@@ -15,6 +15,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/contains.h"
+#include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/logging.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
@@ -61,26 +62,26 @@ std::vector<mojom::Signal*> GetSignals(
     const Publishers& publishers,
     const Signals& signals) {
   std::vector<mojom::Signal*> result;
-  auto it = signals.find(article->publisher_id);
-  if (it != signals.end()) {
-    result.push_back(it->second.get());
+  auto* signal = base::FindOrNull(signals, article->publisher_id);
+  if (signal) {
+    result.push_back(signal->get());
   }
 
-  auto publisher_it = publishers.find(article->publisher_id);
-  if (publisher_it == publishers.end()) {
+  auto* publisher = base::FindPtrOrNull(publishers, article->publisher_id);
+  if (!publisher) {
     return result;
   }
 
-  for (const auto& locale_info : publisher_it->second->locales) {
+  for (const auto& locale_info : publisher->locales) {
     if (locale_info->locale != locale) {
       continue;
     }
     for (const auto& channel : locale_info->channels) {
-      auto signal_it = signals.find(channel);
-      if (signal_it == signals.end()) {
+      auto* signal_match = base::FindOrNull(signals, channel);
+      if (!signal_match) {
         continue;
       }
-      result.push_back(signal_it->second.get());
+      result.push_back(signal_match->get());
     }
   }
   return result;

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/map_util.h"
 #include "url/gurl.h"
 
 namespace brave_wallet::unstoppable_domains {
@@ -50,30 +51,32 @@ void MultichainCall<ResultType>::AddCallback(CallbackType cb) {
 template <class ResultType>
 typename MultichainCall<ResultType>::Response*
 MultichainCall<ResultType>::GetEffectiveResponse() {
-  auto polygon_result = responses_.find(mojom::kPolygonMainnetChainId);
-  if (polygon_result == responses_.end()) {
+  auto* polygon_result =
+      base::FindOrNull(responses_, mojom::kPolygonMainnetChainId);
+  if (!polygon_result) {
     return nullptr;
   }
 
-  auto base_result = responses_.find(mojom::kBaseMainnetChainId);
-  if (base_result == responses_.end()) {
+  auto* base_result = base::FindOrNull(responses_, mojom::kBaseMainnetChainId);
+  if (!base_result) {
     return nullptr;
   }
 
-  auto eth_mainnet_result = responses_.find(mojom::kMainnetChainId);
-  if (eth_mainnet_result == responses_.end()) {
+  auto* eth_mainnet_result =
+      base::FindOrNull(responses_, mojom::kMainnetChainId);
+  if (!eth_mainnet_result) {
     return nullptr;
   }
 
-  if (polygon_result->second.result || polygon_result->second.error) {
-    return &polygon_result->second;
+  if (polygon_result->result || polygon_result->error) {
+    return polygon_result;
   }
 
-  if (base_result->second.result || base_result->second.error) {
-    return &base_result->second;
+  if (base_result->result || base_result->error) {
+    return base_result;
   }
 
-  return &eth_mainnet_result->second;
+  return eth_mainnet_result;
 }
 
 template <class ResultType>

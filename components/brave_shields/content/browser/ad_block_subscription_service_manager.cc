@@ -13,6 +13,7 @@
 
 #include "base/base64url.h"
 #include "base/check.h"
+#include "base/containers/map_util.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/json/json_value_converter.h"
@@ -513,10 +514,10 @@ void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
   info->last_successful_update_attempt = info->last_update_attempt;
   UpdateSubscriptionPrefs(sub_url, *info);
 
-  auto subscription_filters_provider =
-      subscription_filters_providers_.find(sub_url);
-  if (subscription_filters_provider != subscription_filters_providers_.end()) {
-    subscription_filters_provider->second->OnListAvailable();
+  auto* subscription_filters_provider =
+      base::FindPtrOrNull(subscription_filters_providers_, sub_url);
+  if (subscription_filters_provider) {
+    subscription_filters_provider->OnListAvailable();
   }
 
   NotifyObserversOfServiceEvent();

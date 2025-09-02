@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/map_util.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -117,17 +118,18 @@ bool EthPendingTxTracker::IsNonceTaken(const EthTxMeta& meta) {
 bool EthPendingTxTracker::ShouldTxDropped(const EthTxMeta& meta) {
   const std::string& address = meta.from()->address;
   const std::string& chain_id = meta.chain_id();
-  auto network_nonce_map_per_chain_id = network_nonce_map_.find(address);
-  if (network_nonce_map_per_chain_id == network_nonce_map_.end() ||
-      !network_nonce_map_per_chain_id->second.contains(chain_id)) {
+  auto* network_nonce_map_per_chain_id =
+      base::FindOrNull(network_nonce_map_, address);
+  if (!network_nonce_map_per_chain_id ||
+      !network_nonce_map_per_chain_id->contains(chain_id)) {
     json_rpc_service_->GetEthTransactionCount(
         chain_id, address,
         base::BindOnce(&EthPendingTxTracker::OnGetNetworkNonce,
                        weak_factory_.GetWeakPtr(), chain_id, address));
   } else {
     uint256_t network_nonce = network_nonce_map_[address][chain_id];
-    network_nonce_map_per_chain_id->second.erase(chain_id);
-    if (network_nonce_map_per_chain_id->second.empty()) {
+    network_nonce_map_per_chain_id->erase(chain_id);
+    if (network_nonce_map_per_chain_id->empty()) {
       network_nonce_map_.erase(address);
     }
     if (meta.tx()->nonce() < network_nonce) {

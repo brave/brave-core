@@ -9,6 +9,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
@@ -42,11 +43,11 @@ void CardanoBlockTracker::RequestLatestBlock(const std::string& chain_id) {
 
 std::optional<uint32_t> CardanoBlockTracker::GetLatestHeight(
     const std::string& chain_id) const {
-  auto it = latest_height_map_.find(chain_id);
-  if (it == latest_height_map_.end()) {
+  auto* height = base::FindOrNull(latest_height_map_, chain_id);
+  if (!height) {
     return std::nullopt;
   }
-  return it->second;
+  return *height;
 }
 
 void CardanoBlockTracker::OnGetLatestBlock(

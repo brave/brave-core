@@ -13,6 +13,7 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/files/file_path.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
@@ -72,9 +73,10 @@ bool AddRule(
   const ContentSettingsPattern& pattern,
   const std::string& exception_string,
   PatternsByWebcompatTypeMap& patterns_by_webcompat_type) {
-  const auto it = kWebcompatNamesToType.find(exception_string);
-  if (it != kWebcompatNamesToType.end()) {
-    const auto webcompat_type = it->second;
+  const auto* webcompat_type_ptr =
+      base::FindOrNull(kWebcompatNamesToType, exception_string);
+  if (webcompat_type_ptr) {
+    const auto webcompat_type = *webcompat_type_ptr;
     if (!patterns_by_webcompat_type.contains(webcompat_type)) {
       patterns_by_webcompat_type[webcompat_type] = kEmptyPatternVector;
     }
