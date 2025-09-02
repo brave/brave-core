@@ -6,6 +6,16 @@
 import * as Mojom from './mojom'
 
 /**
+ * Checks if a file is a full page screenshot
+ * @param file - The uploaded file to check
+ * @returns True if the file is a full page screenshot
+ */
+export const isFullPageScreenshot = (file: Mojom.UploadedFile): boolean => {
+  return file.type === Mojom.UploadedFileType.kScreenshot &&
+         file.filename.startsWith(Mojom.FULL_PAGE_SCREENSHOT_PREFIX)
+}
+
+/**
  * Updates the conversation history by either merging a new entry with an
  * existing one or appending it if it doesn't exist.
  *
