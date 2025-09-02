@@ -29,17 +29,17 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
       const std::string&,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
 
+  // Delegate interface for UI-related actions. This class is responsible for
+  // facilitating communication with the consent dialog, ensuring that the UI
+  // reflects the current state accurately.
   class PsstUiDelegate {
    public:
-    PsstUiDelegate();
-    virtual ~PsstUiDelegate();
-
-    PsstUiDelegate(const PsstUiDelegate&) = delete;
-    PsstUiDelegate& operator=(const PsstUiDelegate&) = delete;
-
+    virtual ~PsstUiDelegate() = default;
+    // Actualize the UI state based on the applied tasks and progress.
     virtual void SetAppliedItems(
         long progress,
         const std::vector<psst_script_responses::PsstTask>& applied_tasks) = 0;
+    // Sets the consent dialog to complete state.
     virtual void SetComplete() = 0;
   };
 

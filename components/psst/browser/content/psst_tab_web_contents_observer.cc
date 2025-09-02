@@ -98,9 +98,6 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
                                      std::move(inject_script_callback)));
 }
 
-PsstTabWebContentsObserver::PsstUiDelegate::PsstUiDelegate() = default;
-PsstTabWebContentsObserver::PsstUiDelegate::~PsstUiDelegate() = default;
-
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     content::WebContents* web_contents,
     PsstRuleRegistry* registry,
