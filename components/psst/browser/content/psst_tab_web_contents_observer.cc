@@ -70,11 +70,13 @@ std::unique_ptr<PsstTabWebContentsObserver>
 PsstTabWebContentsObserver::MaybeCreateForWebContents(
     content::WebContents* contents,
     content::BrowserContext* browser_context,
+    std::unique_ptr<PsstUiDelegate> ui_delegate,
     PrefService* prefs,
     const int32_t world_id) {
   CHECK(contents);
   CHECK(browser_context);
   CHECK(prefs);
+  CHECK(ui_delegate);
 
   if (browser_context->IsOffTheRecord() ||
       !base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
@@ -92,18 +94,24 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
 
   return base::WrapUnique<PsstTabWebContentsObserver>(
       new PsstTabWebContentsObserver(contents, PsstRuleRegistry::GetInstance(),
-                                     prefs, std::move(inject_script_callback)));
+                                     prefs, std::move(ui_delegate),
+                                     std::move(inject_script_callback)));
 }
+
+PsstTabWebContentsObserver::PsstUiDelegate::PsstUiDelegate() = default;
+PsstTabWebContentsObserver::PsstUiDelegate::~PsstUiDelegate() = default;
 
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     content::WebContents* web_contents,
     PsstRuleRegistry* registry,
     PrefService* prefs,
+    std::unique_ptr<PsstUiDelegate> ui_delegate,
     InjectScriptCallback inject_script_callback)
     : WebContentsObserver(web_contents),
       registry_(registry),
       prefs_(prefs),
-      inject_script_callback_(std::move(inject_script_callback)) {
+      inject_script_callback_(std::move(inject_script_callback)),
+      ui_delegate_(std::move(ui_delegate)) {
   CHECK(!inject_script_callback_.is_null());
 }
 
@@ -181,7 +189,26 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   inject_script_callback_.Run(
       MaybeAddParamsToScript(std::move(rule),
                              std::move(user_script_result).TakeDict()),
-      base::DoNothing());
+      base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
+                     weak_factory_.GetWeakPtr(), id));
+}
+
+void PsstTabWebContentsObserver::OnPolicyScriptResult(
+    int nav_entry_id,
+    base::Value script_result) {
+  const auto script_result_parsed =
+      psst_script_responses::PolicyScriptResult::FromValue(script_result);
+  if (!script_result_parsed || !ShouldInsertScriptForPage(nav_entry_id)) {
+    return;
+  }
+
+  ui_delegate_->SetAppliedItems(script_result_parsed->progress,
+                                script_result_parsed->applied_tasks);
+
+  if (script_result_parsed->status ==
+      psst_script_responses::PolicyScriptStatus::kCompleted) {
+    ui_delegate_->SetComplete();
+  }
 }
 
 }  // namespace psst

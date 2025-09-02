@@ -98,6 +98,24 @@ const params = {
 }
 ;
 <policy script content>
+```
+
+##### Policy script result:
+The policy script returns the next object as result:
 
 ```
+{
+    "status": "<STARTED|COMPLETED>",
+    "progress": "<percent of completion>",
+    "applied": [{
+      "description": "Ads Preferences",
+      "url": "https://x.com/settings/ads_preferences",
+      "error_description": "<optional error description>"
+    }]
+}
+```
+- `status` - represents the flow's status, `started` or `completed`;
+- `progress` - script calculates the percent of operation completion;
+- `applied` - array of the completed tasks, each task is an object `url/description/error_description`
+
 

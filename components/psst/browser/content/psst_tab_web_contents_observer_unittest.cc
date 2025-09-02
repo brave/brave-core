@@ -12,6 +12,7 @@
 
 #include "base/json/json_writer.h"
 #include "base/memory/ptr_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/mock_callback.h"
@@ -93,6 +94,20 @@ ACTION_P(InsertScriptInPageCallback, loop, value) {
   loop->Quit();
 }
 
+class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
+ public:
+  MockUiDelegate() = default;
+  ~MockUiDelegate() override = default;
+
+  MOCK_METHOD(
+      void,
+      SetAppliedItems,
+      (long progress,
+       const std::vector<psst_script_responses::PsstTask>& applied_tasks),
+      (override));
+  MOCK_METHOD(void, SetComplete, (), (override));
+};
+
 class PsstTabWebContentsObserverUnitTestBase
     : public content::RenderViewHostTestHarness {
  public:
@@ -102,12 +117,19 @@ class PsstTabWebContentsObserverUnitTestBase
     psst::RegisterProfilePrefs(prefs_.registry());
     rule_registry_ = std::make_unique<MockPsstRuleRegistry>();
 
+    auto ui_delegate = std::make_unique<MockUiDelegate>();
+    ui_delegate_ = ui_delegate.get();
+
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
         new PsstTabWebContentsObserver(web_contents(), rule_registry_.get(),
-                                       &prefs_, inject_script_callback_.Get()));
+                                       &prefs_, std::move(ui_delegate),
+                                       inject_script_callback_.Get()));
   }
 
-  void TearDown() override { content::RenderViewHostTestHarness::TearDown(); }
+  void TearDown() override {
+    content::RenderViewHostTestHarness::TearDown();
+    ui_delegate_ = nullptr;
+  }
 
   MockPsstRuleRegistry& psst_rule_registry() { return *rule_registry_.get(); }
   PrefService* prefs() { return &prefs_; }
@@ -122,10 +144,13 @@ class PsstTabWebContentsObserverUnitTestBase
     return inject_script_callback_;
   }
 
+  MockUiDelegate& ui_delegate() { return *ui_delegate_; }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
 
  private:
+  raw_ptr<MockUiDelegate> ui_delegate_;
   base::MockCallback<PsstTabWebContentsObserver::InjectScriptCallback>
       inject_script_callback_;
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
@@ -144,7 +169,8 @@ class PsstTabWebContentsObserverUnitTest
 
 TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
   EXPECT_NE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                web_contents(), browser_context(), prefs(), 2),
+                web_contents(), browser_context(),
+                std::make_unique<MockUiDelegate>(), prefs(), 2),
             nullptr);
 }
 
@@ -157,7 +183,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       &otr_browser_context, site_instance);
 
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                web_contents.get(), &otr_browser_context, prefs(), 2),
+                web_contents.get(), &otr_browser_context,
+                std::make_unique<MockUiDelegate>(), prefs(), 2),
             nullptr);
 }
 
@@ -479,7 +506,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   // User script result is an dictionary, and user key is not empty
   auto script_params = base::Value(base::Value::Dict().Set("user", "value"));
-  auto policy_script_result = base::Value();
+
+  // Policy script result is a dictionary, but it is not deserializable
+  auto policy_script_result =
+      base::Value(base::Value::Dict().Set("prop", "value"));
+
+  // Any UI delegate method must not be called, as policy_script_result is empty
+  EXPECT_CALL(ui_delegate(), SetAppliedItems(_, _)).Times(0);
+  EXPECT_CALL(ui_delegate(), SetComplete()).Times(0);
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
@@ -545,6 +579,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
+
   base::RunLoop user_script_insert_loop;
   base::RunLoop policy_script_insert_loop;
 
@@ -555,6 +590,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           .Set("prop",
                base::Value(base::Value::BlobStorage{0x01, 0x02, 0x03})));
   auto policy_script_result = base::Value();
+
+  // Any UI delegate method must not be called, as policy_script_result is empty
+  EXPECT_CALL(ui_delegate(), SetAppliedItems(_, _)).Times(0);
+  EXPECT_CALL(ui_delegate(), SetComplete()).Times(0);
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
@@ -574,6 +613,136 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   policy_script_insert_loop.Run();
 }
 
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UiDelegateSetAppliedItemsButNotSetComplete) {
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  const int progress = 50;
+  base::RunLoop check_loop;
+  base::RunLoop progress_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+
+  // SetAppliedItems must be called as policy script returns valid result with
+  // STARTED status
+  EXPECT_CALL(ui_delegate(), SetAppliedItems(progress, _))
+      .WillOnce([&progress_loop](
+                    long, const std::vector<psst_script_responses::PsstTask>&) {
+        progress_loop.Quit();
+      });
+  // SetComplete must not be called as policy script returns STARTED status
+  EXPECT_CALL(ui_delegate(), SetComplete()).Times(0);
+
+  base::RunLoop user_script_insert_loop;
+  base::RunLoop policy_script_insert_loop;
+
+  // Create a user script return value
+  auto script_params = base::Value(base::Value::Dict().Set("user", "value"));
+
+  // prepare return value for policy script (status should be STARTED)
+  auto policy_script_result =
+      base::Value(base::Value::Dict()
+                      .Set("status", "STARTED")
+                      .Set("progress", progress)
+                      .Set("applied_tasks",
+                           base::Value::List().Append(
+                               base::Value::Dict()
+                                   .Set("url", "https://example1.com/task")
+                                   .Set("description", "Ads Preferences"))));
+
+  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
+                                           script_params.Clone()));
+
+  const auto policy_script_with_parameters = base::StrCat(
+      {"const params = ",
+       base::WriteJsonWithOptions(script_params.Clone(),
+                                  base::JSONWriter::OPTIONS_PRETTY_PRINT)
+           .value(),
+       ";\n", policy_script});
+  // Policy script executed, parameters added
+  EXPECT_CALL(inject_script_callback(), Run(policy_script_with_parameters, _))
+      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_loop,
+                                           std::move(policy_script_result)));
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+
+  check_loop.Run();
+  user_script_insert_loop.Run();
+  policy_script_insert_loop.Run();
+  progress_loop.Run();
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UiDelegateSetAppliedItemsAndSetComplete) {
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  const int progress = 50;
+  base::RunLoop check_loop;
+  base::RunLoop progress_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+
+  // SetAppliedItems must be called as policy script returns valid result with
+  // STARTED status
+  EXPECT_CALL(ui_delegate(), SetAppliedItems(progress, _))
+      .WillOnce([&progress_loop](
+                    long, const std::vector<psst_script_responses::PsstTask>&) {
+        progress_loop.Quit();
+      });
+  // SetComplete must not be called as policy script returns STARTED status
+  EXPECT_CALL(ui_delegate(), SetComplete()).Times(1);
+
+  base::RunLoop user_script_insert_loop;
+  base::RunLoop policy_script_insert_loop;
+
+  // Create a user script return value
+  auto script_params = base::Value(base::Value::Dict().Set("user", "value"));
+
+  // prepare return value for policy script (status should be COMPLETED)
+  auto policy_script_result =
+      base::Value(base::Value::Dict()
+                      .Set("status", "COMPLETED")
+                      .Set("progress", progress)
+                      .Set("applied_tasks",
+                           base::Value::List().Append(
+                               base::Value::Dict()
+                                   .Set("url", "https://example1.com/task")
+                                   .Set("description", "Ads Preferences"))));
+
+  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
+                                           script_params.Clone()));
+
+  const auto policy_script_with_parameters = base::StrCat(
+      {"const params = ",
+       base::WriteJsonWithOptions(script_params.Clone(),
+                                  base::JSONWriter::OPTIONS_PRETTY_PRINT)
+           .value(),
+       ";\n", policy_script});
+  // Policy script executed, parameters added
+  EXPECT_CALL(inject_script_callback(), Run(policy_script_with_parameters, _))
+      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_loop,
+                                           std::move(policy_script_result)));
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+
+  check_loop.Run();
+  user_script_insert_loop.Run();
+  policy_script_insert_loop.Run();
+  progress_loop.Run();
+}
+
 class PsstTabWebContentsObserverFeatureDisabledUnitTest
     : public PsstTabWebContentsObserverUnitTestBase {
  public:
@@ -585,7 +754,8 @@ class PsstTabWebContentsObserverFeatureDisabledUnitTest
 
 TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                web_contents(), browser_context(), prefs(), 2),
+                web_contents(), browser_context(),
+                std::make_unique<MockUiDelegate>(), prefs(), 2),
             nullptr);
 }
 
