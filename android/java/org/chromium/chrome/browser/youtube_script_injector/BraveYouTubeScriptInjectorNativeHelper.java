@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser;
+package org.chromium.chrome.browser.youtube_script_injector;
 
 import android.app.Activity;
 import android.app.PictureInPictureParams;
@@ -14,7 +14,7 @@ import org.jni_zero.NativeMethods;
 
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.content_public.browser.MediaSession;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.WindowAndroid;
 
@@ -45,19 +45,23 @@ public class BraveYouTubeScriptInjectorNativeHelper {
      */
     @CalledByNative
     public static void enterPictureInPicture(WebContents webContents) {
-        MediaSession mediaSession = MediaSession.fromWebContents(webContents);
-        if (mediaSession != null) {
-            mediaSession.resume();
-        }
         final WindowAndroid windowAndroid = webContents.getTopLevelNativeWindow();
         if (windowAndroid != null) {
             final Activity activity = windowAndroid.getActivity().get();
-            if (activity != null) {
+            // Don't PiP if the activity is going to be restarted,
+            // or if the activity is finishing.
+            if (activity == null || activity.isChangingConfigurations() || activity.isFinishing()) {
+                return;
+            }
+            if (activity instanceof final BraveActivity braveActivity) {
+                // Resume the media session when the transition completes.
+                braveActivity.resumeMediaSession(true);
                 try {
-                    activity.enterPictureInPictureMode(
+                    braveActivity.enterPictureInPictureMode(
                             new PictureInPictureParams.Builder().build());
                 } catch (IllegalStateException | IllegalArgumentException e) {
                     Log.e(TAG, "Error entering picture in picture mode.", e);
+                    braveActivity.resumeMediaSession(false);
                 }
             }
         }

@@ -19,7 +19,7 @@ source_set("youtube_script_injector") {
   deps = [
     ":features",
     "//base",
-    "//brave/browser/android/youtube_script_injector:jni_headers",
+    "//brave/build/android:jni_headers",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/constants",
     "//brave/components/script_injector/common/mojom",
@@ -29,20 +29,6 @@ source_set("youtube_script_injector") {
     "//net",
     "//url",
   ]
-}
-
-android_library("java") {
-  srcjar_deps = [ ":jni_headers" ]
-  sources = [ "java/org/chromium/chrome/browser/BraveYouTubeScriptInjectorNativeHelper.java" ]
-
-  deps = [
-    "//base:base_java",
-    "//content/public/android:content_full_java",
-    "//third_party/jni_zero:jni_zero_java",
-    "//ui/android:ui_no_recycler_view_java",
-  ]
-
-  resources_package = "org.chromium.chrome.browser"
 }
 
 source_set("features") {
@@ -72,10 +58,6 @@ source_set("browser_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
-}
-
-generate_jni("jni_headers") {
-  sources = [ "java/org/chromium/chrome/browser/BraveYouTubeScriptInjectorNativeHelper.java" ]
 }
 
 source_set("unit_tests") {
