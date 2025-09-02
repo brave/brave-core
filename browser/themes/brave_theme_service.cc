@@ -8,12 +8,22 @@
 #include <memory>
 
 #include "brave/browser/extensions/brave_theme_event_router.h"
+#include "brave/browser/ui/color/features.h"
+#include "brave/browser/ui/color/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 
 BraveThemeService::BraveThemeService(Profile* profile,
                                      const ThemeHelper& theme_helper)
     : ThemeService(profile, theme_helper) {
   brave_theme_event_router_ =
       std::make_unique<extensions::BraveThemeEventRouter>(profile);
+
+  if (base::FeatureList::IsEnabled(color::features::kBraveDarkerTheme)) {
+    darker_theme_enabled_.Init(
+        color::prefs::kBraveDarkerMode, profile->GetPrefs(),
+        base::BindRepeating(&BraveThemeService::OnDarkerThemePrefChanged,
+                            base::Unretained(this)));
+  }
 }
 
 BraveThemeService::~BraveThemeService() = default;
@@ -27,4 +37,8 @@ bool BraveThemeService::GetIsGrayscale() const {
 void BraveThemeService::SetBraveThemeEventRouterForTesting(
     extensions::BraveThemeEventRouter* mock_router) {
   brave_theme_event_router_.reset(mock_router);
+}
+
+void BraveThemeService::OnDarkerThemePrefChanged() {
+  NotifyThemeChanged();
 }
