@@ -637,8 +637,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       1u);
   EXPECT_TRUE(
       conversation->associated_content_manager()->HasAssociatedContent());
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
+  EXPECT_TRUE(conversation->associated_content_manager()->HasLiveContent());
 
   conversation->associated_content_manager()->AddContent(&associated_content2);
   EXPECT_EQ(
@@ -646,8 +645,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       2u);
   EXPECT_TRUE(
       conversation->associated_content_manager()->HasAssociatedContent());
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
+  EXPECT_TRUE(conversation->associated_content_manager()->HasLiveContent());
 
   WaitForAssociatedContentFetch(conversation->associated_content_manager());
   auto cached_content =
@@ -670,8 +668,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       1u);
   EXPECT_TRUE(
       conversation->associated_content_manager()->HasAssociatedContent());
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
+  EXPECT_TRUE(conversation->associated_content_manager()->HasLiveContent());
 
   conversation->associated_content_manager()->AddContent(&associated_content1);
   EXPECT_EQ(
@@ -679,8 +676,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       1u);
   EXPECT_TRUE(
       conversation->associated_content_manager()->HasAssociatedContent());
-  EXPECT_TRUE(
-      conversation->associated_content_manager()->HasNonArchiveContent());
+  EXPECT_TRUE(conversation->associated_content_manager()->HasLiveContent());
 
   WaitForAssociatedContentFetch(conversation->associated_content_manager());
   auto cached_content =
@@ -707,8 +703,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
             1u);
   EXPECT_TRUE(conversation_handler_->associated_content_manager()
                   ->HasAssociatedContent());
-  EXPECT_TRUE(conversation_handler_->associated_content_manager()
-                  ->HasNonArchiveContent());
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->HasLiveContent());
 
   conversation_handler_->associated_content_manager()->AddContent(
       &associated_content2);
@@ -718,8 +714,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
             2u);
   EXPECT_TRUE(conversation_handler_->associated_content_manager()
                   ->HasAssociatedContent());
-  EXPECT_TRUE(conversation_handler_->associated_content_manager()
-                  ->HasNonArchiveContent());
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->HasLiveContent());
 
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
@@ -737,8 +733,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
             1u);
   EXPECT_TRUE(conversation_handler_->associated_content_manager()
                   ->HasAssociatedContent());
-  EXPECT_TRUE(conversation_handler_->associated_content_manager()
-                  ->HasNonArchiveContent());
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->HasLiveContent());
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   cached_content =
@@ -853,8 +849,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   conversation_handler_->associated_content_manager()->AddContent(
       &associated_content2);
 
-  EXPECT_TRUE(conversation_handler_->associated_content_manager()
-                  ->HasNonArchiveContent());
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->HasLiveContent());
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   auto cached_content =
@@ -865,8 +861,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
 
   conversation_handler_->associated_content_manager()->OnRequestArchive(
       &associated_content1);
-  EXPECT_TRUE(conversation_handler_->associated_content_manager()
-                  ->HasNonArchiveContent());
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->HasLiveContent());
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   cached_content =
@@ -878,8 +874,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   conversation_handler_->associated_content_manager()->OnRequestArchive(
       &associated_content2);
   // Everything should be archived now
-  EXPECT_FALSE(conversation_handler_->associated_content_manager()
-                   ->HasNonArchiveContent());
+  EXPECT_FALSE(
+      conversation_handler_->associated_content_manager()->HasLiveContent());
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
   cached_content =

@@ -1,0 +1,33 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "url/mojom/url.mojom";
+
+// Represents a bookmark (guaranteed to be non-folder).
+struct Bookmark {
+  int64 id;
+  string title;
+  url.mojom.Url url;
+};
+
+// Represents a change to the bookmarks. Currently we don't care about folders,
+// but this may change in the future.
+struct BookmarksChange {
+  map<string, Bookmark> addedOrUpdated;
+  array<string> removed;
+};
+
+interface BookmarksListener {
+  // Called when the bookmarks change.
+  Changed(BookmarksChange change);
+};
+
+interface BookmarksService {
+  // Add a listener to the bookmarks service. The listener will be notified of
+  //the current bookmarks when it is attached.
+  AddListener(pending_remote<BookmarksListener> listener);
+};
