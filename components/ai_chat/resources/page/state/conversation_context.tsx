@@ -74,8 +74,8 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   conversationHandler?: Mojom.ConversationHandlerRemote
 
   isTemporaryChat: boolean
-  showAttachments: boolean
-  setShowAttachments: (show: boolean) => void
+  showAttachments: 'tabs' | 'bookmarks' | null
+  setShowAttachments: (show: 'tabs' | 'bookmarks' | null) => void
   uploadFile: (useMediaCapture: boolean) => void
   getScreenshots: () => void
   removeFile: (index: number) => void
@@ -129,7 +129,7 @@ export const defaultContext: ConversationContext = {
   setIsToolsMenuOpen: () => { },
   isTemporaryChat: false,
   disassociateContent: () => { },
-  showAttachments: false,
+  showAttachments: null,
   setShowAttachments: () => { },
   uploadFile: (useMediaCapture: boolean) => { },
   getScreenshots: () => { },
@@ -163,7 +163,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const [context, setContext] =
     React.useState<ConversationContext>({
       ...defaultContext,
-      setShowAttachments: (showAttachments: boolean) => {
+      setShowAttachments: (showAttachments: 'tabs' | 'bookmarks' | null) => {
         setContext((value) => ({
           ...value,
           showAttachments
@@ -180,14 +180,14 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         .find(c => c.contentId === t.contentId)?.conversationTurnUuid)
   }, [aiChatContext.tabs, context.associatedContentInfo])
 
-  // If there are no unassociated tabs, hide the attachments picker.
+  // If there are no unassociated tabs, hide the tabs attachments picker.
   React.useEffect(() => {
-    if (unassociatedTabs.length === 0) {
+    if (unassociatedTabs.length === 0 && context.showAttachments === 'tabs') {
       setPartialContext({
-        showAttachments: false
+        showAttachments: null
       })
     }
-  }, [unassociatedTabs])
+  }, [unassociatedTabs, context.showAttachments])
 
   const [
     hasDismissedLongConversationInfo,

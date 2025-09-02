@@ -72,7 +72,8 @@ export default function BeginGeneration() {
           getPluralString: () => Promise.resolve(''),
           setShowAttachments: () => {},
           unassociatedTabs: [],
-          attachImages: () => {}
+          attachImages: () => {},
+          bookmarks: []
         }} />
     </FiltersContainer>
     <NoContent />

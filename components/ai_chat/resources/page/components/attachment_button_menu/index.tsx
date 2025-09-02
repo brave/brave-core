@@ -20,7 +20,7 @@ import styles from './style.module.scss'
 type Props = Pick<ConversationContext, 'uploadFile' | 'getScreenshots' |
   'conversationHistory' | 'associatedContentInfo' | 'setShowAttachments'
   | 'associateDefaultContent' | 'unassociatedTabs'> &
-  Pick<AIChatContext, 'isMobile'> & {
+  Pick<AIChatContext, 'isMobile' | 'bookmarks'> & {
     conversationStarted: boolean
   }
 
@@ -85,7 +85,7 @@ export default function AttachmentButtonMenu(props: Props) {
             </div>
           </leo-menu-item>
         )}
-        {props.unassociatedTabs.length > 0 && (<leo-menu-item onClick={() => props.setShowAttachments(true)}>
+        {props.unassociatedTabs.length > 0 && (<leo-menu-item onClick={() => props.setShowAttachments('tabs')}>
           <div className={styles.buttonContent}>
             <Icon
               className={styles.buttonIcon}
@@ -94,6 +94,15 @@ export default function AttachmentButtonMenu(props: Props) {
             {getLocale(S.AI_CHAT_ATTACH_OPEN_TABS_BUTTON_LABEL)}
           </div>
         </leo-menu-item>)}
+        {props.bookmarks.length > 0 && <leo-menu-item onClick={() => props.setShowAttachments('bookmarks')}>
+          <div className={styles.buttonContent}>
+            <Icon
+              className={styles.buttonIcon}
+              name='product-bookmarks'
+            />
+            {getLocale(S.AI_CHAT_ATTACH_BOOKMARKS_BUTTON_LABEL)}
+          </div>
+        </leo-menu-item>}
       </ButtonMenu>
     </>
   )

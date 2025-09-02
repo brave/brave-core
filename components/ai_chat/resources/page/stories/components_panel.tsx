@@ -278,7 +278,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -292,7 +292,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent('The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a *hummingbird* both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and **piranhas** both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.')],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -306,7 +306,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -320,7 +320,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent(`# Title 1\n ## Title 2\n ## **Title 2** using bold that doesn't look different\n### Title 3\n#### Title 4\n \nDuring the latter part of 2021, I reflected on the challenges we were facing at Modern Health. One recurring problem that stood out was our struggle to create new products with an unstructured color palette. This resulted in poor [communication](https://www.google.com) between designers and developers, an inconsistent product brand, and increasing accessibility problems.\n\n1. Inclusivity: our palette provides easy ways to ensure our product uses accessible contrasts.\n 2. Efficiency: our palette is diverse enough for our current and future product design, yet values are still predictable and constrained.\n 3. Reusability: our palette is on-brand but versatile. There are very few one-offs that fall outside the palette.\n\n This article shares the process I followed to apply these principles to develop a more adaptable color palette that prioritizes accessibility and is built to scale into all of our future product **design** needs.`)],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -334,7 +334,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -348,7 +348,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent('The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.')],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -362,7 +362,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -394,7 +394,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
         '1962              |\n' +
         '\n\n Let me know if you\'d like more details!'
       )],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -408,7 +408,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -431,7 +431,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
         { title: 'Tesla Model Y', faviconUrl: { url: 'https://www.tesla.com/favicon.ico' }, url: { url: 'https://www.tesla.com/modely' } }
       ])
     ],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -452,13 +452,13 @@ const HISTORY: Mojom.ConversationTurn[] = [
       createdTime: { internalValue: BigInt('13278618001000000') },
       edits: [],
       events: [],
-      uploadedFiles : [],
+      uploadedFiles: [],
       fromBraveSearchSERP: false,
       modelKey: '1'
     }],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -472,7 +472,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getSearchStatusEvent(), getSearchEvent(['LTT store backpack dimensions', 'Tesla Model Y frunk dimensions'])],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -486,8 +486,9 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [
-      { filename: 'lion.png', filesize: 128,
+    uploadedFiles: [
+      {
+        filename: 'lion.png', filesize: 128,
         data: Array.from(new Uint8Array(128)),
         type: Mojom.UploadedFileType.kImage
       }
@@ -505,7 +506,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [getCompletionEvent('It is a lion!')],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -519,12 +520,14 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [
-      { filename: 'full_screenshot_0.png', filesize: 128,
+    uploadedFiles: [
+      {
+        filename: 'full_screenshot_0.png', filesize: 128,
         data: Array.from(new Uint8Array(128)),
         type: Mojom.UploadedFileType.kScreenshot
       },
-      { filename: 'full_screenshot_1.png', filesize: 128,
+      {
+        filename: 'full_screenshot_1.png', filesize: 128,
         data: Array.from(new Uint8Array(128)),
         type: Mojom.UploadedFileType.kScreenshot
       },
@@ -545,7 +548,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       getCompletionEvent(
         'This website compares differences between Juniper Model Y and legacy one.'
       )],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -559,16 +562,19 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [],
-    uploadedFiles : [
-      { filename: 'full_screenshot_0.png', filesize: 128,
+    uploadedFiles: [
+      {
+        filename: 'full_screenshot_0.png', filesize: 128,
         data: Array.from(new Uint8Array(128)),
         type: Mojom.UploadedFileType.kScreenshot
       },
-      { filename: 'full_screenshot_1.png', filesize: 128,
+      {
+        filename: 'full_screenshot_1.png', filesize: 128,
         data: Array.from(new Uint8Array(128)),
         type: Mojom.UploadedFileType.kScreenshot
       },
-      { filename: 'lion.png', filesize: 128,
+      {
+        filename: 'lion.png', filesize: 128,
         data: Array.from(new Uint8Array(128)),
         type: Mojom.UploadedFileType.kImage
       }
@@ -589,7 +595,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       getCompletionEvent(
         'According to screenshots, this website compares differences between Juniper Model Y and legacy one. And a lion image.'
       )],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -621,7 +627,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
         '1962              |\n' +
         '\n\n Let me know if you\'d like more details!'
       )],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -638,7 +644,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       getCompletionEvent('Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.'),
       ...toolEvents.slice(0, 3).map((toolUseEvent) => ({ ...eventTemplate, toolUseEvent }))
     ],
-    uploadedFiles : [],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -654,7 +660,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [
       ...toolEvents.slice(3).map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent }))
     ],
-    uploadedFiles:[],
+    uploadedFiles: [],
     fromBraveSearchSERP: false,
     modelKey: '1'
   },
@@ -787,7 +793,7 @@ type CustomArgs = {
   totalTokens: number
   trimmedTokens: number
   isGenerating: boolean
-  showAttachments: boolean
+  showAttachments: 'tabs' | 'bookmarks' | null
   isNewConversation: boolean
   generatedUrlToBeOpened: Url | undefined
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
@@ -829,7 +835,7 @@ const args: CustomArgs = {
   totalTokens: 0,
   trimmedTokens: 0,
   isGenerating: false,
-  showAttachments: true,
+  showAttachments: 'tabs',
   isNewConversation: false,
   generatedUrlToBeOpened: undefined,
   ratingTurnUuid: undefined,
@@ -965,6 +971,80 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
       url: { url: 'https://search.brave.com' },
       title: 'Brave Search',
     }],
+    bookmarks: [
+      {
+        id: BigInt(1),
+        title: 'Example',
+        url: { url: 'https://www.example.com' },
+
+        dateAdded: 1719859200000,
+        dateLastUsed: 1719859200000,
+      },
+      {
+        id: BigInt(2),
+        title: 'NZ Topo',
+        url: { url: 'https://topos.nz' },
+
+        dateAdded: 1719859200000,
+        dateLastUsed: 1719859200000,
+      },
+      {
+        id: BigInt(3),
+        title: 'Progrssive',
+        url: { url: 'https://readr.nz' },
+
+        dateAdded: 1719859200000,
+        dateLastUsed: 1719859200000,
+      },
+      {
+        id: BigInt(4),
+        title: 'Brave',
+        url: { url: 'https://brave.com' },
+
+        dateAdded: 1719859200000,
+        dateLastUsed: 1719859200000,
+      },
+      {
+        id: BigInt(5),
+        title: 'Brave Search',
+        url: { url: 'https://search.brave.com' },
+
+        dateAdded: 1719859200000,
+        dateLastUsed: 1719859200000,
+      },
+      {
+        id: BigInt(6),
+        title: 'Chromium',
+        url: { url: 'https://chromium.org' },
+
+        dateAdded: 1719859200000,
+        dateLastUsed: 1719859200000,
+      },
+      {
+        id: BigInt(7),
+        title: 'Webkit',
+        url: { url: 'https://webkit.org' },
+
+        dateAdded: 1719859200000,
+        dateLastUsed: 1719859200000,
+      },
+      {
+        id: BigInt(8),
+        title: 'Firefox',
+        url: { url: 'https://firefox.org' },
+
+        dateAdded: 1719859200000,
+        dateLastUsed: 1719859200000,
+      },
+      {
+        id: BigInt(9),
+        title: 'Edge',
+        url: { url: 'https://edge.microsoft.com' },
+
+        dateAdded: 1719859200000,
+        dateLastUsed: 1719859200000,
+      },
+    ],
     getPluralString: () => Promise.resolve(''),
     goPremium: () => { },
     managePremium: () => { },
@@ -1037,11 +1117,11 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     setIsToolsMenuOpen,
     handleFeedbackFormCancel: () => { },
     handleFeedbackFormSubmit: () => Promise.resolve(),
-    setShowAttachments: (show: boolean) => setArgs({ showAttachments: show }),
+    setShowAttachments: (show: 'tabs' | 'bookmarks' | null) => setArgs({ showAttachments: show }),
     showAttachments: options.args.showAttachments,
-    removeFile: () => {},
-    uploadFile: () => {},
-    getScreenshots: () => {},
+    removeFile: () => { },
+    uploadFile: () => { },
+    getScreenshots: () => { },
     setGeneratedUrlToBeOpened:
       (url?: Url) => setArgs({ generatedUrlToBeOpened: url }),
     setIgnoreExternalLinkWarning: () => { },
@@ -1051,13 +1131,33 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     setTemporary: (temporary: boolean) => {
       setArgs({ isTemporaryChat: temporary })
     },
-    disassociateContent: () => {},
+    disassociateContent: () => { },
     isDragActive: options.args.isDragActive,
     isDragOver: options.args.isDragOver,
-    clearDragState: () => {},
-    attachImages: (images: Mojom.UploadedFile[]) => {},
-    unassociatedTabs: [],
-    associateDefaultContent: async () => {},
+    clearDragState: () => { },
+    attachImages: (images: Mojom.UploadedFile[]) => { },
+    unassociatedTabs: [{
+      id: 1,
+      contentId: 1,
+      url: { url: 'https://www.example.com' },
+      title: 'Example',
+    }, {
+      id: 2,
+      contentId: 2,
+      url: { url: 'https://topos.nz' },
+      title: 'NZ Topo',
+    }, {
+      id: 3,
+      contentId: 3,
+      url: { url: 'https://brave.com' },
+      title: 'Brave',
+    }, {
+      id: 4,
+      contentId: 4,
+      url: { url: 'https://search.brave.com' },
+      title: 'Brave Search',
+    }],
+    associateDefaultContent: async () => { },
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {
@@ -1204,8 +1304,8 @@ export const _ToolUse = {
         {toolEvents
           .filter(event => event.toolName !== Mojom.MEMORY_STORAGE_TOOL_NAME)
           .map((event) => (
-          <ToolEvent key={event.id} toolUseEvent={event} isEntryActive></ToolEvent>
-        ))}
+            <ToolEvent key={event.id} toolUseEvent={event} isEntryActive></ToolEvent>
+          ))}
       </div>
     )
   }

@@ -1,7 +1,9 @@
 .root {
-    background: var(--leo-color-container-highlight);
+    --leo-control-radius: var(--leo-radius-m) var(--leo-radius-m) 0 0;
+
+    background: var(--leo-color-container-background);
     padding: var(--leo-spacing-m);
-    border-radius: var(--leo-radius-l);
+    border-radius: var(--leo-radius-xl);
     box-shadow: var(--leo-effect-elevation-01);
 
     max-height: min(90vh, 720px);
@@ -24,6 +26,10 @@
         color: var(--leo-color-text-secondary);
         font: var(--leo-font-default-semibold);
     }
+
+    & leo-input {
+        z-index: 1;
+    }
 }
 
 leo-dialog .root {
@@ -34,25 +40,13 @@ leo-dialog .root {
     padding: var(--leo-spacing-l) var(--leo-spacing-xl);
 }
 
-.tabSearchContainer {
-    background: var(--leo-color-container-background);
-    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
-    border-radius: var(--leo-radius-l);
-    display: flex;
-    flex-direction: column;
-    gap: var(--leo-spacing-m);
-
-    flex-shrink: 1;
-    overflow: hidden;
-}
-
-.tabList {
+.attachmentList {
     display: flex;
     flex-direction: column;
     gap: var(--leo-spacing-s);
 
     border: 1px solid var(--leo-color-divider-subtle);
-    border-radius: var(--leo-radius-m);
+    border-radius: 0 0 var(--leo-radius-m) var(--leo-radius-m);
 
     padding: var(--leo-spacing-m);
 
@@ -64,7 +58,7 @@ leo-dialog .root {
     color: var(--leo-color-text-tertiary);
 }
 
-.tabItem {
+.attachmentItem {
     --leo-checkbox-flex-direction: row-reverse;
 
     padding: var(--leo-spacing-m);

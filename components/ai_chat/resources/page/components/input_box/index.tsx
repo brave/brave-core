@@ -50,6 +50,7 @@ type Props = Pick<
   | 'unassociatedTabs'
 > &
   Pick<AIChatContext,
+    | 'bookmarks'
     | 'isMobile'
     | 'isAIChatAgentProfileFeatureEnabled'
     | 'isAIChatAgentProfile'
@@ -289,6 +290,7 @@ function InputBox(props: InputBoxProps) {
             isMobile={props.context.isMobile}
             unassociatedTabs={props.context.unassociatedTabs}
             setShowAttachments={props.context.setShowAttachments}
+            bookmarks={props.context.bookmarks}
           />
           {props.context.hasAcceptedAgreement &&
             props.context.isAIChatAgentProfileFeatureEnabled &&

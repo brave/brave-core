@@ -342,7 +342,7 @@ function Main() {
           </div>
         </div>
         {showAttachments && (isSmall ?
-          <Dialog isOpen onClose={() => conversationContext.setShowAttachments(false)} className={styles.attachmentsDialog}>
+          <Dialog isOpen onClose={() => conversationContext.setShowAttachments(null)} className={styles.attachmentsDialog}>
             <Attachments />
           </Dialog>
           : <div className={styles.attachmentsContainer}>
