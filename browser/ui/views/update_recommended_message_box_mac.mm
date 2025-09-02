@@ -16,8 +16,6 @@ void UpdateRecommendedMessageBoxMac::Show(gfx::NativeWindow parent_window) {
 }
 
 bool UpdateRecommendedMessageBoxMac::Accept() {
-  if (brave_relaunch_handler::RelaunchOnMac()) {
-    return true;
-  }
-  return UpdateRecommendedMessageBox::Accept();
+  return brave_relaunch_handler::RelaunchOnMac() ||
+         UpdateRecommendedMessageBox::Accept();
 }
