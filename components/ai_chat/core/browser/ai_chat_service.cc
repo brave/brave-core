@@ -701,7 +701,7 @@ bool AIChatService::CanUnloadConversation(ConversationHandler* conversation) {
   // GetOrCreateConversationHandlerForContent allows a callback so that it
   // can provide an answer after loading the conversation content from storage.
   if (!conversation->GetIsTemporary() &&
-      conversation->IsAssociatedContentAlive() &&
+      conversation->associated_content_manager()->HasLiveContent() &&
       conversation->HasAnyHistory()) {
     return false;
   }
@@ -1156,6 +1156,27 @@ void AIChatService::MaybeAssociateContent(
 
   MaybeAssociateContent(conversation, content->content_id(),
                         content->GetWeakPtr());
+}
+
+void AIChatService::MaybeAssociateContent(
+    std::unique_ptr<AssociatedContentDelegate> content,
+    const std::string& conversation_uuid) {
+  CHECK(content);
+  auto* conversation = GetConversation(conversation_uuid);
+  if (!conversation) {
+    return;
+  }
+
+  if (kAllowedContentSchemes.contains(content->url().scheme())) {
+    conversation->associated_content_manager()->AddOwnedContent(
+        std::move(content),
+        /*notify_updated=*/true);
+  }
+
+  // Note: We don't update |content_conversations_| here because we don't ever
+  // open conversations from owned content.
+  // If this changes in future (i.e right-click a bookmark, open in AI Chat)
+  // then we can consider updating this.
 }
 
 void AIChatService::DisassociateContent(

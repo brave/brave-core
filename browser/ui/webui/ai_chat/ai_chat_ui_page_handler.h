@@ -22,6 +22,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
 
 namespace content {
@@ -79,6 +80,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                     const std::string& conversation_uuid) override;
   void DisassociateContent(mojom::AssociatedContentPtr content,
                            const std::string& conversation_uuid) override;
+  void AttachBookmark(ai_chat::mojom::BookmarkPtr bookmark,
+                      const std::string& conversation_uuid) override;
   void NewConversation(
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
       mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler)
@@ -120,6 +123,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   base::ScopedObservation<AssociatedContentDelegate,
                           AssociatedContentDelegate::Observer>
       associated_content_delegate_observation_{this};
+
   std::unique_ptr<ChatContextObserver> chat_context_observer_;
 
   std::unique_ptr<UploadFileHelper> upload_file_helper_;
