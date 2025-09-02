@@ -6,6 +6,7 @@
 import BraveCore
 import BraveShared
 import Foundation
+import Growth
 import SwiftUI
 import UniformTypeIdentifiers
 import os.log
@@ -108,6 +109,7 @@ class DataImportModel: ObservableObject {
       try await importProfile(profile)
       self.importError = nil
       self.importState = .success
+      DataImportP3A.record(answer: .importedFromSafari)
     } catch let error as DataImportError {
       self.importError = error
 
@@ -116,11 +118,13 @@ class DataImportModel: ObservableObject {
         self.importState = .dataConflict
       } else {
         self.importState = .failure
+        DataImportP3A.record(answer: .didNotImport)
       }
     } catch {
       Logger.module.error("[DataImporter] - Error: \(error)")
       self.importError = .unknown
       self.importState = .failure
+      DataImportP3A.record(answer: .didNotImport)
     }
   }
 
@@ -132,14 +136,17 @@ class DataImportModel: ObservableObject {
         self.importState = .importing
         try await importBookmarks(file)
         self.importState = .success
+        DataImportP3A.record(answer: .importedFromBookmarksHTML)
       case .history:
         self.importState = .importing
         try await importHistory(file)
         self.importState = .success
+        DataImportP3A.record(answer: .importedFromSafari)
       case .passwords:
         self.importState = .importing
         try await importPasswords(file)
         self.importState = .success
+        DataImportP3A.record(answer: .importedFromSafari)
       case .all:
         let zipFileExtractedURL = try await unzipFile(file)
         let profiles = await loadProfiles(zipFileExtractedURL)
@@ -162,6 +169,7 @@ class DataImportModel: ObservableObject {
           try await importProfile(defaultProfile)
           self.importError = nil
           self.importState = .success
+          DataImportP3A.record(answer: .importedFromSafari)
         } else {
           throw DataImportError.invalidZipFileData
         }
@@ -174,11 +182,13 @@ class DataImportModel: ObservableObject {
         self.importState = .dataConflict
       } else {
         self.importState = .failure
+        DataImportP3A.record(answer: .didNotImport)
       }
     } catch {
       Logger.module.error("[DataImporter] - Error: \(error)")
       self.importError = .unknown
       self.importState = .failure
+      DataImportP3A.record(answer: .didNotImport)
     }
   }
 
@@ -206,6 +216,7 @@ class DataImportModel: ObservableObject {
     if option == .abortImport {
       self.importError = nil
       self.importState = .none
+      DataImportP3A.record(answer: .didNotImport)
       return
     }
 
@@ -220,6 +231,7 @@ class DataImportModel: ObservableObject {
         case .none, .success:
           self.importError = nil
           self.importState = .success
+          DataImportP3A.record(answer: .importedFromSafari)
           return
 
         case .unknownError, .ioError, .badFormat, .dismissed, .maxFileSize, .importAlreadyActive,
@@ -242,11 +254,13 @@ class DataImportModel: ObservableObject {
         self.importState = .dataConflict
       } else {
         self.importState = .failure
+        DataImportP3A.record(answer: .didNotImport)
       }
     } catch {
       Logger.module.error("[DataImporter] - Error: \(error)")
       self.importError = .failedToImportPasswords
       self.importState = .failure
+      DataImportP3A.record(answer: .didNotImport)
     }
   }
 
@@ -393,5 +407,20 @@ class DataImportModel: ObservableObject {
     }
 
     return result
+  }
+}
+
+private struct DataImportP3A {
+  enum Answer: Int, CaseIterable {
+    case didNotImport = 1
+    case importedFromBrave = 2
+    case importedFromChrome = 3
+    case importedFromFirefox = 4
+    case importedFromBookmarksHTML = 5
+    case importedFromSafari = 6
+  }
+
+  static func record(answer: Answer) {
+    UmaHistogramEnumeration("Brave.Importer.ImporterSource.2", sample: answer)
   }
 }
