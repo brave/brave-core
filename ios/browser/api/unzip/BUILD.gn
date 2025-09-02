@@ -13,6 +13,8 @@ source_set("unzip") {
     "//base",
     "//components/services/unzip:in_process",
     "//components/services/unzip/public/cpp",
+    "//ios/chrome/browser/shared/model/utils",
+    "//ios/web/public",
     "//net",
     "//url",
   ]
