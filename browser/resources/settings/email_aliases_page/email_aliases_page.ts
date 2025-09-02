@@ -14,8 +14,9 @@ import '../settings_page/settings_subpage.js'
 
 class EmailAliasesPage extends HTMLElement {
   connectedCallback() {
+    this.attachShadow({ mode: 'open' })
     const subpage = document.createElement('settings-subpage')
-    this.appendChild(subpage)
+    this.shadowRoot!.appendChild(subpage)
     const title = loadTimeData.getString('emailAliasesLabel')
     subpage.setAttribute('page-title', title)
     const reactHost = document.createElement('div')
