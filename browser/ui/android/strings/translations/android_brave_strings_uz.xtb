@@ -178,7 +178,6 @@
 <translation id="5927196110206824867">Homiylik qilingan fon tasvirlari Brave'ning mustaqil va foydalanuvchi ustuvor boʻlgan vebni yaratish yo‘lidagi maqsadini dastaklaydi. Yirik texnologik kompaniyalardan farqli oʻlaroq, biz reklama samaradorligini maxfiyligingizni saqlagan holda anonim tarzda oʻlchaymiz.</translation>
 <translation id="8748471354357836070">Batafsil / tanlovlarni bekor qilish</translation>
 <translation id="8522669544471808198">Fon rasmlarini koʻrsatish</translation>
-<translation id="3870475560794762985">Homiylik qilingan rasmlarni koʻrsatish</translation>
 <translation id="7275773481201277457">Brave Statistikasini koʻrsatish</translation>
 <translation id="2898634658146274982">Tashqi havolalarni Brave orqali ochish</translation>
 <translation id="5616508928556767259">Boshqa ilovalardagi havolalar Brave orqali ochiladi. Eslatma: Brave birlamchi brauzer qilib sozlanishi kerak.</translation>
@@ -343,6 +342,7 @@
 <translation id="5317780077021120954">Saqlash</translation>
 <translation id="1426320910664514906">Gaz limiti</translation>
 <translation id="9065203028668620118">Tahrirlash</translation>
+<translation id="473775607612524610">Yangilash</translation>
 <translation id="5045550434625856497">Notoʻgʻri parol</translation>
 <translation id="8047527352810290817">Gazni tahrirlash</translation>
 <translation id="9091334651803050473">Garchi kafolat boʻlmasa-da, agar yuqori haq toʻlasangiz, maynerlar tranzaksiyangizga ustuvor ahamiyat berishadi.</translation>
@@ -522,4 +522,40 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Chat tarixi</translation>
 <translation id="7956713633345437162">Mobil bukmarklar</translation>
+<translation id="1943432128510653496">Parollarni saqlash</translation>
+<translation id="2100273922101894616">Avtomatik kirish</translation>
+<translation id="363596933471559332">Saytlarga kirish vaqtida saqlangan hisob ma’lumotlaridan foydalanish. Agar funksiya o‘chiq bo‘lsa, har safar kirish vaqtida hisob ma’lumotlarini to‘ldirish kerak bo‘ladi.</translation>
+<translation id="8562452229998620586">Saqlangan parollar bu yerda paydo bo‘ladi.</translation>
+<translation id="1303339473099049190">Bu parol topilmadi. Xatosiz kiritilganini tekshiring va qayta urining.</translation>
+<translation id="2259659629660284697">Parollarni eksport qilish…</translation>
+<translation id="133012818630824069">Brave saqlab qolgan parollarni eksport qilish</translation>
+<translation id="2321086116217818302">Parollar tayyorlanmoqda…</translation>
+<translation id="5139940364318403933">Google Drive xizmatidan foydalanish bo‘yicha qo‘llanma</translation>
+<translation id="729975465115245577">Qurilmangizda parollarni saqlovchi ilova yo‘q.</translation>
+<translation id="1129510026454351943">Tafsilotlar: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Parollarni eksport qilish uchun qulfni oching.</translation>
+<translation id="10614374240317010">Parollar saqlanmaydigan saytlar</translation>
+<translation id="1571304935088121812">Foydalanuvchi nomidan nusxa olish</translation>
+<translation id="5005498671520578047">Parolni nusxalash</translation>
+<translation id="2435457462613246316">Parolni ko‘rsatish</translation>
+<translation id="1513858653616922153">Parolni o‘chirish</translation>
+<translation id="543338862236136125">Parolni almashtirish</translation>
+<translation id="4565377596337484307">Parolni berkitish</translation>
+<translation id="8523928698583292556">Saqlangan parolni o‘chirish</translation>
+<translation id="5433691172869980887">Foydalanuvchi nomi nusxalandi</translation>
+<translation id="2625189173221582860">Parol nusxalandi</translation>
+<translation id="8084114998886531721">Saqlangan parol</translation>
+<translation id="6590680911007613645">Saqlayotgan parolingiz <ph name="SITE"/> uchun mos kelishini tekshiring</translation>
+<translation id="1492417797159476138">Bu sayt uchun login allaqachon saqlangan</translation>
+<translation id="5454166040603940656"><ph name="PROVIDER"/> yordamida</translation>
+<translation id="686366188661646310">Parol oʻchirilsinmi?</translation>
+<translation id="7808889146555843082">Bu parol olib tashlangani bilan <ph name="SITE"/> hisobingiz oʻchib ketmaydi. Boshqalardan himoyalash maqsadida <ph name="SITE"/> hisobingiz parolini almashtiring yoki olib tashlang.</translation>
+<translation id="2870560284913253234">Sayt</translation>
+<translation id="8503813439785031346">Foydalanuvchi nomi</translation>
+<translation id="2278052315791335171">Bu parol olib tashlangani bilan <ph name="SITE"/> hisobingiz oʻchib ketmaydi</translation>
+<translation id="6891726759199484455">Paroldan nusxa olish uchun qulfni oching</translation>
+<translation id="5515439363601853141">Paolni ko‘rish uchun qulfni oching</translation>
+<translation id="1724977129262658800">Parolni almashtirish uchun qurilma qulfini oching</translation>
+<translation id="5780792035410621042">Parollardan nusxa olish uchun qurilmangizda avval ekran qulfini sozlang</translation>
+<translation id="7986497153528221272">Parollarni koʻrish uchun qurilmangizni ekran kodi bilan qulflang.</translation>
 </translationbundle>

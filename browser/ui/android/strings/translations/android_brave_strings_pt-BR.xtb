@@ -421,8 +421,8 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="8748471354357836070">Saiba mais/opções de desativação</translation>
 <translation id="3171669670217312786">Imagens de fundo</translation>
 <translation id="8522669544471808198">Mostrar imagens de plano de fundo</translation>
-<translation id="3870475560794762985">Mostrar imagens patrocinadas</translation>
-<translation id="6937724381960478525">Saiba mais sobre imagens patrocinadas</translation>
+<translation id="6258554626602400736">Mostrar anúncios na página nova guia</translation>
+<translation id="9001530744369687550">Saiba mais sobre os anúncios da página da nova guia</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Mostrar os Melhores Sites</translation>
 <translation id="7275773481201277457">Mostrar Estatísticas do Brave</translation>
@@ -500,6 +500,8 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="7616645803364270729">E-mail, Twitter etc.</translation>
 <translation id="5299848999918506028">Obrigado!</translation>
 <translation id="76550953340008122">Agradecemos por informar aos desenvolvedores do Brave que há algo errado com este site. Faremos nosso melhor para corrigir isso!</translation>
+<translation id="3037432377946455872">Qual é o principal problema que você está vendo?</translation>
+<translation id="8731661215617360873">Selecione uma opção</translation>
 <translation id="650318023204990401">Controles avançados</translation>
 <translation id="7205939464631857223">Limpar todos os elementos bloqueados</translation>
 <translation id="5370478469168390143">Salvar dados online</translation>
@@ -796,6 +798,7 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1426320910664514906">Limite de Gás</translation>
 <translation id="6389441740143786465">Desativar barra de compartilhamento</translation>
 <translation id="9065203028668620118">Editar</translation>
+<translation id="473775607612524610">Atualizar</translation>
 <translation id="479795390141144417">Houve uma falha ao atualizar a conta.</translation>
 <translation id="8084782383392198011">O nome da conta não pode ficar em branco.</translation>
 <translation id="5045550434625856497">Senha incorreta</translation>
@@ -1223,4 +1226,41 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="2735247450315842119">Permitir capturas de tela em guias privadas</translation>
 <translation id="8420414929552321089">Se permitido, as guias privadas também ficarão visíveis quando vários aplicativos estiverem abertos.</translation>
 <translation id="7956713633345437162">Favoritos móveis</translation>
+<translation id="1943432128510653496">Salvar senhas</translation>
+<translation id="2100273922101894616">Login automático</translation>
+<translation id="363596933471559332">Faça login automaticamente nos websites usando as credenciais armazenadas. Se o recurso estiver desativado, será preciso fazer a verificação sempre antes de fazer login em um website.</translation>
+<translation id="8562452229998620586">As senhas salvas aparecerão aqui.</translation>
+<translation id="1303339473099049190">Não foi possível encontrar essa senha. Verifique a ortografia e tente novamente.</translation>
+<translation id="2259659629660284697">Exportar senhas…</translation>
+<translation id="133012818630824069">Exportar senhas armazenadas com o Brave</translation>
+<translation id="2321086116217818302">Preparando senhas…</translation>
+<translation id="5139940364318403933">Saber como usar o Google Drive</translation>
+<translation id="729975465115245577">Seu dispositivo não tem um app para armazenar o arquivo de senhas.</translation>
+<translation id="1129510026454351943">Detalhes: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Desbloqueie para exportar suas senhas</translation>
+<translation id="5245792669563792664">senhas</translation>
+<translation id="10614374240317010">Nunca salvas</translation>
+<translation id="1571304935088121812">Copiar nome de usuário</translation>
+<translation id="5005498671520578047">Copiar senha</translation>
+<translation id="2435457462613246316">Mostrar senha</translation>
+<translation id="1513858653616922153">Excluir senha</translation>
+<translation id="543338862236136125">Editar senha</translation>
+<translation id="4565377596337484307">Ocultar senha</translation>
+<translation id="8523928698583292556">Excluir senha armazenada</translation>
+<translation id="5433691172869980887">Nome de usuário copiado</translation>
+<translation id="2625189173221582860">Senha copiada</translation>
+<translation id="8084114998886531721">Senha salva</translation>
+<translation id="6590680911007613645">A senha que você está salvando precisa ser igual à usada em <ph name="SITE"/></translation>
+<translation id="1492417797159476138">Você já salvou este nome de usuário para este site</translation>
+<translation id="5454166040603940656">com <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">Excluir senha?</translation>
+<translation id="7808889146555843082">Remover a senha não excluirá a conta em <ph name="SITE"/>. Mude a senha ou exclua a conta em <ph name="SITE"/> para protegê-la.</translation>
+<translation id="2870560284913253234">Site</translation>
+<translation id="8503813439785031346">Nome de usuário</translation>
+<translation id="2278052315791335171">A exclusão desta senha não excluirá a conta em <ph name="SITE"/></translation>
+<translation id="6891726759199484455">Desbloqueie para copiar sua senha</translation>
+<translation id="5515439363601853141">Desbloqueie para ver sua senha</translation>
+<translation id="1724977129262658800">Desbloqueie para editar sua senha</translation>
+<translation id="5780792035410621042">Para poder copiar senhas, configure um bloqueio de tela no dispositivo</translation>
+<translation id="7986497153528221272">Para poder ver as senhas, configure um bloqueio de tela no dispositivo</translation>
 </translationbundle>

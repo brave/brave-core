@@ -148,7 +148,7 @@
 <translation id="2701204441419443612">Trwa łączenie…</translation>
 <translation id="8813986611396294203">Sieć Tor działa obecnie nieco wolniej</translation>
 <translation id="2795840524629682765">Połączenie z Tor nie powiodło się</translation>
-<translation id="1149108864689950951">Tor łączy się... [[percentage]]%</translation>
+<translation id="9102894004288640876">Tor łączy się… <ph name="PERCENTAGE"/>%</translation>
 <translation id="3651192084771403430">Masz problemy z połączeniem? Spróbuj <ph name="BEGIN_LINK"/>wyłączyć<ph name="END_LINK"/> prywatne okno w Tor i ponownie je włączyć w ustawieniach.</translation>
 <translation id="8834376622642889380"><ph name="BEGIN_LINK"/>Otwórz Ustawienia Brave<ph name="END_LINK"/>, zamknij prywatne okno w Tor, a następnie otwórz je ponownie.</translation>
 <translation id="1576202729986800142"><ph name="BEGIN_BOLD"/>Nadal masz problemy?<ph name="END_BOLD"/> Spróbuj użyć <ph name="BEGIN_BRIDGES_LINK"/>mostów<ph name="END_BRIDGES_LINK"/> lub <ph name="BEGIN_SUPPORT_LINK"/>skontaktuj się z pomocą techniczną<ph name="END_SUPPORT_LINK"/>.</translation>
@@ -170,19 +170,33 @@
 <translation id="5334844597069022743">Pokaż źródło</translation>
 <translation id="4720556299488643018">Cofnij subskrypcję</translation>
 <translation id="1209739344687072997">Zgłoś uszkodzoną stronę</translation>
-<translation id="8510478288840333677">Poinformuj programistów Brave, że ta strona nie działa prawidłowo z tarczami Brave.</translation>
+<translation id="2961941250324390287">Daj znać programistom Brave, że ta strona nie działa poprawnie:</translation>
 <translation id="3110968385867124099">Nie można zgłosić strony, ponieważ nie korzystała z protokołu HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Ta strona jest lokalną stroną internetową i nie można jej zgłosić.</translation>
 <translation id="8740275226259417070">Ta strona jest stroną błędu. Nie można jej zgłosić jako uszkodzonej strony.</translation>
 <translation id="6367576083705149078">Jeśli podasz dane kontaktowe, zostaną one zapisane na potrzeby przyszłych raportów.</translation>
 <translation id="6806248680442980382">Dziękujemy za pomoc w ulepszaniu Brave dla wszystkich użytkowników. Ten raport będzie zawierał tylko informacje niezbędne do naprawienia tej strony.</translation>
-<translation id="6476216365964140603">Dodatkowe szczegóły (opcjonalne)</translation>
+<translation id="8731661215617360873">Wybierz jedną opcję</translation>
+<translation id="2805770823691782631">Dodatkowe szczegóły</translation>
+<translation id="8447940165862889275">(opcjonalne)</translation>
 <translation id="6145852496180774737">Skontaktuj się ze mną poprzez: (opcjonalne)</translation>
 <translation id="7616645803364270729">E-mail, Twitter, itp.</translation>
 <translation id="721949491455392748">Dołącz zrzut ekranu bieżącej strony</translation>
 <translation id="8459191579769999214">Wyświetl zrzut ekranu</translation>
 <translation id="5299848999918506028">Dziękujemy!</translation>
 <translation id="76550953340008122">Dziękujemy za poinformowanie deweloperów Brave, że coś jest nie tak z tą witryną. Dołożymy wszelkich starań, aby ją naprawić!</translation>
+<translation id="3037432377946455872">Jaki główny problem zauważasz?</translation>
+<translation id="9133645617402992550">Reklamy są nadal widoczne</translation>
+<translation id="4784626332068555349">Pusta strona lub brakująca zawartość</translation>
+<translation id="8278217275444967104">Nie można przewijać</translation>
+<translation id="786980556536893096">Nie można wprowadzić tekstu w formularzu</translation>
+<translation id="7744162007310978225">Widoczne powiadomienie o zgodzie na pliki cookie</translation>
+<translation id="5578433701455313672">Zastosowano ochronę przed blokowaniem reklam</translation>
+<translation id="6831478554298438308">Odblokowany skrypt śledzący/analizujący</translation>
+<translation id="7279636930553631442">Wyskakujące okienko newslettera</translation>
+<translation id="6136090320163235283">Widżet społecznościowy</translation>
+<translation id="6657720240983439091">Widżet czatu</translation>
+<translation id="7138678301420049075">Inne</translation>
 <translation id="4046860372562593546">Zarządzaj reklamami Brave</translation>
 <translation id="5136973036012418831">Decyduj o rodzaju reklam Brave i częstotliwości ich wyświetlania.</translation>
 <translation id="4759608598194750161">Im więcej zobaczysz, tym więcej możesz zarobić.</translation>
@@ -422,7 +436,6 @@
 <translation id="8327818101454798856">Dlatego jeśli chcesz wesprzeć swoje ulubione witryny, przejdź tam.</translation>
 <translation id="412480955826088549">Pobieranie komponentu...</translation>
 <translation id="4894106830958548828">Rozumiem</translation>
-<translation id="326118736933420687">Przeglądasz stronę WebTorrent</translation>
 <translation id="2729085694451916573">Testowy ciąg dla <ph name="PART_ONE"/>symboli zastępczych<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Dowiedz się więcej<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Włączyć obsługę Unstoppable Domains w Brave?</translation>
@@ -471,6 +484,7 @@
 <translation id="5770656036486891920"><ph name="URL"/> chce skorzystać z ciasteczek stron trzecich, aby użyć starszej wersji logowania Google</translation>
 <translation id="6053826678715267477">Zezwól na dostęp do zasobów hosta lokalnego</translation>
 <translation id="2973562729984406132"><ph name="URL"/> chce uzyskać dostęp do zasobów hosta lokalnego</translation>
+<translation id="2104347391516032700">Usługa nagród Bat</translation>
 <translation id="5939518447894949180">Resetuj</translation>
 <translation id="3349204812119681938">Zresetuj Brave Rewards</translation>
 <translation id="4915997950539925115">Poprzez zresetowanie Twój obecny profil Nagród Brave zostanie usunięty, a usługa Nagrody Brave zostanie wyłączona. Jeśli później postanowisz ją ponownie włączyć, zaczniesz od nowa z zupełnie nowym profilem Nagród Brave. Aby dowiedzieć się więcej, przeczytaj nasz <ph name="LINK_BEGIN"/>artykuł pomocy dotyczący resetowania<ph name="LINK_END"/>.</translation>
@@ -514,7 +528,6 @@
     }</translation>
 <translation id="6067959437127691361">Korzystanie z Nagród Brave pomaga we wsparciu twórców i pozwala na zdobywanie BAT.</translation>
 <translation id="2359808026110333948">Dalej</translation>
-<translation id="885805571521218129">Oto Twoje szacunkowe zarobki z reklam Brave w tym miesiącu.</translation>
 <translation id="3863981251715594911">Jak to działa?</translation>
 <translation id="7931127789630755251">Zdobywaj tokeny za oglądanie prywatnych reklam wyświetlanych w Brave.</translation>
 <translation id="2278423362884506724">Wspieraj twórców treści, używając tokenów do zakupu kart podarunkowych, wymieniając je na inne waluty itd.</translation>
@@ -589,8 +602,10 @@
 <translation id="5802986777701714573">Dodaliśmy nowy sposób otrzymywania comiesięcznych nagród BAT. Połącz konto od jednego z naszych partnerów lub skorzystaj z nowej opcji self-custody, aby zacząć zarabiać już teraz.</translation>
 <translation id="3251885322612056119">Zaktualizowane warunki świadczenia usług</translation>
 <translation id="7454675823870922788">Zaktualizowaliśmy warunki korzystania z usługi Nagrody Brave. Wprowadziliśmy te aktualizacje, aby wyjaśnić nasze warunki i upewnić się, że obejmują one nowe funkcje. Dalsze korzystanie z usługi Nagrody Brave oznacza akceptację zaktualizowanych warunków świadczenia usług. Jeśli nie wyrażasz zgody, możesz <ph name="LINK_BEGIN"/>zresetować<ph name="LINK_END"/> stronę usługi, co spowoduje wyłączenie tej funkcji.</translation>
+<translation id="56057964000416013">Zaktualizowaliśmy nasze Warunki świadczenia usług. Aby nadal korzystać z Nagród Brave, zapoznaj się i zaakceptuj zaktualizowane warunki.</translation>
 <translation id="5192526308598085294">Zobacz <ph name="LINK_BEGIN"/>Warunki świadczenia usługi Nagrody Brave<ph name="LINK_END"/></translation>
 <translation id="4130750466177569591">zgadzam się</translation>
+<translation id="343114360276812078">Przejrzyj warunki</translation>
 <translation id="86107454835395919">Ustaw jako comiesięczny datek</translation>
 <translation id="6621880242105464352">Brave potrąca <ph name="FEE_PCT"/> wysyłanej sumy jako opłatę manipulacyjną.</translation>
 <translation id="1420756770787071946">Wspieraj tego twórcę</translation>
@@ -642,8 +657,8 @@
 <translation id="756341217015623253">Zaloguj się lub zarejestruj</translation>
 <translation id="2653844658857826081">NOWOŚĆ</translation>
 <translation id="1165039591588034296">Błąd</translation>
-<translation id="5826530373788377342">Osiągnięto maksymalny limit liczby urządzeń dla tego konta w usłudze<ph name="PROVIDER"/>.</translation>
-<translation id="6700131426769360592">Osiągnięto limit liczby urządzeń</translation>
+<translation id="8673410329158754690">Podłączono maksymalną liczbę profili Nagród Brave do tego konta <ph name="PROVIDER"/>.</translation>
+<translation id="8385898883512695376">Osiągnięto limit na koncie do wypłat</translation>
 <translation id="6895088073061692390">Niestety Twój profil nagród Brave został oznaczony, ponieważ nasze automatyczne sprawdzanie znalazło nieoczekiwaną aktywność reklam Brave.</translation>
 <translation id="4229056297802204697">Gdy Twój profil jest oznaczony, możesz nadal wyświetlać reklamy, ale nie będziesz mieć uprawnień do otrzymywania wypłat. Nie będzie również możliwe podłączenie konta powierniczego do nagród Brave.</translation>
 <translation id="5124846913141379164">Możliwe, że Twój profil został oznaczony przez pomyłkę i nie musisz podejmować żadnych natychmiastowych działań. Oznaczenie profilu może zostać w przyszłości usunięte.</translation>
@@ -678,6 +693,7 @@
 <translation id="96989662637180657">Reklamy wyszukiwania Brave są częścią <ph name="LINK_BEGIN"/>Wyszukiwarki Brave<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Ustawienia reklam</translation>
 <translation id="2446517297521536638">Decyduj o rodzaju reklam Brave i częstotliwości ich wyświetlania. Im więcej zobaczysz, tym więcej możesz zarobić.</translation>
+<translation id="3479272537858623647">Pokazuje liczbę obejrzanych w tym miesiącu reklam Brave, które kwalifikują się do zdobywania tokenów BAT.</translation>
 <translation id="5860033963881614850">Wył.</translation>
 <translation id="5916664084637901428">Włączone</translation>
 <translation id="3977723631999461201">Reklamy otrzymane w tym miesiącu: <ph name="NUM"/></translation>
@@ -705,7 +721,6 @@
 <translation id="7550470870580166294">Niewystarczające środki</translation>
 <translation id="7020972866926315918">Wygląda na to, że wylogowano Cię z <ph name="PROVIDER"/>do Nagród Brave. Zaloguj się ponownie, aby kontynuować.</translation>
 <translation id="1166682575529520472">Miesięcznie</translation>
-<translation id="7138678301420049075">Inne</translation>
 <translation id="2134931506717037391">Prześlij <ph name="AMOUNT"/> BAT</translation>
 <translation id="4791565605790056151">Przesyłanie datku</translation>
 <translation id="8251969358165471584">Portfel Web3</translation>
@@ -1070,7 +1085,8 @@
 <translation id="7131971375297699539">Symbol waluty</translation>
 <translation id="4693057234255364395">Adres URL eksploratora bloków</translation>
 <translation id="7982789257301363584">Sieć</translation>
-<translation id="1060221736464994328">Czy zezwolić tej witrynie na zmianę sieci?</translation>
+<translation id="2512821599885971349">Dodaj sieć</translation>
+<translation id="200073220891881812">Pozwolić stronie na przełączenie sieci?</translation>
 <translation id="2478788592457735063">Spowoduje to zmianę sieci na poprzednio dodaną sieć.</translation>
 <translation id="8756686998207163764">Zmień sieć</translation>
 <translation id="3948067511324628726">Opłata za gaz</translation>
@@ -1824,6 +1840,8 @@
 <translation id="2244921323472112851">W tej chwili nie możemy znaleźć strony, której szukasz.</translation>
 <translation id="6277237872689140644">Możliwe, że została przeniesiona lub URL zawiera błąd.</translation>
 <translation id="2737084171727561244">Przejdź do portfela</translation>
+<translation id="3499452861061048987">Dodaj token</translation>
+<translation id="5046066249040287308">Usługi portfela Brave</translation>
 <translation id="3155170474926428993">Oprogramowanie Tor</translation>
 <translation id="3745016858329272300">Ogólne informacje</translation>
 <translation id="4045404575593562245">Wydarzenia kontrolne sieci Tor</translation>
@@ -2046,6 +2064,11 @@
 <translation id="684629111155788563">Dodaj wszystkie karty do nowej grupy</translation>
 <translation id="9106013521852824634">Wyślij kartę do siebie</translation>
 <translation id="6973516366678963184">Pokaż skrót do Wayback Machine</translation>
+<translation id="4765321711834219282">Zamknij grupę kart</translation>
+<translation id="4095483462103784441">Utwórz nową grupę kart</translation>
+<translation id="4292565651642921086">Skup na grupie kart</translation>
+<translation id="874783686573493196">Skup na poprzedniej grupie kart</translation>
+<translation id="9169594135889675189">Dodaj nową kartę do grupy</translation>
 <translation id="1926106318101432555">Otwórz zakładkę...</translation>
 <translation id="6118819645013156507">Przełącz do okna...</translation>
 <translation id="1623204575967809688">Scal bieżące okno z...</translation>
@@ -2077,7 +2100,7 @@
 <translation id="9089090017461255038">Włącz Speedreader</translation>
 <translation id="3929926885379607283">Zawsze używaj Speedreader w tej witrynie</translation>
 <translation id="4186588885948504942">Przełącz, aby włączyć/wyłączyć Speedreader w tej witrynie.</translation>
-<translation id="1873585723672836337">Zawsze używaj Speedreader we wszystkich witrynach</translation>
+<translation id="6568851043090579206">Zawsze używaj Speedreader we wszystkich witrynach</translation>
 <translation id="3138587343887871192">Przełącz, aby włączyć/wyłączyć Speedreader we wszystkich witrynach.</translation>
 <translation id="5153147025131874069">Nie wszystkie witryny zapewniają funkcje Speedreader.</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -2106,9 +2129,9 @@
 <translation id="8637805148029768813">Funkcja podsumowania jest obecnie dostępna tylko w przypadku wybranych artykułów i innych szczegółowych stron internetowych.</translation>
 <translation id="1223498995510244364">Podsumuj</translation>
 <translation id="7491773233732232424">Informacje o Leo</translation>
-<translation id="4885527781814382758">Brave Leo to oparty na sztucznej inteligencji inteligentny asystent, który ułatwia korzystanie z Internetu. Leo jest darmowy, ale ma ograniczony dostęp. Brave Leo Premium oferuje więcej modeli, wyższe limity i umożliwia subskrybentom wcześniejszy dostęp do nowych funkcji. Domyślny model będzie się od czasu do czasu zmieniał. Aby uzyskać więcej informacji, zajrzyj do <ph name="LINK_BEFORE"/>Centrum pomocy Brave<ph name="LINK_AFTER"/>.</translation>
-<translation id="7189603330209995455">Domyślnie, gdy zadajesz Leo pytanie, może on odpowiedzieć w oparciu o zawartość strony internetowej, którą przeglądasz, lub dowolny zaznaczony przez Ciebie tekst na stronie. Dokładność odpowiedzi nie jest gwarantowana i mogą one zawierać nieprecyzyjne, wprowadzające w błąd lub fałszywe informacje. Leo korzysta z danych z wyszukiwarki Brave w celu poprawy jakości odpowiedzi. Nie przesyłaj poufnych ani prywatnych informacji i zachowaj ostrożność w przypadku odpowiedzi związanych ze zdrowiem, finansami, bezpieczeństwem osobistym itp. W każdej chwili możesz dostosować opcje Leo w Ustawieniach. Przejdź do Ustawień &gt; Leo.</translation>
-<translation id="3038772045018370764">Leo nie zbiera identyfikatorów, takich jak adres IP, które można powiązać z użytkownikiem. Żadne dane osobowe nie są przechowywane przez modele sztucznej inteligencji ani używane przez nie do nauki (poza modelem Anthropic, który przechowuje dane przez 30 dni przed usunięciem ich). Aby uzyskać więcej informacji, zobacz <ph name="LINK_BEFORE"/>Politykę prywatności<ph name="LINK_AFTER"/>.</translation>
+<translation id="4611072979071082355">Brave Leo to oparty na sztucznej inteligencji inteligentny asystent, który ułatwia korzystanie z Internetu. Leo jest darmowy, ale ma ograniczony dostęp. Brave Leo Premium oferuje więcej modeli, wyższe limity i umożliwia subskrybentom wcześniejszy dostęp do nowych funkcji. Domyślny model będzie się od czasu do czasu zmieniał. Aby uzyskać więcej informacji, zajrzyj do <ph name="LINK_BEFORE"/>Centrum pomocy Brave<ph name="LINK_AFTER"/>.</translation>
+<translation id="7297056998057521697">Gdy zadasz Leo pytanie dotyczące przeglądanej strony, jej zawartość lub dowolny tekst zaznaczony na stronie oraz Twoje pytanie zostanie wysłane do serwerów Brave w celu udzielenia odpowiedzi przez Leo. W niektórych przypadkach Leo wyśle zapytania pochodzące z Twoich danych wejściowych do Brave Search i wykorzysta wyniki wyszukiwania, by lepiej odpowiedzieć na Twoje pytanie. Brave nie gwarantuje dokładności odpowiedzi i mogą one zawierać niedokładne, mylące lub fałszywe informacje. Nie przesyłaj poufnych lub prywatnych informacji do Brave Leo i zachowaj ostrożność przy odpowiedziach związanych ze zdrowiem, finansami, bezpieczeństwem osobistym itp. W każdej chwili możesz dostosować opcje Leo w ustawieniach. Przejdź do: Ustawienia &gt; Leo.</translation>
+<translation id="6644545214304085600">Leo nie gromadzi identyfikatorów, które mogą zostać z Tobą powiązane, takich jak Twój adres IP. Nie szkolimy naszych modeli w oparciu o Twoje dane, w tym o Twoje zapytania lub odpowiedzi Brave Leo. Żadne dane osobowe nie są przechowywane na naszych serwerach ani zachowywane przez Brave. Więcej informacji znajdziesz w <ph name="LINK_BEFORE"/>Polityce prywatności<ph name="LINK_AFTER"/>.</translation>
 <translation id="4348006373172097089">{PAGE_COUNT, plural,
       =1 {Zapytaj o treść tej strony}
       other {Zapytaj o treść tych stron}
@@ -2134,11 +2157,11 @@
 <translation id="999273441077650169">Model dynamicznie zmienia się, aby użyć najlepszego do zadania.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="3282183392203936979">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Llama 3.1 8B opracowanym przez firmę Meta z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Nasza wersja modelu Llama jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="4328177358021456069">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Qwen 14B opracowanym przez firmę Alibaba Cloud z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Nasza wersja modelu Qwen jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="5594884291408453470">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Gemma 3 12B opracowanym przez Google DeepMind z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Model Gemma jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="8706248250250832190">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu DeepSeek R1 opracowanym przez firmę DeepSeek z myślą o zadaniach wymagających dogłębnego wnioskowania. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="2575216739207798060">Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Instant opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Nasza wersja modelu Claude Instant jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Haiku opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Nasza wersja modelu Claude Haiku jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="406499980300734922">Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Sonnet opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Nasza wersja modelu Claude Sonnet jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="1774712391633741125">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Llama Vision opracowanym przez firmę Meta z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Nasza wersja modelu Llama Vision jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Czat</translation>
 <translation id="4685048769603134644">Otwórz całą stronę</translation>
@@ -2220,6 +2243,8 @@
 <translation id="1352836459737874921">Załącz treść z innych kart</translation>
 <translation id="3028258613451571431">Dodaj treść stron z kart przeglądarki, by dać Leo więcej informacji kontekstowych do rozmowy</translation>
 <translation id="4300920590112551536">Karty przeglądarki</translation>
+<translation id="1446346932629101482">Dodaj zawartość karty dla kontekstu. Zawartość zostanie wysłana do Leo wraz z Twoimi wiadomościami.</translation>
+<translation id="7193316103691252734">Brak pasujących zakładek</translation>
 <translation id="2315654674554095762">Leo będzie teraz zapamiętywać rozmowy, by można było do nich wracać. Są one zaszyfrowane na twoim urządzeniu i możesz je w każdej chwili usunąć.</translation>
 <translation id="7821251979960635244">Historia rozmowy pojawi się tutaj, gdy rozpoczniesz rozmowę.</translation>
 <translation id="887511360213807449">Historia jest wyłączona</translation>
@@ -2229,7 +2254,7 @@
 <translation id="7979673624064378842">Nieprawdopodobnie szybki czat</translation>
 <translation id="2836330653441111204">Równowaga prędkości działania i inteligencji</translation>
 <translation id="6695329447007213917">Czat ogólny, generowanie kodu i nie tylko</translation>
-<translation id="5051668914970329839">Czat ogólny – Vision</translation>
+<translation id="7168072214482631597">Rozumienie tekstu i obrazu ogólnego przeznaczenia</translation>
 <translation id="7226508434216060960">Model rozumowania</translation>
 <translation id="8782867266498869301">Model jest dynamicznie zmieniany, by dopasować się do specyfiki zadania.</translation>
 <translation id="3965507912994218570">Ustawienia Leo</translation>
@@ -2286,6 +2311,8 @@
 <translation id="5355776323718420036">Ukryj popularne strony</translation>
 <translation id="9173319813356700250">AKTUALNOŚCI</translation>
 <translation id="6543799171249004861">Zdjęcie autorstwa <ph name="AUTHOR"/></translation>
+<translation id="466214682712474574">Zaloguj się na swoje konto <ph name="PROVIDER"/>, by wyświetlić saldo</translation>
+<translation id="8332875111286275890">Zaloguj się, by wyświetlić saldo</translation>
 <translation id="5430001801813715388">NAGRODY</translation>
 <translation id="5966055668402779222">Zapytaj Brave Search</translation>
 <translation id="167018310108390163">Dostosuj stronę Nowa karta</translation>
@@ -2302,6 +2329,8 @@
 <translation id="4290791698375397492">Usunięto popularną stronę</translation>
 <translation id="1436784010935106834">Usunięto</translation>
 <translation id="9030215177866748410">Popularne witryny są sugerowane na podstawie stron internetowych, które często odwiedzasz.</translation>
+<translation id="1849266032237224734">Pokaż mniej elementów</translation>
+<translation id="9125416311275819193">Pokaż więcej elementów</translation>
 <translation id="8425213833346101688">Zmień</translation>
 <translation id="755045397420611731">Dodatkowa prywatność i bezpieczeństwo w Internecie</translation>
 <translation id="4520128772974831415">Ukrywanie adresu IP i zmiana lokalizacji</translation>
@@ -2403,6 +2432,7 @@
 <translation id="5222676887888702881">Wyloguj się</translation>
 <translation id="8090292425230843109">Wyloguj się z aliasów e-mail</translation>
 <translation id="8471990782451394141">Łączenie z kontem Brave…</translation>
+<translation id="71316462802471551">Aliasy e-mail</translation>
 <translation id="5713644099811900409">Konto Brave</translation>
 <translation id="6002159997868894136">Kliknij, aby skopiować alias</translation>
 <translation id="8105770564756958406">Używane przez <ph name="DOMAINS"/></translation>
@@ -2437,6 +2467,13 @@
 <translation id="619122420105901711">Nie widzisz e-maila? Sprawdź folder spam lub spróbuj ponownie.</translation>
 <translation id="3397336197747843396">Błąd uwierzytelniania konta Brave. Spróbuj ponownie.</translation>
 <translation id="1340795582009113055">Od początku</translation>
+<translation id="2422927186524098759">Pasek boczny</translation>
+<translation id="2361906291514218784">Sztuczna inteligencja Leo</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="8000020256436988724">Pasek narzędzi</translation>
+<translation id="6225572914528673855">Pasek adresu</translation>
+<translation id="8293206222192510085">Dodaj zakładkę</translation>
+<translation id="7758460733045216901">Panel zakładek</translation>
 <translation id="958268166261124668">VPN Brave: połączony</translation>
 <translation id="6021669293402055982">VPN Brave: rozłączony</translation>
 <translation id="3541307549916475335">Interfejs użytkownika panelu VPN Brave</translation>
@@ -2451,6 +2488,9 @@
 <translation id="7805768142964895445">Status</translation>
 <translation id="5747552184818312860">Wygasa</translation>
 <translation id="8421945428836418371">Automatycznie połącz ponownie</translation>
+<translation id="1775187768313123375">Inteligentne przekierowanie proxy</translation>
+<translation id="1729266073247927443">Dostępne inteligentne przekierowanie proxy</translation>
+<translation id="8416695199565594645">Zapewnia, że ruch jest kierowany przez dedykowane serwery proxy, aby umożliwić dostęp do powszechnie ograniczonych treści/witryn lub usług stron trzecich.</translation>
 <translation id="434523916398030617">Skontaktuj się z pomocą techniczną</translation>
 <translation id="1116694919640316211">Informacje</translation>
 <translation id="2044418816479192294">Setki serwerów na całym świecie</translation>

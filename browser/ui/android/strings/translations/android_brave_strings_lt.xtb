@@ -425,8 +425,8 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="8748471354357836070">Sužinokite daugiau / atsisakymo parinktys</translation>
 <translation id="3171669670217312786">Foniniai vaizdai</translation>
 <translation id="8522669544471808198">Rodyti foninius vaizdus</translation>
-<translation id="3870475560794762985">Rodyti remiamus vaizdus</translation>
-<translation id="6937724381960478525">Sužinokite daugiau apie remiamus vaizdus</translation>
+<translation id="6258554626602400736">Rodyti reklamas naujos kortelės puslapyje</translation>
+<translation id="9001530744369687550">Sužinokite daugiau apie reklamas naujos kortelės puslapyje</translation>
 <translation id="8793108040181436796">Valdikliai</translation>
 <translation id="8643377320501056697">Rodyti populiarias svetaines</translation>
 <translation id="7275773481201277457">Rodyti „Brave“ statistiką</translation>
@@ -504,6 +504,8 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="7616645803364270729">El. paštas, „Twitter“ ir kt.</translation>
 <translation id="5299848999918506028">Dėkojame!</translation>
 <translation id="76550953340008122">Dėkojame, kad pranešėte „Brave“ kūrėjams, jog su šia svetaine kažkas negerai. Pasistengsime ją sutvarkyti!</translation>
+<translation id="3037432377946455872">Kokia yra pagrindinė problema, su kuria susiduriate?</translation>
+<translation id="8731661215617360873">Pasirinkti vieną parinktį</translation>
 <translation id="650318023204990401">Išplėstiniai valdikliai</translation>
 <translation id="7205939464631857223">Išvalykite visus užblokuotus elementus</translation>
 <translation id="5370478469168390143">Įrašyti duomenis internete</translation>
@@ -800,6 +802,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1426320910664514906">Dujų apribojimas</translation>
 <translation id="6389441740143786465">Išjungti bendrinimo telkinį</translation>
 <translation id="9065203028668620118">Redaguoti</translation>
+<translation id="473775607612524610">Atnaujinti</translation>
 <translation id="479795390141144417">Paskyros atnaujinti nepavyko.</translation>
 <translation id="8084782383392198011">Reikia nurodyti paskyros pavadinimą.</translation>
 <translation id="5045550434625856497">Neteisingas slaptažodis</translation>
@@ -1227,4 +1230,41 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="2735247450315842119">Leidimas daryti ekrano kopijas privačiose kortelėse</translation>
 <translation id="8420414929552321089">Jei leidžiama, privačios kortelės taip pat bus matomos, kai bus atidarytos kelios programos.</translation>
 <translation id="7956713633345437162">Mobiliosios žymės</translation>
+<translation id="1943432128510653496">Slaptažodžių išsaugojimas</translation>
+<translation id="2100273922101894616">Automatinis prisijungimas</translation>
+<translation id="363596933471559332">Automatiškai prisijungti prie svetainių naudojant išsaugotus prisijungimo duomenis. Kai funkcija išjungta, kaskart prisijungiant prie svetainės prašoma patvirtinti.</translation>
+<translation id="8562452229998620586">Čia bus rodomi išsaugoti slaptažodžiai.</translation>
+<translation id="1303339473099049190">Nepavyko rasti šio slaptažodžio. Patikrinkite rašybą ir bandykite dar kartą.</translation>
+<translation id="2259659629660284697">Eksportuoti slaptažodžius…</translation>
+<translation id="133012818630824069">Eksportuoti sistemoje „Brave“ saugomus slaptažodžius</translation>
+<translation id="2321086116217818302">Ruošiami slaptažodžiai…</translation>
+<translation id="5139940364318403933">Sužinokite, kaip naudoti „Google Drive“</translation>
+<translation id="729975465115245577">Įrenginyje nėra slaptažodžių failo saugojimo programos.</translation>
+<translation id="1129510026454351943">Išsami informacija: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Atrakinkite, kad galėtumėte eksportuoti slaptažodžius</translation>
+<translation id="5245792669563792664">slaptažodžiai</translation>
+<translation id="10614374240317010">Niekada neišsaugota</translation>
+<translation id="1571304935088121812">Kopijuoti naudotojo vardą</translation>
+<translation id="5005498671520578047">Kopijuoti slaptažodį</translation>
+<translation id="2435457462613246316">Rodyti slaptažodį</translation>
+<translation id="1513858653616922153">Ištrinti slaptažodį</translation>
+<translation id="543338862236136125">Redaguoti slaptažodį</translation>
+<translation id="4565377596337484307">Slėpti slaptažodį</translation>
+<translation id="8523928698583292556">Ištrinti išsaugotą slaptažodį</translation>
+<translation id="5433691172869980887">Naudotojo vardas nukopijuotas</translation>
+<translation id="2625189173221582860">Slaptažodis nukopijuotas</translation>
+<translation id="8084114998886531721">Išsaugotas slaptažodis</translation>
+<translation id="6590680911007613645">Įsitikinkite, kad išsaugomas slaptažodis atitinka svetainės <ph name="SITE"/> slaptažodį</translation>
+<translation id="1492417797159476138">Jau išsaugojote šį naudotojo vardą šioje svetainėje</translation>
+<translation id="5454166040603940656">naudojant <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">Ištrinti slaptažodį?</translation>
+<translation id="7808889146555843082">Ištrynus šį slaptažodį jūsų paskyra svetainėje <ph name="SITE"/> nebus ištrinta. Pakeiskite slaptažodį arba ištrinkite paskyrą domene <ph name="SITE"/>, kad apsaugotumėte ją nuo kitų.</translation>
+<translation id="2870560284913253234">Svetainė</translation>
+<translation id="8503813439785031346">Vartotojo vardas</translation>
+<translation id="2278052315791335171">Ištrynus šį slaptažodį jūsų paskyra svetainėje <ph name="SITE"/> nebus ištrinta</translation>
+<translation id="6891726759199484455">Atrakinkite, kad galėtumėte kopijuoti slaptažodį</translation>
+<translation id="5515439363601853141">Atrakinkite, kad galėtumėte peržiūrėti slaptažodį</translation>
+<translation id="1724977129262658800">Atrakinkite, kad galėtumėte redaguoti slaptažodį</translation>
+<translation id="5780792035410621042">Jei norite nukopijuoti slaptažodžius, pirmiausia nustatykite įrenginio ekrano užraktą</translation>
+<translation id="7986497153528221272">Jei norite peržiūrėti slaptažodžius, pirmiausia nustatykite įrenginio ekrano užraktą</translation>
 </translationbundle>
