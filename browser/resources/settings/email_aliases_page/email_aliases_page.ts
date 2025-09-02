@@ -19,12 +19,9 @@ class EmailAliasesPage extends HTMLElement {
     this.shadowRoot!.appendChild(subpage)
     const title = loadTimeData.getString('emailAliasesLabel')
     subpage.setAttribute('page-title', title)
-    const reactHost = document.createElement('div')
-    subpage.appendChild(reactHost)
-    const reactShadowRoot = reactHost.attachShadow({ mode: 'open' })
     import('/email_aliases.bundle.js' as any)
       .then(() => {
-        ;(window as any).mountEmailAliases(reactShadowRoot)
+        ;(window as any).mountEmailAliases(subpage)
       })
   }
 }
