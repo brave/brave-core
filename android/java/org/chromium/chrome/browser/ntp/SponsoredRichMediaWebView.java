@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.ntp;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -28,6 +29,8 @@ public class SponsoredRichMediaWebView {
 
     private final WebContents mWebContents;
     private final ThinWebView mWebView;
+    private String mPlacementId;
+    private String mCreativeInstanceId;
 
     public SponsoredRichMediaWebView(
             Activity activity, WindowAndroid windowAndroid, Profile profile) {
@@ -59,11 +62,27 @@ public class SponsoredRichMediaWebView {
         mWebView.attachWebContents(mWebContents, webContentView, null);
     }
 
-    public void loadSponsoredRichMedia() {
-        mWebContents.getNavigationController().loadUrl(new LoadUrlParams(NEW_TAB_TAKEOVER_URL));
+    public void maybeLoadSponsoredRichMedia(String placementId, String creativeInstanceId) {
+        if (mPlacementId == placementId && mCreativeInstanceId == creativeInstanceId) {
+            return;
+        }
+
+        mPlacementId = placementId;
+        mCreativeInstanceId = creativeInstanceId;
+
+        mWebContents
+                .getNavigationController()
+                .loadUrl(new LoadUrlParams(getNewTabTakeoverUrl(placementId, creativeInstanceId)));
     }
 
     public View getView() {
         return mWebView.getView();
+    }
+
+    private String getNewTabTakeoverUrl(String placementId, String creativeInstanceId) {
+        Uri.Builder builder = Uri.parse(NEW_TAB_TAKEOVER_URL).buildUpon();
+        builder.appendQueryParameter("placementId", placementId);
+        builder.appendQueryParameter("creativeInstanceId", creativeInstanceId);
+        return builder.build().toString();
     }
 }
