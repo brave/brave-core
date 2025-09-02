@@ -97,6 +97,14 @@
     Hide News
   </message>
 
+  <message name="IDS_NEW_TAB_NEWS_PREVIEW_TEXT" desc="Text of News preview article" formatter_data="webui=BraveNewTabPage">
+    Scroll to explore today's top stories curated for you.
+  </message>
+
+  <message name="IDS_NEW_TAB_NEWS_PREVIEW_TITLE" desc="Title for News preview article" formatter_data="webui=BraveNewTabPage">
+    Welcome to Brave News
+  </message>
+
   <message name="IDS_NEW_TAB_NEWS_WIDGET_TITLE" desc="Title for Brave News widget" formatter_data="webui=BraveNewTabPage">
     NEWS
   </message>
