@@ -6,7 +6,7 @@
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import styled from 'styled-components'
-import { Row, WalletButton } from '../../../shared/style'
+import { Column, Row, WalletButton } from '../../../shared/style'
 
 export const StyledWrapper = styled.div<{ isScrolled: boolean }>`
   display: flex;
@@ -55,14 +55,20 @@ export const Title = styled.span`
   color: ${leo.color.text.primary};
 `
 
+export const DomainTextContainer = styled(Column)`
+  overflow: hidden;
+  box-sizing: border-box;
+`
+
 export const SiteName = styled.span`
   font-family: Poppins;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
-  line-height: 28px;
+  line-height: 18px;
   text-align: left;
   color: ${leo.color.text.primary};
+  word-break: break-all;
 `
 
 export const SiteURL = styled.span`
@@ -70,10 +76,10 @@ export const SiteURL = styled.span`
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
-  line-height: 18px;
+  line-height: 14px;
   text-align: left;
   color: ${leo.color.text.secondary};
-  word-break: break-word;
+  word-break: break-all;
   margin-bottom: 6px;
 `
 
