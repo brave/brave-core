@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/containers/map_util.h"
-#include "base/notreached.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "url/gurl.h"
