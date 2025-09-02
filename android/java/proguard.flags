@@ -101,3 +101,7 @@
 -keep class org.chromium.chrome.browser.notifications.channels.SiteChannelsManager {
     *** toChannelStatus(...);
 }
+
+-keep class org.chromium.ui.base.Clipboard {
+    *** clear(...);
+}

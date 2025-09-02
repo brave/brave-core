@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.base.BraveClipboardHelper;
 
 import javax.crypto.Cipher;
 
@@ -104,7 +105,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
                                 mUnlockWalletPassword.getText().toString(),
                                 result -> {
                                     if (result) {
-                                        Utils.clearClipboard(
+                                        BraveClipboardHelper.clearClipboard(
                                                 mUnlockWalletPassword.getText().toString());
                                         mUnlockWalletPassword.setText(null);
                                         onNextPage.showWallet(false);
@@ -153,7 +154,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment
 
     @Override
     public void authenticationSuccess(@NonNull String unlockWalletPassword) {
-        Utils.clearClipboard(unlockWalletPassword);
+        BraveClipboardHelper.clearClipboard(unlockWalletPassword);
         mUnlockWalletPassword.setText(null);
         if (mOnNextPage != null) {
             mOnNextPage.showWallet(false);
