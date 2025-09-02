@@ -37,8 +37,12 @@
 
 namespace {
 template <const char* Key>
-struct Reply {
-  static std::optional<Reply> FromValue(const base::Value& value) {
+struct Message {
+  base::Value::Dict ToValue() const {
+    return base::Value::Dict().Set(Key, text);
+  }
+
+  static std::optional<Message> FromValue(const base::Value& value) {
     const auto* dict = value.GetIfDict();
     if (!dict) {
       return std::nullopt;
@@ -49,30 +53,24 @@ struct Reply {
       return std::nullopt;
     }
 
-    return Reply(*found);
+    return Message(*found);
   }
 
-  bool operator==(const Reply& other) const { return text == other.text; }
+  bool operator==(const Message& other) const { return text == other.text; }
 
   std::string text;
 };
 
+inline constexpr char kRequestKey[] = "request";
 inline constexpr char kResponseKey[] = "response";
 inline constexpr char kErrorKey[] = "error";
 }  // namespace
 
 namespace brave_account::endpoint_client {
 
-struct TestRequest {
-  base::Value::Dict ToValue() const {
-    return base::Value::Dict().Set("request", text);
-  }
-
-  std::string text;
-};
-
-using TestResponse = Reply<kResponseKey>;
-using TestError = Reply<kErrorKey>;
+using TestRequest = Message<kRequestKey>;
+using TestResponse = Message<kResponseKey>;
+using TestError = Message<kErrorKey>;
 
 // Requests look like this:
 // POST https://example.com/api/query
@@ -170,8 +168,9 @@ TEST_P(ClientTest, Send) {
 
   if (test_case.with_headers) {
     WithHeaders<TestRequest> request{test_case.request};
-    request.headers.emplace("Authorization", "Bearer 12345");
-    Client<TestEndpoint>::Send(api_request_helper_, request, callback.Get());
+    request.headers.SetHeader("Authorization", "Bearer 12345");
+    Client<TestEndpoint>::Send(api_request_helper_, std::move(request),
+                               callback.Get());
   } else {
     Client<TestEndpoint>::Send(api_request_helper_, test_case.request,
                                callback.Get());
@@ -188,7 +187,7 @@ INSTANTIATE_TEST_SUITE_P(
                  .with_headers = false,
                  .status_code = net::HTTP_OK,
                  .server_reply = R"({"response": "some response"})",
-                 .expected_reply = Expected(TestResponse("some response"))},
+                 .expected_reply = TestResponse("some response")},
         TestCase{.request = TestRequest("invalid response"),
                  .with_headers = false,
                  .status_code = net::HTTP_CREATED,
@@ -208,7 +207,7 @@ INSTANTIATE_TEST_SUITE_P(
                  .with_headers = true,
                  .status_code = net::HTTP_OK,
                  .server_reply = R"({"response": "some response"})",
-                 .expected_reply = Expected(TestResponse("some response"))}),
+                 .expected_reply = TestResponse("some response")}),
     [](const auto& info) {
       std::string name;
       base::ReplaceChars(info.param.request.text + "_HTTP_" +

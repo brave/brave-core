@@ -6,6 +6,7 @@
 #include "brave/components/brave_account/endpoints/password_init.h"
 
 #include "brave/components/brave_account/endpoints/host.h"
+#include "net/http/http_request_headers.h"
 
 namespace brave_account::endpoints {
 
@@ -14,7 +15,7 @@ GURL PasswordInit::URL() {
 }
 
 std::string_view PasswordInit::Method() {
-  return "POST";
+  return net::HttpRequestHeaders::kPostMethod;
 }
 
 }  // namespace brave_account::endpoints
