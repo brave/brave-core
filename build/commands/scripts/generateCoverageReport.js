@@ -68,9 +68,7 @@ module.exports = (program) =>
 
       // llvm-cov needs a .profdata (llvms .lcov equivalent) and
       // binaries that include the symbols that are instrumented to generate a report
-      // There seems to be some quirks with llvm-cov where merging multiple test suites fails
-      // silently yielding an empty html report.
-      // Wierdly it appears that the json export is unaffected.
+      // Weirdly it appears that the json export is unaffected.
       // We probably want to use gcov / genhtml instead of llvm-cov
       // For now - if we can - only use brave_browser_tests binary
       // since it will have the most amount of symbols to generate the report.
