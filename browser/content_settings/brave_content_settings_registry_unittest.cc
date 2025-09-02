@@ -118,8 +118,9 @@ TEST_F(BraveContentSettingsRegistryTest, Inheritance) {
     SCOPED_TRACE("Content setting: " + info->website_settings_info()->name());
 
     if (info->website_settings_info()->type() <
-        ContentSettingsType::BRAVE_START)
+        ContentSettingsType::BRAVE_START) {
       continue;
+    }
 
     if (info->incognito_behavior() ==
         ContentSettingsInfo::INHERIT_IN_INCOGNITO) {
@@ -202,11 +203,11 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
   //   EXPECT_EQ(CONTENT_SETTING_DEFAULT, info->GetInitialDefaultSetting());
   // }
 
-  // {
-  //   SCOPED_TRACE("Content setting: BRAVE_SPEEDREADER");
-  //   info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
-  //   EXPECT_EQ(CONTENT_SETTING_DEFAULT, info->GetInitialDefaultSetting());
-  // }
+  {
+    SCOPED_TRACE("Content setting: BRAVE_SPEEDREADER");
+    info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
+    EXPECT_EQ(CONTENT_SETTING_BLOCK, info->GetInitialDefaultSetting());
+  }
 }
 
 }  // namespace content_settings

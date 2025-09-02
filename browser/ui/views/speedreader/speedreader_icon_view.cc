@@ -8,10 +8,8 @@
 #include <string>
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
-#include "brave/components/speedreader/common/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
@@ -40,18 +38,6 @@ SpeedreaderIconView::SpeedreaderIconView(
 SpeedreaderIconView::~SpeedreaderIconView() = default;
 
 void SpeedreaderIconView::UpdateImpl() {
-  // Check if Speedreader feature is enabled
-  auto* web_contents = GetWebContents();
-  if (web_contents) {
-    auto* speedreader_service =
-        speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
-            web_contents->GetBrowserContext());
-    if (!speedreader_service || !speedreader_service->IsFeatureEnabled()) {
-      SetVisible(false);
-      return;
-    }
-  }
-
   const auto state = GetDistillState();
   if (!speedreader::DistillStates::IsDistilled(state) &&
       !speedreader::DistillStates::IsDistillable(state)) {
