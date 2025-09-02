@@ -421,8 +421,8 @@
 <translation id="8748471354357836070">자세히 알아보기 / 옵트아웃 옵션</translation>
 <translation id="3171669670217312786">배경 이미지</translation>
 <translation id="8522669544471808198">배경 이미지 표시</translation>
-<translation id="3870475560794762985">스폰서 이미지 표시</translation>
-<translation id="6937724381960478525">스폰서 이미지에 대해 자세히 알아보기</translation>
+<translation id="6258554626602400736">새 탭 페이지 광고 표시</translation>
+<translation id="9001530744369687550">새 탭 페이지 광고에 대해 자세히 알아보기</translation>
 <translation id="8793108040181436796">위젯</translation>
 <translation id="8643377320501056697">탑 사이트 보기</translation>
 <translation id="7275773481201277457">Brave Stats 보기</translation>
@@ -500,6 +500,8 @@
 <translation id="7616645803364270729">이메일, Twitter 등</translation>
 <translation id="5299848999918506028">감사합니다!</translation>
 <translation id="76550953340008122">이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!</translation>
+<translation id="3037432377946455872">확인된 핵심 문제</translation>
+<translation id="8731661215617360873">택일</translation>
 <translation id="650318023204990401">고급 컨트롤</translation>
 <translation id="7205939464631857223">차단된 모든 요소 지우기</translation>
 <translation id="5370478469168390143">데이터 온라인 저장</translation>
@@ -796,6 +798,7 @@
 <translation id="1426320910664514906">가스 한도</translation>
 <translation id="6389441740143786465">공유 허브 비활성화</translation>
 <translation id="9065203028668620118">수정</translation>
+<translation id="473775607612524610">업데이트</translation>
 <translation id="479795390141144417">계정 업데이트에 실패했습니다.</translation>
 <translation id="8084782383392198011">계정 이름은 비워 둘 수 없습니다.</translation>
 <translation id="5045550434625856497">비밀번호가 잘못되었습니다.</translation>
@@ -1223,4 +1226,41 @@
 <translation id="2735247450315842119">비공개 탭에서 스크린샷 허용</translation>
 <translation id="8420414929552321089">이 기능을 허용하면 앱이 여러 개 열려 있을 때 비공개 탭도 표시됩니다.</translation>
 <translation id="7956713633345437162">모바일 북마크</translation>
+<translation id="1943432128510653496">비밀번호 저장</translation>
+<translation id="2100273922101894616">자동 로그인</translation>
+<translation id="363596933471559332">저장된 사용자 인증 정보를 사용하여 자동으로 웹사이트에 로그인합니다. 이 기능이 꺼져 있는 경우에는 웹사이트에 로그인할 때마다 인증 요청 메시지가 표시됩니다.</translation>
+<translation id="8562452229998620586">저장한 비밀번호가 여기에 표시됩니다.</translation>
+<translation id="1303339473099049190">비밀번호를 찾을 수 없습니다. 철자를 확인하고 다시 시도해 주세요.</translation>
+<translation id="2259659629660284697">비밀번호 내보내기...</translation>
+<translation id="133012818630824069">Brave으로 저장한 비밀번호 내보내기</translation>
+<translation id="2321086116217818302">비밀번호 준비 중…</translation>
+<translation id="5139940364318403933">Google Drive 사용 방법 알아보기</translation>
+<translation id="729975465115245577">기기에 비밀번호 파일을 저장할 수 있는 앱이 없습니다.</translation>
+<translation id="1129510026454351943">세부정보: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">비밀번호를 내보내려면 잠금 해제하세요</translation>
+<translation id="5245792669563792664">비밀번호</translation>
+<translation id="10614374240317010">저장하지 않음</translation>
+<translation id="1571304935088121812">사용자 이름 복사</translation>
+<translation id="5005498671520578047">비밀번호 복사</translation>
+<translation id="2435457462613246316">비밀번호 표시</translation>
+<translation id="1513858653616922153">비밀번호 삭제</translation>
+<translation id="543338862236136125">비밀번호 수정</translation>
+<translation id="4565377596337484307">비밀번호 숨김</translation>
+<translation id="8523928698583292556">저장된 암호 삭제</translation>
+<translation id="5433691172869980887">사용자 이름 복사됨</translation>
+<translation id="2625189173221582860">비밀번호 복사됨</translation>
+<translation id="8084114998886531721">저장된 비밀번호</translation>
+<translation id="6590680911007613645">저장하려는 비밀번호가 <ph name="SITE"/>의 비밀번호와 일치하는지 확인하세요.</translation>
+<translation id="1492417797159476138">이미 사이트에 사용 중인 사용자 이름입니다.</translation>
+<translation id="5454166040603940656">제공업체: <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">비밀번호를 삭제하시겠습니까?</translation>
+<translation id="7808889146555843082">비밀번호를 삭제해도 <ph name="SITE"/> 계정은 삭제되지 않습니다. 비밀번호를 변경하거나 <ph name="SITE"/> 계정을 삭제하여 보안을 유지하세요.</translation>
+<translation id="2870560284913253234">사이트</translation>
+<translation id="8503813439785031346">사용자 이름</translation>
+<translation id="2278052315791335171">비밀번호를 삭제해도 <ph name="SITE"/> 계정은 삭제되지 않습니다.</translation>
+<translation id="6891726759199484455">비밀번호를 복사하려면 잠금 해제하세요</translation>
+<translation id="5515439363601853141">비밀번호를 보려면 잠금 해제하세요</translation>
+<translation id="1724977129262658800">비밀번호를 수정하려면 잠금 해제하세요</translation>
+<translation id="5780792035410621042">비밀번호를 복사하려면 먼저 기기에 화면 잠금을 설정하세요.</translation>
+<translation id="7986497153528221272">비밀번호를 보려면 먼저 기기에 화면 잠금을 설정하세요.</translation>
 </translationbundle>

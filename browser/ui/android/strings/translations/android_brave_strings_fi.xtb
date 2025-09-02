@@ -421,8 +421,6 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="8748471354357836070">Lisätietoja / opt out -valinnat</translation>
 <translation id="3171669670217312786">Taustakuvat</translation>
 <translation id="8522669544471808198">Näytä taustakuvat</translation>
-<translation id="3870475560794762985">Näytä sponsoroidut kuvat</translation>
-<translation id="6937724381960478525">Lue lisää sponsoroiduista kuvista</translation>
 <translation id="8793108040181436796">Widgetit</translation>
 <translation id="8643377320501056697">Näytä kärkisivustot</translation>
 <translation id="7275773481201277457">Näytä Brave-tilastot</translation>
@@ -796,6 +794,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="1426320910664514906">Gas-raja</translation>
 <translation id="6389441740143786465">Poista jakamiskeskus käytöstä</translation>
 <translation id="9065203028668620118">Muokkaa</translation>
+<translation id="473775607612524610">Päivitä</translation>
 <translation id="479795390141144417">Tilin päivitys epäonnistui.</translation>
 <translation id="8084782383392198011">Tilin nimi ei voi olla tyhjä.</translation>
 <translation id="5045550434625856497">Väärä salasana</translation>
@@ -1223,4 +1222,41 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="2735247450315842119">Salli kuvakaappaukset yksityisissä välilehdissä</translation>
 <translation id="8420414929552321089">Jos se sallitaan, yksityiset välilehdet ovat näkyvissä myös silloin, kun useita sovelluksia on avoinna.</translation>
 <translation id="7956713633345437162">Mobiilikirjanmerkit</translation>
+<translation id="1943432128510653496">Salasanojen tallentaminen</translation>
+<translation id="2100273922101894616">Automaattinen kirjautuminen</translation>
+<translation id="363596933471559332">Kirjaudu automaattisesti verkkosivustoille käyttämällä tallennettuja kirjautumistietoja. Jos tämä toiminto ei ole käytössä, sinua pyydetään vahvistamaan kirjautuminen aina, kun kirjaudut sivustolle.</translation>
+<translation id="8562452229998620586">Tässä näytetään tallennetut salasanasi.</translation>
+<translation id="1303339473099049190">Tätä salasanaa ei löydy. Tarkista oikeinkirjoitus ja yritä uudelleen.</translation>
+<translation id="2259659629660284697">Vie salasanat…</translation>
+<translation id="133012818630824069">Vie Braveen tallennetut salasanat</translation>
+<translation id="2321086116217818302">Valmistellaan salasanoja…</translation>
+<translation id="5139940364318403933">Ohjeet Google Driven käyttöön</translation>
+<translation id="729975465115245577">Laitteella ei ole sovellusta, johon salasanatiedoston voisi tallentaa.</translation>
+<translation id="1129510026454351943">Tiedot: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Avaa lukitus viedäksesi salasanoja.</translation>
+<translation id="5245792669563792664">salasanat</translation>
+<translation id="10614374240317010">Ei tallenneta</translation>
+<translation id="1571304935088121812">Kopioi käyttäjänimi</translation>
+<translation id="5005498671520578047">Kopioi salasana</translation>
+<translation id="2435457462613246316">Näytä salasana</translation>
+<translation id="1513858653616922153">Poista salasana</translation>
+<translation id="543338862236136125">Muokkaa salasanaa</translation>
+<translation id="4565377596337484307">Piilota salasana</translation>
+<translation id="8523928698583292556">Poista tallennettu salasana</translation>
+<translation id="5433691172869980887">Käyttäjänimi kopioitu</translation>
+<translation id="2625189173221582860">Salasana kopioitu</translation>
+<translation id="8084114998886531721">Salasana tallennettu</translation>
+<translation id="6590680911007613645">Varmista, että tallennettava salasana vastaa palvelun (<ph name="SITE"/>) salasanaa</translation>
+<translation id="1492417797159476138">Tallensit jo tämän käyttäjänimen sivustolle</translation>
+<translation id="5454166040603940656">palvelulla <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">Poistetaanko salasana?</translation>
+<translation id="7808889146555843082">Vaikka poistat salasanan, tiliäsi (<ph name="SITE"/>) ei poisteta. Vaihda salasana tai poista tili (<ph name="SITE"/>), jotta se pysyy turvassa muilta.</translation>
+<translation id="2870560284913253234">Sivusto</translation>
+<translation id="8503813439785031346">Käyttäjätunnus</translation>
+<translation id="2278052315791335171">Vaikka poistat salasanan, tiliäsi (<ph name="SITE"/>) ei poisteta</translation>
+<translation id="6891726759199484455">Avaa lukitus kopioidaksesi salasanan</translation>
+<translation id="5515439363601853141">Avaa lukitus nähdäksesi salasanan</translation>
+<translation id="1724977129262658800">Avaa lukitus muokataksesi salasanaasi</translation>
+<translation id="5780792035410621042">Jos haluat kopioida salasanoja, sinun on asetettava näytön lukitus laitteellesi</translation>
+<translation id="7986497153528221272">Jos haluat nähdä salasanat, sinun on asetettava näytön lukitus laitteellesi</translation>
 </translationbundle>

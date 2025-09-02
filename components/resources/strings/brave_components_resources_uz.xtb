@@ -42,6 +42,7 @@
 <translation id="5334844597069022743">Manbani koʻrish</translation>
 <translation id="4720556299488643018">Obunani bekor qilish</translation>
 <translation id="1209739344687072997">Nosoz sayt haqida xabar qilish</translation>
+<translation id="7138678301420049075">Boshqa</translation>
 <translation id="4394049700291259645">O‘chirish</translation>
 <translation id="4176463684765177261">Oʻchirilgan</translation>
 <translation id="3082557070674409251">Bosilgan</translation>
@@ -216,7 +217,6 @@
 <translation id="3382275793825152362">Mablagʻlarni himoyalash</translation>
 <translation id="8631765320256788981">Siz shaffof hisobingizdan himoyalangan hisobingizga mablagʻ oʻtkazyapsiz.</translation>
 <translation id="8030852056903932865">Tasdiqlash</translation>
-<translation id="7138678301420049075">Boshqa</translation>
 <translation id="2244921323472112851">Ayni paytda siz qidirayotgan sahifani topa olmadik.</translation>
 <translation id="6277237872689140644">U boshqa joyga koʻchgan yoki URL manzilida xato yozilgan boʻlishi mumkin.</translation>
 <translation id="2737084171727561244">Portfelingizga kiring</translation>
@@ -390,6 +390,8 @@
 <translation id="619122420105901711">Email koʻrinmayaptimi? Spam jildingizni tekshiring yoki qayta urining.</translation>
 <translation id="3397336197747843396">Brave hisobi bilan autentifikatsiya qilinmadi. Qayta urining.</translation>
 <translation id="1340795582009113055">Qaytadan boshlash</translation>
+<translation id="2422927186524098759">Yon panel</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="5753795690521538679">7 kunlik bepul sinovni boshlash</translation>
 <translation id="3357036723290257445">Allaqachon Brave VPN sotib olganmisiz?</translation>
 <translation id="5747552184818312860">Muddati tugaydi</translation>

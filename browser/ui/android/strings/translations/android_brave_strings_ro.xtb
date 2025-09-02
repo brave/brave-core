@@ -421,8 +421,8 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8748471354357836070">Află mai multe / opțiuni de renunțare</translation>
 <translation id="3171669670217312786">Imagini de fundal</translation>
 <translation id="8522669544471808198">Afișare imagini de fundal</translation>
-<translation id="3870475560794762985">Afișare imagini sponsorizate</translation>
-<translation id="6937724381960478525">Află mai multe despre imaginile sponsorizate</translation>
+<translation id="6258554626602400736">Arată filă nouă pentru reclame</translation>
+<translation id="9001530744369687550">Află mai multe despre reclamele pe fila de pagină</translation>
 <translation id="8793108040181436796">Widgeturi</translation>
 <translation id="8643377320501056697">Afișare site-uri de top</translation>
 <translation id="7275773481201277457">Afișare date statistice Brave</translation>
@@ -500,6 +500,8 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="7616645803364270729">Email, Twitter etc.</translation>
 <translation id="5299848999918506028">Mulțumim!</translation>
 <translation id="76550953340008122">Vă mulțumim că i-ați anunțat pe dezvoltatorii Brave că ceva nu este în regulă cu acest site. Vom face tot ce ne stă în putință ca să rezolvăm problema!</translation>
+<translation id="3037432377946455872">Care este problema principală pe care o întâmpini?</translation>
+<translation id="8731661215617360873">Selectează o opțiune</translation>
 <translation id="650318023204990401">Controale avansate</translation>
 <translation id="7205939464631857223">Șterge toate elementele blocate</translation>
 <translation id="5370478469168390143">Salvați datele online</translation>
@@ -798,6 +800,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1426320910664514906">Limită gas</translation>
 <translation id="6389441740143786465">Dezactivați bara de distribuire</translation>
 <translation id="9065203028668620118">Editează</translation>
+<translation id="473775607612524610">Actualizează</translation>
 <translation id="479795390141144417">Eroare la actualizarea contului.</translation>
 <translation id="8084782383392198011">Câmpul pentru numele contului nu poate rămâne gol.</translation>
 <translation id="5045550434625856497">Parolă incorectă</translation>
@@ -1226,4 +1229,41 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="2735247450315842119">Permite capturi de ecran în filele private</translation>
 <translation id="8420414929552321089">Dacă este permis, filele private vor fi vizibile și atunci când sunt deschise mai multe aplicații.</translation>
 <translation id="7956713633345437162">Marcaje mobile</translation>
+<translation id="1943432128510653496">Parole salvate</translation>
+<translation id="2100273922101894616">Conectare automată</translation>
+<translation id="363596933471559332">Te conectezi automat la site-uri folosind datele de conectare stocate. Când funcția este dezactivată, ți se va solicita verificarea de fiecare dată înainte de a te conecta la un site.</translation>
+<translation id="8562452229998620586">Parolele salvate vor fi afișate aici.</translation>
+<translation id="1303339473099049190">Parola nu a fost găsită. Verifică dacă ai scris-o corect și încearcă din nou.</translation>
+<translation id="2259659629660284697">Exportă parolele…</translation>
+<translation id="133012818630824069">Exportă parolele stocate în Brave</translation>
+<translation id="2321086116217818302">Se pregătesc parolele…</translation>
+<translation id="5139940364318403933">Află cum să folosești Google Drive</translation>
+<translation id="729975465115245577">Dispozitivul nu are o aplicație pentru stocarea fișierului parolelor.</translation>
+<translation id="1129510026454351943">Detalii: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Deblochează pentru a-ți exporta parolele.</translation>
+<translation id="5245792669563792664">parole</translation>
+<translation id="10614374240317010">Nu se salvează niciodată</translation>
+<translation id="1571304935088121812">Copiază numele de utilizator</translation>
+<translation id="5005498671520578047">Copiază parola</translation>
+<translation id="2435457462613246316">Afișați parola</translation>
+<translation id="1513858653616922153">Șterge parola</translation>
+<translation id="543338862236136125">Editează parola</translation>
+<translation id="4565377596337484307">Ascunde parola</translation>
+<translation id="8523928698583292556">Șterge parola stocată</translation>
+<translation id="5433691172869980887">Numele de utilizator a fost copiat</translation>
+<translation id="2625189173221582860">Parola a fost copiată</translation>
+<translation id="8084114998886531721">Parolă salvată</translation>
+<translation id="6590680911007613645">Asigură-te că parola pe care o salvezi este aceeași cu parola pentru <ph name="SITE"/></translation>
+<translation id="1492417797159476138">Ai salvat deja acest nume de utilizator pentru site</translation>
+<translation id="5454166040603940656">cu <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">Ștergi parola?</translation>
+<translation id="7808889146555843082">Prin ștergerea acestei parole, nu va fi șters și contul de pe <ph name="SITE"/>. Schimbă-ți parola sau șterge contul din <ph name="SITE"/> ca să nu poată fi accesat de alte persoane.</translation>
+<translation id="2870560284913253234">Site</translation>
+<translation id="8503813439785031346">Nume utilizator</translation>
+<translation id="2278052315791335171">Prin ștergerea acestei parole, nu va fi șters și contul de pe <ph name="SITE"/></translation>
+<translation id="6891726759199484455">Deblochează pentru a copia parola</translation>
+<translation id="5515439363601853141">Deblochează pentru a vedea parola</translation>
+<translation id="1724977129262658800">Deblochează pentru a modifica parola</translation>
+<translation id="5780792035410621042">Pentru a copia parolele, mai întâi setează o blocare a ecranului pe dispozitiv</translation>
+<translation id="7986497153528221272">Pentru a vedea parolele, mai întâi setează o blocare a ecranului pe dispozitiv</translation>
 </translationbundle>

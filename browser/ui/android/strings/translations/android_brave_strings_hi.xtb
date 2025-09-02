@@ -420,8 +420,8 @@
 <translation id="8748471354357836070">ज़्यादा जानें / विकल्प ऑप्ट आउट करें</translation>
 <translation id="3171669670217312786">बैकग्राउंड फ़ोटो</translation>
 <translation id="8522669544471808198">बैकग्राउंड इमेज दिखाएँ</translation>
-<translation id="3870475560794762985">प्रायोजित इमेज दिखाएँ</translation>
-<translation id="6937724381960478525">स्पॉन्सर की गई इमेज के बारे में ज़्यादा जानें</translation>
+<translation id="6258554626602400736">नए टैब पेज ऐड्स दिखाएँ</translation>
+<translation id="9001530744369687550">नए टैब पेज ऐड्स के बारे में ज़्यादा जानें</translation>
 <translation id="8793108040181436796">विजेट</translation>
 <translation id="8643377320501056697">मुख्य साइटों को दिखाएँ</translation>
 <translation id="7275773481201277457">Brave के आँकड़े दिखाएँ</translation>
@@ -499,6 +499,8 @@
 <translation id="7616645803364270729">ईमेल, Twitter, वगैरह.</translation>
 <translation id="5299848999918506028">धन्यवाद!</translation>
 <translation id="76550953340008122">इस साइट की समस्या के बारे में Brave के डेवलपर्स को बताने के लिए धन्यवाद। हम इसे ठीक करने की पूरी कोशिश करेंगे!</translation>
+<translation id="3037432377946455872">आपको कौनसी मुख्य समस्या दिख रही है?</translation>
+<translation id="8731661215617360873">एक विकल्प चुनें</translation>
 <translation id="650318023204990401">उन्नत कंट्रोल</translation>
 <translation id="7205939464631857223">ब्लॉक किए गए सभी एलिमेंट हटाएँ</translation>
 <translation id="5370478469168390143">डेटा ऑनलाइन सेव करें</translation>
@@ -795,6 +797,7 @@
 <translation id="1426320910664514906">गैस की सीमा\n</translation>
 <translation id="6389441740143786465">शेयरिंग हब बंद करें</translation>
 <translation id="9065203028668620118">बदलाव करें</translation>
+<translation id="473775607612524610">अपडेट करें</translation>
 <translation id="479795390141144417">अकाउंट अपडेट नहीं हो सका.</translation>
 <translation id="8084782383392198011">अकाउंट नेम खाली नहीं हो सकता.</translation>
 <translation id="5045550434625856497">ग़लत पासवर्ड</translation>
@@ -1222,4 +1225,41 @@
 <translation id="2735247450315842119">निजी टैब में स्क्रीनशॉट की अनुमति दें</translation>
 <translation id="8420414929552321089">अगर अनुमति हो, तो कई टैब खुले होने पर निजी टैब भी दिखाई देंगे।</translation>
 <translation id="7956713633345437162">मोबाइल बुकमार्क्स</translation>
+<translation id="1943432128510653496">पासवर्ड सेव करें</translation>
+<translation id="2100273922101894616">अपने-आप साइन इन करने की सुविधा</translation>
+<translation id="363596933471559332">स्टोर किए गए क्रेडेंशियल का इस्तेमाल करके वेबसाइटों में अपने आप साइन इन करें. सुविधा के बंद होने पर, किसी वेबसाइट में साइन इन करने से पहले आपसे हर बार पुष्टि करने को कहा जाएगा.</translation>
+<translation id="8562452229998620586">सहेजे गए पासवर्ड यहां दिखाई देंगे.</translation>
+<translation id="1303339473099049190">वह पासवर्ड नहीं मिला. अपनी स्पेलिंग की जांच करें और फिर से कोशिश करें.</translation>
+<translation id="2259659629660284697">पासवर्ड एक्सपोर्ट करें…</translation>
+<translation id="133012818630824069">Brave के ज़रिए संग्रहित पासवर्ड निर्यात करें</translation>
+<translation id="2321086116217818302">पासवर्ड तैयार हो रहे हैं…</translation>
+<translation id="5139940364318403933">Brave डिस्क के इस्तेमाल का तरीका जानें</translation>
+<translation id="729975465115245577">आपके डिवाइस में पासवर्ड फ़ाइल को स्टोर करने वाला कोई ऐप्लिकेशन नहीं है.</translation>
+<translation id="1129510026454351943">विवरण: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">अपने पासवर्ड निर्यात करने के लिए अनलॉक करें</translation>
+<translation id="5245792669563792664">पासवर्ड</translation>
+<translation id="10614374240317010">कभी नहीं सेव किया गया</translation>
+<translation id="1571304935088121812">उपयोगकर्ता नाम की कॉपी करें</translation>
+<translation id="5005498671520578047">पासवर्ड कॉपी करें</translation>
+<translation id="2435457462613246316">पासवर्ड दिखाएं</translation>
+<translation id="1513858653616922153">पासवर्ड मिटाएं</translation>
+<translation id="543338862236136125">पासवर्ड में बदलाव करें</translation>
+<translation id="4565377596337484307">पासवर्ड छिपाएं</translation>
+<translation id="8523928698583292556">स्टोर किया गया पासवर्ड मिटाएं</translation>
+<translation id="5433691172869980887">उपयोगकर्ता नाम कॉपी किया गया</translation>
+<translation id="2625189173221582860">पासवर्ड कॉपी किया गया</translation>
+<translation id="8084114998886531721">सेव किया गया पासवर्ड</translation>
+<translation id="6590680911007613645">पक्का करें कि आप जो पासवर्ड सेव कर रहे हैं वह <ph name="SITE"/> के आपके पासवर्ड से मेल खाता हो</translation>
+<translation id="1492417797159476138">आपने इस साइट के लिए, यह उपयोगकर्ता नाम पहले ही सेव कर दिया है</translation>
+<translation id="5454166040603940656"><ph name="PROVIDER"/> के साथ</translation>
+<translation id="686366188661646310">क्या आप पासवर्ड मिटाना चाहते हैं?</translation>
+<translation id="7808889146555843082">इस पासवर्ड को मिटाने से, आपका <ph name="SITE"/> वाला खाता नहीं मिटेगा. दूसरों से सुरक्षित रखने के लिए, अपना पासवर्ड बदलें या अपना <ph name="SITE"/> वाला खाता मिटाएं.</translation>
+<translation id="2870560284913253234">साइट</translation>
+<translation id="8503813439785031346">उपयोगकर्ता नाम</translation>
+<translation id="2278052315791335171">यह पासवर्ड मिटाने से, आपका <ph name="SITE"/> वाला खाता नहीं मिटेगा</translation>
+<translation id="6891726759199484455">अपना पासवर्ड कॉपी करने के लिए अनलॉक करें</translation>
+<translation id="5515439363601853141">अपना पासवर्ड देखने के लिए अनलॉक करें</translation>
+<translation id="1724977129262658800">अपना पासवर्ड बदलने के लिए अनलॉक करें</translation>
+<translation id="5780792035410621042">पासवर्ड कॉपी करने के लिए, पहले अपने डिवाइस पर एक स्क्रीन लॉक सेट करें</translation>
+<translation id="7986497153528221272">पासवर्ड देखने के लिए, अपने डिवाइस पर एक स्क्रीन लॉक सेट करें</translation>
 </translationbundle>

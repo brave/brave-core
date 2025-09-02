@@ -421,8 +421,8 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="8748471354357836070">Pelajari selengkapnya/pilihan penonaktifan</translation>
 <translation id="3171669670217312786">Gambar Latar Belakang</translation>
 <translation id="8522669544471808198">Tampilkan Gambar Latar Belakang</translation>
-<translation id="3870475560794762985">Tampilkan Gambar Bersponsor</translation>
-<translation id="6937724381960478525">Pelajari selengkapnya tentang Gambar Bersponsor</translation>
+<translation id="6258554626602400736">Tampilkan Iklan Halaman Tab Baru</translation>
+<translation id="9001530744369687550">Pelajari selengkapnya tentang iklan halaman tab baru</translation>
 <translation id="8793108040181436796">Tombol</translation>
 <translation id="8643377320501056697">Tampilkan Situs Teratas</translation>
 <translation id="7275773481201277457">Tampilkan Statistik Brave</translation>
@@ -500,6 +500,8 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="7616645803364270729">Surel, Twitter, dsb.</translation>
 <translation id="5299848999918506028">Terima kasih!</translation>
 <translation id="76550953340008122">Terima kasih telah memberi tahu pengembang Brave tentang masalah dengan situs ini. Kami akan berusaha sebaik mungkin untuk memperbaikinya!</translation>
+<translation id="3037432377946455872">Apa masalah utama yang Anda lihat?</translation>
+<translation id="8731661215617360873">Pilih satu opsi</translation>
 <translation id="650318023204990401">Kontrol lanjutan</translation>
 <translation id="7205939464631857223">Hapus semua elemen yang diblokir</translation>
 <translation id="5370478469168390143">Simpan Data Online</translation>
@@ -796,6 +798,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1426320910664514906">Batas Gas</translation>
 <translation id="6389441740143786465">Nonaktifkan Hub Berbagi</translation>
 <translation id="9065203028668620118">Edit</translation>
+<translation id="473775607612524610">Perbarui</translation>
 <translation id="479795390141144417">Pembaruan akun gagal.</translation>
 <translation id="8084782383392198011">Nama akun tidak dapat dibiarkan kosong.</translation>
 <translation id="5045550434625856497">Sandi salah</translation>
@@ -1223,4 +1226,41 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="2735247450315842119">Izinkan tangkapan layar di tab pribadi</translation>
 <translation id="8420414929552321089">Jika diizinkan, tab pribadi juga akan terlihat ketika beberapa aplikasi terbuka.</translation>
 <translation id="7956713633345437162">Bookmark ponsel</translation>
+<translation id="1943432128510653496">Simpan sandi</translation>
+<translation id="2100273922101894616">Login Otomatis</translation>
+<translation id="363596933471559332">Otomatis login ke situs web menggunakan kredensial yang tersimpan. Saat fitur dinonaktifkan, Anda akan dimintai verifikasi setiap kali hendak login ke situs web.</translation>
+<translation id="8562452229998620586">Sandi yang disimpan akan muncul di sini.</translation>
+<translation id="1303339473099049190">Tidak dapat menemukan sandi tersebut. Periksa ejaan sandi dan coba lagi.</translation>
+<translation id="2259659629660284697">Ekspor sandi…</translation>
+<translation id="133012818630824069">Ekspor sandi yang disimpan dengan Brave</translation>
+<translation id="2321086116217818302">Mempersiapkan sandi…</translation>
+<translation id="5139940364318403933">Pelajari cara menggunakan Google Drive</translation>
+<translation id="729975465115245577">Perangkat Anda tidak memiliki aplikasi untuk menyimpan file sandi.</translation>
+<translation id="1129510026454351943">Detail: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Buka kunci untuk mengekspor sandi</translation>
+<translation id="5245792669563792664">sandi</translation>
+<translation id="10614374240317010">Jangan pernah disimpan</translation>
+<translation id="1571304935088121812">Salin nama pengguna</translation>
+<translation id="5005498671520578047">Salin sandi</translation>
+<translation id="2435457462613246316">Tampilkan sandi</translation>
+<translation id="1513858653616922153">Hapus sandi</translation>
+<translation id="543338862236136125">Edit sandi</translation>
+<translation id="4565377596337484307">Sembunyikan sandi</translation>
+<translation id="8523928698583292556">Hapus sandi tersimpan</translation>
+<translation id="5433691172869980887">Nama pengguna disalin</translation>
+<translation id="2625189173221582860">Sandi disalin</translation>
+<translation id="8084114998886531721">Sandi tersimpan</translation>
+<translation id="6590680911007613645">Pastikan sandi yang Anda simpan cocok dengan sandi untuk <ph name="SITE"/></translation>
+<translation id="1492417797159476138">Anda telah menyimpan nama pengguna ini untuk situs ini</translation>
+<translation id="5454166040603940656">dengan <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">Hapus sandi?</translation>
+<translation id="7808889146555843082">Menghapus sandi ini tidak akan menghapus akun Anda di <ph name="SITE"/>. Ubah sandi Anda atau hapus akun Anda di <ph name="SITE"/> untuk menjaganya tetap aman dari orang lain.</translation>
+<translation id="2870560284913253234">Situs</translation>
+<translation id="8503813439785031346">Nama pengguna</translation>
+<translation id="2278052315791335171">Menghapus sandi ini tidak akan menghapus akun Anda di <ph name="SITE"/></translation>
+<translation id="6891726759199484455">Buka kunci untuk menyalin sandi Anda</translation>
+<translation id="5515439363601853141">Buka kunci untuk melihat sandi Anda</translation>
+<translation id="1724977129262658800">Buka kunci untuk mengedit sandi Anda</translation>
+<translation id="5780792035410621042">Untuk menyalin sandi, setel kunci layar di perangkat terlebih dahulu</translation>
+<translation id="7986497153528221272">Untuk melihat sandi, setel kunci layar di perangkat terlebih dahulu</translation>
 </translationbundle>

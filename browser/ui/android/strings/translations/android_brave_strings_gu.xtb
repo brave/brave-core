@@ -242,7 +242,6 @@
 <translation id="5927196110206824867">પ્રાયોજિત બૅકગ્રાઉન્ડ ઇમેજ Braveના સ્વતંત્ર, વપરાશકર્તા-પ્રથમ વેબ બનાવવાના મિશનને સપોર્ટ કરે છે. અને Big Techથી વિપરીત, અમે તમારી ગોપનીયતા જાળવવા માટે અનામી રીતે જાહેરાત પ્રદર્શનને માપીએ છીએ.</translation>
 <translation id="8748471354357836070">વધુ જાણો / ઓપ્ટ આઉટ પસંગીઓ</translation>
 <translation id="8522669544471808198">બૅકગ્રાઉન્ડ ઇમેજ બતાવો</translation>
-<translation id="3870475560794762985">પ્રાયોજિત ઇમેજ બતાવો</translation>
 <translation id="7275773481201277457">Brave આંકડા બતાવો</translation>
 <translation id="2898634658146274982">બાહરી લિંક Braveમાં ખોલો</translation>
 <translation id="5616508928556767259">અન્ય ઍપની લિંક Brave વેબવ્યૂમાં ખૂલે છે. નોંધ: Brave તમારા ડિફોલ્ટ બ્રાઉઝર તરીકે સેટ કરેલું હોવું જોઈએ.</translation>
@@ -411,6 +410,7 @@
 <translation id="5317780077021120954">સાચવો</translation>
 <translation id="1426320910664514906">ગેસ મર્યાદા</translation>
 <translation id="9065203028668620118">ફેરફાર કરો</translation>
+<translation id="473775607612524610">અપડેટ કરો</translation>
 <translation id="5045550434625856497">ખોટો પાસવર્ડ</translation>
 <translation id="1367951781824006909">એક ફાઇલ પસંદ કરો</translation>
 <translation id="8047527352810290817">ગેસ સંપાદિત કરો</translation>
@@ -597,4 +597,41 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">ચેટનો ઇતિહાસ</translation>
 <translation id="7956713633345437162">મોબાઇલ બુકમાર્ક્સ</translation>
+<translation id="1943432128510653496">પાસવર્ડ સાચવો</translation>
+<translation id="2100273922101894616">સ્વતઃ સાઇન-ઇન</translation>
+<translation id="363596933471559332">સંગ્રહિત ઓળખપત્રોનો ઉપયોગ કરીને વેબસાઇટમાં ઑટોમૅટિક રીતે સાઇન ઇન કરો. જ્યારે સુવિધા બંધ હોય છે, ત્યારે વેબસાઇટમાં સાઇન ઇન કરતાં પહેલાં દર વખતે તમને ચકાસણી માટે કહેવામાં આવશે.</translation>
+<translation id="8562452229998620586">તમારા સાચવેલા પાસવર્ડ્સ અહીં દેખાશે.</translation>
+<translation id="1303339473099049190">તે પાસવર્ડ શોધી શકતા નથી. તમારી જોડણી ચેક કરો અને ફરીથી પ્રયાસ કરો.</translation>
+<translation id="2259659629660284697">બધા પાસવર્ડની નિકાસ કરો…</translation>
+<translation id="133012818630824069">Braveમાં સંગ્રહિત કરેલા પાસવર્ડની નિકાસ કરો</translation>
+<translation id="2321086116217818302">પાસવર્ડ તૈયાર કરી રહ્યાં છીએ…</translation>
+<translation id="5139940364318403933">Brave ડ્રાઇવનો ઉપયોગ કેવી રીતે કરવો તે જાણો</translation>
+<translation id="729975465115245577">તમારા ઉપકરણ પાસે પાસવર્ડ ફાઇલને સ્ટોર કરવા માટેની ઍપ નથી.</translation>
+<translation id="1129510026454351943">વિગતો: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">તમારા બધા પાસવર્ડને નિકાસ કરવા માટે અનલૉક કરો</translation>
+<translation id="5245792669563792664">પાસવર્ડ્સ</translation>
+<translation id="10614374240317010">ક્યારેય ન સચવાયેલું</translation>
+<translation id="1571304935088121812">વપરાશકર્તાનામ કૉપિ કરો</translation>
+<translation id="5005498671520578047">પાસવર્ડની કૉપિ કરો</translation>
+<translation id="2435457462613246316">પાસવર્ડ બતાવો</translation>
+<translation id="1513858653616922153">પાસવર્ડ ડિલીટ કરો</translation>
+<translation id="543338862236136125">પાસવર્ડમાં ફેરફાર કરો</translation>
+<translation id="4565377596337484307">પાસવર્ડ છુપાવો</translation>
+<translation id="8523928698583292556">સંગ્રહિત કરેલ પાસવર્ડ ડિલીટ કરો</translation>
+<translation id="5433691172869980887">વપરાશકર્તાનામ કૉપિ કર્યું</translation>
+<translation id="2625189173221582860">પાસવર્ડ કૉપિ કર્યો</translation>
+<translation id="8084114998886531721">સાચવેલ પાસવર્ડ</translation>
+<translation id="6590680911007613645">તમે સાચવી રહ્યા છો તે પાસવર્ડ <ph name="SITE"/> માટેના તમારા પાસવર્ડ સાથે મેળ ખાતો હોવાની ખાતરી કરો</translation>
+<translation id="1492417797159476138">તમે આ સાઇટ માટે પહેલેથી જ વપરાશકર્તા નામ સાચવ્યું છે</translation>
+<translation id="5454166040603940656"><ph name="PROVIDER"/> સાથે</translation>
+<translation id="686366188661646310">પાસવર્ડ ડિલીટ કરીએ?</translation>
+<translation id="7808889146555843082">આ પાસવર્ડ ડિલીટ કરવાથી <ph name="SITE"/> પરનું તમારું એકાઉન્ટ ડિલીટ થશે નહીં. <ph name="SITE"/> પરનું તમારું એકાઉન્ટ ડિલીટ કરો અથવા તમારો પાસવર્ડ બદલો કે જેથી તેને અન્ય લોકોથી સુરક્ષિત રાખી શકાય.</translation>
+<translation id="2870560284913253234">સાઇટ</translation>
+<translation id="8503813439785031346">વપરાશકર્તાનામ</translation>
+<translation id="2278052315791335171">આ પાસવર્ડ ડિલીટ કરવાથી <ph name="SITE"/> પરનું તમારું એકાઉન્ટ ડિલીટ થશે નહીં</translation>
+<translation id="6891726759199484455">તમારો પાસવર્ડ કૉપિ કરવા માટે અનલૉક કરો</translation>
+<translation id="5515439363601853141">તમારો પાસવર્ડ જોવા માટે અનલૉક કરો</translation>
+<translation id="1724977129262658800">તમારા પાસવર્ડમાં ફેરફાર કરવા માટે અનલૉક કરો</translation>
+<translation id="5780792035410621042">પાસવર્ડ કૉપિ કરવા માટે, પહેલાં તમારા ડિવાઇસ પર સ્ક્રીન લૉક સેટ કરો</translation>
+<translation id="7986497153528221272">પાસવર્ડ જોવા માટે, પહેલા તમારા ડિવાઇસ પર સ્ક્રીન લૉક સેટ કરો</translation>
 </translationbundle>

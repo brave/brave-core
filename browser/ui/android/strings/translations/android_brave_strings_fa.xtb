@@ -423,8 +423,8 @@
 <translation id="8748471354357836070">بیشتر بدانید/گزینه‌های انصراف</translation>
 <translation id="3171669670217312786">تصاویر پس‌زمینه</translation>
 <translation id="8522669544471808198">نمایش تصاویر پس‌زمینه</translation>
-<translation id="3870475560794762985">نمایش تصاویر حمایت‌شده</translation>
-<translation id="6937724381960478525">درباره تصاویر دارای حامی مالی بیشتر بدانید</translation>
+<translation id="6258554626602400736">نمایش تبلیغات در صفحه زبانه جدید</translation>
+<translation id="9001530744369687550">درباره تبلیغات در صفحه زبانه جدید بیشتر بدانید</translation>
 <translation id="8793108040181436796">ویجت‌ها</translation>
 <translation id="8643377320501056697">نمایش سایت‌های برتر</translation>
 <translation id="7275773481201277457">نمایش آمار Brave</translation>
@@ -502,6 +502,8 @@
 <translation id="7616645803364270729">ایمیل، توئیتر، غیره.</translation>
 <translation id="5299848999918506028">متشکریم!</translation>
 <translation id="76550953340008122">متشکریم که وجود مشکل در این سایت را به توسعه‌دهندگان Brave اطلاع دادید. تمام تلاشمان را برای رفع مشکل آن به کار می‌گیریم.</translation>
+<translation id="3037432377946455872">مشکل اصلی که با آن مواجه هستید، چیست؟</translation>
+<translation id="8731661215617360873">یک گزینه را انتخاب کنیذ</translation>
 <translation id="650318023204990401">کنترل‌های پیشرفته</translation>
 <translation id="7205939464631857223">همه عناصر مسدودشده را پاک کن</translation>
 <translation id="5370478469168390143">ذخیره آنلاین داده‌ها</translation>
@@ -798,6 +800,7 @@
 <translation id="1426320910664514906">محدوده گاز</translation>
 <translation id="6389441740143786465">غیرفعال کردن هاب اشتراک‌گذاری</translation>
 <translation id="9065203028668620118">ویرایش</translation>
+<translation id="473775607612524610">به‌روزرسانی</translation>
 <translation id="479795390141144417">به‌روزرسانی حساب ناموفق بود.</translation>
 <translation id="8084782383392198011">نام حساب نمی‌تواند خالی باشد.</translation>
 <translation id="5045550434625856497">گذرواژه نادرست</translation>
@@ -1225,4 +1228,41 @@
 <translation id="2735247450315842119">اجازه گرفتن عکس صفحه در برگه‌های خصوصی</translation>
 <translation id="8420414929552321089">در صورت دادن اجازه، برگه‌های خصوصی هنگام باز بودن چندین برنامه نیز قابل مشاهده خواهند بود.</translation>
 <translation id="7956713633345437162">نشانک‌های موبایل</translation>
+<translation id="1943432128510653496">ذخیره گذرواژه‌ها</translation>
+<translation id="2100273922101894616">ورود به سیستم خودکار</translation>
+<translation id="363596933471559332">با استفاده از اعتبارنامه‌های ذخیره شده، به‌طور خودکار به سیستم وب‌سایت‌ها وارد شوید. وقتی این قابلیت خاموش است، هر بار قبل از وارد شدن به سیستم وب‌سایت از شما خواسته می‌شود اطلاعات را تأیید کنید.</translation>
+<translation id="8562452229998620586">گذرواژه‌های ذخیره شده در اینجا ظاهر می‌شود.</translation>
+<translation id="1303339473099049190">گذرواژه پیدا نشد. املای آن را بررسی و دوباره امتحان کنید.</translation>
+<translation id="2259659629660284697">درحال صادر کردن گذرواژه‌ها…</translation>
+<translation id="133012818630824069">‏صادر کردن گذرواژه‌های ذخیره‌شده در Brave</translation>
+<translation id="2321086116217818302">درحال آماده‌سازی گذرواژه‌ها…</translation>
+<translation id="5139940364318403933">‏آشنایی با نحوه استفاده از Google Drive</translation>
+<translation id="729975465115245577">دستگاه شما برنامه‌ای برای ذخیره فایل گذرواژه‌ها ندارد.</translation>
+<translation id="1129510026454351943">جزئیات: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">برای صادر کردن گذرواژه‌ها، قفل را باز کنید</translation>
+<translation id="5245792669563792664">گذرواژه‌ها</translation>
+<translation id="10614374240317010">هرگز ذخیره نمی‌شود</translation>
+<translation id="1571304935088121812">کپی کردن نام کاربری</translation>
+<translation id="5005498671520578047">کپی گذرواژه</translation>
+<translation id="2435457462613246316">نمایش گذرواژه</translation>
+<translation id="1513858653616922153">حذف گذرواژه</translation>
+<translation id="543338862236136125">ویرایش گذرواژه</translation>
+<translation id="4565377596337484307">عدم نمایش گذرواژه</translation>
+<translation id="8523928698583292556">حذف گذرواژه ذخیره‌شده</translation>
+<translation id="5433691172869980887">نام کاربری کپی شد</translation>
+<translation id="2625189173221582860">گذرواژه کپی شد</translation>
+<translation id="8084114998886531721">گذرواژه ذخیره‌شده</translation>
+<translation id="6590680911007613645">مطمئن شوید گذرواژه‌ای که ذخیره می‌کنید با گذرواژه <ph name="SITE"/> مطابقت داشته باشد</translation>
+<translation id="1492417797159476138">قبلاً این نام کاربری را برای این سایت ذخیره کرده‌اید</translation>
+<translation id="5454166040603940656">با <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">گذرواژه حذف شود؟</translation>
+<translation id="7808889146555843082">حذف این گذرواژه باعث حذف شدن حساب شما در <ph name="SITE"/> نمی‌شود. برای ایمن نگه‌داشتن گذرواژه‌تان، آن را تغییر دهید یا حساب‌تان را در <ph name="SITE"/> حذف کنید.</translation>
+<translation id="2870560284913253234">سایت</translation>
+<translation id="8503813439785031346">نام کاربری</translation>
+<translation id="2278052315791335171">حذف این گذرواژه باعث حذف شدن حساب شما در <ph name="SITE"/> نخواهد شد</translation>
+<translation id="6891726759199484455">برای کپی کردن گذرواژه‌تان، قفل صفحه را باز کنید</translation>
+<translation id="5515439363601853141">برای مشاهده گذرواژه‌تان، قفل صفحه را باز کنید</translation>
+<translation id="1724977129262658800">برای ویرایش گذرواژه‌تان، قفل صفحه را باز کنید</translation>
+<translation id="5780792035410621042">برای کپی کردن گذرواژه‌ها، ابتدا در دستگاهتان قفل صفحه تنظیم کنید</translation>
+<translation id="7986497153528221272">برای مشاهده گذرواژه‌ها، ابتدا در دستگاهتان قفل صفحه تنظیم کنید</translation>
 </translationbundle>

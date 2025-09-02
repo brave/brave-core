@@ -65,6 +65,7 @@
 <translation id="1039337018183941703">Ongeldige of korrupte lêer</translation>
 <translation id="1040761927998636252">Naamlose boekmerk vir <ph name="URL"/></translation>
 <translation id="1041175011127912238">Hierdie bladsy reageer nie</translation>
+<translation id="1041181446722933623">“<ph name="LOCAL_BOOKMARK"/>” word net op hierdie toestel gestoor. Stoor dit in “<ph name="ACCOUNT_FOLDER"/>” in jou rekening om dit op jou ander toestelle te gebruik.</translation>
 <translation id="1041263367839475438">Beskikbare toestelle</translation>
 <translation id="6666716404807343028">Bestuur webwerfliggingtoestemmings in Brave</translation>
 <translation id="1042174272890264476">Jou rekenaar kom ook met <ph name="SHORT_PRODUCT_NAME"/> se RLZ-biblioteek ingebou. RLZ wys 'n nie-unieke, nie-persoonlik identifiseerbare merker toe om die soektogte en <ph name="SHORT_PRODUCT_NAME"/> se gebruik, gedryf deur 'n bepaalde promosieveldtog, te meet. Hierdie etikette verskyn somtyds in Brave Search-navrae op <ph name="PRODUCT_NAME"/>.</translation>
@@ -110,6 +111,7 @@
 <translation id="1069778954840159202">Kry rekening outomaties van Android-foon af</translation>
 <translation id="1069814191880976658">Kies ’n ander skerm</translation>
 <translation id="107022587824771715">Oortjiegroepvoorstelle is tans onbeskikbaar. Jy kan <ph name="BEGIN_LINK"/>nou herlaai<ph name="END_LINK"/> of weer later probeer</translation>
+<translation id="1070357312245925724">Navigasiekortpad</translation>
 <translation id="6654312501894761082">'n Ander program op jou rekenaar het 'n uitbreiding bygevoeg wat dalk die manier sal verander waarop Brave werk.
 
 <ph name="EXTENSION_NAME"/></translation>
@@ -187,6 +189,7 @@ Gaan jou wagwoorde enige tyd na in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</transl
 <translation id="1122913801042512795">Jou rekening se aanmeldbesonderhede is verouderd. Meld asseblief af en meld weer aan.</translation>
 <translation id="1122960773616686544">Boekmerknaam</translation>
 <translation id="1124772482545689468">Gebruiker</translation>
+<translation id="1125371304736839151">Wys Gemini aan die bokant van die blaaier</translation>
 <translation id="1125550662859510761">Lyk soos <ph name="WIDTH"/> x <ph name="HEIGHT"/> (oorspronlik)</translation>
 <translation id="1125921926864945797">Muurpapier en styl</translation>
 <translation id="1128090040635299943">Linux word tans opgestel. Die opstelling sal ’n paar minute neem.</translation>
@@ -214,6 +217,7 @@ Gaan jou wagwoorde enige tyd na in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</transl
 <translation id="1142713751288681188">Papiersoort</translation>
 <translation id="1143142264369994168">Sertifikaatondertekenaar</translation>
 <translation id="1145593918056169051">Drukker het gestop</translation>
+<translation id="1147098843963878839">{SELECTED_ITEMS,plural, =0{Uitbreidings}=1{Uitbreidings ({SELECTED_ITEMS})}other{Uitbreidings ({SELECTED_ITEMS})}}</translation>
 <translation id="114715166554490743">Kopwyser</translation>
 <translation id="9125982323641182972">Kry Brave-slimhede in Brave</translation>
 <translation id="1147322039136785890">Dis nou <ph name="SUPERVISED_USER_NAME"/> se beurt</translation>
@@ -396,6 +400,7 @@ Gaan jou wagwoorde enige tyd na in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</transl
 <translation id="1260810365552581339">Linux het dalk nie genoeg skyfspasie beskikbaar nie. Jy kan jou Linux-skyfspasie vergroot en weer probeer terugstel in <ph name="LINK_START"/>Instellings<ph name="LINK_END"/>.</translation>
 <translation id="1261380933454402672">Matig</translation>
 <translation id="126156426083987769">Iets was fout met demonstrasiemodus-toestellisensies.</translation>
+<translation id="1262395978737369974">Altyd toegelaat om JavaScript-optimering te gebruik</translation>
 <translation id="1262564987698748643">Werwe kan vra om jou sleutelbordinvoer te ignoreer</translation>
 <translation id="1263231323834454256">Leeslys</translation>
 <translation id="1263733306853729545">Gebruik die <ph name="MINUS"/>- en <ph name="EQUAL"/>-sleutel om deur 'n kandidatelys te blaai</translation>
@@ -422,15 +427,14 @@ Gaan jou wagwoorde enige tyd na in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</transl
 <translation id="1277597051786235230">&amp;Soek met <ph name="SEARCH_ENGINE"/> na “<ph name="SEARCH_TERMS"/>” in nuwe oortjie</translation>
 <translation id="127849925363482083">Druk weer <ph name="SHORTCUT_TEXT"/> om die vasgespelde oortjie toe te maak</translation>
 <translation id="1278859221870828664">Gaan Google Play-programme en -dienste na</translation>
+<translation id="1279024913354609713">Moenie toelaat nie</translation>
 <translation id="127946606521051357">Toestel naby aan jou deel tans</translation>
 <translation id="1280332775949918163">Gooi venster</translation>
-<translation id="1280965841156951489">Wysig lêers</translation>
 <translation id="1281746473742296584">{NUM_OF_FILES,plural, =1{Kan nie lêer oopmaak nie}other{Kan nie lêers oopmaak nie}}</translation>
 <translation id="1282311502488501110">Moenie aanmeld nie</translation>
 <translation id="1282436639288565079">Besonderhede van oortjiegroep</translation>
 <translation id="1283126956823499975">Iets het skeefgeloop met die opstel van die toestel</translation>
 <translation id="1284277788676816155">Moenie toelaat om data te stoor nie</translation>
-<translation id="4651041940158185303">Brave skep tans ’n sterk wagwoord vir jou. Jy hoef dit nie te onthou nie, want dit is vir jou gestoor in <ph name="GOOGLE_PASSWORD_MANAGER"/> vir <ph name="EMAIL"/>.</translation>
 <translation id="1285320974508926690">Moet nooit hierdie werf vertaal nie</translation>
 <translation id="1285484354230578868">Stoor data in jou Google Drive-rekening</translation>
 <translation id="1285625592773741684">Huidige datagebruikinstelling is Mobiele data</translation>
@@ -528,6 +532,7 @@ Gaan jou wagwoorde enige tyd na in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</transl
 <translation id="1354045473509304750">Hou aan om <ph name="HOST"/> toe te laat om jou kamera te gebruik en te beweeg</translation>
 <translation id="1354148503392558902">Verander tans wagwoord …</translation>
 <translation id="1355088139103479645">Vee alle data uit?</translation>
+<translation id="1355088659320425659">Geskiedenis en oortjies</translation>
 <translation id="1356376170199999104">Toegelaat – <ph name="PERMISSION_DETAILS"/>. Skakel mikrofoon met die fisieke skakelaar aan.</translation>
 <translation id="1356959069439783953">Onaktiewe oortjies kry ’n nuwe voorkoms</translation>
 <translation id="1358741672408003399">Spelling en grammatika</translation>
@@ -552,6 +557,7 @@ Gaan jou wagwoorde enige tyd na in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</transl
 <translation id="1375938286942050085">Opstelling is voltooi! Kry volgende jou toestel vir speletjies gereed</translation>
 <translation id="137651782282853227">Gestoorde adresse sal hier verskyn</translation>
 <translation id="1376771218494401509">Naam en venster</translation>
+<translation id="7377055577309465332">As een van jou wagwoorde in ’n dataskending gevind is, vra Brave Wagwoordbestuurder of jy dit na ’n sterk wagwoord verander wil hê</translation>
 <translation id="1377600615067678409">Slaan voorlopig oor</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> beheer hierdie instelling</translation>
 <translation id="1378848228640136848">{NUM_COMPROMISED,plural, =0{Geen gekompromitteerde wagwoorde nie}=1{1 gekompromitteerde wagwoord}other{{NUM_COMPROMISED} gekompromitteerde wagwoorde}}</translation>
@@ -588,7 +594,6 @@ Gaan jou wagwoorde enige tyd na in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</transl
 <translation id="1407069428457324124">Donkertema</translation>
 <translation id="1407135791313364759">Maak alles oop</translation>
 <translation id="140723521119632973">Sellulêre aktivering</translation>
-<translation id="1407908250220330281">Hierdie profiel sal nou bestuur word</translation>
 <translation id="1407970155431887387">Klik om Wysig dialoog vir <ph name="SEARCH_ENGINE_NAME"/> oop te maak</translation>
 <translation id="1408504635543854729">Verken die toestel se inhoud in die Lêers-app. Die inhoud word deur 'n administrateur beperk en kan nie gewysig word nie.</translation>
 <translation id="1408980562518920698">Bestuur persoonlike inligting</translation>
@@ -607,6 +612,7 @@ Gaan jou wagwoorde enige tyd na in <ph name="GOOGLE_PASSWORD_MANAGER"/>.</transl
 <translation id="1418559532423038045">Verwyder <ph name="VM_NAME"/> van jou <ph name="DEVICE_TYPE"/>. Dit sal alle apps en data in die virtuele masjien uitvee!</translation>
 <translation id="1418882096915998312">Enterprise-inskrywing aan die gang</translation>
 <translation id="1418954524306642206">Blaai om jou drukker-PPD te spesifiseer</translation>
+<translation id="1419086691207546433">Voeg uitbreidings by om georganiseerd te bly, take te vereenvoudig en jou webblaai te verbeter</translation>
 <translation id="1421334842435688311">Sellulêre ligginginligting</translation>
 <translation id="1421514190500081936">Voer asseblief ’n rede in hoekom jy hierdie data aflaai:</translation>
 <translation id="1422159345171879700">Laai onveilige skripte</translation>
@@ -669,6 +675,7 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1462850958694534228">Gaan ikoonopdatering na</translation>
 <translation id="1463112138205428654"><ph name="FILE_NAME"/> is deur Gevorderde Beskerming geblokkeer.</translation>
 <translation id="1464044141348608623">Moenie werwe toelaat om te weet wanneer jy jou toestel aktief gebruik nie</translation>
+<translation id="1464047267926346987">Berg jou wagwoorde, boekmerke en meer</translation>
 <translation id="1464258312790801189">Jou rekeninge</translation>
 <translation id="1464597059227482327">Maak seker dat “Nabysigbaarheid” op die Chromebook aangeskakel is as jy met ’n Chromebook deel wat nie in jou kontakte is nie. Om “Nabysigbaarheid” aan te skakel, moet jy die hoek onder regs kies en dan kies om “Nabysigbaarheid” aan te skakel. <ph name="LINK_BEGIN"/>Kom meer te wete<ph name="LINK_END"/></translation>
 <translation id="1464781208867302907">Gaan na Instellings toe vir toestelvoorkeure</translation>
@@ -689,7 +696,6 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1474785664565228650">Die verandering in mikrofooninstelling vereis dat Parallels-werkskerm herbegin moet word. Parallels-werkskerm sal herbegin.</translation>
 <translation id="1476088332184200792">Kopieer na jou toestel toe</translation>
 <translation id="1991562568473125499">&amp;Bestuur Brave-profiele</translation>
-<translation id="1476595624592550506">Verander jou wagwoord</translation>
 <translation id="1476607407192946488">Taalinstellings …</translation>
 <translation id="1477446329585670721"><ph name="DOMAIN"/> vereis dat jy jou slimkaart ingesteek hou.</translation>
 <translation id="1477654881618305065">Jou organisasie laat jou nie toe om hierdie inhoud te deel nie. Kontak jou administrateur as jy hulp nodig het.</translation>
@@ -730,6 +736,7 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="150411034776756821">Verwyder <ph name="SITE"/></translation>
 <translation id="1504551620756424144">Gedeelde vouers is in Windows beskikbaar by <ph name="BASE_DIR"/>.</translation>
 <translation id="1505494256539862015">voer wagwoorde uit</translation>
+<translation id="1505654899813338756">Jy kan oortjies groepeer om verwante bladsye bymekaar te hou en op al jou toestelle gestoor te hou</translation>
 <translation id="1506061864768559482">Soekenjin</translation>
 <translation id="1506187449813838456">Verhoog toonhoogte</translation>
 <translation id="1507170440449692343">Hierdie bladsy word gekeer om by jou kamera in te gaan.</translation>
@@ -799,7 +806,6 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1549966883323105187">Kry jou gestoorde wagwoorde vinniger</translation>
 <translation id="822755500038144322">Verstek-Brave</translation>
 <translation id="1552301827267621511">Die "<ph name="EXTENSION_NAME"/>"-uitbreiding het soektog verander om <ph name="SEARCH_PROVIDER_DOMAIN"/> te gebruik</translation>
-<translation id="1552357433305859738">Gaan voort om met hierdie profiel te sinkroniseer en voeg die data saam</translation>
 <translation id="1552752544932680961">Bestuur uitbreiding</translation>
 <translation id="1553538517812678578">onbeperk</translation>
 <translation id="1553947773881524342"><ph name="LINK_BEGIN"/>Kom meer te wete<ph name="LINK_END"/> oor Microsoft 365 op jou Chromebook.</translation>
@@ -813,6 +819,7 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1558671750917454373">Hervat uitsending na <ph name="DEVICE_NAME"/></translation>
 <translation id="1561331397460162942">Dit laat liggingtoegang vir apps, webwerwe met die liggingtoestemming en stelseldienste toe</translation>
 <translation id="1562119309884184621">As hierdie kontak bygevoeg word, sal dit onthou word wanneer dit weer deel</translation>
+<translation id="1562585387501039294">Jou organisasie, <ph name="ACCOUNT_MANAGER"/>, vereis ’n bestuurde profiel en sal sekere inligting kan sien, insluitend</translation>
 <translation id="1566049601598938765">Webwerf</translation>
 <translation id="15662109988763471">Die gekose drukker is nie beskikbaar of reg geïnstalleer nie. Gaan jou drukker na of probeer om 'n ander drukker te kies.</translation>
 <translation id="1566329594234563241">Terwyl dit onaktief en ingeprop is</translation>
@@ -852,6 +859,7 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1587275751631642843">JavaScript-konsole</translation>
 <translation id="1587907146729660231">Raak die aan/af-skakelaar met jou vinger</translation>
 <translation id="1588438908519853928">Normaal</translation>
+<translation id="1588772269240419305">Hersien logo- en naamopdatering</translation>
 <translation id="1588870296199743671">Maak skakel oop met …</translation>
 <translation id="1588919647604819635">Regsklik kaart</translation>
 <translation id="1589055389569595240">Wys spelling en grammatika</translation>
@@ -892,7 +900,7 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1607540893439314147"><ph name="BEGIN_PARAGRAPH1"/>Klets met Gemini om met Brave AI te begin skryf, beplan, leer en meer.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Begin ná opstelling Gemini gebruik deur die Gemini-app op jou rak onderaan jou skerm te kies.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="1608668830839595724">Meer handelinge vir geselekteerde items</translation>
-<translation id="1610272688494140697">Programinstellings</translation>
+<translation id="1610272688494140697">Appinstellings</translation>
 <translation id="161042844686301425">Siaanblou</translation>
 <translation id="1611432201750675208">Jou toestel is gesluit</translation>
 <translation id="1611649489706141841">vorentoe</translation>
@@ -908,6 +916,7 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1616298854599875024">Kan nie uitbreiding "<ph name="IMPORT_NAME"/>" invoer nie, want dit is nie 'n gedeelde module nie</translation>
 <translation id="1617765145568323981">{NUM_FILES,plural, =0{Kontroleer tans hierdie data met jou organisasie se sekuriteitbeleide …}=1{Kontroleer tans hierdie lêer met jou organisasie se sekuriteitbeleide …}other{Kontroleer tans hierdie lêers met jou organisasie se sekuriteitbeleide …}}</translation>
 <translation id="1618102204889321535"><ph name="CURRENT_CHARACTER_COUNT"/>/<ph name="MAX_CHARACTER_COUNT"/></translation>
+<translation id="1618142905422922351">Jy het tans <ph name="NUMBERED_ITEM"/> en meer. Jou organisasie, <ph name="ACCOUNT_MANAGER"/>, sal hierdie data kan sien en bestuur.</translation>
 <translation id="1618268899808219593">Hulpsentrum</translation>
 <translation id="1619829618836636922">Kliëntsertifikate van platform af</translation>
 <translation id="1619879934359211038">Kon nie aan Google Play koppel nie. Gaan jou netwerkverbinding na en probeer weer. Foutkode: <ph name="ERROR_CODE"/>.</translation>
@@ -933,7 +942,6 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1632293440289326475">Skakel Energiebespaarder aan om batterylewe te verleng</translation>
 <translation id="1632756664321977232">Snoeinutsding</translation>
 <translation id="163309982320328737">Aanvanklike karakterbreedte is vol</translation>
-<translation id="5778813027254879911">Deaktiveer Brave Assistent</translation>
 <translation id="1634224622052500893">Wi-fi-netwerk gekry</translation>
 <translation id="1634783886312010422">Het jy hierdie wagwoord reeds op <ph name="WEBSITE"/> verander?</translation>
 <translation id="1634946671922651819">{MULTI_GROUP_TAB_COUNT,plural, =0{Verwyder oortjie en vee groep uit?}=1{Verwyder oortjies en vee groep uit?}other{Verwyder oortjies en vee groepe uit?}}</translation>
@@ -981,6 +989,7 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1660763353352708040">Kragpropkwessie</translation>
 <translation id="1661996889489595105">{NUM_TABS,plural, =1{Stel die oortjie wat jou blaaier stadig maak, reg}other{Stel die oortjies wat jou blaaier stadig maak, reg}}</translation>
 <translation id="16620462294541761">Jammer, jou wagwoord kon nie geverifieer word nie. Probeer asseblief weer.</translation>
+<translation id="1662572015199460525">Klets met stem of teks om antwoorde, sleutelgedagtes en meer te kry terwyl jy blaai</translation>
 <translation id="166278006618318542">Voorwerp se publieke sleutel-algoritme</translation>
 <translation id="1662801900924515589"><ph name="APP"/> is geïnstalleer</translation>
 <translation id="1663698992894057019">Gradeer op na ’n nuwe Chromebook vir die jongste sekuriteit en sagteware</translation>
@@ -992,7 +1001,9 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1668804837842452164">Stoor na <ph name="BRAND"/> vir <ph name="EMAIL"/></translation>
 <translation id="1668979692599483141">Kom meer te wete oor voorstelle</translation>
 <translation id="1670399744444387456">Basies</translation>
+<translation id="1671749176392751693">Identifiseerders vir beskermde inhoud toegelaat</translation>
 <translation id="1673137583248014546"><ph name="URL"/> wil die maak en model van jou sekuriteitsleutel sien</translation>
+<translation id="360538872024580404">Brave Wagwoordbestuurder kan jou rekening opdateer met ’n sterk wagwoord wat namens jou in jou rekening <ph name="EMAIL"/> gestoor word.</translation>
 <translation id="1677306805708094828">Kan nie <ph name="EXTENSION_TYPE_PARAMETER"/> byvoeg nie</translation>
 <translation id="1677472565718498478"><ph name="TIME"/> oor</translation>
 <translation id="1678849866171627536">Skandering het misluk. Hierdie lêer kan ’n virus of wanware hê.</translation>
@@ -1023,7 +1034,6 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="169675691788639886">SSH-bediener is vir toestel opgestel. Moenie met sensitiewe rekeninge aanmeld nie.</translation>
 <translation id="1697122132646041614">Afduim maak ’n vorm oop vir die indien van gedetailleerde terugvoer oor hoekom jy nie van hierdie resultate hou nie.</translation>
 <translation id="1697532407822776718">Als is nou reg!</translation>
-<translation id="1697686431566694143">Wysig lêer</translation>
 <translation id="1698796500103229697">&amp;Betaalmetodes</translation>
 <translation id="1698899521169711967">Karetblaai</translation>
 <translation id="1699807488537653303">Maak wagwoordfout reg</translation>
@@ -1088,7 +1098,6 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1741190788710022490">Aanpasbare laaiproses</translation>
 <translation id="174123615272205933">Gepasmaak</translation>
 <translation id="1741314857973421784">Gaan voort</translation>
-<translation id="1743970419083351269">Maak Aflaaibalk toe</translation>
 <translation id="1744108098763830590">agtergrondbladsy</translation>
 <translation id="1745732479023874451">Bestuur kontakte</translation>
 <translation id="1748283190377208783">{0,plural, =1{unused plural form}other{Maak # lêers in hierdie webprogram oop en wysig dit?}}</translation>
@@ -1200,6 +1209,7 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1822635184853104396">Wys volledige aflaaigeskiedenis in ’n nuwe oortjie</translation>
 <translation id="1823768272150895732">Lettertipe</translation>
 <translation id="1823781806707127806">Voeg bestaande blaaierdata by bestuurde profiel</translation>
+<translation id="1824499847634940868">Gaan appopdatering na</translation>
 <translation id="18245044880483936">Rugsteundata sal nie deel vorm van jou kind se Drive-bergingkwota nie.</translation>
 <translation id="1825073796163165618">Aktiveer skakels</translation>
 <translation id="1825565032302550710">Poort moet tussen 1024 en 65535 wees</translation>
@@ -1209,7 +1219,6 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1826657447823925402">Omgekeerde rollees is gedeaktiveer</translation>
 <translation id="1827416268933303617"><ph name="COLOR_NAME"/> kleur</translation>
 <translation id="1827504459960247692">Warmkolnaam</translation>
-<translation id="1828378091493947763">Hierdie inprop word nie op hierdie toestel gesteun nie</translation>
 <translation id="1828879788654007962">{COUNT,plural, =0{Maak almal &amp;oop}=1{Maak boekmerk &amp;oop}other{Maak almal ({COUNT}) &amp;oop}}</translation>
 <translation id="1828901632669367785">Druk deur stelseldialoog te gebruik …</translation>
 <translation id="1829129547161959350">Pikkewyn</translation>
@@ -1323,6 +1332,7 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1912867150686509584">Sien meer vergaderings op jou Kalender</translation>
 <translation id="1913734973620799732">{NUM_TABS,plural, =1{Onderbreek die oortjie wat jou blaaier stadig maak}other{Onderbreek die oortjies wat jou blaaier stadig maak}}</translation>
 <translation id="1913749768968678106">Saai uit, stoor en deel</translation>
+<translation id="19147273405311768">Stel nutsbalk terug na verstekinstellings</translation>
 <translation id="1915073950770830761">kanarie</translation>
 <translation id="1915307458270490472">Sit neer</translation>
 <translation id="1915734383465415025">Winkelnommer</translation>
@@ -1360,6 +1370,7 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1931152874660185993">Geen komponente is geïnstalleer nie.</translation>
 <translation id="1931410639376954712">Installeer tans <ph name="DEVICE_OS"/></translation>
 <translation id="1932098463447129402">Nie voor</translation>
+<translation id="1933070475689690969">Gemini-appsaktiwiteit</translation>
 <translation id="1933489278505808700">Toegelaat om te lees en te verander</translation>
 <translation id="1935303383381416800">Mag jou ligging sien</translation>
 <translation id="193565226207940518">Steundienstenutsding</translation>
@@ -1395,7 +1406,7 @@ Toestemmings wat jy reeds aan programme gegee het, kan op hierdie rekening van t
 <translation id="1956890443345590119">{NUM_EXTENSIONS,plural, =1{1 uitbreiding gekontroleer}other{{NUM_EXTENSIONS} uitbreidings gekontroleer}}</translation>
 <translation id="1959421829481337178">Voer die aktiveringkode in wat jou diensverskaffer verskaf het.</translation>
 <translation id="1960211333621141174">Krans</translation>
-<translation id="1962233722219655970">Hierdie bladsy gebruik 'n plaaslike kliëntprogram wat nie op jou rekenaar werk nie.</translation>
+<translation id="1962356719152496092">Pasmaak die kortpadsleutel hier</translation>
 <translation id="1963976881984600709">Standaardbeskerming</translation>
 <translation id="1964009877615282740">Sien meer</translation>
 <translation id="6020692851246900043">Wanneer jy hulp met skryf kry, word die bladsy se URL, inhoud en jou teks na Brave toe gestuur. Moenie persoonlike inligting (soos mediese of finansiële besonderhede) invul nie</translation>
@@ -1552,6 +1563,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2073496667646280609">Jy het dalk nie genoeg berging op jou toestel of in jou gekose rugsteunligging beskikbaar nie. Probeer om spasie beskikbaar te maak of kies ’n ander ligging.</translation>
 <translation id="2073505299004274893">Gebruik <ph name="CHARACTER_LIMIT"/> of minder karakters</translation>
 <translation id="6310091415404224128">ChromeOS Brave-gebruikersloglêers</translation>
+<translation id="2074599390896964828">Presiese ligging</translation>
 <translation id="2075088158103027942">Gaan na intekening</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/>% battery</translation>
 <translation id="2076228988744845354">Meer handelinge vir <ph name="EXTENSION_NAME"/>-uitbreiding</translation>
@@ -1561,12 +1573,13 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2079053412993822885">As jy een van jou eie sertifikate uitvee, kan jy dit nie meer gebruik om jouself te identifiseer nie.</translation>
 <translation id="2079495302726689071">Maak skakel in nuwe <ph name="APP"/>-oortjie oop</translation>
 <translation id="2079545284768500474">Ontdoen</translation>
+<translation id="2079553700504470326">Gebruik jou presiese ligging vir die akkuraatste Gemini-resultate, pleks van ’n geskatte ligging op grond van jou IP-adres.</translation>
 <translation id="2080070583977670716">Nog instellings</translation>
 <translation id="2081816110395725788">Sluimerkraggebruik wanneer battery gebruik word</translation>
 <translation id="2082187087049518845">Groepoortjie</translation>
 <translation id="2082510809738716738">Kies 'n temakleur</translation>
 <translation id="208586643495776849">Probeer asseblief weer</translation>
-<translation id="208634871997892083">Altydaan-VPN</translation>
+<translation id="208634871997892083">Altyd-aan-VPN</translation>
 <translation id="208654914566977272">Voorgestelde handelinge wanneer jy jou skerm deursoek</translation>
 <translation id="2087822576218954668">Druk uit: <ph name="PRINT_NAME"/></translation>
 <translation id="2088092308059522196">Inskrywing word eers gesteun nadat jy <ph name="DEVICE_OS"/> installeer.</translation>
@@ -1634,6 +1647,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2121825465123208577">Verander grootte</translation>
 <translation id="2123766928840368256">Kies 'n ander lêer</translation>
 <translation id="2124930039827422115">{1,plural, =1{<ph name="AVERAGE_RATING"/> gegradeer deur een gebruiker.}other{<ph name="AVERAGE_RATING"/> gegradeer deur # gebruikers.}}</translation>
+<translation id="2125715366913703594">Verken &amp;uitbreidings</translation>
 <translation id="2126167708562367080">Sinkronisering is deur jou administrateur gedeaktiveer.</translation>
 <translation id="2127372758936585790">Laekrag-laaier</translation>
 <translation id="212862741129535676">Frekwensietoestand-besettingpersentasie</translation>
@@ -1723,7 +1737,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2188881192257509750">Maak <ph name="APPLICATION"/> oop</translation>
 <translation id="2188919919468240749">Vee oortjiegroep uit?</translation>
 <translation id="2190069059097339078">Wi-Fi-eiebewyshaler</translation>
-<translation id="219008588003277019">Plaaslike kliënt-module: <ph name="NEXE_NAME"/></translation>
 <translation id="2190355936436201913">(leeg)</translation>
 <translation id="2190967441465539539">Kan nie toegang tot kamera en mikrofoon verkry nie</translation>
 <translation id="2191754378957563929">Aan</translation>
@@ -1785,6 +1798,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="7956662517480676674">Sinkronisering en Brave-dienste</translation>
 <translation id="2235344399760031203">Derdepartywebkoekies word geblokkeer</translation>
 <translation id="2236949375853147973">My aktiwiteit</translation>
+<translation id="1706069404634553665">Wil jy jou werkadres uit Brave-outovul verwyder?</translation>
 <translation id="2238379619048995541">Frekwensie-toestanddata</translation>
 <translation id="2240582393605484605">Data wat net op hierdie toestel gestoor word, sal in die bestaande profiel bly</translation>
 <translation id="2241053333139545397">Lees en verander jou data op 'n hele aantal webwerwe</translation>
@@ -1902,7 +1916,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="23030561267973084">"<ph name="EXTENSION_NAME"/>" het bykomende toestemmings versoek.</translation>
 <translation id="2304820083631266885">Planeet</translation>
 <translation id="2306794767168143227">Stoor na <ph name="BRAND"/> op hierdie toestel</translation>
-<translation id="2307462900900812319">Stel netwerk op</translation>
 <translation id="2307553512430195144">As jy instem, sal Brave Assistent in bystandmodus wag om "Ok Brave" te bespeur en kan dit met Voice Match herken dat dit <ph name="SUPERVISED_USER_NAME"/> is wat praat.
     <ph name="BR"/>
     Voice Match help Brave Assistent om <ph name="SUPERVISED_USER_NAME"/> se stem op jou <ph name="DEVICE_TYPE"/> te identifiseer en dit van ander te onderskei.
@@ -1914,12 +1927,10 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
     <ph name="FOOTER_MESSAGE"/></translation>
 <translation id="2308798336967462263">Die volgende sleutels word nie gesteun nie: Tab, Shift, Control, Escape, Caps lock, Volume</translation>
 <translation id="2309620859903500144">Hierdie werf is gekeer om toegang tot jou beweging- en ligsensors te kry.</translation>
-<translation id="2310414604104802967">Kyk tans of jy aangemeld is …</translation>
 <translation id="2310923358723722542">Skerm en vergroting</translation>
 <translation id="2312219318583366810">Bladsy-URL</translation>
 <translation id="2314165183524574721">Huidige sigbaarheidinstelling word versteek</translation>
 <translation id="2314774579020744484">Taal wat gebruik word wanneer bladsye vertaal word</translation>
-<translation id="2316090909467242775">Probeer hierdie terugstelwagwoord</translation>
 <translation id="2316129865977710310">Nee, dankie</translation>
 <translation id="2316433409811863464">Appstroming</translation>
 <translation id="2316709634732130529">Gebruik voorgestelde wagwoord</translation>
@@ -1944,7 +1955,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2328474416100889417">Almal sal onmiddellik toegang tot die “<ph name="GROUP_NAME"/>”-oortjiegroep verloor, en alle uitnodigingskakels sal afgeskakel word</translation>
 <translation id="2328561734797404498">Herbegin asseblief jou toestel om <ph name="APP_NAME"/> te gebruik.</translation>
 <translation id="2329597144923131178">Meld aan om jou boekmerke, geskiedenis, wagwoorde en ander instellings op al jou toestelle te kry.</translation>
-<translation id="1704418244732991394">Inhoud vanaf hierdie webwerf word na Brave toe gestuur en kan deur mense wat kontrolering uitvoer gesien word. Meer oor <ph name="PASSWORD_CHANGE"/>.</translation>
+<translation id="2330182457402792918">Kies lêers wat hierdie werf kan lees</translation>
 <translation id="2332115969598251205">Kan nie toestelle laai wat in <ph name="PRIMARY_EMAIL"/> gestoor is nie. Gaan jou internetverbinding na en probeer weer.</translation>
 <translation id="2332131598580221120">Bekyk in winkel</translation>
 <translation id="2332515770639153015">Verbeterde Veiligblaai is aan</translation>
@@ -1962,6 +1973,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2343160676229467122">Uitbreidings word nie op <ph name="SITE_NAME"/> toegelaat nie</translation>
 <translation id="2343390523044483367">Rocky Mountains Nasionale Park</translation>
 <translation id="2343747224442182863">Fokus hierdie oortjie</translation>
+<translation id="2343971313330854480">Kry jou lêer in die <ph name="FEATURE_NAME"/>-vouer</translation>
 <translation id="2344032937402519675">Kon nie aan die bediener koppel nie. Gaan jou netwerkverbinding na en probeer weer. Probeer om jou Chromebook te herbegin as jy steeds sukkel.</translation>
 <translation id="6055117817387598516">Ouer weergawes van Brave-apps sal nie ná Desember 2022 oopmaak nie. Kontak jou administrateur om na ’n nuwe weergawe toe op te dateer of hierdie app  te verwyder.</translation>
 <translation id="2348176352564285430">App: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1989,7 +2001,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2359556993567737338">Koppel Bluetooth-toestel</translation>
 <translation id="2359808026110333948">Gaan voort</translation>
 <translation id="5184079355364489096">Om ’n bladsyopsomming, verwante soektogte en ander nuttige inligting oor hierdie bladsy te kry, kies Brave Search-kantpaneelknoppie in die nutsbalk</translation>
-<translation id="2361100938102002520">Jy voeg tans 'n bestuurde profiel by hierdie blaaier. Jou administrateur het beheer oor die profiel en het toegang tot die data daarvan.</translation>
 <translation id="236117173274098341">Optimeer</translation>
 <translation id="2361340419970998028">Stuur tans terugvoer …</translation>
 <translation id="236141728043665931">Blokkeer altyd toegang tot mikrofoon</translation>
@@ -2047,7 +2058,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2410079346590497630">Boubesonderhede</translation>
 <translation id="2410298923485357543">Gebruik natuurlike stem wanneer toestel aanlyn is</translation>
 <translation id="2410754283952462441">Kies 'n rekening</translation>
-<translation id="241082044617551207">Onbekende inprop</translation>
 <translation id="2410940059315936967">’n Werf wat jy besoek, kan inhoud van ander werwe af inbed, byvoorbeeld prente, advertensies en teks. Webkoekies wat deur hierdie ander werwe gestel word, word derdepartywebkoekies genoem.</translation>
 <translation id="2411666601450687801">Geen virtuele masjiene word op hierdie toestel toegelaat nie</translation>
 <translation id="2412015533711271895">Jou ouer of voog moet sê dis aanvaarbaar dat jy hierdie uitbreiding gebruik</translation>
@@ -2193,6 +2203,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2496180316473517155">Blaaigeskiedenis</translation>
 <translation id="2496616243169085015">Fotografie</translation>
 <translation id="2497229222757901769">Muisspoed</translation>
+<translation id="24977856422126200"><ph name="WINDOW_TITLE"/> – Jy deel vir die duur van dié gesprek hierdie oortjie met Gemini</translation>
 <translation id="2497852260688568942">Jou administrateur het sinkronisering gedeaktiveer</translation>
 <translation id="2498539833203011245">Maak kleiner</translation>
 <translation id="2498765460639677199">Yslik</translation>
@@ -2209,6 +2220,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2505402373176859469"><ph name="RECEIVED_AMOUNT"/> van <ph name="TOTAL_SIZE"/></translation>
 <translation id="250704661983564564">Vertoonrangskikking</translation>
 <translation id="2507253002925770350">Kaartjie is verwyder</translation>
+<translation id="2507339521369019923">Stoor in jou rekening</translation>
 <translation id="2507491234071975894">Luidspreker</translation>
 <translation id="2508747373511408451">Google Drive moet beskikbaar wees om app <ph name="APPLICATION_NAME"/> oop te maak.</translation>
 <translation id="2509495747794740764">Skaalgetal moet 'n getal tussen 10 en 200 wees.</translation>
@@ -2222,7 +2234,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2514326558286966059">Ontsluit vinniger met jou vingerafdruk</translation>
 <translation id="2514465118223423406">Wanneer ’n muis gekoppel is</translation>
 <translation id="2514938842036917377">Dit sal <ph name="TOTAL_USAGE"/> se data uitvee wat deur <ph name="SITE_NAME"/>, verwante werwe en geïnstalleerde apps geberg is</translation>
-<translation id="2515489088825102986">Meer oor hierdie kenmerke en jou privaatheid</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="251722524540674480">Bevestig jou gebruikernaam</translation>
 <translation id="2517472476991765520">Skandeer</translation>
@@ -2234,7 +2245,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2520961587246779103">Meer opsies vir verdeelde aansig</translation>
 <translation id="2521427645491031107">Apps-sinkronisering word in toestelinstellings gestel</translation>
 <translation id="2521835766824839541">vorige snit</translation>
-<translation id="2521854691574443804">Kontroleer tans <ph name="FILE_NAME"/> met jou organisasie se sekuriteitbeleide …</translation>
 <translation id="252277619743753687">Kies wagwoorde</translation>
 <translation id="284843628681142937">Stuur URL'e van bladsye wat jy besoek na Brave toe</translation>
 <translation id="2524093372979370955">Dit sal kennisgewings vir alle nuwe USB-randtoestelle in die stelsel deaktiveer. Is jy seker jy wil voortgaan?</translation>
@@ -2367,7 +2377,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2620245777360407679">Toestelle wat tans aan warmkol gekoppel is</translation>
 <translation id="2620436844016719705">Stelsel</translation>
 <translation id="2620900772667816510">Bluetooth-superresolusie</translation>
-<translation id="6040544299680716440">Lei Brave Assistent-stemmodel op</translation>
 <translation id="2622280935687585828">Verwyder <ph name="SITE_NAME"/> van gedeaktiveerde webwerwe af</translation>
 <translation id="26224892172169984">Moenie enige werf toelaat om protokolle te hanteer nie</translation>
 <translation id="262373406453641243">Colemak</translation>
@@ -2375,6 +2384,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2624142942574147739">Hierdie bladsy gaan tans by jou kamera en mikrofoon in.</translation>
 <translation id="2626799779920242286">Probeer asseblief later weer.</translation>
 <translation id="2627424346328942291">Kan nie deel nie</translation>
+<translation id="6881963560587394660">Wil jy jou huisadres uit Brave-outovul verwyder?</translation>
 <translation id="2628770867680720336">Hierdie Chromebook moet na fabriekinstellings terugstel word om ADB-ontfouting te aktiveer. <ph name="BEGIN_LINK_LEARN_MORE"/>Kom meer te wete<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="2629227353894235473">Ontwikkel Android-programme</translation>
 <translation id="2629437048544561682">Maak skilderdoek skoon</translation>
@@ -2393,7 +2403,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2638662041295312666">Aanmeldprent</translation>
 <translation id="2640299212685523844">Gebruik GTK</translation>
 <translation id="264083724974021997">Koppel aan jou foon – Dialoog</translation>
-<translation id="2641098199809442625">Jou wagwoord is nie opgedateer nie, maar jy behoort steeds toegang tot die werf te kry met jou ou wagwoord.</translation>
 <translation id="2642111877055905627">Sokkerbal</translation>
 <translation id="2642206811783203764">Altyd aan <ph name="SITE_NAME"/></translation>
 <translation id="2643064289437760082">Jy kan altyd advertensiemetingdata uitvee deur jou blaaierdata uit te vee</translation>
@@ -2404,7 +2413,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="5262884162459552969">Stoor in ’n vouer in jou Brave-rekening?</translation>
 <translation id="264897126871533291">Protanomalie</translation>
 <translation id="2649045351178520408">Basis64-geënkodeerde ASCII, sertifikaatketting</translation>
-<translation id="2650114513545328141">Aan • Gebruik alledaagse taal om jou blaaigeskiedenis te deursoek en die werwe wat jy besoek het, te kry. Jy kan ook vrae vra en antwoorde kry op grond van jou blaaigeskiedenis</translation>
 <translation id="2651259505411913186">Ja, hou my data afsonderlik van skool</translation>
 <translation id="265156376773362237">Standaardvooraflaai</translation>
 <translation id="312102011478921700">{COUNT,plural, =1{{COUNT} wagwoord word net op hierdie toestel gestoor. <ph name="BEGIN_LINK"/>Stoor dit in jou Brave-rekening<ph name="END_LINK"/>, om dit op jou ander toestelle te gebruik.}other{{COUNT} wagwoorde word net op hierdie toestel gestoor. <ph name="BEGIN_LINK"/>Stoor hulle in jou Brave-rekening<ph name="END_LINK"/>, om hulle op jou ander toestelle te gebruik.}}</translation>
@@ -2517,13 +2525,13 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2729661575355442512"><ph name="BEGIN_PARAGRAPH1"/>Wanneer Liggingakkuraatheid aan is, word inligting oor draadlose seine, soos wi-fi-toegangspunte en selnetwerktorings, saam met toestelsensordata, soos versnellingsmeter en giroskoop, gebruik om akkurater toestelligging te skat wat deur Android-apps en -dienste gebruik word om ligginggebaseerde kenmerke te verskaf. Om dit te doen, samel Brave van tyd tot tyd inligting in oor toestelsensors en draadlose seine naby hierdie toestel om by te dra tot draadloseseinliggings wat deur skareverkryging gekry word.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Brave gebruik hierdie inligting wat van hierdie toestel af ingesamel word om: liggingakkuraatheid en ligginggegronde dienste te verbeter; en oor die algemeen Brave se dienste te verbeter, te verskaf en te handhaaf. Ons verwerk hierdie inligting op grond van die wettige belange van Brave en derde partye om in gebruikers se behoeftes te voorsien. Hierdie inligting word nie gebruik om enige individu te identifiseer nie.<ph name="END_PARAGRAPH2"/>
     <ph name="BEGIN_PARAGRAPH3"/>Jy kan enige tyd Liggingakkuraatheid afskakel in hierdie toestel se ligginginstellings onder Instellings &gt; Privaatheid en sekuriteit &gt; Privaatheidkontroles &gt; Liggingtoegang &gt; Gevorderde ligginginstellings. As Liggingakkuraatheid af is, sal geen data oor Liggingakkuraatheid ingesamel word nie. Net IP-adres word vir Android-apps en -dienste gebruik, indien beskikbaar, om hierdie toestel se ligging te bepaal, wat die beskikbaarheid en akkuraatheid van liggings vir Android-apps en -dienste soos Brave Maps kan beïnvloed.<ph name="END_PARAGRAPH3"/></translation>
+<translation id="2729940704980595903">Bekyk en bestuur jou Gemini-appsaktiwiteit</translation>
 <translation id="2730029791981212295">Rugsteun tans Linux-programme en -lêers</translation>
 <translation id="2730550884708194161">Meer oor werkprofiele</translation>
 <translation id="2730596696987224099">Kies jou eie</translation>
 <translation id="2730647855013151888">Sluit alle persoonlike inligting in</translation>
 <translation id="2730901670247399077">Emosiekoon-voorstelle</translation>
 <translation id="273093730430620027">Hierdie bladsy gaan tans by jou kamera in.</translation>
-<translation id="2730956943403103181">Mag nie V8-optimeerder gebruik nie</translation>
 <translation id="2731392572903530958">Maak geslote venster weer oop</translation>
 <translation id="2731700343119398978">Wag asseblief …</translation>
 <translation id="2731971182069536520">Wanneer jy jou toestel volgende keer herbegin, sal jou administrateur 'n eenmalige opdatering uitvoer wat jou plaaslike data sal uitvee.</translation>
@@ -2705,17 +2713,18 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2849936225196189499">Kritiek</translation>
 <translation id="285033512555869047">Toe</translation>
 <translation id="2850541429955027218">Voeg tema by</translation>
+<translation id="2851291081585704741">Jy is vanlyn</translation>
 <translation id="2852045827873867442">Internetverbinding is nodig.</translation>
 <translation id="285237063405807022">(laai tans)</translation>
 <translation id="2853121255651601031">Wagwoord gestoor</translation>
 <translation id="2855243985454069333">Vee geskiedenis op alle gesinkroniseerde toestelle uit</translation>
 <translation id="2855812646048059450">Meld aan met <ph name="CREDENTIAL_PROVIDER"/></translation>
 <translation id="2856776373509145513">Skep 'n nuwe houer</translation>
+<translation id="2857047802954430547">Meld aan om jou wagwoorde, boekmerke en meer op al jou toestelle te kry</translation>
 <translation id="2859741939921354763">Voer wagwoorde in na <ph name="BRAND"/></translation>
 <translation id="2860710618359053450">Beweeg kakebeen regs</translation>
 <translation id="2861301611394761800">Stelselopdatering voltooi. Herbegin asseblief die stelsel.</translation>
 <translation id="2861402191395139055">Passpoint-intekeninge</translation>
-<translation id="2861941300086904918">Toestelspesifieke kliënt se sekuriteitsbestuurder</translation>
 <translation id="2862815659905780618">Verwyder Linux-ontwikkelingomgewing</translation>
 <translation id="2862986593239703553">hierdie kaart</translation>
 <translation id="2864601841139725659">Stel jou profielfoto</translation>
@@ -2742,7 +2751,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2876484123356705658">Kies tydreeks</translation>
 <translation id="2876556152483133018">Werfsoektog</translation>
 <translation id="2877467134191447552">Jy kan jou bykomende rekeninge byvoeg om toegang tot webwerwe en apps te kry.</translation>
-<translation id="2878782256107578644">Skandering vind tans plaas. Maak nou oop?</translation>
 <translation id="2878889940310164513">Voeg sellulêr by …</translation>
 <translation id="288042212351694283">Toegang tot jou Universele 2de Faktor-toestelle</translation>
 <translation id="2881076733170862447">Wanneer jy die uitbreiding klik</translation>
@@ -2877,6 +2885,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="2981113813906970160">Wys groot muismerker</translation>
 <translation id="2983102365694924129">Gegrond op jou aktiwiteit op ’n werf. Hierdie instelling is af.</translation>
 <translation id="2983373101216420412">Houer se batteryvlak <ph name="PERCENTAGE"/>%.</translation>
+<translation id="2983818520079887040">Instellings …</translation>
 <translation id="2984384421572259426">Maak ongebruikte oortjies skoon</translation>
 <translation id="2984727013951557074">Die lêer word steeds gesinchroniseer na Drive.</translation>
 <translation id="2985348301114641460">Stuur 'n versoek na jou administrateur om "<ph name="EXTENSION_NAME"/>" te installeer?</translation>
@@ -2912,10 +2921,12 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3003967365858406397">Jou <ph name="PHONE_NAME"/> sal 'n privaat Wi-Fi-verbinding skep.</translation>
 <translation id="3004385386820284928">Gepasmaakte sleutelbordsleutels</translation>
 <translation id="3006881078666935414">Geen gebruikdata nie</translation>
+<translation id="3007555010975143508">Hierdie apps sal gebruik word om jou skerm op te neem:</translation>
 <translation id="3007771295016901659">Dupliseer oortjie</translation>
 <translation id="3008142279736625920">Kaaskoek</translation>
 <translation id="3008272652534848354">Stel toestemmings terug</translation>
 <translation id="3008694618228964140">{NUM_DAYS,plural, =1{<ph name="MANAGER"/> vereis dat jy vandag aan wi-fi koppel om 'n opdatering af te laai. Of laai oor 'n beperkte verbinding af (heffings kan geld).}other{<ph name="MANAGER"/> vereis dat jy voor die sperdatum aan wi-fi koppel en 'n opdatering aflaai. Of laai oor 'n beperkte verbinding af (heffings kan geld).}}</translation>
+<translation id="3008923556848076408">Gemini sal aanhou om aan jou taak te werk</translation>
 <translation id="3009178788565917040">Uitvoer</translation>
 <translation id="3009352964623081324">Soek + O, dan S. Gebruik om stemme te installeer, te bestuur en te pasmaak.</translation>
 <translation id="3009779501245596802">Geïndekseerde databasisse</translation>
@@ -2993,19 +3004,18 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3053013834507634016">Sertifikaatsleutelgebruik</translation>
 <translation id="3053273573829329829">Aktiveer gebruiker-PIN</translation>
 <translation id="3053274730492362225">Moenie flits nie</translation>
-<translation id="3054011216223858553">Af • Gebruik alledaagse taal om jou blaaigeskiedenis te deursoek en die werwe wat jy besoek het, te kry</translation>
 <translation id="3058498974290601450">Jy kan sinkronisering enige tyd in Instellings aanskakel</translation>
 <translation id="3058517085907878899">Gee toestel 'n naam</translation>
 <translation id="3060952009917586498">Verander toesteltaal. Huidige taal is <ph name="LANGUAGE"/>.</translation>
 <translation id="3060987956645097882">Ons kon nie 'n verbinding met jou foon bewerkstellig nie. Maak seker dat jou foon in die omtrek is en ontsluit is, en dat Bluetooth en wi-fi aangeskakel is.</translation>
 <translation id="501178722143848696">Teks sal vir verwerking na Brave toe gestuur word.</translation>
+<translation id="306166624240243643">Hersien naam- en URL-opdatering</translation>
 <translation id="3064871050034234884">Werwe kan klank speel</translation>
 <translation id="3065041951436100775">Oortjie het terugvoer gestop.</translation>
 <translation id="3065522099314259755">Sleutelbordherhaaltraagheid</translation>
 <translation id="3067198179881736288">Installeer app?</translation>
 <translation id="3067198360141518313">Gebruik hierdie inprop</translation>
 <translation id="3071624960923923138">Jy kan hier klik om 'n nuwe oortjie oop te maak</translation>
-<translation id="3072775339180057696">Laat werf <ph name="FILE_NAME"/> bekyk?</translation>
 <translation id="3074499504015191586">Vertaal hele bladsy</translation>
 <translation id="3075144191779656260">Raak die vingerafdruksensor aan die linkerkant van jou <ph name="DEVICE_TYPE"/>. Jou vingerafdrukdata word veilig geberg en verlaat nooit jou <ph name="DEVICE_TYPE"/> nie.</translation>
 <translation id="3075740753681485522">Af • Hierdie uitbreiding bevat wanware</translation>
@@ -3042,6 +3052,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3100071818310370858">Gebruik ligging. Laat apps en dienste met liggingtoestemming toe om hierdie toestel se ligging te gebruik. Brave kan van tyd tot tyd liggingdata insamel en hierdie data op ’n anonieme manier gebruik om liggingakkuraatheid en ligginggegronde dienste te verbeter. <ph name="BEGIN_LINK1"/>Meer inligting oor ligging<ph name="BEGIN_LINK1_END"/>Meer inligting<ph name="END_LINK1"/></translation>
 <translation id="3101126716313987672">Dowwe lig</translation>
 <translation id="3101709781009526431">Datum en tyd</translation>
+<translation id="3102309003841389927">Hersien logo-opdatering</translation>
 <translation id="310297983047869047">Vorige skyfie</translation>
 <translation id="3103451787721578293">Voer asseblief 'n rede in hoekom jy hierdie data oplaai:</translation>
 <translation id="3103512663951238230">Alt+Klik</translation>
@@ -3112,7 +3123,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3160928651883997588">VPN-voorkeure</translation>
 <translation id="3161522574479303604">Alle tale</translation>
 <translation id="3162070126914310576">Hierdie toestel kan nie op die oomblik ingeskryf word nie omdat jou organisasie-eenheid hul aanvanklike inskrywinglimiet bereik het. Kontak jou administrateur vir bystand.</translation>
-<translation id="3162766632262775911">Altyd toegelaat om die V8-optimeerder te gebruik</translation>
 <translation id="3162853326462195145">Skoolrekening</translation>
 <translation id="3162899666601560689">Werwe kan webkoekies gebruik om jou blaai-ervaring beter te maak, byvoorbeeld, om jou aangemeld te hou of om items in jou inkopiemandjie te onthou</translation>
 <translation id="3163085718713826852">Voer sertifikaatwagwoord in</translation>
@@ -3171,7 +3181,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3202499879214571401">Onderbreek uitsending van die skerm na <ph name="DEVICE_NAME"/></translation>
 <translation id="3202578601642193415">Nuutste</translation>
 <translation id="3204648577100496185">Data wat met hierdie app geassosieer word, kan van hierdie toestel verwyder word</translation>
-<translation id="3204717934117444051">Data wat net op hierdie toestel gestoor word, sal in die bestaande profiel bly. Dit sal nie met <ph name="EMAIL"/> sinkroniseer nie</translation>
 <translation id="3206289903841621620">Gebruikerwoordeboek <ph name="NUMBER"/></translation>
 <translation id="3746394893874035323">Jy sien voorgestelde soektogte en inkopieafslag waarin jy dalk belangstel op grond van jou onlangse aktiwiteit.
         <ph name="BREAK"/>
@@ -3318,6 +3327,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3309330461362844500">Sertifikaatprofiel-ID</translation>
 <translation id="3310379801837527592">Sluit aan by oortjiegroep met <ph name="OWNER_FIRST_NAME"/> en <ph name="NUM_OTHER_MEMBERS"/> ander mens</translation>
 <translation id="331080746368555063">Privaat werwe kan dinge soos jou maatskappy se intranet insluit</translation>
+<translation id="3311007761540106761">Stelselverstek</translation>
 <translation id="3311445899360743395">Data wat met hierdie app geassosieer word, kan van hierdie toestel verwyder word.</translation>
 <translation id="3312470654018965389">Stel tans die Linux-houer op</translation>
 <translation id="365826660749219377">Om 'n spesifieke werf of deel van Brave te deursoek, moet jy sy kortpad by die adresbalk intik gevolg deur jou voorkeurkortpadsleutel. As jy byvoorbeeld net Boekmerke wil deursoek, moet jy "@bookmarks" intik en dan Tab of spasiebalk druk.</translation>
@@ -3378,6 +3388,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3360306038446926262">Windows</translation>
 <translation id="3361421571228286637">{COUNT,plural, =1{<ph name="DEVICE_NAME"/> deel tans <ph name="ATTACHMENTS"/> met jou.}other{<ph name="DEVICE_NAME"/> deel tans <ph name="ATTACHMENTS"/> met jou.}}</translation>
 <translation id="3361954577771524115">Uit die app</translation>
+<translation id="3362651095484543782">Gebruik die kortpadsleutel om Gemini te verlaat of daarheen terug te gaan.</translation>
 <translation id="3362915550009543917">’n Rustige olieverfskildery wat ’n geelgetinte weiland voorstel en ’n gevoel van kalmte en intellektuele besinning gee.</translation>
 <translation id="3363202073972776113">Hierdie nuwe profiel sal deur jou organisasie bestuur word. <ph name="BEGIN_LINK"/>Kom meer te wete<ph name="END_LINK"/></translation>
 <translation id="3364159059299045452">Alt+Hou</translation>
@@ -3396,6 +3407,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3373196968211632036">Steam vir Chromebook (Beta) is nie vir kinders se Brave-rekeninge beskikbaar nie</translation>
 <translation id="3373701465337594448">Indien dit aan is, verskyn ’n lys werwe wat jy besoek wat jou belangstellings raai hier</translation>
 <translation id="3374294321938930390">"<ph name="BOOKMARK_TITLE"/>" is geskuif na "<ph name="NEW_FOLDER_TITLE"/>".</translation>
+<translation id="3376035595160918049">Gaan appopdatering na</translation>
 <translation id="3378517653648586174">Plaaslike sertifikate</translation>
 <translation id="3378572629723696641">Hierdie uitbreiding kon dalk gekorrupteer gewees het.</translation>
 <translation id="3378627645871606983">Toestemmings wat vir Steam toegelaat is, geld vir alle Steam-speletjies en -programme.</translation>
@@ -3487,6 +3499,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3435738964857648380">Sekuriteit</translation>
 <translation id="343578350365773421">Papier is op</translation>
 <translation id="3435896845095436175">Aktiveer</translation>
+<translation id="3437072258256045988">Bestuur jou Gemini-appsaktiwiteit</translation>
 <translation id="3437397693214267762">Sien jou Outlook-kalender en Sharepoint- en OneDrive-lêers</translation>
 <translation id="3438633801274389918">Ninja</translation>
 <translation id="3439153939049640737">Laat <ph name="HOST"/> altyd toe om by jou mikrofoon in te gaan</translation>
@@ -3499,8 +3512,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3443744348829035122"><ph name="BRAND"/> het uitgetel</translation>
 <translation id="3443754338602062261">Jy het reeds wagwoorde vir hierdie rekeninge in jou <ph name="BRAND"/>. As jy kies om een van die wagwoorde hier onder in te voer, sal dit die bestaande een vervang.</translation>
 <translation id="344449859752187052">Derdepartywebkoekies geblokkeer</translation>
-<translation id="3444726579402183581"><ph name="ORIGIN"/> sal <ph name="FILENAME"/> kan bekyk</translation>
-<translation id="3205145910764160561">Vinnige antwoorde in Brave Assistent</translation>
 <translation id="3445288400492335833"><ph name="MINUTES"/> min.</translation>
 <translation id="344537926140058498">Jou organisasie het hierdie lêer geblokkeer omdat dit sensitiewe of gevaarlike inhoud het. Vra die eienaar om dit reg te stel.</translation>
 <translation id="3445465968953598059">Gesigbeheer</translation>
@@ -3600,6 +3611,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3511358375261756531">Vou <ph name="HEADER"/> uit</translation>
 <translation id="351152300840026870">Vastebreedte-lettertipe</translation>
 <translation id="3511528412952710609">Kort</translation>
+<translation id="3512465804715993309">Aanpasbare merking</translation>
 <translation id="3513019849832307207">Sluit aan en maak oop</translation>
 <translation id="3513563267917474897">Kleurglyer vanaf <ph name="MIN_VALUE"/> tot <ph name="MAX_VALUE"/></translation>
 <translation id="3514335087372914653">Speletjiebeheer</translation>
@@ -3712,8 +3724,9 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3592260987370335752">Kom meer te wete</translation>
 <translation id="3592344177526089979">Saai tans ¹n oortjie uit na <ph name="DEVICE_NAME"/></translation>
 <translation id="3593152357631900254">Aktiveer Fuzzy-Pinyin-modus</translation>
+<translation id="3593953853060020305">Laat hierdie werf toe om <ph name="FILE_NAME"/> te redigeer?</translation>
 <translation id="3593965109698325041">Sertifikaatnaam-beperkings</translation>
-<translation id="3596012367874587041">Programinstellings</translation>
+<translation id="3596012367874587041">Appinstellings</translation>
 <translation id="3599221874935822507">Opgehewe</translation>
 <translation id="3600051066689725006">Webversoekinligting</translation>
 <translation id="3600956933576601730">Jy moet die bepalings nagaan en aanvaar om hierdie kenmerke te gebruik</translation>
@@ -3787,6 +3800,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3643962751030964445">Hierdie toestel word deur <ph name="DEVICE_MANAGER"/> bestuur. <ph name="DEVICE_MANAGER"/> vereis ’n nuwe profiel vir die rekening <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="364418405912311456">Klik en sleep oor prente of merk teks om te soek</translation>
 <translation id="3645372836428131288">Beweeg effens om 'n ander deel van die vingerafdruk vas te vang.</translation>
+<translation id="3646789916214779970">Stel na verstektema terug</translation>
 <translation id="3647654707956482440">Kan nie hierdie skakel gebruik nie. Kyk vir tikfoute of gebruik ’n ander skakel om weer te probeer.</translation>
 <translation id="3647998456578545569">{COUNT,plural, =1{<ph name="ATTACHMENTS"/> is van <ph name="DEVICE_NAME"/> af ontvang}other{<ph name="ATTACHMENTS"/> is van <ph name="DEVICE_NAME"/> af ontvang}}</translation>
 <translation id="3648348069317717750"><ph name="USB_DEVICE_NAME"/> bespeur</translation>
@@ -3816,12 +3830,12 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3665100783276035932">Die meeste werwe behoort te werk soos verwag</translation>
 <translation id="3665301845536101715">Maak in kantpaneel oop</translation>
 <translation id="2334029754052191847">Brave het bespeur dat sommige van jou instellings deur 'n ander program korrup gemaak is en het hulle na hul oorspronklike verstekwaardes teruggestel.</translation>
+<translation id="3665918214153961651">Laai lêer op</translation>
 <translation id="3665919494326051362">Huidige weergawe is <ph name="CURRENT_VERSION"/></translation>
 <translation id="3666196264870170605">Intel Wi-Fi NIC se ontfoutstorting</translation>
 <translation id="3666971425390608309">Aflaai is onderbreek: <ph name="FILE_NAME"/>.</translation>
 <translation id="3670113805793654926">Toestelle van enige verkoper af</translation>
 <translation id="3670229581627177274">Skakel Bluetooth aan</translation>
-<translation id="3670480940339182416">Werwe kan die V8-optimeerder gebruik</translation>
 <translation id="3671982238795754537">Kry meer inligting oor toegangsleutels</translation>
 <translation id="3672681487849735243">'n Fabriekfout is bespeur</translation>
 <translation id="3673097791729989571">Gasheer van aanmelding is <ph name="SAML_DOMAIN"/></translation>
@@ -3853,8 +3867,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3694590407685276748">Merk teksskermpyltjie</translation>
 <translation id="369489984217678710">Wagwoorde en ander aanmelddata</translation>
 <translation id="369522892592566391">{NUM_FILES,plural, =0{Sekuriteitkontroles is afgehandel. Jou data sal opgelaai word}=1{Sekuriteitkontroles is afgehandel. Jou lêer sal opgelaai word.}other{Sekuriteitkontroles is afgehandel. Jou lêers sal opgelaai word.}}</translation>
-<translation id="3695339288331169103">Vanaf <ph name="BEGIN_LINK"/><ph name="DISPLAY_REFERRER_URL"/><ph name="END_LINK"/></translation>
-<translation id="3696309329332791122">Gaan jou wagwoord na</translation>
 <translation id="369736917241079046">lanseerder + linkspyl</translation>
 <translation id="3697716475445175867">laas oopgemaak</translation>
 <translation id="3697732362672163692">{NUM_SITES,plural, =1{Jy kan keer dat hierdie werf in die toekoms kennisgewings stuur.}other{Jy kan keer dat hierdie werwe in die toekoms kennisgewings stuur.}}</translation>
@@ -3930,7 +3942,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3732414796052961578">Gaan voort as <ph name="ACCOUNT_NAME"/></translation>
 <translation id="3732530910372558017">PIN moet hoogstens 63 karakters lank wees</translation>
 <translation id="3732706448780793442">Vat handmatig oor</translation>
-<translation id="565625983765378675">Verwante inligting in Brave Assistent</translation>
 <translation id="3733296813637058299">Ons sal daardie programme vir jou installeer. Jy kan meer programme vir jou <ph name="DEVICE_TYPE"/> in die Play Winkel kry.</translation>
 <translation id="3734547157266039796">Rysland</translation>
 <translation id="3735039640698208086">Wanneer oudio gespeel word …</translation>
@@ -3974,7 +3985,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3759933321830434300">Blokkeer dele van webbladsye</translation>
 <translation id="3760460896538743390">Ondersoek agtergrondbladsy</translation>
 <translation id="3760788800962452192"><ph name="DROPDOWN_NAME"/> dag</translation>
-<translation id="3761556954875533505">Laat werf lêers wysig?</translation>
 <translation id="3761560059647741692">Landskap</translation>
 <translation id="3761733456040768239">Meer handelinge vir <ph name="CARD_DESCRIPTION"/>, CVC gestoor</translation>
 <translation id="1768338058980345433">Jy kan werwe blokkeer wat jy nie wil hê nie. Brave vee werwe wat ouer as 30 dae is, ook outomaties van die lys af uit.</translation>
@@ -4025,7 +4035,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3792973596468118484"><ph name="NUM_EXTENSIONS"/> uitbreidings</translation>
 <translation id="3794792524918736965">Skakel Windows Hello aan</translation>
 <translation id="379509625511193653">Af</translation>
-<translation id="1064391869156884018">Jy het onlangs ’n wagwoord verander wat in ’n publieke dataskending gekry is. Brave Wagwoordbestuurder kan jou help om aan te meld as jy sukkel.</translation>
 <translation id="3796215473395753611">alt + oppyl</translation>
 <translation id="3796421550129770366"><ph name="LANGUAGE"/>, gebruik regspylsleutel om stem te voorbeskou</translation>
 <translation id="3796648294839530037">Gunstelingnetwerke:</translation>
@@ -4118,6 +4127,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3844888638014364087">Emosiekoon is ingevoeg</translation>
 <translation id="3846116211488856547">Kry nutsgoed om webwerwe, Android-programme en meer te ontwikkel. <ph name="DOWNLOAD_SIZE"/> se data sal afgelaai word as jy Linux installeer.</translation>
 <translation id="3847319713229060696">Help om sekuriteit op die web vir almal beter te maak</translation>
+<translation id="3847734730889093333"><ph name="RATE"/>x</translation>
 <translation id="3850172593216628215">Sekuriteitopdaterings het geëindig. Bespaar $50 of meer op ’n nuwe Chromebook.</translation>
 <translation id="385051799172605136">Terug</translation>
 <translation id="3850989673553106152">Wagwoord het verander</translation>
@@ -4159,7 +4169,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3873315167136380065">Om dit aan te skakel, <ph name="BEGIN_LINK"/>stel sinkronisering terug<ph name="END_LINK"/> om jou sinkroniseringwagfrase te verwyder</translation>
 <translation id="3873423927483480833">Wys PIN-nommers</translation>
 <translation id="3873915545594852654">Iets was fout met ARC++.</translation>
-<translation id="3412613348266550587">Skakel Brave Assistent aan</translation>
 <translation id="3874845889165401548">Hierdie kenmerk gebruik KI en is eksperimenteel</translation>
 <translation id="3875511946736639169">Aktiveer prente</translation>
 <translation id="3875815154304214043"><ph name="APP_NAME"/> is gestel om in 'n nuwe blaaieroortjie oop te maak; gesteunde skakels sal ook in die blaaier oopmaak. <ph name="BEGIN_LINK_LEARN_MORE"/>Kom meer te wete<ph name="END_LINK_LEARN_MORE"/></translation>
@@ -4196,11 +4205,11 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="389901847090970821">Kies sleutelbord</translation>
 <translation id="3899457911440165602">Kon nie sertifikaat uitvee nie</translation>
 <translation id="3900966090527141178">Voer wagwoorde uit</translation>
-<translation id="390187954523570172"><ph name="TIME_AGO"/> laas gebruik</translation>
 <translation id="3903187154317825986">Ingeboude sleutelbord</translation>
 <translation id="3903696968689283281">Wi-fi-direk se eienaarinligting:</translation>
 <translation id="3904326018476041253">Liggingdienste</translation>
 <translation id="3905761538810670789">Herstel app</translation>
+<translation id="5033074923607633232">Meld by Brave aan om jou wagwoorde, boekmerke en meer op al jou toestelle te kry</translation>
 <translation id="3908501907586732282">Aktiveer uitbreiding</translation>
 <translation id="6894211654645352450">As jy ’n bedienersertifikaat uitvee, sal Brave dit nie meer gebruik om bedieners te identifiseer nie.</translation>
 <translation id="3909701002594999354">Wys alle &amp;Kontroles</translation>
@@ -4211,8 +4220,8 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3913689539406883376">Skakel aan wanneer jou rekenaar uitgeprop is</translation>
 <translation id="3914173277599553213">Vereis</translation>
 <translation id="3914568430265141791">Maak vouer oop <ph name="FOLDER_TITLE"/></translation>
+<translation id="3914894336972817683">Kan nie oplaai nie. Dit lyk asof die lêer leeg is.</translation>
 <translation id="3915280005470252504">Soek volgens stem</translation>
-<translation id="3916233823027929090">Sekuriteitkontroles is afgehandel</translation>
 <translation id="3916445069167113093">Hierdie tipe lêer kan jou rekenaar beskadig. Wil jy <ph name="FILE_NAME"/> in elk geval hou?</translation>
 <translation id="3917184139185490151">Jou rekenaar bevat ’n veilige module wat gebruik word om talle kritieke sekuriteitskenmerke in die Brave-bedryfstelsel te implementeer. Besoek die Chromebook-hulpsentrum om meer te wete te kom: https://support.google.com/chromebook/?p=sm</translation>
 <translation id="3917644013202553949">Daar is nie genoeg bergingspasie om jou lêers te sinkroniseer nie. Probeer spasie beskikbaar maak.</translation>
@@ -4288,6 +4297,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3959969108528118741">Eienaar</translation>
 <translation id="3960566196862329469">ONC</translation>
 <translation id="3961005895395968120">Meer handelinge vir <ph name="IBAN_DESCRIPTION"/></translation>
+<translation id="3961823084595287812">Laat <ph name="HOST"/> toe om identifiseerders te gebruik om beskermde inhoud te speel</translation>
 <translation id="3964480518399667971">Skakel sellulêre netwerk af</translation>
 <translation id="3965467402665811906">Werwe kan vra om inligting te gebruik wat hulle oor jou gestoor het</translation>
 <translation id="3965965397408324205">Verlaat <ph name="PROFILE_NAME"/></translation>
@@ -4348,7 +4358,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="3994878504415702912">Zoem</translation>
 <translation id="3995138139523574647">USB C-toestel (agterste poort aan regterkant)</translation>
 <translation id="3995963973192100066">Speel animasie</translation>
-<translation id="3997537546406230684">Skep ’n nuwe profiel vir werk en hou my bestaande data apart</translation>
 <translation id="399788104667917863">Spel aan nutsbalk vas</translation>
 <translation id="3998780825367526465">Wys voorskouprente vir oortjies</translation>
 <translation id="3998976413398910035">Bestuur drukkers</translation>
@@ -4370,7 +4379,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="4016762287427926315">Toestemmings wat jy vir <ph name="APP_NAME"/> toelaat, sal ook vir hierdie app toegelaat word. <ph name="BEGIN_LINK"/>Bestuur<ph name="END_LINK"/></translation>
 <translation id="4017225831995090447">Skep QR-kode vir hierdie skakel</translation>
 <translation id="4019983356493507433">Wysig boekmerklys</translation>
-<translation id="4020327272915390518">Opsies-kieslys</translation>
+<translation id="4020701737692625681">Jou admin kan jou skerm opneem</translation>
 <translation id="4021279097213088397">–</translation>
 <translation id="4021727050945670219">Jy kan verhoed dat jou skermpyltjie rondspring vir effense kopbewegings, maar daar sal ’n kort vertraging wees.</translation>
 <translation id="402184264550408568">(TCP)</translation>
@@ -4497,6 +4506,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="4109135793348361820">Beweeg venster na <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="4110485659976215879">Laai waarskuwing terug</translation>
 <translation id="4112194537011183136"><ph name="DEVICE_NAME"/> (vanlyn)</translation>
+<translation id="4113030288477039509">Deur jou administrateur bestuur</translation>
 <translation id="4113743276555482284">Lêerwagwoord</translation>
 <translation id="4113888471797244232"><ph name="BEGIN_PARAGRAPH1"/>Wanneer Liggingakkuraatheid aan is, word inligting oor draadlose seine, soos wi-fi-toegangspunte en selnetwerktorings, saam met toestelsensordata, soos versnellingsmeter en giroskoop, gebruik om akkurater toestelligging te skat wat deur Android-apps en -dienste gebruik word om ligginggebaseerde kenmerke te verskaf. Om dit te doen, samel Brave van tyd tot tyd inligting in oor toestelsensors en draadlose seine naby jou om by te dra tot draadloseseinliggings wat deur skareverkryging gekry word.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Brave gebruik hierdie inligting sonder om jou te identifiseer: om liggingakkuraatheid en ligginggegronde dienste te verbeter en om oor die algemeen Brave se dienste te verbeter, te verskaf en te handhaaf. Ons verwerk hierdie inligting op grond van die wettige belange van Brave en derde partye om in gebruikers se behoeftes te voorsien.<ph name="END_PARAGRAPH2"/>
@@ -4668,6 +4678,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="7099712982135840550">Herverbeel Brave, met ’n hupstoot deur AI</translation>
 <translation id="4250229828105606438">Skermkiekie</translation>
 <translation id="4250680216510889253">Nee</translation>
+<translation id="4251243704979202079"><ph name="ORIGIN"/> sal lêers in <ph name="FOLDERNAME"/> kan bekyk en hul eie kopieë daarvan kan maak</translation>
 <translation id="4251377547188244181">Inskrywing van kiosk- en naambordtoestel</translation>
 <translation id="4252828488489674554">Regsklik op die oortjiegroepnaam om hierdie groep te wysig of klik om in te vou</translation>
 <translation id="4252899949534773101">Bluetooth is gedeaktiveer</translation>
@@ -4681,6 +4692,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="425573743389990240">Battery-ontladingspoed in Watt (negatiewe waarde beteken battery laai tans)</translation>
 <translation id="4847510842720497216">Intydse, AI-aangedrewe beskerming teen gevaarlike werwe, aflaaie en uitbreidings wat gegrond is op blaaierdata wat na Brave toe gestuur word</translation>
 <translation id="4256316378292851214">Stoor video as …</translation>
+<translation id="4257175174234042421">Geoutomatiseerde wagwoordverandering</translation>
 <translation id="4258348331913189841">Lêerstelsels</translation>
 <translation id="4258860425202724393">{NUM_GROUPS,plural, =1{Hou groep}other{Hou groepe}}</translation>
 <translation id="4259388776256904261">Dit kan 'n rukkie neem</translation>
@@ -4740,10 +4752,12 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="4291265871880246274">Aanmelddialoog</translation>
 <translation id="4292613336957320546">Versnelling</translation>
 <translation id="429312253194641664">'n Werf speel tans media</translation>
+<translation id="4293219510510666933">Gebruik alledaagse taal om jou blaaigeskiedenis te deursoek en die werwe wat jy besoek het, te kry. Jy kan ook vrae vra en antwoorde kry op grond van jou blaaigeskiedenis. Hierdie instelling is aan.</translation>
 <translation id="4294392694389031609">Het <ph name="FILE_NAME"/> uit die aflaaigeskiedenis gevee, maar dit is steeds op jou toestel</translation>
 <translation id="4295072614469448764">App is in jou terminaal beskikbaar. Daar is dalk ook 'n ikoon in jou Lanseerder.</translation>
 <translation id="4295979599050707005">Meld asseblief weer aan om te bevestig dat jou rekening <ph name="USER_EMAIL"/> in webwerwe, programme en uitbreidings in Brave en Google Play gebruik kan word. Jy kan hierdie rekening ook verwyder. <ph name="LINK_BEGIN"/>Kom meer te wete<ph name="LINK_END"/></translation>
 <translation id="4296424230850377304">Apps wat van <ph name="APP_NAME"/> af geïnstalleer en gestroom is</translation>
+<translation id="4296632172536745000">Jou oorspronklike wagwoord vir hierdie werf is in ’n publieke dataskending gevind. Op <ph name="DATE"/> het jy <ph name="BRAND"/> gevra om jou wagwoord outomaties vir jou te verander.</translation>
 <translation id="4297219207642690536">Herbegin en stel terug</translation>
 <translation id="4297813521149011456">Skermrotasie</translation>
 <translation id="4298660926525614540">Verwyderbare bergingsname</translation>
@@ -4811,7 +4825,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="4348766275249686434">Versamel foute</translation>
 <translation id="4349828822184870497">Nuttig</translation>
 <translation id="4350230709416545141">Keer <ph name="HOST"/> altyd om toegang tot jou ligging te kry</translation>
-<translation id="1471559864592637964">Ok Brave</translation>
 <translation id="435185728237714178">Gaan na die “<ph name="APP_NAME"/>”-app om geïnstalleerde en gestroomde apps te bestuur</translation>
 <translation id="4352913519324947509">Jou wagwoord is nie verander nie, maar jy behoort steeds toegang tot die werf te kry met jou huidige wagwoord</translation>
 <translation id="4354073718307267720">Vra wanneer 'n werf 'n 3D-kaart van jou omgewing wil skep of kameraposisie wil naspoor</translation>
@@ -4936,10 +4949,10 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="443031431654216610">Gebruk net syfers</translation>
 <translation id="4430369329743628066">Boekmerk is bygevoeg</translation>
 <translation id="4430422687972614133">Skakel virtuele kaart aan</translation>
+<translation id="443196770280837407">Maak Gemini met ’n kortpadsleutel oop.</translation>
 <translation id="4432621511648257259">Wagwoord is verkeerd</translation>
 <translation id="4434611816075088065">Niks anders het nou jou aandag nodig nie</translation>
 <translation id="443475966875174318">Dateer onversoenbare programme op of verwyder hulle</translation>
-<translation id="4435006771996380536">“<ph name="LOCAL_BOOKMARK"/>” is net op hierdie toestel gestoor. Stoor dit in jou Brave-rekening om dit op jou ander toestelle te gebruik.</translation>
 <translation id="8811654838370811218">Meld jou by die meeste werwe af. Jy sal by jou Brave-rekening aangemeld bly sodat jou gesinkroniseerde data uitgevee kan word.</translation>
 <translation id="4437879751057074691">Aanbod om wagwoorde en toegangsleutels te stoor</translation>
 <translation id="4437947179446780764">Voeg gepasmaakte DNS-diensverskaffer by</translation>
@@ -4952,6 +4965,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="4442863809158514979">Bekyk webtoestemmings</translation>
 <translation id="4442937638623063085">Kon geen profiele kry nie. Voer die aktiveringkode in wat jou diensverskaffer verskaf het.</translation>
 <translation id="4443536555189480885">Hulp</translation>
+<translation id="4444191890945732856">Jy deel tans hierdie bladsy met Gemini</translation>
 <translation id="4444304522807523469">Kry toegang tot dokumentskandeerders wat via USB of op die plaaslike netwerk gekoppel is</translation>
 <translation id="4444512841222467874">Gebruikers en data sal dalk outomaties verwyder word as spasie nie beskikbaar gemaak word nie.</translation>
 <translation id="4445446646109808714">Lisensie-ooreenkoms vir eindgebruikers: <ph name="EULA_LINK"/></translation>
@@ -5079,7 +5093,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="4545759655004063573">Kan nie stoor nie weens onvoldoende toestemmings. Stoor asseblief na 'n ander plek.</translation>
 <translation id="4546345569117159016">Regterknoppie</translation>
 <translation id="4546509872654834602"><ph name="SUPERVISED_USER_NAME"/> wil hierdie uitbreiding gebruik:</translation>
-<translation id="8936733030396193625">Brave Assistent-steminvoer</translation>
 <translation id="4547659257713117923">Geen oortjies van ander toestelle af nie</translation>
 <translation id="4547672827276975204">Stel outomaties</translation>
 <translation id="4549791035683739768">Geen vingerafdrukke is in jou sekuriteitsleutel geberg nie</translation>
@@ -5223,7 +5236,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="4647836961514597010">Kleurkieser</translation>
 <translation id="4648491805942548247">Onvoldoende toestemmings</translation>
 <translation id="4650037136970677721">Geheue gestoor</translation>
-<translation id="4650364565596261010">Stelsel se verstek</translation>
 <translation id="4650591383426000695">Ontkoppel jou foon van jou <ph name="DEVICE_TYPE"/></translation>
 <translation id="4651484272688821107">Kon nie aanlyn komponent met demonstrasiemodus-hulpbronne laai nie.</translation>
 <translation id="4651921906638302153">Kan nie met hierdie rekening aanmeld nie</translation>
@@ -5264,7 +5276,6 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="4676616966096505747">Sommige data is nog nie in jou rekening gestoor nie</translation>
 <translation id="4677772697204437347">GPU-geheue</translation>
 <translation id="467809019005607715">Brave Skyfies</translation>
-<translation id="748874740067021597">Wanneer een van jou wagwoorde in ’n dataskending gevind word, vra Brave Wagwoordbestuurder of jy dit na ’n sterk wagwoord verander wil hê</translation>
 <translation id="4678848110205818817">Krediet- of debietkaart</translation>
 <translation id="4679018849559620189">Dit help jou om op enige toestel toegang tot jou gestoorde toegangsleutels te kry</translation>
 <translation id="4680105648806843642">Klank op hierdie bladsy word gedemp</translation>
@@ -5274,6 +5285,7 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="4681930562518940301">Maak oorspronklike prent in nuwe oortjie oop</translation>
 <translation id="4682481611456523884">Ingebedde inhoud op hierdie werf kan nie inligting wat hulle oor jou gestoor het, gebruik nie</translation>
 <translation id="4524261726901681678">Wanneer jy hierdie kenmerke gebruik, word data na Brave toe gestuur ten einde AI-ervarings te skep</translation>
+<translation id="3704650847382671289">Brave is opgedateer</translation>
 <translation id="4683629100208651599">Maak dit kleinletters</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (verstek)</translation>
 <translation id="4684427112815847243">Sinkroniseer alles</translation>
@@ -5283,10 +5295,10 @@ Jy kan hierdie rekening se instellings bestuur deur die Family Link-app op jou t
 <translation id="4687718960473379118">Werfvoorgestelde advertensies</translation>
 <translation id="4688036121858134881">Plaaslike loglêer-ID: <ph name="WEBRTC_EVENT_LOG_LOCAL_ID"/>.</translation>
 <translation id="4688176403504673761"><ph name="MANAGER"/> plaas hierdie toestel tans op 'n vorige weergawe (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="4688870304423708920">Gaan jou internetverbinding na en probeer weer om Gemini te gebruik</translation>
 <translation id="4689235506267737042">Kies jou demonstrasievoorkeure</translation>
 <translation id="4689421377817139245">Sinkroniseer hierdie boekmerk met jou iPhone</translation>
 <translation id="4690091457710545971">&lt;Vier lêers gegenereer deur Intel Wi-Fi-fermware: csr.lst, fh_regs.lst, radio_reg.lst, monitor.lst.sysmon. Die eerste drie is binêre lêers wat registerstortings bevat en wat geen persoonlike of toestel-identifiseerbare inligting bevat nie, soos deur Intel aangevoer. Die laaste lêer is 'n uitvoeringnasporing van die Intel-fermware; en enige persoonlike of toestel-identifiseerbare inligting is daaruit verwyder, maar dit is te groot om hier te wys. Hierdie lêers is gegenereer in reaksie op onlangse Wi-fi-probleme met jou toestel en sal met Intel gedeel word om hierdie probleme te help foutspoor.&gt;</translation>
-<translation id="4691791363716065510"><ph name="ORIGIN"/> sal <ph name="FILENAME"/> kan bekyk totdat jy alle oortjies vir hierdie werf toemaak</translation>
 <translation id="4692342362587775867">Kennisgewings van hierdie werf af kan ontwrigtend wees</translation>
 <translation id="4692530924160500770">{MEMBER_COUNT,plural, =1{# lid in die groep}other{# lede in die groep}}</translation>
 <translation id="4692623383562244444">Soekenjins</translation>
@@ -5351,7 +5363,6 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="4742970037960872810">Verwyder kleurmerk</translation>
 <translation id="4743260470722568160"><ph name="BEGIN_LINK"/>Kom meer te wete oor hoe om programme op te dateer<ph name="END_LINK"/></translation>
 <translation id="4743990041512863976">Toegelaat – <ph name="PERMISSION_DETAILS"/>. Skakel <ph name="LINK_BEGIN"/>stelselmikrofoontoegang<ph name="LINK_END"/> aan.</translation>
-<translation id="4744172369799559159">Mense hersien wagwoordbladsye en verwante inligting om hierdie kenmerk te verbeter, alhoewel jou wagwoord geënkripteer is en nooit deur enigiemand gesien word nie.</translation>
 <translation id="4744260496658845719">Helderheid van sleutelbordlig</translation>
 <translation id="4744268813103118742">Gaan na werf</translation>
 <translation id="4744571849207727284">Excel</translation>
@@ -5456,7 +5467,6 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="4816900689218414104">Skep ’n toegangsleutel op ’n foon of tablet</translation>
 <translation id="481917177323309377">Oortjies wat jy nie in <ph name="COUNT"/> of meer dae gebruik het nie</translation>
 <translation id="4819323978093861656">{0,plural, =0{Maak nou toe.}=1{Maak toe oor: 1 sekonde}other{Maak toe oor: # sekondes}}</translation>
-<translation id="8655084398729487585">Brave Assistent-kennisgewings</translation>
 <translation id="4819818293886748542">Kry ’n steundienstenutsdingskakel</translation>
 <translation id="4820236583224459650">Stel as aktiewe kaartjie</translation>
 <translation id="4820795723433418303">Gebruik funksiesleutels as sleutels in die boonste ry</translation>
@@ -5504,7 +5514,6 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="4846897209694249040">Word nie toegelaat om jou muisinteraksie vas te vang en te gebruik nie</translation>
 <translation id="4847242508757499006">Kies “Probeer weer” of kies “Maak in basiese redigeerder oop” om beperkte aansig en redigeeropsies te gebruik.</translation>
 <translation id="4847742514726489375">Verminderde beweging</translation>
-<translation id="9059376008425695864">Brave Assistent "Ok Brave"</translation>
 <translation id="4849286518551984791">Gekoördineerde universele tyd (UTC/GMT)</translation>
 <translation id="4849517651082200438">Moenie installeer nie</translation>
 <translation id="4849731766219625109">Gebruik jou <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>-rekening</translation>
@@ -5518,6 +5527,7 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="4852916668365817106">Muiskleur</translation>
 <translation id="4853020600495124913">Maak in nuwe venster oop</translation>
 <translation id="4854317507773910281">Kies ouerrekening vir goedkeuring</translation>
+<translation id="4854603338816296098">Adres is verwyder</translation>
 <translation id="485480310608090163">Meer instellings en toestemmings</translation>
 <translation id="4857304314344645169">Sien ’n stap-vir-stap verduideliking van enige probleem</translation>
 <translation id="485806788160414322">Speel of onderbreek media</translation>
@@ -5569,6 +5579,7 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="4884937942297374058">Verbeterde beskerming is af</translation>
 <translation id="4884987973312178454">6x</translation>
 <translation id="4885692421645694729">Hierdie uitbreiding het nie bykomende werftoegang nie</translation>
+<translation id="4887391901725877182">Onderskrifte</translation>
 <translation id="4887424188275796356">Maak met stelselbekyker oop</translation>
 <translation id="488785315393301722">Wys besonderhede</translation>
 <translation id="488862352499217187">Skep nuwe vouer</translation>
@@ -5610,7 +5621,6 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="4913209098186576320">Hierdie lêer kan gevaarlik wees<ph name="LINE_BREAK"/>Hierdie kontrole neem langer as gewoonlik …</translation>
 <translation id="4913695564084524048">Kan nie appdata opspoor nie</translation>
 <translation id="4915961947098019832">Mag prente wys</translation>
-<translation id="4916542008280060967">Laat werf <ph name="FILE_NAME"/> wysig?</translation>
 <translation id="491779113051926205">ChromeOS-verkeerstellers</translation>
 <translation id="4918021164741308375"><ph name="ORIGIN"/> wil met die uitbreiding "<ph name="EXTENSION_NAME"/>" kommunikeer</translation>
 <translation id="4918086044614829423">Aanvaar</translation>
@@ -5719,6 +5729,8 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="5001526427543320409">Derdepartywebkoekies</translation>
 <translation id="5003070249435823986">Gebruik die gebaar om na rolleesmodus te gaan en beweeg dan jou kop in die rigting wat jy graag wil rollees. Gebruik weer die gebaar om uit rolleesmodus te gaan.</translation>
 <translation id="5003993274120026347">Volgende sin</translation>
+<translation id="5005113238422129109">Gebruik jou mikrofoon om met Gemini te klets. Wanneer jy met Gemini praat, word oudio in Gemini-appsaktiwiteit gestoor (as dit aan is)</translation>
+<translation id="7523137776324542302">Gestoor vanaf Brave</translation>
 <translation id="5005498671520578047">Kopieer wagwoord</translation>
 <translation id="5006218871145547804">Android-app-ADB in Crostini</translation>
 <translation id="5006778209728626987">Weerlig</translation>
@@ -5790,7 +5802,6 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="5059526285558225588">Kies wat om te deel</translation>
 <translation id="5060332552815861872">Daar is 1 drukker beskikbaar om te stoor.</translation>
 <translation id="5060419232449737386">Onderskrifinstellings</translation>
-<translation id="5061270227873845372">Jy het tans <ph name="NUMBERED_ITEM_1"/>, <ph name="NUMBERED_ITEM_2"/>, <ph name="NUMBERED_ITEM_3"/> en meer. Jou organisasie sal hierdie data kan sien en bestuur</translation>
 <translation id="5061347216700970798">{NUM_BOOKMARKS,plural, =1{Hierdie vouer bevat 'n boekmerk. Is jy seker jy wil dit uitvee?}other{Hierdie vouer bevat # boekmerke. Is jy seker jy wil dit uitvee?}}</translation>
 <translation id="5061531353537614467">Toendra</translation>
 <translation id="5062930723426326933">Kon nie aanmeld nie. Koppel asseblief aan die internet en probeer weer.</translation>
@@ -5837,7 +5848,6 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="5088534251099454936">PKCS #1 SHA-512 met RSA-enkripsie</translation>
 <translation id="5090637338841444533">Mag nie jou kameraposisie naspoor nie</translation>
 <translation id="5091636240353511739">Wys PIN</translation>
-<translation id="5093417502834168387">Sukkel jy om aan te meld? Probeer op ’n ander manier</translation>
 <translation id="5093477827231450397">Lys werwe wat jy geblokkeer het wat jy nie wil hê advertensies aan ander werwe moet voorstel nie</translation>
 <translation id="5094176498302660097">Jy kan met hierdie app gesteunde lêers uit die Lêers-app of ander apps oopmaak en wysig. <ph name="BEGIN_LINK"/>Vind uit hoe om verstekapps op jou toestel te stel<ph name="END_LINK"/> om te beheer watter lêers hierdie app by verstek oopmaak.</translation>
 <translation id="5094721898978802975">Kommunikeer met plaaslike programme wat saamwerk</translation>
@@ -5865,6 +5875,7 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="5109044022078737958">Mia</translation>
 <translation id="5109816792918100764">Verwyder <ph name="LANGUAGE_NAME"/></translation>
 <translation id="5111326646107464148">Maak groep in nuwe venster oop</translation>
+<translation id="511147239888121455">Rugsteun jou goed?</translation>
 <translation id="5111692334209731439">Boekmerkbestuurder</translation>
 <translation id="5111794652433847656">Daar is geen toegangsleutels vir <ph name="APP_NAME"/> op hierdie toestel nie</translation>
 <translation id="5112577000029535889">Ontwikkelaarnutsgoed</translation>
@@ -5932,6 +5943,7 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="5154108062446123722">Gevorderde instellings vir <ph name="PRINTING_DESTINATION"/></translation>
 <translation id="5154702632169343078">Onderwerp</translation>
 <translation id="5154917547274118687">Geheue</translation>
+<translation id="5155299520372681119">Lêeroplaai het verval en is verwyder.</translation>
 <translation id="5155327081870541046">Voer die kortpad vir die werf wat jy wil deursoek, soos "@boekmerke", by die adresbalk in. Druk dan jou voorkeurkortpadsleutel en voer jou soekterm in.</translation>
 <translation id="5156638757840305347">Skermpyltjie word gemerk wanneer dit verskyn of beweeg</translation>
 <translation id="5157250307065481244">Bekyk werfbesonderhede</translation>
@@ -5997,12 +6009,14 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="5201945335223486172">Vir <ph name="EXAMPLE_DOMAIN_1"/></translation>
 <translation id="5203035663139409780">Kan lêers of vouers op jou toestel wysig</translation>
 <translation id="5203920255089865054">{NUM_EXTENSIONS,plural, =1{Klik om die uitbreiding te bekyk}other{Klik om hierdie uitbreidings te bekyk}}</translation>
+<translation id="5204282224596194174">Terugstelwagwoord vir <ph name="USER_EMAIL"/></translation>
 <translation id="5204673965307125349">Powerwash die toestel en probeer weer.</translation>
 <translation id="5204967432542742771">Voer wagwoord in</translation>
 <translation id="5205484256512407285">Moet nooit mobiele data vir oordrag gebruik nie</translation>
 <translation id="520568280985468584">Netwerk is suksesvol bygevoeg. Dit kan 'n paar minute neem voordat jou selnetwerk aktief word.</translation>
 <translation id="5207949376430453814">Lig tekskaret uit</translation>
 <translation id="520840839826327499"><ph name="SERVICE_NAME"/> wil kyk of jy ’n geskikte Brave-bedryfstelseltoestel gebruik.</translation>
+<translation id="5208722776934437424">Verander toestemmings</translation>
 <translation id="5208926629108082192">Inligting oor toestel se selnetwerk</translation>
 <translation id="5208988882104884956">Halfwydte</translation>
 <translation id="5209320130288484488">Geen toestelle gevind nie</translation>
@@ -6024,6 +6038,7 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="5225324770654022472">Wys programkortpad</translation>
 <translation id="52254442782792731">Huidige sigbaarheidinstelling is nog nie gestel nie</translation>
 <translation id="5225463052809312700">Skakel kamera aan</translation>
+<translation id="5226253862147382094">Hersien logo- en URL-opdatering</translation>
 <translation id="5226514125747186">’n Kolletjiesirkel verskyn rondom werfikone. <ph name="BEGIN_LINK"/>Kry meer inligting oor onaktiewe oortjies<ph name="END_LINK"/></translation>
 <translation id="5226731562812684363">Webwerwe word nie toegelaat om jou ligging te gebruik nie</translation>
 <translation id="5227679487546032910">Verstek- blougroen avatar</translation>
@@ -6033,7 +6048,6 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="5230190638672215545">Tik “uow” om “ươ” te kry</translation>
 <translation id="5230516054153933099">Venster</translation>
 <translation id="5232714764496316200">Kry huiswerkhulp met Google Lens</translation>
-<translation id="5233019165164992427">NaCl-ontfoutpoort</translation>
 <translation id="5233231016133573565">Proses-ID</translation>
 <translation id="5233638681132016545">Nuwe oortjie</translation>
 <translation id="5233736638227740678">Plak</translation>
@@ -6089,6 +6103,7 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="5267572070504076962">Skakel Veiligblaai aan om beskerming teen gevaarlike werwe te kry</translation>
 <translation id="5269977353971873915">Kon nie uitdruk nie</translation>
 <translation id="5271578170655641944">Verwyder Google Drive-toegang?</translation>
+<translation id="527335345740023523">Jy het tans <ph name="NUMBERED_ITEM_1"/>, <ph name="NUMBERED_ITEM_2"/>, <ph name="NUMBERED_ITEM_3"/> en meer. Jou organisasie, <ph name="ACCOUNT_MANAGER"/>, sal hierdie data kan sien en bestuur.</translation>
 <translation id="5273806377963980154">Wysig werf-URL</translation>
 <translation id="5275084684151588738">Gebruikerwoordeboeke</translation>
 <translation id="5275338516105640560">Gestoorde Oortjiegroep-knoppie</translation>
@@ -6103,6 +6118,7 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="5280064835262749532">Dateer eiebewyse vir <ph name="SHARE_PATH"/> op</translation>
 <translation id="5280303168922585051">Hierdie instelling is deur jou organisasie opgestel. Is jy seker jy wil hierdie soekenjin uitvee?</translation>
 <translation id="5280426389926346830">Skep kortpad?</translation>
+<translation id="5280966903879030278">Gebruik alledaagse taal om jou blaaigeskiedenis te deursoek en die werwe wat jy besoek het, te kry. Hierdie instelling is af.</translation>
 <translation id="5281013262333731149">Maak oop in: <ph name="OPEN_BROWSER"/></translation>
 <translation id="528208740344463258">Om Android-programme af te laai en te gebruik, moet jy eers hierdie vereiste opdatering installeer. Jy kan nie jou <ph name="DEVICE_TYPE"/> gebruik terwyl dit besig is om op te dateer nie. Jou <ph name="DEVICE_TYPE"/> sal herbegin nadat die installasie voltooi is.</translation>
 <translation id="5283677936944177147">Oeps! Die stelsel kon nie die toestelmodel of reeksnommer bepaal nie.</translation>
@@ -6187,7 +6203,6 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="534449933710420173">Naamlose vouer</translation>
 <translation id="5345916423802287046">Begin app wanneer jy aanmeld</translation>
 <translation id="5350116201946341974">Wispelturig</translation>
-<translation id="5305142070289640735">Skakel Brave Assistent af</translation>
 <translation id="535123479159372765">Teks is van ander toestel af gekopieer</translation>
 <translation id="5352033265844765294">Tydstempel</translation>
 <translation id="5352257124367865087">Bestuur werftoestemmings</translation>
@@ -6207,6 +6222,7 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="536278396489099088">ChromeOS-stelselstatus en -verslae</translation>
 <translation id="5362916924854054326">Moenie SharePoint en OneDrive-lêers wys nie</translation>
 <translation id="5363109466694494651">Kragwas en stel terug</translation>
+<translation id="5365858324977454035">Onverwagte fout, lêeroplaai het misluk.</translation>
 <translation id="5365881113273618889">Die vouer wat jy gekies het, bevat sensitiewe lêers. Is jy seker jy wil permanente skryftoegang tot hierdie vouer aan "<ph name="APP_NAME"/>" verleen?</translation>
 <translation id="536638840841140142">Geen</translation>
 <translation id="5368246151595623328">"<ph name="NETWORK_NAME"/>" gestoor vanaf <ph name="DEVICE_NAME"/></translation>
@@ -6234,6 +6250,7 @@ Gebruik Ctrl + Alt + Verlaag Helderheid om uit te zoem.</translation>
 <translation id="538822246583124912">Ondernemingsbeleid het verander. Eksperimente-knoppie is by nutsbalk gevoeg. Klik die knoppie om 'n dialoog oop te maak om eksperimente te aktiveer.</translation>
 <translation id="5388436023007579456">Apps en webwerwe met die kameratoestemming, sowel as stelseldienste, kan jou kamera gebruik. Jy moet dalk die app herbegin of die bladsy herlaai om die kamera te gebruik.</translation>
 <translation id="5388567882092991136">{NUM_SITES,plural, =1{1 werf met baie kennisgewings is gevind}other{{NUM_SITES} werwe met baie kennisgewings is gevind}}</translation>
+<translation id="5388719243178419614">Kan nie oplaai nie. Kon nie prentlêer verwerk nie.</translation>
 <translation id="5388885445722491159">Saamgebind</translation>
 <translation id="5389224261615877010">Reënboog</translation>
 <translation id="5389794555912875905">Sien waarskuwings voordat daar na onveilige werwe toe gegaan word (aanbeveel)</translation>
@@ -6276,6 +6293,7 @@ Jy kan veelvuldige skakelaars vir hierdie handeling toewys.</translation>
 <translation id="5414836363063783498">Verifieer tans …</translation>
 <translation id="5415328625985164836">Dit is ’n betaprogram. Jy kan Steam nou gebruik om speletjies op jou Chromebook te speel.</translation>
 <translation id="5415497281076257439">Frase</translation>
+<translation id="5417293056300086453">Hierdie werf kan identifiseerders gebruik om beskermde inhoud te speel.</translation>
 <translation id="5417312524372586921">Blaaiertemas</translation>
 <translation id="541737483547792035">Vergroot skerm</translation>
 <translation id="541822678830750798">Versoek om hierdie werf te lees en te verander</translation>
@@ -6285,6 +6303,7 @@ Jy kan veelvuldige skakelaars vir hierdie handeling toewys.</translation>
 <translation id="542073632571549028"><ph name="MEMBER_FULL_NAME"/> (<ph name="EMAIL"/>) sal onmiddellik toegang tot die “<ph name="GROUP_NAME"/>”-oortjiegroep verloor</translation>
 <translation id="5420935737933866496">Kopieer &amp;skakel</translation>
 <translation id="5421048291985386320">&amp;Meld weer aan</translation>
+<translation id="8151667033756518944">Wanneer dit aan is, word data in jou Brave-rekening gestoor en kan dit op al jou toestelle gebruik word. Wanneer dit af is, word data net op hierdie toestel gestoor.</translation>
 <translation id="5422781158178868512">Jammer, jou eksterne bergingtoestel kon nie herken word nie.</translation>
 <translation id="5423505005476604112">Crostini</translation>
 <translation id="5423600335480706727"><ph name="SITE"/> sal met jou volgende besoek verstektoestemmings gebruik</translation>
@@ -6537,6 +6556,7 @@ Jy kan veelvuldige skakelaars vir hierdie handeling toewys.</translation>
 <translation id="5600706100022181951"><ph name="UPDATE_SIZE_MB"/> MB se mobiele data sal gebruik word om opdatering af te laai. Wil jy voortgaan?</translation>
 <translation id="5601503069213153581">PIN</translation>
 <translation id="5601833336918638013">Moenie werwe toelaat om Bluetooth-toestelle te soek nie</translation>
+<translation id="3614763691960125685"><ph name="OPENINGS_COUNT"/> nuwe Brave-oortjies is deur hierdie app oopgemaak. Jy kan hierdie optrede onder “Opspringers en Herleidings”-toestemming bestuur.</translation>
 <translation id="5602586420788540146">Maak in nuwe oortjiegroep oop</translation>
 <translation id="5605758115928394442">'n Kennisgewing is na jou foon toe gestuur om te bevestig dat dit jy is.</translation>
 <translation id="5606849116180480101">{NUM_EXTENSIONS,plural, =1{Hierdie uitbreiding is geblokkeer}other{Hierdie uitbreidings is geblokkeer}}</translation>
@@ -6604,6 +6624,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="5643321261065707929">Beperkte netwerk</translation>
 <translation id="5646376287012673985">Ligging</translation>
 <translation id="5646558797914161501">Sakeman</translation>
+<translation id="5647989922796038257">Deel ook alle oudio-uitsette</translation>
 <translation id="5648021990716966815">Mikrofoonsok</translation>
 <translation id="5648166631817621825">Afgelope 7 dae</translation>
 <translation id="5651308944918885595">Nabydeling: opspoorbaarheid</translation>
@@ -6677,6 +6698,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="5705005699929844214">Wys altyd toeganklikheidopsies</translation>
 <translation id="5705882733397021510">Gaan terug</translation>
 <translation id="5707185214361380026">Kon nie uitbreiding hiervandaan laai nie:</translation>
+<translation id="5707674184620508665">Jou organisasie, <ph name="ACCOUNT_MANAGER"/>, sal nie jou bestaande data kan sien of bestuur nie. Dit sal in die bestaande profiel bly.</translation>
 <translation id="5708171344853220004">Microsoft-hoofnaam</translation>
 <translation id="5711010025974903573">Diensloglêers</translation>
 <translation id="5711983031544731014">Kan nie ontsluit nie. Voer jou wagwoord in.</translation>
@@ -6685,7 +6707,6 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="5713033452812927234">Maak tans vensters oop vanaf jou vorige toestel</translation>
 <translation id="5713158217420111469">Gekoppel aan <ph name="DEVICE"/></translation>
 <translation id="5714100381896040477">Beperkte beweging op die skerm</translation>
-<translation id="5715711091495208045">Inpropagent: <ph name="PLUGIN_NAME"/></translation>
 <translation id="5719854774000914513">Werwe kan vra om aan HID-toestelle te koppel</translation>
 <translation id="572155275267014074">Android-instellings</translation>
 <translation id="5722086096420375088">Groen en wit</translation>
@@ -6796,12 +6817,14 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="5800703268655655701">Kies lig- of donkertema</translation>
 <translation id="5801051031414037185">Stel foon op</translation>
 <translation id="5801568494490449797">Voorkeure</translation>
+<translation id="5801848377610914194">Gebruik alledaagse taal om jou blaaigeskiedenis te deursoek en die werwe wat jy besoek het, te kry. Hierdie instelling is aan.</translation>
 <translation id="5803689677801500549">Gestoorde wagwoorde sal hier verskyn. <ph name="BEGIN_LINK"/>Kies ’n CSV-lêer<ph name="END_LINK"/> om wagwoorde na <ph name="BRAND"/> vir <ph name="USER_EMAIL"/> in te voer.</translation>
 <translation id="5804198298544152115">Werwe spoor gewoonlik jou hande en vingers na om meesleurende ervarings aan te vul</translation>
 <translation id="5804241973901381774">Toestemmings</translation>
 <translation id="5804259315582798390">Kon nie terugstelling van plaaslike data aktiveer nie</translation>
 <translation id="5805268472388605531">Druk en hou sleutelbordsleutels om aksentmerke en spesiale karakters te sien</translation>
 <translation id="5805697420284793859">Vensterbestuurder</translation>
+<translation id="5806322307130093061"><ph name="FILE_NAME"/>: Druk Enter om lêer uit te vee</translation>
 <translation id="5806447147478173900">Totale berginggebruik deur vertoonde werwe: <ph name="TOTAL_USAGE"/></translation>
 <translation id="5806773519584576205">0° (Verstek)</translation>
 <translation id="5807774529265708172">Wys of versteek skermsleutelbord</translation>
@@ -6816,6 +6839,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="581659025233126501">Skakel sinkronisering aan</translation>
 <translation id="5817918615728894473">Bind saam</translation>
 <translation id="5817963443108180228">Welkom terug, <ph name="PROFILE_NAME"/></translation>
+<translation id="7345526121074925571">Wysig in Brave-rekening</translation>
 <translation id="581911254119283028">alle apps</translation>
 <translation id="5821565227679781414">Skep kortpad</translation>
 <translation id="5824976764713185207">Lees bladsy outomaties nadat dit klaar gelaai het</translation>
@@ -6938,6 +6962,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="5901494423252125310">Drukkerdeur is oop</translation>
 <translation id="5901630391730855834">Geel</translation>
 <translation id="5904614460720589786">Kon nie <ph name="APP_NAME"/> opstel nie weens 'n opstellingprobleem. Kontak jou administrateur. Foutkode: <ph name="ERROR_CODE"/>.</translation>
+<translation id="5906457147959147328">Hou aan om hierdie werf toe te laat om identifiseerders te gebruik om beskermde inhoud te speel</translation>
 <translation id="5906655207909574370">Amper op datum! Herbegin jou toestel om opdatering te voltooi.</translation>
 <translation id="5906732635754427568">Data wat met hierdie app geassosieer word, sal van hierdie toestel af verwyder word.</translation>
 <translation id="5906974869830879618">Voer asseblief 'n PIN in</translation>
@@ -6995,7 +7020,6 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="594221546068848596">Deursoek bladsy met <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
 <translation id="5942779427914696408">Toestelsigbaarheid</translation>
 <translation id="5943127421590245687">Jou verifikasie was suksesvol. Voer asseblief jou ou <ph name="DEVICE_TYPE"/>-wagwoord in om jou plaaslike data te ontsluit en terug te laai.</translation>
-<translation id="5945002094477276055"><ph name="FILE_NAME"/> kan gevaarlik wees. Stuur na Brave Veiligblaai om geskandeer te word?</translation>
 <translation id="5945192511027649793">Deaktiveer raakpaneel</translation>
 <translation id="5945363896952315544">Jou sekuriteitsleutel kan nie meer vingerafdrukke berg nie. Om 'n nuwe een by te voeg, moet jy eers 'n bestaande vingerafdruk uitvee.</translation>
 <translation id="5946591249682680882">Verslag-ID <ph name="WEBRTC_LOG_REPORT_ID"/></translation>
@@ -7010,9 +7034,11 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="5952020381407136867">raakpaneel</translation>
 <translation id="5953211687820750364">Hierdie lys word beïnvloed deur <ph name="BEGIN_LINK1"/>{BrowserSwitcherExternalGreylistUrl}<ph name="END_LINK1"/>
           en <ph name="BEGIN_LINK2"/>{BrowserSwitcherUrlGreylist}<ph name="END_LINK2"/></translation>
+<translation id="5955192144223994637">Gaan voort om in hierdie profiel te werk</translation>
 <translation id="5955304353782037793">app</translation>
 <translation id="5955721306465922729">'n Webwerf wil hierdie app oopmaak.</translation>
 <translation id="5955809630138889698">Hierdie toestel kwalifiseer dalk vir aanlyn demonstrasiemodus. Kontak jou steundiensverteenwoordiger vir meer besonderhede.</translation>
+<translation id="59561895884837262">Jy sal in kennis gestel word wanneer die opname begin.</translation>
 <translation id="5957987129450536192">Tik op die Hardoplees-ikoon naby jou profielprent en kies wat jy wil hoor.</translation>
 <translation id="5958836583172610505">Sinkronisering is aan</translation>
 <translation id="5959471481388474538">Netwerk nie beskikbaar nie</translation>
@@ -7025,6 +7051,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="5965607173855879702">Vee tans data uit ...</translation>
 <translation id="5966511985653515929">Werfdata op jou toestel word uitgevee wanneer jy alle vensters toemaak</translation>
 <translation id="5968022600320704045">Geen soekresultate nie</translation>
+<translation id="5968400720580217226">KI-modus</translation>
 <translation id="5969364029958154283">Kom meer te wete oor die terugstel van instellings</translation>
 <translation id="5969419185858894314"><ph name="ORIGIN"/> kan hierdie lêers in <ph name="FOLDERNAME"/> bekyk</translation>
 <translation id="5969728632630673489">Kortpadsleutelkennisgewing is toegemaak</translation>
@@ -7201,7 +7228,6 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="6096326118418049043">X.500-naam</translation>
 <translation id="6097480669505687979">Gebruikers en data sal dalk outomaties verwyder word as jy nie spasie beskikbaar maak nie.</translation>
 <translation id="6097600385983390082">Stemsoektog is toegemaak</translation>
-<translation id="6098793583803863900">'n Onbekende lêer word tans vir gevaarlike inhoud geskandeer.</translation>
 <translation id="609892108553214365">Gebruik hierdie kaart op jou iPhone</translation>
 <translation id="609942571968311933">Teks is van <ph name="DEVICE_NAME"/> af gekopieer</translation>
 <translation id="6099766472403716061">Laat <ph name="HOST"/> altyd toe om jou MIDI-toestelle te beheer en te herprogrammeer</translation>
@@ -7219,7 +7245,6 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="6108952804512516814">Skep met AI</translation>
 <translation id="6110303766838612983">Stuur omvalverslae asook diagnostiese en gebruiksdata na ChromeOS</translation>
 <translation id="6111718295497931251">Verwyder Google Drive-toegang</translation>
-<translation id="2150860531873558613">Aktiveer Brave Assistent</translation>
 <translation id="6112727384379533756">Voeg 'n kaartjie by</translation>
 <translation id="6112931163620622315">Kyk op jou foon</translation>
 <translation id="8589850327914845460">Stel jou versteksoekenjin vir Brave-blaaier en <ph name="DEVICE_TYPE"/>-lanseerder</translation>
@@ -7255,7 +7280,6 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="6134418895482326458">Versteek voetreël of Nuwe Oortjie-bladsy</translation>
 <translation id="6134428719487602109">Verwyder alle gebruikerrekeninge en stel jou Chromebook terug om soos nuut te wees.</translation>
 <translation id="6135826623269483856">Word nie toegelaat om vensters op al jou skerms te bestuur nie</translation>
-<translation id="6136114942382973861">Maak aflaaibalk toe</translation>
 <translation id="6136285399872347291">terugvee</translation>
 <translation id="6136287496450963112">Jou sekuriteitsleutel word nie met 'n PIN beskerm nie. As jy vingerafdrukke wil bestuur, moet jy eers 'n PIN skep.</translation>
 <translation id="6136872094979134163">Kon nie Steam vir Chromebook-nuus ophaal nie.</translation>
@@ -7321,10 +7345,10 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="6180389074227570449">{NUM_EXTENSIONS,plural, =1{Verwyder uitbreiding?}other{Verwyder # uitbreidings?}}</translation>
 <translation id="6180510783007738939">Lynnutsding</translation>
 <translation id="6180550893222597997">Watter toegangsleutel wil jy vir <ph name="APP_NAME"/> gebruik?</translation>
+<translation id="6181218116951226898">Apps dateer soms hul handelsmerk op. Hersien vóór opdatering alle veranderinge om seker te maak dat jy gemaklik is daarmee.</translation>
 <translation id="6181431612547969857">Aflaai geblokkeer</translation>
 <translation id="6183369864942961155">Outomatiese lig-/donkertema</translation>
 <translation id="6184099524311454384">Soek oortjies</translation>
-<translation id="6184419109506034456">laaste gebruik op hierdie werf</translation>
 <translation id="1713601041945301465">Brave beperk outomaties derdepartywebkoekies</translation>
 <translation id="6185132558746749656">Toestelligging</translation>
 <translation id="6185151644843671709">Toegangsleutel is gestoor en PIN is geskep</translation>
@@ -7381,6 +7405,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="622484624075952240">Af</translation>
 <translation id="622537739776246443">Profiel sal uitgevee word</translation>
 <translation id="6225475702458870625">Dataverbinding van jou <ph name="PHONE_NAME"/> af beskikbaar</translation>
+<translation id="622568138962270592">Gemini-appsaktiwiteit</translation>
 <translation id="6226777517901268232">Private sleutellêer (opsioneel)</translation>
 <translation id="6227280783235722609">uitbreiding</translation>
 <translation id="6229062790325126537">Stel ApnMigrator terug</translation>
@@ -7394,6 +7419,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="7946072537360476411">Brave se diensbepalings verander op 31 Maart</translation>
 <translation id="6234474535228214774">Wag vir installering</translation>
 <translation id="6235208551686043831">Toestelkamera het aangeskakel. Plaas jou e-SIM se QR-kode voor die kamera.</translation>
+<translation id="6237256594069101884">Hersien URL-opdatering</translation>
 <translation id="6237342324375264347"><ph name="SHARE_STATE"/> groep <ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENTS"/> – <ph name="COLLAPSED_STATE"/></translation>
 <translation id="6237474966939441970">Stilusaantekeningprogram</translation>
 <translation id="6237481151388361546">Verander jou internetverbinding en kies “Probeer weer” of kies “Maak in basiese redigeerder oop” om beperkte aansig en redigeeropsies te gebruik.</translation>
@@ -7407,7 +7433,6 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="4174528239215311406">Herbegin Brave en laat jou rekenaar se wagwoordbestuurder toe om Brave Wagwoordbestuurder met jou bedryfstelsel te gebruik. Jou oortjies sal weer oopmaak nadat jy herbegin het.</translation>
 <translation id="6241530762627360640">Verkry inligting oor Bluetooth-toestelle wat met jou stelsel saamgebind is en ontdek nabygeleë Bluetooth-toestelle.</translation>
 <translation id="6241844896329831164">Geen toegang nodig nie</translation>
-<translation id="6242574558232861452">Kontroleer tans met jou organisasie se sekuriteitbeleid.</translation>
 <translation id="6242589501614145408">Stel jou sekuriteitsleutel terug</translation>
 <translation id="6242605626259978229">Jou blaaier en profiel word bestuur</translation>
 <translation id="6242852299490624841">Fokus hierdie oortjie</translation>
@@ -7428,7 +7453,6 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="6253801023880399036">Wagwoorde word gestoor in <ph name="GOOGLE_PASSWORD_MANAGER"/></translation>
 <translation id="6254503684448816922">Sleutelkompromie</translation>
 <translation id="6254892857036829079">Perfek</translation>
-<translation id="6257131917452817589">geoutomatiseerde wagwoordverandering</translation>
 <translation id="6257602895346497974">Skakel sinkronisering aan …</translation>
 <translation id="625827534921607067">Hierdie netwerk sal verkies word as daar meer as een gekonfigureerde netwerk beskikbaar is waaraan jy voorheen gekoppel het</translation>
 <translation id="6259776178973198997">Herlaai inligting oor wi-fi-direk se eienaars</translation>
@@ -7480,6 +7504,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="628726841779494414">Bestuur jou drukkers in drukkerinstellings</translation>
 <translation id="6287288864483377583">Invoer word slegs vir ’n enkele sertifikaat gesteun</translation>
 <translation id="6287828400772161253">Android-foon (<ph name="HOST_DEVICE_NAME"/>)</translation>
+<translation id="2564531033618417868">Vra Brave KI-modus</translation>
 <translation id="6290613030083731160">Geen beskikbare toestelle in die omtrek deel tans nie <ph name="LINK_BEGIN"/>Kom meer te wete<ph name="LINK_END"/></translation>
 <translation id="6291580570300353047">Kon weens ’n tekort aan bergingspasie nie terugstel nie.</translation>
 <translation id="6291741848715722067">Bevestigingkode</translation>
@@ -7517,7 +7542,6 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="6316432269411143858">Inhoud van Brave-bedryfstelsel se bepalings</translation>
 <translation id="6317369057005134371">Wag tans vir programvenster …</translation>
 <translation id="6318125393809743217">Sluit 'n policies.json-lêer met beleidopstellings in.</translation>
-<translation id="6318407754858604988">Aflaai het begin</translation>
 <translation id="6318944945640833942">Kon nie 'n drukker bespeur nie. Voer drukkeradres weer in.</translation>
 <translation id="6687282219696132355"><ph name="BEGIN_LINK"/>Besoek sinkroniseringinstellings<ph name="END_LINK"/> om blaaierdata van al jou gesinkroniseerde toestelle en jou Brave-rekening af uit te vee.</translation>
 <translation id="6322370287306604163">Ontsluit vinniger met vingerafdruk</translation>
@@ -7607,7 +7631,6 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="6388577073199278153">Het nie toegang tot jou mobiele rekening nie</translation>
 <translation id="6390020764191254941">Skuif oortjie na nuwe venster</translation>
 <translation id="6390046581187330789">{COUNT,plural, =0{Geen}=1{Vir <ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/> en nog 1}other{Vir <ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/> en nog {COUNT}}}</translation>
-<translation id="6390533465682072118">Terugstelling</translation>
 <translation id="6391131092053186625">Jou toestel se IMEI is <ph name="IMEI_NUMBER"/>. Hierdie nommer kan gebruik word om diens te help aktiveer.</translation>
 <translation id="6393156038355142111">Stel sterk wagwoord voor</translation>
 <translation id="6393550101331051049">Mag onveilige inhoud wys</translation>
@@ -7684,6 +7707,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="6451861213630784801">Jy is afgemeld</translation>
 <translation id="6452181791372256707">Verwerp</translation>
 <translation id="6452251728599530347"><ph name="PERCENT"/> voltooi</translation>
+<translation id="6452268285438583507">Voeg uitbreidings by</translation>
 <translation id="6452961788130242735">Netwerkprobleem of slegte domein</translation>
 <translation id="6453191633103419909">Gehalte van oortjie- of skermprojeksie</translation>
 <translation id="6453921811609336127">Druk <ph name="BEGIN_SHORTCUT"/><ph name="BEGIN_CTRL"/>Ctrl<ph name="END_CTRL"/><ph name="SEPARATOR1"/><ph name="BEGIN_SHIFT"/>Shift<ph name="END_SHIFT"/><ph name="SEPARATOR2"/><ph name="BEGIN_SPACE"/>Spasiebalk<ph name="END_SPACE"/><ph name="END_SHORTCUT"/> om na die volgende invoermetode oor te skakel</translation>
@@ -7730,7 +7754,6 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="6482559668224714696">Volskermvergrootglas</translation>
 <translation id="6483485061007832714">Maak aflaai oop</translation>
 <translation id="6483727753854114405">{NUM_GROUPS,plural, =1{Hou oortjiegroep?}other{Hou oortjiegroepe?}}</translation>
-<translation id="6483805311199035658">Maak tans <ph name="FILE"/> oop …</translation>
 <translation id="6486301003991593638">Gebruik ’n nuwer weergawe van Windows om toegangsleutels te bestuur</translation>
 <translation id="6488266788670893993"><ph name="BRAND"/> kan nie nagaan of jou wagwoorde deur dataskendings geraak is nie. Probeer jou internetverbinding nagaan.</translation>
 <translation id="6488384360522318064">Kies 'n taal</translation>
@@ -7741,6 +7764,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="6493991254603208962">Verlaag helderheid</translation>
 <translation id="6494327278868541139">Wys besonderhede oor gevorderde beskerming</translation>
 <translation id="6494483173119160146">Die toestel het ’n onterugstelbare fout teëgekom. Stel asseblief jou toestel terug (dit sal alle gebruikerdata uitvee) en probeer weer.</translation>
+<translation id="6495261233408033662">Maak oop oortjies toe</translation>
 <translation id="6495266441917713704">Kan nie wi-fi oordra nie</translation>
 <translation id="4328654367880031858">Tema volgens verstek-Brave opgedateer</translation>
 <translation id="6497784818439587832">Verander skermgrootte om items op jou skerm groter of kleiner te maak</translation>
@@ -7780,6 +7804,8 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="6521214596282732365">Werwe gebruik gewoonlik jou lettertipes sodat jy hoëtrou-inhoud met aanlyn ontwerp- en grafiese nutsgoed kan skep</translation>
 <translation id="4840871051102187982">Brave Wagwoordbestuurder kon nie hierdie wagwoorde in jou Brave-rekening stoor nie. Jy kan hulle op hierdie toestel stoor.</translation>
 <translation id="652492607360843641">Jy is aan 'n <ph name="NETWORK_TYPE"/>-netwerk gekoppel.</translation>
+<translation id="6525594601091660913">&gt;
+        Lêeroplaai is voltooi</translation>
 <translation id="6525767484449074555">Klik “Installeer”</translation>
 <translation id="6527303717912515753">Deel</translation>
 <translation id="2975747320108516602">Geen beskikbare toestelle nie Voeg jou Brave-rekening by jou foon om dit aan hierdie <ph name="DEVICE_TYPE"/> te koppel. <ph name="LINK_BEGIN"/>Meer inligting<ph name="LINK_END"/></translation>
@@ -7830,6 +7856,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="655384502888039633"><ph name="USER_COUNT"/> gebruikers</translation>
 <translation id="6555432686520421228">Verwyder alle gebruikerrekeninge en stel jou <ph name="IDS_SHORT_PRODUCT_NAME"/>-toestel terug om soos nuut te wees.</translation>
 <translation id="6555604601707417276">Linux-rugsteun is teruggestel</translation>
+<translation id="6555744145993174510">vanaf: <ph name="APP_ORIGIN"/></translation>
 <translation id="6556866813142980365">Herdoen</translation>
 <translation id="6556903358015358733">Tema en muurpapier</translation>
 <translation id="6557199166823345360">Voeg meer besonderhede by of vra ’n vraag oor jou seleksie om jou soektog te verfyn</translation>
@@ -7838,6 +7865,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="6560151649238390891">Voorstel ingevoeg</translation>
 <translation id="656065428026159829">Sien meer</translation>
 <translation id="6561726789132298588">voer in</translation>
+<translation id="6561877237303825108">Hierdie lêertipe (<ph name="TYPE"/>) kan gevaarlik wees. Stoor hierdie lêer net as jy <ph name="ORIGIN"/> vertrou</translation>
 <translation id="6562117348069327379">Berg stelselloglêers in die Aflaaie-gids.</translation>
 <translation id="656293578423618167">Die lêerpad of -naam is te lank. Stoor asseblief met 'n korter naam of na 'n ander ligging.</translation>
 <translation id="6563002009564846727">Bekyk ingevoerde sertifikate van Windows af</translation>
@@ -7864,6 +7892,7 @@ Maak seker jy wys nie enige sensitiewe inligting nie.</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> – Werkskerminhoud gedeel</translation>
 <translation id="6580060371127789208"><ph name="PERCENTAGE_COMPLETE"/>% voltooi</translation>
 <translation id="6580203076670148210">Skandeerspoed</translation>
+<translation id="6581356304040102696">Kan nie wagwoorde invoer nie. Die lêergrootte moet kleiner as 1 MB wees.</translation>
 <translation id="6582080224869403177">Stel <ph name="DEVICE_TYPE"/> terug om jou sekuriteit op te gradeer.</translation>
 <translation id="6582274660680936615">Jy blaai tans as 'n gas</translation>
 <translation id="6583328141350416497">Gaan voort met aflaai</translation>
@@ -7911,6 +7940,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="661266467055912436">Verbeter sekuriteit vir jou en almal op die web.</translation>
 <translation id="6613267708691765962">Skandeer tans vir wanware …</translation>
 <translation id="6615455863669487791">Wys my</translation>
+<translation id="6618013221808317456">Moenie werwe toelaat om JavaScript-optimering te gebruik nie</translation>
 <translation id="6619058681307408113">Lyndrukkerdaemoon (LPD)</translation>
 <translation id="661907246513853610">Werf kan jou ligging naspoor</translation>
 <translation id="6619243162837544323">Netwerktoestand</translation>
@@ -7981,7 +8011,6 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="4653111393922644171">Vir eers kan jy wagwoorde slegs met gesinslede deel. <ph name="BEGIN_LINK"/>Skep ’n gesinsgroep<ph name="END_LINK"/> met tot 6 lede en kry meer uit jou produkte en intekeninge oral op Brave.</translation>
 <translation id="666731172850799929">Maak oop in <ph name="APP_NAME"/></translation>
 <translation id="6669195257625975787">Data word dieselfde hanteer as die werf wat jy tans bekyk</translation>
-<translation id="6669637573228217624">Laai ’n lêer op</translation>
 <translation id="6670142487971298264"><ph name="APP_NAME"/> is nou beskikbaar</translation>
 <translation id="7256334756499709483">Sommige uitbreidings kan soekenjins by Brave voeg</translation>
 <translation id="6670983860904543332">Outomatiese opdaterings bied jou die nuutste kenmerke. Verken hoogtepunte van onlangse opdaterings.</translation>
@@ -7994,6 +8023,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="6673898378497337661">verhoog sleutelbordhelderheid</translation>
 <translation id="6674571176963658787">Voer jou wagfrase in om sinkronisering te begin</translation>
 <translation id="6675665718701918026">Wystoestel is gekoppel</translation>
+<translation id="6675717447295898330">Skep ’n nuwe profiel vir werk sonder my bestaande data</translation>
 <translation id="6676212663108450937">Oorweeg dit asseblief om oorfone te gebruik terwyl jy jou stem oplei</translation>
 <translation id="7995449485376471452">Jou oortjies, bladsytitels en URL’e word na Brave gestuur</translation>
 <translation id="667752334740867460">Ontvang tans wi-fi-inligting ...</translation>
@@ -8116,6 +8146,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
     <ph name="BEGIN_PARAGRAPH3"/>Vir meer besonderhede oor data wat <ph name="DEVICE_OS"/> met Brave kan deel en hoe dit gebruik word, besoek: g.co/flex/HWDataCollection.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="6770602306803890733">Verbeter sekuriteit vir jou en almal op die web</translation>
 <translation id="6771503742377376720">Is 'n sertifikaatoutoriteit</translation>
+<translation id="6772103682557559072">Meer opsies vir werkadres, <ph name="ADDRESS_SUMMARY"/></translation>
 <translation id="6772974422346500939">Maak oop en wysig</translation>
 <translation id="574857039466693275">Brave Root Store</translation>
 <translation id="677394079035748956">Die werf het ’n eenmalige wagwoord nodig</translation>
@@ -8153,6 +8184,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="6790428901817661496">Speel</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> is oor 'n afstand bygevoeg</translation>
 <translation id="6790820461102226165">Voeg persoon by …</translation>
+<translation id="6792351896138862473">Kan nie ongesteunde kioskapp begin nie. Laat weet jou admin van hierdie kwessie.</translation>
 <translation id="6793610798874309813">Jou PIN kan 4 karakters of meer wees</translation>
 <translation id="6793879402816827484">↓ <ph name="STATUS"/></translation>
 <translation id="6794175321111873395"><ph name="DOWNLOAD_URL"/> is na knipbord gekopieer</translation>
@@ -8166,7 +8198,6 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="679845623837196966">Wys leeslys</translation>
 <translation id="6798578729981748444">Om die invoer te voltooi, maak alle Firefox-vensters toe.</translation>
 <translation id="6798780071646309401">caps lock is aan</translation>
-<translation id="6798954102094737107">Inprop: <ph name="PLUGIN_NAME"/></translation>
 <translation id="679905836499387150">Versteekte nutsbalkknoppies</translation>
 <translation id="6800893479155997609">Topapps vir jou <ph name="DEVICE_TYPE"/></translation>
 <translation id="6801308659697002152">{NUM_EXTENSIONS,plural, =1{Kies of hierdie uitbreiding hierdie werf kan lees of verander}other{Kies of hierdie uitbreidings hierdie werf kan lees of verander}}</translation>
@@ -8234,12 +8265,14 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="6832815922179448173">{MULTI_GROUP_TAB_COUNT,plural, =0{Verwyder oortjie en vee groep uit?}=1{Verwyder oortjies en vee groep uit?}other{Verwyder oortjies en vee groepe uit?}}</translation>
 <translation id="6833479554815567477">Oortjie is verwyder uit groep <ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENTS"/></translation>
 <translation id="6833753236242482566">Gebalanseerd (aanbeveel)</translation>
+<translation id="4261412862774039180">Jou werkadres kan help om dinge in Brave-dienste gedoen te kry, soos meer relevante soekresultate en rigtingaanwysings in Brave Maps. Jy kan jou adres in jou <ph name="BEGIN_LINK"/>Brave-rekening <ph name="USERNAME"/><ph name="END_LINK"/> wysig of uitvee.</translation>
 <translation id="6835762382653651563">Koppel aan die internet om jou <ph name="DEVICE_TYPE"/> op te dateer.</translation>
 <translation id="6838992358006915573">Vergrootglas volg ChromeVox-fokus</translation>
 <translation id="6839916869147598086">Aanmelding het verander</translation>
 <translation id="6840155290835956714">Vra voordat gestuur word</translation>
 <translation id="6840184929775541289">Is nie 'n sertifikaatoutoriteit nie</translation>
 <translation id="6840214587087739194">Adres is uitgevee</translation>
+<translation id="6841076158433142214">Jy sal nie in kennis gestel word wanneer hierdie apps gebruik word om jou skerm op te neem nie:</translation>
 <translation id="6841143363521180029">Geënkripteer</translation>
 <translation id="6841186874966388268">Foute</translation>
 <translation id="6842135459748401207">Net toestelle wat aangemeld is by <ph name="USER_EMAIL"/></translation>
@@ -8363,17 +8396,15 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="6922763095098248079">Jou organisasie bestuur jou toestel. Administrateurs het toegang tot die data in enige profiel op hierdie toestel.</translation>
 <translation id="6923633482430812883">Kan nie deling monteer nie. Kyk dat die lêerbediener waaraan jy tans koppel SMBv2 of later ondersteun.</translation>
 <translation id="6924109527536857168">Sinkronisering is nodig</translation>
-<translation id="6925127338315966709">Jy voeg tans 'n bestuurde profiel by hierdie blaaier. Jou administrateur het beheer oor die profiel en het toegang tot die data daarvan. Boekmerke, geskiedenis, wagwoorde en ander instellings kan met jou rekening gesinkroniseer en deur jou administrateur bestuur word.</translation>
 <translation id="6928650056523249512">Verwyder outomaties toestemmings van ongebruikte werwe</translation>
 <translation id="6929126689972602640">Ouerkontroles word nie vir skoolrekeninge gesteun nie. Meld eers met die kind se persoonlike rekening aan om 'n skoolrekening by te voeg om by die huis toegang tot Brave Klaskamer en ander webwerwe vir skoolwerk te kry. Jy kan die skoolrekening later in opstelling byvoeg.</translation>
-<translation id="7557633564943867584">Ok Brave</translation>
 <translation id="6930161297841867798">{NUM_EXTENSIONS,plural, =1{'n Uitbreiding is afgekeur}other{# uitbreidings is afgekeur}}</translation>
+<translation id="6930337524857202955">Nuwe aflaai is beskikbaar</translation>
 <translation id="6931539787433490713"><ph name="USER_NAME"/> • <ph name="PROFILE_NAME"/></translation>
 <translation id="6931690462168617033">Kliksensitiwiteit</translation>
 <translation id="6933321725007230600">Skakel &amp;sinkronisering aan …</translation>
 <translation id="693459579445775904">Voice-lêers word tussen gebruikers gedeel om skyfspasie te bespaar</translation>
 <translation id="6935031746833428401">Kom meer te wete oor toestelbestuur</translation>
-<translation id="6935125916377656496">Af • Gebruik alledaagse taal om jou blaaigeskiedenis te deursoek en die werwe wat jy besoek het, te kry. Jy kan ook vrae vra en antwoorde kry op grond van jou blaaigeskiedenis</translation>
 <translation id="6935286146439255109">'n Papierlaai ontbreek</translation>
 <translation id="6938386202199793006">Jy het 1 gestoorde drukker.</translation>
 <translation id="6938606182859551396">Volg die instruksies op jou foon om kennisgewings toegang tot Google Play Dienste te gee as jy kennisgewings van jou foon af op jou <ph name="DEVICE_TYPE"/> wil ontvang.</translation>
@@ -8589,6 +8620,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7093220653036489319">Vinnige Antwoorde</translation>
 <translation id="7093866338626856921">Ruil data uit met die toestelle genaamd: <ph name="HOSTNAMES"/></translation>
 <translation id="7094768688212290897">Groot Piramide van Giza</translation>
+<translation id="7094834615934458012">Laat hierdie werf toe om lêers te redigeer?</translation>
 <translation id="7098389117866926363">USB C-toestel (linkerpoort aan agterkant)</translation>
 <translation id="7098447629416471489">Ander gestoorde soekenjins sal hier verskyn</translation>
 <translation id="7098936390718461001">{NUM_APPS,plural, =1{Verwyder app}other{Verwyder apps}}</translation>
@@ -8694,6 +8726,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="6219131628242399788">Maak die Family Link-app op jou toestel oop en dateer <ph name="CHILD_NAME"/> se Brave-instellings op om <ph name="CHILD_NAME"/> toe te laat om in die toekoms uitbreidings sonder jou goedkeuring te installeer.</translation>
 <translation id="7181840534454431748">Sluit by oortjiegroep aan met <ph name="OWNER_FIRST_NAME"/>
             {NUM_OTHER_MEMBERS,plural, =0{Sluit by oortjiegroep aan met <ph name="OWNER_FIRST_NAME"/>}=1{Sluit by oortjiegroep aan met <ph name="OWNER_FIRST_NAME"/> en # ander}other{Sluit by oortjiegroep aan met <ph name="OWNER_FIRST_NAME"/> en # ander}}</translation>
+<translation id="7181976109296206547">Hersien logo-, naam- en URL-opdatering</translation>
 <translation id="7182051712900867547">Gebruik 'n ander rekening</translation>
 <translation id="7182063559013288142">Kitswarmkol</translation>
 <translation id="7182791023900310535">Skuif jou wagwoord</translation>
@@ -8724,7 +8757,6 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="720110658997053098">Hou hierdie toestel permanent in kioskmodus</translation>
 <translation id="7201118060536064622">"<ph name="DELETED_ITEM_NAME"/>" is uitgevee</translation>
 <translation id="7201336084980086208">Outovul kan aanbied om inligting te stoor wanneer jy vorms indien, soos jou rybewys- of paspoortnommer</translation>
-<translation id="7201420661433230412">Bekyk lêers</translation>
 <translation id="7201432510117121839">Die uitsaai van rekenaaroudio word nie op hierdie toestel gesteun nie</translation>
 <translation id="7201535955609308429">Wag asseblief terwyl verifikasie aan die gang is</translation>
 <translation id="7202337678781136582">Skandeer die QR-kode met jou Android-foon</translation>
@@ -8749,9 +8781,11 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7222232353993864120">E-posadres</translation>
 <translation id="7222335051802562841">Voltooi opdatering</translation>
 <translation id="7222373446505536781">F11</translation>
+<translation id="7223027547122518521">Kies ’n lêer wat hierdie werf kan lees</translation>
 <translation id="7223952304612664117">Dit laat stelseldienste toe om Liggingakkuraatheid te gebruik om jou ligging te bepaal. Liggingakkuraatheid gebruik inligting oor draadlose seine en sensors om toestelligging te skat.</translation>
 <translation id="7225082563376899794">Gebruik Windows Hello wanneer wagwoorde ingevul word</translation>
 <translation id="7225179976675429563">Netwerktipe ontbreek</translation>
+<translation id="7226163413959353072">KI-assistent wat sleutelgedagtes gee, konsepte duidelik maak, antwoorde kry en meer</translation>
 <translation id="7227235818314667565">Bestuur deling</translation>
 <translation id="7227458944009118910">Programme wat hieronder gelys word, kan ook protokolskakels hanteer. Ander programme sal vir toestemming vra.</translation>
 <translation id="7228056665272655255">Laat jou kind aan die vingerafdruksensor bo regs op die sleutelbord raak om hul vingerafdruk op te stel. Jou kind se vingerafdrukdata word veilig geberg en verlaat nooit hierdie <ph name="DEVICE_TYPE"/> nie.</translation>
@@ -8821,6 +8855,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="727595954130325265">Koop nou</translation>
 <translation id="727952162645687754">Aflaaifout</translation>
 <translation id="7280649757394340890">Teks-na-spraak-steminstellings</translation>
+<translation id="7280683802406059877">Pasmaak kortpadsleutels</translation>
 <translation id="7280877790564589615">Toestemming versoek</translation>
 <translation id="7281166215790160128">Modus</translation>
 <translation id="7282056103720203738">Lees aangehegde toestelinligting en -data</translation>
@@ -8869,6 +8904,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7312040805247765153">Kan nie app installeer nie</translation>
 <translation id="7312210124139670355">Jou administrateur stel tans jou e-SIM terug. Dit kan 'n paar minute neem.</translation>
 <translation id="7313539585802573958">Sleutelbordligkleure</translation>
+<translation id="7314865262803554456">Jy sal nie in kennis gestel word wanneer die opname begin nie.</translation>
 <translation id="7314989823816739632">Romanties</translation>
 <translation id="7317342082064136423">Verifieer jou rekening</translation>
 <translation id="7317831949569936035">Skoolinskrywing</translation>
@@ -8890,8 +8926,10 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7328162502911382168">(<ph name="COUNT"/>)</translation>
 <translation id="498470726907206577">{BOOKMARK_COUNT,plural, =1{1 boekmerk word net op hierdie toestel gestoor. Stoor dit in jou Brave-rekening om dit op jou ander toestelle te gebruik.}other{{BOOKMARK_COUNT} boekmerke word net op hierdie toestel gestoor. Stoor hulle in jou Brave-rekening om hulle op jou ander toestelle te gebruik.}}</translation>
 <translation id="7328867076235380839">Ongeldige kombinasie</translation>
+<translation id="7329009627557479564">Kan nie oplaai nie. Lêer oorskry maksimum gesteunde grootte.</translation>
 <translation id="7329154610228416156">Kon nie aanmeld nie omdat dit opgestel is om 'n onveilige URL (<ph name="BLOCKED_URL"/>) te gebruik. Kontak jou administrateur.</translation>
 <translation id="7330533963640151632"><ph name="FEATURE_NAME"/>-instellings vir <ph name="USER_NAME"/> se toestel wat deel onder die rekening <ph name="USER_EMAIL"/>.</translation>
+<translation id="733058866272972585">Hierdie werf word gekeer om identifiseerders te gebruik om beskermde inhoud te speel.</translation>
 <translation id="7331646370422660166">alt + afpyl</translation>
 <translation id="7332053360324989309">Toegewyde werker: <ph name="SCRIPT_URL"/></translation>
 <translation id="7332138995369063163">Duplikaatoortjies</translation>
@@ -8960,6 +8998,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7377451353532943397">Hou aan om sensortoegang te blokkeer</translation>
 <translation id="7377481913241237033">Koppel met 'n kode</translation>
 <translation id="7379178796923433598">{NUM_TASKS,plural, =0{<ph name="TASK_ROW"/>}=1{<ph name="TASK_ROW"/>. ’n Ander taak in dieselfde taakgroep: <ph name="OTHER_TASKS"/>}other{<ph name="TASK_ROW"/>. Ander # take in dieselfde taakgroep: <ph name="OTHER_TASKS"/>}}</translation>
+<translation id="7380162005366861509"><ph name="ORIGIN"/> sal <ph name="FILENAME"/> kan bekyk en hul eie kopieë daarvan kan maak</translation>
 <translation id="7380272457268061606">Deaktiveer terugstelling van plaaslike data?</translation>
 <translation id="7380459290951585794">Maak seker dat jou foon in die omtrek is en ontsluit is, en dat Bluetooth en wi-fi aangeskakel is</translation>
 <translation id="7380622428988553498">Toestelnaam bevat ongeldige karakters</translation>
@@ -9043,6 +9082,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7427348830195639090">Agtergrondbladsy: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="7427729970025360383">Hierdie profiel word bestuur</translation>
 <translation id="7427798576651127129">Oproep vanaf <ph name="DEVICE_NAME"/></translation>
+<translation id="7429004613638800673"><ph name="APP_NAME"/> het verskeie oortjies oopgemaak.</translation>
 <translation id="7429415133937917139">Simuleer die lewering van 'n herlaaibare brailleskerm
     in die ChromeVox-paneel aan die bokant van die skerm</translation>
 <translation id="1782880777068048256"><ph name="FILENAME"/> kan gevaarlik wees. Voeg ’n wagwoord by as jy wil hê Brave moet dit verifieer, of laai dit direk af.</translation>
@@ -9097,7 +9137,6 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7466431077154602932">Kompakte aansig</translation>
 <translation id="7466861475611330213">Leestekenstyl</translation>
 <translation id="746861123368584540">Uitbreiding is gelaai</translation>
-<translation id="7469612367552312334">Gebruik alledaagse taal om jou blaaigeskiedenis te deursoek en die werwe wat jy besoek het, te kry</translation>
 <translation id="7470131554696493512">Blokkeer Thunderbolt of USB4-bykomstighede om toegang tot geheue (RAM) te verkry en dit te deel</translation>
 <translation id="7470274830728993952">Sluit by oortjiegroep aan</translation>
 <translation id="8872791231662951324">Hierdie rekening word nie geassosieer met Brave nie, daarom is kenmerke soos Brave-sinkronisering nie beskikbaar nie</translation>
@@ -9126,6 +9165,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7481312909269577407">Vorentoe</translation>
 <translation id="7481358317100446445">Gereed</translation>
 <translation id="748138892655239008">Sertifikaat se basiese beperkings</translation>
+<translation id="7482823403440483089">Verbeterde outovul</translation>
 <translation id="7483732342458943943">Hierdie skakel werk nie</translation>
 <translation id="7484645889979462775">Nooit vir hierdie werf nie</translation>
 <translation id="7914076745371236476">Jy kan al jou toegangsleutels wat in Brave Wagwoordbestuurder gestoor is, op hierdie toestel gebruik. Jy hoef dit net een keer te doen.</translation>
@@ -9138,6 +9178,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7490683549040131791">Gaan oorblywende wagwoorde na</translation>
 <translation id="7491962110804786152">oortjie</translation>
 <translation id="7491963308094506985">{NUM_COOKIES,plural, =1{1 webkoekie}other{{NUM_COOKIES} webkoekies}}</translation>
+<translation id="7493355200491857618">Identifiseerders vir beskermde inhoud geweier</translation>
 <translation id="7493386493263658176"><ph name="EXTENSION_NAME"/>-uitbreiding kan al die teks wat jy tik, insluitend persoonlike data soos wagwoorde en kredietkaartnommers, insamel. Wil jy hierdie uitbreiding gebruik?</translation>
 <translation id="7494694779888133066"><ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
 <translation id="7495149565104413027">Android-app</translation>
@@ -9158,6 +9199,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7506242536428928412">Stel 'n nuwe PIN om jou nuwe sekuriteitsleutel te gebruik</translation>
 <translation id="7506541170099744506">Jou <ph name="DEVICE_TYPE"/> is suksesvol ingeskryf vir ondernemingbestuur.</translation>
 <translation id="7507207699631365376">Lees hierdie verskaffer se <ph name="BEGIN_LINK"/>privaatheidsbeleid<ph name="END_LINK"/></translation>
+<translation id="187964889181534234">Meer oor hierdie kenmerk en relevante data wat na Brave toe gestuur word</translation>
 <translation id="7508707215237589321">Vee “<ph name="CERT_NAME"/>” uit?</translation>
 <translation id="7508971277215079477">{MULTI_GROUP_TAB_COUNT,plural, =0{Maak oortjie toe en vee groep uit?}=1{Maak oortjies toe en vee groep uit?}other{Maak oortjies toe en vee groepe uit?}}</translation>
 <translation id="7509097596023256288">Stel tans bestuur op</translation>
@@ -9195,6 +9237,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7541773865713908457"><ph name="ACTION_NAME"/> met die app <ph name="APP_NAME"/></translation>
 <translation id="754207240458482646">Is met ander toestelle in jou rekening gesinkroniseer. <ph name="LINK_BEGIN"/>Kom meer te wete<ph name="LINK_END"/></translation>
 <translation id="7542113656240799536">EAP-netwerkstawinginligting</translation>
+<translation id="754225194829660954">Vanaf <ph name="DISPLAY_INITIATOR_ORIGIN"/></translation>
 <translation id="7542619176101025604"><ph name="ACTION_NAME"/> – vasgespeld</translation>
 <translation id="7543104066686362383">Aktiveer ontfoutingkenmerke op hierdie <ph name="IDS_SHORT_PRODUCT_NAME"/>-toestel</translation>
 <translation id="7544227555407951270">Skryf die toestel in</translation>
@@ -9226,6 +9269,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7561196759112975576">Altyd</translation>
 <translation id="7561759921596375678">Skakel volume aan</translation>
 <translation id="7561982940498449837">Maak kieslys toe</translation>
+<translation id="7563576896417108627">Pasmaak en beheer <ph name="APP_NAME"/>. Opdatering is beskikbaar.</translation>
 <translation id="756445078718366910">Maak blaaivenster oop</translation>
 <translation id="7564847347806291057">Beëindig proses</translation>
 <translation id="756503097602602175">Jy kan aangemelde Brave-rekeninge in <ph name="LINK_BEGIN"/>Instellings<ph name="LINK_END"/> bestuur. Toestemmings wat jy vir webwerwe en apps gegee het, kan op alle rekeninge van toepassing wees. As jy nie wil hê dat werwe of programme toegang tot jou rekeninginligting moet hê nie, kan jy as 'n gas by jou <ph name="DEVICE_TYPE"/> aanmeld of in 'n <ph name="LINK_2_BEGIN"/>Incognito-venster<ph name="LINK_2_END"/> deur die web blaai.</translation>
@@ -9237,7 +9281,6 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7568759527730933493">Gebruik ’n veilige verbinding om ’n werf se IP-adres in die DNS (domeinnaamstelsel) op te soek. Dit gebruik ’n bestuurde diensverskaffer by <ph name="DNS_SERVER_TEMPLATE_WITH_IDENTIFIER"/>. Veilige verbindings word nie gebruik vir sommige domeine wat deur jou administrateur opgestel is nie.</translation>
 <translation id="756876171895853918">Pasmaak avatar</translation>
 <translation id="7568790562536448087">Dateer tans op</translation>
-<translation id="3666110271222665926">Wanneer Brave een van jou wagwoorde in ’n dataskending vind, kan dit aanbied om jou wagwoord vir jou te verander wanneer jy aanmeld</translation>
 <translation id="7569983096843329377">Swart</translation>
 <translation id="7570548610653957960">Help My Lees</translation>
 <translation id="7571643774869182231">Te min bergingspasie vir opdatering</translation>
@@ -9256,6 +9299,7 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="7582844466922312471">Mobiele data</translation>
 <translation id="7583948862126372804">Telling</translation>
 <translation id="7585106857920830898">Kontroleer tans met jou organisasie se sekuriteitbeleid …</translation>
+<translation id="7585490016012953607">Terugstellingwagwoord – tydelik gestoor vir tot 3 maande</translation>
 <translation id="8201192017531062522">Brave sal aanhou werk terwyl Brave-programme oop is.</translation>
 <translation id="7587806318633605613">Voorstelgeskiedenis</translation>
 <translation id="7589448773774086276">Nuwe verdeelde aansig met huidige oortjie</translation>
@@ -9331,7 +9375,6 @@ Jy het nog # gekompromitteerde wagwoorde. Brave Wagwoordbestuurder beveel aan da
 <translation id="764178579712141045"><ph name="USER_EMAIL"/> is bygevoeg</translation>
 <translation id="7642778300616172920">Versteek sensitiewe inhoud</translation>
 <translation id="7643117827468520640">Gaan hierdie bepalings na</translation>
-<translation id="7643932971554933646">Laat werf lêers bekyk?</translation>
 <translation id="7644953783774050577">Kies geen</translation>
 <translation id="7645176681409127223"><ph name="USER_NAME"/> (eienaar)</translation>
 <translation id="7645681574855902035">Kanselleer tans Linux-rugsteun</translation>
@@ -9528,7 +9571,6 @@ Druk 'n toegewese skakelaar of sleutel om toewysing te verwyder.</translation>
 <translation id="7767554953520855281">Besonderhede word versteek terwyl jy jou skerm deel</translation>
 <translation id="7767972280546034736">Skep ’n toegangsleutel vir <ph name="APP_NAME"/></translation>
 <translation id="7768507955883790804">Werwe volg outomaties hierdie instelling wanneer jy hulle besoek</translation>
-<translation id="7768526219335215384"><ph name="ORIGIN"/> sal lêers in <ph name="FOLDERNAME"/> kan bekyk</translation>
 <translation id="7768770796815395237">Verander</translation>
 <translation id="7768784765476638775">Hardoplees</translation>
 <translation id="7769709635093101687">Kortpadsleutels om te onderbreek</translation>
@@ -9546,7 +9588,6 @@ Druk 'n toegewese skakelaar of sleutel om toewysing te verwyder.</translation>
 <translation id="7774581652827321413">Kry ’n bladsyopsomming, verwante soektogte en ander nuttige inligting oor hierdie bladsy</translation>
 <translation id="7774792847912242537">Te veel versoeke.</translation>
 <translation id="7775694664330414886">Oortjie is geskuif na naamlose groep – <ph name="GROUP_CONTENTS"/></translation>
-<translation id="7776156998370251340"><ph name="ORIGIN"/> sal lêers in <ph name="FOLDERNAME"/> kan bekyk totdat jy alle oortjies vir hierdie werf toemaak</translation>
 <translation id="5614774692683309331">Wanneer jy aangemeld is, beskerm dit jou oral in Brave-dienste.</translation>
 <translation id="7776701556330691704">Geen stemme gevind nie</translation>
 <translation id="7776950606649732730">Probeer weer nadat die lêer klaar gesinchroniseer het.</translation>
@@ -9571,6 +9612,7 @@ Druk 'n toegewese skakelaar of sleutel om toewysing te verwyder.</translation>
 
 
 <ph name="EXTENSION_NAME"/></translation>
+<translation id="2320538105463162259">Jou huisadres kan help om dinge in Brave-dienste gedoen te kry, soos meer relevante soekresultate en rigtingaanwysings in Brave Maps. Jy kan jou adres in jou <ph name="BEGIN_LINK"/>Brave-rekening <ph name="USERNAME"/><ph name="END_LINK"/> wysig of uitvee.</translation>
 <translation id="7791269138074599214">Invoermetode</translation>
 <translation id="5108489105791345153">Hierdie app sal op jou tans gebruikte Brave-profiel geïnstalleer word</translation>
 <translation id="7791436592012979144">Omgekeerde rollees is geaktiveer</translation>
@@ -9583,6 +9625,7 @@ Druk 'n toegewese skakelaar of sleutel om toewysing te verwyder.</translation>
 <translation id="7796453472368605346">Diakritiese tekens</translation>
 <translation id="7797571222998226653">Af</translation>
 <translation id="7798504574384119986">Bekyk webtoestemmings</translation>
+<translation id="7798559336183476274">Meer handelinge vir <ph name="BUTTON_TITLE"/></translation>
 <translation id="7798844538707273832">Het <ph name="PERMISSION"/> outomaties geblokkeer</translation>
 <translation id="7799650166313181433">Net toestelle wat by <ph name="USER_EMAIL"/> aangemeld is, kan met hierdie toestel deel. Jy sal nie deling tussen jou toestelle hoef goed te keur nie.</translation>
 <translation id="7800485561443537737">Gebruik jou <ph name="DEVICE_TYPE"/> se mobiele data. Jou diensverskaffer kan bykomende fooie hef. Kan batterygebruik verhoog. <ph name="BEGIN_LINK_LEARN_MORE"/>Kom meer te wete<ph name="END_LINK_LEARN_MORE"/></translation>
@@ -9628,8 +9671,8 @@ Druk 'n toegewese skakelaar of sleutel om toewysing te verwyder.</translation>
 <translation id="7830833461614351956">Kopieer <ph name="NUM_OF_FILES"/> lêers na <ph name="CLOUD_PROVIDER"/> om oop te maak?</translation>
 <translation id="7831754656372780761"><ph name="TAB_TITLE"/> <ph name="EMOJI_MUTING"/></translation>
 <translation id="7833720883933317473">Gestoorde gepasmaakte woorde sal hier verskyn</translation>
+<translation id="7834832693620032149">Deel eerder ’n oortjie of venster as jy oudio wil deel</translation>
 <translation id="7836577093182643605">Lys onderwerpe wat jy geblokkeer het wat jy nie met werwe gedeel wil hê nie</translation>
-<translation id="7836745198769390202">Jy het tans <ph name="NUMBERED_ITEM_1"/>, <ph name="NUMBERED_ITEM_2"/> en meer. Jou organisasie sal hierdie data kan sien en bestuur</translation>
 <translation id="7836850009646241041">Probeer weer om jou sekuriteitsleutel te raak</translation>
 <translation id="7838838951812478896">Kon nie "<ph name="NETWORK_NAME"/>" vanaf <ph name="DEVICE_NAME"/> stoor nie</translation>
 <translation id="7838971600045234625">{COUNT,plural, =1{<ph name="ATTACHMENTS"/> is gestuur na <ph name="DEVICE_NAME"/>}other{<ph name="ATTACHMENTS"/> is gestuur na <ph name="DEVICE_NAME"/>}}</translation>
@@ -9644,6 +9687,7 @@ Druk 'n toegewese skakelaar of sleutel om toewysing te verwyder.</translation>
 <translation id="784475655832336580">Die item kan nie met sleutelbordfokus gemerk word wanneer ChromeVox aan is nie</translation>
 <translation id="7844992432319478437">Dateer tans verskilvergelyking op</translation>
 <translation id="7846161022626028328">Iets is fout. Probeer weer.</translation>
+<translation id="7068829570137757602">Brave-dienste</translation>
 <translation id="7846634333498149051">Sleutelbord</translation>
 <translation id="7847212883280406910">Druk Ctrl + Alt + S om na <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> oor te skakel</translation>
 <translation id="7848244988854036372">Maak almal (<ph name="URL_COUNT"/>) in nuwe oortjiegroep oop</translation>
@@ -9655,7 +9699,6 @@ Druk 'n toegewese skakelaar of sleutel om toewysing te verwyder.</translation>
     <ph name="BEGIN_PARAGRAPH2"/>Jy kan toestemming vir hierdie verslae enige tyd in jou Brave-bedryfstelseltoestel se instellings begin of stop. As jy 'n domeinadministrateur is, kan jy hierdie instelling in die adminkonsole verander.<ph name="END_PARAGRAPH2"/>
     <ph name="BEGIN_PARAGRAPH3"/>As die Web- en App-aktiwiteit-instelling vir jou Brave-rekening aangeskakel is, kan jou Android-data in jou Brave-rekening gestoor word. Jy kan by account.google.com jou data sien, dit uitvee en jou rekeninginstellings verander.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="7851021205959621355"><ph name="BEGIN_BOLD"/>Let wel<ph name="END_BOLD"/>: 'n Soortgelyke stem of opname kan dalk toegang tot jou persoonlike resultate of jou Assistent kry. As jy batterykrag wil bespaar, kan jy in jou Assistent-instellings kies dat "Ok Brave" net aan moet wees wanneer hierdie toestel aan 'n kragbron gekoppel is.</translation>
-<translation id="7851196412551419054">Verander tans jou wagwoord …</translation>
 <translation id="7851457902707056880">Aanmelding is net tot die eienaarrekening beperk. Herselflaai asseblief en meld met die eienaarrekening aan. Die masjien sal oor 30 sekondes herselflaai.</translation>
 <translation id="7851716364080026749">Blokkeer altyd toegang tot kamera en mikrofoon</translation>
 <translation id="7851720427268294554">IPP-ontleder</translation>
@@ -9664,7 +9707,6 @@ Druk 'n toegewese skakelaar of sleutel om toewysing te verwyder.</translation>
 <translation id="7853747251428735">Meer nutsgoed</translation>
 <translation id="7855258394151767387">Gebruik “w” om ’n muisknoppie te druk</translation>
 <translation id="7855678561139483478">Skuif oortjie na nuwe venster</translation>
-<translation id="7856798637819639676">Gebruik veilig ’n ID op jou Android-toestel</translation>
 <translation id="7857004848504343806">Jou rekenaar bevat ’n veilige module wat gebruik word om baie kritieke sekuriteitskenmerke in Chrome OS Flex te implementeer. Besoek die Chromebook-hulpsentrum om meer te wete te kom: https://support.google.com/chromebook/?p=sm</translation>
 <translation id="7857093393627376423">Teksvoorstelle</translation>
 <translation id="7858120906780498731">ChromeOS-gekoppelde invoertoestelle</translation>
@@ -9705,6 +9747,7 @@ Druk 'n toegewese skakelaar of sleutel om toewysing te verwyder.</translation>
 <translation id="7886279613512920452">{COUNT,plural, =1{'n item}other{# items}}</translation>
 <translation id="7886605625338676841">e-SIM</translation>
 <translation id="7887174313503389866">Begin 'n begeleide toer van belangrike privaatheid- en sekuriteitkontroles. Gaan na individuele instellings vir meer opsies.</translation>
+<translation id="7887286029584695415">Laat hierdie werf toe om lêers te bekyk en te kopieer?</translation>
 <translation id="7887334752153342268">Dupliseer</translation>
 <translation id="7887864092952184874">Bluetooth-muis is saamgebind</translation>
 <translation id="7889371445710865055">Verander dikteertaal</translation>
@@ -9748,6 +9791,7 @@ Druk 'n toegewese skakelaar of sleutel om toewysing te verwyder.</translation>
 <translation id="7920482456679570420">Voeg woorde by wat jy wil hê speltoets moet oorslaan</translation>
 <translation id="7920715534283810633">Kan nie <ph name="FILE_NAMES"/> oopmaak nie</translation>
 <translation id="7921347341284348270">Jy kan nie op hierdie bestuurde rekening na jou foon se kennisgewings kyk nie. Probeer weer met ’n ander rekening. <ph name="LINK_BEGIN"/>Kom meer te wete<ph name="LINK_END"/></translation>
+<translation id="7921395044508886182">Werwe kan JavaScript-optimering gebruik</translation>
 <translation id="7921901223958867679">Hierdie uitbreiding kan <ph name="HOST"/> lees en verander</translation>
 <translation id="7922606348470480702">1 uitbreiding</translation>
 <translation id="7923564237306226146">Linux-opgradering is afgehandel</translation>
@@ -9789,6 +9833,7 @@ Druk 'n toegewese skakelaar of sleutel om toewysing te verwyder.</translation>
 <translation id="7944772052836377867">Sinkronisering moet verifieer dat dit jy is</translation>
 <translation id="7944847494038629732">Prop die skandeerder se USB-kabel uit en prop dit weer in om weer te probeer</translation>
 <translation id="7945703887991230167">Voorkeurstem</translation>
+<translation id="7946243258100028201"><ph name="ORIGIN"/> sal lêers in <ph name="FOLDERNAME"/> kan bekyk en kopieë daarvan kan maak totdat jy alle oortjies vir hierdie werf toemaak</translation>
 <translation id="7946586320617670168">Bron moet veilig wees</translation>
 <translation id="7946681191253332687">Uitgebreide sekuriteitopdaterings is beskikbaar</translation>
 <translation id="794676567536738329">Bevestig toestemmings</translation>
@@ -9868,6 +9913,7 @@ Druk 'n toegewese skakelaar of sleutel om toewysing te verwyder.</translation>
 <translation id="7991296728590311172">Skakelaartoegang-instellings</translation>
 <translation id="7992080146463834191">Som inhoud op, vereenvoudig ingewikkelde taal of vrae vra.</translation>
 <translation id="7992203134935383159">Spraaksintese</translation>
+<translation id="8529840260101294725">Maklike toegang om Gemini oral op jou toestel te gebruik, selfs al is Brave geminimeer.</translation>
 <translation id="7997826902155442747">Verwerkingsprioriteit</translation>
 <translation id="7997828719430450286">Sukses.</translation>
 <translation id="7998701048266085837">URL’e</translation>
@@ -9879,7 +9925,9 @@ Sleutellêer: <ph name="KEY_FILE"/>
 Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes van jou uitbreiding te skep.</translation>
 <translation id="8000020256436988724">Nutsbalk</translation>
 <translation id="800117767980299235">Stemhoogtepunte</translation>
+<translation id="8001561107130904792">Bladsyinhouddeling</translation>
 <translation id="8002274832045662704">Gevorderde drukkeropstelling</translation>
+<translation id="4887423466657350843">Brave kan onderskrifte skep vir die tale wat hier gewys word</translation>
 <translation id="8002670234429879764"><ph name="PRINTER_NAME"/> is nie meer beskikbaar nie</translation>
 <translation id="8004092996156083991">Ons sal jou laat weet as jou wagwoorde gekompromitteer is.</translation>
 <translation id="8004507136466386272">Woorde</translation>
@@ -9913,12 +9961,13 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8025151549289123443">Sluitskerm en aanmelding</translation>
 <translation id="8025291188699172126">Meer oor opdaterings</translation>
 <translation id="8026471514777758216">Al jou toestelle</translation>
+<translation id="8026700655446696031">Meer opsies vir huisadres, <ph name="ADDRESS_SUMMARY"/></translation>
 <translation id="8026784703228858744">Stoor jou boekmerke en meer met sinkronisering</translation>
 <translation id="8027325966409484573">{NUM_DAYS,plural, =0{Het 0 dae gelede besoek}=1{Het 1 dag gelede besoek}other{Het # dae gelede besoek}}</translation>
 <translation id="8028060951694135607">Microsoft-sleutelherwinning</translation>
-<translation id="8028138772801251745">Outovul met AI</translation>
 <translation id="8028803902702117856">Laai nou af: <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="8028993641010258682">Grootte</translation>
+<translation id="8029349782735515147">Wys onderskrifte wanneer Gemini Regstreeks gebruik word</translation>
 <translation id="8029412171914613589">{SELECTED_ITEMS,plural, =0{Leeslys}=1{Leeslys ({SELECTED_ITEMS})}other{Leeslys ({SELECTED_ITEMS})}}</translation>
 <translation id="8029492516535178472"><ph name="WINDOW_TITLE"/> – toestemming is versoek; druk ⌘ + Option + oppyl om te antwoord</translation>
 <translation id="8030169304546394654">Ontkoppel</translation>
@@ -9976,10 +10025,10 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8061991877177392872">Dit lyk of jy Voice Match met jou Assistent op 'n ander toestel opgestel het. Hierdie vorige opnames is gebruik om 'n stemmodel op hierdie toestel te maak.</translation>
 <translation id="8062844841289846053">{COUNT,plural, =1{1 vel papier}other{{COUNT} velle papier}}</translation>
 <translation id="8063235345342641131">Verstek- groen avatar</translation>
-<translation id="8063535366119089408">Bekyk lêer</translation>
 <translation id="8064015586118426197">Chrome OS Flex</translation>
 <translation id="8065144531309810062">Gebruik Brave AI om meer kreatief en produktief te wees</translation>
 <translation id="8066444921260601116">Verbindingdialoog</translation>
+<translation id="8068904756674285749">Gebruik alledaagse taal om jou blaaigeskiedenis te deursoek en die werwe wat jy besoek het, te kry. Jy kan ook vrae vra en antwoorde kry op grond van jou blaaigeskiedenis. Die instelling is af.</translation>
 <translation id="8070572887926783747"><ph name="APP_NAME"/>-liggingtoestemming</translation>
 <translation id="8070662218171013510">Fisiese terugvoer</translation>
 <translation id="8071033114691184017">Gebruik hierdie wagwoord op jou iPhone</translation>
@@ -9996,6 +10045,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="7239633109246708042">Brave Wagwoordbestuurder kan jou rekening met ’n sterk wagwoord opdateer en dit in <ph name="EMAIL"/> stoor. <ph name="PASSWORD_CHANGE"/></translation>
 <translation id="80798452873915119">Werwe kan vra om vensters op al jou skerms te bestuur</translation>
 <translation id="8080028325999236607">Maak alle oortjies toe</translation>
+<translation id="8080530871547404884"><ph name="ORIGIN"/> sal <ph name="FILENAME"/> kan bekyk en hul eie kopieë daarvan kan maak totdat jy alle oortjies vir hierdie werf toemaak</translation>
 <translation id="8081989000209387414">Deaktiveer ADB-ontfouting?</translation>
 <translation id="8082106343289440791">Bind saam met "<ph name="DEVICE_NAME"/>"?</translation>
 <translation id="8082132721957920509">Jou kaart is gestoor</translation>
@@ -10011,7 +10061,6 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="808894953321890993">Verander wagwoord</translation>
 <translation id="8090234456044969073">Lees 'n lys van jou mees besoekte webwerwe</translation>
 <translation id="8090513782447872344">Jy kan enige tyd terugkom om weer te kyk</translation>
-<translation id="8090579562279016251">Verminder werkverrigting, maar maak V8 meer bestand teen aanvalle</translation>
 <translation id="8090686009202681725">Skep tema met AI</translation>
 <translation id="8093359998839330381"><ph name="PLUGIN_NAME"/> reageer tans nie</translation>
 <translation id="8094536695728193970">Appelkoos</translation>
@@ -10036,6 +10085,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8102139037507939978">Verwyder persoonlik identifiseerbare inligting uit system_logs.txt.</translation>
 <translation id="810362914482827094">Soek toegangsleutels</translation>
 <translation id="8104088837833760645">Laai e-SIM-profiel af</translation>
+<translation id="8105050970626643057">Maak Gemini vinnig oop wanneer jy dit ook al nodig het</translation>
 <translation id="8105273883928376822">Meld asseblief aan om voort te gaan.</translation>
 <translation id="8106114112474206597">Gebruik “i” om ’n muisknoppie te druk</translation>
 <translation id="8107015733319732394">Installeer tans die Google Play Winkel op jou <ph name="DEVICE_TYPE"/>. Dit kan 'n paar minute neem.</translation>
@@ -10059,13 +10109,13 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8121537075864592453">Volskerm is gedeaktiveer</translation>
 <translation id="8121750884985440809">Jy saai tans jou skerm uit</translation>
 <translation id="8122898034710982882">Foonsentrum, <ph name="FEATURE_NAME"/></translation>
+<translation id="8123087650856503231">Rugsteun jou wagwoorde, boekmerke en meer sodat jy hulle maklik op al jou toestelle kan kry</translation>
 <translation id="81238879832906896">Geel-en-wit blom</translation>
 <translation id="8123975449645947908">Rollees agteruit</translation>
 <translation id="8124313775439841391">Bestuurde ONC</translation>
 <translation id="8125651784723647184">Wagwoorddeling word deur jou administrateur bestuur</translation>
 <translation id="8126355825906412872">Glimlag</translation>
 <translation id="8129265306888404830">Jy moet onderneminginskrywing gebruik om jou e-posadres by jou organisasie (<ph name="EMAIL_DOMAIN"/>) te gebruik. Meld met jou persoonlike Brave-rekening aan as hierdie toestel vir jou persoonlike gebruik is.</translation>
-<translation id="8130476996317833777">Moenie toelaat dat werwe die V8-optimeerder gebruik nie</translation>
 <translation id="813082847718468539">Bekyk werfinligting</translation>
 <translation id="8131740175452115882">Bevestig</translation>
 <translation id="8133297578569873332">Aanvaarbaar – FM</translation>
@@ -10119,6 +10169,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8162984717805647492">{NUM_TABS,plural, =1{Skuif oortjie na nuwe venster toe}other{Skuif oortjies na nuwe venster toe}}</translation>
 <translation id="8163152278172770963">Moenie toelaat dat werwe outomaties prent-in-prent ingaan nie</translation>
 <translation id="8163708146810922598">oudste</translation>
+<translation id="8164842729077473463">Hou aan om hierdie werf te keer om identifiseerders te gebruik om beskermde inhoud te speel</translation>
 <translation id="8165997195302308593">Crostini-poortaanstuur</translation>
 <translation id="816704878106051517">{COUNT,plural, =1{'n foonnommer}other{# foonnommers}}</translation>
 <translation id="8168435359814927499">Inhoud</translation>
@@ -10284,6 +10335,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8276560076771292512">Maak kas leeg en dwing herlaai af</translation>
 <translation id="8276850948802942358">Kom meer te wete oor hoe om ’n werf tydelike toestemming te gee om derdepartywebkoekies te gebruik</translation>
 <translation id="8277907305629781277">Jy het hierdie toegangsleutel op <ph name="DATE"/> geskep</translation>
+<translation id="8278702675516957539">Nie toegelaat om JavaScript-optimering te gebruik nie</translation>
 <translation id="827966378414194229">Gebruik kopbewegings en gesiguitdrukkings om jou Chromebook te beheer. <ph name="LINK_BEGIN"/>Meer inligting<ph name="LINK_END"/></translation>
 <translation id="8280267190418431666">Webwerwe in jou tale</translation>
 <translation id="8280848878018088610">Dawerende branders in die see, met ’n fantastiese stad en kasteel in die agtergrond, in ’n donker luim.</translation>
@@ -10292,6 +10344,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8283802069507225582">Sinkroniseer jou geskiedenis en oortjies na <ph name="ACCOUNT_EMAIL"/> toe om op ander toestelle aan te gaan waar jy opgehou het</translation>
 <translation id="8284279544186306258">alle <ph name="WEBSITE_1"/>-werwe</translation>
 <translation id="8284326494547611709">Onderskrifte</translation>
+<translation id="8285625579699113397">Jou rekening</translation>
 <translation id="8286036467436129157">Meld aan</translation>
 <translation id="8286227656784970313">Gebruik stelselwoordeboek</translation>
 <translation id="828642162569365647">Hierdie wagwoord of PIN beskerm jou data op <ph name="DEVICE_TYPE"/> en enige inligting waartoe jy van jou foon af toegang kry. Jy sal moet ontsluit elke keer wanneer jou <ph name="DEVICE_TYPE"/> van slaap af wakker word.</translation>
@@ -10333,6 +10386,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8314835274931377415">Begin skakelaartoegangopstelling?</translation>
 <translation id="8315018673856831477">Geheuebespaarderopsies</translation>
 <translation id="8315514906653279104">Skakel tans aan …</translation>
+<translation id="8316480109537174997">Wys Gemini in stelsellaai en skakel kortpadsleutel aan</translation>
 <translation id="8317671367883557781">Voeg netwerkverbinding by</translation>
 <translation id="8317965619823678157">kopieer wagwoorde</translation>
 <translation id="8318266828739827371">Gebruik ’n verdeeldeskermaansig om die vergrote area van jou skerm te sien. Gebruik Soek + Ctrl + D om die gedokte vergrootglas aan en af te skakel.</translation>
@@ -10357,7 +10411,6 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8330617762701840933">Die lys webwerwe wat na ’n alternatiewe blaaier herlei word.</translation>
 <translation id="8330689128072902965">Kontakte in die omtrek kan met jou deel. Klik om te verander.</translation>
 <translation id="8331323939220256760">{FILE_TYPE_COUNT,plural, =1{Gesteunde lêertipe: <ph name="FILE_TYPE1"/>}=2{Gesteunde lêertipes: <ph name="FILE_TYPE1"/>, <ph name="FILE_TYPE2"/>}=3{Gesteunde lêertipes: <ph name="FILE_TYPE1"/>, <ph name="FILE_TYPE2"/>, <ph name="FILE_TYPE3"/>}=4{Gesteunde lêertipes: <ph name="FILE_TYPE1"/>, <ph name="FILE_TYPE2"/>, <ph name="FILE_TYPE3"/>, <ph name="FILE_TYPE4"/>}other{Gesteunde lêertipes: <ph name="FILE_TYPE1"/>, <ph name="FILE_TYPE2"/>, <ph name="FILE_TYPE3"/>, <ph name="FILE_TYPE4"/> (<ph name="LINK"/>en nog {OVERFLOW_COUNT}<ph name="END_LINK"/>)}}</translation>
-<translation id="8331578454993293727">Hierdie wagwoord is in ’n dataskending gekry</translation>
 <translation id="8331822764922665615">Gee jou groep ’n naam, kies ’n kleur, en druk Esc</translation>
 <translation id="833256022891467078">Gedeelde vouers in Crostini</translation>
 <translation id="833262891116910667">Merk</translation>
@@ -10440,7 +10493,6 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
     <ph name="BEGIN_PARAGRAPH2"/>Vir meer hulp, besoek: g.co/flex/InstallErrors.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8383614331548401927">Opsomming van verwelkoming</translation>
 <translation id="8386091599636877289">Kon nie beleid kry nie.</translation>
-<translation id="1028348485151425425">Brave kan jou rekening vir hierdie werf met ’n sterk wagwoord opdateer. Jy hoef nie die wagwoord te onthou nie omdat dit vir jou gestoor is in Brave Wagwoordbestuurder vir <ph name="EMAIL"/>. Meer oor <ph name="PASSWORD_CHANGE"/>.</translation>
 <translation id="8387361103813440603">Mag nie jou ligging sien nie</translation>
 <translation id="8387617938027387193">Verifieer dat dit jy is</translation>
 <translation id="8388770971141403598">Sekondêre profiele word nie gesteun nie</translation>
@@ -10491,6 +10543,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8425213833346101688">Verander</translation>
 <translation id="8425492902634685834">Speld aan taakbalk vas</translation>
 <translation id="8425768983279799676">Jy kan jou PIN gebruik om jou toestel te ontsluit.</translation>
+<translation id="7929115484654063334">Meld by Brave aan om jou wagwoorde en meer op al jou toestelle te kry</translation>
 <translation id="8427213022735114808">Diktee stuur jou stem na Brave om steminvoer in enige teksveld moontlik te maak.</translation>
 <translation id="8427292751741042100">op enige gasheer ingebed</translation>
 <translation id="8428213095426709021">Instellings</translation>
@@ -10501,9 +10554,9 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8431190899827883166">Wys tikke</translation>
 <translation id="843173223122814223">Skep agtergronde met AI</translation>
 <translation id="8431977087510901105">Terugstelling van skermpyltjie-instellings</translation>
+<translation id="843210078733508372">Meld aan en die wagwoordverandering sal voortgaan</translation>
 <translation id="8433186206711564395">Netwerkinstellings</translation>
 <translation id="8434109185104929038">Leeshoekie</translation>
-<translation id="8434480141477525001">NaCl-ontfoutpoort</translation>
 <translation id="8434837876193928924">Besonderhede van oortjiegroep</translation>
 <translation id="8435951291982398331">{NUM_TABS,plural, =1{Stel hierdie oortjie reg}other{Stel hierdie oortjies reg}}</translation>
 <translation id="1720111858957434186">Skep ’n alfanumeriese terugstel-PIN vir Brave Wagwoordbestuurder</translation>
@@ -10548,7 +10601,6 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="846205103980293931">{NUM_TABS,plural, =1{Lyskassie met 1 item}other{Lyskassie met {NUM_TABS} items}}</translation>
 <translation id="8463001014623882202">Kon nie magtig nie</translation>
 <translation id="1212036593149207916">Bestuur toegangsleutels in jou Brave-profiel</translation>
-<translation id="846374874681391779">Aflaaibalk</translation>
 <translation id="8463955938112983119"><ph name="PLUGIN_NAME"/> is gedeaktiveer.</translation>
 <translation id="846399539692727039">Laat loop diagnostiese toetse vir ChromeOS Flex</translation>
 <translation id="8464132254133862871">Die gebruikerrekening is nie geskik vir die diens nie.</translation>
@@ -10601,6 +10653,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8499083585497694743">Ontdemp mikrofoon</translation>
 <translation id="8500044868721690197">Hierdie werf word gekeer om jou MIDI-toestelle te beheer en te herprogrammeer.</translation>
 <translation id="8500123638242682652">Venster het op beweeg</translation>
+<translation id="8500132602331251964">Appopdatering is beskikbaar</translation>
 <translation id="8502536196501630039">Jy moet eers jou programme teruglaai voordat jy programme van Google Play af kan gebruik. Van die data is dalk weg.</translation>
 <translation id="8503813439785031346">Gebruikernaam</translation>
 <translation id="850382998924680137">Vandag bekyk</translation>
@@ -10623,7 +10676,6 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8516472100141530292">Regsklik op die groep</translation>
 <translation id="8517759303731677493">Wysig …</translation>
 <translation id="8518942514525208851">Versteek vloektaal</translation>
-<translation id="8519895319663397036">Kan nie wagwoorde invoer nie. Die lêer moet minder as 150 KB groot wees.</translation>
 <translation id="8523493869875972733">Hou veranderings</translation>
 <translation id="8523849605371521713">Bygevoeg volgens beleid</translation>
 <translation id="8524594273111932386">soek + afpyl</translation>
@@ -10731,8 +10783,10 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="6637045053447935202">'n Ander program op jou rekenaar het 'n app bygevoeg wat Brave se werkwyse kan verander.</translation>
 <translation id="8605428685123651449">SQLite-geheue</translation>
 <translation id="8607171490667464784">Terwyl onaktief en battery gebruik word</translation>
+<translation id="8607661817136110841">Jou oortjiegroepe</translation>
 <translation id="8607828412110648570">Maak seker dat jou Bluetooth-toestel in saambindmodus en naby is. Bind net saam met toestelle wat jy vertrou. Saamgebinde toestelle is vir alle rekeninge op hierdie Chromebook sigbaar. <ph name="BEGIN_LINK_LEARN_MORE"/>Kom meer te wete<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="8608618451198398104">Voeg 'n Kerberos-kaartjie by</translation>
+<translation id="860907040896565281">Pasmaak die kortpadsleutel …</translation>
 <translation id="8609465669617005112">Skuif op</translation>
 <translation id="8611922158252451755">Enigiemand met die skakel kan alle oortjies wysig, so deel verstandig. Skakel verval oor 48 uur.</translation>
 <translation id="8612252270453580753">Deursoek videoraam met <ph name="VISUAL_SEARCH_PROVIDER"/></translation>
@@ -10754,10 +10808,12 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="862542460444371744">Uitbreidings</translation>
 <translation id="8625663000550647058">Mag nie jou mikrofoon gebruik nie</translation>
 <translation id="8625916342247441948">Moenie werwe toelaat om aan HID-toestelle te koppel nie</translation>
+<translation id="8626569226218260115">Hierdie profiel sal bestuur word</translation>
 <translation id="862727964348362408">Opgeskort</translation>
 <translation id="862750493060684461">CSS-kas</translation>
 <translation id="8627795981664801467">Net beveiligde verbindings</translation>
 <translation id="8627804903623428808">Lees hierdie bepalings en beheer jou kind se data</translation>
+<translation id="862907440446514309">Jou administrateur neem jou skerm met <ph name="APP0_NAME"/> op.</translation>
 <translation id="8630338733867813168">Slaap terwyl dit laai</translation>
 <translation id="8631032106121706562">Blomblare</translation>
 <translation id="8632104508818855045">Jy het vantevore gekies om nie enige uitbreidings op <ph name="ORIGIN"/> toe te laat nie</translation>
@@ -10856,6 +10912,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="8686142379631285985">Aangemeld as <ph name="BEGIN_BOLD"/><ph name="DRIVE_ACCOUNT_EMAIL"/><ph name="END_BOLD"/></translation>
 <translation id="8687103160920393343">Kanselleer <ph name="FILE_NAME"/></translation>
 <translation id="8687527282898211955">Stel jou PIN op</translation>
+<translation id="8687774873995698516">Keer altyd <ph name="HOST"/> om identifiseerders te gebruik om beskermde inhoud te speel</translation>
 <translation id="8688672835843460752">Beskikbaar</translation>
 <translation id="8689811383248488428">Weier en maak profiel toe</translation>
 <translation id="8689998525144040851">100</translation>
@@ -10872,6 +10929,7 @@ Hou jou sleutellêer op 'n veilige plek. Jy gaan dit nodig hê om nuwe weergawes
 <translation id="869884720829132584">Programmekieslys</translation>
 <translation id="869891660844655955">Vervaldatum</translation>
 <translation id="8699188901396699995">PPD vir <ph name="PRINTER_NAME"/></translation>
+<translation id="4880437500752902828">Inhoud vanaf wagwoordbladsye en verwante inligting word na Brave toe gestuur en deur mense gekontroleer. Jou wagwoord word geënkripteer en niemand sal dit ooit sien nie. <ph name="PASSWORD_CHANGE"/></translation>
 <translation id="8700066369485012242">Vertel ons hoekom jy derdepartywebkoekies op hierdie werf toegelaat het</translation>
 <translation id="8700087567921985940">Gebruik ligging. Laat apps en dienste met liggingtoestemming toe om jou toestel se ligging te gebruik. Brave kan van tyd tot tyd liggingdata insamel en hierdie data op ’n anonieme manier gebruik om liggingakkuraatheid en ligginggegronde dienste te verbeter. <ph name="BEGIN_LINK1"/>Meer inligting oor maatstawwe<ph name="BEGIN_LINK1_END"/>Meer inligting<ph name="END_LINK1"/></translation>
 <translation id="8700416429250425628">lanseerder + backspace</translation>
@@ -11124,6 +11182,7 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="8868838761037459823">Selfoonbesonderhede</translation>
 <translation id="8870413625673593573">Onlangs toegemaak</translation>
 <translation id="8871043459130124414">Loop slegs nadat jy die uitbreiding geklik het</translation>
+<translation id="8871126140396172266"><ph name="WINDOW_TITLE"/> – Jy deel tans hierdie bladsy met Gemini</translation>
 <translation id="8871551568777368300">Deur administrateur vasgespeld</translation>
 <translation id="8871696467337989339">Jy gebruik tans 'n ongesteunde bevellynvlag: <ph name="BAD_FLAG"/>. Stabiliteit en sekuriteit sal daaronder ly.</translation>
 <translation id="8871974300055371298">Inhoudinstellings</translation>
@@ -11162,6 +11221,7 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="8890529496706615641">Profiel kon nie hernoem word nie. Probeer weer of kontak jou diensverskaffer vir tegniese steundiens.</translation>
 <translation id="8892168913673237979">Gereed!</translation>
 <translation id="8892246501904593980">Sien al jou boekmerke in “Boekmerke en lyste”</translation>
+<translation id="8893779047492837414">Jy het tans <ph name="NUMBERED_ITEM_1"/>, <ph name="NUMBERED_ITEM_2"/> en meer. Jou organisasie, <ph name="ACCOUNT_MANAGER"/>, sal hierdie data kan sien en bestuur.</translation>
 <translation id="8893801527741465188">Deïnstallering is voltooi</translation>
 <translation id="8893928184421379330">Jammer, die toestel <ph name="DEVICE_LABEL"/> kon nie herken word nie.</translation>
 <translation id="8894761918470382415">Datatoegangbeskerming vir randtoestelle</translation>
@@ -11193,12 +11253,14 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="8918637186205009138"><ph name="GIVEN_NAME"/> se <ph name="DEVICE_TYPE"/></translation>
 <translation id="8918900204934259333">Installeer tans -app …</translation>
 <translation id="891931289445130855">Vee data en toestemmings uit</translation>
+<translation id="8919468987486771003">Kan nie oplaai nie. Lêeroplaai het bekragtigingkontrolerings misluk.</translation>
 <translation id="8920133120839850939">Kies die Meer gebare-oortjie en skakel dan Swiep tussen bladsye aan om vorentoe en agtertoe te navigeer</translation>
 <translation id="8921369299636221117">Portierdiens is nie beskikbaar nie.</translation>
 <translation id="8922348435910470639">Dubbelbespreek</translation>
 <translation id="8922624386829239660">Beweeg skerm wanneer muis aan kante van skerm raak</translation>
 <translation id="8923880975836399332">Donkergroenblou</translation>
 <translation id="8925124370124776087">Titelbalk word nou versteek</translation>
+<translation id="8925308599005372373">Laai ’n PDF op</translation>
 <translation id="8925458182817574960">Instellings</translation>
 <translation id="8926389886865778422">Moenie weer vra nie</translation>
 <translation id="8926555406617248399">Oortjies is versteek</translation>
@@ -11220,6 +11282,7 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="8940081510938872932">Jou rekenaar doen tans te veel dinge. Probeer later weer.</translation>
 <translation id="8940888110818450052">Aanmeldopsies</translation>
 <translation id="8941173171815156065">Herroep die toestemming "<ph name="PERMISSION"/>"</translation>
+<translation id="8941209844691374403"><ph name="APP_NAME"/> deel tans ’n venster en oudio.</translation>
 <translation id="8941688920560496412"><ph name="DEVICE_NAME"/> is af</translation>
 <translation id="894191600409472540">Skep sterk wagwoorde</translation>
 <translation id="8942714513622077633">Kanselleer Microsoft 365-opstelling?</translation>
@@ -11239,6 +11302,7 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="895347679606913382">Begin tans …</translation>
 <translation id="8954796993367253220">Jy moet alle Gasvensters toemaak om Gasmodusgeskiedenis uit te vee.</translation>
 <translation id="8955174612586215829">Soek temas</translation>
+<translation id="8957656266859671822">Kies jou rekening</translation>
 <translation id="8957757410289731985">Pasmaak profiel</translation>
 <translation id="8959144235813727886">Werwe en apps</translation>
 <translation id="895944840846194039">JavaScript-geheue</translation>
@@ -11269,6 +11333,7 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="897525204902889653">Kwarantyndiens</translation>
 <translation id="8975396729541388937">Teken enige tyd uit deur die skakel te klik in die e-posse wat jy ontvang.</translation>
 <translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" en 1 ander oortjie}other{"<ph name="TAB_TITLE"/>" en # ander oortjies}}</translation>
+<translation id="897565255818387330">Laat hierdie werf toe om <ph name="FILE_NAME"/> te bekyk en te kopieer?</translation>
 <translation id="8977523125954274918">Stel ’n skoolprofiel op om jou wagwoorde en meer in jou rekening te stoor en te gebruik</translation>
 <translation id="8977811652087512276">Verkeerde wagwoord of korrupte lêer</translation>
 <translation id="8978154919215542464">Aan – sinkroniseer alles</translation>
@@ -11305,12 +11370,12 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="8993059306046735527">Jy kan steeds jou plaaslike data terugstel as jy jou <ph name="DEVICE_TYPE"/>-wagwoord vergeet. Jy sal by jou Brave-rekening moet aanmeld of rekeningherwinning moet gebruik.</translation>
 <translation id="8993198843374358393">Kopieer sertifikaathuts vir <ph name="CERT_NAME"/></translation>
 <translation id="8993737615451556423">Verskaf kontroles om die leesstem vinniger te maak, stadiger te maak en te onderbreek</translation>
+<translation id="591917183749839690">As Brave een van jou wagwoorde in ’n publieke dataskending vind, kan dit aanbied om jou wagwoord namens jou te verander as jy aangemeld is</translation>
 <translation id="899384117894244799">Verwyder gebruiker met beperkte gebruik</translation>
 <translation id="8993853206419610596">Vou alle versoeke uit</translation>
 <translation id="8993945059918628059">Raak met jou vinger aan die vingerafdruksensor. Jou vingerafdrukdata word veilig geberg en verlaat nooit jou <ph name="DEVICE_TYPE"/> nie.</translation>
 <translation id="899403249577094719">Netscape-sertifikaatbasis se URL</translation>
 <translation id="2702745310002987480">{ACCOUNT_EXTENSIONS_COUNT,plural, =1{Hierdie uitbreiding is in jou Brave-rekening gestoor, maar enige data kan uitgevee word wat dit net op hierdie toestel gestoor het}other{Hierdie uitbreidings is in jou Brave-rekening gestoor, maar enige data kan uitgevee word wat hulle net op hierdie toestel gestoor het}}</translation>
-<translation id="8998078711690114234">Hierdie soort lêer kan gevaarlik wees. Stoor hierdie lêer net as jy <ph name="ORIGIN"/> vertrou</translation>
 <translation id="8999027165951679951">Onaktiewe oortjie: <ph name="MEMORY_SAVINGS"/> is beskikbaar gemaak</translation>
 <translation id="8999560016882908256">Afdelingsinsboufout: <ph name="ERROR_LINE"/></translation>
 <translation id="8999651235576960439">Verminderde beweging op die skerm</translation>
@@ -11319,10 +11384,10 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="9003185744423389627">Koppeling aan toestelbestuurbediener het om <ph name="FAILURE_TIME"/> met status "<ph name="STATUS_TEXT"/>" misluk</translation>
 <translation id="90033698482696970">Skandeer outomaties vir beskikbare e-SIM-profiele?</translation>
 <translation id="9003647077635673607">Laat op alle webwerwe toe</translation>
+<translation id="9005774573776346118">Meld aan as <ph name="EMAIL"/> om jou wagwoorde, boekmerke en meer op al jou toestelle te kry</translation>
 <translation id="9007688236643268728">&amp;Meld weer aan</translation>
 <translation id="9008201768610948239">Ignoreer</translation>
 <translation id="9008201858626224558"><ph name="SUBPAGE_TITLE"/>-besonderhedebladsy se terugknoppie</translation>
-<translation id="5576869911588755109">Brave kan jou wagwoord verander sodra jy aangemeld is.</translation>
 <translation id="9008828754342192581">Jy het vantevore gekies om alle uitbreidings op <ph name="ORIGIN"/> toe te laat</translation>
 <translation id="9009369504041480176">Laai tans (<ph name="PROGRESS_PERCENT"/>%) op …</translation>
 <translation id="9009707268312089299">Van Windows af ingevoer</translation>
@@ -11331,6 +11396,7 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="9011163749350026987">Wys ikoon altyd</translation>
 <translation id="9011262023858991985">Saai tans hierdie oortjie uit</translation>
 <translation id="9011393886518328654">Vrystellingsnotas</translation>
+<translation id="9012013036616593083">Gemini is nie op die oomblik beskikbaar nie. Probeer later weer.</translation>
 <translation id="9012122671773859802">Beweeg skerm aanhoudend wanneer muis beweeg</translation>
 <translation id="9012585441087414258">Beskerm teen webwerwe, aflaaie en uitbreidings wat bekend is daarvoor dat hulle gevaarlik is. As ’n bladsy iets verdag doen, word URL’e en stukkies van die bladsyinhoud na Brave Veiligblaai toe gestuur.</translation>
 <translation id="9013037634206938463"><ph name="INSTALL_SIZE"/> se beskikbare spasie is nodig om Linux te installeer. Vee lêers op jou toestel uit om meer spasie beskikbaar te maak.</translation>
@@ -11356,6 +11422,7 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="9024127637873500333">Maak in nuwe oortjie oop</translation>
 <translation id="9024158959543687197">Kon nie deling monteer nie. Gaan die lêerdeling-URL na en probeer weer.</translation>
 <translation id="9024692527554990034">Jy kan kortpaaie in die adresbalk gebruik om 'n spesifieke werf vinnig te deursoek of om 'n ander soekenjin te gebruik</translation>
+<translation id="9024975946059881308">Wys Gemini in Mac-kieslysbalk en skakel kortpadsleutel aan</translation>
 <translation id="9025222334598338152">Jy kan jou vergelykingtabelle gebruik om tred te hou terwyl jy jou opsies verminder</translation>
 <translation id="902638246363752736">Sleutelbordinstellings</translation>
 <translation id="9026393603776578602">dikteer</translation>
@@ -11373,6 +11440,7 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="9033765790910064284">Gaan in elk geval voort</translation>
 <translation id="9033857511263905942">Plak</translation>
 <translation id="903480517321259405">Tik die PIN weer in</translation>
+<translation id="9035157477209989051">Jy sal in kennis gestel word wanneer hierdie apps gebruik word om jou skerm op te neem:</translation>
 <translation id="9036484080057916082">Getekende sertifikaat se tydstempellys</translation>
 <translation id="9037054491984310631">Gekoppel aan Bluetooth-toestel genaamd <ph name="DEVICE"/></translation>
 <translation id="9037640663275993951">Toestel word nie toegelaat nie</translation>
@@ -11397,7 +11465,6 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="9052404922357793350">Hou aan blokkeer</translation>
 <translation id="90528604757378587">Agtergrondaktiwiteit en sommige visuele effekte, soos gladde rollees, kan beperk wees.</translation>
 <translation id="9053563360605707198">Druk op albei kante</translation>
-<translation id="9055810458113674066">Jy het tans <ph name="NUMBERED_ITEM"/> en meer. Jou organisasie sal hierdie data kan sien en bestuur</translation>
 <translation id="9056788090206401048">Bluetooth moet aan wees as jy jou toegangsleutel op ’n ander toestel wil gebruik. Jy kan dit altyd in instellings bestuur.</translation>
 <translation id="9056810968620647706">Geen passings is gevind nie.</translation>
 <translation id="9057007989365783744"><ph name="SUPERVISED_USER_NAME"/> wil toegang tot die volgende inhoud hê:</translation>
@@ -11405,6 +11472,7 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="9057354806206861646">Opdateringskedule</translation>
 <translation id="9058070466596314168">{NUM_NOTIFICATION,plural, =1{Ongeveer 1 kennisgewing per dag}other{Ongeveer {NUM_NOTIFICATION} kennisgewings per dag}}</translation>
 <translation id="9058760336383947367">Bekyk drukker-PPD</translation>
+<translation id="2005092575792810942">As Brave een van jou wagwoorde in ’n publieke dataskending vind, kan Brave Wagwoordbestuurder aanbied om jou wagwoord vir jou te verander as jy aangemeld is.</translation>
 <translation id="9061694916020926968">Jy moet by ’n Brave-rekening aangemeld wees om Steam vir Chromebook (Beta) te gebruik. Meld aan en probeer weer.</translation>
 <translation id="9062468308252555888">14x</translation>
 <translation id="9063208415146866933">Fout vanaf reël <ph name="ERROR_LINE_START"/> tot <ph name="ERROR_LINE_END"/></translation>
@@ -11545,6 +11613,7 @@ Dit kan inligting oor geïnstalleerde sagteware, lêers, jou blaaier, die toeste
 <translation id="9153367754133725216">Sien voorstelle vir nuwe apps en webinhoud in Lanseerder en soekresultate. Stuur net statistieke om voorstelle te verbeter as jy gekies het om omvalverslae en diagnostiek en gebruiksdata na ChromeOS te stuur.</translation>
 <translation id="9154194610265714752">Opgedateer</translation>
 <translation id="915485121129452731">Pentablet</translation>
+<translation id="9155100833189043833">Gebruik veilig ’n ID vanaf jou mobiele toestel</translation>
 <translation id="9155344700756733162">Ontkies kleur</translation>
 <translation id="9157096865782046368">0,8 sekondes</translation>
 <translation id="9157697743260533322">Kon nie outomatiese opdaterings vir alle gebruikers opstel nie (kontroleringoopmaakfout: <ph name="ERROR_NUMBER"/>)</translation>

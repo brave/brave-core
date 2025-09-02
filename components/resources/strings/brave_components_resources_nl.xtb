@@ -52,6 +52,7 @@
 <translation id="1773147648972887693">Toon veel bezocht</translation>
 <translation id="4546260624932151782">Toon favorieten</translation>
 <translation id="8975314993825375476">Lijst aanpassen</translation>
+<translation id="7407744084529395869">Zoek privé op het web met AI</translation>
 <translation id="1629390138158333592">Zoeken op internet</translation>
 <translation id="4016940744851230999">Zoekwidget weergeven op het nieuwe tabblad</translation>
 <translation id="7092560902264458951">Zoekmachines inschakelen op de pagina Nieuw tabblad</translation>
@@ -147,7 +148,6 @@
 <translation id="2701204441419443612">Bezig met verbinding maken...</translation>
 <translation id="8813986611396294203">Er zit enige vertraging in het Tor-netwerk</translation>
 <translation id="2795840524629682765">Tor-verbinding mislukt</translation>
-<translation id="1149108864689950951">Tor aan het verbinden... [[percentage]]%</translation>
 <translation id="3651192084771403430">Ervaart u problemen met verbinden? <ph name="BEGIN_LINK"/>Schakel privévensters uit met Tor<ph name="END_LINK"/> en schakel deze vervolgens weer in in de instellingen.</translation>
 <translation id="8834376622642889380">Open de <ph name="BEGIN_LINK"/>instellingen van Brave<ph name="END_LINK"/>, schakel privévenster met Tor uit, en vervolgens weer in.</translation>
 <translation id="1576202729986800142"><ph name="BEGIN_BOLD"/>Ervaart u nog steeds problemen?<ph name="END_BOLD"/> Probeer het met <ph name="BEGIN_BRIDGES_LINK"/>bruggen<ph name="END_BRIDGES_LINK"/> of <ph name="BEGIN_SUPPORT_LINK"/>neem contact op met support<ph name="END_SUPPORT_LINK"/>.</translation>
@@ -169,19 +169,19 @@
 <translation id="5334844597069022743">Bron bekijken</translation>
 <translation id="4720556299488643018">Afmelden</translation>
 <translation id="1209739344687072997">Meld een gebroken site</translation>
-<translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
 <translation id="3110968385867124099">Deze pagina kan niet worden gerapporteerd omdat deze niet wordt aangeboden via HTTP/HTTPS.</translation>
 <translation id="7907023135990310743">Deze pagina is een lokale webpagina en kan niet worden gerapporteerd.</translation>
 <translation id="8740275226259417070">Dit is een foutpagina die niet als een defecte site kan worden gemeld.</translation>
 <translation id="6367576083705149078">Als je contactgegevens opgeeft, worden deze bewaard voor toekomstige rapporten.</translation>
 <translation id="6806248680442980382">Bedankt voor je hulp om Brave beter te maken voor iedereen. Dit rapport zal alleen informatie bevatten die we nodig hebben om deze site te herstellen.</translation>
-<translation id="6476216365964140603">Aanvullende gegevens (optioneel)</translation>
+<translation id="8447940165862889275">(optioneel)</translation>
 <translation id="6145852496180774737">Neem contact met me op via: (optioneel)</translation>
 <translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
 <translation id="721949491455392748">Voeg een schermafbeelding van de huidige pagina toe</translation>
 <translation id="8459191579769999214">Schermafbeelding bekijken</translation>
 <translation id="5299848999918506028">Bedankt!</translation>
 <translation id="76550953340008122">Bedankt dat u de ontwikkelaars van Brave heeft laten weten dat er iets mis is met deze site. We zullen ons best doen om het te repareren!</translation>
+<translation id="7138678301420049075">Overige</translation>
 <translation id="4046860372562593546">Brave Ads beheren</translation>
 <translation id="5136973036012418831">Beheer welke soort Brave Ads u ziet en hoe vaak.</translation>
 <translation id="4759608598194750161">Hoe meer u ziet, hoe meer u kunt verdienen.</translation>
@@ -421,7 +421,6 @@
 <translation id="8327818101454798856">Dus als je je favoriete sites wilt ondersteunen, ga dan daarheen.</translation>
 <translation id="412480955826088549">Onderdeel downloaden...</translation>
 <translation id="4894106830958548828">Ik begrijp het</translation>
-<translation id="326118736933420687">U bekijkt een WebTorrent-pagina</translation>
 <translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Ondersteuning voor Unstoppable Domains inschakelen in Brave?</translation>
@@ -470,6 +469,7 @@
 <translation id="5770656036486891920"><ph name="URL"/> wil cookies van derden gebruiken voor een verouderd Google-inlogproces.</translation>
 <translation id="6053826678715267477">Toegang tot localhost-resources toestaan</translation>
 <translation id="2973562729984406132"><ph name="URL"/> wil toegang tot localhost-resources</translation>
+<translation id="2104347391516032700">Bat Beloningen-service</translation>
 <translation id="5939518447894949180">Resetten</translation>
 <translation id="3349204812119681938">Brave Rewards opnieuw instellen</translation>
 <translation id="4915997950539925115">Als u kiest voor 'opnieuw instellen', wordt uw huidige profiel van Brave Beloningen verwijderd en is Brave Beloningen niet meer ingeschakeld. Als u Brave Beloningen later opnieuw inschakelt, begint u opnieuw met een nieuw profiel. Lees ons <ph name="LINK_BEGIN"/>ondersteuningsartikel over opnieuw instellen<ph name="LINK_END"/> voor meer informatie.</translation>
@@ -511,7 +511,6 @@
     }</translation>
 <translation id="6067959437127691361">Brave Beloningen helpt contentontwikkelaars te ondersteunen en u kunt er BAT mee verdienen.</translation>
 <translation id="2359808026110333948">Doorgaan met</translation>
-<translation id="885805571521218129">Dit toont uw geschatte inkomstenvoor Brave-advertenties deze maand.</translation>
 <translation id="3863981251715594911">Hoe werkt het?</translation>
 <translation id="7931127789630755251">Verdien tokens voor privéadvertenties die u ziet in Brave</translation>
 <translation id="2278423362884506724">Ondersteun content creators en gebruik uw tokens om onder andere cadeaubonnen te kopen en om in te wisselen voor andere valuta.</translation>
@@ -639,8 +638,6 @@
 <translation id="756341217015623253">Inloggen of registreren</translation>
 <translation id="2653844658857826081">NIEUW</translation>
 <translation id="1165039591588034296">Fout</translation>
-<translation id="5826530373788377342">Je hebt het maximale aantal apparaten bereikt voor dit <ph name="PROVIDER"/>-account.</translation>
-<translation id="6700131426769360592">Maximaal aantal apparaten bereikt</translation>
 <translation id="6895088073061692390">Helaas is uw Brave Beloningen-profiel gerapporteerd, omdat onze automatische controles ongebruikelijke activiteit van Brave Ads hebben gezien.</translation>
 <translation id="4229056297802204697">Wanneer een profiel is gerapporteerd, blijven advertenties zichtbaar, maar komt u niet in aanmerking voor het ontvangen van uitbetalingen. U kunt een beheerdersaccount dan ook niet koppelen aan Brave Beloningen.</translation>
 <translation id="5124846913141379164">Het kan gebeuren dat uw profiel onterecht is gerapporteerd en u hoeft dan ook niet onmiddellijk actie te ondernemen. De vlag op uw profiel kan in de toekomst worden verwijderd.</translation>
@@ -702,7 +699,6 @@
 <translation id="7550470870580166294">Onvoldoende saldo</translation>
 <translation id="7020972866926315918">Zo te zien ben je uitgelogd bij <ph name="PROVIDER"/> voor Brave Rewards. Log opnieuw in om door te gaan.</translation>
 <translation id="1166682575529520472">Maandelijks</translation>
-<translation id="7138678301420049075">Overige</translation>
 <translation id="2134931506717037391"><ph name="AMOUNT"/> BAT sturen</translation>
 <translation id="4791565605790056151">Bijdrage versturen</translation>
 <translation id="8251969358165471584">Web3-wallet</translation>
@@ -1068,7 +1064,7 @@
 <translation id="7131971375297699539">Valutasymbool</translation>
 <translation id="4693057234255364395">Blokkeer Explorer-URL</translation>
 <translation id="7982789257301363584">Netwerk</translation>
-<translation id="1060221736464994328">Deze site toestemming geven om te wisselen van netwerk?</translation>
+<translation id="2512821599885971349">Netwerk toevoegen</translation>
 <translation id="2478788592457735063">Hiermee schakel je over naar een netwerk dat je eerder hebt toegevoegd.</translation>
 <translation id="8756686998207163764">Van netwerk wisselen</translation>
 <translation id="3948067511324628726">Gasvergoeding</translation>
@@ -1823,6 +1819,7 @@
 <translation id="2244921323472112851">We kunnen de pagina die je zoekt nu niet vinden.</translation>
 <translation id="6277237872689140644">Misschien is die verplaatst of bevat de URL een typefout.</translation>
 <translation id="2737084171727561244">Naar portfolio</translation>
+<translation id="5046066249040287308">Brave Wallet-hulpprogramma</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Algemene informatie</translation>
 <translation id="4045404575593562245">Tor-controlegebeurtenissen</translation>
@@ -2074,7 +2071,7 @@
 <translation id="9089090017461255038">Speedreader inschakelen</translation>
 <translation id="3929926885379607283">Speedreader altijd voor deze site gebruiken</translation>
 <translation id="4186588885948504942">Zet de knop om om de speedreader voor deze website in of uit te schakelen.</translation>
-<translation id="1873585723672836337">Speedreader altijd voor alle sites gebruiken</translation>
+<translation id="6568851043090579206">Speedreader altijd voor alle sites gebruiken</translation>
 <translation id="3138587343887871192">Zet de knop om om de speedreader voor alle websites in of uit te schakelen.</translation>
 <translation id="5153147025131874069">Niet alle sites bieden ondersteuning voor de speedreader.</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -2103,9 +2100,6 @@
 <translation id="8637805148029768813">De samensvattingfunctie is momenteel alleen beschikbaar voor bepaalde artikelen en andere webpagina's in lange vorm.</translation>
 <translation id="1223498995510244364">Samenvatten</translation>
 <translation id="7491773233732232424">Over Leo</translation>
-<translation id="4885527781814382758">Brave Leo is je persoonlijke slimme AI-assistent waarmee je het web beter gebruikt. Leo kun je gratis gebruiken met beperkte toegang. Brave Leo Premium biedt meer modellen, hogere limieten en geeft abonnees vroegtijdige toegang tot nieuwe functies. Het standaardmodel zal van tijd tot tijd veranderen. Ga naar het <ph name="LINK_BEFORE"/>Brave Helpcentrum<ph name="LINK_AFTER"/> voor meer informatie.</translation>
-<translation id="7189603330209995455">Als u Leo een vraag stelt, wordt normaal gesproken de inhoud van de webpagina die u bekijkt of tekst die u hebt gemarkeerd op een pagina naar Brave Leo gestuurd om een antwoord te geven. De nauwkeurigheid van de antwoorden is niet gegarandeerd en kan misleidende, onjuiste of valse informatie bevatten. Leo gebruikt gegevens van Brave Zoeken om de kwaliteit van de antwoorden te verbeteren. Geef geen gevoelige of privé-informatie en wees voorzichtig met antwoorden die gaan over gezondheid, financiën, persoonlijke veiligheid en dergelijke. U kunt de instellingen van Leo op elk gewenst moment aanpassen. Ga hiervoor naar Instellingen &gt; Leo.</translation>
-<translation id="3038772045018370764">Leo verzamelt geen identifiers die aan u kunnen worden gekoppeld, zoals uw IP-adres. Er worden geen gegevens gebruikt om de AI-modellen te trainen en de AI-model en modellen van derden bewaren geen persoonsgegevens (met uitzondering van Anthropic, dat gegevens 30 dagen bewaart alvorens deze te verwijderen). Ga naar het <ph name="LINK_BEFORE"/>privacybeleid<ph name="LINK_AFTER"/> voor meer informatie.</translation>
 <translation id="4348006373172097089">{PAGE_COUNT, plural,
       one {}=1 {Stel een vraag over de inhoud van deze pagina}
       other {Stel een vraag over de inhoud van deze pagina's}
@@ -2135,7 +2129,6 @@
 <translation id="2575216739207798060">Hallo, ik ben Leo. Ik werk via een proxy van Brave en ben gebaseerd op Claude Instant, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Dit model wordt gehost via de beveiligde infrastructuur van Brave.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="512933369128404654">Hallo, ik ben Leo. Ik werk via een proxy van Brave en ben gebaseerd op Claude Haiku, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Dit model wordt gehost via de beveiligde infrastructuur van Brave.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="406499980300734922">Hallo, ik ben Leo. Ik werk via een proxy van Brave en ben gebaseerd op Claude Sonnet, een model van Anthropic dat ontworpen is voor gesprekken en tekstverwerking. Dit model wordt gehost via de beveiligde infrastructuur van Brave.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="1774712391633741125">Hallo, ik ben Leo. Ik ben een AI-assistent die volledig door Brave wordt gehost. Ik maak gebruik van Llama Vision, een efficiënt en breed inzetbaar model ontwikkeld door Meta. Brave host dit model via zijn eigen veilige infrastructuur.<ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Volledige pagina openen</translation>
@@ -2226,7 +2219,6 @@
 <translation id="7979673624064378842">Razendsnelle chat</translation>
 <translation id="2836330653441111204">Snelheid en intelligentie in balans</translation>
 <translation id="6695329447007213917">Chat voor algemene doeleinden, codering en meer</translation>
-<translation id="5051668914970329839">Beelden voor algemene taken</translation>
 <translation id="7226508434216060960">Redeneermodel</translation>
 <translation id="8782867266498869301">Het model wordt dynamisch gewijzigd, zodat het beste model voor de taak wordt gebruikt</translation>
 <translation id="3965507912994218570">Leo-instellingen</translation>
@@ -2434,6 +2426,11 @@
 <translation id="619122420105901711">Zie je de e-mail niet? Controleer dan de spammap of probeer het opnieuw.</translation>
 <translation id="3397336197747843396">Fout bij authenticatie met Brave-account. Probeer het opnieuw.</translation>
 <translation id="1340795582009113055">Opnieuw beginnen</translation>
+<translation id="2422927186524098759">Zijbalk</translation>
+<translation id="2361906291514218784">Leo AI</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="8000020256436988724">Werkbalk</translation>
+<translation id="8293206222192510085">Voeg Bladwijzer toe</translation>
 <translation id="958268166261124668">Brave VPN: verbonden</translation>
 <translation id="6021669293402055982">Brave VPN: geen verbinding</translation>
 <translation id="3541307549916475335">Gebruikersinterface Brave VPN-venster</translation>
