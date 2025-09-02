@@ -7,7 +7,7 @@ package org.chromium.components.browser_ui.site_settings;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.build.annotations.UsedByReflection;
-import org.chromium.components.content_settings.ContentSettingValues;
+import org.chromium.components.content_settings.ContentSetting;
 import org.chromium.components.content_settings.ContentSettingsType;
 import org.chromium.components.content_settings.ProviderType;
 import org.chromium.content_public.browser.BrowserContextHandle;
@@ -17,7 +17,7 @@ public class BraveWebsite {
     public void setContentSetting(
             BrowserContextHandle browserContextHandle,
             @ContentSettingsType.EnumType int type,
-            @ContentSettingValues int value) {
+            @ContentSetting int value) {
         PermissionInfo info =
                 (PermissionInfo)
                         BraveReflectionUtil.invokeMethod(
