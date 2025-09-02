@@ -10,7 +10,7 @@
 // optimized (rollup controls the order in which modules are executed).
 
 import './config.js'
-import { ContentSettingsTypes } from '../site_settings/constants.js'
+import '../site_settings/constants.js'
 import './a11y_page.js'
 import './a11y_page_index.js'
 import './all_sites.js'
@@ -19,7 +19,6 @@ import './autofill_page.js'
 import './appearance_page.js'
 import './appearance_page_index.js'
 import './basic_page.js'
-import './battery_page.js'
 import './clear_browsing_data_dialog.js'
 import './add_site_dialog.js'
 import './cookies_page.js'
