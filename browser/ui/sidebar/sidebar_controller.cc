@@ -105,7 +105,10 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
   const auto& item = sidebar_model_->GetAllSidebarItems()[*index];
   // Only an item for panel can get activated.
   if (item.open_in_panel) {
-    sidebar_model_->SetActiveIndex(index);
+    // WebPanel item type also should be activated.
+    if (!item.is_web_panel_type()) {
+      sidebar_model_->SetActiveIndex(index);
+    }
 
     if (sidebar::features::kOpenOneShotLeoPanel.Get() &&
         item.built_in_item_type == SidebarItem::BuiltInItemType::kChatUI) {
@@ -232,9 +235,9 @@ void SidebarController::AddItemWithCurrentTab() {
   DCHECK(active_contents);
   const GURL url = active_contents->GetVisibleURL();
   const std::u16string title = active_contents->GetTitle();
-  GetSidebarService(profile_)->AddItem(
-      SidebarItem::Create(url, title, SidebarItem::Type::kTypeWeb,
-                          SidebarItem::BuiltInItemType::kNone, false));
+  GetSidebarService(profile_)->AddItem(SidebarItem::Create(
+      url, title, SidebarItem::Type::kTypeWeb,
+      SidebarItem::BuiltInItemType::kNone, IsWebPanelFeatureEnabled()));
 }
 
 void SidebarController::UpdateActiveItemState(

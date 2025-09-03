@@ -280,7 +280,7 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
 
 void SidebarService::AddItem(const SidebarItem& item) {
   DCHECK(item.IsValidItem());
-  if (item.is_web_type()) {
+  if (item.is_web_type() || item.is_web_panel_type()) {
     items_.push_back(item);
     for (Observer& obs : observers_) {
       // Index starts at zero.
@@ -522,6 +522,9 @@ void SidebarService::LoadSidebarItems() {
       }
       // Open in panel for custom items is not yet supported
       bool open_in_panel = false;
+      if (const auto value = item.FindBool(kSidebarItemOpenInPanelKey)) {
+        open_in_panel = *value;
+      }
       std::string title;
       if (const auto* value = item.FindString(kSidebarItemTitleKey)) {
         title = *value;

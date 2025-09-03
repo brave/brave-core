@@ -21,6 +21,7 @@ namespace sidebar {
 
 bool CanUseSidebar(Browser* browser);
 bool CanAddCurrentActiveTabToSidebar(Browser* browser);
+bool IsWebPanelFeatureEnabled();
 
 // Exported for testing.
 bool HiddenDefaultSidebarItemsContains(SidebarService* service,

@@ -97,7 +97,7 @@ void SidebarModel::AddItem(const SidebarItem& item,
   }
 
   // Web type uses site favicon as button's image.
-  if (item.is_web_type()) {
+  if (item.is_web_type() || item.is_web_panel_type()) {
     FetchFavicon(item);
   }
 }
