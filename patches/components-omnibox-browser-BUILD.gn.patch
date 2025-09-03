@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 7fb1b972c44c880f24e847d64eedbaf05e8eb5d8..283d12552ce96a956ed9cf9909d1816863944258 100644
+index 1813a7b9ed6f8039a7aa959c41a5f0236da98a07..8d92a74dacb6ead21a9341f97ba5cd1f904cacee 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
 @@ -408,6 +408,7 @@ static_library("browser") {
@@ -10,11 +10,11 @@ index 7fb1b972c44c880f24e847d64eedbaf05e8eb5d8..283d12552ce96a956ed9cf9909d18168
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
  
-@@ -1041,6 +1042,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
+@@ -1039,6 +1040,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
  
  mojom("mojo_bindings") {
    sources = [ "omnibox.mojom" ]
 +  generate_legacy_js_bindings = true
  
-   if (!is_android && !is_ios) {
-     sources += [ "searchbox.mojom" ]
+   webui_module_path = "chrome://resources/mojo/components/omnibox/browser"
+ 
