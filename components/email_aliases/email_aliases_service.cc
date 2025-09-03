@@ -19,8 +19,8 @@
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
-#include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/email_aliases_api_key.h"
+#include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "mojo/public/cpp/bindings/clone_traits.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -38,7 +38,8 @@ constexpr char kAccountServiceEndpoint[] = "https://%s/v2/%s";
 constexpr char kAccountsServiceVerifyInitPath[] = "verify/init";
 constexpr char kAccountsServiceVerifyResultPath[] = "verify/result";
 
-constexpr char kEmailAliasesServiceBaseURL[] = "https://aliases.bravesoftware.com";
+constexpr char kEmailAliasesServiceBaseURL[] =
+    "https://aliases.bravesoftware.com";
 constexpr char kEmailAliasesServiceManagePath[] = "/manage";
 
 // Minimum interval between verify/result polls
@@ -79,8 +80,8 @@ GURL EmailAliasesService::GetAccountsServiceVerifyResultURL() {
 
 // static
 GURL EmailAliasesService::GetEmailAliasesServiceBaseURL() {
-  return GURL(absl::StrFormat("%s%s",
-    kEmailAliasesServiceBaseURL, kEmailAliasesServiceManagePath));
+  return GURL(absl::StrFormat("%s%s", kEmailAliasesServiceBaseURL,
+                              kEmailAliasesServiceManagePath));
 }
 
 // static
@@ -305,7 +306,8 @@ void EmailAliasesService::CancelAuthenticationOrLogout(
 
 void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {
   base::Value::Dict body_value;  // empty JSON object
-  ApiFetch(email_aliases_service_base_url_, net::HttpRequestHeaders::kPostMethod, body_value,
+  ApiFetch(email_aliases_service_base_url_,
+           net::HttpRequestHeaders::kPostMethod, body_value,
            base::BindOnce(&EmailAliasesService::OnGenerateAliasResponse,
                           weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -319,7 +321,8 @@ void EmailAliasesService::UpdateAlias(const std::string& alias_email,
   if (note) {
     body_value.Set("note", *note);
   }
-  ApiFetch(email_aliases_service_base_url_, net::HttpRequestHeaders::kPutMethod, body_value,
+  ApiFetch(email_aliases_service_base_url_, net::HttpRequestHeaders::kPutMethod,
+           body_value,
            base::BindOnce(&EmailAliasesService::OnUpdateAliasResponse,
                           weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -328,7 +331,8 @@ void EmailAliasesService::DeleteAlias(const std::string& alias_email,
                                       DeleteAliasCallback callback) {
   base::Value::Dict body_value;
   body_value.Set("alias", alias_email);
-  ApiFetch(email_aliases_service_base_url_, net::HttpRequestHeaders::kDeleteMethod, body_value,
+  ApiFetch(email_aliases_service_base_url_,
+           net::HttpRequestHeaders::kDeleteMethod, body_value,
            base::BindOnce(&EmailAliasesService::OnDeleteAliasResponse,
                           weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -406,8 +410,7 @@ void EmailAliasesService::OnGenerateAliasResponse(
       const std::string* message = dict.FindString("message");
       const std::string* alias = dict.FindString("alias");
       if (message && *message == "created" && alias && !alias->empty()) {
-        std::move(user_callback)
-            .Run(base::ok(*alias));
+        std::move(user_callback).Run(base::ok(*alias));
         RefreshAliases();
         return;
       } else if (message && *message != "created") {
@@ -417,8 +420,7 @@ void EmailAliasesService::OnGenerateAliasResponse(
       }
     }
   }
-  std::move(user_callback)
-      .Run(base::unexpected(error_message));
+  std::move(user_callback).Run(base::unexpected(error_message));
 }
 
 void EmailAliasesService::OnUpdateAliasResponse(
@@ -438,7 +440,8 @@ void EmailAliasesService::OnDeleteAliasResponse(
 }
 
 void EmailAliasesService::RefreshAliases() {
-  ApiFetch(email_aliases_service_base_url_.Resolve("?status=active"), net::HttpRequestHeaders::kGetMethod, base::Value::Dict(),
+  ApiFetch(email_aliases_service_base_url_.Resolve("?status=active"),
+           net::HttpRequestHeaders::kGetMethod, base::Value::Dict(),
            base::BindOnce(&EmailAliasesService::OnRefreshAliasesResponse,
                           weak_factory_.GetWeakPtr()));
 }

@@ -3,9 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/build/buildflag_header_with_env_config.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
-import("//brave/build/buildflag_header_with_env_config.gni")
 
 mojom_component("mojom") {
   output_prefix = "email_aliases_mojom"
