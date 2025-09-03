@@ -59,7 +59,7 @@ RegisterStyleOverride(
       :host {
         --brave-settings-menu-margin-v: 24px;
         --brave-settings-menu-padding: 24px;
-        --settings-nav-item-color: var(--leo-color-text-primary) !important;
+        --settings-nav-item-color: var(--leo-color-text-secondary) !important;
         position: sticky;
         top: var(--brave-settings-menu-margin-v);
         margin: 0 !important;
@@ -208,7 +208,9 @@ RegisterStyleOverride(
         margin-right: var(--leo-spacing-xl);
       }
       .brave-about-menu-link-text{
-      font: var(--leo-font-components-navbutton);
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: var(--leo-color-text-secondary) !important;
       }
       .brave-about-meta {
         flex: 1;
