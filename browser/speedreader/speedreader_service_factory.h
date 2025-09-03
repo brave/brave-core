@@ -9,7 +9,8 @@
 #include <memory>
 
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
-#include "components/keyed_service/core/keyed_service.h"
+
+class KeyedService;
 
 namespace content {
 class BrowserContext;
