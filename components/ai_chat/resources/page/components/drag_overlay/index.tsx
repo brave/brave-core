@@ -7,7 +7,7 @@ import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import styles from './style.module.scss'
-import { isImageFile } from '../../constants/file_types'
+import { isImageFile, isPdfFile } from '../../constants/file_types'
 import { useConversation } from '../../state/conversation_context'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
 
@@ -23,7 +23,9 @@ export default function DragOverlay() {
     e.stopPropagation()
     clearDragState()
 
-    const files = Array.from(e.dataTransfer?.files || []).filter(isImageFile)
+    const files = Array.from(e.dataTransfer?.files || []).filter(file =>
+      isImageFile(file) || isPdfFile(file)
+    )
 
     if (files.length === 0) {
       return

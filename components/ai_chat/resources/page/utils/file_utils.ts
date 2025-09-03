@@ -21,12 +21,17 @@ export class ImageProcessingError extends Error {
   }
 }
 
+export class UnsupportedFileTypeError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'UnsupportedFileTypeError'
+  }
+}
 
 // Utility function to convert File objects to UploadedFile format
 export const convertFileToUploadedFile = async (
   file: File
 ): Promise<Mojom.UploadedFile> => {
-  // Use backend processing for images via mojo call
   const reader = new FileReader()
   const arrayBuffer = await new Promise<ArrayBuffer>((resolve, reject) => {
     reader.onload = (e) => {
@@ -44,26 +49,45 @@ export const convertFileToUploadedFile = async (
 
   const uint8Array = new Uint8Array(arrayBuffer)
 
-  try {
-    const api = getAPI()
-    const response = await api.uiHandler.processImageFile(
-      Array.from(uint8Array),
-      file.name
-    )
-
-    if (!response.processedFile) {
-      throw new ImageProcessingError(
-        'Failed to process image file: Backend returned no result'
-      )
+  // Check file type and handle accordingly
+  const mimeType = file.type.toLowerCase()
+  if (mimeType === 'application/pdf') {
+    // Handle PDF files directly
+    const uploadedFile: Mojom.UploadedFile = {
+      filename: file.name,
+      filesize: file.size,
+      data: Array.from(uint8Array),
+      type: Mojom.UploadedFileType.kPdf
     }
+    return uploadedFile
+  } else if (mimeType.startsWith('image/')) {
+    // Use backend processing for images via mojo call
+    try {
+      const api = getAPI()
+      const response = await api.uiHandler.processImageFile(
+        Array.from(uint8Array),
+        file.name
+      )
 
-    return response.processedFile
-  } catch (error) {
-    if (error instanceof ImageProcessingError) {
+      if (!response.processedFile) {
+        throw new ImageProcessingError(
+          'Failed to process image file: Backend returned no result'
+        )
+      }
+
+      return response.processedFile
+    } catch (error) {
+      if (error instanceof ImageProcessingError) {
+        throw error
+      }
+
+      // Re-throw any other errors as-is
       throw error
     }
-
-    // Re-throw any other errors as-is
-    throw error
+  } else {
+    throw new UnsupportedFileTypeError(
+      `Unsupported file type: ${file.type}. Only images and PDF files ` +
+      `are supported.`
+    )
   }
 }
