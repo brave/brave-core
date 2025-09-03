@@ -90,10 +90,7 @@ module.exports = (program) =>
       process.env.PATH = `${process.env.PATH}:${config.srcDir}/third_party/llvm-build/Release+Asserts/bin`
       // fetch coverage tools if not available
       await mkdirp(distPath)
-      await utils.runAsync('python3', [
-        `${config.srcDir}/tools/clang/scripts/update.py`,
-        '--package=coverage_tools',
-      ])
+
       await utils.runAsync('llvm-profdata', [
         'merge',
         '-sparse',

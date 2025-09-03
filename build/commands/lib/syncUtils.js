@@ -44,6 +44,7 @@ function buildDefaultGClientConfig(
         'src/third_party/chromium-variations': null,
       },
       custom_vars: {
+        'checkout_clang_coverage_tools': true,
         'checkout_pgo_profiles': config.isBraveReleaseBuild(),
       },
     },
