@@ -47,7 +47,7 @@ UntrustedMarketUI::UntrustedMarketUI(web::WebUIIOS* web_ui, const GURL& url)
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string(
-          "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;"));
+          "style-src 'self' 'unsafe-inline' chrome-untrusted://resources chrome-untrusted://theme;"));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       std::string("font-src 'self' data: chrome-untrusted://resources;"));
