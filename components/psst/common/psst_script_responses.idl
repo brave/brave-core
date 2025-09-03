@@ -5,7 +5,7 @@
 
 // Schema for Brave PSST script responses.
 namespace psst {
-    enum PolicyScriptStatus {
+    enum PsstStatus {
         STARTED,
         COMPLETED
     };
@@ -17,7 +17,7 @@ namespace psst {
     };
 
     dictionary PolicyScriptResult {
-        PolicyScriptStatus status;
+        PsstStatus status;
         long progress;
         PsstTask[] applied_tasks;
     };

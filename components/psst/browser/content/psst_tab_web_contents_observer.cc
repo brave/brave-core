@@ -202,7 +202,7 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
   ui_delegate_->SetAppliedItems(script_result_parsed->progress,
                                 script_result_parsed->applied_tasks);
 
-  if (script_result_parsed->status == PolicyScriptStatus::kCompleted) {
+  if (script_result_parsed->status == PsstStatus::kCompleted) {
     ui_delegate_->SetComplete();
   }
 }
