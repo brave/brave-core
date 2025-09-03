@@ -43,6 +43,8 @@ class AssociatedLinkContent : public AssociatedContentDelegate,
   void GetContent(GetPageContentCallback callback) override;
 
  private:
+  friend class TestableAssociatedLinkContent;
+
   void OnTimeout();
   void OnContentExtractionComplete(std::string content,
                                    bool is_video,

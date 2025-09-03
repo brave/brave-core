@@ -14,20 +14,28 @@ struct Bookmark {
   url.mojom.Url url;
 };
 
-// Represents a change to the bookmarks. Currently we don't care about folders,
-// but this may change in the future.
+// Represents an update to the bookmarks stored in the frontend.
 struct BookmarksChange {
   map<string, Bookmark> addedOrUpdated;
   array<string> removed;
 };
 
 interface BookmarksListener {
-  // Called when the bookmarks change.
+  // Called when the bookmarks the backend is aware of change. This could be for
+  // multiple reasons:
+  // - A new bookmark is added.
+  // - A bookmark is updated.
+  // - A bookmark is removed.
+  // - bookmarks model is loaded.
+  // This is guaranteed to be called when the listener is attached so the
+  // listener knows the current state of the bookmarks, allowing it to maintain
+  // an up to date list based on subsequent deltas.
   Changed(BookmarksChange change);
 };
 
 interface BookmarksService {
   // Add a listener to the bookmarks service. The listener will be notified of
-  //the current bookmarks when it is attached.
+  // the current bookmarks when it is attached and the service will let it know
+  // when there are changes to the bookmarks.
   AddListener(pending_remote<BookmarksListener> listener);
 };

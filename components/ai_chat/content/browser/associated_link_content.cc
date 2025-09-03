@@ -40,6 +40,8 @@ AssociatedLinkContent::AssociatedLinkContent(
 
   // Start observing the WebContents
   content::WebContentsObserver::Observe(web_contents_.get());
+
+  content_fetcher_ = std::make_unique<PageContentFetcher>(web_contents_.get());
 }
 
 AssociatedLinkContent::~AssociatedLinkContent() = default;
@@ -65,9 +67,6 @@ void AssociatedLinkContent::GetContent(GetPageContentCallback callback) {
     timeout_timer_.Start(FROM_HERE, base::Seconds(30),
                          base::BindOnce(&AssociatedLinkContent::OnTimeout,
                                         weak_ptr_factory_.GetWeakPtr()));
-
-    content_fetcher_ =
-        std::make_unique<PageContentFetcher>(web_contents_.get());
 
     content::NavigationController::LoadURLParams load_params(url());
     load_params.transition_type = ui::PAGE_TRANSITION_LINK;
