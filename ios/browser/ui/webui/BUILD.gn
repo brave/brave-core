@@ -64,6 +64,7 @@ source_set("data_sources") {
     "//ios/web/public/thread",
     "//ios/web/public/webui",
     "//services/data_decoder/public/cpp",
+    "//services/data_decoder/public/mojom",
     "//ui/base",
     "//ui/resources:ui_resources_grd",
   ]

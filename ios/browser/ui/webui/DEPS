@@ -17,6 +17,5 @@ include_rules = [
   "+services/data_decoder/public/cpp",
   "+services/data_decoder/public/mojom",
   "+third_party/skia/include/encode",
-  "+ui/native_theme",
   "+ui/resources",
 ]
