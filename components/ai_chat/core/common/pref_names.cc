@@ -38,6 +38,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
     registry->RegisterBooleanPref(kBraveAIChatUserMemoryEnabled, true);
     registry->RegisterDictionaryPref(kBraveAIChatUserCustomizations);
     registry->RegisterListPref(kBraveAIChatUserMemories);
+    registry->RegisterDictionaryPref(kBraveAIChatSmartModes);
   }
   registry->RegisterBooleanPref(kEnabledByPolicy, true);
 }

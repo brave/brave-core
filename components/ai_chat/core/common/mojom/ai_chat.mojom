@@ -240,6 +240,22 @@ struct UploadedFile {
   UploadedFileType type;
 };
 
+struct SmartMode {
+  string id;
+  string shortcut;
+  string prompt;
+  string? model;
+  mojo_base.mojom.Time created_time;
+  mojo_base.mojom.Time last_used;
+};
+
+// An entry of an executed smart mode to be stored inside conversation entry
+// and persisted in database.
+struct SmartModeEntry {
+  string shortcut;
+  string prompt;
+};
+
 struct ImageContentBlock {
   // Only base64 encoded data uri is supported
   url.mojom.Url image_url;
@@ -329,6 +345,8 @@ struct ConversationTurn {
 
   // User uploaded files, currently including image and screenshot
   array<UploadedFile>? uploaded_files;
+
+  SmartModeEntry? smart_mode;
 
   // Whether the turn was generated from Brave Search SERP.
   bool from_brave_search_SERP = false;
@@ -614,6 +632,7 @@ interface ConversationHandler {
   SubmitHumanConversationEntry(
       string input, array<UploadedFile>? uploaded_files);
   SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
+  SubmitHumanConversationEntryWithMode(string input, string mode_id);
   SubmitSummarizationRequest();
 
   // Submit one of the generated suggested questions for response from

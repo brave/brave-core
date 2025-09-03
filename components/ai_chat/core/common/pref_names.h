@@ -114,6 +114,7 @@ inline constexpr char kBraveAIChatUserMemoryEnabled[] =
     "brave.ai_chat.user_memory_enabled";
 inline constexpr char kBraveAIChatUserMemories[] =
     "brave.ai_chat.user_memories";
+inline constexpr char kBraveAIChatSmartModes[] = "brave.ai_chat.smart_modes";
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);

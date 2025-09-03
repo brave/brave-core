@@ -390,6 +390,17 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
           std::vector<std::string>{message->selected_text.value()});
     }
 
+    // Add Smart Mode definition message if this turn has one
+    if (message->character_type == mojom::CharacterType::HUMAN &&
+        message->smart_mode_entry.has_value()) {
+      const auto& smart_mode = message->smart_mode_entry.value();
+      std::string mode_definition =
+          "Smart Mode '" + smart_mode->shortcut + "': " + smart_mode->prompt;
+      conversation.emplace_back(ConversationEventRole::kUser,
+                                ConversationEventType::kChatMessage,
+                                std::vector<std::string>{mode_definition});
+    }
+
     // Build the main conversation event
     ConversationEvent event;
     event.role = message->character_type == mojom::CharacterType::HUMAN

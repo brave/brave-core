@@ -12,6 +12,7 @@
 
 #include "base/component_export.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom-forward.h"
 
 class PrefService;
@@ -57,6 +58,34 @@ void DeleteAllMemoriesFromPrefs(PrefService& prefs);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 std::optional<base::Value::Dict> GetUserMemoryDictFromPrefs(PrefService& prefs);
+
+// Smart Modes prefs
+// Returns smart modes from the smart modes dictionary in the pref.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+std::vector<mojom::SmartModePtr> GetSmartModesFromPrefs(
+    const PrefService& prefs);
+// Returns a specific smart mode by ID, or nullptr if not found.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+mojom::SmartModePtr GetSmartModeFromPrefs(const PrefService& prefs,
+                                          const std::string& id);
+// Adds a new smart mode and saves it to prefs. Returns the created smart mode
+// with generated ID and timestamps.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+mojom::SmartModePtr AddSmartModeToPrefs(const std::string& shortcut,
+                                        const std::string& prompt,
+                                        const std::string& model,
+                                        PrefService& prefs);
+// Updates an existing smart mode in prefs. Returns true if successful.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+bool UpdateSmartModeInPrefs(const std::string& id,
+                            const std::string& shortcut,
+                            const std::string& prompt,
+                            const std::string& model,
+                            PrefService& prefs);
+// Deletes a smart mode from prefs. Returns true if the mode was found and
+// deleted.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+bool DeleteSmartModeFromPrefs(const std::string& id, PrefService& prefs);
 
 }  // namespace ai_chat::prefs
 
