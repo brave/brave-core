@@ -257,7 +257,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   if (use_rounded_corners) {
     // Collapse the separator line between the toolbar or bookmark bar and the
     // views below.
-    contents_separator_->SetPreferredSize(gfx::Size());
+    top_container_separator_->SetPreferredSize(gfx::Size());
     contents_shadow_ = BraveContentsViewUtil::CreateShadow(contents_container_);
     contents_background_view_ =
         AddChildViewAt(std::make_unique<ContentsBackground>(), 0);
@@ -989,10 +989,10 @@ void BraveBrowserView::UpdateContentsSeparatorVisibility() {
   // container.
   if ((split_view_ && split_view_->IsSplitViewActive()) ||
       (multi_contents_view_ && multi_contents_view_->IsInSplitView())) {
-    contents_separator_->SetPreferredSize({});
+    top_container_separator_->SetPreferredSize({});
     return;
   }
-  contents_separator_->SetPreferredSize(
+  top_container_separator_->SetPreferredSize(
       gfx::Size(views::Separator::kThickness, views::Separator::kThickness));
 }
 

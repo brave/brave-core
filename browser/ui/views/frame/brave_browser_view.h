@@ -219,8 +219,8 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   void UpdateSideBarHorizontalAlignment();
-  views::View* contents_separator_for_testing() const {
-    return contents_separator_;
+  views::View* top_container_separator_for_testing() const {
+    return top_container_separator_;
   }
 
   std::unique_ptr<views::Widget> vertical_tab_strip_widget_;
