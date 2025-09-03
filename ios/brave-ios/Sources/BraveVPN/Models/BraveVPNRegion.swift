@@ -16,6 +16,7 @@ struct BraveVPNCityRegion: Identifiable, Equatable {
   let id = UUID()
   let displayName: String
   let regionName: String
+  var smartRoutingProxyState: String
   var serverCount: Int = 0
   var isAutomatic = false
 }
@@ -25,6 +26,7 @@ class VPNCityRegionDetail: ObservableObject {
     BraveVPNCityRegion(
       displayName: Strings.VPN.vpnCityRegionOptimalTitle,
       regionName: BraveVPNCityRegion.optimalCityRegionName,
+      smartRoutingProxyState: kGRDRegionSmartRoutingProxyNone,
       isAutomatic: true
     )
   ]
