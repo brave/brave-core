@@ -13,6 +13,7 @@
 
 namespace brave_wallet {
 
+// The main Polkadot-based interface that the front-end interacts with.
 class PolkadotWalletService : public mojom::PolkadotWalletService {
  public:
   explicit PolkadotWalletService(
@@ -20,16 +21,24 @@ class PolkadotWalletService : public mojom::PolkadotWalletService {
 
   ~PolkadotWalletService() override;
 
+  // Adds a PolkadotWalletService to the internal ReceiverSet.
   void Bind(mojo::PendingReceiver<mojom::PolkadotWalletService> receiver);
+
+  // Invalidates all the weak ptrs in use by this service.
   void Reset();
 
-  // mojom::CardanoWalletService:
+  // Get the name of the chain currently pointed to by the current network
+  // configuration.
   void GetNetworkName(GetNetworkNameCallback callback) override;
 
  private:
+  void StartGetNetworkName(GetNetworkNameCallback callback);
+  void OnGetnetworkName(GetNetworkNameCallback callback,
+                        std::string const& str);
+
   mojo::ReceiverSet<mojom::PolkadotWalletService> receivers_;
 
-  PolkadotRpc polkadot_rpc_;
+  PolkadotSubstrateRpc polkadot_substrate_rpc_;
   base::WeakPtrFactory<PolkadotWalletService> weak_ptr_factory_{this};
 };
 

@@ -5,11 +5,13 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
+#include "mojo/public/cpp/bindings/callback_helpers.h"
+
 namespace brave_wallet {
 
 PolkadotWalletService::PolkadotWalletService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : polkadot_rpc_(url_loader_factory) {}
+    : polkadot_substrate_rpc_(std::move(url_loader_factory)) {}
 
 PolkadotWalletService::~PolkadotWalletService() = default;
 
@@ -25,18 +27,24 @@ void PolkadotWalletService::Reset() {
 void PolkadotWalletService::GetNetworkName(GetNetworkNameCallback callback) {
   auto weak = weak_ptr_factory_.GetWeakPtr();
 
+  auto cb = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+      std::move(callback), "PolkadotWalletService unavailable.");
+
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](base::WeakPtr<brave_wallet::PolkadotWalletService> weak_ptr,
-             GetNetworkNameCallback callback) {
-            weak_ptr->polkadot_rpc_.GetChainName(base::BindOnce(
-                [](base::WeakPtr<brave_wallet::PolkadotWalletService> weak_ptr,
-                   GetNetworkNameCallback callback,
-                   std::string const& str) { std::move(callback).Run(str); },
-                weak_ptr, std::move(callback)));
-          },
-          weak, std::move(callback)));
+      FROM_HERE, base::BindOnce(&PolkadotWalletService::StartGetNetworkName,
+                                std::move(weak), std::move(cb)));
+}
+
+void PolkadotWalletService::StartGetNetworkName(
+    GetNetworkNameCallback callback) {
+  auto weak = weak_ptr_factory_.GetWeakPtr();
+  polkadot_substrate_rpc_.GetChainName(base::BindOnce(
+      &PolkadotWalletService::OnGetnetworkName, weak, std::move(callback)));
+}
+
+void PolkadotWalletService::OnGetnetworkName(GetNetworkNameCallback callback,
+                                             std::string const& str) {
+  std::move(callback).Run(str);
 }
 
 }  // namespace brave_wallet
