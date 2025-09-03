@@ -73,6 +73,7 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "associated_link_content_unittest.cc",
     "bookmarks_service_unittest.cc",
     "page_content_fetcher_unittest.cc",
   ]

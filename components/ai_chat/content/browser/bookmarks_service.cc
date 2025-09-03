@@ -139,7 +139,7 @@ void BookmarksService::BookmarkAllUserNodesRemoved(
     const std::set<GURL>& removed_urls,
     const base::Location& location) {
   // Refresh all bookmarks since all user nodes were removed
-  auto change = GetAllBookmarks();
+  auto change = mojom::BookmarksChange::New();
   std::ranges::transform(removed_urls, std::back_inserter(change->removed),
                          [](const auto& url) { return url.spec(); });
 
