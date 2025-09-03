@@ -101,4 +101,27 @@
       gurl);
 }
 
+- (BraveShieldsAutoShredMode)defaultAutoShredMode {
+  return static_cast<BraveShieldsAutoShredMode>(
+      _braveShieldsSettings->GetDefaultAutoShredMode());
+}
+
+- (BraveShieldsAutoShredMode)autoShredModeForURL:(NSURL*)url {
+  GURL gurl = net::GURLWithNSURL(url);
+  return static_cast<BraveShieldsAutoShredMode>(
+      _braveShieldsSettings->GetAutoShredMode(gurl));
+}
+
+- (void)setDefaultAutoShredMode:(BraveShieldsAutoShredMode)autoShredMode {
+  _braveShieldsSettings->SetDefaultAutoShredMode(
+      static_cast<brave_shields::mojom::AutoShredMode>(autoShredMode));
+}
+
+- (void)setAutoShredMode:(BraveShieldsAutoShredMode)autoShredMode
+                  forURL:(NSURL*)url {
+  GURL gurl = net::GURLWithNSURL(url);
+  _braveShieldsSettings->SetAutoShredMode(
+      static_cast<brave_shields::mojom::AutoShredMode>(autoShredMode), gurl);
+}
+
 @end

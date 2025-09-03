@@ -26,6 +26,7 @@ inline constexpr char kBraveShields[] = "braveShields";
 inline constexpr char kBraveShieldsMetadata[] = "braveShieldsMetadata";
 inline constexpr char kReferrers[] = "referrers";
 inline constexpr char kCookies[] = "shieldsCookiesV3";
+inline constexpr char kBraveAutoShred[] = "braveAutoShred";
 
 // Prefs:
 inline constexpr char kFacebookEmbeds[] = "fb-embeds";
@@ -42,6 +43,7 @@ inline constexpr auto kShieldsContentSettingsTypes =
         ContentSettingsType::BRAVE_SHIELDS,
         ContentSettingsType::BRAVE_REFERRERS,
         ContentSettingsType::BRAVE_COOKIES,
+        ContentSettingsType::BRAVE_AUTO_SHRED,
     });
 
 using ShieldsContentSettingsTypes = decltype(kShieldsContentSettingsTypes);
@@ -60,6 +62,7 @@ inline constexpr auto kShieldsContentTypeNames =
         {ContentSettingsType::BRAVE_SHIELDS_METADATA, kBraveShieldsMetadata},
         {ContentSettingsType::BRAVE_REFERRERS, kReferrers},
         {ContentSettingsType::BRAVE_COOKIES, kCookies},
+        {ContentSettingsType::BRAVE_AUTO_SHRED, kBraveAutoShred},
     });
 
 using ShieldsContentTypeNames = decltype(kShieldsContentTypeNames);

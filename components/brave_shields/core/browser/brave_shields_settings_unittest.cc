@@ -16,6 +16,7 @@
 #include "url/gurl.h"
 
 using brave_shields::mojom::AdBlockMode;
+using brave_shields::mojom::AutoShredMode;
 using brave_shields::mojom::FingerprintMode;
 
 class BraveShieldsSettingsTest : public testing::Test {
@@ -301,3 +302,70 @@ TEST_F(BraveShieldsSettingsTest, NoScriptsEnabledByDefault) {
                                                   kTestUrl),
             brave_shields::ControlType::ALLOW);
 }
+
+#if BUILDFLAG(IS_IOS)
+TEST_F(BraveShieldsSettingsTest, AutoShredMode) {
+  // verify the initial values
+  EXPECT_EQ(brave_shields_settings()->GetAutoShredMode(kTestUrl),
+            AutoShredMode::NEVER);
+  EXPECT_EQ(
+      brave_shields::GetAutoShredType(GetHostContentSettingsMap(), kTestUrl),
+      brave_shields::AutoShredType::NEVER);
+
+  brave_shields_settings()->SetAutoShredMode(AutoShredMode::TAB_CLOSE,
+                                             kTestUrl);
+  EXPECT_EQ(brave_shields_settings()->GetAutoShredMode(kTestUrl),
+            AutoShredMode::TAB_CLOSE);
+  // verify underlying AutoShredType is updated
+  EXPECT_EQ(
+      brave_shields::GetAutoShredType(GetHostContentSettingsMap(), kTestUrl),
+      brave_shields::AutoShredType::TAB_CLOSE);
+
+  brave_shields_settings()->SetAutoShredMode(AutoShredMode::APP_EXIT, kTestUrl);
+  EXPECT_EQ(brave_shields_settings()->GetAutoShredMode(kTestUrl),
+            AutoShredMode::APP_EXIT);
+  // verify underlying AutoShredType is updated
+  EXPECT_EQ(
+      brave_shields::GetAutoShredType(GetHostContentSettingsMap(), kTestUrl),
+      brave_shields::AutoShredType::APP_EXIT);
+
+  // verify other urls remain unchanged
+  EXPECT_EQ(
+      brave_shields_settings()->GetAutoShredMode(GURL("https://example.com")),
+      AutoShredMode::NEVER);
+  EXPECT_EQ(brave_shields::GetAutoShredType(GetHostContentSettingsMap(),
+                                            GURL("https://example.com")),
+            brave_shields::AutoShredType::NEVER);
+}
+
+TEST_F(BraveShieldsSettingsTest, DefaultAutoShredMode) {
+  // explicitly set so we can verify this is unchanged by updating default
+  brave_shields_settings()->SetAutoShredMode(AutoShredMode::NEVER, kTestUrl);
+
+  // verify the initial default values
+  EXPECT_EQ(brave_shields_settings()->GetDefaultAutoShredMode(),
+            AutoShredMode::NEVER);
+  EXPECT_EQ(
+      brave_shields::GetAutoShredType(GetHostContentSettingsMap(), GURL()),
+      brave_shields::AutoShredType::NEVER);
+
+  brave_shields_settings()->SetDefaultAutoShredMode(AutoShredMode::TAB_CLOSE);
+  EXPECT_EQ(brave_shields_settings()->GetDefaultAutoShredMode(),
+            AutoShredMode::TAB_CLOSE);
+  EXPECT_EQ(
+      brave_shields_settings()->GetAutoShredMode(GURL("https://example.com")),
+      AutoShredMode::TAB_CLOSE);
+  // verify underlying AutoShredType is updated
+  EXPECT_EQ(
+      brave_shields::GetAutoShredType(GetHostContentSettingsMap(), GURL()),
+      brave_shields::AutoShredType::TAB_CLOSE);
+
+  // verify explict set auto shred mode unchanged
+  EXPECT_EQ(brave_shields_settings()->GetAutoShredMode(kTestUrl),
+            AutoShredMode::NEVER);
+  // verify underlying AutoShredType is unchanged
+  EXPECT_EQ(
+      brave_shields::GetAutoShredType(GetHostContentSettingsMap(), kTestUrl),
+      brave_shields::AutoShredType::NEVER);
+}
+#endif

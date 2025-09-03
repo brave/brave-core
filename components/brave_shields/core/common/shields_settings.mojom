@@ -45,3 +45,9 @@ enum HttpsUpgradeMode {
   STANDARD_MODE,
   DISABLED_MODE
 };
+
+enum AutoShredMode {
+  NEVER,
+  TAB_CLOSE,
+  APP_EXIT,
+};
