@@ -895,4 +895,23 @@ bool IsDeveloperModeEnabled(PrefService* profile_state) {
   return profile_state->GetBoolean(prefs::kAdBlockDeveloperMode);
 }
 
+void SetAutoShredType(HostContentSettingsMap* map,
+                      AutoShredType type,
+                      const GURL& url) {
+  auto primary_pattern = content_settings::CreateDomainPattern(url);
+
+  if (!primary_pattern.IsValid()) {
+    return;
+  }
+
+  map->SetWebsiteSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      AutoShredSetting::kContentSettingsType, AutoShredSetting::ToValue(type));
+}
+
+AutoShredType GetAutoShredType(HostContentSettingsMap* map, const GURL& url) {
+  return AutoShredSetting::FromValue(map->GetWebsiteSetting(
+      url, GURL(), AutoShredSetting::kContentSettingsType));
+}
+
 }  // namespace brave_shields

@@ -393,6 +393,14 @@ void ContentSettingsRegistry::BraveInit() {
           WebsiteSettingsRegistry::PLATFORM_ANDROID |
           WebsiteSettingsRegistry::PLATFORM_IOS,
       WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
+
+  website_settings_registry_->Register(
+      ContentSettingsType::BRAVE_AUTO_SHRED, brave_shields::kBraveAutoShred,
+      brave_shields::AutoShredSetting::DefaultValue(),
+      WebsiteSettingsInfo::SYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
+      WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+      WebsiteSettingsRegistry::PLATFORM_IOS,
+      WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
 }
 
 }  // namespace content_settings
