@@ -41,7 +41,7 @@ struct SettingTraits<ControlType> {
 };
 
 namespace internal {
-const char* NotShieldCntentTypeFailure();
+const char* NotShieldContentTypeFailure();
 }
 
 consteval const char* GetShieldsContentTypeName(
@@ -52,7 +52,7 @@ consteval const char* GetShieldsContentTypeName(
       return v.second;
     }
   }
-  return internal::NotShieldCntentTypeFailure();
+  return internal::NotShieldContentTypeFailure();
 }
 
 template <ContentSettingsType content_settings_type, typename SettingT>
