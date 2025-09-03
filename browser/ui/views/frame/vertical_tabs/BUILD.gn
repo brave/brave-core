@@ -51,6 +51,7 @@ source_set("browser_tests") {
 
   deps = [
     ":vertical_tabs",
+    "//chrome/browser",
     "//chrome/browser/ui",
     "//chrome/test:test_support_ui",
     "//content/test:test_support",
