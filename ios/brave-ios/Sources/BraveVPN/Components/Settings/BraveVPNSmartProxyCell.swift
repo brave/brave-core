@@ -25,31 +25,18 @@ class BraveVPNSmartProxyCellView: UIView {
 class BraveVPNSmartProxyCell: UITableViewCell, Cell {
 
   private let hostingController = UIHostingController(
-    rootView: VPNSmartProxyView(countryFlagIcon: nil, title: "", subtitle: "")
+    rootView: VPNSmartProxyView(
+      countryFlagIcon: nil,
+      title: "",
+      subtitle: "",
+      isSmartProxyAvailable: false
+    )
   ).then {
     $0.view.backgroundColor = .clear
   }
 
   public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: .default, reuseIdentifier: reuseIdentifier)
-    contentView.addSubview(hostingController.view)
-    hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-
-    NSLayoutConstraint.activate([
-      hostingController.view.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16.0),
-      hostingController.view.bottomAnchor.constraint(
-        equalTo: contentView.bottomAnchor,
-        constant: -16.0
-      ),
-      hostingController.view.leadingAnchor.constraint(
-        equalTo: contentView.leadingAnchor,
-        constant: 16.0
-      ),
-      hostingController.view.trailingAnchor.constraint(
-        equalTo: contentView.trailingAnchor,
-        constant: -16.0
-      ),
-    ])
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -73,13 +60,33 @@ class BraveVPNSmartProxyCell: UITableViewCell, Cell {
 
       parentController.addChild(hostingController)
       hostingController.didMove(toParent: parentController)
+
+      contentView.addSubview(hostingController.view)
+      hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+
+      NSLayoutConstraint.activate([
+        hostingController.view.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16.0),
+        hostingController.view.bottomAnchor.constraint(
+          equalTo: contentView.bottomAnchor,
+          constant: -16.0
+        ),
+        hostingController.view.leadingAnchor.constraint(
+          equalTo: contentView.leadingAnchor,
+          constant: 16.0
+        ),
+        hostingController.view.trailingAnchor.constraint(
+          equalTo: contentView.trailingAnchor,
+          constant: -16.0
+        ),
+      ])
     }
 
     self.accessoryType = .disclosureIndicator
     hostingController.rootView = VPNSmartProxyView(
       countryFlagIcon: row.image,
       title: row.text ?? "",
-      subtitle: row.detailText ?? ""
+      subtitle: row.detailText ?? "",
+      isSmartProxyAvailable: row.context?["smartRoutingProxyState"] as? Bool ?? false
     )
   }
 
@@ -97,6 +104,7 @@ class BraveVPNSmartProxyCell: UITableViewCell, Cell {
     let countryFlagIcon: UIImage?
     let title: String
     let subtitle: String
+    let isSmartProxyAvailable: Bool
 
     @State
     private var showPopover = false
@@ -114,26 +122,28 @@ class BraveVPNSmartProxyCell: UITableViewCell, Cell {
               .foregroundStyle(Color(braveSystemName: .textPrimary))
               .fixedSize(horizontal: false, vertical: true)
 
-            Button {
-              showPopover.toggle()
-            } label: {
-              Label {
-                Text(Strings.VPN.smartProxyPopoverTitle)
-              } icon: {
-                Image(braveSystemName: "leo.smart.proxy-routing")
-                  .foregroundStyle(Color(braveSystemName: .iconDefault))
-                  .padding(4.0)
-                  .background(Color(braveSystemName: .containerHighlight))
-                  .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+            if isSmartProxyAvailable {
+              Button {
+                showPopover.toggle()
+              } label: {
+                Label {
+                  Text(Strings.VPN.smartProxyPopoverTitle)
+                } icon: {
+                  Image(braveSystemName: "leo.smart.proxy-routing")
+                    .foregroundStyle(Color(braveSystemName: .iconDefault))
+                    .padding(4.0)
+                    .background(Color(braveSystemName: .containerHighlight))
+                    .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+                }
+                .labelStyle(.iconOnly)
               }
-              .labelStyle(.iconOnly)
-            }
-            .bravePopover(isPresented: $showPopover, arrowDirection: [.down]) {
-              Text(Strings.VPN.smartProxyPopoverTitle)
-                .font(.subheadline)
-                .foregroundStyle(Color(braveSystemName: .textTertiary))
-                .fixedSize(horizontal: false, vertical: true)
-                .padding()
+              .bravePopover(isPresented: $showPopover, arrowDirection: [.down]) {
+                Text(Strings.VPN.smartProxyPopoverTitle)
+                  .font(.subheadline)
+                  .foregroundStyle(Color(braveSystemName: .textTertiary))
+                  .fixedSize(horizontal: false, vertical: true)
+                  .padding()
+              }
             }
           }
           .frame(maxWidth: .infinity, alignment: .leading)

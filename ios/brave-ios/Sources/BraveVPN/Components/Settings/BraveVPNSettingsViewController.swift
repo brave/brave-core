@@ -290,6 +290,8 @@ public class BraveVPNSettingsViewController: TableViewController {
 
     let locationCity = BraveVPN.serverLocationDetailed.city ?? "-"
     let locationCountry = BraveVPN.serverLocationDetailed.country ?? hostname
+    let smartProxyAvailable =
+      BraveVPN.activatedRegion?.smartRoutingProxyState != kGRDRegionSmartRoutingProxyNone
 
     let userPreferredTunnelProtocol = GRDTransportProtocol.getUserPreferredTransportProtocol()
     let transportProtocol = GRDTransportProtocol.prettyTransportProtocolString(
@@ -309,6 +311,7 @@ public class BraveVPNSettingsViewController: TableViewController {
             ?? UIImage(braveSystemNamed: "leo.globe"),
           accessory: .view(BraveVPNSmartProxyCellView(settingsController: self)),
           cellClass: BraveVPNSmartProxyCell.self,
+          context: ["isSmartProxyAvailable": smartProxyAvailable],
           uuid: locationCellId
         ),
         Row(
@@ -405,10 +408,13 @@ public class BraveVPNSettingsViewController: TableViewController {
         .indexPath(rowUUID: protocolCellId, sectionUUID: serverSectionId)
     else { return }
 
+    let locationCity = BraveVPN.serverLocationDetailed.city ?? "-"
+    let locationCountry = BraveVPN.serverLocationDetailed.country ?? hostname
+
     dataSource.sections[locationIndexPath.section].rows[locationIndexPath.row]
-      .text = BraveVPN.serverLocationDetailed.city ?? "-"
+      .text = locationCity
     dataSource.sections[locationIndexPath.section].rows[locationIndexPath.row]
-      .detailText = BraveVPN.serverLocationDetailed.country ?? hostname
+      .detailText = locationCountry
     dataSource.sections[locationIndexPath.section].rows[locationIndexPath.row]
       .image =
       BraveVPN.serverLocation.isoCode?.regionFlagImage ?? UIImage(braveSystemNamed: "leo.globe")
