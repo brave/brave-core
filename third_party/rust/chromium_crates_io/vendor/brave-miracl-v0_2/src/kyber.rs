@@ -22,6 +22,10 @@
    M.Scott 06/07/2022
 */
 
+// Now conforms to new ML_KEM standard
+// See https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf
+//
+
 use crate::sha3;
 use crate::sha3::SHA3;
 
@@ -123,7 +127,7 @@ fn ntt(r: &mut [i16]) {
 }
 
 fn invntt(r: &mut [i16]) {
-    let f = 1441 as i16;
+    let f = 1441i16;
     let mut k = 127;
     let mut len = 2;
     while len <= 128 {
@@ -244,8 +248,8 @@ fn getbit(b: &[u8], n: usize) -> i16 {
 
 fn cbd(bts: &[u8], eta: usize, f: &mut [i16]) {
     for i in 0..DEGREE {
-        let mut a = 0 as i16;
-        let mut b = 0 as i16;
+        let mut a = 0;
+        let mut b = 0;
         for j in 0..eta {
             a += getbit(bts, 2 * i * eta + j);
             b += getbit(bts, 2 * i * eta + eta + j);
@@ -307,7 +311,7 @@ fn encode(t: &[i16], len: usize, l: usize, pack: &mut [u8]) {
 fn chk_encode(t: &[i16], len: usize, l: usize, pack: &[u8]) -> u8 {
     let mut ptr = 0;
     let mut bts = 0;
-    let mut diff = 0 as u8;
+    let mut diff = 0;
     for n in 0..len * (DEGREE * l) / 8 {
         let m = nextbyte16(l, t, &mut ptr, &mut bts);
         diff |= m ^ pack[n];
@@ -326,7 +330,7 @@ fn decode(pack: &[u8], l: usize, t: &mut [i16], len: usize) {
 // Bernsteins safe division by 0xD01
 fn safediv(xx: i32) -> i32 {
     let mut x = xx;
-    let mut q = 0 as i32;
+    let mut q = 0;
 
     let mut qpart = (((x as i64) * 645083) >> 31) as i32;
     x -= qpart * 0xD01;
@@ -340,7 +344,7 @@ fn safediv(xx: i32) -> i32 {
 }
 
 fn compress(t: &mut [i16], len: usize, d: usize) {
-    let twod = (1 << d) as i32;
+    let twod = 1 << d;
     let dp = PRIME as i32;
     for i in 0..len * DEGREE {
         t[i] += (t[i] >> 15) & PRIME;
@@ -348,7 +352,7 @@ fn compress(t: &mut [i16], len: usize, d: usize) {
     }
 }
 fn decompress(t: &mut [i16], len: usize, d: usize) {
-    let twod1 = (1 << (d - 1)) as i32;
+    let twod1 = 1 << (d - 1);
     let dp = PRIME as i32;
     for i in 0..len * DEGREE {
         t[i] = ((dp * (t[i] as i32) + twod1) >> d) as i16;
@@ -376,6 +380,8 @@ fn cpa_keypair(params: &[usize], tau: &[u8], sk: &mut [u8], pk: &mut [u8]) {
     for i in 0..32 {
         sh.process(tau[i]);
     }
+    sh.process(ck as u8);   /*** ML-KEM change ***/
+
     sh.hash(&mut buff);
     for i in 0..32 {
         rho[i] = buff[i];
@@ -505,7 +511,7 @@ fn cpa_base_encrypt(
         poly_reduce(&mut u[row..]);
     }
 
-    decode(&pk, 12, &mut p, ck);
+    decode(pk, 12, &mut p, ck);
 
     poly_mul(v, &p, &q);
     for i in 1..ck {
@@ -524,7 +530,7 @@ fn cpa_base_encrypt(
 
     poly_acc(v, &w);
 
-    decode(&ss, 1, &mut r, 1);
+    decode(ss, 1, &mut r, 1);
     decompress(&mut r, 1, 1);
     poly_acc(v, &r);
     poly_reduce(v);
@@ -618,19 +624,22 @@ fn cca_encrypt(params: &[usize], randbytes32: &[u8], pk: &[u8], ss: &mut [u8], c
     let mut h: [u8; 32] = [0; 32];
     let mut g: [u8; 64] = [0; 64];
     let ck = params[0];
-    let du = params[3];
-    let dv = params[4];
+    //let du = params[3];
+    //let dv = params[4];
     let public_key_size = 32 + ck * (DEGREE * 3) / 2;
-    let ciphertext_size = (du * ck + dv) * DEGREE / 8;
-    let shared_secret_size = params[5];
+    //let ciphertext_size = (du * ck + dv) * DEGREE / 8;
+    //let shared_secret_size = params[5];
+
+    for i in 0..32 {
+        hm[i]=randbytes32[i];
+    }
+    //let mut sh = SHA3::new(sha3::HASH256);
+    //for i in 0..32 {
+    //    sh.process(randbytes32[i]);
+    //}
+    //sh.hash(&mut hm);
 
     let mut sh = SHA3::new(sha3::HASH256);
-    for i in 0..32 {
-        sh.process(randbytes32[i]);
-    }
-    sh.hash(&mut hm);
-
-    sh = SHA3::new(sha3::HASH256);
     for i in 0..public_key_size {
         sh.process(pk[i]);
     }
@@ -640,17 +649,20 @@ fn cca_encrypt(params: &[usize], randbytes32: &[u8], pk: &[u8], ss: &mut [u8], c
     sh.process_array(&hm);
     sh.process_array(&h);
     sh.hash(&mut g);
-    cpa_encrypt(params, &g[32..], &pk, &hm, ct);
+    cpa_encrypt(params, &g[32..], pk, &hm, ct);
 
-    sh = SHA3::new(sha3::HASH256);
-    for i in 0..ciphertext_size {
-        sh.process(ct[i]);
+    for i in 0..32 {
+        ss[i]=g[i];
     }
-    sh.hash(&mut h);
-    sh = SHA3::new(sha3::SHAKE256);
-    sh.process_array(&g[0..32]);
-    sh.process_array(&h);
-    sh.shake(ss, shared_secret_size);
+    //sh = SHA3::new(sha3::HASH256);
+    //for i in 0..ciphertext_size {
+    //    sh.process(ct[i]);
+    //}
+    //sh.hash(&mut h);
+    //sh = SHA3::new(sha3::SHAKE256);
+    //sh.process_array(&g[0..32]);
+    //sh.process_array(&h);
+    //sh.shake(ss, shared_secret_size);
 }
 
 fn cca_decrypt(params: &[usize], sk: &[u8], ct: &[u8], ss: &mut [u8]) {
@@ -673,20 +685,29 @@ fn cca_decrypt(params: &[usize], sk: &[u8], ct: &[u8], ss: &mut [u8]) {
     sh.process_array(h);
     sh.hash(&mut g);
 
+    sh=SHA3::new(sha3::SHAKE256); /*** ML_KEM ***/
+    sh.process_array(&z[0..32]);
+    sh.process_array(ct);
+    sh.shake(ss, shared_secret_size);
+
     let mask = cpa_check_encrypt(params, &g[32..], pk, &m, ct); // FO check ct is correct
 
-    for i in 0..32 {
-        g[i] ^= (g[i] ^ z[i]) & mask;
+    for i in 0..32 {  /*** ML_KEM ***/
+        ss[i]^=(ss[i]^g[i])&(!mask);
     }
 
-    sh = SHA3::new(sha3::HASH256);
-    sh.process_array(&ct);
-    sh.hash(&mut m);
+    //for i in 0..32 {
+    //    g[i] ^= (g[i] ^ z[i]) & mask;
+    //}
 
-    sh = SHA3::new(sha3::SHAKE256);
-    sh.process_array(&g[0..32]);
-    sh.process_array(&m);
-    sh.shake(ss, shared_secret_size);
+    //sh = SHA3::new(sha3::HASH256);
+    //sh.process_array(ct);
+    //sh.hash(&mut m);
+
+    //sh = SHA3::new(sha3::SHAKE256);
+    //sh.process_array(&g[0..32]);
+    //sh.process_array(&m);
+    //sh.shake(ss, shared_secret_size);
 }
 
 // ********************* Kyber API ******************************

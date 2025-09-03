@@ -393,34 +393,30 @@ impl GCM {
         self.a.end();
     }
 
+    /// Convert a hex-encoded byte sequence to binary
     pub fn hex2bytes(hex: &[u8], bin: &mut [u8]) {
         let len = hex.len();
 
         for i in 0..len / 2 {
             let mut v: u8;
-            let mut c = hex[2 * i];
-            if c >= b'0' && c <= b'9' {
-                v = c - b'0';
-            } else if c >= b'A' && c <= b'F' {
-                v = c - b'A' + 10;
-            } else if c >= b'a' && c <= b'f' {
-                v = c - b'a' + 10;
-            } else {
-                v = 0;
-            }
+            v = hexchar2nibble(hex[2 * i]);
             v <<= 4;
-            c = hex[2 * i + 1];
-            if c >= b'0' && c <= b'9' {
-                v += c - b'0';
-            } else if c >= b'A' && c <= b'F' {
-                v += c - b'A' + 10;
-            } else if c >= b'a' && c <= b'f' {
-                v += c - b'a' + 10;
-            } else {
-                v = 0;
-            }
+            v += hexchar2nibble(hex[2 * i + 1]);
             bin[i] = v;
         }
+    }
+}
+
+/// Convert an ASCII hex character to the corresponding integer value
+///
+/// Helper function for `GCM::hex2bytes`.
+/// Returns a u8 in the range 0..=0xf.
+fn hexchar2nibble(c: u8) -> u8 {
+    match c {
+        b'0'..=b'9' => c - b'0',
+        b'A'..=b'F' => c - b'A' + 10,
+        b'a'..=b'f' => c - b'a' + 10,
+        _ => 0,
     }
 }
 
