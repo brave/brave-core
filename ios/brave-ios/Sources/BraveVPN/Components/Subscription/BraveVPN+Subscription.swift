@@ -39,9 +39,9 @@ extension BraveVPN {
     }
 
     switch productId {
-    case BraveStoreProduct.vpnMonthly.rawValue:
+    case BraveStoreProduct.vpnMonthly.rawValue, BraveStoreProduct.vpnMonthly.itemSKU:
       return Strings.VPN.vpnSettingsMonthlySubName
-    case BraveStoreProduct.vpnYearly.rawValue:
+    case BraveStoreProduct.vpnYearly.rawValue, BraveStoreProduct.vpnYearly.itemSKU:
       return Strings.VPN.vpnSettingsYearlySubName
     default:
       assertionFailure("Can't get product id")

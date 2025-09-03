@@ -69,6 +69,7 @@ struct BraveRegionDetailsView: View {
         BraveVPNCityRegion(
           displayName: $0.displayName,
           regionName: $0.regionName,
+          smartRoutingProxyState: $0.smartRoutingProxyState,
           serverCount: Int(truncating: $0.serverCount)
         )
       }

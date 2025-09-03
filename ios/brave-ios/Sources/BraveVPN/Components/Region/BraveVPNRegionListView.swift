@@ -239,28 +239,31 @@ private struct BraveVPNCountryRegionView: View {
                   ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textPrimary)
               )
 
-            Button {
-              showPopover.toggle()
-            } label: {
-              Label {
-                Text(Strings.VPN.smartProxyPopoverTitle)
-              } icon: {
-                Image(braveSystemName: "leo.smart.proxy-routing")
-                  .foregroundStyle(Color(braveSystemName: .iconDefault))
-                  .padding(4.0)
-                  .background(Color(braveSystemName: .containerHighlight))
-                  .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+            if region.smartRoutingProxyState != kGRDRegionSmartRoutingProxyNone {
+              Button {
+                showPopover.toggle()
+              } label: {
+                Label {
+                  Text(Strings.VPN.smartProxyPopoverTitle)
+                } icon: {
+                  Image(braveSystemName: "leo.smart.proxy-routing")
+                    .foregroundStyle(Color(braveSystemName: .iconDefault))
+                    .padding(4.0)
+                    .background(Color(braveSystemName: .containerHighlight))
+                    .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+                }
+                .labelStyle(.iconOnly)
               }
-              .labelStyle(.iconOnly)
-            }
-            .bravePopover(isPresented: $showPopover, arrowDirection: [.down]) {
-              Text(Strings.VPN.smartProxyPopoverTitle)
-                .font(.subheadline)
-                .foregroundStyle(Color(braveSystemName: .textTertiary))
-                .fixedSize(horizontal: false, vertical: true)
-                .padding()
+              .bravePopover(isPresented: $showPopover, arrowDirection: [.down]) {
+                Text(Strings.VPN.smartProxyPopoverTitle)
+                  .font(.subheadline)
+                  .foregroundStyle(Color(braveSystemName: .textTertiary))
+                  .fixedSize(horizontal: false, vertical: true)
+                  .padding()
+              }
             }
           }
+
           Text(generateServerCountDetails(for: region))
             .font(.footnote)
             .foregroundStyle(
