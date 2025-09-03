@@ -35,7 +35,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   class PsstUiDelegate {
    public:
     virtual ~PsstUiDelegate() = default;
-    // Actualize the UI state based on the applied tasks and progress.
+    // Update the UI state based on the applied tasks and progress.
     virtual void SetAppliedItems(
         long progress,
         const std::vector<PsstTask>& applied_tasks) = 0;
