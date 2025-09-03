@@ -140,17 +140,17 @@ export const DeleteAliasModal = ({
 }) => {
   const [deleting, setDeleting] = React.useState<boolean>(false)
   const [deleteErrorMessage, setDeleteErrorMessage] =
-    React.useState<string | undefined>(undefined)
+    React.useState<string | null>(null)
   const onDeleteAlias = async () => {
-    setDeleteErrorMessage(undefined)
+    setDeleteErrorMessage(null)
     setDeleting(true)
-    const { result } = await emailAliasesService.deleteAlias(alias.email)
-    setDeleting(false)
-    if (result.failure) {
-      setDeleteErrorMessage(result.failure)
-    } else {
+    try {
+      await emailAliasesService.deleteAlias(alias.email)
       onReturnToMain()
+    } catch (errorMessage) {
+      setDeleteErrorMessage(errorMessage as string)
     }
+    setDeleting(false)
   }
   return <ModalCol>
     <ModalTitle>{getLocale('emailAliasesDeleteAliasTitle')}</ModalTitle>
@@ -197,31 +197,40 @@ export const EmailAliasModal = (
     editAlias?.note ?? '')
   const [awaitingProposedAlias, setAwaitingProposedAlias] =
     React.useState<boolean>(true)
+  const [awaitingUpdate, setAwaitingUpdate] =
+    React.useState<boolean>(false)
   const [generateAliasResult, setGenerateAliasResult] =
-    React.useState<{ success?: string, failure?: string }>({
-      success: editAlias?.email ?? '',
-      failure: undefined
+    React.useState<{ aliasEmail: string, errorMessage?: string }>({
+      aliasEmail: editAlias?.email ?? '',
+      errorMessage: undefined
     })
   const [updateErrorMessage, setUpdateErrorMessage] =
-    React.useState<string | undefined>(undefined)
+    React.useState<string | null>(null)
   const createOrSave = async () => {
-    if (generateAliasResult.success) {
-      // Clear any existing error message
-      setUpdateErrorMessage(undefined)
-      const { result } = await emailAliasesService.updateAlias(
-        generateAliasResult.success, proposedNote)
-      if (result.failure) {
-        setUpdateErrorMessage(result.failure)
-      } else {
-        onReturnToMain()
-      }
+    setUpdateErrorMessage(null)
+    setAwaitingUpdate(true)
+    try {
+      await emailAliasesService.updateAlias(
+        generateAliasResult.aliasEmail, proposedNote)
+      onReturnToMain()
+    } catch (errorMessage) {
+      setUpdateErrorMessage(errorMessage as string)
     }
+    setAwaitingUpdate(false)
   }
   const regenerateAlias = async () => {
     setAwaitingProposedAlias(true)
-    setGenerateAliasResult({ success: '', failure: undefined})
-    const { result } = await emailAliasesService.generateAlias()
-    setGenerateAliasResult(result)
+    setGenerateAliasResult({ aliasEmail: '', errorMessage: undefined})
+    try {
+      // We have to do a cast because the mojom generated code produces the
+      // wrong type. TODO: fix this.
+      const proposedEmail =
+        (await emailAliasesService.generateAlias()) as unknown as string
+      setGenerateAliasResult({ aliasEmail: proposedEmail, errorMessage: undefined})
+    } catch (errorMessage) {
+      setGenerateAliasResult({ aliasEmail: '',
+                               errorMessage: errorMessage as string})
+    }
     setAwaitingProposedAlias(false)
   }
   React.useEffect(() => {
@@ -249,16 +258,16 @@ export const EmailAliasModal = (
               <ModalLabel>{getLocale('emailAliasesAliasLabel')}</ModalLabel>
               <GeneratedEmailContainer>
                 <div data-testid='generated-email'>
-                  {generateAliasResult.success}
+                  {generateAliasResult.aliasEmail}
                 </div>
                 {!editing &&
                  <RefreshButton data-testid='regenerate-button'
                                 onClick={regenerateAlias}
                                 waiting={awaitingProposedAlias} />}
               </GeneratedEmailContainer>
-              {generateAliasResult.failure &&
+              {generateAliasResult.errorMessage &&
                 <Alert>
-                  {generateAliasResult.failure}
+                  {generateAliasResult.errorMessage}
                 </Alert>}
               <ModalDetails>
                 {formatLocale('emailAliasesEmailsWillBeForwardedTo',
@@ -290,9 +299,9 @@ export const EmailAliasModal = (
           </Button>
           <Button
             kind='filled'
-            isDisabled={!editing
-                         && (limitReached || awaitingProposedAlias ||
-                             !generateAliasResult?.success)}
+            isDisabled={awaitingUpdate ||
+             (!editing && (limitReached || awaitingProposedAlias ||
+                           !generateAliasResult?.aliasEmail))}
             onClick={createOrSave}>
             {!editing
               ? getLocale('emailAliasesCreateAliasButton')

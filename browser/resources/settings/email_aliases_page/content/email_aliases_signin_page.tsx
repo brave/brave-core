@@ -45,13 +45,14 @@ const BeforeSendingEmailForm = ({ suggestedAuthEmail, emailAliasesService }:
   { suggestedAuthEmail: string,
     emailAliasesService: EmailAliasesServiceInterface }) => {
   const [email, setEmail] = React.useState<string>(suggestedAuthEmail)
-  const [errorMessage, setErrorMessage] =
-    React.useState<string | undefined>(undefined)
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null)
   const requestAuthentication = async () => {
-    setErrorMessage(undefined)
-    const { result } =
+    setErrorMessage(null)
+    try {
       await emailAliasesService.requestAuthentication(email)
-    setErrorMessage(result.failure)
+    } catch (errorMessage) {
+      setErrorMessage(errorMessage as string)
+    }
   }
   return <SpacedCol>
     <h4>{getLocale('emailAliasesSignInOrCreateAccount')}</h4>

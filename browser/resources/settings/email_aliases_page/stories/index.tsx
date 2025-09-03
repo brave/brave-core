@@ -136,34 +136,31 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
 
   async updateAlias (email: string, note: string) {
     if (Math.random() < 1/3) {
-      return { result: { failure: getLocale('emailAliasesUpdateAliasError'),
-                         success: undefined } }
+      throw getLocale('emailAliasesUpdateAliasError')
     }
     const alias = { email, note, domains: undefined }
     this.aliases.set(email, alias)
     this.observers.forEach(observer => {
       observer.onAliasesUpdated([...this.aliases.values()])
     })
-    return { result: { success: {}, failure: undefined } }
+    return {} // success
   }
 
   async deleteAlias (email: string) {
     if (Math.random() < 1/3) {
-      return { result: { failure: getLocale('emailAliasesDeleteAliasError'),
-                         success: undefined } }
+      throw getLocale('emailAliasesDeleteAliasError')
     }
     this.aliases.delete(email)
     this.observers.forEach(observer => {
       observer.onAliasesUpdated([...this.aliases.values()])
     })
-    return { result: { success: {}, failure: undefined } }
+    return {} // success
   }
 
   async generateAlias () {
     await new Promise(resolve => setTimeout(resolve, 1000))
     if (Math.random() < 1/3) {
-      return { result: { failure: getLocale('emailAliasesGenerateError'),
-                         success: undefined } }
+      throw getLocale('emailAliasesGenerateError')
     }
     let aliasEmail: string = ''
     do {
@@ -171,14 +168,12 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
         "@bravealias.com"
     } while (this.aliases.has(aliasEmail))
 
-    return { result: { success: aliasEmail, failure: undefined } }
+    return aliasEmail
   }
 
   async requestAuthentication (email: string) {
     if (Math.random() < 1/3) {
-      return {
-        result: { failure: getLocale('emailAliasesRequestAuthenticationError'),
-                  success: undefined } }
+      throw getLocale('emailAliasesRequestAuthenticationError')
     }
     this.observers.forEach(observer => {
       observer.onAuthStateChanged({
@@ -196,7 +191,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
         })
       })
     }, 5000);
-    return { result: { success: {}, failure: undefined } }
+    return {} // success
   }
 
   async cancelAuthenticationOrLogout () {
