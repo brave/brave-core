@@ -6,6 +6,8 @@
 import './brave_adblock_subpage.js'
 import '//resources/cr_elements/md_select.css.js'
 
+import { assert } from 'chrome://resources/js/assert.js'
+
 import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
@@ -14,8 +16,9 @@ import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener
 import {loadTimeData} from '../i18n_setup.js'
 import { Router} from '../router.js'
 import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
-
 import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js';
+
+import '../ad_block_only_mode_page/ad_block_only_mode_alert.js'
 
 import {
   DefaultBraveShieldsBrowserProxy,
@@ -24,6 +27,7 @@ import {
 
 import {getTemplate} from './default_brave_shields_page.html.js'
 
+import '../ad_block_only_mode_page/ad_block_only_mode_page.js'
 import '../social_blocking_page/social_blocking_page.js';
 
 interface BraveShieldsPage {
@@ -36,6 +40,9 @@ interface BraveShieldsPage {
     httpsUpgradeControlType: HTMLSelectElement,
     noScriptControlType: SettingsToggleButtonElement,
     setContactInfoSaveFlagToggle: SettingsToggleButtonElement,
+    deAmpToggle: SettingsToggleButtonElement,
+    debounceToggle: SettingsToggleButtonElement,
+    reduceLanguageToggle: SettingsToggleButtonElement,
   }
 }
 
@@ -124,6 +131,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       },
       fingerprintingControlType_: String,
       httpsUpgradeControlType_: String,
+      noScriptControlType_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: false,
+        }
+      },
       isAdBlockRoute_: {
         type: Boolean,
         value: false
@@ -163,7 +178,49 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           type: chrome.settingsPrivate.PrefType.BOOLEAN,
           value: true,
         }
-      }
+      },
+      isAdBlockOnlyModeEnabled_: {
+        type: Boolean,
+        value: false,
+      },
+      isDeAmpFeatureEnabled_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isDeAmpFeatureEnabled')
+        },
+      },
+      isDeAmpEnabled_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: true,
+        }
+      },
+      isDebounceFeatureEnabled_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isDebounceFeatureEnabled')
+        },
+      },
+      isDebounceEnabled_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: true,
+        }
+      },
+      isReduceLanguageEnabled_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: true,
+        }
+      },
     }
   }
 
@@ -173,6 +230,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare cookieControlTypes_: ControlType[]
   private declare cookieControlType_: string
   private declare httpsUpgradeControlType_: string
+  private declare noScriptControlType_: chrome.settingsPrivate.PrefObject<boolean>
   private declare isForgetFirstPartyStorageEnabled_: chrome.settingsPrivate.
     PrefObject<boolean>
   private declare isFingerprintingEnabled_: chrome.settingsPrivate.PrefObject<boolean>
@@ -184,6 +242,12 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare isHttpsByDefaultEnabled_: boolean
   private declare showStrictFingerprintingMode_: boolean
   private declare isForgetFirstPartyStorageFeatureEnabled_: boolean
+  private declare isAdBlockOnlyModeEnabled_: boolean
+  private declare isDeAmpFeatureEnabled_: boolean
+  private declare isDeAmpEnabled_: chrome.settingsPrivate.PrefObject<boolean>
+  private declare isDebounceFeatureEnabled_: boolean
+  private declare isDebounceEnabled_: chrome.settingsPrivate.PrefObject<boolean>
+  private declare isReduceLanguageEnabled_: chrome.settingsPrivate.PrefObject<boolean>
 
   private browserProxy_: DefaultBraveShieldsBrowserProxy =
     DefaultBraveShieldsBrowserProxyImpl.getInstance()
@@ -207,6 +271,9 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   }
 
   onAdblockPageClick_() {
+    if (this.isAdBlockOnlyModeEnabled_) {
+      return
+    }
     const router = Router.getInstance()
     router.navigateTo(router.getRoutes().SHIELDS_ADBLOCK)
   }
@@ -259,6 +326,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       this.httpsUpgradeControlType_ = value
     })
 
+    this.browserProxy_.getNoScriptControlType().then(value => {
+      this.noScriptControlType_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value,
+      }
+    })
+
     this.browserProxy_.getForgetFirstPartyStorageEnabled().then(value => {
       this.isForgetFirstPartyStorageEnabled_ = {
         key: '',
@@ -271,6 +346,34 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         key: '',
         type: chrome.settingsPrivate.PrefType.BOOLEAN,
         value: value.contactInfoSaveFlag,
+      }
+    })
+
+    this.browserProxy_.getAdBlockOnlyModeEnabled().then(value => {
+      this.isAdBlockOnlyModeEnabled_ = value
+    })
+
+    this.browserProxy_.getDeAmpEnabled().then(value => {
+      this.isDeAmpEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value,
+      }
+    })
+
+    this.browserProxy_.getDebounceEnabled().then(value => {
+      this.isDebounceEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value,
+      }
+    })
+
+    this.browserProxy_.getReduceLanguageEnabled().then(value => {
+      this.isReduceLanguageEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value,
       }
     })
   }
@@ -316,6 +419,21 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     this.browserProxy_.setContactInfoSaveFlag(
       this.$.setContactInfoSaveFlagToggle.checked
     )
+  }
+
+  onDeAmpToggleChange_(event: Event) {
+    assert(event.target instanceof SettingsToggleButtonElement)
+    this.browserProxy_.setDeAmpEnabled(event.target.checked)
+  }
+
+  onDebounceToggleChange_(event: Event) {
+    assert(event.target instanceof SettingsToggleButtonElement)
+    this.browserProxy_.setDebounceEnabled(event.target.checked)
+  }
+
+  onReduceLanguageToggleChange_(event: Event) {
+    assert(event.target instanceof SettingsToggleButtonElement)
+    this.browserProxy_.setReduceLanguageEnabled(event.target.checked)
   }
 }
 

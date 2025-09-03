@@ -525,13 +525,13 @@ TEST_F(BraveShieldsUtilTest, SetCookieControlType_ForOrigin) {
   brave_shields::SetCookieControlType(
       map, profile()->GetPrefs(), ControlType::ALLOW, GURL("http://brave.com"));
   // override should apply to origin
-  auto setting = brave_shields::GetCookieControlType(map, cookies.get(),
-                                                     GURL("http://brave.com"));
+  auto setting = brave_shields::GetCookieControlType(
+      map, cookies.get(), GURL("http://brave.com"), profile()->GetPrefs());
   EXPECT_EQ(ControlType::ALLOW, setting);
 
   // override should also apply to different scheme
-  setting = brave_shields::GetCookieControlType(map, cookies.get(),
-                                                GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(
+      map, cookies.get(), GURL("http://brave.com"), profile()->GetPrefs());
   EXPECT_EQ(ControlType::ALLOW, setting);
 }
 
@@ -539,38 +539,41 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_Default) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   auto cookies = CookieSettingsFactory::GetForProfile(profile());
 
-  auto setting =
-      brave_shields::GetCookieControlType(map, cookies.get(), GURL());
+  auto setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL(),
+                                                     profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
-  setting = brave_shields::GetCookieControlType(map, cookies.get(),
-                                                GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(
+      map, cookies.get(), GURL("http://brave.com"), profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 
   /* ALLOW */
   brave_shields::SetCookieControlType(map, profile()->GetPrefs(),
                                       ControlType::ALLOW, GURL());
-  setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL());
+  setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL(),
+                                                profile()->GetPrefs());
   EXPECT_EQ(ControlType::ALLOW, setting);
-  setting = brave_shields::GetCookieControlType(map, cookies.get(),
-                                                GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(
+      map, cookies.get(), GURL("http://brave.com"), profile()->GetPrefs());
   EXPECT_EQ(ControlType::ALLOW, setting);
 
   /* BLOCK */
   brave_shields::SetCookieControlType(map, profile()->GetPrefs(),
                                       ControlType::BLOCK, GURL());
-  setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL());
+  setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL(),
+                                                profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK, setting);
-  setting = brave_shields::GetCookieControlType(map, cookies.get(),
-                                                GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(
+      map, cookies.get(), GURL("http://brave.com"), profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK, setting);
 
   /* BLOCK_THIRD_PARTY */
   brave_shields::SetCookieControlType(map, profile()->GetPrefs(),
                                       ControlType::BLOCK_THIRD_PARTY, GURL());
-  setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL());
+  setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL(),
+                                                profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
-  setting = brave_shields::GetCookieControlType(map, cookies.get(),
-                                                GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(
+      map, cookies.get(), GURL("http://brave.com"), profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 }
 
@@ -610,8 +613,8 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_WithUserSettings) {
       ContentSettingsPattern::FromURL(GURL("http://brave.com")),
       ContentSettingsType::COOKIES, CONTENT_SETTING_BLOCK);
 
-  auto setting = brave_shields::GetCookieControlType(map, cookies.get(),
-                                                     GURL("http://brave.com"));
+  auto setting = brave_shields::GetCookieControlType(
+      map, cookies.get(), GURL("http://brave.com"), profile()->GetPrefs());
   // User settings doesn't affect BRAVE_COOKIES
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 
@@ -622,8 +625,8 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_WithUserSettings) {
 
   brave_shields::SetCookieControlType(
       map, profile()->GetPrefs(), ControlType::ALLOW, GURL("http://brave.com"));
-  setting = brave_shields::GetCookieControlType(map, cookies.get(),
-                                                GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(
+      map, cookies.get(), GURL("http://brave.com"), profile()->GetPrefs());
   // User settings still doesn't affect BRAVE_COOKIES
   EXPECT_EQ(ControlType::ALLOW, setting);
 
@@ -637,36 +640,39 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_ForOrigin) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   auto cookies = CookieSettingsFactory::GetForProfile(profile());
 
-  auto setting = brave_shields::GetCookieControlType(map, cookies.get(),
-                                                     GURL("http://brave.com"));
+  auto setting = brave_shields::GetCookieControlType(
+      map, cookies.get(), GURL("http://brave.com"), profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 
   /* ALLOW */
   brave_shields::SetCookieControlType(
       map, profile()->GetPrefs(), ControlType::ALLOW, GURL("http://brave.com"));
-  setting = brave_shields::GetCookieControlType(map, cookies.get(),
-                                                GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(
+      map, cookies.get(), GURL("http://brave.com"), profile()->GetPrefs());
   EXPECT_EQ(ControlType::ALLOW, setting);
-  setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL());
+  setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL(),
+                                                profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 
   /* BLOCK */
   brave_shields::SetCookieControlType(
       map, profile()->GetPrefs(), ControlType::BLOCK, GURL("http://brave.com"));
-  setting = brave_shields::GetCookieControlType(map, cookies.get(),
-                                                GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(
+      map, cookies.get(), GURL("http://brave.com"), profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK, setting);
-  setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL());
+  setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL(),
+                                                profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 
   /* BLOCK_THIRD_PARTY */
   brave_shields::SetCookieControlType(map, profile()->GetPrefs(),
                                       ControlType::BLOCK_THIRD_PARTY,
                                       GURL("http://brave.com"));
-  setting = brave_shields::GetCookieControlType(map, cookies.get(),
-                                                GURL("http://brave.com"));
+  setting = brave_shields::GetCookieControlType(
+      map, cookies.get(), GURL("http://brave.com"), profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
-  setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL());
+  setting = brave_shields::GetCookieControlType(map, cookies.get(), GURL(),
+                                                profile()->GetPrefs());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 }
 

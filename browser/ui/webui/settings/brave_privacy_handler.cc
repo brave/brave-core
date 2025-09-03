@@ -109,12 +109,6 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
   data_source->AddBoolean("pushMessagingEnabledAtStartup",
                           gcm_channel_status->IsGCMEnabled());
 #endif
-  data_source->AddBoolean(
-      "isDeAmpFeatureEnabled",
-      base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP));
-  data_source->AddBoolean(
-      "isDebounceFeatureEnabled",
-      base::FeatureList::IsEnabled(debounce::features::kBraveDebounce));
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   data_source->AddBoolean(
       "isRequestOTRFeatureEnabled",

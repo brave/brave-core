@@ -350,6 +350,9 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DESCRIPTION" desc="Label for shields status on site settings.">
     Shields can block trackers, ads, and fingerprinting
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DESCRIPTION_ADBLOCK_ONLY_MODE" desc="Label for shields status on site settings when adblock only mode is enabled.">
+    Shields can block ads
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP" desc="Label for shields status up site settings.">
     Shields Up
   </message>
@@ -600,6 +603,26 @@
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
     Show Brave Rewards button
+  </message>
+
+  <!-- Settings / Ad block only mode -->
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE" desc="Title for an item in the 'Ad block only mode' section of Shields Settings">
+    Ad block only mode
+  </message>
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_LABEL" desc="The text for settings option to enable shields ad block only mode">
+    Use ad block only mode
+  </message>
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_DESC" desc="The description for settings option to enable shields ad block only mode">
+    Ad block only mode retains the core ad blocking rules of Brave Shields, but reduces some privacy protections in an effort to ease site breakage. This is an experimental mode. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_TITLE" desc="Title for the alert shown when ad block only mode is enabled">
+    Shields options are currently disabled
+  </message>
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_DESC" desc="Description for the alert shown when ad block only mode is enabled">
+    Ad block only mode only enables ad blocking rules to prevent possible web breakages. If you would like to enable standard shields, please disable this mode.
+  </message>
+  <message name="IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_TURN_OFF_BUTTON" desc="Alert button text to turn off ad block only mode">
+    Turn off ad block only mode
   </message>
 
   <!-- Settings / Social media blocking -->

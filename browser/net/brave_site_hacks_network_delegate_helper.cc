@@ -36,7 +36,8 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
 
   content::Referrer new_referrer;
   if (brave_shields::MaybeChangeReferrer(
-          ctx->allow_referrers, ctx->allow_brave_shields, GURL(ctx->referrer),
+          ctx->allow_referrers, ctx->allow_brave_shields,
+          ctx->shields_ad_block_only_mode_enabled, GURL(ctx->referrer),
           ctx->request_url, &new_referrer)) {
     ctx->new_referrer = new_referrer.url;
     return true;
@@ -49,7 +50,7 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
 int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
                                      std::shared_ptr<BraveRequestInfo> ctx) {
   ApplyPotentialReferrerBlock(ctx);
-  if (ctx->allow_brave_shields) {
+  if (ctx->allow_brave_shields && !ctx->shields_ad_block_only_mode_enabled) {
     auto filtered_url = query_filter::MaybeApplyQueryStringFilter(
         ctx->initiator_url, ctx->redirect_source, ctx->request_url, ctx->method,
         ctx->internal_redirect);

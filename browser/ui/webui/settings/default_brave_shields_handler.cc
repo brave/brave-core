@@ -14,7 +14,13 @@
 #include "base/values.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/de_amp/browser/de_amp_util.h"
+#include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/debounce/core/common/pref_names.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -81,6 +87,16 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
           &DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "getAdBlockOnlyModeEnabled",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::GetAdBlockOnlyModeEnabled,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setAdBlockOnlyModeEnabled",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::SetAdBlockOnlyModeEnabled,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "getHttpsUpgradeControlType",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::GetHttpsUpgradeControlType,
@@ -93,6 +109,10 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "setNoScriptControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetNoScriptControlType,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getNoScriptControlType",
+      base::BindRepeating(&DefaultBraveShieldsHandler::GetNoScriptControlType,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getForgetFirstPartyStorageEnabled",
@@ -117,11 +137,42 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       base::BindRepeating(
           &DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag,
           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getDeAmpEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::GetDeAmpEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setDeAmpEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::SetDeAmpEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getDebounceEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::GetDebounceEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setDebounceEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::SetDebounceEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getReduceLanguageEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::GetReduceLanguageEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setReduceLanguageEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::SetReduceLanguageEnabled,
+                          base::Unretained(this)));
 
   content_settings_observation_.Observe(
       HostContentSettingsMapFactory::GetForProfile(profile_));
   cookie_settings_observation_.Observe(
       CookieSettingsFactory::GetForProfile(profile_).get());
+
+  pref_change_registrar_.Init(profile_->GetPrefs());
+  pref_change_registrar_.Add(
+      brave_shields::prefs::kAdblockAdBlockOnlyModeEnabled,
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::OnAdBlockOnlyModePrefChanged,
+          weak_ptr_factory_.GetWeakPtr()));
 }
 
 void DefaultBraveShieldsHandler::OnContentSettingChanged(
@@ -162,6 +213,13 @@ void DefaultBraveShieldsHandler::OnThirdPartyCookieBlockingChanged(
   FireWebUIListener("brave-shields-settings-changed");
 }
 
+void DefaultBraveShieldsHandler::OnAdBlockOnlyModePrefChanged() {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  FireWebUIListener("brave-shields-settings-changed");
+}
+
 void DefaultBraveShieldsHandler::IsAdControlEnabled(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
@@ -169,10 +227,13 @@ void DefaultBraveShieldsHandler::IsAdControlEnabled(
 
   ControlType setting = brave_shields::GetAdControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  const bool is_ad_control_enabled =
+      setting == ControlType::BLOCK &&
+      !brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
+          profile_->GetPrefs());
 
   AllowJavascript();
-  ResolveJavascriptCallback(args[0],
-                            base::Value(setting == ControlType::BLOCK));
+  ResolveJavascriptCallback(args[0], base::Value(is_ad_control_enabled));
 }
 
 void DefaultBraveShieldsHandler::SetAdControlType(
@@ -218,7 +279,8 @@ void DefaultBraveShieldsHandler::GetCookieControlType(
 
   const ControlType setting = brave_shields::GetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      CookieSettingsFactory::GetForProfile(profile_).get(), GURL());
+      CookieSettingsFactory::GetForProfile(profile_).get(), GURL(),
+      profile_->GetPrefs());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(ControlTypeToString(setting)));
@@ -230,7 +292,8 @@ void DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag(
   CHECK(profile_);
   const ControlType setting = brave_shields::GetCookieControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
-      CookieSettingsFactory::GetForProfile(profile_).get(), GURL());
+      CookieSettingsFactory::GetForProfile(profile_).get(), GURL(),
+      profile_->GetPrefs());
 
   const bool block_all_cookies_feature_enabled = base::FeatureList::IsEnabled(
       brave_shields::features::kBlockAllCookiesToggle);
@@ -301,6 +364,27 @@ void DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled(
       g_browser_process->local_state());
 }
 
+void DefaultBraveShieldsHandler::GetAdBlockOnlyModeEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool enabled = brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
+      profile_->GetPrefs());
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(enabled));
+}
+
+void DefaultBraveShieldsHandler::SetAdBlockOnlyModeEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool enabled = args[0].GetBool();
+  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(profile_->GetPrefs(),
+                                                       enabled);
+}
+
 void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
@@ -334,6 +418,19 @@ void DefaultBraveShieldsHandler::SetNoScriptControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
       value ? ControlType::BLOCK : ControlType::ALLOW, GURL(),
       g_browser_process->local_state());
+}
+
+void DefaultBraveShieldsHandler::GetNoScriptControlType(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  ControlType setting = brave_shields::GetNoScriptControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0],
+                            base::Value(setting == ControlType::BLOCK));
 }
 
 void DefaultBraveShieldsHandler::SetContactInfoSaveFlag(
@@ -406,4 +503,73 @@ void DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled(
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(result));
+}
+
+void DefaultBraveShieldsHandler::GetDeAmpEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool de_amp_enabled = de_amp::IsDeAmpEnabled(
+      profile_->GetPrefs(),
+      HostContentSettingsMapFactory::GetForProfile(profile_));
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(de_amp_enabled));
+}
+
+void DefaultBraveShieldsHandler::SetDeAmpEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool value = args[0].GetBool();
+  profile_->GetPrefs()->SetBoolean(de_amp::kDeAmpPrefEnabled, value);
+}
+
+void DefaultBraveShieldsHandler::GetDebounceEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool debounce_enabled =
+      profile_->GetPrefs()->GetBoolean(debounce::prefs::kDebounceEnabled) &&
+      !brave_shields::GetBraveShieldsAdBlockOnlyModeEnabled(
+          profile_->GetPrefs());
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(debounce_enabled));
+}
+
+void DefaultBraveShieldsHandler::SetDebounceEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  bool value = args[0].GetBool();
+  profile_->GetPrefs()->SetBoolean(debounce::prefs::kDebounceEnabled, value);
+}
+
+void DefaultBraveShieldsHandler::GetReduceLanguageEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool reduce_language_enabled =
+      brave_shields::IsReduceLanguageEnabledForProfile(
+          HostContentSettingsMapFactory::GetForProfile(profile_), GURL(),
+          profile_->GetPrefs());
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(reduce_language_enabled));
+}
+
+void DefaultBraveShieldsHandler::SetReduceLanguageEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  bool value = args[0].GetBool();
+  profile_->GetPrefs()->SetBoolean(brave_shields::prefs::kReduceLanguageEnabled,
+                                   value);
 }
