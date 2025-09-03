@@ -18,7 +18,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
       semantics {
         sender: "Polkadot RPC"
         description:
-          "This service is used to communicate with Polkadot nodes "
+          "This service is used to communicate with Polkadot Substrate nodes "
           "on behalf of the user interacting with the native Brave wallet."
         trigger:
           "Triggered by uses of the native Brave wallet."
@@ -38,14 +38,14 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 }  // namespace
 
-PolkadotRpc::PolkadotRpc(
+PolkadotSubstrateRpc::PolkadotSubstrateRpc(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : api_request_helper_(GetNetworkTrafficAnnotationTag(),
                           url_loader_factory) {}
 
-PolkadotRpc::~PolkadotRpc() = default;
+PolkadotSubstrateRpc::~PolkadotSubstrateRpc() = default;
 
-void PolkadotRpc::GetChainName(
+void PolkadotSubstrateRpc::GetChainName(
     base::OnceCallback<void(const std::string&)> callback) {
   std::string method = "POST";
   GURL url("https://westend-rpc.polkadot.io");
@@ -57,15 +57,14 @@ void PolkadotRpc::GetChainName(
   api_request_helper_.Request(
       method, url, payload, payload_content_type,
       base::BindOnce(
-          [](base::WeakPtr<PolkadotRpc> weak,
-             base::OnceCallback<void(const std::string&)> callback,
+          [](base::OnceCallback<void(const std::string&)> callback,
              APIRequestResult res) {
             const auto& body = res.value_body();
             const auto* chain_name = body.GetDict().Find("result");
 
             std::move(callback).Run(chain_name->GetString());
           },
-          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+          std::move(callback)));
 }
 
 }  // namespace brave_wallet
