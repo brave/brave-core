@@ -3,10 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//build/config/ui.gni")
+
 brave_browser_ui_color_mixers_sources = []
 brave_browser_ui_color_mixers_deps = []
 
-if (!is_android) {
+if (toolkit_views) {
   brave_browser_ui_color_mixers_sources += [
     "//brave/browser/ui/color/brave_color_id.h",
     "//brave/browser/ui/color/brave_color_mixer.cc",

@@ -9,7 +9,6 @@
 
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_ui_features.h"
-#include "brave/browser/ui/color/features.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -103,6 +102,10 @@
 
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/common/features.h"
+#endif
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/color/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -474,6 +477,11 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(tabs::features::kBraveRenamingTabs),              \
       })
 
+#else
+#define BRAVE_TABS_FEATURE_ENTRIES
+#endif
+
+#if defined(TOOLKIT_VIEWS)
 #define BRAVE_DARKER_THEME_FEATURE_ENTRIES                    \
   EXPAND_FEATURE_ENTRIES({                                    \
       "brave-darker-theme",                                   \
@@ -483,7 +491,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       FEATURE_VALUE_TYPE(color::features::kBraveDarkerTheme), \
   })
 #else
-#define BRAVE_TABS_FEATURE_ENTRIES
 #define BRAVE_DARKER_THEME_FEATURE_ENTRIES
 #endif
 
@@ -498,7 +505,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   })
 #else
 #define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY
-#endif
+#endif  // defined(TOOLKIT_VIEWS)
 
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES                                          \
   EXPAND_FEATURE_ENTRIES(                                                      \
