@@ -5,12 +5,28 @@
 
 #include "brave/browser/brave_browser_main_parts_mac.h"
 
+#include "base/feature_list.h"
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
+#include "brave/browser/upgrade_when_idle/upgrade_when_idle.h"
+#include "chrome/common/channel_info.h"
+#include "components/version_info/channel.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #import "brave/browser/mac/sparkle_glue.h"
 #endif
+
+namespace brave {
+BASE_FEATURE(kUpgradeWhenIdle,
+             "UpgradeWhenIdle",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+}
+
+BraveBrowserMainPartsMac::BraveBrowserMainPartsMac(bool is_integration_test,
+                                                   StartupData* startup_data)
+    : ChromeBrowserMainPartsMac(is_integration_test, startup_data) {}
+
+BraveBrowserMainPartsMac::~BraveBrowserMainPartsMac() = default;
 
 void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
   ChromeBrowserMainPartsMac::PreCreateMainMessageLoop();
@@ -19,6 +35,10 @@ void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
   // It would be no-op if udpate is disabled.
   [[SparkleGlue sharedSparkleGlue] registerWithSparkle];
 #endif
+
+  if (base::FeatureList::IsEnabled(brave::kUpgradeWhenIdle)) {
+    upgrade_when_idle_ = std::make_unique<brave::UpgradeWhenIdle>();
+  }
 }
 
 void BraveBrowserMainPartsMac::PostProfileInit(Profile* profile,
