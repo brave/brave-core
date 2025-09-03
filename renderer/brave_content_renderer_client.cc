@@ -101,6 +101,7 @@ void BraveContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
   blink::WebRuntimeFeatures::EnableFledge(false);
+  blink::WebRuntimeFeatures::EnablePermissionElement(false);
   // Disable topics APIs because kBrowsingTopics feature is disabled
   blink::WebRuntimeFeatures::EnableTopicsAPI(false);
   blink::WebRuntimeFeatures::EnableTopicsDocumentAPI(false);
