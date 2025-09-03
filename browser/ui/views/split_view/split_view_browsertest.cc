@@ -135,15 +135,17 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
 
   // separator should not be empty when split view is closed.
   auto* browser_view = brave_browser_view();
-  EXPECT_NE(gfx::Size(),
-            browser_view->contents_separator_for_testing()->GetPreferredSize());
+  EXPECT_NE(
+      gfx::Size(),
+      browser_view->top_container_separator_for_testing()->GetPreferredSize());
 
   chrome::NewSplitTab(browser(),
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
 
   // separator should be empty when split view is opened.
-  EXPECT_EQ(gfx::Size(),
-            browser_view->contents_separator_for_testing()->GetPreferredSize());
+  EXPECT_EQ(
+      gfx::Size(),
+      browser_view->top_container_separator_for_testing()->GetPreferredSize());
   EXPECT_TRUE(split_view_separator()->GetVisible());
   EXPECT_EQ(4, split_view_separator()->GetPreferredSize().width());
 
