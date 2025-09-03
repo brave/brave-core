@@ -63,14 +63,11 @@ RegisterStyleOverride(
         position: sticky;
         top: var(--brave-settings-menu-margin-v);
         margin: 0 !important;
-        max-height: calc(100vh - 56px - (var(--brave-settings-menu-margin-v) * 2) - (var(--brave-settings-menu-padding) * 2));
         min-width: 172px;
         max-width: 250px;
-        border-radius: 6px;
         overflow-y: auto;
-        padding: 24px !important;
+        padding: 12px 24px !important;
       }
-
       .cr-nav-menu-item {
         min-height: 20px !important;
         border-end-end-radius: 0px !important;
@@ -98,6 +95,10 @@ RegisterStyleOverride(
         display: none !important;
       }
 
+      .menu-separator {
+        margin: 4px -24px !important;
+      }
+
       @media (prefers-color-scheme: dark) {
         :host {
           --settings-nav-item-color: var(--leo-color-text-primary) !important;
@@ -107,7 +108,7 @@ RegisterStyleOverride(
 
       a[href] {
         font-weight: 500 !important;
-        margin: 0 20px 24px 0 !important;
+        margin: 0 20px 22px 0 !important;
         margin-inline-start: 0 !important;
         margin-inline-end: 0 !important;
         padding-bottom: 0 !important;
@@ -131,7 +132,7 @@ RegisterStyleOverride(
       }
 
       cr-icon, leo-icon {
-        margin-inline-end: 14px !important;
+        margin-inline-end: 16px !important;
         width: 20px;
         height: 20px;
       }
@@ -143,7 +144,7 @@ RegisterStyleOverride(
         left: calc(-1 * var(--brave-settings-menu-padding));
         transform: translateY(-50%);
         display: block;
-        height: 32px;
+        height: 28px;
         width: 4px;
         background: var(--leo-color-text-interactive);
         border-radius: 0px 2px 2px 0px;
@@ -196,14 +197,18 @@ RegisterStyleOverride(
         justify-content: flex-start;
         color: var(--leo-color-text-tertiary) !important;
         margin: 16px 0 0 0 !important;
+        text-decoration: none !important;
       }
       .brave-about-graphic {
         flex: 0;
-        flex-basis: var(--leo-spacing-3xl);
         display: flex;
         align-items: center;
         justify-content: flex-start;
         align-self: stretch;
+        margin-right: var(--leo-spacing-xl);
+      }
+      .brave-about-menu-link-text{
+      font: var(--leo-font-components-navbutton);
       }
       .brave-about-meta {
         flex: 1;
