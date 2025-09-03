@@ -312,8 +312,10 @@ describe('EmailAliasModal', () => {
     const saveButton = screen.getByText('emailAliasesSaveAliasButton')
     expect(saveButton).toHaveAttribute('isdisabled', 'false')
 
+    await act(async () => {
     // Click save button
-    saveButton.shadowRoot?.querySelector('button')?.click()
+      saveButton.shadowRoot?.querySelector('button')?.click()
+    })
 
     // Check that updateAlias was called
     await waitFor(() => {
