@@ -349,6 +349,7 @@ var package = Package(
         "BraveStrings",
         "BraveUI",
         "DesignSystem",
+        "Growth",
         "Strings",
         .product(name: "Collections", package: "swift-collections"),
         .product(name: "Introspect", package: "SwiftUI-Introspect"),

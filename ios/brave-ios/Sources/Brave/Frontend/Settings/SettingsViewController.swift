@@ -306,6 +306,9 @@ class SettingsViewController: TableViewController {
           selection: { [unowned self] in
             let controller = UIHostingController(
               rootView: DataImportView(
+                model: .init(
+                  coordinator: SafariDataImporterCoordinatorImpl(profile: braveCore.profile)
+                ),
                 openURL: { [unowned self] url in
                   self.settingsDelegate?.settingsOpenURLInNewTab(url)
                   self.dismiss(animated: true)
