@@ -1950,6 +1950,9 @@ void BraveWalletService::Reset() {
   if (cardano_wallet_service_) {
     cardano_wallet_service_->Reset();
   }
+  if (polkadot_wallet_service_) {
+    polkadot_wallet_service_->Reset();
+  }
 
   // Clear BraveWalletService
   ClearBraveWalletServicePrefs(profile_prefs_);
