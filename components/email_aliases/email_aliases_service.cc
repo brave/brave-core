@@ -315,6 +315,7 @@ void EmailAliasesService::UpdateAlias(const std::string& alias_email,
                                       UpdateAliasCallback callback) {
   base::Value::Dict body_value;
   body_value.Set("alias", alias_email);
+  body_value.Set("status", "active");
   if (note) {
     body_value.Set("note", *note);
   }
@@ -406,7 +407,7 @@ void EmailAliasesService::OnGenerateAliasResponse(
       const std::string* alias = dict.FindString("alias");
       if (message && *message == "created" && alias && !alias->empty()) {
         std::move(user_callback)
-            .Run(mojom::GenerateAliasResult::NewAliasEmail(*alias));
+            .Run(base::ok(*alias));
         RefreshAliases();
         return;
       } else if (message && *message != "created") {
@@ -417,20 +418,22 @@ void EmailAliasesService::OnGenerateAliasResponse(
     }
   }
   std::move(user_callback)
-      .Run(mojom::GenerateAliasResult::NewErrorMessage(error_message));
+      .Run(base::unexpected(error_message));
 }
 
 void EmailAliasesService::OnUpdateAliasResponse(
     UpdateAliasCallback user_callback,
     std::optional<std::string> /*response_body*/) {
-  std::move(user_callback).Run(std::nullopt);
+  // TODO: handle response body -- errors?
+  std::move(user_callback).Run(base::ok(std::monostate{}));
   RefreshAliases();
 }
 
 void EmailAliasesService::OnDeleteAliasResponse(
     DeleteAliasCallback user_callback,
     std::optional<std::string> /*response_body*/) {
-  std::move(user_callback).Run(std::nullopt);
+  // TODO: handle response body -- errors?
+  std::move(user_callback).Run(base::ok(std::monostate{}));
   RefreshAliases();
 }
 
