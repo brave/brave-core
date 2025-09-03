@@ -93,7 +93,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAllowURNsInIframes,
-      &blink::features::kAttributionReportingInBrowserMigration,
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
