@@ -12,19 +12,25 @@
 
 namespace brave_wallet {
 
-class PolkadotRpc {
+// The main driver for the Polkadot-based RPC calls against the relay chain and
+// the Substrate-based parachains.
+class PolkadotSubstrateRpc {
  public:
-  explicit PolkadotRpc(
+  explicit PolkadotSubstrateRpc(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~PolkadotRpc();
+  ~PolkadotSubstrateRpc();
 
-  void GetChainName(base::OnceCallback<void(const std::string&)> callback);
+  using GetChainNameCallback = base::OnceCallback<void(const std::string&)>;
+
+  // Get the name of the chain pointed to by the current network configuration.
+  // "Westend" or "Paseo" for the testnets, "Polkadot" for the mainnet.
+  void GetChainName(GetChainNameCallback callback);
 
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;
 
   api_request_helper::APIRequestHelper api_request_helper_;
-  base::WeakPtrFactory<PolkadotRpc> weak_ptr_factory_{this};
+  base::WeakPtrFactory<PolkadotSubstrateRpc> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet
