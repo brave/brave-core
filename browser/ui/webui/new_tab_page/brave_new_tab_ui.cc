@@ -143,8 +143,7 @@ BraveNewTabUI::BraveNewTabUI(
 
   web_ui->AddMessageHandler(base::WrapUnique(
       BraveNewTabMessageHandler::Create(source, profile, was_restored)));
-  web_ui->AddMessageHandler(
-      base::WrapUnique(new TopSitesMessageHandler(profile)));
+  web_ui->AddMessageHandler(std::make_unique<TopSitesMessageHandler>(profile));
 
   // For custom background images.
   if (auto* ntp_custom_background_images_service =
