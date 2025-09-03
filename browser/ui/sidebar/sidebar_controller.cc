@@ -14,6 +14,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/sidebar/common/features.h"
@@ -103,6 +104,14 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
   DCHECK_LT(index.value(), sidebar_model_->GetAllSidebarItems().size());
 
   const auto& item = sidebar_model_->GetAllSidebarItems()[*index];
+
+  if (IsWebPanelFeatureEnabled() && item.is_web_panel_type()) {
+    GetWebPanelController()->IsShowingWebPanel()
+        ? GetWebPanelController()->CloseWebPanel()
+        : GetWebPanelController()->OpenWebPanel(item);
+    return;
+  }
+
   // Only an item for panel can get activated.
   if (item.open_in_panel) {
     // WebPanel item type also should be activated.
@@ -261,6 +270,16 @@ void SidebarController::SetSidebar(Sidebar* sidebar) {
 
   sidebar_model_->Init(HistoryServiceFactory::GetForProfile(
       profile_, ServiceAccessType::EXPLICIT_ACCESS));
+}
+
+SidebarWebPanelController* SidebarController::GetWebPanelController() {
+  CHECK(IsWebPanelFeatureEnabled());
+  if (!web_panel_controller_) {
+    web_panel_controller_ =
+        std::make_unique<SidebarWebPanelController>(browser_->GetBrowserView());
+  }
+
+  return web_panel_controller_.get();
 }
 
 }  // namespace sidebar

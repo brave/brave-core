@@ -21,10 +21,13 @@ source_set("sidebar") {
     "sidebar_tab_helper.h",
     "sidebar_utils.cc",
     "sidebar_utils.h",
+    "sidebar_web_panel_controller.cc",
+    "sidebar_web_panel_controller.h",
   ]
 
   deps = [
     "//base",
+    "//brave/browser/ui/views/frame/split_view",
     "//brave/components/sidebar/browser",
     "//brave/components/sidebar/common",
     "//chrome/browser:browser_process",

@@ -67,6 +67,18 @@ void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
   }
 }
 
+void BraveMultiContentsView::ShowWebPanel(bool show) {
+  CHECK(contents_container_view_for_web_panel_);
+  contents_container_view_for_web_panel_->SetVisible(show);
+  contents_container_view_for_web_panel_->UpdateBorderAndOverlay(true, true,
+                                                                 false);
+}
+
+bool BraveMultiContentsView::IsWebPanelVisible() const {
+  CHECK(contents_container_view_for_web_panel_);
+  return contents_container_view_for_web_panel_->GetVisible();
+}
+
 void BraveMultiContentsView::SetWebPanelWidth(int width) {
   web_panel_width_ = width;
   InvalidateLayout();
