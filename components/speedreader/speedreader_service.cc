@@ -147,7 +147,7 @@ bool SpeedreaderService::IsEnabledForSite(content::WebContents* contents) {
 
 bool SpeedreaderService::IsExplicitlyEnabledForSite(const GURL& url) {
   if (!url.is_valid()) {
-    return CONTENT_SETTING_BLOCK;
+    return false;
   }
 
   const auto setting = GetEnabledForSiteSetting(url);
@@ -164,7 +164,7 @@ bool SpeedreaderService::IsExplicitlyEnabledForSite(
 
 bool SpeedreaderService::IsExplicitlyDisabledForSite(const GURL& url) {
   if (!url.is_valid()) {
-    return CONTENT_SETTING_BLOCK;
+    return false;
   }
   const auto setting = GetEnabledForSiteSetting(url);
   return !setting.is_default && setting.setting == CONTENT_SETTING_BLOCK;
