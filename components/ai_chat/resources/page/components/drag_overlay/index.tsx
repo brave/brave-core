@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
+import Icon from '@brave/leo/react/icon'
 import styles from './style.module.scss'
 import { isImageFile } from '../../constants/file_types'
 import { useConversation } from '../../state/conversation_context'
@@ -55,13 +56,17 @@ export default function DragOverlay() {
       {isDragOver && (
         <div className={styles.dragOverlay}>
           <div className={styles.dragOverlayContent}>
-            <div className={styles.dragIcon} />
+          <div className={styles.dragOverlayContentInner}>
+            <div className={styles.dragIcon}>
+              <Icon name="file-upload" />
+            </div>
             <div className={styles.dragTitle}>
               {getLocale(S.CHAT_UI_DROP_IMAGES_HERE_LABEL)}
             </div>
             <div className={styles.dragDescription}>
               {getLocale(S.CHAT_UI_DROP_FILES_DESCRIPTION)}
             </div>
+          </div>
           </div>
         </div>
       )}
