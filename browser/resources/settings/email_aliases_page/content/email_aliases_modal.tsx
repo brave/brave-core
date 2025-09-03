@@ -226,7 +226,8 @@ export const EmailAliasModal = (
       // wrong type. TODO: fix this.
       const proposedEmail =
         (await emailAliasesService.generateAlias()) as unknown as string
-      setGenerateAliasResult({ aliasEmail: proposedEmail, errorMessage: undefined})
+      setGenerateAliasResult({ aliasEmail: proposedEmail,
+                               errorMessage: undefined})
     } catch (errorMessage) {
       setGenerateAliasResult({ aliasEmail: '',
                                errorMessage: errorMessage as string})
