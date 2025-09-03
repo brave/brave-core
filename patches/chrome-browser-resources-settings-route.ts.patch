@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.ts b/chrome/browser/resources/settings/route.ts
-index 41b2a7bf2cb7926893f3369eb0c9fc5c092d5807..b7cf2f842ea80c106a7b26cd92c9bc7a26a26078 100644
+index 5fe5f12ab1f15c62c1bad84c8b94f6ff9e1a38e2..95352cde9d3555dda4e0b78d215e663d03935f24 100644
 --- a/chrome/browser/resources/settings/route.ts
 +++ b/chrome/browser/resources/settings/route.ts
 @@ -9,6 +9,7 @@ import {pageVisibility} from './page_visibility.js';
@@ -10,15 +10,15 @@ index 41b2a7bf2cb7926893f3369eb0c9fc5c092d5807..b7cf2f842ea80c106a7b26cd92c9bc7a
  /**
   * Add all of the child routes that originate from the privacy route,
   * regardless of whether the privacy section under basic or advanced.
-@@ -367,6 +368,7 @@ function createRoutes(): SettingsRoutes {
-     r.PERFORMANCE.hasMigratedToPlugin = true;
+@@ -309,6 +310,7 @@ function createRoutes(): SettingsRoutes {
+         loadTimeData.getString('performancePageTitle'));
    }
  
 +  addBraveRoutes(r);
    return r as unknown as SettingsRoutes;
  }
  
-@@ -400,7 +402,7 @@ export let routes: SettingsRoutes = Router.getInstance().getRoutes();
+@@ -342,7 +344,7 @@ export let routes: SettingsRoutes = Router.getInstance().getRoutes();
  // Returns the "effective" route when at chrome://settings/.
  export function getTopLevelRoute(): Route {
    if (!loadTimeData.getBoolean('isGuest')) {

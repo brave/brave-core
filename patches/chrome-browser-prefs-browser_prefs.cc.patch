@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 1bb09be7790e70057be2d7da96dc2ce58d316860..eb93bccac2b16c558401b8631a394b93d466d06e 100644
+index 63a08869e2e88d6edc69c69fa1f7e27eb20b5075..a7a54645f0b240d73f44b5f312b860fe01c64fe4 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1967,6 +1967,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1996,6 +1996,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #endif  // !BUILDFLAG(IS_ANDROID)
  
    // This is intentionally last.
@@ -10,10 +10,10 @@ index 1bb09be7790e70057be2d7da96dc2ce58d316860..eb93bccac2b16c558401b8631a394b93
    RegisterLocalStatePrefsForMigration(registry);
  }
  
-@@ -2420,6 +2421,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
-       omnibox::kIsOmniboxInBottomPosition, false,
-       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
- #endif
+@@ -2448,6 +2449,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+   // the policies logic is implemented.
+   registry->RegisterListPref(policy::policy_prefs::kIncognitoModeBlocklist);
+   registry->RegisterListPref(policy::policy_prefs::kIncognitoModeAllowlist);
 +  brave::RegisterProfilePrefs(registry);
  }
  

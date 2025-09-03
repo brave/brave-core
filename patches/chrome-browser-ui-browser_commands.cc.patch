@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index a764a94cc7f956aec9793fa496647661c8c3bd95..60fcfb025c03a043d7d3e614ca99e27ccf871e61 100644
+index b525fee02ebbde72581d1c201477ff0ea23a895c..8b494ba84902794b0fc7f1666fdd2be396e443a2 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -514,6 +514,7 @@ void ReloadInternal(Browser* browser,
-           browser->tab_strip_model()->GetWebContentsAt(selected_index));
+@@ -514,6 +514,7 @@ void ReloadInternal(BrowserWindowInterface* browser,
+           tab_strip_model->GetWebContentsAt(selected_index));
      }
    }
 +  BRAVE_RELOAD_INTERNAL
