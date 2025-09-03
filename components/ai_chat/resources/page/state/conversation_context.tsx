@@ -16,7 +16,7 @@ import {
   IGNORE_EXTERNAL_LINK_WARNING_KEY
 } from '../../common/constants'
 import {
-  updateConversationHistory, processUploadedFilesWithLimits
+  updateConversationHistory, processUploadedFilesWithLimits, isFullPageScreenshot
 } from '../../common/conversation_history_utils'
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useIsDragging } from '../hooks/useIsDragging'
@@ -31,6 +31,7 @@ export interface CharCountContext {
 }
 
 export type UploadedImageData = Mojom.UploadedFile
+
 
 export type ConversationContext = SendFeedbackState & CharCountContext & {
   historyInitialized: boolean
@@ -561,11 +562,23 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }
 
   const removeFile = (index: number) => {
-    const updatedImages = [...context.pendingMessageFiles]
-    updatedImages.splice(index, 1)
-    setPartialContext({
-      pendingMessageFiles: updatedImages
-    })
+    const fileToRemove = context.pendingMessageFiles[index]
+    if (fileToRemove && isFullPageScreenshot(fileToRemove)) {
+      // If removing a full page screenshot, remove all full page screenshots
+      const updatedImages = context.pendingMessageFiles.filter(file =>
+        !isFullPageScreenshot(file)
+      )
+      setPartialContext({
+        pendingMessageFiles: updatedImages
+      })
+    } else {
+      // Normal case: remove single file by index
+      const updatedImages = [...context.pendingMessageFiles]
+      updatedImages.splice(index, 1)
+      setPartialContext({
+        pendingMessageFiles: updatedImages
+      })
+    }
   }
 
   // Listen for user uploading files to display the uploading indicator.

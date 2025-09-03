@@ -19,6 +19,9 @@ const string kMemoryStorageToolName = "memory_storage_tool";
 // Maximum length for memory and customization records.
 const int32 kMaxMemoryRecordLength = 512;
 
+// Full page screenshot filename prefix
+const string kFullPageScreenshotPrefix = "fullscreenshot_";
+
 // File upload limits
 // https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Message.html#API_runtime_Message_Contents
 const uint32 MAX_IMAGES = 20;

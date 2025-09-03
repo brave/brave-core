@@ -15,6 +15,7 @@ import * as Mojom from '../../../common/mojom'
 // Styles
 import styles from './style.module.scss'
 import { getLocale } from '$web-common/locale'
+import { isFullPageScreenshot } from '../../../common/conversation_history_utils'
 
 /**
  * Formats file size in bytes to human readable format
@@ -33,6 +34,7 @@ export const formatFileSize = (bytes: number): string => {
 
   return `${size.toFixed(2)} ${units[index]}`
 }
+
 
 type Props = {
   icon: React.ReactNode
@@ -124,14 +126,27 @@ export function AttachmentUploadItems(props: {
   uploadedFiles: Mojom.UploadedFile[]
   remove?: (index: number) => void
 }) {
+  // Calculate first full page screenshot index.
+  const firstFullPageScreenshotIndex = props.uploadedFiles.findIndex(isFullPageScreenshot)
+
   return (
     <>
-      {props.uploadedFiles.map((file, index) => {
-        const isImage = file.type === Mojom.UploadedFileType.kImage ||
-                       file.type === Mojom.UploadedFileType.kScreenshot
-        const isPdf = file.type === Mojom.UploadedFileType.kPdf
+      {props.uploadedFiles
+        .filter((file, index) => {
+          // Only show the first full page screenshot, hide the rest
+          return !isFullPageScreenshot(file) || index === firstFullPageScreenshotIndex
+        })
+        .map((file, filteredIndex) => {
+          // Find the original index in the unfiltered array
+          const originalIndex = props.uploadedFiles.indexOf(file)
 
-        if (isImage) {
+          const isImage = file.type === Mojom.UploadedFileType.kImage ||
+                         file.type === Mojom.UploadedFileType.kScreenshot
+          const isPdf = file.type === Mojom.UploadedFileType.kPdf
+          const isFileFullPageScreenshot = isFullPageScreenshot(file)
+
+          if (isImage) {
+
           const dataUrl = React.useMemo(() => {
             const blob = new Blob([new Uint8Array(file.data)], {
               type: 'image/*'
@@ -143,38 +158,38 @@ export function AttachmentUploadItems(props: {
             return formatFileSize(Number(file.filesize))
           }, [file.filesize])
 
-          return (
-            <AttachmentItem
-              key={`${file.filename}-${index}`}
-              icon={
-                <img
-                  className={styles.image}
-                  src={dataUrl}
-                />
-              }
-              title={file.filename}
-              subtitle={filesize}
-              remove={props.remove ? () => props.remove!(index) : undefined}
-            />
-          )
-        } else if (isPdf) {
-          const filesize = React.useMemo(() => {
-            return formatFileSize(Number(file.filesize))
-          }, [file.filesize])
+            return (
+              <AttachmentItem
+                key={`${file.filename}-${originalIndex}`}
+                icon={
+                  <img
+                    className={styles.image}
+                    src={dataUrl}
+                  />
+                }
+                title={isFileFullPageScreenshot ? getLocale(S.CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE) : file.filename}
+                subtitle={filesize}
+                remove={props.remove ? () => props.remove?.(originalIndex) : undefined}
+              />
+            )
+          } else if (isPdf) {
+            const filesize = React.useMemo(() => {
+              return formatFileSize(Number(file.filesize))
+            }, [file.filesize])
 
-          return (
-            <AttachmentItem
-              key={`${file.filename}-${index}`}
-              icon={<Icon name='file' />}
-              title={file.filename}
-              subtitle={filesize}
-              remove={props.remove ? () => props.remove!(index) : undefined}
-            />
-          )
-        }
+            return (
+              <AttachmentItem
+                key={`${file.filename}-${originalIndex}`}
+                icon={<Icon name='file' />}
+                title={file.filename}
+                subtitle={filesize}
+                remove={props.remove ? () => props.remove!(originalIndex) : undefined}
+              />
+            )
+          }
 
-        return null
-      })}
+          return null
+        })}
     </>
   )
 }
