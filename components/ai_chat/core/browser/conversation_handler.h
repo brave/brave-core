@@ -50,6 +50,8 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
+class PrefService;
+
 namespace ai_chat {
 
 class AIChatFeedbackAPI;
@@ -108,6 +110,7 @@ class ConversationHandler : public mojom::ConversationHandler,
       ModelService* model_service,
       AIChatCredentialManager* credential_manager,
       AIChatFeedbackAPI* feedback_api,
+      PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::vector<std::unique_ptr<ToolProvider>> tool_providers);
 
@@ -117,6 +120,7 @@ class ConversationHandler : public mojom::ConversationHandler,
       ModelService* model_service,
       AIChatCredentialManager* credential_manager,
       AIChatFeedbackAPI* feedback_api,
+      PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::vector<std::unique_ptr<ToolProvider>> tool_providers,
       std::optional<mojom::ConversationArchivePtr> initial_state);
@@ -177,6 +181,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void SubmitHumanConversationEntryWithAction(
       const std::string& input,
       mojom::ActionType action_type) override;
+  void SubmitHumanConversationEntryWithMode(
+      const std::string& input,
+      const std::string& mode_id) override;
   void ModifyConversation(const std::string& entry_uuid,
                           const std::string& new_text) override;
   void RegenerateAnswer(const std::string& turn_uuid,
@@ -451,6 +458,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   raw_ptr<ModelService> model_service_;
   raw_ptr<AIChatCredentialManager, DanglingUntriaged> credential_manager_;
   raw_ptr<AIChatFeedbackAPI, DanglingUntriaged> feedback_api_;
+  raw_ptr<PrefService> prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   base::ScopedObservation<ModelService, ModelService::Observer>

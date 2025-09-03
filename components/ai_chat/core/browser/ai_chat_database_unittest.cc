@@ -195,7 +195,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
           mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
           "edited query 1", std::nullopt, std::nullopt, std::nullopt,
           base::Time::Now() + base::Minutes(121), std::nullopt, std::nullopt,
-          false, std::nullopt));
+          nullptr /* smart_mode */, false, std::nullopt));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -212,7 +212,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
           mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
           "edited query 2", std::nullopt, std::nullopt, std::nullopt,
           base::Time::Now() + base::Minutes(122), std::nullopt, std::nullopt,
-          false, std::nullopt));
+          nullptr /* smart_mode */, false, std::nullopt));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
