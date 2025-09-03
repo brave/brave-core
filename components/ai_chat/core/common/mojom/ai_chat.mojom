@@ -468,6 +468,9 @@ interface AIChatUIHandler {
   // Open various external links or dialogs depending on the platform
   OpenAIChatSettings();
 
+  // Open AI Chat memory management settings
+  OpenMemorySettings();
+
   // From a sidebar or popup conversation, open the conversation in the
   // full-page UI.
   // TODO(petemill): WebUI Compile-timesupport for build flags
