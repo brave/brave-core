@@ -99,7 +99,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kAISummarizationAPI,
       &blink::features::kAIWriterAPI,
       &blink::features::kAllowURNsInIframes,
-      &blink::features::kAttributionReportingInBrowserMigration,
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kBuiltInAIAPI,
       &blink::features::kControlledFrame,
