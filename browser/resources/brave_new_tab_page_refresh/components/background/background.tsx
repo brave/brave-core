@@ -9,6 +9,7 @@ import { NewTabPageAdEventType, SponsoredImageBackground } from '../../state/bac
 import { openLink } from '../common/link'
 import { loadImage } from '../../lib/image_loader'
 import { useWidgetLayoutReady } from '../app_layout_ready'
+import { debounce } from '$web-common/debounce'
 
 import {
   useBackgroundState,
@@ -90,23 +91,9 @@ function SponsoredRichMediaBackground(
   const actions = useBackgroundActions()
   const sponsoredRichMediaBaseUrl =
     useBackgroundState((s) => s.sponsoredRichMediaBaseUrl)
-  const widgetLayoutReady = useWidgetLayoutReady()
   const [frameHandle, setFrameHandle] = React.useState<IframeBackgroundHandle>()
 
-  React.useEffect(() => {
-    if (!widgetLayoutReady || !frameHandle) {
-      return
-    }
-    const safeArea =
-      document.querySelector<HTMLDivElement>('.sponsored-background-safe-area')
-    if (safeArea) {
-      const rect = safeArea.getBoundingClientRect()
-      frameHandle.postMessage({
-        type: 'richMediaSafeRect',
-        value: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
-      })
-    }
-  }, [widgetLayoutReady, frameHandle])
+  useSafeAreaReporter(frameHandle)
 
   return (
     <IframeBackground
@@ -127,6 +114,36 @@ function SponsoredRichMediaBackground(
       }}
     />
   )
+}
+
+// Posts a message to the rich media background iframe containing a rectangle
+// that is empty of content and can be used to display interactive elements.
+function useSafeAreaReporter(frameHandle?: IframeBackgroundHandle) {
+  const widgetLayoutReady = useWidgetLayoutReady()
+
+  React.useEffect(() => {
+    if (!widgetLayoutReady || !frameHandle) {
+      return
+    }
+
+    const postSafeArea = debounce(() => {
+      const selector = '.sponsored-background-safe-area'
+      const safeArea = document.querySelector<HTMLDivElement>(selector)
+      if (!safeArea) {
+        return
+      }
+      const rect = safeArea.getBoundingClientRect()
+      frameHandle.postMessage({
+        type: 'richMediaSafeRect',
+        value: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
+      })
+    }, 120)
+
+    postSafeArea()
+
+    window.addEventListener('resize', postSafeArea)
+    return () => window.removeEventListener('resize', postSafeArea)
+  }, [widgetLayoutReady, frameHandle])
 }
 
 function getRichMediaEventType(data: any): NewTabPageAdEventType | null {
