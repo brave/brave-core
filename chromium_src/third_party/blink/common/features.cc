@@ -17,8 +17,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 
     {kAdInterestGroupAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAllowURNsInIframes, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kAttributionReportingInBrowserMigration,
-     base::FEATURE_DISABLED_BY_DEFAULT},
     {kBackgroundResourceFetch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kControlledFrame, base::FEATURE_DISABLED_BY_DEFAULT},
     {kCssSelectorFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
