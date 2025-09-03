@@ -16,6 +16,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     Preferences.General.lastHTTPURLOpenedDate.reset()
     Preferences.General.isDefaultAPILastResult.reset()
     Preferences.General.isDefaultAPILastCheckDate.reset()
+    Preferences.General.isDefaultAPILastResultDate.reset()
     Preferences.DAU.appRetentionLaunchDate.reset()
     Preferences.DAU.installationDate.reset()
   }
@@ -79,7 +80,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // Set up cached API result from 3 days ago
     Preferences.General.isDefaultAPILastResult.value = true
-    Preferences.General.isDefaultAPILastCheckDate.value = date.addingTimeInterval(-3.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-3.days)
 
     let helper = DefaultBrowserHelper(
       // API would return false, but cached is true
@@ -97,7 +98,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // Cache result from 10 days ago
     Preferences.General.isDefaultAPILastResult.value = false
-    Preferences.General.isDefaultAPILastCheckDate.value = date.addingTimeInterval(-10.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-10.days)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: true)
@@ -111,7 +112,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // Cache result from 15 days ago (expired)
     Preferences.General.isDefaultAPILastResult.value = true
-    Preferences.General.isDefaultAPILastCheckDate.value = date.addingTimeInterval(-15.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-15.days)
     Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-5.days)
 
     let helper = DefaultBrowserHelper(
@@ -128,7 +129,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // API cached result from 5 days ago: not default
     Preferences.General.isDefaultAPILastResult.value = false
-    Preferences.General.isDefaultAPILastCheckDate.value = date.addingTimeInterval(-5.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-5.days)
 
     // User opened link 2 days ago (more recent than API check)
     Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-2.days)
@@ -145,7 +146,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // API cached result from 2 days ago: not default
     Preferences.General.isDefaultAPILastResult.value = false
-    Preferences.General.isDefaultAPILastCheckDate.value = date.addingTimeInterval(-2.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-2.days)
 
     // User opened link 5 days ago (older than API check)
     Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-5.days)
@@ -215,6 +216,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     Preferences.DAU.appRetentionLaunchDate.value = date.addingTimeInterval(-2.days)  // Day 2
     Preferences.General.isDefaultAPILastResult.value = true
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-1.days)
     Preferences.General.isDefaultAPILastCheckDate.value = date.addingTimeInterval(-1.days)
 
     let helper = DefaultBrowserHelper(
@@ -262,7 +264,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // Set up cached result from 3 days ago
     Preferences.General.isDefaultAPILastResult.value = true
-    Preferences.General.isDefaultAPILastCheckDate.value = date.addingTimeInterval(-3.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-3.days)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .rateLimited(retryDate: date.addingTimeInterval(7.days))
@@ -299,9 +301,10 @@ class DefaultBrowserHelperTests: XCTestCase {
     // Perform accurate check - should handle rate limiting gracefully
     helper.performAccurateDefaultCheckIfNeeded()
 
-    // No cached result should be set since API is rate limited
+    // Check date should be set, but result should not be updated
+    XCTAssertEqual(Preferences.General.isDefaultAPILastCheckDate.value, date)
     XCTAssertNil(Preferences.General.isDefaultAPILastResult.value)
-    XCTAssertNil(Preferences.General.isDefaultAPILastCheckDate.value)
+    XCTAssertNil(Preferences.General.isDefaultAPILastResultDate.value)
   }
 
   // MARK: - Accurate Check Tests
@@ -326,6 +329,7 @@ class DefaultBrowserHelperTests: XCTestCase {
 
     // Verify cache was updated
     XCTAssertEqual(Preferences.General.isDefaultAPILastResult.value, true)
+    XCTAssertEqual(Preferences.General.isDefaultAPILastResultDate.value, date)
     XCTAssertEqual(Preferences.General.isDefaultAPILastCheckDate.value, date)
   }
 
@@ -346,6 +350,7 @@ class DefaultBrowserHelperTests: XCTestCase {
 
     // Verify cache was updated
     XCTAssertEqual(Preferences.General.isDefaultAPILastResult.value, false)
+    XCTAssertEqual(Preferences.General.isDefaultAPILastResultDate.value, date)
     XCTAssertEqual(Preferences.General.isDefaultAPILastCheckDate.value, date)
   }
 
@@ -356,6 +361,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     // Set up existing cache
     let existingCacheDate = date.addingTimeInterval(-2.days)
     Preferences.General.isDefaultAPILastResult.value = true
+    Preferences.General.isDefaultAPILastResultDate.value = existingCacheDate
     Preferences.General.isDefaultAPILastCheckDate.value = existingCacheDate
 
     let helper = DefaultBrowserHelper(
@@ -369,9 +375,11 @@ class DefaultBrowserHelperTests: XCTestCase {
     // Perform accurate check (should not throw, should handle gracefully)
     helper.performAccurateDefaultCheckIfNeeded()
 
-    // Verify cache was NOT changed (preserved existing values)
+    // Verify result cache was NOT changed (preserved existing values)
     XCTAssertEqual(Preferences.General.isDefaultAPILastResult.value, true)
-    XCTAssertEqual(Preferences.General.isDefaultAPILastCheckDate.value, existingCacheDate)
+    XCTAssertEqual(Preferences.General.isDefaultAPILastResultDate.value, existingCacheDate)
+    // Check date should be updated
+    XCTAssertEqual(Preferences.General.isDefaultAPILastCheckDate.value, date)
 
     // Status should remain the same
     XCTAssertEqual(helper.status, .defaulted)
@@ -396,6 +404,7 @@ class DefaultBrowserHelperTests: XCTestCase {
 
     // Verify no cache was set (API unavailable)
     XCTAssertNil(Preferences.General.isDefaultAPILastResult.value)
+    XCTAssertNil(Preferences.General.isDefaultAPILastResultDate.value)
     XCTAssertNil(Preferences.General.isDefaultAPILastCheckDate.value)
 
     // Status should remain heuristic-based
@@ -417,6 +426,7 @@ class DefaultBrowserHelperTests: XCTestCase {
 
     // Verify no cache was set (check was skipped)
     XCTAssertNil(Preferences.General.isDefaultAPILastResult.value)
+    XCTAssertNil(Preferences.General.isDefaultAPILastResultDate.value)
     XCTAssertNil(Preferences.General.isDefaultAPILastCheckDate.value)
   }
 
@@ -455,7 +465,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // API cached result from 5 days ago: IS default (true)
     Preferences.General.isDefaultAPILastResult.value = true
-    Preferences.General.isDefaultAPILastCheckDate.value = date.addingTimeInterval(-5.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-5.days)
 
     // User opened link 2 days ago (more recent than API check)
     Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-2.days)
@@ -473,7 +483,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // API cached result from 5 days ago: NOT default (false)
     Preferences.General.isDefaultAPILastResult.value = false
-    Preferences.General.isDefaultAPILastCheckDate.value = date.addingTimeInterval(-5.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-5.days)
 
     // User opened link 2 days ago (more recent than API check)
     Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-2.days)
@@ -525,7 +535,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // Set up cached API result that indicates not default
     Preferences.General.isDefaultAPILastResult.value = false
-    Preferences.General.isDefaultAPILastCheckDate.value =
+    Preferences.General.isDefaultAPILastResultDate.value =
       date.addingTimeInterval(-3.days)
 
     let helper = DefaultBrowserHelper(
@@ -564,7 +574,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // Set up cached API result that indicates IS default
     Preferences.General.isDefaultAPILastResult.value = true
-    Preferences.General.isDefaultAPILastCheckDate.value =
+    Preferences.General.isDefaultAPILastResultDate.value =
       date.addingTimeInterval(-5.days)
 
     let helper = DefaultBrowserHelper(

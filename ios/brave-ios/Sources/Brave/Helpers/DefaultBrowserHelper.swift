@@ -67,10 +67,11 @@ class DefaultBrowserHelper {
       return
     }
     do {
+      Preferences.General.isDefaultAPILastCheckDate.value = now()
       let isDefault = try isDefaultAppChecker.isDefaultWebBrowser()
       // Cache the result and current date
       Preferences.General.isDefaultAPILastResult.value = isDefault
-      Preferences.General.isDefaultAPILastCheckDate.value = now()
+      Preferences.General.isDefaultAPILastResultDate.value = now()
     } catch {
       // Handle rate limiting or other errors - keep existing cached values
     }
@@ -94,7 +95,7 @@ class DefaultBrowserHelper {
     // Check for cached API result within 14-day validity window
     let fourteenDaysAgo = now().addingTimeInterval(-14.days)
     if let cachedResult = Preferences.General.isDefaultAPILastResult.value,
-      let cachedDate = Preferences.General.isDefaultAPILastCheckDate.value,
+      let cachedDate = Preferences.General.isDefaultAPILastResultDate.value,
       cachedDate >= fourteenDaysAgo
     {
       // HTTP url opened logic: if user opened a link more recently than the cached check,
