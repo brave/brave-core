@@ -215,6 +215,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void RespondToToolUseRequest(
       const std::string& tool_id,
       std::vector<mojom::ContentBlockPtr> output_json) override;
+  void UseToolWithClientData(const std::string& tool_id,
+                             std::optional<base::Value> client_data) override;
 
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.
