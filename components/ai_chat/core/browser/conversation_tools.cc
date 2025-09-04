@@ -41,7 +41,7 @@ class UserChoiceTool : public Tool {
   // 3. Suggesting the user thank the assistant
   // Assistant: "[detailed answer]"
   //    { user_choice_tool, { "choices": [ "Explore topic XYZ", "I have a good
-  //    understand now - thank you!"]} }
+  //    understanding now - thank you!"]} }
   //
   std::string_view Description() const override {
     return R"(The user_choice_tool should be used only in the following scenarios:
