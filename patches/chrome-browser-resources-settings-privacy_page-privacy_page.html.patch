@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index ad81cf875bbbaea556b2c5a0e7dc3af7d27f7377..edb32c6ef9a07f1298c03cf16a30d26b8642410f 100644
+index d7c4d4ca6f950ba64a09e7cd58086205384be934..7b9661a0b71fc56ff451afc8f6c328331e43b4cf 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
 @@ -34,6 +34,7 @@
@@ -10,7 +10,7 @@ index ad81cf875bbbaea556b2c5a0e7dc3af7d27f7377..edb32c6ef9a07f1298c03cf16a30d26b
          <cr-link-row id="clearBrowsingData"
              start-icon="cr:delete"
              label="$i18n{clearBrowsingData}"
-@@ -202,6 +203,7 @@
+@@ -149,6 +150,7 @@
            </settings-subpage>
          </template>
        </template>
@@ -18,8 +18,8 @@ index ad81cf875bbbaea556b2c5a0e7dc3af7d27f7377..edb32c6ef9a07f1298c03cf16a30d26b
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
          <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -229,6 +231,7 @@
-           </category-setting-exceptions>
+@@ -157,6 +159,7 @@
+           </settings-background-sync-page>
          </settings-subpage>
        </template>
 +</if>
