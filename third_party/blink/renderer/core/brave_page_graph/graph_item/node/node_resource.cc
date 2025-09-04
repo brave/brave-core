@@ -9,7 +9,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_response.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_start.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
-#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 
 namespace brave_page_graph {
 
@@ -23,9 +23,7 @@ ItemName NodeResource::GetItemName() const {
 }
 
 ItemDesc NodeResource::GetItemDesc() const {
-  blink::StringBuilder ts;
-  ts << GraphNode::GetItemDesc() << " [" << url_.GetString() << "]";
-  return ts.ReleaseString();
+  return blink::StrCat({GraphNode::GetItemDesc(), " [", url_.GetString(), "]"});
 }
 
 void NodeResource::AddGraphMLAttributes(xmlDocPtr doc,
