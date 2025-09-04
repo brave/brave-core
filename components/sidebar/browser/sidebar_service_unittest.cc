@@ -1104,4 +1104,27 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAIChatBuiltInNotListed) {
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
 
+TEST_F(SidebarServiceTest, WebPanelItemTest) {
+  InitService();
+
+  SidebarItem item = SidebarItem::Create(
+      GURL("https://www.brave.com/"), u"brave software",
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
+  EXPECT_TRUE(item.is_web_type());
+  service_->AddItem(item);
+  const int web_type_item_index = service_->items().size() - 1;
+
+  item.open_in_panel = true;
+  EXPECT_TRUE(item.is_web_panel_type());
+  service_->AddItem(item);
+  const int web_panel_type_item_index = web_type_item_index + 1;
+
+  ResetService();
+  InitService();
+
+  // Check web panel type is preserved.
+  EXPECT_TRUE(service_->items()[web_type_item_index].is_web_type());
+  EXPECT_TRUE(service_->items()[web_panel_type_item_index].is_web_panel_type());
+}
+
 }  // namespace sidebar

@@ -114,7 +114,8 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
 
   // Only an item for panel can get activated.
   if (item.open_in_panel) {
-    // WebPanel item type also should be activated.
+    // TODO(https://github.com/brave/brave-browser/issues/33533): WebPanel item
+    // type also should be activated.
     if (!item.is_web_panel_type()) {
       sidebar_model_->SetActiveIndex(index);
     }

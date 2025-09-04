@@ -16,8 +16,7 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 
 namespace sidebar {
-FORWARD_DECLARE_TEST(SidebarBrowserWithWebPanelTest,
-                     ContentsContainerViewForWebPanelTest);
+FORWARD_DECLARE_TEST(SidebarBrowserWithWebPanelTest, WebPanelTest);
 }  // namespace sidebar
 
 namespace views {
@@ -57,7 +56,7 @@ class BraveMultiContentsView : public MultiContentsView,
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
                            BraveMultiContentsViewTest);
   FRIEND_TEST_ALL_PREFIXES(sidebar::SidebarBrowserWithWebPanelTest,
-                           ContentsContainerViewForWebPanelTest);
+                           WebPanelTest);
 
   // MultiContentsView:
   void Layout(PassKey) override;
