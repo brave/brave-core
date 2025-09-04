@@ -21,16 +21,16 @@ enum NTPWallpaper {
   }
 
   var richNewTabTakeoverURL: URL? {
-    //    return URL(string: "brave://ads-internals")
-    if case .sponsoredMedia(let background) = self {
-      return background.isRichNewTabTakeoverFile ? background.imagePath : nil
-    }
+        return URL(string: "chrome-untrusted://new-tab-takeover/assets/index.html")
+    // if case .sponsoredMedia(let background) = self {
+    //   return background.isRichNewTabTakeoverFile ? background.imagePath : nil
+    // }
 
-    // TODO(aseren): Remove following statement. Done for testing only
-    if case .image(let background) = self {
-      return background.imagePath
-    }
-    return nil
+    // // TODO(aseren): Remove following statement. Done for testing only
+    // if case .image(let background) = self {
+    //   return background.imagePath
+    // }
+    // return nil
   }
 
   var backgroundImage: UIImage? {
