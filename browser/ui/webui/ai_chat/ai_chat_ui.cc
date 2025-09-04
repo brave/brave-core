@@ -16,8 +16,8 @@
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/ai_chat/content/browser/bookmarks_service.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/bookmarks_page_handler.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -166,11 +166,11 @@ void AIChatUI::BindInterface(
 }
 
 void AIChatUI::BindInterface(
-    mojo::PendingReceiver<ai_chat::mojom::BookmarksService> receiver) {
-  if (bookmarks_service_) {
-    bookmarks_service_ = nullptr;
+    mojo::PendingReceiver<ai_chat::mojom::BookmarksPageHandler> receiver) {
+  if (bookmarks_page_handler_) {
+    bookmarks_page_handler_ = nullptr;
   }
-  bookmarks_service_ = std::make_unique<ai_chat::BookmarksService>(
+  bookmarks_page_handler_ = std::make_unique<ai_chat::BookmarksPageHandler>(
       BookmarkModelFactory::GetForBrowserContext(profile_),
       std::move(receiver));
 }
