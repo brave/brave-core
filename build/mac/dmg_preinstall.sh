@@ -14,7 +14,8 @@
 # It is unlikely, but in the worst case could lead to a broken installation. The
 # logic below aims to prevent this.
 
-# Function to read Info.plist (copied from .install.sh)
+# Function to read Info.plist (copied from .install.sh).
+# __CFPREFERENCES_AVOID_DAEMON prevents macOS from returning a stale value.
 infoplist_read() {
   __CFPREFERENCES_AVOID_DAEMON=1 defaults read "${@}"
 }
