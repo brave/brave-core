@@ -28,20 +28,19 @@ if [[ ${EUID} -eq 0 ]]; then
   # and let Sparkle take precedence.
   if [[ ${#} -ge 2 ]]; then
     app_plist="${2}/Contents/Info"
-    if cfbundleidentifier="$(infoplist_read "${app_plist}" \
-        "CFBundleIdentifier" 2>/dev/null)"; then
-      if [[ -n "${cfbundleidentifier}" ]]; then
-        sparkle_pid_file="/private/tmp/${cfbundleidentifier}.Sparkle.pid"
-        # Sparkle deletes the file when it next gets loaded. macOS also clears
-        # the contents of /private/tmp on reboot and periodically via
-        # tmp_cleaner. It is therefore enough to check for the file's presence;
-        # We don't need to consider the file's age or it staying around forever.
-        if [[ -f "${sparkle_pid_file}" ]]; then
-          # Sparkle is active on this system. Abort this installation with Omaha
-          # 4 to prevent conflicts. Use a "rare" exit code to make it easier to
-          # grep for.
-          exit 249
-        fi
+    cfbundleidentifier="$(infoplist_read "${app_plist}" "CFBundleIdentifier" \
+                        2>/dev/null)"
+    if [[ -n "${cfbundleidentifier}" ]]; then
+      sparkle_pid_file="/private/tmp/${cfbundleidentifier}.Sparkle.pid"
+      # Sparkle deletes the file when it next gets loaded. macOS also clears
+      # the contents of /private/tmp on reboot and periodically via
+      # tmp_cleaner. It is therefore enough to check for the file's presence;
+      # We don't need to consider the file's age or it staying around forever.
+      if [[ -f "${sparkle_pid_file}" ]]; then
+        # Sparkle is active on this system. Abort this installation with Omaha
+        # 4 to prevent conflicts. Use a "rare" exit code to make it easier to
+        # grep for.
+        exit 249
       fi
     fi
   fi
