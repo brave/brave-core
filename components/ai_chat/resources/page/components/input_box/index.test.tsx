@@ -9,6 +9,15 @@ import InputBox, { InputBoxProps } from '.'
 import { ContentType, UploadedFileType } from '../../../common/mojom'
 import { defaultContext } from '../../state/conversation_context'
 
+// Mock the convertFileToUploadedFile function
+jest.mock('../../utils/file_utils', () => ({
+  convertFileToUploadedFile: jest.fn()
+}))
+
+import { convertFileToUploadedFile } from '../../utils/file_utils'
+const mockConvertFileToUploadedFile = convertFileToUploadedFile as
+  jest.MockedFunction<typeof convertFileToUploadedFile>
+
 // Mock URL.createObjectURL for tests that include image files
 // This is needed because AttachmentUploadItems calls URL.createObjectURL to create blob URLs for images
 Object.defineProperty(URL, 'createObjectURL', {
@@ -290,19 +299,14 @@ describe('input box', () => {
 
     beforeEach(() => {
       jest.clearAllMocks()
-      global.FileReader = jest.fn().mockImplementation(function(this: any) {
-        this.onload = null
-        this.onerror = null
-        this.readAsArrayBuffer = jest.fn().mockImplementation(() => {
-          if (this.onload) {
-            this.onload({
-              target: {
-                result: new ArrayBuffer(8)
-              }
-            })
-          }
+
+      mockConvertFileToUploadedFile.mockImplementation((file: File) => {
+        return Promise.resolve({
+          filename: file.name,
+          filesize: file.size,
+          data: Array.from(new Uint8Array(8)), // Mock data array
+          type: UploadedFileType.kImage
         })
-        return this
       })
     })
 

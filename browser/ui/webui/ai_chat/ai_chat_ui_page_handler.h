@@ -61,6 +61,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void HandleVoiceRecognition(const std::string& conversation_uuid) override;
   void ShowSoftKeyboard() override;
   void UploadFile(bool use_media_capture, UploadFileCallback callback) override;
+  void ProcessImageFile(const std::vector<uint8_t>& file_data,
+                        const std::string& filename,
+                        ProcessImageFileCallback callback) override;
   void GetPluralString(const std::string& key,
                        int32_t count,
                        GetPluralStringCallback callback) override;
