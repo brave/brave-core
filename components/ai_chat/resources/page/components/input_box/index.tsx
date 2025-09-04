@@ -49,7 +49,7 @@ type Props = Pick<
   | 'isUploadingFiles'
   | 'disassociateContent'
   | 'associateDefaultContent'
-  | 'setShowAttachments'
+  | 'setAttachmentsDialog'
   | 'attachImages'
   | 'unassociatedTabs'
 >
@@ -306,7 +306,7 @@ function InputBox(props: InputBoxProps) {
             conversationStarted={props.conversationStarted}
             isMobile={props.context.isMobile}
             unassociatedTabs={props.context.unassociatedTabs}
-            setShowAttachments={props.context.setShowAttachments}
+            setAttachmentsDialog={props.context.setAttachmentsDialog}
           />
           {props.context.hasAcceptedAgreement
             && props.context.isAIChatAgentProfileFeatureEnabled
