@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Browser Tools Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            height: 2000px; /* Make page scrollable */
+        }
+        
+        #test-button {
+            position: absolute;
+            top: 80px;
+            left: 80px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        #right-click-target {
+            position: absolute;
+            top: 80px;
+            left: 180px;
+            padding: 10px 20px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        #test-input {
+            position: absolute;
+            top: 130px;
+            left: 80px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            width: 200px;
+        }
+        
+        #test-select {
+            position: absolute;
+            top: 180px;
+            left: 80px;
+            padding: 5px;
+            width: 150px;
+        }
+        
+        #selectable-text {
+            background-color: #f0f0f0;
+            padding: 20px;
+            margin: 10px;
+            border: 1px solid #ddd;
+        }
+        
+        #scrollable-div {
+            position: absolute;
+            top: 350px;
+            left: 80px;
+            width: 300px;
+            height: 100px;
+            overflow-y: scroll;
+            border: 1px solid #333;
+            padding: 10px;
+        }
+        
+        .draggable {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #FF6B6B;
+            cursor: move;
+        }
+        
+        #draggable1 {
+            top: 380px;
+            left: 80px;
+        }
+        
+        .drop-zone {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px dashed #ccc;
+        }
+        
+        #drop-zone1 {
+            top: 380px;
+            left: 280px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Browser Tools Test Page</h1>
+    
+    <section>
+        <h2>Click Target Elements</h2>
+        <button id="test-button" onclick="buttonClicked()">Click Me</button>
+        <button id="right-click-target" oncontextmenu="rightClicked(); return false;">Right Click Me</button>
+    </section>
+    
+    <section>
+        <h2>Input Elements</h2>
+        <input type="text" id="test-input" placeholder="Type here...">
+        <textarea id="test-textarea" placeholder="Longer text input..."></textarea>
+        <select id="test-select">
+            <option value="">Choose an option...</option>
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+            <option value="option3">Option 3</option>
+        </select>
+    </section>
+    
+    <section>
+        <h2>Selectable Content</h2>
+        <div id="selectable-text">
+            This is some selectable text content that can be highlighted and selected
+            using the select tool. It contains multiple sentences for testing purposes.
+        </div>
+    </section>
+    
+    <section>
+        <h2>Scrollable Content</h2>
+        <div id="scrollable-div">
+            <p>Line 1 of scrollable content</p>
+            <p>Line 2 of scrollable content</p>
+            <p>Line 3 of scrollable content</p>
+            <p>Line 4 of scrollable content</p>
+            <p>Line 5 of scrollable content</p>
+            <p>Line 6 of scrollable content</p>
+            <p>Line 7 of scrollable content</p>
+            <p>Line 8 of scrollable content</p>
+            <p>Line 9 of scrollable content</p>
+            <p>Line 10 of scrollable content</p>
+            <p>Line 11 of scrollable content</p>
+            <p>Line 12 of scrollable content</p>
+            <p>Line 13 of scrollable content</p>
+            <p>Line 14 of scrollable content</p>
+            <p>Line 15 of scrollable content</p>
+        </div>
+    </section>
+    
+    <section>
+        <h2>Drag and Drop Elements</h2>
+        <div class="draggable" id="draggable1" draggable="true"></div>
+        <div class="draggable" id="draggable2" draggable="true"></div>
+        <div class="drop-zone" id="drop-zone1"></div>
+        <div class="drop-zone" id="drop-zone2"></div>
+    </section>
+    
+    <section>
+        <h2>More Content (for page scrolling)</h2>
+        <p>This page has a lot of content to enable page scrolling tests.</p>
+        <p>Content paragraph 1</p>
+        <p>Content paragraph 2</p>
+        <p>Content paragraph 3</p>
+        <p>Content paragraph 4</p>
+        <p>Content paragraph 5</p>
+        <p>Content paragraph 6</p>
+        <p>Content paragraph 7</p>
+        <p>Content paragraph 8</p>
+        <p>Content paragraph 9</p>
+        <p>Content paragraph 10</p>
+        <div style="height: 500px; background: linear-gradient(to bottom, #f0f0f0, #ddd);">
+            <p style="text-align: center; padding-top: 200px;">Large spacer div</p>
+        </div>
+        <p>More content at the bottom</p>
+        <p>Final paragraph for scrolling tests</p>
+    </section>
+    
+    <script>
+        // Track various interactions for test validation
+        let button_clicked = false;
+        let right_button_clicked = false;
+        let input_typed = false;
+        let dropdown_selected = false;
+        let mouse_event_log = [];
+        let scroll_events = [];
+        
+        function buttonClicked() {
+            console.log('Button was clicked!');
+            button_clicked = true;
+            document.getElementById('test-button').textContent = 'Clicked!';
+        }
+        
+        function rightClicked() {
+            console.log('Right click detected!');
+            right_button_clicked = true;
+            return false; // Prevent context menu
+        }
+        
+        // Log mouse events for validation
+        const log_handler = e => mouse_event_log.push(`${e.type}[${e.target.tagName}#${e.target.id}]`);
+        document.addEventListener('click', log_handler);
+        document.addEventListener('mousedown', log_handler);
+        document.addEventListener('mouseup', log_handler);
+        document.addEventListener('contextmenu', log_handler);
+        
+        // Track input events
+        document.getElementById('test-input').addEventListener('input', function() {
+            input_typed = true;
+        });
+        
+        // Track select events
+        document.getElementById('test-select').addEventListener('change', function() {
+            dropdown_selected = true;
+        });
+        
+        // Track scroll events
+        window.addEventListener('scroll', function() {
+            scroll_events.push('window-scroll');
+        });
+        
+        document.getElementById('scrollable-div').addEventListener('scroll', function() {
+            scroll_events.push('element-scroll');
+        });
+        
+        // Add some basic drag and drop handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const draggables = document.querySelectorAll('.draggable');
+            const dropZones = document.querySelectorAll('.drop-zone');
+            
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', e.target.id);
+                });
+            });
+            
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = '#e0e0e0';
+                });
+                
+                zone.addEventListener('dragleave', function(e) {
+                    this.style.backgroundColor = '';
+                });
+                
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.style.backgroundColor = '';
+                    const data = e.dataTransfer.getData('text/plain');
+                    const draggable = document.getElementById(data);
+                    if (draggable) {
+                        this.appendChild(draggable);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

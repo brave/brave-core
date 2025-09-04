@@ -260,7 +260,10 @@ source_set("browser_tests") {
       "ai_chat_render_view_context_menu_browsertest.cc",
       "ai_chat_sidepanel_behavior_browsertest.cc",
       "ai_chat_ui_browsertest.cc",
+      "browser_tools_browsertest.cc",
       "page_content_fetcher_browsertest.cc",
+      "tools/target_test_util.cc",
+      "tools/target_test_util.h",
     ]
     deps = [
       "//brave/app:generate_command_metadata",
@@ -278,6 +281,7 @@ source_set("browser_tests") {
       "//brave/components/sidebar/browser",
       "//brave/components/text_recognition/common/buildflags",
       "//chrome/browser",
+      "//chrome/browser/actor",
       "//chrome/browser/pdf:pdf_extension_test_utils",
       "//chrome/browser/screen_ai:screen_ai_install_state",
       "//chrome/browser/ui",

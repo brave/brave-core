@@ -471,7 +471,6 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
   //     "aside, footer, hidden, paid)\n";
   // result += "- label: Accessibility label for the element\n";
 
-  DLOG(ERROR) << result;
   // Convert to ContentBlocks using the existing utility
   return CreateContentBlocksForText(result);
 }

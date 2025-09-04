@@ -197,7 +197,7 @@ void BrowserToolProvider::ReceivedAnnotatedPageContent(
     Tool::UseToolCallback callback,
     std::optional<optimization_guide::AIPageContentResult> content) {
   if (!content.has_value()) {
-    LOG(ERROR) << "Error getting page content";
+    DLOG(ERROR) << "Error getting page content";
     std::move(callback).Run(
         CreateContentBlocksForText("Error getting page content"));
     return;
@@ -206,7 +206,7 @@ void BrowserToolProvider::ReceivedAnnotatedPageContent(
   auto apc = content->proto;
 
   if (!apc.has_root_node()) {
-    LOG(ERROR) << "No root node";
+    DLOG(ERROR) << "No root node";
     std::move(callback).Run(CreateContentBlocksForText("No root node"));
     return;
   }

@@ -43,6 +43,8 @@ class BrowserToolProvider : public ToolProvider,
                       Tool::UseToolCallback callback) override;
 
  private:
+  friend class BrowserToolsTest;
+
   void CreateTools();
 
   void TabAdded(tabs::TabHandle tab_handle,
