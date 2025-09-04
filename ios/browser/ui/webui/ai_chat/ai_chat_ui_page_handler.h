@@ -41,6 +41,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   // mojom::AIChatUIHandler
   void OpenAIChatSettings() override;
+  void OpenMemorySettings() override;
   void OpenConversationFullPage(const std::string& conversation_uuid) override;
   void OpenAIChatAgentProfile() override;
   void OpenURL(const GURL& url) override;
@@ -51,6 +52,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void ManagePremium() override;
   void HandleVoiceRecognition(const std::string& conversation_uuid) override;
   void ShowSoftKeyboard() override;
+  void ProcessImageFile(const std::vector<uint8_t>& file_data,
+                        const std::string& filename,
+                        ProcessImageFileCallback callback) override;
   void UploadFile(bool use_media_capture, UploadFileCallback callback) override;
   void GetPluralString(const std::string& key,
                        int32_t count,

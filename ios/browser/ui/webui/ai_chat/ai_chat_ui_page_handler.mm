@@ -12,6 +12,7 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -170,6 +171,11 @@ void AIChatUIPageHandler::HandleVoiceRecognition(
 
 void AIChatUIPageHandler::ShowSoftKeyboard() {}
 
+void AIChatUIPageHandler::ProcessImageFile(
+    const std::vector<uint8_t>& file_data,
+    const std::string& filename,
+    ProcessImageFileCallback callback) {}
+
 void AIChatUIPageHandler::UploadFile(bool use_media_capture,
                                      UploadFileCallback callback) {
   auto* web_state_to_navigate = (active_chat_tab_helper_)
@@ -209,6 +215,10 @@ void AIChatUIPageHandler::OpenAIChatSettings() {
   if (auto delegate = [controller delegate]) {
     [delegate openSettings:controller];
   }
+}
+
+void AIChatUIPageHandler::OpenMemorySettings() {
+  NOTIMPLEMENTED();
 }
 
 void AIChatUIPageHandler::OpenConversationFullPage(
