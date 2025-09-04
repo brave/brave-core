@@ -14,7 +14,9 @@ import {
 } from '../../../constants/types'
 
 // Components
-import { ConfirmSwapTransaction } from '../confirm-transaction-panel/swap'
+import {
+  ConfirmSwapTransaction, //
+} from '../confirm_swap_transaction/confirm_swap_transaction'
 import {
   ConfirmTransactionPanel, //
 } from '../confirm-transaction-panel/confirm-transaction-panel'
@@ -202,11 +204,7 @@ export const PendingTransactionPanel: React.FC<Props> = ({
   if (
     selectedPendingTransaction.txType === BraveWallet.TransactionType.ETHSwap
   ) {
-    return (
-      <LongWrapper>
-        <ConfirmSwapTransaction />
-      </LongWrapper>
-    )
+    return <ConfirmSwapTransaction />
   }
 
   // Defaults
