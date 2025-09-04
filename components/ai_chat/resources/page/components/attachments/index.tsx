@@ -21,11 +21,14 @@ function TabItem({ tab }: { tab: TabData }) {
     return <Checkbox className={styles.tabItem} checked={!!content} onChange={(e) => {
         if (e.checked) {
             aiChat.uiHandler?.associateTab(tab, conversationUuid!)
-        } else if (content){
+        } else if (content) {
             aiChat.uiHandler?.disassociateContent(content, conversationUuid!)
         }
     }}>
-        <span className={styles.title}>{tab.title}</span>
+        <div className={styles.itemRow}>
+            <span className={styles.title}>{tab.title}</span>
+            <span className={styles.subtitle}>{tab.url.url}</span>
+        </div>
         <img key={tab.contentId} className={styles.icon} src={`chrome://favicon2/?size=20&pageUrl=${encodeURIComponent(tab.url.url)}`} />
     </Checkbox>
 }
@@ -37,28 +40,30 @@ export default function Attachments() {
     const tabs = React.useMemo(() => {
         const searchLower = search.toLowerCase()
         return conversation.unassociatedTabs
-          .filter(t => t.title.toLowerCase().includes(searchLower))
+            .filter(t => t.title.toLowerCase().includes(searchLower))
     }, [conversation.unassociatedTabs, search])
     return <div className={styles.root}>
         <div className={styles.header}>
             <Flex direction='row' justify='space-between' align='center'>
-                <h4>{getLocale(S.CHAT_UI_ATTACHMENTS_TITLE)}</h4>
-                <Button fab kind='plain-faint' size='small' onClick={() => conversation.setShowAttachments(false)}>
+                <h4>{getLocale(S.CHAT_UI_ATTACHMENTS_TABS_TITLE)}</h4>
+                <Button fab kind='plain-faint' size='small' onClick={() => conversation.setAttachmentsDialog(null)}>
                     <Icon name='close' />
                 </Button>
             </Flex>
-            <span className={styles.description}>{getLocale(S.CHAT_UI_ATTACHMENTS_DESCRIPTION)}</span>
+            <span className={styles.description}>{getLocale(S.CHAT_UI_ATTACHMENTS_TABS_DESCRIPTION)} {getLocale(S.CHAT_UI_ATTACHMENTS_DESCRIPTION_AFTER)}</span>
         </div>
-        <div className={styles.tabSearchContainer}>
-            <Flex direction='row' justify='space-between' align='center'>
-                <h5>{getLocale(S.CHAT_UI_ATTACHMENTS_BROWSER_TABS_TITLE)}</h5>
-            </Flex>
-            <Input placeholder={getLocale(S.CHAT_UI_ATTACHMENTS_SEARCH_PLACEHOLDER)} value={search} onInput={e => setSearch(e.value)}>
-                <Icon name='search' slot='icon-after' />
-            </Input>
-            <div className={styles.tabList}>
-                {tabs.map(t => <TabItem key={t.id} tab={t} />)}
-            </div>
+        <Input className={styles.searchBox} placeholder={getLocale(S.CHAT_UI_ATTACHMENTS_TABS_SEARCH_PLACEHOLDER)} value={search} onInput={e => setSearch(e.value)}>
+            <Icon name='search' slot='left-icon' />
+            {search &&<Button fab kind='plain-faint' size='small' onClick={() => setSearch('')} slot='right-icon'>
+                <Icon name='close' />
+            </Button>}
+        </Input>
+        <div className={styles.tabList}>
+            {tabs.map(t => <TabItem key={t.id} tab={t} />)}
+            {tabs.length === 0 && <Flex direction='column' align='center' justify='center' className={styles.noResults}>
+                <span className={styles.noResultsText}>{getLocale(S.CHAT_UI_ATTACHMENTS_SEARCH_NO_RESULTS)}</span>
+                {conversation.unassociatedTabs.length > 0 && <span className={styles.noResultsSuggestion}>{getLocale(S.CHAT_UI_ATTACHMENTS_SEARCH_NO_RESULTS_SUGGESTION)}</span>}
+            </Flex>}
         </div>
     </div>
 }
