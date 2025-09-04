@@ -10,14 +10,10 @@ namespace psst {
 PsstUiDelegateImpl::PsstUiDelegateImpl() = default;
 PsstUiDelegateImpl::~PsstUiDelegateImpl() = default;
 
-void PsstUiDelegateImpl::SetAppliedItems(
+void PsstUiDelegateImpl::UpdateTasks(
     long progress,
-    const std::vector<PsstTask>& applied_tasks) {
+    const std::vector<PolicyTask>& applied_tasks) {
   // Implementation for setting the current progress.
-}
-
-void PsstUiDelegateImpl::SetComplete() {
-  // Implementation for marking the UI as complete.
 }
 
 }  // namespace psst

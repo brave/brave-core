@@ -103,10 +103,9 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
   ~MockUiDelegate() override = default;
 
   MOCK_METHOD(void,
-              SetAppliedItems,
-              (long progress, const std::vector<PsstTask>& applied_tasks),
+              UpdateTasks,
+              (long progress, const std::vector<PolicyTask>& applied_tasks),
               (override));
-  MOCK_METHOD(void, SetComplete, (), (override));
 };
 
 class PsstTabWebContentsObserverUnitTestBase
@@ -513,8 +512,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       base::Value(base::Value::Dict().Set("prop", "value"));
 
   // Any UI delegate method must not be called, as policy_script_result is empty
-  EXPECT_CALL(ui_delegate(), SetAppliedItems(_, _)).Times(0);
-  EXPECT_CALL(ui_delegate(), SetComplete()).Times(0);
+  EXPECT_CALL(ui_delegate(), UpdateTasks(_, _)).Times(0);
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -593,8 +591,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto policy_script_result = base::Value();
 
   // Any UI delegate method must not be called, as policy_script_result is empty
-  EXPECT_CALL(ui_delegate(), SetAppliedItems(_, _)).Times(0);
-  EXPECT_CALL(ui_delegate(), SetComplete()).Times(0);
+  EXPECT_CALL(ui_delegate(), UpdateTasks(_, _)).Times(0);
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -614,27 +611,32 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
 }
 
-TEST_F(PsstTabWebContentsObserverUnitTest,
-       UiDelegateSetAppliedItemsButNotSetComplete) {
+TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   const std::string user_script = "user";
   const std::string policy_script = "policy";
   const GURL url("https://example1.com");
+  const std::string task_description = "task description";
   const int progress = 50;
   base::RunLoop check_loop;
   base::test::TestFuture<long> progress_future;
+  base::test::TestFuture<std::vector<PolicyTask>> applied_tasks_future;
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
 
-  // SetAppliedItems must be called as policy script returns valid result with
-  // STARTED status
-  EXPECT_CALL(ui_delegate(), SetAppliedItems(progress, _))
-      .WillOnce([&progress_future](long progress,
-                                   const std::vector<PsstTask>& applied_tasks) {
-        progress_future.SetValue(progress);
+  // UpdateTasks must be called with correct parameters, as policy script
+  // returns valid result
+  EXPECT_CALL(ui_delegate(), UpdateTasks(progress, _))
+      .WillOnce([&progress_future, &applied_tasks_future](
+                    long progress_value,
+                    const std::vector<PolicyTask>& applied_tasks) {
+        std::vector<PolicyTask> tasks;
+        std::ranges::for_each(applied_tasks, [&tasks](const PolicyTask& task) {
+          tasks.push_back(task.Clone());
+        });
+        applied_tasks_future.SetValue(std::move(tasks));
+        progress_future.SetValue(progress_value);
       });
-  // SetComplete must not be called as policy script returns STARTED status
-  EXPECT_CALL(ui_delegate(), SetComplete()).Times(0);
 
   base::test::TestFuture<base::Value> user_script_insert_future;
   base::test::TestFuture<base::Value> policy_script_insert_future;
@@ -645,13 +647,12 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // prepare return value for policy script (status should be STARTED)
   auto policy_script_result =
       base::Value(base::Value::Dict()
-                      .Set("status", "STARTED")
                       .Set("progress", progress)
                       .Set("applied_tasks",
                            base::Value::List().Append(
                                base::Value::Dict()
-                                   .Set("url", "https://example1.com/task")
-                                   .Set("description", "Ads Preferences"))));
+                                   .Set("url", url.spec())
+                                   .Set("description", task_description))));
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -677,202 +678,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_EQ(script_params, user_script_insert_future.Take());
   EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
   EXPECT_EQ(progress, progress_future.Take());
-}
-
-TEST_F(PsstTabWebContentsObserverUnitTest,
-       UiDelegateSetAppliedItemsButNotSetCompleteMultipleTasks) {
-  const std::string user_script = "user";
-  const std::string policy_script = "policy";
-  const std::string second_policy_script = "second_policy";
-  const GURL url("https://example1.com");
-  const GURL second_url("https://example1.com/second");
-  const int first_progress_value = 50;
-  const int second_progress_value = 60;
-  const std::string task_description = "first task desription";
-  const std::string second_task_description = "second task description";
-  // Create a user script return value
-  auto script_params = base::Value(base::Value::Dict().Set("user", "value"));
-
-  // prepare return value for policy script (status should be STARTED)
-  auto policy_script_result =
-      base::Value(base::Value::Dict()
-                      .Set("status", "STARTED")
-                      .Set("progress", first_progress_value)
-                      .Set("applied_tasks",
-                           base::Value::List().Append(
-                               base::Value::Dict()
-                                   .Set("url", url.spec())
-                                   .Set("description", task_description))));
-
-  base::RunLoop check_loop;
-  base::RunLoop second_navigation_check_loop;
-  base::test::TestFuture<long> progress_future;
-  base::test::TestFuture<std::vector<PsstTask>> applied_tasks_future;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
-      .WillOnce(CheckIfMatchCallback(
-          &check_loop, CreateMatchedRule(user_script, policy_script)));
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_url, _))
-      .WillOnce(CheckIfMatchCallback(
-          &second_navigation_check_loop,
-          CreateMatchedRule(user_script, second_policy_script)));
-
-  // SetAppliedItems must be called as policy script returns valid result with
-  // STARTED status
-  EXPECT_CALL(ui_delegate(), SetAppliedItems(_, _))
-      .Times(2)
-      .WillRepeatedly([&progress_future, &applied_tasks_future](
-                          long progress,
-                          const std::vector<PsstTask>& applied_tasks) {
-        progress_future.SetValue(progress);
-        std::vector<PsstTask> tasks;
-        std::ranges::for_each(applied_tasks, [&tasks](const PsstTask& task) {
-          tasks.push_back(task.Clone());
-        });
-        applied_tasks_future.SetValue(std::move(tasks));
-      });
-
-  // SetComplete must not be called as policy script returns STARTED status
-  EXPECT_CALL(ui_delegate(), SetComplete()).Times(0);
-
-  base::test::TestFuture<base::Value> user_script_insert_future;
-  base::test::TestFuture<base::Value> policy_script_insert_future;
-
-  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
-      .Times(2)
-      .WillRepeatedly(InsertScriptInPageCallback(&user_script_insert_future,
-                                                 script_params.Clone()));
-
-  const auto policy_script_with_parameters =
-      [&script_params](const std::string& policy_script) {
-        return base::StrCat(
-            {"const params = ",
-             base::WriteJsonWithOptions(script_params.Clone(),
-                                        base::JSONWriter::OPTIONS_PRETTY_PRINT)
-                 .value(),
-             ";\n", policy_script});
-      };
-  // Policy script executed, parameters added
-  EXPECT_CALL(inject_script_callback(),
-              Run(policy_script_with_parameters(policy_script), _))
-      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
-                                           policy_script_result.Clone()));
-
-  // Prepare policy script results for the second navigation
-  auto second_policy_script_result = policy_script_result.Clone();
-  second_policy_script_result.GetDict().Set("progress", second_progress_value);
-  auto* second_applied_tasks_list =
-      second_policy_script_result.GetDict().FindList("applied_tasks");
-  ASSERT_TRUE(second_applied_tasks_list);
-  second_applied_tasks_list->begin()->GetDict().Set("url", second_url.spec());
-  second_applied_tasks_list->begin()->GetDict().Set("description",
-                                                    second_task_description);
-
-  EXPECT_CALL(inject_script_callback(),
-              Run(policy_script_with_parameters(second_policy_script), _))
-      .WillOnce(InsertScriptInPageCallback(
-          &policy_script_insert_future, second_policy_script_result.Clone()));
-
-  // First navigation (task)
-  DocumentOnLoadObserver observer(web_contents());
-  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
-  observer.Wait();
-
-  check_loop.Run();
-  EXPECT_EQ(script_params, user_script_insert_future.Take());
-  user_script_insert_future.Clear();
-
-  EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
-  policy_script_insert_future.Clear();
-
-  EXPECT_EQ(first_progress_value, progress_future.Take());
-  progress_future.Clear();
 
   const auto& applied_tasks = applied_tasks_future.Take();
   EXPECT_EQ(1u, applied_tasks.size());
   EXPECT_EQ(url.spec(), applied_tasks[0].url);
   EXPECT_EQ(task_description, applied_tasks[0].description);
-  applied_tasks_future.Clear();
-
-  // Second navigation (task)
-  DocumentOnLoadObserver second_navigation_observer(web_contents());
-  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             second_url);
-  second_navigation_observer.Wait();
-
-  second_navigation_check_loop.Run();
-  EXPECT_EQ(script_params, user_script_insert_future.Take());
-  EXPECT_EQ(second_policy_script_result, policy_script_insert_future.Take());
-  EXPECT_EQ(second_progress_value, progress_future.Take());
-
-  const auto& second_applied_tasks = applied_tasks_future.Take();
-  EXPECT_EQ(1u, second_applied_tasks.size());
-  EXPECT_EQ(second_url.spec(), second_applied_tasks[0].url);
-  EXPECT_EQ(second_task_description, second_applied_tasks[0].description);
-}
-
-TEST_F(PsstTabWebContentsObserverUnitTest,
-       UiDelegateSetAppliedItemsAndSetComplete) {
-  const std::string user_script = "user";
-  const std::string policy_script = "policy";
-  const GURL url("https://example1.com");
-  const int progress = 50;
-  base::RunLoop check_loop;
-  base::RunLoop progress_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
-      .WillOnce(CheckIfMatchCallback(
-          &check_loop, CreateMatchedRule(user_script, policy_script)));
-
-  // SetAppliedItems must be called as policy script returns valid result with
-  // STARTED status
-  EXPECT_CALL(ui_delegate(), SetAppliedItems(progress, _))
-      .WillOnce([&progress_loop](long, const std::vector<PsstTask>&) {
-        progress_loop.Quit();
-      });
-  // SetComplete must not be called as policy script returns STARTED status
-  EXPECT_CALL(ui_delegate(), SetComplete()).Times(1);
-
-  base::test::TestFuture<base::Value> user_script_insert_future;
-  base::test::TestFuture<base::Value> policy_script_insert_future;
-
-  // Create a user script return value
-  auto script_params = base::Value(base::Value::Dict().Set("user", "value"));
-
-  // prepare return value for policy script (status should be COMPLETED)
-  auto policy_script_result =
-      base::Value(base::Value::Dict()
-                      .Set("status", "COMPLETED")
-                      .Set("progress", progress)
-                      .Set("applied_tasks",
-                           base::Value::List().Append(
-                               base::Value::Dict()
-                                   .Set("url", "https://example1.com/task")
-                                   .Set("description", "Ads Preferences"))));
-
-  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
-      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
-                                           script_params.Clone()));
-
-  const auto policy_script_with_parameters = base::StrCat(
-      {"const params = ",
-       base::WriteJsonWithOptions(script_params.Clone(),
-                                  base::JSONWriter::OPTIONS_PRETTY_PRINT)
-           .value(),
-       ";\n", policy_script});
-  // Policy script executed, parameters added
-  EXPECT_CALL(inject_script_callback(), Run(policy_script_with_parameters, _))
-      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
-                                           policy_script_result.Clone()));
-
-  DocumentOnLoadObserver observer(web_contents());
-  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
-  observer.Wait();
-
-  check_loop.Run();
-  EXPECT_EQ(script_params, user_script_insert_future.Take());
-  EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
-  progress_loop.Run();
 }
 
 class PsstTabWebContentsObserverFeatureDisabledUnitTest

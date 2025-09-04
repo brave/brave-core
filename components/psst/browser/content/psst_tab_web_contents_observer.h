@@ -36,11 +36,8 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
    public:
     virtual ~PsstUiDelegate() = default;
     // Update the UI state based on the applied tasks and progress.
-    virtual void SetAppliedItems(
-        long progress,
-        const std::vector<PsstTask>& applied_tasks) = 0;
-    // Sets the consent dialog to complete state.
-    virtual void SetComplete() = 0;
+    virtual void UpdateTasks(long progress,
+                             const std::vector<PolicyTask>& applied_tasks) = 0;
   };
 
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(

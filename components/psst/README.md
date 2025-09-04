@@ -10,10 +10,18 @@ https://docs.google.com/document/d/1ccnBWBV_KkknZpZYxcOXTwtfIiaSzeLS5dMd08N2pbs/
 1. The user opens any website.
 2. PSST feature detects that it is supported website (it means that browser loads PSST CRX component and find the appropriate user and policy scripts).
 3. The browser injects the user script into the page. The primary goal of the user script is to ensure that the user is signed in to the current website and return a list of URLs where we should apply the privacy settings.
+    - the results of the user script execution we process here:</br> `PsstTabWebContentsObserver::OnUserScriptResult`
 4. If the user is not signed in, we just break the flow.
 5. If the user is signed in and we have a list of URLs, we will display a consent modal dialog. In this dialog, the user can choose their preferred privacy settings and track the progress of the operation.
 6. When the user clicks the OK button, we inject the policy script and execute it.
-7. The policy script saves the list of URLs (tasks) to local storage to be available after the next navigation, takes the first URL (URL_1), marks it as current, and navigates to it.
+7. The policy script does the next things: 
+    - saves the list of URLs (tasks) to local storage to be available after the next navigation;
+    - calculates current progress;
+    - takes the first URL (URL_1) and marks it as current;
+    - navigates to that URL;
+    - returns the progress and applied tasks list to the back-end: `PsstTabWebContentsObserver::OnPolicyScriptResult(int nav_entry_id,base::Value script_result)`</br>
+    where after deserialization and validation, we update the flow's status on the consent dialog, by calling the UI delegate's method:</br>
+    `UpdateTasks(long progress,const std::vector<PolicyTask>& applied_tasks)`</br>
 8. When navigation to URL_1 is complete, and it is a supported website, the user script is injected and executed. Then the same happens as in points #3,4.
 9. Since the workflow is running and the consent dialog is visible, we inject the policy script.
 10. Once injected, the policy script loads saved URLs (tasks) from local storage, takes the current' URL (see p. #7), and applies the privacy setting.
@@ -120,17 +128,15 @@ The policy script returns the next object as result:
 
 ```
 {
-    "status": "<STARTED|COMPLETED>",
     "progress": "<percent of completion>",
-    "applied": [{
+    "applied_tasks": [{
       "description": "Ads Preferences",
       "url": "https://x.com/settings/ads_preferences",
       "error_description": "<optional error description>"
     }]
 }
 ```
-- `status` - represents the flow's status, `started` or `completed`;
 - `progress` - script calculates the percent of operation completion;
-- `applied` - array of the completed tasks, each task is an object `url/description/error_description`
+- `applied_tasks` - array of the completed tasks, each task is an object `url/description/error_description`
 
 
