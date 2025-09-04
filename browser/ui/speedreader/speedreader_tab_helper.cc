@@ -166,8 +166,7 @@ void SpeedreaderTabHelper::ProcessIconClick() {
 }
 
 DistillState SpeedreaderTabHelper::PageDistillState() const {
-  auto* speedreader_service = GetSpeedreaderService();
-  if (!speedreader_service || !speedreader_service->IsFeatureEnabled()) {
+  if (GetSpeedreaderService()->IsFeatureEnabled()) {
     return {};
   }
   return distill_state_;
