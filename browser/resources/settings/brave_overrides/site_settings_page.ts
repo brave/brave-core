@@ -156,6 +156,21 @@ RegisterPolymerComponentReplacement(
               lists.permissionsAdvanced.splice(currentIndex, 0,
                 AIChatItem)
             }
+            const isBravePuppeteerPermissionEnabled =
+              loadTimeData.getBoolean('isBravePuppeteerPermissionEnabled')
+            if (isBravePuppeteerPermissionEnabled) {
+              currentIndex++
+              const puppeteerItem = {
+                route: routes.SITE_SETTINGS_PUPPETEER,
+                id: ContentSettingsTypes.PUPPETEER,
+                label: 'siteSettingsPuppeteer',
+                icon: 'extension',
+                enabledLabel: 'siteSettingsPuppeteerAsk',
+                disabledLabel: 'siteSettingsPuppeteerBlock'
+              }
+              lists.permissionsAdvanced.splice(currentIndex, 0,
+                puppeteerItem)
+            }
             const isNativeBraveWalletEnabled =
               loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
             const isCardanoDappSupportFeatureEnabled =

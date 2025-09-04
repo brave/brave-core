@@ -23,18 +23,20 @@
 // `kWidevine` handled by an override in `WidevinePermissionRequest` and the
 // Brave Ethereum/Solana permission has its own permission request prompt.
 #if BUILDFLAG(IS_ANDROID)
-#define BRAVE_ENUM_ITEMS_FOR_SWITCH \
-  case RequestType::kBraveEthereum: \
-  case RequestType::kBraveSolana:   \
-  case RequestType::kBraveCardano:  \
-  case RequestType::kWidevine:      \
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH  \
+  case RequestType::kBraveEthereum:  \
+  case RequestType::kBraveSolana:    \
+  case RequestType::kBraveCardano:   \
+  case RequestType::kBravePuppeteer: \
+  case RequestType::kWidevine:       \
     NOTREACHED();
 #else
-#define BRAVE_ENUM_ITEMS_FOR_SWITCH \
-  case RequestType::kBraveEthereum: \
-  case RequestType::kBraveSolana:   \
-  case RequestType::kBraveCardano:  \
-  case RequestType::kWidevine:      \
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH  \
+  case RequestType::kBraveEthereum:  \
+  case RequestType::kBraveSolana:    \
+  case RequestType::kBraveCardano:   \
+  case RequestType::kBravePuppeteer: \
+  case RequestType::kWidevine:       \
     NOTREACHED();
 #endif
 

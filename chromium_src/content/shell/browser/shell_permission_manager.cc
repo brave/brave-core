@@ -22,6 +22,7 @@
   case PermissionType::BRAVE_LOCALHOST_ACCESS:          \
   case PermissionType::BRAVE_OPEN_AI_CHAT:              \
   case PermissionType::BRAVE_CARDANO:                   \
+  case PermissionType::BRAVE_PUPPETEER:                 \
   case PermissionType::NUM
 
 #include <content/shell/browser/shell_permission_manager.cc>

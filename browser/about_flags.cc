@@ -28,6 +28,7 @@
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
+#include "brave/components/permissions/puppeteer_features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -856,6 +857,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveLocalhostAccessPermission),       \
+      },                                                                       \
+      {                                                                        \
+          "brave-puppeteer-permission",                                        \
+          "Enable Puppeteer Permission Prompt",                               \
+          "Enable permissioning access for Puppeteer automation tools",       \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(permissions::features::kBravePuppeteerPermission), \
       },                                                                       \
       {                                                                        \
           "brave-extension-network-blocking",                                  \

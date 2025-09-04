@@ -119,6 +119,11 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
       r.SITE_SETTINGS_BRAVE_OPEN_AI_CHAT =
         r.SITE_SETTINGS.createChild('braveOpenAIChat')
     }
+    const isBravePuppeteerPermissionEnabled =
+      loadTimeData.getBoolean('isBravePuppeteerPermissionEnabled')
+    if (isBravePuppeteerPermissionEnabled) {
+      r.SITE_SETTINGS_PUPPETEER = r.SITE_SETTINGS.createChild('puppeteer')
+    }
     const isNativeBraveWalletFeatureEnabled =
       loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     const isCardanoDappSupportFeatureEnabled =

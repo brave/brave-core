@@ -185,6 +185,12 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
     EXPECT_EQ(CONTENT_SETTING_ASK, info->GetInitialDefaultSetting());
   }
 
+  {
+    SCOPED_TRACE("Content setting: BRAVE_PUPPETEER");
+    info = registry()->Get(ContentSettingsType::BRAVE_PUPPETEER);
+    EXPECT_EQ(CONTENT_SETTING_ASK, info->GetInitialDefaultSetting());
+  }
+
   // TODO(bridiver) - DEFAULT is not a valid setting, but leaving it for
   // now because this requires more extensive changes to fix correctly
   // {

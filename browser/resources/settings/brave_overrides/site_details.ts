@@ -117,6 +117,24 @@ RegisterPolymerTemplateModifications({
         }
         curChild++
       }
+      // Puppeteer permission feature
+      const isBravePuppeteerPermissionEnabled =
+        loadTimeData.getBoolean('isBravePuppeteerPermissionEnabled')
+      if (isBravePuppeteerPermissionEnabled) {
+        insertBefore(firstPermissionItem, html`<site-details-permission
+             category="[[contentSettingsTypesEnum_.PUPPETEER]]"
+             icon="extension">
+           </site-details-permission>`)
+        const puppeteerSettings = templateContent.querySelector(
+          `div.list-frame > site-details-permission:nth-child(${curChild})`)
+        if (!puppeteerSettings) {
+          console.error('[Settings] Couldn\'t find Puppeteer settings')
+        } else {
+          puppeteerSettings.setAttribute(
+            'label', loadTimeData.getString('siteSettingsPuppeteer'))
+        }
+        curChild++
+      }
 
       const isNativeBraveWalletEnabled =
           loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')

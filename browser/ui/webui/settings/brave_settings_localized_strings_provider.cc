@@ -153,6 +153,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"siteSettingsBraveOpenAIChatBlock",
        IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT_BLOCK},
 
+      {"siteSettingsPuppeteer", IDS_SETTINGS_SITE_SETTINGS_PUPPETEER},
+      {"siteSettingsCategoryPuppeteer", IDS_SETTINGS_SITE_SETTINGS_PUPPETEER},
+      {"siteSettingsPuppeteerAsk", IDS_SETTINGS_SITE_SETTINGS_PUPPETEER_ASK},
+      {"siteSettingsPuppeteerBlock", IDS_SETTINGS_SITE_SETTINGS_PUPPETEER_BLOCK},
+
       {"siteSettingsLocalhostAccess",
        IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS},
       {"siteSettingsCategoryLocalhostAccess",

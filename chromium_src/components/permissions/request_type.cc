@@ -34,6 +34,7 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
   case RequestType::kBraveGoogleSignInPermission:    \
   case RequestType::kBraveLocalhostAccessPermission: \
   case RequestType::kBraveOpenAIChat:                \
+  case RequestType::kBravePuppeteer:                 \
     return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE
 
 // Add Brave cases into GetIconIdDesktop.
@@ -46,6 +47,7 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
   case RequestType::kBraveGoogleSignInPermission:    \
   case RequestType::kBraveLocalhostAccessPermission: \
   case RequestType::kBraveOpenAIChat:                \
+  case RequestType::kBravePuppeteer:                 \
     return vector_icons::kExtensionIcon
 
 #define BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE                     \
@@ -62,7 +64,9 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
   case permissions::RequestType::kBraveLocalhostAccessPermission: \
     return "brave_localhost_access";                              \
   case permissions::RequestType::kBraveOpenAIChat:                \
-    return "brave_ai_chat";
+    return "brave_ai_chat";                                       \
+  case permissions::RequestType::kBravePuppeteer:                 \
+    return "brave_puppeteer";
 
 #define ContentSettingsTypeToRequestType \
   ContentSettingsTypeToRequestType_ChromiumImpl
@@ -98,6 +102,8 @@ RequestType ContentSettingsTypeToRequestType(
       return RequestType::kBraveLocalhostAccessPermission;
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return RequestType::kBraveOpenAIChat;
+    case ContentSettingsType::BRAVE_PUPPETEER:
+      return RequestType::kBravePuppeteer;
     case ContentSettingsType::DEFAULT:
       // Currently we have only one DEFAULT type that is
       // not mapped, which is Widevine, it's used for
@@ -124,6 +130,8 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
       return ContentSettingsType::BRAVE_OPEN_AI_CHAT;
     case RequestType::kBraveCardano:
       return ContentSettingsType::BRAVE_CARDANO;
+    case RequestType::kBravePuppeteer:
+      return ContentSettingsType::BRAVE_PUPPETEER;
     default:
       return RequestTypeToContentSettingsType_ChromiumImpl(request_type);
   }
@@ -137,6 +145,7 @@ bool IsRequestablePermissionType(ContentSettingsType content_settings_type) {
     case ContentSettingsType::BRAVE_SOLANA:
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
     case ContentSettingsType::BRAVE_CARDANO:
+    case ContentSettingsType::BRAVE_PUPPETEER:
       return true;
     default:
       return IsRequestablePermissionType_ChromiumImpl(content_settings_type);

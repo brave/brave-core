@@ -12,6 +12,7 @@
 #include "brave/components/permissions/contexts/brave_localhost_permission_context.h"
 #include "brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "brave/components/permissions/contexts/brave_puppeteer_permission_context.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
 #include "components/permissions/features.h"
 
@@ -48,6 +49,8 @@ PermissionManagerFactory::BuildServiceInstanceForBrowserContext(
       std::make_unique<permissions::BraveLocalhostPermissionContext>(profile);
   permission_contexts[ContentSettingsType::BRAVE_OPEN_AI_CHAT] =
       std::make_unique<permissions::BraveOpenAIChatPermissionContext>(profile);
+  permission_contexts[ContentSettingsType::BRAVE_PUPPETEER] =
+      std::make_unique<BravePuppeteerPermissionContext>(profile);
 
   if (base::FeatureList::IsEnabled(
           permissions::features::kPermissionLifetime)) {

@@ -51,4 +51,5 @@ enum ContentSettingsType {
   BRAVE_SHIELDS_METADATA,
 
   BRAVE_CARDANO,
+  BRAVE_PUPPETEER,
 };

@@ -55,7 +55,8 @@
   {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr}, \
   {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr}, \
-  {ContentSettingsType::BRAVE_CARDANO, "cardano"},
+  {ContentSettingsType::BRAVE_CARDANO, "cardano"}, \
+  {ContentSettingsType::BRAVE_PUPPETEER, "puppeteer"},
 // clang-format on
 
 #define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \
@@ -127,6 +128,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::BRAVE_CARDANO) {
     return true;
   }
+  if (type == ContentSettingsType::BRAVE_PUPPETEER) {
+    return true;
+  }
   if (type == ContentSettingsType::BRAVE_SHIELDS) {
     return true;
   }
@@ -143,6 +147,7 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategories(
   types.push_back(ContentSettingsType::BRAVE_GOOGLE_SIGN_IN);
   types.push_back(ContentSettingsType::BRAVE_LOCALHOST_ACCESS);
   types.push_back(ContentSettingsType::BRAVE_OPEN_AI_CHAT);
+  types.push_back(ContentSettingsType::BRAVE_PUPPETEER);
 
   // Only add Web3-related content settings if wallet is allowed
   if (brave_wallet::IsAllowedForContext(profile)) {

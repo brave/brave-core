@@ -3,6 +3,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+source_set("permissions") {
+  sources = [
+    "contexts/brave_puppeteer_permission_context.cc",
+    "contexts/brave_puppeteer_permission_context.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/content_settings/core/common",
+    "//components/permissions",
+    "//content/public/browser",
+    "//url",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
