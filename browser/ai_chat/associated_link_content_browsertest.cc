@@ -15,22 +15,21 @@
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
-#include "services/network/public/cpp/network_switches.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
 
-class AssociatedLinkContentBrowserTest : public InProcessBrowserTest {
+class AssociatedLinkContentBrowserTest : public PlatformBrowserTest {
  public:
   AssociatedLinkContentBrowserTest() = default;
 
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+    PlatformBrowserTest::SetUpOnMainThread();
 
     base::FilePath test_data_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
@@ -42,22 +41,22 @@ class AssociatedLinkContentBrowserTest : public InProcessBrowserTest {
 
   void SetUp() override {
     ASSERT_TRUE(https_server_.InitializeAndListen());
-    InProcessBrowserTest::SetUp();
+    PlatformBrowserTest::SetUp();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
+    PlatformBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
   }
 
   void SetUpInProcessBrowserTestFixture() override {
-    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
     mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
   }
 
   void TearDownInProcessBrowserTestFixture() override {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
-    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
  protected:
