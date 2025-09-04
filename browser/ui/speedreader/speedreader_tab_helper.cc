@@ -166,8 +166,7 @@ void SpeedreaderTabHelper::ProcessIconClick() {
 }
 
 DistillState SpeedreaderTabHelper::PageDistillState() const {
-  auto* speedreader_service = GetSpeedreaderService();
-  if (!speedreader_service || !speedreader_service->IsFeatureEnabled()) {
+  if (!GetSpeedreaderService()->IsFeatureEnabled()) {
     return {};
   }
   return distill_state_;
@@ -556,9 +555,8 @@ void SpeedreaderTabHelper::OnSiteEnableSettingChanged(
 
 void SpeedreaderTabHelper::OnAllSitesEnableSettingChanged(
     bool enabled_on_all_sites) {
-  if (!is_visible_ || !GetSpeedreaderService() ||
-      !rewriter_service_->URLLooksReadable(
-          web_contents()->GetLastCommittedURL())) {
+  if (!is_visible_ || !rewriter_service_->URLLooksReadable(
+                          web_contents()->GetLastCommittedURL())) {
     return;
   }
   OnSiteEnableSettingChanged(
