@@ -142,6 +142,41 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
         webView.configuration.preferences.javaScriptEnabled = preferences.allowsContentJavaScript
       }
 
+      let isEnabledSelector = Selector(("_networkConnectionIntegrityEnabled"))
+      if preferences.responds(to: isEnabledSelector) {
+        let obj = preferences.perform(isEnabledSelector)
+        if let obj = obj as? AnyObject {
+          let pointer: UnsafeMutableRawPointer = Unmanaged<AnyObject>.passUnretained(obj).toOpaque()
+          let valueBool: Bool = pointer.load(as: Bool.self)
+          print("LOG: WKWebpagePreferences DOES respond to _networkConnectionIntegrityEnabled - result=\(valueBool)")
+        } else {
+          print("LOG: WKWebpagePreferences DOES respond to _networkConnectionIntegrityEnabled - result is unknown")
+        }
+      } else {
+        print("LOG: WKWebpagePreferences does NOT respond to _networkConnectionIntegrityEnabled")
+      }
+      
+      let senderSelector = Selector(("_setNetworkConnectionIntegrityEnabled:"))
+      if preferences.responds(to: senderSelector) {
+        print("LOG: WKWebpagePreferences DOES respond to _setNetworkConnectionIntegrityEnabled")
+        preferences.performSelector(onMainThread: senderSelector, with: ObjCBool(true), waitUntilDone: true)
+        
+        if preferences.responds(to: isEnabledSelector) {
+          let obj = preferences.perform(isEnabledSelector)
+          if let obj = obj as? AnyObject {
+            let pointer: UnsafeMutableRawPointer = Unmanaged<AnyObject>.passUnretained(obj).toOpaque()
+            let valueBool: Bool = pointer.load(as: Bool.self)
+            print("LOG: WKWebpagePreferences DOES respond to _networkConnectionIntegrityEnabled - result=\(valueBool)")
+          } else {
+            print("LOG: WKWebpagePreferences DOES respond to _networkConnectionIntegrityEnabled - result is unknown")
+          }
+        } else {
+          print("LOG: WKWebpagePreferences does NOT respond to _networkConnectionIntegrityEnabled")
+        }
+      } else {
+        print("LOG: WKWebpagePreferences does NOT respond to _setNetworkConnectionIntegrityEnabled")
+      }
+
       // Downloads
       self.shouldDownloadNavigationResponse = navigationAction.shouldPerformDownload
     }
