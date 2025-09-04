@@ -110,6 +110,8 @@
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "brave/components/permissions/contexts/brave_puppeteer_permission_context.h"
+#include "content/browser/renderer_host/ancestor_throttle.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_browser_interface_binders.h"
@@ -460,7 +462,11 @@ void MaybeBindSkusSdkImpl(
 
 }  // namespace
 
-BraveContentBrowserClient::BraveContentBrowserClient() = default;
+BraveContentBrowserClient::BraveContentBrowserClient() {
+  // Register callback for ancestor throttle permission checking
+  content::AncestorThrottle::SetPermissionCallback(
+      base::BindRepeating(&BravePuppeteerPermissionContext::IsOriginAllowedForPuppeteerMode));
+}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() = default;
 
