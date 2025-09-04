@@ -142,39 +142,10 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
         webView.configuration.preferences.javaScriptEnabled = preferences.allowsContentJavaScript
       }
 
-      let isEnabledSelector = Selector(("_networkConnectionIntegrityEnabled"))
-      if preferences.responds(to: isEnabledSelector) {
-        let obj = preferences.perform(isEnabledSelector)
-        if let obj = obj as? AnyObject {
-          let pointer: UnsafeMutableRawPointer = Unmanaged<AnyObject>.passUnretained(obj).toOpaque()
-          let valueBool: Bool = pointer.load(as: Bool.self)
-          print("LOG: WKWebpagePreferences DOES respond to _networkConnectionIntegrityEnabled - result=\(valueBool)")
-        } else {
-          print("LOG: WKWebpagePreferences DOES respond to _networkConnectionIntegrityEnabled - result is unknown")
-        }
+      if !preferences.private_networkConnectionIntegrityEnabled {
+        preferences.private_setNetworkConnectionIntegrityEnabled(true)
       } else {
-        print("LOG: WKWebpagePreferences does NOT respond to _networkConnectionIntegrityEnabled")
-      }
-      
-      let senderSelector = Selector(("_setNetworkConnectionIntegrityEnabled:"))
-      if preferences.responds(to: senderSelector) {
-        print("LOG: WKWebpagePreferences DOES respond to _setNetworkConnectionIntegrityEnabled")
-        preferences.performSelector(onMainThread: senderSelector, with: ObjCBool(true), waitUntilDone: true)
-        
-        if preferences.responds(to: isEnabledSelector) {
-          let obj = preferences.perform(isEnabledSelector)
-          if let obj = obj as? AnyObject {
-            let pointer: UnsafeMutableRawPointer = Unmanaged<AnyObject>.passUnretained(obj).toOpaque()
-            let valueBool: Bool = pointer.load(as: Bool.self)
-            print("LOG: WKWebpagePreferences DOES respond to _networkConnectionIntegrityEnabled - result=\(valueBool)")
-          } else {
-            print("LOG: WKWebpagePreferences DOES respond to _networkConnectionIntegrityEnabled - result is unknown")
-          }
-        } else {
-          print("LOG: WKWebpagePreferences does NOT respond to _networkConnectionIntegrityEnabled")
-        }
-      } else {
-        print("LOG: WKWebpagePreferences does NOT respond to _setNetworkConnectionIntegrityEnabled")
+        print("LOG: Already enabled!")
       }
 
       // Downloads
@@ -441,6 +412,40 @@ extension WKNavigationType: @retroactive CustomDebugStringConvertible {
     case .reload: return "reload"
     @unknown default:
       return "Unknown(\(rawValue))"
+    }
+  }
+}
+
+extension WKWebpagePreferences {
+  // swift-format-ignore
+  var private_networkConnectionIntegrityEnabled: Bool {
+    let isEnabledSelector = Selector(("_networkConnectionIntegrityEnabled"))
+    if responds(to: isEnabledSelector) {
+      let obj = perform(isEnabledSelector)
+      if let obj = obj as? AnyObject {
+        let pointer: UnsafeMutableRawPointer = Unmanaged<AnyObject>.passUnretained(obj).toOpaque()
+        let valueBool: Bool = pointer.load(as: Bool.self)
+        return valueBool
+      } else {
+        // unknown result
+        print("Error: unknown result checking _networkConnectionIntegrityEnabled")
+        return false
+      }
+    } else {
+      print("Error: WKWebpagePreferences does NOT respond to _networkConnectionIntegrityEnabled")
+      return false
+    }
+  }
+
+  // swift-format-ignore
+  func private_setNetworkConnectionIntegrityEnabled(_ enabled: Bool) {
+    let senderSelector = Selector(("_setNetworkConnectionIntegrityEnabled:"))
+    if responds(to: senderSelector) {
+      performSelector(onMainThread: senderSelector, with: ObjCBool(enabled), waitUntilDone: true)
+      print("Successfully set private network connection integrity to \(enabled)")
+    } else {
+      print("WKWebpagePreferences does NOT respond to _setNetworkConnectionIntegrityEnabled")
+      return
     }
   }
 }
