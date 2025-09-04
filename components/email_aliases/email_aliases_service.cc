@@ -15,6 +15,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
@@ -62,6 +63,32 @@ const net::NetworkTrafficAnnotationTag kTrafficAnnotation =
     })");
 
 constexpr int kMaxResponseLength = 32768;
+
+// Parses a JSON response body into a Dict and surfaces backend error payloads.
+// Returns base::unexpected with a user-facing error string if:
+// - There is no response body
+// - The response is not a dictionary
+// - The response contains an ErrorResponse
+base::expected<base::Value::Dict, std::string> ParseResponseDictOrError(
+    const std::optional<std::string>& response_body) {
+  if (!response_body) {
+    return base::unexpected(
+        l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_RESPONSE_BODY));
+  }
+  auto dict_opt = base::JSONReader::ReadDict(*response_body);
+  if (!dict_opt) {
+    return base::unexpected(l10n_util::GetStringUTF8(
+        IDS_EMAIL_ALIASES_ERROR_INVALID_RESPONSE_BODY));
+  }
+  if (auto err = ErrorResponse::FromValue(*dict_opt)) {
+    LOG(ERROR) << "Email Aliases service error: " << err->error;
+    std::string msg = base::UTF16ToUTF8(
+        l10n_util::GetStringFUTF16(IDS_EMAIL_ALIASES_SERVICE_REPORTED_ERROR,
+                                   base::UTF8ToUTF16(err->error)));
+    return base::unexpected(msg);
+  }
+  return base::ok(std::move(*dict_opt));
+}
 
 }  // namespace
 
@@ -315,12 +342,14 @@ void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {
 void EmailAliasesService::UpdateAlias(const std::string& alias_email,
                                       const std::optional<std::string>& note,
                                       UpdateAliasCallback callback) {
-  base::Value::Dict body_value;
-  body_value.Set("alias", alias_email);
-  body_value.Set("status", "active");
+  // Build JSON using IDL-defined shape
+  UpdateAliasRequest request;
+  request.alias = alias_email;
+  request.status = "active";
   if (note) {
-    body_value.Set("note", *note);
+    request.note = *note;
   }
+  auto body_value = request.ToValue();
   ApiFetch(email_aliases_service_base_url_, net::HttpRequestHeaders::kPutMethod,
            body_value,
            base::BindOnce(&EmailAliasesService::OnUpdateAliasResponse,
@@ -329,8 +358,9 @@ void EmailAliasesService::UpdateAlias(const std::string& alias_email,
 
 void EmailAliasesService::DeleteAlias(const std::string& alias_email,
                                       DeleteAliasCallback callback) {
-  base::Value::Dict body_value;
-  body_value.Set("alias", alias_email);
+  DeleteAliasRequest request;
+  request.alias = alias_email;
+  auto body_value = request.ToValue();
   ApiFetch(email_aliases_service_base_url_,
            net::HttpRequestHeaders::kDeleteMethod, body_value,
            base::BindOnce(&EmailAliasesService::OnDeleteAliasResponse,
@@ -398,43 +428,53 @@ void EmailAliasesService::OnApiFetchDownloadToStringComplete(
 void EmailAliasesService::OnGenerateAliasResponse(
     GenerateAliasCallback user_callback,
     std::optional<std::string> response_body) {
-  std::string error_message;
-  if (!response_body) {
-    error_message = "No response from server.";
-  } else {
-    auto parsed = base::JSONReader::Read(*response_body);
-    if (!parsed || !parsed->is_dict()) {
-      error_message = "Invalid response format.";
-    } else {
-      const auto& dict = parsed->GetDict();
-      const std::string* message = dict.FindString("message");
-      const std::string* alias = dict.FindString("alias");
-      if (message && *message == "created" && alias && !alias->empty()) {
-        std::move(user_callback).Run(base::ok(*alias));
-        RefreshAliases();
-        return;
-      } else if (message && *message != "created") {
-        error_message = *message;
-      } else {
-        error_message = "Alias not available.";
-      }
+  auto parsed = ParseResponseDictOrError(response_body);
+  if (!parsed.has_value()) {
+    std::move(user_callback).Run(base::unexpected(parsed.error()));
+    return;
+  }
+  if (auto ok = GenerateAliasResponse::FromValue(parsed.value())) {
+    if (ok->message == "created" && !ok->alias.empty()) {
+      std::move(user_callback).Run(base::ok(ok->alias));
+      RefreshAliases();
+      return;
     }
   }
-  std::move(user_callback).Run(base::unexpected(error_message));
+  std::move(user_callback).Run(base::unexpected("Alias not available."));
 }
 
 void EmailAliasesService::OnUpdateAliasResponse(
     UpdateAliasCallback user_callback,
-    std::optional<std::string> /*response_body*/) {
-  // TODO: handle response body -- errors?
+    std::optional<std::string> response_body) {
+  auto parsed = ParseResponseDictOrError(response_body);
+  if (!parsed.has_value()) {
+    std::move(user_callback).Run(base::unexpected(parsed.error()));
+    return;
+  }
+  if (auto edited = AliasEditedResponse::FromValue(parsed.value())) {
+    if (edited->message != "updated") {
+      std::move(user_callback).Run(base::unexpected(edited->message));
+      return;
+    }
+  }
   std::move(user_callback).Run(base::ok(std::monostate{}));
   RefreshAliases();
 }
 
 void EmailAliasesService::OnDeleteAliasResponse(
     DeleteAliasCallback user_callback,
-    std::optional<std::string> /*response_body*/) {
-  // TODO: handle response body -- errors?
+    std::optional<std::string> response_body) {
+  auto parsed = ParseResponseDictOrError(response_body);
+  if (!parsed.has_value()) {
+    std::move(user_callback).Run(base::unexpected(parsed.error()));
+    return;
+  }
+  if (auto edited = AliasEditedResponse::FromValue(parsed.value())) {
+    if (edited->message != "deleted") {
+      std::move(user_callback).Run(base::unexpected(edited->message));
+      return;
+    }
+  }
   std::move(user_callback).Run(base::ok(std::monostate{}));
   RefreshAliases();
 }
@@ -448,28 +488,36 @@ void EmailAliasesService::RefreshAliases() {
 
 void EmailAliasesService::OnRefreshAliasesResponse(
     std::optional<std::string> response_body) {
+  // TODO(https://github.com/brave/brave-browser/issues/48959):
+  // In this function, when an error happens, we should show
+  // an error message to the user (requires design work)
   if (!response_body) {
+    LOG(ERROR) << "Email Aliases service error: No response body";
     return;
   }
   auto parsed = base::JSONReader::Read(*response_body);
+  if (parsed && parsed->is_dict() && parsed->GetDict().contains("message")) {
+    auto error_message = parsed->GetDict().FindString("message");
+    if (error_message) {
+      LOG(ERROR) << "Email Aliases service error: " << *error_message;
+      return;
+    }
+  }
   if (!parsed || !parsed->is_list()) {
+    LOG(ERROR) << "Email Aliases service error: Invalid response format";
     return;
   }
   std::vector<email_aliases::mojom::AliasPtr> aliases;
   for (const auto& alias_val : parsed->GetList()) {
     if (!alias_val.is_dict()) {
-      continue;
+      LOG(ERROR) << "Email Aliases service error: Invalid response format";
+      return;
     }
-    const std::string* email = alias_val.GetDict().FindString("email");
-    const std::string* alias = alias_val.GetDict().FindString("alias");
-    if (!email || !alias) {
-      continue;
+    if (auto entry = AliasListEntry::FromValue(alias_val.GetDict())) {
+      auto alias_obj = email_aliases::mojom::Alias::New();
+      alias_obj->email = entry->alias;
+      aliases.push_back(std::move(alias_obj));
     }
-    auto alias_obj = email_aliases::mojom::Alias::New();
-    // What the service calls an alias is the email address for this Alias
-    // object:
-    alias_obj->email = *alias;
-    aliases.push_back(std::move(alias_obj));
   }
   for (auto& observer : observers_) {
     observer->OnAliasesUpdated(mojo::Clone(aliases));
