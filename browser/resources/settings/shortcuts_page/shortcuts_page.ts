@@ -28,4 +28,4 @@ class ShortcutsPage extends HTMLElement {
   }
 }
 
-customElements.define('settings-shortcuts-page', ShortcutsPage)
+customElements.define('settings-brave-shortcuts-page', ShortcutsPage)
