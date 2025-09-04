@@ -14,6 +14,8 @@ brave_components_permissions_sources = [
   "//brave/components/permissions/contexts/brave_localhost_permission_context.h",
   "//brave/components/permissions/contexts/brave_open_ai_chat_permission_context.cc",
   "//brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h",
+  "//brave/components/permissions/contexts/brave_puppeteer_permission_context.cc",
+  "//brave/components/permissions/contexts/brave_puppeteer_permission_context.h",
   "//brave/components/permissions/contexts/brave_wallet_permission_context.cc",
   "//brave/components/permissions/contexts/brave_wallet_permission_context.h",
   "//brave/components/permissions/permission_expiration_key.cc",

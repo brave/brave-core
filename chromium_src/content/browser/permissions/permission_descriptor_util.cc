@@ -50,6 +50,9 @@
   case blink::PermissionType::BRAVE_CARDANO:                                  \
     return CreatePermissionDescriptor(                                        \
         blink::mojom::PermissionName::BRAVE_CARDANO);                         \
+  case blink::PermissionType::BRAVE_PUPPETEER:                               \
+    return CreatePermissionDescriptor(                                        \
+        blink::mojom::PermissionName::BRAVE_PUPPETEER);                       \
   case blink::PermissionType::NUM
 
 #include <content/browser/permissions/permission_descriptor_util.cc>
