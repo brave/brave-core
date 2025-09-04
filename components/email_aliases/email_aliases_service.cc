@@ -497,7 +497,7 @@ void EmailAliasesService::OnRefreshAliasesResponse(
   }
   auto parsed = base::JSONReader::Read(*response_body);
   if (parsed && parsed->is_dict() && parsed->GetDict().contains("message")) {
-    auto error_message = parsed->GetDict().FindString("message");
+    auto* error_message = parsed->GetDict().FindString("message");
     if (error_message) {
       LOG(ERROR) << "Email Aliases service error: " << *error_message;
       return;
