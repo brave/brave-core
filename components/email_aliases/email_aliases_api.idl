@@ -56,8 +56,6 @@ dictionary GenerateAliasResponse {
 dictionary UpdateAliasRequest {
   // Alias email address to create/update
   DOMString alias;
-  // Optional user note
-  DOMString? note;
   // e.g., "active"
   DOMString status;
 };

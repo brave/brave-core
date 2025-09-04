@@ -72,13 +72,13 @@ constexpr int kMaxResponseLength = 32768;
 base::expected<base::Value::Dict, std::string> ParseResponseDictOrError(
     const std::optional<std::string>& response_body) {
   if (!response_body) {
-    return base::unexpected(
-        l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_RESPONSE_BODY));
+    return base::unexpected(l10n_util::GetStringUTF8(
+        IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY));
   }
   auto dict_opt = base::JSONReader::ReadDict(*response_body);
   if (!dict_opt) {
     return base::unexpected(l10n_util::GetStringUTF8(
-        IDS_EMAIL_ALIASES_ERROR_INVALID_RESPONSE_BODY));
+        IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY));
   }
   if (auto err = ErrorResponse::FromValue(*dict_opt)) {
     LOG(ERROR) << "Email Aliases service error: " << err->error;
@@ -346,9 +346,6 @@ void EmailAliasesService::UpdateAlias(const std::string& alias_email,
   UpdateAliasRequest request;
   request.alias = alias_email;
   request.status = "active";
-  if (note) {
-    request.note = *note;
-  }
   auto body_value = request.ToValue();
   ApiFetch(email_aliases_service_base_url_, net::HttpRequestHeaders::kPutMethod,
            body_value,
@@ -436,16 +433,18 @@ void EmailAliasesService::OnGenerateAliasResponse(
   if (auto ok = GenerateAliasResponse::FromValue(parsed.value())) {
     if (ok->message == "created" && !ok->alias.empty()) {
       std::move(user_callback).Run(base::ok(ok->alias));
-      RefreshAliases();
       return;
     }
   }
-  std::move(user_callback).Run(base::unexpected("Alias not available."));
+  std::move(user_callback)
+      .Run(base::unexpected(l10n_util::GetStringUTF8(
+          IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE)));
 }
 
 void EmailAliasesService::OnUpdateAliasResponse(
     UpdateAliasCallback user_callback,
     std::optional<std::string> response_body) {
+  RefreshAliases();
   auto parsed = ParseResponseDictOrError(response_body);
   if (!parsed.has_value()) {
     std::move(user_callback).Run(base::unexpected(parsed.error()));
@@ -458,12 +457,12 @@ void EmailAliasesService::OnUpdateAliasResponse(
     }
   }
   std::move(user_callback).Run(base::ok(std::monostate{}));
-  RefreshAliases();
 }
 
 void EmailAliasesService::OnDeleteAliasResponse(
     DeleteAliasCallback user_callback,
     std::optional<std::string> response_body) {
+  RefreshAliases();
   auto parsed = ParseResponseDictOrError(response_body);
   if (!parsed.has_value()) {
     std::move(user_callback).Run(base::unexpected(parsed.error()));
@@ -476,7 +475,6 @@ void EmailAliasesService::OnDeleteAliasResponse(
     }
   }
   std::move(user_callback).Run(base::ok(std::monostate{}));
-  RefreshAliases();
 }
 
 void EmailAliasesService::RefreshAliases() {
