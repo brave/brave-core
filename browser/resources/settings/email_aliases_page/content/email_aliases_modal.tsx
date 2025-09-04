@@ -223,7 +223,9 @@ export const EmailAliasModal = (
     setGenerateAliasResult({ aliasEmail: '', errorMessage: undefined})
     try {
       // We have to do a cast because the mojom generated code produces the
-      // wrong type. TODO: fix this.
+      // wrong type in its JSDoc.
+      // TODO(https://github.com/brave/brave-browser/issues/48960): fix the
+      // JSDoc generation issue so that this cast is not needed.
       const proposedEmail =
         (await emailAliasesService.generateAlias()) as unknown as string
       setGenerateAliasResult({ aliasEmail: proposedEmail,
