@@ -15,13 +15,12 @@
 #include "base/task/thread_pool.h"
 #include "components/services/unzip/in_process_unzipper.h"  // nogncheck
 #include "components/services/unzip/public/cpp/unzip.h"
+#include "ios/chrome/browser/shared/model/utils/rust_unzipper.h"
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
 #include "net/base/apple/url_conversions.h"
 
 @implementation BraveUnzip
-+ (NSString*)jszipScriptPath {
-  NSBundle* bundle = [NSBundle bundleForClass:self];
-  return [bundle pathForResource:@"jszip" ofType:@"js"];
-}
 
 + (void)unzip:(NSString*)zipFile
     toDirectory:(NSString*)directory
@@ -49,6 +48,18 @@
                                output_directory, completion));
           },
           file_to_unzip, output_directory, completion));
+}
+
++ (void)unzipData:(NSData*)data
+       completion:(void (^)(NSArray<NSData*>* _Nullable unzippedFiles,
+                            NSError* _Nullable error))completion {
+  // Needs to be posted from a runner that can handle PostTaskAndReplyWithResult
+  web::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(&UnzipData, data,
+                                base::BindOnce(^(UnzipResultData results) {
+                                  completion(results.unzipped_files,
+                                             results.error);
+                                })));
 }
 
 @end
