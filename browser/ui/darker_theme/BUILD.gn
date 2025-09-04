@@ -12,3 +12,18 @@ source_set("darker_theme") {
 
   deps = [ "//base" ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "darker_theme_unittest.cc" ]
+
+  deps = [
+    ":darker_theme",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}
