@@ -209,7 +209,6 @@ export const earningsHeaderText = styled.div`
 `
 
 export const earningsInfo = styled.span`
-  display: none;
   position: relative;
 
   .icon {
