@@ -503,7 +503,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if defined(TOOLKIT_VIEWS)
   bookmarks::prefs::RegisterProfilePrefs(registry);
-#endif
+  if (base::FeatureList::IsEnabled(darker_theme::features::kBraveDarkerTheme)) {
+    registry->RegisterBooleanPref(darker_theme::prefs::kBraveDarkerMode, false);
+  }
+#endif  // defined(TOOLKIT_VIEWS)
 
   brave_ads::RegisterProfilePrefs(registry);
   brave_rewards::RegisterProfilePrefs(registry);
@@ -517,12 +520,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(ENABLE_CONTAINERS)
   containers::RegisterProfilePrefs(registry);
 #endif
-
-#if defined(TOOLKIT_VIEWS)
-  if (base::FeatureList::IsEnabled(darker_theme::features::kBraveDarkerTheme)) {
-    registry->RegisterBooleanPref(darker_theme::prefs::kBraveDarkerMode, false);
-  }
-#endif  // defined(TOOLKIT_VIEWS)
 
   OverrideDefaultPrefValues(registry);
 }

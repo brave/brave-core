@@ -492,7 +492,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   })
 #else
 #define BRAVE_DARKER_THEME_FEATURE_ENTRIES
-#endif
+#endif  // defined(TOOLKIT_VIEWS)
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 #define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                      \
@@ -505,7 +505,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   })
 #else
 #define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY
-#endif  // defined(TOOLKIT_VIEWS)
+#endif
 
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES                                          \
   EXPAND_FEATURE_ENTRIES(                                                      \
