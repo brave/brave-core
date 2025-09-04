@@ -7,6 +7,8 @@
 
 #include "base/files/file_util.h"
 #include "base/path_service.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/android/android_browser_test.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -29,7 +31,10 @@ constexpr char kReplaceCallCount[] = "window.getReplaceCallCount()";
 class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
  public:
   AndroidYouTubeScriptInjectorBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    scoped_feature_list_.InitAndEnableFeature(
+        preferences::features::kBravePictureInPictureForYouTubeVideos);
+  }
 
   ~AndroidYouTubeScriptInjectorBrowserTest() override = default;
 
@@ -119,6 +124,7 @@ class AndroidYouTubeScriptInjectorBrowserTest : public PlatformBrowserTest {
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 // TESTS
