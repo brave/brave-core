@@ -27,8 +27,8 @@ using blink::Member;
 using blink::MimeClassInfo;
 using blink::PluginData;
 using blink::PluginInfo;
+using blink::String;
 using blink::StringBuilder;
-using WTF::String;
 
 namespace brave {
 
