@@ -555,6 +555,14 @@ export function createModel(): AppModel {
         })
       })
       await pageHandler.clearRewardsNotification(id)
+    },
+
+    async recordOfferClick() {
+      await pageHandler.recordOfferClick()
+    },
+
+    async recordOfferView() {
+      await pageHandler.recordOfferView()
     }
   }
 }
