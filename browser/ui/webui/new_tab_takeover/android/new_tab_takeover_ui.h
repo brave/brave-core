@@ -20,7 +20,6 @@
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
 class NTPSponsoredRichMediaAdEventHandler;
-class ViewCounterService;
 }  // namespace ntp_background_images
 
 // On desktop, we use a Web UI to display new tab pages. On Android, however,
@@ -35,7 +34,6 @@ class NewTabTakeoverUI : public ui::MojoWebUIController,
  public:
   NewTabTakeoverUI(
       content::WebUI* const web_ui,
-      ntp_background_images::ViewCounterService* view_counter_service,
       ntp_background_images::NTPBackgroundImagesService&
           ntp_background_images_service,
       std::unique_ptr<
@@ -63,9 +61,6 @@ class NewTabTakeoverUI : public ui::MojoWebUIController,
 
   mojo::Receiver<new_tab_takeover::mojom::NewTabTakeover>
       new_tab_takeover_receiver_{this};
-
-  const raw_ptr<ntp_background_images::ViewCounterService>
-      view_counter_service_;  // Not owned.
 
   const raw_ref<ntp_background_images::NTPBackgroundImagesService>
       ntp_background_images_service_;  // Not owned.

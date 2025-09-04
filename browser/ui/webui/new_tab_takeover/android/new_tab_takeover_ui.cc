@@ -18,7 +18,6 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
-#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "components/grit/brave_components_resources.h"
@@ -45,13 +44,11 @@ content::WebContents* GetActiveWebContents() {
 
 NewTabTakeoverUI::NewTabTakeoverUI(
     content::WebUI* const web_ui,
-    ntp_background_images::ViewCounterService* view_counter_service,
     ntp_background_images::NTPBackgroundImagesService&
         ntp_background_images_service,
     std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
         rich_media_ad_event_handler)
     : ui::MojoWebUIController(web_ui),
-      view_counter_service_(view_counter_service),
       ntp_background_images_service_(ntp_background_images_service),
       rich_media_ad_event_handler_(std::move(rich_media_ad_event_handler)) {
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
