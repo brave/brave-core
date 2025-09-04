@@ -122,6 +122,58 @@ export function AttachmentPageItem(props: { title: string, url: string, remove?:
     remove={props.remove} />
 }
 
+function AttachmentUploadItem({ file, index, remove }: {
+  file: Mojom.UploadedFile
+  index: number
+  remove?: (index: number) => void
+}) {
+  const isImage = file.type === Mojom.UploadedFileType.kImage ||
+                 file.type === Mojom.UploadedFileType.kScreenshot
+  const isPdf = file.type === Mojom.UploadedFileType.kPdf
+  const isFileFullPageScreenshot = isFullPageScreenshot(file)
+
+  const dataUrl = React.useMemo(() => {
+    if (!isImage) return null
+    const blob = new Blob([new Uint8Array(file.data)], {
+      type: 'image/*'
+    })
+    return URL.createObjectURL(blob)
+  }, [file, isImage])
+
+  const filesize = React.useMemo(() => {
+    return formatFileSize(Number(file.filesize))
+  }, [file.filesize])
+
+  if (isImage) {
+    return (
+      <AttachmentItem
+        icon={
+          <img
+            className={styles.image}
+            src={dataUrl!}
+          />
+        }
+        title={isFileFullPageScreenshot
+          ? getLocale(S.CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE)
+          : file.filename}
+        subtitle={filesize}
+        remove={remove ? () => remove(index) : undefined}
+      />
+    )
+  } else if (isPdf) {
+    return (
+      <AttachmentItem
+        icon={<Icon name='file' />}
+        title={file.filename}
+        subtitle={filesize}
+        remove={remove ? () => remove(index) : undefined}
+      />
+    )
+  }
+
+  return null
+}
+
 export function AttachmentUploadItems(props: {
   uploadedFiles: Mojom.UploadedFile[]
   remove?: (index: number) => void
@@ -140,55 +192,14 @@ export function AttachmentUploadItems(props: {
           // Find the original index in the unfiltered array
           const originalIndex = props.uploadedFiles.indexOf(file)
 
-          const isImage = file.type === Mojom.UploadedFileType.kImage ||
-                         file.type === Mojom.UploadedFileType.kScreenshot
-          const isPdf = file.type === Mojom.UploadedFileType.kPdf
-          const isFileFullPageScreenshot = isFullPageScreenshot(file)
-
-          if (isImage) {
-
-          const dataUrl = React.useMemo(() => {
-            const blob = new Blob([new Uint8Array(file.data)], {
-              type: 'image/*'
-            })
-            return URL.createObjectURL(blob)
-          }, [file])
-
-          const filesize = React.useMemo(() => {
-            return formatFileSize(Number(file.filesize))
-          }, [file.filesize])
-
-            return (
-              <AttachmentItem
-                key={`${file.filename}-${originalIndex}`}
-                icon={
-                  <img
-                    className={styles.image}
-                    src={dataUrl}
-                  />
-                }
-                title={isFileFullPageScreenshot ? getLocale(S.CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE) : file.filename}
-                subtitle={filesize}
-                remove={props.remove ? () => props.remove?.(originalIndex) : undefined}
-              />
-            )
-          } else if (isPdf) {
-            const filesize = React.useMemo(() => {
-              return formatFileSize(Number(file.filesize))
-            }, [file.filesize])
-
-            return (
-              <AttachmentItem
-                key={`${file.filename}-${originalIndex}`}
-                icon={<Icon name='file' />}
-                title={file.filename}
-                subtitle={filesize}
-                remove={props.remove ? () => props.remove!(originalIndex) : undefined}
-              />
-            )
-          }
-
-          return null
+          return (
+            <AttachmentUploadItem
+              key={`${file.filename}-${originalIndex}`}
+              file={file}
+              index={originalIndex}
+              remove={props.remove}
+            />
+          )
         })}
     </>
   )
