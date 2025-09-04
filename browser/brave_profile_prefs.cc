@@ -13,7 +13,6 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
-#include "brave/browser/ui/color/pref_names.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -120,7 +119,8 @@
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-#include "brave/browser/ui/color/features.h"
+#include "brave/browser/ui/darker_theme/features.h"
+#include "brave/browser/ui/darker_theme/pref_names.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #endif
 
@@ -519,8 +519,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-  if (base::FeatureList::IsEnabled(color::features::kBraveDarkerTheme)) {
-    registry->RegisterBooleanPref(color::prefs::kBraveDarkerMode, false);
+  if (base::FeatureList::IsEnabled(darker_theme::features::kBraveDarkerTheme)) {
+    registry->RegisterBooleanPref(darker_theme::prefs::kBraveDarkerMode, false);
   }
 #endif  // defined(TOOLKIT_VIEWS)
 

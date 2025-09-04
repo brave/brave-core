@@ -105,7 +105,7 @@
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-#include "brave/browser/ui/color/features.h"
+#include "brave/browser/ui/darker_theme/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -482,13 +482,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-#define BRAVE_DARKER_THEME_FEATURE_ENTRIES                    \
-  EXPAND_FEATURE_ENTRIES({                                    \
-      "brave-darker-theme",                                   \
-      "Brave Darker Theme",                                   \
-      "Enables the Brave Darker theme",                       \
-      kOsWin | kOsMac | kOsLinux,                             \
-      FEATURE_VALUE_TYPE(color::features::kBraveDarkerTheme), \
+#define BRAVE_DARKER_THEME_FEATURE_ENTRIES                           \
+  EXPAND_FEATURE_ENTRIES({                                           \
+      "brave-darker-theme",                                          \
+      "Brave Darker Theme",                                          \
+      "Enables the Brave Darker theme",                              \
+      kOsWin | kOsMac | kOsLinux,                                    \
+      FEATURE_VALUE_TYPE(darker_theme::features::kBraveDarkerTheme), \
   })
 #else
 #define BRAVE_DARKER_THEME_FEATURE_ENTRIES

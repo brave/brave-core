@@ -3,16 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-source_set("color") {
-  sources = [
-    "features.cc",
-    "features.h",
-    "pref_names.h",
-  ]
-
-  deps = [ "//base" ]
-}
-
 source_set("unit_tests") {
   testonly = true
 
