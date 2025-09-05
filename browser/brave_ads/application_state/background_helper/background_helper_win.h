@@ -8,9 +8,9 @@
 
 #include <memory>
 
+#include "base/callback_list.h"
 #include "base/win/windows_types.h"
 #include "brave/components/brave_ads/browser/application_state/background_helper.h"
-#include "ui/gfx/win/singleton_hwnd_observer.h"
 
 namespace brave_ads {
 
@@ -32,7 +32,7 @@ class BackgroundHelperWin final : public BackgroundHelper {
   // BackgroundHelper:
   bool IsForeground() const override;
 
-  std::unique_ptr<gfx::SingletonHwndObserver> singleton_hwnd_observer_;
+  base::CallbackListSubscription hwnd_subscription_;
 };
 
 }  // namespace brave_ads
