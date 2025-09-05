@@ -6,7 +6,7 @@
 import("//build/config/ui.gni")
 
 declare_args() {
-  enable_playlist = toolkit_views || is_android
+  enable_playlist = toolkit_views || is_android || is_ios
 }
 
 declare_args() {

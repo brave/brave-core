@@ -19,5 +19,6 @@ include_rules = [
   "+brave/components/ntp_background_images/common",
   "+brave/components/omnibox/browser",
   "+brave/components/p3a",
+  "+brave/components/playlist/core/common",
   "+brave/components/skus/browser",
 ]

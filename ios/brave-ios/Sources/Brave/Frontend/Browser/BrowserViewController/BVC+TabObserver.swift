@@ -33,8 +33,6 @@ extension BrowserViewController: TabObserver {
       BraveSearchScriptHandler(profile: profile, rewards: rewards),
       ResourceDownloadScriptHandler(),
       DownloadContentScriptHandler(browserController: self),
-      PlaylistScriptHandler(tab: tab),
-      PlaylistFolderSharingScriptHandler(),
       AdsMediaReportingScriptHandler(rewards: rewards),
       ReadyStateScriptHandler(),
       DeAmpScriptHandler(),
@@ -50,6 +48,13 @@ extension BrowserViewController: TabObserver {
 
     if let contentBlocker = tab.contentBlocker {
       injectedScripts.append(contentBlocker)
+    }
+
+    if profileController.profile.prefs.isPlaylistAvailable {
+      injectedScripts.append(contentsOf: [
+        PlaylistScriptHandler(tab: tab),
+        PlaylistFolderSharingScriptHandler(),
+      ])
     }
 
     if profileController.profile.prefs.isBraveTalkAvailable {

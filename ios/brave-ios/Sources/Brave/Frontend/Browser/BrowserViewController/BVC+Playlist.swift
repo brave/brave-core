@@ -279,6 +279,9 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
 
   func openPlaylist(tab: (any TabState)?, item: PlaylistInfo?, folderSharingPageUrl: String? = nil)
   {
+    if !profileController.profile.prefs.isPlaylistAvailable {
+      return
+    }
     if let item, let tab {
       PlaylistScriptHandler.getCurrentTime(tab: tab, nodeTag: item.tagId) {
         [weak self] currentTime in

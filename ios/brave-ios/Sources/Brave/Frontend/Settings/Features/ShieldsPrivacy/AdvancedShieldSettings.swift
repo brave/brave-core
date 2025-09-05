@@ -246,11 +246,16 @@ import os
       )
     }
 
-    clearableSettings += [
-      ClearableSetting(id: .playlistCache, clearable: PlayListCacheClearable(), isEnabled: false),
-      ClearableSetting(id: .playlistData, clearable: PlayListDataClearable(), isEnabled: false),
-      ClearableSetting(id: .recentSearches, clearable: RecentSearchClearable(), isEnabled: true),
-    ]
+    if braveCore.profile.prefs.isPlaylistAvailable {
+      clearableSettings += [
+        ClearableSetting(id: .playlistCache, clearable: PlayListCacheClearable(), isEnabled: false),
+        ClearableSetting(id: .playlistData, clearable: PlayListDataClearable(), isEnabled: false),
+      ]
+    }
+
+    clearableSettings.append(
+      ClearableSetting(id: .recentSearches, clearable: RecentSearchClearable(), isEnabled: true)
+    )
 
     let savedToggles = Preferences.Privacy.clearPrivateDataToggles.value
 
