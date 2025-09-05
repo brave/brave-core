@@ -81,8 +81,8 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   private typealias TokenBalanceCache = [String: [String: Double]]
   /// Cache of balances of each asset for each account. [account.id: [token.id: balance]]
   private var balancesForAccountsCache: TokenBalanceCache = [:]
-  /// Cache of prices of assets. The key(s) are the `BraveWallet.BlockchainToken.assetRatioId` lowercased.
-  private var pricesForTokensCache: [String: String] = [:]
+  /// Cache of prices of assets.
+  private var pricesForTokensCache: [BraveWallet.AssetPrice] = []
   /// Cache of metadata for NFTs. The key(s) is the token's `id`.
   private var metadataCache: [String: BraveWallet.NftMetadata] = [:]
 
@@ -347,27 +347,32 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
         let btcAssets = networkAssets.filter({ $0.network.coin == .btc }).flatMap(\.tokens)
         btcAssets.forEach { tokensIdsWithBalance.insert($0.id) }
       }
-      let assetRatioIdsForTokensWithBalance =
+      let tokensWithBalance =
         tokensIdsWithBalance
         .compactMap { tokenId in
-          userVisibleAssets[tokenId]?.assetRatioId
+          userVisibleAssets[tokenId]
         }
-      self.fetchTokenPrices(for: assetRatioIdsForTokensWithBalance)
+      self.fetchTokenPrices(for: tokensWithBalance)
     }
   }
 
-  /// Fetch the prices for the given `assetRatioIds`, store in cache and update `accountSections`.
-  func fetchTokenPrices(for assetRatioIds: [String]) {
-    guard !assetRatioIds.isEmpty else { return }
+  /// Fetch the prices for the given `AssetPriceRequest` list, store in cache and update `accountSections`.
+  func fetchTokenPrices(for tokens: [BraveWallet.BlockchainToken]) {
+    guard !tokens.isEmpty else { return }
     Task { @MainActor in
       self.isLoadingPrices = true
       defer { self.isLoadingPrices = false }
-      let prices: [String: String] = await assetRatioService.fetchPrices(
-        for: assetRatioIds,
-        toAssets: [currencyFormatter.currencyCode],
-        timeframe: .oneDay
+      let prices: [BraveWallet.AssetPrice] = await assetRatioService.fetchPrices(
+        for: tokens.map {
+          BraveWallet.AssetPriceRequest(
+            coinType: $0.coin,
+            chainId: $0.chainId,
+            address: $0.contractAddress.isEmpty ? nil : $0.contractAddress
+          )
+        },
+        vsCurrency: currencyFormatter.currencyCode
       )
-      self.pricesForTokensCache.merge(with: prices)
+      self.pricesForTokensCache.update(with: prices)
       self.updateAccountSections()
     }
   }
@@ -394,7 +399,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     balancesCache: TokenBalanceCache,
     btcBalancesCache: [String: [BTCBalanceType: Double]],
     balancesFetched: Bool,
-    pricesCache: [String: String],
+    pricesCache: [BraveWallet.AssetPrice],
     metadataCache: [String: BraveWallet.NftMetadata],
     hideZeroBalances: Bool,
     query: String,
@@ -431,11 +436,11 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
               return nil
             }
             var price: String?
-            if let tokenPrice = pricesCache[token.assetRatioId.lowercased()],
+            if let tokenPrice = pricesCache.getTokenPrice(for: token),
               balance > 0
             {
               price = currencyFormatter.formatAsFiat(
-                (Double(tokenPrice) ?? 0) * balance
+                (Double(tokenPrice.price) ?? 0) * balance
               )
             }
             return AccountSection.TokenBalance(

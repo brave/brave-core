@@ -38,19 +38,27 @@ import XCTest
   let mockETHBalanceAccount1: Double = 0.896
   let mockETHPrice: String = "3059.99"
   lazy var mockETHAssetPrice: BraveWallet.AssetPrice = .init(
-    fromAsset: "eth",
-    toAsset: "usd",
+    coinType: .eth,
+    chainId: BraveWallet.MainnetChainId,
+    address: "",
     price: mockETHPrice,
-    assetTimeframeChange: "-57.23"
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "-57.23"
   )
   let mockUSDCBalanceAccount1: Double = 0.03
   let mockUSDCBalanceAccount2: Double = 0.01
   let mockUSDCPrice: String = "1"
   lazy var mockUSDCAssetPrice: BraveWallet.AssetPrice = .init(
-    fromAsset: BraveWallet.BlockchainToken.mockUSDCToken.assetRatioId,
-    toAsset: "usd",
+    coinType: .eth,
+    chainId: BraveWallet.MainnetChainId,
+    address: BraveWallet.BlockchainToken.mockUSDCToken.contractAddress,
     price: mockUSDCPrice,
-    assetTimeframeChange: "-57.23"
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "-57.23"
   )
   let ethMainnetTokens: [BraveWallet.BlockchainToken] = [
     BraveWallet.NetworkInfo.mockMainnet.nativeToken,
@@ -60,10 +68,14 @@ import XCTest
   let mockSOLBalance: Double = 3.8765
   let mockSOLPrice: String = "200"
   lazy var mockSOLAssetPrice: BraveWallet.AssetPrice = .init(
-    fromAsset: "sol",
-    toAsset: "usd",
+    coinType: .sol,
+    chainId: BraveWallet.SolanaMainnet,
+    address: "",
     price: mockSOLPrice,
-    assetTimeframeChange: "-57.23"
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "-57.23"
   )
   let solMainnetTokens: [BraveWallet.BlockchainToken] = [
     BraveWallet.NetworkInfo.mockSolana.nativeToken
@@ -73,10 +85,14 @@ import XCTest
   let mockFILTestnetBalanceAccount1: Double = 10
   let mockFILPrice: String = "4.00"
   lazy var mockFILAssetPrice: BraveWallet.AssetPrice = .init(
-    fromAsset: "fil",
-    toAsset: "usd",
+    coinType: .fil,
+    chainId: BraveWallet.FilecoinMainnet,
+    address: "",
     price: mockFILPrice,
-    assetTimeframeChange: "-57.23"
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "-57.23"
   )
   let filMainnetTokens: [BraveWallet.BlockchainToken] = [
     BraveWallet.NetworkInfo.mockFilecoinMainnet.nativeToken
@@ -89,19 +105,27 @@ import XCTest
   let mockBTCTestnetBalanceAccount1: Double = 0
   let mockBTCPrice: String = "65726.00"
   lazy var mockBTCAssetPrice: BraveWallet.AssetPrice = .init(
-    fromAsset: "btc",
-    toAsset: "usd",
+    coinType: .btc,
+    chainId: BraveWallet.BitcoinMainnet,
+    address: "",
     price: mockBTCPrice,
-    assetTimeframeChange: "-57.23"
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "-57.23"
   )
   let mockZECBalanceAccount1: Double = 0
   let mockZECTestnetBalanceAccount1: Double = 0
   let mockZECPrice: String = "36.46"
   lazy var mockZECAssetPrice: BraveWallet.AssetPrice = .init(
-    fromAsset: "zec",
-    toAsset: "usd",
+    coinType: .zec,
+    chainId: BraveWallet.ZCashMainnet,
+    address: "",
     price: mockZECPrice,
-    assetTimeframeChange: "4.32"
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "4.32"
   )
   let btcMainnetTokens: [BraveWallet.BlockchainToken] = [
     BraveWallet.NetworkInfo.mockBitcoinMainnet.nativeToken
@@ -255,7 +279,7 @@ import XCTest
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
-    assetRatioService._price = { priceIds, _, _, completion in
+    assetRatioService._price = { _, _, completion in
       completion(
         true,
         [
