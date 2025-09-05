@@ -637,7 +637,18 @@ extension ParsedTransaction {
       accountInfos: [.previewAccount],
       userAssets: [.previewToken, .previewDaiToken],
       allTokens: [],
-      assetRatios: [BraveWallet.BlockchainToken.previewToken.assetRatioId.lowercased(): 1],
+      assetRatios: [
+        BraveWallet.AssetPrice(
+          coinType: BraveWallet.BlockchainToken.previewToken.coin,
+          chainId: BraveWallet.BlockchainToken.previewToken.chainId,
+          address: BraveWallet.BlockchainToken.previewToken.contractAddress,
+          price: "1",
+          vsCurrency: "usd",
+          cacheStatus: .hit,
+          source: .coingecko,
+          percentageChange24h: "-57.23"
+        )
+      ],
       nftMetadata: [:],
       solEstimatedTxFee: nil,
       currencyFormatter: .usdCurrencyFormatter
