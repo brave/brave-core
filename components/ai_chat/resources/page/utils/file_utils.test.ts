@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { convertFileToUploadedFile, FileReadError, ImageProcessingError } from './file_utils'
+import { convertFileToUploadedFile, FileReadError, ImageProcessingError, UnsupportedFileTypeError } from './file_utils'
 import * as Mojom from '../../common/mojom'
 import getAPI from '../api'
 
@@ -19,7 +19,6 @@ jest.mock('$web-common/loadTimeData', () => ({
     getBoolean: jest.fn().mockReturnValue(false)
   }
 }))
-
 
 describe('convertFileToUploadedFile', () => {
   let mockHandler: any
@@ -97,7 +96,6 @@ describe('convertFileToUploadedFile', () => {
     return new File(['mock content'], name, { type, size: size })
   }
 
-
   describe('successful file processing', () => {
     it('converts image file successfully', async () => {
       const file = createMockFile('test.png', 'image/png', 1500)
@@ -159,6 +157,32 @@ describe('convertFileToUploadedFile', () => {
       const result = await convertFileToUploadedFile(file)
 
       expect(result).toEqual(mockProcessedFile)
+    })
+
+    it('converts PDF file successfully', async () => {
+      const file = createMockFile('test.pdf', 'application/pdf', 2000)
+      const mockArrayBuffer = new ArrayBuffer(8)
+      const expectedData = Array.from(new Uint8Array(mockArrayBuffer))
+
+      // Override readAsArrayBuffer to trigger success
+      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
+        process.nextTick(() => {
+          if (mockFileReader.onload) {
+            mockFileReader.onload({ target: { result: mockArrayBuffer } })
+          }
+        })
+      })
+
+      const result = await convertFileToUploadedFile(file)
+
+      expect(mockFileReader.readAsArrayBuffer).toHaveBeenCalledWith(file)
+      expect(mockHandler.processImageFile).not.toHaveBeenCalled()
+      expect(result).toEqual({
+        filename: 'test.pdf',
+        filesize: file.size, // Use actual file size
+        data: expectedData,
+        type: Mojom.UploadedFileType.kPdf
+      })
     })
 
     it('throws ImageProcessingError for empty files', async () => {
@@ -256,6 +280,30 @@ describe('convertFileToUploadedFile', () => {
       await expect(convertFileToUploadedFile(file)).rejects.toThrow(
         'Failed to process image file: Backend returned no result'
       )
+    })
+
+    it('throws UnsupportedFileTypeError for unknown file types', async () => {
+      const file = createMockFile('test.txt', 'text/plain')
+      const mockArrayBuffer = new ArrayBuffer(8)
+
+      // Override readAsArrayBuffer to trigger success
+      // (FileReader will work, but file type check will fail)
+      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
+        process.nextTick(() => {
+          if (mockFileReader.onload) {
+            mockFileReader.onload({ target: { result: mockArrayBuffer } })
+          }
+        })
+      })
+
+      await expect(convertFileToUploadedFile(file)).rejects.toThrow(
+        UnsupportedFileTypeError
+      )
+      await expect(convertFileToUploadedFile(file)).rejects.toThrow(
+        'Unsupported file type: text/plain. Only images and PDF files are ' +
+        'supported.'
+      )
+      expect(mockHandler.processImageFile).not.toHaveBeenCalled()
     })
 
   })
