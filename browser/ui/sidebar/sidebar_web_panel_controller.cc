@@ -32,7 +32,7 @@ BraveMultiContentsView* SidebarWebPanelController::GetMultiContentsView() {
       std::as_const(*this).GetMultiContentsView());
 }
 
-BraveMultiContentsView* SidebarWebPanelController::GetMultiContentsView()
+const BraveMultiContentsView* SidebarWebPanelController::GetMultiContentsView()
     const {
   return static_cast<BraveMultiContentsView*>(
       browser_view_->multi_contents_view());

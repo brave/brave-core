@@ -26,7 +26,7 @@ class SidebarWebPanelController {
 
  private:
   BraveMultiContentsView* GetMultiContentsView();
-  BraveMultiContentsView* GetMultiContentsView() const;
+  const BraveMultiContentsView* GetMultiContentsView() const;
 
   raw_ref<BrowserView> browser_view_;
 };
