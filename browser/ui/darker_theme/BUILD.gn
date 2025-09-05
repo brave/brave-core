@@ -13,6 +13,24 @@ source_set("darker_theme") {
   deps = [ "//base" ]
 }
 
+source_set("browser_tests") {
+  testonly = true
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "darker_theme_browsertest.cc" ]
+
+  deps = [
+    ":darker_theme",
+    "//base",
+    "//base/test:test_support",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 

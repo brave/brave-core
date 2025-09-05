@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/ui/color/features.h"
-#include "brave/browser/ui/color/pref_names.h"
+#include "brave/browser/ui/darker_theme/features.h"
+#include "brave/browser/ui/darker_theme/pref_names.h"
 #include "brave/browser/ui/views/frame/brave_browser_frame.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
@@ -20,7 +20,7 @@
 class DarkerThemeBrowserTest : public InProcessBrowserTest {
  public:
   DarkerThemeBrowserTest()
-      : scoped_feature_list_(color::features::kBraveDarkerTheme) {}
+      : scoped_feature_list_(darker_theme::features::kBraveDarkerTheme) {}
   ~DarkerThemeBrowserTest() override = default;
 
  private:
@@ -30,7 +30,7 @@ class DarkerThemeBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(DarkerThemeBrowserTest, EnableDarkerMode) {
   // By default, the darker theme should be off.
   ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-      color::prefs::kBraveDarkerMode));
+      darker_theme::prefs::kBraveDarkerMode));
 
   auto* browser_view = static_cast<BrowserView*>(browser()->window());
   auto* browser_frame = static_cast<BraveBrowserFrame*>(browser_view->frame());
@@ -46,14 +46,14 @@ IN_PROC_BROWSER_TEST_F(DarkerThemeBrowserTest, EnableDarkerMode) {
 
   auto* prefs = browser()->profile()->GetPrefs();
   // Enable the darker theme.
-  prefs->SetBoolean(color::prefs::kBraveDarkerMode, true);
+  prefs->SetBoolean(darker_theme::prefs::kBraveDarkerMode, true);
   color_provider_key = browser_frame->GetColorProviderKey();
   EXPECT_TRUE(color_provider_key.scheme_variant.has_value());
   EXPECT_EQ(*color_provider_key.scheme_variant,
             ui::ColorProviderKey::SchemeVariant::kDarker);
 
   // Disable the darker theme.
-  prefs->SetBoolean(color::prefs::kBraveDarkerMode, false);
+  prefs->SetBoolean(darker_theme::prefs::kBraveDarkerMode, false);
   color_provider_key = browser_frame->GetColorProviderKey();
   EXPECT_FALSE(color_provider_key.scheme_variant.has_value());
 }
