@@ -23,7 +23,7 @@ class BraveContentsViewUtil {
 
   // The border radius applied to main content areas.
 #if BUILDFLAG(IS_MAC)
-  static constexpr int kBorderRadius = 6;
+  static constexpr int kBorderRadius = 7;
 #else
   static constexpr int kBorderRadius = 4;
 #endif
