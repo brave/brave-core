@@ -10,7 +10,7 @@
 #include "brave/browser/ui/views/playlist/playlist_bubble_view.h"
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
-#include "brave/components/playlist/browser/pref_names.h"
+#include "brave/components/playlist/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
