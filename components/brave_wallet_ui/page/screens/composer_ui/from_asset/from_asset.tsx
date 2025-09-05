@@ -16,7 +16,7 @@ import {
 import { getLocale } from '../../../../../common/locale'
 import {
   computeFiatAmount,
-  getPriceIdForToken,
+  getPriceRequestForToken,
 } from '../../../../utils/pricing-utils'
 import Amount from '../../../../utils/amount'
 
@@ -122,16 +122,21 @@ export const FromAsset = (props: Props) => {
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
-  const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
+  const tokenPriceRequest = React.useMemo(() => {
+    return token ? getPriceRequestForToken(token) : undefined
+  }, [token])
+
+  const { data: spotPrices = [], isLoading: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(
-      token
+      tokenPriceRequest
+        && token
         && !token.isNft
         && !token.isErc721
         && !token.isErc1155
         && defaultFiatCurrency
         ? {
-            ids: [getPriceIdForToken(token)],
-            toCurrency: defaultFiatCurrency,
+            requests: [tokenPriceRequest],
+            vsCurrency: defaultFiatCurrency,
           }
         : skipToken,
       querySubscriptionOptions60s,
@@ -277,13 +282,13 @@ export const FromAsset = (props: Props) => {
     }
 
     return computeFiatAmount({
-      spotPriceRegistry,
+      spotPrices,
       value: new Amount(inputValue !== '' ? inputValue : '0')
         .multiplyByDecimals(token.decimals)
         .toHex(),
       token: token,
     }).formatAsFiat(defaultFiatCurrency)
-  }, [spotPriceRegistry, token, inputValue, defaultFiatCurrency])
+  }, [spotPrices, token, inputValue, defaultFiatCurrency])
 
   // render
   return (
