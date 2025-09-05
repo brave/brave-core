@@ -158,7 +158,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &features::kSCTAuditing,
       &features::kScrimForBrowserWindowModal,
-      &features::KScrimForTabModal,
+      &features::kScrimForTabModal,
       &features::kServiceWorkerAutoPreload,
       &features::kTabHoverCardImages,
 #if !BUILDFLAG(IS_ANDROID)
