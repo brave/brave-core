@@ -15,6 +15,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -164,6 +165,12 @@ void BraveToolbarView::Init() {
   if (display_mode_ != DisplayMode::NORMAL) {
     brave_initialized_ = true;
     return;
+  }
+
+  if (split_tabs_) {
+    split_tabs_->SetMenuModel(std::make_unique<BraveSplitTabMenuModel>(
+        browser()->tab_strip_model(),
+        SplitTabMenuModel::MenuSource::kToolbarButton));
   }
 
   Profile* profile = browser()->profile();
