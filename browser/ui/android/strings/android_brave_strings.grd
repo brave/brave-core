@@ -1076,6 +1076,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CUSTOMIZE_PAGE_ACTIONS_SECTION_SUMMARY" desc="Description for page actions customization settings">
         The following items will only be visible on the menu when supported by the current open webpage.
       </message>
+        <message name="IDS_WEBAPP" desc="WebApp placeholder used in menu item customization preferences">
+        WebApp
+      </message>
       <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
         ≈ <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD
       </message>
