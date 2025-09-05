@@ -116,6 +116,8 @@
 -ComposeEnablingTest.*
 -ComposePopupAutofillDriverTest.*
 -DigitalIdentityLowRiskOriginsTest.*
+-LoginStateCheckerTest.CachesOnlyLastPageContent
+-LoginStateCheckerTest.CachesPageContentIfRequestInFlight
 -LoginStateCheckerTest.ExceedsMaxLoginChecksAndFails
 -LoginStateCheckerTest.UserIsLoggedInOnFirstAttempt
 -LoginStateCheckerTest.UserIsLoggedInOnSecondAttempt
