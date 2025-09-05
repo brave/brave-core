@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#define TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
+
 #include "content/browser/renderer_host/render_frame_host_impl.h"
 
 #include "base/check.h"
@@ -35,6 +37,8 @@
 #undef BRAVE_RENDER_FRAME_HOST_IMPL_COMPUTE_NONCE
 #undef BRAVE_RENDER_FRAME_HOST_IMPL_IS_THIRD_PARTY_STORAGE_PARTITIONING_ENABLED_CHECK_IF_CAN_BE_DISABLED
 #undef BRAVE_RENDER_FRAME_HOST_IMPL_COMPUTE_ISOLATION_INFO_INTERNAL
+
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
 
 namespace content {
 

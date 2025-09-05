@@ -3,11 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#define TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
+
 #include "chrome/browser/ui/ui_features.h"
 
 #define HasTabSearchToolbarButton HasTabSearchToolbarButton_ChromiumImpl
 #include <chrome/browser/ui/ui_features.cc>
 #undef HasTabSearchToolbarButton
+
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
 
 #include "base/feature_override.h"
 
