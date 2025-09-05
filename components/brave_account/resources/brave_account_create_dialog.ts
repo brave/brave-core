@@ -166,7 +166,7 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
     try {
       const blindedMessage = this.registration.start(this.password)
       const { encryptedVerificationToken, serializedResponse } =
-        await this.browserProxy.handler.registerInitialize(
+        await this.browserProxy.authentication.registerInitialize(
           this.email,
           blindedMessage,
         )
@@ -175,7 +175,7 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
         this.password,
         this.email,
       )
-      await this.browserProxy.handler.registerFinalize(
+      await this.browserProxy.authentication.registerFinalize(
         encryptedVerificationToken,
         serializedRecord,
       )

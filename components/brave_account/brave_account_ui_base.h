@@ -6,14 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_BASE_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_BASE_H_
 
-#include <memory>
 #include <utility>
 
 #include "base/check.h"
 #include "base/containers/span.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
-#include "brave/components/brave_account/brave_account_page_handler.h"
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
@@ -58,7 +56,7 @@ class BraveAccountUIBase {
     SetupWebUIDataSource(source);
   }
 
-  void BindInterface(mojo::PendingReceiver<brave_account::mojom::PageHandler>
+  void BindInterface(mojo::PendingReceiver<brave_account::mojom::Authentication>
                          pending_receiver) {
     auto* brave_account_service = BraveAccountServiceFactory::GetFor(profile_);
     DCHECK(brave_account_service)
@@ -69,8 +67,7 @@ class BraveAccountUIBase {
       return;
     }
 
-    page_handler_ = std::make_unique<BraveAccountPageHandler>(
-        brave_account_service, std::move(pending_receiver));
+    brave_account_service->BindInterface(std::move(pending_receiver));
   }
 
   void BindInterface(mojo::PendingReceiver<
@@ -183,7 +180,6 @@ class BraveAccountUIBase {
 
  private:
   const raw_ptr<Profile> profile_;
-  std::unique_ptr<BraveAccountPageHandler> page_handler_;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_BASE_H_

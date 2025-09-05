@@ -20,6 +20,8 @@
 #include "brave/components/brave_account/endpoints/password_init.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 
 class PrefService;
 
@@ -29,7 +31,7 @@ class SharedURLLoaderFactory;
 
 namespace brave_account {
 
-class BraveAccountService : public KeyedService {
+class BraveAccountService : public KeyedService, public mojom::Authentication {
  public:
   using CryptoFn = base::RepeatingCallback<std::string(const std::string&)>;
 
@@ -42,14 +44,18 @@ class BraveAccountService : public KeyedService {
 
   ~BraveAccountService() override;
 
+  void BindInterface(
+      mojo::PendingReceiver<mojom::Authentication> pending_receiver);
+
   void RegisterInitialize(
       const std::string& email,
       const std::string& blinded_message,
-      mojom::PageHandler::RegisterInitializeCallback callback);
+      mojom::Authentication::RegisterInitializeCallback callback) override;
 
-  void RegisterFinalize(const std::string& encrypted_verification_token,
-                        const std::string& serialized_record,
-                        mojom::PageHandler::RegisterFinalizeCallback callback);
+  void RegisterFinalize(
+      const std::string& encrypted_verification_token,
+      const std::string& serialized_record,
+      mojom::Authentication::RegisterFinalizeCallback callback) override;
 
  private:
   template <typename TestCase>
@@ -63,13 +69,13 @@ class BraveAccountService : public KeyedService {
       CryptoFn decrypt_fn);
 
   void OnRegisterInitialize(
-      mojom::PageHandler::RegisterInitializeCallback callback,
+      mojom::Authentication::RegisterInitializeCallback callback,
       int response_code,
       base::expected<std::optional<endpoints::PasswordInit::Response>,
                      std::optional<endpoints::PasswordInit::Error>> reply);
 
   void OnRegisterFinalize(
-      mojom::PageHandler::RegisterFinalizeCallback callback,
+      mojom::Authentication::RegisterFinalizeCallback callback,
       const std::string& encrypted_verification_token,
       int response_code,
       base::expected<std::optional<endpoints::PasswordFinalize::Response>,
@@ -79,6 +85,7 @@ class BraveAccountService : public KeyedService {
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   CryptoFn encrypt_fn_;
   CryptoFn decrypt_fn_;
+  mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
   base::WeakPtrFactory<BraveAccountService> weak_factory_{this};
 };
 

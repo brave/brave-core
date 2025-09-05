@@ -27,7 +27,7 @@ enum RegisterFailureReason {
   kFinalizeUnexpected,
 };
 
-interface PageHandler {
+interface Authentication {
   RegisterInitialize(string email, string blindedMessage)
     => result<RegisterInitializeResult, RegisterFailureReason>;
 

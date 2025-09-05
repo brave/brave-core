@@ -101,10 +101,15 @@ BraveAccountService::BraveAccountService(
 
 BraveAccountService::~BraveAccountService() = default;
 
+void BraveAccountService::BindInterface(
+    mojo::PendingReceiver<mojom::Authentication> pending_receiver) {
+  authentication_receivers_.Add(this, std::move(pending_receiver));
+}
+
 void BraveAccountService::RegisterInitialize(
     const std::string& email,
     const std::string& blinded_message,
-    mojom::PageHandler::RegisterInitializeCallback callback) {
+    mojom::Authentication::RegisterInitializeCallback callback) {
   DCHECK(!email.empty());
   DCHECK(!blinded_message.empty());
 
@@ -126,7 +131,7 @@ void BraveAccountService::RegisterInitialize(
 void BraveAccountService::RegisterFinalize(
     const std::string& encrypted_verification_token,
     const std::string& serialized_record,
-    mojom::PageHandler::RegisterFinalizeCallback callback) {
+    mojom::Authentication::RegisterFinalizeCallback callback) {
   DCHECK(!encrypted_verification_token.empty());
   DCHECK(!serialized_record.empty());
 
@@ -164,7 +169,7 @@ BraveAccountService::BraveAccountService(
       decrypt_fn_(std::move(decrypt_fn)) {}
 
 void BraveAccountService::OnRegisterInitialize(
-    mojom::PageHandler::RegisterInitializeCallback callback,
+    mojom::Authentication::RegisterInitializeCallback callback,
     int response_code,
     base::expected<std::optional<PasswordInit::Response>,
                    std::optional<PasswordInit::Error>> reply) {
@@ -220,7 +225,7 @@ void BraveAccountService::OnRegisterInitialize(
 }
 
 void BraveAccountService::OnRegisterFinalize(
-    mojom::PageHandler::RegisterFinalizeCallback callback,
+    mojom::Authentication::RegisterFinalizeCallback callback,
     const std::string& encrypted_verification_token,
     int response_code,
     base::expected<std::optional<PasswordFinalize::Response>,

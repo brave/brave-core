@@ -658,7 +658,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveAccountUI>()
-        .Add<brave_account::mojom::PageHandler>()
+        .Add<brave_account::mojom::Authentication>()
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
 }
