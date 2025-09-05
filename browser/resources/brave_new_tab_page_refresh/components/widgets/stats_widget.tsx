@@ -4,9 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 
-import { useNewTabState } from '../../context/new_tab_context'
+import { useNewTabState, useNewTabActions } from '../../context/new_tab_context'
 import { getString } from '../../lib/strings'
+import { WidgetMenu } from './widget_menu'
 
 import { style } from './stats_widget.style'
 
@@ -18,6 +20,7 @@ const adsBlockedFormatter = new Intl.NumberFormat(undefined, {
 export function StatsWidget() {
   const showStats = useNewTabState((s) => s.showShieldsStats)
   const stats = useNewTabState((s) => s.shieldsStats)
+  const actions = useNewTabActions()
 
   function renderUnits(parts: Intl.NumberFormatPart[]) {
     return parts.map(({ type, value }) => {
@@ -34,6 +37,11 @@ export function StatsWidget() {
 
   return (
     <div data-css-scope={style.scope}>
+      <WidgetMenu>
+        <leo-menu-item onClick={() => actions.setShowShieldsStats(false)}>
+          <Icon name='eye-off' /> {getString('hideStatsWidgetLabel')}
+        </leo-menu-item>
+      </WidgetMenu>
       <div className='title'>
         {getString('statsTitle')}
       </div>
