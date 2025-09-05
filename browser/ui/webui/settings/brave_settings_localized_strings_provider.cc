@@ -653,6 +653,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_DELETE_ALL_MEMORIES_CONFIRMATION},
       {"braveLeoAssistantDeleteAllMemoriesConfirmationTitle",
        IDS_SETTINGS_LEO_ASSISTANT_DELETE_ALL_MEMORIES_CONFIRMATION_TITLE},
+      {"braveLeoAssistantNoSearchResultsFound",
+       IDS_SETTINGS_LEO_ASSISTANT_NO_SEARCH_RESULTS_FOUND},
+      {"braveLeoAssistantClearSearch", IDS_SETTINGS_LEO_ASSISTANT_CLEAR_SEARCH},
+      {"braveLeoAssistantSearchMemoriesPlaceholder",
+       IDS_SETTINGS_LEO_ASSISTANT_SEARCH_MEMORIES_PLACEHOLDER},
 
       // Survey Panelist Page
       {"surveyPanelist", IDS_SETTINGS_SURVEY_PANELIST},
