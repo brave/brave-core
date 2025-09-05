@@ -67,25 +67,27 @@ constexpr auto kEip1559ForKnownChains =
 
 constexpr auto kChainSubdomains =
     base::MakeFixedFlatMap<std::string_view, std::string_view>(
-        {
-            {mojom::kMainnetChainId, "ethereum-mainnet"},
-            {mojom::kSepoliaChainId, "ethereum-sepolia"},
-            {mojom::kPolygonMainnetChainId, "polygon-mainnet"},
-            {mojom::kOptimismMainnetChainId, "optimism-mainnet"},
-            {mojom::kBaseMainnetChainId, "base-mainnet"},
-            {mojom::kAvalancheMainnetChainId, "avalanche-mainnet"},
-            {mojom::kBnbSmartChainMainnetChainId, "bsc-mainnet"},
+        {{mojom::kMainnetChainId, "ethereum-mainnet"},
+         {mojom::kSepoliaChainId, "ethereum-sepolia"},
+         {mojom::kPolygonMainnetChainId, "polygon-mainnet"},
+         {mojom::kOptimismMainnetChainId, "optimism-mainnet"},
+         {mojom::kBaseMainnetChainId, "base-mainnet"},
+         {mojom::kAvalancheMainnetChainId, "avalanche-mainnet"},
+         {mojom::kBnbSmartChainMainnetChainId, "bsc-mainnet"},
 
-            // SVM chains.
-            {mojom::kSolanaMainnet, "solana-mainnet"},
+         // SVM chains.
+         {mojom::kSolanaMainnet, "solana-mainnet"},
 
-            // Bitcoin chains.
-            {mojom::kBitcoinMainnet, "bitcoin-mainnet"},
+         // Bitcoin chains.
+         {mojom::kBitcoinMainnet, "bitcoin-mainnet"},
 
-            // Cardano chains.
-            {mojom::kCardanoMainnet, "cardano-mainnet"},
-            {mojom::kCardanoTestnet, "cardano-preprod"},
-        },
+         // Cardano chains.
+         {mojom::kCardanoMainnet, "cardano-mainnet"},
+         {mojom::kCardanoTestnet, "cardano-preprod"},
+
+         // Polkadot chains.
+         {mojom::kPolkadotMainnet, "polkadot-mainnet"},
+         {mojom::kPolkadotTestnet, "polkadot-testnet"}},
         CaseInsensitiveCompare());
 
 constexpr char kGanacheLocalhostURL[] = "http://localhost:7545/";
@@ -585,6 +587,26 @@ GURL CardanoTestnetRpcUrl() {
   return GetURLForKnownChainId(mojom::kCardanoTestnet).value();
 }
 
+GURL PolkadotMainnetRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kPolkadotMainnetRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GetURLForKnownChainId(mojom::kPolkadotMainnet).value();
+}
+
+GURL PolkadotTestnetRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kPolkadotTestnetRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GetURLForKnownChainId(mojom::kPolkadotTestnet).value();
+}
+
 const mojom::NetworkInfo* GetBitcoinMainnet() {
   const auto coin = mojom::CoinType::BTC;
   const auto* chain_id = mojom::kBitcoinMainnet;
@@ -699,6 +721,61 @@ const mojom::NetworkInfo* GetCardanoTestnet() {
   return network_info.get();
 }
 
+const mojom::NetworkInfo* GetPolkadotMainnet() {
+  const auto coin = mojom::CoinType::DOT;
+  const auto* chain_id = mojom::kPolkadotMainnet;
+
+  /*
+  struct NetworkInfo {
+    string chain_id;
+    string chain_name;
+    array<string> block_explorer_urls;
+    array<string> icon_urls;
+    int32 active_rpc_endpoint_index;
+    array<url.mojom.Url> rpc_endpoints;
+    string symbol;
+    string symbol_name;
+    int32 decimals;
+    CoinType coin;
+    array<KeyringId> supported_keyrings;
+  };
+
+   */
+
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Polkadot Mainnet",
+       {"https://polkadot.statescan.io/"},
+       {},
+       0,
+       {PolkadotMainnetRpcUrl()},
+       "DOT",
+       "Polkadot",
+       10,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id)});
+  return network_info.get();
+}
+
+const mojom::NetworkInfo* GetPolkadotTestnet() {
+  const auto coin = mojom::CoinType::DOT;
+  const auto* chain_id = mojom::kPolkadotTestnet;
+
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Polkadot Testnet",
+       {},
+       {},
+       0,
+       {PolkadotTestnetRpcUrl()},
+       "DOT",
+       "Polkadot",
+       10,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id)});
+  return network_info.get();
+}
+
 const std::vector<const mojom::NetworkInfo*>& GetKnownBitcoinNetworks() {
   static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
       // clang-format off
@@ -729,6 +806,16 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownCardanoNetworks() {
   return *networks.get();
 }
 
+const std::vector<const mojom::NetworkInfo*>& GetKnownPolkadotNetworks() {
+  static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
+      // clang-format off
+      GetPolkadotMainnet(),
+      GetPolkadotTestnet(),
+      // clang-format on
+  });
+  return *networks.get();
+}
+
 std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
   switch (coin) {
     case mojom::CoinType::BTC:
@@ -743,6 +830,8 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
       return kSolanaPrefKey;
     case mojom::CoinType::ADA:
       return kCardanoPrefKey;
+    case mojom::CoinType::DOT:
+      return kPolkadotPrefKey;
   }
   NOTREACHED() << coin;
 }
@@ -883,6 +972,15 @@ mojom::NetworkInfoPtr NetworkManager::GetKnownChain(std::string_view chain_id,
     return nullptr;
   }
 
+  if (coin == mojom::CoinType::DOT) {
+    for (const auto* network : GetKnownPolkadotNetworks()) {
+      if (base::EqualsCaseInsensitiveASCII(network->chain_id, chain_id)) {
+        return network->Clone();
+      }
+    }
+    return nullptr;
+  }
+
   NOTREACHED() << coin;
 }
 
@@ -973,6 +1071,12 @@ bool NetworkManager::KnownChainExists(std::string_view chain_id,
     }
   } else if (coin == mojom::CoinType::ADA) {
     for (const auto* network : GetKnownCardanoNetworks()) {
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
+        return true;
+      }
+    }
+  } else if (coin == mojom::CoinType::DOT) {
+    for (const auto* network : GetKnownPolkadotNetworks()) {
       if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
         return true;
       }
@@ -1088,6 +1192,13 @@ std::vector<mojom::NetworkInfoPtr> NetworkManager::GetAllKnownChains(
 
   if (coin == mojom::CoinType::ADA) {
     for (const auto* network : GetKnownCardanoNetworks()) {
+      result.push_back(network->Clone());
+    }
+    return result;
+  }
+
+  if (coin == mojom::CoinType::DOT) {
+    for (const auto* network : GetKnownPolkadotNetworks()) {
       result.push_back(network->Clone());
     }
     return result;
@@ -1248,6 +1359,8 @@ std::string NetworkManager::GetCurrentChainId(
       return mojom::kZCashMainnet;
     case mojom::CoinType::ADA:
       return mojom::kCardanoMainnet;
+    case mojom::CoinType::DOT:
+      return mojom::kPolkadotMainnet;
   }
   NOTREACHED() << coin;
 }

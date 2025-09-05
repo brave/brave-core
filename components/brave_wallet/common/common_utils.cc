@@ -447,6 +447,11 @@ std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
       } else {
         return {mojom::KeyringId::kCardanoTestnet};
       }
+    case mojom::CoinType::DOT:
+      if (chain_id == mojom::kPolkadotMainnet) {
+        return {mojom::KeyringId::kPolkadotMainnet};
+      }
+      return {mojom::KeyringId::kPolkadotTestnet};
   }
   NOTREACHED();
 }

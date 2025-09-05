@@ -442,7 +442,7 @@ TEST(CommonUtils, GetEnabledCoins) {
     EXPECT_EQ(last_pos, coins.size());
   }
 
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 }
 
 TEST(CommonUtils, GetEnabledKeyrings) {
@@ -576,7 +576,7 @@ TEST(CommonUtils, GetSupportedKeyringsForNetwork) {
                                              "any non mainnet chain"),
               ElementsAreArray({mojom::KeyringId::kCardanoTestnet}));
 
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 
   static_assert(AllKeyringsTested<14>());
 }
@@ -653,7 +653,7 @@ TEST(CommonUtils, MakeAccountId) {
   EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::ADA,
                                     mojom::KeyringId::kCardanoMainnet,
                                     mojom::AccountKind::kDerived, "0xabc"));
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 
   static_assert(AllKeyringsTested<14>());
 }
@@ -725,7 +725,7 @@ TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
   EXPECT_TRUE(MakeIndexBasedAccountId(mojom::CoinType::BTC,
                                       mojom::KeyringId::kBitcoinHardwareTestnet,
                                       mojom::AccountKind::kHardware, 123));
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 
   static_assert(AllKeyringsTested<14>());
 }

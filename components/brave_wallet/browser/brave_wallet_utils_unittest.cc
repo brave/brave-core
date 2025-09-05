@@ -284,7 +284,7 @@ TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {
   EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::ZEC), "zcash");
   EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::ADA), "cardano");
 
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 
   EXPECT_NOTREACHED_DEATH(
       GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));

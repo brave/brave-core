@@ -231,7 +231,7 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
       EXPECT_EQ(network_value.FindInt("coin"), static_cast<int>(coin));
     }
 
-    static_assert(AllCoinsTested<6>());
+    static_assert(AllCoinsTested<7>());
   }
 
   {
@@ -279,7 +279,7 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
     EXPECT_THAT(value_network->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kCardanoTestnet}));
 
-    static_assert(AllCoinsTested<6>());
+    static_assert(AllCoinsTested<7>());
   }
 }
 

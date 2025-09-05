@@ -13,10 +13,13 @@
 
 namespace brave_wallet {
 
+class NetworkManager;
+
 // The main Polkadot-based interface that the front-end interacts with.
 class PolkadotWalletService : public mojom::PolkadotWalletService {
  public:
   explicit PolkadotWalletService(
+      NetworkManager& network_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
   ~PolkadotWalletService() override;
@@ -29,10 +32,12 @@ class PolkadotWalletService : public mojom::PolkadotWalletService {
 
   // Get the name of the chain currently pointed to by the current network
   // configuration.
-  void GetNetworkName(GetNetworkNameCallback callback) override;
+  void GetNetworkName(mojom::AccountIdPtr account_id,
+                      GetNetworkNameCallback callback) override;
 
  private:
-  void StartGetNetworkName(GetNetworkNameCallback callback);
+  void StartGetNetworkName(mojom::AccountIdPtr account_id,
+                           GetNetworkNameCallback callback);
   void OnGetnetworkName(GetNetworkNameCallback callback,
                         std::string const& str);
 

@@ -1598,6 +1598,10 @@ const string kZCashMainnet = "zcash_mainnet";
 
 const string kZCashTestnet = "zcash_testnet";
 
+const string kPolkadotMainnet = "polkadot_mainnet";
+
+const string kPolkadotTestnet = "polkadot_testnet";
+
 const string kArbitrumNovaChainId = "0xa4ba";
 
 const string kGnosisChainId = "0x64";
@@ -1721,6 +1725,7 @@ enum CoinType {
   FIL = 461,
   SOL = 501,
   ADA = 1815,
+  DOT = 354,
 };
 
 struct NetworkInfo {
@@ -2293,7 +2298,7 @@ interface ZCashWalletService {
 };
 
 interface PolkadotWalletService {
-  GetNetworkName() => (string network);
+  GetNetworkName(AccountId account_id) => (string network);
 };
 
 enum TransactionStatus {

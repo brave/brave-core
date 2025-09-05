@@ -67,7 +67,7 @@ TEST_F(NetworkManagerUnitTest, GetAllCustomChainsTest) {
     EXPECT_EQ(chain1, *network_manager()->GetAllCustomChains(coin)[0]);
     EXPECT_EQ(chain2, *network_manager()->GetAllCustomChains(coin)[1]);
   }
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 }
 
 TEST_F(NetworkManagerUnitTest, KnownChainExists) {
@@ -123,7 +123,12 @@ TEST_F(NetworkManagerUnitTest, KnownChainExists) {
   EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kCardanoTestnet,
                                                   mojom::CoinType::ADA));
 
-  static_assert(AllCoinsTested<6>());
+  EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kPolkadotMainnet,
+                                                  mojom::CoinType::DOT));
+  EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kPolkadotTestnet,
+                                                  mojom::CoinType::DOT));
+
+  static_assert(AllCoinsTested<7>());
 }
 
 TEST_F(NetworkManagerUnitTest, CustomChainExists) {
@@ -182,7 +187,14 @@ TEST_F(NetworkManagerUnitTest, CustomChainExists) {
   EXPECT_TRUE(network_manager()->CustomChainExists(mojom::kCardanoMainnet,
                                                    mojom::CoinType::ADA));
 
-  static_assert(AllCoinsTested<6>());
+  EXPECT_FALSE(network_manager()->CustomChainExists(mojom::kPolkadotMainnet,
+                                                    mojom::CoinType::DOT));
+  network_manager()->AddCustomNetwork(
+      *network_manager()->GetAllKnownChains(mojom::CoinType::DOT)[0]);
+  EXPECT_TRUE(network_manager()->CustomChainExists(mojom::kPolkadotMainnet,
+                                                   mojom::CoinType::DOT));
+
+  static_assert(AllCoinsTested<7>());
 }
 
 TEST_F(NetworkManagerUnitTest, CustomChainsExist) {
@@ -216,6 +228,7 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
       {
           features::kBraveWalletZCashFeature,
           features::kBraveWalletCardanoFeature,
+          features::kBraveWalletPolkadotFeature,
       },
       {});
 
@@ -353,625 +366,666 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
   EXPECT_THAT(cardano_chains[1]->supported_keyrings,
               ElementsAreArray({mojom::KeyringId::kCardanoTestnet}));
 
-  static_assert(AllCoinsTested<6>());
+  // Polkadot
+  auto polkadot_main_custom =
+      *network_manager()->GetAllKnownChains(mojom::CoinType::DOT)[0];
+  polkadot_main_custom.decimals = 123;
+  network_manager()->AddCustomNetwork(polkadot_main_custom);
+
+  auto polkadot_chains = get_all_chains_for_coin(mojom::CoinType::DOT);
+  ASSERT_EQ(polkadot_chains.size(), 2u);
+  EXPECT_EQ(polkadot_chains[0]->chain_id, mojom::kPolkadotMainnet);
+  EXPECT_EQ(polkadot_chains[0]->decimals, 123);
+  EXPECT_EQ(polkadot_chains[1]->chain_id, mojom::kPolkadotTestnet);
+  EXPECT_THAT(polkadot_chains[0]->supported_keyrings,
+              ElementsAreArray({mojom::KeyringId::kPolkadotMainnet}));
+  EXPECT_THAT(polkadot_chains[1]->supported_keyrings,
+              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet}));
+
+  static_assert(AllCoinsTested<7>());
 
   static_assert(AllKeyringsTested<14>());
 }
 
-TEST_F(NetworkManagerUnitTest, GetNetworkURLTest) {
-  mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
-  mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
-
-  network_manager()->AddCustomNetwork(chain1);
-  network_manager()->AddCustomNetwork(chain2);
-
-  for (const auto& chain :
-       NetworkManager::GetAllKnownChains(mojom::CoinType::ETH)) {
-    // Brave proxies should have infura key added to path.
-    GURL rpc_url(chain->rpc_endpoints.front());
-
-    EXPECT_EQ(rpc_url, network_manager()->GetNetworkURL(chain->chain_id,
-                                                        mojom::CoinType::ETH));
-  }
-  EXPECT_EQ(
-      chain1.rpc_endpoints.front(),
-      network_manager()->GetNetworkURL(chain1.chain_id, mojom::CoinType::ETH));
-  EXPECT_EQ(
-      chain2.rpc_endpoints.front(),
-      network_manager()->GetNetworkURL(chain2.chain_id, mojom::CoinType::ETH));
-
-  EXPECT_EQ(GURL("https://solana-mainnet.wallet.brave.com"),
-            network_manager()->GetNetworkURL(mojom::kSolanaMainnet,
-                                             mojom::CoinType::SOL));
-  auto custom_sol_network = network_manager()->GetKnownChain(
-      mojom::kSolanaMainnet, mojom::CoinType::SOL);
-  custom_sol_network->rpc_endpoints.emplace_back("https://test-sol.com");
-  custom_sol_network->active_rpc_endpoint_index = 1;
-  network_manager()->AddCustomNetwork(*custom_sol_network);
-
-  EXPECT_EQ(GURL("https://test-sol.com"),
-            network_manager()->GetNetworkURL(mojom::kSolanaMainnet,
-                                             mojom::CoinType::SOL));
-
-  EXPECT_EQ(GURL("https://api.node.glif.io/rpc/v0"),
-            network_manager()->GetNetworkURL(mojom::kFilecoinMainnet,
-                                             mojom::CoinType::FIL));
-  auto custom_fil_network = network_manager()->GetKnownChain(
-      mojom::kFilecoinMainnet, mojom::CoinType::FIL);
-  custom_fil_network->rpc_endpoints.emplace_back("https://test-fil.com");
-  custom_fil_network->active_rpc_endpoint_index = 1;
-  network_manager()->AddCustomNetwork(*custom_fil_network);
-
-  EXPECT_EQ(GURL("https://test-fil.com"),
-            network_manager()->GetNetworkURL(mojom::kFilecoinMainnet,
-                                             mojom::CoinType::FIL));
-
-  EXPECT_EQ(GURL("https://bitcoin-mainnet.wallet.brave.com/"),
-            network_manager()->GetNetworkURL(mojom::kBitcoinMainnet,
-                                             mojom::CoinType::BTC));
-  auto custom_btc_network = network_manager()->GetKnownChain(
-      mojom::kBitcoinMainnet, mojom::CoinType::BTC);
-  custom_btc_network->rpc_endpoints.emplace_back("https://test-btc.com");
-  custom_btc_network->active_rpc_endpoint_index = 1;
-  network_manager()->AddCustomNetwork(*custom_btc_network);
-
-  EXPECT_EQ(GURL("https://test-btc.com"),
-            network_manager()->GetNetworkURL(mojom::kBitcoinMainnet,
-                                             mojom::CoinType::BTC));
-
-  EXPECT_EQ(GURL("https://zcash.wallet.brave.com/"),
-            network_manager()->GetNetworkURL(mojom::kZCashMainnet,
-                                             mojom::CoinType::ZEC));
-  auto custom_zec_network = network_manager()->GetKnownChain(
-      mojom::kZCashMainnet, mojom::CoinType::ZEC);
-  custom_zec_network->rpc_endpoints.emplace_back("https://test-zec.com");
-  custom_zec_network->active_rpc_endpoint_index = 1;
-  network_manager()->AddCustomNetwork(*custom_zec_network);
-
-  EXPECT_EQ(GURL("https://test-zec.com"),
-            network_manager()->GetNetworkURL(mojom::kZCashMainnet,
-                                             mojom::CoinType::ZEC));
-
-  EXPECT_EQ(GURL("https://cardano-mainnet.wallet.brave.com/"),
-            network_manager()->GetNetworkURL(mojom::kCardanoMainnet,
-                                             mojom::CoinType::ADA));
-  auto custom_cardano_network = network_manager()->GetKnownChain(
-      mojom::kCardanoMainnet, mojom::CoinType::ADA);
-  custom_cardano_network->rpc_endpoints.emplace_back(
-      "https://test-cardano.com");
-  custom_cardano_network->active_rpc_endpoint_index = 1;
-  network_manager()->AddCustomNetwork(*custom_cardano_network);
-
-  EXPECT_EQ(GURL("https://test-cardano.com"),
-            network_manager()->GetNetworkURL(mojom::kCardanoMainnet,
-                                             mojom::CoinType::ADA));
-
-  static_assert(AllCoinsTested<6>());
-}
-
-TEST_F(NetworkManagerUnitTest, GetNetworkURLForKnownChains) {
-  // GetNetworkURL for these known chains should resolve to brave subdomain.
-  base::flat_set<std::string> known_chains = {
-      brave_wallet::mojom::kMainnetChainId,
-      brave_wallet::mojom::kBaseMainnetChainId,
-      brave_wallet::mojom::kPolygonMainnetChainId,
-      brave_wallet::mojom::kBnbSmartChainMainnetChainId,
-      brave_wallet::mojom::kOptimismMainnetChainId,
-      brave_wallet::mojom::kAvalancheMainnetChainId,
-      brave_wallet::mojom::kSepoliaChainId};
-
-  for (const auto& chain :
-       NetworkManager::GetAllKnownChains(mojom::CoinType::ETH)) {
-    auto network_url =
-        network_manager()->GetNetworkURL(chain->chain_id, mojom::CoinType::ETH);
-    EXPECT_EQ(network_url.host().ends_with(".brave.com"),
-              known_chains.contains(chain->chain_id));
-  }
-}
-
-TEST_F(NetworkManagerUnitTest, GetKnownChain) {
-  auto known_chains = NetworkManager::GetAllKnownChains(mojom::CoinType::ETH);
-  ASSERT_FALSE(known_chains.empty());
-  for (const auto& chain : known_chains) {
-    auto network =
-        network_manager()->GetKnownChain(chain->chain_id, mojom::CoinType::ETH);
-    EXPECT_EQ(network->chain_id, chain->chain_id);
-    EXPECT_EQ(network->chain_name, chain->chain_name);
-    EXPECT_TRUE(GetActiveEndpointUrl(*network).is_valid());
-    EXPECT_EQ(network->icon_urls, chain->icon_urls);
-    EXPECT_EQ(network->block_explorer_urls, chain->block_explorer_urls);
-    EXPECT_EQ(network->symbol, chain->symbol);
-    EXPECT_EQ(network->decimals, chain->decimals);
-    EXPECT_EQ(network->symbol_name, chain->symbol_name);
-  }
-}
-
-TEST_F(NetworkManagerUnitTest, GetCustomChain) {
-  EXPECT_FALSE(
-      network_manager()->GetCustomChain("chain_id", mojom::CoinType::ETH));
-
-  mojom::NetworkInfo chain = GetTestNetworkInfo1();
-  network_manager()->AddCustomNetwork(chain);
-
-  auto network =
-      network_manager()->GetCustomChain(chain.chain_id, mojom::CoinType::ETH);
-  ASSERT_TRUE(network);
-  EXPECT_EQ(*network, chain);
-
-  // Test that uppercase chain ID works too
-  network = network_manager()->GetCustomChain(
-      base::ToUpperASCII(chain.chain_id), mojom::CoinType::ETH);
-  ASSERT_TRUE(network);
-  EXPECT_EQ(*network, chain);
-}
-
-TEST_F(NetworkManagerUnitTest, GetChain) {
-  mojom::NetworkInfo chain1 = GetTestNetworkInfo1("0x5566");
-  mojom::NetworkInfo chain2 = GetTestNetworkInfo1("0x89");
-  network_manager()->AddCustomNetwork(chain1);
-  network_manager()->AddCustomNetwork(chain2);
-
-  EXPECT_FALSE(network_manager()->GetChain("", mojom::CoinType::ETH));
-
-  EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::ETH));
-  EXPECT_EQ(network_manager()->GetChain("0x5566", mojom::CoinType::ETH),
-            chain1.Clone());
-  EXPECT_EQ(network_manager()->GetChain("0x1", mojom::CoinType::ETH),
-            network_manager()->GetKnownChain("0x1", mojom::CoinType::ETH));
-  EXPECT_EQ(network_manager()->GetChain("0x539", mojom::CoinType::ETH),
-            network_manager()->GetKnownChain("0x539", mojom::CoinType::ETH));
-
-  EXPECT_EQ(*network_manager()->GetChain("0x89", mojom::CoinType::ETH), chain2);
-
-  // Solana
-  mojom::NetworkInfo sol_mainnet(
-      brave_wallet::mojom::kSolanaMainnet, "Solana Mainnet Beta",
-      {"https://explorer.solana.com/"}, {}, 0,
-      {GURL("https://solana-mainnet.wallet.brave.com")}, "SOL", "Solana", 9,
-      brave_wallet::mojom::CoinType::SOL, {mojom::KeyringId::kSolana});
-  EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::SOL));
-  EXPECT_EQ(network_manager()->GetChain("0x65", mojom::CoinType::SOL),
-            sol_mainnet.Clone());
-
-  // Filecoin
-  mojom::NetworkInfo fil_mainnet(
-      brave_wallet::mojom::kFilecoinMainnet, "Filecoin Mainnet",
-      {"https://filscan.io/tipset/message-detail"}, {}, 0,
-      {GURL("https://api.node.glif.io/rpc/v0")}, "FIL", "Filecoin", 18,
-      brave_wallet::mojom::CoinType::FIL, {mojom::KeyringId::kFilecoin});
-  EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::FIL));
-  EXPECT_EQ(network_manager()->GetChain("f", mojom::CoinType::FIL),
-            fil_mainnet.Clone());
-
-  // Bitcoin
-  mojom::NetworkInfo btc_mainnet(
-      mojom::kBitcoinMainnet, "Bitcoin Mainnet",
-      {"https://www.blockchain.com/explorer"}, {}, 0,
-      {GURL("https://bitcoin-mainnet.wallet.brave.com/")}, "BTC", "Bitcoin", 8,
-      mojom::CoinType::BTC,
-      {mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoinImport,
-       mojom::KeyringId::kBitcoinHardware});
-  EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::BTC));
-  EXPECT_EQ(
-      network_manager()->GetChain("bitcoin_mainnet", mojom::CoinType::BTC),
-      btc_mainnet.Clone());
-
-  // Zcash
-  mojom::NetworkInfo zec_mainnet(mojom::kZCashMainnet, "Zcash Mainnet",
-                                 {"https://3xpl.com/zcash/transaction"}, {}, 0,
-                                 {GURL("https://zcash.wallet.brave.com/")},
-                                 "ZEC", "Zcash", 8, mojom::CoinType::ZEC,
-                                 {mojom::KeyringId::kZCashMainnet});
-  EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::ZEC));
-  EXPECT_EQ(network_manager()->GetChain("zcash_mainnet", mojom::CoinType::ZEC),
-            zec_mainnet.Clone());
-
-  // Cardano
-  mojom::NetworkInfo cardano_mainnet(
-      mojom::kCardanoMainnet, "Cardano Mainnet", {"https://cexplorer.io"}, {},
-      0, {GURL("https://cardano-mainnet.wallet.brave.com/")}, "ADA", "Cardano",
-      6, mojom::CoinType::ADA, {mojom::KeyringId::kCardanoMainnet});
-  EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::ADA));
-  EXPECT_EQ(
-      network_manager()->GetChain("cardano_mainnet", mojom::CoinType::ADA),
-      cardano_mainnet.Clone());
-
-  static_assert(AllCoinsTested<6>());
-}
-
-TEST_F(NetworkManagerUnitTest, Eip1559Chain) {
-  auto dict = [&] {
-    return prefs()->GetDict(kBraveWalletEip1559CustomChains).Clone();
-  };
-
-  EXPECT_TRUE(dict().empty());
-
-  // Values for known chains.
-  std::map<std::string, bool> known_states = {
-      {mojom::kMainnetChainId, true},
-      {mojom::kPolygonMainnetChainId, true},
-      {mojom::kAvalancheMainnetChainId, true},
-      {mojom::kOptimismMainnetChainId, true},
-      {mojom::kSepoliaChainId, true},
-      {mojom::kFilecoinEthereumMainnetChainId, true},
-      {mojom::kFilecoinEthereumTestnetChainId, true},
-      {mojom::kBnbSmartChainMainnetChainId, false},
-      {mojom::kBaseMainnetChainId, true},
-      {mojom::kNeonEVMMainnetChainId, false},
-      {mojom::kLocalhostChainId, false}};
-  for (auto& [chain_id, value] : known_states) {
-    EXPECT_EQ(network_manager()->IsEip1559Chain(chain_id), value);
-  }
-
-  // Custom chain.
-  const std::string custom_chain_id = "0xa23123";
-  EXPECT_FALSE(network_manager()->IsEip1559Chain(custom_chain_id));
-
-  network_manager()->SetEip1559ForCustomChain(custom_chain_id, true);
-  EXPECT_TRUE(network_manager()->IsEip1559Chain(custom_chain_id));
-  EXPECT_EQ(*dict().FindBool(custom_chain_id), true);
-
-  network_manager()->SetEip1559ForCustomChain(
-      base::ToUpperASCII(custom_chain_id), false);
-  EXPECT_FALSE(
-      network_manager()->IsEip1559Chain(base::ToUpperASCII(custom_chain_id)));
-  EXPECT_EQ(*dict().FindBool(custom_chain_id), false);
-
-  network_manager()->SetEip1559ForCustomChain(custom_chain_id, std::nullopt);
-  EXPECT_FALSE(network_manager()->IsEip1559Chain(custom_chain_id));
-  EXPECT_EQ(dict().FindBool(custom_chain_id), std::nullopt);
-
-  // Custom chain overriding known one.
-  network_manager()->SetEip1559ForCustomChain(mojom::kPolygonMainnetChainId,
-                                              false);
-  EXPECT_FALSE(
-      network_manager()->IsEip1559Chain(mojom::kPolygonMainnetChainId));
-  EXPECT_EQ(*dict().FindBool(mojom::kPolygonMainnetChainId), false);
-
-  network_manager()->SetEip1559ForCustomChain(mojom::kPolygonMainnetChainId,
-                                              std::nullopt);
-  EXPECT_TRUE(network_manager()->IsEip1559Chain(mojom::kPolygonMainnetChainId));
-  EXPECT_EQ(dict().FindBool(mojom::kPolygonMainnetChainId), std::nullopt);
-}
-
-TEST_F(NetworkManagerUnitTest, CustomNetworkMatchesKnownNetwork) {
-  auto get_polygon_from_all = [&] {
-    for (const auto& chain : network_manager()->GetAllChains()) {
-      if (chain->coin == mojom::CoinType::ETH &&
-          chain->chain_id == mojom::kPolygonMainnetChainId) {
-        return chain.Clone();
-      }
-    }
-    return mojom::NetworkInfoPtr();
-  };
-
-  // Known network by default.
-  EXPECT_EQ(get_polygon_from_all()->chain_name, "Polygon Mainnet");
-  EXPECT_EQ(
-      network_manager()
-          ->GetNetworkURL(mojom::kPolygonMainnetChainId, mojom::CoinType::ETH)
-          .GetWithoutFilename(),
-      GURL("https://polygon-mainnet.wallet.brave.com"));
-
-  mojom::NetworkInfo chain1 =
-      GetTestNetworkInfo1(mojom::kPolygonMainnetChainId);
-
-  network_manager()->AddCustomNetwork(chain1);
-
-  // Custom network overrides known one.
-  EXPECT_EQ(get_polygon_from_all()->chain_name, "chain_name");
-  EXPECT_EQ(
-      network_manager()
-          ->GetNetworkURL(mojom::kPolygonMainnetChainId, mojom::CoinType::ETH)
-          .GetWithoutFilename(),
-      GURL("https://url1.com/"));
-
-  network_manager()->RemoveCustomNetwork(mojom::kPolygonMainnetChainId,
-                                         mojom::CoinType::ETH);
-
-  // Back to known when custom is removed.
-  EXPECT_EQ(get_polygon_from_all()->chain_name, "Polygon Mainnet");
-  EXPECT_EQ(
-      network_manager()
-          ->GetNetworkURL(mojom::kPolygonMainnetChainId, mojom::CoinType::ETH)
-          .GetWithoutFilename(),
-      GURL("https://polygon-mainnet.wallet.brave.com"));
-}
-
-TEST_F(NetworkManagerUnitTest, RemoveCustomNetwork) {
-  mojom::NetworkInfo chain = GetTestNetworkInfo1();
-
-  network_manager()->AddCustomNetwork(chain);
-  EXPECT_TRUE(network_manager()->CustomChainExists(chain.chain_id,
-                                                   mojom::CoinType::ETH));
-
-  network_manager()->RemoveCustomNetwork(chain.chain_id, mojom::CoinType::ETH);
-  EXPECT_FALSE(network_manager()->CustomChainExists(chain.chain_id,
-                                                    mojom::CoinType::ETH));
-
-  // Should not crash.
-  network_manager()->RemoveCustomNetwork("unknown network",
-                                         mojom::CoinType::ETH);
-
-  {
-    mojom::NetworkInfo chain_fil =
-        GetTestNetworkInfo1(mojom::kFilecoinMainnet, mojom::CoinType::FIL);
-    network_manager()->AddCustomNetwork(chain_fil);
-    ASSERT_EQ(
-        1u, network_manager()->GetAllCustomChains(mojom::CoinType::FIL).size());
-    network_manager()->RemoveCustomNetwork(mojom::kFilecoinMainnet,
-                                           mojom::CoinType::FIL);
-    ASSERT_EQ(
-        0u, network_manager()->GetAllCustomChains(mojom::CoinType::FIL).size());
-  }
-
-  {
-    mojom::NetworkInfo chain_sol =
-        GetTestNetworkInfo1(mojom::kSolanaMainnet, mojom::CoinType::SOL);
-    network_manager()->AddCustomNetwork(chain_sol);
-    ASSERT_EQ(
-        1u, network_manager()->GetAllCustomChains(mojom::CoinType::SOL).size());
-    network_manager()->RemoveCustomNetwork(mojom::kSolanaMainnet,
-                                           mojom::CoinType::SOL);
-    ASSERT_EQ(
-        0u, network_manager()->GetAllCustomChains(mojom::CoinType::SOL).size());
-  }
-
-  {
-    mojom::NetworkInfo chain_btc =
-        GetTestNetworkInfo1(mojom::kBitcoinMainnet, mojom::CoinType::BTC);
-    network_manager()->AddCustomNetwork(chain_btc);
-    ASSERT_EQ(
-        1u, network_manager()->GetAllCustomChains(mojom::CoinType::BTC).size());
-    network_manager()->RemoveCustomNetwork(mojom::kBitcoinMainnet,
-                                           mojom::CoinType::BTC);
-    ASSERT_EQ(
-        0u, network_manager()->GetAllCustomChains(mojom::CoinType::BTC).size());
-  }
-
-  {
-    mojom::NetworkInfo chain_zec =
-        GetTestNetworkInfo1(mojom::kZCashMainnet, mojom::CoinType::ZEC);
-    network_manager()->AddCustomNetwork(chain_zec);
-    ASSERT_EQ(
-        1u, network_manager()->GetAllCustomChains(mojom::CoinType::ZEC).size());
-    network_manager()->RemoveCustomNetwork(mojom::kZCashMainnet,
-                                           mojom::CoinType::ZEC);
-    ASSERT_EQ(
-        0u, network_manager()->GetAllCustomChains(mojom::CoinType::ZEC).size());
-  }
-
-  {
-    mojom::NetworkInfo chain_cardano =
-        GetTestNetworkInfo1(mojom::kCardanoMainnet, mojom::CoinType::ADA);
-    network_manager()->AddCustomNetwork(chain_cardano);
-    ASSERT_EQ(
-        1u, network_manager()->GetAllCustomChains(mojom::CoinType::ADA).size());
-    network_manager()->RemoveCustomNetwork(mojom::kCardanoMainnet,
-                                           mojom::CoinType::ADA);
-    ASSERT_EQ(
-        0u, network_manager()->GetAllCustomChains(mojom::CoinType::ADA).size());
-  }
-
-  static_assert(AllCoinsTested<6>());
-}
-
-TEST_F(NetworkManagerUnitTest, RemoveCustomNetworkRemovesEip1559) {
-  mojom::NetworkInfo chain = GetTestNetworkInfo1();
-
-  network_manager()->AddCustomNetwork(chain);
-
-  EXPECT_FALSE(network_manager()->IsEip1559Chain(chain.chain_id));
-  network_manager()->SetEip1559ForCustomChain(chain.chain_id, true);
-  EXPECT_TRUE(network_manager()->IsEip1559Chain(chain.chain_id));
-
-  network_manager()->RemoveCustomNetwork(chain.chain_id, mojom::CoinType::ETH);
-  EXPECT_FALSE(network_manager()->IsEip1559Chain(chain.chain_id));
-}
-
-TEST_F(NetworkManagerUnitTest, HiddenNetworks) {
-  EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::ETH),
-              ElementsAreArray<std::string>(
-                  {mojom::kSepoliaChainId, mojom::kLocalhostChainId,
-                   mojom::kFilecoinEthereumTestnetChainId}));
-  EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::FIL),
-              ElementsAreArray<std::string>(
-                  {mojom::kFilecoinTestnet, mojom::kLocalhostChainId}));
-  EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::SOL),
-              ElementsAreArray<std::string>({mojom::kSolanaDevnet,
-                                             mojom::kSolanaTestnet,
-                                             mojom::kLocalhostChainId}));
-  EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::BTC),
-              ElementsAreArray<std::string>({mojom::kBitcoinTestnet}));
-  EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::ZEC),
-              ElementsAreArray<std::string>({mojom::kZCashTestnet}));
-  EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::ADA),
-              ElementsAreArray<std::string>({mojom::kCardanoTestnet}));
-  static_assert(AllCoinsTested<6>());
-
-  for (auto coin : kAllCoins) {
-    for (auto& default_hidden : network_manager()->GetHiddenNetworks(coin)) {
-      network_manager()->RemoveHiddenNetwork(coin, default_hidden);
-    }
-
-    EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
-                ElementsAreArray<std::string>({}));
-
-    network_manager()->AddHiddenNetwork(coin, "0x123");
-    EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
-                ElementsAreArray({"0x123"}));
-    network_manager()->AddHiddenNetwork(coin, "0x123");
-    EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
-                ElementsAreArray({"0x123"}));
-
-    network_manager()->RemoveHiddenNetwork(coin, "0x555");
-    EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
-                ElementsAreArray({"0x123"}));
-
-    network_manager()->AddHiddenNetwork(coin, "0x7");
-    EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
-                ElementsAreArray({"0x123", "0x7"}));
-
-    network_manager()->RemoveHiddenNetwork(coin, "0x123");
-    EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
-                ElementsAreArray({"0x7"}));
-
-    network_manager()->RemoveHiddenNetwork(coin, "0x7");
-    EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
-                ElementsAreArray<std::string>({}));
-  }
-}
-
-TEST_F(NetworkManagerUnitTest, GetAndSetCurrentChainId) {
-  const base::flat_map<mojom::CoinType, std::string> default_chain_ids = {
-      {mojom::CoinType::ETH, mojom::kMainnetChainId},
-      {mojom::CoinType::SOL, mojom::kSolanaMainnet},
-      {mojom::CoinType::FIL, mojom::kFilecoinMainnet},
-  };
-  const base::flat_map<mojom::CoinType, std::string> new_default_chain_ids = {
-      {mojom::CoinType::ETH, mojom::kSepoliaChainId},
-      {mojom::CoinType::SOL, mojom::kSolanaTestnet},
-      {mojom::CoinType::FIL, mojom::kFilecoinTestnet},
-  };
-
-  static_assert(AllCoinsTested<6>());
-
-  for (const auto coin_type : kAllCoins) {
-    // TODO(apaymyshev): make this test working for BTC which has no localhost
-    if (coin_type == mojom::CoinType::BTC ||
-        coin_type == mojom::CoinType::ZEC ||
-        coin_type == mojom::CoinType::ADA) {
-      continue;
-    }
-
-    // default value
-    EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
-              default_chain_ids.at(coin_type));
-
-    // fallback to default
-    EXPECT_EQ(network_manager()->GetCurrentChainId(
-                  coin_type, url::Origin::Create(GURL("https://a.com"))),
-              default_chain_ids.at(coin_type));
-    EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, url::Origin()),
-              default_chain_ids.at(coin_type));
-    EXPECT_EQ(network_manager()->GetCurrentChainId(
-                  coin_type, url::Origin::Create(GURL("file:///etc/passwd"))),
-              default_chain_ids.at(coin_type));
-
-    // unknown chain_id
-    EXPECT_FALSE(network_manager()->SetCurrentChainId(
-        coin_type, url::Origin::Create(GURL("https://a.com")), "0x5566"));
-    EXPECT_EQ(network_manager()->GetCurrentChainId(
-                  coin_type, url::Origin::Create(GURL("https://a.com"))),
-              default_chain_ids.at(coin_type));
-    EXPECT_FALSE(network_manager()->SetCurrentChainId(coin_type, std::nullopt,
-                                                      "0x5566"));
-    EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
-              default_chain_ids.at(coin_type));
-
-    EXPECT_TRUE(network_manager()->SetCurrentChainId(
-        coin_type, url::Origin::Create(GURL("https://a.com")),
-        mojom::kLocalhostChainId));
-    EXPECT_EQ(network_manager()->GetCurrentChainId(
-                  coin_type, url::Origin::Create(GURL("https://a.com"))),
-              mojom::kLocalhostChainId);
-    // other origin still use default
-    EXPECT_EQ(network_manager()->GetCurrentChainId(
-                  coin_type, url::Origin::Create(GURL("https://b.com"))),
-              default_chain_ids.at(coin_type));
-
-    // opaque cannot change the default
-    EXPECT_FALSE(network_manager()->SetCurrentChainId(
-        coin_type, url::Origin(), mojom::kLocalhostChainId));
-    EXPECT_FALSE(network_manager()->SetCurrentChainId(
-        coin_type, url::Origin::Create(GURL("about:blank")),
-        mojom::kLocalhostChainId));
-    EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
-              default_chain_ids.at(coin_type));
-
-    // now we change the default
-    EXPECT_TRUE(network_manager()->SetCurrentChainId(
-        coin_type, std::nullopt, new_default_chain_ids.at(coin_type)));
-    EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
-              new_default_chain_ids.at(coin_type));
-    // should not affect per origin pref
-    EXPECT_EQ(network_manager()->GetCurrentChainId(
-                  coin_type, url::Origin::Create(GURL("https://a.com"))),
-              mojom::kLocalhostChainId);
-
-    // non http/https scheme will change the default
-    EXPECT_TRUE(network_manager()->SetCurrentChainId(
-        coin_type, url::Origin::Create(GURL("file:///etc/passwd")),
-        default_chain_ids.at(coin_type)));
-    EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
-              default_chain_ids.at(coin_type));
-    EXPECT_TRUE(network_manager()->SetCurrentChainId(
-        coin_type, url::Origin::Create(GURL("chrome://wallet")),
-        new_default_chain_ids.at(coin_type)));
-    EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
-              new_default_chain_ids.at(coin_type));
-  }
-}
-
-TEST_F(NetworkManagerUnitTest, GetCurrentChainIdFallback) {
-  mojom::NetworkInfo chain = GetTestNetworkInfo1();
-  auto some_origin = url::Origin::Create(GURL("https://a.com"));
-
-  network_manager()->AddCustomNetwork(chain);
-  network_manager()->SetCurrentChainId(mojom::CoinType::ETH, std::nullopt,
-                                       chain.chain_id);
-  EXPECT_EQ(
-      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, std::nullopt),
-      chain.chain_id);
-  EXPECT_EQ(
-      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, some_origin),
-      chain.chain_id);
-
-  network_manager()->RemoveCustomNetwork(chain.chain_id, mojom::CoinType::ETH);
-  EXPECT_EQ(
-      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, std::nullopt),
-      mojom::kMainnetChainId);
-  EXPECT_EQ(
-      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, some_origin),
-      mojom::kMainnetChainId);
-
-  chain.chain_id = "another_id";
-  network_manager()->AddCustomNetwork(chain);
-  network_manager()->SetCurrentChainId(mojom::CoinType::ETH, some_origin,
-                                       chain.chain_id);
-  EXPECT_EQ(
-      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, std::nullopt),
-      mojom::kMainnetChainId);
-  EXPECT_EQ(
-      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, some_origin),
-      chain.chain_id);
-
-  network_manager()->RemoveCustomNetwork(chain.chain_id, mojom::CoinType::ETH);
-  EXPECT_EQ(
-      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, std::nullopt),
-      mojom::kMainnetChainId);
-  EXPECT_EQ(
-      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, some_origin),
-      mojom::kMainnetChainId);
-}
-
-TEST_F(NetworkManagerUnitTest, GetUnstoppableDomainsRpcUrl) {
-  EXPECT_EQ(
-      GURL("https://ethereum-mainnet.wallet.brave.com"),
-      NetworkManager::GetUnstoppableDomainsRpcUrl(mojom::kMainnetChainId));
-  EXPECT_EQ(GURL("https://polygon-mainnet.wallet.brave.com"),
-            NetworkManager::GetUnstoppableDomainsRpcUrl(
-                mojom::kPolygonMainnetChainId));
-}
-
-TEST_F(NetworkManagerUnitTest, GetEnsRpcUrl) {
-  EXPECT_EQ(GURL("https://ethereum-mainnet.wallet.brave.com"),
-            NetworkManager::GetEnsRpcUrl());
-}
-
-TEST_F(NetworkManagerUnitTest, GetSnsRpcUrl) {
-  EXPECT_EQ(GURL("https://solana-mainnet.wallet.brave.com"),
-            NetworkManager::GetSnsRpcUrl());
-}
+// TEST_F(NetworkManagerUnitTest, GetNetworkURLTest) {
+//   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
+//   mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
+
+//   network_manager()->AddCustomNetwork(chain1);
+//   network_manager()->AddCustomNetwork(chain2);
+
+//   for (const auto& chain :
+//        NetworkManager::GetAllKnownChains(mojom::CoinType::ETH)) {
+//     // Brave proxies should have infura key added to path.
+//     GURL rpc_url(chain->rpc_endpoints.front());
+
+//     EXPECT_EQ(rpc_url, network_manager()->GetNetworkURL(chain->chain_id,
+//                                                         mojom::CoinType::ETH));
+//   }
+//   EXPECT_EQ(
+//       chain1.rpc_endpoints.front(),
+//       network_manager()->GetNetworkURL(chain1.chain_id,
+//       mojom::CoinType::ETH));
+//   EXPECT_EQ(
+//       chain2.rpc_endpoints.front(),
+//       network_manager()->GetNetworkURL(chain2.chain_id,
+//       mojom::CoinType::ETH));
+
+//   EXPECT_EQ(GURL("https://solana-mainnet.wallet.brave.com"),
+//             network_manager()->GetNetworkURL(mojom::kSolanaMainnet,
+//                                              mojom::CoinType::SOL));
+//   auto custom_sol_network = network_manager()->GetKnownChain(
+//       mojom::kSolanaMainnet, mojom::CoinType::SOL);
+//   custom_sol_network->rpc_endpoints.emplace_back("https://test-sol.com");
+//   custom_sol_network->active_rpc_endpoint_index = 1;
+//   network_manager()->AddCustomNetwork(*custom_sol_network);
+
+//   EXPECT_EQ(GURL("https://test-sol.com"),
+//             network_manager()->GetNetworkURL(mojom::kSolanaMainnet,
+//                                              mojom::CoinType::SOL));
+
+//   EXPECT_EQ(GURL("https://api.node.glif.io/rpc/v0"),
+//             network_manager()->GetNetworkURL(mojom::kFilecoinMainnet,
+//                                              mojom::CoinType::FIL));
+//   auto custom_fil_network = network_manager()->GetKnownChain(
+//       mojom::kFilecoinMainnet, mojom::CoinType::FIL);
+//   custom_fil_network->rpc_endpoints.emplace_back("https://test-fil.com");
+//   custom_fil_network->active_rpc_endpoint_index = 1;
+//   network_manager()->AddCustomNetwork(*custom_fil_network);
+
+//   EXPECT_EQ(GURL("https://test-fil.com"),
+//             network_manager()->GetNetworkURL(mojom::kFilecoinMainnet,
+//                                              mojom::CoinType::FIL));
+
+//   EXPECT_EQ(GURL("https://bitcoin-mainnet.wallet.brave.com/"),
+//             network_manager()->GetNetworkURL(mojom::kBitcoinMainnet,
+//                                              mojom::CoinType::BTC));
+//   auto custom_btc_network = network_manager()->GetKnownChain(
+//       mojom::kBitcoinMainnet, mojom::CoinType::BTC);
+//   custom_btc_network->rpc_endpoints.emplace_back("https://test-btc.com");
+//   custom_btc_network->active_rpc_endpoint_index = 1;
+//   network_manager()->AddCustomNetwork(*custom_btc_network);
+
+//   EXPECT_EQ(GURL("https://test-btc.com"),
+//             network_manager()->GetNetworkURL(mojom::kBitcoinMainnet,
+//                                              mojom::CoinType::BTC));
+
+//   EXPECT_EQ(GURL("https://zcash.wallet.brave.com/"),
+//             network_manager()->GetNetworkURL(mojom::kZCashMainnet,
+//                                              mojom::CoinType::ZEC));
+//   auto custom_zec_network = network_manager()->GetKnownChain(
+//       mojom::kZCashMainnet, mojom::CoinType::ZEC);
+//   custom_zec_network->rpc_endpoints.emplace_back("https://test-zec.com");
+//   custom_zec_network->active_rpc_endpoint_index = 1;
+//   network_manager()->AddCustomNetwork(*custom_zec_network);
+
+//   EXPECT_EQ(GURL("https://test-zec.com"),
+//             network_manager()->GetNetworkURL(mojom::kZCashMainnet,
+//                                              mojom::CoinType::ZEC));
+
+//   EXPECT_EQ(GURL("https://cardano-mainnet.wallet.brave.com/"),
+//             network_manager()->GetNetworkURL(mojom::kCardanoMainnet,
+//                                              mojom::CoinType::ADA));
+//   auto custom_cardano_network = network_manager()->GetKnownChain(
+//       mojom::kCardanoMainnet, mojom::CoinType::ADA);
+//   custom_cardano_network->rpc_endpoints.emplace_back(
+//       "https://test-cardano.com");
+//   custom_cardano_network->active_rpc_endpoint_index = 1;
+//   network_manager()->AddCustomNetwork(*custom_cardano_network);
+
+//   EXPECT_EQ(GURL("https://test-cardano.com"),
+//             network_manager()->GetNetworkURL(mojom::kCardanoMainnet,
+//                                              mojom::CoinType::ADA));
+
+//   static_assert(AllCoinsTested<6>());
+// }
+
+// TEST_F(NetworkManagerUnitTest, GetNetworkURLForKnownChains) {
+//   // GetNetworkURL for these known chains should resolve to brave subdomain.
+//   base::flat_set<std::string> known_chains = {
+//       brave_wallet::mojom::kMainnetChainId,
+//       brave_wallet::mojom::kBaseMainnetChainId,
+//       brave_wallet::mojom::kPolygonMainnetChainId,
+//       brave_wallet::mojom::kBnbSmartChainMainnetChainId,
+//       brave_wallet::mojom::kOptimismMainnetChainId,
+//       brave_wallet::mojom::kAvalancheMainnetChainId,
+//       brave_wallet::mojom::kSepoliaChainId};
+
+//   for (const auto& chain :
+//        NetworkManager::GetAllKnownChains(mojom::CoinType::ETH)) {
+//     auto network_url =
+//         network_manager()->GetNetworkURL(chain->chain_id,
+//         mojom::CoinType::ETH);
+//     EXPECT_EQ(network_url.host().ends_with(".brave.com"),
+//               known_chains.contains(chain->chain_id));
+//   }
+// }
+
+// TEST_F(NetworkManagerUnitTest, GetKnownChain) {
+//   auto known_chains =
+//   NetworkManager::GetAllKnownChains(mojom::CoinType::ETH);
+//   ASSERT_FALSE(known_chains.empty());
+//   for (const auto& chain : known_chains) {
+//     auto network =
+//         network_manager()->GetKnownChain(chain->chain_id,
+//         mojom::CoinType::ETH);
+//     EXPECT_EQ(network->chain_id, chain->chain_id);
+//     EXPECT_EQ(network->chain_name, chain->chain_name);
+//     EXPECT_TRUE(GetActiveEndpointUrl(*network).is_valid());
+//     EXPECT_EQ(network->icon_urls, chain->icon_urls);
+//     EXPECT_EQ(network->block_explorer_urls, chain->block_explorer_urls);
+//     EXPECT_EQ(network->symbol, chain->symbol);
+//     EXPECT_EQ(network->decimals, chain->decimals);
+//     EXPECT_EQ(network->symbol_name, chain->symbol_name);
+//   }
+// }
+
+// TEST_F(NetworkManagerUnitTest, GetCustomChain) {
+//   EXPECT_FALSE(
+//       network_manager()->GetCustomChain("chain_id", mojom::CoinType::ETH));
+
+//   mojom::NetworkInfo chain = GetTestNetworkInfo1();
+//   network_manager()->AddCustomNetwork(chain);
+
+//   auto network =
+//       network_manager()->GetCustomChain(chain.chain_id,
+//       mojom::CoinType::ETH);
+//   ASSERT_TRUE(network);
+//   EXPECT_EQ(*network, chain);
+
+//   // Test that uppercase chain ID works too
+//   network = network_manager()->GetCustomChain(
+//       base::ToUpperASCII(chain.chain_id), mojom::CoinType::ETH);
+//   ASSERT_TRUE(network);
+//   EXPECT_EQ(*network, chain);
+// }
+
+// TEST_F(NetworkManagerUnitTest, GetChain) {
+//   mojom::NetworkInfo chain1 = GetTestNetworkInfo1("0x5566");
+//   mojom::NetworkInfo chain2 = GetTestNetworkInfo1("0x89");
+//   network_manager()->AddCustomNetwork(chain1);
+//   network_manager()->AddCustomNetwork(chain2);
+
+//   EXPECT_FALSE(network_manager()->GetChain("", mojom::CoinType::ETH));
+
+//   EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::ETH));
+//   EXPECT_EQ(network_manager()->GetChain("0x5566", mojom::CoinType::ETH),
+//             chain1.Clone());
+//   EXPECT_EQ(network_manager()->GetChain("0x1", mojom::CoinType::ETH),
+//             network_manager()->GetKnownChain("0x1", mojom::CoinType::ETH));
+//   EXPECT_EQ(network_manager()->GetChain("0x539", mojom::CoinType::ETH),
+//             network_manager()->GetKnownChain("0x539", mojom::CoinType::ETH));
+
+//   EXPECT_EQ(*network_manager()->GetChain("0x89", mojom::CoinType::ETH),
+//   chain2);
+
+//   // Solana
+//   mojom::NetworkInfo sol_mainnet(
+//       brave_wallet::mojom::kSolanaMainnet, "Solana Mainnet Beta",
+//       {"https://explorer.solana.com/"}, {}, 0,
+//       {GURL("https://solana-mainnet.wallet.brave.com")}, "SOL", "Solana", 9,
+//       brave_wallet::mojom::CoinType::SOL, {mojom::KeyringId::kSolana});
+//   EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::SOL));
+//   EXPECT_EQ(network_manager()->GetChain("0x65", mojom::CoinType::SOL),
+//             sol_mainnet.Clone());
+
+//   // Filecoin
+//   mojom::NetworkInfo fil_mainnet(
+//       brave_wallet::mojom::kFilecoinMainnet, "Filecoin Mainnet",
+//       {"https://filscan.io/tipset/message-detail"}, {}, 0,
+//       {GURL("https://api.node.glif.io/rpc/v0")}, "FIL", "Filecoin", 18,
+//       brave_wallet::mojom::CoinType::FIL, {mojom::KeyringId::kFilecoin});
+//   EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::FIL));
+//   EXPECT_EQ(network_manager()->GetChain("f", mojom::CoinType::FIL),
+//             fil_mainnet.Clone());
+
+//   // Bitcoin
+//   mojom::NetworkInfo btc_mainnet(
+//       mojom::kBitcoinMainnet, "Bitcoin Mainnet",
+//       {"https://www.blockchain.com/explorer"}, {}, 0,
+//       {GURL("https://bitcoin-mainnet.wallet.brave.com/")}, "BTC", "Bitcoin",
+//       8, mojom::CoinType::BTC, {mojom::KeyringId::kBitcoin84,
+//       mojom::KeyringId::kBitcoinImport,
+//        mojom::KeyringId::kBitcoinHardware});
+//   EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::BTC));
+//   EXPECT_EQ(
+//       network_manager()->GetChain("bitcoin_mainnet", mojom::CoinType::BTC),
+//       btc_mainnet.Clone());
+
+//   // Zcash
+//   mojom::NetworkInfo zec_mainnet(mojom::kZCashMainnet, "Zcash Mainnet",
+//                                  {"https://3xpl.com/zcash/transaction"}, {},
+//                                  0,
+//                                  {GURL("https://zcash.wallet.brave.com/")},
+//                                  "ZEC", "Zcash", 8, mojom::CoinType::ZEC,
+//                                  {mojom::KeyringId::kZCashMainnet});
+//   EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::ZEC));
+//   EXPECT_EQ(network_manager()->GetChain("zcash_mainnet",
+//   mojom::CoinType::ZEC),
+//             zec_mainnet.Clone());
+
+//   // Cardano
+//   mojom::NetworkInfo cardano_mainnet(
+//       mojom::kCardanoMainnet, "Cardano Mainnet", {"https://cexplorer.io"},
+//       {}, 0, {GURL("https://cardano-mainnet.wallet.brave.com/")}, "ADA",
+//       "Cardano", 6, mojom::CoinType::ADA,
+//       {mojom::KeyringId::kCardanoMainnet});
+//   EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::ADA));
+//   EXPECT_EQ(
+//       network_manager()->GetChain("cardano_mainnet", mojom::CoinType::ADA),
+//       cardano_mainnet.Clone());
+
+//   static_assert(AllCoinsTested<6>());
+// }
+
+// TEST_F(NetworkManagerUnitTest, Eip1559Chain) {
+//   auto dict = [&] {
+//     return prefs()->GetDict(kBraveWalletEip1559CustomChains).Clone();
+//   };
+
+//   EXPECT_TRUE(dict().empty());
+
+//   // Values for known chains.
+//   std::map<std::string, bool> known_states = {
+//       {mojom::kMainnetChainId, true},
+//       {mojom::kPolygonMainnetChainId, true},
+//       {mojom::kAvalancheMainnetChainId, true},
+//       {mojom::kOptimismMainnetChainId, true},
+//       {mojom::kSepoliaChainId, true},
+//       {mojom::kFilecoinEthereumMainnetChainId, true},
+//       {mojom::kFilecoinEthereumTestnetChainId, true},
+//       {mojom::kBnbSmartChainMainnetChainId, false},
+//       {mojom::kBaseMainnetChainId, true},
+//       {mojom::kNeonEVMMainnetChainId, false},
+//       {mojom::kLocalhostChainId, false}};
+//   for (auto& [chain_id, value] : known_states) {
+//     EXPECT_EQ(network_manager()->IsEip1559Chain(chain_id), value);
+//   }
+
+//   // Custom chain.
+//   const std::string custom_chain_id = "0xa23123";
+//   EXPECT_FALSE(network_manager()->IsEip1559Chain(custom_chain_id));
+
+//   network_manager()->SetEip1559ForCustomChain(custom_chain_id, true);
+//   EXPECT_TRUE(network_manager()->IsEip1559Chain(custom_chain_id));
+//   EXPECT_EQ(*dict().FindBool(custom_chain_id), true);
+
+//   network_manager()->SetEip1559ForCustomChain(
+//       base::ToUpperASCII(custom_chain_id), false);
+//   EXPECT_FALSE(
+//       network_manager()->IsEip1559Chain(base::ToUpperASCII(custom_chain_id)));
+//   EXPECT_EQ(*dict().FindBool(custom_chain_id), false);
+
+//   network_manager()->SetEip1559ForCustomChain(custom_chain_id, std::nullopt);
+//   EXPECT_FALSE(network_manager()->IsEip1559Chain(custom_chain_id));
+//   EXPECT_EQ(dict().FindBool(custom_chain_id), std::nullopt);
+
+//   // Custom chain overriding known one.
+//   network_manager()->SetEip1559ForCustomChain(mojom::kPolygonMainnetChainId,
+//                                               false);
+//   EXPECT_FALSE(
+//       network_manager()->IsEip1559Chain(mojom::kPolygonMainnetChainId));
+//   EXPECT_EQ(*dict().FindBool(mojom::kPolygonMainnetChainId), false);
+
+//   network_manager()->SetEip1559ForCustomChain(mojom::kPolygonMainnetChainId,
+//                                               std::nullopt);
+//   EXPECT_TRUE(network_manager()->IsEip1559Chain(mojom::kPolygonMainnetChainId));
+//   EXPECT_EQ(dict().FindBool(mojom::kPolygonMainnetChainId), std::nullopt);
+// }
+
+// TEST_F(NetworkManagerUnitTest, CustomNetworkMatchesKnownNetwork) {
+//   auto get_polygon_from_all = [&] {
+//     for (const auto& chain : network_manager()->GetAllChains()) {
+//       if (chain->coin == mojom::CoinType::ETH &&
+//           chain->chain_id == mojom::kPolygonMainnetChainId) {
+//         return chain.Clone();
+//       }
+//     }
+//     return mojom::NetworkInfoPtr();
+//   };
+
+//   // Known network by default.
+//   EXPECT_EQ(get_polygon_from_all()->chain_name, "Polygon Mainnet");
+//   EXPECT_EQ(
+//       network_manager()
+//           ->GetNetworkURL(mojom::kPolygonMainnetChainId,
+//           mojom::CoinType::ETH) .GetWithoutFilename(),
+//       GURL("https://polygon-mainnet.wallet.brave.com"));
+
+//   mojom::NetworkInfo chain1 =
+//       GetTestNetworkInfo1(mojom::kPolygonMainnetChainId);
+
+//   network_manager()->AddCustomNetwork(chain1);
+
+//   // Custom network overrides known one.
+//   EXPECT_EQ(get_polygon_from_all()->chain_name, "chain_name");
+//   EXPECT_EQ(
+//       network_manager()
+//           ->GetNetworkURL(mojom::kPolygonMainnetChainId,
+//           mojom::CoinType::ETH) .GetWithoutFilename(),
+//       GURL("https://url1.com/"));
+
+//   network_manager()->RemoveCustomNetwork(mojom::kPolygonMainnetChainId,
+//                                          mojom::CoinType::ETH);
+
+//   // Back to known when custom is removed.
+//   EXPECT_EQ(get_polygon_from_all()->chain_name, "Polygon Mainnet");
+//   EXPECT_EQ(
+//       network_manager()
+//           ->GetNetworkURL(mojom::kPolygonMainnetChainId,
+//           mojom::CoinType::ETH) .GetWithoutFilename(),
+//       GURL("https://polygon-mainnet.wallet.brave.com"));
+// }
+
+// TEST_F(NetworkManagerUnitTest, RemoveCustomNetwork) {
+//   mojom::NetworkInfo chain = GetTestNetworkInfo1();
+
+//   network_manager()->AddCustomNetwork(chain);
+//   EXPECT_TRUE(network_manager()->CustomChainExists(chain.chain_id,
+//                                                    mojom::CoinType::ETH));
+
+//   network_manager()->RemoveCustomNetwork(chain.chain_id,
+//   mojom::CoinType::ETH);
+//   EXPECT_FALSE(network_manager()->CustomChainExists(chain.chain_id,
+//                                                     mojom::CoinType::ETH));
+
+//   // Should not crash.
+//   network_manager()->RemoveCustomNetwork("unknown network",
+//                                          mojom::CoinType::ETH);
+
+//   {
+//     mojom::NetworkInfo chain_fil =
+//         GetTestNetworkInfo1(mojom::kFilecoinMainnet, mojom::CoinType::FIL);
+//     network_manager()->AddCustomNetwork(chain_fil);
+//     ASSERT_EQ(
+//         1u,
+//         network_manager()->GetAllCustomChains(mojom::CoinType::FIL).size());
+//     network_manager()->RemoveCustomNetwork(mojom::kFilecoinMainnet,
+//                                            mojom::CoinType::FIL);
+//     ASSERT_EQ(
+//         0u,
+//         network_manager()->GetAllCustomChains(mojom::CoinType::FIL).size());
+//   }
+
+//   {
+//     mojom::NetworkInfo chain_sol =
+//         GetTestNetworkInfo1(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+//     network_manager()->AddCustomNetwork(chain_sol);
+//     ASSERT_EQ(
+//         1u,
+//         network_manager()->GetAllCustomChains(mojom::CoinType::SOL).size());
+//     network_manager()->RemoveCustomNetwork(mojom::kSolanaMainnet,
+//                                            mojom::CoinType::SOL);
+//     ASSERT_EQ(
+//         0u,
+//         network_manager()->GetAllCustomChains(mojom::CoinType::SOL).size());
+//   }
+
+//   {
+//     mojom::NetworkInfo chain_btc =
+//         GetTestNetworkInfo1(mojom::kBitcoinMainnet, mojom::CoinType::BTC);
+//     network_manager()->AddCustomNetwork(chain_btc);
+//     ASSERT_EQ(
+//         1u,
+//         network_manager()->GetAllCustomChains(mojom::CoinType::BTC).size());
+//     network_manager()->RemoveCustomNetwork(mojom::kBitcoinMainnet,
+//                                            mojom::CoinType::BTC);
+//     ASSERT_EQ(
+//         0u,
+//         network_manager()->GetAllCustomChains(mojom::CoinType::BTC).size());
+//   }
+
+//   {
+//     mojom::NetworkInfo chain_zec =
+//         GetTestNetworkInfo1(mojom::kZCashMainnet, mojom::CoinType::ZEC);
+//     network_manager()->AddCustomNetwork(chain_zec);
+//     ASSERT_EQ(
+//         1u,
+//         network_manager()->GetAllCustomChains(mojom::CoinType::ZEC).size());
+//     network_manager()->RemoveCustomNetwork(mojom::kZCashMainnet,
+//                                            mojom::CoinType::ZEC);
+//     ASSERT_EQ(
+//         0u,
+//         network_manager()->GetAllCustomChains(mojom::CoinType::ZEC).size());
+//   }
+
+//   {
+//     mojom::NetworkInfo chain_cardano =
+//         GetTestNetworkInfo1(mojom::kCardanoMainnet, mojom::CoinType::ADA);
+//     network_manager()->AddCustomNetwork(chain_cardano);
+//     ASSERT_EQ(
+//         1u,
+//         network_manager()->GetAllCustomChains(mojom::CoinType::ADA).size());
+//     network_manager()->RemoveCustomNetwork(mojom::kCardanoMainnet,
+//                                            mojom::CoinType::ADA);
+//     ASSERT_EQ(
+//         0u,
+//         network_manager()->GetAllCustomChains(mojom::CoinType::ADA).size());
+//   }
+
+//   static_assert(AllCoinsTested<6>());
+// }
+
+// TEST_F(NetworkManagerUnitTest, RemoveCustomNetworkRemovesEip1559) {
+//   mojom::NetworkInfo chain = GetTestNetworkInfo1();
+
+//   network_manager()->AddCustomNetwork(chain);
+
+//   EXPECT_FALSE(network_manager()->IsEip1559Chain(chain.chain_id));
+//   network_manager()->SetEip1559ForCustomChain(chain.chain_id, true);
+//   EXPECT_TRUE(network_manager()->IsEip1559Chain(chain.chain_id));
+
+//   network_manager()->RemoveCustomNetwork(chain.chain_id,
+//   mojom::CoinType::ETH);
+//   EXPECT_FALSE(network_manager()->IsEip1559Chain(chain.chain_id));
+// }
+
+// TEST_F(NetworkManagerUnitTest, HiddenNetworks) {
+//   EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::ETH),
+//               ElementsAreArray<std::string>(
+//                   {mojom::kSepoliaChainId, mojom::kLocalhostChainId,
+//                    mojom::kFilecoinEthereumTestnetChainId}));
+//   EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::FIL),
+//               ElementsAreArray<std::string>(
+//                   {mojom::kFilecoinTestnet, mojom::kLocalhostChainId}));
+//   EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::SOL),
+//               ElementsAreArray<std::string>({mojom::kSolanaDevnet,
+//                                              mojom::kSolanaTestnet,
+//                                              mojom::kLocalhostChainId}));
+//   EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::BTC),
+//               ElementsAreArray<std::string>({mojom::kBitcoinTestnet}));
+//   EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::ZEC),
+//               ElementsAreArray<std::string>({mojom::kZCashTestnet}));
+//   EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::ADA),
+//               ElementsAreArray<std::string>({mojom::kCardanoTestnet}));
+//   static_assert(AllCoinsTested<6>());
+
+//   for (auto coin : kAllCoins) {
+//     for (auto& default_hidden : network_manager()->GetHiddenNetworks(coin)) {
+//       network_manager()->RemoveHiddenNetwork(coin, default_hidden);
+//     }
+
+//     EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
+//                 ElementsAreArray<std::string>({}));
+
+//     network_manager()->AddHiddenNetwork(coin, "0x123");
+//     EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
+//                 ElementsAreArray({"0x123"}));
+//     network_manager()->AddHiddenNetwork(coin, "0x123");
+//     EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
+//                 ElementsAreArray({"0x123"}));
+
+//     network_manager()->RemoveHiddenNetwork(coin, "0x555");
+//     EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
+//                 ElementsAreArray({"0x123"}));
+
+//     network_manager()->AddHiddenNetwork(coin, "0x7");
+//     EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
+//                 ElementsAreArray({"0x123", "0x7"}));
+
+//     network_manager()->RemoveHiddenNetwork(coin, "0x123");
+//     EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
+//                 ElementsAreArray({"0x7"}));
+
+//     network_manager()->RemoveHiddenNetwork(coin, "0x7");
+//     EXPECT_THAT(network_manager()->GetHiddenNetworks(coin),
+//                 ElementsAreArray<std::string>({}));
+//   }
+// }
+
+// TEST_F(NetworkManagerUnitTest, GetAndSetCurrentChainId) {
+//   const base::flat_map<mojom::CoinType, std::string> default_chain_ids = {
+//       {mojom::CoinType::ETH, mojom::kMainnetChainId},
+//       {mojom::CoinType::SOL, mojom::kSolanaMainnet},
+//       {mojom::CoinType::FIL, mojom::kFilecoinMainnet},
+//   };
+//   const base::flat_map<mojom::CoinType, std::string> new_default_chain_ids =
+//   {
+//       {mojom::CoinType::ETH, mojom::kSepoliaChainId},
+//       {mojom::CoinType::SOL, mojom::kSolanaTestnet},
+//       {mojom::CoinType::FIL, mojom::kFilecoinTestnet},
+//   };
+
+//   static_assert(AllCoinsTested<6>());
+
+//   for (const auto coin_type : kAllCoins) {
+//     // TODO(apaymyshev): make this test working for BTC which has no
+//     localhost if (coin_type == mojom::CoinType::BTC ||
+//         coin_type == mojom::CoinType::ZEC ||
+//         coin_type == mojom::CoinType::ADA) {
+//       continue;
+//     }
+
+//     // default value
+//     EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
+//               default_chain_ids.at(coin_type));
+
+//     // fallback to default
+//     EXPECT_EQ(network_manager()->GetCurrentChainId(
+//                   coin_type, url::Origin::Create(GURL("https://a.com"))),
+//               default_chain_ids.at(coin_type));
+//     EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, url::Origin()),
+//               default_chain_ids.at(coin_type));
+//     EXPECT_EQ(network_manager()->GetCurrentChainId(
+//                   coin_type,
+//                   url::Origin::Create(GURL("file:///etc/passwd"))),
+//               default_chain_ids.at(coin_type));
+
+//     // unknown chain_id
+//     EXPECT_FALSE(network_manager()->SetCurrentChainId(
+//         coin_type, url::Origin::Create(GURL("https://a.com")), "0x5566"));
+//     EXPECT_EQ(network_manager()->GetCurrentChainId(
+//                   coin_type, url::Origin::Create(GURL("https://a.com"))),
+//               default_chain_ids.at(coin_type));
+//     EXPECT_FALSE(network_manager()->SetCurrentChainId(coin_type,
+//     std::nullopt,
+//                                                       "0x5566"));
+//     EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
+//               default_chain_ids.at(coin_type));
+
+//     EXPECT_TRUE(network_manager()->SetCurrentChainId(
+//         coin_type, url::Origin::Create(GURL("https://a.com")),
+//         mojom::kLocalhostChainId));
+//     EXPECT_EQ(network_manager()->GetCurrentChainId(
+//                   coin_type, url::Origin::Create(GURL("https://a.com"))),
+//               mojom::kLocalhostChainId);
+//     // other origin still use default
+//     EXPECT_EQ(network_manager()->GetCurrentChainId(
+//                   coin_type, url::Origin::Create(GURL("https://b.com"))),
+//               default_chain_ids.at(coin_type));
+
+//     // opaque cannot change the default
+//     EXPECT_FALSE(network_manager()->SetCurrentChainId(
+//         coin_type, url::Origin(), mojom::kLocalhostChainId));
+//     EXPECT_FALSE(network_manager()->SetCurrentChainId(
+//         coin_type, url::Origin::Create(GURL("about:blank")),
+//         mojom::kLocalhostChainId));
+//     EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
+//               default_chain_ids.at(coin_type));
+
+//     // now we change the default
+//     EXPECT_TRUE(network_manager()->SetCurrentChainId(
+//         coin_type, std::nullopt, new_default_chain_ids.at(coin_type)));
+//     EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
+//               new_default_chain_ids.at(coin_type));
+//     // should not affect per origin pref
+//     EXPECT_EQ(network_manager()->GetCurrentChainId(
+//                   coin_type, url::Origin::Create(GURL("https://a.com"))),
+//               mojom::kLocalhostChainId);
+
+//     // non http/https scheme will change the default
+//     EXPECT_TRUE(network_manager()->SetCurrentChainId(
+//         coin_type, url::Origin::Create(GURL("file:///etc/passwd")),
+//         default_chain_ids.at(coin_type)));
+//     EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
+//               default_chain_ids.at(coin_type));
+//     EXPECT_TRUE(network_manager()->SetCurrentChainId(
+//         coin_type, url::Origin::Create(GURL("chrome://wallet")),
+//         new_default_chain_ids.at(coin_type)));
+//     EXPECT_EQ(network_manager()->GetCurrentChainId(coin_type, std::nullopt),
+//               new_default_chain_ids.at(coin_type));
+//   }
+// }
+
+// TEST_F(NetworkManagerUnitTest, GetCurrentChainIdFallback) {
+//   mojom::NetworkInfo chain = GetTestNetworkInfo1();
+//   auto some_origin = url::Origin::Create(GURL("https://a.com"));
+
+//   network_manager()->AddCustomNetwork(chain);
+//   network_manager()->SetCurrentChainId(mojom::CoinType::ETH, std::nullopt,
+//                                        chain.chain_id);
+//   EXPECT_EQ(
+//       network_manager()->GetCurrentChainId(mojom::CoinType::ETH,
+//       std::nullopt), chain.chain_id);
+//   EXPECT_EQ(
+//       network_manager()->GetCurrentChainId(mojom::CoinType::ETH,
+//       some_origin), chain.chain_id);
+
+//   network_manager()->RemoveCustomNetwork(chain.chain_id,
+//   mojom::CoinType::ETH); EXPECT_EQ(
+//       network_manager()->GetCurrentChainId(mojom::CoinType::ETH,
+//       std::nullopt), mojom::kMainnetChainId);
+//   EXPECT_EQ(
+//       network_manager()->GetCurrentChainId(mojom::CoinType::ETH,
+//       some_origin), mojom::kMainnetChainId);
+
+//   chain.chain_id = "another_id";
+//   network_manager()->AddCustomNetwork(chain);
+//   network_manager()->SetCurrentChainId(mojom::CoinType::ETH, some_origin,
+//                                        chain.chain_id);
+//   EXPECT_EQ(
+//       network_manager()->GetCurrentChainId(mojom::CoinType::ETH,
+//       std::nullopt), mojom::kMainnetChainId);
+//   EXPECT_EQ(
+//       network_manager()->GetCurrentChainId(mojom::CoinType::ETH,
+//       some_origin), chain.chain_id);
+
+//   network_manager()->RemoveCustomNetwork(chain.chain_id,
+//   mojom::CoinType::ETH); EXPECT_EQ(
+//       network_manager()->GetCurrentChainId(mojom::CoinType::ETH,
+//       std::nullopt), mojom::kMainnetChainId);
+//   EXPECT_EQ(
+//       network_manager()->GetCurrentChainId(mojom::CoinType::ETH,
+//       some_origin), mojom::kMainnetChainId);
+// }
+
+// TEST_F(NetworkManagerUnitTest, GetUnstoppableDomainsRpcUrl) {
+//   EXPECT_EQ(
+//       GURL("https://ethereum-mainnet.wallet.brave.com"),
+//       NetworkManager::GetUnstoppableDomainsRpcUrl(mojom::kMainnetChainId));
+//   EXPECT_EQ(GURL("https://polygon-mainnet.wallet.brave.com"),
+//             NetworkManager::GetUnstoppableDomainsRpcUrl(
+//                 mojom::kPolygonMainnetChainId));
+// }
+
+// TEST_F(NetworkManagerUnitTest, GetEnsRpcUrl) {
+//   EXPECT_EQ(GURL("https://ethereum-mainnet.wallet.brave.com"),
+//             NetworkManager::GetEnsRpcUrl());
+// }
+
+// TEST_F(NetworkManagerUnitTest, GetSnsRpcUrl) {
+//   EXPECT_EQ(GURL("https://solana-mainnet.wallet.brave.com"),
+//             NetworkManager::GetSnsRpcUrl());
+// }
 
 }  // namespace brave_wallet
