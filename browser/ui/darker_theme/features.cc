@@ -8,7 +8,7 @@
 namespace darker_theme::features {
 
 BASE_FEATURE(kBraveDarkerTheme,
-             "BraveDarkerTheme",
+             "BraveMidnightTheme",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace darker_theme::features
