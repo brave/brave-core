@@ -455,7 +455,6 @@ test("brave_unit_tests") {
       "//brave/browser/download/bubble:unit_tests",
       "//brave/browser/renderer_context_menu/test:unit_tests",
       "//brave/browser/ui/bookmark:unittest",
-      "//brave/browser/ui/color",
       "//brave/browser/ui/color:unit_tests",
       "//brave/browser/ui/commands:unit_tests",
       "//brave/browser/ui/tabs/test:unit_tests",
@@ -511,6 +510,7 @@ test("brave_unit_tests") {
         [ "//brave/browser/ui/views/brave_tooltips/brave_tooltips_unittest.cc" ]
     deps += [
       "//brave/browser/onboarding:unit_tests",
+      "//brave/browser/ui/darker_theme:unit_tests",
       "//brave/browser/ui/sidebar:unit_tests",
       "//brave/browser/ui/views/brave_ads:unit_tests",
       "//brave/browser/ui/views/brave_tooltips",

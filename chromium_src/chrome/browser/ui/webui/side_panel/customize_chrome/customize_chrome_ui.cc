@@ -5,13 +5,16 @@
 
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h"
 
-#include "brave/browser/ui/color/features.h"
 #include "brave/browser/ui/webui/cr_components/customize_color_scheme_mode/brave_customize_color_scheme_mode_handler.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/search/ntp_features.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/webui/webui_util.h"
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/darker_theme/features.h"
+#endif  // defined(TOOLKIT_VIEWS)
 
 // Add Brave-specific strings to the WebUI data source.
 #define AddLocalizedStrings(...)                                      \
@@ -31,15 +34,19 @@
 #define IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL \
   IDS_BRAVE_NTP_CUSTOMIZE_APPEARANCE_LABEL
 
+#if defined(TOOLKIT_VIEWS)
 // Add a boolean data for DarkerTheme mode to WebUI data source.
 #define kNtpFooter kNtpFooter));     \
   source->AddBoolean(                \
       "shouldShowDarkerThemeToggle", \
-      base::FeatureList::IsEnabled(color::features::kBraveDarkerTheme
+      base::FeatureList::IsEnabled(darker_theme::features::kBraveDarkerTheme
+#endif  // defined(TOOLKIT_VIEWS)
 
 #include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.cc>
 
+#if defined(TOOLKIT_VIEWS)
 #undef kNtpFooter
+#endif  // defined(TOOLKIT_VIEWS)
 #undef IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL
 #undef CreateCustomizeColorSchemeModeHandler
 #undef CreatePageHandler
