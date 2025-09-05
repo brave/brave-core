@@ -461,7 +461,8 @@ interface PageHandler {
   // Mobile only - Used by the brave://wallet page to open up the unlock UI.
   UnlockWalletUI();
 
-  // Mobile only - Used by the brave://wallet page to open up the native onboarding.
+  // Mobile only - Used by the brave://wallet page to open up the native
+  // onboarding.
   ShowOnboarding(bool is_new_account);
 };
 
