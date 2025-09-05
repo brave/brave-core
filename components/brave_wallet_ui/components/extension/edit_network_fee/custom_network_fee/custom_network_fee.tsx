@@ -32,7 +32,7 @@ import {
 } from '../../../../utils/tx-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import {
-  getPriceIdForToken,
+  getPriceRequestForToken,
   getTokenPriceAmountFromRegistry,
 } from '../../../../utils/pricing-utils'
 import Amount from '../../../../utils/amount'
@@ -81,8 +81,11 @@ export function CustomNetworkFee(props: Props) {
     return makeNetworkAsset(selectedNetwork)
   }, [selectedNetwork])
 
-  const networkTokenPriceIds = React.useMemo(
-    () => (networkAsset ? [getPriceIdForToken(networkAsset)] : []),
+  const networkTokenPriceRequests = React.useMemo(
+    () =>
+      (networkAsset ? [getPriceRequestForToken(networkAsset)] : []).filter(
+        (request) => request !== undefined,
+      ),
     [networkAsset],
   )
 
@@ -90,8 +93,8 @@ export function CustomNetworkFee(props: Props) {
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    networkTokenPriceIds.length && defaultFiatCurrency
-      ? { ids: networkTokenPriceIds, toCurrency: defaultFiatCurrency }
+    networkTokenPriceRequests.length && defaultFiatCurrency
+      ? { requests: networkTokenPriceRequests, vsCurrency: defaultFiatCurrency }
       : skipToken,
     querySubscriptionOptions60s,
   )

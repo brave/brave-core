@@ -477,11 +477,31 @@ struct AssetTimePrice {
   string price;
 };
 
+struct AssetPriceRequest {
+  CoinType coin_type;
+  string? chain_id;
+  string? address;
+};
+
+enum AssetPriceSource {
+  kCoingecko,
+  kJupiter,
+};
+
+enum Gate3CacheStatus {
+  kHit,
+  kMiss,
+};
+
 struct AssetPrice {
-  string from_asset;
-  string to_asset;
+  CoinType coin_type;
+  string chain_id;
+  string address;
   string price;
-  string asset_timeframe_change;
+  string vs_currency;
+  Gate3CacheStatus cache_status;
+  AssetPriceSource source;
+  string percentage_change_24h;
 };
 
 struct CoinMarket {
@@ -1370,12 +1390,8 @@ interface AssetRatioService {
              string amount,
              string currencyCode) => (string url, string? error);
 
-  // Obtains the prices from a list of assets to a list of assets
-  // Each from asset is represented in the to asset and includes the timeframe
-  // change as well.
-  GetPrice(array<string> from_assets,
-           array<string> to_assets,
-           AssetPriceTimeframe timeframe)
+  // Obtains the prices from a list of requests
+  GetPrice(array<AssetPriceRequest> requests, string vs_currency)
       => (bool success, array<AssetPrice> values);
 
   // Obtains the price history for a specific asset

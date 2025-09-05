@@ -24,7 +24,7 @@ import {
 } from '../../../utils/asset-utils'
 import {
   getTokenPriceAmountFromRegistry,
-  getPriceIdForToken,
+  getPriceRequestForToken,
 } from '../../../utils/pricing-utils'
 
 // hooks
@@ -76,22 +76,21 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
     // routing
     const { assetId: selectedOnRampAssetId } = useParams<{ assetId: string }>()
 
-    // query Params
-    const tokenIds = React.useMemo(() => {
-      return [getPriceIdForToken(token)]
+    const tokenPriceRequest = React.useMemo(() => {
+      return getPriceRequestForToken(token)
     }, [token])
 
     // queries
     const {
-      data: priceRegistry,
+      data: spotPrices,
       isFetching: isFetchingPrice,
       isLoading: isLoadingPrice,
     } = useGetTokenSpotPricesQuery(
-      !tokenIds.length || !selectedCurrency
+      !tokenPriceRequest || !selectedCurrency
         ? skipToken
         : {
-            ids: tokenIds,
-            toCurrency: selectedCurrency,
+            requests: [tokenPriceRequest],
+            vsCurrency: selectedCurrency,
           },
       // refresh every 15 seconds
       defaultQuerySubscriptionOptions,
@@ -109,10 +108,10 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
     }, [tokenNetwork, isPanel, token])
 
     const price = React.useMemo(() => {
-      return priceRegistry
-        ? getTokenPriceAmountFromRegistry(priceRegistry, token)
+      return spotPrices
+        ? getTokenPriceAmountFromRegistry(spotPrices, token)
         : Amount.empty()
-    }, [priceRegistry, token])
+    }, [spotPrices, token])
 
     // methods
     const handleOnClick = React.useCallback(() => {

@@ -14,7 +14,7 @@ import { UISelectors } from '../../../common/selectors'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import {
-  getPriceIdForToken,
+  getPriceRequestForToken,
   getTokenPriceFromRegistry,
 } from '../../../utils/pricing-utils'
 import { BraveWallet } from '../../../constants/types'
@@ -90,7 +90,6 @@ export const AssetDetailsHeader = (props: Props) => {
     onClickTokenDetails,
     onClickEditToken,
     isShowingMarketData,
-    selectedTimeline,
   } = props
 
   // UI Selectors (safe)
@@ -143,18 +142,22 @@ export const AssetDetailsHeader = (props: Props) => {
     }
   }, [openExplorer, selectedAsset])
 
-  const tokenPriceIds = React.useMemo(
-    () => (selectedAsset ? [getPriceIdForToken(selectedAsset)] : []),
+  const tokenPriceRequests = React.useMemo(
+    () =>
+      selectedAsset
+        ? [getPriceRequestForToken(selectedAsset)].filter(
+            (request) => request !== undefined,
+          )
+        : [],
     [selectedAsset],
   )
 
   // queries
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length && defaultFiatCurrency
+  const { data: spotPrices } = useGetTokenSpotPricesQuery(
+    tokenPriceRequests.length && defaultFiatCurrency
       ? {
-          ids: tokenPriceIds,
-          timeframe: selectedTimeline,
-          toCurrency: defaultFiatCurrency,
+          requests: tokenPriceRequests,
+          vsCurrency: defaultFiatCurrency,
         }
       : skipToken,
     querySubscriptionOptions60s,
@@ -175,11 +178,11 @@ export const AssetDetailsHeader = (props: Props) => {
 
   const selectedAssetFiatPrice =
     selectedAsset
-    && spotPriceRegistry
-    && getTokenPriceFromRegistry(spotPriceRegistry, selectedAsset)
+    && spotPrices
+    && getTokenPriceFromRegistry(spotPrices, selectedAsset)
 
   const isSelectedAssetPriceDown = selectedAssetFiatPrice
-    ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0
+    ? Number(selectedAssetFiatPrice.percentageChange24h) < 0
     : false
 
   return (
@@ -295,7 +298,7 @@ export const AssetDetailsHeader = (props: Props) => {
               }
             />
             {selectedAssetFiatPrice
-              ? Number(selectedAssetFiatPrice.assetTimeframeChange).toFixed(2)
+              ? Number(selectedAssetFiatPrice.percentageChange24h).toFixed(2)
               : '0.00'}
             %
           </PercentChange>

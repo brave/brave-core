@@ -45,11 +45,10 @@ inline constexpr char kTransakURL[] = "https://global.transak.com/";
 inline constexpr char kTransakApiKey[] = "985d14f0-4cf5-4a4c-8917-78107620d3b7";
 inline constexpr char kCoinbaseURL[] = "https://pay.coinbase.com";
 inline constexpr char kCoinbaseAppId[] = "8072ff71-8469-4fef-9404-7c905e2359c9";
-inline constexpr char kSimpleHashUrl[] = "https://api.simplehash.com";
-inline constexpr char kSimpleHashBraveProxyUrl[] =
-    "https://simplehash.wallet.brave.com";
-
 inline constexpr size_t kSimpleHashMaxBatchSize = 50;
+inline constexpr char kSimpleHashBraveProxyUrl[] =
+    "https://gate3.bsg.brave.software/simplehash";
+inline constexpr char kGate3URL[] = "https://gate3.wallet.brave.software";
 
 inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPasswordIsRequiredToTakeThisAction",
@@ -1851,6 +1850,9 @@ std::string GetAssetRatioBaseURL();
 
 std::optional<std::string_view> GetZeroExAllowanceHolderAddress(
     std::string_view chain_id);
+
+std::optional<mojom::CoinType> GetCoinTypeFromString(const std::string& coin);
+std::optional<std::string> GetStringFromCoinType(mojom::CoinType coin_type);
 
 }  // namespace brave_wallet
 

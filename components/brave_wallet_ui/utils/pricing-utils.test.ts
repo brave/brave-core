@@ -40,7 +40,7 @@ describe('computeFiatAmount', () => {
   it('should find and convert the fiat value of a token', () => {
     expect(
       computeFiatAmount({
-        spotPriceRegistry: mockSpotPriceRegistry,
+        spotPrices: mockSpotPriceRegistry,
         value: '20',
         token: mockBasicAttentionToken,
       }).format(),
@@ -52,7 +52,7 @@ describe('computeFiatAmountToAssetValue', () => {
   it('should find and convert the fiat amoount to token value', () => {
     expect(
       computeFiatAmountToAssetValue({
-        spotPriceRegistry: mockSpotPriceRegistry,
+        spotPrices: mockSpotPriceRegistry,
         value: '200',
         token: mockBasicAttentionToken,
       }).format(6),

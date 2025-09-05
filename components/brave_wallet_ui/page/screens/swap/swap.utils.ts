@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { BraveWallet, SpotPriceRegistry } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { LiquiditySource, QuoteOption, RouteTagsType } from './constants/types'
 
 // Constants
@@ -67,7 +67,7 @@ export function getZeroExQuoteOptions({
   fromNetwork: BraveWallet.NetworkInfo
   fromToken: BraveWallet.BlockchainToken
   toToken: BraveWallet.BlockchainToken
-  spotPrices: SpotPriceRegistry
+  spotPrices: BraveWallet.AssetPrice[]
   defaultFiatCurrency: string
 }): QuoteOption[] {
   const networkFee = getZeroExNetworkFee({ quote, fromNetwork })
@@ -177,7 +177,7 @@ export function getJupiterQuoteOptions({
   fromNetwork: BraveWallet.NetworkInfo
   fromToken: BraveWallet.BlockchainToken
   toToken: BraveWallet.BlockchainToken
-  spotPrices: SpotPriceRegistry
+  spotPrices: BraveWallet.AssetPrice[]
   defaultFiatCurrency: string
 }): QuoteOption[] {
   const networkFee = getJupiterNetworkFee({ quote, fromNetwork })
@@ -243,7 +243,7 @@ export function getLiFiQuoteOptions({
 }: {
   quote: BraveWallet.LiFiQuote
   fromNetwork: BraveWallet.NetworkInfo
-  spotPrices: SpotPriceRegistry
+  spotPrices: BraveWallet.AssetPrice[]
   defaultFiatCurrency: string
   fromToken: BraveWallet.BlockchainToken
   toToken: BraveWallet.BlockchainToken
@@ -347,7 +347,7 @@ export function getSquidQuoteOptions({
 }: {
   quote: BraveWallet.SquidQuote
   fromNetwork: BraveWallet.NetworkInfo
-  spotPrices: SpotPriceRegistry
+  spotPrices: BraveWallet.AssetPrice[]
   defaultFiatCurrency: string
 }): QuoteOption[] {
   const networkFee = quote.gasCosts

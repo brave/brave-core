@@ -854,7 +854,7 @@ export const mockParsedERC20ApprovalTransaction: ParsedTransaction =
       entities: { [mockEthAccount.accountId.uniqueKey]: mockEthAccount },
     },
     gasFee: '100',
-    spotPriceRegistry: mockSpotPriceRegistry,
+    spotPrices: mockSpotPriceRegistry,
     tokensList: mockErc20TokensList,
     transactionAccount: mockAccount,
     transactionNetwork: mockEthMainnet,

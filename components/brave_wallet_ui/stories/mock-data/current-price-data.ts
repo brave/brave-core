@@ -45,12 +45,12 @@ export const mockTransactionSpotPrices: SpotPriceRegistry = {
     fromAsset: 'ETH',
     toAsset: 'USD',
     price: '3300',
-    assetTimeframeChange: '',
+    percentageChange24h: '',
   },
   '0x0D8775F648430679A709E98d2b0Cb6250d2887EF': {
     fromAsset: 'BAT',
     toAsset: 'USD',
     price: '0.85',
-    assetTimeframeChange: '',
+    percentageChange24h: '',
   },
 }

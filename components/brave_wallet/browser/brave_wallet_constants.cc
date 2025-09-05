@@ -63,4 +63,39 @@ std::optional<std::string_view> GetZeroExAllowanceHolderAddress(
       base::FindOrNull(kAllowanceHolderAddress, chain_id));
 }
 
+// Maps coin type strings to mojom::CoinType enum values
+std::optional<mojom::CoinType> GetCoinTypeFromString(const std::string& coin) {
+  // key = coin_type_string, value = mojom::CoinType
+  static constexpr auto kCoinTypeStringToEnum =
+      base::MakeFixedFlatMap<std::string_view, mojom::CoinType>(
+          {{"btc", mojom::CoinType::BTC},
+           {"eth", mojom::CoinType::ETH},
+           {"sol", mojom::CoinType::SOL},
+           {"fil", mojom::CoinType::FIL},
+           {"ada", mojom::CoinType::ADA},
+           {"zec", mojom::CoinType::ZEC}});
+
+  return base::OptionalFromPtr(
+      base::FindOrNull(kCoinTypeStringToEnum, base::ToLowerASCII(coin)));
+}
+
+// Maps mojom::CoinType enum values to coin type strings
+std::optional<std::string> GetStringFromCoinType(mojom::CoinType coin_type) {
+  // key = mojom::CoinType, value = coin_type_string
+  static constexpr auto kCoinTypeEnumToString =
+      base::MakeFixedFlatMap<mojom::CoinType, std::string_view>(
+          {{mojom::CoinType::BTC, "btc"},
+           {mojom::CoinType::ETH, "eth"},
+           {mojom::CoinType::SOL, "sol"},
+           {mojom::CoinType::FIL, "fil"},
+           {mojom::CoinType::ADA, "ada"},
+           {mojom::CoinType::ZEC, "zec"}});
+
+  auto* result = base::FindOrNull(kCoinTypeEnumToString, coin_type);
+  if (result) {
+    return base::ToUpperASCII(*result);
+  }
+  return std::nullopt;
+}
+
 }  // namespace brave_wallet

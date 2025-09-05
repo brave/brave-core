@@ -19,7 +19,6 @@ import {
 import {
   BraveWallet,
   SerializableTransactionInfo,
-  SpotPriceRegistry,
   WalletRoutes,
 } from '../../../../../../constants/types'
 
@@ -87,7 +86,7 @@ interface Props {
   accounts: BraveWallet.AccountInfo[]
   tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
   isLoadingBalances: boolean
-  spotPriceRegistry: SpotPriceRegistry | undefined
+  spotPrices: BraveWallet.AssetPrice[] | undefined
 }
 
 export const AccountsAndTransactionsList = ({
@@ -98,7 +97,7 @@ export const AccountsAndTransactionsList = ({
   accounts,
   tokenBalancesRegistry,
   isLoadingBalances,
-  spotPriceRegistry,
+  spotPrices,
 }: Props) => {
   // routing
   const { hash } = useLocation()
@@ -148,6 +147,9 @@ export const AccountsAndTransactionsList = ({
     if (!selectedAsset) {
       return []
     }
+    if (!spotPrices) {
+      return []
+    }
     if (isRewardsToken) {
       return externalRewardsAccount ? [externalRewardsAccount] : []
     }
@@ -159,13 +161,13 @@ export const AccountsAndTransactionsList = ({
       )
       .sort((a, b) => {
         const aBalance = computeFiatAmount({
-          spotPriceRegistry,
+          spotPrices,
           value: getBalance(a.accountId, selectedAsset, tokenBalancesRegistry),
           token: selectedAsset,
         })
 
         const bBalance = computeFiatAmount({
-          spotPriceRegistry,
+          spotPrices,
           value: getBalance(b.accountId, selectedAsset, tokenBalancesRegistry),
           token: selectedAsset,
         })
@@ -178,7 +180,7 @@ export const AccountsAndTransactionsList = ({
     filteredAccountsByCoinType,
     externalRewardsAccount,
     tokenBalancesRegistry,
-    spotPriceRegistry,
+    spotPrices,
   ])
 
   const nonRejectedTransactions = React.useMemo(() => {
