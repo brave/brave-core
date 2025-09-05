@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//build/config/ui.gni")
+
 brave_browser_ui_color_mixers_sources = []
 brave_browser_ui_color_mixers_deps = []
 
@@ -31,4 +33,8 @@ if (!is_android) {
     "//ui/gfx",
     "//ui/native_theme",
   ]
+}
+
+if (toolkit_views) {
+  brave_browser_ui_color_mixers_deps += [ "//brave/browser/ui/darker_theme" ]
 }

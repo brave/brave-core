@@ -12,7 +12,8 @@
 // test also needs some colors. So, defined all here.
 inline constexpr SkColor kPrivateColorForTest = SkColorSetRGB(0xFF, 0x00, 0x00);
 inline constexpr SkColor kLightColorForTest = SkColorSetRGB(0xFF, 0xFF, 0xFF);
-inline constexpr SkColor kDarkColorForTest = SkColorSetRGB(0x00, 0x00, 0x00);
+inline constexpr SkColor kDarkColorForTest = SkColorSetRGB(0x11, 0x11, 0x11);
+inline constexpr SkColor kDarkerColorForTest = SkColorSetRGB(0x00, 0x00, 0x00);
 
 inline constexpr SkColor kPrivateFrame = SkColorSetRGB(0x13, 0x05, 0x2A);
 
