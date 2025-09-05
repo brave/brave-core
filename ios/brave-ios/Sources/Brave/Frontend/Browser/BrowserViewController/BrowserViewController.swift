@@ -740,12 +740,6 @@ public class BrowserViewController: UIViewController {
       return
     }
 
-    // TODO: brave/brave-browser/issues/46565
-    // Remove when all direct mutations on CoreData types are replaced
-    DataController.performOnMainContext { context in
-      try? context.save()
-    }
-
     tabManager.saveAllTabs()
 
     // If we are displaying a private tab, hide any elements in the tab that we wouldn't want shown
