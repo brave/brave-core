@@ -11,14 +11,15 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "ui/gfx/win/singleton_hwnd.h"
 #include "ui/views/win/hwnd_util.h"
 
 namespace brave_ads {
 
 BackgroundHelperWin::BackgroundHelperWin() {
-  singleton_hwnd_observer_.reset(
-      new gfx::SingletonHwndObserver(base::BindRepeating(
-          &BackgroundHelperWin::OnWndProc, base::Unretained(this))));
+  hwnd_subscription_ =
+      gfx::SingletonHwnd::GetInstance()->RegisterCallback(base::BindRepeating(
+          &BackgroundHelperWin::OnWndProc, base::Unretained(this)));
 }
 
 BackgroundHelperWin::~BackgroundHelperWin() = default;
