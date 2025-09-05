@@ -73,7 +73,7 @@ export const OnboardingWelcome = () => {
         'coinbase-color',
         'trezor-color',
         'wallet-ledger',
-      ];
+      ]
 
   // effects
   React.useEffect(() => {
@@ -108,7 +108,7 @@ export const OnboardingWelcome = () => {
               onSelect={() => {
                 if (isMobile) {
                   getWalletPageApiProxy().pageHandler.showOnboarding(true)
-                } else {  
+                } else {
                   history.push(WalletRoutes.OnboardingNewWalletTerms)
                 }
               }}
@@ -124,7 +124,7 @@ export const OnboardingWelcome = () => {
               onSelect={() => {
                 if (isMobile) {
                   getWalletPageApiProxy().pageHandler.showOnboarding(false)
-                } else {  
+                } else {
                   history.push(WalletRoutes.OnboardingImportSelectWalletType)
                 }
               }}
