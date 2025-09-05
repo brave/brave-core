@@ -17,6 +17,7 @@
 #include "base/types/expected.h"
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
+#include "net/base/net_errors.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -343,5 +344,357 @@ TEST_F(EmailAliasesServiceTimingTest, VerifyResult_StopsAfterMaxDuration) {
 
 // TODO(https://github.com/brave/brave-browser/issues/48696): Add tests for
 // checking cancellation of polling, etc.
+
+}  // namespace email_aliases
+namespace email_aliases {
+
+class EmailAliasesAPITest : public ::testing::Test {
+ protected:
+  EmailAliasesAPITest() {
+    feature_list_.InitAndEnableFeature(email_aliases::kEmailAliases);
+  }
+
+  void SetUp() override {
+    url_loader_wrapper_ =
+        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            &url_loader_factory_);
+    service_ = std::make_unique<EmailAliasesService>(url_loader_wrapper_);
+
+    mojo::PendingRemote<email_aliases::mojom::EmailAliasesServiceObserver>
+        remote;
+    observer_.BindReceiver(remote.InitWithNewPipeAndPassReceiver());
+    service_->AddObserver(std::move(remote));
+  }
+
+  // Minimal observer capturing alias updates.
+  class AliasObserver
+      : public email_aliases::mojom::EmailAliasesServiceObserver {
+   public:
+    void OnAuthStateChanged(email_aliases::mojom::AuthStatePtr) override {}
+    void OnAliasesUpdated(
+        std::vector<email_aliases::mojom::AliasPtr> aliases) override {
+      ++alias_updates;
+      last_aliases = std::move(aliases);
+    }
+    bool WaitForAliasUpdateCount(size_t count) {
+      return base::test::RunUntil([&]() { return alias_updates >= count; });
+    }
+
+    size_t alias_updates = 0;
+    std::vector<email_aliases::mojom::AliasPtr> last_aliases;
+    mojo::Receiver<email_aliases::mojom::EmailAliasesServiceObserver> receiver{
+        this};
+    void BindReceiver(
+        mojo::PendingReceiver<email_aliases::mojom::EmailAliasesServiceObserver>
+            pending) {
+      receiver.Bind(std::move(pending));
+    }
+  };
+
+  base::test::ScopedFeatureList feature_list_;
+  base::test::TaskEnvironment task_environment_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_wrapper_;
+  std::unique_ptr<EmailAliasesService> service_;
+  AliasObserver observer_;
+
+  base::expected<std::string, std::string> CallGenerateAliasWith(
+      const std::optional<std::string>& body,
+      const std::optional<int>& net_error = std::nullopt) {
+    const GURL manage_url =
+        EmailAliasesService::GetEmailAliasesServiceBaseURL();
+    if (net_error.has_value()) {
+      network::URLLoaderCompletionStatus completion(*net_error);
+      url_loader_factory_.AddResponse(manage_url, /*head=*/nullptr,
+                                      /*content=*/"", completion);
+    } else {
+      url_loader_factory_.AddResponse(manage_url.spec(), body.value_or(""));
+    }
+
+    bool called = false;
+    base::expected<std::string, std::string> result_out;
+    service_->GenerateAlias(base::BindOnce(
+        [](bool* called_out, decltype(result_out)* out,
+           base::expected<std::string, std::string> res) {
+          *called_out = true;
+          *out = std::move(res);
+        },
+        &called, &result_out));
+    EXPECT_TRUE(base::test::RunUntil([&]() { return called; }));
+    return result_out;
+  }
+
+  base::expected<std::monostate, std::string> CallUpdateAliasWith(
+      const std::string& alias_email,
+      const std::optional<std::string>& put_body,
+      const std::optional<int>& net_error = std::nullopt,
+      const std::optional<std::string>& refresh_body = std::nullopt,
+      bool wait_for_update = true) {
+    const GURL manage_url =
+        EmailAliasesService::GetEmailAliasesServiceBaseURL();
+    if (net_error.has_value()) {
+      network::URLLoaderCompletionStatus completion(*net_error);
+      url_loader_factory_.AddResponse(manage_url, /*head=*/nullptr,
+                                      /*content=*/"", completion);
+    } else {
+      url_loader_factory_.AddResponse(manage_url.spec(), put_body.value_or(""));
+    }
+    url_loader_factory_.AddResponse(manage_url.Resolve("?status=active").spec(),
+                                    refresh_body.value_or("[]"));
+
+    bool called = false;
+    base::expected<std::monostate, std::string> result_out;
+    service_->UpdateAlias(
+        alias_email, /*note=*/std::string("note"),
+        base::BindOnce(
+            [](bool* called_out, decltype(result_out)* out,
+               base::expected<std::monostate, std::string> res) {
+              *called_out = true;
+              *out = std::move(res);
+            },
+            &called, &result_out));
+    EXPECT_TRUE(base::test::RunUntil([&]() { return called; }));
+    if (wait_for_update) {
+      EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
+    }
+    return result_out;
+  }
+
+  base::expected<std::monostate, std::string> CallDeleteAliasWith(
+      const std::string& alias_email,
+      const std::optional<std::string>& delete_body,
+      const std::optional<int>& net_error = std::nullopt) {
+    const GURL manage_url =
+        EmailAliasesService::GetEmailAliasesServiceBaseURL();
+    if (net_error.has_value()) {
+      network::URLLoaderCompletionStatus completion(*net_error);
+      auto head = network::mojom::URLResponseHead::New();
+      url_loader_factory_.AddResponse(manage_url, std::move(head),
+                                      /*content=*/"", completion);
+    } else {
+      url_loader_factory_.AddResponse(manage_url.spec(),
+                                      delete_body.value_or(""));
+    }
+    url_loader_factory_.AddResponse(manage_url.Resolve("?status=active").spec(),
+                                    "[]");
+
+    bool called = false;
+    base::expected<std::monostate, std::string> result_out;
+    service_->DeleteAlias(
+        alias_email, base::BindOnce(
+                         [](bool* called_out, decltype(result_out)* out,
+                            base::expected<std::monostate, std::string> res) {
+                           *called_out = true;
+                           *out = std::move(res);
+                         },
+                         &called, &result_out));
+    EXPECT_TRUE(base::test::RunUntil([&]() { return called; }));
+    EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
+    return result_out;
+  }
+};
+
+TEST_F(EmailAliasesAPITest, GenerateAlias_ReturnsAlias_OnSuccess) {
+  const std::string alias_email = "mock-1234@bravealias.com";
+  auto result_out = CallGenerateAliasWith(
+      std::string("{\"message\":\"created\",\"alias\":\"") + alias_email +
+      "\"}");
+  ASSERT_TRUE(result_out.has_value());
+  EXPECT_EQ(result_out.value(), alias_email);
+}
+
+TEST_F(EmailAliasesAPITest, GenerateAlias_ReturnsError_OnBackendErrorMessage) {
+  auto result_out =
+      CallGenerateAliasWith("{\"message\":\"alias_unavailable\"}");
+  ASSERT_FALSE(result_out.has_value());
+  EXPECT_EQ(
+      result_out.error(),
+      l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE));
+}
+
+TEST_F(EmailAliasesAPITest, GenerateAlias_ReturnsError_OnNoResponseBody) {
+  auto result_out = CallGenerateAliasWith(std::nullopt, net::ERR_FAILED);
+  ASSERT_FALSE(result_out.has_value());
+  EXPECT_EQ(result_out.error(),
+            l10n_util::GetStringUTF8(
+                IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY));
+}
+
+TEST_F(EmailAliasesAPITest, GenerateAlias_ReturnsError_OnInvalidJson) {
+  auto result_out = CallGenerateAliasWith("not a json");
+  ASSERT_FALSE(result_out.has_value());
+  EXPECT_EQ(result_out.error(),
+            l10n_util::GetStringUTF8(
+                IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY));
+}
+
+TEST_F(EmailAliasesAPITest,
+       GenerateAlias_ReturnsError_OnUnexpectedSuccessPayload) {
+  auto result_out = CallGenerateAliasWith("{\"message\":\"ok_but_no_alias\"}");
+  ASSERT_FALSE(result_out.has_value());
+  EXPECT_EQ(
+      result_out.error(),
+      l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE));
+}
+
+// ============== UpdateAlias tests ==============
+
+TEST_F(EmailAliasesAPITest, UpdateAlias_SucceedsAndRefreshes_OnValidResponse) {
+  const std::string alias_email = "alias@example.com";
+  auto result_out =
+      CallUpdateAliasWith(alias_email,
+                          /*put_body=*/"{\"message\":\"updated\"}",
+                          /*net_error=*/std::nullopt);
+  ASSERT_TRUE(result_out.has_value());
+}
+
+TEST_F(EmailAliasesAPITest, UpdateAlias_ReturnsError_OnBackendError) {
+  auto result_out =
+      CallUpdateAliasWith("alias@example.com",
+                          /*put_body=*/"{\"message\":\"backend_error\"}");
+  ASSERT_FALSE(result_out.has_value());
+}
+
+TEST_F(EmailAliasesAPITest, UpdateAlias_ReturnsError_OnNonUpdatedMessage) {
+  auto result_out =
+      CallUpdateAliasWith("alias@example.com",
+                          /*put_body=*/"{\"message\":\"not_updated\"}");
+  ASSERT_FALSE(result_out.has_value());
+  EXPECT_TRUE(result_out.error().find("not_updated") != std::string::npos);
+}
+
+TEST_F(EmailAliasesAPITest, UpdateAlias_ReturnsError_OnNoResponseBody) {
+  auto result_out = CallUpdateAliasWith("alias@example.com",
+                                        /*put_body=*/std::nullopt,
+                                        /*net_error=*/net::ERR_FAILED);
+  ASSERT_FALSE(result_out.has_value());
+  EXPECT_EQ(result_out.error(),
+            l10n_util::GetStringUTF8(
+                IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY));
+}
+
+TEST_F(EmailAliasesAPITest, UpdateAlias_ReturnsError_OnInvalidJson) {
+  auto result_out = CallUpdateAliasWith("alias@example.com",
+                                        /*put_body=*/"not a json");
+  ASSERT_FALSE(result_out.has_value());
+  EXPECT_EQ(result_out.error(),
+            l10n_util::GetStringUTF8(
+                IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY));
+}
+TEST_F(EmailAliasesAPITest, DeleteAlias_SucceedsAndRefreshes_OnValidResponse) {
+  auto result_out =
+      CallDeleteAliasWith("alias@example.com",
+                          /*delete_body=*/"{\"message\":\"deleted\"}");
+  ASSERT_TRUE(result_out.has_value());
+}
+
+TEST_F(EmailAliasesAPITest, DeleteAlias_ReturnsError_OnBackendError) {
+  auto result_out =
+      CallDeleteAliasWith("alias@example.com",
+                          /*delete_body=*/"{\"message\":\"backend_error\"}");
+  ASSERT_FALSE(result_out.has_value());
+}
+
+TEST_F(EmailAliasesAPITest, DeleteAlias_ReturnsError_OnNoResponseBody) {
+  auto result_out = CallDeleteAliasWith("alias@example.com",
+                                        /*delete_body=*/std::nullopt,
+                                        /*net_error=*/net::ERR_FAILED);
+  ASSERT_FALSE(result_out.has_value());
+  EXPECT_EQ(result_out.error(),
+            l10n_util::GetStringUTF8(
+                IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY));
+}
+
+TEST_F(EmailAliasesAPITest, DeleteAlias_ReturnsError_OnInvalidJson) {
+  auto result_out = CallDeleteAliasWith("alias@example.com",
+                                        /*delete_body=*/"not a json");
+  ASSERT_FALSE(result_out.has_value());
+  EXPECT_EQ(result_out.error(),
+            l10n_util::GetStringUTF8(
+                IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY));
+}
+
+TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
+  const std::string alias_email = "alias@example.com";
+  auto result_out = CallUpdateAliasWith(
+      alias_email,
+      /*put_body=*/"{\"message\":\"updated\"}",
+      /*net_error=*/std::nullopt,
+      /*refresh_body=*/
+      std::string("[{\"email\":\"dest@example.com\",\"alias\":\"") +
+          alias_email +
+          "\",\"created_at\":\"2025-01-01T00:00:00Z\",\"last_used\":\"\","
+          "\"status\":\"active\"}]");
+  ASSERT_TRUE(result_out.has_value());
+  ASSERT_FALSE(observer_.last_aliases.empty());
+  EXPECT_EQ(observer_.last_aliases[0]->email, alias_email);
+}
+
+TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
+  auto result_out =
+      CallUpdateAliasWith("alias@example.com",
+                          /*put_body=*/"{\"message\":\"updated\"}",
+                          /*net_error=*/std::nullopt,
+                          /*refresh_body=*/"{\"message\":\"backend_error\"}",
+                          /*wait_for_update=*/false);
+  ASSERT_TRUE(result_out.has_value());
+  EXPECT_EQ(observer_.alias_updates, 0u);
+}
+
+TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
+  // Authenticate to set a non-empty auth token.
+  const std::string init_body = "{\"verificationToken\":\"token123\"}";
+  const std::string result_body =
+      "{\"authToken\":\"auth456\", \"verified\":true, "
+      "\"service\":\"email-aliases\"}";
+  url_loader_factory_.AddResponse(
+      EmailAliasesService::GetAccountsServiceVerifyInitURL().spec(), init_body);
+  url_loader_factory_.AddResponse(
+      EmailAliasesService::GetAccountsServiceVerifyResultURL().spec(),
+      result_body);
+
+  bool auth_called = false;
+  service_->RequestAuthentication(
+      "test@example.com",
+      base::BindOnce(
+          [](bool* called_out,
+             base::expected<std::monostate, std::string> result) {
+            *called_out = true;
+            ASSERT_TRUE(result.has_value());
+          },
+          &auth_called));
+  EXPECT_TRUE(base::test::RunUntil([&]() { return auth_called; }));
+  // Wait until auth token is set by the session poll response.
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return service_->GetAuthTokenForTesting() == "auth456"; }));
+
+  // Intercept the next manage request to capture headers.
+  const GURL manage_url = EmailAliasesService::GetEmailAliasesServiceBaseURL();
+  std::string seen_authorization;
+  std::string seen_api_key;
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        if (request.url == manage_url) {
+          if (auto v = request.headers.GetHeader("Authorization")) {
+            seen_authorization = *v;
+          }
+          if (auto v = request.headers.GetHeader("X-API-key")) {
+            seen_api_key = *v;
+          }
+        }
+      }));
+
+  // Provide a successful GenerateAlias response to trigger ApiFetch.
+  const std::string alias_email = "mock-1234@bravealias.com";
+  url_loader_factory_.AddResponse(
+      manage_url.spec(), std::string("{\"message\":\"created\",\"alias\":\"") +
+                             alias_email + "\"}");
+
+  auto gen_result = CallGenerateAliasWith(std::nullopt);
+  // The helper enqueues the request body separately; here we just ensure it
+  // ran. Validate headers captured by the interceptor.
+  EXPECT_EQ(seen_authorization, "Bearer auth456");
+  EXPECT_EQ(seen_api_key, EmailAliasesService::GetEmailAliasesServiceAPIKey());
+}
 
 }  // namespace email_aliases

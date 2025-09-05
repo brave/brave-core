@@ -11,15 +11,19 @@
 
 #include "absl/strings/str_format.h"
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
+#include "brave/components/email_aliases/email_aliases_api_key.h"
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
+#include "mojo/public/cpp/bindings/clone_traits.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -35,12 +39,16 @@ constexpr char kAccountServiceEndpoint[] = "https://%s/v2/%s";
 constexpr char kAccountsServiceVerifyInitPath[] = "verify/init";
 constexpr char kAccountsServiceVerifyResultPath[] = "verify/result";
 
+constexpr char kEmailAliasesServiceBaseURL[] =
+    "https://aliases.bravesoftware.com";
+constexpr char kEmailAliasesServiceManagePath[] = "/manage";
+
 // Minimum interval between verify/result polls
 constexpr base::TimeDelta kSessionPollInterval = base::Seconds(2);
 // Maximum total polling duration for a single verification flow.
 constexpr base::TimeDelta kMaxSessionPollDuration = base::Minutes(30);
 
-const net::NetworkTrafficAnnotationTag traffic_annotation =
+const net::NetworkTrafficAnnotationTag kTrafficAnnotation =
     net::DefineNetworkTrafficAnnotation("brave_accounts_service", R"(
       semantics {
         sender: "Email Aliases service"
@@ -55,6 +63,32 @@ const net::NetworkTrafficAnnotationTag traffic_annotation =
     })");
 
 constexpr int kMaxResponseLength = 32768;
+
+// Parses a JSON response body into a Dict and surfaces backend error payloads.
+// Returns base::unexpected with a user-facing error string if:
+// - There is no response body
+// - The response is not a dictionary
+// - The response contains an ErrorResponse
+base::expected<base::Value::Dict, std::string> ParseResponseDictOrError(
+    const std::optional<std::string>& response_body) {
+  if (!response_body) {
+    return base::unexpected(l10n_util::GetStringUTF8(
+        IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY));
+  }
+  auto dict_opt = base::JSONReader::ReadDict(*response_body);
+  if (!dict_opt) {
+    return base::unexpected(l10n_util::GetStringUTF8(
+        IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY));
+  }
+  if (auto err = ErrorResponse::FromValue(*dict_opt)) {
+    LOG(ERROR) << "Email Aliases service error: " << err->error;
+    std::string msg = base::UTF16ToUTF8(
+        l10n_util::GetStringFUTF16(IDS_EMAIL_ALIASES_SERVICE_REPORTED_ERROR,
+                                   base::UTF8ToUTF16(err->error)));
+    return base::unexpected(msg);
+  }
+  return base::ok(std::move(*dict_opt));
+}
 
 }  // namespace
 
@@ -71,11 +105,24 @@ GURL EmailAliasesService::GetAccountsServiceVerifyResultURL() {
                               kAccountsServiceVerifyResultPath));
 }
 
+// static
+GURL EmailAliasesService::GetEmailAliasesServiceBaseURL() {
+  return GURL(absl::StrFormat("%s%s", kEmailAliasesServiceBaseURL,
+                              kEmailAliasesServiceManagePath));
+}
+
+// static
+std::string EmailAliasesService::GetEmailAliasesServiceAPIKey() {
+  return BUILDFLAG(EMAIL_ALIASES_API_KEY);
+}
+
 EmailAliasesService::EmailAliasesService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory),
       verify_init_url_(GetAccountsServiceVerifyInitURL()),
-      verify_result_url_(GetAccountsServiceVerifyResultURL()) {
+      verify_result_url_(GetAccountsServiceVerifyResultURL()),
+      email_aliases_service_base_url_(GetEmailAliasesServiceBaseURL()),
+      email_aliases_api_key_(GetEmailAliasesServiceAPIKey()) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::kEmailAliases));
 }
 
@@ -127,7 +174,7 @@ void EmailAliasesService::RequestAuthentication(
   resource_request->url = verify_init_url_;
   resource_request->method = net::HttpRequestHeaders::kPostMethod;
   verification_simple_url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request), traffic_annotation);
+      std::move(resource_request), kTrafficAnnotation);
   verification_simple_url_loader_->SetRetryOptions(
       /* max_retries=*/3,
       network::SimpleURLLoader::RETRY_ON_5XX |
@@ -194,7 +241,7 @@ void EmailAliasesService::RequestSession() {
   resource_request->headers.SetHeader(
       "Authorization", std::string("Bearer ") + verification_token_);
   verification_simple_url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request), traffic_annotation);
+      std::move(resource_request), kTrafficAnnotation);
   verification_simple_url_loader_->AttachStringForUpload(*body,
                                                          "application/json");
   verification_simple_url_loader_->DownloadToString(
@@ -249,6 +296,8 @@ void EmailAliasesService::OnRequestSessionResponse(
   auth_token_ = *parsed_session->auth_token;
   session_poll_elapsed_timer_.reset();
   NotifyObserversAuthStateChanged(mojom::AuthenticationStatus::kAuthenticated);
+  // Kick off an initial aliases refresh on successful authentication.
+  RefreshAliases();
 }
 
 void EmailAliasesService::MaybeRequestSessionAgain() {
@@ -283,20 +332,36 @@ void EmailAliasesService::CancelAuthenticationOrLogout(
 }
 
 void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {
-  std::move(callback).Run(base::unexpected(std::string("Not implemented")));
+  base::Value::Dict body_value;  // empty JSON object
+  ApiFetch(email_aliases_service_base_url_,
+           net::HttpRequestHeaders::kPostMethod, body_value,
+           base::BindOnce(&EmailAliasesService::OnGenerateAliasResponse,
+                          weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void EmailAliasesService::UpdateAlias(const std::string& alias_email,
                                       const std::optional<std::string>& note,
                                       UpdateAliasCallback callback) {
-  // TODO: Implement alias update logic
-  std::move(callback).Run(base::unexpected(std::string("Not implemented")));
+  // Build JSON using IDL-defined shape
+  UpdateAliasRequest request;
+  request.alias = alias_email;
+  request.status = "active";
+  auto body_value = request.ToValue();
+  ApiFetch(email_aliases_service_base_url_, net::HttpRequestHeaders::kPutMethod,
+           body_value,
+           base::BindOnce(&EmailAliasesService::OnUpdateAliasResponse,
+                          weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void EmailAliasesService::DeleteAlias(const std::string& alias_email,
                                       DeleteAliasCallback callback) {
-  // TODO: Implement alias deletion logic
-  std::move(callback).Run(base::unexpected(std::string("Not implemented")));
+  DeleteAliasRequest request;
+  request.alias = alias_email;
+  auto body_value = request.ToValue();
+  ApiFetch(email_aliases_service_base_url_,
+           net::HttpRequestHeaders::kDeleteMethod, body_value,
+           base::BindOnce(&EmailAliasesService::OnDeleteAliasResponse,
+                          weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void EmailAliasesService::AddObserver(
@@ -312,6 +377,149 @@ void EmailAliasesService::AddObserver(
 
 std::string EmailAliasesService::GetAuthTokenForTesting() const {
   return auth_token_;
+}
+
+void EmailAliasesService::ApiFetch(
+    const GURL& url,
+    const char* method,
+    const base::Value::Dict& body_value,
+    BodyAsStringCallback download_to_string_callback) {
+  auto resource_request = std::make_unique<network::ResourceRequest>();
+  resource_request->url = url;
+  resource_request->method = method;
+  resource_request->headers.SetHeader("Authorization",
+                                      std::string("Bearer ") + auth_token_);
+  resource_request->headers.SetHeader("X-API-key", email_aliases_api_key_);
+  auto simple_url_loader = network::SimpleURLLoader::Create(
+      std::move(resource_request), kTrafficAnnotation);
+  // For non-GET/HEAD methods attach a JSON body. Backend expects text/plain.
+  if (method != net::HttpRequestHeaders::kGetMethod &&
+      method != net::HttpRequestHeaders::kHeadMethod) {
+    auto body = base::WriteJson(body_value);
+    CHECK(body);
+    simple_url_loader->AttachStringForUpload(body.value(), "text/plain");
+  }
+  // Keep loader alive until completion by transferring ownership through the
+  // callback. This allows multiple alias requests to run concurrently.
+  auto* loader_ptr = simple_url_loader.get();
+  loader_ptr->DownloadToString(
+      url_loader_factory_.get(),
+      base::BindOnce(&EmailAliasesService::OnApiFetchDownloadToStringComplete,
+                     weak_factory_.GetWeakPtr(),
+                     std::move(download_to_string_callback),
+                     std::move(simple_url_loader)),
+      kMaxResponseLength);
+}
+
+void EmailAliasesService::OnApiFetchDownloadToStringComplete(
+    BodyAsStringCallback callback,
+    std::unique_ptr<network::SimpleURLLoader> /*owned_loader*/,
+    std::unique_ptr<std::string> response_body) {
+  std::optional<std::string> body_opt;
+  if (response_body) {
+    body_opt = std::move(*response_body);
+  }
+  std::move(callback).Run(std::move(body_opt));
+}
+
+void EmailAliasesService::OnGenerateAliasResponse(
+    GenerateAliasCallback user_callback,
+    std::optional<std::string> response_body) {
+  auto parsed = ParseResponseDictOrError(response_body);
+  if (!parsed.has_value()) {
+    std::move(user_callback).Run(base::unexpected(parsed.error()));
+    return;
+  }
+  if (auto ok = GenerateAliasResponse::FromValue(parsed.value())) {
+    if (ok->message == "created" && !ok->alias.empty()) {
+      std::move(user_callback).Run(base::ok(ok->alias));
+      return;
+    }
+  }
+  std::move(user_callback)
+      .Run(base::unexpected(l10n_util::GetStringUTF8(
+          IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE)));
+}
+
+void EmailAliasesService::OnUpdateAliasResponse(
+    UpdateAliasCallback user_callback,
+    std::optional<std::string> response_body) {
+  RefreshAliases();
+  auto parsed = ParseResponseDictOrError(response_body);
+  if (!parsed.has_value()) {
+    std::move(user_callback).Run(base::unexpected(parsed.error()));
+    return;
+  }
+  if (auto edited = AliasEditedResponse::FromValue(parsed.value())) {
+    if (edited->message != "updated") {
+      std::move(user_callback).Run(base::unexpected(edited->message));
+      return;
+    }
+  }
+  std::move(user_callback).Run(base::ok(std::monostate{}));
+}
+
+void EmailAliasesService::OnDeleteAliasResponse(
+    DeleteAliasCallback user_callback,
+    std::optional<std::string> response_body) {
+  RefreshAliases();
+  auto parsed = ParseResponseDictOrError(response_body);
+  if (!parsed.has_value()) {
+    std::move(user_callback).Run(base::unexpected(parsed.error()));
+    return;
+  }
+  if (auto edited = AliasEditedResponse::FromValue(parsed.value())) {
+    if (edited->message != "deleted") {
+      std::move(user_callback).Run(base::unexpected(edited->message));
+      return;
+    }
+  }
+  std::move(user_callback).Run(base::ok(std::monostate{}));
+}
+
+void EmailAliasesService::RefreshAliases() {
+  ApiFetch(email_aliases_service_base_url_.Resolve("?status=active"),
+           net::HttpRequestHeaders::kGetMethod, base::Value::Dict(),
+           base::BindOnce(&EmailAliasesService::OnRefreshAliasesResponse,
+                          weak_factory_.GetWeakPtr()));
+}
+
+void EmailAliasesService::OnRefreshAliasesResponse(
+    std::optional<std::string> response_body) {
+  // TODO(https://github.com/brave/brave-browser/issues/48959):
+  // In this function, when an error happens, we should show
+  // an error message to the user (requires design work)
+  if (!response_body) {
+    LOG(ERROR) << "Email Aliases service error: No response body";
+    return;
+  }
+  auto parsed = base::JSONReader::Read(*response_body);
+  if (parsed && parsed->is_dict() && parsed->GetDict().contains("message")) {
+    auto* error_message = parsed->GetDict().FindString("message");
+    if (error_message) {
+      LOG(ERROR) << "Email Aliases service error: " << *error_message;
+      return;
+    }
+  }
+  if (!parsed || !parsed->is_list()) {
+    LOG(ERROR) << "Email Aliases service error: Invalid response format";
+    return;
+  }
+  std::vector<email_aliases::mojom::AliasPtr> aliases;
+  for (const auto& alias_val : parsed->GetList()) {
+    if (!alias_val.is_dict()) {
+      LOG(ERROR) << "Email Aliases service error: Invalid response format";
+      return;
+    }
+    if (auto entry = AliasListEntry::FromValue(alias_val.GetDict())) {
+      auto alias_obj = email_aliases::mojom::Alias::New();
+      alias_obj->email = entry->alias;
+      aliases.push_back(std::move(alias_obj));
+    }
+  }
+  for (auto& observer : observers_) {
+    observer->OnAliasesUpdated(mojo::Clone(aliases));
+  }
 }
 
 }  // namespace email_aliases
