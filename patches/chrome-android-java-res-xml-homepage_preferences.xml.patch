@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/xml/homepage_preferences.xml b/chrome/android/java/res/xml/homepage_preferences.xml
-index 3796a71e3382637681eca8611a761a466d81a307..4b9f1a5a75c49cfc77726ccafbb7a52ebe528044 100644
+index 5cdf4518fa7a9b0a7bde2d0c1681a1c0444a16f3..fc22913a53b9554543f76699a5afbd652aa87315 100644
 --- a/chrome/android/java/res/xml/homepage_preferences.xml
 +++ b/chrome/android/java/res/xml/homepage_preferences.xml
 @@ -14,7 +14,7 @@ found in the LICENSE file.

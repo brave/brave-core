@@ -1,8 +1,8 @@
 diff --git a/ui/views/interaction/element_tracker_views.cc b/ui/views/interaction/element_tracker_views.cc
-index f2f6795858d41a1f6c5685e700fdb65f04938c88..bc045f9544ff50f9a4fe8ce993fde4441f2e2497 100644
+index c587533d918928f11994c775d618d88c023a91e1..e09c1243ab37190623dbd7f52b90353d76d658b4 100644
 --- a/ui/views/interaction/element_tracker_views.cc
 +++ b/ui/views/interaction/element_tracker_views.cc
-@@ -292,7 +292,7 @@ class ElementTrackerViews::WidgetTracker : public WidgetObserver {
+@@ -300,7 +300,7 @@ class ElementTrackerViews::WidgetTracker : public WidgetObserver {
    }
  
    const raw_ptr<ElementTrackerViews> tracker_;
