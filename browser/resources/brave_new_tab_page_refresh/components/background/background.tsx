@@ -126,9 +126,13 @@ function useSafeAreaReporter(frameHandle?: IframeBackgroundHandle) {
       return
     }
 
+    const selector = '.sponsored-background-safe-area'
+    const safeArea = document.querySelector<HTMLDivElement>(selector)
+    if (!safeArea) {
+      return
+    }
+
     const postSafeArea = debounce(() => {
-      const selector = '.sponsored-background-safe-area'
-      const safeArea = document.querySelector<HTMLDivElement>(selector)
       if (!safeArea) {
         return
       }
@@ -141,8 +145,9 @@ function useSafeAreaReporter(frameHandle?: IframeBackgroundHandle) {
 
     postSafeArea()
 
-    window.addEventListener('resize', postSafeArea)
-    return () => window.removeEventListener('resize', postSafeArea)
+    const resizeObserver = new ResizeObserver(postSafeArea)
+    resizeObserver.observe(safeArea)
+    return () => { resizeObserver.disconnect() }
   }, [widgetLayoutReady, frameHandle])
 }
 
