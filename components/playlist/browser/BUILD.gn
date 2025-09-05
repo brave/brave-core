@@ -40,7 +40,6 @@ static_library("browser") {
     "playlist_tab_helper_observer.h",
     "playlist_thumbnail_downloader.cc",
     "playlist_thumbnail_downloader.h",
-    "pref_names.h",
     "type_converter.cc",
     "type_converter.h",
   ]

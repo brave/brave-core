@@ -32,6 +32,7 @@ class SearchSuggestionDataSource {
 
   let isPrivate: Bool
   let isAIChatAvailable: Bool
+  let isPlaylistAvailable: Bool
   let maxSearchSuggestions = 5
   var suggestions = [String]()
   private let maxPeriodBraveSearchPromotion = 15
@@ -102,9 +103,15 @@ class SearchSuggestionDataSource {
 
   // MARK: - Initialization
 
-  init(isPrivate: Bool, isAIChatAvailable: Bool, searchEngines: SearchEngines?) {
+  init(
+    isPrivate: Bool,
+    isAIChatAvailable: Bool,
+    isPlaylistAvailable: Bool,
+    searchEngines: SearchEngines?
+  ) {
     self.isPrivate = isPrivate
     self.isAIChatAvailable = isAIChatAvailable
+    self.isPlaylistAvailable = isPlaylistAvailable
     self.searchEngines = searchEngines
   }
 
