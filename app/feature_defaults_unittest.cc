@@ -93,7 +93,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAllowURNsInIframes,
-      &blink::features::kAttributionReportingInBrowserMigration,
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
@@ -159,7 +158,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &features::kSCTAuditing,
       &features::kScrimForBrowserWindowModal,
-      &features::KScrimForTabModal,
+      &features::kScrimForTabModal,
       &features::kServiceWorkerAutoPreload,
       &features::kTabHoverCardImages,
 #if !BUILDFLAG(IS_ANDROID)

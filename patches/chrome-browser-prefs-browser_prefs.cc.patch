@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 581384fccb025f2a82945a19589667288722acff..710ac037721c34967caf2669e746c3958afcba35 100644
+index 828156efdf361413f9da377086157c7e5803c4dc..bc5d76ce4dd7519b06e7f2467e65022cc404597e 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1960,6 +1960,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1978,6 +1978,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #endif  // !BUILDFLAG(IS_ANDROID)
  
    // This is intentionally last.
@@ -10,7 +10,7 @@ index 581384fccb025f2a82945a19589667288722acff..710ac037721c34967caf2669e746c395
    RegisterLocalStatePrefsForMigration(registry);
  }
  
-@@ -2413,6 +2414,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2431,6 +2432,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
        omnibox::kIsOmniboxInBottomPosition, false,
        user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
  #endif
