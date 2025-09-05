@@ -3,11 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {
-  BraveWallet,
-  MeldCryptoCurrency,
-  SpotPriceRegistry,
-} from '../constants/types'
+import { BraveWallet, MeldCryptoCurrency } from '../constants/types'
 
 export const getAssetSymbol = (asset: MeldCryptoCurrency) => {
   return asset.currencyCode.replace(`_${asset.chainCode}`, '')
@@ -24,13 +20,6 @@ export const getAssetPriceId = (asset: MeldCryptoCurrency) => {
   }
 
   return getAssetSymbol(asset)?.toLowerCase() ?? ''
-}
-
-export const getTokenPriceFromRegistry = (
-  spotPriceRegistry: SpotPriceRegistry,
-  asset: MeldCryptoCurrency,
-): BraveWallet.AssetPrice | undefined => {
-  return spotPriceRegistry[getAssetPriceId(asset)]
 }
 
 export const getAssetIdKey = (asset: MeldCryptoCurrency) => {

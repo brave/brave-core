@@ -11,7 +11,6 @@ import {
   MeldFiatCurrency,
   MeldPaymentMethod,
   SerializableTransactionInfo,
-  SpotPriceRegistry,
 } from '../../constants/types'
 import type { TokenBalancesRegistry } from '../slices/entities/token-balance.entity'
 
@@ -21,9 +20,6 @@ import {
   FILECOINIcon,
   SOLIcon,
 } from '../../assets/network_token_icons/network_token_icons'
-
-// utils
-import { getPriceIdForToken } from '../../utils/pricing-utils'
 
 // mocks
 import {
@@ -364,40 +360,38 @@ export const mockBitcoinTestnetAccount: BraveWallet.AccountInfo = {
   hardware: undefined,
 }
 
-export const mockCardanoAccount: BraveWallet.AccountInfo = {
-  name: 'mockAdaAccountName',
-  address: '',
-  accountId: {
-    coin: BraveWallet.CoinType.ADA,
-    keyringId: BraveWallet.KeyringId.kCardanoMainnet,
-    kind: BraveWallet.AccountKind.kDerived,
-    address: '',
-    accountIndex: 0,
-    uniqueKey: '1_0_0_0',
-  },
-  hardware: undefined,
-}
-
-export const mockSpotPriceRegistry: SpotPriceRegistry = {
-  eth: {
-    fromAsset: 'ETH',
+export const mockSpotPriceRegistry: BraveWallet.AssetPrice[] = [
+  {
+    coinType: BraveWallet.CoinType.ETH,
+    chainId: '0x1',
+    address: '0x0000000000000000000000000000000000000000',
     price: '4000',
-    toAsset: 'mockValue',
-    assetTimeframeChange: 'mockValue',
+    percentageChange24h: 'mockValue',
+    vsCurrency: 'USD',
+    cacheStatus: BraveWallet.Gate3CacheStatus.kHit,
+    source: BraveWallet.AssetPriceSource.kCoingecko,
   },
-  dog: {
-    fromAsset: 'DOG',
+  {
+    coinType: BraveWallet.CoinType.ETH,
+    chainId: '0x1',
+    address: '0x0000000000000000000000000000000000000000',
     price: '100',
-    toAsset: 'mockValue',
-    assetTimeframeChange: 'mockValue',
+    percentageChange24h: 'mockValue',
+    vsCurrency: 'USD',
+    cacheStatus: BraveWallet.Gate3CacheStatus.kHit,
+    source: BraveWallet.AssetPriceSource.kCoingecko,
   },
-  [getPriceIdForToken(mockBasicAttentionToken)]: {
-    fromAsset: mockBasicAttentionToken.symbol,
+  {
+    coinType: BraveWallet.CoinType.ETH,
+    chainId: '0x1',
+    address: mockBasicAttentionToken.contractAddress,
     price: '0.88',
-    toAsset: 'mockValue',
-    assetTimeframeChange: 'mockValue',
+    percentageChange24h: 'mockValue',
+    vsCurrency: 'USD',
+    cacheStatus: BraveWallet.Gate3CacheStatus.kHit,
+    source: BraveWallet.AssetPriceSource.kCoingecko,
   },
-}
+]
 
 export const mockAddresses: string[] = [
   '0xea674fdde714fd979de3edf0f56aa9716b898ec8',

@@ -22,7 +22,7 @@ import { parseTransactionFeesWithoutPrices } from '../../../utils/tx-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import {
   getTokenPriceAmountFromRegistry,
-  getPriceIdForToken,
+  getPriceRequestForToken,
 } from '../../../utils/pricing-utils'
 
 // Queries
@@ -119,16 +119,18 @@ export const EditGas = ({
     return makeNetworkAsset(selectedNetwork)
   }, [selectedNetwork])
 
-  const networkTokenPriceIds = React.useMemo(
-    () => (networkAsset ? [getPriceIdForToken(networkAsset)] : []),
-    [networkAsset],
-  )
-
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    networkTokenPriceIds.length && defaultFiatCurrency
-      ? { ids: networkTokenPriceIds, toCurrency: defaultFiatCurrency }
+  const networkAssetPriceRequest = React.useMemo(() => {
+    return getPriceRequestForToken(networkAsset)
+  }, [networkAsset])
+
+  const { data: spotPrices } = useGetTokenSpotPricesQuery(
+    networkAssetPriceRequest && defaultFiatCurrency
+      ? {
+          requests: [networkAssetPriceRequest],
+          vsCurrency: defaultFiatCurrency,
+        }
       : skipToken,
     querySubscriptionOptions60s,
   )
@@ -256,9 +258,9 @@ export const EditGas = ({
 
   const suggestedEIP1559FiatGasFee =
     suggestedEIP1559GasFee
-    && spotPriceRegistry
+    && spotPrices
     && new Amount(suggestedEIP1559GasFee)
-      .times(getTokenPriceAmountFromRegistry(spotPriceRegistry, networkAsset))
+      .times(getTokenPriceAmountFromRegistry(spotPrices, networkAsset))
       .formatAsFiat()
 
   const customEIP1559GasFee = showCustomMaxPriorityPanel
@@ -270,9 +272,9 @@ export const EditGas = ({
     : undefined
   const customEIP1559FiatGasFee =
     customEIP1559GasFee
-    && spotPriceRegistry
+    && spotPrices
     && new Amount(customEIP1559GasFee)
-      .times(getTokenPriceAmountFromRegistry(spotPriceRegistry, networkAsset))
+      .times(getTokenPriceAmountFromRegistry(spotPrices, networkAsset))
       .formatAsFiat()
 
   const gasLimitComponent = React.useMemo(

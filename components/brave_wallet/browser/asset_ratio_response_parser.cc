@@ -8,15 +8,44 @@
 #include "base/check.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/api/asset_ratio.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_wallet {
+
+namespace {
+
+std::optional<mojom::Gate3CacheStatus> GetCacheStatusFromString(
+    const std::string& cache_status) {
+  std::string lowercase_status = base::ToUpperASCII(cache_status);
+  if (lowercase_status == "HIT") {
+    return mojom::Gate3CacheStatus::kHit;
+  } else if (lowercase_status == "MISS") {
+    return mojom::Gate3CacheStatus::kMiss;
+  }
+  return std::nullopt;
+}
+
+std::optional<mojom::AssetPriceSource> GetAssetPriceSourceFromString(
+    const std::string& source) {
+  std::string uppercase_source = base::ToUpperASCII(source);
+  if (uppercase_source == "COINGECKO") {
+    return mojom::AssetPriceSource::kCoingecko;
+  } else if (uppercase_source == "JUPITER") {
+    return mojom::AssetPriceSource::kJupiter;
+  }
+  return std::nullopt;
+}
+
+}  // namespace
 
 std::optional<std::string> ParseSardineAuthToken(
     const base::Value& json_value) {
@@ -41,75 +70,88 @@ std::optional<std::string> ParseSardineAuthToken(
   return *auth_token;
 }
 
-bool ParseAssetPrice(const base::Value& json_value,
-                     const std::vector<std::string>& from_assets,
-                     const std::vector<std::string>& to_assets,
-                     std::vector<mojom::AssetPricePtr>* values) {
-  // Parses results like this:
-  // /v2/relative/provider/coingecko/bat,chainlink/btc,usd/1w
-  // {
-  //  "payload": {
-  //    "chainlink": {
-  //      "btc": 0.00063075,
-  //      "usd": 29.17,
-  //      "btc_timeframe_change": -0.9999742658279261,
-  //      "usd_timeframe_change": 0.1901162098990581
-  //    },
-  //    "bat": {
-  //      "btc": 1.715e-05,
-  //      "usd": 0.793188,
-  //      "btc_timeframe_change": -0.9999993002916352,
-  //      "usd_timeframe_change": -0.9676384677306338
-  //    }
-  //  },
-  //  "lastUpdated": "2021-08-16T15:45:11.901Z"
-  // }
+std::vector<mojom::AssetPricePtr> ParseAssetPrices(
+    const base::Value& json_value) {
+  // Parses results from the new /api/pricing/v1/getPrices endpoint:
+  // [
+  //   {
+  //     "coin_type": "ETH",
+  //     "chain_id": "0x1",
+  //     "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+  //     "price": "0.55393",
+  //     "percentge_change_24h": "0.1",
+  //     "vs_currency": "USD",
+  //     "cache_status": "HIT",
+  //     "source": "coingecko"
+  //   }
+  // ]
 
-  DCHECK(values);
-
-  if (!json_value.is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
-    return false;
+  if (!json_value.is_list()) {
+    LOG(ERROR) << "Invalid response, expected array";
+    return {};
   }
 
-  const auto& response_dict = json_value.GetDict();
-  const auto* payload = response_dict.FindDict("payload");
-  if (!payload) {
-    return false;
-  }
+  const auto& response_list = json_value.GetList();
 
-  for (const std::string& from_asset : from_assets) {
-    const auto* from_asset_dict = payload->FindDictByDottedPath(from_asset);
-    if (!from_asset_dict) {
+  std::vector<mojom::AssetPricePtr> prices;
+  for (const auto& item : response_list) {
+    if (!item.is_dict()) {
+      LOG(ERROR) << "Invalid response, expected dict";
       continue;
     }
 
-    for (const std::string& to_asset : to_assets) {
-      auto asset_price = mojom::AssetPrice::New();
-      asset_price->from_asset = from_asset;
-      asset_price->to_asset = to_asset;
+    const auto& response_dict = item.GetDict();
+    const std::string* coin_type_str = response_dict.FindString("coin_type");
+    const std::string* chain_id = response_dict.FindString("chain_id");
+    const std::string* address = response_dict.FindString("address");
+    const std::string* price = response_dict.FindString("price");
+    const std::string* vs_currency_str =
+        response_dict.FindString("vs_currency");
+    const std::string* cache_status_str =
+        response_dict.FindString("cache_status");
+    const std::string* source_str = response_dict.FindString("source");
+    const std::string* percentage_change_24h_str =
+        response_dict.FindString("percentage_change_24h");
 
-      std::optional<double> to_price =
-          from_asset_dict->FindDoubleByDottedPath(to_asset);
-      if (!to_price) {
-        return false;
-      }
-      asset_price->price = base::NumberToString(*to_price);
-      std::string to_asset_timeframe_key =
-          absl::StrFormat("%s_timeframe_change", to_asset);
-      std::optional<double> to_timeframe_change =
-          from_asset_dict->FindDoubleByDottedPath(to_asset_timeframe_key);
-      if (!to_timeframe_change) {
-        return false;
-      }
-      asset_price->asset_timeframe_change =
-          base::NumberToString(*to_timeframe_change);
-
-      values->push_back(std::move(asset_price));
+    if (!coin_type_str || !price || !vs_currency_str || !cache_status_str ||
+        !source_str) {
+      continue;
     }
+
+    auto coin_type = GetCoinTypeFromString(*coin_type_str);
+    if (!coin_type) {
+      continue;
+    }
+
+    auto cache_status = GetCacheStatusFromString(*cache_status_str);
+    if (!cache_status) {
+      continue;
+    }
+
+    auto source = GetAssetPriceSourceFromString(*source_str);
+    if (!source) {
+      continue;
+    }
+
+    auto asset_price = mojom::AssetPrice::New();
+    asset_price->coin_type = *coin_type;
+    if (chain_id) {
+      asset_price->chain_id = *chain_id;
+    }
+    if (address) {
+      asset_price->address = *address;
+    }
+    asset_price->price = *price;
+    asset_price->vs_currency = *vs_currency_str;
+    asset_price->cache_status = *cache_status;
+    asset_price->source = *source;
+    asset_price->percentage_change_24h =
+        percentage_change_24h_str ? *percentage_change_24h_str : "";
+
+    prices.push_back(std::move(asset_price));
   }
 
-  return true;
+  return prices;
 }
 
 bool ParseAssetPriceHistory(const base::Value& json_value,
