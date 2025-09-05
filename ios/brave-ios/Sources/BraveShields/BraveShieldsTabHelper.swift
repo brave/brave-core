@@ -57,6 +57,9 @@ public class BraveShieldsTabHelper {
   public func shieldLevel(for url: URL?, considerAllShieldsOption: Bool) -> ShieldLevel {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return .disabled }
     if FeatureList.kBraveShieldsContentSettings.enabled {
+      if considerAllShieldsOption && !isBraveShieldsEnabled(for: url) {
+        return .disabled
+      }
       return braveShieldsSettings.adBlockMode(for: url).shieldLevel
     }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
