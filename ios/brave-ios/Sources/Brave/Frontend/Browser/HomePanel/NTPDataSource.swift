@@ -21,7 +21,9 @@ enum NTPWallpaper {
   }
 
   var richNewTabTakeoverURL: URL? {
-        return URL(string: "chrome-untrusted://new-tab-takeover/assets/index.html")
+        //return URL(string: "chrome-untrusted://new-tab-takeover/assets/index.html")
+        // TODO(aseren): Construct this URL from parsed creative parameters.
+        return URL(string: "chrome://new-tab-takeover-page?creativeInstanceId=00000000-0000-4000-8000-000000000004&placementId=1234567890")
     // if case .sponsoredMedia(let background) = self {
     //   return background.isRichNewTabTakeoverFile ? background.imagePath : nil
     // }

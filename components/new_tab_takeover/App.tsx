@@ -30,7 +30,7 @@ function useParametersFromQuery(): { placementId: string | null; creativeInstanc
     const urlParams = new URLSearchParams(window.location.search);
     const placementId = urlParams.get('placementId');
     const creativeInstanceId = urlParams.get('creativeInstanceId');
-    
+
     return {
       placementId: sanitizeId(placementId),
       creativeInstanceId: sanitizeId(creativeInstanceId)

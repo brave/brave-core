@@ -25,9 +25,8 @@
 
 namespace {
 
-  // This class is responsible for providing sponsored rich media content from the
-// file system to the new tab page.
-
+// TODO(aseren): Remove this class by making NTPSponsoredRichMediaSource as
+// template to share it for iOS, Android and Desktop platforms.
 class NTPSponsoredRichMediaSourceIOS final : public BraveURLDataSourceIOS {
  public:
   // TODO(aseren): Add this function to WebUIIOSDataSource for rich media
@@ -144,9 +143,10 @@ std::string NTPSponsoredRichMediaSourceIOS::GetContentSecurityPolicy(
     network::mojom::CSPDirectiveName directive) const {
   DCHECK(background_images_service_);
   switch (directive) {
-    // case network::mojom::CSPDirectiveName::FrameAncestors:
-    //   return absl::StrFormat("frame-ancestors %s %s;", kBraveUINewTabURL,
-    //                          kBraveUINewTabTakeoverURL);
+    case network::mojom::CSPDirectiveName::FrameAncestors:
+      return absl::StrFormat("frame-ancestors %s %s %s;", kBraveUINewTabURL,
+                             kBraveUINewTabTakeoverURL,
+                             kBraveUINewTabTakeoverPageURL);
     case network::mojom::CSPDirectiveName::Sandbox:
       return "sandbox allow-scripts;";
     case network::mojom::CSPDirectiveName::DefaultSrc:

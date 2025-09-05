@@ -16,6 +16,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui.h"
+#include "brave/ios/browser/ui/webui/new_tab_takeover_ui/new_tab_takeover_ui_ios.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
@@ -89,7 +90,7 @@ NSInteger BraveWebUIControllerFactory::GetErrorCodeForWebUIURL(
   }
 
   const std::string url_host = url.host();
-  if (url_host == kNewTabTakeoverHost) {
+  if (url_host == kNewTabTakeoverHost || url_host == kNewTabTakeoverPageHost) {
     return 0;
   }
 
@@ -107,6 +108,8 @@ BraveWebUIControllerFactory::CreateWebUIIOSControllerForURL(
   const std::string url_host = url.host();
   if (url_host == kNewTabTakeoverHost) {
     return std::make_unique<NTPSponsoredRichMediaController>(web_ui, url, ntp_background_images_service_);
+  } else if (url_host == kNewTabTakeoverPageHost) {
+    return std::make_unique<NewTabTakeoverUIIOS>(web_ui, url, ntp_background_images_service_);
   }
 
   brave::WebUIIOSFactoryFunction function =
