@@ -50,6 +50,20 @@ BASE_FEATURE(kBraveDayZeroExperiment,
              "BraveDayZeroExperiment",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+#if BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
+// Run WebAssembly code in the DrumBrake interpreter instead of the optimizing
+// compiler. Automatically enabled when V8 is in jitless mode.
+BASE_FEATURE(kBraveWebAssemblyJitless,
+             "BraveWebAssemblyJitless",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif  // BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
+
+// Controls V8 optimization (JIT compilation). When disabled, V8 runs in jitless
+// mode, which reduces performance but improves security.
+BASE_FEATURE(kBraveV8OptimizerJit,
+             "BraveV8OptimizerJit",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
 #if BUILDFLAG(IS_ANDROID)
 // Enable new onboarding on Android
 BASE_FEATURE(kNewAndroidOnboarding,

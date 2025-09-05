@@ -155,6 +155,7 @@
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
+#include "third_party/blink/public/common/switches.h"
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -934,9 +935,19 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
     int child_process_id) {
   ChromeContentBrowserClient::AppendExtraCommandLineSwitches(command_line,
                                                              child_process_id);
+
   std::string process_type =
       command_line->GetSwitchValueASCII(switches::kProcessType);
   if (process_type == switches::kRendererProcess) {
+    if (BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE) &&
+        base::FeatureList::IsEnabled(features::kBraveWebAssemblyJitless)) {
+      content::RenderProcessHost* process =
+          content::RenderProcessHost::FromID(child_process_id);
+      if (process && process->IsJitDisabled()) {
+        command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags,
+                                        "--wasm-jitless");
+      }
+    }
     // Command line parameters from the browser process are propagated to the
     // renderers *after* ContentBrowserClient::AppendExtraCommandLineSwitches()
     // is called from RenderProcessHostImpl::AppendRendererCommandLine(). This
@@ -1390,4 +1401,18 @@ bool BraveContentBrowserClient::AllowSignedExchange(
   // `features::kSignedHTTPExchange`, which was being used to disable signed
   // exchanges.
   return false;
+}
+
+bool BraveContentBrowserClient::IsJitDisabledForSite(
+    content::BrowserContext* browser_context,
+    const GURL& site_url) {
+  // When v8-optimizer-is-jit flag is enabled, V8 optimizer
+  // settings should disable JIT completely, not just optimizations
+  if (AreV8OptimizationsDisabledForSite(browser_context, site_url) &&
+      !base::FeatureList::IsEnabled(features::kBraveV8OptimizerJit)) {
+    return true;
+  }
+
+  return ChromeContentBrowserClient::IsJitDisabledForSite(browser_context,
+                                                          site_url);
 }
