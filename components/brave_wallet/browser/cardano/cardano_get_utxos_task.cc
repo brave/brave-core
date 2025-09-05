@@ -11,8 +11,8 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/extend.h"
 #include "base/functional/bind.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/task/bind_post_task.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
@@ -43,15 +43,14 @@ cardano_rpc::CardanoRpc* GetCardanoUtxosTask::GetCardanoRpc() {
 
 void GetCardanoUtxosTask::FetchAllRequiredData() {
   if (pending_addresses_.empty()) {
-    StopWithResult(UtxoMap());
+    StopWithResult(cardano_rpc::UnspentOutputs());
     return;
   }
 
   for (const auto& address : pending_addresses_) {
     GetCardanoRpc()->GetUtxoList(
-        address.ToString(),
-        base::BindOnce(&GetCardanoUtxosTask::OnGetUtxoList,
-                       weak_ptr_factory_.GetWeakPtr(), address));
+        address, base::BindOnce(&GetCardanoUtxosTask::OnGetUtxoList,
+                                weak_ptr_factory_.GetWeakPtr(), address));
   }
 }
 
@@ -63,7 +62,7 @@ void GetCardanoUtxosTask::OnGetUtxoList(
     return;
   }
 
-  utxos_[address] = std::move(utxos.value());
+  base::Extend(utxos_, std::move(utxos.value()));
   CHECK(std::erase(pending_addresses_, address));
 
   OnMaybeAllRequiredDataFetched();
@@ -85,7 +84,7 @@ void GetCardanoUtxosTask::StopWithError(std::string error_string) {
   std::move(callback_).Run(base::unexpected(std::move(error_string)));
 }
 
-void GetCardanoUtxosTask::StopWithResult(UtxoMap result) {
+void GetCardanoUtxosTask::StopWithResult(cardano_rpc::UnspentOutputs result) {
   weak_ptr_factory_.InvalidateWeakPtrs();
 
   std::move(callback_).Run(base::ok(std::move(result)));

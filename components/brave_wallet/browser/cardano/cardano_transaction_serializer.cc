@@ -12,6 +12,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
@@ -37,9 +38,8 @@ cbor::Value::ArrayValue CardanoTransactionSerializer::SerializeInputs(
   for (const auto& input : tx.inputs()) {
     cbor::Value::ArrayValue input_value;
     input_value.emplace_back(input.utxo_outpoint.txid);
-    // TODO(https://github.com/brave/brave-browser/issues/45278): upstream a fix
-    // for cbor::Value to support uint64_t
-    input_value.emplace_back(static_cast<int64_t>(input.utxo_outpoint.index));
+    input_value.emplace_back(
+        base::strict_cast<int64_t>(input.utxo_outpoint.index));
     result.emplace_back(std::move(input_value));
   }
 
@@ -62,7 +62,8 @@ cbor::Value::ArrayValue CardanoTransactionSerializer::SerializeOutputs(
     if (serialize_as_max_value) {
       output_value.emplace_back(std::numeric_limits<int64_t>::max());
     } else {
-      output_value.emplace_back(static_cast<int64_t>(output.amount));
+      // CHECK is safe as total lovelace supply is 45*10^15.
+      output_value.emplace_back(base::checked_cast<int64_t>(output.amount));
     }
 
     result.emplace_back(std::move(output_value));
@@ -79,11 +80,12 @@ cbor::Value CardanoTransactionSerializer::SerializeTxBody(
 
   body_map.emplace(0, SerializeInputs(tx));
   body_map.emplace(1, SerializeOutputs(tx));
-  body_map.emplace(2,
-                   options_.max_value_for_fee
-                       ? std::numeric_limits<int64_t>::max()
-                       : static_cast<int64_t>(tx.EffectiveFeeAmount()));  // fee
-  body_map.emplace(3, static_cast<int64_t>(tx.invalid_after()));          // ttl
+  body_map.emplace(
+      2, options_.max_value_for_fee
+             ? std::numeric_limits<int64_t>::max()
+             // CHECK is safe as total lovelace supply is 45*10^15.
+             : base::checked_cast<int64_t>(tx.EffectiveFeeAmount()));   // fee
+  body_map.emplace(3, base::strict_cast<int64_t>(tx.invalid_after()));  // ttl
 
   return cbor::Value(body_map);
 }
