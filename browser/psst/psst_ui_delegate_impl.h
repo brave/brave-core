@@ -16,6 +16,9 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   PsstUiDelegateImpl();
   ~PsstUiDelegateImpl() override;
 
+  PsstUiDelegateImpl(const PsstUiDelegateImpl&) = delete;
+  PsstUiDelegateImpl& operator=(const PsstUiDelegateImpl&) = delete;
+
   // PsstUiDelegate overrides
   void UpdateTasks(long progress,
                    const std::vector<PolicyTask>& applied_tasks) override;
