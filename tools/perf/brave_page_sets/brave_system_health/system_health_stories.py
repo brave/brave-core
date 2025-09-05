@@ -169,10 +169,15 @@ class LoadBraveNewsStory2024(_BraveLoadingStory):
 
   def _Login(self, action_runner):
     browser = action_runner.tab.browser
-    # Resize to 1400px to see the Brave News block.
+    # Resize window to 1400px to see the Brave News block.
     tab_id = browser.tabs[0].id
     window_id = browser.GetWindowForTarget(tab_id)['result']['windowId']
-    browser.SetWindowBounds(window_id, {'width': 1400})
+    browser.SetWindowBounds(window_id, {
+        'left': 0,
+        'top': 0,
+        'width': 1400,
+        'height': 1000
+    })
 
 
 class MultiTabLoadExampleStory2024(_BraveMultiTabLoadingStory):
