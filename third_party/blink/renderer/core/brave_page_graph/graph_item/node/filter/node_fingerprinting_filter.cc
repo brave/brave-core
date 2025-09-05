@@ -6,7 +6,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/filter/node_fingerprinting_filter.h"
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
-#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 
 namespace brave_page_graph {
 
@@ -22,9 +22,8 @@ ItemName NodeFingerprintingFilter::GetItemName() const {
 }
 
 ItemDesc NodeFingerprintingFilter::GetItemDesc() const {
-  blink::StringBuilder ts;
-  ts << NodeFilter::GetItemDesc() << " [" << rule_.ToString() << "]";
-  return ts.ReleaseString();
+  return blink::StrCat(
+      {NodeFilter::GetItemDesc(), " [", blink::String(rule_.ToString()), "]"});
 }
 
 void NodeFingerprintingFilter::AddGraphMLAttributes(
