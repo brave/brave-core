@@ -14,6 +14,7 @@
 #include "components/autofill/core/browser/foundations/browser_autofill_manager.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
+#include "components/strike_database/strike_database.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 
 namespace autofill {
