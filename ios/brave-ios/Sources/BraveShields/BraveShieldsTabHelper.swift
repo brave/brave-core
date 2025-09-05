@@ -49,6 +49,9 @@ public class BraveShieldsTabHelper {
     // Also assign to Domain until deprecated so reverse migration is required
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     domain.shield_allOff = NSNumber(booleanLiteral: !isEnabled)
+    DataController.performOnMainContext { context in
+      try? context.save()
+    }
   }
 
   public func shieldLevel(for url: URL?, considerAllShieldsOption: Bool) -> ShieldLevel {
@@ -72,6 +75,9 @@ public class BraveShieldsTabHelper {
     // Also assign to Domain until deprecated so reverse migration is required
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     domain.domainBlockAdsAndTrackingLevel = shieldLevel
+    DataController.performOnMainContext { context in
+      try? context.save()
+    }
   }
 
   public func setBlockScriptsEnabled(_ isEnabled: Bool, for url: URL?) {
@@ -82,6 +88,9 @@ public class BraveShieldsTabHelper {
     // Also assign to Domain until deprecated so reverse migration is required
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     domain.shield_noScript = NSNumber(booleanLiteral: isEnabled)
+    DataController.performOnMainContext { context in
+      try? context.save()
+    }
   }
 
   public func setBlockFingerprintingEnabled(_ isEnabled: Bool, for url: URL?) {
@@ -92,6 +101,9 @@ public class BraveShieldsTabHelper {
     // Also assign to Domain until deprecated so reverse migration is required
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     domain.shield_fpProtection = NSNumber(booleanLiteral: isEnabled)
+    DataController.performOnMainContext { context in
+      try? context.save()
+    }
   }
 
   /// Whether or not a given shield should be enabled based on domain exceptions and the users global preference
@@ -136,5 +148,8 @@ public class BraveShieldsTabHelper {
     // TODO: Support AutoShred via content settings brave-browser#47753
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     domain.shredLevel = shredLevel
+    DataController.performOnMainContext { context in
+      try? context.save()
+    }
   }
 }
