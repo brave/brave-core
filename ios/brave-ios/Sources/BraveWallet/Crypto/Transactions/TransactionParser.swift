@@ -12,7 +12,7 @@ enum TransactionParser {
   static func gasFee(
     from transaction: BraveWallet.TransactionInfo,
     network: BraveWallet.NetworkInfo,
-    assetRatios: [String: Double],
+    assetRatios: [BraveWallet.AssetPrice],
     solEstimatedTxFee: UInt64? = nil,
     currencyFormatter: NumberFormatter
   ) -> GasFee? {
@@ -32,11 +32,14 @@ enum TransactionParser {
         radix: .hex,
         decimals: Int(network.decimals)
       )?.trimmingTrailingZeros {
-        if let doubleValue = Double(value),
-          let assetRatio = assetRatios[network.symbol.lowercased()],
-          let fiat = currencyFormatter.formatAsFiat(doubleValue * assetRatio)
-        {
-          gasFee = .init(fee: value, fiat: fiat)
+        if let doubleValue = Double(value) {
+          let assetRatio =
+            Double(assetRatios.getTokenPrice(for: network.nativeToken)?.price ?? "0") ?? 0
+          if let fiat = currencyFormatter.formatAsFiat(doubleValue * assetRatio) {
+            gasFee = .init(fee: value, fiat: fiat)
+          } else {
+            gasFee = .init(fee: value, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
+          }
         } else {
           gasFee = .init(fee: value, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
         }
@@ -52,11 +55,14 @@ enum TransactionParser {
         radix: .decimal,
         decimals: Int(network.decimals)
       )?.trimmingTrailingZeros {
-        if let doubleValue = Double(value),
-          let assetRatio = assetRatios[network.symbol.lowercased()],
-          let fiat = currencyFormatter.formatAsFiat(doubleValue * assetRatio)
-        {
-          gasFee = .init(fee: value, fiat: fiat)
+        if let doubleValue = Double(value) {
+          let assetRatio =
+            Double(assetRatios.getTokenPrice(for: network.nativeToken)?.price ?? "0") ?? 0
+          if let fiat = currencyFormatter.formatAsFiat(doubleValue * assetRatio) {
+            gasFee = .init(fee: value, fiat: fiat)
+          } else {
+            gasFee = .init(fee: value, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
+          }
         } else {
           gasFee = .init(fee: value, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
         }
@@ -78,11 +84,14 @@ enum TransactionParser {
           precisionAfterDecimalPoint: decimals,
           rounded: true
         ).trimmingTrailingZeros
-        if let doubleValue = Double(gasFeeString),
-          let assetRatio = assetRatios[network.symbol.lowercased()],
-          let fiat = currencyFormatter.formatAsFiat(doubleValue * assetRatio)
-        {
-          gasFee = .init(fee: gasFeeString, fiat: fiat)
+        if let doubleValue = Double(gasFeeString) {
+          let assetRatio =
+            Double(assetRatios.getTokenPrice(for: network.nativeToken)?.price ?? "0") ?? 0
+          if let fiat = currencyFormatter.formatAsFiat(doubleValue * assetRatio) {
+            gasFee = .init(fee: gasFeeString, fiat: fiat)
+          } else {
+            gasFee = .init(fee: gasFeeString, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
+          }
         } else {
           gasFee = .init(fee: gasFeeString, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
         }
@@ -96,11 +105,14 @@ enum TransactionParser {
           decimals: 8
         )
       else { return nil }
-      if let doubleValue = Double(gasFeeString),
-        let assetRatio = assetRatios[network.symbol.lowercased()],
-        let fiat = currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio))
-      {
-        gasFee = .init(fee: gasFeeString, fiat: fiat)
+      if let doubleValue = Double(gasFeeString) {
+        let assetRatio =
+          Double(assetRatios.getTokenPrice(for: network.nativeToken)?.price ?? "0") ?? 0
+        if let fiat = currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio)) {
+          gasFee = .init(fee: gasFeeString, fiat: fiat)
+        } else {
+          gasFee = .init(fee: gasFeeString, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
+        }
       } else {
         gasFee = .init(fee: gasFeeString, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
       }
@@ -115,11 +127,14 @@ enum TransactionParser {
           decimals: Int(network.decimals)
         )
       else { return nil }
-      if let doubleValue = Double(gasFeeString),
-        let assetRatio = assetRatios[network.symbol.lowercased()],
-        let fiat = currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio))
-      {
-        gasFee = .init(fee: gasFeeString, fiat: fiat)
+      if let doubleValue = Double(gasFeeString) {
+        let assetRatio =
+          Double(assetRatios.getTokenPrice(for: network.nativeToken)?.price ?? "0") ?? 0
+        if let fiat = currencyFormatter.string(from: NSNumber(value: doubleValue * assetRatio)) {
+          gasFee = .init(fee: gasFeeString, fiat: fiat)
+        } else {
+          gasFee = .init(fee: gasFeeString, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
+        }
       } else {
         gasFee = .init(fee: gasFeeString, fiat: currencyFormatter.formatAsFiat(0) ?? "$0.00")
       }
@@ -149,7 +164,7 @@ enum TransactionParser {
     accountInfos: [BraveWallet.AccountInfo],
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
-    assetRatios: [String: Double],
+    assetRatios: [BraveWallet.AssetPrice],
     nftMetadata: [String: BraveWallet.NftMetadata],
     solEstimatedTxFee: UInt64?,
     currencyFormatter: NumberFormatter,
@@ -180,7 +195,7 @@ enum TransactionParser {
           )?.trimmingTrailingZeros ?? ""
         let sendFiat =
           currencyFormatter.formatAsFiat(
-            assetRatios[txNetwork.nativeToken.assetRatioId.lowercased(), default: 0]
+            (Double(assetRatios.getTokenPrice(for: txNetwork.nativeToken)?.price ?? "0") ?? 0)
               * (Double(sendValueFormatted) ?? 0)
           ) ?? "$0.00"
         let gasLimitValueFormatted =
@@ -256,7 +271,8 @@ enum TransactionParser {
         let fromFiat =
           currencyFormatter.string(
             from: NSNumber(
-              value: assetRatios[txNetwork.nativeToken.assetRatioId.lowercased(), default: 0]
+              value: (Double(assetRatios.getTokenPrice(for: txNetwork.nativeToken)?.price ?? "0")
+                ?? 0)
                 * (Double(fromValueFormatted) ?? 0)
             )
           ) ?? "$0.00"
@@ -304,7 +320,8 @@ enum TransactionParser {
         let fromFiat =
           currencyFormatter.string(
             from: NSNumber(
-              value: assetRatios[txNetwork.nativeToken.assetRatioId.lowercased(), default: 0]
+              value: (Double(assetRatios.getTokenPrice(for: txNetwork.nativeToken)?.price ?? "0")
+                ?? 0)
                 * (Double(fromValueFormatted) ?? 0)
             )
           ) ?? "$0.00"
@@ -349,7 +366,7 @@ enum TransactionParser {
           )?.trimmingTrailingZeros ?? ""
         let fromFiat =
           currencyFormatter.formatAsFiat(
-            assetRatios[txNetwork.nativeToken.assetRatioId.lowercased(), default: 0]
+            (Double(assetRatios.getTokenPrice(for: txNetwork.nativeToken)?.price ?? "0") ?? 0)
               * (Double(fromValueFormatted) ?? 0)
           ) ?? "$0.00"
         // Example:
@@ -414,7 +431,7 @@ enum TransactionParser {
           )?.trimmingTrailingZeros ?? ""
         fromFiat =
           currencyFormatter.formatAsFiat(
-            assetRatios[token.assetRatioId.lowercased(), default: 0]
+            (Double(assetRatios.getTokenPrice(for: token)?.price ?? "0") ?? 0)
               * (Double(fromAmount) ?? 0)
           ) ?? "$0.00"
       }
@@ -505,12 +522,12 @@ enum TransactionParser {
 
       let fromFiat =
         currencyFormatter.formatAsFiat(
-          assetRatios[fromToken?.assetRatioId.lowercased() ?? "", default: 0]
+          (Double(fromToken.flatMap { assetRatios.getTokenPrice(for: $0) }?.price ?? "0") ?? 0)
             * (Double(formattedSellAmount) ?? 0)
         ) ?? "$0.00"
       let minBuyAmountFiat =
         currencyFormatter.formatAsFiat(
-          assetRatios[toToken?.assetRatioId.lowercased() ?? "", default: 0]
+          (Double(toToken.flatMap { assetRatios.getTokenPrice(for: $0) }?.price ?? "0") ?? 0)
             * (Double(formattedMinBuyAmount) ?? 0)
         ) ?? "$0.00"
       // Example:
@@ -589,7 +606,7 @@ enum TransactionParser {
           )?.trimmingTrailingZeros ?? ""
         approvalFiat =
           currencyFormatter.formatAsFiat(
-            assetRatios[token?.assetRatioId.lowercased() ?? "", default: 0]
+            (Double(token.flatMap { assetRatios.getTokenPrice(for: $0) }?.price ?? "0") ?? 0)
               * (Double(approvalAmount) ?? 0)
           ) ?? "$0.00"
       }
@@ -697,7 +714,7 @@ enum TransactionParser {
         )?.trimmingTrailingZeros ?? ""
       let fromFiat =
         currencyFormatter.formatAsFiat(
-          assetRatios[txNetwork.nativeToken.assetRatioId.lowercased(), default: 0]
+          (Double(assetRatios.getTokenPrice(for: txNetwork.nativeToken)?.price ?? "0") ?? 0)
             * (Double(fromValueFormatted) ?? 0)
         ) ?? "$0.00"
       // Example:
@@ -769,7 +786,7 @@ enum TransactionParser {
         } else {
           fromFiat =
             currencyFormatter.formatAsFiat(
-              assetRatios[token.assetRatioId.lowercased(), default: 0]
+              (Double(assetRatios.getTokenPrice(for: token)?.price ?? "0") ?? 0)
                 * (Double(fromValueFormatted) ?? 0)
             ) ?? "$0.00"
         }
@@ -1331,7 +1348,7 @@ extension BraveWallet.TransactionInfo {
     accountInfos: [BraveWallet.AccountInfo],
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
-    assetRatios: [String: Double],
+    assetRatios: [BraveWallet.AssetPrice],
     nftMetadata: [String: BraveWallet.NftMetadata],
     solEstimatedTxFee: UInt64? = nil,
     currencyFormatter: NumberFormatter,
