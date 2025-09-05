@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/dom_window.h b/third_party/blink/renderer/core/frame/dom_window.h
-index 5ae68b90b470cc09a56c34de7b740819b7811c0d..aceca72c874108f763a14e2e0f385b7cccaeadc7 100644
+index d5e5a9286d89b82c93512d6884aabdbdb74af52b..9191246bd9d7124219e82f7094bdbe9691e3b96b 100644
 --- a/third_party/blink/renderer/core/frame/dom_window.h
 +++ b/third_party/blink/renderer/core/frame/dom_window.h
 @@ -199,6 +199,7 @@ class CORE_EXPORT DOMWindow : public WindowProperties {
