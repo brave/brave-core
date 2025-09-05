@@ -208,6 +208,7 @@
           settings.
         </message>
       </if>
+      <!-- Error Pages -->
       <message name="IDS_ERRORPAGES_SUMMARY_BLOCKED_BY_CLIENT" desc="Summary in the error page when a request is blocked by the browser.">
         This page has been blocked by Brave
       </message>

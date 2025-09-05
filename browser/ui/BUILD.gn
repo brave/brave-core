@@ -70,6 +70,7 @@ source_set("ui") {
   deps += brave_ui_allow_circular_includes_from
 
   public_deps = [ ":ui_public_dependencies" ]
+  deps += [ "//brave/browser/brave_origin" ]
 
   sources = [
     "brave_ui_features.cc",

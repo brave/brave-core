@@ -3,6 +3,24 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+source_set("policy") {
+  sources = [
+    "brave_browser_policy_provider.cc",
+    "brave_browser_policy_provider.h",
+    "brave_profile_policy_provider.cc",
+    "brave_profile_policy_provider.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_origin",
+    "//brave/components/constants",
+    "//components/policy/core/browser",
+    "//components/policy/core/common",
+    "//components/prefs",
+  ]
+}
+
 # See `//components/policy/BUILD.gn` for more info about how these files
 # are generated. Also see:
 # `//brave/chromium_src/components/policy/resources/policy_templates.py`
