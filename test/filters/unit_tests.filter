@@ -56,7 +56,7 @@
 # the url it checks uses a brave: scheme when a chrome: scheme is expected).
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResultExplicitSigninDisabled
--CookieBrowsingDataCounterUtilsTest.CookieCounterResult_RevampEnabled 
+-CookieBrowsingDataCounterUtilsTest.CookieCounterResult_RevampEnabled
 -SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.UploadCardSaveWithCvcDialogContent
 -TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy
 -TemplateURLServiceTest.RepairPrepopulatedSearchEngines
@@ -116,11 +116,7 @@
 -ComposeEnablingTest.*
 -ComposePopupAutofillDriverTest.*
 -DigitalIdentityLowRiskOriginsTest.*
--LoginStateCheckerTest.CachesOnlyLastPageContent
--LoginStateCheckerTest.CachesPageContentIfRequestInFlight
--LoginStateCheckerTest.ExceedsMaxLoginChecksAndFails
--LoginStateCheckerTest.UserIsLoggedInOnFirstAttempt
--LoginStateCheckerTest.UserIsLoggedInOnSecondAttempt
+-LoginStateCheckerTest.*
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
 -PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
 -PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
@@ -185,15 +181,8 @@
 -PrerendererNavigationPredictorPrefetchHoldbackDisabledTest.*
 -PrerenderGWSPrefetchHoldbackOffTest.*
 -PrerenderManagerBasicRequirementTest.*
--PrerenderManagerPrewarmTest.StartPrewarmSearchResult
--PrerenderManagerTest.DestroyedOnNavigateAway
--PrerenderManagerTest.DisallowSearchUrlBookmarkBar
--PrerenderManagerTest.DisallowSearchUrlNewTabPage
--PrerenderManagerTest.StartCleanPrerenderDirectUrlInput
--PrerenderManagerTest.StartCleanSearchSuggestionPrerender
--PrerenderManagerTest.StartNewPrerenderDirectUrlInput
--PrerenderManagerTest.StartNewSuggestionPrerender
--PrerenderManagerTest.StartSameSuggestionPrerender
+-PrerenderManagerPrewarmTest.*
+-PrerenderManagerTest.*
 -PrerenderTest.*
 
 # This test fails due to Brave's disabling of header variation (e.g overrides
@@ -350,6 +339,7 @@
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
 -EnhancedProtectionDownloadTest.*
 -ExternalAppRedirectCheckingTest.ShouldReportExternalAppRedirect
+-GeneratedSecuritySettingsBundlePrefTest.BundlePrefUpdatesSafeBrowsingState
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
@@ -586,9 +576,9 @@
 -ChromeStructuredMetricsRecorderTest.DeviceEventsRecorded
 
 # These tests fail because we disable kPermissionPredictionsV2.
--PredictionBasedPermissionUiSelectorTest.GetPredictionTypeToUseCpssV1
--PredictionBasedPermissionUiSelectorTest.OnlyPromptsForCurrentTypeAreCounted
--PredictionBasedPermissionUiSelectorTest.RequestsWithFewPromptsAreSent
+-PermissionsAiUiSelectorTest.GetPredictionTypeToUseCpssV1
+-PermissionsAiUiSelectorTest.OnlyPromptsForCurrentTypeAreCounted
+-PermissionsAiUiSelectorTest.RequestsWithFewPromptsAreSent
 -PredictionSourceTest/PredictionBasedPermissionUiExpectedPredictionSourceTest.*
 
 # This test fails because we block installation of Probabilistic Reveal Token
