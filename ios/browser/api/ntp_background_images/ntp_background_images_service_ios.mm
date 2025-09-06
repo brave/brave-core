@@ -76,6 +76,8 @@ class NTPBackgroundImagesServiceObserverBridge
         std::make_unique<NTPBackgroundImagesServiceObserverBridge>(self);
     _service->AddObserver(_observerBridge.get());
     _service->Init();
+
+    // TODO(aseren): Maybe add URLDataSource for rich media background here.
   }
   return self;
 }
