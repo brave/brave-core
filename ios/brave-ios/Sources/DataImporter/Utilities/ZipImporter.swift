@@ -8,13 +8,13 @@ import BraveShared
 import Foundation
 import os.log
 
-public class ZipImporter {
-  public enum ZipImportError: Error {
+class ZipImporter {
+  enum ZipImportError: Error {
     case failedToUnzip
     case invalidFileSystemURL
   }
 
-  public static func unzip(path: URL) async throws -> URL {
+  static func unzip(path: URL) async throws -> URL {
     // The zip file's name - The name of the extracted folder
     let fileName = path.deletingPathExtension().lastPathComponent
 
@@ -60,7 +60,7 @@ public class ZipImporter {
     }
 
     // Extract the zip file to the temporary directory
-    if await JSUnzip.unzip(path.path, toDirectory: tempDirectoryImportPath.path) {
+    if await Unzip.unzip(path.path, toDirectory: tempDirectoryImportPath.path) {
       // If the file was extracted to a folder of the same name, we return that folder
       let filePath = tempDirectoryImportPath.appending(path: fileName)
       if await AsyncFileManager.default.fileExists(atPath: filePath.path) {
