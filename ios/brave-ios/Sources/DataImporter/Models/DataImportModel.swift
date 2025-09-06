@@ -6,6 +6,7 @@
 import BraveCore
 import BraveShared
 import Foundation
+import Growth
 import SwiftUI
 import UniformTypeIdentifiers
 import os.log
@@ -103,6 +104,14 @@ class DataImportModel: ObservableObject {
 
   @MainActor
   func importData(from profile: [String: URL]) async {
+    defer {
+      if self.importState == .success {
+        recordP3A(answer: .importedFromSafari)
+      } else if self.importState == .failure {
+        recordP3A(answer: .didNotImport)
+      }
+    }
+
     do {
       self.importState = .importing
       try await importProfile(profile)
@@ -126,6 +135,18 @@ class DataImportModel: ObservableObject {
 
   @MainActor
   func importData(from file: URL, importType: DataImportType) async {
+    defer {
+      if self.importState == .success {
+        if importType == .bookmarks {
+          recordP3A(answer: .importedFromBookmarksHTML)
+        } else {
+          recordP3A(answer: .importedFromSafari)
+        }
+      } else if self.importState == .failure {
+        recordP3A(answer: .didNotImport)
+      }
+    }
+
     do {
       switch importType {
       case .bookmarks:
@@ -203,6 +224,14 @@ class DataImportModel: ObservableObject {
 
   @MainActor
   func keepPasswords(option: DataImportPasswordConflictOption) async {
+    defer {
+      if self.importState == .success {
+        recordP3A(answer: .importedFromSafari)
+      } else if self.importState == .failure {
+        recordP3A(answer: .didNotImport)
+      }
+    }
+
     if option == .abortImport {
       self.importError = nil
       self.importState = .none
@@ -393,5 +422,19 @@ class DataImportModel: ObservableObject {
     }
 
     return result
+  }
+
+  // MARK: - P3A
+  private enum Answer: Int, CaseIterable {
+    case didNotImport = 1
+    case importedFromBrave = 2
+    case importedFromChrome = 3
+    case importedFromFirefox = 4
+    case importedFromBookmarksHTML = 5
+    case importedFromSafari = 6
+  }
+
+  private func recordP3A(answer: Answer) {
+    UmaHistogramEnumeration("Brave.Importer.ImporterSource.2", sample: answer)
   }
 }
