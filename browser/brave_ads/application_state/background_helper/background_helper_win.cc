@@ -16,7 +16,7 @@
 
 namespace brave_ads {
 
-BackgroundHelperWin::BackgroundHelperWin(){
+BackgroundHelperWin::BackgroundHelperWin() {
   hwnd_subscription_ =
       gfx::SingletonHwnd::GetInstance()->RegisterCallback(base::BindRepeating(
           &BackgroundHelperWin::OnWndProc, base::Unretained(this)));
