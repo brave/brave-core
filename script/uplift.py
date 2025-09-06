@@ -23,6 +23,7 @@ from lib.github import (GitHub, get_authenticated_user_login, parse_user_logins,
                         get_title_from_first_commit, push_branches_to_remote,
                         set_issue_details)
 
+from reformat_branch import format_all_touched_files, format_files, reformat_branch
 
 class PrConfig():
     channel_names = channels()
@@ -301,16 +302,52 @@ def main():
     fancy_print('NOTE: Commits are being detected by diffing "' + local_branch +
                 '" against "' + top_level_base + '"')
     local_branches = {}
+    use_reformat = False
     branch = ''
+    if is_sha(top_level_base):
+        compare_from = top_level_base
+    else:
+        compare_from = 'origin/' + top_level_base
+
     try:
         for channel in config.channels_to_process:
-            branch = create_branch(channel, top_level_base,
-                                   remote_branches[channel], local_branch, args)
+            branch = create_branch(channel, compare_from,
+                                   remote_branches[channel], local_branch,
+                                   args)
             local_branches[channel] = branch
     except Exception as e:
-        print('[ERROR] cherry-pick failed for branch "' + branch +
-              '". Please resolve manually:\n' + str(e))
-        return 1
+        print('[WARNING] cherry-pick failed for branch "' + branch + str(e))
+        use_reformat = True
+
+    if use_reformat:
+        try:
+            fancy_print('[INFO] Retrying with reformatting enabled')
+
+            pre_format_commit = None
+
+            # Reformat commits in the local_branch first (the branch can be old).
+            with scoped_cwd(BRAVE_CORE_ROOT):
+                execute(['git', 'checkout', local_branch])
+
+                print(
+                    f'Reformatting branch {local_branch}, base {compare_from}')
+                pre_format_commit = reformat_branch(local_branch, compare_from)
+                execute(['git', 'checkout', '-B', local_branch])
+
+            # Try again with preformatting the changed files.
+            for channel in config.channels_to_process:
+                branch = create_branch(channel,
+                                       pre_format_commit or compare_from,
+                                       remote_branches[channel],
+                                       local_branch,
+                                       args,
+                                       preformat=True)
+                local_branches[channel] = branch
+
+        except Exception as e:
+            print('[ERROR] cherry-pick failed for branch "' + branch +
+                  '". Please resolve manually:\n' + str(e))
+            return 1
 
     print('\nPushing local branches to remote...')
     push_branches_to_remote(BRAVE_CORE_ROOT,
@@ -322,7 +359,7 @@ def main():
         print('\nCreating the pull requests...')
         for channel in config.channels_to_process:
             submit_pr(channel, top_level_base, remote_branches[channel],
-                      local_branches[channel], issues_fixed)
+                      local_branches[channel], issues_fixed, use_reformat)
         print('\nDone!')
     except Exception as e:
         print('\n[ERROR] Unhandled error while creating pull request; ' +
@@ -352,18 +389,18 @@ def is_sha(ref):
     return False
 
 
-def create_branch(channel, top_level_base, remote_base, local_branch, args):
+def create_branch(channel,
+                  compare_from,
+                  remote_base,
+                  local_branch,
+                  args,
+                  preformat=False):
     global config
 
     if is_nightly(channel):
         return local_branch
 
     channel_branch = local_branch + '_' + remote_base
-
-    if is_sha(top_level_base):
-        compare_from = top_level_base
-    else:
-        compare_from = 'origin/' + top_level_base
 
     with scoped_cwd(BRAVE_CORE_ROOT):
         # get SHA for all commits (in order)
@@ -372,6 +409,8 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
             '--reverse'
         ])
         sha_list = sha_list.split('\n')
+        if len(sha_list) > 1000:
+            raise Exception('Too many commits!')
         if len(sha_list) == 0:
             raise Exception('No changes detected!')
         try:
@@ -396,9 +435,18 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
                 execute(['git', 'pull', 'origin', remote_base])
                 execute(['git', 'checkout', '-b', channel_branch])
 
+            if preformat:
+                merge_base = execute(
+                    ['git', 'merge-base', compare_from, local_branch]).strip()
+                pre_format_commit = format_all_touched_files(
+                    merge_base, local_branch)
+                if pre_format_commit:
+                    remote_base = pre_format_commit
+
             # TODO: handle errors thrown by cherry-pick
             for sha in sha_list:
-                output = execute(['git', 'cherry-pick', sha]).split('\n')
+                output = execute(['git', 'cherry-pick', '--allow-empty',
+                                  sha]).split('\n')
                 print('- picked ' + sha + ' (' + output[0] + ')')
 
             # squash all commits into one
@@ -420,6 +468,10 @@ def create_branch(channel, top_level_base, remote_base, local_branch, args):
 
         finally:
             # switch back to original branch
+            try:
+                execute(['git', 'cherry-pick', '--abort'])
+            except Exception:
+                pass
             execute(['git', 'checkout', local_branch])
             execute(['git', 'reset', '--hard', sha_list[-1]])
 
@@ -440,7 +492,12 @@ def get_milestone_for_branch(channel_branch):
     return None
 
 
-def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
+def submit_pr(channel,
+              top_level_base,
+              remote_base,
+              local_branch,
+              issues_fixed,
+              reformatted=False):
     global config
 
     milestone_number = get_milestone_for_branch(remote_base)
@@ -463,6 +520,8 @@ def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
         if len(issues_fixed) > 0:
             for fixed in issues_fixed:
                 pr_body += (fixed[0] + '\n')
+        if reformatted:
+            pr_body += 'NOTE: The PR was automatically reformatted.\n'
 
         pr_body += '\nPre-approval checklist: \n'
         pr_body += '- [ ] You have tested your change on Nightly. \n'
