@@ -23,6 +23,7 @@
 #![allow(clippy::needless_range_loop)]
 #![allow(clippy::manual_memcpy)]
 #![allow(clippy::new_without_default)]
+#![allow(dangerous_implicit_autorefs)]
 pub mod aes;
 pub mod arch;
 pub mod dilithium;

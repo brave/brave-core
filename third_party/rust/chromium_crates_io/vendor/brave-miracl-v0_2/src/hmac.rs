@@ -381,7 +381,7 @@ pub fn xmd_expand(hash: usize, hlen: usize, okm: &mut [u8], olen: usize, dst: &[
             0,
             Some(b"H2C-OVERSIZE-DST-"),
             -1,
-            Some(&dst),
+            Some(dst),
         );
         xmd_expand_short_dst(hash, hlen, okm, olen, &w[0..hlen], msg);
     } else {
@@ -656,7 +656,7 @@ pub fn pss_encode(sha: usize, m: &[u8], rng: &mut RAND, f: &mut [u8], rfs: usize
     for i in 0..hlen {
         salt[i] = rng.getbyte()
     }
-    let mask = (0xff as u8) >> (8 * emlen - embits);
+    let mask = (0xffu8) >> (8 * emlen - embits);
     SPhashit(MC_SHA2, sha, &mut h, Some(m));
     if emlen < hlen + hlen + 2 {
         return false;
@@ -683,7 +683,7 @@ pub fn pss_encode(sha: usize, m: &[u8], rng: &mut RAND, f: &mut [u8], rfs: usize
     for i in 0..hlen {
         f[emlen + i - hlen - 1] = h[i];
     }
-    f[emlen - 1] = 0xbc as u8;
+    f[emlen - 1] = 0xbcu8;
     true
 }
 
@@ -696,13 +696,13 @@ pub fn pss_verify(sha: usize, m: &[u8], f: &[u8]) -> bool {
     let mut h: [u8; 64] = [0; 64];
     let mut salt: [u8; 64] = [0; 64];
     let mut md: [u8; 136] = [0; 136];
-    let mask = (0xff as u8) >> (8 * emlen - embits);
+    let mask = (0xffu8) >> (8 * emlen - embits);
 
     SPhashit(MC_SHA2, sha, &mut hmask, Some(m));
     if emlen < hlen + hlen + 2 {
         return false;
     }
-    if f[emlen - 1] != 0xbc as u8 {
+    if f[emlen - 1] != 0xbcu8 {
         return false;
     }
     if (f[0] & (!mask)) != 0 {
@@ -717,7 +717,7 @@ pub fn pss_verify(sha: usize, m: &[u8], f: &[u8]) -> bool {
     mgf1xor(sha, &h[0..hlen], emlen - hlen - 1, &mut db);
     db[0] &= mask;
 
-    let mut k = 0 as u8;
+    let mut k = 0u8;
     for i in 0..emlen - hlen - hlen - 2 {
         k |= db[i]
     }

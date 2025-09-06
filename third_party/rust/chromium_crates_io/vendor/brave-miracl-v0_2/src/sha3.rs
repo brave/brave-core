@@ -185,7 +185,7 @@ impl SHA3 {
     /* process a single byte */
     pub fn process(&mut self, byt: u8) {
         /* process the next message byte */
-        let cnt = self.length as usize;
+        let cnt = self.length;
         let b = cnt % 8;
         let ind = cnt / 8;
         self.s[ind] ^= (byt as u64) << (8 * b);
@@ -280,7 +280,7 @@ impl SHA3 {
             }
             self.process(0x80);
         }
-        let hlen = self.len as usize;
+        let hlen = self.len;
         self.squeeze(digest, hlen);
     }
 

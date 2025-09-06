@@ -127,11 +127,13 @@ impl FP {
 
     /* convert back to regular form */
     pub fn redc(&self) -> BIG {
+        let mut f = FP::new_copy(self);
+        f.reduce();
         if MODTYPE != PSEUDO_MERSENNE && MODTYPE != GENERALISED_MERSENNE {
-            let mut d = DBIG::new_scopy(&(self.x));
+            let mut d = DBIG::new_scopy(&(f.x));
             FP::modulo(&mut d)
         } else {
-            BIG::new_copy(&(self.x))
+            BIG::new_copy(&(f.x))
         }
     }
 

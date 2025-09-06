@@ -89,9 +89,9 @@ fn inv(x: u8) -> u8 {
 
 /* Lagrange interpolation */
 fn interpolate(n: usize, x: &[u8], y: &[u8]) -> u8 {
-    let mut yp = 0 as u8;
+    let mut yp = 0u8;
     for i in 0..n {
-        let mut p = 1 as u8;
+        let mut p = 1u8;
         for j in 0..n {
             if i != j {
                 p = mul(p, mul(x[j], inv(add(x[i], x[j]))));
