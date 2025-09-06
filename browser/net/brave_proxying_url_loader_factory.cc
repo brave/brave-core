@@ -143,7 +143,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::UpdateRequestInfo() {
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::RestartInternal() {
   request_completed_ = false;
-  start_time_ = base::TimeTicks::Now();
+  elapsed_timer_ = {};
 
   base::RepeatingCallback<void(int)> continuation =
       base::BindRepeating(&InProgressRequest::ContinueToBeforeSendHeaders,
@@ -254,7 +254,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnTransferSizeUpdated(
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnComplete(
     const network::URLLoaderCompletionStatus& status) {
   UMA_HISTOGRAM_TIMES("Brave.ProxyingURLLoader.TotalRequestTime",
-                      base::TimeTicks::Now() - start_time_);
+                      elapsed_timer_.Elapsed());
   if (status.error_code != net::OK) {
     OnRequestError(status);
     return;
