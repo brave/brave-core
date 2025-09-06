@@ -313,6 +313,10 @@ inline constexpr char kPageInfoHelpCenterURL[] =
     "https://support.brave.app/hc/en-us/articles/"
     "360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
 
+// Help center article URL for automated password change.
+inline constexpr char16_t kPasswordChangeLearnMoreURL[] =
+    u"https://support.brave.app/";
+
 // Help URL for the bulk password check.
 inline constexpr char kPasswordCheckLearnMoreURL[] =
     "https://support.brave.app/";
@@ -608,6 +612,13 @@ inline constexpr char kChromeAppsDeprecationLearnMoreURL[] =
 inline constexpr char kChromeRootStoreSettingsHelpCenterURL[] =
     "https://chromium.googlesource.com/chromium/src/+/main/net/data/ssl/"
     "chrome_root_store/root_store.md";
+#endif
+
+#if BUILDFLAG(ENABLE_PDF_SAVE_TO_DRIVE)
+// TODO(crbug.com/436926181): Make sure the URL is not a dead link.
+// "Learn more" URL for how to save PDF to Google Drive from the PDF viewer.
+inline constexpr char kPdfViewerSaveToDriveHelpCenterURL[] =
+    "https://support.brave.app/";
 #endif
 
 }  // namespace chrome

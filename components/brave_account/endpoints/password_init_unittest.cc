@@ -23,7 +23,11 @@ bool operator==(const PasswordInit::Response& lhs,
 
 using PasswordInitTestCase = EndpointTestCase<PasswordInit>;
 
-const PasswordInitTestCase kSuccess{
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const PasswordInitTestCase kSuccess{
     .test_name = "success",
     .http_status_code = net::HTTP_OK,
     .raw_reply = R"({ "serializedResponse": "34c375d933e3c",
@@ -48,7 +52,11 @@ const PasswordInitTestCase kSuccess{
 // - HTTP 5XX:
 //   - { "code": 0, "error": "Internal Server Error", "status": <5xx> }
 // clang-format on
-const PasswordInitTestCase kApplicationJsonError{
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const PasswordInitTestCase kApplicationJsonError{
     .test_name = "application_json_error",
     .http_status_code = net::HTTP_BAD_REQUEST,
     .raw_reply =
@@ -66,7 +74,11 @@ const PasswordInitTestCase kApplicationJsonError{
 // non-application/json errors:
 // - HTTP 5XX:
 //   - plain text errors returned by AWS/load balancer
-const PasswordInitTestCase kNonApplicationJsonError{
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const PasswordInitTestCase kNonApplicationJsonError{
     .test_name = "non_application_json_error",
     .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
     .raw_reply = "non-application/json error",

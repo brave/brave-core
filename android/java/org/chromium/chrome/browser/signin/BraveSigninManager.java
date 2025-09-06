@@ -15,6 +15,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.signin.services.SigninManager;
+import org.chromium.components.prefs.PrefService;
 import org.chromium.components.signin.base.CoreAccountInfo;
 import org.chromium.components.signin.identitymanager.AccountInfoServiceProvider;
 import org.chromium.components.signin.identitymanager.IdentityManager;
@@ -85,6 +86,7 @@ public class BraveSigninManager implements SigninManager {
     static SigninManager create(
             long nativeSigninManagerAndroid,
             @JniType("Profile*") Profile profile,
+            @JniType("PrefService*") PrefService prefService,
             @JniType("signin::IdentityManager*") IdentityManager identityManager,
             IdentityMutator identityMutator) {
         AccountInfoServiceProvider.init(identityManager);
@@ -102,7 +104,7 @@ public class BraveSigninManager implements SigninManager {
     @Override
     public void revokeSyncConsent(
             @SignoutReason int signoutSource,
-            SignOutCallback signOutCallback,
+            @Nullable SignOutCallback signOutCallback,
             boolean forceWipeUserData) {}
 
     @Override

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.ts b/chrome/browser/resources/settings/route.ts
-index b60cf718bf1b9e4269e376989f14a962a1def1f7..d6c8055241f8a1283b022602e41ab9b8a1e3ea23 100644
+index 41b2a7bf2cb7926893f3369eb0c9fc5c092d5807..b7cf2f842ea80c106a7b26cd92c9bc7a26a26078 100644
 --- a/chrome/browser/resources/settings/route.ts
 +++ b/chrome/browser/resources/settings/route.ts
 @@ -9,6 +9,7 @@ import {pageVisibility} from './page_visibility.js';
@@ -10,7 +10,7 @@ index b60cf718bf1b9e4269e376989f14a962a1def1f7..d6c8055241f8a1283b022602e41ab9b8
  /**
   * Add all of the child routes that originate from the privacy route,
   * regardless of whether the privacy section under basic or advanced.
-@@ -348,6 +349,7 @@ function createRoutes(): SettingsRoutes {
+@@ -367,6 +368,7 @@ function createRoutes(): SettingsRoutes {
      r.PERFORMANCE.hasMigratedToPlugin = true;
    }
  
@@ -18,7 +18,7 @@ index b60cf718bf1b9e4269e376989f14a962a1def1f7..d6c8055241f8a1283b022602e41ab9b8
    return r as unknown as SettingsRoutes;
  }
  
-@@ -381,7 +383,7 @@ export let routes: SettingsRoutes = Router.getInstance().getRoutes();
+@@ -400,7 +402,7 @@ export let routes: SettingsRoutes = Router.getInstance().getRoutes();
  // Returns the "effective" route when at chrome://settings/.
  export function getTopLevelRoute(): Route {
    if (!loadTimeData.getBoolean('isGuest')) {

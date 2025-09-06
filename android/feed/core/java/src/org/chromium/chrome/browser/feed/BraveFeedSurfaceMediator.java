@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
 
+import org.chromium.chrome.browser.feed.componentinterfaces.SurfaceCoordinator;
 import org.chromium.chrome.browser.feed.sort_ui.FeedOptionsCoordinator;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
@@ -27,8 +28,8 @@ public class BraveFeedSurfaceMediator extends FeedSurfaceMediator {
             FeedSurfaceCoordinator coordinator,
             Context context,
             @Nullable SnapScrollHelper snapScrollHelper,
-            PropertyModel headerModel,
-            @FeedSurfaceCoordinator.StreamTabId int openingTabId,
+            @Nullable PropertyModel headerModel,
+            @SurfaceCoordinator.StreamTabId int openingTabId,
             FeedActionDelegate actionDelegate,
             FeedOptionsCoordinator optionsCoordinator,
             @Nullable UiConfig uiConfig,
