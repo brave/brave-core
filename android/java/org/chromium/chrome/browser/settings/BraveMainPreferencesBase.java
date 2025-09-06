@@ -391,6 +391,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
         // We want to move the address bar preference to the Appearence settings.
         removePreferenceIfPresent(MainSettings.PREF_ADDRESS_BAR);
+
+        // We want to move toolbar shortcut preference to the Appearence settings.
+        removePreferenceIfPresent(MainSettings.PREF_TOOLBAR_SHORTCUT);
     }
 
     // A wrapper to suppress NullAway warning for the prefs which always present
