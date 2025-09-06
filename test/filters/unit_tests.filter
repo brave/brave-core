@@ -56,7 +56,7 @@
 # the url it checks uses a brave: scheme when a chrome: scheme is expected).
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResultExplicitSigninDisabled
--CookieBrowsingDataCounterUtilsTest.CookieCounterResult_RevampEnabled 
+-CookieBrowsingDataCounterUtilsTest.CookieCounterResult_RevampEnabled
 -SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.UploadCardSaveWithCvcDialogContent
 -TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy
 -TemplateURLServiceTest.RepairPrepopulatedSearchEngines
@@ -116,11 +116,7 @@
 -ComposeEnablingTest.*
 -ComposePopupAutofillDriverTest.*
 -DigitalIdentityLowRiskOriginsTest.*
--LoginStateCheckerTest.CachesOnlyLastPageContent
--LoginStateCheckerTest.CachesPageContentIfRequestInFlight
--LoginStateCheckerTest.ExceedsMaxLoginChecksAndFails
--LoginStateCheckerTest.UserIsLoggedInOnFirstAttempt
--LoginStateCheckerTest.UserIsLoggedInOnSecondAttempt
+-LoginStateCheckerTest.*
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
 -PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
 -PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
