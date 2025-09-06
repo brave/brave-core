@@ -11,6 +11,8 @@
 #include <chrome/browser/ui/ui_features.cc>
 #undef HasTabSearchToolbarButton
 
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
+
 #include "base/feature_override.h"
 
 namespace features {

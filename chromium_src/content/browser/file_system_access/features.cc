@@ -9,6 +9,8 @@
 
 #include <content/browser/file_system_access/features.cc>
 
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
+
 namespace content::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{

@@ -9,6 +9,8 @@
 
 #include <content/browser/private_aggregation/private_aggregation_features.cc>
 
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
+
 namespace content {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{

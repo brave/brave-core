@@ -18,3 +18,5 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 }});
 
 }  // namespace base::features
+
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION

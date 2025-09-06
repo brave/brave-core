@@ -9,6 +9,8 @@
 
 #include <content/browser/preloading/prefetch/prefetch_features.cc>
 
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
+
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{

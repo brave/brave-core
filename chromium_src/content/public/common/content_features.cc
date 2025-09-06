@@ -10,6 +10,8 @@
 
 #include <content/public/common/content_features.cc>
 
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
+
 namespace features {
 
 // This is intended as a kill switch for the Idle Detection feature. To enable

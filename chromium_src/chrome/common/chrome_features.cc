@@ -8,6 +8,9 @@
 #include "base/feature_override.h"
 
 #include <chrome/common/chrome_features.cc>
+
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
+
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{

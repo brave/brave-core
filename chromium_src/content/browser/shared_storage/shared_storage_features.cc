@@ -9,6 +9,8 @@
 
 #include <content/browser/shared_storage/shared_storage_features.cc>
 
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
+
 namespace content::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{

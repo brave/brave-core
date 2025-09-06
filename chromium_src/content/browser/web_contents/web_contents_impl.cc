@@ -27,3 +27,5 @@ bool WebContentsImpl::GetShouldDoLearningForTesting() {
 #include <content/browser/web_contents/web_contents_impl.cc>
 
 #undef ShouldDoLearning
+
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION

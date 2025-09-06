@@ -51,3 +51,5 @@ GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
 #include <content/browser/renderer_host/navigation_request.cc>
 #undef BRAVE_ONSTARTCHECKSCOMPLETE_MAYBEHIDEREFERRER
 #undef BRAVE_ONREQUESTREDIRECTED_MAYBEHIDEREFERRER
+
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
