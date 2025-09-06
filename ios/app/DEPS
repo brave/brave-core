@@ -13,6 +13,7 @@ include_rules += [
   "+brave/components/brave_sync/buildflags.h",
   "+brave/components/brave_shields/ios/browser",
   "+brave/components/brave_user_agent/browser",
+  "+brave/components/https_upgrade_exceptions",
   "+brave/components/ntp_background_images/browser",
   "+brave/components/ntp_background_images/common",
   "+brave/components/p3a",

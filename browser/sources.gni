@@ -203,7 +203,7 @@ brave_chrome_browser_deps = [
   "//brave/components/decentralized_dns/core",
   "//brave/components/email_aliases:features",
   "//brave/components/google_sign_in_permission",
-  "//brave/components/https_upgrade_exceptions/browser",
+  "//brave/components/https_upgrade_exceptions/core/browser",
   "//brave/components/ipfs",
   "//brave/components/ipfs/buildflags",
   "//brave/components/l10n/common",
