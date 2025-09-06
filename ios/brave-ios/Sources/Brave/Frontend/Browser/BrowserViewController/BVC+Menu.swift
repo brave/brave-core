@@ -437,15 +437,20 @@ extension BrowserViewController {
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
     var actions: [Action] = [
       .init(id: .bookmarks) { @MainActor [unowned self] _ in
-        let vc = BookmarksViewController(
-          folder: bookmarkManager.lastVisitedFolder(),
-          bookmarkManager: bookmarkManager,
-          isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+        let vc = UIHostingController(
+          rootView: BookmarksView(
+            model: BookmarkModel(
+              api: self.profileController.bookmarksAPI,
+              tabManager: self.tabManager,
+              bookmarksManager: self.bookmarkManager,
+              toolbarUrlActionsDelegate: self,
+              dismiss: { [weak self] in self?.dismiss(animated: true) }
+            )
+          )
         )
-        vc.toolbarUrlActionsDelegate = self
-        let container = UINavigationController(rootViewController: vc)
+
         self.dismiss(animated: true) {
-          self.present(container, animated: true)
+          self.present(vc, animated: true)
         }
         return .none
       },
