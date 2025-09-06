@@ -64,6 +64,7 @@ source_set("ui") {
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
+    "//chrome/browser/history",
     "//chrome/browser/ui:browser_navigator_params_headers",
     "//chrome/browser/ui/startup",
     "//chrome/browser/ui/tabs:tabs_public",
