@@ -8,6 +8,9 @@
 #include <utility>
 
 #include "base/containers/to_value_list.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/values.h"
+#include "components/cbor/reader.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/converter.h"
@@ -37,7 +40,7 @@ v8::Local<v8::Value> ConvertError(
   base::Value::Dict error_value;
 
   if (error->pagination_error_payload) {
-    error_value.Set("maxNumber",
+    error_value.Set("maxSize",
                     base::Value(error->pagination_error_payload->payload));
     return content::V8ValueConverter::Create()->ToV8Value(error_value, context);
   }
@@ -161,8 +164,9 @@ void JSCardanoWalletApi::HandleUtxoVecResult(
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   if (!error) {
     std::ignore = resolver->Resolve(
-        context, content::V8ValueConverter::Create()->ToV8Value(
-                     base::ToValueList(*result), context));
+        context, result ? content::V8ValueConverter::Create()->ToV8Value(
+                              base::ToValueList(*result), context)
+                        : v8::Null(isolate));
   } else {
     std::ignore = resolver->Reject(
         context, ConvertError(v8::Isolate::GetCurrent(), context, error));
@@ -342,7 +346,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetUtxos(gin::Arguments* args) {
 
   auto arguments = args->GetAll();
 
-  std::optional<std::string> amount;
+  std::optional<int64_t> amount;
   mojom::CardanoProviderPaginationPtr page;
 
   if (arguments.size() > 2) {
@@ -358,7 +362,17 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetUtxos(gin::Arguments* args) {
       args->ThrowError();
       return v8::Local<v8::Promise>();
     }
-    amount = arg1_value->GetString();
+    auto amount_arg = arg1_value->GetString();
+    std::vector<uint8_t> amount_cbor_bytes;
+    if (!base::HexStringToBytes(arg1_value->GetString(), &amount_cbor_bytes)) {
+      return v8::Local<v8::Promise>();
+    }
+    std::optional<cbor::Value> decoded_val =
+        cbor::Reader::Read(amount_cbor_bytes);
+    if (!decoded_val || !decoded_val->is_unsigned()) {
+      return v8::Local<v8::Promise>();
+    }
+    amount = decoded_val->GetInteger();
   }
 
   if (arguments.size() > 1) {

@@ -10,26 +10,22 @@
 #include <utility>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-// #include "components/user_prefs/user_prefs.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -38,6 +34,7 @@
 
 using base::test::TestFuture;
 using testing::_;
+using testing::ElementsAre;
 
 namespace brave_wallet {
 
@@ -95,11 +92,19 @@ class CardanoApiImplTest : public testing::Test {
         MakeIndexBasedAccountId(mojom::CoinType::ADA,
                                 mojom::KeyringId::kCardanoMainnet,
                                 mojom::AccountKind::kDerived, 0));
+
+    cardano_test_rpc_server_ = std::make_unique<CardanoTestRpcServer>(
+        *brave_wallet_service_->GetCardanoWalletService());
+
+    GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
+    account_ =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kCardanoMainnet, 0);
   }
 
-  void CreateWallet() {
-    AccountUtils(keyring_service())
-        .CreateWallet(kMnemonicAbandonAbandon, kTestWalletPassword);
+  const mojom::AccountInfoPtr& account() const { return account_; }
+
+  AccountUtils GetAccountUtils() {
+    return AccountUtils(brave_wallet_service_->keyring_service());
   }
 
   mojom::AccountInfoPtr AddAccount() {
@@ -143,23 +148,21 @@ class CardanoApiImplTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
+  std::unique_ptr<CardanoTestRpcServer> cardano_test_rpc_server_;
+  mojom::AccountInfoPtr account_;
 
   std::unique_ptr<CardanoApiImpl> provider_;
 };
 
 TEST_F(CardanoApiImplTest, GetNetworkId) {
-  CreateWallet();
-  auto added_account = AddAccount();
-
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>(
-                {added_account->account_id->unique_key});
-          });
+      .WillByDefault([&](mojom::CoinType coin,
+                         const std::vector<std::string>& accounts) {
+        EXPECT_EQ(coin, mojom::CoinType::ADA);
+        EXPECT_EQ(accounts.size(), 1u);
+        EXPECT_EQ(accounts[0], account()->account_id->unique_key);
+        return std::vector<std::string>({account()->account_id->unique_key});
+      });
 
   TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr> future;
 
@@ -173,18 +176,14 @@ TEST_F(CardanoApiImplTest, GetNetworkId) {
 }
 
 TEST_F(CardanoApiImplTest, GetUsedAddresses) {
-  CreateWallet();
-  auto added_account = AddAccount();
-
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>(
-                {added_account->account_id->unique_key});
-          });
+      .WillByDefault([&](mojom::CoinType coin,
+                         const std::vector<std::string>& accounts) {
+        EXPECT_EQ(coin, mojom::CoinType::ADA);
+        EXPECT_EQ(accounts.size(), 1u);
+        EXPECT_EQ(accounts[0], account()->account_id->unique_key);
+        return std::vector<std::string>({account()->account_id->unique_key});
+      });
 
   TestFuture<const std::optional<std::vector<std::string>>&,
              mojom::CardanoProviderErrorBundlePtr>
@@ -203,18 +202,14 @@ TEST_F(CardanoApiImplTest, GetUsedAddresses) {
 }
 
 TEST_F(CardanoApiImplTest, GetUnusedAddresses) {
-  CreateWallet();
-  auto added_account = AddAccount();
-
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>(
-                {added_account->account_id->unique_key});
-          });
+      .WillByDefault([&](mojom::CoinType coin,
+                         const std::vector<std::string>& accounts) {
+        EXPECT_EQ(coin, mojom::CoinType::ADA);
+        EXPECT_EQ(accounts.size(), 1u);
+        EXPECT_EQ(accounts[0], account()->account_id->unique_key);
+        return std::vector<std::string>({account()->account_id->unique_key});
+      });
 
   TestFuture<const std::optional<std::vector<std::string>>&,
              mojom::CardanoProviderErrorBundlePtr>
@@ -229,19 +224,38 @@ TEST_F(CardanoApiImplTest, GetUnusedAddresses) {
   EXPECT_FALSE(error);
 }
 
-TEST_F(CardanoApiImplTest, GetChangeAddress) {
-  CreateWallet();
-  auto added_account = AddAccount();
-
+TEST_F(CardanoApiImplTest, GetUtxos) {
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>(
-                {added_account->account_id->unique_key});
-          });
+      .WillByDefault([&](mojom::CoinType coin,
+                         const std::vector<std::string>& accounts) {
+        EXPECT_EQ(coin, mojom::CoinType::ADA);
+        EXPECT_EQ(accounts.size(), 1u);
+        EXPECT_EQ(accounts[0], account()->account_id->unique_key);
+        return std::vector<std::string>({account()->account_id->unique_key});
+      });
+
+  TestFuture<const std::optional<std::vector<std::string>>&,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->GetUtxos(std::nullopt, nullptr, future.GetCallback());
+
+  auto& utxos = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_THAT(*utxos, ElementsAre("1", "2"));
+  EXPECT_FALSE(error);
+}
+
+TEST_F(CardanoApiImplTest, GetChangeAddress) {
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault([&](mojom::CoinType coin,
+                         const std::vector<std::string>& accounts) {
+        EXPECT_EQ(coin, mojom::CoinType::ADA);
+        EXPECT_EQ(accounts.size(), 1u);
+        EXPECT_EQ(accounts[0], account()->account_id->unique_key);
+        return std::vector<std::string>({account()->account_id->unique_key});
+      });
 
   TestFuture<const std::optional<std::string>&,
              mojom::CardanoProviderErrorBundlePtr>
@@ -259,21 +273,17 @@ TEST_F(CardanoApiImplTest, GetChangeAddress) {
 }
 
 TEST_F(CardanoApiImplTest, SignData_Approved) {
-  CreateWallet();
-  auto added_account = AddAccount();
-
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>(
-                {added_account->account_id->unique_key});
-          });
+      .WillByDefault([&](mojom::CoinType coin,
+                         const std::vector<std::string>& accounts) {
+        EXPECT_EQ(coin, mojom::CoinType::ADA);
+        EXPECT_EQ(accounts.size(), 1u);
+        EXPECT_EQ(accounts[0], account()->account_id->unique_key);
+        return std::vector<std::string>({account()->account_id->unique_key});
+      });
 
   auto address = keyring_service()->GetCardanoAddress(
-      added_account->account_id,
+      account()->account_id,
       mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
 
   SignMessageRequestWaiter waiter(brave_wallet_service());
@@ -311,21 +321,17 @@ TEST_F(CardanoApiImplTest, SignData_Approved) {
 }
 
 TEST_F(CardanoApiImplTest, SignData_Rejected) {
-  CreateWallet();
-  auto added_account = AddAccount();
-
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>(
-                {added_account->account_id->unique_key});
-          });
+      .WillByDefault([&](mojom::CoinType coin,
+                         const std::vector<std::string>& accounts) {
+        EXPECT_EQ(coin, mojom::CoinType::ADA);
+        EXPECT_EQ(accounts.size(), 1u);
+        EXPECT_EQ(accounts[0], account()->account_id->unique_key);
+        return std::vector<std::string>({account()->account_id->unique_key});
+      });
 
   auto address = keyring_service()->GetCardanoAddress(
-      added_account->account_id,
+      account()->account_id,
       mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
 
   SignMessageRequestWaiter waiter(brave_wallet_service());
@@ -350,16 +356,13 @@ TEST_F(CardanoApiImplTest, SignData_Rejected) {
 }
 
 TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
-  CreateWallet();
   UnlockWallet();
-  auto added_account = AddAccount();
-
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
           [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
             EXPECT_EQ(coin, mojom::CoinType::ADA);
             EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            EXPECT_EQ(accounts[0], account()->account_id->unique_key);
             return std::vector<std::string>();
           });
 
@@ -488,10 +491,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
 }
 
 TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
-  CreateWallet();
   UnlockWallet();
-  auto added_account = AddAccount();
-
   auto new_account = MakeIndexBasedAccountId(mojom::CoinType::ADA,
                                              mojom::KeyringId::kCardanoMainnet,
                                              mojom::AccountKind::kDerived, 1);
@@ -501,7 +501,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
           [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
             EXPECT_EQ(coin, mojom::CoinType::ADA);
             EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            EXPECT_EQ(accounts[0], account()->account_id->unique_key);
             return std::vector<std::string>(
                 {GetAccountPermissionIdentifier(new_account)});
           });
@@ -631,20 +631,17 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
 }
 
 TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
-  CreateWallet();
   UnlockWallet();
-  auto added_account = AddAccount();
-  EXPECT_TRUE(added_account);
+  EXPECT_TRUE(account());
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
-      .WillByDefault(
-          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
-            EXPECT_EQ(coin, mojom::CoinType::ADA);
-            EXPECT_EQ(accounts.size(), 1u);
-            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
-            return std::vector<std::string>(
-                {added_account->account_id->unique_key});
-          });
+      .WillByDefault([&](mojom::CoinType coin,
+                         const std::vector<std::string>& accounts) {
+        EXPECT_EQ(coin, mojom::CoinType::ADA);
+        EXPECT_EQ(accounts.size(), 1u);
+        EXPECT_EQ(accounts[0], account()->account_id->unique_key);
+        return std::vector<std::string>({account()->account_id->unique_key});
+      });
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 

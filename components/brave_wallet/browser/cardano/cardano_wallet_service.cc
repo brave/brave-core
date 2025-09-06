@@ -15,6 +15,7 @@
 
 #include "base/check.h"
 #include "base/notreached.h"
+#include "base/numerics/checked_math.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_create_transaction_task.h"
@@ -32,15 +33,15 @@ namespace brave_wallet {
 namespace {
 
 mojom::CardanoBalancePtr BalanceFromUtxos(
-    const GetCardanoUtxosTask::UtxoMap& utxos) {
-  auto result = mojom::CardanoBalance::New();
-
-  for (const auto& items : utxos) {
-    for (const auto& utxo : items.second) {
-      result->total_balance += utxo.lovelace_amount;
-    }
+    const cardano_rpc::UnspentOutputs& utxos) {
+  base::CheckedNumeric<uint64_t> total_balance = 0;
+  for (const auto& utxo : utxos) {
+    total_balance += utxo.lovelace_amount;
   }
 
+  auto result = mojom::CardanoBalance::New();
+  // CHECK is safe as total lovelace supply is 45*10^15.
+  result->total_balance = total_balance.ValueOrDie();
   return result;
 }
 
@@ -79,7 +80,7 @@ void CardanoWalletService::GetBalance(mojom::AccountIdPtr account_id,
 
 void CardanoWalletService::OnGetUtxosForGetBalance(
     GetBalanceCallback callback,
-    base::expected<GetCardanoUtxosTask::UtxoMap, std::string> utxos) {
+    base::expected<cardano_rpc::UnspentOutputs, std::string> utxos) {
   if (!utxos.has_value()) {
     std::move(callback).Run(nullptr, utxos.error());
     return;
@@ -136,7 +137,7 @@ void CardanoWalletService::GetUtxos(mojom::AccountIdPtr account_id,
 void CardanoWalletService::OnGetUtxosTaskDone(
     GetCardanoUtxosTask* task,
     GetUtxosCallback callback,
-    base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result) {
+    base::expected<cardano_rpc::UnspentOutputs, std::string> result) {
   get_cardano_utxo_tasks_.erase(task);
 
   std::move(callback).Run(std::move(result));

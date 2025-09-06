@@ -13,6 +13,10 @@
 
 namespace brave_wallet {
 
+namespace cardano_rpc {
+struct UnspentOutput;
+}
+
 // Utility class for serializing data for CIP-30/CIP-8 signing.
 // https://github.com/cardano-foundation/CIPs/tree/master/CIP-0030#apisigndataaddr-address-payload-bytes-promisedatasignature
 class CardanoCip30Serializer {
@@ -37,6 +41,10 @@ class CardanoCip30Serializer {
       const CardanoAddress& payment_address,
       base::span<const uint8_t> message,
       base::span<const uint8_t> signature);
+
+  // Returns CBOR-serialized Utxo.
+  static std::vector<uint8_t> SerializeUtxo(
+      const cardano_rpc::UnspentOutput& unspent_output);
 };
 
 }  // namespace brave_wallet

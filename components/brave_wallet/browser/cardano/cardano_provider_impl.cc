@@ -8,16 +8,11 @@
 #include <utility>
 #include <vector>
 
-#include "base/notimplemented.h"
 #include "base/notreached.h"
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_api_impl.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_dapp_utils.h"
-#include "brave/components/brave_wallet/common/cardano_address.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -206,7 +201,7 @@ void CardanoProviderImpl::OnRequestCardanoPermissions(
     }
   }
 
-  auto account_id = GetCardanoPereferedDappAccount(
+  auto account_id = GetCardanoPreferredDappAccount(
       delegate(), brave_wallet_service_->keyring_service());
 
   if (!account_id) {

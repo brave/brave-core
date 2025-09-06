@@ -126,7 +126,7 @@ class TestCardanoApi : public brave_wallet::mojom::CardanoApi {
   MOCK_METHOD1(GetRewardAddresses, void(GetRewardAddressesCallback callback));
   MOCK_METHOD1(GetBalance, void(GetBalanceCallback callback));
   MOCK_METHOD3(GetUtxos,
-               void(const std::optional<std::string>& amount,
+               void(std::optional<uint64_t> amount,
                     mojom::CardanoProviderPaginationPtr paginate,
                     GetUtxosCallback callback));
   MOCK_METHOD3(SignTx,
@@ -830,10 +830,10 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
           }));
   ON_CALL(*cardano_api, GetUtxos(_, _, _))
       .WillByDefault(
-          ::testing::Invoke([&](const std::optional<std::string>& amount,
+          ::testing::Invoke([&](std::optional<uint64_t> amount,
                                 mojom::CardanoProviderPaginationPtr paginate,
                                 TestCardanoApi::GetUtxosCallback callback) {
-            EXPECT_EQ("1", amount.value());
+            EXPECT_EQ(1u, amount.value());
             EXPECT_EQ(2u, paginate->page);
             EXPECT_EQ(3u, paginate->limit);
             std::move(callback).Run(std::vector<std::string>({"1", "2"}),
@@ -842,7 +842,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
 
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { return await (await "
-                       "window.cardano.brave.enable()).getUtxos(\"1\", {page: "
+                       "window.cardano.brave.enable()).getUtxos(\"01\", {page: "
                        "2, limit:3}) })();");
 
   base::Value::List list_value;
@@ -864,7 +864,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_NoArgs) {
           }));
   ON_CALL(*cardano_api, GetUtxos(_, _, _))
       .WillByDefault(
-          ::testing::Invoke([&](const std::optional<std::string>& amount,
+          ::testing::Invoke([&](std::optional<uint64_t> amount,
                                 mojom::CardanoProviderPaginationPtr paginate,
                                 TestCardanoApi::GetUtxosCallback callback) {
             EXPECT_FALSE(amount);
@@ -897,10 +897,10 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_NoPagination) {
           }));
   ON_CALL(*cardano_api, GetUtxos(_, _, _))
       .WillByDefault(
-          ::testing::Invoke([&](const std::optional<std::string>& amount,
+          ::testing::Invoke([&](std::optional<uint64_t> amount,
                                 mojom::CardanoProviderPaginationPtr paginate,
                                 TestCardanoApi::GetUtxosCallback callback) {
-            EXPECT_EQ("1", amount);
+            EXPECT_EQ(1, amount);
             EXPECT_FALSE(paginate);
             std::move(callback).Run(std::vector<std::string>({"1", "2"}),
                                     nullptr);
@@ -908,7 +908,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_NoPagination) {
 
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { return await (await "
-                       "window.cardano.brave.enable()).getUtxos(\"1\") })();");
+                       "window.cardano.brave.enable()).getUtxos(\"01\") })();");
 
   base::Value::List list_value;
   list_value.Append(base::Value("1"));
@@ -930,7 +930,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_WrongArguments) {
           }));
   ON_CALL(*cardano_api, GetUtxos(_, _, _))
       .WillByDefault(
-          ::testing::Invoke([&](const std::optional<std::string>& amount,
+          ::testing::Invoke([&](std::optional<uint64_t> amount,
                                 mojom::CardanoProviderPaginationPtr paginate,
                                 TestCardanoApi::GetUtxosCallback callback) {
             std::move(callback).Run(std::vector<std::string>({"1", "2"}),
@@ -958,7 +958,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_WrongPagination) {
           }));
   ON_CALL(*cardano_api, GetUtxos(_, _, _))
       .WillByDefault(
-          ::testing::Invoke([&](const std::optional<std::string>& amount,
+          ::testing::Invoke([&](std::optional<uint64_t> amount,
                                 mojom::CardanoProviderPaginationPtr paginate,
                                 TestCardanoApi::GetUtxosCallback callback) {
             std::move(callback).Run(
@@ -974,7 +974,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_WrongPagination) {
                          "window.cardano.brave.enable()).getUtxos() } "
                          "catch(error) {return error} })();");
     base::Value::Dict dict_value;
-    dict_value.Set("maxNumber", base::Value(2));
+    dict_value.Set("maxSize", base::Value(2));
 
     EXPECT_EQ(dict_value, result);
   }
