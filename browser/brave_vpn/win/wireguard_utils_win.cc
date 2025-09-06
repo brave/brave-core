@@ -48,13 +48,16 @@ ServiceRegistrationStatus g_wireguard_service_registered_for_testing;
 // survive the owning process being restarted.
 // TODO(https://github.com/brave/brave-browser/issues/47115): remove this value
 // and pass in the real value each time.
-base::NoDestructor<std::string> g_smart_proxy_url("");
+std::string& GetSmartProxyUrlInstance() {
+  static base::NoDestructor<std::string> instance("");
+  return *instance;
+}
 constexpr wchar_t kSystemProxyRegistryKey[] =
     L"Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
 constexpr wchar_t kAutoConfigURL[] = L"AutoConfigURL";
 
 void MaybeEnableSystemProxy() {
-  if (g_smart_proxy_url->empty()) {
+  if (GetSmartProxyUrlInstance().empty()) {
     return;
   }
 
@@ -70,7 +73,7 @@ void MaybeEnableSystemProxy() {
               << "\".\nBrave VPN smart proxy routing can't be used.";
     } else {
       // Set the system proxy URL.
-      current_proxy_url = base::UTF8ToWide(*g_smart_proxy_url);
+      current_proxy_url = base::UTF8ToWide(GetSmartProxyUrlInstance());
       rv = key.WriteValue(kAutoConfigURL, current_proxy_url.c_str());
       VLOG(1) << L"Set Brave VPN smart proxy routing to = \""
               << current_proxy_url << "\"";
@@ -209,8 +212,9 @@ void EnableBraveVpnWireguardService(const std::string& server_public_key,
       mapped_ip4_address.empty() && vpn_server_hostname.empty();
   // Only reset smart proxy URL if this is not a reconnect or if it has a value.
   if (!reconnect_using_last_config || smart_proxy_url.has_value()) {
-    *g_smart_proxy_url = smart_proxy_url.has_value() ? *smart_proxy_url : "";
-    VLOG(1) << "Using smart_proxy_url = \"" << *smart_proxy_url << "\"";
+    GetSmartProxyUrlInstance() = smart_proxy_url.value_or("");
+    VLOG(1) << "Using smart_proxy_url = \"" << GetSmartProxyUrlInstance()
+            << "\"";
   }
 
   base::ThreadPool::CreateCOMSTATaskRunner(
