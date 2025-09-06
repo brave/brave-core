@@ -25,6 +25,8 @@ UntrustedLedgerUI::UntrustedLedgerUI(content::WebUI* web_ui)
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
   untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'self';");
+  untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src 'unsafe-inline';"));
   untrusted_source->AddResourcePath("load_time_data_deprecated.js",
