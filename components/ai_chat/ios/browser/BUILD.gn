@@ -43,3 +43,25 @@ source_set("browser") {
   ]
   frameworks = [ "Foundation.framework" ]
 }
+
+source_set("image_decoder") {
+  sources = [
+    "upload_file_helper.h",
+    "upload_file_helper.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//ios/web/public/thread",
+    "//services/data_decoder/public/cpp",
+    "//skia",
+    "//ui/gfx/codec",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "UIKit.framework",
+  ]
+}

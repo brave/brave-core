@@ -1,4 +1,5 @@
 // Copyright (c) 2025 The Brave Authors. All rights reserved.
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -10,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/apple/foundation_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/notimplemented.h"
@@ -20,6 +22,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
+#include "brave/components/ai_chat/ios/browser/upload_file_helper.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/tab_data_web_state_observer.h"
@@ -163,9 +166,11 @@ void AIChatUIPageHandler::HandleVoiceRecognition(
   auto* controller =
       [AIChatCommunicationController fromWebState:web_state_to_navigate];
   if (auto delegate = [controller delegate]) {
-    [delegate
-        handleVoiceRecognition:controller
-            withConversationId:base::SysUTF8ToNSString(conversation_uuid)];
+    [delegate handleVoiceRecognition:controller
+                  withConversationId:base::SysUTF8ToNSString(conversation_uuid)
+                          completion:^(NSString* prompt){
+                              // TODO: Do something with the string???
+                          }];
   }
 }
 
@@ -174,7 +179,23 @@ void AIChatUIPageHandler::ShowSoftKeyboard() {}
 void AIChatUIPageHandler::ProcessImageFile(
     const std::vector<uint8_t>& file_data,
     const std::string& filename,
-    ProcessImageFileCallback callback) {}
+    ProcessImageFileCallback callback) {
+  ai_chat::UploadFileHelperIOS::ProcessImageData(
+      file_data,
+      base::BindOnce(
+          [](const std::string& filename, ProcessImageFileCallback callback,
+             std::optional<std::vector<uint8_t>> processed_data) {
+            if (!processed_data) {
+              std::move(callback).Run(nullptr);
+              return;
+            }
+            auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+                filename, processed_data->size(), *processed_data,
+                ai_chat::mojom::UploadedFileType::kImage);
+            std::move(callback).Run(std::move(uploaded_file));
+          },
+          filename, std::move(callback)));
+}
 
 void AIChatUIPageHandler::UploadFile(bool use_media_capture,
                                      UploadFileCallback callback) {
@@ -185,14 +206,43 @@ void AIChatUIPageHandler::UploadFile(bool use_media_capture,
   auto* controller =
       [AIChatCommunicationController fromWebState:web_state_to_navigate];
   if (auto delegate = [controller delegate]) {
-    [delegate fetchImageForChatUpload:controller
-                           completion:^(NSURL* url) {
-                             // TODO: Load Images into files:
-                             std::vector<mojom::UploadedFilePtr> files;
+    auto cb = std::make_shared<UploadFileCallback>(std::move(callback));
+    [delegate
+        fetchImageForChatUpload:controller
+                     completion:^(NSURL* url) {
+                       if (!url) {
+                         std::move(*cb).Run(std::nullopt);
+                         return;
+                       }
 
-                             // TODO: Load image from URL and call
-                             // std::move(callback).Run(files);
-                           }];
+                       ai_chat::UploadFileHelperIOS::ProcessImageFileURL(
+                           url,
+                           base::BindOnce(
+                               [](base::WeakPtr<AIChatUIPageHandler> weak_self,
+                                  std::string file_name, UploadFileCallback cb,
+                                  std::optional<std::vector<uint8_t>>
+                                      image_data) {
+                                 if (!weak_self || !image_data) {
+                                   std::move(cb).Run(std::nullopt);
+                                   return;
+                                 }
+
+                                 std::vector<ai_chat::mojom::UploadedFilePtr>
+                                     images;
+                                 images.push_back(
+                                     ai_chat::mojom::UploadedFile::New(
+                                         std::move(file_name),
+                                         image_data->size(), *image_data,
+                                         ai_chat::mojom::UploadedFileType::
+                                             kImage));
+                                 std::move(cb).Run(std::move(images));
+                               },
+                               weak_ptr_factory_.GetWeakPtr(),
+                               base::apple::NSStringToFilePath([url path])
+                                   .BaseName()
+                                   .value(),
+                               std::move(*cb)));
+                     }];
   }
 }
 

@@ -38,7 +38,7 @@ class PageContentExtractor : public ai_chat::mojom::PageContentExtractor,
                              public web::WebStateObserver,
                              public web::WebFramesManager::Observer {
  public:
-  PageContentExtractor(web::WebState* web_state);
+  explicit PageContentExtractor(web::WebState* web_state);
 
   PageContentExtractor(const PageContentExtractor&) = delete;
   PageContentExtractor& operator=(const PageContentExtractor&) = delete;

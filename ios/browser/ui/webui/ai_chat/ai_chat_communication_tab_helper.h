@@ -16,7 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @protocol AIChatCommunicationProtocol
 - (void)handleVoiceRecognition:(AIChatCommunicationController*)controller
-            withConversationId:(NSString*)conversationId;
+            withConversationId:(NSString*)conversationId
+                    completion:(void (^)(NSString* _Nullable))completion;
 - (void)fetchImageForChatUpload:(AIChatCommunicationController*)controller
                      completion:(void (^)(NSURL* _Nullable))completion;
 - (void)openSettings:(AIChatCommunicationController*)controller;
