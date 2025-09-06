@@ -36,6 +36,7 @@
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/common/pref_names.h"
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
@@ -172,6 +173,8 @@ BraveNewTabUI::BraveNewTabUI(
   // Add a SanitizedImageSource to allow fetching images for Brave News.
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
+
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
 }
 
 BraveNewTabUI::~BraveNewTabUI() = default;

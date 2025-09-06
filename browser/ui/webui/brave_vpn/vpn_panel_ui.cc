@@ -21,6 +21,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/sessions/content/session_tab_helper.h"
@@ -48,6 +49,7 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src chrome-untrusted://resources "
+                  "chrome-untrusted://theme "
                   "'unsafe-inline';"));
 
   source->OverrideContentSecurityPolicy(
@@ -63,6 +65,8 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
   content::URLDataSource::Add(
       profile, std::make_unique<FaviconSource>(
                    profile, chrome::FaviconUrlFormat::kFavicon2));
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(
+                                           profile, /*serve_untrusted=*/true));
 }
 
 VPNPanelUI::~VPNPanelUI() = default;
