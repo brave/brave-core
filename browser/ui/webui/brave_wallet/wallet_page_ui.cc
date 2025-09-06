@@ -126,6 +126,8 @@ void WalletPageUI::CreatePageHandler(
         json_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
         bitcoin_wallet_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::PolkadotWalletService>
+        polkadot_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
         zcash_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::CardanoWalletService>
@@ -169,6 +171,7 @@ void WalletPageUI::CreatePageHandler(
     wallet_service->Bind(std::move(brave_wallet_service_receiver));
     wallet_service->Bind(std::move(json_rpc_service_receiver));
     wallet_service->Bind(std::move(bitcoin_wallet_service_receiver));
+    wallet_service->Bind(std::move(polkadot_wallet_service_receiver));
     wallet_service->Bind(std::move(zcash_wallet_service_receiver));
     wallet_service->Bind(std::move(cardano_wallet_service_receiver));
     wallet_service->Bind(std::move(keyring_service_receiver));
