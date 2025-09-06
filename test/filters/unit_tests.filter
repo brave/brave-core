@@ -17,6 +17,8 @@
 # identity_manager->AreRefreshTokensLoaded()
 -All/AppMenuModelSigninPromoTest.SignedIn/*
 -All/CanOfferSigninWithSigninToSyncFeatureTest.*
+-BrowsingHistoryHandlerTest.RequestAccountInfo
+-BrowsingHistoryHandlerTest.SendsUpdatedInfoOnAccountChange
 -CanOfferSigninTest.ProfileConnected
 -ChromeAutofillAiClientTest.EligibilityOf*
 -TabOrganizationServiceTest.*
@@ -56,7 +58,7 @@
 # the url it checks uses a brave: scheme when a chrome: scheme is expected).
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResultExplicitSigninDisabled
--CookieBrowsingDataCounterUtilsTest.CookieCounterResult_RevampEnabled 
+-CookieBrowsingDataCounterUtilsTest.CookieCounterResult_RevampEnabled
 -SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.UploadCardSaveWithCvcDialogContent
 -TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy
 -TemplateURLServiceTest.RepairPrepopulatedSearchEngines
@@ -91,8 +93,6 @@
 # These tests DCHECK in CookieControlsBubbleCoordinator::ShowBubble
 # because we circumvent creation of CookieControlsIconView
 # in PageActionIconController
--CookieControlsBubbleCoordinatorTest.ShowBubbleTest
--CookieControlsBubbleViewImplTest.BubbleWidth
 -SearchEngineListCountryOverrideParametrizedTest.CheckNumberOfSearchEngines/AllEeaSearchEngineList
 -SearchEngineListCountryOverrideParametrizedTest.CheckNumberOfSearchEngines/BelgiumSearchEngineList
 -SearchEngineListCountryOverrideParametrizedTest.CheckNumberOfSearchEngines/DefaultSearchEngineList
@@ -116,12 +116,7 @@
 -ComposeEnablingTest.*
 -ComposePopupAutofillDriverTest.*
 -DigitalIdentityLowRiskOriginsTest.*
--LoginStateCheckerTest.CachesOnlyLastPageContent
--LoginStateCheckerTest.CachesPageContentIfRequestInFlight
--LoginStateCheckerTest.ExceedsMaxLoginChecksAndFails
--LoginStateCheckerTest.NoRequestWithEmptyCachedPageContent
--LoginStateCheckerTest.UserIsLoggedInOnFirstAttempt
--LoginStateCheckerTest.UserIsLoggedInOnSecondAttempt
+-LoginStateCheckerTest.*
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
 -PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
 -PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
@@ -186,15 +181,8 @@
 -PrerendererNavigationPredictorPrefetchHoldbackDisabledTest.*
 -PrerenderGWSPrefetchHoldbackOffTest.*
 -PrerenderManagerBasicRequirementTest.*
--PrerenderManagerPrewarmTest.StartPrewarmSearchResult
--PrerenderManagerTest.DestroyedOnNavigateAway
--PrerenderManagerTest.DisallowSearchUrlBookmarkBar
--PrerenderManagerTest.DisallowSearchUrlNewTabPage
--PrerenderManagerTest.StartCleanPrerenderDirectUrlInput
--PrerenderManagerTest.StartCleanSearchSuggestionPrerender
--PrerenderManagerTest.StartNewPrerenderDirectUrlInput
--PrerenderManagerTest.StartNewSuggestionPrerender
--PrerenderManagerTest.StartSameSuggestionPrerender
+-PrerenderManagerPrewarmTest.*
+-PrerenderManagerTest.*
 -PrerenderTest.*
 
 # This test fails due to Brave's disabling of header variation (e.g overrides
@@ -243,6 +231,7 @@
 
 # This test is disabled because the Brave NTP doesn't support this feature
 -NewTabPageModulesTest.HasModulesEnabled_SignedInAccount
+-NewTabPageModulesTest.MakeModuleIdDetails_*
 
 # Isolated Web Apps (IWAs) use web bundles which we don't support.
 -All/InstallIsolatedWebAppCommandBundleTest.*
@@ -325,25 +314,11 @@
 -ChromeTailoredSecurityServiceTest.EpEnabledByUserTsDisabledDoesNotChangeSb
 -ChromeTailoredSecurityServiceTest.EpWasEnabledByTsAndTsNowDisabledShowsDialog
 -ChromeTailoredSecurityServiceTest.TsEnabledEnablesEp
+-ClientSideDetectionHostCreditCardFormTest.*
 -ClientSideDetectionHostNotificationTest.*
 -ClientSideDetectionHostScamDetectionTest.*
--ClientSideDetectionHostTest.CSDFeaturesCacheContainsVerdictAndFullDebuggingMetadata
--ClientSideDetectionHostTest.ClipboardCopyApiCallDoesNotProceedWithClassification
--ClientSideDetectionHostTest.ClipboardCopyApiCallDoesNotProceedWithClassificationWithHighHCAcceptanceRate
--ClientSideDetectionHostTest.ClipboardCopyApiCallDoesNotProceedWithClassificationWithZeroSampleRate
--ClientSideDetectionHostTest.ClipboardCopyApiCallProceedsWithClassification
--ClientSideDetectionHostTest.NoRTLookupResponseInRedirectChainContainsForceRequest
--ClientSideDetectionHostTest.PhishingDetectionDoneCalledTwiceShouldSucceed
--ClientSideDetectionHostTest.PhishingDetectionDoneEnhancedProtectionShouldHaveToken
--ClientSideDetectionHostTest.RTLookupResponseForceRequestSendsCSPPPingWhenVerdictNotPhishing
--ClientSideDetectionHostTest.RTLookupResponseOnFirstURLInRedirectChainTriggersForceRequest
--ClientSideDetectionHostTest.TwoKeyboardLockRequestsOnSamePageOnlyLogsOnePreclassificationCheck
--ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerNotTriggerClassificationRequestAlreadyPhishing
--ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerNotTriggerClassificationRequestNoEnforcedPing
--ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerNotTriggerClassificationRequestOnTriggerModelPingConvertedToForceRequest
--ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerTriggersClassificationRequest
--ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerTriggersClassificationRequestOnAllowlistMatch
--ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerTriggersClassificationRequestOnLocalModelPhishing
+-ClientSideDetectionHostTest.*
+-ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTracker*
 -ClientSideDetectionIntelligentScanDelegateDesktopTest*
 -DownloadBubblePrefsTest.EnhancedProtectionEnabled
 -DownloadBubbleRowViewInfoTest.ShouldShowNoticeForEnhancedProtectionScan
@@ -351,6 +326,7 @@
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
 -EnhancedProtectionDownloadTest.*
 -ExternalAppRedirectCheckingTest.ShouldReportExternalAppRedirect
+-GeneratedSecuritySettingsBundlePrefTest.BundlePrefUpdatesSafeBrowsingState
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
@@ -587,9 +563,9 @@
 -ChromeStructuredMetricsRecorderTest.DeviceEventsRecorded
 
 # These tests fail because we disable kPermissionPredictionsV2.
--PredictionBasedPermissionUiSelectorTest.GetPredictionTypeToUseCpssV1
--PredictionBasedPermissionUiSelectorTest.OnlyPromptsForCurrentTypeAreCounted
--PredictionBasedPermissionUiSelectorTest.RequestsWithFewPromptsAreSent
+-PermissionsAiUiSelectorTest.GetPredictionTypeToUseCpssV1
+-PermissionsAiUiSelectorTest.OnlyPromptsForCurrentTypeAreCounted
+-PermissionsAiUiSelectorTest.RequestsWithFewPromptsAreSent
 -PredictionSourceTest/PredictionBasedPermissionUiExpectedPredictionSourceTest.*
 
 # This test fails because we block installation of Probabilistic Reveal Token
@@ -666,6 +642,12 @@
 -TabSearchContainerTest.AnimatesToExpanded
 -TabSearchContainerTest.ButtonsHaveFlatEdges
 -TabSearchContainerTest.OrdersButtonsCorrectly
+
+# These tests fail because they try to access unregistered prefs that Brave
+# implements for the omnibox. The upstream test would probably need to be
+# patched to include that registration code.
+-OmniboxControllerTest.CheckDefaultAutocompleteProviders
+-OmniboxEditModelTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -747,6 +729,8 @@
 -PermissionDashboardUnitTest.DisplayLHSIndicatorForCamera*
 -PermissionsUpdaterTest.GrantAndRevokeOptionalPermissions
 -ProfileAttributesStorageTest.*
+-ProfileCustomizationBubbleSyncControllerTest.ShouldAbortIfCalledAgain
+-ProfileCustomizationBubbleSyncControllerTest.ShouldShowWhenSyncGetsDefaultTheme
 -ProfileResetterTest.CheckSnapshots
 -ProfileResetterTest.ResetContentSettings
 -ProfileResetterTest.ResetStartPagePartially
