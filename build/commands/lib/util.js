@@ -9,6 +9,7 @@ const readline = require('readline')
 const os = require('os')
 const config = require('./config')
 const fs = require('fs-extra')
+const {glob, writeFile} = require('fs/promises')
 const crypto = require('crypto')
 const Log = require('./logging')
 const assert = require('assert')
@@ -17,6 +18,13 @@ const ActionGuard = require('./actionGuard')
 
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0)
+
+async function generateInstrumentationFile(instrumentationFile='../out/files-to-instrument.txt') {
+  const files = await Array.fromAsync(glob(`**/*.{cc,c,h,cpp,hpp}`))
+
+  const paths = files.map(x => `../../brave/${x}`)
+  await writeFile(`${instrumentationFile}`, paths.join('\n'), 'utf-8')
+}
 
 async function applyPatches(printPatchFailuresInJson) {
   const GitPatcher = require('./gitPatcher')
@@ -167,6 +175,7 @@ const normalizeCommand = (cmd, args) => {
 }
 
 const util = {
+  generateInstrumentationFile,
   runProcess: (cmd, args = [], options = {}, skipLogging = false) => {
     if (!skipLogging) {
       Log.command(options.cwd, cmd, args)
