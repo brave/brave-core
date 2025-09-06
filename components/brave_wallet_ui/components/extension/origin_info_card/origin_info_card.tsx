@@ -37,10 +37,12 @@ const isStorybook = isComponentInStorybook()
 
 interface Props {
   origin: BraveWallet.OriginInfo
+  noBackground?: boolean
+  provider?: string
 }
 
 export const OriginInfoCard = (props: Props) => {
-  const { origin } = props
+  const { origin, noBackground = false, provider } = props
 
   // Hooks
   const { isDAppVerified, dapp } = useIsDAppVerified(origin)
@@ -64,9 +66,13 @@ export const OriginInfoCard = (props: Props) => {
       padding='10px 16px'
       gap='16px'
       justifyContent='flex-start'
+      noBackground={noBackground}
     >
       <FavIcon src={isBraveWallet ? BraveIcon : iconSrc} />
       <Column alignItems='flex-start'>
+        {isBraveWallet && provider && (
+          <OriginName textColor='primary'>{provider}</OriginName>
+        )}
         <OriginName textColor='primary'>
           {dapp ? dapp.name : origin.eTldPlusOne}
         </OriginName>
@@ -80,7 +86,7 @@ export const OriginInfoCard = (props: Props) => {
               eTldPlusOne={origin.eTldPlusOne}
             />
           </OriginUrl>
-          {isDAppVerified && <VerifiedLabel />}
+          {(isDAppVerified || isBraveWallet) && <VerifiedLabel />}
         </Column>
       </Column>
     </StyledWrapper>

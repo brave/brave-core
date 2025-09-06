@@ -645,6 +645,9 @@ provideStrings({
   braveWalletExchangeNamePlusSteps: '$1 + $2 $3',
   braveWalletExchangeViaProvider: '$1 via $2',
   braveWalletSortBy: 'Sort by',
+  braveWalletConfirmSwap: 'Confirm swap',
+  braveWalletConfirmBridge: 'Confirm bridge',
+  braveWalletSpend: 'Spend',
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',

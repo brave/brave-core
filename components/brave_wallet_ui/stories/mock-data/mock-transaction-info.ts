@@ -857,3 +857,22 @@ export const mockParsedERC20ApprovalTransaction: ParsedTransaction =
     transactionAccount: mockAccount,
     transactionNetwork: mockEthMainnet,
   })
+
+export const mockETHSwapTransaction: BraveWallet.TransactionInfo = {
+  ...deserializeTransaction(mockTransactionInfo),
+  txType: BraveWallet.TransactionType.ETHSwap,
+  id: 'mock-eth-swap-tx',
+  txStatus: BraveWallet.TransactionStatus.Unapproved,
+  swapInfo: {
+    fromAmount: '0xde0b6b3a7640000',
+    fromAsset: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+    fromCoin: BraveWallet.CoinType.ETH,
+    fromChainId: BraveWallet.MAINNET_CHAIN_ID,
+    toAmount: '0x3d6235a79608ede57a',
+    toAsset: mockBasicAttentionToken.contractAddress,
+    toCoin: BraveWallet.CoinType.ETH,
+    toChainId: BraveWallet.MAINNET_CHAIN_ID,
+    receiver: mockAccount.address,
+    provider: 'lifi',
+  },
+}
