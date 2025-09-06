@@ -14,6 +14,7 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/types/expected.h"
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -79,9 +80,13 @@ class EmailAliasesServiceTest : public ::testing::Test {
     service_->RequestAuthentication(
         email, base::BindOnce(
                    [](bool* called, std::optional<std::string>* error,
-                      const std::optional<std::string>& result) {
+                      base::expected<std::monostate, std::string> result) {
                      *called = true;
-                     *error = result;
+                     if (result.has_value()) {
+                       *error = std::nullopt;
+                     } else {
+                       *error = result.error();
+                     }
                    },
                    &called, &error));
     EXPECT_TRUE(base::test::RunUntil([&]() { return called; }));
@@ -272,9 +277,13 @@ class EmailAliasesServiceTimingTest : public ::testing::Test {
         "test@example.com",
         base::BindOnce(
             [](bool* called_out, std::optional<std::string>* out,
-               const std::optional<std::string>& result) {
+               base::expected<std::monostate, std::string> result) {
               *called_out = true;
-              *out = result;
+              if (result.has_value()) {
+                *out = std::nullopt;
+              } else {
+                *out = result.error();
+              }
             },
             &called, &error));
     EXPECT_TRUE(base::test::RunUntil([&]() { return called; }));

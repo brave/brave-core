@@ -13,7 +13,11 @@ import {
   AuthState,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
-  EmailAliasesServiceObserverRemote
+  EmailAliasesServiceObserverRemote,
+  EmailAliasesService_UpdateAlias_ResponseParam_Result,
+  EmailAliasesService_DeleteAlias_ResponseParam_Result,
+  EmailAliasesService_GenerateAlias_ResponseParam_Result,
+  EmailAliasesService_RequestAuthentication_ResponseParam_Result
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import { provideStrings } from '../../../../../.storybook/locale'
 
@@ -134,34 +138,35 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     observer.onAliasesUpdated([...this.aliases.values()])
   }
 
-  async updateAlias (email: string, note: string) {
+  async updateAlias (aliasEmail: string, note: string | null):
+    Promise<{ result: EmailAliasesService_UpdateAlias_ResponseParam_Result }> {
     if (Math.random() < 1/3) {
-      return { errorMessage: getLocale('emailAliasesUpdateAliasError') }
+      throw getLocale('emailAliasesUpdateAliasError')
     }
-    const alias = { email, note, domains: undefined }
-    this.aliases.set(email, alias)
+    const alias = { email: aliasEmail, note: note ?? '', domains: undefined }
+    this.aliases.set(aliasEmail, alias)
     this.observers.forEach(observer => {
       observer.onAliasesUpdated([...this.aliases.values()])
     })
-    return { errorMessage: null }
+    return { result: { success: {} as any, failure: undefined } }
   }
 
-  async deleteAlias (email: string) {
+  async deleteAlias (aliasEmail: string):
+    Promise<{ result: EmailAliasesService_DeleteAlias_ResponseParam_Result }> {
     if (Math.random() < 1/3) {
-      return { errorMessage: getLocale('emailAliasesDeleteAliasError') }
+      throw getLocale('emailAliasesDeleteAliasError')
     }
-    this.aliases.delete(email)
+    this.aliases.delete(aliasEmail)
     this.observers.forEach(observer => {
       observer.onAliasesUpdated([...this.aliases.values()])
     })
-    return { errorMessage: null }
+    return { result: { success: {} as any, failure: undefined } }
   }
 
-  async generateAlias () {
+  async generateAlias (): Promise<{ result: EmailAliasesService_GenerateAlias_ResponseParam_Result }> {
     await new Promise(resolve => setTimeout(resolve, 1000))
     if (Math.random() < 1/3) {
-      return { result: { errorMessage: getLocale('emailAliasesGenerateError'),
-          aliasEmail: '' } }
+      throw getLocale('emailAliasesGenerateError')
     }
     let aliasEmail: string = ''
     do {
@@ -169,18 +174,18 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
         "@bravealias.com"
     } while (this.aliases.has(aliasEmail))
 
-    return { result: { errorMessage: undefined, aliasEmail } }
+    return { result: { success: aliasEmail, failure: undefined } }
   }
 
-  async requestAuthentication (email: string) {
+  async requestAuthentication (authEmail: string):
+    Promise<{ result: EmailAliasesService_RequestAuthentication_ResponseParam_Result }> {
     if (Math.random() < 1/3) {
-      return {
-        errorMessage: getLocale('emailAliasesRequestAuthenticationError') }
+      throw getLocale('emailAliasesRequestAuthenticationError')
     }
     this.observers.forEach(observer => {
       observer.onAuthStateChanged({
         status: AuthenticationStatus.kAuthenticating,
-        email: email,
+        email: authEmail,
         errorMessage: undefined
       })
     })
@@ -188,12 +193,12 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
       this.observers.forEach(observer => {
         observer.onAuthStateChanged({
           status: AuthenticationStatus.kAuthenticated,
-          email: email,
+          email: authEmail,
           errorMessage: undefined
         })
       })
     }, 5000);
-    return { errorMessage: null }
+    return { result: { success: {} as any, failure: undefined } }
   }
 
   async cancelAuthenticationOrLogout () {
