@@ -89,9 +89,7 @@ mangle(
     appearance.insertAdjacentHTML(
       'beforeend',
       /* html */ `
-      <brave-darker-theme-toggle ?hidden="\${
-        !this.shouldShowDarkerThemeToggle_
-      }"></brave-darker-theme-toggle>`
+      <brave-darker-theme-toggle></brave-darker-theme-toggle>`
     )
   },
   (template) => template.text.includes('id="appearance"'),

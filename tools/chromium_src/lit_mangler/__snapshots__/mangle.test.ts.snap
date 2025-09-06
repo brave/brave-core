@@ -171,7 +171,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/app.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/app.html.ts
-@@ -4,31 +4,27 @@
+@@ -4,31 +4,25 @@
  
  export function getHtml(this: AppElement) {
    // clang-format off
@@ -195,9 +195,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </customize-chrome-appearance>
 -    </div>
 +    
-+      <brave-darker-theme-toggle ?hidden=\\"\${
-+        !this.shouldShowDarkerThemeToggle_
-+      }\\"></brave-darker-theme-toggle></div>
++      <brave-darker-theme-toggle></brave-darker-theme-toggle></div>
      <hr class=\\"sp-cards-separator\\">
 -    <cr-button id=\\"toolbarButton\\" class=\\"section sp-card\\"
 -        @click=\\"\${this.onToolbarCustomizationButtonClick_}\\">
@@ -216,7 +214,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
       \${this.isSourceTabFirstPartyNtp_() ? html\`<hr class=\\"sp-cards-separator\\">
      <div id=\\"shortcuts\\" class=\\"section sp-card\\">
        <sp-heading hide-back-button>
-@@ -98,10 +94,9 @@
+@@ -98,10 +92,9 @@
      <customize-chrome-wallpaper-search @back-click=\\"\${this.onBackClick_}\\"
          page-name=\\"wallpaper-search\\" id=\\"wallpaperSearchPage\\">
      </customize-chrome-wallpaper-search>
