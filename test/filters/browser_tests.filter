@@ -158,6 +158,7 @@
 
 # Google signin is disabled
 -BoundSessionCookieRefreshServiceImplBrowserTest.CookieRotationOnStartup
+-BoundSessionOAuthMultiloginTest.StartsNewBoundSession
 
 # Read anything is disabled
 -All/ContextMenuBrowserTest.OpenInReadingMode/LinkPreview*
@@ -305,6 +306,10 @@
 -ConfirmInfobarCustomLayoutBrowserTest.ShowsDefaultLayout
 -HeadlessModeInfobarBrowserTest.InfoBarsCanBeDisabled/*
 -PageSpecificSiteDataDialogBrowserTest.*
+-SessionRestoreInfobarControllerBrowserTest.InfobarMessageValueForRestart
+-SessionRestoreInfobarControllerBrowserTest.InfobarNotShownForOtherSettings
+-SessionRestoreInfobarControllerBrowserTest.InfobarShownForSessionRestore
+-SessionRestoreInfobarControllerBrowserTest.InfobarUntouchedSessionRestoreDefaultPref
 
 # These tests fail because they expect an additional Manifest V2 deprecation
 # warning, which is disabled in Brave.
@@ -466,6 +471,8 @@
 -GWSPageLoadMetricsObserverBrowserTest.PrerenderSRPAndActivate
 -NewTabPageInitiatedPageLoadMetricsBrowserTest.NonNewTabPagePrerenderTriggeredByEmbedderAndActivate
 -NewTabPagePageLoadMetricsBrowserTest.NonNewTabPagePrerenderTriggeredByEmbedderAndActivate
+-NewTabPagePreloadBrowserTest.PrefetchResponseFailureAndPrerenderFailure
+-NewTabPagePreloadBrowserTest.SuccessfulPrefetchAndSuccessfulPrerender
 -NoCancelSearchPreloadUnifiedBrowserTest.SuggestionChangeAfterStartPrerender
 -NoCancelSearchPreloadUnifiedFallbackBrowserTest.OpenPrefetchedResponseInBackgroundedTab
 -NoCancelSearchPreloadUnifiedFallbackBrowserTest.ServingToPrerenderingUntilCompletion
@@ -619,6 +626,7 @@
 -SafeBrowsingTriggeredPopupBlockerPrerenderingBrowserTest.*
 -SafetyTipPageInfoBubbleViewBrowserTest.MetricsOnlyHeuristicDoesntShowInPageInfo
 -SafetyTipPageInfoBubbleViewPrerenderBrowserTest.*
+-SafetyTipPageInfoBubbleSplitViewTest.ShowLookalikeDialog
 -ScriptingAPIPrerenderingTest.Basic
 -SecurityStatePageLoadMetricsPrerenderBrowserTest.*
 -SecurityStateTabHelperPrerenderTest.*
@@ -799,6 +807,8 @@
 -ProfileMenuClickTest_ManagedProfile.ProfileMenuClickTest_ManagedProfile/*
 -ProfileMenuClickTest_NewSyncPromoVariant.ProfileMenuClickTest_NewSyncPromoVariant/*
 -ProfileMenuClickTest_PasswordManagerWebApp.ProfileMenuClickTest_PasswordManagerWebApp/*
+-ProfileMenuClickTest_SigninPatternDisallowed.ProfileMenuClickTest_SigninPatternDisallowed/*
+-ProfileMenuClickTest_SigninPatternDisallowedSecondaryAllowed.ProfileMenuClickTest_SigninPatternDisallowedSecondaryAllowed/*
 -ProfileMenuClickTest_SyncEnabled_UnoDisabled.ProfileMenuClickTest_*
 -ProfileMenuClickTest_SyncEnabled_UnoEnabled.ProfileMenuClickTest_*
 -ProfileMenuClickTest_SyncError_UnoDisabled.ProfileMenuClickTest_*
@@ -1094,6 +1104,7 @@
 -PredictionModelStoreMigrationBrowserTest.*
 -PredictionServiceBrowserTest.*
 -PredictionServiceBrowserTestBase.*
+-PredictionServiceHoldbackTest/PredictionServiceHoldbackBrowserTest.TestOverallTimeout/*
 -PredictionServiceHoldbackTest/PredictionServiceHoldbackBrowserTest.TestServerSideHoldbackWorkflow/*
 -PredictionSettingsPageBrowserTest.*
 -SearchNavigationPrefetchIncognitoBrowserTest.NavigationPrefetchIsServedMouseDown
@@ -1489,6 +1500,7 @@
 -PlusAddressCreationDialogTest.*
 -ProfileManagementDisclaimerServiceBrowserFocusBrowserTest.Test/Managed_EnforcedByPolicy_NewProfile*
 -ProfileManagementDisclaimerServiceBrowserFocusBrowserTest.Test/Managed_NoPolicies_NewProfile
+-ProfileManagementDisclaimerServiceCachingBrowserTest.Test
 -ProfileManagementDisclaimerServiceSigninBrowserTest.Test/*
 -ProfileManagementDisclaimerServiceStartupBrowserTest.CreateNewManagedProfile
 -ProfilePickerUIPixelTest.InvokeUi_default/*
@@ -1789,6 +1801,7 @@
 -LensOverlayControllerInnerTextAndApc.*
 -LensOverlayControllerInnerTextEnabledSmallByteLimitTest.*
 -LensOverlayControllerOverlaySearchbox.OverlaySearchboxPageClassificationAndState
+-LensOverlayControllerSideBySideBrowserTest.SidePanelRoundedCornerRegularTab
 -LensOverlayControllerSideBySideBrowserTest.SidePanelRoundedCornerSplitTab
 
 # This test fails because we don't implement an accent color for titlebars or
@@ -2093,6 +2106,8 @@
 -WebAppInternalsIwaInstallationBrowserTest.FetchUpdateManifestAndInstallIwa
 -WebAppInternalsIwaInstallationBrowserTest.FetchUpdateManifestAndInstallIwaAndUpdate
 -WebAppInternalsIwaInstallationBrowserTest.FetchUpdateManifestAndInstallIwaAndUpdateInvalidPinnedVersion
+-WebAppInternalsIwaInstallationBrowserTest.InstallIsolatedWebAppFromBundleUrlFailsWithIncorrectUrl
+-WebAppInternalsIwaInstallationBrowserTest.ParseUpdateManifestFromUrlFailsWithIncorrectUrl
 -WebAppMenuBrowserTest.InvokeUi_main_isolated
 -WebAppTagIsolatedWebAppTest.IsolatedWebAppTaskCreated
 -WebAppTagIsolatedWebAppTest.IsolatedWebAppTaskTitleFallbackToAppName
@@ -2251,7 +2266,7 @@
 -ManifestV2ExperimentManagerBrowserTest.*
 -ManifestV2ExperimentWithLegacyExtensionSupportTest.*
 
-# This test fails because it conflicts with our own split view layout,
+# These tests fail because they conflict with our own split view layout,
 # specifically with how we currently manage our vertical tabs host view
 -SideBySideBrowserViewTest.AccessibleTabLabel
 -SideBySideBrowserViewTest.SplitViewActiveIndexTest
@@ -2443,6 +2458,11 @@
 # This test fails because we don't show profile menu for a browser with a
 # single profile
 -ProfileMenuViewBrowserTest.ProfileMenuDoesNotOutliveBrowser
+
+# These tests fail because we don't currently support having our vertical tabs
+# support and upstream's vertical tab support active simultaneously (see
+# https://github.com/brave/brave-browser/issues/48373)
+-VerticalTabStripRegionViewTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
