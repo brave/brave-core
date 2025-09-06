@@ -134,7 +134,9 @@ void SidebarEditItemBubbleDelegateView::AddChildViews() {
 }
 
 views::View* SidebarEditItemBubbleDelegateView::GetInitiallyFocusedView() {
-  DCHECK(title_tf_);
+  // Note that we're returning title_tf_ even if it's null. This is intentional
+  // as this method will be called multiple times through bubble's lifecycle,
+  // and title_tf_ will be set before the second call.
   return title_tf_;
 }
 
