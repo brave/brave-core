@@ -787,7 +787,7 @@ type CustomArgs = {
   totalTokens: number
   trimmedTokens: number
   isGenerating: boolean
-  showAttachments: boolean
+  attachmentsDialog: 'tabs' | null
   isNewConversation: boolean
   generatedUrlToBeOpened: Url | undefined
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
@@ -829,7 +829,7 @@ const args: CustomArgs = {
   totalTokens: 0,
   trimmedTokens: 0,
   isGenerating: false,
-  showAttachments: true,
+  attachmentsDialog: 'tabs',
   isNewConversation: false,
   generatedUrlToBeOpened: undefined,
   ratingTurnUuid: undefined,
@@ -1037,8 +1037,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     setIsToolsMenuOpen,
     handleFeedbackFormCancel: () => { },
     handleFeedbackFormSubmit: () => Promise.resolve(),
-    setShowAttachments: (show: boolean) => setArgs({ showAttachments: show }),
-    showAttachments: options.args.showAttachments,
+    setAttachmentsDialog: (attachmentsDialog) => setArgs({ attachmentsDialog }),
+    attachmentsDialog: options.args.attachmentsDialog,
     removeFile: () => {},
     uploadFile: () => {},
     getScreenshots: () => {},
@@ -1056,7 +1056,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     isDragOver: options.args.isDragOver,
     clearDragState: () => {},
     attachImages: (images: Mojom.UploadedFile[]) => {},
-    unassociatedTabs: [],
+    unassociatedTabs: aiChatContext.tabs,
     associateDefaultContent: async () => {},
   }
 
@@ -1173,7 +1173,7 @@ export const _NewFullpageConversation = {
 export const _AttachmentsPanel = {
   args: {
     isStandalone: true,
-    isDefaultConversation: false
+    isDefaultConversation: false,
   },
   render: () => {
     return (

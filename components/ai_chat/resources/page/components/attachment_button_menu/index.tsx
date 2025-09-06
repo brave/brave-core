@@ -18,7 +18,7 @@ import { getLocale } from '$web-common/locale'
 import styles from './style.module.scss'
 
 type Props = Pick<ConversationContext, 'uploadFile' | 'getScreenshots' |
-  'conversationHistory' | 'associatedContentInfo' | 'setShowAttachments'
+  'conversationHistory' | 'associatedContentInfo' | 'setAttachmentsDialog'
   | 'associateDefaultContent' | 'unassociatedTabs'> &
   Pick<AIChatContext, 'isMobile'> & {
     conversationStarted: boolean
@@ -85,7 +85,7 @@ export default function AttachmentButtonMenu(props: Props) {
             </div>
           </leo-menu-item>
         )}
-        {props.unassociatedTabs.length > 0 && (<leo-menu-item onClick={() => props.setShowAttachments(true)}>
+        {props.unassociatedTabs.length > 0 && (<leo-menu-item onClick={() => props.setAttachmentsDialog('tabs')}>
           <div className={styles.buttonContent}>
             <Icon
               className={styles.buttonIcon}
