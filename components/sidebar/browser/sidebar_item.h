@@ -52,7 +52,12 @@ struct SidebarItem {
   bool is_built_in_type() const {
     return type == SidebarItem::Type::kTypeBuiltIn;
   }
-  bool is_web_type() const { return type == SidebarItem::Type::kTypeWeb; }
+  bool is_web_type() const {
+    return type == SidebarItem::Type::kTypeWeb && !open_in_panel;
+  }
+  bool is_web_panel_type() const {
+    return type == SidebarItem::Type::kTypeWeb && open_in_panel;
+  }
   bool IsValidItem() const;
 
   bool operator==(const SidebarItem& item) const;

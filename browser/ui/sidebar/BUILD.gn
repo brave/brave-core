@@ -21,10 +21,13 @@ source_set("sidebar") {
     "sidebar_tab_helper.h",
     "sidebar_utils.cc",
     "sidebar_utils.h",
+    "sidebar_web_panel_controller.cc",
+    "sidebar_web_panel_controller.h",
   ]
 
   deps = [
     "//base",
+    "//brave/browser/ui/views/frame/split_view",
     "//brave/components/sidebar/browser",
     "//brave/components/sidebar/common",
     "//chrome/browser:browser_process",
@@ -34,6 +37,7 @@ source_set("sidebar") {
     "//chrome/browser/search",
     "//chrome/browser/search_engines",
     "//chrome/browser/ui:browser_navigator_params_headers",
+    "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:tab_strip",
     "//chrome/browser/ui/views/side_panel",

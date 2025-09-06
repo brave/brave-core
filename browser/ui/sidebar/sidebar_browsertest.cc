@@ -830,8 +830,7 @@ class SidebarBrowserWithWebPanelTest
   base::test::ScopedFeatureList scoped_features_;
 };
 
-IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest,
-                       ContentsContainerViewForWebPanelTest) {
+IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
   auto contents_container_view_for_web_panel =
       GetBraveMultiContentsView()->contents_container_view_for_web_panel_;
   if (!IsWebPanelEnabled()) {
@@ -870,6 +869,26 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest,
                ->bounds()
                .origin();
   }));
+
+  contents_container_view_for_web_panel->SetVisible(false);
+
+  // Add an web panel item and check panel is shown by activating it.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com/")));
+  EXPECT_TRUE(CanAddCurrentActiveTabToSidebar(browser()));
+  controller()->AddItemWithCurrentTab();
+  EXPECT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
+
+  // Activate web panel item and check panel gets visible.
+  const int web_panel_item_index = model()->GetAllSidebarItems().size() - 1;
+  EXPECT_TRUE(
+      model()->GetAllSidebarItems()[web_panel_item_index].is_web_panel_type());
+  controller()->ActivateItemAt(web_panel_item_index);
+  EXPECT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
+
+  // Toggle web panel item and check panel gets hidden.
+  controller()->ActivateItemAt(web_panel_item_index);
+  EXPECT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
 }
 
 INSTANTIATE_TEST_SUITE_P(
