@@ -8,6 +8,7 @@
     android:initialLayout="@layout/quick_action_search_and_bookmark_widget_layout"
     android:minWidth="304dp"
     android:minHeight="44dp"
+    android:maxResizeHeight="270dp"
     android:description="@string/brave_quick_action_search"
     android:previewImage="@drawable/ic_quick_action_search_and_bookmark_widget_preview"
     android:resizeMode="horizontal|vertical"

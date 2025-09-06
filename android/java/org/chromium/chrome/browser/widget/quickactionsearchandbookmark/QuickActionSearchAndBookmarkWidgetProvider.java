@@ -93,12 +93,11 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
 
     public static String FROM_SETTINGS = "FROM_SETTINGS";
 
-    private static final int TOTAL_TILES = 16;
+    private static final int TOTAL_TILES = 12;
     private static final int TILES_PER_ROW = 4;
     private static final int MIN_VISIBLE_HEIGHT_ROW_1 = 125;
-    private static final int MIN_VISIBLE_HEIGHT_ROW_2 = 220;
-    private static final int MIN_VISIBLE_HEIGHT_ROW_3 = 252;
-    private static final int MIN_VISIBLE_HEIGHT_ROW_4 = 320;
+    private static final int MIN_VISIBLE_HEIGHT_ROW_2 = 150;
+    private static final int MIN_VISIBLE_HEIGHT_ROW_3 = 210;
     private static final int DESIRED_ICON_SIZE = 44;
     private static final int DESIRED_ICON_RADIUS = 16;
 
@@ -121,12 +120,6 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                     {R.id.ivRow3Bookmark2Icon, R.id.tvRow3Bookmark2Name, R.id.layoutRow3Bookmark2},
                     {R.id.ivRow3Bookmark3Icon, R.id.tvRow3Bookmark3Name, R.id.layoutRow3Bookmark3},
                     {R.id.ivRow3Bookmark4Icon, R.id.tvRow3Bookmark4Name, R.id.layoutRow3Bookmark4},
-                },
-                {
-                    {R.id.ivRow4Bookmark1Icon, R.id.tvRow4Bookmark1Name, R.id.layoutRow4Bookmark1},
-                    {R.id.ivRow4Bookmark2Icon, R.id.tvRow4Bookmark2Name, R.id.layoutRow4Bookmark2},
-                    {R.id.ivRow4Bookmark3Icon, R.id.tvRow4Bookmark3Name, R.id.layoutRow4Bookmark3},
-                    {R.id.ivRow4Bookmark4Icon, R.id.tvRow4Bookmark4Name, R.id.layoutRow4Bookmark4},
                 },
             };
 
@@ -300,6 +293,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
             requestCode = setSearchBarPendingIntent(context, views, requestCode);
             setTopTiles(context, views, widgetTileList, requestCode);
             setRowsVisibility(views, widgetTileList.size(), minHeight);
+            setDynamicLayout(views, widgetTileList.size(), minHeight);
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
@@ -425,22 +419,57 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static void setRowsVisibility(RemoteViews views, int tilesSize, int minHeight) {
-        views.setViewVisibility(R.id.BookmarkLayoutRow1,
+        views.setViewVisibility(
+                R.id.BookmarkLayoutRow1,
                 tilesSize > 0 * TILES_PER_ROW && minHeight >= MIN_VISIBLE_HEIGHT_ROW_1
                         ? View.VISIBLE
                         : View.GONE);
-        views.setViewVisibility(R.id.BookmarkLayoutRow2,
+        views.setViewVisibility(
+                R.id.BookmarkLayoutRow2,
                 tilesSize > 1 * TILES_PER_ROW && minHeight >= MIN_VISIBLE_HEIGHT_ROW_2
                         ? View.VISIBLE
                         : View.GONE);
-        views.setViewVisibility(R.id.BookmarkLayoutRow3,
+        views.setViewVisibility(
+                R.id.BookmarkLayoutRow3,
                 tilesSize > 2 * TILES_PER_ROW && minHeight >= MIN_VISIBLE_HEIGHT_ROW_3
                         ? View.VISIBLE
                         : View.GONE);
-        views.setViewVisibility(R.id.BookmarkLayoutRow4,
-                tilesSize > 3 * TILES_PER_ROW && minHeight >= MIN_VISIBLE_HEIGHT_ROW_4
-                        ? View.VISIBLE
-                        : View.GONE);
+    }
+
+    private static void setDynamicLayout(RemoteViews views, int tilesSize, int minHeight) {
+        // Check if BookmarkLayoutRow1 is visible (same condition as in setRowsVisibility)
+        boolean isRow1Visible = tilesSize > 0 && minHeight >= MIN_VISIBLE_HEIGHT_ROW_1;
+        if (isRow1Visible) {
+            // When top tiles are visible:
+            // 1. Set gravity to "top" to align content to top
+            views.setInt(R.id.background, "setGravity", android.view.Gravity.TOP);
+            // 2. Set layout height to match_parent (API 31+)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                try {
+                    views.setViewLayoutHeight(
+                            R.id.background,
+                            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                            android.util.TypedValue.COMPLEX_UNIT_PX);
+                } catch (Exception e) {
+                    Log.d(TAG, "Could not set layout height to MATCH_PARENT", e);
+                }
+            }
+        } else {
+            // When no top tiles are shown:
+            // 1. Set gravity to "center" to center the search bar
+            views.setInt(R.id.background, "setGravity", android.view.Gravity.CENTER);
+            // 2. Reset layout height to wrap_content (API 31+)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                try {
+                    views.setViewLayoutHeight(
+                            R.id.background,
+                            android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                            android.util.TypedValue.COMPLEX_UNIT_PX);
+                } catch (Exception e) {
+                    Log.d(TAG, "Could not set layout height to WRAP_CONTENT", e);
+                }
+            }
+        }
     }
 
     private static PendingIntent createIntent(
