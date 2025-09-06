@@ -144,9 +144,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   bool HasAnyHistory();
   bool IsRequestInProgress();
 
-  // Returns true if the conversation has associated content that is non-archive
-  bool IsAssociatedContentAlive();
-
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
 

@@ -441,4 +441,33 @@ TEST_F(AssociatedContentManagerUnitTest,
             contents_map_after.at("removal-turn")[0].get().content);
 }
 
+TEST_F(AssociatedContentManagerUnitTest,
+       AddContent_TriggersUpdateAndNotifiesConversation) {
+  // Test that removed content doesn't appear in the cached contents map
+  NiceMock<MockAssociatedContent> associated_content;
+  associated_content.SetTextContent("Some video transcript");
+  associated_content.SetIsVideo(true);
+
+  // Should have empty cached page content.
+  EXPECT_TRUE(associated_content.cached_page_content().content.empty());
+  EXPECT_FALSE(associated_content.cached_page_content().is_video);
+
+  // Conversation metadata should have no associated content.
+  EXPECT_TRUE(conversation_->associated_content.empty());
+
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content);
+
+  // GetContent should have been called when adding the content to the manager.
+  EXPECT_EQ("Some video transcript",
+            associated_content.cached_page_content().content);
+  EXPECT_TRUE(associated_content.cached_page_content().is_video);
+
+  // Conversation metadata should have been updated now the AssociatedContent
+  // knows its a video.
+  ASSERT_EQ(1u, conversation_->associated_content.size());
+  EXPECT_EQ(conversation_->associated_content[0]->content_type,
+            mojom::ContentType::VideoTranscript);
+}
+
 }  // namespace ai_chat
