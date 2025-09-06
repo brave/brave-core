@@ -192,6 +192,7 @@ if (enable_brave_ai_chat_agent_profile) {
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common/mojom",
       "//chrome/browser/actor:types",
+      "//chrome/common",
       "//components/optimization_guide/proto:optimization_guide_proto",
       "//components/tabs:public",
       "//testing/gtest",
