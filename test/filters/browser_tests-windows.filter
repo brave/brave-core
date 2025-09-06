@@ -62,6 +62,7 @@
 -All/CreateShortcutConfirmationViewBrowserTest.*
 
 # These tests fail because we override colors.
+-NativeChromeColorMixerWinBrowserTest.AccentColorAvailableWithFrameColorDisabled
 -NativeChromeColorMixerWinBrowserTest.HeaderColorsFollowAccentColor
 -NativeChromeColorMixerWinBrowserTest.NativeThemeForWebWithAccentColor
 
