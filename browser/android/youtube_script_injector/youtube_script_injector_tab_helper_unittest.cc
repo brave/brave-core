@@ -31,93 +31,115 @@ class YouTubeScriptInjectorTabHelperTest
 
 TEST_F(YouTubeScriptInjectorTabHelperTest, InvalidOrEmptyUrl) {
   NavigateToURL(GURL());
+  EXPECT_FALSE(GetHelper()->IsYouTubeDomain());
   EXPECT_FALSE(GetHelper()->IsYouTubeVideo());
 
   NavigateToURL(GURL(""));
+  EXPECT_FALSE(GetHelper()->IsYouTubeDomain());
   EXPECT_FALSE(GetHelper()->IsYouTubeVideo());
 
   NavigateToURL(GURL("not a url"));
+  EXPECT_FALSE(GetHelper()->IsYouTubeDomain());
   EXPECT_FALSE(GetHelper()->IsYouTubeVideo());
 }
 
 TEST_F(YouTubeScriptInjectorTabHelperTest, NonYouTubeDomain) {
   NavigateToURL(GURL("https://vimeo.com/watch?v=abcdefg"));
+  EXPECT_FALSE(GetHelper()->IsYouTubeDomain());
   EXPECT_FALSE(GetHelper()->IsYouTubeVideo());
 
   NavigateToURL(GURL("https://example.com/watch?v=abcdefg"));
+  EXPECT_FALSE(GetHelper()->IsYouTubeDomain());
   EXPECT_FALSE(GetHelper()->IsYouTubeVideo());
 }
 
 TEST_F(YouTubeScriptInjectorTabHelperTest, YouTubeDomainWrongPath) {
   NavigateToURL(GURL("https://www.youtube.com/other?v=abcdefg"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_FALSE(GetHelper()->IsYouTubeVideo());
 
   NavigateToURL(GURL("https://www.youtube.com/watchlater?v=abcdefg"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_FALSE(GetHelper()->IsYouTubeVideo());
 
   // Path is case-sensitive.
   NavigateToURL(GURL("https://www.youtube.com/Watch?v=abcdefg"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_FALSE(GetHelper()->IsYouTubeVideo());
 }
 
 TEST_F(YouTubeScriptInjectorTabHelperTest, YouTubeDomainCorrectPathNoQuery) {
   NavigateToURL(GURL("https://www.youtube.com/watch"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_FALSE(GetHelper()->IsYouTubeVideo());
 }
 
 TEST_F(YouTubeScriptInjectorTabHelperTest, YouTubeDomainCorrectPathNoVParam) {
   NavigateToURL(GURL("https://www.youtube.com/watch?foo=bar"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_FALSE(GetHelper()->IsYouTubeVideo());
 }
 
 TEST_F(YouTubeScriptInjectorTabHelperTest,
        YouTubeDomainCorrectPathEmptyVParam) {
   NavigateToURL(GURL("https://www.youtube.com/watch?v="));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_FALSE(GetHelper()->IsYouTubeVideo());
 }
 
 TEST_F(YouTubeScriptInjectorTabHelperTest,
        YouTubeDomainCorrectPathValidVParam) {
   NavigateToURL(GURL("https://www.youtube.com/watch?v=abcdefg"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_TRUE(GetHelper()->IsYouTubeVideo());
 
   NavigateToURL(GURL("https://youtube.com/watch?v=abcdefg"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_TRUE(GetHelper()->IsYouTubeVideo());
 
   NavigateToURL(GURL("https://m.youtube.com/watch?v=abcdefg"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain(true));
   EXPECT_TRUE(GetHelper()->IsYouTubeVideo(true));
 
   NavigateToURL(GURL("https://www.youtube.com/watch?v=abcdefg&foo=bar"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_TRUE(GetHelper()->IsYouTubeVideo());
 
   NavigateToURL(GURL("https://www.youtube.com/watch?foo=bar&v=abcdefg"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_TRUE(GetHelper()->IsYouTubeVideo());
 
   // First v param wins.
   NavigateToURL(GURL("https://www.youtube.com/watch?v=abcdefg&v=1234567"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_TRUE(GetHelper()->IsYouTubeVideo());
 }
 
 TEST_F(YouTubeScriptInjectorTabHelperTest,
        YouTubeDomainCorrectPathWhitespaceVParam) {
   NavigateToURL(GURL("https://www.youtube.com/watch?v= abcdefg "));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_TRUE(GetHelper()->IsYouTubeVideo());
 }
 
 TEST_F(YouTubeScriptInjectorTabHelperTest,
        YouTubeDomainCorrectPathCaseInsensitive) {
   NavigateToURL(GURL("https://www.youtube.com/watch?v=ABCdefG"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_TRUE(GetHelper()->IsYouTubeVideo());
 }
 
 TEST_F(YouTubeScriptInjectorTabHelperTest, YouTubeDomainCorrectPathSubdomain) {
   NavigateToURL(GURL("https://music.youtube.com/watch?v=abcdefg"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_TRUE(GetHelper()->IsYouTubeVideo());
 
   NavigateToURL(GURL("https://gaming.youtube.com/watch?v=abcdefg"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_TRUE(GetHelper()->IsYouTubeVideo());
 
   NavigateToURL(GURL("https://m.youtube.com/watch?v=abcdefg"));
+  EXPECT_TRUE(GetHelper()->IsYouTubeDomain());
   EXPECT_TRUE(GetHelper()->IsYouTubeVideo());
 }
 

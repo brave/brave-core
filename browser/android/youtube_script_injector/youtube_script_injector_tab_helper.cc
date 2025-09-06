@@ -221,7 +221,7 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
   SetFullscreenRequested(false);
   content::WebContents* contents = web_contents();
   // Filter only YouTube videos.
-  if (!IsYouTubeVideo()) {
+  if (!IsYouTubeDomain()) {
     return;
   }
   content::RenderFrameHost::AllowInjectingJavaScript();
@@ -265,7 +265,7 @@ void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
           weak_factory_.GetWeakPtr(), rfh->GetGlobalFrameToken()));
 }
 
-bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(bool mobileOnly) const {
+bool YouTubeScriptInjectorTabHelper::IsYouTubeDomain(bool mobileOnly) const {
   const GURL& url = web_contents()->GetLastCommittedURL();
   if (!url.is_valid() || url.is_empty()) {
     return false;
@@ -286,6 +286,16 @@ bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(bool mobileOnly) const {
       return false;
     }
   }
+
+  return true;
+}
+
+bool YouTubeScriptInjectorTabHelper::IsYouTubeVideo(bool mobileOnly) const {
+  if (!IsYouTubeDomain(mobileOnly)) {
+    return false;
+  }
+
+  const GURL& url = web_contents()->GetLastCommittedURL();
 
   // Check if path is exactly "/watch" (case sensitive).
   const auto path = url.path_piece();
