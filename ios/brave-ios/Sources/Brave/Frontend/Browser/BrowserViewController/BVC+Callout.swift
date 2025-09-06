@@ -272,6 +272,9 @@ extension BrowserViewController {
     //   2. Add a done button to the toolbar
     let controller = UIHostingController(
       rootView: DataImportView(
+        model: .init(
+          coordinator: SafariDataImporterCoordinatorImpl(profile: profileController.profile)
+        ),
         openURL: { [unowned self] url in
           dismiss(animated: true)
           openURLInNewTab(

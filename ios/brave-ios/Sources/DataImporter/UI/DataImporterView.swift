@@ -9,28 +9,23 @@ import SwiftUI
 import UniformTypeIdentifiers
 import os.log
 
-private struct ImporterInfo {
-  var shouldShowFileImporter: Bool
-  var fileTypes = [UTType.zip]
-  var importType = DataImportType.all
-}
-
 public struct DataImportView: View {
-  @State
-  private var importerInfo = ImporterInfo(shouldShowFileImporter: false)
+  @State private var isPresentingFileImporter: Bool = false
+  @State private var isPresentingConflictResolution: Bool = false
 
-  @StateObject
-  private var model = DataImportModel()
+  private var model: SafariDataImportModel
 
   private var openURL: (URL) -> Void
   private var dismiss: () -> Void
   private var onDismiss: () -> Void
 
   public init(
+    model: SafariDataImportModel,
     openURL: @escaping (URL) -> Void,
     dismiss: @escaping () -> Void,
     onDismiss: @escaping () -> Void
   ) {
+    self.model = model
     self.openURL = openURL
     self.dismiss = dismiss
     self.onDismiss = onDismiss
@@ -38,10 +33,8 @@ public struct DataImportView: View {
 
   public var body: some View {
     ZStack {
-      if model.importState == .success {
+      if model.state == .success {
         DataImporterSuccessView {
-          model.removeZipFile()
-
           onDismiss()
           dismiss()
         }
@@ -49,16 +42,15 @@ public struct DataImportView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(braveSystemName: .pageBackground))
         .transition(.opacity)
-      } else if model.importState == .failure {
+      } else if model.state == .failure {
         DataImporterFailedView {
-          model.removeZipFile()
-          model.resetAllStates()
+          model.reset()
         }
         .padding(16.0)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(braveSystemName: .pageBackground))
         .transition(.opacity)
-      } else if model.importState == .importing || model.importState == .dataConflict {
+      } else if model.state == .importing || model.state == .passwordConflict {
         DataImporterLoadingView()
           .padding(16.0)
           .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -75,48 +67,37 @@ public struct DataImportView: View {
       }
     }
     .sheet(
-      isPresented: $model.isLoadingProfiles,
-      content: {
-        if let zipFileURL = model.zipFileURL {
-          DataImporterMultipleProfilesView(
-            zipFileExtractedURL: zipFileURL,
-            profiles: model.profiles,
-            onProfileSelected: onProfileSelected
-          )
-        }
-      }
-    )
-    .sheet(
-      isPresented: $model.hasDataConflict,
+      isPresented: $isPresentingConflictResolution,
       content: {
         DataImporterPasswordConflictView(model: model)
           .interactiveDismissDisabled()
       }
     )
     .fileImporter(
-      isPresented: $importerInfo.shouldShowFileImporter,
-      allowedContentTypes: importerInfo.fileTypes,
+      isPresented: $isPresentingFileImporter,
+      allowedContentTypes: [.zip],
       allowsMultipleSelection: false
     ) { result in
       switch result {
       case .success(let files):
-        Task {
-          await onFileSelected(files: files)
-        }
+        guard let file = files.first else { return }
+        model.beginImport(for: file)
       case .failure(let error):
         Logger.module.error("[DataImporter] - File Selector Error: \(error)")
-        model.importError = .unknown
+        model.state = .failure
       }
     }
-    .animation(.default, value: model.importState)
+    .animation(.default, value: model.state)
     .toolbar(
-      [.success, .failure, .importing, .dataConflict].contains(model.importState)
+      [.success, .failure, .importing, .passwordConflict].contains(model.state)
         ? .hidden : .visible,
       for: .navigationBar
     )
     .onDisappear {
-      model.removeZipFile()
       onDismiss()
+    }
+    .onChange(of: model.state) { _, newValue in
+      isPresentingConflictResolution = newValue == .passwordConflict
     }
   }
 
@@ -144,11 +125,7 @@ public struct DataImportView: View {
 
         Button(
           action: {
-            importerInfo = ImporterInfo(
-              shouldShowFileImporter: true,
-              fileTypes: [.zip],
-              importType: .all
-            )
+            isPresentingFileImporter = true
           },
           label: {
             Text(Strings.DataImporter.importDataFileSelectorButtonTitle)
@@ -203,32 +180,4 @@ public struct DataImportView: View {
     .navigationTitle(Strings.DataImporter.importDataFileSelectorNavigationTitle)
     .toolbar(.visible, for: .navigationBar)
   }
-
-  private func onFileSelected(files: [URL]) async {
-    await files.asyncForEach { file in
-      if file.startAccessingSecurityScopedResource() {
-        defer { file.stopAccessingSecurityScopedResource() }
-
-        await model.importData(from: file, importType: importerInfo.importType)
-      }
-    }
-  }
-
-  private func onProfileSelected(profile: String) {
-    if let selectedProfile = model.profiles[profile] {
-      Task {
-        defer {
-          model.removeZipFile()
-        }
-
-        await model.importData(from: selectedProfile)
-      }
-    }
-  }
 }
-
-#if DEBUG
-#Preview {
-  DataImportView(openURL: { _ in }, dismiss: {}, onDismiss: {})
-}
-#endif

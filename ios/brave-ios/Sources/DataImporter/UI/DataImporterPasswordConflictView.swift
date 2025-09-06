@@ -16,7 +16,7 @@ struct DataImporterPasswordConflictView: View {
   @State
   var sheetHeight: CGFloat = 0.0
 
-  var model: DataImportModel
+  var model: SafariDataImportModel
 
   var body: some View {
     ScrollView {
@@ -30,11 +30,11 @@ struct DataImporterPasswordConflictView: View {
             .font(.headline)
             .foregroundColor(Color(braveSystemName: .textPrimary))
 
-          if case .failedToImportPasswordsDueToConflict(let results) = model.importError {
+          if let conflictedPasswordIDs = model.conflictedPasswordIDs {
             Text(
               String(
                 format: Strings.DataImporter.importStatePasswordConflictMessage,
-                results.displayedEntries.count
+                conflictedPasswordIDs.count
               )
             )
             .font(.footnote)
@@ -49,9 +49,7 @@ struct DataImporterPasswordConflictView: View {
 
         Button(
           action: {
-            Task {
-              await model.keepPasswords(option: .keepBravePasswords)
-            }
+            model.resolveConflicts(.keepBravePasswords)
           },
           label: {
             Text(
@@ -73,9 +71,7 @@ struct DataImporterPasswordConflictView: View {
 
         Button(
           action: {
-            Task {
-              await model.keepPasswords(option: .keepSafariPasswords)
-            }
+            model.resolveConflicts(.keepSafariPasswords)
           },
           label: {
             Text(
