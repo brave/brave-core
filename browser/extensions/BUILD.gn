@@ -174,7 +174,10 @@ source_set("extensions") {
   }
 
   if (enable_playlist) {
-    deps += [ "//brave/components/playlist/browser" ]
+    deps += [
+      "//brave/components/playlist/browser",
+      "//brave/components/playlist/common",
+    ]
   }
 
   if (enable_tor) {
