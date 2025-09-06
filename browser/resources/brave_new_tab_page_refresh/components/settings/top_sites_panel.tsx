@@ -34,7 +34,7 @@ export function TopSitesPanel() {
   return (
     <div data-css-scope={style.scope}>
       <div className='control-row'>
-        <label>{getString('showTopSitesLabel')}</label>
+        <label>{getString(S.NEW_TAB_SHOW_TOP_SITES_LABEL)}</label>
         <Toggle
           size='small'
           checked={showTopSites}
@@ -56,8 +56,8 @@ export function TopSitesPanel() {
               <div className='list-view-image'>
                 {renderSelectedMarker(TopSitesListKind.kCustom)}
               </div>
-              <h4>{getString('topSitesCustomOptionTitle')}</h4>
-              <p>{getString('topSitesCustomOptionText')}</p>
+              <h4>{getString(S.NEW_TAB_TOP_SITES_CUSTOM_OPTION_TITLE)}</h4>
+              <p>{getString(S.NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT)}</p>
             </button>
             <button
               className={classNames({
@@ -71,8 +71,12 @@ export function TopSitesPanel() {
               <div className='list-view-image'>
                 {renderSelectedMarker(TopSitesListKind.kMostVisited)}
               </div>
-              <h4>{getString('topSitesMostVisitedOptionTitle')}</h4>
-              <p>{getString('topSitesMostVisitedOptionText')}</p>
+              <h4>
+                {getString(S.NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TITLE)}
+              </h4>
+              <p>
+                {getString(S.NEW_TAB_TOP_SITES_MOST_VISITED_OPTION_TEXT)}
+              </p>
             </button>
           </div>
         )
