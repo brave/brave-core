@@ -4,6 +4,7 @@ include_rules = [
   "+components/pref_registry",
   "+components/prefs",
   "+content/public/browser",
+  "+net",
   "+services/preferences",
 ]
 

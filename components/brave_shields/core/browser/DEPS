@@ -5,6 +5,7 @@ include_rules = [
   "+components/value_store",
   "+components/sync_preferences",
   "+crypto",
+  "+net",
 ]
 
 specific_include_rules = {

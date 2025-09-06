@@ -5,6 +5,7 @@ include_rules = [
   "+components/services",
   "+components/user_prefs",
   "+content/public/browser",
+  "+net",
   "+services/network/public",
   "+third_party/blink/public/mojom/dom_storage/storage_area.mojom.h",
 ]

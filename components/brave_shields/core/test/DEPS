@@ -3,6 +3,7 @@ include_rules = [
   "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
   "+content/public/test",
+  "+net",
 ]
 
 specific_include_rules = {
