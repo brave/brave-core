@@ -19,6 +19,7 @@ import { ModelSelector } from '../model_selector'
 import usePromise from '$web-common/usePromise'
 import { isImageFile } from '../../constants/file_types'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
+import Editable, { stringifyContent } from './editable'
 
 type Props = Pick<
   ConversationContext,
@@ -76,10 +77,6 @@ function usePlaceholderText(attachmentsCount: number, conversationStarted: boole
 }
 
 function InputBox(props: InputBoxProps) {
-  const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    props.context.setInputText(e.target.value)
-  }
-
   const querySubmitted = React.useRef(false)
   const attachmentWrapperRef = React.useRef<HTMLDivElement>(null)
   const [attachmentWrapperHeight, setAttachmentWrapperHeight] =
@@ -98,7 +95,7 @@ function InputBox(props: InputBoxProps) {
     props.context.handleVoiceRecognition?.()
   }
 
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleOnKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       if (!e.repeat) {
         props.context.submitInputTextToAPI()
@@ -109,7 +106,7 @@ function InputBox(props: InputBoxProps) {
 
     if (
       e.key === 'Backspace' &&
-      props.context.inputText === '' &&
+      stringifyContent(props.context.inputText) === '' &&
       props.context.selectedActionType
     ) {
       props.context.resetSelectedActionType()
@@ -144,7 +141,7 @@ function InputBox(props: InputBoxProps) {
     }
   }
 
-  const maybeAutofocus = (node: HTMLTextAreaElement | null) => {
+  const maybeAutofocus = (node: HTMLElement | null) => {
     if (!node) {
       return
     }
@@ -183,10 +180,10 @@ function InputBox(props: InputBoxProps) {
   const pendingContent = props.context.associatedContentInfo
     .filter(c => !c.conversationTurnUuid)
   const isSendButtonDisabled =
-    props.context.shouldDisableUserInput || props.context.inputText === ''
+    props.context.shouldDisableUserInput || stringifyContent(props.context.inputText) === ''
 
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onKeyDownCapture={handleOnKeyDown}>
       {props.context.selectedActionType && (
         <div className={styles.actionsLabelContainer}>
           <ActionTypeLabel
@@ -222,21 +219,15 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      <div
-        className={styles.growWrap}
-        data-replicated-value={props.context.inputText || placeholderText}
-      >
-        <textarea
-          ref={maybeAutofocus}
-          placeholder={placeholderText}
-          onChange={onInputChange}
-          onKeyDown={handleOnKeyDown}
-          onPaste={handleOnPaste}
-          value={props.context.inputText}
-          autoFocus
-          rows={1}
-        />
-      </div>
+      <Editable
+        ref={maybeAutofocus}
+        placeholder={placeholderText}
+        content={props.context.inputText}
+        onContentChange={e => {
+          props.context.setInputText(e)
+        }}
+        onPaste={handleOnPaste}
+      />
       {props.context.isCharLimitApproaching && (
         <div
           className={classnames({
@@ -293,26 +284,26 @@ function InputBox(props: InputBoxProps) {
           {props.context.hasAcceptedAgreement &&
             props.context.isAIChatAgentProfileFeatureEnabled &&
             !props.context.isAIChatAgentProfile && (
-            <Button
-              fab
-              kind='plain-faint'
-              onClick={handleContentAgentToggle}
-              title={'Open Leo AI Content Agent Window'}
-            >
-              <Icon name='leo-cursor' />
-            </Button>
-          )}
+              <Button
+                fab
+                kind='plain-faint'
+                onClick={handleContentAgentToggle}
+                title={'Open Leo AI Content Agent Window'}
+              >
+                <Icon name='leo-cursor' />
+              </Button>
+            )}
           {props.context.isAIChatAgentProfileFeatureEnabled &&
             props.context.isAIChatAgentProfile && (
-            <div data-testid='agent-profile-tooltip'>
-              <Tooltip
+              <div data-testid='agent-profile-tooltip'>
+                <Tooltip
 
-                text={getLocale(S.CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL)}
-              >
-                <Icon className={styles.contentAgentButtonEnabled} name='leo-cursor' />
-              </Tooltip>
-            </div>
-          )}
+                  text={getLocale(S.CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL)}
+                >
+                  <Icon className={styles.contentAgentButtonEnabled} name='leo-cursor' />
+                </Tooltip>
+              </div>
+            )}
         </div>
         <div className={styles.modelSelectorAndSendButton}>
           <ModelSelector />

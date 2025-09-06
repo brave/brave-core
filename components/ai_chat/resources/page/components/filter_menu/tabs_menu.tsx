@@ -11,6 +11,7 @@ import { useExtractedQuery, matches } from "./query";
 import { useAIChat } from "../../state/ai_chat_context";
 import { useConversation } from "../../state/conversation_context";
 import { getLocale } from "$web-common/locale";
+import { stringifyContent } from "../input_box/editable";
 
 function matchesQuery(query: string, entry: TabData) {
   return matches(query, entry.title) || matches(query, entry.url.url)
@@ -20,19 +21,21 @@ export default function TabsMenu() {
   const aiChat = useAIChat()
   const conversation = useConversation()
 
-  const query = useExtractedQuery(conversation.inputText, {
+  const query = useExtractedQuery(stringifyContent(conversation.inputText), {
     onlyAtStart: true,
     triggerCharacter: '@',
   })
 
   const isOpen = React.useMemo(() => query !== null, [query])
-
   const setIsOpen = React.useCallback((isOpen: boolean) => {
     if (!isOpen) {
-      conversation.setInputText('')
-      document.querySelector('textarea')?.focus()
+      const editable: HTMLElement = document.querySelector('[data-editor]')!
+      if (editable) {
+        conversation.setInputText([])
+        editable.focus()
+      }
     }
-  }, [conversation.setInputText])
+  }, [])
 
   const selectTab = React.useCallback((tab: TabData) => {
     setIsOpen(false)
