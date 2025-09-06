@@ -316,6 +316,10 @@ var package = Package(
       dependencies: ["Strings", "Preferences", "BraveCore", "Web", "Data"],
       plugins: ["LoggerPlugin"]
     ),
+    .testTarget(
+      name: "BraveShieldsTests",
+      dependencies: ["BraveShields", "Data", "TestHelpers", "Web"]
+    ),
     .target(
       name: "DesignSystem",
       dependencies: ["Then", "NalaAssets"],
