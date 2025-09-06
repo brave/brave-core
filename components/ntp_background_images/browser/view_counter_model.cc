@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/functional/bind.h"
 #include "base/rand_util.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "components/prefs/pref_service.h"
@@ -24,8 +25,7 @@ ViewCounterModel::ViewCounterModel(PrefService* prefs) : prefs_(prefs) {
       features::kInitialCountToBrandedWallpaper.Get() - 1;
 
   // We also reset when a specific amount of time is elapsed when in SI mode
-  timer_counts_reset_.Start(FROM_HERE, features::kResetCounterAfter.Get(), this,
-                            &ViewCounterModel::OnTimerCountsResetExpired);
+  ScheduleNextBrandedWallpaperCountReset();
 }
 
 ViewCounterModel::~ViewCounterModel() = default;
@@ -184,12 +184,22 @@ void ViewCounterModel::Reset() {
   campaigns_total_branded_image_count_.clear();
   campaigns_current_branded_image_index_.clear();
   MaybeResetBrandedWallpaperCount();
-  // Restart timer with same parameters as set during this class' constructor
-  timer_counts_reset_.Reset();
+  ScheduleNextBrandedWallpaperCountReset();
 }
 
-void ViewCounterModel::OnTimerCountsResetExpired() {
+void ViewCounterModel::ScheduleNextBrandedWallpaperCountReset() {
+  const base::Time next_counts_reset_time =
+      base::Time::Now() + features::kResetCounterAfter.Get();
+  counts_reset_timer_.Start(
+      FROM_HERE, next_counts_reset_time,
+      base::BindOnce(&ViewCounterModel::
+                         ResetBrandedWallpaperCountAndScheduleNextCountReset,
+                     base::Unretained(this)));
+}
+
+void ViewCounterModel::ResetBrandedWallpaperCountAndScheduleNextCountReset() {
   MaybeResetBrandedWallpaperCount();
+  ScheduleNextBrandedWallpaperCountReset();
 }
 
 }  // namespace ntp_background_images
