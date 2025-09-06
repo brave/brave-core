@@ -10,7 +10,8 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/js/node_js.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
-#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/strcat.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 using ::blink::To;
 
@@ -38,9 +39,8 @@ ItemName EdgeJSCall::GetItemName() const {
 }
 
 ItemDesc EdgeJSCall::GetItemDesc() const {
-  blink::StringBuilder ts;
-  ts << GetItemName() << " [arguments: " << arguments_ << "]";
-  return ts.ReleaseString();
+  return blink::StrCat(
+      {GetItemName(), " [arguments: ", blink::String(arguments_), "]"});
 }
 
 void EdgeJSCall::AddGraphMLAttributes(xmlDocPtr doc,

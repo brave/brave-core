@@ -9,7 +9,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_element.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
-#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 
 namespace brave_page_graph {
 
@@ -27,9 +27,7 @@ EdgeAttribute::EdgeAttribute(GraphItemContext* context,
 EdgeAttribute::~EdgeAttribute() = default;
 
 ItemDesc EdgeAttribute::GetItemDesc() const {
-  blink::StringBuilder ts;
-  ts << GraphEdge::GetItemDesc() << " [" << name_ << "]";
-  return ts.ReleaseString();
+  return blink::StrCat({GraphEdge::GetItemDesc(), " [", name_, "]"});
 }
 
 void EdgeAttribute::AddGraphMLAttributes(xmlDocPtr doc,

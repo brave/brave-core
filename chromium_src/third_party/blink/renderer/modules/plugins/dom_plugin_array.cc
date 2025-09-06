@@ -15,7 +15,7 @@
 #include "third_party/blink/renderer/core/page/plugin_data.h"
 #include "third_party/blink/renderer/modules/plugins/dom_plugin.h"
 #include "third_party/blink/renderer/platform/graphics/color.h"
-#include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+#include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 
 using blink::DOMPlugin;
@@ -27,7 +27,7 @@ using blink::Member;
 using blink::MimeClassInfo;
 using blink::PluginData;
 using blink::PluginInfo;
-using blink::StringBuilder;
+using blink::StrCat;
 using WTF::String;
 
 namespace brave {
@@ -45,11 +45,8 @@ String PluginReplacementName(FarblingPRNG* prng) {
                           "com.adobe.pdf "};
   std::vector<String> viewer{"Viewer",  "Renderer", "Display",   "Plugin",
                              "plug-in", "plug in",  "extension", ""};
-  StringBuilder result;
-  result.Append(chrome[(*prng)() % chrome.size()]);
-  result.Append(pdf[(*prng)() % pdf.size()]);
-  result.Append(viewer[(*prng)() % viewer.size()]);
-  return result.ToString();
+  return StrCat({chrome[(*prng)() % chrome.size()], pdf[(*prng)() % pdf.size()],
+                 viewer[(*prng)() % viewer.size()]});
 }
 
 // General helper to add a mime type to a plugin info, with a single extension
