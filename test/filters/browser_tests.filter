@@ -107,6 +107,8 @@
 -PageInfoBubbleViewMerchantTrustDialogBrowserTest.*
 -PageInfoBubbleViewMerchantTrustHatsDialogBrowserTest.InvokeUi_MerchantTrustSubpage
 -PasswordChangeBrowserTest.*
+-PasswordChangeBrowserTestWithLoginCheck.OpenTabWhenLoggedOut
+-PasswordChangeBrowserTestWithLoginCheck.PasswordChangeDoesNotStartUserIsLoggedOut
 -PasswordChangeBrowserTestWithLoginCheck.UserSkipsLoginCheck
 -PasswordChangeUiBrowserTest.InvokeUi_LeakBubble
 -ProactivePersonalizationHintsFetcherBrowserTest.*
@@ -131,6 +133,7 @@
 
 # Google signin is disabled
 -BoundSessionCookieRefreshServiceImplBrowserTest.CookieRotationOnStartup
+-BoundSessionOAuthMultiloginTest.StartsNewBoundSession
 
 # Read anything is disabled
 -All/ContextMenuBrowserTest.OpenInReadingMode/LinkPreview*
@@ -592,6 +595,7 @@
 -SafeBrowsingTriggeredPopupBlockerPrerenderingBrowserTest.*
 -SafetyTipPageInfoBubbleViewBrowserTest.MetricsOnlyHeuristicDoesntShowInPageInfo
 -SafetyTipPageInfoBubbleViewPrerenderBrowserTest.*
+-SafetyTipPageInfoBubbleSplitViewTest.ShowLookalikeDialog
 -ScriptingAPIPrerenderingTest.Basic
 -SecurityStatePageLoadMetricsPrerenderBrowserTest.*
 -SecurityStateTabHelperPrerenderTest.*
@@ -772,6 +776,8 @@
 -ProfileMenuClickTest_ManagedProfile.ProfileMenuClickTest_ManagedProfile/*
 -ProfileMenuClickTest_NewSyncPromoVariant.ProfileMenuClickTest_NewSyncPromoVariant/*
 -ProfileMenuClickTest_PasswordManagerWebApp.ProfileMenuClickTest_PasswordManagerWebApp/*
+-ProfileMenuClickTest_SigninPatternDisallowed.ProfileMenuClickTest_SigninPatternDisallowed/*
+-ProfileMenuClickTest_SigninPatternDisallowedSecondaryAllowed.ProfileMenuClickTest_SigninPatternDisallowedSecondaryAllowed/*
 -ProfileMenuClickTest_SyncEnabled_UnoDisabled.ProfileMenuClickTest_*
 -ProfileMenuClickTest_SyncEnabled_UnoEnabled.ProfileMenuClickTest_*
 -ProfileMenuClickTest_SyncError_UnoDisabled.ProfileMenuClickTest_*
@@ -1067,6 +1073,7 @@
 -PredictionModelStoreMigrationBrowserTest.*
 -PredictionServiceBrowserTest.*
 -PredictionServiceBrowserTestBase.*
+-PredictionServiceHoldbackTest/PredictionServiceHoldbackBrowserTest.TestOverallTimeout/*
 -PredictionServiceHoldbackTest/PredictionServiceHoldbackBrowserTest.TestServerSideHoldbackWorkflow/*
 -PredictionSettingsPageBrowserTest.*
 -SearchNavigationPrefetchIncognitoBrowserTest.NavigationPrefetchIsServedMouseDown
@@ -1791,6 +1798,7 @@
 -LensOverlayControllerInnerTextAndApc.*
 -LensOverlayControllerInnerTextEnabledSmallByteLimitTest.*
 -LensOverlayControllerOverlaySearchbox.OverlaySearchboxPageClassificationAndState
+-LensOverlayControllerSideBySideBrowserTest.SidePanelRoundedCornerRegularTab
 -LensOverlayControllerSideBySideBrowserTest.SidePanelRoundedCornerSplitTab
 
 # This test fails because we don't implement an accent color for titlebars or

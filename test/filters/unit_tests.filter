@@ -116,9 +116,7 @@
 -ComposeEnablingTest.*
 -ComposePopupAutofillDriverTest.*
 -DigitalIdentityLowRiskOriginsTest.*
--LoginStateCheckerTest.ExceedsMaxLoginChecksAndFails
--LoginStateCheckerTest.UserIsLoggedInOnFirstAttempt
--LoginStateCheckerTest.UserIsLoggedInOnSecondAttempt
+-LoginStateCheckerTest.*
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
 -PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
 -PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
