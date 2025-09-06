@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_APPLICATION_STATE_BACKGROUND_HELPER_BACKGROUND_HELPER_WIN_H_
 #define BRAVE_BROWSER_BRAVE_ADS_APPLICATION_STATE_BACKGROUND_HELPER_BACKGROUND_HELPER_WIN_H_
 
-#include <memory>
-
 #include "base/callback_list.h"
 #include "base/win/windows_types.h"
 #include "brave/components/brave_ads/browser/application_state/background_helper.h"
