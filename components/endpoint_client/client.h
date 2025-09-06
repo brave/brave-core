@@ -26,7 +26,7 @@
 
 namespace endpoint_client {
 
-template <endpoints::concepts::Endpoint E>
+template <endpoints::concepts::Endpoint Endpoint>
 class Client {
   template <typename T>
   struct Parse {
@@ -55,17 +55,16 @@ class Client {
   };
 
  public:
-  template <endpoints::concepts::Accepts<E> Request,
-            typename Response = E::template ResponseFor<Request>,
-            typename Error = E::template ErrorFor<Request>,
-            typename Expected =
-                base::expected<std::optional<Response>, std::optional<Error>>,
-            typename Callback = base::OnceCallback<void(int, Expected)>>
+  template <endpoints::concepts::SupportedBy<Endpoint> Request>
   static void Send(api_request_helper::APIRequestHelper& api_request_helper,
-                       Request request,
-                       Callback callback) {
-    auto on_response = [](Callback callback,
+                   Request request,
+                   Endpoint::template CallbackFor<Request> callback) {
+    auto on_response = [](decltype(callback) callback,
                           api_request_helper::APIRequestResult result) {
+      using Response = Endpoint::template ResponseFor<Request>;
+      using Error = Endpoint::template ErrorFor<Request>;
+      using Expected = Endpoint::template ExpectedFor<Request>;
+
       std::move(callback).Run(
           result.response_code(),
           result.Is2XXResponseCode()
@@ -77,7 +76,8 @@ class Client {
     CHECK(json) << "Failed to serialize request to JSON!";
 
     api_request_helper.Request(
-        std::string(request.Method()), E::URL(), *json, "application/json",
+        std::string(request.Method()), Endpoint::URL(), *json,
+        "application/json",
         base::BindOnce(std::move(on_response), std::move(callback)),
         base::ToVector(request.headers.GetHeaderVector(),
                        [](const auto& header) {
