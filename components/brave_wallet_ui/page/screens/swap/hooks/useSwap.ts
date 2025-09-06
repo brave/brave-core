@@ -39,7 +39,7 @@ import Amount from '../../../../utils/amount'
 import { isNativeAsset } from '../../../../utils/asset-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import {
-  getPriceIdForToken,
+  getPriceRequestForToken,
   getTokenPriceAmountFromRegistry,
 } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
@@ -261,19 +261,20 @@ export const useSwap = () => {
         : skipToken,
     )
 
-  const tokenPriceIds = useMemo(
+  const tokenPriceRequests = useMemo(
     () =>
       [nativeAsset, fromToken, toToken]
         .filter(
           (token): token is BraveWallet.BlockchainToken => token !== undefined,
         )
-        .map(getPriceIdForToken),
+        .map(getPriceRequestForToken)
+        .filter((request) => request !== undefined),
     [nativeAsset, fromToken, toToken],
   )
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length && defaultFiatCurrency
-      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+  const { data: spotPrices = [] } = useGetTokenSpotPricesQuery(
+    tokenPriceRequests.length && defaultFiatCurrency
+      ? { requests: tokenPriceRequests, vsCurrency: defaultFiatCurrency }
       : skipToken,
     querySubscriptionOptions60s,
   )
@@ -284,7 +285,7 @@ export const useSwap = () => {
       || !fromToken
       || !toToken
       || !quoteUnion
-      || !spotPriceRegistry
+      || !spotPrices
       || !defaultFiatCurrency
     ) {
       return []
@@ -294,7 +295,7 @@ export const useSwap = () => {
       return getLiFiQuoteOptions({
         quote: quoteUnion.lifiQuote,
         fromNetwork,
-        spotPrices: spotPriceRegistry,
+        spotPrices,
         defaultFiatCurrency,
         toToken,
         fromToken,
@@ -307,7 +308,7 @@ export const useSwap = () => {
         fromNetwork,
         fromToken,
         toToken,
-        spotPrices: spotPriceRegistry,
+        spotPrices,
         defaultFiatCurrency,
       })
     }
@@ -318,7 +319,7 @@ export const useSwap = () => {
         fromNetwork,
         fromToken,
         toToken,
-        spotPrices: spotPriceRegistry,
+        spotPrices,
         defaultFiatCurrency,
       })
     }
@@ -327,7 +328,7 @@ export const useSwap = () => {
       return getSquidQuoteOptions({
         quote: quoteUnion.squidQuote,
         fromNetwork,
-        spotPrices: spotPriceRegistry,
+        spotPrices,
         defaultFiatCurrency,
       })
     }
@@ -338,7 +339,7 @@ export const useSwap = () => {
     fromToken,
     toToken,
     quoteUnion,
-    spotPriceRegistry,
+    spotPrices,
     defaultFiatCurrency,
   ])
 
@@ -882,18 +883,13 @@ export const useSwap = () => {
 
   // Memos
   const fiatValue = useMemo(() => {
-    if (
-      !fromAmount
-      || !fromToken
-      || !spotPriceRegistry
-      || !defaultFiatCurrency
-    ) {
+    if (!fromAmount || !fromToken || !spotPrices || !defaultFiatCurrency) {
       return
     }
 
-    const price = getTokenPriceAmountFromRegistry(spotPriceRegistry, fromToken)
+    const price = getTokenPriceAmountFromRegistry(spotPrices, fromToken)
     return new Amount(fromAmount).times(price).formatAsFiat(defaultFiatCurrency)
-  }, [fromAmount, fromToken, spotPriceRegistry, defaultFiatCurrency])
+  }, [fromAmount, fromToken, spotPrices, defaultFiatCurrency])
 
   const feesWrapped = useMemo(() => {
     if (quoteOptions.length) {
@@ -1405,7 +1401,7 @@ export const useSwap = () => {
     submitButtonText,
     isSubmitButtonDisabled,
     swapValidationError,
-    spotPrices: spotPriceRegistry,
+    spotPrices,
     tokenBalancesRegistry,
     isLoadingBalances,
     isBridge,

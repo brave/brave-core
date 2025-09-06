@@ -316,8 +316,8 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   private typealias TokenBalanceCache = [String: [String: Double]]
   /// Cache of token balances for each account. [token.id: [account.id: balance]]
   private var tokenBalancesCache: TokenBalanceCache = [:]
-  /// Cache of prices for each token. The key is the token's `assetRatioId`.
-  private var pricesCache: [String: String] = [:]
+  /// Cache of prices for each token.
+  private var pricesCache: [BraveWallet.AssetPrice] = []
   /// Cache of priceHistories. The key is the token's `assetRatioId`.
   private var priceHistoriesCache: [String: [BraveWallet.AssetTimePrice]] = [:]
 
@@ -594,21 +594,24 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
       guard !Task.isCancelled else { return }
       // fetch price for every token
       let allTokens = allVisibleUserAssets.flatMap(\.tokens)
-      let allAssetRatioIds = allTokens.map(\.assetRatioId)
-      let prices: [String: String] = await assetRatioService.fetchPrices(
-        for: allAssetRatioIds,
-        toAssets: [currencyFormatter.currencyCode],
-        timeframe: timeframe
+      let prices: [BraveWallet.AssetPrice] = await assetRatioService.fetchPrices(
+        for: allTokens.map {
+          BraveWallet.AssetPriceRequest(
+            coinType: $0.coin,
+            chainId: $0.chainId,
+            address: $0.contractAddress.isEmpty ? nil : $0.contractAddress
+          )
+        },
+        vsCurrency: currencyFormatter.currencyCode
       )
-      for (key, value) in prices {  // update cached values
-        self.pricesCache[key] = value
-      }
+
+      self.pricesCache.update(with: prices)
 
       // fetch price history for every non-zero balance token
       let nonZeroBalanceAssetRatioIds: [String] =
         allTokens
         .filter { (tokenBalancesCache[$0.id] ?? [:]).values.reduce(0, +) > 0 }
-        .map { $0.assetRatioId }
+        .map { $0.assetRatioId.lowercased() }
       let priceHistories: [String: [BraveWallet.AssetTimePrice]] = await fetchPriceHistory(
         for: nonZeroBalanceAssetRatioIds
       )
@@ -629,7 +632,9 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
       let currentBalance =
         allAssets
         .compactMap {
-          if let price = Double($0.price) {
+          if let assetPrice = self.pricesCache.getTokenPrice(for: $0.token),
+            let price = Double(assetPrice.price)
+          {
             return $0.totalBalance * price
           }
           return nil
@@ -773,7 +778,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
             groupType: groupType,
             token: token,
             network: networkAssets.network,
-            price: pricesCache[token.assetRatioId.lowercased(), default: ""],
+            price: pricesCache.getTokenPrice(for: token)?.price ?? "",
             history: priceHistoriesCache[token.assetRatioId.lowercased(), default: []],
             balanceForAccounts: tokenBalancesCache[token.id, default: [:]]
               .filter { key, value in
@@ -823,7 +828,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
             groupType: groupType,
             token: token,
             network: networkAssets.network,
-            price: pricesCache[token.assetRatioId.lowercased(), default: ""],
+            price: pricesCache.getTokenPrice(for: token)?.price ?? "",
             history: priceHistoriesCache[token.assetRatioId.lowercased(), default: []],
             balanceForAccounts: tokenBalancesCache[token.id, default: [:]]
               .filter { key, value in
@@ -859,7 +864,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
               groupType: groupType,
               token: token,
               network: networkAssets.network,
-              price: pricesCache[token.assetRatioId.lowercased(), default: ""],
+              price: pricesCache.getTokenPrice(for: token)?.price ?? "",
               history: priceHistoriesCache[token.assetRatioId.lowercased(), default: []],
               balanceForAccounts: tokenBalancesCache[token.id, default: [:]]
                 .filter { key, value in

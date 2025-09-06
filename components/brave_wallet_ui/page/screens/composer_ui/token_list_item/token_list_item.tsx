@@ -124,7 +124,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
     const tokenHasBalance = balance && new Amount(balance).gt(0)
 
     const isPriceDown = spotPrice
-      ? Number(spotPrice.assetTimeframeChange) < 0
+      ? Number(spotPrice.percentageChange24h) < 0
       : false
 
     // Render
@@ -250,7 +250,9 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                   ) : (
                     <>
                       <Row width='unset'>
-                        {tokenHasMultipleAccounts && <AccountsIcon />}
+                        {tokenHasMultipleAccounts && formattedFiatBalance && (
+                          <AccountsIcon />
+                        )}
                         <FiatBalanceText
                           textSize='14px'
                           isBold={true}
@@ -261,24 +263,36 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                         </FiatBalanceText>
                       </Row>
                       <Row width='unset'>
-                        <PercentChangeIcon
-                          name={
-                            isPriceDown
-                              ? 'arrow-diagonal-down-right'
-                              : 'arrow-diagonal-up-right'
-                          }
-                          isDown={isPriceDown}
-                        />
-                        <PercentChangeText
-                          textSize='12px'
-                          isBold={false}
-                          textAlign='right'
-                          isDown={isPriceDown}
-                        >
-                          {`${Math.abs(
-                            Number(spotPrice?.assetTimeframeChange ?? ''),
-                          ).toFixed(2)}%`}
-                        </PercentChangeText>
+                        {spotPrice?.percentageChange24h ? (
+                          <>
+                            <PercentChangeIcon
+                              name={
+                                isPriceDown
+                                  ? 'arrow-diagonal-down-right'
+                                  : 'arrow-diagonal-up-right'
+                              }
+                              isDown={isPriceDown}
+                            />
+                            <PercentChangeText
+                              textSize='12px'
+                              isBold={false}
+                              textAlign='right'
+                              isDown={isPriceDown}
+                            >
+                              {`${Math.abs(
+                                Number(spotPrice?.percentageChange24h ?? ''),
+                              ).toFixed(2)}%`}
+                            </PercentChangeText>
+                          </>
+                        ) : (
+                          <Text
+                            textSize='12px'
+                            textColor='secondary'
+                            isBold={false}
+                          >
+                            -
+                          </Text>
+                        )}
                       </Row>
                     </>
                   )}

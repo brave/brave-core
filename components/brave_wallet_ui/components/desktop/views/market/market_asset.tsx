@@ -36,6 +36,7 @@ import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
   computeFiatAmount,
   getPriceIdForToken,
+  getPriceRequestForToken,
 } from '../../../../utils/pricing-utils'
 import {
   querySubscriptionOptions60s, //
@@ -177,6 +178,10 @@ export const MarketAsset = () => {
     ? getPriceIdForToken(selectedAssetFromParams)
     : undefined
 
+  const assetPriceRequest = selectedAssetFromParams
+    ? getPriceRequestForToken(selectedAssetFromParams)
+    : undefined
+
   const {
     data: selectedAssetPriceHistory,
     isFetching: isFetchingPortfolioPriceHistory,
@@ -190,11 +195,11 @@ export const MarketAsset = () => {
       : skipToken,
   )
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    assetPriceId && defaultFiat
+  const { data: spotPrices } = useGetTokenSpotPricesQuery(
+    assetPriceRequest && defaultFiat
       ? {
-          ids: [assetPriceId],
-          toCurrency: defaultFiat,
+          requests: [assetPriceRequest],
+          vsCurrency: defaultFiat,
         }
       : skipToken,
     querySubscriptionOptions60s,
@@ -263,14 +268,14 @@ export const MarketAsset = () => {
 
   const fullAssetFiatBalance = React.useMemo(
     () =>
-      selectedAssetFromParams && fullAssetBalance
+      selectedAssetFromParams && fullAssetBalance && spotPrices
         ? computeFiatAmount({
-            spotPriceRegistry,
+            spotPrices,
             value: fullAssetBalance,
             token: selectedAssetFromParams,
           })
         : Amount.empty(),
-    [selectedAssetFromParams, fullAssetBalance, spotPriceRegistry],
+    [selectedAssetFromParams, fullAssetBalance, spotPrices],
   )
 
   // methods

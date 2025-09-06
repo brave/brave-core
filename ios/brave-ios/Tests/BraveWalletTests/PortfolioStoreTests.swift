@@ -72,10 +72,14 @@ import XCTest
   let mockETHBalanceAccount1: Double = 0.896
   let mockETHPrice: String = "3059.99"  // ETH value = $2741.75104
   lazy var mockETHAssetPrice: BraveWallet.AssetPrice = .init(
-    fromAsset: "eth",
-    toAsset: "usd",
+    coinType: .eth,
+    chainId: BraveWallet.MainnetChainId,
+    address: "",
     price: mockETHPrice,
-    assetTimeframeChange: "-57.23"
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "-57.23"
   )
   lazy var mockETHPriceHistory: [BraveWallet.AssetTimePrice] = [
     .init(date: Date(timeIntervalSinceNow: -1000), price: "3000.00"),
@@ -86,10 +90,14 @@ import XCTest
   let mockUSDCBalanceAccount2: Double = 0.01
   let mockUSDCPrice: String = "1"  // USDC total value = $0.04
   lazy var mockUSDCAssetPrice: BraveWallet.AssetPrice = .init(
-    fromAsset: BraveWallet.BlockchainToken.mockUSDCToken.assetRatioId,
-    toAsset: "usd",
+    coinType: .eth,
+    chainId: BraveWallet.MainnetChainId,
+    address: BraveWallet.BlockchainToken.mockUSDCToken.contractAddress,
     price: mockUSDCPrice,
-    assetTimeframeChange: "-57.23"
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "-57.23"
   )
   lazy var mockUSDCPriceHistory: [BraveWallet.AssetTimePrice] = [
     .init(date: Date(timeIntervalSinceNow: -1000), price: "0.999"),
@@ -99,10 +107,14 @@ import XCTest
   let mockSOLBalance: Double = 3.8765  // lamports rounded
   let mockSOLPrice: String = "200"  // SOL value = $775.30
   lazy var mockSOLAssetPrice: BraveWallet.AssetPrice = .init(
-    fromAsset: "sol",
-    toAsset: "usd",
+    coinType: .sol,
+    chainId: BraveWallet.SolanaMainnet,
+    address: "",
     price: mockSOLPrice,
-    assetTimeframeChange: "-57.23"
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "-57.23"
   )
   lazy var mockSOLPriceHistory: [BraveWallet.AssetTimePrice] = [
     .init(date: Date(timeIntervalSinceNow: -1000), price: mockSOLPrice),
@@ -113,10 +125,14 @@ import XCTest
   let mockFILBalanceAccount1: Double = 1
   let mockFILPrice: String = "4.00"  // FIL value on mainnet = $4.00
   lazy var mockFILAssetPrice: BraveWallet.AssetPrice = .init(
-    fromAsset: "fil",
-    toAsset: "usd",
+    coinType: .fil,
+    chainId: BraveWallet.FilecoinMainnet,
+    address: "",
     price: mockFILPrice,
-    assetTimeframeChange: "-57.23"
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "-57.23"
   )
   lazy var mockFILPriceHistory: [BraveWallet.AssetTimePrice] = [
     .init(date: Date(timeIntervalSinceNow: -1000), price: "4.06"),
@@ -131,10 +147,14 @@ import XCTest
     mockAvailableBTCBalanceAccount1 + mockPendingBTCBalanceAccount1
   let mockBTCPrice: String = "65726.00"
   lazy var mockBTCAssetPrice: BraveWallet.AssetPrice = .init(
-    fromAsset: "btc",
-    toAsset: "usd",
+    coinType: .btc,
+    chainId: BraveWallet.BitcoinMainnet,
+    address: "",
     price: mockBTCPrice,
-    assetTimeframeChange: "4.00"
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "4.00"
   )
   lazy var mockBTCPriceHistory: [BraveWallet.AssetTimePrice] = [
     .init(date: Date(timeIntervalSinceNow: -1000), price: "65326.00.06"),
@@ -144,10 +164,14 @@ import XCTest
   let mockZECTransparentBalanceAccount1: Double = 0.00001
   let mockZECPrice: String = "39.50"
   lazy var mockZECAssetPrice: BraveWallet.AssetPrice = .init(
-    fromAsset: "zec",
-    toAsset: "usd",
+    coinType: .zec,
+    chainId: BraveWallet.ZCashMainnet,
+    address: "",
     price: mockZECPrice,
-    assetTimeframeChange: "2.93"
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "2.93"
   )
   lazy var mockZECPriceHistory: [BraveWallet.AssetTimePrice] = [
     .init(date: Date(timeIntervalSinceNow: -1000), price: "36.0"),
@@ -324,7 +348,7 @@ import XCTest
     walletService._addObserver = { _ in }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
     let assetRatioService = BraveWallet.TestAssetRatioService()
-    assetRatioService._price = { priceIds, _, _, completion in
+    assetRatioService._price = { _, _, completion in
       completion(
         true,
         [
