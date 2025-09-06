@@ -1,0 +1,42 @@
+diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
+index 2e5e7c71a529f3d9708c7f6c53cc89f03bdb842e..fe3ed4ad5b125eb68f5c338733a96f41add69d89 100644
+--- a/content/browser/renderer_host/render_process_host_impl.cc
++++ b/content/browser/renderer_host/render_process_host_impl.cc
+@@ -1305,6 +1305,20 @@ bool IsRendererUnresponsive(RenderProcessHost* render_process_host) {
+   return is_unresponsive;
+ }
+ 
++// Appends a `new_value` to a command-line switch that holds a comma-separated
++// list of values.
++void AppendToCommaSeparatedSwitch(base::CommandLine* command_line,
++                                  const std::string& switch_name,
++                                  const std::string& new_value) {
++  const std::string existing_values =
++      command_line->GetSwitchValueASCII(switch_name);
++  command_line->RemoveSwitch(switch_name);
++  command_line->AppendSwitchASCII(
++      switch_name, existing_values.empty()
++                       ? new_value
++                       : base::StrCat({existing_values, ",", new_value}));
++}
++
+ }  // namespace
+ 
+ RenderProcessHostImpl::IOThreadHostImpl::IOThreadHostImpl(
+@@ -3380,11 +3394,12 @@ void RenderProcessHostImpl::AppendRendererCommandLine(
+   }
+ 
+   if (IsJitDisabled()) {
+-    command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags,
+-                                    "--jitless");
++    AppendToCommaSeparatedSwitch(
++        command_line, blink::switches::kJavaScriptFlags, "--jitless");
+   } else if (AreV8OptimizationsDisabled()) {
+-    command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags,
+-                                    "--disable-optimizing-compilers");
++    AppendToCommaSeparatedSwitch(command_line,
++                                 blink::switches::kJavaScriptFlags,
++                                 "--disable-optimizing-compilers");
+   }
+ 
+   if (DisallowV8FeatureFlagOverrides()) {
