@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index f4784c62cca71fe5f6334d53336db530d6f313b0..580854d4dc086d1b1f51242968bc67d2eee589bd 100644
+index f4784c62cca71fe5f6334d53336db530d6f313b0..5349f29a33578a12f489b2be4923cc358266cceb 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-@@ -713,6 +713,11 @@
+@@ -713,10 +713,15 @@
        public: true,
        status: "experimental",
      },
@@ -14,6 +14,11 @@ index f4784c62cca71fe5f6334d53336db530d6f313b0..580854d4dc086d1b1f51242968bc67d2
      {
        name: "BrowserInitiatedAutomaticPictureInPicture",
        public: true,
+-      status: "experimental",
++      status: "stable",
+     },
+     {
+       name: "BrowserVerifiedUserActivationKeyboard",
 @@ -2218,6 +2223,7 @@
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
