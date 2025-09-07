@@ -2718,7 +2718,7 @@ TEST_F(BraveWalletServiceUnitTest, GetSimpleHashSpamNFTs) {
   })";
 
   GURL url = GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "owners?chains=ethereum&wallet_addresses="
       "0x0000000000000000000000000000000000000000");
   std::map<GURL, std::string> responses;
@@ -2963,7 +2963,7 @@ TEST_F(BraveWalletServiceUnitTest, MaybeMigrateCompressedNfts) {
   // Add it, but mock simple hash response saying it's not compressed
   std::map<GURL, std::string> responses;
   responses[GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "assets?nft_ids=solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW")] =
       R"({
     "nfts": [
@@ -3027,7 +3027,7 @@ TEST_F(BraveWalletServiceUnitTest, MaybeMigrateCompressedNfts) {
 
   // Add it, but mock simple hash response saying it's not compressed
   responses[GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "assets?nft_ids=solana.BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW")] =
       R"({
     "nfts": [
@@ -3075,7 +3075,7 @@ TEST_F(BraveWalletServiceUnitTest, MaybeMigrateCompressedNfts) {
 
   // Now mock the response saying it's compressed (note compression field).
   responses[GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "assets?nft_ids=solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW%"
       "2Csolana.BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW")] =
       R"({
