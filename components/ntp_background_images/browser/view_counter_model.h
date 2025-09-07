@@ -11,7 +11,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
-#include "base/timer/timer.h"
+#include "base/timer/wall_clock_timer.h"
 
 class PrefService;
 
@@ -77,7 +77,8 @@ class ViewCounterModel {
 
   void RegisterPageViewForBackgroundImages();
 
-  void OnTimerCountsResetExpired();
+  void ScheduleNextBrandedWallpaperCountReset();
+  void ResetBrandedWallpaperCountAndScheduleNextCountReset();
 
   // For NTP SI.
   raw_ptr<PrefService> prefs_ = nullptr;
@@ -88,7 +89,7 @@ class ViewCounterModel {
   size_t total_campaign_count_ = 0;
   std::vector<size_t> campaigns_total_branded_image_count_;
   std::vector<size_t> campaigns_current_branded_image_index_;
-  base::RepeatingTimer timer_counts_reset_;
+  base::WallClockTimer counts_reset_timer_;
 
   // For NTP BI.
   int current_wallpaper_image_index_ = 0;
