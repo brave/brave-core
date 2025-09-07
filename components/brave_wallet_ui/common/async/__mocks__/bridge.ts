@@ -714,17 +714,19 @@ export class MockedWalletApiProxy {
   assetRatioService: Partial<
     InstanceType<typeof BraveWallet.AssetRatioServiceInterface>
   > = {
-    getPrice: async (fromAssets, toAssets, timeframe) => {
+    getPrice: async (requests, vsCurrency) => {
       return {
         success: true,
-        values: [
-          {
-            percentageChange24h: '1',
-            fromAsset: fromAssets[0],
-            toAsset: toAssets[0],
-            price: '3873.78',
-          },
-        ],
+        values: requests.map((request) => ({
+          percentageChange24h: '1',
+          coinType: request.coinType,
+          chainId: request.chainId || '',
+          address: request.address || '',
+          vsCurrency: vsCurrency,
+          cacheStatus: BraveWallet.Gate3CacheStatus.kHit,
+          source: BraveWallet.AssetPriceSource.kCoingecko,
+          price: '3873.78',
+        })),
       }
     },
     getCoinMarkets: async (vsAsset: string, limit: number) => {
