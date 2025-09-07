@@ -23,6 +23,8 @@ source_set("unit_tests") {
   testonly = true
   sources = [
     "brave_browser_policy_provider_unittest.cc",
+    "brave_policy_conversions_unittest.cc",
+    "brave_policy_source_unittest.cc",
     "brave_profile_policy_provider_unittest.cc",
   ]
 
@@ -30,9 +32,14 @@ source_set("unit_tests") {
     ":brave_policy",
     "//base",
     "//base/test:test_support",
+    "//brave/components/resources:strings",
+    "//components/enterprise",
+    "//components/policy/core/browser",
     "//components/policy/core/common",
     "//components/policy/core/common:test_support",
+    "//components/policy/proto",
     "//components/prefs:test_support",
+    "//components/strings:components_strings_grit",
     "//testing/gtest",
   ]
 }
