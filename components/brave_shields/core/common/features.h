@@ -51,6 +51,7 @@ extern const base::FeatureParam<std::string>
     kCosmeticFilteringswitchToSelectorsPollingThreshold;
 extern const base::FeatureParam<std::string>
     kCosmeticFilteringFetchNewClassIdRulesThrottlingMs;
+extern const base::FeatureParam<bool> kCosmeticFilteringEnableTestTracking;
 BASE_DECLARE_FEATURE(kAdblockOverrideRegexDiscardPolicy);
 extern const base::FeatureParam<int>
     kAdblockOverrideRegexDiscardPolicyCleanupIntervalSec;

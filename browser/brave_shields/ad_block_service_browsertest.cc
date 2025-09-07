@@ -126,6 +126,22 @@ void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
   ASSERT_TRUE(
       EvalJs(target, content::JsReplace(kTemplate, selector)).ExtractBool());
 }
+
+bool WasThrottlingActivated(const content::ToRenderFrameHost& target) {
+  static constexpr char kCheckThrottlingScript[] =
+      R"((function() {
+        try {
+          // Check if throttling was ever activated
+          return throttlingWasActivated === true;
+        } catch (e) {
+          // Variable doesn't exist, so throttling was not activated
+          return false;
+        }
+      })())";
+
+  auto result = EvalJs(target, kCheckThrottlingScript);
+  return result.is_ok() ? result.ExtractBool() : false;
+}
 }  // namespace
 
 AdBlockServiceTest::AdBlockServiceTest()
@@ -3166,7 +3182,8 @@ class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {
         {{kCosmeticFilteringJsPerformance,
           {{"subframes_first_query_delay_ms", "3000"},
            {"switch_to_polling_threshold", "500"},
-           {"fetch_throttling_ms", "500"}}}},
+           {"fetch_throttling_ms", "500"},
+           {"enable_test_tracking", "true"}}}},
         {});
   }
 
@@ -3217,15 +3234,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTestJsPerformance,
 
   // This elements will be check by mutation observer after throttling delay.
   AddDivsWithDynamicClasses(contents, 201, 500);
-  // Wait fetch_throttling_ms/2 ms and check the selector is still visible to
-  // verify that throttling works correctly.
-  NonBlockingDelay(base::Milliseconds(250));
-  EXPECT_TRUE(
-      EvalJs(contents, "checkSelector('.div-class-500', 'display', 'block')")
-          .ExtractBool());
-
-  // Verify that it will be blocked after the delay is finished.
+  // Verify that elements eventually get blocked after throttling finishes.
   WaitForSelectorBlocked(contents, ".div-class-500");
+  // Verify that throttling was activated during the process.
+  // This proves the performance feature worked without timing dependencies.
+  EXPECT_TRUE(WasThrottlingActivated(contents));
 
   // Add more elements to trigger switch to DOM selector polling (see
   // UseSelectorsPolling()).

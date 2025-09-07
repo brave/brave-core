@@ -38,6 +38,8 @@ let currentMutationStartTime = performance.now()
 // The next allowed time to call FetchNewClassIdRules() if it's throttled.
 let nextFetchNewClassIdRulesCall = 0
 let fetchNewClassIdRulesTimeoutId: number | undefined
+// Flag to track if throttling was ever activated (test builds only)
+let throttlingWasActivated: boolean | undefined
 
 // Generate a random string between [a000000000, zzzzzzzzzz] (base 36)
 const generateRandomAttr = () => {
@@ -87,6 +89,12 @@ CC.switchToSelectorsPollingThreshold =
   CC.switchToSelectorsPollingThreshold || undefined
 CC.fetchNewClassIdRulesThrottlingMs =
   CC.fetchNewClassIdRulesThrottlingMs || undefined
+CC.enableTestTracking = CC.enableTestTracking || undefined
+
+// Initialize throttling tracking flag (only when test tracking is enabled)
+if (CC.enableTestTracking === "true") {
+  throttlingWasActivated = false
+}
 
 /**
  * Provides a new function which can only be scheduled once at a time.
@@ -144,6 +152,11 @@ const ShouldThrottleFetchNewClassIdsRules = (): boolean => {
   const msToWait = nextFetchNewClassIdRulesCall - now
   if (msToWait > 0) {
     // Schedule the call in |msToWait| ms and return.
+    // Only set flag if test tracking is enabled
+    // (variable will be undefined otherwise)
+    if (throttlingWasActivated !== undefined) {
+      throttlingWasActivated = true
+    }
     fetchNewClassIdRulesTimeoutId =
       window.setTimeout(
         () => {

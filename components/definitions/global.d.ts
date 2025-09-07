@@ -70,6 +70,7 @@ declare global {
       firstSelectorsPollingDelayMs: number | undefined
       switchToSelectorsPollingThreshold : number | undefined
       fetchNewClassIdRulesThrottlingMs : number | undefined
+      enableTestTracking: string | undefined
       tryScheduleQueuePump: (() => void)
       proceduralActionFilters?: ProceduralActionFilter[]
       hasProceduralActions: boolean

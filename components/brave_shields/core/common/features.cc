@@ -179,6 +179,9 @@ constexpr base::FeatureParam<std::string>
     kCosmeticFilteringFetchNewClassIdRulesThrottlingMs{
         &kCosmeticFilteringJsPerformance, "fetch_throttling_ms", "100"};
 
+constexpr base::FeatureParam<bool> kCosmeticFilteringEnableTestTracking{
+    &kCosmeticFilteringJsPerformance, "enable_test_tracking", false};
+
 BASE_FEATURE(kAdblockOverrideRegexDiscardPolicy,
              "AdblockOverrideRegexDiscardPolicy",
              base::FEATURE_DISABLED_BY_DEFAULT);

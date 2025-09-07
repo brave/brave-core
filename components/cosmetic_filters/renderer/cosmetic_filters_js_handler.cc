@@ -90,6 +90,8 @@ constexpr char kCosmeticFilteringInitScript[] =
           CC.switchToSelectorsPollingThreshold = %s;
         if (CC.fetchNewClassIdRulesThrottlingMs === undefined)
           CC.fetchNewClassIdRulesThrottlingMs = %s;
+        if (CC.enableTestTracking === undefined)
+          CC.enableTestTracking = %s;
        })";
 
 constexpr char kHideSelectorsInjectScript[] =
@@ -716,7 +718,8 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
           ? "undefined"
           : bf::kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs.Get(),
       bf::kCosmeticFilteringswitchToSelectorsPollingThreshold.Get(),
-      bf::kCosmeticFilteringFetchNewClassIdRulesThrottlingMs.Get());
+      bf::kCosmeticFilteringFetchNewClassIdRulesThrottlingMs.Get(),
+      bf::kCosmeticFilteringEnableTestTracking.Get() ? "true" : "false");
   std::string pre_init_script =
       absl::StrFormat(kPreInitScript, cosmetic_filtering_init_script);
 
