@@ -122,16 +122,13 @@ export function TopSitesGrid(props: Props) {
         ref={scrollRef}
         className='top-site-tiles-mask'
         onScroll={onScroll}
-        style={inlineCSSVars({
-          '--self-columns-per-page': columnsPerPage,
-          '--self-tile-count': tileCount
-        })}
+        style={inlineCSSVars({ '--self-columns-per-page': columnsPerPage })}
       >
-        {
-          pages.map((page, i) => (
-            <div key={i} className='top-site-tiles'>
-              {
-                page.map((tile, i) =>
+        {pages.map((page, i) => (
+          <div key={i} className='top-site-tiles'>
+            {page.map((row, i) => (
+              <div key={i} className='top-site-row'>
+                {row.map((tile, i) => (
                   tile === 'add-button' ?
                     <button
                       key={i}
@@ -152,11 +149,11 @@ export function TopSitesGrid(props: Props) {
                       canDrag={props.canReorderSites}
                       onContextMenu={contextMenuHandler(tile)}
                     />
-                )
-              }
-            </div>
-          ))
-        }
+                ))}
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
       {
         pages.length > 1 &&
@@ -206,25 +203,30 @@ type GridItem = TopSite | 'add-button'
 
 function splitIntoPages(topSites: TopSite[], options: SplitIntoPagesOptions) {
   const { columnsPerPage, rowsPerPage, canAddSite } = options
-  const pageSize = columnsPerPage * rowsPerPage
+
+  if (columnsPerPage === 0 || rowsPerPage === 0) {
+    return []
+  }
 
   const tiles: GridItem[] = [...topSites]
   if (canAddSite) {
     tiles.push('add-button')
   }
 
-  let currentPage: GridItem[] = []
-  const pages: GridItem[][] = [currentPage]
+  let currentRow: GridItem[] = []
+  let currentPage: GridItem[][] = [currentRow]
+  const pages: GridItem[][][] = [currentPage]
 
   tiles.forEach((tile) => {
-    if (pageSize === 0) {
-      return
+    if (currentRow.length >= columnsPerPage) {
+      if (currentPage.length >= rowsPerPage) {
+        currentPage = []
+        pages.push(currentPage)
+      }
+      currentRow = []
+      currentPage.push(currentRow)
     }
-    if (currentPage.length >= pageSize) {
-      currentPage = []
-      pages.push(currentPage)
-    }
-    currentPage.push(tile)
+    currentRow.push(tile)
   })
 
   return pages
