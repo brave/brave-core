@@ -149,6 +149,25 @@ TEST_F(BraveAdsSubdivisionTest, OnDidOptOutBraveNews) {
   EXPECT_FALSE(HasPendingTasks());
 }
 
+TEST_F(BraveAdsSubdivisionTest, DoNotRetryAfterForbiddenUrlResponseStatusCode) {
+  // Arrange
+  const test::URLResponseMap url_responses = {
+      {BuildSubdivisionUrlPath(),
+       {{net::HTTP_FORBIDDEN,
+         /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_FORBIDDEN)}}}};
+  test::MockUrlResponses(ads_client_mock_, url_responses);
+
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
+
+  NotifyDidInitializeAds();
+
+  // Act
+  FastForwardClockToNextPendingTask();
+
+  // Assert
+  EXPECT_TRUE(HasPendingTasks());
+}
+
 TEST_F(BraveAdsSubdivisionTest, RetryAfterInvalidUrlResponseStatusCode) {
   // Arrange
   const test::URLResponseMap url_responses = {
