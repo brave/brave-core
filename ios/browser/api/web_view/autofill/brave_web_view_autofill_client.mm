@@ -24,6 +24,8 @@ std::unique_ptr<WebViewAutofillClientIOS> BraveWebViewAutofillClientIOS::Create(
     FromWebStateImpl from_web_state_impl,
     web::WebState* web_state,
     id<CWVAutofillClientIOSBridge, AutofillDriverIOSBridge> bridge) {
+  // Implemented similarily to WebViewAutofillClientIOS::Create but uses
+  // Chrome's ProfileIOS
   ProfileIOS* profile =
       ProfileIOS::FromBrowserState(web_state->GetBrowserState());
   ProfileIOS* original_profile = profile->GetOriginalProfile();

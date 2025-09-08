@@ -6,19 +6,19 @@
 #ifndef BRAVE_IOS_BROWSER_API_WEB_VIEW_PASSWORDS_BRAVE_WEB_VIEW_PASSWORD_MANAGER_CLIENT_H_
 #define BRAVE_IOS_BROWSER_API_WEB_VIEW_PASSWORDS_BRAVE_WEB_VIEW_PASSWORD_MANAGER_CLIENT_H_
 
-#include <memory>
-
 #include "ios/web_view/internal/passwords/web_view_password_manager_client.h"
 
+// An password manager client for BraveWebView's
+//
+// We create a Brave subclass of the standard WebView pasword manager client
+// to allow to ensure we implement GetLocalStatePrefs correcty using the main
+// Chrome application context.
 class BraveWebViewPasswordManagerClient
     : public ios_web_view::WebViewPasswordManagerClient {
  public:
   using WebViewPasswordManagerClient::WebViewPasswordManagerClient;
 
   // password_manager::PasswordManagerClient implementation.
-  bool PromptUserToSaveOrUpdatePassword(
-      std::unique_ptr<password_manager::PasswordFormManagerForUI> form_to_save,
-      bool update_password) override;
   PrefService* GetLocalStatePrefs() const override;
 };
 

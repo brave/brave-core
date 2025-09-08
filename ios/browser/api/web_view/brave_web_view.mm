@@ -153,6 +153,9 @@ class BraveWebViewWebStatePolicyDecider : public web::WebStatePolicyDecider {
 }
 
 - (CWVAutofillController*)newAutofillController {
+  // Reimplements CWVWebView's `newAutofillController` method to  create a
+  // CWVAutofillController using Chrome factories instead of `//ios/web_view`
+  // specific factories.
   if (!base::FeatureList::IsEnabled(
           brave::features::kUseChromiumWebViewsAutofill)) {
     return nil;
