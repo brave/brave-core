@@ -16,6 +16,7 @@
         android:order="2">
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:key="page_actions_summary"
+            android:selectable="false"
             android:summary="@string/customize_page_actions_section_summary" />
     </PreferenceCategory>
 </PreferenceScreen>
