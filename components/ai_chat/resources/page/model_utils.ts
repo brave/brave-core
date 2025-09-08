@@ -6,5 +6,5 @@
 import * as Mojom from '../common/mojom'
 
 export function isLeoModel(model: Mojom.Model) {
-  return !!(model.options.leoModelOptions)
+  return !!model.options.leoModelOptions
 }

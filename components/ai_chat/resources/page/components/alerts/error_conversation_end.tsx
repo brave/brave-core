@@ -15,9 +15,7 @@ function ErrorConversationEnd() {
 
   return (
     <div className={styles.alert}>
-      <Alert
-        type='error'
-      >
+      <Alert type='error'>
         {getLocale(S.CHAT_UI_CONVERSATION_END_ERROR)}
         <Button
           slot='actions'

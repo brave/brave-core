@@ -15,16 +15,14 @@ export default function WarningPremiumDisconnected() {
 
   return (
     <div className={styles.alert}>
-      <Alert
-        type='warning'
-      >
+      <Alert type='warning'>
         {getLocale(S.CHAT_UI_PREMIUM_REFRESH_WARNING_DESCRIPTION)}
         <Button
           slot='actions'
           kind='filled'
           onClick={context.userRefreshPremiumSession}
         >
-            {getLocale(S.CHAT_UI_PREMIUM_REFRESH_WARNING_ACTION)}
+          {getLocale(S.CHAT_UI_PREMIUM_REFRESH_WARNING_ACTION)}
         </Button>
       </Alert>
     </div>

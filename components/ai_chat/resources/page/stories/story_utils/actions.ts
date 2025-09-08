@@ -11,34 +11,34 @@ const ACTIONS_LIST: Mojom.ActionGroup[] = [
     entries: [
       {
         subheading: undefined,
-        details: { label: 'Explain', type: Mojom.ActionType.EXPLAIN }
-      }
-    ]
+        details: { label: 'Explain', type: Mojom.ActionType.EXPLAIN },
+      },
+    ],
   },
   {
     category: 'Rewrite',
     entries: [
       {
         subheading: undefined,
-        details: { label: 'Paraphrase', type: Mojom.ActionType.PARAPHRASE }
+        details: { label: 'Paraphrase', type: Mojom.ActionType.PARAPHRASE },
       },
       { subheading: 'Change tone', details: undefined },
       {
         subheading: undefined,
         details: {
           label: 'Change tone / Academic',
-          type: Mojom.ActionType.ACADEMICIZE
-        }
+          type: Mojom.ActionType.ACADEMICIZE,
+        },
       },
       {
         subheading: undefined,
         details: {
           label: 'Change tone / Professional',
-          type: Mojom.ActionType.PROFESSIONALIZE
-        }
-      }
-    ]
-  }
+          type: Mojom.ActionType.PROFESSIONALIZE,
+        },
+      },
+    ],
+  },
 ]
 
 export default ACTIONS_LIST

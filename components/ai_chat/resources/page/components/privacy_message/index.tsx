@@ -11,10 +11,11 @@ import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { useAIChat } from '../../state/ai_chat_context'
 import styles from './style.module.scss'
 
-const WIKI_URL = "https://support.brave.app/hc/en-us/articles/26727364100493-What-are-the-differences-between-Leo-s-AI-Models"
-const PRIVACY_URL = "https://brave.com/privacy/browser/#brave-leo"
+const WIKI_URL =
+  'https://support.brave.app/hc/en-us/articles/26727364100493-What-are-the-differences-between-Leo-s-AI-Models'
+const PRIVACY_URL = 'https://brave.com/privacy/browser/#brave-leo'
 
-function PrivacyMessage () {
+function PrivacyMessage() {
   const context = useAIChat()
   const buttonRef = React.useRef<HTMLButtonElement>()
 
@@ -27,17 +28,21 @@ function PrivacyMessage () {
   }
 
   const createLinkWithClickHandler = (content: string, url: string) => (
-      <a onClick={(e) => handleLinkClick(e, url)} href={url} target='_blank'>
-        {content}
-      </a>
+    <a
+      onClick={(e) => handleLinkClick(e, url)}
+      href={url}
+      target='_blank'
+    >
+      {content}
+    </a>
   )
 
   const aboutDescription = formatLocale(S.CHAT_UI_ABOUT_DESCRIPTION, {
-    $1: (content) => createLinkWithClickHandler(content, WIKI_URL)
+    $1: (content) => createLinkWithClickHandler(content, WIKI_URL),
   })
 
   const aboutDescription3 = formatLocale(S.CHAT_UI_ABOUT_DESCRIPTION_3, {
-    $1: (content) => createLinkWithClickHandler(content, PRIVACY_URL)
+    $1: (content) => createLinkWithClickHandler(content, PRIVACY_URL),
   })
 
   React.useEffect(() => {
@@ -53,14 +58,19 @@ function PrivacyMessage () {
       backdropClickCloses={false}
       className={styles.dialog}
     >
-      <div slot="subtitle">{getLocale(S.CHAT_UI_PRIVACY_TITLE)}</div>
+      <div slot='subtitle'>{getLocale(S.CHAT_UI_PRIVACY_TITLE)}</div>
       <div className={styles.content}>
         <p>{aboutDescription}</p>
         <p>{getLocale(S.CHAT_UI_ABOUT_DESCRIPTION_2)}</p>
         <p>{aboutDescription3}</p>
       </div>
-      <div slot="actions">
-        <Button ref={buttonRef} onClick={context.handleAgreeClick}>{getLocale(S.CHAT_UI_ACCEPT_BUTTON_LABEL)}</Button>
+      <div slot='actions'>
+        <Button
+          ref={buttonRef}
+          onClick={context.handleAgreeClick}
+        >
+          {getLocale(S.CHAT_UI_ACCEPT_BUTTON_LABEL)}
+        </Button>
       </div>
     </Dialog>
   )

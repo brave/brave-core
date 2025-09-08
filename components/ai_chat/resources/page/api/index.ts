@@ -41,33 +41,34 @@ export const defaultUIState: State = {
   canShowPremiumPrompt: false,
   isMobile: loadTimeData.getBoolean('isMobile'),
   isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
-  isAIChatAgentProfileFeatureEnabled: loadTimeData.getBoolean('isAIChatAgentProfileFeatureEnabled'),
+  isAIChatAgentProfileFeatureEnabled: loadTimeData.getBoolean(
+    'isAIChatAgentProfileFeatureEnabled',
+  ),
   isAIChatAgentProfile: loadTimeData.getBoolean('isAIChatAgentProfile'),
   actionList: [],
-  tabs: []
+  tabs: [],
 }
 
 // Owns connections to the browser via mojom as well as global state
 class PageAPI extends API<State> {
-  public service: Mojom.ServiceRemote
-    = Mojom.Service.getRemote()
+  public service: Mojom.ServiceRemote = Mojom.Service.getRemote()
 
   public metrics: Mojom.MetricsRemote = new Mojom.MetricsRemote()
 
-  public observer: Mojom.ServiceObserverCallbackRouter
-    = new Mojom.ServiceObserverCallbackRouter()
+  public observer: Mojom.ServiceObserverCallbackRouter =
+    new Mojom.ServiceObserverCallbackRouter()
 
-  public uiHandler: Mojom.AIChatUIHandlerRemote
-    = Mojom.AIChatUIHandler.getRemote()
+  public uiHandler: Mojom.AIChatUIHandlerRemote =
+    Mojom.AIChatUIHandler.getRemote()
 
-  public uiObserver: Mojom.ChatUICallbackRouter
-    = new Mojom.ChatUICallbackRouter()
+  public uiObserver: Mojom.ChatUICallbackRouter =
+    new Mojom.ChatUICallbackRouter()
 
-  public conversationEntriesFrameObserver: Mojom.ParentUIFrameCallbackRouter
-    = new Mojom.ParentUIFrameCallbackRouter()
+  public conversationEntriesFrameObserver: Mojom.ParentUIFrameCallbackRouter =
+    new Mojom.ParentUIFrameCallbackRouter()
 
-  public tabObserver: Mojom.TabDataObserverCallbackRouter
-    = new Mojom.TabDataObserverCallbackRouter()
+  public tabObserver: Mojom.TabDataObserverCallbackRouter =
+    new Mojom.TabDataObserverCallbackRouter()
 
   constructor() {
     super(defaultUIState)
@@ -81,24 +82,26 @@ class PageAPI extends API<State> {
     // Premium state separately because it takes longer to fetch and we don't
     // need to wait for it.
 
-    this.uiObserver.onNewDefaultConversation.addListener((contentId?: number) => {
-      this.setPartialState({
-        defaultTabContentId: contentId
-      })
-    })
+    this.uiObserver.onNewDefaultConversation.addListener(
+      (contentId?: number) => {
+        this.setPartialState({
+          defaultTabContentId: contentId,
+        })
+      },
+    )
 
     const [
       { state },
       { isStandalone },
       { conversations },
       { actionList },
-      premiumStatus
+      premiumStatus,
     ] = await Promise.all([
       this.service.bindObserver(this.observer.$.bindNewPipeAndPassRemote()),
       this.uiHandler.setChatUI(this.uiObserver.$.bindNewPipeAndPassRemote()),
       this.service.getConversations(),
       this.service.getActionMenuList(),
-      this.getCurrentPremiumStatus()
+      this.getCurrentPremiumStatus(),
     ])
     this.setPartialState({
       ...state,
@@ -106,16 +109,18 @@ class PageAPI extends API<State> {
       initialized: true,
       isStandalone,
       conversations,
-      actionList
+      actionList,
     })
 
     this.service.bindMetrics(this.metrics.$.bindNewPipeAndPassReceiver())
 
     // If we're in standalone mode, listen for tab changes so we can show a picker.
-    Mojom.TabTrackerService.getRemote().addObserver(this.tabObserver.$.bindNewPipeAndPassRemote())
+    Mojom.TabTrackerService.getRemote().addObserver(
+      this.tabObserver.$.bindNewPipeAndPassRemote(),
+    )
     this.tabObserver.tabDataChanged.addListener((tabs: Mojom.TabData[]) => {
       this.setPartialState({
-        tabs
+        tabs,
       })
     })
 
@@ -126,14 +131,18 @@ class PageAPI extends API<State> {
     this.observer.onConversationListChanged.addListener(
       (conversations: Mojom.Conversation[]) => {
         this.setPartialState({
-          conversations
+          conversations,
         })
-      }
+      },
     )
 
-    this.uiObserver.onChildFrameBound.addListener((parentPagePendingReceiver: Mojom.ParentUIFramePendingReceiver) => {
-      this.conversationEntriesFrameObserver.$.bindHandle(parentPagePendingReceiver.handle)
-    })
+    this.uiObserver.onChildFrameBound.addListener(
+      (parentPagePendingReceiver: Mojom.ParentUIFramePendingReceiver) => {
+        this.conversationEntriesFrameObserver.$.bindHandle(
+          parentPagePendingReceiver.handle,
+        )
+      },
+    )
 
     // Since there is no browser-side event for premium status changing,
     // we should check often. And since purchase or login is performed in
@@ -153,8 +162,10 @@ class PageAPI extends API<State> {
     const { status } = await this.service.getPremiumStatus()
     return {
       isPremiumStatusFetching: false,
-      isPremiumUser: (status !== undefined && status !== Mojom.PremiumStatus.Inactive),
-      isPremiumUserDisconnected: status === Mojom.PremiumStatus.ActiveDisconnected
+      isPremiumUser:
+        status !== undefined && status !== Mojom.PremiumStatus.Inactive,
+      isPremiumUserDisconnected:
+        status === Mojom.PremiumStatus.ActiveDisconnected,
     }
   }
 
@@ -181,17 +192,17 @@ export function bindConversation(id: string | undefined) {
     getAPI().service.bindConversation(
       id,
       conversationHandler.$.bindNewPipeAndPassReceiver(),
-      callbackRouter.$.bindNewPipeAndPassRemote()
+      callbackRouter.$.bindNewPipeAndPassRemote(),
     )
   } else {
     getAPI().uiHandler.bindRelatedConversation(
       conversationHandler.$.bindNewPipeAndPassReceiver(),
-      callbackRouter.$.bindNewPipeAndPassRemote()
+      callbackRouter.$.bindNewPipeAndPassRemote(),
     )
   }
   return {
     conversationHandler,
-    callbackRouter
+    callbackRouter,
   }
 }
 
@@ -201,10 +212,10 @@ export function newConversation() {
   let callbackRouter = new Mojom.ConversationUICallbackRouter()
   getAPI().uiHandler.newConversation(
     conversationHandler.$.bindNewPipeAndPassReceiver(),
-    callbackRouter.$.bindNewPipeAndPassRemote()
+    callbackRouter.$.bindNewPipeAndPassRemote(),
   )
   return {
     conversationHandler,
-    callbackRouter
+    callbackRouter,
   }
 }

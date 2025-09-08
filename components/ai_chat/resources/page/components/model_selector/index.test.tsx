@@ -127,8 +127,9 @@ describe('ModelSelector', () => {
 
     // Test Show all models button
     const showAllModelsButton = getShowAllModelsButton()
-    expect(showAllModelsButton)
-      .toHaveTextContent('CHAT_UI_SHOW_ALL_MODELS_BUTTON')
+    expect(showAllModelsButton).toHaveTextContent(
+      'CHAT_UI_SHOW_ALL_MODELS_BUTTON',
+    )
 
     // Click the show all models button
     await act(async () => {
@@ -136,8 +137,9 @@ describe('ModelSelector', () => {
     })
 
     // Check that the button text has changed
-    expect(showAllModelsButton)
-      .toHaveTextContent('CHAT_UI_RECOMMENDED_MODELS_BUTTON')
+    expect(showAllModelsButton).toHaveTextContent(
+      'CHAT_UI_RECOMMENDED_MODELS_BUTTON',
+    )
 
     // Check that all model items are visible
     const allMenuItems = document.querySelectorAll<HTMLElement>('leo-menu-item')

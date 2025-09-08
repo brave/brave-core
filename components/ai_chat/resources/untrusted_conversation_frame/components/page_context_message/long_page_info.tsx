@@ -18,35 +18,43 @@ function LongPageInfoInternal({ warningText }: { warningText: string }) {
 }
 
 export function LongVisualContentWarning({
-  visualContentUsedPercentage
+  visualContentUsedPercentage,
 }: {
   visualContentUsedPercentage: number
 }) {
-  return <LongPageInfoInternal warningText={formatLocale(
-    S.CHAT_UI_VISUAL_CONTENT_TOO_MUCH_WARNING, {
-      $1: visualContentUsedPercentage + '%'
-    })} />
+  return (
+    <LongPageInfoInternal
+      warningText={formatLocale(S.CHAT_UI_VISUAL_CONTENT_TOO_MUCH_WARNING, {
+        $1: visualContentUsedPercentage + '%',
+      })}
+    />
+  )
 }
 
 export function LongTextContentWarning({
-  percentageUsed
+  percentageUsed,
 }: {
   percentageUsed: number
 }) {
-  return <LongPageInfoInternal warningText={formatLocale(
-    S.CHAT_UI_TRIMMED_TOKENS_WARNING, {
-      $1: percentageUsed + '%'
-    })} />
+  return (
+    <LongPageInfoInternal
+      warningText={formatLocale(S.CHAT_UI_TRIMMED_TOKENS_WARNING, {
+        $1: percentageUsed + '%',
+      })}
+    />
+  )
 }
 
 export function LongPageContentWarning({
-  contentUsedPercentage
+  contentUsedPercentage,
 }: {
   contentUsedPercentage: number
 }) {
-  return <LongPageInfoInternal warningText={formatLocale(
-    S.CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING, {
-      $1: contentUsedPercentage + '%'
-    })} />
+  return (
+    <LongPageInfoInternal
+      warningText={formatLocale(S.CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING, {
+        $1: contentUsedPercentage + '%',
+      })}
+    />
+  )
 }
-

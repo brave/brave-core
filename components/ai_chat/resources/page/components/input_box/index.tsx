@@ -14,7 +14,11 @@ import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
-import { AttachmentUploadItems, AttachmentSpinnerItem, AttachmentPageItem } from '../attachment_item'
+import {
+  AttachmentUploadItems,
+  AttachmentSpinnerItem,
+  AttachmentPageItem,
+} from '../attachment_item'
 import { ModelSelector } from '../model_selector'
 import usePromise from '$web-common/usePromise'
 import { isImageFile } from '../../constants/file_types'
@@ -48,14 +52,16 @@ type Props = Pick<
   | 'setShowAttachments'
   | 'attachImages'
   | 'unassociatedTabs'
-> &
-  Pick<AIChatContext,
+>
+  & Pick<
+    AIChatContext,
     | 'isMobile'
     | 'isAIChatAgentProfileFeatureEnabled'
     | 'isAIChatAgentProfile'
     | 'hasAcceptedAgreement'
     | 'getPluralString'
-    | 'openAIChatAgentProfile'>
+    | 'openAIChatAgentProfile'
+  >
 
 export interface InputBoxProps {
   context: Props
@@ -63,8 +69,16 @@ export interface InputBoxProps {
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
 }
 
-function usePlaceholderText(attachmentsCount: number, conversationStarted: boolean, getter: AIChatContext['getPluralString']) {
-  const { result: attachmentsPlaceholder } = usePromise(async () => getter(S.CHAT_UI_PLACEHOLDER_ATTACHED_PAGES_LABEL, attachmentsCount), [attachmentsCount, getter])
+function usePlaceholderText(
+  attachmentsCount: number,
+  conversationStarted: boolean,
+  getter: AIChatContext['getPluralString'],
+) {
+  const { result: attachmentsPlaceholder } = usePromise(
+    async () =>
+      getter(S.CHAT_UI_PLACEHOLDER_ATTACHED_PAGES_LABEL, attachmentsCount),
+    [attachmentsCount, getter],
+  )
 
   if (conversationStarted) return getLocale(S.CHAT_UI_PLACEHOLDER_LABEL)
 
@@ -108,16 +122,16 @@ function InputBox(props: InputBoxProps) {
     }
 
     if (
-      e.key === 'Backspace' &&
-      props.context.inputText === '' &&
-      props.context.selectedActionType
+      e.key === 'Backspace'
+      && props.context.inputText === ''
+      && props.context.selectedActionType
     ) {
       props.context.resetSelectedActionType()
     }
   }
 
   const handleOnPaste = async (
-    e: React.ClipboardEvent<HTMLTextAreaElement>
+    e: React.ClipboardEvent<HTMLTextAreaElement>,
   ) => {
     const clipboardData = e.clipboardData
 
@@ -136,7 +150,7 @@ function InputBox(props: InputBoxProps) {
 
     try {
       const uploadedFiles = await Promise.all(
-        files.map(file => convertFileToUploadedFile(file))
+        files.map((file) => convertFileToUploadedFile(file)),
       )
       props.context.attachImages(uploadedFiles)
     } catch (error) {
@@ -148,15 +162,17 @@ function InputBox(props: InputBoxProps) {
     if (!node) {
       return
     }
-    if (props.context.selectedActionType ||
-      props.maybeShowSoftKeyboard?.(querySubmitted.current)) {
+    if (
+      props.context.selectedActionType
+      || props.maybeShowSoftKeyboard?.(querySubmitted.current)
+    ) {
       node.focus()
     }
   }
 
   const updateAttachmentWrapperHeight = () => {
     let { height } = attachmentWrapperRef?.current?.getBoundingClientRect() ?? {
-      height: 0
+      height: 0,
     }
     setAttachmentWrapperHeight(height)
   }
@@ -172,7 +188,7 @@ function InputBox(props: InputBoxProps) {
   const placeholderText = usePlaceholderText(
     props.context.associatedContentInfo.length,
     props.conversationStarted,
-    props.context.getPluralString
+    props.context.getPluralString,
   )
 
   const handleContentAgentToggle = () => {
@@ -180,8 +196,9 @@ function InputBox(props: InputBoxProps) {
   }
 
   const showUploadedFiles = props.context.pendingMessageFiles.length > 0
-  const pendingContent = props.context.associatedContentInfo
-    .filter(c => !c.conversationTurnUuid)
+  const pendingContent = props.context.associatedContentInfo.filter(
+    (c) => !c.conversationTurnUuid,
+  )
   const isSendButtonDisabled =
     props.context.shouldDisableUserInput || props.context.inputText === ''
 
@@ -201,7 +218,7 @@ function InputBox(props: InputBoxProps) {
           className={classnames({
             [styles.attachmentWrapper]: true,
             [styles.attachmentWrapperScrollStyles]:
-              attachmentWrapperHeight >= 240
+              attachmentWrapperHeight >= 240,
           })}
           ref={attachmentWrapperRef}
         >
@@ -214,7 +231,9 @@ function InputBox(props: InputBoxProps) {
             />
           ))}
           {props.context.isUploadingFiles && (
-            <AttachmentSpinnerItem title={getLocale(S.AI_CHAT_UPLOADING_FILE_LABEL)} />
+            <AttachmentSpinnerItem
+              title={getLocale(S.AI_CHAT_UPLOADING_FILE_LABEL)}
+            />
           )}
           <AttachmentUploadItems
             uploadedFiles={props.context.pendingMessageFiles}
@@ -242,7 +261,7 @@ function InputBox(props: InputBoxProps) {
           className={classnames({
             [styles.counterText]: true,
             [styles.counterTextVisible]: props.context.isCharLimitApproaching,
-            [styles.counterTextError]: props.context.isCharLimitExceeded
+            [styles.counterTextError]: props.context.isCharLimitExceeded,
           })}
         >
           {props.context.inputTextCharCountDisplay}
@@ -257,13 +276,12 @@ function InputBox(props: InputBoxProps) {
               e.preventDefault()
               e.stopPropagation()
               props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
-            }
-            }
+            }}
             title={getLocale(S.AI_CHAT_LEO_TOOLS_BUTTON_LABEL)}
           >
             <Icon
               className={classnames({
-                [styles.slashIconActive]: props.context.isToolsMenuOpen
+                [styles.slashIconActive]: props.context.isToolsMenuOpen,
               })}
               name='slash'
             />
@@ -290,29 +308,31 @@ function InputBox(props: InputBoxProps) {
             unassociatedTabs={props.context.unassociatedTabs}
             setShowAttachments={props.context.setShowAttachments}
           />
-          {props.context.hasAcceptedAgreement &&
-            props.context.isAIChatAgentProfileFeatureEnabled &&
-            !props.context.isAIChatAgentProfile && (
-            <Button
-              fab
-              kind='plain-faint'
-              onClick={handleContentAgentToggle}
-              title={'Open Leo AI Content Agent Window'}
-            >
-              <Icon name='leo-cursor' />
-            </Button>
-          )}
-          {props.context.isAIChatAgentProfileFeatureEnabled &&
-            props.context.isAIChatAgentProfile && (
-            <div data-testid='agent-profile-tooltip'>
-              <Tooltip
-
-                text={getLocale(S.CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL)}
+          {props.context.hasAcceptedAgreement
+            && props.context.isAIChatAgentProfileFeatureEnabled
+            && !props.context.isAIChatAgentProfile && (
+              <Button
+                fab
+                kind='plain-faint'
+                onClick={handleContentAgentToggle}
+                title={'Open Leo AI Content Agent Window'}
               >
-                <Icon className={styles.contentAgentButtonEnabled} name='leo-cursor' />
-              </Tooltip>
-            </div>
-          )}
+                <Icon name='leo-cursor' />
+              </Button>
+            )}
+          {props.context.isAIChatAgentProfileFeatureEnabled
+            && props.context.isAIChatAgentProfile && (
+              <div data-testid='agent-profile-tooltip'>
+                <Tooltip
+                  text={getLocale(S.CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL)}
+                >
+                  <Icon
+                    className={styles.contentAgentButtonEnabled}
+                    name='leo-cursor'
+                  />
+                </Tooltip>
+              </div>
+            )}
         </div>
         <div className={styles.modelSelectorAndSendButton}>
           <ModelSelector />
@@ -322,12 +342,15 @@ function InputBox(props: InputBoxProps) {
               kind='filled'
               className={classnames({
                 [styles.button]: true,
-                [styles.streamingButton]: true
+                [styles.streamingButton]: true,
               })}
               onClick={handleStopGenerating}
               title={getLocale(S.CHAT_UI_STOP_GENERATION_BUTTON_LABEL)}
             >
-              <Icon name='stop-circle' className={styles.streamingIcon} />
+              <Icon
+                name='stop-circle'
+                className={styles.streamingIcon}
+              />
             </Button>
           ) : (
             <Button
@@ -335,15 +358,18 @@ function InputBox(props: InputBoxProps) {
               kind='filled'
               className={classnames({
                 [styles.button]: true,
-                [styles.sendButtonDisabled]: isSendButtonDisabled
+                [styles.sendButtonDisabled]: isSendButtonDisabled,
               })}
               onClick={handleSubmit}
               disabled={isSendButtonDisabled}
               title={getLocale(S.CHAT_UI_SEND_CHAT_BUTTON_LABEL)}
             >
-              <Icon className={classnames({
-                [styles.sendIconDisabled]: isSendButtonDisabled
-              })} name='arrow-up' />
+              <Icon
+                className={classnames({
+                  [styles.sendIconDisabled]: isSendButtonDisabled,
+                })}
+                name='arrow-up'
+              />
             </Button>
           )}
         </div>

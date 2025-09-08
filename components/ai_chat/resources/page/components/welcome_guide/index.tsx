@@ -19,8 +19,12 @@ function WelcomeGuide() {
   return (
     <div className={styles.box}>
       <div className={styles.header}>
-        <h1 className={styles.title}>{getLocale(S.CHAT_UI_WELCOME_GUIDE_TITLE)}</h1>
-        <h2 className={styles.subtitle}>{getLocale(S.CHAT_UI_WELCOME_GUIDE_SUBTITLE)}</h2>
+        <h1 className={styles.title}>
+          {getLocale(S.CHAT_UI_WELCOME_GUIDE_TITLE)}
+        </h1>
+        <h2 className={styles.subtitle}>
+          {getLocale(S.CHAT_UI_WELCOME_GUIDE_SUBTITLE)}
+        </h2>
       </div>
       <div className={`${styles.card} ${styles.siteHelpCard}`}>
         <h4 className={styles.cardTitle}>
@@ -28,7 +32,9 @@ function WelcomeGuide() {
         </h4>
         {conversationContext.associatedContentInfo.length > 0 ? (
           <>
-            <p>{getLocale(S.CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_WITH_ACTION)}</p>
+            <p>
+              {getLocale(S.CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_WITH_ACTION)}
+            </p>
             <div className={styles.actions}>
               <Button
                 kind='outline'

@@ -11,8 +11,10 @@ import * as Mojom from './mojom'
  * @returns True if the file is a full page screenshot
  */
 export const isFullPageScreenshot = (file: Mojom.UploadedFile): boolean => {
-  return file.type === Mojom.UploadedFileType.kScreenshot &&
-         file.filename.startsWith(Mojom.FULL_PAGE_SCREENSHOT_PREFIX)
+  return (
+    file.type === Mojom.UploadedFileType.kScreenshot
+    && file.filename.startsWith(Mojom.FULL_PAGE_SCREENSHOT_PREFIX)
+  )
 }
 
 /**
@@ -25,11 +27,11 @@ export const isFullPageScreenshot = (file: Mojom.UploadedFile): boolean => {
  */
 export function updateConversationHistory(
   currentHistory: Mojom.ConversationTurn[],
-  newEntry: Mojom.ConversationTurn
+  newEntry: Mojom.ConversationTurn,
 ): Mojom.ConversationTurn[] {
   // Check if an entry with the same UUID already exists
   const existingEntryIndex = currentHistory.findIndex(
-    (existingEntry) => existingEntry.uuid === newEntry.uuid
+    (existingEntry) => existingEntry.uuid === newEntry.uuid,
   )
 
   if (existingEntryIndex !== -1) {
@@ -37,7 +39,7 @@ export function updateConversationHistory(
     const updatedHistory = [...currentHistory]
     updatedHistory[existingEntryIndex] = {
       ...updatedHistory[existingEntryIndex],
-      ...newEntry
+      ...newEntry,
     }
     return updatedHistory
   } else {
@@ -53,11 +55,13 @@ export function updateConversationHistory(
  * @returns Filtered array containing only image and screenshot files
  */
 export function getImageFiles(
-  files?: Mojom.UploadedFile[]): Mojom.UploadedFile[] | undefined {
-  return files?.filter(file =>
-    file.type === Mojom.UploadedFileType.kImage ||
-    file.type === Mojom.UploadedFileType.kScreenshot
-  );
+  files?: Mojom.UploadedFile[],
+): Mojom.UploadedFile[] | undefined {
+  return files?.filter(
+    (file) =>
+      file.type === Mojom.UploadedFileType.kImage
+      || file.type === Mojom.UploadedFileType.kScreenshot,
+  )
 }
 
 /**
@@ -67,10 +71,9 @@ export function getImageFiles(
  * @returns Filtered array containing only document files
  */
 export function getDocumentFiles(
-  files?: Mojom.UploadedFile[]): Mojom.UploadedFile[] | undefined {
-  return files?.filter(file =>
-    file.type === Mojom.UploadedFileType.kPdf
-  );
+  files?: Mojom.UploadedFile[],
+): Mojom.UploadedFile[] | undefined {
+  return files?.filter((file) => file.type === Mojom.UploadedFileType.kPdf)
 }
 
 /**
@@ -80,19 +83,23 @@ export function getDocumentFiles(
  * @returns true if attachment button should be disabled, false otherwise
  */
 export function shouldDisableAttachmentsButton(
-  conversationHistory: Mojom.ConversationTurn[]
+  conversationHistory: Mojom.ConversationTurn[],
 ): boolean {
   const totalUploadedImages = conversationHistory.reduce(
     (total, turn) => total + (getImageFiles(turn.uploadedFiles)?.length || 0),
-    0
+    0,
   )
 
   const totalUploadedDocuments = conversationHistory.reduce(
-    (total, turn) => total + (getDocumentFiles(turn.uploadedFiles)?.length || 0),
-    0
+    (total, turn) =>
+      total + (getDocumentFiles(turn.uploadedFiles)?.length || 0),
+    0,
   )
 
-  return totalUploadedImages >= Mojom.MAX_IMAGES || totalUploadedDocuments >= Mojom.MAX_DOCUMENTS
+  return (
+    totalUploadedImages >= Mojom.MAX_IMAGES
+    || totalUploadedDocuments >= Mojom.MAX_DOCUMENTS
+  )
 }
 
 /**
@@ -106,21 +113,23 @@ export function shouldDisableAttachmentsButton(
 export const processUploadedFilesWithLimits = (
   files: Mojom.UploadedFile[],
   conversationHistory: Mojom.ConversationTurn[],
-  currentPendingFiles: Mojom.UploadedFile[]
+  currentPendingFiles: Mojom.UploadedFile[],
 ): Mojom.UploadedFile[] => {
   // Calculate total uploaded files from conversation history
   const totalUploadedImages = conversationHistory.reduce(
     (total, turn) => total + (getImageFiles(turn.uploadedFiles)?.length || 0),
-    0
+    0,
   )
   const totalUploadedDocuments = conversationHistory.reduce(
-    (total, turn) => total + (getDocumentFiles(turn.uploadedFiles)?.length || 0),
-    0
+    (total, turn) =>
+      total + (getDocumentFiles(turn.uploadedFiles)?.length || 0),
+    0,
   )
 
   // Calculate current pending files by type
   const currentPendingImages = getImageFiles(currentPendingFiles)?.length || 0
-  const currentPendingDocuments = getDocumentFiles(currentPendingFiles)?.length || 0
+  const currentPendingDocuments =
+    getDocumentFiles(currentPendingFiles)?.length || 0
 
   // Track current counts for each type
   let currentImages = 0
@@ -128,20 +137,25 @@ export const processUploadedFilesWithLimits = (
   // Process files in original order while respecting limits
   const newFiles: Mojom.UploadedFile[] = []
   for (const file of files) {
-    const isImage = file.type === Mojom.UploadedFileType.kImage ||
-      file.type === Mojom.UploadedFileType.kScreenshot
+    const isImage =
+      file.type === Mojom.UploadedFileType.kImage
+      || file.type === Mojom.UploadedFileType.kScreenshot
     const isDocument = file.type === Mojom.UploadedFileType.kPdf
     if (isImage) {
-      const maxNewImages = Mojom.MAX_IMAGES - totalUploadedImages - currentPendingImages
+      const maxNewImages =
+        Mojom.MAX_IMAGES - totalUploadedImages - currentPendingImages
       if (currentImages < maxNewImages) {
         newFiles.push(file)
         currentImages++
       }
     } else if (isDocument) {
-      const maxNewDocuments = Mojom.MAX_DOCUMENTS - totalUploadedDocuments - currentPendingDocuments
+      const maxNewDocuments =
+        Mojom.MAX_DOCUMENTS - totalUploadedDocuments - currentPendingDocuments
       const fileSize = Number(file.filesize)
-      if (currentDocuments < maxNewDocuments &&
-          fileSize <= Mojom.MAX_DOCUMENT_SIZE_BYTES) {
+      if (
+        currentDocuments < maxNewDocuments
+        && fileSize <= Mojom.MAX_DOCUMENT_SIZE_BYTES
+      ) {
         newFiles.push(file)
         currentDocuments++
       }

@@ -13,6 +13,8 @@ import '../../../ai_chat/resources/common/strings'
 
 setIconBasePath('//resources/brave-icons')
 
-createRoot(document.querySelector('#root')!).render(<Context>
-  <Layout />
-</Context>)
+createRoot(document.querySelector('#root')!).render(
+  <Context>
+    <Layout />
+  </Context>,
+)

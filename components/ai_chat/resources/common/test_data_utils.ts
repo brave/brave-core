@@ -15,7 +15,7 @@ const eventTemplate: Mojom.ConversationEntryEvent = {
   conversationTitleEvent: undefined,
   sourcesEvent: undefined,
   contentReceiptEvent: undefined,
-  toolUseEvent: undefined
+  toolUseEvent: undefined,
 }
 
 export function getEventTemplate() {
@@ -25,14 +25,15 @@ export function getEventTemplate() {
 export function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
-    completionEvent: { completion: text }
+    completionEvent: { completion: text },
   }
 }
 
-export function getWebSourcesEvent(sources: Mojom.WebSource[]): Mojom.ConversationEntryEvent {
+export function getWebSourcesEvent(
+  sources: Mojom.WebSource[],
+): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
-    sourcesEvent: { sources }
+    sourcesEvent: { sources },
   }
 }
-

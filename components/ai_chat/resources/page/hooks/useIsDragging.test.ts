@@ -13,12 +13,12 @@ const mockAPI = {
       addListener: jest.fn(() => 'mock-listener-id'),
     },
     removeListener: jest.fn(),
-  }
+  },
 }
 
 jest.mock('../api', () => ({
   __esModule: true,
-  default: () => mockAPI
+  default: () => mockAPI,
 }))
 
 describe('useIsDragging', () => {
@@ -44,29 +44,43 @@ describe('useIsDragging', () => {
   })
 
   const renderUseIsDragging = () => {
-    return renderHook(() => useIsDragging({
-      setDragActive: mockSetDragActive,
-      setDragOver: mockSetDragOver,
-      clearDragState: mockClearDragState
-    }))
+    return renderHook(() =>
+      useIsDragging({
+        setDragActive: mockSetDragActive,
+        setDragOver: mockSetDragOver,
+        clearDragState: mockClearDragState,
+      }),
+    )
   }
 
   describe('initialization', () => {
     it('sets up document event listeners', () => {
       renderUseIsDragging()
 
-      expect(document.addEventListener)
-        .toHaveBeenCalledWith('dragenter', expect.any(Function))
-      expect(document.addEventListener)
-        .toHaveBeenCalledWith('dragleave', expect.any(Function))
-      expect(document.addEventListener)
-        .toHaveBeenCalledWith('dragover', expect.any(Function))
-      expect(document.addEventListener)
-        .toHaveBeenCalledWith('dragend', expect.any(Function))
-      expect(window.addEventListener)
-        .toHaveBeenCalledWith('blur', expect.any(Function))
-      expect(document.addEventListener)
-        .toHaveBeenCalledWith('visibilitychange', expect.any(Function))
+      expect(document.addEventListener).toHaveBeenCalledWith(
+        'dragenter',
+        expect.any(Function),
+      )
+      expect(document.addEventListener).toHaveBeenCalledWith(
+        'dragleave',
+        expect.any(Function),
+      )
+      expect(document.addEventListener).toHaveBeenCalledWith(
+        'dragover',
+        expect.any(Function),
+      )
+      expect(document.addEventListener).toHaveBeenCalledWith(
+        'dragend',
+        expect.any(Function),
+      )
+      expect(window.addEventListener).toHaveBeenCalledWith(
+        'blur',
+        expect.any(Function),
+      )
+      expect(document.addEventListener).toHaveBeenCalledWith(
+        'visibilitychange',
+        expect.any(Function),
+      )
     })
   })
 
@@ -75,13 +89,13 @@ describe('useIsDragging', () => {
       renderUseIsDragging()
 
       // Get the dragenter handler
-      const dragEnterHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'dragenter')?.[1]
+      const dragEnterHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragenter')?.[1]
 
       const mockEvent = {
         preventDefault: jest.fn(),
-        dataTransfer: { types: ['Files'] }
+        dataTransfer: { types: ['Files'] },
       } as any
 
       act(() => {
@@ -95,13 +109,13 @@ describe('useIsDragging', () => {
     it('does not activate for non-file drags', () => {
       renderUseIsDragging()
 
-      const dragEnterHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'dragenter')?.[1]
+      const dragEnterHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragenter')?.[1]
 
       const mockEvent = {
         preventDefault: jest.fn(),
-        dataTransfer: { types: ['text/plain'] }
+        dataTransfer: { types: ['text/plain'] },
       } as any
 
       act(() => {
@@ -115,16 +129,16 @@ describe('useIsDragging', () => {
     it('clears drag state on dragleave when counter reaches zero', () => {
       renderUseIsDragging()
 
-      const dragEnterHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'dragenter')?.[1]
-      const dragLeaveHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'dragleave')?.[1]
+      const dragEnterHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragenter')?.[1]
+      const dragLeaveHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragleave')?.[1]
 
       const mockEvent = {
         preventDefault: jest.fn(),
-        dataTransfer: { types: ['Files'] }
+        dataTransfer: { types: ['Files'] },
       } as any
 
       // Enter drag
@@ -145,15 +159,16 @@ describe('useIsDragging', () => {
     it('clears drag state on dragend', () => {
       renderUseIsDragging()
 
-      const dragEnterHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'dragenter')?.[1]
-      const dragEndHandler = (document.addEventListener as jest.Mock).mock.calls
-        .find(call => call[0] === 'dragend')?.[1]
+      const dragEnterHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragenter')?.[1]
+      const dragEndHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragend')?.[1]
 
       const mockEvent = {
         preventDefault: jest.fn(),
-        dataTransfer: { types: ['Files'] }
+        dataTransfer: { types: ['Files'] },
       } as any
 
       // Enter drag
@@ -174,16 +189,16 @@ describe('useIsDragging', () => {
     it('clears drag state on window blur', () => {
       renderUseIsDragging()
 
-      const dragEnterHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'dragenter')?.[1]
-      const windowBlurHandler = (window.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'blur')?.[1]
+      const dragEnterHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragenter')?.[1]
+      const windowBlurHandler = (
+        window.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'blur')?.[1]
 
       const mockEvent = {
         preventDefault: jest.fn(),
-        dataTransfer: { types: ['Files'] }
+        dataTransfer: { types: ['Files'] },
       } as any
 
       // Enter drag
@@ -204,16 +219,16 @@ describe('useIsDragging', () => {
     it('clears drag state when page becomes hidden', () => {
       renderUseIsDragging()
 
-      const dragEnterHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'dragenter')?.[1]
-      const visibilityChangeHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'visibilitychange')?.[1]
+      const dragEnterHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragenter')?.[1]
+      const visibilityChangeHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'visibilitychange')?.[1]
 
       const mockEvent = {
         preventDefault: jest.fn(),
-        dataTransfer: { types: ['Files'] }
+        dataTransfer: { types: ['Files'] },
       } as any
 
       // Enter drag
@@ -226,7 +241,7 @@ describe('useIsDragging', () => {
       // Hide page
       Object.defineProperty(document, 'hidden', {
         value: true,
-        configurable: true
+        configurable: true,
       })
       act(() => {
         visibilityChangeHandler({})
@@ -238,16 +253,16 @@ describe('useIsDragging', () => {
     it('maintains drag counter for nested elements', () => {
       renderUseIsDragging()
 
-      const dragEnterHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'dragenter')?.[1]
-      const dragLeaveHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'dragleave')?.[1]
+      const dragEnterHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragenter')?.[1]
+      const dragLeaveHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragleave')?.[1]
 
       const mockEvent = {
         preventDefault: jest.fn(),
-        dataTransfer: { types: ['Files'] }
+        dataTransfer: { types: ['Files'] },
       } as any
 
       // Enter twice (nested elements)
@@ -279,13 +294,13 @@ describe('useIsDragging', () => {
     it('sets timeout to clear drag state after 1 second of inactivity', () => {
       renderUseIsDragging()
 
-      const dragEnterHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'dragenter')?.[1]
+      const dragEnterHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragenter')?.[1]
 
       const mockEvent = {
         preventDefault: jest.fn(),
-        dataTransfer: { types: ['Files'] }
+        dataTransfer: { types: ['Files'] },
       } as any
 
       act(() => {
@@ -306,16 +321,16 @@ describe('useIsDragging', () => {
     it('resets timeout on dragover activity', () => {
       renderUseIsDragging()
 
-      const dragEnterHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'dragenter')?.[1]
-      const dragOverHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'dragover')?.[1]
+      const dragEnterHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragenter')?.[1]
+      const dragOverHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragover')?.[1]
 
       const mockEvent = {
         preventDefault: jest.fn(),
-        dataTransfer: { types: ['Files'] }
+        dataTransfer: { types: ['Files'] },
       } as any
 
       // Start drag
@@ -357,30 +372,42 @@ describe('useIsDragging', () => {
 
       unmount()
 
-      expect(document.removeEventListener)
-        .toHaveBeenCalledWith('dragenter', expect.any(Function))
-      expect(document.removeEventListener)
-        .toHaveBeenCalledWith('dragleave', expect.any(Function))
-      expect(document.removeEventListener)
-        .toHaveBeenCalledWith('dragover', expect.any(Function))
-      expect(document.removeEventListener)
-        .toHaveBeenCalledWith('dragend', expect.any(Function))
-      expect(window.removeEventListener)
-        .toHaveBeenCalledWith('blur', expect.any(Function))
-      expect(document.removeEventListener)
-        .toHaveBeenCalledWith('visibilitychange', expect.any(Function))
+      expect(document.removeEventListener).toHaveBeenCalledWith(
+        'dragenter',
+        expect.any(Function),
+      )
+      expect(document.removeEventListener).toHaveBeenCalledWith(
+        'dragleave',
+        expect.any(Function),
+      )
+      expect(document.removeEventListener).toHaveBeenCalledWith(
+        'dragover',
+        expect.any(Function),
+      )
+      expect(document.removeEventListener).toHaveBeenCalledWith(
+        'dragend',
+        expect.any(Function),
+      )
+      expect(window.removeEventListener).toHaveBeenCalledWith(
+        'blur',
+        expect.any(Function),
+      )
+      expect(document.removeEventListener).toHaveBeenCalledWith(
+        'visibilitychange',
+        expect.any(Function),
+      )
     })
 
     it('clears timeout on unmount when timeout exists', () => {
       const { unmount } = renderUseIsDragging()
 
-      const dragEnterHandler = (document.addEventListener as jest.Mock)
-        .mock.calls
-        .find(call => call[0] === 'dragenter')?.[1]
+      const dragEnterHandler = (
+        document.addEventListener as jest.Mock
+      ).mock.calls.find((call) => call[0] === 'dragenter')?.[1]
 
       const mockEvent = {
         preventDefault: jest.fn(),
-        dataTransfer: { types: ['Files'] }
+        dataTransfer: { types: ['Files'] },
       } as any
 
       const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout')
@@ -400,18 +427,20 @@ describe('useIsDragging', () => {
     it('sets up iframe drag listener on mount', () => {
       renderUseIsDragging()
 
-      expect(mockAPI.conversationEntriesFrameObserver.dragStart.addListener)
-        .toHaveBeenCalled()
+      expect(
+        mockAPI.conversationEntriesFrameObserver.dragStart.addListener,
+      ).toHaveBeenCalled()
     })
 
     it('activates drag state when iframe drag starts', () => {
       let dragStartCallback: () => void
 
-      mockAPI.conversationEntriesFrameObserver.dragStart.addListener
-        .mockImplementation((callback: () => void) => {
-        dragStartCallback = callback
-        return 'mock-listener-id'
-      })
+      mockAPI.conversationEntriesFrameObserver.dragStart.addListener.mockImplementation(
+        (callback: () => void) => {
+          dragStartCallback = callback
+          return 'mock-listener-id'
+        },
+      )
 
       renderUseIsDragging()
 
@@ -425,13 +454,15 @@ describe('useIsDragging', () => {
 
     it('removes iframe drag listener on unmount', () => {
       // Ensure the addListener mock returns the expected ID
-      mockAPI.conversationEntriesFrameObserver.dragStart.addListener
-        .mockReturnValue('mock-listener-id')
+      mockAPI.conversationEntriesFrameObserver.dragStart.addListener.mockReturnValue(
+        'mock-listener-id',
+      )
 
       const { unmount } = renderUseIsDragging()
       unmount()
-      expect(mockAPI.conversationEntriesFrameObserver.removeListener)
-        .toHaveBeenCalledWith('mock-listener-id')
+      expect(
+        mockAPI.conversationEntriesFrameObserver.removeListener,
+      ).toHaveBeenCalledWith('mock-listener-id')
     })
   })
 })

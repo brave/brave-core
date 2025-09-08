@@ -33,8 +33,8 @@ export function getUserSignature(user: any) {
    * should suffice (and save us some chars).
    */
   if (
-    UserSignatures.has(idStr) ||
-    getDistillationLevel() === LEO_DISTILLATION_LEVEL.LOW
+    UserSignatures.has(idStr)
+    || getDistillationLevel() === LEO_DISTILLATION_LEVEL.LOW
   ) {
     return isString(screenName) ? `@${screenName}` : 'Anonyous'
   }
@@ -79,7 +79,7 @@ function distillLowSeenUsers() {
     const entry = [
       `@${user.screen_name}${isUserVerified(user) ? ' [Verified]' : ''}`,
       ` - Joined: ${memberSince}`,
-      ` - Followers: ${followers}`
+      ` - Followers: ${followers}`,
     ].join('\n')
 
     output.push(entry)
@@ -90,10 +90,10 @@ function distillLowSeenUsers() {
 
 function isUserVerified(user: any): boolean {
   return (
-    user.verified ||
-    user.is_blue_verified ||
-    user.professional ||
-    user.verified_type
+    user.verified
+    || user.is_blue_verified
+    || user.professional
+    || user.verified_type
   )
 }
 
@@ -107,8 +107,8 @@ function distillMediumHighSeenUsers() {
 
     const memberSince = getDateString(user.created_at)
     const description =
-      user.description &&
-      expandEntities(user.description, user.entities.description)
+      user.description
+      && expandEntities(user.description, user.entities.description)
 
     const followersStr = user.followers_count.toLocaleString()
     const followingStr = user.friends_count.toLocaleString()
@@ -119,7 +119,7 @@ function distillMediumHighSeenUsers() {
       ` - Verified: ${isUserVerified(user) ? 'Yes' : 'No'}`,
       ` - Followers: ${followersStr} | Following: ${followingStr}`,
       ` - Member Since: ${memberSince}`,
-      description && [` - Description: ${description}`]
+      description && [` - Description: ${description}`],
     ]
       .filter(Boolean)
       .join('\n')

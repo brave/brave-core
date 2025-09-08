@@ -23,7 +23,7 @@ function distillBranchesTable(table: HTMLTableElement) {
   const cellProcessors = {
     'updated': (cell: HTMLTableCellElement) => ({
       author: cell.querySelector('a')?.getAttribute('href'),
-      date: cell.querySelector('relative-time')?.getAttribute('title')
+      date: cell.querySelector('relative-time')?.getAttribute('title'),
     }),
     'pull request': (cell: HTMLTableCellElement) => {
       const link = cell.querySelector('a')
@@ -37,7 +37,7 @@ function distillBranchesTable(table: HTMLTableElement) {
       }
       return null
     },
-    'action menu': null // Skip this cell
+    'action menu': null, // Skip this cell
   } as Record<string, any>
 
   const data = [] as Array<Record<string, string>>
@@ -77,7 +77,7 @@ function distillBranchesTable(table: HTMLTableElement) {
     `Current URL: ${pageURL}`,
     `# Page Title: ${pageTitle}`,
     `## Data Title: ${tableTitle}`,
-    ...rDistillObject(data)
+    ...rDistillObject(data),
   ].join('\n')
 }
 

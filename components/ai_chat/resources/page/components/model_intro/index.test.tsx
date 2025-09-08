@@ -12,19 +12,19 @@ import { useConversation } from '../../state/conversation_context'
 import ModelIntro from '.'
 
 jest.mock('../../state/ai_chat_context', () => ({
-  useAIChat: jest.fn()
+  useAIChat: jest.fn(),
 }))
 
 jest.mock('../../state/conversation_context', () => ({
-  useConversation: jest.fn()
+  useConversation: jest.fn(),
 }))
 
 describe('ModelIntro', () => {
   beforeEach(() => {
     ;(useAIChat as jest.Mock).mockReturnValue({
       uiHandler: {
-        openModelSupportUrl: jest.fn()
-      }
+        openModelSupportUrl: jest.fn(),
+      },
     })
     ;(useConversation as jest.Mock).mockReturnValue({
       currentModel: {
@@ -32,11 +32,11 @@ describe('ModelIntro', () => {
         displayName: 'Test Model',
         options: {
           leoModelOptions: {
-            category: Mojom.ModelCategory.CHAT
-          }
-        }
+            category: Mojom.ModelCategory.CHAT,
+          },
+        },
       },
-      isCurrentModelLeo: true
+      isCurrentModelLeo: true,
     })
   })
 

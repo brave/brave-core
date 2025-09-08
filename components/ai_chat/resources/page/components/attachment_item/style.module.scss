@@ -9,7 +9,8 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: var(--leo-spacing-m) var(--leo-spacing-xl) var(--leo-spacing-m) var(--leo-spacing-m);
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl) var(--leo-spacing-m)
+    var(--leo-spacing-m);
   border-radius: var(--leo-radius-m);
   border: 1px solid var(--leo-color-divider-subtle);
   background-color: var(--leo-color-container-background);
@@ -104,14 +105,14 @@
 }
 
 .subtitleText {
-    overflow: hidden;
+  overflow: hidden;
 
-    & div:first-child {
-      text-wrap: nowrap;
-      text-overflow: ellipsis;
-      width: 100%;
-      overflow: hidden;
-    }
+  & div:first-child {
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+  }
 }
 
 .tooltipContent {

@@ -11,12 +11,12 @@ export default function useAPIState<T>(api: API<T>, defaultState: T) {
   // time and the first React render.
   const [context, setContext] = React.useState<T>({
     ...defaultState,
-    ...api.state
+    ...api.state,
   })
   const updateFromAPIState = React.useCallback((state: T) => {
     setContext((value) => ({
       ...value,
-      ...state
+      ...state,
     }))
   }, [])
 

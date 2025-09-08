@@ -79,8 +79,7 @@ describe('regenerate answer menu', () => {
 
   const getAndTestAnchorButton = async () => {
     // Make sure the anchor button is visible
-    const anchorButton =
-      document.querySelector<HTMLButtonElement>('leo-button')
+    const anchorButton = document.querySelector<HTMLButtonElement>('leo-button')
     expect(anchorButton).toBeInTheDocument()
     expect(anchorButton).toBeVisible()
     return anchorButton
