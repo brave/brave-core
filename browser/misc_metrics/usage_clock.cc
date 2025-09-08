@@ -6,29 +6,20 @@
 #include "brave/browser/misc_metrics/usage_clock.h"
 
 #include "base/check.h"
-#include "base/time/tick_clock.h"
-#include "base/time/time.h"
 
 namespace misc_metrics {
 
-namespace {
-
-const base::TickClock* g_tick_clock_for_testing = nullptr;
-
-base::TimeTicks NowTicks() {
-  return g_tick_clock_for_testing ? g_tick_clock_for_testing->NowTicks()
-                                  : base::TimeTicks::Now();
-}
-
-}  // namespace
-
-UsageClock::UsageClock() : current_usage_session_start_time_(NowTicks()) {
+UsageClock::UsageClock() {
+  bool in_session = true;
   if (metrics::DesktopSessionDurationTracker::IsInitialized()) {
     auto* tracker = metrics::DesktopSessionDurationTracker::Get();
     tracker->AddObserver(this);
     if (!tracker->in_session()) {
-      current_usage_session_start_time_ = base::TimeTicks();
+      in_session = false;
     }
+  }
+  if (in_session) {
+    current_session_elapsed_timer_ = base::ElapsedTimer();
   }
 }
 
@@ -40,21 +31,21 @@ UsageClock::~UsageClock() {
 
 base::TimeDelta UsageClock::GetTotalUsageTime() const {
   base::TimeDelta elapsed_time_in_session = usage_time_in_completed_sessions_;
-  if (IsInUse()) {
-    elapsed_time_in_session += NowTicks() - current_usage_session_start_time_;
+  if (current_session_elapsed_timer_) {
+    elapsed_time_in_session += current_session_elapsed_timer_->Elapsed();
   }
   return elapsed_time_in_session;
 }
 
 bool UsageClock::IsInUse() const {
-  return !current_usage_session_start_time_.is_null();
+  return current_session_elapsed_timer_.has_value();
 }
 
 void UsageClock::OnSessionStarted(base::TimeTicks session_start) {
   // Ignore |session_start| because it doesn't come from the resource
   // coordinator clock.
   DCHECK(!IsInUse());
-  current_usage_session_start_time_ = NowTicks();
+  current_session_elapsed_timer_ = base::ElapsedTimer();
 }
 
 void UsageClock::OnSessionEnded(base::TimeDelta session_length,
@@ -63,16 +54,8 @@ void UsageClock::OnSessionEnded(base::TimeDelta session_length,
   // coordinator clock.
   DCHECK(IsInUse());
   usage_time_in_completed_sessions_ +=
-      NowTicks() - current_usage_session_start_time_;
-  current_usage_session_start_time_ = base::TimeTicks();
-}
-
-void UsageClock::SetTickClockForTesting(const base::TickClock* tick_clock) {
-  DCHECK(!g_tick_clock_for_testing);
-  g_tick_clock_for_testing = tick_clock;
-  if (IsInUse()) {
-    current_usage_session_start_time_ = NowTicks();
-  }
+      current_session_elapsed_timer_->Elapsed();
+  current_session_elapsed_timer_ = std::nullopt;
 }
 
 }  // namespace misc_metrics
