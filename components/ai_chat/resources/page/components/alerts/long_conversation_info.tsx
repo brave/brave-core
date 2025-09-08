@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
-import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
 import { useConversation } from '../../state/conversation_context'
 import styles from './alerts.module.scss'
@@ -27,13 +26,12 @@ export default function LongConversationInfo() {
       </div>
       <div className={styles.infoText}>
         {getLocale(S.CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING)}
-        <Button
-          kind='plain-faint'
+        <button
           className={styles.link}
           onClick={handleClearChat}
         >
           <span>{getLocale(S.CHAT_UI_CLEAR_CHAT_BUTTON_LABEL)}</span>
-        </Button>
+        </button>
       </div>
     </div>
   )
