@@ -774,7 +774,9 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
 
   // Handling if |entry| is managed one.
   for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
-    if (!item.open_in_panel) {
+    // For now, web type can't get activated and some builtin types(ex, wallet)
+    // as they are not opened in side panel.
+    if (item.is_web_type() || !item.open_in_panel) {
       continue;
     }
 

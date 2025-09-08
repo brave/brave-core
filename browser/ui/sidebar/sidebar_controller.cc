@@ -105,7 +105,9 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
 
   const auto& item = sidebar_model_->GetAllSidebarItems()[*index];
 
-  if (IsWebPanelFeatureEnabled() && item.is_web_panel_type()) {
+  if (item.is_web_panel_type()) {
+    // TODO(https://github.com/brave/brave-browser/issues/33533): web panel item
+    // also should be activated.
     GetWebPanelController()->IsShowingWebPanel()
         ? GetWebPanelController()->CloseWebPanel()
         : GetWebPanelController()->OpenWebPanel(item);
@@ -113,12 +115,8 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
   }
 
   // Only an item for panel can get activated.
-  if (item.open_in_panel) {
-    // TODO(https://github.com/brave/brave-browser/issues/33533): WebPanel item
-    // type also should be activated.
-    if (!item.is_web_panel_type()) {
-      sidebar_model_->SetActiveIndex(index);
-    }
+  if (!item.is_web_type() && item.open_in_panel) {
+    sidebar_model_->SetActiveIndex(index);
 
     if (sidebar::features::kOpenOneShotLeoPanel.Get() &&
         item.built_in_item_type == SidebarItem::BuiltInItemType::kChatUI) {

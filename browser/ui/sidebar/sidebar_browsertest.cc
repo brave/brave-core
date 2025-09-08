@@ -824,7 +824,9 @@ class SidebarBrowserWithWebPanelTest
         BrowserView::GetBrowserViewForBrowser(browser()));
   }
 
-  bool IsWebPanelEnabled() const { return GetParam(); }
+  bool IsWebPanelEnabled() const {
+    return base::FeatureList::IsEnabled(features::kSidebarWebPanel);
+  }
 
  private:
   base::test::ScopedFeatureList scoped_features_;
@@ -835,6 +837,22 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
       GetBraveMultiContentsView()->contents_container_view_for_web_panel_;
   if (!IsWebPanelEnabled()) {
     EXPECT_FALSE(contents_container_view_for_web_panel);
+
+    // Even web panel feature is disabled, sidebar could have web panel
+    // type because it could be added when that feature enabled.
+    // In this sitaution, web panel type should work like web type that
+    // load its url in a tab.
+    // Test it works in that way after adding web panel type.
+    auto* sidebar_service =
+        SidebarServiceFactory::GetForProfile(browser()->profile());
+    GURL item_url("http://foo.bar/");
+    sidebar_service->AddItem(sidebar::SidebarItem::Create(
+        item_url, u"title", SidebarItem::Type::kTypeWeb,
+        SidebarItem::BuiltInItemType::kNone, /*open_in_panel*/ true));
+    EXPECT_NE(tab_model()->GetActiveWebContents()->GetVisibleURL(), item_url);
+    // Above item is added at last.
+    controller()->ActivateItemAt(sidebar_service->items().size() - 1);
+    EXPECT_EQ(tab_model()->GetActiveWebContents()->GetVisibleURL(), item_url);
     return;
   }
 

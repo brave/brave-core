@@ -293,7 +293,7 @@ void SidebarItemsContentsView::AddItemView(const sidebar::SidebarItem& item,
                           base::Unretained(this), item_view));
   item_view->set_drag_controller(drag_controller_);
 
-  if (item.is_web_type() || item.is_web_panel_type()) {
+  if (item.is_web_type()) {
     SetDefaultImageFor(item);
   }
 
@@ -512,13 +512,14 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
 
   const auto& item_model = controller->model()->GetAllSidebarItems()[*index];
 
-  // web panel is not a side panel.
+  // web panel is not a side panel that handled by SidePanelCoordinator.
+  // It'll be loaded into another contents view in MultiContentsView.
   if (item_model.is_web_panel_type()) {
     controller->ActivateItemAt(index);
     return;
   }
 
-  if (item_model.open_in_panel) {
+  if (!item_model.is_web_type() && item_model.open_in_panel) {
     if (item_model.built_in_item_type ==
         sidebar::SidebarItem::BuiltInItemType::kChatUI) {
       auto* profile_metrics =

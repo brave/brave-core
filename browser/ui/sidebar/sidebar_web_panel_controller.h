@@ -20,6 +20,10 @@ class SidebarWebPanelController {
   explicit SidebarWebPanelController(BrowserView& browser);
   ~SidebarWebPanelController();
 
+  SidebarWebPanelController(const SidebarWebPanelController&) = delete;
+  SidebarWebPanelController& operator=(const SidebarWebPanelController&) =
+      delete;
+
   void OpenWebPanel(const SidebarItem& item);
   void CloseWebPanel();
   bool IsShowingWebPanel() const;

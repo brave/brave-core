@@ -280,7 +280,7 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
 
 void SidebarService::AddItem(const SidebarItem& item) {
   DCHECK(item.IsValidItem());
-  if (item.is_web_type() || item.is_web_panel_type()) {
+  if (item.is_web_type()) {
     items_.push_back(item);
     for (Observer& obs : observers_) {
       // Index starts at zero.

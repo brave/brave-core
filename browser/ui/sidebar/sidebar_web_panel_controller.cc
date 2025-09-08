@@ -5,13 +5,16 @@
 
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 namespace sidebar {
 
 SidebarWebPanelController::SidebarWebPanelController(BrowserView& browser_view)
-    : browser_view_(browser_view) {}
+    : browser_view_(browser_view) {
+  CHECK(IsWebPanelFeatureEnabled());
+}
 
 SidebarWebPanelController::~SidebarWebPanelController() = default;
 
