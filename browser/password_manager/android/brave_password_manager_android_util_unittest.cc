@@ -12,6 +12,7 @@
 #include "components/password_manager/core/browser/password_manager_buildflags.h"
 #include "components/password_manager/core/browser/password_manager_constants.h"
 #include "components/password_manager/core/browser/split_stores_and_local_upm.h"
+#include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync/base/data_type.h"
@@ -24,12 +25,6 @@ namespace {
 class BravePasswordManagerAndroidUtilTest : public testing::Test {
  public:
   BravePasswordManagerAndroidUtilTest() {
-    password_manager::RegisterLegacySplitStoresPref(pref_service_.registry());
-
-    pref_service_.registry()->RegisterBooleanPref(
-        password_manager::prefs::kUpmUnmigratedPasswordsExported, false);
-    pref_service_.registry()->RegisterBooleanPref(
-        password_manager::prefs::kEmptyProfileStoreLoginDatabase, false);
     pref_service_.registry()->RegisterBooleanPref(
         password_manager::prefs::kCredentialsEnableService, false);
     pref_service_.registry()->RegisterBooleanPref(
@@ -78,17 +73,6 @@ static_assert(BUILDFLAG(USE_LOGIN_DATABASE_AS_BACKEND));
 // We don't want password db to be deleted on Android
 // Based on DeletesLoginDataFilesAfterUnmigratedPasswordsExported
 TEST_F(BravePasswordManagerAndroidUtilTest, DoNotDeleteLoginDataFiles) {
-  // Assume an unmigrated user.
-  password_manager::SetLegacySplitStoresPrefForTest(pref_service(), false);
-  // With unmigrated passwords exported.
-  pref_service()->SetBoolean(
-      password_manager::prefs::kUpmUnmigratedPasswordsExported, true);
-
-  // And for whom the initial passwords deletion failed, so they still have
-  // passwords in the db.
-  pref_service()->SetBoolean(
-      password_manager::prefs::kEmptyProfileStoreLoginDatabase, false);
-
   // Creating the login data files for testing.
   base::FilePath profile_db_path = login_db_directory().Append(
       password_manager::kLoginDataForProfileFileName);
@@ -116,9 +100,6 @@ TEST_F(BravePasswordManagerAndroidUtilTest, DoNotDeleteLoginDataFiles) {
   EXPECT_TRUE(PathExists(account_db_path));
   EXPECT_TRUE(PathExists(profile_db_journal_path));
   EXPECT_TRUE(PathExists(account_db_journal_path));
-
-  EXPECT_FALSE(pref_service()->GetBoolean(
-      password_manager::prefs::kEmptyProfileStoreLoginDatabase));
 }
 
 }  // namespace
