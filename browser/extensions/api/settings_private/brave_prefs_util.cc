@@ -134,7 +134,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kLocationBarIsWide] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[omnibox::kAutocompleteEnabled] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[omnibox::kTopSuggestionsEnabled] =
+  (*s_brave_allowlist)[omnibox::kOnDeviceSuggestionsEnabled] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[omnibox::kHistorySuggestionsEnabled] =
       settings_api::PrefType::kBoolean;

@@ -24,6 +24,6 @@ class OmniboxAutocompleteUnitTest : public testing::Test {
   std::unique_ptr<TestingPrefServiceSimple> pref_service_;
 };
 
-TEST_F(OmniboxAutocompleteUnitTest, TopSiteSuggestionsEnabledTest) {
-  EXPECT_TRUE(prefs()->GetBoolean(omnibox::kTopSuggestionsEnabled));
+TEST_F(OmniboxAutocompleteUnitTest, OnDeviceSuggestionsEnabledTest) {
+  EXPECT_TRUE(prefs()->GetBoolean(omnibox::kOnDeviceSuggestionsEnabled));
 }

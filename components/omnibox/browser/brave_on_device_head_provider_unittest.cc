@@ -65,14 +65,14 @@ class BraveOnDeviceHeadProviderTest : public testing::Test,
 };
 
 TEST_F(BraveOnDeviceHeadProviderTest, SuggestionsDisabledNoResults) {
-  prefs()->SetBoolean(omnibox::kTopSuggestionsEnabled, false);
+  prefs()->SetBoolean(omnibox::kOnDeviceSuggestionsEnabled, false);
   provider_->Start(CreateAutocompleteInput("Hello"), false);
   EXPECT_TRUE(provider_->done());
   EXPECT_TRUE(provider_->matches().empty());
 }
 
 TEST_F(BraveOnDeviceHeadProviderTest, SuggestionsEnabledRunsProvider) {
-  prefs()->SetBoolean(omnibox::kTopSuggestionsEnabled, true);
+  prefs()->SetBoolean(omnibox::kOnDeviceSuggestionsEnabled, true);
   provider_->Start(CreateAutocompleteInput("Hello"), false);
   EXPECT_FALSE(provider_->done());
 }

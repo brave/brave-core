@@ -34,11 +34,6 @@
         android:persistent="false"
         android:order="5"/>
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="autocomplete_top_sites"
-        android:order="6"
-        android:title="@string/autocomplete_top_suggestions_title"
-        android:persistent="false"/>
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave.other_search_engines_enabled"
         android:order="7"
         android:title="@string/index_other_search_engines_title"

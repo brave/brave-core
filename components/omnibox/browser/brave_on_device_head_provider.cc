@@ -20,7 +20,7 @@ BraveOnDeviceHeadProvider* BraveOnDeviceHeadProvider::Create(
 void BraveOnDeviceHeadProvider::Start(const AutocompleteInput& input,
                                       bool minimal_changes) {
   auto* prefs = client_->GetPrefs();
-  if (!prefs || !prefs->GetBoolean(omnibox::kTopSuggestionsEnabled)) {
+  if (!prefs || !prefs->GetBoolean(omnibox::kOnDeviceSuggestionsEnabled)) {
     matches_.clear();
     return;
   }

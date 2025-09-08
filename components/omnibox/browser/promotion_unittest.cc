@@ -91,7 +91,7 @@ class OmniboxPromotionTest : public testing::Test {
     brave_search_conversion::RegisterPrefs(pref_service->registry());
     omnibox::RegisterProfilePrefs(pref_service->registry());
     omnibox::RegisterBraveProfilePrefs(pref_service->registry());
-    pref_service->SetBoolean(omnibox::kTopSuggestionsEnabled, false);
+    pref_service->SetBoolean(omnibox::kOnDeviceSuggestionsEnabled, false);
   }
 
   std::unique_ptr<AutocompleteController> CreateController(
