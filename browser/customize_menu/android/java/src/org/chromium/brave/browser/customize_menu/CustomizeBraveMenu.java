@@ -148,11 +148,9 @@ public class CustomizeBraveMenu {
             return R.drawable.brave_menu_recent_tabs;
         } else if (menuItemId == R.id.brave_wallet_id) {
             return R.drawable.ic_crypto_wallets;
-        }
-                else if (menuItemId == R.id.brave_playlist_id) {
-                    return R.drawable.ic_open_playlist;
-                }
-        else if (menuItemId == R.id.add_to_playlist_id) {
+        } else if (menuItemId == R.id.brave_playlist_id) {
+            return R.drawable.ic_open_playlist;
+        } else if (menuItemId == R.id.add_to_playlist_id) {
             return R.drawable.ic_baseline_add_24;
         } else if (menuItemId == R.id.brave_news_id) {
             return R.drawable.ic_news;

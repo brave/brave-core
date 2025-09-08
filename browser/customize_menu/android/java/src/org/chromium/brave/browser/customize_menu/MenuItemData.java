@@ -23,10 +23,7 @@ public class MenuItemData implements Parcelable {
     public final @Nullable String title;
     public final boolean checked;
 
-    public MenuItemData(
-            @IdRes int id,
-            @Nullable String title,
-            boolean checked) {
+    public MenuItemData(@IdRes int id, @Nullable String title, boolean checked) {
         this.id = id;
         this.title = title;
         this.checked = checked;
