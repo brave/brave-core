@@ -1,0 +1,41 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("safari_data_import") {
+  sources = [
+    "safari_data_import_client_bridge.h",
+    "safari_data_import_client_bridge.mm",
+    "safari_data_import_client_delegate.h",
+    "safari_data_importer_bridge.h",
+    "safari_data_importer_bridge_impl.h",
+    "safari_data_importer_bridge_impl.mm",
+    "safari_data_importer_coordinator.h",
+    "safari_data_importer_coordinator.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/ios/browser/api/profile",
+    "//components/application_locale_storage",
+    "//components/autofill/core/browser",
+    "//components/bookmarks/browser",
+    "//components/history/core/browser",
+    "//components/keyed_service/core",
+    "//components/password_manager/core/browser",
+    "//components/password_manager/core/browser/import:importer",
+    "//components/reading_list/core",
+    "//components/user_data_importer/ios",
+    "//components/user_data_importer/ios:bookmark_parser",
+    "//components/user_data_importer/utility:safari_data_importer",
+    "//ios/chrome/browser/affiliations/model",
+    "//ios/chrome/browser/autofill/model",
+    "//ios/chrome/browser/bookmarks/model",
+    "//ios/chrome/browser/history/model",
+    "//ios/chrome/browser/passwords/model",
+    "//ios/chrome/browser/reading_list/model",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/sync/model",
+  ]
+}
