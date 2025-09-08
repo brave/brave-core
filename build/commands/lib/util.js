@@ -19,7 +19,7 @@ const ActionGuard = require('./actionGuard')
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0)
 
-async function generateInstrumentationFile(instrumentationFile='../out/files-to-instrument.txt') {
+async function generateInstrumentationFile(instrumentationFile) {
   const files = await Array.fromAsync(glob(`**/*.{cc,c,h,cpp,hpp}`))
 
   const paths = files.map(x => `../../brave/${x}`)

@@ -380,8 +380,8 @@ Config.prototype.isAsan = function () {
   return false
 }
 
-Config.prototype.isCoverage = function () {
-  return this.is_coverage
+Config.prototype.useCoverage = function () {
+  return this.use_coverage
 }
 
 Config.prototype.isOfficialBuild = function () {
@@ -572,11 +572,12 @@ Config.prototype.buildArgs = function () {
     args.symbol_level = 1
   }
 
-  if (this.isCoverage()) {
+  if (this.useCoverage()) {
     args.symbol_level = 1
     args.use_clang_coverage = true
     args.use_clang_profiling_inside_sandbox = true
-    args.coverage_instrumentation_input_file = '//out/files-to-instrument.txt'
+    const buildDir = path.relative(this.srcDir, this.outputDir)
+    args.coverage_instrumentation_input_file = `//${buildDir}/files-to-instrument.txt`
   }
 
   // For Linux Release builds, upstream doesn't want to use symbol_level = 2
@@ -942,7 +943,7 @@ Config.prototype.updateInternal = function (options) {
     this.is_asan = false
   }
 
-  this.is_coverage = !!options.is_coverage
+  this.use_coverage = !!options.use_coverage
 
   if (options.is_ubsan) {
     this.is_ubsan = true

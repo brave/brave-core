@@ -158,7 +158,7 @@ program
     [],
   )
   .option('--ignore_compile_failure', 'Keep compiling regardless of error')
-  .option('--is_coverage', 'is coverage enabled')
+  .option('--use_coverage', 'enable coverage for brave source code')
   .option('--is_asan', 'is asan enabled')
   .option('--is_ubsan', 'is ubsan enabled')
   .option(

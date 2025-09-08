@@ -7,21 +7,33 @@ const { writeJSON, mkdirp } = require('fs-extra')
 const utils = require('../lib/util')
 const config = require('../lib/config')
 
+const dedupe = (xs) => [...new Set(xs)]
+const getTestBinariesFromRecordingsPath = (outputDir) => {
+  const regex = new Regex(outputDir + '/coverage/(.*?)/')
+  return (recording) => {
+    const testName = recording.match(regex).at(1)
+    return `${outputDir}/${testName}`
+  }
+}
+
 module.exports = (program) =>
   program
     .command('coverage_report')
     .description(
       [
         'generates a coverage report.',
-        'Requires to build with --is_coverage and run test.',
+        'Requires to build with --use_coverage and run test.',
         'HTML report will be in out/$BUILD_DIR/coverage/report/$NAME/dist',
       ].join('\n'),
     )
     .option('-C [build_dir]', 'build config (out/Debug, out/Release)')
-    .option('--build_type [build_type]', 'build with coverage information ')
     .option('--target_arch [target_arch]', 'target architecture')
     .option('--target_os <target_os>', 'target OS')
-    .option('--name [name]', 'name of the test report [defaults to coverage]', 'all')
+    .option(
+      '--name [name]',
+      'name of the test report [defaults to coverage]',
+      'all',
+    )
     .option(
       '--clean',
       'delete recordings and reports. Either all or those that match --tests [testSuites]',
@@ -41,7 +53,6 @@ module.exports = (program) =>
       const profDataPath = `${reportPath}/coverage.profdata`
       const distPath = `${reportPath}/dist`
 
-
       const recordings = await Array.fromAsync(
         glob(`${out}/${dirsGlob}/*.profraw`),
       )
@@ -56,15 +67,9 @@ module.exports = (program) =>
         return
       }
 
-      const allTestSuites = [
-        ...new Set(
-          recordings
-            .map((x) => x.replace(out + '/', ''))
-            .map((x) => x.split('/'))
-            .filter((x) => x.length > 1)
-            .map((x) => x[0]),
-        ),
-      ].map((x) => `${config.outputDir}/${x}`)
+      const allTestSuites = dedupe(
+        recordings.map(getTestBinariesFromRecordingsPath(config.outputDir)),
+      )
 
       // llvm-cov needs a .profdata (llvms .lcov equivalent) and
       // binaries that include the symbols that are instrumented to generate a report
@@ -82,33 +87,38 @@ module.exports = (program) =>
         : allTestSuites
 
       if (!recordings.length) {
-        console.log(`glob ${out}/${dirsGlob}/*.profraw didn't yield any recordings!\n make sure you've built with --is_coverage and ran the appropriate tests`);
+        console.log(
+          `glob ${out}/${dirsGlob}/*.profraw didn't yield any recordings!\n make sure you've built with --use_coverage and ran the appropriate tests`,
+        )
         return
       }
 
-      process.env.CWD = config.outputDir
-      process.env.PATH = `${process.env.PATH}:${config.srcDir}/third_party/llvm-build/Release+Asserts/bin`
+      const cwd = config.outputDir
+      const coverageToolPath = `${config.srcDir}/third_party/llvm-build/Release+Asserts/bin`
       // fetch coverage tools if not available
       await mkdirp(distPath)
 
-      await utils.runAsync('llvm-profdata', [
-        'merge',
-        '-sparse',
-        '-o',
-        profDataPath,
-        ...recordings,
-      ])
-      await utils.runAsync('llvm-cov', [
-        'show',
-        `-compilation-dir=${config.outputDir}`,
-        `-instr-profile=${profDataPath}`,
-        '-format=html',
-        `-output-dir=${distPath}`,
-        ...testSuites,
-      ])
+      await utils.runAsync(
+        `${coverageToolPath}/llvm-profdata`,
+        ['merge', '-sparse', '-o', profDataPath, ...recordings],
+        { cwd },
+      )
+
+      await utils.runAsync(
+        `${coverageToolPath}/llvm-cov`,
+        [
+          'show',
+          `-compilation-dir=${config.outputDir}`,
+          `-instr-profile=${profDataPath}`,
+          '-format=html',
+          `-output-dir=${distPath}`,
+          ...testSuites,
+        ],
+        { cwd },
+      )
 
       const output = await utils.runAsync(
-        'llvm-cov',
+        `${coverageToolPath}/llvm-cov`,
         [
           'export',
           `-compilation-dir=${config.outputDir}`,
@@ -116,7 +126,7 @@ module.exports = (program) =>
           '--summary-only',
           ...testSuites,
         ],
-        { stdio: 'pipe' },
+        { cwd, stdio: 'pipe' },
       )
 
       try {
