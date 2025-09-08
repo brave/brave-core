@@ -108,7 +108,7 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
         || this.passwordStrength !== 100
         || this.passwordConfirmation !== this.password
         || !this.isCheckboxChecked}
-        @click=${() => this.fire('create-account-button-clicked')}
+        @click=${this.onCreateAccountButtonClicked}
       >
         $i18n{braveAccountCreateAccountButtonLabel}
       </leo-button>

@@ -49,7 +49,7 @@ export class BraveAccountDialogs extends CrLitElement {
     }
   }
 
-  protected onCloseButtonClicked() {
+  protected onCloseDialog() {
     this.browserProxy.closeDialog()
   }
 

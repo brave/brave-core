@@ -12,7 +12,9 @@
 #include "base/containers/span.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
+#include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -32,22 +34,34 @@
 // across desktop, Android, and iOS. It streamlines the creation and
 // configuration of a WebUIDataSource.
 //
-// Intended to be subclassed with the appropriate WebUIDataSource type.
-template <typename WebUIDataSource>
+// Intended to be subclassed with the appropriate WebUIDataSource and
+// BraveAccountServiceFactory types.
+template <typename WebUIDataSource, typename BraveAccountServiceFactory>
 class BraveAccountUIBase {
  public:
+  template <typename Profile>
   explicit BraveAccountUIBase(
-      auto* profile,
-      base::OnceCallback<
-          void(WebUIDataSource*, base::span<const webui::ResourcePath>, int)>
-          setup_webui_data_source = base::DoNothing()) {
+      Profile* profile,
+      base::OnceCallback<void(WebUIDataSource*,
+                              base::span<const webui::ResourcePath>,
+                              int)> setup_webui_data_source = base::DoNothing())
+      : brave_account_service_(BraveAccountServiceFactory::GetFor(profile)) {
     CHECK(brave_account::features::IsBraveAccountEnabled());
+    CHECK(brave_account_service_)
+        << "BraveAccountService is unexpectedly nullptr - the Brave Account UI "
+           "should be launched only from Settings with a non-Guest, "
+           "non-System, original (non-OTR) regular profile!";
 
     auto* source = WebUIDataSource::CreateAndAdd(profile, kBraveAccountHost);
     std::move(setup_webui_data_source)
         .Run(source, kBraveAccountResources,
              IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_PAGE_HTML);
     SetupWebUIDataSource(source);
+  }
+
+  void BindInterface(mojo::PendingReceiver<brave_account::mojom::Authentication>
+                         pending_receiver) {
+    brave_account_service_->BindInterface(std::move(pending_receiver));
   }
 
   void BindInterface(mojo::PendingReceiver<
@@ -157,6 +171,9 @@ class BraveAccountUIBase {
     source->AddResourcePath("full_brave_brand_dark.svg",
                             IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_DARK_SVG);
   }
+
+ private:
+  const raw_ptr<brave_account::BraveAccountService> brave_account_service_;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_BASE_H_
