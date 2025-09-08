@@ -26,10 +26,10 @@ namespace {
 
 // Tunable HSL targets for hover colors derived from the user's theme color.
 // Adjust these to fine-tune tab hover appearance per color mode.
-constexpr double kVerticalHoverLightS = 0.9;   // Light mode saturation
+constexpr double kVerticalHoverLightS = 0.5;   // Light mode saturation
 constexpr double kVerticalHoverLightL = 0.8;  // Light mode lightness
-constexpr double kVerticalHoverDarkS = 0.55;    // Dark mode saturation
-constexpr double kVerticalHoverDarkL = 0.52;    // Dark mode lightness
+constexpr double kVerticalHoverDarkS = 0.6;    // Dark mode saturation
+constexpr double kVerticalHoverDarkL = 0.50;    // Dark mode lightness
 
 constexpr double kHorizontalHoverLightS = 0.9;  // Light mode saturation
 constexpr double kHorizontalHoverLightL = 0.8;  // Light mode lightness
