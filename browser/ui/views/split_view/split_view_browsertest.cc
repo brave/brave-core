@@ -722,29 +722,41 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, InactiveSplitTabTest) {
       content::JAVASCRIPT_DIALOG_TYPE_ALERT, std::u16string(), std::u16string(),
       base::BindOnce([](bool, const std::u16string&) {}), &did_suppress);
 
-  // false because tab modal manager not yet launched dialog as tab is hidden.
-  EXPECT_FALSE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
-  EXPECT_FALSE(GetWebModalDialogManagerAt(0)->IsDialogActive());
-  EXPECT_FALSE(GetIsWebContentsBlockedFromTabAt(0));
+  if (!IsSideBySideEnabled()) {
+    // false because tab modal manager not yet launched dialog as tab is hidden.
+    EXPECT_FALSE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
+    EXPECT_FALSE(GetWebModalDialogManagerAt(0)->IsDialogActive());
+    EXPECT_FALSE(GetIsWebContentsBlockedFromTabAt(0));
 
-  // Activate split tab at 0.
-  tab_strip_model->ActivateTabAt(0);
-  ASSERT_TRUE(base::test::RunUntil([&]() { return HasWebModalDialogAt(0); }));
+    // Activate split tab at 0.
+    tab_strip_model->ActivateTabAt(0);
+    ASSERT_TRUE(base::test::RunUntil([&]() { return HasWebModalDialogAt(0); }));
 
-  // true because tab/web modal manager launched dialog as tab is activated.
-  // check modal dialog at tab 0 is visible.
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return IsWebModalDialogVisibleAt(0); }));
-  EXPECT_TRUE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
-  EXPECT_TRUE(GetWebModalDialogManagerAt(0)->IsDialogActive());
-  EXPECT_TRUE(GetIsWebContentsBlockedFromTabAt(0));
+    // true because tab/web modal manager launched dialog as tab is activated.
+    // check modal dialog at tab 0 is visible.
+    ASSERT_TRUE(
+        base::test::RunUntil([&]() { return IsWebModalDialogVisibleAt(0); }));
+  } else {
+    // True because tab modal manager will active the tab when showing a dialog.
+    EXPECT_EQ(0, tab_strip_model->active_index());
+    EXPECT_TRUE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
+    EXPECT_TRUE(GetWebModalDialogManagerAt(0)->IsDialogActive());
+    EXPECT_TRUE(GetIsWebContentsBlockedFromTabAt(0));
+  }
 
   // Activate split tab at 1.
   tab_strip_model->ActivateTabAt(1);
 
-  // Check modal dialog at tab 0 is hidden.
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return !IsWebModalDialogVisibleAt(0); }));
+  if (!IsSideBySideEnabled()) {
+    // Check modal dialog at tab 0 is hidden.
+    EXPECT_EQ(1, tab_strip_model->active_index());
+    ASSERT_TRUE(
+        base::test::RunUntil([&]() { return !IsWebModalDialogVisibleAt(0); }));
+  } else {
+    // In SideBySide, active tab is still tab at 0 because it's not allowed to
+    // activate another split tab when curren split tab has dialog.
+    EXPECT_EQ(0, tab_strip_model->active_index());
+  }
 
   // still true as modal was created.
   EXPECT_TRUE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
