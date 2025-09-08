@@ -73,7 +73,7 @@ class BraveBrowserView : public BrowserView,
                          public commands::AcceleratorService::Observer {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
-  explicit BraveBrowserView(std::unique_ptr<Browser> browser);
+  explicit BraveBrowserView(Browser* browser);
   BraveBrowserView(const BraveBrowserView&) = delete;
   BraveBrowserView& operator=(const BraveBrowserView&) = delete;
   ~BraveBrowserView() override;
