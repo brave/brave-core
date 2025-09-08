@@ -1056,7 +1056,6 @@ source_set("ui") {
     deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser/brave_wallet",
-      "//brave/browser/resources/settings:resources",
       "//brave/common/importer",
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_new_tab_ui:mojom",
