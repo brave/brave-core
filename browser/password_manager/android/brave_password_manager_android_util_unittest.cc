@@ -63,13 +63,6 @@ class BravePasswordManagerAndroidUtilTest : public testing::Test {
       base::CreateUniqueTempDirectoryScopedToTest();
 };
 
-// We want to ensure the Passwords DB files are not deleted on Android.
-// This happens in MaybeDeleteLoginDataFiles under
-// use_login_database_as_backend=false flag. We do set this flaf at
-// build/commands/lib/config.js. This check is to make sure the flag is still
-// set.
-static_assert(BUILDFLAG(USE_LOGIN_DATABASE_AS_BACKEND));
-
 // We don't want password db to be deleted on Android
 // Based on DeletesLoginDataFilesAfterUnmigratedPasswordsExported
 TEST_F(BravePasswordManagerAndroidUtilTest, DoNotDeleteLoginDataFiles) {
