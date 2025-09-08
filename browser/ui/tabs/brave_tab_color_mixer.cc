@@ -24,6 +24,13 @@ namespace tabs {
 
 namespace {
 
+// Tunable HSL targets for hover colors derived from the user's theme color.
+// Adjust these to fine-tune vertical tab hover appearance per color mode.
+constexpr double kVerticalHoverLightS = 0.9;   // Light mode saturation
+constexpr double kVerticalHoverLightL = 0.8;  // Light mode lightness
+constexpr double kVerticalHoverDarkS = 0.55;    // Dark mode saturation
+constexpr double kVerticalHoverDarkL = 0.52;    // Dark mode lightness
+
 SkColor GetActiveVerticalTabBackgroundColor(const ui::ColorProviderKey& key,
                                             SkColor input,
                                             const ui::ColorMixer& mixer) {
@@ -53,13 +60,19 @@ SkColor GetHoveredVerticalTabBackgroundColor(const ui::ColorProviderKey& key,
     return default_color;
   }
 
-  // Extract Hue of tab foreground color and apply Saturation and Lightness for
-  // vertical tabs hover state.
+  // Light vs Dark: apply user-color theming only in light mode; keep dark mode
+  // using mode-specific HSL tuning. Defaults to Nala if no user color.
   color_utils::HSL hsl;
   color_utils::SkColorToHSL(*key.user_color, &hsl);
 
-  hsl.s = 0.55;    // Less saturation for hover state
-  hsl.l = 0.555;    // Lighter than active tab for hover effect
+  if (key.color_mode == ui::ColorProviderKey::ColorMode::kLight) {
+    hsl.s = kVerticalHoverLightS;
+    hsl.l = kVerticalHoverLightL;
+  } else {
+    // Dark (and others): apply separate tuning.
+    hsl.s = kVerticalHoverDarkS;
+    hsl.l = kVerticalHoverDarkL;
+  }
 
   return color_utils::HSLShift(default_color, hsl);
 }
