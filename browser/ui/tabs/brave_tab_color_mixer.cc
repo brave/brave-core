@@ -64,6 +64,26 @@ SkColor GetHoveredVerticalTabBackgroundColor(const ui::ColorProviderKey& key,
   return color_utils::HSLShift(default_color, hsl);
 }
 
+SkColor GetHoveredHorizontalTabBackgroundColor(const ui::ColorProviderKey& key,
+                                               SkColor input,
+                                               const ui::ColorMixer& mixer) {
+  const auto default_color =
+      mixer.GetResultColor(nala::kColorDesktopbrowserTabbarHoverTabHorizontal);
+  if (!key.user_color.has_value()) {
+    return default_color;
+  }
+
+  // Extract Hue of tab foreground color and apply Saturation and Lightness for
+  // horizontal tabs hover state.
+  color_utils::HSL hsl;
+  color_utils::SkColorToHSL(*key.user_color, &hsl);
+
+  hsl.s = 0.55;     // Moderate saturation for hover state
+  hsl.l = 0.52;    // Lighter than active tab for hover effect
+
+  return color_utils::HSLShift(default_color, hsl);
+}
+
 }  // namespace
 
 void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
@@ -94,9 +114,13 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
         nala::kColorDesktopbrowserTabbarSplitViewDivider};
     mixer[kColorBraveVerticalTabActiveBackground] = {
         base::BindRepeating(&GetActiveVerticalTabBackgroundColor, key)};
-    mixer[kColorBraveVerticalTabHoveredBackground] = {
-        base::BindRepeating(&GetHoveredVerticalTabBackgroundColor, key)};
+  mixer[kColorBraveVerticalTabHoveredBackground] = {
+      base::BindRepeating(&GetHoveredVerticalTabBackgroundColor, key)};
   }
+
+  // Add horizontal tab hover color theming
+  mixer[kColorTabBackgroundInactiveHoverFrameActive] = {
+      base::BindRepeating(&GetHoveredHorizontalTabBackgroundColor, key)};
 
   mixer[kColorBraveVerticalTabInactiveBackground] = {kColorToolbar};
   mixer[kColorBraveVerticalTabSeparator] = {
