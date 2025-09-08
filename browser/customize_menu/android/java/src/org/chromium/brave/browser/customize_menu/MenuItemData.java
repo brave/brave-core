@@ -5,11 +5,9 @@
 
 package org.chromium.brave.browser.customize_menu;
 
-import android.graphics.drawable.Icon;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.ColorRes;
 import androidx.annotation.IdRes;
 
 import org.chromium.build.annotations.NullMarked;
@@ -23,28 +21,20 @@ import org.chromium.build.annotations.Nullable;
 public class MenuItemData implements Parcelable {
     public final @IdRes int id;
     public final @Nullable String title;
-    public final @Nullable Icon icon;
-    public final @ColorRes int colorResId;
     public final boolean checked;
 
     public MenuItemData(
             @IdRes int id,
             @Nullable String title,
-            @Nullable Icon icon,
-            @ColorRes int colorResId,
             boolean checked) {
         this.id = id;
         this.title = title;
-        this.icon = icon;
-        this.colorResId = colorResId;
         this.checked = checked;
     }
 
     protected MenuItemData(Parcel in) {
         id = in.readInt();
         title = in.readString();
-        icon = in.readParcelable(Icon.class.getClassLoader());
-        colorResId = in.readInt();
         checked = in.readInt() == 1;
     }
 
@@ -52,8 +42,6 @@ public class MenuItemData implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(title);
-        dest.writeParcelable(icon, flags);
-        dest.writeInt(colorResId);
         dest.writeInt(checked ? 1 : 0);
     }
 
@@ -63,7 +51,7 @@ public class MenuItemData implements Parcelable {
     }
 
     public static final Creator<MenuItemData> CREATOR =
-            new Creator<MenuItemData>() {
+            new Creator<>() {
                 @Override
                 public MenuItemData createFromParcel(Parcel in) {
                     return new MenuItemData(in);

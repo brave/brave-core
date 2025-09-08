@@ -7,11 +7,10 @@ package org.chromium.brave.browser.customize_menu.settings;
 
 import static org.chromium.base.BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT;
 
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.appcompat.content.res.AppCompatResources;
+import androidx.annotation.DrawableRes;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
@@ -26,6 +25,7 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.ui.base.ViewUtils;
 
 import java.util.List;
 import java.util.Locale;
@@ -37,12 +37,11 @@ import java.util.Locale;
 @NullMarked
 public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFragment
         implements Preference.OnPreferenceChangeListener {
-    private static final String TAG = "CustomizeMenuPreferenceFragment";
     private static final String MAIN_MENU_SECTION = "main_menu_section";
     private static final String PAGE_ACTIONS_SECTION = "page_actions_section";
 
-
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
+    private int mIconSizePx;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,22 +53,32 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_customize_menu_preferences);
+        mIconSizePx =
+                ViewUtils.dpToPx(requireContext(), CustomizeBraveMenu.PREFERENCE_MENU_ICON_SIZE_DP);
+        // Get menu items from bundle passed by calling activity.
+        final Bundle bundle = getArguments();
+        if (bundle != null) {
+            final PreferenceCategory mainMenuSection = findPreference(MAIN_MENU_SECTION);
+            final PreferenceCategory pageActionsSection = findPreference(PAGE_ACTIONS_SECTION);
+            addSwitchesFromBundle(
+                    mainMenuSection, bundle, CustomizeBraveMenu.KEY_MAIN_MENU_ITEM_LIST);
+            addSwitchesFromBundle(
+                    pageActionsSection, bundle, CustomizeBraveMenu.KEY_PAGE_ACTION_ITEM_LIST);
+        }
+    }
 
-        PreferenceCategory mainMenuSection = findPreference(MAIN_MENU_SECTION);
-        if (mainMenuSection != null) {
-            // Get menu items from bundle passed by calling activity.
-            final Bundle bundle = getArguments();
-            if (bundle != null) {
-                List<MenuItemData> menuItems = bundle.getParcelableArrayList(CustomizeBraveMenu.KEY_MENU_ITEM_LIST);
-                if (menuItems != null) {
-                    for (MenuItemData menuItem : menuItems) {
-                        if (menuItem.id == R.id.brave_customize_menu_id) {
-                            continue;
-                        }
-                        ChromeSwitchPreference switchPreference = getSwitchPreference(menuItem);
-                        mainMenuSection.addPreference(switchPreference);
-                    }
-                }
+    private void addSwitchesFromBundle(
+            @Nullable final PreferenceCategory menuSection,
+            final Bundle bundle,
+            final String keyMenuItemList) {
+        if (menuSection == null) {
+            return;
+        }
+        final List<MenuItemData> menuItems = bundle.getParcelableArrayList(keyMenuItemList);
+        if (menuItems != null) {
+            for (MenuItemData menuItem : menuItems) {
+                ChromeSwitchPreference switchPreference = getSwitchPreference(menuItem);
+                menuSection.addPreference(switchPreference);
             }
         }
     }
@@ -82,15 +91,12 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
         preference.setChecked(menuItem.checked);
         preference.setIconSpaceReserved(true);
 
-        // Set icon if available
-        if (menuItem.icon != null) {
-            final Drawable drawable = menuItem.icon.loadDrawable(requireContext());
-            if (drawable != null) {
-                final ColorStateList tintList =
-                        AppCompatResources.getColorStateList(requireContext(), menuItem.colorResId);
-                drawable.setTintList(tintList);
-                preference.setIcon(drawable);
-            }
+        @DrawableRes int drawableRes = CustomizeBraveMenu.getDrawableResFromMenuItemId(menuItem.id);
+        final Drawable drawable =
+                CustomizeBraveMenu.getStandardizedMenuIcon(
+                        requireContext(), drawableRes, mIconSizePx);
+        if (drawable != null) {
+            preference.setIcon(drawable);
         }
 
         preference.setOnPreferenceChangeListener(this);

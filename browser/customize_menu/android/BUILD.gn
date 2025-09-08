@@ -24,6 +24,7 @@ android_library("java") {
     "//third_party/androidx:androidx_annotation_annotation_java",
     "//third_party/androidx:androidx_preference_preference_java",
     "//ui/android:ui_no_recycler_view_java",
+    "//brave/third_party/android_deps:com_brave_playlist_java",
   ]
 
   resources_package = "org.chromium.brave.browser.customize_menu"

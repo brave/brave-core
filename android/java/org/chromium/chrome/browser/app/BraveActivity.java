@@ -513,7 +513,9 @@ public abstract class BraveActivity extends ChromeActivity
                     (BraveTabbedAppMenuPropertiesDelegate) delegate;
             // Get full menu items and pass them to settings.
             CustomizeBraveMenu.openCustomizeMenuSettings(
-                    this, braveTabbedAppMenuPropertiesDelegate.buildFullMenuModelList());
+                    this,
+                    braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelList(),
+                    braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
         } else {
             return false;
         }
