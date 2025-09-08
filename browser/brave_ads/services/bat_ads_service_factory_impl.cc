@@ -8,10 +8,13 @@
 #include <memory>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/single_thread_task_runner_thread_mode.h"
 #include "base/task/thread_pool.h"
+#include "base/time/time.h"
 #include "brave/browser/brave_ads/services/service_sandbox_type.h"
 #include "brave/components/services/bat_ads/bat_ads_service_impl.h"
 #include "content/public/browser/browser_thread.h"
@@ -21,6 +24,13 @@
 namespace brave_ads {
 
 namespace {
+
+BASE_FEATURE(kInProcessBraveAdsServiceFeature,
+             "InProcessBraveAdsService",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+constexpr base::FeatureParam<base::TimeDelta> kBraveAdsServiceStartupDelay{
+    &kInProcessBraveAdsServiceFeature, "startup_delay", base::Seconds(3)};
 
 // Binds the `receiver` to a new provider on a background task runner.
 void BindInProcessBatAdsService(
@@ -40,7 +50,7 @@ mojo::Remote<bat_ads::mojom::BatAdsService> LaunchInProcessBatAdsService() {
           FROM_HERE,
           base::BindOnce(&BindInProcessBatAdsService,
                          bat_ads_service_remote.BindNewPipeAndPassReceiver()),
-          base::Seconds(3));
+          kBraveAdsServiceStartupDelay.Get());
   return bat_ads_service_remote;
 }
 
