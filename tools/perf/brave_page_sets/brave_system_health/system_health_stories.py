@@ -182,7 +182,7 @@ class LoadBraveNewsStory2024(_BraveLoadingStory):
 
     action_runner.Wait(1)
     inner_width = action_runner.EvaluateJavaScript('window.innerWidth')
-    assert inner_width >= 1300, 'Window size is to small for Brave News block'
+    assert inner_width >= 1300, f'Window width {inner_width} is too small'
 
 
 class MultiTabLoadExampleStory2024(_BraveMultiTabLoadingStory):

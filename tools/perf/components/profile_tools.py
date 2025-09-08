@@ -102,6 +102,7 @@ def CleanProfileCaches(profile_dir: str):
   for path in _CACHE_DIRECTORIES:
     shutil.rmtree(os.path.join(profile_dir, path), ignore_errors=True)
 
+
 def _FixupPreferences(profile_dir: str):
   """Cleanup possible invalid entries in Preferences file"""
 
