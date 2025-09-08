@@ -133,6 +133,17 @@ class BraveSkusScriptHandler: TabContentScript {
           return ["key": storageKey, "data": receipt, "braveLeo.orderId": orderId]
         }
       }
+
+      if storeMessage.message == "origin" {
+        if let originSubscriptionProductId = Preferences.BraveOrigin.subscriptionProductId.value,
+          let orderId = Preferences.BraveOrigin.subscriptionOrderId.value,
+          let product = BraveStoreProduct(rawValue: originSubscriptionProductId)
+        {
+          let storageKey = product.localStorageKey
+          let receipt = try BraveSkusSDK.receipt(for: product)
+          return ["key": storageKey, "data": receipt, "braveOrigin.orderId": orderId]
+        }
+      }
       throw SkusWebMessageError.invalidFormat
     }
   }
