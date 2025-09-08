@@ -1397,6 +1397,7 @@ source_set("brave_layout_constants") {
   # in brave/browser/sources.gni
   deps = [
     ":brave_tab_features",
+    "//chrome/browser/ui:layout_constants",
     "//ui/base",
   ]
 }
