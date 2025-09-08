@@ -7,25 +7,6 @@
 
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 
-bool BraveWebViewPasswordManagerClient::PromptUserToSaveOrUpdatePassword(
-    std::unique_ptr<password_manager::PasswordFormManagerForUI> form_to_save,
-    bool update_password) {
-  // This override removes the account storage check since our version can use
-  // profile stored passwords
-
-  if (form_to_save->IsBlocklisted()) {
-    return false;
-  }
-
-  if (update_password) {
-    [bridge_ showUpdatePasswordInfoBar:std::move(form_to_save) manual:NO];
-  } else {
-    [bridge_ showSavePasswordInfoBar:std::move(form_to_save) manual:NO];
-  }
-
-  return true;
-}
-
 PrefService* BraveWebViewPasswordManagerClient::GetLocalStatePrefs() const {
   return GetApplicationContext()->GetLocalState();
 }

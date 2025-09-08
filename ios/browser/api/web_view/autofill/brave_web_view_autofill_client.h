@@ -13,6 +13,13 @@
 #include "ios/web_view/internal/autofill/web_view_autofill_client_ios.h"
 
 namespace autofill {
+
+// An autofill client for BraveWebView's
+//
+// We create a Brave subclass of the standard WebView autofill client to allow
+// us to create one using Chrome Profile's rather than WebViewBrowserState and
+// to ensure we implement GetAppLocale correcty using the main Chrome
+// application context.
 class BraveWebViewAutofillClientIOS : public WebViewAutofillClientIOS {
  public:
   static std::unique_ptr<WebViewAutofillClientIOS> Create(
