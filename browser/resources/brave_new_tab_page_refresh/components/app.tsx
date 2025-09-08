@@ -46,20 +46,18 @@ export function App() {
       <Background />
       <div className='background-filter allow-background-pointer-events' />
       <main className='allow-background-pointer-events'>
-        <div className='top-controls'>
-          <button
-            className='clock'
-            onClick={() => setSettingsView('clock')}
-          >
-            <Clock />
-          </button>
-          <button
-            className='settings'
-            onClick={() => setSettingsView('background')}
-          >
-            <Icon name='settings' />
-          </button>
-        </div>
+        <button
+          className='clock'
+          onClick={() => setSettingsView('clock')}
+        >
+          <Clock />
+        </button>
+        <button
+          className='settings'
+          onClick={() => setSettingsView('background')}
+        >
+          <Icon name='settings' />
+        </button>
         <div className='topsites-container'>
           <TopSites />
         </div>

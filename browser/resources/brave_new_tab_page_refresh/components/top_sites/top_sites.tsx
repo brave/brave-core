@@ -38,6 +38,13 @@ export function TopSites() {
 
   const rootRef = React.useRef<HTMLDivElement>(null)
 
+  React.useEffect(() => {
+    if (showTopSites && expanded) {
+      document.body.classList.add('ntp-top-sites-wide')
+    }
+    return () => document.body.classList.remove('ntp-top-sites-wide')
+  }, [showTopSites, expanded])
+
   const showAddButton = listKind === TopSitesListKind.kCustom
   const tileCount = topSites.length + (showAddButton ? 1 : 0)
 
