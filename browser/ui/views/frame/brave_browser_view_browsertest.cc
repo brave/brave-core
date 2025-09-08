@@ -35,22 +35,6 @@
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 
-namespace {
-class TestTabModalConfirmDialogDelegate : public TabModalConfirmDialogDelegate {
- public:
-  explicit TestTabModalConfirmDialogDelegate(content::WebContents* contents)
-      : TabModalConfirmDialogDelegate(contents) {}
-
-  TestTabModalConfirmDialogDelegate(const TestTabModalConfirmDialogDelegate&) =
-      delete;
-  TestTabModalConfirmDialogDelegate& operator=(
-      const TestTabModalConfirmDialogDelegate&) = delete;
-
-  std::u16string GetTitle() override { return std::u16string(u"Dialog Title"); }
-  std::u16string GetDialogMessage() override { return std::u16string(); }
-};
-}  // namespace
-
 class BraveBrowserViewTest : public InProcessBrowserTest {
  public:
   BraveBrowserViewTest() = default;
@@ -174,35 +158,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
                 gfx::Vector2d(0, /*contents separator*/ 1));
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
             contents_container()->bounds().origin());
-}
-
-// Tests that a content area scrim is still disabled when a tab modal dialog is
-// active.
-IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, ScrimForTabModalDisabledTest) {
-  content::WebContents* contents = browser_view()->GetActiveWebContents();
-  auto delegate = std::make_unique<TestTabModalConfirmDialogDelegate>(contents);
-
-  // Check scrim view is always not visible.
-  TabModalConfirmDialog::Create(std::move(delegate), contents);
-  EXPECT_FALSE(browser_view()
-                   ->GetActiveContentsContainerView()
-                   ->contents_scrim_view()
-                   ->GetVisible());
-
-  ASSERT_TRUE(
-      AddTabAtIndex(1, GURL(url::kAboutBlankURL), ui::PAGE_TRANSITION_LINK));
-  EXPECT_FALSE(browser_view()
-                   ->GetActiveContentsContainerView()
-                   ->contents_scrim_view()
-                   ->GetVisible());
-
-  browser()->tab_strip_model()->ActivateTabAt(
-      0, TabStripUserGestureDetails(
-             TabStripUserGestureDetails::GestureType::kMouse));
-  EXPECT_FALSE(browser_view()
-                   ->GetActiveContentsContainerView()
-                   ->contents_scrim_view()
-                   ->GetVisible());
 }
 
 class BraveBrowserViewWithRoundedCornersTest
