@@ -101,28 +101,35 @@ constexpr char16_t kPageDistillerScript[] = uR"JS(
           function extractTextFromRoot(rootNode) {
               let textContent = [];
 
+              // Filter for both text and element nodes
               const treeWalker = document.createTreeWalker(
                   rootNode,
-                  NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, // Filter for both text and element nodes
+                  NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT,
                   {
                       acceptNode: function(node) {
                           const parent = node.parentElement;
 
-                          if (node.nodeType === Node.ELEMENT_NODE && kTagsToSkip.includes(node.tagName.toUpperCase())) {
+                          if (node.nodeType === Node.ELEMENT_NODE &&
+                              kTagsToSkip.includes(
+                                node.tagName.toUpperCase())) {
                               return NodeFilter.FILTER_REJECT;
                           }
 
                           if (parent) {
-                              if (kTagsToSkip.includes(parent.tagName.toUpperCase())) {
+                              if (kTagsToSkip.includes(
+                                parent.tagName.toUpperCase())) {
                                   return NodeFilter.FILTER_REJECT;
                               }
-    
-                              if (parent.hasAttribute('role') && kRolesToSkip.includes(parent.getAttribute('role'))) {
+
+                              if (parent.hasAttribute('role') &&
+                                  kRolesToSkip.includes(
+                                    parent.getAttribute('role'))) {
                                   return NodeFilter.FILTER_REJECT;
                               }
                           }
 
-                          if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() === '') {
+                          if (node.nodeType === Node.TEXT_NODE &&
+                              node.nodeValue.trim() === '') {
                               return NodeFilter.FILTER_SKIP;
                           }
 
@@ -157,8 +164,8 @@ constexpr auto kVideoTrackHosts =
                                                  "www.ted.com",
                                              });
 
-constexpr char16_t kGetMetaContentScript[] =
-    uR"JS(document.head.querySelector('meta[name=summarizer-key]')?.getAttribute('content'))JS";
+constexpr char16_t kGetMetaContentScript[] = uR"JS(document.head.querySelector(
+          'meta[name=summarizer-key]')?.getAttribute('content'))JS";
 
 const char16_t kLeoButtonNonceScript[] = uR"JS(
   (function() {
@@ -169,7 +176,7 @@ const char16_t kLeoButtonNonceScript[] = uR"JS(
 
     const href = element.getAttribute("href");
     const nonce = element.getAttribute("data-nonce");
-    
+
     const url = new URL(href, window.location.href);
     return {"href": url.href, "nonce": nonce};
   })();
