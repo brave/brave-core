@@ -135,7 +135,7 @@ struct AIChatFeedbackToastView: View {
           Label {
             Text(Strings.close)
           } icon: {
-            Image(systemName: "xmark")
+            Image(braveSystemName: "leo.close")
               .foregroundStyle(Color(braveSystemName: .primary30))
           }
           .labelStyle(.iconOnly)
@@ -157,7 +157,7 @@ struct AIChatFeedbackToastView: View {
         Label {
           Text(Strings.close)
         } icon: {
-          Image(systemName: "xmark")
+          Image(braveSystemName: "leo.close")
             .foregroundStyle(Color(braveSystemName: .primary30))
         }
         .labelStyle(.iconOnly)

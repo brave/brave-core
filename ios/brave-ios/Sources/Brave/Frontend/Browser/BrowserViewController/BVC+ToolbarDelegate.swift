@@ -1194,14 +1194,14 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
     let children: [UIAction] = [
       UIAction(
         title: Strings.copyLinkActionTitle,
-        image: UIImage(systemName: "doc.on.doc"),
+        image: UIImage(braveSystemNamed: "leo.copy"),
         handler: UIAction.deferredActionHandler { _ in
           UIPasteboard.general.url = url as URL
         }
       ),
       UIAction(
         title: Strings.copyCleanLink,
-        image: UIImage(braveSystemNamed: "leo.broom"),
+        image: UIImage(braveSystemNamed: "leo.copy.clean"),
         handler: UIAction.deferredActionHandler { _ in
           let service = URLSanitizerServiceFactory.get(privateMode: tab?.isPrivate ?? true)
           let cleanedURL = service?.sanitizeURL(url) ?? url

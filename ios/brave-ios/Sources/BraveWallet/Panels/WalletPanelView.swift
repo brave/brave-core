@@ -309,7 +309,7 @@ struct WalletPanelView: View {
             .lineLimit(1)
         } else {
           if accountStatus == .connected {
-            Image(systemName: "checkmark")
+            Image(braveSystemName: "leo.check.normal")
           }
           Text(accountStatus.title(keyringStore.selectedAccount.coin))
             .fontWeight(.bold)
@@ -352,7 +352,7 @@ struct WalletPanelView: View {
     Button {
       presentWalletWithContext(.default(.portfolio))
     } label: {
-      Image(systemName: "arrow.up.left.and.arrow.down.right")
+      Image(braveSystemName: "leo.expand")
         .foregroundColor(Color(.braveLabel))
         .rotationEffect(.init(degrees: 90))
         .frame(minWidth: 30, minHeight: 44)

@@ -496,7 +496,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       var openInNewTab: UIAction {
         .init(
           title: Strings.openNewTabButtonTitle,
-          image: UIImage(braveSystemNamed: "leo.plus.add"),
+          image: UIImage(braveSystemNamed: "leo.browser.mobile-tab-new"),
           handler: mapDeferredHandler(openInNewTabHandler)
         )
       }
@@ -551,7 +551,7 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       var openInNewTab: UIAction {
         .init(
           title: Strings.openNewTabButtonTitle,
-          image: UIImage(braveSystemNamed: "leo.plus.add"),
+          image: UIImage(braveSystemNamed: "leo.browser.mobile-tab-new"),
           handler: mapDeferredHandler(openInNewTabHandler)
         )
       }

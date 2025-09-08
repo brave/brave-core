@@ -15,7 +15,7 @@ struct BackupNotifyView: View {
   }
 
   var body: some View {
-    let closeImage = Image(systemName: "xmark")
+    let closeImage = Image(braveSystemName: "leo.close")
     Button(action: action) {
       HStack {
         Text(Strings.Wallet.backupWalletWarningMessage)

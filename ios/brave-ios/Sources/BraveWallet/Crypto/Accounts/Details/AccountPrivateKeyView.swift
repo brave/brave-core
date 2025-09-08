@@ -45,7 +45,7 @@ struct AccountPrivateKeyView: View {
     ScrollView(.vertical) {
       VStack {
         Text(
-          "\(Image(systemName: "exclamationmark.triangle.fill"))  \(Strings.Wallet.accountPrivateKeyDisplayWarning)"
+          "\(Image(braveSystemName: "leo.warning.triangle-filled"))  \(Strings.Wallet.accountPrivateKeyDisplayWarning)"
         )
         .font(.subheadline.weight(.medium))
         .foregroundColor(Color(.braveLabel))
