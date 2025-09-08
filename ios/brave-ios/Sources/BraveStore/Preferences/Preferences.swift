@@ -19,4 +19,23 @@ extension Preferences {
       default: nil
     )
   }
+
+  public struct BraveOrigin {
+    /// The Order-ID of the user's current AI-Chat subscription
+    public static let subscriptionOrderId = Option<String?>(
+      key: "origin.order-id",
+      default: nil
+    )
+
+    public static let subscriptionProductId = Option<String?>(
+      key: "origin.subscription-product-id",
+      default: nil
+    )
+
+    /// The date the user's current AI-Chat subscription expires
+    public static let subscriptionExpirationDate = Option<Date?>(
+      key: "origin.expiration-date",
+      default: nil
+    )
+  }
 }
