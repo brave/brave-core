@@ -400,5 +400,5 @@ bool BraveBrowser::AreAllTabsSharedPinnedTabs() {
 }
 
 BraveBrowserWindow* BraveBrowser::brave_window() {
-  return static_cast<BraveBrowserWindow*>(window_);
+  return static_cast<BraveBrowserWindow*>(window_.get());
 }
