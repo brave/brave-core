@@ -9,7 +9,7 @@ const config = require('../lib/config')
 
 const dedupe = (xs) => [...new Set(xs)]
 const getTestBinariesFromRecordingsPath = (outputDir) => {
-  const regex = new Regex(outputDir + '/coverage/(.*?)/')
+  const regex = new RegExp(outputDir + '/coverage/(.*?)/')
   return (recording) => {
     const testName = recording.match(regex).at(1)
     return `${outputDir}/${testName}`
