@@ -210,7 +210,7 @@ void NewTabPageInitializer::AddStrings() {
       {"rewardsOnboardingButtonLabel",
        IDS_NEW_TAB_REWARDS_ONBOARDING_BUTTON_LABEL},
       {"rewardsOnboardingLink", IDS_NEW_TAB_REWARDS_ONBOARDING_LINK},
-      {"rewardsPayoutCompleteText", IDS_REWARDS_PAYMENT_COMPLETED},
+      {"rewardsPayoutCompletedText", IDS_REWARDS_PAYMENT_COMPLETED},
       {"rewardsPayoutDetailsLink", IDS_NEW_TAB_REWARDS_PAYOUT_DETAILS_LINK},
       {"rewardsPayoutProcessingText", IDS_REWARDS_PAYMENT_PROCESSING},
       {"rewardsTosUpdateButtonLabel", IDS_REWARDS_TOS_UPDATE_NTP_BUTTON_LABEL},
