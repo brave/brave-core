@@ -1,46 +1,40 @@
-#![cfg(any())] // This attribute disables the entire module
+use adblock::Engine;
 use criterion::*;
-
-use adblock::cosmetic_filter_cache::CosmeticFilterCache;
-use adblock::lists::{parse_filters, FilterFormat};
 
 #[path = "../tests/test_utils.rs"]
 mod test_utils;
-use test_utils::rules_from_lists;
+
+pub fn make_engine() -> Engine {
+    use adblock::resources::Resource;
+
+    let rules = test_utils::rules_from_lists(&["data/brave/brave-main-list.txt"]);
+    let resource_json = std::fs::read_to_string("data/brave/brave-resources.json").unwrap();
+    let resource_list: Vec<Resource> = serde_json::from_str(&resource_json).unwrap();
+    let mut engine = Engine::from_rules_parametrised(rules, Default::default(), true, true);
+    engine.use_resources(resource_list);
+    engine
+}
+
+const TEST_URLS: [&str; 3] = [
+    "https://search.brave.com/search?q=test",
+    "https://mail.google.com/",
+    "https://google.com",
+];
 
 fn by_hostname(c: &mut Criterion) {
-    let mut group = c.benchmark_group("cosmetic-hostname-match");
+    let mut group = c.benchmark_group("url_cosmetic_resources");
 
     group.throughput(Throughput::Elements(1));
     group.sample_size(20);
 
-    group.bench_function("easylist", move |b| {
-        let rules = rules_from_lists(&["data/easylist.to/easylist/easylist.txt"]);
-        let (_, cosmetic_filters) = parse_filters(&rules, false, FilterFormat::Standard);
-        let cfcache = CosmeticFilterCache::from_rules(cosmetic_filters);
-        b.iter(|| cfcache.hostname_cosmetic_resources("google.com"))
-    });
-    group.bench_function("many lists", move |b| {
-        let rules = rules_from_lists(&[
-            "data/easylist.to/easylist/easylist.txt",
-            "data/easylist.to/easylistgermany/easylistgermany.txt",
-            "data/uBlockOrigin/filters.txt",
-            "data/uBlockOrigin/unbreak.txt",
-        ]);
-        let (_, cosmetic_filters) = parse_filters(&rules, false, FilterFormat::Standard);
-        let cfcache = CosmeticFilterCache::from_rules(cosmetic_filters);
-        b.iter(|| cfcache.hostname_cosmetic_resources("google.com"))
-    });
-    group.bench_function("complex_hostname", move |b| {
-        let rules = rules_from_lists(&[
-            "data/easylist.to/easylist/easylist.txt",
-            "data/easylist.to/easylistgermany/easylistgermany.txt",
-            "data/uBlockOrigin/filters.txt",
-            "data/uBlockOrigin/unbreak.txt",
-        ]);
-        let (_, cosmetic_filters) = parse_filters(&rules, false, FilterFormat::Standard);
-        let cfcache = CosmeticFilterCache::from_rules(cosmetic_filters);
-        b.iter(|| cfcache.hostname_cosmetic_resources("ads.serve.1.domain.google.com"))
+    group.bench_function("brave-list", move |b| {
+        let engine = make_engine();
+        b.iter(|| {
+            TEST_URLS
+                .iter()
+                .map(|url| engine.url_cosmetic_resources(url))
+                .collect::<Vec<_>>()
+        })
     });
 
     group.finish();
@@ -52,68 +46,29 @@ fn by_classes_ids(c: &mut Criterion) {
     group.throughput(Throughput::Elements(1));
     group.sample_size(20);
 
-    group.bench_function("easylist", move |b| {
-        let rules = rules_from_lists(&["data/easylist.to/easylist/easylist.txt"]);
-        let (_, cosmetic_filters) = parse_filters(&rules, false, FilterFormat::Standard);
-        let cfcache = CosmeticFilterCache::from_rules(cosmetic_filters);
-        let exceptions = Default::default();
-        b.iter(|| cfcache.hidden_class_id_selectors(&["ad"], &["ad"], &exceptions))
-    });
-    group.bench_function("many lists", move |b| {
-        let rules = rules_from_lists(&[
-            "data/easylist.to/easylist/easylist.txt",
-            "data/easylist.to/easylistgermany/easylistgermany.txt",
-            "data/uBlockOrigin/filters.txt",
-            "data/uBlockOrigin/unbreak.txt",
-        ]);
-        let (_, cosmetic_filters) = parse_filters(&rules, false, FilterFormat::Standard);
-        let cfcache = CosmeticFilterCache::from_rules(cosmetic_filters);
-        let exceptions = Default::default();
-        b.iter(|| cfcache.hidden_class_id_selectors(&["ad"], &["ad"], &exceptions))
-    });
-    group.bench_function("many matching classes and ids", move |b| {
-        let rules = rules_from_lists(&[
-            "data/easylist.to/easylist/easylist.txt",
-            "data/easylist.to/easylistgermany/easylistgermany.txt",
-            "data/uBlockOrigin/filters.txt",
-            "data/uBlockOrigin/unbreak.txt",
-        ]);
-        let (_, cosmetic_filters) = parse_filters(&rules, false, FilterFormat::Standard);
-        let cfcache = CosmeticFilterCache::from_rules(cosmetic_filters);
-        let exceptions = Default::default();
-        let class_list = [
-            "block-bg-advertisement-region-1",
-            "photobox-adbox",
-            "headerad-720",
-            "rscontainer",
-            "rail-article-sponsored",
-            "fbPhotoSnowboxAds",
-            "sidebar_ad_module",
-            "ad-728x90_forum",
-            "commercial-unit-desktop-rhs",
-            "sponsored-editorial",
-            "rr-300x600-ad",
-            "adfoot",
-            "lads",
-        ];
-        let id_list = [
-            "footer-adspace",
-            "adsponsored_links_box",
-            "lsadvert-top",
-            "mn",
-            "col-right-ad",
-            "view_ads_bottom_bg_middle",
-            "ad_468x60",
-            "rightAdColumn",
-            "content",
-            "rhs_block",
-            "center_col",
-            "header",
-            "advertisingModule160x600",
-        ];
-        b.iter(|| cfcache.hidden_class_id_selectors(&class_list, &id_list, &exceptions))
-    });
+    let mut classes = vec![];
+    let mut ids = vec![];
 
+    group.bench_function("brave-list", |b| {
+        for i in 0..1000 {
+            classes.push(format!("class{}", i));
+            ids.push(format!("id{}", i));
+        }
+
+        let engine = make_engine();
+        let cases = TEST_URLS
+            .iter()
+            .map(|url| engine.url_cosmetic_resources(url).exceptions)
+            .collect::<Vec<_>>();
+
+        let engine = make_engine();
+        b.iter(|| {
+            cases
+                .iter()
+                .map(|e| engine.hidden_class_id_selectors(&classes, &ids, e))
+                .collect::<Vec<_>>()
+        })
+    });
     group.finish();
 }
 

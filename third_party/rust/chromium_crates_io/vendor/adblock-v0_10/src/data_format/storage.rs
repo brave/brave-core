@@ -11,7 +11,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::blocker::Blocker;
 use crate::cosmetic_filter_cache::{CosmeticFilterCache, HostnameRuleDb, ProceduralOrActionFilter};
-use crate::filters::network::{NetworkFilter, NetworkFilterMaskHelper};
 use crate::network_filter_list::NetworkFilterList;
 use crate::utils::Hash;
 
@@ -180,54 +179,6 @@ pub(crate) struct LegacyScriptletResource {
 pub(crate) struct LegacyScriptletResourceStorage {
     #[serde(serialize_with = "stabilize_hashmap_serialization")]
     resources: HashMap<String, LegacyScriptletResource>,
-}
-
-/// `_bug` is no longer used, and is removed from future format versions.
-#[derive(Debug, Clone, Serialize)]
-struct NetworkFilterSerializeFmt<'a> {
-    mask: &'a crate::filters::network::NetworkFilterMask,
-    filter: &'a crate::filters::network::FilterPart,
-    opt_domains: &'a Option<Vec<crate::utils::Hash>>,
-    opt_not_domains: &'a Option<Vec<crate::utils::Hash>>,
-    redirect: &'a Option<String>,
-    hostname: &'a Option<String>,
-    csp: &'a Option<String>,
-    _bug: Option<u32>,
-    tag: &'a Option<String>,
-    raw_line: Option<String>,
-    id: &'a crate::utils::Hash,
-}
-
-/// Generic over `Borrow<NetworkFilter>` because `tagged_filters_all` requires `&'a NetworkFilter`
-/// while `NetworkFilterList` requires `&'a Arc<NetworkFilter>`.
-impl<'a, T> From<&'a T> for NetworkFilterSerializeFmt<'a>
-where
-    T: std::borrow::Borrow<NetworkFilter>,
-{
-    fn from(v: &'a T) -> NetworkFilterSerializeFmt<'a> {
-        let v = v.borrow();
-        NetworkFilterSerializeFmt {
-            mask: &v.mask,
-            filter: &v.filter,
-            opt_domains: &v.opt_domains,
-            opt_not_domains: &v.opt_not_domains,
-            redirect: if v.is_redirect() {
-                &v.modifier_option
-            } else {
-                &None
-            },
-            hostname: &v.hostname,
-            csp: if v.is_csp() {
-                &v.modifier_option
-            } else {
-                &None
-            },
-            _bug: None,
-            tag: &v.tag,
-            raw_line: v.raw_line.as_ref().map(|raw| *raw.clone()),
-            id: &v.id,
-        }
-    }
 }
 
 /// Forces a `NetworkFilterList` to be serialized by converting to an
