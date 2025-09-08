@@ -44,9 +44,12 @@ void AddInfoBarsIfNecessary(Browser* browser,
                             Profile* profile,
                             const base::CommandLine& startup_command_line,
                             chrome::startup::IsFirstRun is_first_run,
-                            bool is_web_app) {
+                            bool is_web_app,
+                            bool is_post_crash_launch,
+                            bool was_restarted) {
   AddInfoBarsIfNecessary_ChromiumImpl(browser, profile, startup_command_line,
-                                      is_first_run, is_web_app);
+                                      is_first_run, is_web_app,
+                                      is_post_crash_launch, was_restarted);
 
   if (!browser || !profile || browser->tab_strip_model()->count() == 0) {
     return;
