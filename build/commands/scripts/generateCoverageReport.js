@@ -22,7 +22,7 @@ module.exports = (program) =>
     .description(
       [
         'generates a coverage report.',
-        'Requires to build with --use_coverage and run test.',
+        'Requires to build with --use_clang_coverage and run test.',
         'HTML report will be in out/$BUILD_DIR/coverage/report/$NAME/dist',
       ].join('\n'),
     )

@@ -37,7 +37,7 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.update(options)
   checkVersionsMatch()
 
-  if (config.useCoverage()) {
+  if (config.useClangCoverage()) {
     const instrumentationFile = path.join(
       config.outputDir,
       'files-to-instrument.txt',

@@ -20,10 +20,12 @@ const ActionGuard = require('./actionGuard')
 process.setMaxListeners(0)
 
 async function generateInstrumentationFile(instrumentationFile) {
+  console.log(instrumentationFile);
   const files = await Array.fromAsync(glob(`**/*.{cc,c,h,cpp,hpp}`))
 
   const paths = files.map(x => `../../brave/${x}`)
-  await writeFile(`${instrumentationFile}`, paths.join('\n'), 'utf-8')
+  await fs.mkdirp(path.dirname(instrumentationFile));
+  await writeFile(instrumentationFile, paths.join('\n'), 'utf-8')
 }
 
 async function applyPatches(printPatchFailuresInJson) {

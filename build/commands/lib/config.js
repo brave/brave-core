@@ -380,8 +380,8 @@ Config.prototype.isAsan = function () {
   return false
 }
 
-Config.prototype.useCoverage = function () {
-  return this.use_coverage
+Config.prototype.useClangCoverage = function () {
+  return this.use_clang_coverage
 }
 
 Config.prototype.isOfficialBuild = function () {
@@ -572,11 +572,10 @@ Config.prototype.buildArgs = function () {
     args.symbol_level = 1
   }
 
-  if (this.useCoverage()) {
+  if (this.useClangCoverage()) {
+    const buildDir = path.relative(this.srcDir, this.outputDir)
     args.symbol_level = 1
     args.use_clang_coverage = true
-    args.use_clang_profiling_inside_sandbox = true
-    const buildDir = path.relative(this.srcDir, this.outputDir)
     args.coverage_instrumentation_input_file = `//${buildDir}/files-to-instrument.txt`
   }
 
@@ -943,7 +942,7 @@ Config.prototype.updateInternal = function (options) {
     this.is_asan = false
   }
 
-  this.use_coverage = !!options.use_coverage
+  this.use_clang_coverage = !!options.use_clang_coverage
 
   if (options.is_ubsan) {
     this.is_ubsan = true
