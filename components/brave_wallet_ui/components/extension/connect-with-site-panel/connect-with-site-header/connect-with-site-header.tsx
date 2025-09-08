@@ -34,6 +34,7 @@ import {
   LinkIconCircle,
   LinkIcon,
   VerifiedIcon,
+  DomainTextContainer,
 } from './connect-with-site-header.style'
 import { AccountCircle } from '../select-account-item/select-account-item.style'
 import { HorizontalSpace, Column, Row } from '../../../shared/style'
@@ -127,7 +128,10 @@ export const ConnectWithSiteHeader = (props: Props) => {
                 )}`}
                 isReadyToConnect={isReadyToConnect}
               />
-              <Column alignItems='flex-start'>
+              <DomainTextContainer
+                alignItems='flex-start'
+                gap='4px'
+              >
                 <SiteName>{originInfo.eTldPlusOne}</SiteName>
                 <SiteURL>
                   <CreateSiteOrigin
@@ -136,7 +140,7 @@ export const ConnectWithSiteHeader = (props: Props) => {
                   />
                 </SiteURL>
                 {isDAppVerified && <VerifiedLabel />}
-              </Column>
+              </DomainTextContainer>
             </Row>
           )}
 

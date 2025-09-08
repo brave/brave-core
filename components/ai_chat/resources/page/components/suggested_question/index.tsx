@@ -7,17 +7,19 @@ import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import ConversationAreaButton from '../../../common/components/conversation_area_button'
-import { useConversation } from "../../state/conversation_context"
+import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
 
 export function SuggestedQuestion({ question }: { question: string }) {
-    const context = useConversation()
-    return <SuggestionButton
-        onClick={() => context.conversationHandler?.submitSuggestion(question)}
-        className={styles.questionButton}
+  const context = useConversation()
+  return (
+    <SuggestionButton
+      onClick={() => context.conversationHandler?.submitSuggestion(question)}
+      className={styles.questionButton}
     >
       <span className={styles.questionButtonText}>{question}</span>
     </SuggestionButton>
+  )
 }
 
 export function GenerateSuggestionsButton() {
@@ -25,7 +27,10 @@ export function GenerateSuggestionsButton() {
   return (
     <SuggestionButton
       onClick={conversationContext.generateSuggestedQuestions}
-      isLoading={conversationContext.suggestionStatus === Mojom.SuggestionGenerationStatus.IsGenerating}
+      isLoading={
+        conversationContext.suggestionStatus
+        === Mojom.SuggestionGenerationStatus.IsGenerating
+      }
       className={styles.questionButton}
     >
       <span className={styles.generateButtonText}>
@@ -41,7 +46,9 @@ interface SuggestionButtonProps {
   className?: string
 }
 
-export function SuggestionButton(props: React.PropsWithChildren<SuggestionButtonProps>) {
+export function SuggestionButton(
+  props: React.PropsWithChildren<SuggestionButtonProps>,
+) {
   const context = useConversation()
   return (
     <ConversationAreaButton

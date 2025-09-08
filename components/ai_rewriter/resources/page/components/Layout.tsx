@@ -6,7 +6,13 @@
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import Label from '@brave/leo/react/label'
-import { font, gradient, icon, radius, spacing } from '@brave/leo/tokens/css/variables'
+import {
+  font,
+  gradient,
+  icon,
+  radius,
+  spacing,
+} from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
 import { useRewriterContext } from '../Context'
@@ -27,7 +33,7 @@ const TitleRow = styled.div`
 
   padding: ${spacing['2Xl']};
 
-  &> leo-icon {
+  & > leo-icon {
     --leo-icon-color: ${gradient.iconsActive};
   }
 `
@@ -50,7 +56,7 @@ const ActionsRow = styled.div`
   gap: ${spacing.m};
   padding: ${spacing['2Xl']};
 
-  &> leo-button {
+  & > leo-button {
     flex-grow: 0;
   }
 `
@@ -70,44 +76,77 @@ const Root = styled.div`
 
 export default function Layout() {
   const context = useRewriterContext()
-  return <Root>
-    <TitleRow>
-      <Icon name='product-brave-leo' />
-      <TitleText>leo writer</TitleText>
-      <Label color='blue'>PREMIUM</Label>
-      <DialogControls>
-        <Button fab kind='plain-faint' size='small' onClick={context.openSettings}>
-          <Icon name='settings' />
+  return (
+    <Root>
+      <TitleRow>
+        <Icon name='product-brave-leo' />
+        <TitleText>leo writer</TitleText>
+        <Label color='blue'>PREMIUM</Label>
+        <DialogControls>
+          <Button
+            fab
+            kind='plain-faint'
+            size='small'
+            onClick={context.openSettings}
+          >
+            <Icon name='settings' />
+          </Button>
+          <Button
+            fab
+            kind='plain-faint'
+            size='small'
+            onClick={context.close}
+          >
+            <Icon name='close' />
+          </Button>
+        </DialogControls>
+      </TitleRow>
+      {context.generatedText ? <ModifyGeneration /> : <BeginGeneration />}
+      <ActionsRow>
+        <Button
+          fab
+          kind='outline'
+          isDisabled={!context.canUndo}
+          onClick={context.undo}
+        >
+          <Icon name='arrow-undo' />
         </Button>
-        <Button fab kind='plain-faint' size='small' onClick={context.close}>
-          <Icon name='close' />
+        <Button
+          fab
+          kind='outline'
+          isDisabled={!context.canRedo}
+          onClick={context.redo}
+        >
+          <Icon name='arrow-redo' />
         </Button>
-      </DialogControls>
-    </TitleRow>
-    {context.generatedText
-      ? <ModifyGeneration />
-      : <BeginGeneration />}
-    <ActionsRow>
-      <Button fab kind="outline" isDisabled={!context.canUndo} onClick={context.undo}>
-        <Icon name="arrow-undo" />
-      </Button>
-      <Button fab kind="outline" isDisabled={!context.canRedo} onClick={context.redo}>
-        <Icon name="arrow-redo" />
-      </Button>
-      <Button fab kind="outline" isDisabled={!context.canErase} onClick={context.erase}>
-        <Icon name="erase" />
-      </Button>
-      <FlexSpacer />
-      <Button
-        isLoading={context.isGenerating}
-        onClick={context.generatedText ? context.acceptGeneratedText : context.submitRewriteRequest}
-        isDisabled={context.isGenerating || (!context.instructionsText && !context.selectedActionType)}>
-        {context.isGenerating
-          ? "Generating"
-          : context.generatedText
-            ? "Insert"
-            : "Generate"}
-      </Button>
-    </ActionsRow>
-  </Root>
+        <Button
+          fab
+          kind='outline'
+          isDisabled={!context.canErase}
+          onClick={context.erase}
+        >
+          <Icon name='erase' />
+        </Button>
+        <FlexSpacer />
+        <Button
+          isLoading={context.isGenerating}
+          onClick={
+            context.generatedText
+              ? context.acceptGeneratedText
+              : context.submitRewriteRequest
+          }
+          isDisabled={
+            context.isGenerating
+            || (!context.instructionsText && !context.selectedActionType)
+          }
+        >
+          {context.isGenerating
+            ? 'Generating'
+            : context.generatedText
+              ? 'Insert'
+              : 'Generate'}
+        </Button>
+      </ActionsRow>
+    </Root>
+  )
 }

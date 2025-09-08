@@ -20,23 +20,22 @@ jest.mock('$web-common/locale', () => ({
       return `Memory updated: ${params?.$1}`
     }
     return key
-  }
+  },
 }))
 
 describe('MemoryToolEvent', () => {
-
   const createToolUseEvent = (
     argumentsJson: string,
-    output?: any[]
+    output?: any[],
   ): Mojom.ToolUseEvent => ({
     toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
     id: '123',
     argumentsJson,
-    output
+    output,
   })
 
   const createMockUIObserver = (
-    memoryListener?: (memories: string[]) => void
+    memoryListener?: (memories: string[]) => void,
   ) => {
     let listener = memoryListener
     return {
@@ -44,10 +43,10 @@ describe('MemoryToolEvent', () => {
         addListener: jest.fn().mockImplementation((callback) => {
           listener = callback
           return 1
-        })
+        }),
       },
       removeListener: jest.fn(),
-      fireMemoryChange: (memories: string[]) => listener?.(memories)
+      fireMemoryChange: (memories: string[]) => listener?.(memories),
     }
   }
 
@@ -57,7 +56,7 @@ describe('MemoryToolEvent', () => {
         <MemoryToolEvent
           toolUseEvent={createToolUseEvent('{"invalid": "json"}')}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     expect(container.innerHTML).toBe('')
@@ -71,33 +70,33 @@ describe('MemoryToolEvent', () => {
             toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
             id: '123',
             argumentsJson: '{"memory": "Test memory content"}',
-            output: undefined
+            output: undefined,
           }}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     expect(container.innerHTML).toBe('')
   })
 
-  test(
-    'should render error state when tool output contains error text',
-    async () => {
+  test('should render error state when tool output contains error text', async () => {
     const mockHasMemory = jest.fn().mockResolvedValue({ exists: true })
 
     render(
       <MockContext
-        uiHandler={{
-          hasMemory: mockHasMemory
-        } as unknown as Mojom.UntrustedUIHandlerRemote}
+        uiHandler={
+          {
+            hasMemory: mockHasMemory,
+          } as unknown as Mojom.UntrustedUIHandlerRemote
+        }
       >
         <MemoryToolEvent
           toolUseEvent={createToolUseEvent(
             '{"memory": "Test memory content"}',
-            [createTextContentBlock('Error occurred')]
+            [createTextContentBlock('Error occurred')],
           )}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     await waitFor(() => {
@@ -112,9 +111,11 @@ describe('MemoryToolEvent', () => {
 
     render(
       <MockContext
-        uiHandler={{
-          hasMemory: mockHasMemory
-        } as unknown as Mojom.UntrustedUIHandlerRemote}
+        uiHandler={
+          {
+            hasMemory: mockHasMemory,
+          } as unknown as Mojom.UntrustedUIHandlerRemote
+        }
         uiObserver={
           mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
         }
@@ -122,10 +123,10 @@ describe('MemoryToolEvent', () => {
         <MemoryToolEvent
           toolUseEvent={createToolUseEvent(
             '{"memory": "Test memory content"}',
-            [createTextContentBlock('')]
+            [createTextContentBlock('')],
           )}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     await waitFor(() => {
@@ -137,17 +138,17 @@ describe('MemoryToolEvent', () => {
     expect(mockHasMemory).toHaveBeenCalledWith('Test memory content')
   })
 
-  test(
-    'should render undone state when memory does not exist',
-    async () => {
+  test('should render undone state when memory does not exist', async () => {
     const mockHasMemory = jest.fn().mockResolvedValue({ exists: false })
     const mockUIObserver = createMockUIObserver()
 
     render(
       <MockContext
-        uiHandler={{
-          hasMemory: mockHasMemory
-        } as unknown as Mojom.UntrustedUIHandlerRemote}
+        uiHandler={
+          {
+            hasMemory: mockHasMemory,
+          } as unknown as Mojom.UntrustedUIHandlerRemote
+        }
         uiObserver={
           mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
         }
@@ -155,10 +156,10 @@ describe('MemoryToolEvent', () => {
         <MemoryToolEvent
           toolUseEvent={createToolUseEvent(
             '{"memory": "Test memory content"}',
-            [createTextContentBlock('')]
+            [createTextContentBlock('')],
           )}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     await waitFor(() => {
@@ -176,10 +177,12 @@ describe('MemoryToolEvent', () => {
 
     render(
       <MockContext
-        uiHandler={{
-          deleteMemory: mockDeleteMemory,
-          hasMemory: mockHasMemory
-        } as unknown as Mojom.UntrustedUIHandlerRemote}
+        uiHandler={
+          {
+            deleteMemory: mockDeleteMemory,
+            hasMemory: mockHasMemory,
+          } as unknown as Mojom.UntrustedUIHandlerRemote
+        }
         uiObserver={
           mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
         }
@@ -187,10 +190,10 @@ describe('MemoryToolEvent', () => {
         <MemoryToolEvent
           toolUseEvent={createToolUseEvent(
             '{"memory": "Test memory content"}',
-            [createTextContentBlock('')]
+            [createTextContentBlock('')],
           )}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     await waitFor(() => {
@@ -216,10 +219,12 @@ describe('MemoryToolEvent', () => {
 
     render(
       <MockContext
-        uiHandler={{
-          deleteMemory: mockDeleteMemory,
-          hasMemory: mockHasMemory
-        } as unknown as Mojom.UntrustedUIHandlerRemote}
+        uiHandler={
+          {
+            deleteMemory: mockDeleteMemory,
+            hasMemory: mockHasMemory,
+          } as unknown as Mojom.UntrustedUIHandlerRemote
+        }
         uiObserver={
           mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
         }
@@ -227,10 +232,10 @@ describe('MemoryToolEvent', () => {
         <MemoryToolEvent
           toolUseEvent={createToolUseEvent(
             '{"memory": "Test memory content"}',
-            [createTextContentBlock('')]
+            [createTextContentBlock('')],
           )}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     await waitFor(() => {
@@ -250,19 +255,19 @@ describe('MemoryToolEvent', () => {
     expect(screen.queryByTestId('memory-undo-button')).not.toBeInTheDocument()
   })
 
-  test(
-    'should call openAIChatCustomizationSettings when manage button is clicked',
-       async () => {
+  test('should call openAIChatCustomizationSettings when manage button is clicked', async () => {
     const mockOpenSettings = jest.fn()
     const mockHasMemory = jest.fn().mockResolvedValue({ exists: true })
     const mockUIObserver = createMockUIObserver()
 
     render(
       <MockContext
-        uiHandler={{
-          openAIChatCustomizationSettings: mockOpenSettings,
-          hasMemory: mockHasMemory
-        } as unknown as Mojom.UntrustedUIHandlerRemote}
+        uiHandler={
+          {
+            openAIChatCustomizationSettings: mockOpenSettings,
+            hasMemory: mockHasMemory,
+          } as unknown as Mojom.UntrustedUIHandlerRemote
+        }
         uiObserver={
           mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
         }
@@ -270,10 +275,10 @@ describe('MemoryToolEvent', () => {
         <MemoryToolEvent
           toolUseEvent={createToolUseEvent(
             '{"memory": "Test memory content"}',
-            [createTextContentBlock('')]
+            [createTextContentBlock('')],
           )}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     await waitFor(() => {
@@ -290,12 +295,11 @@ describe('MemoryToolEvent', () => {
     const { container } = render(
       <MockContext>
         <MemoryToolEvent
-          toolUseEvent={createToolUseEvent(
-            '{"memory": invalid json}',
-            [createTextContentBlock('')]
-          )}
+          toolUseEvent={createToolUseEvent('{"memory": invalid json}', [
+            createTextContentBlock(''),
+          ])}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     expect(container.innerHTML).toBe('')
@@ -306,17 +310,18 @@ describe('MemoryToolEvent', () => {
 
     render(
       <MockContext
-        uiHandler={{
-          deleteMemory: mockDeleteMemory
-        } as unknown as Mojom.UntrustedUIHandlerRemote}
+        uiHandler={
+          {
+            deleteMemory: mockDeleteMemory,
+          } as unknown as Mojom.UntrustedUIHandlerRemote
+        }
       >
         <MemoryToolEvent
-          toolUseEvent={createToolUseEvent(
-            '{"memory": ""}',
-            [createTextContentBlock('')]
-          )}
+          toolUseEvent={createToolUseEvent('{"memory": ""}', [
+            createTextContentBlock(''),
+          ])}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     expect(screen.queryByTestId('memory-tool-event')).not.toBeInTheDocument()
@@ -332,10 +337,12 @@ describe('MemoryToolEvent', () => {
 
     render(
       <MockContext
-        uiHandler={{
-          deleteMemory: mockDeleteMemory,
-          hasMemory: mockHasMemory
-        } as unknown as Mojom.UntrustedUIHandlerRemote}
+        uiHandler={
+          {
+            deleteMemory: mockDeleteMemory,
+            hasMemory: mockHasMemory,
+          } as unknown as Mojom.UntrustedUIHandlerRemote
+        }
         uiObserver={
           mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
         }
@@ -343,10 +350,10 @@ describe('MemoryToolEvent', () => {
         <MemoryToolEvent
           toolUseEvent={createToolUseEvent(
             '{"memory": "Test memory content"}',
-            [createTextContentBlock('')]
+            [createTextContentBlock('')],
           )}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     await waitFor(() => {
@@ -374,12 +381,11 @@ describe('MemoryToolEvent', () => {
       const { container } = render(
         <MockContext>
           <MemoryToolEvent
-            toolUseEvent={createToolUseEvent(
-              '{}',
-              [createTextContentBlock('')]
-            )}
+            toolUseEvent={createToolUseEvent('{}', [
+              createTextContentBlock(''),
+            ])}
           />
-        </MockContext>
+        </MockContext>,
       )
       expect(container.innerHTML).toBe('')
     })
@@ -388,12 +394,11 @@ describe('MemoryToolEvent', () => {
       const { container } = render(
         <MockContext>
           <MemoryToolEvent
-            toolUseEvent={createToolUseEvent(
-              'null',
-              [createTextContentBlock('')]
-            )}
+            toolUseEvent={createToolUseEvent('null', [
+              createTextContentBlock(''),
+            ])}
           />
-        </MockContext>
+        </MockContext>,
       )
       expect(container.innerHTML).toBe('')
     })
@@ -402,12 +407,11 @@ describe('MemoryToolEvent', () => {
       const { container } = render(
         <MockContext>
           <MemoryToolEvent
-            toolUseEvent={createToolUseEvent(
-              '{}',
-              [createTextContentBlock('')]
-            )}
+            toolUseEvent={createToolUseEvent('{}', [
+              createTextContentBlock(''),
+            ])}
           />
-        </MockContext>
+        </MockContext>,
       )
       expect(container.innerHTML).toBe('')
     })
@@ -418,20 +422,21 @@ describe('MemoryToolEvent', () => {
 
       render(
         <MockContext
-          uiHandler={{
-            hasMemory: mockHasMemory
-          } as unknown as Mojom.UntrustedUIHandlerRemote}
+          uiHandler={
+            {
+              hasMemory: mockHasMemory,
+            } as unknown as Mojom.UntrustedUIHandlerRemote
+          }
           uiObserver={
             mockUIObserver as unknown as Mojom.UntrustedUICallbackRouter
           }
         >
           <MemoryToolEvent
-            toolUseEvent={createToolUseEvent(
-              '{"memory": "valid string"}',
-              [createTextContentBlock('')]
-            )}
+            toolUseEvent={createToolUseEvent('{"memory": "valid string"}', [
+              createTextContentBlock(''),
+            ])}
           />
-        </MockContext>
+        </MockContext>,
       )
 
       await waitFor(() => {
@@ -444,12 +449,11 @@ describe('MemoryToolEvent', () => {
       const { container } = render(
         <MockContext>
           <MemoryToolEvent
-            toolUseEvent={createToolUseEvent(
-              '{"memory": ""}',
-              [createTextContentBlock('')]
-            )}
+            toolUseEvent={createToolUseEvent('{"memory": ""}', [
+              createTextContentBlock(''),
+            ])}
           />
-        </MockContext>
+        </MockContext>,
       )
       expect(container.innerHTML).toBe('')
     })
@@ -458,12 +462,11 @@ describe('MemoryToolEvent', () => {
       const { container } = render(
         <MockContext>
           <MemoryToolEvent
-            toolUseEvent={createToolUseEvent(
-              '{"memory": 123}',
-              [createTextContentBlock('')]
-            )}
+            toolUseEvent={createToolUseEvent('{"memory": 123}', [
+              createTextContentBlock(''),
+            ])}
           />
-        </MockContext>
+        </MockContext>,
       )
       expect(container.innerHTML).toBe('')
     })
@@ -472,12 +475,11 @@ describe('MemoryToolEvent', () => {
       const { container } = render(
         <MockContext>
           <MemoryToolEvent
-            toolUseEvent={createToolUseEvent(
-              '{"memory": true}',
-              [createTextContentBlock('')]
-            )}
+            toolUseEvent={createToolUseEvent('{"memory": true}', [
+              createTextContentBlock(''),
+            ])}
           />
-        </MockContext>
+        </MockContext>,
       )
       expect(container.innerHTML).toBe('')
     })
@@ -486,12 +488,11 @@ describe('MemoryToolEvent', () => {
       const { container } = render(
         <MockContext>
           <MemoryToolEvent
-            toolUseEvent={createToolUseEvent(
-              '{"memory": null}',
-              [createTextContentBlock('')]
-            )}
+            toolUseEvent={createToolUseEvent('{"memory": null}', [
+              createTextContentBlock(''),
+            ])}
           />
-        </MockContext>
+        </MockContext>,
       )
       expect(container.innerHTML).toBe('')
     })
@@ -500,12 +501,11 @@ describe('MemoryToolEvent', () => {
       const { container } = render(
         <MockContext>
           <MemoryToolEvent
-            toolUseEvent={createToolUseEvent(
-              '{"memory": {"key": "value"}}',
-              [createTextContentBlock('')]
-            )}
+            toolUseEvent={createToolUseEvent('{"memory": {"key": "value"}}', [
+              createTextContentBlock(''),
+            ])}
           />
-        </MockContext>
+        </MockContext>,
       )
       expect(container.innerHTML).toBe('')
     })
@@ -514,12 +514,11 @@ describe('MemoryToolEvent', () => {
       const { container } = render(
         <MockContext>
           <MemoryToolEvent
-            toolUseEvent={createToolUseEvent(
-              '{"memory": ["item1", "item2"]}',
-              [createTextContentBlock('')]
-            )}
+            toolUseEvent={createToolUseEvent('{"memory": ["item1", "item2"]}', [
+              createTextContentBlock(''),
+            ])}
           />
-        </MockContext>
+        </MockContext>,
       )
       expect(container.innerHTML).toBe('')
     })

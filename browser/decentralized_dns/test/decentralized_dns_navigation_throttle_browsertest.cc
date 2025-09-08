@@ -309,29 +309,28 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
 
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
+  content::RenderFrameHost* main_frame = web_contents->GetPrimaryMainFrame();
 
-  EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
+  EXPECT_TRUE(WaitForRenderFrameReady(main_frame));
   EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
             GetInterstitialType(web_contents));
 
-  content::RenderFrameHost* main_frame = web_contents->GetPrimaryMainFrame();
+  constexpr auto* kSimulatedClickEvent =
+      "document.getElementById('primary-button').click();";
 
-  EXPECT_TRUE(content::ExecJs(
-      main_frame,
-      "window.domAutomationController.send(typeof proceedClicksEnabled !== "
-      "'undefined' && !proceedClicksEnabled);"));
+  // Default resolve method is `ASK` and it doesn't get changed after clicking
+  // just after page loaded.
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
+            local_state()->GetInteger(kENSResolveMethod));
+  EXPECT_EQ(true, content::ExecJs(main_frame, kSimulatedClickEvent));
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
+            local_state()->GetInteger(kENSResolveMethod));
 
-  EXPECT_TRUE(content::EvalJs(main_frame,
-                              "typeof proceedClicksEnabled !== 'undefined' && "
-                              "!proceedClicksEnabled")
-                  .ExtractBool());
-
-  // Wait for proceedClicksEnabled to become true
+  // Wait for proceedClicksEnabled to become true.
   EXPECT_TRUE(content::EvalJs(main_frame, R"(
     new Promise((resolve) => {
       function checkCondition() {
-        if (typeof proceedClicksEnabled !== 'undefined' &&
-            proceedClicksEnabled) {
+        if (proceedClicksEnabled) {
           resolve(true);
         } else {
           setTimeout(checkCondition, 50);
@@ -341,6 +340,11 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
     })
   )")
                   .ExtractBool());
+
+  // Button is now clickable and can change resolve method.
+  EXPECT_EQ(true, content::ExecJs(main_frame, kSimulatedClickEvent));
+  EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ENABLED),
+            local_state()->GetInteger(kENSResolveMethod));
 }
 
 class DecentralizedDnsNavigationThrottlePolicyTest

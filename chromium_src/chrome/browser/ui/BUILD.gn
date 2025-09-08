@@ -11,7 +11,6 @@ group("ui") {
 
   if (!is_android) {
     deps += [
-      "//brave/browser/ui/color",
       "//chrome/browser/ui/tabs:tab_strip",
       "//components/tabs:public",
       "//content/public/browser",
@@ -28,6 +27,7 @@ group("ui") {
 
   if (toolkit_views) {
     deps += [
+      "//brave/browser/ui/darker_theme",
       "//brave/components/ai_chat/content/browser",
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common",

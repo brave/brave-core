@@ -64,6 +64,7 @@ public class BrowserMenuController: UIHostingController<BrowserMenu> {
         }), .large(),
       ]
       controller.prefersGrabberVisible = true
+      controller.prefersEdgeAttachedInCompactHeight = true
     }
 
     preferredContentSize = CGSize(width: 375, height: size.height)

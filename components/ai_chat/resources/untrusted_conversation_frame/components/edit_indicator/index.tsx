@@ -13,7 +13,7 @@ import Icon from '@brave/leo/react/icon'
 import styles from './style.module.scss'
 
 interface Props {
-  time: Time;
+  time: Time
 }
 
 const dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
@@ -21,19 +21,21 @@ const dateTimeFormatter = new Intl.DateTimeFormat(undefined, {
   day: 'numeric',
   year: 'numeric',
   hour: 'numeric',
-  minute: 'numeric'
-});
+  minute: 'numeric',
+})
 
 function EditIndicator(props: Props) {
   return (
     <div className={styles.editIndicator}>
       <Icon name='edit-pencil' />
-      <span className={styles.editedText}>{getLocale(S.CHAT_UI_EDIT_BUTTON_LABEL)}</span>
+      <span className={styles.editedText}>
+        {getLocale(S.CHAT_UI_EDIT_BUTTON_LABEL)}
+      </span>
       <span className={styles.time}>
         {dateTimeFormatter.format(mojoTimeToJSDate(props.time))}
       </span>
     </div>
-  );
+  )
 }
 
-export default EditIndicator;
+export default EditIndicator

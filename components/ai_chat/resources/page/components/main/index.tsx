@@ -35,7 +35,10 @@ import OpenExternalLinkModal from '../open_external_link_modal'
 import RateMessagePrivacyModal from '../rate_message_privacy_modal'
 import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
-import { GenerateSuggestionsButton, SuggestedQuestion } from '../suggested_question'
+import {
+  GenerateSuggestionsButton,
+  SuggestedQuestion,
+} from '../suggested_question'
 import ToolsMenu from '../filter_menu/tools_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
@@ -52,41 +55,46 @@ const SCROLL_BOTTOM_THRESHOLD = 20
 // when automatically scrolling to bottom.
 const SCROLL_BOTTOM_PADDING = 18
 
-const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>([
-  Mojom.SuggestionGenerationStatus.CanGenerate,
-  Mojom.SuggestionGenerationStatus.IsGenerating
-])
-
+const SUGGESTION_STATUS_SHOW_BUTTON = new Set<Mojom.SuggestionGenerationStatus>(
+  [
+    Mojom.SuggestionGenerationStatus.CanGenerate,
+    Mojom.SuggestionGenerationStatus.IsGenerating,
+  ],
+)
 
 function Main() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
-  const [isConversationListOpen, setIsConversationsListOpen] = React.useState(false)
+  const [isConversationListOpen, setIsConversationsListOpen] =
+    React.useState(false)
   const [isContentReady, setIsContentReady] = React.useState(false)
   const { isDragActive, isDragOver } = conversationContext
 
   const shouldShowPremiumSuggestionForModel =
-    aiChatContext.hasAcceptedAgreement &&
-    !aiChatContext.isPremiumStatusFetching && // Avoid flash of content
-    !aiChatContext.isPremiumUser &&
-    conversationContext.currentModel?.options.leoModelOptions?.access === Mojom.ModelAccess.PREMIUM
+    aiChatContext.hasAcceptedAgreement
+    && !aiChatContext.isPremiumStatusFetching // Avoid flash of content
+    && !aiChatContext.isPremiumUser
+    && conversationContext.currentModel?.options.leoModelOptions?.access
+      === Mojom.ModelAccess.PREMIUM
 
-  const shouldShowStorageNotice = aiChatContext.hasAcceptedAgreement &&
-    aiChatContext.isHistoryFeatureEnabled &&
-    aiChatContext.isStoragePrefEnabled && !aiChatContext.isStorageNoticeDismissed
+  const shouldShowStorageNotice =
+    aiChatContext.hasAcceptedAgreement
+    && aiChatContext.isHistoryFeatureEnabled
+    && aiChatContext.isStoragePrefEnabled
+    && !aiChatContext.isStorageNoticeDismissed
 
   const shouldShowPremiumSuggestionStandalone =
-    aiChatContext.hasAcceptedAgreement &&
-    !aiChatContext.isPremiumStatusFetching && // Avoid flash of content
-    !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
-    !conversationContext.apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
-    !shouldShowStorageNotice && // Don't show premium prompt and storage notice
-    aiChatContext.canShowPremiumPrompt &&
-    conversationContext.associatedContentInfo === null && // AssociatedContent request has finished and this is a standalone conversation
-    !aiChatContext.isPremiumUser
+    aiChatContext.hasAcceptedAgreement
+    && !aiChatContext.isPremiumStatusFetching // Avoid flash of content
+    && !shouldShowPremiumSuggestionForModel // Don't show 2 premium prompts
+    && !conversationContext.apiHasError // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
+    && !shouldShowStorageNotice // Don't show premium prompt and storage notice
+    && aiChatContext.canShowPremiumPrompt
+    && conversationContext.associatedContentInfo === null // AssociatedContent request has finished and this is a standalone conversation
+    && !aiChatContext.isPremiumUser
 
-  const showAttachments = conversationContext.showAttachments
-    && aiChatContext.tabs.length > 0
+  const showAttachments =
+    conversationContext.showAttachments && aiChatContext.tabs.length > 0
 
   const showTemporaryChatInfo = conversationContext.isTemporaryChat
 
@@ -100,16 +108,21 @@ function Main() {
   if (aiChatContext.hasAcceptedAgreement && conversationContext.apiHasError) {
     switch (conversationContext.currentError) {
       case Mojom.APIError.ConnectionIssue:
-        currentErrorElement = <ErrorConnection
-          onRetry={conversationContext.retryAPIRequest} />
+        currentErrorElement = (
+          <ErrorConnection onRetry={conversationContext.retryAPIRequest} />
+        )
         break
       case Mojom.APIError.InvalidAPIKey:
-        currentErrorElement = <ErrorInvalidAPIKey
-          onRetry={conversationContext.retryAPIRequest} />
+        currentErrorElement = (
+          <ErrorInvalidAPIKey onRetry={conversationContext.retryAPIRequest} />
+        )
         break
       case Mojom.APIError.ServiceOverloaded:
-        currentErrorElement = <ErrorServiceOverloaded
-          onRetry={conversationContext.retryAPIRequest} />
+        currentErrorElement = (
+          <ErrorServiceOverloaded
+            onRetry={conversationContext.retryAPIRequest}
+          />
+        )
         break
       case Mojom.APIError.RateLimitReached:
         currentErrorElement = <ErrorRateLimit />
@@ -128,54 +141,71 @@ function Main() {
   const scrollElement = React.useRef<HTMLDivElement | null>(null)
   const scrollAnchor = React.useRef<HTMLDivElement | null>(null)
 
-  const handleScroll = React.useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    // Monitor scroll positions only when Assistant is generating,
-    // but always reset to bottom before next generation
-    if (!conversationContext.isGenerating) {
-      scrollIsAtBottom.current = true
-    } else if (scrollAnchor.current && conversationContentElement.current) {
-      const el = e.currentTarget
-      const idealScrollFromBottom = (el.scrollHeight -
-        (scrollAnchor.current.offsetTop +
-          scrollAnchor.current.offsetHeight)
-      )
-      const scrollBottom = el.scrollHeight - (el.clientHeight + el.scrollTop)
-      scrollIsAtBottom.current = scrollBottom <= (idealScrollFromBottom + SCROLL_BOTTOM_THRESHOLD)
-    }
-  }, [conversationContext.isGenerating])
-
+  const handleScroll = React.useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      // Monitor scroll positions only when Assistant is generating,
+      // but always reset to bottom before next generation
+      if (!conversationContext.isGenerating) {
+        scrollIsAtBottom.current = true
+      } else if (scrollAnchor.current && conversationContentElement.current) {
+        const el = e.currentTarget
+        const idealScrollFromBottom =
+          el.scrollHeight
+          - (scrollAnchor.current.offsetTop + scrollAnchor.current.offsetHeight)
+        const scrollBottom = el.scrollHeight - (el.clientHeight + el.scrollTop)
+        scrollIsAtBottom.current =
+          scrollBottom <= idealScrollFromBottom + SCROLL_BOTTOM_THRESHOLD
+      }
+    },
+    [conversationContext.isGenerating],
+  )
 
   const handleConversationEntriesHeightChanged = () => {
-    if (!conversationContext.isGenerating || !scrollElement.current ||
-      !scrollIsAtBottom.current || !scrollAnchor.current) {
+    if (
+      !conversationContext.isGenerating
+      || !scrollElement.current
+      || !scrollIsAtBottom.current
+      || !scrollAnchor.current
+    ) {
       return
     }
-    scrollElement.current.scrollTop = (
-      scrollAnchor.current.offsetTop + scrollAnchor.current?.offsetHeight
-    ) - scrollElement.current.clientHeight + SCROLL_BOTTOM_PADDING
+    scrollElement.current.scrollTop =
+      scrollAnchor.current.offsetTop
+      + scrollAnchor.current?.offsetHeight
+      - scrollElement.current.clientHeight
+      + SCROLL_BOTTOM_PADDING
   }
 
   // Ask for opt-in once the first message is sent
-  const showAgreementModal = !aiChatContext.hasAcceptedAgreement &&
-    !!conversationContext.conversationHistory.length
+  const showAgreementModal =
+    !aiChatContext.hasAcceptedAgreement
+    && !!conversationContext.conversationHistory.length
 
-  const showContent = !aiChatContext.hasAcceptedAgreement ||
-    !conversationContext.conversationUuid ||
-    isContentReady
+  const showContent =
+    !aiChatContext.hasAcceptedAgreement
+    || !conversationContext.conversationUuid
+    || isContentReady
 
   const showSuggestions: boolean =
-    aiChatContext.hasAcceptedAgreement &&
-    (conversationContext.suggestedQuestions.length > 0 ||
-      SUGGESTION_STATUS_SHOW_BUTTON.has(conversationContext.suggestionStatus))
+    aiChatContext.hasAcceptedAgreement
+    && (conversationContext.suggestedQuestions.length > 0
+      || SUGGESTION_STATUS_SHOW_BUTTON.has(
+        conversationContext.suggestionStatus,
+      ))
 
-  const hasConversationStarted =
-    useHasConversationStarted(conversationContext.conversationUuid)
+  const hasConversationStarted = useHasConversationStarted(
+    conversationContext.conversationUuid,
+  )
 
   const maybeShowSoftKeyboard = (querySubmitted: boolean) => {
-    if (aiChatContext.isMobile && aiChatContext.hasAcceptedAgreement &&
-      conversationContext.historyInitialized && !querySubmitted &&
-      !conversationContext.isGenerating &&
-      conversationContext.conversationHistory.length === 0) {
+    if (
+      aiChatContext.isMobile
+      && aiChatContext.hasAcceptedAgreement
+      && conversationContext.historyInitialized
+      && !querySubmitted
+      && !conversationContext.isGenerating
+      && conversationContext.conversationHistory.length === 0
+    ) {
       aiChatContext.uiHandler?.showSoftKeyboard()
       return true
     }
@@ -187,8 +217,6 @@ function Main() {
     triggerCharacter: '/',
   })
 
-
-
   return (
     <main
       data-testid='main'
@@ -196,7 +224,7 @@ function Main() {
         [styles.main]: true,
         [styles.mainPanel]: !aiChatContext.isStandalone,
         [styles.mainMobile]: aiChatContext.isMobile,
-        [styles.dragOver]: isDragOver
+        [styles.dragOver]: isDragOver,
       })}
       ref={setMainElement}
     >
@@ -224,22 +252,27 @@ function Main() {
         </div>
       )}
       {showAgreementModal && <PrivacyMessage />}
-      <ConversationHeader ref={headerElement}
+      <ConversationHeader
+        ref={headerElement}
         setIsConversationsListOpen={setIsConversationsListOpen}
       />
       <div className={styles.mainContent}>
-        <div className={classnames({
-          [styles.scroller]: true,
-          [styles.flushBottom]: !aiChatContext.hasAcceptedAgreement
-        })}
+        <div
+          className={classnames({
+            [styles.scroller]: true,
+            [styles.flushBottom]: !aiChatContext.hasAcceptedAgreement,
+          })}
           ref={scrollElement}
           onScroll={handleScroll}
         >
-          <AlertCenter position='top-left' className={styles.alertCenter} />
+          <AlertCenter
+            position='top-left'
+            className={styles.alertCenter}
+          />
           <div
             className={classnames({
               [styles.conversationContent]: true,
-              [styles.showContent]: showContent
+              [styles.showContent]: showContent,
             })}
             ref={conversationContentElement}
           >
@@ -256,40 +289,54 @@ function Main() {
                 <div
                   className={classnames({
                     [styles.aichatIframeContainer]: true,
-                    [styles.dragActive]: isDragActive
+                    [styles.dragActive]: isDragActive,
                   })}
                   ref={scrollAnchor}
                 >
-                  {!!conversationContext.conversationUuid &&
+                  {!!conversationContext.conversationUuid && (
                     <aiChatContext.conversationEntriesComponent
                       onIsContentReady={setIsContentReady}
                       onHeightChanged={handleConversationEntriesHeightChanged}
                     />
-                  }
+                  )}
                 </div>
 
-                {conversationContext.isFeedbackFormVisible &&
-                  <div className={classnames([styles.promptContainer, styles.feedbackForm])}>
+                {conversationContext.isFeedbackFormVisible && (
+                  <div
+                    className={classnames([
+                      styles.promptContainer,
+                      styles.feedbackForm,
+                    ])}
+                  >
                     <FeedbackForm />
                   </div>
-                }
+                )}
 
                 {showSuggestions && (
                   <div className={styles.suggestionsContainer}>
                     <div className={styles.questionsList}>
-                      {conversationContext.suggestedQuestions.map((question, i) => <SuggestedQuestion key={question} question={question} />)}
+                      {conversationContext.suggestedQuestions.map(
+                        (question, i) => (
+                          <SuggestedQuestion
+                            key={question}
+                            question={question}
+                          />
+                        ),
+                      )}
                       {SUGGESTION_STATUS_SHOW_BUTTON.has(
-                        conversationContext.suggestionStatus
-                      ) && conversationContext.associatedContentInfo.length > 0 && (
-                          <GenerateSuggestionsButton />
-                        )}
+                        conversationContext.suggestionStatus,
+                      )
+                        && conversationContext.associatedContentInfo.length
+                          > 0 && <GenerateSuggestionsButton />}
                     </div>
                   </div>
                 )}
               </>
             )}
             {currentErrorElement && (
-              <div className={styles.promptContainer}>{currentErrorElement}</div>
+              <div className={styles.promptContainer}>
+                {currentErrorElement}
+              </div>
             )}
             {shouldShowStorageNotice && (
               <div className={styles.promptContainer}>
@@ -326,28 +373,38 @@ function Main() {
                 />
               </div>
             )}
-            {aiChatContext.isPremiumUserDisconnected && (!conversationContext.currentModel || isLeoModel(conversationContext.currentModel)) && (
-              <div className={styles.promptContainer}>
-                <WarningPremiumDisconnected />
-              </div>
-            )}
+            {aiChatContext.isPremiumUserDisconnected
+              && (!conversationContext.currentModel
+                || isLeoModel(conversationContext.currentModel)) && (
+                <div className={styles.promptContainer}>
+                  <WarningPremiumDisconnected />
+                </div>
+              )}
             {conversationContext.shouldShowLongConversationInfo && (
               <div className={styles.promptContainer}>
                 <LongConversationInfo />
               </div>
             )}
-            {!aiChatContext.hasAcceptedAgreement && !conversationContext.conversationHistory.length && (
-              <WelcomeGuide />
-            )}
+            {!aiChatContext.hasAcceptedAgreement
+              && !conversationContext.conversationHistory.length && (
+                <WelcomeGuide />
+              )}
           </div>
         </div>
-        {showAttachments && (isSmall ?
-          <Dialog isOpen onClose={() => conversationContext.setShowAttachments(false)} className={styles.attachmentsDialog}>
-            <Attachments />
-          </Dialog>
-          : <div className={styles.attachmentsContainer}>
-            <Attachments />
-          </div>)}
+        {showAttachments
+          && (isSmall ? (
+            <Dialog
+              isOpen
+              onClose={() => conversationContext.setShowAttachments(false)}
+              className={styles.attachmentsDialog}
+            >
+              <Attachments />
+            </Dialog>
+          ) : (
+            <div className={styles.attachmentsContainer}>
+              <Attachments />
+            </div>
+          ))}
         <div className={styles.input}>
           <ToolsMenu
             isOpen={conversationContext.isToolsMenuOpen}

@@ -8,7 +8,7 @@ import {
   RegisterPolymerTemplateModifications
 } from 'chrome://resources/brave/polymer_overriding.js'
 
-import {loadTimeData} from '../i18n_setup.js'
+import { loadTimeData } from '../i18n_setup.js'
 
 import '../brave_content_page/content_page_index.js'
 import '../getting_started_page/getting_started_page_index.js'
@@ -17,6 +17,7 @@ import '../brave_wallet_page/wallet_page_index.js'
 import '../brave_leo_assistant_page/brave_leo_assistant_page_index.js'
 import '../brave_default_extensions_page/brave_extensions_page_index.js'
 import '../brave_sync_page/brave_sync_page_index.js'
+import '../brave_system_page/brave_system_page_index.js'
 
 RegisterPolymerTemplateModifications({
   'settings-main': (templateContent) => {
@@ -137,7 +138,8 @@ RegisterPolymerTemplateModifications({
       html`
         <template is="dom-if" if="[[showPage_(pageVisibility_.braveSync)]]">
           <div slot="view" id="braveSync">
-            <template is="dom-if" if="true">
+            <template is="dom-if" if="[[renderPlugin_(
+              routes_.BRAVE_SYNC, lastRoute_, inSearchMode_)]]">
               <settings-brave-sync-page-index
                 prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
@@ -161,5 +163,24 @@ RegisterPolymerTemplateModifications({
           </div>
         </template>
       `)
+
+    // Replace the system page with the system page index (upstream doesn't have sub pages for system).
+    const templateSystemPageSlot = templateContent.querySelector(
+      'template[is=dom-if][if="[[showPage_(pageVisibility_.system)]]"]')
+    if (templateSystemPageSlot) {
+      templateSystemPageSlot.replaceWith(html`<template is="dom-if" if="[[showPage_(pageVisibility_.extensions)]]">
+          <div slot="view" id="system">
+            <template is="dom-if" if="[[renderPlugin_(
+          routes_.SYSTEM, lastRoute_, inSearchMode_)]]">
+              <settings-brave-system-page-index
+                prefs="{{prefs}}"
+                in-search-mode="[[inSearchMode_]]">
+              </settings-brave-system-page-index>
+            </template>
+          </div>
+        </template>`)
+    } else {
+      throw new Error('[Settings] Missing template for system page slot')
+    }
   }
 })

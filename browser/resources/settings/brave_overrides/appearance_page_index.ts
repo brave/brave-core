@@ -47,6 +47,9 @@ RegisterPolymerTemplateModifications({
       return
     }
 
+    // Fonts page is rendered in the content subpage.
+    viewManager.querySelector('#fonts')?.remove()
+
     // Append tabs and sidebar settings to the appearance page.
     viewManager.append(html`
       <settings-brave-appearance-tabs

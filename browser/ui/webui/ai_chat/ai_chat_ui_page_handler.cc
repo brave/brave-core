@@ -15,6 +15,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/notimplemented.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -49,6 +50,8 @@
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+#else
+#include "chrome/browser/ui/chrome_pages.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
@@ -218,6 +221,27 @@ void AIChatUIPageHandler::UploadFile(bool use_media_capture,
       std::move(callback));
 }
 
+void AIChatUIPageHandler::ProcessImageFile(
+    const std::vector<uint8_t>& file_data,
+    const std::string& filename,
+    ProcessImageFileCallback callback) {
+  UploadFileHelper::ProcessImageData(
+      file_data,
+      base::BindOnce(
+          [](const std::string& filename, ProcessImageFileCallback callback,
+             std::optional<std::vector<uint8_t>> processed_data) {
+            if (!processed_data) {
+              std::move(callback).Run(nullptr);
+              return;
+            }
+            auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+                filename, processed_data->size(), *processed_data,
+                ai_chat::mojom::UploadedFileType::kImage);
+            std::move(callback).Run(std::move(uploaded_file));
+          },
+          filename, std::move(callback)));
+}
+
 void AIChatUIPageHandler::GetPluralString(const std::string& key,
                                           int32_t count,
                                           GetPluralStringCallback callback) {
@@ -243,6 +267,15 @@ void AIChatUIPageHandler::OpenAIChatSettings() {
   }
 #else
   ai_chat::ShowBraveLeoSettings(contents_to_navigate);
+#endif
+}
+
+void AIChatUIPageHandler::OpenMemorySettings() {
+#if !BUILDFLAG(IS_ANDROID)
+  chrome::ShowSettingsSubPageForProfile(
+      profile_, ai_chat::kBraveAIChatCustomizationSubPage);
+#else
+  NOTIMPLEMENTED();
 #endif
 }
 

@@ -31,9 +31,7 @@ interface CodeBlockProps {
 function Inline(props: CodeInlineProps) {
   return (
     <span className={styles.container}>
-      <code>
-        {props.code}
-      </code>
+      <code>{props.code}</code>
     </span>
   )
 }
@@ -56,8 +54,11 @@ function Block(props: CodeBlockProps) {
           kind='plain-faint'
           onClick={handleCopy}
         >
-          <div slot="icon-before">
-            <Icon className={styles.icon} name={hasCopied ? 'check-circle-outline' : 'copy'} />
+          <div slot='icon-before'>
+            <Icon
+              className={styles.icon}
+              name={hasCopied ? 'check-circle-outline' : 'copy'}
+            />
           </div>
           <div>{getLocale(S.CHAT_UI_COPY_BUTTON_LABEL)}</div>
         </Button>
@@ -77,5 +78,5 @@ function Block(props: CodeBlockProps) {
 
 export default {
   Inline,
-  Block
+  Block,
 }

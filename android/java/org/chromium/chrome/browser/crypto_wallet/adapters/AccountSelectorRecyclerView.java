@@ -23,6 +23,7 @@ import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSelectorRecycle
 import org.chromium.chrome.browser.crypto_wallet.listeners.AccountSelectorItemListener;
 import org.chromium.chrome.browser.crypto_wallet.model.AccountSelectorItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.base.BraveClipboardHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +31,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AccountSelectorRecyclerView extends RecyclerView.Adapter<ViewHolder> {
-    private Context context;
-    private List<AccountSelectorItemModel> accountSelectorItemModelList = new ArrayList<>();
-    private AccountSelectorItemListener accountSelectorItemListener;
+    private Context mContext;
+    private List<AccountSelectorItemModel> mAccountSelectorItemModelList = new ArrayList<>();
+    private AccountSelectorItemListener mAccountSelectorItemListener;
     private final ExecutorService mExecutor;
     private final Handler mHandler;
     private int mPreviousSelectedIndex;
@@ -44,8 +45,8 @@ public class AccountSelectorRecyclerView extends RecyclerView.Adapter<ViewHolder
 
     @Override
     public @NonNull ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
+        mContext = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(mContext);
         View accountSelectorViewHolder =
                 inflater.inflate(R.layout.view_holder_account_selector, parent, false);
         return new ViewHolder(accountSelectorViewHolder);
@@ -54,66 +55,66 @@ public class AccountSelectorRecyclerView extends RecyclerView.Adapter<ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         AccountSelectorItemModel accountSelectorItemModel =
-                accountSelectorItemModelList.get(position);
+                mAccountSelectorItemModelList.get(position);
         // When ViewHolder is re-used, it has the observers which are fired when
         // we modifying checkbox. This may cause unwanted modifying of the model.
         holder.resetObservers();
 
-        holder.titleText.setText(accountSelectorItemModel.getTitle());
-        holder.subTitleText.setText(
+        holder.mTitleText.setText(accountSelectorItemModel.getTitle());
+        holder.mSubTitleText.setText(
                 Utils.stripAccountAddress(accountSelectorItemModel.getSubTitle()));
         if (accountSelectorItemModel.getText1() != null) {
-            holder.text1Text.setVisibility(View.VISIBLE);
-            holder.text1Text.setText(accountSelectorItemModel.getText1());
+            holder.mText1Text.setVisibility(View.VISIBLE);
+            holder.mText1Text.setText(accountSelectorItemModel.getText1());
         }
 
         if (accountSelectorItemModel.getText2() != null) {
-            holder.text2Text.setVisibility(View.VISIBLE);
-            holder.text2Text.setText(accountSelectorItemModel.getText2());
+            holder.mText2Text.setVisibility(View.VISIBLE);
+            holder.mText2Text.setText(accountSelectorItemModel.getText2());
         }
 
         holder.itemView.setOnClickListener(
                 v -> {
-                    accountSelectorItemListener.onAccountClick(accountSelectorItemModel);
+                    mAccountSelectorItemListener.onAccountClick(accountSelectorItemModel);
                     updateSelectedNetwork(holder.getLayoutPosition());
                 });
 
-        holder.iconImg.setImageResource(android.R.color.transparent);
+        holder.mIconImg.setImageResource(android.R.color.transparent);
         if (accountSelectorItemModel.getAccountInfo() != null) {
             Utils.setBlockiesBitmapResourceFromAccount(
                     mExecutor,
                     mHandler,
-                    holder.iconImg,
+                    holder.mIconImg,
                     accountSelectorItemModel.getAccountInfo(),
                     true);
         }
         holder.itemView.setOnLongClickListener(
                 v -> {
-                    Utils.saveTextToClipboard(
-                            context,
+                    BraveClipboardHelper.saveTextToClipboard(
+                            mContext,
                             accountSelectorItemModel.getSubTitle(),
                             R.string.address_has_been_copied,
                             false);
 
                     return true;
                 });
-        holder.selected.setVisibility(
+        holder.mSelected.setVisibility(
                 accountSelectorItemModel.isSelected() ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
     public int getItemCount() {
-        return accountSelectorItemModelList.size();
+        return mAccountSelectorItemModelList.size();
     }
 
     public void setWalletListItemModelList(
             List<AccountSelectorItemModel> accountSelectorItemModelList) {
-        this.accountSelectorItemModelList = accountSelectorItemModelList;
+        mAccountSelectorItemModelList = accountSelectorItemModelList;
     }
 
     public void setAccountSelectorItemListener(
             AccountSelectorItemListener accountSelectorItemListener) {
-        this.accountSelectorItemListener = accountSelectorItemListener;
+        mAccountSelectorItemListener = accountSelectorItemListener;
     }
 
     /**
@@ -123,8 +124,9 @@ public class AccountSelectorRecyclerView extends RecyclerView.Adapter<ViewHolder
      * @param subTitle is the account address
      */
     public void updateSelectedNetwork(String title, String subTitle) {
-        for (int i = 0; i < accountSelectorItemModelList.size(); i++) {
-            AccountSelectorItemModel accountSelectorItemModel = accountSelectorItemModelList.get(i);
+        for (int i = 0; i < mAccountSelectorItemModelList.size(); i++) {
+            AccountSelectorItemModel accountSelectorItemModel =
+                    mAccountSelectorItemModelList.get(i);
             if (accountSelectorItemModel.getTitle().equals(title)
                     && accountSelectorItemModel.getSubTitle().equals(subTitle)) {
                 updateSelectedNetwork(i);
@@ -134,30 +136,30 @@ public class AccountSelectorRecyclerView extends RecyclerView.Adapter<ViewHolder
     }
 
     private void updateSelectedNetwork(final int selectedAccountPosition) {
-        accountSelectorItemModelList.get(mPreviousSelectedIndex).setSelected(false);
+        mAccountSelectorItemModelList.get(mPreviousSelectedIndex).setSelected(false);
         notifyItemChanged(mPreviousSelectedIndex);
 
-        accountSelectorItemModelList.get(selectedAccountPosition).setSelected(true);
+        mAccountSelectorItemModelList.get(selectedAccountPosition).setSelected(true);
         mPreviousSelectedIndex = selectedAccountPosition;
         notifyItemChanged(selectedAccountPosition);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView iconImg;
-        private final TextView titleText;
-        private final TextView subTitleText;
-        private final TextView text1Text;
-        private final TextView text2Text;
-        private final ImageView selected;
+        private final ImageView mIconImg;
+        private final TextView mTitleText;
+        private final TextView mSubTitleText;
+        private final TextView mText1Text;
+        private final TextView mText2Text;
+        private final ImageView mSelected;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            iconImg = itemView.findViewById(R.id.icon);
-            titleText = itemView.findViewById(R.id.title);
-            subTitleText = itemView.findViewById(R.id.sub_title);
-            text1Text = itemView.findViewById(R.id.text1);
-            text2Text = itemView.findViewById(R.id.text2);
-            selected = itemView.findViewById(R.id.iv_selected);
+            mIconImg = itemView.findViewById(R.id.icon);
+            mTitleText = itemView.findViewById(R.id.title);
+            mSubTitleText = itemView.findViewById(R.id.sub_title);
+            mText1Text = itemView.findViewById(R.id.text1);
+            mText2Text = itemView.findViewById(R.id.text2);
+            mSelected = itemView.findViewById(R.id.iv_selected);
         }
 
         public void resetObservers() {
@@ -167,19 +169,19 @@ public class AccountSelectorRecyclerView extends RecyclerView.Adapter<ViewHolder
 
     @SuppressLint("NotifyDataSetChanged")
     public void removeItem(AccountSelectorItemModel item) {
-        accountSelectorItemModelList.remove(item);
+        mAccountSelectorItemModelList.remove(item);
         notifyDataSetChanged();
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void addItem(AccountSelectorItemModel item) {
-        accountSelectorItemModelList.add(item);
+        mAccountSelectorItemModelList.add(item);
         notifyDataSetChanged();
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void clear() {
-        accountSelectorItemModelList.clear();
+        mAccountSelectorItemModelList.clear();
         notifyDataSetChanged();
     }
 }

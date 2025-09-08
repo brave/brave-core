@@ -33,3 +33,39 @@ source_set("webui") {
     "//url",
   ]
 }
+
+source_set("data_sources") {
+  sources = [
+    "favicon_source.h",
+    "favicon_source.mm",
+    "sanitized_image_source.h",
+    "sanitized_image_source.mm",
+    "untrusted_sanitized_image_source.h",
+    "untrusted_sanitized_image_source.mm",
+  ]
+
+  deps = [
+    "//brave/brave_domains",
+    "//brave/components/brave_private_cdn",
+    "//brave/ios/browser/favicon",
+    "//components/favicon/core",
+    "//components/favicon_base",
+    "//components/history/core/browser",
+    "//components/image_fetcher/ios",
+    "//components/signin/public/identity_manager",
+    "//ios/chrome/browser/favicon/model",
+    "//ios/chrome/browser/history/model",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/url:constants",
+    "//ios/chrome/browser/signin/model",
+    "//ios/chrome/common/ui/favicon:favicon_constants",
+    "//ios/components/webui:url_constants",
+    "//ios/web/public",
+    "//ios/web/public/thread",
+    "//ios/web/public/webui",
+    "//services/data_decoder/public/cpp",
+    "//services/data_decoder/public/mojom",
+    "//ui/base",
+    "//ui/resources:ui_resources_grd",
+  ]
+}

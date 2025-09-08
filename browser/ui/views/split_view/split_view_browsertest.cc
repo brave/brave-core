@@ -20,8 +20,6 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "chrome/browser/profiles/profile.h"
@@ -126,63 +124,6 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
  protected:
   base::test::ScopedFeatureList scoped_features_;
 };
-
-IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
-                       PinnedSplitTabsLayoutInVerticalTabTest) {
-  ToggleVerticalTabStrip();
-
-  // Create enough pinned tabs including split tabs.
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  chrome::PinTab(browser());
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  chrome::PinTab(browser());
-
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  chrome::NewSplitTab(browser(),
-                      split_tabs::SplitTabCreatedSource::kToolbarButton);
-  chrome::PinTab(browser());
-
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  chrome::PinTab(browser());
-
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  chrome::NewSplitTab(browser(),
-                      split_tabs::SplitTabCreatedSource::kToolbarButton);
-  chrome::PinTab(browser());
-
-  tab_strip()->StopAnimating(/* layout= */ true);
-  auto* widget_delegate_view =
-      brave_browser_view()->vertical_tab_strip_widget_delegate_view();
-  ASSERT_TRUE(widget_delegate_view);
-
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
-  ASSERT_TRUE(region_view);
-  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
-
-  auto check_split_tabs_has_same_y_position = [&]() {
-    auto* model = browser()->tab_strip_model();
-    const int tab_count = model->count();
-    for (int i = 0; i < tab_count; i++) {
-      auto* tab = tab_strip()->tab_at(i);
-      if (tab_count != (i + 1) && tab->split().has_value() &&
-          tab->split() == tab_strip()->tab_at(i + 1)->split()) {
-        // Check each split tab has same y-position.
-        EXPECT_EQ(tab->y(), tab_strip()->tab_at(i + 1)->y());
-      }
-    }
-  };
-
-  const auto initial_width = region_view->expanded_width_;
-  while (region_view->expanded_width_ >= (initial_width / 2)) {
-    check_split_tabs_has_same_y_position();
-    region_view->SetExpandedWidth(region_view->expanded_width_ - 20);
-  }
-
-  while (region_view->expanded_width_ < initial_width) {
-    check_split_tabs_has_same_y_position();
-    region_view->SetExpandedWidth(region_view->expanded_width_ + 20);
-  }
-}
 
 IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
                        BraveMultiContentsViewTest) {
@@ -903,6 +844,46 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewReloadTest) {
     EXPECT_TRUE(observer_1.did_load());
     EXPECT_TRUE(observer_2.did_load());
   }
+}
+
+IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewCloseTabTest) {
+  NewSplitTab();
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Check only active tab is closed from split tab when split tab is
+  // the only selected tabs.
+  chrome::CloseTab(browser());
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  EXPECT_EQ(1, tab_strip_model->count());
+
+  // Create another active tab.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  NewSplitTab();
+
+  EXPECT_EQ(2, tab_strip_model->active_index());
+  EXPECT_EQ(3, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(1));
+  EXPECT_TRUE(IsSplitTabAt(2));
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+
+  // Make tabs at 1, 2, 3 selected.
+  // Check selected tab is not the only split tab,
+  // we'll close all selected tabs.
+  tab_strip_model->ExtendSelectionTo(1);
+  EXPECT_TRUE(IsSplitTabAt(1));
+  EXPECT_TRUE(IsSplitTabAt(2));
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_EQ(4, tab_strip_model->count());
+
+  // Check all selected tabs are closed (tab at 1, 2, 3).
+  chrome::CloseTab(browser());
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  EXPECT_EQ(1, tab_strip_model->count());
 }
 
 INSTANTIATE_TEST_SUITE_P(

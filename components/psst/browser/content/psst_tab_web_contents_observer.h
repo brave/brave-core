@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
+#include "brave/components/psst/common/psst_script_responses.h"
 #include "content/public/browser/web_contents_observer.h"
 
 class PrefService;
@@ -28,9 +29,21 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
       const std::string&,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
 
+  // Delegate interface for UI-related actions. This class is responsible for
+  // facilitating communication with the consent dialog, ensuring that the UI
+  // reflects the current state accurately.
+  class PsstUiDelegate {
+   public:
+    virtual ~PsstUiDelegate() = default;
+    // Update the UI state based on the applied tasks and progress.
+    virtual void UpdateTasks(long progress,
+                             const std::vector<PolicyTask>& applied_tasks) = 0;
+  };
+
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
       content::WebContents* contents,
       content::BrowserContext* browser_context,
+      std::unique_ptr<PsstUiDelegate> ui_delegate,
       PrefService* prefs,
       const int32_t world_id);
 
@@ -45,6 +58,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   PsstTabWebContentsObserver(content::WebContents* web_contents,
                              PsstRuleRegistry* registry,
                              PrefService* prefs,
+                             std::unique_ptr<PsstUiDelegate> ui_delegate,
                              InjectScriptCallback inject_script_callback);
 
   bool ShouldInsertScriptForPage(int id);
@@ -53,6 +67,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   void OnUserScriptResult(int id,
                           std::unique_ptr<MatchedRule> rule,
                           base::Value script_result);
+  void OnPolicyScriptResult(int nav_entry_id, base::Value script_result);
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
@@ -61,6 +76,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PrefService> prefs_;
   InjectScriptCallback inject_script_callback_;
+  std::unique_ptr<PsstUiDelegate> ui_delegate_;
 
   base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};
 };

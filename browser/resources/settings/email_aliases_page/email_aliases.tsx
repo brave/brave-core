@@ -68,7 +68,7 @@ export const mount = (at: HTMLElement) => {
     }
   }
   root.render(
-    <StyleSheetManager target={at}>
+    <StyleSheetManager target={at.getRootNode() as ShadowRoot}>
       <ManagePageConnected
         emailAliasesService={emailAliasesService}
         bindObserver={bindObserver} />

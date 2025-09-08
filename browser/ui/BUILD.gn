@@ -362,6 +362,7 @@ source_set("ui") {
       "//skia",
       "//third_party/abseil-cpp:absl",
       "//ui/actions:actions_headers",
+      "//ui/base/clipboard",
       "//ui/color:color_headers",
       "//ui/color:mixers",
       "//url",

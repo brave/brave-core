@@ -15,6 +15,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/playlist/playlist_add_bubble_view.h"
@@ -26,6 +27,7 @@
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -363,6 +365,38 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, DISABLED_PlayWithoutLocalCache) {
         )-js")
         .ExtractBool();
   }));
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, UIHiddenWhenDisabled) {
+  auto* sidebar_service =
+      sidebar::SidebarServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(sidebar_service);
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  prefs->SetBoolean(playlist::kPlaylistEnabledPref, false);
+
+  const auto visible_items = sidebar_service->items();
+  const auto playlist_iter = std::ranges::find(
+      visible_items, sidebar::SidebarItem::BuiltInItemType::kPlaylist,
+      &sidebar::SidebarItem::built_in_item_type);
+
+  ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(),
+                                     GetURL("/playlist/site_with_video.html")));
+  base::RunLoop run_loop;
+  base::OneShotTimer timer;
+  timer.Start(FROM_HERE, base::Milliseconds(500), run_loop.QuitClosure());
+  run_loop.Run();
+
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
+      browser_view->GetLocationBarView());
+  auto* playlist_action_icon_view =
+      location_bar_view->GetPlaylistActionIconView();
+  ASSERT_TRUE(playlist_action_icon_view);
+  EXPECT_FALSE(playlist_action_icon_view->GetVisible());
+
+  EXPECT_EQ(playlist_iter, visible_items.end())
+      << "Playlist item should not be visible when disabled";
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {

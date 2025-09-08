@@ -199,7 +199,6 @@
 <translation id="5927196110206824867">प्रायोजित पार्श्वभूमी प्रतिमा स्वतंत्र, वापरकर्ताभिमुख वेब तयार करण्याच्या Braveच्या उद्दिष्टास बळ देतात. आम्ही बिग टेकसारखे नाही, आम्ही तुमची गोपनीयता जपण्यासाठी तुमच्या जाहिरात कामगिरीची गणना निनावीपणे करतो.</translation>
 <translation id="8748471354357836070">अधिक जाणून घ्या / ऑप्ट आउट पर्याय</translation>
 <translation id="8522669544471808198">पार्श्वभूमीतील प्रतिमा दाखवा</translation>
-<translation id="3870475560794762985">प्रायोजित प्रतिमा दाखवा</translation>
 <translation id="7275773481201277457">Brave आकडेवारी दाखवा</translation>
 <translation id="2898634658146274982">बाहेरच्या लिंक्स ब्रेव्हमध्ये उघडा</translation>
 <translation id="5616508928556767259">इतर ॲप्समधील लिंक्स ब्रेव्ह वेबदृश्यात उघडतो. टीप : यासाठी ब्रेव्ह तुमचा डीफॉल्ट ब्राऊझर असायला हवा.</translation>
@@ -368,6 +367,7 @@
 <translation id="5317780077021120954">सेव्ह करा</translation>
 <translation id="1426320910664514906">गॅस लिमिट</translation>
 <translation id="9065203028668620118">संपादन</translation>
+<translation id="473775607612524610">अपडेट करा</translation>
 <translation id="5045550434625856497">अयोग्य पासवर्ड</translation>
 <translation id="1367951781824006909">फाइल निवडा</translation>
 <translation id="8047527352810290817">गॅस संपादित करा</translation>
@@ -558,4 +558,41 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">गप्पांचा इतिहास</translation>
 <translation id="7956713633345437162">मोबाईल बुकमार्क्स</translation>
+<translation id="1943432128510653496">पासवर्ड सेव्ह करा</translation>
+<translation id="2100273922101894616">ऑटो साइन इन करा</translation>
+<translation id="363596933471559332">स्टोअर क्रेडेंशियल वापरून वेबसाइटवर आपोआप साइन इन करा. वैशिष्ट्य बंद असते तेव्हा, वेबसाइटवर साइन इन करण्यापूर्वी दरवेळी तुम्हाला पडताळणीसाठी विचारले जाईल.</translation>
+<translation id="8562452229998620586">सेव्ह केलेले पासवर्ड येथे दिसून येतील.</translation>
+<translation id="1303339473099049190">तो पासवर्ड सापडत नाही. तुमचे शब्दलेखन तपासा आणि पुन्हा प्रयत्न करा.</translation>
+<translation id="2259659629660284697">पासवर्ड एक्सपोर्ट करा…</translation>
+<translation id="133012818630824069">Brave सह स्टोअर केलेला पासवर्ड पाठवा</translation>
+<translation id="2321086116217818302">पासवर्ड तयार करत आहे…</translation>
+<translation id="5139940364318403933">Brave Software ड्राइव्ह कसे वापरावे ते जाणून घ्या</translation>
+<translation id="729975465115245577">पासवर्ड फाइल स्टोअर करण्यासाठी तुमच्या डिव्हाइसमध्ये अ‍ॅप नाही.</translation>
+<translation id="1129510026454351943">तपशील: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">तुमचे पासवर्ड एक्सपोर्ट करण्यासाठी अनलॉक करा</translation>
+<translation id="5245792669563792664">पासवर्ड</translation>
+<translation id="10614374240317010">कधीही सेव्ह न केलेले</translation>
+<translation id="1571304935088121812">वापरकर्तानाव कॉपी करा</translation>
+<translation id="5005498671520578047">पासवर्ड कॉपी करा</translation>
+<translation id="2435457462613246316">पासवर्ड दर्शवा</translation>
+<translation id="1513858653616922153">पासवर्ड हटवा</translation>
+<translation id="543338862236136125">पासवर्ड संपादित करा</translation>
+<translation id="4565377596337484307">पासवर्ड लपवा</translation>
+<translation id="8523928698583292556">स्टोअर केलेला पासवर्ड हटवा</translation>
+<translation id="5433691172869980887">वापरकर्तानाव कॉपी केले</translation>
+<translation id="2625189173221582860">पासवर्ड कॉपी केला</translation>
+<translation id="8084114998886531721">सेव्ह केलेले पासवर्ड</translation>
+<translation id="6590680911007613645">तुम्ही सेव्ह करत असलेला पासवर्ड तुमच्या <ph name="SITE"/> च्या पासवर्डशी जुळत असल्याची खात्री करा</translation>
+<translation id="1492417797159476138">तुम्ही या साइटसाठी आधीच वापरकर्ता नाव सेव्ह केले आहे</translation>
+<translation id="5454166040603940656"><ph name="PROVIDER"/> सह</translation>
+<translation id="686366188661646310">पासवर्ड हटवायचा का?</translation>
+<translation id="7808889146555843082">हा पासवर्ड हटवल्यामुळे तुमचे <ph name="SITE"/> वरील खाते हटवले जाणार नाही. तुमचे खाते इतरांपासून सुरक्षित ठेवण्यासाठी, त्‍याचा <ph name="SITE"/> वरील पासवर्ड बदला किंवा तुमचे त्‍यावरील खाते हटवा.</translation>
+<translation id="2870560284913253234">साइट</translation>
+<translation id="8503813439785031346">वापरकर्तानाव</translation>
+<translation id="2278052315791335171">हा पासवर्ड हटवल्यामुळे तुमचे <ph name="SITE"/> वरील खाते हटवले जाणार नाही</translation>
+<translation id="6891726759199484455">तुमचा पासवर्ड कॉपी करण्यासाठी अनलॉक करा</translation>
+<translation id="5515439363601853141">तुमचा पासवर्ड पाहण्यासाठी अनलॉक करा</translation>
+<translation id="1724977129262658800">तुमचा पासवर्ड संपादित करण्यासाठी अनलॉक करा</translation>
+<translation id="5780792035410621042">पासवर्ड कॉपी करण्यासाठी, सर्वप्रथम तुमच्या डिव्हाइसवर स्क्रीन लॉक सेट करा</translation>
+<translation id="7986497153528221272">पासवर्ड पाहण्यासाठी, प्रथम तुमच्या डिव्हाइसवर स्क्रीन लॉक सेट करा</translation>
 </translationbundle>

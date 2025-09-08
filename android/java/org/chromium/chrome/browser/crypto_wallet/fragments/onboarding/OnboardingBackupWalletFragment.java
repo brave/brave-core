@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.BaseWalletNextPageFra
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.base.BraveClipboardHelper;
 
 import javax.crypto.Cipher;
 
@@ -107,7 +108,7 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
                                 passwordToUse,
                                 result -> {
                                     if (result) {
-                                        Utils.clearClipboard(passwordToUse);
+                                        BraveClipboardHelper.clearClipboard(passwordToUse);
                                         mUnlockWalletPassword.setText(null);
                                         mOnboardingViewModel.setPassword(passwordToUse);
                                         if (mOnNextPage != null) {
@@ -146,7 +147,7 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
 
     @Override
     public void authenticationSuccess(@NonNull String unlockWalletPassword) {
-        Utils.clearClipboard(unlockWalletPassword);
+        BraveClipboardHelper.clearClipboard(unlockWalletPassword);
         mUnlockWalletPassword.setText(null);
         mOnboardingViewModel.setPassword(unlockWalletPassword);
         if (mOnNextPage != null) {

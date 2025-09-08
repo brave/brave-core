@@ -63,8 +63,10 @@ class CustomizeChromePageHandler : public CustomizeChromePageHandler_Chromium {
   void SetUseDarkerTheme(bool use_darker_theme) override;
 
  private:
+#if defined(TOOLKIT_VIEWS)
   // Notifies when the pref for "Darker Theme" changes.
   void NotifyUseDarkerThemeChanged();
+#endif  // defined(TOOLKIT_VIEWS)
 
   // Needed to close the side panel.
   base::WeakPtr<CustomizeChromeUI> customize_chrome_ui_;

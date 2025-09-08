@@ -33,9 +33,11 @@ class BraveThemeService : public ThemeService {
   void SetBraveThemeEventRouterForTesting(
       extensions::BraveThemeEventRouter* mock_router);
 
+#if defined(TOOLKIT_VIEWS)
   // Called when the darker theme pref is changed to notify that theme has
   // changed.
   void OnDarkerThemePrefChanged();
+#endif  // defined(TOOLKIT_VIEWS)
 
   std::unique_ptr<extensions::BraveThemeEventRouter> brave_theme_event_router_;
 

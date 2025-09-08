@@ -7,10 +7,15 @@
 const SUPPORTED_IMAGE_TYPES: string[] = [
   'image/png',
   'image/jpeg',
-  'image/webp'
+  'image/webp',
 ]
 
 // Check if file is a supported image format
 export const isImageFile = (file: File): boolean => {
   return SUPPORTED_IMAGE_TYPES.includes(file.type.toLowerCase())
+}
+
+// Check if file is a PDF
+export const isPdfFile = (file: File): boolean => {
+  return file.type.toLowerCase() === 'application/pdf'
 }

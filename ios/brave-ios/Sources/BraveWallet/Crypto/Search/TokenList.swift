@@ -73,6 +73,7 @@ struct TokenList<Item: Identifiable, Header: View, Content: View, EmptyStateView
       }
       .padding()
     }
+    .enableButtonScrollViewDragWorkaround()
     .background(Color(braveSystemName: .containerBackground))
     .animation(nil, value: query)
     .searchable(

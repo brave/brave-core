@@ -18,10 +18,6 @@
 <translation id="1544192797660353713">錢包</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">其他…</translation>
-<translation id="9092796350041759828">{0, plural,
-          =1 {關閉訪客}
-          other {關閉訪客}
-        }</translation>
 <translation id="1990886731975529483">安裝並執行 Google Widevine</translation>
 <translation id="8926389886865778422">不再詢問這個問題</translation>
 <translation id="4900351245762303149">安裝 Google Widevine</translation>
@@ -140,7 +136,6 @@
 <translation id="6020553119523541665">此分頁在另一個視窗中使用中</translation>
 <translation id="4987392683074136770">點擊此分頁會將其內容帶到此窗口</translation>
 <translation id="8355523213948477234">分割畫面功能表按鈕</translation>
-<translation id="2104347391516032700">Bat 獎勵服務</translation>
 <translation id="6040143037577758943">關閉</translation>
 <translation id="6665472986740899785">Brave 通知廣告</translation>
 <translation id="5582087890067572966">🎉 您已開始賺取收益！</translation>
@@ -194,7 +189,6 @@
 <translation id="2604698253988679506">這些私密回覆可協助 Brave 估計特定功能的整體使用量，並改善您的使用體驗。</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 網域</translation>
-<translation id="5046066249040287308">Brave 錢包公用程式服務</translation>
 <translation id="4552520379838695057">抱歉，頁面遺失。</translation>
 <translation id="7299769530898469069">無法載入已儲存的版本</translation>
 <translation id="2609895996619941644">您想要檢查 Wayback Machine 上是否有已儲存的版本嗎？</translation>
@@ -210,6 +204,8 @@
 <translation id="3228962656492373217">關閉下方的分頁</translation>
 <translation id="8030501904366631501">將所有分頁整合至此視窗</translation>
 <translation id="253980346046488815">關閉重複的分頁</translation>
+<translation id="8670218546624422041">在容器中開啟</translation>
+<translation id="8638526693050780542">管理容器</translation>
 <translation id="2336228925368920074">將所有分頁加入書籤...</translation>
 <translation id="2523967823495420116">使用垂直分頁</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{關閉分頁音訊}other{關閉多個分頁的音訊}}</translation>
@@ -218,6 +214,8 @@
 <translation id="5611474372949142946">關閉下方分頁</translation>
 <translation id="573844928911967687">將所有分頁整合至此視窗</translation>
 <translation id="2703180365855369896">關閉重複的分頁</translation>
+<translation id="1987871867023021397">在容器中開啟</translation>
+<translation id="6745991613881384719">管理容器</translation>
 <translation id="3704707436873245822">從圖片複製文字</translation>
 <translation id="5268098808165185458">正在從圖片複製文字…</translation>
 <translation id="4046485130884276245">已從圖片複製文字</translation>
@@ -342,6 +340,7 @@
 <translation id="1035309871698658326">開啟時，這會自動將所有非無痕標籤頁的標題和來源傳送至 Leo，以便將它們分類。</translation>
 <translation id="3435896845095436175">啟用</translation>
 <translation id="1940221956626514677">自訂工具列</translation>
+<translation id="6501807887341963552">主題與顏色</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="1426410128494586442">是</translation>
@@ -366,6 +365,19 @@
 <translation id="8000020256436988724">工具列</translation>
 <translation id="8076492880354921740">分頁</translation>
 <translation id="8168435359814927499">內容</translation>
+<translation id="6017560037265964523">容器</translation>
+<translation id="934893482320683588">使用容器整理您的瀏覽內容。<ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/></translation>
+<translation id="7773735778926921278">新增容器</translation>
+<translation id="8900907990448657776">編輯容器</translation>
+<translation id="7900511996284443779">刪除容器</translation>
+<translation id="2738687336989232152">您確定要刪除容器 <ph name="CONTAINER_NAME"/> 嗎？這會刪除與其相關的所有資料。</translation>
+<translation id="5327248766486351172">名稱</translation>
+<translation id="104766043551382253">圖示</translation>
+<translation id="5431318178759467895">顏色</translation>
+<translation id="4328541188421002379">為您的容器命名，例如「工作」或「個人」</translation>
+<translation id="4976989127264491396">錯誤： <ph name="ERROR_MESSAGE"/></translation>
+<translation id="5436069931267876389">找不到容器</translation>
+<translation id="2263346047290834619">使用樹狀標籤</translation>
 <translation id="5860254591544742609">顯示標題列</translation>
 <translation id="5371926069408837914">收合時將滑鼠游標停留於上方，垂直分頁面板就會展開。</translation>
 <translation id="3367129510799209147">索引標籤懸停模式</translation>
@@ -393,8 +405,6 @@
 <translation id="7158817046543187970">書籤在所有頁面上都為隱藏</translation>
 <translation id="3416468988018290825">一律顯示完整 URL</translation>
 <translation id="5529693968082667490">顯示分頁搜尋按鈕</translation>
-<translation id="1013121820689882118">Speedreader</translation>
-<translation id="2025435450953474282">文章會自動以閱讀器模式載入，節省您的時間</translation>
 <translation id="7984721311211272523">在分頁喇叭圖示中停用靜音功能</translation>
 <translation id="832432428796481785">顯示側邊欄按鈕</translation>
 <translation id="5581036754486769849">在無痕式視窗中允許自動填入</translation>
@@ -473,7 +483,6 @@
 <translation id="9202707370720720635">自訂 Scriptlet</translation>
 <translation id="5524306331330789642">新增 Scriptlet</translation>
 <translation id="3865146371459790194">編輯 Scriptlet</translation>
-<translation id="5327248766486351172">名稱</translation>
 <translation id="5584409054843451563">您確定要刪除這個 Scriptlet 嗎？如果在任何自訂篩選器中使用此 Scriptlet，它將不再運作。</translation>
 <translation id="4545850500562727184">Scriptlet 已存在。</translation>
 <translation id="4877521822848390663">無效的 Scriptlet 名稱。</translation>
@@ -540,6 +549,9 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">網站希望存取 Solana 提供者 API 時詢問我</translation>
 <translation id="2777102601740875941">禁止網站存取 Solana 提供者 API</translation>
+<translation id="6420374098612710803">Cardano</translation>
+<translation id="2791323819881188032">網站希望存取 Cardano 提供者 API 時詢問我</translation>
+<translation id="2354424632502836676">禁止網站存取 Cardano 提供者 API</translation>
 <translation id="4206299587103092719">Google 登入</translation>
 <translation id="9110294136812584522">網站可要求透過第三方 Cookie 使用舊版 Google 登入</translation>
 <translation id="2903783737778379345">不允許透過第三方 Cookie 使用舊版 Google 登入</translation>
@@ -679,6 +691,7 @@
 <translation id="7013485839273047434">取得更多擴充功能</translation>
 <translation id="4954512758656527938">預設以太坊錢包</translation>
 <translation id="7701023802820268122">預設 Solana 錢包</translation>
+<translation id="3991455933137809014">預設 Cardano 錢包</translation>
 <translation id="8488282162676695335">Brave 錢包</translation>
 <translation id="6942354363301686374">擴充功能 (無後援)</translation>
 <translation id="702381242110464396">擴充功能 (Brave 錢包後援)</translation>
@@ -754,13 +767,15 @@
 <translation id="8172263161008556851">在對話中顯示建議的提示語</translation>
 <translation id="5781842473834867765">儲存我的對話紀錄</translation>
 <translation id="1082960401708055995">停用對話儲存功能會永久刪除所有先前儲存的對話。此動作無法復原。</translation>
-<translation id="6106701981952170121">刪除所有 Leo AI 對話資料</translation>
-<translation id="1335414530428321716">如果重設 Leo AI，日後必須重新選擇加入才能再次使用 Brave Leo AI，您的聊天紀錄也會一併清除。清除聊天紀錄會刪除您先前與 Brave Leo AI 的對話。此動作無法復原。</translation>
+<translation id="1014480593522400586">清除 Leo 資料</translation>
+<translation id="5256236967791936135">如果重設 Leo AI，日後必須重新選擇加入才能再次使用 Brave Leo AI，您的聊天紀錄、自訂內容和記憶也會一併清除。清除聊天紀錄會刪除您先前與 Brave Leo AI 的對話。此動作無法復原。</translation>
 <translation id="5574059574002819179">調整自動完成建議</translation>
 <translation id="7942415993090181327">聊天紀錄</translation>
 <translation id="5084498230659987096">Brave Leo 在瀏覽器中提供隱私優先的 AI 聊天和其他 AI 驅動的介面。Leo 絕不會學習您的資料或將其使用於模型訓練。所有要求都會透過匿名伺服器代理。</translation>
 <translation id="6458721693611638005">閱讀更多有關 Brave 如何在 Leo 的隱私政策中保護您使用 AI 的資訊。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">新對話的預設模式</translation>
+<translation id="6340526405444716530">個人化</translation>
+<translation id="5077965667729100040">自訂 Leo 的回應和記憶</translation>
 <translation id="8826914609353373601">管理付費訂閱</translation>
 <translation id="235457946228076038">使用自己的模型</translation>
 <translation id="8631951653187535788">確定要刪除這個模型？如果目前在任何進行中的對話使用這個模型，該對話會改用 Leo 的預設模型。</translation>
@@ -794,6 +809,33 @@
 <translation id="6304169450064541679">系統提示</translation>
 <translation id="3081947790648024460">提供給模型的自訂指示和/或內容，以引導其朝特定方向或風格做出回應。使用 %datetime% 來插入目前的日期和時間。</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> 代幣</translation>
+<translation id="6911466383346197271">自訂 Leo</translation>
+<translation id="5702085383070170010">關於您</translation>
+<translation id="2493241731563937877">請告訴 Leo 有關您的資訊，以獲得更個人化的解答。 <ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/></translation>
+<translation id="8536280915366791221">啟用 Leo 自訂功能</translation>
+<translation id="698972836993887081">啟用使用者記憶</translation>
+<translation id="4256342809997283108">Leo 應該如何稱呼您？</translation>
+<translation id="1362393385416256849">輸入您喜歡的名字，以便 Leo 用來稱呼您</translation>
+<translation id="7841672648317556034">您是做什麼的？</translation>
+<translation id="1228535384519357095">和 Leo 分享一些您的工作內容</translation>
+<translation id="1300619108689988155">Leo 應該如何回答您的問題？</translation>
+<translation id="5071940952740278148">描述您希望 Leo 在回答時使用的語氣和特性</translation>
+<translation id="5647284470247510206">還有什麼是 Leo 需要知道的嗎？</translation>
+<translation id="7228073810237286235">請讓 Leo 知道您希望它在回答問題時記住的任何偏好</translation>
+<translation id="683188035663069399">變更已儲存</translation>
+<translation id="6708571471662618310">輸入內容太長</translation>
+<translation id="8213464188712611711">記憶</translation>
+<translation id="736384197563279828">所有 Leo 已知關於您的事情，都不會忘記。<ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/></translation>
+<translation id="4664222465181795837">尚未建立記憶</translation>
+<translation id="8914960762169062277">加入一段記憶，讓 Leo 更了解您。</translation>
+<translation id="4358891361699697299">新增記憶</translation>
+<translation id="6028732745612718012">編輯此記憶</translation>
+<translation id="3970015815965490773">建立新記憶</translation>
+<translation id="1206639071829035972">您想讓 Leo 記住什麼？</translation>
+<translation id="2076082422799949288">刪除此記憶</translation>
+<translation id="1721787502053471881">您確定要刪除此記憶嗎？此動作無法復原。</translation>
+<translation id="5239685926753073108">刪除所有記憶</translation>
+<translation id="2600803466586623124">您確定要刪除所有記憶嗎？此動作無法復原。</translation>
 <translation id="5985516785067818307">調查小組成員</translation>
 <translation id="8347743943525229984">允許 Brave 調查</translation>
 <translation id="3204080538332044581">允許 Brave 在新分頁中顯示私人調查的連結。調查有助於我們建立更好的功能，並衡量基於瀏覽器的廣告活動其有效性。 <ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/></translation>

@@ -130,6 +130,7 @@ extension BraveVPN {
             printToConsole: true
           )
           completion?(nil, false)
+          return
         }
 
         guard let timeZones = timeZones else {

@@ -133,6 +133,20 @@ extension Preferences {
       key: "general.last-url-opened-date",
       default: nil
     )
+
+    /// Cache for Apple's isDefault API results (14-day validity)
+    static let isDefaultAPILastResult = Option<Bool?>(
+      key: "general.isdefault-api-last-result",
+      default: nil
+    )
+    static let isDefaultAPILastCheckDate = Option<Date?>(
+      key: "general.isdefault-api-last-check-date",
+      default: nil
+    )
+    static let isDefaultAPILastResultDate = Option<Date?>(
+      key: "general.isdefault-api-last-result-date",
+      default: nil
+    )
   }
 
   final public class Search {

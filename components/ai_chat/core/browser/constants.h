@@ -49,6 +49,10 @@ inline constexpr float kMaxContentLengthThreshold = 0.6f;
 inline constexpr size_t kReservedTokensForPrompt = 300;
 inline constexpr size_t kReservedTokensForMaxNewTokens = 400;
 
+// Maximum characters per content for title generation to avoid overly long
+// context.
+inline constexpr uint32_t kMaxContextCharsForTitleGeneration = 1200u;
+
 // Model name to send to the server for Claude Haiku model.
 inline constexpr char kClaudeHaikuModelName[] = "claude-3-haiku";
 // Model name to send to the server for Claude Sonnet model.

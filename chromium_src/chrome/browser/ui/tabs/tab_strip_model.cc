@@ -8,3 +8,7 @@
 #define DraggingTabsSession DraggingTabsSessionChromium
 #include <chrome/browser/ui/tabs/tab_strip_model.cc>  // IWYU pragma: export
 #undef DraggingTabsSession
+
+void TabStripModel::CloseSelectedTabsWithSplitView() {
+  NOTREACHED();
+}

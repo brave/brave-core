@@ -43,6 +43,10 @@ bool EngineConsumer::SupportsDeltaTextResponses() const {
   return false;
 }
 
+bool EngineConsumer::RequiresClientSideTitleGeneration() const {
+  return false;  // Default: server handles titles (e.g., conversation API)
+}
+
 std::string EngineConsumer::GetImageDataURL(base::span<uint8_t> image_data) {
   constexpr char kDataUrlPrefix[] = "data:image/png;base64,";
   return base::StrCat({kDataUrlPrefix, base::Base64Encode(image_data)});

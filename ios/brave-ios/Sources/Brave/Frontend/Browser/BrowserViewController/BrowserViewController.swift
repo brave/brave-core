@@ -267,6 +267,8 @@ public class BrowserViewController: UIViewController {
 
   private let prefsChangeRegistrar: PrefChangeRegistrar
 
+  let defaultBrowserHelper: DefaultBrowserHelper = .init()
+
   public init(
     windowId: UUID,
     profile: LegacyBrowserProfile,
@@ -736,12 +738,6 @@ public class BrowserViewController: UIViewController {
   @objc func sceneWillResignActiveNotification(_ notification: NSNotification) {
     guard let scene = notification.object as? UIScene, scene == currentScene else {
       return
-    }
-
-    // TODO: brave/brave-browser/issues/46565
-    // Remove when all direct mutations on CoreData types are replaced
-    DataController.performOnMainContext { context in
-      try? context.save()
     }
 
     tabManager.saveAllTabs()
@@ -3003,7 +2999,7 @@ extension BrowserViewController {
     // in case an external url is triggered
     if case .url(let navigatedURL, _) = path {
       if navigatedURL?.isWebPage(includeDataURIs: false) == true {
-        Preferences.General.lastHTTPURLOpenedDate.value = .now
+        defaultBrowserHelper.recordAppLaunchedWithWebURL()
         recordDefaultBrowserLikelyhoodP3A(openedHTTPLink: true)
 
         Preferences.General.defaultBrowserCalloutDismissed.value = true

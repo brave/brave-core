@@ -75,6 +75,10 @@ class MemorySection extends MemorySectionBase {
       showDeleteAllDialog_: {
         type: Boolean,
         value: false
+      },
+      searchQuery_: {
+        type: String,
+        value: ''
       }
     }
   }
@@ -89,6 +93,7 @@ class MemorySection extends MemorySectionBase {
   declare showDeleteDialog_: boolean
   declare deleteMemoryItem_: string | null
   declare showDeleteAllDialog_: boolean
+  declare searchQuery_: string
 
   override ready() {
     super.ready()
@@ -230,6 +235,47 @@ class MemorySection extends MemorySectionBase {
     handler.deleteAllMemories()
     this.showDeleteAllDialog_ = false
   }
+
+  onSearchInput_(e: { value: string }) {
+    this.searchQuery_ = e.value
+  }
+
+  clearSearch_() {
+    this.searchQuery_ = ''
+  }
+
+  getFilteredMemories_(memoriesList: string[], searchQuery: string): string[] {
+    if (!searchQuery || !searchQuery.trim()) {
+      return memoriesList
+    }
+
+    const query = searchQuery.trim().toLowerCase()
+    return memoriesList.filter(memory =>
+      memory.toLowerCase().includes(query)
+    )
+  }
+
+  hasNoSearchResults_(memoriesList: string[], searchQuery: string): boolean {
+    if (!searchQuery || !searchQuery.trim()) {
+      return false // No search query means we're not searching
+    }
+
+    // If no memories exist at all, clear search instead of showing "no results"
+    if (memoriesList.length === 0) {
+      this.searchQuery_ = ''
+      return false
+    }
+
+    const filteredResults = this.getFilteredMemories_(memoriesList, searchQuery)
+    return filteredResults.length === 0
+  }
+
+  shouldShowMemories_(memoriesList: string[], searchQuery: string): boolean {
+    // Show memories if we have memories AND we're not in the "no results" state
+    return this.hasMemories_(memoriesList) &&
+           !this.hasNoSearchResults_(memoriesList, searchQuery)
+  }
+
 }
 
 customElements.define(MemorySection.is, MemorySection)

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_wallet/line_chart/line_chart_ui.h"
 
+#include <memory>
 #include <string>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -17,6 +18,11 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/theme_source.h"
+#endif
 
 namespace line_chart {
 
@@ -43,8 +49,8 @@ UntrustedLineChartUI::UntrustedLineChartUI(content::WebUI* web_ui)
                   "chrome-untrusted://brave-resources;"));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      std::string(
-          "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;"));
+      std::string("style-src 'self' 'unsafe-inline' "
+                  "chrome-untrusted://resources chrome-untrusted://theme;"));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       std::string("font-src 'self' data: chrome-untrusted://resources;"));
@@ -53,6 +59,12 @@ UntrustedLineChartUI::UntrustedLineChartUI(content::WebUI* web_ui)
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       std::string("img-src 'self' data:;"));
+
+#if !BUILDFLAG(IS_ANDROID)
+  Profile* profile = Profile::FromWebUI(web_ui);
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(
+                                           profile, /*serve_untrusted=*/true));
+#endif
 }
 
 UntrustedLineChartUI::~UntrustedLineChartUI() = default;

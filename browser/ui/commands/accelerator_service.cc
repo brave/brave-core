@@ -14,6 +14,7 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/containers/map_util.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/command_utils.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -93,12 +94,12 @@ base::flat_map<int, mojom::CommandPtr> ToMojoCommands(
     const base::flat_set<ui::Accelerator>& unmodifiable) {
   base::flat_map<int, mojom::CommandPtr> result;
   for (const auto& [command_id, accelerators] : commands) {
-    auto it = default_commands.find(command_id);
-    result[command_id] = ToMojoCommand(command_id, accelerators,
-                                       it == default_commands.end()
-                                           ? std::vector<ui::Accelerator>()
-                                           : it->second,
-                                       unmodifiable);
+    auto* command_accelerators = base::FindOrNull(default_commands, command_id);
+    result[command_id] =
+        ToMojoCommand(command_id, accelerators,
+                      command_accelerators ? *command_accelerators
+                                           : std::vector<ui::Accelerator>(),
+                      unmodifiable);
   }
   return result;
 }
@@ -363,12 +364,13 @@ void AcceleratorService::NotifyCommandsChanged(
     }
 
     const auto& changed_command = accelerators_[command_id];
-    auto it = default_accelerators_.find(command_id);
-    event->addedOrUpdated[command_id] = ToMojoCommand(
-        command_id, changed_command,
-        it == default_accelerators_.end() ? std::vector<ui::Accelerator>()
-                                          : it->second,
-        system_managed_);
+    auto* command_accelerators =
+        base::FindOrNull(default_accelerators_, command_id);
+    event->addedOrUpdated[command_id] =
+        ToMojoCommand(command_id, changed_command,
+                      command_accelerators ? *command_accelerators
+                                           : std::vector<ui::Accelerator>(),
+                      system_managed_);
 
     // Make sure system managed commands aren't registered with the Browser - as
     // that might break these commands being triggered from the system.

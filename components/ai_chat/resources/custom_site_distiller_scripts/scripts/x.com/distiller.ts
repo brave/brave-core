@@ -31,21 +31,21 @@ export default function distill(distillLevel = LEO_DISTILLATION_LEVEL.FULL) {
    * it isn't confused with the original content.
    */
   return (
-    `${seenUsers}\n\nNote: The above user information is supplemental ` +
-    `metadata and not part of the original page content.\n\n--- Page ` +
-    `Content Below ---\n\n${column}`
+    `${seenUsers}\n\nNote: The above user information is supplemental `
+    + `metadata and not part of the original page content.\n\n--- Page `
+    + `Content Below ---\n\n${column}`
   )
 }
 
 const config = {
   'tweet': {
     'selector': selectors.tweet,
-    'distiller': distillPostElement
+    'distiller': distillPostElement,
   },
   'notification': {
     'selector': selectors.notification,
-    'distiller': distillNotificationElement
-  }
+    'distiller': distillNotificationElement,
+  },
 } as Record<string, any>
 
 /**

@@ -23,11 +23,14 @@ export default function FullScreen() {
   const asideAnimationRef = React.useRef<Animation | null>()
   const controllerRef = React.useRef(new AbortController())
   const isSmall = useIsSmall()
-  const [isNavigationCollapsed, setIsNavigationCollapsed] = React.useState(isSmall)
-  const [isNavigationRendered, setIsNavigationRendered] = React.useState(!isSmall)
+  const [isNavigationCollapsed, setIsNavigationCollapsed] =
+    React.useState(isSmall)
+  const [isNavigationRendered, setIsNavigationRendered] =
+    React.useState(!isSmall)
 
-  const canStartNewConversation = aiChatContext.hasAcceptedAgreement &&
-    !!conversationContext.conversationHistory.length
+  const canStartNewConversation =
+    aiChatContext.hasAcceptedAgreement
+    && !!conversationContext.conversationHistory.length
 
   const asideRef = React.useRef<HTMLElement | null>(null)
 
@@ -40,10 +43,10 @@ export default function FullScreen() {
     const animationOptions: KeyframeAnimationOptions = {
       duration: 200,
       easing: 'ease-out',
-      fill: 'forwards'
+      fill: 'forwards',
     }
     asideAnimationRef.current = new Animation(
-      new KeyframeEffect(node, [open, close], animationOptions)
+      new KeyframeEffect(node, [open, close], animationOptions),
     )
 
     // Make sure we're in the right state for our screen size when
@@ -66,7 +69,7 @@ export default function FullScreen() {
         asideAnimation.addEventListener(
           'finish',
           () => setIsNavigationRendered(false),
-          { once: true, signal: controllerRef.current.signal }
+          { once: true, signal: controllerRef.current.signal },
         )
         asideAnimation.playbackRate = 1
       }
@@ -81,7 +84,7 @@ export default function FullScreen() {
     if (aiChatContext.editingConversationId && isOpen) {
       toggleAside()
     }
-  }, [aiChatContext.editingConversationId, isNavigationCollapsed]);
+  }, [aiChatContext.editingConversationId, isNavigationCollapsed])
 
   React.useEffect(() => {
     const isOpen = asideAnimationRef.current?.playbackRate === 1
@@ -95,7 +98,6 @@ export default function FullScreen() {
     if (!isSmall && isOpen) {
       aiChatContext.toggleSidebar()
     }
-
   }, [isSmall])
 
   React.useEffect(() => {
@@ -115,32 +117,46 @@ export default function FullScreen() {
     }
 
     document.addEventListener('click', handleClick, { capture: true })
-    return () => document.removeEventListener('click', handleClick, { capture: true })
+    return () =>
+      document.removeEventListener('click', handleClick, { capture: true })
   }, [aiChatContext.showSidebar, isSmall])
 
   return (
-    <div className={classNames(styles.fullscreen, aiChatContext.isMobile && isSmall && styles.mobile)}>
+    <div
+      className={classNames(
+        styles.fullscreen,
+        aiChatContext.isMobile && isSmall && styles.mobile,
+      )}
+    >
       <div className={styles.left}>
-        {(!aiChatContext.isMobile || !isSmall) && <div className={styles.controls}>
-          <Button
-            fab
-            kind='plain-faint'
-            onClick={() => aiChatContext.toggleSidebar()}
-          >
-            <Icon name={asideAnimationRef.current?.playbackRate === 1 ? 'sidenav-expand' : 'sidenav-collapse'} />
-          </Button>
-          {!isNavigationRendered && canStartNewConversation && (
-            <>
-              <Button
-                fab
-                kind='plain-faint'
-                onClick={createNewConversation}
-              >
-                <Icon name='edit-box' />
-              </Button>
-            </>
-          )}
-        </div>}
+        {(!aiChatContext.isMobile || !isSmall) && (
+          <div className={styles.controls}>
+            <Button
+              fab
+              kind='plain-faint'
+              onClick={() => aiChatContext.toggleSidebar()}
+            >
+              <Icon
+                name={
+                  asideAnimationRef.current?.playbackRate === 1
+                    ? 'sidenav-expand'
+                    : 'sidenav-collapse'
+                }
+              />
+            </Button>
+            {!isNavigationRendered && canStartNewConversation && (
+              <>
+                <Button
+                  fab
+                  kind='plain-faint'
+                  onClick={createNewConversation}
+                >
+                  <Icon name='edit-box' />
+                </Button>
+              </>
+            )}
+          </div>
+        )}
         <aside
           ref={initAsideAnimation}
           className={styles.aside}
@@ -148,7 +164,9 @@ export default function FullScreen() {
           {isNavigationRendered && (
             <div className={styles.nav}>
               <NavigationHeader />
-              <ConversationsList setIsConversationsListOpen={setIsNavigationCollapsed} />
+              <ConversationsList
+                setIsConversationsListOpen={setIsNavigationCollapsed}
+              />
             </div>
           )}
         </aside>

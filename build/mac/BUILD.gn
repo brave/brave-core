@@ -291,6 +291,7 @@ action("package") {
     ":copy_browser_install_script",
     ":copy_dmg_background_image",
     ":copy_dmg_icon",
+    ":copy_dmg_preinstall",
     ":copy_ds_store",
     ":copy_helper_entitlements",
     ":copy_postinstall",
@@ -370,6 +371,11 @@ copy("copy_dmg_icon") {
   }
   sources = [ "$dmg_icon_file_name.icns" ]
   outputs = [ "$packaging_dir/chrome_dmg_icon.icns" ]
+}
+
+copy("copy_dmg_preinstall") {
+  sources = [ "dmg_preinstall.sh" ]
+  outputs = [ "$packaging_dir/dmg_preinstall.sh" ]
 }
 
 copy("copy_ds_store") {

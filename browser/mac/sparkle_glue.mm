@@ -22,10 +22,15 @@
 #include "base/task/thread_pool.h"
 #import "brave/browser/mac/su_updater.h"
 #include "brave/browser/update_util.h"
+#include "brave/browser/updater/buildflags.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/constants/brave_switches.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_constants.h"
+
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/browser/updater/features.h"
+#endif
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -100,6 +105,12 @@ std::string GetDescriptionFromAppcastItem(id item) {
 }
 
 - (BOOL)loadSparkleFramework {
+#if BUILDFLAG(ENABLE_OMAHA4)
+  // Loading Sparkle (in particular its sharedUpdater) already activates some
+  // of its functionality. We do not want this to happen when we use Omaha 4.
+  DUMP_WILL_BE_CHECK(!brave_updater::ShouldUseOmaha4());
+#endif
+
   if (!_appPath) {
     return NO;
   }

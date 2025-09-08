@@ -9,7 +9,8 @@
 # that are necessary for Brave. It collaborates with the similar hook
 # `internal_config.py` in this directory.
 
-from signing import standard_invoker, commands
+from os.path import basename
+from signing import standard_invoker, commands, pipeline
 
 
 class Invoker(standard_invoker.Invoker):
@@ -23,10 +24,40 @@ class Invoker(standard_invoker.Invoker):
 
     def __init__(self, args, config):
         super().__init__(args, config)
+        add_preinstall_to_dmg()
         if args.skip_signing:
             stub_out_signing_in_upstream()
         # The config can use this to access the args:
         self.args = args
+
+
+# Add dmg_preinstall.sh to the DMG as .preinstall
+def add_preinstall_to_dmg():
+    _package_dmg_orig = pipeline._package_dmg
+
+    def _package_dmg(paths, dist, config):
+        run_command_orig = commands.run_command
+
+        def run_command(args, **kwargs):
+            if basename(args[0]) == 'pkg-dmg':
+                args = args.copy()
+                packaging_dir = paths.packaging_dir(config)
+                args += [
+                    '--copy', f'{packaging_dir}/dmg_preinstall.sh:/.preinstall'
+                ]
+                run_command.caught_pkg_dmg = True
+            return run_command_orig(args, **kwargs)
+
+        run_command.caught_pkg_dmg = False
+        commands.run_command = run_command
+        try:
+            result = _package_dmg_orig(paths, dist, config)
+            assert run_command.caught_pkg_dmg
+            return result
+        finally:
+            commands.run_command = run_command_orig
+
+    pipeline._package_dmg = _package_dmg
 
 
 def stub_out_signing_in_upstream():

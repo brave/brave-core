@@ -11,7 +11,7 @@
   justify-content: center;
   opacity: 0;
   // Only show if page has been loading for more than x milliseconds
-  animation: .24s ease-out 1s forwards fadeIn;
+  animation: 0.24s ease-out 1s forwards fadeIn;
 }
 
 @keyframes fadeIn {

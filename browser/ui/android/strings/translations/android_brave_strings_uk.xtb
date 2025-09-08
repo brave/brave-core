@@ -421,8 +421,8 @@
 <translation id="8748471354357836070">Детальніше / змінити вибір</translation>
 <translation id="3171669670217312786">Фонові зображення</translation>
 <translation id="8522669544471808198">Показати фонові зображення</translation>
-<translation id="3870475560794762985">Показати спонсоровані зображення</translation>
-<translation id="6937724381960478525">Докладніше про спонсорські зображення</translation>
+<translation id="6258554626602400736">Показувати оголошення у новій вкладці</translation>
+<translation id="9001530744369687550">Дізнайтеся більше про рекламу у нових вкладках</translation>
 <translation id="8793108040181436796">Віджети</translation>
 <translation id="8643377320501056697">Показати топ-сайти</translation>
 <translation id="7275773481201277457">Показати статистику Brave</translation>
@@ -500,6 +500,8 @@
 <translation id="7616645803364270729">Ел. адреса, Twitter тощо.</translation>
 <translation id="5299848999918506028">Дякуємо!</translation>
 <translation id="76550953340008122">Дякуємо за повідомлення розробникам Brave щодо проблеми із цим сайтом. Ми постараємося її виправити!</translation>
+<translation id="3037432377946455872">Що саме вас турбує найбільше?</translation>
+<translation id="8731661215617360873">Оберіть один з варіантів</translation>
 <translation id="650318023204990401">Розширені налаштування</translation>
 <translation id="7205939464631857223">Очистити всі заблоковані елементи</translation>
 <translation id="5370478469168390143">Зберігайте дані онлайн</translation>
@@ -796,6 +798,7 @@
 <translation id="1426320910664514906">Ліміт газу</translation>
 <translation id="6389441740143786465">Вимкнути центр спільного доступу</translation>
 <translation id="9065203028668620118">Редагувати</translation>
+<translation id="473775607612524610">Оновити</translation>
 <translation id="479795390141144417">Помилка оновлення облікового запису.</translation>
 <translation id="8084782383392198011">Назва облікового запису не може бути порожньою.</translation>
 <translation id="5045550434625856497">Неправильний пароль</translation>
@@ -1223,4 +1226,41 @@
 <translation id="2735247450315842119">Дозволити скріншоти в приватних вкладках</translation>
 <translation id="8420414929552321089">Якщо дозволено, приватні вкладки також буде видно під час відкриття кількох додатків.</translation>
 <translation id="7956713633345437162">Мобільні закладки</translation>
+<translation id="1943432128510653496">Зберігання паролів</translation>
+<translation id="2100273922101894616">Автоматичний вхід</translation>
+<translation id="363596933471559332">Автоматично входити в облікові записи на веб-сайтах за допомогою збережених даних. Якщо цю функцію вимкнено, потрібно вводити облікові дані під час кожного входу.</translation>
+<translation id="8562452229998620586">Тут відображатимуться збережені паролі.</translation>
+<translation id="1303339473099049190">Не вдалося знайти такий пароль. Перевірте правильність написання та повторіть спробу.</translation>
+<translation id="2259659629660284697">Експортувати паролі…</translation>
+<translation id="133012818630824069">Експортувати паролі, збережені в Brave</translation>
+<translation id="2321086116217818302">Готуються паролі…</translation>
+<translation id="5139940364318403933">Як користуватися Brave Диском</translation>
+<translation id="729975465115245577">На пристрої немає додатка для зберігання файлу з паролями.</translation>
+<translation id="1129510026454351943">Деталі. <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Розблокуйте, щоб експортувати паролі</translation>
+<translation id="5245792669563792664">паролі</translation>
+<translation id="10614374240317010">Ніколи не зберігалося</translation>
+<translation id="1571304935088121812">Копіювати ім’я користувача</translation>
+<translation id="5005498671520578047">Копіювати пароль</translation>
+<translation id="2435457462613246316">Показати пароль</translation>
+<translation id="1513858653616922153">Видалити пароль</translation>
+<translation id="543338862236136125">Змінити пароль</translation>
+<translation id="4565377596337484307">Сховати пароль</translation>
+<translation id="8523928698583292556">Видалити збережений пароль</translation>
+<translation id="5433691172869980887">Ім’я користувача скопійовано</translation>
+<translation id="2625189173221582860">Пароль скопійовано</translation>
+<translation id="8084114998886531721">Збережений пароль</translation>
+<translation id="6590680911007613645">Переконайтеся, що ввели правильний пароль для веб-сайту <ph name="SITE"/></translation>
+<translation id="1492417797159476138">Ви вже зберегли це ім'я користувача для цього сайту</translation>
+<translation id="5454166040603940656">за допомогою <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">Видалити пароль?</translation>
+<translation id="7808889146555843082">Якщо видалити цей пароль, ваш обліковий запис на сайті <ph name="SITE"/> залишиться. Змініть пароль або видаліть обліковий запис на сайті <ph name="SITE"/>, щоб захистити його.</translation>
+<translation id="2870560284913253234">Сайт</translation>
+<translation id="8503813439785031346">Ім’я користувача</translation>
+<translation id="2278052315791335171">Якщо видалити цей пароль, ваш обліковий запис на сайті <ph name="SITE"/> залишиться</translation>
+<translation id="6891726759199484455">Розблокуйте, щоб скопіювати пароль</translation>
+<translation id="5515439363601853141">Розблокуйте, щоб переглянути пароль</translation>
+<translation id="1724977129262658800">Розблокуйте, щоб змінити пароль</translation>
+<translation id="5780792035410621042">Щоб скопіювати паролі, спершу налаштуйте блокування екрана на пристрої</translation>
+<translation id="7986497153528221272">Щоб переглянути паролі, спершу налаштуйте блокування екрана на пристрої</translation>
 </translationbundle>

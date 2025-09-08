@@ -39,7 +39,7 @@ function distillPostMediaEntity(media: any) {
   const labels = {
     photo: 'Photo',
     video: 'Video',
-    animated_gif: 'Animated GIF'
+    animated_gif: 'Animated GIF',
   } as Record<string, string>
 
   const downloadableVariant = variants && getDownloadableVariant(variants)

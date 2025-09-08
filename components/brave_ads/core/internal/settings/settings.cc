@@ -18,6 +18,12 @@ bool UserHasJoinedBraveRewards() {
   return GetProfileBooleanPref(brave_rewards::prefs::kEnabled);
 }
 
+bool UserHasJoinedBraveRewardsAndNotConnectedWallet() {
+  return UserHasJoinedBraveRewards() &&
+         GetProfileStringPref(brave_rewards::prefs::kExternalWalletType)
+             .empty();
+}
+
 bool UserHasJoinedBraveRewardsAndConnectedWallet() {
   return UserHasJoinedBraveRewards() &&
          !GetProfileStringPref(brave_rewards::prefs::kExternalWalletType)

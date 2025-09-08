@@ -1,15 +1,17 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hu">
-<translation id="1036348656032585052">Kikapcsolás</translation>
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> hete létrehozva}other{<ph name="NUM_WEEKS_MANY"/> hete létrehozva}}</translation>
 <translation id="1063300264396686489">Más eszközökről származó lapcsoportok automatikus megnyitása</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> lapot nem használt mostanában. Szeretné bezárni őket?</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{<ph name="NUM_YEARS_ONE"/> éve létrehozva}other{<ph name="NUM_YEARS_MANY"/> éve létrehozva}}</translation>
+<translation id="1137385688780024041">{DAY_COUNT,plural, =1{Az inaktív lapok és csoportok 1 hónap után bezáródnak}other{Az inaktív lapok és csoportok <ph name="MONTH_COUNT_MANY"/> hónap után bezáródnak}}</translation>
 <translation id="1173894706177603556">Átnevezés</translation>
 <translation id="1197088940767939838">Narancssárga</translation>
 <translation id="1245862538775272968">{TAB_COUNT,plural, =1{A következő, <ph name="TAB_COUNT2"/> lapot tartalmazó lapcsoport megnyitása: <ph name="TITLE_OF_GROUP"/>}other{A következő, <ph name="TAB_COUNT2"/> lapot tartalmazó lapcsoport megnyitása: <ph name="TITLE_OF_GROUP"/>}}</translation>
 <translation id="1273910660700874265">A következő lapcsoport beállításai: <ph name="TITLE_OF_GROUP"/></translation>
+<translation id="1300188005269437765">Válassza ki, hogy a lapok és a lapcsoportok mikor kerüljenek automatikusan az inaktív szakaszba.</translation>
+<translation id="1321004960118052490">Az inaktív elemek nem halmozódnak fel</translation>
 <translation id="1329584516321524826">Most frissítve</translation>
 <translation id="1340839264183302272">Kilépés a csoportból</translation>
 <translation id="1403729629346559879">{NUMBER_OF_TABS,plural, =1{<ph name="TITLE_OF_GROUP"/> című, <ph name="TABS_COUNT_ONE"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű, <ph name="CARD_LABEL"/> címkével ellátott megosztott lapcsoport kibontása.}other{<ph name="TITLE_OF_GROUP"/> című, <ph name="TABS_COUNT_MANY"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű, <ph name="CARD_LABEL"/> címkével ellátott megosztott lapcsoport kibontása.}}</translation>
@@ -28,6 +30,7 @@
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> lap csoportosítva</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> lap}other{<ph name="TABS_COUNT_MANY"/> lap}}</translation>
 <translation id="1909810060368225529">Figyelem: A megosztott lapcsoport módosításai mindenki számára láthatók. Bárki módosíthatja a megosztott lapcsoportokat</translation>
+<translation id="1982637982196732906">Áthelyezés az inaktív szakaszba</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> kiválasztott lap felvétele a könyvjelzők közé}other{<ph name="TABS_COUNT_MANY"/> kiválasztott lap felvétele a könyvjelzők közé}}</translation>
 <translation id="2055057176188061528">Válasszon ki egy lapcsoportot, vagy hozzon létre újat</translation>
 <translation id="2118649612461486615">Üzletadatok</translation>
@@ -37,14 +40,15 @@
 <translation id="2277224997687551299">Csoportnév szerkesztése</translation>
 <translation id="2330212241471632770">{TABS_COUNT,plural, =1{Felvétel a könyvjelzők közé}other{Felvétel a könyvjelzők közé}}</translation>
 <translation id="2359808026110333948">Tovább</translation>
+<translation id="2371084566192454134">Lapok és lapcsoportok</translation>
 <translation id="2375257132547014176">{TABS_COUNT,plural, =1{A következő, <ph name="TABS_COUNT_ONE"/> lapot tartalmazó lapcsoport összecsukása: <ph name="TITLE_OF_GROUP"/>.}other{A következő, <ph name="TABS_COUNT_MANY"/> lapot tartalmazó lapcsoport összecsukása: <ph name="TITLE_OF_GROUP"/>.}}</translation>
 <translation id="2498435670446402865">Lapcsoport átnevezése</translation>
 <translation id="2536366509642644298">A(z) „<ph name="TAB_GROUP_NAME_1"/>” és a(z) „<ph name="TAB_GROUP_NAME_2"/>” lapcsoportok már nem állnak rendelkezésre</translation>
 <translation id="2539705006853443997">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> lap összecsukása.}other{<ph name="TABS_COUNT_MANY"/> lapot tartalmazó lapcsoport összecsukása.}}</translation>
 <translation id="2569352796411618312">Javaslat: <ph name="NUMBER_OF_TABS"/> lapot nem használt mostanában. Szeretné bezárni őket?</translation>
 <translation id="257674075312929031">Csoport</translation>
+<translation id="2660792762186871190">{NUMBER_OF_TABS,plural, =1{A(z) <ph name="TABS_COUNT_ONE"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű lapcsoport visszaállítása és megnyitása.}other{A(z) <ph name="TABS_COUNT_MANY"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű lapcsoport visszaállítása és megnyitása.}}</translation>
 <translation id="2662028055331606429">Értékelés: <ph name="RATING_BASELINE"/>/<ph name="CURRENT_RATING"/></translation>
-<translation id="120364858946132793">{AUTO_DELETE_DELAY,plural, =1{A Brave automatikusan bezárja az inaktív szakaszban található olyan elemeket, amelyeket Ön <ph name="AUTO_DELETE_DELAY_ONE"/> napja nem használt. Ezt most vagy bármikor kikapcsolhatja a Beállításokban.}other{A Brave automatikusan bezárja az inaktív szakaszban található olyan elemeket, amelyeket Ön <ph name="AUTO_DELETE_DELAY_MANY"/> napja nem használt. Ezt most vagy bármikor kikapcsolhatja a Beállításokban.}}</translation>
 <translation id="266935134738038806">Webhely felkeresése</translation>
 <translation id="2671423594960767771">Csoport megosztása</translation>
 <translation id="2734252994837336591">{NUM_WEEKS,plural, =1{Frissítve: <ph name="NUM_WEEKS_ONE"/> héttel ezelőtt}other{Frissítve: <ph name="NUM_WEEKS_MANY"/> héttel ezelőtt}}</translation>
@@ -54,8 +58,8 @@
 <translation id="2801787514987684416">Megtekinti az üzlet adatait?</translation>
 <translation id="2883875523421277445">{NUMBER_OF_TABS_CLOSED,plural, =1{<ph name="ONE_CLOSED"/> lap bezárva}other{<ph name="MANY_CLOSED"/> lap bezárva}}</translation>
 <translation id="2894757982205307093">Új lap a csoportban</translation>
+<translation id="2918484639460781603">Ugrás a beállításokhoz</translation>
 <translation id="4691798003247738043">Brave | Az üzletről</translation>
-<translation id="29919168204617356">Az inaktív lapok automatikusan bezáródnak. Az Előzményekben bármikor megtalálhatja őket.</translation>
 <translation id="3008554597174452548">Termék nyomon követésének leállítása</translation>
 <translation id="3026391124054406831">Csoportokat hozhat létre a lapok rendszerezéséhez.</translation>
 <translation id="3051031624272448591">Az előzmények között bármikor újra megnyithatja őket.</translation>
@@ -65,6 +69,7 @@
 <translation id="3194464645767632461">értékelés</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> lap hozzáadása csoporthoz}other{<ph name="TABS_COUNT_MANY"/> lap hozzáadása csoporthoz}}</translation>
 <translation id="3328308545011660196">Javaslat: Úgy tűnik, <ph name="NUMBER_OF_TABS"/> lap kapcsolódik egymáshoz. Csoportosítja őket?</translation>
+<translation id="3330595302841061275">{DAY_COUNT,plural, =1{1 nap inaktivitás után}other{<ph name="DAY_COUNT_MANY"/> nap inaktivitás után}}</translation>
 <translation id="358453129938375749">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> új lap}other{<ph name="MANY_ADDED"/> új lap}}</translation>
 <translation id="3613492231657284463">Inaktív lapok elrejtése párbeszédpanel</translation>
 <translation id="3619255692378312441">Hozzáférés kezelése</translation>
@@ -78,6 +83,7 @@
 <translation id="4009732926939031387">{NUM_DAYS,plural, =1{<ph name="NUM_DAYS_ONE"/> napja létrehozva}other{<ph name="NUM_DAYS_MANY"/> napja létrehozva}}</translation>
 <translation id="4076226664360336092">Lapcsoportlista, teljes magasságban megnyitva</translation>
 <translation id="4133493477912226187">Úgy tűnik, <ph name="NUMBER_OF_TABS"/> lap kapcsolódik egymáshoz. Csoportosítja őket?</translation>
+<translation id="4156086991340739772">{NUMBER_OF_TABS,plural, =1{A következő, <ph name="TABS_COUNT_ONE"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű lapcsoport bezárása: <ph name="TITLE_OF_GROUP"/>.}other{A következő, <ph name="TABS_COUNT_MANY"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű lapcsoport bezárása: <ph name="TITLE_OF_GROUP"/>.}}</translation>
 <translation id="4159784952369912983">Lila</translation>
 <translation id="4203448675570432781">A lapok automatikus törléséről szóló értesítés be van zárva.</translation>
 <translation id="427987768447457592">Új lapcsoport</translation>
@@ -85,7 +91,6 @@
 <translation id="4429658455677831355">{TAB_COUNT,plural, =1{Elem visszaállítása}other{Elemek visszaállítása}}</translation>
 <translation id="4453940245650019914">{NUM_DAYS,plural, =1{Frissítve: <ph name="NUM_DAYS_ONE"/> nappal ezelőtt}other{Frissítve: <ph name="NUM_DAYS_MANY"/> nappal ezelőtt}}</translation>
 <translation id="4686942373615810936">Épp most létrehozva</translation>
-<translation id="47070857600201406">{DAY_COUNT,plural, =1{Bezárás 1 nap után}other{Bezárás <ph name="DAY_COUNT_MANY"/> nap után}}</translation>
 <translation id="4783638485675352219">A megnyitott lapok címeinek és URL-jeinek megosztása erről az eszközről az operációs rendszerrel</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> vélemény)}other{(<ph name="REVIEWS_COUNT_MANY"/> vélemény)}}</translation>
 <translation id="4850886885716139402">Nézet</translation>
@@ -94,25 +99,30 @@
 <translation id="4861953997778766866">Bárki módosíthatja a megosztott lapcsoportokat</translation>
 <translation id="4870911314065352661">Az összes lapot bezárja?</translation>
 <translation id="4871719318659334896">Csoport bezárása</translation>
+<translation id="4876860795942196286">{NUMBER_OF_TABS,plural, =1{A(z) <ph name="TITLE_OF_GROUP"/> nevű, <ph name="TABS_COUNT_ONE"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű lapcsoport visszaállítása és megnyitása.}other{A(z) <ph name="TITLE_OF_GROUP"/> nevű, <ph name="TABS_COUNT_MANY"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű lapcsoport visszaállítása és megnyitása}}</translation>
 <translation id="4881695831933465202">Megnyitás</translation>
 <translation id="4895402777090717310">{TABS_COUNT,plural, =1{Lap bezárása}other{Lapok bezárása}}</translation>
 <translation id="4908147833782857886"><ph name="USER_EMAIL"/> csoport mentve (bezárja a lapokat, valamint törli a csoportokat)</translation>
 <translation id="492284538114688557">Árcsökkenés észlelve</translation>
 <translation id="4937582754153367435">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű, <ph name="CARD_LABEL"/> címkével ellátott megosztott lapcsoport kibontása.}other{<ph name="TABS_COUNT_MANY"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű, <ph name="CARD_LABEL"/> címkével ellátott megosztott lapcsoport kibontása.}}</translation>
 <translation id="5007392906805964215">Áttekintés</translation>
+<translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{Lapok áthelyezése új ablakba}other{Lapok áthelyezése másik ablakba}}</translation>
 <translation id="5073204694187207510">Teljes képernyős rács elrejtése</translation>
 <translation id="5076161749301278626">Lát véleményeket az üzletről?</translation>
 <translation id="5161254044473106830">Cím megadása kötelező</translation>
+<translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{<ph name="AUTO_DELETE_DELAY_ONE"/> hónap elteltével a Brave automatikusan bezárja az inaktív lapokat és lapcsoportokat. Ezt a beállításokban módosíthatja.}other{<ph name="AUTO_DELETE_DELAY_MANY"/> hónap elteltével a Brave automatikusan bezárja az inaktív lapokat és lapcsoportokat. Ezt a beállításokban módosíthatja.}}</translation>
 <translation id="5339733443032484186">A legutóbbi lap</translation>
 <translation id="5380159289133845234">Ismétlődő lapok archiválása</translation>
 <translation id="5400836586163650660">Szürke</translation>
 <translation id="5446043142172831860">Lap eltávolítása és kilépés a csoportból</translation>
 <translation id="5490235265819901748">Lapcsoport kibontva</translation>
 <translation id="5494920125229734069">Összes kiválasztása</translation>
+<translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű lapcsoport bezárása.}other{<ph name="TABS_COUNT_MANY"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű lapcsoport bezárása.}}</translation>
 <translation id="5556417849629758491">Az üzlet adatainak megtekintése; a lehetőség a képernyő tetején található</translation>
 <translation id="5627941783489838464">Nincsenek lapfrissítések</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> link a Brave-ból}other{<ph name="TABS_COUNT_MANY"/> link a Brave-ból}}</translation>
 <translation id="5746204836956568669">Csoportosít <ph name="NUMBER_OF_TABS"/> lapot a gyorsabb munkavégzés érdekében?</translation>
+<translation id="5773295109010386583">Inaktív elemek automatikus bezárása</translation>
 <translation id="58326064309361797">A lapokat húzással csoportosíthatja</translation>
 <translation id="5901630391730855834">Sárga</translation>
 <translation id="5972844218283131174">Összes kijelölésének megszüntetése</translation>
@@ -123,17 +133,13 @@
 <translation id="6109251075362363230">Mostantól az összes ismétlődő lap is archiválva lesz a legutóbb használt példány kivételével.</translation>
 <translation id="6149218574440723463">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> kijelölt elem bezárása}other{<ph name="TABS_COUNT_MANY"/> kijelölt elem bezárása}}</translation>
 <translation id="61924696525243173">{WINDOW_COUNT,plural, =1{Csoport áthelyezése egy új ablakba}other{Csoport áthelyezése egy másik ablakba}}</translation>
-<translation id="6193448654517602979">Lapok kiválasztása</translation>
-<translation id="6220820548421939212">Igen, benne vagyok</translation>
 <translation id="6228793724645064692">(az üzlet értékelése)</translation>
 <translation id="6313830465749181217">{TABS_COUNT,plural, =1{Lap hozzáadása új csoporthoz}other{Lapok hozzáadása új csoporthoz}}</translation>
 <translation id="6333260925957816943">Információ erről az üzletről</translation>
 <translation id="6381032505162537930">Itt láthatja majd a lapcsoportjait</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> kijelölt lap csoportosításának megszüntetése}other{<ph name="TABS_COUNT_MANY"/> kijelölt lap csoportosításának megszüntetése}}</translation>
-<translation id="6422650314852876533">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> lap}other{<ph name="TABS_COUNT_MANY"/> lap}}</translation>
 <translation id="6499296376514955580">A megosztott lapcsoportok módosításairól szóló értesítés bezárva</translation>
 <translation id="6527303717912515753">Megosztás</translation>
-<translation id="6542289363124393690">{DAY_COUNT,plural, =1{1 nap után}other{<ph name="DAY_COUNT_MANY"/> nap után}}</translation>
 <translation id="6549021453810473782">Üzletadatok megtekintése</translation>
 <translation id="6557858706263317126">+<ph name="HIDDEN_TABS_COUNT"/></translation>
 <translation id="6562820390860419811">Lap mozgatása balra</translation>
@@ -150,6 +156,7 @@
 <translation id="709473454666962555">Lapcsoport kiválasztása</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Lap megosztása}other{Lapok megosztása}}</translation>
 <translation id="7129458170538955174">Az üzlettel kapcsolatos információs panel félmagasságban van megnyitva</translation>
+<translation id="7151209024774799310">Lapok eltávolítása</translation>
 <translation id="7204204600596740190">Több lapot kiválasztó mód</translation>
 <translation id="7211038039686180558">A rendszer automatikusan menti a lapcsoportokat, és frissíti őket az összes bejelentkezett eszközén.</translation>
 <translation id="731648547091221002"><ph name="COLOR_NAME"/>: kiválasztva</translation>
@@ -158,6 +165,7 @@
 <translation id="7369451074646620503">A(z) „<ph name="TAB_GROUP_NAME"/>” lapcsoport már nem áll rendelkezésre</translation>
 <translation id="7452985128687107478">A rendszer automatikusan menti a lapcsoportokat, és frissíti őket az összes eszközén</translation>
 <translation id="747459581954555080">Összes visszaállítása</translation>
+<translation id="7501728912575021674">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> elem}other{<ph name="TABS_COUNT_MANY"/> elem}}</translation>
 <translation id="7507010952168401940">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> kijelölt elem visszaállítása}other{<ph name="TABS_COUNT_MANY"/> kijelölt elem visszaállítása}}</translation>
 <translation id="753732157349120914">Lapváltó</translation>
 <translation id="1068242749670180460">{REVIEWS,plural, =1{<ph name="REVIEWS_COUNT_ONE"/> vélemény a Brave-on}other{<ph name="REVIEWS_COUNT_MANY"/> vélemény a Brave-on}}</translation>
@@ -167,6 +175,7 @@
 <translation id="7699041944097291312">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> kiválasztott lap megosztása}other{<ph name="TABS_COUNT_MANY"/> kiválasztott lap megosztása}}</translation>
 <translation id="775668479044571025">{NUM_MONTHS,plural, =1{Frissítve: <ph name="NUM_YEARS_ONE"/> évvel ezelőtt}other{Frissítve: <ph name="NUM_YEARS_MANY"/> évvel ezelőtt}}</translation>
 <translation id="7773714564112603605">Lap eltávolítása és csoport törlése</translation>
+<translation id="7774428938729954687">A(z) <ph name="TAB_TITLE"/> lap visszaállítása és megnyitása</translation>
 <translation id="7792771145871471484">Javaslatok áttekintése.</translation>
 <translation id="7792860826279960128">Értesítés a megosztott lapcsoport félmagasságban megjelenő változásairól</translation>
 <translation id="7825973332242257878">Lapcsoportok</translation>
@@ -174,7 +183,6 @@
 <translation id="7853202427316060426">Aktivitás</translation>
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ Értékelés: <ph name="RATING_BASELINE"/>/<ph name="CURRENT_RATING"/>, <ph name="REVIEWS_COUNT_ONE"/> vélemény}other{Értékelés: <ph name="RATING_BASELINE"/>/<ph name="CURRENT_RATING"/>, <ph name="REVIEWS_COUNT_MANY"/> vélemény}}</translation>
 <translation id="7885132941432959125">Lap mozgatása jobbra</translation>
-<translation id="788914896430720926">Rendben szeretné tartani az inaktív szakaszt?</translation>
 <translation id="7939917283308035850"><ph name="COLOR_NAME"/>: nincs kiválasztva</translation>
 <translation id="7942349550061667556">Piros</translation>
 <translation id="7961015016161918242">Soha</translation>
@@ -184,7 +192,6 @@
 <translation id="8029301326595421733">Az üzlettel kapcsolatos információs panel teljes magasságban meg van nyitva</translation>
 <translation id="8053770993984522566">Lapcsoportlista, félmagasságban megnyitva</translation>
 <translation id="805809603610022708">{TABS_COUNT,plural, =1{Lap hozzáadása csoporthoz}other{Lapok hozzáadása csoporthoz}}</translation>
-<translation id="8076492880354921740">Lapok</translation>
 <translation id="8153873338998959464">{NUMBER_OF_TABS,plural, =1{A következő, <ph name="TABS_COUNT_ONE"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű lapcsoport kibontása: <ph name="TITLE_OF_GROUP"/>.}other{A következő, <ph name="TABS_COUNT_MANY"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű lapcsoport kibontása: <ph name="TITLE_OF_GROUP"/>.}}</translation>
 <translation id="8205266828577616993">Lap mozgatása felfelé</translation>
 <translation id="8207688828622594111">{NUM_MINS,plural, =1{Frissítve: <ph name="NUM_MINS_ONE"/> perccel ezelőtt}other{Frissítve: <ph name="NUM_MINS_MANY"/> perccel ezelőtt}}</translation>

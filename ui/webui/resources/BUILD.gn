@@ -586,9 +586,9 @@ generate_grd("icons_grdp") {
   deps = [ ":icons_copy" ]
 }
 
-if (is_android) {
-  # This target replaces the dynamic nala.css file with the default theme. Its
-  # only used on Android since we don't support the ThemeSource there.
+if (is_android || is_ios) {
+  # This target replaces the dynamic nala.css file with the default theme. It's
+  # used on Android and iOS since we don't support the ThemeSource there.
   copy("hardcode_nala_theme_variables") {
     sources = [ "$brave_resources_extra_grdps_path/leo/css/variables.css" ]
     outputs = [ "$brave_resources_extra_grdps_path/css/nala.css" ]
@@ -598,7 +598,7 @@ if (is_android) {
 
 # Static files should be put relative to //ui/webui/resources main resources GRD
 copy("static_copy") {
-  if (is_android) {
+  if (is_android || is_ios) {
     # Exclude the nala.css file - we'll copy the hardcoded theme instead.
     sources = filter_exclude(static_files, [ "css/nala.css" ])
     deps = [ ":hardcode_nala_theme_variables" ]

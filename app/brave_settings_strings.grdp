@@ -1757,6 +1757,15 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_DELETE_ALL_MEMORIES_CONFIRMATION" desc="The confirmation message for deleting all memories">
     Are you sure you want to delete all memories? This action cannot be undone.
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_NO_SEARCH_RESULTS_FOUND" desc="The message shown when no search results are found in memory search">
+    No results found
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_CLEAR_SEARCH" desc="The label for the link to clear search in memory search">
+    Clear search
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_SEARCH_MEMORIES_PLACEHOLDER" desc="The placeholder text for the memory search input field">
+    Search for a memory
+  </message>
 
   <!-- Settings / Survey Panelist -->
   <message name="IDS_SETTINGS_SURVEY_PANELIST" desc="Title for an item in the 'Survey Panelist' section of Brave Settings">

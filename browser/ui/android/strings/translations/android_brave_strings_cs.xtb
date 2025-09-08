@@ -421,8 +421,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8748471354357836070">Další informace / možnosti odhlášení</translation>
 <translation id="3171669670217312786">Obrázky na pozadí</translation>
 <translation id="8522669544471808198">Zobrazit pozadí</translation>
-<translation id="3870475560794762985">Zobrazit sponzorované obrázky</translation>
-<translation id="6937724381960478525">Zjistit více o sponzorovaných obrázcích</translation>
+<translation id="6258554626602400736">Zobrazovat reklamy na nové stránce</translation>
+<translation id="9001530744369687550">Další informace o reklamách na nové stránce</translation>
 <translation id="8793108040181436796">Widgety</translation>
 <translation id="8643377320501056697">Ukázat Top stránky</translation>
 <translation id="7275773481201277457">Zobrazit statistiky Brave</translation>
@@ -500,6 +500,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="7616645803364270729">Email, Twitter atd.</translation>
 <translation id="5299848999918506028">Děkujeme!</translation>
 <translation id="76550953340008122">Díky, že jste vývojářům Brave dali vědět, že tyto stránky vykazují nějakou chybu. Budeme se usilovně snažit ji opravit!</translation>
+<translation id="3037432377946455872">Jaký hlavní problém máte?</translation>
+<translation id="8731661215617360873">Vyberte jednu možnost</translation>
 <translation id="650318023204990401">Pokročilé nastavení</translation>
 <translation id="7205939464631857223">Vymazat všechny zablokované prvky</translation>
 <translation id="5370478469168390143">Uložit data online</translation>
@@ -796,6 +798,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="1426320910664514906">Limit paliva</translation>
 <translation id="6389441740143786465">Zakázat centrum sdílení</translation>
 <translation id="9065203028668620118">Upravit</translation>
+<translation id="473775607612524610">Aktualizovat</translation>
 <translation id="479795390141144417">Aktualizace účtu se nezdařila.</translation>
 <translation id="8084782383392198011">Název účtu nesmí být prázdný.</translation>
 <translation id="5045550434625856497">Nesprávné heslo</translation>
@@ -1224,4 +1227,41 @@ v budoucnu a také vymaže vaši historii chatů. Vymazání historie chatů ods
 <translation id="2735247450315842119">Povolit snímky obrazovky na soukromých kartách</translation>
 <translation id="8420414929552321089">Pokud je tato funkce povolena, soukromé karty budou viditelné i při otevření několika aplikací.</translation>
 <translation id="7956713633345437162">Mobilní záložky</translation>
+<translation id="1943432128510653496">Ukládání hesel</translation>
+<translation id="2100273922101894616">Přihlásit se automaticky</translation>
+<translation id="363596933471559332">Přihlašovat se na weby automaticky pomocí uložených identifikačních údajů. Když je tato funkce vypnutá, budete před každým přihlášením na web požádáni o ověření.</translation>
+<translation id="8562452229998620586">Zde se zobrazí uložená hesla.</translation>
+<translation id="1303339473099049190">Dané heslo nebylo nalezeno. Zkontrolujte ho a zkuste to znovu.</translation>
+<translation id="2259659629660284697">Exportovat hesla…</translation>
+<translation id="133012818630824069">Exportovat hesla uložená v Chromu</translation>
+<translation id="2321086116217818302">Příprava hesel…</translation>
+<translation id="5139940364318403933">Naučte se používat Disk Brave</translation>
+<translation id="729975465115245577">V zařízení není žádná aplikace, pomocí které by soubor s hesly bylo možné uložit.</translation>
+<translation id="1129510026454351943">Podrobnosti: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Chcete-li exportovat hesla, odemkněte zařízení</translation>
+<translation id="5245792669563792664">hesla</translation>
+<translation id="10614374240317010">Nikdy se neukládají</translation>
+<translation id="1571304935088121812">Kopírovat uživatelské jméno</translation>
+<translation id="5005498671520578047">Kopírování hesla</translation>
+<translation id="2435457462613246316">Zobrazit heslo</translation>
+<translation id="1513858653616922153">Vymazat heslo</translation>
+<translation id="543338862236136125">Upravit heslo</translation>
+<translation id="4565377596337484307">Skrýt heslo</translation>
+<translation id="8523928698583292556">Vymazat uložené heslo</translation>
+<translation id="5433691172869980887">Uživatelské jméno bylo zkopírováno</translation>
+<translation id="2625189173221582860">Heslo bylo zkopírováno</translation>
+<translation id="8084114998886531721">Uložené heslo</translation>
+<translation id="6590680911007613645">Zkontrolujte, zda se ukládané heslo shoduje s heslem pro web <ph name="SITE"/>.</translation>
+<translation id="1492417797159476138">Toto uživatelské jméno jste pro tento web už uložili</translation>
+<translation id="5454166040603940656">(<ph name="PROVIDER"/>)</translation>
+<translation id="686366188661646310">Vymazat heslo?</translation>
+<translation id="7808889146555843082">Odstraněním tohoto hesla nesmažete svůj účet na webu <ph name="SITE"/>. Pokud chcete ochránit svá data, změňte své heslo nebo účet na <ph name="SITE"/> smažte.</translation>
+<translation id="2870560284913253234">Stránky</translation>
+<translation id="8503813439785031346">Uživatelské jméno</translation>
+<translation id="2278052315791335171">Odstraněním tohoto hesla nesmažete svůj účet na webu <ph name="SITE"/></translation>
+<translation id="6891726759199484455">Chcete-li zkopírovat heslo, odemkněte zařízení</translation>
+<translation id="5515439363601853141">Chcete-li zobrazit heslo, odemkněte zařízení</translation>
+<translation id="1724977129262658800">Chcete-li upravit heslo, odemkněte zařízení</translation>
+<translation id="5780792035410621042">Chcete-li zkopírovat hesla, nejdříve na zařízení nastavte zámek obrazovky</translation>
+<translation id="7986497153528221272">Chcete-li zobrazit hesla, nejdříve na zařízení nastavte zámek obrazovky</translation>
 </translationbundle>

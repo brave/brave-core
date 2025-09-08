@@ -16,22 +16,22 @@ describe('ToolEvent', () => {
     const mockRespondToToolUseRequest = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
-          respondToToolUseRequest: mockRespondToToolUseRequest
-        } as unknown as Mojom.UntrustedConversationHandlerRemote}
+        conversationHandler={
+          {
+            respondToToolUseRequest: mockRespondToToolUseRequest,
+          } as unknown as Mojom.UntrustedConversationHandlerRemote
+        }
       >
         <ToolEvent
-          toolUseEvent={
-            {
-              toolName: 'user_choice_tool',
-              id: '123',
-              argumentsJson: '{"choices": ["first", "second", "third"]}',
-              output: undefined
-            }
-          }
+          toolUseEvent={{
+            toolName: 'user_choice_tool',
+            id: '123',
+            argumentsJson: '{"choices": ["first", "second", "third"]}',
+            output: undefined,
+          }}
           isEntryActive={true}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     expect(screen.getByTestId('tool-choice-text-0').textContent).toBe('first')
@@ -39,33 +39,35 @@ describe('ToolEvent', () => {
     expect(screen.getByTestId('tool-choice-text-2').textContent).toBe('third')
 
     fireEvent.click(screen.getByTestId('tool-choice-text-0'))
-    expect(mockRespondToToolUseRequest).toHaveBeenCalledWith('123', [{
-      textContentBlock: {
-        text: 'first'
-      }
-    }])
+    expect(mockRespondToToolUseRequest).toHaveBeenCalledWith('123', [
+      {
+        textContentBlock: {
+          text: 'first',
+        },
+      },
+    ])
   })
 
   it('should render completed state for user choice tool events', () => {
     const mockRespondToToolUseRequest = jest.fn()
     render(
       <MockContext
-        conversationHandler={{
-          respondToToolUseRequest: mockRespondToToolUseRequest
-        } as unknown as Mojom.UntrustedConversationHandlerRemote}
+        conversationHandler={
+          {
+            respondToToolUseRequest: mockRespondToToolUseRequest,
+          } as unknown as Mojom.UntrustedConversationHandlerRemote
+        }
       >
         <ToolEvent
-          toolUseEvent={
-            {
-              toolName: 'user_choice_tool',
-              id: '123',
-              argumentsJson: '{"choices": ["first", "second", "third"]}',
-              output: [createTextContentBlock('first')]
-            }
-          }
+          toolUseEvent={{
+            toolName: 'user_choice_tool',
+            id: '123',
+            argumentsJson: '{"choices": ["first", "second", "third"]}',
+            output: [createTextContentBlock('first')],
+          }}
           isEntryActive={true}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     // should only display result
@@ -78,25 +80,27 @@ describe('ToolEvent', () => {
     expect(mockRespondToToolUseRequest).not.toHaveBeenCalled()
 
     // icon should represent completed state
-    expect(screen.getByTestId('tool-default-completed-icon')).toBeInTheDocument()
-    expect(screen.queryByTestId('tool-default-progress-icon')).not.toBeInTheDocument()
+    expect(
+      screen.getByTestId('tool-default-completed-icon'),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByTestId('tool-default-progress-icon'),
+    ).not.toBeInTheDocument()
   })
 
   test('should handle bad json input for inactive entries', () => {
     const { container } = render(
       <MockContext>
         <ToolEvent
-          toolUseEvent={
-            {
-              toolName: 'user_choice_tool',
-              id: '123',
-              argumentsJson: '{"choices": }{["first", "second", "third"]}',
-              output: undefined
-            }
-          }
+          toolUseEvent={{
+            toolName: 'user_choice_tool',
+            id: '123',
+            argumentsJson: '{"choices": }{["first", "second", "third"]}',
+            output: undefined,
+          }}
           isEntryActive={false}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     expect(container.innerHTML).toBe('')
@@ -106,17 +110,15 @@ describe('ToolEvent', () => {
     render(
       <MockContext>
         <ToolEvent
-          toolUseEvent={
-            {
-              toolName: 'user_choice_tool',
-              id: '123',
-              argumentsJson: '{"choices": }{["first", "second", "third"]}',
-              output: undefined
-            }
-          }
+          toolUseEvent={{
+            toolName: 'user_choice_tool',
+            id: '123',
+            argumentsJson: '{"choices": }{["first", "second", "third"]}',
+            output: undefined,
+          }}
           isEntryActive={true}
         />
-      </MockContext>
+      </MockContext>,
     )
 
     expect(screen.getByTestId('tool-choice-progress-icon')).toBeInTheDocument()

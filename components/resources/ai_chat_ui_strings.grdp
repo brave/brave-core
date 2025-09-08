@@ -147,6 +147,9 @@
   <message name="IDS_CHAT_UI_MENU_CONVERSATION_HISTORY" desc="Menu item for opening the list of conversations" formatter_data="webui=AiChat">
     Conversation history
   </message>
+  <message name="IDS_CHAT_UI_MENU_MANAGE_MEMORIES" desc="Menu item for managing AI Chat memories" formatter_data="webui=AiChat">
+    Manage memories
+  </message>
   <message name="IDS_CHAT_UI_MENU_SETTINGS" desc="Menu item for Settings" formatter_data="webui=AiChat">
     Advanced Settings
   </message>
@@ -587,6 +590,9 @@
   </message>
   <message name="IDS_AI_CHAT_SCREENSHOT_BUTTON_LABEL" desc="The button label for screenshot" formatter_data="webui=AiChat">
     Screenshot
+  </message>
+  <message name="IDS_CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE" desc="Title for full page screenshot attachment" formatter_data="webui=AiChat">
+    Full page screenshot
   </message>
   <message name="IDS_AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL" desc="The button label for current tab contents" formatter_data="webui=AiChat">
     Current tab contents

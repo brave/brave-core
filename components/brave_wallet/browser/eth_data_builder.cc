@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
@@ -55,11 +56,11 @@ std::optional<std::string_view> ChainIdToVersion(std::string_view symbol,
     return "OPERA";
   }
 
-  auto it = kIdToVersionMappings.find(chain_id);
-  if (it == kIdToVersionMappings.end()) {
+  const auto* version = base::FindOrNull(kIdToVersionMappings, chain_id);
+  if (!version) {
     return std::nullopt;
   }
-  return it->second;
+  return *version;
 }
 
 }  // namespace

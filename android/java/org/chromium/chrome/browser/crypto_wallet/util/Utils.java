@@ -5,14 +5,9 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -48,11 +43,9 @@ import org.json.JSONObject;
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.Callbacks;
 import org.chromium.base.CommandLine;
-import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.task.PostTask;
-import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
@@ -72,12 +65,12 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.ChromeClickableSpan;
-import org.chromium.ui.widget.Toast;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -122,8 +115,6 @@ public class Utils {
 
     public static int[] P3ACoinTypes = {CoinType.ETH, CoinType.SOL, CoinType.FIL};
 
-    private static final int CLEAR_CLIPBOARD_INTERVAL = 60000; // In milliseconds
-
     public static List<String> getRecoveryPhraseAsList(final String recoveryPhrase) {
         final String[] recoveryPhraseArray = recoveryPhrase.split(" ");
         return new ArrayList<>(Arrays.asList(recoveryPhraseArray));
@@ -137,71 +128,14 @@ public class Utils {
         return recoveryPhrasesText.trim();
     }
 
-    /**
-     * Saves a given text to clipboard, shows a toast and clears it again after 60 seconds.
-     *
-     * @param context Context used to retrieve the clipboard service.
-     * @param textToCopy Text that will be copied to clipboard.
-     * @param textToShow String resource ID to display in the toast, or -1 to disable the toast.
-     * @param scheduleClear {@code true} to clear the clipboard after {@link
-     *     #CLEAR_CLIPBOARD_INTERVAL}.
-     */
-    public static void saveTextToClipboard(
-            final Context context,
-            final String textToCopy,
-            @StringRes final int textToShow,
-            final boolean scheduleClear) {
-        ClipboardManager clipboard =
-                (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("", textToCopy);
-        clipboard.setPrimaryClip(clip);
-        if (textToShow != -1) {
-            Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
-        }
-        if (!scheduleClear) {
-            return;
-        }
-
-        PostTask.postDelayedTask(
-                TaskTraits.UI_DEFAULT, () -> clearClipboard(textToCopy), CLEAR_CLIPBOARD_INTERVAL);
-    }
-
-    public static String getTextFromClipboard(Context context) {
-        ClipboardManager clipboard =
-                (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clipData = clipboard.getPrimaryClip();
-        if (clipData != null
-                && clipData.getDescription().hasMimeType(MIMETYPE_TEXT_PLAIN)
-                && clipData.getItemCount() > 0) {
-            return clipData.getItemAt(0).getText().toString();
-        }
-
-        return "";
-    }
-
-    /**
-     * Clears the clipboard and replaces it with "***" if it matches a given text.
-     *
-     * @param textToCompare Text to compare that will trigger the clipboard clearing in case of a
-     *     match.
-     */
-    public static void clearClipboard(final String textToCompare) {
-        String clipboardText = getTextFromClipboard(ContextUtils.getApplicationContext());
-        if (textToCompare.equals(clipboardText)) {
-            saveTextToClipboard(ContextUtils.getApplicationContext(), "***", -1, false);
-        }
-    }
-
     public static boolean shouldShowCryptoOnboarding() {
-        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-        return mSharedPreferences.getBoolean(PREF_CRYPTO_ONBOARDING, true);
+        SharedPreferencesManager preferencesManager = ChromeSharedPreferences.getInstance();
+        return preferencesManager.readBoolean(PREF_CRYPTO_ONBOARDING, true);
     }
 
     public static void setCryptoOnboarding(boolean enabled) {
-        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putBoolean(PREF_CRYPTO_ONBOARDING, enabled);
-        sharedPreferencesEditor.apply();
+        SharedPreferencesManager preferencesManager = ChromeSharedPreferences.getInstance();
+        preferencesManager.writeBoolean(PREF_CRYPTO_ONBOARDING, enabled);
     }
 
     /**
@@ -662,6 +596,8 @@ public class Utils {
                 });
     }
 
+    // Class Paint does not have setTextAppearance method
+    @SuppressWarnings("checkstyle:SetTextColorAndSetTextSizeCheck")
     public static Bitmap drawTextToBitmap(
             Bitmap bitmap, String text, float scale, float scaleDown) {
         Canvas canvas = new Canvas(bitmap);

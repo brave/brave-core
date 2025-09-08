@@ -5,6 +5,7 @@
 
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 
+#include <algorithm>
 #include <memory>
 #include <string_view>
 #include <utility>
@@ -12,14 +13,17 @@
 
 #include "base/json/json_writer.h"
 #include "base/memory/ptr_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
+#include "brave/components/psst/common/psst_script_responses.h"
 #include "build/build_config.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/navigation_controller.h"
@@ -86,12 +90,23 @@ ACTION_P(CheckIfMatchFailsCallback, loop) {
 
 // testing::InvokeArgument<N> does not work with base::OnceCallback, so we
 // define our own gMock action to run the 2nd argument.
-ACTION_P(InsertScriptInPageCallback, loop, value) {
+ACTION_P(InsertScriptInPageCallback, future, value) {
   std::move(
       const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg1))
       .Run(value.Clone());
-  loop->Quit();
+  future->SetValue(value.Clone());
 }
+
+class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
+ public:
+  MockUiDelegate() = default;
+  ~MockUiDelegate() override = default;
+
+  MOCK_METHOD(void,
+              UpdateTasks,
+              (long progress, const std::vector<PolicyTask>& applied_tasks),
+              (override));
+};
 
 class PsstTabWebContentsObserverUnitTestBase
     : public content::RenderViewHostTestHarness {
@@ -102,12 +117,19 @@ class PsstTabWebContentsObserverUnitTestBase
     psst::RegisterProfilePrefs(prefs_.registry());
     rule_registry_ = std::make_unique<MockPsstRuleRegistry>();
 
+    auto ui_delegate = std::make_unique<MockUiDelegate>();
+    ui_delegate_ = ui_delegate.get();
+
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
         new PsstTabWebContentsObserver(web_contents(), rule_registry_.get(),
-                                       &prefs_, inject_script_callback_.Get()));
+                                       &prefs_, std::move(ui_delegate),
+                                       inject_script_callback_.Get()));
   }
 
-  void TearDown() override { content::RenderViewHostTestHarness::TearDown(); }
+  void TearDown() override {
+    content::RenderViewHostTestHarness::TearDown();
+    ui_delegate_ = nullptr;
+  }
 
   MockPsstRuleRegistry& psst_rule_registry() { return *rule_registry_.get(); }
   PrefService* prefs() { return &prefs_; }
@@ -122,10 +144,13 @@ class PsstTabWebContentsObserverUnitTestBase
     return inject_script_callback_;
   }
 
+  MockUiDelegate& ui_delegate() { return *ui_delegate_; }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
 
  private:
+  raw_ptr<MockUiDelegate> ui_delegate_;
   base::MockCallback<PsstTabWebContentsObserver::InjectScriptCallback>
       inject_script_callback_;
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
@@ -144,7 +169,8 @@ class PsstTabWebContentsObserverUnitTest
 
 TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
   EXPECT_NE(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                web_contents(), browser_context(), prefs(), 2),
+                web_contents(), browser_context(),
+                std::make_unique<MockUiDelegate>(), prefs(), 2),
             nullptr);
 }
 
@@ -157,7 +183,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       &otr_browser_context, site_instance);
 
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                web_contents.get(), &otr_browser_context, prefs(), 2),
+                web_contents.get(), &otr_browser_context,
+                std::make_unique<MockUiDelegate>(), prefs(), 2),
             nullptr);
 }
 
@@ -228,9 +255,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           &first_nav_check_loop,
           CreateMatchedRule(first_nav_user_script, policy_script)));
 
-  base::RunLoop first_nav_user_script_insert_loop;
+  base::test::TestFuture<base::Value> first_nav_user_script_insert_future;
   EXPECT_CALL(inject_script_callback(), Run(first_nav_user_script, _))
-      .WillOnce(InsertScriptInPageCallback(&first_nav_user_script_insert_loop,
+      .WillOnce(InsertScriptInPageCallback(&first_nav_user_script_insert_future,
                                            base::Value()));
 
   DocumentOnLoadObserver first_nav_observer(web_contents());
@@ -239,7 +266,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   first_nav_observer.Wait();
 
   first_nav_check_loop.Run();
-  first_nav_user_script_insert_loop.Run();
+  EXPECT_EQ(base::Value(), first_nav_user_script_insert_future.Take());
 
   const std::string second_nav_user_script = "user2";
   const GURL second_navigation_url("https://example2.com");
@@ -249,10 +276,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           &second_nav_check_loop,
           CreateMatchedRule(second_nav_user_script, policy_script)));
 
-  base::RunLoop second_nav_user_script_insert_loop;
+  base::test::TestFuture<base::Value> second_nav_user_script_insert_future;
   EXPECT_CALL(inject_script_callback(), Run(second_nav_user_script, _))
-      .WillOnce(InsertScriptInPageCallback(&second_nav_user_script_insert_loop,
-                                           base::Value()));
+      .WillOnce(InsertScriptInPageCallback(
+          &second_nav_user_script_insert_future, base::Value()));
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
@@ -261,7 +288,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   observer.Wait();
 
   second_nav_check_loop.Run();
-  second_nav_user_script_insert_loop.Run();
+  EXPECT_EQ(base::Value(), second_nav_user_script_insert_future.Take());
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
@@ -276,10 +303,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
 
-  base::RunLoop user_script_insert_loop;
+  base::test::TestFuture<base::Value> user_script_insert_future;
   auto value = base::Value();
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
-      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            std::move(value)));
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
 
@@ -291,7 +318,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
 
   observer.Wait();
   check_loop.Run();
-  user_script_insert_loop.Run();
+  EXPECT_EQ(base::Value(), user_script_insert_future.Take());
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -389,13 +416,13 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
-  base::RunLoop user_script_insert_loop;
+  base::test::TestFuture<base::Value> user_script_insert_future;
 
   // User script result is not a dictionary
   auto script_params = base::Value();
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
-      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            std::move(script_params)));
   // No policy script executed
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
@@ -405,7 +432,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                                                              url);
   observer.Wait();
   check_loop.Run();
-  user_script_insert_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -418,11 +445,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
-  base::RunLoop user_script_insert_loop;
+  base::test::TestFuture<base::Value> user_script_insert_future;
   auto script_params = base::Value(base::Value::Dict());
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
-      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            std::move(script_params)));
   // No policy script executed
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
@@ -433,7 +460,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   observer.Wait();
 
   check_loop.Run();
-  user_script_insert_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -445,13 +472,13 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
-  base::RunLoop user_script_insert_loop;
+  base::test::TestFuture<base::Value> user_script_insert_future;
 
   // User script result is an empty dictionary
   auto script_params = base::Value(base::Value::Dict());
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
-      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            std::move(script_params)));
   // No policy script executed
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
@@ -462,7 +489,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   observer.Wait();
 
   check_loop.Run();
-  user_script_insert_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -474,15 +501,21 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
-  base::RunLoop user_script_insert_loop;
-  base::RunLoop policy_script_insert_loop;
+  base::test::TestFuture<base::Value> user_script_insert_future;
+  base::test::TestFuture<base::Value> policy_script_insert_future;
 
   // User script result is an dictionary, and user key is not empty
   auto script_params = base::Value(base::Value::Dict().Set("user", "value"));
-  auto policy_script_result = base::Value();
+
+  // Policy script result is a dictionary, but it is not deserializable
+  auto policy_script_result =
+      base::Value(base::Value::Dict().Set("prop", "value"));
+
+  // Any UI delegate method must not be called, as policy_script_result is empty
+  EXPECT_CALL(ui_delegate(), UpdateTasks(_, _)).Times(0);
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
-      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
   const auto script_with_parameters = base::StrCat(
@@ -494,8 +527,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   // Policy script executed, parameters added
   EXPECT_CALL(inject_script_callback(), Run(script_with_parameters, _))
-      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_loop,
-                                           std::move(policy_script_result)));
+      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
+                                           policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -503,8 +536,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   observer.Wait();
 
   check_loop.Run();
-  user_script_insert_loop.Run();
-  policy_script_insert_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
+  EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -516,14 +549,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
-  base::RunLoop user_script_insert_loop;
+  base::test::TestFuture<base::Value> user_script_insert_future;
 
   // User script result is an dictionary, but user key is empty
   auto script_params = base::Value(base::Value::Dict().Set("user", ""));
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
-      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
-                                           std::move(script_params)));
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                           script_params.Clone()));
   // No policy script executed
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
 
@@ -533,7 +566,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   observer.Wait();
 
   check_loop.Run();
-  user_script_insert_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -545,8 +578,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
-  base::RunLoop user_script_insert_loop;
-  base::RunLoop policy_script_insert_loop;
+
+  base::test::TestFuture<base::Value> user_script_insert_future;
+  base::test::TestFuture<base::Value> policy_script_insert_future;
 
   // Create a dictionary with unsupported blob storage value
   auto script_params = base::Value(
@@ -556,13 +590,16 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                base::Value(base::Value::BlobStorage{0x01, 0x02, 0x03})));
   auto policy_script_result = base::Value();
 
+  // Any UI delegate method must not be called, as policy_script_result is empty
+  EXPECT_CALL(ui_delegate(), UpdateTasks(_, _)).Times(0);
+
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
-      .WillOnce(InsertScriptInPageCallback(&user_script_insert_loop,
-                                           std::move(script_params)));
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                           script_params.Clone()));
   // Policy script executed, parameters not added
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _))
-      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_loop,
-                                           std::move(policy_script_result)));
+      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
+                                           policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
@@ -570,8 +607,82 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   observer.Wait();
 
   check_loop.Run();
-  user_script_insert_loop.Run();
-  policy_script_insert_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
+  EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  const std::string task_description = "task description";
+  const int progress = 50;
+  base::RunLoop check_loop;
+  base::test::TestFuture<long> progress_future;
+  base::test::TestFuture<std::vector<PolicyTask>> applied_tasks_future;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+
+  // UpdateTasks must be called with correct parameters, as policy script
+  // returns valid result
+  EXPECT_CALL(ui_delegate(), UpdateTasks(progress, _))
+      .WillOnce([&progress_future, &applied_tasks_future](
+                    long progress_value,
+                    const std::vector<PolicyTask>& applied_tasks) {
+        std::vector<PolicyTask> tasks;
+        std::ranges::for_each(applied_tasks, [&tasks](const PolicyTask& task) {
+          tasks.push_back(task.Clone());
+        });
+        applied_tasks_future.SetValue(std::move(tasks));
+        progress_future.SetValue(progress_value);
+      });
+
+  base::test::TestFuture<base::Value> user_script_insert_future;
+  base::test::TestFuture<base::Value> policy_script_insert_future;
+
+  // Create a user script return value
+  auto script_params = base::Value(base::Value::Dict().Set("user", "value"));
+
+  // prepare return value for policy script (status should be STARTED)
+  auto policy_script_result =
+      base::Value(base::Value::Dict()
+                      .Set("progress", progress)
+                      .Set("applied_tasks",
+                           base::Value::List().Append(
+                               base::Value::Dict()
+                                   .Set("url", url.spec())
+                                   .Set("description", task_description))));
+
+  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                           script_params.Clone()));
+
+  const auto policy_script_with_parameters = base::StrCat(
+      {"const params = ",
+       base::WriteJsonWithOptions(script_params.Clone(),
+                                  base::JSONWriter::OPTIONS_PRETTY_PRINT)
+           .value(),
+       ";\n", policy_script});
+  // Policy script executed, parameters added
+  EXPECT_CALL(inject_script_callback(), Run(policy_script_with_parameters, _))
+      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
+                                           policy_script_result.Clone()));
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+
+  check_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
+  EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
+  EXPECT_EQ(progress, progress_future.Take());
+
+  const auto& applied_tasks = applied_tasks_future.Take();
+  EXPECT_EQ(1u, applied_tasks.size());
+  EXPECT_EQ(url.spec(), applied_tasks[0].url);
+  EXPECT_EQ(task_description, applied_tasks[0].description);
 }
 
 class PsstTabWebContentsObserverFeatureDisabledUnitTest
@@ -585,7 +696,8 @@ class PsstTabWebContentsObserverFeatureDisabledUnitTest
 
 TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreateForWebContents(
-                web_contents(), browser_context(), prefs(), 2),
+                web_contents(), browser_context(),
+                std::make_unique<MockUiDelegate>(), prefs(), 2),
             nullptr);
 }
 

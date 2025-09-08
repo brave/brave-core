@@ -41,7 +41,8 @@
   align-items: flex-start;
   flex-direction: column;
   padding: var(--leo-spacing-xl);
-  border-radius: var(--leo-spacing-xl) var(--leo-spacing-xl) var(--leo-spacing-s) var(--leo-spacing-xl);
+  border-radius: var(--leo-spacing-xl) var(--leo-spacing-xl)
+    var(--leo-spacing-s) var(--leo-spacing-xl);
   background-color: var(--leo-color-neutral-10);
   max-width: min(520px, 100%);
   gap: var(--leo-spacing-m);
@@ -62,7 +63,7 @@
   align-items: center;
   gap: var(--leo-spacing-xs);
   border-radius: var(--leo-radius-s);
-  background: var( --leo-color-container-background);
+  background: var(--leo-color-container-background);
   white-space: nowrap;
 }
 

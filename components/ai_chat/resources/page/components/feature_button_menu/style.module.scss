@@ -20,7 +20,6 @@
   }
 }
 
-
 .menuSeparator {
   padding: 0;
   height: 1px;
@@ -48,12 +47,12 @@
 }
 
 .menuText {
-  flex-grow:1;
+  flex-grow: 1;
   font: var(--leo-font-default-regular);
 }
 
-leo-toggle{
-  margin-right:var(--leo-spacing-m);
+leo-toggle {
+  margin-right: var(--leo-spacing-m);
 }
 
 .lockOpen {

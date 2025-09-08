@@ -7,8 +7,10 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OAI_API_CLIENT_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
@@ -50,7 +52,9 @@ class OAIAPIClient {
   virtual void PerformRequest(const mojom::CustomModelOptions& model_options,
                               base::Value::List messages,
                               GenerationDataCallback data_received_callback,
-                              GenerationCompletedCallback completed_callback);
+                              GenerationCompletedCallback completed_callback,
+                              const std::optional<std::vector<std::string>>&
+                                  stop_sequences = std::nullopt);
 
   void ClearAllQueries();
 

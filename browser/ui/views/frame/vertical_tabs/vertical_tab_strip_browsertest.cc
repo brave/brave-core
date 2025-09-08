@@ -28,6 +28,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -1034,6 +1035,12 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripWithScrollableTabBrowserTest, Sanity) {
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripWithScrollableTabBrowserTest,
                        ToggleWithGroups) {
+  // Deflake the test by setting TabGroupSyncService initialized.
+  tab_groups::TabGroupSyncService* service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  service->SetIsInitializedForTesting(true);
+
   // Make sure browser works with both vertical tab and scrollable tab strip
   // even with groups.
   // https://github.com/brave/brave-browser/issues/46615

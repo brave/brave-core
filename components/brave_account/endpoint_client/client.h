@@ -11,7 +11,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/flat_map.h"
+#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/json/json_writer.h"
@@ -19,6 +19,7 @@
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_account/endpoint_client/concepts.h"
+#include "net/http/http_request_headers.h"
 
 // See //brave/components/brave_account/endpoint_client/README.md
 // for design, motivation, usage, and examples.
@@ -27,7 +28,7 @@ namespace brave_account::endpoint_client {
 
 template <concepts::Request T>
 struct WithHeaders : T {
-  base::flat_map<std::string, std::string> headers;
+  net::HttpRequestHeaders headers;
 };
 
 template <concepts::Endpoint T>
@@ -41,25 +42,28 @@ class Client {
 
  public:
   static void Send(api_request_helper::APIRequestHelper& api_request_helper,
-                   const Request& request,
+                   Request request,
                    Callback callback) {
-    SendImpl(api_request_helper, request, {}, std::move(callback));
+    SendImpl(api_request_helper, std::move(request), net::HttpRequestHeaders(),
+             std::move(callback));
   }
 
   static void Send(api_request_helper::APIRequestHelper& api_request_helper,
-                   const WithHeaders<Request>& request,
+                   WithHeaders<Request> request,
                    Callback callback) {
-    SendImpl(api_request_helper, request, request.headers, std::move(callback));
+    auto headers = std::move(request.headers);
+    SendImpl(api_request_helper, std::move(request), std::move(headers),
+             std::move(callback));
   }
 
  private:
   static void SendImpl(api_request_helper::APIRequestHelper& api_request_helper,
-                       const Request& request,
-                       const base::flat_map<std::string, std::string>& headers,
+                       Request request,
+                       net::HttpRequestHeaders headers,
                        Callback callback) {
-    auto on_response = [](decltype(callback) cb,
+    auto on_response = [](Callback callback,
                           api_request_helper::APIRequestResult result) {
-      std::move(cb).Run(
+      std::move(callback).Run(
           result.response_code(),
           result.Is2XXResponseCode()
               ? Expected(Response::FromValue(result.value_body()))
@@ -71,7 +75,10 @@ class Client {
 
     api_request_helper.Request(
         std::string(T::Method()), T::URL(), *json, "application/json",
-        base::BindOnce(std::move(on_response), std::move(callback)), headers);
+        base::BindOnce(std::move(on_response), std::move(callback)),
+        base::ToVector(headers.GetHeaderVector(), [](const auto& header) {
+          return std::pair(header.key, header.value);
+        }));
   }
 };
 

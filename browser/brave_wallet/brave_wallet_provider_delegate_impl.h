@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
@@ -60,14 +59,12 @@ class BraveWalletProviderDelegateImpl : public BraveWalletProviderDelegate,
 
  private:
   // content::WebContentsObserver overrides
-  void WebContentsDestroyed() override;
   void RenderFrameHostChanged(content::RenderFrameHost* old_host,
                               content::RenderFrameHost* new_host) override;
   void PrimaryPageChanged(content::Page& page) override;
 
-  raw_ptr<content::WebContents> web_contents_ = nullptr;
   const content::GlobalRenderFrameHostId host_id_;
-  base::WeakPtrFactory<BraveWalletProviderDelegateImpl> weak_ptr_factory_;
+  base::WeakPtrFactory<BraveWalletProviderDelegateImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

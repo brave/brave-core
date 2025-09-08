@@ -286,7 +286,16 @@ extension BrowserViewController {
       return
     }
 
-    var steps: [any OnboardingStep] = [.defaultBrowsing, .blockInterruptions]
+    // Perform accurate check to get fresh default browser status
+    defaultBrowserHelper.performAccurateDefaultCheckIfNeeded()
+
+    // Check if user is already default before showing onboarding
+    let isDefault = defaultBrowserHelper.status == .defaulted
+
+    var steps: [any OnboardingStep] = [.blockInterruptions]
+    if !isDefault {
+      steps.insert(.defaultBrowsing, at: 0)
+    }
     if !braveCore.p3aUtils.isP3APreferenceManaged {
       steps.append(.p3aOptIn)
     }
@@ -303,6 +312,7 @@ extension BrowserViewController {
         Preferences.FocusOnboarding.focusOnboardingFinished.value = true
       }
     )
+
     present(controller, animated: false)
 
     Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
