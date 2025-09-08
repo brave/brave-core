@@ -817,7 +817,6 @@ source_set("ui") {
     "//brave/components/brave_wallet_ui/market:market_display_generated",
     "//brave/components/brave_wallet_ui/nft:nft_display_generated",
     "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
-    "//brave/components/brave_wallet_ui/polkadot:polkadot_display_generated",
     "//brave/components/constants",
     "//brave/components/containers/buildflags",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
