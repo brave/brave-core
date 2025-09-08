@@ -8,14 +8,20 @@ import getAPI from '../api'
 
 // Custom error types for better error handling
 export class FileReadError extends Error {
-  constructor(message: string, public readonly cause?: Error) {
+  constructor(
+    message: string,
+    public readonly cause?: Error,
+  ) {
     super(message)
     this.name = 'FileReadError'
   }
 }
 
 export class ImageProcessingError extends Error {
-  constructor(message: string, public readonly cause?: Error) {
+  constructor(
+    message: string,
+    public readonly cause?: Error,
+  ) {
     super(message)
     this.name = 'ImageProcessingError'
   }
@@ -30,7 +36,7 @@ export class UnsupportedFileTypeError extends Error {
 
 // Utility function to convert File objects to UploadedFile format
 export const convertFileToUploadedFile = async (
-  file: File
+  file: File,
 ): Promise<Mojom.UploadedFile> => {
   const reader = new FileReader()
   const arrayBuffer = await new Promise<ArrayBuffer>((resolve, reject) => {
@@ -57,7 +63,7 @@ export const convertFileToUploadedFile = async (
       filename: file.name,
       filesize: file.size,
       data: Array.from(uint8Array),
-      type: Mojom.UploadedFileType.kPdf
+      type: Mojom.UploadedFileType.kPdf,
     }
     return uploadedFile
   } else if (mimeType.startsWith('image/')) {
@@ -66,12 +72,12 @@ export const convertFileToUploadedFile = async (
       const api = getAPI()
       const response = await api.uiHandler.processImageFile(
         Array.from(uint8Array),
-        file.name
+        file.name,
       )
 
       if (!response.processedFile) {
         throw new ImageProcessingError(
-          'Failed to process image file: Backend returned no result'
+          'Failed to process image file: Backend returned no result',
         )
       }
 
@@ -86,8 +92,8 @@ export const convertFileToUploadedFile = async (
     }
   } else {
     throw new UnsupportedFileTypeError(
-      `Unsupported file type: ${file.type}. Only images and PDF files ` +
-      `are supported.`
+      `Unsupported file type: ${file.type}. Only images and PDF files `
+        + `are supported.`,
     )
   }
 }

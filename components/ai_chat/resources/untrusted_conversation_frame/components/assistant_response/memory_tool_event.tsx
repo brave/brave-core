@@ -7,9 +7,7 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import { getLocale, formatLocale } from '$web-common/locale'
 import styles from './memory_tool_event.module.scss'
-import {
-  useUntrustedConversationContext
-} from '../../untrusted_conversation_context'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import * as Mojom from '../../../common/mojom'
 import '../../../common/strings'
 
@@ -46,7 +44,7 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
       (memories: string[]) => {
         const exists = memories.includes(memoryContent)
         setMemoryExists(exists)
-      }
+      },
     )
 
     return () => {
@@ -73,7 +71,6 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
     return null
   }
 
-
   const getTestId = () => {
     if (hasError) return 'memory-tool-event-error'
     if (!memoryExists) return 'memory-tool-event-undone'
@@ -85,8 +82,11 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
       className={styles.memoryToolEvent}
       data-testid={getTestId()}
     >
-      <Icon name='database' className={styles.icon} />
-      {hasError &&
+      <Icon
+        name='database'
+        className={styles.icon}
+      />
+      {hasError && (
         <div className={styles.actions}>
           <span className={styles.textError}>
             {getLocale(S.CHAT_UI_MEMORY_ERROR_LABEL)}
@@ -99,10 +99,13 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
             {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
           </button>
         </div>
-      }
-      {!hasError && !memoryExists &&
+      )}
+      {!hasError && !memoryExists && (
         <div className={styles.actions}>
-          <span className={styles.textUndone} title={memoryContent}>
+          <span
+            className={styles.textUndone}
+            title={memoryContent}
+          >
             {getLocale(S.CHAT_UI_MEMORY_UNDONE_LABEL)}
           </span>
           <button
@@ -113,12 +116,12 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
             {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
           </button>
         </div>
-      }
-      {!hasError && memoryExists &&
+      )}
+      {!hasError && memoryExists && (
         <div className={styles.actions}>
           <span>
             {formatLocale(S.CHAT_UI_MEMORY_UPDATED_WITH_CONTENT_LABEL, {
-              $1: memoryContent
+              $1: memoryContent,
             })}
           </span>
           <button
@@ -136,7 +139,7 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
             {getLocale(S.CHAT_UI_MEMORY_MANAGE_ALL_BUTTON_LABEL)}
           </button>
         </div>
-      }
+      )}
     </div>
   )
 }

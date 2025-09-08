@@ -24,7 +24,7 @@ interface ContextActionsAssistantProps {
 }
 
 export default function ContextActionsAssistant(
-  props: ContextActionsAssistantProps
+  props: ContextActionsAssistantProps,
 ) {
   const conversationContext = useUntrustedConversationContext()
   const [currentRatingStatus, setCurrentRatingStatus] =
@@ -38,7 +38,7 @@ export default function ContextActionsAssistant(
     setCurrentRatingStatus(status)
     conversationContext.parentUiFrame?.rateMessage(
       props.turnUuid,
-      status === 'liked'
+      status === 'liked',
     )
   }
 
@@ -48,13 +48,12 @@ export default function ContextActionsAssistant(
     }
     conversationContext.conversationHandler?.regenerateAnswer(
       props.turnUuid,
-      selectedModelKey
+      selectedModelKey,
     )
   }
 
   const leoModels = conversationContext.allModels.filter(
-    (model) => model.options.leoModelOptions &&
-      model.key !== 'chat-automatic'
+    (model) => model.options.leoModelOptions && model.key !== 'chat-automatic',
   )
 
   const handleOpenCloseRegenerateAnswerMenu = React.useCallback(
@@ -67,21 +66,21 @@ export default function ContextActionsAssistant(
 
   return (
     <div className={styles.actionsWrapper}>
-      {props.onCopyTextClicked &&
-      <CopyButton onClick={props.onCopyTextClicked} />
-      }
-      {props.onEditAnswerClicked &&
-      <Button
-        onClick={props.onEditAnswerClicked}
-        fab
-        size='small'
-        kind='plain-faint'
-        title={getLocale(S.CHAT_UI_EDIT_BUTTON_LABEL)}
-        className={styles.button}
-      >
-        <Icon name='edit-pencil' />
-      </Button>
-      }
+      {props.onCopyTextClicked && (
+        <CopyButton onClick={props.onCopyTextClicked} />
+      )}
+      {props.onEditAnswerClicked && (
+        <Button
+          onClick={props.onEditAnswerClicked}
+          fab
+          size='small'
+          kind='plain-faint'
+          title={getLocale(S.CHAT_UI_EDIT_BUTTON_LABEL)}
+          className={styles.button}
+        >
+          <Icon name='edit-pencil' />
+        </Button>
+      )}
       <Button
         onClick={() => handleLikeOrDislikeAnswer('liked')}
         fab
@@ -93,7 +92,7 @@ export default function ContextActionsAssistant(
         <Icon
           name='thumb-up'
           className={classnames({
-            [styles.liked]: currentRatingStatus === 'liked'
+            [styles.liked]: currentRatingStatus === 'liked',
           })}
         />
       </Button>
@@ -108,11 +107,11 @@ export default function ContextActionsAssistant(
         <Icon
           name='thumb-down'
           className={classnames({
-            [styles.disliked]: currentRatingStatus === 'disliked'
+            [styles.disliked]: currentRatingStatus === 'disliked',
           })}
         />
       </Button>
-      {props.turnModelKey &&(
+      {props.turnModelKey && (
         <RegenerateAnswerMenu
           isOpen={isRegenerateAnswerMenuOpen}
           onOpen={() => handleOpenCloseRegenerateAnswerMenu(true)}

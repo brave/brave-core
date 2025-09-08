@@ -10,7 +10,9 @@ import { useConversation } from '../../state/conversation_context'
 
 // The real WebUI has an iframe with the ConversationEntries component but
 // in storybook it's easier to just include it directly
-export default function StorybookConversationEntries (props: ConversationEntriesProps) {
+export default function StorybookConversationEntries(
+  props: ConversationEntriesProps,
+) {
   const conversationContext = useConversation()
   React.useEffect(() => {
     setTimeout(() => {
@@ -18,7 +20,5 @@ export default function StorybookConversationEntries (props: ConversationEntries
     }, 0)
   }, [conversationContext.conversationUuid])
 
-  return (
-    <ConversationEntries key={conversationContext.conversationUuid} />
-  )
+  return <ConversationEntries key={conversationContext.conversationUuid} />
 }

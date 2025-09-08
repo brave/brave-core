@@ -10,7 +10,7 @@ interface QuoteProps {
   text: string
 }
 
-function Quote (props: QuoteProps) {
+function Quote(props: QuoteProps) {
   return (
     <div className={styles.quote}>
       <div className={styles.text}>{props.text}</div>

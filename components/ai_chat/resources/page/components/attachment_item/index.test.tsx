@@ -5,14 +5,20 @@
 
 import * as React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import { AttachmentItem, AttachmentPageItem, AttachmentSpinnerItem, AttachmentUploadItems, formatFileSize } from '.'
+import {
+  AttachmentItem,
+  AttachmentPageItem,
+  AttachmentSpinnerItem,
+  AttachmentUploadItems,
+  formatFileSize,
+} from '.'
 import * as Mojom from '../../../common/mojom'
 
 // Mock URL.createObjectURL for tests that include image files
 // This is needed because AttachmentUploadItems calls URL.createObjectURL to create blob URLs for images
 Object.defineProperty(URL, 'createObjectURL', {
   writable: true,
-  value: jest.fn(() => 'mock-object-url')
+  value: jest.fn(() => 'mock-object-url'),
 })
 
 describe('attachment item', () => {
@@ -22,12 +28,14 @@ describe('attachment item', () => {
         title='Title'
         subtitle='Subtitle'
         icon={<img src='https://example.com/image.jpg' />}
-      />
+      />,
     )
-    expect(screen.getByText('Title', { selector: '.title' })).toBeInTheDocument()
+    expect(
+      screen.getByText('Title', { selector: '.title' }),
+    ).toBeInTheDocument()
     expect(screen.getByText('Subtitle')).toBeInTheDocument()
     expect(
-      container.querySelector('img[src="https://example.com/image.jpg"]')
+      container.querySelector('img[src="https://example.com/image.jpg"]'),
     ).toBeTruthy()
 
     expect(document.querySelector('leo-button')).not.toBeInTheDocument()
@@ -39,10 +47,10 @@ describe('attachment item', () => {
         title='Title'
         subtitle=''
         icon={<img src='https://example.com/image.jpg' />}
-      />
+      />,
     )
     expect(
-      container.querySelector('[data-key="subtitle"]')
+      container.querySelector('[data-key="subtitle"]'),
     ).not.toBeInTheDocument()
   })
 
@@ -54,7 +62,7 @@ describe('attachment item', () => {
         subtitle='Subtitle'
         icon={<img src='https://example.com/image.jpg' />}
         remove={clickHandler}
-      />
+      />,
     )
 
     const button: any = document.querySelector('leo-button')!
@@ -74,7 +82,9 @@ describe('attachment spinner item', () => {
   it('renders a loading spinner and title', async () => {
     const { container } = render(<AttachmentSpinnerItem title='Loading...' />)
     const spinner = container.querySelector('leo-progressring')
-    expect(screen.getByText('Loading...', { selector: '.title' })).toBeInTheDocument()
+    expect(
+      screen.getByText('Loading...', { selector: '.title' }),
+    ).toBeInTheDocument()
     expect(spinner).toBeInTheDocument()
     expect(spinner).toBeVisible()
   })
@@ -82,30 +92,82 @@ describe('attachment spinner item', () => {
 
 describe('attachment page item', () => {
   it('renders a page item', () => {
-    const { container } = render(<AttachmentPageItem title='Title' url='https://example.com' />)
-    expect(screen.getByText('Title', { selector: '.title' })).toBeInTheDocument()
-    expect(screen.getByText('https://example.com', { selector: 'leo-tooltip [slot="content"]' })).toBeInTheDocument()
-    expect(screen.getByText('example.com', { selector: '.subtitleText div:first-child' })).toBeInTheDocument()
-    expect(container.querySelector('img[src*="example.com"]')).toBeInTheDocument()
+    const { container } = render(
+      <AttachmentPageItem
+        title='Title'
+        url='https://example.com'
+      />,
+    )
+    expect(
+      screen.getByText('Title', { selector: '.title' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('https://example.com', {
+        selector: 'leo-tooltip [slot="content"]',
+      }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('example.com', {
+        selector: '.subtitleText div:first-child',
+      }),
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector('img[src*="example.com"]'),
+    ).toBeInTheDocument()
   })
 
   it('scheme is not hidden in tooltip', () => {
-    render(<AttachmentPageItem title='Title' url='https://example.com' />)
-    expect(screen.getByText('https://example.com', { selector: 'leo-tooltip [slot="content"]' })).toBeInTheDocument()
+    render(
+      <AttachmentPageItem
+        title='Title'
+        url='https://example.com'
+      />,
+    )
+    expect(
+      screen.getByText('https://example.com', {
+        selector: 'leo-tooltip [slot="content"]',
+      }),
+    ).toBeInTheDocument()
   })
 
   it('does not hide non-http(s) urls', () => {
-    render(<AttachmentPageItem title='Title' url='brave://newtab' />)
-    expect(screen.getByText('brave://newtab', { selector: 'leo-tooltip div:first-child' })).toBeInTheDocument()
+    render(
+      <AttachmentPageItem
+        title='Title'
+        url='brave://newtab'
+      />,
+    )
+    expect(
+      screen.getByText('brave://newtab', {
+        selector: 'leo-tooltip div:first-child',
+      }),
+    ).toBeInTheDocument()
 
-    render(<AttachmentPageItem title='Title' url='file:///path/to/file.txt' />)
-    expect(screen.getByText('file:///path/to/file.txt', { selector: 'leo-tooltip div:first-child' })).toBeInTheDocument()
+    render(
+      <AttachmentPageItem
+        title='Title'
+        url='file:///path/to/file.txt'
+      />,
+    )
+    expect(
+      screen.getByText('file:///path/to/file.txt', {
+        selector: 'leo-tooltip div:first-child',
+      }),
+    ).toBeInTheDocument()
 
-    render(<AttachmentPageItem title='Title' url='ftp:///path/to/file.txt' />)
-    expect(screen.getByText('ftp:///path/to/file.txt', { selector: 'leo-tooltip div:first-child' })).toBeInTheDocument()
+    render(
+      <AttachmentPageItem
+        title='Title'
+        url='ftp:///path/to/file.txt'
+      />,
+    )
+    expect(
+      screen.getByText('ftp:///path/to/file.txt', {
+        selector: 'leo-tooltip div:first-child',
+      }),
+    ).toBeInTheDocument()
   })
 })
-
 
 describe('formatFileSize', () => {
   it('should format bytes correctly', () => {
@@ -132,16 +194,19 @@ describe('formatFileSize', () => {
 })
 
 describe('AttachmentUploadItems', () => {
-  const createMockFile = (filename: string, type: Mojom.UploadedFileType): Mojom.UploadedFile => ({
+  const createMockFile = (
+    filename: string,
+    type: Mojom.UploadedFileType,
+  ): Mojom.UploadedFile => ({
     filename,
     type,
     data: new ArrayBuffer(100),
-    filesize: BigInt(100)
+    filesize: BigInt(100),
   })
 
   it('renders regular image files with original filename', () => {
     const uploadedFiles = [
-      createMockFile('photo.jpg', Mojom.UploadedFileType.kImage)
+      createMockFile('photo.jpg', Mojom.UploadedFileType.kImage),
     ]
 
     render(<AttachmentUploadItems uploadedFiles={uploadedFiles} />)
@@ -151,25 +216,43 @@ describe('AttachmentUploadItems', () => {
 
   it('renders screenshot with localized title', () => {
     const uploadedFiles = [
-      createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`, Mojom.UploadedFileType.kScreenshot)
+      createMockFile(
+        `${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`,
+        Mojom.UploadedFileType.kScreenshot,
+      ),
     ]
 
     render(<AttachmentUploadItems uploadedFiles={uploadedFiles} />)
 
-    expect(screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE')).toBeInTheDocument()
+    expect(
+      screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE'),
+    ).toBeInTheDocument()
   })
 
   it('renders only the first screenshot when multiple screenshots exist', () => {
     const uploadedFiles = [
-      createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`, Mojom.UploadedFileType.kScreenshot),
-      createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}1.png`, Mojom.UploadedFileType.kScreenshot),
-      createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}2.png`, Mojom.UploadedFileType.kScreenshot)
+      createMockFile(
+        `${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`,
+        Mojom.UploadedFileType.kScreenshot,
+      ),
+      createMockFile(
+        `${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}1.png`,
+        Mojom.UploadedFileType.kScreenshot,
+      ),
+      createMockFile(
+        `${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}2.png`,
+        Mojom.UploadedFileType.kScreenshot,
+      ),
     ]
 
-    const { container } = render(<AttachmentUploadItems uploadedFiles={uploadedFiles} />)
+    const { container } = render(
+      <AttachmentUploadItems uploadedFiles={uploadedFiles} />,
+    )
 
     // Should only find one "CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE" title
-    const screenshotTitles = screen.getAllByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE')
+    const screenshotTitles = screen.getAllByText(
+      'CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE',
+    )
     expect(screenshotTitles).toHaveLength(1)
 
     // Should only have one image rendered
@@ -180,19 +263,29 @@ describe('AttachmentUploadItems', () => {
   it('renders mixed file types correctly', () => {
     const uploadedFiles = [
       createMockFile('photo.jpg', Mojom.UploadedFileType.kImage),
-      createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`, Mojom.UploadedFileType.kScreenshot),
-      createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}1.png`, Mojom.UploadedFileType.kScreenshot),
-      createMockFile('document.pdf', Mojom.UploadedFileType.kPdf)
+      createMockFile(
+        `${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`,
+        Mojom.UploadedFileType.kScreenshot,
+      ),
+      createMockFile(
+        `${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}1.png`,
+        Mojom.UploadedFileType.kScreenshot,
+      ),
+      createMockFile('document.pdf', Mojom.UploadedFileType.kPdf),
     ]
 
     render(<AttachmentUploadItems uploadedFiles={uploadedFiles} />)
 
     expect(screen.getByText('photo.jpg')).toBeInTheDocument()
-    expect(screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE')).toBeInTheDocument()
+    expect(
+      screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE'),
+    ).toBeInTheDocument()
     expect(screen.getByText('document.pdf')).toBeInTheDocument()
 
     // Should only have one screenshot title despite multiple screenshot files
-    const screenshotTitles = screen.getAllByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE')
+    const screenshotTitles = screen.getAllByText(
+      'CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE',
+    )
     expect(screenshotTitles).toHaveLength(1)
   })
 
@@ -200,20 +293,33 @@ describe('AttachmentUploadItems', () => {
     const mockRemove = jest.fn()
     const uploadedFiles = [
       createMockFile('image.jpg', Mojom.UploadedFileType.kImage),
-      createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`, Mojom.UploadedFileType.kScreenshot),
-      createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}1.png`, Mojom.UploadedFileType.kScreenshot),
-      createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}2.png`, Mojom.UploadedFileType.kScreenshot),
-      createMockFile('document.pdf', Mojom.UploadedFileType.kPdf)
+      createMockFile(
+        `${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`,
+        Mojom.UploadedFileType.kScreenshot,
+      ),
+      createMockFile(
+        `${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}1.png`,
+        Mojom.UploadedFileType.kScreenshot,
+      ),
+      createMockFile(
+        `${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}2.png`,
+        Mojom.UploadedFileType.kScreenshot,
+      ),
+      createMockFile('document.pdf', Mojom.UploadedFileType.kPdf),
     ]
 
-    render(<AttachmentUploadItems
-      uploadedFiles={uploadedFiles}
-      remove={mockRemove}
-    />)
+    render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        remove={mockRemove}
+      />,
+    )
 
     // Should render image, one screenshot thumbnail, and PDF
     expect(screen.getByText('image.jpg')).toBeInTheDocument()
-    expect(screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE')).toBeInTheDocument()
+    expect(
+      screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE'),
+    ).toBeInTheDocument()
     expect(screen.getByText('document.pdf')).toBeInTheDocument()
 
     // Find the remove button for the screenshot thumbnail (should be the second button)
@@ -232,15 +338,25 @@ describe('AttachmentUploadItems', () => {
     const mockRemove = jest.fn()
     const uploadedFiles = [
       createMockFile('image.jpg', Mojom.UploadedFileType.kImage),
-      createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`, Mojom.UploadedFileType.kScreenshot),
-      createMockFile('document.pdf', Mojom.UploadedFileType.kPdf)
+      createMockFile(
+        `${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`,
+        Mojom.UploadedFileType.kScreenshot,
+      ),
+      createMockFile('document.pdf', Mojom.UploadedFileType.kPdf),
     ]
 
-    render(<AttachmentUploadItems uploadedFiles={uploadedFiles} remove={mockRemove} />)
+    render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        remove={mockRemove}
+      />,
+    )
 
     // Should render all items
     expect(screen.getByText('image.jpg')).toBeInTheDocument()
-    expect(screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE')).toBeInTheDocument()
+    expect(
+      screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE'),
+    ).toBeInTheDocument()
     expect(screen.getByText('document.pdf')).toBeInTheDocument()
 
     // Should have remove buttons for all file types
@@ -250,8 +366,14 @@ describe('AttachmentUploadItems', () => {
 
   it('treats non-fullscreenshot screenshots as regular images', () => {
     const uploadedFiles = [
-      createMockFile('regular_screenshot.png', Mojom.UploadedFileType.kScreenshot),
-      createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`, Mojom.UploadedFileType.kScreenshot)
+      createMockFile(
+        'regular_screenshot.png',
+        Mojom.UploadedFileType.kScreenshot,
+      ),
+      createMockFile(
+        `${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`,
+        Mojom.UploadedFileType.kScreenshot,
+      ),
     ]
 
     render(<AttachmentUploadItems uploadedFiles={uploadedFiles} />)
@@ -259,6 +381,8 @@ describe('AttachmentUploadItems', () => {
     // Regular screenshot should show with its original filename
     expect(screen.getByText('regular_screenshot.png')).toBeInTheDocument()
     // Full page screenshot should show with localized title
-    expect(screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE')).toBeInTheDocument()
+    expect(
+      screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE'),
+    ).toBeInTheDocument()
   })
 })

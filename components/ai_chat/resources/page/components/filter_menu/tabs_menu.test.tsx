@@ -5,46 +5,69 @@
 
 import '$test-utils/disable_custom_elements'
 
-import * as React from "react";
-import { AIChatContext, AIChatReactContext, defaultContext as defaultAIChatContext } from "../../state/ai_chat_context";
-import { ConversationReactContext, ConversationContext, defaultContext as defaultConversationContext } from "../../state/conversation_context";
-import { render } from "@testing-library/react";
-import TabsMenu from "./tabs_menu";
+import * as React from 'react'
+import {
+  AIChatContext,
+  AIChatReactContext,
+  defaultContext as defaultAIChatContext,
+} from '../../state/ai_chat_context'
+import {
+  ConversationReactContext,
+  ConversationContext,
+  defaultContext as defaultConversationContext,
+} from '../../state/conversation_context'
+import { render } from '@testing-library/react'
+import TabsMenu from './tabs_menu'
 import { ContentType } from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
 
-const MockContext = (props: React.PropsWithChildren<Partial<AIChatContext & ConversationContext>>) => {
-  return <AIChatReactContext.Provider value={{
-    ...defaultAIChatContext,
-    ...props,
-  }}>
-    <ConversationReactContext.Provider value={{
-      ...defaultConversationContext,
-      ...props,
-    }}>
-      {props.children}
-    </ConversationReactContext.Provider>
-  </AIChatReactContext.Provider>
+const MockContext = (
+  props: React.PropsWithChildren<Partial<AIChatContext & ConversationContext>>,
+) => {
+  return (
+    <AIChatReactContext.Provider
+      value={{
+        ...defaultAIChatContext,
+        ...props,
+      }}
+    >
+      <ConversationReactContext.Provider
+        value={{
+          ...defaultConversationContext,
+          ...props,
+        }}
+      >
+        {props.children}
+      </ConversationReactContext.Provider>
+    </AIChatReactContext.Provider>
+  )
 }
 
 describe('TabsMenu', () => {
   it('should render tabs', () => {
-    const { getByText, container } = render(<MockContext tabs={[{
-      contentId: 1,
-      title: 'Test 1',
-      url: {
-        url: 'https://tes1t.com',
-      },
-      id: 1
-    }, {
-      contentId: 2,
-      title: 'Test 2',
-      url: {
-        url: 'https://test2.com',
-      },
-      id: 2
-    }]}>
-      <TabsMenu />
-    </MockContext>)
+    const { getByText, container } = render(
+      <MockContext
+        tabs={[
+          {
+            contentId: 1,
+            title: 'Test 1',
+            url: {
+              url: 'https://tes1t.com',
+            },
+            id: 1,
+          },
+          {
+            contentId: 2,
+            title: 'Test 2',
+            url: {
+              url: 'https://test2.com',
+            },
+            id: 2,
+          },
+        ]}
+      >
+        <TabsMenu />
+      </MockContext>,
+    )
 
     expect(getByText('Test 1')).toBeInTheDocument()
     expect(getByText('Test 2')).toBeInTheDocument()
@@ -53,43 +76,54 @@ describe('TabsMenu', () => {
   })
 
   it('should filter out attached tabs', () => {
-    const { queryByText } = render(<MockContext associatedContentInfo={[
-      {
-        contentId: 1,
-        title: 'Test 1',
-        url: {
-          url: 'https://test1.com',
-        },
-        contentType: ContentType.PageContent,
-        contentUsedPercentage: 0,
-        uuid: '1'
-      }
-    ]} tabs={[{
-      contentId: 1,
-      title: 'Test 1',
-      url: {
-        url: 'https://tes1t.com',
-      },
-      id: 1
-    }, {
-      contentId: 2,
-      title: 'Test 2',
-      url: {
-        url: 'https://test2.com',
-      },
-      id: 2
-    }]}>
-      <TabsMenu />
-    </MockContext>)
+    const { queryByText } = render(
+      <MockContext
+        associatedContentInfo={[
+          {
+            conversationTurnUuid: undefined,
+            contentId: 1,
+            title: 'Test 1',
+            url: {
+              url: 'https://test1.com',
+            },
+            contentType: ContentType.PageContent,
+            contentUsedPercentage: 0,
+            uuid: '1',
+          },
+        ]}
+        tabs={[
+          {
+            contentId: 1,
+            title: 'Test 1',
+            url: {
+              url: 'https://tes1t.com',
+            },
+            id: 1,
+          },
+          {
+            contentId: 2,
+            title: 'Test 2',
+            url: {
+              url: 'https://test2.com',
+            },
+            id: 2,
+          },
+        ]}
+      >
+        <TabsMenu />
+      </MockContext>,
+    )
 
     expect(queryByText('Test 1')).not.toBeInTheDocument()
     expect(queryByText('Test 2')).toBeInTheDocument()
   })
 
   it('should be open when query starts with @', () => {
-    const { container } = render(<MockContext inputText='@'>
-      <TabsMenu />
-    </MockContext>)
+    const { container } = render(
+      <MockContext inputText='@'>
+        <TabsMenu />
+      </MockContext>,
+    )
 
     const menu = container.querySelector('leo-buttonmenu')
     expect(menu).toBeInTheDocument()
@@ -97,14 +131,17 @@ describe('TabsMenu', () => {
   })
 
   it('should be close when @ is removed', () => {
-    render(<MockContext inputText='@'>
-      <TabsMenu />
-    </MockContext>)
+    render(
+      <MockContext inputText='@'>
+        <TabsMenu />
+      </MockContext>,
+    )
 
-
-    const { container } = render(<MockContext inputText='hi'>
-      <TabsMenu />
-    </MockContext>)
+    const { container } = render(
+      <MockContext inputText='hi'>
+        <TabsMenu />
+      </MockContext>,
+    )
 
     const menu = container.querySelector('leo-buttonmenu')
     expect(menu).toBeInTheDocument()
@@ -112,23 +149,31 @@ describe('TabsMenu', () => {
   })
 
   it('should filter by text after @', () => {
-    const { queryByText } = render(<MockContext inputText='@2' tabs={[{
-      contentId: 1,
-      title: 'Test 1',
-      url: {
-        url: 'https://tes1t.com',
-      },
-      id: 1
-    }, {
-      contentId: 2,
-      title: 'Test 2',
-      url: {
-        url: 'https://test2.com',
-      },
-      id: 2
-    }]}>
-      <TabsMenu />
-    </MockContext>)
+    const { queryByText } = render(
+      <MockContext
+        inputText='@2'
+        tabs={[
+          {
+            contentId: 1,
+            title: 'Test 1',
+            url: {
+              url: 'https://tes1t.com',
+            },
+            id: 1,
+          },
+          {
+            contentId: 2,
+            title: 'Test 2',
+            url: {
+              url: 'https://test2.com',
+            },
+            id: 2,
+          },
+        ]}
+      >
+        <TabsMenu />
+      </MockContext>,
+    )
 
     expect(queryByText('Test 1')).not.toBeInTheDocument()
     expect(queryByText('Test 2')).toBeInTheDocument()
@@ -142,26 +187,34 @@ describe('TabsMenu', () => {
       url: {
         url: 'https://tes1t.com',
       },
-      id: 1
+      id: 1,
     }
-    const { queryByText } = render(<MockContext
-      conversationUuid='1'
-      inputText='@'
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-      uiHandler={{
-        associateTab,
-        ...defaultAIChatContext.uiHandler,
-      } as any}
-      tabs={[tab1, {
-        contentId: 2,
-        title: 'Test 2',
-        url: {
-          url: 'https://test2.com',
-        },
-        id: 2
-      }]}>
-      <TabsMenu />
-    </MockContext>)
+    const { queryByText } = render(
+      <MockContext
+        conversationUuid='1'
+        inputText='@'
+        uiHandler={
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+          {
+            associateTab,
+            ...defaultAIChatContext.uiHandler,
+          } as any
+        }
+        tabs={[
+          tab1,
+          {
+            contentId: 2,
+            title: 'Test 2',
+            url: {
+              url: 'https://test2.com',
+            },
+            id: 2,
+          },
+        ]}
+      >
+        <TabsMenu />
+      </MockContext>,
+    )
 
     queryByText('Test 1')?.click()
 

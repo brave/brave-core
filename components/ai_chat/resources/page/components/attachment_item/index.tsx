@@ -35,7 +35,6 @@ export const formatFileSize = (bytes: number): string => {
   return `${size.toFixed(2)} ${units[index]}`
 }
 
-
 type Props = {
   icon: React.ReactNode
   title: string
@@ -83,7 +82,6 @@ export function AttachmentItem(props: Props) {
   )
 }
 
-
 export function AttachmentSpinnerItem(props: { title: string }) {
   return (
     <AttachmentItem
@@ -98,44 +96,81 @@ export function AttachmentSpinnerItem(props: { title: string }) {
   )
 }
 
-export function AttachmentPageItem(props: { title: string, url: string, remove?: () => void }) {
+export function AttachmentPageItem(props: {
+  title: string
+  url: string
+  remove?: () => void
+}) {
   // We don't display the scheme in the subtitle.
   const sansSchemeUrl = props.url.replace(/^https?:\/\//, '')
 
-  return <AttachmentItem
-    icon={<div className={styles.favicon}>
-      <img src={`//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}`} />
-    </div>}
-    title={props.title}
-    subtitle={<>
-      {props.remove && <Tooltip mode='mini' mouseleaveTimeout={tooltipHideDelay} mouseenterDelay={tooltipShowDelay}>
-        <Icon name='info-outline' />
-        <div className={styles.tooltipContent} slot="content">
-          {getLocale(S.CHAT_UI_PAGE_ATTACHMENT_TOOLTIP_INFO)}
+  return (
+    <AttachmentItem
+      icon={
+        <div className={styles.favicon}>
+          <img
+            src={`//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}`}
+          />
         </div>
-      </Tooltip>}
-      <Tooltip mode='mini' mouseleaveTimeout={tooltipHideDelay} mouseenterDelay={tooltipShowDelay} className={styles.subtitleText}>
-        <div>{sansSchemeUrl}</div>
-        <div className={styles.tooltipContent} slot="content">{props.url}</div>
-      </Tooltip>
-    </>}
-    remove={props.remove} />
+      }
+      title={props.title}
+      subtitle={
+        <>
+          {props.remove && (
+            <Tooltip
+              mode='mini'
+              mouseleaveTimeout={tooltipHideDelay}
+              mouseenterDelay={tooltipShowDelay}
+            >
+              <Icon name='info-outline' />
+              <div
+                className={styles.tooltipContent}
+                slot='content'
+              >
+                {getLocale(S.CHAT_UI_PAGE_ATTACHMENT_TOOLTIP_INFO)}
+              </div>
+            </Tooltip>
+          )}
+          <Tooltip
+            mode='mini'
+            mouseleaveTimeout={tooltipHideDelay}
+            mouseenterDelay={tooltipShowDelay}
+            className={styles.subtitleText}
+          >
+            <div>{sansSchemeUrl}</div>
+            <div
+              className={styles.tooltipContent}
+              slot='content'
+            >
+              {props.url}
+            </div>
+          </Tooltip>
+        </>
+      }
+      remove={props.remove}
+    />
+  )
 }
 
-function AttachmentUploadItem({ file, index, remove }: {
+function AttachmentUploadItem({
+  file,
+  index,
+  remove,
+}: {
   file: Mojom.UploadedFile
   index: number
   remove?: (index: number) => void
 }) {
-  const isImage = file.type === Mojom.UploadedFileType.kImage ||
-                 file.type === Mojom.UploadedFileType.kScreenshot
+  const isImage =
+    file.type === Mojom.UploadedFileType.kImage
+    || file.type === Mojom.UploadedFileType.kScreenshot
   const isPdf = file.type === Mojom.UploadedFileType.kPdf
   const isFileFullPageScreenshot = isFullPageScreenshot(file)
 
   const dataUrl = React.useMemo(() => {
     if (!isImage) return null
     const blob = new Blob([new Uint8Array(file.data)], {
-      type: 'image/*'
+      type: 'image/*',
     })
     return URL.createObjectURL(blob)
   }, [file, isImage])
@@ -153,9 +188,11 @@ function AttachmentUploadItem({ file, index, remove }: {
             src={dataUrl!}
           />
         }
-        title={isFileFullPageScreenshot
-          ? getLocale(S.CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE)
-          : file.filename}
+        title={
+          isFileFullPageScreenshot
+            ? getLocale(S.CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE)
+            : file.filename
+        }
         subtitle={filesize}
         remove={remove ? () => remove(index) : undefined}
       />
@@ -179,14 +216,18 @@ export function AttachmentUploadItems(props: {
   remove?: (index: number) => void
 }) {
   // Calculate first full page screenshot index.
-  const firstFullPageScreenshotIndex = props.uploadedFiles.findIndex(isFullPageScreenshot)
+  const firstFullPageScreenshotIndex =
+    props.uploadedFiles.findIndex(isFullPageScreenshot)
 
   return (
     <>
       {props.uploadedFiles
         .filter((file, index) => {
           // Only show the first full page screenshot, hide the rest
-          return !isFullPageScreenshot(file) || index === firstFullPageScreenshotIndex
+          return (
+            !isFullPageScreenshot(file)
+            || index === firstFullPageScreenshotIndex
+          )
         })
         .map((file, filteredIndex) => {
           // Find the original index in the unfiltered array

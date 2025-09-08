@@ -13,19 +13,17 @@ interface PromptAutoSuggestionProps {
   onRetry?: () => void
 }
 
-function ErrorConnection (props: PromptAutoSuggestionProps) {
+function ErrorConnection(props: PromptAutoSuggestionProps) {
   return (
     <div className={styles.alert}>
-      <Alert
-        type='error'
-      >
+      <Alert type='error'>
         {getLocale(S.CHAT_UI_ERROR_NETWORK)}
         <Button
           slot='actions'
           kind='filled'
           onClick={props.onRetry}
         >
-            {getLocale(S.CHAT_UI_RETRY_BUTTON_LABEL)}
+          {getLocale(S.CHAT_UI_RETRY_BUTTON_LABEL)}
         </Button>
       </Alert>
     </div>

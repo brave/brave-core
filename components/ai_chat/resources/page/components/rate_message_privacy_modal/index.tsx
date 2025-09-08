@@ -24,12 +24,12 @@ export default function RateMessagePrivacyModal() {
     if (conversationContext.ratingTurnUuid) {
       conversationContext.handleRateMessage(
         conversationContext.ratingTurnUuid.turnUuid,
-        conversationContext.ratingTurnUuid.isLiked
+        conversationContext.ratingTurnUuid.isLiked,
       )
     }
   }, [
     conversationContext.handleRateMessage,
-    conversationContext.ratingTurnUuid
+    conversationContext.ratingTurnUuid,
   ])
 
   const handleLearnMoreClicked = React.useCallback(() => {
@@ -67,7 +67,7 @@ export default function RateMessagePrivacyModal() {
               >
                 {content}
               </a>
-            )
+            ),
           })}
         </span>
       </div>

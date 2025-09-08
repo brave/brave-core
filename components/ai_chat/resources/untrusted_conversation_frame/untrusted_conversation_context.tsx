@@ -4,7 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import API, {ConversationEntriesUIState, defaultConversationEntriesUIState} from './untrusted_conversation_frame_api'
+import API, {
+  ConversationEntriesUIState,
+  defaultConversationEntriesUIState,
+} from './untrusted_conversation_frame_api'
 import * as Mojom from '../common/mojom'
 import useAPIState from '../common/useAPIState'
 
@@ -22,13 +25,15 @@ export type UntrustedConversationContext = ConversationEntriesUIState & {
 }
 
 export const defaultContext: UntrustedConversationContext = {
-  ...defaultConversationEntriesUIState
+  ...defaultConversationEntriesUIState,
 }
 
 export const UntrustedConversationReactContext =
   React.createContext<UntrustedConversationContext>(defaultContext)
 
-export function UntrustedConversationContextProvider(props: React.PropsWithChildren) {
+export function UntrustedConversationContextProvider(
+  props: React.PropsWithChildren,
+) {
   const api = API.getInstance()
   const context = useAPIState(api, defaultContext)
 
@@ -38,7 +43,7 @@ export function UntrustedConversationContextProvider(props: React.PropsWithChild
     uiHandler: api.uiHandler,
     parentUiFrame: api.parentUIFrame,
     conversationObserver: api.conversationObserver,
-    uiObserver: api.uiObserver
+    uiObserver: api.uiObserver,
   }
 
   return (

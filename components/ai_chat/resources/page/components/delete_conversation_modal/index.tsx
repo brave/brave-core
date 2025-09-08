@@ -15,10 +15,11 @@ export default function DeleteConversationModal() {
   const aiChatContext = useAIChat()
 
   // Computed
-  const title = aiChatContext.conversations.find(
-        (conversation) =>
-          conversation.uuid === aiChatContext.deletingConversationId
-      )?.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
+  const title =
+    aiChatContext.conversations.find(
+      (conversation) =>
+        conversation.uuid === aiChatContext.deletingConversationId,
+    )?.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
 
   return (
     <Dialog
@@ -55,7 +56,7 @@ export default function DeleteConversationModal() {
             onClick={() => {
               if (aiChatContext.deletingConversationId) {
                 aiChatContext.service?.deleteConversation(
-                  aiChatContext.deletingConversationId
+                  aiChatContext.deletingConversationId,
                 )
                 aiChatContext.setDeletingConversationId(null)
               }

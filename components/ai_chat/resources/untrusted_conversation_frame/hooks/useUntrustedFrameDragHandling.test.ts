@@ -8,15 +8,15 @@ import { untrustedFrameDragHandlingSetup } from './useUntrustedFrameDragHandling
 // Mock the UntrustedConversationFrameAPI
 const mockAPI = {
   parentUIFrame: {
-    dragStart: jest.fn()
-  }
+    dragStart: jest.fn(),
+  },
 }
 
 jest.mock('../untrusted_conversation_frame_api', () => ({
   __esModule: true,
   default: {
-    getInstance: () => mockAPI
-  }
+    getInstance: () => mockAPI,
+  },
 }))
 
 describe('untrustedFrameDragHandlingSetup', () => {
@@ -31,8 +31,10 @@ describe('untrustedFrameDragHandlingSetup', () => {
     it('sets up dragenter event listener', () => {
       untrustedFrameDragHandlingSetup()
 
-      expect(document.addEventListener)
-        .toHaveBeenCalledWith('dragenter', expect.any(Function))
+      expect(document.addEventListener).toHaveBeenCalledWith(
+        'dragenter',
+        expect.any(Function),
+      )
     })
   })
 
@@ -45,14 +47,15 @@ describe('untrustedFrameDragHandlingSetup', () => {
       // Extract the dragenter handler
       const addEventListenerCalls = (document.addEventListener as jest.Mock)
         .mock.calls
-      dragEnterHandler = addEventListenerCalls
-        .find(call => call[0] === 'dragenter')?.[1]
+      dragEnterHandler = addEventListenerCalls.find(
+        (call) => call[0] === 'dragenter',
+      )?.[1]
     })
 
     describe('dragenter handling', () => {
       it('calls dragStart when file drag enters', () => {
         const mockEvent = {
-          dataTransfer: { types: ['Files'] }
+          dataTransfer: { types: ['Files'] },
         } as DragEvent
 
         dragEnterHandler(mockEvent)
@@ -62,7 +65,7 @@ describe('untrustedFrameDragHandlingSetup', () => {
 
       it('does not call dragStart for non-file drags', () => {
         const mockEvent = {
-          dataTransfer: { types: ['text/plain'] }
+          dataTransfer: { types: ['text/plain'] },
         } as DragEvent
 
         dragEnterHandler(mockEvent)
@@ -72,7 +75,7 @@ describe('untrustedFrameDragHandlingSetup', () => {
 
       it('calls dragStart for each dragenter event', () => {
         const mockEvent = {
-          dataTransfer: { types: ['Files'] }
+          dataTransfer: { types: ['Files'] },
         } as DragEvent
 
         dragEnterHandler(mockEvent)
@@ -86,7 +89,7 @@ describe('untrustedFrameDragHandlingSetup', () => {
     describe('edge cases', () => {
       it('handles missing dataTransfer', () => {
         const mockEvent = {
-          dataTransfer: null
+          dataTransfer: null,
         } as unknown as DragEvent
 
         expect(() => {
@@ -98,7 +101,7 @@ describe('untrustedFrameDragHandlingSetup', () => {
 
       it('handles missing types array', () => {
         const mockEvent = {
-          dataTransfer: { types: null }
+          dataTransfer: { types: null },
         } as unknown as DragEvent
 
         expect(() => {
