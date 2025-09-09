@@ -11,11 +11,6 @@ import Icon from '@brave/leo/react/icon'
 // Hooks
 import { useExplorer } from '../../../common/hooks/explorer'
 
-// Queries
-import {
-  useGetDefaultFiatCurrencyQuery, //
-} from '../../../common/slices/api.slice'
-
 // Utils
 import { getLocale, formatLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
@@ -26,33 +21,31 @@ import { ParsedTransaction } from '../../../utils/tx-utils'
 
 // Components
 import { OriginInfoCard } from '../origin_info_card/origin_info_card'
-import {
-  TransactionQueueSelector, //
-} from '../transaction_queue_selector/transaction_queue_selector'
 import { EditSpendLimit } from '../edit_spend_permissions/edit_spend_limit'
 import { BottomSheet } from '../../shared/bottom_sheet/bottom_sheet'
+import {
+  ConfirmationFooterActions, //
+} from '../confirmation_footer_actions/confirmation_footer_actions'
+import {
+  ConfirmationNetworkFee, //
+} from '../confirmation_network_fee/confirmation_network_fee'
+import { ConfirmationHeader } from '../confirmation_header/confirmation_header'
 
 // Styled Components
 import {
   StyledWrapper,
-  HeaderText,
   Card,
   Title,
   Description,
   InfoBox,
-  InfoLabel,
-  InfoText,
   AmountText,
-  ButtonLink,
   TokenButtonLink,
 } from './allow_spend_panel.style'
+import { Column, Row, VerticalDivider } from '../../shared/style'
 import {
-  Column,
-  HorizontalSpace,
-  Row,
-  VerticalDivider,
-} from '../../shared/style'
-
+  ConfirmationInfoLabel,
+  ConfirmationButtonLink,
+} from '../shared-panel-styles'
 export interface Props {
   token?: BraveWallet.BlockchainToken
   transactionDetails: ParsedTransaction
@@ -100,9 +93,6 @@ export const AllowSpendPanel = (props: Props) => {
   // Hooks
   const onClickViewOnBlockExplorer = useExplorer(network)
 
-  // Queries
-  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-
   // Computed
   const isApprovalUnlimited = transactionDetails.isApprovalUnlimited
 
@@ -114,23 +104,13 @@ export const AllowSpendPanel = (props: Props) => {
         justifyContent='space-between'
       >
         {/* Header */}
-        <Row
-          padding='18px'
-          justifyContent={
-            transactionsQueueLength > 1 ? 'space-between' : 'center'
-          }
-        >
-          {transactionsQueueLength > 1 && <HorizontalSpace space='110px' />}
-          <HeaderText textColor='primary'>
-            {getLocale('braveWalletSpendLimit')}
-          </HeaderText>
-          <TransactionQueueSelector
-            transactionsQueueLength={transactionsQueueLength}
-            queueNextTransaction={queueNextTransaction}
-            queuePreviousTransaction={queuePreviousTransaction}
-            rejectAllTransactions={rejectAllTransactions}
-          />
-        </Row>
+        <ConfirmationHeader
+          title={getLocale('braveWalletSpendLimit')}
+          transactionsQueueLength={transactionsQueueLength}
+          queueNextTransaction={queueNextTransaction}
+          queuePreviousTransaction={queuePreviousTransaction}
+          rejectAllTransactions={rejectAllTransactions}
+        />
         <VerticalDivider />
 
         {/* Content */}
@@ -195,67 +175,12 @@ export const AllowSpendPanel = (props: Props) => {
                   gap='8px'
                   width='100%'
                 >
-                  <Row justifyContent='space-between'>
-                    <InfoLabel textColor='secondary'>
-                      {getLocale('braveWalletTransactionDetailNetwork')}
-                    </InfoLabel>
-                    <InfoLabel textColor='primary'>
-                      {network?.chainName ?? ''}
-                    </InfoLabel>
-                  </Row>
-                  <VerticalDivider />
-                  <Row
-                    justifyContent='space-between'
-                    alignItems='flex-start'
-                  >
-                    <Column
-                      alignItems='flex-start'
-                      justifyContent='flex-start'
-                      gap='4px'
-                    >
-                      <InfoLabel
-                        textColor='secondary'
-                        textAlign='left'
-                      >
-                        {getLocale('braveWalletAllowSpendTransactionFee')}
-                      </InfoLabel>
-                      <Button
-                        size='tiny'
-                        kind='plain'
-                        onClick={onClickEditNetworkFee}
-                      >
-                        <Icon
-                          name='tune'
-                          slot='icon-before'
-                        />
-                        {getLocale('braveWalletAllowSpendEditButton')}
-                      </Button>
-                    </Column>
-                    <Column
-                      alignItems='flex-end'
-                      justifyContent='flex-start'
-                      gap='8px'
-                    >
-                      <InfoLabel
-                        textColor='primary'
-                        textAlign='right'
-                      >
-                        {(network
-                          && new Amount(gasFee)
-                            .divideByDecimals(network.decimals)
-                            .formatAsAsset(6, network.symbol))
-                          || ''}
-                      </InfoLabel>
-                      <InfoText
-                        textColor='tertiary'
-                        textAlign='right'
-                      >
-                        {new Amount(transactionDetails.gasFeeFiat).formatAsFiat(
-                          defaultFiatCurrency,
-                        )}
-                      </InfoText>
-                    </Column>
-                  </Row>
+                  <ConfirmationNetworkFee
+                    transactionsNetwork={network}
+                    gasFee={gasFee}
+                    transactionDetails={transactionDetails}
+                    onClickEditNetworkFee={onClickEditNetworkFee}
+                  />
                 </InfoBox>
 
                 {/* Approval target info box */}
@@ -266,18 +191,18 @@ export const AllowSpendPanel = (props: Props) => {
                 >
                   {/* Approval target */}
                   <Row justifyContent='space-between'>
-                    <InfoLabel
+                    <ConfirmationInfoLabel
                       textColor='primary'
                       textAlign='left'
                     >
                       {getLocale('braveWalletApprovalTarget')}
-                    </InfoLabel>
+                    </ConfirmationInfoLabel>
                     <Row
                       width='unset'
                       gap='4px'
                     >
                       <Tooltip text={transactionDetails.approvalTarget}>
-                        <ButtonLink
+                        <ConfirmationButtonLink
                           onClick={onClickViewOnBlockExplorer(
                             'contract',
                             transactionDetails?.approvalTarget ?? '',
@@ -285,19 +210,19 @@ export const AllowSpendPanel = (props: Props) => {
                         >
                           {transactionDetails.approvalTargetLabel}
                           <Icon name='arrow-diagonal-up-right' />
-                        </ButtonLink>
+                        </ConfirmationButtonLink>
                       </Tooltip>
                     </Row>
                   </Row>
 
                   {/* Current approval limit */}
                   <Row justifyContent='space-between'>
-                    <InfoLabel
+                    <ConfirmationInfoLabel
                       textColor='primary'
                       textAlign='left'
                     >
                       {getLocale('braveWalletCurrentApprovalLimit')}
-                    </InfoLabel>
+                    </ConfirmationInfoLabel>
                     {currentLimit && (
                       <AmountText
                         textColor='primary'
@@ -317,12 +242,12 @@ export const AllowSpendPanel = (props: Props) => {
 
                   {/* Proposed approval limit */}
                   <Row justifyContent='space-between'>
-                    <InfoLabel
+                    <ConfirmationInfoLabel
                       textColor='primary'
                       textAlign='left'
                     >
                       {getLocale('braveWalletProposedApprovalLimit')}
-                    </InfoLabel>
+                    </ConfirmationInfoLabel>
                     <AmountText
                       textColor={isApprovalUnlimited ? 'error' : 'primary'}
                       textAlign='right'
@@ -339,34 +264,10 @@ export const AllowSpendPanel = (props: Props) => {
                 </InfoBox>
 
                 {/* Advanced settings and details buttons */}
-                <Row justifyContent='space-between'>
-                  <div>
-                    <Button
-                      kind='plain'
-                      size='tiny'
-                      onClick={onClickAdvancedSettings}
-                    >
-                      <Icon
-                        name='settings'
-                        slot='icon-before'
-                      />
-                      {getLocale('braveWalletAdvancedTransactionSettings')}
-                    </Button>
-                  </div>
-                  <div>
-                    <Button
-                      kind='plain'
-                      size='tiny'
-                      onClick={onClickDetails}
-                    >
-                      <Icon
-                        name='info-outline'
-                        slot='icon-before'
-                      />
-                      {getLocale('braveWalletDetails')}
-                    </Button>
-                  </div>
-                </Row>
+                <ConfirmationFooterActions
+                  onClickAdvancedSettings={onClickAdvancedSettings}
+                  onClickDetails={onClickDetails}
+                />
               </Column>
             </Column>
 
