@@ -39,7 +39,7 @@ class SubdivisionUrlRequest final {
   void FetchAfterDelay();
 
   void SuccessfullyFetchedSubdivision(const std::string& subdivision);
-  void FailedToFetchSubdivision();
+  void FailedToFetchSubdivision(bool should_retry);
 
   void Retry();
   void RetryCallback();
