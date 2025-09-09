@@ -96,7 +96,7 @@ class BraveRenderViewContextMenuTest : public testing::Test {
         profile_.get(), true);
     auto browser_window = std::make_unique<TestBrowserWindow>();
     create_params.window = browser_window.release();
-    browser_.reset(Browser::Create(create_params));
+    browser_ = Browser::DeprecatedCreateOwnedForTesting(create_params);
     menu->SetBrowser(browser_.get());
 
     menu->Init();
