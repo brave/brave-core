@@ -49,7 +49,6 @@ import org.chromium.chrome.browser.toolbar.adaptive.BraveAdaptiveToolbarPrefs;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.prefs.PrefService;
-import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.components.user_prefs.UserPrefsJni;
 
@@ -70,7 +69,6 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
     @Mock private UserPrefsJni mUserPrefsNatives;
     @Mock private PrefService mPrefService;
     @Mock private TemplateUrlService mTemplateUrlService;
-    @Mock private TemplateUrl mSearchEngine;
 
     private ChromeSwitchPreference mSwitchPreference;
     private RadioButtonGroupAdaptiveToolbarPreference mRadioPreference;
