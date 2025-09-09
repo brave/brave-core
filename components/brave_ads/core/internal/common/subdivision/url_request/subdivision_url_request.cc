@@ -79,8 +79,13 @@ void SubdivisionUrlRequest::FetchCallback(
 
   is_fetching_ = false;
 
+  if (mojom_url_response.status_code == net::HTTP_FORBIDDEN) {
+    BLOG(0, "Failed to request subdivision as forbidden");
+    return FailedToFetchSubdivision(/*should_retry=*/false);
+  }
+
   if (mojom_url_response.status_code != net::HTTP_OK) {
-    return FailedToFetchSubdivision();
+    return FailedToFetchSubdivision(/*should_retry=*/true);
   }
 
   BLOG(1, "Parsing subdivision");
@@ -88,7 +93,7 @@ void SubdivisionUrlRequest::FetchCallback(
       json::reader::ParseSubdivision(mojom_url_response.body);
   if (!subdivision) {
     BLOG(0, "Failed to parse subdivision");
-    return FailedToFetchSubdivision();
+    return FailedToFetchSubdivision(/*should_retry=*/true);
   }
 
   SuccessfullyFetchedSubdivision(*subdivision);
@@ -119,12 +124,14 @@ void SubdivisionUrlRequest::SuccessfullyFetchedSubdivision(
   FetchAfterDelay();
 }
 
-void SubdivisionUrlRequest::FailedToFetchSubdivision() {
+void SubdivisionUrlRequest::FailedToFetchSubdivision(bool should_retry) {
   BLOG(0, "Failed to fetch subdivision");
 
   NotifyFailedToFetchSubdivision();
 
-  Retry();
+  if (should_retry) {
+    Retry();
+  }
 }
 
 void SubdivisionUrlRequest::Retry() {
