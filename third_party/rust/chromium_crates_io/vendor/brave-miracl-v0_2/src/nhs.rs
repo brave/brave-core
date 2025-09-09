@@ -418,7 +418,7 @@ fn nhs_unpack(array: &[u8], poly: &mut [i32]) {
 /* See https://eprint.iacr.org/2016/1157.pdf */
 
 fn compress(poly: &[i32], array: &mut [u8]) {
-    let mut col = 0 as i32;
+    let mut col = 0i32;
     let mut j = 0;
     let mut i = 0;
     while i < DEGREE {
@@ -458,7 +458,7 @@ fn error(rng: &mut RAND, poly: &mut [i32]) {
     for i in 0..DEGREE {
         let mut n1 = ((rng.getbyte() as i32) & 0xff) + (((rng.getbyte() as i32) & 0xff) << 8);
         let mut n2 = ((rng.getbyte() as i32) & 0xff) + (((rng.getbyte() as i32) & 0xff) << 8);
-        let mut r = 0 as i32;
+        let mut r = 0i32;
         for _ in 0..16 {
             r += (n1 & 1) - (n2 & 1);
             n1 >>= 1;

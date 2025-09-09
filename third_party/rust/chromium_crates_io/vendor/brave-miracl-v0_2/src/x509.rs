@@ -182,7 +182,7 @@ impl FDTYPE {
 pub fn extract_private_key(c: &[u8], pk: &mut [u8]) -> PKTYPE {
     let mut soid: [u8; 12] = [0; 12];
     let mut ret = PKTYPE::new();
-    let mut j = 0 as usize;
+    let mut j = 0;
     let pklen = pk.len();
 
     let mut len = getalen(SEQ, c, j); // Check for expected SEQ clause, and get length
@@ -471,7 +471,7 @@ pub fn extract_private_key(c: &[u8], pk: &mut [u8]) -> PKTYPE {
 pub fn extract_cert_sig(sc: &[u8], sig: &mut [u8]) -> PKTYPE {
     let mut soid: [u8; 12] = [0; 12];
     let mut ret = PKTYPE::new();
-    let mut j = 0 as usize;
+    let mut j = 0;
     let mut len = getalen(SEQ, sc, j); // Check for expected SEQ clause, and get length
     let siglen = sig.len();
 
@@ -798,7 +798,7 @@ pub fn find_public_key(c: &[u8], ptr: &mut usize) -> usize {
 
 // get Public details from ASN.1 description
 pub fn get_public_key(c: &[u8], key: &mut [u8]) -> PKTYPE {
-    let mut koid: [u8; 12] = [0; 12];
+    let mut koid: [u8; 16] = [0; 16];
     let mut ret = PKTYPE::new();
     let mut j = 0;
     let keylen = key.len();
@@ -960,7 +960,7 @@ pub fn extract_public_key(c: &[u8], key: &mut [u8]) -> PKTYPE {
     let mut ptr = 0;
     let pklen = find_public_key(c, &mut ptr); // ptr is pointer into certificate, at start of ASN.1 raw public key
     let cc = &c[ptr..ptr + pklen];
-    get_public_key(&cc, key)
+    get_public_key(cc, key)
 }
 
 pub fn find_issuer(c: &[u8]) -> FDTYPE {
@@ -1002,15 +1002,16 @@ pub fn find_issuer(c: &[u8]) -> FDTYPE {
 
 pub fn find_validity(c: &[u8]) -> usize {
     let pos = find_issuer(c);
-    let j = pos.index + pos.length; // skip issuer
+    pos.index + pos.length // skip issuer
 
+    //let j = pos.index + pos.length;
     //let mut j=find_issuer(c);
     //let len=getalen(SEQ,c,j);
     //if len==0 {
     //    return 0;
     //}
     //j+=skip(len)+len; // skip issuer
-    j
+    //j
 }
 
 pub fn find_subject(c: &[u8]) -> FDTYPE {
