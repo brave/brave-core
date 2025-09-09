@@ -9,7 +9,9 @@ import re
 import shutil
 import sys
 from distutils.dir_util import copy_tree
+
 from typing import List, Optional
+from enum import Enum
 
 from components.field_trials import FieldTrialsMode
 from components.common_options import CommonOptions
@@ -17,6 +19,26 @@ from components.perf_test_utils import (DownloadArchiveAndUnpack, DownloadFile,
                                         GetProcessOutput, ToBravePlatformName,
                                         ToChromiumPlatformName)
 from components.version import CHROME_VERSION_RE_PATTERN, BraveVersion
+
+
+class BraveChannel(Enum):
+  NIGHTLY = 'Nightly'
+  DEV = 'Dev'
+  BETA = 'Beta'
+  STABLE = ''
+
+
+def BraveChannelToVariationsChannel(
+    brave_channel: BraveChannel) -> Optional[str]:
+  if brave_channel == BraveChannel.NIGHTLY:
+    return 'canary'
+  if brave_channel == BraveChannel.DEV:
+    return 'dev'
+  if brave_channel == BraveChannel.BETA:
+    return 'beta'
+  if brave_channel == BraveChannel.STABLE:
+    return 'stable'
+  return None
 
 
 def _GetBraveDownloadUrl(tag: str, filename: str) -> str:
@@ -126,6 +148,13 @@ class BrowserType:
   def GetDefaultFieldTrials(self) -> FieldTrialsMode:
     return FieldTrialsMode.NO_TRIALS
 
+  def GetVariationsChannel(self) -> Optional[str]:
+    """
+    Used to set --fake-variations-channel switch.
+    See src/components/variations/variations_switches.cc for more details.
+    """
+    return None
+
   def DownloadBrowserBinary(self, url: Optional[str], version: BraveVersion,
                             out_dir: str, common_options: CommonOptions) -> str:
     raise NotImplementedError()
@@ -146,12 +175,17 @@ class BrowserType:
 
 class BraveBrowserTypeImpl(BrowserType):
 
-  def __init__(self, channel: str):
-    super().__init__('brave', 'Brave Browser', channel, [], [], False)
+  def __init__(self, brave_channel: BraveChannel):
+    super().__init__('brave', 'Brave Browser', brave_channel.value, [], [],
+                     False)
+    self._brave_channel = brave_channel
 
   @property
   def is_brave(self) -> bool:
     return True
+
+  def GetVariationsChannel(self) -> Optional[str]:
+    return BraveChannelToVariationsChannel(self._brave_channel)
 
   def _GetWinInstallPath(self) -> str:
     app_name = 'Brave-Browser'
@@ -279,8 +313,12 @@ def ParseBrowserType(browser: str) -> BrowserType:
   if browser == 'chrome':
     return ChromeTestingBrowserTypeImpl('for Testing')
 
-  if browser == 'brave':
-    return BraveBrowserTypeImpl('Nightly')
+  if browser in ['brave', 'brave-nightly']:
+    return BraveBrowserTypeImpl(BraveChannel.NIGHTLY)
+  if browser == 'brave-beta':
+    return BraveBrowserTypeImpl(BraveChannel.BETA)
+  if browser == 'brave-stable':
+    return BraveBrowserTypeImpl(BraveChannel.STABLE)
   if browser.startswith('custom'):
     return BrowserType(browser, browser, '', [], [], False)
 
