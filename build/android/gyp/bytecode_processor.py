@@ -38,9 +38,7 @@ def main(argv):
     parser.add_argument('--extra-classpath-jars', dest='extra_jars',
                         action='append', default=[],
                         help='Extra inputs, passed last to the binary script.')
-    parser.add_argument('-v', '--verbose', action='store_true')
     parser.add_argument('--missing-classes-allowlist')
-    _AddSwitch(parser, '--is-prebuilt')
     _AddSwitch(parser, '--enable-thread-annotations')
     args = parser.parse_args(argv)
 
@@ -53,17 +51,10 @@ def main(argv):
     args.missing_classes_allowlist = action_helpers.parse_gn_list(
         args.missing_classes_allowlist)
 
-    if args.verbose:
-        verbose = '--verbose'
-    else:
-        verbose = '--not-verbose'
-
     cmd = ([
         args.script,
         args.input_jar,
         args.output_jar,
-        verbose,
-        args.is_prebuilt,
         args.enable_thread_annotations,
     ] + [str(len(args.missing_classes_allowlist))] +
            args.missing_classes_allowlist + [str(len(sdk_jars))] + sdk_jars +
