@@ -20,9 +20,7 @@ source_set("endpoint_client") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [
-    "client_unittest.cc",
-  ]
+  sources = [ "client_unittest.cc" ]
 
   deps = [
     "//base",

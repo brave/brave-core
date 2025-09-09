@@ -27,9 +27,25 @@
 // See //brave/components/endpoint_client/README.md
 // for design, motivation, usage, and examples.
 
-namespace endpoints::concepts {
+namespace endpoints::detail {
 
-namespace detail {
+template <typename, template <typename...> typename>
+struct is_specialization_of : std::false_type {};
+
+template <typename... Ts, template <typename...> typename TT>
+struct is_specialization_of<TT<Ts...>, TT> : std::true_type {};
+
+template <typename T, template <typename...> typename TT>
+inline constexpr bool is_specialization_of_v =
+    is_specialization_of<T, TT>::value;
+
+template <typename, typename, typename>
+struct Entry;
+
+}  // namespace endpoints::detail
+
+namespace endpoints::detail::concepts {
+
 template <typename T>
 concept ToValue = requires(T t) { base::WriteJson(t.ToValue()); } &&
                   std::is_member_function_pointer_v<decltype(&T::ToValue)>;
@@ -54,46 +70,22 @@ concept Headers = requires(T t) {
   { t.headers } -> std::same_as<net::HttpRequestHeaders&>;
 };
 
-}  // namespace detail
+template <typename T>
+concept Request = ToValue<T> && Method<T> && Headers<T>;
 
 template <typename T>
-concept RequestBody = detail::ToValue<T>;
+concept Response = FromValue<T>;
 
 template <typename T>
-concept Request = RequestBody<T> && detail::Method<T> && detail::Headers<T>;
+concept Error = FromValue<T>;
 
 template <typename T>
-concept Response = detail::FromValue<T>;
+concept Endpoint = URL<T>;
 
 template <typename T>
-concept Error = detail::FromValue<T>;
+concept Entry = is_specialization_of_v<T, detail::Entry>;
 
-template <typename T>
-concept Endpoint = detail::URL<T>;
-
-}  // namespace endpoints::concepts
-
-namespace endpoints::detail {
-template <typename, typename, typename>
-struct Entry;
-}  // namespace endpoints::detail
-
-namespace endpoints::concepts::detail {
-template <typename T>
-struct is_entry_specialization : std::false_type {};
-
-template <typename Req, typename Resp, typename Err>
-struct is_entry_specialization<endpoints::detail::Entry<Req, Resp, Err>>
-    : std::true_type {};
-
-template <typename T>
-concept Entry = is_entry_specialization<std::remove_cvref_t<T>>::value;
-}  // namespace endpoints::concepts::detail
-
-namespace detail {
-template <auto...>
-inline constexpr bool dependent_false_v = false;
-}  // namespace detail
+}  // namespace endpoints::detail::concepts
 
 namespace endpoints {
 
@@ -111,8 +103,9 @@ enum class HTTPMethod {
 };
 
 namespace detail {
-template <concepts::RequestBody RB, HTTPMethod M>
-struct Request : RB {
+template <typename Body, HTTPMethod M>
+  requires concepts::ToValue<Body>
+struct Request : Body {
   static constexpr std::string_view Method() {
     if constexpr (M == HTTPMethod::kConnect) {
       return net::HttpRequestHeaders::kConnectMethod;
@@ -135,7 +128,7 @@ struct Request : RB {
     } else if constexpr (M == HTTPMethod::kTrack) {
       return net::HttpRequestHeaders::kTrackMethod;
     } else {
-      static_assert(::detail::dependent_false_v<M>,
+      static_assert(base::AlwaysFalse<std::integral_constant<HTTPMethod, M>>,
                     "Unhandled HTTP method enum!");
     }
   }
@@ -144,58 +137,68 @@ struct Request : RB {
 };
 }  // namespace detail
 
-template <concepts::RequestBody R>
-using CONNECT = detail::Request<R, HTTPMethod::kConnect>;
+template <typename Body>
+  requires detail::concepts::ToValue<Body>
+using CONNECT = detail::Request<Body, HTTPMethod::kConnect>;
 
-template <concepts::RequestBody R>
-using DELETE = detail::Request<R, HTTPMethod::kDelete>;
+template <typename Body>
+  requires detail::concepts::ToValue<Body>
+using DELETE = detail::Request<Body, HTTPMethod::kDelete>;
 
-template <concepts::RequestBody R>
-using GET = detail::Request<R, HTTPMethod::kGet>;
+template <typename Body>
+  requires detail::concepts::ToValue<Body>
+using GET = detail::Request<Body, HTTPMethod::kGet>;
 
-template <concepts::RequestBody R>
-using HEAD = detail::Request<R, HTTPMethod::kHead>;
+template <typename Body>
+  requires detail::concepts::ToValue<Body>
+using HEAD = detail::Request<Body, HTTPMethod::kHead>;
 
-template <concepts::RequestBody R>
-using OPTIONS = detail::Request<R, HTTPMethod::kOptions>;
+template <typename Body>
+  requires detail::concepts::ToValue<Body>
+using OPTIONS = detail::Request<Body, HTTPMethod::kOptions>;
 
-template <concepts::RequestBody R>
-using PATCH = detail::Request<R, HTTPMethod::kPatch>;
+template <typename Body>
+  requires detail::concepts::ToValue<Body>
+using PATCH = detail::Request<Body, HTTPMethod::kPatch>;
 
-template <concepts::RequestBody R>
-using POST = detail::Request<R, HTTPMethod::kPost>;
+template <typename Body>
+  requires detail::concepts::ToValue<Body>
+using POST = detail::Request<Body, HTTPMethod::kPost>;
 
-template <concepts::RequestBody R>
-using PUT = detail::Request<R, HTTPMethod::kPut>;
+template <typename Body>
+  requires detail::concepts::ToValue<Body>
+using PUT = detail::Request<Body, HTTPMethod::kPut>;
 
-template <concepts::RequestBody R>
-using TRACE = detail::Request<R, HTTPMethod::kTrace>;
+template <typename Body>
+  requires detail::concepts::ToValue<Body>
+using TRACE = detail::Request<Body, HTTPMethod::kTrace>;
 
-template <concepts::RequestBody R>
-using TRACK = detail::Request<R, HTTPMethod::kTrack>;
+template <typename Body>
+  requires detail::concepts::ToValue<Body>
+using TRACK = detail::Request<Body, HTTPMethod::kTrack>;
 
 namespace detail {
-template <typename Req, typename Resp, typename Err>
+template <typename Req, typename Rsp, typename Err>
 struct Entry {
   using Request = Req;
-  using Response = Resp;
+  using Response = Rsp;
   using Error = Err;
 };
+
+template <typename T, typename... Ts>
+using Collapse =
+    std::conditional_t<sizeof...(Ts) == 0, T, std::variant<T, Ts...>>;
+
 }  // namespace detail
 
-template <concepts::Request Request>
-struct ForRequest {
-  template <concepts::Response Response, concepts::Response... Responses>
+template <detail::concepts::Request Req>
+struct For {
+  template <detail::concepts::Response Rsp, detail::concepts::Response... Rsps>
   struct RespondsWith {
-    template <concepts::Error Error, concepts::Error... Errors>
-    using ErrorsWith =
-        detail::Entry<Request,
-                      std::conditional_t<sizeof...(Responses) == 0,
-                                         Response,
-                                         std::variant<Response, Responses...>>,
-                      std::conditional_t<sizeof...(Errors) == 0,
-                                         Error,
-                                         std::variant<Error, Errors...>>>;
+    template <detail::concepts::Error Err, detail::concepts::Error... Errs>
+    using ErrorsWith = detail::Entry<Req,
+                                     detail::Collapse<Rsp, Rsps...>,
+                                     detail::Collapse<Err, Errs...>>;
   };
 };
 
@@ -207,53 +210,49 @@ struct unique_types<T, Ts...>
     : std::bool_constant<(!std::is_same_v<T, Ts> && ...) &&
                          unique_types<Ts...>::value> {};
 
-template <concepts::detail::Entry... Entries>
-struct Endpoint {
+template <detail::concepts::Entry... Entries>
+class Endpoint {
   static_assert(unique_types<typename Entries::Request...>::value,
                 "Duplicate ForRequest<...>: each Request type may appear at "
                 "most once in an Endpoint.");
 
-  using Request = std::variant<typename Entries::Request...>;
+ public:
+  template <detail::concepts::Request Req>
+  static constexpr bool IsSupported =
+      (std::is_same_v<Req, typename Entries::Request> || ...);
 
-  template <concepts::Request Request>
-  static constexpr bool accepts_v =
-      (std::is_same_v<Request, typename Entries::Request> || ...);
+ private:
+  template <typename, typename...>
+  struct EntryForImpl : std::type_identity<void> {};
 
-  template <class Tagged, class R0, class... Rest>
-  struct Find {
-    using type =
-        std::conditional_t<std::is_same_v<Tagged, typename R0::Request>,
-                           R0,
-                           typename Find<Tagged, Rest...>::type>;
-  };
+  template <typename Req, typename E, typename... Es>
+  struct EntryForImpl<Req, E, Es...>
+      : std::conditional_t<std::is_same_v<Req, typename E::Request>,
+                           std::type_identity<E>,
+                           EntryForImpl<Req, Es...>> {};
 
-  template <class Tagged, class R0>
-  struct Find<Tagged, R0> {
-    using type = std::
-        conditional_t<std::is_same_v<Tagged, typename R0::Request>, R0, void>;
-  };
+  template <typename Req>
+    requires(IsSupported<Req>)
+  using EntryFor = typename EntryForImpl<Req, Entries...>::type;
 
-  template <concepts::Request Request>
-  using EntryFor = typename Find<Request, Entries...>::type;
+ public:
+  template <typename Req>
+    requires detail::concepts::Request<Req>
+  using ResponseFor = typename EntryFor<Req>::Response;
 
-  template <concepts::Request Request>
-  using ResponseFor = typename EntryFor<Request>::Response;
+  template <typename Req>
+    requires detail::concepts::Request<Req>
+  using ErrorFor = typename EntryFor<Req>::Error;
 
-  template <concepts::Request Request>
-  using ErrorFor = typename EntryFor<Request>::Error;
+  template <typename Req>
+    requires detail::concepts::Request<Req>
+  using ExpectedFor = base::expected<std::optional<ResponseFor<Req>>,
+                                     std::optional<ErrorFor<Req>>>;
 
-  template <concepts::Request Request>
-  using ExpectedFor = base::expected<std::optional<ResponseFor<Request>>,
-                                     std::optional<ErrorFor<Request>>>;
-
-  template <concepts::Request Request>
-  using CallbackFor = base::OnceCallback<void(int, ExpectedFor<Request>)>;
+  template <typename Req>
+    requires detail::concepts::Request<Req>
+  using CallbackFor = base::OnceCallback<void(int, ExpectedFor<Req>)>;
 };
-
-namespace concepts {
-template <typename Request, typename Endpoint>
-concept SupportedBy = Endpoint::template accepts_v<Request>;
-}  // namespace concepts
 
 }  // namespace endpoints
 
