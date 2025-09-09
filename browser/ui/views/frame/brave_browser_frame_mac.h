@@ -6,9 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_MAC_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_MAC_H_
 
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/views/frame/browser_frame_mac.h"
 
-class Browser;
+class BrowserView;
 
 class BraveBrowserFrameMac : public BrowserFrameMac {
  public:
@@ -27,8 +28,7 @@ class BraveBrowserFrameMac : public BrowserFrameMac {
                       bool is_before_first_responder) override;
 
  private:
-  raw_ptr<Browser> browser_;
-  raw_ptr<BrowserView> browser_view_;
+  base::WeakPtr<BrowserView> browser_view_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_MAC_H_
