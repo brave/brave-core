@@ -148,9 +148,9 @@ struct UnlockWalletView: View {
     if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
       switch context.biometryType {
       case .faceID:
-        return Image(systemName: "faceid")
+        return Image(braveSystemName: "leo.face.id")
       case .touchID:
-        return Image(systemName: "touchid")
+        return Image(braveSystemName: "leo.biometric.login")
       case .opticID:
         return Image(systemName: "opticid")
       case .none:

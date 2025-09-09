@@ -62,7 +62,7 @@ class TabLocationView: UIView {
   var loading: Bool = false {
     didSet {
       if loading {
-        reloadButton.setImage(UIImage(systemName: "xmark"), for: .normal)
+        reloadButton.setImage(UIImage(braveSystemNamed: "leo.close"), for: .normal)
         reloadButton.accessibilityLabel = Strings.tabToolbarStopButtonAccessibilityLabel
       } else {
         reloadButton.setImage(UIImage(braveSystemNamed: "leo.browser.refresh"), for: .normal)

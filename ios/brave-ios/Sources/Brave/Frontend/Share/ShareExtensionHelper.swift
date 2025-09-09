@@ -63,7 +63,7 @@ extension BasicMenuActivity.ActivityType {
   static let copyCleanLink: Self = .init(
     id: "CopyCleanLink",
     title: Strings.copyCleanLink,
-    braveSystemImage: "leo.broom"
+    braveSystemImage: "leo.copy.clean"
   )
   static let sendURL: Self = .init(
     id: "SendURL",

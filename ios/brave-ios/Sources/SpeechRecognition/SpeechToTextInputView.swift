@@ -35,7 +35,7 @@ public struct SpeechToTextInputView: View {
         Button {
           dismissView()
         } label: {
-          Image(systemName: "xmark")
+          Image(braveSystemName: "leo.close")
             .foregroundColor(Color(.bravePrimary))
             .font(.system(.body))
         }

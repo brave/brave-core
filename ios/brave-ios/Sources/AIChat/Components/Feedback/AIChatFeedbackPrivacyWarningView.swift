@@ -16,12 +16,14 @@ struct AIChatCheckboxToggleStyle: ToggleStyle {
       configuration.isOn.toggle()
     } label: {
       HStack {
-        Image(systemName: configuration.isOn ? "checkmark.square.fill" : "square")
-          .foregroundStyle(
-            Color(
-              braveSystemName: configuration.isOn ? .iconInteractive : .iconDefault
-            )
+        Image(
+          braveSystemName: configuration.isOn ? "leo.checkbox.checked" : "leo.checkbox.unchecked"
+        )
+        .foregroundStyle(
+          Color(
+            braveSystemName: configuration.isOn ? .iconInteractive : .iconDefault
           )
+        )
 
         configuration.label
       }

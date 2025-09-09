@@ -103,7 +103,7 @@ struct PlaylistItemList: View {
             Button {
               openTabURL(url)
             } label: {
-              Label(Strings.Playlist.openInNewTab, braveSystemImage: "leo.plus.add")
+              Label(Strings.Playlist.openInNewTab, braveSystemImage: "leo.browser.mobile-tab-new")
             }
             Button {
               openTabURL(url, privateMode: true)

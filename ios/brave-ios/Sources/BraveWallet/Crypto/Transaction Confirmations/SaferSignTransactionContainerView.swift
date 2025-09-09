@@ -133,7 +133,7 @@ struct SaferSignTransactionContainerView: View {
           .foregroundColor(Color(.secondaryBraveLabel))
         Spacer()
         Button(action: advancedSettingsTapped) {
-          Image(systemName: "gearshape")
+          Image(braveSystemName: "leo.settings")
             .foregroundColor(Color(.secondaryBraveLabel))
         }
         .buttonStyle(.plain)

@@ -311,7 +311,7 @@ extension BrowserViewController: TabManagerDelegate {
     if !privateBrowsingManager.isPrivateBrowsing {
       let openNewPrivateTab = UIAction(
         title: Strings.Hotkey.newPrivateTabTitle,
-        image: UIImage(systemName: "plus.square.fill.on.square.fill"),
+        image: UIImage(braveSystemNamed: "leo.product.private-window"),
         handler: UIAction.deferredActionHandler { [unowned self] _ in
           if Preferences.Privacy.privateBrowsingLock.value {
             self.askForLocalAuthentication { [weak self] success, error in
@@ -338,8 +338,8 @@ extension BrowserViewController: TabManagerDelegate {
       title: privateBrowsingManager.isPrivateBrowsing
         ? Strings.Hotkey.newPrivateTabTitle : Strings.Hotkey.newTabTitle,
       image: privateBrowsingManager.isPrivateBrowsing
-        ? UIImage(systemName: "plus.square.fill.on.square.fill")
-        : UIImage(systemName: "plus.square.on.square"),
+        ? UIImage(braveSystemNamed: "leo.product.private-window")
+        : UIImage(braveSystemNamed: "leo.browser.mobile-tab-new"),
       handler: UIAction.deferredActionHandler { [unowned self] _ in
         self.openBlankNewTab(
           attemptLocationFieldFocus: false,
@@ -364,7 +364,7 @@ extension BrowserViewController: TabManagerDelegate {
     if containsWebPage {
       let bookmarkActiveTab = UIAction(
         title: Strings.addToMenuItem,
-        image: UIImage(systemName: "book"),
+        image: UIImage(braveSystemNamed: "leo.browser.bookmark-add"),
         handler: UIAction.deferredActionHandler { [unowned self] _ in
           self.openAddBookmark()
         }
@@ -378,7 +378,7 @@ extension BrowserViewController: TabManagerDelegate {
             Strings.bookmarkAllTabsTitle,
             tabManager.openedWebsitesCount
           ),
-          image: UIImage(systemName: "book"),
+          image: UIImage(braveSystemNamed: "leo.browser.bookmark-add"),
           handler: UIAction.deferredActionHandler { [unowned self] _ in
             let mode = BookmarkEditMode.addFolderUsingTabs(
               title: Strings.savedTabsFolderTitle,
@@ -402,7 +402,7 @@ extension BrowserViewController: TabManagerDelegate {
     if containsWebPage, let selectedTab = tabManager.selectedTab, let url = selectedTab.fetchedURL {
       let duplicateActiveTab = UIAction(
         title: Strings.duplicateActiveTab,
-        image: UIImage(systemName: "plus.square.on.square"),
+        image: UIImage(braveSystemNamed: "leo.browser.mobile-tabs"),
         handler: UIAction.deferredActionHandler { [weak selectedTab] _ in
           guard let selectedTab = selectedTab else { return }
 
@@ -477,7 +477,7 @@ extension BrowserViewController: TabManagerDelegate {
 
     let closeActiveTab = UIAction(
       title: String(format: Strings.Hotkey.closeTabTitle),
-      image: UIImage(systemName: "xmark"),
+      image: UIImage(braveSystemNamed: "leo.close"),
       attributes: .destructive,
       handler: UIAction.deferredActionHandler { [unowned self] _ in
         if let tab = tabManager.selectedTab {
@@ -547,7 +547,7 @@ extension BrowserViewController: TabManagerDelegate {
 
       let closeAllOtherTabs = UIAction(
         title: Strings.closeAllOtherTabsTitle,
-        image: UIImage(systemName: "xmark"),
+        image: UIImage(braveSystemNamed: "leo.close"),
         attributes: .destructive,
         handler: UIAction.deferredActionHandler { [weak self] _ in
           guard let self = self else { return }
@@ -565,7 +565,7 @@ extension BrowserViewController: TabManagerDelegate {
 
       let closeAllTabs = UIAction(
         title: String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count),
-        image: UIImage(systemName: "xmark"),
+        image: UIImage(braveSystemNamed: "leo.close"),
         attributes: .destructive,
         handler: UIAction.deferredActionHandler { [weak self] _ in
           guard let self = self else { return }

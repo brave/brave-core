@@ -105,7 +105,7 @@ struct WalletPromptContentView<Content, Footer>: View where Content: View, Foote
         ? Button {
           dismissAction?()
         } label: {
-          Image(systemName: "xmark")
+          Image(braveSystemName: "leo.close")
             .padding(16)
         }
         .font(.headline)
