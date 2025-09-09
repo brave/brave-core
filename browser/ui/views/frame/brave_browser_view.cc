@@ -1031,11 +1031,14 @@ void BraveBrowserView::ReadyToListenFullscreenChanges() {
   }
 }
 
-void BraveBrowserView::PreHandleMouseEvent(const blink::WebMouseEvent& event) {
+bool BraveBrowserView::PreHandleMouseEvent(const blink::WebMouseEvent& event) {
   if (event.GetTypeAsUiEventType() == ui::EventType::kMouseMoved &&
       sidebar_container_view_) {
-    sidebar_container_view_->PreHandleMouseEvent(event.PositionInScreen());
+    return sidebar_container_view_->PreHandleMouseEvent(
+        event.PositionInScreen());
   }
+
+  return false;
 }
 
 void BraveBrowserView::OnMouseMoved(const ui::MouseEvent& event) {
