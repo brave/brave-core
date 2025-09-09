@@ -50,19 +50,6 @@ import {
 import {
   TransactionSimulationNotSupportedSheet, //
 } from '../transaction_simulation_not_supported_sheet/transaction_simulation_not_supported_sheet'
-import {
-  AllowSpendPanel, //
-} from '../allow_spend_panel/allow_spend_panel'
-import {
-  PendingTransactionDetails, //
-} from '../pending_transaction_details/pending_transaction_details'
-import {
-  BottomSheet, //
-} from '../../shared/bottom_sheet/bottom_sheet'
-import {
-  AdvancedTransactionSettings, //
-} from '../advanced_transaction_settings/advanced_transaction_settings'
-import { EditNetworkFee } from '../edit_network_fee/edit_network_fee'
 
 // Styled Components
 import {
@@ -117,7 +104,6 @@ export const ConfirmTransactionPanel = ({
 
   // custom hooks
   const {
-    erc20ApproveTokenInfo,
     fromAccount,
     fromOrb,
     isERC20Approve,
@@ -125,7 +111,6 @@ export const ConfirmTransactionPanel = ({
     isERC721TransferFrom,
     isEthereumTransaction,
     isAssociatedTokenAccountCreation,
-    onEditAllowanceSave,
     toOrb,
     transactionDetails,
     transactionsNetwork,
@@ -140,7 +125,6 @@ export const ConfirmTransactionPanel = ({
     insufficientFundsError,
     insufficientFundsForGasError,
     queueNextTransaction,
-    queuePreviousTransaction,
     transactionQueueNumber,
     transactionsQueueLength,
     isSolanaTransaction,
@@ -184,8 +168,6 @@ export const ConfirmTransactionPanel = ({
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
   const [isWarningCollapsed, setIsWarningCollapsed] = React.useState(true)
-  const [showTransactionDetails, setShowTransactionDetails] =
-    React.useState<boolean>(false)
 
   // methods
   const onSelectTab = (tab: confirmPanelTabs) => () => setSelectedTab(tab)
@@ -209,65 +191,6 @@ export const ConfirmTransactionPanel = ({
       <LongWrapper>
         <LoadingPanel />
       </LongWrapper>
-    )
-  }
-
-  if (isERC20Approve) {
-    return (
-      <>
-        <AllowSpendPanel
-          token={erc20ApproveTokenInfo}
-          network={transactionsNetwork}
-          originInfo={originInfo}
-          transactionDetails={transactionDetails}
-          currentLimit={currentTokenAllowance}
-          isCurrentAllowanceUnlimited={isCurrentAllowanceUnlimited}
-          gasFee={gasFee}
-          onSaveSpendLimit={onEditAllowanceSave}
-          onConfirm={onConfirm}
-          onReject={onReject}
-          onClickDetails={() => setShowTransactionDetails(true)}
-          onClickAdvancedSettings={() =>
-            setShowAdvancedTransactionSettings(true)
-          }
-          onClickEditNetworkFee={() => setIsEditing(true)}
-          transactionsQueueLength={transactionsQueueLength}
-          queueNextTransaction={queueNextTransaction}
-          queuePreviousTransaction={queuePreviousTransaction}
-          rejectAllTransactions={rejectAllTransactions}
-        />
-        <BottomSheet
-          isOpen={showTransactionDetails}
-          title={getLocale('braveWalletDetails')}
-          onClose={() => setShowTransactionDetails(false)}
-        >
-          <PendingTransactionDetails
-            transactionInfo={selectedPendingTransaction}
-            instructions={transactionDetails.instructions}
-          />
-        </BottomSheet>
-        <BottomSheet
-          isOpen={showAdvancedTransactionSettings}
-          title={getLocale('braveWalletAdvancedTransactionSettings')}
-          onClose={() => setShowAdvancedTransactionSettings(false)}
-        >
-          <AdvancedTransactionSettings
-            onCancel={() => setShowAdvancedTransactionSettings(false)}
-            nonce={transactionDetails.nonce}
-            onSave={(nonce: string) =>
-              updateUnapprovedTransactionNonce({
-                chainId: selectedPendingTransaction.chainId,
-                txMetaId: selectedPendingTransaction.id,
-                nonce: nonce,
-              })
-            }
-          />
-        </BottomSheet>
-        <EditNetworkFee
-          isOpen={isEditing}
-          onCancel={() => setIsEditing(false)}
-        />
-      </>
     )
   }
 

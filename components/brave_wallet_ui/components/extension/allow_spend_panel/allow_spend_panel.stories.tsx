@@ -7,17 +7,8 @@ import * as React from 'react'
 
 // Mocks
 import {
-  mockUniswapOriginInfo, //
-} from '../../../stories/mock-data/mock-origin-info'
-import {
-  mockParsedERC20ApprovalTransaction, //
+  mockedErc20ApprovalTransaction, //
 } from '../../../stories/mock-data/mock-transaction-info'
-import {
-  mockEthMainnet, //
-} from '../../../stories/mock-data/mock-networks'
-import {
-  mockBasicAttentionToken, //
-} from '../../../stories/mock-data/mock-asset-options'
 
 // Components
 import { AllowSpendPanel } from './allow_spend_panel'
@@ -27,39 +18,7 @@ import {
 
 export const _AllowSpendPanel = {
   render: () => {
-    return (
-      <AllowSpendPanel
-        token={mockBasicAttentionToken}
-        transactionDetails={mockParsedERC20ApprovalTransaction}
-        network={mockEthMainnet}
-        originInfo={mockUniswapOriginInfo}
-        currentLimit='1000'
-        isCurrentAllowanceUnlimited={false}
-        gasFee='3641000000'
-        onSaveSpendLimit={() => {
-          alert('Clicked save spend limit')
-        }}
-        onClickDetails={() => {
-          alert('Clicked details')
-        }}
-        onClickAdvancedSettings={() => {
-          alert('Clicked advanced settings')
-        }}
-        onConfirm={() => {
-          alert('Clicked confirm')
-        }}
-        onReject={() => {
-          alert('Clicked reject')
-        }}
-        onClickEditNetworkFee={() => {
-          alert('Clicked edit network fee')
-        }}
-        transactionsQueueLength={1}
-        queueNextTransaction={() => {}}
-        queuePreviousTransaction={() => {}}
-        rejectAllTransactions={() => {}}
-      />
-    )
+    return <AllowSpendPanel />
   },
 }
 
@@ -71,7 +30,11 @@ export default {
   },
   decorators: [
     (Story: any) => (
-      <WalletPanelStory>
+      <WalletPanelStory
+        uiStateOverride={{
+          selectedPendingTransactionId: mockedErc20ApprovalTransaction.id,
+        }}
+      >
         <Story />
       </WalletPanelStory>
     ),

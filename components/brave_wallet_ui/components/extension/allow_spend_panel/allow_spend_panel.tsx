@@ -8,16 +8,18 @@ import Button from '@brave/leo/react/button'
 import Tooltip from '@brave/leo/react/tooltip'
 import Icon from '@brave/leo/react/icon'
 
+// Queries
+import { useGetActiveOriginQuery } from '../../../common/slices/api.slice'
+
 // Hooks
 import { useExplorer } from '../../../common/hooks/explorer'
+import {
+  usePendingTransactions, //
+} from '../../../common/hooks/use-pending-transaction'
 
 // Utils
 import { getLocale, formatLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
-
-// Types
-import { BraveWallet } from '../../../constants/types'
-import { ParsedTransaction } from '../../../utils/tx-utils'
 
 // Components
 import { OriginInfoCard } from '../origin_info_card/origin_info_card'
@@ -30,6 +32,14 @@ import {
   ConfirmationNetworkFee, //
 } from '../confirmation_network_fee/confirmation_network_fee'
 import { ConfirmationHeader } from '../confirmation_header/confirmation_header'
+import {
+  PendingTransactionDetails, //
+} from '../pending_transaction_details/pending_transaction_details'
+import { EditNetworkFee } from '../edit_network_fee/edit_network_fee'
+import {
+  AdvancedTransactionSettings, //
+} from '../advanced_transaction_settings/advanced_transaction_settings'
+import { LoadingPanel } from '../loading_panel/loading_panel'
 
 // Styled Components
 import {
@@ -46,55 +56,49 @@ import {
   ConfirmationInfoLabel,
   ConfirmationButtonLink,
 } from '../shared-panel-styles'
-export interface Props {
-  token?: BraveWallet.BlockchainToken
-  transactionDetails: ParsedTransaction
-  gasFee: string
-  network?: BraveWallet.NetworkInfo
-  originInfo?: BraveWallet.OriginInfo
-  currentLimit?: string
-  isCurrentAllowanceUnlimited: boolean
-  transactionsQueueLength: number
-  onSaveSpendLimit: (limit: string) => void
-  onClickDetails: () => void
-  onClickAdvancedSettings: () => void
-  onClickEditNetworkFee: () => void
-  onConfirm: () => void
-  onReject: () => void
-  queueNextTransaction: () => void
-  queuePreviousTransaction: () => void
-  rejectAllTransactions: () => void
-}
 
-export const AllowSpendPanel = (props: Props) => {
-  const {
-    token,
-    originInfo,
-    transactionDetails,
-    network,
-    currentLimit,
-    isCurrentAllowanceUnlimited,
-    gasFee,
-    transactionsQueueLength,
-    onConfirm,
-    onReject,
-    onClickDetails,
-    onClickAdvancedSettings,
-    onClickEditNetworkFee,
-    onSaveSpendLimit,
-    queueNextTransaction,
-    queuePreviousTransaction,
-    rejectAllTransactions,
-  } = props
+export const AllowSpendPanel = () => {
+  // Queries
+  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
+    useGetActiveOriginQuery()
 
   // State
   const [showEditSpendLimit, setShowEditSpendLimit] = React.useState(false)
+  const [showEditNetworkFee, setShowEditNetworkFee] =
+    React.useState<boolean>(false)
+  const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
+    React.useState<boolean>(false)
+  const [showTransactionDetails, setShowTransactionDetails] =
+    React.useState<boolean>(false)
 
   // Hooks
-  const onClickViewOnBlockExplorer = useExplorer(network)
+  const {
+    erc20ApproveTokenInfo,
+    onEditAllowanceSave,
+    transactionDetails,
+    transactionsNetwork,
+    updateUnapprovedTransactionNonce,
+    isCurrentAllowanceUnlimited,
+    currentTokenAllowance,
+    selectedPendingTransaction,
+    onConfirm,
+    onReject,
+    gasFee,
+    queueNextTransaction,
+    queuePreviousTransaction,
+    transactionsQueueLength,
+    rejectAllTransactions,
+  } = usePendingTransactions()
+
+  const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
 
   // Computed
-  const isApprovalUnlimited = transactionDetails.isApprovalUnlimited
+  const isApprovalUnlimited = transactionDetails?.isApprovalUnlimited ?? false
+  const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
+
+  if (!selectedPendingTransaction || !transactionDetails) {
+    return <LoadingPanel />
+  }
 
   return (
     <>
@@ -139,14 +143,16 @@ export const AllowSpendPanel = (props: Props) => {
                         width='unset'
                         margin='0px 0px 0px 4px'
                       >
-                        <Tooltip text={token?.contractAddress ?? ''}>
+                        <Tooltip
+                          text={erc20ApproveTokenInfo?.contractAddress ?? ''}
+                        >
                           <TokenButtonLink
                             onClick={onClickViewOnBlockExplorer(
                               'token',
-                              token?.contractAddress ?? '',
+                              erc20ApproveTokenInfo?.contractAddress ?? '',
                             )}
                           >
-                            {token?.symbol ?? ''}
+                            {erc20ApproveTokenInfo?.symbol ?? ''}
                           </TokenButtonLink>
                         </Tooltip>
                       </Row>
@@ -156,7 +162,7 @@ export const AllowSpendPanel = (props: Props) => {
                 <Description textColor='tertiary'>
                   {getLocale('braveWalletAllowSpendDescription').replace(
                     '$1',
-                    token?.symbol ?? '',
+                    erc20ApproveTokenInfo?.symbol ?? '',
                   )}
                 </Description>
                 <Row>
@@ -176,10 +182,10 @@ export const AllowSpendPanel = (props: Props) => {
                   width='100%'
                 >
                   <ConfirmationNetworkFee
-                    transactionsNetwork={network}
+                    transactionsNetwork={transactionsNetwork}
                     gasFee={gasFee}
                     transactionDetails={transactionDetails}
-                    onClickEditNetworkFee={onClickEditNetworkFee}
+                    onClickEditNetworkFee={() => setShowEditNetworkFee(true)}
                   />
                 </InfoBox>
 
@@ -223,7 +229,7 @@ export const AllowSpendPanel = (props: Props) => {
                     >
                       {getLocale('braveWalletCurrentApprovalLimit')}
                     </ConfirmationInfoLabel>
-                    {currentLimit && (
+                    {currentTokenAllowance && (
                       <AmountText
                         textColor='primary'
                         textAlign='right'
@@ -231,10 +237,10 @@ export const AllowSpendPanel = (props: Props) => {
                         {isCurrentAllowanceUnlimited
                           ? getLocale('braveWalletTransactionApproveUnlimited')
                             + ' '
-                            + (token?.symbol || '')
-                          : new Amount(currentLimit).formatAsAsset(
+                            + (erc20ApproveTokenInfo?.symbol || '')
+                          : new Amount(currentTokenAllowance).formatAsAsset(
                               undefined,
-                              token?.symbol ?? '',
+                              erc20ApproveTokenInfo?.symbol ?? '',
                             )}
                       </AmountText>
                     )}
@@ -255,18 +261,23 @@ export const AllowSpendPanel = (props: Props) => {
                       {isApprovalUnlimited
                         ? getLocale('braveWalletTransactionApproveUnlimited')
                           + ' '
-                          + (token?.symbol || '')
+                          + (erc20ApproveTokenInfo?.symbol || '')
                         : new Amount(
                             transactionDetails.valueExact,
-                          ).formatAsAsset(2, token?.symbol || '')}
+                          ).formatAsAsset(
+                            2,
+                            erc20ApproveTokenInfo?.symbol || '',
+                          )}
                     </AmountText>
                   </Row>
                 </InfoBox>
 
                 {/* Advanced settings and details buttons */}
                 <ConfirmationFooterActions
-                  onClickAdvancedSettings={onClickAdvancedSettings}
-                  onClickDetails={onClickDetails}
+                  onClickAdvancedSettings={() =>
+                    setShowAdvancedTransactionSettings(true)
+                  }
+                  onClickDetails={() => setShowTransactionDetails(true)}
                 />
               </Column>
             </Column>
@@ -303,13 +314,50 @@ export const AllowSpendPanel = (props: Props) => {
       >
         <EditSpendLimit
           onCancel={() => setShowEditSpendLimit(false)}
-          onSave={onSaveSpendLimit}
+          onSave={onEditAllowanceSave}
           approvalTarget={transactionDetails?.approvalTargetLabel ?? ''}
           isApprovalUnlimited={transactionDetails?.isApprovalUnlimited ?? false}
           proposedAllowance={transactionDetails.valueExact}
-          symbol={token?.symbol ?? ''}
+          symbol={erc20ApproveTokenInfo?.symbol ?? ''}
         />
       </BottomSheet>
+
+      {/* Transaction details */}
+      <BottomSheet
+        isOpen={showTransactionDetails}
+        title={getLocale('braveWalletDetails')}
+        onClose={() => setShowTransactionDetails(false)}
+      >
+        <PendingTransactionDetails
+          transactionInfo={selectedPendingTransaction}
+          instructions={transactionDetails.instructions}
+        />
+      </BottomSheet>
+
+      {/* Advanced transaction settings */}
+      <BottomSheet
+        isOpen={showAdvancedTransactionSettings}
+        title={getLocale('braveWalletAdvancedTransactionSettings')}
+        onClose={() => setShowAdvancedTransactionSettings(false)}
+      >
+        <AdvancedTransactionSettings
+          onCancel={() => setShowAdvancedTransactionSettings(false)}
+          nonce={transactionDetails.nonce}
+          onSave={(nonce: string) =>
+            updateUnapprovedTransactionNonce({
+              chainId: selectedPendingTransaction.chainId,
+              txMetaId: selectedPendingTransaction.id,
+              nonce: nonce,
+            })
+          }
+        />
+      </BottomSheet>
+
+      {/* Edit network fee */}
+      <EditNetworkFee
+        isOpen={showEditNetworkFee}
+        onCancel={() => setShowEditNetworkFee(false)}
+      />
     </>
   )
 }
