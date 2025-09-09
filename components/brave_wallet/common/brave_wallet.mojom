@@ -2293,7 +2293,7 @@ interface ZCashWalletService {
 };
 
 interface PolkadotWalletService {
-  GetNetworkName() => (string network);
+  GetNetworkName() => (string? network, string? error_message);
 };
 
 enum TransactionStatus {

@@ -20,7 +20,9 @@ class PolkadotSubstrateRpc {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~PolkadotSubstrateRpc();
 
-  using GetChainNameCallback = base::OnceCallback<void(const std::string&)>;
+  using GetChainNameCallback =
+      base::OnceCallback<void(const std::optional<std::string>&,
+                              const std::optional<std::string>&)>;
 
   // Get the name of the chain pointed to by the current network configuration.
   // "Westend" or "Paseo" for the testnets, "Polkadot" for the mainnet.
@@ -28,6 +30,8 @@ class PolkadotSubstrateRpc {
 
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;
+
+  void OnGetChainName(GetChainNameCallback callback, APIRequestResult res);
 
   api_request_helper::APIRequestHelper api_request_helper_;
   base::WeakPtrFactory<PolkadotSubstrateRpc> weak_ptr_factory_{this};

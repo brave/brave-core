@@ -45,8 +45,7 @@ PolkadotSubstrateRpc::PolkadotSubstrateRpc(
 
 PolkadotSubstrateRpc::~PolkadotSubstrateRpc() = default;
 
-void PolkadotSubstrateRpc::GetChainName(
-    base::OnceCallback<void(const std::string&)> callback) {
+void PolkadotSubstrateRpc::GetChainName(GetChainNameCallback callback) {
   std::string method = "POST";
   GURL url("https://westend-rpc.polkadot.io");
   std::string payload =
@@ -56,15 +55,34 @@ void PolkadotSubstrateRpc::GetChainName(
 
   api_request_helper_.Request(
       method, url, payload, payload_content_type,
-      base::BindOnce(
-          [](base::OnceCallback<void(const std::string&)> callback,
-             APIRequestResult res) {
-            const auto& body = res.value_body();
-            const auto* chain_name = body.GetDict().Find("result");
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetChainName,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
 
-            std::move(callback).Run(chain_name->GetString());
-          },
-          std::move(callback)));
+void PolkadotSubstrateRpc::OnGetChainName(GetChainNameCallback callback,
+                                          APIRequestResult res) {
+  if (!res.Is2XXResponseCode()) {
+    auto err_str = res.SerializeBodyToString();
+    if (err_str.empty()) {
+      err_str = "PolkadotSubstrateRpc error";
+    }
+    return std::move(callback).Run(std::nullopt, err_str);
+  }
+
+  const auto& body = res.value_body();
+  const auto* result = body.GetDict().Find("result");
+  if (!result) {
+    return std::move(callback).Run(std::nullopt,
+                                   "Missing result field in RPC response");
+  }
+
+  const auto* chain_name = result->GetIfString();
+  if (!chain_name) {
+    return std::move(callback).Run(std::nullopt,
+                                   "result field was not a string");
+  }
+
+  std::move(callback).Run(*chain_name, std::nullopt);
 }
 
 }  // namespace brave_wallet
