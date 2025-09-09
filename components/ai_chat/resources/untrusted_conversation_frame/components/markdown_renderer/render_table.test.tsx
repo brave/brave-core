@@ -213,5 +213,70 @@ describe('Table Rendering', () => {
         expect(table.querySelector('tbody')).toBeInTheDocument()
       })
     })
+
+    test('renders table with <br> tags', () => {
+      const markdown = `
+| Name | Description |
+|------|-------------|
+| John | Line 1<br>Line 2 |
+| Jane | Single line |
+      `.trim()
+
+      renderMarkdown(markdown)
+
+      // Check table structure
+      const table = document.querySelector('table')
+      expect(table).toBeInTheDocument()
+
+      // Check that the cell with <br> tag is rendered correctly
+      const cells = document.querySelectorAll('td')
+      expect(cells).toHaveLength(4) // 2 rows × 2 columns
+
+      // Find the cell containing the <br> tag
+      const cellWithBr = Array.from(cells).find((cell) =>
+        cell.innerHTML.includes('<br>'),
+      )
+      expect(cellWithBr).toBeInTheDocument()
+      expect(cellWithBr).toHaveTextContent('Line 1Line 2')
+      expect(cellWithBr!.innerHTML).toContain('<br>')
+
+      // Verify the <br> tag is properly rendered as an HTML element
+      const brElement = cellWithBr!.querySelector('br')
+      expect(brElement).toBeInTheDocument()
+    })
+
+    test('renders table with bold headers', () => {
+      const markdown = `
+| **Name** | **Age** | **Location** |
+|----------|---------|--------------|
+| John     | 25      | NYC          |
+| Jane     | 30      | LA           |
+      `.trim()
+
+      renderMarkdown(markdown)
+
+      // Check table structure
+      const table = document.querySelector('table')
+      expect(table).toBeInTheDocument()
+
+      // Check that bold headers are rendered
+      expect(screen.getByText('Name')).toBeInTheDocument()
+      expect(screen.getByText('Age')).toBeInTheDocument()
+      expect(screen.getByText('Location')).toBeInTheDocument()
+
+      // Check that data-label attributes contain the text content (without **)
+      const cells = document.querySelectorAll('td')
+      expect(cells).toHaveLength(6)
+
+      // First row cells should have data-label from first header
+      expect(cells[0]).toHaveAttribute('data-label', 'Name')
+      expect(cells[1]).toHaveAttribute('data-label', 'Age')
+      expect(cells[2]).toHaveAttribute('data-label', 'Location')
+
+      // Second row cells should have the same data-label attributes
+      expect(cells[3]).toHaveAttribute('data-label', 'Name')
+      expect(cells[4]).toHaveAttribute('data-label', 'Age')
+      expect(cells[5]).toHaveAttribute('data-label', 'Location')
+    })
   })
 })

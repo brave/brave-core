@@ -157,6 +157,45 @@ export function RenderLink(props: RenderLinkProps) {
   )
 }
 
+// Helper function to process content and convert <br> tags to line breaks
+function processBrTags(children: React.ReactNode): React.ReactNode {
+  return React.Children.map(children, (child) => {
+    if (typeof child === 'string') {
+      // Split by <br> tags and create line breaks
+      const parts = child.split(/<br\s*\/?>/gi)
+      if (parts.length === 1) {
+        return child
+      }
+      return parts.map((part, index) => (
+        <React.Fragment key={index}>
+          {index !== 0 && <br />}
+          {part}
+        </React.Fragment>
+      ))
+    }
+    return child
+  })
+}
+
+// Helper function to extract text content from React nodes
+function extractTextContent(node: React.ReactNode): string {
+  if (typeof node === 'string') {
+    return node
+  }
+  if (typeof node === 'number') {
+    return String(node)
+  }
+  if (React.isValidElement(node)) {
+    if (node.props.children) {
+      return (
+        React.Children.map(node.props.children, extractTextContent)?.join('')
+        || ''
+      )
+    }
+  }
+  return ''
+}
+
 function buildTableRenderer() {
   // For table header tracking
   const tableHeaders: string[] = []
@@ -186,12 +225,14 @@ function buildTableRenderer() {
       return <tr className={styles.tableRow}>{props.children}</tr>
     },
     th: (props: { children: React.ReactNode }) => {
-      // Store header text
-      const text = React.Children.map(props.children, (child) =>
-        typeof child === 'string' ? child : '',
-      )?.join(' ')
+      // Store header text (process content to handle <br> tags)
+      const processedChildren = processBrTags(props.children)
+
+      const text =
+        React.Children.map(processedChildren, extractTextContent)?.join(' ')
+        || ''
       if (text) tableHeaders.push(text)
-      return <th className={styles.tableHeader}>{props.children}</th>
+      return <th className={styles.tableHeader}>{processedChildren}</th>
     },
     td: (props: { children: React.ReactNode }) => {
       // Assign data-label from headers
@@ -202,7 +243,7 @@ function buildTableRenderer() {
           className={styles.tableCell}
           data-label={label}
         >
-          {props.children}
+          {processBrTags(props.children)}
         </td>
       )
     },
