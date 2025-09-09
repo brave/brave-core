@@ -32,7 +32,7 @@ AboutSigninInternalsFactory* AboutSigninInternalsFactory::GetInstance() {
 
 std::unique_ptr<KeyedService>
 AboutSigninInternalsFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
+    ProfileIOS* profile) const {
   return nullptr;
 }
 
