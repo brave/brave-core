@@ -25,6 +25,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -873,6 +874,26 @@ const std::string& GetAccountPermissionIdentifier(
 bool IsBraveWalletOrigin(const url::Origin& origin) {
   return origin == url::Origin::Create(GURL(kBraveUIWalletPanelURL)) ||
          origin == url::Origin::Create(GURL(kBraveUIWalletPageURL));
+}
+
+std::optional<std::map<CardanoAddress, mojom::CardanoKeyIdPtr>>
+GetCardanoAddressesWithKeyIds(
+    const std::vector<mojom::CardanoAddressPtr>& addresses) {
+  if (addresses.empty()) {
+    return std::nullopt;
+  }
+
+  std::map<CardanoAddress, mojom::CardanoKeyIdPtr> address_map;
+  for (const auto& addr : addresses) {
+    auto cardano_address = CardanoAddress::FromString(addr->address_string);
+    if (!cardano_address) {
+      continue;
+    }
+    address_map.emplace(std::move(*cardano_address),
+                        std::move(addr->payment_key_id));
+  }
+
+  return address_map;
 }
 
 }  // namespace brave_wallet

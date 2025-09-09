@@ -12,6 +12,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
@@ -64,8 +65,32 @@ class CardanoApiImpl final : public mojom::CardanoApi {
       mojom::CardanoProviderPaginationPtr paginate,
       GetUtxosCallback callback,
       base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result);
+  void OnGetUtxosForSignTx(
+      CardanoTransactionSerializer::RestoredTransaction tx,
+      bool partial_sign,
+      SignTxCallback callback,
+      base::expected<GetCardanoUtxosTask::UtxoMap, std::string>);
 
   mojom::CardanoProviderErrorBundlePtr CheckSelectedAccountValid();
+
+  void OnAddUnapprovedTransaction(SubmitTxCallback callback,
+                                  bool success,
+                                  const std::string& tx_meta_id,
+                                  const std::string& error_message);
+
+  bool InsertKnowInputAddresses(
+      const GetCardanoUtxosTask::UtxoMap& utxo_map,
+      CardanoTransactionSerializer::RestoredTransaction& transaction,
+      bool partial_sign);
+
+  void OnSignTransactionRequestProcessed(
+      CardanoTransactionSerializer::RestoredTransaction tx,
+      SignTxCallback callback,
+      bool approved,
+      const std::optional<std::string>& error);
+
+  mojom::SignCardanoTransactionRequestPtr FromRestoredTransaction(
+      const CardanoTransactionSerializer::RestoredTransaction& tx);
 
   BraveWalletProviderDelegate* delegate();
 

@@ -39,6 +39,9 @@ class CardanoAddress {
 
   std::vector<uint8_t> ToCborBytes() const;
 
+  static std::optional<CardanoAddress> FromCborBytes(
+      base::span<const uint8_t> bytes);
+
  private:
   std::vector<uint8_t> bytes_;
 };

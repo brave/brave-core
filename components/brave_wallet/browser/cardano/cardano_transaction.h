@@ -147,6 +147,7 @@ class CardanoTransaction {
 
   const std::vector<TxWitness>& witnesses() const { return witnesses_; }
   void SetWitnesses(std::vector<TxWitness> witnesses);
+  void AddWitness(TxWitness);
 
   const std::vector<TxOutput>& outputs() const { return outputs_; }
   void AddOutput(TxOutput output);
