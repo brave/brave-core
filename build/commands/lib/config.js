@@ -574,7 +574,6 @@ Config.prototype.buildArgs = function () {
 
   if (this.useClangCoverage()) {
     const buildDir = path.relative(this.srcDir, this.outputDir)
-    args.symbol_level = 1
     args.use_clang_coverage = true
     args.coverage_instrumentation_input_file = `//${buildDir}/files-to-instrument.txt`
   }

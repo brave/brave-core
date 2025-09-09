@@ -20,7 +20,6 @@ const ActionGuard = require('./actionGuard')
 process.setMaxListeners(0)
 
 async function generateInstrumentationFile(instrumentationFile) {
-  console.log(instrumentationFile);
   const files = await Array.fromAsync(glob(`**/*.{cc,c,h,cpp,hpp}`))
 
   const paths = files.map(x => `../../brave/${x}`)
