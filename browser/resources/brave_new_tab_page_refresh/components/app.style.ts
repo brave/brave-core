@@ -10,9 +10,13 @@ export const narrowBreakpoint = '900px'
 export const threeColumnBreakpoint = '1275px'
 export const horizontalContentPadding = 24
 
+const topControlsNarrowBreakpoint = '1075px'
+const topControlsWideBreakpoint = threeColumnBreakpoint
+
 export const style = scoped.css`
   & {
     --search-transition-duration: 120ms;
+    --top-controls-text-shadow: rgba(0, 0, 0, 0.33) 0 1px 2px;
   }
 
   @keyframes background-scroll-fade {
@@ -39,46 +43,59 @@ export const style = scoped.css`
     animation-range: 0px 100vh;
   }
 
-  .top-controls {
-    position: absolute;
-    inset-block-start: 24px;
-    inset-inline-end: 24px;
-    min-height: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    align-items: flex-end;
-    z-index: 2;
-
-    @container (width < ${narrowBreakpoint}) {
-      inset-block-start: 12px;
-      inset-inline-end: 12px;
-    }
-  }
-
   .settings {
     --leo-icon-size: 18px;
 
+    position: absolute;
+    z-index: 2;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    margin: 24px;
+
     padding: 8px;
-    opacity: 0.8;
     border-radius: 50%;
     color: #fff;
-    filter: drop-shadow(${effect.elevation['01']});
+    opacity: .9;
+    filter: drop-shadow(var(--top-controls-text-shadow));
 
     &:hover {
       background: rgba(255, 255, 255, .3);
       box-shadow: ${effect.elevation['01']};
-      opacity: .9;
       cursor: pointer;
+    }
+
+    @container (width < ${topControlsNarrowBreakpoint}) {
+      margin: 12px;
     }
   }
 
   .clock {
-    margin-inline-end: 8px;
+    position: absolute;
+    z-index: 2;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    margin: 24px;
+
+    padding: 8px;
     font: ${font.large.semibold};
-    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.20);
+    font-size: 56px;
+    font-weight: 500;
+    line-height: 100%;
+    text-shadow: var(--top-controls-text-shadow);
+
     color: #fff;
-    opacity: .8;
+    opacity: .9;
+
+    .ntp-top-sites-wide & {
+      @container (width < ${topControlsWideBreakpoint}) {
+        font-size: 16px;
+      }
+    }
+
+    @container (width < ${topControlsNarrowBreakpoint}) {
+      margin: 12px;
+      font-size: 16px;
+    }
   }
 
   .allow-background-pointer-events {
