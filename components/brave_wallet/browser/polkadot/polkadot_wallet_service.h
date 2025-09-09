@@ -32,10 +32,6 @@ class PolkadotWalletService : public mojom::PolkadotWalletService {
   void GetNetworkName(GetNetworkNameCallback callback) override;
 
  private:
-  void StartGetNetworkName(GetNetworkNameCallback callback);
-  void OnGetnetworkName(GetNetworkNameCallback callback,
-                        std::string const& str);
-
   mojo::ReceiverSet<mojom::PolkadotWalletService> receivers_;
 
   PolkadotSubstrateRpc polkadot_substrate_rpc_;

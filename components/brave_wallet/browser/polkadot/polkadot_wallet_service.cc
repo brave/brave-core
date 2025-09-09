@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
-#include "mojo/public/cpp/bindings/callback_helpers.h"
-
 namespace brave_wallet {
 
 PolkadotWalletService::PolkadotWalletService(
@@ -25,26 +23,7 @@ void PolkadotWalletService::Reset() {
 }
 
 void PolkadotWalletService::GetNetworkName(GetNetworkNameCallback callback) {
-  auto weak = weak_ptr_factory_.GetWeakPtr();
-
-  auto cb = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-      std::move(callback), "PolkadotWalletService unavailable.");
-
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&PolkadotWalletService::StartGetNetworkName,
-                                std::move(weak), std::move(cb)));
-}
-
-void PolkadotWalletService::StartGetNetworkName(
-    GetNetworkNameCallback callback) {
-  auto weak = weak_ptr_factory_.GetWeakPtr();
-  polkadot_substrate_rpc_.GetChainName(base::BindOnce(
-      &PolkadotWalletService::OnGetnetworkName, weak, std::move(callback)));
-}
-
-void PolkadotWalletService::OnGetnetworkName(GetNetworkNameCallback callback,
-                                             std::string const& str) {
-  std::move(callback).Run(str);
+  polkadot_substrate_rpc_.GetChainName(std::move(callback));
 }
 
 }  // namespace brave_wallet
