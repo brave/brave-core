@@ -46,41 +46,42 @@ RUN source $NVM_DIR/nvm.sh && \
     nvm install $NODE_VERSION && \
     nvm alias default $NODE_VERSION
 
+RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /home/ubuntu/depot_tools
+ENV PATH=/home/ubuntu/depot_tools:$PATH
+ENV GIT_CACHE_PATH=/home/ubuntu/.cache/git
+
+
+RUN git config --global user.name "docker" \
+    git config --global user.email "docker@email.com" \
+    git config --global core.autocrlf false \
+    git config --global core.filemode false \
+    git config --global cache.cachepath $GIT_CACHE_PATH && \
+    git config --global checkout.workers 16
 
 # ---------------------------------------------------------------------------------
 # Setup a minimal image so you can build brave without needing to download anything
 # You can volume mount your sourcecode onto /home/ubuntu/src/brave
 FROM chromium-build-base AS brave-dev
 
-# Ideally we only get the files required to do a gclient sync
-RUN git clone https://github.com/brave/brave-core --depth=1 src/brave
-WORKDIR /home/ubuntu/src/brave
+WORKDIR /home/ubuntu
+ADD .gclient .gclient
 
 
-RUN npm ci
+# RUN echo "build_type=$BUILD_TYPE --target_os=$TARGET_OS --target_arch=$TARGET_ARCH" 
+# RUN echo projects_chrome_repository_url=https://chromium.googlesource.com/chromium/src > .env
 
-ARG TARGET_OS=linux
-ARG TARGET_ARCH=arm64
 
-RUN echo "build_type=$BUILD_TYPE --target_os=$TARGET_OS --target_arch=$TARGET_ARCH" 
-RUN echo projects_chrome_repository_url=https://chromium.googlesource.com/chromium/src > .env
-
-ENV GIT_CACHE_PATH=/home/ubuntu/.cache/git
 # Setup git cache for gclient; we give the cache-mount a dedicated name uid
 # This folder will only exist in the cache to ensure we don't bloat the image
 # We enable sharing to maximize reuse in a matrix build.
 # The id is required to ensure gclient doesn't hang on macos
-RUN --mount=type=cache,id=git-cache,uid=$UID,sharing=shared,target=$GIT_CACHE_PATH \
+RUN --mount=type=cache,id=git-cache,uid=$UID,sharing=locked,target=$GIT_CACHE_PATH \
     mkdir -p $GIT_CACHE_PATH && \
     rm -rf $GIT_CACHE_PATH/*.locked && \
-    git config --global cache.cachepath $GIT_CACHE_PATH && \
-    git config --global checkout.workers 16 && \
-    ls $GIT_CACHE_PATH
-
-
-RUN --mount=type=cache,id=git-cache,uid=$UID,sharing=shared,target=$GIT_CACHE_PATH \
-    npm run init        -- --no-history --target_os=$TARGET_OS --target_arch=$TARGET_ARCH
-
+    ls $GIT_CACHE_PATH && \
+    gclient sync --no-history \
+                --revision src@140.0.7339.80 \
+                --revision src/brave@master
 
 # --------------------------------------------------------------------------------------
 # Prebuilt image for faster incremental builds
