@@ -9,6 +9,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/themes/theme_properties.h"
@@ -23,18 +24,6 @@
 namespace tabs {
 
 namespace {
-
-// Tunable HSL targets for hover colors derived from the user's theme color.
-// Adjust these to fine-tune tab hover appearance per color mode.
-constexpr double kVerticalHoverLightS = 0.5;   // Light mode saturation
-constexpr double kVerticalHoverLightL = 0.8;  // Light mode lightness
-constexpr double kVerticalHoverDarkS = 0.6;    // Dark mode saturation
-constexpr double kVerticalHoverDarkL = 0.50;    // Dark mode lightness
-
-constexpr double kHorizontalHoverLightS = 0.9;  // Light mode saturation
-constexpr double kHorizontalHoverLightL = 0.8;  // Light mode lightness
-constexpr double kHorizontalHoverDarkS = 0.55;  // Dark mode saturation
-constexpr double kHorizontalHoverDarkL = 0.52;  // Dark mode lightness
 
 SkColor GetActiveVerticalTabBackgroundColor(const ui::ColorProviderKey& key,
                                             SkColor input,
@@ -56,53 +45,41 @@ SkColor GetActiveVerticalTabBackgroundColor(const ui::ColorProviderKey& key,
   return color_utils::HSLShift(default_color, hsl);
 }
 
-SkColor GetHoveredVerticalTabBackgroundColor(const ui::ColorProviderKey& key,
-                                             SkColor input,
-                                             const ui::ColorMixer& mixer) {
-  const auto default_color =
-      mixer.GetResultColor(nala::kColorDesktopbrowserTabbarHoverTabVertical);
+SkColor GetHoveredTabBackgroundColor(const ui::ColorProviderKey& key,
+                                     nala::Color default_color_id,
+                                     SkColor input,
+                                     const ui::ColorMixer& mixer) {
+  CHECK(default_color_id == nala::kColorDesktopbrowserTabbarHoverTabVertical ||
+        default_color_id == nala::kColorDesktopbrowserTabbarHoverTabHorizontal);
+
+  const auto default_color = mixer.GetResultColor(default_color_id);
   if (!key.user_color.has_value()) {
+    // Defaults to Nala if no user color.
     return default_color;
   }
 
-  // Light vs Dark: apply user-color theming only in light mode; keep dark mode
-  // using mode-specific HSL tuning. Defaults to Nala if no user color.
-  color_utils::HSL hsl;
+  constexpr auto kHSLShiftMap =
+      base::MakeFixedFlatMap<nala::Color, std::array<color_utils::HSL, 2>>({
+          {nala::kColorDesktopbrowserTabbarHoverTabVertical,
+           {color_utils::HSL{
+                .h = -1, .s = 0.5, .l = 0.8},  // Light mode : lighter
+            color_utils::HSL{
+                .h = -1, .s = 0.6, .l = 0.5}}},  // Dark mode : More saturation
+          {nala::kColorDesktopbrowserTabbarHoverTabHorizontal,
+           {color_utils::HSL{
+                .h = -1,
+                .s = 0.9,
+                .l = 0.8},  // Light-mode: More saturation and lighter
+            color_utils::HSL{
+                .h = -1,
+                .s = 0.55,
+                .l = 0.52}}},  // Dark-mode: A little more saturation
+                               // and a little bit darker
+      });
+
+  color_utils::HSL hsl = kHSLShiftMap.at(default_color_id).at(
+      base::to_underlying(ui::ColorProviderKey::ColorMode::kLight));
   color_utils::SkColorToHSL(*key.user_color, &hsl);
-
-  if (key.color_mode == ui::ColorProviderKey::ColorMode::kLight) {
-    hsl.s = kVerticalHoverLightS;
-    hsl.l = kVerticalHoverLightL;
-  } else {
-    // Dark (and others): apply separate tuning.
-    hsl.s = kVerticalHoverDarkS;
-    hsl.l = kVerticalHoverDarkL;
-  }
-
-  return color_utils::HSLShift(default_color, hsl);
-}
-
-SkColor GetHoveredHorizontalTabBackgroundColor(const ui::ColorProviderKey& key,
-                                               SkColor input,
-                                               const ui::ColorMixer& mixer) {
-  const auto default_color =
-      mixer.GetResultColor(nala::kColorDesktopbrowserTabbarHoverTabHorizontal);
-  if (!key.user_color.has_value()) {
-    return default_color;
-  }
-
-  // Mode-specific tuning mirroring vertical tabs.
-  color_utils::HSL hsl;
-  color_utils::SkColorToHSL(*key.user_color, &hsl);
-
-  if (key.color_mode == ui::ColorProviderKey::ColorMode::kLight) {
-    hsl.s = kHorizontalHoverLightS;
-    hsl.l = kHorizontalHoverLightL;
-  } else {
-    hsl.s = kHorizontalHoverDarkS;
-    hsl.l = kHorizontalHoverDarkL;
-  }
-
   return color_utils::HSLShift(default_color, hsl);
 }
 
@@ -136,13 +113,13 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
         nala::kColorDesktopbrowserTabbarSplitViewDivider};
     mixer[kColorBraveVerticalTabActiveBackground] = {
         base::BindRepeating(&GetActiveVerticalTabBackgroundColor, key)};
-  mixer[kColorBraveVerticalTabHoveredBackground] = {
-      base::BindRepeating(&GetHoveredVerticalTabBackgroundColor, key)};
+    mixer[kColorTabBackgroundInactiveHoverFrameActive] = {base::BindRepeating(
+        &GetHoveredTabBackgroundColor, key,
+        nala::kColorDesktopbrowserTabbarHoverTabHorizontal)};
+    mixer[kColorBraveVerticalTabHoveredBackground] = {
+        base::BindRepeating(&GetHoveredTabBackgroundColor, key,
+                            nala::kColorDesktopbrowserTabbarHoverTabVertical)};
   }
-
-  // Add horizontal tab hover color theming
-  mixer[kColorTabBackgroundInactiveHoverFrameActive] = {
-      base::BindRepeating(&GetHoveredHorizontalTabBackgroundColor, key)};
 
   mixer[kColorBraveVerticalTabInactiveBackground] = {kColorToolbar};
   mixer[kColorBraveVerticalTabSeparator] = {
