@@ -133,9 +133,6 @@ class EndpointClientTest : public testing::TestWithParam<TestCase> {
  protected:
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory test_url_loader_factory_;
-  api_request_helper::APIRequestHelper api_request_helper_{
-      TRAFFIC_ANNOTATION_FOR_TESTS,
-      test_url_loader_factory_.GetSafeWeakWrapper()};
 };
 
 TEST_P(EndpointClientTest, Send) {
@@ -197,8 +194,9 @@ TEST_P(EndpointClientTest, Send) {
                                   std::get<Expected>(test_case.parsed_reply)))
             .Times(1)
             .WillOnce([&] { run_loop.Quit(); });
-        Client<TestEndpoint>::Send(api_request_helper_, std::move(request),
-                                   callback.Get());
+        Client<TestEndpoint>::Send(
+            test_url_loader_factory_.GetSafeWeakWrapper(), std::move(request),
+            callback.Get());
       },
       test_case.request);
 
