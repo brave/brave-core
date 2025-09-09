@@ -357,6 +357,7 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
 export const mockedErc20ApprovalTransaction = {
   ...mockTransactionInfo,
   txType: BraveWallet.TransactionType.ERC20Approve,
+  id: 'erc20-approve-tx',
 }
 
 export const mockEthSendTransaction = {

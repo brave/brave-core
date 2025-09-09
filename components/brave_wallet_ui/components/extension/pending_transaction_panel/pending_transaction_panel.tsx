@@ -28,6 +28,7 @@ import {
 import {
   ConfirmSimulatedTransactionPanel, //
 } from '../confirm-transaction-panel/confirm_simulated_tx_panel'
+import { AllowSpendPanel } from '../allow_spend_panel/allow_spend_panel'
 
 // Utils
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
@@ -205,6 +206,14 @@ export const PendingTransactionPanel: React.FC<Props> = ({
     selectedPendingTransaction.txType === BraveWallet.TransactionType.ETHSwap
   ) {
     return <ConfirmSwapTransaction />
+  }
+
+  // Allow spend
+  if (
+    selectedPendingTransaction.txType
+    === BraveWallet.TransactionType.ERC20Approve
+  ) {
+    return <AllowSpendPanel />
   }
 
   // Defaults
