@@ -20,6 +20,7 @@
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/types/always_false.h"
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -37,7 +38,7 @@
 #include "url/gurl.h"
 
 using endpoints::Endpoint;
-using endpoints::ForRequest;
+using endpoints::For;
 using endpoints::PATCH;
 using endpoints::POST;
 
@@ -91,31 +92,27 @@ using Error1 = Message<kError1Key>;
 using Error2 = Message<kError2Key>;
 
 struct TestEndpoint
-    : Endpoint<ForRequest<POST<Request1>>            // Request1
-               ::RespondsWith<Response1, Response2>  // Response1, Response2
-               ::ErrorsWith<Error1>,                 // Error1
-               // POST<Request1> =>
-               //   expected<
-               //     optional<variant<Response1, Response2>>,
-               //     optional<Error1>
-               //   >
-               ForRequest<PATCH<Request2>>    // Request2
-               ::RespondsWith<Response3>      // Response3
-               ::ErrorsWith<Error1, Error2>,  // Error1, Error2
-               // PATCH<Request2> =>
-               //   expected<
-               //     optional<Response3>,
-               //     optional<variant<Error1, Error2>>
-               //   >
-               ForRequest<PATCH<Request1>>  // Request1
-               ::RespondsWith<Response2>    // Response2
-               ::ErrorsWith<Error2>         // Error2
-               // PATCH<Request1> =>
-               //   expected<
-               //     optional<Response2>,
-               //     optional<Error2>
-               //   >
-               > {
+    : Endpoint<
+          // POST<Request1> =>
+          //   expected<
+          //     optional<variant<Response1, Response2>>,
+          //     optional<Error1>
+          //   >
+          For<POST<Request1>>::RespondsWith<Response1,
+                                            Response2>::ErrorsWith<Error1>,
+          // PATCH<Request2> =>
+          //   expected<
+          //     optional<Response3>,
+          //     optional<variant<Error1, Error2>>
+          //   >
+          For<PATCH<Request2>>::RespondsWith<Response3>::ErrorsWith<Error1,
+                                                                    Error2>,
+          // PATCH<Request1> =>
+          //   expected<
+          //     optional<Response2>,
+          //     optional<Error2>
+          //   >
+          For<PATCH<Request1>>::RespondsWith<Response2>::ErrorsWith<Error2>> {
   static GURL URL() { return GURL("https://example.com/api/query"); }
 };
 

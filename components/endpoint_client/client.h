@@ -30,7 +30,7 @@
 
 namespace endpoint_client {
 
-template <endpoints::concepts::Endpoint Endpoint>
+template <endpoints::detail::concepts::Endpoint Endpoint>
 class Client {
   template <typename T>
   struct Parse {
@@ -59,8 +59,9 @@ class Client {
   };
 
  public:
-  template <endpoints::concepts::SupportedBy<Endpoint> Request>
-  static void Send(
+  template <typename Request>
+    requires Endpoint::template
+  IsSupported<Request> static void Send(
       const scoped_refptr<network::SharedURLLoaderFactory>& url_loader_factory,
       Request request,
       Endpoint::template CallbackFor<Request> callback) {
