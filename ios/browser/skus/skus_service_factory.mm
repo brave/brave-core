@@ -61,7 +61,7 @@ std::unique_ptr<KeyedService> SkusServiceFactory::BuildServiceInstanceFor(
   return sku_service;
 }
 
-void SkusServiceFactory::RegisterBrowserStatePrefs(
+void SkusServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   skus::RegisterProfilePrefsForMigration(registry);
 }

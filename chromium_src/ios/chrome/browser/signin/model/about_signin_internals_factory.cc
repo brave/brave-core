@@ -36,7 +36,7 @@ AboutSigninInternalsFactory::BuildServiceInstanceFor(
   return nullptr;
 }
 
-void AboutSigninInternalsFactory::RegisterBrowserStatePrefs(
+void AboutSigninInternalsFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* user_prefs) {}
 
 }  // namespace ios
