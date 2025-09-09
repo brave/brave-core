@@ -6,7 +6,7 @@
 .main {
   --conversation-content-margin: var(--leo-spacing-5xl);
   --conversation-content-max-width: calc(
-    680px + calc(var(--conversation-content-margin) * 2)
+    768px + calc(var(--conversation-content-margin) * 2)
   );
 
   display: flex;
