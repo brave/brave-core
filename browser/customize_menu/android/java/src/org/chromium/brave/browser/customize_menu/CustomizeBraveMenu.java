@@ -60,16 +60,67 @@ public class CustomizeBraveMenu {
     public static void applyCustomization(final MVCListAdapter.ModelList modelList) {
         for (Iterator<MVCListAdapter.ListItem> it = modelList.iterator(); it.hasNext(); ) {
             MVCListAdapter.ListItem item = it.next();
+            final int menuItemId = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
             // Skip current item if it matches the customize menu id or settings menu id.
-            if (BRAVE_CUSTOMIZE_ITEM_ID == item.model.get(AppMenuItemProperties.MENU_ITEM_ID)
-                    || R.id.preferences_id == item.model.get(AppMenuItemProperties.MENU_ITEM_ID)) {
+            if (BRAVE_CUSTOMIZE_ITEM_ID == menuItemId || R.id.preferences_id == menuItemId) {
                 continue;
             }
-            boolean visible = isVisible(item.model.get(AppMenuItemProperties.MENU_ITEM_ID));
-            if (!visible) {
+            if (!isVisible(menuItemId)) {
                 it.remove();
             }
         }
+
+        // Removes adjacent separators, if any.
+        sanitizeSeparators(modelList);
+    }
+
+    /**
+     * Sanitizes a menu model by normalizing separator items (type {@code DIVIDER}).
+     *
+     * <p>Specifically, this method:
+     *
+     * <ul>
+     *   <li>Removes any leading separators.
+     *   <li>Removes any trailing separators.
+     *   <li>Collapses runs of adjacent separators to a single separator.
+     * </ul>
+     *
+     * <p>The operation modifies {@code modelList} in place and preserves the relative order of
+     * non-separator items.
+     *
+     * @param modelList the mutable list of menu items to sanitize; must not be {@code null}
+     * @see AppMenuHandler.AppMenuItemType#DIVIDER
+     */
+    public static void sanitizeSeparators(final MVCListAdapter.ModelList modelList) {
+        if (modelList.isEmpty()) {
+            return;
+        }
+        final MVCListAdapter.ModelList out = new MVCListAdapter.ModelList();
+
+        // Mark when one or more separators are met.
+        boolean pendingSeparators = false;
+        MVCListAdapter.ListItem separator = null;
+
+        for (Iterator<MVCListAdapter.ListItem> it = modelList.iterator(); it.hasNext(); ) {
+            MVCListAdapter.ListItem curr = it.next();
+            if (curr.type == AppMenuHandler.AppMenuItemType.DIVIDER) {
+                // Just mark a separator was met, act when a standard item arrives.
+                pendingSeparators = true;
+                separator = curr;
+                continue;
+            }
+
+            if (!out.isEmpty() && pendingSeparators) {
+                // Add a single separator between standard menu items.
+                out.add(separator);
+            }
+            out.add(curr);
+            // Reset after placing standard menu item.
+            pendingSeparators = false;
+        }
+
+        modelList.clear();
+        modelList.addAll(out);
     }
 
     public static void openCustomizeMenuSettings(
