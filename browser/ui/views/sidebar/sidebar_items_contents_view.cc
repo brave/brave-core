@@ -511,7 +511,15 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
   }
 
   const auto& item_model = controller->model()->GetAllSidebarItems()[*index];
-  if (item_model.open_in_panel) {
+
+  // web panel is not a side panel that's handled by SidePanelCoordinator.
+  // It'll be loaded into another contents view in MultiContentsView.
+  if (item_model.is_web_panel_type()) {
+    controller->ActivateItemAt(index);
+    return;
+  }
+
+  if (!item_model.is_web_type() && item_model.open_in_panel) {
     if (item_model.built_in_item_type ==
         sidebar::SidebarItem::BuiltInItemType::kChatUI) {
       auto* profile_metrics =
