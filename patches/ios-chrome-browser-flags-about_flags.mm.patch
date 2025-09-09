@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 6930f3002d38bb111934556dcec18e89510a5d74..3d0e49da959e9cd4fe12256390f2edb0965ee591 100644
+index e54df18127ba3fcf463b83f54c973d7678215d5b..4634809eb2d4c44b6f0b46b3f434fb24cdfb6621 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
 @@ -1453,6 +1453,7 @@ const FeatureEntry::FeatureVariation kOmniboxAimShortcutTypedStateVariations[] =
