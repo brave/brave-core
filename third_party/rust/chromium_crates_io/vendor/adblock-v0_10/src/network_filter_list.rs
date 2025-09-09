@@ -106,7 +106,7 @@ impl NetworkFilterList {
         })
     }
 
-    pub fn get_filter_map(&self) -> FlatFilterMap<ShortHash, fb::NetworkFilter> {
+    pub fn get_filter_map(&self) -> FlatFilterMap<'_, ShortHash, fb::NetworkFilter<'_>> {
         let filters_list = self.memory.filter_list();
         FlatFilterMap::new(
             fb_vector_to_slice(filters_list.filter_map_index()),

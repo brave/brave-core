@@ -363,7 +363,7 @@ impl FilterPart {
         }
     }
 
-    pub fn iter(&self) -> FilterPartIterator {
+    pub fn iter(&self) -> FilterPartIterator<'_> {
         FilterPartIterator {
             filter_part: self,
             index: 0,
@@ -828,7 +828,7 @@ impl NetworkFilter {
 
         // This shouldn't be used to block an entire TLD, and the hostname shouldn't end with a dot
         if find_char(b'.', hostname.as_bytes()).is_none()
-            || (hostname.starts_with('.') && find_char(b'.', hostname[1..].as_bytes()).is_none())
+            || (hostname.starts_with('.') && find_char(b'.', &hostname.as_bytes()[1..]).is_none())
             || hostname.ends_with('.')
         {
             return Err(NetworkFilterError::FilterParseError);

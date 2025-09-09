@@ -96,7 +96,7 @@ impl Blocker {
     }
 
     #[cfg(feature = "unsync-regex-caching")]
-    fn borrow_regex_manager(&self) -> std::cell::RefMut<RegexManager> {
+    fn borrow_regex_manager(&self) -> std::cell::RefMut<'_, RegexManager> {
         #[allow(unused_mut)]
         let mut manager = self.regex_manager.borrow_mut();
 
@@ -107,7 +107,7 @@ impl Blocker {
     }
 
     #[cfg(not(feature = "unsync-regex-caching"))]
-    fn borrow_regex_manager(&self) -> std::sync::MutexGuard<RegexManager> {
+    fn borrow_regex_manager(&self) -> std::sync::MutexGuard<'_, RegexManager> {
         let mut manager = self.regex_manager.lock().unwrap();
         manager.update_time();
         manager
@@ -274,7 +274,7 @@ impl Blocker {
             // String indexing safety: indices come from `.len()` or `find_char` on individual ASCII
             // characters (1 byte each), some plus 1.
             let params_start = i + 1;
-            let hash_index = if let Some(j) = find_char(b'#', url[params_start..].as_bytes()) {
+            let hash_index = if let Some(j) = find_char(b'#', &url.as_bytes()[params_start..]) {
                 params_start + j
             } else {
                 url.len()

@@ -212,7 +212,7 @@ fn rule_match_browserlike_comparable(c: &mut Criterion) {
     let requests_len = requests.len() as u64;
 
     group.throughput(Throughput::Elements(requests_len));
-    group.sample_size(20);
+    group.sample_size(10);
 
     fn requests_parsed(requests: &[TestRequest]) -> Vec<(String, String, String, String, bool)> {
         requests

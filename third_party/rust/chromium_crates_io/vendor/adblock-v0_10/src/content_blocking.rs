@@ -253,6 +253,7 @@ fn non_empty(v: Vec<String>) -> Option<Vec<String>> {
 /// into multiple rules.
 ///
 /// The contained rules can be accessed using `IntoIterator`.
+#[allow(clippy::large_enum_variant)]
 pub enum CbRuleEquivalent {
     /// In most successful cases, an ABP rule can be converted into a single content blocking rule.
     SingleRule(CbRule),
