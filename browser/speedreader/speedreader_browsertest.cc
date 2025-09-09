@@ -956,9 +956,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
 
     content::WebContentsConsoleObserver console_observer(ActiveWebContents());
     console_observer.SetPattern(
-        "Loading the image 'https://a.test/should_fail.png' violates the "
-        "following Content Security Policy directive: \"img-src 'none'\". The "
-        "action has been blocked.");
+        "Refused to load the image 'https://a.test/should_fail.png' because it "
+        "violates the following Content Security Policy directive: \"img-src "
+        "'none'\".*");
 
     NavigateToPageSynchronously(page, WindowOpenDisposition::CURRENT_TAB);
 
@@ -990,9 +990,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspOrder) {
   {
     content::WebContentsConsoleObserver console_observer(ActiveWebContents());
     console_observer.SetPattern(
-        "Setting the document's base URI to 'https://a.test/' violates the "
-        "following Content Security Policy directive: \"base-uri 'none'\". The "
-        "action has been blocked.");
+        "Refused to set the document's base URI to 'https://a.test/' because "
+        "it violates the following Content Security Policy directive: "
+        "\"base-uri 'none'\".*");
     NavigateToPageSynchronously(kTestCSPOrderPage2,
                                 WindowOpenDisposition::CURRENT_TAB);
     EXPECT_TRUE(console_observer.Wait());
