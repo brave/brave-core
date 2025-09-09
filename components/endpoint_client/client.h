@@ -64,14 +64,15 @@ class Client {
   IsSupported<Request> static void Send(
       const scoped_refptr<network::SharedURLLoaderFactory>& url_loader_factory,
       Request request,
-      Endpoint::template CallbackFor<Request> callback) {
+      Endpoint::template EntryFor<Request>::Callback callback) {
     auto on_response =
         [](decltype(callback) callback,
            std::unique_ptr<network::SimpleURLLoader> simple_url_loader,
            std::optional<std::string> response_body) {
-          using Response = Endpoint::template ResponseFor<Request>;
-          using Error = Endpoint::template ErrorFor<Request>;
-          using Expected = Endpoint::template ExpectedFor<Request>;
+          using Entry = Endpoint::template EntryFor<Request>;
+          using Response = Entry::Response;
+          using Error = Entry::Error;
+          using Expected = Entry::Expected;
 
           CHECK(simple_url_loader);
 
