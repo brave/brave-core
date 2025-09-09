@@ -25,7 +25,9 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_launcher_factory.h"
+#include "chrome/browser/browser_process.h"
 #endif
 
 namespace {
@@ -98,7 +100,13 @@ void BravePrivateNewTabPageHandler::GetIsTorDisabled(
     GetIsTorDisabledCallback callback) {
   CHECK(profile_);
 #if BUILDFLAG(ENABLE_TOR)
-  bool is_disabled = TorProfileServiceFactory::IsTorDisabled(profile_);
+  // For private new tab page, only check if Tor is explicitly
+  // disabled by enterprise policy (managed and set to true)
+  bool is_disabled = false;
+  if (auto* prefs = g_browser_process->local_state()) {
+    auto* pref = prefs->FindPreference(tor::prefs::kTorDisabled);
+    is_disabled = pref && pref->IsManaged() && pref->GetValue()->GetBool();
+  }
 #else
   bool is_disabled = true;
 #endif
