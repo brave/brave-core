@@ -17,6 +17,7 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/password_manager/core/browser/ui/saved_passwords_presenter.h"
+#include "components/prefs/pref_service.h"
 #include "components/reading_list/core/reading_list_model.h"
 #include "components/user_data_importer/ios/ios_bookmark_parser.h"
 #include "components/user_data_importer/utility/safari_data_importer.h"
@@ -58,6 +59,7 @@
         ReadingListModelFactory::GetForProfile(profile);
     syncer::SyncService* syncService =
         SyncServiceFactory::GetForProfile(profile);
+    PrefService* prefService = profile->GetPrefs();
     std::unique_ptr<user_data_importer::IOSBookmarkParser> bookmarkParser =
         std::make_unique<user_data_importer::IOSBookmarkParser>();
     std::string locale =
@@ -78,7 +80,7 @@
         std::make_unique<user_data_importer::SafariDataImporter>(
             _bridge.get(), _savedPasswordsPresenter.get(), paymentsDataManager,
             historyService, bookmarkModel, readingListModel, syncService,
-            std::move(bookmarkParser), locale);
+            prefService, std::move(bookmarkParser), locale);
     _importer = [[SafariDataImporterBridgeImpl alloc]
         initWithSafariDataImporter:std::move(safariDataImporter)];
   }
