@@ -1,0 +1,12 @@
+diff --git a/third_party/libwebp/visibility.gni b/third_party/libwebp/visibility.gni
+index c9f06c36ac0b9ed34f13cb0741d0994338c1eb3d..c1dd94bf96d0eb6a3f7df9bd2ec371195203b7e7 100644
+--- a/third_party/libwebp/visibility.gni
++++ b/third_party/libwebp/visibility.gni
+@@ -14,6 +14,7 @@ allowed_visibility = [
+   "//skia:*",
+   "//third_party/blink/renderer/*",
+   "//third_party/libwebp/*",
++  "//brave/ios/browser/svg",
+ 
+   # Note: Presubmit complains about this being a disallowed import,
+   # but it's not actually an import.
