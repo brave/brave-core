@@ -29,6 +29,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "content/public/common/url_constants.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
 #include "ui/webui/webui_util.h"
@@ -43,6 +44,7 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
       web_ui->GetWebContents()->GetBrowserContext(), kVPNPanelURL);
 
   brave_vpn::AddLocalizedStrings(source);
+  source->AddLocalizedStrings(webui::kVpnStrings);
   webui::SetupWebUIDataSource(source, kBraveVpnPanelGenerated,
                               IDR_VPN_PANEL_HTML);
 

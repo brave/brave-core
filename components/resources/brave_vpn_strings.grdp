@@ -48,7 +48,7 @@
     Try again
   </message>
 
-  <message name="IDS_BRAVE_VPN_CHOOSE_ANOTHER_SERVER" desc="Button title to show a region list">
+  <message name="IDS_BRAVE_VPN_CHOOSE_ANOTHER_SERVER" desc="Button title to show a region list" formatter_data="webui=Vpn">
     Choose another server
   </message>
 

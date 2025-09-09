@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import * as S from './style'
+import * as Styles from './style'
 import { PanelHeader } from '../select-region-list'
 import * as Actions from '../../state/actions'
 import { useSelector, useDispatch } from '../../state/hooks'
@@ -37,16 +37,16 @@ function ErrorPanel(props: Props) {
   }
 
   return (
-    <S.Box>
-      <S.PanelContent>
+    <Styles.Box>
+      <Styles.PanelContent>
         <PanelHeader
           title={getLocale('braveVpn')}
           buttonAriaLabel={getLocale('braveVpnErrorPanelBackButtonAriaLabel')}
           onClick={handleShowMainView}
 
         />
-        <S.TopContent>
-          <S.StyledAlert
+        <Styles.TopContent>
+          <Styles.StyledAlert
             type='error'
             hideIcon
           >
@@ -55,31 +55,31 @@ function ErrorPanel(props: Props) {
               /\$\d+/g,
               (match) => matches[match as keyof typeof matches]
             )}
-          </S.StyledAlert>
-          <S.StyledActionButton
+          </Styles.StyledAlert>
+          <Styles.StyledActionButton
             slot='actions'
             kind='filled'
             onClick={handleTryAgain}
           >
             {getLocale('braveVpnTryAgain')}
-          </S.StyledActionButton>
-          <S.StyledActionButton
+          </Styles.StyledActionButton>
+          <Styles.StyledActionButton
             slot='actions'
             kind='plain'
             onClick={handleChooseServer}
           >
-            {getLocale('braveVpnChooseAnotherServer')}
-          </S.StyledActionButton>
-          <S.StyledActionButton
+            {getLocale(S.BRAVE_VPN_CHOOSE_ANOTHER_SERVER)}
+          </Styles.StyledActionButton>
+          <Styles.StyledActionButton
             slot='actions'
             kind='plain'
             onClick={props.showContactSupport}
           >
             {getLocale('braveVpnContactSupport')}
-          </S.StyledActionButton>
-        </S.TopContent>
-      </S.PanelContent>
-    </S.Box>
+          </Styles.StyledActionButton>
+        </Styles.TopContent>
+      </Styles.PanelContent>
+    </Styles.Box>
   )
 }
 
