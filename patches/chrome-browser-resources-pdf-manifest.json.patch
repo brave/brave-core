@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/pdf/manifest.json b/chrome/browser/resources/pdf/manifest.json
-index 814bec7dfaa7b73377586aec05df7c4707f85513..941a09e2772754502e22fe03a560babf946a40de 100644
+index 04e1e8868ef79c343da291711aab5cfce7aafdd8..598af3db866268c036cfac23c5eced6824ba0f79 100644
 --- a/chrome/browser/resources/pdf/manifest.json
 +++ b/chrome/browser/resources/pdf/manifest.json
 @@ -8,6 +8,7 @@
@@ -14,8 +14,8 @@ index 814bec7dfaa7b73377586aec05df7c4707f85513..941a09e2772754502e22fe03a560babf
    "mime_types": [
      "application/pdf"
    ],
--  "content_security_policy": "script-src 'self' 'wasm-eval' blob: filesystem: chrome://resources chrome://webui-test; object-src * blob: externalfile: file: filesystem: data:",
-+  "content_security_policy": "script-src 'self' 'wasm-eval' blob: filesystem: chrome://brave-resources chrome://resources chrome://webui-test; object-src * blob: externalfile: file: filesystem: data:",
+-  "content_security_policy": "script-src 'self' blob: filesystem: chrome://resources chrome://webui-test; object-src * blob: externalfile: file: filesystem: data:",
++  "content_security_policy": "script-src 'self' blob: filesystem: chrome://brave-resources chrome://resources chrome://webui-test; object-src * blob: externalfile: file: filesystem: data:",
    "mime_types_handler": "index.html",
    "web_accessible_resources": [
      "pdf_embedder.css"
