@@ -52,8 +52,6 @@ class ByteCodeProcessor {
     private static boolean sVerbose;
     private static boolean sIsPrebuilt;
     private static boolean sShouldUseThreadAnnotations;
-    private static boolean sShouldCheckClassPath;
-    private static ClassLoader sDirectClassPathClassLoader;
     private static ClassLoader sFullClassPathClassLoader;
     private static Set<String> sFullClassPathJarPaths;
     private static Set<String> sMissingClassesAllowlist;
@@ -88,11 +86,6 @@ class ByteCodeProcessor {
         }
 
         ClassReader reader = new ClassReader(data);
-        if (sShouldCheckClassPath) {
-            sValidator.validateClassPathsAndOutput(reader, sDirectClassPathClassLoader,
-                    sFullClassPathClassLoader, sFullClassPathJarPaths, sIsPrebuilt, sVerbose,
-                    sMissingClassesAllowlist);
-        }
 
         ClassWriter writer = new ClassWriter(reader, 0);
         ClassVisitor chain = writer;
@@ -242,19 +235,12 @@ class ByteCodeProcessor {
         sVerbose = args[currIndex++].equals("--verbose");
         sIsPrebuilt = args[currIndex++].equals("--is-prebuilt");
         sShouldUseThreadAnnotations = args[currIndex++].equals("--enable-thread-annotations");
-        sShouldCheckClassPath = args[currIndex++].equals("--enable-check-class-path");
 
         sMissingClassesAllowlist = new HashSet<>();
         currIndex = parseListArgument(args, currIndex, sMissingClassesAllowlist);
 
         ArrayList<String> sdkJarPaths = new ArrayList<>();
         currIndex = parseListArgument(args, currIndex, sdkJarPaths);
-
-        ArrayList<String> directClassPathJarPaths = new ArrayList<>();
-        directClassPathJarPaths.add(inputJarPath);
-        directClassPathJarPaths.addAll(sdkJarPaths);
-        currIndex = parseListArgument(args, currIndex, directClassPathJarPaths);
-        sDirectClassPathClassLoader = loadJars(directClassPathJarPaths);
 
         // Load all jars that are on the classpath for the input jar for analyzing class
         // hierarchy.
@@ -266,7 +252,6 @@ class ByteCodeProcessor {
                 Arrays.asList(Arrays.copyOfRange(args, currIndex, args.length)));
 
         sFullClassPathClassLoader = loadJars(sFullClassPathJarPaths);
-        sFullClassPathJarPaths.removeAll(directClassPathJarPaths);
 
         sValidator = new ClassPathValidator();
         process(inputJarPath, outputJarPath);
