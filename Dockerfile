@@ -63,9 +63,7 @@ RUN git config --global user.name "docker" \
 # You can volume mount your sourcecode onto /home/ubuntu/src/brave
 FROM chromium-build-base AS brave-dev
 
-WORKDIR /home/ubuntu
 ADD .gclient .gclient
-
 
 # RUN echo "build_type=$BUILD_TYPE --target_os=$TARGET_OS --target_arch=$TARGET_ARCH" 
 # RUN echo projects_chrome_repository_url=https://chromium.googlesource.com/chromium/src > .env
@@ -93,6 +91,7 @@ RUN --mount=type=cache,id=git-cache,uid=$UID,sharing=locked,target=$GIT_CACHE_PA
 #    you will need to copy out the test binary and test data onto the host
 # eg. docker cp brave-dev-prebuilt-container:/home/ubuntu/src/out/brave-browser-test .
 FROM brave-dev AS brave-dev-prebuilt
+WORKDIR /home/ubuntu/src/brave
 ARG BUILD_TYPE=Static
 
 RUN --mount=type=secret,id=env,optional=true \
