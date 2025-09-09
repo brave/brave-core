@@ -33,5 +33,5 @@ GoogleGroupsManagerFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
   return nullptr;
 }
 
-void GoogleGroupsManagerFactory::RegisterBrowserStatePrefs(
+void GoogleGroupsManagerFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {}
