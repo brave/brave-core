@@ -39,6 +39,18 @@ template <typename T, template <typename...> typename TT>
 inline constexpr bool is_specialization_of_v =
     is_specialization_of<T, TT>::value;
 
+template <typename T, typename... Ts>
+using Collapse =
+    std::conditional_t<sizeof...(Ts) == 0, T, std::variant<T, Ts...>>;
+
+template <typename...>
+struct unique_types : std::true_type {};
+
+template <typename T, typename... Ts>
+struct unique_types<T, Ts...>
+    : std::conjunction<std::negation<std::is_same<T, Ts>>...,
+                       unique_types<Ts...>> {};
+
 template <typename, typename, typename>
 struct Entry;
 
@@ -183,11 +195,10 @@ struct Entry {
   using Request = Req;
   using Response = Rsp;
   using Error = Err;
+  using Expected =
+      base::expected<std::optional<Response>, std::optional<Error>>;
+  using Callback = base::OnceCallback<void(int, Expected)>;
 };
-
-template <typename T, typename... Ts>
-using Collapse =
-    std::conditional_t<sizeof...(Ts) == 0, T, std::variant<T, Ts...>>;
 
 }  // namespace detail
 
@@ -202,26 +213,9 @@ struct For {
   };
 };
 
-template <typename...>
-struct unique_types : std::true_type {};
-
-template <typename T, typename... Ts>
-struct unique_types<T, Ts...>
-    : std::bool_constant<(!std::is_same_v<T, Ts> && ...) &&
-                         unique_types<Ts...>::value> {};
-
 template <detail::concepts::Entry... Entries>
+  requires(detail::unique_types<typename Entries::Request...>::value)
 class Endpoint {
-  static_assert(unique_types<typename Entries::Request...>::value,
-                "Duplicate ForRequest<...>: each Request type may appear at "
-                "most once in an Endpoint.");
-
- public:
-  template <detail::concepts::Request Req>
-  static constexpr bool IsSupported =
-      (std::is_same_v<Req, typename Entries::Request> || ...);
-
- private:
   template <typename, typename...>
   struct EntryForImpl : std::type_identity<void> {};
 
@@ -231,27 +225,14 @@ class Endpoint {
                            std::type_identity<E>,
                            EntryForImpl<Req, Es...>> {};
 
-  template <typename Req>
-    requires(IsSupported<Req>)
-  using EntryFor = typename EntryForImpl<Req, Entries...>::type;
-
  public:
-  template <typename Req>
-    requires detail::concepts::Request<Req>
-  using ResponseFor = typename EntryFor<Req>::Response;
+  template <detail::concepts::Request Req>
+  static constexpr bool IsSupported =
+      (std::is_same_v<Req, typename Entries::Request> || ...);
 
   template <typename Req>
-    requires detail::concepts::Request<Req>
-  using ErrorFor = typename EntryFor<Req>::Error;
-
-  template <typename Req>
-    requires detail::concepts::Request<Req>
-  using ExpectedFor = base::expected<std::optional<ResponseFor<Req>>,
-                                     std::optional<ErrorFor<Req>>>;
-
-  template <typename Req>
-    requires detail::concepts::Request<Req>
-  using CallbackFor = base::OnceCallback<void(int, ExpectedFor<Req>)>;
+    requires IsSupported<Req>
+  using EntryFor = typename EntryForImpl<Req, Entries...>::type;
 };
 
 }  // namespace endpoints

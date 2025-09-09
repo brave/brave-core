@@ -120,9 +120,9 @@ struct TestCase {
   std::variant<POST<Request1>, PATCH<Request2>, PATCH<Request1>> request;
   net::HttpStatusCode status_code;
   std::string raw_reply;
-  std::variant<TestEndpoint::ExpectedFor<POST<Request1>>,
-               TestEndpoint::ExpectedFor<PATCH<Request2>>,
-               TestEndpoint::ExpectedFor<PATCH<Request1>>>
+  std::variant<TestEndpoint::EntryFor<POST<Request1>>::Expected,
+               TestEndpoint::EntryFor<PATCH<Request2>>::Expected,
+               TestEndpoint::EntryFor<PATCH<Request1>>::Expected>
       parsed_reply;
 };
 
@@ -181,8 +181,9 @@ TEST_P(EndpointClientTest, Send) {
 
   std::visit(
       [&]<typename Request>(Request request) {
-        using Expected = TestEndpoint::ExpectedFor<Request>;
-        using Callback = TestEndpoint::CallbackFor<Request>;
+        using Entry = TestEndpoint::EntryFor<Request>;
+        using Expected = Entry::Expected;
+        using Callback = Entry::Callback;
 
         ASSERT_TRUE(std::holds_alternative<Expected>(test_case.parsed_reply));
 
