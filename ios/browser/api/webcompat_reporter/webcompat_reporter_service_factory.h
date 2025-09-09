@@ -33,7 +33,7 @@ class WebcompatReporterServiceFactory : public ProfileKeyedServiceFactoryIOS {
 
  private:
   friend class base::NoDestructor<WebcompatReporterServiceFactory>;
-  void RegisterBrowserStatePrefs(
+  void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
 
   WebcompatReporterServiceFactory();
