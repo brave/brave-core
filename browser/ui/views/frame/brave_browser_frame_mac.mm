@@ -20,25 +20,27 @@
 BraveBrowserFrameMac::BraveBrowserFrameMac(BrowserFrame* browser_frame,
                                            BrowserView* browser_view)
     : BrowserFrameMac(browser_frame, browser_view),
-      browser_(browser_view->browser()),
-      browser_view_(browser_view) {}
+      browser_view_(browser_view->GetAsWeakPtr()) {}
 
-BraveBrowserFrameMac::~BraveBrowserFrameMac() = default;
+BraveBrowserFrameMac::~BraveBrowserFrameMac() {}
 
 void BraveBrowserFrameMac::GetWindowFrameTitlebarHeight(
     bool* override_titlebar_height,
     float* titlebar_height) {
-  if (tabs::utils::ShouldShowVerticalTabs(browser_)) {
-    if (!tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser_)) {
-      // In this case, titlbar height should be the same as toolbar height.
-      *titlebar_height = browser_view_->toolbar()->GetPreferredSize().height();
-      *override_titlebar_height = true;
+  if (BrowserView* browser_view = browser_view_.get()) {
+    Browser* browser = browser_view->browser();
+    if (tabs::utils::ShouldShowVerticalTabs(browser)) {
+      if (!tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
+        // In this case, titlebar height should be the same as toolbar height.
+        *titlebar_height = browser_view->toolbar()->GetPreferredSize().height();
+        *override_titlebar_height = true;
+        return;
+      }
+
+      // Otherwise, don't override titlebar height. The titlebar will be aligned
+      // to the center of the given height automatically.
       return;
     }
-
-    // Otherwise, don't override titlebar height. The titlbar will be aligned
-    // to the center of the given height automatically.
-    return;
   }
 
   BrowserFrameMac::GetWindowFrameTitlebarHeight(override_titlebar_height,
@@ -55,11 +57,14 @@ void BraveBrowserFrameMac::ValidateUserInterfaceItem(
   }
 
   // Update toggle state for tab mute menu bar entry.
-  Browser* browser = browser_view_->browser();
-  TabStripModel* model = browser->tab_strip_model();
-  result->set_toggle_state = true;
-  result->new_toggle_state = !model->empty() && model->GetActiveWebContents() &&
-                             model->GetActiveWebContents()->IsAudioMuted();
+  if (BrowserView* browser_view = browser_view_.get()) {
+    Browser* browser = browser_view->browser();
+    TabStripModel* model = browser->tab_strip_model();
+    result->set_toggle_state = true;
+    result->new_toggle_state = !model->empty() &&
+                               model->GetActiveWebContents() &&
+                               model->GetActiveWebContents()->IsAudioMuted();
+  }
 }
 
 bool BraveBrowserFrameMac::ExecuteCommand(
@@ -71,14 +76,16 @@ bool BraveBrowserFrameMac::ExecuteCommand(
     // focus while the keyboard command was fired. In current method, it helps
     // in distinguishing the 'file -> close tab' (false, as toolbar was in
     // focus) command from 'ctrl + w' (true, as tab was in focus) command.
-    Browser* browser = browser_view_->browser();
-    if (browser->profile()->GetPrefs()->GetBoolean(
-            brave_tabs::kSharedPinnedTab) &&
-        command == IDC_CLOSE_TAB && is_before_first_responder &&
-        browser->tab_strip_model()->IsTabPinned(
-            browser->tab_strip_model()->active_index())) {
-      // Ignoring the ctrl+w command when the active tab is shared pinned
-      return true;
+    if (BrowserView* browser_view = browser_view_.get()) {
+      Browser* browser = browser_view->browser();
+      if (browser->profile()->GetPrefs()->GetBoolean(
+              brave_tabs::kSharedPinnedTab) &&
+          command == IDC_CLOSE_TAB && is_before_first_responder &&
+          browser->tab_strip_model()->IsTabPinned(
+              browser->tab_strip_model()->active_index())) {
+        // Ignoring the ctrl+w command when the active tab is shared pinned
+        return true;
+      }
     }
   }
 
