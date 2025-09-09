@@ -19,11 +19,11 @@ SidebarWebPanelController::SidebarWebPanelController(BrowserView& browser_view)
 SidebarWebPanelController::~SidebarWebPanelController() = default;
 
 void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item) {
-  GetMultiContentsView()->ShowWebPanel(true);
+  GetMultiContentsView()->SetWebPanelVisible(true);
 }
 
 void SidebarWebPanelController::CloseWebPanel() {
-  GetMultiContentsView()->ShowWebPanel(false);
+  GetMultiContentsView()->SetWebPanelVisible(false);
 }
 
 bool SidebarWebPanelController::IsShowingWebPanel() const {

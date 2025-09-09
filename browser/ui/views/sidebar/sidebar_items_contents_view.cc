@@ -512,7 +512,7 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
 
   const auto& item_model = controller->model()->GetAllSidebarItems()[*index];
 
-  // web panel is not a side panel that handled by SidePanelCoordinator.
+  // web panel is not a side panel that's handled by SidePanelCoordinator.
   // It'll be loaded into another contents view in MultiContentsView.
   if (item_model.is_web_panel_type()) {
     controller->ActivateItemAt(index);

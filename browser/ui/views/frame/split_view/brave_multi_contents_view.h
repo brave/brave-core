@@ -40,7 +40,7 @@ class BraveMultiContentsView : public MultiContentsView,
   void UpdateSecondaryLocationBar();
   void UpdateCornerRadius();
   void UseContentsContainerViewForWebPanel();
-  void ShowWebPanel(bool show);
+  void SetWebPanelVisible(bool visible);
   bool IsWebPanelVisible() const;
 
   void SetWebPanelWidth(int width);

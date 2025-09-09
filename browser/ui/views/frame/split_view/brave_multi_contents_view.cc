@@ -67,9 +67,9 @@ void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
   }
 }
 
-void BraveMultiContentsView::ShowWebPanel(bool show) {
+void BraveMultiContentsView::SetWebPanelVisible(bool visible) {
   CHECK(contents_container_view_for_web_panel_);
-  contents_container_view_for_web_panel_->SetVisible(show);
+  contents_container_view_for_web_panel_->SetVisible(visible);
   contents_container_view_for_web_panel_->UpdateBorderAndOverlay(true, true,
                                                                  false);
 }
