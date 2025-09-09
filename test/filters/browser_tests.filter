@@ -2384,6 +2384,7 @@
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
 -All/AmpPageLoadMetricsBrowserTest.*
+-All/BrowsingDataRemoverBrowserTestP.CookieIncognitoDeletion/*
 -All/ClickToCallPolicyTest.*
 -All/ClientHintsBrowserTestForBlockAcceptClientHintsExperiment.Block/*
 -All/ClientHintsBrowserTestForMetaTagTypes.*
@@ -2395,6 +2396,7 @@
 -All/DownloadReferrerPolicyTest.DownloadCrossDomainReferrerPolicy/2
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*
 -All/GetAuthTokenFunctionEnableGranularPermissionsTest.EnableGranularPermissions/*
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/0
 -All/HeadlessModeDumpDomCommandBrowserTestWithSubResourceTimeout.HeadlessDumpDomWithSubResourceTimeout/*
 -All/IdentityGetProfileUserInfoFunctionTest*.*/*
 -All/LoginPromptBrowserTest.*
@@ -2783,6 +2785,7 @@
 -PersistentBackground/WebNavigationApiTestWithContextType.*
 -PersistentBackground/WebUiNtpInterceptionWebRequestAPITest.OneGoogleBarRequestsHidden/*
 -PersistentScriptingAPITest.*
+-PKIMetadataComponentChromeRootStoreUpdateWithDoHServerTest.TrustAnchorIDs
 -PlatformAppBrowserTest.*
 -PolicyEnabled/WebrtcLoggingPrivateApiStartEventLoggingTestPolicy.StartEventLogging/*
 -PolicyPrefsTest.*
@@ -3010,8 +3013,9 @@
 -SystemNetworkContext/NetworkContextConfigurationProxyOnStartBrowserTest.*
 -SystemNetworkContext/NetworkContextConfigurationProxySettingsBrowserTest.*
 -SystemNetworkContext/NetworkContextConfigurationReportingAndNelBrowserTest.*
--SyncSessionsRouterTabHelperBrowserTest.*
+-SystemNetworkContextManagerNetworkServiceSandboxBrowsertest.NetworkServiceRestartsFailingLaunches
 -SystemNetworkContextManagerWithFirstPartySetComponentBrowserTest.*
+-SyncSessionsRouterTabHelperBrowserTest.*
 -TabActivityWatcherTest.SwitchTabs
 -TabActivityWatcherTest.SwitchWindows
 -TabActivityWatcherTest.TabDrag

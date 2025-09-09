@@ -679,6 +679,7 @@
 -CountingPolicyTest.*
 -CWSInfoServiceTest.IgnoresNonCWSExtensions
 -DeclarativeContentActionTest.*
+-DeviceAPIServiceWebAppTest.ReportErrorForDefaultUser
 -DevToolsUIBindingsTest.SanitizeFrontendURL
 -DevToolsUIDataSourceTest.TestDevToolsRemoteURL
 -DownloadProtectionServiceTest.*
