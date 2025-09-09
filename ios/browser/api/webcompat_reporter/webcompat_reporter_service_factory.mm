@@ -41,7 +41,7 @@ WebcompatReporterServiceFactory::WebcompatReporterServiceFactory()
 
 WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() {}
 
-void WebcompatReporterServiceFactory::RegisterBrowserStatePrefs(
+void WebcompatReporterServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   webcompat_reporter::prefs::RegisterProfilePrefs(
       static_cast<PrefRegistrySimple*>(registry));
