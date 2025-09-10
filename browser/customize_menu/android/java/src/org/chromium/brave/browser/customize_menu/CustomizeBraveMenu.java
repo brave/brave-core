@@ -14,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.SparseIntArray;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
@@ -81,6 +82,66 @@ public class CustomizeBraveMenu {
             R.color.default_icon_color_secondary_tint_list;
 
     public static final int PREFERENCE_MENU_ICON_SIZE_DP = 24;
+
+    /**
+     * Static mapping of menu item IDs to their corresponding drawable resource IDs. Uses
+     * SparseIntArray for optimal performance and memory efficiency on Android when mapping resource
+     * IDs (sparse integers) to drawable resource IDs.
+     *
+     * <p>This provides significantly better performance and memory usage compared to {@code
+     * HashMap<Integer, Integer>} by avoiding autoboxing overhead and utilizing Android's optimized
+     * sparse array implementation designed for resource ID mappings.
+     */
+    private static final SparseIntArray MENU_ICON_MAP = new SparseIntArray();
+
+    static {
+        // Main menu items
+        MENU_ICON_MAP.put(R.id.new_tab_menu_id, R.drawable.ic_new_tab_page);
+        MENU_ICON_MAP.put(R.id.new_incognito_tab_menu_id, R.drawable.brave_menu_new_private_tab);
+        MENU_ICON_MAP.put(R.id.add_to_group_menu_id, R.drawable.ic_widgets);
+        MENU_ICON_MAP.put(R.id.pin_tab_menu_id, R.drawable.ic_keep_24dp);
+        MENU_ICON_MAP.put(R.id.new_window_menu_id, R.drawable.ic_new_window);
+        MENU_ICON_MAP.put(R.id.new_incognito_window_menu_id, R.drawable.ic_incognito);
+        MENU_ICON_MAP.put(R.id.move_to_other_window_menu_id, R.drawable.ic_open_in_browser);
+        MENU_ICON_MAP.put(R.id.manage_all_windows_menu_id, R.drawable.ic_select_window);
+        MENU_ICON_MAP.put(R.id.open_history_menu_id, R.drawable.brave_menu_history);
+        MENU_ICON_MAP.put(R.id.tinker_tank_menu_id, R.drawable.ic_add_box_rounded_corner);
+        MENU_ICON_MAP.put(R.id.downloads_menu_id, R.drawable.brave_menu_downloads);
+        MENU_ICON_MAP.put(R.id.all_bookmarks_menu_id, R.drawable.brave_menu_bookmarks);
+        MENU_ICON_MAP.put(R.id.recent_tabs_menu_id, R.drawable.brave_menu_recent_tabs);
+        MENU_ICON_MAP.put(R.id.brave_wallet_id, R.drawable.ic_crypto_wallets);
+        MENU_ICON_MAP.put(R.id.brave_playlist_id, R.drawable.ic_open_playlist);
+        MENU_ICON_MAP.put(R.id.add_to_playlist_id, R.drawable.ic_baseline_add_24);
+        MENU_ICON_MAP.put(R.id.brave_news_id, R.drawable.ic_news);
+        MENU_ICON_MAP.put(R.id.brave_speedreader_id, R.drawable.ic_readermode);
+        MENU_ICON_MAP.put(R.id.brave_leo_id, R.drawable.ic_brave_ai);
+        MENU_ICON_MAP.put(R.id.request_brave_vpn_id, R.drawable.ic_vpn);
+        MENU_ICON_MAP.put(R.id.brave_rewards_id, R.drawable.brave_menu_rewards);
+        MENU_ICON_MAP.put(R.id.set_default_browser, R.drawable.brave_menu_set_as_default);
+        MENU_ICON_MAP.put(R.id.exit_id, R.drawable.brave_menu_exit);
+
+        // Page action items
+        MENU_ICON_MAP.put(R.id.page_zoom_id, R.drawable.ic_zoom);
+        MENU_ICON_MAP.put(R.id.share_menu_id, R.drawable.ic_share_white_24dp);
+        MENU_ICON_MAP.put(R.id.download_page_id, R.drawable.ic_download);
+        MENU_ICON_MAP.put(R.id.print_id, R.drawable.sharing_print);
+        MENU_ICON_MAP.put(R.id.enable_price_tracking_menu_id, R.drawable.price_tracking_disabled);
+        MENU_ICON_MAP.put(
+                R.id.disable_price_tracking_menu_id, R.drawable.price_tracking_enabled_filled);
+        MENU_ICON_MAP.put(R.id.ai_web_menu_id, R.drawable.summarize_auto);
+        MENU_ICON_MAP.put(R.id.find_in_page_id, R.drawable.ic_find_in_page);
+        MENU_ICON_MAP.put(R.id.translate_id, R.drawable.ic_translate);
+        MENU_ICON_MAP.put(R.id.readaloud_menu_id, R.drawable.ic_play_circle);
+        MENU_ICON_MAP.put(R.id.reader_mode_menu_id, R.drawable.ic_reader_mode_24dp);
+        MENU_ICON_MAP.put(R.id.open_with_id, R.drawable.ic_open_in_new);
+        MENU_ICON_MAP.put(R.id.open_webapk_id, R.drawable.ic_open_webapk);
+        MENU_ICON_MAP.put(R.id.universal_install, R.drawable.ic_add_to_home_screen);
+        MENU_ICON_MAP.put(R.id.reader_mode_prefs_id, R.drawable.reader_mode_prefs_icon);
+        MENU_ICON_MAP.put(R.id.auto_dark_web_contents_id, R.drawable.ic_brightness_medium_24dp);
+        MENU_ICON_MAP.put(R.id.paint_preview_show_id, R.drawable.ic_photo_camera);
+        MENU_ICON_MAP.put(R.id.get_image_descriptions_id, R.drawable.ic_image_descriptions);
+        MENU_ICON_MAP.put(R.id.listen_to_feed_id, R.drawable.ic_play_circle);
+    }
 
     /**
      * Applies user customization settings to hide or show menu items based on saved preferences.
@@ -240,96 +301,10 @@ public class CustomizeBraveMenu {
      */
     @DrawableRes
     public static int getDrawableResFromMenuItemId(@IdRes final int menuItemId) {
-        // Resource IDs will be non-final by default in next
-        // Gradle Plugin version, so we'll avoid using switch/case statements.
-        if (menuItemId == R.id.new_tab_menu_id) {
-            return R.drawable.ic_new_tab_page;
-        } else if (menuItemId == R.id.new_incognito_tab_menu_id) {
-            return R.drawable.brave_menu_new_private_tab;
-        } else if (menuItemId == R.id.add_to_group_menu_id) {
-            return R.drawable.ic_widgets;
-        } else if (menuItemId == R.id.pin_tab_menu_id) {
-            return R.drawable.ic_keep_24dp;
-        } else if (menuItemId == R.id.new_window_menu_id) {
-            return R.drawable.ic_new_window;
-        } else if (menuItemId == R.id.new_incognito_window_menu_id) {
-            return R.drawable.ic_incognito;
-        } else if (menuItemId == R.id.move_to_other_window_menu_id) {
-            return R.drawable.ic_open_in_browser;
-        } else if (menuItemId == R.id.manage_all_windows_menu_id) {
-            return R.drawable.ic_select_window;
-        } else if (menuItemId == R.id.open_history_menu_id) {
-            return R.drawable.brave_menu_history;
-        } else if (menuItemId == R.id.tinker_tank_menu_id) {
-            return R.drawable.ic_add_box_rounded_corner;
-        } else if (menuItemId == R.id.downloads_menu_id) {
-            return R.drawable.brave_menu_downloads;
-        } else if (menuItemId == R.id.all_bookmarks_menu_id) {
-            return R.drawable.brave_menu_bookmarks;
-        } else if (menuItemId == R.id.recent_tabs_menu_id) {
-            return R.drawable.brave_menu_recent_tabs;
-        } else if (menuItemId == R.id.brave_wallet_id) {
-            return R.drawable.ic_crypto_wallets;
-        } else if (menuItemId == R.id.brave_playlist_id) {
-            return R.drawable.ic_open_playlist;
-        } else if (menuItemId == R.id.add_to_playlist_id) {
-            return R.drawable.ic_baseline_add_24;
-        } else if (menuItemId == R.id.brave_news_id) {
-            return R.drawable.ic_news;
-        } else if (menuItemId == R.id.brave_speedreader_id) {
-            return R.drawable.ic_readermode;
-        } else if (menuItemId == R.id.brave_leo_id) {
-            return R.drawable.ic_brave_ai;
-        } else if (menuItemId == R.id.request_brave_vpn_id) {
-            return R.drawable.ic_vpn;
-        } else if (menuItemId == R.id.brave_rewards_id) {
-            return R.drawable.brave_menu_rewards;
-        } else if (menuItemId == R.id.set_default_browser) {
-            return R.drawable.brave_menu_set_as_default;
-        } else if (menuItemId == R.id.exit_id) {
-            return R.drawable.brave_menu_exit;
-        } else if (menuItemId == R.id.page_zoom_id) {
-            return R.drawable.ic_zoom;
-        } else if (menuItemId == R.id.share_menu_id) {
-            return R.drawable.ic_share_white_24dp;
-        } else if (menuItemId == R.id.download_page_id) {
-            return R.drawable.ic_download;
-        } else if (menuItemId == R.id.print_id) {
-            return R.drawable.sharing_print;
-        } else if (menuItemId == R.id.enable_price_tracking_menu_id) {
-            return R.drawable.price_tracking_disabled;
-        } else if (menuItemId == R.id.disable_price_tracking_menu_id) {
-            return R.drawable.price_tracking_enabled_filled;
-        } else if (menuItemId == R.id.ai_web_menu_id) {
-            return R.drawable.summarize_auto;
-        } else if (menuItemId == R.id.find_in_page_id) {
-            return R.drawable.ic_find_in_page;
-        } else if (menuItemId == R.id.translate_id) {
-            return R.drawable.ic_translate;
-        } else if (menuItemId == R.id.readaloud_menu_id) {
-            return R.drawable.ic_play_circle;
-        } else if (menuItemId == R.id.reader_mode_menu_id) {
-            return R.drawable.ic_reader_mode_24dp;
-        } else if (menuItemId == R.id.open_with_id) {
-            return R.drawable.ic_open_in_new;
-        } else if (menuItemId == R.id.open_webapk_id) {
-            return R.drawable.ic_open_webapk;
-        } else if (menuItemId == R.id.universal_install) {
-            return R.drawable.ic_add_to_home_screen;
-        } else if (menuItemId == R.id.reader_mode_prefs_id) {
-            return R.drawable.reader_mode_prefs_icon;
-        } else if (menuItemId == R.id.auto_dark_web_contents_id) {
-            return R.drawable.ic_brightness_medium_24dp;
-        } else if (menuItemId == R.id.paint_preview_show_id) {
-            return R.drawable.ic_photo_camera;
-        } else if (menuItemId == R.id.get_image_descriptions_id) {
-            return R.drawable.ic_image_descriptions;
-        } else if (menuItemId == R.id.listen_to_feed_id) {
-            return R.drawable.ic_play_circle;
-        }
+        final int drawableRes = MENU_ICON_MAP.get(menuItemId, 0);
 
-        assert false : "Unexpected value for menu item ID: " + menuItemId;
-        return 0;
+        assert drawableRes != 0 : "Unexpected value for menu item ID: " + menuItemId;
+        return drawableRes;
     }
 
     /**
