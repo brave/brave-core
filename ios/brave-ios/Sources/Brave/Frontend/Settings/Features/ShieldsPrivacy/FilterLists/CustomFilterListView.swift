@@ -18,8 +18,10 @@ struct CustomFilterListView: View {
   @State private var rulesError: Error?
   /// A state for showing/hiding the cancelation alert
   @State private var showCancelAlert = false
-  /// Tells us if our text content is empty which allows us to show the prompt text
+  /// Indicates if our text content is empty which allows us to show the prompt text
   @State private var isTextEmpty = false
+  /// Indicates if we are currently saving the custom filters
+  @State private var isSaving = false
   /// Our coordinator manages the content of the input text and gives us information back
   /// when saving up cancelling
   private var coordinator: FilterListEditor.Coordinator
@@ -43,13 +45,17 @@ struct CustomFilterListView: View {
 
   private var saveToolbarItem: ToolbarItem<(), some View> {
     ToolbarItem(placement: .confirmationAction) {
-      Button(
-        action: saveCustomRules,
-        label: {
-          Label(Strings.saveButtonTitle, braveSystemImage: "leo.check.normal")
-            .labelStyle(.titleOnly)
-        }
-      )
+      if isSaving {
+        ProgressView()
+      } else {
+        Button(
+          action: saveCustomRules,
+          label: {
+            Label(Strings.saveButtonTitle, braveSystemImage: "leo.check.normal")
+              .labelStyle(.titleOnly)
+          }
+        )
+      }
     }
   }
 
@@ -95,6 +101,7 @@ struct CustomFilterListView: View {
         error: $rulesError,
         isTextEmpty: $isTextEmpty
       )
+      .disabled(isSaving)
       .overlay(
         Text(Strings.Shields.customFiltersPlaceholder)
           .multilineTextAlignment(.leading)
@@ -141,9 +148,12 @@ struct CustomFilterListView: View {
   }
 
   private func saveCustomRules() {
+    guard !isSaving else { return }
     let pendingRules = coordinator.text
 
     Task {
+      self.isSaving = true
+      defer { self.isSaving = false }
       do {
         if !pendingRules.isEmpty {
           try await customFilterListStorage.save(customRules: pendingRules)
