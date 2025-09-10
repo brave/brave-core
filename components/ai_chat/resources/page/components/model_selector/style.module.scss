@@ -39,6 +39,7 @@
 }
 
 .buttonMenu {
+  --leo-menu-max-height: calc(100vh - 136px);
   leo-menu-item {
     --leo-icon-size: 20px;
     --leo-icon-color: var(--leo-color-icon-default);
