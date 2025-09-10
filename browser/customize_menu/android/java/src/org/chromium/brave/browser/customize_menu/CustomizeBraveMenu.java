@@ -328,7 +328,7 @@ public class CustomizeBraveMenu {
             return R.drawable.ic_play_circle;
         }
 
-        assert true : "Unexpected value for menu item ID: " + menuItemId;
+        assert false : "Unexpected value for menu item ID: " + menuItemId;
         return 0;
     }
 
