@@ -12,7 +12,8 @@ PsstUiDelegateImpl::~PsstUiDelegateImpl() = default;
 
 void PsstUiDelegateImpl::UpdateTasks(
     long progress,
-    const std::vector<PolicyTask>& applied_tasks) {
+    const std::vector<PolicyTask>& applied_tasks,
+    const PsstStatus status) {
   // Implementation for setting the current progress.
 }
 

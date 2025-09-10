@@ -21,7 +21,8 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
 
   // PsstUiDelegate overrides
   void UpdateTasks(long progress,
-                   const std::vector<PolicyTask>& applied_tasks) override;
+                   const std::vector<PolicyTask>& applied_tasks,
+                   const PsstStatus status) override;
 };
 
 }  // namespace psst
