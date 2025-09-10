@@ -42,6 +42,21 @@ void TabUIHelper::UpdateLastOrigin() {
     return;
   }
 
-  custom_title_.reset();
+  // In case this tab is newly created one and has not yet commited real page,
+  // e.g. restoring tabs, we do not reset the custom title. In case of
+  // restoring, the real page will be commited soon and the custom title will be
+  // reset or persisted based on the origin of the real page.
+  if (web_contents()->GetController().IsInitialNavigation()) {
+    return;
+  }
+
+  // We reset the custom title only when the last origin is initialized. When
+  // restoring tabs, last origin could be uninitialized yet, and we do not want
+  // to reset the custom title in that case.
+  if (last_origin_initialized_) {
+    custom_title_.reset();
+  } else {
+    last_origin_initialized_ = true;
+  }
   last_origin_ = origin;
 }
