@@ -22,7 +22,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/json/json_helper.h"
 #include "net/base/url_util.h"
-#include "services/data_decoder/public/cpp/json_sanitizer.h"
 
 namespace brave_wallet {
 
