@@ -280,8 +280,9 @@ class PlasterFile:
                 # Only accept valid re flags
                 if flag.isupper() and hasattr(re, flag):
                     re_flags |= getattr(re, flag)
-                raise ValueError(
-                    f'Invalid re flag specified: {flag} in {info.source}')
+                else:
+                    raise ValueError(
+                        f'Invalid re flag specified: {flag} in {info.source}')
 
             contents, num_changes = re.subn(re_pattern,
                                             replace,
