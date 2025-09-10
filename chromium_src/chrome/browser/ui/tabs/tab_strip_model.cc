@@ -14,6 +14,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/local_ai/fast_vlm_tab_content_extractor.h"
 #include "brave/components/local_ai/browser/local_models_updater.h"
 #include "brave/components/local_ai/browser/text_embedder.h"
 #include "brave/components/local_ai/common/features.h"
@@ -179,19 +180,15 @@ void TabStripModel::OnTextEmbedderInitializedForGroupCommand(
                      context_index));
 
   for (const auto& tab_data : all_tabs_needing_content) {
-    content_extraction::GetInnerText(
-        *tab_data.web_contents->GetPrimaryMainFrame(), std::nullopt,
+    local_ai::FastVLMTabContentExtractor::ExtractVisualContent(
+        tab_data.web_contents, tab_data.index,
         base::BindOnce(
             [](base::RepeatingCallback<void(std::pair<int, std::string>)>
                    callback,
-               int tab_index,
-               std::unique_ptr<content_extraction::InnerTextResult> result) {
-              std::string content = result && !result->inner_text.empty()
-                                        ? result->inner_text
-                                        : "";
-              callback.Run(std::make_pair(tab_index, content));
+               int tab_index, const std::string& visual_description) {
+              callback.Run(std::make_pair(tab_index, visual_description));
             },
-            barrier_callback, tab_data.index));
+            barrier_callback));
   }
 }
 

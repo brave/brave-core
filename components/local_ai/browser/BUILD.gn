@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//services/webnn/features.gni")
+
 static_library("browser") {
   sources = [
     "local_models_updater.cc",
@@ -22,6 +24,25 @@ static_library("browser") {
     "//components/update_client",
     "//crypto",
   ]
+}
+
+source_set("fast_vlm_executor") {
+  sources = [
+    "fast_vlm_executor.cc",
+    "fast_vlm_executor.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/local_ai/ort:ort_wrapper",
+    "//brave/third_party/onnxruntime_headers",
+    "//mojo/public/cpp/bindings",
+    "//services/data_decoder/public/cpp",
+    "//skia",
+  ]
+
+  # Use dynamic loading for ONNX Runtime with RAII patterns
+  defines = [ "FASTVLM_ONNX_RUNTIME_DYNAMIC=1" ]
 }
 
 source_set("text_embedder") {
@@ -46,6 +67,7 @@ if (!is_ios) {
   source_set("unit_tests") {
     testonly = true
     sources = [
+      "fast_vlm_executor_unittest.cc",
       "local_models_updater_unittest.cc",
       "text_embedder_unittest.cc",
       "yake_keyword_extractor_unittest.cc",
@@ -53,6 +75,7 @@ if (!is_ios) {
 
     deps = [
       ":browser",
+      ":fast_vlm_executor",
       ":text_embedder",
       "//base",
       "//base/test:test_support",

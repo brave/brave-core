@@ -81,4 +81,7 @@ source_set("unit_tests") {
       "//testing/gtest",
     ]
   }
+
+  # Include local AI unit tests
+  deps += [ "//brave/browser/local_ai:unit_tests" ]
 }
