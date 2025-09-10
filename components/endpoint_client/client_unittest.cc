@@ -65,18 +65,19 @@ struct Message {
 
   bool operator==(const Message& other) const { return text == other.text; }
 
+  const char* GetKey() const { return Key; }
+
   std::string text;
 };
 
-inline constexpr char kRequest1Key[] = "request1";
-inline constexpr char kRequest2Key[] = "request2";
+constexpr char kRequest1Key[] = "request1";
+constexpr char kRequest2Key[] = "request2";
 
-inline constexpr char kResponse1Key[] = "response1";
-inline constexpr char kResponse2Key[] = "response2";
-inline constexpr char kResponse3Key[] = "response3";
+constexpr char kResponse1Key[] = "response1";
+constexpr char kResponse2Key[] = "response2";
 
-inline constexpr char kError1Key[] = "error1";
-inline constexpr char kError2Key[] = "error2";
+constexpr char kError1Key[] = "error1";
+constexpr char kError2Key[] = "error2";
 }  // namespace
 
 namespace endpoint_client {
@@ -86,7 +87,6 @@ using Request2 = Message<kRequest2Key>;
 
 using Response1 = Message<kResponse1Key>;
 using Response2 = Message<kResponse2Key>;
-using Response3 = Message<kResponse3Key>;
 
 using Error1 = Message<kError1Key>;
 using Error2 = Message<kError2Key>;
@@ -102,17 +102,17 @@ struct TestEndpoint
                                             Response2>::ErrorsWith<Error1>,
           // PATCH<Request2> =>
           //   expected<
-          //     optional<Response3>,
+          //     optional<Response1>,
           //     optional<variant<Error1, Error2>>
           //   >
-          For<PATCH<Request2>>::RespondsWith<Response3>::ErrorsWith<Error1,
+          For<PATCH<Request2>>::RespondsWith<Response1>::ErrorsWith<Error1,
                                                                     Error2>,
           // PATCH<Request1> =>
           //   expected<
-          //     optional<Response2>,
-          //     optional<Error2>
+          //     optional<Response1>,
+          //     optional<Error1>
           //   >
-          For<PATCH<Request1>>::RespondsWith<Response2>::ErrorsWith<Error2>> {
+          For<PATCH<Request1>>::RespondsWith<Response1>::ErrorsWith<Error1>> {
   static GURL URL() { return GURL("https://example.com/api/query"); }
 };
 
@@ -135,55 +135,52 @@ class EndpointClientTest : public testing::TestWithParam<TestCase> {
 TEST_P(EndpointClientTest, Send) {
   const TestCase& test_case = GetParam();
 
-  test_url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-      [&](const network::ResourceRequest& resource_request) {
-        // Always add a response immediately so the request does not hang,
-        // even if validations below fail early with ADD_FAILURE().
-        test_url_loader_factory_.AddResponse(resource_request.url.spec(),
-                                             test_case.raw_reply,
-                                             test_case.status_code);
-
-        // Method
-        EXPECT_EQ(resource_request.method, "POST");
-        // URL
-        EXPECT_EQ(resource_request.url, GURL("https://example.com/api/query"));
-        // Request body
-        if (!resource_request.request_body) {
-          return ADD_FAILURE() << "resource_request.request_body is nullptr !";
-        }
-        const auto* elements = resource_request.request_body->elements();
-        if (!elements) {
-          return ADD_FAILURE() << "elements is nullptr!";
-        }
-        EXPECT_EQ(elements->size(), 1u);
-        const auto& element = elements->front();
-        EXPECT_EQ(element.type(), network::DataElement::Tag::kBytes);
-        const auto body = base::JSONReader::Read(
-            element.As<network::DataElementBytes>().AsStringPiece());
-        if (!body || !body->is_dict()) {
-          return ADD_FAILURE()
-                 << "body is std::nullopt or not a base::Value::Dict!";
-        }
-        const auto& dict = body->GetDict();
-        const auto* request = dict.FindString("request");
-        EXPECT_NE(request, nullptr);
-        std::visit(
-            [&](const auto& test_case_request) {
-              EXPECT_EQ(*request, test_case_request.text);
-            },
-            test_case.request);
-        // Headers
-        EXPECT_EQ(resource_request.headers.GetHeader("Content-Type"),
-                  "application/json");
-      }));
-
-  base::RunLoop run_loop;
-
   std::visit(
-      [&]<typename Request>(Request request) {
+      [&]<typename Request>(const Request& request) {
+        test_url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+            [&](const network::ResourceRequest& resource_request) {
+              // Always add a response immediately so the request does not hang,
+              // even if validations below fail early with ADD_FAILURE().
+              test_url_loader_factory_.AddResponse(resource_request.url.spec(),
+                                                   test_case.raw_reply,
+                                                   test_case.status_code);
+              // Method
+              EXPECT_EQ(resource_request.method, request.Method());
+              // URL
+              EXPECT_EQ(resource_request.url,
+                        GURL("https://example.com/api/query"));
+              // Request body
+              if (!resource_request.request_body) {
+                return ADD_FAILURE()
+                       << "resource_request.request_body is nullptr !";
+              }
+              const auto* elements = resource_request.request_body->elements();
+              if (!elements) {
+                return ADD_FAILURE() << "elements is nullptr!";
+              }
+              EXPECT_EQ(elements->size(), 1u);
+              const auto& element = elements->front();
+              EXPECT_EQ(element.type(), network::DataElement::Tag::kBytes);
+              const auto body = base::JSONReader::Read(
+                  element.As<network::DataElementBytes>().AsStringPiece());
+              if (!body || !body->is_dict()) {
+                return ADD_FAILURE()
+                       << "body is std::nullopt or not a base::Value::Dict!";
+              }
+              const auto& dict = body->GetDict();
+              const auto* key = dict.FindString(request.GetKey());
+              EXPECT_NE(key, nullptr);
+              EXPECT_EQ(*key, request.text);
+              // Headers
+              EXPECT_EQ(resource_request.headers.GetHeader("Content-Type"),
+                        "application/json");
+            }));
+
         using Entry = TestEndpoint::EntryFor<Request>;
         using Expected = Entry::Expected;
         using Callback = Entry::Callback;
+
+        base::RunLoop run_loop;
 
         ASSERT_TRUE(std::holds_alternative<Expected>(test_case.parsed_reply));
 
@@ -192,49 +189,110 @@ TEST_P(EndpointClientTest, Send) {
                                   std::get<Expected>(test_case.parsed_reply)))
             .Times(1)
             .WillOnce([&] { run_loop.Quit(); });
+
         Client<TestEndpoint>::Send(
-            test_url_loader_factory_.GetSafeWeakWrapper(), std::move(request),
+            test_url_loader_factory_.GetSafeWeakWrapper(), request,
             callback.Get());
+
+        run_loop.Run();
       },
       test_case.request);
-
-  run_loop.Run();
 }
 
 INSTANTIATE_TEST_SUITE_P(
     EndpointClientTestCases,
     EndpointClientTest,
-    testing::Values(TestCase{.request =
-                                 [] {
-                                   POST<Request1> request;
-                                   request.text = "Request1";
-                                   return request;
-                                 }(),
-                             .status_code = net::HTTP_OK,
-                             .raw_reply = R"({"response": "some response"})"},
-                    TestCase{.request =
-                                 [] {
-                                   PATCH<Request2> request;
-                                   request.text = "Request2";
-                                   return request;
-                                 }(),
-                             .status_code = net::HTTP_CREATED,
-                             .raw_reply = R"({"invalid": response})"},
-                    TestCase{.request =
-                                 [] {
-                                   PATCH<Request1> request;
-                                   request.text = "Request1";
-                                   return request;
-                                 }(),
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .raw_reply = R"({"error": "some error"})"}),
+    testing::Values(
+        // POST<Request1>
+        TestCase{
+            // ==> Response1
+            .request = POST<Request1>{{"POST<Request1>"}},
+            .status_code = net::HTTP_OK,
+            .raw_reply = R"({"response1": "Response1"})",
+            .parsed_reply = TestEndpoint::EntryFor<POST<Request1>>::Expected(
+                Response1("Response1")),
+        },
+        TestCase{
+            // ==> Response2
+            .request = POST<Request1>{{"POST<Request1>"}},
+            .status_code = net::HTTP_CREATED,
+            .raw_reply = R"({"response2": "Response2"})",
+            .parsed_reply = TestEndpoint::EntryFor<POST<Request1>>::Expected(
+                Response2("Response2")),
+        },
+        TestCase{
+            // ==> unsupported response
+            .request = POST<Request1>{{"POST<Request1>"}},
+            .status_code = net::HTTP_ACCEPTED,
+            .raw_reply = R"({"response3": "Response3"})",
+            .parsed_reply =
+                TestEndpoint::EntryFor<POST<Request1>>::Expected(std::nullopt),
+        },
+        TestCase{
+            // ==> Error1
+            .request = POST<Request1>{{"POST<Request1>"}},
+            .status_code = net::HTTP_MULTIPLE_CHOICES,
+            .raw_reply = R"({"error1": "Error1"})",
+            .parsed_reply = TestEndpoint::EntryFor<POST<Request1>>::Expected(
+                base::unexpected(Error1("Error1"))),
+        },
+        TestCase{
+            // ==> unsupported error
+            .request = POST<Request1>{{"POST<Request1>"}},
+            .status_code = net::HTTP_MOVED_PERMANENTLY,
+            .raw_reply = R"({"error2": "Error2"})",
+            .parsed_reply = TestEndpoint::EntryFor<POST<Request1>>::Expected(
+                base::unexpected(std::nullopt)),
+        },
+        // PATCH<Request2>
+        TestCase{
+            // ==> Response1
+            .request = PATCH<Request2>{{"PATCH<Request2>"}},
+            .status_code = net::HTTP_NON_AUTHORITATIVE_INFORMATION,
+            .raw_reply = R"({"response1": "Response1"})",
+            .parsed_reply = TestEndpoint::EntryFor<PATCH<Request2>>::Expected(
+                Response1("Response1"))},
+        TestCase{
+            // ==> Error1
+            .request = PATCH<Request2>{{"PATCH<Request2>"}},
+            .status_code = net::HTTP_FOUND,
+            .raw_reply = R"({"error1": "Error1"})",
+            .parsed_reply = TestEndpoint::EntryFor<PATCH<Request2>>::Expected(
+                base::unexpected(Error1("Error1")))},
+        TestCase{
+            // ==> Error2
+            .request = PATCH<Request2>{{"PATCH<Request2>"}},
+            .status_code = net::HTTP_SEE_OTHER,
+            .raw_reply = R"({"error2": "Error2"})",
+            .parsed_reply = TestEndpoint::EntryFor<PATCH<Request2>>::Expected(
+                base::unexpected(Error2("Error2")))},
+        // PATCH<Request1>
+        TestCase{
+            // ==> Response1
+            .request = PATCH<Request1>{{"PATCH<Request1>"}},
+            .status_code = net::HTTP_NO_CONTENT,
+            .raw_reply = R"({"response1": "Response1"})",
+            .parsed_reply = TestEndpoint::EntryFor<PATCH<Request1>>::Expected(
+                Response1("Response1"))},
+        TestCase{
+            // ==> Error1
+            .request = PATCH<Request1>{{"PATCH<Request1>"}},
+            .status_code = net::HTTP_NOT_MODIFIED,
+            .raw_reply = R"({"error1": "Error1"})",
+            .parsed_reply = TestEndpoint::EntryFor<PATCH<Request1>>::Expected(
+                base::unexpected(Error1("Error1")))}),
     [](const auto& info) {
-      std::string name;
-      base::ReplaceChars("HTTP_" + base::ToString(info.param.status_code) +
-                             "_" +
-                             net::GetHttpReasonPhrase(info.param.status_code),
-                         " ", "_", &name);
-      return name;
+      return std::visit(
+          [&](const auto& request) {
+            std::string name;
+            base::ReplaceChars(
+                request.text + "_HTTP_" +
+                    base::ToString(info.param.status_code) + "_" +
+                    net::GetHttpReasonPhrase(info.param.status_code),
+                "<>- ", "_", &name);
+            return name;
+          },
+          info.param.request);
     });
 
 }  // namespace endpoint_client
