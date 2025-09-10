@@ -5,6 +5,8 @@
 
 static_library("brave_policy") {
   sources = [
+    "ad_block_only_mode_policy_provider.cc",
+    "ad_block_only_mode_policy_provider.h",
     "brave_browser_policy_provider.cc",
     "brave_browser_policy_provider.h",
     "brave_profile_policy_provider.cc",
