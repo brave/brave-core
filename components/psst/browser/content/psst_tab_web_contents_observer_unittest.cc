@@ -25,8 +25,8 @@
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
-#include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_common.h"
+#include "brave/components/psst/common/psst_script_responses.h"
 #include "build/build_config.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/navigation_controller.h"
@@ -662,7 +662,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   EXPECT_CALL(ui_delegate(), UpdateTasks(progress, _, PsstStatus::kInProgress))
       .WillOnce([&progress_future, &applied_tasks_future](
                     long progress_value,
-                    const std::vector<PolicyTask>& applied_tasks, const PsstStatus status) {
+                    const std::vector<PolicyTask>& applied_tasks,
+                    const PsstStatus status) {
         std::vector<PolicyTask> tasks;
         std::ranges::for_each(applied_tasks, [&tasks](const PolicyTask& task) {
           tasks.push_back(task.Clone());
@@ -737,7 +738,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(ui_delegate(), UpdateTasks(progress, _, PsstStatus::kFailed))
       .WillOnce([&progress_future, &applied_tasks_future](
                     long progress_value,
-                    const std::vector<PolicyTask>& applied_tasks, const PsstStatus status) {
+                    const std::vector<PolicyTask>& applied_tasks,
+                    const PsstStatus status) {
         std::vector<PolicyTask> tasks;
         std::ranges::for_each(applied_tasks, [&tasks](const PolicyTask& task) {
           tasks.push_back(task.Clone());
@@ -754,8 +756,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // User script's callback is delayed, causing the flow to fail
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageDelayedCallback(
-          &user_script_insert_future, task_environment(), kScriptTimeout.InSeconds() + 1,
-          script_params.Clone()));
+          &user_script_insert_future, task_environment(),
+          kScriptTimeout.InSeconds() + 1, script_params.Clone()));
 
   // No policy script executed
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
@@ -765,7 +767,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                                                              url);
   observer.Wait();
   check_loop.Run();
-  // It means that 
+  // It means that
   EXPECT_EQ(script_params, user_script_insert_future.Take());
   EXPECT_EQ(progress, progress_future.Take());
 

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_PSST_COMMON_H_
-#define BRAVE_COMPONENTS_PSST_COMMON_H_
+#ifndef BRAVE_COMPONENTS_PSST_COMMON_PSST_COMMON_H_
+#define BRAVE_COMPONENTS_PSST_COMMON_PSST_COMMON_H_
 
 namespace psst {
 
@@ -17,4 +17,4 @@ enum class PsstStatus {
 
 }  // namespace psst
 
-#endif  // BRAVE_COMPONENTS_PSST_COMMON_H_
+#endif  // BRAVE_COMPONENTS_PSST_COMMON_PSST_COMMON_H_
