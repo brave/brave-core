@@ -228,6 +228,20 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTest, VerifyRemovalMasks) {
   chrome::ExecuteCommand(browser(), IDC_EXIT);
 }
 
+IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTest, ClearCacheClearsCacheStorage) {
+  browser()->profile()->GetPrefs()->SetBoolean(
+      browsing_data::prefs::kDeleteCacheOnExit, true);
+
+  SetExpectedRemoveDataRemovalMasks(
+      content::BrowsingDataRemover::DATA_TYPE_CACHE |
+          content::BrowsingDataRemover::DATA_TYPE_CACHE_STORAGE,
+      content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB);
+
+  SetExepectedRemoveDataCallCount(1);
+
+  chrome::ExecuteCommand(browser(), IDC_EXIT);
+}
+
 class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
  public:
   BraveClearDataOnExitTwoBrowsersTest() { browsers_count_ = 2u; }

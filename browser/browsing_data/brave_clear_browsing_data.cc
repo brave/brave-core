@@ -82,6 +82,8 @@ bool BrowsingDataRemovalWatcher::GetClearBrowsingDataOnExitSettings(
 
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteCacheOnExit)) {
     *remove_mask |= content::BrowsingDataRemover::DATA_TYPE_CACHE;
+    BraveClearBrowsingData::UpdateMasksToClearCacheStorage(*remove_mask,
+                                                           *origin_mask);
   }
 
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteCookiesOnExit)) {
@@ -179,6 +181,14 @@ void BrowsingDataRemovalWatcher::OnBrowsingDataRemoverDone(
 
 BraveClearBrowsingData::OnExitTestingCallback*
     BraveClearBrowsingData::on_exit_testing_callback_ = nullptr;
+
+// static
+void BraveClearBrowsingData::UpdateMasksToClearCacheStorage(
+    uint64_t& remove_mask,
+    uint64_t& origin_mask) {
+  remove_mask |= content::BrowsingDataRemover::DATA_TYPE_CACHE_STORAGE;
+  origin_mask |= content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB;
+}
 
 // static
 void BraveClearBrowsingData::ClearOnExit() {
