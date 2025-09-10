@@ -105,27 +105,8 @@ index 7ff496c5312fda7c76147d436f267504401bece4..ccb97686ec27821228c2a23ef28cd0df
 -          kCrossOriginChildFrameSource, {link.spec()}, nullptr));
 -  return base::ReplaceStringPlaceholders(kMainFrameSource, {encoded_payload},
 -                                         nullptr);
-+    std::string encoded_payload =
-+        base::Base64Encode(base::ReplaceStringPlaceholders(
-+            kCrossOriginChildFrameSource, {link.spec()}, nullptr));
-+    return base::ReplaceStringPlaceholders(kMainFrameSource, {encoded_payload},
-+                                           nullptr);
-+  }
-+};
-+
-+INSTANTIATE_TEST_SUITE_P(All,
-+                         SubframeContextMenuBrowserTest,
-+                         testing::Bool(),
-+                         [](const testing::TestParamInfo<bool>& info) {
-+                           return info.param ? "LinkPreviewEnabled"
-+                                             : "LinkPreviewDisabled";
-+                         });
-+
-+IN_PROC_BROWSER_TEST_P(SubframeContextMenuBrowserTest,
-+                       SubframeNewTabInitiator) {
-+  RunSubframeInitiatorTestForCommand(IDC_CONTENT_CONTEXT_OPENLINKNEWTAB);
- }
- 
+-}
+-
 -IN_PROC_BROWSER_TEST_P(ContextMenuBrowserTest, SubframeNewTabInitiator) {
 -  // If a frame on example.com opens a subframe with a different opaque origin,
 -  // the subframe origin should be passed through to a context menu on that
@@ -138,11 +119,7 @@ index 7ff496c5312fda7c76147d436f267504401bece4..ccb97686ec27821228c2a23ef28cd0df
 -  using HttpRequest = net::test_server::HttpRequest;
 -  using HttpResponse = net::test_server::HttpResponse;
 -  HttpRequest::HeaderMap logged_headers;
-+IN_PROC_BROWSER_TEST_P(SubframeContextMenuBrowserTest,
-+                       SubframeNewSplitInitiator) {
-+  RunSubframeInitiatorTestForCommand(IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW);
-+}
- 
+-
 -  base::RunLoop danger_request_wait_loop;
 -  embedded_test_server()->RegisterRequestHandler(base::BindLambdaForTesting(
 -      [&](const HttpRequest& req) -> std::unique_ptr<HttpResponse> {
@@ -169,19 +146,41 @@ index 7ff496c5312fda7c76147d436f267504401bece4..ccb97686ec27821228c2a23ef28cd0df
 -      browser()->tab_strip_model()->GetActiveWebContents();
 -  GURL url(embedded_test_server()->GetURL("/main"));
 -  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
--
++    std::string encoded_payload =
++        base::Base64Encode(base::ReplaceStringPlaceholders(
++            kCrossOriginChildFrameSource, {link.spec()}, nullptr));
++    return base::ReplaceStringPlaceholders(kMainFrameSource, {encoded_payload},
++                                           nullptr);
++  }
++};
+ 
 -  content::RenderFrameHost* main_frame = ConvertToRenderFrameHost(web_contents);
 -  content::RenderFrameHost* child_frame = ChildFrameAt(main_frame, 0);
--
++INSTANTIATE_TEST_SUITE_P(All,
++                         SubframeContextMenuBrowserTest,
++                         testing::Bool(),
++                         [](const testing::TestParamInfo<bool>& info) {
++                           return info.param ? "LinkPreviewEnabled"
++                                             : "LinkPreviewDisabled";
++                         });
+ 
 -  EXPECT_FALSE(main_frame->GetLastCommittedOrigin().IsSameOriginWith(
 -      child_frame->GetLastCommittedOrigin()));
--
++IN_PROC_BROWSER_TEST_P(SubframeContextMenuBrowserTest,
++                       SubframeNewTabInitiator) {
++  RunSubframeInitiatorTestForCommand(IDC_CONTENT_CONTEXT_OPENLINKNEWTAB);
++}
+ 
 -  ContextMenuWaiter menu_observer(IDC_CONTENT_CONTEXT_OPENLINKNEWTAB);
 -  content::SimulateMouseClickAt(web_contents, 0,
 -                                blink::WebMouseEvent::Button::kRight,
 -                                gfx::Point(15, 15));
 -  menu_observer.WaitForMenuOpenAndClose();
--
++IN_PROC_BROWSER_TEST_P(SubframeContextMenuBrowserTest,
++                       SubframeNewSplitInitiator) {
++  RunSubframeInitiatorTestForCommand(IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW);
++}
+ 
 -  // Wait for the request to "/danger" to be issued by the context menu click
 -  // and handled by the EmbeddedTestServer, which logs the request headers as a
 -  // side effect. Since that request is issued by a click on a link in a
