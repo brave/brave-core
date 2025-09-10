@@ -154,7 +154,7 @@ class ByteCodeProcessor {
                     sValidator.getErrors().entrySet()) {
                 printValidationError(System.err, entry.getKey(), entry.getValue());
             }
-            System.exit(1);
+            throw new RuntimeException("Program failed, see details above");
         }
     }
 
