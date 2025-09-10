@@ -14,7 +14,6 @@
 #define LayoutBookmarkBar virtual LayoutBookmarkBar
 #define LayoutInfoBar virtual LayoutInfoBar
 #define LayoutContentsContainerView virtual LayoutContentsContainerView
-#define UpdateSplitViewInsets virtual UpdateSplitViewInsets
 
 // Add a new method: NotifyDialogPositionRequiresUpdate(). This is needed for
 // split view to update the dialog position when the split view is resized.
@@ -26,7 +25,6 @@
 #include <chrome/browser/ui/views/frame/browser_view_layout.h>  // IWYU pragma: export
 
 #undef set_webui_tab_strip
-#undef UpdateSplitViewInsets
 #undef LayoutContentsContainerView
 #undef LayoutInfoBar
 #undef LayoutBookmarkBar
