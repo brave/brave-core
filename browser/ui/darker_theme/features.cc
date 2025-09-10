@@ -7,8 +7,10 @@
 
 namespace darker_theme::features {
 
+// Note that we're exposing the feature with the name "BraveMidnightTheme" for
+// brand consistency
 BASE_FEATURE(kBraveDarkerTheme,
-             "BraveDarkerTheme",
+             "BraveMidnightTheme",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace darker_theme::features
