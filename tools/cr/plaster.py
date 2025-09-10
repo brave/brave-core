@@ -268,21 +268,26 @@ class PlasterFile:
                     f'No description specified in {info.source}: {substitution}'
                 )
 
-            if pattern is None and re_pattern is None:
+            if re_pattern is None:
+              if pattern is None:
                 raise ValueError(
-                    f'No pattern specified for {description} in {info.source}: {substitution}'
+                    f'No pattern specified for {description} in {info.source}: '
+                    f'{substitution}'
                 )
+              else:
+                re_pattern = re.escape(pattern)
 
 
             re_flags = 0
             for flag in flags:
-              # Only accept valid re flags
-              if flag.isupper() and getattr(re, flag):
-                re_flags |= getattr(re, flag)
-              else:
-                raise ValueError(
-                    f'Invalid re flag specified: {flag} for {description} in {info.source}'
-                )
+                # Only accept valid re flags
+                if flag.isupper() and hasattr(re, flag):
+                    re_flags |= getattr(re, flag)
+                else:
+                    raise ValueError(
+                        f'Invalid re flag specified: {flag} for {description} '
+                        f'in {info.source}'
+                    )
 
             contents, num_changes = re.subn(re_pattern,
                                             replace,
@@ -292,11 +297,13 @@ class PlasterFile:
 
             if num_changes == 0:
                 raise ValueError(
-                    f'No matches found for pattern {pattern} in {info.source}')
+                    f'No matches found for pattern {re_pattern} in '
+                    f'{info.source}')
 
             if num_changes != count:
                 raise ValueError(
-                    f'Unexpected number of matches ({num_changes} vs {count}) found for {pattern} in {info.source}'
+                    f'Unexpected number of matches ({num_changes} vs {count}) '
+                    f'found for {re_pattern} in {info.source}'
                 )
         has_changed = info.save_source_if_changed(contents, dry_run=dry_run)
         has_changed = info.save_patch_if_changed(

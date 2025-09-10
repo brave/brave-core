@@ -66,7 +66,7 @@ occurrences of `ChromeAutocompleteSchemeClassifier` with
 [[substitution]]
 description = 'Adding header for BraveAutocompleteSchemeClassifier'
 pattern = '#include "extensions/buildflags/buildflags.h"'
-re_pattern = '''#include "extensions/buildflags/buildflags.h"
+replace = '''#include "extensions/buildflags/buildflags.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"'''
 
 [[substitution]]
@@ -78,11 +78,12 @@ replace = 'BraveAutocompleteSchemeClassifier'
 The basic format for a `[[substitution]]` entry is as follow:
 
 ```toml
-[[plaster]]
+[[substition]]
 description = ''
+pattern = ''
 re_pattern = ''
 replace = ''
-re_flags = ''  # These are traditional python regex flags.
+re_flags = ''  # python regex flags ASCII, IGNORECASE, etc...
 count = 0
 ```
 
