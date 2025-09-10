@@ -240,10 +240,6 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(
   contents_container_->SetBoundsRect(contents_container_bounds);
 }
 
-void BraveBrowserViewLayout::UpdateSplitViewInsets() {
-  // We don't use chromium's split view insets.
-}
-
 void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
   if (!sidebar_container_) {
     return;
