@@ -4,6 +4,7 @@
 
 import Foundation
 import Preferences
+import SwiftUI
 import UIKit
 
 public struct UserAgent {
@@ -15,4 +16,25 @@ public struct UserAgent {
   public static let desktop = UserAgentBuilder().build(desktopMode: true)
   /// Desktop user agent for masking we are Brave
   public static let desktopMasked = UserAgentBuilder().build(desktopMode: true, maskBrave: true)
+
+  public static let chromeMobile = """
+    Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_1 like Mac OS X) \
+    AppleWebKit/605.1.15 (KHTML, like Gecko) \
+    CriOS/140.0.7339.101 Mobile/15E148 Safari/604.1
+    """
+  public static let chromeDesktop = """
+    Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) \
+    AppleWebKit/605.1.15 (KHTML, like Gecko) \
+    CriOS/140 Version/11.1.1 Safari/605.1.15
+    """
+  public static let chromeMobileBraveComment = """
+    Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_1 like Mac OS X) \
+    AppleWebKit/605.1.15 (KHTML, like Gecko) \
+    CriOS (Brave)/140.0.7339.101 Mobile/15E148 Safari/604.1
+    """
+  public static let chromeDesktopBraveComment = """
+    Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) \
+    AppleWebKit/605.1.15 (KHTML, like Gecko) \
+    CriOS (Brave)/140 Version/11.1.1 Safari/605.1.15
+    """
 }

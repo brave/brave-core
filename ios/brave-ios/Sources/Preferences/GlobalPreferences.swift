@@ -278,5 +278,11 @@ extension Preferences {
       key: "debug.dev-options-enabled",
       default: false
     )
+    /// Stores a user agent that overrides existing User Agent logic (mobile
+    /// or desktop mode, masking brave from User Agent, etc).
+    public static let userAgentOverride = Option<String>(
+      key: "debug.user-agent-override",
+      default: ""
+    )
   }
 }
