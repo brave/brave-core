@@ -1756,6 +1756,7 @@
 -All/LensOverlayControllerBrowserPDFTest.ContextMenuOpensOverlay/*
 -All/LensOverlayControllerBrowserPDFUpdatedContentFieldsTest.PartialPdfIncludedInRequest/*
 -All/LensOverlayControllerEntrypointsBrowserTest.OverlayHidesEntrypoints/PageActionsMigration*
+-LensComposeboxControllerBrowserTest.*
 -LensOverlayControllerApcOnlyTest.*
 -LensOverlayControllerBrowserTest.*
 -LensOverlayControllerBrowserFullscreenDisabled.*
@@ -2379,6 +2380,9 @@
 -All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkDisabled
 -All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkEnabled
 -All/PermissionElementOriginTrialBrowserTest.WithoutOriginTrialToken/BaseDefault_BlinkEnabled
+
+# These tests fail because we disable kAimEnabled.
+-ChromeAimEligibilityServiceBrowserTest.ComprehensiveEligibilityTest*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
