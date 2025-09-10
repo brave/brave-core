@@ -21,31 +21,33 @@ void BraveSafariDataImportClientBridge::OnTotalFailure() {
   }
 }
 
-void BraveSafariDataImportClientBridge::OnBookmarksReady(size_t count) {
+void BraveSafariDataImportClientBridge::OnBookmarksReady(
+    user_data_importer::CountOrError result) {
   if (delegate_) {
-    [delegate_ onBookmarksReady:static_cast<NSInteger>(count)];
+    [delegate_ onBookmarksReady:static_cast<NSInteger>(
+                                    result.has_value() ? result.value() : 0)];
   }
 }
 
 void BraveSafariDataImportClientBridge::OnHistoryReady(
-    size_t estimated_count,
-    std::vector<std::u16string> profiles) {
+    user_data_importer::CountOrError estimated_count) {
   if (delegate_) {
-    NSMutableArray<NSString*>* bridged_profiles = [[NSMutableArray alloc] init];
-    for (const auto& profile : profiles) {
-      [bridged_profiles addObject:base::SysUTF16ToNSString(profile)];
-    }
-    [delegate_ onHistoryReady:static_cast<NSInteger>(estimated_count)
-                     profiles:bridged_profiles];
+    [delegate_
+        onHistoryReady:static_cast<NSInteger>(estimated_count.has_value()
+                                                  ? estimated_count.value()
+                                                  : 0)];
   }
 }
 
 void BraveSafariDataImportClientBridge::OnPasswordsReady(
-    const password_manager::ImportResults& results) {
+    base::expected<password_manager::ImportResults,
+                   user_data_importer::ImportPreparationError> results) {
   if (delegate_) {
     NSMutableArray<NSNumber*>* ids = [[NSMutableArray alloc] init];
-    if (results.status == password_manager::ImportResults::Status::CONFLICTS) {
-      for (const auto& entry : results.displayed_entries) {
+    if (results.has_value() &&
+        results.value().status ==
+            password_manager::ImportResults::Status::CONFLICTS) {
+      for (const auto& entry : results.value().displayed_entries) {
         [ids addObject:@(entry.id)];
       }
     }
@@ -53,9 +55,12 @@ void BraveSafariDataImportClientBridge::OnPasswordsReady(
   }
 }
 
-void BraveSafariDataImportClientBridge::OnPaymentCardsReady(size_t count) {
+void BraveSafariDataImportClientBridge::OnPaymentCardsReady(
+    user_data_importer::CountOrError result) {
   if (delegate_) {
-    [delegate_ onPaymentCardsReady:static_cast<NSInteger>(count)];
+    [delegate_ onPaymentCardsReady:static_cast<NSInteger>(result.has_value()
+                                                              ? result.value()
+                                                              : 0)];
   }
 }
 
@@ -90,7 +95,7 @@ void BraveSafariDataImportClientBridge::OnPaymentCardsImported(size_t count) {
   }
 }
 
-base::WeakPtr<SafariDataImportClient>
+base::WeakPtr<user_data_importer::SafariDataImportClient>
 BraveSafariDataImportClientBridge::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
