@@ -182,7 +182,6 @@ import org.chromium.components.offline_items_collection.OfflineItem;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogDelegate;
-import org.chromium.components.prefs.PrefService;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.signin.base.AccountInfo;
 import org.chromium.components.variations.firstrun.VariationsSeedFetcher;
@@ -769,8 +768,7 @@ public class BytecodeTest {
                         "setUpPostDeprecationWarning",
                         MethodModifier.REGULAR,
                         void.class,
-                        PreferenceViewHolder.class,
-                        PrefService.class));
+                        PreferenceViewHolder.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView", // presubmit: ignore-long-line
