@@ -43,13 +43,12 @@ template <typename T, typename... Ts>
 using Collapse =
     std::conditional_t<sizeof...(Ts) == 0, T, std::variant<T, Ts...>>;
 
-template <typename...>
-struct unique_types : std::true_type {};
+template <typename... Ts>
+struct inherit : Ts... {};
 
-template <typename T, typename... Ts>
-struct unique_types<T, Ts...>
-    : std::conjunction<std::negation<std::is_same<T, Ts>>...,
-                       unique_types<Ts...>> {};
+template <typename... Ts>
+inline constexpr bool unique_types_v =
+    requires { inherit<std::type_identity<Ts>...>{}; };
 
 template <typename, typename, typename>
 struct Entry;
@@ -214,7 +213,7 @@ struct For {
 };
 
 template <detail::concepts::Entry... Entries>
-  requires(detail::unique_types<typename Entries::Request...>::value)
+  requires(detail::unique_types_v<typename Entries::Request...>)
 class Endpoint {
   template <typename, typename...>
   struct EntryForImpl : std::type_identity<void> {};
