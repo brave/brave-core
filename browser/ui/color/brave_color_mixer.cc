@@ -97,7 +97,7 @@ bool IsHighContrast() {
   // For high contrast, selected rows use inverted colors to stand out more.
   ui::NativeTheme* native_theme = ui::NativeTheme::GetInstanceForNativeUi();
 #endif  // !defined(USE_AURA)
-  return native_theme && native_theme->GetPreferredContrast() ==
+  return native_theme && native_theme->preferred_contrast() ==
                              ui::NativeTheme::PreferredContrast::kMore;
 }
 
