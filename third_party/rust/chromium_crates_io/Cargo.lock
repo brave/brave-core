@@ -550,7 +550,7 @@ dependencies = [
 
 [[package]]
 name = "cxx"
-version = "1.0.175"
+version = "1.0.179"
 dependencies = [
  "cc",
  "cxxbridge-cmd",
@@ -562,7 +562,7 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-cmd"
-version = "1.0.175"
+version = "1.0.179"
 dependencies = [
  "clap",
  "codespan-reporting",
@@ -574,11 +574,11 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-flags"
-version = "1.0.175"
+version = "1.0.179"
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.175"
+version = "1.0.179"
 dependencies = [
  "indexmap",
  "proc-macro2",
@@ -2378,7 +2378,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "winapi-util"
-version = "0.1.10"
+version = "0.1.11"
 dependencies = [
  "windows-sys",
 ]
