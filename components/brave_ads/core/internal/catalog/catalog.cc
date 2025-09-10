@@ -22,20 +22,10 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesRequireResourceForNewTabPageAds() {
-  // Require resource only if:
-  // - The user has opted into new tab page ads and joined Brave Rewards.
-  return UserHasJoinedBraveRewards() && UserHasOptedInToNewTabPageAds();
-}
-
 bool DoesRequireResource() {
   // Require resource only if:
-  // - The user has opted into Brave News ads.
-  // - The user has opted into new tab page ads and and joined Brave Rewards.
   // - The user has joined Brave Rewards and opted into notification ads.
-  return UserHasOptedInToBraveNewsAds() ||
-         DoesRequireResourceForNewTabPageAds() ||
-         UserHasOptedInToNotificationAds();
+  return UserHasOptedInToNotificationAds();
 }
 
 }  // namespace
@@ -115,8 +105,6 @@ void Catalog::OnNotifyDidInitializeAds() {
 
 void Catalog::OnNotifyPrefDidChange(const std::string& path) {
   if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
-      DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(path) ||
-      DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path) ||
       DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
     // This condition should include all the preferences that are present in the
     // `DoesRequireResource` function.
