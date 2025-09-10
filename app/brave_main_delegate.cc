@@ -178,8 +178,6 @@ void BraveMainDelegate::PreSandboxStartup() {
   if (brave::SubprocessNeedsResourceBundle()) {
     brave::InitializeResourceBundle();
   }
-
-  brave::InitializeBlockedThemedLottieImages();
 }
 
 std::optional<int> BraveMainDelegate::PostEarlyInitialization(
