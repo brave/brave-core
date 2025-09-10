@@ -173,6 +173,15 @@ class AIChatService : public KeyedService,
   void EnableStoragePref() override;
   void DismissStorageNotice() override;
   void DismissPremiumPrompt() override;
+  void GetSmartModes(GetSmartModesCallback callback) override;
+  void CreateSmartMode(const std::string& shortcut,
+                       const std::string& prompt,
+                       const std::optional<std::string>& model) override;
+  void UpdateSmartMode(const std::string& id,
+                       const std::string& shortcut,
+                       const std::string& prompt,
+                       const std::optional<std::string>& model) override;
+  void DeleteSmartMode(const std::string& id) override;
   void GetConversations(GetConversationsCallback callback) override;
   void GetActionMenuList(GetActionMenuListCallback callback) override;
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;

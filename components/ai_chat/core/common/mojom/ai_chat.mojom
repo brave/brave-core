@@ -452,6 +452,12 @@ interface Service {
   DismissStorageNotice();
   DismissPremiumPrompt();
 
+  // Smart Mode management
+  GetSmartModes() => (array<SmartMode> smart_modes);
+  CreateSmartMode(string shortcut, string prompt, string? model);
+  UpdateSmartMode(string id, string shortcut, string prompt, string? model);
+  DeleteSmartMode(string id);
+
   // Get metadata for conversations
   GetConversations() => (array<Conversation> conversations);
 

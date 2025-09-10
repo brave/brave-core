@@ -618,6 +618,31 @@ void AIChatService::DismissPremiumPrompt() {
   profile_prefs_->SetBoolean(prefs::kUserDismissedPremiumPrompt, true);
 }
 
+void AIChatService::GetSmartModes(GetSmartModesCallback callback) {
+  auto smart_modes = prefs::GetSmartModesFromPrefs(*profile_prefs_);
+  std::move(callback).Run(std::move(smart_modes));
+}
+
+void AIChatService::CreateSmartMode(const std::string& shortcut,
+                                    const std::string& prompt,
+                                    const std::optional<std::string>& model) {
+  std::string model_str = model.value_or("");
+  prefs::AddSmartModeToPrefs(shortcut, prompt, model_str, *profile_prefs_);
+}
+
+void AIChatService::UpdateSmartMode(const std::string& id,
+                                    const std::string& shortcut,
+                                    const std::string& prompt,
+                                    const std::optional<std::string>& model) {
+  std::string model_str = model.value_or("");
+  prefs::UpdateSmartModeInPrefs(id, shortcut, prompt, model_str,
+                                *profile_prefs_);
+}
+
+void AIChatService::DeleteSmartMode(const std::string& id) {
+  prefs::DeleteSmartModeFromPrefs(id, *profile_prefs_);
+}
+
 void AIChatService::GetActionMenuList(GetActionMenuListCallback callback) {
   std::move(callback).Run(ai_chat::GetActionMenuList());
 }
