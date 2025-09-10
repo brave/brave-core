@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Size;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
+import androidx.preference.Preference;
 
 import org.chromium.brave.browser.customize_menu.settings.BraveCustomizeMenuPreferenceFragment;
 import org.chromium.build.annotations.NullMarked;
@@ -29,6 +30,7 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
+import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.ui.modelutil.MVCListAdapter;
 
@@ -128,6 +130,16 @@ public class CustomizeBraveMenu {
             final MVCListAdapter.ModelList menuItems,
             final MVCListAdapter.ModelList pageActions) {
         final Bundle bundle = new Bundle();
+        populateBundle(bundle, menuItems, pageActions);
+
+        SettingsNavigation settingsLauncher = SettingsNavigationFactory.createSettingsNavigation();
+        settingsLauncher.startSettings(context, BraveCustomizeMenuPreferenceFragment.class, bundle);
+    }
+
+    public static Bundle populateBundle(
+            final Bundle bundle,
+            final MVCListAdapter.ModelList menuItems,
+            final MVCListAdapter.ModelList pageActions) {
 
         // Convert menu items to parcelable data.
         final ArrayList<MenuItemData> menuItemDataList = new ArrayList<>();
@@ -140,9 +152,7 @@ public class CustomizeBraveMenu {
         // Add data list to fragment bundle.
         bundle.putParcelableArrayList(KEY_MAIN_MENU_ITEM_LIST, menuItemDataList);
         bundle.putParcelableArrayList(KEY_PAGE_ACTION_ITEM_LIST, pageActionDataList);
-
-        SettingsNavigation settingsLauncher = SettingsNavigationFactory.createSettingsNavigation();
-        settingsLauncher.startSettings(context, BraveCustomizeMenuPreferenceFragment.class, bundle);
+        return bundle;
     }
 
     private static void populateMenuItemData(
@@ -300,5 +310,40 @@ public class CustomizeBraveMenu {
             drawable.setTintList(tintList);
         }
         return drawable;
+    }
+
+    /**
+     * Propagates custom menu related extras from a parent settings screen into the given {@link
+     * ChromeBasePreference} so that the payload is carried to the next fragment when that
+     * preference is clicked.
+     *
+     * @param preference The child {@link ChromeBasePreference} that will navigate to the next
+     *     screen (e.g., “Appearance”). Its {@link Preference#getExtras()} will be augmented if
+     *     non-null.
+     * @param bundle Source of extras to forward (typically the current fragment’s {@link
+     *     androidx.fragment.app.Fragment#getArguments()}); may be null.
+     */
+    public static void propagateMenuItemExtras(
+            @Nullable final ChromeBasePreference preference, @Nullable final Bundle bundle) {
+        if (preference == null || bundle == null) {
+            return;
+        }
+        // Copy over the custom menu item list (main section and page actions)
+        // from the main settings screen to the appearance screen.
+        if (bundle.containsKey(KEY_MAIN_MENU_ITEM_LIST)) {
+            preference
+                    .getExtras()
+                    .putParcelableArrayList(
+                            KEY_MAIN_MENU_ITEM_LIST,
+                            bundle.getParcelableArrayList(KEY_MAIN_MENU_ITEM_LIST));
+        }
+
+        if (bundle.containsKey(KEY_PAGE_ACTION_ITEM_LIST)) {
+            preference
+                    .getExtras()
+                    .putParcelableArrayList(
+                            KEY_PAGE_ACTION_ITEM_LIST,
+                            bundle.getParcelableArrayList(KEY_PAGE_ACTION_ITEM_LIST));
+        }
     }
 }

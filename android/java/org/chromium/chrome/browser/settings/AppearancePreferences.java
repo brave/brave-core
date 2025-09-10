@@ -16,6 +16,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -55,6 +56,7 @@ public class AppearancePreferences extends BravePreferenceFragment
     public static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
     public static final String PREF_ADDRESS_BAR = "address_bar";
     public static final String PREF_TOOLBAR_SHORTCUT = "toolbar_shortcut";
+    private static final String PREF_BRAVE_CUSTOMIZE_MENU = "brave_customize_menu";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
@@ -65,6 +67,11 @@ public class AppearancePreferences extends BravePreferenceFragment
         super.onCreate(savedInstanceState);
         mPageTitle.set(getString(R.string.prefs_appearance));
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_appearance_preferences);
+
+        // Forward the custom menu item keys from appearance to custom menu item preference screen.
+        CustomizeBraveMenu.propagateMenuItemExtras(
+                findPreference(PREF_BRAVE_CUSTOMIZE_MENU), getArguments());
+
         boolean isTablet =
                 DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                         ContextUtils.getApplicationContext());

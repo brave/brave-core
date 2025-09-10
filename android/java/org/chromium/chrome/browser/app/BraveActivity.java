@@ -448,6 +448,23 @@ public abstract class BraveActivity extends ChromeActivity
             return true;
         } else if (id == R.id.reload_menu_id) {
             setComesFromNewTab(true);
+        } else if (id == R.id.preferences_id) {
+            final AppMenuPropertiesDelegate delegate = createAppMenuPropertiesDelegate();
+            assert delegate instanceof BraveTabbedAppMenuPropertiesDelegate;
+            final BraveTabbedAppMenuPropertiesDelegate braveTabbedAppMenuPropertiesDelegate =
+                    (BraveTabbedAppMenuPropertiesDelegate) delegate;
+
+            final Bundle bundle =
+                    CustomizeBraveMenu.populateBundle(
+                            new Bundle(),
+                            braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelList(),
+                            braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
+            SettingsNavigation settingsNavigation =
+                    SettingsNavigationFactory.createSettingsNavigation();
+            // Follow upstream code and pass null as fragment to show
+            // that defaults to main settings screen.
+            settingsNavigation.startSettings(this, null, bundle);
+            return true;
         }
 
         if (super.onMenuOrKeyboardAction(id, fromMenu, triggeringMotion)) {
