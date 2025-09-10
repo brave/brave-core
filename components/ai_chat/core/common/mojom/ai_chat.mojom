@@ -199,8 +199,28 @@ struct WebSource {
   url.mojom.Url favicon_url;
 };
 
+enum RichWebSourceType {
+  WEATHER,
+};
+
+struct RichWebSource {
+  RichWebSourceType type;
+
+  // Data provider attribution information
+  string provider_type;
+  string provider_name;
+  url.mojom.Url provider_url;
+
+  // Untyped data passed through directly from the API, since the types are
+  // extremely detailed they are defined in the UI.
+  // Any UI use of this data should contain error handling in case the data
+  // format changes unexpectedly.
+  string data;
+};
+
 struct WebSourcesEvent {
   array<WebSource> sources;
+  array<RichWebSource> rich_sources;
 };
 
 struct CompletionEvent {

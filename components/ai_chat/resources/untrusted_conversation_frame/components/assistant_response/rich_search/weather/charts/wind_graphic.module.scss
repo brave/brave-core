@@ -1,0 +1,81 @@
+// Wind Graphic styles converted from Svelte to SCSS modules
+
+.windGraphic {
+  display: flex;
+  flex-direction: column;
+  height: 122px;
+  justify-content: space-between;
+  max-height: 122px;
+  min-width: 364px;
+  width: 100%;
+}
+
+.items {
+  display: flex;
+  justify-content: space-between;
+  background: linear-gradient(180deg, rgba(5, 145, 164, 0) 0%, rgba(5, 145, 164, 0.09) 100%);
+  margin-left: calc(-1 * var(--leo-spacing-xl, 32px));
+  margin-right: calc(-1 * var(--leo-spacing-xl, 32px));
+  padding: var(--leo-spacing-xl, 32px) var(--leo-spacing-xl, 32px) var(--leo-spacing-m, 16px) var(--leo-spacing-xl, 32px);
+
+  // Dark theme
+  [data-theme="dark"] & {
+    background: linear-gradient(
+      180deg,
+      rgba(34, 37, 49, 0.65) 24.11%,
+      rgba(29, 67, 75, 0.65) 182.14%
+    );
+  }
+}
+
+.times {
+  display: flex;
+  justify-content: space-between;
+}
+
+.item,
+.time {
+  width: 12.5%;
+  text-align: center;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &.invisible {
+    visibility: hidden;
+  }
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+
+  svg {
+    width: inherit;
+    height: inherit;
+  }
+}
+
+.message {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+  color: var(--leo-color-text-tertiary, #9ca3af);
+}
+
+@media (max-width: 567px) {
+  .items {
+    margin-left: calc(-1 * var(--leo-spacing-2xl, 40px));
+    margin-right: calc(-1 * var(--leo-spacing-2xl, 40px));
+  }
+
+  .isMobile .items {
+    margin-left: calc(-1 * var(--leo-spacing-xl, 32px));
+    margin-right: calc(-1 * var(--leo-spacing-xl, 32px));
+  }
+}

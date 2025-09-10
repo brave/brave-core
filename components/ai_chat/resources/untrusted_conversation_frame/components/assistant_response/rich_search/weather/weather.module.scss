@@ -1,0 +1,414 @@
+// Weather component styles converted from Svelte to SCSS modules
+
+.richWeatherContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-2xl, 40px);
+  padding-top: var(--leo-spacing-m, 16px);
+
+  .isMobile & {
+    padding-top: 0;
+  }
+}
+
+.weatherDesc {
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+.currentHour {
+  margin-left: var(--leo-spacing-s, 8px);
+}
+
+.body {
+  display: flex;
+  gap: var(--leo-spacing-2xl, 40px);
+
+  // Mobile layout
+  @media (max-width: 703px) {
+    flex-direction: column;
+  }
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xl, 32px);
+  justify-content: space-between;
+  min-width: 200px;
+
+  // Mobile layout
+  @media (max-width: 703px) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.weather {
+  display: flex;
+  gap: var(--leo-spacing-l, 24px);
+}
+
+.weatherIcon {
+  &.wideOnly {
+    width: 66px;
+    height: 66px;
+  }
+
+  &.narrowOnly {
+    align-self: center;
+    width: 33px;
+    height: 33px;
+    display: none;
+  }
+}
+
+.temps {
+  display: flex;
+  flex-direction: column;
+}
+
+.tempsHeader {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--leo-spacing-l, 24px);
+}
+
+.tempsCurrent {
+  min-width: 56px;
+}
+
+.unitSwitch {
+  border-radius: var(--border-radius-full, 9999px);
+  border: 1px solid var(--leo-color-divider-interactive, #d1d5db);
+  display: flex;
+  padding: var(--leo-spacing-s, 8px);
+  position: relative;
+  margin-top: var(--leo-spacing-m, 16px);
+
+  .isMobile & {
+    margin-top: 0;
+  }
+
+  button {
+    align-items: center;
+    color: var(--leo-color-text-interactive, #374151);
+    display: flex;
+    height: var(--leo-icon-s, 16px);
+    justify-content: center;
+    width: var(--leo-icon-m, 24px);
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &.active {
+      background: var(--leo-color-container-interactive, #f3f4f6);
+    }
+  }
+
+  form:first-child button {
+    border-top-left-radius: var(--leo-radius-l, 12px);
+    border-bottom-left-radius: var(--leo-radius-l, 12px);
+    border-top-right-radius: var(--leo-radius-s, 4px);
+    border-bottom-right-radius: var(--leo-radius-s, 4px);
+  }
+
+  form:last-child button {
+    border-top-left-radius: var(--leo-radius-s, 4px);
+    border-bottom-left-radius: var(--leo-radius-s, 4px);
+    border-top-right-radius: var(--leo-radius-l, 12px);
+    border-bottom-right-radius: var(--leo-radius-l, 12px);
+  }
+}
+
+.divider {
+  border-top: 1px solid var(--leo-color-divider-subtle, #e5e7eb);
+  height: 1px;
+  margin: var(--leo-spacing-s, 8px) 0;
+
+  @media (max-width: 703px) {
+    margin: var(--leo-spacing-m, 16px) 0;
+  }
+}
+
+.tempsHighLow {
+  display: flex;
+  flex-wrap: wrap;
+  white-space: nowrap;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+
+.row {
+  border-top: 1px solid var(--leo-color-divider-subtle, #e5e7eb);
+  display: flex;
+  gap: var(--leo-spacing-l, 24px);
+  justify-content: space-between;
+  padding: var(--leo-spacing-s, 8px) 0;
+
+  &:last-child {
+    border-bottom: 1px solid var(--leo-color-divider-subtle, #e5e7eb);
+  }
+}
+
+.right {
+  border-radius: var(--leo-radius-m, 8px);
+  border: 1px solid var(--leo-color-divider-subtle, #e5e7eb);
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m, 16px);
+  flex: 1;
+  padding: var(--leo-spacing-xl, 32px);
+
+  @media (max-width: 703px) {
+    border: none;
+    padding: 0;
+  }
+
+  nav {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--leo-spacing-xs, 4px) var(--leo-spacing-m, 16px);
+
+    button {
+      padding: var(--leo-spacing-s, 8px) var(--leo-spacing-m, 16px);
+      border-radius: var(--leo-radius-s, 4px);
+      border: none;
+      overflow: visible;
+      position: relative;
+      font-weight: 600;
+      transition: var(--transition-background-hover, background-color 0.2s ease);
+      background: none;
+      cursor: pointer;
+
+      &:hover:not(.active) {
+        background: var(--leo-color-button-hover, #f3f4f6);
+      }
+
+      &.active {
+        color: var(--leo-color-text-interactive, #374151);
+      }
+
+      .activeBg {
+        border-radius: var(--leo-radius-s, 4px);
+        background: var(--leo-color-button-hover, #f3f4f6);
+        inset: 0;
+        position: absolute;
+
+        &.slideTransition {
+          animation: slideIn 250ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+      }
+
+      .content {
+        position: relative;
+        z-index: 1;
+      }
+    }
+  }
+}
+
+.chart {
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  @media (max-width: 703px) {
+    &.noscrollbar {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+}
+
+.dayButtons {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  position: relative;
+
+  &.noscrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  // Mobile layout
+  @media (max-width: 885px) {
+    gap: var(--leo-spacing-m, 16px);
+    justify-content: space-between;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+
+.dayIcon {
+  height: 48px;
+  width: 48px;
+}
+
+.dayButton {
+  border-radius: var(--leo-radius-m, 8px);
+  border: none;
+  line-height: 0.9rem;
+  min-width: 70px;
+  overflow: visible;
+  padding-bottom: var(--leo-spacing-m, 16px);
+  padding-top: var(--leo-spacing-m, 16px);
+  position: relative;
+  transition: var(--transition-background-hover, background-color 0.2s ease);
+  background: none;
+  cursor: pointer;
+
+  &:hover:not(.active) {
+    background: var(--leo-color-button-hover, #f3f4f6);
+  }
+
+  .activeBg {
+    border-radius: var(--leo-radius-m, 8px);
+    background: linear-gradient(180deg, #dae0f5 0%, var(--leo-color-container-background, #ffffff) 100%);
+    inset: 0;
+    position: absolute;
+
+    [data-theme="dark"] & {
+      background: linear-gradient(180deg, #273a55 0%, var(--leo-color-container-background, #1f2937) 100%);
+    }
+
+    &.slideTransition {
+      animation: slideIn 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  .content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.fullwidthDivider {
+  border-bottom: 1px solid var(--color-divider-subtle, #e5e7eb);
+}
+
+.weatherAlerts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-2xl, 40px);
+  padding-bottom: var(--leo-spacing-m, 16px);
+}
+
+#llm-snippet {
+  scroll-margin: 180px;
+}
+
+// Show/hide narrow/wide only elements
+.narrowOnly {
+  display: none;
+}
+
+.wideOnly {
+  display: block;
+}
+
+@media (max-width: 703px) {
+  .narrowOnly {
+    display: block;
+  }
+
+  .wideOnly {
+    display: none;
+  }
+}
+
+// Typography semantic classes
+.locationHeading {
+  font: var(--leo-font-heading-h2);
+  color: var(--leo-color-text-primary);
+
+  &.mobile {
+    font: var(--leo-font-heading-h4);
+  }
+}
+
+.weatherInfo {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-tertiary);
+  display: flex;
+  align-items: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
+  &.mobile {
+    font: var(--leo-font-small-regular);
+  }
+}
+
+.temperatureDisplay {
+  font: var(--leo-font-heading-h1);
+  color: var(--leo-color-text-primary);
+
+  &.mobile {
+    font: var(--leo-font-heading-h3);
+  }
+}
+
+.unitButton {
+  font: var(--leo-font-small-semibold);
+}
+
+.temperatureRange {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-tertiary);
+}
+
+.weatherTable {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-tertiary);
+}
+
+.chartNavButton {
+  font: var(--leo-font-small-semibold);
+}
+
+.dayButtonText {
+  font: var(--leo-font-small-regular);
+
+  &.active {
+    color: var(--leo-color-text-secondary);
+  }
+
+  &.inactive {
+    color: var(--leo-color-text-tertiary);
+  }
+}
+
+// Animations
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.slideTransition {
+  animation: slideIn 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}

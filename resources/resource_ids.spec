@@ -158,16 +158,16 @@
     "includes": [30280],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-tip_panel/tip_panel.grd": {
-    "META": {"sizes": {"includes": [20]}},
-    "includes": [30300]
+    "META": {"sizes": {"includes": [15]}},
+    "includes": [30295]
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_ui/ai_chat_ui.grd": {
-    "META": {"sizes": {"includes": [10]}},
-    "includes": [30320],
+    "META": {"sizes": {"includes": [40]}},
+    "includes": [30310],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-skus_internals/skus_internals.grd": {
     "META": {"sizes": {"includes": [10]}},
-    "includes": [30340],
+    "includes": [30350],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_news_internals/brave_news_internals.grd": {
     "META": {"sizes": {"includes": [10]}},

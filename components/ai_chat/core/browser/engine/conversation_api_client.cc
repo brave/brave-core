@@ -538,6 +538,49 @@ ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
       web_sources_event->sources.push_back(
           mojom::WebSource::New(*title, item_url, item_favicon_url));
     }
+
+    // Rich data
+    const base::Value::List* rich_sources = response_event.FindList("rich_results");
+    if (rich_sources) {
+      for (auto& item : *rich_sources) {
+        if (!item.is_dict()) {
+          continue;
+        }
+        const base::Value::List* rich_sources_item = item.GetDict().FindList("results");
+        if (!rich_sources_item) {
+          continue;
+        }
+        for (auto& rich_source_item : *rich_sources_item) {
+          if (!rich_source_item.is_dict()) {
+            continue;
+          }
+          const base::Value::Dict& rich_source_item_dict = rich_source_item.GetDict();
+          auto rich_source = mojom::RichWebSource::New();
+          if (auto* rich_source_type =
+                  rich_source_item_dict.FindString("subtype");
+              !rich_source_type || *rich_source_type != "weather") {
+            // We only support rich weather sources for now
+            continue;
+          }
+          rich_source->type = mojom::RichWebSourceType::WEATHER;
+          auto* provider_type = rich_source_item_dict.FindStringByDottedPath("provider.type");
+          auto* provider_name = rich_source_item_dict.FindStringByDottedPath("provider.name");
+          auto* provider_url = rich_source_item_dict.FindStringByDottedPath("provider.url");
+          auto* weather_data = rich_source_item_dict.FindDict("weather");
+          if (!provider_type || !provider_name || !provider_url || !weather_data) {
+            continue;
+          }
+          rich_source->provider_type = *provider_type;
+          rich_source->provider_name = *provider_name;
+          rich_source->provider_url = GURL(*provider_url);
+          std::string weather_data_string;
+          base::JSONWriter::Write(*weather_data, &weather_data_string);
+          rich_source->data = weather_data_string;
+          web_sources_event->rich_sources.push_back(std::move(rich_source));
+        }
+      }
+    }
+
     if (web_sources_event->sources.empty()) {
       return std::nullopt;
     }

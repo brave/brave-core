@@ -1,0 +1,42 @@
+// Temperature Chart styles converted from Svelte to SCSS modules
+
+.temperatureChartContainer {
+  --line-color: #cbd3da;
+  --temperature-gradient-neg-0-0: rgba(255, 255, 255, 0.01);
+  --temperature-gradient-neg-0-5: rgba(197, 244, 255, 0.45);
+  --temperature-gradient-neg-1-0: rgba(197, 244, 255, 0.75);
+  --temperature-gradient-pos-0-0: rgba(250, 240, 177, 0.75);
+  --temperature-gradient-pos-0-5: rgba(250, 240, 177, 0.45);
+  --temperature-gradient-pos-1-0: rgba(255, 255, 255, 0.01);
+
+  // IMPORTANT: set an explicit height/max-height
+  // otherwise the chart will grow indefinitely
+  height: 122px;
+  max-height: 122px;
+  min-width: 364px;
+  width: 100%;
+
+  // Dark theme styles
+  &[data-theme="dark"] {
+    --line-color: #dad2cb;
+    --temperature-gradient-neg-0-0: rgba(48, 99, 148, 0.25);
+    --temperature-gradient-neg-0-5: rgba(48, 99, 148, 0.65);
+    --temperature-gradient-neg-1-0: #2427311a;
+    --temperature-gradient-pos-0-0: rgba(151, 135, 33, 0.75);
+    --temperature-gradient-pos-0-5: rgba(151, 135, 33, 0.45);
+    --temperature-gradient-pos-1-0: #2427311a;
+  }
+
+  svg {
+    height: 100%;
+    width: 100%;
+  }
+
+  text {
+    fill: var(--color-text-secondary, #6b7280);
+    
+    &.t-tertiary {
+      fill: var(--color-text-tertiary, #9ca3af);
+    }
+  }
+}

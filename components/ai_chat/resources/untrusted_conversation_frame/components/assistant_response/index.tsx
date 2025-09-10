@@ -18,6 +18,8 @@ import {
   removeReasoning,
   removeCitationsWithMissingLinks,
 } from '../conversation_entries/conversation_entries_utils'
+import { Weather } from './rich_search/weather'
+import { WeatherResult } from './rich_search/weather/types'
 
 interface BaseProps {
   // Whether data is currently being received (generated)
@@ -158,6 +160,15 @@ export type AssistantResponseProps = BaseProps & {
   events: Mojom.ConversationEntryEvent[]
 }
 
+function RichWebSource(props: { data: Mojom.RichWebSource }) {
+  if (props.data.type !== Mojom.RichWebSourceType.WEATHER || !props.data.data) {
+    console.warn('RichWebSource: unsupported type', props.data)
+    return null
+  }
+  // TODO: error boundary
+  return <Weather data={JSON.parse(props.data.data) as unknown as WeatherResult} />
+}
+
 export default function AssistantResponse(props: AssistantResponseProps) {
   // Extract certain events which need to render at specific locations (e.g. end of the events)
   const searchQueriesEvent = props.events?.find(
@@ -173,6 +184,9 @@ export default function AssistantResponse(props: AssistantResponseProps) {
 
   return (
     <>
+      {sourcesEvent && sourcesEvent.richSources.length && sourcesEvent.richSources.map((richSource, i) => (
+        <RichWebSource key={i} data={richSource} />
+      ))}
       {props.events?.map((event, i) => (
         <AssistantEvent
           key={i}
