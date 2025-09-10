@@ -137,6 +137,17 @@ class TextEmbedderUnitTest : public testing::Test {
     return future.Get();
   }
 
+  absl::StatusOr<std::vector<int>> VerifySuggestTabsForGroupWithMethod(
+      std::vector<local_ai::TextEmbedder::TabInfo> group_tabs,
+      std::vector<local_ai::TextEmbedder::CandidateTab> candidate_tabs,
+      local_ai::ClusteringMethod method) {
+    base::test::TestFuture<absl::StatusOr<std::vector<int>>> future;
+    embedder_->SuggestTabsForGroup(std::move(group_tabs),
+                                   std::move(candidate_tabs),
+                                   future.GetCallback(), method);
+    return future.Get();
+  }
+
   absl::StatusOr<tab_groups::TabGroupId> VerifySuggestGroupForTab(
       local_ai::TextEmbedder::CandidateTab candidate_tab,
       std::map<tab_groups::TabGroupId,
@@ -145,6 +156,39 @@ class TextEmbedderUnitTest : public testing::Test {
     embedder_->SuggestGroupForTab(std::move(candidate_tab),
                                   std::move(group_tabs), future.GetCallback());
     return future.Get();
+  }
+
+  absl::StatusOr<tab_groups::TabGroupId> VerifySuggestGroupForTabWithMethod(
+      local_ai::TextEmbedder::CandidateTab candidate_tab,
+      std::map<tab_groups::TabGroupId,
+               std::vector<local_ai::TextEmbedder::TabInfo>> group_tabs,
+      local_ai::ClusteringMethod method) {
+    base::test::TestFuture<absl::StatusOr<tab_groups::TabGroupId>> future;
+    embedder_->SuggestGroupForTab(std::move(candidate_tab),
+                                  std::move(group_tabs), future.GetCallback(),
+                                  method);
+    return future.Get();
+  }
+
+  // Helper method to access ScoreGroupKNN for testing
+  double CallScoreGroupKNN(
+      const tflite::task::processor::EmbeddingResult& candidate,
+      const std::vector<tflite::task::processor::EmbeddingResult>&
+          group_embeddings) {
+    double result = -1.0;
+    base::RunLoop run_loop;
+    embedder_task_runner_->PostTask(
+        FROM_HERE, base::BindLambdaForTesting([&]() {
+          result = embedder_->ScoreGroupKNN(candidate, group_embeddings);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    return result;
+  }
+
+  // Helper method to get a specific embedding for testing
+  tflite::task::processor::EmbeddingResult GetEmbedding(size_t index) {
+    return embedder_->embeddings_[index];
   }
 
  protected:
@@ -209,26 +253,31 @@ TEST_F(TextEmbedderUnitTest, InspectEmbedding) {
 
   std::vector<double> ref_embed;
 
-  ref_embed = {1.13038528,  0.83160812,  0.06623636,  1.53322351,  0.80242991,
-               0.53564548,  -1.35267901, -0.20925859, 2.54806185,  0.76327729,
-               0.38529554,  -1.32557571, 0.83827466,  -2.23799992, 0.68120342,
-               1.98290706,  -0.8830418,  -1.01441491, -0.34110293, -0.96301019,
-               -0.84333646, 0.39633867,  1.57250464,  -0.68522394, 2.12945008,
-               0.31963441,  -0.20059782, -1.47930455, 1.57752252,  1.47504377,
-               1.0764029,   0.37355256,  -0.42052221, -0.19836292, 0.34847736,
-               1.81372452,  -0.51717269, 0.61680889,  -0.66423297, -0.31588519,
-               -0.62898684, 2.61123896,  1.22074258,  1.20217431,  -1.53226435,
-               0.71343607,  -1.1455394,  1.47197676,  1.42579842,  -0.45529655,
-               -0.38407931, 0.99821067,  1.13552809,  -0.00381027, -0.29902685,
-               -1.69532633, 1.23231995,  -0.02990777, 0.1631268,   2.29497313,
-               -1.03595591, -1.48891973, 1.62486315,  0.75086355,  -0.19678396,
-               1.11072791,  0.71181858,  0.02584061,  -1.30660319, 0.48642394,
-               0.09257797,  -0.86246204, -1.1063292,  -0.18176673, 0.31313393,
-               0.21751097,  -0.06199005, -0.42951369, 0.1223064,   -0.19713967,
-               0.40490884,  -1.4795959,  1.10003591,  0.17397788,  -0.13940017,
-               1.53504717,  3.41920114,  0.39580631,  -0.1163614,  0.07005535,
-               -1.81727087, -0.07773433, -1.27058601, -1.97312176, -1.59849489,
-               0.41968283,  -0.35715488, 1.08086693,  0.23084836,  -0.7961573};
+  ref_embed = {0.10092739016,  0.07425074279,  0.00591397611,  0.13689494133,
+               0.07164548337,  0.04782557487,  -0.12077489495, -0.01868362352,
+               0.22750549018,  0.06814983487,  0.03440141305,  -0.11835493892,
+               0.07484595478,  -0.19982145727, 0.06082181633,  0.17704525590,
+               -0.07884288579, -0.09057270736, -0.03045560606, -0.08598326147,
+               -0.07529779524, 0.03538763523,  0.14040215313,  -0.06118085608,
+               0.19012954831,  0.02853878960,  -0.01791056618, -0.13208074868,
+               0.14085020125,  0.13170032203,  0.09610727429,  0.03335298598,
+               -0.03754656389, -0.01771099679, 0.03111405671,  0.16193972528,
+               -0.04617633298, 0.05507221818,  -0.05930658057, -0.02820394561,
+               -0.05615946278, 0.23314623535,  0.10899495333,  0.10733693093,
+               -0.13680922985, 0.06369972229,  -0.10228036344, 0.13142640889,
+               0.12730343640,  -0.04065163061, -0.03429286927, 0.08912606537,
+               0.10138636827,  -0.00034019700, -0.02669881843, -0.15136839449,
+               0.11002867669,  -0.00267032092, 0.01456489321,  0.20490823686,
+               -0.09249607474, -0.13293913007, 0.14507712424,  0.06704143435,
+               -0.01757001877, 0.09917218238,  0.06355525553,  0.00230723666,
+               -0.11666078866, 0.04343061894,  0.00826582499,  -0.07700549066,
+               -0.09877946228, -0.01622928493, 0.02795844525,  0.01942070946,
+               -0.00553485472, -0.03834943846, 0.01092033274,  -0.01760163158,
+               0.03615249321,  -0.13210675120, 0.09821762890,  0.01553387661,
+               -0.01244646497, 0.13705776632,  0.30528572202,  0.03533969447,
+               -0.01038954034, 0.00625515683,  -0.16225637496, -0.00694054272,
+               -0.11344513297, -0.17617160082, -0.14272285998, 0.03747169301,
+               -0.03188877180, 0.09650610387,  0.02061141841,  -0.07108546048};
 
   size_t ref_size;
   ref_size = ref_embed.size();
@@ -532,10 +581,13 @@ TEST_F(TextEmbedderUnitTest, HostExtractionTest) {
   std::string result = CallSerializeTabInfo(tab_with_content);
   EXPECT_THAT(result, testing::HasSubstr("Article Title"));
   EXPECT_THAT(result, testing::HasSubstr("example.com"));
-  EXPECT_THAT(result, testing::HasSubstr("[keywords:"));
+  // Keywords are currently disabled, should NOT contain keywords section
+  EXPECT_THAT(result, testing::Not(testing::HasSubstr("[keywords:")));
 }
 
-// Test YAKE keyword extraction functionality
+// Test YAKE keyword extraction functionality (currently disabled in
+// SerializeTabInfo) This test verifies the YakeKeywordExtractor still works
+// independently
 TEST_F(TextEmbedderUnitTest, YakeKeywordExtraction) {
   YakeKeywordExtractor extractor;
 
@@ -573,9 +625,10 @@ TEST_F(TextEmbedderUnitTest, YakeKeywordExtraction) {
   EXPECT_EQ(single_keywords[0].keyword, "technology");
 }
 
-// Test SerializeTabInfo with keyword extraction integration
-TEST_F(TextEmbedderUnitTest, SerializeTabInfoWithKeywords) {
-  // Test with rich content that should produce meaningful keywords
+// Test SerializeTabInfo format (keywords currently disabled)
+TEST_F(TextEmbedderUnitTest, SerializeTabInfoFormat) {
+  // Test with rich content - keywords are disabled so should only show title |
+  // host
   local_ai::TextEmbedder::TabInfo tab_with_rich_content = {
       u"Best Travel Destinations in Europe",
       GURL("https://travelblog.com/europe-guide"),
@@ -595,8 +648,11 @@ TEST_F(TextEmbedderUnitTest, SerializeTabInfoWithKeywords) {
   // Should contain the host
   EXPECT_THAT(serialized, testing::HasSubstr("travelblog.com"));
 
-  // Should contain keyword section (from content)
-  EXPECT_THAT(serialized, testing::HasSubstr("[keywords:"));
+  // Keywords are currently disabled - should NOT contain keyword section
+  EXPECT_THAT(serialized, testing::Not(testing::HasSubstr("[keywords:")));
+
+  // Current format should be "title | host"
+  EXPECT_THAT(serialized, testing::ContainsRegex(".* \\| travelblog\\.com"));
 
   // Test with title-only content (no tab_content)
   local_ai::TextEmbedder::TabInfo tab_title_only = {
@@ -607,9 +663,235 @@ TEST_F(TextEmbedderUnitTest, SerializeTabInfoWithKeywords) {
   EXPECT_THAT(title_only_result,
               testing::HasSubstr("Machine Learning Tutorial for Beginners"));
   EXPECT_THAT(title_only_result, testing::HasSubstr("ai-tutorial.com"));
-  // Should NOT contain keywords section since tab_content is empty
+  // Should NOT contain keywords section (keywords are disabled)
   EXPECT_THAT(title_only_result,
               testing::Not(testing::HasSubstr("[keywords:")));
+
+  // Current format should be "title | host"
+  EXPECT_THAT(title_only_result,
+              testing::ContainsRegex(".* \\| ai-tutorial\\.com"));
+}
+
+// Test ScoreGroupKNN function directly
+TEST_F(TextEmbedderUnitTest, ScoreGroupKNNBasicFunctionality) {
+  // Create test embeddings by generating them from text
+  SetTabs(
+      embedder_.get(),
+      {"Travel destinations in Europe", "Visit Italy for amazing experiences",
+       "France travel guide recommendations", "Stock market analysis report"});
+  EXPECT_TRUE(EmbedTabs(embedder_.get()).ok());
+  EXPECT_EQ(embeddings_size(), 4u);
+
+  // Get candidate embedding (travel-related)
+  auto candidate = GetEmbedding(0);  // "Travel destinations in Europe"
+
+  // Create group with similar travel content
+  std::vector<tflite::task::processor::EmbeddingResult> travel_group = {
+      GetEmbedding(1),  // "Visit Italy for amazing experiences"
+      GetEmbedding(2)   // "France travel guide recommendations"
+  };
+
+  // Create group with different content
+  std::vector<tflite::task::processor::EmbeddingResult> finance_group = {
+      GetEmbedding(3)  // "Stock market analysis report"
+  };
+
+  // Test KNN scoring
+  double travel_score = CallScoreGroupKNN(candidate, travel_group);
+  double finance_score = CallScoreGroupKNN(candidate, finance_group);
+
+  // Travel group should have higher similarity score than finance group
+  EXPECT_GT(travel_score, finance_score);
+  EXPECT_GT(travel_score, 0.0);   // Should be positive similarity
+  EXPECT_GT(finance_score, 0.0);  // Should still be positive but lower
+
+  // Test empty group
+  std::vector<tflite::task::processor::EmbeddingResult> empty_group;
+  double empty_score = CallScoreGroupKNN(candidate, empty_group);
+  EXPECT_EQ(empty_score, -1.0);  // Should return -1.0 for empty groups
+}
+
+// Test KNN method vs Centroid method comparison
+TEST_F(TextEmbedderUnitTest, ClusteringMethodComparison) {
+  // Create group tabs (travel-related content)
+  std::vector<local_ai::TextEmbedder::TabInfo> group_tabs = {
+      {u"Top travel destinations in Europe", GURL("https://travelblog.com"),
+       ""},
+      {u"Visit Italy for amazing cultural experiences",
+       GURL("https://lonelyplanet.com"), ""},
+      {u"France travel guide and recommendations",
+       GURL("https://frenchguide.com"), ""}};
+
+  // Create candidate tabs with varying similarity
+  std::vector<local_ai::TextEmbedder::CandidateTab> candidate_tabs = {
+      {0,
+       {u"Stock market analysis and trading tips", GURL("https://finance.com"),
+        ""}},  // Low similarity
+      {1,
+       {u"Amazing travel experiences in Spain",
+        GURL("https://spanishtravel.com"), ""}},  // High similarity
+      {2,
+       {u"Weather forecast for tomorrow", GURL("https://weather.com"),
+        ""}},  // Low similarity
+      {3,
+       {u"Best European cities to visit this summer",
+        GURL("https://euroguide.com"), ""}}  // High similarity
+  };
+
+  // Test with Centroid method
+  auto centroid_result = VerifySuggestTabsForGroupWithMethod(
+      group_tabs, candidate_tabs, local_ai::ClusteringMethod::kCentroid);
+  ASSERT_TRUE(centroid_result.ok())
+      << "Centroid method failed: " << centroid_result.status().message();
+
+  // Test with KNN method
+  auto knn_result = VerifySuggestTabsForGroupWithMethod(
+      std::move(group_tabs), std::move(candidate_tabs),
+      local_ai::ClusteringMethod::kKNN);
+  ASSERT_TRUE(knn_result.ok())
+      << "KNN method failed: " << knn_result.status().message();
+
+  // Both methods should return some suggestions
+  EXPECT_FALSE(centroid_result.value().empty());
+  EXPECT_FALSE(knn_result.value().empty());
+
+  // Both should identify the travel-related tabs (indices 1 and 3) as good
+  // candidates
+  const auto& centroid_indices = centroid_result.value();
+  const auto& knn_indices = knn_result.value();
+
+  // Verify that travel-related candidates are suggested by both methods
+  bool centroid_found_travel =
+      std::find(centroid_indices.begin(), centroid_indices.end(), 1) !=
+          centroid_indices.end() ||
+      std::find(centroid_indices.begin(), centroid_indices.end(), 3) !=
+          centroid_indices.end();
+  bool knn_found_travel =
+      std::find(knn_indices.begin(), knn_indices.end(), 1) !=
+          knn_indices.end() ||
+      std::find(knn_indices.begin(), knn_indices.end(), 3) != knn_indices.end();
+
+  EXPECT_TRUE(centroid_found_travel)
+      << "Centroid method should find travel-related candidates";
+  EXPECT_TRUE(knn_found_travel)
+      << "KNN method should find travel-related candidates";
+}
+
+// Test SuggestGroupForTab with both clustering methods
+TEST_F(TextEmbedderUnitTest, SuggestGroupForTabClusteringMethods) {
+  // Create a travel-related candidate
+  local_ai::TextEmbedder::CandidateTab candidate_tab = {
+      10,
+      {u"Best places to visit in Italy this summer",
+       GURL("https://italyguide.com")}};
+
+  // Create groups with different themes
+  tab_groups::TabGroupId travel_group_id = CreateMockTabGroupId();
+  tab_groups::TabGroupId finance_group_id = CreateMockTabGroupId();
+  tab_groups::TabGroupId weather_group_id = CreateMockTabGroupId();
+
+  std::map<tab_groups::TabGroupId, std::vector<local_ai::TextEmbedder::TabInfo>>
+      group_tabs;
+
+  // Travel group - should be the best match
+  group_tabs[travel_group_id] = {
+      {u"Top European travel destinations", GURL("https://europeguide.com"),
+       ""},
+      {u"France travel guide and tips", GURL("https://francetravel.com"), ""}};
+
+  // Finance group - should be low match
+  group_tabs[finance_group_id] = {
+      {u"Stock market trading strategies", GURL("https://trading.com"), ""},
+      {u"Investment portfolio management", GURL("https://invest.com"), ""}};
+
+  // Weather group - should be low match
+  group_tabs[weather_group_id] = {
+      {u"Daily weather forecast", GURL("https://weather.com"), ""},
+      {u"Climate change reports", GURL("https://climate.org"), ""}};
+
+  // Test with Centroid method
+  auto centroid_result = VerifySuggestGroupForTabWithMethod(
+      candidate_tab, group_tabs, local_ai::ClusteringMethod::kCentroid);
+  EXPECT_TRUE(centroid_result.ok())
+      << "Centroid method failed: " << centroid_result.status().message();
+
+  // Test with KNN method
+  auto knn_result = VerifySuggestGroupForTabWithMethod(
+      std::move(candidate_tab), std::move(group_tabs),
+      local_ai::ClusteringMethod::kKNN);
+  EXPECT_TRUE(knn_result.ok())
+      << "KNN method failed: " << knn_result.status().message();
+
+  // Both methods should return valid group IDs
+  if (centroid_result.ok()) {
+    EXPECT_FALSE(centroid_result.value().is_empty());
+  }
+  if (knn_result.ok()) {
+    EXPECT_FALSE(knn_result.value().is_empty());
+  }
+}
+
+// Test default clustering method behavior
+TEST_F(TextEmbedderUnitTest, DefaultClusteringMethod) {
+  // Test that default behavior uses Centroid method
+  std::vector<local_ai::TextEmbedder::TabInfo> group_tabs = {
+      {u"European travel destinations", GURL("https://travel.com"), ""}};
+  std::vector<local_ai::TextEmbedder::CandidateTab> candidate_tabs = {
+      {0, {u"Italy travel guide", GURL("https://italy.com"), ""}}};
+
+  // Call without explicit method (should use default kCentroid)
+  auto default_result = VerifySuggestTabsForGroup(group_tabs, candidate_tabs);
+
+  // Call with explicit kCentroid method
+  auto explicit_result = VerifySuggestTabsForGroupWithMethod(
+      std::move(group_tabs), std::move(candidate_tabs),
+      local_ai::ClusteringMethod::kCentroid);
+
+  // Both should work identically
+  EXPECT_EQ(default_result.ok(), explicit_result.ok());
+  if (default_result.ok() && explicit_result.ok()) {
+    EXPECT_EQ(default_result.value().size(), explicit_result.value().size());
+  }
+}
+
+// Test KNN with various group sizes
+TEST_F(TextEmbedderUnitTest, KNNWithVariousGroupSizes) {
+  // Test with group size smaller than MAX_NN_GROUPED_TABS (4)
+  SetTabs(embedder_.get(), {
+                               "Travel in Europe", "Visit Italy",
+                               "France guide"  // Only 2 items in group
+                           });
+  EXPECT_TRUE(EmbedTabs(embedder_.get()).ok());
+
+  auto candidate = GetEmbedding(0);
+  std::vector<tflite::task::processor::EmbeddingResult> small_group = {
+      GetEmbedding(1), GetEmbedding(2)};
+
+  double small_score = CallScoreGroupKNN(candidate, small_group);
+  EXPECT_GT(small_score, 0.0);
+  EXPECT_LT(small_score, 1.0);  // Should be normalized similarity
+
+  // Test with group size larger than MAX_NN_GROUPED_TABS (4)
+  SetTabs(embedder_.get(),
+          {
+              "Travel candidate", "Europe travel 1", "Europe travel 2",
+              "Europe travel 3", "Europe travel 4", "Europe travel 5",
+              "Europe travel 6"  // 6 items in group
+          });
+  EXPECT_TRUE(EmbedTabs(embedder_.get()).ok());
+
+  candidate = GetEmbedding(0);
+  std::vector<tflite::task::processor::EmbeddingResult> large_group;
+  for (size_t i = 1; i < embeddings_size(); ++i) {
+    large_group.push_back(GetEmbedding(i));
+  }
+
+  double large_score = CallScoreGroupKNN(candidate, large_group);
+  EXPECT_GT(large_score, 0.0);
+  EXPECT_LT(large_score, 1.0);
+
+  // The score should be reasonable (KNN should use top 4 out of 6)
+  EXPECT_GT(large_score, 0.3);  // Should have decent similarity
 }
 
 }  // namespace local_ai

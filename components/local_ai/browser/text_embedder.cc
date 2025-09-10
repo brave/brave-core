@@ -101,6 +101,9 @@ void TextEmbedder::InitializeEmbedder(InitializeCallback callback) {
   *options.mutable_base_options()
        ->mutable_model_file()
        ->mutable_file_content() = std::move(file_content);
+
+  // Enable L2 normalization for consistent embedding comparisons
+  options.add_embedding_options()->set_l2_normalize(true);
   auto maybe_text_embedder =
       TFLiteTextEmbedder::CreateFromOptions(options, CreateTextOpResolver());
   if (!maybe_text_embedder.ok()) {
@@ -130,6 +133,7 @@ std::string TextEmbedder::SerializeTabInfo(const TabInfo& tab_info) {
 
   std::string title_str = base::UTF16ToUTF8(tab_info.title);
 
+#if 0
   // Extract keywords from tab content only
   std::string content_keywords;
   if (!tab_info.tab_content.empty()) {
@@ -141,7 +145,8 @@ std::string TextEmbedder::SerializeTabInfo(const TabInfo& tab_info) {
   if (!content_keywords.empty()) {
     result += " [keywords: " + content_keywords + "]";
   }
-  result += " | " + url_part;
+#endif
+  auto result = base::StrCat({title_str, " | " + url_part});
 
   // Temporary debugging output
   LOG(ERROR) << "SerializeTabInfo result: " << result;
@@ -242,6 +247,11 @@ TextEmbedder::CalculateTabGroupCentroid() {
         i, centroid.embeddings(0).feature_vector().value_float(i) /
                num_embeddings);
   }
+
+  // Normalize the centroid to unit length
+  NormalizeFeatureVector(
+      centroid.mutable_embeddings(0)->mutable_feature_vector());
+
   return centroid;
 }
 
@@ -250,7 +260,8 @@ TextEmbedder::CalculateTabGroupCentroid() {
 // indices for top 3 candidates.
 void TextEmbedder::SuggestTabsForGroup(std::vector<TabInfo> group_tabs,
                                        std::vector<CandidateTab> candidate_tabs,
-                                       SuggestTabsForGroupCallback callback) {
+                                       SuggestTabsForGroupCallback callback,
+                                       ClusteringMethod method) {
   DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
 
   if (!IsInitialized()) {
@@ -264,13 +275,15 @@ void TextEmbedder::SuggestTabsForGroup(std::vector<TabInfo> group_tabs,
       base::BindOnce(&TextEmbedder::SuggestTabsForGroupImpl,
                      weak_ptr_factory_.GetWeakPtr(), std::move(group_tabs),
                      std::move(candidate_tabs),
-                     base::BindPostTaskToCurrentDefault(std::move(callback))));
+                     base::BindPostTaskToCurrentDefault(std::move(callback)),
+                     method));
 }
 
 void TextEmbedder::SuggestTabsForGroupImpl(
     std::vector<TabInfo> group_tabs,
     std::vector<CandidateTab> candidate_tabs,
-    SuggestTabsForGroupCallback callback) {
+    SuggestTabsForGroupCallback callback,
+    ClusteringMethod method) {
   DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
 
   // Serialize group tabs for embedding
@@ -317,17 +330,40 @@ void TextEmbedder::SuggestTabsForGroupImpl(
 
   std::vector<double> sim_scores;
 
-  // get cosine simularity of each candiate tab with centroid
-  for (size_t i = 0; i < candidate_embeddings.size(); ++i) {
-    auto maybe_similarity = tflite_text_embedder_->CosineSimilarity(
-        candidate_embeddings[i].embeddings(0).feature_vector(),
-        group_centroid.embeddings(0).feature_vector());
-    if (!maybe_similarity.ok()) {
+  if (method == ClusteringMethod::kCentroid) {
+    // get cosine simularity of each candiate tab with centroid
+    for (size_t i = 0; i < candidate_embeddings.size(); ++i) {
+      auto maybe_similarity = tflite_text_embedder_->CosineSimilarity(
+          candidate_embeddings[i].embeddings(0).feature_vector(),
+          group_centroid.embeddings(0).feature_vector());
+      if (!maybe_similarity.ok()) {
+        std::move(callback).Run(absl::FailedPreconditionError(
+            "Error calculating cosine similarity."));
+        return;
+      }
+      sim_scores.push_back(maybe_similarity.value());
+    }
+  } else if (method == ClusteringMethod::kKNN) {
+    // Get group embeddings for KNN scoring
+    std::vector<tflite::task::processor::EmbeddingResult> group_embeddings;
+    tabs_.clear();
+    for (const auto& tab_info : group_tabs) {
+      tabs_.push_back(SerializeTabInfo(tab_info));
+    }
+    auto status_group_knn = EmbedTabs();
+    if (!status_group_knn.ok()) {
       std::move(callback).Run(absl::FailedPreconditionError(
-          "Error calculating cosine similarity."));
+          "Error generating embeddings for group tabs in KNN method"));
       return;
     }
-    sim_scores.push_back(maybe_similarity.value());
+    group_embeddings = embeddings_;
+
+    // Score each candidate using KNN
+    for (size_t i = 0; i < candidate_embeddings.size(); ++i) {
+      double knn_score =
+          ScoreGroupKNN(candidate_embeddings[i], group_embeddings);
+      sim_scores.push_back(knn_score);
+    }
   }
 
   std::vector<int> top_indices;
@@ -381,7 +417,8 @@ std::vector<int> TextEmbedder::getMostSimilarTabIndices(
 void TextEmbedder::SuggestGroupForTab(
     CandidateTab candidate_tab,
     std::map<tab_groups::TabGroupId, std::vector<TabInfo>> group_tabs,
-    SuggestGroupForTabCallback callback) {
+    SuggestGroupForTabCallback callback,
+    ClusteringMethod method) {
   DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
 
   if (!IsInitialized()) {
@@ -392,16 +429,17 @@ void TextEmbedder::SuggestGroupForTab(
 
   embedder_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TextEmbedder::SuggestGroupForTabImpl,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(candidate_tab),
-                     std::move(group_tabs),
-                     base::BindPostTaskToCurrentDefault(std::move(callback))));
+      base::BindOnce(
+          &TextEmbedder::SuggestGroupForTabImpl, weak_ptr_factory_.GetWeakPtr(),
+          std::move(candidate_tab), std::move(group_tabs),
+          base::BindPostTaskToCurrentDefault(std::move(callback)), method));
 }
 
 void TextEmbedder::SuggestGroupForTabImpl(
     CandidateTab candidate_tab,
     std::map<tab_groups::TabGroupId, std::vector<TabInfo>> group_tabs,
-    SuggestGroupForTabCallback callback) {
+    SuggestGroupForTabCallback callback,
+    ClusteringMethod method) {
   DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
 
   if (group_tabs.empty()) {
@@ -410,10 +448,10 @@ void TextEmbedder::SuggestGroupForTabImpl(
     return;
   }
 
-  // for each group, find centroid embedding
-  std::vector<tflite::task::processor::EmbeddingResult> all_centroids;
   std::vector<tab_groups::TabGroupId> group_ids;
-  tflite::task::processor::EmbeddingResult group_centroid;
+  std::vector<tflite::task::processor::EmbeddingResult> all_centroids;
+  std::vector<std::vector<tflite::task::processor::EmbeddingResult>>
+      all_group_embeddings;
 
   for (const auto& [group_id, group_tab_infos] : group_tabs) {
     group_ids.push_back(group_id);
@@ -423,24 +461,24 @@ void TextEmbedder::SuggestGroupForTabImpl(
     }
 
     auto status_group = EmbedTabs();
-
     if (!status_group.ok()) {
       std::move(callback).Run(absl::FailedPreconditionError(
           "Error generating embeddings for tabs in the group"));
       return;
     }
 
-    // get centroid of each group
-
-    auto group_centroid_output = CalculateTabGroupCentroid();
-
-    if (!group_centroid_output.ok()) {
-      std::move(callback).Run(absl::FailedPreconditionError(
-          "Error generating centroid for tab group"));
-      return;
-    } else {
-      group_centroid = group_centroid_output.value();
-      all_centroids.push_back(group_centroid);
+    if (method == ClusteringMethod::kCentroid) {
+      // get centroid of each group
+      auto group_centroid_output = CalculateTabGroupCentroid();
+      if (!group_centroid_output.ok()) {
+        std::move(callback).Run(absl::FailedPreconditionError(
+            "Error generating centroid for tab group"));
+        return;
+      }
+      all_centroids.push_back(group_centroid_output.value());
+    } else if (method == ClusteringMethod::kKNN) {
+      // Store group embeddings for KNN scoring
+      all_group_embeddings.push_back(embeddings_);
     }
   }
 
@@ -453,19 +491,27 @@ void TextEmbedder::SuggestGroupForTabImpl(
     return;
   }
 
-  // find cosine sim between candidate and all centroids
+  // find similarity between candidate and all groups
   std::vector<double> sim_scores;
 
-  for (size_t i = 0; i < all_centroids.size(); ++i) {
-    auto maybe_similarity = tflite_text_embedder_->CosineSimilarity(
-        all_centroids[i].embeddings(0).feature_vector(),
-        candidate_embedding.embeddings(0).feature_vector());
-    if (!maybe_similarity.ok()) {
-      std::move(callback).Run(absl::FailedPreconditionError(
-          "Error calculating cosine similarity."));
-      return;
+  if (method == ClusteringMethod::kCentroid) {
+    for (size_t i = 0; i < all_centroids.size(); ++i) {
+      auto maybe_similarity = tflite_text_embedder_->CosineSimilarity(
+          all_centroids[i].embeddings(0).feature_vector(),
+          candidate_embedding.embeddings(0).feature_vector());
+      if (!maybe_similarity.ok()) {
+        std::move(callback).Run(absl::FailedPreconditionError(
+            "Error calculating cosine similarity."));
+        return;
+      }
+      sim_scores.push_back(maybe_similarity.value());
     }
-    sim_scores.push_back(maybe_similarity.value());
+  } else if (method == ClusteringMethod::kKNN) {
+    for (size_t i = 0; i < all_group_embeddings.size(); ++i) {
+      double knn_score =
+          ScoreGroupKNN(candidate_embedding, all_group_embeddings[i]);
+      sim_scores.push_back(knn_score);
+    }
   }
 
   auto max_it = std::max_element(sim_scores.begin(), sim_scores.end());
@@ -480,6 +526,71 @@ void TextEmbedder::SuggestGroupForTabImpl(
   } else {
     int max_index = std::distance(sim_scores.begin(), max_it);
     std::move(callback).Run(group_ids[max_index]);
+  }
+}
+
+double TextEmbedder::ScoreGroupKNN(
+    const tflite::task::processor::EmbeddingResult& candidate,
+    const std::vector<tflite::task::processor::EmbeddingResult>&
+        group_embeddings) {
+  DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
+
+  if (group_embeddings.empty()) {
+    return -1.0;
+  }
+
+  std::vector<double> similarities;
+  similarities.reserve(group_embeddings.size());
+
+  for (const auto& group_embedding : group_embeddings) {
+    auto maybe_similarity = tflite_text_embedder_->CosineSimilarity(
+        candidate.embeddings(0).feature_vector(),
+        group_embedding.embeddings(0).feature_vector());
+
+    if (maybe_similarity.ok()) {
+      similarities.push_back(maybe_similarity.value());
+    }
+  }
+
+  if (similarities.empty()) {
+    return -1.0;
+  }
+
+  std::sort(similarities.begin(), similarities.end(), std::greater<double>());
+
+  size_t top_k =
+      std::min(static_cast<size_t>(MAX_NN_GROUPED_TABS), similarities.size());
+  double sum = 0.0;
+  for (size_t i = 0; i < top_k; ++i) {
+    sum += similarities[i];
+  }
+
+  return sum / static_cast<double>(top_k);
+}
+
+void TextEmbedder::NormalizeFeatureVector(
+    tflite::task::processor::FeatureVector* feature_vector) {
+  DCHECK(embedder_task_runner_->RunsTasksInCurrentSequence());
+
+  if (!feature_vector || feature_vector->value_float().empty()) {
+    return;
+  }
+
+  // Calculate L2 norm (same approach as TFLite EmbeddingPostprocessor)
+  float squared_l2_norm = 0.0f;
+  for (const float val : feature_vector->value_float()) {
+    squared_l2_norm += val * val;
+  }
+
+  // Avoid division by zero
+  if (squared_l2_norm <= 0.0f) {
+    return;
+  }
+
+  const float inv_l2_norm = 1.0f / std::sqrt(squared_l2_norm);
+  for (int i = 0; i < feature_vector->value_float().size(); ++i) {
+    feature_vector->set_value_float(
+        i, feature_vector->value_float(i) * inv_l2_norm);
   }
 }
 

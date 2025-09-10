@@ -45,6 +45,13 @@ class SequencedTaskRunner;
 }  // namespace base
 
 namespace local_ai {
+
+// Clustering method for tab grouping similarity calculations
+enum class ClusteringMethod {
+  kCentroid,  // Use group centroid for similarity calculation
+  kKNN        // Use k-nearest neighbors approach
+};
+
 // TextEmbedder is a wrapper class for tflite::task::text::TextEmbedder.and
 // runs all the operations on a separate sequence task runner to avoid blocking
 // owner sequence runner ex. brwoser UI thread.
@@ -84,9 +91,11 @@ class TextEmbedder {
   // Suggest tabs to add to a group based on semantic similarity.
   // IMPORTANT: TextEmbedder must be initialized before calling this method.
   // Check IsInitialized() or call Initialize() first.
-  void SuggestTabsForGroup(std::vector<TabInfo> group_tabs,
-                           std::vector<CandidateTab> candidate_tabs,
-                           SuggestTabsForGroupCallback callback);
+  void SuggestTabsForGroup(
+      std::vector<TabInfo> group_tabs,
+      std::vector<CandidateTab> candidate_tabs,
+      SuggestTabsForGroupCallback callback,
+      ClusteringMethod method = ClusteringMethod::kCentroid);
 
   using SuggestGroupForTabCallback =
       base::OnceCallback<void(absl::StatusOr<tab_groups::TabGroupId>)>;
@@ -96,7 +105,8 @@ class TextEmbedder {
   void SuggestGroupForTab(
       CandidateTab candidate_tab,
       std::map<tab_groups::TabGroupId, std::vector<TabInfo>> group_tabs,
-      SuggestGroupForTabCallback callback);
+      SuggestGroupForTabCallback callback,
+      ClusteringMethod method = ClusteringMethod::kCentroid);
 
   // Cancel all the pending tflite tasks on the embedder task runner.
   // Should be used right before the TextEmbedder is destroyed to avoid long
@@ -121,12 +131,14 @@ class TextEmbedder {
 
   void SuggestTabsForGroupImpl(std::vector<TabInfo> group_tabs,
                                std::vector<CandidateTab> candidate_tabs,
-                               SuggestTabsForGroupCallback callback);
+                               SuggestTabsForGroupCallback callback,
+                               ClusteringMethod method);
 
   void SuggestGroupForTabImpl(
       CandidateTab candidate_tab,
       std::map<tab_groups::TabGroupId, std::vector<TabInfo>> group_tabs,
-      SuggestGroupForTabCallback callback);
+      SuggestGroupForTabCallback callback,
+      ClusteringMethod method);
 
   std::vector<tflite::task::processor::EmbeddingResult> embeddings_;
   absl::Status EmbedText(const std::string& text,
@@ -139,8 +151,19 @@ class TextEmbedder {
   CalculateTabGroupCentroid();
 
   static constexpr float COSINE_SIM_THRESHOLD = 0.75f;
+  static constexpr int MAX_NN_GROUPED_TABS = 4;
   std::vector<int> getMostSimilarTabIndices(const std::vector<double>& vec,
                                             const std::vector<int>& id);
+
+  // Score a group using k-nearest neighbors approach
+  double ScoreGroupKNN(
+      const tflite::task::processor::EmbeddingResult& candidate,
+      const std::vector<tflite::task::processor::EmbeddingResult>&
+          group_embeddings);
+
+  // Normalize a feature vector to unit length (L2 normalization)
+  void NormalizeFeatureVector(
+      tflite::task::processor::FeatureVector* feature_vector);
 
   // Lock used to ensure mutual exclusive access to |tflite_text_embedder_|
   // when setting unique_ptr and accessing it from |owner_task_runner_|.
