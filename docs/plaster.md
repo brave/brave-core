@@ -65,26 +65,25 @@ occurrences of `ChromeAutocompleteSchemeClassifier` with
 
 [[substitution]]
 description = 'Adding header for BraveAutocompleteSchemeClassifier'
-pattern = '#include "extensions/buildflags/buildflags.h"'
-replace = '''#include "extensions/buildflags/buildflags.h"
-#include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"'''
+re_pattern = '(#include "[\s\S]*)'
+replace = '#include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"\n\1'
 
 [[substitution]]
 description = 'Patching in BraveAutocompleteSchemeClassifier'
-re_pattern = 'ChromeAutocompleteSchemeClassifier'
+pattern = 'ChromeAutocompleteSchemeClassifier'
 replace = 'BraveAutocompleteSchemeClassifier'
-```
 
 The basic format for a `[[substitution]]` entry is as follow:
 
 ```toml
 [[substition]]
 description = ''
-pattern = ''
-re_pattern = ''
+# One of either pattern or re_pattern must be specified
+pattern = ''  # non-regex pattern (string will be escaped)
+re_pattern = ''  # regex pattern
 replace = ''
 re_flags = ''  # python regex flags ASCII, IGNORECASE, etc...
-count = 0
+count = 1  # use -1 to ignore the match count and replace all
 ```
 
 To apply this plaster file, just run `plaster.py`:
