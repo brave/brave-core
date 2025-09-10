@@ -1,0 +1,14 @@
+diff --git a/components/update_client/ping_manager_unittest.cc b/components/update_client/ping_manager_unittest.cc
+index 8284de71ff10c18fa1d69df7a78598d67846aa68..fae5469d59e89b6b0acdefd1ee1212a3e8255fe6 100644
+--- a/components/update_client/ping_manager_unittest.cc
++++ b/components/update_client/ping_manager_unittest.cc
+@@ -174,8 +174,7 @@ TEST_P(PingManagerTest, SendPing) {
+     EXPECT_EQ("abc", CHECK_DEREF(app.FindString("appid")));
+     EXPECT_EQ("ap1", CHECK_DEREF(app.FindString("ap")));
+     EXPECT_EQ("BRND", CHECK_DEREF(app.FindString("brand")));
+-    EXPECT_EQ(lang.empty() ? "fake_lang" : lang,
+-              CHECK_DEREF(app.FindString("lang")));
++    EXPECT_FALSE(request.contains("lang"));
+     EXPECT_EQ(-1, app.FindInt("installdate"));
+     EXPECT_EQ("1.0", CHECK_DEREF(app.FindString("version")));
+     EXPECT_EQ("c1", CHECK_DEREF(app.FindString("cohort")));
