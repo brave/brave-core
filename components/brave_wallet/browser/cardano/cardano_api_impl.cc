@@ -53,8 +53,21 @@ base::expected<
     mojom::CardanoProviderErrorBundlePtr>
 FilterUtxosByAmount(const GetCardanoUtxosTask::UtxoMap& utxo_map,
                     const std::optional<std::string>& amount) {
-  std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>> utxos;
+  std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>> all_utxos;
+  for (const auto& pair_by_address : utxo_map) {
+    for (const auto& utxo : pair_by_address.second) {
+      all_utxos.push_back({pair_by_address.first, utxo});
+    }
+  }
+  std::sort(all_utxos.begin(), all_utxos.end(),
+            [](std::pair<CardanoAddress, cardano_rpc::UnspentOutput>& a,
+               std::pair<CardanoAddress, cardano_rpc::UnspentOutput>& b) {
+              return (a.second.output_index < b.second.output_index);
+            });
+
   if (amount) {
+    std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>>
+        selected_utxos;
     auto numeric_amount = CardanoCip30Serializer::DeserializeAmount(*amount);
 
     if (!numeric_amount) {
@@ -62,22 +75,19 @@ FilterUtxosByAmount(const GetCardanoUtxosTask::UtxoMap& utxo_map,
           kAPIErrorInternalError, "Failed to decode amount", nullptr));
     }
 
-    // TODO(cypt4): Use knapsack solver here
     base::CheckedNumeric<uint64_t> accumulated_sum = 0u;
 
-    for (const auto& pair_by_address : utxo_map) {
-      for (const auto& utxo : pair_by_address.second) {
-        accumulated_sum += utxo.lovelace_amount;
-        if (!accumulated_sum.IsValid()) {
-          return base::unexpected(mojom::CardanoProviderErrorBundle::New(
-              kAPIErrorInternalError, "Value overflow", nullptr));
-        }
+    for (const auto& utxo : all_utxos) {
+      accumulated_sum += utxo.second.lovelace_amount;
+      if (!accumulated_sum.IsValid()) {
+        return base::unexpected(mojom::CardanoProviderErrorBundle::New(
+            kAPIErrorInternalError, "Value overflow", nullptr));
+      }
 
-        utxos.push_back({pair_by_address.first, utxo});
+      selected_utxos.push_back(utxo);
 
-        if (accumulated_sum.ValueOrDie() >= numeric_amount.value()) {
-          break;
-        }
+      if (accumulated_sum.ValueOrDie() >= numeric_amount.value()) {
+        break;
       }
     }
 
@@ -85,19 +95,16 @@ FilterUtxosByAmount(const GetCardanoUtxosTask::UtxoMap& utxo_map,
       return base::unexpected(mojom::CardanoProviderErrorBundle::New(
           kAPIErrorInternalError, "Not enough funds", nullptr));
     }
-  } else {
-    for (const auto& pair_by_address : utxo_map) {
-      for (const auto& utxo : pair_by_address.second) {
-        utxos.push_back({pair_by_address.first, utxo});
-      }
-    }
+
+    return selected_utxos;
   }
 
-  return base::ok(std::move(utxos));
+  return all_utxos;
 }
 
-base::expected<std::vector<std::string>, mojom::CardanoProviderErrorBundlePtr>
-ApplyPaginate(const std::vector<std::string>& serialized_utxos,
+base::expected<base::span<const std::string>,
+               mojom::CardanoProviderErrorBundlePtr>
+ApplyPaginate(base::span<const std::string> serialized_utxos,
               const mojom::CardanoProviderPaginationPtr& paginate) {
   if (!paginate) {
     return serialized_utxos;
@@ -108,39 +115,29 @@ ApplyPaginate(const std::vector<std::string>& serialized_utxos,
         kAPIErrorInvalidRequest, "Pagination argument error", nullptr));
   }
 
-  size_t result_size = serialized_utxos.size();
-
-  // Check whether pages count matches int32 range.
-  base::CheckedNumeric<int32_t> max_pages_count =
-      std::ceil(result_size / paginate->limit);
-  if (!max_pages_count.IsValid()) {
+  size_t start_pos = 0;
+  if (!base::CheckMul<size_t>(paginate->page, paginate->limit)
+           .AssignIfValid(&start_pos)) {
     return base::unexpected(mojom::CardanoProviderErrorBundle::New(
         kAPIErrorInternalError, "Numeric error", nullptr));
   }
 
-  if (paginate->page > max_pages_count.ValueOrDie()) {
+  if (start_pos >= serialized_utxos.size()) {
+    base::CheckedNumeric<int32_t> max_pages_count =
+        std::ceil(serialized_utxos.size() / paginate->limit);
     return base::unexpected(mojom::CardanoProviderErrorBundle::New(
         kAPIErrorInvalidRequest, "Pagination error",
         mojom::CardanoProviderPaginationErrorPayload::New(
             max_pages_count.ValueOrDie())));
   }
 
-  base::CheckedNumeric<size_t> low_page_border =
-      base::CheckMul(paginate->page, paginate->limit);
-  base::CheckedNumeric<size_t> high_page_border =
-      base::CheckMin(base::CheckAdd(low_page_border, paginate->limit),
-                     serialized_utxos.size());
-
-  if (!low_page_border.IsValid() || !high_page_border.IsValid()) {
-    return base::unexpected(mojom::CardanoProviderErrorBundle::New(
-        kAPIErrorInternalError, "Numeric error", nullptr));
+  auto [_, requested_page] = serialized_utxos.split_at(start_pos);
+  if (requested_page.size() > static_cast<uint32_t>(paginate->limit)) {
+    requested_page =
+        requested_page.first(static_cast<uint32_t>(paginate->limit));
   }
 
-  return base::ok(std::vector<std::string>(
-      serialized_utxos.begin() +
-          static_cast<size_t>((low_page_border.ValueOrDie())),
-      serialized_utxos.begin() +
-          static_cast<size_t>(high_page_border.ValueOrDie())));
+  return requested_page;
 }
 
 }  // namespace
@@ -336,7 +333,10 @@ void CardanoApiImpl::OnGetUtxos(
     return;
   }
 
-  std::move(callback).Run(std::move(apply_paginate_result.value()), nullptr);
+  std::move(callback).Run(
+      std::vector<std::string>(apply_paginate_result->begin(),
+                               apply_paginate_result->end()),
+      nullptr);
 }
 
 void CardanoApiImpl::SignTx(const std::string& tx_cbor,
