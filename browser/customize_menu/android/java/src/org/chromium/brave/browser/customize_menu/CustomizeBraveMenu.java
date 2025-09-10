@@ -59,6 +59,12 @@ public class CustomizeBraveMenu {
 
     public static final int PREFERENCE_MENU_ICON_SIZE_DP = 24;
 
+    /**
+     * Applies user customization settings to hide or show menu items based on saved preferences.
+     * Removes items from the menu that the user has chosen to hide in the customization settings.
+     *
+     * @param modelList the mutable list of menu items to apply customization to; must not be {@code null}
+     */
     public static void applyCustomization(final MVCListAdapter.ModelList modelList) {
         for (Iterator<MVCListAdapter.ListItem> it = modelList.iterator(); it.hasNext(); ) {
             MVCListAdapter.ListItem item = it.next();
@@ -125,6 +131,14 @@ public class CustomizeBraveMenu {
         modelList.addAll(out);
     }
 
+    /**
+     * Opens the Customize Menu settings screen where users can toggle visibility of menu items.
+     * Passes the current menu items and page actions to the settings fragment for display.
+     *
+     * @param context the Android context used to launch the settings activity
+     * @param menuItems the current list of main menu items to customize
+     * @param pageActions the current list of page action menu items to customize
+     */
     public static void openCustomizeMenuSettings(
             final Context context,
             final MVCListAdapter.ModelList menuItems,
@@ -136,6 +150,15 @@ public class CustomizeBraveMenu {
         settingsLauncher.startSettings(context, BraveCustomizeMenuPreferenceFragment.class, bundle);
     }
 
+    /**
+     * Populates a bundle with menu item data for passing between fragments.
+     * Converts menu items and page actions into parcelable data structures.
+     *
+     * @param bundle the bundle to populate with menu item data
+     * @param menuItems the list of main menu items to convert to parcelable data
+     * @param pageActions the list of page action items to convert to parcelable data
+     * @return the same bundle instance passed in, now populated with menu data
+     */
     public static Bundle populateBundle(
             final Bundle bundle,
             final MVCListAdapter.ModelList menuItems,
@@ -169,6 +192,13 @@ public class CustomizeBraveMenu {
         }
     }
 
+    /**
+     * Checks whether a menu item should be visible based on user preferences.
+     * Returns true by default if no preference has been set.
+     *
+     * @param itemId the resource ID of the menu item to check
+     * @return {@code true} if the item should be visible, {@code false} if it should be hidden
+     */
     public static boolean isVisible(final int itemId) {
         return ChromeSharedPreferences.getInstance()
                 .readBoolean(
@@ -177,6 +207,13 @@ public class CustomizeBraveMenu {
                         true);
     }
 
+    /**
+     * Maps a menu item ID to its corresponding drawable resource ID.
+     * Used to display appropriate icons for menu items in the settings screen.
+     *
+     * @param menuItemId the resource ID of the menu item
+     * @return the drawable resource ID for the menu item's icon, or 0 if no icon is defined
+     */
     @DrawableRes
     public static int getDrawableResFromMenuItemId(@IdRes final int menuItemId) {
         // Resource IDs will be non-final by default in next
@@ -271,6 +308,16 @@ public class CustomizeBraveMenu {
         return 0;
     }
 
+    /**
+     * Creates a standardized menu icon drawable with consistent size and tinting.
+     * Ensures all menu icons have uniform appearance by applying standard sizing and color tinting.
+     * Icons smaller than the target size are scaled up to match the standard menu icon dimensions.
+     *
+     * @param context the Android context for accessing resources
+     * @param drawableRes the drawable resource ID to standardize
+     * @param iconSizePx the target icon size in pixels (must be positive)
+     * @return a standardized drawable with applied tinting and sizing, or {@code null} if the resource cannot be loaded
+     */
     @Nullable
     public static Drawable getStandardizedMenuIcon(
             final Context context,
