@@ -264,32 +264,24 @@ class PlasterFile:
             flags = substitution.get('re_flags', [])
 
             if description is None:
-                raise ValueError(
-                    f'No description specified in {info.source}'
-                )
+                raise ValueError(f'No description specified in {info.source}')
 
             if re_pattern is None:
-              if pattern is None:
-                raise ValueError(
-                    f'No pattern specified in {info.source}'
-                )
-              else:
+                if pattern is None:
+                    raise ValueError(f'No pattern specified in {info.source}')
                 re_pattern = re.escape(pattern)
 
             if replace is None:
                 raise ValueError(
-                    f'No replace value specified in {info.source}'
-                )
+                    f'No replace value specified in {info.source}')
 
             re_flags = 0
             for flag in flags:
                 # Only accept valid re flags
                 if flag.isupper() and hasattr(re, flag):
                     re_flags |= getattr(re, flag)
-                else:
-                    raise ValueError(
-                        f'Invalid re flag specified: {flag} in {info.source}'
-                    )
+                raise ValueError(
+                    f'Invalid re flag specified: {flag} in {info.source}')
 
             contents, num_changes = re.subn(re_pattern,
                                             replace,
@@ -302,11 +294,10 @@ class PlasterFile:
                     f'No matches found for pattern {re_pattern} in '
                     f'{info.source}')
 
-            if count != -1 and num_changes != count:
+            if count not in (num_changes, -1):
                 raise ValueError(
                     f'Unexpected number of matches ({num_changes} vs {count}) '
-                    f'in {info.source}'
-                )
+                    f'in {info.source}')
         has_changed = info.save_source_if_changed(contents, dry_run=dry_run)
         has_changed = info.save_patch_if_changed(
             dry_run=dry_run) or has_changed
