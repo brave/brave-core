@@ -9,10 +9,8 @@
 
 #include "base/check.h"
 #include "base/command_line.h"
-#include "base/containers/flat_set.h"
 #include "base/path_service.h"
 #include "build/build_config.h"
-#include "chrome/grit/browser_resources.h"
 #include "ui/base/resource/resource_bundle.h"
 
 #if !BUILDFLAG(IS_IOS)
@@ -106,20 +104,6 @@ bool SubprocessNeedsResourceBundle() {
       process_type == switches::kRendererProcess ||
       process_type == switches::kUtilityProcess;
 #endif  // BUILDFLAG(IS_IOS)
-}
-
-// Initializes the set of themed Lottie images to block. Should be called early
-// in startup before any themed Lottie images are loaded.
-void InitializeBlockedThemedLottieImages() {
-  const base::flat_set<int> blocked_ids = {
-#if !BUILDFLAG(IS_ANDROID)
-      IDR_AUTOFILL_SAVE_ADDRESS_LOTTIE,
-      IDR_AUTOFILL_SAVE_CARD_LOCAL_LOTTIE,
-      IDR_AUTOFILL_SAVE_CARD_SECURE_LOTTIE,
-      IDR_AUTOFILL_SAVE_PASSWORD_LOTTIE,
-#endif
-  };
-  ui::SetBlockedThemedLottieImages(blocked_ids);
 }
 
 }  // namespace brave
