@@ -31,6 +31,8 @@ using brave_shields::ControlType;
 
 constexpr char kEmbeddedTestServerDirectory[] = "webaudio";
 constexpr char kTitleScript[] = "document.title;";
+constexpr char kWebAudioResultScript[] =
+    "(async () => await window.webAudioAnalysisPromise)()";
 
 class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
  public:
@@ -120,7 +122,7 @@ IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest, FarbleWebAudio) {
   EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "356");
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling2_url()));
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "-971");
+  EXPECT_EQ(content::EvalJs(contents(), kWebAudioResultScript), -971);
 
   // Farbling level: balanced (default)
   // web audio: farbled audio data
@@ -129,7 +131,7 @@ IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest, FarbleWebAudio) {
   EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "7920");
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling2_url()));
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "-1032");
+  EXPECT_EQ(content::EvalJs(contents(), kWebAudioResultScript), -1032);
 
   // Farbling level: off
   // web audio: original audio data
@@ -138,7 +140,7 @@ IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest, FarbleWebAudio) {
   EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "8000");
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling2_url()));
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "-1031");
+  EXPECT_EQ(content::EvalJs(contents(), kWebAudioResultScript), -1031);
 
   // Farbling level: balanced (default), but webcompat exception enabled
   // web audio: original audio data
@@ -150,5 +152,5 @@ IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest, FarbleWebAudio) {
   EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "8000");
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling2_url()));
-  EXPECT_EQ(content::EvalJs(contents(), kTitleScript), "-1031");
+  EXPECT_EQ(content::EvalJs(contents(), kWebAudioResultScript), -1031);
 }
