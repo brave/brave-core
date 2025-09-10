@@ -5,7 +5,7 @@
   <title>Web Audio farbling test</title>
 </head>
 <body>
-<script type="module">
+<script>
 // Testing code adapted from PoC in https://hackerone.com/reports/2846851
 
 const sumArray = (arr) => arr.reduce((sum, val) => sum + val, 0);
@@ -41,9 +41,10 @@ async function analyzeAudio() {
 async function runTest() {
   const result = await analyzeAudio();
   document.title = result;
+  return result;
 }
 
-await runTest();
+window.webAudioAnalysisPromise = runTest();
 
 </script>
 </body>
