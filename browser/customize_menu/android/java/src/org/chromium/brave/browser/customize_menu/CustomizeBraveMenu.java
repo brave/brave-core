@@ -40,9 +40,32 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * A Brave menu to handle customization logic for all those items that can be hidden from Settings >
- * Appearance > Customize menu. See {@link BraveCustomizeMenuPreferenceFragment} to inspect the
- * settings screen where a user can toggle the visibility of supported items.
+ * Handles the customization logic for Brave's custom menu item preference screen, allowing users to
+ * show or hide menu items based on their preferences.
+ *
+ * <p>This class provides functionality to:
+ *
+ * <ul>
+ *   <li>Apply user-defined visibility settings to menu items
+ *   <li>Manage the navigation to customization settings
+ *   <li>Standardize menu item icons for consistent appearance
+ *   <li>Sanitize menu separators to prevent visual issues
+ * </ul>
+ *
+ * <p>Users can customize which menu items are visible through Settings > Appearance > Customize
+ * menu. The customization settings are persisted in shared preferences and applied whenever the
+ * menu is displayed.
+ *
+ * <p><strong>Note:</strong> Two menu items cannot be hidden and will always remain visible:
+ *
+ * <ul>
+ *   <li>The "Customize menu" item itself ({@link #BRAVE_CUSTOMIZE_ITEM_ID})
+ *   <li>The main "Settings" item ({@code R.id.preferences_id})
+ * </ul>
+ *
+ * These items are essential for menu navigation and configuration access.
+ *
+ * @see BraveCustomizeMenuPreferenceFragment for the settings screen implementation.
  */
 @NullMarked
 public class CustomizeBraveMenu {
@@ -63,7 +86,8 @@ public class CustomizeBraveMenu {
      * Applies user customization settings to hide or show menu items based on saved preferences.
      * Removes items from the menu that the user has chosen to hide in the customization settings.
      *
-     * @param modelList the mutable list of menu items to apply customization to; must not be {@code null}
+     * @param modelList the mutable list of menu items to apply customization to; must not be {@code
+     *     null}
      */
     public static void applyCustomization(final MVCListAdapter.ModelList modelList) {
         for (Iterator<MVCListAdapter.ListItem> it = modelList.iterator(); it.hasNext(); ) {
@@ -151,8 +175,8 @@ public class CustomizeBraveMenu {
     }
 
     /**
-     * Populates a bundle with menu item data for passing between fragments.
-     * Converts menu items and page actions into parcelable data structures.
+     * Populates a bundle with menu item data for passing between fragments. Converts menu items and
+     * page actions into parcelable data structures.
      *
      * @param bundle the bundle to populate with menu item data
      * @param menuItems the list of main menu items to convert to parcelable data
@@ -193,8 +217,8 @@ public class CustomizeBraveMenu {
     }
 
     /**
-     * Checks whether a menu item should be visible based on user preferences.
-     * Returns true by default if no preference has been set.
+     * Checks whether a menu item should be visible based on user preferences. Returns true by
+     * default if no preference has been set.
      *
      * @param itemId the resource ID of the menu item to check
      * @return {@code true} if the item should be visible, {@code false} if it should be hidden
@@ -208,8 +232,8 @@ public class CustomizeBraveMenu {
     }
 
     /**
-     * Maps a menu item ID to its corresponding drawable resource ID.
-     * Used to display appropriate icons for menu items in the settings screen.
+     * Maps a menu item ID to its corresponding drawable resource ID. Used to display appropriate
+     * icons for menu items in the settings screen.
      *
      * @param menuItemId the resource ID of the menu item
      * @return the drawable resource ID for the menu item's icon, or 0 if no icon is defined
@@ -309,14 +333,15 @@ public class CustomizeBraveMenu {
     }
 
     /**
-     * Creates a standardized menu icon drawable with consistent size and tinting.
-     * Ensures all menu icons have uniform appearance by applying standard sizing and color tinting.
-     * Icons smaller than the target size are scaled up to match the standard menu icon dimensions.
+     * Creates a standardized menu icon drawable with consistent size and tinting. Ensures all menu
+     * icons have uniform appearance by applying standard sizing and color tinting. Icons smaller
+     * than the target size are scaled up to match the standard menu icon dimensions.
      *
      * @param context the Android context for accessing resources
      * @param drawableRes the drawable resource ID to standardize
      * @param iconSizePx the target icon size in pixels (must be positive)
-     * @return a standardized drawable with applied tinting and sizing, or {@code null} if the resource cannot be loaded
+     * @return a standardized drawable with applied tinting and sizing, or {@code null} if the
+     *     resource cannot be loaded
      */
     @Nullable
     public static Drawable getStandardizedMenuIcon(
