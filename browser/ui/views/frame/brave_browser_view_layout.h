@@ -62,7 +62,6 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
   void LayoutBookmarkBar(gfx::Rect& available_bounds) override;
   void LayoutInfoBar(gfx::Rect& available_bounds) override;
   void LayoutContentsContainerView(const gfx::Rect& available_bounds) override;
-  void UpdateSplitViewInsets() override;
 
  private:
   void LayoutVerticalTabs();
