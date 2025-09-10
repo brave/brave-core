@@ -80,10 +80,10 @@ SkColor GetHoveredTabBackgroundColor(const ui::ColorProviderKey& key,
                                // and a little bit darker
       });
 
-  color_utils::HSL hsl = kHSLShiftMap.at(default_color_id).at(
-      base::to_underlying(ui::ColorProviderKey::ColorMode::kLight));
-  color_utils::SkColorToHSL(*key.user_color, &hsl);
-  return color_utils::HSLShift(default_color, hsl);
+  const color_utils::HSL& shift =
+      kHSLShiftMap.at(default_color_id)
+          .at(base::to_underlying(ui::ColorProviderKey::ColorMode::kLight));
+  return color_utils::HSLShift(default_color, shift);
 }
 
 }  // namespace
