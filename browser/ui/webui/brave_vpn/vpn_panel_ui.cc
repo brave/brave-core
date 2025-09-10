@@ -13,7 +13,6 @@
 #include "base/functional/bind.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
-#include "brave/browser/ui/webui/brave_vpn/brave_vpn_localized_string_provider.h"
 #include "brave/components/brave_vpn/resources/panel/grit/brave_vpn_panel_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -24,12 +23,12 @@
 #include "chrome/browser/ui/webui/theme_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
-#include "components/grit/brave_components_webui_strings.h"
 #include "content/public/common/url_constants.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
 #include "ui/webui/webui_util.h"
@@ -43,7 +42,6 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kVPNPanelURL);
 
-  brave_vpn::AddLocalizedStrings(source);
   source->AddLocalizedStrings(webui::kVpnStrings);
   webui::SetupWebUIDataSource(source, kBraveVpnPanelGenerated,
                               IDR_VPN_PANEL_HTML);

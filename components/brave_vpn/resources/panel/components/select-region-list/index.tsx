@@ -6,7 +6,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import * as S from './style'
+import * as Styles from './style'
 import Icon from '@brave/leo/react/icon'
 import Tooltip from '@brave/leo/react/tooltip'
 import Flag from '../flag'
@@ -33,8 +33,8 @@ const SmartProxyIcon = styled(Icon)`
 function getCountryInfo(numCity: number, numServer: number) {
   const city =
     numCity === 1
-      ? getLocale('braveVpnServerSelectionSingleCity')
-      : getLocale('braveVpnServerSelectionMultipleCities').replace(
+      ? getLocale(S.BRAVE_VPN_SERVER_SELECTION_SINGLE_CITY)
+      : getLocale(S.BRAVE_VPN_SERVER_SELECTION_MULTIPLE_CITIES).replace(
           '$1',
           `${numCity}`
         )
@@ -44,8 +44,8 @@ function getCountryInfo(numCity: number, numServer: number) {
 
 function getCityInfo(numServer: number) {
   return numServer === 1
-    ? getLocale('braveVpnServerSelectionSingleServer')
-    : getLocale('braveVpnServerSelectionMultipleServers').replace(
+    ? getLocale(S.BRAVE_VPN_SERVER_SELECTION_SINGLE_SERVER)
+    : getLocale(S.BRAVE_VPN_SERVER_SELECTION_MULTIPLE_SERVERS).replace(
         '$1',
         `${numServer}`
       )
@@ -58,7 +58,7 @@ interface ConnectButtonProps {
 
 function ConnectButton(props: ConnectButtonProps) {
   return (
-    <S.RegionConnect
+    <Styles.RegionConnect
       slot='actions'
       kind='filled'
       size='tiny'
@@ -68,8 +68,8 @@ function ConnectButton(props: ConnectButtonProps) {
         props.connect()
       }}
     >
-      {getLocale('braveVpnConnect')}
-    </S.RegionConnect>
+      {getLocale(S.BRAVE_VPN_CONNECT)}
+    </Styles.RegionConnect>
   )
 }
 
@@ -85,20 +85,20 @@ function RegionCity(props: RegionCityProps) {
   const showButton =
     !props.selected || connectionStatus !== ConnectionState.CONNECTED
   return (
-    <S.RegionCity selected={props.selected}>
-      <S.RegionCityInfo>
-        <S.RegionCityLabel selected={props.selected}>
+    <Styles.RegionCity selected={props.selected}>
+      <Styles.RegionCityInfo>
+        <Styles.RegionCityLabel selected={props.selected}>
           {props.cityLabel}
-        </S.RegionCityLabel>
-        <S.CityServerInfo selected={props.selected}>
+        </Styles.RegionCityLabel>
+        <Styles.CityServerInfo selected={props.selected}>
           {props.serverInfo}
-        </S.CityServerInfo>
-      </S.RegionCityInfo>
+        </Styles.CityServerInfo>
+      </Styles.RegionCityInfo>
       {props.selected && (
-        <S.StyledCheckBox name='check-circle-filled'></S.StyledCheckBox>
+        <Styles.StyledCheckBox name='check-circle-filled'></Styles.StyledCheckBox>
       )}
       {showButton && props.connectionButton}
-    </S.RegionCity>
+    </Styles.RegionCity>
   )
 }
 
@@ -124,57 +124,57 @@ function RegionContent(props: RegionContentProps) {
   }, [])
 
   return (
-    <S.RegionContainer
+    <Styles.RegionContainer
       selected={props.selected}
       fillBackground={!props.open}
       ref={ref}
     >
-      <S.RegionCountry
+      <Styles.RegionCountry
         onClick={() => {
           // Pass '' to toggle currently opened country.
           props.onClick(props.open ? '' : props.region.name)
         }}
       >
         <Flag countryCode={props.region.countryIsoCode} />
-        <S.CountryInfo>
+        <Styles.CountryInfo>
           <RegionLabelBox>
-            <S.RegionCountryLabel selected={!props.open && props.selected}>
+            <Styles.RegionCountryLabel selected={!props.open && props.selected}>
               {props.region.namePretty}
-            </S.RegionCountryLabel>
+            </Styles.RegionCountryLabel>
             {smartProxyRoutingEnabled && props.region.smartRoutingProxyState === 'all' && (
               <Tooltip mode='mini'>
                 <SmartProxyIcon name='smart-proxy-routing' />
                 <div slot='content'>
-                  {getLocale('braveVpnSmartProxyRoutingIconTooltip')}
+                  {getLocale(S.BRAVE_VPN_SMART_PROXY_ROUTING_ICON_TOOLTIP)}
                 </div>
               </Tooltip>)
             }
           </RegionLabelBox>
-          <S.CountryServerInfo selected={!props.open && props.selected}>
+          <Styles.CountryServerInfo selected={!props.open && props.selected}>
             {getCountryInfo(
               props.region.cities.length,
               props.region.serverCount
             )}
-          </S.CountryServerInfo>
-        </S.CountryInfo>
+          </Styles.CountryServerInfo>
+        </Styles.CountryInfo>
         {props.selected && (
-          <S.StyledCheckBox name='check-circle-filled'></S.StyledCheckBox>
+          <Styles.StyledCheckBox name='check-circle-filled'></Styles.StyledCheckBox>
         )}
-        <S.StyledIcon
+        <Styles.StyledIcon
           name={props.open ? 'carat-up' : 'carat-down'}
-        ></S.StyledIcon>
+        ></Styles.StyledIcon>
         {!props.open && !props.selected && (
           <ConnectButton
             right='44px'
             connect={() => handleConnect(props.region)}
           />
         )}
-      </S.RegionCountry>
+      </Styles.RegionCountry>
       {props.open && (
         <>
           <RegionCity
-            cityLabel={getLocale('braveVpnServerSelectionOptimalLabel')}
-            serverInfo={getLocale('braveVpnServerSelectionOptimalDesc')}
+            cityLabel={getLocale(S.BRAVE_VPN_SERVER_SELECTION_OPTIMAL_LABEL)}
+            serverInfo={getLocale(S.BRAVE_VPN_SERVER_SELECTION_OPTIMAL_DESC)}
             selected={
               props.selected && currentRegion.name === props.region.name
             }
@@ -201,7 +201,7 @@ function RegionContent(props: RegionContentProps) {
           ))}
         </>
       )}
-    </S.RegionContainer>
+    </Styles.RegionContainer>
   )
 }
 
@@ -213,30 +213,30 @@ function RegionAutomatic() {
   }
 
   return (
-    <S.RegionContainer
+    <Styles.RegionContainer
       selected={currentRegion.isAutomatic}
       fillBackground={true}
     >
-      <S.RegionCountry>
+      <Styles.RegionCountry>
         <Flag countryCode='WORLDWIDE' />
-        <S.CountryInfo>
-          <S.RegionCountryLabel selected={currentRegion.isAutomatic}>
-            {getLocale('braveVpnServerSelectionAutomaticLabel')}
-          </S.RegionCountryLabel>
-          <S.CountryServerInfo selected={currentRegion.isAutomatic}>
-            {getLocale('braveVpnServerSelectionOptimalDesc')}
-          </S.CountryServerInfo>
-        </S.CountryInfo>
+        <Styles.CountryInfo>
+          <Styles.RegionCountryLabel selected={currentRegion.isAutomatic}>
+            {getLocale(S.BRAVE_VPN_SERVER_SELECTION_AUTOMATIC_LABEL)}
+          </Styles.RegionCountryLabel>
+          <Styles.CountryServerInfo selected={currentRegion.isAutomatic}>
+            {getLocale(S.BRAVE_VPN_SERVER_SELECTION_OPTIMAL_DESC)}
+          </Styles.CountryServerInfo>
+        </Styles.CountryInfo>
         {currentRegion.isAutomatic ? (
-          <S.StyledCheckBox name='check-circle-filled'></S.StyledCheckBox>
+          <Styles.StyledCheckBox name='check-circle-filled'></Styles.StyledCheckBox>
         ) : (
           <ConnectButton
             right='16px'
             connect={handleConnect}
           />
         )}
-      </S.RegionCountry>
-    </S.RegionContainer>
+      </Styles.RegionCountry>
+    </Styles.RegionContainer>
   )
 }
 
@@ -246,17 +246,17 @@ export function PanelHeader(props: {
   onClick: () => void
 }) {
   return (
-    <S.PanelHeader>
-      <S.StyledButton
+    <Styles.PanelHeader>
+      <Styles.StyledButton
         type='button'
         onClick={props.onClick}
         aria-label={props.buttonAriaLabel}
         title={props.buttonAriaLabel}
       >
-        <S.StyledIcon name='arrow-left'></S.StyledIcon>
-      </S.StyledButton>
-      <S.HeaderLabel>{props.title}</S.HeaderLabel>
-    </S.PanelHeader>
+        <Styles.StyledIcon name='arrow-left'></Styles.StyledIcon>
+      </Styles.StyledButton>
+      <Styles.HeaderLabel>{props.title}</Styles.HeaderLabel>
+    </Styles.PanelHeader>
   )
 }
 
@@ -283,15 +283,15 @@ function SelectRegion() {
   }
 
   return (
-    <S.Box>
-      <S.PanelContent>
+    <Styles.Box>
+      <Styles.PanelContent>
         <PanelHeader
-          title={getLocale('braveVpnSelectYourServer')}
-          buttonAriaLabel={getLocale('braveVpnSelectPanelBackButtonAriaLabel')}
+          title={getLocale(S.BRAVE_VPN_SELECT_YOUR_SERVER)}
+          buttonAriaLabel={getLocale(S.BRAVE_VPN_SETTINGS_PANEL_BACK_BUTTON_ARIA_LABEL)}
           onClick={handleGoBackClick}
         />
-        <S.Divider />
-        <S.RegionList>
+        <Styles.Divider />
+        <Styles.RegionList>
           <RegionAutomatic />
           {regions.map((region: Region) => (
             <RegionContent
@@ -302,9 +302,9 @@ function SelectRegion() {
               onClick={(countryName) => setOpenedCountry(countryName)}
             />
           ))}
-        </S.RegionList>
-      </S.PanelContent>
-    </S.Box>
+        </Styles.RegionList>
+      </Styles.PanelContent>
+    </Styles.Box>
   )
 }
 

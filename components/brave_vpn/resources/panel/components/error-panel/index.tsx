@@ -32,7 +32,7 @@ function ErrorPanel(props: Props) {
   }
 
   const matches = {
-    $1: getLocale('braveVpn'),
+    $1: getLocale(S.BRAVE_VPN),
     $2: currentRegion?.namePretty || ''
   }
 
@@ -40,8 +40,8 @@ function ErrorPanel(props: Props) {
     <Styles.Box>
       <Styles.PanelContent>
         <PanelHeader
-          title={getLocale('braveVpn')}
-          buttonAriaLabel={getLocale('braveVpnErrorPanelBackButtonAriaLabel')}
+          title={getLocale(S.BRAVE_VPN)}
+          buttonAriaLabel={getLocale(S.BRAVE_VPN_SUPPORT_PANEL_BACK_BUTTON_ARIA_LABEL)}
           onClick={handleShowMainView}
 
         />
@@ -50,8 +50,8 @@ function ErrorPanel(props: Props) {
             type='error'
             hideIcon
           >
-            <div slot='title'>{getLocale('braveVpnUnableConnectToServer')}</div>
-            {getLocale('braveVpnUnableConnectInfo').replace(
+            <div slot='title'>{getLocale(S.BRAVE_VPN_UNABLE_CONNECT_TO_SERVER)}</div>
+            {getLocale(S.BRAVE_VPN_UNABLE_CONNECT_INFO).replace(
               /\$\d+/g,
               (match) => matches[match as keyof typeof matches]
             )}
@@ -61,7 +61,7 @@ function ErrorPanel(props: Props) {
             kind='filled'
             onClick={handleTryAgain}
           >
-            {getLocale('braveVpnTryAgain')}
+            {getLocale(S.BRAVE_VPN_TRY_AGAIN)}
           </Styles.StyledActionButton>
           <Styles.StyledActionButton
             slot='actions'
@@ -75,7 +75,7 @@ function ErrorPanel(props: Props) {
             kind='plain'
             onClick={props.showContactSupport}
           >
-            {getLocale('braveVpnContactSupport')}
+            {getLocale(S.BRAVE_VPN_CONTACT_SUPPORT)}
           </Styles.StyledActionButton>
         </Styles.TopContent>
       </Styles.PanelContent>

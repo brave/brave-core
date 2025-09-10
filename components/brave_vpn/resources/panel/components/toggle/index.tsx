@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
-import * as S from './style'
+import * as Styles from './style'
 import { getLocale } from '$web-common/locale'
 
 import { ConnectionState } from '../../api/panel_browser_api'
@@ -25,27 +25,27 @@ function useIsOnSelector() {
 
 const getStatusText = (status: ConnectionState) => {
   if (status === ConnectionState.CONNECTED) {
-    return getLocale('braveVpnConnected')
+    return getLocale(S.BRAVE_VPN_CONNECTED)
   }
 
   if (status === ConnectionState.CONNECTING) {
-    return getLocale('braveVpnConnecting')
+    return getLocale(S.BRAVE_VPN_CONNECTING)
   }
 
   if (status === ConnectionState.DISCONNECTING) {
-    return getLocale('braveVpnDisconnecting')
+    return getLocale(S.BRAVE_VPN_DISCONNECTING)
   }
 
   if (status === ConnectionState.DISCONNECTED) {
-    return getLocale('braveVpnDisconnected')
+    return getLocale(S.BRAVE_VPN_DISCONNECTED)
   }
 
   if (status === ConnectionState.CONNECT_NOT_ALLOWED) {
-    return getLocale('braveVpnDisconnected')
+    return getLocale(S.BRAVE_VPN_DISCONNECTED)
   }
 
   if (status === ConnectionState.CONNECT_FAILED) {
-    return getLocale('braveVpnConnectionFailed')
+    return getLocale(S.BRAVE_VPN_CONNECTION_FAILED)
   }
 
   return null
@@ -53,25 +53,25 @@ const getStatusText = (status: ConnectionState) => {
 
 const getStatusIndicator = (status: ConnectionState, icon: string) => {
   if (status === ConnectionState.CONNECTED) {
-    return <S.ActiveIndicator name={icon} />
+    return <Styles.ActiveIndicator name={icon} />
   }
 
   if (
     status === ConnectionState.CONNECTING ||
     status === ConnectionState.DISCONNECTING
   ) {
-    return <S.LoadingIcon />
+    return <Styles.LoadingIcon />
   }
 
   if (
     status === ConnectionState.DISCONNECTED ||
     status === ConnectionState.CONNECT_NOT_ALLOWED
   ) {
-    return <S.InActiveIndicator name={icon} />
+    return <Styles.InActiveIndicator name={icon} />
   }
 
   if (status === ConnectionState.CONNECT_FAILED) {
-    return <S.FailedIndicator name={icon} />
+    return <Styles.FailedIndicator name={icon} />
   }
 
   return null
@@ -111,19 +111,19 @@ function Toggle(props: ToggleProps) {
   }
 
   return (
-    <S.Content>
-      <S.StatusBox>
+    <Styles.Content>
+      <Styles.StatusBox>
         {getStatusIndicator(status, icon)}
-        <S.StatusLabel color={getStatusTextColor(status)}>
+        <Styles.StatusLabel color={getStatusTextColor(status)}>
           {getStatusText(status)}
-        </S.StatusLabel>
-      </S.StatusBox>
+        </Styles.StatusLabel>
+      </Styles.StatusBox>
       <ToggleButton
         onChange={handleToggleChange}
         checked={isOn}
         disabled={props.disabled}
       />
-    </S.Content>
+    </Styles.Content>
   )
 }
 
