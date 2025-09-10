@@ -1,0 +1,35 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/features.gni")
+
+component("ort_wrapper") {
+  sources = [
+    "environment.cc",
+    "environment.h",
+    "ort_status.cc",
+    "ort_status.h",
+    "platform_functions_ort.cc",
+    "platform_functions_ort.h",
+    "scoped_ort_types.h",
+  ]
+
+  defines = [ "LOCAL_AI_IMPLEMENTATION" ]
+
+  public_deps = [
+    "//base",
+    "//brave/third_party/onnxruntime_headers",
+  ]
+
+  deps = [
+    "//base",
+    "//build:branding_buildflags",
+  ]
+
+  # Linux needs libdl for dynamic library loading
+  if (is_linux) {
+    libs = [ "dl" ]
+  }
+}

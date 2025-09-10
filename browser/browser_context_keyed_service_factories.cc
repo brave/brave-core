@@ -26,6 +26,7 @@
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/browser/local_ai/fast_vlm_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
@@ -201,6 +202,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   if (base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
     email_aliases::EmailAliasesServiceFactory::GetInstance();
   }
+
+  local_ai::FastVLMServiceFactory::GetInstance();
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extensions_mv2::ExtensionsManifestV2MigratorFactory::GetInstance();

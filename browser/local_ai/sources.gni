@@ -1,0 +1,27 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# FastVLM Service - Browser-level integration with GPU service
+brave_browser_local_ai_sources = [
+  "//brave/browser/local_ai/fast_vlm_service.cc",
+  "//brave/browser/local_ai/fast_vlm_service.h",
+  "//brave/browser/local_ai/fast_vlm_service_factory.cc",
+  "//brave/browser/local_ai/fast_vlm_service_factory.h",
+  "//brave/browser/local_ai/fast_vlm_tab_content_extractor.cc",
+  "//brave/browser/local_ai/fast_vlm_tab_content_extractor.h",
+]
+
+brave_browser_local_ai_deps = [
+  "//brave/components/local_ai/browser:fast_vlm_executor",
+  "//components/keyed_service/content",
+  "//content/public/browser",
+  "//services/webnn/public/mojom",
+  "//skia",
+  "//ui/gfx",
+  "//ui/gfx/codec",
+]
+
+# Enable WebNN runtime features
+brave_browser_local_ai_defines = [ "ENABLE_WEBNN_INTEGRATION=1" ]

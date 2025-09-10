@@ -1,0 +1,4 @@
+Name: ONNXRuntime
+URL: https://github.com/microsoft/onnxruntime
+License: MIT
+License File: /brave/third_party/onnxruntime_local/LICENSE
