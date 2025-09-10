@@ -76,6 +76,7 @@ base::Value::Dict GetDefaultSelectedNetworks() {
   selected_networks.Set(kFilecoinPrefKey, mojom::kFilecoinMainnet);
   selected_networks.Set(kBitcoinPrefKey, mojom::kBitcoinMainnet);
   selected_networks.Set(kZCashPrefKey, mojom::kZCashMainnet);
+  selected_networks.Set(kPolkadotPrefKey, mojom::kPolkadotMainnet);
 
   return selected_networks;
 }
@@ -87,6 +88,7 @@ base::Value::Dict GetDefaultSelectedNetworksPerOrigin() {
   selected_networks.Set(kFilecoinPrefKey, base::Value::Dict());
   selected_networks.Set(kBitcoinPrefKey, base::Value::Dict());
   selected_networks.Set(kZCashPrefKey, base::Value::Dict());
+  selected_networks.Set(kPolkadotPrefKey, base::Value::Dict());
 
   return selected_networks;
 }

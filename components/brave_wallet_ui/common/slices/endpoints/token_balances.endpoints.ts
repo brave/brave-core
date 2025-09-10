@@ -52,6 +52,7 @@ import {
   blockchainTokenEntityAdaptorInitialState, //
 } from '../entities/blockchain-token.entity'
 import { reportActiveWalletsToP3A } from '../../../utils/p3a_utils'
+import { AccountId } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
 
 type BalanceNetwork = Pick<
   BraveWallet.NetworkInfo,
@@ -322,7 +323,28 @@ export const tokenBalancesEndpoints = ({
             bitcoinWalletService,
             zcashWalletService,
             cardanoWalletService,
+            polkadotWalletService,
           } = api
+
+          console.log("god, I hope this works lol");
+          console.log(polkadotWalletService);
+          console.log('supposed to be the account info...');
+          console.log(arg.accountIds);
+
+          let account: AccountId = {
+            coin:BraveWallet.CoinType.DOT,
+            keyringId: BraveWallet.KeyringId.kPolkadotTestnet,
+            kind: 0,
+            address: '',
+            accountIndex: 0,
+            uniqueKey: `${BraveWallet.CoinType.DOT}_${BraveWallet.KeyringId.kPolkadotTestnet}_0_0`
+          };
+
+          console.log('dummy account is:');
+          console.log(account);
+
+          const rawr = await polkadotWalletService.getNetworkName(account);
+          console.log(rawr);
 
           const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
 
