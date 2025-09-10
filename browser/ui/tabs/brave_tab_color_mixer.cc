@@ -58,6 +58,9 @@ SkColor GetHoveredTabBackgroundColor(const ui::ColorProviderKey& key,
     return default_color;
   }
 
+  CHECK_EQ(base::to_underlying(ui::ColorProviderKey::ColorMode::kLight), 0);
+  CHECK_EQ(base::to_underlying(ui::ColorProviderKey::ColorMode::kDark), 1);
+
   constexpr auto kHSLShiftMap =
       base::MakeFixedFlatMap<nala::Color, std::array<color_utils::HSL, 2>>({
           {nala::kColorDesktopbrowserTabbarHoverTabVertical,
