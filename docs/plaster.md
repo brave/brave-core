@@ -63,13 +63,13 @@ occurrences of `ChromeAutocompleteSchemeClassifier` with
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-[[substitutions]]
+[[substitution]]
 description = 'Adding header for BraveAutocompleteSchemeClassifier'
 pattern = '#include "extensions/buildflags/buildflags.h"'
 re_pattern = '''#include "extensions/buildflags/buildflags.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"'''
 
-[[substitutions]]
+[[substitution]]
 description = 'Patching in BraveAutocompleteSchemeClassifier'
 re_pattern = 'ChromeAutocompleteSchemeClassifier'
 replace = 'BraveAutocompleteSchemeClassifier'

@@ -255,23 +255,35 @@ class PlasterFile:
         plaster_file = tomllib.loads(info.plaster_contents)
         contents = repository.chromium.read_file(info.source)
 
-        for substitution in plaster_file.get('substitution', []):
-            pattern = substitution.get('re_pattern', '')
-            replace = substitution.get('replace', '')
+        for substitution in plaster_file.get('substitution'):
+            description = substitution.get('description')
+            re_pattern = substitution.get('re_pattern')
+            pattern = substitution.get('pattern')
+            replace = substitution.get('replace')
             count = substitution.get('count', 0)
             flags = substitution.get('re_flags', '')
 
-            re_flags = 0
-            if 'IGNORECASE' in flags:
-                re_flags |= re.IGNORECASE
-            if 'MULTILINE' in flags:
-                re_flags |= re.MULTILINE
-            if 'DOTALL' in flags:
-                re_flags |= re.DOTALL
-            if 'VERBOSE' in flags:
-                re_flags |= re.VERBOSE
+            if description is None:
+                raise ValueError(
+                    f'No description specified in {info.source}: {substitution}'
+                )
 
-            contents, num_changes = re.subn(pattern,
+            if pattern is None and re_pattern is None:
+                raise ValueError(
+                    f'No pattern specified for {description} in {info.source}: {substitution}'
+                )
+
+
+            re_flags = 0
+            for flag in flags:
+              if flag.isupper() and getattr(re, flag):
+                re_flags |= getattr(re, flag)
+              else:
+                raise ValueError(
+                    f'Invalid re flag specified: {flag} for {description} in {info.source}'
+                )
+
+            contents, num_changes = re.subn(re_pattern,
                                             replace,
                                             contents,
                                             flags=re_flags,
