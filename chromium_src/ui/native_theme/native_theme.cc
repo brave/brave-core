@@ -15,7 +15,7 @@
 namespace ui {
 
 SkColor NativeTheme::GetSystemButtonPressedColor(SkColor base_color) const {
-  bool is_dark = (GetPreferredColorScheme() == PreferredColorScheme::kDark);
+  bool is_dark = (preferred_color_scheme() == PreferredColorScheme::kDark);
   return color_utils::GetResultingPaintColor(
       SkColorSetA(gfx::kColorButtonBackground, is_dark ? 0x2b : 0x23),
       base_color);
