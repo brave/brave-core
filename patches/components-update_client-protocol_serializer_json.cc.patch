@@ -1,0 +1,12 @@
+diff --git a/components/update_client/protocol_serializer_json.cc b/components/update_client/protocol_serializer_json.cc
+index e16ce0e9ac3865b815564970f0305075b2efdbd4..2c55f94fcb9b3916b00f811717f5db92f39d246a 100644
+--- a/components/update_client/protocol_serializer_json.cc
++++ b/components/update_client/protocol_serializer_json.cc
+@@ -78,7 +78,6 @@ std::string ProtocolSerializerJSON::Serialize(
+   hw_node.Set("sse42", request.hw.sse42);
+   hw_node.Set("ssse3", request.hw.ssse3);
+   hw_node.Set("avx", request.hw.avx);
+-  request_node.Set("hw", std::move(hw_node));
+ 
+   // OS version and platform information.
+   base::Value::Dict os_node;
