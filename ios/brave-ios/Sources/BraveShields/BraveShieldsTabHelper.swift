@@ -23,18 +23,21 @@ extension TabDataValues {
 public class BraveShieldsTabHelper {
   private weak var tab: (any TabState)?
   private let braveShieldsSettings: any BraveShieldsSettings
+  private let isBraveShieldsContentSettingsEnabled: Bool
 
   public init(
     tab: some TabState,
-    braveShieldsSettings: any BraveShieldsSettings
+    braveShieldsSettings: any BraveShieldsSettings,
+    isBraveShieldsContentSettingsEnabled: Bool = FeatureList.kBraveShieldsContentSettings.enabled
   ) {
     self.tab = tab
     self.braveShieldsSettings = braveShieldsSettings
+    self.isBraveShieldsContentSettingsEnabled = isBraveShieldsContentSettingsEnabled
   }
 
   public func isBraveShieldsEnabled(for url: URL?) -> Bool {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return false }
-    if FeatureList.kBraveShieldsContentSettings.enabled {
+    if isBraveShieldsContentSettingsEnabled {
       return braveShieldsSettings.isBraveShieldsEnabled(for: url)
     }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
@@ -43,7 +46,7 @@ public class BraveShieldsTabHelper {
 
   public func setBraveShieldsEnabled(_ isEnabled: Bool, for url: URL?) {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
-    if FeatureList.kBraveShieldsContentSettings.enabled {
+    if isBraveShieldsContentSettingsEnabled {
       braveShieldsSettings.setBraveShieldsEnabled(isEnabled, for: url)
     }
     // Also assign to Domain until deprecated so reverse migration is required
@@ -56,7 +59,10 @@ public class BraveShieldsTabHelper {
 
   public func shieldLevel(for url: URL?, considerAllShieldsOption: Bool) -> ShieldLevel {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return .disabled }
-    if FeatureList.kBraveShieldsContentSettings.enabled {
+    if isBraveShieldsContentSettingsEnabled {
+      if considerAllShieldsOption && !isBraveShieldsEnabled(for: url) {
+        return .disabled
+      }
       return braveShieldsSettings.adBlockMode(for: url).shieldLevel
     }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
@@ -69,7 +75,7 @@ public class BraveShieldsTabHelper {
 
   public func setShieldLevel(_ shieldLevel: ShieldLevel, for url: URL?) {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
-    if FeatureList.kBraveShieldsContentSettings.enabled {
+    if isBraveShieldsContentSettingsEnabled {
       braveShieldsSettings.setAdBlockMode(shieldLevel.adBlockMode, for: url)
     }
     // Also assign to Domain until deprecated so reverse migration is required
@@ -82,7 +88,7 @@ public class BraveShieldsTabHelper {
 
   public func setBlockScriptsEnabled(_ isEnabled: Bool, for url: URL?) {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
-    if FeatureList.kBraveShieldsContentSettings.enabled {
+    if isBraveShieldsContentSettingsEnabled {
       braveShieldsSettings.setBlockScriptsEnabled(isEnabled, for: url)
     }
     // Also assign to Domain until deprecated so reverse migration is required
@@ -95,7 +101,7 @@ public class BraveShieldsTabHelper {
 
   public func setBlockFingerprintingEnabled(_ isEnabled: Bool, for url: URL?) {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
-    if FeatureList.kBraveShieldsContentSettings.enabled {
+    if isBraveShieldsContentSettingsEnabled {
       braveShieldsSettings.setFingerprintMode(isEnabled ? .standardMode : .allowMode, for: url)
     }
     // Also assign to Domain until deprecated so reverse migration is required
@@ -113,7 +119,7 @@ public class BraveShieldsTabHelper {
     considerAllShieldsOption: Bool
   ) -> Bool {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return false }
-    if FeatureList.kBraveShieldsContentSettings.enabled {
+    if isBraveShieldsContentSettingsEnabled {
       if considerAllShieldsOption && !isBraveShieldsEnabled(for: url) {
         // Shields is disabled for this url
         return false
