@@ -14,8 +14,36 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 
 /**
- * Parcelable data class representing a menu item for customization. This can be passed between
- * activities via Intent extras.
+ * Parcelable data class representing a menu item for the Brave menu customization feature.
+ * 
+ * <p>This class encapsulates the essential information about a menu item that needs to be
+ * transferred between activities when navigating to the customize menu settings screen. It contains
+ * the menu item's resource ID, display title, and current visibility state.
+ * 
+ * <p>The class implements {@link Parcelable} to enable efficient serialization and transfer
+ * via {@link android.content.Intent} extras when launching the 
+ * {@link org.chromium.brave.browser.customize_menu.settings.BraveCustomizeMenuPreferenceFragment}.
+ * 
+ * <p><strong>Note on Icons:</strong> This class does not include drawable icons because
+ * {@link android.graphics.drawable.Drawable} objects cannot be parceled across activity boundaries.
+ * Instead, the settings screen uses the {@code id} field with
+ * {@link org.chromium.brave.browser.customize_menu.CustomizeBraveMenu#getDrawableResFromMenuItemId(int)}
+ * to retrieve the appropriate icon drawable resource.
+ * 
+ * <p><strong>Usage Example:</strong>
+ * <pre>{@code
+ * // Create menu item data for "New Tab" item that is currently visible
+ * MenuItemData newTabItem = new MenuItemData(
+ *     R.id.new_tab_menu_id, 
+ *     "New Tab", 
+ *     true
+ * );
+ * 
+ * // Add to bundle for transfer to settings screen
+ * ArrayList<MenuItemData> menuItems = new ArrayList<>();
+ * menuItems.add(newTabItem);
+ * bundle.putParcelableArrayList(CustomizeBraveMenu.KEY_MAIN_MENU_ITEM_LIST, menuItems);
+ * }</pre>
  */
 @NullMarked
 public class MenuItemData implements Parcelable {
