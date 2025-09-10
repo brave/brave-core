@@ -260,8 +260,8 @@ class PlasterFile:
             re_pattern = substitution.get('re_pattern')
             pattern = substitution.get('pattern')
             replace = substitution.get('replace')
-            count = substitution.get('count', 0)
-            flags = substitution.get('re_flags', '')
+            count = substitution.get('count', 1)
+            flags = substitution.get('re_flags', [])
 
             if description is None:
                 raise ValueError(
@@ -276,6 +276,7 @@ class PlasterFile:
 
             re_flags = 0
             for flag in flags:
+              # Only accept valid re flags
               if flag.isupper() and getattr(re, flag):
                 re_flags |= getattr(re, flag)
               else:
@@ -293,6 +294,10 @@ class PlasterFile:
                 raise ValueError(
                     f'No matches found for pattern {pattern} in {info.source}')
 
+            if num_changes != count:
+                raise ValueError(
+                    f'Unexpected number of matches ({num_changes} vs {count}) found for {pattern} in {info.source}'
+                )
         has_changed = info.save_source_if_changed(contents, dry_run=dry_run)
         has_changed = info.save_patch_if_changed(
             dry_run=dry_run) or has_changed
