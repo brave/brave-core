@@ -254,17 +254,17 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
     /**
      * Builds the complete list of main menu items for the Customize menu settings screen.
-     * 
+     *
      * <p>This method creates a comprehensive list of all available main menu items that users can
-     * customize through the menu settings. The list includes items like "New Tab", "History", 
+     * customize through the menu settings. The list includes items like "New Tab", "History",
      * "Downloads", "Brave Wallet", etc., based on feature availability and device configuration.
-     * 
+     *
      * <p><strong>Note on Icons:</strong> The returned menu items do not include drawable icons
-     * because {@link android.graphics.drawable.Drawable} objects cannot be parceled across 
-     * activity boundaries. Instead, the settings screen uses 
-     * {@link org.chromium.brave.browser.customize_menu.CustomizeBraveMenu#getDrawableResFromMenuItemId(int)}
+     * because {@link android.graphics.drawable.Drawable} objects cannot be parceled across activity
+     * boundaries. Instead, the settings screen uses {@link
+     * org.chromium.brave.browser.customize_menu.CustomizeBraveMenu#getDrawableResFromMenuItemId(int)}
      * to map menu item IDs to their corresponding drawable resource IDs for display.
-     * 
+     *
      * @return a ModelList containing all customizable main menu items with their IDs and titles
      */
     public MVCListAdapter.ModelList buildMainMenuModelList() {
@@ -431,19 +431,20 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
     /**
      * Builds the complete list of page action items for the Customize menu settings screen.
-     * 
-     * <p>This method creates a comprehensive list of all available page action menu items that 
+     *
+     * <p>This method creates a comprehensive list of all available page action menu items that
      * users can customize through the menu settings. Page actions are context-sensitive menu items
      * that operate on the current page, such as "Share", "Download Page", "Print", "Find in Page",
      * "Translate", etc., based on feature availability and current page context.
-     * 
+     *
      * <p><strong>Note on Icons:</strong> The returned menu items do not include drawable icons
-     * because {@link android.graphics.drawable.Drawable} objects cannot be parceled across 
-     * activity boundaries. Instead, the settings screen uses 
-     * {@link org.chromium.brave.browser.customize_menu.CustomizeBraveMenu#getDrawableResFromMenuItemId(int)}
+     * because {@link android.graphics.drawable.Drawable} objects cannot be parceled across activity
+     * boundaries. Instead, the settings screen uses {@link
+     * org.chromium.brave.browser.customize_menu.CustomizeBraveMenu#getDrawableResFromMenuItemId(int)}
      * to map menu item IDs to their corresponding drawable resource IDs for display.
-     * 
-     * @return a ModelList containing all customizable page action menu items with their IDs and titles
+     *
+     * @return a ModelList containing all customizable page action menu items with their IDs and
+     *     titles
      */
     public MVCListAdapter.ModelList buildPageActionsModelList() {
         // Page Zoom
