@@ -1008,7 +1008,7 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
   // OK: with fees
   auto url = swap_service_->GetJupiterQuoteURL(*params, "85");
   EXPECT_EQ(url,
-            "https://jupiter.wallet.brave.com/v6/quote?"
+            "https://jupiter-lite.wallet.brave.com/swap/v1/quote?"
             "inputMint=So11111111111111111111111111111111111111112&"
             "outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&"
             "amount=10000&"
@@ -1019,7 +1019,7 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
   // OK: no fees
   url = swap_service_->GetJupiterQuoteURL(*params, "");
   EXPECT_EQ(url,
-            "https://jupiter.wallet.brave.com/v6/quote?"
+            "https://jupiter-lite.wallet.brave.com/swap/v1/quote?"
             "inputMint=So11111111111111111111111111111111111111112&"
             "outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&"
             "amount=10000&"
@@ -1029,7 +1029,7 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
 
 TEST_F(SwapServiceUnitTest, GetJupiterTransactionURL) {
   auto url = swap_service_->GetJupiterTransactionURL(mojom::kSolanaMainnet);
-  EXPECT_EQ(url, "https://jupiter.wallet.brave.com/v6/swap");
+  EXPECT_EQ(url, "https://jupiter-lite.wallet.brave.com/swap/v1/swap");
 }
 
 TEST_F(SwapServiceUnitTest, GetJupiterQuote) {

@@ -1727,7 +1727,8 @@ inline constexpr char kZeroExAPIVersionHeader[] = "0x-version";
 inline constexpr char kZeroExAPIVersion[] = "v2";
 
 // Jupiter swap constants
-inline constexpr char kJupiterBaseAPIURL[] = "https://jupiter.wallet.brave.com";
+inline constexpr char kJupiterBaseAPIURL[] =
+    "https://jupiter-lite.wallet.brave.com";
 inline constexpr char kJupiterReferralKey[] =
     "7yke2kxg6ewNsun61qBkdsLdxuXcUiB8CMB47Zv39Aoy";
 inline constexpr char kJupiterReferralProgram[] =
