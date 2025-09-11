@@ -191,25 +191,23 @@ public class CustomizeBraveMenu {
         final MVCListAdapter.ModelList out = new MVCListAdapter.ModelList();
 
         // Mark when one or more separators are met.
-        boolean pendingSeparators = false;
         MVCListAdapter.ListItem separator = null;
 
         for (Iterator<MVCListAdapter.ListItem> it = modelList.iterator(); it.hasNext(); ) {
             MVCListAdapter.ListItem curr = it.next();
             if (curr.type == AppMenuHandler.AppMenuItemType.DIVIDER) {
-                // Just mark a separator was met, act when a standard item arrives.
-                pendingSeparators = true;
+                // Just mark a separator was met, add it later when a standard item arrives.
                 separator = curr;
                 continue;
             }
 
-            if (!out.isEmpty() && pendingSeparators) {
+            if (!out.isEmpty() && separator != null) {
                 // Add a single separator between standard menu items.
                 out.add(separator);
             }
             out.add(curr);
             // Reset after placing standard menu item.
-            pendingSeparators = false;
+            separator = null;
         }
 
         modelList.clear();

@@ -262,8 +262,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
      * <p><strong>Note on Icons:</strong> The returned menu items do not include drawable icons
      * because {@link android.graphics.drawable.Drawable} objects cannot be parceled across activity
      * boundaries. Instead, the settings screen uses {@link
-     * org.chromium.brave.browser.customize_menu.CustomizeBraveMenu#getDrawableResFromMenuItemId(int)}
-     * to map menu item IDs to their corresponding drawable resource IDs for display.
+     * CustomizeBraveMenu#getDrawableResFromMenuItemId(int)} to map menu item IDs to their
+     * corresponding drawable resource IDs for display.
      *
      * @return a ModelList containing all customizable main menu items with their IDs and titles
      */
@@ -440,8 +440,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
      * <p><strong>Note on Icons:</strong> The returned menu items do not include drawable icons
      * because {@link android.graphics.drawable.Drawable} objects cannot be parceled across activity
      * boundaries. Instead, the settings screen uses {@link
-     * org.chromium.brave.browser.customize_menu.CustomizeBraveMenu#getDrawableResFromMenuItemId(int)}
-     * to map menu item IDs to their corresponding drawable resource IDs for display.
+     * CustomizeBraveMenu#getDrawableResFromMenuItemId(int)} to map menu item IDs to their
+     * corresponding drawable resource IDs for display.
      *
      * @return a ModelList containing all customizable page action menu items with their IDs and
      *     titles
