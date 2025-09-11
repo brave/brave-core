@@ -14,7 +14,7 @@ compression: lzo
 base: core22
 apps:
   brave:
-    command: opt/brave.com/brave/brave-browser
+    command: opt/brave.com/brave/brave-browser --ozone-platform=x11
     desktop: usr/share/applications/brave.desktop
     extensions:
       - gnome
