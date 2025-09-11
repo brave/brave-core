@@ -167,7 +167,9 @@ void NotificationAdPopup::OnPaintBackground(gfx::Canvas* canvas) {
   gfx::Rect bounds(GetWidget()->GetLayer()->bounds());
   bounds.Inset(GetWidgetMargin());
 
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors =
+      GetNativeTheme()->preferred_color_scheme() ==
+      ui::NativeTheme::PreferredColorScheme::kDark;
 
   // Draw border with drop shadow
   cc::PaintFlags border_flags;
