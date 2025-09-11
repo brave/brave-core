@@ -45,8 +45,7 @@ AssetRatioServiceFactory::AssetRatioServiceFactory()
 AssetRatioServiceFactory::~AssetRatioServiceFactory() = default;
 
 std::unique_ptr<KeyedService> AssetRatioServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
-  auto* profile = ProfileIOS::FromBrowserState(context);
+    ProfileIOS* profile) const {
   std::unique_ptr<AssetRatioService> asset_ratio_service(
       new AssetRatioService(profile->GetSharedURLLoaderFactory()));
   return asset_ratio_service;

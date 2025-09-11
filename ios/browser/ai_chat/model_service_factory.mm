@@ -34,7 +34,7 @@ ModelServiceFactory::ModelServiceFactory()
 ModelServiceFactory::~ModelServiceFactory() {}
 
 std::unique_ptr<KeyedService> ModelServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
-  return std::make_unique<ModelService>(user_prefs::UserPrefs::Get(context));
+    ProfileIOS* profile) const {
+  return std::make_unique<ModelService>(user_prefs::UserPrefs::Get(profile));
 }
 }  // namespace ai_chat
