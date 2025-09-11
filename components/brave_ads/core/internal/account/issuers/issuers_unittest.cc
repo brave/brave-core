@@ -49,7 +49,7 @@ TEST_F(BraveAdsIssuersTest, FetchIssuers) {
   issuers_->PeriodicallyFetch();
 }
 
-TEST_F(BraveAdsIssuersTest, DoNotFetchIssuersIfInvalidResponseBody) {
+TEST_F(BraveAdsIssuersTest, DoNotFetchIfInvalidResponseBody) {
   // Arrange
   const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
@@ -66,7 +66,8 @@ TEST_F(BraveAdsIssuersTest, DoNotFetchIssuersIfInvalidResponseBody) {
   EXPECT_FALSE(GetIssuers());
 }
 
-TEST_F(BraveAdsIssuersTest, RetryFetchingIssuersIfNonHttpOkResponse) {
+TEST_F(BraveAdsIssuersTest,
+       RetryAfterHttpInternalServerErrorResponseStatusCode) {
   // Arrange
   const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
@@ -91,6 +92,27 @@ TEST_F(BraveAdsIssuersTest, RetryFetchingIssuersIfNonHttpOkResponse) {
   FastForwardClockToNextPendingTask();
 
   EXPECT_TRUE(HasIssuers());
+}
+
+TEST_F(BraveAdsIssuersTest, DoNotRetryAfterHttpForbiddenResponseStatusCode) {
+  // Arrange
+  const test::URLResponseMap url_responses = {
+      {BuildIssuersUrlPath(),
+       {{net::HTTP_FORBIDDEN,
+         /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_FORBIDDEN)},
+        {net::HTTP_OK, test::BuildIssuersUrlResponseBody()}}}};
+  test::MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
+
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnFailedToFetchIssuers);
+  EXPECT_CALL(delegate_mock_, OnDidFetchIssuers).Times(0);
+  EXPECT_CALL(delegate_mock_, OnWillRetryFetchingIssuers).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidRetryFetchingIssuers).Times(0);
+  EXPECT_CALL(delegate_mock_, OnDidFetchIssuers).Times(0);
+  issuers_->PeriodicallyFetch();
+
+  EXPECT_FALSE(HasPendingTasks());
 }
 
 }  // namespace brave_ads
