@@ -38,7 +38,7 @@ void TabUIHelper::UpdateLastOrigin() {
   // custom title. This is to ensure that the custom title is not stale.
   const auto origin =
       web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
-  if (last_origin_.IsSameOriginWith(origin)) {
+  if (last_origin_ && last_origin_->IsSameOriginWith(origin)) {
     return;
   }
 
@@ -53,10 +53,8 @@ void TabUIHelper::UpdateLastOrigin() {
   // We reset the custom title only when the last origin is initialized. When
   // restoring tabs, last origin could be uninitialized yet, and we do not want
   // to reset the custom title in that case.
-  if (last_origin_initialized_) {
+  if (last_origin_) {
     custom_title_.reset();
-  } else {
-    last_origin_initialized_ = true;
   }
   last_origin_ = origin;
 }
