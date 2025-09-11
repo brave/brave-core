@@ -24,6 +24,10 @@
 #include "ui/views/view_constants_aura.h"
 #endif
 
+#if BUILDFLAG(IS_MAC)
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_utils_mac.h"
+#endif
+
 namespace {
 
 class VerticalTabStripWidget : public ThemeCopyingWidget {
@@ -226,25 +230,22 @@ void VerticalTabStripWidgetDelegateView::OnWidgetDestroying(
 void VerticalTabStripWidgetDelegateView::UpdateClip() {
   // On mac, child window can be drawn out of parent window. We should clip
   // the border line and corner radius manually.
-  // The corner radius value refers to the that of menu widget. Looks fit for
-  // us.
-  // https://github.com/chromium/chromium/blob/371d67fd9c7db16c32f22e3ba247a07aa5e81487/ui/views/controls/menu/menu_config_mac.mm#L35
   SkPath path;
-  constexpr int kCornerRadius = 8;
+  const int corner_radius = GetVerticalTabStripCornerRadius();
   if (tabs::utils::IsVerticalTabOnRight(browser_view_->browser())) {
     path.moveTo(width(), 0);
     path.lineTo(0, 0);
     path.lineTo(0, height() - 1);
-    path.lineTo(width() - kCornerRadius, height() - 1);
-    path.rArcTo(kCornerRadius, kCornerRadius, 0, SkPath::kSmall_ArcSize,
-                SkPathDirection::kCCW, kCornerRadius, -kCornerRadius);
+    path.lineTo(width() - corner_radius, height() - 1);
+    path.rArcTo(corner_radius, corner_radius, 0, SkPath::kSmall_ArcSize,
+                SkPathDirection::kCCW, corner_radius, -corner_radius);
   } else {
     path.moveTo(0, 0);
     path.lineTo(width(), 0);
     path.lineTo(width(), height() - 1);
-    path.lineTo(kCornerRadius, height() - 1);
-    path.rArcTo(kCornerRadius, kCornerRadius, 0, SkPath::kSmall_ArcSize,
-                SkPathDirection::kCW, -kCornerRadius, -kCornerRadius);
+    path.lineTo(corner_radius, height() - 1);
+    path.rArcTo(corner_radius, corner_radius, 0, SkPath::kSmall_ArcSize,
+                SkPathDirection::kCW, -corner_radius, -corner_radius);
   }
   path.close();
   SetClipPath(path);
