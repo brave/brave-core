@@ -36,8 +36,7 @@ SwapServiceFactory::SwapServiceFactory()
 SwapServiceFactory::~SwapServiceFactory() = default;
 
 std::unique_ptr<KeyedService> SwapServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
-  auto* profile = ProfileIOS::FromBrowserState(context);
+    ProfileIOS* profile) const {
   std::unique_ptr<SwapService> swap_service(
       new SwapService(profile->GetSharedURLLoaderFactory()));
   return swap_service;
