@@ -19,7 +19,7 @@ struct DefaultShieldsSectionView: View {
 
   var body: some View {
     Section {
-      Picker(selection: $settings.adBlockAndTrackingPreventionLevel) {
+      FormPicker(selection: $settings.adBlockAndTrackingPreventionLevel) {
         ForEach(ShieldLevel.allCases) { level in
           Text(level.localizedTitle)
             .foregroundColor(Color(.secondaryBraveLabel))
@@ -33,7 +33,7 @@ struct DefaultShieldsSectionView: View {
       }
 
       if FeatureList.kBraveHttpsByDefault.enabled {
-        Picker(selection: $settings.httpsUpgradeLevel) {
+        FormPicker(selection: $settings.httpsUpgradeLevel) {
           ForEach(HTTPSUpgradeLevel.allCases) { level in
             Text(level.localizedTitle)
               .foregroundColor(Color(.secondaryBraveLabel))
@@ -97,7 +97,7 @@ struct DefaultShieldsSectionView: View {
       )
 
       if FeatureList.kBraveShredFeature.enabled {
-        Picker(selection: $settings.shredLevel) {
+        FormPicker(selection: $settings.shredLevel) {
           ForEach(SiteShredLevel.allCases) { level in
             Text(level.localizedTitle)
               .foregroundColor(Color(.secondaryBraveLabel))
