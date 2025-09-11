@@ -12,6 +12,7 @@
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/views/frame/browser_frame.h"
 #include "components/prefs/pref_service.h"
 
 #if !BUILDFLAG(IS_MAC)
