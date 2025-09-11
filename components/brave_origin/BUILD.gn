@@ -5,9 +5,27 @@
 
 source_set("brave_origin") {
   sources = [
+    "brave_origin_constants.h",
+    "brave_origin_policy_info.cc",
+    "brave_origin_policy_info.h",
+    "brave_origin_policy_manager.cc",
+    "brave_origin_policy_manager.h",
+    "brave_origin_prefs.cc",
+    "brave_origin_prefs.h",
+    "brave_origin_service.cc",
+    "brave_origin_service.h",
+    "brave_origin_utils.cc",
+    "brave_origin_utils.h",
     "features.cc",
     "features.h",
+    "profile_id.cc",
+    "profile_id.h",
   ]
 
   public_deps = [ "//base" ]
+  deps = [
+    "//components/keyed_service/core",
+    "//components/policy/core/common",
+    "//components/prefs",
+  ]
 }

@@ -17,9 +17,18 @@ CreateBraveProfilePolicyProvider();
 #define BRAVE_PROFILE_POLICY_CONNECTOR_INIT                         \
   auto provider = brave_policy::CreateBraveProfilePolicyProvider(); \
   policy_providers_.push_back(provider.get());                      \
+  brave_profile_policy_provider_ = provider.get();                  \
   provider->Init(schema_registry);                                  \
   wrapped_policy_providers_.push_back(std::move(provider));
 
 #include <chrome/browser/policy/profile_policy_connector.cc>  // IWYU pragma: export
+
+namespace policy {
+raw_ptr<policy::ConfigurationPolicyProvider>
+ProfilePolicyConnector::GetBraveProfilePolicyProvider() {
+  return brave_profile_policy_provider_;
+}
+
+}  // namespace policy
 
 #undef BRAVE_PROFILE_POLICY_CONNECTOR_INIT

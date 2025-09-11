@@ -125,6 +125,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_ads:impl",
   "//brave/browser/brave_ads/creatives/search_result_ad",
   "//brave/browser/brave_ads/tabs",
+  "//brave/browser/brave_origin",
   "//brave/browser/brave_rewards:brave_rewards_impl",
   "//brave/browser/brave_rewards:util",
   "//brave/browser/brave_search",

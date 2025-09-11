@@ -13,6 +13,7 @@
 #include "base/path_service.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/brave_sync/features.h"
@@ -195,6 +196,16 @@ void ChromeBrowserMainParts::PostProfileInit(Profile* profile,
                                              bool is_initial_profile) {
   ChromeBrowserMainParts_ChromiumImpl::PostProfileInit(profile,
                                                        is_initial_profile);
+
+  // Initialize BraveOriginPolicyManager with local state when the initial
+  // profile is created. This allows policy providers to begin loading policies
+  // from local state.
+  if (is_initial_profile) {
+    LOG(ERROR) << "======================initwithlocalstate--initial profile";
+    PrefService* local_state = g_browser_process->local_state();
+    brave_origin::BraveOriginPolicyManager::GetInstance()->SetLocalState(
+        local_state);
+  }
 
 #if BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(
