@@ -495,7 +495,7 @@ EngineConsumerConversationAPI::GetAssociatedContentConversationEvent(
     const PageContent& content,
     uint32_t remaining_length) {
   std::string truncated_page_content =
-      content.content.substr(0, remaining_length);
+      FormatPageContentWithTitle(content).substr(0, remaining_length);
   SanitizeInput(truncated_page_content);
 
   ConversationEvent event;

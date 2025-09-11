@@ -114,7 +114,7 @@ class EngineConsumerOAIUnitTest : public testing::Test {
 };
 
 TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
-  PageContent page_content("Page content", false);
+  PageContent page_content(u"", "Page content", false);
   auto* client = GetClient();
 
   base::RunLoop run_loop;
@@ -166,7 +166,7 @@ TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
 }
 
 TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
-  PageContent page_content("This is a test page content", false);
+  PageContent page_content(u"", "This is a test page content", false);
 
   auto* client = GetClient();
   base::RunLoop run_loop;
@@ -233,8 +233,8 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
 }
 
 TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages) {
-  PageContent page_content("This is content 1", false);
-  PageContent video_content("This is content 2 and a video", true);
+  PageContent page_content(u"", "This is content 1", false);
+  PageContent video_content(u"", "This is content 2 and a video", true);
   PageContents page_contents = {page_content, video_content};
   uint32_t remaining_length = 100;
   auto message = engine_->BuildPageContentMessages(
@@ -244,17 +244,19 @@ TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages) {
   EXPECT_EQ(message.size(), 2u);
   EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[0].GetDict().Find("content"),
-            "This is a video transcript:\n\n\u003Ctranscript>\nThis is content "
+            "This is a video transcript:\n\n\u003Ctranscript>\nTitle: \nThis "
+            "is content "
             "2 and a video\n\u003C/transcript>\n\n");
   EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
-  EXPECT_EQ(*message[1].GetDict().Find("content"),
-            "This is the text of a web page:\n\u003Cpage>\nThis is content "
-            "1\n\u003C/page>\n\n");
+  EXPECT_EQ(
+      *message[1].GetDict().Find("content"),
+      "This is the text of a web page:\n\u003Cpage>\nTitle: \nThis is content "
+      "1\n\u003C/page>\n\n");
 }
 
 TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_Truncates) {
-  PageContent page_content("This is content 1", false);
-  PageContent video_content("This is content 2 and a video", true);
+  PageContent page_content(u"", "This is content 1", false);
+  PageContent video_content(u"", "This is content 2 and a video", true);
   PageContents page_contents = {video_content, page_content};
 
   uint32_t remaining_length = 20;
@@ -262,22 +264,18 @@ TEST_F(EngineConsumerOAIUnitTest, BuildPageContentMessages_Truncates) {
       page_contents, remaining_length, IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
       IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT);
 
-  EXPECT_EQ(message.size(), 2u);
+  EXPECT_EQ(message.size(), 1u);
   EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[0].GetDict().Find("content"),
-            "This is the text of a web page:\n\u003Cpage>\nThis is content "
-            "1\n\u003C/page>\n\n");
-  EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
-  EXPECT_EQ(*message[1].GetDict().Find("content"),
-            "This is a video "
-            "transcript:\n\n\u003Ctranscript>\nThi\n\u003C/transcript>\n\n");
+            "This is the text of a web page:\n\u003Cpage>\nTitle: \nThis is "
+            "cont\n\u003C/page>\n\n");
 }
 
 TEST_F(EngineConsumerOAIUnitTest,
        BuildPageContentMessages_MaxPerContentLength) {
   // Test max_per_content_length parameter
-  PageContent page_content("This is content 1", false);
-  PageContent video_content("This is content 2 and a video", true);
+  PageContent page_content(u"", "This is content 1", false);
+  PageContent video_content(u"", "This is content 2 and a video", true);
   PageContents page_contents = {video_content, page_content};
 
   uint32_t remaining_length = 100;
@@ -289,11 +287,13 @@ TEST_F(EngineConsumerOAIUnitTest,
   EXPECT_EQ(message.size(), 2u);
   EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
   EXPECT_EQ(*message[0].GetDict().Find("content"),
-            "This is the text of a web page:\n<page>\nThis is co\n</page>\n\n");
+            "This is the text of a web page:\n\u003Cpage>\nTitle: "
+            "\nTh\n\u003C/page>\n\n");
   EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
-  EXPECT_EQ(*message[1].GetDict().Find("content"),
-            "This is a video "
-            "transcript:\n\n<transcript>\nThis is co\n</transcript>\n\n");
+  EXPECT_EQ(
+      *message[1].GetDict().Find("content"),
+      "This is a video "
+      "transcript:\n\n\u003Ctranscript>\nTitle: \nTh\n\u003C/transcript>\n\n");
 }
 
 TEST_F(EngineConsumerOAIUnitTest,
@@ -301,7 +301,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   // Test that remaining max_associated_content_length is used when smaller
   // than max_per_content_length
   std::string long_content(50, 'y');
-  PageContent page_content(long_content, false);
+  PageContent page_content(u"", long_content, false);
   PageContents page_contents = {page_content};
 
   uint32_t remaining_length = 15;  // Small remaining length
@@ -312,16 +312,17 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   EXPECT_EQ(message.size(), 1u);
   EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
-  std::string expected_content = "This is the text of a web page:\n<page>\n" +
-                                 std::string(15, 'y') + "\n</page>\n\n";
+  std::string expected_content =
+      "This is the text of a web page:\n\u003Cpage>\nTitle: \n" +
+      std::string(7, 'y') + "\n\u003C/page>\n\n";
   EXPECT_EQ(*message[0].GetDict().Find("content"), expected_content);
 }
 
 TEST_F(EngineConsumerOAIUnitTest,
        BuildPageContentMessages_MaxPerContentLength_NoTruncationNeeded) {
   // Test when content is shorter than both limits
-  PageContent page_content("Short", false);
-  PageContent video_content("Video", true);
+  PageContent page_content(u"", "Short", false);
+  PageContent video_content(u"", "Video", true);
   PageContents page_contents = {video_content, page_content};
 
   uint32_t remaining_length = 100;
@@ -332,16 +333,17 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   EXPECT_EQ(message.size(), 2u);
   EXPECT_EQ(*message[0].GetDict().Find("role"), "user");
-  EXPECT_EQ(*message[0].GetDict().Find("content"),
-            "This is the text of a web page:\n<page>\nShort\n</page>\n\n");
-  EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
   EXPECT_EQ(
-      *message[1].GetDict().Find("content"),
-      "This is a video transcript:\n\n<transcript>\nVideo\n</transcript>\n\n");
+      *message[0].GetDict().Find("content"),
+      "This is the text of a web page:\n<page>\nTitle: \nShort\n</page>\n\n");
+  EXPECT_EQ(*message[1].GetDict().Find("role"), "user");
+  EXPECT_EQ(*message[1].GetDict().Find("content"),
+            "This is a video transcript:\n\n<transcript>\nTitle: "
+            "\nVideo\n</transcript>\n\n");
 }
 
 TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
-  PageContent page_content("This is a test page content", false);
+  PageContent page_content(u"", "This is a test page content", false);
   auto* client = GetClient();
 
   // Test error case: result doesn't have a value
@@ -467,7 +469,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions_Errors) {
 
 TEST_F(EngineConsumerOAIUnitTest,
        GenerateAssistantResponseWithDefaultSystemPrompt) {
-  PageContent page_content("Page content 1", false);
+  PageContent page_content(u"", "Page content 1", false);
   // Create a set of options WITHOUT a custom system prompt.
   auto options = mojom::CustomModelOptions::New();
   options->endpoint = GURL("https://test.com/");
@@ -537,7 +539,8 @@ TEST_F(EngineConsumerOAIUnitTest,
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[1].GetDict().Find("content"),
                       "This is the text of a web "
-                      "page:\n\u003Cpage>\nPage content 1\n\u003C/page>\n\n");
+                      "page:\n\u003Cpage>\nTitle: \nPage content "
+                      "1\n\u003C/page>\n\n");
 
             EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[2].GetDict().Find("content"), human_input);
@@ -1098,9 +1101,10 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
              const std::optional<std::vector<std::string>>&) {
             // Page content should always be attached to the first message
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[1].GetDict().Find("content"),
-                      "This is the text of a web page:\n<page>\nThis is a "
-                      "page.\n</page>\n\n");
+            EXPECT_EQ(
+                *messages[1].GetDict().Find("content"),
+                "This is the text of a web page:\n<page>\nTitle: \nThis is a "
+                "page.\n</page>\n\n");
             EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[2].GetDict().Find("content"),
                       "Tell me more about this page");
@@ -1119,7 +1123,7 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
     history.push_back(std::move(entry));
   }
 
-  PageContent page_content("This is a page.", false);
+  PageContent page_content(u"", "This is a page.", false);
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
       base::DoNothing(),
@@ -1138,18 +1142,25 @@ TEST_F(EngineConsumerOAIUnitTest, ShouldCallSanitizeInputOnPageContent) {
     MOCK_METHOD(void, SanitizeInput, (std::string & input), (override));
   };
 
-  PageContent page_content_1("This is a page about The Mandalorian.", false);
-  PageContent page_content_2("This is a video about The Mandalorian.", true);
+  PageContent page_content_1(u"", "This is a page about The Mandalorian.",
+                             false);
+  PageContent page_content_2(u"", "This is a video about The Mandalorian.",
+                             true);
 
   auto mock_engine_consumer = std::make_unique<MockOAIEngineConsumer>(
       *model_->options->get_custom_model_options(), nullptr, nullptr,
       &pref_service_);
   mock_engine_consumer->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
 
-  // Calling GenerateAssistantResponse should call SanitizeInput
+  // Calling GenerateAssistantResponse should call SanitizeInput on formatted
+  // content
   {
-    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
-    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
+    EXPECT_CALL(*mock_engine_consumer,
+                SanitizeInput(::testing::StrEq(
+                    "Title: \nThis is a page about The Mandalorian.")));
+    EXPECT_CALL(*mock_engine_consumer,
+                SanitizeInput(::testing::StrEq(
+                    "Title: \nThis is a video about The Mandalorian.")));
 
     std::vector<mojom::ConversationTurnPtr> history;
     auto turn = mojom::ConversationTurn::New();
@@ -1162,10 +1173,15 @@ TEST_F(EngineConsumerOAIUnitTest, ShouldCallSanitizeInputOnPageContent) {
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
 
-  // Calling GenerateQuestionSuggestions should call SanitizeInput
+  // Calling GenerateQuestionSuggestions should call SanitizeInput on formatted
+  // content
   {
-    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
-    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
+    EXPECT_CALL(*mock_engine_consumer,
+                SanitizeInput(::testing::StrEq(
+                    "Title: \nThis is a page about The Mandalorian.")));
+    EXPECT_CALL(*mock_engine_consumer,
+                SanitizeInput(::testing::StrEq(
+                    "Title: \nThis is a video about The Mandalorian.")));
 
     mock_engine_consumer->GenerateQuestionSuggestions(
         {page_content_1, page_content_2}, "", base::DoNothing());
@@ -1398,8 +1414,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
 TEST_F(EngineConsumerOAIUnitTest,
        BuildMessages_PageContentsOrderedBeforeTurns) {
-  PageContent page_content1("Test page 1 content", false);
-  PageContent page_content2("Test page 2 content", false);
+  PageContent page_content1(u"", "Test page 1 content", false);
+  PageContent page_content2(u"", "Test page 2 content", false);
   PageContentsMap page_contents;
   page_contents["turn-1"] = {std::cref(page_content1)};
   page_contents["turn-3"] = {std::cref(page_content2)};
@@ -1463,8 +1479,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
 TEST_F(EngineConsumerOAIUnitTest,
        BuildMessages_PageContentsExcludedForMissingTurns) {
-  PageContent page_content1("Content for existing turn", false);
-  PageContent page_content2("Content for missing turn", false);
+  PageContent page_content1(u"", "Content for existing turn", false);
+  PageContent page_content2(u"", "Content for missing turn", false);
   PageContentsMap page_contents;
   page_contents["existing-turn"] = {std::cref(page_content1)};
   page_contents["missing-turn"] = {std::cref(page_content2)};
@@ -1501,8 +1517,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
 TEST_F(EngineConsumerOAIUnitTest,
        BuildMessages_MultiplePageContentsForSameTurn) {
-  PageContent page_content1("First page content", false);
-  PageContent video_content("Video content", true);
+  PageContent page_content1(u"", "First page content", false);
+  PageContent video_content(u"", "Video content", true);
   PageContentsMap page_contents;
   page_contents["turn-1"] = {std::cref(page_content1),
                              std::cref(video_content)};
@@ -1541,9 +1557,9 @@ TEST_F(EngineConsumerOAIUnitTest,
 
 TEST_F(EngineConsumerOAIUnitTest,
        BuildMessages_MultiplePageContents_MultipleTurns) {
-  PageContent page_1("Page 1", false);
-  PageContent page_2("Page 2", false);
-  PageContent page_3("Page 3", false);
+  PageContent page_1(u"", "Page 1", false);
+  PageContent page_2(u"", "Page 2", false);
+  PageContent page_3(u"", "Page 3", false);
 
   PageContentsMap page_contents;
   page_contents["turn-1"] = {std::cref(page_1)};
@@ -1618,7 +1634,7 @@ TEST_F(EngineConsumerOAIUnitTest, BuildMessages_EmptyPageContentsMap) {
 }
 
 TEST_F(EngineConsumerOAIUnitTest, BuildMessages_NonExistentTurnId) {
-  PageContent page_content("This is a test page content", false);
+  PageContent page_content(u"", "This is a test page content", false);
   PageContentsMap page_contents;
   page_contents["non-existent-turn"] = {std::cref(page_content)};
 
@@ -1644,9 +1660,9 @@ TEST_F(EngineConsumerOAIUnitTest, BuildMessages_NonExistentTurnId) {
 
 TEST_F(EngineConsumerOAIUnitTest,
        BuildMessages_MultiplePageContents_MultipleTurns_TooLong) {
-  PageContent page_content_1(std::string(35, '1'), false);
-  PageContent page_content_2(std::string(35, '2'), false);
-  PageContent page_content_3(std::string(35, '3'), false);
+  PageContent page_content_1(u"One", std::string(35, '1'), false);
+  PageContent page_content_2(u"Two", std::string(35, '2'), false);
+  PageContent page_content_3(u"", std::string(35, '3'), false);
 
   PageContentsMap page_contents;
   page_contents["turn-1"] = {std::cref(page_content_1),
@@ -1668,10 +1684,11 @@ TEST_F(EngineConsumerOAIUnitTest,
   conversation_history.push_back(std::move(turn2));
 
   // Gets the content of a page content event
-  auto get_page_content_event = [](char c, int length) {
+  auto get_page_content_event = [](const std::string& title, char c,
+                                   int length) {
     return "This is the text of a web "
-           "page:\n<page>\n" +
-           std::string(length, c) + "\n</page>\n\n";
+           "page:\n<page>\nTitle: " +
+           title + "\n" + std::string(length, c) + "\n</page>\n\n";
   };
 
   auto test_content_truncation = [&](uint32_t max_length,
@@ -1698,79 +1715,78 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Max Length = 1000 (should include all the page contents)
   test_content_truncation(1000, {
-                                    get_page_content_event('2', 35),
-                                    get_page_content_event('1', 35),
+                                    get_page_content_event("Two", '2', 35),
+                                    get_page_content_event("One", '1', 35),
                                     "Human message 1",
-                                    get_page_content_event('3', 35),
+                                    get_page_content_event("", '3', 35),
                                     "Human message 2",
                                 });
 
   // Max Length = 100 (should truncate some of page content 1)
-  test_content_truncation(100, {
-                                   get_page_content_event('2', 35),
-                                   get_page_content_event('1', 30),
-                                   "Human message 1",
-                                   get_page_content_event('3', 35),
-                                   "Human message 2",
-                               });
+  test_content_truncation(
+      100, {
+               get_page_content_event("Two", '2', 35),
+               get_page_content_event(
+                   "One", '1', 0),  // Content truncated to 0 but title remains
+               "Human message 1",
+               get_page_content_event("", '3', 35),
+               "Human message 2",
+           });
 
-  // Max Length = 71 (should include all of page content 3 and all of page
-  // content 2 and 1 character of page content 1).
+  // Max Length = 71 (content 1 gets omitted due to title prefix).
   test_content_truncation(71, {
-                                  get_page_content_event('2', 35),
-                                  get_page_content_event('1', 1),
+                                  get_page_content_event("Two", '2', 17),
                                   "Human message 1",
-                                  get_page_content_event('3', 35),
+                                  get_page_content_event("", '3', 35),
                                   "Human message 2",
                               });
 
   // Max Length = 70 (should include all of page content 3 and all of page
   // content 2).
   test_content_truncation(70, {
-                                  get_page_content_event('2', 35),
+                                  get_page_content_event("Two", '2', 16),
                                   "Human message 1",
-                                  get_page_content_event('3', 35),
+                                  get_page_content_event("", '3', 35),
                                   "Human message 2",
                               });
 
   // Max Length = 65 (should include all of page content 3 and most of page
   // content 2).
   test_content_truncation(65, {
-                                  get_page_content_event('2', 30),
+                                  get_page_content_event("Two", '2', 11),
                                   "Human message 1",
-                                  get_page_content_event('3', 35),
+                                  get_page_content_event("", '3', 35),
                                   "Human message 2",
                               });
 
-  // Max Length = 36 (should include all of page content 3 and one character of
-  // page content 2).
+  // Max Length = 36 (content 2 gets omitted due to title prefix).
   test_content_truncation(36, {
-                                  get_page_content_event('2', 1),
                                   "Human message 1",
-                                  get_page_content_event('3', 35),
+                                  get_page_content_event("", '3', 28),
                                   "Human message 2",
                               });
 
   // Max Length = 35 (should include all of page content 3).
   test_content_truncation(35, {
                                   "Human message 1",
-                                  get_page_content_event('3', 35),
+                                  get_page_content_event("", '3', 27),
                                   "Human message 2",
                               });
 
   // Max Length = 10 (should only include some of page content 3)
   test_content_truncation(10, {
                                   "Human message 1",
-                                  get_page_content_event('3', 10),
+                                  get_page_content_event("", '3', 2),
                                   "Human message 2",
                               });
 
-  // Max Length = 1 (should include one char of page content 3).
-  test_content_truncation(1, {
-                                 "Human message 1",
-                                 get_page_content_event('3', 1),
-                                 "Human message 2",
-                             });
+  // Max Length = 1 (content included but heavily truncated).
+  test_content_truncation(
+      1, {
+             "Human message 1",
+             "This is the text of a web page:\n<page>\nT\n</page>\n\n",
+             "Human message 2",
+         });
 
   // Max Length = 0 (should include no page content)
   test_content_truncation(0, {
@@ -1781,7 +1797,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
 TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_Success) {
   auto* client = GetClient();
-  PageContent page_content("This is a test page about AI", false);
+  PageContent page_content(u"", "This is a test page about AI", false);
   PageContentsMap page_contents;
   page_contents["turn-1"] = {std::cref(page_content)};
 
@@ -1868,15 +1884,15 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Content 1: Exactly limit-1 chars (1199) - should NOT be truncated
   std::string content_1199(kMaxContextCharsForTitleGeneration - 1, 'a');
-  PageContent page_content1(content_1199, false);
+  PageContent page_content1(u"", content_1199, false);
 
   // Content 2: Exactly limit chars (1200) - should NOT be truncated
   std::string content_1200(kMaxContextCharsForTitleGeneration, 'b');
-  PageContent page_content2(content_1200, false);
+  PageContent page_content2(u"", content_1200, false);
 
   // Content 3: Exactly limit+1 chars (1201) - should be truncated to limit
   std::string content_1201(kMaxContextCharsForTitleGeneration + 1, 'c');
-  PageContent page_content3(content_1201, true);  // video content
+  PageContent page_content3(u"", content_1201, true);  // video content
 
   PageContentsMap page_contents;
   page_contents["turn-1"] = {std::cref(page_content1), std::cref(page_content2),
@@ -1913,8 +1929,8 @@ TEST_F(EngineConsumerOAIUnitTest,
             std::string* content1 = messages[0].GetDict().FindString("content");
             ASSERT_TRUE(content1);
             std::string expected_content1 =
-                "This is a video transcript:\n\n<transcript>\n" +
-                std::string(kMaxContextCharsForTitleGeneration, 'c') +
+                "This is a video transcript:\n\n<transcript>\nTitle: \n" +
+                std::string(kMaxContextCharsForTitleGeneration - 8, 'c') +
                 "\n</transcript>\n\n";
             EXPECT_EQ(*content1, expected_content1);
 
@@ -1924,8 +1940,8 @@ TEST_F(EngineConsumerOAIUnitTest,
             std::string* content2 = messages[1].GetDict().FindString("content");
             ASSERT_TRUE(content2);
             std::string expected_content2 =
-                "This is the text of a web page:\n<page>\n" +
-                std::string(kMaxContextCharsForTitleGeneration, 'b') +
+                "This is the text of a web page:\n<page>\nTitle: \n" +
+                std::string(kMaxContextCharsForTitleGeneration - 8, 'b') +
                 "\n</page>\n\n";
             EXPECT_EQ(*content2, expected_content2);
 
@@ -1935,8 +1951,8 @@ TEST_F(EngineConsumerOAIUnitTest,
             std::string* content3 = messages[2].GetDict().FindString("content");
             ASSERT_TRUE(content3);
             std::string expected_content3 =
-                "This is the text of a web page:\n<page>\n" +
-                std::string(kMaxContextCharsForTitleGeneration - 1, 'a') +
+                "This is the text of a web page:\n<page>\nTitle: \n" +
+                std::string(kMaxContextCharsForTitleGeneration - 8, 'a') +
                 "\n</page>\n\n";
             EXPECT_EQ(*content3, expected_content3);
 

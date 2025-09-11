@@ -338,7 +338,8 @@ base::Value::List EngineConsumerOAIRemote::BuildPageContentMessages(
     }
 
     std::string truncated_page_content =
-        page_content.get().content.substr(0, effective_length_limit);
+        FormatPageContentWithTitle(page_content.get())
+            .substr(0, effective_length_limit);
     uint32_t truncated_page_content_size = truncated_page_content.size();
 
     SanitizeInput(truncated_page_content);

@@ -68,7 +68,7 @@ TEST(AssociatedContentDelegateTest, OnNewPage) {
         EXPECT_EQ(delegate->url(), GURL("https://www.brave.com"));
         EXPECT_EQ(delegate->uuid(), uuid);
         EXPECT_EQ(delegate->cached_page_content(),
-                  PageContent("Content 1", false));
+                  PageContent(u"", "Content 1", false));
       });
   observer.Observe(&delegate);
 
@@ -95,7 +95,7 @@ TEST(AssociatedContentDelegateTest, DestroyNotificationShouldBeAbleToSnapshot) {
         EXPECT_EQ(delegate->url(), GURL("https://www.brave.com"));
         EXPECT_EQ(delegate->uuid(), uuid);
         EXPECT_EQ(delegate->cached_page_content(),
-                  PageContent("Content 1", false));
+                  PageContent(u"", "Content 1", false));
         EXPECT_EQ(delegate->content_id(), 5);
         observer.StopObserving();
       });
