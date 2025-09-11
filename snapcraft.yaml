@@ -11,7 +11,7 @@ description: |
  today with our new Brave Payments system.
 confinement: strict
 compression: lzo
-base: core22
+base: core24
 apps:
   brave:
     command: opt/brave.com/brave/brave-browser
