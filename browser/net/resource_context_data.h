@@ -34,7 +34,7 @@ class BrowserContext;
 class RequestIDGenerator
     : public base::RefCountedThreadSafe<RequestIDGenerator> {
  public:
-  RequestIDGenerator() = default;
+  RequestIDGenerator();
   RequestIDGenerator(const RequestIDGenerator&) = delete;
   RequestIDGenerator& operator=(const RequestIDGenerator&) = delete;
   int64_t Generate() {
