@@ -73,6 +73,8 @@ class EngineConsumer {
       base::expected<std::vector<std::string>, mojom::APIError>)>;
 
   static std::string GetPromptForEntry(const mojom::ConversationTurnPtr& entry);
+  static std::string BuildSmartModeDefinitionMessage(
+      const mojom::SmartModeEntryPtr& smart_mode);
 
   EngineConsumer(ModelService* model_service, PrefService* prefs);
   EngineConsumer(const EngineConsumer&) = delete;

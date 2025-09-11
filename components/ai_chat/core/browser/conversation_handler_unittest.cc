@@ -206,7 +206,7 @@ class ConversationHandlerUnitTest : public testing::Test {
     conversation_handler_ = std::make_unique<ConversationHandler>(
         conversation_.get(), ai_chat_service_.get(), model_service_.get(),
         ai_chat_service_->GetCredentialManagerForTesting(),
-        mock_feedback_api_.get(), shared_url_loader_factory_,
+        mock_feedback_api_.get(), &prefs_, shared_url_loader_factory_,
         std::move(tool_providers));
 
     mock_tool_provider_ = static_cast<MockToolProvider*>(

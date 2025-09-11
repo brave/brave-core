@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/json/values_util.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "base/values.h"
@@ -208,7 +209,7 @@ std::vector<mojom::SmartModePtr> GetSmartModesFromPrefs(
 
   std::vector<mojom::SmartModePtr> smart_modes;
 
-  for (const auto& [id, mode_value] : smart_modes_dict) {
+  for (const auto [id, mode_value] : smart_modes_dict) {
     if (!mode_value.is_dict()) {
       continue;
     }

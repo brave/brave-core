@@ -433,7 +433,8 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
 
     auto entry = mojom::ConversationTurn::New(
         entry_uuid, character_type, action_type, text, prompt, selected_text,
-        std::nullopt, date, std::nullopt, std::nullopt, false, model_key);
+        std::nullopt, date, std::nullopt, std::nullopt, nullptr, false,
+        model_key);
 
     // events
     struct Event {

@@ -35,6 +35,13 @@ std::string EngineConsumer::GetPromptForEntry(
   return prompt_entry->prompt.value_or(prompt_entry->text);
 }
 
+// static
+std::string EngineConsumer::BuildSmartModeDefinitionMessage(
+    const mojom::SmartModeEntryPtr& smart_mode) {
+  return "Interpret '/" + smart_mode->shortcut + "' as '" + smart_mode->prompt +
+         "' when handling the request.";
+}
+
 EngineConsumer::EngineConsumer(ModelService* model_service, PrefService* prefs)
     : model_service_(model_service), prefs_(prefs) {}
 EngineConsumer::~EngineConsumer() = default;

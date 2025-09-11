@@ -508,6 +508,17 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
                             .Set("content", std::move(content_uploaded_pdfs)));
       }
     }
+
+    // Add Smart Mode definition message if this turn has one
+    if (turn->character_type == CharacterType::HUMAN && turn->smart_mode) {
+      std::string mode_definition =
+          BuildSmartModeDefinitionMessage(turn->smart_mode);
+      base::Value::Dict smart_mode_message;
+      smart_mode_message.Set("role", "user");
+      smart_mode_message.Set("content", mode_definition);
+      messages.Append(std::move(smart_mode_message));
+    }
+
     base::Value::Dict message;
     message.Set("role", turn->character_type == CharacterType::HUMAN
                             ? "user"
