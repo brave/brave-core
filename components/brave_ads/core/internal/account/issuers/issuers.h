@@ -39,7 +39,7 @@ class Issuers final {
   void FetchAfterDelay();
 
   void SuccessfullyFetchedIssuers(const IssuersInfo& issuers);
-  void FailedToFetchIssuers();
+  void FailedToFetchIssuers(bool should_retry);
 
   void Retry();
   void RetryCallback();
