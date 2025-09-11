@@ -12,12 +12,11 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class BraveWindowFrameGraphic;
-class BrowserWidget;
 
 class BraveOpaqueBrowserFrameView : public OpaqueBrowserFrameView {
   METADATA_HEADER(BraveOpaqueBrowserFrameView, OpaqueBrowserFrameView)
  public:
-  BraveOpaqueBrowserFrameView(BrowserWidget* frame,
+  BraveOpaqueBrowserFrameView(BrowserFrame* frame,
                               BrowserView* browser_view,
                               OpaqueBrowserFrameViewLayout* layout);
   ~BraveOpaqueBrowserFrameView() override;
