@@ -2454,6 +2454,11 @@
 # see https://github.com/brave/brave-browser/issues/49422
 -LocalNetworkAccessBrowserTest.HtmlScriptSrcAllowPermission
 
+# This test fails because we stub ResourceBundle::GetLottieThemedImageNamed to
+# return an empty ImageModel, but this test expects to run an ImageGenerator off
+# its returned Lottie ImageModel and first DCHECKs that it's not empty
+-FeatureFirstRunDialogHelperBrowserTest.DialogConstructedFromParams
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
