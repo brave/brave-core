@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/to_vector.h"
 #include "base/notimplemented.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -48,9 +49,9 @@ constexpr char kNotImplemented[] = "Not implemented";
 [[maybe_unused]] constexpr int kTxSignProofGeneration = 1;
 [[maybe_unused]] constexpr int kTxSignUserDeclined = 2;
 
-base::expected<
-    std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>>,
-    mojom::CardanoProviderErrorBundlePtr>
+base::expected<std::optional<std::vector<
+                   std::pair<CardanoAddress, cardano_rpc::UnspentOutput>>>,
+               mojom::CardanoProviderErrorBundlePtr>
 FilterUtxosByAmount(const GetCardanoUtxosTask::UtxoMap& utxo_map,
                     const std::optional<std::string>& amount) {
   std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>> all_utxos;
@@ -92,14 +93,13 @@ FilterUtxosByAmount(const GetCardanoUtxosTask::UtxoMap& utxo_map,
     }
 
     if (accumulated_sum.ValueOrDie() < numeric_amount.value()) {
-      return base::unexpected(mojom::CardanoProviderErrorBundle::New(
-          kAPIErrorInternalError, "Not enough funds", nullptr));
+      return base::ok(std::nullopt);
     }
 
-    return selected_utxos;
+    return base::ok(selected_utxos);
   }
 
-  return all_utxos;
+  return base::ok(all_utxos);
 }
 
 base::expected<base::span<const std::string>,
@@ -323,8 +323,14 @@ void CardanoApiImpl::OnGetUtxos(
     return;
   }
 
+  if (!filter_utxos_result.value()) {
+    // Can't achieve amount.
+    std::move(callback).Run(std::nullopt, nullptr);
+    return;
+  }
+
   auto serialized_utxos =
-      CardanoCip30Serializer::SerializeUtxos(filter_utxos_result.value());
+      CardanoCip30Serializer::SerializeUtxos(**filter_utxos_result);
 
   auto apply_paginate_result = ApplyPaginate(serialized_utxos, paginate);
   if (!apply_paginate_result.has_value()) {
@@ -333,10 +339,7 @@ void CardanoApiImpl::OnGetUtxos(
     return;
   }
 
-  std::move(callback).Run(
-      std::vector<std::string>(apply_paginate_result->begin(),
-                               apply_paginate_result->end()),
-      nullptr);
+  std::move(callback).Run(base::ToVector(*apply_paginate_result), nullptr);
 }
 
 void CardanoApiImpl::SignTx(const std::string& tx_cbor,

@@ -958,7 +958,7 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                          nullptr, future.GetCallback());
     auto [utxos, error] = future.Take();
     EXPECT_FALSE(utxos);
-    EXPECT_TRUE(error);
+    EXPECT_FALSE(error);
   }
 
   // Amount limit with pagination

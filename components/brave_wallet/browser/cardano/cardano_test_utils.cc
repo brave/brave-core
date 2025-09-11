@@ -226,7 +226,7 @@ CardanoTestRpcServer::GetUtxos() {
 }
 
 void CardanoTestRpcServer::AddUtxo(const std::string& address,
-                                   uint32_t amount) {
+                                   uint64_t amount) {
   auto& utxo = utxos_map_[address].emplace_back();
   utxo.tx_hash = HexEncodeLower(CreateNewTxHash());
   utxo.output_index = "13";
