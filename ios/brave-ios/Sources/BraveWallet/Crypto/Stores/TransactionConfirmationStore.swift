@@ -518,13 +518,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     for userVisibleTokens: [BraveWallet.BlockchainToken]
   ) async {
     let newAssetRatios = await assetRatioService.fetchPrices(
-      for: userVisibleTokens.map {
-        BraveWallet.AssetPriceRequest(
-          coinType: $0.coin,
-          chainId: $0.chainId,
-          address: $0.contractAddress.isEmpty ? nil : $0.contractAddress
-        )
-      },
+      for: userVisibleTokens,
       vsCurrency: currencyFormatter.currencyCode
     )
     assetRatios.update(with: newAssetRatios)

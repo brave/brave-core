@@ -174,13 +174,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         .filter { self.assetRatiosCache.getTokenPrice(for: $0) == nil }
       if !txTokensWithoutPrice.isEmpty {
         let assetRatios = await assetRatioService.fetchPrices(
-          for: userAssets.map {
-            BraveWallet.AssetPriceRequest(
-              coinType: $0.coin,
-              chainId: $0.chainId,
-              address: $0.contractAddress.isEmpty ? nil : $0.contractAddress
-            )
-          },
+          for: userAssets,
           vsCurrency: currencyFormatter.currencyCode
         )
         self.assetRatiosCache.update(with: assetRatios)

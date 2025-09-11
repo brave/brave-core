@@ -290,13 +290,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
 
       // fetch price for every user asset
       let prices: [BraveWallet.AssetPrice] = await assetRatioService.fetchPrices(
-        for: allUserAssets.map { token in
-          BraveWallet.AssetPriceRequest(
-            coinType: token.coin,
-            chainId: token.chainId,
-            address: token.contractAddress.isEmpty ? nil : token.contractAddress
-          )
-        },
+        for: allUserAssets,
         vsCurrency: currencyFormatter.currencyCode
       )
       tokenPricesCache.update(with: prices)

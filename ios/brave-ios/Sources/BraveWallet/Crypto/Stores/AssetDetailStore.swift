@@ -405,13 +405,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   ) async -> ([BraveWallet.AssetPrice], [BraveWallet.AssetTimePrice]) {
     // fetch prices for the asset
     let prices = await assetRatioService.fetchPrices(
-      for: [
-        BraveWallet.AssetPriceRequest(
-          coinType: token.coin,
-          chainId: token.chainId,
-          address: token.contractAddress.isEmpty ? nil : token.contractAddress
-        )
-      ],
+      for: [token],
       vsCurrency: currencyFormatter.currencyCode
     )
 
@@ -555,13 +549,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
 
   @MainActor private func updateAssetPricesCache(for tokens: [BraveWallet.BlockchainToken]) async {
     let prices = await assetRatioService.fetchPrices(
-      for: tokens.map {
-        BraveWallet.AssetPriceRequest(
-          coinType: $0.coin,
-          chainId: $0.chainId,
-          address: $0.contractAddress.isEmpty ? nil : $0.contractAddress
-        )
-      },
+      for: tokens,
       vsCurrency: currencyFormatter.currencyCode
     )
     self.assetPricesCache.update(with: prices)
