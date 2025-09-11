@@ -161,7 +161,8 @@ export class ModelConfigUI extends ModelConfigUIBase {
       key: modelKey,
       displayName: this.label,
       visionSupport: this.hasVisionSupport,
-      supportsTools: false
+      supportsTools: false,
+      isSuggestedModel: false,
     }
 
     this.fire('save', { modelConfig })
