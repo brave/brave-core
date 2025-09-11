@@ -24,15 +24,21 @@
 #include "base/types/same_as_any.h"
 #include "base/values.h"
 #include "net/http/http_request_headers.h"
+#include "net/http/http_response_headers.h"
+
+namespace endpoints {
+template <typename>
+struct WithHeaders;
+}  // namespace endpoints
 
 namespace endpoints::detail {
 template <typename T>
-concept ToValue = requires(T t) { base::WriteJson(t.ToValue()); } &&
-                  std::is_member_function_pointer_v<decltype(&T::ToValue)>;
+concept HasToValue = requires(T t) { base::WriteJson(t.ToValue()); } &&
+                     std::is_member_function_pointer_v<decltype(&T::ToValue)>;
 
 template <typename T>
-concept FromValue = requires(const base::Value& value) {
-  { T::FromValue(value) } -> std::same_as<std::optional<T>>;
+concept HasFromValue = requires(const base::Value& v) {
+  { T::FromValue(v) } -> std::same_as<std::optional<T>>;
 };
 
 template <typename T>
@@ -41,23 +47,48 @@ concept URL = requires {
 };
 
 template <typename T>
-concept Method = requires {
+concept HasMethod = requires {
   { T::Method() } -> std::same_as<std::string_view>;
 };
 
 template <typename T>
-concept Headers = requires(T t) {
+concept HasRequestHeaders = requires(T& t) {
   { t.headers } -> std::same_as<net::HttpRequestHeaders&>;
 };
 
 template <typename T>
-concept Request = ToValue<T> && Method<T> && Headers<T>;
+concept HasResponseHeaders = requires(T& t) {
+  { t.headers } -> std::same_as<scoped_refptr<net::HttpResponseHeaders>&>;
+};
 
 template <typename T>
-concept Response = FromValue<T>;
+struct RequestImpl {
+  static constexpr bool value = HasToValue<T> && HasMethod<T>;
+};
 
 template <typename T>
-concept Error = FromValue<T>;
+struct RequestImpl<WithHeaders<T>> {
+  static constexpr bool value = RequestImpl<T>::value;
+};
+
+template <typename T>
+concept Request = RequestImpl<T>::value;
+
+template <typename T>
+struct ResponseImpl {
+  static constexpr bool value = HasFromValue<T>;
+};
+
+template <typename T>
+struct ResponseImpl<WithHeaders<T>> {
+  static constexpr bool value = ResponseImpl<T>::value;
+};
+
+template <typename T>
+concept Response = ResponseImpl<T>::value;
+
+template <typename T>
+concept Error = Response<T>;
 
 template <typename T>
 concept Endpoint = URL<T>;
@@ -83,7 +114,7 @@ enum class HTTPMethod {
 };
 
 template <typename Body, HTTPMethod M>
-struct MakeRequest : Body {
+struct WithMethod : Body {
   static constexpr std::string_view Method() {
     if constexpr (M == HTTPMethod::kConnect) {
       return net::HttpRequestHeaders::kConnectMethod;
@@ -110,8 +141,6 @@ struct MakeRequest : Body {
                     "Unhandled HTTPMethod enum!");
     }
   }
-
-  net::HttpRequestHeaders headers;
 };
 
 template <typename Req, typename Rsp, typename Err>
@@ -121,42 +150,54 @@ struct Entry {
   using Error = Err;
   using Expected =
       base::expected<std::optional<Response>, std::optional<Error>>;
-  using Callback = base::OnceCallback<void(int, Expected)>;
+  using Callback = base::OnceCallback<void(Expected)>;
 };
 
 }  // namespace endpoints::detail
 
 namespace endpoints {
+template <detail::Request Req>
+struct WithHeaders<Req> : Req {
+  net::HttpRequestHeaders headers;
+};
 
-template <detail::ToValue Body>
-using CONNECT = detail::MakeRequest<Body, detail::HTTPMethod::kConnect>;
+template <detail::Response Rsp>
+struct WithHeaders<Rsp> : Rsp {
+  scoped_refptr<net::HttpResponseHeaders> headers;
+};
+}  // namespace endpoints
 
-template <detail::ToValue Body>
-using DELETE = detail::MakeRequest<Body, detail::HTTPMethod::kDelete>;
+namespace endpoints {
 
-template <detail::ToValue Body>
-using GET = detail::MakeRequest<Body, detail::HTTPMethod::kGet>;
+template <detail::HasToValue Body>
+using CONNECT = detail::WithMethod<Body, detail::HTTPMethod::kConnect>;
 
-template <detail::ToValue Body>
-using HEAD = detail::MakeRequest<Body, detail::HTTPMethod::kHead>;
+template <detail::HasToValue Body>
+using DELETE = detail::WithMethod<Body, detail::HTTPMethod::kDelete>;
 
-template <detail::ToValue Body>
-using OPTIONS = detail::MakeRequest<Body, detail::HTTPMethod::kOptions>;
+template <detail::HasToValue Body>
+using GET = detail::WithMethod<Body, detail::HTTPMethod::kGet>;
 
-template <detail::ToValue Body>
-using PATCH = detail::MakeRequest<Body, detail::HTTPMethod::kPatch>;
+template <detail::HasToValue Body>
+using HEAD = detail::WithMethod<Body, detail::HTTPMethod::kHead>;
 
-template <detail::ToValue Body>
-using POST = detail::MakeRequest<Body, detail::HTTPMethod::kPost>;
+template <detail::HasToValue Body>
+using OPTIONS = detail::WithMethod<Body, detail::HTTPMethod::kOptions>;
 
-template <detail::ToValue Body>
-using PUT = detail::MakeRequest<Body, detail::HTTPMethod::kPut>;
+template <detail::HasToValue Body>
+using PATCH = detail::WithMethod<Body, detail::HTTPMethod::kPatch>;
 
-template <detail::ToValue Body>
-using TRACE = detail::MakeRequest<Body, detail::HTTPMethod::kTrace>;
+template <detail::HasToValue Body>
+using POST = detail::WithMethod<Body, detail::HTTPMethod::kPost>;
 
-template <detail::ToValue Body>
-using TRACK = detail::MakeRequest<Body, detail::HTTPMethod::kTrack>;
+template <detail::HasToValue Body>
+using PUT = detail::WithMethod<Body, detail::HTTPMethod::kPut>;
+
+template <detail::HasToValue Body>
+using TRACE = detail::WithMethod<Body, detail::HTTPMethod::kTrace>;
+
+template <detail::HasToValue Body>
+using TRACK = detail::WithMethod<Body, detail::HTTPMethod::kTrack>;
 
 template <detail::Request Req>
 struct For {
