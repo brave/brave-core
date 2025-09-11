@@ -42,7 +42,7 @@ class SwapServiceFactory : public ProfileKeyedServiceFactoryIOS {
 
   // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
+      ProfileIOS* profile) const override;
 
   SwapServiceFactory(const SwapServiceFactory&) = delete;
   SwapServiceFactory& operator=(const SwapServiceFactory&) = delete;
