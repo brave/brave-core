@@ -125,6 +125,7 @@ ACTION_P(InsertScriptInPageDelayedCallback,
             fut->SetValue(val.Clone());
           }),
       base::Seconds(delay_in_secs));
+  task_environment->FastForwardBy(base::Seconds(delay_in_secs));
 }
 
 class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
@@ -143,6 +144,11 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
 class PsstTabWebContentsObserverUnitTestBase
     : public content::RenderViewHostTestHarness {
  public:
+  PsstTabWebContentsObserverUnitTestBase()
+      : content::RenderViewHostTestHarness(
+            base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+  ~PsstTabWebContentsObserverUnitTestBase() override = default;
+
   void SetUp() override {
     content::RenderViewHostTestHarness::SetUp();
 
