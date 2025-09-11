@@ -388,10 +388,8 @@ void AssetRatioService::GetPrice(
     return;
   }
 
-  // Create JSON payload for the new API
   std::string json_payload = CreatePricingRequestPayload(requests);
 
-  // Create URL with vs_currency query parameter
   GURL url = GetPriceURL(vs_currency);
 
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
