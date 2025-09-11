@@ -40,8 +40,6 @@ void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
 #define ShouldShowAppsShortcutInBookmarkBar \
   ShouldShowAppsShortcutInBookmarkBar_Unused
 
-// No Brave overrides for folder icon; use Chromium implementation.
-
 #define ToggleBookmarkBarWhenVisible                                       \
   ToggleBookmarkBarWhenVisible(content::BrowserContext* browser_context) { \
     BraveToggleBookmarkBarState(browser_context);                          \
