@@ -134,7 +134,7 @@ export const getPriceRequestForToken = (
     BraveWallet.BlockchainToken,
     'coin' | 'chainId' | 'contractAddress'
   >,
-) => {
+): BraveWallet.AssetPriceRequest | undefined => {
   // Skip price of testnet tokens
   if (SupportedTestNetworks.includes(token.chainId)) {
     return
@@ -144,5 +144,5 @@ export const getPriceRequestForToken = (
     coinType: token.coin,
     chainId: token.chainId,
     address: token.contractAddress || undefined,
-  } as BraveWallet.AssetPriceRequest
+  } satisfies BraveWallet.AssetPriceRequest
 }
