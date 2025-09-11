@@ -126,7 +126,9 @@ class WebDiscoveryInfoBarContentViewBackground : public views::Background {
     canvas->DrawImageInt(
         gfx::ImageSkiaOperations::CreateResizedImage(
             *rb.GetImageSkiaNamed(
-                ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors()
+                ui::NativeTheme::GetInstanceForNativeUi()
+                            ->preferred_color_scheme() ==
+                        ui::NativeTheme::PreferredColorScheme::kDark
                     ? IDR_BRAVE_WEB_DISCOVERY_INFOBAR_BG_GRAPHIC_DARK
                     : IDR_BRAVE_WEB_DISCOVERY_INFOBAR_BG_GRAPHIC),
             skia::ImageOperations::RESIZE_BEST, view->size()),
