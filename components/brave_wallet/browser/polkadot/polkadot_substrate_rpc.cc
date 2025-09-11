@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/polkadot/polkadot_rpc.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
 #include "base/functional/bind.h"
 
@@ -14,16 +14,16 @@ using APIRequestResult = api_request_helper::APIRequestResult;
 namespace {
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("polkadot_rpc", R"(
+  return net::DefineNetworkTrafficAnnotation("polkadot_substrate_rpc", R"(
       semantics {
-        sender: "Polkadot RPC"
+        sender: "Polkadot Substrate RPC"
         description:
           "This service is used to communicate with Polkadot Substrate nodes "
           "on behalf of the user interacting with the native Brave wallet."
         trigger:
           "Triggered by uses of the native Brave wallet."
         data:
-          "Polkadot JSON RPC response bodies."
+          "Polkadot Substrate JSON RPC response bodies."
         destination: WEBSITE
       }
       policy {
