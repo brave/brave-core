@@ -486,6 +486,7 @@ struct AssetPriceRequest {
 enum AssetPriceSource {
   kCoingecko,
   kJupiter,
+  kUnknown,
 };
 
 enum Gate3CacheStatus {
