@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
-#include "brave/browser/ui/views/split_view/split_view_separator_delegate.h"
+#include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -21,8 +21,7 @@ class Widget;
 class SplitViewLocationBar;
 class BraveContentsContainerView;
 
-class BraveMultiContentsView : public MultiContentsView,
-                               public SplitViewSeparatorDelegate {
+class BraveMultiContentsView : public MultiContentsView {
   METADATA_HEADER(BraveMultiContentsView, MultiContentsView)
 
  public:
@@ -47,9 +46,7 @@ class BraveMultiContentsView : public MultiContentsView,
 
   // MultiContentsView:
   void Layout(PassKey) override;
-
-  // SplitViewSeparatorDelegate:
-  void OnDoubleClicked() override;
+  void ResetResizeArea() override;
 
   std::vector<ContentsContainerView*> contents_container_views_for_testing()
       const {

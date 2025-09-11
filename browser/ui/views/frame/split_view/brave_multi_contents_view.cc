@@ -11,7 +11,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/split_view/split_view_location_bar.h"
-#include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
@@ -33,20 +32,8 @@ BraveMultiContentsView::BraveMultiContentsView(
     BrowserView* browser_view,
     std::unique_ptr<MultiContentsViewDelegate> delegate)
     : MultiContentsView(browser_view, std::move(delegate)) {
-  // Replace upstream's resize area with ours.
-  // To prevent making |resize_area_| dangling pointer,
-  // reset it after setting null to |resize_area_|.
-  {
-    std::unique_ptr<views::View> resize_area = RemoveChildViewT(resize_area_);
-    resize_area_ = nullptr;
-  }
-  auto* separator = AddChildView(
-      std::make_unique<SplitViewSeparator>(browser_view_->browser()));
-  separator->set_resize_delegate(this);
-  separator->set_separator_delegate(this);
-  separator->SetPreferredSize(
+  resize_area_->SetPreferredSize(
       gfx::Size(kSpacingBetweenContentsContainerViews, 0));
-  resize_area_ = separator;
   start_contents_view_inset_ = gfx::Insets();
   end_contents_view_inset_ = gfx::Insets();
 }
@@ -59,7 +46,7 @@ void BraveMultiContentsView::Layout(PassKey) {
   BraveBrowserView::From(browser_view_)->NotifyDialogPositionRequiresUpdate();
 }
 
-void BraveMultiContentsView::OnDoubleClicked() {
+void BraveMultiContentsView::ResetResizeArea() {
   // Give same width on both contents view.
   // Pass true to make delegate save ratio in session service like resizing
   // complete.
@@ -84,12 +71,6 @@ void BraveMultiContentsView::UpdateSecondaryLocationBar() {
       GetInactiveContentsView()->web_contents());
   secondary_location_bar_->SetParentWebView(
       contents_container_views_[inactive_index]);
-
-  // Set separator's menu widget visibility after setting location bar's to make
-  // separator's menu widget locate above the location bar.
-  auto* separator = static_cast<SplitViewSeparator*>(resize_area_);
-  CHECK(separator);
-  separator->ShowMenuButtonWidget();
 }
 
 void BraveMultiContentsView::UpdateCornerRadius() {
