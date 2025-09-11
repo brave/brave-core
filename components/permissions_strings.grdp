@@ -41,13 +41,13 @@
       Notifications are automatically blocked for all sites except ones you allow
     </message>
     <message name="IDS_NOTIFICATION_QUIET_PERMISSION_INFOBAR_PREDICTION_SERVICE_MESSAGE" desc="Text used as notification message when requesting permission for Web Notifications via a notification. Used when the prediction service has decided that the user will be very unlikely to grant this permission.">
-      Notifications were automatically blocked because you usually don't allow them
+      Brave thinks you don't want notifications from this site. So, requests are hidden to reduce interruptions.
     </message>
     <message name="IDS_LOCATION_QUIET_PERMISSION_MESSAGE_UI" desc="Text used as notification message when requesting Gelocation permission. Used when quiet UI is enabled in settings.">
       Location requests are automatically blocked for all sites except ones you allow
     </message>
     <message name="IDS_LOCATION_QUIET_PERMISSION_MESSAGE_UI_PREDICTION_SERVICE" desc="Text used as notification message when requesting permission for Geolocation. Used when the prediction service has decided that the user will be very unlikely to grant this permission.">
-      This site was blocked from knowing your precise location because you usually don't allow this
+      Brave thinks you don't want to use your location on this site. So, requests are hidden to reduce interruptions.
     </message>
     <message name="IDS_MEDIA_CAPTURE_AUDIO_ONLY_INFOBAR_TEXT" desc="Text requesting permission for a site to access the computer's microphone.">
       <ph name="HOST">$1<ex>html5rocks.com</ex></ph> wants to use your microphone
@@ -489,7 +489,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
   </if>
   <if expr="is_chromeos">
     <message name="IDS_SMART_CARD_PERMISSION_PROMPT" desc="Text on dialog that asks the user for permission to access a smart card reader device and the card inserted in it (or presented to it, if contactless).">
-      Control authentication devices named <ph name="ReaderName">$1<ex>HID Omnikey</ex></ph> and smart cards used with them
+      Control authentication devices of type <ph name="ReaderName">$1<ex>HID Omnikey</ex></ph> and smart cards accessible to them
     </message>
     <message name="IDS_SMART_CARD_PERMISSION_ALWAYS_ALLOW" desc="Label on button to always allow access to this smart card reader and any card inserted in (or presented to) it.">
       Always allow, with any card
