@@ -26,23 +26,41 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
-// See //brave/components/endpoint_client/README.md
-// for design, motivation, usage, and examples.
-
 namespace endpoint_client {
 
 template <endpoints::detail::Endpoint Endpoint>
 class Client {
   template <typename T>
   struct Parse {
-    static auto FromValue(const base::Value& value) {
-      return T::FromValue(value);
+    static auto From(std::optional<std::string> response_body,
+                     scoped_refptr<net::HttpResponseHeaders> headers) {
+      std::optional<T> result;
+
+      const auto reply = base::JSONReader::Read(response_body.value_or(""));
+      if (!reply) {
+        return result;
+      }
+
+      auto t = T::FromValue(*reply);
+      if (!t) {
+        return result;
+      }
+
+      if constexpr (endpoints::detail::HasResponseHeaders<T>) {
+        result.emplace(std::move(*t));
+        result->headers = std::move(headers);
+      } else {
+        result = std::move(t);
+      }
+
+      return result;
     }
   };
 
   template <typename... Ts>
   struct Parse<std::variant<Ts...>> {
-    static auto FromValue(const base::Value& value) {
+    static auto From(std::optional<std::string> response_body,
+                     scoped_refptr<net::HttpResponseHeaders> headers) {
       std::optional<std::variant<Ts...>> result;
       (
           [&] {
@@ -50,8 +68,8 @@ class Client {
               return;
             }
 
-            if (auto t = Ts::FromValue(value)) {
-              result = std::move(*t);
+            if (auto ts = Parse<Ts>::From(response_body, headers)) {
+              result = std::move(*ts);
             }
           }(),
           ...);
@@ -79,26 +97,21 @@ class Client {
 
           const auto* response_info = simple_url_loader->ResponseInfo();
           if (!response_info) {
-            return std::move(callback).Run(simple_url_loader->NetError(),
-                                           base::unexpected(std::nullopt));
+            return std::move(callback).Run(base::unexpected(std::nullopt));
           }
 
-          const auto& headers = response_info->headers;
+          auto headers = response_info->headers;
           if (!headers) {
-            return std::move(callback).Run(simple_url_loader->NetError(),
-                                           base::unexpected(std::nullopt));
+            return std::move(callback).Run(base::unexpected(std::nullopt));
           }
 
           const auto status_code = headers->response_code();
-
-          const auto reply = base::JSONReader::Read(response_body.value_or(""));
           std::move(callback).Run(
-              status_code,
               status_code >= 200 && status_code < 300
-                  ? Expected(reply ? Parse<Response>::FromValue(*reply)
-                                   : std::nullopt)
-                  : base::unexpected(reply ? Parse<Error>::FromValue(*reply)
-                                           : std::nullopt));
+                  ? Expected(Parse<Response>::From(std::move(response_body),
+                                                   std::move(headers)))
+                  : base::unexpected(Parse<Error>::From(
+                        std::move(response_body), std::move(headers))));
         };
 
     const auto json = base::WriteJson(request.ToValue());
@@ -107,7 +120,9 @@ class Client {
     auto resource_request = std::make_unique<network::ResourceRequest>();
     resource_request->url = Endpoint::URL();
     resource_request->method = request.Method();
-    resource_request->headers = std::move(request.headers);
+    if constexpr (endpoints::detail::HasRequestHeaders<Request>) {
+      resource_request->headers = std::move(request.headers);
+    }
 
     auto simple_url_loader = network::SimpleURLLoader::Create(
         std::move(resource_request),

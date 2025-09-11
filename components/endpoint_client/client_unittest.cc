@@ -41,6 +41,7 @@ using endpoints::Endpoint;
 using endpoints::For;
 using endpoints::PATCH;
 using endpoints::POST;
+using endpoints::WithHeaders;
 
 namespace {
 template <const char* Key>
@@ -107,22 +108,24 @@ struct TestEndpoint
           //   >
           For<PATCH<Request2>>::RespondsWith<Response1>::ErrorsWith<Error1,
                                                                     Error2>,
-          // PATCH<Request1> =>
+          // WithHeaders<PATCH<Request1>> =>
           //   expected<
           //     optional<Response1>,
           //     optional<Error1>
           //   >
-          For<PATCH<Request1>>::RespondsWith<Response1>::ErrorsWith<Error1>> {
+          For<WithHeaders<PATCH<Request1>>>::RespondsWith<
+              WithHeaders<Response1>>::ErrorsWith<Error1>> {
   static GURL URL() { return GURL("https://example.com/api/query"); }
 };
 
 struct TestCase {
-  std::variant<POST<Request1>, PATCH<Request2>, PATCH<Request1>> request;
+  std::variant<POST<Request1>, PATCH<Request2>, WithHeaders<PATCH<Request1>>>
+      request;
   net::HttpStatusCode status_code;
   std::string raw_reply;
   std::variant<TestEndpoint::EntryFor<POST<Request1>>::Expected,
                TestEndpoint::EntryFor<PATCH<Request2>>::Expected,
-               TestEndpoint::EntryFor<PATCH<Request1>>::Expected>
+               TestEndpoint::EntryFor<WithHeaders<PATCH<Request1>>>::Expected>
       parsed_reply;
 };
 
@@ -178,17 +181,41 @@ TEST_P(EndpointClientTest, Send) {
 
         using Entry = TestEndpoint::EntryFor<Request>;
         using Expected = Entry::Expected;
+        using Response = Entry::Response;
         using Callback = Entry::Callback;
 
         base::RunLoop run_loop;
-
-        ASSERT_TRUE(std::holds_alternative<Expected>(test_case.parsed_reply));
-
         base::MockCallback<Callback> callback;
-        EXPECT_CALL(callback, Run(test_case.status_code,
-                                  std::get<Expected>(test_case.parsed_reply)))
-            .Times(1)
-            .WillOnce([&] { run_loop.Quit(); });
+        EXPECT_CALL(callback, Run).Times(1).WillOnce([&](Expected expected) {
+          ASSERT_TRUE(std::holds_alternative<Expected>(test_case.parsed_reply));
+          const Expected& got = std::get<Expected>(test_case.parsed_reply);
+          EXPECT_EQ(expected, got);
+          // TODO(sszaloki): currently, if a Response/Error type is
+          // WithHeaders<T>, EXPECT_EQ() will use T::operator==(), which
+          // WithHeaders<T> inherits from T. Check headers for equality.
+          // Below is a workaround, as HttpResponseHeaders::StrictlyEquals()
+          // doesn't work because of a space difference.
+          if constexpr (endpoints::detail::HasResponseHeaders<Response>) {
+            if (expected.has_value() && expected.value() &&
+                expected.value()->headers) {
+              ASSERT_TRUE(got.has_value() && got.value() &&
+                          got.value()->headers);
+
+              const auto& expected_headers = expected.value()->headers;
+              const auto& got_headers = got.value()->headers;
+
+              std::string expected_raw_no_ws;
+              std::string got_raw_no_ws;
+              base::RemoveChars(expected_headers->raw_headers(), " ",
+                                &expected_raw_no_ws);
+              base::RemoveChars(got_headers->raw_headers(), " ",
+                                &got_raw_no_ws);
+
+              EXPECT_EQ(expected_raw_no_ws, got_raw_no_ws);
+            }
+          }
+          run_loop.Quit();
+        });
 
         Client<TestEndpoint>::Send(
             test_url_loader_factory_.GetSafeWeakWrapper(), request,
@@ -266,21 +293,34 @@ INSTANTIATE_TEST_SUITE_P(
             .raw_reply = R"({"error2": "Error2"})",
             .parsed_reply = TestEndpoint::EntryFor<PATCH<Request2>>::Expected(
                 base::unexpected(Error2("Error2")))},
-        // PATCH<Request1>
+        // WithHeaders<PATCH<Request1>>
         TestCase{
-            // ==> Response1
-            .request = PATCH<Request1>{{"PATCH<Request1>"}},
+            // ==> WithHeaders<Response1>
+            .request =
+                WithHeaders<PATCH<Request1>>{{"WithHeaders<PATCH<Request1>>"}},
             .status_code = net::HTTP_NO_CONTENT,
             .raw_reply = R"({"response1": "Response1"})",
-            .parsed_reply = TestEndpoint::EntryFor<PATCH<Request1>>::Expected(
-                Response1("Response1"))},
+            .parsed_reply =
+                [] {
+                  WithHeaders<Response1> response;
+                  response.text = "Response1";
+                  response.headers =
+                      net::HttpResponseHeaders::Builder(net::HttpVersion(1, 1),
+                                                        "204 No Content")
+                          .AddHeader("Content-type", "text/html")
+                          .Build();
+                  return TestEndpoint::EntryFor<WithHeaders<PATCH<Request1>>>::
+                      Expected(std::move(response));
+                }()},
         TestCase{
             // ==> Error1
-            .request = PATCH<Request1>{{"PATCH<Request1>"}},
+            .request =
+                WithHeaders<PATCH<Request1>>{{"WithHeaders<PATCH<Request1>>"}},
             .status_code = net::HTTP_NOT_MODIFIED,
             .raw_reply = R"({"error1": "Error1"})",
-            .parsed_reply = TestEndpoint::EntryFor<PATCH<Request1>>::Expected(
-                base::unexpected(Error1("Error1")))}),
+            .parsed_reply =
+                TestEndpoint::EntryFor<WithHeaders<PATCH<Request1>>>::Expected(
+                    base::unexpected(Error1("Error1")))}),
     [](const auto& info) {
       return std::visit(
           [&](const auto& request) {
