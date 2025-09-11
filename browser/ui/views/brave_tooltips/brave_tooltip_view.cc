@@ -258,7 +258,9 @@ void BraveTooltipView::UpdateTitleLabelColors() {
     return;
   }
 
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors =
+      GetNativeTheme()->preferred_color_scheme() ==
+      ui::NativeTheme::PreferredColorScheme::kDark;
   title_label_->SetEnabledColor(should_use_dark_colors
                                     ? kDarkModeTitleTextColor
                                     : kLightModeTitleTextColor);
@@ -331,7 +333,9 @@ void BraveTooltipView::UpdateBodyLabelColors() {
     return;
   }
 
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors =
+      GetNativeTheme()->preferred_color_scheme() ==
+      ui::NativeTheme::PreferredColorScheme::kDark;
   body_label_->SetEnabledColor(should_use_dark_colors
                                    ? kDarkModeBodyTextColor
                                    : kLightModeBodyTextColor);
@@ -362,7 +366,9 @@ void BraveTooltipView::UpdateOkButtonColors() {
     return;
   }
 
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors =
+      GetNativeTheme()->preferred_color_scheme() ==
+      ui::NativeTheme::PreferredColorScheme::kDark;
   ok_button_->SetBackground(views::CreateRoundedRectBackground(
       kDefaultButtonColor, kButtonCornerRadius));
   ok_button_->SetTextColor(views::Button::ButtonState::STATE_DISABLED,
@@ -404,7 +410,9 @@ void BraveTooltipView::UpdateCancelButtonColors() {
     return;
   }
 
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors =
+      GetNativeTheme()->preferred_color_scheme() ==
+      ui::NativeTheme::PreferredColorScheme::kDark;
   cancel_button_->SetBackground(views::CreateRoundedRectBackground(
       should_use_dark_colors ? kDarkModeButtonColor : kLightModeButtonColor,
       kButtonCornerRadius));

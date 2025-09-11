@@ -144,7 +144,9 @@ BraveDarkModeType GetActiveBraveDarkModeType() {
       return GetDarkModeTypeBasedOnChannel();
     }
 
-    return ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors()
+    return ui::NativeTheme::GetInstanceForNativeUi()
+                       ->preferred_color_scheme() ==
+                   ui::NativeTheme::PreferredColorScheme::kDark
                ? BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK
                : BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT;
   }

@@ -16,14 +16,9 @@
 namespace ui {
 
 void SetUseDarkColors(bool dark_mode) {
-  NativeTheme::GetInstanceForNativeUi()->set_use_dark_colors(dark_mode);
-  NativeTheme::GetInstanceForWeb()->set_use_dark_colors(dark_mode);
-}
-// Recalculate preferred color scheme based on current dark mode that set by
-// SetDarkMode() and set it to NativeTheme.
-void ReCalcAndSetPreferredColorScheme() {
-  auto scheme =
-      NativeTheme::GetInstanceForNativeUi()->CalculatePreferredColorScheme();
+  ui::NativeTheme::PreferredColorScheme scheme =
+      dark_mode ? ui::NativeTheme::PreferredColorScheme::kDark
+                : ui::NativeTheme::PreferredColorScheme::kLight;
   NativeTheme::GetInstanceForNativeUi()->set_preferred_color_scheme(scheme);
   NativeTheme::GetInstanceForWeb()->set_preferred_color_scheme(scheme);
 }
@@ -37,7 +32,6 @@ void SetSystemDarkModeForNonDefaultMode(bool dark_mode) {
   // because ReCalcPreferredColorScheme() calculates preferred color scheme
   // based on dark mode.
   ui::SetUseDarkColors(dark_mode);
-  ui::ReCalcAndSetPreferredColorScheme();
   // Have to notify observers explicitly because ui::SetDarkMode() and
   // ui::ReCalcPreferredColorScheme| just update ui::NativeTheme:dark_mode_ and
   // ui::NativeTheme:preferred_color_scheme_ values. Need to propagate them.

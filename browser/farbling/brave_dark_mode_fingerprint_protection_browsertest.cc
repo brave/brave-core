@@ -135,7 +135,9 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
   }
 
   void SetDarkMode(bool dark_mode) {
-    test_theme_.SetDarkMode(dark_mode);
+    test_theme_.SetPreferredColorScheme(
+        dark_mode ? ui::NativeTheme::PreferredColorScheme::kDark
+                  : ui::NativeTheme::PreferredColorScheme::kLight);
     browser()
         ->tab_strip_model()
         ->GetActiveWebContents()
