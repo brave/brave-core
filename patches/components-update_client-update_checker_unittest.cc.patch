@@ -1,8 +1,18 @@
 diff --git a/components/update_client/update_checker_unittest.cc b/components/update_client/update_checker_unittest.cc
-index e2417243e8e8d6f05184e1fb797483ab6fa0b609..b50959ff160aa7de8835b105e64828d66b5bde1e 100644
+index e2417243e8e8d6f05184e1fb797483ab6fa0b609..1b74a4de77a9c71559c5b79dc2b48a13332cfa70 100644
 --- a/components/update_client/update_checker_unittest.cc
 +++ b/components/update_client/update_checker_unittest.cc
-@@ -328,8 +328,7 @@ TEST_P(UpdateCheckerTest, UpdateCheckSuccess) {
+@@ -289,8 +289,7 @@ TEST_P(UpdateCheckerTest, UpdateCheckSuccess) {
+   EXPECT_EQ("cr", *request->FindString("dedup"));
+   ASSERT_TRUE(request->FindString("extra"));
+   EXPECT_EQ("params", *request->FindString("extra"));
+-  ASSERT_TRUE(request->FindIntByDottedPath("hw.physmemory").has_value());
+-  EXPECT_LT(0, *request->FindIntByDottedPath("hw.physmemory"));
++  EXPECT_FALSE(request->contains("hw"));
+   EXPECT_FALSE(request->contains("nacl_arch"));
+   ASSERT_TRUE(request->FindString("prodchannel"));
+   EXPECT_EQ("fake_channel_string", *request->FindString("prodchannel"));
+@@ -328,8 +327,7 @@ TEST_P(UpdateCheckerTest, UpdateCheckSuccess) {
    EXPECT_EQ("0.9", *app->FindString("version"));
    ASSERT_TRUE(app->FindString("brand"));
    EXPECT_EQ("TEST", *app->FindString("brand"));
@@ -12,7 +22,7 @@ index e2417243e8e8d6f05184e1fb797483ab6fa0b609..b50959ff160aa7de8835b105e64828d6
    EXPECT_EQ("name1", *app->FindString("cohortname"));
    EXPECT_EQ("hint2", *app->FindString("cohorthint"));
    EXPECT_EQ("id3", *app->FindString("cohort"));
-@@ -425,7 +424,7 @@ TEST_P(UpdateCheckerTest, UpdateCheckInvalidAp) {
+@@ -425,7 +423,7 @@ TEST_P(UpdateCheckerTest, UpdateCheckInvalidAp) {
    EXPECT_EQ(kUpdateItemId, CHECK_DEREF(app.FindString("appid")));
    EXPECT_EQ("0.9", CHECK_DEREF(app.FindString("version")));
    EXPECT_EQ("TEST", CHECK_DEREF(app.FindString("brand")));

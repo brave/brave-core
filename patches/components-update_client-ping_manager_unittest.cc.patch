@@ -1,7 +1,16 @@
 diff --git a/components/update_client/ping_manager_unittest.cc b/components/update_client/ping_manager_unittest.cc
-index 8284de71ff10c18fa1d69df7a78598d67846aa68..fae5469d59e89b6b0acdefd1ee1212a3e8255fe6 100644
+index 8284de71ff10c18fa1d69df7a78598d67846aa68..3c5298d352b789ab814af3c9381f3cd7122b37b8 100644
 --- a/components/update_client/ping_manager_unittest.cc
 +++ b/components/update_client/ping_manager_unittest.cc
+@@ -152,7 +152,7 @@ TEST_P(PingManagerTest, SendPing) {
+               CHECK_DEREF(request.FindString("acceptformat")));
+     EXPECT_TRUE(request.contains("arch"));
+     EXPECT_EQ("cr", CHECK_DEREF(request.FindString("dedup")));
+-    EXPECT_LT(0, request.FindByDottedPath("hw.physmemory")->GetInt());
++    EXPECT_FALSE(request.contains("hw"));
+     EXPECT_FALSE(request.contains("nacl_arch"));
+     EXPECT_EQ("fake_channel_string",
+               CHECK_DEREF(request.FindString("prodchannel")));
 @@ -174,8 +174,7 @@ TEST_P(PingManagerTest, SendPing) {
      EXPECT_EQ("abc", CHECK_DEREF(app.FindString("appid")));
      EXPECT_EQ("ap1", CHECK_DEREF(app.FindString("ap")));
