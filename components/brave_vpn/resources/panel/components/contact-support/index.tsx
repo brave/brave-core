@@ -12,7 +12,7 @@ import Input from '@brave/leo/react/input'
 import Toggle from '@brave/leo/react/toggle'
 import { PanelHeader } from '../select-region-list'
 import getPanelBrowserAPI, * as BraveVPN from '../../api/panel_browser_api'
-import * as S from './style'
+import * as Styles from './style'
 
 interface Props {
   onCloseContactSupport: () => void
@@ -44,15 +44,15 @@ const defaultSupportState: ContactSupportState = {
 
 const SUBJECT_OPTIONS = new Map([
   ['otherConnectionProblems',
-    getLocale('braveVpnSupportSubjectOtherConnectionProblem')],
+    getLocale(S.BRAVE_VPN_SUPPORT_SUBJECT_OTHER_CONNECTION_PROBLEM)],
   ['noInternet',
-    getLocale('braveVpnSupportSubjectNoInternet')],
+    getLocale(S.BRAVE_VPN_SUPPORT_SUBJECT_NO_INTERNET)],
   ['slowConnection',
-    getLocale('braveVpnSupportSubjectSlowConnection')],
+    getLocale(S.BRAVE_VPN_SUPPORT_SUBJECT_SLOW_CONNECTION)],
   ['websiteProblems',
-    getLocale('braveVpnSupportSubjectWebsiteDoesntWork')],
+    getLocale(S.BRAVE_VPN_SUPPORT_SUBJECT_WEBSITE_DOESNT_WORK)],
   ['other',
-    getLocale('braveVpnSupportSubjectOther')]
+    getLocale(S.BRAVE_VPN_SUPPORT_SUBJECT_OTHER)]
 ])
 
 type FormElement = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -188,44 +188,44 @@ function ContactSupport(props: Props) {
   let emailAddressErrorMessage = ''
   if (showErrors) {
     if (formData.contactEmail && !emailAddressIsValid) {
-      emailAddressErrorMessage = getLocale('braveVpnSupportEmailNotValid')
+      emailAddressErrorMessage = getLocale(S.BRAVE_VPN_SUPPORT_EMAIL_NOT_VALID)
     } else {
-      emailAddressErrorMessage = getLocale('braveVpnSupportFieldIsRequired')
+      emailAddressErrorMessage = getLocale(S.BRAVE_VPN_SUPPORT_FIELD_IS_REQUIRED)
     }
   }
 
   return (
-    <S.Box>
-      <S.PanelContent>
+    <Styles.Box>
+      <Styles.PanelContent>
         <PanelHeader
-          title={getLocale('braveVpnContactSupport')}
-          buttonAriaLabel={getLocale('braveVpnSupportPanelBackButtonAriaLabel')}
+          title={getLocale(S.BRAVE_VPN_CONTACT_SUPPORT)}
+          buttonAriaLabel={getLocale(S.BRAVE_VPN_SUPPORT_PANEL_BACK_BUTTON_ARIA_LABEL)}
           onClick={() => props.onCloseContactSupport()}
         />
-        <S.TopContent>
-          <S.Form onSubmit={(e) => e.preventDefault()}>
+        <Styles.TopContent>
+          <Styles.Form onSubmit={(e) => e.preventDefault()}>
             <Input
-              placeholder={getLocale('braveVpnSupportEmailInputPlaceholder')}
+              placeholder={getLocale(S.BRAVE_VPN_SUPPORT_EMAIL_PLACEHOLDER)}
               showErrors={emailAddressErrorMessage.length !== 0}
               value={formData.contactEmail ?? ''}
               onChange={handleInputOnChange}
             >
-              <S.StyledLabel>{getLocale('braveVpnSupportEmail')}</S.StyledLabel>
-              <S.ErrorLabel slot='errors'>
+              <Styles.StyledLabel>{getLocale(S.BRAVE_VPN_SUPPORT_EMAIL)}</Styles.StyledLabel>
+              <Styles.ErrorLabel slot='errors'>
                 {emailAddressErrorMessage}
-              </S.ErrorLabel>
+              </Styles.ErrorLabel>
             </Input>
             <Dropdown
               showErrors={showErrors && formData.problemSubject?.length === 0}
               value={SUBJECT_OPTIONS.get(problemSubject)}
               onChange={handleSelectOnChange}
             >
-              <S.StyledDropdownPlaceholder slot="placeholder">
-                {getLocale('braveVpnSupportSubjectNotSet')}
-              </S.StyledDropdownPlaceholder>
-              <S.StyledLabel slot="label">
-                {getLocale('braveVpnSupportSubject')}
-              </S.StyledLabel>
+              <Styles.StyledDropdownPlaceholder slot="placeholder">
+                {getLocale(S.BRAVE_VPN_SUPPORT_SUBJECT_NOTSET)}
+              </Styles.StyledDropdownPlaceholder>
+              <Styles.StyledLabel slot="label">
+                {getLocale(S.BRAVE_VPN_SUPPORT_SUBJECT)}
+              </Styles.StyledLabel>
               {[...SUBJECT_OPTIONS.keys()].map((key) => {
                 return (
                   <leo-option class='option' key={key} value={key}>
@@ -233,48 +233,48 @@ function ContactSupport(props: Props) {
                   </leo-option>
                 )
               })}
-              <S.ErrorLabel slot='errors'>
-                {getLocale('braveVpnSupportSubjectNotSet')}
-              </S.ErrorLabel>
+              <Styles.ErrorLabel slot='errors'>
+                {getLocale(S.BRAVE_VPN_SUPPORT_SUBJECT_NOTSET)}
+              </Styles.ErrorLabel>
             </Dropdown>
-            <S.TextareaWrapper
+            <Styles.TextareaWrapper
               showError={showErrors && formData.problemBody?.length === 0}
             >
-              <S.StyledLabel>{getLocale('braveVpnSupportBody')}</S.StyledLabel>
+              <Styles.StyledLabel>{getLocale(S.BRAVE_VPN_SUPPORT_BODY)}</Styles.StyledLabel>
               <textarea
-                placeholder={getLocale('braveVpnSupportDescriptionPlaceholder')}
+                placeholder={getLocale(S.BRAVE_VPN_SUPPORT_BODY_PLACEHOLDER)}
                 value={formData.problemBody}
                 onChange={getOnChangeField('problemBody')}
               />
               {(showErrors && formData.problemBody?.length === 0) && (
-                <S.ErrorLabel>
-                  {getLocale('braveVpnSupportFieldIsRequired')}
-                </S.ErrorLabel>
+                <Styles.ErrorLabel>
+                  {getLocale(S.BRAVE_VPN_SUPPORT_FIELD_IS_REQUIRED)}
+                </Styles.ErrorLabel>
               )}
-            </S.TextareaWrapper>
-            <S.OptionalValues>
-              <S.SectionDescription>
-                {getLocale('braveVpnSupportOptionalHeader')}
-              </S.SectionDescription>
-              <S.Notes>
+            </Styles.TextareaWrapper>
+            <Styles.OptionalValues>
+              <Styles.SectionDescription>
+                {getLocale(S.BRAVE_VPN_SUPPORT_OPTIONAL_HEADER)}
+              </Styles.SectionDescription>
+              <Styles.Notes>
                 <p>
-                  {getLocale('braveVpnSupportOptionalNotes')}{' '}
+                  {getLocale(S.BRAVE_VPN_SUPPORT_OPTIONAL_NOTES)}{' '}
                   <a
                     href='#'
                     onClick={handlePrivacyPolicyClick}
                   >
-                    {getLocale('braveVpnSupportOptionalNotesPrivacyPolicy')}
+                    {getLocale(S.BRAVE_VPN_SUPPORT_OPTIONAL_NOTES_PRIVACY_POLICY)}
                   </a>
                   .
                 </p>
-              </S.Notes>
-              <S.OptionalValuesFields>
-                <S.OptionalValueLabel
+              </Styles.Notes>
+              <Styles.OptionalValuesFields>
+                <Styles.OptionalValueLabel
                   onClick={(e) => toggleOptionalValue('shareHostname')}
                 >
                   <div className={'optionalValueTitle'}>
                     <span className={'optionalValueTitleKey'}>
-                      {getLocale('braveVpnSupportOptionalVpnHostname')}
+                      {getLocale(S.BRAVE_VPN_SUPPORT_OPTIONAL_VPN_HOSTNAME)}
                     </span>{' '}
                     {supportData?.hostname}
                   </div>
@@ -283,14 +283,14 @@ function ContactSupport(props: Props) {
                     size='small'
                     onChange={getOnChangeToggle('shareHostname')}
                   />
-                </S.OptionalValueLabel>
-                <S.Divider />
-                <S.OptionalValueLabel
+                </Styles.OptionalValueLabel>
+                <Styles.Divider />
+                <Styles.OptionalValueLabel
                   onClick={(e) => toggleOptionalValue('shareAppVersion')}
                 >
                   <div className={'optionalValueTitle'}>
                     <span className={'optionalValueTitleKey'}>
-                      {getLocale('braveVpnSupportOptionalAppVersion')}
+                      {getLocale(S.BRAVE_VPN_SUPPORT_OPTIONAL_APP_VERSION)}
                     </span>{' '}
                     {supportData?.appVersion}
                   </div>
@@ -299,14 +299,14 @@ function ContactSupport(props: Props) {
                     size='small'
                     onChange={getOnChangeToggle('shareAppVersion')}
                   />
-                </S.OptionalValueLabel>
-                <S.Divider />
-                <S.OptionalValueLabel
+                </Styles.OptionalValueLabel>
+                <Styles.Divider />
+                <Styles.OptionalValueLabel
                   onClick={(e) => toggleOptionalValue('shareOsVersion')}
                 >
                   <div className={'optionalValueTitle'}>
                     <span className={'optionalValueTitleKey'}>
-                      {getLocale('braveVpnSupportOptionalOsVersion')}
+                      {getLocale(S.BRAVE_VPN_SUPPORT_OPTIONAL_OS_VERSION)}
                     </span>{' '}
                     {supportData?.osVersion}
                   </div>
@@ -315,39 +315,39 @@ function ContactSupport(props: Props) {
                     size='small'
                     onChange={getOnChangeToggle('shareOsVersion')}
                   />
-                </S.OptionalValueLabel>
-                <S.Divider />
-                <S.OptionalValueLabel>
+                </Styles.OptionalValueLabel>
+                <Styles.Divider />
+                <Styles.OptionalValueLabel>
                   <div className={'optionalValueTitle'}>
                     <span className={'optionalValueTitleKey'}>
-                      {getLocale('braveVpnSupportTimezone')}
+                      {getLocale(S.BRAVE_VPN_SUPPORT_TIMEZONE)}
                     </span>{' '}
                     {supportData?.timezone}
                   </div>
-                </S.OptionalValueLabel>
-              </S.OptionalValuesFields>
-            </S.OptionalValues>
-            <S.SupportNotes>
-              {getLocale('braveVpnSupportNotes')}
-            </S.SupportNotes>
+                </Styles.OptionalValueLabel>
+              </Styles.OptionalValuesFields>
+            </Styles.OptionalValues>
+            <Styles.SupportNotes>
+              {getLocale(S.BRAVE_VPN_SUPPORT_NOTES)}
+            </Styles.SupportNotes>
             {isRemoteSubmissionError && (
-              <S.ErrorLabel>
-                {getLocale('braveVpnSupportTicketFailed')}
-              </S.ErrorLabel>
+              <Styles.ErrorLabel>
+                {getLocale(S.BRAVE_VPN_SUPPORT_TICKET_FAILED)}
+              </Styles.ErrorLabel>
             )}
-            <S.StyledSubmitButton
+            <Styles.StyledSubmitButton
               slot='actions'
               kind='filled'
               isLoading={isSubmitting}
               isDisabled={isSubmitting}
               onClick={handleSubmit}
             >
-              {getLocale('braveVpnSupportSubmit')}
-            </S.StyledSubmitButton>
-          </S.Form>
-        </S.TopContent>
-      </S.PanelContent>
-    </S.Box>
+              {getLocale(S.BRAVE_VPN_SUPPORT_SUBMIT)}
+            </Styles.StyledSubmitButton>
+          </Styles.Form>
+        </Styles.TopContent>
+      </Styles.PanelContent>
+    </Styles.Box>
   )
 }
 

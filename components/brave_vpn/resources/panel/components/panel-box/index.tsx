@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import * as S from './style'
+import * as Styles from './style'
 
 interface Props {
   children: React.ReactNode
@@ -11,12 +11,12 @@ interface Props {
 
 function PanelBox (props: Props) {
   return (
-    <S.Box>
+    <Styles.Box>
       {props.children}
-      <S.WavesContainer>
-        <S.Waves />
-      </S.WavesContainer>
-    </S.Box>
+      <Styles.WavesContainer>
+        <Styles.Waves />
+      </Styles.WavesContainer>
+    </Styles.Box>
   )
 }
 
