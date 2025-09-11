@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index 6ccd7eba27b35b616e3151dc82b9b0f7da44fce9..3e8237b6bd841f12775d15aa89fd2004a94dbdba 100644
+index 37ea1c5b0a1aecc22ceab792e1286c4caf047137..f0edfef5a97cdd6c3f5bd2414f7ad947f335a9a2 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-@@ -81,6 +81,7 @@ public class SiteSettingsCategory {
+@@ -82,6 +82,7 @@ public class SiteSettingsCategory {
          Type.LOCAL_NETWORK_ACCESS,
          Type.WINDOW_MANAGEMENT,
          Type.AUTO_PICTURE_IN_PICTURE,
@@ -10,7 +10,7 @@ index 6ccd7eba27b35b616e3151dc82b9b0f7da44fce9..3e8237b6bd841f12775d15aa89fd2004
          Type.NUM_ENTRIES
      })
      @Retention(RetentionPolicy.SOURCE)
-@@ -127,7 +128,7 @@ public class SiteSettingsCategory {
+@@ -128,7 +129,7 @@ public class SiteSettingsCategory {
          int AUTO_PICTURE_IN_PICTURE = 37;
  
          /** Number of handled categories used for calculating array sizes. */

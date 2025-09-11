@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
-index 07e14ff5153c5743e19fd890e5cc5c5a0300726e..35d1a87d1bc5beeb0bee64448b56d35b90be3bb2 100644
+index e48bf445f05234ab9f8e1d6498ceec220b11baab..d83f2262f7dafe360ebfc28a351876f7f0747212 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
-@@ -870,6 +870,7 @@ void BookmarkBarView::Layout(PassKey) {
+@@ -871,6 +871,7 @@ void BookmarkBarView::Layout(PassKey) {
        x = next_x;
      }
    }
