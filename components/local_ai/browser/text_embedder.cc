@@ -133,7 +133,6 @@ std::string TextEmbedder::SerializeTabInfo(const TabInfo& tab_info) {
 
   std::string title_str = base::UTF16ToUTF8(tab_info.title);
 
-#if 0
   // Extract keywords from tab content only
   std::string content_keywords;
   if (!tab_info.tab_content.empty()) {
@@ -141,12 +140,13 @@ std::string TextEmbedder::SerializeTabInfo(const TabInfo& tab_info) {
   }
 
   // Build serialized string with keywords
-  std::string result = title_str;
+  std::string result;
   if (!content_keywords.empty()) {
-    result += " [keywords: " + content_keywords + "]";
+    result = base::StrCat(
+        {title_str, " [keywords: ", content_keywords, "]", " | ", url_part});
+  } else {
+    result = base::StrCat({title_str, " | ", url_part});
   }
-#endif
-  auto result = base::StrCat({title_str, " | " + url_part});
 
   // Temporary debugging output
   LOG(ERROR) << "SerializeTabInfo result: " << result;
