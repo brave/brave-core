@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-index 27dc461d343284bb52d9fd32736a55bcc1b7cfe6..43953af320be8d0eb8b453049227f93fa8649bab 100644
+index 48a8120434596a9ae402d1e01d850744ceb6c78a..224f357a4fe1c0cbefd30c1063a8bc4fa22b900d 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
 @@ -71,6 +71,7 @@ found in the LICENSE file.
