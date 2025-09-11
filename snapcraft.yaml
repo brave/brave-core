@@ -19,7 +19,6 @@ apps:
     extensions:
       - gnome
     environment:
-      DISABLE_WAYLAND: 1
       GTK_USE_PORTAL: 1
       BRAVE_SNAP: 1
       BRAVE_DESKTOP: brave.desktop
