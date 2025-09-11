@@ -12,12 +12,12 @@
 #include "base/run_loop.h"
 #include "base/scoped_multi_source_observation.h"
 #include "base/trace_event/trace_event.h"
+#include "brave/browser/browsing_data/brave_clear_browsing_data_features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/lifetime/browser_shutdown.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/common/pref_names.h"
 #include "components/browsing_data/core/pref_names.h"
 #include "components/history/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -186,6 +186,10 @@ BraveClearBrowsingData::OnExitTestingCallback*
 void BraveClearBrowsingData::UpdateMasksToClearCacheStorage(
     uint64_t& remove_mask,
     uint64_t& origin_mask) {
+  if (!base::FeatureList::IsEnabled(
+          browsing_data::features::kClearServiceWorkerCacheStorage)) {
+    return;
+  }
   remove_mask |= content::BrowsingDataRemover::DATA_TYPE_CACHE_STORAGE;
   origin_mask |= content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB;
 }

@@ -17,6 +17,7 @@
 #include "base/run_loop.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/browsing_data/brave_clear_browsing_data_features.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -32,14 +33,12 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
-#include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/browsing_data/core/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -236,6 +235,30 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTest, ClearCacheClearsCacheStorage) {
       content::BrowsingDataRemover::DATA_TYPE_CACHE |
           content::BrowsingDataRemover::DATA_TYPE_CACHE_STORAGE,
       content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB);
+
+  SetExpectedRemoveDataCallCount(1);
+
+  chrome::ExecuteCommand(browser(), IDC_EXIT);
+}
+
+class BraveClearDataOnExitTestNoCacheFeature : public BraveClearDataOnExitTest {
+ public:
+  BraveClearDataOnExitTestNoCacheFeature() {
+    feature_list_.InitAndDisableFeature(
+        browsing_data::features::kClearServiceWorkerCacheStorage);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTestNoCacheFeature,
+                       ClearCacheClearsCacheStorageDisable) {
+  browser()->profile()->GetPrefs()->SetBoolean(
+      browsing_data::prefs::kDeleteCacheOnExit, true);
+
+  SetExpectedRemoveDataRemovalMasks(
+      content::BrowsingDataRemover::DATA_TYPE_CACHE, 0);
 
   SetExpectedRemoveDataCallCount(1);
 

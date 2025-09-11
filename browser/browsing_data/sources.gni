@@ -10,6 +10,8 @@ brave_browser_browsing_data_sources = [
   "//brave/browser/browsing_data/brave_browsing_data_remover_delegate.h",
   "//brave/browser/browsing_data/brave_clear_browsing_data.cc",
   "//brave/browser/browsing_data/brave_clear_browsing_data.h",
+  "//brave/browser/browsing_data/brave_clear_browsing_data_features.cc",
+  "//brave/browser/browsing_data/brave_clear_browsing_data_features.h",
 ]
 
 brave_browser_browsing_data_deps = [
