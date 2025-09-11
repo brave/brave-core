@@ -14,6 +14,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/notimplemented.h"
 #include "base/types/expected.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
@@ -283,6 +284,7 @@ void EmailAliasesService::CancelAuthenticationOrLogout(
 }
 
 void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {
+  NOTIMPLEMENTED();
   std::move(callback).Run(base::unexpected(std::string("Not implemented")));
 }
 
@@ -290,12 +292,14 @@ void EmailAliasesService::UpdateAlias(const std::string& alias_email,
                                       const std::optional<std::string>& note,
                                       UpdateAliasCallback callback) {
   // TODO: Implement alias update logic
+  NOTIMPLEMENTED();
   std::move(callback).Run(base::unexpected(std::string("Not implemented")));
 }
 
 void EmailAliasesService::DeleteAlias(const std::string& alias_email,
                                       DeleteAliasCallback callback) {
   // TODO: Implement alias deletion logic
+  NOTIMPLEMENTED();
   std::move(callback).Run(base::unexpected(std::string("Not implemented")));
 }
 
