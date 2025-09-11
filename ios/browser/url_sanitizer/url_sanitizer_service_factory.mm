@@ -55,8 +55,7 @@ URLSanitizerServiceFactory::URLSanitizerServiceFactory()
 URLSanitizerServiceFactory::~URLSanitizerServiceFactory() = default;
 
 std::unique_ptr<KeyedService>
-URLSanitizerServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
+URLSanitizerServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
   std::unique_ptr<brave::URLSanitizerService> service =
       std::make_unique<brave::URLSanitizerService>();
   BraveApplicationContextImpl* braveContext =
