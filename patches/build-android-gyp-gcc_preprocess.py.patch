@@ -1,0 +1,12 @@
+diff --git a/build/android/gyp/gcc_preprocess.py b/build/android/gyp/gcc_preprocess.py
+index e859e1e9df162313ff97636ede5c7986998c788c..8e0b3ebde0f49797d0ebc0ba5f6356c2682b4348 100755
+--- a/build/android/gyp/gcc_preprocess.py
++++ b/build/android/gyp/gcc_preprocess.py
+@@ -34,6 +34,7 @@ def ProcessJavaFile(template, defines, include_dirs):
+       '-x',
+       'c-header',  # treat sources as C header files
+       '-P',  # disable line markers, i.e. '#line 309'
++      '-Wno-gcc-install-dir-libstdcxx', # disable  warning: future releases of the clang compiler will prefer GCC installations containing libstdc++ include directories; '/usr/lib/gcc/x86_64-linux-gnu/11' would be chosen over '/usr/lib/gcc/x86_64-linux-gnu/12'
+   ]
+   clang_cmd.extend('-D' + x for x in defines)
+   clang_cmd.extend('-I' + x for x in include_dirs)
