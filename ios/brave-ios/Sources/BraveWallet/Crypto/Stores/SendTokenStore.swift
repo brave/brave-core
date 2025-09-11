@@ -390,14 +390,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         if self.btcPrice == nil,
           btcBalances[.pending] != 0,  // price needed for details display
           let btcPrice = await assetRatioService.fetchPrices(
-            for: [
-              BraveWallet.AssetPriceRequest(
-                coinType: selectedSendToken.coin,
-                chainId: selectedSendToken.chainId,
-                address: selectedSendToken.contractAddress.isEmpty
-                  ? nil : selectedSendToken.contractAddress
-              )
-            ],
+            for: [selectedSendToken],
             vsCurrency: selectTokenStore.currencyCode
           ).first,
           let btcPriceDouble = Double(btcPrice.price)

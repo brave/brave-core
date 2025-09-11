@@ -7,12 +7,19 @@ import BraveCore
 import Foundation
 
 extension BraveWalletAssetRatioService {
-  /// Fetches the prices for a given list of `AssetPriceRequest`, giving a list of `AssetPrice`.
+  /// Fetches the prices for a given list of `BlockchainToken`, giving a list of `AssetPrice`.
   /// Returns an empty array in case no prices are found.
   @MainActor func fetchPrices(
-    for requests: [BraveWallet.AssetPriceRequest],
+    for tokens: [BraveWallet.BlockchainToken],
     vsCurrency: String
   ) async -> [BraveWallet.AssetPrice] {
+    let requests = tokens.map { token in
+      BraveWallet.AssetPriceRequest(
+        coinType: token.coin,
+        chainId: token.chainId,
+        address: token.contractAddress.isEmpty ? nil : token.contractAddress
+      )
+    }
 
     let (_, prices) = await self.price(
       requests: requests,
