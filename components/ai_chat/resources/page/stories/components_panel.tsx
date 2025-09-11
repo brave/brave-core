@@ -744,6 +744,7 @@ const MODELS: Mojom.Model[] = [
     displayName: 'Model One',
     visionSupport: false,
     supportsTools: false,
+    isSuggestedModel: true,
     options: {
       leoModelOptions: {
         name: 'model-one',
@@ -761,6 +762,7 @@ const MODELS: Mojom.Model[] = [
     displayName: 'Model Two',
     visionSupport: true,
     supportsTools: true,
+    isSuggestedModel: true,
     options: {
       leoModelOptions: {
         name: 'model-two-premium',
@@ -778,6 +780,7 @@ const MODELS: Mojom.Model[] = [
     displayName: 'Model Three',
     visionSupport: false,
     supportsTools: false,
+    isSuggestedModel: false,
     options: {
       leoModelOptions: {
         name: 'model-three-freemium',
@@ -795,6 +798,7 @@ const MODELS: Mojom.Model[] = [
     displayName: 'Microsoft Phi-3',
     visionSupport: false,
     supportsTools: true,
+    isSuggestedModel: false,
     options: {
       leoModelOptions: undefined,
       customModelOptions: {

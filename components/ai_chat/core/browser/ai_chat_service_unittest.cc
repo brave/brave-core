@@ -139,7 +139,9 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void,
               OnModelDataChanged,
-              (const std::string&, std::vector<mojom::ModelPtr>),
+              (const std::string& conversation_model_key,
+               const std::string& default_model_key,
+               std::vector<mojom::ModelPtr> all_models),
               (override));
 
   MOCK_METHOD(void,

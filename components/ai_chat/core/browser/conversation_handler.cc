@@ -344,6 +344,7 @@ void ConversationHandler::GetState(GetStateCallback callback) {
   std::transform(models.cbegin(), models.cend(), models_copy.begin(),
                  [](auto& model) { return model.Clone(); });
   auto model_key = GetCurrentModel().key;
+  auto default_model_key = model_service_->GetDefaultModelKey();
 
   std::vector<std::string> suggestions;
   std::ranges::transform(suggestions_, std::back_inserter(suggestions),
@@ -351,7 +352,8 @@ void ConversationHandler::GetState(GetStateCallback callback) {
 
   mojom::ConversationStatePtr state = mojom::ConversationState::New(
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
-      model_key, std::move(suggestions), suggestion_generation_status_,
+      model_key, default_model_key, std::move(suggestions),
+      suggestion_generation_status_,
       associated_content_manager_->GetAssociatedContent(), current_error_,
       metadata_->temporary);
 
@@ -1509,6 +1511,12 @@ void ConversationHandler::OnDefaultModelChanged(const std::string& old_key,
   DVLOG(1) << "Default model changed from " << old_key << " to " << new_key;
   if (model_key_ == old_key) {
     ChangeModel(new_key);
+  } else {
+    // If this conversation is not using the old default model, we still need to
+    // notify the UI about the default model change without changing the current
+    // model. This ensures the UI gets updated with the new default model
+    // information even when the conversation is using a different model.
+    OnModelDataChanged();
   }
 }
 
@@ -1526,13 +1534,15 @@ void ConversationHandler::OnModelRemoved(const std::string& removed_key) {
 
 void ConversationHandler::OnModelDataChanged() {
   const std::vector<mojom::ModelPtr>& models = model_service_->GetModels();
+  auto default_model_key = model_service_->GetDefaultModelKey();
 
   for (const mojo::Remote<mojom::ConversationUI>& client :
        conversation_ui_handlers_) {
     std::vector<mojom::ModelPtr> models_copy(models.size());
     std::transform(models.cbegin(), models.cend(), models_copy.begin(),
                    [](auto& model) { return model.Clone(); });
-    client->OnModelDataChanged(model_key_, std::move(models_copy));
+    client->OnModelDataChanged(model_key_, default_model_key,
+                               std::move(models_copy));
   }
   OnStateForConversationEntriesChanged();
 }

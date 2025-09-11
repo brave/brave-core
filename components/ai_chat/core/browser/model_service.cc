@@ -114,6 +114,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Automatic";
       model->vision_support = true;
       model->supports_tools = false;
+      model->is_suggested_model = true;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
       models.push_back(std::move(model));
@@ -134,6 +135,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "DeepSeek R1";
       model->vision_support = false;
       model->supports_tools = false;
+      model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -154,6 +156,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Claude Haiku";
       model->vision_support = true;
       model->supports_tools = true;
+      model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -174,6 +177,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Claude Sonnet";
       model->vision_support = true;
       model->supports_tools = true;
+      model->is_suggested_model = true;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -196,6 +200,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Llama 3.1 8B";
       model->vision_support = false;
       model->supports_tools = false;
+      model->is_suggested_model = true;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -218,6 +223,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Qwen 14B";
       model->vision_support = false;
       model->supports_tools = false;
+      model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -240,6 +246,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->display_name = "Gemma 12B";
       model->vision_support = true;
       model->supports_tools = false;
+      model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
