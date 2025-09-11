@@ -83,7 +83,9 @@ void NotificationAdControlButtonsView::CreateInfoButton() {
 }
 
 void NotificationAdControlButtonsView::UpdateInfoButton() {
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors =
+      GetNativeTheme()->preferred_color_scheme() ==
+      ui::NativeTheme::PreferredColorScheme::kDark;
 
   const gfx::ImageSkia image_skia = gfx::CreateVectorIcon(
       should_use_dark_colors ? kBraveAdsDarkModeInfoButtonIcon
@@ -105,7 +107,9 @@ void NotificationAdControlButtonsView::CreateCloseButton() {
 void NotificationAdControlButtonsView::UpdateCloseButton() {
   CHECK(close_button_);
 
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors =
+      GetNativeTheme()->preferred_color_scheme() ==
+      ui::NativeTheme::PreferredColorScheme::kDark;
 
   close_button_->SetImageModel(
       views::Button::STATE_NORMAL,

@@ -198,7 +198,9 @@ std::unique_ptr<views::Label> TextNotificationAdView::CreateBodyLabel(
 }
 
 void TextNotificationAdView::UpdateBodyLabel() {
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors =
+      GetNativeTheme()->preferred_color_scheme() ==
+      ui::NativeTheme::PreferredColorScheme::kDark;
 
   CHECK(body_label_);
   body_label_->SetEnabledColor(should_use_dark_colors ? kDarkModeBodyColor
