@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/internal/BUILD.gn b/chrome/browser/ui/browser_window/internal/BUILD.gn
-index 1412028c9c8b6acef0349406b39bac041fd3e5bb..418928ef776482c013d3c901b4ea129f1241fcf6 100644
+index 07e44ea29c1750846e8b5456d864825c7f98c817..212da8ba602878cecf7826ad00a718e59b75d95a 100644
 --- a/chrome/browser/ui/browser_window/internal/BUILD.gn
 +++ b/chrome/browser/ui/browser_window/internal/BUILD.gn
-@@ -83,6 +83,7 @@ source_set("internal") {
+@@ -97,6 +97,7 @@ source_set("internal") {
        deps += [ "//chrome/browser/ui:overscroll_pref_manager" ]
      }
    }
