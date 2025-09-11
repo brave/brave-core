@@ -14,11 +14,11 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/tabs/tab_content_extractor.h"
 #include "brave/components/local_ai/browser/local_models_updater.h"
 #include "brave/components/local_ai/browser/text_embedder.h"
 #include "brave/components/local_ai/common/features.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
-#include "components/content_extraction/content/browser/inner_text.h"
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
@@ -179,19 +179,14 @@ void TabStripModel::OnTextEmbedderInitializedForGroupCommand(
                      context_index));
 
   for (const auto& tab_data : all_tabs_needing_content) {
-    content_extraction::GetInnerText(
-        *tab_data.web_contents->GetPrimaryMainFrame(), std::nullopt,
+    VLOG(1) << "Starting content extraction for tab " << tab_data.index;
+    tab_content_extractor::ExtractTextContent(
+        tab_data.web_contents, tab_data.url, tab_data.index,
         base::BindOnce(
             [](base::RepeatingCallback<void(std::pair<int, std::string>)>
                    callback,
-               int tab_index,
-               std::unique_ptr<content_extraction::InnerTextResult> result) {
-              std::string content = result && !result->inner_text.empty()
-                                        ? result->inner_text
-                                        : "";
-              callback.Run(std::make_pair(tab_index, content));
-            },
-            barrier_callback, tab_data.index));
+               std::pair<int, std::string> result) { callback.Run(result); },
+            barrier_callback));
   }
 }
 

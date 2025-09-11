@@ -1,0 +1,18 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_tabs_sources = [
+  "//brave/browser/tabs/tab_content_extractor.cc",
+  "//brave/browser/tabs/tab_content_extractor.h",
+]
+
+brave_browser_tabs_deps = [
+  "//base",
+  "//chrome/common",
+  "//components/dom_distiller/core",
+  "//content/public/browser",
+  "//third_party/dom_distiller_js:proto",
+  "//url",
+]
