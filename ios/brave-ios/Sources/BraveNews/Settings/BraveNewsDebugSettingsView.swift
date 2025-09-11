@@ -64,15 +64,19 @@ public struct BraveNewsDebugSettingsView: View {
   public var body: some View {
     Form {
       Section {
-        Picker("Environment", selection: $environment) {
+        FormPicker(selection: $environment) {
           ForEach(FeedDataSource.Environment.allCases, id: \.self) { env in
             Text(env.name)
           }
+        } label: {
+          Text("Environment")
         }
-        Picker("Selected Locale", selection: $localeOverride) {
+        FormPicker(selection: $localeOverride) {
           ForEach(Array(feedDataSource.availableLocales).sorted(), id: \.self) { locale in
             Text(locale).tag(locale)
           }
+        } label: {
+          Text("Selected Locale")
         }
       } footer: {
         Text("Changing the environment will purge all cached resources immediately.")
