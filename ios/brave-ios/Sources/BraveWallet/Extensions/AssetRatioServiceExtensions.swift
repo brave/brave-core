@@ -29,8 +29,6 @@ extension Array where Element == BraveWallet.AssetPrice {
   func getTokenPrice(
     for token: BraveWallet.BlockchainToken
   ) -> BraveWallet.AssetPrice? {
-    guard !isEmpty else { return nil }
-
     // For SOL and ETH, match by coinType, chainId, and contractAddress
     if [BraveWallet.CoinType.sol, BraveWallet.CoinType.eth].contains(token.coin) {
       return first { assetPrice in
