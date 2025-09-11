@@ -154,4 +154,20 @@ IN_PROC_BROWSER_TEST_F(PermissionPromptBubbleBaseViewBrowserTest,
 
   ASSERT_TRUE(base::test::RunUntil([&]() { return !widget_weak_ptr; }));
   EXPECT_NE(parent_widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
+
+  // After the prompt is deactivated, the parent widget should have the original
+  // z-order level.
+  permission_prompt = create_permission_prompt();
+  auto* widget = permission_prompt->GetWidget();
+  parent_widget = widget->parent();
+
+  permission_prompt->GetWidget()->Deactivate();
+
+  EXPECT_NE(widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
+  EXPECT_NE(parent_widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
+
+  // After the prompt is actviated, the z-order level should be elevated again.
+  permission_prompt->GetWidget()->Activate();
+  EXPECT_EQ(widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
+  EXPECT_EQ(parent_widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
 }

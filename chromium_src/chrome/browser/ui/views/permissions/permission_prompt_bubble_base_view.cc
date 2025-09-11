@@ -431,7 +431,9 @@ PermissionPromptBubbleZOrderManager::PermissionPromptBubbleZOrderManager(
   CHECK(widget);
   prompt_widget_observation_.Observe(widget);
 
-  ElevateZOrder();
+  if (widget->IsActive()) {
+    ElevateZOrder();
+  }
 }
 
 PermissionPromptBubbleZOrderManager::~PermissionPromptBubbleZOrderManager() =
@@ -442,6 +444,17 @@ void PermissionPromptBubbleZOrderManager::OnWidgetDestroying(
   CHECK_EQ(widget, permission_prompt_bubble_->GetWidget());
   RestoreZOrder();
   prompt_widget_observation_.Reset();
+}
+
+void PermissionPromptBubbleZOrderManager::OnWidgetActivationChanged(
+    views::Widget* widget,
+    bool active) {
+  CHECK_EQ(widget, permission_prompt_bubble_->GetWidget());
+  if (active) {
+    ElevateZOrder();
+  } else {
+    RestoreZOrder();
+  }
 }
 
 void PermissionPromptBubbleZOrderManager::ElevateZOrder() {
