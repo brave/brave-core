@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.h"
 
+#include "base/test/run_until.h"
 #include "chrome/browser/ui/views/permissions/permission_prompt_style.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/content_settings/core/common/content_settings_types.mojom.h"
@@ -104,19 +105,53 @@ IN_PROC_BROWSER_TEST_F(PermissionPromptBubbleBaseViewBrowserTest,
   // This test checks that the permission prompt bubble is created with the
   // correct z-order level, which should be kSecuritySurface.
   MockPermissionPromptDelegate mock_delegate;
-  auto* permission_prompt = new MockPermissionPromptBubbleBaseView(
-      browser(), mock_delegate.GetWeakPtr());
-  EXPECT_EQ(permission_prompt->GetWidget()->GetZOrderLevel(),
-            ui::ZOrderLevel::kSecuritySurface);
+  auto create_permission_prompt = [&]() {
+    auto* permission_prompt = new MockPermissionPromptBubbleBaseView(
+        browser(), mock_delegate.GetWeakPtr());
+    EXPECT_EQ(permission_prompt->GetWidget()->GetZOrderLevel(),
+              ui::ZOrderLevel::kSecuritySurface);
 
-  // Also parent widget should have the same z-order level.
-  auto* parent_widget = permission_prompt->GetWidget()->parent();
-  ASSERT_TRUE(parent_widget);
-  EXPECT_EQ(parent_widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
-
-  permission_prompt->Close();
+    // Also parent widget should have the same z-order level.
+    auto* parent_widget = permission_prompt->GetWidget()->parent();
+    EXPECT_TRUE(parent_widget);
+    EXPECT_EQ(parent_widget->GetZOrderLevel(),
+              ui::ZOrderLevel::kSecuritySurface);
+    return permission_prompt;
+  };
 
   // After closing the prompt widget, the parent widget should have the original
   // z-order level.
+  auto* permission_prompt = create_permission_prompt();
+  auto widget_weak_ptr = permission_prompt->GetWidget()->GetWeakPtr();
+  ASSERT_TRUE(widget_weak_ptr);
+  auto* parent_widget = widget_weak_ptr->parent();
+
+  permission_prompt->GetWidget()->Close();
+
+  ASSERT_TRUE(base::test::RunUntil([&]() { return !widget_weak_ptr; }));
+  EXPECT_NE(parent_widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
+
+  // After Accepting the prompt, the parent widget should have the original
+  // z-order level.
+  permission_prompt = create_permission_prompt();
+  widget_weak_ptr = permission_prompt->GetWidget()->GetWeakPtr();
+  ASSERT_TRUE(widget_weak_ptr);
+  parent_widget = widget_weak_ptr->parent();
+
+  permission_prompt->AcceptDialog();
+
+  ASSERT_TRUE(base::test::RunUntil([&]() { return !widget_weak_ptr; }));
+  EXPECT_NE(parent_widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
+
+  // After Canceling the prompt, the parent widget should have the original
+  // z-order level.
+  permission_prompt = create_permission_prompt();
+  widget_weak_ptr = permission_prompt->GetWidget()->GetWeakPtr();
+  ASSERT_TRUE(widget_weak_ptr);
+  parent_widget = widget_weak_ptr->parent();
+
+  permission_prompt->CancelDialog();
+
+  ASSERT_TRUE(base::test::RunUntil([&]() { return !widget_weak_ptr; }));
   EXPECT_NE(parent_widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
 }
