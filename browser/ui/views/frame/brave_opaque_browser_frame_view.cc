@@ -25,7 +25,7 @@
 #include "ui/gfx/scoped_canvas.h"
 
 BraveOpaqueBrowserFrameView::BraveOpaqueBrowserFrameView(
-    BrowserWidget* frame,
+    BrowserFrame* frame,
     BrowserView* browser_view,
     OpaqueBrowserFrameViewLayout* layout)
     : OpaqueBrowserFrameView(frame, browser_view, layout) {
