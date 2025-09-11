@@ -123,8 +123,15 @@ class TabGridViewModel {
     }
   }
 
-  func closeTabs(_ tabIDs: [TabState.ID]) {
+  func closeTabs(_ tabIDs: Set<TabState.ID>) {
     let tabs = tabIDs.compactMap { tabManager[$0] }
+    withAnimation {
+      tabManager.removeTabs(tabs)
+    }
+  }
+
+  func closeOtherTabs(_ tabIDs: Set<TabState.ID>) {
+    let tabs = tabManager.tabsForCurrentMode.filter({ !tabIDs.contains($0.id) })
     withAnimation {
       tabManager.removeTabs(tabs)
     }
@@ -148,7 +155,7 @@ class TabGridViewModel {
     tabManager.selectedTab?.visibleURL?.isShredAvailable == true
   }
 
-  func isShredAvailableForSelectedTabs(_ tabs: [TabState.ID]) -> Bool {
+  func isShredAvailableForSelectedTabs(_ tabs: Set<TabState.ID>) -> Bool {
     let tabs = tabs.map({ tabManager[$0] })
     return tabs.contains(where: { $0?.visibleURL?.isShredAvailable == true })
   }
