@@ -89,6 +89,7 @@ TEST_F(ShieldsSettingsValuesTest, ControlTypeSettingTypeSuccess) {
   EXPECT_TRUE(checker.SuccessCheck());
 }
 
+#if !BUILDFLAG(IS_IOS)  // iOS doesn't support EXPECT_DEATH
 TEST_F(ShieldsSettingsValuesTest, ControlTypeSettingTypeFailure) {
   using ControlTypeTrait = traits::SettingTraits<ControlType>;
   EXPECT_DEATH(ControlTypeTrait::To(static_cast<ControlType>(-1)),
@@ -114,5 +115,6 @@ TEST_F(ShieldsSettingsValuesTest, ControlTypeSettingTypeFailure) {
                     ContentSettingsType::BRAVE_COSMETIC_FILTERING),
                 -1))));
 }
+#endif
 
 }  // namespace brave_shields
