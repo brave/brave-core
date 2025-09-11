@@ -19,8 +19,7 @@
 
 namespace {
 
-std::unique_ptr<KeyedService> BuildFaviconLoader(web::BrowserState* context) {
-  ProfileIOS* profile = ProfileIOS::FromBrowserState(context);
+std::unique_ptr<KeyedService> BuildFaviconLoader(ProfileIOS* profile) {
   return std::make_unique<brave_favicon::BraveFaviconLoader>(
       ios::FaviconServiceFactory::GetForProfile(
           profile, ServiceAccessType::EXPLICIT_ACCESS));
@@ -47,7 +46,7 @@ BraveIOSFaviconLoaderFactory* BraveIOSFaviconLoaderFactory::GetInstance() {
 }
 
 // static
-BrowserStateKeyedServiceFactory::TestingFactory
+ProfileKeyedServiceFactoryIOS::TestingFactory
 BraveIOSFaviconLoaderFactory::GetDefaultFactory() {
   return base::BindRepeating(&BuildFaviconLoader);
 }
@@ -65,7 +64,7 @@ BraveIOSFaviconLoaderFactory::~BraveIOSFaviconLoaderFactory() {}
 
 std::unique_ptr<KeyedService>
 BraveIOSFaviconLoaderFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
-  return BuildFaviconLoader(context);
+    ProfileIOS* profile) const {
+  return BuildFaviconLoader(profile);
 }
 }  // namespace brave_favicon
