@@ -165,7 +165,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kTrustSafetySentimentSurveyV2,
 #endif
 #if BUILDFLAG(IS_MAC)
-      &features::kUseChromiumUpdater,
       &features::kImmersiveFullscreen,
 #endif
       &features::kWebIdentityDigitalCredentials,
