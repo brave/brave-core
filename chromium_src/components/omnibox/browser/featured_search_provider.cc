@@ -9,7 +9,12 @@
 // on it to also disable @aimode.
 #define BRAVE_FEATURED_SEARCH_PROVIDER_ADD_FEATURED_KEYWORD_MATCHES         \
   if (turl->starter_pack_id() == template_url_starter_pack_data::kAiMode && \
-      !OmniboxFieldTrial::IsStarterPackExpansionEnabled())                  \
-    continue;
+      !OmniboxFieldTrial::IsStarterPackExpansionEnabled()) {                \
+    continue;                                                               \
+  }                                                                         \
+  if (turl->starter_pack_id() == template_url_starter_pack_data::kGemini) { \
+  } else  // NOLINT
+
 #include <components/omnibox/browser/featured_search_provider.cc>
+
 #undef BRAVE_FEATURED_SEARCH_PROVIDER_ADD_FEATURED_KEYWORD_MATCHES

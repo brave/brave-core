@@ -7,11 +7,14 @@
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_starter_pack_data.h"
 
-// We disable starter pack expansion to hide @gemini search keyword. Piggy back
-// on it to also disable @aimode.
-#define kGemini                                 \
-  kGemini || template_url->starter_pack_id() == \
-                 template_url_starter_pack_data::kAiMode
+// Unconditionally skip @aimode keyword. Always allow `kGemini`, which is
+// reused to implement `@ask`.
+#define kGemini kAiMode) {                        \
+    continue;                                     \
+  }                                               \
+  if (false && template_url->starter_pack_id() == \
+            template_url_starter_pack_data::kGemini
 
 #include <chrome/browser/ui/search_engines/template_url_table_model.cc>
+
 #undef kGemini

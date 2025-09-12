@@ -31,6 +31,8 @@
 #include "components/omnibox/browser/clipboard_provider.h"
 #include "components/omnibox/browser/history_cluster_provider.h"
 #include "components/omnibox/browser/history_fuzzy_provider.h"
+#include "components/search_engines/template_url.h"
+#include "components/search_engines/template_url_starter_pack_data.h"
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -118,8 +120,13 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
   SortBraveSearchPromotionMatch(&internal_result_); \
   MaybeShowCommands(&internal_result_, input_);
 
+// Bypass special case branches targeting the kGemini starter pack, which is
+// reused to implement `@ask`.
+#define kGemini kGemini && false
+
 #include <components/omnibox/browser/autocomplete_controller.cc>
 
+#undef kGemini
 #undef BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT
 #undef BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER
 #undef OnDeviceHeadProvider

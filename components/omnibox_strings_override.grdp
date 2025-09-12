@@ -2,6 +2,16 @@
 <grit-part>
   <part file="omnibox_pedal_ui_strings_override.grdp" />
 
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_GEMINI_NAME" desc="The name of the Gemini engine as it appears on chrome://settings/searchEngines.">
+    Brave
+  </message>
+  <message name="IDS_SEARCH_ENGINES_STARTER_PACK_GEMINI_KEYWORD" desc="The keyword required to trigger Ask Gemini in keyword mode. This will be prepended with an '@'.">
+    Ask
+  </message>
+  <message name="IDS_OMNIBOX_GEMINI_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @gemini scope.">
+    Ask anything
+  </message>
+
 <if expr="use_titlecase">
     </if>
   <if expr="not use_titlecase">
