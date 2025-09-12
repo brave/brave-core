@@ -22,6 +22,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -145,46 +146,84 @@ void BackupResultsServiceImpl::FetchBackupResults(
 
   std::unique_ptr<content::WebContents> web_contents;
 
+#if BUILDFLAG(IS_ANDROID)
+  auto view_android = std::make_unique<ui::ViewAndroid>();
+#endif
   if (should_render) {
     auto create_params = content::WebContents::CreateParams(otr_profile);
-    web_contents = content::WebContents::Create(create_params);
 
-    int random_width = base::RandInt(800, 1920);
-    int random_height = base::RandInt(600, 1080);
 #if BUILDFLAG(IS_ANDROID)
-    auto* native_view = web_contents->GetNativeView();
-    native_view->OnSizeChanged(random_width, random_height);
-#else
-    web_contents->Resize({random_width, random_height});
+    // Create a temporary ViewAndroid to configure frame info
+    view_android->UpdateFrameInfo(ui::FrameInfo{
+        .viewport_size = gfx::SizeF(360., 488.), .content_offset = 0});
+    create_params.context = view_android.get();
+
+    LOG(ERROR) << "FetchBackupResults! ViewAndroid: "
+               << create_params.context->viewport_size().width() << "x"
+               << create_params.context->viewport_size().height();
 #endif
 
-    auto web_preferences = web_contents->GetOrCreateWebPreferences();
-    web_preferences.supports_multiple_windows = false;
-    web_contents->SetWebPreferences(web_preferences);
+    web_contents = content::WebContents::Create(create_params);
+
+    // int random_width = base::RandInt(800, 1920);
+    // int random_height = base::RandInt(600, 1080);
+    // web_contents->Resize({360, 488});
+    web_contents->Resize({1152, 930});
+
+    // auto web_preferences = web_contents->GetOrCreateWebPreferences();
+    // web_preferences.supports_multiple_windows = false;
+    // web_contents->SetWebPreferences(web_preferences);
 
     if (features::IsBackupResultsFullRenderEnabled()) {
       BackupResultsWebContentsObserver::CreateForWebContents(
           web_contents.get(), weak_ptr_factory_.GetWeakPtr());
     }
+
+    LOG(ERROR) << "FetchBackupResults! " << url.spec();
+    auto size = web_contents->GetSize();
+    LOG(ERROR) << "FetchBackupResults! Size: " << size.width() << "x"
+               << size.height();
+    LOG(ERROR) << "is render widget host view present: "
+               << (web_contents->GetRenderWidgetHostView() != nullptr);
+    // web_contents->GetRenderWidgetHostView()->SetSize(gfx::Size(360, 488));
+    // auto bounds = web_contents->GetRenderWidgetHostView()->GetViewBounds();
+    // LOG(ERROR) << "FetchBackupResults! Bounds: " << bounds.x() << "," <<
+    // bounds.y() << ","
+    //            << bounds.width() << "," << bounds.height();
+    size = web_contents->GetSize();
+    LOG(ERROR) << "FetchBackupResults! Size2: " << size.width() << "x"
+               << size.height();
+    // auto visible_bounds =
+    // web_contents->GetRenderWidgetHostView()->GetVisibleViewportSize();
+    // LOG(ERROR) << "FetchBackupResults! Visible Bounds: " <<
+    // visible_bounds.width() << "x" << visible_bounds.height();
   }
 
   auto request = pending_requests_.emplace(pending_requests_.end(),
                                            std::move(web_contents), headers,
-                                           otr_profile, std::move(callback));
+                                           otr_profile, std::move(callback), url
+#if BUILDFLAG(IS_ANDROID)
+                                           ,
+                                           std::move(view_android)
+#endif
+  );
 
   if (should_render) {
-    auto load_url_params = content::NavigationController::LoadURLParams(url);
+    // Navigate to brave.com first, then we'll navigate to the original URL
+    // after 3 seconds
+    auto load_url_params =
+        content::NavigationController::LoadURLParams(GURL("https://brave.com"));
     // Disallow all downloads
-    for (size_t i = 0;
-         i <= static_cast<size_t>(blink::NavigationDownloadType::kMaxValue);
-         i++) {
-      blink::NavigationDownloadType type =
-          static_cast<blink::NavigationDownloadType>(i);
-      load_url_params.download_policy.SetDisallowed(type);
-    }
-    if (request->headers) {
-      load_url_params.extra_headers = request->headers->ToString();
-    }
+    // for (size_t i = 0;
+    //      i <= static_cast<size_t>(blink::NavigationDownloadType::kMaxValue);
+    //      i++) {
+    //   blink::NavigationDownloadType type =
+    //       static_cast<blink::NavigationDownloadType>(i);
+    //   load_url_params.download_policy.SetDisallowed(type);
+    // }
+    // if (request->headers) {
+    //   load_url_params.extra_headers = request->headers->ToString();
+    // }
     if (!request->web_contents->GetController().LoadURLWithParams(
             load_url_params)) {
       CleanupAndDispatchResult(request, std::nullopt);
@@ -203,11 +242,24 @@ BackupResultsServiceImpl::PendingRequest::PendingRequest(
     std::unique_ptr<content::WebContents> web_contents,
     std::optional<net::HttpRequestHeaders> headers,
     Profile* otr_profile,
-    BackupResultsCallback callback)
+    BackupResultsCallback callback,
+    const GURL& original_url
+#if BUILDFLAG(IS_ANDROID)
+    ,
+    std::unique_ptr<ui::ViewAndroid> view_android
+#endif
+    )
     : headers(std::move(headers)),
       callback(std::move(callback)),
+      original_url(original_url),
       web_contents(std::move(web_contents)),
-      otr_profile(otr_profile) {}
+      otr_profile(otr_profile)
+#if BUILDFLAG(IS_ANDROID)
+      ,
+      view_android(std::move(view_android))
+#endif
+{
+}
 
 BackupResultsServiceImpl::PendingRequest::~PendingRequest() = default;
 
@@ -226,6 +278,17 @@ bool BackupResultsServiceImpl::HandleWebContentsStartRequest(
   if (pending_request == pending_requests_.end()) {
     return false;
   }
+
+  // Check if this is the brave.com request
+  if (url.host() == "brave.com") {
+    // Start 3-second timer to navigate to the original URL
+    pending_request->brave_com_timer.Start(
+        FROM_HERE, base::Seconds(3),
+        base::BindOnce(&BackupResultsServiceImpl::NavigateToOriginalUrl,
+                       base::Unretained(this), pending_request));
+    return true;
+  }
+
   if (!IsBackupResultURLAllowed(url)) {
     content::GetUIThreadTaskRunner({})->PostTask(
         FROM_HERE,
@@ -243,6 +306,10 @@ bool BackupResultsServiceImpl::HandleWebContentsStartRequest(
     pending_request->initial_request_started = true;
     return true;
   }
+
+  LOG(ERROR)
+      << "HandleWebContentsStartRequest! is render widget host view present: "
+      << (pending_request->web_contents->GetRenderWidgetHostView() != nullptr);
 
   MakeSimpleURLLoaderRequest(pending_request, url);
   return false;
@@ -339,6 +406,43 @@ void BackupResultsServiceImpl::HandleWebContentsContentExtraction(
   }
 
   CleanupAndDispatchResult(pending_request, result);
+}
+
+void BackupResultsServiceImpl::NavigateToOriginalUrl(
+    PendingRequestList::iterator pending_request) {
+  if (pending_request == pending_requests_.end() ||
+      !pending_request->web_contents) {
+    return;
+  }
+
+  LOG(ERROR) << "NavigateToOriginalUrl! is render widget host view present: "
+             << (pending_request->web_contents->GetRenderWidgetHostView() !=
+                 nullptr);
+
+  // Resize the viewport to the same dimensions as in FetchBackupResults
+  // pending_request->web_contents->Resize({360, 488});
+  pending_request->web_contents->Resize({1152, 930});
+  // pending_request->web_contents->GetRenderWidgetHostView()->SetSize(gfx::Size(360,
+  // 488));
+  // pending_request->web_contents->GetRenderWidgetHostView()->SetBounds(gfx::Rect(0,
+  // 0, 360, 488));
+
+  LOG(ERROR) << "NavigateToOriginalUrl! "
+             << pending_request->original_url.spec();
+  auto size = pending_request->web_contents->GetSize();
+  LOG(ERROR) << "NavigateToOriginalUrl! Size: " << size.width() << "x"
+             << size.height();
+  auto bounds =
+      pending_request->web_contents->GetRenderWidgetHostView()->GetViewBounds();
+  LOG(ERROR) << "NavigateToOriginalUrl! Bounds: " << bounds.x() << ","
+             << bounds.y() << "," << bounds.width() << "," << bounds.height();
+
+  auto load_url_params = content::NavigationController::LoadURLParams(
+      pending_request->original_url);
+  if (!pending_request->web_contents->GetController().LoadURLWithParams(
+          load_url_params)) {
+    CleanupAndDispatchResult(pending_request, std::nullopt);
+  }
 }
 
 void BackupResultsServiceImpl::CleanupAndDispatchResult(
