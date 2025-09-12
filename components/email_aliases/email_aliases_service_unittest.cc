@@ -58,10 +58,8 @@ class EmailAliasesServiceTest : public ::testing::Test {
   }
 
   void SetUp() override {
-    url_loader_factory_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &test_url_loader_factory_);
-    service_ = std::make_unique<EmailAliasesService>(url_loader_factory_);
+    service_ = std::make_unique<EmailAliasesService>(
+        test_url_loader_factory_.GetSafeWeakWrapper());
     observer_ = std::make_unique<TestObserver>();
     mojo::PendingRemote<email_aliases::mojom::EmailAliasesServiceObserver>
         remote;
@@ -140,7 +138,6 @@ class EmailAliasesServiceTest : public ::testing::Test {
 
   base::test::ScopedFeatureList feature_list_;
   network::TestURLLoaderFactory test_url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<EmailAliasesService> service_;
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<TestObserver> observer_;
@@ -235,15 +232,12 @@ TEST_F(EmailAliasesServiceTest,
 // rate limiting and total polling duration.
 class EmailAliasesServiceTimingTest : public ::testing::Test {
  protected:
-  EmailAliasesServiceTimingTest()
-      : url_loader_factory_(/*no args*/),
-        url_loader_wrapper_(
-            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory_)) {}
+  EmailAliasesServiceTimingTest() : url_loader_factory_(/*no args*/) {}
 
   void SetUp() override {
     feature_list_.InitAndEnableFeature(email_aliases::kEmailAliases);
-    service_ = std::make_unique<EmailAliasesService>(url_loader_wrapper_);
+    service_ = std::make_unique<EmailAliasesService>(
+        url_loader_factory_.GetSafeWeakWrapper());
     observer_ = std::make_unique<TestObserver>();
     mojo::PendingRemote<email_aliases::mojom::EmailAliasesServiceObserver>
         remote;
@@ -295,7 +289,6 @@ class EmailAliasesServiceTimingTest : public ::testing::Test {
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::test::ScopedFeatureList feature_list_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_wrapper_;
   std::unique_ptr<EmailAliasesService> service_;
   std::unique_ptr<TestObserver> observer_;
   std::vector<base::TimeTicks> verify_result_request_times_;
@@ -355,10 +348,8 @@ class EmailAliasesAPITest : public ::testing::Test {
   }
 
   void SetUp() override {
-    url_loader_wrapper_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &url_loader_factory_);
-    service_ = std::make_unique<EmailAliasesService>(url_loader_wrapper_);
+    service_ = std::make_unique<EmailAliasesService>(
+        url_loader_factory_.GetSafeWeakWrapper());
 
     mojo::PendingRemote<email_aliases::mojom::EmailAliasesServiceObserver>
         remote;
@@ -394,7 +385,6 @@ class EmailAliasesAPITest : public ::testing::Test {
   base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_wrapper_;
   std::unique_ptr<EmailAliasesService> service_;
   AliasObserver observer_;
 
