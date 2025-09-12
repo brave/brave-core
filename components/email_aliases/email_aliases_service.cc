@@ -333,19 +333,24 @@ void EmailAliasesService::CancelAuthenticationOrLogout(
 }
 
 void EmailAliasesService::GenerateAlias(GenerateAliasCallback callback) {
-  base::Value::Dict body_value;  // empty JSON object
+  base::Value::Dict body_value;  // empty JSON object required by the API
   ApiFetch(email_aliases_service_base_url_,
            net::HttpRequestHeaders::kPostMethod, body_value,
            base::BindOnce(&EmailAliasesService::OnGenerateAliasResponse,
                           weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void EmailAliasesService::UpdateAlias(const std::string& alias_email,
-                                      const std::optional<std::string>& note,
-                                      UpdateAliasCallback callback) {
+void EmailAliasesService::UpdateAlias(
+    const std::string& alias_email,
+    const std::optional<std::string>& /* note */,
+    UpdateAliasCallback callback) {
   // Build JSON using IDL-defined shape
   UpdateAliasRequest request;
   request.alias = alias_email;
+  // TODO(https://github.com/brave/brave-browser/issues/49229):
+  // Add support for storing alias note in the client.
+
+  // For now, we only support active aliases.
   request.status = "active";
   auto body_value = request.ToValue();
   ApiFetch(email_aliases_service_base_url_, net::HttpRequestHeaders::kPutMethod,
