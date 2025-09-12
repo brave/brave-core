@@ -8,6 +8,10 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/color_utils.h"
 
+#if BUILDFLAG(IS_MAC)
+#include "ui/native_theme/native_theme_mac.h"
+#endif
+
 #define GetSystemButtonPressedColor GetSystemButtonPressedColor_ChromiumImpl
 #include <ui/native_theme/native_theme.cc>
 #undef GetSystemButtonPressedColor
