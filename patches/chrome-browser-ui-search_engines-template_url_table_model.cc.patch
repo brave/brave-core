@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/search_engines/template_url_table_model.cc b/chrome/browser/ui/search_engines/template_url_table_model.cc
+index f7f0e85c3ebd6b3e26371534302184d20247186e..dcb67d96da627cb733c3d7021d5a42bf72d5c67f 100644
+--- a/chrome/browser/ui/search_engines/template_url_table_model.cc
++++ b/chrome/browser/ui/search_engines/template_url_table_model.cc
+@@ -118,6 +118,7 @@ void TemplateURLTableModel::Reload() {
+   // Keywords that can be made the default first.
+   for (TemplateURL* template_url : urls) {
+     // Skip @gemini if feature disabled.
++    BRAVE_TEMPLATE_URL_TABLE_MODEL_RELOAD
+     if (template_url->starter_pack_id() ==
+             template_url_starter_pack_data::kGemini &&
+         !OmniboxFieldTrial::IsStarterPackExpansionEnabled()) {

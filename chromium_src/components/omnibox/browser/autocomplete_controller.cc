@@ -118,8 +118,18 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
   SortBraveSearchPromotionMatch(&internal_result_); \
   MaybeShowCommands(&internal_result_, input_);
 
+#define BRAVE_AUTOCOMPLETE_CONTROLLER_SET_MATCH_DESTINATION_URL \
+  if (true) {                                                   \
+  } else
+
+#define BRAVE_AUTOCOMPLETE_CONTROLLER_COMPUTE_URL_FROM_SEARCH_TERMS_ARGS \
+  if (true) {                                                            \
+  } else
+
 #include <components/omnibox/browser/autocomplete_controller.cc>
 
+#undef BRAVE_AUTOCOMPLETE_CONTROLLER_COMPUTE_URL_FROM_SEARCH_TERMS_ARGS
+#undef BRAVE_AUTOCOMPLETE_CONTROLLER_SET_MATCH_DESTINATION_URL
 #undef BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT
 #undef BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER
 #undef OnDeviceHeadProvider

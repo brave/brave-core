@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/omnibox/browser/autocomplete_match.h"
-#include "components/search_engines/template_url.h"
-#include "components/search_engines/template_url_starter_pack_data.h"
-
-// We disable starter pack expansion to hide @gemini search keyword. Piggy back
-// on it to also disable @aimode.
-#define kGemini                                 \
-  kGemini || template_url->starter_pack_id() == \
-                 template_url_starter_pack_data::kAiMode
+#define BRAVE_TEMPLATE_URL_TABLE_MODEL_RELOAD    \
+  if (template_url->starter_pack_id() ==         \
+      template_url_starter_pack_data::kAiMode) { \
+    continue;                                    \
+  }                                              \
+  if (template_url->starter_pack_id() ==         \
+      template_url_starter_pack_data::kGemini) { \
+  } else
 
 #include <chrome/browser/ui/search_engines/template_url_table_model.cc>
-#undef kGemini
+
+#undef BRAVE_TEMPLATE_URL_TABLE_MODEL_RELOAD

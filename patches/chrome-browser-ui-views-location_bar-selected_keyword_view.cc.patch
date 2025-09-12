@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/location_bar/selected_keyword_view.cc b/chrome/browser/ui/views/location_bar/selected_keyword_view.cc
+index f824957011655e33004ff528d5a791878cbb3868..bdda9cceb5df0c5a1a9fa6107ff2143f49ef4f9a 100644
+--- a/chrome/browser/ui/views/location_bar/selected_keyword_view.cc
++++ b/chrome/browser/ui/views/location_bar/selected_keyword_view.cc
+@@ -113,6 +113,7 @@ void SelectedKeywordView::SetCustomImage(const gfx::Image& image) {
+   if (template_url && template_url->starter_pack_id() ==
+                           template_url_starter_pack_data::kGemini) {
+     vector_icon = &omnibox::kSparkIcon;
++    BRAVE_SELECTED_KEYWORD_VIEW_SET_CUSTOM_IMAGE
+   } else if (template_url && template_url->starter_pack_id() ==
+                                  template_url_starter_pack_data::kAiMode) {
+     vector_icon = &omnibox::kSearchSparkIcon;

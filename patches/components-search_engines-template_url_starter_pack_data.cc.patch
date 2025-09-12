@@ -1,0 +1,12 @@
+diff --git a/components/search_engines/template_url_starter_pack_data.cc b/components/search_engines/template_url_starter_pack_data.cc
+index 4cb042d2413a06fd1ebf5834fb09563747f88d82..2964a4c627d3334f7797fdd8d840bd1ada4a4d1f 100644
+--- a/components/search_engines/template_url_starter_pack_data.cc
++++ b/components/search_engines/template_url_starter_pack_data.cc
+@@ -93,6 +93,7 @@ const StarterPackEngine ai_mode = {
+ };
+ 
+ const StarterPackEngine* engines[] = {
++    BRAVE_TEMPLATE_URL_STARTER_PACK_DATA_ENGINES
+     &bookmarks, &history, &tabs, &gemini, &page, &ai_mode,
+ };
+ 

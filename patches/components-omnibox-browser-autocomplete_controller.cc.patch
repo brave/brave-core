@@ -1,8 +1,24 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.cc b/components/omnibox/browser/autocomplete_controller.cc
-index 91cc462a37b5c6c32279d8f5aab1e3cdc7621370..8621f3364705ff16f4ba59be84705a1ca0609c23 100644
+index 91cc462a37b5c6c32279d8f5aab1e3cdc7621370..1923cfd1748456ffa7abf1b82785e38ebc988291 100644
 --- a/components/omnibox/browser/autocomplete_controller.cc
 +++ b/components/omnibox/browser/autocomplete_controller.cc
-@@ -1262,6 +1262,7 @@ void AutocompleteController::InitializeAsyncProviders(int provider_types) {
+@@ -1047,6 +1047,7 @@ void AutocompleteController::SetMatchDestinationURL(
+ 
+   // Append an extra header to navigations from the @gemini scope.
+   const TemplateURL* turl = match->GetTemplateURL(template_url_service_, false);
++  BRAVE_AUTOCOMPLETE_CONTROLLER_SET_MATCH_DESTINATION_URL
+   if (turl &&
+       turl->starter_pack_id() == template_url_starter_pack_data::kGemini &&
+       !encoded_search_terms.empty() &&
+@@ -1249,6 +1250,7 @@ GURL AutocompleteController::ComputeURLFromSearchTermsArgs(
+   // Skip search term replacement when in the @gemini scope.
+   // TODO(crbug.com/41494524): Replace this logic with a proper fix to support
+   // keywords that do not do search term replacement in omnibox.
++  BRAVE_AUTOCOMPLETE_CONTROLLER_COMPUTE_URL_FROM_SEARCH_TERMS_ARGS
+   if (template_url->starter_pack_id() ==
+       template_url_starter_pack_data::kGemini) {
+     return GURL(OmniboxFieldTrial::kGeminiUrlOverride.Get());
+@@ -1262,6 +1264,7 @@ void AutocompleteController::InitializeAsyncProviders(int provider_types) {
    if (provider_types & AutocompleteProvider::TYPE_SEARCH) {
      search_provider_ = new SearchProvider(provider_client_.get(), this);
      providers_.push_back(search_provider_.get());
@@ -10,7 +26,7 @@ index 91cc462a37b5c6c32279d8f5aab1e3cdc7621370..8621f3364705ff16f4ba59be84705a1c
    }
    // Providers run in the order they're added.  Add `HistoryURLProvider` after
    // `SearchProvider` because:
-@@ -1509,6 +1510,7 @@ void AutocompleteController::UpdateResult(UpdateType update_type,
+@@ -1509,6 +1512,7 @@ void AutocompleteController::UpdateResult(UpdateType update_type,
      StartStopTimer();
    }
  

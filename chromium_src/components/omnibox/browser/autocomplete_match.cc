@@ -18,6 +18,10 @@ const gfx::VectorIcon& AutocompleteMatch::GetVectorIcon(
            .empty()) {
     return kLeoCaratRightIcon;
   }
+  if (type == Type::STARTER_PACK && turl &&
+      turl->GetBuiltinEngineType() == KEYWORD_MODE_STARTER_PACK_GEMINI) {
+    return kLeoMessageBubbleAskIcon;
+  }
   return GetVectorIcon_Chromium(is_bookmark, turl);
 }
 
