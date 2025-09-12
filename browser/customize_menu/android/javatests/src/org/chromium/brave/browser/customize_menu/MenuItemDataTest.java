@@ -18,9 +18,7 @@ import org.robolectric.annotation.Config;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
 
-/**
- * Unit tests for {@link MenuItemData}.
- */
+/** Unit tests for {@link MenuItemData}. */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 public class MenuItemDataTest {
@@ -91,12 +89,13 @@ public class MenuItemDataTest {
     @Test
     public void testMultipleParcelOperations() {
         // Test with multiple items to ensure parcel operations work correctly.
-        MenuItemData[] originalData = new MenuItemData[]{
-                new MenuItemData(R.id.new_tab_menu_id, "New Tab", true),
-                new MenuItemData(R.id.downloads_menu_id, "Downloads", false),
-                new MenuItemData(R.id.brave_leo_id, null, true),
-                new MenuItemData(R.id.share_menu_id, "Share", false)
-        };
+        MenuItemData[] originalData =
+                new MenuItemData[] {
+                    new MenuItemData(R.id.new_tab_menu_id, "New Tab", true),
+                    new MenuItemData(R.id.downloads_menu_id, "Downloads", false),
+                    new MenuItemData(R.id.brave_leo_id, null, true),
+                    new MenuItemData(R.id.share_menu_id, "Share", false)
+                };
 
         Parcel parcel = Parcel.obtain();
 

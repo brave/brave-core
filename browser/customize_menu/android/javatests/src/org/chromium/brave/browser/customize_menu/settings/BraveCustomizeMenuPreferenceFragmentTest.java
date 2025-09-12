@@ -6,9 +6,9 @@
 package org.chromium.brave.browser.customize_menu.settings;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -34,9 +34,7 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import java.util.ArrayList;
 import java.util.Locale;
 
-/**
- * Unit tests for {@link BraveCustomizeMenuPreferenceFragment}.
- */
+/** Unit tests for {@link BraveCustomizeMenuPreferenceFragment}. */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 public class BraveCustomizeMenuPreferenceFragmentTest {
@@ -59,23 +57,25 @@ public class BraveCustomizeMenuPreferenceFragmentTest {
         pageActionItems.add(new MenuItemData(R.id.share_menu_id, "Share", true));
         pageActionItems.add(new MenuItemData(R.id.find_in_page_id, "Find in Page", false));
 
-        mTestBundle.putParcelableArrayList(CustomizeBraveMenu.KEY_MAIN_MENU_ITEM_LIST, mainMenuItems);
-        mTestBundle.putParcelableArrayList(CustomizeBraveMenu.KEY_PAGE_ACTION_ITEM_LIST, pageActionItems);
+        mTestBundle.putParcelableArrayList(
+                CustomizeBraveMenu.KEY_MAIN_MENU_ITEM_LIST, mainMenuItems);
+        mTestBundle.putParcelableArrayList(
+                CustomizeBraveMenu.KEY_PAGE_ACTION_ITEM_LIST, pageActionItems);
     }
 
     @Test
     public void testOnCreate_SetsPageTitle() {
         FragmentScenario<BraveCustomizeMenuPreferenceFragment> scenario =
                 FragmentScenario.launchInContainer(
-                        BraveCustomizeMenuPreferenceFragment.class,
-                        mTestBundle);
+                        BraveCustomizeMenuPreferenceFragment.class, mTestBundle);
 
-        scenario.onFragment(fragment -> {
-            ObservableSupplier<String> pageTitle = fragment.getPageTitle();
-            assertNotNull(pageTitle);
-            assertNotNull(pageTitle.get());
-            assertTrue(pageTitle.get().contains("Customize"));
-        });
+        scenario.onFragment(
+                fragment -> {
+                    ObservableSupplier<String> pageTitle = fragment.getPageTitle();
+                    assertNotNull(pageTitle);
+                    assertNotNull(pageTitle.get());
+                    assertTrue(pageTitle.get().contains("Customize"));
+                });
     }
 
     @Test
@@ -84,8 +84,11 @@ public class BraveCustomizeMenuPreferenceFragmentTest {
 
         // Create a mock preference.
         Preference preference = mock(Preference.class);
-        String prefKey = String.format(Locale.ENGLISH, BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
-                R.id.new_tab_menu_id);
+        String prefKey =
+                String.format(
+                        Locale.ENGLISH,
+                        BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
+                        R.id.new_tab_menu_id);
         when(preference.getKey()).thenReturn(prefKey);
 
         // Call onPreferenceChange.
@@ -103,12 +106,18 @@ public class BraveCustomizeMenuPreferenceFragmentTest {
 
         // Test multiple preference changes.
         String[] prefKeys = {
-                String.format(Locale.ENGLISH, BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
-                        R.id.new_tab_menu_id),
-                String.format(Locale.ENGLISH, BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
-                        R.id.downloads_menu_id),
-                String.format(Locale.ENGLISH, BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
-                        R.id.share_menu_id)
+            String.format(
+                    Locale.ENGLISH,
+                    BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
+                    R.id.new_tab_menu_id),
+            String.format(
+                    Locale.ENGLISH,
+                    BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
+                    R.id.downloads_menu_id),
+            String.format(
+                    Locale.ENGLISH,
+                    BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
+                    R.id.share_menu_id)
         };
         boolean[] values = {true, false, true};
 
@@ -119,7 +128,9 @@ public class BraveCustomizeMenuPreferenceFragmentTest {
             boolean result = mFragment.onPreferenceChange(preference, values[i]);
 
             assertTrue(result);
-            assertEquals(ChromeSharedPreferences.getInstance().readBoolean(prefKeys[i], !values[i]), values[i]);
+            assertEquals(
+                    ChromeSharedPreferences.getInstance().readBoolean(prefKeys[i], !values[i]),
+                    values[i]);
         }
     }
 
@@ -132,28 +143,29 @@ public class BraveCustomizeMenuPreferenceFragmentTest {
         FragmentScenario<BraveCustomizeMenuPreferenceFragment> scenario =
                 FragmentScenario.launchInContainer(BraveCustomizeMenuPreferenceFragment.class);
 
-        scenario.onFragment(fragment -> {
-            // Fragment should be created successfully even with null bundle.
-            assertNotNull(fragment);
-        });
+        scenario.onFragment(
+                fragment -> {
+                    // Fragment should be created successfully even with null bundle.
+                    assertNotNull(fragment);
+                });
     }
 
     @Test
     public void testOnCreatePreferences_WithEmptyMenuLists() {
         Bundle emptyBundle = new Bundle();
-        emptyBundle.putParcelableArrayList(CustomizeBraveMenu.KEY_MAIN_MENU_ITEM_LIST,
-                new ArrayList<>());
-        emptyBundle.putParcelableArrayList(CustomizeBraveMenu.KEY_PAGE_ACTION_ITEM_LIST,
-                new ArrayList<>());
+        emptyBundle.putParcelableArrayList(
+                CustomizeBraveMenu.KEY_MAIN_MENU_ITEM_LIST, new ArrayList<>());
+        emptyBundle.putParcelableArrayList(
+                CustomizeBraveMenu.KEY_PAGE_ACTION_ITEM_LIST, new ArrayList<>());
 
         FragmentScenario<BraveCustomizeMenuPreferenceFragment> scenario =
                 FragmentScenario.launchInContainer(
-                        BraveCustomizeMenuPreferenceFragment.class,
-                        emptyBundle);
+                        BraveCustomizeMenuPreferenceFragment.class, emptyBundle);
 
-        scenario.onFragment(fragment -> {
-            // Fragment should handle empty lists gracefully.
-            assertNotNull(fragment);
-        });
+        scenario.onFragment(
+                fragment -> {
+                    // Fragment should handle empty lists gracefully.
+                    assertNotNull(fragment);
+                });
     }
 }
