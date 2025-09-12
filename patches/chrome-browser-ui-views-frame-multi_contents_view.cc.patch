@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/ui/views/frame/multi_contents_view.cc b/chrome/browser/ui/views/frame/multi_contents_view.cc
-index b2ebcdc1a1d4f7bbbb9e769c6ff4c897eac93925..71342946302dc9629c118bda52bf9fb78aa29271 100644
+index 293c5f3a9e05d5a5163cd602c5c163567f1bb91e..6fda93bb6e496104e552ba4c24f98dfcd38a6a1f 100644
 --- a/chrome/browser/ui/views/frame/multi_contents_view.cc
 +++ b/chrome/browser/ui/views/frame/multi_contents_view.cc
-@@ -45,7 +45,7 @@ MultiContentsView::MultiContentsView(
-           gfx::Insets(kSplitViewContentInset).set_top(0).set_left(0)) {
-   SetLayoutManager(std::make_unique<views::DelegatingLayoutManager>(this));
+@@ -59,7 +59,7 @@ MultiContentsView::MultiContentsView(
+   SetProperty(views::kElementIdentifierKey, kMultiContentsViewElementId);
+ 
    contents_container_views_.push_back(
 -      AddChildView(std::make_unique<ContentsContainerView>(browser_view_)));
 +      AddChildView(std::make_unique<BraveContentsContainerView>(browser_view_)));
    contents_container_views_[0]
        ->contents_view()
        ->set_is_primary_web_contents_for_window(true);
-@@ -54,7 +54,7 @@ MultiContentsView::MultiContentsView(
+@@ -68,7 +68,7 @@ MultiContentsView::MultiContentsView(
    resize_area_->SetVisible(false);
  
    contents_container_views_.push_back(
@@ -19,4 +19,4 @@ index b2ebcdc1a1d4f7bbbb9e769c6ff4c897eac93925..71342946302dc9629c118bda52bf9fb7
 +      AddChildView(std::make_unique<BraveContentsContainerView>(browser_view_)));
    contents_container_views_[1]->SetVisible(false);
  
-   for (auto* contents_container_view : contents_container_views_) {
+   drop_target_view_ =

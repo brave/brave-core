@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#define TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
+
 #include "content/browser/web_contents/web_contents_impl.h"
 
 namespace content {
@@ -35,3 +37,5 @@ bool WebContentsImpl::PreHandleMouseEvent(const blink::WebMouseEvent& event) {
 }
 
 }  // namespace content
+
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION

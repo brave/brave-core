@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index ad81cf875bbbaea556b2c5a0e7dc3af7d27f7377..edb32c6ef9a07f1298c03cf16a30d26b8642410f 100644
+index a7a40d038d5505cf0d763ac9e4b57e0dd06c9714..31a8728944bbe57be0769b4a209b4373e9dc59ea 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
 @@ -34,6 +34,7 @@
@@ -10,19 +10,3 @@ index ad81cf875bbbaea556b2c5a0e7dc3af7d27f7377..edb32c6ef9a07f1298c03cf16a30d26b
          <cr-link-row id="clearBrowsingData"
              start-icon="cr:delete"
              label="$i18n{clearBrowsingData}"
-@@ -202,6 +203,7 @@
-           </settings-subpage>
-         </template>
-       </template>
-+<if expr="_google_chrome">
-       <template is="dom-if" route-path="/content/backgroundSync" no-search>
-         <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}"
-             search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -229,6 +231,7 @@
-           </category-setting-exceptions>
-         </settings-subpage>
-       </template>
-+</if>
-       <template is="dom-if" route-path="/content/camera" no-search>
-         <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}"
-             search-label="$i18n{siteSettingsAllSitesSearch}"

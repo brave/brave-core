@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.ts b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
-index b45a26e61192b28cddb4f9a964f9397e6c332809..81075c6b8c5488e72a02e92693155550e32013dd 100644
+index 7baf4a333e5dc1590219d8bc7fabae039a5e064b..6a0aad7cc3ae33be53e101b3762ce1f0878a2b65 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 @@ -24,6 +24,7 @@ import '../settings_shared.css.js';

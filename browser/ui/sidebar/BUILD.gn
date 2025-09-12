@@ -32,6 +32,7 @@ source_set("sidebar") {
     "//brave/components/sidebar/common",
     "//chrome/browser:browser_process",
     "//chrome/browser/favicon",
+    "//chrome/browser/history",
     "//chrome/browser/image_fetcher",
     "//chrome/browser/profiles",
     "//chrome/browser/search",

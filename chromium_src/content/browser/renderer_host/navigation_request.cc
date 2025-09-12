@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#define TODO_BASE_FEATURE_MACROS_NEED_MIGRATION
+
 #include "build/build_config.h"
 #include "content/browser/renderer_host/frame_tree.h"
 #include "content/browser/renderer_host/frame_tree_node.h"
@@ -49,3 +51,5 @@ GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
 #include <content/browser/renderer_host/navigation_request.cc>
 #undef BRAVE_ONSTARTCHECKSCOMPLETE_MAYBEHIDEREFERRER
 #undef BRAVE_ONREQUESTREDIRECTED_MAYBEHIDEREFERRER
+
+#undef TODO_BASE_FEATURE_MACROS_NEED_MIGRATION

@@ -73,7 +73,7 @@ class BraveBrowserView : public BrowserView,
                          public commands::AcceleratorService::Observer {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
-  explicit BraveBrowserView(std::unique_ptr<Browser> browser);
+  explicit BraveBrowserView(Browser* browser);
   BraveBrowserView(const BraveBrowserView&) = delete;
   BraveBrowserView& operator=(const BraveBrowserView&) = delete;
   ~BraveBrowserView() override;
@@ -222,8 +222,8 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   void UpdateSideBarHorizontalAlignment();
-  views::View* contents_separator_for_testing() const {
-    return contents_separator_;
+  views::View* top_container_separator_for_testing() const {
+    return top_container_separator_;
   }
 
   std::unique_ptr<views::Widget> vertical_tab_strip_widget_;

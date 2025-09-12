@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index dde604d78e36d36986dc9e774a8f6dce14b85a45..7a6918dbadcfe8c789b1ea32f22510fbdb698cd9 100644
+index 783647dcc9d588f89a177948a5a3539205d9eb11..a9fdf184a692839789566e0346f1f566b2d9e044 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
 @@ -641,6 +641,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
@@ -11,7 +11,7 @@ index dde604d78e36d36986dc9e774a8f6dce14b85a45..7a6918dbadcfe8c789b1ea32f22510fb
    VISIT(invalidation_fields);
    VISIT(paask_fields);
 @@ -663,6 +664,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
-   VISIT(floating_workspace_last_signin_time_windows_epoch_micros);
+   VISIT(auto_sign_out_last_signin_timestamp_windows_epoch_micros);
  }
  
 +BRAVE_VISIT_PROTO_FIELDS_BRAVE_SPECIFIC_FIELD

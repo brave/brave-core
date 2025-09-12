@@ -138,8 +138,8 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
   // above. In order to avoid tabstrip position changes when switching to a
   // different tab, add some spacing as if the separator were above and
   // invisible.
-  if (contents_separator_ && ShouldPushBookmarkBarForVerticalTabs()) {
-    insets.set_top(contents_separator_->GetPreferredSize().height());
+  if (top_container_separator_ && ShouldPushBookmarkBarForVerticalTabs()) {
+    insets.set_top(top_container_separator_->GetPreferredSize().height());
   }
 #endif  // BUILDFLAG(IS_LINUX)
 
@@ -238,10 +238,6 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(
   UpdateContentsContainerInsets(contents_container_bounds);
 
   contents_container_->SetBoundsRect(contents_container_bounds);
-}
-
-void BraveBrowserViewLayout::UpdateSplitViewInsets() {
-  // We don't use chromium's split view insets.
 }
 
 void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
