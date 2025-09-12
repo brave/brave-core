@@ -1,0 +1,12 @@
+diff --git a/build/android/list_java_targets.py b/build/android/list_java_targets.py
+index e66fd3697e315d97c689b1662fbab9887a42392d..8d0c7ffa5551cae604bf8fb5c7dfbaf793fb5789 100755
+--- a/build/android/list_java_targets.py
++++ b/build/android/list_java_targets.py
+@@ -147,6 +147,7 @@ class _TargetEntry:
+     assert ':' in gn_target, f'Non-root {gn_target} required'
+     self.gn_target = gn_target
+     self.has_build_config = has_build_config
++    self.has_build_config = True
+     self._combined_config = None
+     self._params_json = None
+ 
