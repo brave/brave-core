@@ -23,6 +23,11 @@
 #include "url/gurl.h"
 
 class PrefService;
+
+#if BUILDFLAG(IS_ANDROID)
+#include "ui/android/view_android.h"
+#endif
+
 class Profile;
 
 namespace content {
@@ -69,11 +74,18 @@ class BackupResultsServiceImpl : public BackupResultsService,
     PendingRequest(std::unique_ptr<content::WebContents> web_contents,
                    std::optional<net::HttpRequestHeaders> headers,
                    Profile* otr_profile,
-                   BackupResultsCallback callback);
+                   BackupResultsCallback callback,
+                   const GURL& original_url
+#if BUILDFLAG(IS_ANDROID)
+                   ,
+                   std::unique_ptr<ui::ViewAndroid> view_android = nullptr
+#endif
+    );
     ~PendingRequest();
 
     std::optional<net::HttpRequestHeaders> headers;
     BackupResultsCallback callback;
+    GURL original_url;
 
     std::unique_ptr<content::WebContents> web_contents;
 
@@ -85,6 +97,11 @@ class BackupResultsServiceImpl : public BackupResultsService,
     size_t requests_loaded = 0;
     int last_response_code = -1;
     base::OneShotTimer timeout_timer;
+    base::OneShotTimer brave_com_timer;
+
+#if BUILDFLAG(IS_ANDROID)
+    std::unique_ptr<ui::ViewAndroid> view_android;
+#endif
   };
   using PendingRequestList = std::list<PendingRequest>;
 
@@ -112,6 +129,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
 
   // Returns true if the daily request limit has been reached, false otherwise.
   bool UpdateDailyRequestCount();
+  void NavigateToOriginalUrl(PendingRequestList::iterator pending_request);
 
   raw_ptr<Profile> profile_;
   raw_ptr<PrefService> local_state_;
