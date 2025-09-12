@@ -41,7 +41,7 @@ export const OnboardingRoutes = () => {
   // render
   return (
     <WalletPageLayout maintainWidth={isMobile}>
-      <WalletSubViewLayout>
+      <WalletSubViewLayout noPadding={isMobile}>
         <Switch>
           <ProtectedRoute
             path={WalletRoutes.OnboardingWelcome}
