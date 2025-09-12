@@ -24,10 +24,6 @@
 #include "ui/views/view_constants_aura.h"
 #endif
 
-#if BUILDFLAG(IS_MAC)
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_utils_mac.h"
-#endif
-
 namespace {
 
 class VerticalTabStripWidget : public ThemeCopyingWidget {
@@ -231,7 +227,7 @@ void VerticalTabStripWidgetDelegateView::UpdateClip() {
   // On mac, child window can be drawn out of parent window. We should clip
   // the border line and corner radius manually.
   SkPath path;
-  const int corner_radius = GetVerticalTabStripCornerRadius();
+  const int corner_radius = GetVerticalTabStripCornerRadiusMac();
   if (tabs::utils::IsVerticalTabOnRight(browser_view_->browser())) {
     path.moveTo(width(), 0);
     path.lineTo(0, 0);

@@ -19,8 +19,7 @@ source_set("vertical_tabs") {
   if (is_mac) {
     sources += [
       "vertical_tab_strip_region_view_mac.mm",
-      "vertical_tab_utils_mac.h",
-      "vertical_tab_utils_mac.mm",
+      "vertical_tab_strip_widget_delegate_view_mac.mm",
     ]
   }
   deps = [
