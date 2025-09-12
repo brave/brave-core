@@ -437,10 +437,13 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 
   // All tabs should have the same group.
   auto group = tsm->GetTabGroupForTab(0);
-  EXPECT_TRUE(group.has_value());
+  ASSERT_TRUE(group.has_value());
 
   for (int i = 1; i < tsm->count(); ++i) {
-    EXPECT_EQ(group, tsm->GetTabGroupForTab(i));
+    auto group_i = tsm->GetTabGroupForTab(i);
+    ASSERT_TRUE(group_i.has_value())
+        << "Tab " << i << " is not in the tab group";
+    EXPECT_EQ(group, group_i);
   }
 }
 
