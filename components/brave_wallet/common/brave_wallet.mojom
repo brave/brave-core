@@ -196,8 +196,9 @@ interface EthereumProvider {
 };
 
 struct CardanoProviderPagination {
-  uint32 page;
-  uint32 limit;
+  // Use signed types since JS numeric translates to int.
+  int32 page;
+  int32 limit;
 };
 
 struct CardanoProviderPaginationErrorPayload {
