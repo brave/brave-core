@@ -9,6 +9,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/themes/theme_properties.h"
@@ -44,6 +45,46 @@ SkColor GetActiveVerticalTabBackgroundColor(const ui::ColorProviderKey& key,
   return color_utils::HSLShift(default_color, hsl);
 }
 
+SkColor GetHoveredTabBackgroundColor(const ui::ColorProviderKey& key,
+                                     nala::Color default_color_id,
+                                     SkColor input,
+                                     const ui::ColorMixer& mixer) {
+  CHECK(default_color_id == nala::kColorDesktopbrowserTabbarHoverTabVertical ||
+        default_color_id == nala::kColorDesktopbrowserTabbarHoverTabHorizontal);
+
+  const auto default_color = mixer.GetResultColor(default_color_id);
+  if (!key.user_color.has_value()) {
+    // Defaults to Nala if no user color.
+    return default_color;
+  }
+
+  CHECK_EQ(base::to_underlying(ui::ColorProviderKey::ColorMode::kLight), 0);
+  CHECK_EQ(base::to_underlying(ui::ColorProviderKey::ColorMode::kDark), 1);
+
+  constexpr auto kHSLShiftMap =
+      base::MakeFixedFlatMap<nala::Color, std::array<color_utils::HSL, 2>>({
+          {nala::kColorDesktopbrowserTabbarHoverTabVertical,
+           {color_utils::HSL{
+                .h = -1, .s = 0.5, .l = 0.8},  // Light mode : lighter
+            color_utils::HSL{
+                .h = -1, .s = 0.6, .l = 0.5}}},  // Dark mode : More saturation
+          {nala::kColorDesktopbrowserTabbarHoverTabHorizontal,
+           {color_utils::HSL{
+                .h = -1,
+                .s = 0.9,
+                .l = 0.8},  // Light-mode: More saturation and lighter
+            color_utils::HSL{
+                .h = -1,
+                .s = 0.55,
+                .l = 0.52}}},  // Dark-mode: A little more saturation
+                               // and a little bit darker
+      });
+
+  const color_utils::HSL& shift =
+      kHSLShiftMap.at(default_color_id).at(base::to_underlying(key.color_mode));
+  return color_utils::HSLShift(default_color, shift);
+}
+
 }  // namespace
 
 void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
@@ -74,8 +115,12 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
         nala::kColorDesktopbrowserTabbarSplitViewDivider};
     mixer[kColorBraveVerticalTabActiveBackground] = {
         base::BindRepeating(&GetActiveVerticalTabBackgroundColor, key)};
+    mixer[kColorTabBackgroundInactiveHoverFrameActive] = {base::BindRepeating(
+        &GetHoveredTabBackgroundColor, key,
+        nala::kColorDesktopbrowserTabbarHoverTabHorizontal)};
     mixer[kColorBraveVerticalTabHoveredBackground] = {
-        nala::kColorDesktopbrowserTabbarHoverTabVertical};
+        base::BindRepeating(&GetHoveredTabBackgroundColor, key,
+                            nala::kColorDesktopbrowserTabbarHoverTabVertical)};
   }
 
   mixer[kColorBraveVerticalTabInactiveBackground] = {kColorToolbar};
