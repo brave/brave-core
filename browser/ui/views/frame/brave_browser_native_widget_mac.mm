@@ -1,9 +1,9 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/frame/brave_browser_frame_mac.h"
+#include "brave/browser/ui/views/frame/brave_browser_native_widget_mac.h"
 
 #include "base/feature_list.h"
 #include "brave/app/brave_command_ids.h"
@@ -17,14 +17,15 @@
 #include "components/prefs/pref_service.h"
 #include "components/remote_cocoa/common/native_widget_ns_window_host.mojom.h"
 
-BraveBrowserFrameMac::BraveBrowserFrameMac(BrowserFrame* browser_frame,
-                                           BrowserView* browser_view)
-    : BrowserFrameMac(browser_frame, browser_view),
+BraveBrowserNativeWidgetMac::BraveBrowserNativeWidgetMac(
+    BrowserFrame* browser_frame,
+    BrowserView* browser_view)
+    : BrowserNativeWidgetMac(browser_frame, browser_view),
       browser_view_(browser_view->GetAsWeakPtr()) {}
 
-BraveBrowserFrameMac::~BraveBrowserFrameMac() {}
+BraveBrowserNativeWidgetMac::~BraveBrowserNativeWidgetMac() {}
 
-void BraveBrowserFrameMac::GetWindowFrameTitlebarHeight(
+void BraveBrowserNativeWidgetMac::GetWindowFrameTitlebarHeight(
     bool* override_titlebar_height,
     float* titlebar_height) {
   if (BrowserView* browser_view = browser_view_.get()) {
@@ -43,14 +44,14 @@ void BraveBrowserFrameMac::GetWindowFrameTitlebarHeight(
     }
   }
 
-  BrowserFrameMac::GetWindowFrameTitlebarHeight(override_titlebar_height,
-                                                titlebar_height);
+  BrowserNativeWidgetMac::GetWindowFrameTitlebarHeight(override_titlebar_height,
+                                                       titlebar_height);
 }
 
-void BraveBrowserFrameMac::ValidateUserInterfaceItem(
+void BraveBrowserNativeWidgetMac::ValidateUserInterfaceItem(
     int32_t tag,
     remote_cocoa::mojom::ValidateUserInterfaceItemResult* result) {
-  BrowserFrameMac::ValidateUserInterfaceItem(tag, result);
+  BrowserNativeWidgetMac::ValidateUserInterfaceItem(tag, result);
 
   if (tag != IDC_TOGGLE_TAB_MUTE || !result->enable) {
     return;
@@ -67,7 +68,7 @@ void BraveBrowserFrameMac::ValidateUserInterfaceItem(
   }
 }
 
-bool BraveBrowserFrameMac::ExecuteCommand(
+bool BraveBrowserNativeWidgetMac::ExecuteCommand(
     int32_t command,
     WindowOpenDisposition window_open_disposition,
     bool is_before_first_responder) {
@@ -89,6 +90,6 @@ bool BraveBrowserFrameMac::ExecuteCommand(
     }
   }
 
-  return BrowserFrameMac::ExecuteCommand(command, window_open_disposition,
-                                         is_before_first_responder);
+  return BrowserNativeWidgetMac::ExecuteCommand(
+      command, window_open_disposition, is_before_first_responder);
 }
