@@ -211,7 +211,9 @@ public class CustomizeBraveMenu {
         }
 
         modelList.clear();
-        modelList.addAll(out);
+        if (!out.isEmpty()) {
+            modelList.addAll(out);
+        }
     }
 
     /**
