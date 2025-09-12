@@ -54,8 +54,8 @@ export const IconWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
   background-color: ${leo.color.container.interactive};
   border-radius: 50%;
   z-index: 0;
