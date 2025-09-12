@@ -7,11 +7,10 @@
 
 #include <AppKit/AppKit.h>
 
-#include "brave/browser/ui/views/frame/brave_browser_frame_mac.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
-#import "chrome/browser/ui/views/frame/browser_frame_mac.h"
+#import "chrome/browser/ui/views/frame/browser_native_widget_mac.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
