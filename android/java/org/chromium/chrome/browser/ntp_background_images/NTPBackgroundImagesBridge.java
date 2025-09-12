@@ -88,11 +88,6 @@ public class NTPBackgroundImagesBridge {
         }
     }
 
-    public void registerPageView() {
-        NTPBackgroundImagesBridgeJni.get().registerPageView(
-                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
-    }
-
     public void wallpaperLogoClicked(Wallpaper wallpaper) {
         NTPBackgroundImagesBridgeJni.get()
                 .wallpaperLogoClicked(
@@ -189,9 +184,6 @@ public class NTPBackgroundImagesBridge {
         NTPBackgroundImagesBridge getInstance(Profile profile);
 
         NTPImage getCurrentWallpaper(
-                long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
-
-        void registerPageView(
                 long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
 
         void wallpaperLogoClicked(
