@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
-index 44f5da292099a35a9d8eba4bd8f6e22fa09d3ff5..a358fa626e6f1a5acaf024bd08a2ead110a40f3f 100644
+index c11a17c81bddc4bfea2f49b7a9f735c0900d69de..03fa38b27ea0216ce083e371cd370a68c31e048e 100644
 --- a/components/permissions/permission_request_manager.cc
 +++ b/components/permissions/permission_request_manager.cc
 @@ -553,6 +553,7 @@ void PermissionRequestManager::OnVisibilityChanged(
