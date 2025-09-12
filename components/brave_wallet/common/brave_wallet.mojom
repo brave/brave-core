@@ -231,7 +231,7 @@ interface CardanoApi {
   GetBalance()
       => (string? cbor_balance, CardanoProviderErrorBundle? error_message);
 
-  GetUtxos(string? amount, CardanoProviderPagination? paginate)
+  GetUtxos(uint64? amount, CardanoProviderPagination? paginate)
       => (array<string>? utxos, CardanoProviderErrorBundle? error);
 
   SignTx(string tx_cbor, bool partial_sign)

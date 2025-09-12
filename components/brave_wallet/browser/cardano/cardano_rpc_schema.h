@@ -12,6 +12,8 @@
 #include <optional>
 #include <vector>
 
+#include "brave/components/brave_wallet/common/cardano_address.h"
+
 namespace brave_wallet::cardano_rpc {
 
 namespace blockfrost_api {
@@ -48,11 +50,13 @@ struct Block {
 struct UnspentOutput {
   bool operator==(const UnspentOutput& other) const = default;
 
+  CardanoAddress address_to;
   std::array<uint8_t, 32> tx_hash = {};
   uint32_t output_index = 0;
   uint64_t lovelace_amount = 0;
 
   static std::optional<UnspentOutput> FromBlockfrostApiValue(
+      CardanoAddress address_to,
       std::optional<blockfrost_api::UnspentOutput> api_unspent_output);
 };
 

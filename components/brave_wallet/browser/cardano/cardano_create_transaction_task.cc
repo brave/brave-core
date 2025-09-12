@@ -14,7 +14,6 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/task/bind_post_task.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -36,15 +35,13 @@ constexpr uint32_t kTxValiditySeconds = 2 * 3600;
 namespace {
 static bool g_arrange_tx_for_test = false;
 
-std::vector<CardanoTransaction::TxInput> TxInputsFromUtxoMap(
-    const std::map<CardanoAddress, cardano_rpc::UnspentOutputs>& map) {
+std::vector<CardanoTransaction::TxInput> TxInputsFromUtxos(
+    const cardano_rpc::UnspentOutputs& utxos) {
   std::vector<CardanoTransaction::TxInput> result;
-  for (const auto& [key, value] : map) {
-    for (const auto& utxo : value) {
-      if (auto input = CardanoTransaction::TxInput::FromRpcUtxo(key, utxo)) {
-        result.push_back(std::move(*input));
-      }
-    }
+  result.reserve(utxos.size());
+
+  for (const auto& utxo : utxos) {
+    result.push_back(CardanoTransaction::TxInput::FromRpcUtxo(utxo));
   }
 
   return result;
@@ -127,8 +124,7 @@ void CardanoCreateTransactionTask::FetchAllRequiredData() {
 }
 
 bool CardanoCreateTransactionTask::IsAllRequiredDataFetched() {
-  return latest_epoch_parameters_ && latest_block_ && utxo_map_ &&
-         change_address_;
+  return latest_epoch_parameters_ && latest_block_ && utxos_ && change_address_;
 }
 
 void CardanoCreateTransactionTask::OnMaybeAllRequiredDataFetched() {
@@ -147,14 +143,14 @@ void CardanoCreateTransactionTask::RunSolverForTransaction() {
     transaction_.AddOutput(CreateTargetOutput());
 
     CardanoMaxSendSolver solver(transaction_, *latest_epoch_parameters_,
-                                TxInputsFromUtxoMap(*utxo_map_));
+                                TxInputsFromUtxos(*utxos_));
     solved_transaction = solver.Solve();
   } else {
     transaction_.AddOutput(CreateTargetOutput());
     transaction_.AddOutput(CreateChangeOutput());
 
     CardanoKnapsackSolver solver(transaction_, *latest_epoch_parameters_,
-                                 TxInputsFromUtxoMap(*utxo_map_));
+                                 TxInputsFromUtxos(*utxos_));
     solved_transaction = solver.Solve();
   }
 
@@ -207,18 +203,18 @@ void CardanoCreateTransactionTask::OnGetLatestBlock(
 }
 
 void CardanoCreateTransactionTask::OnGetUtxos(
-    base::expected<UtxoMap, std::string> utxos) {
+    base::expected<cardano_rpc::UnspentOutputs, std::string> utxos) {
   if (!utxos.has_value()) {
     StopWithError(std::move(utxos.error()));
     return;
   }
 
   if (utxos->empty()) {
-    StopWithError(WalletInternalErrorMessage());
+    StopWithError(WalletInsufficientBalanceErrorMessage());
     return;
   }
 
-  utxo_map_ = std::move(utxos.value());
+  utxos_ = std::move(utxos.value());
   OnMaybeAllRequiredDataFetched();
 }
 

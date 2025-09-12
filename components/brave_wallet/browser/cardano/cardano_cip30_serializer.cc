@@ -10,6 +10,8 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/numerics/safe_conversions.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "components/cbor/values.h"
 #include "components/cbor/writer.h"
@@ -108,6 +110,30 @@ std::vector<uint8_t> CardanoCip30Serializer::SerializeSignedDataSignature(
       cbor::Writer::Write(cbor::Value(std::move(cose_sign)));
   CHECK(cose_sign_serialized);
   return *cose_sign_serialized;
+}
+
+std::vector<uint8_t> CardanoCip30Serializer::SerializeUtxo(
+    const cardano_rpc::UnspentOutput& unspent_output) {
+  // https://github.com/IntersectMBO/cardano-ledger/blob/master/eras/shelley/impl/cddl-files/shelley.cddl#L67-L71
+
+  cbor::Value::ArrayValue transaction_input;
+  transaction_input.emplace_back(unspent_output.tx_hash);
+  transaction_input.emplace_back(
+      base::strict_cast<int64_t>(unspent_output.output_index));
+
+  cbor::Value::ArrayValue transaction_output;
+  transaction_output.emplace_back(unspent_output.address_to.ToCborBytes());
+  // CHECK is safe as total lovelace supply is 45*10^15.
+  transaction_output.emplace_back(
+      base::checked_cast<int64_t>(unspent_output.lovelace_amount));
+
+  cbor::Value::ArrayValue utxo;
+  utxo.emplace_back(std::move(transaction_input));
+  utxo.emplace_back(std::move(transaction_output));
+
+  auto utxo_serialized = cbor::Writer::Write(cbor::Value(std::move(utxo)));
+  CHECK(utxo_serialized);
+  return *utxo_serialized;
 }
 
 }  // namespace brave_wallet
