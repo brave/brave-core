@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/frame/brave_browser_frame_mac.h"
+#include "brave/browser/ui/views/frame/brave_browser_native_widget_mac.h"
 
-#define BrowserFrameMac BraveBrowserFrameMac
+#define BrowserNativeWidgetMac BraveBrowserNativeWidgetMac
 
-#include <chrome/browser/ui/views/frame/native_browser_frame_factory_mac.mm>
+#include <chrome/browser/ui/views/frame/browser_native_widget_factory_mac.mm>
 
-#undef BrowserFrameMac
+#undef BrowserNativeWidgetMac
