@@ -51,7 +51,17 @@ class TransactionDetailsStoreTests: XCTestCase {
           cacheStatus: .hit,
           source: .coingecko,
           percentageChange24h: "-57.23"
-        )
+        ),
+        .init(
+          coinType: .eth,
+          chainId: BraveWallet.SepoliaChainId,
+          address: "",
+          price: "3059.99",
+          vsCurrency: "usd",
+          cacheStatus: .hit,
+          source: .coingecko,
+          percentageChange24h: "-57.23"
+        ),
       ]
       completion(true, mockAssetPrices)
     }
