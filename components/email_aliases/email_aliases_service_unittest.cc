@@ -484,125 +484,213 @@ class EmailAliasesAPITest : public ::testing::Test {
   }
 };
 
-TEST_F(EmailAliasesAPITest, GenerateAlias_ReturnsAlias_OnSuccess) {
-  const std::string alias_email = "mock-1234@bravealias.com";
-  auto result_out = CallGenerateAliasWith(
-      std::string("{\"message\":\"created\",\"alias\":\"") + alias_email +
-      "\"}");
-  ASSERT_TRUE(result_out.has_value());
-  EXPECT_EQ(result_out.value(), alias_email);
+// ================= GenerateAlias (parameterized) =================
+
+struct GenerateAliasCase {
+  const char* name;
+  std::optional<std::string> body;
+  std::optional<int> net_error;
+  bool expect_success;
+  std::optional<std::string> expected_alias;
+  std::optional<int> expected_error_id;
+};
+
+class GenerateAliasParamTest : public EmailAliasesAPITest,
+                              public testing::WithParamInterface<GenerateAliasCase> {};
+
+TEST_P(GenerateAliasParamTest, HandlesResponses) {
+  const auto& p = GetParam();
+  auto result_out = CallGenerateAliasWith(p.body, p.net_error);
+  if (p.expect_success) {
+    ASSERT_TRUE(result_out.has_value());
+    if (p.expected_alias) {
+      EXPECT_EQ(result_out.value(), *p.expected_alias);
+    }
+  } else {
+    ASSERT_FALSE(result_out.has_value());
+    if (p.expected_error_id) {
+      EXPECT_EQ(result_out.error(), l10n_util::GetStringUTF8(*p.expected_error_id));
+    }
+  }
 }
 
-TEST_F(EmailAliasesAPITest, GenerateAlias_ReturnsError_OnBackendErrorMessage) {
-  auto result_out =
-      CallGenerateAliasWith("{\"message\":\"alias_unavailable\"}");
-  ASSERT_FALSE(result_out.has_value());
-  EXPECT_EQ(
-      result_out.error(),
-      l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE));
+static std::string GenerateAliasCaseName(
+    const testing::TestParamInfo<GenerateAliasCase>& info) {
+  return info.param.name;
 }
 
-TEST_F(EmailAliasesAPITest, GenerateAlias_ReturnsError_OnNoResponseBody) {
-  auto result_out = CallGenerateAliasWith(std::nullopt, net::ERR_FAILED);
-  ASSERT_FALSE(result_out.has_value());
-  EXPECT_EQ(result_out.error(),
-            l10n_util::GetStringUTF8(
-                IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY));
-}
+INSTANTIATE_TEST_SUITE_P(
+    EmailAliasesGenerateAlias,
+    GenerateAliasParamTest,
+    testing::Values(
+        GenerateAliasCase{"Success",
+                          "{\"message\":\"created\",\"alias\":\"mock-1234@bravealias.com\"}",
+                          std::nullopt, true,
+                          "mock-1234@bravealias.com",
+                          std::nullopt},
+        GenerateAliasCase{"BackendError",
+                          std::string("{\"message\":\"alias_unavailable\"}"),
+                          std::nullopt, false, std::nullopt,
+                          IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE},
+        GenerateAliasCase{"NoBody", std::nullopt,
+                          net::ERR_FAILED, false,
+                          std::nullopt,
+                          IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY},
+        GenerateAliasCase{"InvalidJSON",
+                          "not a json",
+                          std::nullopt, false, std::nullopt,
+                          IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY},
+        GenerateAliasCase{"UnexpectedPayload",
+                          "{\"message\":\"ok_but_no_alias\"}",
+                          std::nullopt, false, std::nullopt,
+                          IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE}),
+    GenerateAliasCaseName);
 
-TEST_F(EmailAliasesAPITest, GenerateAlias_ReturnsError_OnInvalidJson) {
-  auto result_out = CallGenerateAliasWith("not a json");
-  ASSERT_FALSE(result_out.has_value());
-  EXPECT_EQ(result_out.error(),
-            l10n_util::GetStringUTF8(
-                IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY));
-}
+// ================= UpdateAlias (parameterized) =================
 
-TEST_F(EmailAliasesAPITest,
-       GenerateAlias_ReturnsError_OnUnexpectedSuccessPayload) {
-  auto result_out = CallGenerateAliasWith("{\"message\":\"ok_but_no_alias\"}");
-  ASSERT_FALSE(result_out.has_value());
-  EXPECT_EQ(
-      result_out.error(),
-      l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE));
-}
+struct UpdateAliasCase {
+  const char* name;
+  std::optional<std::string> put_body;
+  std::optional<int> net_error;
+  bool expect_success;
+  std::optional<int> expected_error_id;
+  std::optional<std::string> expected_error_substr;
+};
 
-// ============== UpdateAlias tests ==============
+class UpdateAliasParamTest : public EmailAliasesAPITest,
+                             public testing::WithParamInterface<UpdateAliasCase> {};
 
-TEST_F(EmailAliasesAPITest, UpdateAlias_SucceedsAndRefreshes_OnValidResponse) {
+TEST_P(UpdateAliasParamTest, HandlesResponses) {
+  const auto& p = GetParam();
   const std::string alias_email = "alias@example.com";
-  auto result_out =
-      CallUpdateAliasWith(alias_email,
-                          /*put_body=*/"{\"message\":\"updated\"}",
-                          /*net_error=*/std::nullopt);
-  ASSERT_TRUE(result_out.has_value());
+  auto result_out = CallUpdateAliasWith(alias_email, p.put_body, p.net_error);
+  if (p.expect_success) {
+    ASSERT_TRUE(result_out.has_value());
+  } else {
+    ASSERT_FALSE(result_out.has_value());
+    if (p.expected_error_id) {
+      EXPECT_EQ(result_out.error(), l10n_util::GetStringUTF8(*p.expected_error_id));
+    } else if (p.expected_error_substr) {
+      EXPECT_NE(result_out.error().find(*p.expected_error_substr),
+                std::string::npos);
+    }
+  }
 }
 
-TEST_F(EmailAliasesAPITest, UpdateAlias_ReturnsError_OnBackendError) {
-  auto result_out =
-      CallUpdateAliasWith("alias@example.com",
-                          /*put_body=*/"{\"message\":\"backend_error\"}");
-  ASSERT_FALSE(result_out.has_value());
+static std::string UpdateAliasCaseName(
+    const testing::TestParamInfo<UpdateAliasCase>& info) {
+  return info.param.name;
 }
 
-TEST_F(EmailAliasesAPITest, UpdateAlias_ReturnsError_OnNonUpdatedMessage) {
-  auto result_out =
-      CallUpdateAliasWith("alias@example.com",
-                          /*put_body=*/"{\"message\":\"not_updated\"}");
-  ASSERT_FALSE(result_out.has_value());
-  EXPECT_TRUE(result_out.error().find("not_updated") != std::string::npos);
+INSTANTIATE_TEST_SUITE_P(
+    EmailAliasesUpdateAlias,
+    UpdateAliasParamTest,
+    testing::Values(
+        UpdateAliasCase{
+            /*name=*/"Success",
+            /*put_body=*/"{\"message\":\"updated\"}",
+            /*net_error=*/std::nullopt,
+            /*expect_success=*/true,
+            /*expected_error_id=*/std::nullopt,
+            /*expected_error_substr=*/std::nullopt},
+        UpdateAliasCase{
+            /*name=*/"BackendError",
+            /*put_body=*/"{\"message\":\"backend_error\"}",
+            /*net_error=*/std::nullopt,
+            /*expect_success=*/false,
+            /*expected_error_id=*/std::nullopt,
+            /*expected_error_substr=*/std::nullopt},
+        UpdateAliasCase{
+            /*name=*/"NonUpdatedMessage",
+            /*put_body=*/"{\"message\":\"not_updated\"}",
+            /*net_error=*/std::nullopt,
+            /*expect_success=*/false,
+            /*expected_error_id=*/std::nullopt,
+            /*expected_error_substr=*/"not_updated"},
+        UpdateAliasCase{
+            /*name=*/"NoBody",
+            /*put_body=*/std::nullopt,
+            /*net_error=*/net::ERR_FAILED,
+            /*expect_success=*/false,
+            /*expected_error_id=*/IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY,
+            /*expected_error_substr=*/std::nullopt},
+        UpdateAliasCase{
+            /*name=*/"InvalidJSON",
+            /*put_body=*/"not a json",
+            /*net_error=*/std::nullopt,
+            /*expect_success=*/false,
+            /*expected_error_id=*/IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY,
+            /*expected_error_substr=*/std::nullopt}),
+    UpdateAliasCaseName);
+// ================= DeleteAlias (parameterized) =================
+
+struct DeleteAliasCase {
+  const char* name;
+  std::optional<std::string> delete_body;
+  std::optional<int> net_error;
+  bool expect_success;
+  std::optional<int> expected_error_id;
+  std::optional<std::string> expected_error_substr;
+};
+
+class DeleteAliasParamTest : public EmailAliasesAPITest,
+                             public testing::WithParamInterface<DeleteAliasCase> {};
+
+TEST_P(DeleteAliasParamTest, HandlesResponses) {
+  const auto& p = GetParam();
+  auto result_out = CallDeleteAliasWith("alias@example.com", p.delete_body,
+                                       p.net_error);
+  if (p.expect_success) {
+    ASSERT_TRUE(result_out.has_value());
+  } else {
+    ASSERT_FALSE(result_out.has_value());
+    if (p.expected_error_id) {
+      EXPECT_EQ(result_out.error(), l10n_util::GetStringUTF8(*p.expected_error_id));
+    } else if (p.expected_error_substr) {
+      EXPECT_NE(result_out.error().find(*p.expected_error_substr),
+                std::string::npos);
+    }
+  }
 }
 
-TEST_F(EmailAliasesAPITest, UpdateAlias_ReturnsError_OnNoResponseBody) {
-  auto result_out = CallUpdateAliasWith("alias@example.com",
-                                        /*put_body=*/std::nullopt,
-                                        /*net_error=*/net::ERR_FAILED);
-  ASSERT_FALSE(result_out.has_value());
-  EXPECT_EQ(result_out.error(),
-            l10n_util::GetStringUTF8(
-                IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY));
+static std::string DeleteAliasCaseName(
+    const testing::TestParamInfo<DeleteAliasCase>& info) {
+  return info.param.name;
 }
 
-TEST_F(EmailAliasesAPITest, UpdateAlias_ReturnsError_OnInvalidJson) {
-  auto result_out = CallUpdateAliasWith("alias@example.com",
-                                        /*put_body=*/"not a json");
-  ASSERT_FALSE(result_out.has_value());
-  EXPECT_EQ(result_out.error(),
-            l10n_util::GetStringUTF8(
-                IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY));
-}
-TEST_F(EmailAliasesAPITest, DeleteAlias_SucceedsAndRefreshes_OnValidResponse) {
-  auto result_out =
-      CallDeleteAliasWith("alias@example.com",
-                          /*delete_body=*/"{\"message\":\"deleted\"}");
-  ASSERT_TRUE(result_out.has_value());
-}
-
-TEST_F(EmailAliasesAPITest, DeleteAlias_ReturnsError_OnBackendError) {
-  auto result_out =
-      CallDeleteAliasWith("alias@example.com",
-                          /*delete_body=*/"{\"message\":\"backend_error\"}");
-  ASSERT_FALSE(result_out.has_value());
-}
-
-TEST_F(EmailAliasesAPITest, DeleteAlias_ReturnsError_OnNoResponseBody) {
-  auto result_out = CallDeleteAliasWith("alias@example.com",
-                                        /*delete_body=*/std::nullopt,
-                                        /*net_error=*/net::ERR_FAILED);
-  ASSERT_FALSE(result_out.has_value());
-  EXPECT_EQ(result_out.error(),
-            l10n_util::GetStringUTF8(
-                IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY));
-}
-
-TEST_F(EmailAliasesAPITest, DeleteAlias_ReturnsError_OnInvalidJson) {
-  auto result_out = CallDeleteAliasWith("alias@example.com",
-                                        /*delete_body=*/"not a json");
-  ASSERT_FALSE(result_out.has_value());
-  EXPECT_EQ(result_out.error(),
-            l10n_util::GetStringUTF8(
-                IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY));
-}
+INSTANTIATE_TEST_SUITE_P(
+    EmailAliasesDeleteAlias,
+    DeleteAliasParamTest,
+    testing::Values(
+        DeleteAliasCase{
+            /*name=*/"Success",
+            /*delete_body=*/"{\"message\":\"deleted\"}",
+            /*net_error=*/std::nullopt,
+            /*expect_success=*/true,
+            /*expected_error_id=*/std::nullopt,
+            /*expected_error_substr=*/std::nullopt},
+        DeleteAliasCase{
+            /*name=*/"BackendError",
+            /*delete_body=*/"{\"message\":\"backend_error\"}",
+            /*net_error=*/std::nullopt,
+            /*expect_success=*/false,
+            /*expected_error_id=*/std::nullopt,
+            /*expected_error_substr=*/std::nullopt},
+        DeleteAliasCase{
+            /*name=*/"NoBody",
+            /*delete_body=*/std::nullopt,
+            /*net_error=*/net::ERR_FAILED,
+            /*expect_success=*/false,
+            /*expected_error_id=*/IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY,
+            /*expected_error_substr=*/std::nullopt},
+        DeleteAliasCase{
+            /*name=*/"InvalidJSON",
+            /*delete_body=*/"not a json",
+            /*net_error=*/std::nullopt,
+            /*expect_success=*/false,
+            /*expected_error_id=*/IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY,
+            /*expected_error_substr=*/std::nullopt}),
+    DeleteAliasCaseName);
 
 TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
   const std::string alias_email = "alias@example.com";
