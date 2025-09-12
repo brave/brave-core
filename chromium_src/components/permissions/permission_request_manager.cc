@@ -106,8 +106,8 @@ void PermissionRequestManager::AcceptDenyCancel(
 void PermissionRequestManager::OnTabActiveStateChanged(bool active) {
   tab_is_activated_ = active;
 
-  // OnVisibilityChanged() has logic for |tab_is_hidden_| state changes.
-  // Tab activation state could affect |tab_is_hidden_| state.
+  // OnVisibilityChanged() has logic for |tab_is_active_| state changes.
+  // Tab activation state could affect |tab_is_active_| state.
   OnVisibilityChanged(web_contents()->GetVisibility());
 }
 
@@ -118,11 +118,11 @@ void PermissionRequestManager::UpdateTabIsHiddenWithTabActivationState() {
 
   // In split view, permission manager can have invalid tab hidden state.
   // If it's inactive split tab, permission manager should set false
-  // to |tab_is_hidden_| to prevent launching permission bubble from
+  // to |tab_is_active_| to prevent launching permission bubble from
   // that inactive split tab. Otherwise, it launches permission bubble even
   // it's inactive tab.
-  if (!tab_is_hidden_ && !tab_is_activated_.value()) {
-    tab_is_hidden_ = true;
+  if (tab_is_active_ && !tab_is_activated_.value()) {
+    tab_is_active_ = false;
   }
 }
 
