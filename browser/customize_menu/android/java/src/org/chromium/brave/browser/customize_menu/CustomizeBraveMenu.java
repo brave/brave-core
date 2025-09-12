@@ -64,7 +64,7 @@ import java.util.Locale;
  *   <li>The main "Settings" item ({@code R.id.preferences_id})
  * </ul>
  *
- * These items are essential for menu navigation and configuration access.
+ * <p>These items are essential for menu navigation and configuration access.
  *
  * @see BraveCustomizeMenuPreferenceFragment for the settings screen implementation.
  */
