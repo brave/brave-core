@@ -78,7 +78,6 @@ export default function FeatureMenu(props: Props) {
 
       {aiChatContext.isStandalone && hasConversationStarted && (
         <>
-        
           <leo-menu-item
             onClick={() =>
               aiChatContext.setEditingConversationId(
@@ -117,7 +116,6 @@ export default function FeatureMenu(props: Props) {
               </div>
             </div>
           </leo-menu-item>
-          
         </>
       )}
       <div className={styles.menuSeparator} />
