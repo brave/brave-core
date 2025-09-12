@@ -35,7 +35,7 @@
 #endif
 
 #if BUILDFLAG(DEPRECATE_IPFS)
-#include "brave/components/ipfs/ipfs_prefs.h"
+#include "brave/components/ipfs/ipfs_prefs.h"  // nogncheck
 #endif  // BUILDFLAG(DEPRECATE_IPFS)
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
