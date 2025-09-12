@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarBehavior.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarBehavior.java
+index 19f812c290a33b425538c40d1964bbd51b733091..4e1ea0f691c038decc77e3a0f1ec60ed8d33893c 100644
+--- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarBehavior.java
++++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarBehavior.java
+@@ -25,6 +25,7 @@ public interface AdaptiveToolbarBehavior {
+             Set.of(
+                     AdaptiveToolbarButtonVariant.SHARE,
+                     AdaptiveToolbarButtonVariant.ADD_TO_BOOKMARKS,
++                    AdaptiveToolbarButtonVariant.BOOKMARKS,
+                     AdaptiveToolbarButtonVariant.TRANSLATE,
+                     AdaptiveToolbarButtonVariant.PRICE_INSIGHTS,
+                     AdaptiveToolbarButtonVariant.PRICE_TRACKING,

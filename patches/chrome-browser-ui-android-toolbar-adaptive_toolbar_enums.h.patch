@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h b/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h
+index 346d0fc2b0fb5a9dcb093814511ffb2afa90f463..ed1dfaa103d4da3b5595583c6b8064be7449b595 100644
+--- a/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h
++++ b/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h
+@@ -50,7 +50,8 @@ enum class AdaptiveToolbarButtonVariant {
+   // Tab grouping action.
+   kTabGrouping = 16,
+ 
+-  kMaxValue = kTabGrouping,
++  kBookmarks = kTabGrouping + 1,
++  kMaxValue = kBookmarks,
+ };
+ // LINT.ThenChange(/tools/metrics/histograms/enums.xml:AdaptiveToolbarButtonVariant)
+ 

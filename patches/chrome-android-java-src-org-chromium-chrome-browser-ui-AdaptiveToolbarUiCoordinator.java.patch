@@ -1,0 +1,47 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ui/AdaptiveToolbarUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/ui/AdaptiveToolbarUiCoordinator.java
+index ea2ba7093e2b9a8d8b8f5bd6ba50f96d38653c64..2537d010d938fb8c1b157809a17fe57e8136c56e 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ui/AdaptiveToolbarUiCoordinator.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ui/AdaptiveToolbarUiCoordinator.java
+@@ -15,6 +15,7 @@ import org.chromium.chrome.R;
+ import org.chromium.chrome.browser.ActivityTabProvider;
+ import org.chromium.chrome.browser.ai.AiAssistantService;
+ import org.chromium.chrome.browser.ai.PageSummaryButtonController;
++import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
+ import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+ import org.chromium.chrome.browser.bookmarks.TabBookmarker;
+ import org.chromium.chrome.browser.commerce.CommerceBottomSheetContentController;
+@@ -109,7 +110,8 @@ public class AdaptiveToolbarUiCoordinator {
+             Runnable onShareRunnable,
+             WindowAndroid windowAndroid,
+             Supplier<Tracker> trackerSupplier,
+-            Supplier<ScrimManager> scrimSupplier) {
++            Supplier<ScrimManager> scrimSupplier,
++            BookmarkManagerOpener bookmarkManagerOpener) {
+         if (!toolbarBehavior.shouldInitialize()) return;
+         mBottomSheetController = bottomSheetController;
+         mProfileSupplier = profileSupplier;
+@@ -169,6 +171,15 @@ public class AdaptiveToolbarUiCoordinator {
+                         trackerSupplier,
+                         mModalDialogManagerSupplier.get(),
+                         onShareRunnable);
++        org.chromium.chrome.browser.toolbar.adaptive.BraveBookmarksButtonController bookmarksButtonController =
++                new org.chromium.chrome.browser.toolbar.adaptive.BraveBookmarksButtonController(
++                        mContext,
++                        AppCompatResources.getDrawable(
++                                mContext, R.drawable.brave_menu_bookmarks),
++                        mActivityTabProvider,
++                        profileSupplier,
++                        mModalDialogManagerSupplier.get(),
++                        bookmarkManagerOpener);
+         TranslateToolbarButtonController translateToolbarButtonController =
+                 new TranslateToolbarButtonController(
+                         mActivityTabProvider,
+@@ -205,6 +216,8 @@ public class AdaptiveToolbarUiCoordinator {
+ 
+         adaptiveToolbarButtonController.addButtonVariant(
+                 AdaptiveToolbarButtonVariant.SHARE, shareButtonController);
++        adaptiveToolbarButtonController.addButtonVariant(
++                AdaptiveToolbarButtonVariant.BOOKMARKS, bookmarksButtonController);
+         adaptiveToolbarButtonController.addButtonVariant(
+                 AdaptiveToolbarButtonVariant.TRANSLATE, translateToolbarButtonController);
+         adaptiveToolbarButtonController.addButtonVariant(

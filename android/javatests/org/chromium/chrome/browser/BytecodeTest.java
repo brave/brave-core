@@ -2432,6 +2432,22 @@ public class BytecodeTest {
                         "sProfileMap",
                         true,
                         ProfileKeyedMap.class));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/adaptive/settings/RadioButtonGroupAdaptiveToolbarPreference",
+                        "mIsBound"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/adaptive/settings/RadioButtonGroupAdaptiveToolbarPreference",
+                        "mAutoButton"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/adaptive/settings/RadioButtonGroupAdaptiveToolbarPreference",
+                        "mNewTabButton"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/adaptive/settings/RadioButtonGroupAdaptiveToolbarPreference",
+                        "mShareButton"));
     }
 
     @Test

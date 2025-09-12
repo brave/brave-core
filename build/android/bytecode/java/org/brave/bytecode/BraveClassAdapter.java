@@ -38,6 +38,7 @@ public class BraveClassAdapter {
         chain = new BraveChromeContextMenuPopulatorAdapter(chain);
         chain = new BraveQuickActionSearchWidgetProviderClassAdapter(chain);
         chain = new BraveRadioButtonGroupHomepagePreferenceClassAdapter(chain);
+        chain = new BraveRadioButtonGroupAdaptiveToolbarPreferenceClassAdapter(chain);
         chain = new BraveClearBrowsingDataFragmentAdapter(chain);
         chain = new BraveCommandLineInitUtilClassAdapter(chain);
         chain = new BraveContentSettingsResourcesClassAdapter(chain);
