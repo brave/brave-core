@@ -131,6 +131,14 @@
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveIOSEnableFarblingPlugins),        \
+      },                                                                       \
+      {                                                                        \
+          "ios-webkit-advanced-privacy-protections",                           \
+          "Enable WebKit's Advanced Privacy Protections",                      \
+          "Enable's WebKit's Advanced Privacy Protections on all sites",       \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kWebKitAdvancedPrivacyProtections),     \
       })
 
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES                                 \
