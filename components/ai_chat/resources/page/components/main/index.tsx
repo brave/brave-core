@@ -27,6 +27,7 @@ import NoticeConversationStorage from '../notices/notice_conversation_storage'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
 import ConversationsList from '../conversations_list'
 import DeleteConversationModal from '../delete_conversation_modal'
+import SmartModeDialog from '../smart_mode_dialog'
 import FeedbackForm from '../feedback_form'
 import { ConversationHeader } from '../header'
 import InputBox from '../input_box'
@@ -402,6 +403,8 @@ function Main() {
           query={extractedQuery}
           categories={aiChatContext.actionList}
           handleClick={conversationContext.handleActionTypeClick}
+          handleSmartModeClick={conversationContext.handleSmartModeClick}
+          handleSmartModeEdit={conversationContext.handleSmartModeEdit}
         />
         {!hasConversationStarted && <TabsMenu />}
         <InputBox
@@ -411,6 +414,7 @@ function Main() {
         />
       </div>
       <DeleteConversationModal />
+      <SmartModeDialog />
       <OpenExternalLinkModal />
       <RateMessagePrivacyModal />
     </main>
