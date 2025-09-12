@@ -162,6 +162,10 @@ BASE_FEATURE(kCosmeticFilteringCustomScriptlets,
              "CosmeticFilteringCustomScriptlets",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+BASE_FEATURE(kWebKitAdvancedPrivacyProtections,
+             "kWebKitAdvancedPrivacyProtections",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 constexpr base::FeatureParam<int> kComponentUpdateCheckIntervalMins{
     &kAdBlockDefaultResourceUpdateInterval, "update_interval_mins", 100};
 
