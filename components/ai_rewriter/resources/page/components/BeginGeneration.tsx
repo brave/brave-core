@@ -75,6 +75,9 @@ export default function BeginGeneration() {
             setAttachmentsDialog: () => {},
             unassociatedTabs: [],
             attachImages: () => {},
+            selectedSmartMode: undefined,
+            resetSelectedSmartMode: () => {},
+            handleSmartModeClick: () => {},
           }}
         />
       </FiltersContainer>

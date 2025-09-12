@@ -82,3 +82,27 @@
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
 }
+
+.smartModeWithEdit {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+}
+
+.shortcut {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.editIcon {
+  flex: 0 0 auto;
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.smartModeWithEdit:hover .editIcon,
+.smartModeWithEdit:focus-within .editIcon,
+leo-menu-item:focus-visible .editIcon {
+  opacity: 1;
+}

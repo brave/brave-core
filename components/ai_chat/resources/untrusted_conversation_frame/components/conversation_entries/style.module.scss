@@ -101,3 +101,13 @@
   --leo-progressring-size: 15px;
   --leo-icon-size: 20px;
 }
+
+.smartModeHighlight {
+  display: inline-flex;
+  background: var(--leo-color-primary-10);
+  border-radius: var(--leo-radius-m);
+  padding: var(--leo-spacing-xs) var(--leo-spacing-s);
+  color: var(--leo-color-primary-60);
+  justify-content: center;
+  align-items: center;
+}

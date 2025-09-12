@@ -10,7 +10,7 @@ import * as React from 'react'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import ActionTypeLabel from '../../../common/components/action_type_label'
-import { AIChatContext } from '../../state/ai_chat_context'
+import { useAIChat, AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
@@ -23,6 +23,7 @@ import { ModelSelector } from '../model_selector'
 import usePromise from '$web-common/usePromise'
 import { isImageFile } from '../../constants/file_types'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
+import * as Mojom from '../../../common/mojom'
 
 type Props = Pick<
   ConversationContext,
@@ -52,6 +53,9 @@ type Props = Pick<
   | 'setAttachmentsDialog'
   | 'attachImages'
   | 'unassociatedTabs'
+  | 'selectedSmartMode'
+  | 'resetSelectedSmartMode'
+  | 'handleSmartModeClick'
 >
   & Pick<
     AIChatContext,
@@ -90,14 +94,57 @@ function usePlaceholderText(
 }
 
 function InputBox(props: InputBoxProps) {
+  const { smartModes } = useAIChat()
+
+  // Smart mode regex patterns - currently limited to start of input only.
+  // We plan to support it at anywhere after
+  // https://github.com/brave/brave-browser/issues/48610 is resolved.
+  const SMART_MODE_DETECTION_REGEX = /^\/([a-zA-Z0-9_-]+)/
+  const SMART_MODE_HIGHLIGHT_REGEX = /^(\/[a-zA-Z0-9_-]*)/
+
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    props.context.setInputText(e.target.value)
+    const newValue = e.target.value
+    props.context.setInputText(newValue)
+
+    if (props.context.selectedSmartMode) {
+      // Check if current smart mode shortcut is still valid
+      const currentModeShortcut = `/${props.context.selectedSmartMode.shortcut}`
+      if (!newValue.startsWith(currentModeShortcut)) {
+        props.context.resetSelectedSmartMode()
+      }
+    } else if (newValue.startsWith('/') && smartModes.length > 0) {
+      // No smart mode selected, but input starts with /, try to detect
+      detectAndSetSmartMode()
+    }
   }
 
   const querySubmitted = React.useRef(false)
   const attachmentWrapperRef = React.useRef<HTMLDivElement>(null)
   const [attachmentWrapperHeight, setAttachmentWrapperHeight] =
     React.useState(0)
+
+  const detectAndSetSmartMode = () => {
+    if (smartModes.length === 0) {
+      return
+    }
+
+    const match = props.context.inputText.match(SMART_MODE_DETECTION_REGEX)
+
+    if (!match) {
+      return
+    }
+
+    const shortcut = match[1]
+    const foundMode = smartModes.find(
+      (mode: Mojom.SmartMode) =>
+        mode.shortcut.toLowerCase() === shortcut.toLowerCase(),
+    )
+
+    // Only set if different from current selection
+    if (foundMode && props.context.handleSmartModeClick) {
+      props.context.handleSmartModeClick(foundMode)
+    }
+  }
 
   const handleSubmit = () => {
     querySubmitted.current = true
@@ -128,6 +175,44 @@ function InputBox(props: InputBoxProps) {
     ) {
       props.context.resetSelectedActionType()
     }
+  }
+
+  const shouldShowHighlighting = () => {
+    if (!smartModes || smartModes.length === 0) return false
+
+    const match = props.context.inputText.match(SMART_MODE_HIGHLIGHT_REGEX)
+
+    if (match) {
+      const partialShortcut = match[1].substring(1) // Remove the '/' prefix
+
+      // Check if there are any smart modes that could potentially match
+      return smartModes.some((mode: Mojom.SmartMode) =>
+        mode.shortcut.toLowerCase().startsWith(partialShortcut.toLowerCase()),
+      )
+    }
+
+    return false
+  }
+
+  const renderHighlightedText = (text: string) => {
+    if (!shouldShowHighlighting()) return null
+
+    // Only highlight shortcuts at the very beginning of input
+    const match = text.match(SMART_MODE_HIGHLIGHT_REGEX)
+
+    if (match) {
+      const shortcut = match[1]
+      const remainingText = text.substring(shortcut.length)
+
+      return (
+        <>
+          <span className={styles.smartModeText}>{shortcut}</span>
+          {remainingText}
+        </>
+      )
+    }
+
+    return text
   }
 
   const handleOnPaste = async (
@@ -164,6 +249,7 @@ function InputBox(props: InputBoxProps) {
     }
     if (
       props.context.selectedActionType
+      || props.context.selectedSmartMode
       || props.maybeShowSoftKeyboard?.(querySubmitted.current)
     ) {
       node.focus()
@@ -245,6 +331,9 @@ function InputBox(props: InputBoxProps) {
         className={styles.growWrap}
         data-replicated-value={props.context.inputText || placeholderText}
       >
+        <div className={styles.highlightLayer}>
+          {renderHighlightedText(props.context.inputText)}
+        </div>
         <textarea
           ref={maybeAutofocus}
           placeholder={placeholderText}
@@ -254,6 +343,10 @@ function InputBox(props: InputBoxProps) {
           value={props.context.inputText}
           autoFocus
           rows={1}
+          className={classnames({
+            [styles.textarea]: true,
+            [styles.textTransparent]: shouldShowHighlighting(),
+          })}
         />
       </div>
       {props.context.isCharLimitApproaching && (

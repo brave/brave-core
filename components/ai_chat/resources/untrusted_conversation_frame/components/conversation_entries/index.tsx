@@ -34,6 +34,27 @@ import {
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
 import styles from './style.module.scss'
 
+// Utility function to highlight smart mode shortcuts in text
+const highlightSmartModeText = (
+  text: string,
+  smartMode?: Mojom.SmartModeEntry,
+) => {
+  if (!smartMode) return text
+
+  const shortcutPattern = `/${smartMode.shortcut}`
+  const index = text.indexOf(shortcutPattern)
+
+  if (index === -1) return text
+
+  return (
+    <span>
+      {text.substring(0, index)}
+      <span className={styles.smartModeHighlight}>{shortcutPattern}</span>
+      {text.substring(index + shortcutPattern.length)}
+    </span>
+  )
+}
+
 function ConversationEntries() {
   const conversationContext = useUntrustedConversationContext()
 
@@ -218,13 +239,22 @@ function ConversationEntries() {
                                     setEditInputId(index)
                                   }
                                   onCopyQuestionClicked={handleCopyText}
+                                  onSaveAsSmartModeClicked={() => {
+                                    conversationContext.parentUiFrame?.showSmartModeDialog(
+                                      firstEntryEdit.text,
+                                    )
+                                    hideHumanMenu()
+                                  }}
                                 />
                               ) : (
                                 <div className={styles.divToKeepGap} />
                               )}
                               <div className={styles.humanMessageBubble}>
                                 <div className={styles.humanTextRow}>
-                                  {currentEntryEdit.text}
+                                  {highlightSmartModeText(
+                                    currentEntryEdit.text,
+                                    currentEntryEdit.smartMode,
+                                  )}
                                   {!!entry.edits?.length && (
                                     <div className={styles.editLabel}>
                                       <span className={styles.editLabelText}>
