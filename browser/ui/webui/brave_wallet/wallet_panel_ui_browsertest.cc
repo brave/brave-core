@@ -324,6 +324,8 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
 
   // Chain name for Neon EVM changes to 'Custom Network' in wallet.
   ActivateWalletTab();
+  wallet()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(wallet()));
   ASSERT_TRUE(WaitFor(wallet(), Select(NeonEVMNetwork(), NetworkNameSpan()) +
                                     "?.innerText === 'Custom Network'"));
 }
