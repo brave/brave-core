@@ -40,10 +40,6 @@ void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
 #define ShouldShowAppsShortcutInBookmarkBar \
   ShouldShowAppsShortcutInBookmarkBar_Unused
 
-#if defined(TOOLKIT_VIEWS)
-#define GetBookmarkFolderIcon GetBookmarkFolderIcon_UnUsed
-#endif
-
 #define ToggleBookmarkBarWhenVisible                                       \
   ToggleBookmarkBarWhenVisible(content::BrowserContext* browser_context) { \
     BraveToggleBookmarkBarState(browser_context);                          \
@@ -55,10 +51,6 @@ void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
 #undef IsAppsShortcutEnabled
 #undef ShouldShowAppsShortcutInBookmarkBar
 
-#if defined(TOOLKIT_VIEWS)
-#undef GetBookmarkFolderIcon
-#endif
-
 namespace chrome {
 
 bool IsAppsShortcutEnabled(Profile* profile) {
@@ -68,48 +60,5 @@ bool IsAppsShortcutEnabled(Profile* profile) {
 bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
   return false;
 }
-
-#if defined(TOOLKIT_VIEWS)
-ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
-                                     ui::ColorVariant color) {
-  int default_id =
-#if BUILDFLAG(IS_WIN)
-      IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_LIGHT;
-#elif BUILDFLAG(IS_LINUX)
-      IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_LIGHT;
-#else
-      IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIGHT;
-#endif
-
-  const auto generator = [](int default_id, BookmarkFolderIconType icon_type,
-                            ui::ColorVariant color,
-                            const ui::ColorProvider* color_provider) {
-    gfx::ImageSkia folder;
-    SkColor sk_color = color.ResolveToSkColor(color_provider);
-
-    const int resource_id = color_utils::IsDark(sk_color)
-#if BUILDFLAG(IS_WIN)
-                                ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_LIGHT
-                                : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_DARK;
-#elif BUILDFLAG(IS_LINUX)
-                                ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_LIGHT
-                                : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIN_DARK;
-#else
-                                ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIGHT
-                                : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_DARK;
-#endif
-    folder = *ui::ResourceBundle::GetSharedInstance()
-                  .GetNativeImageNamed(resource_id)
-                  .ToImageSkia();
-    return gfx::ImageSkia(std::make_unique<RTLFlipSource>(folder),
-                          folder.size());
-  };
-  const gfx::Size size =
-      ui::ResourceBundle::GetSharedInstance().GetImageNamed(default_id).Size();
-  return ui::ImageModel::FromImageGenerator(
-      base::BindRepeating(generator, default_id, icon_type, std::move(color)),
-      size);
-}
-#endif
 
 }  // namespace chrome
