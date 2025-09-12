@@ -350,4 +350,10 @@
       [[Feature alloc] initWithFeature:&brave::features::kModernTabTrayEnabled];
 }
 
++ (Feature*)kWebKitAdvancedPrivacyProtections {
+  return
+      [[Feature alloc] initWithFeature:&brave_shields::features::
+                                           kWebKitAdvancedPrivacyProtections];
+}
+
 @end
