@@ -35,3 +35,17 @@ android_library("java") {
 android_resources("java_resources") {
   sources = [ "java/res/xml/brave_customize_menu_preferences.xml" ]
 }
+
+robolectric_library("junit") {
+  resources_package = "org.chromium.brave.browser.customize_menu"
+  sources = [
+    "javatests/src/org/chromium/brave/browser/customize_menu/CustomizeBraveMenuTest.java",
+    "javatests/src/org/chromium/brave/browser/customize_menu/MenuItemDataTest.java",
+    "javatests/src/org/chromium/brave/browser/customize_menu/settings/BraveCustomizeMenuPreferenceFragmentTest.java",
+  ]
+
+  deps = [
+    ":java",
+    "//chrome/android/junit:chrome_junit_tests_helper",
+  ]
+}
