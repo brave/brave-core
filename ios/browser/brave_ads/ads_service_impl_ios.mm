@@ -109,6 +109,24 @@ void AdsServiceImplIOS::TriggerNotificationAdEvent(
                                    std::move(callback));
 }
 
+void AdsServiceImplIOS::NotifyDidInitializeAdsService() const {
+  for (AdsServiceObserver& observer : observers_) {
+    observer.OnDidInitializeAdsService();
+  }
+}
+
+void AdsServiceImplIOS::NotifyDidShutdownAdsService() const {
+  for (AdsServiceObserver& observer : observers_) {
+    observer.OnDidShutdownAdsService();
+  }
+}
+
+void AdsServiceImplIOS::NotifyDidClearAdsServiceData() const {
+  for (AdsServiceObserver& observer : observers_) {
+    observer.OnDidClearAdsServiceData();
+  }
+}
+
 bool AdsServiceImplIOS::IsBrowserUpgradeRequiredToServeAds() const {
   return false;
 }
@@ -476,6 +494,8 @@ void AdsServiceImplIOS::NotifyDidSolveAdaptiveCaptcha() {
 void AdsServiceImplIOS::Shutdown() {
   ResetNewTabPageAd();
 
+  NotifyDidShutdownAdsService();
+
   ads_.reset();
 }
 
@@ -499,6 +519,8 @@ void AdsServiceImplIOS::InitializeAdsCallback(InitializeCallback callback,
                                               bool success) {
   if (!success) {
     Shutdown();
+  } else {
+    NotifyDidInitializeAdsService();
   }
 
   task_queue_.FlushAndStopQueueing();
@@ -539,6 +561,7 @@ void AdsServiceImplIOS::ClearAdsData(ClearDataCallback callback, bool success) {
 }
 
 void AdsServiceImplIOS::ClearAdsDataCallback(ClearDataCallback callback) {
+  NotifyDidClearAdsServiceData();
   InitializeAds(std::move(callback));
 }
 
