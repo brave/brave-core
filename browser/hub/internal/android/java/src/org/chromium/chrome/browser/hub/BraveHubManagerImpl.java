@@ -49,7 +49,8 @@ public class BraveHubManagerImpl extends HubManagerImpl {
             HubShowPaneHelper hubShowPaneHelper,
             ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
             SearchActivityClient searchActivityClient,
-            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
+            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
+            @PaneId int defaultPaneId) {
         super(
                 activity,
                 profileProviderSupplier,
@@ -62,7 +63,8 @@ public class BraveHubManagerImpl extends HubManagerImpl {
                 hubShowPaneHelper,
                 edgeToEdgeSupplier,
                 searchActivityClient,
-                xrSpaceModeObservableSupplier);
+                xrSpaceModeObservableSupplier,
+                defaultPaneId);
 
         mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(activity);
 
