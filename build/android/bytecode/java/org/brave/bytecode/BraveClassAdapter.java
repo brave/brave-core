@@ -12,6 +12,7 @@ public class BraveClassAdapter {
     public static ClassVisitor createAdapter(ClassVisitor chain) {
         chain = new BraveActivityClassAdapter(chain);
         chain = new BraveAdaptiveToolbarPrefsClassAdapter(chain);
+        chain = new BraveAdaptiveToolbarStatePredictorClassAdapter(chain);
         chain = new BraveAppHooksClassAdapter(chain);
         chain = new BraveAppMenuClassAdapter(chain);
         chain = new BraveBaseCustomTabActivityClassAdapter(chain);

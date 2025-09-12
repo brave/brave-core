@@ -11,6 +11,7 @@ java_binary("java_bytecode_rewriter") {
   sources = [
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveActivityClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAdaptiveToolbarPrefsClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAdaptiveToolbarStatePredictorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAppHooksClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAppMenuClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveApplicationImplBaseClassAdapter.java",

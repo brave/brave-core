@@ -1009,6 +1009,13 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         PasswordManagerHelper.class,
                         Profile.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor",
+                        "isValidSegment",
+                        MethodModifier.REGULAR,
+                        boolean.class,
+                        int.class));
     }
 
     @Test
@@ -2609,6 +2616,10 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/tabmodel/RedirectTabCreator",
                         "org/chromium/chrome/browser/tabmodel/BraveTabCreator"));
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/toolbar/adaptive/BraveAdaptiveToolbarStatePredictor",
+                        "org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor"));
     }
 
     @Test
