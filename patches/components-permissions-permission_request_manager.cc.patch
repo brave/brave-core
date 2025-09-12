@@ -1,15 +1,15 @@
 diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
-index 44f5da292099a35a9d8eba4bd8f6e22fa09d3ff5..bca6661405f66583bde15cba6f41ec928b0ce121 100644
+index 44f5da292099a35a9d8eba4bd8f6e22fa09d3ff5..c3d5c551d3c6a51399def26e671b9eb78e283cc6 100644
 --- a/components/permissions/permission_request_manager.cc
 +++ b/components/permissions/permission_request_manager.cc
-@@ -551,6 +551,7 @@ void PermissionRequestManager::OnVisibilityChanged(
-   if (!tab_subscriptions_.empty()) {
-     return;
+@@ -553,6 +553,7 @@ void PermissionRequestManager::OnVisibilityChanged(
    }
-+  BRAVE_PERMISSION_REQUEST_MANAGER_ON_VISIBILITY_CHANGED
    bool prior_tab_is_active_ = tab_is_active_;
    tab_is_active_ = visibility != content::Visibility::HIDDEN;
++  BRAVE_PERMISSION_REQUEST_MANAGER_ON_VISIBILITY_CHANGED
    if (prior_tab_is_active_ != tab_is_active_) {
+     OnTabActiveChanged();
+   }
 @@ -568,6 +569,7 @@ GURL PermissionRequestManager::GetRequestingOrigin() const {
    GURL origin = requests_.front()->requesting_origin();
    if (DCHECK_IS_ON()) {
