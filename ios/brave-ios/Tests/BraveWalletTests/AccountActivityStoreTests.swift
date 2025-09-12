@@ -48,6 +48,16 @@ class AccountActivityStoreTests: XCTestCase {
     ),
     .init(
       coinType: .sol,
+      chainId: BraveWallet.SolanaTestnet,
+      address: "",
+      price: "2.00",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coinType: .sol,
       chainId: BraveWallet.SolanaMainnet,
       address: BraveWallet.BlockchainToken.mockSpdToken.contractAddress,
       price: "0.50",
@@ -546,7 +556,7 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockSpdTokenDecimalBalance)
         XCTAssertEqual(
           lastUpdatedAssets[safe: 0]?.price,
-          self.mockAssetPrices[safe: 3]?.price ?? ""
+          self.mockAssetPrices[safe: 4]?.price ?? ""
         )
 
         XCTAssertEqual(
@@ -766,7 +776,7 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockFilDecimalBalance)
         XCTAssertEqual(
           lastUpdatedAssets[safe: 0]?.price,
-          self.mockAssetPrices[safe: 4]?.price ?? ""
+          self.mockAssetPrices[safe: 5]?.price ?? ""
         )
 
         XCTAssertEqual(
@@ -780,7 +790,7 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedAssets[safe: 1]?.totalBalance, mockFileTestnetDecimalBalance)
         XCTAssertEqual(
           lastUpdatedAssets[safe: 1]?.price,
-          self.mockAssetPrices[safe: 4]?.price ?? ""
+          self.mockAssetPrices[safe: 5]?.price ?? ""
         )
       }
       .store(in: &cancellables)
@@ -884,7 +894,7 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockZecDecimalBalance)
         XCTAssertEqual(
           lastUpdatedAssets[safe: 0]?.price,
-          self.mockAssetPrices[safe: 5]?.price ?? ""
+          self.mockAssetPrices[safe: 6]?.price ?? ""
         )
       }
       .store(in: &cancellables)

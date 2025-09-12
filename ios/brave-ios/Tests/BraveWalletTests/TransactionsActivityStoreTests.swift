@@ -49,6 +49,16 @@ class TransactionsActivityStoreTests: XCTestCase {
     ),
     .init(
       coinType: .eth,
+      chainId: BraveWallet.SepoliaChainId,
+      address: "",
+      price: "3059.99",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coinType: .eth,
       chainId: BraveWallet.MainnetChainId,
       address: BraveWallet.BlockchainToken.mockUSDCToken.contractAddress,
       price: "1.00",
@@ -69,6 +79,16 @@ class TransactionsActivityStoreTests: XCTestCase {
     ),
     .init(
       coinType: .sol,
+      chainId: BraveWallet.SolanaTestnet,
+      address: "",
+      price: "2.00",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coinType: .sol,
       chainId: BraveWallet.SolanaMainnet,
       address: BraveWallet.BlockchainToken.mockSpdToken.contractAddress,
       price: "0.50",
@@ -80,6 +100,16 @@ class TransactionsActivityStoreTests: XCTestCase {
     .init(
       coinType: .fil,
       chainId: BraveWallet.FilecoinMainnet,
+      address: "",
+      price: "4.00",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coinType: .fil,
+      chainId: BraveWallet.FilecoinTestnet,
       address: "",
       price: "4.00",
       vsCurrency: "usd",
