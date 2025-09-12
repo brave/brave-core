@@ -1469,7 +1469,7 @@ public abstract class BraveActivity extends ChromeActivity
                                 Snackbar.TYPE_ACTION,
                                 Snackbar.UMA_UNKNOWN)
                         .setAction(getResources().getString(R.string.update), null)
-                        .setSingleLine(false)
+                        .setDefaultLines(false)
                         .setDuration(10000);
         Tab currentTab = getActivityTabProvider().get();
         if (currentTab != null) {
