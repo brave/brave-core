@@ -248,16 +248,6 @@ RegisterPolymerTemplateModifications({
       console.error(
         `[Brave Settings Overrides] Couldn't find privacy_page #pages`)
     } else {
-      if (!loadTimeData.getBoolean('isIdleDetectionFeatureEnabled')) {
-        const idleDetection = templateContent.querySelector(
-          '[route-path="/content/idleDetection"]')
-        if (!idleDetection) {
-          console.error(
-            `[Brave Settings Overrides] Couldn't find idle detection template`)
-        } else {
-          idleDetection.content.firstElementChild.hidden = true
-        }
-      }
       const isGoogleSignInFeatureEnabled =
         loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
       if (isGoogleSignInFeatureEnabled) {
