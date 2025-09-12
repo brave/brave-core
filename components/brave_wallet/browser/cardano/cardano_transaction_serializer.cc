@@ -108,8 +108,6 @@ cbor::Value CardanoTransactionSerializer::SerializeWitnessSet(
       vk_witness_array.emplace_back(std::move(input_array));
     }
   } else {
-    DCHECK(tx.IsSigned());
-
     for (const auto& witness : tx.witnesses()) {
       cbor::Value::ArrayValue input_array;
       auto [pubkey, signature] =

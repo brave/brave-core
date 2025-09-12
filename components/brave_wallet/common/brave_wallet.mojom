@@ -2865,6 +2865,25 @@ struct SignSolTransactionsRequest {
   string chain_id;
 };
 
+struct SignCardanoTransactionRequest {
+  int32 id;
+
+  AccountId account_id;
+  OriginInfo origin_info;
+  string raw_tx_data;
+
+  // Inputs that belong to the selected account and
+  // that are being signed.
+  array<CardanoTxInput> signed_inputs;
+  // Outputs that are not belong to the selected account.
+  array<CardanoTxOutput> external_outputs;
+  // Outputs that belong to the selected account.
+  array<CardanoTxOutput> account_outputs;
+
+  uint64 total_signed_inputs_amount;
+  uint64 total_outputs_amount;
+};
+
 enum ExternalWalletType {
   MetaMask = 1,
 };
@@ -3012,6 +3031,9 @@ interface BraveWalletService {
   GetPendingSignSolTransactionsRequests()
       => (array<SignSolTransactionsRequest> requests);
 
+  GetPendingSignCardanoTransactionRequests()
+      => (array<SignCardanoTransactionRequest> requests);
+
   // Used for UI notifying native when the user approve/reject sign all
   // transactions request.
   NotifySignSolTransactionsRequestProcessed(
@@ -3019,6 +3041,9 @@ interface BraveWalletService {
       int32 id,
       array<SolanaSignature> hw_signatures,
       string? error);
+
+  NotifySignCardanoTransactionRequestProcessed(
+      bool approved, int32 id, string? error);
 
   // Used for UI notifying native when the user approve/reject add suggest
   // token requests.

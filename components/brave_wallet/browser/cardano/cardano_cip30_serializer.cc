@@ -10,6 +10,8 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/span_writer.h"
+#include "base/containers/to_vector.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/cbor/reader.h"
@@ -39,6 +41,39 @@ std::vector<uint8_t> MakeSerializedProtectedHeaders(
   return *protected_headers_serialized;
 }
 }  // namespace
+
+CardanoCip30Serializer::RestoredTransactionInput::RestoredTransactionInput() =
+    default;
+CardanoCip30Serializer::RestoredTransactionInput::~RestoredTransactionInput() =
+    default;
+CardanoCip30Serializer::RestoredTransactionInput::RestoredTransactionInput(
+    const CardanoCip30Serializer::RestoredTransactionInput&) = default;
+CardanoCip30Serializer::RestoredTransactionInput::RestoredTransactionInput(
+    CardanoCip30Serializer::RestoredTransactionInput&&) = default;
+
+CardanoCip30Serializer::RestoredTransactionOutput::RestoredTransactionOutput() =
+    default;
+CardanoCip30Serializer::RestoredTransactionOutput::
+    ~RestoredTransactionOutput() = default;
+
+CardanoCip30Serializer::RestoredTransactionBody::RestoredTransactionBody() =
+    default;
+CardanoCip30Serializer::RestoredTransactionBody::~RestoredTransactionBody() =
+    default;
+CardanoCip30Serializer::RestoredTransactionBody::RestoredTransactionBody(
+    const RestoredTransactionBody&) = default;
+CardanoCip30Serializer::RestoredTransactionBody::RestoredTransactionBody(
+    RestoredTransactionBody&&) = default;
+CardanoCip30Serializer::RestoredTransactionBody&
+CardanoCip30Serializer::RestoredTransactionBody::operator=(
+    RestoredTransactionBody&&) = default;
+
+CardanoCip30Serializer::RestoredTransaction::RestoredTransaction() = default;
+CardanoCip30Serializer::RestoredTransaction::~RestoredTransaction() = default;
+CardanoCip30Serializer::RestoredTransaction::RestoredTransaction(
+    const RestoredTransaction&) = default;
+CardanoCip30Serializer::RestoredTransaction::RestoredTransaction(
+    RestoredTransaction&&) = default;
 
 CardanoCip30Serializer::CardanoCip30Serializer() = default;
 CardanoCip30Serializer::~CardanoCip30Serializer() = default;
@@ -170,6 +205,243 @@ std::vector<std::string> CardanoCip30Serializer::SerializeUtxos(
     serialized_utxos.push_back(HexEncodeLower(*cbor_utxo_serialized));
   }
   return serialized_utxos;
+}
+
+// static
+// Deserializes a Cardano transaction from a byte vector (CBOR format).
+std::optional<CardanoCip30Serializer::RestoredTransaction>
+CardanoCip30Serializer::DeserializeTransaction(
+    base::span<const uint8_t> bytes) {
+  std::optional<cbor::Value> as_cbor = cbor::Reader::Read(bytes);
+
+  if (!as_cbor || !as_cbor->is_array()) {
+    return std::nullopt;
+  }
+
+  const std::vector<cbor::Value>& array_value = as_cbor->GetArray();
+
+  if (array_value.size() != 4) {
+    return std::nullopt;
+  }
+
+  if (!array_value[0].is_map() || !array_value[1].is_map()) {
+    return std::nullopt;
+  }
+
+  auto tx_body = DeserializeTxBody(array_value[0].GetMap());
+  if (!tx_body) {
+    return std::nullopt;
+  }
+
+  RestoredTransaction result;
+
+  result.raw_bytes_ = base::ToVector(bytes);
+  result.tx_body_ = std::move(tx_body.value());
+
+  return result;
+}
+
+// static
+std::optional<std::vector<CardanoCip30Serializer::RestoredTransactionInput>>
+CardanoCip30Serializer::DeserializeInputs(const cbor::Value::ArrayValue& data) {
+  std::vector<RestoredTransactionInput> tx_inputs;
+  for (const auto& value : data) {
+    if (!value.is_array() || value.GetArray().size() != 2) {
+      return std::nullopt;
+    }
+
+    if (!value.GetArray()[0].is_bytestring()) {
+      return std::nullopt;
+    }
+
+    if (value.GetArray()[0].GetBytestring().size() != kCardanoTxHashSize) {
+      return std::nullopt;
+    }
+
+    if (!value.GetArray()[1].is_integer()) {
+      return std::nullopt;
+    }
+
+    RestoredTransactionInput tx_input;
+    base::span(tx_input.tx_hash)
+        .copy_from_nonoverlapping(value.GetArray()[0].GetBytestring());
+    base::CheckedNumeric<uint32_t> index = value.GetArray()[1].GetInteger();
+    if (!index.IsValid()) {
+      return std::nullopt;
+    }
+    tx_input.index = index.ValueOrDie();
+
+    tx_inputs.push_back(std::move(tx_input));
+  }
+  return tx_inputs;
+}
+
+// static
+std::optional<std::vector<CardanoCip30Serializer::RestoredTransactionOutput>>
+CardanoCip30Serializer::DeserializeOutputs(
+    const cbor::Value::ArrayValue& data) {
+  std::vector<RestoredTransactionOutput> outputs;
+  for (const auto& value : data) {
+    if (!value.is_array()) {
+      return std::nullopt;
+    }
+
+    if (value.GetArray().size() != 2) {
+      return std::nullopt;
+    }
+
+    if (!value.GetArray()[0].is_bytestring() ||
+        !value.GetArray()[1].is_integer()) {
+      return std::nullopt;
+    }
+
+    RestoredTransactionOutput output;
+    auto addr =
+        CardanoAddress::FromCborBytes(value.GetArray()[0].GetBytestring());
+    if (!addr) {
+      return std::nullopt;
+    }
+    output.address = std::move(addr.value());
+    base::CheckedNumeric<uint64_t> amount = value.GetArray()[1].GetInteger();
+    if (!amount.IsValid()) {
+      return std::nullopt;
+    }
+    output.amount = amount.ValueOrDie();
+    outputs.push_back(std::move(output));
+  }
+
+  return outputs;
+}
+
+// static
+std::optional<std::vector<CardanoCip30Serializer::InputWitness>>
+CardanoCip30Serializer::DeserializeWitnessSet(
+    const cbor::Value::ArrayValue& data) {
+  std::vector<CardanoCip30Serializer::InputWitness> witness_set;
+  for (const auto& value : data) {
+    if (!value.is_array()) {
+      return std::nullopt;
+    }
+
+    if (value.GetArray().size() != 2) {
+      return std::nullopt;
+    }
+
+    if (!value.GetArray()[0].is_bytestring() ||
+        !value.GetArray()[1].is_bytestring()) {
+      return std::nullopt;
+    }
+
+    auto& pubkey = value.GetArray()[0].GetBytestring();
+    auto& signature = value.GetArray()[1].GetBytestring();
+
+    if (pubkey.size() != kEd25519PublicKeySize ||
+        signature.size() != kEd25519SignatureSize) {
+      return std::nullopt;
+    }
+
+    InputWitness witness;
+
+    base::SpanWriter span_writer = base::SpanWriter(base::span(witness));
+    span_writer.Write(pubkey);
+    span_writer.Write(signature);
+    CHECK_EQ(0u, span_writer.remaining());
+
+    witness_set.push_back(std::move(witness));
+  }
+
+  return witness_set;
+}
+
+// static
+std::optional<CardanoCip30Serializer::RestoredTransactionBody>
+CardanoCip30Serializer::DeserializeTxBody(const cbor::Value::MapValue& data) {
+  if (data.size() != 4) {
+    return std::nullopt;
+  }
+
+  auto map_iterator = data.find(cbor::Value(0));
+
+  if (map_iterator == data.end() || !map_iterator->second.is_array()) {
+    return std::nullopt;
+  }
+
+  auto inputs = DeserializeInputs(map_iterator->second.GetArray());
+
+  if (!inputs) {
+    return std::nullopt;
+  }
+
+  map_iterator = data.find(cbor::Value(1));
+  if (map_iterator == data.end() || !map_iterator->second.is_array()) {
+    return std::nullopt;
+  }
+  auto outputs = DeserializeOutputs(map_iterator->second.GetArray());
+
+  RestoredTransactionBody result;
+  result.inputs_ = std::move(inputs.value());
+  result.outputs_ = std::move(outputs.value());
+
+  return result;
+}
+
+// static
+std::optional<std::vector<uint8_t>> CardanoCip30Serializer::ApplySignResults(
+    const std::vector<uint8_t>& unsigned_tx_bytes,
+    const std::vector<CardanoSignMessageResult>& sign_results) {
+  std::optional<cbor::Value> as_cbor = cbor::Reader::Read(unsigned_tx_bytes);
+  cbor::Value::ArrayValue output;
+
+  if (!as_cbor->is_array()) {
+    return std::nullopt;
+  }
+
+  const auto& as_cbor_array = as_cbor->GetArray();
+
+  if (as_cbor_array.size() != 4) {
+    return std::nullopt;
+  }
+
+  output.emplace_back(as_cbor_array[0].Clone());
+
+  if (!as_cbor_array[1].is_map()) {
+    return std::nullopt;
+  }
+
+  const auto& witness_map = as_cbor_array[1].GetMap();
+  auto witness_array = witness_map.find(cbor::Value(0));
+  if (witness_array == witness_map.end()) {
+    return std::nullopt;
+  }
+
+  if (!witness_array->second.is_array()) {
+    return std::nullopt;
+  }
+
+  cbor::Value::ArrayValue output_witness_array;
+  for (const auto& existing_signatures : witness_array->second.GetArray()) {
+    output_witness_array.push_back(existing_signatures.Clone());
+  }
+
+  for (const auto& sign_result : sign_results) {
+    cbor::Value::ArrayValue array;
+    array.push_back(cbor::Value(sign_result.pubkey));
+    array.push_back(cbor::Value(sign_result.signature));
+
+    output_witness_array.emplace_back(std::move(array));
+  }
+
+  cbor::Value::MapValue output_witness_map;
+  output_witness_map.emplace(0, std::move(output_witness_array));
+
+  output.emplace_back(std::move(output_witness_map));
+  output.emplace_back(as_cbor_array[2].Clone());
+  output.emplace_back(as_cbor_array[3].Clone());
+
+  std::optional<std::vector<uint8_t>> output_bytes =
+      cbor::Writer::Write(cbor::Value(std::move(output)));
+  CHECK(output_bytes);
+  return *output_bytes;
 }
 
 }  // namespace brave_wallet

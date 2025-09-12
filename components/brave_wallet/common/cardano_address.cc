@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/span_writer.h"
+#include "base/containers/to_vector.h"
 #include "brave/components/brave_wallet/common/bech32.h"
 
 namespace brave_wallet {
@@ -95,6 +96,14 @@ bool CardanoAddress::IsTestnet() const {
 
 std::vector<uint8_t> CardanoAddress::ToCborBytes() const {
   return bytes_;
+}
+
+// static
+std::optional<CardanoAddress> CardanoAddress::FromCborBytes(
+    base::span<const uint8_t> bytes) {
+  CardanoAddress result;
+  result.bytes_ = base::ToVector(bytes);
+  return result;
 }
 
 }  // namespace brave_wallet
