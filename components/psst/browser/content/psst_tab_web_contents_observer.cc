@@ -10,12 +10,16 @@
 
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
+#include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
+#include "brave/components/psst/common/psst_common.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
@@ -26,6 +30,7 @@ namespace psst {
 
 namespace {
 
+constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
 const char kShouldProcessKey[] = "should_process_key";
 const char kSignedUserId[] = "user";
 
@@ -95,7 +100,62 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
   return base::WrapUnique<PsstTabWebContentsObserver>(
       new PsstTabWebContentsObserver(contents, PsstRuleRegistry::GetInstance(),
                                      prefs, std::move(ui_delegate),
-                                     std::move(inject_script_callback)));
+                                     std::move(inject_script_callback),
+                                     kScriptTimeout));
+}
+
+PsstTabWebContentsObserver::TimedScriptRepeatingCallback::
+    TimedScriptRepeatingCallback(
+        InjectScriptCallback inject_script_callback,
+        InsertScriptInPageTimeoutCallback timeout_callback,
+        base::TimeDelta timeout)
+    : inject_script_callback_(std::move(inject_script_callback)),
+      timeout_delay_(std::move(timeout)),
+      timeout_callback_(std::move(timeout_callback)) {
+  DCHECK(!inject_script_callback_.is_null());
+}
+PsstTabWebContentsObserver::TimedScriptRepeatingCallback::
+    ~TimedScriptRepeatingCallback() = default;
+
+void PsstTabWebContentsObserver::TimedScriptRepeatingCallback::Run(
+    const int last_committed_entry_id,
+    const std::string& script,
+    InsertScriptInPageCallback callback) {
+  CHECK(!callback.is_null());
+  if (timer_.IsRunning()) {
+    timer_.Stop();
+  }
+
+  result_callback_ = std::move(callback);
+  timer_.Start(
+      FROM_HERE, timeout_delay_,
+      base::BindOnce(
+          &PsstTabWebContentsObserver::TimedScriptRepeatingCallback::OnTimeout,
+          weak_factory_.GetWeakPtr(), last_committed_entry_id));
+
+  inject_script_callback_.Run(
+      script,
+      base::BindOnce(
+          &PsstTabWebContentsObserver::TimedScriptRepeatingCallback::OnResult,
+          weak_factory_.GetWeakPtr()));
+}
+
+void PsstTabWebContentsObserver::TimedScriptRepeatingCallback::OnResult(
+    base::Value value) {
+  if (result_callback_.is_null()) {
+    return;
+  }
+  timer_.Stop();
+  std::move(result_callback_).Run(std::move(value));
+}
+
+void PsstTabWebContentsObserver::TimedScriptRepeatingCallback::OnTimeout(
+    const int last_committed_entry_id) {
+  result_callback_.Reset();
+  if (timeout_callback_.is_null()) {
+    return;
+  }
+  std::move(timeout_callback_).Run(last_committed_entry_id);
 }
 
 PsstTabWebContentsObserver::PsstTabWebContentsObserver(
@@ -103,13 +163,17 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     PsstRuleRegistry* registry,
     PrefService* prefs,
     std::unique_ptr<PsstUiDelegate> ui_delegate,
-    InjectScriptCallback inject_script_callback)
+    InjectScriptCallback inject_script_callback,
+    base::TimeDelta script_execution_timeout)
     : WebContentsObserver(web_contents),
       registry_(registry),
       prefs_(prefs),
-      inject_script_callback_(std::move(inject_script_callback)),
       ui_delegate_(std::move(ui_delegate)) {
-  CHECK(!inject_script_callback_.is_null());
+  inject_script_callback_ = std::make_unique<TimedScriptRepeatingCallback>(
+      std::move(inject_script_callback),
+      base::BindRepeating(&PsstTabWebContentsObserver::OnScriptTimeout,
+                          weak_factory_.GetWeakPtr()),
+      std::move(script_execution_timeout));
 }
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
@@ -157,10 +221,9 @@ void PsstTabWebContentsObserver::InsertUserScript(
   if (!rule || !ShouldInsertScriptForPage(id)) {
     return;
   }
-
   const std::string user_script = rule->user_script();
-  inject_script_callback_.Run(
-      user_script,
+  inject_script_callback_->Run(
+      id, user_script,
       base::BindOnce(&PsstTabWebContentsObserver::OnUserScriptResult,
                      weak_factory_.GetWeakPtr(), id, std::move(rule)));
 }
@@ -183,7 +246,8 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     return;
   }
 
-  inject_script_callback_.Run(
+  inject_script_callback_->Run(
+      id,
       MaybeAddParamsToScript(std::move(rule),
                              std::move(user_script_result).TakeDict()),
       base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
@@ -199,8 +263,18 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
     return;
   }
 
-  ui_delegate_->UpdateTasks(script_result_parsed->progress,
-                            script_result_parsed->applied_tasks);
+  ui_delegate_->UpdateTasks(
+      script_result_parsed->progress, script_result_parsed->applied_tasks,
+      script_result_parsed->progress == 100 ? PsstStatus::kCompleted
+                                            : PsstStatus::kInProgress);
+}
+
+void PsstTabWebContentsObserver::OnScriptTimeout(int id) {
+  if (!ShouldInsertScriptForPage(id)) {
+    return;
+  }
+  ui_delegate_->UpdateTasks(100, std::vector<PolicyTask>(),
+                            PsstStatus::kFailed);
 }
 
 }  // namespace psst
