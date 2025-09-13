@@ -14,7 +14,6 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/split_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
-#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -186,19 +185,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
   EXPECT_EQ(incognito_browser->tab_strip_model()->count(), incognito_tab_count);
 }
 
-class BraveTabContextMenuWithSideBySideTest
-    : public BraveTabContextMenuContentsTest {
- public:
-  BraveTabContextMenuWithSideBySideTest() {
-    scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {features::kSideBySide}, {});
-  }
-
- private:
-  base::test::ScopedFeatureList scoped_features_;
-};
-
-IN_PROC_BROWSER_TEST_F(BraveTabContextMenuWithSideBySideTest,
+IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
                        SplitViewMenuCustomizationTest) {
   // Check with non split tab.
   {
@@ -210,11 +197,14 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuWithSideBySideTest,
     EXPECT_FALSE(menu_model->IsNewFeatureAt(*index));
   }
 
+  auto* tab_strip_model = browser()->tab_strip_model();
+
   // Create split tabs with tab at 1 and 2.
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
   chrome::NewSplitTab(browser(),
                       split_tabs::SplitTabCreatedSource::kTabContextMenu);
-  EXPECT_EQ(2, browser()->tab_strip_model()->active_index());
+  EXPECT_EQ(3, tab_strip_model->count());
+  EXPECT_EQ(2, tab_strip_model->active_index());
 
   // split tab's context menu has arrange command.
   {
@@ -224,7 +214,19 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuWithSideBySideTest,
         menu_model->GetIndexOfCommandId(TabStripModel::CommandArrangeSplit);
     EXPECT_TRUE(index.has_value());
     EXPECT_FALSE(menu_model->IsNewFeatureAt(*index));
+
+    // Execute close tab menu and check only active tab is closed from split
+    // tab.
+    menu->ExecuteCommand(TabStripModel::CommandCloseTab,
+                         /*event_flags=*/0);
+    EXPECT_EQ(2, tab_strip_model->count());
+    EXPECT_EQ(1, tab_strip_model->active_index());
   }
+
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+  EXPECT_EQ(3, tab_strip_model->count());
+  EXPECT_EQ(2, tab_strip_model->active_index());
 
   {
     auto menu = CreateMenuAt(2);

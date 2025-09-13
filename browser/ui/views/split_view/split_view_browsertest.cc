@@ -846,6 +846,46 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewReloadTest) {
   }
 }
 
+IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewCloseTabTest) {
+  NewSplitTab();
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Check only active tab is closed from split tab when split tab is
+  // the only selected tabs.
+  chrome::CloseTab(browser());
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  EXPECT_EQ(1, tab_strip_model->count());
+
+  // Create another active tab.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  NewSplitTab();
+
+  EXPECT_EQ(2, tab_strip_model->active_index());
+  EXPECT_EQ(3, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(1));
+  EXPECT_TRUE(IsSplitTabAt(2));
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+
+  // Make tabs at 1, 2, 3 selected.
+  // Check selected tab is not the only split tab,
+  // we'll close all selected tabs.
+  tab_strip_model->ExtendSelectionTo(1);
+  EXPECT_TRUE(IsSplitTabAt(1));
+  EXPECT_TRUE(IsSplitTabAt(2));
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_EQ(4, tab_strip_model->count());
+
+  // Check all selected tabs are closed (tab at 1, 2, 3).
+  chrome::CloseTab(browser());
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  EXPECT_EQ(1, tab_strip_model->count());
+}
+
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     SplitViewCommonBrowserTest,
