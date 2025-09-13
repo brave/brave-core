@@ -12,8 +12,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/quick_action_search_widget_small_margin"
-    android:paddingVertical=
-      "@dimen/quick_action_search_widget_small_margin_vertical"
+    android:paddingVertical="@dimen/quick_action_search_widget_small_margin_vertical"
     android:theme="@style/Theme.Chromium.Widget" >
 
     <LinearLayout
@@ -469,133 +468,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/BookmarkLayoutRow4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="@dimen/quick_action_search_widget_small_search_bar_background_inset_vertical"
-        android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_search_bar_background_inset_horizontal"
-        android:visibility="gone"
-        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/layoutRow4Bookmark1"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
 
-            <ImageView
-                android:id="@+id/ivRow4Bookmark1Icon"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
-                android:contentDescription="@string/top_visited_site" />
 
-            <TextView
-                android:id="@+id/tvRow4Bookmark1Name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:ellipsize="marquee"
-                android:maxLines="1"
-                android:gravity="center"
-                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_weight="1" />
-
-        <LinearLayout
-            android:id="@+id/layoutRow4Bookmark2"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
-
-            <ImageView
-                android:id="@+id/ivRow4Bookmark2Icon"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
-                android:contentDescription="@string/top_visited_site" />
-
-            <TextView
-                android:id="@+id/tvRow4Bookmark2Name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="center"
-                android:ellipsize="marquee"
-                android:maxLines="1"
-                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_weight="1" />
-
-        <LinearLayout
-            android:id="@+id/layoutRow4Bookmark3"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
-
-            <ImageView
-                android:id="@+id/ivRow4Bookmark3Icon"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
-                android:contentDescription="@string/top_visited_site" />
-
-            <TextView
-                android:id="@+id/tvRow4Bookmark3Name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:ellipsize="marquee"
-                android:maxLines="1"
-                android:gravity="center"
-                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_weight="1" />
-
-        <LinearLayout
-            android:id="@+id/layoutRow4Bookmark4"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
-
-            <ImageView
-                android:id="@+id/ivRow4Bookmark4Icon"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
-                android:contentDescription="@string/top_visited_site" />
-
-            <TextView
-                android:id="@+id/tvRow4Bookmark4Name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="center"
-                android:ellipsize="marquee"
-                android:maxLines="1"
-                android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
-                android:textSize="12sp" />
-        </LinearLayout>
-    </LinearLayout>
 </LinearLayout>
