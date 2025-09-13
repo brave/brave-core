@@ -15,7 +15,7 @@ import styles from './style.module.scss'
 
 type ToolsMenuProps = {
   handleClick: (type: ActionType) => void
-} & Pick<Props<ActionEntry>, 'categories' | 'isOpen' | 'setIsOpen' | 'query'>
+} & Pick<Props<ActionEntry>, 'categories' | 'isOpen' | 'setIsOpen' | 'query' | 'placement'>
 
 function matchesQuery(query: string, entry: ActionEntry) {
   return entry.details && matches(query, entry.details.label)
@@ -29,6 +29,7 @@ export default function ToolsMenu(props: ToolsMenuProps) {
       setIsOpen={props.setIsOpen}
       query={props.query}
       matchesQuery={matchesQuery}
+      placement={props.placement}
     >
       {(item) =>
         !item.details ? (
