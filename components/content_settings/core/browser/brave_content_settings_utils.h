@@ -8,15 +8,17 @@
 
 #include <optional>
 #include <string>
-#include <vector>
 
-#include "components/content_settings/core/common/content_settings.h"
-#include "components/content_settings/core/common/content_settings_constraints.h"
+#include "base/values.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "components/content_settings/core/common/content_settings_enums.mojom.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 
 namespace content_settings {
 
-const std::vector<ContentSettingsType>& GetShieldsContentSettingsTypes();
+const brave_shields::ShieldsContentSettingsTypes&
+GetShieldsContentSettingsTypes();
 
 std::string GetShieldsContentTypeName(const ContentSettingsType& content_type);
 

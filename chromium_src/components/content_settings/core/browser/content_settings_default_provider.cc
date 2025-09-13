@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "build/build_config.h"
+#include "components/prefs/pref_service.h"
+#include "components/prefs/pref_value_map.h"
 
 #if !BUILDFLAG(IS_IOS)
 #define BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES           \
@@ -17,6 +20,23 @@
 #define BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES
 #endif
 
+#define GetValue(...)                                  \
+  GetValue(__VA_ARGS__);                               \
+  if (IsBraveValidDefaultValue(content_type, value)) { \
+    return value.Clone();                              \
+  }
+
+namespace {
+
+bool IsBraveValidDefaultValue(ContentSettingsType content_type,
+                              const base::Value& value) {
+  return value.is_dict() &&
+         content_settings::IsShieldsContentSettingsType(content_type);
+}
+
+}  // namespace
+
 #include <components/content_settings/core/browser/content_settings_default_provider.cc>
 
 #undef BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES
+#undef GetValue

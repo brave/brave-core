@@ -9,7 +9,6 @@
 // clang-format off
 #define NUM                         \
   BRAVE_ADS,                        \
-  BRAVE_COSMETIC_FILTERING,         \
   BRAVE_TRACKERS,                   \
   BRAVE_HTTP_UPGRADABLE_RESOURCES,  \
   BRAVE_FINGERPRINTING_V2,          \
