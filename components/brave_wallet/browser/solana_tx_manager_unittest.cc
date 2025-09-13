@@ -1925,7 +1925,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeBubbleGumProgramTransferTxData) {
   // Invalid response JSON results in error
   std::map<GURL, std::string> responses;
   responses[GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/proof/solana/"
+      "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/proof/solana/"
       "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR")] = "invalid json";
   SetInterceptors(responses);
   TestMakeBubbleGumProgramTransferTxData(
@@ -1973,7 +1973,7 @@ TEST_F(SolanaTxManagerUnitTest, MakeBubbleGumProgramTransferTxData) {
     "canopy_depth": 0
   })";
   responses[GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/proof/solana/"
+      "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/proof/solana/"
       "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR")] = json;
   // Invalid get account info response results in error
   responses[GURL("https://solana-mainnet.wallet.brave.com/")] = "invalid json";

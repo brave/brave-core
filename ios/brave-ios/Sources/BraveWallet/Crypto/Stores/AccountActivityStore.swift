@@ -50,7 +50,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
   private var tokenBalanceCache: [String: Double] = [:]
-  private var tokenPricesCache: [String: String] = [:]
+  private var tokenPricesCache: [BraveWallet.AssetPrice] = []
   private var nftMetadataCache: [String: BraveWallet.NftMetadata] = [:]
   private var solEstimatedTxFeesCache: [String: UInt64] = [:]
   private var btcBalancesCache: [BTCBalanceType: Double] = [:]
@@ -289,19 +289,17 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       )
 
       // fetch price for every user asset
-      let prices: [String: String] = await assetRatioService.fetchPrices(
-        for: allUserAssets.map(\.assetRatioId),
-        toAssets: [currencyFormatter.currencyCode],
-        timeframe: .oneDay
+      let prices: [BraveWallet.AssetPrice] = await assetRatioService.fetchPrices(
+        for: allUserAssets,
+        vsCurrency: currencyFormatter.currencyCode
       )
-      tokenPricesCache.merge(with: prices)
+      tokenPricesCache.update(with: prices)
 
       var totalFiat: Double = 0
       for (key, balance) in tokenBalances where balance > 0 {
-        if let token = allUserAssets.first(where: { $0.id == key }),
-          let priceString = prices[token.assetRatioId.lowercased()],
-          let price = Double(priceString)
-        {
+        if let token = allUserAssets.first(where: { $0.id == key }) {
+          let assetPrice = prices.getTokenPrice(for: token)
+          let price = Double(assetPrice?.price ?? "0") ?? 0
           let tokenFiat = balance * price
           totalFiat += tokenFiat
         }
@@ -407,7 +405,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   private func buildAssetsAndNFTs(
     userNetworkAssets: [NetworkAssets],
     tokenBalances: [String: Double],
-    tokenPrices: [String: String],
+    tokenPrices: [BraveWallet.AssetPrice],
     nftMetadata: [String: BraveWallet.NftMetadata],
     btcBalances: [BTCBalanceType: Double]
   ) -> ([AssetViewModel], [NFTAssetViewModel]) {
@@ -439,7 +437,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
               groupType: .none,
               token: token,
               network: networkAssets.network,
-              price: tokenPrices[token.assetRatioId.lowercased()] ?? "",
+              price: tokenPrices.getTokenPrice(for: token)?.price ?? "",
               history: [],
               balanceForAccounts: [account.id: tokenBalances[token.id] ?? 0],
               btcBalances: token.coin == .btc ? [account.id: btcBalancesCache] : [:]
@@ -461,7 +459,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     accountInfos: [BraveWallet.AccountInfo],
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
-    tokenPrices: [String: String],
+    tokenPrices: [BraveWallet.AssetPrice],
     nftMetadata: [String: BraveWallet.NftMetadata],
     solEstimatedTxFees: [String: UInt64]
   ) -> [TransactionSection] {
@@ -473,12 +471,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       )
       return Calendar.current.date(from: dateComponents) ?? transaction.createdTime
     }
-    let tokenPrices = self.userAssets.reduce(
-      into: [String: Double](),
-      {
-        $0[$1.token.assetRatioId.lowercased()] = Double($1.price)
-      }
-    )
+
     // Map to 1 `TransactionSection` per date
     return transactionsGroupedByDate.keys.sorted(by: { $0 > $1 }).compactMap { date in
       let transactions = transactionsGroupedByDate[date] ?? []

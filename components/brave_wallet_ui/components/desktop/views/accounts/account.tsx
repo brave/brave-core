@@ -49,7 +49,7 @@ import Amount from '../../../../utils/amount'
 import {
   getTokenPriceAmountFromRegistry,
   computeFiatAmount,
-  getPriceIdForToken,
+  getPriceRequestForToken,
 } from '../../../../utils/pricing-utils'
 import {
   selectAllVisibleUserAssetsFromQueryResult, //
@@ -415,7 +415,7 @@ export const Account = () => {
     [accountsTokensList, selectedAccount, tokenBalancesRegistry],
   )
 
-  const tokenPriceIds = React.useMemo(
+  const tokenPriceRequests = React.useMemo(
     () =>
       fungibleTokens
         .filter((token) =>
@@ -427,14 +427,15 @@ export const Account = () => {
             ),
           ).gt(0),
         )
-        .map(getPriceIdForToken),
+        .map((token) => getPriceRequestForToken(token))
+        .filter((request) => request !== undefined),
     [fungibleTokens, selectedAccount, tokenBalancesRegistry],
   )
 
-  const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
+  const { data: spotPrices = [], isLoading: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(
-      tokenPriceIds.length && defaultFiatCurrency
-        ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      tokenPriceRequests.length && defaultFiatCurrency
+        ? { requests: tokenPriceRequests, vsCurrency: defaultFiatCurrency }
         : skipToken,
       querySubscriptionOptions60s,
     )
@@ -475,13 +476,13 @@ export const Account = () => {
       )
 
       const aFiatBalance = computeFiatAmount({
-        spotPriceRegistry,
+        spotPrices,
         value: aBalance,
         token: a,
       })
 
       const bFiatBalance = computeFiatAmount({
-        spotPriceRegistry,
+        spotPrices,
         value: bBalance,
         token: b,
       })
@@ -490,7 +491,7 @@ export const Account = () => {
     })
   }, [
     selectedAccount,
-    spotPriceRegistry,
+    spotPrices,
     isLoadingSpotPrices,
     fungibleTokens,
     tokenBalancesRegistry,
@@ -723,9 +724,9 @@ export const Account = () => {
                 }
                 token={asset}
                 spotPrice={
-                  spotPriceRegistry && !isLoadingSpotPrices
+                  spotPrices && !isLoadingSpotPrices
                     ? getTokenPriceAmountFromRegistry(
-                        spotPriceRegistry,
+                        spotPrices,
                         asset,
                       ).format()
                     : ''

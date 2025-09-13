@@ -501,7 +501,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     filTxGasFeeCap = nil
   }
 
-  private var assetRatios: [String: Double] = [:]
+  private var assetRatios: [BraveWallet.AssetPrice] = []
   private var currentAllowanceCache: [String: String] = [:]
   /// Cache of gas token balance for each chainId (in pending transactions) for each account.
   /// Outer key is the `NetworkInfo.chainId`, inner key is the `AccountInfo.id`.
@@ -517,15 +517,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   @MainActor private func fetchAssetRatios(
     for userVisibleTokens: [BraveWallet.BlockchainToken]
   ) async {
-    let priceResult = await assetRatioService.priceWithIndividualRetry(
-      userVisibleTokens.map { $0.assetRatioId.lowercased() },
-      toAssets: [currencyFormatter.currencyCode],
-      timeframe: .oneDay
+    let newAssetRatios = await assetRatioService.fetchPrices(
+      for: userVisibleTokens,
+      vsCurrency: currencyFormatter.currencyCode
     )
-    let newAssetRatios = priceResult.assetPrices.reduce(into: [String: Double]()) {
-      $0[$1.fromAsset] = Double($1.price)
-    }
-    assetRatios.merge(with: newAssetRatios)
+    assetRatios.update(with: newAssetRatios)
     updateTransaction(
       with: activeTransaction,
       shouldFetchCurrentAllowance: false,
@@ -699,7 +695,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasValue = gasFee.fee
         gasFiat = gasFee.fiat
         gasSymbol = activeParsedTransaction.networkSymbol
-        gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
+        gasAssetRatio =
+          Double(
+            assetRatios.getTokenPrice(for: activeParsedTransaction.network.nativeToken)?.price
+              ?? "0"
+          ) ?? 0
 
         let gasBalance = gasTokenBalanceCache[network.chainId]?[
           activeParsedTransaction.fromAccountInfo.id
@@ -732,9 +732,9 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       if let fromToken = details.fromToken {
         totalFiat = totalFiat(
           value: value,
-          tokenAssetRatioId: fromToken.assetRatioId,
+          token: fromToken,
+          network: network,
           gasValue: gasValue,
-          gasSymbol: gasSymbol,
           assetRatios: assetRatios,
           currencyFormatter: currencyFormatter
         )
@@ -750,7 +750,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasValue = gasFee.fee
         gasFiat = gasFee.fiat
         gasSymbol = activeParsedTransaction.networkSymbol
-        gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
+        gasAssetRatio =
+          Double(
+            assetRatios.getTokenPrice(for: activeParsedTransaction.network.nativeToken)?.price
+              ?? "0"
+          ) ?? 0
 
         if let gasBalance = gasTokenBalanceCache[network.chainId]?[
           activeParsedTransaction.fromAccountInfo.id
@@ -792,7 +796,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasValue = gasFee.fee
         gasFiat = gasFee.fiat
         gasSymbol = activeParsedTransaction.networkSymbol
-        gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
+        gasAssetRatio =
+          Double(
+            assetRatios.getTokenPrice(for: activeParsedTransaction.network.nativeToken)?.price
+              ?? "0"
+          ) ?? 0
 
         if let gasBalance = gasTokenBalanceCache[network.chainId]?[
           activeParsedTransaction.fromAccountInfo.id
@@ -816,14 +824,16 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         }
 
-        totalFiat = totalFiat(
-          value: value,
-          tokenAssetRatioId: details.fromToken?.assetRatioId ?? "",
-          gasValue: gasValue,
-          gasSymbol: gasSymbol,
-          assetRatios: assetRatios,
-          currencyFormatter: currencyFormatter
-        )
+        if let fromToken = details.fromToken {
+          totalFiat = totalFiat(
+            value: value,
+            token: fromToken,
+            network: network,
+            gasValue: gasValue,
+            assetRatios: assetRatios,
+            currencyFormatter: currencyFormatter
+          )
+        }
       }
     case .erc721Transfer(let details):
       symbol = details.fromToken?.symbol ?? ""
@@ -833,7 +843,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasValue = gasFee.fee
         gasFiat = gasFee.fiat
         gasSymbol = activeParsedTransaction.networkSymbol
-        gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
+        gasAssetRatio =
+          Double(
+            assetRatios.getTokenPrice(for: activeParsedTransaction.network.nativeToken)?.price
+              ?? "0"
+          ) ?? 0
 
         if let gasBalance = gasTokenBalanceCache[network.chainId]?[
           activeParsedTransaction.fromAccountInfo.id
@@ -857,14 +871,16 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         }
 
-        totalFiat = totalFiat(
-          value: value,
-          tokenAssetRatioId: details.fromToken?.assetRatioId ?? "",
-          gasValue: gasValue,
-          gasSymbol: gasSymbol,
-          assetRatios: assetRatios,
-          currencyFormatter: currencyFormatter
-        )
+        if let fromToken = details.fromToken {
+          totalFiat = totalFiat(
+            value: value,
+            token: fromToken,
+            network: network,
+            gasValue: gasValue,
+            assetRatios: assetRatios,
+            currencyFormatter: currencyFormatter
+          )
+        }
       }
     case .solDappTransaction(let details), .solSwapTransaction(let details):
       symbol = details.symbol ?? ""
@@ -880,7 +896,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasValue = gasFee.fee
         gasFiat = gasFee.fiat
         gasSymbol = activeParsedTransaction.networkSymbol
-        gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
+        gasAssetRatio =
+          Double(
+            assetRatios.getTokenPrice(for: activeParsedTransaction.network.nativeToken)?.price
+              ?? "0"
+          ) ?? 0
 
         if let gasBalance = gasTokenBalanceCache[network.chainId]?[
           activeParsedTransaction.fromAccountInfo.id
@@ -917,7 +937,11 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasValue = gasFee.fee
         gasFiat = gasFee.fiat
         gasSymbol = activeParsedTransaction.networkSymbol
-        gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
+        gasAssetRatio =
+          Double(
+            assetRatios.getTokenPrice(for: activeParsedTransaction.network.nativeToken)?.price
+              ?? "0"
+          ) ?? 0
 
         if let gasBalance = gasTokenBalanceCache[network.chainId]?[
           activeParsedTransaction.fromAccountInfo.id
@@ -944,9 +968,9 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       if let token = details.sendToken {
         totalFiat = totalFiat(
           value: value,
-          tokenAssetRatioId: token.assetRatioId,
+          token: token,
+          network: network,
           gasValue: gasValue,
-          gasSymbol: gasSymbol,
           assetRatios: assetRatios,
           currencyFormatter: currencyFormatter
         )
@@ -958,14 +982,14 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 
   private func totalFiat(
     value: String,
-    tokenAssetRatioId: String,
+    token: BraveWallet.BlockchainToken,
+    network: BraveWallet.NetworkInfo,
     gasValue: String,
-    gasSymbol: String,
-    assetRatios: [String: Double],
+    assetRatios: [BraveWallet.AssetPrice],
     currencyFormatter: NumberFormatter
   ) -> String {
-    let ratio = assetRatios[tokenAssetRatioId.lowercased(), default: 0]
-    let gasRatio = assetRatios[gasSymbol.lowercased(), default: 0]
+    let ratio = Double(assetRatios.getTokenPrice(for: token)?.price ?? "0") ?? 0
+    let gasRatio = Double(assetRatios.getTokenPrice(for: network.nativeToken)?.price ?? "0") ?? 0
     let amount = (Double(value) ?? 0.0) * ratio
     let gasAmount = (Double(gasValue) ?? 0.0) * gasRatio
     let totalFiat = currencyFormatter.formatAsFiat(amount + gasAmount) ?? "$0.00"

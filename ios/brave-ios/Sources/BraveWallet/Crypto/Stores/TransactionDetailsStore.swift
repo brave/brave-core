@@ -43,7 +43,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
   private var nftMetadataCache: [String: BraveWallet.NftMetadata] = [:]
   private var solEstimatedTxFeesCache: [String: UInt64] = [:]
-  private var assetRatiosCache: [String: Double] = [:]
+  private var assetRatiosCache: [BraveWallet.AssetPrice] = []
 
   var isObserving: Bool {
     txServiceObserver != nil
@@ -171,17 +171,13 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       self.parsedTransaction = parsedTransaction
 
       let txTokensWithoutPrice = (parsedTransaction.tokens + [network.nativeToken])
-        .filter { self.assetRatiosCache[$0.assetRatioId] == nil }
+        .filter { self.assetRatiosCache.getTokenPrice(for: $0) == nil }
       if !txTokensWithoutPrice.isEmpty {
-        let priceResult = await assetRatioService.priceWithIndividualRetry(
-          userAssets.map { $0.assetRatioId.lowercased() },
-          toAssets: [currencyFormatter.currencyCode],
-          timeframe: .oneDay
+        let assetRatios = await assetRatioService.fetchPrices(
+          for: userAssets,
+          vsCurrency: currencyFormatter.currencyCode
         )
-        let assetRatios = priceResult.assetPrices.reduce(into: [String: Double]()) {
-          $0[$1.fromAsset] = Double($1.price)
-        }
-        self.assetRatiosCache.merge(with: assetRatios)
+        self.assetRatiosCache.update(with: assetRatios)
       }
 
       if transaction.coin == .sol, solEstimatedTxFeesCache[transaction.id] == nil {

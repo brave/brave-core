@@ -36,8 +36,8 @@ class AccountsStore: ObservableObject, WalletObserverStore {
   private typealias TokenBalanceCache = [String: [String: Double]]
   /// Cache of token balances for each account. `[account.id: [token.id: balance]]`
   private var tokenBalancesCache: TokenBalanceCache = [:]
-  /// Cache of prices for each token. The key is the token's `assetRatioId`.
-  private var pricesCache: [String: String] = [:]
+  /// Cache of prices for each token.
+  private var pricesCache: [BraveWallet.AssetPrice] = []
 
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -283,17 +283,11 @@ class AccountsStore: ObservableObject, WalletObserverStore {
       tokenIdsWithAccountBalance.forEach { tokensIdsWithBalance.insert($0) }
     }
     let allTokens = allNetworkAssets.flatMap(\.tokens)
-    let assetRatioIdsForTokensWithBalance =
-      tokensIdsWithBalance
-      .compactMap { tokenId in
-        allTokens.first(where: { $0.id == tokenId })?.assetRatioId
-      }
-    let prices: [String: String] = await assetRatioService.fetchPrices(
-      for: assetRatioIdsForTokensWithBalance,
-      toAssets: [currencyFormatter.currencyCode],
-      timeframe: .live
+    let prices: [BraveWallet.AssetPrice] = await assetRatioService.fetchPrices(
+      for: allTokens,
+      vsCurrency: currencyFormatter.currencyCode
     )
-    self.pricesCache.merge(with: prices)
+    self.pricesCache.update(with: prices)
   }
 
   // MARK: Helpers
@@ -334,8 +328,8 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     var tokensFiatForAccount: [(token: BraveWallet.BlockchainToken, fiat: Double)] = []
     for (tokenId, balance) in tokenBalancesForAccount where balance > 0 {
       guard let token = tokens.first(where: { $0.id == tokenId }) else { continue }
-      if let priceString = pricesCache[token.assetRatioId.lowercased()],
-        let price = Double(priceString)
+      if let assetPrice = pricesCache.getTokenPrice(for: token),
+        let price = Double(assetPrice.price)
       {
         let fiat = balance * price
         tokensFiatForAccount.append((token, fiat))
@@ -361,8 +355,8 @@ class AccountsStore: ObservableObject, WalletObserverStore {
         return partialResult
       }
       guard let token = tokens.first(where: { $0.id == tokenId }),
-        let priceString = pricesCache[token.assetRatioId.lowercased()],
-        let price = Double(priceString)
+        let assetPrice = pricesCache.getTokenPrice(for: token),
+        let price = Double(assetPrice.price)
       else {
         // price for token unavailable
         return partialResult

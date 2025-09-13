@@ -6,7 +6,7 @@ import { BraveWallet, CoinTypes } from '../../constants/types'
 
 const s = 1000
 
-export const maxBatchSizePrice = 25
+export const maxBatchSizePrice = 200
 export const maxConcurrentPriceRequests = 2
 export const querySubscriptionOptions60s = {
   refetchOnFocus: true,

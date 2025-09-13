@@ -32,7 +32,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
 
   private var solEstimatedTxFeesCache: [String: UInt64] = [:]
-  private var assetPricesCache: [String: Double] = [:]
+  private var assetPricesCache: [BraveWallet.AssetPrice] = []
   /// Cache of metadata for NFTs. The key is the token's `id`.
   private var metadataCache: [String: BraveWallet.NftMetadata] = [:]
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
@@ -195,8 +195,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
         await updateSolEstimatedTxFeesCache(solTransactions)
       }
 
-      let allUserAssetsAssetRatioIds = userAssets.map(\.assetRatioId)
-      await updateAssetPricesCache(assetRatioIds: allUserAssetsAssetRatioIds)
+      await updateAssetPricesCache(for: userAssets)
 
       guard !Task.isCancelled else { return }
       self.transactionSections = buildTransactionSections(
@@ -278,7 +277,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
     accountInfos: [BraveWallet.AccountInfo],
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
-    assetRatios: [String: Double],
+    assetRatios: [BraveWallet.AssetPrice],
     nftMetadata: [String: BraveWallet.NftMetadata],
     solEstimatedTxFees: [String: UInt64]
   ) -> [TransactionSection] {
@@ -327,15 +326,12 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  @MainActor private func updateAssetPricesCache(assetRatioIds: [String]) async {
+  @MainActor private func updateAssetPricesCache(for tokens: [BraveWallet.BlockchainToken]) async {
     let prices = await assetRatioService.fetchPrices(
-      for: assetRatioIds,
-      toAssets: [currencyFormatter.currencyCode],
-      timeframe: .oneDay
-    ).compactMapValues { Double($0) }
-    for (key, value) in prices {  // update cached values
-      self.assetPricesCache[key] = value
-    }
+      for: tokens,
+      vsCurrency: currencyFormatter.currencyCode
+    )
+    self.assetPricesCache.update(with: prices)
   }
 
   private func updateUnknownTokens(

@@ -59,7 +59,7 @@ import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import {
   computeFiatAmount,
-  getPriceIdForToken,
+  getPriceRequestForToken,
 } from '../../../../utils/pricing-utils'
 import Amount from '../../../../utils/amount'
 import {
@@ -225,23 +225,21 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
   const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
     useSwapTransactionParser(transaction)
 
-  const networkAssetPriceId = networkAsset
-    ? getPriceIdForToken(networkAsset)
-    : ''
-  const txTokenPriceId = txToken ? getPriceIdForToken(txToken) : ''
-  const sellTokenPriceId = sellToken ? getPriceIdForToken(sellToken) : ''
-  const buyTokenPriceId = buyToken ? getPriceIdForToken(buyToken) : ''
-  const priceIds = [
-    networkAssetPriceId,
-    txTokenPriceId,
-    sellTokenPriceId,
-    buyTokenPriceId,
-  ].filter(Boolean)
+  const priceRequests = React.useMemo(
+    () =>
+      [
+        txToken ? getPriceRequestForToken(txToken) : undefined,
+        sellToken ? getPriceRequestForToken(sellToken) : undefined,
+        buyToken ? getPriceRequestForToken(buyToken) : undefined,
+        networkAsset ? getPriceRequestForToken(networkAsset) : undefined,
+      ].filter((request) => request !== undefined),
+    [txToken, sellToken, buyToken, networkAsset],
+  )
 
   // price queries
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    priceIds.length && defaultFiatCurrency
-      ? { ids: priceIds, toCurrency: defaultFiatCurrency }
+  const { data: spotPrices = [] } = useGetTokenSpotPricesQuery(
+    priceRequests.length && defaultFiatCurrency
+      ? { requests: priceRequests, vsCurrency: defaultFiatCurrency }
       : skipToken,
   )
 
@@ -310,7 +308,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
 
   const formattedBuyFiatValue = buyToken
     ? computeFiatAmount({
-        spotPriceRegistry,
+        spotPrices,
         value: buyAmountWei.format(),
         token: buyToken,
       }).formatAsFiat(defaultFiatCurrency)
@@ -318,7 +316,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
 
   const computedSendFiatAmount = sendToken
     ? computeFiatAmount({
-        spotPriceRegistry,
+        spotPrices,
         value: transferredValueWei.format(),
         token: sendToken,
       }).formatAsFiat(defaultFiatCurrency)
@@ -359,9 +357,9 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
       : getTransactionGasFee(transaction)
 
   const formattedGasFeeFiatValue =
-    networkAsset && spotPriceRegistry
+    networkAsset && spotPrices
       ? computeFiatAmount({
-          spotPriceRegistry,
+          spotPrices,
           value: gasFee,
           token: networkAsset,
         }).formatAsFiat(defaultFiatCurrency)
