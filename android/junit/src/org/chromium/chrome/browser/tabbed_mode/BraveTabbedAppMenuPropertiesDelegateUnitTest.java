@@ -338,6 +338,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.preferences_id,
             R.id.set_default_browser,
             R.id.brave_news_id,
+            R.id.brave_customize_menu_id,
             R.id.exit_id,
         };
         assertMenuItemsAreEqual(modelList, expectedItems);
@@ -377,6 +378,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.set_default_browser);
         expectedItems.add(R.id.preferences_id);
         expectedItems.add(R.id.brave_news_id);
+        expectedItems.add(R.id.brave_customize_menu_id);
         expectedItems.add(R.id.exit_id);
 
         assertMenuItemsAreEqual(modelList, expectedItems.toArray(new Integer[0]));
