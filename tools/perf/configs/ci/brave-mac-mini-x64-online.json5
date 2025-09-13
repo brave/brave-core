@@ -28,6 +28,7 @@
       "pageset-repeat": 20,
       "stories": [
         "load:site:example:2023",
+        "load:ntp:brave_news:2024",
       ]
     },
     {
@@ -35,6 +36,7 @@
       "pageset-repeat": 20,
       "stories": [
         "load:site:example:2023",
+        "load:ntp:brave_news:2024",
       ]
     }
   ]
