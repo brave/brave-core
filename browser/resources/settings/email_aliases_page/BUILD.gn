@@ -8,6 +8,8 @@ import("//brave/components/common/typescript.gni")
 transpile_web_ui("email_aliases_ui") {
   generate_grdp = true
 
+  output_dir = target_gen_dir
+
   entry_points = [ [
         "email_aliases",
         rebase_path("email_aliases.tsx"),
