@@ -82,6 +82,8 @@
   "//components/vector_icons/content_paste_off_chrome_refresh.icon": "leo_clipboard_off",
   "//components/vector_icons/content_paste_off.icon": "leo_clipboard_off",
   "//components/vector_icons/content_paste.icon": "leo_clipboard",
+  "//components/vector_icons/folder_chrome_refresh.icon": "leo_folder",
+  "//components/vector_icons/folder_managed_refresh.icon": "leo_folder",
   "//components/vector_icons/cookie_chrome_refresh.icon": "leo_cookie",
   "//components/vector_icons/cookie.icon": "leo_cookie",
   "//components/vector_icons/extension_chrome_refresh.icon": "leo_browser_extensions",
