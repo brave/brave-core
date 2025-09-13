@@ -37,10 +37,6 @@ namespace https_upgrade_exceptions {
 class HttpsUpgradeExceptionsService;
 }  // namespace https_upgrade_exceptions
 
-namespace localhost_permission {
-class LocalhostPermissionComponent;
-}  // namespace localhost_permission
-
 namespace brave_stats {
 class BraveStatsUpdater;
 }  // namespace brave_stats
@@ -111,8 +107,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   brave_shields::AdBlockService* ad_block_service() override;
   https_upgrade_exceptions::HttpsUpgradeExceptionsService*
   https_upgrade_exceptions_service() override;
-  localhost_permission::LocalhostPermissionComponent*
-  localhost_permission_component() override;
   debounce::DebounceComponentInstaller* debounce_component_installer() override;
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRComponentInstallerPolicy*
@@ -183,8 +177,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
   std::unique_ptr<https_upgrade_exceptions::HttpsUpgradeExceptionsService>
       https_upgrade_exceptions_service_;
-  std::unique_ptr<localhost_permission::LocalhostPermissionComponent>
-      localhost_permission_component_;
   std::unique_ptr<debounce::DebounceComponentInstaller>
       debounce_component_installer_;
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
