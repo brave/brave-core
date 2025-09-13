@@ -51,6 +51,7 @@ class BraveContentsContainerView :
   static constexpr int kBorderThickness = 2;
 
   float GetCornerRadius(bool for_border) const;
+  float GetCornerRadiusWithoutRoundedCorners() const;
 
   raw_ref<BrowserView> browser_view_;
 

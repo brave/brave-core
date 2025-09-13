@@ -51,6 +51,8 @@ BraveContentsContainerView::~BraveContentsContainerView() = default;
 void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
                                                         bool is_active,
                                                         bool show_scrim) {
+  is_in_split_ = is_in_split;
+
   // We don't show scrim view always.
   GetInactiveSplitScrimView()->SetVisible(false);
 
@@ -147,8 +149,14 @@ float BraveContentsContainerView::GetCornerRadius(bool for_border) const {
              browser_view_->browser())
              ? BraveContentsViewUtil::kBorderRadius +
                    (for_border ? kBorderThickness : 0)
-             : 0;
+             : GetCornerRadiusWithoutRoundedCorners();
 }
+
+#if !BUILDFLAG(IS_MAC)
+float BraveContentsContainerView::GetCornerRadiusWithoutRoundedCorners() const {
+  return 0;
+}
+#endif
 
 BEGIN_METADATA(BraveContentsContainerView)
 END_METADATA
