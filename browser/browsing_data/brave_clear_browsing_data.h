@@ -21,6 +21,9 @@ class BraveClearBrowsingData {
   BraveClearBrowsingData(const BraveClearBrowsingData&) = delete;
   BraveClearBrowsingData& operator=(const BraveClearBrowsingData&) = delete;
 
+  static void UpdateMasksToClearCacheStorage(uint64_t& remove_mask,
+                                             uint64_t& origin_mask);
+
   // Clears browsing data for all loaded non-off-the-record profiles.
   // Profile's *OnExit preferences determine what gets cleared.
   // Note: this method will wait until browsing data has been cleared.

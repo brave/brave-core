@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "chrome/browser/browsing_data/browsing_data_important_sites_util.h"
+#include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
 
 #if BUILDFLAG(IS_WIN)
@@ -32,8 +34,16 @@ void BraveRemoveJumplist(Profile* profile) {
   remove_mask |= chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY; \
   break;                                                                    \
   case BrowsingDataType::HOSTED_APPS_DATA
+
+#define DATA_TYPE_CACHE                                                        \
+  DATA_TYPE_CACHE;                                                             \
+  content::BraveClearBrowsingData::UpdateMasksToClearCacheStorage(remove_mask, \
+                                                                  origin_mask)
+
 #include <chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc>
+
 #undef HOSTED_APPS_DATA
+#undef DATA_TYPE_CACHE
 
 #if BUILDFLAG(IS_WIN)
 #undef browsing_data_important_sites_util
