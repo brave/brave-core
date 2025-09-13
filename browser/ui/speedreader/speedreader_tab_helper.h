@@ -81,7 +81,7 @@ class SpeedreaderTabHelper
   // In Speedreader mode shows bubble. In Reader mode toggles state.
   void ProcessIconClick();
 
-  DistillState PageDistillState() const { return distill_state_; }
+  DistillState PageDistillState() const;
 
   // returns nullptr if no bubble currently shown
   SpeedreaderBubbleView* speedreader_bubble_view() const;
@@ -154,6 +154,7 @@ class SpeedreaderTabHelper
                          int length) override;
 
   // SpeedreaderService::Observer:
+  void OnFeatureStateChanged(bool enabled) override;
   void OnSiteEnableSettingChanged(content::WebContents* site,
                                   bool enabled_on_site) override;
   void OnAllSitesEnableSettingChanged(bool enabled_on_all_sites) override;
@@ -168,7 +169,7 @@ class SpeedreaderTabHelper
 
   void OnGetDocumentSource(bool success, std::string html);
 
-  SpeedreaderService* GetSpeedreaderService();
+  SpeedreaderService* GetSpeedreaderService() const;
 
   void TransitStateTo(const DistillState& desired_state,
                       bool no_reload = false);
