@@ -27,7 +27,9 @@
 
 .attachmentsDialog {
   --leo-dialog-padding: 0;
-  --leo-dialog-width: 600px;
+  --leo-dialog-width: 500px;
+  --leo-dialog-backdrop-background: var(--leo-color-dialogs-scrim-background);
+  --leo-dialog-backdrop-filter: blur(4px);
 
   & > * {
     width: min(var(--leo-dialog-width), calc(100vw - var(--leo-spacing-xl)));
@@ -50,37 +52,6 @@
 
 .siteTitleContainer {
   margin-top: var(--conversation-content-margin);
-}
-
-.mainContent {
-  &:has(.attachmentsContainer) {
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    grid-template-rows: 1fr min-content;
-    gap: var(--leo-spacing-m);
-
-    height: 100%;
-    width: 100%;
-
-    overflow: hidden;
-  }
-
-  display: contents;
-}
-
-.attachmentsContainer {
-  margin: var(--leo-spacing-m);
-  padding-top: var(--leo-spacing-m);
-  align-self: stretch;
-  position: sticky;
-  top: 0;
-
-  grid-column: 2;
-  grid-row: 1 / 3;
-
-  max-height: min(90vh, 720px);
-
-  overflow: hidden;
 }
 
 .scroller {

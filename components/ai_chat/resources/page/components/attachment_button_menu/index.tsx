@@ -23,7 +23,7 @@ type Props = Pick<
   | 'getScreenshots'
   | 'conversationHistory'
   | 'associatedContentInfo'
-  | 'setShowAttachments'
+  | 'setAttachmentsDialog'
   | 'associateDefaultContent'
   | 'unassociatedTabs'
 >
@@ -96,7 +96,7 @@ export default function AttachmentButtonMenu(props: Props) {
           </leo-menu-item>
         )}
         {props.unassociatedTabs.length > 0 && (
-          <leo-menu-item onClick={() => props.setShowAttachments(true)}>
+          <leo-menu-item onClick={() => props.setAttachmentsDialog('tabs')}>
             <div className={styles.buttonContent}>
               <Icon
                 className={styles.buttonIcon}

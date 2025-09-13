@@ -867,7 +867,7 @@ type CustomArgs = {
   totalTokens: number
   trimmedTokens: number
   isGenerating: boolean
-  showAttachments: boolean
+  attachmentsDialog: 'tabs' | null
   isNewConversation: boolean
   generatedUrlToBeOpened: Url | undefined
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
@@ -910,7 +910,7 @@ const args: CustomArgs = {
   totalTokens: 0,
   trimmedTokens: 0,
   isGenerating: false,
-  showAttachments: true,
+  attachmentsDialog: 'tabs',
   isNewConversation: false,
   generatedUrlToBeOpened: undefined,
   ratingTurnUuid: undefined,
@@ -1145,8 +1145,8 @@ function StoryContext(
     setIsToolsMenuOpen,
     handleFeedbackFormCancel: () => {},
     handleFeedbackFormSubmit: () => Promise.resolve(),
-    setShowAttachments: (show: boolean) => setArgs({ showAttachments: show }),
-    showAttachments: options.args.showAttachments,
+    setAttachmentsDialog: (attachmentsDialog) => setArgs({ attachmentsDialog }),
+    attachmentsDialog: options.args.attachmentsDialog,
     removeFile: () => {},
     uploadFile: () => {},
     getScreenshots: () => {},
@@ -1164,7 +1164,7 @@ function StoryContext(
     isDragOver: options.args.isDragOver,
     clearDragState: () => {},
     attachImages: (images: Mojom.UploadedFile[]) => {},
-    unassociatedTabs: [],
+    unassociatedTabs: aiChatContext.tabs,
     associateDefaultContent: async () => {},
   }
 

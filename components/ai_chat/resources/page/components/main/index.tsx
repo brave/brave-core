@@ -43,7 +43,6 @@ import ToolsMenu from '../filter_menu/tools_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
 import Attachments from '../attachments'
-import { useIsElementSmall } from '../../hooks/useIsElementSmall'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
 import TabsMenu from '../filter_menu/tabs_menu'
@@ -94,7 +93,8 @@ function Main() {
     && !aiChatContext.isPremiumUser
 
   const showAttachments =
-    conversationContext.showAttachments && aiChatContext.tabs.length > 0
+    conversationContext.attachmentsDialog === 'tabs'
+    && aiChatContext.tabs.length > 0
 
   const showTemporaryChatInfo = conversationContext.isTemporaryChat
 
@@ -102,7 +102,6 @@ function Main() {
 
   const headerElement = React.useRef<HTMLDivElement>(null)
   const conversationContentElement = React.useRef<HTMLDivElement>(null)
-  const { isSmall, setElement: setMainElement } = useIsElementSmall()
 
   // Determine which, if any, error message should be displayed
   if (aiChatContext.hasAcceptedAgreement && conversationContext.apiHasError) {
@@ -226,7 +225,6 @@ function Main() {
         [styles.mainMobile]: aiChatContext.isMobile,
         [styles.dragOver]: isDragOver,
       })}
-      ref={setMainElement}
     >
       <DragOverlay />
       {isConversationListOpen && !aiChatContext.isStandalone && (
@@ -256,170 +254,161 @@ function Main() {
         ref={headerElement}
         setIsConversationsListOpen={setIsConversationsListOpen}
       />
-      <div className={styles.mainContent}>
+      <div
+        className={classnames({
+          [styles.scroller]: true,
+          [styles.flushBottom]: !aiChatContext.hasAcceptedAgreement,
+        })}
+        ref={scrollElement}
+        onScroll={handleScroll}
+      >
+        <AlertCenter
+          position='top-left'
+          className={styles.alertCenter}
+        />
         <div
           className={classnames({
-            [styles.scroller]: true,
-            [styles.flushBottom]: !aiChatContext.hasAcceptedAgreement,
+            [styles.conversationContent]: true,
+            [styles.showContent]: showContent,
           })}
-          ref={scrollElement}
-          onScroll={handleScroll}
+          ref={conversationContentElement}
         >
-          <AlertCenter
-            position='top-left'
-            className={styles.alertCenter}
-          />
-          <div
-            className={classnames({
-              [styles.conversationContent]: true,
-              [styles.showContent]: showContent,
-            })}
-            ref={conversationContentElement}
-          >
-            {aiChatContext.hasAcceptedAgreement && (
-              <>
-                <ModelIntro />
+          {aiChatContext.hasAcceptedAgreement && (
+            <>
+              <ModelIntro />
 
-                {showTemporaryChatInfo && (
-                  <div className={styles.promptContainer}>
-                    <TemporaryChatInfo />
-                  </div>
-                )}
-
-                <div
-                  className={classnames({
-                    [styles.aichatIframeContainer]: true,
-                    [styles.dragActive]: isDragActive,
-                  })}
-                  ref={scrollAnchor}
-                >
-                  {!!conversationContext.conversationUuid && (
-                    <aiChatContext.conversationEntriesComponent
-                      onIsContentReady={setIsContentReady}
-                      onHeightChanged={handleConversationEntriesHeightChanged}
-                    />
-                  )}
-                </div>
-
-                {conversationContext.isFeedbackFormVisible && (
-                  <div
-                    className={classnames([
-                      styles.promptContainer,
-                      styles.feedbackForm,
-                    ])}
-                  >
-                    <FeedbackForm />
-                  </div>
-                )}
-
-                {showSuggestions && (
-                  <div className={styles.suggestionsContainer}>
-                    <div className={styles.questionsList}>
-                      {conversationContext.suggestedQuestions.map(
-                        (question, i) => (
-                          <SuggestedQuestion
-                            key={question}
-                            question={question}
-                          />
-                        ),
-                      )}
-                      {SUGGESTION_STATUS_SHOW_BUTTON.has(
-                        conversationContext.suggestionStatus,
-                      )
-                        && conversationContext.associatedContentInfo.length
-                          > 0 && <GenerateSuggestionsButton />}
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-            {currentErrorElement && (
-              <div className={styles.promptContainer}>
-                {currentErrorElement}
-              </div>
-            )}
-            {shouldShowStorageNotice && (
-              <div className={styles.promptContainer}>
-                <NoticeConversationStorage />
-              </div>
-            )}
-            {shouldShowPremiumSuggestionForModel && (
-              <div className={styles.promptContainer}>
-                <PremiumSuggestion
-                  title={getLocale(S.CHAT_UI_UNLOCK_PREMIUM_TITLE)}
-                  secondaryActionButton={
-                    <Button
-                      kind='plain-faint'
-                      onClick={() => conversationContext.switchToBasicModel()}
-                    >
-                      {getLocale(S.CHAT_UI_SWITCH_TO_BASIC_MODEL_BUTTON_LABEL)}
-                    </Button>
-                  }
-                />
-              </div>
-            )}
-            {shouldShowPremiumSuggestionStandalone && (
-              <div className={styles.promptContainer}>
-                <PremiumSuggestion
-                  title={getLocale(S.CHAT_UI_UNLOCK_PREMIUM_TITLE)}
-                  secondaryActionButton={
-                    <Button
-                      kind='plain-faint'
-                      onClick={() => aiChatContext.dismissPremiumPrompt()}
-                    >
-                      {getLocale(S.CHAT_UI_DISMISS_BUTTON_LABEL)}
-                    </Button>
-                  }
-                />
-              </div>
-            )}
-            {aiChatContext.isPremiumUserDisconnected
-              && (!conversationContext.currentModel
-                || isLeoModel(conversationContext.currentModel)) && (
+              {showTemporaryChatInfo && (
                 <div className={styles.promptContainer}>
-                  <WarningPremiumDisconnected />
+                  <TemporaryChatInfo />
                 </div>
               )}
-            {conversationContext.shouldShowLongConversationInfo && (
+
+              <div
+                className={classnames({
+                  [styles.aichatIframeContainer]: true,
+                  [styles.dragActive]: isDragActive,
+                })}
+                ref={scrollAnchor}
+              >
+                {!!conversationContext.conversationUuid && (
+                  <aiChatContext.conversationEntriesComponent
+                    onIsContentReady={setIsContentReady}
+                    onHeightChanged={handleConversationEntriesHeightChanged}
+                  />
+                )}
+              </div>
+
+              {conversationContext.isFeedbackFormVisible && (
+                <div
+                  className={classnames([
+                    styles.promptContainer,
+                    styles.feedbackForm,
+                  ])}
+                >
+                  <FeedbackForm />
+                </div>
+              )}
+
+              {showSuggestions && (
+                <div className={styles.suggestionsContainer}>
+                  <div className={styles.questionsList}>
+                    {conversationContext.suggestedQuestions.map(
+                      (question, i) => (
+                        <SuggestedQuestion
+                          key={question}
+                          question={question}
+                        />
+                      ),
+                    )}
+                    {SUGGESTION_STATUS_SHOW_BUTTON.has(
+                      conversationContext.suggestionStatus,
+                    )
+                      && conversationContext.associatedContentInfo.length
+                        > 0 && <GenerateSuggestionsButton />}
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+          {currentErrorElement && (
+            <div className={styles.promptContainer}>{currentErrorElement}</div>
+          )}
+          {shouldShowStorageNotice && (
+            <div className={styles.promptContainer}>
+              <NoticeConversationStorage />
+            </div>
+          )}
+          {shouldShowPremiumSuggestionForModel && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale(S.CHAT_UI_UNLOCK_PREMIUM_TITLE)}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => conversationContext.switchToBasicModel()}
+                  >
+                    {getLocale(S.CHAT_UI_SWITCH_TO_BASIC_MODEL_BUTTON_LABEL)}
+                  </Button>
+                }
+              />
+            </div>
+          )}
+          {shouldShowPremiumSuggestionStandalone && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale(S.CHAT_UI_UNLOCK_PREMIUM_TITLE)}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => aiChatContext.dismissPremiumPrompt()}
+                  >
+                    {getLocale(S.CHAT_UI_DISMISS_BUTTON_LABEL)}
+                  </Button>
+                }
+              />
+            </div>
+          )}
+          {aiChatContext.isPremiumUserDisconnected
+            && (!conversationContext.currentModel
+              || isLeoModel(conversationContext.currentModel)) && (
               <div className={styles.promptContainer}>
-                <LongConversationInfo />
+                <WarningPremiumDisconnected />
               </div>
             )}
-            {!aiChatContext.hasAcceptedAgreement
-              && !conversationContext.conversationHistory.length && (
-                <WelcomeGuide />
-              )}
-          </div>
-        </div>
-        {showAttachments
-          && (isSmall ? (
-            <Dialog
-              isOpen
-              onClose={() => conversationContext.setShowAttachments(false)}
-              className={styles.attachmentsDialog}
-            >
-              <Attachments />
-            </Dialog>
-          ) : (
-            <div className={styles.attachmentsContainer}>
-              <Attachments />
+          {conversationContext.shouldShowLongConversationInfo && (
+            <div className={styles.promptContainer}>
+              <LongConversationInfo />
             </div>
-          ))}
-        <div className={styles.input}>
-          <ToolsMenu
-            isOpen={conversationContext.isToolsMenuOpen}
-            setIsOpen={conversationContext.setIsToolsMenuOpen}
-            query={extractedQuery}
-            categories={aiChatContext.actionList}
-            handleClick={conversationContext.handleActionTypeClick}
-          />
-          {!hasConversationStarted && <TabsMenu />}
-          <InputBox
-            conversationStarted={hasConversationStarted}
-            context={{ ...conversationContext, ...aiChatContext }}
-            maybeShowSoftKeyboard={maybeShowSoftKeyboard}
-          />
+          )}
+          {!aiChatContext.hasAcceptedAgreement
+            && !conversationContext.conversationHistory.length && (
+              <WelcomeGuide />
+            )}
         </div>
+      </div>
+      {showAttachments && (
+        <Dialog
+          isOpen
+          onClose={() => conversationContext.setAttachmentsDialog(null)}
+          className={styles.attachmentsDialog}
+        >
+          <Attachments />
+        </Dialog>
+      )}
+      <div className={styles.input}>
+        <ToolsMenu
+          isOpen={conversationContext.isToolsMenuOpen}
+          setIsOpen={conversationContext.setIsToolsMenuOpen}
+          query={extractedQuery}
+          categories={aiChatContext.actionList}
+          handleClick={conversationContext.handleActionTypeClick}
+        />
+        {!hasConversationStarted && <TabsMenu />}
+        <InputBox
+          conversationStarted={hasConversationStarted}
+          context={{ ...conversationContext, ...aiChatContext }}
+          maybeShowSoftKeyboard={maybeShowSoftKeyboard}
+        />
       </div>
       <DeleteConversationModal />
       <OpenExternalLinkModal />

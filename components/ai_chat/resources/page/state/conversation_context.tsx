@@ -78,8 +78,8 @@ export type ConversationContext = SendFeedbackState
     conversationHandler?: Mojom.ConversationHandlerRemote
 
     isTemporaryChat: boolean
-    showAttachments: boolean
-    setShowAttachments: (show: boolean) => void
+    attachmentsDialog: 'tabs' | null
+    setAttachmentsDialog: (show: 'tabs' | null) => void
     uploadFile: (useMediaCapture: boolean) => void
     getScreenshots: () => void
     removeFile: (index: number) => void
@@ -133,8 +133,8 @@ export const defaultContext: ConversationContext = {
   setIsToolsMenuOpen: () => {},
   isTemporaryChat: false,
   disassociateContent: () => {},
-  showAttachments: false,
-  setShowAttachments: () => {},
+  attachmentsDialog: null,
+  setAttachmentsDialog: () => {},
   uploadFile: (useMediaCapture: boolean) => {},
   getScreenshots: () => {},
   removeFile: () => {},
@@ -166,10 +166,10 @@ export const ConversationReactContext =
 export function ConversationContextProvider(props: React.PropsWithChildren) {
   const [context, setContext] = React.useState<ConversationContext>({
     ...defaultContext,
-    setShowAttachments: (showAttachments: boolean) => {
+    setAttachmentsDialog: (attachmentsDialog: 'tabs' | null) => {
       setContext((value) => ({
         ...value,
-        showAttachments,
+        attachmentsDialog,
       }))
     },
   })
@@ -197,7 +197,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   React.useEffect(() => {
     if (unassociatedTabs.length === 0) {
       setPartialContext({
-        showAttachments: false,
+        attachmentsDialog: null,
       })
     }
   }, [unassociatedTabs])
