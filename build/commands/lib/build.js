@@ -37,6 +37,14 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.update(options)
   checkVersionsMatch()
 
+  if (config.useClangCoverage()) {
+    const instrumentationFile = path.join(
+      config.outputDir,
+      'files-to-instrument.txt',
+    )
+    await util.generateInstrumentationFile(instrumentationFile)
+  }
+
   util.touchOverriddenFiles()
   branding.update()
   await util.buildNativeRedirectCC()
@@ -51,6 +59,7 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
     if (!config.use_no_gn_gen) {
       await util.generateNinjaFiles()
     }
+
     await util.buildTargets()
   }
 }

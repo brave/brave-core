@@ -26,6 +26,7 @@ const gnCheck = require('../lib/gnCheck')
 const genGradle = require('../lib/genGradle')
 const perfTests = require('../lib/perfTests')
 const registerListAffectedTestsCommand = require('./listAffectedTests')
+const registerGenerateCoverageReportCommand = require('./generateCoverageReport')
 
 const collect = (value, accumulator) => {
   accumulator.push(value)
@@ -157,6 +158,7 @@ program
     [],
   )
   .option('--ignore_compile_failure', 'Keep compiling regardless of error')
+  .option('--use_clang_coverage', 'enable coverage for brave source code')
   .option('--is_asan', 'is asan enabled')
   .option('--is_ubsan', 'is ubsan enabled')
   .option(
@@ -472,5 +474,6 @@ program
 program.command('docs').action(util.launchDocs)
 
 registerListAffectedTestsCommand(program)
+registerGenerateCoverageReportCommand(program)
 
 program.parse(process.argv)
