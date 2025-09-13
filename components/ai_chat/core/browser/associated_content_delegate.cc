@@ -17,8 +17,12 @@ PageContent& PageContent::operator=(const PageContent&) = default;
 PageContent& PageContent::operator=(PageContent&&) = default;
 
 PageContent::PageContent() = default;
-PageContent::PageContent(std::string content, bool is_video)
-    : content(std::move(content)), is_video(is_video) {}
+PageContent::PageContent(std::u16string title,
+                         std::string content,
+                         bool is_video)
+    : title(std::move(title)),
+      content(std::move(content)),
+      is_video(is_video) {}
 
 AssociatedContentDelegate::AssociatedContentDelegate()
     : uuid_(base::Uuid::GenerateRandomV4().AsLowercaseString()) {}
@@ -43,11 +47,8 @@ void AssociatedContentDelegate::OnNewPage(int64_t navigation_id) {
   }
 
   // Page content is reset to empty when a new page is navigated to.
-  set_cached_page_content(PageContent());
+  cached_page_content_ = PageContent();
   set_url(GURL());
-
-  // Clear title directly so we don't notify observers.
-  title_.clear();
 }
 
 void AssociatedContentDelegate::GetStagedEntriesFromContent(
@@ -65,11 +66,17 @@ void AssociatedContentDelegate::GetScreenshots(
 }
 
 void AssociatedContentDelegate::SetTitle(std::u16string title) {
-  title_ = std::move(title);
+  cached_page_content_.title = std::move(title);
 
   for (auto& observer : observers_) {
     observer.OnTitleChanged(this);
   }
+}
+
+void AssociatedContentDelegate::SetCachedPageContent(std::string content,
+                                                     bool is_video) {
+  cached_page_content_.content = std::move(content);
+  cached_page_content_.is_video = is_video;
 }
 
 void AssociatedContentDelegate::AddObserver(Observer* observer) {
