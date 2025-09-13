@@ -1,0 +1,13 @@
+diff --git a/components/update_client/update_client_unittest.cc b/components/update_client/update_client_unittest.cc
+index 62087691cc03f9d993c664db7e6fb20775e3406e..271c945562819b897ae9aa35db390e67eaae04ed 100644
+--- a/components/update_client/update_client_unittest.cc
++++ b/components/update_client/update_client_unittest.cc
+@@ -4656,7 +4656,7 @@ TEST_F(UpdateClientTest, ActionRun_Install) {
+                 CHECK_DEREF(event0.FindString("url")));
+       EXPECT_EQ(48141, event0.FindDouble("downloaded"));
+       EXPECT_EQ(48141, event0.FindDouble("total"));
+-      EXPECT_EQ(1000, event0.FindDouble("download_time_ms"));
++      EXPECT_EQ(nullptr, event0.Find("download_time_ms"));
+       EXPECT_EQ("0.0", CHECK_DEREF(event0.FindString("previousversion")));
+       EXPECT_EQ("1.0", CHECK_DEREF(event0.FindString("nextversion")));
+ 
