@@ -41,7 +41,6 @@ class MockTool : public Tool {
   std::optional<base::Value::Dict> ExtraParams() const override;
   bool RequiresUserInteractionBeforeHandling() const override;
   bool IsSupportedByModel(const mojom::Model& model) const override;
-  bool IsContentAssociationRequired() const override;
   bool SupportsConversation(bool is_temporary,
                             bool has_untrusted_content) const override;
 

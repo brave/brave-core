@@ -64,10 +64,6 @@ class Tool {
   // e.g. location for a search tool, or screen size for a computer use tool.
   virtual std::optional<base::Value::Dict> ExtraParams() const;
 
-  // If this tool requires content associated, it won't be provided if
-  // used in a conversation without content association.
-  virtual bool IsContentAssociationRequired() const;
-
   // If this tool is an agent tool, it will only be available to
   // conversations using the agent mode instead of the chat mode.
   virtual bool IsAgentTool() const;
@@ -84,11 +80,16 @@ class Tool {
   // Whether this tool supports the given conversation. Can be used to filter
   // tools based on conversation properties like temporary status.
   virtual bool SupportsConversation(bool is_temporary,
-                                    bool has_untrusted_content) const;
+                                    bool has_untrusted_content,
+      mojom::ConversationCapability conversation_capability) const;
 
   // Implementers should handle tool execution unless it is a built-in
   // tool handled directly by the ConversationHandler.
   virtual void UseTool(const std::string& input_json, UseToolCallback callback);
+
+  virtual void UseTool(const std::string& input_json,
+                       UseToolCallback callback,
+                       std::optional<base::Value> client_data);
 
   base::WeakPtr<Tool> GetWeakPtr() { return weak_ptr_factory_.GetWeakPtr(); }
 
