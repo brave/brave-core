@@ -588,6 +588,9 @@
   <message name="IDS_AI_CHAT_SCREENSHOT_BUTTON_LABEL" desc="The button label for screenshot" formatter_data="webui=AiChat">
     Screenshot
   </message>
+  <message name="IDS_CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE" desc="Title for full page screenshot attachment" formatter_data="webui=AiChat">
+    Full page screenshot
+  </message>
   <message name="IDS_AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL" desc="The button label for current tab contents" formatter_data="webui=AiChat">
     Current tab contents
   </message>
