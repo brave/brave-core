@@ -264,7 +264,7 @@ GURL SwapService::GetZeroExTransactionURL(
 GURL SwapService::GetJupiterQuoteURL(
     const mojom::SwapQuoteParams& params,
     const std::optional<std::string>& fee_param) {
-  auto url = GURL(kJupiterBaseAPIURL).Resolve("/v6/quote");
+  auto url = GURL(kJupiterBaseAPIURL).Resolve("/swap/v1/quote");
   url = AppendJupiterQuoteParams(url, params, fee_param);
 
   return url;
@@ -272,7 +272,7 @@ GURL SwapService::GetJupiterQuoteURL(
 
 // static
 GURL SwapService::GetJupiterTransactionURL(const std::string& chain_id) {
-  return GURL(kJupiterBaseAPIURL).Resolve("/v6/swap");
+  return GURL(kJupiterBaseAPIURL).Resolve("/swap/v1/swap");
 }
 
 // static
