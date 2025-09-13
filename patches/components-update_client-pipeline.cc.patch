@@ -1,5 +1,5 @@
 diff --git a/components/update_client/pipeline.cc b/components/update_client/pipeline.cc
-index 5e5d53cfc9e645a0d376e515a680266e0f45282e..64d748b904657ab600e7f1bbf284302fe53ead30 100644
+index 5b4eb0ddfaf4afec90a9d21da02fb37a45b092b5..58fcf799739c480bcbab4b141f737353c9b4fb04 100644
 --- a/components/update_client/pipeline.cc
 +++ b/components/update_client/pipeline.cc
 @@ -78,9 +78,7 @@ constexpr CategorizedError kInvalidOperationAttributesError = CategorizedError(

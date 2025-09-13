@@ -142,8 +142,8 @@ class PermissionManagerBrowserTest : public InProcessBrowserTest {
     auto observer = std::make_unique<PermissionRequestManagerObserver>(
         permission_request_manager);
 
-    base::MockCallback<base::OnceCallback<void(
-        const std::vector<blink::mojom::PermissionStatus>&)>>
+    base::MockCallback<
+        base::OnceCallback<void(const std::vector<content::PermissionResult>&)>>
         callback;
 
     permission_manager()->RequestPermissionsForOrigin(
@@ -229,12 +229,20 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     auto observer = std::make_unique<PermissionRequestManagerObserver>(
         permission_request_manager);
 
-    base::MockCallback<base::OnceCallback<void(
-        const std::vector<blink::mojom::PermissionStatus>&)>>
+    base::MockCallback<
+        base::OnceCallback<void(const std::vector<content::PermissionResult>&)>>
         callback;
-    EXPECT_CALL(callback,
-                Run(ElementsAreArray({blink::mojom::PermissionStatus::ASK,
-                                      blink::mojom::PermissionStatus::ASK})))
+    EXPECT_CALL(
+        callback,
+        Run(ElementsAreArray(
+            {content::PermissionResult(
+                 content::PermissionStatus::ASK,
+                 content::PermissionStatusSource::UNSPECIFIED,
+                 PermissionSetting(ContentSetting(CONTENT_SETTING_ASK))),
+             content::PermissionResult(
+                 content::PermissionStatus::ASK,
+                 content::PermissionStatusSource::UNSPECIFIED,
+                 PermissionSetting(ContentSetting(CONTENT_SETTING_ASK)))})))
         .Times(1);
     permission_manager()->RequestPermissionsForOrigin(
         permissions, web_contents()->GetPrimaryMainFrame(), origin->GetURL(),
@@ -279,8 +287,15 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
     observer->Reset();
     EXPECT_CALL(
         callback,
-        Run(ElementsAreArray({blink::mojom::PermissionStatus::ASK,
-                              blink::mojom::PermissionStatus::GRANTED})))
+        Run(ElementsAreArray(
+            {content::PermissionResult(
+                 content::PermissionStatus::ASK,
+                 content::PermissionStatusSource::UNSPECIFIED,
+                 PermissionSetting(ContentSetting(CONTENT_SETTING_ASK))),
+             content::PermissionResult(
+                 content::PermissionStatus::GRANTED,
+                 content::PermissionStatusSource::UNSPECIFIED,
+                 PermissionSetting(ContentSetting(CONTENT_SETTING_ALLOW)))})))
         .Times(1);
     permission_manager()->RequestPermissionsForOrigin(
         permissions, web_contents()->GetPrimaryMainFrame(), origin->GetURL(),

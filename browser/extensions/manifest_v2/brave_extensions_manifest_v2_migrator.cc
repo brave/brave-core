@@ -10,6 +10,7 @@
 #include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 #include "brave/browser/extensions/manifest_v2/features.h"

@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "base/task/sequenced_task_runner.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 

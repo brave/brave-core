@@ -1,8 +1,8 @@
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index 3feab35ee2ef6997c0b6cfdd48252f6dfac5b23c..796d91c25816b41def6c9f9e4a8f41c68f932cfc 100644
+index be9378065761d009af11a80bb31bd72c5f204713..1723635f80052812760bd94c81b0e0c9772a5ca8 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
-@@ -13,6 +13,7 @@
+@@ -14,6 +14,7 @@
  #include "base/metrics/histogram_macros.h"
  #include "base/strings/string_util.h"
  #include "base/values.h"
@@ -10,7 +10,7 @@ index 3feab35ee2ef6997c0b6cfdd48252f6dfac5b23c..796d91c25816b41def6c9f9e4a8f41c6
  #include "chrome/common/chrome_resource_request_blocked_reason.h"
  #include "chrome/common/chrome_switches.h"
  #include "chrome/common/extensions/chrome_extensions_api_provider.h"
-@@ -54,6 +55,7 @@ const char kExtensionBlocklistHttpsUrlPrefix[] =
+@@ -55,6 +56,7 @@ const char kExtensionBlocklistHttpsUrlPrefix[] =
  ChromeExtensionsClient::ChromeExtensionsClient() {
    AddAPIProvider(std::make_unique<ChromeExtensionsAPIProvider>());
    AddAPIProvider(std::make_unique<CoreExtensionsAPIProvider>());

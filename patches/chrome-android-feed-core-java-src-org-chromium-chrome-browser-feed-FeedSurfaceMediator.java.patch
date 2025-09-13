@@ -1,8 +1,8 @@
 diff --git a/chrome/android/feed/core/java/src/org/chromium/chrome/browser/feed/FeedSurfaceMediator.java b/chrome/android/feed/core/java/src/org/chromium/chrome/browser/feed/FeedSurfaceMediator.java
-index efd3b45aa8c1af09b91a5632a13acc1daaaeb543..baf7e877d093b1bf6a99c967525568da3e09bc6f 100644
+index e5a170796bf5617d37462564ef0f1efe971a2e2c..3d7bb57cff652b0bf100e8314c5b6be900868835 100644
 --- a/chrome/android/feed/core/java/src/org/chromium/chrome/browser/feed/FeedSurfaceMediator.java
 +++ b/chrome/android/feed/core/java/src/org/chromium/chrome/browser/feed/FeedSurfaceMediator.java
-@@ -398,7 +398,7 @@ public class FeedSurfaceMediator
+@@ -399,7 +399,7 @@ public class FeedSurfaceMediator
          // Start is showing, update the value of Pref.ENABLE_SNIPPETS_BY_DSE here. The
          // value should be updated before adding an observer to prevent an extra call of
          // updateContent().

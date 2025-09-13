@@ -197,6 +197,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         this,
                         getShareDelegateSupplier(),
                         getActivityTabProvider(),
+                        getCustomTabActivityTabProvider(),
                         mTabModelProfileSupplier,
                         mBookmarkModelSupplier,
                         mTabBookmarkerSupplier,

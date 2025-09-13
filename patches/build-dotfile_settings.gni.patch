@@ -1,8 +1,8 @@
 diff --git a/build/dotfile_settings.gni b/build/dotfile_settings.gni
-index 4b8d16a5d5c83bc8a1fbcaac32f57650484f1309..b1c97d606a5a3fe428135f6e17993c9fc2e33cc3 100644
+index 58e564773dafbcb75fe073c32794b70375e08c08..4e5452a40ca4f3c7dce273fe843b7f3f3c2c53ea 100644
 --- a/build/dotfile_settings.gni
 +++ b/build/dotfile_settings.gni
-@@ -40,3 +40,4 @@ build_dotfile_settings = {
+@@ -39,3 +39,4 @@ build_dotfile_settings = {
      "//build/util/branding.gni",
    ]
  }

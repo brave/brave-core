@@ -39,6 +39,7 @@
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/new_tab_page_third_party/new_tab_page_third_party_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
+#include "chrome/browser/ui/webui_browser/webui_browser.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -77,6 +78,12 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
     // So, initializing sidebar controller/model here and then ask to initialize
     // sidebar UI. After that, UI will be updated for model's change.
     sidebar_controller->SetSidebar(brave_window()->InitSidebar());
+  }
+
+  if (webui_browser::IsWebUIBrowserEnabled() && is_type_normal()) {
+    // WebUIBrowserWindow was created in Browser's c'tor (in
+    // BrowserWindow::CreateBrowserWindow), not a BraveBrowserWindow.
+    return;
   }
 
   // As browser window(BrowserView) is initialized before fullscreen controller
@@ -310,6 +317,11 @@ bool BraveBrowser::NormalBrowserSupportsWindowFeature(
 
   return Browser::NormalBrowserSupportsWindowFeature(feature,
                                                      check_can_support);
+}
+
+bool BraveBrowser::PreHandleMouseEvent(content::WebContents* source,
+                                       const blink::WebMouseEvent& event) {
+  return brave_window()->PreHandleMouseEvent(event);
 }
 
 bool BraveBrowser::IsWebContentsVisible(content::WebContents* web_contents) {
