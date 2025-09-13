@@ -16,8 +16,8 @@ RegisterPolymerTemplateModifications({
       throw new Error(
         '[Settings] Missing settings-section on memory_page')
     }
-    if (settingsSection.parentNode) {
-      settingsSection.replaceWith(...settingsSection.childNodes)
-    }
+    
+    settingsSection.append(html`<tab-discard-exception-list id="exceptionList" prefs="{{prefs}}">
+    </tab-discard-exception-list>`)
   }
 })

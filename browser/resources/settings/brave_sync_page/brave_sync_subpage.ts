@@ -67,6 +67,10 @@ class SettingBraveSyncSubpage extends SettingBraveSyncSubpageBase {
         type: Object,
       },
 
+      syncLabel: {
+        type: String,
+      },
+
       syncCodeDialogType: {
         type: String,
         notify: true,
@@ -104,6 +108,7 @@ class SettingBraveSyncSubpage extends SettingBraveSyncSubpageBase {
   private declare pageStatus_: PageStatus
   private declare syncPrefs: SyncPrefs | undefined
   private declare syncStatus: BraveSyncStatus
+  private declare syncLabel: string
   private declare syncCodeDialogType: 'qr' | 'words' | 'input' | 'choose' | null
   private declare syncDisabledByAdmin_: boolean
   private declare hasLockedSafeStorage_: boolean

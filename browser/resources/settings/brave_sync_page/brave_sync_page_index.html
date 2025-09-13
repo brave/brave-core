@@ -12,10 +12,10 @@
     id="braveSync"
     label="[[syncLabel_]]">
   </settings-brave-sync-manage-devices-page>
-  <settings-subpage
-    page-title="[[syncLabel_]]" slot="view" id="setup"
+  <settings-brave-sync-subpage prefs="{{prefs}}"
+    sync-status="[[syncStatus_]]"
+    sync-label="[[syncLabel_]]"
+    slot="view" id="setup"
     data-parent-view-id="braveSync">
-    <settings-brave-sync-subpage prefs="{{prefs}}" sync-status="[[syncStatus_]]">
-    </settings-brave-sync-subpage>
-  </settings-subpage>
+  </settings-brave-sync-subpage>
 </cr-view-manager>
