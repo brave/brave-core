@@ -1283,6 +1283,13 @@ extension Strings {
       value: "Select Tabs",
       comment: "A button title which when tapped will allow the user to select multiple tabs in the tab grid"
     )
+    public static let deselectTabsButtonTitle = NSLocalizedString(
+      "tabGrid.deselectTabsButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Deselect Tabs",
+      comment: "A button title which when tapped will allow the user to deselect multiple tabs in the tab grid"
+    )
     public static let moreMenuButtonTitle = NSLocalizedString(
       "tabGrid.moreMenuButtonTitle",
       tableName: "BraveShared",
@@ -1297,12 +1304,19 @@ extension Strings {
       value: "New Tab",
       comment: "Accessibility label for a close button that when tapped opens a new tab"
     )
-    public static let closeTabAccessibilityLabel = NSLocalizedString(
+    public static let closeTab = NSLocalizedString(
       "tabGrid.closeTab",
       tableName: "BraveShared",
       bundle: .module,
       value: "Close Tab",
-      comment: "Accessibility label for a close button that when tapped closes the associated tab"
+      comment: "Label for a close button that when tapped closes the associated tab"
+    )
+    public static let closeTabs = NSLocalizedString(
+      "tabGrid.closeTabs",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Close Tabs",
+      comment: "Label for a close button that when tapped closes the associated tabs"
     )
     public static let shredTabsAccessibilityLabel = NSLocalizedString(
       "tabGrid.shredTabsAccessibilityLabel",
