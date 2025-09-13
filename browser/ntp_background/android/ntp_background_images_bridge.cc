@@ -112,14 +112,6 @@ NTPBackgroundImagesBridge::GetJavaObject() {
   return base::android::ScopedJavaLocalRef<jobject>(java_object_);
 }
 
-void NTPBackgroundImagesBridge::RegisterPageView(
-    JNIEnv* env,
-    const JavaParamRef<jobject>& obj) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  if (view_counter_service_)
-    view_counter_service_->RegisterPageView();
-}
-
 void NTPBackgroundImagesBridge::WallpaperLogoClicked(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& obj,
@@ -264,13 +256,17 @@ NTPBackgroundImagesBridge::GetCurrentWallpaper(
     JNIEnv* env,
     const JavaParamRef<jobject>& obj) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-
-  std::optional<base::Value::Dict> data;
-  if (view_counter_service_)
-    data = view_counter_service_->GetCurrentWallpaperForDisplay();
-
-  if (!data)
+  if (!view_counter_service_) {
     return base::android::ScopedJavaLocalRef<jobject>();
+  }
+
+  std::optional<base::Value::Dict> data =
+      view_counter_service_->GetCurrentWallpaperForDisplay();
+  if (!data) {
+    return base::android::ScopedJavaLocalRef<jobject>();
+  }
+
+  view_counter_service_->RegisterPageView();
 
   bool is_background =
       data->FindBool(ntp_background_images::kIsBackgroundKey).value_or(false);

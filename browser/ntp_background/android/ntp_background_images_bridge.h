@@ -42,8 +42,6 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
       delete;
   ~NTPBackgroundImagesBridge() override;
 
-  void RegisterPageView(JNIEnv* env,
-                        const base::android::JavaParamRef<jobject>& obj);
   void WallpaperLogoClicked(
       JNIEnv* env,
       const base::android::JavaParamRef<jobject>& obj,
