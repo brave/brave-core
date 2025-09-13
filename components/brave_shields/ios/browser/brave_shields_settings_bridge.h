@@ -35,6 +35,12 @@ NS_SWIFT_NAME(BraveShieldsSettings)
     NS_SWIFT_NAME(fingerprintMode(for:));
 - (void)setFingerprintMode:(BraveShieldsFingerprintMode)fingerprintMode
                     forURL:(NSURL*)url;
+
+@property(nonatomic) BraveShieldsAutoShredMode defaultAutoShredMode;
+- (BraveShieldsAutoShredMode)autoShredModeForURL:(NSURL*)url
+    NS_SWIFT_NAME(autoShredMode(for:));
+- (void)setAutoShredMode:(BraveShieldsAutoShredMode)autoShredMode
+                  forURL:(NSURL*)url;
 @end
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_BRIDGE_H_
