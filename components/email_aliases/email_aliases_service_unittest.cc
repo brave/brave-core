@@ -19,6 +19,8 @@
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "net/base/net_errors.h"
+#include "base/test/mock_callback.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -402,15 +404,17 @@ class EmailAliasesAPITest : public ::testing::Test {
       url_loader_factory_.AddResponse(manage_url.spec(), body.value_or(""));
     }
 
+    base::MockCallback<
+        base::OnceCallback<void(base::expected<std::string, std::string>)>> cb;
     bool called = false;
     base::expected<std::string, std::string> result_out;
-    service_->GenerateAlias(base::BindOnce(
-        [](bool* called_out, decltype(result_out)* out,
-           base::expected<std::string, std::string> res) {
-          *called_out = true;
-          *out = std::move(res);
-        },
-        &called, &result_out));
+    EXPECT_CALL(cb, Run(testing::_))
+        .Times(1)
+        .WillOnce([&](base::expected<std::string, std::string> res) {
+          called = true;
+          result_out = std::move(res);
+        });
+    service_->GenerateAlias(cb.Get());
     EXPECT_TRUE(base::test::RunUntil([&]() { return called; }));
     return result_out;
   }
@@ -433,17 +437,18 @@ class EmailAliasesAPITest : public ::testing::Test {
     url_loader_factory_.AddResponse(manage_url.Resolve("?status=active").spec(),
                                     refresh_body.value_or("[]"));
 
+    base::MockCallback<
+        base::OnceCallback<void(base::expected<std::monostate, std::string>)>>
+        cb;
     bool called = false;
     base::expected<std::monostate, std::string> result_out;
-    service_->UpdateAlias(
-        alias_email, /*note=*/std::string("note"),
-        base::BindOnce(
-            [](bool* called_out, decltype(result_out)* out,
-               base::expected<std::monostate, std::string> res) {
-              *called_out = true;
-              *out = std::move(res);
-            },
-            &called, &result_out));
+    EXPECT_CALL(cb, Run(testing::_))
+        .Times(1)
+        .WillOnce([&](base::expected<std::monostate, std::string> res) {
+          called = true;
+          result_out = std::move(res);
+        });
+    service_->UpdateAlias(alias_email, /*note=*/std::string("note"), cb.Get());
     EXPECT_TRUE(base::test::RunUntil([&]() { return called; }));
     if (wait_for_update) {
       EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
@@ -469,16 +474,18 @@ class EmailAliasesAPITest : public ::testing::Test {
     url_loader_factory_.AddResponse(manage_url.Resolve("?status=active").spec(),
                                     "[]");
 
+    base::MockCallback<
+        base::OnceCallback<void(base::expected<std::monostate, std::string>)>>
+        cb;
     bool called = false;
     base::expected<std::monostate, std::string> result_out;
-    service_->DeleteAlias(
-        alias_email, base::BindOnce(
-                         [](bool* called_out, decltype(result_out)* out,
-                            base::expected<std::monostate, std::string> res) {
-                           *called_out = true;
-                           *out = std::move(res);
-                         },
-                         &called, &result_out));
+    EXPECT_CALL(cb, Run(testing::_))
+        .Times(1)
+        .WillOnce([&](base::expected<std::monostate, std::string> res) {
+          called = true;
+          result_out = std::move(res);
+        });
+    service_->DeleteAlias(alias_email, cb.Get());
     EXPECT_TRUE(base::test::RunUntil([&]() { return called; }));
     EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
     return result_out;
