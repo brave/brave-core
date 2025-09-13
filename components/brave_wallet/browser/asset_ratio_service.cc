@@ -394,9 +394,9 @@ void AssetRatioService::GetPrice(
 
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
 
-  auto internal_callback = base::BindOnce(
-      &AssetRatioService::OnGetPrice, weak_ptr_factory_.GetWeakPtr(),
-      std::move(requests), std::move(callback));
+  auto internal_callback =
+      base::BindOnce(&AssetRatioService::OnGetPrice,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   api_request_helper_->Request(
       "POST", url, json_payload, "application/json",
@@ -484,10 +484,8 @@ void AssetRatioService::OnGetStripeBuyURL(GetBuyUrlV1Callback callback,
   std::move(callback).Run(*url, std::nullopt);
 }
 
-void AssetRatioService::OnGetPrice(
-    std::vector<mojom::AssetPriceRequestPtr> requests,
-    GetPriceCallback callback,
-    APIRequestResult api_request_result) {
+void AssetRatioService::OnGetPrice(GetPriceCallback callback,
+                                   APIRequestResult api_request_result) {
   std::vector<mojom::AssetPricePtr> prices;
   if (!api_request_result.Is2XXResponseCode()) {
     std::move(callback).Run(false, std::move(prices));

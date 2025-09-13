@@ -110,8 +110,7 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
   void OnGetStripeBuyURL(GetBuyUrlV1Callback callback,
                          APIRequestResult api_request_result);
 
-  void OnGetPrice(std::vector<mojom::AssetPriceRequestPtr> requests,
-                  GetPriceCallback callback,
+  void OnGetPrice(GetPriceCallback callback,
                   APIRequestResult api_request_result);
   void OnGetPriceHistory(GetPriceHistoryCallback callback,
                          APIRequestResult api_request_result);
