@@ -8,7 +8,7 @@
 #include <sstream>
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
-#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 
 namespace brave_page_graph {
 
@@ -22,14 +22,10 @@ EdgeStorage::EdgeStorage(GraphItemContext* context,
 EdgeStorage::~EdgeStorage() = default;
 
 ItemName EdgeStorage::GetItemDesc() const {
-  blink::StringBuilder ts;
-  ts << GraphEdge::GetItemDesc();
-
   if (!key_.empty()) {
-    ts << " [" << key_ << "]";
+    return blink::StrCat({GraphEdge::GetItemDesc(), " [", key_, "]"});
   }
-
-  return ts.ReleaseString();
+  return GraphEdge::GetItemDesc();
 }
 
 void EdgeStorage::AddGraphMLAttributes(xmlDocPtr doc,

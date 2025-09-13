@@ -7,7 +7,7 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
-#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 
 using ::blink::DOMNodeId;
 
@@ -25,18 +25,11 @@ ItemName NodeDOMRoot::GetItemName() const {
 }
 
 ItemDesc NodeDOMRoot::GetItemDesc() const {
-  blink::StringBuilder ts;
-  ts << NodeHTMLElement::GetItemDesc();
-  ts << " [is attached: " << is_attached_;
-
-  ts << " security origin: ";
-  ts << (security_origin_.empty() ? "<empty>" : security_origin_);
-
-  ts << " url: ";
-  ts << (url_.empty() ? "<empty>" : url_);
-
-  ts << "]";
-  return ts.ReleaseString();
+  return blink::StrCat(
+      {NodeHTMLElement::GetItemDesc(), " [is attached: ",
+       blink::String::Boolean(is_attached_), " security origin: ",
+       (security_origin_.empty() ? "<empty>" : security_origin_),
+       " url: ", (url_.empty() ? "<empty>" : url_), "]"});
 }
 
 void NodeDOMRoot::AddGraphMLAttributes(xmlDocPtr doc,

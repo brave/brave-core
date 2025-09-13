@@ -8,7 +8,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_actor.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/html/node_html_element.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
-#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 
 namespace brave_page_graph {
 
@@ -28,10 +28,9 @@ ItemName EdgeEventListener::GetItemName() const {
 }
 
 ItemDesc EdgeEventListener::GetItemDesc() const {
-  blink::StringBuilder ts;
-  ts << GraphEdge::GetItemDesc() << " [" << event_type_ << "]"
-     << " [listener id: " << listener_id_ << "]";
-  return ts.ReleaseString();
+  return blink::StrCat({GraphEdge::GetItemDesc(), " [", event_type_, "]",
+                        " [listener id: ", blink::String::Number(listener_id_),
+                        "]"});
 }
 
 void EdgeEventListener::AddGraphMLAttributes(xmlDocPtr doc,
