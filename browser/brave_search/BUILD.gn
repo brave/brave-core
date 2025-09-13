@@ -21,6 +21,8 @@ source_set("brave_search") {
     "//chrome/browser/content_extraction",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/tabs:tab_strip",
     "//components/keyed_service/core",
     "//content/public/browser",
     "//services/network/public/cpp",

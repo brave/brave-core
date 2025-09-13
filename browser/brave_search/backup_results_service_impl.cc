@@ -19,6 +19,10 @@
 #include "chrome/browser/content_extraction/inner_html.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
@@ -34,6 +38,7 @@
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "third_party/blink/public/common/navigation/navigation_policy.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
+#include "url/url_constants.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "ui/android/view_android.h"
@@ -144,7 +149,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
       Profile::OTRProfileID::CreateUniqueForSearchBackupResults();
   auto* otr_profile = profile_->GetOffTheRecordProfile(otr_profile_id, true);
 
-  std::unique_ptr<content::WebContents> web_contents;
+  content::WebContents* web_contents = nullptr;
 
 #if BUILDFLAG(IS_ANDROID)
   auto view_android = std::make_unique<ui::ViewAndroid>();
@@ -163,12 +168,37 @@ void BackupResultsServiceImpl::FetchBackupResults(
                << create_params.context->viewport_size().height();
 #endif
 
-    web_contents = content::WebContents::Create(create_params);
+    auto web_contents_unique = content::WebContents::Create(create_params);
 
     // int random_width = base::RandInt(800, 1920);
     // int random_height = base::RandInt(600, 1080);
     // web_contents->Resize({360, 488});
-    web_contents->Resize({1152, 930});
+
+    // Insert the web contents into the tab strip model
+    auto* browser_list = BrowserList::GetInstance();
+    if (!browser_list->empty()) {
+      auto* browser = browser_list->get(0);  // Get the first browser instance
+      auto* model = browser->tab_strip_model();
+      web_contents =
+          web_contents_unique.get();  // Store raw pointer before moving
+
+      // Look for a tab with about:blank and insert right before it
+      int insert_index =
+          model->count();  // Default to end if no about:blank found
+      for (int i = 0; i < model->count(); ++i) {
+        auto* existing_web_contents = model->GetWebContentsAt(i);
+        if (existing_web_contents &&
+            existing_web_contents->GetLastCommittedURL() ==
+                GURL(url::kAboutBlankURL)) {
+          LOG(ERROR) << "FetchBackupResults! Found a grouped about:blank tab";
+          insert_index = i;  // Insert right before this about:blank tab
+          break;
+        }
+      }
+
+      model->InsertWebContentsAt(insert_index, std::move(web_contents_unique),
+                                 ADD_ACTIVE);
+    }
 
     // auto web_preferences = web_contents->GetOrCreateWebPreferences();
     // web_preferences.supports_multiple_windows = false;
@@ -176,7 +206,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
 
     if (features::IsBackupResultsFullRenderEnabled()) {
       BackupResultsWebContentsObserver::CreateForWebContents(
-          web_contents.get(), weak_ptr_factory_.GetWeakPtr());
+          web_contents, weak_ptr_factory_.GetWeakPtr());
     }
 
     LOG(ERROR) << "FetchBackupResults! " << url.spec();
@@ -199,14 +229,14 @@ void BackupResultsServiceImpl::FetchBackupResults(
     // visible_bounds.width() << "x" << visible_bounds.height();
   }
 
-  auto request = pending_requests_.emplace(pending_requests_.end(),
-                                           std::move(web_contents), headers,
-                                           otr_profile, std::move(callback), url
+  auto request =
+      pending_requests_.emplace(pending_requests_.end(), web_contents, headers,
+                                otr_profile, std::move(callback), url
 #if BUILDFLAG(IS_ANDROID)
-                                           ,
-                                           std::move(view_android)
+                                ,
+                                std::move(view_android)
 #endif
-  );
+      );
 
   if (should_render) {
     // Navigate to brave.com first, then we'll navigate to the original URL
@@ -239,7 +269,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
 }
 
 BackupResultsServiceImpl::PendingRequest::PendingRequest(
-    std::unique_ptr<content::WebContents> web_contents,
+    content::WebContents* web_contents,
     std::optional<net::HttpRequestHeaders> headers,
     Profile* otr_profile,
     BackupResultsCallback callback,
@@ -252,7 +282,7 @@ BackupResultsServiceImpl::PendingRequest::PendingRequest(
     : headers(std::move(headers)),
       callback(std::move(callback)),
       original_url(original_url),
-      web_contents(std::move(web_contents)),
+      web_contents(web_contents),
       otr_profile(otr_profile)
 #if BUILDFLAG(IS_ANDROID)
       ,
@@ -267,7 +297,7 @@ BackupResultsServiceImpl::PendingRequestList::iterator
 BackupResultsServiceImpl::FindPendingRequest(
     const content::WebContents* web_contents) {
   return std::ranges::find_if(pending_requests_, [&](const auto& request) {
-    return request.web_contents.get() == web_contents;
+    return request.web_contents == web_contents;
   });
 }
 
@@ -421,7 +451,7 @@ void BackupResultsServiceImpl::NavigateToOriginalUrl(
 
   // Resize the viewport to the same dimensions as in FetchBackupResults
   // pending_request->web_contents->Resize({360, 488});
-  pending_request->web_contents->Resize({1152, 930});
+  // pending_request->web_contents->Resize({1152, 930});
   // pending_request->web_contents->GetRenderWidgetHostView()->SetSize(gfx::Size(360,
   // 488));
   // pending_request->web_contents->GetRenderWidgetHostView()->SetBounds(gfx::Rect(0,
@@ -450,8 +480,24 @@ void BackupResultsServiceImpl::CleanupAndDispatchResult(
     std::optional<BackupResults> result) {
   auto* otr_profile = pending_request->otr_profile.get();
 
-  // Track query result (failure if result is nullopt, success otherwise)
-  backup_results_metrics_.RecordQuery(!result);
+  // Remove the web contents from the tab strip model before destroying the
+  // profile
+  if (pending_request->web_contents) {
+    auto* browser_list = BrowserList::GetInstance();
+    if (!browser_list->empty()) {
+      auto* browser = browser_list->get(0);  // Get the first browser instance
+      auto* model = browser->tab_strip_model();
+
+      // Find and remove the tab containing our web contents
+      for (int i = 0; i < model->count(); ++i) {
+        if (model->GetWebContentsAt(i) == pending_request->web_contents) {
+          pending_request->web_contents = nullptr;
+          model->DetachAndDeleteWebContentsAt(i);
+          break;
+        }
+      }
+    }
+  }
 
   std::move(pending_request->callback).Run(result);
   pending_requests_.erase(pending_request);
