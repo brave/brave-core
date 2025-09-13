@@ -10,6 +10,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -55,9 +56,31 @@ class NTPBackgroundImagesServiceObserverBridge
   __weak id<NTPBackgroundImagesServiceObserver> bridge_;
 };
 
-@interface NTPBackgroundImagesService () <NTPBackgroundImagesServiceObserver> {
+@protocol AdsServiceObserverIOS <NSObject>
+@required
+- (void)onDidClearAdsServiceData;
+@end
+
+class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
+ public:
+  explicit AdsServiceObserverBridge(id<AdsServiceObserverIOS> bridge)
+      : bridge_(bridge) {}
+
+  ~AdsServiceObserverBridge() override = default;
+
+  void OnDidClearAdsServiceData() override {
+    [bridge_ onDidClearAdsServiceData];
+  }
+
+ private:
+  __weak id<AdsServiceObserverIOS> bridge_;
+};
+
+@interface NTPBackgroundImagesService () <NTPBackgroundImagesServiceObserver,
+                                          AdsServiceObserverIOS> {
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService> _service;
   raw_ptr<brave_ads::AdsService> _adsService;  // Not owned.
+  std::unique_ptr<AdsServiceObserverBridge> _adsServiceObserverBridge;
   std::unique_ptr<NTPBackgroundImagesServiceObserverBridge> _observerBridge;
 }
 @end
@@ -72,6 +95,9 @@ class NTPBackgroundImagesServiceObserverBridge
   if ((self = [super init])) {
     _service = std::move(service);
     _adsService = ads_service;
+    _adsServiceObserverBridge =
+        std::make_unique<AdsServiceObserverBridge>(self);
+    _adsService->AddObserver(_adsServiceObserverBridge.get());
     _observerBridge =
         std::make_unique<NTPBackgroundImagesServiceObserverBridge>(self);
     _service->AddObserver(_observerBridge.get());
@@ -81,6 +107,7 @@ class NTPBackgroundImagesServiceObserverBridge
 }
 
 - (void)dealloc {
+  _adsService->RemoveObserver(_adsServiceObserverBridge.get());
   _service->RemoveObserver(_observerBridge.get());
 }
 
@@ -156,6 +183,10 @@ class NTPBackgroundImagesServiceObserverBridge
     _adsService->ParseAndSaveNewTabPageAds(data.Clone(),
                                            /*intentional*/ base::DoNothing());
   }
+}
+
+- (void)onDidClearAdsServiceData {
+  _service->ForceSponsoredComponentUpdate();
 }
 
 @end
