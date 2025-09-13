@@ -186,6 +186,24 @@ class SignMessageRequestWaiter {
   base::test::TestFuture<int> future_;
 };
 
+// Helper class to mock BraveWalletService::AddSignTransactionRequest and
+// BraveWalletService::NotifySignMessageRequestProcessed methods.
+class SignCardanoTransactionRequestWaiter {
+ public:
+  explicit SignCardanoTransactionRequestWaiter(
+      BraveWalletService* brave_wallet_service);
+  ~SignCardanoTransactionRequestWaiter();
+
+  mojom::SignCardanoTransactionRequestPtr WaitAndProcess(bool approved);
+
+ private:
+  void OnSignTransactionRequestAdded();
+
+  raw_ptr<BraveWalletService> brave_wallet_service_;
+  base::CallbackListSubscription subscription_;
+  base::test::TestFuture<mojom::SignCardanoTransactionRequestPtr> future_;
+};
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TEST_UTILS_H_

@@ -97,4 +97,16 @@ std::vector<uint8_t> CardanoAddress::ToCborBytes() const {
   return bytes_;
 }
 
+// static
+std::optional<CardanoAddress> CardanoAddress::FromCborBytes(
+    base::span<const uint8_t> bytes) {
+  if (bytes.size() != 1 + kPaymentKeyHashLength + kStakeKeyHashLength) {
+    return std::nullopt;
+  }
+
+  CardanoAddress result;
+  result.bytes_ = std::vector<uint8_t>(bytes.begin(), bytes.end());
+  return result;
+}
+
 }  // namespace brave_wallet

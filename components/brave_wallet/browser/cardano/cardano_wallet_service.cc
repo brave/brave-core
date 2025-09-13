@@ -197,29 +197,23 @@ void CardanoWalletService::SignAndPostTransaction(
 bool CardanoWalletService::SignTransactionInternal(
     CardanoTransaction& tx,
     const mojom::AccountIdPtr& account_id) {
-  auto addresses = keyring_service().GetCardanoAddresses(account_id);
-  if (!addresses || addresses->empty()) {
+  auto addresses = keyring_service_->GetCardanoAddresses(account_id);
+  if (!addresses) {
     return false;
   }
-
-  std::map<CardanoAddress, mojom::CardanoKeyIdPtr> address_map;
-  for (const auto& addr : *addresses) {
-    auto cardano_address = CardanoAddress::FromString(addr->address_string);
-    if (!cardano_address) {
-      continue;
-    }
-    address_map.emplace(std::move(*cardano_address),
-                        std::move(addr->payment_key_id));
+  auto address_map = GetCardanoAddressesWithKeyIds(*addresses);
+  if (!address_map) {
+    return false;
   }
 
   auto hash = CardanoTransactionSerializer().GetTxHash(tx);
 
   std::vector<CardanoTransaction::TxWitness> witnesses;
   for (const auto& input : tx.inputs()) {
-    if (!address_map.contains(input.utxo_address)) {
+    if (!address_map->contains(input.utxo_address)) {
       return false;
     }
-    auto& key_id = address_map.at(input.utxo_address);
+    auto& key_id = address_map->at(input.utxo_address);
 
     auto signature_pair =
         keyring_service().SignMessageByCardanoKeyring(account_id, key_id, hash);

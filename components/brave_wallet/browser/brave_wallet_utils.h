@@ -24,6 +24,8 @@ class GURL;
 
 namespace brave_wallet {
 
+class CardanoAddress;
+
 bool EncodeString(std::string_view input, std::string* output);
 bool EncodeStringArray(base::span<const std::string> input,
                        std::string* output);
@@ -139,6 +141,10 @@ const std::string& GetAccountPermissionIdentifier(
     const mojom::AccountIdPtr& account_id);
 
 bool IsBraveWalletOrigin(const url::Origin& origin);
+
+std::optional<std::map<CardanoAddress, mojom::CardanoKeyIdPtr>>
+GetCardanoAddressesWithKeyIds(
+    const std::vector<mojom::CardanoAddressPtr>& addresses);
 
 }  // namespace brave_wallet
 

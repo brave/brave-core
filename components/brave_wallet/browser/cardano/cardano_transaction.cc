@@ -442,6 +442,10 @@ void CardanoTransaction::SetWitnesses(std::vector<TxWitness> witnesses) {
   witnesses_ = std::move(witnesses);
 }
 
+void CardanoTransaction::AddWitness(TxWitness witness) {
+  witnesses_.push_back(std::move(witness));
+}
+
 void CardanoTransaction::AddOutput(TxOutput output) {
   outputs_.push_back(std::move(output));
 }
