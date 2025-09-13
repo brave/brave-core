@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 
+#include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -13,10 +14,16 @@
 
 namespace brave_wallet {
 
+class KeyringService;
+class NetworkManager;
+
 // The main Polkadot-based interface that the front-end interacts with.
-class PolkadotWalletService : public mojom::PolkadotWalletService {
+class PolkadotWalletService : public mojom::PolkadotWalletService,
+                              public KeyringServiceObserverBase {
  public:
-  explicit PolkadotWalletService(
+  PolkadotWalletService(
+      KeyringService& keyring_service,
+      NetworkManager& network_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
   ~PolkadotWalletService() override;
@@ -29,12 +36,16 @@ class PolkadotWalletService : public mojom::PolkadotWalletService {
 
   // Get the name of the chain currently pointed to by the current network
   // configuration.
-  void GetNetworkName(GetNetworkNameCallback callback) override;
+  void GetNetworkName(mojom::AccountIdPtr account_id,
+                      GetNetworkNameCallback callback) override;
 
  private:
+  const raw_ref<KeyringService> keyring_service_;
   mojo::ReceiverSet<mojom::PolkadotWalletService> receivers_;
 
   PolkadotSubstrateRpc polkadot_substrate_rpc_;
+  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
+      keyring_service_observer_receiver_{this};
   base::WeakPtrFactory<PolkadotWalletService> weak_ptr_factory_{this};
 };
 
