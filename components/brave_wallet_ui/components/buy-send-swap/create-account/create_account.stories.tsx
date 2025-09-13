@@ -7,10 +7,10 @@ import * as React from 'react'
 
 import {
   WalletPanelStory, //
-} from '../../../stories/wrappers/wallet-panel-story-wrapper'
+} from '$wallet/stories/wrappers/wallet-panel-story-wrapper'
 import { CreateAccountTab } from '.'
 import { Meta } from '@storybook/react'
-import { mockNetworks } from '../../../stories/mock-data/mock-networks'
+import { mockNetworks } from '$wallet/stories/mock-data/mock-networks'
 
 export const CreateAccount = {}
 
