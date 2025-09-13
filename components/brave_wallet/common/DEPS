@@ -1,8 +1,9 @@
 include_rules = [
+  "+brave/net/base",
   "+components/base32",
   "+components/prefs",
   "+crypto",
-  "+brave/net/base",
+  "+net",
 ]
 
 specific_include_rules = {
