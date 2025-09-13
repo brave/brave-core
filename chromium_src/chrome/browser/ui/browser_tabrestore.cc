@@ -9,16 +9,58 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/public/constants.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/tab_ui_helper.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
+#include "content/public/browser/browser_context.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "chrome/browser/tab_contents/tab_util.h"
 
 #define AddRestoredTab AddRestoredTab_ChromiumImpl
 #define ReplaceRestoredTab ReplaceRestoredTab_ChromiumImpl
+
+#define GetSiteInstanceForNewTab(...)                  \
+  GetSiteInstanceForNewTab(                            \
+      __VA_ARGS__, GetStoragePartitionConfigToRestore( \
+                       browser->profile(), navigations, selected_navigation))
+
+namespace {
+
+std::optional<content::StoragePartitionConfig>
+GetStoragePartitionConfigToRestore(
+    content::BrowserContext* browser_context,
+    const std::vector<sessions::SerializedNavigationEntry>& navigations,
+    int selected_navigation) {
+  if (navigations.empty()) {
+    return std::nullopt;
+  }
+
+  if (selected_navigation < 0 ||
+      static_cast<size_t>(selected_navigation) >= navigations.size()) {
+    return std::nullopt;
+  }
+
+  if (const auto& storage_partition_key =
+          navigations.at(selected_navigation).storage_partition_key()) {
+    return content::StoragePartitionConfig::Create(
+        browser_context, storage_partition_key->first,
+        storage_partition_key->second, browser_context->IsOffTheRecord());
+  }
+
+  return std::nullopt;
+}
+
+}  // namespace
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #include <chrome/browser/ui/browser_tabrestore.cc>
 
 #undef ReplaceRestoredTab
 #undef AddRestoredTab
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#undef GetSiteInstanceForNewTab
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace chrome {
 
