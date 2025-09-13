@@ -255,23 +255,36 @@ class PlasterFile:
         plaster_file = tomllib.loads(info.plaster_contents)
         contents = repository.chromium.read_file(info.source)
 
-        for substitution in plaster_file.get('substitution', []):
-            pattern = substitution.get('re_pattern', '')
-            replace = substitution.get('replace', '')
-            count = substitution.get('count', 0)
-            flags = substitution.get('re_flags', '')
+        for substitution in plaster_file.get('substitution'):
+            description = substitution.get('description')
+            re_pattern = substitution.get('re_pattern')
+            pattern = substitution.get('pattern')
+            replace = substitution.get('replace')
+            count = substitution.get('count', 1)
+            flags = substitution.get('re_flags', [])
+
+            if description is None:
+                raise ValueError(f'No description specified in {info.source}')
+
+            if re_pattern is None:
+                if pattern is None:
+                    raise ValueError(f'No pattern specified in {info.source}')
+                re_pattern = re.escape(pattern)
+
+            if replace is None:
+                raise ValueError(
+                    f'No replace value specified in {info.source}')
 
             re_flags = 0
-            if 'IGNORECASE' in flags:
-                re_flags |= re.IGNORECASE
-            if 'MULTILINE' in flags:
-                re_flags |= re.MULTILINE
-            if 'DOTALL' in flags:
-                re_flags |= re.DOTALL
-            if 'VERBOSE' in flags:
-                re_flags |= re.VERBOSE
+            for flag in flags:
+                # Only accept valid re flags
+                if flag.isupper() and hasattr(re, flag):
+                    re_flags |= getattr(re, flag)
+                else:
+                    raise ValueError(
+                        f'Invalid re flag specified: {flag} in {info.source}')
 
-            contents, num_changes = re.subn(pattern,
+            contents, num_changes = re.subn(re_pattern,
                                             replace,
                                             contents,
                                             flags=re_flags,
@@ -279,8 +292,13 @@ class PlasterFile:
 
             if num_changes == 0:
                 raise ValueError(
-                    f'No matches found for pattern {pattern} in {info.source}')
+                    f'No matches found for pattern {re_pattern} in '
+                    f'{info.source}')
 
+            if count not in (num_changes, -1):
+                raise ValueError(
+                    f'Unexpected number of matches ({num_changes} vs {count}) '
+                    f'in {info.source}')
         has_changed = info.save_source_if_changed(contents, dry_run=dry_run)
         has_changed = info.save_patch_if_changed(
             dry_run=dry_run) or has_changed
