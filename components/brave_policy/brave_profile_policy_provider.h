@@ -11,7 +11,10 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/values.h"
+#include "brave/components/brave_policy/ad_block_only_mode_policy_provider.h"
 #include "components/policy/core/common/configuration_policy_provider.h"
+
+class PrefService;
 
 namespace brave_policy {
 
@@ -19,7 +22,7 @@ namespace brave_policy {
 // Note: When this is created, the profile is not yet initialized.
 class BraveProfilePolicyProvider : public policy::ConfigurationPolicyProvider {
  public:
-  BraveProfilePolicyProvider();
+  explicit BraveProfilePolicyProvider(PrefService* local_state);
   ~BraveProfilePolicyProvider() override;
 
   BraveProfilePolicyProvider(const BraveProfilePolicyProvider&) = delete;
@@ -34,7 +37,11 @@ class BraveProfilePolicyProvider : public policy::ConfigurationPolicyProvider {
  private:
   policy::PolicyBundle LoadPolicies();
 
+  void LoadAdBlockOnlyModePolicies(policy::PolicyBundle& bundle);
+
   bool first_policies_loaded_ = false;
+
+  AdBlockOnlyModePolicyProvider ad_block_only_mode_policy_provider_;
 
   base::WeakPtrFactory<BraveProfilePolicyProvider> weak_factory_{this};
 };

@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="chrome://resources/brave/leo/css/variables.css">
 <style include="settings-shared md-select">
   .label.shields-primary-title
   {
@@ -6,7 +7,7 @@
     padding-top: 1em;
   }
   .label.shields-secondary-title {
-    padding-bottom: 1em;
+    padding-bottom: 0;
   }
   .flex-center {
     align-items: center;
@@ -32,6 +33,9 @@
     cursor: pointer;
     color: red;
   }
+  .md-select:disabled {
+    background-color: var(--leo-color-container-disabled) !important;
+  }
 </style>
 
 <settings-section
@@ -45,6 +49,10 @@
         <p>$i18n{braveShieldsDefaultsSectionDescription1}</p>
         <p>$i18n{braveShieldsDefaultsSectionDescription2}</p>
       </div>
+      <settings-ad-block-only-mode-alert
+       id="adBlockOnlyModeAlert"
+       prefs="{{prefs}}">
+      </settings-ad-block-only-mode-alert>
     </div>
   </div>
   <settings-toggle-button
@@ -55,7 +63,7 @@
   <div class="settings-box">
     <div class="start">$i18n{adControlLabel}</div>
     <select id="adControlType" class="md-select"
-        on-change="onAdControlChange_">
+        on-change="onAdControlChange_" disabled="[[isAdBlockOnlyModeEnabled_]]">
       <template is="dom-repeat" items="[[adControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, adControlType_)]]">
@@ -67,7 +75,7 @@
   <div hidden="[[!isHttpsByDefaultEnabled_]]" class="settings-box">
     <div class="start">$i18n{httpsUpgradeControlLabel}</div>
     <select id="httpsUpgradeControlType" class="md-select"
-        on-change="onHttpsUpgradeControlChange_">
+        on-change="onHttpsUpgradeControlChange_" disabled="[[isAdBlockOnlyModeEnabled_]]">
       <template is="dom-repeat" items="[[httpsUpgradeControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, httpsUpgradeControlType_)]]">
@@ -78,14 +86,15 @@
   </div>
   <settings-toggle-button id="noScriptControlType"
       class="cr-row"
-      pref="{{prefs.brave.no_script_default}}"
+      pref="[[noScriptControlType_]]"
       label="$i18n{noScriptControlLabel}"
-      on-settings-boolean-control-change="onNoScriptControlChange_">
+      on-settings-boolean-control-change="onNoScriptControlChange_"
+      disabled="[[isAdBlockOnlyModeEnabled_]]">
   </settings-toggle-button>
   <div hidden="[[!showStrictFingerprintingMode_]]" class="settings-box">
     <div class="start">$i18n{fingerprintingControlLabel}</div>
     <select id="fingerprintingSelectControlType" class="md-select"
-        on-change="onFingerprintingSelectControlChange_">
+        on-change="onFingerprintingSelectControlChange_" disabled="[[isAdBlockOnlyModeEnabled_]]">
       <template is="dom-repeat" items="[[fingerprintingControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, fingerprintingControlType_)]]">
@@ -99,7 +108,8 @@
     class="cr-row"
     pref="[[isFingerprintingEnabled_]]"
     label="$i18n{fingerprintingControlLabel}"
-    on-settings-boolean-control-change="onFingerprintingToggleControlChange_">
+    on-settings-boolean-control-change="onFingerprintingToggleControlChange_"
+    disabled="[[isAdBlockOnlyModeEnabled_]]">
   </settings-toggle-button>
   <div class="settings-box">
     <div class="start">
@@ -109,7 +119,7 @@
       </div>
     </div>
     <select id="cookieControlType" class="md-select"
-        on-change="onCookieControlChange_">
+        on-change="onCookieControlChange_" disabled="[[isAdBlockOnlyModeEnabled_]]" >
       <template is="dom-repeat" items="[[cookieControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, cookieControlType_)]]">
@@ -124,7 +134,38 @@
     label="$i18n{forgetFirstPartyStorageLabel}"
     sub-label="$i18n{forgetFirstPartyStorageSubLabel}"
     on-settings-boolean-control-change="onForgetFirstPartyStorageToggleChange_"
-    pref="[[isForgetFirstPartyStorageEnabled_]]">
+    pref="[[isForgetFirstPartyStorageEnabled_]]"
+    disabled="[[isAdBlockOnlyModeEnabled_]]">
+  </settings-toggle-button>
+  <template is="dom-if" if="[[isDeAmpFeatureEnabled_]]">
+    <settings-toggle-button id="deAmpToggle"
+      class="cr-row"
+      pref="[[isDeAmpEnabled_]]"
+      label="$i18n{deAmpSettingLabel}"
+      sub-label="$i18n{deAmpSettingSubLabel}"
+      learn-more-url="$i18n{deAmpLearnMoreURL}"
+      on-settings-boolean-control-change="onDeAmpToggleChange_"
+      disabled="[[isAdBlockOnlyModeEnabled_]]">
+    </settings-toggle-button>
+  </template>
+  <template is="dom-if" if="[[isDebounceFeatureEnabled_]]">
+    <settings-toggle-button id="debounceToggle"
+      class="cr-row"
+      pref="[[isDebounceEnabled_]]"
+      label="$i18n{debounceSettingLabel}"
+      sub-label="$i18n{debounceSettingSubLabel}"
+      learn-more-url="$i18n{debounceLearnMoreURL}"
+      on-settings-boolean-control-change="onDebounceToggleChange_"
+      disabled="[[isAdBlockOnlyModeEnabled_]]">
+    </settings-toggle-button>
+  </template>
+  <settings-toggle-button id="reduceLanguageToggle"
+    class="cr-row"
+    pref="[[isReduceLanguageEnabled_]]"
+    label="$i18n{reduceLanguageControlLabel}"
+    sub-label="$i18n{reduceLanguageDesc}"
+    on-settings-boolean-control-change="onReduceLanguageToggleChange_"
+    disabled="[[isAdBlockOnlyModeEnabled_]]">
   </settings-toggle-button>
   <settings-toggle-button id="setContactInfoSaveFlagToggle"
       class="cr-row"
@@ -139,6 +180,7 @@
     label="$i18n{adblockContentFilteringLabel}"
     sub-label="$i18n{adblockContentFilterLabelDesc}"
     on-click="onAdblockPageClick_"
+    disabled="[[isAdBlockOnlyModeEnabled_]]"
   ></cr-link-row>
 
 </settings-section>

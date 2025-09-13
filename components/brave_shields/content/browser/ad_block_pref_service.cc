@@ -11,7 +11,9 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/proxy_config/pref_proxy_config_tracker.h"
@@ -60,6 +62,20 @@ AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
   OnPreferenceChanged(prefs::kFBEmbedControlType);
   OnPreferenceChanged(prefs::kTwitterEmbedControlType);
   OnPreferenceChanged(prefs::kLinkedInEmbedControlType);
+
+  local_state_change_registrar_.reset(new PrefChangeRegistrar());
+  local_state_change_registrar_->Init(local_state);
+  local_state_change_registrar_->Add(
+      prefs::kAdblockAdBlockOnlyModeEnabled,
+      base::BindRepeating(
+          &AdBlockPrefService::OnAdBlockOnlyModeGlobalDefaultChanged,
+          base::Unretained(this)));
+  OnAdBlockOnlyModeGlobalDefaultChanged();
+
+  pref_change_registrar_->Add(
+      prefs::kAdblockAdBlockOnlyModeEnabled,
+      base::BindRepeating(&AdBlockPrefService::OnAdBlockOnlyModeChanged,
+                          base::Unretained(this)));
 }
 
 AdBlockPrefService::~AdBlockPrefService() = default;
@@ -89,6 +105,7 @@ AdBlockPrefService::GetLatestProxyConfig(
 
 void AdBlockPrefService::Shutdown() {
   pref_change_registrar_.reset();
+  local_state_change_registrar_.reset();
 
   // `pref_proxy_config_tracker_` has a reference to `proxy_config_service_`,
   // therefore detach `pref_proxy_config_tracker_` first, to prevent the
@@ -112,6 +129,18 @@ void AdBlockPrefService::OnPreferenceChanged(const std::string& pref_name) {
   }
   bool enabled = prefs_->GetBoolean(pref_name);
   ad_block_service_->EnableTag(tag, enabled);
+}
+
+void AdBlockPrefService::OnAdBlockOnlyModeChanged() {
+  const bool enabled = GetBraveShieldsAdBlockOnlyModeEnabled(prefs_);
+  ad_block_service_->SetAdBlockOnlyModeGloballyDefaulted(enabled);
+}
+
+void AdBlockPrefService::OnAdBlockOnlyModeGlobalDefaultChanged() {
+  const bool adblock_only_mode_enabled =
+      ad_block_service_->GetAdBlockOnlyModeSupported() &&
+      ad_block_service_->GetAdBlockOnlyModeGloballyDefaulted();
+  SetBraveShieldsAdBlockOnlyModeEnabled(prefs_, adblock_only_mode_enabled);
 }
 
 void AdBlockPrefService::OnProxyConfigChanged(

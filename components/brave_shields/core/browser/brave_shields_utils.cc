@@ -377,9 +377,16 @@ bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
   return type == ControlType::BLOCK;
 }
 
-bool IsReduceLanguageEnabledForProfile(PrefService* pref_service) {
+bool IsReduceLanguageEnabledForProfile(HostContentSettingsMap* map,
+                                       const GURL& url,
+                                       PrefService* pref_service) {
   // Don't reduce language if feature is disabled
   if (!base::FeatureList::IsEnabled(features::kBraveReduceLanguage)) {
+    return false;
+  }
+
+  if (!GetBraveShieldsEnabled(map, url) ||
+      GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
     return false;
   }
 
@@ -394,7 +401,7 @@ bool IsReduceLanguageEnabledForProfile(PrefService* pref_service) {
 bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
                             const GURL& url,
                             PrefService* pref_service) {
-  if (!IsReduceLanguageEnabledForProfile(pref_service)) {
+  if (!IsReduceLanguageEnabledForProfile(map, url, pref_service)) {
     return false;
   }
 
@@ -552,9 +559,14 @@ void SetCookieControlType(HostContentSettingsMap* map,
 ControlType GetCookieControlType(
     HostContentSettingsMap* map,
     content_settings::CookieSettings* cookie_settings,
-    const GURL& url) {
+    const GURL& url,
+    PrefService* pref_service) {
   DCHECK(map);
   DCHECK(cookie_settings);
+
+  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
+    return ControlType::ALLOW;
+  }
 
   auto result = BraveCookieRules::Get(map, url);
   if (result.HasDefault()) {

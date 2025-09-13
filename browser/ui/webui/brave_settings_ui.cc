@@ -35,6 +35,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -149,7 +150,8 @@ BraveSettingsUI::~BraveSettingsUI() = default;
 
 // static
 void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
-                                   Profile* profile) {
+                                   Profile* profile,
+                                   const std::string& locale) {
   html_source->AddResourcePaths(kBraveSettingsResources);
 
   html_source->AddBoolean("isSyncDisabled", !syncer::IsSyncAllowedByFlag());
@@ -216,6 +218,11 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           base::FeatureList::IsEnabled(
                               ntp_background_images::features::
                                   kBraveNTPBrandedWallpaperSurveyPanelist));
+  html_source->AddBoolean(
+      "isAdBlockOnlyModeSupported",
+      brave_shields::IsAdblockOnlyModeFeatureEnabled() &&
+          brave_shields::IsAdblockOnlyModeSupportedForLocale(locale));
+
 #if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(
       "isPlaylistAllowed",
