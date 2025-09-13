@@ -32,3 +32,19 @@ source_set("webui") {
     "//ui/base",
   ]
 }
+
+source_set("ios_web_webui_unittests") {
+  testonly = true
+  sources = [ "mojo_facade_unittest.mm" ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//ios/web/public/test",
+    "//ios/web/public/test:test_fixture",
+    "//ios/web/public/test/fakes",
+    "//ios/web/test:mojo_bindings",
+    "//ios/web/web_state:web_state_impl_header",
+    "//ios/web/webui",
+    "//testing/gtest",
+  ]
+}
