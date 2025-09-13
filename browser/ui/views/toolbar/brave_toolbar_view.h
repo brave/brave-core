@@ -23,6 +23,7 @@ class BraveVPNButton;
 
 class BraveBookmarkButton;
 class SidePanelButton;
+class SplitTabsToolbarButton;
 class WalletButton;
 
 class BraveToolbarView : public ToolbarView,
@@ -60,7 +61,7 @@ class BraveToolbarView : public ToolbarView,
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarDividerNotShownTest);
-
+  FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, SplitTabsToolbarButtonTest);
   void LoadImages() override;
   void ResetLocationBarBounds();
   void ResetBookmarkButtonBounds();
@@ -75,6 +76,9 @@ class BraveToolbarView : public ToolbarView,
   void UpdateWalletButtonVisibility();
 
   views::View* toolbar_divider_for_testing() { return toolbar_divider_; }
+  SplitTabsToolbarButton* split_tabs_toolbar_button_for_testing() {
+    return split_tabs_.get();
+  }
 
   raw_ptr<BraveBookmarkButton> bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.
