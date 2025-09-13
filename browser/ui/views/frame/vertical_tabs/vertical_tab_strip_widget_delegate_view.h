@@ -70,6 +70,7 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
 
 #if BUILDFLAG(IS_MAC)
   void UpdateClip();
+  int GetVerticalTabStripCornerRadiusMac() const;
 #endif
 
   raw_ptr<BrowserView> browser_view_ = nullptr;
