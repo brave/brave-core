@@ -40,6 +40,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/combobox_model.h"
 #include "ui/base/models/image_model.h"
+#include "ui/base/ui_base_types.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/button/checkbox.h"
@@ -420,6 +421,76 @@ void AddFootnoteViewIfNeeded(
 
 }  // namespace
 
+// PermissionPromptBubbleZOrderManager implementation
+// ------------------------------------------------------------
+
+PermissionPromptBubbleZOrderManager::PermissionPromptBubbleZOrderManager(
+    PermissionPromptBubbleBaseView& permission_prompt_bubble)
+    : permission_prompt_bubble_(permission_prompt_bubble) {
+  auto* widget = permission_prompt_bubble_->GetWidget();
+  CHECK(widget);
+  prompt_widget_observation_.Observe(widget);
+
+  if (widget->IsActive()) {
+    ElevateZOrder();
+  }
+}
+
+PermissionPromptBubbleZOrderManager::~PermissionPromptBubbleZOrderManager() =
+    default;
+
+void PermissionPromptBubbleZOrderManager::OnWidgetDestroying(
+    views::Widget* widget) {
+  CHECK_EQ(widget, permission_prompt_bubble_->GetWidget());
+  RestoreZOrder();
+  prompt_widget_observation_.Reset();
+}
+
+void PermissionPromptBubbleZOrderManager::OnWidgetActivationChanged(
+    views::Widget* widget,
+    bool active) {
+  CHECK_EQ(widget, permission_prompt_bubble_->GetWidget());
+  if (active) {
+    ElevateZOrder();
+  } else {
+    RestoreZOrder();
+  }
+}
+
+void PermissionPromptBubbleZOrderManager::ElevateZOrder() {
+  if (z_order_elevated_) {
+    return;
+  }
+
+  auto* widget = permission_prompt_bubble_->GetWidget();
+  CHECK(widget);
+  auto* parent_widget = widget->parent();
+  CHECK(parent_widget);
+  z_order_elevated_ = false;
+
+  // Store current z-order level to restore later.
+  widget_z_order_level_ = widget->GetZOrderLevel();
+  parent_widget_z_order_level_ = parent_widget->GetZOrderLevel();
+
+  parent_widget->SetZOrderLevel(ui::ZOrderLevel::kSecuritySurface);
+  widget->SetZOrderLevel(ui::ZOrderLevel::kSecuritySurface);
+  z_order_elevated_ = true;
+}
+
+void PermissionPromptBubbleZOrderManager::RestoreZOrder() {
+  if (!z_order_elevated_) {
+    return;
+  }
+  auto* widget = permission_prompt_bubble_->GetWidget();
+  CHECK(widget);
+  auto* parent_widget = widget->parent();
+  CHECK(parent_widget);
+
+  parent_widget->SetZOrderLevel(parent_widget_z_order_level_);
+  widget->SetZOrderLevel(widget_z_order_level_);
+  z_order_elevated_ = false;
+}
+
 #define BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW                          \
   AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests()); \
   auto* permission_lifetime_view =                                        \
@@ -434,15 +505,16 @@ void AddFootnoteViewIfNeeded(
   }                                                                       \
   AddGeolocationDescriptionIfNeeded(this, delegate_.get(), browser());
 
-// Sets the zorder for permission prompt bubble to kSecuritySurface, so that it
-// appears above other UI elements even they are floating on top.For example,
-// Picture-in-Picture window is on top of other widgets, but permission prompt
-// bubble should still be on top of it.
+// Creates PermissionPromptBubbleZOrdermanager instance to manage the z-order
+// of the bubble and its parent widget. Note that we need to do this at this
+// point so that widget is ready.
 #define SetZOrderSublevel(...)    \
   SetZOrderSublevel(__VA_ARGS__); \
-  widget->SetZOrderLevel(ui::ZOrderLevel::kSecuritySurface);
+  z_order_manager_ =              \
+      std::make_unique<PermissionPromptBubbleZOrderManager>(*this);
 
 #include <chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc>
 
+#undef SetCloseCallback
 #undef SetZOrderSublevel
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW
