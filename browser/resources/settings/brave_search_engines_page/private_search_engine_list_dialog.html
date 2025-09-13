@@ -108,7 +108,7 @@
     <cr-radio-group selected="{{selectedEngineId_}}">
       <template is="dom-repeat" items="[[searchEngines]]">
         <cr-radio-button class="label-first" name="[[item.id]]"
-                         hidden="[[isBraveSearchEngine_(item)]]">
+                         hidden="[[shouldHideIfBraveSearchEngine_(item)]]">
           <div class="search-engine">
             <site-favicon favicon-url="[[item.iconURL]]" url="[[item.url]]"
                  icon-path="[[item.iconPath]]">
