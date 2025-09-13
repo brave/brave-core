@@ -1,8 +1,16 @@
 diff --git a/components/omnibox/browser/featured_search_provider.cc b/components/omnibox/browser/featured_search_provider.cc
-index 3f93bf5689e8b51f6e842373e530b81fa7a905ed..e0ab6d9dfd5c44a7ec5e71168b8ad0a2126f75ef 100644
+index 3f93bf5689e8b51f6e842373e530b81fa7a905ed..7c1e35c18616cfefc93a8b48d43a034d7ab8ccfb 100644
 --- a/components/omnibox/browser/featured_search_provider.cc
 +++ b/components/omnibox/browser/featured_search_provider.cc
-@@ -290,6 +290,7 @@ void FeaturedSearchProvider::AddFeaturedKeywordMatches(
+@@ -74,6 +74,7 @@ constexpr int kIphRelevance = 5000;
+ int StarterPackRelevance(
+     template_url_starter_pack_data::StarterPackId starter_pack_id) {
+   switch (starter_pack_id) {
++    BRAVE_FEATURED_SEARCH_PROVIDER_STARTER_PACK_RELEVANCE
+     case template_url_starter_pack_data::StarterPackId::kAiMode:
+       return 1460;
+     case template_url_starter_pack_data::StarterPackId::kGemini:
+@@ -290,6 +291,7 @@ void FeaturedSearchProvider::AddFeaturedKeywordMatches(
    for (TemplateURL* turl : turls) {
      if (turl->starter_pack_id() > 0 &&
          turl->is_active() == TemplateURLData::ActiveStatus::kTrue) {

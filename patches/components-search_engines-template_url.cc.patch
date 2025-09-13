@@ -1,0 +1,12 @@
+diff --git a/components/search_engines/template_url.cc b/components/search_engines/template_url.cc
+index 33638c629aa01a01fd71cd7ad234f20138290861..b87e871b2ae76487dbdecfad50cfa210a904d529 100644
+--- a/components/search_engines/template_url.cc
++++ b/components/search_engines/template_url.cc
+@@ -1859,6 +1859,7 @@ BuiltinEngineType TemplateURL::GetBuiltinEngineType() const {
+         return KEYWORD_MODE_STARTER_PACK_PAGE;
+       case template_url_starter_pack_data::kAiMode:
+         return KEYWORD_MODE_STARTER_PACK_AI_MODE;
++      BRAVE_TEMPLATE_URL_GET_BUILTIN_ENGINE_TYPE
+       default:
+         // In theory, this code path should never be reached.  However, it's
+         // possible that when expanding the starter pack, a new entry may

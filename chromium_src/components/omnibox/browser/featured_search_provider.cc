@@ -5,11 +5,18 @@
 
 #include "components/omnibox/browser/omnibox_field_trial.h"
 
+#define BRAVE_FEATURED_SEARCH_PROVIDER_STARTER_PACK_RELEVANCE          \
+  case template_url_starter_pack_data::StarterPackId::kAskBraveSearch: \
+    return 1461;
+
 // We disable starter pack expansion to hide @gemini search keyword. Piggy back
 // on it to also disable @aimode.
 #define BRAVE_FEATURED_SEARCH_PROVIDER_ADD_FEATURED_KEYWORD_MATCHES         \
   if (turl->starter_pack_id() == template_url_starter_pack_data::kAiMode && \
       !OmniboxFieldTrial::IsStarterPackExpansionEnabled())                  \
     continue;
+
 #include <components/omnibox/browser/featured_search_provider.cc>
+
 #undef BRAVE_FEATURED_SEARCH_PROVIDER_ADD_FEATURED_KEYWORD_MATCHES
+#undef BRAVE_FEATURED_SEARCH_PROVIDER_STARTER_PACK_RELEVANCE
