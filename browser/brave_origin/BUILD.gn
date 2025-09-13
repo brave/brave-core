@@ -3,14 +3,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-static_library("brave_origin") {
+source_set("brave_origin") {
   sources = [
-    "brave_origin_service.cc",
-    "brave_origin_service.h",
-    "features.cc",
-    "features.h",
+    "brave_origin_service_factory.cc",
+    "brave_origin_service_factory.h",
   ]
 
-  public_deps = [ "//base" ]
-  deps = [ "//components/keyed_service/core" ]
+  deps = [
+    "//base",
+    "//brave/components/brave_origin",
+    "//chrome/browser/profiles",
+    "//components/keyed_service/content",
+  ]
 }
