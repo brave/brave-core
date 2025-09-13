@@ -66,7 +66,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
 
  private:
   struct PendingRequest {
-    PendingRequest(std::unique_ptr<content::WebContents> web_contents,
+    PendingRequest(content::WebContents* web_contents,
                    std::optional<net::HttpRequestHeaders> headers,
                    Profile* otr_profile,
                    BackupResultsCallback callback,
@@ -82,7 +82,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
     BackupResultsCallback callback;
     GURL original_url;
 
-    std::unique_ptr<content::WebContents> web_contents;
+    raw_ptr<content::WebContents> web_contents = nullptr;
 
     raw_ptr<Profile> otr_profile;
     scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory;
