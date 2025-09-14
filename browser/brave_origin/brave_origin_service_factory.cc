@@ -12,8 +12,29 @@
 #include "base/no_destructor.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
+#include "brave/components/brave_wayback_machine/pref_names.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/p3a/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/components/tor/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/pref_names.h"
+#endif
 
 namespace brave_origin {
 
@@ -53,6 +74,7 @@ constexpr auto kBraveOriginMetadata =
                                BraveOriginPolicyScope::kGlobal,
                                /*user_settable=*/true)},
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
         // Brave Rewards preferences
         {brave_rewards::prefs::kDisabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
@@ -66,6 +88,7 @@ constexpr auto kBraveOriginMetadata =
              true,
              BraveOriginPolicyScope::kProfile,
              /*user_settable=*/false)},
+#endif
 
         // AI Chat preferences
         {ai_chat::prefs::kEnabledByPolicy,

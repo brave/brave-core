@@ -58,3 +58,28 @@ source_set("brave_origin") {
     deps += [ "//brave/components/ipfs" ]
   }
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_origin_service_factory_unittest.cc" ]
+
+  deps = [
+    ":brave_origin",
+    "//base/test:test_support",
+    "//brave/browser/policy:brave_simple_policy_map",
+    "//brave/components/brave_origin",
+    "//brave/components/constants",
+    "//brave/components/p3a",
+    "//components/policy/core/common:test_support",
+    "//testing/gtest",
+  ]
+
+  if (enable_tor) {
+    deps += [ "//brave/components/tor:pref_names" ]
+  }
+
+  if (is_win || is_mac || is_linux) {
+    deps += [ "//brave/components/brave_rewards/core" ]
+  }
+}
