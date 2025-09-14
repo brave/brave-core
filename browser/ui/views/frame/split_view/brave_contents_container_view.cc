@@ -41,7 +41,7 @@ BraveContentsContainerView::BraveContentsContainerView(
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   auto* browser = browser_view_->browser();
   const bool use_rounded_corners =
-      BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser);
+      BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(browser);
   reader_mode_toolbar_ = AddChildView(std::make_unique<ReaderModeToolbarView>(
       browser->profile(), use_rounded_corners));
   reader_mode_toolbar_->SetDelegate(this);
@@ -74,6 +74,12 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
   contents_web_view->layer()->SetRoundedCornerRadius(contents_corner_radius);
   if (contents_web_view->holder()->native_view()) {
     contents_web_view->holder()->SetCornerRadii(contents_corner_radius);
+  }
+
+  if (reader_mode_toolbar_) {
+    auto* browser = browser_view_->browser();
+    reader_mode_toolbar_->SetUseRoundedCorners(
+        BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(browser));
   }
 
   if (!is_in_split) {
@@ -154,7 +160,7 @@ float BraveContentsContainerView::GetCornerRadius(bool for_border) const {
     return 0;
   }
 
-  return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+  return BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
              browser_view_->browser())
              ? BraveContentsViewUtil::kBorderRadius +
                    (for_border ? kBorderThickness : 0)
