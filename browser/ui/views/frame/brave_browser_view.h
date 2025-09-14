@@ -196,6 +196,8 @@ class BraveBrowserView : public BrowserView,
   void UpdateDevTools(content::WebContents* inspected_web_contents) override;
   bool MaybeUpdateDevtools(content::WebContents* web_contents) override;
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
+  void OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
+                                            bool visible) override;
   void GetAccessiblePanes(std::vector<views::View*>* panes) override;
   void ShowSplitView(bool focus_active_view) override;
   void HideSplitView() override;
