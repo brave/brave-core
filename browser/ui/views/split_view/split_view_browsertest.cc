@@ -1041,10 +1041,6 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
 // (-[NSWindow beginSheet:]), which natively draws a scrim since macOS 11.
 #if !BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, ScrimForSecondaryContents) {
-  if (!base::FeatureList::IsEnabled(features::kScrimForBrowserWindowModal)) {
-    GTEST_SKIP();
-  }
-
   brave::NewSplitViewForTab(browser());
 
   auto child_widget_delegate = std::make_unique<views::WidgetDelegate>();
