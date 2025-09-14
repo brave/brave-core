@@ -9,12 +9,11 @@
 
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/ui/brave_browser.h"
-#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/background.h"
@@ -28,11 +27,6 @@ struct ContextMenuParams;
 namespace {
 
 constexpr gfx::Size kToolbarSize{870, 40};
-constexpr gfx::RoundedCornersF kRoundedCorners(
-    BraveContentsViewUtil::kBorderRadius,
-    BraveContentsViewUtil::kBorderRadius,
-    0,
-    0);
 
 class Toolbar : public views::WebView {
  public:
@@ -66,22 +60,10 @@ void ReaderModeToolbarView::SetDelegate(Delegate* delegate) {
 }
 
 ReaderModeToolbarView::ReaderModeToolbarView(
-    content::BrowserContext* browser_context,
-    bool use_rounded_corners)
-    : use_rounded_corners_(use_rounded_corners) {
-  SetVisible(false);
-
+    content::BrowserContext* browser_context) {
   toolbar_ = std::make_unique<Toolbar>(this, browser_context);
   AddChildView(toolbar_.get());
-
-  if (use_rounded_corners_) {
-    SetBackground(
-        views::CreateRoundedRectBackground(kColorToolbar, kRoundedCorners));
-  } else {
-    SetBorder(views::CreateSolidSidedBorder(gfx::Insets::TLBR(0, 0, 1, 0),
-                                            kColorToolbarContentAreaSeparator));
-    SetBackground(views::CreateSolidBackground(kColorToolbar));
-  }
+  SetVisible(false);
 }
 
 ReaderModeToolbarView::~ReaderModeToolbarView() = default;
@@ -97,11 +79,10 @@ void ReaderModeToolbarView::SetVisible(bool visible) {
     toolbar_contents_->GetController().LoadURLWithParams(params);
 
     toolbar_->SetWebContents(toolbar_contents_.get());
-    if (use_rounded_corners_) {
-      toolbar_->holder()->SetCornerRadii(kRoundedCorners);
-    }
   }
   views::View::SetVisible(visible);
+
+  UpdateBorderAndBackground();
 }
 
 content::WebContents* ReaderModeToolbarView::GetWebContentsForTesting() {
@@ -142,6 +123,27 @@ void ReaderModeToolbarView::RestoreToolbarContents(
   toolbar_->SetWebContents(toolbar_contents_.get());
   another_toolbar->toolbar_->SetWebContents(
       another_toolbar->toolbar_contents_.get());
+}
+
+void ReaderModeToolbarView::SetCornerRadius(int radius) {
+  rounded_corners_ = gfx::RoundedCornersF(radius, radius, 0, 0);
+  UpdateBorderAndBackground();
+}
+
+void ReaderModeToolbarView::UpdateBorderAndBackground() {
+  CHECK(toolbar_ && toolbar_->holder());
+
+  if (rounded_corners_.IsEmpty()) {
+    SetBorder(views::CreateSolidSidedBorder(gfx::Insets::TLBR(0, 0, 1, 0),
+                                            kColorToolbarContentAreaSeparator));
+    SetBackground(views::CreateSolidBackground(kColorToolbar));
+    toolbar_->holder()->SetCornerRadii(rounded_corners_);
+  } else {
+    SetBorder(nullptr);
+    SetBackground(
+        views::CreateRoundedRectBackground(kColorToolbar, rounded_corners_));
+    toolbar_->holder()->SetCornerRadii(rounded_corners_);
+  }
 }
 
 gfx::Size ReaderModeToolbarView::CalculatePreferredSize(
