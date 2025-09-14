@@ -83,6 +83,8 @@ class BraveSidePanel : public views::View,
   void Open(bool animated);
   void Close(bool animated);
 
+  void UpdateBorder();
+
   // This is the parent view for the contents of the side panel.
   views::View* GetContentParentView();
 
@@ -98,7 +100,6 @@ class BraveSidePanel : public views::View,
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
 
-  void UpdateBorder();
   void OnSidePanelWidthChanged();
 
   // Monitors addition of content view and change content view property that

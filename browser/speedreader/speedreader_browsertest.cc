@@ -1062,6 +1062,41 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEnableForSite) {
       tab_helper()->PageDistillState()));
 }
 
+// Test toolbar's rounded corners is updated when split view is toggled.
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarWithRoundedCorners) {
+  ToggleSpeedreader();
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+
+  // Load distilled page at tab 0.
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
+
+  auto* browser_view = static_cast<BraveBrowserView*>(browser()->window());
+  EXPECT_TRUE(browser_view->reader_mode_toolbar()->rounded_corners_.IsEmpty());
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+
+  // Tab at 1 is newly created tab with split view and it's not distilled.
+  EXPECT_FALSE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
+
+  tab_strip_model->ActivateTabAt(0);
+  EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
+  EXPECT_FALSE(browser_view->reader_mode_toolbar()->rounded_corners_.IsEmpty());
+
+  auto* active_tab = tab_strip_model->GetActiveTab();
+  auto split_id = active_tab->GetSplit();
+  ASSERT_TRUE(split_id);
+  tab_strip_model->RemoveSplit(*split_id);
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  EXPECT_TRUE(browser_view->reader_mode_toolbar()->rounded_corners_.IsEmpty());
+}
+
 class SpeedReaderWithSplitViewBrowserTest
     : public SpeedReaderBrowserTest,
       public testing::WithParamInterface<bool> {

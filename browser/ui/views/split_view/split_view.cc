@@ -429,7 +429,7 @@ void SplitView::UpdateContentsWebViewBorder() {
   if (split_view_browser_data->GetTile(GetActiveTabHandle()) &&
       !ShouldHideSecondaryContentsByTabFullscreen()) {
     const auto kRadius =
-        BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+        BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
             base::to_address(browser_))
             ? BraveContentsViewUtil::kBorderRadius + kBorderThickness
             : 0;

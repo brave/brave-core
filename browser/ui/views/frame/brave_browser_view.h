@@ -141,6 +141,9 @@ class BraveBrowserView : public BrowserView,
   void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
 
   BraveMultiContentsView* GetBraveMultiContentsView() const;
+  void UpdateRoundedCornersUI();
+  void UpdateVerticalTabStripBorder();
+  void UpdateSidebarBorder();
 
   SidebarContainerView* sidebar_container_view() {
     return sidebar_container_view_;

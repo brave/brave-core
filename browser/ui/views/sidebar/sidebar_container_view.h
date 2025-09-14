@@ -85,6 +85,7 @@ class SidebarContainerView
   // is called whether it's closing from deregistration.
   void WillShowSidePanel();
   bool IsFullscreenForCurrentEntry() const;
+  void UpdateBorder();
 
   void set_operation_from_active_tab_change(bool tab_change) {
     operation_from_active_tab_change_ = tab_change;

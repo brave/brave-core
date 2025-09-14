@@ -1119,7 +1119,8 @@ void BraveVerticalTabStripRegionView::UpdateBorder() {
       return false;
     }
 
-    if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_)) {
+    if (!BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
+            browser_)) {
       return true;
     }
 
@@ -1153,6 +1154,8 @@ void BraveVerticalTabStripRegionView::UpdateBorder() {
   } else {
     SetBorder(views::CreateEmptyBorder(border_insets));
   }
+
+  PreferredSizeChanged();
 }
 
 void BraveVerticalTabStripRegionView::OnCollapsedPrefChanged() {
