@@ -357,9 +357,9 @@ class SplitViewCommonBrowserTest : public InProcessBrowserTest,
 
   bool GetIsTabHiddenFromPermissionManagerFromTabAt(int index) {
     auto* tab_strip_model = browser()->tab_strip_model();
-    return permissions::PermissionRequestManager::FromWebContents(
-               tab_strip_model->GetWebContentsAt(index))
-        ->tab_is_hidden_for_testing();
+    return !permissions::PermissionRequestManager::FromWebContents(
+                tab_strip_model->GetWebContentsAt(index))
+                ->tab_is_active_for_testing();
   }
 
   // blocked(true) when tab at |index| has tab modal dialog.
