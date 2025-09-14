@@ -120,7 +120,8 @@ void BraveWalletPermissionContext::RequestPermission(
           sub_request_origin->GetURL());
   // This will prevent PermissionRequestManager from reprioritize the request
   // queue.
-  data->embedded_permission_element_initiated = true;
+  data->embedded_permission_request_descriptor =
+      blink::mojom::EmbeddedPermissionRequestDescriptor::New();
   ContentSettingPermissionContextBase::RequestPermission(std::move(data),
                                                          std::move(callback));
 }
