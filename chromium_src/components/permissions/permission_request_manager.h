@@ -21,8 +21,8 @@ class SplitViewCommonBrowserTest;
   bool ShouldBeGrouppedInRequests(PermissionRequest* a) const;                 \
   friend class ::WidevinePermissionAndroidTest;                                \
   friend class ::SplitViewCommonBrowserTest;                                   \
-  bool tab_is_hidden_for_testing() const {                                     \
-    return tab_is_hidden_;                                                     \
+  bool tab_is_active_for_testing() const {                                     \
+    return tab_is_active_;                                                     \
   }                                                                            \
                                                                                \
  public:                                                                       \
