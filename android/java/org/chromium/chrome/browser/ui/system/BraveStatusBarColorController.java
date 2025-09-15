@@ -12,8 +12,8 @@ import android.view.Window;
 import androidx.annotation.ColorInt;
 
 import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -38,7 +38,7 @@ public class BraveStatusBarColorController extends StatusBarColorController {
             ActivityTabProvider tabProvider,
             TopUiThemeColorProvider topUiThemeColorProvider,
             EdgeToEdgeSystemBarColorHelper edgeToEdgeSystemBarColorHelper,
-            OneshotSupplier<DesktopWindowStateManager> desktopWindowStateManagerSupplier,
+            @Nullable DesktopWindowStateManager desktopWindowStateManager,
             ObservableSupplier<Integer> overviewColorSupplier,
             boolean supportEdgeToEdge) {
         super(
@@ -51,7 +51,7 @@ public class BraveStatusBarColorController extends StatusBarColorController {
                 tabProvider,
                 topUiThemeColorProvider,
                 edgeToEdgeSystemBarColorHelper,
-                desktopWindowStateManagerSupplier,
+                desktopWindowStateManager,
                 overviewColorSupplier,
                 supportEdgeToEdge);
 
