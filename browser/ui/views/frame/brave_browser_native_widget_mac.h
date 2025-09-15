@@ -10,10 +10,11 @@
 #include "chrome/browser/ui/views/frame/browser_native_widget_mac.h"
 
 class BrowserView;
+class BrowserWidget;
 
 class BraveBrowserNativeWidgetMac : public BrowserNativeWidgetMac {
  public:
-  BraveBrowserNativeWidgetMac(BrowserFrame* browser_frame,
+  BraveBrowserNativeWidgetMac(BrowserWidget* browser_widget,
                               BrowserView* browser_view);
   ~BraveBrowserNativeWidgetMac() override;
 
