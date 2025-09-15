@@ -8,7 +8,7 @@
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/darker_theme/features.h"
 #include "brave/browser/ui/darker_theme/pref_names.h"
-#include "brave/browser/ui/views/frame/brave_browser_frame.h"
+#include "brave/browser/ui/views/frame/brave_browser_widget.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -48,13 +48,14 @@ IN_PROC_BROWSER_TEST_F(DarkerThemeBrowserTest, EnableDarkerMode) {
       darker_theme::prefs::kBraveDarkerMode));
 
   auto* browser_view = static_cast<BrowserView*>(browser()->window());
-  auto* browser_frame = static_cast<BraveBrowserFrame*>(browser_view->frame());
+  auto* browser_widget =
+      static_cast<BraveBrowserWidget*>(browser_view->frame());
   auto* theme_service =
       ThemeServiceFactory::GetForProfile(browser()->profile());
   ASSERT_TRUE(theme_service);
   theme_service->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
 
-  auto color_provider_key = browser_frame->GetColorProviderKey();
+  auto color_provider_key = browser_widget->GetColorProviderKey();
   ASSERT_FALSE(color_provider_key.scheme_variant.has_value());
   ASSERT_EQ(color_provider_key.color_mode,
             ui::ColorProviderKey::ColorMode::kDark);
@@ -62,21 +63,21 @@ IN_PROC_BROWSER_TEST_F(DarkerThemeBrowserTest, EnableDarkerMode) {
   auto* prefs = browser()->profile()->GetPrefs();
   // Enable the darker theme.
   prefs->SetBoolean(darker_theme::prefs::kBraveDarkerMode, true);
-  color_provider_key = browser_frame->GetColorProviderKey();
+  color_provider_key = browser_widget->GetColorProviderKey();
   EXPECT_TRUE(color_provider_key.scheme_variant.has_value());
   EXPECT_EQ(*color_provider_key.scheme_variant,
             ui::ColorProviderKey::SchemeVariant::kDarker);
 
-  auto* color_provider = browser_frame->GetColorProvider();
+  auto* color_provider = browser_widget->GetColorProvider();
   ASSERT_TRUE(color_provider);
   EXPECT_EQ(color_provider->GetColor(kColorForTest), kDarkerColorForTest);
 
   // Disable the darker theme.
   prefs->SetBoolean(darker_theme::prefs::kBraveDarkerMode, false);
-  color_provider_key = browser_frame->GetColorProviderKey();
+  color_provider_key = browser_widget->GetColorProviderKey();
   EXPECT_FALSE(color_provider_key.scheme_variant.has_value());
 
-  color_provider = browser_frame->GetColorProvider();
+  color_provider = browser_widget->GetColorProvider();
   EXPECT_EQ(color_provider->GetColor(kColorForTest), kDarkColorForTest);
 }
 
@@ -124,13 +125,14 @@ IN_PROC_BROWSER_TEST_F(DarkerThemeFeatureToggleOffBrowserTest,
   // Even if the preference was previously set to true, the darker theme
   // should not be applied when the feature flag is off.
   auto* browser_view = static_cast<BrowserView*>(browser()->window());
-  auto* browser_frame = static_cast<BraveBrowserFrame*>(browser_view->frame());
+  auto* browser_widget =
+      static_cast<BraveBrowserWidget*>(browser_view->frame());
   auto* theme_service =
       ThemeServiceFactory::GetForProfile(browser()->profile());
   ASSERT_TRUE(theme_service);
   theme_service->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
 
-  auto color_provider_key = browser_frame->GetColorProviderKey();
+  auto color_provider_key = browser_widget->GetColorProviderKey();
   ASSERT_EQ(color_provider_key.color_mode,
             ui::ColorProviderKey::ColorMode::kDark);
   EXPECT_FALSE(color_provider_key.scheme_variant.has_value())
