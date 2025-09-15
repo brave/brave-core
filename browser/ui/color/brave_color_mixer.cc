@@ -614,10 +614,10 @@ void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
 
   // |key.color_mode| always dark as we use dark native theme for
-  // private/tor/guest profile. See BraveBrowserFrame::GetNativeTheme().
+  // private/tor/guest profile. See BraveBrowserWidget::GetNativeTheme().
   // Exceptionally, below side panel header colors should be brave theme
-  // specific because side panel header colors should be aligned with
-  // side panel contents.
+  // specific because side panel header colors should be aligned with side panel
+  // contents.
   const bool is_dark = dark_mode::GetActiveBraveDarkModeType() ==
                        dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
   // These colors should be nala colors, but we don't necessarily match the
