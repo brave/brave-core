@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/rand_util.h"
 #include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/common/features.h"
@@ -139,6 +140,11 @@ void BackupResultsServiceImpl::FetchBackupResults(
   if (should_render) {
     auto create_params = content::WebContents::CreateParams(otr_profile);
     web_contents = content::WebContents::Create(create_params);
+
+    int random_width = base::RandInt(800, 1920);
+    int random_height = base::RandInt(600, 1080);
+    web_contents->Resize({random_width, random_height});
+
     auto web_preferences = web_contents->GetOrCreateWebPreferences();
     web_preferences.supports_multiple_windows = false;
     web_contents->SetWebPreferences(web_preferences);
