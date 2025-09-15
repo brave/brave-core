@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/startup/startup_browser_creator.cc b/chrome/browser/ui/startup/startup_browser_creator.cc
-index 4e73a019f990be661d177fb59bdc9b9603275dd6..6ef2149318fd51868c69144803b05cc32a247bde 100644
+index 2a10728ee12e6fb47070c6c30d32564351894d89..eb69e9cb1451a06f18be3b7b579cc8384a7821a4 100644
 --- a/chrome/browser/ui/startup/startup_browser_creator.cc
 +++ b/chrome/browser/ui/startup/startup_browser_creator.cc
 @@ -46,6 +46,7 @@

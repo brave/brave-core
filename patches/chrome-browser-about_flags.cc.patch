@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 17097a283683f5faf8154609fc059229ffb07c1c..fbf5cdb6eeca0ab0f8ebb6f98c3fea25677d60bf 100644
+index 37db2cc67672b6b63950374396e34816e9ba55d4..69f6d1dd6da1304d22e8e8f25e9e5334b5016884 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4927,6 +4927,7 @@ constexpr char kWebiumFlag[] = "webium";
+@@ -4908,6 +4908,7 @@ const FeatureEntry::FeatureVariation kNtpEnterpriseShortcutsVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

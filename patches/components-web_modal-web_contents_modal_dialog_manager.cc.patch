@@ -1,8 +1,8 @@
 diff --git a/components/web_modal/web_contents_modal_dialog_manager.cc b/components/web_modal/web_contents_modal_dialog_manager.cc
-index 472ba00eb467edfcfb781048a0f98540199bc834..26f425211f49fce8401bdcffc123eb4b52dcd3cb 100644
+index 5e8dc375eedb78d1995f4a36033da1337184b5e8..9bc7e3d8c7321c5b97e5efca7b4867058c41d22e 100644
 --- a/components/web_modal/web_contents_modal_dialog_manager.cc
 +++ b/components/web_modal/web_contents_modal_dialog_manager.cc
-@@ -178,6 +178,7 @@ void WebContentsModalDialogManager::OnVisibilityChanged(
+@@ -183,6 +183,7 @@ void WebContentsModalDialogManager::OnVisibilityChanged(
    const content::Visibility previous_web_contents_visibility =
        web_contents_visibility_;
    web_contents_visibility_ = visibility;

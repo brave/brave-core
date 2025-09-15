@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/resources/settings/basic_page/basic_page.ts b/chrome/browser/resources/settings/basic_page/basic_page.ts
-index d61f8ff7f101eb47e5974e62775d813ea73256f7..d69b3fd5c33db1911223c7fca507d75b52f50f0d 100644
+index fc1a30aaa810ec703aa620169abb24c8ebad7208..adc5e1bbd4ee87591afe0b500b1ed215497f2e41 100644
 --- a/chrome/browser/resources/settings/basic_page/basic_page.ts
 +++ b/chrome/browser/resources/settings/basic_page/basic_page.ts
-@@ -53,7 +53,7 @@ export class SettingsBasicPageElement extends SettingsBasicPageElementBase {
-
+@@ -54,7 +54,7 @@ export class SettingsBasicPageElement extends SettingsBasicPageElementBase {
+ 
    /** Overrides MainPageMixin method. */
    override containsRoute(route: Route|null): boolean {
 -    return !route || routes.PRIVACY.contains(route);
 +    return !route || routes.BASIC.contains(route) || (routes.ADVANCED && routes.ADVANCED.contains(route));
    }
-
+ 
    // SettingsViewMixin implementation.
