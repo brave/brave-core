@@ -327,8 +327,7 @@ const Config = function () {
     'zebpay_sandbox_client_secret',
     'zebpay_sandbox_oauth_url',
     'use_clang_coverage',
-    'coverage_instrumentation_input_file',
-    'use_clang_profiling_inside_sandbox',
+    'coverage_instrumentation_input_file'
   ]
 }
 
@@ -941,7 +940,9 @@ Config.prototype.updateInternal = function (options) {
     this.is_asan = false
   }
 
-  this.use_clang_coverage = !!options.use_clang_coverage
+  if (options.use_clang_coverage) {
+    this.use_clang_coverage = true
+  }
 
   if (options.is_ubsan) {
     this.is_ubsan = true
