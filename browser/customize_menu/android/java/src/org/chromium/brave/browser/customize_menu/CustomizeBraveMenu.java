@@ -26,6 +26,9 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.preference.Preference;
 
+import org.chromium.base.Callback;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.brave.browser.customize_menu.settings.BraveCustomizeMenuPreferenceFragment;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -328,55 +331,82 @@ public class CustomizeBraveMenu {
     }
 
     /**
-     * Creates a standardized menu icon drawable with consistent size and tinting. Ensures all menu
-     * icons have uniform appearance by applying standard sizing and color tinting. Icons smaller
-     * than the target size are scaled up to match the standard menu icon dimensions.
+     * Creates a standardized menu icon drawable with consistent size and tinting asynchronously.
+     * Ensures all menu icons have uniform appearance by applying standard sizing and color tinting.
+     * Icons smaller than the target size are scaled up to match the standard menu icon dimensions.
+     * Bitmap recreation is performed on a background thread to avoid blocking the UI thread.
      *
      * @param context the Android context for accessing resources
      * @param drawableRes the drawable resource ID to standardize
      * @param iconSizePx the target icon size in pixels (must be positive)
-     * @return a standardized drawable with applied tinting and sizing, or {@code null} if the
+     * @param callback the callback to receive the standardized drawable, or {@code null} if the
      *     resource cannot be loaded
      */
-    @Nullable
-    public static Drawable getStandardizedMenuIcon(
+    @SuppressWarnings("NullAway")
+    public static void getStandardizedMenuIconAsync(
             final Context context,
             @DrawableRes final int drawableRes,
-            @Size(min = 1) final int iconSizePx) {
+            @Size(min = 1) final int iconSizePx,
+            final Callback<Drawable> callback) {
         if (drawableRes == 0) {
-            return null;
+            callback.onResult(null);
+            return;
         }
+
         Drawable src = ContextCompat.getDrawable(context, drawableRes);
         if (src == null) {
-            return null;
+            callback.onResult(null);
+            return;
         }
 
         // Work on a mutated instance to avoid shared state issues.
-        Drawable drawable = src.mutate();
+        final Drawable drawable = src.mutate();
 
         final int width = drawable.getIntrinsicWidth();
         final int height = drawable.getIntrinsicHeight();
 
         if (width < 1 || height < 1) {
-            return null;
+            callback.onResult(null);
+            return;
         }
 
         // If required, standardize icon size to match menu icons.
         if (width < iconSizePx || height < iconSizePx) {
-            Bitmap bitmap = Bitmap.createBitmap(iconSizePx, iconSizePx, Bitmap.Config.ARGB_8888);
-            bitmap.setDensity(context.getResources().getDisplayMetrics().densityDpi);
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawable.draw(canvas);
-            drawable = new BitmapDrawable(context.getResources(), bitmap);
-        }
+            // Offload bitmap recreation to background thread.
+            PostTask.postTask(
+                    TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                    () -> {
+                        // Create bitmap on background thread.
+                        Bitmap bitmap =
+                                Bitmap.createBitmap(
+                                        iconSizePx, iconSizePx, Bitmap.Config.ARGB_8888);
+                        bitmap.setDensity(context.getResources().getDisplayMetrics().densityDpi);
+                        Canvas canvas = new Canvas(bitmap);
+                        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                        drawable.draw(canvas);
+                        final Drawable resizedDrawable =
+                                new BitmapDrawable(context.getResources(), bitmap);
 
+                        // Apply tinting.
+                        maybeApplyTinting(context, drawable);
+
+                        // Return to UI thread with result.
+                        PostTask.postTask(
+                                TaskTraits.UI_DEFAULT, () -> callback.onResult(resizedDrawable));
+                    });
+        } else {
+            // No resizing needed, apply tinting and return directly.
+            maybeApplyTinting(context, drawable);
+            callback.onResult(drawable);
+        }
+    }
+
+    private static void maybeApplyTinting(final Context context, final Drawable drawable) {
         final ColorStateList tintList =
                 AppCompatResources.getColorStateList(context, DEFAULT_COLOR_RES_MENU_ITEM_ICON);
         if (tintList != null) {
             drawable.setTintList(tintList);
         }
-        return drawable;
     }
 
     /**

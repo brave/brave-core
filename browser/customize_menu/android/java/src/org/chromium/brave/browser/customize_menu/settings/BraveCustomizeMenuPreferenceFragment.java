@@ -8,7 +8,6 @@ package org.chromium.brave.browser.customize_menu.settings;
 import static org.chromium.base.BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT;
 
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.DrawableRes;
@@ -104,12 +103,15 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
         preference.setIconSpaceReserved(true);
 
         @DrawableRes int drawableRes = CustomizeBraveMenu.getDrawableResFromMenuItemId(menuItem.id);
-        final Drawable drawable =
-                CustomizeBraveMenu.getStandardizedMenuIcon(
-                        requireContext(), drawableRes, mIconSizePx);
-        if (drawable != null) {
-            preference.setIcon(drawable);
-        }
+        CustomizeBraveMenu.getStandardizedMenuIconAsync(
+                requireContext(),
+                drawableRes,
+                mIconSizePx,
+                drawable -> {
+                    if (drawable != null) {
+                        preference.setIcon(drawable);
+                    }
+                });
 
         preference.setOnPreferenceChangeListener(this);
         return preference;

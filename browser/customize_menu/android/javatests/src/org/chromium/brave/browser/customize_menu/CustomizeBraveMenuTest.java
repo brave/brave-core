@@ -349,8 +349,10 @@ public class CustomizeBraveMenuTest {
     @Test
     public void testGetStandardizedMenuIcon_InvalidDrawableRes() {
         // Test that it handles invalid resource ID gracefully.
-        Drawable result = CustomizeBraveMenu.getStandardizedMenuIcon(mContext, 0, 24);
-        assertNull(result);
+        final Drawable[] result = new Drawable[1];
+        CustomizeBraveMenu.getStandardizedMenuIconAsync(
+                mContext, 0, 24, drawable -> result[0] = drawable);
+        assertNull(result[0]);
     }
 
     @Test
