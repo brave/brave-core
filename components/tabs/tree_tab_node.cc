@@ -10,10 +10,10 @@
 #include <utility>
 #include <variant>
 
+#include "base/containers/adapters.h"
 #include "absl/functional/overload.h"
 #include "base/containers/adapters.h"
 #include "base/functional/bind.h"
-#include "base/logging.h"
 #include "base/types/to_address.h"
 #include "components/tabs/public/tab_interface.h"
 
@@ -46,10 +46,8 @@ void TreeTabNode::FlattenTreeTabs(TabCollection& root) {
   CollectTreeNodesRecursively(root, all_tree_nodes);
 
   // Process tree nodes in reverse order to handle children before parents.
-  std::reverse(all_tree_nodes.begin(), all_tree_nodes.end());
-
-  // Now we have all tree nodes in reverse post-order traversal.
-  for (auto* tree_node : all_tree_nodes) {
+  // i.e. we have all tree nodes in reverse post-order traversal.
+  for (auto* tree_node : base::Reversed(all_tree_nodes)) {
     // Move all tabs from the tree node to its parent collection.
 
     // * We're going to remove tab tree nodes and insert all children of it to
