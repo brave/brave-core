@@ -123,7 +123,7 @@ class Client {
       Request request,
       Callback callback) {
     auto on_response =
-        [](decltype(callback) callback,
+        [](Callback callback,
            std::unique_ptr<network::SimpleURLLoader> simple_url_loader,
            std::optional<std::string> response_body) {
           using Entry = Endpoint::template EntryFor<Request>;
