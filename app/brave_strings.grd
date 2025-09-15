@@ -701,6 +701,14 @@ Brave is unable to recover your settings.
           Pin Brave
         </message>
       </if>
+      <if expr="is_macosx">
+        <message name="IDS_PIN_INFOBAR_DOCK_TEXT" desc="Text to show in an infobar when Brave is not in the Dock.">
+          Keep Brave in your Dock to get to it quickly anytime
+        </message>
+        <message name="IDS_PIN_INFOBAR_DOCK_BUTTON" desc="Label for the button on an infobar offering to keep Brave in the Dock.">
+          Keep in Dock
+        </message>
+      </if>
         <message name="IDS_DEFAULT_BROWSER_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the current default browser.">
           Brave isn't your default browser
         </message>
@@ -994,6 +1002,20 @@ Brave is unable to recover your settings.
           Someone previously signed in to Brave on this computer as <ph name="ACCOUNT_EMAIL_LAST">$1<ex>user@example.com</ex></ph>. Please create a new Brave user to keep your information separate.
         </message>
       </if>
+
+      <!-- Session Restore Infobar -->
+      <message name="IDS_SESSION_RESTORE_TURN_OFF_RESTORE_FROM_SESSION" desc="Message that appears in the session restore infobar when the user has restored their tabs once.">
+        Continue where you left off: Brave restored your tabs from your last session. You can turn this off in
+      </message>
+      <message name="IDS_SESSION_RESTORE_TURN_OFF_RESTORE_FROM_RESTART" desc="Message that appears in the session restore infobar when the user has restored their tabs multiple times.">
+        Continue where you left off: Brave restores your tabs every time you restart. To turn this off, go to
+      </message>
+      <message name="IDS_SESSION_RESTORE_TURN_ON" desc="Message that appears in the session restore infobar to get the user to opt-in into session restore.">
+        Continue where you left off: Brave can restore your tabs every time you restart. To turn this on, go to
+      </message>
+      <message name="IDS_SESSION_RESTORE_LINK" desc="Text for the link in the session restore infobar to open the Settings page.">
+        Settings.
+      </message>
 
       <!-- Enterprise sign-in dialog -->
       <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_PROFILE_REQUIRED_BY_ORG_TITLE" desc="Title of the screen in the profile creation flow where the user is asked whether they want to confirm signing in to Brave with their enterprise account when it is mandatory to sign in to Brave with the enterprise account.">
@@ -1433,9 +1455,8 @@ Brave is unable to recover your settings.
         </if>
 
         <!-- On Sign-in Avatar Button Label Desktop -->
-        <!-- TODO(crbug.com/417928515): Finalize the string and make it translateable. -->
-        <message translateable="false" name="IDS_AVATAR_BUTTON_MAKING_CHROME_YOURS" desc="">
-          Making Brave Yours
+        <message name="IDS_AVATAR_BUTTON_MAKING_CHROME_YOURS" desc="The avatar button label when the user has just signed in. When clicked, it opens the profile menu.">
+          Making Brave yours...
         </message>
       </if>
 
@@ -1808,6 +1829,9 @@ Brave is unable to recover your settings.
         <message name="IDS_CONTENT_LENS_OVERLAY_HOMEWORK_ENTRYPOINT_LABEL" desc="The label of the Lens overlay entrypoint in the omnibox offering homework help">
           Homework help
         </message>
+        <message name="IDS_CONTENT_LENS_OVERLAY_ASK_GOOGLE_ENTRYPOINT_LABEL" desc="The label of the Lens overlay entrypoint in the omnibox, allowing users to ask about the page">
+          Ask
+        </message>
         <message name="IDS_SIDE_PANEL_LENS_OVERLAY_TOOLBAR_TOOLTIP" desc="The tooltip for the Lens overlay toolbar button.">
           Search with Image Search
         </message>
@@ -1839,11 +1863,13 @@ Brave is unable to recover your settings.
         <message name="IDS_LENS_OVERLAY_VIDEO_ENTRYPOINT_LABEL_ALT3" desc="Label for the Lens overlay command, through which the video will be searched using the Image Search service.">
           Search this video with Image Search
         </message>
+      </if>
 
-        <message name="IDS_AI_MODE_ENTRYPOINT_LABEL" desc="The label of the AI mode entrypoint in the omnibox">
-          AI Mode
-        </message>
+      <message name="IDS_AI_MODE_ENTRYPOINT_LABEL" desc="The label of the AI mode entrypoint in the omnibox" formatter_data="android_java">
+        AI Mode
+      </message>
 
+      <if expr="not is_android">
         <!-- Lens Side Panel Error Page -->
         <message name="IDS_SIDE_PANEL_LENS_OVERLAY_GENERIC_ERROR_PAGE_FIRST_LINE" desc="Text shown on the side panel for the Lens feature when there is a network or other server error. The texts informs the user that an error has occured.">
           Something went wrong
@@ -2338,6 +2364,9 @@ Brave is unable to recover your settings.
         <message name="IDS_DOWNLOAD_HASH_MISMATCH" desc="Error message displayed in the main dialog when the downloaded file fails hash verification.">
           The downloaded file failed verification.
         </message>
+        <message name="IDS_UPDATER_DISK_FULL" desc="Error displayed if there is not enough disk space to install and application or download an update.">
+          Not enough disk space.
+        </message>
         <message name="IDS_GENERIC_DOWNLOAD_ERROR" desc="Error message displayed in the main dialog when the update client returns an error while downloading.">
           Download error: <ph name="DOWNLOAD_ERROR">$1<ex>error-internal</ex></ph>.
         </message>
@@ -2585,6 +2614,20 @@ Brave is unable to recover your settings.
       <message name="IDS_DICE_MIGRATION_CONFIRMATION_TOAST_BUTTON" desc="The text on the button of the confirmation toast shown after the user clicks the accept button on the Dice Migration dialog, that allows the users to control the sync settings or sign out of Brave.">
         Manage
       </message>
+
+      <!-- Profile menu strings -->
+      <if expr="not is_android">
+        <if expr="use_titlecase">
+          <message name="IDS_PROFILE_MENU_ACCOUNT_SETTINGS_BUTTON" desc="Button in the avatar menu bubble view for opening Brave account settings.">
+            Your Account in Brave
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+          <message name="IDS_PROFILE_MENU_ACCOUNT_SETTINGS_BUTTON" desc="Button in the avatar menu bubble view for opening Brave account settings.">
+            Your account in Brave
+          </message>
+        </if>
+      </if>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta
         </message><message name="IDS_CHROME_SHORTCUT_NAME_DEV" desc="The Chrome shortcut name for dev channel">
