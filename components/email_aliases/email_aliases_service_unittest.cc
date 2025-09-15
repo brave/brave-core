@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -19,10 +20,9 @@
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "net/base/net_errors.h"
-#include "base/test/mock_callback.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -405,7 +405,8 @@ class EmailAliasesAPITest : public ::testing::Test {
     }
 
     base::MockCallback<
-        base::OnceCallback<void(base::expected<std::string, std::string>)>> cb;
+        base::OnceCallback<void(base::expected<std::string, std::string>)>>
+        cb;
     bool called = false;
     base::expected<std::string, std::string> result_out;
     EXPECT_CALL(cb, Run(testing::_))
