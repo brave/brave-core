@@ -1898,7 +1898,7 @@ public class BytecodeTest {
                         ActivityTabProvider.class,
                         TopUiThemeColorProvider.class,
                         EdgeToEdgeSystemBarColorHelper.class,
-                        OneshotSupplier.class,
+                        DesktopWindowStateManager.class,
                         ObservableSupplier.class,
                         boolean.class));
         Assert.assertTrue(
