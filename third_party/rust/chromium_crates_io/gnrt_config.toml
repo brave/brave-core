@@ -422,3 +422,9 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.zerocopy]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.impl-trait-for-tuples]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.parity-scale-codec]
+extra_input_roots = ['../README.md' ]
