@@ -21,9 +21,10 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
 
-BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(BrowserFrame* frame,
-                                                   BrowserView* browser_view)
-    : BrowserFrameViewWin(frame, browser_view) {
+BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(
+    BrowserWidget* browser_widget,
+    BrowserView* browser_view)
+    : BrowserFrameViewWin(browser_widget, browser_view) {
   frame_graphic_.reset(
       new BraveWindowFrameGraphic(browser_view->browser()->profile()));
 

@@ -18,9 +18,9 @@
 #include "components/remote_cocoa/common/native_widget_ns_window_host.mojom.h"
 
 BraveBrowserNativeWidgetMac::BraveBrowserNativeWidgetMac(
-    BrowserFrame* browser_frame,
+    BrowserWidget* browser_widget,
     BrowserView* browser_view)
-    : BrowserNativeWidgetMac(browser_frame, browser_view),
+    : BrowserNativeWidgetMac(browser_widget, browser_view),
       browser_view_(browser_view->GetAsWeakPtr()) {}
 
 BraveBrowserNativeWidgetMac::~BraveBrowserNativeWidgetMac() {}
