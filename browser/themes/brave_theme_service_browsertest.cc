@@ -30,6 +30,7 @@
 #include "ui/color/color_provider.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_observer.h"
+#include "ui/native_theme/os_settings_provider.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "base/run_loop.h"
@@ -255,7 +256,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, MAYBE_DarkModeChangeByRegTest) {
   // And Toggle it twice from initial value to go back to initial value  because
   // reg value changes system value. Otherwise, dark mode config could be
   // changed after running this test.
-  if (!ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported()) {
+  if (!ui::OsSettingsProvider::Get().DarkColorSchemeAvailable()) {
     return;
   }
 

@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "brave/browser/themes/brave_dark_mode_utils_internal.h"
 #include "ui/native_theme/native_theme_win.h"
+#include "ui/native_theme/os_settings_provider.h"
 
 namespace ui {
 // This resets dark mode to os theme when user changes brave theme from
@@ -32,8 +33,7 @@ void SetSystemDarkMode(BraveDarkModeType type) {
       type != dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT);
   // Reset and follow os dark mode.
   if (type == BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT) {
-    DCHECK(
-        ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported());
+    DCHECK(ui::OsSettingsProvider::Get().DarkColorSchemeAvailable());
     // This sets preferred color scheme on its own.
     ui::UpdateDarkModeStatus();
     return;
