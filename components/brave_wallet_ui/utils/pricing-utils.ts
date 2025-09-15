@@ -25,17 +25,13 @@ export const getTokenPriceFromRegistry = (
     return undefined
   }
 
-  if (
-    [BraveWallet.CoinType.SOL, BraveWallet.CoinType.ETH].includes(token.coin)
-  ) {
-    return registry.find(
-      (p) =>
-        p.coinType === token.coin
-        && p.chainId === token.chainId
-        && p.address.toLowerCase() === token.contractAddress?.toLowerCase(),
-    )
-  }
-  return registry.find((p) => p.coinType === token.coin)
+  return registry.find(
+    (p) =>
+      p.coinType === token.coin
+      && p.chainId === token.chainId
+      && p.address.toLowerCase()
+        === (token.contractAddress?.toLowerCase() || ''),
+  )
 }
 
 export const getTokenPriceAmountFromRegistry = (
@@ -135,11 +131,6 @@ export const getPriceRequestForToken = (
     'coin' | 'chainId' | 'contractAddress'
   >,
 ): BraveWallet.AssetPriceRequest | undefined => {
-  // Skip price of testnet tokens
-  if (SupportedTestNetworks.includes(token.chainId)) {
-    return
-  }
-
   return {
     coinType: token.coin,
     chainId: token.chainId,

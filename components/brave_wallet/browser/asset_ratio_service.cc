@@ -113,14 +113,14 @@ std::string CreatePricingRequestPayload(
 
   for (const auto& request : requests) {
     base::Value::Dict response_item;
-    auto coin_type_str = GetStringFromCoinType(request->coin_type);
-    if (coin_type_str) {
+    if (auto coin_type_str = GetStringFromCoinType(request->coin_type)) {
       response_item.Set("coin_type", *coin_type_str);
+    } else {
+      LOG(ERROR) << "Invalid coin type: " << request->coin_type;
+      continue;
     }
 
-    if (request->chain_id) {
-      response_item.Set("chain_id", *request->chain_id);
-    }
+    response_item.Set("chain_id", request->chain_id);
 
     if (request->address) {
       response_item.Set("address", *request->address);
@@ -141,9 +141,7 @@ std::vector<mojom::AssetPricePtr> DummyPrices(
   for (const auto& request : requests) {
     auto price = mojom::AssetPrice::New();
     price->coin_type = request->coin_type;
-    if (request->chain_id) {
-      price->chain_id = *request->chain_id;
-    }
+    price->chain_id = request->chain_id;
     if (request->address) {
       price->address = *request->address;
     }

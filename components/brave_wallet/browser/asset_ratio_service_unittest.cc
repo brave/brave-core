@@ -239,6 +239,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPrice) {
     },
     {
       "coin_type": "BTC",
+      "chain_id": "bitcoin_mainnet",
       "price": "102000",
       "percentage_change_24h": "5.2",
       "vs_currency": "USD",
@@ -276,6 +277,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPrice) {
   // BTC native token
   asset_price = brave_wallet::mojom::AssetPrice::New();
   asset_price->coin_type = mojom::CoinType::BTC;
+  asset_price->chain_id = "bitcoin_mainnet";
   asset_price->price = "102000";
   asset_price->vs_currency = "USD";
   asset_price->cache_status = mojom::Gate3CacheStatus::kMiss;

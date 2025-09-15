@@ -23,6 +23,18 @@ namespace brave_wallet {
 
 namespace {
 
+std::optional<std::string> ParseNullableString(const base::Value& value) {
+  if (value.is_none()) {
+    return "";
+  }
+
+  if (value.is_string()) {
+    return value.GetString();
+  }
+
+  return std::nullopt;
+}
+
 std::optional<mojom::Gate3CacheStatus> GetCacheStatusFromString(
     const std::string& cache_status) {
   std::string uppercase_status = base::ToUpperASCII(cache_status);
@@ -96,6 +108,11 @@ std::vector<mojom::AssetPricePtr> ParseAssetPrices(
       continue;
     }
 
+    auto address = ParseNullableString(payload->address);
+    if (!address.has_value()) {
+      continue;
+    }
+
     auto cache_status = GetCacheStatusFromString(payload->cache_status);
     if (!cache_status) {
       continue;
@@ -105,8 +122,8 @@ std::vector<mojom::AssetPricePtr> ParseAssetPrices(
 
     auto asset_price = mojom::AssetPrice::New();
     asset_price->coin_type = *coin_type;
-    asset_price->chain_id = payload->chain_id.value_or("");
-    asset_price->address = payload->address.value_or("");
+    asset_price->chain_id = payload->chain_id;
+    asset_price->address = *address;
     asset_price->price = payload->price;
     asset_price->vs_currency = payload->vs_currency;
     asset_price->cache_status = *cache_status;

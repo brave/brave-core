@@ -36,17 +36,11 @@ extension Array where Element == BraveWallet.AssetPrice {
   func getTokenPrice(
     for token: BraveWallet.BlockchainToken
   ) -> BraveWallet.AssetPrice? {
-    // For SOL and ETH, match by coinType, chainId, and contractAddress
-    if [BraveWallet.CoinType.sol, BraveWallet.CoinType.eth].contains(token.coin) {
-      return first { assetPrice in
-        assetPrice.coinType == token.coin
-          && assetPrice.chainId == token.chainId
-          && assetPrice.address.lowercased() == token.contractAddress.lowercased()
-      }
+    return first { assetPrice in
+      assetPrice.coinType == token.coin
+        && assetPrice.chainId == token.chainId
+        && assetPrice.address.lowercased() == token.contractAddress.lowercased()
     }
-
-    // For other coins, match by coinType only
-    return first { $0.coinType == token.coin }
   }
 
   /// Updates the existing array with new AssetPrice objects, ensuring no duplicates

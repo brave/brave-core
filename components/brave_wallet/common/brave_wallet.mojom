@@ -479,7 +479,7 @@ struct AssetTimePrice {
 
 struct AssetPriceRequest {
   CoinType coin_type;
-  string? chain_id;
+  string chain_id;
   string? address;
 };
 

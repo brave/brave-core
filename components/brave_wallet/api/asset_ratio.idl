@@ -121,10 +121,11 @@ namespace asset_ratio {
     DOMString coin_type;
 
     // e.g. "0x1"
-    DOMString? chain_id;
+    DOMString chain_id;
 
+    // Nullable DOMString field
     // e.g. "0x0D8775F648430679A709E98d2b0Cb6250d2887EF"
-    DOMString? address;
+    any address;
 
     // e.g. "0.55393"
     DOMString price;
