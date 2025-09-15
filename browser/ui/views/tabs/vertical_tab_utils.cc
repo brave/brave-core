@@ -9,6 +9,7 @@
 #include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -72,6 +73,12 @@ bool ShouldShowWindowTitleForVerticalTabs(const Browser* browser) {
 bool IsFloatingVerticalTabsEnabled(const Browser* browser) {
   if (!ShouldShowVerticalTabs(browser)) {
     return false;
+  }
+
+  if (ShouldHideVerticalTabsCompletelyWhenCollapsed(browser)) {
+    // In this case, we should support floating mode regardless of the setting
+    // of kVerticalTabsFloatingEnabled.
+    return true;
   }
 
   return browser->profile()->GetPrefs()->GetBoolean(
@@ -152,6 +159,13 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
 #else
 #error "not handled platform"
 #endif
+}
+
+bool ShouldHideVerticalTabsCompletelyWhenCollapsed(const Browser* browser) {
+  return base::FeatureList::IsEnabled(
+             tabs::features::kBraveVerticalTabHideCompletely) &&
+         browser->profile()->GetPrefs()->GetBoolean(
+             brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed);
 }
 
 }  // namespace tabs::utils

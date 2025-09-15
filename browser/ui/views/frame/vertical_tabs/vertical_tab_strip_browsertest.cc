@@ -1148,6 +1148,17 @@ class VerticalTabStripHideCompletelyTest : public VerticalTabStripBrowserTest {
 
   ~VerticalTabStripHideCompletelyTest() override = default;
 
+  void SetHideCompletelyWhenCollapsed(bool hide) {
+    browser()->profile()->GetPrefs()->SetBoolean(
+        brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed, hide);
+  }
+
+  void SetUpOnMainThread() override {
+    VerticalTabStripBrowserTest::SetUpOnMainThread();
+
+    SetHideCompletelyWhenCollapsed(true);
+  }
+
  private:
   base::test::ScopedFeatureList feature_list_;
 };
@@ -1169,9 +1180,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
   // The minimum width of the region view should be 4px, which is narrower than
   // it used to be.
   EXPECT_EQ(4, region_view->GetMinimumSize().width());
+
+  // When the preference is disabled, the minimum width should be back to 41px.
+  SetHideCompletelyWhenCollapsed(false);
+  EXPECT_EQ(41, region_view->GetMinimumSize().width());
 }
 
-IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInVisible) {
+IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInvisible) {
   ToggleVerticalTabStrip();
 
   const gfx::AnimationTestApi::RenderModeResetter render_mode_resetter =
@@ -1196,5 +1211,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInVisible) {
   ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
 
   // When expanded, it should get visible again.
+  EXPECT_TRUE(region_view->GetVisible());
+
+  // When we turn off the preference, it should be visible even when collapsed.
+  region_view->ToggleState();
+  ASSERT_EQ(VerticalTabStripRegionView::State::kCollapsed,
+            region_view->state());
+  ASSERT_FALSE(region_view->GetVisible());
+  SetHideCompletelyWhenCollapsed(false);
   EXPECT_TRUE(region_view->GetVisible());
 }

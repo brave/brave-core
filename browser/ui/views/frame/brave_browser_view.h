@@ -167,7 +167,7 @@ class BraveBrowserView : public BrowserView,
                            BraveMultiContentsViewTest);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest, GetMinimumWidth);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest,
-                           ShouldBeInVisible);
+                           ShouldBeInvisible);
   FRIEND_TEST_ALL_PREFIXES(SideBySideWithRoundedCornersTest,
                            TabFullscreenStateTest);
   FRIEND_TEST_ALL_PREFIXES(BraveBrowserViewWithRoundedCornersTest,

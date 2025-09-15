@@ -558,6 +558,15 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       base::BindRepeating(&VerticalTabStripRegionView::OnBrowserPanelsMoved,
                           base::Unretained(this)));
 
+  if (base::FeatureList::IsEnabled(
+          tabs::features::kBraveVerticalTabHideCompletely)) {
+    hide_completely_when_collapsed_pref_.Init(
+        brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed, prefs,
+        base::BindRepeating(&VerticalTabStripRegionView::
+                                OnHideComopletelyWhenCollapsedPrefChanged,
+                            base::Unretained(this)));
+  }
+
   widget_observation_.Observe(browser_view->GetWidget());
 
   // At this point, Browser hasn't finished its initialization. In order to
@@ -739,8 +748,7 @@ void VerticalTabStripRegionView::UpdateStateAfterDragAndDropFinished(
   DCHECK_NE(original_state, State::kExpanded)
       << "As per ExpandTabStripForDragging(), this shouldn't happen";
 
-  if (tabs::utils::IsFloatingVerticalTabsEnabled(browser_) &&
-      IsMouseHovered()) {
+  if (IsFloatingVerticalTabsEnabled() && IsMouseHovered()) {
     SetState(State::kFloating);
     return;
   }
@@ -995,8 +1003,7 @@ void VerticalTabStripRegionView::OnBoundsChanged(
   // when mouse is hovered, it expands to the full width.
   const bool is_hot_corner =
       IsBrowserFullscren() ||
-      (base::FeatureList::IsEnabled(
-           tabs::features::kBraveVerticalTabHideCompletely) &&
+      (tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_) &&
        state_ == State::kCollapsed);
 
   // Checks if the width is in valid range when it's visible.
@@ -1153,7 +1160,7 @@ void VerticalTabStripRegionView::OnCollapsedPrefChanged() {
 }
 
 void VerticalTabStripRegionView::OnFloatingModePrefChanged() {
-  if (!tabs::utils::IsFloatingVerticalTabsEnabled(browser_)) {
+  if (!IsFloatingVerticalTabsEnabled()) {
     if (state_ == State::kFloating) {
       SetState(State::kCollapsed);
     }
@@ -1168,6 +1175,17 @@ void VerticalTabStripRegionView::OnFloatingModePrefChanged() {
 void VerticalTabStripRegionView::OnExpandedStatePerWindowPrefChanged() {
   OnCollapsedPrefChanged();
   OnExpandedWidthPrefChanged();
+}
+
+void VerticalTabStripRegionView::OnHideComopletelyWhenCollapsedPrefChanged() {
+  OnFloatingModePrefChanged();
+  PreferredSizeChanged();
+  if (state_ == State::kCollapsed) {
+    // When setting is turned on/off, we should make sure vertical tab strip is
+    // getting hidden/shown.
+    SetVisible(
+        !tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_));
+  }
 }
 
 void VerticalTabStripRegionView::OnExpandedWidthPrefChanged() {
@@ -1214,8 +1232,7 @@ int VerticalTabStripRegionView::GetPreferredWidthForState(
       return 2;
     }
 
-    if (base::FeatureList::IsEnabled(
-            tabs::features::kBraveVerticalTabHideCompletely)) {
+    if (tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_)) {
       // Typical window frame border is 8px, so we can use 4px as vertical tab
       // space only takes inner 4px.
       return 4;
@@ -1254,8 +1271,7 @@ VerticalTabStripRegionView::GetTabStripScrollContainer() {
 bool VerticalTabStripRegionView::IsFloatingVerticalTabsEnabled() const {
   return IsFloatingEnabledForBrowserFullscreen() ||
          tabs::utils::IsFloatingVerticalTabsEnabled(browser_) ||
-         base::FeatureList::IsEnabled(
-             tabs::features::kBraveVerticalTabHideCompletely);
+         tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_);
 }
 
 bool VerticalTabStripRegionView::IsFloatingEnabledForBrowserFullscreen() const {
@@ -1374,8 +1390,7 @@ void VerticalTabStripRegionView::OnCollapseAnimationEnded() {
   CHECK_EQ(state_, State::kCollapsed);
 
   if (IsFloatingEnabledForBrowserFullscreen() ||
-      base::FeatureList::IsEnabled(
-          tabs::features::kBraveVerticalTabHideCompletely)) {
+      tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_)) {
     // When the animation ends, we should hide the vertical tab strip as we
     // don't want the tabstrip to be visible partially. This view only takes a
     // little width and watches mouse movement to expand itself.

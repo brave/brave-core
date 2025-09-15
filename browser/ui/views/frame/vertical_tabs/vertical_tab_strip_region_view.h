@@ -153,6 +153,7 @@ class VerticalTabStripRegionView : public views::View,
   void OnFloatingModePrefChanged();
   void OnExpandedStatePerWindowPrefChanged();
   void OnExpandedWidthPrefChanged();
+  void OnHideComopletelyWhenCollapsedPrefChanged();
 
   bool IsFloatingVerticalTabsEnabled() const;
   bool IsFloatingEnabledForBrowserFullscreen() const;
@@ -212,6 +213,7 @@ class VerticalTabStripRegionView : public views::View,
   BooleanPrefMember collapsed_pref_;
   BooleanPrefMember expanded_state_per_window_pref_;
   BooleanPrefMember floating_mode_pref_;
+  BooleanPrefMember hide_completely_when_collapsed_pref_;
 
   IntegerPrefMember expanded_width_pref_;
   int expanded_width_ = 220;
