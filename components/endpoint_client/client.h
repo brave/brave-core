@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include <type_traits>
 #include <utility>
 
 #include "base/check.h"
@@ -78,12 +79,49 @@ class Client {
   };
 
  public:
-  template <typename Request>
-    requires Endpoint::template
-  IsSupported<Request> static void Send(
+  // Overload selected when the given `Request` type is not supported by
+  // the current `Endpoint`. This definition never generates code: it only
+  // exists to provide a clean compile-time diagnostic.
+  template <typename Request, typename Callback>
+    requires(!requires { typename Endpoint::template EntryFor<Request>; })
+  static void Send(const scoped_refptr<network::SharedURLLoaderFactory>&,
+                   Request,
+                   Callback) {
+    using GotRequest = Request;
+    static_assert(base::AlwaysFalse<GotRequest>,
+                  "Request is not supported by Endpoint!");
+  }
+
+  // Overload selected when the given `Request` type is supported by the
+  // current `Endpoint`, but the provided `Callback` type does not match the
+  // expected callback signature. This definition never generates code: it
+  // only exists to provide a clean compile-time diagnostic.
+  template <typename Request, typename Callback>
+    requires(requires {
+      typename Endpoint::template EntryFor<Request>;
+    } && !std::same_as<Callback,
+                       typename Endpoint::template EntryFor<Request>::Callback>)
+  static void Send(const scoped_refptr<network::SharedURLLoaderFactory>&,
+                   Request,
+                   Callback) {
+    using GotCallback = Callback;
+    using ExpectedCallback =
+        typename Endpoint::template EntryFor<Request>::Callback;
+
+    static_assert(base::AlwaysFalse<GotCallback, ExpectedCallback>,
+                  "Callback is not the right type for Request - it must be "
+                  "Endpoint::EntryFor<Request>::Callback!");
+  }
+
+  template <typename Request, typename Callback>
+    requires(requires {
+      typename Endpoint::template EntryFor<Request>;
+    } && std::same_as<Callback,
+                      typename Endpoint::template EntryFor<Request>::Callback>)
+  static void Send(
       const scoped_refptr<network::SharedURLLoaderFactory>& url_loader_factory,
       Request request,
-      Endpoint::template EntryFor<Request>::Callback callback) {
+      Callback callback) {
     auto on_response =
         [](decltype(callback) callback,
            std::unique_ptr<network::SimpleURLLoader> simple_url_loader,

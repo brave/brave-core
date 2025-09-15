@@ -97,7 +97,7 @@ template <typename... Ts>
 concept UniqueTypes = requires {
   [] {
     struct Unique : std::type_identity<Ts>... {};
-  }();
+  };
 };
 
 enum class HTTPMethod {
@@ -223,13 +223,13 @@ class Endpoint {
                            std::type_identity<E>,
                            EntryForImpl<Req, Es...>> {};
 
- public:
   template <detail::Request Req>
-  static constexpr bool IsSupported =
+  static constexpr bool kIsSupported =
       base::SameAsAny<Req, typename Entries::Request...>;
 
+ public:
   template <detail::Request Req>
-    requires IsSupported<Req>
+    requires kIsSupported<Req>
   using EntryFor = typename EntryForImpl<Req, Entries...>::type;
 };
 
