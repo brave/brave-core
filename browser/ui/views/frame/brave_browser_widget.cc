@@ -1,9 +1,9 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/frame/brave_browser_frame.h"
+#include "brave/browser/ui/views/frame/brave_browser_widget.h"
 
 #include "brave/browser/themes/brave_private_window_theme_supplier.h"
 #include "brave/browser/ui/darker_theme/features.h"
@@ -16,13 +16,13 @@
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/views/frame/browser_frame.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "components/prefs/pref_service.h"
 #include "ui/color/color_provider_key.h"
 
-BraveBrowserFrame::BraveBrowserFrame(BrowserView* browser_view)
-    : BrowserFrame(browser_view), view_(browser_view) {
+BraveBrowserWidget::BraveBrowserWidget(BrowserView* browser_view)
+    : BrowserWidget(browser_view), view_(browser_view) {
   if (view_->browser()->profile()->IsIncognitoProfile() ||
       view_->browser()->profile()->IsTor() ||
       view_->browser()->profile()->IsGuestSession()) {
@@ -31,12 +31,12 @@ BraveBrowserFrame::BraveBrowserFrame(BrowserView* browser_view)
   }
 }
 
-BraveBrowserFrame::~BraveBrowserFrame() = default;
+BraveBrowserWidget::~BraveBrowserWidget() = default;
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
 // Tor/Guest profile should use DarkAura. If not, their native ui is affected by
 // normal windows theme change.
-const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
+const ui::NativeTheme* BraveBrowserWidget::GetNativeTheme() const {
   if ((view_->browser()->profile()->IsIncognitoProfile() ||
        view_->browser()->profile()->IsTor() ||
        view_->browser()->profile()->IsGuestSession()) &&
@@ -49,7 +49,7 @@ const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
 #endif
 
 ui::ColorProviderKey::ThemeInitializerSupplier*
-BraveBrowserFrame::GetCustomTheme() const {
+BraveBrowserWidget::GetCustomTheme() const {
   // To provider private(tor) windows's theme color via color provider,
   // we use |theme_supplier_| for both as upstream doesn't use separated
   // mix for private window.
@@ -57,20 +57,20 @@ BraveBrowserFrame::GetCustomTheme() const {
     return theme_supplier_.get();
   }
 
-  return BrowserFrame::GetCustomTheme();
+  return BrowserWidget::GetCustomTheme();
 }
 
-views::internal::RootView* BraveBrowserFrame::CreateRootView() {
+views::internal::RootView* BraveBrowserWidget::CreateRootView() {
   root_view_ = new BraveBrowserRootView(browser_view_, this);
   return root_view_;
 }
 
-void BraveBrowserFrame::SetTabDragKind(TabDragKind kind) {
+void BraveBrowserWidget::SetTabDragKind(TabDragKind kind) {
   const bool should_sync_shared_pinned_tab =
       base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
       tab_drag_kind_ == TabDragKind::kAllTabs && kind == TabDragKind::kNone;
 
-  BrowserFrame::SetTabDragKind(kind);
+  BrowserWidget::SetTabDragKind(kind);
 
   if (should_sync_shared_pinned_tab) {
     SharedPinnedTabServiceFactory::GetForProfile(browser_view_->GetProfile())
@@ -78,8 +78,8 @@ void BraveBrowserFrame::SetTabDragKind(TabDragKind kind) {
   }
 }
 
-ui::ColorProviderKey BraveBrowserFrame::GetColorProviderKey() const {
-  auto key = BrowserFrame::GetColorProviderKey();
+ui::ColorProviderKey BraveBrowserWidget::GetColorProviderKey() const {
+  auto key = BrowserWidget::GetColorProviderKey();
 
   if (base::FeatureList::IsEnabled(darker_theme::features::kBraveDarkerTheme)) {
     // Note that we don't change set SchemeVariant to kDarker if

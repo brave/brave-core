@@ -1,25 +1,25 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_
-#define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_WIDGET_H_
+#define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_WIDGET_H_
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "build/build_config.h"
-#include "chrome/browser/ui/views/frame/browser_frame.h"
+#include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "ui/color/color_provider_key.h"
 
 class CustomThemeSupplier;
 
-class BraveBrowserFrame : public BrowserFrame {
+class BraveBrowserWidget : public BrowserWidget {
  public:
-  explicit BraveBrowserFrame(BrowserView* browser_view);
-  BraveBrowserFrame(const BraveBrowserFrame&) = delete;
-  BraveBrowserFrame& operator=(const BraveBrowserFrame&) = delete;
-  ~BraveBrowserFrame() override;
+  explicit BraveBrowserWidget(BrowserView* browser_view);
+  BraveBrowserWidget(const BraveBrowserWidget&) = delete;
+  BraveBrowserWidget& operator=(const BraveBrowserWidget&) = delete;
+  ~BraveBrowserWidget() override;
 
   const BrowserView* browser_view() const { return view_; }
 
@@ -38,4 +38,4 @@ class BraveBrowserFrame : public BrowserFrame {
   scoped_refptr<CustomThemeSupplier> theme_supplier_;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_WIDGET_H_

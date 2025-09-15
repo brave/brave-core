@@ -22,8 +22,9 @@
 #include "ui/gfx/scoped_canvas.h"
 
 BraveBrowserNonClientFrameViewMac::BraveBrowserNonClientFrameViewMac(
-    BrowserFrame* frame, BrowserView* browser_view)
-    : BrowserNonClientFrameViewMac(frame, browser_view) {
+    BrowserWidget* browser_widget,
+    BrowserView* browser_view)
+    : BrowserNonClientFrameViewMac(browser_widget, browser_view) {
   auto* browser = browser_view->browser();
   frame_graphic_ =
       std::make_unique<BraveWindowFrameGraphic>(browser->profile());
