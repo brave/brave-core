@@ -128,34 +128,23 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService> json_rpc_service,
-    mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
-        bitcoin_rpc_service,
-    mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
-        zcash_service,
-    mojo::PendingReceiver<brave_wallet::mojom::CardanoWalletService>
-        cardano_wallet_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService> bitcoin_rpc_service,
+    mojo::PendingReceiver<brave_wallet::mojom::PolkadotWalletService> polkadot_wallet_service,
+    mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService> zcash_service,
+    mojo::PendingReceiver<brave_wallet::mojom::CardanoWalletService> cardano_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
-    mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
-        asset_ratio_service,
+    mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService> asset_ratio_service,
     mojo::PendingReceiver<brave_wallet::mojom::KeyringService> keyring_service,
-    mojo::PendingReceiver<brave_wallet::mojom::BlockchainRegistry>
-        blockchain_registry_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BlockchainRegistry> blockchain_registry_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::TxService> tx_service,
-    mojo::PendingReceiver<brave_wallet::mojom::EthTxManagerProxy>
-        eth_tx_manager_proxy,
-    mojo::PendingReceiver<brave_wallet::mojom::SolanaTxManagerProxy>
-        solana_tx_manager_proxy,
-    mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy>
-        filecoin_tx_manager_proxy,
-    mojo::PendingReceiver<brave_wallet::mojom::BtcTxManagerProxy>
-        bitcoin_tx_manager_proxy_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
-        brave_wallet_service,
+    mojo::PendingReceiver<brave_wallet::mojom::EthTxManagerProxy> eth_tx_manager_proxy,
+    mojo::PendingReceiver<brave_wallet::mojom::SolanaTxManagerProxy> solana_tx_manager_proxy,
+    mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy> filecoin_tx_manager_proxy,
+    mojo::PendingReceiver<brave_wallet::mojom::BtcTxManagerProxy> bitcoin_tx_manager_proxy_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService> brave_wallet_service,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A> brave_wallet_p3a,
-    mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
-        brave_wallet_ipfs_service_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
-        meld_integration_service) {
+    mojo::PendingReceiver<brave_wallet::mojom::IpfsService> brave_wallet_ipfs_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService> meld_integration_service) {
   auto* profile = ProfileIOS::FromWebUIIOS(web_ui());
   DCHECK(profile);
 
@@ -171,6 +160,7 @@ void WalletPageUI::CreatePageHandler(
     wallet_service->Bind(std::move(brave_wallet_service));
     wallet_service->Bind(std::move(json_rpc_service));
     wallet_service->Bind(std::move(bitcoin_rpc_service));
+    wallet_service->Bind(std::move(polkadot_wallet_service));
     wallet_service->Bind(std::move(zcash_service));
     wallet_service->Bind(std::move(cardano_wallet_service_receiver));
     wallet_service->Bind(std::move(keyring_service));
