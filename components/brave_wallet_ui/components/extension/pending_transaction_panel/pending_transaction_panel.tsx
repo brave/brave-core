@@ -29,6 +29,9 @@ import {
   ConfirmSimulatedTransactionPanel, //
 } from '../confirm-transaction-panel/confirm_simulated_tx_panel'
 import { AllowSpendPanel } from '../allow_spend_panel/allow_spend_panel'
+import {
+  ConfirmSendTransaction, //
+} from '../confirm_send_transaction/confirm_send_transaction'
 
 // Utils
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
@@ -214,6 +217,23 @@ export const PendingTransactionPanel: React.FC<Props> = ({
     === BraveWallet.TransactionType.ERC20Approve
   ) {
     return <AllowSpendPanel />
+  }
+
+  // Send
+  if (
+    selectedPendingTransaction.txType === BraveWallet.TransactionType.ETHSend
+    || selectedPendingTransaction.txType
+      === BraveWallet.TransactionType.ERC20Transfer
+    || selectedPendingTransaction.txType
+      === BraveWallet.TransactionType.SolanaSystemTransfer
+    || selectedPendingTransaction.txType
+      === BraveWallet.TransactionType.SolanaSPLTokenTransfer
+    || selectedPendingTransaction.txType
+      === BraveWallet.TransactionType
+        .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+    || selectedPendingTransaction.txType === BraveWallet.TransactionType.Other
+  ) {
+    return <ConfirmSendTransaction />
   }
 
   // Defaults

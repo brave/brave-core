@@ -4,42 +4,26 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { skipToken } from '@reduxjs/toolkit/query/react'
-import Tooltip from '@brave/leo/react/tooltip'
 import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-
-// Queries
-import {
-  useGetActiveOriginQuery,
-  useGetNetworkQuery,
-  useGetTokenInfoQuery,
-} from '../../../common/slices/api.slice'
 
 // Constants
 import { BraveWallet } from '../../../constants/types'
+
+// Queries
 import {
-  NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
-  UNKNOWN_TOKEN_COINGECKO_ID,
-} from '../../../common/constants/magics'
+  useGetDefaultFiatCurrencyQuery, //
+} from '../../../common/slices/api.slice'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { isBridgeTransaction } from '../../../utils/tx-utils'
-import { reduceAddress } from '../../../utils/reduce-address'
-import { getAddressLabel } from '../../../utils/account-utils'
+import Amount from '../../../utils/amount'
 
 // Hooks
 import {
   usePendingTransactions, //
 } from '../../../common/hooks/use-pending-transaction'
-import {
-  useSwapTransactionParser, //
-} from '../../../common/hooks/use-swap-tx-parser'
-import { useExplorer } from '../../../common/hooks/explorer'
 
 // Components
-import { OriginInfoCard } from '../origin_info_card/origin_info_card'
 import {
   ConfirmationFooterActions, //
 } from '../confirmation_footer_actions/confirmation_footer_actions'
@@ -59,58 +43,24 @@ import {
   AdvancedTransactionSettings, //
 } from '../advanced_transaction_settings/advanced_transaction_settings'
 import { EditNetworkFee } from '../edit_network_fee/edit_network_fee'
+import {
+  CreateAccountIcon, //
+} from '../../shared/create-account-icon/create-account-icon'
 
 // Styled Components
 import {
   StyledWrapper,
   InfoBox,
   Card,
-  ArrowIconContainer,
-} from './confirm_swap_transaction.style'
+  Title,
+} from './confirm_send_transaction.style'
 import { Column, Row, VerticalDivider } from '../../shared/style'
 import {
-  ConfirmationButtonLink,
   ConfirmationInfoLabel,
+  ConfirmationInfoText,
 } from '../shared-panel-styles'
 
-const isNativeToken = (token: BraveWallet.BlockchainToken) =>
-  token.contractAddress === ''
-  || token.contractAddress.toLowerCase() === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
-
-const makeToken = (
-  token?: BraveWallet.BlockchainToken,
-  network?: BraveWallet.NetworkInfo,
-  symbol?: string,
-  decimals?: number,
-) => {
-  if (!token || !network) {
-    return undefined
-  }
-
-  if (token.coingeckoId !== UNKNOWN_TOKEN_COINGECKO_ID) {
-    return token
-  }
-
-  if (isNativeToken(token)) {
-    return {
-      ...token,
-      decimals: network.decimals,
-      symbol: network.symbol,
-    }
-  }
-
-  if (!symbol || !decimals) {
-    return undefined
-  }
-
-  return {
-    ...token,
-    symbol,
-    decimals,
-  }
-}
-
-export function ConfirmSwapTransaction() {
+export function ConfirmSendTransaction() {
   // State
   const [showEditNetworkFee, setShowEditNetworkFee] =
     React.useState<boolean>(false)
@@ -118,10 +68,6 @@ export function ConfirmSwapTransaction() {
     React.useState<boolean>(false)
   const [showTransactionDetails, setShowTransactionDetails] =
     React.useState<boolean>(false)
-
-  // Queries
-  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
-    useGetActiveOriginQuery()
 
   // Hooks
   const {
@@ -137,77 +83,54 @@ export function ConfirmSwapTransaction() {
     gasFee,
     updateUnapprovedTransactionNonce,
     fromAccount,
+    toAccount,
     canEditNetworkFee,
     isEthereumTransaction,
+    isAssociatedTokenAccountCreation,
   } = usePendingTransactions()
 
-  const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
-
-  // Computed
-  const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
-  const isBridgeTx = selectedPendingTransaction
-    ? isBridgeTransaction(selectedPendingTransaction)
-    : false
-  const toChainId = selectedPendingTransaction?.swapInfo?.toChainId
-  const toCoin = selectedPendingTransaction?.swapInfo?.toCoin
-
   // Queries
-  const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
-    useSwapTransactionParser(selectedPendingTransaction)
-
-  const { data: sellAssetNetwork } = useGetNetworkQuery(sellToken ?? skipToken)
-
-  const { data: buyAssetNetwork } = useGetNetworkQuery(
-    isBridgeTx && toChainId && toCoin
-      ? { chainId: toChainId, coin: toCoin }
-      : (buyToken ?? skipToken),
-  )
-
-  const { data: sellTokenInfo } = useGetTokenInfoQuery(
-    sellToken
-      && sellToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID
-      && !isNativeToken(sellToken)
-      ? {
-          contractAddress: sellToken.contractAddress,
-          chainId: sellToken.chainId,
-          coin: sellToken.coin,
-        }
-      : skipToken,
-  )
-
-  const { data: buyTokenInfo } = useGetTokenInfoQuery(
-    buyToken
-      && buyToken.coingeckoId === UNKNOWN_TOKEN_COINGECKO_ID
-      && !isNativeToken(buyToken)
-      ? {
-          contractAddress: buyToken.contractAddress,
-          chainId: buyToken.chainId,
-          coin: buyToken.coin,
-        }
-      : skipToken,
-  )
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   // Memos
-  const buyTokenResult = React.useMemo(
-    () =>
-      makeToken(
-        buyToken,
-        buyAssetNetwork,
-        buyTokenInfo?.symbol,
-        buyTokenInfo?.decimals,
-      ),
-    [buyToken, buyAssetNetwork, buyTokenInfo],
-  )
-  const sellTokenResult = React.useMemo(
-    () =>
-      makeToken(
-        sellToken,
-        sellAssetNetwork,
-        sellTokenInfo?.symbol,
-        sellTokenInfo?.decimals,
-      ),
-    [sellToken, sellAssetNetwork, sellTokenInfo],
-  )
+  const totalAmount = React.useMemo(() => {
+    if (
+      !transactionDetails
+      || !selectedPendingTransaction
+      || !transactionsNetwork
+    ) {
+      return ''
+    }
+    if (
+      selectedPendingTransaction.txType
+        === BraveWallet.TransactionType.ERC20Transfer
+      || selectedPendingTransaction.txType
+        === BraveWallet.TransactionType.SolanaSPLTokenTransfer
+      || selectedPendingTransaction.txType
+        === BraveWallet.TransactionType
+          .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+    ) {
+      return (
+        new Amount(transactionDetails.valueExact).formatAsAsset(
+          undefined,
+          transactionDetails.token?.symbol ?? '',
+        )
+        + ' + '
+        + new Amount(gasFee)
+          .divideByDecimals(transactionsNetwork.decimals)
+          .formatAsAsset(6, transactionsNetwork.symbol)
+      )
+    }
+    return new Amount(gasFee)
+      .plus(transactionDetails.weiTransferredValue)
+      .divideByDecimals(transactionsNetwork?.decimals ?? 18)
+      .formatAsAsset(undefined, transactionsNetwork?.symbol ?? '')
+  }, [
+    selectedPendingTransaction,
+    transactionDetails,
+    transactionsNetwork,
+    gasFee,
+  ])
 
   if (!selectedPendingTransaction || !transactionDetails) {
     return <LoadingPanel />
@@ -222,76 +145,59 @@ export function ConfirmSwapTransaction() {
       >
         {/* Header */}
         <ConfirmationHeader
-          title={
-            isBridgeTx
-              ? getLocale('braveWalletConfirmBridge')
-              : getLocale('braveWalletConfirmSwap')
-          }
+          title={getLocale('braveWalletConfirmSend')}
           transactionsQueueLength={transactionsQueueLength}
           queueNextTransaction={queueNextTransaction}
           queuePreviousTransaction={queuePreviousTransaction}
           rejectAllTransactions={rejectAllTransactions}
         />
-        {originInfo && (
-          <Row
-            justifyContent='flex-start'
-            padding='0px 0px 14px 0px'
-          >
-            <OriginInfoCard
-              origin={originInfo}
-              noBackground={true}
-              provider={getAddressLabel(transactionDetails.recipient) ?? ''}
-            />
-          </Row>
-        )}
         <Column
           width='100%'
           height='100%'
           padding='0px 16px'
-          gap='8px'
+          gap='12px'
           justifyContent='flex-start'
         >
+          <CreateAccountIcon
+            size='extra-huge'
+            account={fromAccount}
+          />
+          <Title textColor='primary'>
+            {getLocale('braveWalletPanelTitle')}
+          </Title>
           <InfoBox width='100%'>
             {/* Swap details */}
             <Card
               width='100%'
               padding='16px'
             >
-              {/* Sell token */}
+              {/* Send token and amount */}
               <ConfirmationTokenInfo
-                token={sellTokenResult}
-                label='spend'
-                amount={
-                  !sellAmountWei.isUndefined()
-                    ? sellAmountWei.format()
-                    : undefined
-                }
-                network={sellAssetNetwork}
+                token={transactionDetails.token}
+                label='send'
+                valueExact={transactionDetails.valueExact}
+                fiatValue={transactionDetails.fiatValue}
+                network={transactionsNetwork}
                 account={fromAccount}
               />
 
               {/* Divider */}
               <Row
                 justifyContent='space-between'
-                gap='24px'
+                padding='16px 0px'
               >
-                <ArrowIconContainer>
-                  <Icon name='arrow-down' />
-                </ArrowIconContainer>
                 <VerticalDivider />
               </Row>
 
-              {/* Buy token */}
+              {/* Recipient info */}
               <ConfirmationTokenInfo
-                token={buyTokenResult}
-                label={isBridgeTx ? 'bridge' : 'receive'}
-                amount={
-                  !buyAmountWei.isUndefined()
-                    ? buyAmountWei.format()
-                    : undefined
+                label='to'
+                receiveAddress={transactionDetails.recipient}
+                isAssociatedTokenAccountCreation={
+                  isAssociatedTokenAccountCreation
                 }
-                network={buyAssetNetwork}
-                receiveAddress={selectedPendingTransaction.swapInfo?.receiver}
+                network={transactionsNetwork}
+                account={toAccount}
               />
             </Card>
 
@@ -312,29 +218,44 @@ export function ConfirmSwapTransaction() {
                 }
               />
               <VerticalDivider />
-              <Row justifyContent='space-between'>
-                <ConfirmationInfoLabel textColor='secondary'>
-                  {getLocale('braveWalletNFTDetailContractAddress')}
-                </ConfirmationInfoLabel>
-                <Row
-                  width='unset'
-                  gap='4px'
-                >
-                  <Tooltip text={transactionDetails.recipient}>
-                    <ConfirmationButtonLink
-                      onClick={onClickViewOnBlockExplorer(
-                        'contract',
-                        transactionDetails.recipient,
-                      )}
-                    >
-                      {reduceAddress(transactionDetails.recipient)}
-                      <Icon name='arrow-diagonal-up-right' />
-                    </ConfirmationButtonLink>
-                  </Tooltip>
+
+              {/* Transaction total amount */}
+              <Column width='100%'>
+                <Row justifyContent='space-between'>
+                  <ConfirmationInfoLabel
+                    textColor='secondary'
+                    textAlign='left'
+                  >
+                    {getLocale('braveWalletConfirmTransactionTotal')}
+                  </ConfirmationInfoLabel>
+                  <ConfirmationInfoLabel
+                    textColor='primary'
+                    textAlign='right'
+                  >
+                    {totalAmount}
+                  </ConfirmationInfoLabel>
                 </Row>
-              </Row>
+                <Row justifyContent='space-between'>
+                  <ConfirmationInfoText
+                    textColor='tertiary'
+                    textAlign='left'
+                  >
+                    {getLocale('braveWalletConfirmTransactionAmountFee')}
+                  </ConfirmationInfoText>
+                  <ConfirmationInfoText
+                    textColor='tertiary'
+                    textAlign='right'
+                  >
+                    {new Amount(transactionDetails.fiatValue)
+                      .plus(transactionDetails.gasFeeFiat)
+                      .formatAsFiat(defaultFiatCurrency)}
+                  </ConfirmationInfoText>
+                </Row>
+              </Column>
             </Column>
           </InfoBox>
+
+          {/* Advanced settings and details buttons */}
           <ConfirmationFooterActions
             onClickAdvancedSettings={
               isEthereumTransaction
@@ -346,6 +267,7 @@ export function ConfirmSwapTransaction() {
             }}
           />
         </Column>
+
         {/* Reject and confirm buttons */}
         <Row
           padding='16px'
@@ -367,6 +289,8 @@ export function ConfirmSwapTransaction() {
           </Button>
         </Row>
       </StyledWrapper>
+
+      {/* Transaction details */}
       <BottomSheet
         isOpen={showTransactionDetails}
         title={getLocale('braveWalletDetails')}
@@ -377,6 +301,8 @@ export function ConfirmSwapTransaction() {
           instructions={transactionDetails.instructions}
         />
       </BottomSheet>
+
+      {/* Advanced transaction settings */}
       <BottomSheet
         isOpen={showAdvancedTransactionSettings}
         title={getLocale('braveWalletAdvancedTransactionSettings')}
@@ -394,6 +320,8 @@ export function ConfirmSwapTransaction() {
           }
         />
       </BottomSheet>
+
+      {/* Edit network fee */}
       <EditNetworkFee
         isOpen={showEditNetworkFee}
         onCancel={() => setShowEditNetworkFee(false)}
