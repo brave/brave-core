@@ -9,7 +9,7 @@
 #include <utility>
 
 class Browser;
-class BrowserFrame;
+class BrowserWidget;
 
 namespace tabs::utils {
 
@@ -30,7 +30,7 @@ bool IsVerticalTabOnRight(const Browser* browser);
 
 // Returns window caption buttons' width based on the current platform
 std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
-    const BrowserFrame* frame);
+    const BrowserWidget* frame);
 
 }  // namespace tabs::utils
 
