@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
@@ -16,6 +17,7 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/types/expected.h"
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
@@ -392,65 +394,32 @@ class EmailAliasesAPITest : public ::testing::Test {
   AliasObserver observer_;
 
   base::expected<std::string, std::string> CallGenerateAliasWith(
-      const std::optional<std::string>& body,
-      const std::optional<int>& net_error = std::nullopt) {
-    const GURL manage_url =
-        EmailAliasesService::GetEmailAliasesServiceBaseURL();
-    if (net_error.has_value()) {
-      network::URLLoaderCompletionStatus completion(*net_error);
-      url_loader_factory_.AddResponse(manage_url, /*head=*/nullptr,
-                                      /*content=*/"", completion);
-    } else {
-      url_loader_factory_.AddResponse(manage_url.spec(), body.value_or(""));
-    }
-
-    base::MockCallback<
-        base::OnceCallback<void(base::expected<std::string, std::string>)>>
-        cb;
-    bool called = false;
-    base::expected<std::string, std::string> result_out;
-    EXPECT_CALL(cb, Run(testing::_))
-        .Times(1)
-        .WillOnce([&](base::expected<std::string, std::string> res) {
-          called = true;
-          result_out = std::move(res);
-        });
-    service_->GenerateAlias(cb.Get());
-    EXPECT_TRUE(base::test::RunUntil([&]() { return called; }));
-    return result_out;
+      const std::optional<std::string>& body) {
+    url_loader_factory_.AddResponse(
+        EmailAliasesService::GetEmailAliasesServiceBaseURL().spec(),
+        body.value_or(""),
+        body ? net::HTTP_OK : net::HTTP_INTERNAL_SERVER_ERROR);
+    base::test::TestFuture<base::expected<std::string, std::string>> future;
+    service_->GenerateAlias(future.GetCallback());
+    return future.Take();
   }
 
   base::expected<std::monostate, std::string> CallUpdateAliasWith(
       const std::string& alias_email,
       const std::optional<std::string>& put_body,
-      const std::optional<int>& net_error = std::nullopt,
       const std::optional<std::string>& refresh_body = std::nullopt,
       bool wait_for_update = true) {
     const GURL manage_url =
         EmailAliasesService::GetEmailAliasesServiceBaseURL();
-    if (net_error.has_value()) {
-      network::URLLoaderCompletionStatus completion(*net_error);
-      url_loader_factory_.AddResponse(manage_url, /*head=*/nullptr,
-                                      /*content=*/"", completion);
-    } else {
-      url_loader_factory_.AddResponse(manage_url.spec(), put_body.value_or(""));
-    }
+    url_loader_factory_.AddResponse(
+        manage_url.spec(), put_body.value_or(""),
+        put_body ? net::HTTP_OK : net::HTTP_INTERNAL_SERVER_ERROR);
     url_loader_factory_.AddResponse(manage_url.Resolve("?status=active").spec(),
                                     refresh_body.value_or("[]"));
-
-    base::MockCallback<
-        base::OnceCallback<void(base::expected<std::monostate, std::string>)>>
-        cb;
-    bool called = false;
-    base::expected<std::monostate, std::string> result_out;
-    EXPECT_CALL(cb, Run(testing::_))
-        .Times(1)
-        .WillOnce([&](base::expected<std::monostate, std::string> res) {
-          called = true;
-          result_out = std::move(res);
-        });
-    service_->UpdateAlias(alias_email, /*note=*/std::string("note"), cb.Get());
-    EXPECT_TRUE(base::test::RunUntil([&]() { return called; }));
+    base::test::TestFuture<base::expected<std::monostate, std::string>> future;
+    service_->UpdateAlias(alias_email, /*note=*/std::string("note"),
+                          future.GetCallback());
+    auto result_out = future.Take();
     if (wait_for_update) {
       EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
     }
@@ -459,35 +428,17 @@ class EmailAliasesAPITest : public ::testing::Test {
 
   base::expected<std::monostate, std::string> CallDeleteAliasWith(
       const std::string& alias_email,
-      const std::optional<std::string>& delete_body,
-      const std::optional<int>& net_error = std::nullopt) {
+      const std::optional<std::string>& delete_body) {
     const GURL manage_url =
         EmailAliasesService::GetEmailAliasesServiceBaseURL();
-    if (net_error.has_value()) {
-      network::URLLoaderCompletionStatus completion(*net_error);
-      auto head = network::mojom::URLResponseHead::New();
-      url_loader_factory_.AddResponse(manage_url, std::move(head),
-                                      /*content=*/"", completion);
-    } else {
-      url_loader_factory_.AddResponse(manage_url.spec(),
-                                      delete_body.value_or(""));
-    }
+    url_loader_factory_.AddResponse(
+        manage_url.spec(), delete_body.value_or(""),
+        delete_body ? net::HTTP_OK : net::HTTP_INTERNAL_SERVER_ERROR);
     url_loader_factory_.AddResponse(manage_url.Resolve("?status=active").spec(),
                                     "[]");
-
-    base::MockCallback<
-        base::OnceCallback<void(base::expected<std::monostate, std::string>)>>
-        cb;
-    bool called = false;
-    base::expected<std::monostate, std::string> result_out;
-    EXPECT_CALL(cb, Run(testing::_))
-        .Times(1)
-        .WillOnce([&](base::expected<std::monostate, std::string> res) {
-          called = true;
-          result_out = std::move(res);
-        });
-    service_->DeleteAlias(alias_email, cb.Get());
-    EXPECT_TRUE(base::test::RunUntil([&]() { return called; }));
+    base::test::TestFuture<base::expected<std::monostate, std::string>> future;
+    service_->DeleteAlias(alias_email, future.GetCallback());
+    auto result_out = future.Take();
     EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
     return result_out;
   }
@@ -509,7 +460,6 @@ std::string MakeGenerateAliasSuccessBody() {
 struct EmailAliasesApiCase {
   const char* name;
   std::optional<std::string> body;
-  std::optional<int> net_error;
   // When set, expect failure and substring must appear; otherwise expect
   // success.
   std::optional<std::string> expected_error_substr;
@@ -528,7 +478,7 @@ void ExpectResultStateMatches(const base::expected<T, std::string>& result,
                               const EmailAliasesApiCase& p) {
   if (p.expected_error_substr) {
     ASSERT_FALSE(result.has_value());
-    EXPECT_NE(result.error().find(*p.expected_error_substr), std::string::npos);
+    EXPECT_TRUE(base::Contains(result.error(), *p.expected_error_substr));
   } else {
     ASSERT_TRUE(result.has_value());
   }
@@ -542,7 +492,7 @@ class GenerateAliasParamTest
 
 TEST_P(GenerateAliasParamTest, HandlesResponses) {
   const auto& p = GetParam();
-  auto result_out = CallGenerateAliasWith(p.body, p.net_error);
+  auto result_out = CallGenerateAliasWith(p.body);
   ExpectResultStateMatches(result_out, p);
   if (!p.expected_error_substr) {
     EXPECT_EQ(result_out.value(), kExpectedGeneratedAlias);
@@ -553,26 +503,21 @@ INSTANTIATE_TEST_SUITE_P(
     EmailAliasesGenerateAlias,
     GenerateAliasParamTest,
     testing::Values(
-        EmailAliasesApiCase{/*name=*/"Success",
-                            /*body=*/MakeGenerateAliasSuccessBody(),
-                            /*net_error=*/std::nullopt,
-                            /*expected_error_substr=*/std::nullopt},
-        EmailAliasesApiCase{/*name=*/"BackendError",
-                            /*body=*/"{\"message\":\"alias_unavailable\"}",
-                            /*net_error=*/std::nullopt,
-                            /*expected_error_substr=*/"Alias not available"},
-        EmailAliasesApiCase{/*name=*/"NoBody",
-                            /*body=*/std::nullopt,
-                            /*net_error=*/net::ERR_FAILED,
-                            /*expected_error_substr=*/"No response"},
-        EmailAliasesApiCase{/*name=*/"InvalidJSON",
-                            /*body=*/"not a json",
-                            /*net_error=*/std::nullopt,
-                            /*expected_error_substr=*/"Invalid response"},
-        EmailAliasesApiCase{/*name=*/"UnexpectedPayload",
-                            /*body=*/"{\"message\":\"ok_but_no_alias\"}",
-                            /*net_error=*/std::nullopt,
-                            /*expected_error_substr=*/"Alias not available"}),
+        EmailAliasesApiCase{.name = "Success",
+                            .body = MakeGenerateAliasSuccessBody(),
+                            .expected_error_substr = std::nullopt},
+        EmailAliasesApiCase{.name = "BackendError",
+                            .body = "{\"message\":\"alias_unavailable\"}",
+                            .expected_error_substr = "Alias not available"},
+        EmailAliasesApiCase{.name = "NoBody",
+                            .body = std::nullopt,
+                            .expected_error_substr = "No response"},
+        EmailAliasesApiCase{.name = "InvalidJSON",
+                            .body = "not a json",
+                            .expected_error_substr = "Invalid response"},
+        EmailAliasesApiCase{.name = "UnexpectedPayload",
+                            .body = "{\"message\":\"ok_but_no_alias\"}",
+                            .expected_error_substr = "Alias not available"}),
     ParamName);
 
 // ================= UpdateAlias (parameterized) =================
@@ -583,8 +528,7 @@ class UpdateAliasParamTest
 
 TEST_P(UpdateAliasParamTest, HandlesResponses) {
   const auto& p = GetParam();
-  const std::string alias_email = "alias@example.com";
-  auto result_out = CallUpdateAliasWith(alias_email, p.body, p.net_error);
+  auto result_out = CallUpdateAliasWith("alias@example.com", p.body);
   ExpectResultStateMatches(result_out, p);
 }
 
@@ -592,26 +536,21 @@ INSTANTIATE_TEST_SUITE_P(
     EmailAliasesUpdateAlias,
     UpdateAliasParamTest,
     testing::Values(
-        EmailAliasesApiCase{/*name=*/"Success",
-                            /*body=*/"{\"message\":\"updated\"}",
-                            /*net_error=*/std::nullopt,
-                            /*expected_error_substr=*/std::nullopt},
-        EmailAliasesApiCase{/*name=*/"BackendError",
-                            /*body=*/"{\"message\":\"backend_error\"}",
-                            /*net_error=*/std::nullopt,
-                            /*expected_error_substr=*/"backend_error"},
-        EmailAliasesApiCase{/*name=*/"NonUpdatedMessage",
-                            /*body=*/"{\"message\":\"not_updated\"}",
-                            /*net_error=*/std::nullopt,
-                            /*expected_error_substr=*/"not_updated"},
-        EmailAliasesApiCase{/*name=*/"NoBody",
-                            /*body=*/std::nullopt,
-                            /*net_error=*/net::ERR_FAILED,
-                            /*expected_error_substr=*/"No response"},
-        EmailAliasesApiCase{/*name=*/"InvalidJSON",
-                            /*body=*/"not a json",
-                            /*net_error=*/std::nullopt,
-                            /*expected_error_substr=*/"Invalid response"}),
+        EmailAliasesApiCase{.name = "Success",
+                            .body = "{\"message\":\"updated\"}",
+                            .expected_error_substr = std::nullopt},
+        EmailAliasesApiCase{.name = "BackendError",
+                            .body = "{\"message\":\"backend_error\"}",
+                            .expected_error_substr = "backend_error"},
+        EmailAliasesApiCase{.name = "NonUpdatedMessage",
+                            .body = "{\"message\":\"not_updated\"}",
+                            .expected_error_substr = "not_updated"},
+        EmailAliasesApiCase{.name = "NoBody",
+                            .body = std::nullopt,
+                            .expected_error_substr = "No response"},
+        EmailAliasesApiCase{.name = "InvalidJSON",
+                            .body = "not a json",
+                            .expected_error_substr = "Invalid response"}),
     ParamName);
 
 // ================= DeleteAlias (parameterized) =================
@@ -622,8 +561,7 @@ class DeleteAliasParamTest
 
 TEST_P(DeleteAliasParamTest, HandlesResponses) {
   const auto& p = GetParam();
-  auto result_out =
-      CallDeleteAliasWith("alias@example.com", p.body, p.net_error);
+  auto result_out = CallDeleteAliasWith("alias@example.com", p.body);
   ExpectResultStateMatches(result_out, p);
 }
 
@@ -631,22 +569,18 @@ INSTANTIATE_TEST_SUITE_P(
     EmailAliasesDeleteAlias,
     DeleteAliasParamTest,
     testing::Values(
-        EmailAliasesApiCase{/*name=*/"Success",
-                            /*body=*/"{\"message\":\"deleted\"}",
-                            /*net_error=*/std::nullopt,
-                            /*expected_error_substr=*/std::nullopt},
-        EmailAliasesApiCase{/*name=*/"BackendError",
-                            /*body=*/"{\"message\":\"backend_error\"}",
-                            /*net_error=*/std::nullopt,
-                            /*expected_error_substr=*/"backend_error"},
-        EmailAliasesApiCase{/*name=*/"NoBody",
-                            /*body=*/std::nullopt,
-                            /*net_error=*/net::ERR_FAILED,
-                            /*expected_error_substr=*/"No response"},
-        EmailAliasesApiCase{/*name=*/"InvalidJSON",
-                            /*body=*/"not a json",
-                            /*net_error=*/std::nullopt,
-                            /*expected_error_substr=*/"Invalid response"}),
+        EmailAliasesApiCase{.name = "Success",
+                            .body = "{\"message\":\"deleted\"}",
+                            .expected_error_substr = std::nullopt},
+        EmailAliasesApiCase{.name = "BackendError",
+                            .body = "{\"message\":\"backend_error\"}",
+                            .expected_error_substr = "backend_error"},
+        EmailAliasesApiCase{.name = "NoBody",
+                            .body = std::nullopt,
+                            .expected_error_substr = "No response"},
+        EmailAliasesApiCase{.name = "InvalidJSON",
+                            .body = "not a json",
+                            .expected_error_substr = "Invalid response"}),
     ParamName);
 
 TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
@@ -654,7 +588,6 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
   auto result_out = CallUpdateAliasWith(
       alias_email,
       /*put_body=*/"{\"message\":\"updated\"}",
-      /*net_error=*/std::nullopt,
       /*refresh_body=*/
       std::string("[{\"email\":\"dest@example.com\",\"alias\":\"") +
           alias_email +
@@ -669,7 +602,6 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
   auto result_out =
       CallUpdateAliasWith("alias@example.com",
                           /*put_body=*/"{\"message\":\"updated\"}",
-                          /*net_error=*/std::nullopt,
                           /*refresh_body=*/"{\"message\":\"backend_error\"}",
                           /*wait_for_update=*/false);
   ASSERT_TRUE(result_out.has_value());
