@@ -16,35 +16,29 @@ class ActionToBraveViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    // Get the item[s] for handling from the extension context
-    for item in extensionContext?.inputItems as? [NSExtensionItem] ?? [] {
-      for provider in item.attachments ?? [] {
+    // Reduce all input items down to a single list of item providers
+    let attachments: [NSItemProvider] =
+      (extensionContext?.inputItems as? [NSExtensionItem] ?? [])
+      .compactMap { $0.attachments }
+      .flatMap { $0 }
 
-        // Opening browser with site
-        if provider.hasItemConformingToTypeIdentifier(UTType.url.identifier) {
-          loadAttachmentFor(type: .url, using: provider)
-          break
-        } else {
-          // Opening browser with search url
-          loadAttachmentFor(type: .query, using: provider)
-          break
-        }
-      }
+    // Look for the first URL the host application is sharing.
+    // If there isn't a URL grab the first text item
+    guard
+      let provider = attachments.first(where: { $0.isUrl })
+        ?? attachments.first(where: { $0.isText })
+    else {
+      done()
+      return
     }
-  }
 
-  func done() {
-    // Return any edited content to the host app, in this case empty
-    extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
-  }
-
-  private func loadAttachmentFor(type: SchemeType, using provider: NSItemProvider) {
-    let typeIdentifier: String = type == .query ? UTType.text.identifier : UTType.url.identifier
-
-    provider.loadItem(forTypeIdentifier: typeIdentifier) { item, error in
+    provider.loadItem(
+      forTypeIdentifier: provider.isUrl ? UTType.url.identifier : UTType.text.identifier
+    ) { item, error in
       DispatchQueue.main.async {
-
-        guard let schemeUrl = self.constructSchemeURL(for: type, with: item) else {
+        guard
+          let schemeUrl = self.constructSchemeURL(for: provider.isUrl ? .url : .query, with: item)
+        else {
           self.done()
           return
         }
@@ -52,6 +46,11 @@ class ActionToBraveViewController: UIViewController {
         self.openBrowser(with: schemeUrl)
       }
     }
+  }
+
+  func done() {
+    // Return any edited content to the host app, in this case empty
+    extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
   }
 
   private func constructSchemeURL(for schemeType: SchemeType, with item: NSSecureCoding?) -> URL? {
@@ -116,5 +115,15 @@ class ActionToBraveViewController: UIViewController {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
       self.done()
     }
+  }
+}
+
+extension NSItemProvider {
+  var isText: Bool {
+    return hasItemConformingToTypeIdentifier(UTType.text.identifier)
+  }
+
+  var isUrl: Bool {
+    return hasItemConformingToTypeIdentifier(UTType.url.identifier)
   }
 }
