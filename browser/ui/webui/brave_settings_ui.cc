@@ -245,6 +245,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
   html_source->AddString("braveSearchEngineName",
                          TemplateURLPrepopulateData::brave_search.name);
+  html_source->AddBoolean("isHideVerticalTabCompletelyFlagEnabled",
+                          base::FeatureList::IsEnabled(
+                              tabs::features::kBraveVerticalTabHideCompletely));
 }
 
 // static

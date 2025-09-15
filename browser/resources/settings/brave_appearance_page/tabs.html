@@ -20,11 +20,39 @@
       pref="{{prefs.brave.tabs.vertical_tabs_show_title_on_window}}"
       label="$i18n{appearanceSettingsTabsShowWindowTitle}">
     </settings-checkbox>
-    <settings-checkbox
-      class="list-item"
-      pref="{{prefs.brave.tabs.vertical_tabs_floating_enabled}}"
-      label="$i18n{appearanceSettingsTabsFloatOnMouseOver}">
-    </settings-checkbox>
+    <template is="dom-if" if="[[isHideVerticalTabCompletelyFlagEnabled()]]">
+      <settings-checkbox
+        class="list-item"
+        pref="{{prefs.brave.tabs.vertical_tabs_hide_completely_when_collapsed}}"
+        label="$i18n{SETTINGS_APPEARANCE_SETTINGS_TABS_HIDE_COMPLETELY_WHEN_COLLPASED}">
+      </settings-checkbox>
+      <template is="dom-if" if="[[prefs.brave.tabs.vertical_tabs_hide_completely_when_collapsed.value]]">
+        <!-- Show always checked and disabled checkbox. When 
+             vertical_tabs_hide_completely_when_collapsed is true
+             "Float on mouse over" is always enabled -->
+        <settings-checkbox
+          class="list-item"
+          disabled="true"
+          no-set-pref
+          pref="{{prefs.brave.tabs.vertical_tabs_hide_completely_when_collapsed}}"
+          label="$i18n{appearanceSettingsTabsFloatOnMouseOver}">
+        </settings-checkbox>
+      </template>
+      <template is="dom-if" if="[[!prefs.brave.tabs.vertical_tabs_hide_completely_when_collapsed.value]]">
+        <settings-checkbox
+          class="list-item"
+          pref="{{prefs.brave.tabs.vertical_tabs_floating_enabled}}"
+          label="$i18n{appearanceSettingsTabsFloatOnMouseOver}">
+        </settings-checkbox>
+      </template>
+    </template>
+    <template is="dom-if" if="[[!isHideVerticalTabCompletelyFlagEnabled()]]">
+      <settings-checkbox
+        class="list-item"
+        pref="{{prefs.brave.tabs.vertical_tabs_floating_enabled}}"
+        label="$i18n{appearanceSettingsTabsFloatOnMouseOver}">
+      </settings-checkbox>
+    </template>
     <settings-checkbox
       class="list-item"
       pref="{{prefs.brave.tabs.vertical_tabs_expanded_state_per_window}}"

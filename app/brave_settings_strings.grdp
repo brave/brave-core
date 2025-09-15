@@ -156,6 +156,9 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_SHOW_TITLE_BAR" desc="The label for showing window title when vertical tab strip is enabled.">
     Show title bar
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_HIDE_COMPLETELY_WHEN_COLLPASED" desc="The label for hiding vertical tabs completely when collapsed" formatter_data="webui=BraveSettings">
+    Hide completely when collapsed
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_USE_FLOATING_VERTICAL_TABS" desc="The label for enabling floating mode for vertical tab strip">
     Expand vertical tabs panel on mouseover when collapsed
   </message>

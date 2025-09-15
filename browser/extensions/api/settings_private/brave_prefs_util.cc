@@ -321,6 +321,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kVerticalTabsExpandedStatePerWindow] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed] =
+      settings_api::PrefType::kBoolean;
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
