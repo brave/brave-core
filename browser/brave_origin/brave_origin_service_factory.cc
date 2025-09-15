@@ -12,6 +12,7 @@
 #include "base/no_destructor.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
+#include "brave/components/brave_origin/profile_id.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
@@ -154,8 +155,8 @@ BraveOriginServiceFactory::~BraveOriginServiceFactory() = default;
 std::unique_ptr<KeyedService>
 BraveOriginServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  // Pass the profile ID here
-  return std::make_unique<BraveOriginService>("");
+  std::string profile_id = GetProfileId(context->GetPath());
+  return std::make_unique<BraveOriginService>(profile_id);
 }
 
 bool BraveOriginServiceFactory::ServiceIsCreatedWithBrowserContext() const {

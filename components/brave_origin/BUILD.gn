@@ -14,11 +14,27 @@ static_library("brave_origin") {
     "features.cc",
     "features.h",
     "pref_names.h",
+    "profile_id.cc",
+    "profile_id.h",
   ]
+
+  friend = [ ":unit_tests" ]
 
   public_deps = [ "//base" ]
   deps = [
     "//components/keyed_service/core",
     "//components/prefs",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "profile_id_unittest.cc" ]
+
+  deps = [
+    ":brave_origin",
+    "//base/test:test_support",
+    "//testing/gtest",
   ]
 }

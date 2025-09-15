@@ -56,6 +56,10 @@ policy::PolicyBundle BraveProfilePolicyProvider::LoadPolicies() {
   return bundle;
 }
 
+void BraveProfilePolicyProvider::SetProfileID(const std::string& profile_id) {
+  profile_id_ = profile_id;
+}
+
 std::unique_ptr<policy::ConfigurationPolicyProvider>
 CreateBraveProfilePolicyProvider() {
   return std::make_unique<BraveProfilePolicyProvider>();
