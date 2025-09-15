@@ -130,12 +130,6 @@ CHAR_LIMIT guidelines:
         Show bookmarks
       </message>
 
-      <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_INCOGNITO_TITLE" desc="Title for the radio button for blocking third-party cookies in private.">
-        Block while using Private
-      </message>
-      <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_INCOGNITO_DESCRIPTION" desc="Description for the radio button for blocking third-party cookies in private.">
-        While in Private, sites can’t use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
-      </message>
       <message name="IDS_SAFETY_HUB_SAFETY_TIPS_INCOGNITO_TITLE" desc="Title for a entry in the Safety Hub user education section. The entry leads the user to a help center article about Private.">
         Brave Private
       </message>
@@ -150,6 +144,9 @@ CHAR_LIMIT guidelines:
       </message>
       <message name="IDS_CONTEXTMENU_OPEN_IN_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a new Private tab. [CHAR_LIMIT=30]">
         Open in Private tab
+      </message>
+      <message name="IDS_CONTEXTMENU_OPEN_IN_INCOGNITO_WINDOW" desc="Context sensitive menu item to open the selected link in a new Private window. [CHAR_LIMIT=30]">
+        Open in Private window
       </message>
       <message name="IDS_CONTEXTMENU_OPEN_IN_CHROME_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a Brave Private tab from Brave Custom Tab. [CHAR_LIMIT=30]">
         Open in Private tab
@@ -197,7 +194,10 @@ CHAR_LIMIT guidelines:
         New Private tab
       </message>
       <message name="IDS_MENU_NEW_INCOGNITO_WINDOW" desc="Menu item for opening a new private window. [CHAR_LIMIT=27]">
-        New private window
+        New Private window
+      </message>
+      <message name="IDS_MENU_INCOGNITO_WINDOW" desc="Short label of menu item for opening a new private window. [CHAR_LIMIT=27]">
+        Private window
       </message>
       <message name="IDS_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new Private tab that facilitates pseudononymous browsing. [CHAR_LIMIT=27]" meaning="Android menu">
         New Private tab
@@ -280,7 +280,6 @@ CHAR_LIMIT guidelines:
           =1 {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>2</ex></ph> private and <ph name="TAB_COUNT_ONE">%2$s<ex>1</ex></ph> other tab will be closed}
           other {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>4</ex></ph> private and <ph name="TAB_COUNT_MANY">%2$s<ex>4</ex></ph> other tabs will be closed}}
       </message>
-
       <message name="IDS_IPH_TAB_SWITCHER_SWITCH_INTO_INCOGNITO_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
         Touch and hold to switch to Private
       </message>
