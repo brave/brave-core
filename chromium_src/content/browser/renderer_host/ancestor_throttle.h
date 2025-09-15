@@ -4,13 +4,17 @@
 #include "base/functional/callback.h"
 #include "url/origin.h"
 
+namespace content {
+class BrowserContext;
+}
+
 // Add injection point before the private section
 #define EvaluateEmbeddingOptIn(...) unused_var; \
  public: \
-  using PermissionCallback = base::RepeatingCallback<bool(const url::Origin&)>; \
+  using PermissionCallback = base::RepeatingCallback<bool(content::BrowserContext*, const url::Origin&)>; \
   static void SetPermissionCallback(PermissionCallback callback); \
  private: \
-  static bool CheckPermissionForOrigin(const url::Origin& origin); \
+  static bool CheckPermissionForOrigin(content::BrowserContext* browser_context, const url::Origin& origin); \
   NavigationThrottle::ThrottleCheckResult WillProcessResponse_ChromiumImpl(); \
   static PermissionCallback* permission_callback_; \
   CheckResult EvaluateEmbeddingOptIn(LoggingDisposition logging)

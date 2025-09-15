@@ -18,7 +18,7 @@ class BravePuppeteerPermissionContext : public permissions::PermissionContextBas
   BravePuppeteerPermissionContext& operator=(const BravePuppeteerPermissionContext&) = delete;
 
   // Returns true if the origin is allowed to use puppeteer mode
-  static bool IsOriginAllowedForPuppeteerMode(const url::Origin& origin);
+  static bool IsOriginAllowedForPuppeteerMode(content::BrowserContext* browser_context, const url::Origin& origin);
 
  private:
   // PermissionContextBase implementation

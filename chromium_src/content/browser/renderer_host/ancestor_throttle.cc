@@ -6,6 +6,7 @@
 #include "content/browser/renderer_host/ancestor_throttle.h"
 #include "content/browser/renderer_host/navigation_request.h"
 #include "content/browser/renderer_host/frame_tree_node.h"
+#include "content/public/browser/web_contents.h"
 
 // Override WillProcessResponse to check permissions before CSP checks
 #define WillProcessResponse WillProcessResponse_ChromiumImpl
@@ -25,11 +26,11 @@ void AncestorThrottle::SetPermissionCallback(AncestorThrottle::PermissionCallbac
   *permission_callback_ = std::move(callback);
 }
 
-bool AncestorThrottle::CheckPermissionForOrigin(const url::Origin& origin) {
+bool AncestorThrottle::CheckPermissionForOrigin(content::BrowserContext* browser_context, const url::Origin& origin) {
   if (!permission_callback_ || permission_callback_->is_null()) {
     return false;
   }
-  return permission_callback_->Run(origin);
+  return permission_callback_->Run(browser_context, origin);
 }
 
 NavigationThrottle::ThrottleCheckResult AncestorThrottle::WillProcessResponse() {
@@ -41,7 +42,8 @@ NavigationThrottle::ThrottleCheckResult AncestorThrottle::WillProcessResponse() 
       content::RenderFrameHost* parent_frame = frame_node->parent();
       if (parent_frame) {
         url::Origin parent_origin = parent_frame->GetLastCommittedOrigin();
-        if (CheckPermissionForOrigin(parent_origin)) {
+        content::BrowserContext* browser_context = navigation_handle()->GetWebContents()->GetBrowserContext();
+        if (CheckPermissionForOrigin(browser_context, parent_origin)) {
           return NavigationThrottle::PROCEED;
         }
       }

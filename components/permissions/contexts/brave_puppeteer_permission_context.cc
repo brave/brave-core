@@ -6,6 +6,10 @@
 #include "brave/components/permissions/contexts/brave_puppeteer_permission_context.h"
 
 #include "base/logging.h"
+#include "brave/components/permissions/puppeteer_features.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_frame_host.h"
@@ -26,31 +30,63 @@ BravePuppeteerPermissionContext::BravePuppeteerPermissionContext(
 BravePuppeteerPermissionContext::~BravePuppeteerPermissionContext() = default;
 
 bool BravePuppeteerPermissionContext::IsOriginAllowedForPuppeteerMode(
-    const url::Origin& origin) {
+    content::BrowserContext* browser_context, const url::Origin& origin) {
+  // Step 1: Check if puppeteer permission feature is enabled
+  if (!permissions::features::IsBravePuppeteerPermissionEnabled()) {
+    return false;
+  }
+
+  // Step 2: Check if origin is in allowlist
+  bool is_allowlisted = false;
+
   // In development builds, allow all hosts and localhost
   if (IS_DEVELOPMENT_BUILD) {
-    return true;
+    is_allowlisted = true;
   }
-  
   // Allow all brave:// scheme origins
-  if (origin.scheme() == "brave") {
-    return true;
+  else if (origin.scheme() == "brave") {
+    is_allowlisted = true;
   }
-  
   // Allow search.brave.com if HTTPS
-  if (origin.host() == "search.brave.com" && origin.scheme() == "https") {
-    return true;
+  else if (origin.host() == "search.brave.com" && origin.scheme() == "https") {
+    is_allowlisted = true;
   }
-  
-  return false;
+
+  if (!is_allowlisted) {
+    return false;
+  }
+
+  // Step 3: Check user permission setting
+  if (!browser_context) {
+    return false;
+  }
+
+  HostContentSettingsMap* settings_map =
+      HostContentSettingsMapFactory::GetForProfile(browser_context);
+  if (!settings_map) {
+    return false;
+  }
+
+  GURL origin_url = origin.GetURL();
+  ContentSetting permission_setting = settings_map->GetContentSetting(
+      origin_url, origin_url, ContentSettingsType::BRAVE_PUPPETEER);
+
+  // Allow if permission is explicitly granted or set to default (ASK)
+  // In production, we want explicit user consent, but in development builds
+  // we can be more permissive
+  if (IS_DEVELOPMENT_BUILD) {
+    return permission_setting != CONTENT_SETTING_BLOCK;
+  } else {
+    return permission_setting == CONTENT_SETTING_ALLOW;
+  }
 }
 
 // Global function for chromium_src forward declaration
 // This follows the same pattern as brave_policy components
 namespace brave_puppeteer {
 
-bool IsOriginAllowedForPuppeteerMode(const url::Origin& origin) {
-  return BravePuppeteerPermissionContext::IsOriginAllowedForPuppeteerMode(origin);
+bool IsOriginAllowedForPuppeteerMode(content::BrowserContext* browser_context, const url::Origin& origin) {
+  return BravePuppeteerPermissionContext::IsOriginAllowedForPuppeteerMode(browser_context, origin);
 }
 
 } // namespace brave_puppeteer
@@ -73,7 +109,7 @@ PermissionSetting BravePuppeteerPermissionContext::GetPermissionStatusInternal(
             << requesting_origin << ", embedding: " << embedding_origin;
 
   // Check if origin is allowed for puppeteer mode
-  if (!IsOriginAllowedForPuppeteerMode(url::Origin::Create(requesting_origin))) {
+  if (!IsOriginAllowedForPuppeteerMode(browser_context(), url::Origin::Create(requesting_origin))) {
     LOG(INFO) << "[PUPPETEER_DEBUG] Origin not allowed, returning BLOCK";
     return CONTENT_SETTING_BLOCK;
   }
