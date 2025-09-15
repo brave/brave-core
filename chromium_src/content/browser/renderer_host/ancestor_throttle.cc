@@ -39,8 +39,9 @@ NavigationThrottle::ThrottleCheckResult AncestorThrottle::WillProcessResponse() 
   if (request && !request->IsInOutermostMainFrame()) {
     content::FrameTreeNode* frame_node = request->frame_tree_node();
     if (frame_node && frame_node->parent()) {
+      // Only bypass CSP for the first level of inner frames (direct children of main frame)
       content::RenderFrameHost* parent_frame = frame_node->parent();
-      if (parent_frame) {
+      if (parent_frame && parent_frame->IsInPrimaryMainFrame()) {
         url::Origin parent_origin = parent_frame->GetLastCommittedOrigin();
         content::BrowserContext* browser_context = navigation_handle()->GetWebContents()->GetBrowserContext();
         if (CheckPermissionForOrigin(browser_context, parent_origin)) {
