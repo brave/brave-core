@@ -9,14 +9,13 @@
 
 #include "base/check.h"
 #include "brave/browser/themes/brave_dark_mode_utils_internal.h"
-#include "ui/native_theme/native_theme.h"
+#include "ui/native_theme/os_settings_provider.h"
 
 namespace dark_mode {
 
 void SetSystemDarkMode(BraveDarkModeType type) {
   if (type == BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT) {
-    DCHECK(
-        ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported());
+    DCHECK(ui::OsSettingsProvider::Get().DarkColorSchemeAvailable());
     [NSApp setAppearance:nil];
     return;
   }
