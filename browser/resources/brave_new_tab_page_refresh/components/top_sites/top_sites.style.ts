@@ -34,6 +34,9 @@ export const style = scoped.css`
   }
 
   .top-site-tiles-mask {
+    --self-page-width:
+      calc(var(--self-columns-per-page) * var(--self-tile-width));
+
     position: relative;
     overflow-x: scroll;
     overflow-y: hidden;
@@ -41,7 +44,7 @@ export const style = scoped.css`
     scroll-snap-type: x mandatory;
     scroll-snap-stop: always;
     overscroll-behavior: none;
-    max-width: calc(var(--self-columns-per-page) * var(--self-tile-width));
+    max-width: var(--self-page-width);
     max-height: fit-content;
     display: flex;
     gap: 16px;
@@ -50,15 +53,16 @@ export const style = scoped.css`
   }
 
   .top-site-tiles {
-    --self-grid-columns:
-      min(var(--self-columns-per-page), var(--self-tile-count));
-
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
     scroll-snap-align: start;
-    grid-template-columns:
-      repeat(var(--self-grid-columns), var(--self-tile-width));
-    grid-auto-rows: var(--self-tile-height);
-    grid-row-gap: 16px;
+    min-width: var(--self-page-width);
+  }
+
+  .top-site-row {
+    display: flex;
   }
 
   .top-site-tile {
