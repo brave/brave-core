@@ -5,6 +5,8 @@
 
 static_library("brave_origin") {
   sources = [
+    "brave_origin_policy_info.cc",
+    "brave_origin_policy_info.h",
     "brave_origin_service.cc",
     "brave_origin_service.h",
     "features.cc",
