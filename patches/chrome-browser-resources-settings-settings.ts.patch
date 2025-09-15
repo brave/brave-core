@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/settings.ts b/chrome/browser/resources/settings/settings.ts
-index f192b4ec19f7a41f82de0e930a53ecf8d4802495..3c0c97fcb66042eb5a24f760647ea814c2c99553 100644
+index 063a68c32dcef3e1fb371f1aaaee6fd212efbb46..1576beec2b6706a6adf90606b1906ec348256c2e 100644
 --- a/chrome/browser/resources/settings/settings.ts
 +++ b/chrome/browser/resources/settings/settings.ts
 @@ -2,6 +2,7 @@
  // Use of this source code is governed by a BSD-style license that can be
  // found in the LICENSE file.
  
-+import './brave_overrides/index.js';
++import './br/index.js';
  import './settings_ui/settings_ui.js';
  
  export {CrPolicyPrefIndicatorElement} from '/shared/settings/controls/cr_policy_pref_indicator.js';
