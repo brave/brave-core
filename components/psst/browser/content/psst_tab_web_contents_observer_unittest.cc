@@ -514,7 +514,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       base::Value(base::Value::Dict().Set("prop", "value"));
 
   // Any UI delegate method must not be called, as policy_script_result is empty
-  EXPECT_CALL(ui_delegate(), UpdateTasks(_, _)).Times(0);
+  EXPECT_CALL(ui_delegate(), UpdateTasks(_, _, _)).Times(0);
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -593,7 +593,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto policy_script_result = base::Value();
 
   // Any UI delegate method must not be called, as policy_script_result is empty
-  EXPECT_CALL(ui_delegate(), UpdateTasks(_, _)).Times(0);
+  EXPECT_CALL(ui_delegate(), UpdateTasks(_, _, _)).Times(0);
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
