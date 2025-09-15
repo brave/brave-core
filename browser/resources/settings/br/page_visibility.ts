@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js'
 
@@ -72,8 +72,8 @@ function getPageVisibility () {
   // notifies after a property is set.
   // Use proxy objects here so we only need to write out the attributes we
   // would like to hide.
-  // See brave/browser/settings/brave_overrides/basic_page.js for brave's list,
-  // and chrome/browser/settings/page_visibility.js for chromium's list.
+  // See brave/browser/settings/overrides/basic_page.js for Brave's list,
+  // and chrome/browser/settings/page_visibility.js for Bhromium's list.
   const staticProps = {
     // future-proof chromium actually defining something,
     ...chromiumPageVisibility,
