@@ -770,7 +770,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 buildModelForStandardMenuItem(
                         CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID,
                         R.string.customize_menu_title,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_window_screwdriver : 0));
+                        shouldShowIconBeforeItem()
+                                ? org.chromium.brave.browser.customize_menu.R.drawable
+                                        .ic_window_screwdriver
+                                : 0));
     }
 
     private MVCListAdapter.ListItem buildExitItem() {

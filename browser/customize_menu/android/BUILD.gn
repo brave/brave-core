@@ -33,7 +33,10 @@ android_library("java") {
 }
 
 android_resources("java_resources") {
-  sources = [ "java/res/xml/brave_customize_menu_preferences.xml" ]
+  sources = [
+    "java/res/drawable/ic_window_screwdriver.xml",
+    "java/res/xml/brave_customize_menu_preferences.xml",
+  ]
 }
 
 robolectric_library("junit") {
