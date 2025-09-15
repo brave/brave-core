@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/browser/tabs/tab_content_extractor.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/abseil-cpp/absl/status/statusor.h"
@@ -45,7 +46,8 @@ class TextEmbedder;
           text_embedder,                                                    \
       std::vector<BraveTabStripTabData> all_tabs_needing_content,           \
       std::vector<int> ungrouped_indices, int context_index,                \
-      std::vector<std::pair<int, std::string>> content_results);            \
+      std::vector<std::pair<int, tab_content_extractor::ExtractedData>>     \
+          content_results);                                                 \
   void OnSuggestGroupForTabResult(                                          \
       std::vector<int> tab_indices, int context_index,                      \
       absl::StatusOr<tab_groups::TabGroupId> result);                       \

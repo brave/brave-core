@@ -70,6 +70,28 @@ TextEmbedder::TextEmbedder(
 
 TextEmbedder::~TextEmbedder() = default;
 
+TextEmbedder::TabInfo::TabInfo() = default;
+
+TextEmbedder::TabInfo::TabInfo(const std::u16string& title,
+                               const GURL& url,
+                               const std::string& tab_content,
+                               const std::string& description)
+    : title(title),
+      url(url),
+      tab_content(tab_content),
+      description(description) {}
+
+TextEmbedder::TabInfo::~TabInfo() = default;
+
+TextEmbedder::TabInfo::TabInfo(const TabInfo&) = default;
+
+TextEmbedder::TabInfo& TextEmbedder::TabInfo::operator=(const TabInfo&) =
+    default;
+
+TextEmbedder::TabInfo::TabInfo(TabInfo&&) = default;
+
+TextEmbedder::TabInfo& TextEmbedder::TabInfo::operator=(TabInfo&&) = default;
+
 bool TextEmbedder::IsInitialized() const {
   DCHECK(owner_task_runner_->RunsTasksInCurrentSequence());
   base::AutoLock auto_lock(lock_);
@@ -133,6 +155,8 @@ std::string TextEmbedder::SerializeTabInfo(const TabInfo& tab_info) {
 
   std::string title_str = base::UTF16ToUTF8(tab_info.title);
 
+  // Temporarily disable keywords from distilled content
+#if 0
   // Extract keywords from tab content only
   std::string content_keywords;
   if (!tab_info.tab_content.empty()) {
@@ -145,7 +169,14 @@ std::string TextEmbedder::SerializeTabInfo(const TabInfo& tab_info) {
     result = base::StrCat(
         {title_str, " [keywords: ", content_keywords, "]", " | ", url_part});
   } else {
-    result = base::StrCat({title_str, " | ", url_part});
+#endif
+
+  std::string result;
+  if (!tab_info.description.empty()) {
+    result =
+        base::JoinString({title_str, url_part, tab_info.description}, " | ");
+  } else {
+    result = base::JoinString({title_str, url_part}, " | ");
   }
 
   // Temporary debugging output

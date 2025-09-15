@@ -14,15 +14,21 @@
 
 namespace tab_content_extractor {
 
-// Extracts text content from a tab using DOM distiller.
-// If the tab is not alive (discarded or dead render frame), it will be loaded
-// first. The callback is called with the extracted content (or empty string on
-// failure).
+// Structure to hold extracted content and description
+struct ExtractedData {
+  std::string content;
+  std::string description;
+};
+
+// Extracts text content and description from a tab using DOM distiller and
+// meta tag extraction. If the tab is not alive (discarded or dead render
+// frame), it will be loaded first. The callback is called with the extracted
+// data (or empty strings on failure).
 void ExtractTextContent(
     content::WebContents* web_contents,
     const GURL& tab_url,
     int tab_index,
-    base::OnceCallback<void(std::pair<int, std::string>)> callback);
+    base::OnceCallback<void(std::pair<int, ExtractedData>)> callback);
 
 }  // namespace tab_content_extractor
 

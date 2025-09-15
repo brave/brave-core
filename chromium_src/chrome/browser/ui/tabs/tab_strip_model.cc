@@ -171,7 +171,8 @@ void TabStripModel::OnTextEmbedderInitializedForGroupCommand(
 
   // Now collect inner text for all tabs using barrier callback
 
-  auto barrier_callback = base::BarrierCallback<std::pair<int, std::string>>(
+  auto barrier_callback = base::BarrierCallback<
+      std::pair<int, tab_content_extractor::ExtractedData>>(
       all_tabs_needing_content.size(),
       base::BindOnce(&TabStripModel::OnAllTabContentCollectedForGroupCommand,
                      weak_factory_.GetWeakPtr(), std::move(text_embedder),
@@ -183,9 +184,12 @@ void TabStripModel::OnTextEmbedderInitializedForGroupCommand(
     tab_content_extractor::ExtractTextContent(
         tab_data.web_contents, tab_data.url, tab_data.index,
         base::BindOnce(
-            [](base::RepeatingCallback<void(std::pair<int, std::string>)>
+            [](base::RepeatingCallback<void(
+                   std::pair<int, tab_content_extractor::ExtractedData>)>
                    callback,
-               std::pair<int, std::string> result) { callback.Run(result); },
+               std::pair<int, tab_content_extractor::ExtractedData> result) {
+              callback.Run(result);
+            },
             barrier_callback));
   }
 }
@@ -196,9 +200,10 @@ void TabStripModel::OnAllTabContentCollectedForGroupCommand(
     std::vector<BraveTabStripTabData> all_tabs_needing_content,
     std::vector<int> ungrouped_indices,
     int context_index,
-    std::vector<std::pair<int, std::string>> content_results) {
-  // Create a map of tab_index -> content for quick lookup
-  std::map<int, std::string> content_map;
+    std::vector<std::pair<int, tab_content_extractor::ExtractedData>>
+        content_results) {
+  // Create a map of tab_index -> extracted data for quick lookup
+  std::map<int, tab_content_extractor::ExtractedData> content_map;
   for (const auto& result : content_results) {
     content_map[result.first] = result.second;
   }
@@ -213,7 +218,7 @@ void TabStripModel::OnAllTabContentCollectedForGroupCommand(
       continue;
     }
 
-    std::string content = content_map[tab_data.index];
+    const auto& extracted_data = content_map[tab_data.index];
 
     // Initialize the group if we haven't seen it yet
     if (group_tabs.find(tab_data.group_id.value()) == group_tabs.end()) {
@@ -222,7 +227,8 @@ void TabStripModel::OnAllTabContentCollectedForGroupCommand(
     }
 
     group_tabs[tab_data.group_id.value()].push_back(
-        {tab_data.title, tab_data.url, content});
+        {tab_data.title, tab_data.url, extracted_data.content,
+         extracted_data.description});
   }
 
   if (group_tabs.empty()) {
@@ -278,11 +284,12 @@ void TabStripModel::OnAllTabContentCollectedForGroupCommand(
       continue;
     }
 
-    std::string content = content_map[tab_index];
+    const auto& extracted_data = content_map[tab_index];
 
     local_ai::TextEmbedder::CandidateTab candidate_tab;
     candidate_tab.index = tab_index;
-    candidate_tab.tab_info = {it->title, it->url, content};
+    candidate_tab.tab_info = {it->title, it->url, extracted_data.content,
+                              extracted_data.description};
 
     text_embedder->SuggestGroupForTab(
         candidate_tab, group_tabs,

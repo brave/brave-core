@@ -18,6 +18,37 @@ namespace tab_content_extractor {
 
 namespace {
 
+// JavaScript to extract description meta tags with fallback order
+constexpr char kDescriptionExtractionScript[] = R"(
+  (function() {
+    var description = '';
+
+    // Try description meta tag first
+    var descMeta = document.querySelector('meta[name="description"]');
+    if (descMeta && descMeta.content) {
+      description = descMeta.content.trim();
+    }
+
+    // Fallback to og:description
+    if (!description) {
+      var ogDesc = document.querySelector('meta[property="og:description"]');
+      if (ogDesc && ogDesc.content) {
+        description = ogDesc.content.trim();
+      }
+    }
+
+    // Fallback to twitter:description
+    if (!description) {
+      var twitterDesc = document.querySelector('meta[name="twitter:description"]');
+      if (twitterDesc && twitterDesc.content) {
+        description = twitterDesc.content.trim();
+      }
+    }
+
+    return description;
+  })();
+)";
+
 // NavigationObserver that waits for page load completion before executing
 // JavaScript
 class ContentExtractionObserver : public content::WebContentsObserver {
@@ -25,7 +56,7 @@ class ContentExtractionObserver : public content::WebContentsObserver {
   ContentExtractionObserver(
       content::WebContents* web_contents,
       int tab_index,
-      base::OnceCallback<void(std::pair<int, std::string>)> callback)
+      base::OnceCallback<void(std::pair<int, ExtractedData>)> callback)
       : WebContentsObserver(web_contents),
         tab_index_(tab_index),
         callback_(std::move(callback)) {}
@@ -39,19 +70,20 @@ class ContentExtractionObserver : public content::WebContentsObserver {
       base::TerminationStatus status) override {
     VLOG(1) << "Tab " << tab_index_
             << " render process gone, calling callback with empty content";
-    std::move(callback_).Run(std::make_pair(tab_index_, std::string()));
+    std::move(callback_).Run(std::make_pair(tab_index_, ExtractedData{}));
     delete this;
   }
 
   void StartExtraction() { ExecuteScript(); }
 
  private:
+  // TODO(darkdh): Move script executing into renderer.
   void ExecuteScript() {
     if (!web_contents() || !web_contents()->GetPrimaryMainFrame() ||
         !web_contents()->GetPrimaryMainFrame()->IsRenderFrameLive()) {
       VLOG(1) << "Tab " << tab_index_
               << " not ready, calling callback with empty content";
-      std::move(callback_).Run(std::make_pair(tab_index_, std::string()));
+      std::move(callback_).Run(std::make_pair(tab_index_, ExtractedData{}));
       delete this;
       return;
     }
@@ -64,24 +96,26 @@ class ContentExtractionObserver : public content::WebContentsObserver {
     // Get distiller script with text-only option
     std::string script = dom_distiller::GetDistillerScriptWithOptions(options);
 
+    // First execute the distiller script
     web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
         base::UTF8ToUTF16(script),
         base::BindOnce(
-            [](base::OnceCallback<void(std::pair<int, std::string>)> callback,
+            [](base::OnceCallback<void(std::pair<int, ExtractedData>)> callback,
                int tab_index, ContentExtractionObserver* observer,
-               base::Value result) {
-              std::string content;
+               content::WebContents* web_contents, base::Value result) {
+              ExtractedData extracted_data;
 
-              // Use proper protobuf deserialization
+              // Use proper protobuf deserialization for content
               dom_distiller::proto::DomDistillerResult distiller_result;
               if (dom_distiller::proto::json::DomDistillerResult::ReadFromValue(
                       result, &distiller_result)) {
                 if (distiller_result.has_distilled_content() &&
                     distiller_result.distilled_content().has_html()) {
-                  content = distiller_result.distilled_content().html();
+                  extracted_data.content =
+                      distiller_result.distilled_content().html();
                   VLOG(1) << "Tab " << tab_index
-                          << " extracted content (length: " << content.length()
-                          << ")";
+                          << " extracted content (length: "
+                          << extracted_data.content.length() << ")";
                 } else {
                   VLOG(2) << "Tab " << tab_index
                           << " - no distilled content or html found";
@@ -90,15 +124,43 @@ class ContentExtractionObserver : public content::WebContentsObserver {
                 VLOG(2) << "Tab " << tab_index << " - ReadFromValue failed";
               }
 
-              std::move(callback).Run(std::make_pair(tab_index, content));
-              delete observer;  // Clean up the observer
+              // Now extract description from meta tags
+              web_contents->GetPrimaryMainFrame()
+                  ->ExecuteJavaScriptInIsolatedWorld(
+                      base::UTF8ToUTF16(
+                          std::string(kDescriptionExtractionScript)),
+                      base::BindOnce(
+                          [](base::OnceCallback<void(
+                                 std::pair<int, ExtractedData>)> callback,
+                             int tab_index, ContentExtractionObserver* observer,
+                             ExtractedData extracted_data,
+                             base::Value description_result) {
+                            // Extract description from the result
+                            if (description_result.is_string()) {
+                              extracted_data.description =
+                                  description_result.GetString();
+                              VLOG(1) << "Tab " << tab_index
+                                      << " extracted description: "
+                                      << extracted_data.description;
+                            } else {
+                              VLOG(2) << "Tab " << tab_index
+                                      << " - no description found";
+                            }
+
+                            std::move(callback).Run(
+                                std::make_pair(tab_index, extracted_data));
+                            delete observer;  // Clean up the observer
+                          },
+                          std::move(callback), tab_index, observer,
+                          extracted_data),
+                      ISOLATED_WORLD_ID_CHROME_INTERNAL);
             },
-            std::move(callback_), tab_index_, this),
+            std::move(callback_), tab_index_, this, web_contents()),
         ISOLATED_WORLD_ID_CHROME_INTERNAL);
   }
 
   int tab_index_;
-  base::OnceCallback<void(std::pair<int, std::string>)> callback_;
+  base::OnceCallback<void(std::pair<int, ExtractedData>)> callback_;
 };
 
 }  // namespace
@@ -107,12 +169,12 @@ void ExtractTextContent(
     content::WebContents* web_contents,
     const GURL& tab_url,
     int tab_index,
-    base::OnceCallback<void(std::pair<int, std::string>)> callback) {
+    base::OnceCallback<void(std::pair<int, ExtractedData>)> callback) {
   // Check if WebContents and frame are valid
   if (!web_contents || !web_contents->GetPrimaryMainFrame()) {
     VLOG(1) << "Tab " << tab_index
             << " has invalid WebContents or frame, skipping";
-    std::move(callback).Run(std::make_pair(tab_index, std::string()));
+    std::move(callback).Run(std::make_pair(tab_index, ExtractedData{}));
     return;
   }
 
@@ -120,7 +182,7 @@ void ExtractTextContent(
   if (web_contents->IsLoading()) {
     VLOG(1) << "Tab " << tab_index
             << " is still loading, skipping JavaScript execution";
-    std::move(callback).Run(std::make_pair(tab_index, std::string()));
+    std::move(callback).Run(std::make_pair(tab_index, ExtractedData{}));
     return;
   }
 

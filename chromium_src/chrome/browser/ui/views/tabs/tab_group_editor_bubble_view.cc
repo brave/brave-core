@@ -411,7 +411,8 @@ void TabGroupEditorBubbleView::ProcessTabSuggestion() {
   // Create a copy for the barrier callback to avoid moving the vector we need
   // to iterate over
   auto all_tabs_copy = all_tabs;
-  auto barrier_callback = base::BarrierCallback<std::pair<int, std::string>>(
+  auto barrier_callback = base::BarrierCallback<
+      std::pair<int, tab_content_extractor::ExtractedData>>(
       all_tabs.size(),
       base::BindOnce(&TabGroupEditorBubbleView::OnAllTabContentsCollected,
                      base::Unretained(this), std::move(all_tabs_copy)));
@@ -422,18 +423,22 @@ void TabGroupEditorBubbleView::ProcessTabSuggestion() {
     tab_content_extractor::ExtractTextContent(
         tab_data.web_contents, tab_data.url, tab_data.index,
         base::BindOnce(
-            [](base::RepeatingCallback<void(std::pair<int, std::string>)>
+            [](base::RepeatingCallback<void(
+                   std::pair<int, tab_content_extractor::ExtractedData>)>
                    callback,
-               std::pair<int, std::string> result) { callback.Run(result); },
+               std::pair<int, tab_content_extractor::ExtractedData> result) {
+              callback.Run(result);
+            },
             barrier_callback));
   }
 }
 
 void TabGroupEditorBubbleView::OnAllTabContentsCollected(
     std::vector<TabData> all_tabs,
-    std::vector<std::pair<int, std::string>> content_results) {
-  // Create a map of tab_index -> content for quick lookup
-  std::map<int, std::string> content_map;
+    std::vector<std::pair<int, tab_content_extractor::ExtractedData>>
+        content_results) {
+  // Create a map of tab_index -> extracted data for quick lookup
+  std::map<int, tab_content_extractor::ExtractedData> content_map;
   for (const auto& result : content_results) {
     content_map[result.first] = result.second;
   }
@@ -443,10 +448,11 @@ void TabGroupEditorBubbleView::OnAllTabContentsCollected(
   std::vector<local_ai::TextEmbedder::CandidateTab> candidate_tabs;
 
   for (const auto& tab_data : all_tabs) {
-    std::string content = content_map[tab_data.index];
+    const auto& extracted_data = content_map[tab_data.index];
 
     local_ai::TextEmbedder::TabInfo tab_info = {tab_data.title, tab_data.url,
-                                                content};
+                                                extracted_data.content,
+                                                extracted_data.description};
 
     if (tab_data.is_in_group) {
       // Tab is in the current group

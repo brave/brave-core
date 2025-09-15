@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/task/sequenced_task_runner.h"
+#include "brave/browser/tabs/tab_content_extractor.h"
 #include "brave/components/local_ai/browser/text_embedder.h"
 
 // Forward declaration for TabData
@@ -29,7 +30,8 @@ struct TabData;
   void ProcessTabSuggestion();                                          \
   void OnAllTabContentsCollected(                                       \
       std::vector<TabData> all_tabs,                                    \
-      std::vector<std::pair<int, std::string>> content_results);        \
+      std::vector<std::pair<int, tab_content_extractor::ExtractedData>> \
+          content_results);                                             \
   void OnTabSuggestionResult(absl::StatusOr<std::vector<int>> result);  \
   void ShowSuggestionDialog(std::vector<int> suggested_tab_indices);    \
   void CleanupTextEmbedder();                                           \
