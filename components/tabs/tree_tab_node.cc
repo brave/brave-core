@@ -124,11 +124,13 @@ void TreeTabNode::CollectTreeNodesRecursively(
 
 std::vector<std::variant<tabs::TabInterface*, tabs::TabCollection*>>
 TreeTabNode::GetChildren() {
+  const auto& unique_children = GetChildrenStatic(*this);
   std::vector<std::variant<tabs::TabInterface*, TabCollection*>> children;
+  children.reserve(unique_children.size());
 
   // Transforms unique_ptrs to raw pointers for the children.
   std::ranges::transform(
-      GetChildrenStatic(*this), std::back_inserter(children),
+      unique_children, std::back_inserter(children),
       [](const auto& child)
           -> std::variant<tabs::TabInterface*, TabCollection*> {
         if (std::holds_alternative<std::unique_ptr<tabs::TabInterface>>(
