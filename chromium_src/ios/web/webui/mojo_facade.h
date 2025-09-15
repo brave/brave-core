@@ -15,7 +15,13 @@
   bool IsWebUIMessageAllowedForFrame(const GURL& origin, NSString* prompt); \
   std::string HandleMojoMessage
 
+// Override OnWatcherCallback to have a frame_id parameter
+#define OnWatcherCallback(callback_id, watch_id, result) \
+  OnWatcherCallback(callback_id, watch_id, std::string frame_id, result)
+
 #include <ios/web/webui/mojo_facade.h>  // IWYU pragma: export
+
+#undef OnWatcherCallback
 
 #undef HandleMojoMessage
 

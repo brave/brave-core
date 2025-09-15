@@ -78,7 +78,10 @@ brave_all_unit_tests_deps = [ "//brave/components:brave_components_unittests" ]
 if (!is_ios) {
   brave_all_unit_tests_deps += [ "//brave/test:brave_unit_tests" ]
 } else {
-  brave_all_unit_tests_deps += [ "//brave/ios/testing:ios_brave_unit_tests" ]
+  brave_all_unit_tests_deps += [
+    "//brave/ios/testing:ios_brave_unit_tests",
+    "//brave/ios/web:ios_brave_web_unittests",
+  ]
 }
 if (!is_ios && !is_android) {
   brave_all_unit_tests_deps += [ "//brave/test:brave_installer_unittests" ]

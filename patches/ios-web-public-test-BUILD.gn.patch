@@ -1,0 +1,12 @@
+diff --git a/ios/web/public/test/BUILD.gn b/ios/web/public/test/BUILD.gn
+index 920aba014b40377986bb5c2b8b0d446d27889966..e82c5ab6faf25950e835be0fbe4f5778d13b7454 100644
+--- a/ios/web/public/test/BUILD.gn
++++ b/ios/web/public/test/BUILD.gn
+@@ -100,6 +100,7 @@ source_set("test_fixture") {
+     # please contact sdefresne@ or rohitrao@ to check with them.
+     "//ios/chrome/test:ios_chrome_unit_test_suite",
+   ]
++  import("//brave/ios/web/sources.gni") visibility += brave_ios_web_test_fixture_visibility
+ 
+   sources = [
+     "web_test.h",
