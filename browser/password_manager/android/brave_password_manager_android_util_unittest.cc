@@ -19,81 +19,87 @@
 #include "components/sync/base/pref_names.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace password_manager_android_util {
-namespace {
+// AlexeyBarabash: WIP
+// MaybeDeleteLoginDatabases was removed at upstream at revision
+// 62fdf60f5e40bb6fc6bf31d292482c353be23dcc, so no point to keep this test
 
-class BravePasswordManagerAndroidUtilTest : public testing::Test {
- public:
-  BravePasswordManagerAndroidUtilTest() {
-    pref_service_.registry()->RegisterBooleanPref(
-        password_manager::prefs::kCredentialsEnableService, false);
-    pref_service_.registry()->RegisterBooleanPref(
-        password_manager::prefs::kCredentialsEnableAutosignin, false);
-    pref_service_.registry()->RegisterBooleanPref(
-        syncer::prefs::internal::kSyncInitialSyncFeatureSetupComplete, false);
-    pref_service_.registry()->RegisterBooleanPref(
-        syncer::prefs::internal::kSyncKeepEverythingSynced, false);
-    pref_service_.registry()->RegisterBooleanPref(
-        base::StrCat(
-            {syncer::prefs::internal::
-                 kSyncDataTypeStatusForSyncToSigninMigrationPrefix,
-             ".", syncer::DataTypeToStableLowerCaseString(syncer::PASSWORDS)}),
-        false);
+// namespace password_manager_android_util {
+// namespace {
 
-    base::WriteFile(login_db_directory_.Append(
-                        password_manager::kLoginDataForProfileFileName),
-                    "");
-  }
+// class BravePasswordManagerAndroidUtilTest : public testing::Test {
+//  public:
+//   BravePasswordManagerAndroidUtilTest() {
+//     pref_service_.registry()->RegisterBooleanPref(
+//         password_manager::prefs::kCredentialsEnableService, false);
+//     pref_service_.registry()->RegisterBooleanPref(
+//         password_manager::prefs::kCredentialsEnableAutosignin, false);
+//     pref_service_.registry()->RegisterBooleanPref(
+//         syncer::prefs::internal::kSyncInitialSyncFeatureSetupComplete,
+//         false);
+//     pref_service_.registry()->RegisterBooleanPref(
+//         syncer::prefs::internal::kSyncKeepEverythingSynced, false);
+//     pref_service_.registry()->RegisterBooleanPref(
+//         base::StrCat(
+//             {syncer::prefs::internal::
+//                  kSyncDataTypeStatusForSyncToSigninMigrationPrefix,
+//              ".",
+//              syncer::DataTypeToStableLowerCaseString(syncer::PASSWORDS)}),
+//         false);
 
-  TestingPrefServiceSimple* pref_service() { return &pref_service_; }
+//     base::WriteFile(login_db_directory_.Append(
+//                         password_manager::kLoginDataForProfileFileName),
+//                     "");
+//   }
 
-  const base::FilePath& login_db_directory() { return login_db_directory_; }
+//   TestingPrefServiceSimple* pref_service() { return &pref_service_; }
 
-  std::unique_ptr<MockPasswordManagerUtilBridge>
-  GetMockBridgeWithBackendPresent() {
-    auto mock_bridge = std::make_unique<MockPasswordManagerUtilBridge>();
-    ON_CALL(*mock_bridge, IsInternalBackendPresent)
-        .WillByDefault(testing::Return(true));
-    return mock_bridge;
-  }
+//   const base::FilePath& login_db_directory() { return login_db_directory_; }
 
- private:
-  TestingPrefServiceSimple pref_service_;
-  const base::FilePath login_db_directory_ =
-      base::CreateUniqueTempDirectoryScopedToTest();
-};
+//   std::unique_ptr<MockPasswordManagerUtilBridge>
+//   GetMockBridgeWithBackendPresent() {
+//     auto mock_bridge = std::make_unique<MockPasswordManagerUtilBridge>();
+//     ON_CALL(*mock_bridge, IsInternalBackendPresent)
+//         .WillByDefault(testing::Return(true));
+//     return mock_bridge;
+//   }
 
-// We don't want password db to be deleted on Android
-// Based on DeletesLoginDataFilesAfterUnmigratedPasswordsExported
-TEST_F(BravePasswordManagerAndroidUtilTest, DoNotDeleteLoginDataFiles) {
-  // Creating the login data files for testing.
-  base::FilePath profile_db_path = login_db_directory().Append(
-      password_manager::kLoginDataForProfileFileName);
-  base::FilePath account_db_path = login_db_directory().Append(
-      password_manager::kLoginDataForAccountFileName);
-  base::FilePath profile_db_journal_path = login_db_directory().Append(
-      password_manager::kLoginDataJournalForProfileFileName);
-  base::FilePath account_db_journal_path = login_db_directory().Append(
-      password_manager::kLoginDataJournalForAccountFileName);
+//  private:
+//   TestingPrefServiceSimple pref_service_;
+//   const base::FilePath login_db_directory_ =
+//       base::CreateUniqueTempDirectoryScopedToTest();
+// };
 
-  base::WriteFile(profile_db_path, "Test content");
-  base::WriteFile(account_db_path, "Test content");
-  base::WriteFile(profile_db_journal_path, "Test content");
-  base::WriteFile(account_db_journal_path, "Test content");
+// // We don't want password db to be deleted on Android
+// // Based on DeletesLoginDataFilesAfterUnmigratedPasswordsExported
+// TEST_F(BravePasswordManagerAndroidUtilTest, DoNotDeleteLoginDataFiles) {
+//   // Creating the login data files for testing.
+//   base::FilePath profile_db_path = login_db_directory().Append(
+//       password_manager::kLoginDataForProfileFileName);
+//   base::FilePath account_db_path = login_db_directory().Append(
+//       password_manager::kLoginDataForAccountFileName);
+//   base::FilePath profile_db_journal_path = login_db_directory().Append(
+//       password_manager::kLoginDataJournalForProfileFileName);
+//   base::FilePath account_db_journal_path = login_db_directory().Append(
+//       password_manager::kLoginDataJournalForAccountFileName);
 
-  EXPECT_TRUE(PathExists(profile_db_path));
-  EXPECT_TRUE(PathExists(account_db_path));
-  EXPECT_TRUE(PathExists(profile_db_journal_path));
-  EXPECT_TRUE(PathExists(account_db_journal_path));
+//   base::WriteFile(profile_db_path, "Test content");
+//   base::WriteFile(account_db_path, "Test content");
+//   base::WriteFile(profile_db_journal_path, "Test content");
+//   base::WriteFile(account_db_journal_path, "Test content");
 
-  MaybeDeleteLoginDatabases(pref_service(), login_db_directory(),
-                            GetMockBridgeWithBackendPresent());
+//   EXPECT_TRUE(PathExists(profile_db_path));
+//   EXPECT_TRUE(PathExists(account_db_path));
+//   EXPECT_TRUE(PathExists(profile_db_journal_path));
+//   EXPECT_TRUE(PathExists(account_db_journal_path));
 
-  EXPECT_TRUE(PathExists(profile_db_path));
-  EXPECT_TRUE(PathExists(account_db_path));
-  EXPECT_TRUE(PathExists(profile_db_journal_path));
-  EXPECT_TRUE(PathExists(account_db_journal_path));
-}
+//   MaybeDeleteLoginDatabases(pref_service(), login_db_directory(),
+//                             GetMockBridgeWithBackendPresent());
 
-}  // namespace
-}  // namespace password_manager_android_util
+//   EXPECT_TRUE(PathExists(profile_db_path));
+//   EXPECT_TRUE(PathExists(account_db_path));
+//   EXPECT_TRUE(PathExists(profile_db_journal_path));
+//   EXPECT_TRUE(PathExists(account_db_journal_path));
+// }
+
+// }  // namespace
+// }  // namespace password_manager_android_util
