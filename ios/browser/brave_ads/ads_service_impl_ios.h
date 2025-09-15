@@ -57,6 +57,10 @@ class AdsServiceImplIOS : public AdsService {
       mojom::NotificationAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback);
 
+  void NotifyDidInitializeAdsService() const;
+  void NotifyDidShutdownAdsService() const;
+  void NotifyDidClearAdsServiceData() const;
+
   // AdsService:
   bool IsBrowserUpgradeRequiredToServeAds() const override;
 
