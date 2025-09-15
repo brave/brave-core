@@ -62,7 +62,9 @@ class FakeWebStateWithInterfaceBinder : public FakeWebState {
 // Frame type enum for parameterized tests
 enum class FrameType { kMainFrame, kChildFrame };
 
-// A test fixture to test MojoFacade class.
+// A test fixture to test MojoFacade class. It creates a frames manager, along
+// with a main & child frame associated with it and copies the neccesssary
+// helper methods that exist in //ios/web/webui/mojo_facade_unittest.mm
 class MojoFacadeTest : public WebTest {
  protected:
   MojoFacadeTest() {
@@ -193,7 +195,13 @@ class MojoFacadeTest : public WebTest {
   std::unique_ptr<MojoFacade> facade_;
 };
 
-// Parameterized test fixture for frame-specific tests
+// Parameterized test fixture for frame-specific tests. The actual logic being
+// tested is copied from //ios/web/webui/mojo_facade_unittest.mm with the
+// exception that we are testing it on both the main & child frames rather
+// than just main. This ensures that our patch & overrides work correctly and
+// that the mojo communication JavaScript is being run on the correct frame
+// based on the frame ID passed in. This suite only copies tests related to the
+// Watch commands as they are the ones that now pass in a frame ID
 class MojoFacadeWatchFramesTest
     : public MojoFacadeTest,
       public ::testing::WithParamInterface<FrameType> {
