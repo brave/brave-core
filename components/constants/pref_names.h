@@ -166,4 +166,7 @@ inline constexpr char kBraveSuggestedSiteSuggestionsEnabled[] =
     "brave.brave_suggested_site_suggestions_enabled";
 #endif
 
+inline constexpr char kManagedDefaultBraveCookies[] =
+    "brave.profile.managed_default_content_settings.brave_cookies";
+
 #endif  // BRAVE_COMPONENTS_CONSTANTS_PREF_NAMES_H_

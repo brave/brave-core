@@ -56,17 +56,24 @@ void AdBlockOnlyModePolicyProvider::MaybeLoadPolicies(
   policy::PolicyMap& policies = bundle.Get(
       policy::PolicyNamespace(policy::POLICY_DOMAIN_CHROME, std::string()));
 
-  policies.Set("DefaultJavaScriptSetting", policy::POLICY_LEVEL_MANDATORY,
-               policy::POLICY_SCOPE_USER, policy::POLICY_SOURCE_BRAVE,
-               base::Value(1), nullptr);
+  policies.Set(policy::key::kDefaultJavaScriptSetting,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE,
+               base::Value(ContentSetting::CONTENT_SETTING_ALLOW), nullptr);
 
-  policies.Set("DefaultCookiesSetting", policy::POLICY_LEVEL_MANDATORY,
-               policy::POLICY_SCOPE_USER, policy::POLICY_SOURCE_BRAVE,
-               base::Value(1), nullptr);
+  policies.Set(policy::key::kDefaultCookiesSetting,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE,
+               base::Value(ContentSetting::CONTENT_SETTING_ALLOW), nullptr);
 
-  policies.Set("BlockThirdPartyCookies", policy::POLICY_LEVEL_MANDATORY,
-               policy::POLICY_SCOPE_USER, policy::POLICY_SOURCE_BRAVE,
-               base::Value(false), nullptr);
+  policies.Set(policy::key::kBlockThirdPartyCookies,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE, base::Value(false), nullptr);
+
+  policies.Set(policy::key::kDefaultBraveCookiesSetting,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE,
+               base::Value(ContentSetting::CONTENT_SETTING_ALLOW), nullptr);
 }
 
 void AdBlockOnlyModePolicyProvider::OnAdBlockOnlyModeChanged() {

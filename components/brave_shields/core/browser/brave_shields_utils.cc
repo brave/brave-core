@@ -564,9 +564,9 @@ ControlType GetCookieControlType(
   DCHECK(map);
   DCHECK(cookie_settings);
 
-  if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
-    return ControlType::ALLOW;
-  }
+  // if (GetBraveShieldsAdBlockOnlyModeEnabled(pref_service)) {
+  //   return ControlType::ALLOW;
+  // }
 
   auto result = BraveCookieRules::Get(map, url);
   if (result.HasDefault()) {

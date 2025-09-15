@@ -20,7 +20,7 @@ bool IsAdBlockOnlyModeContentSettingsType(ContentSettingsType content_type,
       base::MakeFixedFlatSet<ContentSettingsType>({
           ContentSettingsType::JAVASCRIPT,
           ContentSettingsType::COOKIES,
-          ContentSettingsType::BRAVE_COOKIES,
+          //ContentSettingsType::BRAVE_COOKIES,
           ContentSettingsType::BRAVE_REFERRERS,
           ContentSettingsType::BRAVE_ADS,
           ContentSettingsType::BRAVE_TRACKERS,
@@ -63,10 +63,10 @@ void FillAdBlockOnlyModeRules(OriginValueMap& ad_block_only_mode_rules) {
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::COOKIES,
       ContentSettingToValue(CONTENT_SETTING_ALLOW), metadata.Clone());
-  ad_block_only_mode_rules.SetValue(
-      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_COOKIES,
-      ContentSettingToValue(CONTENT_SETTING_ALLOW), metadata.Clone());
+  // ad_block_only_mode_rules.SetValue(
+  //     ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+  //     ContentSettingsType::BRAVE_COOKIES,
+  //     ContentSettingToValue(CONTENT_SETTING_ALLOW), metadata.Clone());
   ad_block_only_mode_rules.SetValue(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::BRAVE_REFERRERS,

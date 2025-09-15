@@ -13,6 +13,13 @@
 #define BRAVE_MANAGED_PREFS \
   kManagedBraveShieldsDisabledForUrls, kManagedBraveShieldsEnabledForUrls,
 
+#define BRAVE_MANAGED_DEFAULT \
+  {ContentSettingsType::BRAVE_COOKIES, kManagedDefaultBraveCookies},
+
+#define BRAVE_MANAGED_DEFAULT_PREFS kManagedDefaultBraveCookies,
+
 #include <components/content_settings/core/browser/content_settings_policy_provider.cc>
+#undef BRAVE_MANAGED_DEFAULT_PREFS
+#undef BRAVE_MANAGED_DEFAULT
 #undef BRAVE_MANAGED_PREFS
 #undef BRAVE_MANAGED_CONTENT_SETTINGS

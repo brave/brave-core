@@ -1,0 +1,30 @@
+caption: Default Brave cookies setting
+desc: |-
+  Setting the policy to 1 allows cookies on websites. Setting the policy to 2 denies cookies on websites.
+
+  Leaving it unset allows cookies, but users can change this setting.
+
+default: null
+example_value: 1
+features:
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Allow all sites to set cookies
+  name: AllowCookies
+  value: 1
+- caption: Do not allow any site to set cookies
+  name: BlockCookies
+  value: 2
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  enum:
+  - 1
+  - 2
+  type: integer
+supported_on:
+- chrome.*:139-
+tags: []
+type: int-enum
