@@ -815,7 +815,13 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   map->Add<brave_wallet::mojom::BraveWalletP3A>(
       base::BindRepeating(&MaybeBindWalletP3A));
   map->Add<brave::mojom::BraveDebugger>(
-      base::BindRepeating(&BraveDebuggerService::Create));
+      base::BindRepeating([](content::RenderFrameHost* render_frame_host,
+                            mojo::PendingReceiver<brave::mojom::BraveDebugger> receiver) {
+        // Only allow debugger API access from main frame
+        if (render_frame_host->IsInPrimaryMainFrame()) {
+          BraveDebuggerService::Create(render_frame_host, std::move(receiver));
+        }
+      }));
   if (brave_wallet::IsAllowedForContext(
           render_frame_host->GetBrowserContext())) {
     if (brave_wallet::IsNativeWalletEnabled()) {
