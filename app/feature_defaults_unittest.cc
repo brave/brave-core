@@ -130,6 +130,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &feature_engagement::kIPHPasswordsManagementBubbleAfterSaveFeature,
       &feature_engagement::kIPHTabSearchToolbarButtonFeature,
 #endif
+      &features::kBookmarkTriggerForPrefetch,
       &features::kChromeStructuredMetrics,
       &features::kCookieDeprecationFacilitatedTesting,
 #if !BUILDFLAG(IS_ANDROID)
