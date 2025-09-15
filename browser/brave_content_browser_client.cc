@@ -34,6 +34,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
+#include "brave/browser/debugger/brave_debugger_service.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
@@ -813,6 +814,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
   map->Add<brave_wallet::mojom::BraveWalletP3A>(
       base::BindRepeating(&MaybeBindWalletP3A));
+  map->Add<brave::mojom::BraveDebugger>(
+      base::BindRepeating(&BraveDebuggerService::Create));
   if (brave_wallet::IsAllowedForContext(
           render_frame_host->GetBrowserContext())) {
     if (brave_wallet::IsNativeWalletEnabled()) {

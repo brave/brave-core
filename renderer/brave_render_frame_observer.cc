@@ -7,7 +7,9 @@
 
 #include <string>
 
+#include "brave/renderer/brave_debugger_api.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
+#include "third_party/blink/public/web/web_local_frame.h"
 
 BraveRenderFrameObserver::BraveRenderFrameObserver(
     content::RenderFrame* render_frame)
@@ -23,4 +25,20 @@ void BraveRenderFrameObserver::OnInterfaceRequestForFrame(
     const std::string& interface_name,
     mojo::ScopedMessagePipeHandle* interface_pipe) {
   registry_.TryBindInterface(interface_name, interface_pipe);
+}
+
+void BraveRenderFrameObserver::DidClearWindowObject() {
+  if (!render_frame() || !render_frame()->GetWebFrame()) {
+    return;
+  }
+
+  v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
+  v8::Local<v8::Context> context = render_frame()->GetWebFrame()->MainWorldScriptContext();
+  if (context.IsEmpty()) {
+    return;
+  }
+
+  if (BraveDebuggerAPI::ShouldInject(render_frame(), context)) {
+    BraveDebuggerAPI::Install(render_frame(), context);
+  }
 }

@@ -8,7 +8,9 @@
 
 #include <string>
 
+#include "brave/common/brave_debugger.mojom.h"
 #include "content/public/renderer/render_frame_observer.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
 
 class BraveRenderFrameObserver : public content::RenderFrameObserver {
@@ -24,6 +26,7 @@ class BraveRenderFrameObserver : public content::RenderFrameObserver {
   void OnInterfaceRequestForFrame(
       const std::string& interface_name,
       mojo::ScopedMessagePipeHandle* interface_pipe) override;
+  void DidClearWindowObject() override;
 
  protected:
   ~BraveRenderFrameObserver() override;

@@ -1,0 +1,37 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave.mojom;
+
+import "url/mojom/origin.mojom";
+import "mojo/public/mojom/base/values.mojom";
+
+// Represents a debugger target (usually a frame or page)
+struct DebuggerTarget {
+  string id;
+  string type;
+  string title;
+  string url;
+  bool attached;
+};
+
+// Interface for debugger operations, implemented by the browser process
+interface BraveDebugger {
+  // Attach debugger to a target
+  AttachToTarget(url.mojom.Origin origin, string target_id, string version)
+      => (bool success, string error);
+
+  // Detach debugger from a target
+  DetachFromTarget(url.mojom.Origin origin, string target_id)
+      => (bool success, string error);
+
+  // Send a command to the debugger
+  SendCommand(url.mojom.Origin origin, string target_id, string method,
+             mojo_base.mojom.DictionaryValue params)
+      => (bool success, mojo_base.mojom.DictionaryValue result, string error);
+
+  // Get available targets
+  GetTargets(url.mojom.Origin origin) => (array<DebuggerTarget> targets);
+};

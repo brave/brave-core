@@ -57,7 +57,13 @@ config("constants_configs") {
 }
 
 mojom("mojo_bindings") {
-  sources = [ "brave_renderer_configuration.mojom" ]
+  sources = [
+    "brave_debugger.mojom",
+    "brave_renderer_configuration.mojom",
+  ]
 
-  deps = [ "//mojo/public/mojom/base" ]
+  deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_origin",
+  ]
 }

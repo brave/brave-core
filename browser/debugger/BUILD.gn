@@ -1,0 +1,31 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/features.gni")
+
+source_set("debugger") {
+  sources = [
+    "brave_debugger_client_host.cc",
+    "brave_debugger_client_host.h",
+    "brave_debugger_manager.cc",
+    "brave_debugger_manager.h",
+    "brave_debugger_service.cc",
+    "brave_debugger_service.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common:mojom",
+    "//brave/components/permissions",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//url",
+  ]
+
+  public_deps = [
+    "//brave/common:mojom",
+    "//content/public/browser",
+  ]
+}

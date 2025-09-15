@@ -1,0 +1,14 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Debugger functionality for Brave puppeteer mode
+brave_browser_debugger_sources = [
+  "//brave/browser/debugger/brave_debugger_client_host.cc",
+  "//brave/browser/debugger/brave_debugger_client_host.h",
+  "//brave/browser/debugger/brave_debugger_manager.cc",
+  "//brave/browser/debugger/brave_debugger_manager.h",
+  "//brave/browser/debugger/brave_debugger_service.cc",
+  "//brave/browser/debugger/brave_debugger_service.h",
+]
