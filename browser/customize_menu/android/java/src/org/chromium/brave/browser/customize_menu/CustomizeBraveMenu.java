@@ -9,6 +9,7 @@ import static org.chromium.base.BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -147,10 +148,12 @@ public class CustomizeBraveMenu {
      * Applies user customization settings to hide or show menu items based on saved preferences.
      * Removes items from the menu that the user has chosen to hide in the customization settings.
      *
+     * @param resources the resources used to access the entry name of a given menu item ID
      * @param modelList the mutable list of menu items to apply customization to; must not be {@code
      *     null}
      */
-    public static void applyCustomization(final MVCListAdapter.ModelList modelList) {
+    public static void applyCustomization(
+            final Resources resources, final MVCListAdapter.ModelList modelList) {
         for (Iterator<MVCListAdapter.ListItem> it = modelList.iterator(); it.hasNext(); ) {
             MVCListAdapter.ListItem item = it.next();
             final int menuItemId = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
@@ -158,7 +161,7 @@ public class CustomizeBraveMenu {
             if (BRAVE_CUSTOMIZE_ITEM_ID == menuItemId || R.id.preferences_id == menuItemId) {
                 continue;
             }
-            if (!isVisible(menuItemId)) {
+            if (!isVisible(resources, menuItemId)) {
                 it.remove();
             }
         }
@@ -229,7 +232,7 @@ public class CustomizeBraveMenu {
             final MVCListAdapter.ModelList menuItems,
             final MVCListAdapter.ModelList pageActions) {
         final Bundle bundle = new Bundle();
-        populateBundle(bundle, menuItems, pageActions);
+        populateBundle(context.getResources(), bundle, menuItems, pageActions);
 
         SettingsNavigation settingsLauncher = SettingsNavigationFactory.createSettingsNavigation();
         settingsLauncher.startSettings(context, BraveCustomizeMenuPreferenceFragment.class, bundle);
@@ -239,23 +242,25 @@ public class CustomizeBraveMenu {
      * Populates a bundle with menu item data for passing between fragments. Converts menu items and
      * page actions into parcelable data structures.
      *
+     * @param resources the resources used to access the entry name of a given menu item ID
      * @param bundle the bundle to populate with menu item data
      * @param menuItems the list of main menu items to convert to parcelable data
      * @param pageActions the list of page action items to convert to parcelable data
      * @return the same bundle instance passed in, now populated with menu data
      */
     public static Bundle populateBundle(
+            final Resources resources,
             final Bundle bundle,
             final MVCListAdapter.ModelList menuItems,
             final MVCListAdapter.ModelList pageActions) {
 
         // Convert menu items to parcelable data.
         final ArrayList<MenuItemData> menuItemDataList = new ArrayList<>();
-        populateMenuItemData(menuItemDataList, menuItems);
+        populateMenuItemData(resources, menuItemDataList, menuItems);
 
         // Convert page action items to parcelable data.
         final ArrayList<MenuItemData> pageActionDataList = new ArrayList<>();
-        populateMenuItemData(pageActionDataList, pageActions);
+        populateMenuItemData(resources, pageActionDataList, pageActions);
 
         // Add data list to fragment bundle.
         bundle.putParcelableArrayList(KEY_MAIN_MENU_ITEM_LIST, menuItemDataList);
@@ -264,7 +269,9 @@ public class CustomizeBraveMenu {
     }
 
     private static void populateMenuItemData(
-            final List<MenuItemData> menuItemDataList, final MVCListAdapter.ModelList menuItems) {
+            final Resources resources,
+            final List<MenuItemData> menuItemDataList,
+            final MVCListAdapter.ModelList menuItems) {
         for (int i = 0; i < menuItems.size(); i++) {
             MVCListAdapter.ListItem item = menuItems.get(i);
 
@@ -273,7 +280,7 @@ public class CustomizeBraveMenu {
             }
             int id = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
             CharSequence title = item.model.get(AppMenuItemProperties.TITLE);
-            menuItemDataList.add(new MenuItemData(id, title.toString(), isVisible(id)));
+            menuItemDataList.add(new MenuItemData(id, title.toString(), isVisible(resources, id)));
         }
     }
 
@@ -281,14 +288,27 @@ public class CustomizeBraveMenu {
      * Checks whether a menu item should be visible based on user preferences. Returns true by
      * default if no preference has been set.
      *
+     * @param resources the resources used to access the entry name of a given menu item ID
      * @param itemId the resource ID of the menu item to check
      * @return {@code true} if the item should be visible, {@code false} if it should be hidden
      */
-    public static boolean isVisible(final int itemId) {
+    public static boolean isVisible(final Resources resource, final int itemId) {
+        String resourceName;
+        try {
+            resourceName = resource.getResourceEntryName(itemId);
+        } catch (Resources.NotFoundException notFoundException) {
+            assert false : "Resource not found for item with ID " + itemId;
+            // We are referencing a resource that does not
+            // exist. This should never happen.
+            // Leave visibility unchanged by returning true.
+            return true;
+        }
         return ChromeSharedPreferences.getInstance()
                 .readBoolean(
                         String.format(
-                                Locale.ENGLISH, CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT, itemId),
+                                Locale.ENGLISH,
+                                CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
+                                resourceName),
                         true);
     }
 

@@ -13,6 +13,7 @@ import static org.junit.Assert.assertTrue;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -46,12 +47,14 @@ public class CustomizeBraveMenuTest {
     private MVCListAdapter.ModelList mModelList;
 
     @Rule public ExpectedException thrown = ExpectedException.none();
+    private Resources mResources;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mContext = ApplicationProvider.getApplicationContext();
         mModelList = new MVCListAdapter.ModelList();
+        mResources = ApplicationProvider.getApplicationContext().getResources();
     }
 
     @Test
@@ -75,11 +78,11 @@ public class CustomizeBraveMenuTest {
         String key =
                 String.format(
                         BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
-                        R.id.downloads_menu_id);
+                        mResources.getResourceEntryName(R.id.downloads_menu_id));
         ChromeSharedPreferences.getInstance().writeBoolean(key, false);
 
         // Apply customization.
-        CustomizeBraveMenu.applyCustomization(mModelList);
+        CustomizeBraveMenu.applyCustomization(mResources, mModelList);
 
         // Verify only one visible item remains.
         assertEquals(1, mModelList.size());
@@ -111,7 +114,7 @@ public class CustomizeBraveMenuTest {
                 new MVCListAdapter.ListItem(AppMenuHandler.AppMenuItemType.STANDARD, settingsItem));
 
         // Apply customization.
-        CustomizeBraveMenu.applyCustomization(mModelList);
+        CustomizeBraveMenu.applyCustomization(mResources, mModelList);
 
         // Both items should remain.
         assertEquals(2, mModelList.size());
@@ -253,7 +256,8 @@ public class CustomizeBraveMenuTest {
                 new MVCListAdapter.ListItem(AppMenuHandler.AppMenuItemType.STANDARD, pageAction));
 
         // Populate bundle.
-        Bundle result = CustomizeBraveMenu.populateBundle(bundle, menuItems, pageActions);
+        Bundle result =
+                CustomizeBraveMenu.populateBundle(mResources, bundle, menuItems, pageActions);
 
         // Verify bundle contains the lists.
         assertNotNull(result);
@@ -284,13 +288,13 @@ public class CustomizeBraveMenuTest {
 
     @Test
     public void testIsVisible_DefaultTrue() {
-        assertTrue(CustomizeBraveMenu.isVisible(R.id.new_tab_menu_id));
-        assertTrue(CustomizeBraveMenu.isVisible(R.id.new_incognito_tab_menu_id));
-        assertTrue(CustomizeBraveMenu.isVisible(R.id.downloads_menu_id));
-        assertTrue(CustomizeBraveMenu.isVisible(R.id.all_bookmarks_menu_id));
-        assertTrue(CustomizeBraveMenu.isVisible(R.id.open_history_menu_id));
-        assertTrue(CustomizeBraveMenu.isVisible(R.id.brave_wallet_id));
-        assertTrue(CustomizeBraveMenu.isVisible(R.id.brave_leo_id));
+        assertTrue(CustomizeBraveMenu.isVisible(mResources, R.id.new_tab_menu_id));
+        assertTrue(CustomizeBraveMenu.isVisible(mResources, R.id.new_incognito_tab_menu_id));
+        assertTrue(CustomizeBraveMenu.isVisible(mResources, R.id.downloads_menu_id));
+        assertTrue(CustomizeBraveMenu.isVisible(mResources, R.id.all_bookmarks_menu_id));
+        assertTrue(CustomizeBraveMenu.isVisible(mResources, R.id.open_history_menu_id));
+        assertTrue(CustomizeBraveMenu.isVisible(mResources, R.id.brave_wallet_id));
+        assertTrue(CustomizeBraveMenu.isVisible(mResources, R.id.brave_leo_id));
     }
 
     @Test
@@ -299,10 +303,10 @@ public class CustomizeBraveMenuTest {
         String key =
                 String.format(
                         BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT,
-                        R.id.downloads_menu_id);
+                        mResources.getResourceEntryName(R.id.downloads_menu_id));
         ChromeSharedPreferences.getInstance().writeBoolean(key, false);
 
-        assertFalse(CustomizeBraveMenu.isVisible(R.id.downloads_menu_id));
+        assertFalse(CustomizeBraveMenu.isVisible(mResources, R.id.downloads_menu_id));
     }
 
     @Test
@@ -400,7 +404,7 @@ public class CustomizeBraveMenuTest {
         mModelList.add(new MVCListAdapter.ListItem(AppMenuHandler.AppMenuItemType.STANDARD, item3));
 
         // Apply customization.
-        CustomizeBraveMenu.applyCustomization(mModelList);
+        CustomizeBraveMenu.applyCustomization(mResources, mModelList);
 
         // Should have: item1, separator, item2, separator, item3 (no adjacent separators).
         assertEquals(5, mModelList.size());

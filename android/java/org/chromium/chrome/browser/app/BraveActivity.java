@@ -456,6 +456,7 @@ public abstract class BraveActivity extends ChromeActivity
 
             final Bundle bundle =
                     CustomizeBraveMenu.populateBundle(
+                            getResources(),
                             new Bundle(),
                             braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelList(),
                             braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());

@@ -625,7 +625,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         maybeReplaceIcons(modelList);
 
         // Customize menu item visibility.
-        CustomizeBraveMenu.applyCustomization(modelList);
+        CustomizeBraveMenu.applyCustomization(mContext.getResources(), modelList);
 
         return modelList;
     }

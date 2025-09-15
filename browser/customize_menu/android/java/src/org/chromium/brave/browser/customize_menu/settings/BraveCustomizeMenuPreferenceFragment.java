@@ -7,6 +7,7 @@ package org.chromium.brave.browser.customize_menu.settings;
 
 import static org.chromium.base.BravePreferenceKeys.CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT;
 
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -78,16 +79,27 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
         if (menuItems != null) {
             for (MenuItemData menuItem : menuItems) {
                 ChromeSwitchPreference switchPreference = getSwitchPreference(menuItem);
-                menuSection.addPreference(switchPreference);
+                if (switchPreference != null) {
+                    menuSection.addPreference(switchPreference);
+                }
             }
         }
     }
 
+    @Nullable
     private ChromeSwitchPreference getSwitchPreference(MenuItemData menuItem) {
+        String resourceName;
+        try {
+            resourceName = getResources().getResourceEntryName(menuItem.id);
+        } catch (Resources.NotFoundException notFoundException) {
+            assert false : "Resource not found for menu item with ID " + menuItem.id;
+            return null;
+        }
         ChromeSwitchPreference preference = new ChromeSwitchPreference(getContext());
         preference.setTitle(menuItem.title);
         preference.setKey(
-                String.format(Locale.ENGLISH, CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT, menuItem.id));
+                String.format(
+                        Locale.ENGLISH, CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT, resourceName));
         preference.setChecked(menuItem.checked);
         preference.setIconSpaceReserved(true);
 
