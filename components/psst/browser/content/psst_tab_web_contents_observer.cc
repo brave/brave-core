@@ -173,6 +173,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   // script result is not a dictionary
   if (!rule || !ShouldInsertScriptForPage(id) ||
       rule->policy_script().empty() || !user_script_result.is_dict()) {
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
 
@@ -180,6 +181,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   if (const auto* user_id =
           user_script_result.GetDict().FindString(kSignedUserId);
       !user_id || user_id->empty()) {
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
 
@@ -199,8 +201,10 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
     return;
   }
 
-  ui_delegate_->UpdateTasks(script_result_parsed->progress,
-                            script_result_parsed->applied_tasks);
+  ui_delegate_->UpdateTasks(
+      script_result_parsed->progress, script_result_parsed->applied_tasks,
+      script_result_parsed->progress == 100 ? mojom::PsstStatus::kCompleted
+                                            : mojom::PsstStatus::kInProgress);
 }
 
 }  // namespace psst

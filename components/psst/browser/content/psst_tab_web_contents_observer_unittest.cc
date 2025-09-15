@@ -104,7 +104,9 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
 
   MOCK_METHOD(void,
               UpdateTasks,
-              (long progress, const std::vector<PolicyTask>& applied_tasks),
+              (long progress,
+               const std::vector<PolicyTask>& applied_tasks,
+               const mojom::PsstStatus status),
               (override));
 };
 
@@ -626,10 +628,12 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
 
   // UpdateTasks must be called with correct parameters, as policy script
   // returns valid result
-  EXPECT_CALL(ui_delegate(), UpdateTasks(progress, _))
+  EXPECT_CALL(ui_delegate(),
+              UpdateTasks(progress, _, mojom::PsstStatus::kInProgress))
       .WillOnce([&progress_future, &applied_tasks_future](
                     long progress_value,
-                    const std::vector<PolicyTask>& applied_tasks) {
+                    const std::vector<PolicyTask>& applied_tasks,
+                    const mojom::PsstStatus status) {
         std::vector<PolicyTask> tasks;
         std::ranges::for_each(applied_tasks, [&tasks](const PolicyTask& task) {
           tasks.push_back(task.Clone());
