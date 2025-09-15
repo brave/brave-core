@@ -938,6 +938,35 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
   std::string process_type =
       command_line->GetSwitchValueASCII(switches::kProcessType);
   if (process_type == switches::kRendererProcess) {
+    // Enable site-per-process when any page has puppeteer permission
+    content::RenderProcessHost* process =
+        content::RenderProcessHost::FromID(child_process_id);
+    if (process) {
+      content::BrowserContext* browser_context = process->GetBrowserContext();
+      if (browser_context) {
+        // Check if any main frames in this process have puppeteer permissions
+        bool has_puppeteer_permission = false;
+        process->ForEachRenderFrameHost([&](content::RenderFrameHost* rfh) {
+          if (has_puppeteer_permission) return; // Early exit if already found
+
+          // Only check main frames, not iframes
+          if (!rfh->IsInPrimaryMainFrame()) return;
+
+          url::Origin origin = rfh->GetLastCommittedOrigin();
+          if (!origin.opaque() &&
+              BravePuppeteerPermissionContext::IsOriginAllowedForPuppeteerMode(
+                  browser_context, origin)) {
+            has_puppeteer_permission = true;
+            LOG(INFO) << "[PUPPETEER_DEBUG] Found puppeteer permission for main frame origin: " << origin;
+          }
+        });
+
+        if (has_puppeteer_permission) {
+          command_line->AppendSwitch(switches::kSitePerProcess);
+          LOG(INFO) << "[PUPPETEER_DEBUG] Added --site-per-process flag for renderer process";
+        }
+      }
+    }
     // Command line parameters from the browser process are propagated to the
     // renderers *after* ContentBrowserClient::AppendExtraCommandLineSwitches()
     // is called from RenderProcessHostImpl::AppendRendererCommandLine(). This
