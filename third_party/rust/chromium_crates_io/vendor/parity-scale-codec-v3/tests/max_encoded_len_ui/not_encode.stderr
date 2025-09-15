@@ -1,0 +1,22 @@
+error[E0277]: the trait bound `NotEncode: Encode` is not satisfied
+ --> tests/max_encoded_len_ui/not_encode.rs:4:8
+  |
+4 | struct NotEncode;
+  |        ^^^^^^^^^ the trait `WrapperTypeEncode` is not implemented for `NotEncode`, which is required by `NotEncode: Encode`
+  |
+  = help: the following other types implement trait `WrapperTypeEncode`:
+            &T
+            &mut T
+            Arc<T>
+            Box<T>
+            Cow<'_, T>
+            Rc<T>
+            String
+            Vec<T>
+            parity_scale_codec::Ref<'_, T, U>
+  = note: required for `NotEncode` to implement `Encode`
+note: required by a bound in `MaxEncodedLen`
+ --> src/max_encoded_len.rs
+  |
+  | pub trait MaxEncodedLen: Encode {
+  |                          ^^^^^^ required by this bound in `MaxEncodedLen`
