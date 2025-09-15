@@ -42,7 +42,7 @@ concept HasFromValue = requires(const base::Value& v) {
 };
 
 template <typename T>
-concept URL = requires {
+concept HasURL = requires {
   { T::URL() } -> std::same_as<GURL>;
 };
 
@@ -91,7 +91,7 @@ template <typename T>
 concept Error = Response<T>;
 
 template <typename T>
-concept Endpoint = URL<T>;
+concept Endpoint = HasURL<T>;
 
 template <typename... Ts>
 concept UniqueTypes = requires {
@@ -215,7 +215,7 @@ template <base::is_instantiation<detail::Entry>... Entries>
   requires(detail::UniqueTypes<typename Entries::Request...>)
 class Endpoint {
   template <typename, typename...>
-  struct EntryForImpl : std::type_identity<void> {};
+  struct EntryForImpl {};
 
   template <typename Req, typename E, typename... Es>
   struct EntryForImpl<Req, E, Es...>
@@ -224,12 +224,12 @@ class Endpoint {
                            EntryForImpl<Req, Es...>> {};
 
   template <detail::Request Req>
-  static constexpr bool kIsSupported =
-      base::SameAsAny<Req, typename Entries::Request...>;
+  static constexpr bool kHasEntryFor =
+      requires { typename EntryForImpl<Req, Entries...>::type; };
 
  public:
   template <detail::Request Req>
-    requires kIsSupported<Req>
+    requires kHasEntryFor<Req>
   using EntryFor = typename EntryForImpl<Req, Entries...>::type;
 };
 
