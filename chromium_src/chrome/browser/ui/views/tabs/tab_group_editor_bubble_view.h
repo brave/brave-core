@@ -12,7 +12,9 @@
 #include "brave/browser/tabs/tab_content_extractor.h"
 #include "brave/components/local_ai/browser/text_embedder.h"
 
-// Forward declaration for TabData
+// Forward declarations
+class Browser;
+class Profile;
 struct TabData;
 
 // Inject our new member methods into the upstream class
@@ -36,6 +38,9 @@ struct TabData;
   void ShowSuggestionDialog(std::vector<int> suggested_tab_indices);    \
   void CleanupTextEmbedder();                                           \
   void CleanupAndClose();                                               \
+  bool ShouldTrackBrowser(Browser* browser, Profile* target_profile);   \
+  void CollectTabsFromAllWindows(Profile* profile,                      \
+                                 std::vector<TabData>& all_tabs);       \
                                                                         \
   /* Member variables for TextEmbedder functionality */                 \
   std::unique_ptr<local_ai::TextEmbedder, base::OnTaskRunnerDeleter>    \

@@ -14,6 +14,9 @@
 #include "third_party/abseil-cpp/absl/status/statusor.h"
 #include "url/gurl.h"
 
+class Browser;
+class Profile;
+
 namespace local_ai {
 class TextEmbedder;
 }
@@ -21,36 +24,46 @@ class TextEmbedder;
 #define CommandCommerceProductSpecifications \
   CommandAddTabToSuggestedGroup, CommandCommerceProductSpecifications
 
-#define ExecuteContextMenuCommand                                           \
-  ExecuteContextMenuCommand_ChromiumImpl(int context_index,                 \
-                                         ContextMenuCommand command_id);    \
-                                                                            \
- private:                                                                   \
-  struct BraveTabStripTabData {                                             \
-    int index;                                                              \
-    std::u16string title;                                                   \
-    GURL url;                                                               \
-    std::optional<tab_groups::TabGroupId> group_id;                         \
-    raw_ptr<content::WebContents> web_contents;                             \
-  };                                                                        \
-                                                                            \
- public:                                                                    \
-  void HandleAddTabToSuggestedGroupCommand(int context_index);              \
-  void OnTextEmbedderInitializedForGroupCommand(                            \
-      std::unique_ptr<local_ai::TextEmbedder, base::OnTaskRunnerDeleter>    \
-          text_embedder,                                                    \
-      std::vector<BraveTabStripTabData> all_tabs_needing_content,           \
-      std::vector<int> ungrouped_indices, int context_index, bool success); \
-  void OnAllTabContentCollectedForGroupCommand(                             \
-      std::unique_ptr<local_ai::TextEmbedder, base::OnTaskRunnerDeleter>    \
-          text_embedder,                                                    \
-      std::vector<BraveTabStripTabData> all_tabs_needing_content,           \
-      std::vector<int> ungrouped_indices, int context_index,                \
-      std::vector<std::pair<int, tab_content_extractor::ExtractedData>>     \
-          content_results);                                                 \
-  void OnSuggestGroupForTabResult(                                          \
-      std::vector<int> tab_indices, int context_index,                      \
-      absl::StatusOr<tab_groups::TabGroupId> result);                       \
+#define ExecuteContextMenuCommand                                        \
+  ExecuteContextMenuCommand_ChromiumImpl(int context_index,              \
+                                         ContextMenuCommand command_id); \
+                                                                         \
+ private:                                                                \
+  struct BraveTabStripTabData {                                          \
+    int index;                                                           \
+    std::u16string title;                                                \
+    GURL url;                                                            \
+    std::optional<tab_groups::TabGroupId> group_id;                      \
+    raw_ptr<content::WebContents> web_contents;                          \
+  };                                                                     \
+                                                                         \
+ public:                                                                 \
+  void HandleAddTabToSuggestedGroupCommand(int context_index);           \
+  void OnTextEmbedderInitializedForGroupCommand(                         \
+      std::unique_ptr<local_ai::TextEmbedder, base::OnTaskRunnerDeleter> \
+          text_embedder,                                                 \
+      std::vector<BraveTabStripTabData> all_tabs_needing_content,        \
+      std::vector<int> ungrouped_global_handles, int context_index,      \
+      bool success);                                                     \
+  void OnAllTabContentCollectedForGroupCommand(                          \
+      std::unique_ptr<local_ai::TextEmbedder, base::OnTaskRunnerDeleter> \
+          text_embedder,                                                 \
+      std::vector<BraveTabStripTabData> all_tabs_needing_content,        \
+      std::vector<int> ungrouped_global_handles, int context_index,      \
+      std::vector<std::pair<int, tab_content_extractor::ExtractedData>>  \
+          content_results);                                              \
+  void OnSuggestGroupForTabResult(                                       \
+      std::vector<int> tab_global_handles, int context_index,            \
+      absl::StatusOr<tab_groups::TabGroupId> result);                    \
+                                                                         \
+ private:                                                                \
+  bool ShouldTrackBrowser(Browser* browser, Profile* target_profile);    \
+  void CollectTabsFromAllWindows(                                        \
+      Profile* profile,                                                  \
+      std::vector<BraveTabStripTabData>& all_tabs_needing_content,       \
+      const std::vector<int>& ungrouped_global_handles);                 \
+                                                                         \
+ public:                                                                 \
   void ExecuteContextMenuCommand
 
 #define IsContextMenuCommandEnabled                            \

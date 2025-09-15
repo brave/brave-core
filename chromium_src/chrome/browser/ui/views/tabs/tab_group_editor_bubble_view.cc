@@ -23,11 +23,14 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/bubble_menu_item_factory.h"
 #include "chrome/browser/ui/views/data_sharing/data_sharing_bubble_controller.h"
 #include "chrome/browser/user_education/user_education_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
@@ -142,41 +145,44 @@ class TabSuggestionDialog : public views::DialogDelegate {
   }
 
  private:
-  void AddTabsToGroup(std::vector<int> selected_tab_indices) {
-    // Validate that browser is still valid
-    if (!browser_) {
-      return;
-    }
+  void AddTabsToGroup(std::vector<int> selected_global_handles) {
+    // Group tabs by their TabStripModel to handle cross-window operations
+    std::map<TabStripModel*, std::vector<int>> tabs_by_strip_model;
 
-    // Get tab strip model with validation
-    TabStripModel* tab_strip_model = browser_->tab_strip_model();
-    if (!tab_strip_model) {
-      return;
-    }
+    for (int global_handle : selected_global_handles) {
+      const tabs::TabHandle handle = tabs::TabHandle(global_handle);
+      tabs::TabInterface* const tab = handle.Get();
+      if (!tab) {
+        continue;  // Tab no longer exists
+      }
 
-    // Validate that all selected tab indices are still valid
-    std::vector<int> valid_indices;
-    for (int tab_index : selected_tab_indices) {
-      if (tab_index >= 0 && tab_index < tab_strip_model->count()) {
-        content::WebContents* web_contents =
-            tab_strip_model->GetWebContentsAt(tab_index);
-        if (web_contents) {
-          // Ensure the tab is not already in any group
-          std::optional<tab_groups::TabGroupId> existing_group =
-              tab_strip_model->GetTabGroupForTab(tab_index);
-          if (!existing_group.has_value()) {
-            valid_indices.push_back(tab_index);
-          }
-        }
+      BrowserWindowInterface* browser_window = tab->GetBrowserWindowInterface();
+      if (!browser_window) {
+        continue;
+      }
+
+      TabStripModel* tab_strip_model = browser_window->GetTabStripModel();
+      if (!tab_strip_model) {
+        continue;
+      }
+
+      int local_index = tab_strip_model->GetIndexOfTab(tab);
+      if (local_index == TabStripModel::kNoTab) {
+        continue;  // Tab not found in strip model
+      }
+
+      // Ensure the tab is not already in any group
+      if (!tab_strip_model->GetTabGroupForTab(local_index).has_value()) {
+        tabs_by_strip_model[tab_strip_model].push_back(local_index);
       }
     }
 
-    // Add valid selected tabs to the group
-    if (!valid_indices.empty()) {
-      // Sort indices in ascending order as required by
-      // TabStripModel::AddToExistingGroup
-      std::ranges::sort(valid_indices);
-      tab_strip_model->AddToExistingGroup(valid_indices, group_);
+    // Add tabs to the group in each TabStripModel
+    for (auto& [strip_model, local_indices] : tabs_by_strip_model) {
+      if (!local_indices.empty()) {
+        std::ranges::sort(local_indices);
+        strip_model->AddToExistingGroup(local_indices, group_);
+      }
     }
   }
 
@@ -212,12 +218,17 @@ class TabSuggestionDialog : public views::DialogDelegate {
     scroll_content->SetLayoutManager(std::make_unique<views::BoxLayout>(
         views::BoxLayout::Orientation::kVertical, gfx::Insets(), 2));
 
-    TabStripModel* tab_strip_model = browser_->tab_strip_model();
     checkboxes_.reserve(suggested_tab_indices_.size());
 
-    for (int tab_index : suggested_tab_indices_) {
-      content::WebContents* web_contents =
-          tab_strip_model->GetWebContentsAt(tab_index);
+    for (int global_handle : suggested_tab_indices_) {
+      // Use TabHandle to get the actual tab and its information
+      const tabs::TabHandle handle = tabs::TabHandle(global_handle);
+      tabs::TabInterface* const tab = handle.Get();
+      if (!tab) {
+        continue;  // Tab no longer exists
+      }
+
+      content::WebContents* web_contents = tab->GetContents();
       if (!web_contents) {
         continue;
       }
@@ -373,33 +384,24 @@ void TabGroupEditorBubbleView::ProcessTabSuggestion() {
     return;
   }
 
-  // Collect tab information first (without content)
+  // Collect tab information from all windows in the profile
   std::vector<TabData> all_tabs;
+  Profile* profile = browser_->profile();
+  if (!profile) {
+    CleanupAndClose();
+    return;
+  }
+
+  CollectTabsFromAllWindows(profile, all_tabs);
+
   int group_tab_count = 0;
   int candidate_tab_count = 0;
-
-  for (int i = 0; i < tab_strip_model->count(); ++i) {
-    content::WebContents* web_contents = tab_strip_model->GetWebContentsAt(i);
-    if (!web_contents) {
-      continue;
-    }
-
-    std::u16string title = web_contents->GetTitle();
-    GURL url = web_contents->GetVisibleURL();
-    std::optional<tab_groups::TabGroupId> tab_group =
-        tab_strip_model->GetTabGroupForTab(i);
-
-    bool is_in_current_group =
-        tab_group.has_value() && tab_group.value() == group_;
-    bool is_candidate = !tab_group.has_value();
-
-    if (is_in_current_group) {
+  for (const auto& tab : all_tabs) {
+    if (tab.is_in_group) {
       group_tab_count++;
-    } else if (is_candidate) {
+    } else {
       candidate_tab_count++;
     }
-
-    all_tabs.push_back({i, title, url, is_in_current_group, web_contents});
   }
 
   // If there are no candidate tabs or no group tabs, just close
@@ -525,4 +527,51 @@ void TabGroupEditorBubbleView::CleanupTextEmbedder() {
 void TabGroupEditorBubbleView::CleanupAndClose() {
   CleanupTextEmbedder();
   GetWidget()->Close();
+}
+
+bool TabGroupEditorBubbleView::ShouldTrackBrowser(Browser* browser,
+                                                  Profile* target_profile) {
+  return browser && browser->profile() == target_profile &&
+         browser->type() == Browser::TYPE_NORMAL;
+}
+
+void TabGroupEditorBubbleView::CollectTabsFromAllWindows(
+    Profile* profile,
+    std::vector<TabData>& all_tabs) {
+  // Collect tabs from all browsers in the same profile
+  for (Browser* browser : *BrowserList::GetInstance()) {
+    if (!ShouldTrackBrowser(browser, profile)) {
+      continue;
+    }
+
+    TabStripModel* tab_strip_model = browser->tab_strip_model();
+    if (!tab_strip_model) {
+      continue;
+    }
+
+    for (int i = 0; i < tab_strip_model->count(); ++i) {
+      content::WebContents* web_contents = tab_strip_model->GetWebContentsAt(i);
+      if (!web_contents) {
+        continue;
+      }
+
+      std::u16string title = web_contents->GetTitle();
+      GURL url = web_contents->GetVisibleURL();
+      std::optional<tab_groups::TabGroupId> tab_group =
+          tab_strip_model->GetTabGroupForTab(i);
+
+      bool is_in_current_group =
+          tab_group.has_value() && tab_group.value() == group_;
+
+      // Only include tabs that are either in our target group or ungrouped
+      // candidates
+      if (is_in_current_group || !tab_group.has_value()) {
+        // Use the tab's global TabHandle ID for uniqueness across windows
+        const tabs::TabInterface* tab = tab_strip_model->GetTabAtIndex(i);
+        int global_tab_index = tab ? tab->GetHandle().raw_value() : i;
+        all_tabs.push_back(
+            {global_tab_index, title, url, is_in_current_group, web_contents});
+      }
+    }
+  }
 }
