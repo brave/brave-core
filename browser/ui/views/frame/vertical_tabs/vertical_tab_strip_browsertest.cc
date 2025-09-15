@@ -230,6 +230,12 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
     run_loop_->Run();
   }
 
+ protected:
+  TabStripRegionView* tab_strip_region_view() {
+    return views::AsViewClass<TabStripRegionView>(
+        BrowserView::GetBrowserViewForBrowser(browser())->tab_strip_view());
+  }
+
  private:
   std::unique_ptr<base::RunLoop> run_loop_;
 };
@@ -310,16 +316,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
-  EXPECT_TRUE(
-      browser_view()->tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_TRUE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
 
   ToggleVerticalTabStrip();
-  EXPECT_FALSE(
-      browser_view()->tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_FALSE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
 
   ToggleVerticalTabStrip();
-  EXPECT_TRUE(
-      browser_view()->tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_TRUE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
@@ -334,12 +337,12 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
 
   // Add tabs as much as it can grow mih height of tab strip.
   auto tab_strip_min_height =
-      browser_view()->tab_strip_region_view()->GetMinimumSize().height();
+      tab_strip_region_view()->GetMinimumSize().height();
   for (int i = 0; i < 10; i++) {
     AppendTab(browser());
   }
   ASSERT_LE(tab_strip_min_height,
-            browser_view()->tab_strip_region_view()->GetMinimumSize().height());
+            tab_strip_region_view()->GetMinimumSize().height());
 
   // TabStrip's min height shouldn't affect that of browser window.
   EXPECT_EQ(browser_view_min_size.height(),
