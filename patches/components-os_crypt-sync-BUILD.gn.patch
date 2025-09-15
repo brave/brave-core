@@ -1,12 +1,12 @@
 diff --git a/components/os_crypt/sync/BUILD.gn b/components/os_crypt/sync/BUILD.gn
-index ff1e356ff696d3830d02644969c36a71fdf32ff6..fa5f4f45644327db02c4b49a573ba6e7bf87849a 100644
+index bbaf1143e725a1b6c49eef705b1e62c4133bfa27..86fd56561c40b9c955b44cc57c71d05ad01d5994 100644
 --- a/components/os_crypt/sync/BUILD.gn
 +++ b/components/os_crypt/sync/BUILD.gn
-@@ -77,6 +77,7 @@ component("sync") {
+@@ -114,6 +114,7 @@ component("sync") {
    } else if (is_posix || is_fuchsia) {
      sources += [ "os_crypt_posix.cc" ]
    }
-+  import("//brave/components/os_crypt/sources.gni") deps += brave_components_os_crypt_deps
++  import("//brave/components/os_crypt/sources.gni") deps += brave_components_os_crypt_deps visibility += brave_components_os_crypt_visibility
  }
- 
+
  static_library("test_support") {
