@@ -16,6 +16,7 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -42,6 +43,23 @@ class EphemeralStorageTabHelper
   std::optional<base::UnguessableToken> GetEphemeralStorageToken(
       const url::Origin& origin);
 
+  // Frame-specific version for puppeteer storage isolation
+  std::optional<base::UnguessableToken> GetEphemeralStorageToken(
+      content::RenderFrameHost* render_frame_host,
+      const url::Origin& origin);
+
+  // NEW: Puppeteer storage support
+  std::optional<base::UnguessableToken> GetPuppeteerStorageToken(
+      content::RenderFrameHost* render_frame_host);
+
+  void EnablePuppeteerModeForFrame(content::RenderFrameHost* frame_host);
+  void DisablePuppeteerModeForFrame(content::RenderFrameHost* frame_host);
+
+ protected:
+  // WebContentsObserver overrides
+  void RenderFrameCreated(content::RenderFrameHost* render_frame_host) override;
+  void RenderFrameDeleted(content::RenderFrameHost* render_frame_host) override;
+
  private:
   friend class content::WebContentsUserData<EphemeralStorageTabHelper>;
 
@@ -63,12 +81,19 @@ class EphemeralStorageTabHelper
 
   void UpdateShieldsState(const GURL& url);
 
+  // NEW: Puppeteer storage helpers
+  bool HasPuppeteerPermission(const url::Origin& origin) const;
+  void CreatePuppeteerStorageForFrame(content::RenderFrameHost* frame_host);
+
   const base::raw_ptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
   scoped_refptr<content::SessionStorageNamespace> session_storage_namespace_;
   base::flat_set<scoped_refptr<TLDEphemeralLifetime>>
       provisional_tld_ephemeral_lifetimes_;
   scoped_refptr<TLDEphemeralLifetime> tld_ephemeral_lifetime_;
+
+  // NEW: Track puppeteer-enabled frames
+  base::flat_map<content::GlobalRenderFrameHostId, url::Origin> puppeteer_frames_;
 
   base::WeakPtrFactory<EphemeralStorageTabHelper> weak_factory_{this};
 

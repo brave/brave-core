@@ -267,12 +267,12 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY);
 
-  // Register puppeteer permission default value as Block.
+  // Register puppeteer permission default value as Ask.
   Register(ContentSettingsType::BRAVE_PUPPETEER, "brave_puppeteer",
-           CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::UNSYNCABLE,
+           CONTENT_SETTING_ASK, WebsiteSettingsInfo::UNSYNCABLE,
            /*allowlisted_schemes=*/{},
            /*valid_settings=*/
-           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
            WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID,

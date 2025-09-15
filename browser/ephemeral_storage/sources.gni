@@ -10,6 +10,8 @@ brave_browser_ephemeral_storage_sources = [
   "//brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h",
   "//brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.cc",
   "//brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h",
+  "//brave/browser/ephemeral_storage/puppeteer_storage_manager.cc",
+  "//brave/browser/ephemeral_storage/puppeteer_storage_manager.h",
   "//brave/browser/ephemeral_storage/tld_ephemeral_lifetime.cc",
   "//brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h",
 ]

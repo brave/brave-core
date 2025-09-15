@@ -17,13 +17,17 @@
 #include "base/timer/timer.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/url_storage_checker.h"
+#include "brave/components/permissions/contexts/brave_puppeteer_permission_context.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "net/base/features.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/schemeful_site.h"
 #include "net/base/url_util.h"
 #include "url/origin.h"
@@ -413,6 +417,129 @@ size_t EphemeralStorageService::FireCleanupTimersForTesting() {
   }
   DCHECK(first_party_storage_areas_to_cleanup_on_startup_.empty());
   return timers.size() + first_party_storage_areas_to_cleanup_count;
+}
+
+// NEW: Puppeteer storage methods implementation
+std::optional<base::UnguessableToken> EphemeralStorageService::GetGlobalFrameToken(
+    const url::Origin& main_frame_origin) {
+  LOG(INFO) << "[PUPPETEER_DEBUG] GetGlobalFrameToken called for main frame: " << main_frame_origin;
+
+  // Get or create a global frame token for the main frame origin
+  // This serves as the base token for all iframe storage derivation in this main frame
+  std::string main_frame_key = main_frame_origin.Serialize();
+
+  // Check if we already have a global frame token for this main frame
+  auto it = fpes_tokens_.find(main_frame_key);
+  if (it != fpes_tokens_.end()) {
+    LOG(INFO) << "[PUPPETEER_DEBUG] Found existing global frame token for: " << main_frame_origin;
+    return it->second;
+  }
+
+  // Create new global frame token for this main frame
+  base::UnguessableToken global_token = base::UnguessableToken::Create();
+  fpes_tokens_[main_frame_key] = global_token;
+
+  LOG(INFO) << "[PUPPETEER_DEBUG] Created new global frame token for: " << main_frame_origin;
+  return global_token;
+}
+
+std::optional<base::UnguessableToken> EphemeralStorageService::GetPuppeteerStorageToken(
+    const url::Origin& main_frame_origin,
+    const content::GlobalRenderFrameHostToken& iframe_frame_token) {
+  LOG(INFO) << "[PUPPETEER_DEBUG] GetPuppeteerStorageToken called for main frame: "
+            << main_frame_origin << ", iframe child_id: " << iframe_frame_token.child_id;
+
+  // Get the global frame token for the main frame
+  auto global_frame_token = GetGlobalFrameToken(main_frame_origin);
+  if (!global_frame_token) {
+    LOG(INFO) << "[PUPPETEER_DEBUG] Failed to get global frame token";
+    return std::nullopt;
+  }
+
+  LOG(INFO) << "[PUPPETEER_DEBUG] Got global frame token, deriving unique iframe storage key";
+
+  // Create a unique storage key using the global frame token + iframe frame token
+  // This ensures each iframe instance gets its own storage, even if they share the same origin
+  std::string tld_domain = net::registry_controlled_domains::GetDomainAndRegistry(
+      main_frame_origin.host(),
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+
+  LOG(INFO) << "[PUPPETEER_DEBUG] TLD domain: " << tld_domain;
+
+  // Combine global frame token with specific iframe frame token for uniqueness
+  std::string storage_key_data = global_frame_token->ToString() + "#" +
+      std::to_string(iframe_frame_token.child_id) + "-" +
+      iframe_frame_token.frame_token.value().ToString();
+  url::Origin derived_origin = url::Origin::Create(GURL("https://puppeteer-storage-" + storage_key_data));
+
+  ExtendedStorageKey key(
+      tld_domain,
+      content::StoragePartitionConfig::CreateDefault(context_),
+      StorageIsolationMode::kPuppeteer,
+      derived_origin);
+
+  LOG(INFO) << "[PUPPETEER_DEBUG] Created unique storage key, checking for existing token";
+
+  // Return existing token or create new one
+  auto it = puppeteer_storage_tokens_.find(key);
+  if (it != puppeteer_storage_tokens_.end()) {
+    LOG(INFO) << "[PUPPETEER_DEBUG] Found existing unique token";
+    return it->second;
+  }
+
+  LOG(INFO) << "[PUPPETEER_DEBUG] Creating new unique storage token";
+  // Create new storage partition token for this specific iframe instance
+  base::UnguessableToken unique_token = base::UnguessableToken::Create();
+  puppeteer_storage_tokens_[key] = unique_token;
+
+  LOG(INFO) << "[PUPPETEER_DEBUG] Created unique puppeteer storage token for iframe child_id: " << iframe_frame_token.child_id;
+  return unique_token;
+}
+
+void EphemeralStorageService::EnablePuppeteerStorageForOrigin(const url::Origin& origin) {
+  DVLOG(1) << __func__ << " " << origin;
+  puppeteer_enabled_origins_.insert(origin);
+}
+
+void EphemeralStorageService::DisablePuppeteerStorageForOrigin(const url::Origin& origin) {
+  DVLOG(1) << __func__ << " " << origin;
+  puppeteer_enabled_origins_.erase(origin);
+
+  // Cleanup associated storage tokens
+  for (auto it = puppeteer_storage_tokens_.begin();
+       it != puppeteer_storage_tokens_.end();) {
+    if (it->first.requesting_origin == origin) {
+      CleanupPuppeteerStoragePartition(it->first);
+      it = puppeteer_storage_tokens_.erase(it);
+    } else {
+      ++it;
+    }
+  }
+}
+
+bool EphemeralStorageService::IsPuppeteerStorageEnabledForOrigin(const url::Origin& origin) const {
+  return puppeteer_enabled_origins_.contains(origin);
+}
+
+void EphemeralStorageService::CreatePuppeteerStoragePartition(
+    const url::Origin& iframe_origin,
+    const url::Origin& parent_origin) {
+  DVLOG(1) << __func__ << " iframe: " << iframe_origin << " parent: " << parent_origin;
+
+  // This will be called by the frame observer when needed
+  // The actual partition creation is handled by the storage system
+  // TODO: Update to pass frame token when available
+  // For now, this method is mainly for legacy compatibility
+  LOG(INFO) << "[PUPPETEER_DEBUG] CreatePuppeteerStoragePartition called for: " << iframe_origin;
+}
+
+void EphemeralStorageService::CleanupPuppeteerStoragePartition(const ExtendedStorageKey& key) {
+  DVLOG(1) << __func__ << " " << key.requesting_origin;
+
+  // Use delegate to clean up the storage partition
+  // Convert to TLD key format for compatibility with existing cleanup
+  TLDEphemeralAreaKey tld_key = {key.tld_domain, key.storage_config};
+  delegate_->CleanupTLDEphemeralArea(tld_key);
 }
 
 }  // namespace ephemeral_storage

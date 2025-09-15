@@ -31,10 +31,15 @@ BravePuppeteerPermissionContext::~BravePuppeteerPermissionContext() = default;
 
 bool BravePuppeteerPermissionContext::IsOriginAllowedForPuppeteerMode(
     content::BrowserContext* browser_context, const url::Origin& origin) {
+  LOG(INFO) << "[PUPPETEER_DEBUG] IsOriginAllowedForPuppeteerMode called for: " << origin;
+
   // Step 1: Check if puppeteer permission feature is enabled
   if (!permissions::features::IsBravePuppeteerPermissionEnabled()) {
+    LOG(INFO) << "[PUPPETEER_DEBUG] Feature disabled, returning false";
     return false;
   }
+
+  LOG(INFO) << "[PUPPETEER_DEBUG] Feature enabled, checking allowlist";
 
   // Step 2: Check if origin is in allowlist
   bool is_allowlisted = false;
@@ -53,8 +58,11 @@ bool BravePuppeteerPermissionContext::IsOriginAllowedForPuppeteerMode(
   }
 
   if (!is_allowlisted) {
+    LOG(INFO) << "[PUPPETEER_DEBUG] Origin not in allowlist, returning false";
     return false;
   }
+
+  LOG(INFO) << "[PUPPETEER_DEBUG] Origin in allowlist, checking permission setting";
 
   // Step 3: Check user permission setting
   if (!browser_context) {
@@ -74,11 +82,18 @@ bool BravePuppeteerPermissionContext::IsOriginAllowedForPuppeteerMode(
   // Allow if permission is explicitly granted or set to default (ASK)
   // In production, we want explicit user consent, but in development builds
   // we can be more permissive
+  LOG(INFO) << "[PUPPETEER_DEBUG] Permission setting: " << permission_setting
+            << ", is_development: " << IS_DEVELOPMENT_BUILD;
+
+  bool result;
   if (IS_DEVELOPMENT_BUILD) {
-    return permission_setting != CONTENT_SETTING_BLOCK;
+    result = permission_setting != CONTENT_SETTING_BLOCK;
   } else {
-    return permission_setting == CONTENT_SETTING_ALLOW;
+    result = permission_setting == CONTENT_SETTING_ALLOW;
   }
+
+  LOG(INFO) << "[PUPPETEER_DEBUG] Final result: " << (result ? "ALLOWED" : "DENIED");
+  return result;
 }
 
 // Global function for chromium_src forward declaration

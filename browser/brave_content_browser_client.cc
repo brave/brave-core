@@ -683,7 +683,7 @@ BraveContentBrowserClient::GetEphemeralStorageToken(
     return std::nullopt;
   }
 
-  return es_tab_helper->GetEphemeralStorageToken(origin);
+  return es_tab_helper->GetEphemeralStorageToken(render_frame_host, origin);
 }
 
 bool BraveContentBrowserClient::CanThirdPartyStoragePartitioningBeDisabled(

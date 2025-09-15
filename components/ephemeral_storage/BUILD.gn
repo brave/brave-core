@@ -10,6 +10,7 @@ static_library("ephemeral_storage") {
     "ephemeral_storage_service.h",
     "ephemeral_storage_service_delegate.h",
     "ephemeral_storage_service_observer.h",
+    "ephemeral_storage_types.cc",
     "ephemeral_storage_types.h",
     "url_storage_checker.cc",
     "url_storage_checker.h",

@@ -27,6 +27,7 @@
 #include "content/public/browser/storage_partition_config.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+#include "content/public/browser/render_frame_host.h"
 
 class EphemeralStorageBrowserTest;
 class EphemeralStorageQaBrowserTest;
@@ -70,6 +71,22 @@ class EphemeralStorageService : public KeyedService {
                                   base::OnceCallback<void(bool)> on_ready);
   // Returns First Party Ephemeral Storage token to partition storage.
   std::optional<base::UnguessableToken> Get1PESToken(const url::Origin& origin);
+
+  // NEW: Puppeteer-specific storage methods
+  std::optional<base::UnguessableToken> GetPuppeteerStorageToken(
+      const url::Origin& main_frame_origin,
+      const content::GlobalRenderFrameHostToken& iframe_frame_token);
+
+  // Helper method to get global frame token for main frame
+  std::optional<base::UnguessableToken> GetGlobalFrameToken(
+      const url::Origin& main_frame_origin);
+
+  void EnablePuppeteerStorageForOrigin(const url::Origin& origin);
+  void DisablePuppeteerStorageForOrigin(const url::Origin& origin);
+  bool IsPuppeteerStorageEnabledForOrigin(const url::Origin& origin) const;
+
+  void CreatePuppeteerStoragePartition(const url::Origin& iframe_origin,
+                                      const url::Origin& parent_origin);
 
   void TLDEphemeralLifetimeCreated(
       const std::string& ephemeral_domain,
@@ -115,6 +132,9 @@ class EphemeralStorageService : public KeyedService {
   void CleanupFirstPartyStorageAreasOnStartup();
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
 
+  // NEW: Puppeteer storage management
+  void CleanupPuppeteerStoragePartition(const ExtendedStorageKey& key);
+
   size_t FireCleanupTimersForTesting();
 
   raw_ptr<content::BrowserContext> context_ = nullptr;
@@ -134,6 +154,10 @@ class EphemeralStorageService : public KeyedService {
   base::flat_map<std::string, base::UnguessableToken> fpes_tokens_;
   base::Value::List first_party_storage_areas_to_cleanup_on_startup_;
   base::OneShotTimer first_party_storage_areas_startup_cleanup_timer_;
+
+  // Extended storage tracking for puppeteer mode
+  base::flat_map<ExtendedStorageKey, base::UnguessableToken> puppeteer_storage_tokens_;
+  base::flat_set<url::Origin> puppeteer_enabled_origins_;
 
   base::WeakPtrFactory<EphemeralStorageService> weak_ptr_factory_{this};
 };

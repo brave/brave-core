@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "content/browser/renderer_host/render_frame_host_impl.h"
+#include "brave/components/permissions/contexts/brave_puppeteer_permission_context.h"
 
 #include "base/check.h"
 #include "base/logging.h"
@@ -50,9 +51,34 @@ void RenderFrameHostImpl::GetImageAt(
 
 void RenderFrameHostImpl::SetEphemeralStorageToken(
     const url::Origin& top_frame_origin) {
-  if (!is_main_frame()) {
+  /*if (!is_main_frame()) {
+    // For iframes, check if they have puppeteer permissions and need isolated storage
+    auto origin = GetLastCommittedOrigin();
+
+    // Check if this iframe origin is allowed for puppeteer mode
+    bool has_puppeteer_permission = false;
+    if (GetBrowserContext()) {
+      LOG(INFO) << "[PUPPETEER_DEBUG] Checking puppeteer permission for iframe: " << origin;
+
+      // For development, allow origins containing "pompel.me"
+      // In production, this would be controlled by the allowlist
+      //if (origin.host().find("pompel.me") != std::string::npos) {
+      //  has_puppeteer_permission = true;
+      //}
+      //has_puppeteer_permission = BravePuppeteerPermissionContext::IsOriginAllowedForPuppeteerMode(
+      //    GetBrowserContext(), origin);
+    }
+
+    if (has_puppeteer_permission) {
+      LOG(INFO) << "[PUPPETEER_DEBUG] Setting unique ephemeral storage token for puppeteer iframe: " << origin;
+      // Generate unique token for this specific iframe
+      ephemeral_storage_token_ = base::UnguessableToken::Create();
+      ephemeral_storage_token_set_ = true;
+      DVLOG(2) << __func__ << " [PUPPETEER IFRAME] " << origin << " " << ephemeral_storage_token_->ToString();
+      return;
+    }
     return;
-  }
+  }*/
 
   ephemeral_storage_token_ =
       GetContentClient()->browser()->GetEphemeralStorageToken(this,
@@ -66,6 +92,12 @@ void RenderFrameHostImpl::SetEphemeralStorageToken(
 
 std::optional<base::UnguessableToken>
 RenderFrameHostImpl::GetEphemeralStorageToken() const {
+  // For puppeteer iframes, return their own unique token if set
+  if (!is_main_frame() && ephemeral_storage_token_set_) {
+    return ephemeral_storage_token_;
+  }
+
+  // Otherwise, use the main frame's token
   const RenderFrameHostImpl* main_rfh = this;
   while (main_rfh->parent_) {
     main_rfh = main_rfh->parent_;

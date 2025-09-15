@@ -22,6 +22,7 @@
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/browser/ephemeral_storage/puppeteer_storage_manager.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
@@ -200,6 +201,11 @@ void AttachTabHelpers(content::WebContents* web_contents) {
     ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
         web_contents);
   }
+
+  // Create PuppeteerStorageManager for all web contents
+  // It will only activate when BRAVE_PUPPETEER permission is granted
+  ephemeral_storage::PuppeteerStorageManager::CreateForWebContents(
+      web_contents);
 
   brave_wallet::BraveWalletTabHelper::CreateForWebContents(web_contents);
 

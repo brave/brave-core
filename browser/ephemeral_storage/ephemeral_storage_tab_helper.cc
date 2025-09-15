@@ -10,10 +10,14 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
+#include "brave/components/permissions/contexts/brave_puppeteer_permission_context.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
@@ -57,6 +61,36 @@ EphemeralStorageTabHelper::GetEphemeralStorageToken(const url::Origin& origin) {
     return ephemeral_storage_service->Get1PESToken(origin);
   }
   return std::nullopt;
+}
+
+std::optional<base::UnguessableToken>
+EphemeralStorageTabHelper::GetEphemeralStorageToken(
+    content::RenderFrameHost* render_frame_host,
+    const url::Origin& origin) {
+  // Just use the regular method for now - puppeteer isolation handled elsewhere
+  LOG(INFO) << "[PUPPETEER_DEBUG] GetEphemeralStorageToken frame depth: " << render_frame_host->GetFrameDepth();
+  
+  // https://chromium.googlesource.com/chromium/src/+/master/content/public/browser/render_frame_host.h
+  // if frame depth > 0, then it's not main frame
+  // if puppeteer is enabled globally and it's not main frame, check if it has puppeteer permissions
+  if (/* is puppeteer enabled */true && render_frame_host->GetFrameDepth() > 0) {
+    // Check if this iframe has puppeteer permissions
+    url::Origin main_frame_origin = render_frame_host->GetMainFrame()->GetLastCommittedOrigin();
+
+    if (HasPuppeteerPermission(main_frame_origin)) {
+      // If it has permissions, return a unique token for this iframe
+      auto it = puppeteer_frames_.find(render_frame_host->GetGlobalId());
+      if (it != puppeteer_frames_.end()) {
+        return GetPuppeteerStorageToken(render_frame_host);
+      } else {
+        // Not found in map, add it
+        EnablePuppeteerModeForFrame(render_frame_host);
+        return GetPuppeteerStorageToken(render_frame_host);
+      }
+    }
+  }
+
+  return GetEphemeralStorageToken(origin);
 }
 
 void EphemeralStorageTabHelper::WebContentsDestroyed() {}
@@ -168,6 +202,85 @@ void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
       brave_shields::ControlType::ALLOW;
   tld_ephemeral_lifetime_->SetShieldsStateOnHost(
       url.host(), shields_enabled && cookies_restricted);
+}
+
+// NEW: Puppeteer storage support methods
+std::optional<base::UnguessableToken>
+EphemeralStorageTabHelper::GetPuppeteerStorageToken(
+    content::RenderFrameHost* render_frame_host) {
+  if (!render_frame_host) {
+    return std::nullopt;
+  }
+  return render_frame_host->GetDevToolsFrameToken();
+}
+
+void EphemeralStorageTabHelper::EnablePuppeteerModeForFrame(
+    content::RenderFrameHost* frame_host) {
+  if (!frame_host) {
+    return;
+  }
+
+  url::Origin origin = frame_host->GetLastCommittedOrigin();
+  if (HasPuppeteerPermission(origin)) {
+    puppeteer_frames_[frame_host->GetGlobalId()] = origin;
+    CreatePuppeteerStorageForFrame(frame_host);
+  }
+}
+
+void EphemeralStorageTabHelper::DisablePuppeteerModeForFrame(
+    content::RenderFrameHost* frame_host) {
+  if (!frame_host) {
+    return;
+  }
+
+  auto it = puppeteer_frames_.find(frame_host->GetGlobalId());
+  if (it != puppeteer_frames_.end()) {
+    puppeteer_frames_.erase(it);
+  }
+}
+
+void EphemeralStorageTabHelper::RenderFrameCreated(
+    content::RenderFrameHost* render_frame_host) {
+  if (!render_frame_host || !render_frame_host->GetParent()) {
+    return; // Only handle iframes
+  }
+
+  url::Origin iframe_origin = render_frame_host->GetLastCommittedOrigin();
+  if (HasPuppeteerPermission(iframe_origin)) {
+    EnablePuppeteerModeForFrame(render_frame_host);
+  }
+}
+
+void EphemeralStorageTabHelper::RenderFrameDeleted(
+    content::RenderFrameHost* render_frame_host) {
+  DisablePuppeteerModeForFrame(render_frame_host);
+}
+
+bool EphemeralStorageTabHelper::HasPuppeteerPermission(
+    const url::Origin& origin) const {
+  // Use the centralized permission checking method
+  return BravePuppeteerPermissionContext::IsOriginAllowedForPuppeteerMode(
+      web_contents()->GetBrowserContext(), origin);
+}
+
+void EphemeralStorageTabHelper::CreatePuppeteerStorageForFrame(
+    content::RenderFrameHost* frame_host) {
+  if (!frame_host) {
+    return;
+  }
+
+  // Get main frame origin
+  content::RenderFrameHost* main_frame = web_contents()->GetPrimaryMainFrame();
+  if (!main_frame) {
+    return;
+  }
+  url::Origin main_frame_origin = main_frame->GetLastCommittedOrigin();
+
+  auto token = GetPuppeteerStorageToken(frame_host);
+  if (token) {
+    DVLOG(1) << "Created puppeteer storage for frame: "
+             << frame_host->GetLastCommittedOrigin();
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(EphemeralStorageTabHelper);
