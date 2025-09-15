@@ -459,8 +459,11 @@ void AIChatUIPageHandler::DisassociateContent(
 
 void AIChatUIPageHandler::AttachBookmark(ai_chat::mojom::BookmarkPtr bookmark,
                                          const std::string& conversation_uuid) {
+  // Get TabInterface from the owner WebContents
+  tabs::TabInterface* tab_interface = tabs::TabInterface::GetFromContents(owner_web_contents_);
+  
   auto bookmark_content = std::make_unique<ai_chat::AssociatedLinkContent>(
-      bookmark->url, base::UTF8ToUTF16(bookmark->title), profile_);
+      bookmark->url, base::UTF8ToUTF16(bookmark->title), tab_interface);
 
   auto* service = AIChatServiceFactory::GetForBrowserContext(profile_);
   service->MaybeAssociateContent(std::move(bookmark_content),

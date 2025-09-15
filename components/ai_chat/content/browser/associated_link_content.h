@@ -13,12 +13,11 @@
 #include "base/one_shot_event.h"
 #include "base/timer/timer.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "url/gurl.h"
 
 namespace content {
-class BrowserContext;
-class WebContents;
 class NavigationHandle;
 }  // namespace content
 
@@ -34,7 +33,7 @@ class AssociatedLinkContent : public AssociatedContentDelegate,
  public:
   AssociatedLinkContent(GURL url,
                         std::u16string title,
-                        content::BrowserContext* browser_context);
+                        tabs::TabInterface* tab_interface);
   ~AssociatedLinkContent() override;
   AssociatedLinkContent(const AssociatedLinkContent&) = delete;
   AssociatedLinkContent& operator=(const AssociatedLinkContent&) = delete;
@@ -56,7 +55,7 @@ class AssociatedLinkContent : public AssociatedContentDelegate,
       content::NavigationHandle* navigation_handle) override;
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
 
-  std::unique_ptr<content::WebContents> web_contents_;
+  raw_ptr<tabs::TabInterface> tab_interface_;
   std::unique_ptr<PageContentFetcher> content_fetcher_;
   base::OneShotTimer timeout_timer_;
   std::unique_ptr<base::OneShotEvent> content_loaded_event_;

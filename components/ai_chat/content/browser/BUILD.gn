@@ -81,6 +81,9 @@ source_set("unit_tests") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/api_request_helper",
+    "//components/tab_groups:tab_groups",
+    "//components/tabs:public",
+    "//components/tabs:tabs",
     "//content/public/browser",
     "//content/test:test_support",
     "//mojo/public/cpp/bindings",
@@ -92,6 +95,7 @@ source_set("unit_tests") {
     "//services/service_manager/public/cpp",
     "//testing/gmock",
     "//testing/gtest",
+    "//ui/base",
     "//url",
   ]
 }

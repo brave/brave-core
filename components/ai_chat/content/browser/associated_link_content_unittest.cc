@@ -15,12 +15,20 @@
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "base/notreached.h"
+#include "base/types/pass_key.h"
+#include "components/tab_groups/tab_group_id.h"
+#include "components/tabs/public/split_tab_id.h"
+#include "components/tabs/public/tab_collection.h"
+#include "components/tabs/public/tab_interface.h"
+#include "ui/base/unowned_user_data/unowned_user_data_host.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/mock_navigation_handle.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -43,6 +51,69 @@ class MockPageContentFetcher : public PageContentFetcher {
               (std::string_view, FetchPageContentCallback));
 };
 
+// Minimal test TabInterface that only implements GetContents()
+class TestTabInterface : public tabs::TabInterface {
+ public:
+  explicit TestTabInterface(content::WebContents* web_contents)
+      : web_contents_(web_contents) {}
+
+  // Only implement the method that AssociatedLinkContent actually uses
+  content::WebContents* GetContents() const override {
+    return web_contents_;
+  }
+
+  // All other methods are stubs that should not be called in our tests
+  base::WeakPtr<TabInterface> GetWeakPtr() override {
+    NOTREACHED();
+  }
+  void Close() override { NOTREACHED(); }
+  ui::UnownedUserDataHost& GetUnownedUserDataHost() override { NOTREACHED(); }
+  const ui::UnownedUserDataHost& GetUnownedUserDataHost() const override { NOTREACHED(); }
+  base::CallbackListSubscription RegisterWillDiscardContents(
+      TabInterface::WillDiscardContentsCallback callback) override { NOTREACHED(); }
+  bool IsActivated() const override { NOTREACHED(); }
+  base::CallbackListSubscription RegisterDidActivate(
+      TabInterface::DidActivateCallback callback) override { NOTREACHED(); }
+  base::CallbackListSubscription RegisterWillDeactivate(
+      TabInterface::WillDeactivateCallback callback) override { NOTREACHED(); }
+  bool IsVisible() const override { NOTREACHED(); }
+  bool IsSelected() const override { NOTREACHED(); }
+  base::CallbackListSubscription RegisterDidBecomeVisible(
+      DidBecomeVisibleCallback callback) override { NOTREACHED(); }
+  base::CallbackListSubscription RegisterWillBecomeHidden(
+      WillBecomeHiddenCallback callback) override { NOTREACHED(); }
+  base::CallbackListSubscription RegisterWillDetach(
+      WillDetach callback) override { NOTREACHED(); }
+  base::CallbackListSubscription RegisterDidInsert(
+      DidInsertCallback callback) override { NOTREACHED(); }
+  base::CallbackListSubscription RegisterPinnedStateChanged(
+      PinnedStateChangedCallback callback) override { NOTREACHED(); }
+  base::CallbackListSubscription RegisterGroupChanged(
+      GroupChangedCallback callback) override { NOTREACHED(); }
+  bool CanShowModalUI() const override { NOTREACHED(); }
+  std::unique_ptr<tabs::ScopedTabModalUI> ShowModalUI() override { NOTREACHED(); }
+  base::CallbackListSubscription RegisterModalUIChanged(
+      TabInterfaceCallback callback) override { NOTREACHED(); }
+  bool IsInNormalWindow() const override { NOTREACHED(); }
+  BrowserWindowInterface* GetBrowserWindowInterface() override { NOTREACHED(); }
+  const BrowserWindowInterface* GetBrowserWindowInterface() const override { NOTREACHED(); }
+  tabs::TabFeatures* GetTabFeatures() override { NOTREACHED(); }
+  const tabs::TabFeatures* GetTabFeatures() const override { NOTREACHED(); }
+  bool IsPinned() const override { NOTREACHED(); }
+  bool IsSplit() const override { NOTREACHED(); }
+  std::optional<tab_groups::TabGroupId> GetGroup() const override { NOTREACHED(); }
+  std::optional<split_tabs::SplitTabId> GetSplit() const override { NOTREACHED(); }
+  tabs::TabCollection* GetParentCollection(
+      base::PassKey<tabs::TabCollection>) const override { NOTREACHED(); }
+  const tabs::TabCollection* GetParentCollection() const override { NOTREACHED(); }
+  void OnReparented(tabs::TabCollection* parent,
+                    base::PassKey<tabs::TabCollection>) override { NOTREACHED(); }
+  void OnAncestorChanged(base::PassKey<tabs::TabCollection>) override { NOTREACHED(); }
+
+ private:
+  raw_ptr<content::WebContents> web_contents_;
+};
+
 }  // namespace
 
 // Test wrapper that exposes private methods for testing
@@ -50,12 +121,12 @@ class TestableAssociatedLinkContent : public AssociatedLinkContent {
  public:
   TestableAssociatedLinkContent(GURL url,
                                 std::u16string title,
-                                content::BrowserContext* browser_context)
+                                tabs::TabInterface* tab_interface)
       : AssociatedLinkContent(std::move(url),
                               std::move(title),
-                              browser_context) {
+                              tab_interface) {
     auto fetcher =
-        std::make_unique<MockPageContentFetcher>(web_contents_.get());
+        std::make_unique<MockPageContentFetcher>(tab_interface->GetContents());
     mock_fetcher_ = fetcher.get();
     content_fetcher_ = std::move(fetcher);
   }
@@ -67,7 +138,7 @@ class TestableAssociatedLinkContent : public AssociatedLinkContent {
   using AssociatedLinkContent::DocumentOnLoadCompletedInPrimaryMainFrame;
   using AssociatedLinkContent::OnContentExtractionComplete;
   using AssociatedLinkContent::OnTimeout;
-  using AssociatedLinkContent::web_contents_;
+  using AssociatedLinkContent::tab_interface_;
 
   base::OneShotEvent* content_loaded_event() {
     return content_loaded_event_.get();
@@ -89,17 +160,31 @@ class AssociatedLinkContentTest : public content::RenderViewHostTestHarness {
             base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~AssociatedLinkContentTest() override = default;
 
+  void SetUp() override {
+    content::RenderViewHostTestHarness::SetUp();
+    test_tab_interface_ = std::make_unique<TestTabInterface>(web_contents());
+  }
+
+  void TearDown() override {
+    // Clean up TestTabInterface before the base class cleans up WebContents
+    test_tab_interface_.reset();
+    content::RenderViewHostTestHarness::TearDown();
+  }
+
   std::unique_ptr<TestableAssociatedLinkContent> CreateAssociatedLinkContent(
       GURL url,
       std::u16string title) {
-    return std::make_unique<TestableAssociatedLinkContent>(url, title,
-                                                           browser_context());
+    return std::make_unique<TestableAssociatedLinkContent>(
+        url, title, test_tab_interface_.get());
   }
 
  protected:
   GURL test_url() { return GURL("https://example.com/test-page"); }
   std::u16string test_title() { return u"Test Page Title"; }
   std::string test_content() { return "This is test page content"; }
+
+ private:
+  std::unique_ptr<TestTabInterface> test_tab_interface_;
 };
 
 TEST_F(AssociatedLinkContentTest, ConstructorDoesNotTriggerLoad) {

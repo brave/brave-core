@@ -15,7 +15,9 @@
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/platform_browser_test.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -83,8 +85,12 @@ IN_PROC_BROWSER_TEST_F(AssociatedLinkContentBrowserTest,
                        SuccessfulBackgroundLoading) {
   GURL test_url = https_server_.GetURL("/basic.html");
 
+  // Get the active tab's TabInterface
+  content::WebContents* active_web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  tabs::TabInterface* tab_interface = tabs::TabInterface::GetFromContents(active_web_contents);
+  
   auto link_content = std::make_unique<AssociatedLinkContent>(
-      test_url, u"Title", browser()->profile());
+      test_url, u"Title", tab_interface);
 
   PageContent content = WaitForContent(link_content.get());
 
@@ -96,8 +102,12 @@ IN_PROC_BROWSER_TEST_F(AssociatedLinkContentBrowserTest,
                        MultipleGetConentsDoesNotBreak) {
   GURL test_url = https_server_.GetURL("/basic.html");
 
+  // Get the active tab's TabInterface
+  content::WebContents* active_web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  tabs::TabInterface* tab_interface = tabs::TabInterface::GetFromContents(active_web_contents);
+  
   auto link_content = std::make_unique<AssociatedLinkContent>(
-      test_url, u"Title", browser()->profile());
+      test_url, u"Title", tab_interface);
 
   // Repeat the load a few times to make sure nothing breaks. In the current
   // implementation we only fetch once but that may change in the future, so we
@@ -115,8 +125,12 @@ IN_PROC_BROWSER_TEST_F(AssociatedLinkContentBrowserTest,
   // Test with non-existent URL that will return 404
   GURL invalid_url = https_server_.GetURL("/non-existent-page.html");
 
+  // Get the active tab's TabInterface
+  content::WebContents* active_web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  tabs::TabInterface* tab_interface = tabs::TabInterface::GetFromContents(active_web_contents);
+  
   auto link_content = std::make_unique<AssociatedLinkContent>(
-      invalid_url, u"Invalid URL Title", browser()->profile());
+      invalid_url, u"Invalid URL Title", tab_interface);
 
   // Should handle 404 gracefully
   PageContent content = WaitForContent(link_content.get());
@@ -128,9 +142,12 @@ IN_PROC_BROWSER_TEST_F(AssociatedLinkContentBrowserTest,
                        HandlesMultipleConcurrentRequests) {
   GURL test_url = https_server_.GetURL("/basic.html");
 
+  // Get the active tab's TabInterface
+  content::WebContents* active_web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  tabs::TabInterface* tab_interface = tabs::TabInterface::GetFromContents(active_web_contents);
+  
   auto link_content = std::make_unique<AssociatedLinkContent>(
-      test_url, u"Title",
-      static_cast<content::BrowserContext*>(browser()->profile()));
+      test_url, u"Title", tab_interface);
 
   // Make multiple concurrent requests
   base::RunLoop run_loop;

@@ -13,7 +13,7 @@
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
-#include "content/public/browser/browser_context.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/net_errors.h"
@@ -24,7 +24,8 @@ namespace ai_chat {
 AssociatedLinkContent::AssociatedLinkContent(
     GURL url,
     std::u16string title,
-    content::BrowserContext* browser_context) {
+    tabs::TabInterface* tab_interface) 
+    : tab_interface_(tab_interface) {
   DVLOG(2) << __func__ << "Creating link content for: " << url.spec()
            << " title: " << title;
 
@@ -32,16 +33,13 @@ AssociatedLinkContent::AssociatedLinkContent(
   set_url(std::move(url));
   SetTitle(std::move(title));
 
-  // Create background WebContents optimized for headless loading
-  content::WebContents::CreateParams params(browser_context);
-  params.initially_hidden = true;
-  params.preview_mode = true;
-  web_contents_ = content::WebContents::Create(params);
-
+  // Use the TabInterface's WebContents instead of creating our own
+  content::WebContents* web_contents = tab_interface_->GetContents();
+  
   // Start observing the WebContents
-  content::WebContentsObserver::Observe(web_contents_.get());
+  content::WebContentsObserver::Observe(web_contents);
 
-  content_fetcher_ = std::make_unique<PageContentFetcher>(web_contents_.get());
+  content_fetcher_ = std::make_unique<PageContentFetcher>(web_contents);
 }
 
 AssociatedLinkContent::~AssociatedLinkContent() = default;
@@ -70,7 +68,7 @@ void AssociatedLinkContent::GetContent(GetPageContentCallback callback) {
 
     content::NavigationController::LoadURLParams load_params(url());
     load_params.transition_type = ui::PAGE_TRANSITION_LINK;
-    web_contents_->GetController().LoadURLWithParams(load_params);
+    tab_interface_->GetContents()->GetController().LoadURLWithParams(load_params);
   }
 
   // Register callback with the OneShotEvent - it will be called when content is
@@ -110,7 +108,7 @@ void AssociatedLinkContent::DidFinishNavigation(
 
 void AssociatedLinkContent::DocumentOnLoadCompletedInPrimaryMainFrame() {
   DVLOG(2) << __func__ << "Page fully loaded for URL: " << url().spec();
-  SetTitle(web_contents_->GetTitle());
+  SetTitle(tab_interface_->GetContents()->GetTitle());
 
   content_fetcher_->FetchPageContent(
       /*invalidation_token=*/"",
