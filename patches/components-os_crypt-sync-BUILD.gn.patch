@@ -1,12 +1,35 @@
 diff --git a/components/os_crypt/sync/BUILD.gn b/components/os_crypt/sync/BUILD.gn
-index ff1e356ff696d3830d02644969c36a71fdf32ff6..fa5f4f45644327db02c4b49a573ba6e7bf87849a 100644
+index bbaf1143e725a1b6c49eef705b1e62c4133bfa27..ced096c779bf9dd1eb4676286cd8c0e44482f398 100644
 --- a/components/os_crypt/sync/BUILD.gn
 +++ b/components/os_crypt/sync/BUILD.gn
-@@ -77,6 +77,7 @@ component("sync") {
+@@ -43,8 +43,22 @@ component("sync") {
+     "//ios/chrome/browser/web/model:web_internal",
+     "//services/network:network_service",
+     "//services/test/echo:lib",
++
++    "//brave/components/ai_chat/core/browser",
++    "//brave/components/brave_sync:prefs",
++    "//brave/components/sync/service:unit_tests",
++    "//brave/components/brave_account",
++    "//brave/components/brave_rewards/content",
++    "//components/os_crypt/sync",
++    "//chrome/utility",
+   ]
+
++  if (is_ios) {
++    visibility += [
++      "//brave/ios/browser/api/brave_rewards",
++    ]
++  }
++
+   sources = [
+     "os_crypt.h",
+     "os_crypt_metrics.cc",
+@@ -114,6 +128,7 @@ component("sync") {
    } else if (is_posix || is_fuchsia) {
      sources += [ "os_crypt_posix.cc" ]
    }
 +  import("//brave/components/os_crypt/sources.gni") deps += brave_components_os_crypt_deps
  }
- 
+
  static_library("test_support") {
