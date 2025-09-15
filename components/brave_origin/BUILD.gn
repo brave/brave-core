@@ -7,12 +7,18 @@ static_library("brave_origin") {
   sources = [
     "brave_origin_policy_info.cc",
     "brave_origin_policy_info.h",
+    "brave_origin_prefs.cc",
+    "brave_origin_prefs.h",
     "brave_origin_service.cc",
     "brave_origin_service.h",
     "features.cc",
     "features.h",
+    "pref_names.h",
   ]
 
   public_deps = [ "//base" ]
-  deps = [ "//components/keyed_service/core" ]
+  deps = [
+    "//components/keyed_service/core",
+    "//components/prefs",
+  ]
 }
