@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js'
 
@@ -42,8 +42,8 @@ const alwaysTrue = {
 const alwaysTrueProxy = new Proxy({}, alwaysTrue)
 
 function getPageVisibility () {
-  // Use chromium value defined in page_visibility.js in guest mode
-  // which hides most sections, and add brave sections to hide.
+  // Use Chromium value defined in page_visibility.ts in guest mode
+  // which hides most sections, and add Brave sections to hide.
   if (loadTimeData.getBoolean('isGuest')) {
     // Hide appropriate brave sections as well as chromium ones
     return {
@@ -69,13 +69,13 @@ function getPageVisibility () {
     }
   }
   // We need to specify values for every attribute in pageVisibility instead of
-  // only overriding specific attributes here because chromium does not
-  // explicitly define pageVisibility in page_visibility.js since polymer only
+  // only overriding specific attributes here because Chromium does not
+  // explicitly define pageVisibility in page_visibility.ts since Polymer only
   // notifies after a property is set.
   // Use proxy objects here so we only need to write out the attributes we
   // would like to hide.
-  // See brave/browser/settings/brave_overrides/basic_page.js for brave's list,
-  // and chrome/browser/settings/page_visibility.js for chromium's list.
+  // See brave/browser/resources/settings/br/basic_page.ts for Brave's list,
+  // and chrome/browser/resources/settings/page_visibility.ts for Chromium's list.
   const staticProps = {
     // future-proof chromium actually defining something,
     ...chromiumPageVisibility,
