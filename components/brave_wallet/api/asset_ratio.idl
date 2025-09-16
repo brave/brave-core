@@ -124,14 +124,15 @@ namespace asset_ratio {
     DOMString chain_id;
 
     // Nullable optional DOMString field
-    // e.g. "0x0D8775F648430679A709E98d2b0Cb6250d2887EF"
+    // e.g. "0x0D8775F648430679A709E98d2b0Cb6250d2887EF" or null
     any? address;
 
     // e.g. "0.55393"
     DOMString price;
 
-    // e.g. "0.1"
-    DOMString? percentage_change_24h;
+    // Nullable optional DOMString field
+    // e.g. "0.1" or null
+    any? percentage_change_24h;
 
     // e.g. "USD"
     DOMString vs_currency;

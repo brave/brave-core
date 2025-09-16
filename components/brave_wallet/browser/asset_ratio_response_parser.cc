@@ -127,6 +127,9 @@ std::vector<mojom::AssetPricePtr> ParseAssetPrices(
 
     auto source = GetAssetPriceSource(payload->source);
 
+    auto percentage_change_24h =
+        ParseOptionalNullableString(payload->percentage_change_24h);
+
     auto asset_price = mojom::AssetPrice::New();
     asset_price->coin = *coin;
     asset_price->chain_id = payload->chain_id;
@@ -135,8 +138,7 @@ std::vector<mojom::AssetPricePtr> ParseAssetPrices(
     asset_price->vs_currency = payload->vs_currency;
     asset_price->cache_status = *cache_status;
     asset_price->source = source;
-    asset_price->percentage_change_24h =
-        payload->percentage_change_24h.value_or("");
+    asset_price->percentage_change_24h = percentage_change_24h.value_or("");
 
     prices.push_back(std::move(asset_price));
   }
