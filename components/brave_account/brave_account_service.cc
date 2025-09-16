@@ -20,6 +20,11 @@ BraveAccountService::BraveAccountService(
 
 BraveAccountService::~BraveAccountService() = default;
 
+void BraveAccountService::BindInterface(
+    mojo::PendingReceiver<mojom::Authentication> pending_receiver) {
+  authentication_receivers_.Add(this, std::move(pending_receiver));
+}
+
 void BraveAccountService::RegisterInitialize(
     const std::string& email,
     const std::string& blinded_message,
