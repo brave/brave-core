@@ -9,4 +9,5 @@ include_rules = [
   "+ios/web/web_state",
   "+ios/web/test",
   "+services/network/public/mojom",
+  "+ui/strings/grit",
 ]

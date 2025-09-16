@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_BRAVE_WALLET_PAGE_UI_H_
-#define BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_BRAVE_WALLET_PAGE_UI_H_
+#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PAGE_UI_H_
+#define BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PAGE_UI_H_
 
 #include <memory>
 
@@ -39,7 +39,7 @@ class WalletPageUI : public web::WebUIIOSController,
           json_rpc_service,
       mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
           bitcoin_rpc_service,
-      mojo::PendingReceiver<brave_wallet::mojom::PolkadotWalletService> 
+      mojo::PendingReceiver<brave_wallet::mojom::PolkadotWalletService>
           polkadot_wallet_service,
       mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
           zcash_service,
@@ -77,4 +77,4 @@ class WalletPageUI : public web::WebUIIOSController,
       page_factory_receiver_{this};
 };
 
-#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_BRAVE_WALLET_PAGE_UI_H_
+#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PAGE_UI_H_
