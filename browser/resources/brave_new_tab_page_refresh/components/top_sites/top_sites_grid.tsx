@@ -122,7 +122,9 @@ export function TopSitesGrid(props: Props) {
         ref={scrollRef}
         className='top-site-tiles-mask'
         onScroll={onScroll}
-        style={inlineCSSVars({ '--self-columns-per-page': columnsPerPage })}
+        style={inlineCSSVars({
+          '--self-columns-per-page': Math.min(columnsPerPage, tileCount)
+        })}
       >
         {pages.map((page, i) => (
           <div key={i} className='top-site-tiles'>
