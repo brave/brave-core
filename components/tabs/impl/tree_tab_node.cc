@@ -101,6 +101,18 @@ TreeTabNode::TreeTabNode(const tree_tab::TreeTabNodeId& tree_tab_node_id,
 
 TreeTabNode::~TreeTabNode() = default;
 
+TreeTabNode* TreeTabNode::GetTopLevelAncestor() {
+  auto* parent = GetParentCollection();
+  if (!parent || parent->type() != TabCollection::Type::TREE_NODE) {
+    return this;
+  }
+  return static_cast<TreeTabNode*>(parent)->GetTopLevelAncestor();
+}
+
+const TreeTabNode* TreeTabNode::GetTopLevelAncestor() const {
+  return const_cast<TreeTabNode*>(this)->GetTopLevelAncestor();
+}
+
 // static
 void TreeTabNode::CollectTreeNodesRecursively(
     tabs::TabCollection& parent,
