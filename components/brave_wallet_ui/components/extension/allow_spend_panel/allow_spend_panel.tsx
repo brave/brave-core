@@ -88,6 +88,7 @@ export const AllowSpendPanel = () => {
     queuePreviousTransaction,
     transactionsQueueLength,
     rejectAllTransactions,
+    canEditNetworkFee,
   } = usePendingTransactions()
 
   const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
@@ -185,7 +186,11 @@ export const AllowSpendPanel = () => {
                     transactionsNetwork={transactionsNetwork}
                     gasFee={gasFee}
                     transactionDetails={transactionDetails}
-                    onClickEditNetworkFee={() => setShowEditNetworkFee(true)}
+                    onClickEditNetworkFee={
+                      canEditNetworkFee
+                        ? () => setShowEditNetworkFee(true)
+                        : undefined
+                    }
                   />
                 </InfoBox>
 

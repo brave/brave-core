@@ -56,6 +56,7 @@ import {
   usePendingTransactionsQuery,
   useGetCombinedTokensListQuery,
   useAccountQuery,
+  useAccountFromAddressQuery,
 } from '../slices/api.slice.extra'
 import { useSwapTransactionParser } from './use-swap-tx-parser'
 import {
@@ -686,12 +687,24 @@ export const usePendingTransactions = () => {
       : skipToken,
   )
 
+  const { account: toAccount } = useAccountFromAddressQuery(
+    transactionDetails?.recipient,
+  )
+
+  const canEditNetworkFee = React.useMemo(() => {
+    return (
+      isEthereumTransaction(transactionInfo)
+      || transactionDetails?.isFilecoinTransaction
+    )
+  }, [transactionInfo, transactionDetails?.isFilecoinTransaction])
+
   return {
     baseFeePerGas,
     currentTokenAllowance,
     isCurrentAllowanceUnlimited,
     erc20ApproveTokenInfo,
     fromAccount: txAccount,
+    toAccount,
     fromOrb,
     isConfirmButtonDisabled,
     isEthereumTransaction: isEthereumTransaction(transactionInfo),
@@ -731,5 +744,6 @@ export const usePendingTransactions = () => {
     isCardanoTransaction: isCardanoTransaction(transactionInfo),
     isAccountSyncing,
     isShieldingFunds,
+    canEditNetworkFee,
   }
 }

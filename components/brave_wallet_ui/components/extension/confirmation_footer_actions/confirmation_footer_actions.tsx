@@ -14,8 +14,8 @@ import { getLocale } from '../../../../common/locale'
 import { Row } from '../../shared/style'
 
 interface Props {
-  onClickAdvancedSettings: () => void
-  onClickDetails: () => void
+  onClickAdvancedSettings?: () => void
+  onClickDetails?: () => void
 }
 
 export function ConfirmationFooterActions(props: Props) {
@@ -24,30 +24,34 @@ export function ConfirmationFooterActions(props: Props) {
   return (
     <Row justifyContent='space-between'>
       <div>
-        <Button
-          kind='plain'
-          size='tiny'
-          onClick={onClickAdvancedSettings}
-        >
-          <Icon
-            name='settings'
-            slot='icon-before'
-          />
-          {getLocale('braveWalletAdvancedTransactionSettings')}
-        </Button>
+        {onClickAdvancedSettings && (
+          <Button
+            kind='plain'
+            size='tiny'
+            onClick={onClickAdvancedSettings}
+          >
+            <Icon
+              name='settings'
+              slot='icon-before'
+            />
+            {getLocale('braveWalletAdvancedTransactionSettings')}
+          </Button>
+        )}
       </div>
       <div>
-        <Button
-          kind='plain'
-          size='tiny'
-          onClick={onClickDetails}
-        >
-          <Icon
-            name='info-outline'
-            slot='icon-before'
-          />
-          {getLocale('braveWalletDetails')}
-        </Button>
+        {onClickDetails && (
+          <Button
+            kind='plain'
+            size='tiny'
+            onClick={onClickDetails}
+          >
+            <Icon
+              name='info-outline'
+              slot='icon-before'
+            />
+            {getLocale('braveWalletDetails')}
+          </Button>
+        )}
       </div>
     </Row>
   )

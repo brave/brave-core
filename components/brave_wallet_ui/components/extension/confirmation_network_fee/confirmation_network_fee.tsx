@@ -31,7 +31,7 @@ interface Props {
   gasFee: string
   transactionsNetwork?: BraveWallet.NetworkInfo
   transactionDetails?: ParsedTransaction
-  onClickEditNetworkFee: () => void
+  onClickEditNetworkFee?: () => void
 }
 
 export function ConfirmationNetworkFee(props: Props) {
@@ -68,22 +68,23 @@ export function ConfirmationNetworkFee(props: Props) {
           >
             {getLocale('braveWalletAllowSpendTransactionFee')}
           </ConfirmationInfoLabel>
-          <Button
-            size='tiny'
-            kind='plain'
-            onClick={onClickEditNetworkFee}
-          >
-            <Icon
-              name='tune'
-              slot='icon-before'
-            />
-            {getLocale('braveWalletAllowSpendEditButton')}
-          </Button>
+          {onClickEditNetworkFee && (
+            <Button
+              size='tiny'
+              kind='plain'
+              onClick={onClickEditNetworkFee}
+            >
+              <Icon
+                name='tune'
+                slot='icon-before'
+              />
+              {getLocale('braveWalletAllowSpendEditButton')}
+            </Button>
+          )}
         </Column>
         <Column
           alignItems='flex-end'
           justifyContent='flex-start'
-          gap='8px'
         >
           <ConfirmationInfoLabel
             textColor='primary'

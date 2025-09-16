@@ -147,6 +147,7 @@
   <message name="IDS_BRAVE_WALLET_EXCHANGE_VIA_PROVIDER" desc="Exchange being used via API provider"><ph name="EXCHANGE_NAME"><ex>0x</ex>$1</ph> via <ph name="PROVIDER_NAME"><ex>Li.Fi</ex>$2</ph></message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SWAP" desc="Confirm swap title">Confirm swap</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_BRIDGE" desc="Confirm bridge title">Confirm bridge</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_SEND" desc="Confirm send title">Confirm send</message>
   <message name="IDS_BRAVE_WALLET_SPEND" desc="Spend button">Spend</message>
   <message name="IDS_BRAVE_WALLET_SORT_BY" desc="Sort by button label">Sort by</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_BRIDGE" desc="Review bridge button">Review bridge</message>
@@ -410,7 +411,7 @@
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_TRANSACTION_FEE" desc="Confirm transaction panel transaction fee label">Transaction fee</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_BID" desc="Confirm transaction panel bid label">Bid</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_AMOUNT_GAS" desc="Confirm transaction panel total gas label">Amount + gas</message>
-  <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_AMOUNT_FEE" desc="Confirm transaction panel total fee label">Amount + fee</message>
+  <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_AMOUNT_FEE" desc="Confirm transaction panel total fee label">Amount + Network fee</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_NO_DATA" desc="Confirm transaction panel no data placeholder">No data.</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_NEXT" desc="Confirm transaction panel next transaction button">next</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_TRANSACTION_FIRST" desc="Confirm transaction panel first transaction button">first</message>
