@@ -23,6 +23,7 @@ import org.chromium.brave_wallet.mojom.TxService;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 public class AsyncUtils {
     private static final String TAG = "AsyncUtils";
@@ -242,15 +243,15 @@ public class AsyncUtils {
     }
 
     public static class FetchPricesResponseContext extends SingleResponseBaseContext
-            implements Callbacks.Callback1<HashMap<String, Double>> {
-        public HashMap<String, Double> assetPrices;
+            implements Callbacks.Callback1<List<AssetPrice>> {
+        public List<AssetPrice> assetPrices;
 
         public FetchPricesResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
 
         @Override
-        public void call(HashMap<String, Double> assetPrices) {
+        public void call(List<AssetPrice> assetPrices) {
             this.assetPrices = assetPrices;
             super.fireResponseCompleteCallback();
         }
@@ -294,11 +295,11 @@ public class AsyncUtils {
 
     public static class GetTxExtraInfoResponseContext extends SingleResponseBaseContext
             implements Callbacks.Callback4<
-                    HashMap<String, Double>,
+                    List<AssetPrice>,
                     BlockchainToken[],
                     HashMap<String, Double>,
                     HashMap<String, HashMap<String, Double>>> {
-        public HashMap<String, Double> assetPrices;
+        public List<AssetPrice> assetPrices;
         public BlockchainToken[] tokenList;
         public HashMap<String, Double> nativeAssetsBalances;
         public HashMap<String, HashMap<String, Double>> blockchainTokensBalances;
@@ -309,7 +310,7 @@ public class AsyncUtils {
 
         @Override
         public void call(
-                HashMap<String, Double> assetPrices,
+                List<AssetPrice> assetPrices,
                 BlockchainToken[] tokenList,
                 HashMap<String, Double> nativeAssetsBalances,
                 HashMap<String, HashMap<String, Double>> blockchainTokensBalances) {

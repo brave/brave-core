@@ -144,11 +144,8 @@ public class BraveWalletPanel implements DialogInterface {
                                             new AccountInfo[] {mSelectedAccount},
                                             (coinType, nativeAssetsBalances) -> {
                                                 double price =
-                                                        Utils.getOrDefault(
-                                                                assetPrices,
-                                                                asset.symbol.toLowerCase(
-                                                                        Locale.getDefault()),
-                                                                0.0d);
+                                                        AssetsPricesHelper.getPriceForAsset(
+                                                                assetPrices, asset);
                                                 double balance =
                                                         Utils.getOrDefault(
                                                                 nativeAssetsBalances,

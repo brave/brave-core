@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
@@ -38,13 +39,14 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AdvanceTxSettingActi
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.presenters.Amount;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransaction;
 import org.chromium.chrome.browser.crypto_wallet.util.ParsedTransactionFees;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 @NullMarked
@@ -54,7 +56,7 @@ public class TxFragment extends Fragment {
     private ParsedTransaction mParsedTx;
     private final NetworkInfo mTxNetwork;
     private final AccountInfo[] mAccounts;
-    private final HashMap<String, Double> mAssetPrices;
+    private final List<AssetPrice> mAssetPrices;
     private final BlockchainToken[] mFullTokenList;
     private int mCheckedPriorityId;
     private int mPreviousCheckedPriorityId;
@@ -72,7 +74,7 @@ public class TxFragment extends Fragment {
             TransactionInfo txInfo,
             NetworkInfo txNetwork,
             AccountInfo[] accounts,
-            HashMap<String, Double> assetPrices,
+            List<AssetPrice> assetPrices,
             BlockchainToken[] fullTokenList,
             boolean updateTxObjectManually,
             long solanaEstimatedTxFee) {
@@ -99,7 +101,7 @@ public class TxFragment extends Fragment {
             TransactionInfo txInfo,
             NetworkInfo txNetwork,
             AccountInfo[] accounts,
-            HashMap<String, Double> assetPrices,
+            List<AssetPrice> assetPrices,
             BlockchainToken[] fullTokenList,
             boolean updateTxObjectManually,
             long solanaEstimatedTxFee) {
@@ -501,8 +503,8 @@ public class TxFragment extends Fragment {
         final double[] gasFeeArr =
                 ParsedTransactionFees.calcGasFee(
                         mTxNetwork,
-                        Utils.getOrDefault(
-                                mAssetPrices, mTxNetwork.symbol.toLowerCase(Locale.ENGLISH), 0.0d),
+                        AssetsPricesHelper.getPrice(
+                                mAssetPrices, mTxNetwork.coin, mTxNetwork.chainId, ""),
                         true,
                         gasLimit,
                         "0",
