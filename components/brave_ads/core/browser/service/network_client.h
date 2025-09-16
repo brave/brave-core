@@ -19,6 +19,8 @@
 #include "brave/components/brave_ads/core/public/network_client_callback.h"
 #include "services/network/public/mojom/network_context.mojom-forward.h"
 
+class GURL;
+
 namespace network {
 class SimpleURLLoader;
 class SharedURLLoaderFactory;
@@ -26,12 +28,16 @@ class SharedURLLoaderFactory;
 
 namespace brave_ads {
 
-// This class is responsible for sending HTTP network requests.
+class NetworkClientObliviousHttpKeyConfig;
+
+// This class is responsible for sending HTTP and Oblivious HTTP network
+// requests.
 class NetworkClient {
  public:
   NetworkClient(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      network::mojom::NetworkContext* mojom_network_context);
+      network::mojom::NetworkContext* mojom_network_context,
+      bool use_staging);
 
   NetworkClient(const NetworkClient&) = delete;
   NetworkClient& operator=(const NetworkClient&) = delete;
@@ -49,11 +55,19 @@ class NetworkClient {
   void CancelRequests();
 
  private:
+  // Uses standard HTTP to perform the request.
   void HttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                    UrlRequestCallback callback);
   void HttpRequestCallback(network::SimpleURLLoader* url_loader,
                            UrlRequestCallback callback,
                            std::optional<std::string> response_body);
+
+  // Uses Oblivous HTTP indirectly to perform the request. See specification at
+  // https://ietf-wg-ohai.github.io/oblivious-http/draft-ietf-ohai-ohttp.html
+  void FetchObliviousHttpKeyConfig();
+  void ObliviousHttpRequest(mojom::UrlRequestInfoPtr mojom_url_request,
+                            const GURL& relay_url,
+                            UrlRequestCallback callback);
 
   const scoped_refptr<network::SharedURLLoaderFactory>
       url_loader_factory_;  // Not owned.
@@ -63,6 +77,11 @@ class NetworkClient {
 
   const raw_ptr<network::mojom::NetworkContext>
       mojom_network_context_;  // Not owned.
+
+  const bool use_staging_ = false;
+
+  std::unique_ptr<NetworkClientObliviousHttpKeyConfig>
+      oblivious_http_key_config_;
 
   base::WeakPtrFactory<NetworkClient> weak_ptr_factory_{this};
 };

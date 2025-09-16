@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_NETWORK_CLIENT_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_NETWORK_CLIENT_UTIL_H_
 
+#include <optional>
 #include <string>
+#include <string_view>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/scoped_refptr.h"

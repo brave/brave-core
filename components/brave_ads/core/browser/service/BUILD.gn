@@ -7,9 +7,17 @@ source_set("service") {
   sources = [
     "ads_service.cc",
     "ads_service.h",
+    "ads_service_feature.cc",
+    "ads_service_feature.h",
     "ads_service_observer.h",
     "network_client.cc",
     "network_client.h",
+    "network_client_callback.h",
+    "network_client_constants.h",
+    "network_client_oblivious_http_impl.cc",
+    "network_client_oblivious_http_impl.h",
+    "network_client_oblivious_http_key_config.cc",
+    "network_client_oblivious_http_key_config.h",
     "network_client_util.cc",
     "network_client_util.h",
     "new_tab_page_ad_prefetcher.cc",
@@ -37,6 +45,7 @@ source_set("service") {
     "//net",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
+    "//net",
   ]
 }
 
@@ -44,6 +53,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "ads_service_feature_unittest.cc",
     "new_tab_page_ad_prefetcher_unittest.cc",
     "virtual_pref_provider_unittest.cc",
   ]

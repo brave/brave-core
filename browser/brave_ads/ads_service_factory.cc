@@ -23,6 +23,7 @@
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -102,9 +103,16 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(profile);
 
+  // TODO(tmancey): Decouple.
+  const brave_rewards::RewardsFlags& rewards_flags =
+      brave_rewards::RewardsFlags::ForCurrentProcess();
+  const bool use_staging =
+      rewards_flags.environment !=
+      brave_rewards::RewardsFlags::Environment::kProduction;
+
   auto network_client = std::make_unique<NetworkClient>(
       default_store_partition->GetURLLoaderFactoryForBrowserProcess(),
-      default_store_partition->GetNetworkContext());
+      default_store_partition->GetNetworkContext(), use_staging);
 
   return std::make_unique<AdsServiceImpl>(
       std::move(delegate), prefs, local_state, std::move(network_client),
