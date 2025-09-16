@@ -12,7 +12,7 @@ extension Strings {
       "vpn.buyVPNTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave Firewall + VPN",
+      value: "Brave VPN",
       comment: "Title for screen to buy the VPN."
     )
 
@@ -701,7 +701,7 @@ extension Strings {
       "vpn.vpnConfigPermissionDeniedErrorBody",
       bundle: .module,
       value:
-        "The Brave Firewall + VPN requires a VPN profile to be installed on your device to work. ",
+        "The Brave VPN requires a VPN profile to be installed on your device to work. ",
       comment: "Title for an alert when the user didn't allow to install VPN profile"
     )
 
@@ -753,7 +753,7 @@ extension Strings {
       "vpn.vpnResetAlertBody",
       bundle: .module,
       value:
-        "This will reset your Brave Firewall + VPN configuration and fix any errors. This process may take a minute.",
+        "This will reset your Brave VPN configuration and fix any errors. This process may take a minute.",
       comment: "Message for alert to reset vpn configuration"
     )
 
@@ -960,7 +960,7 @@ extension Strings {
     public static let contactFormTitle = NSLocalizedString(
       "vpn.contactFormTitle",
       bundle: .module,
-      value: "Brave Firewall + VPN Issue",
+      value: "Brave VPN Issue",
       comment: "Title for contact form email."
     )
 
@@ -981,7 +981,7 @@ extension Strings {
     public static let vpnBackgroundNotificationTitle = NSLocalizedString(
       "vpn.vpnBackgroundNotificationTitle",
       bundle: .module,
-      value: "Brave Firewall + VPN is ON",
+      value: "Brave VPN is ON",
       comment: "Notification title to tell user that the vpn is turned on even in background"
     )
 

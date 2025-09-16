@@ -22,7 +22,7 @@ public class BraveVPN {
 
   public static let iapObserver = BraveVPNInAppPurchaseObserver()
 
-  private static let connectionName = "Brave Firewall + VPN"  // Non translatable
+  private static let connectionName = "Brave VPN"  // Non translatable
 
   // MARK: - Initialization
 
