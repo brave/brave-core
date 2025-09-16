@@ -87,6 +87,7 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
       "script-src chrome://resources 'self' 'wasm-unsafe-eval';");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
+  source->AddString("braveWalletPolkadotBridgeUrl", kUntrustedPolkadotURL);
   source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
   source->AddBoolean("isAndroid", false);

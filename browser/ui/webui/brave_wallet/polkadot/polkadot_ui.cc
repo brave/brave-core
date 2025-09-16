@@ -10,7 +10,7 @@
 #include "brave/browser/ui/webui/untrusted_sanitized_image_source.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/nft_display/resources/grit/nft_display_generated_map.h"
+#include "brave/components/polkadot_bridge/resources/grit/polkadot_bridge_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/grit/browser_resources.h"
 #include "chrome/grit/generated_resources.h"
@@ -35,15 +35,16 @@ UntrustedPolkadotUI::UntrustedPolkadotUI(content::WebUI* web_ui)
     untrusted_source->AddString(str.name, l10n_str);
   }
 
-  untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_POLKADOT_DISPLAY_HTML);
-  untrusted_source->AddResourcePaths(kNftDisplayGenerated);
+  untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_POLKADOT_BRIDGE_HTML);
+  untrusted_source->AddResourcePaths(kPolkadotBridgeGenerated);
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
-  webui::SetupWebUIDataSource(untrusted_source, kNftDisplayGenerated,
-                              IDR_BRAVE_WALLET_NFT_DISPLAY_HTML);
+  webui::SetupWebUIDataSource(untrusted_source, kPolkadotBridgeGenerated,
+                              IDR_BRAVE_WALLET_POLKADOT_BRIDGE_HTML);
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      std::string("script-src 'self' chrome-untrusted://resources;"));
+      std::string("script-src 'self' chrome-untrusted://resources 'self' "
+                  "'wasm-unsafe-eval';"));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src 'self' 'unsafe-inline';"));
@@ -60,6 +61,8 @@ UntrustedPolkadotUI::UntrustedPolkadotUI(content::WebUI* web_ui)
                               kUntrustedLedgerURL);
   untrusted_source->AddString("braveWalletMarketUiBridgeUrl",
                               kUntrustedMarketURL);
+  untrusted_source->AddString("braveWalletPolkadotBridgeUrl",
+                              kUntrustedPolkadotURL);
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       std::string("img-src 'self' chrome-untrusted://resources "
@@ -79,6 +82,6 @@ UntrustedPolkadotUIConfig::CreateWebUIController(content::WebUI* web_ui,
 }
 
 UntrustedPolkadotUIConfig::UntrustedPolkadotUIConfig()
-    : WebUIConfig(content::kChromeUIUntrustedScheme, kUntrustedNftHost) {}
+    : WebUIConfig(content::kChromeUIUntrustedScheme, kUntrustedPolkadotHost) {}
 
 }  // namespace brave_wallet
