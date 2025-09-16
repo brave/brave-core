@@ -5075,9 +5075,19 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Adding video and audio files for offline use can use a lot of storage on your device. Please remove some files to free up storage space.",
+          "Your device is low on space. Adding this video to Playlist may fail or affect other downloads.",
         comment: "When the user's disk space is almost full"
       )
+    
+    public static let playlistDiskSpaceAddAnywayButtonTitle =
+    NSLocalizedString(
+      "playlist.playlistDiskSpaceAddAnywayButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value:
+        "Add Anyway",
+      comment: "The title of the button for the user to proceed adding playlist item when the user's disk space is almost full"
+    )
 
     public static let playlistPopoverChangeFoldersButtonTitle =
       NSLocalizedString(
