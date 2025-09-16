@@ -488,8 +488,9 @@ std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
     case mojom::CoinType::DOT:
       if (chain_id == mojom::kPolkadotMainnet) {
         return {mojom::KeyringId::kPolkadotMainnet};
+      } else {
+        return {mojom::KeyringId::kPolkadotTestnet};
       }
-      return {mojom::KeyringId::kPolkadotTestnet};
   }
   NOTREACHED();
 }
