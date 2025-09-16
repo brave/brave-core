@@ -15,7 +15,7 @@ import { PanelActions } from '../../panel/actions'
 
 // utils
 import Amount from '../../utils/amount'
-import { getPriceRequestForToken } from '../../utils/pricing-utils'
+import { getPriceRequestsForTokens } from '../../utils/pricing-utils'
 import { isHardwareAccount } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
@@ -152,11 +152,7 @@ export const usePendingTransactions = () => {
   const txToken = findTransactionToken(transactionInfo, combinedTokensList)
 
   const tokenPriceRequests = React.useMemo(
-    () =>
-      [txToken, networkAsset]
-        .filter((t): t is BraveWallet.BlockchainToken => Boolean(t))
-        .map(getPriceRequestForToken)
-        .filter((r): r is BraveWallet.AssetPriceRequest => Boolean(r)),
+    () => getPriceRequestsForTokens([txToken, networkAsset]),
     [txToken, networkAsset],
   )
 

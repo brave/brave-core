@@ -24,7 +24,7 @@ import {
 } from '../../../utils/asset-utils'
 import {
   getTokenPriceAmountFromRegistry,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../utils/pricing-utils'
 
 // hooks
@@ -76,9 +76,10 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
     // routing
     const { assetId: selectedOnRampAssetId } = useParams<{ assetId: string }>()
 
-    const tokenPriceRequest = React.useMemo(() => {
-      return getPriceRequestForToken(token)
-    }, [token])
+    const tokenPriceRequests = React.useMemo(
+      () => getPriceRequestsForTokens([token]),
+      [token],
+    )
 
     // queries
     const {
@@ -86,10 +87,10 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
       isFetching: isFetchingPrice,
       isLoading: isLoadingPrice,
     } = useGetTokenSpotPricesQuery(
-      !tokenPriceRequest || !selectedCurrency
+      !tokenPriceRequests.length || !selectedCurrency
         ? skipToken
         : {
-            requests: [tokenPriceRequest],
+            requests: tokenPriceRequests,
             vsCurrency: selectedCurrency,
           },
       // refresh every 15 seconds

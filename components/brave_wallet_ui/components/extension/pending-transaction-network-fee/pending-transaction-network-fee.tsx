@@ -16,7 +16,7 @@ import {
   isSolanaTransaction,
 } from '../../../utils/tx-utils'
 import {
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
   getTokenPriceFromRegistry,
 } from '../../../utils/pricing-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
@@ -79,14 +79,14 @@ export const PendingTransactionNetworkFeeAndSettings: React.FC<Props> = ({
     feeDisplayMode === 'fiat' ? undefined : skipToken,
   )
 
-  const networkTokenPriceRequest = txNetwork
-    ? getPriceRequestForToken(makeNetworkAsset(txNetwork))
-    : undefined
+  const networkTokenPriceRequests = txNetwork
+    ? getPriceRequestsForTokens([makeNetworkAsset(txNetwork)])
+    : []
 
   const { data: pricesRegistry } = useGetTokenSpotPricesQuery(
-    networkTokenPriceRequest && defaultFiatCurrency
+    networkTokenPriceRequests.length && defaultFiatCurrency
       ? {
-          requests: [networkTokenPriceRequest],
+          requests: networkTokenPriceRequests,
           vsCurrency: defaultFiatCurrency,
         }
       : skipToken,

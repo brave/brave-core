@@ -49,7 +49,7 @@ import Amount from '../../../../utils/amount'
 import {
   getTokenPriceAmountFromRegistry,
   computeFiatAmount,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import {
   selectAllVisibleUserAssetsFromQueryResult, //
@@ -417,8 +417,8 @@ export const Account = () => {
 
   const tokenPriceRequests = React.useMemo(
     () =>
-      fungibleTokens
-        .filter((token) =>
+      getPriceRequestsForTokens(
+        fungibleTokens.filter((token) =>
           new Amount(
             getBalance(
               selectedAccount?.accountId,
@@ -426,9 +426,8 @@ export const Account = () => {
               tokenBalancesRegistry,
             ),
           ).gt(0),
-        )
-        .map((token) => getPriceRequestForToken(token))
-        .filter((request) => request !== undefined),
+        ),
+      ),
     [fungibleTokens, selectedAccount, tokenBalancesRegistry],
   )
 

@@ -16,7 +16,7 @@ import {
 import { getLocale } from '../../../../../common/locale'
 import {
   computeFiatAmount,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import Amount from '../../../../utils/amount'
 
@@ -122,20 +122,21 @@ export const FromAsset = (props: Props) => {
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
-  const tokenPriceRequest = React.useMemo(() => {
-    return token ? getPriceRequestForToken(token) : undefined
-  }, [token])
+  const tokenPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens([token]),
+    [token],
+  )
 
   const { data: spotPrices = [], isLoading: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(
-      tokenPriceRequest
+      tokenPriceRequests.length
         && token
         && !token.isNft
         && !token.isErc721
         && !token.isErc1155
         && defaultFiatCurrency
         ? {
-            requests: [tokenPriceRequest],
+            requests: tokenPriceRequests,
             vsCurrency: defaultFiatCurrency,
           }
         : skipToken,

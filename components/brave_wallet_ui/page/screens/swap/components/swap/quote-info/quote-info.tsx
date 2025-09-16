@@ -48,7 +48,7 @@ import { getBalance } from '../../../../../../utils/balance-utils'
 import {
   getTokenPriceAmountFromRegistry,
   getTokenPriceFromRegistry,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../../../../utils/pricing-utils'
 import { getLPIcon } from '../../../swap.utils'
 
@@ -143,10 +143,7 @@ export const QuoteInfo = (props: Props) => {
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const tokenPriceRequests = React.useMemo(() => {
-    return [
-      toToken ? getPriceRequestForToken(toToken) : undefined,
-      fromToken ? getPriceRequestForToken(fromToken) : undefined,
-    ].filter((request) => request !== undefined)
+    return getPriceRequestsForTokens([toToken, fromToken])
   }, [toToken, fromToken])
 
   const { data: spotPrices } = useGetTokenSpotPricesQuery(

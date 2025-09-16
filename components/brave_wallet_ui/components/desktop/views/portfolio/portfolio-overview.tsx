@@ -46,7 +46,7 @@ import Amount from '../../../../utils/amount'
 import {
   computeFiatAmount,
   getTokenPriceAmountFromRegistry,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
@@ -333,10 +333,11 @@ export const PortfolioOverview = () => {
 
   const tokenPriceRequests = React.useMemo(
     () =>
-      visibleAssetOptions
-        .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
-        .map(({ asset }) => getPriceRequestForToken(asset))
-        .filter((request) => request !== undefined),
+      getPriceRequestsForTokens(
+        visibleAssetOptions
+          .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
+          .map(({ asset }) => asset),
+      ),
     [visibleAssetOptions],
   )
 

@@ -24,7 +24,7 @@ import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { reduceAddress } from '../../../utils/reduce-address'
 import {
   computeFiatAmount,
-  getPriceIdForToken,
+  getPriceRequestsForTokens,
 } from '../../../utils/pricing-utils'
 import {
   openAssociatedTokenAccountSupportArticleTab, //
@@ -97,15 +97,17 @@ export function ConfirmationTokenInfo(props: Props) {
 
   // Queries
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
+  const tokenPriceRequests = getPriceRequestsForTokens([token])
+  const { data: spotPrices } = useGetTokenSpotPricesQuery(
     token
       && !token.isNft
       && !token.isErc721
       && !token.isErc1155
+      && tokenPriceRequests.length
       && defaultFiatCurrency
       ? {
-          ids: [getPriceIdForToken(token)],
-          toCurrency: defaultFiatCurrency,
+          requests: tokenPriceRequests,
+          vsCurrency: defaultFiatCurrency,
         }
       : skipToken,
     querySubscriptionOptions60s,
@@ -145,13 +147,13 @@ export function ConfirmationTokenInfo(props: Props) {
     }
     if (amount && token) {
       return computeFiatAmount({
-        spotPriceRegistry,
+        spotPrices,
         value: amount,
         token: token,
       }).formatAsFiat(defaultFiatCurrency)
     }
     return ''
-  }, [fiatValue, amount, token, defaultFiatCurrency, spotPriceRegistry])
+  }, [fiatValue, amount, token, defaultFiatCurrency, spotPrices])
 
   if (label === 'to' && account) {
     return (

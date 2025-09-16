@@ -27,7 +27,7 @@ import { reduceAddress } from '../../../../../utils/reduce-address'
 import { isNativeAsset } from '../../../../../utils/asset-utils'
 import { getLocale } from '../../../../../../common/locale'
 import {
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
   getTokenPriceFromRegistry,
 } from '../../../../../utils/pricing-utils'
 import {
@@ -71,11 +71,11 @@ export const TokenDetails = (props: Props) => {
   // Queries
   const { data: tokensNetwork } = useGetNetworkQuery(token)
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
-  const tokenPriceRequest = getPriceRequestForToken(token)
+  const tokenPriceRequests = getPriceRequestsForTokens([token])
   const { data: spotPrices, isLoading: isLoadingSpotPrice } =
     useGetTokenSpotPricesQuery(
-      tokenPriceRequest && defaultFiatCurrency
-        ? { requests: [tokenPriceRequest], vsCurrency: defaultFiatCurrency }
+      tokenPriceRequests.length && defaultFiatCurrency
+        ? { requests: tokenPriceRequests, vsCurrency: defaultFiatCurrency }
         : skipToken,
       querySubscriptionOptions60s,
     )

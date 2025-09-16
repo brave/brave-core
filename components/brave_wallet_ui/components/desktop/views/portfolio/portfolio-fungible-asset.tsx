@@ -33,7 +33,7 @@ import { getBalance } from '../../../../utils/balance-utils'
 import {
   computeFiatAmount,
   getPriceIdForToken,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
@@ -205,12 +205,7 @@ export const PortfolioFungibleAsset = () => {
   )
 
   const tokenPriceRequests = React.useMemo(
-    () =>
-      selectedAssetFromParams
-        ? [getPriceRequestForToken(selectedAssetFromParams)].filter(
-            (request) => request !== undefined,
-          )
-        : [],
+    () => getPriceRequestsForTokens([selectedAssetFromParams]),
     [selectedAssetFromParams],
   )
 

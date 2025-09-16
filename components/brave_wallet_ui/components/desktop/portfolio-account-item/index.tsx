@@ -18,7 +18,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import Amount from '../../../utils/amount'
 import {
   computeFiatAmount,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../utils/pricing-utils'
 import { makeAccountRoute } from '../../../utils/routes-utils'
 import { getIsRewardsAccount } from '../../../utils/rewards_utils'
@@ -112,10 +112,7 @@ export const PortfolioAccountItem = (props: Props) => {
   }, [assetBalance, asset.decimals])
 
   const tokenPriceRequests = React.useMemo(
-    () =>
-      [getPriceRequestForToken(asset)].filter(
-        (request) => request !== undefined,
-      ),
+    () => getPriceRequestsForTokens([asset]),
     [asset],
   )
 

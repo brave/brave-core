@@ -59,7 +59,7 @@ import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import {
   computeFiatAmount,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import Amount from '../../../../utils/amount'
 import {
@@ -227,12 +227,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
 
   const priceRequests = React.useMemo(
     () =>
-      [
-        txToken ? getPriceRequestForToken(txToken) : undefined,
-        sellToken ? getPriceRequestForToken(sellToken) : undefined,
-        buyToken ? getPriceRequestForToken(buyToken) : undefined,
-        networkAsset ? getPriceRequestForToken(networkAsset) : undefined,
-      ].filter((request) => request !== undefined),
+      getPriceRequestsForTokens([txToken, sellToken, buyToken, networkAsset]),
     [txToken, sellToken, buyToken, networkAsset],
   )
 

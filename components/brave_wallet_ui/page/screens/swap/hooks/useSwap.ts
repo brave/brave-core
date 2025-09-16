@@ -39,7 +39,7 @@ import Amount from '../../../../utils/amount'
 import { isNativeAsset } from '../../../../utils/asset-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import {
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
   getTokenPriceAmountFromRegistry,
 } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
@@ -262,13 +262,7 @@ export const useSwap = () => {
     )
 
   const tokenPriceRequests = useMemo(
-    () =>
-      [nativeAsset, fromToken, toToken]
-        .filter(
-          (token): token is BraveWallet.BlockchainToken => token !== undefined,
-        )
-        .map(getPriceRequestForToken)
-        .filter((request) => request !== undefined),
+    () => getPriceRequestsForTokens([nativeAsset, fromToken, toToken]),
     [nativeAsset, fromToken, toToken],
   )
 

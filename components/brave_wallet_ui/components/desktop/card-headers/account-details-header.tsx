@@ -31,7 +31,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { getBalance } from '../../../utils/balance-utils'
 import {
   computeFiatAmount,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../utils/pricing-utils'
 import { getAccountTypeDescription } from '../../../utils/account-utils'
 import { getLocale } from '../../../../common/locale'
@@ -127,10 +127,7 @@ export const AccountDetailsHeader = (props: Props) => {
   }, [userVisibleTokensInfo, account])
 
   const tokenPriceRequests = React.useMemo(
-    () =>
-      accountsFungibleTokens
-        .map((token) => getPriceRequestForToken(token))
-        .filter((request) => request !== undefined),
+    () => getPriceRequestsForTokens(accountsFungibleTokens),
     [accountsFungibleTokens],
   )
 

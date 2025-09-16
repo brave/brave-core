@@ -32,7 +32,7 @@ import {
 } from '../../../../utils/tx-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import {
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
   getTokenPriceAmountFromRegistry,
 } from '../../../../utils/pricing-utils'
 import Amount from '../../../../utils/amount'
@@ -82,10 +82,7 @@ export function CustomNetworkFee(props: Props) {
   }, [selectedNetwork])
 
   const networkTokenPriceRequests = React.useMemo(
-    () =>
-      (networkAsset ? [getPriceRequestForToken(networkAsset)] : []).filter(
-        (request) => request !== undefined,
-      ),
+    () => getPriceRequestsForTokens([networkAsset]),
     [networkAsset],
   )
 

@@ -35,7 +35,7 @@ import {
 } from '../../../../../../utils/datetime-utils'
 import {
   computeFiatAmount,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../../../../utils/pricing-utils'
 import { getLPIcon } from '../../../swap.utils'
 
@@ -110,7 +110,7 @@ export const RouteOption = (props: Props) => {
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const toTokenPriceRequest = React.useMemo(() => {
-    return getPriceRequestForToken(toToken)
+    return getPriceRequestsForTokens([toToken])
   }, [toToken])
 
   const { data: spotPrices = [] } = useGetTokenSpotPricesQuery(

@@ -10,7 +10,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import { getLocale, formatLocale } from '$web-common/locale'
 import {
   computeFiatAmount,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import {
   getDominantColorFromImageURL, //
@@ -97,15 +97,16 @@ export const ToAsset = (props: Props) => {
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
-  const tokenPriceRequest = React.useMemo(() => {
-    return token ? getPriceRequestForToken(token) : undefined
-  }, [token])
+  const tokenPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens([token]),
+    [token],
+  )
 
   const { data: spotPrices = [], isFetching: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(
-      tokenPriceRequest && defaultFiatCurrency
+      tokenPriceRequests.length && defaultFiatCurrency
         ? {
-            requests: [tokenPriceRequest],
+            requests: tokenPriceRequests,
             vsCurrency: defaultFiatCurrency,
           }
         : skipToken,

@@ -40,7 +40,7 @@ import { getBalance } from '../../../../utils/balance-utils'
 import {
   computeFiatAmount,
   getTokenPriceFromRegistry,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
 import {
@@ -390,15 +390,15 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     const tokenPriceRequests = React.useMemo(
       () =>
-        tokensBySelectedComposerOption
-          .filter(
-            (token) => !token.isNft && !token.isErc721 && !token.isErc1155,
-          )
-          .filter((token) =>
-            new Amount(userTokenBalances[getAssetIdKey(token)]).gt(0),
-          )
-          .map((token) => getPriceRequestForToken(token))
-          .filter((request) => request !== undefined),
+        getPriceRequestsForTokens(
+          tokensBySelectedComposerOption
+            .filter(
+              (token) => !token.isNft && !token.isErc721 && !token.isErc1155,
+            )
+            .filter((token) =>
+              new Amount(userTokenBalances[getAssetIdKey(token)]).gt(0),
+            ),
+        ),
       [tokensBySelectedComposerOption, userTokenBalances],
     )
 

@@ -125,7 +125,7 @@ export const getPriceIdForToken = (
   return token.symbol.toLowerCase()
 }
 
-export const getPriceRequestForToken = (
+const getPriceRequestForToken = (
   token: Pick<
     BraveWallet.BlockchainToken,
     'coin' | 'chainId' | 'contractAddress'
@@ -136,4 +136,16 @@ export const getPriceRequestForToken = (
     chainId: token.chainId,
     address: token.contractAddress || undefined,
   } satisfies BraveWallet.AssetPriceRequest
+}
+
+export const getPriceRequestsForTokens = (
+  tokens: (
+    | Pick<BraveWallet.BlockchainToken, 'coin' | 'chainId' | 'contractAddress'>
+    | undefined
+  )[],
+): BraveWallet.AssetPriceRequest[] => {
+  return tokens
+    .filter((token) => token !== undefined)
+    .map(getPriceRequestForToken)
+    .filter((request) => request !== undefined)
 }

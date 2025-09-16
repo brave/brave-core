@@ -33,7 +33,7 @@ import {
 import { reduceAddress } from '../../../../utils/reduce-address'
 import {
   computeFiatAmount,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import Amount from '../../../../utils/amount'
@@ -117,10 +117,7 @@ export const SelectAccountItem = (props: Props) => {
   ])
 
   const tokenPriceRequests = React.useMemo(
-    () =>
-      tokenListByAccount
-        .map((token) => getPriceRequestForToken(token))
-        .filter((request) => request !== undefined),
+    () => getPriceRequestsForTokens(tokenListByAccount),
     [tokenListByAccount],
   )
 

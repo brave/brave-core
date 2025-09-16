@@ -30,7 +30,7 @@ import {
   makeNetworkAsset, //
 } from '../../../../options/asset-options'
 import {
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
   getTokenPriceAmountFromRegistry,
 } from '../../../../utils/pricing-utils'
 import {
@@ -87,10 +87,7 @@ export function SuggestedMaxPriorityFeeSelector(props: Props) {
   }, [selectedNetwork])
 
   const networkTokenPriceRequests = React.useMemo(
-    () =>
-      (networkAsset ? [getPriceRequestForToken(networkAsset)] : []).filter(
-        (request) => request !== undefined,
-      ),
+    () => getPriceRequestsForTokens([networkAsset]),
     [networkAsset],
   )
 

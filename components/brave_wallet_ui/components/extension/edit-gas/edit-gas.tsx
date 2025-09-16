@@ -22,7 +22,7 @@ import { parseTransactionFeesWithoutPrices } from '../../../utils/tx-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import {
   getTokenPriceAmountFromRegistry,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../utils/pricing-utils'
 
 // Queries
@@ -121,14 +121,15 @@ export const EditGas = ({
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
-  const networkAssetPriceRequest = React.useMemo(() => {
-    return getPriceRequestForToken(networkAsset)
-  }, [networkAsset])
+  const networkAssetPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens([networkAsset]),
+    [networkAsset],
+  )
 
   const { data: spotPrices } = useGetTokenSpotPricesQuery(
-    networkAssetPriceRequest && defaultFiatCurrency
+    networkAssetPriceRequests.length && defaultFiatCurrency
       ? {
-          requests: [networkAssetPriceRequest],
+          requests: networkAssetPriceRequests,
           vsCurrency: defaultFiatCurrency,
         }
       : skipToken,

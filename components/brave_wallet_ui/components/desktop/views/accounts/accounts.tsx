@@ -25,7 +25,7 @@ import {
   sortAccountsByName,
 } from '../../../../utils/account-utils'
 import { makeAccountRoute } from '../../../../utils/routes-utils'
-import { getPriceRequestForToken } from '../../../../utils/pricing-utils'
+import { getPriceRequestsForTokens } from '../../../../utils/pricing-utils'
 
 // Styled Components
 import { SectionTitle, AccountsListWrapper } from './style'
@@ -135,11 +135,11 @@ export const Accounts = () => {
 
   const tokenPriceRequests = React.useMemo(() => {
     if (userTokensRegistry) {
-      return userTokensRegistry.fungibleVisibleTokenIds
-        .map((id) => {
-          return getPriceRequestForToken(userTokensRegistry.entities[id]!)
-        })
-        .filter((request) => request !== undefined)
+      return getPriceRequestsForTokens(
+        userTokensRegistry.fungibleVisibleTokenIds.map((id) => {
+          return userTokensRegistry.entities[id]!
+        }),
+      )
     }
     return []
   }, [userTokensRegistry])

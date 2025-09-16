@@ -14,7 +14,7 @@ import { UISelectors } from '../../../common/selectors'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import {
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
   getTokenPriceFromRegistry,
 } from '../../../utils/pricing-utils'
 import { BraveWallet } from '../../../constants/types'
@@ -143,12 +143,7 @@ export const AssetDetailsHeader = (props: Props) => {
   }, [openExplorer, selectedAsset])
 
   const tokenPriceRequests = React.useMemo(
-    () =>
-      selectedAsset
-        ? [getPriceRequestForToken(selectedAsset)].filter(
-            (request) => request !== undefined,
-          )
-        : [],
+    () => getPriceRequestsForTokens([selectedAsset]),
     [selectedAsset],
   )
 

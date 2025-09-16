@@ -43,7 +43,7 @@ import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { getAddressLabel, getAccountLabel } from '../../../utils/account-utils'
 import {
   computeFiatAmount,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../utils/pricing-utils'
 import { isNativeAsset } from '../../../utils/asset-utils'
 
@@ -224,12 +224,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
     const priceRequests = React.useMemo(
       () =>
-        [
-          networkAsset ? getPriceRequestForToken(networkAsset) : undefined,
-          txToken ? getPriceRequestForToken(txToken) : undefined,
-          sellToken ? getPriceRequestForToken(sellToken) : undefined,
-          buyToken ? getPriceRequestForToken(buyToken) : undefined,
-        ].filter((request) => request !== undefined),
+        getPriceRequestsForTokens([networkAsset, txToken, sellToken, buyToken]),
       [networkAsset, txToken, sellToken, buyToken],
     )
 

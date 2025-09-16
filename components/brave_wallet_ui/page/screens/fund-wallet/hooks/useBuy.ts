@@ -55,7 +55,7 @@ import {
 } from '../../../../utils/meld_utils'
 import { makeFundWalletRoute } from '../../../../utils/routes-utils'
 import {
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
   getTokenPriceAmountFromRegistry,
 } from '../../../../utils/pricing-utils'
 
@@ -185,14 +185,15 @@ export const useBuy = () => {
     [selectedMeldAsset],
   )
 
-  const selectedAssetPriceRequest = useMemo(() => {
-    return selectedAsset ? getPriceRequestForToken(selectedAsset) : undefined
-  }, [selectedAsset])
+  const selectedAssetPriceRequests = useMemo(
+    () => getPriceRequestsForTokens([selectedAsset]),
+    [selectedAsset],
+  )
 
   const { data: spotPrices = [] } = useGetTokenSpotPricesQuery(
-    selectedAssetPriceRequest && selectedCurrency?.currencyCode
+    selectedAssetPriceRequests.length && selectedCurrency?.currencyCode
       ? {
-          requests: [selectedAssetPriceRequest],
+          requests: selectedAssetPriceRequests,
           vsCurrency: selectedCurrency?.currencyCode || defaultFiatCurrency,
         }
       : skipToken,

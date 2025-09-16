@@ -36,7 +36,7 @@ import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
   computeFiatAmount,
   getPriceIdForToken,
-  getPriceRequestForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import {
   querySubscriptionOptions60s, //
@@ -178,9 +178,9 @@ export const MarketAsset = () => {
     ? getPriceIdForToken(selectedAssetFromParams)
     : undefined
 
-  const assetPriceRequest = selectedAssetFromParams
-    ? getPriceRequestForToken(selectedAssetFromParams)
-    : undefined
+  const assetPriceRequests = getPriceRequestsForTokens([
+    selectedAssetFromParams,
+  ])
 
   const {
     data: selectedAssetPriceHistory,
@@ -196,9 +196,9 @@ export const MarketAsset = () => {
   )
 
   const { data: spotPrices } = useGetTokenSpotPricesQuery(
-    assetPriceRequest && defaultFiat
+    assetPriceRequests.length && defaultFiat
       ? {
-          requests: [assetPriceRequest],
+          requests: assetPriceRequests,
           vsCurrency: defaultFiat,
         }
       : skipToken,
