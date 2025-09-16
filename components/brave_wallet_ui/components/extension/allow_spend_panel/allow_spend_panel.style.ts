@@ -14,6 +14,10 @@ export const StyledWrapper = styled(Column)`
   background-color: ${leo.color.page.background};
 `
 
+export const ContentWrapper = styled(Column)`
+  overflow: hidden;
+`
+
 export const Title = styled(Row)`
   font: ${leo.font.heading.h4};
   letter-spacing: ${leo.typography.letterSpacing.headings};
@@ -35,6 +39,7 @@ export const Card = styled(Column)`
 export const InfoBox = styled(Column)`
   background-color: ${leo.color.container.highlight};
   border-radius: ${leo.radius.xl};
+  overflow: hidden;
 `
 
 export const AmountText = styled(Text)`

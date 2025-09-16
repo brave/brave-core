@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Tooltip from '@brave/leo/react/tooltip'
-import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 // Queries
@@ -59,6 +58,12 @@ import {
   AdvancedTransactionSettings, //
 } from '../advanced_transaction_settings/advanced_transaction_settings'
 import { EditNetworkFee } from '../edit_network_fee/edit_network_fee'
+import {
+  ConfirmRejectButtons, //
+} from '../confirm_reject_buttons/confirm_reject_buttons'
+import {
+  ConfirmationError, //
+} from '../confirmation_error/confirmation_error'
 
 // Styled Components
 import {
@@ -71,6 +76,7 @@ import { Column, Row, VerticalDivider } from '../../shared/style'
 import {
   ConfirmationButtonLink,
   ConfirmationInfoLabel,
+  ScrollableColumn,
 } from '../shared-panel-styles'
 
 const isNativeToken = (token: BraveWallet.BlockchainToken) =>
@@ -139,6 +145,9 @@ export function ConfirmSwapTransaction() {
     fromAccount,
     canEditNetworkFee,
     isEthereumTransaction,
+    isConfirmButtonDisabled,
+    insufficientFundsError,
+    insufficientFundsForGasError,
   } = usePendingTransactions()
 
   const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
@@ -232,140 +241,142 @@ export function ConfirmSwapTransaction() {
           queuePreviousTransaction={queuePreviousTransaction}
           rejectAllTransactions={rejectAllTransactions}
         />
-        {originInfo && (
-          <Row
-            justifyContent='flex-start'
-            padding='0px 0px 14px 0px'
-          >
-            <OriginInfoCard
-              origin={originInfo}
-              noBackground={true}
-              provider={getAddressLabel(transactionDetails.recipient) ?? ''}
-            />
-          </Row>
-        )}
-        <Column
+        <ScrollableColumn
           width='100%'
           height='100%'
-          padding='0px 16px'
-          gap='8px'
           justifyContent='flex-start'
         >
-          <InfoBox width='100%'>
-            {/* Swap details */}
-            <Card
-              width='100%'
-              padding='16px'
+          {originInfo && (
+            <Row
+              justifyContent='flex-start'
+              padding='0px 0px 14px 0px'
             >
-              {/* Sell token */}
-              <ConfirmationTokenInfo
-                token={sellTokenResult}
-                label='spend'
-                amount={
-                  !sellAmountWei.isUndefined()
-                    ? sellAmountWei.format()
-                    : undefined
-                }
-                network={sellAssetNetwork}
+              <OriginInfoCard
+                origin={originInfo}
+                noBackground={true}
+                provider={getAddressLabel(transactionDetails.recipient) ?? ''}
+              />
+            </Row>
+          )}
+          <Column
+            width='100%'
+            height='100%'
+            padding='0px 16px'
+            gap='8px'
+            justifyContent='flex-start'
+          >
+            <InfoBox width='100%'>
+              {/* Swap details */}
+              <Card
+                width='100%'
+                padding='16px'
+              >
+                {/* Sell token */}
+                <ConfirmationTokenInfo
+                  token={sellTokenResult}
+                  label='spend'
+                  amount={
+                    !sellAmountWei.isUndefined()
+                      ? sellAmountWei.format()
+                      : undefined
+                  }
+                  network={sellAssetNetwork}
+                  account={fromAccount}
+                />
+
+                {/* Divider */}
+                <Row
+                  justifyContent='space-between'
+                  gap='24px'
+                >
+                  <ArrowIconContainer>
+                    <Icon name='arrow-down' />
+                  </ArrowIconContainer>
+                  <VerticalDivider />
+                </Row>
+
+                {/* Buy token */}
+                <ConfirmationTokenInfo
+                  token={buyTokenResult}
+                  label={isBridgeTx ? 'bridge' : 'receive'}
+                  amount={
+                    !buyAmountWei.isUndefined()
+                      ? buyAmountWei.format()
+                      : undefined
+                  }
+                  network={buyAssetNetwork}
+                  receiveAddress={selectedPendingTransaction.swapInfo?.receiver}
+                />
+              </Card>
+
+              {/* Network fee details */}
+              <Column
+                width='100%'
+                padding='16px'
+                gap='8px'
+              >
+                <ConfirmationNetworkFee
+                  transactionsNetwork={transactionsNetwork}
+                  gasFee={gasFee}
+                  transactionDetails={transactionDetails}
+                  onClickEditNetworkFee={
+                    canEditNetworkFee
+                      ? () => setShowEditNetworkFee(true)
+                      : undefined
+                  }
+                />
+                <VerticalDivider />
+                <Row justifyContent='space-between'>
+                  <ConfirmationInfoLabel textColor='secondary'>
+                    {getLocale('braveWalletNFTDetailContractAddress')}
+                  </ConfirmationInfoLabel>
+                  <Row
+                    width='unset'
+                    gap='4px'
+                  >
+                    <Tooltip text={transactionDetails.recipient}>
+                      <ConfirmationButtonLink
+                        onClick={onClickViewOnBlockExplorer(
+                          'contract',
+                          transactionDetails.recipient,
+                        )}
+                      >
+                        {reduceAddress(transactionDetails.recipient)}
+                        <Icon name='arrow-diagonal-up-right' />
+                      </ConfirmationButtonLink>
+                    </Tooltip>
+                  </Row>
+                </Row>
+              </Column>
+
+              {/* Transaction errors */}
+              <ConfirmationError
+                insufficientFundsError={insufficientFundsError}
+                insufficientFundsForGasError={insufficientFundsForGasError}
+                transactionDetails={transactionDetails}
+                transactionsNetwork={transactionsNetwork}
                 account={fromAccount}
               />
+            </InfoBox>
+            <ConfirmationFooterActions
+              onClickAdvancedSettings={
+                isEthereumTransaction
+                  ? () => setShowAdvancedTransactionSettings(true)
+                  : undefined
+              }
+              onClickDetails={() => {
+                setShowTransactionDetails(true)
+              }}
+            />
+          </Column>
+        </ScrollableColumn>
 
-              {/* Divider */}
-              <Row
-                justifyContent='space-between'
-                gap='24px'
-              >
-                <ArrowIconContainer>
-                  <Icon name='arrow-down' />
-                </ArrowIconContainer>
-                <VerticalDivider />
-              </Row>
-
-              {/* Buy token */}
-              <ConfirmationTokenInfo
-                token={buyTokenResult}
-                label={isBridgeTx ? 'bridge' : 'receive'}
-                amount={
-                  !buyAmountWei.isUndefined()
-                    ? buyAmountWei.format()
-                    : undefined
-                }
-                network={buyAssetNetwork}
-                receiveAddress={selectedPendingTransaction.swapInfo?.receiver}
-              />
-            </Card>
-
-            {/* Network fee details */}
-            <Column
-              width='100%'
-              padding='16px'
-              gap='8px'
-            >
-              <ConfirmationNetworkFee
-                transactionsNetwork={transactionsNetwork}
-                gasFee={gasFee}
-                transactionDetails={transactionDetails}
-                onClickEditNetworkFee={
-                  canEditNetworkFee
-                    ? () => setShowEditNetworkFee(true)
-                    : undefined
-                }
-              />
-              <VerticalDivider />
-              <Row justifyContent='space-between'>
-                <ConfirmationInfoLabel textColor='secondary'>
-                  {getLocale('braveWalletNFTDetailContractAddress')}
-                </ConfirmationInfoLabel>
-                <Row
-                  width='unset'
-                  gap='4px'
-                >
-                  <Tooltip text={transactionDetails.recipient}>
-                    <ConfirmationButtonLink
-                      onClick={onClickViewOnBlockExplorer(
-                        'contract',
-                        transactionDetails.recipient,
-                      )}
-                    >
-                      {reduceAddress(transactionDetails.recipient)}
-                      <Icon name='arrow-diagonal-up-right' />
-                    </ConfirmationButtonLink>
-                  </Tooltip>
-                </Row>
-              </Row>
-            </Column>
-          </InfoBox>
-          <ConfirmationFooterActions
-            onClickAdvancedSettings={
-              isEthereumTransaction
-                ? () => setShowAdvancedTransactionSettings(true)
-                : undefined
-            }
-            onClickDetails={() => {
-              setShowTransactionDetails(true)
-            }}
-          />
-        </Column>
-        {/* Reject and confirm buttons */}
-        <Row
-          padding='16px'
-          gap='8px'
-        >
-          <Button
-            kind='outline'
-            size='medium'
-            onClick={onReject}
-          >
-            {getLocale('braveWalletAllowSpendRejectButton')}
-          </Button>
-          <Button
-            kind='filled'
-            size='medium'
-            onClick={onConfirm}
-          >
-            {getLocale('braveWalletAllowSpendConfirmButton')}
-          </Button>
-        </Row>
+        {/* Confirm and reject buttons */}
+        <ConfirmRejectButtons
+          onConfirm={onConfirm}
+          onReject={onReject}
+          isConfirmButtonDisabled={isConfirmButtonDisabled}
+        />
       </StyledWrapper>
       <BottomSheet
         isOpen={showTransactionDetails}

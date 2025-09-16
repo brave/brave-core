@@ -447,7 +447,7 @@ export function openTab(url: string) {
 }
 
 // Wallet Page Tabs
-export const openWalletRouteTab = (route: WalletRoutes) => {
+export const openWalletRouteTab = (route: WalletRoutes | string) => {
   openTab(`${WalletOrigin}${route}`)
 }
 

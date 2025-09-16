@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
 
 // Constants
 import { BraveWallet } from '../../../constants/types'
@@ -46,6 +45,12 @@ import { EditNetworkFee } from '../edit_network_fee/edit_network_fee'
 import {
   CreateAccountIcon, //
 } from '../../shared/create-account-icon/create-account-icon'
+import {
+  ConfirmRejectButtons, //
+} from '../confirm_reject_buttons/confirm_reject_buttons'
+import {
+  ConfirmationError, //
+} from '../confirmation_error/confirmation_error'
 
 // Styled Components
 import {
@@ -58,6 +63,7 @@ import { Column, Row, VerticalDivider } from '../../shared/style'
 import {
   ConfirmationInfoLabel,
   ConfirmationInfoText,
+  ScrollableColumn,
 } from '../shared-panel-styles'
 
 export function ConfirmSendTransaction() {
@@ -87,6 +93,11 @@ export function ConfirmSendTransaction() {
     canEditNetworkFee,
     isEthereumTransaction,
     isAssociatedTokenAccountCreation,
+    isConfirmButtonDisabled,
+    isAccountSyncing,
+    isShieldingFunds,
+    insufficientFundsForGasError,
+    insufficientFundsError,
   } = usePendingTransactions()
 
   // Queries
@@ -151,143 +162,144 @@ export function ConfirmSendTransaction() {
           queuePreviousTransaction={queuePreviousTransaction}
           rejectAllTransactions={rejectAllTransactions}
         />
-        <Column
+        <ScrollableColumn
           width='100%'
           height='100%'
-          padding='0px 16px'
-          gap='12px'
           justifyContent='flex-start'
         >
-          <CreateAccountIcon
-            size='extra-huge'
-            account={fromAccount}
-          />
-          <Title textColor='primary'>
-            {getLocale('braveWalletPanelTitle')}
-          </Title>
-          <InfoBox width='100%'>
-            {/* Swap details */}
-            <Card
-              width='100%'
-              padding='16px'
-            >
-              {/* Send token and amount */}
-              <ConfirmationTokenInfo
-                token={transactionDetails.token}
-                label='send'
-                valueExact={transactionDetails.valueExact}
-                fiatValue={transactionDetails.fiatValue}
-                network={transactionsNetwork}
+          <Column
+            width='100%'
+            padding='0px 16px'
+            gap='8px'
+          >
+            <CreateAccountIcon
+              size='extra-huge'
+              account={fromAccount}
+            />
+            <Title textColor='primary'>
+              {getLocale('braveWalletPanelTitle')}
+            </Title>
+            <InfoBox width='100%'>
+              {/* Swap details */}
+              <Card
+                width='100%'
+                padding='16px'
+              >
+                {/* Send token and amount */}
+                <ConfirmationTokenInfo
+                  token={transactionDetails.token}
+                  label='send'
+                  valueExact={transactionDetails.valueExact}
+                  fiatValue={transactionDetails.fiatValue}
+                  network={transactionsNetwork}
+                  account={fromAccount}
+                />
+
+                {/* Divider */}
+                <Row
+                  justifyContent='space-between'
+                  padding='16px 0px'
+                >
+                  <VerticalDivider />
+                </Row>
+
+                {/* Recipient info */}
+                <ConfirmationTokenInfo
+                  label='to'
+                  receiveAddress={transactionDetails.recipient}
+                  isAssociatedTokenAccountCreation={
+                    isAssociatedTokenAccountCreation
+                  }
+                  network={transactionsNetwork}
+                  account={toAccount}
+                />
+              </Card>
+
+              {/* Network fee details */}
+              <Column
+                width='100%'
+                padding='16px'
+                gap='8px'
+              >
+                <ConfirmationNetworkFee
+                  transactionsNetwork={transactionsNetwork}
+                  gasFee={gasFee}
+                  transactionDetails={transactionDetails}
+                  onClickEditNetworkFee={
+                    canEditNetworkFee
+                      ? () => setShowEditNetworkFee(true)
+                      : undefined
+                  }
+                />
+                <VerticalDivider />
+
+                {/* Transaction total amount */}
+                <Column width='100%'>
+                  <Row justifyContent='space-between'>
+                    <ConfirmationInfoLabel
+                      textColor='secondary'
+                      textAlign='left'
+                    >
+                      {getLocale('braveWalletConfirmTransactionTotal')}
+                    </ConfirmationInfoLabel>
+                    <ConfirmationInfoLabel
+                      textColor='primary'
+                      textAlign='right'
+                    >
+                      {totalAmount}
+                    </ConfirmationInfoLabel>
+                  </Row>
+                  <Row justifyContent='space-between'>
+                    <ConfirmationInfoText
+                      textColor='tertiary'
+                      textAlign='left'
+                    >
+                      {getLocale('braveWalletConfirmTransactionAmountFee')}
+                    </ConfirmationInfoText>
+                    <ConfirmationInfoText
+                      textColor='tertiary'
+                      textAlign='right'
+                    >
+                      {new Amount(transactionDetails.fiatValue)
+                        .plus(transactionDetails.gasFeeFiat)
+                        .formatAsFiat(defaultFiatCurrency)}
+                    </ConfirmationInfoText>
+                  </Row>
+                </Column>
+              </Column>
+
+              {/* Transaction errors */}
+              <ConfirmationError
+                insufficientFundsError={insufficientFundsError}
+                insufficientFundsForGasError={insufficientFundsForGasError}
+                transactionDetails={transactionDetails}
+                transactionsNetwork={transactionsNetwork}
                 account={fromAccount}
               />
+            </InfoBox>
 
-              {/* Divider */}
-              <Row
-                justifyContent='space-between'
-                padding='16px 0px'
-              >
-                <VerticalDivider />
-              </Row>
+            {/* Advanced settings and details buttons */}
+            <ConfirmationFooterActions
+              onClickAdvancedSettings={
+                isEthereumTransaction
+                  ? () => setShowAdvancedTransactionSettings(true)
+                  : undefined
+              }
+              onClickDetails={() => {
+                setShowTransactionDetails(true)
+              }}
+            />
+          </Column>
+        </ScrollableColumn>
 
-              {/* Recipient info */}
-              <ConfirmationTokenInfo
-                label='to'
-                receiveAddress={transactionDetails.recipient}
-                isAssociatedTokenAccountCreation={
-                  isAssociatedTokenAccountCreation
-                }
-                network={transactionsNetwork}
-                account={toAccount}
-              />
-            </Card>
-
-            {/* Network fee details */}
-            <Column
-              width='100%'
-              padding='16px'
-              gap='8px'
-            >
-              <ConfirmationNetworkFee
-                transactionsNetwork={transactionsNetwork}
-                gasFee={gasFee}
-                transactionDetails={transactionDetails}
-                onClickEditNetworkFee={
-                  canEditNetworkFee
-                    ? () => setShowEditNetworkFee(true)
-                    : undefined
-                }
-              />
-              <VerticalDivider />
-
-              {/* Transaction total amount */}
-              <Column width='100%'>
-                <Row justifyContent='space-between'>
-                  <ConfirmationInfoLabel
-                    textColor='secondary'
-                    textAlign='left'
-                  >
-                    {getLocale('braveWalletConfirmTransactionTotal')}
-                  </ConfirmationInfoLabel>
-                  <ConfirmationInfoLabel
-                    textColor='primary'
-                    textAlign='right'
-                  >
-                    {totalAmount}
-                  </ConfirmationInfoLabel>
-                </Row>
-                <Row justifyContent='space-between'>
-                  <ConfirmationInfoText
-                    textColor='tertiary'
-                    textAlign='left'
-                  >
-                    {getLocale('braveWalletConfirmTransactionAmountFee')}
-                  </ConfirmationInfoText>
-                  <ConfirmationInfoText
-                    textColor='tertiary'
-                    textAlign='right'
-                  >
-                    {new Amount(transactionDetails.fiatValue)
-                      .plus(transactionDetails.gasFeeFiat)
-                      .formatAsFiat(defaultFiatCurrency)}
-                  </ConfirmationInfoText>
-                </Row>
-              </Column>
-            </Column>
-          </InfoBox>
-
-          {/* Advanced settings and details buttons */}
-          <ConfirmationFooterActions
-            onClickAdvancedSettings={
-              isEthereumTransaction
-                ? () => setShowAdvancedTransactionSettings(true)
-                : undefined
-            }
-            onClickDetails={() => {
-              setShowTransactionDetails(true)
-            }}
-          />
-        </Column>
-
-        {/* Reject and confirm buttons */}
-        <Row
-          padding='16px'
-          gap='8px'
-        >
-          <Button
-            kind='outline'
-            size='medium'
-            onClick={onReject}
-          >
-            {getLocale('braveWalletAllowSpendRejectButton')}
-          </Button>
-          <Button
-            kind='filled'
-            size='medium'
-            onClick={onConfirm}
-          >
-            {getLocale('braveWalletAllowSpendConfirmButton')}
-          </Button>
-        </Row>
+        {/* Confirm and reject buttons */}
+        <ConfirmRejectButtons
+          onConfirm={onConfirm}
+          onReject={onReject}
+          isConfirmButtonDisabled={isConfirmButtonDisabled}
+          isAccountSyncing={isAccountSyncing}
+          isShieldingFunds={isShieldingFunds}
+        />
       </StyledWrapper>
 
       {/* Transaction details */}

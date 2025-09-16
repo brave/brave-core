@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
-import { WalletButton, Text } from '../shared/style'
+import { WalletButton, Text, Column } from '../shared/style'
 import WarningTriangle from '../../assets/svg-icons/warning-triangle.svg'
 import IThemeProps from 'brave-ui/theme/theme-interface'
 
@@ -254,4 +254,9 @@ export const ConfirmationButtonLink = styled(WalletButton)`
   font: ${leo.font.small.semibold};
   letter-spacing: ${leo.typography.letterSpacing.small};
   color: ${leo.color.text.interactive};
+`
+
+export const ScrollableColumn = styled(Column)`
+  overflow-x: hidden;
+  overflow-y: auto;
 `

@@ -40,6 +40,12 @@ import {
   AdvancedTransactionSettings, //
 } from '../advanced_transaction_settings/advanced_transaction_settings'
 import { LoadingPanel } from '../loading_panel/loading_panel'
+import {
+  ConfirmRejectButtons, //
+} from '../confirm_reject_buttons/confirm_reject_buttons'
+import {
+  ConfirmationError, //
+} from '../confirmation_error/confirmation_error'
 
 // Styled Components
 import {
@@ -50,11 +56,13 @@ import {
   InfoBox,
   AmountText,
   TokenButtonLink,
+  ContentWrapper,
 } from './allow_spend_panel.style'
 import { Column, Row, VerticalDivider } from '../../shared/style'
 import {
   ConfirmationInfoLabel,
   ConfirmationButtonLink,
+  ScrollableColumn,
 } from '../shared-panel-styles'
 
 export const AllowSpendPanel = () => {
@@ -89,6 +97,10 @@ export const AllowSpendPanel = () => {
     transactionsQueueLength,
     rejectAllTransactions,
     canEditNetworkFee,
+    isConfirmButtonDisabled,
+    insufficientFundsError,
+    insufficientFundsForGasError,
+    fromAccount,
   } = usePendingTransactions()
 
   const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
@@ -119,7 +131,7 @@ export const AllowSpendPanel = () => {
         <VerticalDivider />
 
         {/* Content */}
-        <Column
+        <ContentWrapper
           padding='8px'
           width='100%'
           height='100%'
@@ -131,11 +143,17 @@ export const AllowSpendPanel = () => {
             height='100%'
             justifyContent='space-between'
           >
-            <Column>
-              {originInfo && <OriginInfoCard origin={originInfo} />}
+            {originInfo && <OriginInfoCard origin={originInfo} />}
+            <ScrollableColumn
+              width='100%'
+              height='100%'
+              justifyContent='flex-start'
+            >
               <Column
+                width='100%'
                 padding='16px 16px 0px 16px'
                 gap='8px'
+                justifyContent='flex-start'
               >
                 <Title>
                   {formatLocale('braveWalletAllowSpendTitle', {
@@ -177,20 +195,33 @@ export const AllowSpendPanel = () => {
                 </Row>
 
                 {/* Network info box */}
-                <InfoBox
-                  padding='16px'
-                  gap='8px'
-                  width='100%'
-                >
-                  <ConfirmationNetworkFee
-                    transactionsNetwork={transactionsNetwork}
-                    gasFee={gasFee}
-                    transactionDetails={transactionDetails}
-                    onClickEditNetworkFee={
-                      canEditNetworkFee
-                        ? () => setShowEditNetworkFee(true)
-                        : undefined
+                <InfoBox width='100%'>
+                  <Column
+                    padding={
+                      isConfirmButtonDisabled ? '16px 16px 8px 16px' : '16px'
                     }
+                    gap='8px'
+                    width='100%'
+                  >
+                    <ConfirmationNetworkFee
+                      transactionsNetwork={transactionsNetwork}
+                      gasFee={gasFee}
+                      transactionDetails={transactionDetails}
+                      onClickEditNetworkFee={
+                        canEditNetworkFee
+                          ? () => setShowEditNetworkFee(true)
+                          : undefined
+                      }
+                    />
+                  </Column>
+
+                  {/* Transaction errors */}
+                  <ConfirmationError
+                    insufficientFundsError={insufficientFundsError}
+                    insufficientFundsForGasError={insufficientFundsForGasError}
+                    transactionDetails={transactionDetails}
+                    transactionsNetwork={transactionsNetwork}
+                    account={fromAccount}
                   />
                 </InfoBox>
 
@@ -285,30 +316,16 @@ export const AllowSpendPanel = () => {
                   onClickDetails={() => setShowTransactionDetails(true)}
                 />
               </Column>
-            </Column>
+            </ScrollableColumn>
 
-            {/* Reject and confirm buttons */}
-            <Row
-              padding='16px'
-              gap='8px'
-            >
-              <Button
-                kind='outline'
-                size='medium'
-                onClick={onReject}
-              >
-                {getLocale('braveWalletAllowSpendRejectButton')}
-              </Button>
-              <Button
-                kind='filled'
-                size='medium'
-                onClick={onConfirm}
-              >
-                {getLocale('braveWalletAllowSpendConfirmButton')}
-              </Button>
-            </Row>
+            {/* Confirm and reject buttons */}
+            <ConfirmRejectButtons
+              onConfirm={onConfirm}
+              onReject={onReject}
+              isConfirmButtonDisabled={isConfirmButtonDisabled}
+            />
           </Card>
-        </Column>
+        </ContentWrapper>
       </StyledWrapper>
 
       {/* Edit spend limit */}
