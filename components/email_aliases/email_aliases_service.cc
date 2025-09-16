@@ -419,6 +419,7 @@ void EmailAliasesService::PerformFetch(
   resource_request->headers.SetHeader("X-API-key", email_aliases_api_key_);
   auto simple_url_loader = network::SimpleURLLoader::Create(
       std::move(resource_request), kTrafficAnnotation);
+  simple_url_loader->SetAllowHttpErrorResults(true);
   if (serialized_body.has_value()) {
     simple_url_loader->AttachStringForUpload(*serialized_body, "text/plain");
   }

@@ -22,6 +22,7 @@
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "net/base/net_errors.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -393,15 +394,41 @@ class EmailAliasesAPITest : public ::testing::Test {
   std::unique_ptr<EmailAliasesService> service_;
   AliasObserver observer_;
 
+  void AddManageResponseFor(const std::optional<std::string>& body) {
+    const GURL manage_url =
+        EmailAliasesService::GetEmailAliasesServiceBaseURL();
+    if (body.has_value()) {
+      url_loader_factory_.AddResponse(manage_url.spec(), *body,
+                                      base::Contains(*body, "error")
+                                          ? net::HTTP_BAD_REQUEST
+                                          : net::HTTP_OK);
+    } else {
+      network::URLLoaderCompletionStatus completion(net::ERR_FAILED);
+      url_loader_factory_.AddResponse(manage_url, /*head=*/nullptr,
+                                      /*content=*/"", completion);
+    }
+  }
+
+  void AddRefreshResponseFor(
+      const std::optional<std::string>& refresh_body = std::nullopt) {
+    const GURL manage_url =
+        EmailAliasesService::GetEmailAliasesServiceBaseURL();
+    url_loader_factory_.AddResponse(manage_url.Resolve("?status=active").spec(),
+                                    refresh_body.value_or("[]"));
+  }
+
+  template <typename T, typename InvokeFn>
+  base::expected<T, std::string> InvokeAndWait(InvokeFn&& invoker) {
+    base::test::TestFuture<base::expected<T, std::string>> future;
+    std::forward<InvokeFn>(invoker)(future.GetCallback());
+    return future.Take();
+  }
+
   base::expected<std::string, std::string> CallGenerateAliasWith(
       const std::optional<std::string>& body) {
-    url_loader_factory_.AddResponse(
-        EmailAliasesService::GetEmailAliasesServiceBaseURL().spec(),
-        body.value_or(""),
-        body ? net::HTTP_OK : net::HTTP_INTERNAL_SERVER_ERROR);
-    base::test::TestFuture<base::expected<std::string, std::string>> future;
-    service_->GenerateAlias(future.GetCallback());
-    return future.Take();
+    AddManageResponseFor(body);
+    return InvokeAndWait<std::string>(
+        [&](auto cb) { service_->GenerateAlias(std::move(cb)); });
   }
 
   base::expected<std::monostate, std::string> CallUpdateAliasWith(
@@ -409,17 +436,12 @@ class EmailAliasesAPITest : public ::testing::Test {
       const std::optional<std::string>& put_body,
       const std::optional<std::string>& refresh_body = std::nullopt,
       bool wait_for_update = true) {
-    const GURL manage_url =
-        EmailAliasesService::GetEmailAliasesServiceBaseURL();
-    url_loader_factory_.AddResponse(
-        manage_url.spec(), put_body.value_or(""),
-        put_body ? net::HTTP_OK : net::HTTP_INTERNAL_SERVER_ERROR);
-    url_loader_factory_.AddResponse(manage_url.Resolve("?status=active").spec(),
-                                    refresh_body.value_or("[]"));
-    base::test::TestFuture<base::expected<std::monostate, std::string>> future;
-    service_->UpdateAlias(alias_email, /*note=*/std::string("note"),
-                          future.GetCallback());
-    auto result_out = future.Take();
+    AddManageResponseFor(put_body);
+    AddRefreshResponseFor(refresh_body);
+    auto result_out = InvokeAndWait<std::monostate>([&](auto cb) {
+      service_->UpdateAlias(alias_email, /*note=*/std::string("note"),
+                            std::move(cb));
+    });
     if (wait_for_update) {
       EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
     }
@@ -429,22 +451,14 @@ class EmailAliasesAPITest : public ::testing::Test {
   base::expected<std::monostate, std::string> CallDeleteAliasWith(
       const std::string& alias_email,
       const std::optional<std::string>& delete_body) {
-    const GURL manage_url =
-        EmailAliasesService::GetEmailAliasesServiceBaseURL();
-    url_loader_factory_.AddResponse(
-        manage_url.spec(), delete_body.value_or(""),
-        delete_body ? net::HTTP_OK : net::HTTP_INTERNAL_SERVER_ERROR);
-    url_loader_factory_.AddResponse(manage_url.Resolve("?status=active").spec(),
-                                    "[]");
-    base::test::TestFuture<base::expected<std::monostate, std::string>> future;
-    service_->DeleteAlias(alias_email, future.GetCallback());
-    auto result_out = future.Take();
+    AddManageResponseFor(delete_body);
+    AddRefreshResponseFor(/*refresh_body=*/std::nullopt);
+    auto result_out = InvokeAndWait<std::monostate>(
+        [&](auto cb) { service_->DeleteAlias(alias_email, std::move(cb)); });
     EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
     return result_out;
   }
 };
-
-// ================= Parameterized cases (shared) =================
 
 namespace {
 
