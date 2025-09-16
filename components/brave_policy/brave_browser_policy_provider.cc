@@ -9,6 +9,7 @@
 
 #include "base/logging.h"
 #include "base/values.h"
+#include "brave/components/brave_origin/brave_origin_utils.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
@@ -49,7 +50,9 @@ bool BraveBrowserPolicyProvider::IsFirstPolicyLoadComplete(
 policy::PolicyBundle BraveBrowserPolicyProvider::LoadPolicies() {
   policy::PolicyBundle bundle;
 
-  // Future work will add policies here
+  if (brave_origin::IsBraveOriginEnabled()) {
+    // Future work will add policies here
+  }
 
   return bundle;
 }
