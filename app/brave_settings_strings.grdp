@@ -157,7 +157,7 @@
     Show title bar
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_HIDE_COMPLETELY_WHEN_COLLPASED" desc="The label for hiding vertical tabs completely when collapsed" formatter_data="webui=BraveSettings">
-    Hide completely when collapsed
+    Hide completely when minimized
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_USE_FLOATING_VERTICAL_TABS" desc="The label for enabling floating mode for vertical tab strip">
     Expand vertical tabs panel on mouseover when collapsed
