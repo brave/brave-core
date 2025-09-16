@@ -288,7 +288,8 @@ class PlasterTest(unittest.TestCase):
         self.assertEqual(result, 'Content with Brave word.')
 
     def test_regex_flags_invalid_cases_fail(self):
-        """Test that invalid regex flags (nonexistent, lowercase, etc.) raise ValueError."""
+        """Test that invalid regex flags (nonexistent, lowercase, etc.) raise
+           ValueError."""
         test_file_chromium = Path(
             'chrome/common/extensions/api/test_invalid_flags.idl')
 
