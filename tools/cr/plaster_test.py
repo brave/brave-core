@@ -362,6 +362,5 @@ class PlasterTest(unittest.TestCase):
         self.assertEqual(result, 'Content with CHROMIUM and Brave words.')
 
 
-
 if __name__ == '__main__':
     unittest.main()
