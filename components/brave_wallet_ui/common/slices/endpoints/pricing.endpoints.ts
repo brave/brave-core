@@ -13,7 +13,7 @@ import {
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Constants
-import { maxConcurrentPriceRequests, maxBatchSizePrice } from '../constants'
+import { maxConcurrentPriceRequests } from '../constants'
 import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../../constants/magics'
 
 // Utils
@@ -95,33 +95,20 @@ export const pricingEndpoints = ({
             throw new Error('no requests provided for price lookup')
           }
 
-          const chunkedRequests = []
-          for (let i = 0; i < requests.length; i += maxBatchSizePrice) {
-            chunkedRequests.push(requests.slice(i, i + maxBatchSizePrice))
-          }
-
-          // Use maxConcurrentPriceRequests concurrent HTTP requests to
-          // fetch prices, in batch of maxBatchSizePrice.
-          const results = await mapLimit(
-            chunkedRequests,
-            maxConcurrentPriceRequests,
-            async function (requests: BraveWallet.AssetPriceRequest[]) {
-              const { success, values } = await assetRatioService.getPrice(
-                requests,
-                vsCurrency,
-              )
-
-              if (success && values) {
-                return values
-              }
-
-              console.log('Unable to fetch prices for batch:', requests)
-              return []
-            },
+          const { success, values } = await assetRatioService.getPrice(
+            requests,
+            vsCurrency,
           )
 
+          if (success && values) {
+            return {
+              data: values,
+            }
+          }
+
+          console.log('Unable to fetch prices for requests:', requests)
           return {
-            data: results.flat(),
+            data: [],
           }
         } catch (error) {
           const msg = `Unable to fetch prices`
