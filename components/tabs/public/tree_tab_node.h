@@ -38,6 +38,17 @@ class TreeTabNode : public tabs::TabCollection {
   const tabs::TabInterface* current_tab() const { return current_tab_; }
   tabs::TabInterface* current_tab() { return current_tab_; }
 
+  int height() const { return height_; }
+  int level() const { return level_; }
+
+  // Returns the top-level ancestor TreeTabNode in the hierarchy.
+  TreeTabNode* GetTopLevelAncestor();
+  const TreeTabNode* GetTopLevelAncestor() const;
+
+  // TabCollection:
+  void OnReparentedImpl(TabCollection* old_parent,
+                        TabCollection* new_parent) override;
+
  private:
   // Returns all TreeTabNodes recursively from the given parent collection.
   static void CollectTreeNodesRecursively(tabs::TabCollection& parent,
@@ -49,6 +60,14 @@ class TreeTabNode : public tabs::TabCollection {
   void OnWillDetach(tabs::TabInterface*,
                     tabs::TabInterface::DetachReason tab_detach_reason);
 
+  // Recalculates the level and height of this node and its children recursively
+  // in the tree. This returns the deepest height of the subtree rooted at this
+  // node.
+  int CalculateLevelAndHeightRecursively();
+
+  // Called when child node's height changes to update this node's height.
+  void OnChildHeightChanged();
+
   // Returns the direct children of this TreeTabNode as a list of variants
   // containing either TabInterface* or TabCollection*.
   std::vector<std::variant<tabs::TabInterface*, TabCollection*>>
@@ -59,6 +78,14 @@ class TreeTabNode : public tabs::TabCollection {
   // Could be nullptr on closing the tab. Should be nulled out in order to avoid
   // dangling pointer issues.
   raw_ptr<tabs::TabInterface> current_tab_;
+
+  // The level of this node in the tree. Root is level 0, its children are
+  // level 1, and so on.
+  int level_ = 0;
+
+  // The height of the subtree rooted at this node. A leaf node has height 0.
+  // This is used for calculating the level of nodes efficiently.
+  int height_ = 0;
 
   base::CallbackListSubscription will_detach_tab_subscription_;
 };
