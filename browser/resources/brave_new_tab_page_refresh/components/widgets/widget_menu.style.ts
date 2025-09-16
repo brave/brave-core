@@ -29,6 +29,8 @@ export const style = scoped.css`
   }
 
   leo-menu-item {
+    --leo-icon-size: 24px;
+
     display: flex;
     align-items: center;
     gap: 12px;
