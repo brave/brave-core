@@ -104,7 +104,9 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
 
   MOCK_METHOD(void,
               UpdateTasks,
-              (long progress, const std::vector<PolicyTask>& applied_tasks),
+              (long progress,
+               const std::vector<PolicyTask>& applied_tasks,
+               const mojom::PsstStatus status),
               (override));
 };
 
@@ -255,6 +257,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           &first_nav_check_loop,
           CreateMatchedRule(first_nav_user_script, policy_script)));
 
+  // Called twice, once for each navigation, with Failed status as user script
+  // result is empty in both cases
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(2);
+
   base::test::TestFuture<base::Value> first_nav_user_script_insert_future;
   EXPECT_CALL(inject_script_callback(), Run(first_nav_user_script, _))
       .WillOnce(InsertScriptInPageCallback(&first_nav_user_script_insert_future,
@@ -302,6 +309,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(redirect_target, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
+
+  // Called once, with Failed status as user script result is empty
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
 
   base::test::TestFuture<base::Value> user_script_insert_future;
   auto value = base::Value();
@@ -418,6 +429,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::test::TestFuture<base::Value> user_script_insert_future;
 
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
+
   // User script result is not a dictionary
   auto script_params = base::Value();
 
@@ -445,6 +459,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
+
+  // Called once, with Failed status as user script result is empty dictionary
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
+
   base::test::TestFuture<base::Value> user_script_insert_future;
   auto script_params = base::Value(base::Value::Dict());
 
@@ -473,6 +492,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::test::TestFuture<base::Value> user_script_insert_future;
+
+  // Called once, with Failed status as user script result is empty dictionary
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
 
   // User script result is an empty dictionary
   auto script_params = base::Value(base::Value::Dict());
@@ -511,8 +534,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto policy_script_result =
       base::Value(base::Value::Dict().Set("prop", "value"));
 
-  // Any UI delegate method must not be called, as policy_script_result is empty
-  EXPECT_CALL(ui_delegate(), UpdateTasks(_, _)).Times(0);
+  // Call UI delegate method once (Failed state) as policy_script_result
+  // is not deserializable
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -550,6 +575,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::test::TestFuture<base::Value> user_script_insert_future;
+
+  // Call UI delegate method once (Failed state) as user_script_result
+  // has empty user value
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
 
   // User script result is an dictionary, but user key is empty
   auto script_params = base::Value(base::Value::Dict().Set("user", ""));
@@ -590,8 +620,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                base::Value(base::Value::BlobStorage{0x01, 0x02, 0x03})));
   auto policy_script_result = base::Value();
 
-  // Any UI delegate method must not be called, as policy_script_result is empty
-  EXPECT_CALL(ui_delegate(), UpdateTasks(_, _)).Times(0);
+  // Call UI delegate method once (Failed state) as policy_script_result is
+  // empty
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -626,10 +658,12 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
 
   // UpdateTasks must be called with correct parameters, as policy script
   // returns valid result
-  EXPECT_CALL(ui_delegate(), UpdateTasks(progress, _))
+  EXPECT_CALL(ui_delegate(),
+              UpdateTasks(progress, _, mojom::PsstStatus::kInProgress))
       .WillOnce([&progress_future, &applied_tasks_future](
                     long progress_value,
-                    const std::vector<PolicyTask>& applied_tasks) {
+                    const std::vector<PolicyTask>& applied_tasks,
+                    const mojom::PsstStatus status) {
         std::vector<PolicyTask> tasks;
         std::ranges::for_each(applied_tasks, [&tasks](const PolicyTask& task) {
           tasks.push_back(task.Clone());

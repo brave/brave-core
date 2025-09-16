@@ -3,7 +3,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
+
+mojom("mojom") {
+  sources = [ "psst_ui_common.mojom" ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
+}
 
 static_library("common") {
   sources = [
@@ -13,7 +20,10 @@ static_library("common") {
     "pref_names.h",
   ]
 
-  public_deps = [ ":psst_script_responses" ]
+  public_deps = [
+    ":mojom",
+    ":psst_script_responses",
+  ]
 
   deps = [
     "//base",

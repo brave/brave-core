@@ -8,6 +8,7 @@
 
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 #include "brave/components/psst/common/psst_script_responses.h"
+#include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 
 namespace psst {
 
@@ -21,7 +22,8 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
 
   // PsstUiDelegate overrides
   void UpdateTasks(long progress,
-                   const std::vector<PolicyTask>& applied_tasks) override;
+                   const std::vector<PolicyTask>& applied_tasks,
+                   const mojom::PsstStatus status) override;
 };
 
 }  // namespace psst

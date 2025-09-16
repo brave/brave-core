@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/psst/common/psst_script_responses.h"
+#include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "content/public/browser/web_contents_observer.h"
 
 class PrefService;
@@ -37,7 +38,8 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
     virtual ~PsstUiDelegate() = default;
     // Update the UI state based on the applied tasks and progress.
     virtual void UpdateTasks(long progress,
-                             const std::vector<PolicyTask>& applied_tasks) = 0;
+                             const std::vector<PolicyTask>& applied_tasks,
+                             const mojom::PsstStatus status) = 0;
   };
 
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
