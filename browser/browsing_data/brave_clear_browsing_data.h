@@ -26,7 +26,7 @@ class BraveClearBrowsingData {
   // Note: this method will wait until browsing data has been cleared.
   static void ClearOnExit();
 
-  static bool WillClearOnExit(Profile* profile);
+  static bool IsClearOnExitEnabledForAnyType(Profile* profile);
 
   // Used for testing only.
   struct OnExitTestingCallback {

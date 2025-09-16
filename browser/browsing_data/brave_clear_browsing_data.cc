@@ -190,7 +190,7 @@ void BraveClearBrowsingData::ClearOnExit() {
   watcher.ClearBrowsingDataForLoadedProfiles(on_exit_testing_callback_);
 }
 
-bool BraveClearBrowsingData::WillClearOnExit(Profile* profile) {
+bool BraveClearBrowsingData::IsClearOnExitEnabledForAnyType(Profile* profile) {
   uint64_t remove_mask;
   uint64_t origin_mask;
   return GetClearBrowsingDataOnExitSettings(profile, &remove_mask,

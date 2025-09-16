@@ -49,7 +49,8 @@ bool AreAnyClearDataOnExitSettingsEnabled() {
     return false;
   }
   for (Profile* profile : profile_manager->GetLoadedProfiles()) {
-    if (content::BraveClearBrowsingData::WillClearOnExit(profile)) {
+    if (content::BraveClearBrowsingData::IsClearOnExitEnabledForAnyType(
+            profile)) {
       return true;
     }
     const base::Value::List& clear_on_exit_list = profile->GetPrefs()->GetList(
