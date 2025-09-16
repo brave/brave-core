@@ -535,7 +535,8 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   postprocessing_mixer[ui::kColorFrameActive] =
       darker_theme::CreateDarkerThemeColorTransform(
           nala::kColorPrimitiveNeutral0);
-  postprocessing_mixer[ui::kColorFrameInactive] = {ui::kColorFrameActive};
+  postprocessing_mixer[ui::kColorFrameInactive] = {
+      postprocessing_mixer.GetResultColor(ui::kColorFrameActive)};
   postprocessing_mixer[kColorToolbar] =
       darker_theme::CreateDarkerThemeColorTransform(
           nala::kColorPrimitiveNeutral5);
