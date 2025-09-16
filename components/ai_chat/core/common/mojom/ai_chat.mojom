@@ -14,6 +14,7 @@ import "url/mojom/url.mojom";
 // Share some tool names between the browser and the UI so that
 // custom user actions and UI representations can be created.
 const string kUserChoiceToolName = "user_choice_tool";
+const string kNavigateToolName = "web_page_navigator";
 const string kMemoryStorageToolName = "memory_storage_tool";
 
 // Maximum length for memory and customization records.

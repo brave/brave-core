@@ -1050,13 +1050,8 @@ void ConversationHandler::AddToConversationHistory(
 }
 
 void ConversationHandler::InitToolsForNewGenerationLoop() {
-  // TODO(https://github.com/brave/brave-browser/issues/48535): This is the
-  // main place to create stateful tools that this Conversation creates.
-
-  // We can also reset any already-created tools that don't want state to
+  // We can reset any already-created tools that don't want state to
   // survive between loops (i.e. when a new user message is received).
-
-  // Tool providers may want to do the same
   for (auto& tool_provider : tool_providers_) {
     tool_provider->OnNewGenerationLoop();
   }
