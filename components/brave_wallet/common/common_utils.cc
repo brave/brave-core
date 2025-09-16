@@ -520,7 +520,7 @@ mojom::AccountIdPtr MakeIndexBasedAccountId(mojom::CoinType coin,
                                             uint32_t account_index) {
 #if DCHECK_IS_ON()
   DCHECK(coin == mojom::CoinType::BTC || coin == mojom::CoinType::ZEC ||
-         coin == mojom::CoinType::ADA);
+         coin == mojom::CoinType::ADA || coin == mojom::CoinType::DOT);
   if (coin == mojom::CoinType::BTC) {
     DCHECK(IsBitcoinKeyring(keyring_id));
     if (IsBitcoinHDKeyring(keyring_id)) {
@@ -539,6 +539,10 @@ mojom::AccountIdPtr MakeIndexBasedAccountId(mojom::CoinType coin,
   }
   if (coin == mojom::CoinType::ADA) {
     DCHECK(IsCardanoKeyring(keyring_id));
+    DCHECK_EQ(kind, mojom::AccountKind::kDerived);
+  }
+  if (coin == mojom::CoinType::DOT) {
+    DCHECK(IsPolkadotKeyring(keyring_id));
     DCHECK_EQ(kind, mojom::AccountKind::kDerived);
   }
 #endif
