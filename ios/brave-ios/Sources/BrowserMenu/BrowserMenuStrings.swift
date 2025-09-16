@@ -49,7 +49,7 @@ extension Strings {
     public static let visibleActionsTitle = NSLocalizedString(
       "BrowserMenu.visibleActionsTitle",
       bundle: .module,
-      value: "All Actions",
+      value: "Primary Actions",
       comment: "A title shown above the list of actions that are visible on the menu."
     )
     public static let hiddenActionsTitle = NSLocalizedString(
