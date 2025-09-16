@@ -172,6 +172,8 @@ class BraveBrowserView : public BrowserView,
                            TabFullscreenStateTest);
   FRIEND_TEST_ALL_PREFIXES(BraveBrowserViewWithRoundedCornersTest,
                            ContentsBackgroundEventHandleTest);
+  FRIEND_TEST_ALL_PREFIXES(SideBySideWithRoundedCornersTest,
+                           ContentsShadowTest);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
@@ -194,13 +196,8 @@ class BraveBrowserView : public BrowserView,
   void GetAccessiblePanes(std::vector<views::View*>* panes) override;
   void ShowSplitView(bool focus_active_view) override;
   void HideSplitView() override;
-  void UpdateActiveTabInSplitView() override;
 
-  void UpdateContentsInSplitView(
-      const std::vector<std::pair<tabs::TabInterface*, int>>& prev_tabs,
-      const std::vector<std::pair<tabs::TabInterface*, int>>& new_tabs)
-      override;
-
+  void UpdateContentsShadowVisibility();
   void StopTabCycling();
   void UpdateSearchTabsButtonState();
   void OnPreferenceChanged(const std::string& pref_name);
