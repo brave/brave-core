@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/task_environment.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/country_codes/country_codes.h"
 #include "components/regional_capabilities/regional_capabilities_test_utils.h"
@@ -49,6 +50,7 @@ class BraveTemplateURLServiceUtilTest : public testing::Test {
   BraveTemplateURLServiceUtilTest() = default;
 
  protected:
+  base::test::SingleThreadTaskEnvironment task_environment_;
   search_engines::SearchEnginesTestEnvironment search_engines_test_environment_;
 };
 
