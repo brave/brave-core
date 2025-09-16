@@ -5,6 +5,7 @@
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 
+#include "base/test/task_environment.h"
 #include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/search_engines_test_environment.h"
@@ -17,6 +18,7 @@ class BravePrepopulatedEnginesTest : public testing::Test {
   BravePrepopulatedEnginesTest() = default;
 
  protected:
+  base::test::SingleThreadTaskEnvironment task_environment_;
   search_engines::SearchEnginesTestEnvironment search_engines_test_environment_;
 };
 
