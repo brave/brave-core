@@ -35,7 +35,7 @@ const createTransport = (
     targetWindow,
     targetWindow.origin,
   )
-  transport['senderWindow'] = window // Shorthand for testing
+  ;(transport as any)['senderWindow'] = window
   return transport
 }
 
@@ -51,7 +51,7 @@ test('sendCommand configures handler for the response message ', async () => {
   const transport = createTransport()
   const sendEvent: UnlockCommand = {
     id: LedgerCommand.Unlock,
-    origin: transport['senderWindow']['origin'],
+    origin: (transport as any)['senderWindow']['origin'],
     command: LedgerCommand.Unlock,
   }
   const initialHandlersCount = transport['handlers'].size
@@ -66,7 +66,7 @@ test('sendCommand returns CommandInProgress if response handler already exists',
   const transport = createTransport()
   const sendEvent: UnlockCommand = {
     id: LedgerCommand.Unlock,
-    origin: transport['senderWindow'].origin,
+    origin: (transport as any)['senderWindow'].origin,
     command: LedgerCommand.Unlock,
   }
 
@@ -84,7 +84,7 @@ test('sendCommand removes command handler for the response when its resolved', a
   const transport = createTransport()
   const sendEvent: UnlockCommand = {
     id: LedgerCommand.Unlock,
-    origin: transport['senderWindow']['origin'],
+    origin: (transport as any)['senderWindow']['origin'],
     command: LedgerCommand.Unlock,
   }
 
@@ -94,7 +94,7 @@ test('sendCommand removes command handler for the response when its resolved', a
       origin: transport['targetWindow'].origin,
       source: transport['targetWindow'],
     })
-    transport['senderWindow'].dispatchEvent(replyEvent)
+    ;(transport as any)['senderWindow'].dispatchEvent(replyEvent)
   }
 
   await transport.sendCommand(sendEvent)
@@ -115,11 +115,11 @@ test('onMessageReceived ignores messages not from the targetUrl', () => {
   // Events nott from the targetUrl should not be handled
   const invalidEvent: MessageEvent = new MessageEvent('message', {
     data: eventData,
-    origin: transport['senderWindow']['origin'],
-    source: transport['senderWindow'],
+    origin: (transport as any)['senderWindow']['origin'],
+    source: (transport as any)['senderWindow'],
   })
   transport['addCommandHandler'](testId, () => (callbackCalled = true))
-  transport['senderWindow'].dispatchEvent(invalidEvent)
+  ;(transport as any)['senderWindow'].dispatchEvent(invalidEvent)
   expect(callbackCalled).toEqual(false)
 
   // Events from the targetUrl should be handled
@@ -128,7 +128,7 @@ test('onMessageReceived ignores messages not from the targetUrl', () => {
     origin: transport['targetWindow'].origin,
     source: transport['targetWindow'],
   })
-  transport['senderWindow'].dispatchEvent(validEvent)
+  ;(transport as any)['senderWindow'].dispatchEvent(validEvent)
   expect(callbackCalled).toEqual(true)
 })
 
@@ -155,7 +155,7 @@ test('onMessageReceived invokes handler and replies with response', () => {
   transport['targetWindow'].postMessage = (event) => {
     expect(event).toEqual(expectedResponse)
   }
-  transport['senderWindow'].dispatchEvent(event)
+  ;(transport as any)['senderWindow'].dispatchEvent(event)
 })
 
 test('onMessageReceived does not reply with response if the receiving message is already response', () => {
@@ -163,18 +163,20 @@ test('onMessageReceived does not reply with response if the receiving message is
   const testId = 'test'
   const eventData = {
     id: testId,
-    origin: transport['targetWindow'].origin,
+    origin: 'chrome://test-origin',
     command: testId,
   }
   let callbackCalled = false
   const event: MessageEvent = new MessageEvent('message', {
     data: eventData,
-    origin: transport['senderWindow']['origin'], // event.origin !== event.data.origin when it is a reponse to a sendCommand
+    // event.origin !== event.data.origin when it
+    // is a reponse to a sendCommand
+    origin: 'chrome://sender-origin',
     source: transport['targetWindow'],
   })
   transport['addCommandHandler'](testId, () => {
     callbackCalled = true
   })
-  transport['senderWindow'].dispatchEvent(event)
+  ;(transport as any)['senderWindow'].dispatchEvent(event)
   expect(callbackCalled).toEqual(false)
 })
