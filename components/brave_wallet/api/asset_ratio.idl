@@ -123,9 +123,9 @@ namespace asset_ratio {
     // e.g. "0x1"
     DOMString chain_id;
 
-    // Nullable DOMString field
+    // Nullable optional DOMString field
     // e.g. "0x0D8775F648430679A709E98d2b0Cb6250d2887EF"
-    any address;
+    any? address;
 
     // e.g. "0.55393"
     DOMString price;

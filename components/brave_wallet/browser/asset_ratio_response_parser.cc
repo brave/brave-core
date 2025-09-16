@@ -23,13 +23,19 @@ namespace brave_wallet {
 
 namespace {
 
-std::optional<std::string> ParseNullableString(const base::Value& value) {
-  if (value.is_none()) {
+std::optional<std::string> ParseOptionalNullableString(
+    const std::optional<base::Value>& value) {
+  if (!value.has_value()) {
     return "";
   }
 
-  if (value.is_string()) {
-    return value.GetString();
+  const base::Value& val = value.value();
+  if (val.is_none()) {
+    return "";
+  }
+
+  if (val.is_string()) {
+    return val.GetString();
   }
 
   return std::nullopt;
@@ -99,7 +105,8 @@ std::vector<mojom::AssetPricePtr> ParseAssetPrices(
   for (const auto& item : response_list) {
     auto payload = api::asset_ratio::AssetPricePayload::FromValue(item);
     if (!payload) {
-      LOG(ERROR) << "Invalid response, could not parse AssetPricePayload";
+      LOG(ERROR) << "Invalid response, could not parse AssetPricePayload:"
+                 << item.DebugString();
       continue;
     }
 
@@ -108,7 +115,7 @@ std::vector<mojom::AssetPricePtr> ParseAssetPrices(
       continue;
     }
 
-    auto address = ParseNullableString(payload->address);
+    auto address = ParseOptionalNullableString(payload->address);
     if (!address.has_value()) {
       continue;
     }
