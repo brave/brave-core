@@ -8,11 +8,12 @@
 #include "base/check.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 
-#define CalculateTabBounds                                                     \
-          use_vertical_tabs_&& FillGroupInfo(tab_widths)                       \
-      ? tabs::CalculateVerticalTabBounds(                                      \
-            tab_widths, available_width,                                       \
-            GetBraveTabStrip() -> IsVerticalTabsFloating())                    \
+#define CalculateTabBounds                                  \
+  use_vertical_tabs_&& FillGroupInfo(tab_widths) &&         \
+          FillNestingInfo(tab_widths)                       \
+      ? tabs::CalculateVerticalTabBounds(                   \
+            tab_widths, available_width,                    \
+            GetBraveTabStrip() -> IsVerticalTabsFloating()) \
       : CalculateTabBounds
 
 #include <chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc>
@@ -35,6 +36,19 @@ bool TabStripLayoutHelper::FillGroupInfo(
     tab_width_constraints.set_is_tab_in_group(
         slots_.at(i).type == TabSlotView::ViewType::kTab &&
         slots_.at(i).view->group().has_value());
+  }
+  return true;
+}
+
+bool TabStripLayoutHelper::FillNestingInfo(
+    std::vector<TabWidthConstraints>& tab_widths) {
+  if (!use_vertical_tabs_ || !use_tree_tabs_) {
+    return true;
+  }
+
+  for (int i = 0; i < static_cast<int>(slots_.size()); i++) {
+    auto& tab_width = tab_widths[i];
+    tab_width.state().set_nesting_info(slots_.at(i).view->GetTabNestingInfo());
   }
   return true;
 }

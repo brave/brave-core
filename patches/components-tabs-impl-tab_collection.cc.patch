@@ -1,0 +1,12 @@
+diff --git a/components/tabs/impl/tab_collection.cc b/components/tabs/impl/tab_collection.cc
+index c53a377cc4da71e2b1bb4ba559d474dffcec6d02..6ad52ed02ac2f104461720c36760568a6ca627a9 100644
+--- a/components/tabs/impl/tab_collection.cc
++++ b/components/tabs/impl/tab_collection.cc
+@@ -307,6 +307,7 @@ std::unique_ptr<TabCollection> TabCollection::MaybeRemoveCollection(
+ }
+ 
+ void TabCollection::OnReparented(TabCollection* new_parent) {
++  BRAVE_TAB_COLLECTION_ON_REPARENTED
+   parent_ = new_parent;
+ 
+   for (auto tab : GetTabsRecursive()) {
