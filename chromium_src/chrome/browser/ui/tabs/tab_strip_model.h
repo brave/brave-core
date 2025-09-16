@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_
 
+#include "components/tabs/public/tab_strip_collection.h"
+
 #define SelectRelativeTab(...)            \
   virtual SelectRelativeTab(__VA_ARGS__); \
   friend class BraveTabStripModel
@@ -20,7 +22,16 @@
 #define IsReadLaterSupportedForAny virtual IsReadLaterSupportedForAny
 #define UpdateWebContentsStateAt virtual UpdateWebContentsStateAt
 
+#if !BUILDFLAG(IS_ANDROID)
+// Use Brave version of TabStripCollection.
+#define TabStripCollection BraveTabStripCollection
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 #include <chrome/browser/ui/tabs/tab_strip_model.h>  // IWYU pragma: export
+
+#if !BUILDFLAG(IS_ANDROID)
+#undef TabStripCollection
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #undef UpdateWebContentsStateAt
 #undef IsReadLaterSupportedForAny
