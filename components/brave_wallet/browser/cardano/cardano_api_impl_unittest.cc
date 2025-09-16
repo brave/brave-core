@@ -762,17 +762,6 @@ TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
   {
     EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
-    base::test::TestFuture<const std::optional<std::string>&,
-                           mojom::CardanoProviderErrorBundlePtr>
-        future;
-    provider()->SubmitTx("", future.GetCallback());
-    auto [tx_hash, error] = future.Take();
-    EXPECT_EQ(error->error_message, "Not implemented");
-  }
-
-  {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1105,6 +1094,96 @@ TEST_F(CardanoApiImplTest, GetUtxos_NumericOverflow) {
     auto [utxos, error] = future.Take();
     EXPECT_FALSE(utxos);
     EXPECT_TRUE(error);
+  }
+}
+
+TEST_F(CardanoApiImplTest, SubmitTx_Fails) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+  EXPECT_TRUE(added_account);
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  test_rpc_service()->FailNextTransactionSubmission();
+  {
+    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
+
+    base::test::TestFuture<const std::optional<std::string>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->SubmitTx("aaaa", future.GetCallback());
+    auto [tx_hash, error] = future.Take();
+    EXPECT_FALSE(tx_hash);
+    EXPECT_TRUE(error);
+    EXPECT_EQ(error->code, 2);
+  }
+}
+
+TEST_F(CardanoApiImplTest, SubmitTx) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+  EXPECT_TRUE(added_account);
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  {
+    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
+
+    base::test::TestFuture<const std::optional<std::string>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->SubmitTx("aaaa", future.GetCallback());
+    auto [tx_hash, error] = future.Take();
+    EXPECT_EQ(kMockCardanoTxid, *tx_hash);
+    EXPECT_FALSE(error);
+  }
+}
+
+TEST_F(CardanoApiImplTest, SubmitTx_FailsNotHex) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+  EXPECT_TRUE(added_account);
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  {
+    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
+
+    base::test::TestFuture<const std::optional<std::string>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->SubmitTx("rrrr", future.GetCallback());
+    auto [tx_hash, error] = future.Take();
+    EXPECT_FALSE(tx_hash);
+    EXPECT_TRUE(error);
+    EXPECT_EQ(error->code, 2);
   }
 }
 

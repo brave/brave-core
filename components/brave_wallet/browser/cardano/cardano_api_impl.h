@@ -64,6 +64,8 @@ class CardanoApiImpl final : public mojom::CardanoApi {
       mojom::CardanoProviderPaginationPtr paginate,
       GetUtxosCallback callback,
       base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result);
+  void OnSubmitTx(SubmitTxCallback callback,
+                  base::expected<std::string, std::string> txid);
 
   mojom::CardanoProviderErrorBundlePtr CheckSelectedAccountValid();
 
