@@ -109,14 +109,14 @@ export const RouteOption = (props: Props) => {
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
-  const toTokenPriceRequest = React.useMemo(() => {
+  const toTokenPriceRequests = React.useMemo(() => {
     return getPriceRequestsForTokens([toToken])
   }, [toToken])
 
   const { data: spotPrices = [] } = useGetTokenSpotPricesQuery(
-    toTokenPriceRequest && defaultFiatCurrency
+    toTokenPriceRequests.length && defaultFiatCurrency
       ? {
-          requests: [toTokenPriceRequest],
+          requests: toTokenPriceRequests,
           vsCurrency: defaultFiatCurrency,
         }
       : skipToken,
