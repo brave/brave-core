@@ -17,6 +17,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -36,17 +37,21 @@ BraveTabStripModel::BraveTabStripModel(
     Profile* profile,
     TabGroupModelFactory* group_model_factory)
     : TabStripModel(delegate, profile, group_model_factory) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab) &&
-      delegate->IsNormalWindow()) {
-    tree_tabs_enabled_.Init(
-        brave_tabs::kTreeTabsEnabled, profile->GetPrefs(),
-        base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
-                            base::Unretained(this)));
-    vertical_tabs_enabled_.Init(
-        brave_tabs::kVerticalTabsEnabled, profile->GetPrefs(),
-        base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
-                            base::Unretained(this)));
-    OnTreeTabRelatedPrefChanged();
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab)) {
+    // Replace the default TabStripCollection with Brave's version
+    contents_data_ = std::make_unique<tabs::BraveTabStripCollection>();
+
+    if (delegate->IsNormalWindow()) {
+      tree_tabs_enabled_.Init(
+          brave_tabs::kTreeTabsEnabled, profile->GetPrefs(),
+          base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
+                              base::Unretained(this)));
+      vertical_tabs_enabled_.Init(
+          brave_tabs::kVerticalTabsEnabled, profile->GetPrefs(),
+          base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
+                              base::Unretained(this)));
+      OnTreeTabRelatedPrefChanged();
+    }
   }
 }
 
@@ -151,6 +156,34 @@ void BraveTabStripModel::SetCustomTitleForTab(
   NotifyTabChanged(tab_interface, TabChangeType::kAll);
 }
 
+int BraveTabStripModel::GetTreeHeightOfTab(int index) const {
+  auto* tab_interface = GetTabAtIndex(index);
+  CHECK(tab_interface);
+
+  const auto* parent_collection = tab_interface->GetParentCollection();
+  if (!parent_collection ||
+      parent_collection->type() != tabs::TabCollection::Type::TREE_NODE) {
+    return 0;
+  }
+
+  return static_cast<const TreeTabNode*>(parent_collection)
+      ->GetTopLevelAncestor()
+      ->height();
+}
+
+int BraveTabStripModel::GetTreeNodeLevel(int index) const {
+  auto* tab_interface = GetTabAtIndex(index);
+  CHECK(tab_interface);
+
+  const auto* parent_collection = tab_interface->GetParentCollection();
+  if (!parent_collection ||
+      parent_collection->type() != tabs::TabCollection::Type::TREE_NODE) {
+    return 0;
+  }
+
+  return static_cast<const TreeTabNode*>(parent_collection)->level();
+}
+
 void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
   if (*tree_tabs_enabled_ && *vertical_tabs_enabled_) {
     BuildTreeTabs();
@@ -161,30 +194,30 @@ void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
 
 void BraveTabStripModel::BuildTreeTabs() {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
-  CHECK(!in_tree_mode_);
+  CHECK(!contents_data()->in_tree_tab_mode());
 
-  auto* unpinned_collection = contents_data_->unpinned_collection();
+  auto* unpinned_collection = contents_data()->unpinned_collection();
   CHECK(unpinned_collection);
 
   TreeTabNode::BuildTreeTabs(*unpinned_collection);
-  in_tree_mode_ = true;
+  contents_data()->set_in_tree_tab_mode(true);
 }
 
 void BraveTabStripModel::FlattenTreeTabs() {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
 
-  if (!in_tree_mode_) {
+  if (!contents_data()->in_tree_tab_mode()) {
     return;
   }
 
-  auto* unpinned_collection = contents_data_->unpinned_collection();
+  auto* unpinned_collection = contents_data()->unpinned_collection();
   CHECK(unpinned_collection);
 
   TreeTabNode::FlattenTreeTabs(*unpinned_collection);
-  in_tree_mode_ = false;
+  contents_data()->set_in_tree_tab_mode(false);
 }
 
 tabs::TabStripCollection&
 BraveTabStripModel::GetTabStripCollectionForTesting() {
-  return *contents_data_;
+  return *contents_data();
 }

@@ -29,6 +29,12 @@ class BraveTab : public Tab, public views::TextfieldController {
 
   void EnterRenameMode();
 
+  // Returns the height of the tree that this tab belongs to.
+  int GetTreeHeight() const;
+
+  // Returns the level of the node in the tree that this tab belongs to.
+  int GetTreeNodeLevel() const;
+
   // Tab:
   std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
 
@@ -49,6 +55,7 @@ class BraveTab : public Tab, public views::TextfieldController {
   gfx::Insets GetInsets() const override;
   void SetData(TabRendererData data) override;
   bool IsActive() const override;
+  TabNestingInfo GetTabNestingInfo() const override;
 
   // views::TextfieldController:
   bool HandleKeyEvent(views::Textfield* sender,
