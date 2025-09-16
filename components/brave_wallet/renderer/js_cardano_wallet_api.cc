@@ -160,9 +160,13 @@ void JSCardanoWalletApi::HandleUtxoVecResult(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   if (!error) {
-    std::ignore = resolver->Resolve(
-        context, content::V8ValueConverter::Create()->ToV8Value(
-                     base::ToValueList(*result), context));
+    if (!result) {
+      std::ignore = resolver->Resolve(context, v8::Null(isolate));
+    } else {
+      std::ignore = resolver->Resolve(
+          context, content::V8ValueConverter::Create()->ToV8Value(
+                       base::ToValueList(*result), context));
+    }
   } else {
     std::ignore = resolver->Reject(
         context, ConvertError(v8::Isolate::GetCurrent(), context, error));
