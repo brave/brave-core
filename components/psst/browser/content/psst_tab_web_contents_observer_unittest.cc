@@ -807,6 +807,8 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_EQ(progress, progress_future.Take());
 
   EXPECT_TRUE(applied_tasks_future.Take().empty());
+  // TODO(https://github.com/brave/brave-browser/issues/49317) We need to check
+  // that script result callbacks are not in queue
 }
 class PsstTabWebContentsObserverFeatureDisabledUnitTest
     : public PsstTabWebContentsObserverUnitTestBase {
