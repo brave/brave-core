@@ -11,7 +11,7 @@ import Foundation
 class MockAssetRatioService: BraveWalletAssetRatioService {
   private let assets: [String: BraveWallet.AssetPrice] = [
     "eth": .init(
-      coinType: .eth,
+      coin: .eth,
       chainId: BraveWallet.MainnetChainId,
       address: "",
       price: "3059.99",
@@ -21,7 +21,7 @@ class MockAssetRatioService: BraveWalletAssetRatioService {
       percentageChange24h: "-57.23"
     ),
     "bat": .init(
-      coinType: .eth,
+      coin: .eth,
       chainId: BraveWallet.MainnetChainId,
       address: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
       price: "0.627699",
@@ -40,9 +40,9 @@ class MockAssetRatioService: BraveWalletAssetRatioService {
     let prices = requests.compactMap { request in
       // Find matching asset based on coin type, chain ID, and address
       return assets.first { (_, assetPrice) in
-        assetPrice.coinType == request.coinType
-          && (request.chainId == nil || assetPrice.chainId == request.chainId)
-          && (request.address == nil || assetPrice.address == request.address)
+        assetPrice.coin == request.coin
+          && assetPrice.chainId == request.chainId
+          && assetPrice.address == request.address
       }?.value
     }
     completion(!prices.isEmpty, prices)

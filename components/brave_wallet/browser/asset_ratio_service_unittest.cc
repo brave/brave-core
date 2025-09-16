@@ -72,21 +72,22 @@ class AssetRatioServiceUnitTest : public testing::Test {
 
     // ETH token (BAT)
     auto eth_request = mojom::AssetPriceRequest::New();
-    eth_request->coin_type = mojom::CoinType::ETH;
+    eth_request->coin = mojom::CoinType::ETH;
     eth_request->chain_id = "0x1";
     eth_request->address = "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
     requests.push_back(std::move(eth_request));
 
     // SOL token (USDC)
     auto sol_request = mojom::AssetPriceRequest::New();
-    sol_request->coin_type = mojom::CoinType::SOL;
+    sol_request->coin = mojom::CoinType::SOL;
     sol_request->chain_id = "0x65";
     sol_request->address = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
     requests.push_back(std::move(sol_request));
 
     // BTC native token
     auto btc_request = mojom::AssetPriceRequest::New();
-    btc_request->coin_type = mojom::CoinType::BTC;
+    btc_request->coin = mojom::CoinType::BTC;
+    btc_request->chain_id = "bitcoin_mainnet";
     requests.push_back(std::move(btc_request));
 
     return requests;
@@ -218,7 +219,7 @@ TEST_F(AssetRatioServiceUnitTest, GetSellUrl) {
 TEST_F(AssetRatioServiceUnitTest, GetPrice) {
   SetInterceptor(R"([
     {
-      "coin_type": "ETH",
+      "coin": "ETH",
       "chain_id": "0x1",
       "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
       "price": "0.55393",
@@ -228,7 +229,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPrice) {
       "source": "coingecko"
     },
     {
-      "coin_type": "SOL",
+      "coin": "SOL",
       "chain_id": "0x65",
       "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       "price": "0.998",
@@ -238,7 +239,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPrice) {
       "source": "jupiter"
     },
     {
-      "coin_type": "BTC",
+      "coin": "BTC",
       "chain_id": "bitcoin_mainnet",
       "price": "102000",
       "percentage_change_24h": "5.2",
@@ -252,7 +253,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPrice) {
 
   // ETH token (BAT)
   auto asset_price = brave_wallet::mojom::AssetPrice::New();
-  asset_price->coin_type = mojom::CoinType::ETH;
+  asset_price->coin = mojom::CoinType::ETH;
   asset_price->chain_id = "0x1";
   asset_price->address = "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
   asset_price->price = "0.55393";
@@ -264,7 +265,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPrice) {
 
   // SOL token (USDC)
   asset_price = brave_wallet::mojom::AssetPrice::New();
-  asset_price->coin_type = mojom::CoinType::SOL;
+  asset_price->coin = mojom::CoinType::SOL;
   asset_price->chain_id = "0x65";
   asset_price->address = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   asset_price->price = "0.998";
@@ -276,7 +277,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPrice) {
 
   // BTC native token
   asset_price = brave_wallet::mojom::AssetPrice::New();
-  asset_price->coin_type = mojom::CoinType::BTC;
+  asset_price->coin = mojom::CoinType::BTC;
   asset_price->chain_id = "bitcoin_mainnet";
   asset_price->price = "102000";
   asset_price->vs_currency = "USD";

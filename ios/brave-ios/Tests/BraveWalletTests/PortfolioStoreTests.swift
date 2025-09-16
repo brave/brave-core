@@ -72,7 +72,7 @@ import XCTest
   let mockETHBalanceAccount1: Double = 0.896
   let mockETHPrice: String = "3059.99"  // ETH value = $2741.75104
   lazy var mockETHAssetPrice: BraveWallet.AssetPrice = .init(
-    coinType: .eth,
+    coin: .eth,
     chainId: BraveWallet.MainnetChainId,
     address: "",
     price: mockETHPrice,
@@ -86,7 +86,7 @@ import XCTest
     .init(date: Date(), price: mockETHPrice),
   ]
   lazy var mockETHAssetPriceOnSepolia: BraveWallet.AssetPrice = .init(
-    coinType: .eth,
+    coin: .eth,
     chainId: BraveWallet.SepoliaChainId,
     address: "",
     price: mockETHPrice,
@@ -100,7 +100,7 @@ import XCTest
   let mockUSDCBalanceAccount2: Double = 0.01
   let mockUSDCPrice: String = "1"  // USDC total value = $0.04
   lazy var mockUSDCAssetPrice: BraveWallet.AssetPrice = .init(
-    coinType: .eth,
+    coin: .eth,
     chainId: BraveWallet.MainnetChainId,
     address: BraveWallet.BlockchainToken.mockUSDCToken.contractAddress,
     price: mockUSDCPrice,
@@ -117,7 +117,7 @@ import XCTest
   let mockSOLBalance: Double = 3.8765  // lamports rounded
   let mockSOLPrice: String = "200"  // SOL value = $775.30
   lazy var mockSOLAssetPrice: BraveWallet.AssetPrice = .init(
-    coinType: .sol,
+    coin: .sol,
     chainId: BraveWallet.SolanaMainnet,
     address: "",
     price: mockSOLPrice,
@@ -135,7 +135,7 @@ import XCTest
   let mockFILBalanceAccount1: Double = 1
   let mockFILPrice: String = "4.00"  // FIL value on mainnet = $4.00
   lazy var mockFILAssetPrice: BraveWallet.AssetPrice = .init(
-    coinType: .fil,
+    coin: .fil,
     chainId: BraveWallet.FilecoinMainnet,
     address: "",
     price: mockFILPrice,
@@ -157,7 +157,7 @@ import XCTest
     mockAvailableBTCBalanceAccount1 + mockPendingBTCBalanceAccount1
   let mockBTCPrice: String = "65726.00"
   lazy var mockBTCAssetPrice: BraveWallet.AssetPrice = .init(
-    coinType: .btc,
+    coin: .btc,
     chainId: BraveWallet.BitcoinMainnet,
     address: "",
     price: mockBTCPrice,
@@ -171,7 +171,7 @@ import XCTest
     .init(date: Date(), price: mockBTCPrice),
   ]
   lazy var mockBTCAssetPriceOnTestnet: BraveWallet.AssetPrice = .init(
-    coinType: .btc,
+    coin: .btc,
     chainId: BraveWallet.BitcoinTestnet,
     address: "",
     price: mockBTCPrice,
@@ -184,7 +184,7 @@ import XCTest
   let mockZECTransparentBalanceAccount1: Double = 0.00001
   let mockZECPrice: String = "39.50"
   lazy var mockZECAssetPrice: BraveWallet.AssetPrice = .init(
-    coinType: .zec,
+    coin: .zec,
     chainId: BraveWallet.ZCashMainnet,
     address: "",
     price: mockZECPrice,
@@ -198,7 +198,7 @@ import XCTest
     .init(date: Date(), price: mockZECPrice),
   ]
   lazy var mockZECAssetPriceOnTestnet: BraveWallet.AssetPrice = .init(
-    coinType: .zec,
+    coin: .zec,
     chainId: BraveWallet.ZCashTestnet,
     address: "",
     price: mockZECPrice,

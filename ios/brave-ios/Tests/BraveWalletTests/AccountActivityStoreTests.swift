@@ -17,7 +17,7 @@ class AccountActivityStoreTests: XCTestCase {
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [:]
   let mockAssetPrices: [BraveWallet.AssetPrice] = [
     .init(
-      coinType: .eth,
+      coin: .eth,
       chainId: BraveWallet.MainnetChainId,
       address: "",
       price: "3059.99",
@@ -27,7 +27,7 @@ class AccountActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
-      coinType: .eth,
+      coin: .eth,
       chainId: BraveWallet.MainnetChainId,
       address: BraveWallet.BlockchainToken.mockUSDCToken.contractAddress,
       price: "1.00",
@@ -37,7 +37,7 @@ class AccountActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
-      coinType: .sol,
+      coin: .sol,
       chainId: BraveWallet.SolanaMainnet,
       address: "",
       price: "2.00",
@@ -47,7 +47,7 @@ class AccountActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
-      coinType: .sol,
+      coin: .sol,
       chainId: BraveWallet.SolanaTestnet,
       address: "",
       price: "2.00",
@@ -57,7 +57,7 @@ class AccountActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
-      coinType: .sol,
+      coin: .sol,
       chainId: BraveWallet.SolanaMainnet,
       address: BraveWallet.BlockchainToken.mockSpdToken.contractAddress,
       price: "0.50",
@@ -67,7 +67,7 @@ class AccountActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
-      coinType: .fil,
+      coin: .fil,
       chainId: BraveWallet.FilecoinMainnet,
       address: "",
       price: "4.00",
@@ -77,7 +77,7 @@ class AccountActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
-      coinType: .zec,
+      coin: .zec,
       chainId: BraveWallet.ZCashMainnet,
       address: "",
       price: "31.10",

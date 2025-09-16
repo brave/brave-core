@@ -112,7 +112,7 @@ class SelectAccountTokenStoreTests: XCTestCase {
         decimals: Int(allUserAssets[0].decimals)
       ) ?? ""
     let mockETHAssetPrice: BraveWallet.AssetPrice = .init(
-      coinType: .eth,
+      coin: .eth,
       chainId: BraveWallet.MainnetChainId,
       address: "",
       price: mockETHPrice,
@@ -128,7 +128,7 @@ class SelectAccountTokenStoreTests: XCTestCase {
         decimals: Int(allUserAssets[1].decimals)
       ) ?? ""
     let mockUSDCAssetPrice: BraveWallet.AssetPrice = .init(
-      coinType: .eth,
+      coin: .eth,
       chainId: BraveWallet.SepoliaChainId,
       address: BraveWallet.BlockchainToken.mockUSDCToken.contractAddress,
       price: mockUSDCPrice,
@@ -138,7 +138,7 @@ class SelectAccountTokenStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     )
     let mockSOLAssetPrice: BraveWallet.AssetPrice = .init(
-      coinType: .sol,
+      coin: .sol,
       chainId: BraveWallet.SolanaMainnet,
       address: "",
       price: mockSOLPrice,
@@ -154,7 +154,7 @@ class SelectAccountTokenStoreTests: XCTestCase {
         decimals: Int(allUserAssets[5].decimals)
       ) ?? ""
     let mockFILAssetPrice: BraveWallet.AssetPrice = .init(
-      coinType: .fil,
+      coin: .fil,
       chainId: BraveWallet.FilecoinMainnet,
       address: "",
       price: mockFILPrice,

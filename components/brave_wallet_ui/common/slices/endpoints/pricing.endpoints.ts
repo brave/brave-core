@@ -134,7 +134,7 @@ export const pricingEndpoints = ({
       providesTags: (result, error, { requests, vsCurrency }) =>
         requests.map((r) => ({
           type: 'TokenSpotPrices',
-          id: `${r.coinType}-${r.chainId}-${r.address}-${vsCurrency}`,
+          id: `${r.coin}-${r.chainId}-${r.address}-${vsCurrency}`,
         })),
     }),
 

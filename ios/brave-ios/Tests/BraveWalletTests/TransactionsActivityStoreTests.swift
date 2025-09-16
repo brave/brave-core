@@ -38,7 +38,7 @@ class TransactionsActivityStoreTests: XCTestCase {
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [:]
   let mockAssetPrices: [BraveWallet.AssetPrice] = [
     .init(
-      coinType: .eth,
+      coin: .eth,
       chainId: BraveWallet.MainnetChainId,
       address: "",
       price: "3059.99",
@@ -48,7 +48,7 @@ class TransactionsActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
-      coinType: .eth,
+      coin: .eth,
       chainId: BraveWallet.SepoliaChainId,
       address: "",
       price: "3059.99",
@@ -58,7 +58,7 @@ class TransactionsActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
-      coinType: .eth,
+      coin: .eth,
       chainId: BraveWallet.MainnetChainId,
       address: BraveWallet.BlockchainToken.mockUSDCToken.contractAddress,
       price: "1.00",
@@ -68,7 +68,7 @@ class TransactionsActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
-      coinType: .sol,
+      coin: .sol,
       chainId: BraveWallet.SolanaMainnet,
       address: "",
       price: "2.00",
@@ -78,7 +78,7 @@ class TransactionsActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
-      coinType: .sol,
+      coin: .sol,
       chainId: BraveWallet.SolanaTestnet,
       address: "",
       price: "2.00",
@@ -88,7 +88,7 @@ class TransactionsActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
-      coinType: .sol,
+      coin: .sol,
       chainId: BraveWallet.SolanaMainnet,
       address: BraveWallet.BlockchainToken.mockSpdToken.contractAddress,
       price: "0.50",
@@ -98,7 +98,7 @@ class TransactionsActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
-      coinType: .fil,
+      coin: .fil,
       chainId: BraveWallet.FilecoinMainnet,
       address: "",
       price: "4.00",
@@ -108,7 +108,7 @@ class TransactionsActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
-      coinType: .fil,
+      coin: .fil,
       chainId: BraveWallet.FilecoinTestnet,
       address: "",
       price: "4.00",

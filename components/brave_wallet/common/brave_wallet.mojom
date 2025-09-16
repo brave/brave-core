@@ -478,7 +478,7 @@ struct AssetTimePrice {
 };
 
 struct AssetPriceRequest {
-  CoinType coin_type;
+  CoinType coin;
   string chain_id;
   string? address;
 };
@@ -495,7 +495,7 @@ enum Gate3CacheStatus {
 };
 
 struct AssetPrice {
-  CoinType coin_type;
+  CoinType coin;
   string chain_id;
   string address;
   string price;

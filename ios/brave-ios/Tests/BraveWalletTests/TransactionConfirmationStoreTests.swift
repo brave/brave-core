@@ -25,7 +25,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
     setDataForUnapprovedTransactionSuccess: Bool = true
   ) -> TransactionConfirmationStore {
     let mockEthAssetPrice: BraveWallet.AssetPrice = .init(
-      coinType: .eth,
+      coin: .eth,
       chainId: BraveWallet.MainnetChainId,
       address: "",
       price: "3059.99",
@@ -35,7 +35,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     )
     let mockSolAssetPrice: BraveWallet.AssetPrice = .init(
-      coinType: .sol,
+      coin: .sol,
       chainId: BraveWallet.SolanaMainnet,
       address: "",
       price: "39.57",
@@ -45,7 +45,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     )
     let mockFilAssetPrice: BraveWallet.AssetPrice = .init(
-      coinType: .fil,
+      coin: .fil,
       chainId: BraveWallet.FilecoinMainnet,
       address: "",
       price: "4.0",
@@ -55,7 +55,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     )
     let mockBtcAssetPrice: BraveWallet.AssetPrice = .init(
-      coinType: .btc,
+      coin: .btc,
       chainId: BraveWallet.BitcoinMainnet,
       address: "",
       price: "62117.0",
@@ -65,7 +65,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     )
     let mockZECAssetPrice: BraveWallet.AssetPrice = .init(
-      coinType: .zec,
+      coin: .zec,
       chainId: BraveWallet.ZCashMainnet,
       address: "",
       price: "36.24",

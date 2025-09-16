@@ -42,7 +42,7 @@ class AssetDetailStoreTests: XCTestCase {
         true,
         [
           .init(
-            coinType: .eth,
+            coin: .eth,
             chainId: BraveWallet.MainnetChainId,
             address: BraveWallet.BlockchainToken.previewToken.contractAddress,
             price: "1",
@@ -279,7 +279,7 @@ class AssetDetailStoreTests: XCTestCase {
         true,
         [
           .init(
-            coinType: .btc,
+            coin: .btc,
             chainId: BraveWallet.BitcoinMainnet,
             address: "",
             price: "\(mockBtcPrice)",
@@ -495,7 +495,7 @@ class AssetDetailStoreTests: XCTestCase {
         true,
         [
           .init(
-            coinType: .btc,
+            coin: .btc,
             chainId: BraveWallet.BitcoinMainnet,
             address: "",
             price: "100000",

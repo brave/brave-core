@@ -106,7 +106,7 @@ namespace asset_ratio {
   //
   // Example:
   // {
-  //   "coin_type": "ETH",
+  //   "coin": "ETH",
   //   "chain_id": "0x1",
   //   "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
   //   "price": "0.55393",
@@ -118,7 +118,7 @@ namespace asset_ratio {
   //
   dictionary AssetPricePayload {
     // e.g. "ETH"
-    DOMString coin_type;
+    DOMString coin;
 
     // e.g. "0x1"
     DOMString chain_id;

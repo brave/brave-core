@@ -15,7 +15,7 @@ extension BraveWalletAssetRatioService {
   ) async -> [BraveWallet.AssetPrice] {
     let requests = tokens.map { token in
       BraveWallet.AssetPriceRequest(
-        coinType: token.coin,
+        coin: token.coin,
         chainId: token.chainId,
         address: token.contractAddress.isEmpty ? nil : token.contractAddress
       )
@@ -37,19 +37,19 @@ extension Array where Element == BraveWallet.AssetPrice {
     for token: BraveWallet.BlockchainToken
   ) -> BraveWallet.AssetPrice? {
     return first { assetPrice in
-      assetPrice.coinType == token.coin
+      assetPrice.coin == token.coin
         && assetPrice.chainId == token.chainId
         && assetPrice.address.lowercased() == token.contractAddress.lowercased()
     }
   }
 
   /// Updates the existing array with new AssetPrice objects, ensuring no duplicates
-  /// Two AssetPrices are considered duplicates if they have the same coinType, chainId, and address
+  /// Two AssetPrices are considered duplicates if they have the same coin, chainId, and address
   mutating func update(with newPrices: [BraveWallet.AssetPrice]) {
     for newPrice in newPrices {
-      // Find index of existing price with same coinType, chainId, and address
+      // Find index of existing price with same coin, chainId, and address
       if let existingIndex = firstIndex(where: { existingPrice in
-        existingPrice.coinType == newPrice.coinType
+        existingPrice.coin == newPrice.coin
           && existingPrice.chainId == newPrice.chainId
           && existingPrice.address.lowercased() == newPrice.address.lowercased()
       }) {

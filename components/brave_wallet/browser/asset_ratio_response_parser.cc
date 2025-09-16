@@ -103,8 +103,8 @@ std::vector<mojom::AssetPricePtr> ParseAssetPrices(
       continue;
     }
 
-    auto coin_type = GetCoinTypeFromString(payload->coin_type);
-    if (!coin_type) {
+    auto coin = GetCoinTypeFromString(payload->coin);
+    if (!coin) {
       continue;
     }
 
@@ -121,7 +121,7 @@ std::vector<mojom::AssetPricePtr> ParseAssetPrices(
     auto source = GetAssetPriceSource(payload->source);
 
     auto asset_price = mojom::AssetPrice::New();
-    asset_price->coin_type = *coin_type;
+    asset_price->coin = *coin;
     asset_price->chain_id = payload->chain_id;
     asset_price->address = *address;
     asset_price->price = payload->price;

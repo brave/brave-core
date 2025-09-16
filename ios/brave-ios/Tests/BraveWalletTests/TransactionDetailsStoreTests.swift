@@ -43,7 +43,7 @@ class TransactionDetailsStoreTests: XCTestCase {
     assetRatioService._price = { _, _, completion in
       let mockAssetPrices: [BraveWallet.AssetPrice] = [
         .init(
-          coinType: .eth,
+          coin: .eth,
           chainId: BraveWallet.MainnetChainId,
           address: "",
           price: "3059.99",
@@ -53,7 +53,7 @@ class TransactionDetailsStoreTests: XCTestCase {
           percentageChange24h: "-57.23"
         ),
         .init(
-          coinType: .eth,
+          coin: .eth,
           chainId: BraveWallet.SepoliaChainId,
           address: "",
           price: "3059.99",

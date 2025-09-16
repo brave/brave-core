@@ -719,8 +719,8 @@ export class MockedWalletApiProxy {
         success: true,
         values: requests.map((request) => ({
           percentageChange24h: '1',
-          coinType: request.coinType,
-          chainId: request.chainId || '',
+          coin: request.coin,
+          chainId: request.chainId,
           address: request.address || '',
           vsCurrency: vsCurrency,
           cacheStatus: BraveWallet.Gate3CacheStatus.kHit,

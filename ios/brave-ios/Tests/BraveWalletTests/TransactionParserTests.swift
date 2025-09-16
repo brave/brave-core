@@ -75,7 +75,7 @@ class TransactionParserTests: XCTestCase {
   ]
   let assetRatios: [BraveWallet.AssetPrice] = [
     .init(
-      coinType: .eth,
+      coin: .eth,
       chainId: BraveWallet.MainnetChainId,
       address: "",
       price: "1",
@@ -85,7 +85,7 @@ class TransactionParserTests: XCTestCase {
       percentageChange24h: "0"
     ),
     .init(
-      coinType: .eth,
+      coin: .eth,
       chainId: BraveWallet.MainnetChainId,
       address: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
       price: "2",
@@ -95,7 +95,7 @@ class TransactionParserTests: XCTestCase {
       percentageChange24h: "0"
     ),
     .init(
-      coinType: .eth,
+      coin: .eth,
       chainId: BraveWallet.MainnetChainId,
       address: BraveWallet.BlockchainToken.mockUSDCToken.contractAddress,
       price: "3",
@@ -105,7 +105,7 @@ class TransactionParserTests: XCTestCase {
       percentageChange24h: "0"
     ),
     .init(
-      coinType: .sol,
+      coin: .sol,
       chainId: BraveWallet.SolanaMainnet,
       address: "",
       price: "20",
@@ -115,7 +115,7 @@ class TransactionParserTests: XCTestCase {
       percentageChange24h: "0"
     ),
     .init(
-      coinType: .sol,
+      coin: .sol,
       chainId: BraveWallet.SolanaMainnet,
       address: BraveWallet.BlockchainToken.mockSpdToken.contractAddress,
       price: "15",
@@ -125,7 +125,7 @@ class TransactionParserTests: XCTestCase {
       percentageChange24h: "0"
     ),
     .init(
-      coinType: .fil,
+      coin: .fil,
       chainId: BraveWallet.FilecoinMainnet,
       address: "",
       price: "2",
@@ -135,7 +135,7 @@ class TransactionParserTests: XCTestCase {
       percentageChange24h: "0"
     ),
     .init(
-      coinType: .btc,
+      coin: .btc,
       chainId: BraveWallet.BitcoinMainnet,
       address: "",
       price: "62117",
@@ -145,7 +145,7 @@ class TransactionParserTests: XCTestCase {
       percentageChange24h: "0"
     ),
     .init(
-      coinType: .zec,
+      coin: .zec,
       chainId: BraveWallet.ZCashMainnet,
       address: "",
       price: "35",

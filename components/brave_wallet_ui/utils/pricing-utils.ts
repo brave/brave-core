@@ -27,7 +27,7 @@ export const getTokenPriceFromRegistry = (
 
   return registry.find(
     (p) =>
-      p.coinType === token.coin
+      p.coin === token.coin
       && p.chainId === token.chainId
       && p.address.toLowerCase()
         === (token.contractAddress?.toLowerCase() || ''),
@@ -132,7 +132,7 @@ export const getPriceRequestForToken = (
   >,
 ): BraveWallet.AssetPriceRequest | undefined => {
   return {
-    coinType: token.coin,
+    coin: token.coin,
     chainId: token.chainId,
     address: token.contractAddress || undefined,
   } satisfies BraveWallet.AssetPriceRequest

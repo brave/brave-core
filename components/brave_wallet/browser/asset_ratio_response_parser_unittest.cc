@@ -38,7 +38,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseSardineAuthToken) {
 TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   std::string json(R"([
     {
-      "coin_type": "ETH",
+      "coin": "ETH",
       "chain_id": "0x1",
       "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
       "price": "0.55393",
@@ -48,7 +48,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
       "source": "coingecko"
     },
     {
-      "coin_type": "ETH",
+      "coin": "ETH",
       "chain_id": "0x1",
       "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
       "price": "83.77",
@@ -64,7 +64,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   ASSERT_EQ(prices.size(), 2UL);
 
   // Check BAT token (ETH chain with contract address)
-  EXPECT_EQ(prices[0]->coin_type, mojom::CoinType::ETH);
+  EXPECT_EQ(prices[0]->coin, mojom::CoinType::ETH);
   EXPECT_EQ(prices[0]->chain_id, "0x1");
   EXPECT_EQ(prices[0]->address, "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
   EXPECT_EQ(prices[0]->price, "0.55393");
@@ -73,7 +73,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   EXPECT_EQ(prices[0]->source, mojom::AssetPriceSource::kCoingecko);
 
   // Check LINK token (ETH chain with contract address)
-  EXPECT_EQ(prices[1]->coin_type, mojom::CoinType::ETH);
+  EXPECT_EQ(prices[1]->coin, mojom::CoinType::ETH);
   EXPECT_EQ(prices[1]->chain_id, "0x1");
   EXPECT_EQ(prices[1]->address, "0x514910771AF9Ca656af840dff83E8264EcF986CA");
   EXPECT_EQ(prices[1]->price, "83.77");
@@ -85,7 +85,8 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   prices.clear();
   json = R"([
     {
-      "coin_type": "BTC",
+      "coin": "BTC",
+      "chain_id": "bitcoin_mainnet",
       "price": "45000.0",
       "percentage_change_24h": "2.5",
       "vs_currency": "USD",
@@ -93,7 +94,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
       "source": "coingecko"
     },
     {
-      "coin_type": "ETH",
+      "coin": "ETH",
       "chain_id": "0x1",
       "price": "2800.0",
       "percentage_change_24h": "-1.2",
@@ -106,14 +107,14 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   ASSERT_EQ(prices.size(), 2UL);
 
   // Check BTC native token
-  EXPECT_EQ(prices[0]->coin_type, mojom::CoinType::BTC);
+  EXPECT_EQ(prices[0]->coin, mojom::CoinType::BTC);
   EXPECT_EQ(prices[0]->price, "45000.0");
   EXPECT_EQ(prices[0]->vs_currency, "USD");
   EXPECT_EQ(prices[0]->percentage_change_24h, "2.5");
   EXPECT_EQ(prices[0]->source, mojom::AssetPriceSource::kCoingecko);
 
   // Check ETH native token
-  EXPECT_EQ(prices[1]->coin_type, mojom::CoinType::ETH);
+  EXPECT_EQ(prices[1]->coin, mojom::CoinType::ETH);
   EXPECT_EQ(prices[1]->chain_id, "0x1");
   EXPECT_EQ(prices[1]->price, "2800.0");
   EXPECT_EQ(prices[1]->vs_currency, "USD");
@@ -124,7 +125,8 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   prices.clear();
   json = R"([
     {
-      "coin_type": "BTC",
+      "coin": "BTC",
+      "chain_id": "bitcoin_mainnet",
       "price": "42000.0",
       "percentage_change_24h": "0.1",
       "vs_currency": "EUR",
@@ -134,7 +136,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   ])";
   prices = ParseAssetPrices(ParseJson(json));
   ASSERT_EQ(prices.size(), 1UL);
-  EXPECT_EQ(prices[0]->coin_type, mojom::CoinType::BTC);
+  EXPECT_EQ(prices[0]->coin, mojom::CoinType::BTC);
   EXPECT_EQ(prices[0]->price, "42000.0");
   EXPECT_EQ(prices[0]->vs_currency, "EUR");
   EXPECT_EQ(prices[0]->percentage_change_24h, "0.1");
@@ -144,7 +146,8 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   prices.clear();
   json = R"([
     {
-      "coin_type": "BTC",
+      "coin": "BTC",
+      "chain_id": "bitcoin_mainnet",
       "price": "42000.0",
       "percentage_change_24h": "",
       "vs_currency": "EUR",
@@ -154,7 +157,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   ])";
   prices = ParseAssetPrices(ParseJson(json));
   ASSERT_EQ(prices.size(), 1UL);
-  EXPECT_EQ(prices[0]->coin_type, mojom::CoinType::BTC);
+  EXPECT_EQ(prices[0]->coin, mojom::CoinType::BTC);
   EXPECT_EQ(prices[0]->price, "42000.0");
   EXPECT_EQ(prices[0]->vs_currency, "EUR");
   EXPECT_EQ(prices[0]->percentage_change_24h, "");
@@ -164,7 +167,8 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   prices.clear();
   json = R"([
     {
-      "coin_type": "BTC",
+      "coin": "BTC",
+      "chain_id": "bitcoin_mainnet",
       "price": "42000.0",
       "percentage_change_24h": "0.1",
       "vs_currency": "EUR",
@@ -192,7 +196,7 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
   EXPECT_EQ(prices.size(), 0UL);
 
   // Response missing required fields
-  json = R"([{"coin_type": "BTC"}])";  // missing price
+  json = R"([{"coin": "BTC"}])";  // missing price
   prices = ParseAssetPrices(ParseJson(json));
   EXPECT_EQ(prices.size(), 0UL);  // Should skip invalid entries
 }

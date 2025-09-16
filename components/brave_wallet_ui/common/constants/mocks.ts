@@ -376,7 +376,7 @@ export const mockCardanoAccount: BraveWallet.AccountInfo = {
 
 export const mockSpotPriceRegistry: BraveWallet.AssetPrice[] = [
   {
-    coinType: BraveWallet.CoinType.ETH,
+    coin: BraveWallet.CoinType.ETH,
     chainId: '0x1',
     address: '0x0000000000000000000000000000000000000000',
     price: '4000',
@@ -386,7 +386,7 @@ export const mockSpotPriceRegistry: BraveWallet.AssetPrice[] = [
     source: BraveWallet.AssetPriceSource.kCoingecko,
   },
   {
-    coinType: BraveWallet.CoinType.ETH,
+    coin: BraveWallet.CoinType.ETH,
     chainId: '0x1',
     address: '0x0000000000000000000000000000000000000000',
     price: '100',
@@ -396,7 +396,7 @@ export const mockSpotPriceRegistry: BraveWallet.AssetPrice[] = [
     source: BraveWallet.AssetPriceSource.kCoingecko,
   },
   {
-    coinType: BraveWallet.CoinType.ETH,
+    coin: BraveWallet.CoinType.ETH,
     chainId: '0x1',
     address: mockBasicAttentionToken.contractAddress,
     price: '0.88',

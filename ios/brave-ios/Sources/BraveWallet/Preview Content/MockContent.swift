@@ -639,7 +639,7 @@ extension ParsedTransaction {
       allTokens: [],
       assetRatios: [
         BraveWallet.AssetPrice(
-          coinType: BraveWallet.BlockchainToken.previewToken.coin,
+          coin: BraveWallet.BlockchainToken.previewToken.coin,
           chainId: BraveWallet.BlockchainToken.previewToken.chainId,
           address: BraveWallet.BlockchainToken.previewToken.contractAddress,
           price: "1",
