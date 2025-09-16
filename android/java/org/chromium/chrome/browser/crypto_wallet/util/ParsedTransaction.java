@@ -179,9 +179,6 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 isSPLTransaction
                         ? findToken(fullTokenList, solTxData != null ? solTxData.tokenAddress : "")
                         : findToken(fullTokenList, to);
-        final String tokenSymbolLower =
-                token != null ? token.symbol.toLowerCase(Locale.getDefault()) : "";
-
         ParsedTransaction parsedTransaction = new ParsedTransaction(feeDetails);
         // Common fields
         parsedTransaction.hash = txInfo.txHash;

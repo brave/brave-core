@@ -44,17 +44,18 @@ public class AssetsPricesHelper {
         }
 
         AsyncUtils.MultiResponseHandler multiResponse = new AsyncUtils.MultiResponseHandler(1);
-        AsyncUtils.GetPriceResponseContext priceContext = new AsyncUtils.GetPriceResponseContext(
-                multiResponse.singleResponseComplete);
+        AsyncUtils.GetPriceResponseContext priceContext =
+                new AsyncUtils.GetPriceResponseContext(multiResponse.singleResponseComplete);
 
-        multiResponse.setWhenAllCompletedAction(() -> {
-            if (priceContext.success && priceContext.prices != null) {
-                callback.call(Arrays.asList(priceContext.prices));
-            } else {
-                Log.e(TAG, "Failed to fetch prices");
-                callback.call(new ArrayList<>());
-            }
-        });
+        multiResponse.setWhenAllCompletedAction(
+                () -> {
+                    if (priceContext.success && priceContext.prices != null) {
+                        callback.call(Arrays.asList(priceContext.prices));
+                    } else {
+                        Log.e(TAG, "Failed to fetch prices");
+                        callback.call(new ArrayList<>());
+                    }
+                });
 
         assetRatioService.getPrice(requests.toArray(new AssetPriceRequest[0]), "usd", priceContext);
     }
@@ -69,7 +70,7 @@ public class AssetsPricesHelper {
         for (AssetPrice assetPrice : assetPrices) {
             // Match by coin, chainId, and address
             if (assetPrice.coin == coin
-                    && assetPrice.chainId == chainId
+                    && Objects.equals(assetPrice.chainId, chainId)
                     && Objects.toString(assetPrice.address, "")
                             .equals(Objects.toString(address, ""))) {
                 return parseAssetPrice(assetPrice);
