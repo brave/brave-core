@@ -30,6 +30,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/tools/todo_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/browser/types.h"
@@ -63,6 +64,7 @@ class AssociatedContentManager;
 class ConversationHandler : public mojom::ConversationHandler,
                             public mojom::UntrustedConversationHandler,
                             public ModelService::Observer,
+                            public ToolProvider::Observer,
                             public ConversationHandlerForMetrics {
  public:
   using GeneratedTextCallback =
@@ -272,6 +274,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnDefaultModelChanged(const std::string& old_key,
                              const std::string& new_key) override;
   void OnModelRemoved(const std::string& removed_key) override;
+
+  // ToolProvider::Observer
+  void OnContentTaskStarted(tabs::TabHandle tab_handle) override;
 
  private:
   friend class ::AIChatUIBrowserTest;

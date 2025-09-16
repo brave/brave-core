@@ -8,7 +8,16 @@
 #include <memory>
 #include <vector>
 
+#include "brave/browser/ai_chat/page_content_blocks.h"
+#include "brave/browser/ai_chat/tools/click_tool.h"
+#include "brave/browser/ai_chat/tools/drag_and_release_tool.h"
+#include "brave/browser/ai_chat/tools/history_tool.h"
+#include "brave/browser/ai_chat/tools/move_mouse_tool.h"
 #include "brave/browser/ai_chat/tools/navigation_tool.h"
+#include "brave/browser/ai_chat/tools/scroll_tool.h"
+#include "brave/browser/ai_chat/tools/select_tool.h"
+#include "brave/browser/ai_chat/tools/type_tool.h"
+#include "brave/browser/ai_chat/tools/wait_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
@@ -17,6 +26,7 @@
 #include "chrome/browser/actor/actor_task.h"
 #include "chrome/browser/actor/browser_action_util.h"
 #include "chrome/browser/actor/task_id.h"
+#include "chrome/browser/page_content_annotations/multi_source_page_context_fetcher.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -91,6 +101,10 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
 
     task_tab_handle_ =
         tabs::TabInterface::GetFromContents(new_contents)->GetHandle();
+
+    for (auto& observer : observers_) {
+      observer.OnContentTaskStarted(task_tab_handle_);
+    }
   }
   actor_service_->GetTask(task_id_)->AddTab(
       task_tab_handle_, base::BindOnce(&ContentAgentToolProvider::TabAdded,
@@ -126,7 +140,16 @@ void ContentAgentToolProvider::ExecuteActions(
 void ContentAgentToolProvider::CreateTools() {
   tools_.clear();
 
+    tools_.push_back(std::make_unique<ClickTool>(this, actor_service_));
+    tools_.push_back(
+        std::make_unique<DragAndReleaseTool>(this, actor_service_));
+    tools_.push_back(std::make_unique<HistoryTool>(this, actor_service_));
+    tools_.push_back(std::make_unique<MoveMouseTool>(this, actor_service_));
   tools_.push_back(std::make_unique<NavigationTool>(this, actor_service_));
+    tools_.push_back(std::make_unique<ScrollTool>(this, actor_service_));
+    tools_.push_back(std::make_unique<SelectTool>(this, actor_service_));
+    tools_.push_back(std::make_unique<TypeTool>(this, actor_service_));
+    tools_.push_back(std::make_unique<WaitTool>(this, actor_service_));
 }
 
 void ContentAgentToolProvider::OnActionsFinished(
@@ -181,9 +204,11 @@ void ContentAgentToolProvider::ReceivedAnnotatedPageContent(
     return;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/49301): implement
-  // structured representation of page content
-  NOTREACHED();
+  auto content_blocks = ConvertAnnotatedPageContentToBlocks(apc);
+  content_blocks.insert(
+      content_blocks.begin(),
+      std::move(CreateContentBlocksForText("Action successful")[0]));
+  std::move(callback).Run(std::move(content_blocks));
 }
 
 }  // namespace ai_chat
