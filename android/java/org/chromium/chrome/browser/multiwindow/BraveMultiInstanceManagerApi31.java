@@ -92,7 +92,7 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
                                 .setAction(
                                         mActivity.getResources().getString(R.string.merge_windows),
                                         null)
-                                .setSingleLine(false)
+                                .setDefaultLines(false)
                                 .setDuration(10000);
                 Tab firstTab = tabs.get(0);
                 SnackbarManager snackbarManager =

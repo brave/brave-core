@@ -161,7 +161,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                                     getResources()
                                             .getString(R.string.brave_open_system_sync_settings),
                                     null)
-                            .setSingleLine(false)
+                            .setDefaultLines(false)
                             .setDuration(0); // it would use default timing for snackbar
 
             SnackbarManager snackbarManager = SnackbarManagerProvider.from(getWindowAndroid());
