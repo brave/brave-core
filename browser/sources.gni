@@ -280,14 +280,6 @@ brave_chrome_browser_deps = [
   "//url",
 ]
 
-brave_chrome_browser_allow_circular_includes_from = [
-  "//brave/browser/ui",
-  "//brave/browser/brave_ads:impl",
-  "//brave/browser/brave_ads/creatives/search_result_ad",
-  "//brave/browser/brave_stats",
-  "//brave/browser/ntp_background",
-]
-
 if (enable_psst) {
   brave_chrome_browser_deps += [
     "//brave/components/psst/browser/content",
@@ -373,13 +365,10 @@ if (is_mac) {
     "//brave/app:command_ids",
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/updater:buildflags",
-    "//brave/browser/upgrade_when_idle",
     "//chrome:strings",
     "//chrome/app:generated_resources",
     "//chrome/common:non_code_constants",
   ]
-  brave_chrome_browser_allow_circular_includes_from +=
-      [ "//brave/browser/upgrade_when_idle" ]
   brave_chrome_framework_contents = []
 }
 
@@ -644,6 +633,14 @@ brave_chrome_browser_ui_allow_circular_includes_from = [ "//brave/browser/ui" ]
 brave_chrome_browser_ui_allow_circular_includes_from +=
     brave_ui_allow_circular_includes_from
 
+brave_chrome_browser_allow_circular_includes_from = [
+  "//brave/browser/ui",
+  "//brave/browser/brave_ads:impl",
+  "//brave/browser/brave_ads/creatives/search_result_ad",
+  "//brave/browser/brave_stats",
+  "//brave/browser/ntp_background",
+]
+
 if (enable_brave_ai_chat_agent_profile) {
   brave_chrome_browser_deps +=
       [ "//brave/browser/ai_chat:ai_chat_agent_profile_impl" ]
@@ -703,4 +700,10 @@ if (is_android) {
 if (!is_android) {
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/ui/webui/brave_new_tab_page_refresh" ]
+}
+
+if (is_mac) {
+  brave_chrome_browser_deps += [ "//brave/browser/upgrade_when_idle" ]
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/upgrade_when_idle" ]
 }
