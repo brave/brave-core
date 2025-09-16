@@ -41,6 +41,7 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "services/network/public/mojom/network_context.mojom.h"
 #include "ui/base/idle/idle.h"
 
 class GURL;
@@ -79,6 +80,7 @@ class AdsServiceImpl final : public AdsService,
  public:
   explicit AdsServiceImpl(
       std::unique_ptr<Delegate> delegate,
+      network::mojom::NetworkContext* mojom_network_context,
       PrefService* prefs,
       PrefService* local_state,
       std::unique_ptr<VirtualPrefProvider::Delegate>
@@ -216,6 +218,10 @@ class AdsServiceImpl final : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
   // request business logic.
+  void HttpUrlRequest(mojom::UrlRequestInfoPtr mojom_url_request,
+                      UrlRequestCallback callback);
+  void ObliviousHttpUrlRequest(mojom::UrlRequestInfoPtr mojom_url_request,
+                               UrlRequestCallback callback);
   void URLRequestCallback(SimpleURLLoaderList::iterator url_loader_iter,
                           UrlRequestCallback callback,
                           std::unique_ptr<std::string> response_body);
@@ -458,6 +464,9 @@ class AdsServiceImpl final : public AdsService,
   base::CancelableTaskTracker history_service_task_tracker_;
 
   SimpleURLLoaderList url_loaders_;
+
+  const raw_ptr<network::mojom::NetworkContext>
+      mojom_network_context_;  // Not owned.
 
   const raw_ptr<PrefService> prefs_;  // Not owned.
 
