@@ -6,10 +6,9 @@
 #ifndef BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_LINE_CHART_UI_H_
 #define BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_LINE_CHART_UI_H_
 
-#include <memory>
-
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_controller.h"
+#include "url/gurl.h"
 
 namespace line_chart {
 

@@ -7,4 +7,5 @@ include_rules = [
   "+ios/components/webui",
   "+ios/web/webui",
   "+services/network/public/mojom",
+  "+ui/strings/grit",
 ]
