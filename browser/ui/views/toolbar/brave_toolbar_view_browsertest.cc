@@ -343,13 +343,14 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, SplitTabsToolbarButtonTest) {
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   SplitTabsToolbarButton* split_tabs_toolbar_button =
-      toolbar_view_->split_tabs_toolbar_button_for_testing();
+      browser_view->toolbar()->split_tabs_.get();
   ASSERT_TRUE(split_tabs_toolbar_button);
 
   // Check our menu model is used for split button.
   auto* menu_model = static_cast<BraveSplitTabMenuModel*>(
-      split_tabs_toolbar_button->split_tab_menu_for_testing());
+      split_tabs_toolbar_button->split_tab_menu_.get());
 
   // This id calc is copied from GetCommandIdInt() at split_tab_menu_model.cc
   // Check that method if test failed.

@@ -1,0 +1,10 @@
+diff --git a/chrome/browser/ui/views/toolbar/BUILD.gn b/chrome/browser/ui/views/toolbar/BUILD.gn
+index 1818896a7aa5e2c8fbf45112a83318e2f9e6cbf2..d35617074d9848a59bbd386766d70044c40fcc9b 100644
+--- a/chrome/browser/ui/views/toolbar/BUILD.gn
++++ b/chrome/browser/ui/views/toolbar/BUILD.gn
+@@ -203,4 +203,5 @@ source_set("toolbar") {
+   if (!is_android) {
+     deps += [ "//chrome/browser/ui/views/zoom" ]
+   }
++  import("//brave/browser/ui/views/toolbar/sources.gni") deps += brave_browser_ui_views_toolbar_deps
+ }

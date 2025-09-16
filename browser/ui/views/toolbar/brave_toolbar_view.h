@@ -61,7 +61,7 @@ class BraveToolbarView : public ToolbarView,
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarDividerNotShownTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, SplitTabsToolbarButtonTest);
+
   void LoadImages() override;
   void ResetLocationBarBounds();
   void ResetBookmarkButtonBounds();

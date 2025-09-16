@@ -5,9 +5,10 @@
 
 #include "chrome/browser/ui/views/toolbar/split_tabs_button.h"
 
+#include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
+
+#define SplitTabMenuModel BraveSplitTabMenuModel
+
 #include <chrome/browser/ui/views/toolbar/split_tabs_button.cc>
 
-void SplitTabsToolbarButton::SetMenuModel(
-    std::unique_ptr<ui::SimpleMenuModel> menu) {
-  split_tab_menu_ = std::move(menu);
-}
+#undef SplitTabMenuModel

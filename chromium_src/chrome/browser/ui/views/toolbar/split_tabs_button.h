@@ -6,18 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_SPLIT_TABS_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_SPLIT_TABS_BUTTON_H_
 
-#include <memory>
-
-namespace ui {
-class SimpleMenuModel;
-}  // namespace ui
-
-#define GetIconsForTesting(...)                       \
-  GetIconsForTesting(__VA_ARGS__);                    \
-  ui::SimpleMenuModel* split_tab_menu_for_testing() { \
-    return split_tab_menu_.get();                     \
-  }                                                   \
-  void SetMenuModel(std::unique_ptr<ui::SimpleMenuModel> menu)
+#define GetIconsForTesting(...)    \
+  GetIconsForTesting(__VA_ARGS__); \
+  FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, SplitTabsToolbarButtonTest)
 
 #include <chrome/browser/ui/views/toolbar/split_tabs_button.h>  // IWYU pragma: export
 
