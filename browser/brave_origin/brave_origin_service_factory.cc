@@ -41,24 +41,16 @@ namespace brave_origin {
 
 namespace {
 
-// Define BraveOrigin-specific metadata for each pref we want to control
-constexpr auto kBraveOriginMetadata =
+// Define BraveOrigin-specific metadata for browser-level prefs
+constexpr auto kBraveOriginBrowserMetadata =
     base::MakeFixedFlatMap<std::string_view,
                            BraveOriginServiceFactory::BraveOriginPrefMetadata>({
-
-        // Wayback Machine preferences
-        {kBraveWaybackMachineEnabled,
-         BraveOriginServiceFactory::BraveOriginPrefMetadata(
-             false,
-             BraveOriginPolicyScope::kProfile,
-             /*user_settable=*/true)},
 
 #if BUILDFLAG(ENABLE_TOR)
         // Tor preferences
         {tor::prefs::kTorDisabled,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
-             BraveOriginPolicyScope::kGlobal,
              /*user_settable=*/false)},
 #endif
 
@@ -66,28 +58,36 @@ constexpr auto kBraveOriginMetadata =
         {kStatsReportingEnabled,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
-             BraveOriginPolicyScope::kGlobal,
              /*user_settable=*/true)},
 
         // P3A preferences
         {p3a::kP3AEnabled, BraveOriginServiceFactory::BraveOriginPrefMetadata(
                                false,
-                               BraveOriginPolicyScope::kGlobal,
                                /*user_settable=*/true)},
+    });
+
+// Define BraveOrigin-specific metadata for profile-level prefs
+constexpr auto kBraveOriginProfileMetadata =
+    base::MakeFixedFlatMap<std::string_view,
+                           BraveOriginServiceFactory::BraveOriginPrefMetadata>({
+
+        // Wayback Machine preferences
+        {kBraveWaybackMachineEnabled,
+         BraveOriginServiceFactory::BraveOriginPrefMetadata(
+             false,
+             /*user_settable=*/true)},
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
         // Brave Rewards preferences
         {brave_rewards::prefs::kDisabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
-             BraveOriginPolicyScope::kProfile,
              /*user_settable=*/false)},
 
         // Brave Wallet preferences
         {brave_wallet::prefs::kDisabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
-             BraveOriginPolicyScope::kProfile,
              /*user_settable=*/false)},
 #endif
 
@@ -95,7 +95,6 @@ constexpr auto kBraveOriginMetadata =
         {ai_chat::prefs::kEnabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
-             BraveOriginPolicyScope::kProfile,
              /*user_settable=*/false)},
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -103,7 +102,6 @@ constexpr auto kBraveOriginMetadata =
         {speedreader::kSpeedreaderPrefFeatureEnabled,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
-             BraveOriginPolicyScope::kProfile,
              /*user_settable=*/true)},
 #endif
 
@@ -111,7 +109,6 @@ constexpr auto kBraveOriginMetadata =
         {brave_news::prefs::kBraveNewsDisabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
-             BraveOriginPolicyScope::kProfile,
              /*user_settable=*/false)},
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -119,7 +116,6 @@ constexpr auto kBraveOriginMetadata =
         {brave_vpn::prefs::kManagedBraveVPNDisabled,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
-             BraveOriginPolicyScope::kProfile,
              /*user_settable=*/false)},
 #endif
 
@@ -127,7 +123,6 @@ constexpr auto kBraveOriginMetadata =
         {kBraveTalkDisabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
-             BraveOriginPolicyScope::kProfile,
              /*user_settable=*/false)},
     });
 
@@ -164,30 +159,48 @@ bool BraveOriginServiceFactory::ServiceIsCreatedWithBrowserContext() const {
 }
 
 // static
-BraveOriginPolicyMap
-BraveOriginServiceFactory::BuildBraveOriginPolicyDefinitions() {
-  BraveOriginPolicyMap policy_definitions;
+BraveOriginPolicyMap BraveOriginServiceFactory::GetBrowserPolicyDefinitions() {
+  BraveOriginPolicyMap browser_policy_definitions;
 
-  // Build the final preference definitions
+  // Build browser-level preference definitions
   for (const auto& [policy_key, pref_name, type] :
        policy::kBraveSimplePolicyMap) {
     if (const auto* metadata =
-            base::FindOrNull(kBraveOriginMetadata, pref_name)) {
-      // brave_origin_pref_key will be computed dynamically at usage time
-      // For global prefs: use pref_name directly
-      // For profile prefs: use profile_id.pref_name (computed by
-      // BraveOriginService)
+            base::FindOrNull(kBraveOriginBrowserMetadata, pref_name)) {
       std::string brave_origin_pref_key = pref_name;
 
-      policy_definitions.emplace(
+      browser_policy_definitions.emplace(
           pref_name,
           BraveOriginPolicyInfo(pref_name, metadata->origin_default_value,
-                                metadata->scope, metadata->user_settable,
-                                policy_key, brave_origin_pref_key));
+                                metadata->user_settable, policy_key,
+                                brave_origin_pref_key));
     }
   }
 
-  return policy_definitions;
+  return browser_policy_definitions;
+}
+
+// static
+BraveOriginPolicyMap BraveOriginServiceFactory::GetProfilePolicyDefinitions(
+    std::string_view profile_id) {
+  BraveOriginPolicyMap profile_policy_definitions;
+
+  // Build profile-level preference definitions
+  for (const auto& [policy_key, pref_name, type] :
+       policy::kBraveSimplePolicyMap) {
+    if (const auto* metadata =
+            base::FindOrNull(kBraveOriginProfileMetadata, pref_name)) {
+      std::string brave_origin_pref_key = pref_name;
+
+      profile_policy_definitions.emplace(
+          pref_name,
+          BraveOriginPolicyInfo(pref_name, metadata->origin_default_value,
+                                metadata->user_settable, policy_key,
+                                brave_origin_pref_key));
+    }
+  }
+
+  return profile_policy_definitions;
 }
 
 }  // namespace brave_origin
