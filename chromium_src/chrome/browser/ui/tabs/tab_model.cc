@@ -16,3 +16,14 @@
 #include <chrome/browser/ui/tabs/tab_model.cc>  // IWYU pragma: export
 
 #undef UNPINNED
+
+namespace tabs {
+
+TabInterface* TabModel::GetOpener() {
+  return opener_;
+}
+const TabInterface* TabModel::GetOpener() const {
+  return opener_;
+}
+
+}  // namespace tabs

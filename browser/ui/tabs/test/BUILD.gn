@@ -7,10 +7,7 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [
-    "brave_tab_strip_model_browsertest.cc",
-    "tree_tabs_browsertest.cc",
-  ]
+  sources = [ "brave_tab_strip_model_browsertest.cc" ]
 
   deps = [
     "//brave/browser/ui/tabs:tabs_public",
@@ -31,10 +28,12 @@ source_set("browser_tests") {
       "shared_pinned_tab_service_browsertest.h",
       "split_view_browser_data_browsertest.cc",
       "split_view_tab_strip_model_adapter_browsertest.cc",
+      "tree_tabs_browsertest.cc",
     ]
     deps += [
       "//brave/browser/ui/tabs:split_view",
       "//brave/browser/ui/tabs:tab_strip",
+      "//brave/components/tabs",
       "//chrome/browser/ui:ui_features",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/toasts",
