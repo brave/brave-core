@@ -29,6 +29,34 @@ https://docs.google.com/document/d/1ccnBWBV_KkknZpZYxcOXTwtfIiaSzeLS5dMd08N2pbs/
 12. Then we enumerate each available URL in the list and do the same as in points #8-11.
 13. When all tasks are completed, the user sees all status and progress information in the consent dialog.
 
+### Workflow failure cases
+
+1. <a id="script-times-out"></a>The script times out or page crashes.</br> This happens when an injected script (either from a user or a policy) never finishes running. Common causes include an infinite loop, a promise that never resolves, or renderer crash can lead to the same situation, when we need to stop the process and notify the front end.
+
+#### Handling Script Timeouts and page crashes
+
+The `base::OneShotTimer timeout_timer_;` is used to handle cases when a script fails to finish running, (i.e. ["The script times out or page crashes"](#script-times-out)).</br>
+Use the next method for script execution as it starts the timer first (with interval: 15 seconds):
+```
+void PsstTabWebContentsObserver::RunWithTimeout(
+    const int last_committed_entry_id,
+    const std::string& script,
+    InsertScriptInPageCallback callback) {
+  timeout_timer_.Start(
+      FROM_HERE, kScriptTimeout,
+      base::BindOnce(&PsstTabWebContentsObserver::OnScriptTimeout,
+                     weak_factory_.GetWeakPtr(), last_committed_entry_id));
+  inject_script_callback_.Run(script, std::move(callback));
+}
+
+```
+Parameters:</br>
+`const int last_committed_entry_id` -  the unique last committed entry ID;</br>
+`const std::string& script` - the script to be injected;</br>
+`InsertScriptInPageCallback callback` - callback function that handles the script result once it executes;
+
+The `PsstTabWebContentsObserver::OnScriptTimeout` is special timeout handler, which stops the other script execution result handlers by calling the `weak_factory_.InvalidateWeakPtrs();`
+
 # PSST CRX Component
 
 Contains set of rules and scripts for small number of very popular sites (Google, Facebook, Twitter, Twitch, etc.). 
