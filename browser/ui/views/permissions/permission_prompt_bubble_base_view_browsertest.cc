@@ -6,6 +6,7 @@
 #include "chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.h"
 
 #include "base/test/run_until.h"
+#include "chrome/browser/ui/views/chrome_widget_sublevel.h"
 #include "chrome/browser/ui/views/permissions/permission_prompt_style.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/content_settings/core/common/content_settings_types.mojom.h"
@@ -15,6 +16,7 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/views/widget/widget_observer.h"
 
 using PermissionPromptBubbleBaseViewBrowserTest = InProcessBrowserTest;
 
@@ -85,7 +87,8 @@ class MockPermissionPromptDelegate
 };
 
 class MockPermissionPromptBubbleBaseView
-    : public PermissionPromptBubbleBaseView {
+    : public PermissionPromptBubbleBaseView,
+      public views::WidgetObserver {
  public:
   MockPermissionPromptBubbleBaseView(
       Browser* browser,
@@ -94,7 +97,22 @@ class MockPermissionPromptBubbleBaseView
                                        delegate,
                                        PermissionPromptStyle::kBubbleOnly) {
     CreateWidget();
-    ShowWidget();
+    GetWidget()->AddObserver(this);
+
+    // Instead of using ShowWidget(), directly show the widget to avoid
+    // dependency on browser window activation state.
+    GetWidget()->Show();
+  }
+  ~MockPermissionPromptBubbleBaseView() override = default;
+
+  // views::WidgetObserver:
+  void OnWidgetCreated(views::Widget* widget) override {
+    // Ensure the widget is active when created.
+    widget->Activate();
+  }
+
+  void OnWidgetDestroyed(views::Widget* widget) override {
+    widget->RemoveObserver(this);
   }
 };
 
@@ -108,6 +126,12 @@ IN_PROC_BROWSER_TEST_F(PermissionPromptBubbleBaseViewBrowserTest,
   auto create_permission_prompt = [&]() {
     auto* permission_prompt = new MockPermissionPromptBubbleBaseView(
         browser(), mock_delegate.GetWeakPtr());
+    // Wait until the prompt widget's native widget is created. Before that,
+    // IsActive() will return false.
+    EXPECT_TRUE(base::test::RunUntil(
+        [&]() { return permission_prompt->GetWidget()->IsActive(); }));
+    EXPECT_EQ(permission_prompt->GetWidget()->GetZOrderSublevel(),
+              ChromeWidgetSublevel::kSublevelSecurity);
     EXPECT_EQ(permission_prompt->GetWidget()->GetZOrderLevel(),
               ui::ZOrderLevel::kSecuritySurface);
 
