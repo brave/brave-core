@@ -633,6 +633,15 @@ const util = {
     options = config.defaultOptions,
   ) => {
     assert(Array.isArray(targets))
+
+    if (config.useClangCoverage()) {
+      const instrumentationFile = path.join(
+        config.outputDir,
+        'files-to-instrument.txt',
+      )
+      await generateInstrumentationFile(instrumentationFile)
+    }
+
     const buildId = crypto.randomUUID()
     const outputDir = options.outputDir || config.outputDir
     const progressMessage = `build ${targets} (${path.basename(

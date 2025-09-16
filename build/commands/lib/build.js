@@ -36,15 +36,7 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.buildConfig = buildConfig
   config.update(options)
   checkVersionsMatch()
-
-  if (config.useClangCoverage()) {
-    const instrumentationFile = path.join(
-      config.outputDir,
-      'files-to-instrument.txt',
-    )
-    await util.generateInstrumentationFile(instrumentationFile)
-  }
-
+  
   util.touchOverriddenFiles()
   branding.update()
   await util.buildNativeRedirectCC()
