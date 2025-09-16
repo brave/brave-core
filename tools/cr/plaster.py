@@ -259,7 +259,7 @@ class PlasterFile:
             pattern = substitution.get('re_pattern', '')
             replace = substitution.get('replace', '')
             count = substitution.get('count', 0)
-            flags = substitution.get('re_flags', '')
+            flags = substitution.get('re_flags', [])
 
             re_flags = 0
             for flag in flags:
