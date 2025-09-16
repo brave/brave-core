@@ -134,6 +134,11 @@ ConversationHandler::ConversationHandler(
     conversation_capability_ = mojom::ConversationCapability::CONTENT_AGENT;
   }
 
+  // Observe tool providers
+  for (const auto& tool_provider : tool_providers_) {
+    tool_provider->AddObserver(this);
+  }
+
   // When a client disconnects, let observers know
   receivers_.set_disconnect_handler(
       base::BindRepeating(&ConversationHandler::OnClientConnectionChanged,
@@ -165,6 +170,9 @@ ConversationHandler::ConversationHandler(
 
 ConversationHandler::~ConversationHandler() {
   OnConversationDeleted();
+  for (const auto& tool_provider : tool_providers_) {
+    tool_provider->RemoveObserver(this);
+  }
 }
 
 void ConversationHandler::AddObserver(Observer* observer) {
@@ -1530,6 +1538,12 @@ void ConversationHandler::OnModelRemoved(const std::string& removed_key) {
 
   // Update the engine and fetch the new models
   InitEngine();
+}
+
+void ConversationHandler::OnContentTaskStarted(tabs::TabHandle tab_handle) {
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->ContentTaskStarted(tab_handle.raw_value());
+  }
 }
 
 void ConversationHandler::OnModelDataChanged() {

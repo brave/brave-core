@@ -11,4 +11,12 @@ ToolProvider::ToolProvider() = default;
 
 ToolProvider::~ToolProvider() = default;
 
+void ToolProvider::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void ToolProvider::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
 }  // namespace ai_chat

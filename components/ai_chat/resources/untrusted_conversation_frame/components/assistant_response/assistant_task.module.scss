@@ -1,0 +1,25 @@
+.task {
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-xl);
+  min-height: 350px;
+  box-shadow: var(--leo-effect-elevation-01);
+}
+
+.taskContent {
+  padding: var(--leo-spacing-l);
+  display: flex;
+  flex-direction: row;
+  gap: var(--leo-spacing-xs);
+  flex-wrap: wrap;
+}
+
+.taskData {
+  flex: 1 1 0;
+  min-width: min(300px, 100%);
+}
+
+.taskImage {
+  // display: none;
+  flex: 1 1 0;
+  min-width: min(300px, 100%);
+}

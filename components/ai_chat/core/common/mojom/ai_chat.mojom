@@ -14,7 +14,9 @@ import "url/mojom/url.mojom";
 // Share some tool names between the browser and the UI so that
 // custom user actions and UI representations can be created.
 const string kUserChoiceToolName = "user_choice_tool";
+const string kTodoToolName = "todo_write";
 const string kNavigateToolName = "web_page_navigator";
+const string kAssistantDetailStorageToolName = "assistant_detail_storage";
 const string kMemoryStorageToolName = "memory_storage_tool";
 
 // Maximum length for memory and customization records.
@@ -677,6 +679,8 @@ interface UntrustedConversationUI {
   OnConversationHistoryUpdate(ConversationTurn? entry);
   OnToolUseEventOutput(string entry_uuid, ToolUseEvent tool_use);
   OnEntriesUIStateChanged(ConversationEntriesState state);
+
+  ContentTaskStarted(int32 tab_id);
 
   // Called when the associated content is changed - called when the untrusted
   // conversation frame is attached and when the content is changed.
