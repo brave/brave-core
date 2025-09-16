@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/actor/site_policy.cc b/chrome/browser/actor/site_policy.cc
+index 2e5ed7d2d8bc6b44a16e50f29af594221db54738..f0d6626adbeda2264c73484315f4b2be3724d941 100644
+--- a/chrome/browser/actor/site_policy.cc
++++ b/chrome/browser/actor/site_policy.cc
+@@ -229,6 +229,7 @@ void MayActOnUrl(const GURL& url,
+     return;
+   }
+ 
++  BRAVE_MAY_ACT_ON_URL_FALLBACK
+   // Fail closed.
+   decision_wrapper->Reject("Fallback");
+ }

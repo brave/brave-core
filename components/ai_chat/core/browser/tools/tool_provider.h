@@ -52,6 +52,10 @@ class ToolProvider {
   // Note: any filtering conditions required by ToolProviders can be added as
   // params here.
   virtual std::vector<base::WeakPtr<Tool>> GetTools() = 0;
+
+  // Attempts to stops all current tasks started by Tools from this
+  // ToolProvider.
+  virtual void StopAllTasks() {}
 };
 
 }  // namespace ai_chat
