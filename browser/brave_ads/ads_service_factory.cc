@@ -23,6 +23,7 @@
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -30,6 +31,8 @@
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 
 namespace brave_ads {
@@ -78,14 +81,18 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
 
+  auto* prefs = profile->GetPrefs();
+  auto* local_state = g_browser_process->local_state();
+
+  auto* default_store_partition = profile->GetDefaultStoragePartition();
+
   auto* brave_adaptive_captcha_service =
       brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
           profile);
   CHECK(brave_adaptive_captcha_service);
 
   auto delegate = std::make_unique<AdsServiceDelegate>(
-      *profile, g_browser_process->local_state(),
-      *brave_adaptive_captcha_service,
+      *profile, local_state, *brave_adaptive_captcha_service,
       std::make_unique<NotificationAdPlatformBridge>(*profile));
 
   auto* history_service = HistoryServiceFactory::GetForProfile(
@@ -97,12 +104,14 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(profile);
 
+  auto network_client = std::make_unique<NetworkClient>(
+      default_store_partition->GetURLLoaderFactoryForBrowserProcess(),
+      default_store_partition->GetNetworkContext(),
+      prefs->GetBoolean(brave_rewards::prefs::kUseRewardsStagingServer));
+
   return std::make_unique<AdsServiceImpl>(
-      std::move(delegate), profile->GetPrefs(),
-      g_browser_process->local_state(),
+      std::move(delegate), prefs, local_state, std::move(network_client),
       std::make_unique<VirtualPrefProviderDelegate>(*profile),
-      profile->GetDefaultStoragePartition()
-          ->GetURLLoaderFactoryForBrowserProcess(),
       brave::GetChannelName(), profile->GetPath(), CreateAdsTooltipsDelegate(),
       std::make_unique<DeviceIdImpl>(),
       std::make_unique<BatAdsServiceFactoryImpl>(),

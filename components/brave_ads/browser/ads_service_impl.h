@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
 
 #include <cstdint>
-#include <list>
 #include <map>
 #include <memory>
 #include <optional>
@@ -26,6 +25,7 @@
 #include "brave/components/brave_ads/browser/application_state/background_helper.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
+#include "brave/components/brave_ads/core/browser/service/network_client.h"
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -56,19 +56,16 @@ namespace brave_rewards {
 class RewardsService;
 }  // namespace brave_rewards
 
-namespace network {
-class SimpleURLLoader;
-class SharedURLLoaderFactory;
-}  // namespace network
-
 namespace brave_ads {
 
 class AdsTooltipsDelegate;
 class BatAdsServiceFactory;
 class DeviceId;
-class ResourceComponent;
-struct NewTabPageAdInfo;
 class NewTabPageAdPrefetcher;
+class ResourceComponent;
+class NetworkClient;
+struct NewTabPageAdInfo;
+
 class AdsServiceImpl final : public AdsService,
                              public bat_ads::mojom::BatAdsClient,
                              public bat_ads::mojom::BatAdsObserver,
@@ -81,9 +78,9 @@ class AdsServiceImpl final : public AdsService,
       std::unique_ptr<Delegate> delegate,
       PrefService* prefs,
       PrefService* local_state,
+      std::unique_ptr<NetworkClient> network_client,
       std::unique_ptr<VirtualPrefProvider::Delegate>
           virtual_pref_provider_delegate,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader,
       std::string_view channel_name,
       const base::FilePath& profile_path,
       std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
@@ -100,9 +97,6 @@ class AdsServiceImpl final : public AdsService,
   ~AdsServiceImpl() override;
 
  private:
-  using SimpleURLLoaderList =
-      std::list<std::unique_ptr<network::SimpleURLLoader>>;
-
   bool IsBatAdsServiceBound() const;
 
   void RegisterResourceComponents();
@@ -211,12 +205,6 @@ class AdsServiceImpl final : public AdsService,
   void OpenNewTabWithAdCallback(std::optional<base::Value::Dict> dict);
   void RetryOpeningNewTabWithAd(const std::string& placement_id);
   void OpenNewTabWithUrl(const GURL& url);
-
-  // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
-  // request business logic.
-  void URLRequestCallback(SimpleURLLoaderList::iterator url_loader_iter,
-                          UrlRequestCallback callback,
-                          std::unique_ptr<std::string> response_body);
 
   void ShowScheduledCaptchaCallback(const std::string& payment_id,
                                     const std::string& captcha_id);
@@ -440,15 +428,13 @@ class AdsServiceImpl final : public AdsService,
 
   base::CancelableTaskTracker history_service_task_tracker_;
 
-  SimpleURLLoaderList url_loaders_;
-
   const raw_ptr<PrefService> prefs_;  // Not owned.
 
   const raw_ptr<PrefService> local_state_;  // Not owned.
 
   const std::unique_ptr<VirtualPrefProvider> virtual_pref_provider_;
 
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_ = nullptr;
+  const std::unique_ptr<NetworkClient> network_client_;
 
   const std::string channel_name_;
 
