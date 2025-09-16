@@ -30,6 +30,7 @@
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 
 namespace brave_ads {
@@ -98,8 +99,9 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       HostContentSettingsMapFactory::GetForProfile(profile);
 
   return std::make_unique<AdsServiceImpl>(
-      std::move(delegate), profile->GetPrefs(),
-      g_browser_process->local_state(),
+      std::move(delegate),
+      profile->GetDefaultStoragePartition()->GetNetworkContext(),
+      profile->GetPrefs(), g_browser_process->local_state(),
       std::make_unique<VirtualPrefProviderDelegate>(*profile),
       profile->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
