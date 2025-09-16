@@ -363,5 +363,162 @@ class PlasterTest(unittest.TestCase):
 
 
 
+    def test_count_mismatch_fails(self):
+        """Test that count mismatch raises ValueError."""
+        # Test case: more matches than expected
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_file1.idl')
+
+        # Write and commit file with 3 matches but expect only 2
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Chromium and Chromium and Chromium word.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_file1.idl',
+                                      self.fake_chromium_src.chromium)
+
+        # Create a PlasterFile with count=2 but 3 matches exist
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.toml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('''
+          [[substitution]]
+          description = 'Test count mismatch'
+          re_pattern = 'Chromium'
+          replace = 'Brave'
+          count = 2
+        ''')
+
+        # Should fail because there are 3 matches but count expects 2
+        plaster_file = plaster.PlasterFile(plaster_path)
+        with self.assertRaises(ValueError) as context:
+            plaster_file.apply()
+
+        self.assertIn('Unexpected number of matches (3 vs 2)',
+                      str(context.exception))
+        self.assertIn(str(test_file_chromium), str(context.exception))
+
+    def test_default_count_fails_with_multiple_matches(self):
+        """Test that default count=1 fails when there are multiple matches."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_default_count.idl')
+
+        # Write and commit file with 2 matches but no count specified
+        # (defaults to 1)
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Chromium browser and Chromium app.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_default_count.idl',
+                                      self.fake_chromium_src.chromium)
+
+        # Create a PlasterFile with NO count specified (defaults to 1)
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.toml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('''
+          [[substitution]]
+          description = 'Test default count behavior'
+          re_pattern = 'Chromium'
+          replace = 'Brave'
+        ''')
+
+        # Should fail because there are 2 matches but default count expects 1
+        plaster_file = plaster.PlasterFile(plaster_path)
+        with self.assertRaises(ValueError) as context:
+            plaster_file.apply()
+
+        self.assertIn('Unexpected number of matches (2 vs 1)',
+                      str(context.exception))
+        self.assertIn(str(test_file_chromium), str(context.exception))
+
+    def test_count_zero_replaces_all(self):
+        """
+        Test that count=0 replaces all matches and bypasses count validation.
+        Note: All substitutions now behave as count=0 since count=0 is
+        always passed to subn.
+        """
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_count_zero_all.idl')
+
+        # Write and commit file with multiple matches
+        original_content = ('Chromium content with Chromium and more '
+                            'Chromium text.')
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, original_content,
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_count_zero_all.idl',
+                                      self.fake_chromium_src.chromium)
+
+        # Create a PlasterFile with count=0 (replace all)
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.toml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('''
+          [[substitution]]
+          description = 'Test count 0 replaces all'
+          re_pattern = 'Chromium'
+          replace = 'Brave'
+          count = 0
+        ''')
+
+        # Should succeed because count=0 means replace all and bypass validation
+        plaster_file = plaster.PlasterFile(plaster_path)
+        plaster_file.apply()
+
+        result = (self.fake_chromium_src.chromium /
+                  test_file_chromium).read_text()
+        self.assertEqual(result,
+                         'Brave content with Brave and more Brave text.')
+
+    def test_count_explicit_values_work(self):
+        """Test that explicit count values work correctly for validation.
+           Note: All substitutions now replace all matches due to count=0
+           in subn, but validation still checks if actual matches equal
+           expected count."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_explicit_counts.idl')
+
+        # Write and commit file with patterns for multiple substitutions
+        original_content = ('Chromium browser and Firefox browser and '
+                            'Safari browser.')
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, original_content,
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_explicit_counts.idl',
+                                      self.fake_chromium_src.chromium)
+
+        # Create a PlasterFile with multiple substitutions using different count
+        # strategies - these counts must match the actual number of
+        # matches for validation
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.toml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('''
+          [[substitution]]
+          description = 'Replace single Chromium'
+          re_pattern = 'Chromium'
+          replace = 'Brave'
+          count = 1
+
+          [[substitution]]
+          description = 'Replace all browsers'
+          re_pattern = 'browser'
+          replace = 'application'
+          count = 3
+        ''')
+
+        # Should succeed - first substitution finds 1 Chromium
+        # (matches count=1),
+        # second finds 3 "browser" instances (matches count=3)
+        plaster_file = plaster.PlasterFile(plaster_path)
+        plaster_file.apply()
+
+        result = (self.fake_chromium_src.chromium /
+                  test_file_chromium).read_text()
+        self.assertEqual(
+            result,
+            'Brave application and Firefox application and Safari application.'
+        )
+
+
 if __name__ == '__main__':
     unittest.main()
