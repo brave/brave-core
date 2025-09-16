@@ -39,6 +39,7 @@ mojom::UrlRequestInfoPtr CreateNonRewardConfirmationUrlRequestBuilder::Build() {
   mojom_url_request->content = BuildBody();
   mojom_url_request->content_type = "application/json";
   mojom_url_request->method = mojom::UrlRequestMethodType::kPost;
+  mojom_url_request->use_ohttp = true;
 
   return mojom_url_request;
 }
