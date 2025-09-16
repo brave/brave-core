@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { processUploadedFilesWithLimits, getImageFiles, getDocumentFiles, shouldDisableAttachmentsButton } from './conversation_history_utils'
+import { processUploadedFilesWithLimits, getImageFiles, getDocumentFiles, shouldDisableAttachmentsButton, isFullPageScreenshot } from './conversation_history_utils'
 import * as Mojom from './mojom'
 
 describe('processUploadedFilesWithLimits', () => {
@@ -537,5 +537,45 @@ describe('shouldDisableAttachmentsButton', () => {
     ]
 
     expect(shouldDisableAttachmentsButton(conversationHistory)).toBe(false)
+  })
+})
+
+describe('isFullPageScreenshot', () => {
+  const createMockFile = (
+    filename: string,
+    type: Mojom.UploadedFileType
+  ): Mojom.UploadedFile => ({
+    filename,
+    type,
+    data: new ArrayBuffer(100),
+    filesize: BigInt(100)
+  })
+
+  it('returns true for full page screenshots', () => {
+    const file = createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`, Mojom.UploadedFileType.kScreenshot)
+    expect(isFullPageScreenshot(file)).toBe(true)
+  })
+
+  it('returns false for regular screenshots without prefix', () => {
+    const file = createMockFile('regular_screenshot.png', Mojom.UploadedFileType.kScreenshot)
+    expect(isFullPageScreenshot(file)).toBe(false)
+  })
+
+  it('returns false for non-screenshot files with screenshot-like names', () => {
+    const file = createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`, Mojom.UploadedFileType.kImage)
+    expect(isFullPageScreenshot(file)).toBe(false)
+  })
+
+  it('returns false for PDF files', () => {
+    const file = createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}0.png`, Mojom.UploadedFileType.kPdf)
+    expect(isFullPageScreenshot(file)).toBe(false)
+  })
+
+  it('handles files with different screenshot indices', () => {
+    const file1 = createMockFile(`${Mojom.FULL_PAGE_SCREENSHOT_PREFIX}123.png`, Mojom.UploadedFileType.kScreenshot)
+    expect(isFullPageScreenshot(file1)).toBe(true)
+
+    const file2 = createMockFile('screenshot_123.png', Mojom.UploadedFileType.kScreenshot)
+    expect(isFullPageScreenshot(file2)).toBe(false)
   })
 })
