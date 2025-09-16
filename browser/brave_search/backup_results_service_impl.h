@@ -113,6 +113,9 @@ class BackupResultsServiceImpl : public BackupResultsService,
 
   void CleanupAndDispatchResult(PendingRequestList::iterator pending_request,
                                 std::optional<BackupResults> result);
+  void OnProxyLogsReceived(PendingRequestList::iterator pending_request,
+                           std::optional<BackupResults> result,
+                           base::Value proxy_logs_value);
 
   void NavigateToOriginalUrl(PendingRequestList::iterator pending_request);
 

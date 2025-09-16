@@ -10,7 +10,7 @@
 
 #include "base/byte_count.h"
 #include "base/functional/bind.h"
-#include "base/rand_util.h"
+#include "base/values.h"
 #include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/common/features.h"
@@ -65,7 +65,7 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
     )");
 
 constexpr base::ByteCount kMaxResponseSize = base::MiB(5);
-constexpr base::TimeDelta kTimeout = base::Seconds(5);
+constexpr base::TimeDelta kTimeout = base::Seconds(10);
 
 class BackupResultsWebContentsObserver
     : public content::WebContentsObserver,
@@ -286,20 +286,21 @@ bool BackupResultsServiceImpl::HandleWebContentsStartRequest(
     return true;
   }
 
-  if (!IsBackupResultURLAllowed(url)) {
-    content::GetUIThreadTaskRunner({})->PostTask(
-        FROM_HERE,
-        base::BindOnce(&BackupResultsServiceImpl::CleanupAndDispatchResult,
-                       weak_ptr_factory_.GetWeakPtr(), pending_request,
-                       std::nullopt));
-    return false;
-  }
+  // if (!IsBackupResultURLAllowed(url)) {
+  //   content::GetUIThreadTaskRunner({})->PostTask(
+  //       FROM_HERE,
+  //       base::BindOnce(&BackupResultsServiceImpl::CleanupAndDispatchResult,
+  //                      weak_ptr_factory_.GetWeakPtr(), pending_request,
+  //                      std::nullopt));
+  //   return false;
+  // }
   if (features::IsBackupResultsFullRenderEnabled()) {
     return pending_request->requests_loaded <
            static_cast<size_t>(
                features::kBackupResultsFullRenderMaxRequests.Get());
   }
   if (!pending_request->initial_request_started) {
+    LOG(ERROR) << "HandleWebContentsStartRequest! initial request started";
     pending_request->initial_request_started = true;
     return true;
   }
@@ -445,6 +446,40 @@ void BackupResultsServiceImpl::NavigateToOriginalUrl(
 void BackupResultsServiceImpl::CleanupAndDispatchResult(
     PendingRequestList::iterator pending_request,
     std::optional<BackupResults> result) {
+  // Try to get window.proxyLogs before cleanup if we have web_contents
+  if (pending_request->web_contents &&
+      pending_request->web_contents->GetPrimaryMainFrame()) {
+    LOG(ERROR)
+        << "CleanupAndDispatchResult! web_contents and main frame present";
+    auto* main_frame = pending_request->web_contents->GetPrimaryMainFrame();
+
+    content::RenderFrameHost::AllowInjectingJavaScript();
+    // Execute JavaScript to get window.proxyLogs
+    main_frame->ExecuteJavaScript(
+        u"window.joinProxyLogs()",
+        base::BindOnce(&BackupResultsServiceImpl::OnProxyLogsReceived,
+                       weak_ptr_factory_.GetWeakPtr(), pending_request,
+                       result));
+  } else {
+    LOG(ERROR)
+        << "CleanupAndDispatchResult! no web_contents or main frame present";
+    // No web_contents, proceed directly to cleanup
+    OnProxyLogsReceived(pending_request, result, base::Value());
+  }
+}
+
+void BackupResultsServiceImpl::OnProxyLogsReceived(
+    PendingRequestList::iterator pending_request,
+    std::optional<BackupResults> result,
+    base::Value proxy_logs_value) {
+  // Log and write proxy logs to file if they exist
+  if (!proxy_logs_value.is_none() && proxy_logs_value.is_string()) {
+    const std::string& proxy_logs_str = proxy_logs_value.GetString();
+    LOG(ERROR) << "ProxyLogs: " << proxy_logs_str;
+  } else {
+    LOG(ERROR) << "ProxyLogs: null, undefined, or not a string";
+  }
+
   auto* otr_profile = pending_request->otr_profile.get();
 
   std::move(pending_request->callback).Run(result);
