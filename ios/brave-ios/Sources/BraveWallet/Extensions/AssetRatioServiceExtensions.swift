@@ -30,6 +30,16 @@ extension BraveWalletAssetRatioService {
   }
 }
 
+extension BraveWallet.AssetPrice {
+  /// Checks if this AssetPrice matches the given coin, chainId, and address
+  /// Two tokens are considered the same if they have the same coin, chainId, and address
+  func eq(coin: BraveWallet.CoinType, chainId: String, address: String) -> Bool {
+    return self.coin == coin
+      && self.chainId == chainId
+      && self.address.lowercased() == address.lowercased()
+  }
+}
+
 extension Array where Element == BraveWallet.AssetPrice {
   /// Get token price from a list of asset prices
   /// Returns the matching AssetPrice if found, nil otherwise
@@ -37,9 +47,7 @@ extension Array where Element == BraveWallet.AssetPrice {
     for token: BraveWallet.BlockchainToken
   ) -> BraveWallet.AssetPrice? {
     return first { assetPrice in
-      assetPrice.coin == token.coin
-        && assetPrice.chainId == token.chainId
-        && assetPrice.address.lowercased() == token.contractAddress.lowercased()
+      assetPrice.eq(coin: token.coin, chainId: token.chainId, address: token.contractAddress)
     }
   }
 
@@ -49,9 +57,7 @@ extension Array where Element == BraveWallet.AssetPrice {
     for newPrice in newPrices {
       // Find index of existing price with same coin, chainId, and address
       if let existingIndex = firstIndex(where: { existingPrice in
-        existingPrice.coin == newPrice.coin
-          && existingPrice.chainId == newPrice.chainId
-          && existingPrice.address.lowercased() == newPrice.address.lowercased()
+        existingPrice.eq(coin: newPrice.coin, chainId: newPrice.chainId, address: newPrice.address)
       }) {
         // Replace existing price with new one
         self[existingIndex] = newPrice
