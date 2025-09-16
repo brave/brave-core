@@ -15,7 +15,7 @@
 #include "chrome/browser/first_run/upgrade_util.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/upgrade_detector/upgrade_detector.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/browsing_data/core/pref_names.h"
@@ -39,7 +39,7 @@ bool IsTesting() {
 }
 
 bool AreAnyBrowsersOpen() {
-  return BrowserList::GetInstance()->size() > 0;
+  return GetAllBrowserWindowInterfaces().size() > 0;
 }
 
 bool AreAnyClearDataOnExitSettingsEnabled() {
