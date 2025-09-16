@@ -12,9 +12,10 @@ class WebUIIOS;
 
 // Exposes an API to obtain the main frame WebUI which is required for some
 // Brave WebUI implementations
-#define ClearWebUI \
-  ClearWebUI();    \
-  web::WebUIIOS* GetMainFrameWebUI
+#define ClearWebUI                    \
+  ClearWebUI();                       \
+  web::WebUIIOS* GetMainFrameWebUI(); \
+  size_t GetWebUICountForTesting
 #include <ios/web/web_state/web_state_impl.h>  // IWYU pragma: export
 #undef ClearWebUI
 

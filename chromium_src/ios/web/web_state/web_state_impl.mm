@@ -6,8 +6,15 @@
 #include <ios/web/web_state/web_state_impl.mm>
 
 namespace web {
+
 WebUIIOS* WebStateImpl::GetMainFrameWebUI() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return RealizedState()->GetMainFrameWebUI();
 }
+
+size_t WebStateImpl::GetWebUICountForTesting() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return RealizedState()->GetWebUICountForTesting();  // IN-TEST
+}
+
 }  // namespace web

@@ -73,4 +73,8 @@ WebUIIOS* WebStateImpl::RealizedWebState::GetMainFrameWebUI() {
   return web_uis_.begin()->second.get();
 }
 
+size_t WebStateImpl::RealizedWebState::GetWebUICountForTesting() {
+  return web_uis_.size();
+}
+
 }  // namespace web

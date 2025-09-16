@@ -27,9 +27,10 @@
                                const base::Value::List&)
 // Exposes an API to obtain the main frame WebUI which is required for some
 // Brave WebUI implementations
-#define ClearWebUI \
-  ClearWebUI();    \
-  web::WebUIIOS* GetMainFrameWebUI
+#define ClearWebUI                    \
+  ClearWebUI();                       \
+  web::WebUIIOS* GetMainFrameWebUI(); \
+  size_t GetWebUICountForTesting
 #include <ios/web/web_state/web_state_impl_realized_web_state.h>  // IWYU pragma: export
 #undef ClearWebUI
 #undef web_ui_
