@@ -10,6 +10,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/task_environment.h"
 #include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "components/bookmarks/browser/bookmark_model.h"
@@ -49,6 +50,7 @@ class BraveBookmarkProviderTest : public testing::Test {
   PrefService* prefs() { return client_.GetPrefs(); }
 
  protected:
+  base::test::SingleThreadTaskEnvironment task_environment_;
   TestSchemeClassifier classifier_;
   search_engines::SearchEnginesTestEnvironment search_engines_test_environment_;
   BraveFakeAutocompleteProviderClient client_;
