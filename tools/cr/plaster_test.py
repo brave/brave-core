@@ -284,62 +284,43 @@ class PlasterTest(unittest.TestCase):
         result = (self.fake_chromium_src.chromium / test_file_chromium).read_text()
         self.assertEqual(result, 'Content with Brave word.')
 
-    def test_regex_flags_invalid_flag_fails(self):
-        """Test that invalid regex flags raise ValueError."""
-        test_file_chromium = Path('chrome/common/extensions/api/test_invalid_flag.idl')
+    def test_regex_flags_invalid_cases_fail(self):
+        """Test that invalid regex flags (nonexistent, lowercase, etc.) raise ValueError."""
+        test_file_chromium = Path('chrome/common/extensions/api/test_invalid_flags.idl')
         
         # Write and commit file
         self.fake_chromium_src.write_and_stage_file(
             test_file_chromium, 'Content with Chromium word.',
             self.fake_chromium_src.chromium)
-        self.fake_chromium_src.commit('Add test_invalid_flag.idl',
+        self.fake_chromium_src.commit('Add test_invalid_flags.idl',
                                       self.fake_chromium_src.chromium)
         
-        # Create a PlasterFile with invalid flag
-        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) + '.toml')
-        plaster_path.parent.mkdir(parents=True, exist_ok=True)
-        plaster_path.write_text('''
-          [[substitution]]
-          description = 'Test invalid flag'
-          re_pattern = 'Chromium'
-          replace = 'Brave'
-          re_flags = ['INVALID_FLAG']
-        ''')
+        # Test various invalid flag cases
+        invalid_flags_cases = [
+            'INVALID_FLAG',     # Nonexistent flag
+            'ignorecase',       # Lowercase (should be IGNORECASE)
+            'fake_flag',        # Another nonexistent flag
+            'NOTREAL'          # Another invalid flag
+        ]
         
-        plaster_file = plaster.PlasterFile(plaster_path)
-        with self.assertRaises(ValueError) as context:
-            plaster_file.apply()
-        
-        self.assertIn('Invalid re flag specified: INVALID_FLAG', str(context.exception))
-        self.assertIn(str(test_file_chromium), str(context.exception))
-
-    def test_regex_flags_lowercase_flag_fails(self):
-        """Test that lowercase flag names are rejected."""
-        test_file_chromium = Path('chrome/common/extensions/api/test_lowercase_flag.idl')
-        
-        # Write and commit file
-        self.fake_chromium_src.write_and_stage_file(
-            test_file_chromium, 'Content with Chromium word.',
-            self.fake_chromium_src.chromium)
-        self.fake_chromium_src.commit('Add test_lowercase_flag.idl',
-                                      self.fake_chromium_src.chromium)
-        
-        # Create a PlasterFile with lowercase flag name
-        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) + '.toml')
-        plaster_path.parent.mkdir(parents=True, exist_ok=True)
-        plaster_path.write_text('''
-          [[substitution]]
-          description = 'Test lowercase flag rejection'
-          re_pattern = 'chromium'
-          replace = 'Brave'
-          re_flags = ['ignorecase']
-        ''')
-        
-        plaster_file = plaster.PlasterFile(plaster_path)
-        with self.assertRaises(ValueError) as context:
-            plaster_file.apply()
-        
-        self.assertIn('Invalid re flag specified: ignorecase', str(context.exception))
+        for invalid_flag in invalid_flags_cases:
+            with self.subTest(flag=invalid_flag):
+                # Create a PlasterFile with invalid flag
+                plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) + '.toml')
+                plaster_path.parent.mkdir(parents=True, exist_ok=True)
+                plaster_path.write_text(f'''
+                  [[substitution]]
+                  description = 'Test invalid flag rejection'
+                  re_pattern = 'Chromium'
+                  replace = 'Brave'
+                  re_flags = ['{invalid_flag}']
+                ''')
+                
+                plaster_file = plaster.PlasterFile(plaster_path)
+                with self.assertRaises(ValueError) as context:
+                    plaster_file.apply()
+                
+                self.assertIn(f'Invalid re flag specified: {invalid_flag}', str(context.exception))
 
     def test_regex_flags_empty_list_works(self):
         """Test that empty flag list works (no flags applied)."""
