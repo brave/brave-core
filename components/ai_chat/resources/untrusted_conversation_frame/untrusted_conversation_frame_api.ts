@@ -29,6 +29,7 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   canSubmitUserEntries: false,
   isMobile: loadTimeData.getBoolean('isMobile'),
   associatedContent: [],
+  conversationCapability: Mojom.ConversationCapability.CHAT,
 }
 
 // Updates a tool use event for a conversation entry in the history.

@@ -191,6 +191,9 @@ class AIChatService : public KeyedService,
   void BindObserver(mojo::PendingRemote<mojom::ServiceObserver> ui,
                     BindObserverCallback callback) override;
 
+  bool GetIsContentAgentAllowed();
+  void SetIsContentAgentAllowed(bool is_allowed);
+
   bool HasUserOptedIn();
   bool IsPremiumStatus();
 
@@ -386,6 +389,10 @@ class AIChatService : public KeyedService,
   // subscription status changes. So we cache it and fetch latest fairly
   // often (whenever UI is focused).
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
+
+  // Whether conversations can utilize content agent capabilities. For now,
+  // this is profile-specific.
+  bool is_content_agent_allowed_ = false;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };

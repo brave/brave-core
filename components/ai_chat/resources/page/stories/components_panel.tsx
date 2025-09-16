@@ -1170,6 +1170,7 @@ function StoryContext(
 
   const conversationEntriesContext: UntrustedConversationContext = {
     conversationHistory: conversationContext.conversationHistory,
+    conversationCapability: Mojom.ConversationCapability.CONTENT_AGENT,
     isGenerating: conversationContext.isGenerating,
     isLeoModel: conversationContext.isCurrentModelLeo,
     contentUsedPercentage: options.args.shouldShowLongPageWarning ? 48 : 100,

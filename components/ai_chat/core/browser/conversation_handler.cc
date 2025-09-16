@@ -121,6 +121,19 @@ ConversationHandler::ConversationHandler(
       credential_manager_(credential_manager),
       feedback_api_(feedback_api),
       url_loader_factory_(url_loader_factory) {
+  // Set conversation capability based on profile-global state.
+  // TODO(https://github.com/brave/brave-browser/issues/49261): This is
+  // temporary whilst content agent conversations are
+  // 1) not toggleable by the user and
+  // 2) only for specific profiles.
+  // When this is toggleable by the user,
+  // we should have some client function that changes the conversation
+  // capability. And when this is not global to a Profile, we should not have
+  // the service make the determination.
+  if (ai_chat_service_->GetIsContentAgentAllowed()) {
+    conversation_capability_ = mojom::ConversationCapability::CONTENT_AGENT;
+  }
+
   // When a client disconnects, let observers know
   receivers_.set_disconnect_handler(
       base::BindRepeating(&ConversationHandler::OnClientConnectionChanged,
@@ -1082,7 +1095,7 @@ void ConversationHandler::PerformAssistantGeneration() {
   engine_->GenerateAssistantResponse(
       associated_content_manager_->GetCachedContentsMap(), chat_history_,
       selected_language_, IsTemporaryChat(), GetTools(),
-      std::nullopt /* preferred_tool_name */,
+      std::nullopt /* preferred_tool_name */, conversation_capability_,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
@@ -1657,6 +1670,7 @@ ConversationHandler::GetStateForConversationEntries() {
       (ai_chat_service_->IsPremiumStatus() || !is_leo_model ||
        model.options->get_leo_model_options()->access !=
            mojom::ModelAccess::PREMIUM);
+  entries_state->conversation_capability = conversation_capability_;
   return entries_state;
 }
 
@@ -1739,9 +1753,8 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
             return (!tool->IsSupportedByModel(model) ||
                     !tool->SupportsConversation(
                         GetIsTemporary(),
-                        associated_content_manager_->HasAssociatedContent()) ||
-                    (tool->IsContentAssociationRequired() &&
-                     !associated_content_manager_->HasAssociatedContent()));
+                        associated_content_manager_->HasAssociatedContent(),
+                        conversation_capability_));
           }),
       tools.end());
 
