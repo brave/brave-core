@@ -195,9 +195,14 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
 void PsstTabWebContentsObserver::OnPolicyScriptResult(
     int nav_entry_id,
     base::Value script_result) {
+  if (!ShouldInsertScriptForPage(nav_entry_id)) {
+    return;
+  }
+
   const auto script_result_parsed =
       PolicyScriptResult::FromValue(script_result);
-  if (!script_result_parsed || !ShouldInsertScriptForPage(nav_entry_id)) {
+  if (!script_result_parsed) {
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
 
