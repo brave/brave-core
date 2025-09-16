@@ -39,6 +39,7 @@
 #include "brave/components/brave_ads/browser/device_id/device_id.h"
 #include "brave/components/brave_ads/browser/reminder/reminder_util.h"
 #include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_feature.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/browser/service/new_tab_page_ad_prefetcher.h"
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
@@ -68,10 +69,12 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/oblivious_http_request.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
@@ -179,6 +182,7 @@ void OnUrlLoaderResponseStartedCallback(
 
 AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<Delegate> delegate,
+    network::mojom::NetworkContext* mojom_network_context,
     PrefService* prefs,
     PrefService* local_state,
     std::unique_ptr<VirtualPrefProvider::Delegate>
@@ -194,6 +198,7 @@ AdsServiceImpl::AdsServiceImpl(
     brave_rewards::RewardsService* rewards_service,
     HostContentSettingsMap* host_content_settings_map)
     : AdsService(std::move(delegate)),
+      mojom_network_context_(mojom_network_context),
       prefs_(prefs),
       local_state_(local_state),
       virtual_pref_provider_(std::make_unique<VirtualPrefProvider>(
@@ -1098,6 +1103,128 @@ void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& placement_id) {
   retry_opening_new_tab_for_ad_with_placement_id_ = placement_id;
 }
 
+void AdsServiceImpl::HttpUrlRequest(mojom::UrlRequestInfoPtr mojom_url_request,
+                                    UrlRequestCallback callback) {
+  CHECK(mojom_url_request);
+  CHECK(mojom_url_request->url.is_valid());
+
+  auto resource_request = std::make_unique<network::ResourceRequest>();
+  resource_request->url = mojom_url_request->url;
+  resource_request->method = URLMethodToRequestType(mojom_url_request->method);
+  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  for (const auto& header : mojom_url_request->headers) {
+    resource_request->headers.AddHeaderFromString(header);
+  }
+
+  auto url_loader = network::SimpleURLLoader::Create(
+      std::move(resource_request), GetNetworkTrafficAnnotationTag());
+
+  if (!mojom_url_request->content.empty()) {
+    url_loader->AttachStringForUpload(mojom_url_request->content,
+                                      mojom_url_request->content_type);
+  }
+
+  url_loader->SetOnResponseStartedCallback(
+      base::BindOnce(&OnUrlLoaderResponseStartedCallback));
+
+  url_loader->SetRetryOptions(
+      kMaximumNumberOfTimesToRetryNetworkRequests,
+      network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
+
+  url_loader->SetAllowHttpErrorResults(true);
+
+  auto url_loader_iter =
+      url_loaders_.insert(url_loaders_.cend(), std::move(url_loader));
+  url_loader_iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_.get(), base::BindOnce(&AdsServiceImpl::URLRequestCallback,
+                                        base::Unretained(this), url_loader_iter,
+                                        std::move(callback)));
+}
+
+void AdsServiceImpl::ObliviousHttpUrlRequest(
+    mojom::UrlRequestInfoPtr mojom_url_request,
+    UrlRequestCallback callback) {
+  CHECK(mojom_url_request);
+  CHECK(mojom_url_request->url.is_valid());
+
+  std::string_view hpke_key_as_hex =
+      "0000204d2b5332acfa391e6fb004d8f916631b2b5155f248202911ccaf5539441f524c"
+      "000400010002";
+  std::vector<uint8_t> hpke_key_as_bytes;
+  CHECK(base::HexStringToBytes(hpke_key_as_hex, &hpke_key_as_bytes));
+
+  auto request = network::mojom::ObliviousHttpRequest::New();
+
+  request->key_config =
+      std::string(hpke_key_as_bytes.cbegin(), hpke_key_as_bytes.cend());
+
+  request->relay_url =
+      GURL("https://brave-ohttp-relay-dev.fastly-edge.com/v1/ohttp/gateway");
+
+  request->traffic_annotation =
+      net::MutableNetworkTrafficAnnotationTag(GetNetworkTrafficAnnotationTag());
+
+  request->timeout_duration = base::Seconds(10);
+
+  request->resource_url = mojom_url_request->url;
+
+  request->method = URLMethodToRequestType(mojom_url_request->method);
+
+  std::string content_type = mojom_url_request->content_type;
+  if (content_type.empty()) {
+    content_type = "application/json";
+  }
+
+  VLOG(1) << "[OHTTP] URL request:"
+          << "\n  URL: " << request->resource_url
+          << "\n  Body: " << mojom_url_request->content
+          << "\n  Content-Type: " << content_type;
+
+  request->request_body = network::mojom::ObliviousHttpRequestBody::New(
+      mojom_url_request->content, content_type);
+
+  class OhttpClientImpl : public network::mojom::ObliviousHttpClient {
+   public:
+    OhttpClientImpl(GURL request_url, UrlRequestCallback callback)
+        : request_url_(std::move(request_url)),
+          callback_(std::move(callback)) {}
+
+    void OnCompleted(
+        network::mojom::ObliviousHttpCompletionResultPtr result) override {
+      mojom::UrlResponseInfoPtr mojom_url_response =
+          mojom::UrlResponseInfo::New();
+
+      mojom_url_response->url = request_url_;
+      if (result->is_inner_response()) {
+        auto& inner_response = result->get_inner_response();
+        mojom_url_response->status_code = inner_response->response_code;
+        mojom_url_response->body = inner_response->response_body;
+      } else if (result->is_net_error()) {
+        mojom_url_response->status_code = result->get_net_error();
+      } else if (result->is_outer_response_error_code()) {
+        mojom_url_response->status_code =
+            result->get_outer_response_error_code();
+      }
+
+      std::move(callback_).Run(std::move(mojom_url_response));
+    }
+
+   private:
+    GURL request_url_;
+    UrlRequestCallback callback_;
+  };
+
+  mojo::PendingRemote<network::mojom::ObliviousHttpClient>
+      oblivious_http_client_pending_remote;
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<OhttpClientImpl>(mojom_url_request->url,
+                                        std::move(callback)),
+      oblivious_http_client_pending_remote.InitWithNewPipeAndPassReceiver());
+
+  mojom_network_context_->GetViaObliviousHttp(
+      std::move(request), std::move(oblivious_http_client_pending_remote));
+}
+
 void AdsServiceImpl::URLRequestCallback(
     SimpleURLLoaderList::iterator url_loader_iter,
     UrlRequestCallback callback,
@@ -1751,40 +1878,12 @@ void AdsServiceImpl::GetSiteHistory(int max_count,
 
 void AdsServiceImpl::UrlRequest(mojom::UrlRequestInfoPtr mojom_url_request,
                                 UrlRequestCallback callback) {
-  CHECK(mojom_url_request);
-  CHECK(mojom_url_request->url.is_valid());
-
-  auto resource_request = std::make_unique<network::ResourceRequest>();
-  resource_request->url = mojom_url_request->url;
-  resource_request->method = URLMethodToRequestType(mojom_url_request->method);
-  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  for (const auto& header : mojom_url_request->headers) {
-    resource_request->headers.AddHeaderFromString(header);
+  if (kShouldSupportOhttp.Get() && mojom_url_request->use_ohttp) {
+    return ObliviousHttpUrlRequest(std::move(mojom_url_request),
+                                   std::move(callback));
   }
 
-  auto url_loader = network::SimpleURLLoader::Create(
-      std::move(resource_request), GetNetworkTrafficAnnotationTag());
-
-  if (!mojom_url_request->content.empty()) {
-    url_loader->AttachStringForUpload(mojom_url_request->content,
-                                      mojom_url_request->content_type);
-  }
-
-  url_loader->SetOnResponseStartedCallback(
-      base::BindOnce(&OnUrlLoaderResponseStartedCallback));
-
-  url_loader->SetRetryOptions(
-      kMaximumNumberOfTimesToRetryNetworkRequests,
-      network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
-
-  url_loader->SetAllowHttpErrorResults(true);
-
-  auto url_loader_iter =
-      url_loaders_.insert(url_loaders_.cend(), std::move(url_loader));
-  url_loader_iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      url_loader_.get(), base::BindOnce(&AdsServiceImpl::URLRequestCallback,
-                                        base::Unretained(this), url_loader_iter,
-                                        std::move(callback)));
+  HttpUrlRequest(std::move(mojom_url_request), std::move(callback));
 }
 
 void AdsServiceImpl::Save(const std::string& name,
