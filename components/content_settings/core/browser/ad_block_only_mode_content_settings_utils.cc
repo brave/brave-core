@@ -25,7 +25,7 @@ bool IsAdBlockOnlyModeContentSettingsType(ContentSettingsType content_type,
           ContentSettingsType::BRAVE_ADS,
           ContentSettingsType::BRAVE_TRACKERS,
           ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-          ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+          //ContentSettingsType::BRAVE_FINGERPRINTING_V2,
           ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
           ContentSettingsType::BRAVE_HTTPS_UPGRADE,
       });
@@ -85,10 +85,10 @@ void FillAdBlockOnlyModeRules(OriginValueMap& ad_block_only_mode_rules) {
       ContentSettingsType::BRAVE_COSMETIC_FILTERING,
       ContentSettingToValue(CONTENT_SETTING_ALLOW), metadata.Clone());
 
-  ad_block_only_mode_rules.SetValue(
-      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-      ContentSettingToValue(CONTENT_SETTING_ALLOW), metadata.Clone());
+  // ad_block_only_mode_rules.SetValue(
+  //     ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+  //     ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+  //     ContentSettingToValue(CONTENT_SETTING_ALLOW), metadata.Clone());
 
   ad_block_only_mode_rules.SetValue(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),

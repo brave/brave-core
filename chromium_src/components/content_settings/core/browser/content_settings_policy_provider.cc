@@ -13,10 +13,13 @@
 #define BRAVE_MANAGED_PREFS \
   kManagedBraveShieldsDisabledForUrls, kManagedBraveShieldsEnabledForUrls,
 
-#define BRAVE_MANAGED_DEFAULT \
-  {ContentSettingsType::BRAVE_COOKIES, kManagedDefaultBraveCookies},
+#define BRAVE_MANAGED_DEFAULT                                        \
+  {ContentSettingsType::BRAVE_COOKIES, kManagedDefaultBraveCookies}, \
+      {ContentSettingsType::BRAVE_FINGERPRINTING_V2,                 \
+       kManagedDefaultBraveFingerprintingV2},
 
-#define BRAVE_MANAGED_DEFAULT_PREFS kManagedDefaultBraveCookies,
+#define BRAVE_MANAGED_DEFAULT_PREFS \
+  kManagedDefaultBraveCookies, kManagedDefaultBraveFingerprintingV2,
 
 #include <components/content_settings/core/browser/content_settings_policy_provider.cc>
 #undef BRAVE_MANAGED_DEFAULT_PREFS

@@ -66,6 +66,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::STRING},
     {policy::key::kDefaultBraveCookiesSetting, kManagedDefaultBraveCookies,
      base::Value::Type::INTEGER},
+    {policy::key::kDefaultBraveFingerprintingV2Setting, kManagedDefaultBraveFingerprintingV2,
+     base::Value::Type::INTEGER},
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)

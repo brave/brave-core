@@ -74,6 +74,11 @@ void AdBlockOnlyModePolicyProvider::MaybeLoadPolicies(
                policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
                policy::POLICY_SOURCE_BRAVE,
                base::Value(ContentSetting::CONTENT_SETTING_ALLOW), nullptr);
+
+  policies.Set(policy::key::kDefaultBraveFingerprintingV2Setting,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE,
+               base::Value(ContentSetting::CONTENT_SETTING_ALLOW), nullptr);
 }
 
 void AdBlockOnlyModePolicyProvider::OnAdBlockOnlyModeChanged() {

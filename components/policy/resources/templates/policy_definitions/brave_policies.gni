@@ -23,6 +23,7 @@ _brave_policies = [
   "BraveSoftware/IPFSEnabled.yaml",
   "BraveSoftware/TorDisabled.yaml",
   "BraveSoftware/DefaultBraveCookiesSetting.yaml",
+  "BraveSoftware/DefaultBraveFingerprintingV2Setting.yaml",
 ]
 
 _brave_policies_sync_config_path =
