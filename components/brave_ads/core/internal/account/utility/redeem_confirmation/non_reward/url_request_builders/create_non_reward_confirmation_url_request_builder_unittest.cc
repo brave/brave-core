@@ -58,6 +58,7 @@ TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   expected_mojom_url_request->content = kExpectedUrlRequestContent;
   expected_mojom_url_request->content_type = "application/json";
   expected_mojom_url_request->method = mojom::UrlRequestMethodType::kPost;
+  expected_mojom_url_request->use_ohttp = true;
   EXPECT_EQ(expected_mojom_url_request, mojom_url_request);
 }
 

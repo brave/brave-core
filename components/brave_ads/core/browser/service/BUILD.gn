@@ -7,6 +7,8 @@ source_set("service") {
   sources = [
     "ads_service.cc",
     "ads_service.h",
+    "ads_service_feature.cc",
+    "ads_service_feature.h",
     "ads_service_observer.h",
     "new_tab_page_ad_prefetcher.cc",
     "new_tab_page_ad_prefetcher.h",
@@ -37,6 +39,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "ads_service_feature_unittest.cc",
     "new_tab_page_ad_prefetcher_unittest.cc",
     "virtual_pref_provider_unittest.cc",
   ]
