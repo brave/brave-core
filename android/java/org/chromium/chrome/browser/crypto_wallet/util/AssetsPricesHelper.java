@@ -43,16 +43,18 @@ public class AssetsPricesHelper {
             return;
         }
 
-        AsyncUtils.GetPriceResponseContext priceContext = new AsyncUtils.GetPriceResponseContext();
-        priceContext.callback =
-                () -> {
-                    if (priceContext.success && priceContext.prices != null) {
-                        callback.call(Arrays.asList(priceContext.prices));
-                    } else {
-                        Log.e(TAG, "Failed to fetch prices");
-                        callback.call(new ArrayList<>());
-                    }
-                };
+        AsyncUtils.MultiResponseHandler multiResponse = new AsyncUtils.MultiResponseHandler(1);
+        AsyncUtils.GetPriceResponseContext priceContext = new AsyncUtils.GetPriceResponseContext(
+                multiResponse.singleResponseComplete);
+
+        multiResponse.setWhenAllCompletedAction(() -> {
+            if (priceContext.success && priceContext.prices != null) {
+                callback.call(Arrays.asList(priceContext.prices));
+            } else {
+                Log.e(TAG, "Failed to fetch prices");
+                callback.call(new ArrayList<>());
+            }
+        });
 
         assetRatioService.getPrice(requests.toArray(new AssetPriceRequest[0]), "usd", priceContext);
     }
