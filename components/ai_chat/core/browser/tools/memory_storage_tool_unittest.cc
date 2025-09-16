@@ -18,6 +18,7 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-data-view.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
@@ -148,18 +149,22 @@ TEST_F(MemoryStorageToolTest, UseTool_TooLongMemory) {
 
 TEST_F(MemoryStorageToolTest, SupportsConversation_NonTemporary) {
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  EXPECT_FALSE(memory_tool_->SupportsConversation(false, false));
+  EXPECT_FALSE(memory_tool_->SupportsConversation(
+      false, false, mojom::ConversationCapability::CHAT));
 #else
-  EXPECT_TRUE(memory_tool_->SupportsConversation(false, false));
+  EXPECT_TRUE(memory_tool_->SupportsConversation(
+      false, false, mojom::ConversationCapability::CHAT));
 #endif
 }
 
 TEST_F(MemoryStorageToolTest, SupportsConversation_Temporary) {
-  EXPECT_FALSE(memory_tool_->SupportsConversation(true, false));
+  EXPECT_FALSE(memory_tool_->SupportsConversation(
+      true, false, mojom::ConversationCapability::CHAT));
 }
 
 TEST_F(MemoryStorageToolTest, SupportsConversation_UntrustedContent) {
-  EXPECT_FALSE(memory_tool_->SupportsConversation(false, true));
+  EXPECT_FALSE(memory_tool_->SupportsConversation(
+      false, true, mojom::ConversationCapability::CHAT));
 }
 
 }  // namespace ai_chat

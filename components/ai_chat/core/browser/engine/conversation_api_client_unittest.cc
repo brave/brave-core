@@ -614,6 +614,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
       std::move(events), "" /* selected_language */,
       std::nullopt, /* oai_tool_definitions */
       std::nullopt, /* preferred_tool_name */
+      mojom::ConversationCapability::CHAT,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -735,6 +736,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
       std::move(events), "" /* selected_language */,
       std::nullopt, /* oai_tool_definitions */
       std::nullopt, /* preferred_tool_name */
+      mojom::ConversationCapability::CHAT,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -847,6 +849,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_WithToolUseResponse) {
       std::move(events), "" /* selected_language */,
       std::nullopt, /* oai_tool_definitions */
       std::nullopt, /* preferred_tool_name */
+      mojom::ConversationCapability::CHAT,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -883,6 +886,9 @@ TEST_F(ConversationAPIUnitTest,
         const std::string* model = dict->FindString("model");
         EXPECT_TRUE(model);
         EXPECT_EQ(*model, override_model_name);
+        const std::string* capability = dict->FindString("capability");
+        EXPECT_TRUE(capability);
+        EXPECT_EQ(*capability, "chat");
 
         {
           base::Value result(base::Value::Type::DICT);
@@ -923,6 +929,7 @@ TEST_F(ConversationAPIUnitTest,
       std::move(events), "" /* selected_language */,
       std::nullopt, /* oai_tool_definitions */
       std::nullopt, /* preferred_tool_name */
+      mojom::ConversationCapability::CHAT,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -993,6 +1000,7 @@ TEST_F(ConversationAPIUnitTest,
   client_->PerformRequest(std::move(events), "" /* selected_language */,
                           std::nullopt, /* oai_tool_definitions */
                           std::nullopt, /* preferred_tool_name */
+                          mojom::ConversationCapability::CHAT,
                           base::NullCallback(),
                           base::BindOnce(&MockCallbacks::OnCompleted,
                                          base::Unretained(&mock_callbacks)),
@@ -1027,6 +1035,7 @@ TEST_F(ConversationAPIUnitTest, FailNoConversationEvents) {
       std::move(events), "" /* selected_language */,
       std::nullopt, /* oai_tool_definitions */
       std::nullopt, /* preferred_tool_name */
+      mojom::ConversationCapability::CHAT,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
