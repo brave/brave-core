@@ -50,9 +50,7 @@ bool BraveBrowserPolicyProvider::IsFirstPolicyLoadComplete(
 policy::PolicyBundle BraveBrowserPolicyProvider::LoadPolicies() {
   policy::PolicyBundle bundle;
 
-  if (brave_origin::IsBraveOriginEnabled()) {
-    // Future work will add policies here
-  }
+  // Future work will add policies here
 
   return bundle;
 }

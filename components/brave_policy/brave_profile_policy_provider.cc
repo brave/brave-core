@@ -52,9 +52,7 @@ bool BraveProfilePolicyProvider::IsFirstPolicyLoadComplete(
 policy::PolicyBundle BraveProfilePolicyProvider::LoadPolicies() {
   policy::PolicyBundle bundle;
 
-  if (brave_origin::IsBraveOriginEnabled()) {
-    // Future work will add policies here
-  }
+  // Future work will add policies here
 
   return bundle;
 }

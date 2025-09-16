@@ -6,6 +6,9 @@
 #include "brave/components/brave_origin/brave_origin_utils.h"
 
 #include "base/feature_list.h"
+#include "base/logging.h"
+#include "base/strings/strcat.h"
+#include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_origin/features.h"
 
 namespace brave_origin {
@@ -18,6 +21,19 @@ bool IsBraveOriginEnabled() {
 #else
   return false;  // Always disabled in release builds
 #endif
+}
+
+std::string GetBraveOriginPrefKey(const BraveOriginPolicyInfo& pref_info,
+                                  std::string_view profile_id) {
+  // For global prefs, use policy_key directly
+  // For profile prefs, use profile_id.policy_key format
+  if (pref_info.scope == BraveOriginPolicyScope::kGlobal) {
+    return pref_info.policy_key;
+  } else {
+    CHECK(!profile_id.empty())
+        << "Profile ID cannot be empty for profile-scoped preferences";
+    return base::StrCat({profile_id, ".", pref_info.policy_key});
+  }
 }
 
 }  // namespace brave_origin
