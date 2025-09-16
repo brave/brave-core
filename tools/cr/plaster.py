@@ -256,11 +256,15 @@ class PlasterFile:
         contents = repository.chromium.read_file(info.source)
 
         for substitution in plaster_file.get('substitution'):
+            description = substitution.get('description')
             re_pattern = substitution.get('re_pattern')
             pattern = substitution.get('pattern')
             replace = substitution.get('replace')
             count = substitution.get('count', 0)
             flags = substitution.get('re_flags', '')
+
+            if description is None:
+                raise ValueError(f'No description specified in {info.source}')
 
             if re_pattern is not None and pattern is not None:
                 raise ValueError(
