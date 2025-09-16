@@ -770,10 +770,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   // UpdateTasks must be called with in case of timeout failure, to indicate
   // that the complete workflow has ended with error.
-  EXPECT_CALL(ui_delegate(), UpdateTasks(progress, _))
+  EXPECT_CALL(ui_delegate(), UpdateTasks(progress, _, mojom::PsstStatus::kFailed))
       .WillOnce([&progress_future, &applied_tasks_future](
                     long progress_value,
-                    const std::vector<PolicyTask>& applied_tasks) {
+                    const std::vector<PolicyTask>& applied_tasks,
+                    const mojom::PsstStatus status) {
         std::vector<PolicyTask> tasks;
         std::ranges::for_each(applied_tasks, [&tasks](const PolicyTask& task) {
           tasks.push_back(task.Clone());
