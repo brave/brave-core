@@ -61,18 +61,18 @@ export class SettingsPrivateSearchEngineListDialogElement extends
       },
 
       /**
-       * Brave search engine
+       * Promoted search engine
        */
-       braveSearchEngine_: {
+       promotedEngine_: {
          type: Object,
-         computed: 'computeBraveSearchEngine_(searchEngines)',
+         computed: 'computePromotedEngine_(searchEngines)',
        },
     }
   }
 
   declare searchEngines: SearchEngine[]
 
-  private declare braveSearchEngine_: SearchEngine|undefined
+  private declare promotedEngine_: SearchEngine|undefined
   private declare selectedEngineId_: string
   private browserProxy_: BraveSearchEnginesPageBrowserProxy =
       BraveSearchEnginesPageBrowserProxyImpl.getInstance()
@@ -109,11 +109,8 @@ export class SettingsPrivateSearchEngineListDialogElement extends
     this.selectedEngineId_ = defaultSearchEngine.id.toString()
   }
 
-  private shouldHideIfBraveSearchEngine_(engine: SearchEngine): boolean {
-    if (loadTimeData.getBoolean('isLocaleJapan')) {
-      return false
-    }
-    return this.isBraveSearchEngine_(engine)
+  private isPromotedEngine_(engine: SearchEngine): boolean {
+    return this.promotedEngine_ === engine
   }
 
   private isBraveSearchEngine_(engine: SearchEngine): boolean {
@@ -121,7 +118,7 @@ export class SettingsPrivateSearchEngineListDialogElement extends
         && engine.isPrepopulated === true
   }
 
-  private computeBraveSearchEngine_(
+  private computePromotedEngine_(
       searchEngines: Array<SearchEngine>): SearchEngine|undefined {
     if (loadTimeData.getBoolean('isLocaleJapan') || !searchEngines?.length) {
       return undefined
