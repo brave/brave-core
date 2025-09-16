@@ -50,11 +50,17 @@ void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
   }                                                                        \
   void ToggleBookmarkBarWhenVisible_ChromiumImpl
 
+#if defined(TOOLKIT_VIEWS)
 // Override folder icon to use a fixed 20px size similar to saved groups.
 #define GetBookmarkFolderIcon GetBookmarkFolderIcon_ChromiumImpl
+#endif  // defined(TOOLKIT_VIEWS)
 
 #include <chrome/browser/ui/bookmarks/bookmark_utils.cc>
+
+#if defined(TOOLKIT_VIEWS)
 #undef GetBookmarkFolderIcon
+#endif  // defined(TOOLKIT_VIEWS)
+
 #undef ToggleBookmarkBarWhenVisible
 #undef IsAppsShortcutEnabled
 #undef ShouldShowAppsShortcutInBookmarkBar
@@ -69,6 +75,7 @@ bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
   return false;
 }
 
+#if defined(TOOLKIT_VIEWS)
 // Brave override: return folder icons at 20px like the saved groups icon.
 ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
                                      ui::ColorVariant color) {
@@ -78,5 +85,6 @@ ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
   // Use toolbar icon color for visual consistency with other toolbar icons.
   return ui::ImageModel::FromVectorIcon(*id, kColorToolbarButtonIcon, 20);
 }
+#endif  // defined(TOOLKIT_VIEWS)
 
 }  // namespace chrome
