@@ -83,7 +83,7 @@ description = ''
 re_pattern = ''
 replace = ''
 re_flags = ''  # These are traditional python regex flags.
-count = 0
+count = 1  # use 0 to ignore the match count and replace all
 ```
 
 To apply this plaster file, just run `plaster.py`:

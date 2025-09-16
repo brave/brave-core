@@ -258,7 +258,7 @@ class PlasterFile:
         for substitution in plaster_file.get('substitution', []):
             pattern = substitution.get('re_pattern', '')
             replace = substitution.get('replace', '')
-            count = substitution.get('count', 0)
+            expected_count = substitution.get('count', 1)
             flags = substitution.get('re_flags', [])
 
             re_flags = 0
@@ -270,16 +270,21 @@ class PlasterFile:
                     raise ValueError(
                         f'Invalid re flag specified: {flag} in {info.source}')
 
-            contents, num_changes = re.subn(pattern,
-                                            replace,
-                                            contents,
-                                            flags=re_flags,
-                                            count=count)
+            contents, num_changes = re.subn(
+                pattern,
+                replace,
+                contents,
+                flags=re_flags,
+                # We dont't want to explicitly limit the number of matches here,
+                # we want to control what matches using the match pattern and
+                # then ensure the output matches only what we expected
+                count=0)
 
-            if num_changes == 0:
+            # count == 0 means "replace all matches" and bypass count validation
+            if expected_count not in (0, num_changes):
                 raise ValueError(
-                    f'No matches found for pattern {pattern} in {info.source}')
-
+                    f'Unexpected number of matches ({num_changes} vs '
+                    f'{expected_count}) in {info.source}')
         has_changed = info.save_source_if_changed(contents, dry_run=dry_run)
         has_changed = info.save_patch_if_changed(
             dry_run=dry_run) or has_changed
