@@ -19,60 +19,57 @@
 #include "base/json/json_writer.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/endpoint_client/endpoint.h"
 #include "brave/components/endpoint_client/endpoint_builder.h"
+#include "brave/components/endpoint_client/with_headers.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
-#include "brave/components/endpoint_client/endpoint.h"
-#include "brave/components/endpoint_client/with_headers.h"
 
 namespace endpoint_client {
 
 template <endpoints::detail::Endpoint Endpoint>
 class Client {
-  template <typename T>
+  template <endpoints::detail::Response Response>
   struct Parse {
-    static auto From(std::optional<std::string> response_body,
+    static auto From(const std::optional<base::Value>& value,
+                     scoped_refptr<net::HttpResponseHeaders>) {
+      return value ? Response::FromValue(*value) : std::nullopt;
+    }
+  };
+
+  template <endpoints::detail::Response Response>
+  struct Parse<endpoints::WithHeaders<Response>> {
+    static auto From(const std::optional<base::Value>& value,
                      scoped_refptr<net::HttpResponseHeaders> headers) {
-      std::optional<T> result;
-
-      const auto reply = base::JSONReader::Read(response_body.value_or(""));
-      if (!reply) {
+      std::optional<endpoints::WithHeaders<Response>> result;
+      auto response = Parse<Response>::From(value, nullptr);
+      if (!response) {
         return result;
       }
 
-      auto t = T::FromValue(*reply);
-      if (!t) {
-        return result;
-      }
-
-      if constexpr (endpoints::detail::HasHeaders<T>) {
-        result.emplace(std::move(*t));
-        result->headers = std::move(headers);
-      } else {
-        result = std::move(t);
-      }
-
+      result.emplace(std::move(*response));
+      result->headers = std::move(headers);
       return result;
     }
   };
 
-  template <typename... Ts>
-  struct Parse<std::variant<Ts...>> {
-    static auto From(std::optional<std::string> response_body,
+  template <endpoints::detail::Response... Responses>
+  struct Parse<std::variant<Responses...>> {
+    static auto From(const std::optional<base::Value>& value,
                      scoped_refptr<net::HttpResponseHeaders> headers) {
-      std::optional<std::variant<Ts...>> result;
+      std::optional<std::variant<Responses...>> result;
       (
           [&] {
             if (result) {
               return;
             }
 
-            if (auto ts = Parse<Ts>::From(response_body, headers)) {
-              result = std::move(*ts);
+            if (auto response = Parse<Responses>::From(value, headers)) {
+              result = std::move(*response);
             }
           }(),
           ...);
@@ -146,12 +143,12 @@ class Client {
           }
 
           const auto status_code = headers->response_code();
+          const auto value = base::JSONReader::Read(response_body.value_or(""));
           std::move(callback).Run(
               status_code >= 200 && status_code < 300
-                  ? Expected(Parse<Response>::From(std::move(response_body),
-                                                   std::move(headers)))
-                  : base::unexpected(Parse<Error>::From(
-                        std::move(response_body), std::move(headers))));
+                  ? Expected(Parse<Response>::From(value, std::move(headers)))
+                  : base::unexpected(
+                        Parse<Error>::From(value, std::move(headers))));
         };
 
     const auto json = base::WriteJson(request.ToValue());
