@@ -149,6 +149,16 @@ import XCTest
     .init(date: Date(), price: mockFILPrice),
   ]
   // FIL Asset, balance on filecoin testnet
+  lazy var mockFILAssetPriceOnTestnet: BraveWallet.AssetPrice = .init(
+    coin: .fil,
+    chainId: BraveWallet.FilecoinTestnet,
+    address: "",
+    price: mockFILPrice,
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "-57.23"
+  )
   let mockFILBalanceTestnet: Double = 100  // FIL value on testnet = $400.00
 
   let mockAvailableBTCBalanceAccount1: Double = 0.00000005
@@ -382,11 +392,11 @@ import XCTest
       completion(
         true,
         [
-          self.mockETHAssetPriceOnSepolia, self.mockETHAssetPrice,
+          self.mockETHAssetPrice, self.mockETHAssetPriceOnSepolia,
           self.mockUSDCAssetPrice, self.mockSOLAssetPrice,
-          self.mockFILAssetPrice, self.mockBTCAssetPrice,
-          self.mockBTCAssetPriceOnTestnet, self.mockZECAssetPrice,
-          self.mockZECAssetPriceOnTestnet,
+          self.mockFILAssetPrice, self.mockFILAssetPriceOnTestnet,
+          self.mockBTCAssetPrice, self.mockBTCAssetPriceOnTestnet,
+          self.mockZECAssetPrice, self.mockZECAssetPriceOnTestnet,
         ]
       )
     }

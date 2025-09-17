@@ -77,6 +77,16 @@ class AccountActivityStoreTests: XCTestCase {
       percentageChange24h: "-57.23"
     ),
     .init(
+      coin: .fil,
+      chainId: BraveWallet.FilecoinTestnet,
+      address: "",
+      price: "4.00",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
       coin: .zec,
       chainId: BraveWallet.ZCashMainnet,
       address: "",
@@ -894,7 +904,7 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockZecDecimalBalance)
         XCTAssertEqual(
           lastUpdatedAssets[safe: 0]?.price,
-          self.mockAssetPrices[safe: 6]?.price ?? ""
+          self.mockAssetPrices[safe: 7]?.price ?? ""
         )
       }
       .store(in: &cancellables)

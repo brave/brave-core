@@ -163,6 +163,16 @@ class SelectAccountTokenStoreTests: XCTestCase {
       source: .coingecko,
       percentageChange24h: "-57.23"
     )
+    let mockFILTestnetAssetPrice: BraveWallet.AssetPrice = .init(
+      coin: .fil,
+      chainId: BraveWallet.FilecoinTestnet,
+      address: "",
+      price: mockFILPrice,
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    )
 
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._allAccounts = {
@@ -234,7 +244,11 @@ class SelectAccountTokenStoreTests: XCTestCase {
     assetRatioService._price = { _, _, completion in
       completion(
         true,
-        [mockETHAssetPrice, mockUSDCAssetPrice, mockSOLAssetPrice, mockFILAssetPrice]
+        [
+          mockETHAssetPrice, mockUSDCAssetPrice,
+          mockSOLAssetPrice, mockFILAssetPrice,
+          mockFILTestnetAssetPrice,
+        ]
       )
     }
 

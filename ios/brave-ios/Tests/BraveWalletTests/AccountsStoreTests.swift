@@ -94,6 +94,16 @@ import XCTest
     source: .coingecko,
     percentageChange24h: "-57.23"
   )
+  lazy var mockFILTestnetAssetPrice: BraveWallet.AssetPrice = .init(
+    coin: .fil,
+    chainId: BraveWallet.FilecoinTestnet,
+    address: "",
+    price: mockFILPrice,
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "-57.23"
+  )
   let filMainnetTokens: [BraveWallet.BlockchainToken] = [
     BraveWallet.NetworkInfo.mockFilecoinMainnet.nativeToken
   ]
@@ -114,12 +124,32 @@ import XCTest
     source: .coingecko,
     percentageChange24h: "-57.23"
   )
+  lazy var mockBTCTestnetAssetPrice: BraveWallet.AssetPrice = .init(
+    coin: .btc,
+    chainId: BraveWallet.BitcoinTestnet,
+    address: "",
+    price: mockBTCPrice,
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "-57.23"
+  )
   let mockZECBalanceAccount1: Double = 0
   let mockZECTestnetBalanceAccount1: Double = 0
   let mockZECPrice: String = "36.46"
   lazy var mockZECAssetPrice: BraveWallet.AssetPrice = .init(
     coin: .zec,
     chainId: BraveWallet.ZCashMainnet,
+    address: "",
+    price: mockZECPrice,
+    vsCurrency: "usd",
+    cacheStatus: .hit,
+    source: .coingecko,
+    percentageChange24h: "4.32"
+  )
+  lazy var mockZECTestnetAssetPrice: BraveWallet.AssetPrice = .init(
+    coin: .zec,
+    chainId: BraveWallet.ZCashTestnet,
     address: "",
     price: mockZECPrice,
     vsCurrency: "usd",
@@ -249,11 +279,11 @@ import XCTest
       } else if coin == .zec,
         chainId == BraveWallet.ZCashMainnet
       {
-        completion(mockBtcBalanceInWei, .success, "")
+        completion(mockZcashBalanceInWei, .success, "")
       } else if coin == .zec,
         chainId == BraveWallet.ZCashTestnet
       {
-        completion(mockBtcTestnetBalanceInWei, .success, "")
+        completion(mockZcashTestnetBalanceInWei, .success, "")
       } else {
         completion("", .internalError, "")
       }
@@ -287,8 +317,11 @@ import XCTest
           self.mockUSDCAssetPrice,
           self.mockSOLAssetPrice,
           self.mockFILAssetPrice,
+          self.mockFILTestnetAssetPrice,
           self.mockBTCAssetPrice,
+          self.mockBTCTestnetAssetPrice,
           self.mockZECAssetPrice,
+          self.mockZECTestnetAssetPrice,
         ]
       )
     }

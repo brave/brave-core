@@ -135,6 +135,16 @@ class TransactionParserTests: XCTestCase {
       percentageChange24h: "0"
     ),
     .init(
+      coin: .fil,
+      chainId: BraveWallet.FilecoinTestnet,
+      address: "",
+      price: "2",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "0"
+    ),
+    .init(
       coin: .btc,
       chainId: BraveWallet.BitcoinMainnet,
       address: "",
