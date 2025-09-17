@@ -33,12 +33,6 @@ struct WithHeaders<Response> : Response {
   scoped_refptr<net::HttpResponseHeaders> headers;
 };
 
-namespace detail {
-
-template <typename T>
-concept HasHeaders = base::is_instantiation<T, WithHeaders>;
-
-}  // namespace detail
 }  // namespace endpoints
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_WITH_HEADERS_H_

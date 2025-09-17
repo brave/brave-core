@@ -197,7 +197,8 @@ TEST_P(EndpointClientTest, Send) {
           // WithHeaders<T> inherits from T. Check headers for equality.
           // Below is a workaround, as HttpResponseHeaders::StrictlyEquals()
           // doesn't work because of a space difference.
-          if constexpr (endpoints::detail::HasHeaders<Response>) {
+          if constexpr (base::is_instantiation<Response,
+                                               endpoints::WithHeaders>) {
             if (expected.has_value() && expected.value() &&
                 expected.value()->headers) {
               ASSERT_TRUE(got.has_value() && got.value() &&
