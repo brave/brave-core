@@ -8,6 +8,14 @@
 
 namespace brave_account::prefs {
 
+// This preference will store (`OSCrypt`-encrypted) the `verificationToken`
+// returned by the POST /v2/accounts/password/init endpoint.
+// It is then used for:
+// - calling POST /v2/accounts/password/finalize
+//   to complete the registration flow
+// - polling POST /v2/verify/result
+//   to exchange the `verificationToken` for the `authToken`
+//   after the user has verified their email
 inline constexpr char kVerificationToken[] = "brave.account.verification_token";
 
 }  // namespace brave_account::prefs
