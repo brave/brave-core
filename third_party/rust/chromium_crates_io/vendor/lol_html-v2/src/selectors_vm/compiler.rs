@@ -4,7 +4,7 @@ use super::{
     Ast, AstNode, AttributeComparisonExpr, Expr, OnAttributesExpr, OnTagNameExpr, Predicate,
     SelectorState,
 };
-use crate::base::{Bytes, HasReplacementsError};
+use crate::base::{BytesCow, HasReplacementsError};
 use crate::html::LocalName;
 use encoding_rs::Encoding;
 use selectors::attr::{AttrSelectorOperator, ParsedCaseSensitivity};
@@ -12,11 +12,14 @@ use std::fmt::Debug;
 use std::hash::Hash;
 use std::iter;
 
+type BytesOwned = Box<[u8]>;
+
 /// An expression using only the tag name of an element.
-pub type CompiledLocalNameExpr = Box<dyn Fn(&SelectorState<'_>, &LocalName<'_>) -> bool + Send>;
+pub type CompiledLocalNameExpr =
+    Box<dyn Fn(&SelectorState<'_>, &LocalName<'_>) -> bool + Send + 'static>;
 /// An expression using the attributes of an element.
 pub type CompiledAttributeExpr =
-    Box<dyn Fn(&SelectorState<'_>, &AttributeMatcher<'_>) -> bool + Send>;
+    Box<dyn Fn(&SelectorState<'_>, &AttributeMatcher<'_>) -> bool + Send + 'static>;
 
 #[derive(Default)]
 struct ExprSet {
@@ -25,8 +28,8 @@ struct ExprSet {
 }
 
 pub(crate) struct AttrExprOperands {
-    pub name: Bytes<'static>,
-    pub value: Bytes<'static>,
+    pub name: BytesOwned,
+    pub value: BytesOwned,
     pub case_sensitivity: ParsedCaseSensitivity,
 }
 
@@ -111,15 +114,15 @@ impl Expr<OnAttributesExpr> {
 fn compile_literal(
     encoding: &'static Encoding,
     lit: &str,
-) -> Result<Bytes<'static>, HasReplacementsError> {
-    Bytes::from_str_without_replacements(lit, encoding).map(Bytes::into_owned)
+) -> Result<BytesOwned, HasReplacementsError> {
+    Ok(BytesCow::from_str_without_replacements(lit, encoding)?.into())
 }
 
 #[inline]
 fn compile_literal_lowercase(
     encoding: &'static Encoding,
     lit: &str,
-) -> Result<Bytes<'static>, HasReplacementsError> {
+) -> Result<BytesOwned, HasReplacementsError> {
     compile_literal(encoding, &lit.to_ascii_lowercase())
 }
 
@@ -128,7 +131,7 @@ fn compile_operands(
     encoding: &'static Encoding,
     name: &str,
     value: &str,
-) -> Result<(Bytes<'static>, Bytes<'static>), HasReplacementsError> {
+) -> Result<(BytesOwned, BytesOwned), HasReplacementsError> {
     Ok((
         compile_literal_lowercase(encoding, name)?,
         compile_literal(encoding, value)?,
@@ -220,12 +223,12 @@ where
     ) -> Instruction<P> {
         let mut exprs = ExprSet::default();
 
-        on_tag_name_exprs
-            .iter()
-            .for_each(|c| c.compile(self.encoding, &mut exprs, enable_nth_of_type));
-        on_attr_exprs
-            .iter()
-            .for_each(|c| c.compile(self.encoding, &mut exprs, enable_nth_of_type));
+        for c in on_tag_name_exprs {
+            c.compile(self.encoding, &mut exprs, enable_nth_of_type);
+        }
+        for c in on_attr_exprs {
+            c.compile(self.encoding, &mut exprs, enable_nth_of_type);
+        }
 
         let ExprSet {
             local_name_exprs,
@@ -292,7 +295,11 @@ where
         addr_range
     }
 
+    // generic methods tend to be inlined, but this one is called from a couple of places,
+    // and has cheap-to-pass non-constants args, so it won't benefit from being merged into its callers.
+    // It's better to outline it, and let its callers be inlined.
     #[must_use]
+    #[inline(never)]
     pub fn compile(mut self, ast: Ast<P>) -> Program<P> {
         let mut enable_nth_of_type = false;
         self.instructions = iter::repeat_with(|| None)
@@ -393,7 +400,7 @@ mod tests {
             Token::StartTag(t) => {
                 let (input, attrs) = t.raw_attributes();
                 let tag_name = t.name();
-                let attr_matcher = AttributeMatcher::new(input, attrs, Namespace::Html);
+                let attr_matcher = AttributeMatcher::new(*input, attrs, Namespace::Html);
                 let local_name =
                     LocalName::from_str_without_replacements(&tag_name, encoding).unwrap();
 
@@ -617,16 +624,6 @@ mod tests {
             );
 
             assert_non_attr_expr_matches_and_negation_reverses_match(
-                r#"[foo*=""]"#,
-                encoding,
-                &[
-                    ("<div>", false),
-                    ("<span>", false),
-                    ("<anything-else>", false),
-                ],
-            );
-
-            assert_non_attr_expr_matches_and_negation_reverses_match(
                 "div",
                 encoding,
                 &[
@@ -725,6 +722,16 @@ mod tests {
                     ("<div foo='BaRα'>", true),
                     ("<div foo='42'>", false),
                     ("<div bar=baz qux>", false),
+                ],
+            );
+
+            assert_attr_expr_matches_and_negation_reverses_match(
+                r#"[foo*=""]"#,
+                encoding,
+                &[
+                    ("<div>", false),
+                    ("<span>", false),
+                    ("<anything-else>", false),
                 ],
             );
 
