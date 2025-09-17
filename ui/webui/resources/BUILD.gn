@@ -142,7 +142,7 @@ transpile_web_ui("brave_wallet_ui_wasm") {
 
   no_iife = true
   output_module = true
-  public_asset_path = "chrome://resources/brave/"
+  public_asset_path = "chrome-untrusted://resources/brave/"
 }
 
 # Create a grdp that //ui/webui/resources can include in its main resources GRD

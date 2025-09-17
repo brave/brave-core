@@ -43,8 +43,8 @@ UntrustedPolkadotUI::UntrustedPolkadotUI(content::WebUI* web_ui)
                               IDR_BRAVE_WALLET_POLKADOT_BRIDGE_HTML);
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      std::string("script-src 'self' chrome-untrusted://resources 'self' "
-                  "'wasm-unsafe-eval';"));
+      std::string("script-src chrome://resources chrome-untrusted://resources "
+                  "'self' 'wasm-unsafe-eval';"));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src 'self' 'unsafe-inline';"));

@@ -84,7 +84,8 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
           kUntrustedLineChartURL + " " + kUntrustedMarketURL + ";");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      "script-src chrome://resources 'self' 'wasm-unsafe-eval';");
+      "script-src chrome://resources chrome-untrusted://resources 'self' "
+      "'wasm-unsafe-eval';");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletPolkadotBridgeUrl", kUntrustedPolkadotURL);

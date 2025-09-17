@@ -119,6 +119,9 @@ module.exports = async function (env, argv) {
         if (/^chrome:\/\/resources\/brave\/brave_wallet_ui_wasm/.test(request)) {
           return callback(null, 'module ' + request);
         }
+        if (/^chrome-untrusted:\/\/resources\/brave\/brave_wallet_ui_wasm/.test(request)) {
+          return callback(null, 'module ' + request);
+        }
         callback();
       },
     ],

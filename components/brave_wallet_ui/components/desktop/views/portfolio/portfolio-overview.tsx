@@ -133,14 +133,14 @@ import {
   selectAllVisibleFungibleUserAssetsFromQueryResult, //
 } from '../../../../common/slices/entities/blockchain-token.entity'
 
-// @ts-expect-error
-import { rawr, get_pubkey } from 'chrome://resources/brave/brave_wallet_ui_wasm.bundle.js'
+// // @ts-expect-error
+// import { rawr, get_pubkey } from 'chrome-untrusted://resources/brave/brave_wallet_ui_wasm.bundle.js'
 
 function SchnorrDemoButton() {
   const [pubkey, setPubKey] = React.useState('');
 
   const onClick = () => {
-    setPubKey(get_pubkey());
+    setPubKey(/* get_pubkey() */ 'dummy key');
   };
 
   return (<>
