@@ -33,6 +33,7 @@ export type StringKey =
   'newsDisableButtonLabel' |
   'newsEnableButtonLabel' |
   'newsEnableText' |
+  'newsHideButtonLabel' |
   'newsSettingsTitle' |
   'newsWidgetTitle' |
   'photoCreditsText' |
