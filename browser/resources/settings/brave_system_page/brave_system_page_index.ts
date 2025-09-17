@@ -49,7 +49,7 @@ export class SettingsBraveSystemPageIndexElement extends
       showShortcutsPage_: {
         type: Boolean,
         value: () => loadTimeData.getBoolean('areShortcutsSupported'),
-      }
+      },
     };
   }
 
@@ -68,7 +68,7 @@ export class SettingsBraveSystemPageIndexElement extends
     }
     // </if>
 
-    views.push('memory', 'battery')
+    views.push('memory')
     this.$.viewManager.switchViews(views, 'no-animation', 'no-animation');
   }
 
