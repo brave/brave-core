@@ -39,6 +39,7 @@ class ConversationClient : public mojom::ConversationUI,
   void OnAPIResponseError(mojom::APIError error) override;
   void OnModelDataChanged(
       const std::string& model_key,
+      const std::string& default_model_key,
       std::vector<ai_chat::mojom::ModelPtr> model_list) override;
   void OnSuggestedQuestionsChanged(
       const std::vector<std::string>& questions,

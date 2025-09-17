@@ -49,6 +49,7 @@ void ConversationClient::OnAPIResponseError(mojom::APIError error) {
 
 void ConversationClient::OnModelDataChanged(
     const std::string& model_key,
+    const std::string& default_model_key,
     std::vector<mojom::ModelPtr> model_list) {
   NSMutableArray* models =
       [[NSMutableArray alloc] initWithCapacity:model_list.size()];
@@ -57,7 +58,9 @@ void ConversationClient::OnModelDataChanged(
     [models addObject:[[AiChatModel alloc] initWithModelPtr:model->Clone()]];
   }
 
-  [bridge_ onModelChanged:base::SysUTF8ToNSString(model_key) modelList:models];
+  [bridge_ onModelChanged:base::SysUTF8ToNSString(model_key)
+          defaultModelKey:base::SysUTF8ToNSString(default_model_key)
+                modelList:models];
 }
 
 void ConversationClient::OnSuggestedQuestionsChanged(

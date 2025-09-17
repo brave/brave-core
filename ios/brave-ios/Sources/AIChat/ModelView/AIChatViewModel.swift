@@ -334,7 +334,8 @@ extension AIChatViewModel: AIChatDelegate {
     self.suggestionsStatus = status
   }
 
-  public func onModelChanged(_ modelKey: String, modelList: [AiChat.Model]) {
+  public func onModelChanged(_ modelKey: String, defaultModelKey: String, modelList: [AiChat.Model])
+  {
     self.currentModel = self.models.first(where: { $0.key == modelKey })
     self.models = modelList
   }
