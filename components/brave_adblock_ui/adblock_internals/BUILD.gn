@@ -12,6 +12,10 @@ transpile_web_ui("brave_adblock_internals_ui") {
       ] ]
 
   resource_name = "brave_adblock_internals"
+  data = [
+    "//brave/components/brave_adblock_ui/",
+    "//brave/components/common/",
+  ]
 }
 
 pack_web_resources("generated_resources") {

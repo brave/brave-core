@@ -20,6 +20,12 @@ transpile_web_ui("ai_chat_ui") {
           "untrusted_conversation_frame/untrusted_conversation_frame.tsx"),
     ],
   ]
+
+  data = [
+    "//brave/components/ai_chat/resources/",
+    "//brave/components/common/",
+  ]
+
   deps = [
     "//brave/components/ai_chat/core/common/mojom:mojom_js",
     "//brave/components/resources:strings",

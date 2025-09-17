@@ -12,6 +12,10 @@ transpile_web_ui("ai_rewriter_ui") {
         "rewriter_ui",
         rebase_path("rewriter_ui.tsx"),
       ] ]
+  data = [
+    "//brave/components/ai_rewriter/resources/page/",
+    "//brave/components/common/",
+  ]
   deps = [
     "//brave/components/ai_rewriter/common/mojom:mojom_js",
     "//brave/components/resources:strings",

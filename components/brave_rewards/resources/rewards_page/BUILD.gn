@@ -12,6 +12,12 @@ transpile_web_ui("rewards_page") {
         rebase_path("rewards_page.tsx"),
       ] ]
   resource_name = "rewards_page"
+  output_module = true
+  data = [
+    "//brave/components/brave_rewards/resources/rewards_page/",
+    "//brave/components/brave_rewards/shared/",
+    "//brave/components/common/",
+  ]
   deps = [ "//brave/components/brave_rewards/core/mojom:webui_js" ]
 }
 

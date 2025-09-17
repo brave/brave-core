@@ -13,6 +13,11 @@ transpile_web_ui("email_aliases_ui") {
         rebase_path("email_aliases.tsx"),
       ] ]
 
+  data = [
+    "//brave/components/email_aliases/",
+    "//brave/components/common/",
+  ]
+
   resource_name = "email_aliases"
 
   deps = [ "//brave/components/email_aliases:mojom_js" ]

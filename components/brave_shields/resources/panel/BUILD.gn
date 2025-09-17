@@ -13,6 +13,10 @@ transpile_web_ui("brave_shields_panel_ui") {
         rebase_path("shields_panel.tsx"),
       ] ]
   resource_name = "brave_shields_panel"
+  data = [
+    "//brave/components/brave_shields/resources/panel/",
+    "//brave/components/common/",
+  ]
   deps = [ "//brave/components/brave_shields/core/common:mojom_js" ]
 }
 

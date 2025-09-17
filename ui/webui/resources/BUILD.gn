@@ -94,6 +94,8 @@ transpile_web_ui("leo_web_components") {
   generate_grdp = true
   resource_path_prefix = "brave"
 
+  data = [ "//brave/ui/webui/resources/" ]
+
   entry_points = [ [
         "leo",
         rebase_path("leo/web_components.ts"),
@@ -116,6 +118,8 @@ transpile_web_ui("opaque_ke") {
     rebase_path("wasm/Cargo.lock"),
     rebase_path("wasm/opaque_ke/src/lib.rs"),
   ]
+
+  data = [ "//brave/ui/webui/resources/" ]
 
   rust_packages = [ rebase_path("wasm/opaque_ke/Cargo.toml") ]
 
