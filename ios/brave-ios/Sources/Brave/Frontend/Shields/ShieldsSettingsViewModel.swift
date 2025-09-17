@@ -54,9 +54,14 @@ class ShieldsSettingsViewModel: ObservableObject {
     self.shieldsEnabled =
       tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL)
       ?? true
+    // `considerAlwaysAggressiveETLDs` is `false` to mask that we may force
+    // aggressive mode on some domains.
     self.blockAdsAndTrackingLevel =
-      tab.braveShieldsHelper?.shieldLevel(for: tab.visibleURL, considerAllShieldsOption: true)
-      ?? .standard
+      tab.braveShieldsHelper?.shieldLevel(
+        for: tab.visibleURL,
+        considerAllShieldsOption: true,
+        considerAlwaysAggressiveETLDs: false
+      ) ?? .standard
     self.blockScripts =
       tab.braveShieldsHelper?.isShieldExpected(
         for: tab.visibleURL,
@@ -81,10 +86,13 @@ class ShieldsSettingsViewModel: ObservableObject {
     isUpdatingState = true
     defer { isUpdatingState = false }
     shieldsEnabled = tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL) ?? true
+    // `considerAlwaysAggressiveETLDs` is `false` to mask that we may force
+    // aggressive mode on some domains.
     blockAdsAndTrackingLevel =
       tab.braveShieldsHelper?.shieldLevel(
         for: tab.visibleURL,
-        considerAllShieldsOption: false
+        considerAllShieldsOption: true,
+        considerAlwaysAggressiveETLDs: false
       ) ?? .standard
     self.blockScripts =
       tab.braveShieldsHelper?.isShieldExpected(
