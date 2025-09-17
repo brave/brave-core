@@ -24,6 +24,8 @@
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/endpoint_client/http_method.h"
+#include "brave/components/endpoint_client/with_headers.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
@@ -99,22 +101,22 @@ struct TestEndpoint
           //     optional<variant<Response1, Response2>>,
           //     optional<Error1>
           //   >
-          For<POST<Request1>>::RespondsWith<Response1,
-                                            Response2>::ErrorsWith<Error1>,
+          For<POST<Request1>>::ReturnsWith<Response1,
+                                           Response2>::FailsWith<Error1>,
           // PATCH<Request2> =>
           //   expected<
           //     optional<Response1>,
           //     optional<variant<Error1, Error2>>
           //   >
-          For<PATCH<Request2>>::RespondsWith<Response1>::ErrorsWith<Error1,
-                                                                    Error2>,
+          For<PATCH<Request2>>::ReturnsWith<Response1>::FailsWith<Error1,
+                                                                  Error2>,
           // WithHeaders<PATCH<Request1>> =>
           //   expected<
           //     optional<Response1>,
           //     optional<Error1>
           //   >
-          For<WithHeaders<PATCH<Request1>>>::RespondsWith<
-              WithHeaders<Response1>>::ErrorsWith<Error1>> {
+          For<WithHeaders<PATCH<Request1>>>::ReturnsWith<
+              WithHeaders<Response1>>::FailsWith<Error1>> {
   static GURL URL() { return GURL("https://example.com/api/query"); }
 };
 
@@ -195,7 +197,7 @@ TEST_P(EndpointClientTest, Send) {
           // WithHeaders<T> inherits from T. Check headers for equality.
           // Below is a workaround, as HttpResponseHeaders::StrictlyEquals()
           // doesn't work because of a space difference.
-          if constexpr (endpoints::detail::HasResponseHeaders<Response>) {
+          if constexpr (endpoints::detail::HasHeaders<Response>) {
             if (expected.has_value() && expected.value() &&
                 expected.value()->headers) {
               ASSERT_TRUE(got.has_value() && got.value() &&

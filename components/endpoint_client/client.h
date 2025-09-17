@@ -26,6 +26,8 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "brave/components/endpoint_client/endpoint.h"
+#include "brave/components/endpoint_client/with_headers.h"
 
 namespace endpoint_client {
 
@@ -47,7 +49,7 @@ class Client {
         return result;
       }
 
-      if constexpr (endpoints::detail::HasResponseHeaders<T>) {
+      if constexpr (endpoints::detail::HasHeaders<T>) {
         result.emplace(std::move(*t));
         result->headers = std::move(headers);
       } else {
@@ -158,7 +160,7 @@ class Client {
     auto resource_request = std::make_unique<network::ResourceRequest>();
     resource_request->url = Endpoint::URL();
     resource_request->method = request.Method();
-    if constexpr (endpoints::detail::HasRequestHeaders<Request>) {
+    if constexpr (endpoints::detail::HasHeaders<Request>) {
       resource_request->headers = std::move(request.headers);
     }
 
