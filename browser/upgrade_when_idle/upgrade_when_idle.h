@@ -26,7 +26,7 @@ namespace brave {
 // quit the browser, and thus also does not apply an update.
 class UpgradeWhenIdle : public UpgradeObserver {
  public:
-  UpgradeWhenIdle(ProfileManager* profile_manager);
+  explicit UpgradeWhenIdle(ProfileManager* profile_manager);
   ~UpgradeWhenIdle() override;
 
   // UpgradeObserver:
