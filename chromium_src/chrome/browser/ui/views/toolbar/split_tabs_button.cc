@@ -5,10 +5,26 @@
 
 #include "chrome/browser/ui/views/toolbar/split_tabs_button.h"
 
-#include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
-
-#define SplitTabMenuModel BraveSplitTabMenuModel
+#define SplitTabsToolbarButton SplitTabsToolbarButton_ChromiumImpl
 
 #include <chrome/browser/ui/views/toolbar/split_tabs_button.cc>
 
-#undef SplitTabMenuModel
+#undef SplitTabsToolbarButton
+
+// defined at brave_split_tab_menu_model.cc to avoid BraveSplitTabMenuModel
+// dependency here.
+std::unique_ptr<ui::SimpleMenuModel> CreateBraveSplitTabMenuModel(
+    TabStripModel* tab_strip_model,
+    SplitTabMenuModel::MenuSource source);
+
+SplitTabsToolbarButton::SplitTabsToolbarButton(Browser* browser)
+    : SplitTabsToolbarButton_ChromiumImpl(browser) {
+  split_tab_menu_ = CreateBraveSplitTabMenuModel(
+      browser_->tab_strip_model(),
+      SplitTabMenuModel::MenuSource::kToolbarButton);
+}
+
+SplitTabsToolbarButton::~SplitTabsToolbarButton() = default;
+
+BEGIN_METADATA(SplitTabsToolbarButton)
+END_METADATA
