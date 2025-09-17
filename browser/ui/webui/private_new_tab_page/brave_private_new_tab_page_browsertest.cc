@@ -89,8 +89,7 @@ class BravePrivateNewTabPageBrowserTest
 #if BUILDFLAG(ENABLE_TOR)
 IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageBrowserTest,
                        BraveSearchForTorBrowser) {
-  ui_test_utils::BrowserChangeObserver tor_browser_creation_observer(
-      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+  ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
   brave::NewOffTheRecordWindowTor(browser());
   Browser* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);
