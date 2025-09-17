@@ -12,6 +12,7 @@
 #include "base/run_loop.h"
 #include "base/scoped_multi_source_observation.h"
 #include "base/trace_event/trace_event.h"
+#include "base/values.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/lifetime/browser_shutdown.h"
@@ -193,8 +194,12 @@ void BraveClearBrowsingData::ClearOnExit() {
 bool BraveClearBrowsingData::IsClearOnExitEnabledForAnyType(Profile* profile) {
   uint64_t remove_mask;
   uint64_t origin_mask;
-  return GetClearBrowsingDataOnExitSettings(profile, &remove_mask,
-                                            &origin_mask);
+  if (GetClearBrowsingDataOnExitSettings(profile, &remove_mask, &origin_mask)) {
+    return true;
+  }
+  const base::Value::List& clear_on_exit_list = profile->GetPrefs()->GetList(
+      browsing_data::prefs::kClearBrowsingDataOnExitList);
+  return !clear_on_exit_list.empty();
 }
 
 // static

@@ -18,7 +18,6 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/upgrade_detector/upgrade_detector.h"
 #include "chrome/common/chrome_switches.h"
-#include "components/browsing_data/core/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/idle/idle.h"
 
@@ -117,15 +116,9 @@ bool UpgradeWhenIdle::AreAnyClearDataOnExitSettingsEnabled() {
             profile)) {
       return true;
     }
-    const base::Value::List& clear_on_exit_list = profile->GetPrefs()->GetList(
-        browsing_data::prefs::kClearBrowsingDataOnExitList);
-    if (!clear_on_exit_list.empty()) {
-      return true;
-    }
   }
   return false;
 }
-
 
 bool UpgradeWhenIdle::AttemptRelaunch() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
