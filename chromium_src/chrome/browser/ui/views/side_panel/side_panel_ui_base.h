@@ -8,6 +8,11 @@
 
 class BraveSidePanelCoordinator;
 
+// Make BraveSidePanelCoordinator a friend of SidePanelUIBase because we want
+// to override some of its protected and private methods and have access to
+// the private current_key_ member variable.
+// Inheritance:
+// BraveSidePanelCoordinator -> SidePanelCoordinator -> SidePanelUIBase
 #define set_current_key                   \
   Unused();                               \
   friend class BraveSidePanelCoordinator; \
