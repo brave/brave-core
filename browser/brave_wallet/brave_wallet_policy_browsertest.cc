@@ -92,16 +92,14 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, IsBraveWalletDisabled) {
 
     auto* profile = browser()->profile();
     auto* incognito_profile = CreateIncognitoBrowser(profile)->profile();
-    ui_test_utils::BrowserChangeObserver browser_creation_observer(
-        nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+    ui_test_utils::BrowserCreatedObserver browser_creation_observer;
     profiles::SwitchToGuestProfile();
     Browser* guest_browser = browser_creation_observer.Wait();
     DCHECK(guest_browser);
     auto* guest_profile = guest_browser->profile();
     ASSERT_TRUE(guest_profile->IsGuestSession());
 
-    ui_test_utils::BrowserChangeObserver tor_browser_creation_observer(
-        nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+    ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
     brave::NewOffTheRecordWindowTor(browser());
     Browser* tor_browser = tor_browser_creation_observer.Wait();
     DCHECK(tor_browser);
