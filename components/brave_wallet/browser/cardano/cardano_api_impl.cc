@@ -43,7 +43,7 @@ constexpr char kNotImplemented[] = "Not implemented";
 
 // TxSendErrorCode
 [[maybe_unused]] constexpr int kTxSendRefused = 1;
-[[maybe_unused]] constexpr int kTxSendFailure = 2;
+constexpr int kTxSendFailure = 2;
 
 // TxSignErrorCode
 [[maybe_unused]] constexpr int kTxSignProofGeneration = 1;
@@ -459,10 +459,33 @@ void CardanoApiImpl::SubmitTx(const std::string& signed_tx_cbor,
 
   delegate_->WalletInteractionDetected();
 
-  NOTIMPLEMENTED_LOG_ONCE();
-  std::move(callback).Run(
-      std::nullopt, mojom::CardanoProviderErrorBundle::New(
-                        kAPIErrorInternalError, kNotImplemented, nullptr));
+  auto* cardano_rpc =
+      brave_wallet_service_->GetCardanoWalletService()->GetCardanoRpc(
+          GetNetworkForCardanoAccount(selected_account_));
+
+  std::vector<uint8_t> message;
+  if (!base::HexStringToBytes(signed_tx_cbor, &message)) {
+    std::move(callback).Run(
+        std::nullopt, mojom::CardanoProviderErrorBundle::New(
+                          kTxSendFailure, "Failed to decode CBOR", nullptr));
+    return;
+  }
+
+  cardano_rpc->PostTransaction(
+      std::move(message),
+      base::BindOnce(&CardanoApiImpl::OnSubmitTx,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void CardanoApiImpl::OnSubmitTx(SubmitTxCallback callback,
+                                base::expected<std::string, std::string> txid) {
+  if (txid.has_value()) {
+    std::move(callback).Run(txid.value(), nullptr);
+  } else {
+    std::move(callback).Run(std::nullopt,
+                            mojom::CardanoProviderErrorBundle::New(
+                                kTxSendFailure, txid.error(), nullptr));
+  }
 }
 
 void CardanoApiImpl::GetCollateral(const std::string& amount,
@@ -489,7 +512,6 @@ CardanoApiImpl::CheckSelectedAccountValid() {
     return mojom::CardanoProviderErrorBundle::New(
         kAPIErrorRefused, kAccountNotConnectedError, nullptr);
   }
-
   if (account_id->unique_key != selected_account_->unique_key) {
     return mojom::CardanoProviderErrorBundle::New(
         kAPIErrorAccountChange, kAccountChangedError, nullptr);
