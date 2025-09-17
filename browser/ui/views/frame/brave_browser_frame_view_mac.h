@@ -3,25 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_NON_CLIENT_FRAME_VIEW_MAC_H_
-#define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_NON_CLIENT_FRAME_VIEW_MAC_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_VIEW_MAC_H_
+#define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_VIEW_MAC_H_
 
 #include <memory>
 
-#include "chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.h"
+#include "chrome/browser/ui/views/frame/browser_frame_view_mac.h"
 
 class BraveWindowFrameGraphic;
 
-class BraveBrowserNonClientFrameViewMac : public BrowserNonClientFrameViewMac {
+class BraveBrowserFrameViewMac : public BrowserFrameViewMac {
  public:
-  BraveBrowserNonClientFrameViewMac(BrowserWidget* browser_widget,
-                                    BrowserView* browser_view);
-  ~BraveBrowserNonClientFrameViewMac() override;
+  BraveBrowserFrameViewMac(BrowserWidget* browser_widget,
+                           BrowserView* browser_view);
+  ~BraveBrowserFrameViewMac() override;
 
-  BraveBrowserNonClientFrameViewMac(
-      const BraveBrowserNonClientFrameViewMac&) = delete;
-  BraveBrowserNonClientFrameViewMac& operator=(
-      const BraveBrowserNonClientFrameViewMac&) = delete;
+  BraveBrowserFrameViewMac(const BraveBrowserFrameViewMac&) = delete;
+  BraveBrowserFrameViewMac& operator=(const BraveBrowserFrameViewMac&) = delete;
   gfx::Size GetMinimumSize() const override;
 
  private:
@@ -30,7 +28,7 @@ class BraveBrowserNonClientFrameViewMac : public BrowserNonClientFrameViewMac {
   void UpdateWindowTitleAndControls();
   void UpdateWindowTitleColor();
 
-  // BrowserNonClientFrameViewMac overrides:
+  // BrowserFrameViewMac overrides:
   void OnPaint(gfx::Canvas* canvas) override;
   int GetTopInset(bool restored) const override;
   int NonClientHitTest(const gfx::Point& point) override;
@@ -42,4 +40,4 @@ class BraveBrowserNonClientFrameViewMac : public BrowserNonClientFrameViewMac {
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_NON_CLIENT_FRAME_VIEW_MAC_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_VIEW_MAC_H_
