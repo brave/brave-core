@@ -43,7 +43,7 @@ class UpgradeWhenIdle : public UpgradeObserver {
   bool AttemptRelaunch();
 
   raw_ptr<ProfileManager> profile_manager_ = nullptr;
-  
+
   // Timer for periodic idle checks.
   base::RepeatingTimer idle_check_timer_;
 

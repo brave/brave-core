@@ -36,8 +36,8 @@ class UpgradeWhenIdleTest : public testing::Test {
 
   void SetUp() override {
     ASSERT_TRUE(profile_manager_.SetUp());
-    upgrade_when_idle_ = std::make_unique<UpgradeWhenIdle>(
-        profile_manager_.profile_manager());
+    upgrade_when_idle_ =
+        std::make_unique<UpgradeWhenIdle>(profile_manager_.profile_manager());
     profile_ = profile_manager_.CreateTestingProfile("TestProfile");
   }
 
