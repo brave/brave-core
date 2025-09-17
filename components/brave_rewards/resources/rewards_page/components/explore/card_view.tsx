@@ -37,7 +37,11 @@ export function CardView(props: Props) {
   }
 
   return (
-    <div className='content-card' data-css-scope={style.scope}>
+    <div
+      className='content-card'
+      data-css-scope={style.scope}
+      data-deep-link-id={card.name}
+    >
       <h4>{cardTitle()}</h4>
       {
         card.banner &&

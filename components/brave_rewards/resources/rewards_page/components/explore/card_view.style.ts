@@ -12,17 +12,6 @@ export const style = scoped.css`
     align-items: center;
     justify-content: space-between;
 
-    a {
-      --leo-icon-size: 16px;
-      --leo-icon-color: ${color.icon.interactive};
-
-      font: ${font.components.buttonSmall};
-      color: ${color.text.interactive};
-      text-decoration: none;
-      display: flex;
-      gap: 8px;
-    }
-
     &:empty {
       display: none;
     }
