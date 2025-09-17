@@ -9,15 +9,18 @@
 
 #include "brave/browser/ai_chat/browser_tool_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
+#include "content/public/browser/browser_context.h"
 
 namespace ai_chat {
 
-BrowserToolProviderFactory::BrowserToolProviderFactory() = default;
+BrowserToolProviderFactory::BrowserToolProviderFactory(
+    content::BrowserContext* browser_context)
+    : browser_context_(browser_context) {}
 
 BrowserToolProviderFactory::~BrowserToolProviderFactory() = default;
 
 std::unique_ptr<ToolProvider> BrowserToolProviderFactory::CreateToolProvider() {
-  return std::make_unique<BrowserToolProvider>();
+  return std::make_unique<BrowserToolProvider>(browser_context_);
 }
 
 }  // namespace ai_chat

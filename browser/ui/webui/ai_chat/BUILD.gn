@@ -15,6 +15,8 @@ source_set("ai_chat") {
     "ai_chat_ui_page_handler.h",
     "ai_chat_untrusted_conversation_ui.cc",
     "ai_chat_untrusted_conversation_ui.h",
+    "code_sandbox_ui.cc",
+    "code_sandbox_ui.h",
   ]
 
   deps = [
