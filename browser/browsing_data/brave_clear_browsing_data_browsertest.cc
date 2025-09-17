@@ -241,10 +241,9 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
 
   // Close the provided |browser| window and wait until done.
   void CloseBrowserWindow(Browser* browser) {
-    BrowserChangeObserver bco(browser,
-                              BrowserChangeObserver::ChangeType::kRemoved);
+    ui_test_utils::BrowserDestroyedObserver browser_destroyed_observer(browser);
     chrome::ExecuteCommand(browser, IDC_CLOSE_WINDOW);
-    EXPECT_EQ(bco.Wait(), browser);
+    browser_destroyed_observer.Wait();
   }
 
   // Enable deletion of browsing history on exit.
