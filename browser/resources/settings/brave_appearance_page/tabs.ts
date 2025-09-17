@@ -69,6 +69,10 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
   private isTreeTabsFlagEnabled() {
     return loadTimeData.getBoolean('isTreeTabsFlagEnabled');
   }
+
+  private isHideVerticalTabCompletelyFlagEnabled() {
+    return loadTimeData.getBoolean('isHideVerticalTabCompletelyFlagEnabled');
+  }
 }
 
 customElements.define(SettingsBraveAppearanceTabsElement.is, SettingsBraveAppearanceTabsElement)

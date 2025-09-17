@@ -38,6 +38,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
+#include "brave/components/ai_chat/core/browser/mock_untrusted_conversation_handler_client.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
@@ -49,6 +50,8 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
+#include "build/build_config.h"
+#include "build/buildflag.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
@@ -82,6 +85,15 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
               GetPremiumStatus,
               (mojom::Service::GetPremiumStatusCallback callback),
               (override));
+};
+
+class MockToolProvider : public ToolProvider {
+ public:
+  MockToolProvider() = default;
+  ~MockToolProvider() override = default;
+
+  MOCK_METHOD(void, OnNewGenerationLoop, (), (override));
+  MOCK_METHOD(std::vector<base::WeakPtr<Tool>>, GetTools, (), (override));
 };
 
 class MockConversationHandlerClient : public mojom::ConversationUI {
@@ -131,40 +143,6 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
   mojo::Remote<mojom::ConversationHandler> conversation_handler_;
 };
 
-class MockUntrustedConversationHandlerClient
-    : public mojom::UntrustedConversationUI {
- public:
-  explicit MockUntrustedConversationHandlerClient(ConversationHandler* driver) {
-    driver->BindUntrustedConversationUI(
-        conversation_ui_receiver_.BindNewPipeAndPassRemote(),
-        base::DoNothing());
-  }
-
-  ~MockUntrustedConversationHandlerClient() override = default;
-
-  void Disconnect() { conversation_ui_receiver_.reset(); }
-
-  MOCK_METHOD(void,
-              OnConversationHistoryUpdate,
-              (mojom::ConversationTurnPtr),
-              (override));
-  MOCK_METHOD(void,
-              OnToolUseEventOutput,
-              (const std::string& entry_uuid, mojom::ToolUseEventPtr tool_use),
-              (override));
-  MOCK_METHOD(void,
-              OnEntriesUIStateChanged,
-              (mojom::ConversationEntriesStatePtr),
-              (override));
-  MOCK_METHOD(void,
-              AssociatedContentChanged,
-              (std::vector<mojom::AssociatedContentPtr>),
-              (override));
-
- private:
-  mojo::Receiver<mojom::UntrustedConversationUI> conversation_ui_receiver_{
-      this};
-};
 
 class MockAIChatFeedbackAPI : public AIChatFeedbackAPI {
  public:
@@ -221,10 +199,23 @@ class ConversationHandlerUnitTest : public testing::Test {
         "uuid", "title", base::Time::Now(), false, std::nullopt, 0, 0, false,
         std::vector<mojom::AssociatedContentPtr>());
 
+    std::vector<std::unique_ptr<ToolProvider>> tool_providers;
+    tool_providers.push_back(std::make_unique<NiceMock<MockToolProvider>>());
+
     conversation_handler_ = std::make_unique<ConversationHandler>(
         conversation_.get(), ai_chat_service_.get(), model_service_.get(),
         ai_chat_service_->GetCredentialManagerForTesting(),
-        mock_feedback_api_.get(), shared_url_loader_factory_);
+        mock_feedback_api_.get(), shared_url_loader_factory_,
+        std::move(tool_providers));
+
+    mock_tool_provider_ = static_cast<MockToolProvider*>(
+        conversation_handler_->GetFirstToolProviderForTesting());
+    ASSERT_TRUE(mock_tool_provider_);
+
+    // No tools by default
+    ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([]() {
+      return std::vector<base::WeakPtr<Tool>>();
+    });
 
     conversation_handler_->SetEngineForTesting(
         std::make_unique<NiceMock<MockEngineConsumer>>());
@@ -248,7 +239,10 @@ class ConversationHandlerUnitTest : public testing::Test {
 
   void EmulateUserOptedOut() { ::ai_chat::SetUserOptedIn(&prefs_, false); }
 
-  void TearDown() override { ai_chat_service_.reset(); }
+  void TearDown() override {
+    mock_tool_provider_ = nullptr;
+    ai_chat_service_.reset();
+  }
 
   void SetAssociatedContentStagedEntries(bool empty = false,
                                          bool multi = false) {
@@ -292,7 +286,7 @@ class ConversationHandlerUnitTest : public testing::Test {
       }
 
       auto entry = mojom::ConversationTurn::New(
-          std::nullopt,
+          "turn-" + base::NumberToString(i),
           is_human ? mojom::CharacterType::HUMAN
                    : mojom::CharacterType::ASSISTANT,
           is_human ? mojom::ActionType::QUERY : mojom::ActionType::RESPONSE,
@@ -321,6 +315,7 @@ class ConversationHandlerUnitTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   std::unique_ptr<NiceMock<MockAssociatedContent>> associated_content_;
   mojom::ConversationPtr conversation_;
+  raw_ptr<MockToolProvider> mock_tool_provider_;
   std::unique_ptr<ConversationHandler> conversation_handler_;
   std::unique_ptr<NiceMock<MockAIChatFeedbackAPI>> mock_feedback_api_;
   bool is_opted_in_ = true;
@@ -899,16 +894,16 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   auto metadata = mojom::Conversation::New();
   metadata->associated_content.push_back(mojom::AssociatedContent::New(
       "1", mojom::ContentType::PageContent, "Content 1", 1,
-      GURL("https://one.com"), 100));
+      GURL("https://one.com"), 100, "turn-1"));
   metadata->associated_content.push_back(mojom::AssociatedContent::New(
       "2", mojom::ContentType::PageContent, "Content 2", 2,
-      GURL("https://two.com"), 100));
+      GURL("https://two.com"), 100, "turn-1"));
 
   auto conversation_archive = mojom::ConversationArchive::New();
   conversation_archive->associated_content.push_back(
-      mojom::ContentArchive::New("1", "The content of one"));
+      mojom::ContentArchive::New("1", "The content of one", "turn-1"));
   conversation_archive->associated_content.push_back(
-      mojom::ContentArchive::New("1", "The content of two"));
+      mojom::ContentArchive::New("2", "The content of two", "turn-1"));
 
   conversation_handler_->associated_content_manager()->LoadArchivedContent(
       metadata.get(), conversation_archive);
@@ -1502,16 +1497,16 @@ TEST_F(ConversationHandlerUnitTest,
   auto& history = conversation_handler_->GetConversationHistory();
   std::vector<mojom::ConversationTurnPtr> expected_history;
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "query", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, true, std::nullopt /* model_key */));
+      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "query",
+      std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
+      std::nullopt, true, std::nullopt /* model_key */));
   std::vector<mojom::ConversationEntryEventPtr> events;
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("summary")));
   expected_history.push_back(mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, "summary", std::nullopt, std::nullopt,
-      std::move(events), base::Time::Now(), std::nullopt, std::nullopt, true,
+      "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "summary", std::nullopt, std::nullopt, std::move(events),
+      base::Time::Now(), std::nullopt, std::nullopt, true,
       std::nullopt /* model_key */));
   ASSERT_EQ(history.size(), expected_history.size());
   for (size_t i = 0; i < history.size(); i++) {
@@ -1844,7 +1839,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   constexpr char kTestPrompt[] = "What is this?";
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillRepeatedly(testing::Invoke(
-          [](PageContents page_contents,
+          [](PageContentsMap page_contents,
              const std::vector<mojom::ConversationTurnPtr>& history,
              const std::string& selected_language, bool is_temporary_chat,
              const std::vector<base::WeakPtr<Tool>>& tools,
@@ -2557,11 +2552,12 @@ TEST_F(ConversationHandlerUnitTest,
 
   auto tool1 =
       std::make_unique<NiceMock<MockTool>>("weather_tool", "Get weather");
-  auto* tool1_ptr = tool1.get();
   tool1->set_requires_user_interaction_before_handling(false);
-  std::vector<std::unique_ptr<Tool>> tools;
-  tools.push_back(std::move(tool1));
-  conversation_handler_->SetToolsForTesting(std::move(tools));
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    return tools;
+  });
 
   bool tool_response_generation_started = false;
 
@@ -2605,7 +2601,7 @@ TEST_F(ConversationHandlerUnitTest,
                         std::nullopt)));
               })));
 
-  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"New York\"}"), _))
+  EXPECT_CALL(*tool1, UseTool(StrEq("{\"location\":\"New York\"}"), _))
       .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
@@ -2654,10 +2650,55 @@ TEST_F(ConversationHandlerUnitTest,
             mojom::APIError::ConnectionIssue);
 }
 
+TEST_F(ConversationHandlerUnitTest, GetTools_FiltersUnsupportedTools) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+  ASSERT_FALSE(conversation_handler_->associated_content_manager()
+                   ->HasAssociatedContent());
+
+  auto tool1 =
+      std::make_unique<NiceMock<MockTool>>("not_supported_by_model", "");
+  auto tool2 =
+      std::make_unique<NiceMock<MockTool>>("requires_content_association", "");
+  auto tool3 = std::make_unique<NiceMock<MockTool>>("supported", "");
+  auto tool4 =
+      std::make_unique<NiceMock<MockTool>>("not_supports_conversation", "");
+
+  tool1->set_is_supported_by_model(false);
+  tool2->set_requires_content_association(true);
+  tool4->set_supports_conversation(false);
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    tools.push_back(tool3->GetWeakPtr());
+    tools.push_back(tool4->GetWeakPtr());
+    return tools;
+  });
+
+  auto tools = conversation_handler_->GetToolsForTesting();
+  EXPECT_EQ(tools.size(), 1u);
+  EXPECT_EQ(tools[0]->Name(), "supported");
+}
+
 TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
   conversation_handler_->associated_content_manager()->ClearContent();
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
+
+  // Set up test tools that match the tool names used in the test
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+  auto tool2 =
+      std::make_unique<NiceMock<MockTool>>("test_tool2", "Test tool 2");
+  tool1->set_requires_user_interaction_before_handling(false);
+  tool2->set_requires_user_interaction_before_handling(false);
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    return tools;
+  });
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
 
@@ -2739,16 +2780,15 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
       std::make_unique<NiceMock<MockTool>>("weather_tool", "Get weather");
   auto tool2 = std::make_unique<NiceMock<MockTool>>("calculator", "Do math");
 
-  auto* tool1_ptr = tool1.get();
-  auto* tool2_ptr = tool2.get();
-
   tool1->set_requires_user_interaction_before_handling(false);
   tool2->set_requires_user_interaction_before_handling(false);
 
-  std::vector<std::unique_ptr<Tool>> tools;
-  tools.push_back(std::move(tool1));
-  tools.push_back(std::move(tool2));
-  conversation_handler_->SetToolsForTesting(std::move(tools));
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    return tools;
+  });
 
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
@@ -2814,7 +2854,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
       }));
 
   // Only the weather_tool UseTool should be called
-  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"New York\"}"), _))
+  EXPECT_CALL(*tool1, UseTool(StrEq("{\"location\":\"New York\"}"), _))
       .InSequence(seq)
       .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
         std::vector<mojom::ContentBlockPtr> result;
@@ -2858,7 +2898,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
         EXPECT_TRUE(second_generation_started);
       }));
 
-  EXPECT_CALL(*tool2_ptr, UseTool).Times(0);
+  EXPECT_CALL(*tool2, UseTool).Times(0);
 
   // Submit a human entry to trigger the tool use
   conversation_handler_->SubmitHumanConversationEntry(
@@ -2892,16 +2932,16 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
   auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
   auto tool2 =
       std::make_unique<NiceMock<MockTool>>("test_tool2", "Test tool 2");
-  auto* tool1_ptr = tool1.get();
-  auto* tool2_ptr = tool2.get();
 
   tool1->set_requires_user_interaction_before_handling(false);
   tool2->set_requires_user_interaction_before_handling(false);
 
-  std::vector<std::unique_ptr<Tool>> tools;
-  tools.push_back(std::move(tool1));
-  tools.push_back(std::move(tool2));
-  conversation_handler_->SetToolsForTesting(std::move(tools));
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    return tools;
+  });
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
 
@@ -2943,7 +2983,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
               })));
 
   // Setup tool use results
-  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"location\":\"NYC\"}"), _))
+  EXPECT_CALL(*tool1, UseTool(StrEq("{\"location\":\"NYC\"}"), _))
       .InSequence(seq)
       .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
         std::vector<mojom::ContentBlockPtr> result;
@@ -2952,7 +2992,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
         std::move(callback).Run(std::move(result));
       }));
 
-  EXPECT_CALL(*tool2_ptr, UseTool(StrEq("{\"input1\":\"val1\"}"), _))
+  EXPECT_CALL(*tool2, UseTool(StrEq("{\"input1\":\"val1\"}"), _))
       .InSequence(seq)
       .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
         std::vector<mojom::ContentBlockPtr> result;
@@ -3030,12 +3070,13 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Setup a tool that requires user interaction before handling
   auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
-  auto* tool1_ptr = tool1.get();
   tool1->set_requires_user_interaction_before_handling(true);
 
-  std::vector<std::unique_ptr<Tool>> tools;
-  tools.push_back(std::move(tool1));
-  conversation_handler_->SetToolsForTesting(std::move(tools));
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    return tools;
+  });
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
 
@@ -3066,7 +3107,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Tool should not be called since there is no explicit call via user
   // interaction.
-  EXPECT_CALL(*tool1_ptr, UseTool).Times(0);
+  EXPECT_CALL(*tool1, UseTool).Times(0);
 
   // When the user instead decides to send a new human entry, before the tool
   // use request is handled, the tool use request should be discarded.
@@ -3133,16 +3174,19 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
   auto tool1 = std::make_unique<NiceMock<MockTool>>("tool1", "First tool");
   auto tool2 = std::make_unique<NiceMock<MockTool>>("tool2", "Second tool");
 
-  auto* tool1_ptr = tool1.get();
-  auto* tool2_ptr = tool2.get();
-
   tool1->set_requires_user_interaction_before_handling(false);
   tool2->set_requires_user_interaction_before_handling(false);
 
-  std::vector<std::unique_ptr<Tool>> tools;
-  tools.push_back(std::move(tool1));
-  tools.push_back(std::move(tool2));
-  conversation_handler_->SetToolsForTesting(std::move(tools));
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    return tools;
+  });
+
+  // Expect our tool provider will be informed of the new generation loop
+  // starting.
+  EXPECT_CALL(*mock_tool_provider_, OnNewGenerationLoop).Times(1);
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
 
@@ -3174,7 +3218,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
                         std::nullopt)));
               })));
 
-  EXPECT_CALL(*tool1_ptr, UseTool(StrEq("{\"param1\":\"value1\"}"), _))
+  EXPECT_CALL(*tool1, UseTool(StrEq("{\"param1\":\"value1\"}"), _))
       .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
@@ -3182,7 +3226,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
         std::move(callback).Run(std::move(result));
       }));
 
-  EXPECT_CALL(*tool2_ptr, UseTool(StrEq("{\"param2\":\"value2\"}"), _))
+  EXPECT_CALL(*tool2, UseTool(StrEq("{\"param2\":\"value2\"}"), _))
       .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
         std::vector<mojom::ContentBlockPtr> result;
         result.push_back(mojom::ContentBlock::NewTextContentBlock(
@@ -3279,6 +3323,93 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
 
   // Final response should be present
   EXPECT_EQ(history.back()->text, "Final response after tools");
+}
+
+TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
+  // Test that requesting a non-existent tool returns proper error message
+  conversation_handler_->associated_content_manager()->ClearContent();
+  auto* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  MockUntrustedConversationHandlerClient untrusted_client(
+      conversation_handler_.get());
+
+  base::RunLoop run_loop;
+
+  // Set up engine to return a response with a tool use request for non-existent
+  // tool, then expect a second call after tool error is handled
+  testing::Sequence seq;
+
+  // First call: returns tool use event for non-existent tool
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          // Send completion event first (like working test)
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback data_callback) {
+                data_callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Let me help you...")),
+                    std::nullopt));
+              }),
+          // Then send tool use event via data callback
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback data_callback) {
+                data_callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("nonexistent_tool",
+                                                 "test_tool_id", "{}",
+                                                 std::nullopt)),
+                    std::nullopt));
+              }),
+          // Complete with empty completion event (like working test)
+          testing::WithArg<7>([](EngineConsumer::GenerationCompletedCallback
+                                     completion_callback) {
+            std::move(completion_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("")),
+                    std::nullopt)));
+          })));
+
+  // Second call: after tool error is handled, should continue generation
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback data_callback) {
+                data_callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New(
+                            "Final response after handling tool error")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>([&](EngineConsumer::GenerationCompletedCallback
+                                      completion_callback) {
+            std::move(completion_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("")),
+                    std::nullopt)));
+            run_loop.QuitWhenIdle();
+          })));
+
+  // Expect the error message when tool is not found
+  EXPECT_CALL(untrusted_client, OnToolUseEventOutput)
+      .WillOnce(testing::WithArg<1>([&](mojom::ToolUseEventPtr tool_use_event) {
+        EXPECT_EQ(tool_use_event->tool_name, "nonexistent_tool");
+        EXPECT_EQ(tool_use_event->id, "test_tool_id");
+
+        ASSERT_TRUE(tool_use_event->output.has_value());
+        const std::string& error_text =
+            tool_use_event->output->at(0)->get_text_content_block()->text;
+        EXPECT_EQ(error_text, "The nonexistent_tool tool is not available.");
+      }));
+
+  // Trigger generation which will cause tool lookup
+  conversation_handler_->SubmitHumanConversationEntry("Help me with something",
+                                                      std::nullopt);
+  run_loop.Run();
 }
 
 TEST_F(ConversationHandlerUnitTest, AssociatingContentTriggersGetContent) {
@@ -3426,7 +3557,7 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenScreenshotsAlreadyExist) {
   // Add existing screenshots to conversation history
   std::vector<mojom::ConversationTurnPtr> history;
   auto turn_with_screenshots = mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "turn-screenshots", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Previous question", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt,
       CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot), false,
@@ -3563,7 +3694,7 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
   // Mock engine response
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillRepeatedly(testing::Invoke(
-          [](PageContents page_contents,
+          [](PageContentsMap page_contents,
              const std::vector<mojom::ConversationTurnPtr>& history,
              const std::string& selected_language, bool is_temporary_chat,
              const std::vector<base::WeakPtr<Tool>>& tools,
@@ -3859,14 +3990,348 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(untrusted_client, OnEntriesUIStateChanged(testing::_)).Times(0);
 
   // Call the callback directly with a no-op callback
-  auto noop_callback = base::BindOnce([](PageContents) {});
   conversation_handler_->OnAutoScreenshotsTaken(
-      std::move(noop_callback), std::make_optional(std::move(screenshots)));
+      base::DoNothing(), std::make_optional(std::move(screenshots)));
 
   // Verify the percentage is still the same and no UI update was triggered
   auto entries_state = conversation_handler_->GetStateForConversationEntries();
   EXPECT_TRUE(entries_state->visual_content_used_percentage.has_value());
   EXPECT_EQ(entries_state->visual_content_used_percentage.value(), 66u);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       AutomaticallyAssociateContentUponConversationEntryAdded) {
+  // This test verifies that human turns are automatically associated when added
+  // to conversation history. Initially content should not be associated.
+  auto initial_content = conversation_handler_->associated_content_manager()
+                             ->GetAssociatedContent();
+  ASSERT_EQ(1u, initial_content.size());
+  EXPECT_FALSE(initial_content[0]->conversation_turn_uuid.has_value());
+
+  // Submit a human turn - this should automatically associate content
+  conversation_handler_->SubmitHumanConversationEntry("Test message",
+                                                      std::nullopt);
+
+  // Verify content is now associated with a turn
+  auto associated_content = conversation_handler_->associated_content_manager()
+                                ->GetAssociatedContent();
+  ASSERT_EQ(1u, associated_content.size());
+  EXPECT_TRUE(associated_content[0]->conversation_turn_uuid.has_value());
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_TriggersConversationTitle) {
+  // Test the title generation would be triggered for engines requiring
+  // title generation when submitting the first human turn.
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  // Engine requires title generation
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(true));
+
+  // Set up expectations with key sequence: assistant response → title
+  // generation
+  base::RunLoop run_loop;
+  testing::Sequence assistant_title_seq;
+
+  // API request progress callbacks
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  // Assistant response is generated first
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(assistant_title_seq)
+      .WillOnce(testing::DoAll(
+          // Mock successful assistant response
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                std::move(callback).Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Assistant response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  // Then title generation is triggered
+  EXPECT_CALL(*engine, GenerateConversationTitle)
+      .InSequence(assistant_title_seq)
+      .WillOnce(testing::WithArg<2>(
+          [](EngineConsumer::GenerationCompletedCallback callback) {
+            // Mock successful title generation
+            std::move(callback).Run(
+                base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewConversationTitleEvent(
+                        mojom::ConversationTitleEvent::New("Generated Title")),
+                    std::nullopt)));
+          }));
+
+  // Title change notification
+  EXPECT_CALL(observer, OnConversationTitleChanged(_, StrEq("Generated Title")))
+      .Times(1);
+
+  // Submit human entry to trigger the flow
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify conversation has 2 turns (human + assistant)
+  const auto& history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 2u);
+  EXPECT_EQ(history[0]->character_type, mojom::CharacterType::HUMAN);
+  EXPECT_EQ(history[1]->character_type, mojom::CharacterType::ASSISTANT);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_NoTitleGenerationAfterFirstTurn) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Engine requires title generation
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(true));
+
+  // First, set up a complete conversation with 2 turns (human + assistant)
+  base::RunLoop first_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                std::move(callback).Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("First response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  // Title generation should be called for first conversation (2 turns)
+  EXPECT_CALL(*engine, GenerateConversationTitle)
+      .WillOnce(testing::WithArg<2>(
+          [&first_loop](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(
+                base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewConversationTitleEvent(
+                        mojom::ConversationTitleEvent::New("First Title")),
+                    std::nullopt)));
+            first_loop.QuitWhenIdle();
+          }));
+
+  conversation_handler_->SubmitHumanConversationEntry("First question",
+                                                      std::nullopt);
+  first_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(engine);
+
+  // Now submit second human entry - this should NOT trigger title generation
+  base::RunLoop second_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                std::move(callback).Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Second response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&second_loop](
+                  EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                second_loop.QuitWhenIdle();
+              })));
+
+  // Title generation should NOT be called after the first turn (only on 2nd
+  // turn)
+  EXPECT_CALL(*engine, GenerateConversationTitle).Times(0);
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(true));
+
+  conversation_handler_->SubmitHumanConversationEntry("Second question",
+                                                      std::nullopt);
+  second_loop.Run();
+
+  // Verify conversation has 4 turns
+  const auto& history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 4u);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_NoTitleWhenEngineDoesntRequire) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Engine does NOT require title generation
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(false));
+
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                std::move(callback).Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Assistant response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&run_loop](
+                  EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.QuitWhenIdle();
+              })));
+
+  // Title generation should NOT be called
+  EXPECT_CALL(*engine, GenerateConversationTitle).Times(0);
+
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(1);
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify conversation has 2 turns but no title generation occurred
+  const auto& history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 2u);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_TitleGenerationFailure) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  // Engine requires title generation
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(true));
+
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                std::move(callback).Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Assistant response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  EXPECT_CALL(*engine, GenerateConversationTitle)
+      .WillOnce(testing::WithArg<2>(
+          [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
+            // Mock title generation failure
+            std::move(callback).Run(
+                base::unexpected(mojom::APIError::ConnectionIssue));
+            run_loop.QuitWhenIdle();
+          }));
+
+  // Title failure should be handled silently - no error should be set
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(1);
+  EXPECT_CALL(observer, OnConversationTitleChanged).Times(0);
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify conversation still completes successfully despite title failure
+  const auto& history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 2u);
+  EXPECT_EQ(conversation_handler_->current_error(), mojom::APIError::None);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_AssistantResponseFailure) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Engine requires title generation
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(true));
+
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArg<7>(
+          [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
+            // Mock assistant response failure
+            std::move(callback).Run(
+                base::unexpected(mojom::APIError::ConnectionIssue));
+            run_loop.QuitWhenIdle();
+          }));
+
+  // Title generation should NOT be called when assistant response fails
+  EXPECT_CALL(*engine, GenerateConversationTitle).Times(0);
+
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(1);
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify error is set and conversation has only human entry
+  const auto& history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 1u);
+  EXPECT_EQ(history[0]->character_type, mojom::CharacterType::HUMAN);
+  EXPECT_EQ(conversation_handler_->current_error(),
+            mojom::APIError::ConnectionIssue);
 }
 
 }  // namespace ai_chat

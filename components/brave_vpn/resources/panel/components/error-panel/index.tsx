@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import * as S from './style'
+import * as Styles from './style'
 import { PanelHeader } from '../select-region-list'
 import * as Actions from '../../state/actions'
 import { useSelector, useDispatch } from '../../state/hooks'
@@ -32,54 +32,54 @@ function ErrorPanel(props: Props) {
   }
 
   const matches = {
-    $1: getLocale('braveVpn'),
+    $1: getLocale(S.BRAVE_VPN),
     $2: currentRegion?.namePretty || ''
   }
 
   return (
-    <S.Box>
-      <S.PanelContent>
+    <Styles.Box>
+      <Styles.PanelContent>
         <PanelHeader
-          title={getLocale('braveVpn')}
-          buttonAriaLabel={getLocale('braveVpnErrorPanelBackButtonAriaLabel')}
+          title={getLocale(S.BRAVE_VPN)}
+          buttonAriaLabel={getLocale(S.BRAVE_VPN_SUPPORT_PANEL_BACK_BUTTON_ARIA_LABEL)}
           onClick={handleShowMainView}
 
         />
-        <S.TopContent>
-          <S.StyledAlert
+        <Styles.TopContent>
+          <Styles.StyledAlert
             type='error'
             hideIcon
           >
-            <div slot='title'>{getLocale('braveVpnUnableConnectToServer')}</div>
-            {getLocale('braveVpnUnableConnectInfo').replace(
+            <div slot='title'>{getLocale(S.BRAVE_VPN_UNABLE_CONNECT_TO_SERVER)}</div>
+            {getLocale(S.BRAVE_VPN_UNABLE_CONNECT_INFO).replace(
               /\$\d+/g,
               (match) => matches[match as keyof typeof matches]
             )}
-          </S.StyledAlert>
-          <S.StyledActionButton
+          </Styles.StyledAlert>
+          <Styles.StyledActionButton
             slot='actions'
             kind='filled'
             onClick={handleTryAgain}
           >
-            {getLocale('braveVpnTryAgain')}
-          </S.StyledActionButton>
-          <S.StyledActionButton
+            {getLocale(S.BRAVE_VPN_TRY_AGAIN)}
+          </Styles.StyledActionButton>
+          <Styles.StyledActionButton
             slot='actions'
             kind='plain'
             onClick={handleChooseServer}
           >
-            {getLocale('braveVpnChooseAnotherServer')}
-          </S.StyledActionButton>
-          <S.StyledActionButton
+            {getLocale(S.BRAVE_VPN_CHOOSE_ANOTHER_SERVER)}
+          </Styles.StyledActionButton>
+          <Styles.StyledActionButton
             slot='actions'
             kind='plain'
             onClick={props.showContactSupport}
           >
-            {getLocale('braveVpnContactSupport')}
-          </S.StyledActionButton>
-        </S.TopContent>
-      </S.PanelContent>
-    </S.Box>
+            {getLocale(S.BRAVE_VPN_CONTACT_SUPPORT)}
+          </Styles.StyledActionButton>
+        </Styles.TopContent>
+      </Styles.PanelContent>
+    </Styles.Box>
   )
 }
 

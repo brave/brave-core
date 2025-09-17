@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 77544a1f84731c65b41ed5eff4920a1874025a4d..8d98cd7ef9b1a2d5e3f4ba8118619572ede44f75 100644
+index e9fa11a2671a4aacc72e6f2fa0bfddf65bc56028..4918f492253bb4a53f7531f03cccf291b5306835 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -680,6 +680,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -687,6 +687,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
        prefs::kNTPHomeCustomizationNewBadgeImpressionCount, 0);
  
    registry->RegisterBooleanPref(prefs::kWidgetsForMultiProfile, false);
@@ -10,7 +10,7 @@ index 77544a1f84731c65b41ed5eff4920a1874025a4d..8d98cd7ef9b1a2d5e3f4ba8118619572
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1119,6 +1120,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1128,6 +1129,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Deprecated 08/2025.
    registry->RegisterDictionaryPref(kInvalidationClientIDCache);
    registry->RegisterDictionaryPref(kInvalidationTopicsToHandler);

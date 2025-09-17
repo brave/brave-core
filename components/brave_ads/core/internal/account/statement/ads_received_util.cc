@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
@@ -15,12 +16,19 @@ namespace brave_ads {
 size_t GetAdsReceivedForDateRange(const TransactionList& transactions,
                                   base::Time from_time,
                                   base::Time to_time) {
+  const bool should_include_zero_value_transactions =
+      UserHasJoinedBraveRewardsAndNotConnectedWallet();
+
   return std::ranges::count_if(
-      transactions, [from_time, to_time](const TransactionInfo& transaction) {
+      transactions,
+      [from_time, to_time, should_include_zero_value_transactions](
+          const TransactionInfo& transaction) {
         return transaction.confirmation_type ==
                    mojom::ConfirmationType::kViewedImpression &&
                transaction.created_at >= from_time &&
-               transaction.created_at <= to_time && transaction.value > 0;
+               transaction.created_at <= to_time &&
+               (should_include_zero_value_transactions ||
+                transaction.value > 0);
       });
 }
 

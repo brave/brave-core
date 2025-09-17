@@ -28,6 +28,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -48,6 +49,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "ui/base/test/ui_controls.h"
+#include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
 
@@ -1033,6 +1035,12 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripWithScrollableTabBrowserTest, Sanity) {
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripWithScrollableTabBrowserTest,
                        ToggleWithGroups) {
+  // Deflake the test by setting TabGroupSyncService initialized.
+  tab_groups::TabGroupSyncService* service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  service->SetIsInitializedForTesting(true);
+
   // Make sure browser works with both vertical tab and scrollable tab strip
   // even with groups.
   // https://github.com/brave/brave-browser/issues/46615
@@ -1161,4 +1169,32 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
   // The minimum width of the region view should be 4px, which is narrower than
   // it used to be.
   EXPECT_EQ(4, region_view->GetMinimumSize().width());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInVisible) {
+  ToggleVerticalTabStrip();
+
+  const gfx::AnimationTestApi::RenderModeResetter render_mode_resetter =
+      gfx::AnimationTestApi::SetRichAnimationRenderMode(
+          gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+
+  auto* widget_delegate_view =
+      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
+  ASSERT_TRUE(widget_delegate_view);
+
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+
+  region_view->ToggleState();
+  ASSERT_EQ(VerticalTabStripRegionView::State::kCollapsed,
+            region_view->state());
+
+  // When collapsed, it should be inivisible.
+  EXPECT_FALSE(region_view->GetVisible());
+
+  region_view->ToggleState();
+  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+
+  // When expanded, it should get visible again.
+  EXPECT_TRUE(region_view->GetVisible());
 }

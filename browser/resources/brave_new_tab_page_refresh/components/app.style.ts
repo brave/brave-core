@@ -3,16 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color, font } from '@brave/leo/tokens/css/variables'
+import { color, effect, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../lib/scoped_css'
 
 export const narrowBreakpoint = '900px'
 export const threeColumnBreakpoint = '1275px'
 export const horizontalContentPadding = 24
 
+const topControlsNarrowBreakpoint = '1075px'
+const topControlsWideBreakpoint = threeColumnBreakpoint
+
 export const style = scoped.css`
   & {
     --search-transition-duration: 120ms;
+    --top-controls-text-shadow: rgba(0, 0, 0, 0.33) 0 1px 2px;
   }
 
   @keyframes background-scroll-fade {
@@ -39,35 +43,59 @@ export const style = scoped.css`
     animation-range: 0px 100vh;
   }
 
-  .top-controls {
-    position: absolute;
-    inset-block-start: 4px;
-    inset-inline-end: 4px;
-    min-height: 24px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    z-index: 2;
-  }
-
   .settings {
-    --leo-icon-size: 20px;
+    --leo-icon-size: 18px;
 
-    opacity: 0.5;
+    position: absolute;
+    z-index: 2;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    margin: 24px;
+
+    padding: 8px;
+    border-radius: 50%;
     color: #fff;
-    filter: drop-shadow(0px 1px 4px rgba(0, 0, 0, 0.60));
+    opacity: .9;
+    filter: drop-shadow(var(--top-controls-text-shadow));
 
     &:hover {
-      opacity: 0.7;
+      background: rgba(255, 255, 255, .3);
+      box-shadow: ${effect.elevation['01']};
       cursor: pointer;
+    }
+
+    @container (width < ${topControlsNarrowBreakpoint}) {
+      margin: 12px;
     }
   }
 
   .clock {
+    position: absolute;
+    z-index: 2;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    margin: 24px;
+
+    padding: 8px;
     font: ${font.large.semibold};
-    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.20);
+    font-size: 56px;
+    font-weight: 500;
+    line-height: 100%;
+    text-shadow: var(--top-controls-text-shadow);
+
     color: #fff;
-    opacity: .8;
+    opacity: .9;
+
+    .ntp-top-sites-wide & {
+      @container (width < ${topControlsWideBreakpoint}) {
+        font-size: 16px;
+      }
+    }
+
+    @container (width < ${topControlsNarrowBreakpoint}) {
+      margin: 12px;
+      font-size: 16px;
+    }
   }
 
   .allow-background-pointer-events {

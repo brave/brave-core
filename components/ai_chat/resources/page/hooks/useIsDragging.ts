@@ -19,15 +19,14 @@ interface DocumentDragHandlers {
 export function useIsDragging({
   setDragActive,
   setDragOver,
-  clearDragState
+  clearDragState,
 }: DocumentDragHandlers) {
-
   // Iframe drag detection
   React.useEffect(() => {
     const api = getAPI()
 
-    const dragStartId = api.conversationEntriesFrameObserver.dragStart
-      .addListener(() => {
+    const dragStartId =
+      api.conversationEntriesFrameObserver.dragStart.addListener(() => {
         setDragActive(true)
         setDragOver(true)
       })

@@ -9,11 +9,17 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/p3a/pref_names.h"
 #include "build/build_config.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 #include "components/policy/policy_constants.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/pref_names.h"
+#endif
 
 namespace policy {
 
@@ -41,6 +47,23 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {
         policy::key::kBraveNewsDisabled,
         brave_news::prefs::kBraveNewsDisabledByPolicy,
+        base::Value::Type::BOOLEAN,
+    },
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    {
+        policy::key::kBraveVPNDisabled,
+        brave_vpn::prefs::kManagedBraveVPNDisabled,
+        base::Value::Type::BOOLEAN,
+    },
+#endif
+    {
+        policy::key::kBraveP3AEnabled,
+        p3a::kP3AEnabled,
+        base::Value::Type::BOOLEAN,
+    },
+    {
+        policy::key::kBraveStatsPingEnabled,
+        kStatsReportingEnabled,
         base::Value::Type::BOOLEAN,
     },
 };

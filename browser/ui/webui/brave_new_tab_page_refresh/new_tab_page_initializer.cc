@@ -28,6 +28,7 @@
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/favicon_base/favicon_url_parser.h"
@@ -102,6 +103,9 @@ void NewTabPageInitializer::Initialize() {
 
   web_ui_->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   web_ui_->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
+
+  content::URLDataSource::Add(GetProfile(),
+                              std::make_unique<ThemeSource>(GetProfile()));
 }
 
 Profile* NewTabPageInitializer::GetProfile() {
@@ -182,6 +186,13 @@ void NewTabPageInitializer::AddStrings() {
       {"enabledSearchEnginesLabel", IDS_NEW_TAB_ENABLED_SEARCH_ENGINES_LABEL},
       {"gradientBackgroundLabel", IDS_NEW_TAB_GRADIENT_BACKGROUND_LABEL},
       {"gradientBackgroundTitle", IDS_NEW_TAB_GRADIENT_BACKGROUND_LABEL},
+      {"hideRewardsWidgetLabel", IDS_NEW_TAB_HIDE_REWARDS_WIDGET_LABEL},
+      {"hideStatsWidgetLabel", IDS_NEW_TAB_HIDE_STATS_WIDGET_LABEL},
+      {"hideTalkWidgetLabel", IDS_NEW_TAB_HIDE_TALK_WIDGET_LABEL},
+      {"hideTopSitesLabel", IDS_NEW_TAB_HIDE_TOP_SITES_LABEL},
+      {"hideVpnWidgetLabel", IDS_NEW_TAB_HIDE_VPN_WIDGET_LABEL},
+      {"newsCustomizeButtonLabel", IDS_NEW_TAB_NEWS_CUSTOMIZE_BUTTON_LABEL},
+      {"newsDisableButtonLabel", IDS_NEW_TAB_NEWS_DISABLE_BUTTON_LABEL},
       {"hideTopSitesLabel", IDS_NEW_TAB_HIDE_TOP_SITES_LABEL},
       {"newsEnableButtonLabel", IDS_BRAVE_NEWS_OPT_IN_ACTION_LABEL},
       {"newsEnableText", IDS_BRAVE_NEWS_INTRO_TITLE},
@@ -203,7 +214,7 @@ void NewTabPageInitializer::AddStrings() {
       {"rewardsOnboardingButtonLabel",
        IDS_NEW_TAB_REWARDS_ONBOARDING_BUTTON_LABEL},
       {"rewardsOnboardingLink", IDS_NEW_TAB_REWARDS_ONBOARDING_LINK},
-      {"rewardsPayoutCompleteText", IDS_REWARDS_PAYMENT_COMPLETED},
+      {"rewardsPayoutCompletedText", IDS_REWARDS_PAYMENT_COMPLETED},
       {"rewardsPayoutDetailsLink", IDS_NEW_TAB_REWARDS_PAYOUT_DETAILS_LINK},
       {"rewardsPayoutProcessingText", IDS_REWARDS_PAYMENT_PROCESSING},
       {"rewardsTosUpdateButtonLabel", IDS_REWARDS_TOS_UPDATE_NTP_BUTTON_LABEL},

@@ -70,7 +70,7 @@ export const SelectAddressContainer = styled.div`
   justify-content: flex-start;
   width: 100%;
   padding: 0px 16px;
-  top: 164px;
+  top: 200px;
   position: relative;
   z-index: 9;
   box-sizing: border-box;

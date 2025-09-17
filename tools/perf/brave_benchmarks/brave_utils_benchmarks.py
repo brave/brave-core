@@ -40,12 +40,23 @@ class BraveUtilsOnlineBenchmark(BraveUtilsBenchmark):
   options = {
       'use_live_sites': True,
   }
+  # A default delay.
+  # SB database update is started <=5 minutes after browser start
+  # (kV4TimerStartIntervalSecMax = 300). Add extra 3 minutes to ensure
+  # the database is updated. Default delay is 8 minutes.
+  _delay = 8 * 60
+
+  @classmethod
+  def AddBenchmarkCommandLineArgs(cls, parser):
+    parser.add_argument('--delay', type=int, help='Override the default delay')
+
+  @classmethod
+  def ProcessCommandLineArgs(cls, _parser, args):
+    if args.delay:
+      cls._delay = args.delay
 
   def CreateStorySet(self, options):
-    # SB database update is started <=5 minutes after browser start
-    # (kV4TimerStartIntervalSecMax = 300). Add an extra 1 minute to ensure
-    # the database is updated.
-    return BravePerfUtilsStorySet(6 * 60, options)
+    return BravePerfUtilsStorySet(self._delay, options)
 
   def SetExtraBrowserOptions(self, options):
     # To enable Safe Browsing updates:

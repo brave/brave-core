@@ -6,9 +6,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.brave.browser.customize_menu.settings.BraveCustomizeMenuPreferenceFragment"
+        android:key="brave_customize_menu"
+        android:icon="@drawable/ic_window_screwdriver"
+        android:title="@string/customize_menu_title"/>
+
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment"
         android:key="address_bar"
         android:title="@string/address_bar_settings"/>
+
+    <Preference
+        android:fragment="org.chromium.chrome.browser.toolbar.adaptive.settings.AdaptiveToolbarSettingsFragment"
+        android:key="toolbar_shortcut"
+        android:title="@string/toolbar_shortcut"/>
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_bottom_toolbar_enabled_key"

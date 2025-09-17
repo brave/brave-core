@@ -1,0 +1,143 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.anchorButton {
+  --leo-button-color: var(--leo-color-text-tertiary);
+}
+
+.anchorButtonContent {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.anchorButtonText {
+  font: var(--leo-font-small-regular);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.anchorButtonOpen {
+  --leo-button-color: var(--leo-color-icon-interactive);
+}
+
+.anchorButtonIcon {
+  --leo-icon-size: 18px;
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+}
+
+.anchorButtonIconOpen {
+  transform: rotate(180deg);
+  transition: transform 0.2s ease;
+}
+
+.buttonMenu {
+  --leo-menu-max-height: calc(100vh - 136px);
+  leo-menu-item {
+    --leo-icon-size: 20px;
+    --leo-icon-color: var(--leo-color-icon-default);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--leo-spacing-l);
+    padding: var(--leo-spacing-s) var(--leo-spacing-m);
+    max-width: 270px;
+    font: var(--leo-font-default-regular);
+  }
+  leo-menu-item:first-of-type {
+    margin-top: 4px;
+  }
+}
+
+.menuFooterIconAndText {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+}
+
+.menuFooter {
+  display: flex;
+  width: 100%;
+  padding: var(--leo-spacing-s);
+  background-color: var(--leo-color-container-background);
+  position: absolute;
+  bottom: 0;
+  inset-inline: 0;
+  background-color: var(--leo-color-container-background);
+  border-radius: 0px 0px 8px 8px;
+  border: 1px solid var(--leo-color-divider-subtle);
+  leo-menu-item {
+    width: 100%;
+    justify-content: space-between;
+    border-radius: var(--leo-radius-s);
+    padding: var(--leo-spacing-m);
+    gap: var(--leo-spacing-m);
+    &:hover {
+      background-color: var(--leo-color-container-highlight);
+    }
+  }
+  leo-menu-item:first-of-type {
+    margin-top: 0;
+  }
+}
+
+.menuFooterExtraPadding {
+  leo-menu-item {
+    padding: var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-m)
+      var(--leo-spacing-l);
+  }
+}
+
+.footerGap {
+  min-height: 48px;
+}
+
+.modelIcon {
+  --leo-icon-size: 18px;
+  --leo-icon-color: var(--leo-color-icon-default);
+
+  border-radius: var(--leo-radius-m);
+  border: 1px solid var(--leo-color-divider-subtle);
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 32px;
+  height: 32px;
+
+  &[data-key='chat-automatic'] {
+    --leo-icon-color: white;
+
+    background: var(--leo-gradient-icons-active);
+    border: none;
+  }
+}
+
+.menuText {
+  flex-grow: 1;
+  font: var(--leo-font-default-regular);
+}
+
+.modelSubtitle {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-tertiary);
+  padding: 0;
+  margin: 0;
+}
+
+.modelLabel {
+  align-self: flex-start;
+}

@@ -17,9 +17,7 @@ include_rules += [
   "+brave/net",
   "+brave/components/constants",
   "+chrome/browser",
-
-  # TODO(bridiver) code outside of content should only dependon content/public
-  "!content/test",
+  "+content/test",
 
   "+brave/components/p3a",
   "+brave/components/p3a_utils",

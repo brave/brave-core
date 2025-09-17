@@ -10,12 +10,16 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class SplitViewLayoutManagerUnitTest : public testing::Test {
  public:
-  SplitViewLayoutManagerUnitTest()
-      : scoped_feature_(tabs::features::kBraveSplitView) {}
+  SplitViewLayoutManagerUnitTest() {
+    scoped_feature_.InitWithFeatures({tabs::features::kBraveSplitView},
+                                     {features::kSideBySide});
+  }
+
   ~SplitViewLayoutManagerUnitTest() override = default;
 
   void Layout() { layout_manager_->Layout(split_view_.get()); }

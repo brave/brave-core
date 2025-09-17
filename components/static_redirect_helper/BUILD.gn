@@ -18,3 +18,17 @@ static_library("static_redirect_helper") {
     "//url",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "static_redirect_helper_unittest.cc" ]
+
+  deps = [
+    ":static_redirect_helper",
+    "//base",
+    "//base/test:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+}

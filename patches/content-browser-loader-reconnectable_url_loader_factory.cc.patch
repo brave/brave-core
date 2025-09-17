@@ -1,21 +1,22 @@
 diff --git a/content/browser/loader/reconnectable_url_loader_factory.cc b/content/browser/loader/reconnectable_url_loader_factory.cc
-index 1a82d44aade7d4c2648d9f8a370cbee97fc4163c..f52909192d834fefc7fc41987bbe922679056cf5 100644
+index 1a82d44aade7d4c2648d9f8a370cbee97fc4163c..6dc0c60a6019411e17c1582b7f57f4d02ea771f9 100644
 --- a/content/browser/loader/reconnectable_url_loader_factory.cc
 +++ b/content/browser/loader/reconnectable_url_loader_factory.cc
-@@ -10,6 +10,7 @@
- #include "content/browser/loader/url_loader_factory_utils.h"
- #include "services/network/public/cpp/cross_thread_pending_shared_url_loader_factory.h"
- #include "services/network/public/cpp/shared_url_loader_factory.h"
-+#include "brave/services/network/public/cpp/system_request_handler.h"
- 
- namespace content {
- 
-@@ -136,7 +137,7 @@ class ReconnectableURLLoaderFactoryForIOThread::URLLoaderFactoryForIOThread
+@@ -29,7 +29,7 @@ void ReconnectableURLLoaderFactory::CreateLoaderAndStart(
+     const net::MutableNetworkTrafficAnnotationTag& traffic_annotation) {
+   if (network::mojom::URLLoaderFactory* factory = GetURLLoaderFactory()) {
+     factory->CreateLoaderAndStart(std::move(receiver), request_id, options,
+-                                  url_request, std::move(client),
++                                  BRAVE_CREATE_LOADER_AND_START, std::move(client),
+                                   traffic_annotation);
+   }
+ }
+@@ -136,7 +136,7 @@ class ReconnectableURLLoaderFactoryForIOThread::URLLoaderFactoryForIOThread
        override {
      DCHECK(BrowserThread::CurrentlyOn(BrowserThread::IO));
      factory_getter_->GetURLLoaderFactory()->CreateLoaderAndStart(
 -        std::move(receiver), request_id, options, url_request,
-+        std::move(receiver), request_id, options, network::SystemRequestHandler::GetInstance()->OnBeforeSystemRequest(url_request),
++        std::move(receiver), request_id, options, BRAVE_CREATE_LOADER_AND_START,
          std::move(client), traffic_annotation);
    }
  

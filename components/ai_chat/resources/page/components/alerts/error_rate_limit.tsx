@@ -22,8 +22,8 @@ function ErrorRateLimit(props: Props) {
 
   // Respond to BYOM scenarios
   if (
-    !conversationContext.isCurrentModelLeo ||
-    props._testIsCurrentModelLeo === false
+    !conversationContext.isCurrentModelLeo
+    || props._testIsCurrentModelLeo === false
   ) {
     return (
       <div className={styles.alert}>

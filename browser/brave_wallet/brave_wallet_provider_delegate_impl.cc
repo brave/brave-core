@@ -15,11 +15,8 @@
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
-#include "components/content_settings/core/common/content_settings.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
@@ -65,10 +62,7 @@ void OnRequestPermissions(
 BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
     content::WebContents* web_contents,
     content::GlobalRenderFrameHostId render_frame_host_id)
-    : WebContentsObserver(web_contents),
-      web_contents_(web_contents),
-      host_id_(render_frame_host_id),
-      weak_ptr_factory_(this) {}
+    : WebContentsObserver(web_contents), host_id_(render_frame_host_id) {}
 
 BraveWalletProviderDelegateImpl::~BraveWalletProviderDelegateImpl() = default;
 
@@ -78,13 +72,12 @@ url::Origin BraveWalletProviderDelegateImpl::GetOrigin() const {
 }
 
 bool BraveWalletProviderDelegateImpl::IsTabVisible() {
-  return web_contents_
-             ? web_contents_->GetVisibility() == content::Visibility::VISIBLE
-             : false;
+  CHECK(web_contents());
+  return web_contents()->GetVisibility() == content::Visibility::VISIBLE;
 }
 
 void BraveWalletProviderDelegateImpl::ShowPanel() {
-  ::brave_wallet::ShowPanel(web_contents_);
+  ::brave_wallet::ShowPanel(web_contents());
 }
 
 void BraveWalletProviderDelegateImpl::ShowWalletBackup() {
@@ -96,16 +89,16 @@ void BraveWalletProviderDelegateImpl::UnlockWallet() {
 }
 
 void BraveWalletProviderDelegateImpl::WalletInteractionDetected() {
-  ::brave_wallet::WalletInteractionDetected(web_contents_);
+  ::brave_wallet::WalletInteractionDetected(web_contents());
 }
 
 void BraveWalletProviderDelegateImpl::ShowWalletOnboarding() {
-  ::brave_wallet::ShowWalletOnboarding(web_contents_);
+  ::brave_wallet::ShowWalletOnboarding(web_contents());
 }
 
 void BraveWalletProviderDelegateImpl::ShowAccountCreation(
     mojom::CoinType type) {
-  ::brave_wallet::ShowAccountCreation(web_contents_, type);
+  ::brave_wallet::ShowAccountCreation(web_contents(), type);
 }
 
 std::optional<std::vector<std::string>>
@@ -190,44 +183,30 @@ bool BraveWalletProviderDelegateImpl::IsPermissionDenied(mojom::CoinType type) {
 
 void BraveWalletProviderDelegateImpl::AddSolanaConnectedAccount(
     const std::string& account) {
-  if (!web_contents_) {
-    return;
-  }
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (tab_helper) {
+  CHECK(web_contents());
+  if (auto* tab_helper =
+          BraveWalletTabHelper::FromWebContents(web_contents())) {
     tab_helper->AddSolanaConnectedAccount(host_id_, account);
   }
 }
 
 void BraveWalletProviderDelegateImpl::RemoveSolanaConnectedAccount(
     const std::string& account) {
-  if (!web_contents_) {
-    return;
-  }
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (tab_helper) {
+  CHECK(web_contents());
+  if (auto* tab_helper =
+          BraveWalletTabHelper::FromWebContents(web_contents())) {
     tab_helper->RemoveSolanaConnectedAccount(host_id_, account);
   }
 }
 
 bool BraveWalletProviderDelegateImpl::IsSolanaAccountConnected(
     const std::string& account) {
-  if (!web_contents_) {
-    return false;
+  CHECK(web_contents());
+  if (auto* tab_helper =
+          BraveWalletTabHelper::FromWebContents(web_contents())) {
+    return tab_helper->IsSolanaAccountConnected(host_id_, account);
   }
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (!tab_helper) {
-    return false;
-  }
-
-  return tab_helper->IsSolanaAccountConnected(host_id_, account);
-}
-
-void BraveWalletProviderDelegateImpl::WebContentsDestroyed() {
-  web_contents_ = nullptr;
+  return false;
 }
 
 // This is for dapp inside iframe navigates away.
@@ -237,20 +216,18 @@ void BraveWalletProviderDelegateImpl::RenderFrameHostChanged(
   if (!old_host || old_host != content::RenderFrameHost::FromID(host_id_)) {
     return;
   }
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (tab_helper) {
+
+  CHECK(web_contents());
+  if (auto* tab_helper =
+          BraveWalletTabHelper::FromWebContents(web_contents())) {
     tab_helper->ClearSolanaConnectedAccounts(host_id_);
   }
 }
 
 void BraveWalletProviderDelegateImpl::PrimaryPageChanged(content::Page& page) {
-  if (!web_contents_) {
-    return;
-  }
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents_);
-  if (tab_helper) {
+  CHECK(web_contents());
+  if (auto* tab_helper =
+          BraveWalletTabHelper::FromWebContents(web_contents())) {
     tab_helper->ClearSolanaConnectedAccounts(host_id_);
   }
 }

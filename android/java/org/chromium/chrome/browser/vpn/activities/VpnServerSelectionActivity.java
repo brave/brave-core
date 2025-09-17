@@ -57,6 +57,7 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
 
     private void initVpnService() {
         if (mServiceHandler != null) {
+            mServiceHandler.close();
             mServiceHandler = null;
         }
         mServiceHandler =
@@ -67,6 +68,10 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
 
     public interface OnServerRegionSelection {
         void onServerRegionClick(Region region);
+    }
+
+    public interface OnQuickServerSelection {
+        void onQuickServerSelect(Region region);
     }
 
     @Override
@@ -169,6 +174,24 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
                                                     VpnServerSelectionActivity.this, region);
                                         }
                                     });
+                            mBraveVpnServerSelectionAdapter.setOnQuickServerSelection(
+                                    new OnQuickServerSelection() {
+                                        @Override
+                                        public void onQuickServerSelect(Region region) {
+                                            BraveVpnUtils.selectedRegion = region;
+                                            BraveVpnUtils.selectedServerRegion =
+                                                    new BraveVpnServerRegion(
+                                                            false,
+                                                            region.country,
+                                                            region.continent,
+                                                            region.countryIsoCode,
+                                                            region.name,
+                                                            region.namePretty,
+                                                            BraveVpnConstants
+                                                                    .REGION_PRECISION_COUNTRY);
+                                            changeServerRegion();
+                                        }
+                                    });
                             mServerRegionList.setAdapter(mBraveVpnServerSelectionAdapter);
                             boolean isAutomatic = BraveVpnPrefUtils.isAutomaticServerSelection();
                             updateAutomaticSelection(isAutomatic);
@@ -218,4 +241,13 @@ public class VpnServerSelectionActivity extends BraveVpnParentActivity
 
     @Override
     public void updateProfileView() {}
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mServiceHandler != null) {
+            mServiceHandler.close();
+            mServiceHandler = null;
+        }
+    }
 }

@@ -45,6 +45,8 @@ export interface AppModel {
   dismissSelfCustodyInvite: () => Promise<void>
   onCaptchaResult: (success: boolean) => Promise<void>
   clearNotification: (id: string) => Promise<void>
+  recordOfferClick: () => Promise<void>
+  recordOfferView: () => Promise<void>
 }
 
 export function defaultModel(): AppModel {
@@ -103,6 +105,10 @@ export function defaultModel(): AppModel {
 
     async onCaptchaResult(success) {},
 
-    async clearNotification(id: string) {}
+    async clearNotification(id: string) {},
+
+    async recordOfferClick() {},
+
+    async recordOfferView() {}
   }
 }

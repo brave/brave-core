@@ -12,8 +12,10 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -63,93 +65,149 @@ TEST_F(BraveAdsSubdivisionTest, OnDidInitializeAds) {
   EXPECT_TRUE(HasPendingTasks());
 }
 
-TEST_F(BraveAdsSubdivisionTest, PrefsNotEnabledOnDidInitializeAds) {
+TEST_F(BraveAdsSubdivisionTest, FetchIfUserJoinsBraveRewards) {
   // Arrange
   test::DisableBraveRewards();
-  test::OptOutOfBraveNewsAds();
+
+  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
+
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision);
+
+  // Act & Assert
+  SetProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
+}
+
+TEST_F(BraveAdsSubdivisionTest, DoNotFetchIfUserHasNotJoinedBraveRewards) {
+  // Arrange
+  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
+
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
+
+  // Act & Assert
+  SetProfileBooleanPref(brave_rewards::prefs::kEnabled, false);
+}
+
+TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfNotificationAds) {
+  // Arrange
+  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
+
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
+
+  // Act & Assert
+  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, false);
+}
+
+TEST_F(BraveAdsSubdivisionTest, FetchWhenOptingInToNotificationAds) {
+  // Arrange
+  test::OptOutOfAllAds();
+
+  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
+
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision);
+
+  // Act & Assert
+  SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+}
+
+TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfBraveNewsAds) {
+  // Arrange
+  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
+
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
+
+  // Act & Assert
+  SetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);
+  SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, false);
+  task_environment_.DescribeCurrentTasks();
+}
+
+TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToBraveNewsAds) {
+  // Arrange
+  test::OptOutOfAllAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
-  // Act
-  NotifyDidInitializeAds();
-
-  // Assert
-  EXPECT_FALSE(HasPendingTasks());
+  // Act & Assert
+  SetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
+  SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
 }
 
-TEST_F(BraveAdsSubdivisionTest, OnDidJoinBraveRewards) {
+TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfNewTabPageAds) {
   // Arrange
-  test::DisableBraveRewards();
-  test::OptOutOfBraveNewsAds();
+  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
+
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
+
+  // Act & Assert
+  SetProfileBooleanPref(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);
+  SetProfileBooleanPref(ntp_background_images::prefs::
+                            kNewTabPageShowSponsoredImagesBackgroundImage,
+                        false);
+}
+
+TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToNewTabPageAds) {
+  // Arrange
+  test::OptOutOfAllAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
-  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision("US-CA"));
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
+
+  // Act & Assert
+  SetProfileBooleanPref(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
+  SetProfileBooleanPref(ntp_background_images::prefs::
+                            kNewTabPageShowSponsoredImagesBackgroundImage,
+                        true);
+}
+
+TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfSearchResultAds) {
+  // Arrange
+  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
+
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
+
+  // Act & Assert
+  SetProfileBooleanPref(prefs::kOptedInToSearchResultAds, false);
+}
+
+TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToSearchResultAds) {
+  // Arrange
+  test::OptOutOfAllAds();
+
+  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
+
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
+
+  // Act & Assert
+  SetProfileBooleanPref(prefs::kOptedInToSearchResultAds, true);
+}
+
+TEST_F(BraveAdsSubdivisionTest,
+       DoNotRetryIfHttpForbiddenUrlResponseStatusCode) {
+  // Arrange
+  const test::URLResponseMap url_responses = {
+      {BuildSubdivisionUrlPath(),
+       {{net::HTTP_FORBIDDEN,
+         /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_FORBIDDEN)}}}};
+  test::MockUrlResponses(ads_client_mock_, url_responses);
+
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
+
+  NotifyDidInitializeAds();
 
   // Act
-  SetProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
+  FastForwardClockToNextPendingTask();
 
   // Assert
   EXPECT_TRUE(HasPendingTasks());
 }
 
 TEST_F(BraveAdsSubdivisionTest,
-       FetchWhenOptingInToBraveNewsIfBraveRewardsIsDisabled) {
-  // Arrange
-  test::DisableBraveRewards();
-  test::OptOutOfBraveNewsAds();
-
-  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
-
-  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision("US-CA"));
-
-  // Act
-  SetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
-  SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
-
-  // Assert
-  EXPECT_TRUE(HasPendingTasks());
-}
-
-TEST_F(BraveAdsSubdivisionTest, OnDidResetBraveRewards) {
-  // Arrange
-  test::OptOutOfBraveNewsAds();
-
-  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
-
-  NotifyDidInitializeAds();
-
-  ASSERT_TRUE(HasPendingTasks());
-
-  // Act
-  SetProfileBooleanPref(brave_rewards::prefs::kEnabled, false);
-
-  // Assert
-  EXPECT_FALSE(HasPendingTasks());
-}
-
-TEST_F(BraveAdsSubdivisionTest, OnDidOptOutBraveNews) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
-
-  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision("US-CA"));
-
-  NotifyDidInitializeAds();
-
-  ASSERT_TRUE(HasPendingTasks());
-
-  // Act
-  SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, false);
-
-  // Assert
-  EXPECT_FALSE(HasPendingTasks());
-}
-
-TEST_F(BraveAdsSubdivisionTest, RetryAfterInvalidUrlResponseStatusCode) {
+       RetryIfHttpInternalServerErrorResponseStatusCode) {
   // Arrange
   const test::URLResponseMap url_responses = {
       {BuildSubdivisionUrlPath(),
@@ -167,6 +225,21 @@ TEST_F(BraveAdsSubdivisionTest, RetryAfterInvalidUrlResponseStatusCode) {
 
   // Act
   FastForwardClockToNextPendingTask();
+
+  // Assert
+  EXPECT_TRUE(HasPendingTasks());
+}
+
+TEST_F(BraveAdsSubdivisionTest, RetryIfResponseBodyIsInvalid) {
+  // Arrange
+  const test::URLResponseMap url_responses = {
+      {BuildSubdivisionUrlPath(), {{net::HTTP_OK, /*response_body=*/"{}"}}}};
+  test::MockUrlResponses(ads_client_mock_, url_responses);
+
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
+
+  // Act
+  NotifyDidInitializeAds();
 
   // Assert
   EXPECT_TRUE(HasPendingTasks());
@@ -203,21 +276,6 @@ TEST_F(BraveAdsSubdivisionTest, EmptySubdivisionCode) {
 TEST_F(BraveAdsSubdivisionTest, EmptyCountryCode) {
   // Arrange
   MockHttpOkUrlResponse(/*country_code=*/"", /*subdivision_code=*/"CA");
-
-  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
-
-  // Act
-  NotifyDidInitializeAds();
-
-  // Assert
-  EXPECT_TRUE(HasPendingTasks());
-}
-
-TEST_F(BraveAdsSubdivisionTest, NotValidSubdivisionResonse) {
-  // Arrange
-  const test::URLResponseMap url_responses = {
-      {BuildSubdivisionUrlPath(), {{net::HTTP_OK, /*response_body=*/"{}"}}}};
-  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 

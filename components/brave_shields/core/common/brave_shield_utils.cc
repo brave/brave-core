@@ -9,6 +9,7 @@
 #include <set>
 #include <string>
 
+#include "base/containers/map_util.h"
 #include "base/no_destructor.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -44,11 +45,11 @@ ContentSetting GetBraveWebcompatContentSettingFromRules(
           webcompat::features::kBraveWebcompatExceptionsService)) {
     return CONTENT_SETTING_DEFAULT;
   }
-  const auto& item = webcompat_rules.find(content_settings_type);
-  if (item == webcompat_rules.end()) {
+  const auto* rules = base::FindOrNull(webcompat_rules, content_settings_type);
+  if (!rules) {
     return CONTENT_SETTING_DEFAULT;
   }
-  for (const auto& rule : item->second) {
+  for (const auto& rule : *rules) {
     if (rule.primary_pattern.Matches(primary_url)) {
       return rule.GetContentSetting();
     }
@@ -98,7 +99,7 @@ ShieldsSettingCounts GetAdsSettingCountFromRules(
   for (const auto& rule : ads_rules) {
     if (rule.primary_pattern.MatchesAllHosts() ||
         rule.secondary_pattern.MatchesAllHosts() ||
-        block_set.find(rule.primary_pattern.ToString()) == block_set.end()) {
+        !block_set.contains(rule.primary_pattern.ToString())) {
       continue;
     }
     if (rule.GetContentSetting() == CONTENT_SETTING_BLOCK) {

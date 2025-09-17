@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_account/brave_account_service.h"
 
+#include <utility>
+
+#include "base/notimplemented.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -16,5 +19,30 @@ BraveAccountService::BraveAccountService(
     : pref_service_(pref_service), url_loader_factory_(url_loader_factory) {}
 
 BraveAccountService::~BraveAccountService() = default;
+
+void BraveAccountService::BindInterface(
+    mojo::PendingReceiver<mojom::Authentication> pending_receiver) {
+  authentication_receivers_.Add(this, std::move(pending_receiver));
+}
+
+void BraveAccountService::RegisterInitialize(
+    const std::string& email,
+    const std::string& blinded_message,
+    mojom::Authentication::RegisterInitializeCallback callback) {
+  // TODO(https://github.com/brave/brave-browser/issues/47400)
+  // TODO(https://github.com/brave/brave-browser/issues/48488)
+  NOTIMPLEMENTED();
+  std::move(callback).Run(mojom::RegisterInitializeResult::New());
+}
+
+void BraveAccountService::RegisterFinalize(
+    const std::string& encrypted_verification_token,
+    const std::string& serialized_record,
+    mojom::Authentication::RegisterFinalizeCallback callback) {
+  // TODO(https://github.com/brave/brave-browser/issues/47400)
+  // TODO(https://github.com/brave/brave-browser/issues/48488)
+  NOTIMPLEMENTED();
+  std::move(callback).Run(mojom::RegisterFinalizeResult::New());
+}
 
 }  // namespace brave_account

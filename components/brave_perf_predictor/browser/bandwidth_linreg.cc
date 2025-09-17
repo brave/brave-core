@@ -11,6 +11,7 @@
 #include <numeric>
 #include <utility>
 
+#include "base/containers/map_util.h"
 #include "base/logging.h"
 #include "brave/components/brave_perf_predictor/browser/bandwidth_linreg_parameters.h"
 
@@ -69,9 +70,10 @@ double LinregPredictVector(const std::array<double, feature_count>& features) {
 double LinregPredictNamed(const base::flat_map<std::string, double>& features) {
   std::array<double, feature_count> feature_vector{};
   for (unsigned int i = 0; i < feature_count; i++) {
-    auto it = features.find(feature_sequence.at(i));
-    if (it != features.end())
-      feature_vector[i] = it->second;
+    if (const auto* value =
+            base::FindOrNull(features, feature_sequence.at(i))) {
+      feature_vector[i] = *value;
+    }
   }
   return LinregPredictVector(feature_vector);
 }

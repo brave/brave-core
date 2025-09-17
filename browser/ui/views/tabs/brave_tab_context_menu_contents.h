@@ -80,6 +80,8 @@ class BraveTabContextMenuContents
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripStringBrowserTest,
                            ContextMenuString);
+  FRIEND_TEST_ALL_PREFIXES(BraveTabContextMenuContentsTest,
+                           SplitViewMenuCustomizationTest);
 
   bool IsBraveCommandIdEnabled(int command_id) const;
   void ExecuteBraveCommand(int command_id);

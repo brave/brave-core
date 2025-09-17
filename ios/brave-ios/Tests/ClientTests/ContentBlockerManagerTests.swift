@@ -142,7 +142,7 @@ class ContentBlockerManagerTests: XCTestCase {
     )
   }
 
-  @MainActor func testMissingModesFilterListGroup() async {
+  @MainActor func testMissingModesFilterListGroup() async throws {
     let blocklistTypeStandard: ContentBlockerManager.BlocklistType = .engineGroup(
       id: "standard",
       engineType: .standard
@@ -163,7 +163,8 @@ class ContentBlockerManagerTests: XCTestCase {
     let contentBlockerManager = makeManager(userDefaults: userDefaults)
 
     // assign mock cached rule lists (required so we can compare versions)
-    let cachedList: ContentBlockerManager.CompileResult = .success(WKContentRuleList())
+    let ruleList = try await makeMockRuleList(id: #function)
+    let cachedList: ContentBlockerManager.CompileResult = .success(ruleList)
     contentBlockerManager.setTestingCachedRuleLists([
       blocklistTypeStandard.makeIdentifier(for: .standard): cachedList,
       blocklistTypeStandardAggressive.makeIdentifier(for: .aggressive): cachedList,
@@ -209,7 +210,7 @@ class ContentBlockerManagerTests: XCTestCase {
     XCTAssertFalse(missingModesAggressive3.isEmpty)
   }
 
-  @MainActor func testMissingModesFilterListComponent() async {
+  @MainActor func testMissingModesFilterListComponent() async throws {
     let blocklistTypeFilterListAggressive: ContentBlockerManager.BlocklistType = .engineSource(
       .filterList(componentId: "cdbbhgbmjhfnhnmgeddbliobbofkgdhe"),
       engineType: .aggressive
@@ -222,10 +223,10 @@ class ContentBlockerManagerTests: XCTestCase {
     userDefaults?.set(existingVersions, forKey: "content-blocker.versions")
     let contentBlockerManager = makeManager(userDefaults: userDefaults)
 
+    let ruleList = try await makeMockRuleList(id: #function)
+
     contentBlockerManager.setTestingCachedRuleLists([
-      blocklistTypeFilterListAggressive.makeIdentifier(for: .aggressive): .success(
-        WKContentRuleList()
-      )
+      blocklistTypeFilterListAggressive.makeIdentifier(for: .aggressive): .success(ruleList)
     ])
 
     // Test no updates needed
@@ -255,7 +256,7 @@ class ContentBlockerManagerTests: XCTestCase {
     XCTAssertFalse(missingModesStandard3.isEmpty)
   }
 
-  @MainActor func testMissingModesGeneric() async {
+  @MainActor func testMissingModesGeneric() async throws {
     let blocklistTypeGenericTrackers: ContentBlockerManager.BlocklistType = .generic(.blockTrackers)
     let existingVersion = "2025-01-23T19:55:25Z"
     let existingVersions: [String: String] = [
@@ -265,8 +266,9 @@ class ContentBlockerManagerTests: XCTestCase {
     userDefaults?.set(existingVersions, forKey: "content-blocker.versions")
     let contentBlockerManager = makeManager(userDefaults: userDefaults)
 
+    let ruleList = try await makeMockRuleList(id: #function)
     contentBlockerManager.setTestingCachedRuleLists([
-      blocklistTypeGenericTrackers.makeIdentifier(for: .general): .success(WKContentRuleList())
+      blocklistTypeGenericTrackers.makeIdentifier(for: .general): .success(ruleList)
     ])
 
     // Test no updates needed (no missing modes)
@@ -284,5 +286,18 @@ class ContentBlockerManagerTests: XCTestCase {
       version: newVersionDate
     )
     XCTAssertFalse(missingModesStandard3.isEmpty)
+  }
+
+  @MainActor private func makeMockRuleList(id: String) async throws -> WKContentRuleList {
+    let testRuleListStore = try XCTUnwrap(
+      WKContentRuleListStore(
+        url: URL.temporaryDirectory.appending(path: id)
+      )
+    )
+    let ruleList = try await testRuleListStore.compileContentRuleList(
+      forIdentifier: id,
+      encodedContentRuleList: #"[{"trigger":{"url-filter":".*"},"action":{"type":"block"}}]"#
+    )
+    return try XCTUnwrap(ruleList)
   }
 }

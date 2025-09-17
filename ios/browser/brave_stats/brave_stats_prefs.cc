@@ -7,11 +7,13 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace brave_stats {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(kStatsReportingEnabled, true);
   registry->RegisterTimePref(kBraveWalletPingReportedUnlockTime, base::Time());
 }
 

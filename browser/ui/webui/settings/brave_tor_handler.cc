@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/byte_count.h"
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
@@ -68,7 +69,7 @@ constexpr net::NetworkTrafficAnnotationTag kTorBridgesMoatAnnotation =
       cookies_allowed: NO
     })");
 
-constexpr size_t kMaxBodySize = 256 * 1024;
+constexpr base::ByteCount kMaxBodySize = base::KiB(256);
 
 base::Value FetchCaptchaData() {
   base::Value::Dict data;
@@ -265,7 +266,8 @@ class BridgeRequest {
       url_loader->AttachStringForUpload(data_content);
     }
     url_loader->DownloadToString(url_loader_factory_.get(),
-                                 std::move(response_callback), kMaxBodySize);
+                                 std::move(response_callback),
+                                 kMaxBodySize.InBytes());
 
     return url_loader;
   }

@@ -99,7 +99,7 @@
 -OptimizationGuideInternalsPageBrowserTest.*
 -OptimizationGuideKeyedServiceBrowserTest.*
 -OptimizationGuideKeyedServiceEnterpriseBrowserTest.*
--OptimizationGuideKeyedServicePermissionsCheckDisabledTest.RemoteFetchingAllowed
+-OptimizationGuideKeyedServicePermissionsCheckDisabledTest.*
 -PageInfoBubbleViewMerchantTrustDialogBrowserTest.*
 -PageInfoBubbleViewMerchantTrustHatsDialogBrowserTest.InvokeUi_MerchantTrustSubpage
 -PasswordChangeBrowserTest.*
@@ -568,7 +568,7 @@
 -PrerenderPageLoadMetricsBrowserTest.*
 -PrerenderPageLoadMetricsObserverBrowserTest.*
 -PrerenderPageLoadMetricsObserverIncognitoBrowserTest.*
--PrerenderPrewarmDefaultSearchEngineTest.Prewarm*
+-PrerenderPrewarmDefaultSearchEngineTest.Pre*
 -PrerenderHoldbackBrowserTest.PreloadingHoldbackNotOverridden
 -PrerenderHoldbackBrowserTest.PreloadingHoldbackOverridden
 -PrerenderSiteDetailsBrowserTest.*
@@ -1011,6 +1011,7 @@
 -Aiv4ModelLanguageDetectionTest/Aiv4ModelLanguageDetectionBrowserTest.CheckLanguageDetectionHistogramStatus/*
 -Aiv4ModelPredictionServiceBrowserTestBase.Aiv4ModelHandlerDefined
 -Aiv4ModelTest/Aiv4ModelPredictionServiceBrowserTest.*/*
+-Aiv4ModelTimeoutBrowserTest.*
 -All/LoadingPredictorNetworkIsolationKeyBrowserTest.*
 -All/SearchNavigationPrefetchDefaultMatchBrowserTest.NotDefaultMatch/0
 -All/NavigationPredictorSiteIsolationBrowserTest.PageWithSameOriginIframeInCrossOriginIframe/*
@@ -1474,6 +1475,7 @@
 -All/MLPromotionInstallDialogBrowserTest.MlHandlesInvisible/PWA_Confirmation_Bubble
 -All/PermissionPromptBubbleBaseViewBrowserTest.InvokeUi_storage_access/*
 -All/SoftNavigationTest.LayoutShift/*
+-AutoPictureInPictureTabHelperBrowserTest.CachedBoundsIgnoredWhenPermissionPromtIsVisible
 -AutoPictureInPictureTabHelperBrowserTest.ImmediatelyClosesAutopipIfTabIsAlreadyFocused
 -AutoPictureInPictureTabHelperBrowserTest.RespectsAutoPictureInPictureContentSetting
 -AutoPictureInPictureTabHelperBrowserTest.ShowsMostRecentlyHiddenTab
@@ -1754,6 +1756,7 @@
 -All/LensOverlayControllerBrowserPDFTest.ContextMenuOpensOverlay/*
 -All/LensOverlayControllerBrowserPDFUpdatedContentFieldsTest.PartialPdfIncludedInRequest/*
 -All/LensOverlayControllerEntrypointsBrowserTest.OverlayHidesEntrypoints/PageActionsMigration*
+-LensComposeboxControllerBrowserTest.*
 -LensOverlayControllerApcOnlyTest.*
 -LensOverlayControllerBrowserTest.*
 -LensOverlayControllerBrowserFullscreenDisabled.*
@@ -1819,7 +1822,10 @@
 -BreadcrumbManagerTabHelperSecurityStateBrowserTest.BrokenAuthentication
 
 # These fail because we disable history_clusters::internal::kJourneys.
+-HistoryClustersInternalsBrowserTest.*
+-HistoryClustersInternalsDisabledBrowserTest.*
 -HistoryClustersPolicyTest.HistoryClustersVisible
+-HistoryClustersSidePanelCoordinatorBrowserTest.*
 -RenameJourneys/HistoryClustersPolicyTest.HistoryClustersVisible/*
 
 # These fail because we disable history clusters and the tests can't get the
@@ -1839,10 +1845,6 @@
 -All/PageInfoBubbleViewBrowserTestTrackingProtectionSubpage.*
 -PageInfoBubbleViewBrowserTest.InteractedWithCookiesButton
 -PageInfoBubbleViewCookiesSubpageBrowserTest.*
-
-# These tests fail because we disable Journeys via
-# history_clusters::internal::kJourneys
--RenameJourneys/HistoryClustersPolicyTest.HistoryClustersVisible/*
 
 # These tests fail because we disable the
 # privacy_sandbox::kEnforcePrivacySandboxAttestations feature
@@ -2373,10 +2375,20 @@
 -LanguageDetectionModelServiceBrowserTest.*
 -PreloadingModelKeyedServiceTest.Score
 
+# These tests fail because we disable blink::features::kPermissionElement
+-All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkDefault
+-All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkDisabled
+-All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseDefault_BlinkEnabled
+-All/PermissionElementOriginTrialBrowserTest.WithoutOriginTrialToken/BaseDefault_BlinkEnabled
+
+# These tests fail because we disable kAimEnabled.
+-ChromeAimEligibilityServiceBrowserTest.ComprehensiveEligibilityTest*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
 -All/AmpPageLoadMetricsBrowserTest.*
+-All/BrowsingDataRemoverBrowserTestP.CookieIncognitoDeletion/*
 -All/ClickToCallPolicyTest.*
 -All/ClientHintsBrowserTestForBlockAcceptClientHintsExperiment.Block/*
 -All/ClientHintsBrowserTestForMetaTagTypes.*
@@ -2388,6 +2400,7 @@
 -All/DownloadReferrerPolicyTest.DownloadCrossDomainReferrerPolicy/2
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*
 -All/GetAuthTokenFunctionEnableGranularPermissionsTest.EnableGranularPermissions/*
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/0
 -All/HeadlessModeDumpDomCommandBrowserTestWithSubResourceTimeout.HeadlessDumpDomWithSubResourceTimeout/*
 -All/IdentityGetProfileUserInfoFunctionTest*.*/*
 -All/LoginPromptBrowserTest.*
@@ -2607,6 +2620,7 @@
 -GooglePFTestDefaultFieldTrialValue.BaseGoogleSearchHasPFForPrefetch
 -GooglePFTestFieldTrialOverride.BaseGoogleSearchHasPFForPrefetch
 -GuestStartupBrowserCreatorPickerTest.*
+-GWSAbandonedPageLoadMetricsObserverBrowserTest.NonSRPRedirectToSRP_Hidden
 -HangoutServicesBrowserTest.*
 -HeadlessModeCommandBrowserTest_DumpDomWithBeforeUnloadPreventDefault.DumpDomWithBeforeUnloadPreventDefault
 -HeadlessModeCommandBrowserTest_PrintToPdfWithLazyLoading.PrintToPdfWithLazyLoading
@@ -2615,6 +2629,7 @@
 -HeadlessModeLazyLoadingPrintToPdfCommandBrowserTest.HeadlessLazyLoadingPrintToPdf
 -HeadlessModePrintToPdfCommandBrowserTest.HeadlessPrintToPdf
 -HeadlessModePrintToPdfCommandBrowserTest.HeadlessTaggedPrintToPdf/*
+-HeadlessModeProtocolBrowserTest_MAYBE_InputClipboardOps.InputClipboardOps
 -HeadlessModeScreencastTest.ScreencastBasics
 -HeadlessModeScreencastTest.ScreencastViewport
 -HeadlessModeScreenshotCommandBrowserTest.*
@@ -2624,8 +2639,6 @@
 -HintsFetcherBrowserTest.*
 -HintsFetcherSearchPageBrowserTest.*
 -HistoryBrowserTest.*
--HistoryClustersInternalsBrowserTest.*
--HistoryClustersInternalsDisabledBrowserTest.*
 -HTMLCSSNoStatePrefetchBrowserTest.*
 -HTMLCSSScriptNoStatePrefetchBrowserTest.*
 -HTMLCSSSyncScriptFontNoStatePrefetchBrowserTest.*
@@ -2666,6 +2679,7 @@
 -IntentChipButtonBrowserTest.*
 -IntentChipButtonSkipIntentPickerBrowserTest.ClickingChipOpensApp
 -IntentChipButtonSkipIntentPickerBrowserTest.ShowsIntentChipCollapsed
+-InteractiveBrowserTestCodeCoverageBrowsertest.TestCoverageEmits/*
 -IsolatedOriginWebViewTest.IsolatedOriginInWebview
 -IsolatedOriginWebViewTest.LoadIsolatedOriginInWebviewAfterLoadingInRegularTab
 -JavascriptFrameworksUkmObserverBrowserTest.*
@@ -2775,6 +2789,7 @@
 -PersistentBackground/WebNavigationApiTestWithContextType.*
 -PersistentBackground/WebUiNtpInterceptionWebRequestAPITest.OneGoogleBarRequestsHidden/*
 -PersistentScriptingAPITest.*
+-PKIMetadataComponentChromeRootStoreUpdateWithDoHServerTest.TrustAnchorIDs
 -PlatformAppBrowserTest.*
 -PolicyEnabled/WebrtcLoggingPrivateApiStartEventLoggingTestPolicy.StartEventLogging/*
 -PolicyPrefsTest.*
@@ -3002,8 +3017,9 @@
 -SystemNetworkContext/NetworkContextConfigurationProxyOnStartBrowserTest.*
 -SystemNetworkContext/NetworkContextConfigurationProxySettingsBrowserTest.*
 -SystemNetworkContext/NetworkContextConfigurationReportingAndNelBrowserTest.*
--SyncSessionsRouterTabHelperBrowserTest.*
+-SystemNetworkContextManagerNetworkServiceSandboxBrowsertest.NetworkServiceRestartsFailingLaunches
 -SystemNetworkContextManagerWithFirstPartySetComponentBrowserTest.*
+-SyncSessionsRouterTabHelperBrowserTest.*
 -TabActivityWatcherTest.SwitchTabs
 -TabActivityWatcherTest.SwitchWindows
 -TabActivityWatcherTest.TabDrag

@@ -101,6 +101,10 @@ package = "anstyle"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/arrayvec-v0_7"
 package = "arrayvec"
 
+[patch.crates-io.autocfg_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/autocfg-v1"
+package = "autocfg"
+
 [patch.crates-io.base64_v0_22]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/base64-v0_22"
 package = "base64"

@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/panel_handler/wallet_panel_handler.h"
+#include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
@@ -36,6 +37,10 @@ class WalletPanelUI : public TopChromeWebUIController,
   // interface passing the pending receiver that will be internally bound.
   void BindInterface(
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandlerFactory> receiver);
+
+  void BindInterface(
+      mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver);
+
   // The bubble disappears by default when Trezor opens a popup window
   // from the wallet panel bubble. In order to prevent it we set a callback
   // to modify panel deactivation flag when necessary.
@@ -53,6 +58,8 @@ class WalletPanelUI : public TopChromeWebUIController,
           json_rpc_service,
       mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
           bitcoin_rpc_service,
+      mojo::PendingReceiver<brave_wallet::mojom::PolkadotWalletService>
+          polkadot_wallet_service,
       mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
           zcash_service,
       mojo::PendingReceiver<brave_wallet::mojom::CardanoWalletService>
@@ -86,6 +93,7 @@ class WalletPanelUI : public TopChromeWebUIController,
 
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
+  std::unique_ptr<brave_rewards::mojom::RewardsPageHandler> rewards_handler_;
   raw_ptr<content::WebContents> active_web_contents_ = nullptr;
 
   base::RepeatingCallback<void(bool)> deactivation_callback_;

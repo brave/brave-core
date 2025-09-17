@@ -432,13 +432,13 @@ void SimpleHashClient::OnGetNftsForBalances(
       continue;
     }
 
-    auto owner_it = it->second.find(wallet_address);
-    if (owner_it == it->second.end()) {
+    auto* balance = base::FindOrNull(it->second, wallet_address);
+    if (!balance) {
       balances.push_back(0);
       continue;
     }
 
-    balances.push_back(owner_it->second);
+    balances.push_back(*balance);
   }
 
   std::move(callback).Run(base::ok(std::move(balances)));

@@ -25,6 +25,7 @@ import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.ui.base.BraveClipboardHelper;
 
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
         mCopyButton.setVisibility(View.INVISIBLE);
         mCopyButton.setOnClickListener(
                 v ->
-                        Utils.saveTextToClipboard(
+                        BraveClipboardHelper.saveTextToClipboard(
                                 requireContext(),
                                 Utils.getRecoveryPhraseFromList(mRecoveryPhrases),
                                 R.string.text_has_been_copied,

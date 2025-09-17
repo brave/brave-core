@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveUI
 import Strings
 import SwiftUI
 import WebKit
@@ -45,7 +46,7 @@ private struct CompileContentBlockersSectionView: View {
         .multilineTextAlignment(.trailing)
       }
 
-      Picker(selection: $selection) {
+      FormPicker(selection: $selection) {
         ForEach(availableSelections) { selection in
           Group {
             Text(getTitle(for: selection)) + Text(verbatim: " v\(selection.filterListInfo.version)")

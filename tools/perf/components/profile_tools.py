@@ -9,6 +9,7 @@ import os
 import re
 import shutil
 import json
+import zipfile
 
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -94,11 +95,31 @@ def PreRebaseCleanup(cfg: RunnerConfig, options: CommonOptions):
   # Remove safe browsing database
   shutil.rmtree(_GetSafeBrowsingDir(profile_dir), ignore_errors=True)
 
+  _FixupPreferences(profile_dir)
+
 
 def CleanProfileCaches(profile_dir: str):
   for path in _CACHE_DIRECTORIES:
     shutil.rmtree(os.path.join(profile_dir, path), ignore_errors=True)
 
+
+def _FixupPreferences(profile_dir: str):
+  """Cleanup possible invalid entries in Preferences file"""
+
+  preferences_path = os.path.join(profile_dir, 'Default', 'Preferences')
+  if not os.path.isfile(preferences_path):
+    return
+
+  # Cleanup Brave News preferences. They could vary depending on the locale.
+  with open(preferences_path, 'r', encoding='utf8') as f:
+    preferences = json.load(f)
+    if brave := preferences.get('brave'):
+      brave.pop('news', None)
+      if new_tab_page := brave.get('new_tab_page'):
+        new_tab_page.pop('show_brave_news', None)
+
+  with open(preferences_path, 'w', encoding='utf8') as f:
+    json.dump(preferences, f)
 
 def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
                               extra_dirs_to_add: List[str]) -> str:
@@ -134,8 +155,16 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
     shutil.copytree(extra_dir, target_dir, dirs_exist_ok=True)
 
   logging.info('Packing profile %s to %s', profile_dir, profile_zip)
-  with scoped_cwd(profile_dir):
-    make_zip(profile_zip, files=[], dirs=['.'])
+  # strict_timestamps=False because Chromium makes files with empty timestamps.
+  with zipfile.ZipFile(profile_zip,
+                       "w",
+                       zipfile.ZIP_DEFLATED,
+                       strict_timestamps=False) as zip_file:
+    with scoped_cwd(profile_dir):
+      for root, _, filenames in os.walk('.'):
+        for f in filenames:
+          print('adding', os.path.join(root, f))
+          zip_file.write(os.path.join(root, f))
 
   with open(profile_zip_sizes, 'w', encoding='utf-8') as f:
     f.write(GetProfileStats(profile_dir).toText())
@@ -299,18 +328,37 @@ def _RunUpdateProfileForConfig(config: perf_config.PerfConfig,
   if len(config.runners) != 1:
     raise RuntimeError('Only one configuration should be specified.')
   options.do_report = False
-  config.runners[0].profile_rebase = perf_config.ProfileRebaseType.NONE
+  runner = config.runners[0]
+  runner.profile_rebase = perf_config.ProfileRebaseType.NONE
+
+  # Remove --disable-component-update to get all the components
+  runner.extra_browser_args = [
+      arg for arg in runner.extra_browser_args
+      if arg != '--disable-component-update'
+  ]
+
+  def make_benchmark_config(delay: int):
+    return perf_config.BenchmarkConfig({
+        'name':
+        'brave_utils.online',
+        'pageset-repeat':
+        1,
+        'stories': ['UpdateProfile'],
+        'stories_exclude': [],
+        'extra-benchmark-args': [f'--delay={delay}'],
+    })
+
   config.benchmarks = [
-      perf_config.BenchmarkConfig({
-          'name': 'brave_utils.online',
-          'pageset-repeat': 3,
-          'stories': ['UpdateProfile'],
-          'stories_exclude': [],
-      })
+      # 15 minutes to update everything
+      make_benchmark_config(15 * 60),
+
+      # two short runs to drop old files
+      make_benchmark_config(30),
+      make_benchmark_config(30),
   ]
 
   configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
-      options.targets, config.runners[0])
+      options.targets, runner)
   assert len(configurations) == 1
   PreRebaseCleanup(configurations[0], options)
   if not perf_test_runner.RunConfigurations(configurations, config.benchmarks,

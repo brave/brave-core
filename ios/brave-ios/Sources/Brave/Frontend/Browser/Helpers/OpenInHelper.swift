@@ -85,20 +85,16 @@ class OpenPassBookHelper: NSObject {
   }
 
   private func parsePasses() async throws -> [PKPass] {
+    let passData = try Data(contentsOf: passURL)
     if mimeType == MIMEType.passbookBundle {
-      let url = try await ZipImporter.unzip(path: passURL)
+      let files = try await Unzip.unzip(data: passData)
       do {
-        let files = await enumerateFiles(in: url, withExtensions: ["pkpass", "pkpasses"])
-        let result = try files.map { try PKPass(data: Data(contentsOf: $0)) }
-        try? await AsyncFileManager.default.removeItem(at: url)
+        let result = try files.map { try PKPass(data: $0) }
         return result
       } catch {
-        try? await AsyncFileManager.default.removeItem(at: url)
         throw error
       }
     }
-
-    let passData = try Data(contentsOf: passURL)
     return try [PKPass(data: passData)]
   }
 

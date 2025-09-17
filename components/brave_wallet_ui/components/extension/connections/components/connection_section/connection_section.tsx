@@ -21,11 +21,7 @@ import {
   useSetNetworkForAccountOnActiveOriginMutation,
   useSetSelectedAccountMutation,
 } from '../../../../../common/slices/api.slice'
-import {
-  useSelectedADAAccountQuery,
-  useSelectedETHAccountQuery,
-  useSelectedSOLAccountQuery,
-} from '../../../../../common/slices/api.slice.extra'
+import { useAccountQuery } from '../../../../../common/slices/api.slice.extra'
 
 // Proxies
 import getWalletPanelApiProxy from '../../../../../panel/wallet_panel_api_proxy'
@@ -61,10 +57,11 @@ import { Column, Row, Text } from '../../../../shared/style'
 
 interface Props {
   coin: BraveWallet.CoinType
+  selectedAccountId: BraveWallet.AccountId | undefined
 }
 
 export const ConnectionSection = (props: Props) => {
-  const { coin } = props
+  const { coin, selectedAccountId } = props
 
   // State
   const [isPermissionDenied, setIsPermissionDenied] =
@@ -87,18 +84,11 @@ export const ConnectionSection = (props: Props) => {
   // Queries
   const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
     useGetActiveOriginQuery()
-  const { data: selectedSOLAccount } = useSelectedSOLAccountQuery()
-  const { data: selectedETHAccount } = useSelectedETHAccountQuery()
-  const { data: selectedADAAccount } = useSelectedADAAccountQuery()
+  const { account: selectedAccount } = useAccountQuery(selectedAccountId)
 
   const { data: networkForAccount } =
     useGetNetworkForAccountOnActiveOriginQuery({
-      accountId:
-        coin === BraveWallet.CoinType.ETH
-          ? selectedETHAccount?.accountId
-          : coin === BraveWallet.CoinType.SOL
-            ? selectedSOLAccount?.accountId
-            : selectedADAAccount?.accountId,
+      accountId: selectedAccountId,
     })
   const { data: networks = [] } = useGetNetworksQuery()
   const firstNetworkByCoin = networks.filter(
@@ -113,28 +103,21 @@ export const ConnectionSection = (props: Props) => {
 
   // Computed
   const isChromeOrigin = activeOrigin?.originSpec.startsWith('chrome')
-  const selectedAccount =
-    coin === BraveWallet.CoinType.ETH
-      ? selectedETHAccount
-      : coin === BraveWallet.CoinType.SOL
-        ? selectedSOLAccount
-        : selectedADAAccount
 
   // Memos
   const isConnected = React.useMemo((): boolean => {
-    if (!selectedAccount || isPermissionDenied) {
+    if (!selectedAccountId || isPermissionDenied) {
       return false
     }
     if (coin === BraveWallet.CoinType.SOL) {
       return isSolanaConnected
     }
     return connectedAccounts.some(
-      (accountId) =>
-        accountId.uniqueKey === selectedAccount.accountId.uniqueKey,
+      (accountId) => accountId.uniqueKey === selectedAccountId.uniqueKey,
     )
   }, [
     connectedAccounts,
-    selectedAccount,
+    selectedAccountId,
     coin,
     isSolanaConnected,
     isPermissionDenied,
@@ -151,16 +134,16 @@ export const ConnectionSection = (props: Props) => {
 
   // Methods
   const onClickConnect = React.useCallback(() => {
-    if (selectedAccount) {
-      requestSitePermission(selectedAccount.accountId)
+    if (selectedAccountId) {
+      requestSitePermission(selectedAccountId)
     }
-  }, [selectedAccount, requestSitePermission])
+  }, [selectedAccountId, requestSitePermission])
 
   const onClickDisconnect = React.useCallback(async () => {
-    if (selectedAccount) {
-      await removeSitePermission(selectedAccount.accountId)
+    if (selectedAccountId) {
+      await removeSitePermission(selectedAccountId)
     }
-  }, [selectedAccount, removeSitePermission])
+  }, [selectedAccountId, removeSitePermission])
 
   const onClickUnblock = React.useCallback(() => {
     chrome.tabs.create(
@@ -179,16 +162,16 @@ export const ConnectionSection = (props: Props) => {
 
   const onChangeNetwork = React.useCallback(
     async (network: BraveWallet.NetworkInfo) => {
-      if (selectedAccount) {
+      if (selectedAccountId) {
         await setNetworkForAccountOnActiveOrigin({
-          accountId: selectedAccount.accountId,
+          accountId: selectedAccountId,
           chainId: network.chainId,
         })
         setSelectedNetworkState(network)
         setShowNetworks(false)
       }
     },
-    [selectedAccount, setNetworkForAccountOnActiveOrigin],
+    [selectedAccountId, setNetworkForAccountOnActiveOrigin],
   )
 
   const onChangeAccount = React.useCallback(
@@ -199,15 +182,22 @@ export const ConnectionSection = (props: Props) => {
     [setSelectedAccount],
   )
 
+  const canChangeNetwork = props.coin !== BraveWallet.CoinType.ADA
+  const onClickNetwork = React.useCallback(() => {
+    if (canChangeNetwork) {
+      setShowNetworks(true)
+    }
+  }, [canChangeNetwork])
+
   // Effects
   React.useEffect(() => {
     let subscribed = true
 
-    if (selectedAccount?.address && coin === BraveWallet.CoinType.SOL) {
+    if (selectedAccount && coin === BraveWallet.CoinType.SOL) {
       ;(async () => {
         const { panelHandler } = getWalletPanelApiProxy()
         await panelHandler
-          .isSolanaAccountConnected(selectedAccount?.address)
+          .isSolanaAccountConnected(selectedAccount.address)
           .then((result) => {
             if (subscribed) {
               setIsSolanaConnected(result.connected)
@@ -220,7 +210,7 @@ export const ConnectionSection = (props: Props) => {
     return () => {
       subscribed = false
     }
-  }, [selectedAccount?.address, coin])
+  }, [selectedAccount, coin])
 
   React.useEffect(() => {
     let subscribed = true
@@ -306,7 +296,8 @@ export const ConnectionSection = (props: Props) => {
               </Row>
             </SelectButton>
             <SelectButton
-              onClick={() => setShowNetworks(true)}
+              disabled={!canChangeNetwork}
+              onClick={onClickNetwork}
               data-test-id={
                 coin === BraveWallet.CoinType.ETH ? 'select-network-button' : ''
               }
@@ -325,7 +316,7 @@ export const ConnectionSection = (props: Props) => {
                   {selectedNetwork?.chainName ?? ''}
                 </Text>
               </Row>
-              <SelectButtonIcon />
+              {canChangeNetwork && <SelectButtonIcon />}
             </SelectButton>
           </Column>
           <Row
@@ -369,9 +360,9 @@ export const ConnectionSection = (props: Props) => {
         title={getLocale('braveWalletChangeNetwork')}
       >
         <DAppConnectionNetworks
+          accountId={selectedAccountId}
           onChangeNetwork={onChangeNetwork}
           selectedNetwork={selectedNetwork}
-          coin={coin}
         />
       </BottomSheet>
     </>

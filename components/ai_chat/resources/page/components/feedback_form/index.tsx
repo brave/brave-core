@@ -7,7 +7,7 @@ import * as React from 'react'
 import DropDown from '@brave/leo/react/dropdown'
 import Button from '@brave/leo/react/button'
 import Checkbox from '@brave/leo/react/checkbox'
-import { getLocale , formatLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
@@ -16,7 +16,7 @@ const CATEGORY_OPTIONS = new Map([
   ['not-helpful', getLocale(S.CHAT_UI_OPTION_NOT_HELPFUL)],
   ['incorrect', getLocale(S.CHAT_UI_OPTION_INCORRECT)],
   ['unsafe-harmful', getLocale(S.CHAT_UI_OPTION_UNSAFE_HARMFUL)],
-  ['other', getLocale(S.CHAT_UI_OPTION_OTHER)]
+  ['other', getLocale(S.CHAT_UI_OPTION_OTHER)],
 ])
 
 const getHostName = (url: string) => {
@@ -38,7 +38,11 @@ function FeedbackForm() {
   const canSubmit = !!category
 
   const handleSubmit = () => {
-    conversationContext.handleFeedbackFormSubmit(category, feedbackText, shouldSendUrl)
+    conversationContext.handleFeedbackFormSubmit(
+      category,
+      feedbackText,
+      shouldSendUrl,
+    )
   }
 
   const handleSelectOnChange = ({ value }: { value: string }) => {
@@ -49,7 +53,7 @@ function FeedbackForm() {
     setFeedbackText(e.target.value)
   }
 
-  const handleCheckboxChange = ({ checked }: { checked: boolean; }) => {
+  const handleCheckboxChange = ({ checked }: { checked: boolean }) => {
     setShouldSendUrl(checked)
   }
 
@@ -61,7 +65,10 @@ function FeedbackForm() {
   // is selected when user attempts to Submit.
 
   return (
-    <div ref={ref} className={styles.form}>
+    <div
+      ref={ref}
+      className={styles.form}
+    >
       <h4>{getLocale(S.CHAT_UI_PROVIDE_FEEDBACK_TITLE)}</h4>
       <form>
         <fieldset>
@@ -72,10 +79,15 @@ function FeedbackForm() {
             required={true}
             value={CATEGORY_OPTIONS.get(category)}
           >
-            <div slot='label'>{getLocale(S.CHAT_UI_FEEDBACK_CATEGORY_LABEL)}</div>
+            <div slot='label'>
+              {getLocale(S.CHAT_UI_FEEDBACK_CATEGORY_LABEL)}
+            </div>
             {[...CATEGORY_OPTIONS.keys()].map((key) => {
               return (
-                <leo-option key={key} value={key}>
+                <leo-option
+                  key={key}
+                  value={key}
+                >
                   {CATEGORY_OPTIONS.get(key)}
                 </leo-option>
               )
@@ -93,12 +105,17 @@ function FeedbackForm() {
         </fieldset>
         {conversationContext.associatedContentInfo.length > 0 && (
           <fieldset>
-            <Checkbox checked={shouldSendUrl} onChange={handleCheckboxChange}>
-              <label>{
-                formatLocale(S.CHAT_UI_SEND_SITE_HOSTNAME_LABEL, {
-                  $1: conversationContext.associatedContentInfo.map(c => getHostName(c.url.url)).join(', ')
-                })
-              }</label>
+            <Checkbox
+              checked={shouldSendUrl}
+              onChange={handleCheckboxChange}
+            >
+              <label>
+                {formatLocale(S.CHAT_UI_SEND_SITE_HOSTNAME_LABEL, {
+                  $1: conversationContext.associatedContentInfo
+                    .map((c) => getHostName(c.url.url))
+                    .join(', '),
+                })}
+              </label>
             </Checkbox>
           </fieldset>
         )}
@@ -106,18 +123,28 @@ function FeedbackForm() {
           <div className={styles.premiumNote}>
             {formatLocale(S.CHAT_UI_FEEDBACK_PREMIUM_NOTE, {
               $1: (linkText) => (
-                  <Button kind='plain' size='medium' onClick={aiChatContext.goPremium}>
-                    {linkText}
-                  </Button>
-                )
+                <Button
+                  kind='plain'
+                  size='medium'
+                  onClick={aiChatContext.goPremium}
+                >
+                  {linkText}
+                </Button>
+              ),
             })}
           </div>
         )}
         <fieldset className={styles.actions}>
-          <Button onClick={conversationContext.handleFeedbackFormCancel} kind='plain-faint'>
+          <Button
+            onClick={conversationContext.handleFeedbackFormCancel}
+            kind='plain-faint'
+          >
             {getLocale(S.CHAT_UI_CANCEL_BUTTON_LABEL)}
           </Button>
-          <Button isDisabled={!canSubmit} onClick={handleSubmit}>
+          <Button
+            isDisabled={!canSubmit}
+            onClick={handleSubmit}
+          >
             {getLocale(S.CHAT_UI_SUBMIT_BUTTON_LABEL)}
           </Button>
         </fieldset>

@@ -74,6 +74,11 @@ BASE_FEATURE(kBraveForgetFirstPartyStorage,
              "BraveForgetFirstPartyStorage",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+// Ephemeralize third party cookies set during redirects.
+BASE_FEATURE(kBraveProvisionalTLDEphemeralLifetime,
+             "BraveProvisionalTLDEphemeralLifetime",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
 const base::FeatureParam<int>
     kBraveForgetFirstPartyStorageStartupCleanupDelayInSeconds = {
         &kBraveForgetFirstPartyStorage,

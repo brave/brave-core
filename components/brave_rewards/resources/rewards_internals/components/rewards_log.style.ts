@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color } from '@brave/leo/tokens/css/variables'
+import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../../rewards_page/lib/scoped_css'
 
 export const style = scoped.css`
@@ -15,6 +15,10 @@ export const style = scoped.css`
     > * {
       flex: 0 1 auto;
     }
+  }
+
+  .title {
+    flex: 1 1 auto;
   }
 
   textarea {
@@ -30,16 +34,7 @@ export const style = scoped.css`
   }
 
   .auto-refresh {
-    --leo-icon-size: 20px;
-
-    flex: 1 1 auto;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 0 8px;
-
-    leo-icon {
-      opacity: .75;
-    }
+    padding: 0 16px;
+    font: ${font.small.semibold};
   }
 `

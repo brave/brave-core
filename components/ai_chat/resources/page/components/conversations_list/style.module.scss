@@ -36,7 +36,7 @@
   // Display ButtonMenu button when menu is open or title
   // is hovered.
   @media (hover: hover) {
-    &:not(.isOptionsMenuOpen,:hover) .optionsMenu {
+    &:not(.isOptionsMenuOpen, :hover) .optionsMenu {
       visibility: hidden;
     }
   }
@@ -85,7 +85,8 @@
   // somehow empty
   min-height: 1lh;
 
-  &:hover, .isOptionsMenuOpen & {
+  &:hover,
+  .isOptionsMenuOpen & {
     background: var(--leo-color-container-highlight);
     box-shadow: var(--leo-effect-elevation-01);
   }

@@ -14,6 +14,13 @@ import "url/mojom/url.mojom";
 // Share some tool names between the browser and the UI so that
 // custom user actions and UI representations can be created.
 const string kUserChoiceToolName = "user_choice_tool";
+const string kMemoryStorageToolName = "memory_storage_tool";
+
+// Maximum length for memory and customization records.
+const int32 kMaxMemoryRecordLength = 512;
+
+// Full page screenshot filename prefix
+const string kFullPageScreenshotPrefix = "fullscreenshot_";
 
 // File upload limits
 // https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Message.html#API_runtime_Message_Contents
@@ -96,6 +103,11 @@ struct AssociatedContent {
 
   // Percentage of the text content that has been utilized by remote LLM (0-100)
   int32 content_used_percentage;
+
+  // If set, the conversation turn that this content is associated with.
+  // If |nullopt| this indicates that the user has staged the content but it
+  // hasn't been submitted yet (i.e. its in the input box).
+  string? conversation_turn_uuid;
 };
 
 struct Conversation {
@@ -132,6 +144,9 @@ struct Conversation {
 struct ContentArchive {
   string content_uuid;
   string content;
+
+  // The turn this Content was sent with.
+  string conversation_turn_uuid;
 };
 
 struct ConversationArchive {
@@ -453,6 +468,9 @@ interface AIChatUIHandler {
   // Open various external links or dialogs depending on the platform
   OpenAIChatSettings();
 
+  // Open AI Chat memory management settings
+  OpenMemorySettings();
+
   // From a sidebar or popup conversation, open the conversation in the
   // full-page UI.
   // TODO(petemill): WebUI Compile-timesupport for build flags
@@ -475,6 +493,10 @@ interface AIChatUIHandler {
   // be used on desktop as well in the future when a camera support is added.
   UploadFile(bool use_media_capture)
       => (array<UploadedFile>? uploaded_files);
+
+  // Process image files using backend processing (resizing and sanitization)
+  ProcessImageFile(array<uint8> file_data, string filename)
+      => (UploadedFile? processed_file);
 
   // Get a plural string for the given key and count.
   GetPluralString(string key, int32 count) => (string plural_string);

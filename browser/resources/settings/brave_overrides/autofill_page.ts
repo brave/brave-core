@@ -6,22 +6,38 @@
 import {
   html,
   RegisterPolymerTemplateModifications,
-  RegisterPolymerComponentReplacement
+  RegisterPolymerComponentReplacement,
+  RegisterPolymerPrototypeModification
 } from 'chrome://resources/brave/polymer_overriding.js'
 import {
   BraveSettingsAutofillPageElement
 } from '../brave_autofill_page/brave_autofill_page.js'
-import {loadTimeData} from '../i18n_setup.js'
+import { loadTimeData } from '../i18n_setup.js'
+import { routes } from '../route.js'
+import type { Route } from '../router.js'
 import '../email_aliases_page/email_aliases_page.js'
 
 RegisterPolymerComponentReplacement(
   'settings-autofill-page', BraveSettingsAutofillPageElement
 )
 
+RegisterPolymerPrototypeModification({
+  'settings-autofill-page-index': (prototype) => {
+    const originalCurrentRouteChanged = prototype.currentRouteChanged
+    prototype.currentRouteChanged =
+      function (newRoute: Route, oldRoute?: Route) {
+      if (newRoute === routes.EMAIL_ALIASES) {
+        this.$.viewManager.switchView('email-aliases', 'no-animation',
+                                      'no-animation')
+        return
+      }
+      originalCurrentRouteChanged.call(this, newRoute, oldRoute)
+    }
+  }
+})
+
 RegisterPolymerTemplateModifications({
   'settings-autofill-page': (templateContent) => {
-    const isEmailAliasesEnabled = loadTimeData.getBoolean(
-      'isEmailAliasesEnabled')
     const controlsDiv = templateContent.querySelector('div[route-path=default]')
     if (!controlsDiv) {
       throw new Error(
@@ -37,24 +53,20 @@ RegisterPolymerTemplateModifications({
           hidden=[[!isAutofillPage_]]
         </settings-toggle-button>
       `)
-      if (isEmailAliasesEnabled) {
-        const pages = templateContent.getElementById('pages')
-        if (!pages) {
-          console.error('[overrides]: Couldn\'t find pages')
-        } else {
-          pages.appendChild(html`
-          <template is="dom-if" route-path="/email-aliases">
-            <settings-subpage
-              associated-control="[[$$('#paymentManagerButton')]]"
-              page-title="${loadTimeData.getString('emailAliasesLabel')}"
-              learn-more-url="${loadTimeData.getString(
-                'addressesAndPaymentMethodsLearnMoreURL')}">
-              <settings-email-aliases-page id="emailAliasesSection"
-                prefs="{{prefs}}" />
-            </settings-subpage>
-          </template>`)
-        }
-      }
-    }
   },
-)
+  'settings-autofill-page-index': (templateContent) => {
+    if (!loadTimeData.getBoolean('isEmailAliasesEnabled')) {
+      return
+    }
+    const viewManager = templateContent.querySelector('cr-view-manager')
+    if (!viewManager) {
+      throw new Error(
+        '[Settings] Unable to find cr-view-manager on autofill-page')
+    }
+    viewManager.append(html`
+      <settings-email-aliases-page page-title="Email Aliases" slot="view"
+         id="email-aliases" data-parent-view-id="parent">
+      </settings-email-aliases-page>
+    `)
+  }
+})

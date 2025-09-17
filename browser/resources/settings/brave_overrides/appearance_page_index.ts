@@ -21,10 +21,6 @@ RegisterPolymerPrototypeModification({
         case routes.APPEARANCE:
           showDefaultViews();
           break;
-        case routes.FONTS:
-          this.$.viewManager.switchView(
-            'fonts', 'no-animation', 'no-animation');
-          break;
       }
     }
   }
@@ -46,6 +42,9 @@ RegisterPolymerTemplateModifications({
       console.error('View manager not found')
       return
     }
+
+    // Fonts page is rendered in the content subpage.
+    viewManager.querySelector('#fonts')?.remove()
 
     // Append tabs and sidebar settings to the appearance page.
     viewManager.append(html`

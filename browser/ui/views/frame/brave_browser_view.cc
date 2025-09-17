@@ -48,6 +48,7 @@
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/sidebar/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -79,11 +80,13 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
+#include "third_party/blink/public/common/input/web_mouse_event.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/accelerators/accelerator_manager.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
+#include "ui/events/event.h"
 #include "ui/events/event_observer.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/border.h"
@@ -102,7 +105,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #endif
@@ -141,6 +144,10 @@ class ContentsBackground : public views::View {
   ContentsBackground() {
     SetBackground(views::CreateSolidBackground(kColorToolbar));
     SetEnabled(false);
+
+    // Prevent to eat any events that goes to web contents because web contents
+    // could be behind this background.
+    SetCanProcessEventsWithinSubtree(false);
   }
 };
 BEGIN_METADATA(ContentsBackground)
@@ -348,6 +355,11 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 
   sidebar_container_view_->SetSidebarOnLeft(on_left);
 
+  if (multi_contents_view_ &&
+      base::FeatureList::IsEnabled(sidebar::features::kSidebarWebPanel)) {
+    GetBraveMultiContentsView()->SetWebPanelOnLeft(on_left);
+  }
+
   DeprecatedLayoutImmediately();
 }
 
@@ -373,7 +385,17 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   // Start Sidebar UI initialization.
   DCHECK(sidebar_container_view_);
   sidebar_container_view_->Init();
+
+  // Ask BraveMultiContentsView for preparing web panel feature.
+  if (multi_contents_view_ &&
+      base::FeatureList::IsEnabled(sidebar::features::kSidebarWebPanel)) {
+    GetBraveMultiContentsView()->SetWebPanelWidth(
+        sidebar_container_view_->side_panel()->GetPreferredSize().width());
+    GetBraveMultiContentsView()->UseContentsContainerViewForWebPanel();
+  }
+
   UpdateSideBarHorizontalAlignment();
+
   return sidebar_container_view_;
 }
 
@@ -973,14 +995,33 @@ bool BraveBrowserView::PreHandleMouseEvent(const blink::WebMouseEvent& event) {
     return true;
   }
 
-  if (sidebar_container_view_ &&
-      sidebar_container_view_->PreHandleMouseEvent(event)) {
+  if (event.GetTypeAsUiEventType() == ui::EventType::kMouseMoved &&
+      sidebar_container_view_ &&
+      sidebar_container_view_->PreHandleMouseEvent(event.PositionInScreen())) {
     // If the sidebar container handles the event, we don't need to handle it
     // further.
     return true;
   }
 
   return false;
+}
+
+void BraveBrowserView::OnMouseMoved(const ui::MouseEvent& event) {
+  BrowserView::OnMouseMoved(event);
+
+  // To make sidebar UI visible when mouse moved to space between window border
+  // & contents. This space exists when rounded corners feature is enabled. As
+  // BraveBrowserView::PreHandleMouseEvent() is only called from web contents,
+  // we need to handle move event from browser view.
+  // This handling is useful when it's in fullscreen. If move the mouse point to
+  // window edge quickly BraveBrowserView::PreHandleMouseEvent() is not called.
+  if (sidebar_container_view_ && event.type() == ui::EventType::kMouseMoved &&
+      BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
+    gfx::Point position_in_screen = event.location();
+    views::View::ConvertPointToScreen(this, &position_in_screen);
+    sidebar_container_view_->PreHandleMouseEvent(
+        gfx::PointF(position_in_screen));
+  }
 }
 
 bool BraveBrowserView::IsSidebarVisible() const {

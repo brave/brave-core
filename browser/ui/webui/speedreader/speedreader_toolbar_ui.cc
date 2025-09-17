@@ -17,8 +17,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/prefs/prefs_tab_helper.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/host_zoom_map.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
@@ -50,6 +52,9 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui)
                      speedreader::features::IsSpeedreaderEnabled() &&
                          speedreader::kSpeedreaderTTS.Get());
   PrefsTabHelper::CreateForWebContents(web_ui->GetWebContents());
+
+  content::URLDataSource::Add(profile_,
+                              std::make_unique<ThemeSource>(profile_));
 }
 
 SpeedreaderToolbarUI::~SpeedreaderToolbarUI() = default;

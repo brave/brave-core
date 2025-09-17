@@ -18,6 +18,12 @@
 
 namespace skus {
 
+// static
+SkusRenderFrameObserver* SkusRenderFrameObserver::Create(
+    content::RenderFrame* render_frame) {
+  return new SkusRenderFrameObserver(render_frame);
+}
+
 SkusRenderFrameObserver::SkusRenderFrameObserver(
     content::RenderFrame* render_frame)
     : RenderFrameObserver(render_frame) {}

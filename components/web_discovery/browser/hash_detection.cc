@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <locale>
 
 #include "brave/components/web_discovery/browser/hash_detection_matrix.h"
 

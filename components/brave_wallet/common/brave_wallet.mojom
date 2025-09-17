@@ -10,6 +10,7 @@ import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/origin.mojom";
 import "url/mojom/url.mojom";
+
 const int8 kAccountNameMaxCharacterLength = 30;
 
 // Used to notify the renderer of provider information for use in
@@ -30,6 +31,7 @@ interface SolanaEventsListener {
   // base58 encoded account, account would be null when switching to an about to
   // be created account
   AccountChangedEvent(string? account);
+
   // Wallet initiated disconnect event. Ex. permission revoked
   DisconnectEvent();
 };
@@ -37,11 +39,11 @@ interface SolanaEventsListener {
 // Pre-defined error codes specified in
 // https://www.jsonrpc.org/specification#error_object
 enum JsonRpcError {
-  kParsingError = -32700,    // Parse error - Invalid JSON
+  kParsingError = -32700,  // Parse error - Invalid JSON
   kInvalidRequest = -32600,  // JSON is not a valid request object
   kMethodNotFound = -32601,  // Method does not exist
-  kInvalidParams = -32602,   // Invalid method parameters
-  kInternalError = -32603,   // Internal JSON RPC error
+  kInvalidParams = -32602,  // Invalid method parameters
+  kInternalError = -32603,  // Internal JSON RPC error
 };
 
 // https://eips.ethereum.org/EIPS/eip-1193#provider-errors
@@ -49,52 +51,56 @@ enum JsonRpcError {
 enum ProviderError {
   kSuccess = 0,  // No error
 
-  kUserRejectedRequest = 4001,   // User rejected the request
-  kUnauthorized = 4100,          // The requested account and/or method has not
+  kUserRejectedRequest = 4001,  // User rejected the request
+  kUnauthorized = 4100,  // The requested account and/or method has not
                                  // been authorized by the user
-  kUnsupportedMethod = 4200,     // The requested method is not supported by this
+
+  kUnsupportedMethod = 4200,  // The requested method is not supported by this
                                  // Ethereum provider
-  kDisconnected = 4900,          // The provider is disconnected from all chains
-  kChainDisconnected = 4901,     // The provider is disconnected from the
+
+  kDisconnected = 4900,  // The provider is disconnected from all chains
+  kChainDisconnected = 4901,  // The provider is disconnected from the
                                  // specified chain
-  kUnknownChain = 4902,          // The provider doesn't know this chain
+
+  kUnknownChain = 4902,  // The provider doesn't know this chain
 
   // Pre-defined error codes specified in
   // https://www.jsonrpc.org/specification#error_object
-  kParsingError = JsonRpcError.kParsingError,      // Parse error - Invalid JSON
+  kParsingError = JsonRpcError.kParsingError,  // Parse error - Invalid JSON
   kInvalidRequest = JsonRpcError.kInvalidRequest,  // JSON is not a valid request object
   kMethodNotFound = JsonRpcError.kMethodNotFound,  // Method does not exist
-  kInvalidParams = JsonRpcError.kInvalidParams,    // Invalid method parameters
-  kInternalError = JsonRpcError.kInternalError,    // Internal JSON RPC error
+  kInvalidParams = JsonRpcError.kInvalidParams,  // Invalid method parameters
+  kInternalError = JsonRpcError.kInternalError,  // Internal JSON RPC error
 
   // Implementation-defined server-errors
-  kInvalidInput = -32000,        // Missing or invalid parameters
-  kResourceNotFound = -32001,    // Requested resource not found
-  kResourceUnavailable = -32002, // Requested resource not available
-  kTransactionRejected = -32003, // Transaction creation failed
+  kInvalidInput = -32000,  // Missing or invalid parameters
+  kResourceNotFound = -32001,  // Requested resource not found
+  kResourceUnavailable = -32002,  // Requested resource not available
+  kTransactionRejected = -32003,  // Transaction creation failed
   kMethodNotSupported = -32004,  // Method is not implemented
-  kLimitExceeded = -32005,       // Request exceeds defined limit
-  kVersionNotSupported = -32006, // Version of JSON-RPC protocol is not supported
+  kLimitExceeded = -32005,  // Request exceeds defined limit
+  kVersionNotSupported = -32006,  // Version of JSON-RPC protocol is not supported
 
-  kUnknown = -1                 // Unknown error
+  kUnknown = -1,  // Unknown error
 };
 
 enum FilecoinProviderError {
   kSuccess = ProviderError.kSuccess,  // No error
   kUnknown = ProviderError.kUnknown,
-  kActorNotFound = 1, // Actor not found for given address
+  kActorNotFound = 1,  // Actor not found for given address
   // Pre-defined error codes specified in
   // https://www.jsonrpc.org/specification#error_object
-  kParsingError = JsonRpcError.kParsingError,      // Parse error - Invalid JSON
+
+  kParsingError = JsonRpcError.kParsingError,  // Parse error - Invalid JSON
   kInvalidRequest = JsonRpcError.kInvalidRequest,  // JSON is not a valid request object
   kMethodNotFound = JsonRpcError.kMethodNotFound,  // Method does not exist
-  kInvalidParams = JsonRpcError.kInvalidParams,    // Invalid method parameters
-  kInternalError = JsonRpcError.kInternalError,    // Internal JSON RPC error
+  kInvalidParams = JsonRpcError.kInvalidParams,  // Invalid method parameters
+  kInternalError = JsonRpcError.kInternalError,  // Internal JSON RPC error
 };
 
 enum SolanaProviderError {
   kSuccess = ProviderError.kSuccess,  // No error
-  kUnknown =  ProviderError.kUnknown,
+  kUnknown = ProviderError.kUnknown,
 
   kUserRejectedRequest = ProviderError.kUserRejectedRequest,
   kUnauthorized = ProviderError.kUnauthorized,
@@ -102,11 +108,11 @@ enum SolanaProviderError {
 
   // Pre-defined error codes specified in
   // https://www.jsonrpc.org/specification#error_object
-  kParsingError = JsonRpcError.kParsingError,      // Parse error - Invalid JSON
+  kParsingError = JsonRpcError.kParsingError,  // Parse error - Invalid JSON
   kInvalidRequest = JsonRpcError.kInvalidRequest,  // JSON is not a valid request object
   kMethodNotFound = JsonRpcError.kMethodNotFound,  // Method does not exist
-  kInvalidParams = JsonRpcError.kInvalidParams,    // Invalid method parameters
-  kInternalError = JsonRpcError.kInternalError,    // Internal JSON RPC error
+  kInvalidParams = JsonRpcError.kInvalidParams,  // Invalid method parameters
+  kInternalError = JsonRpcError.kInternalError,  // Internal JSON RPC error
 
   // Implementation defined RPC server errors
   // https://docs.rs/solana-client/1.9.9/src/solana_client/rpc_custom_error.rs.html
@@ -123,7 +129,7 @@ enum SolanaProviderError {
   kTransactionHistoryNotAvailable = -32011,
   kScanError = -32012,
   kTransactionSignatureLenMismatch = -32013,
-  kBlockStatusNotAvailableYet = -32014
+  kBlockStatusNotAvailableYet = -32014,
 };
 
 enum BitcoinProviderError {
@@ -137,7 +143,7 @@ enum ZCashProviderError {
   kUnknown = ProviderError.kUnknown,
   kInternalError = JsonRpcError.kInternalError,
   // Fired when there are several outgoings transactions
-  kMultipleTransactionsNotSupported
+  kMultipleTransactionsNotSupported,
 };
 
 enum CardanoProviderError {
@@ -145,7 +151,6 @@ enum CardanoProviderError {
   kUnknown = ProviderError.kUnknown,
   kInternalError = JsonRpcError.kInternalError,
 };
-
 
 union ProviderErrorUnion {
   ProviderError provider_error;
@@ -176,8 +181,12 @@ interface EthereumProvider {
 
   // Corresponds to window.ethereum.enable and eth_requestAccounts
   Enable() => (EthereumProviderResponse response);
-  Send(string method, mojo_base.mojom.ListValue params) => ( EthereumProviderResponse response);
-  SendAsync(mojo_base.mojom.Value input) => (EthereumProviderResponse response);
+
+  Send(string method, mojo_base.mojom.ListValue params)
+      => (EthereumProviderResponse response);
+
+  SendAsync(mojo_base.mojom.Value input)
+      => (EthereumProviderResponse response);
 
   // Used for the connect event
   GetChainId() => (string chain_id);
@@ -187,8 +196,9 @@ interface EthereumProvider {
 };
 
 struct CardanoProviderPagination {
-  uint32 page;
-  uint32 limit;
+  // Use signed types since JS numeric translates to int.
+  int32 page;
+  int32 limit;
 };
 
 struct CardanoProviderPaginationErrorPayload {
@@ -205,34 +215,44 @@ struct CardanoProviderErrorBundle {
 
 // https://cips.cardano.org/cip/CIP-30
 interface CardanoApi {
-  GetNetworkId() =>
-    (int32 network_id, CardanoProviderErrorBundle? error);
-  GetUsedAddresses() =>
-    (array<string>? used_addresses, CardanoProviderErrorBundle? error);
-  GetUnusedAddresses() =>
-    (array<string>? unused_addresses, CardanoProviderErrorBundle? error);
-  GetChangeAddress() =>
-    (string? change_address, CardanoProviderErrorBundle? error);
-  GetRewardAddresses() =>
-    (array<string>? reward_addresses, CardanoProviderErrorBundle? error);
-  GetBalance() =>
-    (string? cbor_balance, CardanoProviderErrorBundle? error_message);
-  GetUtxos(string? amount, CardanoProviderPagination? paginate) =>
-    (array<string>? utxos, CardanoProviderErrorBundle? error);
-  SignTx(string tx_cbor, bool partial_sign) =>
-    (string? signed_tx_cbor, CardanoProviderErrorBundle? error);
-  SubmitTx(string signed_tx_cbor) =>
-    (string? tx_hash, CardanoProviderErrorBundle? error);
-  SignData(string address, string payload_hex) =>
-    (mojo_base.mojom.DictionaryValue? signature,
-      CardanoProviderErrorBundle? error);
-  GetCollateral(string amount) => (array<string>? utxos,
-    CardanoProviderErrorBundle? error);
+  GetNetworkId() => (int32 network_id, CardanoProviderErrorBundle? error);
+
+  GetUsedAddresses()
+      => (array<string>? used_addresses, CardanoProviderErrorBundle? error);
+
+  GetUnusedAddresses()
+      => (array<string>? unused_addresses, CardanoProviderErrorBundle? error);
+
+  GetChangeAddress()
+      => (string? change_address, CardanoProviderErrorBundle? error);
+
+  GetRewardAddresses()
+      => (array<string>? reward_addresses, CardanoProviderErrorBundle? error);
+
+  GetBalance()
+      => (string? cbor_balance, CardanoProviderErrorBundle? error_message);
+
+  GetUtxos(string? amount, CardanoProviderPagination? paginate)
+      => (array<string>? utxos, CardanoProviderErrorBundle? error);
+
+  SignTx(string tx_cbor, bool partial_sign)
+      => (string? signed_tx_cbor, CardanoProviderErrorBundle? error);
+
+  SubmitTx(string signed_tx_cbor)
+      => (string? tx_hash, CardanoProviderErrorBundle? error);
+
+  SignData(string address, string payload_hex)
+      => (mojo_base.mojom.DictionaryValue? signature,
+          CardanoProviderErrorBundle? error);
+
+  GetCollateral(string amount)
+      => (array<string>? utxos, CardanoProviderErrorBundle? error);
 };
 
 interface CardanoProvider {
-  Enable(pending_receiver<CardanoApi> incoming_connection) =>
-    (CardanoProviderErrorBundle? error);
+  Enable(pending_receiver<CardanoApi> incoming_connection)
+      => (CardanoProviderErrorBundle? error);
+
   IsEnabled() => (bool enabled);
 };
 
@@ -256,7 +276,8 @@ struct SolanaSignature {
 };
 
 struct FilecoinSignature {
-  // TODO(apaymyshev): this should be just a signature, not fully signed message.
+  // TODO(apaymyshev): this should be just a signature, not fully signed
+  // message.
   string signed_message_json;
 };
 
@@ -284,23 +305,31 @@ interface SolanaProvider {
   // connect and emit a connect event if the application is trusted.
   // It will returns base58 encoded public key when success
   Connect(mojo_base.mojom.DictionaryValue? arg)
-    => (SolanaProviderError error, string error_message, string public_key);
+      => (SolanaProviderError error, string error_message, string public_key);
+
   Disconnect();
+
   [Sync]
   IsConnected() => (bool is_connected);
+
   // return base58 encoded public key
   [Sync]
   GetPublicKey() => (string public_key);
+
   // It takes a base58 encoded serialized Message and return a serialized
   // Transaction with signature in wire format.
   SignTransaction(SolanaSignTransactionParam param)
-    => (SolanaProviderError error, string error_message,
-        array<uint8> serialized_tx,
-        SolanaMessageVersion version);
+      => (SolanaProviderError error,
+          string error_message,
+          array<uint8> serialized_tx,
+          SolanaMessageVersion version);
+
   SignAllTransactions(array<SolanaSignTransactionParam> params)
-    => (SolanaProviderError error, string error_message,
-        array<array<uint8>> serialized_txs,
-        array<SolanaMessageVersion> versions);
+      => (SolanaProviderError error,
+          string error_message,
+          array<array<uint8>> serialized_txs,
+          array<SolanaMessageVersion> versions);
+
   // It takes a base58 encoded serialized Message and return an object
   // containing both base58 encoded public key and signature as
   // { publicKey: <base58 encoded string>,
@@ -311,76 +340,80 @@ interface SolanaProvider {
   //     preflightCommitment?: <string>,
   //     skipPreflight?: <boolean>
   //   }
-  SignAndSendTransaction(
-      SolanaSignTransactionParam param,
-      mojo_base.mojom.DictionaryValue? send_options)
-    => (SolanaProviderError error, string error_message,
-        mojo_base.mojom.DictionaryValue result);
+  SignAndSendTransaction(SolanaSignTransactionParam param,
+                         mojo_base.mojom.DictionaryValue? send_options)
+      => (SolanaProviderError error,
+          string error_message,
+          mojo_base.mojom.DictionaryValue result);
+
   // It takes a byte array and an optional display encoding for
   // users and returns an object as
   // { publicKey: <base58 encoded string>,
   //   signature:  <base58 encoded string>
   // }
   SignMessage(array<uint8> blob_msg, string? display_encoding)
-    => (SolanaProviderError error, string error_message,
-        mojo_base.mojom.DictionaryValue result);
+      => (SolanaProviderError error,
+          string error_message,
+          mojo_base.mojom.DictionaryValue result);
 
   // Arg is {method: <string>, params: {...}}
   // returns a dictionary result to be converted into a v8 object
   Request(mojo_base.mojom.DictionaryValue arg)
-    => (SolanaProviderError error, string error_message,
-        mojo_base.mojom.DictionaryValue result);
+      => (SolanaProviderError error,
+          string error_message,
+          mojo_base.mojom.DictionaryValue result);
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
 interface PanelHandlerFactory {
   // The WebUI calls this method when the page is first initialized.
-  CreatePanelHandler(pending_receiver<PanelHandler> panel_handler,
-                     pending_receiver<WalletHandler> wallet_handler,
-                     pending_receiver<JsonRpcService> json_rpc_service,
-                     pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
-                     pending_receiver<ZCashWalletService> zcash_wallet_service,
-                     pending_receiver<CardanoWalletService> cardano_wallet_service,
-                     pending_receiver<SwapService> swap_service,
-                     pending_receiver<SimulationService> simulation_service,
-                     pending_receiver<AssetRatioService> asset_ratio_service,
-                     pending_receiver<KeyringService> keyring_service,
-                     pending_receiver<BlockchainRegistry> blockchain_registry,
-                     pending_receiver<TxService> tx_service,
-                     pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
-                     pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
-                     pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
-                     pending_receiver<BtcTxManagerProxy> btc_tx_manager_proxy,
-                     pending_receiver<BraveWalletService> brave_wallet_service,
-                     pending_receiver<BraveWalletP3A> brave_wallet_p3a,
-                     pending_receiver<IpfsService>
-                         brave_wallet_ipfs_service_receiver,
-                     pending_receiver<MeldIntegrationService>
-                         meld_integration_service);
+  CreatePanelHandler(
+      pending_receiver<PanelHandler> panel_handler,
+      pending_receiver<WalletHandler> wallet_handler,
+      pending_receiver<JsonRpcService> json_rpc_service,
+      pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
+      pending_receiver<PolkadotWalletService> polkadot_wallet_service,
+      pending_receiver<ZCashWalletService> zcash_wallet_service,
+      pending_receiver<CardanoWalletService> cardano_wallet_service,
+      pending_receiver<SwapService> swap_service,
+      pending_receiver<SimulationService> simulation_service,
+      pending_receiver<AssetRatioService> asset_ratio_service,
+      pending_receiver<KeyringService> keyring_service,
+      pending_receiver<BlockchainRegistry> blockchain_registry,
+      pending_receiver<TxService> tx_service,
+      pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
+      pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
+      pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
+      pending_receiver<BtcTxManagerProxy> btc_tx_manager_proxy,
+      pending_receiver<BraveWalletService> brave_wallet_service,
+      pending_receiver<BraveWalletP3A> brave_wallet_p3a,
+      pending_receiver<IpfsService> brave_wallet_ipfs_service_receiver,
+      pending_receiver<MeldIntegrationService> meld_integration_service);
 };
 
 interface PageHandlerFactory {
   // The WebUI calls this method when the page is first initialized.
-  CreatePageHandler(pending_receiver<PageHandler> page_handler,
-                    pending_receiver<WalletHandler> wallet_handler,
-                    pending_receiver<JsonRpcService> json_rpc_service,
-                    pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
-                    pending_receiver<ZCashWalletService> zcash_wallet_service,
-                    pending_receiver<CardanoWalletService> cardano_wallet_service,
-                    pending_receiver<SwapService> swap_service,
-                    pending_receiver<AssetRatioService> asset_ratio_service,
-                    pending_receiver<KeyringService> keyring_service,
-                    pending_receiver<BlockchainRegistry> blockchain_registry,
-                    pending_receiver<TxService> tx_service,
-                    pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
-                    pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
-                    pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
-                    pending_receiver<BtcTxManagerProxy> btc_tx_manager_proxy,
-                    pending_receiver<BraveWalletService> brave_wallet_service,
-                    pending_receiver<BraveWalletP3A> brave_wallet_p3a,
-                    pending_receiver<IpfsService> brave_wallet_ipfs_service,
-                    pending_receiver<MeldIntegrationService>
-                        meld_integration_service);
+  CreatePageHandler(
+      pending_receiver<PageHandler> page_handler,
+      pending_receiver<WalletHandler> wallet_handler,
+      pending_receiver<JsonRpcService> json_rpc_service,
+      pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
+      pending_receiver<PolkadotWalletService> polkadot_wallet_service,
+      pending_receiver<ZCashWalletService> zcash_wallet_service,
+      pending_receiver<CardanoWalletService> cardano_wallet_service,
+      pending_receiver<SwapService> swap_service,
+      pending_receiver<AssetRatioService> asset_ratio_service,
+      pending_receiver<KeyringService> keyring_service,
+      pending_receiver<BlockchainRegistry> blockchain_registry,
+      pending_receiver<TxService> tx_service,
+      pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
+      pending_receiver<SolanaTxManagerProxy> solana_tx_manager_proxy,
+      pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
+      pending_receiver<BtcTxManagerProxy> btc_tx_manager_proxy,
+      pending_receiver<BraveWalletService> brave_wallet_service,
+      pending_receiver<BraveWalletP3A> brave_wallet_p3a,
+      pending_receiver<IpfsService> brave_wallet_ipfs_service,
+      pending_receiver<MeldIntegrationService> meld_integration_service);
 };
 
 // Lifetime option in sync with CreatePermissionLifetimeOptions()
@@ -388,7 +421,7 @@ enum PermissionLifetimeOption {
   kPageClosed = 0,
   k24Hours = 1,
   k7Days = 2,
-  kForever = 3
+  kForever = 3,
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -400,8 +433,11 @@ interface PanelHandler {
   CloseUI();
 
   ConnectToSite(array<string> accounts, PermissionLifetimeOption option);
+
   CancelConnectToSite();
+
   SetCloseOnDeactivate(bool close);
+
   Focus();
 
   IsSolanaAccountConnected(string account) => (bool connected);
@@ -433,7 +469,7 @@ enum AssetPriceTimeframe {
   OneMonth,
   ThreeMonths,
   OneYear,
-  All
+  All,
 };
 
 struct AssetTimePrice {
@@ -462,7 +498,7 @@ struct CoinMarket {
 };
 
 struct Dapp {
-  uint32 id; // Assigned by DappRadar
+  uint32 id;  // Assigned by DappRadar
   string name;
   string description;
   string logo;
@@ -478,7 +514,7 @@ struct Dapp {
 
 enum RoutePriority {
   kFastest,
-  kCheapest
+  kCheapest,
 };
 
 enum SwapProvider {
@@ -486,7 +522,7 @@ enum SwapProvider {
   kLiFi,
   kZeroEx,
   kJupiter,
-  kSquid
+  kSquid,
 };
 
 struct SwapQuoteParams {
@@ -660,7 +696,7 @@ enum LiFiStatusCode {
   kInvalid,
   kPending,
   kDone,
-  kFailed
+  kFailed,
 };
 
 enum LiFiSubstatusCode {
@@ -683,7 +719,7 @@ enum LiFiSubstatusCode {
   kSlippageExceeded,
   kInsufficientAllowance,
   kInsufficientBalance,
-  kExpired
+  kExpired,
 };
 
 struct LiFiStatus {
@@ -702,7 +738,7 @@ struct LiFiStatus {
 enum LiFiStepType {
   kSwap,
   kCross,
-  kLiFi
+  kLiFi,
 };
 
 struct LiFiToolDetails {
@@ -819,7 +855,7 @@ enum LifiToolErrorCode {
   // The third-party tool returned an error.
   kToolSpecificError = 8,
   // The tool cannot guarantee that the minimum amount will be met.
-  kCannotGuaranteeMinAmount = 9
+  kCannotGuaranteeMinAmount = 9,
 };
 
 // https://github.com/lifinance/types/blob/main/src/errors.ts
@@ -852,13 +888,12 @@ struct LiFiError {
 };
 
 // Squid types
-
 enum SquidActionType {
   kWrap,
   kUnwrap,
   kSwap,
   kBridge,
-  kUnknown
+  kUnknown,
 };
 
 struct SquidAction {
@@ -908,7 +943,7 @@ struct SquidQuote {
 enum SquidErrorType {
   kBadRequest,
   kSchemaValidationError,
-  kUnknownError
+  kUnknownError,
 };
 
 struct SquidError {
@@ -972,24 +1007,28 @@ enum KeyringId {
   kBitcoinHardwareTestnet = 11,
   kCardanoMainnet = 12,
   kCardanoTestnet = 13,
+  kPolkadotMainnet = 14,
+  kPolkadotTestnet = 15,
 };
 
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
-const string kP3ACountTestNetworksLoadTimeKey = "braveWalletP3ACountTestNetworks";
+
+const string kP3ACountTestNetworksLoadTimeKey =
+    "braveWalletP3ACountTestNetworks";
 
 enum FilecoinAddressProtocol {
-  SECP256K1 = 1, // Represents the address SECP256K1 protocol
-  BLS = 3, // Represents the address BLS protocol
-  DELEGATED = 4
+  SECP256K1 = 1,  // Represents the address SECP256K1 protocol
+  BLS = 3,  // Represents the address BLS protocol
+  DELEGATED = 4,
 };
 
 enum HardwareVendor {
   kLedger = 1,
-  kTrezor = 2
+  kTrezor = 2,
 };
 
 struct HardwareWalletAccount {
-  string address; // Account's address or account's xpub for BTC.
+  string address;  // Account's address or account's xpub for BTC.
   string derivation_path;
   string name;
   HardwareVendor hardware_vendor;
@@ -1006,7 +1045,7 @@ struct HardwareInfo {
 enum AccountKind {
   kDerived,
   kImported,
-  kHardware
+  kHardware,
 };
 
 struct AccountId {
@@ -1078,7 +1117,7 @@ struct BlockchainToken {
   string contract_address;
   string name;
   string logo;
-  bool is_compressed = false; // Solana NFTs only
+  bool is_compressed = false;  // Solana NFTs only
   bool is_erc20;
   bool is_erc721;
   bool is_erc1155;
@@ -1092,7 +1131,7 @@ struct BlockchainToken {
   string coingecko_id = "";
   string chain_id;
   CoinType coin;
-  bool is_shielded = false; // Zcash only, marks whether asset belongs to the shielded pool.
+  bool is_shielded = false;  // Zcash only, marks whether asset belongs to the shielded pool.
 };
 
 struct AllowanceInfo {
@@ -1143,34 +1182,43 @@ enum OnRampProvider {
   kSardine = 1,
   kTransak = 2,
   kStripe = 3,
-  kCoinbase = 4
+  kCoinbase = 4,
 };
 
 enum OffRampProvider {
-  kRamp = 1
+  kRamp = 1,
 };
 
 // List of tokens and coins that are supported.
-// is_nft property in the returned registry tokens is not reliable, the value is based
-// on the value of is_erc721 only and doesn't consider Solana NFTs and ERC1155 NFTs.
+// is_nft property in the returned registry tokens is not reliable, the value is
+// based
+// on the value of is_erc721 only and doesn't consider Solana NFTs and ERC1155
+// NFTs.
 interface BlockchainRegistry {
   // Obtains token information by an address lookup.
-  GetTokenByAddress(string chain_id, CoinType coin, string address) => (BlockchainToken? token);
+  GetTokenByAddress(string chain_id, CoinType coin, string address)
+      => (BlockchainToken? token);
 
   // Obtains token information by a symbol lookup.
-  GetTokenBySymbol(string chain_id, CoinType coin, string symbol) => (BlockchainToken? token);
+  GetTokenBySymbol(string chain_id, CoinType coin, string symbol)
+      => (BlockchainToken? token);
 
   // Obtains all tokens Send/Swap UI
-  GetAllTokens(string chain_id, CoinType coin) => (array<BlockchainToken> tokens);
+  GetAllTokens(string chain_id, CoinType coin)
+      => (array<BlockchainToken> tokens);
 
   // Below APIs are Ethereum only for the moment.
   // Obtains all tokens for a single provider for the Buy UI
-  GetBuyTokens(OnRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
+  GetBuyTokens(OnRampProvider provider, string chain_id)
+      => (array<BlockchainToken> tokens);
+
   // Obtains all tokens for multiple providers for the Buy UI
-  GetProvidersBuyTokens(array<OnRampProvider> providers, string chain_id) => (array<BlockchainToken> tokens);
+  GetProvidersBuyTokens(array<OnRampProvider> providers, string chain_id)
+      => (array<BlockchainToken> tokens);
 
   // Obtains all tokens for the Sell UI
-  GetSellTokens(OffRampProvider provider, string chain_id) => (array<BlockchainToken> tokens);
+  GetSellTokens(OffRampProvider provider, string chain_id)
+      => (array<BlockchainToken> tokens);
 
   // Get currencies list
   GetOnRampCurrencies() => (array<OnRampCurrency> currencies);
@@ -1183,7 +1231,7 @@ interface BlockchainRegistry {
 
   // Returns the Coincecko ID for a given chain id and contract address
   GetCoingeckoId(string chain_id, string contract_address)
-    => (string? coingecko_id);
+      => (string? coingecko_id);
 };
 
 // Implements the HD wallet, Ledger & Trezor integration, account management,
@@ -1199,10 +1247,12 @@ interface KeyringService {
   GetWalletMnemonic(string password) => (string? mnemonic);
 
   // Restores a wallet with the specified mnemonic and encrypts it with the
-  // new password provided. `is_legacy_eth_seed_format` can be used to restore the
+  // new password provided. `is_legacy_eth_seed_format` can be used to restore
+  // the
   // wallet using Brave's legacy derivation paths.
-  RestoreWallet(string mnemonic, string password, bool is_legacy_eth_seed_format)
-    => (bool is_valid_mnemonic);
+  RestoreWallet(
+      string mnemonic, string password, bool is_legacy_eth_seed_format)
+      => (bool is_valid_mnemonic);
 
   // Locks the keyring.
   Lock();
@@ -1214,31 +1264,35 @@ interface KeyringService {
   IsLocked() => (bool isLocked);
 
   // Adds an account to the keyring.
-  AddAccount(CoinType coin, KeyringId keyring_id, string account_name) => (AccountInfo? account_info);
+  AddAccount(CoinType coin, KeyringId keyring_id, string account_name)
+      => (AccountInfo? account_info);
 
   // Encodes the private key for exporting.
   EncodePrivateKeyForExport(AccountId account_id, string password)
-    => (string? privateKey);
+      => (string? privateKey);
 
   // Imports an account with a specific private key to the corresponding keyring
   ImportEthereumAccount(string accountName, string privateKey)
-    => (AccountInfo? account);
+      => (AccountInfo? account);
 
   // Imports a solana account.
   ImportSolanaAccount(string accountName, string privateKey)
-    => (AccountInfo? account);
-
-  // Imports a filecoin account with a specific private key and network.
-  ImportFilecoinAccount(string accountName, string privateKey, string network)
       => (AccountInfo? account);
 
-  // Imports a bitcoin account for a network. Payload is an extended private key.
+  // Imports a filecoin account with a specific private key and network.
+  ImportFilecoinAccount(
+      string accountName, string privateKey, string network)
+      => (AccountInfo? account);
+
+  // Imports a bitcoin account for a network. Payload is an extended private
+  // key.
   ImportBitcoinAccount(string accountName, string payload, string network)
       => (AccountInfo? account);
 
   // Imports an account via JSON.
-  ImportEthereumAccountFromJson(string accountName, string password, string json)
-    => (AccountInfo? account);
+  ImportEthereumAccountFromJson(
+      string accountName, string password, string json)
+      => (AccountInfo? account);
 
   // Determines if wallet's mnemonic has been backed up.
   IsWalletBackedUp() => (bool backed_up);
@@ -1253,7 +1307,8 @@ interface KeyringService {
   SetAccountName(AccountId account_id, string name) => (bool success);
 
   // Adds hardware accounts
-  AddHardwareAccounts(array<HardwareWalletAccount> info) => (array<AccountInfo>? account_infos);
+  AddHardwareAccounts(array<HardwareWalletAccount> info)
+      => (array<AccountInfo>? account_infos);
 
   // Adds BTC hardware account
   AddBitcoinHardwareAccount(HardwareWalletAccount info) => (bool success);
@@ -1274,7 +1329,8 @@ interface KeyringService {
   GetAutoLockMinutes() => (int32 minutes);
 
   // Sets the number of minutes for keyring auto-lock
-  // Must be within the inclusive range [kAutoLockMinutesMin, kAutoLockMinutesMax]
+  // Must be within the inclusive range [kAutoLockMinutesMin,
+  // kAutoLockMinutesMax]
   SetAutoLockMinutes(int32 minutes) => (bool success);
 
   // Returned result is true if the password is considered a strong password.
@@ -1300,104 +1356,120 @@ interface KeyringService {
 // Used for cryptocurrency prices over time.
 interface AssetRatioService {
   // Obtains the URL for buying assets specifying currency
-  GetBuyUrlV1(OnRampProvider provider, string chain_id, string address, string symbol, string amount, string currencyCode) => (string url, string? error);
+  GetBuyUrlV1(OnRampProvider provider,
+              string chain_id,
+              string address,
+              string symbol,
+              string amount,
+              string currencyCode) => (string url, string? error);
 
   // Obtains the URL for selling assets specifying currency
-  GetSellUrl(OffRampProvider provider, string chain_id, string symbol, string amount, string currencyCode) => (string url, string? error);
+  GetSellUrl(OffRampProvider provider,
+             string chain_id,
+             string symbol,
+             string amount,
+             string currencyCode) => (string url, string? error);
 
   // Obtains the prices from a list of assets to a list of assets
   // Each from asset is represented in the to asset and includes the timeframe
   // change as well.
-  GetPrice(array<string> from_assets, array<string> to_assets, AssetPriceTimeframe timeframe) =>
-      (bool success, array<AssetPrice> values);
+  GetPrice(array<string> from_assets,
+           array<string> to_assets,
+           AssetPriceTimeframe timeframe)
+      => (bool success, array<AssetPrice> values);
 
   // Obtains the price history for a specific asset
-  GetPriceHistory(string asset, string vs_asset,
-      AssetPriceTimeframe timeframe) =>
-          (bool success, array<AssetTimePrice> values);
+  GetPriceHistory(
+      string asset, string vs_asset, AssetPriceTimeframe timeframe)
+      => (bool success, array<AssetTimePrice> values);
 
   // Obtain list of top currencies and their market data
-  GetCoinMarkets(string vs_asset, uint8 limit) => (bool success, array<CoinMarket> values);
+  GetCoinMarkets(string vs_asset, uint8 limit)
+      => (bool success, array<CoinMarket> values);
 };
 
 interface MeldIntegrationService {
   // Obtains the list of Service Providers
   // All parameters are optional
   GetServiceProviders(MeldFilter filter)
-    => (array<MeldServiceProvider>? service_providers, array<string>? error);
+      => (array<MeldServiceProvider>? service_providers,
+          array<string>? error);
 
   // Obtains the crypto quotes
   // Note that next parameters are mandatory:
   // destination_currency_code, country, source_amount, source_currency_code
-  GetCryptoQuotes(string country, string source_currency_code,
-    string destination_currency_code, double source_amount, string? account,
-    string? payment_method)
-    => (array<MeldCryptoQuote>? crypto_quotes, array<string>? error);
+  GetCryptoQuotes(string country,
+                  string source_currency_code,
+                  string destination_currency_code,
+                  double source_amount,
+                  string? account,
+                  string? payment_method)
+      => (array<MeldCryptoQuote>? crypto_quotes, array<string>? error);
 
   // Obtains the list of payment methods
   // All parameters are optional
   GetPaymentMethods(MeldFilter filter)
-    => (array<MeldPaymentMethod>? payment_methods, array<string>? error);
+      => (array<MeldPaymentMethod>? payment_methods, array<string>? error);
 
   // Obtains the list of fiat currencies
   // All parameters are optional
   GetFiatCurrencies(MeldFilter filter)
-    => (array<MeldFiatCurrency>? fiat_currencies, array<string>? error);
+      => (array<MeldFiatCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of crypto currencies
   // All parameters are optional
   GetCryptoCurrencies(MeldFilter filter)
-    => (array<MeldCryptoCurrency>? fiat_currencies, array<string>? error);
+      => (array<MeldCryptoCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of countries
   // All parameters are optional
   GetCountries(MeldFilter filter)
-    => (array<MeldCountry>? countries, array<string>? error);
+      => (array<MeldCountry>? countries, array<string>? error);
 
   CryptoBuyWidgetCreate(CryptoBuySessionData session_data,
-    CryptoWidgetCustomerData? customer_data)
-    => (MeldCryptoWidget? widget_data, array<string>? error);
+                        CryptoWidgetCustomerData? customer_data)
+      => (MeldCryptoWidget? widget_data, array<string>? error);
 
   CryptoSellWidgetCreate(CryptoSellSessionData session_data,
-    CryptoWidgetCustomerData? customer_data)
-    => (MeldCryptoWidget? widget_data, array<string>? error);
+                         CryptoWidgetCustomerData? customer_data)
+      => (MeldCryptoWidget? widget_data, array<string>? error);
 
   CryptoTransferWidgetCreate(CryptoTransferSessionData session_data,
-    CryptoWidgetCustomerData? customer_data)
-    => (MeldCryptoWidget? widget_data, array<string>? error);
+                             CryptoWidgetCustomerData? customer_data)
+      => (MeldCryptoWidget? widget_data, array<string>? error);
 };
 
 // Implements cross-chain swap functionality using 0x, Jupiter, and LiFi APIs
 interface SwapService {
-  GetQuote(SwapQuoteParams params) =>
-    (SwapQuoteUnion? response,
-     SwapFees? fees,
-     SwapErrorUnion? error,
-     string error_string);
+  GetQuote(SwapQuoteParams params) => (SwapQuoteUnion? response,
+                                       SwapFees? fees,
+                                       SwapErrorUnion? error,
+                                       string error_string);
 
-  GetTransaction(SwapTransactionParamsUnion params) =>
-    (SwapTransactionUnion? response,
-     SwapErrorUnion? error,
-     string error_string);
+  GetTransaction(SwapTransactionParamsUnion params)
+      => (SwapTransactionUnion? response,
+          SwapErrorUnion? error,
+          string error_string);
 
   // Obtains whether the given chain id supports swap
   IsSwapSupported(string chain_id) => (bool result);
 
   // Get LiFi status for a given transaction meta id
-  GetLiFiStatus(string tx_hash) =>
-    (LiFiStatus? response,
-     LiFiError? error_response,
-     string error_string);
+  GetLiFiStatus(string tx_hash) => (LiFiStatus? response,
+                                    LiFiError? error_response,
+                                    string error_string);
 };
 
 interface IpfsService {
   TranslateToGatewayURL(string url) => (string? translated_url);
+
   ContentHashToCIDv1URL(array<uint8> content_hash) => (string? url);
 };
 
 interface JsonRpcServiceObserver {
   // Fired when the selected network changes
-  ChainChangedEvent(string chain_id, CoinType coin, url.mojom.Origin? origin);
+  ChainChangedEvent(
+      string chain_id, CoinType coin, url.mojom.Origin? origin);
 
   // Fired when a wallet_addEthereumChain request is completed
   OnAddEthereumChainRequestCompleted(string chain_id, string error);
@@ -1433,114 +1505,214 @@ struct TxData1559 {
 };
 
 const string kSolanaSystemProgramId = "11111111111111111111111111111111";
-const string kSolanaTokenProgramId = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+
+const string kSolanaTokenProgramId =
+    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+
 const string kSolanaToken2022ProgramId =
     "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb";
-const string kSolanaAssociatedTokenProgramId = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
-const string kSolanaSysvarRentProgramId = "SysvarRent111111111111111111111111111111111";
-const string kSolanaMetadataProgramId = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s";
+
+const string kSolanaAssociatedTokenProgramId =
+    "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
+
+const string kSolanaSysvarRentProgramId =
+    "SysvarRent111111111111111111111111111111111";
+
+const string kSolanaMetadataProgramId =
+    "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s";
+
 const string kSolanaBubbleGumProgramId =
-  "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY";
+    "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY";
+
 const string kSolanaAccountCompressionProgramId =
-  "cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK";
+    "cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK";
+
 const string kSolanaConfigProgramId =
-  "Config1111111111111111111111111111111111111";
+    "Config1111111111111111111111111111111111111";
+
 const string kSolanaStakeProgramId =
-  "Stake11111111111111111111111111111111111111";
+    "Stake11111111111111111111111111111111111111";
+
 const string kSolanaVoteProgramId =
-  "Vote111111111111111111111111111111111111111";
+    "Vote111111111111111111111111111111111111111";
+
 const string kSolanaBPFLoaderUpgradeableProgramId =
-  "BPFLoaderUpgradeab1e11111111111111111111111";
+    "BPFLoaderUpgradeab1e11111111111111111111111";
+
 const string kSolanaEd25519SigVerifyProgramId =
-  "Ed25519SigVerify111111111111111111111111111";
+    "Ed25519SigVerify111111111111111111111111111";
+
 const string kSolanaKeccakSecp256kProgramId =
-  "KeccakSecp256k11111111111111111111111111111";
-const string kSolanaComputeBudgetProgramId = "ComputeBudget111111111111111111111111111111";
+    "KeccakSecp256k11111111111111111111111111111";
+
+const string kSolanaComputeBudgetProgramId =
+    "ComputeBudget111111111111111111111111111111";
 
 // It is required to keep these chain IDs lowercase ASCII
 const string kMainnetChainId = "0x1";
+
 const string kSepoliaChainId = "0xaa36a7";
+
 const string kLocalhostChainId = "0x539";
+
 const string kPolygonMainnetChainId = "0x89";
+
 const string kBnbSmartChainMainnetChainId = "0x38";
-const string kAvalancheMainnetChainId = "0xa86a"; // Avalanche C-Chain
-const string kFantomMainnetChainId = "0xfa"; // Fantom Opera
+
+const string kAvalancheMainnetChainId = "0xa86a";  // Avalanche C-Chain
+
+const string kFantomMainnetChainId = "0xfa";  // Fantom Opera
+
 const string kCeloMainnetChainId = "0xa4ec";
+
 const string kOptimismMainnetChainId = "0xa";
+
 const string kAuroraMainnetChainId = "0x4e454152";
+
 const string kArbitrumMainnetChainId = "0xa4b1";
+
 const string kNeonEVMMainnetChainId = "0xe9ac0d6";
+
 const string kFilecoinEthereumMainnetChainId = "0x13a";  // Filecoin eth mainnet
+
 const string kFilecoinEthereumTestnetChainId = "0x4cb2f";  // Filecoin eth calibration
+
 const string kSolanaMainnet = "0x65";
+
 const string kSolanaTestnet = "0x66";
+
 const string kSolanaDevnet = "0x67";
+
 const string kFilecoinTestnet = "t";
+
 const string kFilecoinMainnet = "f";
+
 const string kBitcoinMainnet = "bitcoin_mainnet";
+
 const string kBitcoinTestnet = "bitcoin_testnet";
+
 const string kCardanoMainnet = "cardano_mainnet";
+
 const string kCardanoTestnet = "cardano_testnet";
+
 const string kZCashMainnet = "zcash_mainnet";
+
 const string kZCashTestnet = "zcash_testnet";
+
 const string kArbitrumNovaChainId = "0xa4ba";
+
 const string kGnosisChainId = "0x64";
+
 const string kGodwokenChainId = "0x116ea";
+
 const string kPalmChainId = "0x2a15c308d";
+
 const string kPolygonZKEVMChainId = "0x44d";
+
 const string kZkSyncEraChainId = "0x144";
+
 const string kBaseMainnetChainId = "0x2105";
+
 const string kFlareMainnetChainId = "0xe";
+
 const string kRolluxMainnetChainId = "0x23a";
+
 const string kSyscoinMainnetChainId = "0x39";
+
 const string kArbitrumSepoliaChainId = "0x66eee";
+
 const string kAvalancheFujiTestnetChainId = "0xa869";
+
 const string kBaseSepoliaTestnetChainId = "0x14a34";
+
 const string kBlastMainnetChainId = "0xee";
+
 const string kBlastSepoliaTestnetChainId = "0xa0c71fd";
+
 const string kDegenChainId = "0x27bc86aa";
+
 const string kLineaChainId = "0xe708";
+
 const string kOptimismSepoliaChainId = "0xaa37dc";
+
 const string kZoraChainId = "0x76adf1";
+
 const string kAstarChainId = "0x250";
+
 const string kAstarZkEVMChainId = "0xec0";
+
 const string kBahamutChainId = "0x142d";
+
 const string kBitTorrentChainMainnetChainId = "0xc7";
+
 const string kCoreChainId = "0x45c";
+
 const string kCronosMainnetChainId = "0x19";
+
 const string kCyberMainnetChainId = "0x1d88";
+
 const string kElysiumMainnetChainId = "0x53b";
+
 const string kEOSEVMNetworkChainId = "0x4571";
+
 const string kHederaMainnetChainId = "0x127";
+
 const string kImmutableZkEVMChainId = "0x343b";
+
 const string kKlaytnMainnetCypressChainId = "0x2019";
+
 const string kKromaChainId = "0xff";
+
 const string kLightlinkPhoenixMainnetChainId = "0x762";
+
 const string kMoonbeamChainId = "0x504";
+
 const string kMoonriverChainId = "0x505";
+
 const string kNearMainnetChainId = "0x18d";
+
 const string kOasisEmeraldChainId = "0xa516";
+
 const string kOasisSapphireChainId = "0x5afe";
+
 const string kOasysMainnetChainId = "0xf8";
+
 const string kOntologyMainnetChainId = "0x3a";
+
 const string kOpBNBMainnetChainId = "0xcc";
+
 const string kRangersProtocolMainnetChainId = "0x7e9";
+
 const string kRoninChainId = "0x7e4";
+
 const string kShidenChainId = "0x150";
+
 const string kSkaleCalypsoHubChainId = "0x5d456c62";
+
 const string kSkaleEuropaHubChainId = "0x79f99296";
+
 const string kSkaleNebulaHubChainId = "0x585eb4b1";
+
 const string kSkaleTitanHubChainId = "0x507aaa2a";
+
 const string kTelosEVMMainnetChainId = "0x28";
+
 const string kThetaMainnetChainId = "0x169";
+
 const string kThunderCoreMainnetChainId = "0x6c";
+
 const string kWemixMainnetChainId = "0x457";
+
 const string kXaiMainnetChainId = "0xa1337";
+
 const string kZetaChainMainnetChainId = "0x1b58";
+
 const string kZilliqaEVMChainId = "0x8001";
+
 const string kScrollChainId = "0x82750";
 
-const string kBatTokenContractAddress = "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
+const string kBatTokenContractAddress =
+    "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
 
 // https://github.com/satoshilabs/slips/blob/master/slip-0044.md
 enum CoinType {
@@ -1622,9 +1794,9 @@ struct SPLTokenAmount {
 };
 
 enum ResolveMethod {
-   kAsk = 0,
-   kDisabled = 1,
-   kEnabled = 2,
+  kAsk = 0,
+  kDisabled = 1,
+  kEnabled = 2,
 };
 
 struct AnkrAssetBalance {
@@ -1667,79 +1839,113 @@ struct NftIdentifier {
 // network.
 interface JsonRpcService {
   // Checks the chain ID for an ethereum chain that should be added
-  AddChain(NetworkInfo chain) => (string chain_id, ProviderError error, string error_message);
+  AddChain(NetworkInfo chain)
+      => (string chain_id, ProviderError error, string error_message);
+
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
+
   RemoveChain(string chain_id, CoinType coin) => (bool success);
+
   GetPendingAddChainRequests() => (array<AddChainRequest> requests);
 
   // This is used for UI notifying native when the user approves or
   // rejects SwitchChainRequest
   NotifySwitchChainRequestProcessed(string request_id, bool approved);
+
   GetPendingSwitchChainRequests() => (array<SwitchChainRequest> requests);
 
   SetNetwork(string chain_id, CoinType coin, url.mojom.Origin? origin)
-    => (bool success);
-  GetNetwork(CoinType coin, url.mojom.Origin? origin) => (NetworkInfo network);
+      => (bool success);
+
+  GetNetwork(CoinType coin, url.mojom.Origin? origin)
+      => (NetworkInfo network);
+
   GetAllNetworks() => (array<NetworkInfo> networks);
+
   GetCustomNetworks(CoinType coin) => (array<string> chain_ids);
+
   GetKnownNetworks(CoinType coin) => (array<string> chain_ids);
+
   GetHiddenNetworks(CoinType coin) => (array<string> chain_ids);
+
   AddHiddenNetwork(CoinType coin, string chain_id) => (bool success);
+
   RemoveHiddenNetwork(CoinType coin, string chain_id) => (bool success);
 
   // Obtains the default network's chain ID when there is no origin info
   // available. Ex. wallet page.
   GetDefaultChainId(CoinType coin) => (string chain_id);
+
   // Obtains the selected network's chain ID for origin.
-  GetChainIdForOrigin(CoinType coin, url.mojom.Origin origin) => (string chain_id);
+  GetChainIdForOrigin(CoinType coin, url.mojom.Origin origin)
+      => (string chain_id);
 
   // Obtains the native balance (e.g. ETH for Ethereum) for the address
-  GetBalance(string address, CoinType coin, string chain_id) => (string balance, ProviderError error, string error_message);
+  GetBalance(string address, CoinType coin, string chain_id)
+      => (string balance, ProviderError error, string error_message);
 
   // Obtains the associated bytecode for the contract
-  GetCode(string address, CoinType coin, string chain_id) => (string bytecode, ProviderError error, string error_message);
+  GetCode(string address, CoinType coin, string chain_id)
+      => (string bytecode, ProviderError error, string error_message);
 
   // Obtains the contract's ERC20 compatible balance for an address
   // Supported by all EVM chains.
-  GetERC20TokenBalance(string contract,
-                       string address,
-                       string chain_id) => (string balance, ProviderError error, string error_message);
+  GetERC20TokenBalance(string contract, string address, string chain_id)
+      => (string balance, ProviderError error, string error_message);
 
   // Fetches the balances of multiple ERC20 tokens for an address. Requires a
   // BalanceScanner contract to be deployed on that network. See
   // GetEthBalanceScannerContractAddresses() in brave_wallet_constants.cc for
   // the list of supported chains.
-  GetERC20TokenBalances(array<string> contracts,
-                        string address,
-                        string chain_id) => (array<ERC20BalanceResult> balances,
-                                             ProviderError error,
-                                             string error_message);
+  GetERC20TokenBalances(
+      array<string> contracts, string address, string chain_id)
+      => (array<ERC20BalanceResult> balances,
+          ProviderError error,
+          string error_message);
 
   // Obtains the contract's ERC20 allowance for an owner and a spender
   GetERC20TokenAllowance(string contract,
                          string owner_address,
-                         string spender_address, string chain_id)
-    => (string allowance, ProviderError error, string error_message);
+                         string spender_address,
+                         string chain_id)
+      => (string allowance, ProviderError error, string error_message);
 
   // Obtains the metadata JSON for a token ID of an ERC721 contract
-  GetERC721Metadata(string contract, string token_id, string chain_id) => (string token_url, string response, ProviderError error, string error_message);
+  GetERC721Metadata(string contract, string token_id, string chain_id)
+      => (string token_url,
+          string response,
+          ProviderError error,
+          string error_message);
 
   // Obtains the metadata JSON for a token ID of an ERC1155 contract
-  GetERC1155Metadata(string contract, string token_id, string chain_id) => (string token_url, string response, ProviderError error, string error_message);
+  GetERC1155Metadata(string contract, string token_id, string chain_id)
+      => (string token_url,
+          string response,
+          ProviderError error,
+          string error_message);
 
   GetUnstoppableDomainsResolveMethod() => (ResolveMethod method);
+
   GetEnsResolveMethod() => (ResolveMethod method);
+
   GetEnsOffchainLookupResolveMethod() => (ResolveMethod method);
+
   GetSnsResolveMethod() => (ResolveMethod method);
 
   // Calling these setters should be approved by privacy review.
   SetUnstoppableDomainsResolveMethod(ResolveMethod method);
+
   SetEnsResolveMethod(ResolveMethod method);
+
   SetEnsOffchainLookupResolveMethod(ResolveMethod method);
+
   SetSnsResolveMethod(ResolveMethod method);
 
   // ENS lookups
-  EnsGetEthAddr(string domain) => (string address, bool require_offchain_consent, ProviderError error, string error_message);
+  EnsGetEthAddr(string domain) => (string address,
+                                   bool require_offchain_consent,
+                                   ProviderError error,
+                                   string error_message);
 
   // ENS Domain lookups
   EnsGetContentHash(string domain) => (array<uint8> content_hash,
@@ -1748,28 +1954,43 @@ interface JsonRpcService {
                                        string error_message);
 
   // SNS lookups
-  SnsGetSolAddr(string domain) => (string address, SolanaProviderError error, string error_message);
+  SnsGetSolAddr(string domain)
+      => (string address, SolanaProviderError error, string error_message);
 
   // SNS Domain lookups
-  SnsResolveHost(string domain) => (url.mojom.Url? url, SolanaProviderError error, string error_message);
+  SnsResolveHost(string domain) => (url.mojom.Url? url,
+                                    SolanaProviderError error,
+                                    string error_message);
 
   // Unstoppable Domains lookups
-  UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token) => (string address, ProviderError error, string error_message);
-  UnstoppableDomainsResolveDns(string domain) => (url.mojom.Url? url, ProviderError error, string error_message);
+  UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token)
+      => (string address, ProviderError error, string error_message);
+
+  UnstoppableDomainsResolveDns(string domain)
+      => (url.mojom.Url? url, ProviderError error, string error_message);
 
   // Adds an observer for the events of JsonRpcService
   AddObserver(pending_remote<JsonRpcServiceObserver> observer);
 
   // Obtains the owner of a contract's ERC721 token ID
-  GetERC721OwnerOf(string contract, string token_id, string chain_id) => (string owner_address, ProviderError error, string error_message);
+  GetERC721OwnerOf(string contract, string token_id, string chain_id)
+      => (string owner_address, ProviderError error, string error_message);
 
   // Obtains the balance of a contract's ERC721 token ID for an address
   // Balance is 0x1 if current selected account is the same as token owner's
   // address, otherwise balance is 0x0.
-  GetERC721TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
+  GetERC721TokenBalance(string contract_address,
+                        string token_id,
+                        string account_address,
+                        string chain_id)
+      => (string balance, ProviderError error, string error_message);
 
   // Obtains the quantity of ERC1155 tokens a user has
-  GetERC1155TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
+  GetERC1155TokenBalance(string contract_address,
+                         string token_id,
+                         string account_address,
+                         string chain_id)
+      => (string balance, ProviderError error, string error_message);
 
   // Fetches token info by contract address and chain ID. The returned token
   // has the following fields populated:
@@ -1787,53 +2008,63 @@ interface JsonRpcService {
   //   - is_erc1155
   //   - is_erc20
   //   - is_nft
-  GetEthTokenInfo(string contract_address,
-                  string chain_id) => (BlockchainToken? token,
-                                       ProviderError error,
-                                       string error_message);
+  GetEthTokenInfo(string contract_address, string chain_id)
+      => (BlockchainToken? token, ProviderError error, string error_message);
 
   // Solana JSON RPCs
   // https://docs.solana.com/developing/clients/jsonrpc-api
 
   // Returns the balance of the account of provided Pubkey.
-  GetSolanaBalance(string pubkey, string chain_id) =>
-      (uint64 balance, SolanaProviderError error, string error_message);
+  GetSolanaBalance(string pubkey, string chain_id)
+      => (uint64 balance, SolanaProviderError error, string error_message);
+
   // Returns the token balance of an SPL Token account.
-  GetSPLTokenAccountBalance(string wallet_address,
-                            string token_mint_address, string chain_id) =>
-      (string amount, uint8 decimals, string uiAmountString,
-       SolanaProviderError error, string error_message);
+  GetSPLTokenAccountBalance(
+      string wallet_address, string token_mint_address, string chain_id)
+      => (string amount,
+          uint8 decimals,
+          string uiAmountString,
+          SolanaProviderError error,
+          string error_message);
 
-  // Returns the metadata json associated with the NFT. Uses the SimpleHash API, not
-  // the JSON RPC API. Callers should only supply NFT identifiers owned by a single
+  // Returns the metadata json associated with the NFT. Uses the SimpleHash API,
+  // not
+  // the JSON RPC API. Callers should only supply NFT identifiers owned by a
+  // single
   // account at a time.
-  GetNftMetadatas(array<NftIdentifier> nft_identifiers) => (array<NftMetadata> metadatas,
-                                                            string error_message);
+  GetNftMetadatas(array<NftIdentifier> nft_identifiers)
+      => (array<NftMetadata> metadatas, string error_message);
 
-  // Returns the balances of the list of NFTs for the owner using the SimpleHash API.
-  GetNftBalances(string wallet_address, array<NftIdentifier> nft_identifiers)
-    => (array<uint64> balances, string error_message);
+  // Returns the balances of the list of NFTs for the owner using the SimpleHash
+  // API.
+  GetNftBalances(
+      string wallet_address, array<NftIdentifier> nft_identifiers)
+      => (array<uint64> balances, string error_message);
 
   // Returns the metadata json associated with the NFT account address
   GetSolTokenMetadata(string chain_id, string token_mint_address)
-    => (string token_url, string response, SolanaProviderError error,
-        string error_message);
+      => (string token_url,
+          string response,
+          SolanaProviderError error,
+          string error_message);
 
   // Returns whether a blockhash is still valid or not for a given chain.
-  IsSolanaBlockhashValid(string chain_id, string blockhash, string? commitment)
-    => (bool is_valid, SolanaProviderError error, string error_message);
+  IsSolanaBlockhashValid(
+      string chain_id, string blockhash, string? commitment)
+      => (bool is_valid, SolanaProviderError error, string error_message);
 
   // Fetches balances of all SPL tokens held by an address.
-  GetSPLTokenBalances(string pubkey,
-                      string chain_id) => (array<SPLTokenAmount> balances,
-                                           SolanaProviderError error,
-                                           string error_message);
+  GetSPLTokenBalances(string pubkey, string chain_id)
+      => (array<SPLTokenAmount> balances,
+          SolanaProviderError error,
+          string error_message);
 
   // Fetches balances of an EVM account address for a list of chain ids
   // using Ankr Advanced APIs.
   AnkrGetAccountBalances(string account_address, array<ChainId> chain_ids)
-    => (array<AnkrAssetBalance> balances, ProviderError error,
-        string error_message);
+      => (array<AnkrAssetBalance> balances,
+          ProviderError error,
+          string error_message);
 };
 
 struct BitcoinKeyId {
@@ -1872,14 +2103,19 @@ struct BitcoinAccountInfo {
 interface BitcoinWalletService {
   // Fetches BitcoinBalance struct for all addresses associated with account_id.
   // Now includes both confirmed and mempool utxos.
-  GetBalance(AccountId account_id) => (BitcoinBalance? balance, string? error_message);
+  GetBalance(AccountId account_id)
+      => (BitcoinBalance? balance, string? error_message);
 
   // Checks balance of possible hw account.
-  GetExtendedKeyAccountBalance(string chain_id, string extended_key) => (BitcoinBalance? balance, string? error_message);
+  GetExtendedKeyAccountBalance(string chain_id, string extended_key)
+      => (BitcoinBalance? balance, string? error_message);
 
   // These are parts of wallet internals api(brave://wallet/dev-bitcoin)
-  RunDiscovery(AccountId account_id, bool change) => (BitcoinAddress? address, string? error_message);
-  GetBitcoinAccountInfo(AccountId account_id) => (BitcoinAccountInfo? account_info);
+  RunDiscovery(AccountId account_id, bool change)
+      => (BitcoinAddress? address, string? error_message);
+
+  GetBitcoinAccountInfo(AccountId account_id)
+      => (BitcoinAccountInfo? account_info);
 };
 
 enum CardanoKeyRole {
@@ -1911,7 +2147,8 @@ struct CardanoAccountInfo {
 interface CardanoWalletService {
   // Fetches CardanoBalance struct for all addresses associated with account_id.
   // Now includes both confirmed and mempool utxos.
-  GetBalance(AccountId account_id) => (CardanoBalance? balance, string? error_message);
+  GetBalance(AccountId account_id)
+      => (CardanoBalance? balance, string? error_message);
 };
 
 struct ZCashKeyId {
@@ -1971,7 +2208,7 @@ enum ZCashAddressError {
   kInvalidUnifiedAddress = 2,
   kInvalidUnifiedAddressMissingTransparentPart = 3,
   kInvalidUnifiedAddressMissingOrchardPart = 4,
-  kInvalidAddressNetworkMismatch = 5
+  kInvalidAddressNetworkMismatch = 5,
 };
 
 struct ZCashOrchardNoteInfo {
@@ -2009,34 +2246,55 @@ struct ZCashChainTipStatus {
 
 interface ZCashWalletServiceObserver {
   OnSyncStart(AccountId account_id);
+
   OnSyncStatusUpdate(AccountId account_id, ZCashShieldSyncStatus status);
+
   OnSyncStop(AccountId account_id);
+
   OnSyncError(AccountId account_id, string error);
 };
 
 interface ZCashWalletService {
-  GetBalance(string network_id, AccountId account_id) =>
-      (ZCashBalance? balance, string? error_message);
-  GetReceiverAddress(AccountId account_id) =>
-      (ZCashAddress? address, string? error_message);
-  GetZCashAccountInfo(AccountId account_id) =>
-      (ZCashAccountInfo? account_info);
-  ShieldAllFunds(string network_id, AccountId account_id) =>
-      (string? tx_id, string? error_message);
+  GetBalance(string network_id, AccountId account_id)
+      => (ZCashBalance? balance, string? error_message);
+
+  GetReceiverAddress(AccountId account_id)
+      => (ZCashAddress? address, string? error_message);
+
+  GetZCashAccountInfo(AccountId account_id)
+      => (ZCashAccountInfo? account_info);
+
+  ShieldAllFunds(string network_id, AccountId account_id)
+      => (string? tx_id, string? error_message);
+
   GetTransactionType(string chain_id,
                      AccountId account_id,
                      bool use_shielded_pool,
-                     string recipient) =>
-      (ZCashTxType tx_type, ZCashAddressError error);
+                     string recipient)
+      => (ZCashTxType tx_type, ZCashAddressError error);
 
   AddObserver(pending_remote<ZCashWalletServiceObserver> observer);
 
-  MakeAccountShielded(AccountId account_id, uint32 account_birthday_block /* 0 if use last available block */) => (string? error_message);
-  StartShieldSync(AccountId account_id, uint32 to /* 0 if latest available block is used */) => (string? error_message);
+  // `account_birthday_block` is 0 if use last available block.
+  MakeAccountShielded(AccountId account_id, uint32 account_birthday_block)
+      => (string? error_message);
+
+  // `to` is 0 if latest available block is used.
+  StartShieldSync(AccountId account_id, uint32 to) => (string? error_message);
+
   StopShieldSync(AccountId account_id) => (string? error_message);
-  IsSyncInProgress(AccountId account_id) => (bool result, string? error_message);
+
+  IsSyncInProgress(AccountId account_id)
+      => (bool result, string? error_message);
+
   ResetSyncState(AccountId account_id) => (string? error_message);
-  GetChainTipStatus(AccountId account_id, string chain_id) => (ZCashChainTipStatus? status, string? error_message);
+
+  GetChainTipStatus(AccountId account_id, string chain_id)
+      => (ZCashChainTipStatus? status, string? error_message);
+};
+
+interface PolkadotWalletService {
+  GetNetworkName() => (string? network, string? error_message);
 };
 
 enum TransactionStatus {
@@ -2047,7 +2305,7 @@ enum TransactionStatus {
   Confirmed = 4,
   Error = 5,
   Dropped = 6,
-  Signed = 7 // dapps will submit the transaction
+  Signed = 7,  // dapps will submit the transaction
 };
 
 enum TransactionType {
@@ -2065,7 +2323,7 @@ enum TransactionType {
   SolanaDappSignAndSendTransaction = 11,
   SolanaDappSignTransaction = 12,
   SolanaSwap = 13,
-  ETHFilForwarderTransfer = 14, // Used to send from FEVM to FVM
+  ETHFilForwarderTransfer = 14,  // Used to send from FEVM to FVM
   SolanaCompressedNftTransfer = 15,
 };
 
@@ -2256,51 +2514,52 @@ struct NewCardanoTransactionParams {
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
 interface TxService {
-  AddUnapprovedTransaction(TxDataUnion tx_data_union,
-                           string chain_id,
-                           AccountId from)
-    => (bool success, string tx_meta_id, string error_message);
+  AddUnapprovedTransaction(
+      TxDataUnion tx_data_union, string chain_id, AccountId from)
+      => (bool success, string tx_meta_id, string error_message);
 
   AddUnapprovedEvmTransaction(NewEvmTransactionParams params)
-    => (bool success, string tx_meta_id, string error_message);
+      => (bool success, string tx_meta_id, string error_message);
 
   AddUnapprovedBitcoinTransaction(NewBitcoinTransactionParams params)
-    => (bool success, string tx_meta_id, string error_message);
+      => (bool success, string tx_meta_id, string error_message);
 
   AddUnapprovedZCashTransaction(NewZCashTransactionParams params)
-    => (bool success, string tx_meta_id, string error_message);
+      => (bool success, string tx_meta_id, string error_message);
 
   AddUnapprovedCardanoTransaction(NewCardanoTransactionParams params)
-    => (bool success, string tx_meta_id, string error_message);
+      => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction
   ApproveTransaction(CoinType coin_type, string chain_id, string tx_meta_id)
-    => (bool status, ProviderErrorUnion error_union, string error_message);
+      => (bool status, ProviderErrorUnion error_union, string error_message);
 
   // Used to reject a transaction
   RejectTransaction(CoinType coin_type, string chain_id, string tx_meta_id)
-    => (bool status);
+      => (bool status);
 
   // Used to get transaction info
   GetTransactionInfo(CoinType coin_type, string tx_meta_id)
-    => (TransactionInfo? transaction_info);
+      => (TransactionInfo? transaction_info);
 
   // Obtains a list of all transactions from an address.
-  // This returns different data depending on which network is currently selected in JsonRpcService
-  GetAllTransactionInfo(CoinType coin_type, string? chain_id, AccountId? from)
-    => (array<TransactionInfo> transaction_infos);
+  // This returns different data depending on which network is currently
+  // selected in JsonRpcService
+  GetAllTransactionInfo(
+      CoinType coin_type, string? chain_id, AccountId? from)
+      => (array<TransactionInfo> transaction_infos);
 
   // Used to speed-up or cancel a transaction
-  SpeedupOrCancelTransaction(CoinType coin_type,
-                             string chain_id, string tx_meta_id, bool cancel)
-    => (bool success, string tx_meta_id, string error_message);
+  SpeedupOrCancelTransaction(
+      CoinType coin_type, string chain_id, string tx_meta_id, bool cancel)
+      => (bool success, string tx_meta_id, string error_message);
 
   // Used to retry a transaction.
   // tx_meta_id parameter is the ID of the transaction to be retried.
   // tx_meta_id in the callback result is the ID of the new transaction if
   // the retry is successful, otherwise it will be empty.
   RetryTransaction(CoinType coin_type, string chain_id, string tx_meta_id)
-    => (bool success, string tx_meta_id, string error_message);
+      => (bool success, string tx_meta_id, string error_message);
 
   // Adds an observer for TxService
   AddObserver(pending_remote<TxServiceObserver> observer);
@@ -2316,45 +2575,68 @@ interface TxService {
 interface EthTxManagerProxy {
   // Used for modifying transaction data
   SetGasPriceAndLimitForUnapprovedTransaction(
-    string chain_id, string tx_meta_id, string gas_price, string gas_limit)
-    => (bool success);
-  SetGasFeeAndLimitForUnapprovedTransaction(
-    string chain_id, string tx_meta_id, string max_priority_fee_per_gas,
-    string max_fee_per_gas, string gas_limit) => (bool success);
+      string chain_id, string tx_meta_id, string gas_price, string gas_limit)
+      => (bool success);
+
+  SetGasFeeAndLimitForUnapprovedTransaction(string chain_id,
+                                            string tx_meta_id,
+                                            string max_priority_fee_per_gas,
+                                            string max_fee_per_gas,
+                                            string gas_limit)
+      => (bool success);
+
   SetDataForUnapprovedTransaction(
-    string chain_id, string tx_meta_id, array<uint8> data) => (bool success);
+      string chain_id, string tx_meta_id, array<uint8> data)
+      => (bool success);
+
   SetNonceForUnapprovedTransaction(
-    string chain_id, string tx_meta_id, string nonce) => (bool success);
+      string chain_id, string tx_meta_id, string nonce) => (bool success);
 
   // Used for creating transaction data
-  MakeERC20TransferData(string to_address, string amount) => (bool success, array<uint8> data);
-  MakeERC20ApproveData(string spender_address, string amount) => (bool success, array<uint8> data);
-  MakeERC721TransferFromData(string from, string to, string token_id, string contract_address) => (bool success, array<uint8> data);
-  MakeERC1155TransferFromData(string from, string to, string token_id, string value, string contract_address) => (bool success, array<uint8> data);
-  MakeFilForwarderTransferData(string to_address_fil) => (bool success, array<uint8> data);
+  MakeERC20TransferData(string to_address, string amount)
+      => (bool success, array<uint8> data);
+
+  MakeERC20ApproveData(string spender_address, string amount)
+      => (bool success, array<uint8> data);
+
+  MakeERC721TransferFromData(
+      string from, string to, string token_id, string contract_address)
+      => (bool success, array<uint8> data);
+
+  MakeERC1155TransferFromData(string from,
+                              string to,
+                              string token_id,
+                              string value,
+                              string contract_address)
+      => (bool success, array<uint8> data);
+
+  MakeFilForwarderTransferData(string to_address_fil)
+      => (bool success, array<uint8> data);
 
   // Gas estimation API via eth_feeHistory API
   GetGasEstimation1559(string chain_id) => (GasEstimation1559? estimation);
 
-  GetEthTransactionMessageToSign(string tx_meta_id)
-    => (string? hex_message);
+  GetEthTransactionMessageToSign(string tx_meta_id) => (string? hex_message);
 
   GetNonceForHardwareTransaction(string tx_meta_id) => (string? nonce);
-  ProcessEthHardwareSignature(string tx_meta_id, EthereumSignatureVRS hw_signature)
-    => (bool status, ProviderError error, string error_message);
+
+  ProcessEthHardwareSignature(
+      string tx_meta_id, EthereumSignatureVRS hw_signature)
+      => (bool status, ProviderError error, string error_message);
 };
 
 interface SolanaTxManagerProxy {
   // Get transaction data for transferring SOL.
   MakeSystemProgramTransferTxData(string from, string to, uint64 lamports)
-      => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
+      => (SolanaTxData? tx_data,
+          SolanaProviderError error,
+          string error_message);
 
   GetSolTransactionMessageToSign(string tx_meta_id)
       => (array<uint8>? message);
 
   ProcessSolanaHardwareSignature(
-      string tx_meta_id,
-      SolanaSignature hw_signature)
+      string tx_meta_id, SolanaSignature hw_signature)
       => (bool status, ProviderErrorUnion error_union, string error_message);
 
   // Get transaction data for transferring SPL tokens from one associated token
@@ -2370,17 +2652,19 @@ interface SolanaTxManagerProxy {
   // to be rent exempt. `chain_id` is needed here because we need to check if
   // the receiving associated token account exists on the specific chain via
   // `GetSolanaAccountInfo` which requires chain_id.
-  MakeTokenProgramTransferTxData(
-      string chain_id,
-      string spl_token_mint_address,
-      string from_wallet_address,
-      string to_wallet_address,
-      uint64 amount,
-      uint8 decimals)
-      => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
+  MakeTokenProgramTransferTxData(string chain_id,
+                                 string spl_token_mint_address,
+                                 string from_wallet_address,
+                                 string to_wallet_address,
+                                 uint64 amount,
+                                 uint8 decimals) => (SolanaTxData? tx_data,
+                                                     SolanaProviderError error,
+                                                     string error_message);
 
   GetSolanaTxFeeEstimation(string chain_id, string tx_meta_id)
-    => (SolanaFeeEstimation fee, SolanaProviderError error, string error_message);
+      => (SolanaFeeEstimation fee,
+          SolanaProviderError error,
+          string error_message);
 
   // Get transaction data from transaction bytes encoded in base64 format.
   //
@@ -2390,23 +2674,26 @@ interface SolanaTxManagerProxy {
       string encoded_transaction,
       TransactionType tx_type,
       SolanaSendTransactionOptions? send_options)
-      => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
+      => (SolanaTxData? tx_data,
+          SolanaProviderError error,
+          string error_message);
 
-  MakeBubbleGumProgramTransferTxData(
-      string chain_id,
-      string token_address,
-      string from_wallet_address,
-      string to_wallet_address)
-      => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
+  MakeBubbleGumProgramTransferTxData(string chain_id,
+                                     string token_address,
+                                     string from_wallet_address,
+                                     string to_wallet_address)
+      => (SolanaTxData? tx_data,
+          SolanaProviderError error,
+          string error_message);
 };
 
 interface FilTxManagerProxy {
-  GetFilTransactionMessageToSign(string tx_meta_id)
-    => (string? json_message);
+  GetFilTransactionMessageToSign(string tx_meta_id) => (string? json_message);
 
   // Publishes signed transaction.
-  ProcessFilHardwareSignature(string tx_meta_id, FilecoinSignature hw_signature)
-    => (bool status, ProviderErrorUnion error_union, string error_message);
+  ProcessFilHardwareSignature(
+      string tx_meta_id, FilecoinSignature hw_signature)
+      => (bool status, ProviderErrorUnion error_union, string error_message);
 };
 
 struct BtcHardwareTransactionSignInputData {
@@ -2424,10 +2711,10 @@ struct BtcHardwareTransactionSignData {
 
 interface BtcTxManagerProxy {
   GetBtcHardwareTransactionSignData(string tx_meta_id)
-    => (BtcHardwareTransactionSignData data);
+      => (BtcHardwareTransactionSignData data);
 
-  ProcessBtcHardwareSignature(string tx_meta_id, BitcoinSignature hw_signature)
-    => (bool status);
+  ProcessBtcHardwareSignature(
+      string tx_meta_id, BitcoinSignature hw_signature) => (bool status);
 };
 
 interface BraveWalletServiceObserver {
@@ -2464,6 +2751,7 @@ interface BraveWalletServiceObserver {
 
 interface BraveWalletServiceTokenObserver {
   OnTokenAdded(BlockchainToken token);
+
   OnTokenRemoved(BlockchainToken token);
 };
 
@@ -2491,8 +2779,8 @@ struct EthSignTypedData {
   string address_param;
 
   string message_json;  // sanitized json string
-  string domain_json;   // sanitized json string
-  string types_json;    // sanitized json string
+  string domain_json;  // sanitized json string
+  string types_json;  // sanitized json string
   string primary_type;
 
   string? chain_id;  // chainId from domain
@@ -2555,7 +2843,7 @@ struct SignMessageRequest {
 enum SignMessageErrorType {
   kChainIdMismatched,
   kAccountMismatched,
-  kDomainMismatched
+  kDomainMismatched,
 };
 
 struct SignMessageError {
@@ -2578,7 +2866,7 @@ struct SignSolTransactionsRequest {
 };
 
 enum ExternalWalletType {
-  MetaMask = 1
+  MetaMask = 1,
 };
 
 struct AddSuggestTokenRequest {
@@ -2598,7 +2886,8 @@ interface BraveWalletService {
   GetAllUserAssets() => (array<BlockchainToken> tokens);
 
   // Obtains the user assets for the specified chain ID and coin type.
-  GetUserAssets(string chain_id, CoinType coin) => (array<BlockchainToken> tokens);
+  GetUserAssets(string chain_id, CoinType coin)
+      => (array<BlockchainToken> tokens);
 
   // Adds a user asset to the user asset list pref.
   // This asset could be a token from BlockchainRegistry or a custom token.
@@ -2625,19 +2914,22 @@ interface BraveWalletService {
   IsExternalWalletInitialized(ExternalWalletType type) => (bool initialized);
 
   // Import from the external wallet
-  ImportFromExternalWallet(ExternalWalletType type,
-                           string password,
-                           string newPassword)
-    => (bool success, string? errorMessage);
+  ImportFromExternalWallet(
+      ExternalWalletType type, string password, string newPassword)
+      => (bool success, string? errorMessage);
 
   // Obtains the default wallet setting
   GetDefaultEthereumWallet() => (DefaultWallet default_wallet);
+
   GetDefaultSolanaWallet() => (DefaultWallet default_wallet);
+
   GetDefaultCardanoWallet() => (DefaultWallet default_wallet);
 
   // Modifies the default wallet setting
   SetDefaultEthereumWallet(DefaultWallet default_wallet);
+
   SetDefaultSolanaWallet(DefaultWallet default_wallet);
+
   SetDefaultCardanoWallet(DefaultWallet default_wallet);
 
   // Obtains the default base currency
@@ -2655,12 +2947,16 @@ interface BraveWalletService {
   // This selects account which supports coin and chain_id pair. Nothing is
   // changed if such account is already selected. Returns null if no such
   // suitable account could be found.
-  EnsureSelectedAccountForChain(CoinType coin, string chain_id) => (AccountId? account_id);
+  EnsureSelectedAccountForChain(CoinType coin, string chain_id)
+      => (AccountId? account_id);
+
   // These will automatically fetch active origin for caller to set/get
   // chain_id properly according to the origin. Setting chain_id fails if
   // currently selected account does not support it.
   GetNetworkForSelectedAccountOnActiveOrigin() => (NetworkInfo? network);
-  SetNetworkForSelectedAccountOnActiveOrigin(string chain_id) => (bool success);
+
+  SetNetworkForSelectedAccountOnActiveOrigin(string chain_id)
+      => (bool success);
 
   // At this time only coin will be used to manage chain id setting,
   // so any account can be used.
@@ -2669,17 +2965,17 @@ interface BraveWalletService {
   // GetNetworkForSelectedAccountOnActiveOrigin and
   // SetNetworkForSelectedAccountOnActiveOrigin will be deprecated.
   GetNetworkForAccountOnActiveOrigin(AccountId account)
-    => (NetworkInfo? network);
+      => (NetworkInfo? network);
+
   SetNetworkForAccountOnActiveOrigin(AccountId account, string chain_id)
-    => (bool success);
+      => (bool success);
 
   // Filters accounts with permissions on active origin.
   HasPermission(array<AccountId> accounts)
-    => (bool success, array<AccountId> accounts_with_permission);
+      => (bool success, array<AccountId> accounts_with_permission);
 
   // Resets the permission of coin for the account on active origin.
-  ResetPermission(AccountId account_id)
-    => (bool success);
+  ResetPermission(AccountId account_id) => (bool success);
 
   // Check if permission is denied for the active origin.
   IsPermissionDenied(CoinType coin) => (bool denied);
@@ -2689,44 +2985,62 @@ interface BraveWalletService {
 
   // Gets all websites with a permission of coin
   GetWebSitesWithPermission(CoinType coin) => (array<string> web_sites);
+
   // Resets the permission of coin for the formed website
   ResetWebSitePermission(CoinType coin, string formed_website)
-    => (bool success);
+      => (bool success);
 
   // TODO(darkdh): Move these bridging methods into EthereumProviderService when
   // we split EthereumProviderImpl into EthereumProviderHost and
   // EthereumProviderService https://github.com/brave/brave-browser/issues/32313
 
-  // These are used for UI notifying native when the user approve/reject SignMessage[Hardware]Request
-  NotifySignMessageRequestProcessed(bool approved, int32 id, EthereumSignatureBytes? hw_signature, string? error);
+  // These are used for UI notifying native when the user approve/reject
+  // SignMessage[Hardware]Request
+  NotifySignMessageRequestProcessed(bool approved,
+                                    int32 id,
+                                    EthereumSignatureBytes? hw_signature,
+                                    string? error);
+
   // Obtains the pending sign message requests
   GetPendingSignMessageRequests() => (array<SignMessageRequest> requests);
 
   GetPendingSignMessageErrors() => (array<SignMessageError> errors);
+
   // Used for UI notifying native when the error has been displayed to users
   NotifySignMessageErrorProcessed(string error_id);
 
-  GetPendingSignSolTransactionsRequests() => (array<SignSolTransactionsRequest> requests);
+  GetPendingSignSolTransactionsRequests()
+      => (array<SignSolTransactionsRequest> requests);
+
   // Used for UI notifying native when the user approve/reject sign all
   // transactions request.
-  NotifySignSolTransactionsRequestProcessed(bool approved, int32 id,
-      array<SolanaSignature> hw_signatures, string? error);
+  NotifySignSolTransactionsRequestProcessed(
+      bool approved,
+      int32 id,
+      array<SolanaSignature> hw_signatures,
+      string? error);
 
   // Used for UI notifying native when the user approve/reject add suggest
   // token requests.
-  NotifyAddSuggestTokenRequestsProcessed(bool approved, array<string> contract_addresses);
+  NotifyAddSuggestTokenRequestsProcessed(
+      bool approved, array<string> contract_addresses);
+
   // Obtain the pending add suggest token requests for current chain, will be
   // cleared when user switch networks.
-  GetPendingAddSuggestTokenRequests() => (array<AddSuggestTokenRequest> requests);
+  GetPendingAddSuggestTokenRequests()
+      => (array<AddSuggestTokenRequest> requests);
 
   // This is used for UI notifying native when the user approves or
   // rejects getting the public key for an origin
   NotifyGetPublicKeyRequestProcessed(string request_id, bool approved);
-  GetPendingGetEncryptionPublicKeyRequests() => (array<GetEncryptionPublicKeyRequest> requests);
+
+  GetPendingGetEncryptionPublicKeyRequests()
+      => (array<GetEncryptionPublicKeyRequest> requests);
 
   // This is used for UI notifying native when the user approves or
   // rejects decrypting data for an origin
   NotifyDecryptRequestProcessed(string request_id, bool approved);
+
   GetPendingDecryptRequests() => (array<DecryptRequest> requests);
 
   IsBase58EncodedSolanaPubkey(string key) => (bool result);
@@ -2749,10 +3063,9 @@ interface BraveWalletService {
   GetBalanceScannerSupportedChains() => (array<string> chain_ids);
 
   // Fetches NFTs labeled as spam by SimpleHash
-  GetSimpleHashSpamNFTs(string wallet_address,
-                        array<ChainId> chain_ids,
-                        string? cursor)
-    => (array<BlockchainToken> tokens, string? cursor);
+  GetSimpleHashSpamNFTs(
+      string wallet_address, array<ChainId> chain_ids, string? cursor)
+      => (array<BlockchainToken> tokens, string? cursor);
 
   // Resets the keyring and the related preferences
   Reset();
@@ -2761,13 +3074,14 @@ interface BraveWalletService {
   DiscoverEthAllowances() => (array<AllowanceInfo> allowances);
 
   // Converts a set of ETH addresses to FIL delegated addresses
-  ConvertFEVMToFVMAddress(bool is_mainnet, array<string> fevm_addresses) => (map<string, string> result);
+  ConvertFEVMToFVMAddress(bool is_mainnet, array<string> fevm_addresses)
+      => (map<string, string> result);
 
   // Returns receiving address for an account. For ETC/SOL/FIL it's account
   // address. For BTC it checks if 'next receive address' is still not
   // transacted and tries next one if it is(prefs are changed).
   GenerateReceiveAddress(AccountId account_id)
-    => (string? address, string? error_message);
+      => (string? address, string? error_message);
 
   GetAnkrSupportedChainIds() => (array<string> chain_ids);
 
@@ -2783,7 +3097,9 @@ interface BraveWalletService {
 // For reporting wallet related P3A metrics.
 interface BraveWalletP3A {
   // Called when the wallet provider type is evaluated after page load.
-  ReportJSProvider(JSProviderType provider_type, CoinType coin_type, bool allow_provider_overwrite);
+  ReportJSProvider(JSProviderType provider_type,
+                   CoinType coin_type,
+                   bool allow_provider_overwrite);
 
   // Called when a Wallet onboarding action is performed.
   ReportOnboardingAction(OnboardingAction onboarding_action);
@@ -2801,13 +3117,13 @@ enum OnboardingAction {
   RecoverySetup = 2,
   Complete = 3,
   CompleteRecoverySkipped = 4,
-  StartRestore = 5
+  StartRestore = 5,
 };
 
 enum JSProviderType {
   None = 0,
   ThirdParty = 1,
-  Native = 2
+  Native = 2,
 };
 
 enum DefaultWallet {
@@ -2815,7 +3131,7 @@ enum DefaultWallet {
   None = 1,
   CryptoWalletsDeprecated = 2,
   BraveWalletPreferExtension = 3,
-  BraveWallet = 4
+  BraveWallet = 4,
 };
 
 struct EncryptionKeyRequest {
@@ -2892,12 +3208,19 @@ enum SolanaComputeBudgetInstruction {
 // Note: UI can add names they need here, and please update
 // solana_instruction_data_decoder.cc to use the same constant.
 const string kLamports = "lamports";
+
 const string kAmount = "amount";
+
 const string kDecimals = "decimals";
+
 const string kFromAccount = "from_account";
+
 const string kToAccount = "to_account";
+
 const string kSigners = "signers";
+
 const string kNonceAccount = "nonce_account";
+
 const string kNewAccount = "new_account";
 
 enum SolanaInstructionParamType {
@@ -3003,7 +3326,7 @@ struct SolanaTxData {
 enum RequestPermissionsError {
   kNone = 0,
   kRequestInProgress = 1,
-  kInternal = 2
+  kInternal = 2,
 };
 
 struct OnRampCurrency {
@@ -3025,7 +3348,7 @@ enum BlowfishSuggestedAction {
 
 enum BlowfishWarningSeverity {
   kCritical,
-  kWarning
+  kWarning,
 };
 
 // UI should defer to the supplied message if the kind isn't recognized
@@ -3069,7 +3392,7 @@ enum BlowfishWarningKind {
   kYakoaNftIpInfringement,
   kReliableSimulationNotPossible,
   kInteractingWithAccountWithoutActivity,
-  kUnknown = -1
+  kUnknown = -1,
 };
 
 enum BlowfishEVMRawInfoKind {
@@ -3082,7 +3405,7 @@ enum BlowfishEVMRawInfoKind {
   kErc1155Transfer,
   kErc1155ApprovalForAll,
   kAnyNftFromCollectionTransfer,
-  kUnknown = -1
+  kUnknown = -1,
 };
 
 enum BlowfishSolanaRawInfoKind {
@@ -3091,7 +3414,7 @@ enum BlowfishSolanaRawInfoKind {
   kSplApproval,
   kSolStakeAuthorityChange,
   kUserAccountOwnerChange,
-  kUnknown = -1
+  kUnknown = -1,
 };
 
 enum BlowfishMetaplexTokenStandardKind {
@@ -3099,31 +3422,31 @@ enum BlowfishMetaplexTokenStandardKind {
   kFungibleAsset,
   kFungible,
   kNonFungibleEdition,
-  kUnknown = -1
+  kUnknown = -1,
 };
 
 enum BlowfishDiffSign {
   kPlus,
-  kMinus
+  kMinus,
 };
 
 enum BlowfishEVMAddressKind {
   kAccount,
-  kUnknown = -1
+  kUnknown = -1,
 };
 
 enum BlowfishAssetPriceSource {
   kSimplehash,
   kDefillama,
   kCoingecko,
-  kUnknown = -1
+  kUnknown = -1,
 };
 
 enum BlowfishEVMErrorKind {
   kTransactionReverted,
   kTransactionError,
   kSimulationFailed,
-  kUnknownError
+  kUnknownError,
 };
 
 enum BlowfishSolanaErrorKind {
@@ -3191,13 +3514,13 @@ enum BlowfishSolanaErrorKind {
   kTransactionWouldExceedMaxBlockCostLimit,
   kTransactionWouldExceedMaxVoteCostLimit,
   kTransactionWouldExceedTotalAccountDataLimit,
-  kUnknownError = -1
+  kUnknownError = -1,
 };
 
 enum BlowfishSuggestedColor {
   kCredit,
   kDebit,
-  kInfo
+  kInfo,
 };
 
 enum BlowfishOptInStatus {
@@ -3365,7 +3688,7 @@ struct BlowfishSolanaError {
 
 struct BlowfishSolanaDiff {
   BlowfishDiffSign sign;
-  string digits; // uint64
+  string digits;  // uint64
 };
 
 struct BlowfishSolanaStakeAuthorities {
@@ -3412,7 +3735,7 @@ struct BlowfishSOLStakeAuthorityChangeData {
   BlowfishSolanaStakeAuthorities current_authorities;
   BlowfishSolanaStakeAuthorities future_authorities;
   BlowfishSolanaAsset asset;
-  string sol_staked; // uint64
+  string sol_staked;  // uint64
 };
 
 struct BlowfishSolanaUserAccountOwnerChangeData {
@@ -3465,7 +3788,9 @@ interface SimulationService {
   //
   // error_string contains internal errors generated in brave-core.
   ScanEVMTransaction(string tx_meta_id, string language)
-    => (EVMSimulationResponse? response, string error_response, string error_string);
+      => (EVMSimulationResponse? response,
+          string error_response,
+          string error_string);
 
   // Scans a Solana transaction to obtain simulation results.
   //
@@ -3478,7 +3803,9 @@ interface SimulationService {
   //
   // error_string contains internal errors generated in brave-core.
   ScanSolanaTransaction(string tx_meta_id, string language)
-    => (SolanaSimulationResponse? response, string error_response, string error_string);
+      => (SolanaSimulationResponse? response,
+          string error_response,
+          string error_string);
 
   // Scans Solana transactions from a dapp request to obtain simulation results.
   //
@@ -3491,5 +3818,7 @@ interface SimulationService {
   //
   // error_string contains internal errors generated in brave-core.
   ScanSignSolTransactionsRequest(int32 id, string language)
-    => (SolanaSimulationResponse? response, string error_response, string error_string);
+      => (SolanaSimulationResponse? response,
+          string error_response,
+          string error_string);
 };

@@ -6,11 +6,17 @@
 import("//build/config/android/rules.gni")
 
 android_library("java") {
-  sources = [ "java/src/org/chromium/chrome/browser/download/BraveDownloadMessageUiControllerImpl.java" ]
+  sources = [
+    "java/src/org/chromium/chrome/browser/download/BraveDownloadMessageUiControllerImpl.java",
+    "java/src/org/chromium/chrome/browser/download/home/search/BraveSearchBarCoordinator.java",
+  ]
 
   deps = [
     "//base:base_java",
+    "//build/android:build_java",
     "//chrome/browser/download/internal/android:java",
+    "//chrome/browser/download/internal/android:java_resources",
+    "//chrome/browser/flags:java",
     "//chrome/browser/preferences:java",
     "//components/offline_items_collection/core:core_java",
   ]

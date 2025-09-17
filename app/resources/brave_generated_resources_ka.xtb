@@ -8,10 +8,6 @@
 <translation id="6406506848690869874">სინქრონიზაცია</translation>
 <translation id="1544192797660353713">საფულე</translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="9092796350041759828">{0, plural,
-          =1 {სტუმრის სესიის დახურვა}
-          other {სტუმრის სესიის დახურვა}
-        }</translation>
 <translation id="1990886731975529483">Google Widevine-ის ინსტალაცია და გააქტიურება</translation>
 <translation id="4900351245762303149">Google Widevine-ის ინსტალაცია და გააქტიურება</translation>
 <translation id="8342816622062204340"><ph name="URL"/> სურს Google Widevine-ის დაცული კონტენტის დაკვრა, რისთვისაც საჭიროა Widevine-ის Android სისტემის მხარდაჭერა. ნებართვის მიცემით, თქვენ ეთანხმებით Google-ის გამოყენების წესებს.</translation>
@@ -69,6 +65,7 @@
 <translation id="9071187015476020102">დამატებითი პარამეტრების იმპორტისათვის, გთხოვთ, დახუროთ ბრაუზერი, საიდანაც იმპორტი ხდება.</translation>
 <translation id="5840822070878669614">Web მაღაზიის გახსნა</translation>
 <translation id="8076492880354921740">ტაბები</translation>
+<translation id="5327248766486351172">სახელი</translation>
 <translation id="3987546108749866209">ვერტიკალური ჩანართების გამოყენება</translation>
 <translation id="5977931179408079967">პოზიცია</translation>
 <translation id="4109670531935487117">ავტომატური შევსების შემოთავაზებების მისამართის ზოლში ჩვენება</translation>
@@ -86,7 +83,6 @@
 <translation id="7740996059027112821">სტანდარტული</translation>
 <translation id="4516904298421534459">სასაქონლო სიების გაფილტვრა</translation>
 <translation id="5524306331330789642">ახალი სკრიპტლეტის დამატება</translation>
-<translation id="5327248766486351172">სახელი</translation>
 <translation id="8168435359814927499">კონტენტი</translation>
 <translation id="5317780077021120954">შენახვა</translation>
 <translation id="8823559166155093873">ქუქების დაბლოკვა</translation>
@@ -107,9 +103,9 @@
 <translation id="2653659639078652383">გაგზავნა</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="5781842473834867765">მიმოწერების ისტორიის შენახვა</translation>
-<translation id="6106701981952170121">Leo AI მიმოწერების მონაცემების წაშლა</translation>
 <translation id="614530507403667291">ნაგულისხმევი მოდელი ახალი საუბრებისთვის</translation>
 <translation id="1907126221851170941">მოდელის დამატება</translation>
+<translation id="6532106788206463496">ცვლილებების შენახვა</translation>
 <translation id="5985516785067818307">კითხვარის პანელი</translation>
 <translation id="8347743943525229984">Brave-ის გამოკითხვის დაშვება</translation>
 <translation id="3204080538332044581">ეს პარამეტრი Brave-ს საშუალებას აძლევს, ახალ ტაბზე პირადი გამოკითხვის ბმულები გვაჩვენოს. გამოკითხვები გვეხმარება მომხმარებელთა საჭიროებების უკეთ გაცნობაში, ფუნქციონალის გაუმჯობესებასა და ბრაუზერზე დაფუძნებული სარეკლამო კამპანიების ეფექტიანობის შეფასებაში. <ph name="BEGIN_LINK"/>გაიგეთ მეტი<ph name="END_LINK"/>;</translation>

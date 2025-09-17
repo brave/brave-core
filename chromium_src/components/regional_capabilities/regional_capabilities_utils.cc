@@ -211,9 +211,10 @@ std::vector<const PrepopulatedEngine*> GetBravePrepopulatedEnginesForCountryID(
       brave_engine_ids = kBraveEnginesDefault;
 
   // Check for a per-country override of this list
-  const auto it_country = kDefaultEnginesByCountryIdMap.find(country_id);
-  if (it_country != kDefaultEnginesByCountryIdMap.end()) {
-    brave_engine_ids = it_country->second;
+  const auto* country_engines =
+      base::FindOrNull(kDefaultEnginesByCountryIdMap, country_id);
+  if (country_engines) {
+    brave_engine_ids = *country_engines;
   }
   DCHECK_GT(brave_engine_ids.size(), 0ul);
 
@@ -696,73 +697,36 @@ TemplateURLPrepopulateData::BravePrepopulatedEngineID GetDefaultSearchEngine(
   });
   // LINT.ThenChange(//brave/components/search_engines/brave_prepopulated_engines.h:kBraveCurrentDataVersion)
 
+  const TemplateURLPrepopulateData::BravePrepopulatedEngineID* content;
+
   if (version > 30) {
-    const auto it = kContentV31.find(country_id);
-    if (it == kContentV31.end()) {
-      return default_v6;
-    }
-    return it->second;
+    content = base::FindOrNull(kContentV31, country_id);
   } else if (version > 29) {
-    const auto it = kContentV30.find(country_id);
-    if (it == kContentV30.end()) {
-      return default_v6;
-    }
-    return it->second;
+    content = base::FindOrNull(kContentV30, country_id);
   } else if (version > 25) {
-    const auto it = kContentV26.find(country_id);
-    if (it == kContentV26.end()) {
-      return default_v6;
-    }
-    return it->second;
+    content = base::FindOrNull(kContentV26, country_id);
   } else if (version > 24) {
-    const auto it = kContentV25.find(country_id);
-    if (it == kContentV25.end()) {
-      return default_v6;
-    }
-    return it->second;
+    content = base::FindOrNull(kContentV25, country_id);
   } else if (version > 21) {
-    const auto it = kContentV22.find(country_id);
-    if (it == kContentV22.end()) {
-      return default_v6;
-    }
-    return it->second;
+    content = base::FindOrNull(kContentV22, country_id);
   } else if (version > 20) {
-    const auto it = kContentV21.find(country_id);
-    if (it == kContentV21.end()) {
-      return default_v6;
-    }
-    return it->second;
+    content = base::FindOrNull(kContentV21, country_id);
   } else if (version > 19) {
-    const auto it = kContentV20.find(country_id);
-    if (it == kContentV20.end()) {
-      return default_v6;
-    }
-    return it->second;
+    content = base::FindOrNull(kContentV20, country_id);
   } else if (version > 16) {
-    const auto it = kContentV17.find(country_id);
-    if (it == kContentV17.end()) {
-      return default_v6;
-    }
-    return it->second;
+    content = base::FindOrNull(kContentV17, country_id);
   } else if (version > 15) {
-    const auto it = kContentV16.find(country_id);
-    if (it == kContentV16.end()) {
-      return default_v6;
-    }
-    return it->second;
+    content = base::FindOrNull(kContentV16, country_id);
   } else if (version > 7) {
-    const auto it = kContentV8.find(country_id);
-    if (it == kContentV8.end()) {
-      return default_v6;
-    }
-    return it->second;
+    content = base::FindOrNull(kContentV8, country_id);
   } else {
-    const auto it = kContentV6.find(country_id);
-    if (it == kContentV6.end()) {
-      return default_v6;
-    }
-    return it->second;
+    content = base::FindOrNull(kContentV6, country_id);
   }
+
+  if (!content) {
+    return default_v6;
+  }
+  return *content;
 }
 
 }  // namespace

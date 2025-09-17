@@ -5,6 +5,8 @@
 
 module email_aliases.mojom;
 
+import "mojo/public/mojom/base/empty.mojom";
+
 const uint8 kMaxAliases = 5;
 
 enum AuthenticationStatus {
@@ -31,12 +33,6 @@ struct Alias {
   array<string>? domains;
 };
 
-// Return value for EmailAliasesService::GenerateAlias()
-union GenerateAliasResult {
-  string alias_email;
-  string error_message;
-};
-
 // Observer for change in email aliases state
 interface EmailAliasesServiceObserver {
 
@@ -50,22 +46,26 @@ interface EmailAliasesServiceObserver {
 };
 
 // Interface for managing email aliases
+// TODO(https://github.com/brave/brave-browser/issues/48515):
+// Look into using `request<>` for function calls in this interface.
 interface EmailAliasesService {
 
   // Initiate authentication using the user's auth email.
-  RequestAuthentication(string auth_email) => (string? error_message);
+  RequestAuthentication(string auth_email) =>
+    result<mojo_base.mojom.Empty, string>;
 
   // Cancel pending authentication or log out if already authenticated.
   CancelAuthenticationOrLogout() => ();
 
   // Generate a proposed email alias.
-  GenerateAlias() => (GenerateAliasResult result);
+  GenerateAlias() => result<string, string>;
 
   // Create or Update an existing email alias.
-  UpdateAlias(string alias_email, string? note) => (string? error_message);
+  UpdateAlias(string alias_email, string? note) =>
+    result<mojo_base.mojom.Empty, string>;
 
   // Delete an email alias.
-  DeleteAlias(string alias_email) => (string? error_message);
+  DeleteAlias(string alias_email) => result<mojo_base.mojom.Empty, string>;
 
   // Add an email aliases observer.
   AddObserver(pending_remote<EmailAliasesServiceObserver> observer);

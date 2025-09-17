@@ -5,11 +5,17 @@
 
 import * as React from 'react'
 
+// Images
+import BraveIcon from '../../../assets/svg-icons/brave-icon.svg'
+
 // Types
 import { BraveWallet } from '../../../constants/types'
 
 // Utils
-import { isComponentInStorybook } from '../../../utils/string-utils'
+import {
+  getIsBraveWalletOrigin,
+  isComponentInStorybook,
+} from '../../../utils/string-utils'
 
 // Hooks
 import { useIsDAppVerified } from '../../../common/hooks/use_is_dapp_verified'
@@ -31,15 +37,19 @@ const isStorybook = isComponentInStorybook()
 
 interface Props {
   origin: BraveWallet.OriginInfo
+  noBackground?: boolean
+  provider?: string
 }
 
 export const OriginInfoCard = (props: Props) => {
-  const { origin } = props
+  const { origin, noBackground = false, provider } = props
 
   // Hooks
   const { isDAppVerified, dapp } = useIsDAppVerified(origin)
 
   // Computed
+  const isBraveWallet = getIsBraveWalletOrigin(origin)
+
   const dappIcon = dapp
     ? isStorybook
       ? dapp.logo
@@ -56,9 +66,13 @@ export const OriginInfoCard = (props: Props) => {
       padding='10px 16px'
       gap='16px'
       justifyContent='flex-start'
+      noBackground={noBackground}
     >
-      <FavIcon src={iconSrc} />
+      <FavIcon src={isBraveWallet ? BraveIcon : iconSrc} />
       <Column alignItems='flex-start'>
+        {isBraveWallet && provider && (
+          <OriginName textColor='primary'>{provider}</OriginName>
+        )}
         <OriginName textColor='primary'>
           {dapp ? dapp.name : origin.eTldPlusOne}
         </OriginName>
@@ -72,7 +86,7 @@ export const OriginInfoCard = (props: Props) => {
               eTldPlusOne={origin.eTldPlusOne}
             />
           </OriginUrl>
-          {isDAppVerified && <VerifiedLabel />}
+          {(isDAppVerified || isBraveWallet) && <VerifiedLabel />}
         </Column>
       </Column>
     </StyledWrapper>

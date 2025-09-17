@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_WALLET_WALLET_BUBBLE_MANAGER_DELEGATE_H_
 #define BRAVE_BROWSER_UI_BRAVE_WALLET_WALLET_BUBBLE_MANAGER_DELEGATE_H_
 
+#include <stdint.h>
+
 #include <memory>
 #include <vector>
 

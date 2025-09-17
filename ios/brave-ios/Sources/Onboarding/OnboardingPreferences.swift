@@ -15,18 +15,6 @@ extension Preferences {
       default: OnboardingState.undetermined.rawValue
     )
 
-    /// The time until the next on-boarding shows
-    public static let basicOnboardingDefaultBrowserSelected = Option<Bool>(
-      key: "general.basic-onboarding-default-browser-selected",
-      default: false
-    )
-
-    /// The progress the user has made with onboarding
-    public static let basicOnboardingProgress = Option<Int>(
-      key: "general.basic-onboarding-progress",
-      default: OnboardingProgress.none.rawValue
-    )
-
     /// The bool detemining if p3a infomartion is shown in onboarding to a user so they will not see it again as pop-over
     public static let p3aOnboardingShown = Option<Bool>(
       key: "onboarding.basic-onboarding-default-browser-selected",
@@ -84,12 +72,6 @@ extension Preferences {
     /// Whether the omnibox callout is shown.
     public static let omniboxCalloutCompleted = Option<Bool>(
       key: "fullScreenCallout.full-screen-omnibox-callout-completed",
-      default: false
-    )
-
-    /// Whether the vpn promotion callout is shown.
-    public static let vpnUpdateBillingCalloutCompleted = Option<Bool>(
-      key: "fullScreenCallout.full-screen-vpn-billing-callout-completed",
       default: false
     )
   }

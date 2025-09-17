@@ -118,7 +118,9 @@ def PrepareBinary(binary_dir: str, artifacts_dir: str, config: RunnerConfig,
                                  config.version)
 
   trials = config.field_trials or config.browser_type.GetDefaultFieldTrials()
-  field_trial_config = MakeFieldTrials(trials, artifacts_dir, config.version,
+  variations_channel = config.browser_type.GetVariationsChannel()
+  field_trial_config = MakeFieldTrials(trials, variations_channel,
+                                       artifacts_dir, config.version,
                                        common_options.variations_repo_dir)
   MaybeInjectSeedToLocalState(field_trial_config, profile_dir)
 

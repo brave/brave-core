@@ -175,8 +175,8 @@
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_TOGGLE" desc="Name of the enable current tab access setting.">
     Page content sharing
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_TOGGLE_SUBLABEL" desc="Sublabel describing that this setting will enable sharing the current tab's content with Gemini">
-    Share page content with Gemini to get more relevant answers.
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_TOGGLE_SUBLABEL" translateable="false" desc="Sublabel describing that this setting will enable sharing the current tab's content with Gemini">
+    Shares the current tab with Gemini, even as you switch tabs
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_TOGGLE_SUBLABEL_DATA_PROTECTED" translateable="false" desc="Sublabel describing that this setting will enable sharing the current tab's content with Gemini, but the user's data is not used to improve the model">
     Share page content with Gemini to get more relevant answers. Your data is not used to improve generative AI models.
@@ -196,14 +196,11 @@
   <message name="IDS_SETTINGS_GLIC_EXTENSIONS_BUTTON_SUBLABEL" translateable="false" desc="Sublabel describing that this link allows the user to manage Gemini connected apps.">
     Manage which apps Gemini connects to
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_WHEN_ON_1" desc="First point in the 'when on' column of the 'tab access' expando">
-    You’ll get more relevant answers related to the page content you’re sharing
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_WHEN_ON_1" translateable="false" desc="First point in the 'when on' column of the 'tab access' expando">
+    You can easily ask Gemini questions about your current tab as you browse
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_WHEN_ON_2" desc="Second point in the 'when on' column of the 'tab access' expando">
-    You can use voice or text chat to ask Gemini a question about the page content you’re sharing
-  </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_CONSIDER_1" desc="First point in 'things to consider' column of the 'tab access' expando">
-    When you share a page with Gemini, the page’s full content and URL are sent to Brave.
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_CONSIDER_1" translateable="false" desc="First point in 'things to consider' column of the 'tab access' expando">
+    When you choose to share the current tab with Gemini, the tab’s full content and URL are sent to Brave.
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_CONSIDER_1_LEARN_MORE_LABEL" desc="Label for the 'Learn more' link in the 'things to consider' section.">
     Learn more
@@ -248,6 +245,7 @@
   </message>
 
   <!-- Multi-Page -->
+  <if expr="not use_titlecase">
   <message name="IDS_TAB_CXMENU_GLIC_START_SHARE" desc="The label of the tab context menu submenu for starting sharing the given tab or tabs with Gemini. [ICU syntax]" translateable="false">
     {NUM_TABS, plural,
       =1 {Share tab with Gemini}
@@ -263,6 +261,24 @@
       =1 {Sharing selected tab would exceed the sharing limit}
     other {Sharing # tabs would exceed the sharing limit}}
   </message>
+  </if>
+  <if expr="use_titlecase">
+  <message name="IDS_TAB_CXMENU_GLIC_START_SHARE" desc="The label of the tab context menu submenu for starting sharing the given tab or tabs with Gemini. [ICU syntax]" translateable="false">
+    {NUM_TABS, plural,
+      =1 {Share Tab with Gemini}
+    other {Share # Tabs with Gemini}}
+  </message>
+  <message name="IDS_TAB_CXMENU_GLIC_STOP_SHARE" desc="The label of the tab context menu submenu for stopping sharing the given tab or tabs with Gemini. [ICU syntax]" translateable="false">
+    {NUM_TABS, plural,
+      =1 {Stop Sharing Tab with Gemini}
+    other {Stop Sharing # Tabs with Gemini}}
+  </message>
+  <message name="IDS_TAB_CXMENU_GLIC_SHARE_LIMIT" desc="The label of the tab context menu submenu when the number of tabs is beyond the supported limit. [ICU syntax]" translateable="false">
+    {NUM_TABS, plural,
+      =1 {Sharing Selected Tab Would Exceed the Sharing Limit}
+    other {Sharing # Tabs Would Exceed the Sharing Limit}}
+  </message>
+  </if>
 
   <!-- Glic button context menu. -->
   <message name="IDS_GLIC_BUTTON_CXMENU_UNPIN" desc="Name of the Glic button context menu item for unpinning Glic.">

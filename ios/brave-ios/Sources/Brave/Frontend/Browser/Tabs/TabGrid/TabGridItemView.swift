@@ -15,6 +15,7 @@ class TabGridItemViewModel: TabObserver {
   private(set) var title: String?
   private(set) var snapshot: UIImage?
   private(set) var isVisible: Bool = false
+  var isSelectedInEditMode: Bool = false
   var isPrivateBrowsing: Bool = false
   var swipeToDeleteGestureState: GestureState?
 
@@ -56,6 +57,7 @@ class TabGridItemViewModel: TabObserver {
     snapshot = nil
     isVisible = false
     swipeToDeleteGestureState = nil
+    isSelectedInEditMode = false
   }
 
   func tabDidChangeTitle(_ tab: some TabState) {
@@ -78,6 +80,7 @@ class TabGridItemViewModel: TabObserver {
 }
 
 struct TabGridItemView: View {
+  @Environment(\.editMode) private var editMode
   enum Action {
     case closedTab
   }
@@ -110,11 +113,19 @@ struct TabGridItemView: View {
             .lineLimit(1)
         }
         Spacer()
-        Button {
-          actionHandler(.closedTab)
-        } label: {
-          Label(Strings.TabGrid.closeTabAccessibilityLabel, braveSystemImage: "leo.close")
-            .labelStyle(.iconOnly)
+        Group {
+          if editMode?.wrappedValue == .active {
+            let isSelected = viewModel.isSelectedInEditMode
+            Image(braveSystemName: isSelected ? "leo.checkbox.checked" : "leo.checkbox.unchecked")
+              .foregroundStyle(Color(braveSystemName: isSelected ? .iconInteractive : .iconDefault))
+          } else {
+            Button {
+              actionHandler(.closedTab)
+            } label: {
+              Label(Strings.TabGrid.closeTab, braveSystemImage: "leo.close")
+                .labelStyle(.iconOnly)
+            }
+          }
         }
         .imageScale(.large)
         .foregroundStyle(Color(braveSystemName: .iconDefault))
@@ -142,9 +153,16 @@ struct TabGridItemView: View {
     }
     .padding(4)
     .overlay {
-      if viewModel.isVisible {
-        ContainerRelativeShape()
-          .strokeBorder(Color(uiColor: browserColors.tabSwitcherSelectedCellBorder), lineWidth: 1.5)
+      let borderShape = ContainerRelativeShape().strokeBorder(
+        Color(uiColor: browserColors.tabSwitcherSelectedCellBorder),
+        lineWidth: 1.5
+      )
+      if editMode?.wrappedValue == .active {
+        if viewModel.isSelectedInEditMode {
+          borderShape
+        }
+      } else if viewModel.isVisible {
+        borderShape
       }
     }
     .animation(.default) { content in

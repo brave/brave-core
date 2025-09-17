@@ -50,8 +50,7 @@ class BraveAdsSubdivisionTargetingTest : public test::TestBase {
 TEST_F(BraveAdsSubdivisionTargetingTest,
        AllowAndFetchWhenOptingInToNotificationAds) {
   // Arrange
-  test::OptOutOfBraveNewsAds();
-  test::OptOutOfNotificationAds();
+  test::OptOutOfAllAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -68,11 +67,9 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
                          prefs::kSubdivisionTargetingAutoDetectedSubdivision));
 }
 
-TEST_F(BraveAdsSubdivisionTargetingTest,
-       AllowAndFetchWhenOptingInToBraveNewsAds) {
+TEST_F(BraveAdsSubdivisionTargetingTest, DoNotFetchWhenOptingInToBraveNewsAds) {
   // Arrange
-  test::OptOutOfBraveNewsAds();
-  test::OptOutOfNotificationAds();
+  test::OptOutOfAllAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -83,17 +80,13 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
 
   // Assert
-  EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
-  EXPECT_FALSE(subdivision_targeting_->IsDisabled());
-  EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
-  EXPECT_EQ("US-CA", GetProfileStringPref(
-                         prefs::kSubdivisionTargetingAutoDetectedSubdivision));
+  EXPECT_FALSE(SubdivisionTargeting::ShouldAllow());
 }
 
 TEST_F(BraveAdsSubdivisionTargetingTest,
        DoNotFetchWhenOptingOutOfNotificationAds) {
   // Arrange
-  test::OptOutOfBraveNewsAds();
+  test::OptOutOfAllAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
@@ -107,7 +100,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        DoNotFetchWhenOptingOutOfBraveNewsAds) {
   // Arrange
-  test::OptOutOfNotificationAds();
+  test::OptOutOfAllAds();
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 

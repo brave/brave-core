@@ -738,8 +738,5 @@ void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
                      {kColorTabBackgroundInactiveFrameActive}, 0.75 * 0xff);
   mixer[kColorTabDividerFrameInactive] = {kColorTabDividerFrameActive};
 
-  if (key.color_mode == ui::ColorProviderKey::ColorMode::kDark) {
-    mixer[kColorTabBackgroundInactiveHoverFrameActive] = {
-        nala::kColorDesktopbrowserTabbarHoverTabHorizontal};
-  }
+  // Other tab colors are handled in brave_tab_color_mixer.cc
 }

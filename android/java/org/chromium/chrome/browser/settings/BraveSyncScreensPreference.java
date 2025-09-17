@@ -9,8 +9,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -76,6 +74,7 @@ import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.sync.SyncService;
+import org.chromium.ui.base.BraveClipboardHelper;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.io.IOException;
@@ -611,24 +610,20 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             setJoinExistingChainLayout();
         } else if (mPasteButton == v) {
             if (null != mCodeWords) {
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(
-                        Context.CLIPBOARD_SERVICE);
-                ClipData clipData = clipboard.getPrimaryClip();
-                if (null != clipData && clipData.getItemCount() > 0) {
-                    mCodeWords.setText(clipData.getItemAt(0).coerceToText(
-                            getActivity().getApplicationContext()));
+                String codeWordsAtClipboard =
+                        BraveClipboardHelper.getTextFromClipboard(
+                                getActivity().getApplicationContext());
+                if (codeWordsAtClipboard != null) {
+                    mCodeWords.setText(codeWordsAtClipboard);
                 }
             }
         } else if (mCopyButton == v) {
             if (null != mBraveSyncAddDeviceCodeWords) {
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(
-                        Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("", mBraveSyncAddDeviceCodeWords.getText());
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(getActivity().getApplicationContext(),
-                             getResources().getString(R.string.brave_sync_copied_text),
-                             Toast.LENGTH_LONG)
-                        .show();
+                BraveClipboardHelper.saveTextToClipboard(
+                        getActivity().getApplicationContext(),
+                        mBraveSyncAddDeviceCodeWords.getText().toString(),
+                        R.string.brave_sync_copied_text,
+                        true /* treatAsPassword */);
             }
         } else if (mConfirmCodeWordsButton == v) {
             String words = mCodeWords.getText().toString();

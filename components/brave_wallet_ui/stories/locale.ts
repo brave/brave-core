@@ -645,6 +645,10 @@ provideStrings({
   braveWalletExchangeNamePlusSteps: '$1 + $2 $3',
   braveWalletExchangeViaProvider: '$1 via $2',
   braveWalletSortBy: 'Sort by',
+  braveWalletConfirmSwap: 'Confirm swap',
+  braveWalletConfirmBridge: 'Confirm bridge',
+  braveWalletConfirmSend: 'Confirm send',
+  braveWalletSpend: 'Spend',
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',
@@ -790,6 +794,10 @@ provideStrings({
   braveWalletAllowSpendRejectButton: 'Reject',
   braveWalletAllowSpendConfirmButton: 'Confirm',
   braveWalletAllowSpendUnlimitedWarningTitle: 'Unlimited approval requested',
+  braveWalletSpendLimit: 'Spend limit',
+  braveWalletApprovalTarget: 'Approval target',
+  braveWalletCurrentApprovalLimit: 'Current approval limit',
+  braveWalletProposedApprovalLimit: 'Proposed approval limit',
 
   // Allow Add or Change Network Panel
   braveWalletAllowAddNetworkTitle: 'Allow this site to add a network?',
@@ -816,7 +824,7 @@ provideStrings({
   braveWalletConfirmTransactionTransactionFee: 'Transaction fee',
   braveWalletConfirmTransactionBid: 'Bid',
   braveWalletConfirmTransactionAmountGas: 'Amount + gas',
-  braveWalletConfirmTransactionAmountFee: 'Amount + fee',
+  braveWalletConfirmTransactionAmountFee: 'Amount + Network fee',
   braveWalletConfirmTransactionNoData: 'No data.',
   braveWalletConfirmTransactionNext: 'next',
   braveWalletConfirmTransactionFirst: 'first',
@@ -1156,6 +1164,12 @@ provideStrings({
 
   // Transaction Details
   braveWalletOn: 'On',
+
+  // Transaction Queue Selector
+  braveWalletPendingTransactionsNumber: 'Pending ($1)',
+  braveWalletNextTransaction: 'Next transaction',
+  braveWalletPreviousTransaction: 'Previous transaction',
+  braveWalletRejectTransactions: 'Reject $1 transactions',
 
   // NFT Details Page
   braveWalletNFTDetailBlockchain: 'Blockchain',

@@ -13,6 +13,9 @@ source_set("brave_account") {
   deps = [
     "//base",
     "//brave/components/brave_account:features",
+    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/brave_account/endpoints",
+    "//brave/components/brave_account/mojom",
     "//brave/components/brave_account/resources",
     "//brave/components/constants",
     "//brave/components/password_strength_meter",

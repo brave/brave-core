@@ -19,6 +19,15 @@ const runPerfTests = (
     perfConfig,
   ]
 
+  if (perfConfig === 'smoke') {
+    // Launch python unit tests before running perf tests.
+    const perfDir = path.join(config.braveCoreDir, 'tools', 'perf')
+    util.run('vpython3', ['-m', 'unittest', 'discover', '-p', '*_test.py'], {
+      ...config.defaultOptions,
+      cwd: perfDir,
+    })
+  }
+
   if (['Static', 'Release', 'Component'].includes(targetBuildConfig)) {
     config.buildConfig = targetBuildConfig
     config.update(options)
@@ -27,13 +36,20 @@ const runPerfTests = (
     if (process.platform === 'win32') {
       binaryPath += '.exe'
     } else if (process.platform === 'darwin') {
-      binaryPath = fs
-        .readFileSync(binaryPath + '_helper')
-        .toString()
-        .trim()
+      const helperPath = binaryPath + '_helper'
+      if (!fs.existsSync(helperPath)) {
+        console.log(`${helperPath} not found, run build first`)
+        process.exit(1)
+      }
+
+      binaryPath = fs.readFileSync(helperPath).toString().trim()
 
       // Convert "\ " to " ":
       binaryPath = binaryPath.replace(/\\ /g, ' ')
+      if (!fs.existsSync(binaryPath)) {
+        console.log(`${binaryPath} not found, run build first`)
+        process.exit(1)
+      }
     }
     const braveCoreCommit = util.runGit(
       config.braveCoreDir,
@@ -50,15 +66,7 @@ const runPerfTests = (
   args.push(...passthroughArgs)
   console.log(args)
 
-  let cmdOptions = {
-    ...config.defaultOptions,
-    shell: false,
-  }
-  if (process.platform === 'win32') {
-    util.run('cmd.exe', ['/c', 'vpython3.bat', ...args], cmdOptions)
-  } else {
-    util.run('vpython3', args, cmdOptions)
-  }
+  util.run('vpython3', args, config.defaultOptions)
 }
 
 module.exports = { runPerfTests }

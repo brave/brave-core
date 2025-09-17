@@ -76,7 +76,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -135,8 +135,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
             web_contents,
             base::BindRepeating(
                 [](content::WebContents* web_contents, bool is_pdf,
-                   ai_chat::PrintPreviewExtractor::Extractor::CallbackVariant&&
-                       variant)
+                   ai_chat::PrintPreviewExtractor::Extractor::ImageCallback&&
+                       callback)
                     -> std::unique_ptr<
                         ai_chat::PrintPreviewExtractor::Extractor> {
                   return std::make_unique<
@@ -144,7 +144,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
                       web_contents,
                       Profile::FromBrowserContext(
                           web_contents->GetBrowserContext()),
-                      is_pdf, std::move(variant),
+                      is_pdf, std::move(callback),
                       base::BindRepeating(
                           []() -> base::IDMap<
                                    printing::mojom::PrintPreviewUI*>& {

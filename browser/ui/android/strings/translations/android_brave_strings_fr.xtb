@@ -421,8 +421,8 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="8748471354357836070">En savoir plus / Me désinscrire</translation>
 <translation id="3171669670217312786">Images en arrière-plan</translation>
 <translation id="8522669544471808198">Afficher les images d'arrière-plan</translation>
-<translation id="3870475560794762985">Afficher les images sponsorisées</translation>
-<translation id="6937724381960478525">En savoir plus sur les images sponsorisées</translation>
+<translation id="6258554626602400736">Afficher les annonces sur la page de nouvel onglet</translation>
+<translation id="9001530744369687550">En savoir plus sur les annonces sur la page de nouvel onglet</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Afficher mes sites</translation>
 <translation id="7275773481201277457">Afficher les statistiques de Brave</translation>
@@ -500,6 +500,8 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
 <translation id="5299848999918506028">Merci !</translation>
 <translation id="76550953340008122">Merci d'avoir fait savoir aux développeurs de Brave qu'il y a quelque chose qui ne marche pas sur ce site. Nous ferons de notre mieux pour le réparer !</translation>
+<translation id="3037432377946455872">Quel est le problème principal ?</translation>
+<translation id="8731661215617360873">Sélectionnez une option</translation>
 <translation id="650318023204990401">Paramètres avancés</translation>
 <translation id="7205939464631857223">Effacer tous les éléments bloqués</translation>
 <translation id="5370478469168390143">Sauvegarder les données en ligne</translation>
@@ -796,6 +798,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="1426320910664514906">Limite de Gas</translation>
 <translation id="6389441740143786465">Désactiver le centre de partage</translation>
 <translation id="9065203028668620118">Édition</translation>
+<translation id="473775607612524610">Mettre à jour</translation>
 <translation id="479795390141144417">Échec de la mise à jour du compte.</translation>
 <translation id="8084782383392198011">Le nom du compte ne peut pas être vide.</translation>
 <translation id="5045550434625856497">Mot de passe incorrect</translation>
@@ -1223,4 +1226,41 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="2735247450315842119">Autoriser les captures d'écran dans les onglets de navigation privée</translation>
 <translation id="8420414929552321089">Si cette option est activée, les onglets de navigation privée seront visibles lorsque plusieurs applications sont ouvertes.</translation>
 <translation id="7956713633345437162">Favoris sur mobile</translation>
+<translation id="1943432128510653496">Enregistrer les mots de passe</translation>
+<translation id="2100273922101894616">Connexion automatique</translation>
+<translation id="363596933471559332">Connexion automatique aux sites Web à l'aide des identifiants enregistrés. Lorsque cette fonctionnalité est désactivée, vous devez valider vos identifiants avant chaque connexion à un site Web.</translation>
+<translation id="8562452229998620586">Les mots de passe enregistrés s'affichent ici.</translation>
+<translation id="1303339473099049190">Ce mot de passe est introuvable. Vérifiez l'orthographe, puis réessayez.</translation>
+<translation id="2259659629660284697">Exporter les mots de passe…</translation>
+<translation id="133012818630824069">Exporter les mots de passe enregistrés dans Brave</translation>
+<translation id="2321086116217818302">Préparation des mots de passe…</translation>
+<translation id="5139940364318403933">Découvrez comment utiliser Google Drive</translation>
+<translation id="729975465115245577">Aucune application n'est installée sur votre appareil pour stocker le fichier de mots de passe.</translation>
+<translation id="1129510026454351943">Détails : <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Déverrouillez pour exporter vos mots de passe.</translation>
+<translation id="5245792669563792664">mots de passe</translation>
+<translation id="10614374240317010">Jamais enregistrés</translation>
+<translation id="1571304935088121812">Copier le nom d'utilisateur</translation>
+<translation id="5005498671520578047">Copier le mot de passe</translation>
+<translation id="2435457462613246316">Afficher le mot de passe</translation>
+<translation id="1513858653616922153">Supprimer le mot de passe</translation>
+<translation id="543338862236136125">Modifier le mot de passe</translation>
+<translation id="4565377596337484307">Masquer le mot de passe</translation>
+<translation id="8523928698583292556">Supprimer le mot de passe enregistré</translation>
+<translation id="5433691172869980887">Nom d'utilisateur copié</translation>
+<translation id="2625189173221582860">Mot de passe copié</translation>
+<translation id="8084114998886531721">Mot de passe enregistré</translation>
+<translation id="6590680911007613645">Assurez-vous que le mot de passe que vous enregistrez correspond bien à celui que vous utilisez pour accéder à <ph name="SITE"/>.</translation>
+<translation id="1492417797159476138">Vous avez déjà enregistré ce nom d'utilisateur pour ce site.</translation>
+<translation id="5454166040603940656">avec <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">Supprimer le mot de passe ?</translation>
+<translation id="7808889146555843082">La suppression de ce mot de passe ne supprimera pas votre compte <ph name="SITE"/>. Modifiez votre mot de passe ou supprimez votre compte <ph name="SITE"/> pour vous protéger.</translation>
+<translation id="2870560284913253234">Site</translation>
+<translation id="8503813439785031346">Nom d'utilisateur</translation>
+<translation id="2278052315791335171">La suppression de ce mot de passe ne supprimera pas votre compte <ph name="SITE"/>.</translation>
+<translation id="6891726759199484455">Déverrouillez pour copier votre mot de passe.</translation>
+<translation id="5515439363601853141">Déverrouillez pour afficher votre mot de passe.</translation>
+<translation id="1724977129262658800">Déverrouillez pour modifier votre mot de passe.</translation>
+<translation id="5780792035410621042">Pour copier les mots de passe, définissez d'abord un verrouillage d'écran sur votre appareil.</translation>
+<translation id="7986497153528221272">Pour afficher les mots de passe, définissez d'abord un verrouillage d'écran sur votre appareil.</translation>
 </translationbundle>

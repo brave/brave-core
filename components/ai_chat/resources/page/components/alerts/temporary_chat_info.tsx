@@ -14,7 +14,10 @@ export default function TemporaryChatInfo() {
     <div className={styles.alert}>
       <Alert type='info'>
         <div slot='title'>{getLocale(S.AI_CHAT_TEMPORARY_CHAT_LABEL)}</div>
-        <Icon name='message-bubble-temporary' slot='icon' />
+        <Icon
+          name='message-bubble-temporary'
+          slot='icon'
+        />
         {getLocale(S.AI_CHAT_TEMPORARY_CHAT_DESCRIPTION)}
       </Alert>
     </div>

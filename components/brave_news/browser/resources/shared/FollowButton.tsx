@@ -13,7 +13,7 @@ const StyledButton = styled(Button)`
   backdrop-filter: blur(64px);
 `
 
-export default function FollowButton(props: ButtonProps<undefined, boolean> & { following: boolean }) {
+export default function FollowButton(props: ButtonProps<undefined, boolean, boolean> & { following: boolean }) {
   const { following, ...rest } = props
   return <StyledButton {...rest} fab size='tiny'>
     <Icon name={following ? 'minus' : 'plus-add'} />

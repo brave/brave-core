@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 25e52874f1092c3463a22e7de1500c3577cc05f8..0d0b083958174e7366bbaf66f7b3c3f4ddd7ee01 100644
+index ae70ded0b977e4f11430a583554ec99378c1bc34..a19551c76e7d90a8d7e57760b43c840ca29869b1 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4878,6 +4878,7 @@ constexpr char kWebiumFlag[] = "webium";
+@@ -4926,6 +4926,7 @@ constexpr char kWebiumFlag[] = "webium";
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

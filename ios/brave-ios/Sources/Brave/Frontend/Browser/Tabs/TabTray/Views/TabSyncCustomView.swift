@@ -151,7 +151,7 @@ extension TabSyncHeaderView: UIContextMenuInteractionDelegate {
 
       let allOpenAction = UIAction(
         title: Strings.OpenTabs.openSessionOpenAllActionTitle,
-        image: UIImage(systemName: "plus"),
+        image: UIImage(braveSystemNamed: "leo.plus.add"),
         handler: UIAction.deferredActionHandler { _ in
           self.delegate?.openAll(self, section: self.section)
         }

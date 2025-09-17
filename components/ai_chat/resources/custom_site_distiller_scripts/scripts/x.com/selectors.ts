@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 export default {
-    "tweet": "[data-testid='tweet']",
-    "notification": "[data-testid='notification']",
-    "primaryColumn": "[data-testid='primaryColumn']",
-    "userProfileHeaderItems": "[data-testid='UserProfileHeader_Items']"
+  'tweet': "[data-testid='tweet']",
+  'notification': "[data-testid='notification']",
+  'primaryColumn': "[data-testid='primaryColumn']",
+  'userProfileHeaderItems': "[data-testid='UserProfileHeader_Items']",
 }

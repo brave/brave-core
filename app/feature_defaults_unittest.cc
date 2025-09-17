@@ -70,6 +70,7 @@
 #else
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
+#include "chrome/browser/ui/toasts/toast_features.h"
 #include "components/device_signals/core/common/signals_features.h"
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
@@ -105,6 +106,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kFledgeConsiderKAnonymity,
       &blink::features::kFledgeEnforceKAnonymity,
       &blink::features::kParakeet,
+      &blink::features::kPermissionElement,
       &blink::features::kPrerender2,
       &blink::features::kPrivateAggregationApi,
 #if BUILDFLAG(IS_ANDROID)
@@ -130,6 +132,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
       &feature_engagement::kIPHGMCCastStartStopFeature,
       &feature_engagement::kIPHPasswordsManagementBubbleAfterSaveFeature,
+      &feature_engagement::kIPHTabSearchToolbarButtonFeature,
 #endif
       &features::kBookmarkTriggerForPrerender2,
       &features::kChromeStructuredMetrics,
@@ -163,7 +166,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kScrimForBrowserWindowModal,
       &features::KScrimForTabModal,
       &features::kServiceWorkerAutoPreload,
-      &features::kSideBySide,
       &features::kTabHoverCardImages,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kTrustSafetySentimentSurvey,
@@ -238,6 +240,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillLoyaltyCard,
 #if !BUILDFLAG(IS_ANDROID)
+      &toast_features::kPinnedTabToastOnClose,
       &translate::kTFLiteLanguageDetectionEnabled,
 #endif
       &webapps::features::kWebAppsEnableMLModelForPromotion,
@@ -259,6 +262,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kLocationProviderManager,
 #endif
+      &features::kSideBySide,
       &features::kTabstripComboButton,
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,

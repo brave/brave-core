@@ -320,9 +320,7 @@ void TorLauncherFactory::GotSOCKSListeners(
   }
   std::string tor_proxy_uri = kTorProxyScheme + listeners[0];
   // Remove extra quotes
-  tor_proxy_uri.erase(
-      std::remove(tor_proxy_uri.begin(), tor_proxy_uri.end(), '\"'),
-      tor_proxy_uri.end());
+  std::erase(tor_proxy_uri, '\"');
   tor_proxy_uri_ = tor_proxy_uri;
   for (auto& observer : observers_) {
     observer.OnTorNewProxyURI(tor_proxy_uri);

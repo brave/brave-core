@@ -11,11 +11,16 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
@@ -28,11 +33,13 @@
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
@@ -83,8 +90,11 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
+  source->AddBoolean("rewardsFeatureEnabled",
+                     brave_rewards::IsSupportedForProfile(profile));
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
   brave_wallet::AddBlockchainTokenImageSource(profile);
 }
 
@@ -97,6 +107,18 @@ void WalletPageUI::BindInterface(
   page_factory_receiver_.Bind(std::move(receiver));
 }
 
+void WalletPageUI::BindInterface(
+    mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  CHECK(profile);
+
+  rewards_handler_ = std::make_unique<brave_rewards::RewardsPageHandler>(
+      std::move(receiver), nullptr,
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile),
+      brave_ads::AdsServiceFactory::GetForProfile(profile), nullptr,
+      profile->GetPrefs());
+}
+
 void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
@@ -104,6 +126,8 @@ void WalletPageUI::CreatePageHandler(
         json_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
         bitcoin_wallet_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::PolkadotWalletService>
+        polkadot_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
         zcash_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::CardanoWalletService>
@@ -147,6 +171,7 @@ void WalletPageUI::CreatePageHandler(
     wallet_service->Bind(std::move(brave_wallet_service_receiver));
     wallet_service->Bind(std::move(json_rpc_service_receiver));
     wallet_service->Bind(std::move(bitcoin_wallet_service_receiver));
+    wallet_service->Bind(std::move(polkadot_wallet_service_receiver));
     wallet_service->Bind(std::move(zcash_wallet_service_receiver));
     wallet_service->Bind(std::move(cardano_wallet_service_receiver));
     wallet_service->Bind(std::move(keyring_service_receiver));
@@ -171,4 +196,13 @@ void WalletPageUI::CreatePageHandler(
   if (blockchain_registry) {
     blockchain_registry->Bind(std::move(blockchain_registry_receiver));
   }
+}
+
+WalletPageUIConfig::WalletPageUIConfig()
+    : DefaultWebUIConfig(content::kChromeUIScheme, kWalletPageHost) {}
+
+bool WalletPageUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return brave_wallet::IsNativeWalletEnabled() &&
+         brave_wallet::IsAllowedForContext(browser_context);
 }

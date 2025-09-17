@@ -123,6 +123,20 @@ class TabGridViewModel {
     }
   }
 
+  func closeTabs(_ tabIDs: Set<TabState.ID>) {
+    let tabs = tabIDs.compactMap { tabManager[$0] }
+    withAnimation {
+      tabManager.removeTabs(tabs)
+    }
+  }
+
+  func closeOtherTabs(_ tabIDs: Set<TabState.ID>) {
+    let tabs = tabManager.tabsForCurrentMode.filter({ !tabIDs.contains($0.id) })
+    withAnimation {
+      tabManager.removeTabs(tabs)
+    }
+  }
+
   func closeAllTabs() {
     withAnimation {
       if !isPrivateBrowsing {
@@ -141,9 +155,18 @@ class TabGridViewModel {
     tabManager.selectedTab?.visibleURL?.isShredAvailable == true
   }
 
+  func isShredAvailableForSelectedTabs(_ tabs: Set<TabState.ID>) -> Bool {
+    let tabs = tabs.map({ tabManager[$0] })
+    return tabs.contains(where: { $0?.visibleURL?.isShredAvailable == true })
+  }
+
   func shredSelectedTab() {
     guard let tab = tabManager.selectedTab, let url = tab.visibleURL else { return }
     tabManager.shredData(for: url, in: tab)
+  }
+
+  func shredSelectedTabs(_ tabs: Set<TabState.ID>) -> Set<TabState.ID> {
+    return tabManager.shredDataForTabs(tabs.compactMap({ tabManager[$0] }))
   }
 
   func shredAllTabs() {
@@ -156,8 +179,8 @@ class TabGridViewModel {
     }
   }
 
-  func moveTab(_ tab: any TabState, to index: Int) {
-    tabManager.moveTab(tab, toIndex: index)
+  func moveTabs(_ tabs: [TabState.ID], to index: Int) {
+    tabManager.moveTabs(tabs, toIndex: index)
     updateTabs()
   }
 

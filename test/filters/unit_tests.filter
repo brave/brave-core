@@ -61,7 +61,7 @@
 
 # This test fails because we have different than expected default number of
 # prepopulated search engines
-=TemplateURLServiceTest.TemplateURLCountsOnStartupHistogram
+-TemplateURLServiceTest.TemplateURLCountsOnStartupHistogram
 
 # These tests crash because pinned_toolbar_actions_container_ in
 # BraveToolbarView is set to nullptr
@@ -99,6 +99,7 @@
 # nullptr.
 -AILanguageModelHackyPrototypeTest.Basic
 -AILanguageModelTest.*
+-AILanguageModelTestWithLanguageParams.PromptWithEnabledLanguages/*
 -AIManagerTest.*
 -AIProofreaderTest.*
 -AIRewriterTest.*
@@ -115,6 +116,7 @@
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
 -PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
 -PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
+-PasswordChangeDelegateImplTest.OtpDetectionProcessedFieldNotFocusableSkip
 -PasswordChangeDelegateImplTest.PasswordChangeFlowCanceled
 -PasswordChangeDelegateImplTest.WaitingForAgreement
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportNotificationAsSafe
@@ -271,6 +273,9 @@
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable_NoAccount
 -EnclaveManagerTest.PrimaryUserChange
 -ExtensionInstalledBubbleModelTransportModeTest.ShowSigninPromo_NonExtensionsExplicitSignin
+-ExtensionLocalDataBatchUploaderTest.LocalDataDescriptionOnlyReturnsUploadableExtensions
+-ExtensionLocalDataBatchUploaderTest.TriggerLocalDataMigration
+-ExtensionLocalDataBatchUploaderTest.TriggerLocalDataMigrationForItems
 -ExtensionSyncServiceTransportModeTest.AccountExtensionTypeChangesWithSync
 -ExtensionSyncServiceTransportModeTest.OnlySyncAccountExtensions
 -ManagePasswordsUIControllerWithBrowserTestExplicitBrowserSignin.MovePasswordUponSigninWithExistingAccount
@@ -311,6 +316,9 @@
 -ClientSideDetectionHostNotificationTest.*
 -ClientSideDetectionHostScamDetectionTest.*
 -ClientSideDetectionHostTest.CSDFeaturesCacheContainsVerdictAndFullDebuggingMetadata
+-ClientSideDetectionHostTest.ClipboardCopyApiCallDoesNotProceedWithClassification
+-ClientSideDetectionHostTest.ClipboardCopyApiCallDoesNotProceedWithClassificationWithHighHCAcceptanceRate
+-ClientSideDetectionHostTest.ClipboardCopyApiCallProceedsWithClassification
 -ClientSideDetectionHostTest.NoRTLookupResponseInRedirectChainContainsForceRequest
 -ClientSideDetectionHostTest.PhishingDetectionDoneCalledTwiceShouldSucceed
 -ClientSideDetectionHostTest.PhishingDetectionDoneEnhancedProtectionShouldHaveToken
@@ -333,7 +341,7 @@
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
--NotificationTelemetryServiceTest.SendsTelemetryReport
+-NotificationTelemetryServiceTest.SendsTelemetryReport/*
 -SafeBrowsingResultTest.GetState_EnabledEnhanced
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains_EsbEnabledOnStartup
@@ -406,12 +414,15 @@
 
 # This test fails because we remove description and 3p cookies toggle from the
 # Page Info cookies view.
+-All/PageInfoBubbleViewCookiesSubpageTitleTest.DisplaysCookiesAndSiteDataTitle/*
+-All/PageInfoBubbleViewPrivacyAndSiteDataSubpageTitleTest.DisplaysPrivacyAndSiteDataTitle/*
 -All/PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
 -All/PageInfoCookiesContentView3pcdCookieToggleTest.*
 -CookieControlsUserBypassTest.*
 -PageInfoCookiesContentView3pcdCookieToggleTest.*
 -PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
 -PageInfoCookiesContentViewAlwaysBlock3pcsIncognito.DisplaysIncognitoDescriptionWhenInIncognito
+-PageInfoCookiesContentViewAlwaysBlock3pcsIncognito.DisplaysStandardDescriptionWhenInRegularMode
 -PageInfoCookiesContentViewPre3pcdTest.*
 -PageInfoCookiesContentViewTrackingProtectionBubbleTest.Displays*
 
@@ -557,8 +568,10 @@
 -ChromeStructuredMetricsRecorderTest.DeviceEventsRecorded
 
 # These tests fail because we disable kPermissionPredictionsV2.
+-PredictionBasedPermissionUiSelectorTest.GetPredictionTypeToUseCpssV1
 -PredictionBasedPermissionUiSelectorTest.OnlyPromptsForCurrentTypeAreCounted
 -PredictionBasedPermissionUiSelectorTest.RequestsWithFewPromptsAreSent
+-PredictionSourceTest/PredictionBasedPermissionUiExpectedPredictionSourceTest.*
 
 # This test fails because we block installation of Probabilistic Reveal Token
 # component installation.
@@ -624,6 +637,16 @@
 # account signin (because we disable kSignin consent level anyway).
 -FirstRunServiceTest.ShouldPopulateProfileNameFromPrimaryAccount
 
+# This test fails because CONTENT_SETTING_DEFAULT cannot be used as the default
+# setting any more. https://github.com/brave/brave-browser/issues/48374
+-HostContentSettingsMapTest.IncognitoChangesDoNotPersist
+
+# These tests fail because we enable features::kTabstripComboButton and stub
+# features::HasTabSearchToolbarButton() to return true
+-TabSearchContainerTest.AnimatesToExpanded
+-TabSearchContainerTest.ButtonsHaveFlatEdges
+-TabSearchContainerTest.OrdersButtonsCorrectly
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
@@ -656,6 +679,7 @@
 -CountingPolicyTest.*
 -CWSInfoServiceTest.IgnoresNonCWSExtensions
 -DeclarativeContentActionTest.*
+-DeviceAPIServiceWebAppTest.ReportErrorForDefaultUser
 -DevToolsUIBindingsTest.SanitizeFrontendURL
 -DevToolsUIDataSourceTest.TestDevToolsRemoteURL
 -DownloadProtectionServiceTest.*

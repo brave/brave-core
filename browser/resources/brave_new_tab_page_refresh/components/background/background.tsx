@@ -9,6 +9,7 @@ import { NewTabPageAdEventType, SponsoredImageBackground } from '../../state/bac
 import { openLink } from '../common/link'
 import { loadImage } from '../../lib/image_loader'
 import { useWidgetLayoutReady } from '../app_layout_ready'
+import { debounce } from '$web-common/debounce'
 
 import {
   useBackgroundState,
@@ -90,30 +91,15 @@ function SponsoredRichMediaBackground(
   const actions = useBackgroundActions()
   const sponsoredRichMediaBaseUrl =
     useBackgroundState((s) => s.sponsoredRichMediaBaseUrl)
-  const widgetLayoutReady = useWidgetLayoutReady()
-  const frameHandleRef = React.useRef<IframeBackgroundHandle>()
+  const [frameHandle, setFrameHandle] = React.useState<IframeBackgroundHandle>()
 
-  React.useEffect(() => {
-    const frameHandle = frameHandleRef.current
-    if (!widgetLayoutReady || !frameHandle) {
-      return
-    }
-    const safeArea =
-      document.querySelector<HTMLDivElement>('.sponsored-background-safe-area')
-    if (safeArea) {
-      const rect = safeArea.getBoundingClientRect()
-      frameHandle.postMessage({
-        type: 'richMediaSafeRect',
-        value: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
-      })
-    }
-  }, [widgetLayoutReady])
+  useSafeAreaReporter(frameHandle)
 
   return (
     <IframeBackground
       url={props.background.imageUrl}
       expectedOrigin={new URL(sponsoredRichMediaBaseUrl).origin}
-      onReady={(handle) => frameHandleRef.current = handle}
+      onReady={setFrameHandle}
       onMessage={(data) => {
         const eventType = getRichMediaEventType(data)
         if (eventType) {
@@ -128,6 +114,41 @@ function SponsoredRichMediaBackground(
       }}
     />
   )
+}
+
+// Posts a message to the rich media background iframe containing a rectangle
+// that is empty of content and can be used to display interactive elements.
+function useSafeAreaReporter(frameHandle?: IframeBackgroundHandle) {
+  const widgetLayoutReady = useWidgetLayoutReady()
+
+  React.useEffect(() => {
+    if (!widgetLayoutReady || !frameHandle) {
+      return
+    }
+
+    const selector = '.sponsored-background-safe-area'
+    const safeArea = document.querySelector<HTMLDivElement>(selector)
+    if (!safeArea) {
+      return
+    }
+
+    const postSafeArea = debounce(() => {
+      if (!safeArea) {
+        return
+      }
+      const rect = safeArea.getBoundingClientRect()
+      frameHandle.postMessage({
+        type: 'richMediaSafeRect',
+        value: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
+      })
+    }, 120)
+
+    postSafeArea()
+
+    const resizeObserver = new ResizeObserver(postSafeArea)
+    resizeObserver.observe(safeArea)
+    return () => { resizeObserver.disconnect() }
+  }, [widgetLayoutReady, frameHandle])
 }
 
 function getRichMediaEventType(data: any): NewTabPageAdEventType | null {
@@ -152,7 +173,7 @@ interface IframeBackgroundHandle {
 interface IframeBackgroundProps {
   url: string
   expectedOrigin: string
-  onReady?: (handle: IframeBackgroundHandle) => void
+  onReady: (handle: IframeBackgroundHandle) => void
   onMessage: (data: unknown) => void
 }
 
@@ -176,7 +197,7 @@ function IframeBackground(props: IframeBackgroundProps) {
   }, [props.expectedOrigin, props.onMessage])
 
   React.useEffect(() => {
-    if (!props.onReady) {
+    if (!props.onReady || !contentLoaded) {
       return
     }
     props.onReady({
@@ -185,7 +206,7 @@ function IframeBackground(props: IframeBackgroundProps) {
         window?.postMessage(data, props.expectedOrigin)
       }
     })
-  }, [props.onReady, props.expectedOrigin])
+  }, [props.onReady, props.expectedOrigin, contentLoaded])
 
   return (
     <iframe

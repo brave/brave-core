@@ -10,6 +10,7 @@ source_set("unit_tests") {
     sources = [
       "brave_importer_observer_unittest.cc",
       "brave_site_settings_handler_unittest.cc",
+      "brave_sync_handler_unittest.cc",
       "brave_wallet_handler_unittest.cc",
     ]
 
@@ -31,6 +32,8 @@ source_set("unit_tests") {
       "//components/sync_preferences:test_support",
       "//content/test:test_support",
       "//testing/gtest",
+      "//ui/base/clipboard",
+      "//ui/base/clipboard:clipboard_test_support",
     ]
   }
 }

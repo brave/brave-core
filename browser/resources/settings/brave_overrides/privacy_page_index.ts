@@ -11,6 +11,7 @@ import {
 import type { Route } from '../router.js';
 import { routes } from '../route.js';
 import {loadTimeData} from "../i18n_setup.js"
+import {pageVisibility} from './page_visibility.js'
 
 RegisterPolymerPrototypeModification({
   'settings-privacy-page-index': (prototype) => {
@@ -20,8 +21,14 @@ RegisterPolymerPrototypeModification({
         // Hide the privacy guide promo view.
         .filter((v: string) => v !== 'privacyGuidePromo');
 
-      // Add tor and dataCollection views.
-      views.splice(1, 0, 'tor', 'dataCollection');
+      // Add dataCollection view.
+      views.splice(1, 0, 'dataCollection');
+
+      // Add tor view if it should be shown.
+      if (pageVisibility.braveTor) {
+        views.splice(1, 0, 'tor');
+      }
+
       return views;
     }
 
@@ -30,7 +37,7 @@ RegisterPolymerPrototypeModification({
     prototype.currentRouteChanged = function (newRoute: Route, oldRoute: Route) {
       if (newRoute === routes.BRAVE_SURVEY_PANELIST) {
         queueMicrotask(() => {
-          this.$.viewManager.setCurrentView('surveyPanelist', 'no-animation', 'no-animation');
+          this.$.viewManager.switchView('surveyPanelist', 'no-animation', 'no-animation');
         })
         return;
       }
@@ -56,12 +63,15 @@ RegisterPolymerTemplateModifications({
       throw new Error('[Settings] Missing privacyGuidePromoTemplate')
     }
 
-    viewManager.appendChild(html`<settings-brave-tor-subpage
-      id="tor"
-      slot="view"
-      prefs="{{prefs}}"
-      in-search-mode="[[inSearchMode_]]">
-    </settings-brave-tor-subpage>`)
+    viewManager.appendChild(html`<template is="dom-if"
+        if="[[showPage_(pageVisibility_.braveTor)]]">
+      <settings-brave-tor-subpage
+        id="tor"
+        slot="view"
+        prefs="{{prefs}}"
+        in-search-mode="[[inSearchMode_]]">
+      </settings-brave-tor-subpage>
+    </template>`)
 
     viewManager.appendChild(html`<settings-brave-data-collection-subpage
       id="dataCollection"

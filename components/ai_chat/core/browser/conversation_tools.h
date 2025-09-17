@@ -8,13 +8,31 @@
 
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 
 namespace ai_chat {
 
-const std::vector<Tool*> GetToolsForConversation(bool has_associated_content,
-                                                 const mojom::Model& model);
+class ConversationToolProvider : public ToolProvider {
+ public:
+  explicit ConversationToolProvider(base::WeakPtr<Tool> memory_storage_tool);
+  ~ConversationToolProvider() override;
+
+  ConversationToolProvider(const ConversationToolProvider&) = delete;
+  ConversationToolProvider& operator=(const ConversationToolProvider&) = delete;
+
+  // ToolProvider implementation
+  std::vector<base::WeakPtr<Tool>> GetTools() override;
+
+ private:
+  // Owned by AIChatService and shared across conversations. It could be
+  // invalidated when memory preference is disabled, but it won't leave
+  // conversation hanging waiting for a response even if it is destroyed
+  // mid-loop because it doesn't have any async operations and will send a
+  // response right away in UseTool.
+  base::WeakPtr<Tool> memory_storage_tool_;
+};
 
 }  // namespace ai_chat
 

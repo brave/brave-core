@@ -21,7 +21,7 @@ BASE_FEATURE(kBraveNTPSuperReferralWallpaper,
 
 BASE_FEATURE(kBraveNTPBrandedWallpaperSurveyPanelist,
              "BraveNTPBrandedWallpaperSurveyPanelist",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveNTPBrandedWallpaper,
              "BraveNTPBrandedWallpaper",

@@ -56,6 +56,17 @@ class CardanoApiImpl final : public mojom::CardanoApi {
                                      mojom::EthereumSignatureBytesPtr signature,
                                      const std::optional<std::string>& error);
 
+  void OnGetBalance(GetBalanceCallback callback,
+                    mojom::CardanoBalancePtr balance,
+                    const std::optional<std::string>& error);
+  void OnGetUtxos(
+      const std::optional<std::string>& amount,
+      mojom::CardanoProviderPaginationPtr paginate,
+      GetUtxosCallback callback,
+      base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result);
+  void OnSubmitTx(SubmitTxCallback callback,
+                  base::expected<std::string, std::string> txid);
+
   mojom::CardanoProviderErrorBundlePtr CheckSelectedAccountValid();
 
   BraveWalletProviderDelegate* delegate();

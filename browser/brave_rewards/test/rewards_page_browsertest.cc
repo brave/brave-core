@@ -51,6 +51,7 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
                          .AppendASCII("brave_rewards")
                          .AppendASCII("rewards_page");
 
+    GetRewardsService().SetEngineEnvForTesting();
     GetRewardsService().ForTestingSetTestResponseCallback(base::BindRepeating(
         &RewardsPageBrowserTest::HandleRequest, base::Unretained(this)));
   }

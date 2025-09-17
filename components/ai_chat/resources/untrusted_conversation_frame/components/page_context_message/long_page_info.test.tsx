@@ -8,7 +8,7 @@ import { render } from '@testing-library/react'
 import {
   LongVisualContentWarning,
   LongTextContentWarning,
-  LongPageContentWarning
+  LongPageContentWarning,
 } from './long_page_info'
 
 // Mock the formatLocale function from $web-common/locale
@@ -24,16 +24,18 @@ jest.mock('$web-common/locale', () => ({
       return `${params?.$1} of the page content was used`
     }
     return key
-  }
+  },
 }))
 
 describe('Long Page Warning Components', () => {
   beforeEach(() => {
     // Mock the global S object
     global.S = {
-      CHAT_UI_VISUAL_CONTENT_TOO_MUCH_WARNING: 'CHAT_UI_VISUAL_CONTENT_TOO_MUCH_WARNING',
+      CHAT_UI_VISUAL_CONTENT_TOO_MUCH_WARNING:
+        'CHAT_UI_VISUAL_CONTENT_TOO_MUCH_WARNING',
       CHAT_UI_TRIMMED_TOKENS_WARNING: 'CHAT_UI_TRIMMED_TOKENS_WARNING',
-      CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING: 'CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING'
+      CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING:
+        'CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING',
     }
   })
 
@@ -44,33 +46,39 @@ describe('Long Page Warning Components', () => {
   describe('LongVisualContentWarning', () => {
     test('should display visual content warning with correct percentage', () => {
       const { getByText } = render(
-        <LongVisualContentWarning visualContentUsedPercentage={75} />
+        <LongVisualContentWarning visualContentUsedPercentage={75} />,
       )
 
-      expect(getByText('Only 75% of visual content could be used')).toBeInTheDocument()
+      expect(
+        getByText('Only 75% of visual content could be used'),
+      ).toBeInTheDocument()
     })
 
     test('should display visual content warning with 0%', () => {
       const { getByText } = render(
-        <LongVisualContentWarning visualContentUsedPercentage={0} />
+        <LongVisualContentWarning visualContentUsedPercentage={0} />,
       )
 
-      expect(getByText('Only 0% of visual content could be used')).toBeInTheDocument()
+      expect(
+        getByText('Only 0% of visual content could be used'),
+      ).toBeInTheDocument()
     })
 
     test('should display visual content warning with 99%', () => {
       const { getByText } = render(
-        <LongVisualContentWarning visualContentUsedPercentage={99} />
+        <LongVisualContentWarning visualContentUsedPercentage={99} />,
       )
 
-      expect(getByText('Only 99% of visual content could be used')).toBeInTheDocument()
+      expect(
+        getByText('Only 99% of visual content could be used'),
+      ).toBeInTheDocument()
     })
   })
 
   describe('LongTextContentWarning', () => {
     test('should display text content warning with correct percentage', () => {
       const { getByText } = render(
-        <LongTextContentWarning percentageUsed={90} />
+        <LongTextContentWarning percentageUsed={90} />,
       )
 
       expect(getByText('90% of the content was used')).toBeInTheDocument()
@@ -78,7 +86,7 @@ describe('Long Page Warning Components', () => {
 
     test('should display text content warning with low percentage', () => {
       const { getByText } = render(
-        <LongTextContentWarning percentageUsed={25} />
+        <LongTextContentWarning percentageUsed={25} />,
       )
 
       expect(getByText('25% of the content was used')).toBeInTheDocument()
@@ -88,7 +96,7 @@ describe('Long Page Warning Components', () => {
   describe('LongPageContentWarning', () => {
     test('should display page content warning with correct percentage', () => {
       const { getByText } = render(
-        <LongPageContentWarning contentUsedPercentage={85} />
+        <LongPageContentWarning contentUsedPercentage={85} />,
       )
 
       expect(getByText('85% of the page content was used')).toBeInTheDocument()
@@ -96,7 +104,7 @@ describe('Long Page Warning Components', () => {
 
     test('should display page content warning with low percentage', () => {
       const { getByText } = render(
-        <LongPageContentWarning contentUsedPercentage={50} />
+        <LongPageContentWarning contentUsedPercentage={50} />,
       )
 
       expect(getByText('50% of the page content was used')).toBeInTheDocument()
@@ -106,7 +114,7 @@ describe('Long Page Warning Components', () => {
   describe('component structure', () => {
     test('should render with info icon', () => {
       const { container } = render(
-        <LongVisualContentWarning visualContentUsedPercentage={80} />
+        <LongVisualContentWarning visualContentUsedPercentage={80} />,
       )
 
       // Check for icon (leo-icon with name 'info-outline')
@@ -116,7 +124,7 @@ describe('Long Page Warning Components', () => {
 
     test('should have correct CSS class structure', () => {
       const { container } = render(
-        <LongPageContentWarning contentUsedPercentage={75} />
+        <LongPageContentWarning contentUsedPercentage={75} />,
       )
 
       // Check for info container with CSS class

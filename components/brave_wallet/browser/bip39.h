@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BIP39_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BIP39_H_
 
+#include <array>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -17,6 +18,7 @@
 // https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki
 namespace brave_wallet::bip39 {
 
+inline constexpr uint32_t kSeedSize = 64;
 inline constexpr uint32_t kDefaultEntropySize = 16;
 inline constexpr uint32_t kLegacyEthEntropySize = 32;
 
@@ -33,6 +35,12 @@ std::optional<std::vector<uint8_t>> MnemonicToSeed(
 // This is mainly used for restoring legacy brave crypto wallet
 std::optional<std::vector<uint8_t>> MnemonicToEntropy(
     std::string_view mnemonic);
+
+// Generate a seed in a manner compatible with Polkadot.
+// See the implementation of this function for more details.
+std::optional<std::array<uint8_t, kSeedSize>> MnemonicToEntropyToSeed(
+    std::string_view mnemonic,
+    std::string_view password = "");
 
 bool IsValidMnemonic(std::string_view mnemonic);
 

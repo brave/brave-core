@@ -46,11 +46,13 @@
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "brave/components/ai_chat/core/browser/tools/memory_storage_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -465,7 +467,7 @@ TEST_P(AIChatServiceUnitTest,
   base::OnceClosure resolve;
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(
-          [&resolve](PageContents page_contents,
+          [&resolve](PageContentsMap page_contents,
                      const std::vector<mojom::ConversationTurnPtr>& history,
                      const std::string& selected_language,
                      bool is_temporary_chat,
@@ -1309,7 +1311,11 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
 
     base::RunLoop run_loop_2;
     data[i].conversation_handler->GeneratePageContentInternal(
-        base::BindLambdaForTesting([&](PageContents page_contents) {
+        base::BindLambdaForTesting([&]() {
+          auto page_contents =
+              data[i]
+                  .conversation_handler->associated_content_manager()
+                  ->GetCachedContents();
           if (i == 1) {
             EXPECT_TRUE(page_contents.empty()) << i << " content was not empty";
           } else {
@@ -1417,6 +1423,72 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
   EXPECT_CALL(*mock_db_ptr, UpdateConversationModelKey).Times(1);
   DisconnectConversationClient(client2.get());
   testing::Mock::VerifyAndClearExpectations(mock_db_ptr);
+}
+
+TEST_P(AIChatServiceUnitTest,
+       OnConversationEntryAdded_GetsLatestAssociatedContent) {
+  NiceMock<MockAssociatedContent> associated_content;
+  associated_content.SetUrl(GURL("https://example.com"));
+
+  ConversationHandler* handler = CreateConversation();
+  auto client = CreateConversationClient(handler);
+
+  // Don't notify listeners the content has been updated.
+  handler->associated_content_manager()->AddContent(&associated_content,
+                                                    /*notify_updated=*/false);
+
+  // |associated_content| shouldn't have been updated on the metadata yet.
+  EXPECT_EQ(handler->GetMetadataForTesting().associated_content.size(), 0u);
+
+  handler->SubmitHumanConversationEntry("Human message", {});
+
+  EXPECT_EQ(handler->GetMetadataForTesting().associated_content.size(), 1u);
+}
+
+TEST_P(AIChatServiceUnitTest, InitializeTools_MemoryDisabled) {
+  // Test that no memory tool is created when memory is disabled
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+  ResetService();
+
+  EXPECT_FALSE(ai_chat_service_->GetMemoryToolForTesting());
+}
+
+TEST_P(AIChatServiceUnitTest, InitializeTools_MemoryEnabled) {
+  // Test that memory tool is created when memory is enabled
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  ResetService();
+
+  EXPECT_TRUE(ai_chat_service_->GetMemoryToolForTesting());
+}
+
+TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_EnabledToDisabled) {
+  // Start with memory enabled
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  ResetService();
+
+  // Verify memory tool exists
+  EXPECT_TRUE(ai_chat_service_->GetMemoryToolForTesting());
+
+  // Disable memory
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+  // Verify memory tool is removed
+  EXPECT_FALSE(ai_chat_service_->GetMemoryToolForTesting());
+}
+
+TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_DisabledToEnabled) {
+  // Start with memory disabled
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+  ResetService();
+
+  // Verify no memory tool exists
+  EXPECT_FALSE(ai_chat_service_->GetMemoryToolForTesting());
+
+  // Enable memory
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+
+  // Verify memory tool is added
+  EXPECT_TRUE(ai_chat_service_->GetMemoryToolForTesting());
 }
 
 }  // namespace ai_chat

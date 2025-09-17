@@ -61,29 +61,19 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
         Row(
           text: "Start Onboarding",
           selection: { [unowned self] in
-            let onboardingController = WelcomeViewController(
-              state: .loading,
-              p3aUtilities: p3aUtilities,
-              attributionManager: attributionManager
-            )
-            onboardingController.modalPresentationStyle = .fullScreen
-
-            present(onboardingController, animated: false)
-          },
-          cellClass: MultilineButtonCell.self
-        ),
-        Row(
-          text: "Start Day 0 JP Onboarding",
-          selection: { [unowned self] in
             let env = OnboardingEnvironment(
               p3aUtils: p3aUtilities,
               attributionManager: attributionManager
             )
-            let controller = OnboardingController(environment: env)
+            var steps: [any OnboardingStep] = [.defaultBrowsing, .blockInterruptions]
+            if !p3aUtilities.isP3APreferenceManaged {
+              steps.append(.p3aOptIn)
+            }
+            let controller = OnboardingController(environment: env, steps: steps)
             present(controller, animated: false)
           },
           cellClass: MultilineButtonCell.self
-        ),
+        )
       ]
     )
 

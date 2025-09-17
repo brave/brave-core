@@ -35,7 +35,12 @@ void PlaylistBubblesController::ShowBubble(
     return;
   }
 
-  CHECK(!bubble_);
+  if (bubble_) {
+    // When the bubble is already showing, do nothing. This can happen if the
+    // user clicks button multiple times quickly from web ui.
+    return;
+  }
+
   auto* tab_helper = PlaylistTabHelper::FromWebContents(&GetWebContents());
   CHECK(tab_helper);
 

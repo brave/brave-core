@@ -21,38 +21,7 @@ extension BrowserViewController {
   func presentOnboardingIntro() {
     if Preferences.DebugFlag.skipOnboardingIntro == true { return }
 
-    // If locale is onboarding_region, start the new onboarding process
-    // This will be the case as long as new onboarding is active for JAPAN
-    if Locale.current.isNewOnboardingRegion {
-      presentFocusOnboarding()
-    } else {
-      presentOnboardingWelcomeScreen()
-    }
-  }
-
-  // MARK: Welcome Onboarding - Regions except JAPAN
-
-  private func presentOnboardingWelcomeScreen() {
-    // 1. Existing user.
-    // 2. User already completed onboarding.
-    if Preferences.Onboarding.basicOnboardingCompleted.value == OnboardingState.completed.rawValue {
-      Preferences.AppState.shouldDeferPromotedPurchase.value = false
-      return
-    }
-
-    // 1. User is brand new
-    // 2. User hasn't completed onboarding
-    if Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue,
-      Preferences.Onboarding.isNewRetentionUser.value == true
-    {
-      let onboardingController = WelcomeViewController(
-        p3aUtilities: braveCore.p3aUtils,
-        attributionManager: attributionManager
-      )
-      onboardingController.modalPresentationStyle = .fullScreen
-      present(onboardingController, animated: false)
-      isOnboardingOrFullScreenCalloutPresented = true
-    }
+    presentFocusOnboarding()
   }
 
   func showNTPOnboarding() {
@@ -68,7 +37,6 @@ extension BrowserViewController {
         Preferences.Onboarding.isNewRetentionUser.value == true
       {
         presentOmniBoxOnboarding()
-        addNTPTutorialPage()
       }
 
       if !Preferences.FullScreenCallout.ntpCalloutCompleted.value {
@@ -85,47 +53,23 @@ extension BrowserViewController {
 
     var controller: UIViewController & PopoverContentComponent
 
-    if !Locale.current.isNewOnboardingRegion {
-      // Present the popover
-      controller = WelcomeOmniBoxOnboardingController().then {
+    if Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value {
+      Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.reset()
+
+      controller = FocusNTPOnboardingViewController().then {
         $0.setText(
-          title: Strings.Onboarding.omniboxOnboardingPopOverTitle,
-          details: Strings.Onboarding.omniboxOnboardingPopOverDescription
+          title: Strings.FocusOnboarding.urlBarIndicatorTitle,
+          details: Strings.FocusOnboarding.urlBarIndicatorDescription
         )
       }
-      presentNTPURLBarPopover(
+
+      presentFavouriteURLBarPopover(
         controller: controller,
         onDismiss: { [weak self] in
           guard let self = self else { return }
           self.triggerPromotedInAppPurchase(savedPayment: self.iapObserver.savedPayment)
-        },
-        onClickURLBar: { [weak self] in
-          guard let self = self else { return }
-
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
-          }
         }
       )
-    } else {
-      if Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value {
-        Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.reset()
-
-        controller = FocusNTPOnboardingViewController().then {
-          $0.setText(
-            title: Strings.FocusOnboarding.urlBarIndicatorTitle,
-            details: Strings.FocusOnboarding.urlBarIndicatorDescription
-          )
-        }
-
-        presentFavouriteURLBarPopover(
-          controller: controller,
-          onDismiss: { [weak self] in
-            guard let self = self else { return }
-            self.triggerPromotedInAppPurchase(savedPayment: self.iapObserver.savedPayment)
-          }
-        )
-      }
     }
 
     func presentFavouriteURLBarPopover(
@@ -157,54 +101,6 @@ extension BrowserViewController {
       )
     }
 
-    func presentNTPURLBarPopover(
-      controller: UIViewController & PopoverContentComponent,
-      onDismiss: @escaping () -> Void,
-      onClickURLBar: @escaping () -> Void
-    ) {
-      let frame = view.convert(
-        topToolbar.locationView.frame,
-        from: topToolbar.locationView
-      ).insetBy(dx: -1.0, dy: -1.0)
-
-      presentPopoverContent(
-        using: controller,
-        with: frame,
-        cornerRadius: topToolbar.locationContainer.layer.cornerRadius,
-        didDismiss: {
-          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
-          Preferences.AppState.shouldDeferPromotedPurchase.value = false
-
-          onDismiss()
-        },
-        didClickBorderedArea: {
-          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
-          Preferences.AppState.shouldDeferPromotedPurchase.value = false
-
-          onClickURLBar()
-        }
-      )
-    }
-  }
-
-  private func addNTPTutorialPage() {
-    // The new onboarding will be only JP Region and this is part of old onboarding
-    guard !Locale.current.isNewOnboardingRegion else {
-      return
-    }
-
-    // NTP Education screen should load after onboarding is finished and user is on locale JP
-    let (educationPermitted, url) = (
-      Locale.current.isNewOnboardingRegion, URL.brave.ntpTutorialPage
-    )
-
-    if educationPermitted {
-      tabManager.addTab(
-        URLRequest(url: url),
-        afterTab: self.tabManager.selectedTab,
-        isPrivate: privateBrowsingManager.isPrivateBrowsing
-      )
-    }
   }
 
   private func triggerPromotedInAppPurchase(savedPayment: SKPayment?) {
@@ -379,7 +275,7 @@ extension BrowserViewController {
 
 extension BrowserViewController {
 
-  // MARK: Day 0 Focus Onboarding - JAPAN Region
+  // MARK: Day 0 Focus Onboarding
 
   func presentFocusOnboarding() {
 
@@ -390,17 +286,33 @@ extension BrowserViewController {
       return
     }
 
+    // Perform accurate check to get fresh default browser status
+    defaultBrowserHelper.performAccurateDefaultCheckIfNeeded()
+
+    // Check if user is already default before showing onboarding
+    let isDefault = defaultBrowserHelper.status == .defaulted
+
+    var steps: [any OnboardingStep] = [.blockInterruptions]
+    if !isDefault {
+      steps.insert(.defaultBrowsing, at: 0)
+    }
+    if !braveCore.p3aUtils.isP3APreferenceManaged {
+      steps.append(.p3aOptIn)
+    }
+
     let controller = OnboardingController(
       environment: .init(
         p3aUtils: braveCore.p3aUtils,
         attributionManager: attributionManager
       ),
+      steps: steps,
       onCompletion: {
         Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
         Preferences.AppState.shouldDeferPromotedPurchase.value = false
         Preferences.FocusOnboarding.focusOnboardingFinished.value = true
       }
     )
+
     present(controller, animated: false)
 
     Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true

@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT NSString* const kBraveTalkDisabledByPolicyPrefName;
+OBJC_EXPORT NSString* const kStatsReportingEnabledPrefName;
 
 NS_ASSUME_NONNULL_END
 

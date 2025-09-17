@@ -7,17 +7,17 @@ import * as React from 'react'
 import {
   defaultContext,
   UntrustedConversationContext,
-  UntrustedConversationReactContext
+  UntrustedConversationReactContext,
 } from './untrusted_conversation_context'
 
 export default function MockContext(
-  props: React.PropsWithChildren<Partial<UntrustedConversationContext>>
+  props: React.PropsWithChildren<Partial<UntrustedConversationContext>>,
 ) {
   return (
     <UntrustedConversationReactContext.Provider
       value={{
         ...defaultContext,
-        ...props
+        ...props,
       }}
     >
       {props.children}

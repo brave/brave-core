@@ -64,6 +64,9 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_LEO_AUTOCOMPLETE =
             "org.chromium.chrome.browser.Brave_Leo_AutoComplete";
 
+    public static final String CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT =
+            "customizable_brave_menu_item_id_%s";
+
     // Playlist preference keys
     public static final String PREF_ENABLE_PLAYLIST = "enable_playlist";
     public static final String PREF_ADD_TO_PLAYLIST_BUTTON = "add_to_playlist_button";

@@ -28,6 +28,7 @@
 #include "brave/components/brave_wallet/browser/eth_allowance_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
@@ -114,6 +115,36 @@ std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
   return tokens;
 }
 
+// For Bitcoin and Cardano we have always fixed selected network based on
+// testnet/mainnet account type. Don't need to get value from prefs.
+mojom::NetworkInfoPtr GetFixedSelectedNetworkForAccount(
+    NetworkManager& network_manager,
+    const mojom::AccountIdPtr& account_id) {
+  DCHECK(IsFixedSelectedNetworkCoin(account_id->coin));
+
+  if (account_id->coin == mojom::CoinType::BTC) {
+    if (IsBitcoinMainnetKeyring(account_id->keyring_id)) {
+      return network_manager.GetChain(mojom::kBitcoinMainnet,
+                                      mojom::CoinType::BTC);
+    } else {
+      return network_manager.GetChain(mojom::kBitcoinTestnet,
+                                      mojom::CoinType::BTC);
+    }
+  }
+
+  if (account_id->coin == mojom::CoinType::ADA) {
+    if (IsCardanoMainnetKeyring(account_id->keyring_id)) {
+      return network_manager.GetChain(mojom::kCardanoMainnet,
+                                      mojom::CoinType::ADA);
+    } else {
+      return network_manager.GetChain(mojom::kCardanoTestnet,
+                                      mojom::CoinType::ADA);
+    }
+  }
+
+  NOTREACHED();
+}
+
 }  // namespace
 
 struct PendingDecryptRequest {
@@ -187,6 +218,11 @@ BraveWalletService::BraveWalletService(
   if (IsCardanoEnabled()) {
     cardano_wallet_service_ = std::make_unique<CardanoWalletService>(
         *keyring_service(), *network_manager(), url_loader_factory);
+  }
+
+  if (IsPolkadotEnabled()) {
+    polkadot_wallet_service_ =
+        std::make_unique<PolkadotWalletService>(url_loader_factory);
   }
 
   tx_service_ = std::make_unique<TxService>(
@@ -287,6 +323,14 @@ void BraveWalletService::Bind(
     mojo::PendingReceiver<mojom::BitcoinWalletService> receiver) {
   if (GetBitcoinWalletService()) {
     GetBitcoinWalletService()->Bind(std::move(receiver));
+  }
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::PolkadotWalletService> receiver) {
+  if (GetPolkadotWalletService()) {
+    GetPolkadotWalletService()->Bind(std::move(receiver));
   }
 }
 
@@ -674,14 +718,9 @@ BraveWalletService::GetNetworkForSelectedAccountOnActiveOriginSync() {
     return {};
   }
 
-  if (selected_account->account_id->coin == mojom::CoinType::BTC) {
-    if (IsBitcoinMainnetKeyring(selected_account->account_id->keyring_id)) {
-      return network_manager()->GetChain(mojom::kBitcoinMainnet,
-                                         mojom::CoinType::BTC);
-    } else {
-      return network_manager()->GetChain(mojom::kBitcoinTestnet,
-                                         mojom::CoinType::BTC);
-    }
+  if (IsFixedSelectedNetworkCoin(selected_account->account_id->coin)) {
+    return GetFixedSelectedNetworkForAccount(*network_manager(),
+                                             selected_account->account_id);
   }
 
   return json_rpc_service_->GetNetworkSync(selected_account->account_id->coin,
@@ -695,8 +734,8 @@ mojom::NetworkInfoPtr BraveWalletService::GetNetworkForAccountOnOriginSync(
     return nullptr;
   }
 
-  if (!HasPermissionSync(origin, account)) {
-    return nullptr;
+  if (IsFixedSelectedNetworkCoin(account->coin)) {
+    return GetFixedSelectedNetworkForAccount(*network_manager(), account);
   }
 
   return json_rpc_service_->GetNetworkSync(account->coin, origin);
@@ -714,8 +753,8 @@ bool BraveWalletService::SetNetworkForAccountOnOriginSync(
     return false;
   }
 
-  if (!HasPermissionSync(origin, account)) {
-    return false;
+  if (IsFixedSelectedNetworkCoin(account->coin)) {
+    return true;
   }
 
   return json_rpc_service_->SetNetwork(chain_id, account->coin, origin);
@@ -1138,6 +1177,10 @@ BraveWalletP3A* BraveWalletService::GetBraveWalletP3A() {
 
 BitcoinWalletService* BraveWalletService::GetBitcoinWalletService() {
   return bitcoin_wallet_service_.get();
+}
+
+PolkadotWalletService* BraveWalletService::GetPolkadotWalletService() {
+  return polkadot_wallet_service_.get();
 }
 
 ZCashWalletService* BraveWalletService::GetZcashWalletService() {
@@ -1906,6 +1949,9 @@ void BraveWalletService::Reset() {
   }
   if (cardano_wallet_service_) {
     cardano_wallet_service_->Reset();
+  }
+  if (polkadot_wallet_service_) {
+    polkadot_wallet_service_->Reset();
   }
 
   // Clear BraveWalletService

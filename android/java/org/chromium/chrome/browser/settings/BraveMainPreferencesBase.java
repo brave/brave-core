@@ -18,6 +18,7 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -114,6 +115,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         // But, calling here has same effect because |onCreatePreferences()| is called by
         // onCreate().
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_main_preferences);
+
+        // Forward the custom menu item keys from main settings to appearance preference screen.
+        CustomizeBraveMenu.propagateMenuItemExtras(findPreference(PREF_APPEARANCE), getArguments());
 
         initBraveAccount();
         overrideChromiumPreferences();
@@ -391,6 +395,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
         // We want to move the address bar preference to the Appearence settings.
         removePreferenceIfPresent(MainSettings.PREF_ADDRESS_BAR);
+
+        // We want to move toolbar shortcut preference to the Appearence settings.
+        removePreferenceIfPresent(MainSettings.PREF_TOOLBAR_SHORTCUT);
     }
 
     // A wrapper to suppress NullAway warning for the prefs which always present

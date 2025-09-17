@@ -18,10 +18,6 @@
 <translation id="1544192797660353713">ウォレット</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">詳細…</translation>
-<translation id="9092796350041759828">{0, plural,
-          =1 {ゲストウィンドウを閉じる}
-          other {ゲストウィンドウを閉じる}
-        }</translation>
 <translation id="1990886731975529483">Google Widevineをインストールして実行</translation>
 <translation id="8926389886865778422">再表示させない</translation>
 <translation id="4900351245762303149">Google Widevineをインストール</translation>
@@ -140,7 +136,6 @@
 <translation id="6020553119523541665">このタブは別のウィンドウで有効になっています</translation>
 <translation id="4987392683074136770">このタブをクリックすると、コンテンツがこのウィンドウに表示されます</translation>
 <translation id="8355523213948477234">「スプリットビュー」メニューボタン</translation>
-<translation id="2104347391516032700">BATリワードサービス</translation>
 <translation id="6040143037577758943">閉じる</translation>
 <translation id="6665472986740899785">Brave通知広告</translation>
 <translation id="5582087890067572966">🎉 ウォレットの接続が完了しました！</translation>
@@ -194,7 +189,6 @@
 <translation id="2604698253988679506">これらの個人的な回答は、Braveが特定の機能の全体的な使用状況を推定し、お客様にとってより良いものにするために役立ちます。</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3ドメイン</translation>
-<translation id="5046066249040287308">Braveウォレットユーティリティサービス</translation>
 <translation id="4552520379838695057">申し訳ございません、そのページはありません。</translation>
 <translation id="7299769530898469069">保存されたバージョンを読み込めません</translation>
 <translation id="2609895996619941644">ウェイバックマシンで保存されたバージョンが利用可能か確認したいですか？</translation>
@@ -210,6 +204,8 @@
 <translation id="3228962656492373217">以下のタブを閉じる</translation>
 <translation id="8030501904366631501">すべてのタブをこのウィンドウに移動</translation>
 <translation id="253980346046488815">重複するタブを閉じる</translation>
+<translation id="8670218546624422041">コンテナで開く</translation>
+<translation id="8638526693050780542">コンテナの管理</translation>
 <translation id="2336228925368920074">すべてのタブをブックマークに追加...</translation>
 <translation id="2523967823495420116">垂直タブを使用</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{タブをミュート}other{タブをミュート}}</translation>
@@ -218,6 +214,8 @@
 <translation id="5611474372949142946">以下のタブを閉じる</translation>
 <translation id="573844928911967687">すべてのタブをこのウィンドウに移動</translation>
 <translation id="2703180365855369896">重複するタブを閉じる</translation>
+<translation id="1987871867023021397">コンテナで開く</translation>
+<translation id="6745991613881384719">コンテナの管理</translation>
 <translation id="3704707436873245822">画像からテキストをコピー</translation>
 <translation id="5268098808165185458">画像からテキストをコピーしています...</translation>
 <translation id="4046485130884276245">画像からテキストをコピーしました</translation>
@@ -342,6 +340,7 @@
 <translation id="1035309871698658326">これを開くと、プライベート以外のタブのタイトルと発信元が自動的にLeoに送信され、分類されます。</translation>
 <translation id="3435896845095436175">有効にする</translation>
 <translation id="1940221956626514677">ツールバーをカスタマイズ</translation>
+<translation id="6501807887341963552">テーマと色</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="1426410128494586442">はい</translation>
@@ -366,6 +365,19 @@
 <translation id="8000020256436988724">ツールバー</translation>
 <translation id="8076492880354921740">タブ</translation>
 <translation id="8168435359814927499">コンテンツ</translation>
+<translation id="6017560037265964523">コンテナ</translation>
+<translation id="934893482320683588">コンテナでブラウジングを整理します。<ph name="BEGIN_LINK"/>詳しく見る<ph name="END_LINK"/></translation>
+<translation id="7773735778926921278">新しいコンテナを追加</translation>
+<translation id="8900907990448657776">コンテナを編集</translation>
+<translation id="7900511996284443779">コンテナを削除</translation>
+<translation id="2738687336989232152">コンテナ <ph name="CONTAINER_NAME"/>を削除してもよろしいですか？ これにより、すべての関連データが削除されます。</translation>
+<translation id="5327248766486351172">名前</translation>
+<translation id="104766043551382253">アイコン</translation>
+<translation id="5431318178759467895">色</translation>
+<translation id="4328541188421002379">「仕事」「個人」など、コンテナに名前を付けてください</translation>
+<translation id="4976989127264491396">エラー: <ph name="ERROR_MESSAGE"/></translation>
+<translation id="5436069931267876389">コンテナが見つかりません</translation>
+<translation id="2263346047290834619">ツリータブを使用</translation>
 <translation id="5860254591544742609">タイトルバーを表示</translation>
 <translation id="5371926069408837914">折りたたまれている状態でマウスオーバーすると、垂直タブパネルを展開</translation>
 <translation id="3367129510799209147">タブホバーモード</translation>
@@ -393,8 +405,6 @@
 <translation id="7158817046543187970">ブックマーク バーをすべてのページで非表示</translation>
 <translation id="3416468988018290825">常に完全な URL を表示</translation>
 <translation id="5529693968082667490">タブの検索ボタンを表示</translation>
-<translation id="1013121820689882118">Speedreader</translation>
-<translation id="2025435450953474282">記事が自動的にリーダーモードで読み込まれるため、時間を節約できます</translation>
 <translation id="7984721311211272523">タブのスピーカーアイコンでミュート機能を無効にする</translation>
 <translation id="832432428796481785">サイドバーのボタンを表示</translation>
 <translation id="5581036754486769849">プライベートウィンドウでオートフィルを許可</translation>
@@ -473,7 +483,6 @@
 <translation id="9202707370720720635">カスタムスクリプトレット</translation>
 <translation id="5524306331330789642">新しいスクリプトレットを追加</translation>
 <translation id="3865146371459790194">スクリプトレットを編集</translation>
-<translation id="5327248766486351172">名前</translation>
 <translation id="5584409054843451563">このスクリプトレットを削除してもよろしいですか？このスクリプトレットが任意のカスタムフィルターで使用されている場合は、動作しなくなります。</translation>
 <translation id="4545850500562727184">スクリプトレットがすでに存在しています。</translation>
 <translation id="4877521822848390663">無効なスクリプトレット名です。</translation>
@@ -540,6 +549,9 @@
 <translation id="5390923430722428146">Solana</translation>
 <translation id="4539536028173362640">サイトのSolanaプロバイダーAPIへのアクセス可否を確認</translation>
 <translation id="2777102601740875941">SolanaプロバイダーAPIのアクセスからサイトをブロック</translation>
+<translation id="6420374098612710803">Cardano</translation>
+<translation id="2791323819881188032">サイトのCardanoプロバイダーAPIへのアクセス可否を確認</translation>
+<translation id="2354424632502836676">CardanoプロバイダーAPIのアクセスからサイトをブロック</translation>
 <translation id="4206299587103092719">Google サインイン</translation>
 <translation id="9110294136812584522">サイトは、サードパーティのCookieを介して、レガシーのGoogleサインインの利用を求めることができる</translation>
 <translation id="2903783737778379345">サードパーティCookieを使用したレガシーのGoogleサインインを許可しない</translation>
@@ -678,6 +690,7 @@
 <translation id="7013485839273047434">機能拡張をさらに取得</translation>
 <translation id="4954512758656527938">デフォルトの Ethereum ウォレット</translation>
 <translation id="7701023802820268122">デフォルトの Solana ウォレット</translation>
+<translation id="3991455933137809014">デフォルトの Cardano ウォレット</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="6942354363301686374">拡張機能（フォールバックなし）</translation>
 <translation id="702381242110464396">拡張機能（Braveウォレットのフォールバック）</translation>
@@ -753,14 +766,16 @@
 <translation id="8172263161008556851">会話でおすすめのプロンプトを表示</translation>
 <translation id="5781842473834867765">会話履歴を保存</translation>
 <translation id="1082960401708055995">会話ストレージを無効にすると、以前に保存された会話はすべて永久に消去されます。この操作を元に戻すことはできません。</translation>
-<translation id="6106701981952170121">Leo AI 会話データをすべて削除</translation>
-<translation id="1335414530428321716">Leo AIをリセットすると、将来的にBrave Leo AIを使用するためのオプトインが必要になり、チャット履歴も消去されます。
+<translation id="1014480593522400586">Leoのデータを消去</translation>
+<translation id="5256236967791936135">Leo AIをリセットすると、将来的にBrave Leo AIを使用するためのオプトインが必要になり、チャット履歴、カスタマイゼーション、メモリーも消去されます。
 チャット履歴の消去は、以前のBrave Leo AIとの会話をすべて削除します。この操作を元に戻すことはできません。</translation>
 <translation id="5574059574002819179">オートコンプリートの候補を調整する</translation>
 <translation id="7942415993090181327">チャット履歴</translation>
 <translation id="5084498230659987096">Brave Leoは、プライバシーファーストのAIチャットをはじめ、AIを搭載したインターフェースをブラウザ内で提供します。Leoがあなたのデータから学習したり、モデルのトレーニングに使用したりすることはありません。すべてのリクエストは匿名化サーバーを経由してプロキシされます。</translation>
 <translation id="6458721693611638005">BraveがあなたのAI使用をどのように保護するかについては、Leoのプライバシーポリシーをお読みください。 <ph name="BEGIN_LINK"/>詳細はこちら<ph name="END_LINK"/></translation>
 <translation id="614530507403667291">新しい会話向けデフォルトモデル</translation>
+<translation id="6340526405444716530">パーソナライゼーション</translation>
+<translation id="5077965667729100040">Leoの応答とメモリをカスタマイズ</translation>
 <translation id="8826914609353373601">プレミアムサブスクリプションを管理</translation>
 <translation id="235457946228076038">モデルを自由にカスタマイズ</translation>
 <translation id="8631951653187535788">このモデルを削除しますか？このモデルがアクティブな会話で使用されている場合、その会話はLeoのデフォルトモデルを使用するよう変更されます。</translation>
@@ -794,6 +809,33 @@
 <translation id="6304169450064541679">システムプロンプト</translation>
 <translation id="3081947790648024460">モデルに特定の方向やスタイルで応答させるためのカスタム指示やコンテキストです。現在の日付や時刻を挿入したい場合は、%datetime%を使用してください。</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> トークン</translation>
+<translation id="6911466383346197271">Leoのカスタマイズ</translation>
+<translation id="5702085383070170010">あなたについて</translation>
+<translation id="2493241731563937877">ご自身についてLeoに教えると、よりパーソナライズされた回答が得られます。<ph name="BEGIN_LINK"/>詳しく見る<ph name="END_LINK"/></translation>
+<translation id="8536280915366791221">レオのカスタマイズを有効にする</translation>
+<translation id="698972836993887081">ユーザーメモリーを有効にする</translation>
+<translation id="4256342809997283108">Leoにあなたを何と呼ばせますか？</translation>
+<translation id="1362393385416256849">Leoがあなたを呼ぶのに使う名前を入力してください</translation>
+<translation id="7841672648317556034">あなたはどんなことをしていますか？</translation>
+<translation id="1228535384519357095">Leoにあなたの仕事や活動について簡単に教えてください</translation>
+<translation id="1300619108689988155">Leoにどんな風に回答してほしいですか？</translation>
+<translation id="5071940952740278148">回答時にLeoに使用させたい口調や特徴を記述してください</translation>
+<translation id="5647284470247510206">他にLEOが知っておくべきことはありますか？</translation>
+<translation id="7228073810237286235">回答時に留意すべきことがあれば、Leoに教えてください</translation>
+<translation id="683188035663069399">変更を保存しました</translation>
+<translation id="6708571471662618310">文字数制限を超えています</translation>
+<translation id="8213464188712611711">メモリー</translation>
+<translation id="736384197563279828">Leoがあなたについて学び記憶しているすべてのこと<ph name="BEGIN_LINK"/>詳しく見る<ph name="END_LINK"/></translation>
+<translation id="4664222465181795837">まだメモリーが作成されていません</translation>
+<translation id="8914960762169062277">メモリーを追加すると、Leoがあなたをもっとよく知ることができるようになります</translation>
+<translation id="4358891361699697299">新しいメモリーを追加する</translation>
+<translation id="6028732745612718012">このメモリーを編集する</translation>
+<translation id="3970015815965490773">新しいメモリーを作成</translation>
+<translation id="1206639071829035972">Leoに覚えていてほしいことは何ですか？</translation>
+<translation id="2076082422799949288">このメモリーを削除する</translation>
+<translation id="1721787502053471881">本当にこのメモリーを削除しますか？この操作は元に戻せません。</translation>
+<translation id="5239685926753073108">すべてのメモリーを削除する</translation>
+<translation id="2600803466586623124">本当にすべてのメモリーを削除しますか？この操作は元に戻せません。</translation>
 <translation id="5985516785067818307">調査パネリスト</translation>
 <translation id="8347743943525229984">Braveアンケートを許可</translation>
 <translation id="3204080538332044581">Braveに対し、新しいタブページに匿名アンケートへのリンクを表示することを許可します。こうした調査は、より良い機能の構築や、ブラウザベースの広告キャンペーンの効果測定などに役立ちます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>

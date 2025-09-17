@@ -657,15 +657,14 @@
                 : query_parser::MatchingAlgorithm::DEFAULT);
 
     NSMutableArray<IOSBookmarkNode*>* nodes = [[NSMutableArray alloc] init];
+
     for (const auto& result : results) {
-      for (const bookmarks::BookmarkNode* bookmark :
-           bookmarks_api->bookmark_model_->GetNodesByURL(
-               result.node->GetTitledUrlNodeUrl())) {
-        IOSBookmarkNode* node = [[IOSBookmarkNode alloc]
-            initWithNode:bookmark
-                   model:bookmarks_api->bookmark_model_];
-        [nodes addObject:node];
-      }
+      const bookmarks::BookmarkNode* bookmark_node =
+          static_cast<const bookmarks::BookmarkNode*>(result.node.get());
+      IOSBookmarkNode* node =
+          [[IOSBookmarkNode alloc] initWithNode:bookmark_node
+                                          model:bookmarks_api->bookmark_model_];
+      [nodes addObject:node];
     }
     completion(nodes);
   };

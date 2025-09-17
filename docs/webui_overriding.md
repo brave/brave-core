@@ -67,7 +67,7 @@ and modify the prototype of the upstream class.
 ```ts
 import { FancyElement } from './fancy-chromium.js'
 
-declare module './item-chromium.js' {
+declare module './fancy-chromium.js' {
   interface FancyElement {
     isBraveAndFancy: () => boolean
   }
@@ -155,7 +155,7 @@ mangle(e => {
 
 These overrides have an automatically generated test which checks to see whether
 the mangler still applies. To generate (or update the test) run
-`npm run test-unit -- "mangled files should have up to date snapshots" -u`.
+`npm run test-unit -- -t "mangled files should have up to date snapshots" -u`.
 
 If the test fails it indicates that upstream has changed and we should check the
 override still applies. If it does, then it is safe to update the snapshot.

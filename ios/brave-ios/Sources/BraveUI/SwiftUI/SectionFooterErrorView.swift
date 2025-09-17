@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import DesignSystem
 import SwiftUI
 
 public struct SectionFooterErrorView: View {
@@ -15,7 +16,7 @@ public struct SectionFooterErrorView: View {
   public var body: some View {
     if let errorMessage {
       HStack(alignment: .firstTextBaseline, spacing: 4) {
-        Image(systemName: "exclamationmark.circle.fill")
+        Image(braveSystemName: "leo.warning.circle-filled")
         Text(errorMessage)
           .fixedSize(horizontal: false, vertical: true)
           .animation(nil, value: errorMessage)

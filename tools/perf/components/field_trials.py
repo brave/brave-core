@@ -42,8 +42,8 @@ def ParseFieldTrialsMode(string_type: str) -> FieldTrialsMode:
   raise RuntimeError('Bad field trial mode ' + string_type)
 
 
-def MakeFieldTrials(mode: FieldTrialsMode, artifacts_dir: str,
-                    version: Optional[BraveVersion],
+def MakeFieldTrials(mode: FieldTrialsMode, variations_channel: Optional[str],
+                    artifacts_dir: str, version: Optional[BraveVersion],
                     variations_repo_dir: Optional[str]) -> FieldTrialConfig:
   if mode != FieldTrialsMode.GRIFFIN:
     return FieldTrialConfig(mode, None, '')
@@ -74,7 +74,7 @@ def MakeFieldTrials(mode: FieldTrialsMode, artifacts_dir: str,
   assert os.path.isfile(seed_path)
   with open(seed_path, 'rb') as seed_file:
     seed = seed_file.read()
-  return FieldTrialConfig(mode, seed, sha1)
+  return FieldTrialConfig(mode, seed, sha1, variations_channel)
 
 
 def MaybeInjectSeedToLocalState(field_trial_config: FieldTrialConfig,

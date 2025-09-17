@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_COMMON_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_COMMON_H_
 
-#include <cstdint>
+#include <stddef.h>
+#include <stdint.h>
+
 #include <optional>
 
 namespace brave_wallet {

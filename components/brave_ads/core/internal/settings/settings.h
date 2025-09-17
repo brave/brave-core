@@ -9,6 +9,7 @@
 namespace brave_ads {
 
 bool UserHasJoinedBraveRewards();
+bool UserHasJoinedBraveRewardsAndNotConnectedWallet();
 bool UserHasJoinedBraveRewardsAndConnectedWallet();
 
 bool UserHasOptedInToBraveNewsAds();

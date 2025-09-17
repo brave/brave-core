@@ -190,6 +190,10 @@ static_library("browser") {
     "nonce_tracker.h",
     "password_encryptor.cc",
     "password_encryptor.h",
+    "polkadot/polkadot_substrate_rpc.cc",
+    "polkadot/polkadot_substrate_rpc.h",
+    "polkadot/polkadot_wallet_service.cc",
+    "polkadot/polkadot_wallet_service.h",
     "scoped_txs_update.cc",
     "scoped_txs_update.h",
     "simple_hash_client.cc",
@@ -477,6 +481,8 @@ source_set("hd_keyring") {
     "ethereum_keyring.h",
     "filecoin_keyring.cc",
     "filecoin_keyring.h",
+    "polkadot/polkadot_keyring.cc",
+    "polkadot/polkadot_keyring.h",
     "secp256k1_hd_keyring.cc",
     "secp256k1_hd_keyring.h",
     "solana_keyring.cc",
@@ -714,6 +720,8 @@ source_set("unit_tests") {
     "network_manager_unittest.cc",
     "nft_metadata_fetcher_unittest.cc",
     "password_encryptor_unittest.cc",
+    "polkadot/polkadot_keyring_unittest.cc",
+    "polkadot/polkadot_wallet_service_unittest.cc",
     "rlp_decode_unittest.cc",
     "rlp_encode_unittest.cc",
     "simple_hash_client_unittest.cc",
@@ -832,6 +840,9 @@ source_set("unit_tests") {
   }
 
   data = [
+    "//brave/components/test/data/brave_wallet",
+    "//brave/components/test/data/brave_wallet/cardano/cardano_sdk_cip30/test_vectors.json",
+
     # Test vectors for
     # BitcoinSerializer.AddressToScriptPubkey_BitcoinCoreTestVectors test.
     "//brave/third_party/bitcoin-core/src/src/test/data/key_io_valid.json",

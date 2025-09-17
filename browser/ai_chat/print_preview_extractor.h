@@ -9,7 +9,6 @@
 #include <cstdint>
 #include <memory>
 #include <string>
-#include <variant>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
@@ -30,11 +29,8 @@ class PrintPreviewExtractor
   // Performs the print preview extraction. Used only for a single operation.
   class Extractor {
    public:
-    using TextCallback =
-        AIChatTabHelper::PrintPreviewExtractionDelegate::ExtractCallback;
     using ImageCallback =
-        AIChatTabHelper::PrintPreviewExtractionDelegate::CapturePdfCallback;
-    using CallbackVariant = std::variant<TextCallback, ImageCallback>;
+        AIChatTabHelper::PrintPreviewExtractionDelegate::CaptureImagesCallback;
 
     virtual ~Extractor() = default;
     virtual void CreatePrintPreview() = 0;
@@ -45,22 +41,20 @@ class PrintPreviewExtractor
       base::RepeatingCallback<std::unique_ptr<Extractor>(
           content::WebContents* web_contents,
           bool is_pdf,
-          Extractor::CallbackVariant&&)>;
+          Extractor::ImageCallback&&)>;
   PrintPreviewExtractor(content::WebContents* web_contents,
                         CreateExtractorCallback callback);
   ~PrintPreviewExtractor() override;
   PrintPreviewExtractor(const PrintPreviewExtractor&) = delete;
   PrintPreviewExtractor& operator=(const PrintPreviewExtractor&) = delete;
 
-  void Extract(ExtractCallback callback) override;
-
-  void CapturePdf(CapturePdfCallback callback) override;
+  void CaptureImages(CaptureImagesCallback callback) override;
 
  private:
   friend class PrintPreviewExtractorTest;
-  template <typename CallbackType, typename ResultType>
-  void OnComplete(CallbackType callback,
-                  base::expected<ResultType, std::string> result);
+  void OnComplete(
+      Extractor::ImageCallback callback,
+      base::expected<std::vector<std::vector<uint8_t>>, std::string> result);
 
   CreateExtractorCallback create_extractor_callback_;
   std::unique_ptr<Extractor> extractor_;

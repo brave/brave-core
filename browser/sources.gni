@@ -31,7 +31,6 @@ import("//brave/browser/profiles/sources.gni")
 import("//brave/browser/renderer_context_menu/sources.gni")
 import("//brave/browser/request_otr/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
-import("//brave/browser/speedreader/sources.gni")
 import("//brave/browser/sync/sources.gni")
 import("//brave/browser/themes/sources.gni")
 import("//brave/browser/ui/config.gni")
@@ -126,6 +125,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_ads:impl",
   "//brave/browser/brave_ads/creatives/search_result_ad",
   "//brave/browser/brave_ads/tabs",
+  "//brave/browser/brave_origin",
   "//brave/browser/brave_rewards:brave_rewards_impl",
   "//brave/browser/brave_rewards:util",
   "//brave/browser/brave_search",
@@ -155,6 +155,7 @@ brave_chrome_browser_deps = [
   "//brave/components/ai_rewriter/common/buildflags",
   "//brave/components/body_sniffer",
   "//brave/components/brave_account:features",
+  "//brave/components/brave_account/mojom",
   "//brave/components/brave_adaptive_captcha",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/core",
@@ -164,6 +165,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_news/common:mojom",
   "//brave/components/brave_origin",
   "//brave/components/brave_perf_predictor/browser",
+  "//brave/components/brave_policy",
   "//brave/components/brave_private_new_tab_ui/common",
   "//brave/components/brave_private_new_tab_ui/common:mojom",
   "//brave/components/brave_referrals/browser",
@@ -314,7 +316,6 @@ if (!is_android) {
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom",
     "//brave/browser/ui/webui/brave_news_internals",
     "//brave/browser/user_education:features",
-    "//brave/components/brave_account/mojom",
     "//chrome/browser/regional_capabilities",
     "//chrome/browser/ui/thumbnails",
     "//components/feed:feature_list",
@@ -394,8 +395,8 @@ if (enable_omaha4) {
 
 if (enable_speedreader) {
   brave_chrome_browser_deps += [
-    "//brave/components/speedreader/common",
-    "//brave/components/speedreader/common:mojom",
+    "//brave/browser/speedreader",
+    "//brave/browser/ui/speedreader",
   ]
 }
 
@@ -482,7 +483,10 @@ if (toolkit_views) {
   brave_chrome_browser_sources += brave_browser_onboarding_sources
 
   brave_chrome_browser_deps += brave_browser_onboarding_deps
-  brave_chrome_browser_deps += [ "//brave/components/sidebar/browser" ]
+  brave_chrome_browser_deps += [
+    "//brave/browser/ui/darker_theme",
+    "//brave/components/sidebar/browser",
+  ]
 }
 
 if (enable_extensions) {
@@ -590,7 +594,6 @@ brave_chrome_browser_sources += brave_browser_playlist_sources
 brave_chrome_browser_sources += brave_browser_renderer_context_menu_sources
 brave_chrome_browser_sources += brave_browser_request_otr_sources
 brave_chrome_browser_sources += brave_browser_search_engines_sources
-brave_chrome_browser_sources += brave_browser_speedreader_sources
 brave_chrome_browser_sources += brave_browser_sync_sources
 brave_chrome_browser_sources += brave_browser_themes_sources
 brave_chrome_browser_sources += brave_browser_url_sanitizer_sources
@@ -620,7 +623,6 @@ brave_chrome_browser_deps += brave_browser_playlist_deps
 brave_chrome_browser_deps += brave_browser_renderer_context_menu_deps
 brave_chrome_browser_deps += brave_browser_request_otr_deps
 brave_chrome_browser_deps += brave_browser_search_engines_deps
-brave_chrome_browser_deps += brave_browser_speedreader_deps
 brave_chrome_browser_deps += brave_browser_sync_deps
 brave_chrome_browser_deps += brave_browser_themes_deps
 brave_chrome_browser_deps += brave_browser_url_sanitizer_deps

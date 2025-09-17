@@ -37,7 +37,7 @@
 #include "ui/views/painter.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #endif
 
 namespace {

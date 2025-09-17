@@ -11,12 +11,16 @@
 #include "brave/components/email_aliases/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
+#include "content/public/browser/storage_partition.h"
 
 namespace email_aliases {
 
 // static
 EmailAliasesService* EmailAliasesServiceFactory::GetServiceForProfile(
     Profile* profile) {
+  if (!base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+    return nullptr;
+  }
   return static_cast<EmailAliasesService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
@@ -47,10 +51,9 @@ EmailAliasesServiceFactory::~EmailAliasesServiceFactory() = default;
 std::unique_ptr<KeyedService>
 EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  if (!base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
-    return nullptr;
-  }
-  return std::make_unique<EmailAliasesService>();
+  return std::make_unique<EmailAliasesService>(
+      context->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess());
 }
 
 }  // namespace email_aliases

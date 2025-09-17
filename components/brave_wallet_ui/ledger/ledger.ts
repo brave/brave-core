@@ -17,6 +17,18 @@ import { EthereumLedgerUntrustedMessagingTransport } from '../common/hardware/le
 import { FilecoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/fil-ledger-untrusted-transport'
 import { BitcoinLedgerUntrustedMessagingTransport } from '../common/hardware/ledgerjs/btc_ledger_untrusted_transport'
 
+// Security: URL sanitization function to validate targetUrl
+const checkWebuiScheme = (url: string): string | null => {
+  const parsed = new URL(url)
+  if (
+    parsed.protocol === 'chrome-untrusted:'
+    || parsed.protocol === `chrome:`
+  ) {
+    return url
+  }
+  return null
+}
+
 const setUpAuthorizeButtonListener = (
   targetUrl: string,
   bridgeType: string,
@@ -75,5 +87,8 @@ const params = new URLSearchParams(window.location.search)
 const targetUrl = params.get('targetUrl')
 const bridgeType = params.get('bridgeType')
 if (targetUrl && bridgeType) {
-  setUpAuthorizeButtonListener(targetUrl, bridgeType)
+  const sanitizedUrl = checkWebuiScheme(targetUrl)
+  if (sanitizedUrl) {
+    setUpAuthorizeButtonListener(sanitizedUrl, bridgeType)
+  }
 }

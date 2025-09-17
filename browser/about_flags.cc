@@ -73,6 +73,7 @@
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
+#include "content/public/common/content_features.h"
 #else
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/components/commander/common/features.h"
@@ -105,6 +106,10 @@
 
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/components/psst/common/features.h"
+#endif
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/darker_theme/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -369,11 +374,20 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       kOsAndroid,                                                    \
       FEATURE_VALUE_TYPE(features::kBraveAndroidDynamicColors),      \
   })
+#define BRAVE_ANDROID_OPEN_PDF_INLINE                      \
+  EXPAND_FEATURE_ENTRIES({                                 \
+      "brave-android-open-pdf-inline",                     \
+      "Open PDF inline on Android",                        \
+      "Opens pdf files in browser when enabled.",          \
+      kOsAndroid,                                          \
+      FEATURE_VALUE_TYPE(features::kAndroidOpenPdfInline), \
+  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
 #define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID
 #define BRAVE_ANDROID_DYNAMIC_COLORS
+#define BRAVE_ANDROID_OPEN_PDF_INLINE
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -453,13 +467,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           MULTI_VALUE_TYPE(kVerticalTabCollapseDelayChoices),                  \
       },                                                                       \
       {                                                                        \
-          "brave-split-view",                                                  \
-          "Enable split view",                                                 \
-          "Enables split view",                                                \
-          kOsWin | kOsMac | kOsLinux,                                          \
-          FEATURE_VALUE_TYPE(tabs::features::kBraveSplitView),                 \
-      },                                                                       \
-      {                                                                        \
           "brave-tree-tab",                                                    \
           "Brave Tree Tab",                                                    \
           "Enables the Tree Tab feature",                                      \
@@ -473,6 +480,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsWin | kOsMac | kOsLinux,                                          \
           FEATURE_VALUE_TYPE(tabs::features::kBraveRenamingTabs),              \
       })
+
 #else
 #define BRAVE_TABS_FEATURE_ENTRIES
 #endif
@@ -488,6 +496,19 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsMac,                                                              \
           FEATURE_VALUE_TYPE(brave::kUpgradeWhenIdle),                         \
       }))
+
+#if defined(TOOLKIT_VIEWS)
+#define BRAVE_DARKER_THEME_FEATURE_ENTRIES                           \
+  EXPAND_FEATURE_ENTRIES({                                           \
+      "brave-midnight-theme",                                        \
+      "Brave Midnight Theme",                                        \
+      "Enables the Brave Midnight theme",                            \
+      kOsWin | kOsMac | kOsLinux,                                    \
+      FEATURE_VALUE_TYPE(darker_theme::features::kBraveDarkerTheme), \
+  })
+#else
+#define BRAVE_DARKER_THEME_FEATURE_ENTRIES
+#endif  // defined(TOOLKIT_VIEWS)
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 #define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                      \
@@ -893,6 +914,21 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               brave_shields::features::kBraveShieldsElementPicker),            \
       },                                                                       \
       {                                                                        \
+          "brave-farbling",                                                    \
+          "Enable Brave Farbling",                                             \
+          "Enables randomization of fingerprinting-susceptible WebAPIs",       \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveFarbling),         \
+      },                                                                       \
+      {                                                                        \
+          "brave-provisional-tld-ephemeral-lifetime",                          \
+          "Enable Provisional TLDEphemeralLifetime",                           \
+          "Cleanup third party cookies set during redirects",                  \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              net::features::kBraveProvisionalTLDEphemeralLifetime),           \
+      },                                                                       \
+      {                                                                        \
           "brave-super-referral",                                              \
           "Enable Brave Super Referral",                                       \
           "Use custom theme for Brave Super Referral",                         \
@@ -1172,8 +1208,10 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                                     \
   BRAVE_ANDROID_DYNAMIC_COLORS                                                 \
+  BRAVE_ANDROID_OPEN_PDF_INLINE                                                \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
+  BRAVE_DARKER_THEME_FEATURE_ENTRIES                                           \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_REWRITER                                                            \
   BRAVE_OMNIBOX_FEATURES                                                       \

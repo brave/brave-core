@@ -136,6 +136,21 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   .memory-input {
     width: 100%;
   }
+
+  .search-container {
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  .no-results-title {
+    color: var(--leo-color-text-primary);
+    font-weight: 600;
+  }
+
+  .clear-search-link {
+    color: var(--leo-color-text-primary);
+    text-decoration: underline;
+    font-weight: 400;
+  }
 </style>
 
 <div class="settings-box header">
@@ -155,6 +170,26 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
 <template is="dom-if" if="[[prefs.brave.ai_chat.user_memory_enabled.value]]" restamp>
   <div class="list-container">
+    <div class="search-container">
+      <leo-input
+        type="text"
+        placeholder="$i18n{braveLeoAssistantSearchMemoriesPlaceholder}"
+        value="[[searchQuery_]]"
+        disabled$="[[!hasMemories_(memoriesList_)]]"
+        on-input="onSearchInput_">
+        <leo-icon name="search" slot="left-icon"></leo-icon>
+        <template is="dom-if" if="[[searchQuery_]]">
+          <leo-button
+            kind="plain-faint"
+            fab
+            size="small"
+            slot="right-icon"
+            on-click="clearSearch_">
+            <leo-icon name="close"></leo-icon>
+          </leo-button>
+        </template>
+      </leo-input>
+    </div>
     <template
       is="dom-if"
       if="[[!hasMemories_(memoriesList_)]]"
@@ -169,12 +204,22 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
     <template
       is="dom-if"
-      if="[[hasMemories_(memoriesList_)]]"
+      if="[[hasNoSearchResults_(memoriesList_, searchQuery_)]]"
+    >
+      <div class="empty-memories-table">
+        <div class="no-results-title">$i18n{braveLeoAssistantNoSearchResultsFound}</div>
+        <div class="clear-search-link" on-click="clearSearch_">$i18n{braveLeoAssistantClearSearch}</div>
+      </div>
+    </template>
+
+    <template
+      is="dom-if"
+      if="[[shouldShowMemories_(memoriesList_, searchQuery_)]]"
     >
       <div class="list">
         <template
           is="dom-repeat"
-          items="[[memoriesList_]]"
+          items="[[getFilteredMemories_(memoriesList_, searchQuery_)]]"
         >
           <div class="memory">
             <div class="memory-info">

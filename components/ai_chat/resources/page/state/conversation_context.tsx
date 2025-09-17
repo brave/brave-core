@@ -7,16 +7,19 @@ import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import * as Mojom from '../../common/mojom'
-import useSendFeedback, { defaultSendFeedbackState, SendFeedbackState } from './useSendFeedback'
+import useSendFeedback, {
+  defaultSendFeedbackState,
+  SendFeedbackState,
+} from './useSendFeedback'
 import { isLeoModel } from '../model_utils'
 import { tabAssociatedChatId, useActiveChat } from './active_chat_context'
 import { useAIChat } from './ai_chat_context'
 import getAPI from '../api'
+import { IGNORE_EXTERNAL_LINK_WARNING_KEY } from '../../common/constants'
 import {
-  IGNORE_EXTERNAL_LINK_WARNING_KEY
-} from '../../common/constants'
-import {
-  updateConversationHistory, processUploadedFilesWithLimits
+  updateConversationHistory,
+  processUploadedFilesWithLimits,
+  isFullPageScreenshot,
 } from '../../common/conversation_history_utils'
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useIsDragging } from '../hooks/useIsDragging'
@@ -32,64 +35,66 @@ export interface CharCountContext {
 
 export type UploadedImageData = Mojom.UploadedFile
 
-export type ConversationContext = SendFeedbackState & CharCountContext & {
-  historyInitialized: boolean
-  conversationUuid?: string
-  conversationHistory: Mojom.ConversationTurn[]
-  associatedContentInfo: Mojom.AssociatedContent[]
-  allModels: Mojom.Model[]
-  currentModel?: Mojom.Model
-  suggestedQuestions: string[]
-  isGenerating: boolean
-  suggestionStatus: Mojom.SuggestionGenerationStatus
-  currentError: Mojom.APIError | undefined
-  apiHasError: boolean
-  shouldDisableUserInput: boolean
-  shouldShowLongPageWarning: boolean
-  shouldShowLongConversationInfo: boolean
-  inputText: string
-  selectedActionType: Mojom.ActionType | undefined
-  isToolsMenuOpen: boolean
-  isCurrentModelLeo: boolean
-  generatedUrlToBeOpened: Url | undefined
-  isDragActive: boolean
-  isDragOver: boolean
-  clearDragState: () => void
-  setCurrentModel: (model: Mojom.Model) => void
-  switchToBasicModel: () => void
-  generateSuggestedQuestions: () => void
-  dismissLongConversationInfo: () => void
-  retryAPIRequest: () => void
-  handleResetError: () => void
-  handleStopGenerating: () => Promise<void>
-  setInputText: (text: string) => void
-  submitInputTextToAPI: () => void
-  resetSelectedActionType: () => void
-  handleActionTypeClick: (actionType: Mojom.ActionType) => void
-  setIsToolsMenuOpen: (isOpen: boolean) => void
-  handleVoiceRecognition?: () => void
-  disassociateContent: (content: Mojom.AssociatedContent) => void,
-  associateDefaultContent?: () => void,
-  conversationHandler?: Mojom.ConversationHandlerRemote
+export type ConversationContext = SendFeedbackState
+  & CharCountContext & {
+    historyInitialized: boolean
+    conversationUuid?: string
+    conversationHistory: Mojom.ConversationTurn[]
+    associatedContentInfo: Mojom.AssociatedContent[]
+    allModels: Mojom.Model[]
+    currentModel?: Mojom.Model
+    suggestedQuestions: string[]
+    isGenerating: boolean
+    suggestionStatus: Mojom.SuggestionGenerationStatus
+    currentError: Mojom.APIError | undefined
+    apiHasError: boolean
+    shouldDisableUserInput: boolean
+    shouldShowLongPageWarning: boolean
+    shouldShowLongConversationInfo: boolean
+    inputText: string
+    selectedActionType: Mojom.ActionType | undefined
+    isToolsMenuOpen: boolean
+    isCurrentModelLeo: boolean
+    generatedUrlToBeOpened: Url | undefined
+    isDragActive: boolean
+    isDragOver: boolean
+    unassociatedTabs: Mojom.TabData[]
+    clearDragState: () => void
+    setCurrentModel: (model: Mojom.Model) => void
+    switchToBasicModel: () => void
+    generateSuggestedQuestions: () => void
+    dismissLongConversationInfo: () => void
+    retryAPIRequest: () => void
+    handleResetError: () => void
+    handleStopGenerating: () => Promise<void>
+    setInputText: (text: string) => void
+    submitInputTextToAPI: () => void
+    resetSelectedActionType: () => void
+    handleActionTypeClick: (actionType: Mojom.ActionType) => void
+    setIsToolsMenuOpen: (isOpen: boolean) => void
+    handleVoiceRecognition?: () => void
+    disassociateContent: (content: Mojom.AssociatedContent) => void
+    associateDefaultContent?: () => void
+    conversationHandler?: Mojom.ConversationHandlerRemote
 
-  isTemporaryChat: boolean
-  showAttachments: boolean
-  setShowAttachments: (show: boolean) => void
-  uploadFile: (useMediaCapture: boolean) => void
-  getScreenshots: () => void
-  removeFile: (index: number) => void
-  setGeneratedUrlToBeOpened: (url?: Url) => void
-  setIgnoreExternalLinkWarning: () => void
-  pendingMessageFiles: Mojom.UploadedFile[]
-  isUploadingFiles: boolean
-  setTemporary: (temporary: boolean) => void
-  attachImages: (images: Mojom.UploadedFile[]) => void
-}
+    isTemporaryChat: boolean
+    attachmentsDialog: 'tabs' | null
+    setAttachmentsDialog: (show: 'tabs' | null) => void
+    uploadFile: (useMediaCapture: boolean) => void
+    getScreenshots: () => void
+    removeFile: (index: number) => void
+    setGeneratedUrlToBeOpened: (url?: Url) => void
+    setIgnoreExternalLinkWarning: () => void
+    pendingMessageFiles: Mojom.UploadedFile[]
+    isUploadingFiles: boolean
+    setTemporary: (temporary: boolean) => void
+    attachImages: (images: Mojom.UploadedFile[]) => void
+  }
 
 export const defaultCharCountContext: CharCountContext = {
   isCharLimitApproaching: false,
   isCharLimitExceeded: false,
-  inputTextCharCountDisplay: ''
+  inputTextCharCountDisplay: '',
 }
 
 export const defaultContext: ConversationContext = {
@@ -112,34 +117,35 @@ export const defaultContext: ConversationContext = {
   generatedUrlToBeOpened: undefined,
   isDragActive: false,
   isDragOver: false,
-  clearDragState: () => { },
-  setCurrentModel: () => { },
-  switchToBasicModel: () => { },
-  generateSuggestedQuestions: () => { },
-  dismissLongConversationInfo: () => { },
-  retryAPIRequest: () => { },
-  handleResetError: () => { },
-  handleStopGenerating: async () => { },
-  setInputText: () => { },
-  submitInputTextToAPI: () => { },
-  resetSelectedActionType: () => { },
-  handleActionTypeClick: () => { },
-  setIsToolsMenuOpen: () => { },
+  unassociatedTabs: [],
+  clearDragState: () => {},
+  setCurrentModel: () => {},
+  switchToBasicModel: () => {},
+  generateSuggestedQuestions: () => {},
+  dismissLongConversationInfo: () => {},
+  retryAPIRequest: () => {},
+  handleResetError: () => {},
+  handleStopGenerating: async () => {},
+  setInputText: () => {},
+  submitInputTextToAPI: () => {},
+  resetSelectedActionType: () => {},
+  handleActionTypeClick: () => {},
+  setIsToolsMenuOpen: () => {},
   isTemporaryChat: false,
-  disassociateContent: () => { },
-  showAttachments: false,
-  setShowAttachments: () => { },
-  uploadFile: (useMediaCapture: boolean) => { },
-  getScreenshots: () => { },
-  removeFile: () => { },
-  setGeneratedUrlToBeOpened: () => { },
-  setIgnoreExternalLinkWarning: () => { },
+  disassociateContent: () => {},
+  attachmentsDialog: null,
+  setAttachmentsDialog: () => {},
+  uploadFile: (useMediaCapture: boolean) => {},
+  getScreenshots: () => {},
+  removeFile: () => {},
+  setGeneratedUrlToBeOpened: () => {},
+  setIgnoreExternalLinkWarning: () => {},
   pendingMessageFiles: [],
   isUploadingFiles: false,
-  setTemporary: (temporary: boolean) => { },
-  attachImages: (images: Mojom.UploadedFile[]) => { },
+  setTemporary: (temporary: boolean) => {},
+  attachImages: (images: Mojom.UploadedFile[]) => {},
   ...defaultSendFeedbackState,
-  ...defaultCharCountContext
+  ...defaultCharCountContext,
 }
 
 export function useCharCountInfo(inputText: string) {
@@ -150,7 +156,7 @@ export function useCharCountInfo(inputText: string) {
   return {
     isCharLimitExceeded,
     isCharLimitApproaching,
-    inputTextCharCountDisplay
+    inputTextCharCountDisplay,
   }
 }
 
@@ -158,38 +164,60 @@ export const ConversationReactContext =
   React.createContext<ConversationContext>(defaultContext)
 
 export function ConversationContextProvider(props: React.PropsWithChildren) {
-  const [context, setContext] =
-    React.useState<ConversationContext>({
-      ...defaultContext,
-      setShowAttachments: (showAttachments: boolean) => {
-        setContext((value) => ({
-          ...value,
-          showAttachments
-        }))
-      }
-    })
+  const [context, setContext] = React.useState<ConversationContext>({
+    ...defaultContext,
+    setAttachmentsDialog: (attachmentsDialog: 'tabs' | null) => {
+      setContext((value) => ({
+        ...value,
+        attachmentsDialog,
+      }))
+    },
+  })
 
   const aiChatContext = useAIChat()
-  const { conversationHandler, callbackRouter, selectedConversationId, updateSelectedConversationId } = useActiveChat()
-  const sendFeedbackState = useSendFeedback(conversationHandler, getAPI().conversationEntriesFrameObserver)
+  const {
+    conversationHandler,
+    callbackRouter,
+    selectedConversationId,
+    updateSelectedConversationId,
+  } = useActiveChat()
+  const sendFeedbackState = useSendFeedback(
+    conversationHandler,
+    getAPI().conversationEntriesFrameObserver,
+  )
+  const unassociatedTabs = React.useMemo(() => {
+    return aiChatContext.tabs.filter(
+      (t) =>
+        !context.associatedContentInfo.find((c) => c.contentId === t.contentId)
+          ?.conversationTurnUuid,
+    )
+  }, [aiChatContext.tabs, context.associatedContentInfo])
+
+  // If there are no unassociated tabs, hide the attachments picker.
+  React.useEffect(() => {
+    if (unassociatedTabs.length === 0) {
+      setPartialContext({
+        attachmentsDialog: null,
+      })
+    }
+  }, [unassociatedTabs])
 
   const [
     hasDismissedLongConversationInfo,
-    setHasDismissedLongConversationInfo
+    setHasDismissedLongConversationInfo,
   ] = React.useState<boolean>(false)
 
   const setPartialContext = (partialContext: Partial<ConversationContext>) => {
     setContext((value) => ({
       ...value,
-      ...partialContext
+      ...partialContext,
     }))
   }
 
   // Drag state handlers
   const setDragActive = (isDragActive: boolean) =>
     setPartialContext({ isDragActive })
-  const setDragOver = (isDragOver: boolean) =>
-    setPartialContext({ isDragOver })
+  const setDragOver = (isDragOver: boolean) => setPartialContext({ isDragOver })
   const clearDragState = () =>
     setPartialContext({ isDragActive: false, isDragOver: false })
 
@@ -198,11 +226,11 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   const getModelContext = (
     currentModelKey: string,
-    allModels: Mojom.Model[]
+    allModels: Mojom.Model[],
   ): Partial<ConversationContext> => {
     return {
       allModels,
-      currentModel: allModels.find((m) => m.key === currentModelKey)
+      currentModel: allModels.find((m) => m.key === currentModelKey),
     }
   }
 
@@ -211,11 +239,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     async function updateHistory(entry?: Mojom.ConversationTurn) {
       if (entry) {
         // Use the shared utility function to update the history
-        const updatedHistory =
-          updateConversationHistory(context.conversationHistory, entry)
+        const updatedHistory = updateConversationHistory(
+          context.conversationHistory,
+          entry,
+        )
         setPartialContext({
           conversationHistory: updatedHistory,
-          historyInitialized: true
+          historyInitialized: true,
         })
       } else {
         // When no entry is provided, fetch the full history
@@ -223,23 +253,25 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
           await conversationHandler.getConversationHistory()
         setPartialContext({
           conversationHistory,
-          historyInitialized: true
+          historyInitialized: true,
         })
       }
     }
 
     async function initialize() {
-      const { conversationState: {
-        conversationUuid,
-        isRequestInProgress: isGenerating,
-        allModels: models,
-        currentModelKey,
-        suggestedQuestions,
-        suggestionStatus,
-        associatedContent,
-        error,
-        temporary
-      } } = await conversationHandler.getState()
+      const {
+        conversationState: {
+          conversationUuid,
+          isRequestInProgress: isGenerating,
+          allModels: models,
+          currentModelKey,
+          suggestedQuestions,
+          suggestionStatus,
+          associatedContent,
+          error,
+          temporary,
+        },
+      } = await conversationHandler.getState()
       setPartialContext({
         conversationUuid,
         isGenerating,
@@ -248,7 +280,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
         suggestionStatus,
         associatedContentInfo: associatedContent,
         currentError: error,
-        isTemporaryChat: temporary
+        isTemporaryChat: temporary,
       })
     }
 
@@ -266,21 +298,22 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     id = callbackRouter.onAPIRequestInProgress.addListener(
       (isGenerating: boolean) =>
         setPartialContext({
-          isGenerating
-        })
+          isGenerating,
+        }),
     )
     listenerIds.push(id)
 
-    id = callbackRouter.onAPIResponseError.addListener((error: Mojom.APIError) =>
-      setPartialContext({
-        currentError: error
-      })
+    id = callbackRouter.onAPIResponseError.addListener(
+      (error: Mojom.APIError) =>
+        setPartialContext({
+          currentError: error,
+        }),
     )
     listenerIds.push(id)
 
     id = callbackRouter.onModelDataChanged.addListener(
       (conversationModelKey: string, allModels: Mojom.Model[]) =>
-        setPartialContext(getModelContext(conversationModelKey, allModels))
+        setPartialContext(getModelContext(conversationModelKey, allModels)),
     )
     listenerIds.push(id)
 
@@ -288,19 +321,17 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       (questions: string[], status: Mojom.SuggestionGenerationStatus) =>
         setPartialContext({
           suggestedQuestions: questions,
-          suggestionStatus: status
-        })
+          suggestionStatus: status,
+        }),
     )
     listenerIds.push(id)
 
     id = callbackRouter.onAssociatedContentInfoChanged.addListener(
-      (
-        associatedContentInfo: Mojom.AssociatedContent[]
-      ) => {
+      (associatedContentInfo: Mojom.AssociatedContent[]) => {
         setPartialContext({
-          associatedContentInfo
+          associatedContentInfo,
         })
-      }
+      },
     )
     listenerIds.push(id)
 
@@ -319,8 +350,9 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }, [conversationHandler, callbackRouter])
 
   // Update the location when the conversation has been started
-  const hasConversationStarted =
-    useHasConversationStarted(context.conversationUuid)
+  const hasConversationStarted = useHasConversationStarted(
+    context.conversationUuid,
+  )
   React.useEffect(() => {
     if (!hasConversationStarted) return
     if (selectedConversationId === tabAssociatedChatId) return
@@ -331,9 +363,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   // Update page title when conversation changes
   React.useEffect(() => {
     const originalTitle = document.title
-    const conversationTitle = aiChatContext.conversations.find(c =>
-      c.uuid === context.conversationUuid
-    )?.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
+    const conversationTitle =
+      aiChatContext.conversations.find(
+        (c) => c.uuid === context.conversationUuid,
+      )?.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
 
     function setTitle(isPWA: boolean) {
       if (isPWA) {
@@ -358,12 +391,12 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const shouldShowLongConversationInfo = React.useMemo(() => {
     const chatHistoryCharTotal = context.conversationHistory.reduce(
       (charCount, curr) => charCount + curr.text.length,
-      0
+      0,
     )
 
     const options =
-      context.currentModel?.options.leoModelOptions ||
-      context.currentModel?.options.customModelOptions
+      context.currentModel?.options.leoModelOptions
+      || context.currentModel?.options.customModelOptions
 
     let totalCharLimit = 0
 
@@ -374,21 +407,23 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       }
     }
 
-    return !hasDismissedLongConversationInfo
+    return (
+      !hasDismissedLongConversationInfo
       && chatHistoryCharTotal >= totalCharLimit
+    )
   }, [
     context.conversationHistory,
     context.currentModel,
-    hasDismissedLongConversationInfo
+    hasDismissedLongConversationInfo,
   ])
 
   const apiHasError = context.currentError !== Mojom.APIError.None
   const shouldDisableUserInput = !!(
-    apiHasError ||
-    context.isGenerating ||
-    (!aiChatContext.isPremiumUser &&
-      context.currentModel?.options.leoModelOptions?.access ===
-      Mojom.ModelAccess.PREMIUM)
+    apiHasError
+    || context.isGenerating
+    || (!aiChatContext.isPremiumUser
+      && context.currentModel?.options.leoModelOptions?.access
+        === Mojom.ModelAccess.PREMIUM)
   )
   const isCharLimitExceeded = context.inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching =
@@ -399,20 +434,20 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   const resetSelectedActionType = () => {
     setPartialContext({
-      selectedActionType: undefined
+      selectedActionType: undefined,
     })
   }
 
   React.useEffect(() => {
     try {
       getAPI().metrics.onQuickActionStatusChange(!!context.selectedActionType)
-    } catch (e) { }
+    } catch (e) {}
   }, [context.selectedActionType])
 
   const handleActionTypeClick = (actionType: Mojom.ActionType) => {
     const update: Partial<ConversationContext> = {
       selectedActionType: actionType,
-      isToolsMenuOpen: false
+      isToolsMenuOpen: false,
     }
 
     if (context.inputText.startsWith('/')) {
@@ -427,7 +462,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     if (isCharLimitExceeded) return
     if (shouldDisableUserInput) return
 
-    if (!aiChatContext.isStorageNoticeDismissed && aiChatContext.hasAcceptedAgreement) {
+    if (
+      !aiChatContext.isStorageNoticeDismissed
+      && aiChatContext.hasAcceptedAgreement
+    ) {
       // Submitting a conversation entry manually, after opt-in,
       // means the storage notice can be dismissed.
       aiChatContext.dismissStorageNotice()
@@ -440,42 +478,56 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     if (context.selectedActionType) {
       conversationHandler.submitHumanConversationEntryWithAction(
         context.inputText,
-        context.selectedActionType
+        context.selectedActionType,
       )
     } else {
       conversationHandler.submitHumanConversationEntry(
         context.inputText,
-        context.pendingMessageFiles)
+        context.pendingMessageFiles,
+      )
     }
 
     setPartialContext({
       inputText: '',
-      pendingMessageFiles: []
+      pendingMessageFiles: [],
     })
     resetSelectedActionType()
   }
 
   const disassociateContent = (content: Mojom.AssociatedContent) => {
-    aiChatContext.uiHandler?.disassociateContent(content, context.conversationUuid!)
+    aiChatContext.uiHandler?.disassociateContent(
+      content,
+      context.conversationUuid!,
+    )
   }
 
   const associateDefaultContent = React.useMemo(() => {
-    const existingAttachedContent = context.associatedContentInfo.find(c => c.contentId === aiChatContext.defaultTabContentId)
-    const tab = aiChatContext.tabs.find(t => t.contentId === aiChatContext.defaultTabContentId)
+    const existingAttachedContent = context.associatedContentInfo.find(
+      (c) => c.contentId === aiChatContext.defaultTabContentId,
+    )
+    const tab = aiChatContext.tabs.find(
+      (t) => t.contentId === aiChatContext.defaultTabContentId,
+    )
 
     return aiChatContext.defaultTabContentId && !existingAttachedContent && tab
       ? () => {
-        aiChatContext.uiHandler?.associateTab(tab, context.conversationUuid!)
-      }
+          aiChatContext.uiHandler?.associateTab(tab, context.conversationUuid!)
+        }
       : undefined
-  }, [aiChatContext.defaultTabContentId, aiChatContext.uiHandler, aiChatContext.tabs, context.associatedContentInfo, context.conversationUuid])
+  }, [
+    aiChatContext.defaultTabContentId,
+    aiChatContext.uiHandler,
+    aiChatContext.tabs,
+    context.associatedContentInfo,
+    context.conversationUuid,
+  ])
 
   // TODO(petemill): rename to switchToNonPremiumModel as there are no longer
   // a different in limitations between basic and freemium models.
   const switchToBasicModel = () => {
     // Select the first non-premium model
     const nonPremium = context.allModels.find(
-      (m) => m.options.leoModelOptions?.access !== Mojom.ModelAccess.PREMIUM
+      (m) => m.options.leoModelOptions?.access !== Mojom.ModelAccess.PREMIUM,
     )
     if (!nonPremium) {
       console.error('Could not find a non-premium model!')
@@ -487,7 +539,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const handleResetError = async () => {
     const { turn } = await conversationHandler.clearErrorAndGetFailedMessage()
     setPartialContext({
-      inputText: turn.text
+      inputText: turn.text,
     })
   }
 
@@ -496,7 +548,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       await conversationHandler.stopGenerationAndMaybeGetHumanEntry()
     if (humanEntry) {
       setPartialContext({
-        inputText: humanEntry.text
+        inputText: humanEntry.text,
       })
     }
   }
@@ -509,34 +561,38 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     aiChatContext.uiHandler?.handleVoiceRecognition(context.conversationUuid)
   }
 
-    const processUploadedFiles = (files: Mojom.UploadedFile[]) => {
-    const newFiles = processUploadedFilesWithLimits(files, context.conversationHistory, context.pendingMessageFiles)
+  const processUploadedFiles = (files: Mojom.UploadedFile[]) => {
+    const newFiles = processUploadedFilesWithLimits(
+      files,
+      context.conversationHistory,
+      context.pendingMessageFiles,
+    )
     if (newFiles.length > 0) {
       setPartialContext({
         isUploadingFiles: false,
-        pendingMessageFiles: [...context.pendingMessageFiles, ...newFiles]
+        pendingMessageFiles: [...context.pendingMessageFiles, ...newFiles],
       })
     } else {
       setPartialContext({
-        isUploadingFiles: false
+        isUploadingFiles: false,
       })
     }
   }
 
   const getScreenshots = () => {
     setPartialContext({
-      isUploadingFiles: true
+      isUploadingFiles: true,
     })
-    conversationHandler.getScreenshots()
-      .then(({ screenshots }) => {
-        if (screenshots) {
-          processUploadedFiles(screenshots)
-        }
-      })
+    conversationHandler.getScreenshots().then(({ screenshots }) => {
+      if (screenshots) {
+        processUploadedFiles(screenshots)
+      }
+    })
   }
 
   const uploadFile = (useMediaCapture: boolean) => {
-    aiChatContext.uiHandler?.uploadFile(useMediaCapture)
+    aiChatContext.uiHandler
+      ?.uploadFile(useMediaCapture)
       .then(({ uploadedFiles }) => {
         if (uploadedFiles) {
           processUploadedFiles(uploadedFiles)
@@ -545,42 +601,51 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }
 
   const removeFile = (index: number) => {
-    const updatedImages = [...context.pendingMessageFiles]
-    updatedImages.splice(index, 1)
-    setPartialContext({
-      pendingMessageFiles: updatedImages
-    })
+    const fileToRemove = context.pendingMessageFiles[index]
+    if (fileToRemove && isFullPageScreenshot(fileToRemove)) {
+      // If removing a full page screenshot, remove all full page screenshots
+      const updatedImages = context.pendingMessageFiles.filter(
+        (file) => !isFullPageScreenshot(file),
+      )
+      setPartialContext({
+        pendingMessageFiles: updatedImages,
+      })
+    } else {
+      // Normal case: remove single file by index
+      const updatedImages = [...context.pendingMessageFiles]
+      updatedImages.splice(index, 1)
+      setPartialContext({
+        pendingMessageFiles: updatedImages,
+      })
+    }
   }
 
   // Listen for user uploading files to display the uploading indicator.
   React.useEffect(() => {
     async function handleSetIsUploading() {
       setPartialContext({
-        isUploadingFiles: true
+        isUploadingFiles: true,
       })
     }
 
-    const listenerId = getAPI()
-      .uiObserver
-      .onUploadFilesSelected
-      .addListener(handleSetIsUploading)
+    const listenerId =
+      getAPI().uiObserver.onUploadFilesSelected.addListener(
+        handleSetIsUploading,
+      )
 
     return () => {
-      getAPI()
-        .uiObserver
-        .removeListener(listenerId)
+      getAPI().uiObserver.removeListener(listenerId)
     }
   }, [])
 
-  const ignoreExternalLinkWarningFromLocalStorage =
-    React.useMemo(() => {
-      return JSON.parse(
-        localStorage.getItem(IGNORE_EXTERNAL_LINK_WARNING_KEY) ?? 'false'
-      )
-    }, [])
+  const ignoreExternalLinkWarningFromLocalStorage = React.useMemo(() => {
+    return JSON.parse(
+      localStorage.getItem(IGNORE_EXTERNAL_LINK_WARNING_KEY) ?? 'false',
+    )
+  }, [])
 
   const ignoreExternalLinkWarning = React.useRef(
-    ignoreExternalLinkWarningFromLocalStorage
+    ignoreExternalLinkWarningFromLocalStorage,
   )
 
   const setIgnoreExternalLinkWarning = () => {
@@ -594,7 +659,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     // Update the IGNORE_EXTERNAL_LINK_WARNING_KEY state when the key changes
     const handleStorageChange = () => {
       ignoreExternalLinkWarning.current = JSON.parse(
-        localStorage.getItem(IGNORE_EXTERNAL_LINK_WARNING_KEY) ?? 'false'
+        localStorage.getItem(IGNORE_EXTERNAL_LINK_WARNING_KEY) ?? 'false',
       )
     }
 
@@ -615,19 +680,17 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       }
       // Otherwise, set the URL to be opened in the modal.
       setPartialContext({
-        generatedUrlToBeOpened: url
+        generatedUrlToBeOpened: url,
       })
     }
 
-    const listenerId = getAPI()
-      .conversationEntriesFrameObserver
-      .userRequestedOpenGeneratedUrl
-      .addListener(handleSetOpeningExternalLinkURL)
+    const listenerId =
+      getAPI().conversationEntriesFrameObserver.userRequestedOpenGeneratedUrl.addListener(
+        handleSetOpeningExternalLinkURL,
+      )
 
     return () => {
-      getAPI()
-        .conversationEntriesFrameObserver
-        .removeListener(listenerId)
+      getAPI().conversationEntriesFrameObserver.removeListener(listenerId)
     }
   }, [])
 
@@ -641,6 +704,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     inputTextCharCountDisplay,
     isCurrentModelLeo,
     shouldShowLongConversationInfo,
+    unassociatedTabs,
     dismissLongConversationInfo: () =>
       setHasDismissedLongConversationInfo(true),
     retryAPIRequest: () => conversationHandler.retryAPIRequest(),
@@ -655,7 +719,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     submitInputTextToAPI,
     isGenerating: context.isGenerating,
     switchToBasicModel,
-    setIsToolsMenuOpen: (isToolsMenuOpen) => setPartialContext({ isToolsMenuOpen }),
+    setIsToolsMenuOpen: (isToolsMenuOpen) =>
+      setPartialContext({ isToolsMenuOpen }),
     handleVoiceRecognition,
     uploadFile,
     getScreenshots,
@@ -668,18 +733,18 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       conversationHandler.setTemporary(temporary)
     },
     conversationHandler,
-    setGeneratedUrlToBeOpened:
-      (url?: Url) => setPartialContext({ generatedUrlToBeOpened: url }),
+    setGeneratedUrlToBeOpened: (url?: Url) =>
+      setPartialContext({ generatedUrlToBeOpened: url }),
     setIgnoreExternalLinkWarning,
     disassociateContent,
-          associateDefaultContent,
-      attachImages: (images: Mojom.UploadedFile[]) => {
-        setPartialContext({
-          isUploadingFiles: true
-        })
-        processUploadedFiles(images)
-      },
-      clearDragState
+    associateDefaultContent,
+    attachImages: (images: Mojom.UploadedFile[]) => {
+      setPartialContext({
+        isUploadingFiles: true,
+      })
+      processUploadedFiles(images)
+    },
+    clearDragState,
   }
 
   return (
@@ -691,13 +756,4 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
 export function useConversation() {
   return React.useContext(ConversationReactContext)
-}
-
-export function useIsNewConversation() {
-  const conversationContext = useConversation()
-  const aiChatContext = useAIChat()
-
-  // A conversation is new if it isn't in the list of conversations or doesn't have content
-  return !aiChatContext.conversations.find(
-    c => c.uuid === conversationContext.conversationUuid && c.hasContent)
 }

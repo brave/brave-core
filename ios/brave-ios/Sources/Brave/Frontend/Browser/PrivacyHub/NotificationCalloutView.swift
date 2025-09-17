@@ -38,7 +38,7 @@ extension PrivacyReportsView {
           Preferences.PrivacyReports.shouldShowNotificationPermissionCallout.value = false
         },
         label: {
-          Image(systemName: "xmark")
+          Image(braveSystemName: "leo.close")
         }
       )
       .accessibilityLabel(Text(Strings.close))

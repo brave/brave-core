@@ -16,6 +16,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "content/public/browser/content_browser_client.h"
@@ -26,8 +27,11 @@
 
 class SplitViewTabStripModelAdapterBrowserTest : public InProcessBrowserTest {
  public:
-  SplitViewTabStripModelAdapterBrowserTest()
-      : feature_list_(tabs::features::kBraveSplitView) {}
+  SplitViewTabStripModelAdapterBrowserTest() {
+    feature_list_.InitWithFeatures(
+        /*enabled_features*/ {tabs::features::kBraveSplitView},
+        /*disabled_features*/ {features::kSideBySide});
+  }
   ~SplitViewTabStripModelAdapterBrowserTest() override = default;
 
   TabStripModel* tab_strip_model() const {

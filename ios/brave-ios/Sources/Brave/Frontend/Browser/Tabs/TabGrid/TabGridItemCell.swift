@@ -51,6 +51,12 @@ class TabGridItemCell: UICollectionViewCell {
   private func handleAction(_ action: TabGridItemView.Action) {
     actionHandler?(action)
   }
+
+  override var isSelected: Bool {
+    didSet {
+      model.isSelectedInEditMode = isSelected
+    }
+  }
 }
 
 extension TabGridItemCell: UIGestureRecognizerDelegate {

@@ -49,7 +49,7 @@ extension WidgetShortcut {
     case .unknown:
       return nil
     case .newTab:
-      return "leo.plus.add"
+      return "leo.browser.mobile-tab-new"
     case .newPrivateTab:
       return "leo.product.private-window"
     case .bookmarks:

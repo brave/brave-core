@@ -170,6 +170,18 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountResetTimerTest) {
   model.RegisterPageView();
   EXPECT_FALSE(model.ShouldShowSponsoredImages());
   EXPECT_EQ(3, model.count_to_branded_wallpaper_);
+
+  // Verify Sponsored Images count is reset after specific time.
+  task_environment_.FastForwardBy(features::kResetCounterAfter.Get());
+  EXPECT_EQ(1, model.count_to_branded_wallpaper_);
+  model.RegisterPageView();
+  EXPECT_TRUE(model.ShouldShowSponsoredImages());
+  model.RegisterPageView();
+  EXPECT_FALSE(model.ShouldShowSponsoredImages());
+  EXPECT_EQ(3, model.count_to_branded_wallpaper_);
+
+  // Verify next count reset timer is scheduled and count is reset after
+  // specific time.
   task_environment_.FastForwardBy(features::kResetCounterAfter.Get());
   EXPECT_EQ(1, model.count_to_branded_wallpaper_);
 }

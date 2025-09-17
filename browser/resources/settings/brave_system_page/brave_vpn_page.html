@@ -1,21 +1,23 @@
 <if expr="enable_brave_vpn_wireguard">
-<style include="settings-shared cr-shared-style">
-  .title {
-    font-size: 14px;
-    font-weight: 600;
-    height: 68px;
-  }
-</style>
+  <style include="settings-shared cr-shared-style">
+    .title {
+      font-size: 14px;
+      font-weight: 600;
+      height: 68px;
+    }
+  </style>
 
-<div class="cr-row title">$i18n{vpnPageTitle}</div>
-<settings-vpn-page prefs="{{prefs}}">
+  <settings-section
+    page-title="$i18n{vpnPageTitle}">
+    <settings-vpn-page prefs="{{prefs}}">
 
-  <settings-toggle-button id="toggleWireguardButton"
-      pref="{{prefs.brave.brave_vpn.wireguard_enabled}}"
-      label="$i18n{useWireguardLabel}"
-      sub-label="[[toggleWireguardSubLabel_]]"
-      disabled="[[braveVpnConnected_]]">
-  </settings-toggle-button>
+      <settings-toggle-button id="toggleWireguardButton"
+        pref="{{prefs.brave.brave_vpn.wireguard_enabled}}"
+        label="$i18n{useWireguardLabel}"
+        sub-label="[[toggleWireguardSubLabel_]]"
+        disabled="[[braveVpnConnected_]]">
+      </settings-toggle-button>
 
-</settings-vpn-page>
+    </settings-vpn-page>
+  </settings-section>
 </if>

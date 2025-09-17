@@ -214,4 +214,32 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Conversion) {
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
+IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, OfferEvents) {
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  // Test view recording
+  p3a::RecordOfferView(prefs);
+  histogram_tester_->ExpectUniqueSample(p3a::kOffersViewedHistogramName, true,
+                                        1);
+  histogram_tester_->ExpectTotalCount(p3a::kOfferClicksHistogramName, 0);
+
+  // Test click recording (first click should record bucket 0 for 1 click)
+  p3a::RecordOfferClicks(prefs, true);
+  histogram_tester_->ExpectBucketCount(p3a::kOfferClicksHistogramName, 0, 1);
+
+  // Test another click (should record bucket 1 for 2-3 clicks)
+  p3a::RecordOfferClicks(prefs, true);
+  histogram_tester_->ExpectBucketCount(p3a::kOfferClicksHistogramName, 1, 1);
+
+  // Test both view and click together
+  p3a::RecordOfferView(prefs);
+  p3a::RecordOfferClicks(prefs, true);
+  histogram_tester_->ExpectUniqueSample(p3a::kOffersViewedHistogramName, true,
+                                        2);
+  histogram_tester_->ExpectBucketCount(p3a::kOfferClicksHistogramName, 1, 2);
+
+  p3a::RecordOfferClicks(prefs, false);
+  histogram_tester_->ExpectBucketCount(p3a::kOfferClicksHistogramName, 1, 3);
+}
+
 }  // namespace brave_rewards

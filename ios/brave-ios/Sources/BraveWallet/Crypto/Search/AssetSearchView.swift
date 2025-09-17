@@ -117,7 +117,6 @@ struct AssetSearchView: View {
             }
           }
         }
-        .modifier(WalletButtonStyleModifier())
       }
       .background(
         NavigationLink(

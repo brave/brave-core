@@ -9,11 +9,13 @@
 
 #include "base/functional/bind.h"
 #include "base/values.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_message_handler.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "url/gurl.h"
 
 namespace {
@@ -52,14 +54,28 @@ void BraveAccountUIMessageHandler::OnDialogCloseMessage(
 BraveAccountUI::BraveAccountUI(web::WebUIIOS* web_ui, const GURL& url)
     : BraveAccountUIBase(ProfileIOS::FromWebUIIOS(web_ui)),
       web::WebUIIOSController(web_ui, url.host()) {
+  using Authentication = void (BraveAccountUIBase::*)(
+      mojo::PendingReceiver<brave_account::mojom::Authentication>);
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
-      base::BindRepeating(&BraveAccountUIBase::BindInterface,
+      base::BindRepeating(
+          static_cast<Authentication>(&BraveAccountUIBase::BindInterface),
+          base::Unretained(this)));
+
+  using PasswordStrengthMeter = void (BraveAccountUIBase::*)(
+      mojo::PendingReceiver<
+          password_strength_meter::mojom::PasswordStrengthMeter>);
+  web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
+      base::BindRepeating(static_cast<PasswordStrengthMeter>(
+                              &BraveAccountUIBase::BindInterface),
                           base::Unretained(this)));
 
   web_ui->AddMessageHandler(std::make_unique<BraveAccountUIMessageHandler>());
 }
 
 BraveAccountUI::~BraveAccountUI() {
+  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
+      brave_account::mojom::Authentication::Name_);
+
   web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
       password_strength_meter::mojom::PasswordStrengthMeter::Name_);
 }

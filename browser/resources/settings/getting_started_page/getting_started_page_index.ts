@@ -61,6 +61,7 @@ export class SettingsGettingStartedPageIndexElement extends
     queueMicrotask(() => {
       switch (newRoute) {
         case routes.GET_STARTED:
+        case routes.IMPORT_DATA:
           this.showDefaultViews_();
           break;
         case routes.MANAGE_PROFILE:

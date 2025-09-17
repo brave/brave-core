@@ -44,7 +44,6 @@ brave_java_resources = [
   "java/res/drawable-hdpi/ic_onboarding_bottom_leaf.png",
   "java/res/drawable-hdpi/ic_onboarding_top_leaf.png",
   "java/res/drawable-hdpi/icon_validated_notification.png",
-  "java/res/drawable-hdpi/incognito_simple.png",
   "java/res/drawable-hdpi/location_bar_incognito_badge.png",
   "java/res/drawable-hdpi/modern_location_bar.9.png",
   "java/res/drawable-hdpi/omnibox_https_valid_lock.png",
@@ -83,7 +82,6 @@ brave_java_resources = [
   "java/res/drawable-mdpi/ic_onboarding_bottom_leaf.png",
   "java/res/drawable-mdpi/ic_onboarding_top_leaf.png",
   "java/res/drawable-mdpi/icon_validated_notification.png",
-  "java/res/drawable-mdpi/incognito_simple.png",
   "java/res/drawable-mdpi/location_bar_incognito_badge.png",
   "java/res/drawable-mdpi/modern_location_bar.9.png",
   "java/res/drawable-mdpi/omnibox_https_valid_lock.png",
@@ -144,7 +142,6 @@ brave_java_resources = [
   "java/res/drawable-xhdpi/ic_onboarding_bottom_leaf.png",
   "java/res/drawable-xhdpi/ic_onboarding_top_leaf.png",
   "java/res/drawable-xhdpi/icon_validated_notification.png",
-  "java/res/drawable-xhdpi/incognito_simple.png",
   "java/res/drawable-xhdpi/location_bar_incognito_badge.png",
   "java/res/drawable-xhdpi/modern_location_bar.9.png",
   "java/res/drawable-xhdpi/omnibox_https_valid_lock.png",
@@ -183,7 +180,6 @@ brave_java_resources = [
   "java/res/drawable-xxhdpi/ic_onboarding_bottom_leaf.png",
   "java/res/drawable-xxhdpi/ic_onboarding_top_leaf.png",
   "java/res/drawable-xxhdpi/icon_validated_notification.png",
-  "java/res/drawable-xxhdpi/incognito_simple.png",
   "java/res/drawable-xxhdpi/location_bar_incognito_badge.png",
   "java/res/drawable-xxhdpi/modern_location_bar.9.png",
   "java/res/drawable-xxhdpi/omnibox_https_valid_lock.png",
@@ -221,7 +217,6 @@ brave_java_resources = [
   "java/res/drawable-xxxhdpi/ic_onboarding_bottom_leaf.png",
   "java/res/drawable-xxxhdpi/ic_onboarding_top_leaf.png",
   "java/res/drawable-xxxhdpi/icon_validated_notification.png",
-  "java/res/drawable-xxxhdpi/incognito_simple.png",
   "java/res/drawable-xxxhdpi/location_bar_incognito_badge.png",
   "java/res/drawable-xxxhdpi/omnibox_https_valid_lock.png",
   "java/res/drawable-xxxhdpi/plus.png",
@@ -967,8 +962,10 @@ brave_java_resources = [
 brave_base_module_resources =
     [ "java/res_chromium_base/drawable-night/themed_app_icon.xml" ]
 
-brave_download_internal_java_resources =
-    [ "java/res/drawable-night/downloads_empty_state_illustration.xml" ]
+brave_download_internal_java_resources = [
+  "java/res/drawable-night/downloads_empty_state_illustration.xml",
+  "java/res/drawable/no_dynamic_download_search_bar_background.xml",
+]
 
 brave_android_features_java_resources = [
   "java/res/drawable-night/phone_tab_switcher_empty_state_illustration_bottom_window.xml",

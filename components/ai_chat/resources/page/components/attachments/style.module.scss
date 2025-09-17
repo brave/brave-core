@@ -1,89 +1,130 @@
 .root {
-    background: var(--leo-color-container-highlight);
-    padding: var(--leo-spacing-m);
-    border-radius: var(--leo-radius-l);
-    box-shadow: var(--leo-effect-elevation-01);
+  background: var(--leo-color-container-background);
+  border-radius: var(--leo-radius-l);
+  box-shadow: var(--leo-effect-elevation-01);
 
-    max-height: min(90vh, 720px);
+  height: min(720px, calc(100vh - var(--leo-spacing-xl)));
+  width: 100%;
 
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    & leo-button[fab] {
-        flex: 0;
-    }
+  & h4 {
+    margin: 0;
+    color: var(--leo-color-text-secondary);
+    font: var(--leo-font-heading-h4);
+  }
+}
 
-    & h4 {
-        margin: 0;
-        color: var(--leo-color-text-secondary);
-        font: var(--leo-font-heading-h4);
-    }
+.searchBox {
+  padding: 0 var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-m);
 
-    & h5 {
-        margin: 0;
-        color: var(--leo-color-text-secondary);
-        font: var(--leo-font-default-semibold);
-    }
+  & leo-button {
+    display: block;
+  }
 }
 
 leo-dialog .root {
-    max-height: 90vh;
+  max-height: 90vh;
 }
 
 .header {
-    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
-}
+  padding: var(--leo-spacing-2xl);
 
-.tabSearchContainer {
-    background: var(--leo-color-container-background);
-    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
-    border-radius: var(--leo-radius-l);
-    display: flex;
-    flex-direction: column;
-    gap: var(--leo-spacing-m);
-
-    flex-shrink: 1;
-    overflow: hidden;
-}
-
-.tabList {
-    display: flex;
-    flex-direction: column;
-    gap: var(--leo-spacing-s);
-
-    border: 1px solid var(--leo-color-divider-subtle);
-    border-radius: var(--leo-radius-m);
-
-    padding: var(--leo-spacing-m);
-
-    overflow: hidden auto;
+  & leo-button[fab] {
+    flex: 0;
+  }
 }
 
 .description {
-    font: var(--leo-font-small-regular);
-    color: var(--leo-color-text-tertiary);
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-tertiary);
+}
+
+.tabList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-s);
+
+  border-top: 1px solid var(--leo-color-divider-subtle);
+  border-radius: 0 0 var(--leo-radius-m) var(--leo-radius-m);
+
+  padding: var(--leo-spacing-s);
+  padding-bottom: 0;
+
+  overflow: hidden auto;
+
+  height: 100%;
 }
 
 .tabItem {
-    --leo-checkbox-flex-direction: row-reverse;
+  --leo-checkbox-flex-direction: row-reverse;
 
-    padding: var(--leo-spacing-m);
+  padding: var(--leo-spacing-m);
+  display: flex;
+  gap: var(--leo-spacing-m);
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--leo-radius-s);
+
+  transition: background-color 0.12s ease-in-out;
+
+  & * {
+    transition: color 0.12s ease-in-out;
+  }
+
+  &[checked='true'] {
+    background: var(--leo-color-container-interactive);
+
+    /* style the children of the checkbox */
+    & * {
+      color: var(--leo-color-text-interactive) !important;
+    }
+  }
+
+  & .icon {
+    flex-shrink: 0;
+  }
+
+  & .itemRow {
+    padding: 0 var(--leo-spacing-m);
+
     display: flex;
-    gap: var(--leo-spacing-m);
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
 
-    & .icon {
-        flex-shrink: 0;
-    }
+    flex: 1;
+    width: 0;
+  }
 
-    & .title {
-        text-wrap: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        flex: 1;
+  & .title {
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 
-        color: var(--leo-color-text-primary);
-        font: var(--leo-font-default-regular);
-    }
+    color: var(--leo-color-text-primary);
+    font: var(--leo-font-default-regular);
+  }
+
+  & .subtitle {
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    color: var(--leo-color-text-tertiary);
+    font: var(--leo-font-small-regular);
+  }
+}
+
+.noResults {
+  height: 100%;
+}
+
+.noResultsText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-tertiary);
+}
+
+.noResultsSuggestion {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-tertiary);
 }

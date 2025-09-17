@@ -12,7 +12,7 @@ export const style = scoped.css`
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: 64px;
   }
 
   .message {

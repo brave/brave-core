@@ -9,4 +9,17 @@ module side_panel.mojom;
 interface CustomizeChromePageHandler {
   // Closes the customize chrome side pane
   ClosePanel();
+
+  // Gets the current state of the darker theme preference.
+  GetUseDarkerTheme() => (bool use_darker_theme);
+
+  // Sets to use the darker theme. This modifies the user's preference
+  SetUseDarkerTheme(bool use_darker_theme);
+};
+
+[BraveExtend]
+interface CustomizeChromePage {
+  // Sets the darker theme usage state in the page. This will be called when
+  // the user preference for the darker theme is changed.
+  OnUseDarkerThemeChanged(bool use_darker_theme);
 };

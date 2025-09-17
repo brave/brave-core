@@ -25,7 +25,7 @@ rust_static_library("anonymous_credentials") {
   cxx_bindings = [ "lib.rs" ]
 
   deps = [
-    "//brave/third_party/rust/brave_miracl/v0_1:lib",
+    "//brave/third_party/rust/brave_miracl/v0_2:lib",
     "//brave/third_party/rust/lazy_static/v1:lib",
     "//brave/third_party/rust/rand/v0_8:lib",
     "//brave/third_party/rust/thiserror/v1:lib",

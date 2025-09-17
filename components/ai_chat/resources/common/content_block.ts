@@ -11,6 +11,6 @@ export function createTextContentBlock(text: string): Mojom.ContentBlock {
   // transport errors when these are present. It only wants a single property from the union
   // to be set, even if the value of that property is undefined.
   return {
-    textContentBlock: { text }
+    textContentBlock: { text },
   } as Mojom.ContentBlock
 }

@@ -4,11 +4,7 @@
     "browser-type": "brave",
     "profile": "brave-typical-mac",
     "extra-browser-args": [
-      "--disable-component-update",
       "--disable-backgrounding-occluded-windows",
-
-      // For https://github.com/brave/brave-browser/issues/43711 debugging:
-      "--vmodule=\"*/brave_ads/*\"=6,\"*/bat_ads/*\"=6,\"*/variations/*\"=6"
     ],
     "extra-benchmark-args": [],
   }],

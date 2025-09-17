@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/map_util.h"
 #include "base/feature_list.h"
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/engine/constants.h"
@@ -804,25 +805,24 @@ void Publisher::OnSaveVisitForSavePublisherInfo(
 // static
 std::string Publisher::GetShareURL(
     const base::flat_map<std::string, std::string>& args) {
-  auto comment = args.find("comment");
-  auto name = args.find("name");
-  auto tweet_id = args.find("tweet_id");
-  auto hashtag = args.find("hashtag");
-  if (comment == args.end() || name == args.end() || hashtag == args.end()) {
+  auto* comment = base::FindOrNull(args, "comment");
+  auto* name = base::FindOrNull(args, "name");
+  auto* tweet_id = base::FindOrNull(args, "tweet_id");
+  auto* hashtag = base::FindOrNull(args, "hashtag");
+  if (!comment || !name || !hashtag) {
     return "";
   }
 
   // Append hashtag to comment ("%20%23" = percent-escaped space and
   // number sign)
-  const std::string comment_with_hashtag =
-      comment->second + "%20%23" + hashtag->second;
+  const std::string comment_with_hashtag = *comment + "%20%23" + *hashtag;
 
   // If a tweet ID was specified, then quote the original tweet along
   // with the supplied comment; otherwise, just tweet the comment.
   std::string share_url;
-  if (tweet_id != args.end() && !tweet_id->second.empty()) {
-    const std::string quoted_tweet_url = absl::StrFormat(
-        "https://twitter.com/%s/status/%s", name->second, tweet_id->second);
+  if (tweet_id && !tweet_id->empty()) {
+    const std::string quoted_tweet_url =
+        absl::StrFormat("https://twitter.com/%s/status/%s", *name, *tweet_id);
     share_url =
         absl::StrFormat("https://twitter.com/intent/tweet?text=%s&url=%s",
                         comment_with_hashtag, quoted_tweet_url);

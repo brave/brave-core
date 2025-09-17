@@ -165,6 +165,7 @@ test("brave_unit_tests") {
     "//brave/browser/brave_account:unit_tests",
     "//brave/browser/brave_ads",
     "//brave/browser/brave_ads/device_id:unit_tests",
+    "//brave/browser/brave_origin:unit_tests",
     "//brave/browser/brave_shields:unit_tests",
     "//brave/browser/brave_stats:unit_tests",
     "//brave/browser/brave_wallet",
@@ -460,6 +461,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/tabs/test:unit_tests",
       "//brave/browser/ui/toolbar:brave_app_menu_unit_test",
       "//brave/browser/ui/views/download/bubble:unit_tests",
+      "//brave/browser/ui/views/infobars:unit_tests",
       "//brave/browser/ui/views/split_view:unit_tests",
       "//brave/browser/ui/views/tabs:unit_tests",
       "//brave/browser/ui/webui/cr_components:unit_tests",
@@ -510,6 +512,7 @@ test("brave_unit_tests") {
         [ "//brave/browser/ui/views/brave_tooltips/brave_tooltips_unittest.cc" ]
     deps += [
       "//brave/browser/onboarding:unit_tests",
+      "//brave/browser/ui/darker_theme:unit_tests",
       "//brave/browser/ui/sidebar:unit_tests",
       "//brave/browser/ui/views/brave_ads:unit_tests",
       "//brave/browser/ui/views/brave_tooltips",
@@ -572,10 +575,6 @@ test("brave_unit_tests") {
       "//extensions/browser:test_support",
       "//url",
     ]
-  }
-
-  if (enable_speedreader) {
-    deps += [ "//brave/components/speedreader:unit_tests" ]
   }
 
   if (enable_containers) {
@@ -880,6 +879,7 @@ test("brave_browser_tests") {
     "//brave/browser/web_discovery:browser_tests",
     "//brave/common",
     "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/renderer:browser_tests",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core",
@@ -1070,16 +1070,15 @@ test("brave_browser_tests") {
     deps += [ "//brave/components/brave_wayback_machine" ]
   }
 
-  if (enable_speedreader && toolkit_views) {
-    sources += [ "//brave/browser/speedreader/speedreader_browsertest.cc" ]
+  if (enable_speedreader) {
+    if (!is_android) {
+      deps += [ "//brave/browser/speedreader:browser_tests" ]
+    }
+
     deps += [
-      "//brave/browser/ui/views/frame/split_view/",
-      "//brave/browser/ui/views/split_view/",
-      "//brave/components/ai_chat/core/common",
+      # Required for brave_perf_features_processor_browsertest.cc & ad_block_service_browsertest.cc
+      "//brave/browser/speedreader",
       "//brave/components/speedreader",
-      "//brave/components/speedreader/common:mojom",
-      "//chrome/browser/ui/browser_window",
-      "//components/language/core/browser",
     ]
   }
 
@@ -1122,6 +1121,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/toolbar/wallet_button_browsertest.cc",
     ]
     deps += [
+      "//brave/browser/ui/darker_theme:browser_tests",
       "//brave/browser/ui/sidebar:browser_tests",
       "//brave/browser/ui/views/brave_ads:browser_tests",
       "//brave/browser/ui/views/frame:browser_tests",
@@ -1161,6 +1161,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/ai_rewriter:browsertest",
       "//brave/browser/ui/geolocation:browser_tests",
       "//brave/browser/ui/tabs:split_view",
+      "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/toolbar:brave_app_menu_browser_tests",
       "//brave/browser/ui/webui/side_panel/customize_chrome:browser_tests",
       "//brave/browser/ui/webui/tab_search:browser_tests",
@@ -1393,6 +1394,7 @@ if (is_android) {
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.homepage",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.tabbed_mode",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.toolbar",
+      "//brave/browser/customize_menu/android:junit",
       "//brave/components/minidump_uploader:junit",
     ]
   }

@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/map_util.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -69,13 +70,13 @@ void SignalCalculator::OnGotHistory(
   // certain areas.
   base::flat_map<std::string, uint32_t> article_counts;
   for (const auto& article : articles) {
-    auto it = publishers.find(article->publisher_id);
-    if (it == publishers.end()) {
+    auto* publisher = base::FindPtrOrNull(publishers, article->publisher_id);
+    if (!publisher) {
       continue;
     }
 
     article_counts[article->publisher_id]++;
-    for (const auto& locale_info : it->second->locales) {
+    for (const auto& locale_info : publisher->locales) {
       if (locale_info->locale != locale) {
         continue;
       }
@@ -107,15 +108,15 @@ void SignalCalculator::OnGotHistory(
       host = publisher->feed_source.host();
     }
 
-    auto history_it = origin_visits.find(host);
-    if (history_it == origin_visits.end()) {
+    auto* visits = base::FindOrNull(origin_visits, host);
+    if (!visits) {
       publisher_visits[publisher_id] = {};
       continue;
     }
 
-    std::ranges::copy(history_it->second,
+    std::ranges::copy(*visits,
                       std::back_inserter(publisher_visits[publisher_id]));
-    total_publisher_visits += history_it->second.size();
+    total_publisher_visits += visits->size();
 
     for (const auto& locale_info : publisher->locales) {
       if (locale_info->locale != locale) {
@@ -123,9 +124,8 @@ void SignalCalculator::OnGotHistory(
       }
 
       for (const auto& channel : locale_info->channels) {
-        total_channel_visits += history_it->second.size();
-        std::ranges::copy(history_it->second,
-                          std::back_inserter(channel_visits[channel]));
+        total_channel_visits += visits->size();
+        std::ranges::copy(*visits, std::back_inserter(channel_visits[channel]));
       }
       break;
     }
@@ -146,8 +146,8 @@ void SignalCalculator::OnGotHistory(
 
   // Add channel signals
   for (const auto& channel : channels) {
-    auto it = channel_visits.find(channel.first);
-    auto visit_count = it == channel_visits.end() ? 0 : it->second.size();
+    auto* channel_visit_vec = base::FindOrNull(channel_visits, channel.first);
+    auto visit_count = channel_visit_vec ? channel_visit_vec->size() : 0;
     signals[channel.first] = mojom::Signal::New(
         /*disabled=*/false,
         subscriptions.GetChannelSubscribed(locale, channel.first)

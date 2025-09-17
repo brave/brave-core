@@ -25,7 +25,6 @@
 #include "brave/components/omnibox/browser/leo_provider.h"
 #include "brave/components/omnibox/browser/promotion_provider.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
-#include "brave/components/omnibox/browser/topsites_provider.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/calculator_provider.h"
@@ -107,7 +106,6 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
 #define BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER         \
   MaybeAddCommanderProvider(providers_, this);                        \
   MaybeAddLeoProvider(providers_, this);                              \
-  providers_.push_back(new TopSitesProvider(provider_client_.get())); \
   if (IsBraveSearchConversionFeatureEnabled() &&                      \
       !provider_client_->IsOffTheRecord())                            \
     providers_.push_back(new PromotionProvider(provider_client_.get()));

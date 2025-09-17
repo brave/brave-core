@@ -8,12 +8,27 @@
 #include <memory>
 
 #include "brave/browser/extensions/brave_theme_event_router.h"
+#include "chrome/browser/profiles/profile.h"
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/darker_theme/features.h"
+#include "brave/browser/ui/darker_theme/pref_names.h"
+#endif  // defined(TOOLKIT_VIEWS)
 
 BraveThemeService::BraveThemeService(Profile* profile,
                                      const ThemeHelper& theme_helper)
     : ThemeService(profile, theme_helper) {
   brave_theme_event_router_ =
       std::make_unique<extensions::BraveThemeEventRouter>(profile);
+
+#if defined(TOOLKIT_VIEWS)
+  if (base::FeatureList::IsEnabled(darker_theme::features::kBraveDarkerTheme)) {
+    darker_theme_enabled_.Init(
+        darker_theme::prefs::kBraveDarkerMode, profile->GetPrefs(),
+        base::BindRepeating(&BraveThemeService::OnDarkerThemePrefChanged,
+                            base::Unretained(this)));
+  }
+#endif  // defined(TOOLKIT_VIEWS)
 }
 
 BraveThemeService::~BraveThemeService() = default;
@@ -28,3 +43,9 @@ void BraveThemeService::SetBraveThemeEventRouterForTesting(
     extensions::BraveThemeEventRouter* mock_router) {
   brave_theme_event_router_.reset(mock_router);
 }
+
+#if defined(TOOLKIT_VIEWS)
+void BraveThemeService::OnDarkerThemePrefChanged() {
+  NotifyThemeChanged();
+}
+#endif  // defined(TOOLKIT_VIEWS)

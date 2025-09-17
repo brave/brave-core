@@ -66,23 +66,23 @@ const std::vector<Tool*>& AllTools() {
 
 }  // namespace
 
-const std::vector<Tool*> GetToolsForConversation(bool has_associated_content,
-                                                 const mojom::Model& model) {
-  if (!features::IsToolsEnabled()) {
-    return {};
-  }
-  // Filter AllTools based on arguments
-  std::vector<Tool*> filtered_tools;
+ConversationToolProvider::ConversationToolProvider(
+    base::WeakPtr<Tool> memory_storage_tool)
+    : memory_storage_tool_(memory_storage_tool) {}
+
+ConversationToolProvider::~ConversationToolProvider() = default;
+
+std::vector<base::WeakPtr<Tool>> ConversationToolProvider::GetTools() {
+  std::vector<base::WeakPtr<Tool>> tools;
   for (Tool* tool : AllTools()) {
-    if (tool->IsContentAssociationRequired() && !has_associated_content) {
-      continue;
-    }
-    if (!tool->IsSupportedByModel(model)) {
-      continue;
-    }
-    filtered_tools.push_back(tool);
+    tools.push_back(tool->GetWeakPtr());
   }
-  return filtered_tools;
+
+  if (memory_storage_tool_) {
+    tools.push_back(memory_storage_tool_);
+  }
+
+  return tools;
 }
 
 }  // namespace ai_chat

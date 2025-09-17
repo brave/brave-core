@@ -42,8 +42,6 @@ extension BrowserViewController {
     switch type {
     case .p3a:
       presentP3AScreenCallout()
-    case .vpnUpdateBilling:
-      presentVPNUpdateBillingCallout(skipSafeGuards: skipSafeGuards)
     case .bottomBar:
       presentBottomBarCallout(skipSafeGuards: skipSafeGuards)
     case .defaultBrowser:
@@ -58,44 +56,7 @@ extension BrowserViewController {
   // MARK: Conditional Callout Methods
 
   private func presentP3AScreenCallout() {
-    if !Locale.current.isNewOnboardingRegion {
-      let onboardingP3ACalloutController = Welcome3PAViewController().then {
-        $0.isModalInPresentation = true
-        $0.modalPresentationStyle = .overFullScreen
-      }
-
-      let state = WelcomeViewCalloutState.p3a(
-        info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
-          title: Strings.Callout.p3aCalloutTitle,
-          toggleTitle: Strings.Callout.p3aCalloutToggleTitle,
-          details: Strings.Callout.p3aCalloutDescription,
-          linkDescription: Strings.Callout.p3aCalloutLinkTitle,
-          primaryButtonTitle: Strings.P3A.continueButton,
-          toggleAction: { [weak self] isOn in
-            self?.braveCore.p3aUtils.isP3AEnabled = isOn
-          },
-          linkAction: { [unowned onboardingP3ACalloutController] url in
-            let p3aLearnMoreController = SFSafariViewController(
-              url: .brave.p3aHelpArticle,
-              configuration: .init()
-            )
-            p3aLearnMoreController.modalPresentationStyle = .currentContext
-
-            onboardingP3ACalloutController.present(p3aLearnMoreController, animated: true)
-          },
-          primaryButtonAction: { [weak self] in
-            Preferences.Onboarding.p3aOnboardingShown.value = true
-
-            self?.isOnboardingOrFullScreenCalloutPresented = true
-            self?.dismiss(animated: false)
-          }
-        )
-      )
-
-      onboardingP3ACalloutController.setLayoutState(state: state)
-
-      braveCore.p3aUtils.isNoticeAcknowledged = true
-      present(onboardingP3ACalloutController, animated: false)
+    if braveCore.p3aUtils.isP3APreferenceManaged {
       return
     }
 
@@ -148,43 +109,11 @@ extension BrowserViewController {
   }
 
   func presentDefaultBrowserScreenCallout(skipSafeGuards: Bool = false) {
-    if !Locale.current.isNewOnboardingRegion {
-      let onboardingController = WelcomeViewController(
-        state: WelcomeViewCalloutState.defaultBrowserCallout(
-          info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
-            title: Strings.Callout.defaultBrowserCalloutTitle,
-            details: Strings.Callout.defaultBrowserCalloutDescription,
-            primaryButtonTitle: Strings.Callout.defaultBrowserCalloutPrimaryButtonTitle,
-            secondaryButtonTitle: Strings.Callout.defaultBrowserCalloutSecondaryButtonTitle,
-            primaryButtonAction: { [weak self] in
-              guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                return
-              }
-
-              Preferences.General.defaultBrowserCalloutDismissed.value = true
-              self?.isOnboardingOrFullScreenCalloutPresented = true
-
-              UIApplication.shared.open(settingsUrl)
-              self?.dismiss(animated: false)
-            },
-            secondaryButtonAction: { [weak self] in
-              self?.isOnboardingOrFullScreenCalloutPresented = true
-
-              self?.dismiss(animated: false)
-            }
-          )
-        ),
-        p3aUtilities: braveCore.p3aUtils,
-        attributionManager: attributionManager
-      )
-      present(onboardingController, animated: true)
-      return
-    }
-
     if !skipSafeGuards {
-      let isLikelyDefault = DefaultBrowserHelper.isBraveLikelyDefaultBrowser()
-
-      guard !isLikelyDefault else {
+      defaultBrowserHelper.performAccurateDefaultCheckIfNeeded()
+      let isLikelyDefault =
+        defaultBrowserHelper.status == .defaulted || defaultBrowserHelper.status == .likely
+      if isLikelyDefault {
         return
       }
     }
@@ -253,29 +182,6 @@ extension BrowserViewController {
     present(popup, animated: false)
   }
 
-  private func presentVPNUpdateBillingCallout(skipSafeGuards: Bool = false) {
-    if !skipSafeGuards {
-      // Checking subscription receipt is in retry period
-      guard let receiptStatus = Preferences.VPN.vpnReceiptStatus.value else {
-        return
-      }
-
-      if receiptStatus != BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue {
-        return
-      }
-    }
-
-    Task { @MainActor in
-      for await message in StoreKit.Message.messages {
-        guard let windowScene = currentScene else {
-          return
-        }
-
-        try? message.display(in: windowScene)
-      }
-    }
-  }
-
   // MARK: Helper Methods for Presentation
 
   private func presentVPNChurnPromoCallout(
@@ -305,6 +211,11 @@ extension BrowserViewController {
       return false
     }
 
+    if calloutType == .defaultBrowser, defaultBrowserHelper.isAccurateDefaultCheckAvailable {
+      // Use DefaultBrowserHelper's logic when more accurate API is available
+      return defaultBrowserHelper.shouldPerformAccurateDefaultCheck
+    }
+
     if presentedViewController != nil
       || !FullScreenCalloutManager.shouldShowCallout(calloutType: calloutType)
     {
@@ -317,9 +228,11 @@ extension BrowserViewController {
   // MARK: Non-Conditional Callouts Methods
 
   func presentVPNInAppEventCallout() {
-    // If the onboarding has not completed we do not show any promo screens.
+    // If the onboarding has not completed or VPN is not available we do not show any promo screens.
     // This will most likely be the case for users who have not installed the app yet.
-    if Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
+    if profileController.profile.prefs.isBraveVPNAvailable,
+      Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue
+    {
       return
     }
 
@@ -359,6 +272,9 @@ extension BrowserViewController {
     //   2. Add a done button to the toolbar
     let controller = UIHostingController(
       rootView: DataImportView(
+        model: .init(
+          coordinator: SafariDataImporterCoordinatorImpl(profile: profileController.profile)
+        ),
         openURL: { [unowned self] url in
           dismiss(animated: true)
           openURLInNewTab(

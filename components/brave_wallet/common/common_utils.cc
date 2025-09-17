@@ -77,6 +77,10 @@ bool IsZCashShieldedTransactionsEnabled() {
 #endif
 }
 
+bool IsPolkadotEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveWalletPolkadotFeature);
+}
+
 bool IsAnkrBalancesEnabled() {
   return base::FeatureList::IsEnabled(
       features::kBraveWalletAnkrBalancesFeature);
@@ -280,6 +284,11 @@ std::string GetNetworkForCardanoAccount(const mojom::AccountIdPtr& account_id) {
   return GetNetworkForCardanoKeyring(account_id->keyring_id);
 }
 
+bool IsPolkadotKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kPolkadotMainnet ||
+         keyring_id == mojom::KeyringId::kPolkadotTestnet;
+}
+
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
   if (IsEthereumKeyring(keyring_id)) {
     return mojom::CoinType::ETH;
@@ -395,6 +404,11 @@ std::vector<mojom::KeyringId> GetEnabledKeyrings() {
 bool CoinSupportsDapps(mojom::CoinType coin) {
   return coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL ||
          coin == mojom::CoinType::ADA;
+}
+
+bool IsFixedSelectedNetworkCoin(mojom::CoinType coin) {
+  // This might need to be extended with ZEC and FIL.
+  return coin == mojom::CoinType::BTC || coin == mojom::CoinType::ADA;
 }
 
 std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(

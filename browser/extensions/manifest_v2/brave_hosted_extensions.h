@@ -61,7 +61,7 @@ inline constexpr auto kPreconfiguredManifestV2Extensions =
 static_assert(kPreconfiguredManifestV2Extensions.size() == kBraveHosted.size());
 
 bool IsKnownBraveHostedExtension(const extensions::ExtensionId& id);
-bool IsKnownWebStoreHostedExtensionExtension(const extensions::ExtensionId& id);
+bool IsKnownWebStoreHostedExtension(const extensions::ExtensionId& id);
 
 // Returns the Brave-hosted extension id for a given WebStore-hosted.
 // In case if the given id is unknown returns nullopt.

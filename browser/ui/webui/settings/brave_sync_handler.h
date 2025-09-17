@@ -48,6 +48,7 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void HandleDeleteDevice(const base::Value::List& args);
   void HandlePermanentlyDeleteAccount(const base::Value::List& args);
   void HandleSyncGetWordsCount(const base::Value::List& args);
+  void HandleCopySyncCodeToClipboard(const base::Value::List& args);
 
   void OnResetDone(base::Value callback_id);
   void OnAccountPermanentlyDeleted(base::Value callback_id,
@@ -68,6 +69,8 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
       device_info_tracker_observer_{this};
 
   base::WeakPtrFactory<BraveSyncHandler> weak_ptr_factory_;
+
+  friend class BraveSyncHandlerUnittest;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SYNC_HANDLER_H_

@@ -101,6 +101,7 @@ void BraveContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
   blink::WebRuntimeFeatures::EnableFledge(false);
+  blink::WebRuntimeFeatures::EnablePermissionElement(false);
   // Disable topics APIs because kBrowsingTopics feature is disabled
   blink::WebRuntimeFeatures::EnableTopicsAPI(false);
   blink::WebRuntimeFeatures::EnableTopicsDocumentAPI(false);
@@ -178,7 +179,7 @@ void BraveContentRendererClient::RenderFrameCreated(
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature) &&
       !IsIncognitoProcess()) {
-    new skus::SkusRenderFrameObserver(render_frame);
+    skus::SkusRenderFrameObserver::Create(render_frame);
   }
 
 #if BUILDFLAG(IS_ANDROID)

@@ -12,6 +12,9 @@
 #include "base/command_line.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
@@ -19,6 +22,7 @@
 #include "brave/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/browser/brave_wallet/simulation_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -30,6 +34,7 @@
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -37,6 +42,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
@@ -76,6 +82,9 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
                         base::StrCat({kUntrustedMarketURL, ";"})},
                        " "));
   source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::StyleSrc,
+      "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
+  source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       base::JoinString(
           {"img-src", "'self'", "chrome://resources",
@@ -90,8 +99,11 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
+  source->AddBoolean("rewardsFeatureEnabled",
+                     brave_rewards::IsSupportedForProfile(profile));
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
   brave_wallet::AddBlockchainTokenImageSource(profile);
   active_web_contents_ = brave_wallet::GetActiveWebContents();
 }
@@ -106,6 +118,18 @@ void WalletPanelUI::BindInterface(
   panel_factory_receiver_.Bind(std::move(receiver));
 }
 
+void WalletPanelUI::BindInterface(
+    mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  CHECK(profile);
+
+  rewards_handler_ = std::make_unique<brave_rewards::RewardsPageHandler>(
+      std::move(receiver), nullptr,
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile),
+      brave_ads::AdsServiceFactory::GetForProfile(profile), nullptr,
+      profile->GetPrefs());
+}
+
 void WalletPanelUI::SetDeactivationCallback(
     base::RepeatingCallback<void(bool)> deactivation_callback) {
   deactivation_callback_ = std::move(deactivation_callback);
@@ -118,6 +142,8 @@ void WalletPanelUI::CreatePanelHandler(
         json_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
         bitcoin_wallet_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::PolkadotWalletService>
+        polkadot_wallet_service,
     mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
         zcash_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::CardanoWalletService>
@@ -164,6 +190,7 @@ void WalletPanelUI::CreatePanelHandler(
     wallet_service->Bind(std::move(brave_wallet_service_receiver));
     wallet_service->Bind(std::move(json_rpc_service_receiver));
     wallet_service->Bind(std::move(bitcoin_wallet_service_receiver));
+    wallet_service->Bind(std::move(polkadot_wallet_service));
     wallet_service->Bind(std::move(zcash_wallet_service_receiver));
     wallet_service->Bind(std::move(cardano_wallet_service_receiver));
     wallet_service->Bind(std::move(keyring_service_receiver));
@@ -197,7 +224,8 @@ WalletPanelUIConfig::WalletPanelUIConfig()
 
 bool WalletPanelUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return brave_wallet::IsAllowedForContext(browser_context);
+  return brave_wallet::IsNativeWalletEnabled() &&
+         brave_wallet::IsAllowedForContext(browser_context);
 }
 
 bool WalletPanelUIConfig::ShouldAutoResizeHost() {

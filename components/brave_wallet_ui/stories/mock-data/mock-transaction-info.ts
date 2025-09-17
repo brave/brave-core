@@ -12,21 +12,32 @@ import {
   StorybookTransactionTypes,
 } from '../../constants/types'
 import { deserializeTransaction } from '../../utils/model-serialization-utils'
-import { FileCoinTransactionInfo } from '../../utils/tx-utils'
+import {
+  FileCoinTransactionInfo,
+  ParsedTransaction,
+  parseTransactionWithPrices,
+} from '../../utils/tx-utils'
 
 // Mocks
 import {
   mockAccount,
+  mockEthAccountInfo,
   mockBtcAccount,
   mockFilecoinAccount,
   mockSolanaAccount,
   mockSolanaAccountInfo,
+  mockSpotPriceRegistry,
   mockZecAccount,
 } from '../../common/constants/mocks'
-import { mockOriginInfo } from './mock-origin-info'
+import { mockOriginInfo, mockUniswapOriginInfo } from './mock-origin-info'
 import { mockEthAccount } from './mock-wallet-accounts'
-import { mockBasicAttentionToken, mockUSDCoin } from './mock-asset-options'
+import {
+  mockBasicAttentionToken,
+  mockErc20TokensList,
+  mockUSDCoin,
+} from './mock-asset-options'
 import { LiFiExchangeProxy } from '../../common/constants/registry'
+import { mockEthMainnet } from './mock-networks'
 
 export const mockTransactionInfo: SerializableTransactionInfo = {
   fromAccountId: mockAccount.accountId,
@@ -39,7 +50,7 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
         nonce: '0x1',
         gasPrice: '100000000',
         gasLimit: '122665', // wei
-        to: '2',
+        to: mockBasicAttentionToken.contractAddress,
         value: '0x15ddf09c97b0000',
         data: Array.from(new Uint8Array(24)),
         signOnly: false,
@@ -64,7 +75,7 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
   createdTime: { microseconds: 0 },
   submittedTime: { microseconds: 0 },
   confirmedTime: { microseconds: 0 },
-  originInfo: mockOriginInfo,
+  originInfo: mockUniswapOriginInfo,
   effectiveRecipient: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
   isRetriable: false,
   swapInfo: undefined,
@@ -347,10 +358,11 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
 export const mockedErc20ApprovalTransaction = {
   ...mockTransactionInfo,
   txType: BraveWallet.TransactionType.ERC20Approve,
+  id: 'erc20-approve-tx',
 }
 
 export const mockEthSendTransaction = {
-  id: '8e41ec0c-9e62-45fc-904f-a25b42275a1a',
+  id: 'eth-send-tx',
   fromAddress: mockAccount.address,
   fromAccountId: mockAccount.accountId,
   txHash: '0xbabaaaaaaaaaaa',
@@ -833,3 +845,79 @@ export const mockSuggestedMaxPriorityFeeOptions: MaxPriorityFeeOptionType[] = [
     duration: '1 min',
   },
 ]
+
+export const mockParsedERC20ApprovalTransaction: ParsedTransaction =
+  parseTransactionWithPrices({
+    tx: mockedErc20ApprovalTransaction,
+    accounts: {
+      ids: [mockEthAccount.accountId.uniqueKey],
+      entities: { [mockEthAccount.accountId.uniqueKey]: mockEthAccount },
+    },
+    gasFee: '100',
+    spotPriceRegistry: mockSpotPriceRegistry,
+    tokensList: mockErc20TokensList,
+    transactionAccount: mockAccount,
+    transactionNetwork: mockEthMainnet,
+  })
+
+export const mockETHSwapTransaction: BraveWallet.TransactionInfo = {
+  ...deserializeTransaction(mockTransactionInfo),
+  txType: BraveWallet.TransactionType.ETHSwap,
+  id: 'mock-eth-swap-tx',
+  txStatus: BraveWallet.TransactionStatus.Unapproved,
+  swapInfo: {
+    fromAmount: '0xde0b6b3a7640000',
+    fromAsset: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+    fromCoin: BraveWallet.CoinType.ETH,
+    fromChainId: BraveWallet.MAINNET_CHAIN_ID,
+    toAmount: '0x3d6235a79608ede57a',
+    toAsset: mockBasicAttentionToken.contractAddress,
+    toCoin: BraveWallet.CoinType.ETH,
+    toChainId: BraveWallet.MAINNET_CHAIN_ID,
+    receiver: mockAccount.address,
+    provider: 'lifi',
+  },
+}
+
+export const mockETHNativeTokenSendTransaction = {
+  chainId: BraveWallet.MAINNET_CHAIN_ID,
+  confirmedTime: { microseconds: 0 },
+  createdTime: {
+    microseconds: 1697722990427000,
+  },
+  submittedTime: {
+    microseconds: 0,
+  },
+  effectiveRecipient: mockEthAccountInfo.accountId.address,
+  fromAccountId: mockAccount.accountId,
+  id: 'eth-native-token-send-tx',
+  isRetriable: false,
+  originInfo: {
+    originSpec: 'chrome://wallet',
+    eTldPlusOne: '',
+  },
+  swapInfo: undefined,
+  txArgs: [],
+  txHash: '',
+  txParams: [],
+  txStatus: BraveWallet.TransactionStatus.Unapproved,
+  txType: BraveWallet.TransactionType.ETHSend,
+  txDataUnion: {
+    ethTxData1559: {
+      baseData: {
+        nonce: '',
+        gasPrice: '0x5f5e100',
+        gasLimit: '0x5208',
+        to: mockEthAccountInfo.accountId.address,
+        value: '0xad78ebc5ac620000',
+        data: [],
+        signOnly: false,
+        signedTransaction: undefined,
+      },
+      chainId: '',
+      maxPriorityFeePerGas: '',
+      maxFeePerGas: '',
+      gasEstimation: undefined,
+    },
+  },
+}

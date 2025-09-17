@@ -29,12 +29,11 @@ import { Tooltip } from '../../shared/tooltip/index'
 import { withPlaceholderIcon } from '../../shared/create-placeholder-icon'
 import { PanelTab } from '../panel-tab/index'
 import { TransactionDetailBox } from '../transaction-box/index'
-import { EditAllowance } from '../edit-allowance/index'
 import {
   AdvancedTransactionSettingsButton, //
 } from '../advanced-transaction-settings/button/index'
 import {
-  AdvancedTransactionSettings, //
+  AdvancedTransactionSettings as OldTransactionSettings, //
 } from '../advanced-transaction-settings/index'
 import { TransactionInfo } from './transaction-info'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
@@ -42,7 +41,6 @@ import {
   PendingTransactionActionsFooter, //
 } from './common/pending_tx_actions_footer'
 import { TransactionQueueSteps } from './common/queue'
-import { Origin } from './common/origin'
 import { EditPendingTransactionGas } from './common/gas'
 import { TxWarningBanner } from './common/tx_warnings'
 import { LoadingPanel } from '../loading_panel/loading_panel'
@@ -67,7 +65,6 @@ import {
   TransactionTypeText,
   AccountCircleWrapper,
   ArrowIcon,
-  EditButton,
   WarningIcon,
   ContractButton,
   ExplorerIcon,
@@ -76,10 +73,6 @@ import {
 
 import {
   TabRow,
-  Description,
-  PanelTitle,
-  AddressAndOrb,
-  AddressText,
   WarningBox,
   WarningTitle,
   WarningText,
@@ -90,6 +83,7 @@ import {
 import { Column, Row } from '../../shared/style'
 import { NetworkFeeRow } from './common/style'
 import { FooterContainer } from './common/pending_tx_actions_footer.style'
+import { LongWrapper } from '../../../stories/style'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -110,7 +104,6 @@ export const ConfirmTransactionPanel = ({
 
   // custom hooks
   const {
-    erc20ApproveTokenInfo,
     fromAccount,
     fromOrb,
     isERC20Approve,
@@ -118,7 +111,6 @@ export const ConfirmTransactionPanel = ({
     isERC721TransferFrom,
     isEthereumTransaction,
     isAssociatedTokenAccountCreation,
-    onEditAllowanceSave,
     toOrb,
     transactionDetails,
     transactionsNetwork,
@@ -173,8 +165,6 @@ export const ConfirmTransactionPanel = ({
   const [isSimulationWarningDismissed, setIsSimulationWarningDismissed] =
     React.useState(false)
   const [isEditing, setIsEditing] = React.useState<boolean>(false)
-  const [isEditingAllowance, setIsEditingAllowance] =
-    React.useState<boolean>(false)
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
   const [isWarningCollapsed, setIsWarningCollapsed] = React.useState(true)
@@ -183,8 +173,6 @@ export const ConfirmTransactionPanel = ({
   const onSelectTab = (tab: confirmPanelTabs) => () => setSelectedTab(tab)
 
   const onToggleEditGas = () => setIsEditing((prev) => !prev)
-
-  const onToggleEditAllowance = () => setIsEditingAllowance((prev) => !prev)
 
   const onToggleAdvancedTransactionSettings = () => {
     setShowAdvancedTransactionSettings((prev) => !prev)
@@ -199,93 +187,47 @@ export const ConfirmTransactionPanel = ({
     || !fromAccount
     || !transactionsQueueLength
   ) {
-    return <LoadingPanel />
+    return (
+      <LongWrapper>
+        <LoadingPanel />
+      </LongWrapper>
+    )
   }
 
   if (isEditing) {
-    return <EditPendingTransactionGas onCancel={onToggleEditGas} />
-  }
-
-  if (isEditingAllowance) {
     return (
-      <EditAllowance
-        onCancel={onToggleEditAllowance}
-        onSave={onEditAllowanceSave}
-        proposedAllowance={transactionDetails.valueExact}
-        symbol={transactionDetails.symbol}
-        approvalTarget={transactionDetails.approvalTargetLabel || ''}
-        isApprovalUnlimited={transactionDetails.isApprovalUnlimited || false}
-      />
+      <LongWrapper>
+        <EditPendingTransactionGas onCancel={onToggleEditGas} />
+      </LongWrapper>
     )
   }
 
   if (showAdvancedTransactionSettings) {
     return (
-      <AdvancedTransactionSettings
-        onCancel={onToggleAdvancedTransactionSettings}
-        nonce={transactionDetails.nonce}
-        chainId={selectedPendingTransaction.chainId}
-        txMetaId={selectedPendingTransaction.id}
-        updateUnapprovedTransactionNonce={updateUnapprovedTransactionNonce}
-      />
+      <LongWrapper>
+        <OldTransactionSettings
+          onCancel={onToggleAdvancedTransactionSettings}
+          nonce={transactionDetails.nonce}
+          chainId={selectedPendingTransaction.chainId}
+          txMetaId={selectedPendingTransaction.id}
+          updateUnapprovedTransactionNonce={updateUnapprovedTransactionNonce}
+        />
+      </LongWrapper>
     )
   }
 
   return (
-    <StyledWrapper>
-      <TopRow>
-        <NetworkText>{transactionsNetwork?.chainName ?? ''}</NetworkText>
+    <LongWrapper>
+      <StyledWrapper>
+        <TopRow>
+          <NetworkText>{transactionsNetwork?.chainName ?? ''}</NetworkText>
 
-        <TransactionQueueSteps
-          queueNextTransaction={queueNextTransaction}
-          transactionQueueNumber={transactionQueueNumber}
-          transactionsQueueLength={transactionsQueueLength}
-        />
-      </TopRow>
-
-      {isERC20Approve ? (
-        <>
-          <Origin originInfo={originInfo} />
-          <PanelTitle>
-            {getLocale('braveWalletAllowSpendTitle').replace(
-              '$1',
-              erc20ApproveTokenInfo?.symbol ?? '',
-            )}
-          </PanelTitle>
-          <AddressAndOrb>
-            <Tooltip
-              text={transactionDetails.approvalTarget}
-              isAddress={true}
-              position={'right'}
-            >
-              <AddressText>
-                {transactionDetails.approvalTargetLabel}
-              </AddressText>
-            </Tooltip>
-          </AddressAndOrb>
-          <Description>
-            {getLocale('braveWalletAllowSpendDescription').replace(
-              '$1',
-              erc20ApproveTokenInfo?.symbol ?? '',
-            )}
-          </Description>
-
-          {transactionDetails.isApprovalUnlimited && (
-            <WarningBox warningType={'danger'}>
-              <WarningBoxTitleRow>
-                <WarningIcon />
-                <WarningTitle warningType={'danger'}>
-                  {getLocale('braveWalletAllowSpendUnlimitedWarningTitle')}
-                </WarningTitle>
-              </WarningBoxTitleRow>
-            </WarningBox>
-          )}
-
-          <EditButton onClick={onToggleEditAllowance}>
-            {getLocale('braveWalletEditPermissionsButton')}
-          </EditButton>
-        </>
-      ) : (
+          <TransactionQueueSteps
+            queueNextTransaction={queueNextTransaction}
+            transactionQueueNumber={transactionQueueNumber}
+            transactionsQueueLength={transactionsQueueLength}
+          />
+        </TopRow>
         <>
           <AccountCircleWrapper>
             <FromCircle orb={fromOrb} />
@@ -432,95 +374,95 @@ export const ConfirmTransactionPanel = ({
             </WarningBox>
           )}
         </>
-      )}
 
-      <TabRow>
-        <PanelTab
-          isSelected={selectedTab === 'transaction'}
-          onSubmit={onSelectTab('transaction')}
-          text='Transaction'
-        />
-        <PanelTab
-          isSelected={selectedTab === 'details'}
-          onSubmit={onSelectTab('details')}
-          text='Details'
-        />
-        {isEthereumTransaction && (
-          <AdvancedTransactionSettingsButton
-            onSubmit={onToggleAdvancedTransactionSettings}
+        <TabRow>
+          <PanelTab
+            isSelected={selectedTab === 'transaction'}
+            onSubmit={onSelectTab('transaction')}
+            text='Transaction'
           />
-        )}
-      </TabRow>
+          <PanelTab
+            isSelected={selectedTab === 'details'}
+            onSubmit={onSelectTab('details')}
+            text='Details'
+          />
+          {isEthereumTransaction && (
+            <AdvancedTransactionSettingsButton
+              onSubmit={onToggleAdvancedTransactionSettings}
+            />
+          )}
+        </TabRow>
 
-      <MessageBox isDetails={selectedTab === 'details'}>
-        {selectedTab === 'transaction' ? (
-          <TransactionInfo
-            onToggleEditGas={canEditGas ? onToggleEditGas : undefined}
-            isZCashTransaction={isZCashTransaction}
-            isBitcoinTransaction={isBitcoinTransaction}
+        <MessageBox isDetails={selectedTab === 'details'}>
+          {selectedTab === 'transaction' ? (
+            <TransactionInfo
+              onToggleEditGas={canEditGas ? onToggleEditGas : undefined}
+              isZCashTransaction={isZCashTransaction}
+              isBitcoinTransaction={isBitcoinTransaction}
+              transactionDetails={transactionDetails}
+              isERC721SafeTransferFrom={isERC721SafeTransferFrom}
+              isERC721TransferFrom={isERC721TransferFrom}
+              transactionsNetwork={transactionsNetwork}
+              hasFeeEstimatesError={Boolean(hasFeeEstimatesError)}
+              isLoadingGasFee={isLoadingGasFee}
+              gasFee={gasFee}
+              insufficientFundsError={insufficientFundsError}
+              insufficientFundsForGasError={insufficientFundsForGasError}
+              isERC20Approve={isERC20Approve}
+              currentTokenAllowance={currentTokenAllowance}
+              isCurrentAllowanceUnlimited={isCurrentAllowanceUnlimited}
+            />
+          ) : (
+            <TransactionDetailBox
+              transactionInfo={selectedPendingTransaction}
+              instructions={transactionDetails.instructions}
+            />
+          )}
+        </MessageBox>
+
+        <NetworkFeeRow>
+          <PendingTransactionNetworkFeeAndSettings
+            showEditGas={
+              isEthereumTransaction
+              || isSolanaTransaction
+              || isFilecoinTransaction
+            }
+            onToggleEditGas={onToggleEditGas}
+            feeDisplayMode='fiat'
+          />
+        </NetworkFeeRow>
+
+        <Column fullWidth>
+          <FooterContainer>
+            {retrySimulation
+              && !isSimulationWarningDismissed
+              && !showSimulationNotSupportedMessage && (
+                <TxWarningBanner
+                  retrySimulation={retrySimulation}
+                  onDismiss={() => setIsSimulationWarningDismissed(true)}
+                />
+              )}
+          </FooterContainer>
+          <PendingTransactionActionsFooter
+            onConfirm={onConfirm}
+            onReject={onReject}
+            rejectAllTransactions={rejectAllTransactions}
+            isConfirmButtonDisabled={isConfirmButtonDisabled}
             transactionDetails={transactionDetails}
-            isERC721SafeTransferFrom={isERC721SafeTransferFrom}
-            isERC721TransferFrom={isERC721TransferFrom}
-            transactionsNetwork={transactionsNetwork}
-            hasFeeEstimatesError={Boolean(hasFeeEstimatesError)}
-            isLoadingGasFee={isLoadingGasFee}
-            gasFee={gasFee}
-            insufficientFundsError={insufficientFundsError}
+            transactionsQueueLength={transactionsQueueLength}
             insufficientFundsForGasError={insufficientFundsForGasError}
-            isERC20Approve={isERC20Approve}
-            currentTokenAllowance={currentTokenAllowance}
-            isCurrentAllowanceUnlimited={isCurrentAllowanceUnlimited}
+            insufficientFundsError={insufficientFundsError}
+            isWarningCollapsed={isWarningCollapsed}
+            setIsWarningCollapsed={setIsWarningCollapsed}
+            isAccountSyncing={isAccountSyncing}
+            isShieldingFunds={isShieldingFunds}
           />
-        ) : (
-          <TransactionDetailBox
-            transactionInfo={selectedPendingTransaction}
-            instructions={transactionDetails.instructions}
-          />
+        </Column>
+        {showSimulationNotSupportedMessage && (
+          <TransactionSimulationNotSupportedSheet />
         )}
-      </MessageBox>
-
-      <NetworkFeeRow>
-        <PendingTransactionNetworkFeeAndSettings
-          showEditGas={
-            isEthereumTransaction
-            || isSolanaTransaction
-            || isFilecoinTransaction
-          }
-          onToggleEditGas={onToggleEditGas}
-          feeDisplayMode='fiat'
-        />
-      </NetworkFeeRow>
-
-      <Column fullWidth>
-        <FooterContainer>
-          {retrySimulation
-            && !isSimulationWarningDismissed
-            && !showSimulationNotSupportedMessage && (
-              <TxWarningBanner
-                retrySimulation={retrySimulation}
-                onDismiss={() => setIsSimulationWarningDismissed(true)}
-              />
-            )}
-        </FooterContainer>
-        <PendingTransactionActionsFooter
-          onConfirm={onConfirm}
-          onReject={onReject}
-          rejectAllTransactions={rejectAllTransactions}
-          isConfirmButtonDisabled={isConfirmButtonDisabled}
-          transactionDetails={transactionDetails}
-          transactionsQueueLength={transactionsQueueLength}
-          insufficientFundsForGasError={insufficientFundsForGasError}
-          insufficientFundsError={insufficientFundsError}
-          isWarningCollapsed={isWarningCollapsed}
-          setIsWarningCollapsed={setIsWarningCollapsed}
-          isAccountSyncing={isAccountSyncing}
-          isShieldingFunds={isShieldingFunds}
-        />
-      </Column>
-      {showSimulationNotSupportedMessage && (
-        <TransactionSimulationNotSupportedSheet />
-      )}
-    </StyledWrapper>
+      </StyledWrapper>
+    </LongWrapper>
   )
 }
 

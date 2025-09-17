@@ -61,9 +61,23 @@ class BasicMenuActivity: UIActivity, MenuActivity {
   }
 
   override var activityImage: UIImage? {
-    return UIImage(braveSystemNamed: braveSystemImage)?.applyingSymbolConfiguration(
-      .init(scale: .large)
-    )
+    guard
+      let image = UIImage(braveSystemNamed: braveSystemImage)?
+        .applyingSymbolConfiguration(.init(scale: .large))
+    else {
+      return nil
+    }
+    let longest = max(image.size.width, image.size.height)
+    let size = CGSize(width: longest, height: longest)
+    let renderer = UIGraphicsImageRenderer(size: size)
+    return renderer.image { _ in
+      image.draw(
+        at: .init(
+          x: (size.width - image.size.width) / 2,
+          y: (size.height - image.size.height) / 2
+        )
+      )
+    }
   }
 
   override func perform() {

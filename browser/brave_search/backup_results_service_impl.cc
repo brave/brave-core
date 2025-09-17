@@ -8,7 +8,9 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/byte_count.h"
 #include "base/functional/bind.h"
+#include "base/rand_util.h"
 #include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/common/features.h"
@@ -57,7 +59,7 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
       }
     )");
 
-constexpr size_t kMaxResponseSize = 5 * 1024 * 1024;
+constexpr base::ByteCount kMaxResponseSize = base::MiB(5);
 constexpr base::TimeDelta kTimeout = base::Seconds(5);
 
 class BackupResultsWebContentsObserver
@@ -139,6 +141,11 @@ void BackupResultsServiceImpl::FetchBackupResults(
   if (should_render) {
     auto create_params = content::WebContents::CreateParams(otr_profile);
     web_contents = content::WebContents::Create(create_params);
+
+    int random_width = base::RandInt(800, 1920);
+    int random_height = base::RandInt(600, 1080);
+    web_contents->Resize({random_width, random_height});
+
     auto web_preferences = web_contents->GetOrCreateWebPreferences();
     web_preferences.supports_multiple_windows = false;
     web_contents->SetWebPreferences(web_preferences);
@@ -291,7 +298,7 @@ void BackupResultsServiceImpl::MakeSimpleURLLoaderRequest(
       pending_request->shared_url_loader_factory.get(),
       base::BindOnce(&BackupResultsServiceImpl::HandleURLLoaderResponse,
                      base::Unretained(this), pending_request),
-      kMaxResponseSize);
+      kMaxResponseSize.InBytes());
 }
 
 void BackupResultsServiceImpl::HandleURLLoaderResponse(

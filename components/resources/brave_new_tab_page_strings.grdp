@@ -65,8 +65,32 @@
     Gradients
   </message>
 
+  <message name="IDS_NEW_TAB_HIDE_REWARDS_WIDGET_LABEL" desc="Label for button that hides the Rewards widget">
+    Hide Rewards card
+  </message>
+
+  <message name="IDS_NEW_TAB_HIDE_STATS_WIDGET_LABEL" desc="Label for button that hides the Rewards widget">
+    Hide stats card
+  </message>
+
+  <message name="IDS_NEW_TAB_HIDE_TALK_WIDGET_LABEL" desc="Label for button that hides the Talk widget">
+    Hide Talk card
+  </message>
+
   <message name="IDS_NEW_TAB_HIDE_TOP_SITES_LABEL" desc="Label for button that hides the top sites UI">
     Hide top sites
+  </message>
+
+  <message name="IDS_NEW_TAB_HIDE_VPN_WIDGET_LABEL" desc="Label for button that hides the VPN widget">
+    Hide VPN card
+  </message>
+
+  <message name="IDS_NEW_TAB_NEWS_CUSTOMIZE_BUTTON_LABEL" desc="Label for button that opens the News settings modal">
+    Customize News
+  </message>
+
+  <message name="IDS_NEW_TAB_NEWS_DISABLE_BUTTON_LABEL" desc="Label for button that disables News on the NTP">
+    Disable News
   </message>
 
   <message name="IDS_NEW_TAB_NEWS_WIDGET_TITLE" desc="Title for Brave News widget">

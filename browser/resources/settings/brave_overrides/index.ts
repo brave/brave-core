@@ -10,8 +10,9 @@
 // optimized (rollup controls the order in which modules are executed).
 
 import './config.js'
-import { ContentSettingsTypes } from '../site_settings/constants.js'
+import '../site_settings/constants.js'
 import './a11y_page.js'
+import './a11y_page_index.js'
 import './all_sites.js'
 import './about_page.js'
 import './autofill_page.js'
@@ -40,6 +41,7 @@ import './safety_check.js'
 import './safety_check_passwords_child.js'
 import './safety_hub_page.js'
 import './search_page.js'
+import './search_page_index.js'
 import './security_page.js'
 import './settings_basic_page.js'
 import './settings_manage_profile.js'

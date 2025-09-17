@@ -10,8 +10,10 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "base/types/pass_key.h"
 #include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/view_shadow.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
@@ -31,6 +33,7 @@ class OnionLocationView;
 
 namespace playlist {
 FORWARD_DECLARE_TEST(PlaylistBrowserTest, AddItemsToList);
+FORWARD_DECLARE_TEST(PlaylistBrowserTest, UIHiddenWhenDisabled);
 FORWARD_DECLARE_TEST(PlaylistBrowserTestWithSitesUsingMediaSource,
                      MediaShouldBeExtractedFromBackground_SucceedInExtracting);
 FORWARD_DECLARE_TEST(PlaylistBrowserTestWithSitesUsingMediaSource,
@@ -75,6 +78,8 @@ class BraveLocationBarView : public LocationBarView {
   views::View* GetSearchPromotionButton() const override;
   void RefreshBackground() override;
   void OnOmniboxBlurred() override;
+  void Layout(PassKey) override;
+  void OnVisibleBoundsChanged() override;
 
   // views::View:
   gfx::Size CalculatePreferredSize(
@@ -95,8 +100,14 @@ class BraveLocationBarView : public LocationBarView {
       playlist::PlaylistBubblesController::BubbleType type =
           playlist::PlaylistBubblesController::BubbleType::kInfer);
 
+  void set_ignore_layout(base::PassKey<BraveToolbarView::LayoutGuard>,
+                         bool ignore) {
+    ignore_layout_ = ignore;
+  }
+
  private:
   FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest, AddItemsToList);
+  FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest, UIHiddenWhenDisabled);
   FRIEND_TEST_ALL_PREFIXES(
       playlist::PlaylistBrowserTestWithSitesUsingMediaSource,
       MediaShouldBeExtractedFromBackground_SucceedInExtracting);
@@ -115,6 +126,10 @@ class BraveLocationBarView : public LocationBarView {
   PlaylistActionIconView* GetPlaylistActionIconView();
   void SetupShadow();
 
+  // Prevent layout with invalid rect.
+  // It also could make omnibox popup have wrong position.
+  // See the comments of BraveToolbarView::Layout().
+  bool ignore_layout_ = false;
   std::unique_ptr<ViewShadow> shadow_;
   raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
   raw_ptr<BraveNewsActionIconView> brave_news_action_icon_view_ = nullptr;

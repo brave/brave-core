@@ -41,6 +41,11 @@ bool Tool::RequiresUserInteractionBeforeHandling() const {
   return false;
 }
 
+bool Tool::SupportsConversation(bool is_temporary,
+                                bool has_untrusted_content) const {
+  return true;
+}
+
 std::optional<base::Value::Dict> Tool::ExtraParams() const {
   return std::nullopt;
 }

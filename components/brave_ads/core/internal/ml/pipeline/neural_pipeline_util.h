@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_PIPELINE_NEURAL_PIPELINE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_PIPELINE_NEURAL_PIPELINE_UTIL_H_
 
-#include <cstddef>
+#include <stddef.h>
+#include <stdint.h>
+
 #include <optional>
 
 namespace brave_ads::ml::pipeline {

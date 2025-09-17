@@ -9,7 +9,6 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
 import { setIconBasePath } from '@brave/leo/react/icon'
-import '@brave/leo/tokens/css/variables.css'
 
 // Components
 import App from './components/app.v1'

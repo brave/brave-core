@@ -142,14 +142,25 @@ void AIChatTabHelper::GetPageContent(FetchPageContentCallback callback,
     std::move(callback).Run("", false, "");
     return;
   }
-  if (kPrintPreviewRetrievalHosts.contains(
+  if (print_preview_extraction_delegate_ &&
+      kPrintPreviewRetrievalHosts.contains(
           web_contents()->GetLastCommittedURL().host_piece())) {
-    // Get content using a printing / OCR mechanism, instead of
-    // directly from the source, if available.
+    // Get content using print preview image capture for server-side OCR
     DVLOG(1) << __func__ << " print preview url";
-    if (MaybePrintPreviewExtract(callback)) {
+    // For print preview hosts, we always return empty content to trigger
+    // the autoscreenshots mechanism which will use CaptureImages for
+    // server-side OCR. However, if the page isn't loaded yet, wait for load
+    // completion.
+    if (!is_page_loaded_) {
+      DVLOG(1) << "print preview page was not loaded yet, will return empty "
+                  "after load";
+      SetPendingGetContentCallback(std::move(callback));
       return;
     }
+    DVLOG(1) << "print preview host detected, returning empty to trigger "
+                "autoscreenshots";
+    std::move(callback).Run("", false, "");
+    return;
   }
   page_content_fetcher_delegate_->FetchPageContent(
       invalidation_token,
@@ -180,37 +191,6 @@ void AIChatTabHelper::SetPendingGetContentCallback(
     std::move(pending_get_page_content_callback_).Run("", false, "");
   }
   pending_get_page_content_callback_ = std::move(callback);
-}
-
-bool AIChatTabHelper::MaybePrintPreviewExtract(
-    FetchPageContentCallback& callback) {
-  if (print_preview_extraction_delegate_ == nullptr) {
-    DVLOG(1) << "print preview extraction not supported";
-    return false;
-  }
-  if (!is_page_loaded_) {
-    DVLOG(1) << "will extract print preview content when page is loaded";
-    SetPendingGetContentCallback(std::move(callback));
-  } else {
-    // When page is already loaded, fallback to print preview extraction
-    DVLOG(1) << "extracting print preview content now";
-    print_preview_extraction_delegate_->Extract(
-        base::BindOnce(&AIChatTabHelper::OnExtractPrintPreviewContentComplete,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-  }
-  return true;
-}
-
-void AIChatTabHelper::OnExtractPrintPreviewContentComplete(
-    FetchPageContentCallback callback,
-    base::expected<std::string, std::string> result) {
-  // Invalidation token not applicable for print preview OCR
-  if (result.has_value()) {
-    std::move(callback).Run(std::move(result.value()), false, "");
-  } else {
-    VLOG(1) << result.error();
-    std::move(callback).Run("", false, "");
-  }
 }
 
 void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
@@ -341,8 +321,13 @@ bool AIChatTabHelper::HasOpenAIChatPermission() const {
 
 void AIChatTabHelper::GetScreenshots(
     mojom::ConversationHandler::GetScreenshotsCallback callback) {
-  if (IsPdf(web_contents())) {
-    print_preview_extraction_delegate_->CapturePdf(
+  if (print_preview_extraction_delegate_ &&
+      (IsPdf(web_contents()) ||
+       kPrintPreviewRetrievalHosts.contains(
+           web_contents()->GetLastCommittedURL().host_piece()))) {
+    // Use print preview extraction for PDFs and print preview hosts
+    // when delegate is available
+    print_preview_extraction_delegate_->CaptureImages(
         base::BindOnce(&AIChatTabHelper::OnScreenshotsCaptured,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   } else {
@@ -363,7 +348,8 @@ void AIChatTabHelper::OnScreenshotsCaptured(
     for (auto& screenshot : result.value()) {
       size_t screenshot_size = screenshot.size();
       screenshots.push_back(mojom::UploadedFile::New(
-          absl::StrFormat("fullscreenshot_%i.png", screenshot_index++),
+          absl::StrFormat("%s%i.png", mojom::kFullPageScreenshotPrefix,
+                          screenshot_index++),
           screenshot_size, std::move(screenshot),
           mojom::UploadedFileType::kScreenshot));
     }

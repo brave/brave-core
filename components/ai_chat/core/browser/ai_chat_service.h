@@ -29,6 +29,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
@@ -55,6 +56,7 @@ namespace ai_chat {
 class ModelService;
 class TabTrackerService;
 class AIChatMetrics;
+class MemoryStorageTool;
 
 // Main entry point for creating and consuming AI Chat conversations
 class AIChatService : public KeyedService,
@@ -78,7 +80,10 @@ class AIChatService : public KeyedService,
       os_crypt_async::OSCryptAsync* os_crypt_async,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::string_view channel_string,
-      base::FilePath profile_path);
+      base::FilePath profile_path,
+      // Factories of ToolProviders from other layers
+      std::vector<std::unique_ptr<ToolProviderFactory>>
+          tool_provider_factories = {});
 
   ~AIChatService() override;
   AIChatService(const AIChatService&) = delete;
@@ -116,6 +121,9 @@ class AIChatService : public KeyedService,
 
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
+
+  // Provides memory tool for testing
+  MemoryStorageTool* GetMemoryToolForTesting();
 
   ConversationHandler* GetConversation(std::string_view uuid);
   void GetConversation(std::string_view conversation_uuid,
@@ -291,6 +299,8 @@ class AIChatService : public KeyedService,
   void OnDataDeletedForDisabledStorage(bool success);
   mojom::ServiceStatePtr BuildState();
   void OnStateChanged();
+  void OnMemoryEnabledChanged();
+  void InitializeTools();
 
   void GetEngineForTabOrganization(base::OnceClosure callback);
   void ContinueGetEngineForTabOrganization(base::OnceClosure callback,
@@ -308,6 +318,8 @@ class AIChatService : public KeyedService,
   void OnGetFocusTabs(
       GetFocusTabsCallback callback,
       base::expected<std::vector<std::string>, mojom::APIError> result);
+  std::vector<std::unique_ptr<ToolProvider>>
+  CreateToolProvidersForNewConversation();
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
@@ -320,8 +332,14 @@ class AIChatService : public KeyedService,
   std::unique_ptr<AIChatFeedbackAPI> feedback_api_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
 
+  // Factories of ToolProviders from other layers
+  std::vector<std::unique_ptr<ToolProviderFactory>> tool_provider_factories_;
+
   // Engine for tab organization, created on demand and owned by AIChatService.
   std::unique_ptr<ai_chat::EngineConsumer> tab_organization_engine_;
+
+  // Memory tool that is available and shared across all conversations.
+  std::unique_ptr<MemoryStorageTool> memory_tool_;
 
   base::FilePath profile_path_;
 

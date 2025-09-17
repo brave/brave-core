@@ -37,7 +37,9 @@
 namespace skus {
 
 SkusJSHandler::SkusJSHandler(content::RenderFrame* render_frame)
-    : content::RenderFrameObserver(render_frame) {}
+    : content::RenderFrameObserver(render_frame) {
+  self_ = this;
+}
 
 SkusJSHandler::~SkusJSHandler() = default;
 
@@ -89,6 +91,7 @@ void SkusJSHandler::Install(content::RenderFrame* render_frame) {
   // window.chrome.braveSkus
   SkusJSHandler* handler = cppgc::MakeGarbageCollected<SkusJSHandler>(
       isolate->GetCppHeap()->GetAllocationHandle(), render_frame);
+
   v8::PropertyDescriptor skus_desc(
       handler->GetWrapper(isolate).ToLocalChecked(), false);
   skus_desc.set_configurable(false);
@@ -100,6 +103,7 @@ void SkusJSHandler::Install(content::RenderFrame* render_frame) {
 }
 
 void SkusJSHandler::OnDestruct() {
+  self_.Clear();
 }
 
 // window.chrome.braveSkus.refresh_order

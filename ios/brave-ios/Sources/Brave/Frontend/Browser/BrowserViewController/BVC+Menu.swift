@@ -59,6 +59,7 @@ extension BrowserViewController {
       windowProtection: self.windowProtection,
       p3aUtils: self.braveCore.p3aUtils,
       braveCore: self.profileController,
+      localState: self.braveCore.localState,
       attributionManager: attributionManager,
       keyringStore: keyringStore,
       cryptoStore: cryptoStore
@@ -137,7 +138,9 @@ extension BrowserViewController {
     pageURL: URL?
   ) {
     var actions: [Action] = []
-    actions.append(vpnMenuAction)
+    if profileController.profile.prefs.isBraveVPNAvailable {
+      actions.append(vpnMenuAction)
+    }
     actions.append(contentsOf: destinationMenuActions(for: pageURL))
     actions.append(contentsOf: pageActions(for: pageURL, tab: tab))
     var pageActivities: Set<Action> = Set(

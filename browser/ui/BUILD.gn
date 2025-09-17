@@ -213,8 +213,6 @@ source_set("ui") {
       "tabs/brave_tab_layout_constants.h",
       "tabs/brave_tab_menu_model.cc",
       "tabs/brave_tab_menu_model.h",
-      "tabs/brave_tab_strip_model.cc",
-      "tabs/brave_tab_strip_model.h",
       "tabs/shared_pinned_tab_dummy_view.h",
       "tabs/shared_pinned_tab_service.cc",
       "tabs/shared_pinned_tab_service.h",
@@ -313,6 +311,8 @@ source_set("ui") {
       "//brave/browser/profiles:util",
       "//brave/browser/ui/sidebar",
       "//brave/browser/ui/tabs:split_view",
+      "//brave/browser/ui/tabs:tab_model",
+      "//brave/browser/ui/tabs:tab_strip",
       "//brave/common",
       "//brave/components/brave_account:features",
       "//brave/components/brave_account/mojom",
@@ -362,6 +362,7 @@ source_set("ui") {
       "//skia",
       "//third_party/abseil-cpp:absl",
       "//ui/actions:actions_headers",
+      "//ui/base/clipboard",
       "//ui/color:color_headers",
       "//ui/color:mixers",
       "//url",
@@ -536,7 +537,6 @@ source_set("ui") {
       "views/page_action/brave_page_action_icon_container_view.h",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",
-      "views/side_panel/ai_chat/ai_chat_side_panel_utils_views.cc",
       "views/side_panel/bookmarks/brave_bookmarks_side_panel_coordinator.cc",
       "views/side_panel/bookmarks/brave_bookmarks_side_panel_coordinator.h",
       "views/side_panel/brave_bookmarks_side_panel_view.cc",
@@ -609,6 +609,7 @@ source_set("ui") {
     ]
 
     deps += [
+      "//brave/browser/ui/darker_theme",
       "//brave/browser/ui/side_panel",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
@@ -1003,18 +1004,12 @@ source_set("ui") {
     }
   }
 
-  if (enable_speedreader && !is_android) {
-    deps += [ "//brave/components/speedreader" ]
+  if (enable_speedreader) {
+    deps += [ "//brave/browser/ui/speedreader" ]
 
-    sources += [
-      "speedreader/speedreader_bubble_view.h",
-      "views/speedreader/reader_mode_bubble.cc",
-      "views/speedreader/reader_mode_bubble.h",
-      "views/speedreader/reader_mode_toolbar_view.cc",
-      "views/speedreader/reader_mode_toolbar_view.h",
-      "views/speedreader/speedreader_icon_view.cc",
-      "views/speedreader/speedreader_icon_view.h",
-    ]
+    if (toolkit_views) {
+      deps += [ "//brave/browser/ui/views/speedreader" ]
+    }
   }
 
   if (enable_request_otr) {
@@ -1184,8 +1179,6 @@ source_set("ui") {
     sources += [
       "toolbar/brave_vpn_menu_model.cc",
       "toolbar/brave_vpn_menu_model.h",
-      "webui/brave_vpn/brave_vpn_localized_string_provider.cc",
-      "webui/brave_vpn/brave_vpn_localized_string_provider.h",
       "webui/brave_vpn/vpn_panel_handler.cc",
       "webui/brave_vpn/vpn_panel_handler.h",
       "webui/brave_vpn/vpn_panel_ui.cc",

@@ -44,6 +44,9 @@ inline constexpr char kPanelCountHistogramName[] =
 #endif
 inline constexpr char kPageViewCountHistogramName[] =
     "Brave.Rewards.PageViewCount";
+inline constexpr char kOfferClicksHistogramName[] = "Brave.Rewards.OfferClicks";
+inline constexpr char kOffersViewedHistogramName[] =
+    "Brave.Rewards.OffersViewed";
 
 enum class AutoContributionsState {
   kNoWallet,
@@ -74,6 +77,9 @@ void RecordAdTypesEnabled(PrefService* prefs);
 void RecordSearchResultAdsOptinChange(PrefService* prefs);
 
 void RecordAdsHistoryView();
+
+void RecordOfferView(PrefService* prefs);
+void RecordOfferClicks(PrefService* prefs, bool new_click);
 
 class ConversionMonitor {
  public:

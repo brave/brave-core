@@ -310,6 +310,10 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
   // Given a tab has a custom title set.
   BraveTabStripModel* tab_strip_model =
       static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
+  auto target_url = embedded_test_server()->GetURL("/");
+  ASSERT_TRUE(
+      content::NavigateToURL(tab_strip_model->GetWebContentsAt(0), target_url));
+
   tab_strip_model->SetCustomTitleForTab(0, u"Custom Title");
   ASSERT_EQ(TabRendererData::FromTabInModel(tab_strip_model, 0).title,
             u"Custom Title");
@@ -322,6 +326,9 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelRenamingTabBrowserTest,
   ASSERT_TRUE(TabRestoreServiceFactory::GetForProfile(browser()->profile()));
   chrome::RestoreTab(browser());
   ASSERT_EQ(tab_strip_model->count(), 2);
+
+  base::test::RunUntil(
+      [&]() { return !tab_strip_model->GetWebContentsAt(0)->IsLoading(); });
 
   // Then the restored tab should have the custom title.
   EXPECT_EQ(TabRendererData::FromTabInModel(tab_strip_model, 0).title,

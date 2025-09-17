@@ -12,13 +12,12 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/threading/sequence_bound.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/web_discovery/browser/background_credential_helper.h"
 #include "brave/components/web_discovery/browser/credential_signer.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
-#include "crypto/rsa_private_key.h"
+#include "crypto/keypair.h"
 #include "net/base/backoff_entry.h"
 
 class PrefService;
@@ -69,15 +68,14 @@ class CredentialManager : public CredentialSigner {
  private:
   bool LoadRSAKey();
   bool GenerateRSAKey();
-  void OnNewRSAKey(std::unique_ptr<crypto::RSAPrivateKey> key);
+  void OnNewRSAKey(crypto::keypair::PrivateKey key);
 
   void StartJoinGroup(const std::string& date,
                       const std::vector<uint8_t>& group_pub_key);
 
-  void OnJoinRequestReady(
-      std::string date,
-      std::vector<uint8_t> group_pub_key,
-      std::optional<StartJoinInitialization> generate_join_result);
+  void OnJoinRequestReady(std::string date,
+                          std::vector<uint8_t> group_pub_key,
+                          StartJoinInitialization generate_join_result);
 
   void OnJoinResponse(std::string date,
                       std::vector<uint8_t> group_pub_key,

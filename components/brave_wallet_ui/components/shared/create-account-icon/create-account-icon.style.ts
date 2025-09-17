@@ -13,15 +13,17 @@ import { ExternalWalletProvider } from '../../../../brave_rewards/resources/shar
 
 export const AccountBox = styled.div<{
   orb?: string
-  size?: 'huge' | 'big' | 'medium' | 'small' | 'tiny'
+  size?: 'extra-huge' | 'huge' | 'big' | 'medium' | 'small' | 'tiny' | 'x-tiny'
   marginRight?: number
   round?: boolean
 }>`
+  --box-extra-huge: 56px;
   --box-huge: 48px;
   --box-big: 40px;
   --box-medium: 32px;
   --box-small: 24px;
   --box-tiny: 20px;
+  --box-x-tiny: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,13 +46,15 @@ export const ExternalAccountBox = styled(AccountBox)<{
 `
 
 export const ExternalAccountIcon = styled.img<{
-  size?: 'huge' | 'big' | 'medium' | 'small' | 'tiny'
+  size?: 'extra-huge' | 'huge' | 'big' | 'medium' | 'small' | 'tiny' | 'x-tiny'
 }>`
+  --icon-extra-huge: 40px;
   --icon-huge: 32px;
   --icon-big: 28px;
   --icon-medium: 24px;
   --icon-small: 18px;
   --icon-tiny: 14px;
+  --icon-x-tiny: 10px;
   width: ${(p) => (p.size ? `var(--icon-${p.size})` : 'var(--icon-medium)')};
   height: ${(p) => (p.size ? `var(--icon-${p.size})` : 'var(--icon-medium)')};
 `

@@ -176,7 +176,7 @@ private struct QualitySettingsView: View {
         .foregroundColor(Color(.braveLabel))
       Spacer()
       if Preferences.General.youtubeHighQuality.value == preference.rawValue {
-        Image(systemName: "checkmark")
+        Image(braveSystemName: "leo.check.normal")
       }
     }
   }

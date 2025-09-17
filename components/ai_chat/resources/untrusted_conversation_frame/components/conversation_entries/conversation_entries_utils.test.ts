@@ -19,11 +19,17 @@ describe('groupConversationEntries', () => {
         { completionEvent: { completion: 'Response 1' } },
         {
           sourcesEvent: {
-            sources: [{ url: { url: 'https://a.com' }, title: 'Title 1', faviconUrl: { url: 'https://a.com/favicon.ico' } }]
-        }
-      }
-    ]
-  }
+            sources: [
+              {
+                url: { url: 'https://a.com' },
+                title: 'Title 1',
+                faviconUrl: { url: 'https://a.com/favicon.ico' },
+              },
+            ],
+          },
+        },
+      ],
+    }
 
     const turn2 = {
       characterType: Mojom.CharacterType.ASSISTANT,
@@ -31,11 +37,17 @@ describe('groupConversationEntries', () => {
         { completionEvent: { completion: 'Response 2' } },
         {
           sourcesEvent: {
-            sources: [{ url: { url: 'https://b.com' }, title: 'Title 2', faviconUrl: { url: 'https://b.com/favicon.ico' } }]
-        }
-      }
-    ]
-  }
+            sources: [
+              {
+                url: { url: 'https://b.com' },
+                title: 'Title 2',
+                faviconUrl: { url: 'https://b.com/favicon.ico' },
+              },
+            ],
+          },
+        },
+      ],
+    }
 
     const groupedEntries = groupConversationEntries([turn1, turn2] as any)
 
@@ -51,10 +63,16 @@ describe('groupConversationEntries', () => {
         { completionEvent: { completion: 'Response 1' } },
         {
           sourcesEvent: {
-            sources: [{ url: { url: 'https://a.com' }, title: 'Title 1', faviconUrl: { url: 'https://a.com/favicon.ico' } }]
-          }
-        }
-      ]
+            sources: [
+              {
+                url: { url: 'https://a.com' },
+                title: 'Title 1',
+                faviconUrl: { url: 'https://a.com/favicon.ico' },
+              },
+            ],
+          },
+        },
+      ],
     }
 
     const humanTurn1: Partial<Mojom.ConversationTurn> = {
@@ -68,13 +86,23 @@ describe('groupConversationEntries', () => {
         { completionEvent: { completion: 'Response 2' } },
         {
           sourcesEvent: {
-            sources: [{ url: { url: 'https://b.com' }, title: 'Title 2', faviconUrl: { url: 'https://b.com/favicon.ico' } }]
-          }
-        }
-      ]
+            sources: [
+              {
+                url: { url: 'https://b.com' },
+                title: 'Title 2',
+                faviconUrl: { url: 'https://b.com/favicon.ico' },
+              },
+            ],
+          },
+        },
+      ],
     }
 
-    const groupedEntries = groupConversationEntries([assistantTurn1, humanTurn1, assistantTurn2] as any)
+    const groupedEntries = groupConversationEntries([
+      assistantTurn1,
+      humanTurn1,
+      assistantTurn2,
+    ] as any)
 
     expect(groupedEntries).toHaveLength(3)
     expect(groupedEntries[0]).toEqual([assistantTurn1])
@@ -113,7 +141,8 @@ describe('getReasoningText', () => {
 
 describe('removeReasoning', () => {
   it('Should remove reasoning text between start and end tags', () => {
-    const input = 'Before reasoning.<think>Reasoning text here.'
+    const input =
+      'Before reasoning.<think>Reasoning text here.'
       + '</think> Rest of the text.'
     expect(removeReasoning(input)).toBe('Before reasoning. Rest of the text.')
   })

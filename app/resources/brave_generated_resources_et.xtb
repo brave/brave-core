@@ -18,10 +18,6 @@
 <translation id="1544192797660353713">Rahakott</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Rohkem…</translation>
-<translation id="9092796350041759828">{0, plural,
-          =1 {Sulge Külaline}
-          other {Sulge Külaline}
-        }</translation>
 <translation id="1990886731975529483">Google Widevine'i installimine ja käivitamine</translation>
 <translation id="8926389886865778422">Ära enam küsi</translation>
 <translation id="4900351245762303149">Google Widevine'i installimine</translation>
@@ -140,7 +136,6 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="6020553119523541665">See vaheleht on teises aknas aktiivne</translation>
 <translation id="4987392683074136770">Sellel vahelehel klõpsamine toob selle sisu sellesse aknasse</translation>
 <translation id="8355523213948477234">Tükeldatud vaate menüünupp</translation>
-<translation id="2104347391516032700">Bati preemiate teenus</translation>
 <translation id="6040143037577758943">Sulge</translation>
 <translation id="6665472986740899785">Brave'i Teavituse reklaam</translation>
 <translation id="5582087890067572966">🎉 Teenite nüüd raha!</translation>
@@ -194,7 +189,6 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="2604698253988679506">Need privaatsed vastused aitavad Brave'il hinnata teatud funktsioonide üldkasutust ja muuta need teie jaoks paremaks.</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 domeenid</translation>
-<translation id="5046066249040287308">Brave Walleti liidese teenus</translation>
 <translation id="4552520379838695057">Vabandust, seda lehte pole.</translation>
 <translation id="7299769530898469069">Salvestatud versiooni ei saanud laadida</translation>
 <translation id="2609895996619941644">Soovite kontrollida, kas ajamasinas on salvestatud versioon?</translation>
@@ -366,6 +360,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="8000020256436988724">Tööriistariba</translation>
 <translation id="8076492880354921740">Vahelehed</translation>
 <translation id="8168435359814927499">Sisu</translation>
+<translation id="5327248766486351172">Nimi</translation>
 <translation id="5860254591544742609">Kuva pealkirja riba</translation>
 <translation id="5371926069408837914">Kui vertikaalsete vahelehtede paneel on ahendatud, laienda hiirega peale liikumisel</translation>
 <translation id="3367129510799209147">Vahelehe hõljutusrežiim</translation>
@@ -393,8 +388,6 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="7158817046543187970">Järjehoidjariba on peidetud kõigil lehtedel</translation>
 <translation id="3416468988018290825">Kuva alati täielikud URL-id</translation>
 <translation id="5529693968082667490">Kuva vahelehtede otsingu nupp</translation>
-<translation id="1013121820689882118">Speedreader</translation>
-<translation id="2025435450953474282">Artiklid laaditakse automaatselt lugemisrežiimis, säästes teie aega</translation>
 <translation id="7984721311211272523">Keela vahelehe kõlariikoonide vaigistusfunktsioon</translation>
 <translation id="832432428796481785">Kuva külgriba nupp</translation>
 <translation id="5581036754486769849">Luba privaatsetes akendes automaattäide</translation>
@@ -473,7 +466,6 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="9202707370720720635">Kohandatud skriptid</translation>
 <translation id="5524306331330789642">Lisa uus skript</translation>
 <translation id="3865146371459790194">Muuda skripti</translation>
-<translation id="5327248766486351172">Nimi</translation>
 <translation id="5584409054843451563">Kas oled kindel, et soovid skripti kustutada? Kui seda skripti kasutatakse mõnes kohandatud filtris, ei tööta see enam.</translation>
 <translation id="4545850500562727184">Skript on juba olemas.</translation>
 <translation id="4877521822848390663">Vigane skripti nimi.</translation>
@@ -754,11 +746,7 @@ Loe Brave'i plaane Manifest V2 jaoks <ph name="BEGIN_LINK"/>siit<ph name="END_LI
 <translation id="8172263161008556851">Kuva vestluses soovitatud viibad</translation>
 <translation id="5781842473834867765">Salvesta minu vestluste ajalugu</translation>
 <translation id="1082960401708055995">Vestluste salvestamise keelamine kustutab lõplikult kõik varem salvestatud vestlused. Seda toimingut ei saa tühistada.</translation>
-<translation id="6106701981952170121">Kustuta kõik Leo AI vestluste andmed</translation>
-<translation id="1335414530428321716">Kui soovite Leo lähtestada, peate nõustuma Brave 
-Leo AI kasutamisega tulevikus ja sellega, et teie  vestluseajalugu tühjendatakse. See tähendab,
-et kõik eelnevad Brave Leoga peetud vestlused kustutatakse.
-Seda tegevust ei saa tagasi võtta.</translation>
+<translation id="1014480593522400586">Eemalda Leo andmed</translation>
 <translation id="5574059574002819179">Automaatteksti soovituste kohandamine</translation>
 <translation id="7942415993090181327">Vestluse ajalugu</translation>
 <translation id="5084498230659987096">Brave Leo pakub privaatsust tagavat AI-vestluskaaslast ja muid AI-võimelisi kasutajaliideseid brauseris. Leo ei kasuta teie andmeid õppimiseks ega mudelite treenimiseks. Kõik päringud edastatakse anonüümse serveri kaudu.</translation>

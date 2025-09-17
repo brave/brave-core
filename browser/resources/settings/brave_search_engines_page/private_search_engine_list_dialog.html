@@ -12,8 +12,14 @@
     margin: 0 0 16px;
   }
 
+  .dialog-header {
+    padding: 0px 16px 8px 16px;
+  }
+
   .dialog-body {
     color: var(--cr-primary-text-color);
+    border-bottom: 1px solid var(--leo-color-divider-subtle);
+    border-top: 1px solid var(--leo-color-divider-subtle);
   }
 
   .search-engine {
@@ -21,6 +27,20 @@
     display: flex;
     flex-direction: row;
     gap: 16px;
+  }
+
+  leo-label {
+    --leo-label-font-text: var(--leo-font-small-regular);
+    --leo-label-padding: var(--leo-spacing-s);
+  }
+
+  #name-description {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #description {
+    font: var(--leo-font-x-small-regular);
   }
 
   site-favicon {
@@ -61,10 +81,34 @@
       $i18n{searchEnginesSettingsDialogSubtitle}
     </div>
   </div>
+  <template is="dom-if" if="[[promotedEngine_]]">
+    <div slot="header" class="dialog-header">
+      <cr-radio-group selected="{{selectedEngineId_}}">
+        <cr-radio-button class="label-first" name="[[promotedEngine_.id]]">
+          <div class="search-engine">
+            <site-favicon favicon-url="[[promotedEngine_.iconURL]]"
+                url="[[promotedEngine_.url]]"
+                icon-path="[[promotedEngine_.iconPath]]">
+            </site-favicon>
+            <div id="name-description">
+              [[promotedEngine_.name]]
+              <div id="description">
+                $i18n{searchEngineListBraveSearchDescription}
+              </div>
+            </div>
+            <leo-label mode="default" color="primary">
+              $i18n{searchEngineListBraveSearchRecommended}
+            </leo-label>
+          </div>
+        </cr-radio-button>
+      </cr-radio-group>
+    </div>
+  </template>
   <div slot="body" class="dialog-body">
     <cr-radio-group selected="{{selectedEngineId_}}">
       <template is="dom-repeat" items="[[searchEngines]]">
-        <cr-radio-button class="label-first" name="[[item.id]]">
+        <cr-radio-button class="label-first" name="[[item.id]]"
+                         hidden="[[isPromotedEngine_(item)]]">
           <div class="search-engine">
             <site-favicon favicon-url="[[item.iconURL]]" url="[[item.url]]"
                  icon-path="[[item.iconPath]]">

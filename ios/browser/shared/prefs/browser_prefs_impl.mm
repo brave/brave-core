@@ -13,6 +13,7 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/constants/pref_names.h"
@@ -29,6 +30,10 @@
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/pref_names.h"
+#endif
 
 namespace brave {
 
@@ -52,6 +57,11 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_shields::RegisterShieldsP3AProfilePrefsForMigration(registry);
 
   registry->RegisterBooleanPref(kBraveTalkDisabledByPolicy, false);
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  registry->RegisterBooleanPref(brave_vpn::prefs::kManagedBraveVPNDisabled,
+                                false);
+#endif
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {

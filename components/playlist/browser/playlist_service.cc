@@ -82,7 +82,7 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   playlist_streaming_ = std::make_unique<PlaylistStreaming>(context);
   media_detector_component_manager_ = manager;
 
-  enabled_pref_.Init(kPlaylistEnabledPref, prefs_.get(),
+  enabled_pref_.Init(kPlaylistEnabledPref, prefs_,
                      base::BindRepeating(&PlaylistService::OnEnabledPrefChanged,
                                          weak_factory_.GetWeakPtr()));
 
@@ -92,6 +92,10 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   MigratePlaylistValues();
 
   CleanUpOrphanedPlaylistItemDirs();
+
+  if (delegate_) {
+    delegate_->UpdateSidebarState(*enabled_pref_);
+  }
 }
 
 PlaylistService::~PlaylistService() = default;

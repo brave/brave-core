@@ -8,6 +8,7 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -18,7 +19,9 @@ class TabDragControllerTest : public InProcessBrowserTest {
   ~TabDragControllerTest() override = default;
 
   TabDragControllerTest() {
-    scoped_feature_list_.InitAndEnableFeature(tabs::features::kBraveSplitView);
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features*/ {tabs::features::kBraveSplitView},
+        /*disabled_features*/ {::features::kSideBySide});
   }
 
  protected:

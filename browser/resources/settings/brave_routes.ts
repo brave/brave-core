@@ -50,7 +50,9 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   r.SOCIAL_BLOCKING.hasMigratedToPlugin = true
 
   r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
+  r.EXTENSIONS.hasMigratedToPlugin = true
   r.EXTENSIONS_V2 = r.EXTENSIONS.createChild('/extensions/v2')
+  r.EXTENSIONS_V2.hasMigratedToPlugin = true
   if (pageVisibility.braveSync) {
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
     r.BRAVE_SYNC.hasMigratedToPlugin = true
@@ -86,9 +88,10 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     r.FONTS = r.BRAVE_CONTENT.createChild('/fonts')
     r.FONTS.hasMigratedToPlugin = true
   }
-  if (pageVisibility.surveyPanelist) {
+  if (pageVisibility.surveyPanelist && r.PRIVACY) {
     r.BRAVE_SURVEY_PANELIST =
-      r.BASIC.createSection('/surveyPanelist', 'surveyPanelist')
+      r.PRIVACY.createChild('/surveyPanelist', 'surveyPanelist')
+    r.BRAVE_SURVEY_PANELIST.hasMigratedToPlugin = true
   }
   if (r.SEARCH) {
     r.DEFAULT_SEARCH = r.SEARCH.createChild('defaultSearch')

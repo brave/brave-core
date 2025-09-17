@@ -7,10 +7,14 @@
 
 #include "brave/ios/browser/profile/model/brave_keyed_service_factories.h"
 #include "ios/chrome/browser/affiliations/model/ios_chrome_affiliation_service_factory.h"
+#include "ios/chrome/browser/aim/model/ios_chrome_aim_eligibility_service_factory.h"
 #include "ios/chrome/browser/autocomplete/model/autocomplete_classifier_factory.h"
 #include "ios/chrome/browser/autocomplete/model/zero_suggest_cache_service_factory.h"
+#include "ios/chrome/browser/autofill/model/autocomplete_history_manager_factory.h"
+#include "ios/chrome/browser/autofill/model/autofill_image_fetcher_factory.h"
 #include "ios/chrome/browser/autofill/model/autofill_log_router_factory.h"
 #include "ios/chrome/browser/autofill/model/personal_data_manager_factory.h"
+#include "ios/chrome/browser/autofill/model/strike_database_factory.h"
 #include "ios/chrome/browser/bookmarks/model/account_bookmark_sync_service_factory.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
@@ -88,6 +92,9 @@
 void EnsureProfileKeyedServiceFactoriesBuilt() {
   autofill::AutofillLogRouterFactory::GetInstance();
   autofill::PersonalDataManagerFactory::GetInstance();
+  autofill::StrikeDatabaseFactory::GetInstance();
+  autofill::AutocompleteHistoryManagerFactory::GetInstance();
+  autofill::AutofillImageFetcherFactory::GetInstance();
   commerce::ShoppingServiceFactory::GetInstance();
   data_sharing::DataSharingServiceFactory::GetInstance();
   ios::AccountBookmarkSyncServiceFactory::GetInstance();
@@ -122,6 +129,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   HttpsUpgradeServiceFactory::GetInstance();
   IdentityManagerFactory::GetInstance();
   IOSChromeAccountPasswordStoreFactory::GetInstance();
+  IOSChromeAimEligibilityServiceFactory::GetInstance();
   IOSChromeAffiliationServiceFactory::GetInstance();
   IOSChromeBulkLeakCheckServiceFactory::GetInstance();
   IOSChromeFaviconLoaderFactory::GetInstance();

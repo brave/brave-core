@@ -4,6 +4,10 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
+
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_web_view.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 
 #define PopulateGlobalEntries PopulateGlobalEntries_ChromiumImpl
@@ -20,5 +24,19 @@ void SidePanelUtil::PopulateGlobalEntries(Browser* browser,
   if (auto* playlist_coordinator =
           browser->GetFeatures().playlist_side_panel_coordinator()) {
     playlist_coordinator->CreateAndRegisterEntry(global_registry);
+  }
+
+  // AI Chat side panel as a global panel and not tab-specific is conditional
+  // for now.
+  // TODO(https://github.com/brave/brave-browser/issues/48526): Remove the
+  // condition when the feature flag is removed.
+  if (ai_chat::AIChatServiceFactory::GetForBrowserContext(browser->profile()) &&
+      ai_chat::ShouldSidePanelBeGlobal(browser->profile())) {
+    global_registry->Register(std::make_unique<SidePanelEntry>(
+        SidePanelEntry::Key(SidePanelEntry::Id::kChatUI),
+        base::BindRepeating(&AIChatSidePanelWebView::CreateView,
+                            browser->profile(),
+                            /*is_tab_associated=*/false),
+        base::NullCallback()));
   }
 }

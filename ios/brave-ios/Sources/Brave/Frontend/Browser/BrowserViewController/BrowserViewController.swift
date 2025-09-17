@@ -267,6 +267,8 @@ public class BrowserViewController: UIViewController {
 
   private let prefsChangeRegistrar: PrefChangeRegistrar
 
+  let defaultBrowserHelper: DefaultBrowserHelper = .init()
+
   public init(
     windowId: UUID,
     profile: LegacyBrowserProfile,
@@ -481,6 +483,11 @@ public class BrowserViewController: UIViewController {
       [weak self] _ in
       self?.updateRewardsButtonState()
     }
+    prefsChangeRegistrar.addObserver(forPath: kManagedBraveVPNDisabledPrefName) { [weak self] _ in
+      self?.disconnectVPNIfDisabledByPolicy()
+    }
+
+    disconnectVPNIfDisabledByPolicy()
 
     pageZoomListener = NotificationCenter.default.addObserver(
       forName: PageZoomView.notificationName,
@@ -733,12 +740,6 @@ public class BrowserViewController: UIViewController {
       return
     }
 
-    // TODO: brave/brave-browser/issues/46565
-    // Remove when all direct mutations on CoreData types are replaced
-    DataController.performOnMainContext { context in
-      try? context.save()
-    }
-
     tabManager.saveAllTabs()
 
     // If we are displaying a private tab, hide any elements in the tab that we wouldn't want shown
@@ -756,6 +757,14 @@ public class BrowserViewController: UIViewController {
 
     // Stop Voice Search and dismiss controller
     stopVoiceSearch()
+  }
+
+  private func disconnectVPNIfDisabledByPolicy() {
+    if !profileController.profile.prefs.isBraveVPNAvailable,
+      BraveVPN.isConnected || BraveVPN.isConnecting
+    {
+      BraveVPN.disconnect(skipChecks: true)
+    }
   }
 
   @objc func vpnConfigChanged() {
@@ -894,12 +903,14 @@ public class BrowserViewController: UIViewController {
         name: .adsOrRewardsToggledInSettings,
         object: nil
       )
-      $0.addObserver(
-        self,
-        selector: #selector(vpnConfigChanged),
-        name: .NEVPNConfigurationChange,
-        object: nil
-      )
+      if profileController.profile.prefs.isBraveVPNAvailable {
+        $0.addObserver(
+          self,
+          selector: #selector(vpnConfigChanged),
+          name: .NEVPNConfigurationChange,
+          object: nil
+        )
+      }
     }
 
     BraveGlobalShieldStats.shared.$adblock
@@ -936,22 +947,24 @@ public class BrowserViewController: UIViewController {
 
     // Adding a small delay before fetching gives more reliability to it,
     // epsecially when you are connected to a VPN.
-    Task.delayed(bySeconds: 1.0) { @MainActor in
-      // Refresh Skus VPN Credentials before loading VPN state
-      await BraveSkusManager(isPrivateMode: self.privateBrowsingManager.isPrivateBrowsing)?
-        .refreshVPNCredentials()
+    if profileController.profile.prefs.isBraveVPNAvailable {
+      Task.delayed(bySeconds: 1.0) { @MainActor in
+        // Refresh Skus VPN Credentials before loading VPN state
+        await BraveSkusManager(isPrivateMode: self.privateBrowsingManager.isPrivateBrowsing)?
+          .refreshVPNCredentials()
 
-      self.vpnProductInfo.load()
-      if let customCredential = Preferences.VPN.skusCredential.value,
-        let customCredentialDomain = Preferences.VPN.skusCredentialDomain.value,
-        let vpnCredential = BraveSkusWebHelper.fetchVPNCredential(
-          customCredential,
-          domain: customCredentialDomain
-        )
-      {
-        BraveVPN.initialize(customCredential: vpnCredential)
-      } else {
-        BraveVPN.initialize(customCredential: nil)
+        self.vpnProductInfo.load()
+        if let customCredential = Preferences.VPN.skusCredential.value,
+          let customCredentialDomain = Preferences.VPN.skusCredentialDomain.value,
+          let vpnCredential = BraveSkusWebHelper.fetchVPNCredential(
+            customCredential,
+            domain: customCredentialDomain
+          )
+        {
+          BraveVPN.initialize(customCredential: vpnCredential)
+        } else {
+          BraveVPN.initialize(customCredential: nil)
+        }
       }
     }
 
@@ -1843,7 +1856,7 @@ public class BrowserViewController: UIViewController {
 
     let isPrivate = tab.isPrivate
     tabManager.removeTab(tab)
-    browser.tabManager.addTabsForURLs([url], zombie: false, isPrivate: isPrivate)
+    browser.tabManager.addTabsForURLs([url], isPrivate: isPrivate)
   }
 
   public func switchToTabForURLOrOpen(_ url: URL, isPrivate: Bool, isPrivileged: Bool) {
@@ -2284,14 +2297,14 @@ extension BrowserViewController: SettingsDelegate {
 
   func settingsOpenURLs(_ urls: [URL], loadImmediately: Bool) {
     let tabIsPrivate = tabManager.selectedTab?.isPrivate ?? false
-    self.tabManager.addTabsForURLs(urls, zombie: !loadImmediately, isPrivate: tabIsPrivate)
+    self.tabManager.addTabsForURLs(urls, isPrivate: tabIsPrivate)
   }
 
   // QA Stuff
   func settingsCreateFakeTabs() {
     let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=\($0)")! }
     let tabIsPrivate = tabManager.selectedTab?.isPrivate ?? false
-    self.tabManager.addTabsForURLs(urls, zombie: true, isPrivate: tabIsPrivate)
+    self.tabManager.addTabsForURLs(urls, isPrivate: tabIsPrivate)
   }
 
   func settingsCreateFakeBookmarks() {
@@ -2636,7 +2649,7 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
 
   func batchOpen(_ urls: [URL]) {
     let tabIsPrivate = tabManager.selectedTab?.isPrivate ?? false
-    self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabIsPrivate)
+    self.tabManager.addTabsForURLs(urls, isPrivate: tabIsPrivate)
   }
 
   func select(url: URL, isUserDefinedURLNavigation: Bool) {
@@ -2986,7 +2999,7 @@ extension BrowserViewController {
     // in case an external url is triggered
     if case .url(let navigatedURL, _) = path {
       if navigatedURL?.isWebPage(includeDataURIs: false) == true {
-        Preferences.General.lastHTTPURLOpenedDate.value = .now
+        defaultBrowserHelper.recordAppLaunchedWithWebURL()
         recordDefaultBrowserLikelyhoodP3A(openedHTTPLink: true)
 
         Preferences.General.defaultBrowserCalloutDismissed.value = true

@@ -14,7 +14,9 @@ import {
 } from '../../../constants/types'
 
 // Components
-import { ConfirmSwapTransaction } from '../confirm-transaction-panel/swap'
+import {
+  ConfirmSwapTransaction, //
+} from '../confirm_swap_transaction/confirm_swap_transaction'
 import {
   ConfirmTransactionPanel, //
 } from '../confirm-transaction-panel/confirm-transaction-panel'
@@ -26,6 +28,10 @@ import {
 import {
   ConfirmSimulatedTransactionPanel, //
 } from '../confirm-transaction-panel/confirm_simulated_tx_panel'
+import { AllowSpendPanel } from '../allow_spend_panel/allow_spend_panel'
+import {
+  ConfirmSendTransaction, //
+} from '../confirm_send_transaction/confirm_send_transaction'
 
 // Utils
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
@@ -148,7 +154,11 @@ export const PendingTransactionPanel: React.FC<Props> = ({
       || isFetchingSolanaTxSimulation
       || isLoadingSolanaTxSimulation)
   ) {
-    return <LoadingSimulation />
+    return (
+      <LongWrapper padding='0px'>
+        <LoadingSimulation />
+      </LongWrapper>
+    )
   }
 
   // Simulated EVM Transaction
@@ -198,31 +208,51 @@ export const PendingTransactionPanel: React.FC<Props> = ({
   if (
     selectedPendingTransaction.txType === BraveWallet.TransactionType.ETHSwap
   ) {
-    return (
-      <LongWrapper>
-        <ConfirmSwapTransaction />
-      </LongWrapper>
-    )
+    return <ConfirmSwapTransaction />
+  }
+
+  // Allow spend
+  if (
+    selectedPendingTransaction.txType
+    === BraveWallet.TransactionType.ERC20Approve
+  ) {
+    return <AllowSpendPanel />
+  }
+
+  // Send
+  if (
+    selectedPendingTransaction.txType === BraveWallet.TransactionType.ETHSend
+    || selectedPendingTransaction.txType
+      === BraveWallet.TransactionType.ERC20Transfer
+    || selectedPendingTransaction.txType
+      === BraveWallet.TransactionType.SolanaSystemTransfer
+    || selectedPendingTransaction.txType
+      === BraveWallet.TransactionType.SolanaSPLTokenTransfer
+    || selectedPendingTransaction.txType
+      === BraveWallet.TransactionType
+        .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
+    || selectedPendingTransaction.txType === BraveWallet.TransactionType.Other
+  ) {
+    return <ConfirmSendTransaction />
   }
 
   // Defaults
   return (
-    <LongWrapper data-testid='confirm-tx-panel'>
-      <ConfirmTransactionPanel
-        showSimulationNotSupportedMessage={
-          isSimulationPermitted && !networkHasTxSimulationSupport
-        }
-        retrySimulation={
-          isSimulationPermitted && networkHasTxSimulationSupport
-            ? selectedPendingTxCoinType === CoinTypes.SOL
-              && hasSolanaSimulationError
-              ? retrySolanaSimulation
-              : hasEvmSimulationError
-                ? retryEvmSimulation
-                : undefined
-            : undefined
-        }
-      />
-    </LongWrapper>
+    <ConfirmTransactionPanel
+      data-testid='confirm-tx-panel'
+      showSimulationNotSupportedMessage={
+        isSimulationPermitted && !networkHasTxSimulationSupport
+      }
+      retrySimulation={
+        isSimulationPermitted && networkHasTxSimulationSupport
+          ? selectedPendingTxCoinType === CoinTypes.SOL
+            && hasSolanaSimulationError
+            ? retrySolanaSimulation
+            : hasEvmSimulationError
+              ? retryEvmSimulation
+              : undefined
+          : undefined
+      }
+    />
   )
 }

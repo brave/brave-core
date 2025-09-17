@@ -520,8 +520,10 @@ void SidebarService::LoadSidebarItems() {
       } else {
         continue;
       }
-      // Open in panel for custom items is not yet supported
       bool open_in_panel = false;
+      if (const auto value = item.FindBool(kSidebarItemOpenInPanelKey)) {
+        open_in_panel = *value;
+      }
       std::string title;
       if (const auto* value = item.FindString(kSidebarItemTitleKey)) {
         title = *value;

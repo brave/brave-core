@@ -70,8 +70,7 @@ constexpr char16_t kBraveReleaseTagPrefix[] =
     u"https://github.com/brave/brave-browser/releases/tag/v";
 #if BUILDFLAG(ENABLE_CONTAINERS)
 constexpr char16_t kContainersLearnMoreURL[] =
-    u"https://github.com/brave/brave-browser/wiki/"
-    u"Containers";
+    u"https://support.brave.app/hc/en-us/articles/39077103885325";
 #endif
 constexpr char16_t kGoogleLoginLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
@@ -202,8 +201,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_NEVER_SHOW_BOOKMARK_BAR_DESC},
       {"appearanceSettingsShowAutocompleteInAddressBar",
        IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR},
-      {"appearanceSettingsUseTopSuggestions",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_TOP_SUGGESTIONS},
+      {"appearanceSettingsUseOnDeviceSuggestions",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_ON_DEVICE},
       {"appearanceSettingsUseHistorySuggestions",
        IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_HISTORY},
       {"appearanceSettingsUseBookmarkSuggestions",
@@ -345,6 +344,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_PRIVATE_PROFILE_SEARCH_ENGINE_TITLE},
       {"privateSearchEnginesConfirmationToastLabel",
        IDS_SETTINGS_PRIVATE_PROFILE_SEARCH_ENGINE_CHOICE_SETTINGS_CONFIRMATION_TOAST_LABEL},
+      {"searchEngineListBraveSearchDescription",
+       IDS_SETTINGS_SEARCH_ENGINE_LIST_BRAVE_SEARCH_DESCRIPTION},
+      {"searchEngineListBraveSearchRecommended",
+       IDS_SETTINGS_SEARCH_ENGINE_LIST_BRAVE_SEARCH_RECOMMENDED},
       {"blockAdsTrackersAggressive",
        IDS_SETTINGS_BLOCK_ADS_TRACKERS_AGGRESSIVE},
       {"blockAdsTrackersStandard", IDS_SETTINGS_BLOCK_ADS_TRACKERS_STANDARD},
@@ -650,6 +653,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_DELETE_ALL_MEMORIES_CONFIRMATION},
       {"braveLeoAssistantDeleteAllMemoriesConfirmationTitle",
        IDS_SETTINGS_LEO_ASSISTANT_DELETE_ALL_MEMORIES_CONFIRMATION_TITLE},
+      {"braveLeoAssistantNoSearchResultsFound",
+       IDS_SETTINGS_LEO_ASSISTANT_NO_SEARCH_RESULTS_FOUND},
+      {"braveLeoAssistantClearSearch", IDS_SETTINGS_LEO_ASSISTANT_CLEAR_SEARCH},
+      {"braveLeoAssistantSearchMemoriesPlaceholder",
+       IDS_SETTINGS_LEO_ASSISTANT_SEARCH_MEMORIES_PLACEHOLDER},
 
       // Survey Panelist Page
       {"surveyPanelist", IDS_SETTINGS_SURVEY_PANELIST},

@@ -21,7 +21,8 @@
     }
   }
 }
-.form:hover, .form:focus-visible{
+.form:hover,
+.form:focus-visible {
   box-shadow: var(--leo-effect-elevation-01);
 }
 
@@ -38,12 +39,16 @@
     border: 0;
     overflow: hidden;
 
-    &:focus { outline: none; }
-    &::placeholder { color: var(--leo-color-text-tertiary); }
+    &:focus {
+      outline: none;
+    }
+    &::placeholder {
+      color: var(--leo-color-text-tertiary);
+    }
   }
 
   &::after {
-    content: attr(data-replicated-value) " ";
+    content: attr(data-replicated-value) ' ';
     white-space: pre-wrap;
     visibility: hidden;
   }
@@ -92,7 +97,9 @@
   padding: 3px 16px;
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0.2s linear, opacity 0.2s linear;
+  transition:
+    visibility 0.2s linear,
+    opacity 0.2s linear;
 }
 
 .counterTextVisible {
@@ -144,7 +151,6 @@
   --leo-button-padding: var(--leo-spacing-m);
 }
 
-
 .sendButtonDisabled {
   --leo-button-color: var(--leo-color-button-disabled);
 }
@@ -160,11 +166,24 @@
 }
 
 .streamingButton {
-  --leo-button-color:
-    color-mix(in srgb, var(--leo-color-button-background) 5%, transparent);
+  --leo-button-color: color-mix(
+    in srgb,
+    var(--leo-color-button-background) 5%,
+    transparent
+  );
 }
 
 .streamingIcon {
   // Same is applied to the icon in the .streamingButton class.
   --leo-icon-color: var(--leo-color-icon-interactive);
+}
+
+.modelSelectorAndSendButton {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--leo-spacing-m);
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 0 0 0 var(--leo-spacing-m);
 }

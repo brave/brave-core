@@ -10,6 +10,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "chrome/browser/themes/theme_service.h"
+#include "components/prefs/pref_member.h"
 
 namespace extensions {
 class BraveThemeEventRouter;
@@ -32,7 +33,15 @@ class BraveThemeService : public ThemeService {
   void SetBraveThemeEventRouterForTesting(
       extensions::BraveThemeEventRouter* mock_router);
 
+#if defined(TOOLKIT_VIEWS)
+  // Called when the darker theme pref is changed to notify that theme has
+  // changed.
+  void OnDarkerThemePrefChanged();
+#endif  // defined(TOOLKIT_VIEWS)
+
   std::unique_ptr<extensions::BraveThemeEventRouter> brave_theme_event_router_;
+
+  BooleanPrefMember darker_theme_enabled_;
 };
 
 #endif  // BRAVE_BROWSER_THEMES_BRAVE_THEME_SERVICE_H_

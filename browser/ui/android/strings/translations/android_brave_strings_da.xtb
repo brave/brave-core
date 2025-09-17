@@ -421,8 +421,8 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="8748471354357836070">Få mere at vide / fravalgsmuligheder</translation>
 <translation id="3171669670217312786">Baggrundsbilleder</translation>
 <translation id="8522669544471808198">Vis baggrundsbilleder</translation>
-<translation id="3870475560794762985">Vis sponsorerede billeder</translation>
-<translation id="6937724381960478525">Få mere at vide om sponsorerede billeder</translation>
+<translation id="6258554626602400736">Vis annoncer i ny fane</translation>
+<translation id="9001530744369687550">Få mere at vide om annoncer i ny fane</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Vis topsider</translation>
 <translation id="7275773481201277457">Vis Brave Stats</translation>
@@ -500,6 +500,8 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="7616645803364270729">E-mail, Twitter etc.</translation>
 <translation id="5299848999918506028">Tak!</translation>
 <translation id="76550953340008122">Tak for at du har fortalt Braves udviklere om at der er fejl på siden. Vi vil gøre vores bedste for at ordne fejlen!</translation>
+<translation id="3037432377946455872">Hvad er det største problem, du oplever?</translation>
+<translation id="8731661215617360873">Vælg en mulighed</translation>
 <translation id="650318023204990401">Avancerede kontroller</translation>
 <translation id="7205939464631857223">Ryd alle blokerede elementer</translation>
 <translation id="5370478469168390143">Gem data online</translation>
@@ -796,6 +798,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1426320910664514906">Gas-grænse</translation>
 <translation id="6389441740143786465">Deaktivér Sharing Hub</translation>
 <translation id="9065203028668620118">Rediger</translation>
+<translation id="473775607612524610">Opdater</translation>
 <translation id="479795390141144417">Kontoopdatering mislykkedes.</translation>
 <translation id="8084782383392198011">Kontonavn kan ikke være tom.</translation>
 <translation id="5045550434625856497">Ugyldig adgangskode</translation>
@@ -1223,4 +1226,41 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="2735247450315842119">Tillad skærmbilleder i private faner</translation>
 <translation id="8420414929552321089">Hvis det er tilladt, vil private faner også være synlige, når flere apps er åbne.</translation>
 <translation id="7956713633345437162">Mobilbogmærker</translation>
+<translation id="1943432128510653496">Gem adgangskoder</translation>
+<translation id="2100273922101894616">Automatisk login</translation>
+<translation id="363596933471559332">Log automatisk ind på websites med gemte loginoplysninger. Når funktionen er slået fra, bliver du bedt om at verificere, hver gang du vil logge ind på et website.</translation>
+<translation id="8562452229998620586">Dine gemte adgangskoder vises her.</translation>
+<translation id="1303339473099049190">Adgangskoden blev ikke fundet. Tjek stavningen, og prøv igen.</translation>
+<translation id="2259659629660284697">Eksportér adgangskoder…</translation>
+<translation id="133012818630824069">Eksportér adgangskoder, der er gemt med Brave</translation>
+<translation id="2321086116217818302">Forbereder adgangskoder…</translation>
+<translation id="5139940364318403933">Få oplysninger om, hvordan du bruger Brave Drev</translation>
+<translation id="729975465115245577">Der er ikke nogen app på din enhed, hvor filen med adgangskoder kan gemmes.</translation>
+<translation id="1129510026454351943">Info: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6221633008163990886">Lås op for at eksportere dine adgangskoder</translation>
+<translation id="5245792669563792664">adgangskoder</translation>
+<translation id="10614374240317010">Gemmes aldrig</translation>
+<translation id="1571304935088121812">Kopiér brugernavnet</translation>
+<translation id="5005498671520578047">Kopiér adgangskode</translation>
+<translation id="2435457462613246316">Vis adgangskode</translation>
+<translation id="1513858653616922153">Slet adgangskoden</translation>
+<translation id="543338862236136125">Rediger adgangskode</translation>
+<translation id="4565377596337484307">Skjul adgangskode</translation>
+<translation id="8523928698583292556">Slet den gemte adgangskode</translation>
+<translation id="5433691172869980887">Brugernavnet er kopieret</translation>
+<translation id="2625189173221582860">Adgangskoden er kopieret</translation>
+<translation id="8084114998886531721">Gemt adgangskode</translation>
+<translation id="6590680911007613645">Sørg for, at den adgangskode, du gemmer, er den samme som din adgangskode til <ph name="SITE"/></translation>
+<translation id="1492417797159476138">Du har allerede gemt dette brugernavn for dette website</translation>
+<translation id="5454166040603940656">med <ph name="PROVIDER"/></translation>
+<translation id="686366188661646310">Vil du slette adgangskoden?</translation>
+<translation id="7808889146555843082">Fjernelse af denne adgangskode sletter ikke din konto på <ph name="SITE"/>. Skift din adgangskode, eller slet din konto på <ph name="SITE"/> for at beskytte den mod andre.</translation>
+<translation id="2870560284913253234">Website</translation>
+<translation id="8503813439785031346">Brugernavn</translation>
+<translation id="2278052315791335171">Fjernelse af denne adgangskode sletter ikke din konto på <ph name="SITE"/></translation>
+<translation id="6891726759199484455">Lås op for at kopiere din adgangskode</translation>
+<translation id="5515439363601853141">Lås op for at se din adgangskode</translation>
+<translation id="1724977129262658800">Lås op for at redigere din adgangskode</translation>
+<translation id="5780792035410621042">Hvis du vil kopiere adgangskoder, skal du først konfigurere en skærmlås på din enhed</translation>
+<translation id="7986497153528221272">Hvis du vil se adgangskoder, skal du først konfigurere en skærmlås på din enhed</translation>
 </translationbundle>

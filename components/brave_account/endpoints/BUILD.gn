@@ -1,0 +1,67 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
+source_set("endpoints") {
+  sources = [
+    "host.cc",
+    "host.h",
+    "password_finalize.cc",
+    "password_finalize.h",
+    "password_init.cc",
+    "password_init.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/brave_domains",
+    "//brave/components/brave_account/endpoint_client",
+    "//net",
+    "//url",
+  ]
+
+  public_deps =
+      [ "//brave/components/brave_account/endpoints:generated_api_types" ]
+}
+
+generated_types("generated_api_types") {
+  sources = [
+    "error.idl",
+    "password_finalize_request.idl",
+    "password_finalize_response.idl",
+    "password_init_request.idl",
+    "password_init_response.idl",
+  ]
+
+  deps = [ "//base" ]
+
+  root_namespace = "brave_account::%(namespace)s"
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "endpoint_test.h",
+    "password_finalize_unittest.cc",
+    "password_init_unittest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/brave_account/endpoints",
+    "//net",
+    "//net/traffic_annotation:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//url",
+  ]
+}

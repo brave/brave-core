@@ -34,6 +34,7 @@ TEST_F(BraveAdsSettingsTest, UserHasNotJoinedBraveRewards) {
 TEST_F(BraveAdsSettingsTest, UserHasJoinedBraveRewardsAndConnectedWallet) {
   // Act & Assert
   EXPECT_TRUE(UserHasJoinedBraveRewardsAndConnectedWallet());
+  EXPECT_FALSE(UserHasJoinedBraveRewardsAndNotConnectedWallet());
 }
 
 TEST_F(BraveAdsSettingsTest, UserHasJoinedBraveRewardsAndNotConnectedWallet) {
@@ -42,6 +43,7 @@ TEST_F(BraveAdsSettingsTest, UserHasJoinedBraveRewardsAndNotConnectedWallet) {
 
   // Act & Assert
   EXPECT_FALSE(UserHasJoinedBraveRewardsAndConnectedWallet());
+  EXPECT_TRUE(UserHasJoinedBraveRewardsAndNotConnectedWallet());
 }
 
 TEST_F(BraveAdsSettingsTest, UserHasOptedInToBraveNewsAds) {

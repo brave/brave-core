@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
 brave_ui_allow_circular_includes_from =
@@ -17,6 +18,7 @@ if (!is_android) {
     "//brave/browser/ui/webui/brave_news_internals",
     "//brave/browser/ui/webui/cr_components",
     "//brave/browser/ui/webui/side_panel/customize_chrome",
+    "//brave/browser/ui/tabs:tab_strip",
   ]
 }
 if (is_android) {
@@ -27,6 +29,7 @@ if (toolkit_views) {
   brave_ui_allow_circular_includes_from += [
     "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/frame/vertical_tabs",
+    "//brave/browser/ui/views/side_panel/ai_chat",
     "//brave/browser/ui/views/split_view",
     "//brave/browser/ui/sidebar",
   ]
@@ -34,4 +37,13 @@ if (toolkit_views) {
   if (enable_containers) {
     brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/containers" ]
   }
+
+  if (enable_speedreader) {
+    brave_ui_allow_circular_includes_from +=
+        [ "//brave/browser/ui/views/speedreader" ]
+  }
+}
+
+if (enable_speedreader) {
+  brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/speedreader" ]
 }

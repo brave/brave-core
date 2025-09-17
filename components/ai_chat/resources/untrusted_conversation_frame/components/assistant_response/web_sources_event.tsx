@@ -7,16 +7,13 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import createSanitizedImageUrl from '$web-common/create_sanitized_image_url'
 import { getLocale, formatLocale } from '$web-common/locale'
-import * as mojom  from '../../../common/mojom'
+import * as mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './web_sources_event.module.scss'
 
-const UNEXPANDED_SOURCES_COUNT = 4;
+const UNEXPANDED_SOURCES_COUNT = 4
 
-function WebSource (props: {
-    source: mojom.WebSource,
-    citationNumber: number
-  }) {
+function WebSource(props: { source: mojom.WebSource; citationNumber: number }) {
   const context = useUntrustedConversationContext()
 
   const { source } = props
@@ -33,15 +30,21 @@ function WebSource (props: {
   const host = new URL(source.url.url).hostname
   return (
     <li>
-      <a href={source.url.url} title={source.title} onClick={(e) => handleOpenSource(e, source)}>
-        <img src={faviconSrc} />
+      <a
+        href={source.url.url}
+        title={source.title}
+        onClick={(e) => handleOpenSource(e, source)}
+      >
+        <span>
+          <img src={faviconSrc} />
+        </span>
         {props.citationNumber} - {host}
       </a>
     </li>
   )
 }
 
-export default function WebSourcesEvent (props: { sources: mojom.WebSource[] }) {
+export default function WebSourcesEvent(props: { sources: mojom.WebSource[] }) {
   const [isExpanded, setIsExpanded] = React.useState(false)
 
   const unhiddenSources = props.sources?.slice(0, UNEXPANDED_SOURCES_COUNT)
@@ -51,28 +54,37 @@ export default function WebSourcesEvent (props: { sources: mojom.WebSource[] }) 
     <div className={styles.sources}>
       <h4>{getLocale(S.CHAT_UI_SOURCES)}</h4>
       <ul>
-        {unhiddenSources.map((source, index) =>
+        {unhiddenSources.map((source, index) => (
           <WebSource
             key={source.url.url}
             source={source}
             citationNumber={index + 1}
           />
-        )}
+        ))}
         {!isExpanded && hiddenSources.length > 0 && (
           <li>
-            <button name='expand' onClick={() => setIsExpanded(true)}>
-              <Icon className={styles.expandIcon} name='plus-add' />
-              {formatLocale(S.CHAT_UI_EXPAND_SOURCES, { $1: hiddenSources.length })}
+            <button
+              name='expand'
+              onClick={() => setIsExpanded(true)}
+            >
+              <Icon
+                className={styles.expandIcon}
+                name='plus-add'
+              />
+              {formatLocale(S.CHAT_UI_EXPAND_SOURCES, {
+                $1: hiddenSources.length,
+              })}
             </button>
           </li>
         )}
-        {isExpanded && hiddenSources.map((source, index) =>
-          <WebSource
-            key={source.url.url}
-            source={source}
-            citationNumber={index + UNEXPANDED_SOURCES_COUNT + 1}
-          />
-        )}
+        {isExpanded
+          && hiddenSources.map((source, index) => (
+            <WebSource
+              key={source.url.url}
+              source={source}
+              citationNumber={index + UNEXPANDED_SOURCES_COUNT + 1}
+            />
+          ))}
       </ul>
     </div>
   )

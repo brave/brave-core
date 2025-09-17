@@ -81,6 +81,11 @@ class Tool {
   // the tool requires the user to take some action to provide the result.
   virtual bool RequiresUserInteractionBeforeHandling() const;
 
+  // Whether this tool supports the given conversation. Can be used to filter
+  // tools based on conversation properties like temporary status.
+  virtual bool SupportsConversation(bool is_temporary,
+                                    bool has_untrusted_content) const;
+
   // Implementers should handle tool execution unless it is a built-in
   // tool handled directly by the ConversationHandler.
   virtual void UseTool(const std::string& input_json, UseToolCallback callback);

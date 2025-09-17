@@ -8,10 +8,6 @@
 <translation id="6406506848690869874">សមកាលកម្ម</translation>
 <translation id="1544192797660353713">កាបូប</translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="9092796350041759828">{0, plural,
-          =1 {បិទភ្ញៀវ}
-          other {បិទភ្ញៀវ}
-        }</translation>
 <translation id="1990886731975529483">ដំឡើង និងដំណើរការ Google Widevine</translation>
 <translation id="8926389886865778422">កុំសួរម្តងទៀត</translation>
 <translation id="4900351245762303149">ដំឡើង Google Widevine</translation>
@@ -98,6 +94,7 @@
 <translation id="5840822070878669614">បើក Brave Web Store</translation>
 <translation id="8076492880354921740">ផ្ទាំង</translation>
 <translation id="8168435359814927499">មាតិកា</translation>
+<translation id="5327248766486351172">ឈ្មោះ</translation>
 <translation id="3987546108749866209">ប្រើផ្ទាំងបញ្ឈរ</translation>
 <translation id="5977931179408079967">ទីតាំង</translation>
 <translation id="4109670531935487117">បង្ហាញការណែនាំអំពីការបំពេញដោយស្វ័យប្រវត្តិនៅក្នុងរបារអាសយដ្ឋាន</translation>
@@ -120,7 +117,6 @@
 <translation id="802154636333426148">បានបរាជ័យក្នុងការទាញយក</translation>
 <translation id="4516904298421534459">បញ្ជីតម្រង</translation>
 <translation id="5524306331330789642">បន្ថែមស្ក្រីបថ្មី</translation>
-<translation id="5327248766486351172">ឈ្មោះ</translation>
 <translation id="863171915776379000">អនុញ្ញាតឱ្យចូលគណនីហ្វេសប៊ុក និងប្រកាសដែលបានបានបង្កប់</translation>
 <translation id="958971637207126733">អនុញ្ញាតឱ្យបង្កប់ប្រកាស LinkIn</translation>
 <translation id="8823559166155093873">ទប់ស្កាត់ខូឃីស៍</translation>
@@ -145,9 +141,9 @@
 <translation id="8488282162676695335">កាបូប Brave</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="5781842473834867765">រក្សាទុកប្រវត្តិសន្ទនារបស់ខ្ញុំ</translation>
-<translation id="6106701981952170121">លុបទិន្នន័យសន្ទនា Leo AI ទាំងអស់</translation>
 <translation id="614530507403667291">ម៉ូដែលលំនាំដើមសម្រាប់ការសន្ទនាថ្មីៗ</translation>
 <translation id="1907126221851170941">បន្ថែមគំរូ</translation>
+<translation id="6532106788206463496">រក្សាទុកការផ្លាស់ប្តូរ</translation>
 <translation id="5985516785067818307">អ្នកវិភាគការស្ទង់មតិ</translation>
 <translation id="8347743943525229984">អនុញ្ញាតឱ្យមានការស្ទង់មតិ Brave</translation>
 <translation id="3204080538332044581">អនុញ្ញាតឱ្យ Brave បង្ហាញតំណទៅកាន់ការស្ទង់មតិឯកជននៅក្នុងទំព័រផ្ទាំងថ្មី។ ការស្ទង់មតិជួយយើងបង្កើតមុខងារកាន់តែប្រសើរ និងវាស់ស្ទង់ប្រសិទ្ធភាពនៃយុទ្ធនាការផ្សាយពាណិជ្ជកម្មផ្អែកលើកម្មវិធីរុករក។ <ph name="BEGIN_LINK"/>ស្វែងយល់បន្ថែម<ph name="END_LINK"/></translation>

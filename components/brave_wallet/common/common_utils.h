@@ -22,6 +22,7 @@ bool IsBitcoinEnabled();
 bool IsBitcoinImportEnabled();
 bool IsBitcoinLedgerEnabled();
 bool IsZCashEnabled();
+bool IsPolkadotEnabled();
 bool IsCardanoEnabled();
 bool IsCardanoDAppSupportEnabled();
 bool IsZCashShieldedTransactionsEnabled();
@@ -70,6 +71,8 @@ bool IsCardanoAccount(const mojom::AccountIdPtr& account_id);
 std::string GetNetworkForCardanoKeyring(const mojom::KeyringId& keyring_id);
 std::string GetNetworkForCardanoAccount(const mojom::AccountIdPtr& account_id);
 
+bool IsPolkadotKeyring(mojom::KeyringId keyring_id);
+
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id);
 
 mojom::CoinType GetCoinTypeFromTxDataUnion(
@@ -79,10 +82,17 @@ GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 
 std::vector<mojom::CoinType> GetEnabledCoins();
 std::vector<mojom::KeyringId> GetEnabledKeyrings();
-bool CoinSupportsDapps(mojom::CoinType coin);
 std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
     mojom::CoinType coin,
     const std::string& chain_id);
+
+// True for coins which support dApps.
+bool CoinSupportsDapps(mojom::CoinType coin);
+
+// True for coins which don't need to store selected network in prefs. I.e. for
+// corresponding account there is only and only available
+// network(mainnet/testnet).
+bool IsFixedSelectedNetworkCoin(mojom::CoinType coin);
 
 mojom::AccountIdPtr MakeAccountId(mojom::CoinType coin,
                                   mojom::KeyringId keyring_id,

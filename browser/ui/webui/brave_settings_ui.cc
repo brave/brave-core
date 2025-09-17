@@ -48,12 +48,16 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
+#include "components/regional_capabilities/regional_capabilities_country_id.h"
+#include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/web_contents.h"
@@ -97,6 +101,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/features.h"
 #endif
 
@@ -104,6 +109,20 @@
 #include "brave/components/containers/core/browser/containers_settings_handler.h"
 #include "brave/components/containers/core/common/features.h"
 #endif
+
+namespace {
+
+bool IsLocaleJapan(Profile* profile) {
+  if (auto* regional_capabilities = regional_capabilities::
+          RegionalCapabilitiesServiceFactory::GetForProfile(profile)) {
+    return regional_capabilities->GetCountryId() ==
+           regional_capabilities::CountryIdHolder(
+               country_codes::CountryId("JP"));
+  }
+  return false;
+}
+
+}  // namespace
 
 using ntp_background_images::ViewCounterServiceFactory;
 
@@ -214,11 +233,11 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           base::FeatureList::IsEnabled(
                               ntp_background_images::features::
                                   kBraveNTPBrandedWallpaperSurveyPanelist));
-
 #if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(
       "isPlaylistAllowed",
-      base::FeatureList::IsEnabled(playlist::features::kPlaylist));
+      base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
+          profile->GetPrefs()->GetBoolean(playlist::kPlaylistEnabledPref));
 #else
   html_source->AddBoolean("isPlaylistAllowed", false);
 #endif
@@ -241,6 +260,12 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isTreeTabsFlagEnabled",
       base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
+  html_source->AddString("braveSearchEngineName",
+                         TemplateURLPrepopulateData::brave_search.name);
+  html_source->AddBoolean("isLocaleJapan", IsLocaleJapan(profile));
+  html_source->AddBoolean("isHideVerticalTabCompletelyFlagEnabled",
+                          base::FeatureList::IsEnabled(
+                              tabs::features::kBraveVerticalTabHideCompletely));
 }
 
 // static

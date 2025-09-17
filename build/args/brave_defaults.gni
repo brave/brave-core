@@ -15,3 +15,8 @@ generate_about_credits = true
 # This has been disabled after some discussion deciding it is not relevant for
 # our use case since it was introduced in M140, and caused build problems.
 translate_genders = false
+
+# Chromium_src overrides do not work with precompiled headers well.
+# Before Siso they were always disabled as we always used redirect_cc as a
+# cc_wrapper, but with Siso we need to disable it explicitly.
+enable_precompiled_headers = false

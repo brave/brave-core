@@ -123,7 +123,7 @@ public struct BrowserMenu: View {
               Image(braveSystemName: "leo.product.vpn")
             }
           }
-          .modifier(MenuRowButtonStyleModifier())
+          .buttonStyle(MenuRowButtonStyle())
           .background(Color(braveSystemName: .schemesSurfaceBright))
           .clipShape(.rect(cornerRadius: 14, style: .continuous))
           .transition(.blurReplace())
@@ -133,12 +133,13 @@ public struct BrowserMenu: View {
         } label: {
           Label(Strings.BrowserMenu.allSettingsButtonTitle, braveSystemImage: "leo.settings")
         }
-        .modifier(MenuRowButtonStyleModifier())
+        .buttonStyle(MenuRowButtonStyle())
         .background(Color(braveSystemName: .schemesSurfaceBright))
         .clipShape(.rect(cornerRadius: 14, style: .continuous))
       }
       .padding()
     }
+    .enableButtonScrollViewDragWorkaround()
     .background(Color(braveSystemName: .iosBrowserChromeBackgroundIos))
     .dynamicTypeSize(DynamicTypeSize.xSmall..<DynamicTypeSize.accessibility3)
     .osAvailabilityModifiers { content in
@@ -191,7 +192,7 @@ private struct QuickActionsView: View {
             Image(braveSystemName: action.image)
           }
         }
-        .modifier(ButtonStyleViewModifier(state: action.state, traits: action.traits))
+        .buttonStyle(QuickActionButtonStyle(state: action.state, traits: action.traits))
         .disabled(action.attributes.contains(.disabled))
         .transition(.blurReplace())
         .id(action)
@@ -199,127 +200,75 @@ private struct QuickActionsView: View {
     }
   }
 
-  private struct ButtonStyleViewModifier: ViewModifier {
-    var state: Bool?
-    var traits: Action.Traits
-
-    func body(content: Content) -> some View {
-      if #available(iOS 18, *) {
-        content.buttonStyle(_OS18ButtonStyle(state: state, traits: traits))
-      } else {
-        content.buttonStyle(_StandardButtonStyle(state: state, traits: traits))
-      }
-    }
-
-    @available(
-      iOS,
-      introduced: 18.0,
-      message: """
-        A PrimitiveButtonStyle to that handles highlights & action execution for quick action buttons.
-
-        On iOS 18 there is a bug where a Button inside of a ScrollView which is being presented
-        in a sheet will not cancel their tap gesture when a drag occurs which would move the sheet
-        instead of the ScrollView, and as a result will execute the action you started your drag on
-        even if you dismiss the sheet.
-
-        This is tested up to iOS 18.2 and still broken.
-        """
-    )
-    private struct _OS18ButtonStyle: PrimitiveButtonStyle {
-      var state: Bool?
-      var traits: Action.Traits
-
-      @GestureState private var isPressed: Bool = false
-
-      func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-          .simultaneousGesture(
-            DragGesture(minimumDistance: 0).updating(
-              $isPressed,
-              body: { _, state, _ in state = true }
-            )
-          )
-          .simultaneousGesture(
-            TapGesture().onEnded {
-              configuration.trigger()
-            }
-          )
-          .labelStyle(_LabelStyle(isPressed: isPressed, state: state, traits: traits))
-          .animation(isPressed ? nil : .default, value: isPressed)
-      }
-    }
-
-    private struct _StandardButtonStyle: ButtonStyle {
-      var state: Bool?
-      var traits: Action.Traits
-
-      func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-          .labelStyle(_LabelStyle(isPressed: configuration.isPressed, state: state, traits: traits))
-      }
-    }
-
-  }
-
-  private struct _LabelStyle: LabelStyle {
-    @Environment(\.isEnabled) private var isEnabled
-    @ScaledMetric private var iconFrameSize = 22
-    @ScaledMetric private var iconFontSize = 18
-    @ScaledMetric private var badgeRadius = 8
-    var isPressed: Bool
+  private struct QuickActionButtonStyle: ButtonStyle {
     var state: Bool?
     var traits: Action.Traits
 
     func makeBody(configuration: Configuration) -> some View {
-      VStack(spacing: 8) {
-        configuration.icon
-          .frame(width: iconFrameSize, height: iconFrameSize)
-          .padding(.vertical, 12)
-          .font(.system(size: iconFontSize))
-          .foregroundStyle(
-            state == true
-              ? Color(braveSystemName: .schemesOnPrimary)
-              : isEnabled
-                ? Color(braveSystemName: .iconDefault)
-                : Color(braveSystemName: .iconDisabled)
-          )
-          .frame(maxWidth: .infinity)
-          .background {
-            Color(braveSystemName: state == true ? .schemesPrimary : .schemesSurfaceBright)
-              .overlay(
-                Color(
-                  braveSystemName: state == true
-                    ? .schemesPrimary : .iosBrowserContainerHighlightIos
-                ).opacity(isPressed ? 1 : 0)
-              )
-              .opacity(state == true && isPressed ? 0.5 : 1)
-              .clipShape(.rect(cornerRadius: 14, style: .continuous))
-              .hoverEffect()
-          }
-          .overlay(alignment: .topTrailing) {
-            if let badgeColor = traits.badgeColor {
-              Circle()
-                .fill(Color(uiColor: badgeColor))
-                .frame(width: badgeRadius, height: badgeRadius)
-                .overlay {
-                  Circle()
-                    .stroke(Color(braveSystemName: .iosBrowserChromeBackgroundIos), lineWidth: 1)
-                }
-                .allowsHitTesting(false)
+      configuration.label
+        .labelStyle(_LabelStyle(isPressed: configuration.isPressed, state: state, traits: traits))
+    }
+
+    private struct _LabelStyle: LabelStyle {
+      @Environment(\.isEnabled) private var isEnabled
+      @ScaledMetric private var iconFrameSize = 22
+      @ScaledMetric private var iconFontSize = 18
+      @ScaledMetric private var badgeRadius = 8
+      var isPressed: Bool
+      var state: Bool?
+      var traits: Action.Traits
+
+      func makeBody(configuration: Configuration) -> some View {
+        VStack(spacing: 8) {
+          configuration.icon
+            .frame(width: iconFrameSize, height: iconFrameSize)
+            .padding(.vertical, 12)
+            .font(.system(size: iconFontSize))
+            .foregroundStyle(
+              state == true
+                ? Color(braveSystemName: .schemesOnPrimary)
+                : isEnabled
+                  ? Color(braveSystemName: .iconDefault)
+                  : Color(braveSystemName: .iconDisabled)
+            )
+            .frame(maxWidth: .infinity)
+            .background {
+              Color(braveSystemName: state == true ? .schemesPrimary : .schemesSurfaceBright)
+                .overlay(
+                  Color(
+                    braveSystemName: state == true
+                      ? .schemesPrimary : .iosBrowserContainerHighlightIos
+                  ).opacity(isPressed ? 1 : 0)
+                )
+                .opacity(state == true && isPressed ? 0.5 : 1)
+                .clipShape(.rect(cornerRadius: 14, style: .continuous))
+                .hoverEffect()
             }
-          }
-        configuration.title
-          .font(.caption2)
-          .lineLimit(2)
-          .foregroundStyle(
-            isEnabled
-              ? Color(braveSystemName: .textPrimary)
-              : Color(braveSystemName: .textDisabled)
-          )
-          .multilineTextAlignment(.center)
+            .overlay(alignment: .topTrailing) {
+              if let badgeColor = traits.badgeColor {
+                Circle()
+                  .fill(Color(uiColor: badgeColor))
+                  .frame(width: badgeRadius, height: badgeRadius)
+                  .overlay {
+                    Circle()
+                      .stroke(Color(braveSystemName: .iosBrowserChromeBackgroundIos), lineWidth: 1)
+                  }
+                  .allowsHitTesting(false)
+              }
+            }
+          configuration.title
+            .font(.caption2)
+            .lineLimit(2)
+            .foregroundStyle(
+              isEnabled
+                ? Color(braveSystemName: .textPrimary)
+                : Color(braveSystemName: .textDisabled)
+            )
+            .multilineTextAlignment(.center)
+        }
+        .opacity(isEnabled ? 1 : 0.7)
+        .contentShape(.rect)
       }
-      .opacity(isEnabled ? 1 : 0.7)
-      .contentShape(.rect)
     }
   }
 }
@@ -354,7 +303,7 @@ private struct ActionButton: View {
         }
       }
     }
-    .modifier(MenuRowButtonStyleModifier())
+    .buttonStyle(MenuRowButtonStyle())
     .disabled(action.attributes.contains(.disabled))
     .transition(.blurReplace())
     .id(action)
@@ -436,7 +385,7 @@ private struct ActionsList: View {
           } label: {
             Label(Strings.BrowserMenu.showAllButtonTitle, braveSystemImage: "leo.more.horizontal")
           }
-          .modifier(MenuRowButtonStyleModifier())
+          .buttonStyle(MenuRowButtonStyle())
         }
         if isAdditionalActionsVisible {
           ForEach($additionalActions) { $action in
@@ -455,73 +404,19 @@ private struct ActionsList: View {
   }
 }
 
-private struct MenuRowButtonStyleModifier: ViewModifier {
-  func body(content: Content) -> some View {
-    if #available(iOS 18, *) {
-      content.buttonStyle(_OS18ButtonStyle())
-    } else {
-      content.buttonStyle(_StandardButtonStyle())
-    }
-  }
-
-  @available(
-    iOS,
-    introduced: 18.0,
-    message: """
-      A PrimitiveButtonStyle to that handles highlights & action execution for menu row buttons.
-
-      On iOS 18 there is a bug where a Button inside of a ScrollView which is being presented
-      in a sheet will not cancel their tap gesture when a drag occurs which would move the sheet
-      instead of the ScrollView, and as a result will execute the action you started your drag on
-      even if you dismiss the sheet.
-
-      This is tested up to iOS 18.2 and still broken.
-      """
-  )
-  private struct _OS18ButtonStyle: PrimitiveButtonStyle {
-    @GestureState private var isPressed: Bool = false
-
-    func makeBody(configuration: Configuration) -> some View {
-      configuration.label
-        .frame(minHeight: 46)
-        .padding(.horizontal, 16)
-        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
-        .contentShape(.rect)
-        .simultaneousGesture(
-          DragGesture(minimumDistance: 0).updating(
-            $isPressed,
-            body: { _, state, _ in state = true }
-          )
-        )
-        .simultaneousGesture(
-          TapGesture().onEnded {
-            configuration.trigger()
-          }
-        )
-        .hoverEffect()
-        .background(
-          Color(braveSystemName: .iosBrowserContainerHighlightIos).opacity(isPressed ? 1 : 0)
-            .animation(isPressed ? nil : .default, value: isPressed)
-        )
-        .labelStyle(_LabelStyle())
-    }
-  }
-
-  private struct _StandardButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-      configuration.label
-        .frame(minHeight: 46)
-        .padding(.horizontal, 16)
-        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
-        .contentShape(.rect)
-        .hoverEffect()
-        .background(
-          Color(braveSystemName: .schemesSurfaceBright).opacity(
-            configuration.isPressed ? 1 : 0
-          )
-        )
-        .labelStyle(_LabelStyle())
-    }
+private struct MenuRowButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .frame(minHeight: 46)
+      .padding(.horizontal, 16)
+      .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+      .contentShape(.rect)
+      .hoverEffect()
+      .background(
+        Color(braveSystemName: .iosBrowserContainerHighlightIos)
+          .opacity(configuration.isPressed ? 1 : 0)
+      )
+      .labelStyle(_LabelStyle())
   }
 
   private struct _LabelStyle: LabelStyle {

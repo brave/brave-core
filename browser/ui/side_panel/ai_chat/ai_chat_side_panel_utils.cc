@@ -6,7 +6,8 @@
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 
 #include "base/notimplemented.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "chrome/browser/profiles/profile.h"
 
 namespace ai_chat {
 
@@ -20,5 +21,10 @@ void ClosePanel(content::WebContents* web_contents) {
   NOTIMPLEMENTED();
 }
 #endif
+
+bool ShouldSidePanelBeGlobal(Profile* profile) {
+  return profile->IsAIChatAgent() ||
+         ai_chat::features::IsAIChatGlobalSidePanelEverywhereEnabled();
+}
 
 }  // namespace ai_chat

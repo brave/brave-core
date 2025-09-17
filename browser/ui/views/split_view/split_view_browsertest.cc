@@ -20,8 +20,6 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "chrome/browser/profiles/profile.h"
@@ -37,6 +35,7 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -73,17 +72,9 @@ ui::MouseEvent GetDummyEvent() {
 }
 }  // namespace
 
-class SplitViewDisabledBrowserTest : public InProcessBrowserTest {
- public:
-  SplitViewDisabledBrowserTest() {
-    scoped_features_.InitAndDisableFeature(tabs::features::kBraveSplitView);
-  }
-  ~SplitViewDisabledBrowserTest() override = default;
+using SplitViewDisabledBrowserTest = InProcessBrowserTest;
 
- private:
-  base::test::ScopedFeatureList scoped_features_;
-};
-
+// Check brave split view is disabled by default.
 IN_PROC_BROWSER_TEST_F(SplitViewDisabledBrowserTest,
                        SplitViewDisabledStateTest) {
   auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
@@ -94,7 +85,7 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
  public:
   SideBySideEnabledBrowserTest() {
     scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {features::kSideBySide},
+        /*enabled_features*/ {},
         /*disabled_features*/ {features::kBraveWebViewRoundedCorners});
   }
   ~SideBySideEnabledBrowserTest() override = default;
@@ -108,9 +99,8 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
         BrowserView::GetBrowserViewForBrowser(browser()));
   }
 
-  SplitViewSeparator* split_view_separator() const {
-    return views::AsViewClass<SplitViewSeparator>(
-        brave_multi_contents_view()->resize_area_for_testing());
+  views::View* split_view_separator() const {
+    return brave_multi_contents_view()->resize_area_for_testing();
   }
 
   BraveMultiContentsView* brave_multi_contents_view() const {
@@ -136,63 +126,6 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
-                       PinnedSplitTabsLayoutInVerticalTabTest) {
-  ToggleVerticalTabStrip();
-
-  // Create enough pinned tabs including split tabs.
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  chrome::PinTab(browser());
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  chrome::PinTab(browser());
-
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  chrome::NewSplitTab(browser(),
-                      split_tabs::SplitTabCreatedSource::kToolbarButton);
-  chrome::PinTab(browser());
-
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  chrome::PinTab(browser());
-
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  chrome::NewSplitTab(browser(),
-                      split_tabs::SplitTabCreatedSource::kToolbarButton);
-  chrome::PinTab(browser());
-
-  tab_strip()->StopAnimating(/* layout= */ true);
-  auto* widget_delegate_view =
-      brave_browser_view()->vertical_tab_strip_widget_delegate_view();
-  ASSERT_TRUE(widget_delegate_view);
-
-  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
-  ASSERT_TRUE(region_view);
-  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
-
-  auto check_split_tabs_has_same_y_position = [&]() {
-    auto* model = browser()->tab_strip_model();
-    const int tab_count = model->count();
-    for (int i = 0; i < tab_count; i++) {
-      auto* tab = tab_strip()->tab_at(i);
-      if (tab_count != (i + 1) && tab->split().has_value() &&
-          tab->split() == tab_strip()->tab_at(i + 1)->split()) {
-        // Check each split tab has same y-position.
-        EXPECT_EQ(tab->y(), tab_strip()->tab_at(i + 1)->y());
-      }
-    }
-  };
-
-  const auto initial_width = region_view->expanded_width_;
-  while (region_view->expanded_width_ >= (initial_width / 2)) {
-    check_split_tabs_has_same_y_position();
-    region_view->SetExpandedWidth(region_view->expanded_width_ - 20);
-  }
-
-  while (region_view->expanded_width_ < initial_width) {
-    check_split_tabs_has_same_y_position();
-    region_view->SetExpandedWidth(region_view->expanded_width_ + 20);
-  }
-}
-
-IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
                        BraveMultiContentsViewTest) {
   // Check SplitView feature is not enabled.
   EXPECT_FALSE(tabs::features::IsBraveSplitViewEnabled());
@@ -201,7 +134,6 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
 
   // Check MultiContentsView uses our separator and initially hidden.
   EXPECT_FALSE(split_view_separator()->GetVisible());
-  EXPECT_FALSE(split_view_separator()->menu_button_widget_->IsVisible());
 
   // separator should not be empty when split view is closed.
   auto* browser_view = brave_browser_view();
@@ -215,7 +147,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   EXPECT_EQ(gfx::Size(),
             browser_view->contents_separator_for_testing()->GetPreferredSize());
   EXPECT_TRUE(split_view_separator()->GetVisible());
-  EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsVisible());
+  EXPECT_EQ(4, split_view_separator()->GetPreferredSize().width());
 
   // Check corner radius.
   auto* multi_contents_view = brave_multi_contents_view();
@@ -259,8 +191,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
     return start_contents_web_view->width() == end_contents_web_view->width();
   }));
 
-  split_view_separator()->OnResize(30, false);
-  split_view_separator()->OnResize(30, true);
+  multi_contents_view->OnResize(30, false);
+  multi_contents_view->OnResize(30, true);
 
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return start_contents_web_view->width() != end_contents_web_view->width();
@@ -272,7 +204,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
                        ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON,
                        ui::EF_LEFT_MOUSE_BUTTON);
   event.SetClickCount(2);
-  split_view_separator()->OnMousePressed(event);
+  split_view_separator()->OnMouseReleased(event);
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return start_contents_web_view->width() == end_contents_web_view->width();
   }));
@@ -284,7 +216,6 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_EQ(2, tab_strip()->GetActiveIndex());
 
   EXPECT_FALSE(split_view_separator()->GetVisible());
-  EXPECT_FALSE(split_view_separator()->menu_button_widget_->IsVisible());
 
   // Created new tab(at 3) for new split view with existing tab(at 2).
   chrome::NewSplitTab(browser(),
@@ -294,9 +225,6 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_TRUE(tab_strip()->tab_at(3)->split().has_value());
   EXPECT_TRUE(tab_strip()->tab_at(3)->IsActive());
   EXPECT_TRUE(split_view_separator()->GetVisible());
-  EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsVisible());
-  EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsStackedAbove(
-      secondary_location_bar_widget()->GetNativeView()));
 
   // Chromium's mini toolbar should be hidden always as we're using own own mini
   // urlbar.
@@ -309,7 +237,6 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
   EXPECT_EQ(0, tab_strip()->GetActiveIndex());
   EXPECT_FALSE(split_view_separator()->GetVisible());
-  EXPECT_FALSE(split_view_separator()->menu_button_widget_->IsVisible());
 
   // Check only hovered split tab has hover animation.
   auto* hovered_split_tab = tab_strip()->tab_at(2);
@@ -330,7 +257,6 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_TRUE(tab_strip()->tab_at(2)->IsActive());
   EXPECT_FALSE(tab_strip()->tab_at(3)->IsActive());
   EXPECT_TRUE(split_view_separator()->GetVisible());
-  EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsVisible());
 
   tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
   EXPECT_EQ(0, tab_strip()->GetActiveIndex());
@@ -347,9 +273,7 @@ class SideBySideWithRoundedCornersTest : public SideBySideEnabledBrowserTest {
     // Reset to have different features config with base test class.
     scoped_features_.Reset();
     scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {features::kSideBySide,
-                              features::kBraveWebViewRoundedCorners},
-        {});
+        /*enabled_features*/ {features::kBraveWebViewRoundedCorners}, {});
   }
   ~SideBySideWithRoundedCornersTest() override = default;
 };
@@ -394,9 +318,10 @@ class SplitViewCommonBrowserTest : public InProcessBrowserTest,
                                    public testing::WithParamInterface<bool> {
  public:
   SplitViewCommonBrowserTest() {
-    if (IsSideBySideEnabled()) {
+    if (!IsSideBySideEnabled()) {
       scoped_features_.InitWithFeatures(
-          /*enabled_features*/ {features::kSideBySide}, {});
+          /*enabled_features*/ {tabs::features::kBraveSplitView},
+          /*disabled_features*/ {features::kSideBySide});
     }
   }
   ~SplitViewCommonBrowserTest() override = default;
@@ -914,6 +839,46 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewReloadTest) {
   }
 }
 
+IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewCloseTabTest) {
+  NewSplitTab();
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Check only active tab is closed from split tab when split tab is
+  // the only selected tabs.
+  chrome::CloseTab(browser());
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  EXPECT_EQ(1, tab_strip_model->count());
+
+  // Create another active tab.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  NewSplitTab();
+
+  EXPECT_EQ(2, tab_strip_model->active_index());
+  EXPECT_EQ(3, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(1));
+  EXPECT_TRUE(IsSplitTabAt(2));
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+
+  // Make tabs at 1, 2, 3 selected.
+  // Check selected tab is not the only split tab,
+  // we'll close all selected tabs.
+  tab_strip_model->ExtendSelectionTo(1);
+  EXPECT_TRUE(IsSplitTabAt(1));
+  EXPECT_TRUE(IsSplitTabAt(2));
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_EQ(4, tab_strip_model->count());
+
+  // Check all selected tabs are closed (tab at 1, 2, 3).
+  chrome::CloseTab(browser());
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  EXPECT_EQ(1, tab_strip_model->count());
+}
+
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     SplitViewCommonBrowserTest,
@@ -921,7 +886,11 @@ INSTANTIATE_TEST_SUITE_P(
 
 class SplitViewBrowserTest : public InProcessBrowserTest {
  public:
-  SplitViewBrowserTest() = default;
+  SplitViewBrowserTest() {
+    scoped_features_.InitWithFeatures(
+        /*enabled_features*/ {tabs::features::kBraveSplitView},
+        /*disabled_features*/ {features::kSideBySide});
+  }
   ~SplitViewBrowserTest() override = default;
 
   BraveBrowserView& browser_view() {
@@ -964,6 +933,9 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
   }
 
   TabStripModel& tab_strip_model() { return *(browser()->tab_strip_model()); }
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
 };
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,

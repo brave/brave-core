@@ -6,6 +6,7 @@
 import BraveCore
 import BraveShared
 import Data
+import DesignSystem
 import Foundation
 import Preferences
 import Shared
@@ -44,7 +45,7 @@ extension BrowserViewController: TabDelegate {
         if !isPrivate {
           let openNewTabAction = UIAction(
             title: Strings.openNewTabButtonTitle,
-            image: UIImage(systemName: "plus")
+            image: UIImage(braveSystemNamed: "leo.browser.mobile-tab-new")
           ) { _ in
             self.addTab(url: url, inPrivateMode: false, currentTab: currentTab)
           }
@@ -75,7 +76,7 @@ extension BrowserViewController: TabDelegate {
           if !isPrivate {
             let openNewWindowAction = UIAction(
               title: Strings.openInNewWindowTitle,
-              image: UIImage(braveSystemNamed: "leo.window")
+              image: UIImage(braveSystemNamed: "leo.window.tab-new")
             ) { _ in
               self.openInNewWindow(url: url, isPrivate: false)
             }
@@ -105,7 +106,7 @@ extension BrowserViewController: TabDelegate {
 
         let copyAction = UIAction(
           title: Strings.copyLinkActionTitle,
-          image: UIImage(systemName: "doc.on.doc"),
+          image: UIImage(braveSystemNamed: "leo.copy"),
           handler: UIAction.deferredActionHandler { _ in
             UIPasteboard.general.url = url as URL
           }
@@ -115,7 +116,7 @@ extension BrowserViewController: TabDelegate {
 
         let copyCleanLinkAction = UIAction(
           title: Strings.copyCleanLink,
-          image: UIImage(braveSystemNamed: "leo.broom"),
+          image: UIImage(braveSystemNamed: "leo.copy.clean"),
           handler: UIAction.deferredActionHandler { _ in
             let service = URLSanitizerServiceFactory.get(privateMode: currentTab.isPrivate)
             let cleanedURL = service?.sanitizeURL(url) ?? url
@@ -127,7 +128,7 @@ extension BrowserViewController: TabDelegate {
 
         let shareAction = UIAction(
           title: Strings.shareLinkActionTitle,
-          image: UIImage(systemName: "square.and.arrow.up")
+          image: UIImage(braveSystemNamed: "leo.share.macos")
         ) { _ in
           // TODO: Find a way to add fixes brave-ios#3323 and brave-ios#2961 here:
           // Normally we use `tab.temporaryDocument` for the downloaded file on the tab.
@@ -159,7 +160,7 @@ extension BrowserViewController: TabDelegate {
           linkPreview ? Strings.hideLinkPreviewsActionTitle : Strings.showLinkPreviewsActionTitle
         let linkPreviewAction = UIAction(
           title: linkPreviewTitle,
-          image: UIImage(systemName: "eye.fill")
+          image: UIImage(braveSystemNamed: linkPreview ? "leo.eye.off" : "leo.eye.on")
         ) { _ in
           Preferences.General.enableLinkPreview.value.toggle()
         }

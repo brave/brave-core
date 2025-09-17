@@ -9,8 +9,9 @@ import * as leo from '@brave/leo/tokens/css/variables'
 // Shared Styles
 import { Row, Text } from '../../shared/style'
 
-export const StyledWrapper = styled(Row)`
-  background-color: ${leo.color.container.highlight};
+export const StyledWrapper = styled(Row)<{ noBackground?: boolean }>`
+  background-color: ${({ noBackground }) =>
+    noBackground ? 'transparent' : leo.color.container.highlight};
 `
 
 export const FavIcon = styled.img`

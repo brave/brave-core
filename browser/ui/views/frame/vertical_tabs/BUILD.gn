@@ -17,7 +17,10 @@ source_set("vertical_tabs") {
   ]
 
   if (is_mac) {
-    sources += [ "vertical_tab_strip_region_view_mac.mm" ]
+    sources += [
+      "vertical_tab_strip_region_view_mac.mm",
+      "vertical_tab_strip_widget_delegate_view_mac.mm",
+    ]
   }
   deps = [
     "//base",
@@ -51,6 +54,7 @@ source_set("browser_tests") {
 
   deps = [
     ":vertical_tabs",
+    "//chrome/browser",
     "//chrome/browser/ui",
     "//chrome/test:test_support_ui",
     "//content/test:test_support",

@@ -137,9 +137,11 @@
     <file path="strings/brave_components_resources_iw.xtb" lang="he" />
     <file path="strings/brave_components_resources_ja.xtb" lang="ja" />
     <file path="strings/brave_components_resources_ka.xtb" lang="ka" />
+    <file path="strings/brave_components_resources_kk.xtb" lang="kk" />
     <file path="strings/brave_components_resources_km.xtb" lang="km" />
     <file path="strings/brave_components_resources_kn.xtb" lang="kn" />
     <file path="strings/brave_components_resources_ko.xtb" lang="ko" />
+    <file path="strings/brave_components_resources_lo.xtb" lang="lo" />
     <file path="strings/brave_components_resources_lt.xtb" lang="lt" />
     <file path="strings/brave_components_resources_lv.xtb" lang="lv" />
     <file path="strings/brave_components_resources_mk.xtb" lang="mk" />
@@ -806,6 +808,11 @@
         Test string for <ph name="PART_ONE">$1</ph>place holders<ph name="PART_ONE_END">$2</ph>. <ph name="PART_TWO">$3</ph>Learn more<ph name="PART_TWO_END">$4</ph>
       </message>
 
+       <!-- Policy UI -->
+      <message name="IDS_POLICY_SOURCE_BRAVE" desc="Indicates that a policy is set by Brave" translateable="false">
+        Brave
+      </message>
+
       <if expr="not is_ios">
         <part file="decentralized_dns_strings.grdp" />
       </if>
@@ -822,11 +829,12 @@
       <part file="speedreader_strings.grdp" />
       <part file="ai_chat_prompts.grdp" />
       <part file="ai_chat_ui_strings.grdp" />
+      <part file="email_aliases_strings.grdp" />
       <if expr="not is_android">
         <part file="brave_new_tab_page_strings.grdp" />
         <part file="brave_shields_strings.grdp" />
         <part file="brave_welcome_strings.grdp" />
-        <part file="email_aliases_strings.grdp" />
+        <part file="customize_chrome_ui_strings.grdp" />
         <part file="customize_toolbar_ui_strings.grdp" />
       </if>
       <if expr="enable_brave_vpn">

@@ -52,11 +52,7 @@ if (include_polymer) {
     mojo_files = [ "$root_gen_dir/brave/ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom-webui.ts" ]
     mojo_files_deps = [ "js/brave_browser_command:mojo_bindings_ts__generator" ]
 
-    css_files = [
-      "br_elements/br_shared_style.css",
-      "br_elements/br_shared_vars.css",
-      "page_specific/settings/br_settings_shared.css",
-    ]
+    css_files = [ "page_specific/settings/br_settings_shared.css" ]
 
     ts_composite = true
     generate_grdp = true
@@ -78,6 +74,10 @@ static_files = [
   "css/md_colors.css",
   "css/text_defaults_md.css",
   "css/reset.css",
+
+  # Note: On Android, we replace this with the default theme, as it doesn't
+  # support ThemeSource.
+  "css/nala.css",
 ]
 
 if (include_polymer) {
@@ -431,6 +431,7 @@ leo_icons = [
   "swap-horizontal.svg",
   "swap-vertical.svg",
   "themes.svg",
+  "theme-darker.svg",
   "thumb-down.svg",
   "thumb-up.svg",
   "trash.svg",
@@ -581,9 +582,26 @@ generate_grd("icons_grdp") {
   deps = [ ":icons_copy" ]
 }
 
+if (is_android || is_ios) {
+  # This target replaces the dynamic nala.css file with the default theme. It's
+  # used on Android and iOS since we don't support the ThemeSource there.
+  copy("hardcode_nala_theme_variables") {
+    sources = [ "$brave_resources_extra_grdps_path/leo/css/variables.css" ]
+    outputs = [ "$brave_resources_extra_grdps_path/css/nala.css" ]
+    deps = [ ":leo_static_copy" ]
+  }
+}
+
 # Static files should be put relative to //ui/webui/resources main resources GRD
 copy("static_copy") {
-  sources = static_files
+  if (is_android || is_ios) {
+    # Exclude the nala.css file - we'll copy the hardcoded theme instead.
+    sources = filter_exclude(static_files, [ "css/nala.css" ])
+    deps = [ ":hardcode_nala_theme_variables" ]
+  } else {
+    sources = static_files
+  }
+
   outputs = [ "$brave_resources_extra_grdps_path/{{source_target_relative}}" ]
 }
 

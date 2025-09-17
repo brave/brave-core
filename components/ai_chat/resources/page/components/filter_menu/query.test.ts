@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { extractQuery, matches } from "./query"
+import { extractQuery, matches } from './query'
 
 describe('query', () => {
   describe('matches', () => {
@@ -34,27 +34,51 @@ describe('query', () => {
 
   describe('extractQuery', () => {
     it('should return the query if it is at the start of the text', () => {
-      expect(extractQuery('/hello world', { onlyAtStart: true, triggerCharacter: '/' })).toBe('hello world')
+      expect(
+        extractQuery('/hello world', {
+          onlyAtStart: true,
+          triggerCharacter: '/',
+        }),
+      ).toBe('hello world')
     })
 
     it('should not return the query if it is not at the start of the text', () => {
-      expect(extractQuery('hi /hello world', { onlyAtStart: true, triggerCharacter: '/' })).toBeNull()
+      expect(
+        extractQuery('hi /hello world', {
+          onlyAtStart: true,
+          triggerCharacter: '/',
+        }),
+      ).toBeNull()
     })
 
     it('should return the empty string if the trigger character is in the string but no query', () => {
-      expect(extractQuery('/', { onlyAtStart: true, triggerCharacter: '/' })).toBe('')
+      expect(
+        extractQuery('/', { onlyAtStart: true, triggerCharacter: '/' }),
+      ).toBe('')
     })
 
     it('empty string should return null', () => {
-      expect(extractQuery('', { onlyAtStart: true, triggerCharacter: '/' })).toBeNull()
+      expect(
+        extractQuery('', { onlyAtStart: true, triggerCharacter: '/' }),
+      ).toBeNull()
     })
 
     it('should support @ as trigger character', () => {
-      expect(extractQuery('@hello world', { onlyAtStart: true, triggerCharacter: '@' })).toBe('hello world')
+      expect(
+        extractQuery('@hello world', {
+          onlyAtStart: true,
+          triggerCharacter: '@',
+        }),
+      ).toBe('hello world')
     })
 
     it('should support matches not just at the start', () => {
-      expect(extractQuery('hi @hello world', { onlyAtStart: false, triggerCharacter: '@' })).toBe('hello world')
+      expect(
+        extractQuery('hi @hello world', {
+          onlyAtStart: false,
+          triggerCharacter: '@',
+        }),
+      ).toBe('hello world')
     })
   })
 })

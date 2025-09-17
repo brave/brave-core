@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/containers/flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
@@ -431,19 +432,16 @@ void BlockchainRegistry::GetSellTokens(mojom::OffRampProvider provider,
                                        GetSellTokensCallback callback) {
   std::vector<mojom::BlockchainTokenPtr> blockchain_sell_tokens;
 
-  auto sell_tokens_itr = off_ramp_token_lists_.find(provider);
+  auto* sell_tokens = base::FindOrNull(off_ramp_token_lists_, provider);
 
   // Check if the provider is found in the map
-  if (sell_tokens_itr == off_ramp_token_lists_.end()) {
+  if (!sell_tokens) {
     std::move(callback).Run(std::move(blockchain_sell_tokens));
     return;
   }
 
-  // Now we have a vector of BlockchainTokens for the provider
-  auto& sell_tokens = sell_tokens_itr->second;
-
   // Filter out tokens that do not belong to the specified chain_id
-  for (const auto& token : sell_tokens) {
+  for (const auto& token : *sell_tokens) {
     if (token->chain_id != chain_id) {
       continue;
     }

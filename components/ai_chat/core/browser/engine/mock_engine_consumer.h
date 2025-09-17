@@ -30,7 +30,7 @@ class MockEngineConsumer : public EngineConsumer {
 
   MOCK_METHOD(void,
               GenerateAssistantResponse,
-              (PageContents page_contents,
+              (PageContentsMap && page_contents,
                const ConversationHistory& conversation_history,
                const std::string& selected_language,
                bool is_temporary_chat,
@@ -49,6 +49,13 @@ class MockEngineConsumer : public EngineConsumer {
                GenerationCompletedCallback completed_callback),
               (override));
 
+  MOCK_METHOD(void,
+              GenerateConversationTitle,
+              (const PageContentsMap& page_contents,
+               const ConversationHistory& conversation_history,
+               GenerationCompletedCallback completed_callback),
+              (override));
+
   MOCK_METHOD(void, SanitizeInput, (std::string & input), (override));
 
   MOCK_METHOD(void, ClearAllQueries, (), (override));
@@ -64,6 +71,8 @@ class MockEngineConsumer : public EngineConsumer {
                GetFocusTabsCallback),
               (override));
   MOCK_METHOD(const std::string&, GetModelName, (), (const, override));
+
+  MOCK_METHOD(bool, RequiresClientSideTitleGeneration, (), (const, override));
 
   bool SupportsDeltaTextResponses() const override {
     return supports_delta_text_responses_;

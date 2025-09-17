@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import { getLocale } from '$web-common/locale'
-import * as S from './style'
+import * as Styles from './style'
 import ContactSupport from '../contact-support'
 
 interface Props {
@@ -28,29 +28,29 @@ function PurchaseFailedPanel(props: Props) {
 
   const title = props.stateDescription
     ? props.stateDescription
-    : getLocale('braveVpnPurchaseFailed')
+    : getLocale(S.BRAVE_VPN_PURCHASE_FAILED)
   return (
-    <S.Box>
-      <S.PanelContent>
-        <S.EmptyPanelHeader />
-        <S.StyledAlert
+    <Styles.Box>
+      <Styles.PanelContent>
+        <Styles.EmptyPanelHeader />
+        <Styles.StyledAlert
           type='error'
           hideIcon
         >
           {title}
-        </S.StyledAlert>
+        </Styles.StyledAlert>
 
         {!isContactSupportVisible && (
-          <S.StyledActionButton
+          <Styles.StyledActionButton
             slot='actions'
             kind='plain'
             onClick={showContactSupport}
           >
-            {getLocale('braveVpnContactSupport')}
-          </S.StyledActionButton>
+            {getLocale(S.BRAVE_VPN_CONTACT_SUPPORT)}
+          </Styles.StyledActionButton>
         )}
-      </S.PanelContent>
-    </S.Box>
+      </Styles.PanelContent>
+    </Styles.Box>
   )
 }
 

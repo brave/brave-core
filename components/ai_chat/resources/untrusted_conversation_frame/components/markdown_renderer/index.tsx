@@ -14,14 +14,14 @@ import { visit } from 'unist-util-visit'
 import styles from './style.module.scss'
 import CaretSVG from '../svg/caret'
 import {
-  useUntrustedConversationContext //
+  useUntrustedConversationContext, //
 } from '../../untrusted_conversation_context'
 
 const CodeBlock = React.lazy(async () => ({
-  default: (await import('../code_block')).default.Block
+  default: (await import('../code_block')).default.Block,
 }))
 const CodeInline = React.lazy(async () => ({
-  default: (await import('../code_block')).default.Inline
+  default: (await import('../code_block')).default.Inline,
 }))
 
 const allowedElements = [
@@ -64,7 +64,7 @@ const allowedElements = [
   'tbody',
   'tr',
   'th',
-  'td'
+  'td',
 ]
 
 interface CursorDecoratorProps {
@@ -95,7 +95,7 @@ interface RenderLinkProps {
 }
 
 export function RenderLink(props: RenderLinkProps) {
-  const { a, allowedLinks, disableLinkRestrictions} = props
+  const { a, allowedLinks, disableLinkRestrictions } = props
   const { href, children } = a
 
   // Context
@@ -103,8 +103,10 @@ export function RenderLink(props: RenderLinkProps) {
 
   // Computed
   const isHttps = href?.toLowerCase().startsWith('https://')
-  const isLinkAllowed = isHttps && (disableLinkRestrictions ||
-    (allowedLinks?.some((link) => href?.startsWith(link)) ?? false))
+  const isLinkAllowed =
+    isHttps
+    && (disableLinkRestrictions
+      || (allowedLinks?.some((link) => href?.startsWith(link)) ?? false))
 
   const handleLinkClicked = React.useCallback(() => {
     if (href && isLinkAllowed) {
@@ -155,6 +157,45 @@ export function RenderLink(props: RenderLinkProps) {
   )
 }
 
+// Helper function to process content and convert <br> tags to line breaks
+function processBrTags(children: React.ReactNode): React.ReactNode {
+  return React.Children.map(children, (child) => {
+    if (typeof child === 'string') {
+      // Split by <br> tags and create line breaks
+      const parts = child.split(/<br\s*\/?>/gi)
+      if (parts.length === 1) {
+        return child
+      }
+      return parts.map((part, index) => (
+        <React.Fragment key={index}>
+          {index !== 0 && <br />}
+          {part}
+        </React.Fragment>
+      ))
+    }
+    return child
+  })
+}
+
+// Helper function to extract text content from React nodes
+function extractTextContent(node: React.ReactNode): string {
+  if (typeof node === 'string') {
+    return node
+  }
+  if (typeof node === 'number') {
+    return String(node)
+  }
+  if (React.isValidElement(node)) {
+    if (node.props.children) {
+      return (
+        React.Children.map(node.props.children, extractTextContent)?.join('')
+        || ''
+      )
+    }
+  }
+  return ''
+}
+
 function buildTableRenderer() {
   // For table header tracking
   const tableHeaders: string[] = []
@@ -184,23 +225,28 @@ function buildTableRenderer() {
       return <tr className={styles.tableRow}>{props.children}</tr>
     },
     th: (props: { children: React.ReactNode }) => {
-      // Store header text
-      const text = React.Children.map(props.children, (child) =>
-        typeof child === 'string' ? child : '',
-      )?.join(' ')
+      // Store header text (process content to handle <br> tags)
+      const processedChildren = processBrTags(props.children)
+
+      const text =
+        React.Children.map(processedChildren, extractTextContent)?.join(' ')
+        || ''
       if (text) tableHeaders.push(text)
-      return <th className={styles.tableHeader}>{props.children}</th>
+      return <th className={styles.tableHeader}>{processedChildren}</th>
     },
     td: (props: { children: React.ReactNode }) => {
       // Assign data-label from headers
       const label = tableHeaders[columnIndex] || ''
       columnIndex++
       return (
-        <td className={styles.tableCell} data-label={label}>
-          {props.children}
+        <td
+          className={styles.tableCell}
+          data-label={label}
+        >
+          {processBrTags(props.children)}
         </td>
       )
-    }
+    },
   }
 }
 
@@ -221,8 +267,8 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
 
       visit(tree, 'element', (el: HastElement) => {
         if (
-          lastElLineEndsAt === el.position?.end.line &&
-          lastElCharEndsAt === el.position?.end.offset
+          lastElLineEndsAt === el.position?.end.line
+          && lastElCharEndsAt === el.position?.end.offset
         ) {
           lastElementRef.current = el
         }
@@ -284,7 +330,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
               disableLinkRestrictions={mainProps.disableLinkRestrictions}
             />
           ),
-          ...buildTableRenderer()
+          ...buildTableRenderer(),
         }}
       />
     </div>

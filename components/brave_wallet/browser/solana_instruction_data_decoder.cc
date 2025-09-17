@@ -864,8 +864,8 @@ std::optional<std::string> DecodePublicKey(base::span<const uint8_t> input,
   }
 
   offset += kSolanaPubkeySize;
-  return Base58Encode(std::vector<uint8_t>(
-      input.begin() + offset - kSolanaPubkeySize, input.begin() + offset));
+  return Base58Encode(
+      base::span(input).subspan(offset - kSolanaPubkeySize, kSolanaPubkeySize));
 }
 
 std::vector<InsParamPair> GetAccountParamsForTesting(

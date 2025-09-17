@@ -61,17 +61,17 @@ export default function ModelIntro() {
               >
                 {formatLocale(getIntroMessageKey(model), {
                   $1: (content) => {
-                      return (
-                        <button
-                          key={content}
-                          onClick={() =>
-                            aiChatContext.uiHandler?.openModelSupportUrl()
-                          }
-                        >
-                          {content}
-                        </button>
-                      )
-                  }
+                    return (
+                      <button
+                        key={content}
+                        onClick={() =>
+                          aiChatContext.uiHandler?.openModelSupportUrl()
+                        }
+                      >
+                        {content}
+                      </button>
+                    )
+                  },
                 })}
               </div>
               <Button

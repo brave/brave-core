@@ -5,7 +5,9 @@
 
 .main {
   --conversation-content-margin: var(--leo-spacing-5xl);
-  --conversation-content-max-width: calc(680px + calc(var(--conversation-content-margin) * 2));
+  --conversation-content-max-width: calc(
+    768px + calc(var(--conversation-content-margin) * 2)
+  );
 
   display: flex;
   flex-direction: column;
@@ -14,7 +16,6 @@
   position: relative;
   overflow: hidden;
 }
-
 
 .mainPanel {
   --conversation-content-margin: var(--leo-spacing-2xl);
@@ -26,7 +27,9 @@
 
 .attachmentsDialog {
   --leo-dialog-padding: 0;
-  --leo-dialog-width: 600px;
+  --leo-dialog-width: 500px;
+  --leo-dialog-backdrop-background: var(--leo-color-dialogs-scrim-background);
+  --leo-dialog-backdrop-filter: blur(4px);
 
   & > * {
     width: min(var(--leo-dialog-width), calc(100vw - var(--leo-spacing-xl)));
@@ -49,37 +52,6 @@
 
 .siteTitleContainer {
   margin-top: var(--conversation-content-margin);
-}
-
-.mainContent {
-  &:has(.attachmentsContainer) {
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    grid-template-rows: 1fr min-content;
-    gap: var(--leo-spacing-m);
-
-    height: 100%;
-    width: 100%;
-
-    overflow: hidden;
-  }
-
-  display: contents;
-}
-
-.attachmentsContainer {
-  margin: var(--leo-spacing-m);
-  padding-top: var(--leo-spacing-m);
-  align-self: stretch;
-  position: sticky;
-  top: 0;
-
-  grid-column: 2;
-  grid-row: 1 / 3;
-
-  max-height: min(90vh, 720px);
-
-  overflow: hidden;
 }
 
 .scroller {
@@ -106,7 +78,9 @@
   max-width: var(--conversation-content-max-width);
   // Adjust padding to account for scrollbar width so content lines up with
   // input area which is outside of the scroller.
-  padding: 0 calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2) 0 var(--conversation-content-margin);
+  padding: 0
+    calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2) 0
+    var(--conversation-content-margin);
 
   // Hide until content is ready
   opacity: 0;
@@ -120,9 +94,9 @@
 }
 
 .flushBottom {
-  display: flex;
+  display: grid;
   flex-direction: column;
-  justify-content: flex-end;
+  align-items: flex-end;
   padding-bottom: 0;
 }
 
@@ -157,7 +131,12 @@
 
 .logo {
   --leo-icon-size: 20px;
-  --leo-icon-color: linear-gradient(314.42deg, #FA7250 8.49%, #FF1893 43.72%, #A78AFF 99.51%);
+  --leo-icon-color: linear-gradient(
+    314.42deg,
+    #fa7250 8.49%,
+    #ff1893 43.72%,
+    #a78aff 99.51%
+  );
 
   display: flex;
   align-items: center;

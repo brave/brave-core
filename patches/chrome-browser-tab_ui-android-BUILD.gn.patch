@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/tab_ui/android/BUILD.gn b/chrome/browser/tab_ui/android/BUILD.gn
-index f707a8b937b1f1fd55560dfab386880b8a8a33c8..14bac97f0700affb58df21dc609938d0b50a59e5 100644
+index 8c5c694e0e4f20608d5f0befd4ce871eb35e02bc..03e191a5b4b89bae60bf7ecec8599a8ca28cad5d 100644
 --- a/chrome/browser/tab_ui/android/BUILD.gn
 +++ b/chrome/browser/tab_ui/android/BUILD.gn
-@@ -36,6 +36,7 @@ android_library("java") {
+@@ -35,6 +35,7 @@ android_library("java") {
+     "java/src/org/chromium/chrome/browser/tab_ui/TabThumbnailView.java",
      "java/src/org/chromium/chrome/browser/tab_ui/ThumbnailProvider.java",
-     "java/src/org/chromium/chrome/browser/tab_ui/VersionUpdateIphHandler.java",
    ]
 +  sources += brave_tab_ui_sources
    deps = [

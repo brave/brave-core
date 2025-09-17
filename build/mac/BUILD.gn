@@ -18,22 +18,11 @@ packaging_out_dir = "$root_out_dir/packaged"
 
 unsigned_app_path = "$root_out_dir/$brave_exe"
 
-target_dmg_path = "$root_out_dir/$brave_dmg"
-
-upstream_packaged_basename =
+packaged_basename =
     "$packaging_out_dir/" + string_replace(chrome_product_full_name, " ", "") +
     "-$chrome_version_full"
 
-# Brave's .dmg/.pkg/.zip artifacts used to be generated with custom code. Now,
-# we use upstream's implementation instead. The output paths of the legacy and
-# upstream implementations are different. The variables below contain the new
-# paths. CI expects the legacy paths. To bridge this gap, several copy(...)
-# actions further below put the artifacts at the legacy paths. In the future,
-# it would be nice to make CI use the new paths and remove the copy actions.
-upstream_dmg_path = "$upstream_packaged_basename.dmg"
-upstream_pkg_path = "$upstream_packaged_basename.pkg"
-upstream_zip_path = "$upstream_packaged_basename.zip"
-upstream_crx_path = "$upstream_packaged_basename.crx3"
+dmg_path = "$packaged_basename.dmg"
 
 if (is_universal_binary) {
   assert(target_cpu == "arm64")
@@ -110,7 +99,7 @@ action("generate_dsa_sig_for_dmg") {
     "--sign-key-file",
     "$sparkle_dsa_private_key_file",
     "--target",
-    rebase_path(upstream_dmg_path),
+    rebase_path(dmg_path),
     "--output",
     rebase_path("$output_dmg_dsa_path"),
     "--dsa",
@@ -119,7 +108,7 @@ action("generate_dsa_sig_for_dmg") {
   inputs = [
     script,
     "$sign_update_path",
-    upstream_dmg_path,
+    dmg_path,
   ]
 
   outputs = [ "$output_dmg_dsa_path" ]
@@ -148,7 +137,7 @@ action("generate_eddsa_sig_for_dmg") {
     "--sign-key",
     "$sparkle_eddsa_private_key",
     "--target",
-    rebase_path(upstream_dmg_path),
+    rebase_path(dmg_path),
     "--output",
     rebase_path("$output_dmg_eddsa_path"),
     "--eddsa",
@@ -157,7 +146,7 @@ action("generate_eddsa_sig_for_dmg") {
   inputs = [
     script,
     "$sign_update_path",
-    upstream_dmg_path,
+    dmg_path,
   ]
 
   outputs = [ "$output_dmg_eddsa_path" ]
@@ -188,7 +177,7 @@ action("build_delta_installer") {
     "--old-dmg",
     rebase_path("$root_out_dir/$last_chrome_installer"),
     "--new-dmg",
-    rebase_path(upstream_dmg_path),
+    rebase_path(dmg_path),
     "--delta-output",
     rebase_path("$output_delta_path"),
   ]
@@ -196,7 +185,7 @@ action("build_delta_installer") {
   inputs = [
     script,
     "$binary_delta_path",
-    upstream_dmg_path,
+    dmg_path,
   ]
 
   outputs = [ "$output_delta_path" ]
@@ -283,14 +272,15 @@ if (is_official_build && !skip_signing) {
 
 action("package") {
   outputs = [
-    upstream_dmg_path,
-    upstream_pkg_path,
-    upstream_zip_path,
+    dmg_path,
+    "$packaged_basename.pkg",
+    "$packaged_basename.zip",
   ]
   deps = [
     ":copy_browser_install_script",
     ":copy_dmg_background_image",
     ":copy_dmg_icon",
+    ":copy_dmg_preinstall",
     ":copy_ds_store",
     ":copy_helper_entitlements",
     ":copy_postinstall",
@@ -372,6 +362,11 @@ copy("copy_dmg_icon") {
   outputs = [ "$packaging_dir/chrome_dmg_icon.icns" ]
 }
 
+copy("copy_dmg_preinstall") {
+  sources = [ "dmg_preinstall.sh" ]
+  outputs = [ "$packaging_dir/dmg_preinstall.sh" ]
+}
+
 copy("copy_ds_store") {
   ds_store_file_name = "DS_Store"
   if (!is_release_channel) {
@@ -389,14 +384,8 @@ copy("copy_helper_entitlements") {
 }
 
 group("create_dist_mac") {
-  deps = [
-    ":copy_dmg",
-    ":copy_zip",
-  ]
-  if (skip_signing) {
-    deps += [ ":copy_unsigned_dmg" ]
-  } else {
-    deps += [ ":copy_pkg" ]
+  deps = [ ":package" ]
+  if (!skip_signing) {
     if (sparkle_dsa_private_key_file != "") {
       deps += [ ":generate_dsa_sig_for_dmg" ]
     }
@@ -414,36 +403,10 @@ group("create_dist_mac") {
   }
 }
 
-copy("copy_dmg") {
-  sources = [ upstream_dmg_path ]
-  deps = [ ":package" ]
-  outputs = [ target_dmg_path ]
-}
-
-copy("copy_pkg") {
-  sources = [ upstream_pkg_path ]
-  deps = [ ":package" ]
-  outputs = [ "$root_out_dir/$brave_pkg" ]
-}
-
-copy("copy_zip") {
-  sources = [ upstream_zip_path ]
-  deps = [ ":package" ]
-  outputs = [ "$root_out_dir/$brave_zip" ]
-}
-
-if (skip_signing) {
-  copy("copy_unsigned_dmg") {
-    deps = [ ":package" ]
-    sources = [ upstream_dmg_path ]
-    outputs = [ "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg" ]
-  }
-}
-
 crx3("crx") {
-  inputs = [ upstream_dmg_path ]
-  output = upstream_crx_path
-  base_dir = get_path_info(upstream_dmg_path, "dir")
+  inputs = [ dmg_path ]
+  output = "$packaged_basename.crx3"
+  base_dir = get_path_info(dmg_path, "dir")
 
   # The private key file is not in Git for obvious reasons. It needs to be
   # copied into this directory manually. Changing the private key requires

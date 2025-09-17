@@ -81,6 +81,7 @@ brave_core_public_headers = [
   "//brave/ios/app/brave_core_switches.h",
   "//brave/ios/browser/ai_chat/ai_chat_utils.h",
   "//brave/ios/browser/brave_news/brave_news_pref_names_bridge.h",
+  "//brave/ios/browser/brave_vpn/brave_vpn_pref_names_bridge.h",
   "//brave/ios/browser/brave_wallet/brave_wallet_factory_wrappers.h",
   "//brave/ios/browser/skus/skus_sdk_factory_wrappers.h",
   "//brave/ios/browser/api/bookmarks/brave_bookmarks_api.h",
@@ -102,6 +103,9 @@ brave_core_public_headers = [
   "//brave/ios/components/prefs/pref_service_bridge.h",
   "//brave/ios/components/prefs/pref_change_registrar_bridge.h",
   "//brave/ios/components/constants/pref_names_bridge.h",
+  "//brave/ios/browser/safari_data_import/safari_data_import_client_delegate.h",
+  "//brave/ios/browser/safari_data_import/safari_data_importer_bridge.h",
+  "//brave/ios/browser/safari_data_import/safari_data_importer_coordinator.h",
 ]
 
 brave_core_public_headers += ads_public_headers

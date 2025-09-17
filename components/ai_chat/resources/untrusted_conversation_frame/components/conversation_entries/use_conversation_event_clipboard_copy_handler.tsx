@@ -8,17 +8,17 @@ import * as Mojom from '../../../common/mojom'
 // Possibly expose an event handler for copying the entry's text to clipboard,
 // if the entry is simple enough for the text to be extracted
 // (i.e. no tool use events).
-export default function useConversationEventClipboardCopyHandler (entry: Mojom.ConversationTurn) {
+export default function useConversationEventClipboardCopyHandler(
+  entry: Mojom.ConversationTurn,
+) {
   // Cannot copy complicated structured content (for now)
-  if (entry.events?.some(event => !!event.toolUseEvent)) {
+  if (entry.events?.some((event) => !!event.toolUseEvent)) {
     return undefined
   }
 
   return () => {
     if (entry.characterType === Mojom.CharacterType.ASSISTANT) {
-      const event = entry.events?.find(
-        (event) => event.completionEvent
-      )
+      const event = entry.events?.find((event) => event.completionEvent)
       if (!event?.completionEvent) return
       navigator.clipboard.writeText(event.completionEvent.completion)
     } else {

@@ -119,7 +119,7 @@ struct AddSuggestedTokenView: View {
       onDismiss()
     } label: {
       HStack {
-        Image(systemName: "xmark")
+        Image(braveSystemName: "leo.close")
         Text(Strings.cancelButtonTitle)
       }
     }

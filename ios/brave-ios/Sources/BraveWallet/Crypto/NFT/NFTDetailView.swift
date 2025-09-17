@@ -150,7 +150,7 @@ struct NFTDetailView: View {
             } label: {
               HStack {
                 Text(nftDetailStore.nft.contractAddress.truncatedAddress)
-                Image(systemName: "arrow.up.forward.square")
+                Image(braveSystemName: "leo.arrow.diagonal-up-right")
               }
               .font(.subheadline)
               .foregroundColor(Color(.braveBlurpleTint))

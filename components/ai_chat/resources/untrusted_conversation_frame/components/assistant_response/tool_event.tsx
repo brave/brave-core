@@ -50,8 +50,16 @@ function ToolEventContent(
   let content: ToolUseContent = {
     toolText: <>{toolUseEvent.toolName}</>,
     tooltipContent: null,
-    statusIcon: <span data-testid='tool-default-completed-icon'><Icon name='check-circle-outline' /></span>,
-    progressIcon: <span data-testid='tool-default-progress-icon'><ProgressRing /></span>,
+    statusIcon: (
+      <span data-testid='tool-default-completed-icon'>
+        <Icon name='check-circle-outline' />
+      </span>
+    ),
+    progressIcon: (
+      <span data-testid='tool-default-progress-icon'>
+        <ProgressRing />
+      </span>
+    ),
   }
 
   // parse input
@@ -105,10 +113,7 @@ export default function ToolEvent(props: Props) {
             className={styles.toolUseIcon}
             title={props.toolUseEvent.argumentsJson}
           >
-            {isComplete
-              ? statusIcon
-              : progressIcon
-            }
+            {isComplete ? statusIcon : progressIcon}
           </div>
           {tooltipContent ? (
             <Tooltip>

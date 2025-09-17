@@ -417,6 +417,10 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS},
     {"braveWalletExchangeViaProvider", IDS_BRAVE_WALLET_EXCHANGE_VIA_PROVIDER},
     {"braveWalletSortBy", IDS_BRAVE_WALLET_SORT_BY},
+    {"braveWalletConfirmSwap", IDS_BRAVE_WALLET_CONFIRM_SWAP},
+    {"braveWalletConfirmBridge", IDS_BRAVE_WALLET_CONFIRM_BRIDGE},
+    {"braveWalletConfirmSend", IDS_BRAVE_WALLET_CONFIRM_SEND},
+    {"braveWalletSpend", IDS_BRAVE_WALLET_SPEND},
     {"braveWalletEstTime", IDS_BRAVE_WALLET_EST_TIME},
     {"braveWalletExchangeRate", IDS_BRAVE_WALLET_EXCHANGE_RATE},
     {"braveWalletExchangeFor", IDS_BRAVE_WALLET_EXCHANGE_FOR},
@@ -756,6 +760,12 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ALLOW_SPEND_PROPOSED_ALLOWANCE},
     {"braveWalletAllowSpendUnlimitedWarningTitle",
      IDS_BRAVE_WALLET_ALLOW_SPEND_UNLIMITED_WARNING_TITLE},
+    {"braveWalletSpendLimit", IDS_BRAVE_WALLET_SPEND_LIMIT},
+    {"braveWalletApprovalTarget", IDS_BRAVE_WALLET_APPROVAL_TARGET},
+    {"braveWalletCurrentApprovalLimit",
+     IDS_BRAVE_WALLET_CURRENT_APPROVAL_LIMIT},
+    {"braveWalletProposedApprovalLimit",
+     IDS_BRAVE_WALLET_PROPOSED_APPROVAL_LIMIT},
     {"braveWalletAllowAddNetworkTitle",
      IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_TITLE},
     {"braveWalletAllowChangeNetworkTitle",
@@ -1057,6 +1067,11 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ADD_SUGGESTED_TOKEN_TITLE},
     {"braveWalletAddSuggestedTokenDescription",
      IDS_BRAVE_WALLET_ADD_SUGGESTED_TOKEN_DESCRIPTION},
+    {"braveWalletPendingTransactionsNumber",
+     IDS_BRAVE_WALLET_PENDING_TRANSACTIONS_NUMBER},
+    {"braveWalletNextTransaction", IDS_BRAVE_WALLET_NEXT_TRANSACTION},
+    {"braveWalletPreviousTransaction", IDS_BRAVE_WALLET_PREVIOUS_TRANSACTION},
+    {"braveWalletRejectTransactions", IDS_BRAVE_WALLET_REJECT_TRANSACTIONS},
     {"braveWalletNFTDetailBlockchain", IDS_BRAVE_WALLET_NFT_DETAIL_BLOCKCHAIN},
     {"braveWalletNFTDetailTokenStandard",
      IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_STANDARD},
@@ -1713,7 +1728,8 @@ inline constexpr char kZeroExAPIVersionHeader[] = "0x-version";
 inline constexpr char kZeroExAPIVersion[] = "v2";
 
 // Jupiter swap constants
-inline constexpr char kJupiterBaseAPIURL[] = "https://jupiter.wallet.brave.com";
+inline constexpr char kJupiterBaseAPIURL[] =
+    "https://jupiter-lite.wallet.brave.com";
 inline constexpr char kJupiterReferralKey[] =
     "7yke2kxg6ewNsun61qBkdsLdxuXcUiB8CMB47Zv39Aoy";
 inline constexpr char kJupiterReferralProgram[] =

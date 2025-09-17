@@ -1,0 +1,44 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.memoryToolEvent {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--leo-spacing-m);
+  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-small-regular);
+  margin-bottom: var(--leo-spacing-xl);
+}
+
+.icon {
+  --leo-icon-size: var(--leo-icon-s);
+  align-self: center;
+}
+
+.textUndone {
+  color: var(--leo-color-systemfeedback-info-text);
+}
+
+.textError {
+  color: var(--leo-color-systemfeedback-error-text);
+}
+
+.button {
+  all: unset;
+  color: var(--leo-color-text-tertiary);
+  text-decoration: underline;
+  cursor: pointer;
+  display: inline;
+
+  &:hover {
+    color: var(--leo-color-text-secondary);
+  }
+}
+
+.actions {
+  display: inline-flex;
+  flex-direction: row;
+  gap: var(--leo-spacing-m);
+}

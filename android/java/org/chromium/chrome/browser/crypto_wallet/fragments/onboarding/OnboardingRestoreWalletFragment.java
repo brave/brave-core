@@ -30,8 +30,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.custom_layout.PasteEditText;
+import org.chromium.ui.base.BraveClipboardHelper;
 import org.chromium.ui.base.ViewUtils;
 
 import java.util.ArrayList;
@@ -322,7 +322,7 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
         mOnboardingViewModel.setRecoveryPhrase(recoveryPhrase);
         mOnboardingViewModel.setLegacyRestoreEnabled(mLegacyWalletRestoreEnabled);
 
-        Utils.clearClipboard(recoveryPhrase);
+        BraveClipboardHelper.clearClipboard(recoveryPhrase);
         mPastedWords.clear();
         mGridLayout12List.clear();
         mGridLayout24List.clear();

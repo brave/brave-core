@@ -5,6 +5,7 @@
 
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
 import("//testing/test.gni")
@@ -22,9 +23,14 @@ test("brave_components_unittests") {
     "//brave/components/ai_chat/core/browser:unit_tests",
     "//brave/components/ai_chat/core/common:unit_tests",
     "//brave/components/api_request_helper:unit_tests",
+    "//brave/components/brave_account/endpoint_client:unit_tests",
+    "//brave/components/brave_account/endpoints:unit_tests",
+    "//brave/components/brave_policy:unit_tests",
     "//brave/components/brave_shields/core/browser:unit_tests",
     "//brave/components/brave_wallet/common:unit_tests",
+    "//brave/components/email_aliases:unit_tests",
     "//brave/components/json:unit_tests",
+    "//brave/components/static_redirect_helper:unit_tests",
     "//components/test:run_all_unittests",
   ]
 
@@ -37,6 +43,10 @@ test("brave_components_unittests") {
 
   if (enable_brave_wayback_machine) {
     deps += [ "//brave/components/brave_wayback_machine:unit_tests" ]
+  }
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader:unit_tests" ]
   }
 
   if (use_blink) {

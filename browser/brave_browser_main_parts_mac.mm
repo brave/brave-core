@@ -9,12 +9,17 @@
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/upgrade_when_idle/upgrade_when_idle.h"
+#include "brave/browser/updater/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/channel_info.h"
 #include "components/version_info/channel.h"
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #import "brave/browser/mac/sparkle_glue.h"
+#endif
+
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/browser/updater/features.h"
 #endif
 
 namespace brave {
@@ -32,17 +37,22 @@ BraveBrowserMainPartsMac::~BraveBrowserMainPartsMac() = default;
 void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
   ChromeBrowserMainPartsMac::PreCreateMainMessageLoop();
 
-#if BUILDFLAG(ENABLE_SPARKLE)
-  // It would be no-op if udpate is disabled.
-  [[SparkleGlue sharedSparkleGlue] registerWithSparkle];
-#endif
-
   if (base::FeatureList::IsEnabled(brave::kUpgradeWhenIdle)) {
     upgrade_when_idle_ = std::make_unique<brave::UpgradeWhenIdle>(
         // It's OK to pass profile_manager() here because it stays constant
         // until we reset upgrade_when_idle_ in PostMainMessageLoopRun below.
         g_browser_process->profile_manager());
   }
+
+#if BUILDFLAG(ENABLE_SPARKLE)
+#if BUILDFLAG(ENABLE_OMAHA4)
+  if (brave_updater::ShouldUseOmaha4()) {
+    return;
+  }
+#endif
+  // It would be a no-op if updates are disabled.
+  [[SparkleGlue sharedSparkleGlue] registerWithSparkle];
+#endif  // BUILDFLAG(ENABLE_SPARKLE)
 }
 
 void BraveBrowserMainPartsMac::PostProfileInit(Profile* profile,

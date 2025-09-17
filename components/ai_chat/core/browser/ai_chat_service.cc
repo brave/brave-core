@@ -36,8 +36,10 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/conversation_tools.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
+#include "brave/components/ai_chat/core/browser/tools/memory_storage_tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -45,6 +47,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "build/build_config.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
@@ -101,7 +104,8 @@ AIChatService::AIChatService(
     os_crypt_async::OSCryptAsync* os_crypt_async,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::string_view channel_string,
-    base::FilePath profile_path)
+    base::FilePath profile_path,
+    std::vector<std::unique_ptr<ToolProviderFactory>> tool_provider_factories)
     : model_service_(model_service),
       tab_tracker_service_(tab_tracker_service),
       profile_prefs_(profile_prefs),
@@ -112,8 +116,14 @@ AIChatService::AIChatService(
           std::make_unique<AIChatFeedbackAPI>(url_loader_factory_,
                                               std::string(channel_string))),
       credential_manager_(std::move(ai_chat_credential_manager)),
+      tool_provider_factories_(std::move(tool_provider_factories)),
       profile_path_(profile_path) {
   DCHECK(profile_prefs_);
+
+  // Initialize tools based on current pref settings which can be used across
+  // all conversations.
+  InitializeTools();
+
   pref_change_registrar_.Init(profile_prefs_);
   pref_change_registrar_.Add(
       prefs::kLastAcceptedDisclaimer,
@@ -130,6 +140,10 @@ AIChatService::AIChatService(
   pref_change_registrar_.Add(
       prefs::kUserDismissedStorageNotice,
       base::BindRepeating(&AIChatService::OnStateChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kBraveAIChatUserMemoryEnabled,
+      base::BindRepeating(&AIChatService::OnMemoryEnabledChanged,
                           weak_ptr_factory_.GetWeakPtr()));
 
   MaybeInitStorage();
@@ -175,7 +189,8 @@ ConversationHandler* AIChatService::CreateConversation() {
   std::unique_ptr<ConversationHandler> conversation_handler =
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
-          feedback_api_.get(), url_loader_factory_);
+          feedback_api_.get(), url_loader_factory_,
+          CreateToolProvidersForNewConversation());
   conversation_observations_.AddObservation(conversation_handler.get());
 
   // Own it
@@ -192,6 +207,30 @@ ConversationHandler* AIChatService::CreateConversation() {
 
   // Return the raw pointer
   return GetConversation(conversation_uuid);
+}
+
+MemoryStorageTool* AIChatService::GetMemoryToolForTesting() {
+  return memory_tool_.get();
+}
+
+void AIChatService::OnMemoryEnabledChanged() {
+  bool memory_enabled =
+      profile_prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled);
+
+  if (memory_enabled && !memory_tool_) {
+    // Memory enabled but tool doesn't exist, add it.
+    memory_tool_ = std::make_unique<MemoryStorageTool>(profile_prefs_);
+  } else if (!memory_enabled && memory_tool_) {
+    // Memory disabled but tool exists, remove it.
+    memory_tool_.reset();
+  }
+}
+
+void AIChatService::InitializeTools() {
+  // Add memory storage tool if memory is enabled.
+  if (profile_prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled)) {
+    memory_tool_ = std::make_unique<MemoryStorageTool>(profile_prefs_);
+  }
 }
 
 ConversationHandler* AIChatService::GetConversation(
@@ -256,7 +295,8 @@ void AIChatService::OnConversationDataReceived(
   std::unique_ptr<ConversationHandler> conversation_handler =
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
-          feedback_api_.get(), url_loader_factory_, std::move(data));
+          feedback_api_.get(), url_loader_factory_,
+          CreateToolProvidersForNewConversation(), std::move(data));
   conversation_observations_.AddObservation(conversation_handler.get());
   conversation_handlers_.insert_or_assign(conversation_uuid,
                                           std::move(conversation_handler));
@@ -801,6 +841,9 @@ void AIChatService::OnConversationEntryAdded(
   auto conversation_it = conversations_.find(handler->get_conversation_uuid());
   CHECK(conversation_it != conversations_.end());
   mojom::ConversationPtr& conversation = conversation_it->second;
+  // Ensure the conversation has the latest associated content metadata.
+  conversation->associated_content =
+      handler->associated_content_manager()->GetAssociatedContent();
   std::optional<std::vector<std::string>> associated_content;
   if (maybe_associated_content.has_value()) {
     associated_content = std::vector<std::string>();
@@ -1160,6 +1203,21 @@ void AIChatService::OnGetFocusTabs(
     ai_chat_metrics_->tab_focus_metrics()->RecordUsage(result.value().size());
   }
   std::move(callback).Run(std::move(result));
+}
+
+std::vector<std::unique_ptr<ToolProvider>>
+AIChatService::CreateToolProvidersForNewConversation() {
+  std::vector<std::unique_ptr<ToolProvider>> tool_providers;
+
+  for (const auto& factory : tool_provider_factories_) {
+    tool_providers.push_back(factory->CreateToolProvider());
+  }
+
+  // Basic set of tools that we can provide
+  tool_providers.push_back(std::make_unique<ConversationToolProvider>(
+      memory_tool_ ? memory_tool_->GetWeakPtr() : nullptr));
+
+  return tool_providers;
 }
 
 void AIChatService::GetEngineForTabOrganization(base::OnceClosure callback) {

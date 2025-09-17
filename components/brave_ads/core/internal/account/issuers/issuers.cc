@@ -85,8 +85,13 @@ void Issuers::FetchCallback(const mojom::UrlResponseInfo& mojom_url_response) {
         .NotifyBrowserUpgradeRequiredToServeAds();
   }
 
+  if (mojom_url_response.status_code == net::HTTP_FORBIDDEN) {
+    BLOG(0, "Failed to request issuers as forbidden");
+    return FailedToFetchIssuers(/*should_retry=*/false);
+  }
+
   if (mojom_url_response.status_code != net::HTTP_OK) {
-    return FailedToFetchIssuers();
+    return FailedToFetchIssuers(/*should_retry=*/true);
   }
 
   BLOG(1, "Parsing issuers");
@@ -94,7 +99,7 @@ void Issuers::FetchCallback(const mojom::UrlResponseInfo& mojom_url_response) {
       json::reader::ReadIssuers(mojom_url_response.body);
   if (!issuers) {
     BLOG(0, "Failed to parse issuers");
-    return FailedToFetchIssuers();
+    return FailedToFetchIssuers(/*should_retry=*/true);
   }
 
   SuccessfullyFetchedIssuers(*issuers);
@@ -110,12 +115,14 @@ void Issuers::SuccessfullyFetchedIssuers(const IssuersInfo& issuers) {
   FetchAfterDelay();
 }
 
-void Issuers::FailedToFetchIssuers() {
+void Issuers::FailedToFetchIssuers(bool should_retry) {
   BLOG(0, "Failed to fetch issuers");
 
   NotifyFailedToFetchIssuers();
 
-  Retry();
+  if (should_retry) {
+    Retry();
+  }
 }
 
 void Issuers::FetchAfterDelay() {

@@ -17,9 +17,9 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
-#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
+#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
@@ -95,8 +95,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     feature_list_.InitWithFeaturesAndParameters(
         {{speedreader::kSpeedreaderFeature,
           {{speedreader::kSpeedreaderTTS.name, "true"}}},
-         {ai_chat::features::kAIChat, {{}}},
-         {tabs::features::kBraveSplitView, {{}}}},
+         {ai_chat::features::kAIChat, {{}}}},
         {});
   }
 
@@ -811,7 +810,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
 
   auto* page = ActiveWebContents();
   auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
-                           ->reader_mode_toolbar_.get();
+                           ->reader_mode_toolbar();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
   WaitElement(toolbar, "appearance");
 
@@ -883,7 +882,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarLangs) {
   NavigateToPageSynchronously(kTestPageReadable);
 
   auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
-                           ->reader_mode_toolbar_.get();
+                           ->reader_mode_toolbar();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
 
   static constexpr char kGetLang[] = R"js( navigator.languages.toString() )js";
@@ -1068,9 +1067,10 @@ class SpeedReaderWithSplitViewBrowserTest
       public testing::WithParamInterface<bool> {
  public:
   SpeedReaderWithSplitViewBrowserTest() {
-    if (IsSideBySideEnabled()) {
+    if (!IsSideBySideEnabled()) {
       scoped_features_.InitWithFeatures(
-          /*enabled_features*/ {features::kSideBySide}, {});
+          /*enabled_features*/ {tabs::features::kBraveSplitView},
+          /*disabled_features*/ {features::kSideBySide});
     }
   }
   ~SpeedReaderWithSplitViewBrowserTest() override = default;

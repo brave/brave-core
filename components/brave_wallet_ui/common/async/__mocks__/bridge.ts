@@ -54,6 +54,8 @@ import {
   mockTokensList,
 } from '../../../stories/mock-data/mock-asset-options'
 import {
+  mockETHSwapTransaction,
+  mockETHNativeTokenSendTransaction,
   mockFilSendTransaction,
   mockTransactionInfo,
   mockedErc20ApprovalTransaction,
@@ -195,6 +197,8 @@ export class MockedWalletApiProxy {
     deserializeTransaction(mockTransactionInfo),
     mockFilSendTransaction as BraveWallet.TransactionInfo,
     deserializeTransaction(mockedErc20ApprovalTransaction),
+    deserializeTransaction(mockETHNativeTokenSendTransaction),
+    mockETHSwapTransaction,
   ]
 
   // name service lookups

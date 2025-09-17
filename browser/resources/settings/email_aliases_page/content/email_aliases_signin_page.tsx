@@ -48,16 +48,18 @@ const BeforeSendingEmailForm = ({ suggestedAuthEmail, emailAliasesService }:
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null)
   const requestAuthentication = async () => {
     setErrorMessage(null)
-    const { errorMessage } =
+    try {
       await emailAliasesService.requestAuthentication(email)
-    setErrorMessage(errorMessage)
+    } catch (errorMessage) {
+      setErrorMessage(errorMessage as string)
+    }
   }
   return <SpacedCol>
     <h4>{getLocale('emailAliasesSignInOrCreateAccount')}</h4>
     <div>{getLocale('emailAliasesEnterEmailToGetLoginLink')}</div>
     <LoginRow>
       <StretchyInput autofocus
-        onChange={(detail) => setEmail(detail.value)}
+        onInput={(detail) => setEmail(detail.value)}
         onKeyDown={onEnterKeyForInput(requestAuthentication)}
         name='email'
         type='text'

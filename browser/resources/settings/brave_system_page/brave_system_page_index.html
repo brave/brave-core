@@ -1,0 +1,39 @@
+<style include="cr-shared-style settings-shared">
+  cr-view-manager [hidden-by-search],
+  cr-view-manager[show-all] [slot=view][data-parent-view-id] {
+    display: none;
+  }
+
+  cr-view-manager [slot=view]:not(.closing) {
+    position: initial;
+  }
+</style>
+
+<cr-view-manager id="viewManager" class="cr-centered-card-container"
+  show-all$="[[shouldShowAll]]">
+
+  <settings-system-page
+    id="system"
+    slot="view"
+    prefs="{{prefs}}"
+    in-search-mode="[[inSearchMode_]]">
+  </settings-system-page>
+
+  <!-- <if expr="enable_brave_vpn_wireguard"> -->
+  <settings-brave-vpn-page
+    id="vpn"
+    slot="view"
+    prefs="{{prefs}}">
+  </settings-brave-vpn-page>
+  <!-- </if> -->
+
+  <settings-memory-page slot="view" id="memory" prefs="{{prefs}}">
+  </settings-memory-page>
+
+  <settings-brave-shortcuts-page
+    id="shortcuts"
+    slot="view"
+    prefs="{{prefs}}"
+    data-parent-view-id="system">
+  </settings-brave-shortcuts-page>
+</cr-view-manager>

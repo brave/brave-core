@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { isImageFile } from './file_types'
+import { isImageFile, isPdfFile } from './file_types'
 
 describe('isImageFile', () => {
   // Helper function to create mock File objects
@@ -112,5 +112,47 @@ describe('isImageFile', () => {
       const file = createMockFile('test.png', ' image/png ')
       expect(isImageFile(file)).toBe(false)
     })
+  })
+})
+
+describe('isPdfFile', () => {
+  // Helper function to create mock File objects
+  const createMockFile = (name: string, type: string): File => {
+    return new File([''], name, { type })
+  }
+
+  it('accepts PDF files', () => {
+    const file = createMockFile('test.pdf', 'application/pdf')
+    expect(isPdfFile(file)).toBe(true)
+  })
+
+  it('handles uppercase MIME type', () => {
+    const file = createMockFile('test.pdf', 'APPLICATION/PDF')
+    expect(isPdfFile(file)).toBe(true)
+  })
+
+  it('handles mixed case MIME type', () => {
+    const file = createMockFile('test.pdf', 'Application/Pdf')
+    expect(isPdfFile(file)).toBe(true)
+  })
+
+  it('rejects image files', () => {
+    const file = createMockFile('test.png', 'image/png')
+    expect(isPdfFile(file)).toBe(false)
+  })
+
+  it('rejects text files', () => {
+    const file = createMockFile('test.txt', 'text/plain')
+    expect(isPdfFile(file)).toBe(false)
+  })
+
+  it('rejects empty MIME type', () => {
+    const file = createMockFile('test', '')
+    expect(isPdfFile(file)).toBe(false)
+  })
+
+  it('rejects malformed MIME type', () => {
+    const file = createMockFile('test', 'not-a-mime-type')
+    expect(isPdfFile(file)).toBe(false)
   })
 })

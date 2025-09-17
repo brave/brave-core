@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/common/url/url_util_internal.h"
 
 #include <string>
+#include <string_view>
 
 #include "base/check.h"
 #include "base/containers/contains.h"
@@ -19,8 +20,10 @@ namespace {
 
 constexpr char kChromeScheme[] = "chrome";
 
+constexpr char kGettingStartedHostName[] = "getting-started";
 constexpr char kRewardsHostName[] = "rewards";
 constexpr char kSyncHostName[] = "sync";
+constexpr char kLeoAiHostName[] = "leo-ai";
 constexpr char kWalletHostName[] = "wallet";
 
 constexpr char kSettingsHostName[] = "settings";
@@ -57,26 +60,29 @@ bool ShouldSupportInternalUrl(const GURL& url) {
     return false;
   }
 
-  const std::string host_name = url.host();
+  const std::string_view url_host = url.host_piece();
+  const std::string_view url_path = url.path_piece();
 
-  if (host_name == kRewardsHostName || host_name == kSyncHostName ||
-      host_name == kWalletHostName) {
-    // Support chrome://rewards, chrome://sync, and chrome://wallet hosts.
-    return true;
+  if (url_host == kGettingStartedHostName || url_host == kRewardsHostName ||
+      url_host == kSyncHostName || url_host == kLeoAiHostName ||
+      url_host == kWalletHostName) {
+    // Support chrome://getting-started, chrome://rewards, chrome://sync,
+    // chrome://leo-ai, and chrome://wallet hosts only if the path is "/".
+    return url_path == "/";
   }
 
-  if (host_name != kSettingsHostName) {
+  if (url_host != kSettingsHostName) {
     // Do not support hosts other than chrome://settings.
     return false;
   }
 
-  if (url.path() == kSurveyPanelistPath) {
+  if (url_path == kSurveyPanelistPath) {
     // Support chrome://settings/surveyPanelist.
     return true;
   }
 
-  if (url.path() == kSearchEnginesPath || url.path() == kSearchPath ||
-      url.path() == kDefaultSearchPath) {
+  if (url_path == kSearchEnginesPath || url_path == kSearchPath ||
+      url_path == kDefaultSearchPath) {
     if (!url.has_query()) {
       // Support chrome://settings/searchEngines,
       // chrome://settings/searchEngines/defaultSearch and

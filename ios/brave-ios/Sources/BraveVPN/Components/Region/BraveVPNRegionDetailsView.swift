@@ -121,7 +121,7 @@ struct BraveRegionDetailsView: View {
       Spacer()
 
       if cityRegionDetail.selectedRegion == region {
-        Image(systemName: "checkmark")
+        Image(braveSystemName: "leo.check.normal")
           .foregroundStyle(Color(braveSystemName: .iconInteractive))
       }
     }

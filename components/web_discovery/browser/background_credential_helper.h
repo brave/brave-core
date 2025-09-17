@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "crypto/rsa_private_key.h"
+#include "crypto/keypair.h"
 
 namespace web_discovery {
 
@@ -44,14 +44,13 @@ class BackgroundCredentialHelper {
 
   // Generate a new RSA key, store the key internally for future operations
   // and return the new key
-  virtual std::unique_ptr<crypto::RSAPrivateKey> GenerateAndSetRSAKey() = 0;
+  virtual crypto::keypair::PrivateKey GenerateAndSetRSAKey() = 0;
 
   // Store an imported key for future operations
-  virtual void SetRSAKey(
-      std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key) = 0;
+  virtual void SetRSAKey(crypto::keypair::PrivateKey rsa_private_key) = 0;
 
   // Generate a join request to be sent to the Web Discovery server.
-  virtual std::optional<StartJoinInitialization> GenerateJoinRequest(
+  virtual StartJoinInitialization GenerateJoinRequest(
       std::string pre_challenge) = 0;
 
   // Process a response from the server for a join request to finish

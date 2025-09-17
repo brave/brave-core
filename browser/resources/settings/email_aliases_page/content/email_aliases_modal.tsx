@@ -16,7 +16,7 @@ import Input from "@brave/leo/react/input"
 import ProgressRing from "@brave/leo/react/progressRing"
 import Row from "./styles/Row"
 import styled from "styled-components"
-import { Alias, EmailAliasesServiceInterface, GenerateAliasResult, MAX_ALIASES }
+import { Alias, EmailAliasesServiceInterface, MAX_ALIASES}
   from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 
 const ModalCol = styled(Col)`
@@ -144,13 +144,13 @@ export const DeleteAliasModal = ({
   const onDeleteAlias = async () => {
     setDeleteErrorMessage(null)
     setDeleting(true)
-    const { errorMessage } = await emailAliasesService.deleteAlias(alias.email)
-    setDeleting(false)
-    if (errorMessage) {
-      setDeleteErrorMessage(errorMessage)
-    } else {
+    try {
+      await emailAliasesService.deleteAlias(alias.email)
       onReturnToMain()
+    } catch (errorMessage) {
+      setDeleteErrorMessage(errorMessage as string)
     }
+    setDeleting(false)
   }
   return <ModalCol>
     <ModalTitle>{getLocale('emailAliasesDeleteAliasTitle')}</ModalTitle>
@@ -197,31 +197,43 @@ export const EmailAliasModal = (
     editAlias?.note ?? '')
   const [awaitingProposedAlias, setAwaitingProposedAlias] =
     React.useState<boolean>(true)
+  const [awaitingUpdate, setAwaitingUpdate] =
+    React.useState<boolean>(false)
   const [generateAliasResult, setGenerateAliasResult] =
-    React.useState<GenerateAliasResult>({
+    React.useState<{ aliasEmail: string, errorMessage?: string }>({
       aliasEmail: editAlias?.email ?? '',
       errorMessage: undefined
     })
   const [updateErrorMessage, setUpdateErrorMessage] =
     React.useState<string | null>(null)
   const createOrSave = async () => {
-    if (generateAliasResult.aliasEmail) {
-      // Clear any existing error message
-      setUpdateErrorMessage(null)
-      const { errorMessage } = await emailAliasesService.updateAlias(
+    setUpdateErrorMessage(null)
+    setAwaitingUpdate(true)
+    try {
+      await emailAliasesService.updateAlias(
         generateAliasResult.aliasEmail, proposedNote)
-      if (errorMessage) {
-        setUpdateErrorMessage(errorMessage)
-      } else {
-        onReturnToMain()
-      }
+      onReturnToMain()
+    } catch (errorMessage) {
+      setUpdateErrorMessage(errorMessage as string)
     }
+    setAwaitingUpdate(false)
   }
   const regenerateAlias = async () => {
     setAwaitingProposedAlias(true)
     setGenerateAliasResult({ aliasEmail: '', errorMessage: undefined})
-    const { result } = await emailAliasesService.generateAlias()
-    setGenerateAliasResult(result)
+    try {
+      // We have to do a cast because the mojom generated code produces the
+      // wrong type in its JSDoc.
+      // TODO(https://github.com/brave/brave-browser/issues/48960): fix the
+      // JSDoc generation issue so that this cast is not needed.
+      const proposedEmail =
+        (await emailAliasesService.generateAlias()) as unknown as string
+      setGenerateAliasResult({ aliasEmail: proposedEmail,
+                               errorMessage: undefined})
+    } catch (errorMessage) {
+      setGenerateAliasResult({ aliasEmail: '',
+                               errorMessage: errorMessage as string})
+    }
     setAwaitingProposedAlias(false)
   }
   React.useEffect(() => {
@@ -272,7 +284,7 @@ export const EmailAliasModal = (
                 placeholder={getLocale('emailAliasesEditNotePlaceholder')}
                 maxlength={255}
                 value={proposedNote}
-                onChange={(detail) => setProposedNote(detail.value)}
+                onInput={(detail) => setProposedNote(detail.value)}
                 onKeyDown={onEnterKeyForInput(createOrSave)}>
               </NoteInput>
               {editing && editAlias?.domains &&
@@ -290,9 +302,9 @@ export const EmailAliasModal = (
           </Button>
           <Button
             kind='filled'
-            isDisabled={!editing
-                         && (limitReached || awaitingProposedAlias ||
-                             !generateAliasResult?.aliasEmail)}
+            isDisabled={awaitingUpdate ||
+             (!editing && (limitReached || awaitingProposedAlias ||
+                           !generateAliasResult?.aliasEmail))}
             onClick={createOrSave}>
             {!editing
               ? getLocale('emailAliasesCreateAliasButton')

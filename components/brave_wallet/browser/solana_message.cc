@@ -354,9 +354,8 @@ SolanaMessage::GetSignerAccountsFromSerializedMessage(
       return std::nullopt;
     }
 
-    const std::vector<uint8_t> address_bytes(
-        serialized_message.begin() + index,
-        serialized_message.begin() + index + kSolanaPubkeySize);
+    base::span<const uint8_t> address_bytes =
+        base::span(serialized_message).subspan(index, kSolanaPubkeySize);
     signers.push_back(Base58Encode(address_bytes));
     index += kSolanaPubkeySize;
   }
@@ -405,9 +404,8 @@ std::optional<SolanaMessage> SolanaMessage::Deserialize(
   if (bytes_index + kSolanaHashSize > bytes.size()) {
     return std::nullopt;
   }
-  const std::vector<uint8_t> blockhash_bytes(
-      bytes.begin() + bytes_index,
-      bytes.begin() + bytes_index + kSolanaHashSize);
+  base::span<const uint8_t> blockhash_bytes =
+      base::span(bytes).subspan(bytes_index, kSolanaHashSize);
   bytes_index += kSolanaHashSize;
   const std::string recent_blockhash = Base58Encode(blockhash_bytes);
 

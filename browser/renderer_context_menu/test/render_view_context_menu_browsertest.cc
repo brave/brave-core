@@ -11,6 +11,7 @@
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -20,7 +21,9 @@
 class BraveContextMenuBrowserTest : public InProcessBrowserTest {
  protected:
   BraveContextMenuBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(tabs::features::kBraveSplitView);
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features*/ {tabs::features::kBraveSplitView},
+        /*disabled_features*/ {features::kSideBySide});
   }
 
   std::unique_ptr<TestRenderViewContextMenu> CreateContextMenuInWebContents(

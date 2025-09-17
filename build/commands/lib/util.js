@@ -158,12 +158,20 @@ const getAdditionalGenLocation = () => {
   return ''
 }
 
+const normalizeCommand = (cmd, args) => {
+  if (process.platform === 'win32') {
+    args = ['/c', cmd, ...args]
+    cmd = 'cmd'
+  }
+  return [ cmd, args ]
+}
+
 const util = {
   runProcess: (cmd, args = [], options = {}, skipLogging = false) => {
     if (!skipLogging) {
       Log.command(options.cwd, cmd, args)
     }
-    return spawnSync(cmd, args, options)
+    return spawnSync(...normalizeCommand(cmd, args), options)
   },
 
   run: (cmd, args = [], options = {}) => {
@@ -200,7 +208,7 @@ const util = {
       Log.command(cmdOptions.cwd, cmd, args)
     }
     return new Promise((resolve, reject) => {
-      const prog = spawn(cmd, args, cmdOptions)
+      const prog = spawn(...normalizeCommand(cmd, args), cmdOptions)
       const signalsToForward = ['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGHUP']
       const signalHandler = (s) => {
         prog.kill(s)
@@ -257,6 +265,7 @@ const util = {
           )
           err.stderr = stderr
           err.stdout = stdout
+          err.statusCode = statusCode
           reject(err)
           if (!continueOnFail) {
             console.error(err.message)
@@ -641,21 +650,14 @@ const util = {
     // block.
     let buildStats = ''
 
-    // Parse output to display the build status and exact failure location.
+    // Parse output to display the build progress on Teamcity.
     if (config.isTeamcity) {
-      // Teamcity error lines limit to display on the Overview page is 1000.
-      // Left 50 lines for other possible build output (python, node, etc.).
-      const maxErrorLines = 950
-      let printedErrorLines = 0
       let lastStatusTime = Date.now()
       options.onStdOutLine = (line) => {
         if (
-          (printedErrorLines > 0 || line.startsWith('FAILED: '))
-          && printedErrorLines < maxErrorLines
+          buildStats
+          || /^(RBE Stats:|metric\s+count|build finished)\s+/.test(line)
         ) {
-          Log.error(line)
-          printedErrorLines++
-        } else if (buildStats || /^(RBE Stats:|metric\s+count|build finished)\s+/.test(line)) {
           buildStats += line + '\n'
         } else {
           console.log(line)
@@ -673,7 +675,30 @@ const util = {
       options.stdio = 'pipe'
     }
 
-    await util.runAsync('autoninja', ninjaOpts, options)
+    // Enable to allow error post-processing after autoninja/siso failure.
+    options.continueOnFail = true
+
+    // Ensure siso_output doesn't exist before the build.
+    const sisoOutputFile = path.join(outputDir, 'siso_output')
+    if (fs.existsSync(sisoOutputFile)) {
+      fs.unlinkSync(sisoOutputFile)
+    }
+
+    try {
+      await util.runAsync('autoninja', ninjaOpts, options)
+    } catch (e) {
+      // Display siso_output on CI after a build failure.
+      if (config.isCI && fs.existsSync(sisoOutputFile)) {
+        const sisoOutput = fs.readFileSync(sisoOutputFile, 'utf8')
+        Log.error(`Siso output from ${sisoOutputFile}:`)
+        // Split the output into lines to correctly display on Teamcity.
+        for (const line of sisoOutput.split('\n')) {
+          Log.error(line)
+        }
+      }
+      console.error(e.message)
+      process.exit(e.statusCode || 1)
+    }
 
     Log.progressFinish(progressMessage)
 

@@ -42,6 +42,11 @@
     margin-bottom: 0;
   }
 
+  .filter-list-description {
+    font-size: 0.9em;
+    color: var(--text02);
+  }
+
   .flex {
     align-self: center;
     flex: 1 1 auto;
@@ -195,7 +200,10 @@
           filter="{{searchListBy_(filterListTitle)}}" observe="val" initial-count="10">
             <div class$="filter-list-item selected-[[item.enabled]]">
               <cr-checkbox checked="{{item.enabled}}" on-change="handleFilterListItemToggle_">
-                <div>[[item.title]]</div>
+                <div>
+                  <div>[[item.title]]</div>
+                  <div class="filter-list-description">[[item.desc]]</div>
+                </div>
               </cr-checkbox>
             </div>
           </template>

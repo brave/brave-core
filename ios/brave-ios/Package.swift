@@ -316,6 +316,10 @@ var package = Package(
       dependencies: ["Strings", "Preferences", "BraveCore", "Web", "Data"],
       plugins: ["LoggerPlugin"]
     ),
+    .testTarget(
+      name: "BraveShieldsTests",
+      dependencies: ["BraveShields", "Data", "TestHelpers", "Web"]
+    ),
     .target(
       name: "DesignSystem",
       dependencies: ["Then", "NalaAssets"],
@@ -349,6 +353,7 @@ var package = Package(
         "BraveStrings",
         "BraveUI",
         "DesignSystem",
+        "Growth",
         "Strings",
         .product(name: "Collections", package: "swift-collections"),
         .product(name: "Introspect", package: "SwiftUI-Introspect"),
@@ -667,7 +672,7 @@ let isStripAbsolutePathsFromDebugSymbolsEnabled = {
 }()
 
 if isStripAbsolutePathsFromDebugSymbolsEnabled {
-  for target in package.targets where target.type == .regular {
+  for target in package.targets where target.type == .regular || target.type == .test {
     var settings = target.swiftSettings ?? []
     settings.append(
       .unsafeFlags(

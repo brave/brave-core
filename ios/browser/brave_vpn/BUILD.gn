@@ -1,0 +1,20 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+source_set("brave_vpn") {
+  sources = [
+    "brave_vpn_pref_names_bridge.h",
+    "brave_vpn_pref_names_bridge.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/common/buildflags",
+  ]
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn/common" ]
+  }
+}

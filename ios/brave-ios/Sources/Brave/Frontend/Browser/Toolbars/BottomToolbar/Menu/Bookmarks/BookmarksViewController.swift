@@ -614,7 +614,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
 
       let openInNewTabAction = UIAction(
         title: Strings.openNewTabButtonTitle,
-        image: UIImage(systemName: "plus.square.on.square"),
+        image: UIImage(braveSystemNamed: "leo.browser.mobile-tab-new"),
         handler: UIAction.deferredActionHandler { [unowned self] _ in
           self.toolbarUrlActionsDelegate?.openInNewTab(
             bookmarkItemURL,
@@ -626,7 +626,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
 
       let newPrivateTabAction = UIAction(
         title: Strings.openNewPrivateTabButtonTitle,
-        image: UIImage(systemName: "plus.square.fill.on.square.fill"),
+        image: UIImage(braveSystemNamed: "leo.product.private-window"),
         handler: UIAction.deferredActionHandler { [unowned self] _ in
           if !isPrivateBrowsing, Preferences.Privacy.privateBrowsingLock.value {
             self.askForLocalAuthentication { [weak self] success, error in
@@ -644,7 +644,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
 
       let copyAction = UIAction(
         title: Strings.copyLinkActionTitle,
-        image: UIImage(systemName: "doc.on.doc"),
+        image: UIImage(braveSystemNamed: "leo.copy"),
         handler: UIAction.deferredActionHandler { [unowned self] _ in
           self.toolbarUrlActionsDelegate?.copy(bookmarkItemURL)
         }
@@ -652,7 +652,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
 
       let shareAction = UIAction(
         title: Strings.shareLinkActionTitle,
-        image: UIImage(systemName: "square.and.arrow.up"),
+        image: UIImage(braveSystemNamed: "leo.share.macos"),
         handler: UIAction.deferredActionHandler { [unowned self] _ in
           self.toolbarUrlActionsDelegate?.share(bookmarkItemURL)
         }

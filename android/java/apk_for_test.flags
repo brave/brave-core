@@ -1021,3 +1021,11 @@
 -keep class org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarPrefs {
     *** getCustomizationSetting(...);
 }
+
+-keep class org.chromium.chrome.browser.download.home.search.SearchBarCoordinator {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.download.home.search.BraveSearchBarCoordinator {
+    <init>(...);
+}

@@ -2969,15 +2969,17 @@ mojom::AccountInfoPtr KeyringService::GetSelectedDappAccount(
     mojom::CoinType coin) {
   CHECK(CoinSupportsDapps(coin));
 
-  mojom::KeyringId keyring_id = mojom::KeyringId::kDefault;
+  std::vector<mojom::KeyringId> keyring_ids;
   switch (coin) {
     case mojom::CoinType::ETH:
+      keyring_ids = {mojom::KeyringId::kDefault};
       break;
     case mojom::CoinType::SOL:
-      keyring_id = mojom::KeyringId::kSolana;
+      keyring_ids = {mojom::KeyringId::kSolana};
       break;
     case mojom::CoinType::ADA:
-      keyring_id = mojom::KeyringId::kCardanoMainnet;
+      keyring_ids = {mojom::KeyringId::kCardanoMainnet,
+                     mojom::KeyringId::kCardanoTestnet};
       break;
     default:
       NOTREACHED();
@@ -2985,9 +2987,11 @@ mojom::AccountInfoPtr KeyringService::GetSelectedDappAccount(
 
   auto unique_key = GetSelectedDappAccountFromPrefs(profile_prefs_, coin);
 
-  for (auto& account_info : GetAccountInfosForKeyring(keyring_id)) {
-    if (account_info->account_id->unique_key == unique_key) {
-      return account_info->Clone();
+  for (auto keyring_id : keyring_ids) {
+    for (auto& account_info : GetAccountInfosForKeyring(keyring_id)) {
+      if (account_info->account_id->unique_key == unique_key) {
+        return account_info->Clone();
+      }
     }
   }
 

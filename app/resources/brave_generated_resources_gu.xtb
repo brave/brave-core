@@ -10,10 +10,6 @@
 <translation id="6406506848690869874">સમન્વયન</translation>
 <translation id="1544192797660353713">વૉલેટ</translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="9092796350041759828">{0, plural,
-          one {}=1 {ગેસ્ટ બંધ કરો}
-          other {ગેસ્ટ બંધ કરો}
-        }</translation>
 <translation id="1990886731975529483">Google Widevine ઇન્સ્ટોલ કરો અને ચલાવો</translation>
 <translation id="8926389886865778422">ફરિથી પુછશો નહીં</translation>
 <translation id="4900351245762303149">Google Widevine ઇન્સ્ટોલ કરો</translation>
@@ -112,6 +108,7 @@
 <translation id="5840822070878669614">વેબ સ્ટોર ખોલો</translation>
 <translation id="8076492880354921740">ટૅબ્સ</translation>
 <translation id="8168435359814927499">કન્ટેન્ટ</translation>
+<translation id="5327248766486351172">નામ</translation>
 <translation id="3987546108749866209">વર્ટિકલ ટેબ્સ વાપરો</translation>
 <translation id="5977931179408079967">સ્થિતિ</translation>
 <translation id="4109670531935487117">એડ્રેસ બારમાં ઓટોકમ્પ્લીટ સૂચનો બતાવો</translation>
@@ -135,7 +132,6 @@
 <translation id="802154636333426148">ડાઉનલોડ નિષ્ફળ થયું</translation>
 <translation id="4516904298421534459">ફિલ્ટર સૂચિઓ</translation>
 <translation id="5524306331330789642">નવી સ્ક્રિપ્ટલેટ ઉમેરો</translation>
-<translation id="5327248766486351172">નામ</translation>
 <translation id="8823559166155093873">કૂકિઝ બ્લૉક કરો</translation>
 <translation id="8798099450830957504">ડિફૉલ્ટ</translation>
 <translation id="933652931229970927">આપમેળે ડાયગ્નોસ્ટિક્સ રિપોર્ટ મોકલો</translation>
@@ -175,9 +171,9 @@
 <translation id="8488282162676695335">Brave વૉલેટ</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="5781842473834867765">મારી વાતચીતના ઇતિહાસને સ્ટોર કરો</translation>
-<translation id="6106701981952170121">તમામ Leo AI વાતચીત ડેટાને ડિલીટ કરો</translation>
 <translation id="614530507403667291">નવી વાતચીતો માટે ડિફોલ્ટ મોડેલ</translation>
 <translation id="1907126221851170941">મોડલ ઉમેરો</translation>
+<translation id="6532106788206463496">ફેરફારો સાચવો</translation>
 <translation id="5985516785067818307">સર્વે પેનલિસ્ટ</translation>
 <translation id="8347743943525229984">Brave સર્વેને મંજૂરી આપો</translation>
 <translation id="3204080538332044581">Braveને નવા ટૅબ પેજ પર પ્રાઇવેટ સર્વેની લિંક દર્શાવવાની મંજૂરી આપે છે. સર્વે અમને બહેતર ફીચર બનાવવા અને બ્રાઉઝર-આધારિત જાહેરાત પ્રચારોની અસરકારકતા માપવામાં મદદ કરે છે. <ph name="BEGIN_LINK"/>વધુ જાણો<ph name="END_LINK"/></translation>
