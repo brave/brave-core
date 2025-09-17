@@ -259,17 +259,16 @@ class PlasterFile:
             pattern = substitution.get('re_pattern', '')
             replace = substitution.get('replace', '')
             count = substitution.get('count', 0)
-            flags = substitution.get('re_flags', '')
+            flags = substitution.get('re_flags', [])
 
             re_flags = 0
-            if 'IGNORECASE' in flags:
-                re_flags |= re.IGNORECASE
-            if 'MULTILINE' in flags:
-                re_flags |= re.MULTILINE
-            if 'DOTALL' in flags:
-                re_flags |= re.DOTALL
-            if 'VERBOSE' in flags:
-                re_flags |= re.VERBOSE
+            for flag in flags:
+                # Only accept valid re flags
+                if flag.isupper() and hasattr(re, flag):
+                    re_flags |= getattr(re, flag)
+                else:
+                    raise ValueError(
+                        f'Invalid re flag specified: {flag} in {info.source}')
 
             contents, num_changes = re.subn(pattern,
                                             replace,
