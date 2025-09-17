@@ -21,6 +21,7 @@
 #include "brave/components/ai_chat/content/browser/model_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -85,7 +86,12 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   tool_provider_factories.push_back(
       std::make_unique<BrowserToolProviderFactory>());
 
-  return std::make_unique<AIChatService>(
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  bool is_actor_allowed = features::IsAIChatAgentProfileEnabled() &&
+                          Profile::FromBrowserContext(context)->IsAIChatAgent();
+#endif
+
+  auto service = std::make_unique<AIChatService>(
       ModelServiceFactory::GetForBrowserContext(context),
       TabTrackerServiceFactory::GetForBrowserContext(context),
       std::move(credential_manager), user_prefs::UserPrefs::Get(context),
@@ -95,6 +101,15 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
           ->GetURLLoaderFactoryForBrowserProcess(),
       version_info::GetChannelString(chrome::GetChannel()), context->GetPath(),
       std::move(tool_provider_factories));
+
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  // This configuration is not part of the AIChatService constructor because it
+  // is experimental and might not always be per-profile and is not needed in
+  // the AIChatService constructor.
+  service->SetIsContentAgentAllowed(is_actor_allowed);
+#endif
+
+  return service;
 }
 
 }  // namespace ai_chat

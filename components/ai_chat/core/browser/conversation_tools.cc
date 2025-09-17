@@ -46,8 +46,6 @@ class UserChoiceTool : public Tool {
     return std::optional<std::vector<std::string>>({"choices"});
   }
 
-  bool IsContentAssociationRequired() const override { return false; }
-
   bool RequiresUserInteractionBeforeHandling() const override { return true; }
 };
 

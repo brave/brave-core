@@ -33,6 +33,11 @@ enum CharacterType {
   ASSISTANT
 };
 
+enum ConversationCapability {
+  CHAT,
+  CONTENT_AGENT
+};
+
 enum APIError {
   None,
   InternalError,
@@ -581,6 +586,7 @@ struct ConversationEntriesState {
   uint64 total_tokens;
   // Indicates the number of tokens that were trimmed from the conversation
   uint64 trimmed_tokens;
+  ConversationCapability conversation_capability;
 };
 
 // Browser-side handler for a Conversation

@@ -41,9 +41,10 @@ class MockTool : public Tool {
   std::optional<base::Value::Dict> ExtraParams() const override;
   bool RequiresUserInteractionBeforeHandling() const override;
   bool IsSupportedByModel(const mojom::Model& model) const override;
-  bool IsContentAssociationRequired() const override;
-  bool SupportsConversation(bool is_temporary,
-                            bool has_untrusted_content) const override;
+  bool SupportsConversation(
+      bool is_temporary,
+      bool has_untrusted_content,
+      mojom::ConversationCapability conversation_capability) const override;
 
   void set_requires_user_interaction_before_handling(
       bool requires_user_interaction_before_handling) {
@@ -53,10 +54,6 @@ class MockTool : public Tool {
 
   void set_is_supported_by_model(bool is_supported_by_model) {
     is_supported_by_model_ = is_supported_by_model;
-  }
-
-  void set_requires_content_association(bool requires_content_association) {
-    requires_content_association_ = requires_content_association;
   }
 
   void set_supports_conversation(bool supports_conversation) {
@@ -77,7 +74,6 @@ class MockTool : public Tool {
   std::optional<base::Value::Dict> extra_params_;
   bool requires_user_interaction_before_handling_;
   bool is_supported_by_model_ = true;
-  bool requires_content_association_ = false;
   bool supports_conversation_ = true;
 };
 

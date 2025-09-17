@@ -438,6 +438,15 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // Data store UUID for conversation
   raw_ptr<mojom::Conversation> metadata_;
+
+  // |conversation_capability_| informs some system prompt behavior,
+  // as well as letting ToolProviders know which tools to provide.
+  // We might want to phase this out if all tools are part of all conversations
+  // or if we have some kind of dynamic ToolProvider-led user toggle choices.
+  // If we keep it, should it be part of mojom::Conversation?
+  mojom::ConversationCapability conversation_capability_ =
+      mojom::ConversationCapability::CHAT;
+
   raw_ptr<AIChatService, DanglingUntriaged> ai_chat_service_;
   raw_ptr<ModelService> model_service_;
   raw_ptr<AIChatCredentialManager, DanglingUntriaged> credential_manager_;
