@@ -139,7 +139,12 @@ function useSafeAreaReporter(frameHandle?: IframeBackgroundHandle) {
       const rect = safeArea.getBoundingClientRect()
       frameHandle.postMessage({
         type: 'richMediaSafeRect',
-        value: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
+        value: {
+          x: rect.x + window.scrollX,
+          y: rect.y + window.scrollY,
+          width: rect.width,
+          height: rect.height
+        }
       })
     }, 120)
 
