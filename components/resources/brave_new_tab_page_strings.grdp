@@ -273,10 +273,6 @@
     Top site removed
   </message>
 
-  <message name="IDS_NEW_TAB_TOP_SITE_REMOVED_TITLE" desc="Title of message that is displayed when a top site is removed">
-    Removed
-  </message>
-
   <message name="IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT" desc="Text that describes custom top sites option">
     Top sites are curated by you
   </message>
