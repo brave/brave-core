@@ -311,6 +311,7 @@ class AIChatService : public KeyedService,
   void OnDataDeletedForDisabledStorage(bool success);
   mojom::ServiceStatePtr BuildState();
   void OnStateChanged();
+  void OnSmartModesChanged();
   void OnMemoryEnabledChanged();
   void InitializeTools();
 

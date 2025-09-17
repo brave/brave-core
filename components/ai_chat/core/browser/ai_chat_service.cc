@@ -157,6 +157,10 @@ AIChatService::AIChatService(
       prefs::kBraveAIChatUserMemoryEnabled,
       base::BindRepeating(&AIChatService::OnMemoryEnabledChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kBraveAIChatSmartModes,
+      base::BindRepeating(&AIChatService::OnSmartModesChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
 
   MaybeInitStorage();
 
@@ -863,6 +867,12 @@ void AIChatService::OnStateChanged() {
   mojom::ServiceStatePtr state = BuildState();
   for (auto& remote : observer_remotes_) {
     remote->OnStateChanged(state.Clone());
+  }
+}
+
+void AIChatService::OnSmartModesChanged() {
+  for (auto& remote : observer_remotes_) {
+    remote->OnSmartModesChanged(prefs::GetSmartModesFromPrefs(*profile_prefs_));
   }
 }
 

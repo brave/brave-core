@@ -491,6 +491,7 @@ interface Service {
 interface ServiceObserver {
   OnConversationListChanged(array<Conversation> conversations);
   OnStateChanged(ServiceState state);
+  OnSmartModesChanged(array<SmartMode> smart_modes);
 };
 
 // Browser-side handler for general AI Chat UI functions, implemented
