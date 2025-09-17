@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/search_engine_choice/search_engine_choice_service_factory.cc b/chrome/browser/search_engine_choice/search_engine_choice_service_factory.cc
+index ff5d7b894fb3abf39df55cf1b1c60d02932d12b7..b46418b44e9fe35ac9b2967bb3bc40fae0305d1f 100644
+--- a/chrome/browser/search_engine_choice/search_engine_choice_service_factory.cc
++++ b/chrome/browser/search_engine_choice/search_engine_choice_service_factory.cc
+@@ -31,7 +31,7 @@ std::unique_ptr<KeyedService> BuildSearchEngineChoiceService(
+                       GetForProfile(&profile)),
+       CHECK_DEREF(
+           TemplateURLPrepopulateData::ResolverFactory::GetForProfile(&profile)),
+-      CHECK_DEREF(IdentityManagerFactory::GetForProfile(&profile)));
++      IdentityManagerFactory::GetForProfile(&profile));
+   service->Init();
+   return service;
+ }

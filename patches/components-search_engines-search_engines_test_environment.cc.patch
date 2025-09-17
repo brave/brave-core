@@ -1,0 +1,13 @@
+diff --git a/components/search_engines/search_engines_test_environment.cc b/components/search_engines/search_engines_test_environment.cc
+index 15819abd12118997c58cfe10ea4ada4e28bef6a7..1c4625c34a5ad05e5a4d1fbbf53bd94810750cb4 100644
+--- a/components/search_engines/search_engines_test_environment.cc
++++ b/components/search_engines/search_engines_test_environment.cc
+@@ -72,7 +72,7 @@ SearchEnginesTestEnvironment::GetSearchEngineChoiceServiceFactory(
+             environment.pref_service(), &environment.local_state(),
+             environment.regional_capabilities_service(),
+             environment.prepopulate_data_resolver(),
+-            CHECK_DEREF(environment.identity_test_env().identity_manager()));
++            environment.identity_test_env().identity_manager());
+         if (!skip_init) {
+           service->Init();
+         }

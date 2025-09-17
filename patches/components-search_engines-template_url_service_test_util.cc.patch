@@ -1,0 +1,14 @@
+diff --git a/components/search_engines/template_url_service_test_util.cc b/components/search_engines/template_url_service_test_util.cc
+index f58527391169a08dc8dd72e6a1083e860b153f14..b00aad9813279f18eb1a1733aae1e79f791672c9 100644
+--- a/components/search_engines/template_url_service_test_util.cc
++++ b/components/search_engines/template_url_service_test_util.cc
+@@ -97,8 +97,7 @@ void TemplateURLServiceUnitTestBase::SetUp() {
+       std::make_unique<search_engines::SearchEngineChoiceService>(
+           std::make_unique<FakeSearchEngineChoiceServiceClient>(),
+           pref_service_, &local_state_, *regional_capabilities_service_,
+-          *prepopulate_data_resolver_,
+-          CHECK_DEREF(identity_test_env_.identity_manager()));
++          *prepopulate_data_resolver_, identity_test_env_.identity_manager());
+ 
+   template_url_service_ = CreateService();
+ }
