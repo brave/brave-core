@@ -5078,7 +5078,7 @@ extension Strings {
           "Your device is low on space. Adding this video to Playlist may fail or affect other downloads.",
         comment: "When the user's disk space is almost full"
       )
-    
+
     public static let playlistDiskSpaceAddAnywayButtonTitle =
     NSLocalizedString(
       "playlist.playlistDiskSpaceAddAnywayButtonTitle",
