@@ -704,7 +704,8 @@ TEST(CommonUtils, MakeAccountId) {
   EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::ADA,
                                     mojom::KeyringId::kCardanoMainnet,
                                     mojom::AccountKind::kDerived, "0xabc"));
-  // TODO(cmazakas): Polkadot Keyring Testing
+  // TODO(https://github.com/brave/brave-browser/issues/49225): Polkadot Keyring
+  // Testing
   static_assert(AllCoinsTested<7>());
 
   static_assert(AllKeyringsTested<14>());

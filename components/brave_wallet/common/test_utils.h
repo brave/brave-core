@@ -72,7 +72,8 @@ inline constexpr mojom::KeyringId kAllKeyrings[] = {
     mojom::KeyringId::kZCashTestnet,
     mojom::KeyringId::kCardanoMainnet,
     mojom::KeyringId::kCardanoTestnet,
-    // TODO(cmazakas): Polkadot Keyring Testing
+    // TODO(https://github.com/brave/brave-browser/issues/49225): Polkadot
+    // Keyring Testing
 };
 
 // Change calling test's hardcoded value only after it has adequate testing for
