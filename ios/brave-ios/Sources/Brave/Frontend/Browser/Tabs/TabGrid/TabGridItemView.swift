@@ -122,7 +122,7 @@ struct TabGridItemView: View {
             Button {
               actionHandler(.closedTab)
             } label: {
-              Label(Strings.TabGrid.closeTabAccessibilityLabel, braveSystemImage: "leo.close")
+              Label(Strings.TabGrid.closeTab, braveSystemImage: "leo.close")
                 .labelStyle(.iconOnly)
             }
           }
