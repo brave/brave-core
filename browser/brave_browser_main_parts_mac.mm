@@ -9,6 +9,7 @@
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/upgrade_when_idle/upgrade_when_idle.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/common/channel_info.h"
 #include "components/version_info/channel.h"
 
@@ -37,7 +38,10 @@ void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
 #endif
 
   if (base::FeatureList::IsEnabled(brave::kUpgradeWhenIdle)) {
-    upgrade_when_idle_ = std::make_unique<brave::UpgradeWhenIdle>();
+    upgrade_when_idle_ = std::make_unique<brave::UpgradeWhenIdle>(
+        // It's OK to pass profile_manager() here because it stays constant
+        // until we reset upgrade_when_idle_ in PostMainMessageLoopRun below.
+        g_browser_process->profile_manager());
   }
 }
 
@@ -57,4 +61,13 @@ void BraveBrowserMainPartsMac::PostProfileInit(Profile* profile,
     // like marking of the product as active.
     [glue setRegistrationActive];
   }
+}
+
+void BraveBrowserMainPartsMac::PostMainMessageLoopRun() {
+  // This code runs before g_browser_process->profile_manager() is destroyed by
+  // BrowserProcessImpl::StartTearDown() in upstream's PostMainMessageLoopRun.
+  // upgrade_when_idle_ has a pointer to that profile manager and is no longer
+  // needed. We therefore reset it here to avoid a potential use-after-free.
+  upgrade_when_idle_.reset();
+  ChromeBrowserMainPartsMac::PostMainMessageLoopRun();
 }

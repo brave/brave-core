@@ -9,7 +9,9 @@
 #include <utility>
 
 #include "base/functional/callback_forward.h"
+#include "base/sequence_checker.h"
 #include "base/timer/timer.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/upgrade_detector/upgrade_observer.h"
 
 namespace brave {
@@ -24,7 +26,7 @@ namespace brave {
 // quit the browser, and thus also does not apply an update.
 class UpgradeWhenIdle : public UpgradeObserver {
  public:
-  UpgradeWhenIdle();
+  UpgradeWhenIdle(ProfileManager* profile_manager);
   ~UpgradeWhenIdle() override;
 
   // UpgradeObserver:
@@ -37,12 +39,17 @@ class UpgradeWhenIdle : public UpgradeObserver {
  private:
   void CheckIdle();
   bool CanRelaunch();
+  bool AreAnyClearDataOnExitSettingsEnabled();
   bool AttemptRelaunch();
 
+  raw_ptr<ProfileManager> profile_manager_ = nullptr;
+  
   // Timer for periodic idle checks.
   base::RepeatingTimer idle_check_timer_;
 
   bool is_relaunching_ = false;
+
+  SEQUENCE_CHECKER(sequence_checker_);
 
   base::OnceClosure check_idle_callback_for_testing_;
 };

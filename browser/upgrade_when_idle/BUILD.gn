@@ -13,7 +13,6 @@ source_set("upgrade_when_idle") {
   # here because it would create a dependency cycle.
   deps = [
     "//base",
-    "//chrome/browser:browser_process",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/upgrade_detector",
     "//chrome/common:non_code_constants",

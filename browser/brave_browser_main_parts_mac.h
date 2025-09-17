@@ -25,6 +25,7 @@ class BraveBrowserMainPartsMac : public ChromeBrowserMainPartsMac {
   // ChromeBrowserMainPartsMac overrides:
   void PreCreateMainMessageLoop() override;
   void PostProfileInit(Profile* profile, bool is_initial_profile) override;
+  void PostMainMessageLoopRun() override;
 
   std::unique_ptr<brave::UpgradeWhenIdle> upgrade_when_idle_;
 };

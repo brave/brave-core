@@ -9,9 +9,9 @@
 
 #include "base/check_is_test.h"
 #include "base/command_line.h"
+#include "base/sequence_checker.h"
 #include "base/time/time.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/upgrade_util.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -42,39 +42,25 @@ bool AreAnyBrowsersOpen() {
   return GetAllBrowserWindowInterfaces().size() > 0;
 }
 
-bool AreAnyClearDataOnExitSettingsEnabled() {
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
-  if (!profile_manager) {
-    CHECK_IS_TEST();
-    return false;
-  }
-  for (Profile* profile : profile_manager->GetLoadedProfiles()) {
-    if (content::BraveClearBrowsingData::IsClearOnExitEnabledForAnyType(
-            profile)) {
-      return true;
-    }
-    const base::Value::List& clear_on_exit_list = profile->GetPrefs()->GetList(
-        browsing_data::prefs::kClearBrowsingDataOnExitList);
-    if (!clear_on_exit_list.empty()) {
-      return true;
-    }
-  }
-  return false;
-}
-
 }  // namespace
 
 namespace brave {
 
-UpgradeWhenIdle::UpgradeWhenIdle() {
+UpgradeWhenIdle::UpgradeWhenIdle(ProfileManager* profile_manager) {
+  if (!profile_manager) {
+    CHECK_IS_TEST();
+  }
+  profile_manager_ = profile_manager;
   UpgradeDetector::GetInstance()->AddObserver(this);
 }
 
 UpgradeWhenIdle::~UpgradeWhenIdle() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   UpgradeDetector::GetInstance()->RemoveObserver(this);
 }
 
 void UpgradeWhenIdle::OnUpgradeRecommended() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // This function gets called repeatedly when an upgrade is available. When
   // testing, the interval is every 500ms. In that case, our idle timer needs to
   // have a shorter interval than that in order to run. We use 250ms.
@@ -86,6 +72,7 @@ void UpgradeWhenIdle::OnUpgradeRecommended() {
 
 void UpgradeWhenIdle::CheckIdle() {
   // This function was inspired by UpgradeDetector::CheckIdle.
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (check_idle_callback_for_testing_) {
     std::move(check_idle_callback_for_testing_).Run();
@@ -115,11 +102,33 @@ void UpgradeWhenIdle::CheckIdle() {
 }
 
 bool UpgradeWhenIdle::CanRelaunch() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return !AreAnyBrowsersOpen() && !AreAnyClearDataOnExitSettingsEnabled() &&
          !is_relaunching_;
 }
 
+bool UpgradeWhenIdle::AreAnyClearDataOnExitSettingsEnabled() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!profile_manager_) {
+    return false;
+  }
+  for (Profile* profile : profile_manager_->GetLoadedProfiles()) {
+    if (content::BraveClearBrowsingData::IsClearOnExitEnabledForAnyType(
+            profile)) {
+      return true;
+    }
+    const base::Value::List& clear_on_exit_list = profile->GetPrefs()->GetList(
+        browsing_data::prefs::kClearBrowsingDataOnExitList);
+    if (!clear_on_exit_list.empty()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
 bool UpgradeWhenIdle::AttemptRelaunch() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // We are relaunching the browser when there are no open windows.
   // Upstream's function chrome::AttemptRelaunch() opens the browser with a new
   // window, even when there were no open windows before. This function avoids

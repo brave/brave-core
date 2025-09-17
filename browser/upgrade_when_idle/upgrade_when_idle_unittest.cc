@@ -30,13 +30,14 @@ namespace brave {
 class UpgradeWhenIdleTest : public testing::Test {
  public:
   UpgradeWhenIdleTest()
-      : upgrade_when_idle_(),
+      : profile_manager_(TestingBrowserProcess::GetGlobal()),
         mock_relaunch_callback_(),
-        relaunch_chrome_override_(mock_relaunch_callback_.Get()),
-        profile_manager_(TestingBrowserProcess::GetGlobal()) {}
+        relaunch_chrome_override_(mock_relaunch_callback_.Get()) {}
 
   void SetUp() override {
     ASSERT_TRUE(profile_manager_.SetUp());
+    upgrade_when_idle_ = std::make_unique<UpgradeWhenIdle>(
+        profile_manager_.profile_manager());
     profile_ = profile_manager_.CreateTestingProfile("TestProfile");
   }
 
@@ -45,12 +46,12 @@ class UpgradeWhenIdleTest : public testing::Test {
  protected:
   void RunImplementation(ui::IdleState state, bool expect_upgrade) {
     base::RunLoop run_loop;
-    upgrade_when_idle_.SetCheckIdleCallbackForTesting(run_loop.QuitClosure());
+    upgrade_when_idle_->SetCheckIdleCallbackForTesting(run_loop.QuitClosure());
     if (expect_upgrade) {
       EXPECT_CALL(mock_relaunch_callback_, Run);
     }
     ui::ScopedSetIdleState scoped_set_idle_state(state);
-    upgrade_when_idle_.OnUpgradeRecommended();
+    upgrade_when_idle_->OnUpgradeRecommended();
     task_environment_.FastForwardBy(base::Minutes(3));
     run_loop.Run();
   }
@@ -75,14 +76,14 @@ class UpgradeWhenIdleTest : public testing::Test {
   }
 
  private:
-  UpgradeWhenIdle upgrade_when_idle_;
   content::BrowserTaskEnvironment task_environment_{
       content::BrowserTaskEnvironment::TimeSource::MOCK_TIME};
+  TestingProfileManager profile_manager_;
+  std::unique_ptr<UpgradeWhenIdle> upgrade_when_idle_;
   ::testing::StrictMock<
       base::MockCallback<upgrade_util::RelaunchChromeBrowserCallback>>
       mock_relaunch_callback_;
   upgrade_util::ScopedRelaunchChromeBrowserOverride relaunch_chrome_override_;
-  TestingProfileManager profile_manager_;
   raw_ptr<TestingProfile> profile_;
 };
 
