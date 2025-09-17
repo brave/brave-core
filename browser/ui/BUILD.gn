@@ -84,6 +84,8 @@ source_set("ui") {
     "webui/ai_chat/ai_chat_ui_page_handler.h",
     "webui/ai_chat/ai_chat_untrusted_conversation_ui.cc",
     "webui/ai_chat/ai_chat_untrusted_conversation_ui.h",
+    "webui/ai_chat/code_sandbox_ui.cc",
+    "webui/ai_chat/code_sandbox_ui.h",
     "webui/brave_adblock_internals_ui.cc",
     "webui/brave_adblock_internals_ui.h",
     "webui/brave_adblock_ui.cc",
