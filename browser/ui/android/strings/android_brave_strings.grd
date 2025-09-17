@@ -3599,7 +3599,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Select all
     </message>
     <message name="IDS_MENU_BRAVE_LEO" desc="Brave AI menu item text">
-      Leo
+      Leo AI
     </message>
     <message name="IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET" desc="Sign in with Brave Wallet Title">
       Sign in with Brave Wallet
@@ -3659,7 +3659,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Manage Subscription
     </message>
     <message name="IDS_BRAVE_LEO_PREMIUM" desc="Title for Brave Leo plans dialog">
-      Leo Premium
+      Leo AI Premium
     </message>
     <message name="IDS_ONE_YEAR_SUBSCRIPTION" desc="Brave Leo and Origin yearly plan text">
       One year
@@ -3671,7 +3671,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Monthly
     </message>
     <message name="IDS_ASK_LEO_AUTO_SUGGESTION" desc="Omnibox Brave Leo auto suggestion description">
-      Ask Leo
+      Ask Leo AI
     </message>
     <!-- Start of Playlist strings -->
     <message name="IDS_REMEMBER_FILE_PLAYBACK_POSITION" desc="Remember file playback position title for playlist settings">
@@ -3856,7 +3856,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <!-- End of Playlist strings -->
     <message name="IDS_LEO_UNLEASH_POWER" desc="Title for Brave Leo subscription purchase">
-      Unleash Leo's full powers with Premium:
+      Unleash Leo AI's full powers with Premium:
     </message>
     <message name="IDS_LEO_TIP_EXPLORE_TITLE" desc="Title for Brave Leo subscription Explore tip">
       Explore different AI models
