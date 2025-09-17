@@ -16,6 +16,7 @@
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -55,6 +56,11 @@ class BraveAccountUIBase {
         .Run(source, kBraveAccountResources,
              IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_PAGE_HTML);
     SetupWebUIDataSource(source);
+  }
+
+  void BindInterface(mojo::PendingReceiver<brave_account::mojom::Authentication>
+                         pending_receiver) {
+    brave_account_service_->BindInterface(std::move(pending_receiver));
   }
 
   void BindInterface(mojo::PendingReceiver<

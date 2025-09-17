@@ -162,6 +162,36 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
     this.isCheckboxChecked = detail.checked
   }
 
+  // The reason this happens here (rather than in BraveAccountService) is that
+  // both `registration.start()` and `registration.finish()` invoke the OPAQUE
+  // protocol in our WASM (compiled from Rust), and so the flow must run in the
+  // renderer to manage the transient cryptographic state — the service only
+  // transports the two server round trips
+  // (`registerInitialize`/`registerFinalize`). We'll revisit handling this
+  // through Mojo in C++ if that proves practical.
+  protected async onCreateAccountButtonClicked() {
+    try {
+      const blindedMessage = this.registration.start(this.password)
+      const { encryptedVerificationToken, serializedResponse } =
+        await this.browserProxy.authentication.registerInitialize(
+          this.email,
+          blindedMessage,
+        )
+      const serializedRecord = this.registration.finish(
+        serializedResponse,
+        this.password,
+        this.email,
+      )
+      await this.browserProxy.authentication.registerFinalize(
+        encryptedVerificationToken,
+        serializedRecord,
+      )
+      this.fire('close-dialog')
+    } catch (error) {
+      console.error('Error occurred:', error)
+    }
+  }
+
   // TODO(sszaloki): we should consider exporting `noChange`
   // from third_party/lit/v3_0/lit.ts instead, so that such
   // a workaround is not needed.

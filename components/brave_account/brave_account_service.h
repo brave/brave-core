@@ -12,6 +12,8 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 
 class PrefService;
 
@@ -32,6 +34,9 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   ~BraveAccountService() override;
 
+  void BindInterface(
+      mojo::PendingReceiver<mojom::Authentication> pending_receiver);
+
  private:
   void RegisterInitialize(
       const std::string& email,
@@ -45,6 +50,7 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   const raw_ptr<PrefService> pref_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
 };
 
 }  // namespace brave_account
