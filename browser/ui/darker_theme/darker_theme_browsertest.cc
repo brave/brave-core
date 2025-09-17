@@ -4,6 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/darker_theme/features.h"
 #include "brave/browser/ui/darker_theme/pref_names.h"
 #include "brave/browser/ui/views/frame/brave_browser_frame.h"
@@ -65,10 +67,17 @@ IN_PROC_BROWSER_TEST_F(DarkerThemeBrowserTest, EnableDarkerMode) {
   EXPECT_EQ(*color_provider_key.scheme_variant,
             ui::ColorProviderKey::SchemeVariant::kDarker);
 
+  auto* color_provider = browser_frame->GetColorProvider();
+  ASSERT_TRUE(color_provider);
+  EXPECT_EQ(color_provider->GetColor(kColorForTest), kDarkerColorForTest);
+
   // Disable the darker theme.
   prefs->SetBoolean(darker_theme::prefs::kBraveDarkerMode, false);
   color_provider_key = browser_frame->GetColorProviderKey();
   EXPECT_FALSE(color_provider_key.scheme_variant.has_value());
+
+  color_provider = browser_frame->GetColorProvider();
+  EXPECT_EQ(color_provider->GetColor(kColorForTest), kDarkColorForTest);
 }
 
 class DarkerThemeFeatureToggleOffBrowserTest : public InProcessBrowserTest {
