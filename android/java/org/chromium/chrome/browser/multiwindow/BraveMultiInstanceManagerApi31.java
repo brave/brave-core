@@ -63,7 +63,7 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
     public void moveTabsToWindow(InstanceInfo info, List<Tab> tabs, int tabAtIndex) {
         super.moveTabsToWindow(info, tabs, tabAtIndex);
 
-        if (mIsMoveTabsFromSettings && tabs != null && !tabs.isEmpty()) {
+        if (mIsMoveTabsFromSettings && !tabs.isEmpty()) {
             mIsMoveTabsFromSettings = false;
             TabModelSelector selector =
                     TabWindowManagerSingleton.getInstance().getTabModelSelectorById(mInstanceId);
