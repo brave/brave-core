@@ -30,6 +30,11 @@ struct ResponseImpl : std::bool_constant<ResponseBody<T>> {};
 template <typename T>
 struct ResponseImpl<WithHeaders<T>> : ResponseImpl<T> {};
 
+template <typename... Ts>
+struct ResponseImpl<std::variant<Ts...>>
+    : std::bool_constant<sizeof...(Ts) >= 2 &&
+                         (ResponseImpl<Ts>::value && ...)> {};
+
 template <typename T>
 concept Response = ResponseImpl<T>::value;
 
