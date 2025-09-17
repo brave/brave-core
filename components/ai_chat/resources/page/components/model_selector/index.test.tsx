@@ -28,8 +28,29 @@ describe('ModelSelector', () => {
 
   const mockModels = [
     {
+      key: 'chat-automatic',
+      displayName: 'Automatic',
+      isSuggestedModel: true,
+      options: {
+        leoModelOptions: {
+          access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
+        },
+      },
+    },
+    {
       key: 'chat-basic',
       displayName: 'Basic Model',
+      isSuggestedModel: true,
+      options: {
+        leoModelOptions: {
+          access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
+        },
+      },
+    },
+    {
+      key: 'another-chat-basic',
+      displayName: 'Another Basic Model',
+      isSuggestedModel: false,
       options: {
         leoModelOptions: {
           access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
@@ -39,12 +60,24 @@ describe('ModelSelector', () => {
     {
       key: 'chat-premium',
       displayName: 'Premium Model',
+      isSuggestedModel: true,
       options: {
         leoModelOptions: {
           access: Mojom.ModelAccess.PREMIUM,
         },
       },
     },
+    {
+      key: 'another-chat-premium',
+      displayName: 'Another Premium Model',
+      isSuggestedModel: false,
+      options: {
+        leoModelOptions: {
+          access: Mojom.ModelAccess.PREMIUM,
+        },
+      },
+    },
+
     {
       key: 'chat-custom',
       displayName: 'Custom Model',
@@ -62,7 +95,7 @@ describe('ModelSelector', () => {
 
   const defaultConversationContext = {
     allModels: mockModels,
-    currentModel: mockModels[0],
+    currentModel: mockModels[1],
     setCurrentModel: jest.fn(),
   }
 
@@ -112,8 +145,10 @@ describe('ModelSelector', () => {
 
     // Make sure the default menu items are visible
     const menuItems = document.querySelectorAll<HTMLElement>('leo-menu-item')
-    expect(menuItems).toHaveLength(2)
-    expect(menuItems[0]).toHaveTextContent('Basic Model')
+    expect(menuItems).toHaveLength(4)
+    expect(menuItems[0]).toHaveTextContent('Automatic')
+    expect(menuItems[1]).toHaveTextContent('Basic Model')
+    expect(menuItems[2]).toHaveTextContent('Premium Model')
   })
 
   it('shows all models if Show all models button is clicked', async () => {
@@ -143,10 +178,13 @@ describe('ModelSelector', () => {
 
     // Check that all model items are visible
     const allMenuItems = document.querySelectorAll<HTMLElement>('leo-menu-item')
-    expect(allMenuItems).toHaveLength(4)
-    expect(allMenuItems[0]).toHaveTextContent('Basic Model')
-    expect(allMenuItems[1]).toHaveTextContent('Premium Model')
-    expect(allMenuItems[2]).toHaveTextContent('Custom Model')
+    expect(allMenuItems).toHaveLength(7)
+    expect(allMenuItems[0]).toHaveTextContent('Automatic')
+    expect(allMenuItems[1]).toHaveTextContent('Basic Model')
+    expect(allMenuItems[2]).toHaveTextContent('Another Basic Model')
+    expect(allMenuItems[3]).toHaveTextContent('Premium Model')
+    expect(allMenuItems[4]).toHaveTextContent('Another Premium Model')
+    expect(allMenuItems[5]).toHaveTextContent('Custom Model')
 
     const labels = document.querySelectorAll<HTMLElement>('leo-label')
 
@@ -158,9 +196,9 @@ describe('ModelSelector', () => {
     )
 
     // Check that local label is visible
-    expect(labels[1]).toBeInTheDocument()
-    expect(labels[1]).toBeVisible()
-    expect(labels[1]).toHaveTextContent('CHAT_UI_MODEL_LOCAL_LABEL')
+    expect(labels[2]).toBeInTheDocument()
+    expect(labels[2]).toBeVisible()
+    expect(labels[2]).toHaveTextContent('CHAT_UI_MODEL_LOCAL_LABEL')
   })
 
   it('should call setCurrentModel when a model is clicked', async () => {
@@ -191,7 +229,7 @@ describe('ModelSelector', () => {
 
     // Select another model
     const allMenuItems = document.querySelectorAll<HTMLElement>('leo-menu-item')
-    expect(allMenuItems).toHaveLength(4)
+    expect(allMenuItems).toHaveLength(7)
     await act(async () => {
       allMenuItems[1].click()
     })

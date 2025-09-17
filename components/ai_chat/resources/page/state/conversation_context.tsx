@@ -43,6 +43,7 @@ export type ConversationContext = SendFeedbackState
     associatedContentInfo: Mojom.AssociatedContent[]
     allModels: Mojom.Model[]
     currentModel?: Mojom.Model
+    userDefaultModel?: Mojom.Model
     suggestedQuestions: string[]
     isGenerating: boolean
     suggestionStatus: Mojom.SuggestionGenerationStatus
@@ -226,11 +227,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   const getModelContext = (
     currentModelKey: string,
+    defaultModelKey: string,
     allModels: Mojom.Model[],
   ): Partial<ConversationContext> => {
     return {
       allModels,
       currentModel: allModels.find((m) => m.key === currentModelKey),
+      userDefaultModel: allModels.find((m) => m.key === defaultModelKey),
     }
   }
 
@@ -265,6 +268,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
           isRequestInProgress: isGenerating,
           allModels: models,
           currentModelKey,
+          defaultModelKey,
           suggestedQuestions,
           suggestionStatus,
           associatedContent,
@@ -275,7 +279,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       setPartialContext({
         conversationUuid,
         isGenerating,
-        ...getModelContext(currentModelKey, models),
+        ...getModelContext(currentModelKey, defaultModelKey, models),
         suggestedQuestions,
         suggestionStatus,
         associatedContentInfo: associatedContent,
@@ -312,8 +316,15 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     listenerIds.push(id)
 
     id = callbackRouter.onModelDataChanged.addListener(
-      (conversationModelKey: string, allModels: Mojom.Model[]) =>
-        setPartialContext(getModelContext(conversationModelKey, allModels)),
+      (
+        conversationModelKey: string,
+        defaultModelKey: string,
+        allModels: Mojom.Model[],
+      ) => {
+        setPartialContext(
+          getModelContext(conversationModelKey, defaultModelKey, allModels),
+        )
+      },
     )
     listenerIds.push(id)
 
