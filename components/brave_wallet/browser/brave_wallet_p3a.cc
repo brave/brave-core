@@ -253,7 +253,7 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
     case mojom::CoinType::ADA:
     case mojom::CoinType::DOT:
       // TODO(apaymyshev): Cardano P3A
-      // TODO(cmazakas): Polkadot P3A
+      // TODO(https://github.com/brave/brave-browser/issues/49224): Polkadot P3A
       return;
   }
 
@@ -308,7 +308,7 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
     case mojom::CoinType::ADA:
     case mojom::CoinType::DOT:
       // TODO(apaymyshev): Cardano P3A
-      // TODO(cmazakas): Polkadot P3A
+      // TODO(https://github.com/brave/brave-browser/issues/49224): Polkadot P3A
       return;
   }
 
