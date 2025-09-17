@@ -83,7 +83,7 @@ pattern = ''  # non-regex pattern (string will be escaped)
 re_pattern = ''  # regex pattern
 replace = ''
 re_flags = ''  # python regex flags ASCII, IGNORECASE, etc...
-count = 1  # use -1 to ignore the match count and replace all
+count = 0
 ```
 
 To apply this plaster file, just run `plaster.py`:
