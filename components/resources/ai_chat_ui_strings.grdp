@@ -792,4 +792,13 @@
   <message name="IDS_CHAT_UI_CONTENT_AGENT_WARNING_TEXT" desc="Warning message for content agent" formatter_data="webui=AiChat">
     Enabling AI to browse automatically for you may cause harmful, unintended consequences for your privacy, finances, and online communications. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
+  <message name="IDS_CHAT_UI_CODE_EXECUTION_TITLE" desc="Title for code execution tool event" formatter_data="webui=AiChat">
+    Code Execution
+  </message>
+  <message name="IDS_CHAT_UI_CODE_EXECUTION_CODE_LABEL" desc="Label for code section in code execution tool" formatter_data="webui=AiChat">
+    Code:
+  </message>
+  <message name="IDS_CHAT_UI_CODE_EXECUTION_OUTPUT_LABEL" desc="Label for output section in code execution tool" formatter_data="webui=AiChat">
+    Output:
+  </message>
 </grit-part>
