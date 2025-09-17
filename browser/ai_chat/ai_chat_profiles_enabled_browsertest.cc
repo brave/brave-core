@@ -30,8 +30,6 @@
 
 namespace {
 
-using ui_test_utils::BrowserChangeObserver;
-
 enum class ProfileType { kRegular, kGuest, kPrivate, kTor };
 
 const char* GetProfileTypeString(ProfileType type) {
@@ -75,10 +73,9 @@ class AIChatProfilesEnabledTest
       case ProfileType::kPrivate:
         return CreateIncognitoBrowser();
       case ProfileType::kTor: {
-        BrowserChangeObserver observer(
-            nullptr, BrowserChangeObserver::ChangeType::kAdded);
+        ui_test_utils::BrowserCreatedObserver browser_created_observer;
         brave::NewOffTheRecordWindowTor(browser());
-        return observer.Wait();
+        return browser_created_observer.Wait();
       }
     }
     NOTREACHED();
