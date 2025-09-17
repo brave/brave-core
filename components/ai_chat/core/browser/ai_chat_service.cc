@@ -1068,7 +1068,7 @@ void AIChatService::BindObserver(
   std::move(callback).Run(BuildState());
 }
 
-bool AIChatService::GetIsContentAgentAllowed() {
+bool AIChatService::GetIsContentAgentAllowed() const {
   return is_content_agent_allowed_;
 }
 

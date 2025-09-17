@@ -17,6 +17,7 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/containers/checked_iterators.h"
+#include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
@@ -284,13 +285,12 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
     const bool is_sse_enabled) {
   base::Value::Dict dict;
 
-  static const base::NoDestructor<
-      std::map<mojom::ConversationCapability, std::string>>
-      kCapabilityMap(
+  static constexpr auto kCapabilityMap =
+      base::MakeFixedFlatMap<mojom::ConversationCapability, std::string_view>(
           {{mojom::ConversationCapability::CHAT, "chat"},
            {mojom::ConversationCapability::CONTENT_AGENT, "content_agent"}});
-  auto capability_it = kCapabilityMap->find(conversation_capability);
-  CHECK(capability_it != kCapabilityMap->end())
+  auto capability_it = kCapabilityMap.find(conversation_capability);
+  CHECK(capability_it != kCapabilityMap.end())
       << "Invalid conversation capability: " << conversation_capability;
 
   dict.Set("events", ConversationEventsToList(std::move(conversation)));

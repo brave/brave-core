@@ -191,7 +191,7 @@ class AIChatService : public KeyedService,
   void BindObserver(mojo::PendingRemote<mojom::ServiceObserver> ui,
                     BindObserverCallback callback) override;
 
-  bool GetIsContentAgentAllowed();
+  bool GetIsContentAgentAllowed() const;
   void SetIsContentAgentAllowed(bool is_allowed);
 
   bool HasUserOptedIn();
