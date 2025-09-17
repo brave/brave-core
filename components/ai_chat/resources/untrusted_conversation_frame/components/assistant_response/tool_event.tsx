@@ -10,6 +10,8 @@ import Tooltip from '@brave/leo/react/tooltip'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
+import ToolEventTodos from './tool_event_todos'
+import ToolEventContentAssistantDetailStorage from './tool_event_assistant_detail_storage'
 import styles from './tool_event.module.scss'
 
 interface Props {
@@ -83,14 +85,34 @@ function ToolEventContent(
   }
 
   // If we have a tool-specific component, use it, otherwise use the default
-  let component: ToolComponent | null = null
-
   if (toolUseEvent.toolName === Mojom.USER_CHOICE_TOOL_NAME) {
-    component = ToolEventContentUserChoice
+    return (
+      <ToolEventContentUserChoice
+        {...props}
+        toolInput={input}
+        content={content}
+      />
+    )
   }
 
-  if (component) {
-    return component({ ...props, toolInput: input, content })
+  if (toolUseEvent.toolName === Mojom.TODO_TOOL_NAME) {
+    return (
+      <ToolEventTodos
+        {...props}
+        toolInput={input}
+        content={content}
+      />
+    )
+  }
+
+  if (toolUseEvent.toolName === Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME) {
+    return (
+      <ToolEventContentAssistantDetailStorage
+        {...props}
+        toolInput={input}
+        content={content}
+      />
+    )
   }
 
   // default

@@ -14,6 +14,8 @@
 
 namespace ai_chat {
 
+class TodoTool;
+
 class ConversationToolProvider : public ToolProvider {
  public:
   explicit ConversationToolProvider(base::WeakPtr<Tool> memory_storage_tool);
@@ -23,9 +25,12 @@ class ConversationToolProvider : public ToolProvider {
   ConversationToolProvider& operator=(const ConversationToolProvider&) = delete;
 
   // ToolProvider implementation
+  void OnNewGenerationLoop() override;
   std::vector<base::WeakPtr<Tool>> GetTools() override;
 
  private:
+  std::unique_ptr<TodoTool> todo_tool_ = nullptr;
+
   // Owned by AIChatService and shared across conversations. It could be
   // invalidated when memory preference is disabled, but it won't leave
   // conversation hanging waiting for a response even if it is destroyed
