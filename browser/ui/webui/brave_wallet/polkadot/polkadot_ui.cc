@@ -49,6 +49,10 @@ UntrustedPolkadotUI::UntrustedPolkadotUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::StyleSrc,
       std::string("style-src 'self' 'unsafe-inline';"));
   untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ConnectSrc,
+      "connect-src chrome://resources chrome-untrusted://resources 'self' "
+      "'wasm-unsafe-eval';");
+  untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       std::string("font-src 'self' data:;"));
   untrusted_source->AddResourcePath("load_time_data_deprecated.js",

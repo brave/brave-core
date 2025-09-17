@@ -46,6 +46,20 @@ const kPolkadotBridgeUrl = loadTimeData.getString(
 
 console.log(`kPolkadotBridgeUrl => ${kPolkadotBridgeUrl}`);
 
+{
+  const frameId = crypto.randomUUID();
+  let element = document.createElement('iframe');
+  element.id = frameId;
+  element.src = kPolkadotBridgeUrl;
+  element.style.display = 'none'
+  element.onload = () => {
+    console.log('Created polkadot-bridge iframe');
+  }
+  document.body.appendChild(element)
+}
+
+
+
 function App() {
 
   React.useEffect(() => {
