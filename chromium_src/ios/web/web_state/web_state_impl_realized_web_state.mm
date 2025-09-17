@@ -5,22 +5,18 @@
 
 #include "ios/web/web_state/web_state_impl_realized_web_state.h"
 
-// Replaces patched macros with Brave implementations
-#define BRAVE_CLEAR_WEBUI \
-  BraveClearWebUI();      \
-  return;
-#define BRAVE_CREATE_WEBUI \
-  BraveCreateWebUI(url);   \
-  return;
-#define BRAVE_HANDLE_WEBUI_MESSAGE                    \
-  BraveHandleWebUIMessage(source_url, message, args); \
-  return;
-#define BRAVE_HAS_WEBUI return BraveHasWebUI();
+// Support for replacing the following methods below
+#define ClearWebUI ClearWebUI_ChromiumImpl
+#define CreateWebUI(url) CreateWebUI_ChromiumImpl(url)
+#define HandleWebUIMessage HandleWebUIMessage_ChromiumImpl
+#define HasWebUI HasWebUI_ChromiumImpl
+#define TearDown TearDown_ChromiumImpl
 #include <ios/web/web_state/web_state_impl_realized_web_state.mm>
-#undef BRAVE_HANDLE_WEBUI_MESSAGE
-#undef BRAVE_HAS_WEBUI
-#undef BRAVE_CREATE_WEBUI
-#undef BRAVE_CLEAR_WEBUI
+#undef TearDown
+#undef HasWebUI
+#undef HandleWebUIMessage
+#undef CreateWebUI
+#undef ClearWebUI
 
 namespace web {
 
@@ -31,7 +27,14 @@ namespace web {
 // See web_state_impl_realized_web_state.h for reasons why we are replacing
 // these implementations
 
-void WebStateImpl::RealizedWebState::BraveCreateWebUI(const GURL& url) {
+void WebStateImpl::RealizedWebState::TearDown() {
+  // Call the original ClearWebUI which would have been replaced with
+  // ClearWebUI_ChromiumImpl
+  ClearWebUI();
+  TearDown_ChromiumImpl();
+}
+
+void WebStateImpl::RealizedWebState::CreateWebUI(const GURL& url) {
   const std::string host = url.host();
   if (web_uis_.contains(host)) {
     // Don't recreate WebUI for the same host. At the moment this is a required
@@ -45,11 +48,11 @@ void WebStateImpl::RealizedWebState::BraveCreateWebUI(const GURL& url) {
   }
 }
 
-void WebStateImpl::RealizedWebState::BraveClearWebUI() {
+void WebStateImpl::RealizedWebState::ClearWebUI() {
   web_uis_.clear();
 }
 
-void WebStateImpl::RealizedWebState::BraveHandleWebUIMessage(
+void WebStateImpl::RealizedWebState::HandleWebUIMessage(
     const GURL& source_url,
     std::string_view message,
     const base::Value::List& args) {
@@ -60,7 +63,7 @@ void WebStateImpl::RealizedWebState::BraveHandleWebUIMessage(
   }
 }
 
-bool WebStateImpl::RealizedWebState::BraveHasWebUI() const {
+bool WebStateImpl::RealizedWebState::HasWebUI() const {
   return !web_uis_.empty();
 }
 
