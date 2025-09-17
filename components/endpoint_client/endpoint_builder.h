@@ -28,10 +28,10 @@
 
 namespace endpoints::detail {
 
-template <typename Req, typename Rsp, typename Err>
+template <Request Req, Response Ok, Response Err>
 struct Entry {
   using Request = Req;
-  using Response = Rsp;
+  using Response = Ok;
   using Error = Err;
   using Expected =
       base::expected<std::optional<Response>, std::optional<Error>>;
@@ -39,7 +39,7 @@ struct Entry {
 };
 
 template <typename... Ts>
-concept UniqueTypes = requires {
+concept UniqueRequests = (Request<Ts> && ...) && requires {
   [] {
     struct Unique : std::type_identity<Ts>... {};
   };
@@ -64,7 +64,7 @@ struct For {
 };
 
 template <base::is_instantiation<detail::Entry>... Entries>
-  requires(detail::UniqueTypes<typename Entries::Request...>)
+  requires(detail::UniqueRequests<typename Entries::Request...>)
 class Endpoint {
   template <typename, typename...>
   struct EntryForImpl {};

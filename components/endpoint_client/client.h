@@ -157,7 +157,7 @@ class Client {
     auto resource_request = std::make_unique<network::ResourceRequest>();
     resource_request->url = Endpoint::URL();
     resource_request->method = request.Method();
-    if constexpr (endpoints::detail::HasHeaders<Request>) {
+    if constexpr (base::is_instantiation<Request, endpoints::WithHeaders>) {
       resource_request->headers = std::move(request.headers);
     }
 
