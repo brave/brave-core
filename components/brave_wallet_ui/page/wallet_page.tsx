@@ -40,25 +40,25 @@ setIconBasePath('chrome://resources/brave-icons')
 // console.log(`and then here's the thunder: ${rawr()}`);
 // console.log(`would this happen to be a pubkey????? ${get_pubkey()}`);
 
-const kPolkadotBridgeUrl = loadTimeData.getString(
-  'braveWalletPolkadotBridgeUrl',
-)
+// const kPolkadotBridgeUrl = loadTimeData.getString(
+//   'braveWalletPolkadotBridgeUrl',
+// )
 
-console.log(`kPolkadotBridgeUrl => ${kPolkadotBridgeUrl}`);
+// console.log(`kPolkadotBridgeUrl => ${kPolkadotBridgeUrl}`);
 
-{
-  const frameId = crypto.randomUUID();
-  let element = document.createElement('iframe');
-  element.id = frameId;
-  element.src = kPolkadotBridgeUrl;
-  element.style.display = 'none'
-  element.onload = () => {
-    console.log('Created polkadot-bridge iframe');
-  }
-  document.body.appendChild(element)
-}
-
-
+// {
+//   const frameId = crypto.randomUUID();
+//   let element = document.createElement('iframe');
+//   element.id = frameId;
+//   element.src = kPolkadotBridgeUrl;
+//   element.style.display = 'none'
+//   element.onload = () => {
+//     console.log('Created polkadot-bridge iframe');
+//     if (!element || !element.contentWindow) { console.log('too slow!!!'); return; }
+//     element.contentWindow.postMessage('rawrawrawr', kPolkadotBridgeUrl);
+//   }
+//   document.body.appendChild(element)
+// }
 
 function App() {
 

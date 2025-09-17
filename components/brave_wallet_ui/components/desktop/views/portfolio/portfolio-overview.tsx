@@ -133,14 +133,56 @@ import {
   selectAllVisibleFungibleUserAssetsFromQueryResult, //
 } from '../../../../common/slices/entities/blockchain-token.entity'
 
+import { loadTimeData } from '../../../../../common/loadTimeData'
+
 // // @ts-expect-error
 // import { rawr, get_pubkey } from 'chrome-untrusted://resources/brave/brave_wallet_ui_wasm.bundle.js'
+
+const kPolkadotBridgeUrl = loadTimeData.getString(
+  'braveWalletPolkadotBridgeUrl',
+)
+
+console.log(`kPolkadotBridgeUrl => ${kPolkadotBridgeUrl}`);
+
+const frameId = crypto.randomUUID();
+let polkadotIFrame = document.createElement('iframe');
+polkadotIFrame.id = frameId;
+polkadotIFrame.src = kPolkadotBridgeUrl;
+polkadotIFrame.style.display = 'none'
+polkadotIFrame.onload = () => {
+  console.log('Created polkadot-bridge iframe');
+  if (!polkadotIFrame || !polkadotIFrame.contentWindow) { console.log('too slow!!!'); return; }
+
+  // polkadotIFrame.contentWindow.postMessage('rawrawrawr', kPolkadotBridgeUrl);
+}
+document.body.appendChild(polkadotIFrame)
+
+let msgHandler: any = null;
+
+window.addEventListener('message', (msgEvent) => {
+  console.log('this is the message event we care about');
+  console.log(msgEvent);
+  if (!msgHandler) {
+    console.log('failed to assign mesage handler');
+    return;
+  }
+
+  msgHandler(msgEvent.data);
+});
 
 function SchnorrDemoButton() {
   const [pubkey, setPubKey] = React.useState('');
 
+  msgHandler = setPubKey;
+
   const onClick = () => {
-    setPubKey(/* get_pubkey() */ 'dummy key');
+    if (!polkadotIFrame || !polkadotIFrame.contentWindow) {
+      setPubKey('invalid polkadot-bridge');
+      return;
+    }
+
+    polkadotIFrame.contentWindow.postMessage('rawrawrawr', kPolkadotBridgeUrl);
+    // setPubKey(/* get_pubkey() */ 'dummy key');
   };
 
   return (<>
