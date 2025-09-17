@@ -6,12 +6,10 @@
 #ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_
 #define BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_
 
-#include <concepts>
-#include <string_view>
 #include <type_traits>
 
 #include "base/json/json_writer.h"
-#include "net/http/http_request_headers.h"
+#include "brave/components/endpoint_client/with_method.h"
 
 namespace endpoints {
 
@@ -21,23 +19,17 @@ struct WithHeaders;
 namespace detail {
 
 template <typename T>
-concept HasToValue = requires(T t) { base::WriteJson(t.ToValue()); } &&
-                     std::is_member_function_pointer_v<decltype(&T::ToValue)>;
+concept RequestBody = requires(T t) { base::WriteJson(t.ToValue()); } &&
+                      std::is_member_function_pointer_v<decltype(&T::ToValue)>;
+
+template <typename>
+struct RequestImpl : std::false_type {};
+
+template <typename T, Method M>
+struct RequestImpl<WithMethod<T, M>> : std::bool_constant<RequestBody<T>> {};
 
 template <typename T>
-concept HasMethod = requires {
-  { T::Method() } -> std::same_as<std::string_view>;
-};
-
-template <typename T>
-struct RequestImpl {
-  static constexpr bool value = HasToValue<T> && HasMethod<T>;
-};
-
-template <typename T>
-struct RequestImpl<WithHeaders<T>> {
-  static constexpr bool value = RequestImpl<T>::value;
-};
+struct RequestImpl<WithHeaders<T>> : RequestImpl<T> {};
 
 template <typename T>
 concept Request = RequestImpl<T>::value;

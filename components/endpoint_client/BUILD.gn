@@ -10,10 +10,11 @@ source_set("endpoint_client") {
     "client.h",
     "endpoint_builder.h",
     "endpoint.h",
-    "http_method.h",
+    "methods.h",
     "request.h",
     "response.h",
     "with_headers.h",
+    "with_method.h",
   ]
 
   deps = [

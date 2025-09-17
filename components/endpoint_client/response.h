@@ -8,10 +8,9 @@
 
 #include <concepts>
 #include <optional>
+#include <type_traits>
 
-#include "base/memory/scoped_refptr.h"
 #include "base/values.h"
-#include "net/http/http_response_headers.h"
 
 namespace endpoints {
 
@@ -21,19 +20,15 @@ struct WithHeaders;
 namespace detail {
 
 template <typename T>
-concept HasFromValue = requires(const base::Value& value) {
+concept ResponseBody = requires(const base::Value& value) {
   { T::FromValue(value) } -> std::same_as<std::optional<T>>;
 };
 
 template <typename T>
-struct ResponseImpl {
-  static constexpr bool value = HasFromValue<T>;
-};
+struct ResponseImpl : std::bool_constant<ResponseBody<T>> {};
 
 template <typename T>
-struct ResponseImpl<WithHeaders<T>> {
-  static constexpr bool value = ResponseImpl<T>::value;
-};
+struct ResponseImpl<WithHeaders<T>> : ResponseImpl<T> {};
 
 template <typename T>
 concept Response = ResponseImpl<T>::value;

@@ -24,7 +24,7 @@
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/endpoint_client/http_method.h"
+#include "brave/components/endpoint_client/methods.h"
 #include "brave/components/endpoint_client/with_headers.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
