@@ -52,10 +52,21 @@ export const style = scoped.css`
 
   .actions {
     padding: 0 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
 
     leo-button {
       --leo-button-color: rgba(255, 255, 255, 0.20);
       white-space: nowrap;
+    }
+
+    a {
+      opacity: 0.5;
+      color: #fff;
+      font: ${font.xSmall.regular};
+      text-underline-position: under;
     }
   }
 `
