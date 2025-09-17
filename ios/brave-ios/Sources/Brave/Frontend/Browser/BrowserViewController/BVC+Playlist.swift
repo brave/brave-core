@@ -380,17 +380,15 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
       && !BrowserViewController.didShowStorageFullWarning
     {
       BrowserViewController.didShowStorageFullWarning = true
-      let style: UIAlertController.Style =
-        UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
       let alert = UIAlertController(
         title: Strings.PlayList.playlistDiskSpaceWarningTitle,
         message: Strings.PlayList.playlistDiskSpaceWarningMessage,
-        preferredStyle: style
+        preferredStyle: .alert
       )
 
       alert.addAction(
         UIAlertAction(
-          title: Strings.OKString,
+          title: Strings.PlayList.playlistDiskSpaceAddAnywayButtonTitle,
           style: .default,
           handler: { [weak self] _ in
             guard let self = self else { return }
