@@ -82,7 +82,7 @@ description = ''
 pattern = ''  # non-regex pattern (string will be escaped)
 re_pattern = ''  # regex pattern
 replace = ''
-re_flags = ''  # python regex flags ASCII, IGNORECASE, etc...
+re_flags = []  # These are traditional python regex flags.
 count = 0
 ```
 
