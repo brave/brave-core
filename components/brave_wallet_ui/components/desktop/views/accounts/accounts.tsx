@@ -25,7 +25,7 @@ import {
   sortAccountsByName,
 } from '../../../../utils/account-utils'
 import { makeAccountRoute } from '../../../../utils/routes-utils'
-import { getPriceIdForToken } from '../../../../utils/pricing-utils'
+import { getPriceRequestsForTokens } from '../../../../utils/pricing-utils'
 
 // Styled Components
 import { SectionTitle, AccountsListWrapper } from './style'
@@ -133,19 +133,21 @@ export const Accounts = () => {
       networks,
     })
 
-  const tokenPriceIds = React.useMemo(() => {
+  const tokenPriceRequests = React.useMemo(() => {
     if (userTokensRegistry) {
-      return userTokensRegistry.fungibleVisibleTokenIds.map((id) => {
-        return getPriceIdForToken(userTokensRegistry.entities[id]!)
-      })
+      return getPriceRequestsForTokens(
+        userTokensRegistry.fungibleVisibleTokenIds.map((id) => {
+          return userTokensRegistry.entities[id]!
+        }),
+      )
     }
     return []
   }, [userTokensRegistry])
 
-  const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
+  const { data: spotPrices, isLoading: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(
-      tokenPriceIds.length && defaultFiatCurrency
-        ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      tokenPriceRequests.length && defaultFiatCurrency
+        ? { requests: tokenPriceRequests, vsCurrency: defaultFiatCurrency }
         : skipToken,
       querySubscriptionOptions60s,
     )
@@ -169,7 +171,7 @@ export const Accounts = () => {
               account={account}
               tokenBalancesRegistry={tokenBalancesRegistry}
               isLoadingBalances={isLoadingBalances}
-              spotPriceRegistry={spotPriceRegistry}
+              spotPrices={spotPrices}
               isLoadingSpotPrices={isLoadingSpotPrices}
               isShieldingAvailable={isShieldingAvailable}
             />
@@ -182,7 +184,7 @@ export const Accounts = () => {
     trezorAccounts,
     onSelectAccount,
     tokenBalancesRegistry,
-    spotPriceRegistry,
+    spotPrices,
     isLoadingBalances,
     isLoadingSpotPrices,
     isShieldingAvailable,
@@ -207,7 +209,7 @@ export const Accounts = () => {
               account={account}
               tokenBalancesRegistry={tokenBalancesRegistry}
               isLoadingBalances={isLoadingBalances}
-              spotPriceRegistry={spotPriceRegistry}
+              spotPrices={spotPrices}
               isLoadingSpotPrices={isLoadingSpotPrices}
               isShieldingAvailable={isShieldingAvailable}
             />
@@ -220,7 +222,7 @@ export const Accounts = () => {
     ledgerAccounts,
     onSelectAccount,
     tokenBalancesRegistry,
-    spotPriceRegistry,
+    spotPrices,
     isLoadingBalances,
     isLoadingSpotPrices,
     isShieldingAvailable,
@@ -254,7 +256,7 @@ export const Accounts = () => {
             account={account}
             tokenBalancesRegistry={tokenBalancesRegistry}
             isLoadingBalances={isLoadingBalances}
-            spotPriceRegistry={spotPriceRegistry}
+            spotPrices={spotPrices}
             isLoadingSpotPrices={isLoadingSpotPrices}
             isShieldingAvailable={isShieldingAvailable}
           />
@@ -283,7 +285,7 @@ export const Accounts = () => {
                 account={account}
                 tokenBalancesRegistry={tokenBalancesRegistry}
                 isLoadingBalances={isLoadingBalances}
-                spotPriceRegistry={spotPriceRegistry}
+                spotPrices={spotPrices}
                 isLoadingSpotPrices={isLoadingSpotPrices}
                 isShieldingAvailable={isShieldingAvailable}
               />
@@ -334,7 +336,7 @@ export const Accounts = () => {
               account={externalRewardsAccount}
               tokenBalancesRegistry={tokenBalancesRegistry}
               isLoadingBalances={isLoadingBalances}
-              spotPriceRegistry={spotPriceRegistry}
+              spotPrices={spotPrices}
               isLoadingSpotPrices={isLoadingSpotPrices}
               isShieldingAvailable={isShieldingAvailable}
             />

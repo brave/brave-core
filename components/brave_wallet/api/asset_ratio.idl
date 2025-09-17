@@ -99,4 +99,48 @@ namespace asset_ratio {
     DOMString url;
   };
 
+  // AssetPricePayload models the response from GET /api/pricing/v1/getPrices
+  // to Gate3.
+  //
+  // The response is a list of AssetPricePayload objects.
+  //
+  // Example:
+  // {
+  //   "coin": "ETH",
+  //   "chain_id": "0x1",
+  //   "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+  //   "price": "0.55393",
+  //   "percentage_change_24h": "0.1",
+  //   "vs_currency": "USD",
+  //   "cache_status": "HIT",
+  //   "source": "coingecko"
+  // }
+  //
+  dictionary AssetPricePayload {
+    // e.g. "ETH"
+    DOMString coin;
+
+    // e.g. "0x1"
+    DOMString chain_id;
+
+    // Nullable optional DOMString field
+    // e.g. "0x0D8775F648430679A709E98d2b0Cb6250d2887EF" or null
+    any? address;
+
+    // e.g. "0.55393"
+    DOMString price;
+
+    // Nullable optional DOMString field
+    // e.g. "0.1" or null
+    any? percentage_change_24h;
+
+    // e.g. "USD"
+    DOMString vs_currency;
+
+    // "HIT" or "MISS"
+    DOMString cache_status;
+
+    // e.g. "coingecko" or "jupiter"
+    DOMString source;
+  };
 };

@@ -11,28 +11,41 @@ import Foundation
 class MockAssetRatioService: BraveWalletAssetRatioService {
   private let assets: [String: BraveWallet.AssetPrice] = [
     "eth": .init(
-      fromAsset: "eth",
-      toAsset: "usd",
+      coin: .eth,
+      chainId: BraveWallet.MainnetChainId,
+      address: "",
       price: "3059.99",
-      assetTimeframeChange: "-57.23"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
     ),
     "bat": .init(
-      fromAsset: "bat",
-      toAsset: "usd",
+      coin: .eth,
+      chainId: BraveWallet.MainnetChainId,
+      address: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
       price: "0.627699",
-      assetTimeframeChange: "-0.019865"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-0.019865"
     ),
   ]
+
   func price(
-    fromAssets: [String],
-    toAssets: [String],
-    timeframe: BraveWallet.AssetPriceTimeframe,
+    requests: [BraveWallet.AssetPriceRequest],
+    vsCurrency: String,
     completion: @escaping (Bool, [BraveWallet.AssetPrice]) -> Void
   ) {
-    let prices = assets.filter { (key, value) in
-      fromAssets.contains(where: { key == $0 })
+    let prices = requests.compactMap { request in
+      // Find matching asset based on coin type, chain ID, and address
+      return assets.first { (_, assetPrice) in
+        assetPrice.coin == request.coin
+          && assetPrice.chainId == request.chainId
+          && assetPrice.address == request.address
+      }?.value
     }
-    completion(!prices.isEmpty, Array(prices.values))
+    completion(!prices.isEmpty, prices)
   }
 
   func estimatedTime(_ gasPrice: String, completion: @escaping (Bool, String) -> Void) {

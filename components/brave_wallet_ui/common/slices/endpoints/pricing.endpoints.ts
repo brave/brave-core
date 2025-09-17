@@ -5,11 +5,7 @@
 import { mapLimit } from 'async'
 
 // Types
-import {
-  BraveWallet,
-  TokenPriceHistory,
-  SpotPriceRegistry,
-} from '../../../constants/types'
+import { BraveWallet, TokenPriceHistory } from '../../../constants/types'
 import {
   TokenBalancesRegistry,
   ChainBalances,
@@ -17,7 +13,7 @@ import {
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // Constants
-import { maxConcurrentPriceRequests, maxBatchSizePrice } from '../constants'
+import { maxConcurrentPriceRequests } from '../constants'
 import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../../constants/magics'
 
 // Utils
@@ -27,9 +23,8 @@ import Amount from '../../../utils/amount'
 import { findTokenByAssetId } from '../../../utils/asset-utils'
 
 interface GetTokenSpotPricesArg {
-  ids: string[]
-  timeframe?: BraveWallet.AssetPriceTimeframe
-  toCurrency: string
+  requests: BraveWallet.AssetPriceRequest[]
+  vsCurrency: string
 }
 
 interface GetPriceHistoryArg {
@@ -84,9 +79,9 @@ export const pricingEndpoints = ({
   query,
 }: WalletApiEndpointBuilderParams) => {
   return {
-    getTokenSpotPrices: query<SpotPriceRegistry, GetTokenSpotPricesArg>({
+    getTokenSpotPrices: query<BraveWallet.AssetPrice[], GetTokenSpotPricesArg>({
       queryFn: async (
-        { ids, timeframe, toCurrency },
+        { requests, vsCurrency },
         { dispatch },
         extraOptions,
         baseQuery,
@@ -96,80 +91,24 @@ export const pricingEndpoints = ({
             data: { assetRatioService },
           } = baseQuery(undefined)
 
-          if (!ids.length) {
-            throw new Error('no token ids provided for price lookup')
+          if (!requests.length) {
+            throw new Error('no requests provided for price lookup')
           }
 
-          // dedupe ids to prevent duplicate price requests
-          const uniqueIds = [...new Set(ids)]
-            // skip flagged coins such as testnet coins and null/undefined ids
-            .filter((id) => id && id !== SKIP_PRICE_LOOKUP_COINGECKO_ID)
-
-          const chunkedParams = []
-          for (let i = 0; i < uniqueIds.length; i += maxBatchSizePrice) {
-            chunkedParams.push(uniqueIds.slice(i, i + maxBatchSizePrice))
-          }
-
-          // Use maxConcurrentPriceRequests concurrent HTTP requests to
-          // fetch prices, in batch of maxBatchSizePrice.
-          const results = await mapLimit(
-            chunkedParams,
-            maxConcurrentPriceRequests,
-            async function (params: string[]) {
-              const { success, values } = await assetRatioService.getPrice(
-                params,
-                [toCurrency],
-                timeframe ?? BraveWallet.AssetPriceTimeframe.Live,
-              )
-
-              if (success && values) {
-                return values
-              }
-
-              console.log('Unable to fetch prices for batch:', params)
-              const fallbackResults = await mapLimit(
-                params,
-                maxConcurrentPriceRequests,
-                async function (param: string) {
-                  const { success, values } = await assetRatioService.getPrice(
-                    [param],
-                    [toCurrency],
-                    timeframe ?? BraveWallet.AssetPriceTimeframe.Live,
-                  )
-
-                  if (success) {
-                    return values
-                  }
-
-                  console.log('Unable to fetch price using fallback:', param)
-
-                  return []
-                },
-              )
-
-              return fallbackResults.flat()
-            },
+          const { success, values } = await assetRatioService.getPrice(
+            requests,
+            vsCurrency,
           )
 
-          const registry: SpotPriceRegistry = results
-            .flat()
-            .reduce<SpotPriceRegistry>((acc, assetPrice) => {
-              acc[assetPrice.fromAsset.toLowerCase()] = assetPrice
-              return acc
-            }, {})
-
-          // add skipped value
-          registry[SKIP_PRICE_LOOKUP_COINGECKO_ID] = {
-            assetTimeframeChange: (
-              timeframe ?? BraveWallet.AssetPriceTimeframe.Live
-            ).toString(),
-            fromAsset: SKIP_PRICE_LOOKUP_COINGECKO_ID,
-            price: '0',
-            toAsset: toCurrency,
+          if (success && values) {
+            return {
+              data: values,
+            }
           }
 
+          console.log('Unable to fetch prices for requests:', requests)
           return {
-            data: registry,
+            data: [],
           }
         } catch (error) {
           const msg = `Unable to fetch prices`
@@ -179,10 +118,10 @@ export const pricingEndpoints = ({
           }
         }
       },
-      providesTags: (result, error, { ids, timeframe }) =>
-        ids.map((id) => ({
+      providesTags: (result, error, { requests, vsCurrency }) =>
+        requests.map((r) => ({
           type: 'TokenSpotPrices',
-          id: `${id}-${timeframe ?? BraveWallet.AssetPriceTimeframe.Live}`,
+          id: `${r.coin}-${r.chainId}-${r.address}-${vsCurrency}`,
         })),
     }),
 

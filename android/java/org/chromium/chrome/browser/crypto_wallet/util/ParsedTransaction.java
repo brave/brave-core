@@ -10,6 +10,7 @@ import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.SOL
 import android.text.TextUtils;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BtcTxData;
 import org.chromium.brave_wallet.mojom.FilTxData;
@@ -30,7 +31,6 @@ import org.chromium.mojo_base.mojom.TimeDelta;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -105,13 +105,11 @@ public class ParsedTransaction extends ParsedTransactionFees {
             TransactionInfo txInfo,
             NetworkInfo txNetwork,
             AccountInfo[] accounts,
-            HashMap<String, Double> assetPrices,
+            List<AssetPrice> assetPrices,
             long solFeeEstimatesFee,
             BlockchainToken[] fullTokenList) {
         BlockchainToken nativeAsset = Utils.makeNetworkAsset(txNetwork);
-        Double networkSpotPrice =
-                Utils.getOrDefault(
-                        assetPrices, txNetwork.symbol.toLowerCase(Locale.getDefault()), 0.0d);
+        Double networkSpotPrice = AssetsPricesHelper.getPriceForAsset(assetPrices, nativeAsset);
 
         final ParsedTransactionFees feeDetails =
                 ParsedTransactionFees.parseTransactionFees(
@@ -181,9 +179,6 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 isSPLTransaction
                         ? findToken(fullTokenList, solTxData != null ? solTxData.tokenAddress : "")
                         : findToken(fullTokenList, to);
-        final String tokenSymbolLower =
-                token != null ? token.symbol.toLowerCase(Locale.getDefault()) : "";
-
         ParsedTransaction parsedTransaction = new ParsedTransaction(feeDetails);
         // Common fields
         parsedTransaction.hash = txInfo.txHash;
@@ -272,7 +267,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 }
             }
             final int decimals = token != null ? token.decimals : Utils.SOL_DEFAULT_DECIMALS;
-            final double price = Utils.getOrDefault(assetPrices, tokenSymbolLower, 0.0d);
+            final double price = AssetsPricesHelper.getPriceForAsset(assetPrices, token);
             final double sendAmount =
                     Utils.getBalanceForCoinType(
                             TransactionUtils.getCoinFromTxDataUnion(txDataUnion),
@@ -295,7 +290,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
             final String address = txInfo.txArgs[0];
             final String amount = txInfo.txArgs[1];
             final int decimals = token != null ? token.decimals : Utils.ETH_DEFAULT_DECIMALS;
-            final double price = Utils.getOrDefault(assetPrices, tokenSymbolLower, 0.0d);
+            final double price = AssetsPricesHelper.getPriceForAsset(assetPrices, token);
             final double sendAmount = Utils.fromHexWei(amount, decimals);
             final double sendAmountFiat = sendAmount * price;
 
@@ -334,7 +329,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                         == TransactionType
                                 .SOLANA_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION) {
             final int decimals = token != null ? token.decimals : Utils.SOL_DEFAULT_DECIMALS;
-            final double price = Utils.getOrDefault(assetPrices, tokenSymbolLower, 0.0d);
+            final double price = AssetsPricesHelper.getPriceForAsset(assetPrices, token);
             final double sendAmount = Utils.fromWei(value, decimals);
             final double sendAmountFiat = sendAmount * price;
 
@@ -364,9 +359,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
             BlockchainToken[] fillTokens = fillTokensList.toArray(new BlockchainToken[0]);
 
             final BlockchainToken sellToken = fillTokens.length == 1 ? nativeAsset : fillTokens[0];
-            final double price =
-                    Utils.getOrDefault(
-                            assetPrices, sellToken.symbol.toLowerCase(Locale.getDefault()), 0.0d);
+            final double price = AssetsPricesHelper.getPriceForAsset(assetPrices, sellToken);
             final String sellAmountWei =
                     sellAmountArg != null && !sellAmountArg.isEmpty() ? sellAmountArg : value;
             final double sellAmountFiat =
@@ -391,9 +384,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
             parsedTransaction.minBuyAmount = buyAmount;
         } else {
             // The rest cases falls through to default
-            final double price =
-                    Utils.getOrDefault(
-                            assetPrices, txNetwork.symbol.toLowerCase(Locale.ENGLISH), 0.0d);
+            final double price = AssetsPricesHelper.getPriceForAsset(assetPrices, nativeAsset);
             double sendAmount;
             if (txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER || zecTxData != null) {
                 sendAmount = Utils.fromWei(value, txNetwork.decimals);

@@ -15,7 +15,7 @@ import { PanelActions } from '../../panel/actions'
 
 // utils
 import Amount from '../../utils/amount'
-import { getPriceIdForToken } from '../../utils/pricing-utils'
+import { getPriceRequestsForTokens } from '../../utils/pricing-utils'
 import { isHardwareAccount } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
@@ -151,17 +151,14 @@ export const usePendingTransactions = () => {
 
   const txToken = findTransactionToken(transactionInfo, combinedTokensList)
 
-  const tokenPriceIds = React.useMemo(
-    () =>
-      [txToken, networkAsset]
-        .filter((t): t is BraveWallet.BlockchainToken => Boolean(t))
-        .map(getPriceIdForToken),
+  const tokenPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens([txToken, networkAsset]),
     [txToken, networkAsset],
   )
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length > 0 && defaultFiat
-      ? { ids: tokenPriceIds, toCurrency: defaultFiat }
+  const { data: spotPrices } = useGetTokenSpotPricesQuery(
+    tokenPriceRequests.length > 0 && defaultFiat
+      ? { requests: tokenPriceRequests, vsCurrency: defaultFiat }
       : skipToken,
     querySubscriptionOptions60s,
   )
@@ -215,7 +212,7 @@ export const usePendingTransactions = () => {
   const transactionDetails = React.useMemo(() => {
     if (
       !transactionInfo
-      || !spotPriceRegistry
+      || !spotPrices
       || !txAccount
       || !transactionsNetwork
       || !accounts
@@ -227,7 +224,7 @@ export const usePendingTransactions = () => {
       tx: transactionInfo,
       accounts,
       gasFee,
-      spotPriceRegistry,
+      spotPrices,
       tokensList: combinedTokensList,
       transactionAccount: txAccount,
       transactionNetwork: transactionsNetwork,
@@ -235,7 +232,7 @@ export const usePendingTransactions = () => {
   }, [
     transactionInfo,
     accounts,
-    spotPriceRegistry,
+    spotPrices,
     txAccount,
     transactionsNetwork,
     gasFee,

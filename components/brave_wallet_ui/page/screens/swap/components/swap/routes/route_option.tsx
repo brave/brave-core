@@ -35,7 +35,7 @@ import {
 } from '../../../../../../utils/datetime-utils'
 import {
   computeFiatAmount,
-  getPriceIdForToken,
+  getPriceRequestsForTokens,
 } from '../../../../../../utils/pricing-utils'
 import { getLPIcon } from '../../../swap.utils'
 
@@ -109,11 +109,15 @@ export const RouteOption = (props: Props) => {
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    toToken && defaultFiatCurrency
+  const toTokenPriceRequests = React.useMemo(() => {
+    return getPriceRequestsForTokens([toToken])
+  }, [toToken])
+
+  const { data: spotPrices = [] } = useGetTokenSpotPricesQuery(
+    toTokenPriceRequests.length && defaultFiatCurrency
       ? {
-          ids: [getPriceIdForToken(toToken)],
-          toCurrency: defaultFiatCurrency,
+          requests: toTokenPriceRequests,
+          vsCurrency: defaultFiatCurrency,
         }
       : skipToken,
     querySubscriptionOptions60s,
@@ -139,11 +143,11 @@ export const RouteOption = (props: Props) => {
 
   const fiatValue = React.useMemo(() => {
     return computeFiatAmount({
-      spotPriceRegistry,
+      spotPrices,
       value: toAmount.multiplyByDecimals(toToken.decimals).toHex(),
       token: toToken,
     }).formatAsFiat(defaultFiatCurrency)
-  }, [spotPriceRegistry, toToken, toAmount, defaultFiatCurrency])
+  }, [spotPrices, toToken, toAmount, defaultFiatCurrency])
 
   // Computed
   const firstStep =

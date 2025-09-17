@@ -37,15 +37,85 @@ class TransactionsActivityStoreTests: XCTestCase {
   ]
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [:]
   let mockAssetPrices: [BraveWallet.AssetPrice] = [
-    .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23"),
-    .init(fromAsset: "usdc", toAsset: "usd", price: "1.00", assetTimeframeChange: "-57.23"),
-    .init(fromAsset: "sol", toAsset: "usd", price: "2.00", assetTimeframeChange: "-57.23"),
-    .init(fromAsset: "spd", toAsset: "usd", price: "0.50", assetTimeframeChange: "-57.23"),
     .init(
-      fromAsset: BraveWallet.BlockchainToken.mockFilToken.assetRatioId.lowercased(),
-      toAsset: "usd",
+      coin: .eth,
+      chainId: BraveWallet.MainnetChainId,
+      address: "",
+      price: "3059.99",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coin: .eth,
+      chainId: BraveWallet.SepoliaChainId,
+      address: "",
+      price: "3059.99",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coin: .eth,
+      chainId: BraveWallet.MainnetChainId,
+      address: BraveWallet.BlockchainToken.mockUSDCToken.contractAddress,
+      price: "1.00",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coin: .sol,
+      chainId: BraveWallet.SolanaMainnet,
+      address: "",
+      price: "2.00",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coin: .sol,
+      chainId: BraveWallet.SolanaTestnet,
+      address: "",
+      price: "2.00",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coin: .sol,
+      chainId: BraveWallet.SolanaMainnet,
+      address: BraveWallet.BlockchainToken.mockSpdToken.contractAddress,
+      price: "0.50",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coin: .fil,
+      chainId: BraveWallet.FilecoinMainnet,
+      address: "",
       price: "4.00",
-      assetTimeframeChange: "-57.23"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coin: .fil,
+      chainId: BraveWallet.FilecoinTestnet,
+      address: "",
+      price: "4.00",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
     ),
   ]
 
@@ -79,7 +149,7 @@ class TransactionsActivityStoreTests: XCTestCase {
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
-    assetRatioService._price = { _, _, _, completion in
+    assetRatioService._price = { _, _, completion in
       completion(true, self.mockAssetPrices)
     }
 

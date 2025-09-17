@@ -6,9 +6,6 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query'
 
-// types
-import { BraveWallet } from '../../../constants/types'
-
 // utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
@@ -18,7 +15,10 @@ import {
   getTransactionGasFee,
   isSolanaTransaction,
 } from '../../../utils/tx-utils'
-import { getPriceIdForToken } from '../../../utils/pricing-utils'
+import {
+  getPriceRequestsForTokens,
+  getTokenPriceFromRegistry,
+} from '../../../utils/pricing-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
 
 // components
@@ -79,16 +79,15 @@ export const PendingTransactionNetworkFeeAndSettings: React.FC<Props> = ({
     feeDisplayMode === 'fiat' ? undefined : skipToken,
   )
 
-  const networkTokenPriceId = txNetwork
-    ? getPriceIdForToken(makeNetworkAsset(txNetwork))
-    : ''
+  const networkTokenPriceRequests = txNetwork
+    ? getPriceRequestsForTokens([makeNetworkAsset(txNetwork)])
+    : []
 
   const { data: pricesRegistry } = useGetTokenSpotPricesQuery(
-    txNetwork && defaultFiatCurrency
+    networkTokenPriceRequests.length && defaultFiatCurrency
       ? {
-          ids: [networkTokenPriceId],
-          toCurrency: defaultFiatCurrency,
-          timeframe: BraveWallet.AssetPriceTimeframe.Live,
+          requests: networkTokenPriceRequests,
+          vsCurrency: defaultFiatCurrency,
         }
       : skipToken,
   )
@@ -111,9 +110,14 @@ export const PendingTransactionNetworkFeeAndSettings: React.FC<Props> = ({
       : getTransactionGasFee(selectedPendingTransaction)
     : ''
 
+  const networkTokenPrice =
+    pricesRegistry && txNetwork
+      ? getTokenPriceFromRegistry(pricesRegistry, makeNetworkAsset(txNetwork))
+      : undefined
+
   const networkFeeFiat = getGasFeeFiatValue({
     gasFee: networkFee,
-    networkSpotPrice: pricesRegistry?.[networkTokenPriceId]?.price || '',
+    networkSpotPrice: networkTokenPrice?.price || '',
     txNetwork,
   })
 

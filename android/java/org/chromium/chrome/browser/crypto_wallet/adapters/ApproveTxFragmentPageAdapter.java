@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -26,7 +27,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 @NullMarked
@@ -35,7 +35,7 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
     private final TransactionInfo mTxInfo;
     private final NetworkInfo mSelectedNetwork;
     private final AccountInfo[] mAccounts;
-    private final HashMap<String, Double> mAssetPrices;
+    private final List<AssetPrice> mAssetPrices;
     private final BlockchainToken[] mFullTokenList;
     private final boolean mUpdateTxObjectManually;
     private final long mSolanaEstimatedTxFee;
@@ -47,7 +47,7 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
             TransactionInfo txInfo,
             NetworkInfo selectedNetwork,
             AccountInfo[] accounts,
-            HashMap<String, Double> assetPrices,
+            List<AssetPrice> assetPrices,
             BlockchainToken[] fullTokenList,
             Activity activity,
             boolean updateTxObjectManually,

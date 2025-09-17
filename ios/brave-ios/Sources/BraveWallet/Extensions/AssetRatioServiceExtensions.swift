@@ -7,140 +7,64 @@ import BraveCore
 import Foundation
 
 extension BraveWalletAssetRatioService {
-  typealias PricesResult = (assetPrices: [BraveWallet.AssetPrice], failureCount: Int)
+  /// Fetches the prices for a given list of `BlockchainToken`, giving a list of `AssetPrice`.
+  /// Returns an empty array in case no prices are found.
+  @MainActor func fetchPrices(
+    for tokens: [BraveWallet.BlockchainToken],
+    vsCurrency: String
+  ) async -> [BraveWallet.AssetPrice] {
+    let requests = tokens.map { token in
+      BraveWallet.AssetPriceRequest(
+        coin: token.coin,
+        chainId: token.chainId,
+        address: token.contractAddress.isEmpty ? nil : token.contractAddress
+      )
+    }
 
-  /// Filter out empty strings, make unique, and ensure lowercase
-  private func uniqueNonEmptyPriceIds(_ priceIds: [String]) -> [String] {
-    Array(Set(priceIds.filter { !$0.isEmpty }.map { $0.lowercased() }))
-  }
-
-  /// Fetch the price for a list of assets to a list of assets over a given timeframe.
-  /// If the main call for all asset prices fails, will fetch the price for each asset individually, so one failure will not result in a failure to fetch all assets.
-  @MainActor func priceWithIndividualRetry(
-    _ fromAssets: [String],
-    toAssets: [String],
-    timeframe: BraveWallet.AssetPriceTimeframe
-  ) async -> PricesResult {
-    let uniquePriceIds = uniqueNonEmptyPriceIds(fromAssets)
-
-    let (success, prices) = await self.price(
-      fromAssets: uniquePriceIds,
-      toAssets: toAssets,
-      timeframe: timeframe
+    let (_, prices) = await self.price(
+      requests: requests,
+      vsCurrency: vsCurrency
     )
-    guard success else {
-      return await self.priceIndividually(
-        uniquePriceIds,
-        toAssets: toAssets,
-        timeframe: timeframe
-      )
-    }
-    return PricesResult(prices, 0)
-  }
 
-  /// Fetch the price for each asset in `fromAssets` individually, so one failure will not result in a failure to fetch all assets.
-  @MainActor private func priceIndividually(
-    _ fromAssets: [String],
-    toAssets: [String],
-    timeframe: BraveWallet.AssetPriceTimeframe
-  ) async -> PricesResult {
-    return await withTaskGroup(of: PricesResult.self) { @MainActor group -> PricesResult in
-      fromAssets.forEach { asset in
-        group.addTask { @MainActor in
-          let (success, prices) = await self.price(
-            fromAssets: [asset],
-            toAssets: toAssets,
-            timeframe: timeframe
-          )
-          return PricesResult(prices, success ? 0 : 1)
-        }
-      }
-      return await group.reduce(
-        PricesResult([], 0),
-        { prior, new in
-          return PricesResult(
-            prior.assetPrices + new.assetPrices,
-            prior.failureCount + new.failureCount
-          )
-        }
-      )
-    }
+    return prices
   }
 }
 
-extension BraveWalletAssetRatioService {
-  /// Fetch the price for a list of assets to a list of assets over a given timeframe.
-  /// If the main call for all asset prices fails, will fetch the price for each asset individually, so one failure will not result in a failure to fetch all assets.
-  func priceWithIndividualRetry(
-    _ fromAssets: [String],
-    toAssets: [String],
-    timeframe: BraveWallet.AssetPriceTimeframe,
-    completion: @escaping (PricesResult) -> Void
-  ) {
-    let uniquePriceIds = uniqueNonEmptyPriceIds(fromAssets)
+extension BraveWallet.AssetPrice {
+  /// Checks if this AssetPrice matches the given coin, chainId, and address
+  /// Two tokens are considered the same if they have the same coin, chainId, and address
+  func eq(coin: BraveWallet.CoinType, chainId: String, address: String) -> Bool {
+    return self.coin == coin
+      && self.chainId == chainId
+      && self.address.lowercased() == address.lowercased()
+  }
+}
 
-    price(fromAssets: uniquePriceIds, toAssets: toAssets, timeframe: timeframe) {
-      [self] success, prices in
-      guard success else {
-        self.priceIndividually(
-          uniquePriceIds,
-          toAssets: toAssets,
-          timeframe: timeframe,
-          completion: completion
-        )
-        return
-      }
-      completion(PricesResult(prices, 0))
+extension Array where Element == BraveWallet.AssetPrice {
+  /// Get token price from a list of asset prices
+  /// Returns the matching AssetPrice if found, nil otherwise
+  func getTokenPrice(
+    for token: BraveWallet.BlockchainToken
+  ) -> BraveWallet.AssetPrice? {
+    return first { assetPrice in
+      assetPrice.eq(coin: token.coin, chainId: token.chainId, address: token.contractAddress)
     }
   }
 
-  /// Fetch the price for each asset in `fromAssets` individually, so one failure will not result in a failure to fetch all assets.
-  private func priceIndividually(
-    _ fromAssets: [String],
-    toAssets: [String],
-    timeframe: BraveWallet.AssetPriceTimeframe,
-    completion: @escaping (PricesResult) -> Void
-  ) {
-    var pricesResults: [PricesResult] = []
-    let dispatchGroup = DispatchGroup()
-    fromAssets.forEach { asset in
-      dispatchGroup.enter()
-      self.price(fromAssets: [asset], toAssets: toAssets, timeframe: timeframe) { success, prices in
-        defer { dispatchGroup.leave() }
-        pricesResults.append(PricesResult(prices, success ? 0 : 1))
+  /// Updates the existing array with new AssetPrice objects, ensuring no duplicates
+  /// Two AssetPrices are considered duplicates if they have the same coin, chainId, and address
+  mutating func update(with newPrices: [BraveWallet.AssetPrice]) {
+    for newPrice in newPrices {
+      // Find index of existing price with same coin, chainId, and address
+      if let existingIndex = firstIndex(where: { existingPrice in
+        existingPrice.eq(coin: newPrice.coin, chainId: newPrice.chainId, address: newPrice.address)
+      }) {
+        // Replace existing price with new one
+        self[existingIndex] = newPrice
+      } else {
+        // Add new price if no duplicate found
+        append(newPrice)
       }
     }
-
-    dispatchGroup.notify(queue: .main) {
-      let priceResult = pricesResults.reduce(
-        PricesResult([], 0),
-        { prior, new in
-          return PricesResult(
-            prior.assetPrices + new.assetPrices,
-            prior.failureCount + new.failureCount
-          )
-        }
-      )
-      completion(priceResult)
-    }
-  }
-
-  /// Fetches the prices for a given list of `assetRatioId`, giving a dictionary with the price for each symbol
-  @MainActor func fetchPrices(
-    for priceIds: [String],
-    toAssets: [String],
-    timeframe: BraveWallet.AssetPriceTimeframe
-  ) async -> [String: String] {
-    let uniquePriceIds = uniqueNonEmptyPriceIds(priceIds)
-
-    let priceResult = await priceWithIndividualRetry(
-      uniquePriceIds,
-      toAssets: toAssets,
-      timeframe: timeframe
-    )
-    let prices = Dictionary(
-      uniqueKeysWithValues: priceResult.assetPrices.map { ($0.fromAsset, $0.price) }
-    )
-    return prices
   }
 }

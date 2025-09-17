@@ -27,7 +27,7 @@ import { reduceAddress } from '../../../../../utils/reduce-address'
 import { isNativeAsset } from '../../../../../utils/asset-utils'
 import { getLocale } from '../../../../../../common/locale'
 import {
-  getPriceIdForToken,
+  getPriceRequestsForTokens,
   getTokenPriceFromRegistry,
 } from '../../../../../utils/pricing-utils'
 import {
@@ -71,10 +71,11 @@ export const TokenDetails = (props: Props) => {
   // Queries
   const { data: tokensNetwork } = useGetNetworkQuery(token)
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
-  const { data: spotPriceRegistry, isLoading: isLoadingSpotPrice } =
+  const tokenPriceRequests = getPriceRequestsForTokens([token])
+  const { data: spotPrices, isLoading: isLoadingSpotPrice } =
     useGetTokenSpotPricesQuery(
-      defaultFiatCurrency
-        ? { ids: [getPriceIdForToken(token)], toCurrency: defaultFiatCurrency }
+      tokenPriceRequests.length && defaultFiatCurrency
+        ? { requests: tokenPriceRequests, vsCurrency: defaultFiatCurrency }
         : skipToken,
       querySubscriptionOptions60s,
     )
@@ -90,8 +91,8 @@ export const TokenDetails = (props: Props) => {
   }, [token.tokenId])
 
   // Computed
-  const spotPrice = spotPriceRegistry
-    ? getTokenPriceFromRegistry(spotPriceRegistry, token)
+  const spotPrice = spotPrices
+    ? getTokenPriceFromRegistry(spotPrices, token)
     : undefined
 
   const isNativeToken = isNativeAsset(token)
@@ -99,7 +100,7 @@ export const TokenDetails = (props: Props) => {
   const isNFT = token.isErc1155 || token.isErc721 || token.isNft
 
   const isPriceDown = spotPrice
-    ? Number(spotPrice.assetTimeframeChange) < 0
+    ? Number(spotPrice.percentageChange24h) < 0
     : false
 
   const tokenName = token.isShielded ? token.name + '(shielded)' : token.name
@@ -169,15 +170,25 @@ export const TokenDetails = (props: Props) => {
                     defaultFiatCurrency,
                   )}
                 </Text>
-                <PercentChangeText
-                  isDown={isPriceDown}
-                  textSize='14px'
-                  isBold={false}
-                >
-                  {`${!isPriceDown ? '+' : ''}${Number(
-                    spotPrice?.assetTimeframeChange ?? '',
-                  ).toFixed(2)}%`}
-                </PercentChangeText>
+
+                {spotPrice?.percentageChange24h ? (
+                  <PercentChangeText
+                    isDown={isPriceDown}
+                    textSize='14px'
+                    isBold={false}
+                  >
+                    {`${!isPriceDown ? '+' : ''}
+                        ${Number(spotPrice.percentageChange24h).toFixed(2)}%`}
+                  </PercentChangeText>
+                ) : (
+                  <Text
+                    textSize='14px'
+                    textColor='primary'
+                    isBold={false}
+                  >
+                    -
+                  </Text>
+                )}
               </Row>
             )}
           </Row>

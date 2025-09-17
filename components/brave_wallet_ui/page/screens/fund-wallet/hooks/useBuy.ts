@@ -50,10 +50,14 @@ import { querySubscriptionOptions60s } from '../../../../common/slices/constants
 import Amount from '../../../../utils/amount'
 import {
   getAssetSymbol,
-  getAssetPriceId,
+  getMeldTokensChainId,
   getMeldTokensCoinType,
 } from '../../../../utils/meld_utils'
 import { makeFundWalletRoute } from '../../../../utils/routes-utils'
+import {
+  getPriceRequestsForTokens,
+  getTokenPriceAmountFromRegistry,
+} from '../../../../utils/pricing-utils'
 
 export type BuyParamOverrides = {
   country?: string
@@ -156,7 +160,7 @@ export const useBuy = () => {
     )
 
   // Memos and Queries
-  const selectedAsset = useMemo(() => {
+  const selectedMeldAsset = useMemo(() => {
     if (!currencyCode || !meldSupportedBuyAssets || !chainId) {
       return DEFAULT_ASSET
     }
@@ -169,11 +173,28 @@ export const useBuy = () => {
     )
   }, [meldSupportedBuyAssets, currencyCode, chainId])
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    selectedAsset
+  const selectedAsset: Pick<
+    BraveWallet.BlockchainToken,
+    'coin' | 'chainId' | 'contractAddress'
+  > = useMemo(
+    () => ({
+      coin: getMeldTokensCoinType(selectedMeldAsset),
+      chainId: getMeldTokensChainId(selectedMeldAsset) ?? '',
+      contractAddress: selectedMeldAsset.contractAddress || '',
+    }),
+    [selectedMeldAsset],
+  )
+
+  const selectedAssetPriceRequests = useMemo(
+    () => getPriceRequestsForTokens([selectedAsset]),
+    [selectedAsset],
+  )
+
+  const { data: spotPrices = [] } = useGetTokenSpotPricesQuery(
+    selectedAssetPriceRequests.length && selectedCurrency?.currencyCode
       ? {
-          ids: [getAssetPriceId(selectedAsset)],
-          toCurrency: selectedCurrency?.currencyCode || defaultFiatCurrency,
+          requests: selectedAssetPriceRequests,
+          vsCurrency: selectedCurrency?.currencyCode || defaultFiatCurrency,
         }
       : skipToken,
     querySubscriptionOptions60s,
@@ -181,25 +202,22 @@ export const useBuy = () => {
 
   const selectedAccount = useMemo(() => {
     if (!accountFromParams) {
-      return getFirstAccountByCoinType(
-        getMeldTokensCoinType(selectedAsset),
-        accounts,
-      )
+      return getFirstAccountByCoinType(selectedAsset.coin, accounts)
     }
     return accountFromParams
   }, [accountFromParams, accounts, selectedAsset])
 
   const selectedAssetSpotPrice = useMemo(() => {
-    if (selectedAsset && spotPriceRegistry) {
-      return spotPriceRegistry[getAssetPriceId(selectedAsset)]
+    if (selectedAsset && spotPrices) {
+      return getTokenPriceAmountFromRegistry(spotPrices, selectedAsset)
     }
     return undefined
-  }, [selectedAsset, spotPriceRegistry])
+  }, [selectedAsset, spotPrices])
 
   const [cryptoEstimate, formattedCryptoEstimate] = useMemo(() => {
-    if (selectedAssetSpotPrice && selectedAsset) {
-      const symbol = getAssetSymbol(selectedAsset)
-      const estimate = new Amount(amount).div(selectedAssetSpotPrice.price)
+    if (selectedAssetSpotPrice && selectedMeldAsset) {
+      const symbol = getAssetSymbol(selectedMeldAsset)
+      const estimate = new Amount(amount).div(selectedAssetSpotPrice)
 
       return [
         estimate?.toNumber().toString(),
@@ -207,7 +225,7 @@ export const useBuy = () => {
       ]
     }
     return ['', '']
-  }, [selectedAssetSpotPrice, selectedAsset, amount])
+  }, [selectedAssetSpotPrice, selectedMeldAsset, amount])
 
   const quotesSortedByBestReturn = useMemo(() => {
     if (quotes.length === 0) {
@@ -259,7 +277,7 @@ export const useBuy = () => {
         sourceCurrencyCode:
           overrides.sourceCurrencyCode ?? selectedCurrency?.currencyCode,
         destinationCurrencyCode:
-          overrides.destinationCurrencyCode ?? selectedAsset?.currencyCode,
+          overrides.destinationCurrencyCode ?? selectedMeldAsset?.currencyCode,
         amount: overrides.amount ?? amount,
         receiveAddress: overrides.receiveAddress ?? receiveAddress,
         paymentMethod: overrides.paymentMethod ?? selectedPaymentMethod,
@@ -322,7 +340,7 @@ export const useBuy = () => {
       amount,
       selectedCountryCode,
       generateQuotes,
-      selectedAsset?.currencyCode,
+      selectedMeldAsset?.currencyCode,
       selectedCurrency?.currencyCode,
       selectedPaymentMethod,
       receiveAddress,
@@ -418,9 +436,9 @@ export const useBuy = () => {
 
   const onSelectAccount = useCallback(
     (account: BraveWallet.AccountInfo) => {
-      history.replace(makeFundWalletRoute(selectedAsset, account))
+      history.replace(makeFundWalletRoute(selectedMeldAsset, account))
     },
-    [selectedAsset, history],
+    [selectedMeldAsset, history],
   )
 
   const onBuy = useCallback(
@@ -429,7 +447,7 @@ export const useBuy = () => {
 
       const sessionData: CryptoBuySessionData = {
         countryCode: selectedCountryCode,
-        destinationCurrencyCode: selectedAsset.currencyCode,
+        destinationCurrencyCode: selectedMeldAsset.currencyCode,
         paymentMethodType: undefined,
         redirectUrl: undefined,
         serviceProvider: quote.serviceProvider,
@@ -480,7 +498,7 @@ export const useBuy = () => {
     [
       amount,
       createMeldBuyWidget,
-      selectedAsset?.currencyCode,
+      selectedMeldAsset?.currencyCode,
       selectedCountryCode,
       selectedCurrency,
       receiveAddress,
@@ -526,10 +544,11 @@ export const useBuy = () => {
     // Reset quotes and triggers a new fetch if state is reset
     // back to defaults on the page.
     if (
-      selectedAsset.currencyCode === DEFAULT_ASSET.currencyCode
+      selectedMeldAsset.currencyCode === DEFAULT_ASSET.currencyCode
       && ((hasQuoteError && quotes.length === 0)
         || (quotes.length !== 0
-          && quotes[0].destinationCurrencyCode !== selectedAsset.currencyCode))
+          && quotes[0].destinationCurrencyCode
+            !== selectedMeldAsset.currencyCode))
       && currencyCode === undefined
       && chainId === undefined
     ) {
@@ -537,21 +556,21 @@ export const useBuy = () => {
       setHasQuoteError(false)
       setTimeUntilNextQuote(undefined)
     }
-  }, [selectedAsset, currencyCode, chainId, quotes, hasQuoteError])
+  }, [selectedMeldAsset, currencyCode, chainId, quotes, hasQuoteError])
 
   useEffect(() => {
     if (
-      selectedAsset.currencyCode !== DEFAULT_ASSET.currencyCode
+      selectedMeldAsset.currencyCode !== DEFAULT_ASSET.currencyCode
       && currencyCode !== undefined
       && chainId !== undefined
       && selectedAccount === undefined
     ) {
       setShowCreateAccount(true)
     }
-  }, [selectedAsset, currencyCode, chainId, selectedAccount])
+  }, [selectedMeldAsset, currencyCode, chainId, selectedAccount])
 
   return {
-    selectedAsset,
+    selectedMeldAsset,
     selectedCurrency,
     selectedAccount,
     amount,

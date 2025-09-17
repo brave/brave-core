@@ -112,10 +112,14 @@ class SelectAccountTokenStoreTests: XCTestCase {
         decimals: Int(allUserAssets[0].decimals)
       ) ?? ""
     let mockETHAssetPrice: BraveWallet.AssetPrice = .init(
-      fromAsset: "eth",
-      toAsset: "usd",
+      coin: .eth,
+      chainId: BraveWallet.MainnetChainId,
+      address: "",
       price: mockETHPrice,
-      assetTimeframeChange: "-57.23"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
     )
     let usdcBalanceWei =
       formatter.weiString(
@@ -124,16 +128,24 @@ class SelectAccountTokenStoreTests: XCTestCase {
         decimals: Int(allUserAssets[1].decimals)
       ) ?? ""
     let mockUSDCAssetPrice: BraveWallet.AssetPrice = .init(
-      fromAsset: allUserAssets[1].assetRatioId.lowercased(),
-      toAsset: "usd",
+      coin: .eth,
+      chainId: BraveWallet.SepoliaChainId,
+      address: BraveWallet.BlockchainToken.mockUSDCToken.contractAddress,
       price: mockUSDCPrice,
-      assetTimeframeChange: "-57.23"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
     )
     let mockSOLAssetPrice: BraveWallet.AssetPrice = .init(
-      fromAsset: "sol",
-      toAsset: "usd",
+      coin: .sol,
+      chainId: BraveWallet.SolanaMainnet,
+      address: "",
       price: mockSOLPrice,
-      assetTimeframeChange: "-57.23"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
     )
     let filBalanceWei =
       formatter.weiString(
@@ -142,10 +154,24 @@ class SelectAccountTokenStoreTests: XCTestCase {
         decimals: Int(allUserAssets[5].decimals)
       ) ?? ""
     let mockFILAssetPrice: BraveWallet.AssetPrice = .init(
-      fromAsset: "fil",
-      toAsset: "usd",
+      coin: .fil,
+      chainId: BraveWallet.FilecoinMainnet,
+      address: "",
       price: mockFILPrice,
-      assetTimeframeChange: "-57.23"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    )
+    let mockFILTestnetAssetPrice: BraveWallet.AssetPrice = .init(
+      coin: .fil,
+      chainId: BraveWallet.FilecoinTestnet,
+      address: "",
+      price: mockFILPrice,
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
     )
 
     let keyringService = BraveWallet.TestKeyringService()
@@ -215,10 +241,14 @@ class SelectAccountTokenStoreTests: XCTestCase {
       return result
     }
     let assetRatioService = BraveWallet.TestAssetRatioService()
-    assetRatioService._price = { priceIds, _, _, completion in
+    assetRatioService._price = { _, _, completion in
       completion(
         true,
-        [mockETHAssetPrice, mockUSDCAssetPrice, mockSOLAssetPrice, mockFILAssetPrice]
+        [
+          mockETHAssetPrice, mockUSDCAssetPrice,
+          mockSOLAssetPrice, mockFILAssetPrice,
+          mockFILTestnetAssetPrice,
+        ]
       )
     }
 

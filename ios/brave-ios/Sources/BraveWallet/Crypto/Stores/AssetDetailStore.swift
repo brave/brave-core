@@ -203,7 +203,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
 
   private var updateTask: Task<Void, Never>?
   private var solEstimatedTxFeesCache: [String: UInt64] = [:]
-  private var assetPricesCache: [String: Double] = [:]
+  private var assetPricesCache: [BraveWallet.AssetPrice] = []
   public func update() {
     updateTask?.cancel()
     updateTask = Task { @MainActor in
@@ -233,19 +233,17 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         }
 
         // fetch prices for the asset
-        let (prices, _, priceHistory) = await fetchPriceInfo(for: token.assetRatioId)
+        let (prices, priceHistory) = await fetchPriceInfo(for: token)
         self.priceHistory = priceHistory
         self.isLoadingPrice = false
         self.isInitialState = false
         self.isLoadingChart = false
 
-        if let assetPrice = prices.first(where: {
-          $0.toAsset.caseInsensitiveCompare(self.currencyFormatter.currencyCode) == .orderedSame
-        }),
+        if let assetPrice = prices.getTokenPrice(for: token),
           let value = Double(assetPrice.price)
         {
           self.price = value
-          if let deltaValue = Double(assetPrice.assetTimeframeChange) {
+          if let deltaValue = Double(assetPrice.percentageChange24h) {
             self.priceIsDown = deltaValue < 0
             self.priceDelta =
               self.percentFormatter.string(from: NSNumber(value: deltaValue / 100.0)) ?? ""
@@ -316,8 +314,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         )
 
         // 3. update assets price t build tx section again
-        let allUserAssetsAssetRatioIds = userAssets.map(\.assetRatioId)
-        await updateAssetPricesCache(assetRatioIds: allUserAssetsAssetRatioIds)
+        await updateAssetPricesCache(for: userAssets)
 
         guard !Task.isCancelled else { return }
         self.transactionSections = buildTransactionSections(
@@ -339,7 +336,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
           ) ?? ""
         self.priceIsDown = coinMarket.priceChangePercentage24h < 0
 
-        let (_, _, priceHistory) = await self.fetchPriceInfo(for: coinMarket.id)
+        let priceHistory = await self.fetchPriceHistory(for: coinMarket.id)
         self.priceHistory = priceHistory
         self.isLoadingPrice = false
         self.isInitialState = false
@@ -388,32 +385,34 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     return token
   }
 
-  // Return given token's asset prices, btc ratio and price history
-  @MainActor private func fetchPriceInfo(
-    for tokenId: String
-  ) async -> ([BraveWallet.AssetPrice], String, [BraveWallet.AssetTimePrice]) {
-    // fetch prices for the asset
-    var assetPrices: [BraveWallet.AssetPrice] = []
-    var btcRatio = "0.0000 BTC"
-    let (_, prices) = await assetRatioService.price(
-      fromAssets: [tokenId],
-      toAssets: [currencyFormatter.currencyCode, "btc"],
-      timeframe: timeframe
-    )
-    assetPrices = prices
-    if tokenId.caseInsensitiveCompare("bitcoin") == .orderedSame {
-      btcRatio = "1 BTC"
-    } else if let assetPrice = prices.first(where: { $0.toAsset == "btc" }) {
-      btcRatio = "\(assetPrice.price) BTC"
-    }
+  // Return given token's price history
+  @MainActor private func fetchPriceHistory(
+    for assetRatioId: String
+  ) async -> [BraveWallet.AssetTimePrice] {
     // fetch price history for the asset
     let (_, priceHistory) = await assetRatioService.priceHistory(
-      asset: tokenId,
+      asset: assetRatioId,
       vsAsset: currencyFormatter.currencyCode,
       timeframe: timeframe
     )
 
-    return (assetPrices, btcRatio, priceHistory)
+    return priceHistory
+  }
+
+  // Return given token's asset prices and price history
+  @MainActor private func fetchPriceInfo(
+    for token: BraveWallet.BlockchainToken
+  ) async -> ([BraveWallet.AssetPrice], [BraveWallet.AssetTimePrice]) {
+    // fetch prices for the asset
+    let prices = await assetRatioService.fetchPrices(
+      for: [token],
+      vsCurrency: currencyFormatter.currencyCode
+    )
+
+    // fetch price history for the asset
+    let priceHistory = await fetchPriceHistory(for: token.assetRatioId)
+
+    return (prices, priceHistory)
   }
 
   @MainActor func handleTransactionFollowUpAction(
@@ -499,7 +498,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     accountInfos: [BraveWallet.AccountInfo],
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
-    assetRatios: [String: Double],
+    assetRatios: [BraveWallet.AssetPrice],
     nftMetadata: [String: BraveWallet.NftMetadata],
     solEstimatedTxFees: [String: UInt64]
   ) -> [TransactionSection] {
@@ -548,15 +547,12 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  @MainActor private func updateAssetPricesCache(assetRatioIds: [String]) async {
+  @MainActor private func updateAssetPricesCache(for tokens: [BraveWallet.BlockchainToken]) async {
     let prices = await assetRatioService.fetchPrices(
-      for: assetRatioIds,
-      toAssets: [currencyFormatter.currencyCode],
-      timeframe: .oneDay
-    ).compactMapValues { Double($0) }
-    for (key, value) in prices {  // update cached values
-      self.assetPricesCache[key] = value
-    }
+      for: tokens,
+      vsCurrency: currencyFormatter.currencyCode
+    )
+    self.assetPricesCache.update(with: prices)
   }
 
   private var transactionDetailsStore: TransactionDetailsStore?

@@ -46,7 +46,7 @@ import Amount from '../../../../utils/amount'
 import {
   computeFiatAmount,
   getTokenPriceAmountFromRegistry,
-  getPriceIdForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
@@ -331,18 +331,20 @@ export const PortfolioOverview = () => {
     tokenBalancesRegistry,
   ])
 
-  const tokenPriceIds = React.useMemo(
+  const tokenPriceRequests = React.useMemo(
     () =>
-      visibleAssetOptions
-        .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
-        .map(({ asset }) => getPriceIdForToken(asset)),
+      getPriceRequestsForTokens(
+        visibleAssetOptions
+          .filter(({ assetBalance }) => new Amount(assetBalance).gt(0))
+          .map(({ asset }) => asset),
+      ),
     [visibleAssetOptions],
   )
 
-  const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
+  const { data: spotPrices = [], isLoading: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(
-      !isCollectionView && tokenPriceIds.length && defaultFiat
-        ? { ids: tokenPriceIds, toCurrency: defaultFiat }
+      !isCollectionView && tokenPriceRequests.length && defaultFiat
+        ? { requests: tokenPriceRequests, vsCurrency: defaultFiat }
         : skipToken,
       querySubscriptionOptions60s,
     )
@@ -386,7 +388,7 @@ export const PortfolioOverview = () => {
 
     const visibleAssetFiatBalances = visibleAssetOptions.map((item) => {
       return computeFiatAmount({
-        spotPriceRegistry,
+        spotPrices,
         value: item.assetBalance,
         token: item.asset,
       })
@@ -400,7 +402,7 @@ export const PortfolioOverview = () => {
     tokenBalancesRegistry,
     visiblePortfolioNetworks,
     visibleAssetOptions,
-    spotPriceRegistry,
+    spotPrices,
     accountsListWithRewards,
     isLoadingTokensOrRewards,
     isLoadingSpotPrices,
@@ -481,7 +483,7 @@ export const PortfolioOverview = () => {
         networks={visiblePortfolioNetworks}
         accounts={accountsListWithRewards}
         tokenBalancesRegistry={tokenBalancesRegistry}
-        spotPriceRegistry={spotPriceRegistry}
+        spotPrices={spotPrices}
         renderToken={({ item, account }) => (
           <PortfolioAssetItem
             action={() => onSelectAsset(item.asset)}
@@ -506,9 +508,9 @@ export const PortfolioOverview = () => {
             token={item.asset}
             hideBalances={hidePortfolioBalances}
             spotPrice={
-              spotPriceRegistry
+              spotPrices
                 ? getTokenPriceAmountFromRegistry(
-                    spotPriceRegistry,
+                    spotPrices,
                     item.asset,
                   ).format()
                 : tokenBalancesRegistry
@@ -528,7 +530,7 @@ export const PortfolioOverview = () => {
     onSelectAsset,
     selectedGroupAssetsByItem,
     hidePortfolioBalances,
-    spotPriceRegistry,
+    spotPrices,
     tokenBalancesRegistry,
   ])
 

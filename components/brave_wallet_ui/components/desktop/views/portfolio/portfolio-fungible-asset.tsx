@@ -33,6 +33,7 @@ import { getBalance } from '../../../../utils/balance-utils'
 import {
   computeFiatAmount,
   getPriceIdForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
@@ -203,6 +204,11 @@ export const PortfolioFungibleAsset = () => {
     [selectedAssetFromParams],
   )
 
+  const tokenPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens([selectedAssetFromParams]),
+    [selectedAssetFromParams],
+  )
+
   const {
     data: selectedAssetPriceHistory,
     isFetching: isFetchingPortfolioPriceHistory,
@@ -250,9 +256,9 @@ export const PortfolioFungibleAsset = () => {
   const isLoadingGraphData =
     !selectedAssetFromParams || isFetchingPortfolioPriceHistory
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length && defaultFiat
-      ? { ids: tokenPriceIds, toCurrency: defaultFiat }
+  const { data: spotPrices = [] } = useGetTokenSpotPricesQuery(
+    tokenPriceRequests.length && defaultFiat
+      ? { requests: tokenPriceRequests, vsCurrency: defaultFiat }
       : skipToken,
     querySubscriptionOptions60s,
   )
@@ -298,12 +304,12 @@ export const PortfolioFungibleAsset = () => {
     () =>
       selectedAssetFromParams && fullAssetBalance
         ? computeFiatAmount({
-            spotPriceRegistry,
+            spotPrices,
             value: fullAssetBalance,
             token: selectedAssetFromParams,
           })
         : Amount.empty(),
-    [fullAssetBalance, selectedAssetFromParams, spotPriceRegistry],
+    [fullAssetBalance, selectedAssetFromParams, spotPrices],
   )
 
   const formattedFullAssetBalance = React.useMemo(
@@ -537,7 +543,7 @@ export const PortfolioFungibleAsset = () => {
             tokenBalancesRegistry={tokenBalancesRegistry}
             isLoadingBalances={isLoadingBalances}
             accounts={candidateAccounts}
-            spotPriceRegistry={spotPriceRegistry}
+            spotPrices={spotPrices}
           />
         </Column>
       </StyledWrapper>

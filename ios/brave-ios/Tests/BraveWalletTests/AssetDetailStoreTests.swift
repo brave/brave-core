@@ -37,15 +37,19 @@ class AssetDetailStoreTests: XCTestCase {
     let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
-    assetRatioService._price = { _, _, _, completion in
+    assetRatioService._price = { _, _, completion in
       completion(
         true,
         [
           .init(
-            fromAsset: BraveWallet.BlockchainToken.previewToken.tokenId,
-            toAsset: "usd",
+            coin: .eth,
+            chainId: BraveWallet.MainnetChainId,
+            address: BraveWallet.BlockchainToken.previewToken.contractAddress,
             price: "1",
-            assetTimeframeChange: "1"
+            vsCurrency: "usd",
+            cacheStatus: .hit,
+            source: .coingecko,
+            percentageChange24h: "1"
           )
         ]
       )
@@ -270,15 +274,19 @@ class AssetDetailStoreTests: XCTestCase {
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
     let mockBtcPrice: Double = 63503
-    assetRatioService._price = { _, _, _, completion in
+    assetRatioService._price = { _, _, completion in
       completion(
         true,
         [
           .init(
-            fromAsset: BraveWallet.BlockchainToken.mockBTCToken.tokenId,
-            toAsset: "usd",
+            coin: .btc,
+            chainId: BraveWallet.BitcoinMainnet,
+            address: "",
             price: "\(mockBtcPrice)",
-            assetTimeframeChange: "-1.72"
+            vsCurrency: "usd",
+            cacheStatus: .hit,
+            source: .coingecko,
+            percentageChange24h: "-1.72"
           )
         ]
       )
@@ -482,15 +490,19 @@ class AssetDetailStoreTests: XCTestCase {
     let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
-    assetRatioService._price = { _, _, _, completion in
+    assetRatioService._price = { _, _, completion in
       completion(
         true,
         [
           .init(
-            fromAsset: BraveWallet.BlockchainToken.previewToken.tokenId,
-            toAsset: "btc",
-            price: "0.1",
-            assetTimeframeChange: "1"
+            coin: .btc,
+            chainId: BraveWallet.BitcoinMainnet,
+            address: "",
+            price: "100000",
+            vsCurrency: "usd",
+            cacheStatus: .hit,
+            source: .coingecko,
+            percentageChange24h: "0.58"
           )
         ]
       )

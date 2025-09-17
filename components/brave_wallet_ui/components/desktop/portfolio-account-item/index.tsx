@@ -18,7 +18,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import Amount from '../../../utils/amount'
 import {
   computeFiatAmount,
-  getPriceIdForToken,
+  getPriceRequestsForTokens,
 } from '../../../utils/pricing-utils'
 import { makeAccountRoute } from '../../../utils/routes-utils'
 import { getIsRewardsAccount } from '../../../utils/rewards_utils'
@@ -111,28 +111,28 @@ export const PortfolioAccountItem = (props: Props) => {
       .format(6, true)
   }, [assetBalance, asset.decimals])
 
-  const tokenPriceIds = React.useMemo(
-    () => [getPriceIdForToken(asset)],
+  const tokenPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens([asset]),
     [asset],
   )
 
   // Queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    defaultFiatCurrency && tokenPriceIds.length
-      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+  const { data: spotPrices = [] } = useGetTokenSpotPricesQuery(
+    defaultFiatCurrency && tokenPriceRequests.length
+      ? { requests: tokenPriceRequests, vsCurrency: defaultFiatCurrency }
       : skipToken,
     querySubscriptionOptions60s,
   )
 
   const fiatBalance: Amount = React.useMemo(() => {
     return computeFiatAmount({
-      spotPriceRegistry,
+      spotPrices,
       value: assetBalance,
       token: asset,
     })
-  }, [spotPriceRegistry, assetBalance, asset])
+  }, [spotPrices, assetBalance, asset])
 
   const isAssetsBalanceZero = React.useMemo(() => {
     return new Amount(assetBalance).isZero()

@@ -58,9 +58,8 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                   GetSellUrlCallback callback) override;
 
   // mojom::AssetRatioService
-  void GetPrice(const std::vector<std::string>& from_assets,
-                const std::vector<std::string>& to_assets,
-                mojom::AssetPriceTimeframe timeframe,
+  void GetPrice(std::vector<mojom::AssetPriceRequestPtr> requests,
+                const std::string& vs_currency,
                 GetPriceCallback callback) override;
 
   // The asset and vs_asset params are strings like: "bat"
@@ -79,9 +78,7 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                                const std::string& currency_code,
                                const std::string& auth_token);
 
-  static GURL GetPriceURL(const std::vector<std::string>& from_assets,
-                          const std::vector<std::string>& to_assets,
-                          mojom::AssetPriceTimeframe timeframe);
+  static GURL GetPriceURL(const std::string& vs_currency);
   static GURL GetPriceHistoryURL(const std::string& asset,
                                  const std::string& vs_asset,
                                  mojom::AssetPriceTimeframe timeframe);
@@ -113,9 +110,7 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
   void OnGetStripeBuyURL(GetBuyUrlV1Callback callback,
                          APIRequestResult api_request_result);
 
-  void OnGetPrice(std::vector<std::string> from_assets,
-                  std::vector<std::string> to_assets,
-                  GetPriceCallback callback,
+  void OnGetPrice(GetPriceCallback callback,
                   APIRequestResult api_request_result);
   void OnGetPriceHistory(GetPriceHistoryCallback callback,
                          APIRequestResult api_request_result);

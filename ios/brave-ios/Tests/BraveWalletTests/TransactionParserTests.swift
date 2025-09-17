@@ -73,15 +73,97 @@ class TransactionParserTests: XCTestCase {
     .previewToken, .previewDaiToken, .mockUSDCToken, .mockSolToken, .mockSpdToken,
     .mockSolanaNFTToken, .mockFilToken, .mockBTCToken, .mockZecToken,
   ]
-  let assetRatios: [String: Double] = [
-    "eth": 1,
-    BraveWallet.BlockchainToken.previewDaiToken.assetRatioId.lowercased(): 2,
-    BraveWallet.BlockchainToken.mockUSDCToken.assetRatioId.lowercased(): 3,
-    "sol": 20,
-    BraveWallet.BlockchainToken.mockSpdToken.assetRatioId.lowercased(): 15,
-    "fil": 2,
-    BraveWallet.BlockchainToken.mockBTCToken.assetRatioId.lowercased(): 62_117,
-    BraveWallet.BlockchainToken.mockZecToken.assetRatioId.lowercased(): 35,
+  let assetRatios: [BraveWallet.AssetPrice] = [
+    .init(
+      coin: .eth,
+      chainId: BraveWallet.MainnetChainId,
+      address: "",
+      price: "1",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "0"
+    ),
+    .init(
+      coin: .eth,
+      chainId: BraveWallet.MainnetChainId,
+      address: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
+      price: "2",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "0"
+    ),
+    .init(
+      coin: .eth,
+      chainId: BraveWallet.MainnetChainId,
+      address: BraveWallet.BlockchainToken.mockUSDCToken.contractAddress,
+      price: "3",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "0"
+    ),
+    .init(
+      coin: .sol,
+      chainId: BraveWallet.SolanaMainnet,
+      address: "",
+      price: "20",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "0"
+    ),
+    .init(
+      coin: .sol,
+      chainId: BraveWallet.SolanaMainnet,
+      address: BraveWallet.BlockchainToken.mockSpdToken.contractAddress,
+      price: "15",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "0"
+    ),
+    .init(
+      coin: .fil,
+      chainId: BraveWallet.FilecoinMainnet,
+      address: "",
+      price: "2",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "0"
+    ),
+    .init(
+      coin: .fil,
+      chainId: BraveWallet.FilecoinTestnet,
+      address: "",
+      price: "2",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "0"
+    ),
+    .init(
+      coin: .btc,
+      chainId: BraveWallet.BitcoinMainnet,
+      address: "",
+      price: "62117",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "0"
+    ),
+    .init(
+      coin: .zec,
+      chainId: BraveWallet.ZCashMainnet,
+      address: "",
+      price: "35",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "0"
+    ),
   ]
 
   let mockGasEstimation = BraveWallet.GasEstimation1559(

@@ -8,15 +8,62 @@
 #include "base/check.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/api/asset_ratio.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_wallet {
+
+namespace {
+
+std::optional<std::string> ParseOptionalNullableString(
+    const std::optional<base::Value>& value) {
+  if (!value.has_value()) {
+    return "";
+  }
+
+  const base::Value& val = value.value();
+  if (val.is_none()) {
+    return "";
+  }
+
+  if (val.is_string()) {
+    return val.GetString();
+  }
+
+  return std::nullopt;
+}
+
+std::optional<mojom::Gate3CacheStatus> GetCacheStatusFromString(
+    const std::string& cache_status) {
+  std::string uppercase_status = base::ToUpperASCII(cache_status);
+  if (uppercase_status == "HIT") {
+    return mojom::Gate3CacheStatus::kHit;
+  } else if (uppercase_status == "MISS") {
+    return mojom::Gate3CacheStatus::kMiss;
+  }
+  return std::nullopt;
+}
+
+mojom::AssetPriceSource GetAssetPriceSource(const std::string& source) {
+  std::string uppercase_source = base::ToUpperASCII(source);
+  if (uppercase_source == "COINGECKO") {
+    return mojom::AssetPriceSource::kCoingecko;
+  } else if (uppercase_source == "JUPITER") {
+    return mojom::AssetPriceSource::kJupiter;
+  } else {
+    return mojom::AssetPriceSource::kUnknown;
+  }
+}
+
+}  // namespace
 
 std::optional<std::string> ParseSardineAuthToken(
     const base::Value& json_value) {
@@ -41,75 +88,62 @@ std::optional<std::string> ParseSardineAuthToken(
   return *auth_token;
 }
 
-bool ParseAssetPrice(const base::Value& json_value,
-                     const std::vector<std::string>& from_assets,
-                     const std::vector<std::string>& to_assets,
-                     std::vector<mojom::AssetPricePtr>* values) {
-  // Parses results like this:
-  // /v2/relative/provider/coingecko/bat,chainlink/btc,usd/1w
-  // {
-  //  "payload": {
-  //    "chainlink": {
-  //      "btc": 0.00063075,
-  //      "usd": 29.17,
-  //      "btc_timeframe_change": -0.9999742658279261,
-  //      "usd_timeframe_change": 0.1901162098990581
-  //    },
-  //    "bat": {
-  //      "btc": 1.715e-05,
-  //      "usd": 0.793188,
-  //      "btc_timeframe_change": -0.9999993002916352,
-  //      "usd_timeframe_change": -0.9676384677306338
-  //    }
-  //  },
-  //  "lastUpdated": "2021-08-16T15:45:11.901Z"
-  // }
-
-  DCHECK(values);
-
-  if (!json_value.is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
-    return false;
+// ParseAssetPrices parses the response from the pricing API of Gate3.
+//
+// Docs:
+// https://gate3.bsg.brave.com/docs#/default/get_prices_api_pricing_v1_getPrices_post
+std::vector<mojom::AssetPricePtr> ParseAssetPrices(
+    const base::Value& json_value) {
+  if (!json_value.is_list()) {
+    LOG(ERROR) << "Invalid response, expected array";
+    return {};
   }
 
-  const auto& response_dict = json_value.GetDict();
-  const auto* payload = response_dict.FindDict("payload");
-  if (!payload) {
-    return false;
-  }
+  const auto& response_list = json_value.GetList();
+  std::vector<mojom::AssetPricePtr> prices;
 
-  for (const std::string& from_asset : from_assets) {
-    const auto* from_asset_dict = payload->FindDictByDottedPath(from_asset);
-    if (!from_asset_dict) {
+  for (const auto& item : response_list) {
+    auto payload = api::asset_ratio::AssetPricePayload::FromValue(item);
+    if (!payload) {
+      LOG(ERROR) << "Invalid response, could not parse AssetPricePayload:"
+                 << item.DebugString();
       continue;
     }
 
-    for (const std::string& to_asset : to_assets) {
-      auto asset_price = mojom::AssetPrice::New();
-      asset_price->from_asset = from_asset;
-      asset_price->to_asset = to_asset;
-
-      std::optional<double> to_price =
-          from_asset_dict->FindDoubleByDottedPath(to_asset);
-      if (!to_price) {
-        return false;
-      }
-      asset_price->price = base::NumberToString(*to_price);
-      std::string to_asset_timeframe_key =
-          absl::StrFormat("%s_timeframe_change", to_asset);
-      std::optional<double> to_timeframe_change =
-          from_asset_dict->FindDoubleByDottedPath(to_asset_timeframe_key);
-      if (!to_timeframe_change) {
-        return false;
-      }
-      asset_price->asset_timeframe_change =
-          base::NumberToString(*to_timeframe_change);
-
-      values->push_back(std::move(asset_price));
+    auto coin = GetCoinTypeFromString(payload->coin);
+    if (!coin) {
+      continue;
     }
+
+    auto address = ParseOptionalNullableString(payload->address);
+    if (!address.has_value()) {
+      continue;
+    }
+
+    auto cache_status = GetCacheStatusFromString(payload->cache_status);
+    if (!cache_status) {
+      continue;
+    }
+
+    auto source = GetAssetPriceSource(payload->source);
+
+    auto percentage_change_24h =
+        ParseOptionalNullableString(payload->percentage_change_24h);
+
+    auto asset_price = mojom::AssetPrice::New();
+    asset_price->coin = *coin;
+    asset_price->chain_id = payload->chain_id;
+    asset_price->address = *address;
+    asset_price->price = payload->price;
+    asset_price->vs_currency = payload->vs_currency;
+    asset_price->cache_status = *cache_status;
+    asset_price->source = source;
+    asset_price->percentage_change_24h = percentage_change_24h.value_or("");
+
+    prices.push_back(std::move(asset_price));
   }
 
-  return true;
+  return prices;
 }
 
 bool ParseAssetPriceHistory(const base::Value& json_value,

@@ -48,7 +48,7 @@ import { getBalance } from '../../../../../../utils/balance-utils'
 import {
   getTokenPriceAmountFromRegistry,
   getTokenPriceFromRegistry,
-  getPriceIdForToken,
+  getPriceRequestsForTokens,
 } from '../../../../../../utils/pricing-utils'
 import { getLPIcon } from '../../../swap.utils'
 
@@ -142,11 +142,15 @@ export const QuoteInfo = (props: Props) => {
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    !isLoadingBalances && toToken && fromToken && defaultFiatCurrency
+  const tokenPriceRequests = React.useMemo(() => {
+    return getPriceRequestsForTokens([toToken, fromToken])
+  }, [toToken, fromToken])
+
+  const { data: spotPrices } = useGetTokenSpotPricesQuery(
+    !isLoadingBalances && defaultFiatCurrency && tokenPriceRequests.length
       ? {
-          ids: [getPriceIdForToken(toToken), getPriceIdForToken(fromToken)],
-          toCurrency: defaultFiatCurrency,
+          requests: tokenPriceRequests,
+          vsCurrency: defaultFiatCurrency,
         }
       : skipToken,
     querySubscriptionOptions60s,
@@ -193,9 +197,9 @@ export const QuoteInfo = (props: Props) => {
     : quoteOptions[0]
 
   const toTokenPriceAmount =
-    spotPriceRegistry
+    spotPrices
     && toToken
-    && getTokenPriceAmountFromRegistry(spotPriceRegistry, toToken)
+    && getTokenPriceAmountFromRegistry(spotPrices, toToken)
 
   const swapRate: string = React.useMemo(() => {
     if (selectedQuoteOption === undefined) {
@@ -215,11 +219,8 @@ export const QuoteInfo = (props: Props) => {
   const coinGeckoDelta: Amount = React.useMemo(() => {
     if (
       fromToken !== undefined
-      && spotPriceRegistry
-      && !getTokenPriceAmountFromRegistry(
-        spotPriceRegistry,
-        fromToken,
-      ).isUndefined()
+      && spotPrices
+      && !getTokenPriceAmountFromRegistry(spotPrices, fromToken).isUndefined()
       && toTokenPriceAmount !== undefined
       && selectedQuoteOption !== undefined
     ) {
@@ -231,7 +232,7 @@ export const QuoteInfo = (props: Props) => {
       //   1 FROM/USD = <R> TO/USD
       //   => <R> = (FROM/USD) / (TO/USD)
       const coinGeckoRate = getTokenPriceAmountFromRegistry(
-        spotPriceRegistry,
+        spotPrices,
         fromToken,
       ).div(toTokenPriceAmount)
 
@@ -246,7 +247,7 @@ export const QuoteInfo = (props: Props) => {
     }
 
     return Amount.zero()
-  }, [spotPriceRegistry, fromToken, selectedQuoteOption, toTokenPriceAmount])
+  }, [spotPrices, fromToken, selectedQuoteOption, toTokenPriceAmount])
 
   const coinGeckoDeltaText: string = React.useMemo(() => {
     if (coinGeckoDelta.gte(0)) {
@@ -353,8 +354,8 @@ export const QuoteInfo = (props: Props) => {
         accounts={accountsForReceivingToken}
         tokenBalancesRegistry={tokenBalancesRegistry}
         spotPrice={
-          spotPriceRegistry
-            ? getTokenPriceFromRegistry(spotPriceRegistry, toToken)
+          spotPrices
+            ? getTokenPriceFromRegistry(spotPrices, toToken)
             : undefined
         }
         onSelectAccount={handleSelectAccount}
@@ -364,7 +365,7 @@ export const QuoteInfo = (props: Props) => {
     toToken,
     accountsForReceivingToken,
     tokenBalancesRegistry,
-    spotPriceRegistry,
+    spotPrices,
     handleSelectAccount,
   ])
 

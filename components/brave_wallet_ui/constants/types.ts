@@ -42,15 +42,6 @@ export type HardwareWalletResponseCodeType =
   | 'transactionRejected'
   | 'unauthorized'
 
-/**
- * SpotPriceRegistry represents a mapping of a unique ID for a token to its
- * current spot price in default fiat currency terms. Use getPricingIdForToken
- * for computing this unique ID.
- */
-export type SpotPriceRegistry = {
-  [id: string]: BraveWallet.AssetPrice
-}
-
 export type TokenPriceHistory = {
   date: SerializableTimeDelta
   close: number
