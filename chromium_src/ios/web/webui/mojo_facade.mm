@@ -20,7 +20,12 @@
 // via mojom. Chrome-iOS responds only to the main-frame, but sub-frames can
 // also bind mojom. So we need to respond to whatever frame requested the
 // data, instead of always the main-frame.
-#define GetMainWebFrame() GetFrameWithId(frame_id)
+#define GetMainWebFrame()                                              \
+  GetFrameWithId(frame_id);                                            \
+  if (!main_frame) {                                                   \
+    main_frame =                                                       \
+        web_state_->GetPageWorldWebFramesManager()->GetMainWebFrame(); \
+  }
 // Add the frame id argument to the callback
 #define OnWatcherCallback(callback_id, watch_id, result) \
   OnWatcherCallback(callback_id, watch_id, std::string frame_id, result)
