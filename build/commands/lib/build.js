@@ -36,7 +36,6 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.buildConfig = buildConfig
   config.update(options)
   checkVersionsMatch()
-  
   util.touchOverriddenFiles()
   branding.update()
   await util.buildNativeRedirectCC()
