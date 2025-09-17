@@ -703,10 +703,10 @@ source_set("ui") {
       sources += [
         "views/commands/default_accelerators_mac.h",
         "views/commands/default_accelerators_mac.mm",
+        "views/frame/brave_browser_frame_view_mac.h",
+        "views/frame/brave_browser_frame_view_mac.mm",
         "views/frame/brave_browser_native_widget_mac.h",
         "views/frame/brave_browser_native_widget_mac.mm",
-        "views/frame/brave_browser_non_client_frame_view_mac.h",
-        "views/frame/brave_browser_non_client_frame_view_mac.mm",
       ]
     }
   }
