@@ -276,7 +276,7 @@ extension BrowserViewController: TabPolicyDecider {
       let isBlockFingerprintingEnabled =
         tab.braveShieldsHelper?.isShieldExpected(
           for: mainDocumentURL,
-          shield: .noScript,
+          shield: .fpProtection,
           considerAllShieldsOption: true
         ) ?? true
 
