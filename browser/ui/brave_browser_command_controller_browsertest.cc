@@ -268,8 +268,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 // Create guest browser and test its brave commands status.
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsEnableTestGuestWindow) {
-  ui_test_utils::BrowserChangeObserver browser_creation_observer(
-      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+  ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
 
   Browser* guest_browser = browser_creation_observer.Wait();
@@ -299,8 +298,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 #if BUILDFLAG(ENABLE_TOR)
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsEnableTestPrivateTorWindow) {
-  ui_test_utils::BrowserChangeObserver tor_browser_creation_observer(
-      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+  ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
   brave::NewOffTheRecordWindowTor(browser());
   Browser* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);

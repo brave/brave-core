@@ -1,4 +1,4 @@
-/* Copyright 2022 <year> The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -87,8 +87,7 @@ class BravePrivateNewTabPageBrowserTest
 
 IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageBrowserTest,
                        BraveSearchForTorBrowser) {
-  ui_test_utils::BrowserChangeObserver tor_browser_creation_observer(
-      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+  ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
   brave::NewOffTheRecordWindowTor(browser());
   Browser* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);
