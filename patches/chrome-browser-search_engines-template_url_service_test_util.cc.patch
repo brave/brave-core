@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/search_engines/template_url_service_test_util.cc b/chrome/browser/search_engines/template_url_service_test_util.cc
+index f68caa0a2f26b4f9b2806803627c75c54d4aa146..11cd6a8dc55a3dc215246ca2844f7d496f1951eb 100644
+--- a/chrome/browser/search_engines/template_url_service_test_util.cc
++++ b/chrome/browser/search_engines/template_url_service_test_util.cc
+@@ -220,7 +220,7 @@ TemplateURLServiceTestUtil::SetUpRequiredServicesWithCustomLocalState(
+                 CHECK_DEREF(
+                     TemplateURLPrepopulateData::ResolverFactory::GetInstance()
+                         ->GetForProfile(profile)),
+-                CHECK_DEREF(IdentityManagerFactory::GetForProfile(profile)));
++                IdentityManagerFactory::GetForProfile(profile));
+           }),
+   });
+ 
