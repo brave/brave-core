@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
+#include "brave/browser/ui/views/frame/brave_browser_frame_view_mac.h"
 
-#include "brave/browser/ui/views/frame/brave_browser_non_client_frame_view_mac.h"
+#include <memory>
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -21,10 +21,10 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
 
-BraveBrowserNonClientFrameViewMac::BraveBrowserNonClientFrameViewMac(
+BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
     BrowserWidget* browser_widget,
     BrowserView* browser_view)
-    : BrowserNonClientFrameViewMac(browser_widget, browser_view) {
+    : BrowserFrameViewMac(browser_widget, browser_view) {
   auto* browser = browser_view->browser();
   frame_graphic_ =
       std::make_unique<BraveWindowFrameGraphic>(browser->profile());
@@ -34,20 +34,20 @@ BraveBrowserNonClientFrameViewMac::BraveBrowserNonClientFrameViewMac(
     show_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsEnabled, prefs,
         base::BindRepeating(
-            &BraveBrowserNonClientFrameViewMac::UpdateWindowTitleAndControls,
+            &BraveBrowserFrameViewMac::UpdateWindowTitleAndControls,
             base::Unretained(this)));
     show_title_bar_on_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
         base::BindRepeating(
-            &BraveBrowserNonClientFrameViewMac::UpdateWindowTitleVisibility,
+            &BraveBrowserFrameViewMac::UpdateWindowTitleVisibility,
             base::Unretained(this)));
   }
 }
 
-BraveBrowserNonClientFrameViewMac::~BraveBrowserNonClientFrameViewMac() = default;
+BraveBrowserFrameViewMac::~BraveBrowserFrameViewMac() = default;
 
-void BraveBrowserNonClientFrameViewMac::OnPaint(gfx::Canvas* canvas) {
-  BrowserNonClientFrameViewMac::OnPaint(canvas);
+void BraveBrowserFrameViewMac::OnPaint(gfx::Canvas* canvas) {
+  BrowserFrameViewMac::OnPaint(canvas);
 
   // Don't draw frame graphic over border outline.
   gfx::ScopedCanvas scoped_canvas(canvas);
@@ -62,39 +62,39 @@ void BraveBrowserNonClientFrameViewMac::OnPaint(gfx::Canvas* canvas) {
   frame_graphic_->Paint(canvas, bounds_to_frame_graphic);
 }
 
-int BraveBrowserNonClientFrameViewMac::GetTopInset(bool restored) const {
+int BraveBrowserFrameViewMac::GetTopInset(bool restored) const {
   if (tabs::utils::ShouldShowVerticalTabs(browser_view()->browser())) {
     if (ShouldShowWindowTitleForVerticalTabs()) {
       // Set minimum top inset to show caption buttons on frame.
       return 30;
     }
 
-    // Bypassing BrowserNonClientFrameViewMac's implementation so that we don't
-    // have any inset when hiding title bar.
+    // Bypassing BrowserFrameViewMac's implementation so that we don't have any
+    // inset when hiding title bar.
     return 0;
   }
 
   if (!tabs::features::HorizontalTabsUpdateEnabled()) {
-    return BrowserNonClientFrameViewMac::GetTopInset(restored);
+    return BrowserFrameViewMac::GetTopInset(restored);
   }
 
   return 0;
 }
 
-bool BraveBrowserNonClientFrameViewMac::ShouldShowWindowTitleForVerticalTabs()
-    const {
+bool BraveBrowserFrameViewMac::ShouldShowWindowTitleForVerticalTabs() const {
   return tabs::utils::ShouldShowWindowTitleForVerticalTabs(
       browser_view()->browser());
 }
 
-void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleVisibility() {
-  if (!browser_view()->browser()->is_type_normal())
+void BraveBrowserFrameViewMac::UpdateWindowTitleVisibility() {
+  if (!browser_view()->browser()->is_type_normal()) {
     return;
+  }
 
   frame()->SetWindowTitleVisibility(ShouldShowWindowTitleForVerticalTabs());
 }
 
-void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleColor() {
+void BraveBrowserFrameViewMac::UpdateWindowTitleColor() {
   if (!browser_view()->browser()->is_type_normal()) {
     return;
   }
@@ -103,22 +103,21 @@ void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleColor() {
       GetCaptionColor(BrowserFrameActiveState::kUseCurrent));
 }
 
-int BraveBrowserNonClientFrameViewMac::NonClientHitTest(
-    const gfx::Point& point) {
+int BraveBrowserFrameViewMac::NonClientHitTest(const gfx::Point& point) {
   if (auto res = brave::NonClientHitTest(browser_view(), point);
       res != HTNOWHERE) {
     return res;
   }
 
-  return BrowserNonClientFrameViewMac::NonClientHitTest(point);
+  return BrowserFrameViewMac::NonClientHitTest(point);
 }
 
-void BraveBrowserNonClientFrameViewMac::OnThemeChanged() {
-  BrowserNonClientFrameViewMac::OnThemeChanged();
+void BraveBrowserFrameViewMac::OnThemeChanged() {
+  BrowserFrameViewMac::OnThemeChanged();
   UpdateWindowTitleColor();
 }
 
-void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleAndControls() {
+void BraveBrowserFrameViewMac::UpdateWindowTitleAndControls() {
   UpdateWindowTitleVisibility();
 
   // In case title visibility wasn't changed and only vertical tab strip enabled
@@ -128,9 +127,9 @@ void BraveBrowserNonClientFrameViewMac::UpdateWindowTitleAndControls() {
                                 frame()->GetWeakPtr()));
 }
 
-gfx::Size BraveBrowserNonClientFrameViewMac::GetMinimumSize() const {
+gfx::Size BraveBrowserFrameViewMac::GetMinimumSize() const {
   if (tabs::utils::ShouldShowVerticalTabs(browser_view()->browser())) {
-    // In order to ignore tab strip height, skip BrowserNonClientFrameViewMac's
+    // In order to ignore tab strip height, skip BrowserFrameViewMac's
     // implementation.
     auto size = frame()->client_view()->GetMinimumSize();
     size.SetToMax(gfx::Size(0, (size.width() * 3) / 4));
@@ -139,5 +138,5 @@ gfx::Size BraveBrowserNonClientFrameViewMac::GetMinimumSize() const {
     return size;
   }
 
-  return BrowserNonClientFrameViewMac::GetMinimumSize();
+  return BrowserFrameViewMac::GetMinimumSize();
 }
