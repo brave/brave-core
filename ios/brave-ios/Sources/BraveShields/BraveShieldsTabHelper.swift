@@ -19,6 +19,11 @@ extension TabDataValues {
   }
 }
 
+/// eTLDs that should force aggressive mode when standard is selected.
+/// This is done behind the scenes (the panel will still display standard mode)
+/// to align with Desktop/Android & uBO.
+private let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
+
 @MainActor
 public class BraveShieldsTabHelper {
   private weak var tab: (any TabState)?
@@ -57,20 +62,33 @@ public class BraveShieldsTabHelper {
     }
   }
 
-  public func shieldLevel(for url: URL?, considerAllShieldsOption: Bool) -> ShieldLevel {
+  public func shieldLevel(
+    for url: URL?,
+    considerAllShieldsOption: Bool,
+    considerAlwaysAggressiveETLDs: Bool = true
+  ) -> ShieldLevel {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return .disabled }
+    if considerAllShieldsOption && !isBraveShieldsEnabled(for: url) {
+      return .disabled
+    }
+    let shieldLevel: ShieldLevel
     if isBraveShieldsContentSettingsEnabled {
-      if considerAllShieldsOption && !isBraveShieldsEnabled(for: url) {
-        return .disabled
-      }
-      return braveShieldsSettings.adBlockMode(for: url).shieldLevel
-    }
-    let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
-    if considerAllShieldsOption {
-      return domain.globalBlockAdsAndTrackingLevel
+      shieldLevel = braveShieldsSettings.adBlockMode(for: url).shieldLevel
     } else {
-      return domain.domainBlockAdsAndTrackingLevel
+      let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
+      shieldLevel =
+        considerAllShieldsOption
+        ? domain.globalBlockAdsAndTrackingLevel : domain.domainBlockAdsAndTrackingLevel
     }
+
+    if considerAlwaysAggressiveETLDs,
+      shieldLevel.isEnabled,
+      let baseDomain = url.baseDomain,
+      alwaysAggressiveETLDs.contains(baseDomain)
+    {
+      return .aggressive
+    }
+    return shieldLevel
   }
 
   public func setShieldLevel(_ shieldLevel: ShieldLevel, for url: URL?) {

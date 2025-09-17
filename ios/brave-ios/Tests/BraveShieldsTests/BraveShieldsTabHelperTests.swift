@@ -124,26 +124,60 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
       braveShieldsTabHelper.shieldLevel(for: url, considerAllShieldsOption: true),
       .disabled
     )
+
+    // Verify `considerAlwaysAggressiveETLDs` is respected
+    let alwaysAggressiveURL = URL(string: "https://m.youtube.com")!
+    XCTAssertEqual(
+      braveShieldsTabHelper.shieldLevel(
+        for: alwaysAggressiveURL,
+        considerAllShieldsOption: true,
+        considerAlwaysAggressiveETLDs: false
+      ),
+      .standard
+    )
+    XCTAssertEqual(
+      braveShieldsTabHelper.shieldLevel(
+        for: alwaysAggressiveURL,
+        considerAllShieldsOption: true,
+        considerAlwaysAggressiveETLDs: true
+      ),
+      .aggressive
+    )
+    braveShieldsTabHelper.setShieldLevel(.disabled, for: alwaysAggressiveURL)
+    XCTAssertEqual(
+      braveShieldsTabHelper.shieldLevel(
+        for: alwaysAggressiveURL,
+        considerAllShieldsOption: true,
+        considerAlwaysAggressiveETLDs: true
+      ),
+      .disabled
+    )
+    XCTAssertEqual(
+      braveShieldsTabHelper.shieldLevel(
+        for: alwaysAggressiveURL,
+        considerAllShieldsOption: true,
+        considerAlwaysAggressiveETLDs: false
+      ),
+      .disabled
+    )
   }
 
   /// Test `shieldLevel(for:considerAllShieldsOption:)` with
   /// `isBraveShieldsContentSettingsEnabled` flag enabled.
   func testShieldLevelContentSettings() {
     var adBlockMode: BraveShields.AdBlockMode = .standard
+    var isBraveShieldsEnabled = true
 
     let testBraveShieldsSettings = TestBraveShieldsSettings()
     testBraveShieldsSettings._adBlockMode = { url in
-      XCTAssertEqual(url, self.url)
       return adBlockMode
     }
     testBraveShieldsSettings._setAdBlockMode = { mode, url in
-      XCTAssertEqual(url, self.url)
       XCTAssertEqual(mode, .aggressive)
       adBlockMode = mode
     }
     testBraveShieldsSettings._isBraveShieldsEnabled = { _ in
-      // disabled so we can test `considerAllShieldsOption: true`
-      return false
+      return isBraveShieldsEnabled
     }
 
     let tabState = TabStateFactory.create(with: .init(braveCore: nil))
@@ -167,9 +201,49 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
       .aggressive
     )
     // Verify `considerAllShieldsOption`
+    isBraveShieldsEnabled = false
     XCTAssertFalse(braveShieldsTabHelper.isBraveShieldsEnabled(for: url))
     XCTAssertEqual(
       braveShieldsTabHelper.shieldLevel(for: url, considerAllShieldsOption: true),
+      .disabled
+    )
+
+    // Verify `considerAlwaysAggressiveETLDs` is respected
+    let alwaysAggressiveURL = URL(string: "https://m.youtube.com")!
+    // reset TestBraveShieldsSettings values
+    isBraveShieldsEnabled = true
+    adBlockMode = .standard
+    XCTAssertEqual(
+      braveShieldsTabHelper.shieldLevel(
+        for: alwaysAggressiveURL,
+        considerAllShieldsOption: true,
+        considerAlwaysAggressiveETLDs: false
+      ),
+      .standard
+    )
+    XCTAssertEqual(
+      braveShieldsTabHelper.shieldLevel(
+        for: alwaysAggressiveURL,
+        considerAllShieldsOption: true,
+        considerAlwaysAggressiveETLDs: true
+      ),
+      .aggressive
+    )
+    adBlockMode = .allow  // equivalent to ShieldLevel.disabled
+    XCTAssertEqual(
+      braveShieldsTabHelper.shieldLevel(
+        for: alwaysAggressiveURL,
+        considerAllShieldsOption: true,
+        considerAlwaysAggressiveETLDs: true
+      ),
+      .disabled
+    )
+    XCTAssertEqual(
+      braveShieldsTabHelper.shieldLevel(
+        for: alwaysAggressiveURL,
+        considerAllShieldsOption: true,
+        considerAlwaysAggressiveETLDs: false
+      ),
       .disabled
     )
   }

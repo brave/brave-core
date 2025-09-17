@@ -30,17 +30,41 @@
   },
   "testTargets" : [
     {
+      "skippedTests" : [
+        "DecentralizedDNSHelperTests"
+      ],
       "target" : {
         "containerPath" : "container:..",
-        "identifier" : "AIChatTests",
-        "name" : "AIChatTests"
+        "identifier" : "BraveWalletTests",
+        "name" : "BraveWalletTests"
       }
     },
     {
       "target" : {
         "containerPath" : "container:..",
-        "identifier" : "BraveVPNTests",
-        "name" : "BraveVPNTests"
+        "identifier" : "PrivateCDNTests",
+        "name" : "PrivateCDNTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "UserAgentTests",
+        "name" : "UserAgentTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "StorageTests",
+        "name" : "StorageTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "AIChatTests",
+        "name" : "AIChatTests"
       }
     },
     {
@@ -56,60 +80,15 @@
     {
       "target" : {
         "containerPath" : "container:..",
-        "identifier" : "PrivateCDNTests",
-        "name" : "PrivateCDNTests"
+        "identifier" : "BraveShieldsTests",
+        "name" : "BraveShieldsTests"
       }
     },
     {
       "target" : {
         "containerPath" : "container:..",
-        "identifier" : "DataTests",
-        "name" : "DataTests"
-      }
-    },
-    {
-      "skippedTests" : [
-        "CertificatePinningTest\/testSelfSignedRootAllowed2()"
-      ],
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "BraveSharedTests",
-        "name" : "BraveSharedTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "BrowserMenuTests",
-        "name" : "BrowserMenuTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "UserAgentTests",
-        "name" : "UserAgentTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "BraveNewsTests",
-        "name" : "BraveNewsTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "StorageTests",
-        "name" : "StorageTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "SharedTests",
-        "name" : "SharedTests"
+        "identifier" : "GrowthTests",
+        "name" : "GrowthTests"
       }
     },
     {
@@ -127,20 +106,55 @@
       }
     },
     {
-      "skippedTests" : [
-        "DecentralizedDNSHelperTests"
-      ],
       "target" : {
         "containerPath" : "container:..",
-        "identifier" : "BraveWalletTests",
-        "name" : "BraveWalletTests"
+        "identifier" : "BraveTalkTests",
+        "name" : "BraveTalkTests"
       }
     },
     {
       "target" : {
         "containerPath" : "container:..",
-        "identifier" : "GrowthTests",
-        "name" : "GrowthTests"
+        "identifier" : "SharedTests",
+        "name" : "SharedTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveNewsTests",
+        "name" : "BraveNewsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BrowserMenuTests",
+        "name" : "BrowserMenuTests"
+      }
+    },
+    {
+      "skippedTests" : [
+        "CertificatePinningTest\/testSelfSignedRootAllowed2()"
+      ],
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveSharedTests",
+        "name" : "BraveSharedTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "DataTests",
+        "name" : "DataTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveVPNTests",
+        "name" : "BraveVPNTests"
       }
     },
     {
@@ -148,13 +162,6 @@
         "containerPath" : "container:..",
         "identifier" : "PlaylistUITests",
         "name" : "PlaylistUITests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "BraveTalkTests",
-        "name" : "BraveTalkTests"
       }
     }
   ],
