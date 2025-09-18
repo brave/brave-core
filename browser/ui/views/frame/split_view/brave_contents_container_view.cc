@@ -48,7 +48,11 @@ BraveContentsContainerView::BraveContentsContainerView(
 #endif
 
   if (base::FeatureList::IsEnabled(features::kSideBySide)) {
-    RemoveChildViewT(mini_toolbar_);
+    // To prevent |mini_toolbar_| becomes dangling pointer.
+    {
+      auto old_toolbar = RemoveChildViewT(mini_toolbar_);
+      mini_toolbar_ = nullptr;
+    }
     mini_toolbar_ =
         AddChildView(std::make_unique<BraveMultiContentsViewMiniToolbar>(
             browser_view, contents_view_));
