@@ -235,6 +235,18 @@ void CardanoTestRpcServer::AddUtxo(const std::string& address,
   utxo.amount.back().unit = "lovelace";
 }
 
+void CardanoTestRpcServer::AddUtxo(const std::string& address,
+                                   const std::string& tx_hash,
+                                   const std::string& index,
+                                   const std::string& amount) {
+  auto& utxo = utxos_map_[address].emplace_back();
+  utxo.tx_hash = tx_hash;
+  utxo.output_index = index;
+  utxo.amount.emplace_back();
+  utxo.amount.back().quantity = amount;
+  utxo.amount.back().unit = "lovelace";
+}
+
 void CardanoTestRpcServer::FailNextTransactionSubmission() {
   fail_next_transaction_submission_ = true;
 }

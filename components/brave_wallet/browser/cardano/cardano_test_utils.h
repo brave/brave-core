@@ -41,7 +41,10 @@ class CardanoTestRpcServer {
                        std::optional<uint32_t> account_index);
 
   void AddUtxo(const std::string& address, uint64_t amount);
-
+  void AddUtxo(const std::string& address,
+               const std::string& tx_hash,
+               const std::string& index,
+               const std::string& amount);
   void FailNextTransactionSubmission();
   void ConfirmAllTransactions();
   void AddConfirmedTransaction(const std::string& txid);
