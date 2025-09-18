@@ -472,11 +472,11 @@
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
     *** mDropdownViewInfoListManager;
     *** mDropdownViewInfoListBuilder;
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediator {
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediatorBase {
