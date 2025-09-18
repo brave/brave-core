@@ -227,7 +227,7 @@ void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
     std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result,
     const std::vector<std::string>& disabled_checks) {
-  // Exclude disabled URLs by the user
+  // Exclude the URLs, disabled by the user
   if (auto* tasks = user_script_result.GetDict().FindList(
           kUserScriptResultTasksPropName)) {
     tasks->EraseIf([&](const base::Value& v) {
