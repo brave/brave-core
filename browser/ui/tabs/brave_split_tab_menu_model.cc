@@ -6,7 +6,6 @@
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 
 #include <memory>
-#include <optional>
 
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/tabs/split_tab_util.h"
@@ -16,10 +15,8 @@
 
 std::unique_ptr<ui::SimpleMenuModel> CreateBraveSplitTabMenuModel(
     TabStripModel* tab_strip_model,
-    SplitTabMenuModel::MenuSource source,
-    std::optional<int> split_tab_index) {
-  return std::make_unique<BraveSplitTabMenuModel>(tab_strip_model, source,
-                                                  split_tab_index);
+    SplitTabMenuModel::MenuSource source) {
+  return std::make_unique<BraveSplitTabMenuModel>(tab_strip_model, source);
 }
 
 BraveSplitTabMenuModel::~BraveSplitTabMenuModel() = default;

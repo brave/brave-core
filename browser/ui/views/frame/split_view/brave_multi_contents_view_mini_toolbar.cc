@@ -7,6 +7,7 @@
 
 #include "base/i18n/rtl.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -30,6 +31,15 @@ const gfx::VectorIcon& GetMoreVerticalIcon() {
 
 BraveMultiContentsViewMiniToolbar::~BraveMultiContentsViewMiniToolbar() =
     default;
+
+std::unique_ptr<ui::SimpleMenuModel>
+BraveMultiContentsViewMiniToolbar::CreateBraveSplitTabMenuModel(
+    TabStripModel* tab_strip_model,
+    SplitTabMenuModel::MenuSource source,
+    int split_tab_index) {
+  return std::make_unique<BraveSplitTabMenuModel>(tab_strip_model, source,
+                                                  split_tab_index);
+}
 
 void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active) {
   MultiContentsViewMiniToolbar::UpdateState(is_active);

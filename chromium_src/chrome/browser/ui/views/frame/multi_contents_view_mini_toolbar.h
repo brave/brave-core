@@ -6,10 +6,17 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_MULTI_CONTENTS_VIEW_MINI_TOOLBAR_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_MULTI_CONTENTS_VIEW_MINI_TOOLBAR_H_
 
+#include <memory>
+
+#include "chrome/browser/ui/tabs/split_tab_menu_model.h"
+
 #define GetPath virtual GetPath
-#define UpdateState(...)                                                 \
-  virtual UpdateState(__VA_ARGS__);                                      \
-  FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest, SelectTabTest); \
+#define UpdateState(...)                                                     \
+  virtual UpdateState(__VA_ARGS__);                                          \
+  virtual std::unique_ptr<ui::SimpleMenuModel> CreateBraveSplitTabMenuModel( \
+      TabStripModel* tab_strip_model, SplitTabMenuModel::MenuSource source,  \
+      int split_tab_index);                                                  \
+  FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest, SelectTabTest);     \
   friend class BraveMultiContentsViewMiniToolbar
 
 #include <chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h>  // IWYU pragma: export
