@@ -743,6 +743,37 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
 
   // We don't use bg color for location icon view.
   mixer[kColorOmniboxIconBackground] = {SK_ColorTRANSPARENT};
+
+#if defined(TOOLKIT_VIEWS)
+  if (!base::FeatureList::IsEnabled(
+          darker_theme::features::kBraveDarkerTheme) ||
+      key.scheme_variant != ui::ColorProviderKey::SchemeVariant::kDarker) {
+    return;
+  }
+
+  auto& postprocessing_mixer = provider->AddPostprocessingMixer();
+  // Location bar
+  postprocessing_mixer[kColorLocationBarBackground] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral10);
+  postprocessing_mixer[kColorLocationBarBackgroundHovered] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral10);
+
+  // Omnibox
+  postprocessing_mixer[kColorOmniboxResultsBackground] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral10);
+  postprocessing_mixer[kColorOmniboxResultsBackgroundHovered] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral20);
+  postprocessing_mixer[kColorOmniboxResultsBackgroundSelected] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral20);
+  postprocessing_mixer[kColorBraveOmniboxResultViewSeparator] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral20);
+#endif  // defined(TOOLKIT_VIEWS)
 }
 
 void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
