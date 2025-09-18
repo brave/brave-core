@@ -93,6 +93,10 @@
     Disable News
   </message>
 
+  <message name="IDS_NEW_TAB_NEWS_HIDE_BUTTON_LABEL" desc="Label for button that hides News on the NTP">
+    Hide News
+  </message>
+
   <message name="IDS_NEW_TAB_NEWS_WIDGET_TITLE" desc="Title for Brave News widget">
     NEWS
   </message>

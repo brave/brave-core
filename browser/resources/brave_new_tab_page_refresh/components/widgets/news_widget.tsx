@@ -31,7 +31,12 @@ export function NewsWidget() {
             </leo-menu-item>
         }
         <leo-menu-item onClick={() => braveNews.toggleBraveNewsOnNTP(false)}>
-          <Icon name='disable-outline' /> {getString('newsDisableButtonLabel')}
+          <Icon name='disable-outline' />
+          {
+            braveNews.isOptInPrefEnabled
+              ? getString('newsDisableButtonLabel')
+              : getString('newsHideButtonLabel')
+          }
         </leo-menu-item>
       </WidgetMenu>
       <div className='title'>

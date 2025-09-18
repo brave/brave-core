@@ -196,6 +196,7 @@ void NewTabPageInitializer::AddStrings() {
       {"hideTopSitesLabel", IDS_NEW_TAB_HIDE_TOP_SITES_LABEL},
       {"newsEnableButtonLabel", IDS_BRAVE_NEWS_OPT_IN_ACTION_LABEL},
       {"newsEnableText", IDS_BRAVE_NEWS_INTRO_TITLE},
+      {"newsHideButtonLabel", IDS_NEW_TAB_NEWS_HIDE_BUTTON_LABEL},
       {"newsSettingsTitle", IDS_BRAVE_NEWS_SETTINGS_TITLE},
       {"newsWidgetTitle", IDS_NEW_TAB_NEWS_WIDGET_TITLE},
       {"photoCreditsText", IDS_NEW_TAB_PHOTO_CREDITS_TEXT},
