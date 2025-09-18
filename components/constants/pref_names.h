@@ -55,7 +55,6 @@ inline constexpr char kReferralAttemptCount[] =
     "brave.referral.referral_attempt_count";
 inline constexpr char kReferralAndroidFirstRunTimestamp[] =
     "brave.referral_android_first_run_timestamp";
-inline constexpr char kNoScriptControlType[] = "brave.no_script_default";
 inline constexpr char kShieldsAdvancedViewEnabled[] =
     "brave.shields.advanced_view_enabled";
 inline constexpr char kShieldsStatsBadgeVisible[] =
@@ -166,5 +165,10 @@ inline constexpr char kNewTabPageShowBinance[] =
 inline constexpr char kBraveSuggestedSiteSuggestionsEnabled[] =
     "brave.brave_suggested_site_suggestions_enabled";
 #endif
+
+inline constexpr char kManagedDefaultBraveCookies[] =
+    "brave.profile.managed_default_content_settings.brave_cookies";
+inline constexpr char kManagedDefaultBraveFingerprintingV2[] =
+    "brave.profile.managed_default_content_settings.brave_fingerprinting_v2";
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_PREF_NAMES_H_

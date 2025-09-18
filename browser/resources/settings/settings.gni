@@ -18,6 +18,7 @@ settings_namespace_rewrites = [
   "settings.BraveSearchEnginesPageBrowserProxyImpl|BraveSearchEnginesPageBrowserProxyImpl",
   "settings.BraveSyncBrowserProxy|BraveSyncBrowserProxy",
   "settings.DefaultBraveShieldsBrowserProxyImpl|DefaultBraveShieldsBrowserProxyImpl",
+  "settings.AdBlockOnlyModePageProxyImpl|AdBlockOnlyModePageProxyImpl",
   "settings.SocialBlockingPageProxyImpl|SocialBlockingPageProxyImpl",
   "settings.Router|Router",
 ]

@@ -8,7 +8,9 @@ source_set("unit_tests") {
 
   sources = [
     "brave_content_settings_default_provider_unittest.cc",
+    "brave_content_settings_policy_provider_unittest.cc",
     "brave_content_settings_registry_unittest.cc",
+    "brave_host_content_settings_map_unittest.cc",
   ]
 
   deps = [

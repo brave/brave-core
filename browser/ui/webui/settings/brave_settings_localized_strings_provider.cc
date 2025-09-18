@@ -24,6 +24,8 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/de_amp/common/features.h"
+#include "brave/components/debounce/core/common/features.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -106,6 +108,9 @@ constexpr char16_t kLeoMemoryLearnMoreURL[] =
 constexpr char16_t kLeoPrivacyPolicyURL[] =
     u"https://brave.com/privacy/browser/#brave-leo";
 
+constexpr char16_t kAdBlockOnlyModeLearnMoreURL[] =
+    u"https://support.brave.app/hc/en-us/articles/38076796692109";
+
 constexpr char16_t kSurveyPanelistLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/36550092449165";
 
@@ -172,6 +177,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"siteSettingsShieldsDown", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DOWN},
       {"siteSettingsShieldsDescription",
        IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DESCRIPTION},
+      {"siteSettingsShieldsDescriptionAdblockOnlyMode",
+       IDS_SETTINGS_SITE_SETTINGS_SHIELDS_DESCRIPTION_ADBLOCK_ONLY_MODE},
       {"appearanceSettingsBraveTheme",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES},
       {"appearanceSettingsThemesGalleryUrl",
@@ -301,6 +308,14 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_1},
       {"braveShieldsDefaultsSectionDescription2",
        IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2},
+      {"adBlockOnlyModeAlertDesc", IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_DESC},
+      {"adBlockOnlyModeAlertTitle",
+       IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_TITLE},
+      {"adBlockOnlyMode", IDS_SETTINGS_AD_BLOCK_ONLY_MODE},
+      {"adBlockOnlyModeLabel", IDS_SETTINGS_AD_BLOCK_ONLY_MODE_LABEL},
+      {"adBlockOnlyModeDesc", IDS_SETTINGS_AD_BLOCK_ONLY_MODE_DESC},
+      {"adBlockOnlyModeAlertTurnOffButton",
+       IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_TURN_OFF_BUTTON},
       {"socialBlocking", IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE},
       {"defaultView", IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DEFAULT_VIEW_LABEL},
       {"simpleView", IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_SIMPLE_VIEW_LABEL},
@@ -1051,6 +1066,16 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
           kBlockAllCookiesLearnMoreUrl));
 
   html_source->AddString(
+      "adBlockOnlyModeDesc",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_AD_BLOCK_ONLY_MODE_DESC,
+                                 kAdBlockOnlyModeLearnMoreURL));
+
+  html_source->AddString(
+      "braveLeoAssistantAboutLeoDesc2",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_ABOUT_LEO_DESC_2,
+                                 kLeoPrivacyPolicyURL));
+
+  html_source->AddString(
       "braveLeoAssistantYourModelsDesc2",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_2,
                                  kLeoCustomModelsLearnMoreURL));
@@ -1086,7 +1111,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
 void BraveAddResources(content::WebUIDataSource* html_source,
                        Profile* profile) {
-  BraveSettingsUI::AddResources(html_source, profile);
+  BraveSettingsUI::AddResources(html_source, profile,
+                                g_browser_process->GetApplicationLocale());
 }
 
 void BraveAddAboutStrings(content::WebUIDataSource* html_source,
@@ -1238,6 +1264,14 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "showStrictFingerprintingMode",
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShowStrictFingerprintingMode));
+
+  html_source->AddBoolean(
+      "isDeAmpFeatureEnabled",
+      base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP));
+
+  html_source->AddBoolean(
+      "isDebounceFeatureEnabled",
+      base::FeatureList::IsEnabled(debounce::features::kBraveDebounce));
 
   html_source->AddBoolean(
       "braveTalkDisabledByPolicy",

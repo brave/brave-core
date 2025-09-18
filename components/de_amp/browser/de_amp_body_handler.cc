@@ -19,8 +19,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
-#include "brave/components/de_amp/common/features.h"
-#include "brave/components/de_amp/common/pref_names.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -91,15 +90,15 @@ DeAmpBodyHandler::~DeAmpBodyHandler() = default;
 // static
 std::unique_ptr<DeAmpBodyHandler> DeAmpBodyHandler::Create(
     const network::ResourceRequest& request,
-    const content::WebContents::Getter& wc_getter) {
+    const content::WebContents::Getter& wc_getter,
+    HostContentSettingsMap* host_content_settings_map) {
   auto* contents = wc_getter.Run();
   if (!contents) {
     return nullptr;
   }
   PrefService* prefs =
       user_prefs::UserPrefs::Get(contents->GetBrowserContext());
-  if (!base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP) ||
-      !prefs->GetBoolean(kDeAmpPrefEnabled)) {
+  if (!de_amp::IsDeAmpEnabled(prefs, host_content_settings_map)) {
     return nullptr;
   }
 

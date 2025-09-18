@@ -61,13 +61,6 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         },
       },
       webRTCPolicy_: String,
-      isDebounceFeatureEnabled_: {
-        readOnly: true,
-        type: Boolean,
-        value: function () {
-          return loadTimeData.getBoolean('isDebounceFeatureEnabled')
-        },
-      },
       isRequestOTRFeatureEnabled_: {
         readOnly: true,
         type: Boolean,
@@ -105,7 +98,6 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
 
   declare private webRTCPolicies_: Object[]
   declare private webRTCPolicy_: String
-  declare private isDebounceFeatureEnabled_: boolean
   declare private isRequestOTRFeatureEnabled_: boolean
   declare private requestOTRActions_: Object[]
   declare private requestOTRAction_: String

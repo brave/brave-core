@@ -1,0 +1,37 @@
+caption: Default Brave Fingerprinting v2 setting
+desc: |-
+  Setting the policy to:
+  - 1 do not block fingerprinting on all URLs.
+  - 2 block fingerprinting on all URLs.
+  - 3 block fingerprinting on third-party URLs.
+
+  When leaving it unset, fingerprinting blocking is controlled by the user setting.
+
+default: null
+example_value: 3
+features:
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Do not block fingerprinting on all URLs
+  name: AllowFingerprintingV2
+  value: 1
+- caption: Block fingerprinting on all URLs
+  name: BlockFingerprintingV2
+  value: 2
+- caption: Block fingerprinting on third-party URLs
+  name: BlockThirdPartyFingerprintingV2
+  value: 3
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  enum:
+  - 1
+  - 2
+  - 3
+  type: integer
+supported_on:
+- chrome.*:139-
+tags: []
+type: int-enum

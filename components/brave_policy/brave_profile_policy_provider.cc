@@ -20,12 +20,16 @@
 
 namespace brave_policy {
 
-BraveProfilePolicyProvider::BraveProfilePolicyProvider() = default;
+BraveProfilePolicyProvider::BraveProfilePolicyProvider(PrefService* local_state)
+    : ad_block_only_mode_policy_provider_(local_state, *this) {}
+
 BraveProfilePolicyProvider::~BraveProfilePolicyProvider() = default;
 
 void BraveProfilePolicyProvider::Init(policy::SchemaRegistry* registry) {
   // Call base class Init first
   policy::ConfigurationPolicyProvider::Init(registry);
+
+  ad_block_only_mode_policy_provider_.Init();
 
   // Trigger immediate policy loading to ensure policies are available in
   // chrome://policy
@@ -53,12 +57,14 @@ policy::PolicyBundle BraveProfilePolicyProvider::LoadPolicies() {
 
   // Future work will add Brave Origin profile policies here
 
+  ad_block_only_mode_policy_provider_.MaybeLoadPolicies(bundle);
+
   return bundle;
 }
 
 std::unique_ptr<policy::ConfigurationPolicyProvider>
-CreateBraveProfilePolicyProvider() {
-  return std::make_unique<BraveProfilePolicyProvider>();
+CreateBraveProfilePolicyProvider(PrefService* local_state) {
+  return std::make_unique<BraveProfilePolicyProvider>(local_state);
 }
 
 }  // namespace brave_policy

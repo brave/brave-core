@@ -13,9 +13,11 @@
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
+class HostContentSettingsMap;
+
 namespace de_amp {
 // Check feature flag and user pref
-bool IsDeAmpEnabled(PrefService* prefs);
+bool IsDeAmpEnabled(PrefService* prefs, HostContentSettingsMap* map);
 
 // Run a regex against a string to check if AMP page
 bool CheckIfAmpPage(std::string_view body);

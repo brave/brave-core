@@ -13,6 +13,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/debounce/core/common/features.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -53,7 +54,8 @@ DebounceServiceFactory::BuildServiceInstanceForBrowserContext(
     component_installer =
         g_brave_browser_process->debounce_component_installer();
   return std::make_unique<DebounceService>(
-      component_installer, Profile::FromBrowserContext(context)->GetPrefs());
+      component_installer, Profile::FromBrowserContext(context)->GetPrefs(),
+      HostContentSettingsMapFactory::GetForProfile(context));
 }
 
 content::BrowserContext* DebounceServiceFactory::GetBrowserContextToUse(

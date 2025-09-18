@@ -123,6 +123,7 @@ void PrepareParamsAndShowDialog(content::WebContents* initiator,
                                 bool shields_enabled,
                                 const std::string_view adblock_mode,
                                 const std::string_view fingerprint_mode,
+                                const bool language_farbling_enabled,
                                 const int source,
                                 const bool is_error_page,
                                 const std::optional<std::string>& contact_info,
@@ -133,6 +134,7 @@ void PrepareParamsAndShowDialog(content::WebContents* initiator,
   params_dict.Set(kShieldsEnabledField, shields_enabled);
   params_dict.Set(kAdBlockSettingField, adblock_mode);
   params_dict.Set(kFPBlockSettingField, fingerprint_mode);
+  params_dict.Set(kLanguageFarblingField, language_farbling_enabled);
   params_dict.Set(kContactField, contact_info.value_or(""));
   params_dict.Set(kContactInfoSaveFlagField, contact_info_save_flag);
   params_dict.Set(kUISourceField, source);
@@ -164,12 +166,15 @@ void OpenReporterDialog(content::WebContents* initiator, UISource source) {
       brave_shields::mojom::FingerprintMode::STANDARD_MODE;
   brave_shields::mojom::AdBlockMode ad_block_mode =
       brave_shields::mojom::AdBlockMode::STANDARD;
+  bool language_farbling_enabled = true;
   brave_shields::BraveShieldsTabHelper* shields_data_controller =
       brave_shields::BraveShieldsTabHelper::FromWebContents(initiator);
   if (shields_data_controller != nullptr) {
     shields_enabled = shields_data_controller->GetBraveShieldsEnabled();
     fp_block_mode = shields_data_controller->GetFingerprintMode();
     ad_block_mode = shields_data_controller->GetAdBlockMode();
+    language_farbling_enabled =
+        shields_data_controller->GetReduceLanguageEnabled();
   }
 
   bool is_error_page = false;
@@ -192,16 +197,16 @@ void OpenReporterDialog(content::WebContents* initiator, UISource source) {
     webcompat_reporter_service->GetBrowserParams(base::BindOnce(
         &PrepareParamsAndShowDialog, initiator, report_url.spec(),
         shields_enabled, GetAdBlockModeString(ad_block_mode),
-        GetFingerprintModeString(fp_block_mode), static_cast<int>(source),
-        is_error_page));
+        GetFingerprintModeString(fp_block_mode), language_farbling_enabled,
+        static_cast<int>(source), is_error_page));
     return;
   }
 
-  PrepareParamsAndShowDialog(initiator, report_url.spec(), shields_enabled,
-                             GetAdBlockModeString(ad_block_mode),
-                             GetFingerprintModeString(fp_block_mode),
-                             static_cast<int>(source), is_error_page,
-                             std::nullopt, false, {});
+  PrepareParamsAndShowDialog(
+      initiator, report_url.spec(), shields_enabled,
+      GetAdBlockModeString(ad_block_mode),
+      GetFingerprintModeString(fp_block_mode), language_farbling_enabled,
+      static_cast<int>(source), is_error_page, std::nullopt, false, {});
 }
 
 }  // namespace webcompat_reporter

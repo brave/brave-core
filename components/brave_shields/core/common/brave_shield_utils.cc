@@ -11,9 +11,14 @@
 
 #include "base/containers/map_util.h"
 #include "base/no_destructor.h"
+#include "base/strings/string_util.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
 namespace brave_shields {
@@ -110,6 +115,35 @@ ShieldsSettingCounts GetAdsSettingCountFromRules(
   }
 
   return result;
+}
+
+bool IsAdblockOnlyModeFeatureEnabled() {
+  return base::FeatureList::IsEnabled(features::kAdblockOnlyMode);
+}
+
+bool IsAdblockOnlyModeSupportedForLocale(const std::string& locale) {
+  return kAdblockOnlyModeSupportedLanguageCodes.contains(
+      GetLanguageCodeFromLocale(locale));
+}
+
+bool GetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs) {
+  return prefs &&
+         prefs->FindPreference(prefs::kAdblockAdBlockOnlyModeEnabled) &&
+         prefs->GetBoolean(prefs::kAdblockAdBlockOnlyModeEnabled);
+}
+
+void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs, bool enabled) {
+  if (prefs) {
+    prefs->SetBoolean(prefs::kAdblockAdBlockOnlyModeEnabled, enabled);
+  }
+}
+
+std::string GetLanguageCodeFromLocale(const std::string& locale) {
+  const std::string::size_type loc = locale.find("-");
+  if (loc == std::string::npos) {
+    return base::ToLowerASCII(locale);
+  }
+  return base::ToLowerASCII(locale.substr(0, loc));
 }
 
 }  // namespace brave_shields

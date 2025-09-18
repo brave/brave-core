@@ -26,8 +26,8 @@ std::optional<api::settings_private::PrefObject> BravePrefsUtil::GetPref(
       pref->enforcement == api::settings_private::Enforcement::kNone &&
       brave_shields::GetCookieControlType(
           HostContentSettingsMapFactory::GetForProfile(profile()),
-          CookieSettingsFactory::GetForProfile(profile()).get(),
-          GURL()) == brave_shields::ControlType::BLOCK) {
+          CookieSettingsFactory::GetForProfile(profile()).get(), GURL(),
+          profile()->GetPrefs()) == brave_shields::ControlType::BLOCK) {
     pref->enforcement = api::settings_private::Enforcement::kEnforced;
   }
   return pref;

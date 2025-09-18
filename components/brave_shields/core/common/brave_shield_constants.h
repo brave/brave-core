@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_CONSTANTS_H_
 
+#include <string>
+
+#include "base/containers/fixed_flat_set.h"
 #include "base/files/file_path.h"
 
 namespace brave_shields {
@@ -42,6 +45,12 @@ inline constexpr char kCosmeticResourcesProceduralActions[] =
 // Filename for cached text from a custom filter list subscription
 const base::FilePath::CharType kCustomSubscriptionListText[] =
     FILE_PATH_LITERAL("list_text.txt");
+
+inline constexpr auto kAdblockOnlyModeUuidList =
+    base::MakeFixedFlatSet<std::string_view>({"default"});
+
+inline constexpr auto kAdblockOnlyModeSupportedLanguageCodes =
+    base::MakeFixedFlatSet<std::string_view>({"en"});
 
 inline constexpr char kCookieListUuid[] =
     "AC023D22-AE88-4060-A978-4FEEEC4221693";

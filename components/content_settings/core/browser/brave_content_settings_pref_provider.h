@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_BRAVE_CONTENT_SETTINGS_PREF_PROVIDER_H_
 #define BRAVE_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_BRAVE_CONTENT_SETTINGS_PREF_PROVIDER_H_
 
+#include <atomic>
 #include <map>
 #include <memory>
 #include <string>
@@ -115,22 +116,28 @@ class BravePrefProvider : public PrefProvider, public Observer {
       const ContentSettingConstraints& constraints,
       const PartitionKey& partition_key = PartitionKey::WipGetDefault());
 
+  bool IsAdBlockOnlyModeEnabled() const;
+
   // content_settings::Observer overrides:
   void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
                                const ContentSettingsPattern& secondary_pattern,
                                ContentSettingsType content_type) override;
   void OnCookiePrefsChanged(const std::string& pref);
+  void OnAdBlockOnlyModeChanged();
 
   std::map<bool /* is_incognito */, OriginValueMap> cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
       brave_cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
       brave_shield_down_rules_;
+  OriginValueMap ad_block_only_mode_rules_;
 
   bool initialized_;
   bool store_last_modified_;
 
   PrefChangeRegistrar pref_change_registrar_;
+
+  mutable std::atomic<bool> ad_block_only_mode_enabled_ = false;
 
   base::WeakPtrFactory<BravePrefProvider> weak_factory_;
 };
