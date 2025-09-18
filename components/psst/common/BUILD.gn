@@ -18,10 +18,13 @@ static_library("common") {
     "features.h",
     "pref_names.cc",
     "pref_names.h",
+    "psst_consent_data.cc",
+    "psst_consent_data.h",
   ]
 
   public_deps = [
     ":mojom",
+    ":psst_permission_schema",
     ":psst_script_responses",
   ]
 
@@ -34,6 +37,13 @@ static_library("common") {
 
 generated_types("psst_script_responses") {
   sources = [ "psst_script_responses.idl" ]
+  root_namespace = "psst"
+  deps = [ "//base" ]
+  visibility = [ ":common" ]
+}
+
+generated_types("psst_permission_schema") {
+  sources = [ "psst_permission_schema.idl" ]
   root_namespace = "psst"
   deps = [ "//base" ]
   visibility = [ ":common" ]
