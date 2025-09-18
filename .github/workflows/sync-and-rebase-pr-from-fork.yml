@@ -32,10 +32,15 @@ jobs:
           COMMIT_HASH: ${{ inputs.COMMIT_HASH }}
         run: |
           set -x
-          JQ="jq -e -r"
+
+          if ! grep -qix '[0-9a-f]\{40,40\}' <<<"$COMMIT_HASH"; then 
+            echo "Provide a full commit hash; got: $COMMIT_HASH"
+            exit 1
+          fi
 
           gh_pr_view=$(gh pr view "$PR_NUMBER" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
 
+          JQ="jq -e -r"
           baseRefName=$($JQ ".baseRefName" <<<"$gh_pr_view")
           headRefName=$($JQ ".headRefName" <<<"$gh_pr_view")
           headRepositoryName=$($JQ ".headRepository.name" <<<"$gh_pr_view")
