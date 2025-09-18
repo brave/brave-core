@@ -19,6 +19,8 @@ source_set("webui") {
     "//brave/components/constants",
     "//brave/components/webui",
     "//brave/ios/browser/ui/webui/ads",
+    "//brave/ios/browser/ui/webui/ai_chat",
+    "//brave/ios/browser/ui/webui/ai_chat:features",
     "//brave/ios/browser/ui/webui/brave_account",
     "//brave/ios/browser/ui/webui/skus",
     "//brave/ios/web/webui",

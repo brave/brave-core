@@ -15,6 +15,9 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
+#include "brave/ios/browser/ui/webui/ai_chat/features.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui_ios.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
@@ -39,30 +42,31 @@ std::unique_ptr<WebUIIOSController> NewWebUIIOS(WebUIIOS* web_ui,
   return std::make_unique<T>(web_ui, url);
 }
 
+WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
+  const std::string_view url_host = url.host_piece();
+
+  if (url_host == kAIChatUntrustedConversationUIHost &&
+      ai_chat::features::IsAIChatWebUIEnabled()) {
+    return &NewWebUIIOS<AIChatUntrustedConversationUI>;
+  }
+
+  return nullptr;
+}
+
 // Returns a function that can be used to create the right type of WebUIIOS for
 // a tab, based on its URL. Returns nullptr if the URL doesn't have WebUIIOS
 // associated with it.
 WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
-  const char kChromeUIUntrustedScheme[] = "chrome-untrusted";
-
-  // This will get called a lot to check all URLs, so do a quick check of other
-  // schemes to filter out most URLs.
-  if (!url.SchemeIs(kBraveUIScheme) && !url.SchemeIs(kChromeUIScheme) &&
+  if (!url.SchemeIs(kChromeUIScheme) &&
       !url.SchemeIs(kChromeUIUntrustedScheme)) {
     return nullptr;
   }
 
-  // TODO: Handle RewardsInternalUI, AdsInternalUI, AdblockInternalUI URLs here
-  // ProfileIOS* browser_state =
-  // ProfileIOS::FromWebUIIOS(web_ui);
+  if (url.SchemeIs(kChromeUIUntrustedScheme)) {
+    return GetUntrustedWebUIIOSFactoryFunction(url);
+  }
 
   const std::string url_host = url.host();
-  /*if (url_host == kAdblockInternalsHost) {
-    return &NewWebUIIOS<BraveAdblockInternalsUI>;
-  } if (url_host == kRewardsInternalsHost &&
-             brave_rewards::IsSupportedForProfile(browser_state)) {
-    return &NewWebUIIOS<BraveRewardsInternalsUI>;
-  }*/
 
   if (url_host == kAdsInternalsHost) {
     return &NewWebUIIOS<AdsInternalsUI>;
@@ -71,6 +75,9 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
     return &NewWebUIIOS<BraveAccountUIIOS>;
   } else if (url_host == kSkusInternalsHost) {
     return &NewWebUIIOS<SkusInternalsUI>;
+  } else if (url_host == kAIChatUIHost &&
+             ai_chat::features::IsAIChatWebUIEnabled()) {
+    return &NewWebUIIOS<AIChatUI>;
   }
   return nullptr;
 }
