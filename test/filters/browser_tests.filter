@@ -2479,6 +2479,11 @@
 -VerticalTabStripRegionViewTest.*
 >>>>>>> e061698b768 ([cr142] Filter upstream tests as needed)
 
+# This test fails because we temporarily reverted
+# https://source.chromium.org/chromium/chromium/src/+/b1e66bdb
+# see https://github.com/brave/brave-browser/issues/49422
+-LocalNetworkAccessBrowserTest.HtmlScriptSrcAllowPermission
+
 # These tests fail because the dialog title contains "Chrome" or "Chromium"
 # instead of "Brave" (the string is hard-coded into the test)
 -ExternalInstallErrorTest.InitialPreinstallFallbackTitleWhenIdNotListed
