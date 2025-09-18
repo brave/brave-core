@@ -6,6 +6,9 @@ on:
       PR_NUMBER:
         required: true
         description: "Number of the PR from the fork"
+      COMMIT_HASH:
+        required: true
+        description: "Commit hash of the PR"
 
 jobs:
   sync-and-rebase-pr-from-fork:
@@ -26,6 +29,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           PR_NUMBER: ${{ inputs.PR_NUMBER }}
+          COMMIT_HASH: ${{ inputs.COMMIT_HASH }}
         run: |
           set -x
           JQ="jq -e -r"
@@ -48,6 +52,13 @@ jobs:
           # Rebase the branch with the latest targeting branch HEAD
           git checkout "$contribHeadRefName"
           git fetch origin "$baseRefName"
+
+          ACTUAL_PR_HASH=$(git rev-parse HEAD)
+          if [[ "$ACTUAL_PR_HASH" != "$COMMI_THASH" ]]; then
+            echo "FORK HASH does not match provided hash! Make sure the PR has no changes that have not been reviewed. Exiting!"
+            exit 1
+          fi
+
           if ! git rebase FETCH_HEAD; then
             echo "Rebase conflict detected. Please resolve the conflicts and push the changes to your fork. Exiting!"
             exit 1
