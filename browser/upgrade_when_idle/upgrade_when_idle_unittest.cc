@@ -107,75 +107,75 @@ class UpgradeWhenIdleTest : public testing::Test {
 };
 
 TEST_F(UpgradeWhenIdleTest, UpgradeWhenIdle) {
-  RunImplementation(ui::IDLE_STATE_IDLE, true);
+  RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/true);
 }
 
 TEST_F(UpgradeWhenIdleTest, UpgradeWhenLocked) {
-  RunImplementation(ui::IDLE_STATE_LOCKED, true);
+  RunImplementation(ui::IDLE_STATE_LOCKED, /*expect_upgrade=*/true);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenActive) {
-  RunImplementation(ui::IDLE_STATE_ACTIVE, false);
+  RunImplementation(ui::IDLE_STATE_ACTIVE, /*expect_upgrade=*/false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenStateUnknown) {
-  RunImplementation(ui::IDLE_STATE_UNKNOWN, false);
+  RunImplementation(ui::IDLE_STATE_UNKNOWN, /*expect_upgrade=*/false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenOpenWindows) {
   SimulateOpenBrowserWindow();
-  RunImplementation(ui::IDLE_STATE_IDLE, false);
+  RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteBrowsingHistoryOnExit) {
   SetPref(browsing_data::prefs::kDeleteBrowsingHistoryOnExit);
-  RunImplementation(ui::IDLE_STATE_IDLE, false);
+  RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteDownloadHistoryOnExit) {
   SetPref(browsing_data::prefs::kDeleteDownloadHistoryOnExit);
-  RunImplementation(ui::IDLE_STATE_IDLE, false);
+  RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteCacheOnExit) {
   SetPref(browsing_data::prefs::kDeleteCacheOnExit);
-  RunImplementation(ui::IDLE_STATE_IDLE, false);
+  RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteCookiesOnExit) {
   SetPref(browsing_data::prefs::kDeleteCookiesOnExit);
-  RunImplementation(ui::IDLE_STATE_IDLE, false);
+  RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeletePasswordsOnExit) {
   SetPref(browsing_data::prefs::kDeletePasswordsOnExit);
-  RunImplementation(ui::IDLE_STATE_IDLE, false);
+  RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteFormDataOnExit) {
   SetPref(browsing_data::prefs::kDeleteFormDataOnExit);
-  RunImplementation(ui::IDLE_STATE_IDLE, false);
+  RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteHostedAppsDataOnExit) {
   SetPref(browsing_data::prefs::kDeleteHostedAppsDataOnExit);
-  RunImplementation(ui::IDLE_STATE_IDLE, false);
+  RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteSiteSettingsOnExit) {
   SetPref(browsing_data::prefs::kDeleteSiteSettingsOnExit);
-  RunImplementation(ui::IDLE_STATE_IDLE, false);
+  RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteBraveLeoHistoryOnExit) {
   SetPref(browsing_data::prefs::kDeleteBraveLeoHistoryOnExit);
-  RunImplementation(ui::IDLE_STATE_IDLE, false);
+  RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/false);
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenClearBrowsingDataOnExitList) {
   SetClearBrowsingDataOnExitList(
       {"browsing_history", "cached_images_and_files"});
-  RunImplementation(ui::IDLE_STATE_IDLE, false);
+  RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/false);
 }
 
 }  // namespace brave
