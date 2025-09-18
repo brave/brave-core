@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
@@ -159,13 +160,12 @@ class EmailAliasesService : public KeyedService,
   void OnGenerateAliasResponse(GenerateAliasCallback user_callback,
                                std::optional<std::string> response_body);
 
-  // Processes the server response for an update-alias request.
-  void OnUpdateAliasResponse(UpdateAliasCallback user_callback,
-                             std::optional<std::string> response_body);
-
-  // Processes the server response for a delete-alias request.
-  void OnDeleteAliasResponse(DeleteAliasCallback user_callback,
-                             std::optional<std::string> response_body);
+  // Common handler for alias edit responses (update/delete).
+  void OnEditAliasResponse(
+      base::OnceCallback<void(base::expected<std::monostate, std::string>)>
+          user_callback,
+      std::string_view expected_message,
+      std::optional<std::string> response_body);
 
   // Bound Mojo receivers for the EmailAliasesService interface.
   mojo::ReceiverSet<mojom::EmailAliasesService> receivers_;
