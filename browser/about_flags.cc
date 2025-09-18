@@ -80,6 +80,10 @@
 #include "brave/components/commands/common/features.h"
 #endif
 
+#if BUILDFLAG(IS_MAC)
+#include "brave/browser/brave_browser_main_parts_mac.h"
+#endif
+
 #if BUILDFLAG(IS_WIN)
 #include "sandbox/policy/features.h"
 #endif
@@ -480,6 +484,18 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #else
 #define BRAVE_TABS_FEATURE_ENTRIES
 #endif
+
+#define BRAVE_UPGRADE_WHEN_IDLE_FEATURE_ENTRY                                  \
+  IF_BUILDFLAG(                                                                \
+      IS_MAC,                                                                  \
+      EXPAND_FEATURE_ENTRIES({                                                 \
+          "upgrade-when-idle",                                                 \
+          "Upgrade when idle",                                                 \
+          "Restart the browser to apply a pending update when no windows are " \
+          "open, the system is idle, and no data would be cleared on exit.",   \
+          kOsMac,                                                              \
+          FEATURE_VALUE_TYPE(brave::kUpgradeWhenIdle),                         \
+      }))
 
 #if defined(TOOLKIT_VIEWS)
 #define BRAVE_DARKER_THEME_FEATURE_ENTRIES                           \
@@ -1200,6 +1216,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_AI_REWRITER                                                            \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
+  BRAVE_UPGRADE_WHEN_IDLE_FEATURE_ENTRY                                        \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
   BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \
   BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS                                              \
