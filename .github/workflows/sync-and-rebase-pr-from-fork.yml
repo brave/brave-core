@@ -50,14 +50,8 @@ jobs:
           git fetch --no-tags contributor +"$headRefName":"$contribHeadRefName"
 
           # Rebase the branch with the latest targeting branch HEAD
-          git checkout "$contribHeadRefName"
+          git checkout "$COMMIT_HASH"
           git fetch origin "$baseRefName"
-
-          ACTUAL_PR_HASH=$(git rev-parse HEAD)
-          if [[ "$ACTUAL_PR_HASH" != "$COMMI_THASH" ]]; then
-            echo "FORK HASH does not match provided hash! Make sure the PR has no changes that have not been reviewed. Exiting!"
-            exit 1
-          fi
 
           if ! git rebase FETCH_HEAD; then
             echo "Rebase conflict detected. Please resolve the conflicts and push the changes to your fork. Exiting!"
