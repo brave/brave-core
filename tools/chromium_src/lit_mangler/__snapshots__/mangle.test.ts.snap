@@ -136,7 +136,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </cr-button>
        \${this.shouldShowErrorsButton_() ? html\`
          <cr-button id=\\"errors-button\\" @click=\\"\${this.onErrorsClick_}\\"
-@@ -168,24 +163,14 @@
+@@ -168,25 +163,14 @@
        <cr-button id=\\"terminated-reload-button\\" @click=\\"\${this.onReloadClick_}\\"
            aria-describedby=\\"a11yAssociation\\" class=\\"action-button\\">
          $i18n{itemReload}
@@ -148,9 +148,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -        icon-aria-label=\\"$i18n{parentDisabledPermissions}\\">
 +    <cr-tooltip-icon id=\\"parentDisabledPermissionsToolTip\\" ?hidden=\\"\${!this.data.disableReasons.parentDisabledPermissions}\\" tooltip-text=\\"$i18n{parentDisabledPermissions}\\" icon-class=\\"cr20:kite\\" icon-aria-label=\\"$i18n{parentDisabledPermissions}\\">
      </cr-tooltip-icon>
--    <cr-tooltip id=\\"enable-toggle-tooltip\\" for=\\"enableToggle\\" position=\\"left\\"
+-    <cr-tooltip id=\\"enable-toggle-tooltip\\" for=\\"enableToggle\\"
+-        position=\\"\${this.enableToggleTooltipPosition_}\\"
 -        aria-hidden=\\"true\\" animation-delay=\\"0\\" fit-to-visible-bounds>
-+    <cr-tooltip id=\\"enable-toggle-tooltip\\" for=\\"enableToggle\\" position=\\"left\\" aria-hidden=\\"true\\" animation-delay=\\"0\\" fit-to-visible-bounds=\\"\\">
++    <cr-tooltip id=\\"enable-toggle-tooltip\\" for=\\"enableToggle\\" position=\\"\${this.enableToggleTooltipPosition_}\\" aria-hidden=\\"true\\" animation-delay=\\"0\\" fit-to-visible-bounds=\\"\\">
        \${this.getEnableToggleTooltipText_()}
      </cr-tooltip>
 -    <cr-toggle id=\\"enableToggle\\"
