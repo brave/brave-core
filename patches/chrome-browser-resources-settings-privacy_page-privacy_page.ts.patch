@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.ts b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
-index 4e96e0dca55778b9673731a6a04b1f4412275208..03bd6391e9cd916e669498ca78b8cd00faf6ea57 100644
+index 90c45d13bd12ec54ab90943662af20cf97200d4f..71324bb5aabc63c7bd5d27bfefd6023b69ff0bcc 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
-@@ -22,6 +22,7 @@ import '../settings_page/settings_animated_pages.js';
- import '../settings_page/settings_subpage.js';
+@@ -16,6 +16,7 @@ import '../icons.html.js';
+ import '../privacy_icons.html.js';
+ import '../settings_page/settings_section.js';
  import '../settings_shared.css.js';
- import '../site_settings/settings_category_default_radio_group.js';
 +import './personalization_options.js';
  import './privacy_guide/privacy_guide_dialog.js';
  
