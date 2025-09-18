@@ -87,7 +87,7 @@ constexpr auto kChainSubdomains =
 
          // Polkadot chains.
          {mojom::kPolkadotMainnet, "polkadot-mainnet"},
-         {mojom::kPolkadotTestnet, "polkadot-testnet"}},
+         {mojom::kPolkadotTestnet, "polkadot-westend"}},
         CaseInsensitiveCompare());
 
 constexpr char kGanacheLocalhostURL[] = "http://localhost:7545/";
@@ -746,14 +746,14 @@ const mojom::NetworkInfo* GetPolkadotTestnet() {
 
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
-       "Polkadot Testnet",
-       {},
+       "Polkadot Westend",
+       {"https://westend.subscan.io/"},
        {},
        0,
        {PolkadotTestnetRpcUrl()},
        "DOT",
        "Polkadot",
-       10,
+       12,
        coin,
        GetSupportedKeyringsForNetwork(coin, chain_id)});
   return network_info.get();
