@@ -87,7 +87,7 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
 
   override getAssociatedControlFor(childViewId: string): HTMLElement {
     switch (childViewId) {
-      case 'extensions-v2-subpage':
+      case 'manageV2Extensions':
         return this.shadowRoot!.querySelector('#manageV2Extensions')!;
       default:
         throw new Error(`Unknown child view id: ${childViewId}`)

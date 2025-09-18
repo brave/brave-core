@@ -23,7 +23,6 @@ import {Route, Router} from '../router.js';
 import {routes} from '../route.js';
 import {RouteObserverMixin, RouteObserverMixinInterface} from '../router.js';
 import type {SettingsPlugin} from '../settings_main/settings_plugin.js';
-import {SettingsViewMixin, SettingsViewMixinInterface} from '../settings_page/settings_view_mixin.js';
 import {SearchableViewContainerMixin, SearchableViewContainerMixinInterface} from '../settings_page/searchable_view_container_mixin.js';
 
 
@@ -37,13 +36,12 @@ import {getTemplate} from './brave_sync_page_index.html.js'
  */
 
 const SettingsBraveSyncPageElementBase =
-SettingsViewMixin(SearchableViewContainerMixin(RouteObserverMixin(I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement)))))) as {
+SearchableViewContainerMixin(RouteObserverMixin(I18nMixin(WebUiListenerMixin(BaseMixin(PolymerElement))))) as {
     new(): PolymerElement
       & WebUiListenerMixinInterface
       & I18nMixinInterface
       & RouteObserverMixinInterface
       & SearchableViewContainerMixinInterface
-      & SettingsViewMixinInterface
   }
 
 export interface SettingsBraveSyncPageElement {
@@ -142,22 +140,13 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
     queueMicrotask(() => {
       switch (newRoute) {
         case routes.BRAVE_SYNC:
+        case routes.BASIC:
           this.$.viewManager.switchView(
               'braveSync', 'no-animation', 'no-animation');
           break;
         case routes.BRAVE_SYNC_SETUP:
           this.$.viewManager.switchView(
               'setup', 'no-animation', 'no-animation');
-          break;
-        case routes.BASIC:
-          // Switch back to the default view in case they are part of search
-          // results.
-          this.$.viewManager.switchView(
-              'braveSync', 'no-animation', 'no-animation');
-          break;
-        default:
-          // Nothing to do. Other parent elements are responsible for updating
-          // the displayed contents.
           break;
       }
     });
