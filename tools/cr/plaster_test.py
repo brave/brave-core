@@ -397,38 +397,64 @@ class PlasterTest(unittest.TestCase):
                       str(context.exception))
         self.assertIn(str(test_file_chromium), str(context.exception))
 
-    def test_default_count_fails_with_multiple_matches(self):
-        """Test that default count=1 fails when there are multiple matches."""
-        test_file_chromium = Path(
-            'chrome/common/extensions/api/test_default_count.idl')
+    def test_default_count(self):
+        """Test default count=1 behavior for both correct and incorrect cases."""
+        # Test case 1: Correct - exactly 1 match (should succeed)
+        test_file_correct = Path(
+            'chrome/common/extensions/api/test_default_count_correct.idl')
 
-        # Write and commit file with 2 matches but no count specified
-        # (defaults to 1)
         self.fake_chromium_src.write_and_stage_file(
-            test_file_chromium, 'Chromium browser and Chromium app.',
+            test_file_correct, 'Content with single Chromium word.',
             self.fake_chromium_src.chromium)
-        self.fake_chromium_src.commit('Add test_default_count.idl',
+        self.fake_chromium_src.commit('Add test_default_count_correct.idl',
                                       self.fake_chromium_src.chromium)
 
-        # Create a PlasterFile with NO count specified (defaults to 1)
-        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
-                                                     '.toml')
-        plaster_path.parent.mkdir(parents=True, exist_ok=True)
-        plaster_path.write_text('''
+        plaster_path_correct = (plaster.PLASTER_FILES_PATH /
+                                (str(test_file_correct) + '.toml'))
+        plaster_path_correct.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path_correct.write_text('''
           [[substitution]]
-          description = 'Test default count behavior'
+          description = 'Test default count with 1 match'
           re_pattern = 'Chromium'
           replace = 'Brave'
         ''')
 
-        # Should fail because there are 2 matches but default count expects 1
-        plaster_file = plaster.PlasterFile(plaster_path)
+        # Should succeed because there's exactly 1 match (matches default)
+        plaster_file_correct = plaster.PlasterFile(plaster_path_correct)
+        plaster_file_correct.apply()
+
+        result_correct = (self.fake_chromium_src.chromium /
+                          test_file_correct).read_text()
+        self.assertEqual(result_correct, 'Content with single Brave word.')
+
+        # Test case 2: Incorrect - 2 matches (should fail)
+        test_file_incorrect = Path(
+            'chrome/common/extensions/api/test_default_count_incorrect.idl')
+
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_incorrect, 'Chromium browser and Chromium app.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_default_count_incorrect.idl',
+                                      self.fake_chromium_src.chromium)
+
+        plaster_path_incorrect = (plaster.PLASTER_FILES_PATH /
+                                  (str(test_file_incorrect) + '.toml'))
+        plaster_path_incorrect.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path_incorrect.write_text('''
+          [[substitution]]
+          description = 'Test default count with 2 matches'
+          re_pattern = 'Chromium'
+          replace = 'Brave'
+        ''')
+
+        # Should fail because there are 2 matches but default expects 1
+        plaster_file_incorrect = plaster.PlasterFile(plaster_path_incorrect)
         with self.assertRaises(ValueError) as context:
-            plaster_file.apply()
+            plaster_file_incorrect.apply()
 
         self.assertIn('Unexpected number of matches (2 vs 1)',
                       str(context.exception))
-        self.assertIn(str(test_file_chromium), str(context.exception))
+        self.assertIn(str(test_file_incorrect), str(context.exception))
 
     def test_count_zero_replaces_all(self):
         """
