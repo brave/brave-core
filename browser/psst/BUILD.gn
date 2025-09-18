@@ -4,9 +4,17 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 static_library("psst") {
-  public = [ "psst_ui_delegate_impl.h" ]
+  public = [
+    "brave_psst_permission_context.h",
+    "brave_psst_permission_context_factory.h",
+    "psst_ui_delegate_impl.h",
+  ]
 
-  sources = [ "psst_ui_delegate_impl.cc" ]
+  sources = [
+    "brave_psst_permission_context.cc",
+    "brave_psst_permission_context_factory.cc",
+    "psst_ui_delegate_impl.cc",
+  ]
 
   deps = [
     "//base",
@@ -14,6 +22,24 @@ static_library("psst") {
     "//brave/components/constants",
     "//brave/components/psst/browser/content",
     "//brave/components/psst/common",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_psst_permission_context_unittest.cc" ]
+  deps = [
+    ":psst",
+    "//base",
+    "//brave/components/psst/common",
+    "//chrome/test:test_support",
+    "//components/content_settings/core/browser",
+    "//components/permissions",
+    "//components/sync_preferences:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//url",
   ]
 }
 
