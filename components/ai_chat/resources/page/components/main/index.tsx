@@ -398,15 +398,17 @@ function Main() {
         </Dialog>
       )}
       <div className={styles.input}>
-        <ToolsMenu
-          isOpen={conversationContext.isToolsMenuOpen}
-          setIsOpen={conversationContext.setIsToolsMenuOpen}
-          query={extractedQuery}
-          categories={aiChatContext.actionList}
-          handleClick={conversationContext.handleActionTypeClick}
-          handleSmartModeClick={conversationContext.handleSmartModeClick}
-          handleSmartModeEdit={conversationContext.handleSmartModeEdit}
-        />
+        {!conversationContext.selectedSmartMode && (
+          <ToolsMenu
+            isOpen={conversationContext.isToolsMenuOpen}
+            setIsOpen={conversationContext.setIsToolsMenuOpen}
+            query={extractedQuery}
+            categories={aiChatContext.actionList}
+            handleClick={conversationContext.handleActionTypeClick}
+            handleSmartModeClick={conversationContext.handleSmartModeClick}
+            handleSmartModeEdit={conversationContext.handleSmartModeEdit}
+          />
+        )}
         {!hasConversationStarted && <TabsMenu />}
         <InputBox
           conversationStarted={hasConversationStarted}
