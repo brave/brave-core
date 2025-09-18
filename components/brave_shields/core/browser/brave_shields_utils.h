@@ -9,6 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 
@@ -42,6 +43,12 @@ enum class DomainBlockingType {
   k1PES,
   // Show an interstitial before proceeding to as website.
   kAggressive,
+};
+
+enum AutoShredType {
+  NEVER = 0,
+  TAB_CLOSE,
+  APP_EXIT,
 };
 
 struct ShieldsSettingCounts;
@@ -152,6 +159,11 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
 base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url);
 
 bool IsDeveloperModeEnabled(PrefService* profile_state);
+
+void SetAutoShredType(HostContentSettingsMap* map,
+                      AutoShredType type,
+                      const GURL& url);
+AutoShredType GetAutoShredType(HostContentSettingsMap* map, const GURL& url);
 
 }  // namespace brave_shields
 
