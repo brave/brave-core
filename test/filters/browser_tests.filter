@@ -2449,6 +2449,11 @@
 # single profile
 -ProfileMenuViewBrowserTest.ProfileMenuDoesNotOutliveBrowser
 
+# This test fails because we temporarily reverted
+# https://source.chromium.org/chromium/chromium/src/+/b1e66bdb
+# see https://github.com/brave/brave-browser/issues/49422
+-LocalNetworkAccessBrowserTest.HtmlScriptSrcAllowPermission
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
