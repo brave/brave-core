@@ -474,7 +474,9 @@ void EmailAliasesService::OnEditAliasResponse(
     result = base::unexpected(dict.error());
   } else if (auto edited = AliasEditedResponse::FromValue(dict.value())) {
     if (edited->message != expected_message) {
-      result = base::unexpected(edited->message);
+      result = base::unexpected(
+          l10n_util::GetStringFUTF8(IDS_EMAIL_ALIASES_SERVICE_REPORTED_ERROR,
+                                    base::UTF8ToUTF16(edited->message)));
     } else {
       result = base::ok(std::monostate{});
     }

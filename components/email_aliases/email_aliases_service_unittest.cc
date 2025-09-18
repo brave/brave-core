@@ -7,6 +7,7 @@
 
 #include <string>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "base/containers/contains.h"
@@ -482,9 +483,10 @@ std::string MakeGenerateAliasSuccessBody() {
 struct EmailAliasesApiCase {
   const char* name;
   std::optional<std::string> body;
-  // When set, expect failure and substring must appear; otherwise expect
-  // success.
-  std::optional<std::string> expected_error_substr;
+  // If set, the test expects failure. Holds either a resource id (int) whose
+  // localized string must be contained in the error, or a raw expected string
+  // that must match exactly.
+  std::optional<std::variant<int, std::string>> expected_error;
 };
 
 // Param-to-name converter used by all parameterized suites.
@@ -498,9 +500,16 @@ std::string ParamName(const testing::TestParamInfo<EmailAliasesApiCase>& info) {
 template <typename T>
 void ExpectResultStateMatches(const base::expected<T, std::string>& result,
                               const EmailAliasesApiCase& p) {
-  if (p.expected_error_substr) {
+  if (p.expected_error) {
     ASSERT_FALSE(result.has_value());
-    EXPECT_TRUE(base::Contains(result.error(), *p.expected_error_substr));
+    std::string error_string;
+    if (std::holds_alternative<int>(*p.expected_error)) {
+      const int id = std::get<int>(*p.expected_error);
+      error_string = l10n_util::GetStringUTF8(id);
+    } else {
+      error_string = std::get<std::string>(*p.expected_error);
+    }
+    EXPECT_TRUE(base::Contains(result.error(), error_string));
   } else {
     ASSERT_TRUE(result.has_value());
   }
@@ -516,7 +525,7 @@ TEST_P(GenerateAliasParamTest, HandlesResponses) {
   const auto& p = GetParam();
   auto result_out = CallGenerateAliasWith(p.body);
   ExpectResultStateMatches(result_out, p);
-  if (!p.expected_error_substr) {
+  if (!p.expected_error) {
     EXPECT_EQ(result_out.value(), kExpectedGeneratedAlias);
   }
 }
@@ -527,19 +536,24 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(
         EmailAliasesApiCase{.name = "Success",
                             .body = MakeGenerateAliasSuccessBody(),
-                            .expected_error_substr = std::nullopt},
-        EmailAliasesApiCase{.name = "BackendError",
-                            .body = "{\"message\":\"alias_unavailable\"}",
-                            .expected_error_substr = "Alias not available"},
-        EmailAliasesApiCase{.name = "NoBody",
-                            .body = std::nullopt,
-                            .expected_error_substr = "No response"},
-        EmailAliasesApiCase{.name = "InvalidJSON",
-                            .body = "not a json",
-                            .expected_error_substr = "Invalid response"},
-        EmailAliasesApiCase{.name = "UnexpectedPayload",
-                            .body = "{\"message\":\"ok_but_no_alias\"}",
-                            .expected_error_substr = "Alias not available"}),
+                            .expected_error = std::nullopt},
+        EmailAliasesApiCase{
+            .name = "BackendError",
+            .body = "{\"message\":\"alias_unavailable\"}",
+            .expected_error = IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE},
+        EmailAliasesApiCase{
+            .name = "NoBody",
+            .body = std::nullopt,
+            .expected_error = IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY},
+        EmailAliasesApiCase{
+            .name = "InvalidJSON",
+            .body = "not a json",
+            .expected_error =
+                IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY},
+        EmailAliasesApiCase{
+            .name = "UnexpectedPayload",
+            .body = "{\"message\":\"ok_but_no_alias\"}",
+            .expected_error = IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE}),
     ParamName);
 
 // ================= UpdateAlias (parameterized) =================
@@ -560,19 +574,22 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(
         EmailAliasesApiCase{.name = "Success",
                             .body = "{\"message\":\"updated\"}",
-                            .expected_error_substr = std::nullopt},
+                            .expected_error = std::nullopt},
         EmailAliasesApiCase{.name = "BackendError",
                             .body = "{\"message\":\"backend_error\"}",
-                            .expected_error_substr = "backend_error"},
+                            .expected_error = "backend_error"},
         EmailAliasesApiCase{.name = "NonUpdatedMessage",
                             .body = "{\"message\":\"not_updated\"}",
-                            .expected_error_substr = "not_updated"},
-        EmailAliasesApiCase{.name = "NoBody",
-                            .body = std::nullopt,
-                            .expected_error_substr = "No response"},
-        EmailAliasesApiCase{.name = "InvalidJSON",
-                            .body = "not a json",
-                            .expected_error_substr = "Invalid response"}),
+                            .expected_error = "not_updated"},
+        EmailAliasesApiCase{
+            .name = "NoBody",
+            .body = std::nullopt,
+            .expected_error = IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY},
+        EmailAliasesApiCase{
+            .name = "InvalidJSON",
+            .body = "not a json",
+            .expected_error =
+                IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY}),
     ParamName);
 
 // ================= DeleteAlias (parameterized) =================
@@ -593,16 +610,19 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(
         EmailAliasesApiCase{.name = "Success",
                             .body = "{\"message\":\"deleted\"}",
-                            .expected_error_substr = std::nullopt},
+                            .expected_error = std::nullopt},
         EmailAliasesApiCase{.name = "BackendError",
                             .body = "{\"message\":\"backend_error\"}",
-                            .expected_error_substr = "backend_error"},
-        EmailAliasesApiCase{.name = "NoBody",
-                            .body = std::nullopt,
-                            .expected_error_substr = "No response"},
-        EmailAliasesApiCase{.name = "InvalidJSON",
-                            .body = "not a json",
-                            .expected_error_substr = "Invalid response"}),
+                            .expected_error = "backend_error"},
+        EmailAliasesApiCase{
+            .name = "NoBody",
+            .body = std::nullopt,
+            .expected_error = IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY},
+        EmailAliasesApiCase{
+            .name = "InvalidJSON",
+            .body = "not a json",
+            .expected_error =
+                IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY}),
     ParamName);
 
 TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
