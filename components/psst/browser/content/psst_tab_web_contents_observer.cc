@@ -194,6 +194,50 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     return;
   }
 
+  const auto* tasks =
+      user_script_result.GetDict().FindList(kUserScriptResultTasksPropName);
+  if (!tasks || tasks->empty()) {
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    return;
+  }
+
+  if (!is_initial.value() && permission_info &&
+      permission_info->consent_status == ConsentStatus::kAllow) {
+    // If permission is granted and it is not the initial iteration call we
+    // don't need to show the dialog again.
+    OnUserAcceptedPsstSettings(id, false, std::move(rule),
+                               std::move(user_script_result),
+                               permission_info->urls_to_skip);
+    return;
+  }
+
+  const int script_version = rule->version();
+  // Show the PSST settings dialog to the user
+  ui_delegate_->Show(
+      {*user_id, web_contents()->GetLastCommittedURL().host(), tasks->Clone(),
+       script_version,
+       base::BindOnce(&PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
+                      weak_factory_.GetWeakPtr(), id, is_initial.value(),
+                      std::move(rule), std::move(user_script_result))});
+}
+
+void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
+    int nav_entry_id,
+    const bool is_initial,
+    std::unique_ptr<MatchedRule> rule,
+    base::Value user_script_result,
+    const std::vector<std::string>& disabled_checks) {
+  // Exclude disabled URLs by the user
+  if (auto* tasks = user_script_result.GetDict().FindList(
+          kUserScriptResultTasksPropName)) {
+    tasks->EraseIf([&](const base::Value& v) {
+      const auto& item_dict = v.GetDict();
+      const auto* url =
+          item_dict.FindString(kUserScriptResultTaskItemUrlPropName);
+      return url && base::Contains(disabled_checks, *url);
+    });
+  }
+
   RunWithTimeout(
       id,
       MaybeAddParamsToScript(std::move(rule),
