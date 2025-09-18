@@ -144,10 +144,10 @@ class EmailAliasesService : public KeyedService,
 
   // Shared implementation used by the two ApiFetch overloads to make a network
   // request.
-  void PerformFetch(const GURL& url,
-                    const char* method,
-                    std::optional<std::string> serialized_body,
-                    BodyAsStringCallback download_to_string_callback);
+  void ApiFetchInternal(const GURL& url,
+                        const char* method,
+                        std::optional<std::string> serialized_body,
+                        BodyAsStringCallback download_to_string_callback);
 
   // Refreshes the aliases list from the server and notifies observers.
   void RefreshAliases();

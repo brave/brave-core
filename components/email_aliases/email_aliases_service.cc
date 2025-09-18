@@ -390,8 +390,8 @@ void EmailAliasesService::ApiFetch(const GURL& url,
                                    BodyAsStringCallback callback) {
   CHECK(method == net::HttpRequestHeaders::kGetMethod ||
         method == net::HttpRequestHeaders::kHeadMethod);
-  PerformFetch(url, method, /*serialized_body=*/std::nullopt,
-               std::move(callback));
+  ApiFetchInternal(url, method, /*serialized_body=*/std::nullopt,
+                   std::move(callback));
 }
 
 void EmailAliasesService::ApiFetch(const GURL& url,
@@ -403,10 +403,10 @@ void EmailAliasesService::ApiFetch(const GURL& url,
         method == net::HttpRequestHeaders::kDeleteMethod);
   auto body = base::WriteJson(body_value);
   CHECK(body);
-  PerformFetch(url, method, /*serialized_body=*/body, std::move(callback));
+  ApiFetchInternal(url, method, /*serialized_body=*/body, std::move(callback));
 }
 
-void EmailAliasesService::PerformFetch(
+void EmailAliasesService::ApiFetchInternal(
     const GURL& url,
     const char* method,
     std::optional<std::string> serialized_body,
