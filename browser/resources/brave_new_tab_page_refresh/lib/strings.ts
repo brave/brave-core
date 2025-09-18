@@ -89,7 +89,6 @@ export type StringKey =
   'talkStartCallLabel' |
   'talkWidgetTitle' |
   'topSiteRemovedText' |
-  'topSiteRemovedTitle' |
   'topSitesCustomOptionText' |
   'topSitesCustomOptionTitle' |
   'topSitesMostVisitedOptionText' |

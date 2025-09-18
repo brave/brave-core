@@ -260,7 +260,6 @@ void NewTabPageInitializer::AddStrings() {
       {"talkStartCallLabel", IDS_NEW_TAB_TALK_START_CALL_LABEL},
       {"talkWidgetTitle", IDS_NEW_TAB_TALK_WIDGET_TITLE},
       {"topSiteRemovedText", IDS_NEW_TAB_TOP_SITE_REMOVED_TEXT},
-      {"topSiteRemovedTitle", IDS_NEW_TAB_TOP_SITE_REMOVED_TITLE},
       {"topSitesCustomOptionText", IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TEXT},
       {"topSitesCustomOptionTitle", IDS_NEW_TAB_TOP_SITES_CUSTOM_OPTION_TITLE},
       {"topSitesMostVisitedOptionText",
