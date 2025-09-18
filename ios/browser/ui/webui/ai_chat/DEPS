@@ -1,0 +1,7 @@
+include_rules = [
+  "+brave/components/ai_chat/core/common",
+  "+brave/components/ai_chat/core/common/mojom",
+  "+brave/components/ai_chat/resources/grit",
+  "+brave/components/constants",
+  "+brave/components/l10n/common",
+]
