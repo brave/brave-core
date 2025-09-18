@@ -43,6 +43,18 @@
 /* The title above a list of the users selected browser actions such as bookmarks, history, etc. */
 "BrowserMenu.myActions" = "Tevékenységeim";
 
+/* A row in the menu action customization list that divides which items are placed in a grid and which are placed in a list. */
+"BrowserMenu.quickActionDividerTitle" = "A legfelül lévő elemek jelennek meg a fő területen";
+
+/* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
+"BrowserMenu.resetButtonTitle" = "Alapállapot";
+
+/* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
+"BrowserMenu.resetToDefault" = "Visszaállítás alapértelmezettre";
+
+/* A message presented in a confirmation dialog explaining the destructive action of resetting the menu to its default state */
+"BrowserMenu.resetToDefaultDialogMessage" = "Az alapértelmezett beállítások visszaállításával elvesznek a Brave-ben végzett testreszabásai. Ez a művelet nem vonható vissza. Biztosan folytatja?";
+
 /* A button title that when taps shows all actions that are hidden by default */
 "BrowserMenu.showAllButtonTitle" = "Az összes megjelenítése…";
 

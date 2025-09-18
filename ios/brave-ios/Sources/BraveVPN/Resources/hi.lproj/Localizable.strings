@@ -1,0 +1,366 @@
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "ऐक्टिवेट करें";
+
+/* Text for toggle which indicating the toggle action is for selecting region in automatic */
+"vpn.automaticServerSelectionToggleTitle" = "स्वचालित";
+
+/* Title on top the list of available servers */
+"vpn.availableServerTitle" = "उपलब्ध सर्वर";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "खरीदें";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxDevicesProtect" = "1 सदस्यता पर 5 डिवाइस सुरक्षित रखें";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoLocation" = "Chooअपना भौगोलिक/देश का स्थान चुनें";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Brave कभी भी आपकी गतिविधि को लॉग नहीं करता है";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectYourDevices" = "हर ऐप और अपने पूरे डिवाइस को सुरक्षित रखें";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSaferWifi" = "घर या सार्वजनिक Wi-Fi के लिए अधिक सुरक्षित";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSpeedFast" = "बिजली की तेजी से, 100 Mbps तक";
+
+/* Text indicating how many cities is used for that country used as Ex: '1 City' */
+"vpn.cityCountTitle" = "%ld शहर";
+
+/* Text showing the vpn region is connected */
+"vpn.connectedRegionDescription" = "कनेक्टेड";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "App Store की रसीद";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "ऐप वर्शन";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "सेल्युलर सेवा देने वाली कंपनी";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Brave आपको ट्रैक नहीं करता है या न ही यह जानता है कि आप हमारे ऐप का इस्तेमाल कैसे करते हैं, इसलिए हम नहीं जानते कि आपने VPN कैसे सेट अप किया है। जिस समस्या का आप सामना कर रहे हैं उसके बारे में जानकारी दें और हम जल्द से जल्द उसे हल करने की पूरी कोशिश करेंगे।";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "ईमेल नहीं भेज सकते। कृपया अपनी ईमेल कॉन्फ़िगरेशन देखें।";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "कृपया वह जानकारी चुनें जिसे हमारे साथ शेयर करने में आप सहज हों।\n\nआप शुरुआत में हमारे साथ जितनी ज़्यादा जानकारी शेयर करेंगे, हमारे सपोर्ट स्टाफ़ को आपकी समस्या सुलझाने के लिए आपकी मदद करने में उतनी ज़्यादा आसानी होगी।";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "सपोर्ट Guardian टीम की मदद से दिया जाता है।";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "VPN होस्टनेम";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "समस्या";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "कनेक्शन की विश्वसनीयता की समस्या";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "कृपया समस्या के बारे में बताने वाली श्रेणी चुनें।";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "कनेक्ट होने पर कोई इंटरनेट कनेक्‍शन नहीं मिला";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "अन्य";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "VPN से कनेक्ट नहीं हो सका (कोई और एरर)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "धीमा कनेक्शन";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "वेबसाइट काम नहीं कर रही";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "गड़बड़ी के लॉग";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "नेटवर्क प्रकार";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "प्लेटफ़ॉर्म";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "ईमेल जारी रखें";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "सब्सक्रिप्शन प्रकार";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "iOS टाइमज़ोन";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Brave Firewall + VPN समस्या";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "सक्षम करें";
+
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "सभी प्लान में शामिल है";
+
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "7 दिन फ़्री ट्रायल";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "7 दिन फ़्री में आज़माएँ";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "सभी सब्सक्रिप्शन ऑटो-रिन्यू हो जाते हैं, लेकिन उन्हें रिन्यूअल से पहले कैंसल किया जा सकता है।";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "यह प्रोफ़ाइल VPN को आपके डिवाइस पर हर समय ट्रैफ़िक को अपने-आप कनेक्ट और सुरक्षित करने की अनुमति देती है। यह VPN कनेक्शन एन्क्रिप्ट किया जाएगा और संभावित रूप से नुकसान पहुँचाने वाले और हमला करने वाले कनेक्शंस को ब्लॉक करने के लिए Brave के इंटेलिजेंट फ़ायरवॉल के ज़रिए रूट किया जाएगा।";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "VPN प्रोफ़ाइल इंस्टॉल करें";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave अब VPN प्रोफ़ाइल इंस्टॉल करेगा.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPN अब चालू है";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "VPN इंस्टॉल करें";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "7 दिनों का मुफ़्त ट्रायल शुरू करें";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "हर महीने रिन्यू होता है";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "हर महीने का सब्सक्रिप्शन";
+
+/* Text indicating how many cities is used for that region used as Ex: '2 Cities' */
+"vpn.multipleCityCountTitle" = "%ld शहर";
+
+/* Text indicating how many server is used for that region used as Ex: '2 Servers' */
+"vpn.multipleServerCountTitle" = "%ld सर्वर";
+
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "सब्सक्रिप्शन की राशि आपके Apple अकाउंट के ज़रिए लिया जाएगा। जब आप सब्सक्रिप्शन खरीदते हैं, तो मुफ़्त ट्रायल का बचा हुआ कोई भी हिस्सा, अगर ऑफ़र किया गया हो, तो खत्म हो जाता है।\n\nसब्सक्रिप्शन की मौजूदा अवधि खत्म होने के कम से कम 24 घंटे पहले अगर उसे रद्द नहीं किया जाता, तो वह अपने आप रिन्यू हो जाता है।\n\nआप अपने सब्सक्रिप्शन को सेटिंग में जाकर मैनेज कर सकते हैं।\n\nBrave का इस्तेमाल करके, आप इस्तेमाल की शर्तों और प्राइवेसी पॉलिसी से सहमत होते हैं।";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "माह";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "साल";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "समयसीमा खत्म हो गई";
+
+/* Description of vpn tunnel protocol */
+"vpn.protocolPickerDescription" = "कृपया अपना पसंदीदा ट्रांसपोर्ट प्रोटोकॉल चुनें। स्विच करने के बाद, आपके मौजूदा VPN क्रेडेंशियल हट जाएँगे और अगर VPN कनेक्शन अभी बना हुआ है, चो आपको फिर से कनेक्ट किया जाएगा।";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "टनल प्रोटोकॉल को स्विच नहीं कर पाए, कृपया बाद में कोशिश करें।";
+
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "सर्वर की गड़बड़ी";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "ट्रांसपोर्ट प्रोटोकॉल";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "VPN टनल प्रोटोकॉल बदल गया।";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "आपके सिस्टम के टाइमज़ोन के आधार पर, आपका सबसे नज़दीकी सर्वर क्षेत्र अपने-आप चुना जाएगा। इंटरनेट की तेज़ गति के लिए इसका सुझाव दिया जाता है।";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "सर्वर को स्विच नहीं कर पाए, कृपया बाद में कोशिश करें।";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "सर्वर की गड़बड़ी";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "सर्वर क्षेत्र";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "VPN क्षेत्र बदल गया।";
+
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "हर साल रिन्यू होती है";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "हर महीने रिन्यू होता है";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "VPN कॉन्फ़िगरेशन को रीसेट नहीं किया जा सका। कृपया फिर से कोशिश करें। अगर समस्या बनी रहती है, तो सहायता के लिए सपोर्ट से संपर्क करें।";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "फिर से कोशिश करें";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "रीसेट नहीं हो सका";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "VPN कॉन्फ़िगरेशन रीसेट हो गया है।";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "रीसेट हो गया है";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "पुनर्स्थापित करें";
+
+/* Use in context: save 16%. */
+"vpn.save" = "सेव करें";
+
+/* Title showing which country serves list showing. Ex: 'Brazil Server */
+"vpn.serverNameTitle" = "%@ सर्वर";
+
+/* Text for description of toggle that auto selcets the server according to time zone. */
+"vpn.serverRegionAutoSelectDescription" = "अपने टाइमज़ोन के आधार पर अपने सबसे नज़दीकी VPN सर्वर के क्षेत्र को ऑटोमैटिक तरीके से चुनें. इंटरनेट की स्पीड को अधिकतम करने के लिए यह विकल्प अपनाना चाहिए.";
+
+/* Text indicating how many server is used for that region used as Ex: '1 Server' */
+"vpn.serverTitle" = "%ld सर्वर";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "हर ऐप को Brave VPN से सुरक्षित करें। एक प्लान से अधिकतम 10 डिवाइसों को सुरक्षित रखें।";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "टेक्निकल सपोर्ट से संपर्क करें";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "सर्वर सूची रिट्रीव नहीं कर पाए, कृपया बाद में कोशिश करें।";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "VPN सपोर्ट";
+
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "खरीदारी को अपने Brave अकाउंट से लिंक करें";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "दूसरे डिवाइसों पर Brave VPN का इस्तेमाल करने के लिए अपने App Store की खरीदारी को अपने Brave अकाउंट से लिंक करें।";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "सब्सक्रिप्शन मैनेज करें";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "ऑफ़र कोड रिडीम करें";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "कॉन्फ़िगरेशन रीसेट करें";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "होस्ट";
+
+/* Table cell title for vpn's server location and which open opens location select */
+"vpn.settingsServerLocation" = "स्थान";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "सर्वर";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "समय सीमा समाप्ति दिनांक";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "सब्सक्रिप्शन";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "स्थिति";
+
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "ट्रांसपोर्ट प्रोटोकॉल";
+
+/* Button to allow the user to view the App Store receipt. */
+"vpn.settingsViewReceipt" = "App Store की रसीद देखें";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "चालू होने पर, अगर आपका VPN कनेक्शन अचानक से टूट जाता है, तो IP address और डेटा लीक रोकने के लिए आपका डिवाइस अपने-आप इंटरनेट से डिसकनेक्ट हो जाएगा। [ज़्यादा जानें](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Kill Switch चालू करें";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "स्मार्ट प्रॉक्सी राउंटिंग से पक्का होता है कि ट्रैफ़िक को प्रतिबद्ध प्रॉक्सी सर्वर्स के ज़रिए राउट किया जाए, ताकि समान्य तौर पर प्रतिबंधित कॉन्टेंट/साइटों या तीसरे पक्ष की सेवाओं के ऐक्सेस की अनुमति दी जा सके। [ज़्यादा जानें](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "स्मार्ट प्रॉक्सी चालू करें";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "पेमेंट का तरीका अपडेट करें";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "बैकग्राउंड में भी, Brave आपकी सुरक्षा करता रहेगा।";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN चालू है";
+
+/* Text for description of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalDescription" = "जो सबसे अच्छा सर्वर मौजूद हो, वह इस्तेमाल करें";
+
+/* Text for title of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalTitle" = "सर्वोत्तम";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "VPN को शुरू करने में समस्या हुई। कृपया फिर से कोशिश करें या VPN सेटिंग पेज में कॉन्फ़िगरेशन रीसेट करने की कोशिश करें।";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "गड़बड़ी";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "आपका डिवाइस काम कर पाए, इसके लिए Brave Firewall + VPN पर VPN प्रोफ़ाइल इंस्टॉल करना ज़रूरी होता है। ";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "अनुमति नहीं दी गई";
+
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "ऑफ़र कोड रिडीम नहीं कर पाए। कृपया फिर से कोशिश करें या अपने ऑफ़र कोड की जानकारी जाँचकर फिर से कोशिश करें।";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "खरीदारी पूरी नहीं हो पाई। कृपया फिर से कोशिश करें या Apple पर अपने भुगतान की जानकारी देखकर फिर से कोशिश करें।";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "गड़बड़ी";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "सब्सक्रिप्शन की राशि आपके iTunes अकाउंट के ज़रिए ली जाएगी।\n\nजब आप सब्सक्रिप्शन खरीदते हैं, तो मुफ़्त ट्रायल का बचा हुआ कोई भी हिस्सा, अगर ऑफ़र किया गया हो, तो खत्म हो जाता है।\n\nसब्सक्रिप्शन की मौजूदा अवधि खत्म होने के कम से कम 24 घंटे पहले अगर उसे रद्द नहीं किया जाता, तो वह अपने आप रिन्यू हो जाता है।\n\nआप अपने सब्सक्रिप्शन को सेटिंग में जाकर मैनेज कर सकते हैं।\n\nBrave का इस्तेमाल करके, आप इस्तेमाल की शर्तों और प्राइवेसी पॉलिसी से सहमत होते हैं।";
+
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN बंद है";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN चालू है";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "कोड रिडीम करें";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "VPN क्षेत्र बदल गया";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "इससे आपका Brave Firewall + VPN कॉन्फ़िगरेशन रीसेट हो जाएगा और सभी गड़बड़ियाँ ठीक हो जाएँगी। इस प्रोसेस में एक मिनट लग सकता है।";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "कॉन्फ़िगरेशन रीसेट करें";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "रीसेट करें";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "हर महीने का सब्सक्रिप्शन";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "सालाना सब्सक्रिप्शन ";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "रिन्यू से साल भर में %@ बचत होती है";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "बेस्ट वैल्यू";
+
+/* One year length vpn subcription */
+"vpn.yearlySubTitle" = "एक साल";
+

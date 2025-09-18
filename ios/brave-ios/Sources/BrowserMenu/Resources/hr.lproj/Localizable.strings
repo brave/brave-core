@@ -43,6 +43,18 @@
 /* The title above a list of the users selected browser actions such as bookmarks, history, etc. */
 "BrowserMenu.myActions" = "Moje radnje";
 
+/* A row in the menu action customization list that divides which items are placed in a grid and which are placed in a list. */
+"BrowserMenu.quickActionDividerTitle" = "Stavke na vrhu pokazuju se u glavnom području";
+
+/* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
+"BrowserMenu.resetButtonTitle" = "Ponovo postavite";
+
+/* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
+"BrowserMenu.resetToDefault" = "Vrati sve na zadane postavke";
+
+/* A message presented in a confirmation dialog explaining the destructive action of resetting the menu to its default state */
+"BrowserMenu.resetToDefaultDialogMessage" = "Povratkom na zadane postavke izgubit ćete sve prilagodbe koje ste napravili u Braveu. Ova se radnja ne može poništiti. Jeste li sigurni da želite nastaviti?";
+
 /* A button title that when taps shows all actions that are hidden by default */
 "BrowserMenu.showAllButtonTitle" = "Pokaži sve…";
 
