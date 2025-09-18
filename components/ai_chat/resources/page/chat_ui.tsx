@@ -61,6 +61,7 @@ function Content() {
 }
 
 function ConversationEntries(props: ConversationEntriesProps) {
+  const aiChatContext = useAIChat()
   const conversationContext = useConversation()
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null)
   const hasNotifiedContentReady = React.useRef(false)
@@ -153,9 +154,16 @@ function ConversationEntries(props: ConversationEntriesProps) {
     }
   }, [])
 
+  // On iOS, mojo is powered by using JavaScript alerts as this is the only way
+  // to perform serial communicaton between WebKit & the app, so we must allow
+  // modals in the frame for it to function
+  const sandboxPermissions =
+    'allow-scripts allow-same-origin'
+    + (aiChatContext.isMobile ? ' allow-modals' : '')
+
   return (
     <iframe
-      sandbox='allow-scripts allow-same-origin'
+      sandbox={sandboxPermissions}
       allow='clipboard-write'
       src={
         'chrome-untrusted://leo-ai-conversation-entries/'
