@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
+#include "base/run_loop.h"
 #include "base/test/gtest_util.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
@@ -758,12 +759,23 @@ TEST_F(BraveSyncServiceImplTest_DisableSyncDefaultPasswordsTest,
   OSCryptMocker::SetUp();
   CreateSyncService();
   EXPECT_FALSE(engine());
+
+  base::RunLoop engine_waiter;
+  base::RepeatingClosure quit_closure = engine_waiter.QuitClosure();
+  NiceMock<SyncServiceObserverMock> observer_mock;
+  ON_CALL(observer_mock, OnStateChanged(_))
+      .WillByDefault(testing::Invoke([this, quit_closure]() {
+        if (engine()) {
+          quit_closure.Run();
+        }
+      }));
+  brave_sync_service_impl()->AddObserver(&observer_mock);
+
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
 
-  base::RunLoop run_loop;
-  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, run_loop.QuitClosure());
-  run_loop.Run();
+  engine_waiter.Run();
+
+  brave_sync_service_impl()->RemoveObserver(&observer_mock);
 
   brave_sync_service_impl()
       ->GetUserSettings()
