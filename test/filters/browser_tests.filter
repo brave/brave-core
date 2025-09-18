@@ -2254,6 +2254,9 @@
 
 # This test fails because it conflicts with our own split view layout,
 # specifically with how we currently manage our vertical tabs host view
+-DeviceChooserBubbleSplitViewTest.ShowDeviceChooserDialog
+-FileSystemAccessBubbleSplitViewTest.ShowFileSystemAccessDialog
+-SafetyTipPageInfoBubbleSplitViewTest.ShowLookalikeDialog
 -SideBySideBrowserViewTest.AccessibleTabLabel
 -SideBySideBrowserViewTest.SplitViewActiveIndexTest
 -SideBySideBrowserViewTest.SplitViewInactiveIndexReturnsCorrectly
