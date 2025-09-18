@@ -439,56 +439,62 @@ void EmailAliasesService::ApiFetchInternal(
 void EmailAliasesService::OnGenerateAliasResponse(
     GenerateAliasCallback user_callback,
     std::optional<std::string> response_body) {
+  base::expected<std::string, std::string> result;
   auto parsed = ParseResponseDictOrError(response_body);
   if (!parsed.has_value()) {
-    std::move(user_callback).Run(base::unexpected(parsed.error()));
-    return;
-  }
-  if (auto ok = GenerateAliasResponse::FromValue(parsed.value())) {
+    result = base::unexpected(parsed.error());
+  } else if (auto ok = GenerateAliasResponse::FromValue(parsed.value())) {
     if (ok->message == "created" && !ok->alias.empty()) {
-      std::move(user_callback).Run(base::ok(ok->alias));
-      return;
+      result = base::ok(ok->alias);
+    } else {
+      result = base::unexpected(l10n_util::GetStringUTF8(
+          IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE));
     }
+  } else {
+    result = base::unexpected(l10n_util::GetStringUTF8(
+        IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE));
   }
-  std::move(user_callback)
-      .Run(base::unexpected(l10n_util::GetStringUTF8(
-          IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE)));
+  std::move(user_callback).Run(std::move(result));
 }
 
 void EmailAliasesService::OnUpdateAliasResponse(
     UpdateAliasCallback user_callback,
     std::optional<std::string> response_body) {
   RefreshAliases();
+  base::expected<std::monostate, std::string> result;
   auto parsed = ParseResponseDictOrError(response_body);
   if (!parsed.has_value()) {
-    std::move(user_callback).Run(base::unexpected(parsed.error()));
-    return;
-  }
-  if (auto edited = AliasEditedResponse::FromValue(parsed.value())) {
+    result = base::unexpected(parsed.error());
+  } else if (auto edited = AliasEditedResponse::FromValue(parsed.value())) {
     if (edited->message != "updated") {
-      std::move(user_callback).Run(base::unexpected(edited->message));
-      return;
+      result = base::unexpected(edited->message);
+    } else {
+      result = base::ok(std::monostate{});
     }
+  } else {
+    result = base::ok(std::monostate{});
   }
-  std::move(user_callback).Run(base::ok(std::monostate{}));
+  std::move(user_callback).Run(std::move(result));
 }
 
 void EmailAliasesService::OnDeleteAliasResponse(
     DeleteAliasCallback user_callback,
     std::optional<std::string> response_body) {
   RefreshAliases();
+  base::expected<std::monostate, std::string> result;
   auto parsed = ParseResponseDictOrError(response_body);
   if (!parsed.has_value()) {
-    std::move(user_callback).Run(base::unexpected(parsed.error()));
-    return;
-  }
-  if (auto edited = AliasEditedResponse::FromValue(parsed.value())) {
+    result = base::unexpected(parsed.error());
+  } else if (auto edited = AliasEditedResponse::FromValue(parsed.value())) {
     if (edited->message != "deleted") {
-      std::move(user_callback).Run(base::unexpected(edited->message));
-      return;
+      result = base::unexpected(edited->message);
+    } else {
+      result = base::ok(std::monostate{});
     }
+  } else {
+    result = base::ok(std::monostate{});
   }
-  std::move(user_callback).Run(base::ok(std::monostate{}));
+  std::move(user_callback).Run(std::move(result));
 }
 
 void EmailAliasesService::RefreshAliases() {
