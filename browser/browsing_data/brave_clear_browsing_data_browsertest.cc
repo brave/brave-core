@@ -17,6 +17,7 @@
 #include "base/run_loop.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/browsing_data/brave_clear_browsing_data_features.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -32,14 +33,12 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
-#include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/browsing_data/core/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -141,7 +140,7 @@ class BraveClearDataOnExitTest
 
   int remove_data_call_count() { return remove_data_call_count_; }
 
-  void SetExepectedRemoveDataCallCount(int count) {
+  void SetExpectedRemoveDataCallCount(int count) {
     expected_remove_data_call_count_ = count;
   }
 
@@ -208,7 +207,7 @@ class BraveClearDataOnExitTest
 
 IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTest, NoPrefsSet) {
   // No set preferences to clear data.
-  SetExepectedRemoveDataCallCount(0);
+  SetExpectedRemoveDataCallCount(0);
   // Tell the application to quit.
   chrome::ExecuteCommand(browser(), IDC_EXIT);
 }
@@ -222,9 +221,47 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTest, VerifyRemovalMasks) {
   SetExpectedRemoveDataRemovalMasks(GetRemoveMaskAll(), GetOriginMaskAll());
 
   // Expect a call to clear data.
-  SetExepectedRemoveDataCallCount(1);
+  SetExpectedRemoveDataCallCount(1);
 
   // Tell the application to quit.
+  chrome::ExecuteCommand(browser(), IDC_EXIT);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTest, ClearCacheClearsCacheStorage) {
+  browser()->profile()->GetPrefs()->SetBoolean(
+      browsing_data::prefs::kDeleteCacheOnExit, true);
+
+  SetExpectedRemoveDataRemovalMasks(
+      content::BrowsingDataRemover::DATA_TYPE_CACHE |
+          content::BrowsingDataRemover::DATA_TYPE_CACHE_STORAGE,
+      content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB);
+
+  SetExpectedRemoveDataCallCount(1);
+
+  chrome::ExecuteCommand(browser(), IDC_EXIT);
+}
+
+class BraveClearDataOnExitTestNoCacheFeature : public BraveClearDataOnExitTest {
+ public:
+  BraveClearDataOnExitTestNoCacheFeature() {
+    feature_list_.InitAndDisableFeature(
+        browsing_data::features::kClearServiceWorkerCacheStorage);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTestNoCacheFeature,
+                       ClearCacheClearsCacheStorageDisable) {
+  browser()->profile()->GetPrefs()->SetBoolean(
+      browsing_data::prefs::kDeleteCacheOnExit, true);
+
+  SetExpectedRemoveDataRemovalMasks(
+      content::BrowsingDataRemover::DATA_TYPE_CACHE, 0);
+
+  SetExpectedRemoveDataCallCount(1);
+
   chrome::ExecuteCommand(browser(), IDC_EXIT);
 }
 
@@ -318,7 +355,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, SameProfile) {
   // Delete browsing history on exit.
   SetDeleteBrowsingHistoryOnExit();
   // Same profile, so expect a single call.
-  SetExepectedRemoveDataCallCount(1);
+  SetExpectedRemoveDataCallCount(1);
 
   // Open a second browser window.
   Browser* second_window = NewBrowserWindow(browser()->profile());
@@ -334,7 +371,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneOTR) {
   // Delete browsing history on exit.
   SetDeleteBrowsingHistoryOnExit();
   // OTR sessions don't count, so expect a single call.
-  SetExepectedRemoveDataCallCount(1);
+  SetExpectedRemoveDataCallCount(1);
 
   // Open a second browser window with OTR profile.
   Browser* second_window = NewBrowserWindow(
@@ -351,7 +388,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneOTRExitsLast) {
   // Delete browsing history on exit.
   SetDeleteBrowsingHistoryOnExit();
   // OTR sessions don't count, so expect a single call.
-  SetExepectedRemoveDataCallCount(1);
+  SetExpectedRemoveDataCallCount(1);
 
   // Open a second browser window with OTR profile.
   Browser* second_window = NewBrowserWindow(
@@ -369,7 +406,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneGuest) {
   // Delete browsing history on exit.
   SetDeleteBrowsingHistoryOnExit();
   // Guest sessions don't count, so expect a single call.
-  SetExepectedRemoveDataCallCount(1);
+  SetExpectedRemoveDataCallCount(1);
 
   // Open a second browser window with Guest session.
   Browser* guest_window = NewGuestBrowserWindow();
@@ -386,7 +423,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneGuestExitsLast) {
   // Delete browsing history on exit.
   SetDeleteBrowsingHistoryOnExit();
   // Guest sessions don't count, so expect a single call.
-  SetExepectedRemoveDataCallCount(1);
+  SetExpectedRemoveDataCallCount(1);
 
   // Open a second browser window with Guest session.
   Browser* guest_window = NewGuestBrowserWindow();
@@ -411,7 +448,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, TwoProfiles) {
   SetDeleteBrowsingHistoryOnExit(second_profile);
 
   // Both profiles have browsing data removal set, so expect two calls.
-  SetExepectedRemoveDataCallCount(2);
+  SetExpectedRemoveDataCallCount(2);
 
   // Close second profile window.
   CloseBrowserWindow(second_profile_window);
