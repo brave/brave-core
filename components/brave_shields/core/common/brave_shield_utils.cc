@@ -9,11 +9,15 @@
 #include <set>
 #include <string>
 
+#include "base/check.h"
 #include "base/containers/map_util.h"
 #include "base/no_destructor.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
 namespace brave_shields {
@@ -110,6 +114,20 @@ ShieldsSettingCounts GetAdsSettingCountFromRules(
   }
 
   return result;
+}
+
+bool IsBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs) {
+  CHECK(prefs);
+  // PrefService::FindPreference call is needed because the
+  // kAdBlockOnlyModeEnabled preference might not be registered for tests.
+  return base::FeatureList::IsEnabled(features::kAdblockOnlyMode) &&
+         prefs->FindPreference(prefs::kAdBlockOnlyModeEnabled) &&
+         prefs->GetBoolean(prefs::kAdBlockOnlyModeEnabled);
+}
+
+void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* prefs, bool enabled) {
+  CHECK(prefs);
+  prefs->SetBoolean(prefs::kAdBlockOnlyModeEnabled, enabled);
 }
 
 }  // namespace brave_shields
