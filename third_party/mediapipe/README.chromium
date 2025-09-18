@@ -1,0 +1,18 @@
+Name: Brave MediaPipe Integration
+Short Name: brave-mediapipe
+URL: https://github.com/brave/brave-core
+Version: N/A
+Date: N/A
+License: Mozilla Public License 2.0
+License File: LICENSE
+Security Critical: no
+Shipped: yes
+
+Description:
+Brave's integration layer for MediaPipe LLM inference engine. This provides
+build configuration and wrapper implementations for MediaPipe's generative AI
+inference capabilities within Brave browser.
+
+This directory contains Brave-specific build files and stub implementations
+that interface with the upstream MediaPipe library located in
+//third_party/mediapipe.

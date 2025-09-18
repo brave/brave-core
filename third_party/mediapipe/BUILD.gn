@@ -1,0 +1,127 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/third_party/mediapipe/features.gni")
+import("//build/buildflag_header.gni")
+import("//third_party/flatbuffers/flatbuffer.gni")
+import("//third_party/protobuf/proto_library.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "BRAVE_MEDIAPIPE_LLM_ENABLED=$brave_build_with_mediapipe_lib" ]
+}
+
+if (brave_build_with_mediapipe_lib) {
+  # Additional warning suppressions for upstream MediaPipe genai code
+  config("mediapipe_genai_config") {
+    cflags = [
+      "-Wno-defaulted-function-deleted",
+      "-Wno-range-loop-bind-reference",
+    ]
+  }
+
+  # Flatbuffer schema for MediaPipe genai LLM inference
+  flatbuffer("mediapipe_genai_flatbuffer") {
+    sources = [ "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/named_buffer.fbs" ]
+  }
+
+  # Protocol buffer definitions for MediaPipe genai LLM inference
+  proto_library("mediapipe_genai_proto") {
+    proto_in_dir = "//third_party/mediapipe/src"
+    cc_generator_options = "lite=true:"
+    sources = [
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/proto/llm_file_metadata.proto",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/proto/llm_params.proto",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/proto/prompt_template.proto",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/proto/sampler_params.proto",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/proto/transformer_params.proto",
+    ]
+    deps = [ "//third_party/mediapipe:mediapipe_proto" ]
+  }
+
+  # MediaPipe LLM inference engine C API implementation - using upstream sources
+  static_library("llm_inference_engine_cpu") {
+    sources = [
+      # Main LLM inference engine C API implementation - using patched version
+      "//brave/chromium_src/third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/c/llm_inference_engine_cpu.cc",
+
+      # LLM utilities
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/llm_utils/metadata_utils.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/llm_utils/model_data.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/llm_utils/prompt_utils.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/llm_utils/well_known_models.cc",
+
+      # XNN utilities
+      "//brave/chromium_src/third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/pack_weights_cache.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/falcon.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/graph_builder.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/llm.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/llm_builder_factory.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/llm_weights.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/phi.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/sampling.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/stablelm.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/tflite_weight_accessor.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/utils.cc",
+      "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/xnn_tensor.cc",
+    ]
+
+    # Platform-specific memory mapped file implementation
+    if (is_win) {
+      sources += [
+        "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/llm_utils/memory_mapped_file_win.cc",
+        "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/llm_utils/scoped_file_win.cc",
+      ]
+    } else {
+      sources += [
+        "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/llm_utils/memory_mapped_file_posix.cc",
+        "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/llm_utils/scoped_file_posix.cc",
+      ]
+    }
+
+    deps = [
+      ":mediapipe_genai_flatbuffer",
+      ":mediapipe_genai_proto",
+      "//base",
+      "//third_party/abseil-cpp:absl",
+      "//third_party/mediapipe:mediapipe_core",
+      "//third_party/mediapipe:mediapipe_proto",
+      "//third_party/mediapipe:mediapipe_tasks",
+      "//third_party/protobuf:protobuf_lite",
+      "//third_party/sentencepiece",
+      "//third_party/tflite",
+      "//third_party/xnnpack",
+    ]
+
+    # Add include paths for MediaPipe and genai dependencies
+    include_dirs = [
+      "//third_party/mediapipe/src",
+      "//third_party/xnnpack/src/include",
+
+      # Special mapping to make sentencepiece/src/file.h work
+      # This maps sentencepiece/src/ to the actual src/ directory
+      "//third_party/sentencepiece/src",
+    ]
+
+    public_configs = [
+      "//third_party/mediapipe:mediapipe_config",
+      "//third_party/sentencepiece:sentencepiece_config",
+    ]
+
+    configs -= [
+      "//build/config/compiler:chromium_code",
+      "//build/config/compiler:no_rtti",
+    ]
+
+    configs += [
+      "//build/config/compiler:no_chromium_code",
+      "//build/config/compiler:rtti",
+      "//third_party/mediapipe:mediapipe_flags",
+      "//third_party/mediapipe:mediapipe_config",
+      "//third_party/mediapipe:mediapipe_internal_config",
+      ":mediapipe_genai_config",
+    ]
+  }
+}

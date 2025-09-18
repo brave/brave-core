@@ -3,6 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/third_party/mediapipe/features.gni")
+import("//build/buildflag_header.gni")
+
 static_library("browser") {
   sources = [
     "local_models_updater.cc",
@@ -34,12 +37,31 @@ source_set("text_embedder") {
 
   deps = [ "//base" ]
 
+  if (brave_build_with_mediapipe_lib) {
+    deps += [ ":mediapipe_llm_wrapper" ]
+  }
+
   public_deps = [
     "//brave/third_party/tflite_support",
     "//third_party/tflite",
     "//third_party/tflite_support",
     "//third_party/tflite_support:tflite_support_proto",
   ]
+}
+
+if (brave_build_with_mediapipe_lib) {
+  static_library("mediapipe_llm_wrapper") {
+    sources = [
+      "mediapipe_llm_wrapper.cc",
+      "mediapipe_llm_wrapper.h",
+    ]
+
+    public_deps = [
+      "//base",
+      "//brave/third_party/mediapipe:buildflags",
+      "//brave/third_party/mediapipe:llm_inference_engine_cpu",
+    ]
+  }
 }
 
 if (!is_ios) {
@@ -62,5 +84,10 @@ if (!is_ios) {
       "//testing/gmock",
       "//testing/gtest",
     ]
+
+    if (brave_build_with_mediapipe_lib) {
+      sources += [ "mediapipe_llm_wrapper_unittest.cc" ]
+      deps += [ ":mediapipe_llm_wrapper" ]
+    }
   }
 }
