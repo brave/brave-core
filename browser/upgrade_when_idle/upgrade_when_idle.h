@@ -39,8 +39,12 @@ class UpgradeWhenIdle : public UpgradeObserver {
  private:
   void CheckIdle();
   bool CanRelaunch();
+  bool AreAnyBrowsersOpen();
   bool AreAnyClearDataOnExitSettingsEnabled();
   bool AttemptRelaunch();
+
+  // Can be overridden for testing.
+  virtual size_t GetBrowserWindowCount();
 
   raw_ptr<ProfileManager> profile_manager_ = nullptr;
 

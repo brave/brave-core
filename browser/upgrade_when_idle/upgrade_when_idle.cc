@@ -37,10 +37,6 @@ bool IsTesting() {
          cmd_line.HasSwitch(switches::kSimulateOutdatedNoAU);
 }
 
-bool AreAnyBrowsersOpen() {
-  return GetAllBrowserWindowInterfaces().size() > 0;
-}
-
 }  // namespace
 
 namespace brave {
@@ -104,6 +100,16 @@ bool UpgradeWhenIdle::CanRelaunch() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return !AreAnyBrowsersOpen() && !AreAnyClearDataOnExitSettingsEnabled() &&
          !is_relaunching_;
+}
+
+bool UpgradeWhenIdle::AreAnyBrowsersOpen() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return GetBrowserWindowCount() > 0;
+}
+
+size_t UpgradeWhenIdle::GetBrowserWindowCount() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return GetAllBrowserWindowInterfaces().size();
 }
 
 bool UpgradeWhenIdle::AreAnyClearDataOnExitSettingsEnabled() {

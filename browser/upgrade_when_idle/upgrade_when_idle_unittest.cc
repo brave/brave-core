@@ -17,8 +17,7 @@
 #include "base/values.h"
 #include "chrome/browser/first_run/scoped_relaunch_chrome_browser_override.h"
 #include "chrome/browser/first_run/upgrade_util.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/test/base/test_browser_window.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
@@ -31,6 +30,23 @@
 
 namespace brave {
 
+namespace {
+
+class UpgradeWhenIdleForTest : public UpgradeWhenIdle {
+ public:
+  explicit UpgradeWhenIdleForTest(ProfileManager* profile_manager)
+      : UpgradeWhenIdle(profile_manager) {}
+  size_t GetBrowserWindowCount() override { return browser_window_count_; }
+  void SetBrowserWindowCount(size_t browser_window_count) {
+    browser_window_count_ = browser_window_count;
+  }
+
+ private:
+  size_t browser_window_count_ = 0;
+};
+
+}  // namespace
+
 class UpgradeWhenIdleTest : public testing::Test {
  public:
   UpgradeWhenIdleTest()
@@ -40,8 +56,8 @@ class UpgradeWhenIdleTest : public testing::Test {
 
   void SetUp() override {
     ASSERT_TRUE(profile_manager_.SetUp());
-    upgrade_when_idle_ =
-        std::make_unique<UpgradeWhenIdle>(profile_manager_.profile_manager());
+    upgrade_when_idle_ = std::make_unique<UpgradeWhenIdleForTest>(
+        profile_manager_.profile_manager());
     profile_ = profile_manager_.CreateTestingProfile("TestProfile");
   }
 
@@ -60,9 +76,8 @@ class UpgradeWhenIdleTest : public testing::Test {
     run_loop.Run();
   }
 
-  std::unique_ptr<Browser> CreateTestBrowser() {
-    Browser::CreateParams params(profile_.get(), true);
-    return CreateBrowserWithTestWindowForParams(params);
+  void SimulateOpenBrowserWindow() {
+    upgrade_when_idle_->SetBrowserWindowCount(1);
   }
 
   void SetPref(const std::string& pref_name) {
@@ -83,7 +98,7 @@ class UpgradeWhenIdleTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_{
       content::BrowserTaskEnvironment::TimeSource::MOCK_TIME};
   TestingProfileManager profile_manager_;
-  std::unique_ptr<UpgradeWhenIdle> upgrade_when_idle_;
+  std::unique_ptr<UpgradeWhenIdleForTest> upgrade_when_idle_;
   ::testing::StrictMock<
       base::MockCallback<upgrade_util::RelaunchChromeBrowserCallback>>
       mock_relaunch_callback_;
@@ -108,7 +123,7 @@ TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenStateUnknown) {
 }
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenOpenWindows) {
-  std::unique_ptr<Browser> test_browser = CreateTestBrowser();
+  SimulateOpenBrowserWindow();
   RunImplementation(ui::IDLE_STATE_IDLE, false);
 }
 
