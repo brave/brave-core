@@ -650,6 +650,180 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
+       UserScriptReturnsUserHasPolicyScriptSkipOneTask) {
+  const std::string signed_user_id = "user-id-123";
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  const std::string site_name = url.host();
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+  base::test::TestFuture<base::Value> user_script_insert_future;
+  base::test::TestFuture<base::Value> policy_script_insert_future;
+
+  auto tasks_list =
+      base::Value::List()
+          .Append(base::Value::Dict()
+                      .Set("url", "https://x.com/settings/ads_preferences")
+                      .Set("description", "Disable personalized ads"))
+          .Append(base::Value::Dict()
+                      .Set("url", "https://y.com/settings/privacy")
+                      .Set("description", "Increase privacy"));
+
+  // User script result is an dictionary, and user key is not empty
+  auto script_params = base::Value(base::Value::Dict()
+                                       .Set("user", signed_user_id)
+                                       .Set("name", site_name)
+                                       .Set("is_initial", true)
+                                       .Set("tasks", tasks_list.Clone()));
+
+  // Policy script result is a dictionary, but it is not deserializable
+  auto policy_script_result =
+      base::Value(base::Value::Dict().Set("prop", "value"));
+
+  EXPECT_CALL(ui_delegate(), Show(_))
+      .WillOnce([&](PsstConsentData dialog_data) {
+        EXPECT_EQ(dialog_data.user_id, signed_user_id);
+        EXPECT_EQ(dialog_data.site_name, site_name);
+        EXPECT_EQ(dialog_data.request_infos.size(), 2u);
+        EXPECT_EQ(dialog_data.request_infos, tasks_list.Clone());
+        EXPECT_FALSE(dialog_data.apply_changes_callback.is_null());
+
+        // Simulate that user reviewed and applied PSST changes (There is one
+        // URL to skip)
+        std::move(dialog_data.apply_changes_callback)
+            .Run({"https://y.com/settings/privacy"});
+      });
+
+  // Call UI delegate method once (Failed state) as policy_script_result
+  // is not deserializable
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
+  EXPECT_CALL(ui_delegate(),
+              GetPsstPermissionInfo(url::Origin::Create(url), signed_user_id))
+      .WillOnce(
+          [](const url::Origin& origin,
+             const std::string& user_id) -> std::optional<PsstPermissionInfo> {
+            PsstPermissionInfo info;
+            info.user_id = user_id;
+            info.consent_status = psst::ConsentStatus::kAllow;
+            info.script_version = 1;
+            info.urls_to_skip = {};
+            return info;
+          });
+
+  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                           script_params.Clone()));
+
+  auto policy_script_params = script_params.Clone();
+  auto* tasks = policy_script_params.GetDict().FindList("tasks");
+  tasks->EraseIf([&](const base::Value& v) {
+    const auto& item_dict = v.GetDict();
+    const auto* url = item_dict.FindString("url");
+    return url && *url == "https://y.com/settings/privacy";
+  });
+
+  const auto script_with_parameters = base::StrCat(
+      {"const params = ",
+       base::WriteJsonWithOptions(policy_script_params.Clone(),
+                                  base::JSONWriter::OPTIONS_PRETTY_PRINT)
+           .value(),
+       ";\n", policy_script});
+
+  // Policy script executed, parameters added, with one task removed
+  EXPECT_CALL(inject_script_callback(), Run(script_with_parameters, _))
+      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
+                                           policy_script_result.Clone()));
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+
+  check_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
+  EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       NonInitialIterationUserScriptReturnsUserHasPolicyScript) {
+  const std::string signed_user_id = "user-id-123";
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  const std::string site_name = url.host();
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+  base::test::TestFuture<base::Value> user_script_insert_future;
+  base::test::TestFuture<base::Value> policy_script_insert_future;
+
+  // User script result is an dictionary, and is_initial is false
+  auto script_params = base::Value(
+      base::Value::Dict()
+          .Set("user", signed_user_id)
+          .Set("name", site_name)
+          .Set("is_initial", false)
+          .Set("tasks",
+               base::Value::List().Append(
+                   base::Value::Dict()
+                       .Set("url", "https://x.com/settings/ads_preferences")
+                       .Set("description", "Disable personalized ads"))));
+
+  // Policy script result is a dictionary, but it is not deserializable
+  auto policy_script_result =
+      base::Value(base::Value::Dict().Set("prop", "value"));
+
+  EXPECT_CALL(ui_delegate(), Show(_)).Times(0);
+
+  // Call UI delegate method once (Failed state) as policy_script_result
+  // is not deserializable
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
+  EXPECT_CALL(ui_delegate(),
+              GetPsstPermissionInfo(url::Origin::Create(url), signed_user_id))
+      .WillOnce(
+          [](const url::Origin& origin,
+             const std::string& user_id) -> std::optional<PsstPermissionInfo> {
+            PsstPermissionInfo info;
+            info.user_id = user_id;
+            info.consent_status = psst::ConsentStatus::kAllow;
+            info.script_version = 1;
+            info.urls_to_skip = {};
+            return info;
+          });
+
+  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                           script_params.Clone()));
+
+  const auto script_with_parameters = base::StrCat(
+      {"const params = ",
+       base::WriteJsonWithOptions(script_params.Clone(),
+                                  base::JSONWriter::OPTIONS_PRETTY_PRINT)
+           .value(),
+       ";\n", policy_script});
+
+  // Policy script executed, parameters added
+  EXPECT_CALL(inject_script_callback(), Run(script_with_parameters, _))
+      .WillOnce(InsertScriptInPageCallback(&policy_script_insert_future,
+                                           policy_script_result.Clone()));
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+
+  check_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
+  EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest,
        UserScriptReturnsEmptyUserNoPolicyScript) {
   const std::string user_script = "user";
   const std::string policy_script = "policy";
@@ -672,6 +846,120 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
   // No policy script executed
+  EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+
+  check_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest, TasksListEmptyNoPolicyScript) {
+  const std::string signed_user_id = "user-id-123";
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  const std::string site_name = url.host();
+
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+
+  base::test::TestFuture<base::Value> user_script_insert_future;
+
+  // Create userscript result with empty tasks list
+  auto script_params = base::Value(base::Value::Dict()
+                                       .Set("user", signed_user_id)
+                                       .Set("name", site_name)
+                                       .Set("is_initial", true)
+                                       .Set("tasks", base::Value::List()));
+
+  auto policy_script_result = base::Value();
+
+  // Call UI delegate method once (Failed state) as empty tasks list
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
+  EXPECT_CALL(ui_delegate(),
+              GetPsstPermissionInfo(url::Origin::Create(url), signed_user_id))
+      .WillOnce(
+          [](const url::Origin& origin,
+             const std::string& user_id) -> std::optional<PsstPermissionInfo> {
+            PsstPermissionInfo info;
+            info.user_id = user_id;
+            info.consent_status = psst::ConsentStatus::kAllow;
+            info.script_version = 1;
+            info.urls_to_skip = {};
+            return info;
+          });
+
+  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                           script_params.Clone()));
+  // No Policy script executed, as permission was denied
+  EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+
+  check_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
+}
+
+TEST_F(PsstTabWebContentsObserverUnitTest, PermissionDeniedNoPolicyScript) {
+  const std::string signed_user_id = "user-id-123";
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  const std::string site_name = url.host();
+
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+
+  base::test::TestFuture<base::Value> user_script_insert_future;
+
+  // Create correct userscript result, but permission will be denied
+  auto script_params = base::Value(
+      base::Value::Dict()
+          .Set("user", signed_user_id)
+          .Set("name", site_name)
+          .Set("is_initial", true)
+          .Set("tasks",
+               base::Value::List().Append(
+                   base::Value::Dict()
+                       .Set("url", "https://x.com/settings/ads_preferences")
+                       .Set("description", "Disable personalized ads"))));
+
+  auto policy_script_result = base::Value();
+
+  // Call UI delegate method once (Failed state) as permission denied
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
+  EXPECT_CALL(ui_delegate(),
+              GetPsstPermissionInfo(url::Origin::Create(url), signed_user_id))
+      .WillOnce(
+          [](const url::Origin& origin,
+             const std::string& user_id) -> std::optional<PsstPermissionInfo> {
+            PsstPermissionInfo info;
+            info.user_id = user_id;
+            // Simulate that permission was denied
+            info.consent_status = psst::ConsentStatus::kBlock;
+            info.script_version = 1;
+            info.urls_to_skip = {};
+            return info;
+          });
+
+  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                           script_params.Clone()));
+  // No Policy script executed, as permission was denied
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
