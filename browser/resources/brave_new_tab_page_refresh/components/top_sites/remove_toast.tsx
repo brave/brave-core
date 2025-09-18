@@ -46,7 +46,6 @@ export function RemoveToast(props: Props) {
         >
           <Icon name='info-filled' />
           <div className='text'>
-            <h4>{getString('topSiteRemovedTitle')}</h4>
             <p>{getString('topSiteRemovedText')}</p>
           </div>
           <Button onClick={props.onUndo}>
