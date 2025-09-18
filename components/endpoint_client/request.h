@@ -11,12 +11,7 @@
 #include "base/json/json_writer.h"
 #include "brave/components/endpoint_client/with_method.h"
 
-namespace endpoints {
-
-template <typename>
-struct WithHeaders;
-
-namespace detail {
+namespace endpoints::detail {
 
 template <typename T>
 concept RequestBody = requires(T t) { base::WriteJson(t.ToValue()); } &&
@@ -29,12 +24,8 @@ template <typename T, Method M>
 struct RequestImpl<WithMethod<T, M>> : std::bool_constant<RequestBody<T>> {};
 
 template <typename T>
-struct RequestImpl<WithHeaders<T>> : RequestImpl<T> {};
-
-template <typename T>
 concept Request = RequestImpl<T>::value;
 
-}  // namespace detail
-}  // namespace endpoints
+}  // namespace endpoints::detail
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_

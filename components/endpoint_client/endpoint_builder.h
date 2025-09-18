@@ -25,6 +25,7 @@
 #include "base/values.h"
 #include "brave/components/endpoint_client/request.h"
 #include "brave/components/endpoint_client/response.h"
+#include "brave/components/endpoint_client/with_headers.h"
 
 namespace endpoints::detail {
 
@@ -80,9 +81,10 @@ class Endpoint {
       requires { typename EntryForImpl<Request, Entries...>::type; };
 
  public:
-  template <detail::Request Request>
-    requires kHasEntryFor<Request>
-  using EntryFor = typename EntryForImpl<Request, Entries...>::type;
+  template <typename T>
+    requires kHasEntryFor<MaybeStripWithHeaders<T>>
+  using EntryFor =
+      typename EntryForImpl<MaybeStripWithHeaders<T>, Entries...>::type;
 };
 
 }  // namespace endpoints
