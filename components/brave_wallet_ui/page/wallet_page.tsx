@@ -35,6 +35,7 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
 function App() {
+
   React.useEffect(() => {
     /** Sets FAVICON for Wallet Pages */
     let link: HTMLLinkElement = document.querySelector("link[rel~='icon']")!

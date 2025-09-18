@@ -80,7 +80,8 @@ class BraveAccountUIBase {
   void SetupWebUIDataSource(WebUIDataSource* source) {
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::ScriptSrc,
-        "script-src chrome://resources 'self' 'wasm-unsafe-eval';");
+        "script-src chrome://resources chrome-untrusted://resources 'self' "
+        "'wasm-unsafe-eval';");
 
     source->UseStringsJs();
     source->EnableReplaceI18nInJS();

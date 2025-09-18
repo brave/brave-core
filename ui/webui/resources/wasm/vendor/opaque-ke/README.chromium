@@ -1,6 +1,6 @@
-Name: opaque-ke
-URL: https://crates.io/crates/opaque-ke
-Version: 3.0.0
+Name: rand
+URL: https://crates.io/crates/rand
+Version: 0.8.5
 License: Apache-2.0
-License File: //brave/ui/webui/resources/wasm/vendor/opaque-ke/LICENSE-APACHE
-Description: An implementation of the OPAQUE password-authenticated key exchange protocol.
+License File: //brave/ui/webui/resources/wasm/vendor/rand/LICENSE-APACHE
+Description: Random number generators and other randomness functionality.
