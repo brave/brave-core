@@ -6,10 +6,14 @@
 #include "brave/browser/upgrade_when_idle/upgrade_when_idle.h"
 
 #include <initializer_list>
+#include <memory>
+#include <string>
+#include <utility>
 
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/mock_callback.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "chrome/browser/first_run/scoped_relaunch_chrome_browser_override.h"
 #include "chrome/browser/first_run/upgrade_util.h"
