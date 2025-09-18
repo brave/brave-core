@@ -11,6 +11,8 @@ java_binary("java_bytecode_rewriter") {
   sources = [
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveActivityClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAdaptiveToolbarPrefsClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAdaptiveToolbarStatePredictorClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAdaptiveToolbarUiCoordinatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAppHooksClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAppMenuClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveApplicationImplBaseClassAdapter.java",
@@ -101,6 +103,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BravePreferenceFragmentClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BravePureJavaExceptionReporterClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveQuickActionSearchWidgetProviderClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveRadioButtonGroupAdaptiveToolbarPreferenceClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveRadioButtonGroupHomepagePreferenceClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveReaderModeManagerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveReturnToChromeUtilClassAdapter.java",

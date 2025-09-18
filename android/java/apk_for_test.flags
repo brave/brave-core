@@ -1030,3 +1030,38 @@
 -keep class org.chromium.chrome.browser.download.home.search.BraveSearchBarCoordinator {
     <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.ui.AdaptiveToolbarUiCoordinator {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ui.BraveAdaptiveToolbarUiCoordinator {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarStatePredictor {
+    *** isValidSegment(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.adaptive.settings.RadioButtonGroupAdaptiveToolbarPreference {
+    *** mIsBound;
+    *** mAutoButton;
+    *** mNewTabButton;
+    *** mShareButton;
+}
+
+-keep class org.chromium.chrome.browser.ui.AdaptiveToolbarUiCoordinator {
+    *** mContext;
+    *** mActivityTabProvider;
+    *** mModalDialogManagerSupplier;
+    *** mProfileSupplier;
+    *** mAdaptiveToolbarButtonController;
+}
+
+-keep class org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarStatePredictor {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.adaptive.BraveAdaptiveToolbarStatePredictor {
+    public <init>(...);
+}

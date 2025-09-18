@@ -1017,6 +1017,13 @@ public class BytecodeTest {
                         View.class,
                         Context.class,
                         boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor", // presubmit: ignore-long-line
+                        "isValidSegment",
+                        MethodModifier.REGULAR,
+                        boolean.class,
+                        int.class));
     }
 
     @Test
@@ -2011,6 +2018,13 @@ public class BytecodeTest {
                         Context.class,
                         Callback.class,
                         boolean.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/ui/AdaptiveToolbarUiCoordinator",
+                        "org/chromium/chrome/browser/ui/BraveAdaptiveToolbarUiCoordinator",
+                        Context.class,
+                        ActivityTabProvider.class,
+                        Supplier.class));
     }
 
     @Test
@@ -2440,6 +2454,41 @@ public class BytecodeTest {
                         "sProfileMap",
                         true,
                         ProfileKeyedMap.class));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/adaptive/settings/RadioButtonGroupAdaptiveToolbarPreference", // presubmit: ignore-long-line
+                        "mIsBound"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/adaptive/settings/RadioButtonGroupAdaptiveToolbarPreference", // presubmit: ignore-long-line
+                        "mAutoButton"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/adaptive/settings/RadioButtonGroupAdaptiveToolbarPreference", // presubmit: ignore-long-line
+                        "mNewTabButton"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/adaptive/settings/RadioButtonGroupAdaptiveToolbarPreference", // presubmit: ignore-long-line
+                        "mShareButton"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/ui/AdaptiveToolbarUiCoordinator", "mContext"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/ui/AdaptiveToolbarUiCoordinator",
+                        "mActivityTabProvider"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/ui/AdaptiveToolbarUiCoordinator",
+                        "mModalDialogManagerSupplier"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/ui/AdaptiveToolbarUiCoordinator",
+                        "mProfileSupplier"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/ui/AdaptiveToolbarUiCoordinator",
+                        "mAdaptiveToolbarButtonController"));
     }
 
     @Test
@@ -2605,6 +2654,10 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/ui/appmenu/BraveAppMenu",
                         "org/chromium/chrome/browser/ui/appmenu/AppMenu"));
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/toolbar/adaptive/BraveAdaptiveToolbarStatePredictor", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor")); // presubmit: ignore-long-line
     }
 
     @Test

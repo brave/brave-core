@@ -1,0 +1,12 @@
+diff --git a/build/android/gyp/java_cpp_enum.py b/build/android/gyp/java_cpp_enum.py
+index ffd896d9bc7ecb937e9f367400eea0cb18defbd9..87dc0091b74f80d5df3674566bc23478738a7fb3 100755
+--- a/build/android/gyp/java_cpp_enum.py
++++ b/build/android/gyp/java_cpp_enum.py
+@@ -262,6 +262,7 @@ class HeaderParser:
+     self._generator_directives = DirectiveSet()
+ 
+   def ParseDefinitions(self):
++    from brave_java_cpp_enum_utils import SplitBraveJavaEnumEntries; self._lines = SplitBraveJavaEnumEntries(self._lines)
+     for line in self._lines:
+       self._ParseLine(line)
+     return self._enum_definitions

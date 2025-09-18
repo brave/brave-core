@@ -192,6 +192,30 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
                             AdaptiveToolbarButtonVariant.VOICE,
                             ChromeSharedPreferences.getInstance()
                                     .readInt(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS));
+
+                    // Check indexes of Bookmarks button (as a first Brave-specific button) and
+                    // MAX_VALUE
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.BOOKMARKS,
+                            AdaptiveToolbarButtonVariant.TAB_GROUPING + 1);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.NEWS,
+                            AdaptiveToolbarButtonVariant.MAX_VALUE);
+
+                    // Test Bookmarks button
+                    Assert.assertEquals(
+                            R.id.adaptive_option_bookmarks,
+                            getButton(AdaptiveToolbarButtonVariant.BOOKMARKS).getId());
+                    selectButton(AdaptiveToolbarButtonVariant.BOOKMARKS);
+                    assertButtonCheckedCorrectly(
+                            "Bookmarks", AdaptiveToolbarButtonVariant.BOOKMARKS);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.BOOKMARKS,
+                            mRadioPreference.getSelection());
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.BOOKMARKS,
+                            ChromeSharedPreferences.getInstance()
+                                    .readInt(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS));
                 });
     }
 
