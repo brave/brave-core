@@ -110,12 +110,12 @@ struct TestEndpoint
           //   >
           For<PATCH<Request2>>::ReturnsWith<Response1>::FailsWith<Error1,
                                                                   Error2>,
-          // WithHeaders<PATCH<Request1>> =>
+          // PATCH<Request1> =>
           //   expected<
           //     optional<Response1>,
           //     optional<Error1>
           //   >
-          For<WithHeaders<PATCH<Request1>>>::ReturnsWith<
+          For<PATCH<Request1>>::ReturnsWith<
               WithHeaders<Response1>>::FailsWith<Error1>> {
   static GURL URL() { return GURL("https://example.com/api/query"); }
 };
