@@ -11,12 +11,15 @@
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
+#include "base/run_loop.h"
 #include "base/test/gtest_util.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/time/default_clock.h"
 #include "base/time/default_tick_clock.h"
 #include "brave/components/brave_sync/brave_sync_p3a.h"
+#include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/history/core/browser/sync/brave_history_data_type_controller.h"
 #include "brave/components/history/core/browser/sync/brave_history_delete_directives_data_type_controller.h"
@@ -28,6 +31,7 @@
 #include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/signin/public/identity_manager/accounts_in_cookie_jar_info.h"
+#include "components/sync/base/data_type.h"
 #include "components/sync/engine/nigori/key_derivation_params.h"
 #include "components/sync/engine/nigori/nigori.h"
 #include "components/sync/model/type_entities_count.h"
@@ -61,7 +65,7 @@ constexpr char kValidSyncCode[] =
     "exotic ill sure question trial squirrel glove celery "
     "awkward push jelly logic broccoli almost grocery drift";
 
-// Taken from anonimous namespace from sync_service_crypto_unittest.cc
+// Taken from anonymous namespace from sync_service_crypto_unittest.cc
 sync_pb::EncryptedData MakeEncryptedData(
     const std::string& passphrase,
     const KeyDerivationParams& derivation_params) {
@@ -132,7 +136,7 @@ class BraveSyncServiceImplTest : public testing::Test {
   }
 
   void CreateSyncService(
-      DataTypeSet registered_types = DataTypeSet({BOOKMARKS})) {
+      DataTypeSet registered_types = DataTypeSet({BOOKMARKS, PASSWORDS})) {
     DataTypeController::TypeVector controllers;
     for (DataType type : registered_types) {
       controllers.push_back(std::make_unique<FakeDataTypeController>(type));
@@ -640,7 +644,7 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
   OSCryptMocker::TearDown();
 }
 
-TEST_F(BraveSyncServiceImplTest, OnlyBookmarksAfterSetup) {
+TEST_F(BraveSyncServiceImplTest, BookmarksAndPasswordsAfterSetup) {
   OSCryptMocker::SetUp();
   CreateSyncService();
   EXPECT_FALSE(engine());
@@ -657,15 +661,16 @@ TEST_F(BraveSyncServiceImplTest, OnlyBookmarksAfterSetup) {
       brave_sync_service_impl()->GetUserSettings()->IsSyncEverythingEnabled());
   auto selected_types =
       brave_sync_service_impl()->GetUserSettings()->GetSelectedTypes();
-  EXPECT_EQ(selected_types.size(), 1u);
+  EXPECT_EQ(selected_types.size(), 2u);
   EXPECT_TRUE(selected_types.Has(UserSelectableType::kBookmarks));
+  EXPECT_TRUE(selected_types.Has(UserSelectableType::kPasswords));
 
   OSCryptMocker::TearDown();
 }
 
 TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
   OSCryptMocker::SetUp();
-  CreateSyncService(DataTypeSet({BOOKMARKS, HISTORY}));
+  CreateSyncService(DataTypeSet({BOOKMARKS, HISTORY, PASSWORDS}));
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   task_environment_.RunUntilIdle();
@@ -735,6 +740,58 @@ TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
   // SyncServiceImpl::Initialize and details will not be cleared
   EXPECT_EQ(leave_chain_pref_changed_count, 0u);
   EXPECT_FALSE(brave_sync_prefs()->GetLeaveChainDetails().empty());
+}
+
+class BraveSyncServiceImplTest_DisableSyncDefaultPasswordsTest
+    : public BraveSyncServiceImplTest {
+ public:
+  BraveSyncServiceImplTest_DisableSyncDefaultPasswordsTest() {
+    scoped_feature_list_.InitAndDisableFeature(
+        brave_sync::features::kBraveSyncDefaultPasswords);
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+TEST_F(BraveSyncServiceImplTest_DisableSyncDefaultPasswordsTest,
+       OnlyBookmarks) {
+  OSCryptMocker::SetUp();
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  base::RunLoop engine_waiter;
+  base::RepeatingClosure quit_closure = engine_waiter.QuitClosure();
+  NiceMock<SyncServiceObserverMock> observer_mock;
+  ON_CALL(observer_mock, OnStateChanged(_))
+      .WillByDefault(testing::Invoke([this, quit_closure]() {
+        if (engine()) {
+          quit_closure.Run();
+        }
+      }));
+  brave_sync_service_impl()->AddObserver(&observer_mock);
+
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+
+  engine_waiter.Run();
+
+  brave_sync_service_impl()->RemoveObserver(&observer_mock);
+
+  brave_sync_service_impl()
+      ->GetUserSettings()
+      ->SetInitialSyncFeatureSetupComplete(
+          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  EXPECT_TRUE(engine());
+
+  EXPECT_FALSE(
+      brave_sync_service_impl()->GetUserSettings()->IsSyncEverythingEnabled());
+  auto selected_types =
+      brave_sync_service_impl()->GetUserSettings()->GetSelectedTypes();
+  EXPECT_EQ(selected_types.size(), 1u);
+  EXPECT_TRUE(selected_types.Has(UserSelectableType::kBookmarks));
+  EXPECT_FALSE(selected_types.Has(UserSelectableType::kPasswords));
+
+  OSCryptMocker::TearDown();
 }
 
 namespace {
