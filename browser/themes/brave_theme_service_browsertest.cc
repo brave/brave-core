@@ -279,25 +279,21 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, MAYBE_DarkModeChangeByRegTest) {
 
   {
     // Set up theme observer and toggle the system dark mode by writing to the
-    // registry. We should get 2 notifications:
-    //    1 for dark mode change + 1 for reduced transparency.
-    // We get notifications for both because they are watching the same registry
-    // key.
+    // registry
     TestNativeThemeObserver native_theme_observer_for_default;
     ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
         &native_theme_observer_for_default);
 
     EXPECT_CALL(native_theme_observer_for_default,
                 OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi()))
-        .Times(2);
+        .Times(1);
     apps_use_light_theme = !initial_dark_mode ? 0 : 1;
     hkcu_themes_regkey.WriteValue(L"AppsUseLightTheme", apps_use_light_theme);
 
     // Timeout is used to let notifications trickle in.
     RunLoopRunWithTimeout(base::Milliseconds(500));
 
-    // Toggling dark mode to light should result in only one notification since
-    // we aren't touching the registry.
+    // Toggling dark mode to light should result in one notification
     EXPECT_CALL(native_theme_observer_for_default,
                 OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi()))
         .Times(1);
@@ -310,14 +306,14 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, MAYBE_DarkModeChangeByRegTest) {
 
   {
     // Set up theme observer and toggle the system dark mode via the registry
-    // again. We should only get 1 reduced transparency notifications this time
-    // because we short circuit dark mode change system notifications when we
-    // are in non-default dark mode (i.e. dark mode is set to Dark or Light, not
-    // to "Same as Windows").
+    // again. We should only get no notifications this time because we short
+    // circuit the dark mode change system notifications when we are in
+    // non-default dark mode (i.e. dark mode is set to Dark or Light, not to
+    // "Same as Windows").
     TestNativeThemeObserver native_theme_observer_for_light;
     EXPECT_CALL(native_theme_observer_for_light,
                 OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi()))
-        .Times(1);
+        .Times(0);
     ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
         &native_theme_observer_for_light);
 
