@@ -270,14 +270,15 @@ class PlasterFile:
                     raise ValueError(
                         f'Invalid re flag specified: {flag} in {info.source}')
 
-            contents, num_changes = re.subn(pattern,
-                                            replace,
-                                            contents,
-                                            flags=re_flags,
+            contents, num_changes = re.subn(
+                pattern,
+                replace,
+                contents,
+                flags=re_flags,
                 # We dont't want to explicitly limit the number of matches here,
                 # we want to control what matches using the match pattern and
                 # then ensure the output matches only what we expected
-                                            count=0)
+                count=0)
 
             # count == 0 means "replace all matches" and bypass count validation
             if expected_count != 0 and num_changes != expected_count:
