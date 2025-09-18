@@ -5,9 +5,13 @@
 
 #include "components/component_updater/configurator_impl.h"
 
+#include "brave/components/update_client/brave_protocol_handler.h"
+
 #define EnabledBackgroundDownloader EnabledBackgroundDownloader_Unused
 #define EnabledCupSigning EnabledCupSigning_Unused
+#define ProtocolHandlerFactoryJSON BraveProtocolHandlerFactoryJSON
 #include <components/component_updater/configurator_impl.cc>
+#undef ProtocolHandlerFactoryJSON
 #undef EnabledCupSigning
 #undef EnabledBackgroundDownloader
 
