@@ -176,12 +176,6 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "Všeobecný chat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaVisionMessageDescription" = "Ahoj, ja som Leo, asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama Vision vytvoreným spoločnosťou Meta, aby bol výkonný a použiteľný v mnohých prípadoch. Llama Vision prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaVisionModelPurposeDescription" = "Všeobecné videnie";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Ahoj, ja som Leo, asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Qwen 14B vytvoreným spoločnosťou Alibaba Cloud, aby bol výkonný a použiteľný v mnohých prípadoch. Model Qwen prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
 
 /* The model's purpose - Describes what it can do best */
@@ -225,9 +219,6 @@
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo AI";
-
-/* An indicator to show page content refined is in progress */
-"aichat.leoPageContentRefineInProgress" = "Vyhľadávajú sa príslušné časti z webovej stránky…";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Prepnutím do polohy „Povolené“ sa opýtate na túto stránku. Jej obsah bude odoslaný spoločnosti Brave Leo spolu s vašimi správami.";
@@ -425,7 +416,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Rozumiem";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo je súkromný inteligentný asistent s umelou inteligenciou, ktorý zlepšuje vaše používanie internetu. Leo je bezplatný s obmedzeným prístupom. Brave Leo Premium ponúka viac modelov, vyššie limity a poskytuje predplatiteľom skorý prístup k novým funkciám. Viac informácií nájdete v **[Centre pomoci](%1$@)** Brave.\n\nKeď položíte Leovi otázku, v predvolenom nastavení môže na poskytnutie odpovede odoslať a použiť obsah internetovej stránky, ktorú si prezeráte, alebo akýkoľvek text, ktorý na stránke zvýrazníte, asistentovi Brave Leo. V niektorých prípadoch Leo odošle dopyty odvodené z vášho vstupu do Vyhľadávania Brave a použije dané výsledky na lepšie zodpovedanie vašej otázky. Presnosť odpovede nie je zaručená a môže obsahovať nepresné, zavádzajúce alebo nepravdivé informácie. Neodosielajte citlivé alebo súkromné informácie a buďte opatrní pri odpovediach týkajúcich sa zdravia, financií, osobnej bezpečnosti a podobne. Možnosti Lea môžete kedykoľvek upraviť v Nastaveniach. Prejdite do časti Nastavenia > Leo.\n\nLeo nezhromažďuje identifikátory, ktoré by sa s vami dali spojiť, ako je vaša IP adresa. Údaje sa nepoužívajú na trénovanie modelov umelej inteligencie a modely umelej inteligencie neuchovávajú žiadne osobné údaje (okrem modelu Anthropic, ktorý uchováva údaje 30 dní pred ich vymazaním). Viac informácií nájdete v **[zásadách ochrany osobných údajov](%2$@)**.";
+"aichat.termsConditionsDescription" = "Brave Leo je súkromný inteligentný asistent s umelou inteligenciou, ktorý zlepšuje vaše používanie internetu. Leo je bezplatný s obmedzeným prístupom. Brave Leo Premium ponúka viac modelov, vyššie limity a poskytuje predplatiteľom skorý prístup k novým funkciám. Predvolený model sa bude z času na čas meniť. Viac informácií nájdete v **[Centre pomoci](%1$@)** Brave.\n\nKeď položíte Leovi otázku o webe alebo stránke, ktorú práve prehliadate, obsah stránky alebo akýkoľvek text, ktorý na nej zvýrazníte, sa spolu so zadaným vyhľadávaním odošle na servery Brave, aby mohol Leo poskytnúť odpoveď. V niektorých prípadoch Leo odošle dopyty odvodené z vášho vstupu do Vyhľadávania Brave a použije dané výsledky na lepšie zodpovedanie vašej otázky. Brave negarantuje presnosť odpovedí a tie môžu obsahovať nepresné, zavádzajúce alebo nepravdivé informácie. Neodosielajte do Brave Leo citlivé alebo súkromné informácie a buďte opatrní pri odpovediach týkajúcich sa zdravia, financií, osobnej bezpečnosti a podobne. Možnosti Lea môžete kedykoľvek upraviť v Nastaveniach. Prejdite do časti Nastavenia > Leo.\n\nLeo nezhromažďuje identifikátory, ktoré by sa s vami dali spojiť, ako je vaša IP adresa. Vaše údaje sa nepoužívajú na trénovanie našich modelov umelej inteligencie, čo sa týka aj vašich vyhľadávaní a Leových odpovedí. Na našich serveroch neukladáme žiadne osobné údaje. Viac informácií nájdete v **[zásadách ochrany osobných údajov](%2$@)**.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Chatovať súkromne s Brave Leo";

@@ -443,6 +443,10 @@
 		59B691DE21B6965C00E9388E /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		59B691E921B6966C00E9388E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libarchive.2.tbd; path = usr/lib/libarchive.2.tbd; sourceTree = SDKROOT; };
+		7D2697692E7B9AE20058A3DF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = "sr-Cyrl.lproj/BraveWidgets.strings"; sourceTree = "<group>"; };
+		7D26976A2E7B9AE20058A3DF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = "sr-Cyrl.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		7D26976B2E7B9AE20058A3DF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = "Supporting Files/sr-Cyrl.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		7D26976C2E7B9AE30058A3DF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = "Shortcuts/sr-Cyrl.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
 		7D7193F42CFE43830015D31D /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
 		7D7193F52CFE43830015D31D /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7D7193F62CFE43830015D31D /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = "Supporting Files/th.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -463,10 +467,18 @@
 		7DBDEE3C2D5E79F1001AAEB4 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7DBDEE3D2D5E79F1001AAEB4 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = "Supporting Files/ko.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		7DBDEE3E2D5E79F1001AAEB4 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = Shortcuts/ko.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		7DBFC9882E7B9A5200043B44 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		7DBFC9892E7B9A5200043B44 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7DBFC98A2E7B9A5200043B44 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = "Supporting Files/hi.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		7DBFC98B2E7B9A5200043B44 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = Shortcuts/hi.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		7DDB12112CFE43AE008D75E5 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
 		7DDB12122CFE43AE008D75E5 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7DDB12132CFE43AE008D75E5 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = "Supporting Files/vi.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		7DDB12142CFE43AE008D75E5 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = Shortcuts/vi.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		7DF818862E7B99F300CDB912 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		7DF818872E7B99F300CDB912 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7DF818882E7B99F300CDB912 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = "Supporting Files/bg.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		7DF818892E7B99F300CDB912 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = Shortcuts/bg.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BraveWidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA0391B3271E1023000EB13C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		CA0391B5271E1023000EB13C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -1177,6 +1189,9 @@
 				th,
 				vi,
 				ko,
+				bg,
+				hi,
+				sr,
 			);
 			mainGroup = F84B21B51A090F8100AAB793;
 			packageReferences = (
@@ -1460,6 +1475,9 @@
 				7DDB12142CFE43AE008D75E5 /* vi */,
 				7DA1F3552D5E79D00010BA2F /* id */,
 				7DBDEE3E2D5E79F1001AAEB4 /* ko */,
+				7DF818892E7B99F300CDB912 /* bg */,
+				7DBFC98B2E7B9A5200043B44 /* hi */,
+				7D26976C2E7B9AE30058A3DF /* sr */,
 			);
 			name = BrowserIntents.intentdefinition;
 			sourceTree = "<group>";
@@ -1504,6 +1522,9 @@
 				7DDB12122CFE43AE008D75E5 /* vi */,
 				7DA1F3532D5E79D00010BA2F /* id */,
 				7DBDEE3C2D5E79F1001AAEB4 /* ko */,
+				7DF818872E7B99F300CDB912 /* bg */,
+				7DBFC9892E7B9A5200043B44 /* hi */,
+				7D26976A2E7B9AE20058A3DF /* sr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1549,6 +1570,9 @@
 				7DDB12132CFE43AE008D75E5 /* vi */,
 				7DA1F3542D5E79D00010BA2F /* id */,
 				7DBDEE3D2D5E79F1001AAEB4 /* ko */,
+				7DF818882E7B99F300CDB912 /* bg */,
+				7DBFC98A2E7B9A5200043B44 /* hi */,
+				7D26976B2E7B9AE20058A3DF /* sr */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1684,6 +1708,9 @@
 				7DDB12112CFE43AE008D75E5 /* vi */,
 				7DA1F3522D5E79D00010BA2F /* id */,
 				7DBDEE3B2D5E79F1001AAEB4 /* ko */,
+				7DF818862E7B99F300CDB912 /* bg */,
+				7DBFC9882E7B9A5200043B44 /* hi */,
+				7D2697692E7B9AE20058A3DF /* sr */,
 			);
 			name = BraveWidgets.intentdefinition;
 			sourceTree = "<group>";
