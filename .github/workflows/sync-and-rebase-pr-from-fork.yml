@@ -48,11 +48,12 @@ jobs:
           git remote add contributor "https://github.com/$headRepositoryOwnerLogin/$headRepositoryName.git" || :
           contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
           git fetch --no-tags contributor +"$headRefName":"$contribHeadRefName"
-
-          # Rebase the branch with the latest targeting branch HEAD
+          # Note we are checking out the provided commit hash instead of the pr-branch to avoid race condition
+          # The author could have commited malicious code between the last review and the execution of this workflow
           git checkout "$COMMIT_HASH"
+          
+          # Rebase the branch with the latest targeting branch HEAD
           git fetch origin "$baseRefName"
-
           if ! git rebase FETCH_HEAD; then
             echo "Rebase conflict detected. Please resolve the conflicts and push the changes to your fork. Exiting!"
             exit 1
