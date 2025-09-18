@@ -93,6 +93,14 @@
     Disable News
   </message>
 
+  <message name="IDS_NEW_TAB_NEWS_PREVIEW_TEXT" desc="Text of News preview article">
+    Scroll to explore today's top stories curated for you.
+  </message>
+
+  <message name="IDS_NEW_TAB_NEWS_PREVIEW_TITLE" desc="Title for News preview article">
+    Welcome to Brave News
+  </message>
+
   <message name="IDS_NEW_TAB_NEWS_WIDGET_TITLE" desc="Title for Brave News widget">
     NEWS
   </message>
