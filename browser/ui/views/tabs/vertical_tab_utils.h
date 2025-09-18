@@ -28,6 +28,12 @@ bool IsFloatingVerticalTabsEnabled(const Browser* browser);
 
 bool IsVerticalTabOnRight(const Browser* browser);
 
+// Returns true if we should hide vertical tab completely when collapsed. In
+// this case vertical tab strip will be almost a few pixels wide vertical bar
+// when collapsed. And will expand to show tab icons when mouse is over the bar
+// regardless of the setting of kVerticalTabsFloatingEnabled.
+bool ShouldHideVerticalTabsCompletelyWhenCollapsed(const Browser* browser);
+
 // Returns window caption buttons' width based on the current platform
 std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
     const BrowserFrame* frame);
