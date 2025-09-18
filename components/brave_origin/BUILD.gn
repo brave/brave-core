@@ -11,6 +11,8 @@ static_library("brave_origin") {
     "brave_origin_prefs.h",
     "brave_origin_service.cc",
     "brave_origin_service.h",
+    "brave_origin_utils.cc",
+    "brave_origin_utils.h",
     "features.cc",
     "features.h",
     "pref_names.h",
@@ -30,7 +32,10 @@ static_library("brave_origin") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "profile_id_unittest.cc" ]
+  sources = [
+    "brave_origin_utils_unittest.cc",
+    "profile_id_unittest.cc",
+  ]
 
   deps = [
     ":brave_origin",
