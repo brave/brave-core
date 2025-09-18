@@ -304,7 +304,7 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
   ControlType prev_setting = GetCosmeticFilteringControlType(map, url);
   content_settings::SettingInfo setting_info;
   base::Value web_setting = map->GetWebsiteSetting(
-      url, GURL(), CosmeticFilteringSetting::kContentSettingsType,
+      url, GURL::EmptyGURL(), CosmeticFilteringSetting::kContentSettingsType,
       &setting_info);
   bool was_default =
       web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts();
@@ -339,9 +339,9 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
       url.SchemeIs(kChromeExtensionScheme)) {
     return ControlType::BLOCK;
   }
-  const auto setting =
-      CosmeticFilteringSetting::FromValue(map->GetWebsiteSetting(
-          url, GURL(), CosmeticFilteringSetting::kContentSettingsType));
+  const auto setting = CosmeticFilteringSetting::FromValue(
+      map->GetWebsiteSetting(url, GURL::EmptyGURL(),
+                             CosmeticFilteringSetting::kContentSettingsType));
   return setting;
 }
 
