@@ -347,6 +347,39 @@ TEST_F(EmailAliasesServiceTimingTest, VerifyResult_StopsAfterMaxDuration) {
 }  // namespace email_aliases
 namespace email_aliases {
 
+class AliasObserver : public email_aliases::mojom::EmailAliasesServiceObserver {
+ public:
+  void OnAuthStateChanged(email_aliases::mojom::AuthStatePtr) override {}
+
+  void OnAliasesUpdated(
+      std::vector<email_aliases::mojom::AliasPtr> aliases) override {
+    ++alias_updates;
+    last_aliases = std::move(aliases);
+  }
+
+  bool WaitForAliasUpdateCount(size_t count) {
+    return base::test::RunUntil([&]() { return alias_updates >= count; });
+  }
+
+  void BindReceiver(
+      mojo::PendingReceiver<email_aliases::mojom::EmailAliasesServiceObserver>
+          pending) {
+    receiver.Bind(std::move(pending));
+  }
+
+  size_t alias_update_count() const { return alias_updates; }
+
+  const std::vector<email_aliases::mojom::AliasPtr>& get_last_aliases() const {
+    return last_aliases;
+  }
+
+ private:
+  size_t alias_updates = 0;
+  std::vector<email_aliases::mojom::AliasPtr> last_aliases;
+  mojo::Receiver<email_aliases::mojom::EmailAliasesServiceObserver> receiver{
+      this};
+};
+
 class EmailAliasesAPITest : public ::testing::Test {
  protected:
   EmailAliasesAPITest() {
@@ -362,37 +395,6 @@ class EmailAliasesAPITest : public ::testing::Test {
     observer_.BindReceiver(remote.InitWithNewPipeAndPassReceiver());
     service_->AddObserver(std::move(remote));
   }
-
-  // Minimal observer capturing alias updates.
-  class AliasObserver
-      : public email_aliases::mojom::EmailAliasesServiceObserver {
-   public:
-    void OnAuthStateChanged(email_aliases::mojom::AuthStatePtr) override {}
-    void OnAliasesUpdated(
-        std::vector<email_aliases::mojom::AliasPtr> aliases) override {
-      ++alias_updates;
-      last_aliases = std::move(aliases);
-    }
-    bool WaitForAliasUpdateCount(size_t count) {
-      return base::test::RunUntil([&]() { return alias_updates >= count; });
-    }
-
-    size_t alias_updates = 0;
-    std::vector<email_aliases::mojom::AliasPtr> last_aliases;
-    mojo::Receiver<email_aliases::mojom::EmailAliasesServiceObserver> receiver{
-        this};
-    void BindReceiver(
-        mojo::PendingReceiver<email_aliases::mojom::EmailAliasesServiceObserver>
-            pending) {
-      receiver.Bind(std::move(pending));
-    }
-  };
-
-  base::test::ScopedFeatureList feature_list_;
-  base::test::TaskEnvironment task_environment_;
-  network::TestURLLoaderFactory url_loader_factory_;
-  std::unique_ptr<EmailAliasesService> service_;
-  AliasObserver observer_;
 
   void AddManageResponseFor(const std::optional<std::string>& body) {
     const GURL manage_url =
@@ -458,6 +460,12 @@ class EmailAliasesAPITest : public ::testing::Test {
     EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
     return result_out;
   }
+
+  base::test::ScopedFeatureList feature_list_;
+  base::test::TaskEnvironment task_environment_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  std::unique_ptr<EmailAliasesService> service_;
+  AliasObserver observer_;
 };
 
 namespace {
@@ -608,8 +616,8 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
           "\",\"created_at\":\"2025-01-01T00:00:00Z\",\"last_used\":\"\","
           "\"status\":\"active\"}]");
   ASSERT_TRUE(result_out.has_value());
-  ASSERT_FALSE(observer_.last_aliases.empty());
-  EXPECT_EQ(observer_.last_aliases[0]->email, alias_email);
+  ASSERT_FALSE(observer_.get_last_aliases().empty());
+  EXPECT_EQ(observer_.get_last_aliases()[0]->email, alias_email);
 }
 
 TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
@@ -619,7 +627,7 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
                           /*refresh_body=*/"{\"message\":\"backend_error\"}",
                           /*wait_for_update=*/false);
   ASSERT_TRUE(result_out.has_value());
-  EXPECT_EQ(observer_.alias_updates, 0u);
+  EXPECT_EQ(observer_.alias_update_count(), 0u);
 }
 
 TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
