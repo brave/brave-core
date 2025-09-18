@@ -1,0 +1,232 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "अपने भरोसेमंद समुदाय की ओर से बनाई और संभाली जा रही अतिरिक्त लिस्ट जोड़ें.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**केवल उन संस्थाओं की लिस्ट की सदस्यता लें जिन पर आप भरोसा करते हैं**। आपका ब्राउज़र समय-समय पर आपके दर्ज किए गए URL से लिस्ट अपडेट की जाँच करेगा।";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "URL के आधार पर फ़िल्टर जोड़ें";
+
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** ऐड फ़्री और बिना रुकावट वाले वीडियो अनुभव के लिए आपका टिकट है।";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "मेरे लिए Shields एडजस्ट करें";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "इस साइट ने कुछ ऐड ब्लॉकर्स को ब्लॉक करना शुरू कर दिया है, जिसका मतलब है कि शायद उनकी साइट उम्मीद के मुताबिक काम न करे।";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "इस समस्या को सुलझाने के लिए, Brave आपके लिए Shields सेटिंग एडजस्ट कर सकता है। एडजस्ट होने के बाद, आप इस सामग्री को इसके बजाय Brave Player में चलाकर देख सकते हैं।";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "मौजूदा सेटिंग रखें";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "इस साइट के लिए ऐड ब्लॉक सेटिंग एडजस्ट करें";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "अपने-आप श्रेड करें";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "एग्रेसिव";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "ऐड्स, पॉप-अप्स और ट्रैकर्स को लोड होने से रोकें।";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "अक्षम";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "मानक";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "'ऐप में स्विच करें' सूचनाओं को अवरुद्ध करें";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave प्लेयर";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "इस साइट के वीडियो हमेशा Brave Player में खोलें";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "इसे आज़माएँ";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "अभी नहीं";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Brave Player आपको बिना रुकावट के वीडियो देखने देता है।";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "इसके बजाय Brave Player में देखें";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "कंटेंट फ़िल्टर करना";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "कस्टम फ़िल्टर की सुविधा चालू करें, जो क्षेत्र और भाषा से जुड़े ट्रैकर और अनचाही चीज़ों को ब्लॉक करती है.";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "कस्टम फ़िल्टर की सूची";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "कस्टम फ़िल्टर लिस्ट का URL";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "कस्टम फ़िल्टर";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "यहाँ कस्टम फ़िल्टर की सूची जोड़ें। ऐडब्लॉकर फ़िल्टर सिंटेक्स का इस्तेमाल ज़रूर करें।";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "लाइन %2$i पर अमान्य नियम '%1$@'";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "यहाँ अपनी कस्टम फ़ाइलें एक लाइन में एक जोड़ें।";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "कस्टम फ़िल्टर्स %i से ज़्यादा लाइनों को सपोर्ट नहीं करते";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "डिफ़ॉल्ट फ़िल्टर सूचियाँ";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "वापस जाएँ";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "क्योंकि आपने ट्रैकर्स और विज्ञापनों को बहुत ज़्यादा ब्लॉक करने का अनुरोध किया था, Brave पहले नेटवर्क कनेक्शन से पहले इस साइट को ब्लॉक कर रहा है.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave ने निम्नलिखित साइट को लोड होने से रोका है:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "यह साइट आपको दूसरी साइटों पर ट्रैक करने की कोशिश कर सकती है";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "आगे बढ़ें";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "डोमेन ब्लॉक है";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "वेबसाइटों को अपना डेटा बेचने या शेयर करने से मना करें। [ज़्यादा जानें](https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "ग्लोबल प्राइवेसी कंट्रोल चालू करें";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "बाहरी फ़िल्टरों की सूचियाँ";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "दर्ज किया गया URL अमान्य है";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "कस्टम फ़िल्टर सूची के लिए, केवल सुरक्षित (https) URL की अनुमति है";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "जोड़ें";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "मशहूर समुदायों की अतिरिक्त लिस्ट. ध्यान दें कि बहुत सारे फ़िल्टर लगाने से ब्राउज़िंग की रफ़्तार कम हो जाएगी.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "डाउनलोड विफल रहा";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "डाउनलोड बकाया है";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "बदलाव करें";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "फ़िल्टर लिस्ट का URL डालें";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "पिछली बार अपडेट करने का समय %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "फ़िल्टर सूची का URL यहाँ दर्ज करें ";
+
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "जब आप कोई साइट बंद करते हैं तो कुकीज़ और अन्य साइट डेटा साफ़ करता है";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "यह साइट बंद करने पर मुझे भुला देना";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "सख्त";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "सूचियाँ अपडेट की गईं";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "एग्रेसिव";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "यहाँ ब्लॉक किया गया";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "अनुरोध ब्लॉक किए गए";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "सामग्री ब्लॉकर";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "अनुरोध ब्लॉक करना";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "अनुरोध का URL";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "रिसोर्स का प्रकार";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "सोर्स का URL";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "डेटा श्रेड करें";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "कभी नहीं";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "ऐप बंद होने पर";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "साइट के टैब बंद होने पर";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "साइट डेटा श्रेड करें";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
+A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "डेटा श्रेड करने से इस साइट के लिए खुले सभी टैब बंद हो जाएँगे और साइट का पूरा डेटा मिट जाएगा। इसे पहले जैसा नहीं किया जा सकता।";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "साइट डेटा श्रेड करें?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "अभी साइट डेटा श्रेड करें";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "साइट सुरक्षित नहीं है";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "%@ से कनेक्शन सुरक्षित नहीं है";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "ट्रैकर्स & ऐड्स ब्लॉक करना";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "लिस्ट अपडेट करें";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "लिस्ट अपडेट करें";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "कनेक्शन को HTTPS पर अपग्रेड करें";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "आपको यह चेतावनी दिख रही है, क्योंकि यह साइट HTTPS को सपोर्ट नहीं करता।";
+

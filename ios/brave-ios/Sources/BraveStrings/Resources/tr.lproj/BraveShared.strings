@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Hepsini Aç";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "Senkronizasyon Ayarlarını Göster";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Geçen Hafta %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "Cihazlar";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "Senkronize Sekme Yok";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "Diğer Cihazlardaki Sekmeler";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "Senkronize edilmiş sekmeleriniz burada görünür";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Cihazınıza Gönderin";
@@ -1381,38 +1393,11 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Web Sitesini Aç";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
-"optionsMenu.braveLeoItemDescription" = "Leo, doğrudan tarayıcınıza dâhil edilmiş, gücünü yapay zekâdan alan bir akıllı asistandır";
-
-/* The subtitle description of menu item Brave News */
-"optionsMenu.braveNewsItemDescription" = "Günün en iyi hikayeleri özel bir haber akışında";
-
 /* Brave News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "Haberler";
 
-/* The subtitle description of menu item Brave Playlist */
-"optionsMenu.bravePlaylistItemDescription" = "Tüm videolar/akışlar için çevrimdışı bir oynatma listesi tutun";
-
 /* Brave News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "Oynatma Listesi";
-
-/* The subtitle description of menu item Brave Talk */
-"optionsMenu.braveTalkItemDescription" = "Özel görüntülü aramalar, doğrudan tarayıcınızın içinde";
-
-/* Brave Talk Item Menu title */
-"optionsMenu.braveTalkItemTitle" = "Sohbet";
-
-/* The subtitle description of menu item Brave VPN */
-"optionsMenu.braveVPNItemDescription" = "Çevrimiçi ortamda tüm cihazınızı koruyun";
-
-/* Brave VPN Item Menu title */
-"optionsMenu.braveVPNItemTitle" = "VPN";
-
-/* The subtitle description of menu item Brave Wallet */
-"optionsMenu.braveWalletItemDescription" = "Güvenli kripto cüzdanı, eklenti gerektirmez";
-
-/* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "Brave Özellikleri";
 
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Diğer Gizlilik Ayarları";
@@ -1528,17 +1513,11 @@
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "Oynatma Listesini Değiştir";
 
-/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
-"playlist.deleteForOfflineButtonTitle" = "Çevrimdışı Önbelleği Sil";
-
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "Bu video bir canlı yayındı veya zaman sınırına ulaşıldı. Lütfen yenilemek için bağlantıyı yeniden açın.";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "Süresi Dolan Video";
-
-/* Text indicator on the table cell If a video is expired */
-"playList.expiredLabelTitle" = "Süresi dolmuş";
 
 /* Number of items in the playlsit folder. Example: '10 items' */
 "playlist.folderItemCountPlural" = "%d öğe";
@@ -1548,15 +1527,6 @@
 
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Kaynak yüklenirken bir sorun meydana geldi!";
-
-/* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Etkinleştirildiğinde ana menü ikonu üzerinde sayfadaki medyanın Brave Oynatma Listesi'ne eklenebileceğini belirten bir rozet gösterilir.";
-
-/* Title for playlist menu badge option */
-"playlist.menuBadgeOptionTitle" = "Menü Bildirim Rozetini Göster";
-
-/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
-"playlist.movePlaylistShareActionMenuTitle" = "Öğeyi taşı...";
 
 /* Detail Text when there are no items in the playlist */
 "playList.noItemLabelDetailLabel" = "Tarayıcı içinde Brave Oynatma Listenize öğe ekleyebilirsiniz";
@@ -1572,9 +1542,6 @@
 
 /* Title for opening the playlist */
 "playList.openInPlaylistButtonTitle" = "Oynatma Listesinde Aç";
-
-/* The title for the alert that shows up when an item is expired */
-"playList.pictureInPictureErrorTitle" = "Üzgünüz, resimde resim görüntülenmeye çalışılırken bir hata oluştu.";
 
 /* Playlist alert message when playlist is already showing on a different window */
 "playlist.playlistAlreadyShowingBody" = "Oynatma listesi, başka bir pencerede zaten etkin";
@@ -1612,9 +1579,6 @@
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Depolama Alanı Neredeyse Dolu";
 
-/* When a video or audio is live and has no duration */
-"playlist.playlistLiveMediaStream" = "Canlı Yayın";
-
 /* Footer Text for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionFooterText" = "Etkinleştirildiğinde, çoğu video/ses dosyasının üzerine uzun basarak Oynatma Listenize ekleyebilirsiniz.";
 
@@ -1636,41 +1600,8 @@
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
 "playlist.playlistResetPlaylistOptionFooterText" = "Bu seçenek, tüm videoları Oynatma Listesinden ve Çevrimdışı mod depolama alanından kaldırır.";
 
-/* Error message when saving a playlist item for offline fails */
-"playlist.playlistSaveForOfflineErrorMessage" = "Üzgünüz, bu öğe şu anda çevrimdışı mod için kaydedilemedi.";
-
-/* Title of alert when saving a playlist item for offline mode */
-"playlist.playlistSaveForOfflineErrorTitle" = "Özür dileriz, bir şeyler ters gitti.";
-
-/* Title For the Section that videos are listed */
-"playList.playListSectionTitle" = "Oynatma listeleri";
-
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Oynatma Listesi";
-
-/* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "Bu dosya zaten Brave Oynatma Listenizde mevcut";
-
-/* Title for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsTitle" = "Özür dileriz";
-
-/* Title for the Section that videos are listed */
-"playList.playlistSharedFolderSectionTitle" = "Sizinle paylaşılanlar";
-
-/* Title For the Section that videos are listed */
-"playList.playListSharedFolderSectionTitle" = "Sizinle paylaşılanlar";
-
-/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationFooterText" = "Bu ayar, video listesi konumunu sol taraf / sağ taraf arasında değiştirir.";
-
-/* Option Text for Sidebar Location Left */
-"playlist.playlistSidebarLocationOptionLeft" = "Sol";
-
-/* Option Text for Sidebar Location Right */
-"playlist.playlistSidebarLocationOptionRight" = "Sağ";
-
-/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationTitle" = "Kenar Çubuğu Konumu";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsFooterText" = "Ayrı dosyalarda en son durdurulan noktadan çalmayı sürdürün.";
@@ -1684,50 +1615,8 @@
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
 "playList.removedFromPlaylistMessage" = "%@ Klasöründen Kaldırıldı";
 
-/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertMessage" = "Bu, ortamı çevrimdışı depolama alanından siler. Devam etmek istediğinizden emin misiniz?";
-
-/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertTitle" = "Çevrimdışı Verileri Kaldır";
-
-/* Message for the alert shown when the user tries to remove a video from playlist */
-"playlist.removePlaylistVideoAlertMessage" = "Bu işlem, medya öğesini listeden kaldırır. Devam etmek istediğinizden emin misiniz?";
-
-/* Title for the alert shown when the user tries to remove an item from playlist */
-"playlist.removePlaylistVideoAlertTitle" = "Medya Öğesi Çalma Listesinden Kaldırılsın mı?";
-
 /* Reopen Alert button title */
 "playList.reopenButtonTitle" = "Yeniden aç";
-
-/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "Çevrimdışı kullanıma eklendi";
-
-/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
-"playlist.saveForOfflineButtonTitle" = "Çevrimdışı için Kaydet";
-
-/* Text indicator on the table cell while saving a video for offline */
-"playList.savingForOfflineLabelTitle" = "Çevrimdışı kullanım için Kaydediliyor...";
-
-/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyDescription" = "Tüm oynatma listesi dosyalarını otomatik olarak senkronize eder";
-
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Oynatma Listesi Dosyalarını Otomatik Olarak Senkronize Et";
-
-/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionDetailsTitle" = "Mevcut öğeyi Yeni Sekmede açabilir ya da Sistem Paylaşımı Menüsü aracılığıyla paylaşabilirsiniz";
-
-/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Brave Oynatma Listesi Menüsü";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Gizli Sekmede Aç";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewTabTitle" = "Yeni Sekmede Aç";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistShareActionMenuTitle" = "Paylaş...";
 
 /* Title for load resources error alert */
 "playList.sorryAlertTitle" = "Özür dileriz";
@@ -1765,56 +1654,11 @@
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "Yarat";
 
-/* The title of the button that allows the user to edit the name of a folder */
-"playlistFolders.editButtonTitle" = "Düzenle";
-
-/* The title of the screen where the user edits folder names */
-"playlistFolders.editFolderScreenTitle" = "Klasörü Düzenle";
-
-/* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "Oynatma Listesini Düzenle";
-
-/* The error shown to the user when we cannot save their changes made on a folder */
-"playlistFolders.errorSavingMessage" = "Maalesef bu klasörde yaptığınız değişiklikleri kaydedemedik";
-
-/* The title of the button where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderButtonTitle" = "Taşı";
-
-/* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "Mevcut Oynatma Listesi";
-
-/* The title of the screen where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderScreenTitle" = "Taşı";
-
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
-"playlistFolders.moveItemDescription" = "%@ ve 1 öğe daha";
-
-/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld öğe";
-
-/* Sometimes an item can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithNoNameTitle" = "1 öğe";
-
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
-"playlistFolders.moveMultipleItemDescription" = "%1$@ ve %2$lld öğe daha";
-
 /* The title of the button to create a new folder */
 "playlistFolders.newFolderButtonTitle" = "Yeni Oynatma Listesi";
 
 /* The title of the screen to create a new folder */
 "playlistFolders.newFolderScreenTitle" = "Yeni Oynatma Listesi";
-
-/* The sub-title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionSubtitle" = "Videoları seçmek için dokunun";
-
-/* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "Bu oynatma listesine videolar ekleyin";
-
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "%lld öğeyi taşımak için bir oynatma listesi seçin";
-
-/* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "1 öğeyi taşımak için bir oynatma listesi seçin";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld öğe";
@@ -1824,45 +1668,6 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Adsız Oynatma Listesi";
-
-/* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "Brave Oynatma Listesi Düğmesine Ekle";
-
-/* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "Kaydet";
-
-/* Menu Title for removing offline data/cache */
-"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Çevrimdışı Verileri Kaldır";
-
-/* Menu Title for deleting the playlist */
-"playlistFolderSharing.deletePlaylistMenuTitle" = "Oynatma Listesini Sil";
-
-/* Menu Title for editing a folder */
-"playlistFolderSharing.editMenuTitle" = "Düzenle";
-
-/* Accessibility Title for the playlist menu. */
-"playlistFolderSharing.menuButtonAccessibilityTitle" = "Oynatma Listesi Menü Düğmesi";
-
-/* Button that adds the playlist to the local database */
-"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Oynatma listesini hemen ekle";
-
-/* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewDescription" = "Cihazınıza kaydettiğiniz paylaşılan oynatma listeleri dahil olmak üzere oynatma listelerine yeni eklenenleri çevrimdışı görüntülemek ve hücresel verinizi kullanabilmenizi sağlayan çevrimdışı kullanım için otomatik kaydetme açıktır.\n\nÇevrimdışı kullanım için otomatik kaydetme, Oynatma Listesi ayarlarından yönetilebilir.";
-
-/* Button that takes the user to the settings menu */
-"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Ayarlar";
-
-/* Title of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewTitle" = "Oynatma Listesi verinizin yönetimi";
-
-/* Menu Title for renaming a folder */
-"playlistFolderSharing.renameMenuTitle" = "Yeniden adlandır";
-
-/* Menu Title for saving offline data/cache */
-"playlistFolderSharing.saveOfflineDataMenuTitle" = "Çevrimdışı Verileri Kaydet";
-
-/* Menu Title for syncing playlist */
-"playlistFolderSharing.syncNowMenuTitle" = "Şimdi Senkronize Et";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Kalkanlar Menüsünü Kapat";
@@ -2197,6 +2002,13 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "ReportBrokenAdditionalDetails" = "Ek ayrıntılar (isteğe bağlı)";
 
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"reportBrokenAdditionalDetailsRequired" = "Ek detaylar";
+
+/* A label for a drop down where the user provides a category for a web-compatibility report
+A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Bir seçenek seçin";
+
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Benimle şuradan iletişime geçin (isteğe bağlı):";
 
@@ -2207,7 +2019,7 @@
 "ReportBrokenContactMeSuggestions" = "E-posta, Twitter, vb.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Brave'in geliştiricilerine bu sitenin Kalkanlar ile düzgün çalışmadığını bildirin:";
+"ReportBrokenSiteBody1" = "Brave'in geliştiricilerine bu sitenin beklendiği gibi çalışmadığını bildirin:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
 "ReportBrokenSiteBody2" = "Not: Brave sunucularına gönderilen rapor site adresini, Brave sürüm numarasını, Kalkanlar ayarlarını, VPN durumunu ve dil ayarlarını içerecektir.";
@@ -2557,6 +2369,9 @@
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "%@ 'den arama önerileri";
 
+/* Action title for open a playlist item in Playlist. */
+"searchSuggestionOpenPlaylistActionTitle" = "Oynatma Listesinde Aç";
+
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Bu sekmeye geç";
 
@@ -2617,6 +2432,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Brave'in yakın zamanda görüntülenmeyen sekmeleri otomatik olarak kapatmasına izin ver.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "Youtube'da Dikkat Dağıtıcı Öğeleri Engelle";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "Youtube'da Dikkat Dağıtıcı Öğeleri Engelle";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "Youtube.com'da sıradaki ve bitiş kartı öğelerini engeller";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "YouTube'da Önerilen İçerikleri Engelle";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Youtube.com'da Shorts'ları ana sayfada, trend sayfasında ve arama sonuçlarında engeller";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "YouTube Shorts'u engelle";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "En Yüksek Kalitede Oynatma";
 
@@ -2646,6 +2479,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Günlük kullanım ping'ini Brave'e otomatik olarak gönder";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Brave'in yeni sekme sayfasında özel anketlere bağlantılar göstermesine izin verir. Anketler, daha iyi özellikler oluşturmamıza ve tarayıcı tabanlı reklam kampanyalarının etkinliğini ölçmemize yardımcı olur. [Daha fazla bilgi edinin](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Brave anketlerine izin verin";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3061,6 +2900,15 @@
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "Senkronizasyon zincirindeki cihazlar alınırken bir şeyler ters gitti.";
 
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "Cihazınız Brave Sync'i etkileyebilecek şekilde yedekten geri yüklenmiş gibi görünüyor. Brave Sync'i kullanmaya devam etmek için senkronizasyon zincirini sıfırlamalı ve yeniden katılmalısınız.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "Geri Yükleme Algılandı";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "Senkronizasyon Zincirini Sıfırla";
+
 /* Sync device settings page title. */
 "sync.devices" = "Eşitleme zincirindeki cihazlar";
 
@@ -3235,6 +3083,63 @@
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Kapat";
 
+/* Accessibility label for a close button that when tapped opens a new tab */
+"tabGrid.addTabAccessibilityLabel" = "Yeni Sekme";
+
+/* A button title which when tapped will close all of the open tabs for the user */
+"tabGrid.closeAllTabsButtonTitle" = "Tüm Sekmeleri Kapat";
+
+/* Accessibility label for a close button that when tapped closes the associated tab */
+"tabGrid.closeTab" = "Sekmeyi Kapat";
+
+/* A button title which when tapped will display a menu with more options */
+"tabGrid.moreMenuButtonTitle" = "Daha fazla";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneBody" = "Gizli pencerelerde ziyaret ettiğiniz siteler geçmişinizde görünmez. Çerezler, form verileri ve site verileri, tüm gizli pencereler kapatıldığında silinir.";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneTitle" = "Cihazınızda iz bırakmayın";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeBody" = "Brave VPN, Brave tarayıcısının dışında bile, çevrimiçi yaptığınız her şeyi şifreler ve korur.";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeTitle" = "Brave VPN";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoBody" = "Unutmayın ki tarama etkinliğiniz, gizli pencerelerde bile İSS'niz, ağ gözlemcileri veya işvereniniz (bir iş cihazı/ağ kullanıyorsanız) tarafından görülebilir.";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoTitle" = "Gezinme görünürlüğü";
+
+/* A title shown when in private browsing mode with no tabs open */
+"tabGrid.privateBrowsingInfoTitle" = "gizli sekme";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.privateBrowsingModeAccessibilityLabel" = "Gizli Tarama";
+
+/* A button title which when tapped will present settings for private tabs */
+"tabGrid.privateTabsSettingsTitle" = "Gizli Sekme Ayarları";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.regularBrowsingModeAccessibilityLabel" = "Normal Gezinme";
+
+/* A button title that when tapped allows users to shred all of their tabs */
+"tabGrid.shredAllTabsButtonTitle" = "Tüm Sekmeleri Unut";
+
+/* A button title that when tapped allows users to shred the currently selected tab */
+"tabGrid.shredSelectedTabButtonTitle" = "Seçili Sekmeyi Unut";
+
+/* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
+"tabGrid.shredTabsAccessibilityLabel" = "Sekmeleri Unut";
+
+/* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryAccessibilityLabel" = "Geçmişi Görüntüle";
+
+/* Accessibility label for a button that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsAccessibilityLabel" = "Senkronize Sekmeleri Görüntüle";
+
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Gizli modu açar veya kapatır";
 
@@ -3252,6 +3157,15 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingTitle" = "Özel Sekmeleri Tut";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionFaceID" = "Gizli sekmelerinize erişmek için Face ID gereksin.";
+
+/* Describes the preference that locks the users private tabs behind their device PIN */
+"tabs.settings.privateBrowsingLockDescriptionPinCode" = "Gizli sekmelerinize erişmek için cihaz PIN kodunuz gereksin.";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionTouchID" = "Gizli sekmelerinize erişmek için Touch ID gereksin.";
 
 /* No comment provided by engineer. */
 "tabs.settings.privateBrowsingLockTitleFaceID" = "Yüz Kimliği Gerektir";

@@ -176,12 +176,6 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "Chat de interes general";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaVisionMessageDescription" = "Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Llama Vision, un model creat de Meta pentru a fi performant și aplicabil la multe cazuri de utilizare. Llama Vision este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaVisionModelPurposeDescription" = "Viziune de scop general";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Qwen 14B, un model creat de Alibaba Cloud pentru a fi performant și aplicabil la multe cazuri de utilizare. Qwen este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.";
 
 /* The model's purpose - Describes what it can do best */
@@ -225,9 +219,6 @@
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo IA";
-
-/* An indicator to show page content refined is in progress */
-"aichat.leoPageContentRefineInProgress" = "Se caută părțile relevante ale paginii web...";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Activează pentru a pune întrebări despre această pagină. Conținutul paginii va fi trimis lui Brave Leo alături de mesajele tale.";
@@ -425,7 +416,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Înțeleg";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo este un asistent inteligent privat IA care îți îmbunătățește utilizarea web-ului. Leo poate fi utilizat gratuit cu acces limitat. Brave Leo Premium oferă mai multe modele lingvistice, limite mai mari și oferă abonaților acces timpuriu la funcții noi. Consultă **[Centrul de asistență Brave](%1$@)** pentru mai multe detalii.\n\nÎn mod implicit, când îi adresezi o întrebare lui Leo, acesta poate trimite și folosi conținutul paginii web pe care o vizualizezi sau textul pe care îl evidențiezi către Brave Leo pentru a oferi un răspuns. În unele cazuri, Leo va trimite întrebări derivate din promptul tău către Brave Search și va folosi rezultatele căutărilor pentru a îti răspunde mai bine la întrebare. Acuratețea răspunsurilor nu este garantată și poate include informații inexacte, înșelătoare sau false. Nu trimite informații sensibile sau private și fii precaut cu orice răspunsuri legate de sănătate, finanțe, siguranță personală sau similare. Poți ajusta opțiunile lui Leo în Setări oricând. Mergi la Setări > Leo.\n\nLeo nu colectează identificatori, cum ar fi adresa ta IP, care pot fi legați de tine. Niciun fel de date nu sunt folosite pentru a antrena modelele de IA și niciun fel de date personale nu sunt reținute de către modelele de IA (exceptând Anthropic care reține datele pentru 30 zile înainte de a le șterge). Consultă **[politica de confidențialitate](%2$@)** pentru mai multe informații.";
+"aichat.termsConditionsDescription" = "Brave Leo este un asistent inteligent IA confidențial care îți îmbunătățește utilizarea web-ului. Utilizarea acestuia este gratuită, cu acces limitat. Brave Leo Premium oferă mai multe modele, limite mai mari și oferă abonaților acces anticipat la noi caracteristici. Modelul implicit se va schimba ocazional. Consultă Brave **[Help Center](%1$@)** pentru mai multe detalii.\n\nÎn mod implicit, atunci când îi adresezi o întrebare lui Leo despre un site web sau o pagină pe care o vizualizezi, acesta poate trimite și utiliza conținutul paginii web pe care o vizualizezi sau orice text pe care îl evidențiezi pe o pagină, precum și interogarea de căutare către serverele Brave pentru ca Leo să furnizeze un răspuns. În unele cazuri, Leo va trimite interogări derivate din datele introduse de tine în Brave Search și va utiliza rezultatele căutării pentru a răspunde mai bine la întrebarea ta. Acuratețea răspunsurilor nu este garantată și poate include informații inexacte, înșelătoare sau false. Nu trimite informații sensibile sau private și fii prudent cu orice răspuns legat de sănătate, finanțe, siguranță personală sau altele similare. Poți ajusta oricând opțiunile lui Leo în Setări. Mergi la Setări > Leo.\n\nLeo nu colectează identificatori, cum ar fi adresa ta IP, care pot fi legați de tine. Nu sunt utilizate date, interogări sau răspunsurile acordate de Brave Leo pentru instruirea modelelor. Nu păstrăm date cu caracter personal pe serverele noastre Brave. Consultă **[politica de confidențialitate](%2$@)** pentru mai multe informații.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Inițiază conversații private cu Brave Leo";

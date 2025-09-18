@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Mở tất cả";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "Mở cài đặt đồng bộ hóa";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Tuần trước %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "Thiết bị";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "Không có thẻ được đồng bộ";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "Thẻ trên các thiết bị khác";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "Thẻ được đồng bộ sẽ hiển thị ở đây";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Gửi đến thiết bị của bạn";
@@ -1381,38 +1393,11 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Mở trang web";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
-"optionsMenu.braveLeoItemDescription" = "Leo là trợ lý thông minh được hỗ trợ bởi AI, được tích hợp ngay trên trình duyệt";
-
-/* The subtitle description of menu item Brave News */
-"optionsMenu.braveNewsItemDescription" = "Các tin tức hàng đầu hôm nay trong trang tin tức riêng tư";
-
 /* Brave News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "Tin tức";
 
-/* The subtitle description of menu item Brave Playlist */
-"optionsMenu.bravePlaylistItemDescription" = "Giữ một danh sách phát ngoại tuyến của bất kỳ video/luồng nào";
-
 /* Brave News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "Danh sách phát";
-
-/* The subtitle description of menu item Brave Talk */
-"optionsMenu.braveTalkItemDescription" = "Gọi video riêng tư, ngay trong trình duyệt của bạn";
-
-/* Brave Talk Item Menu title */
-"optionsMenu.braveTalkItemTitle" = "Trò chuyện";
-
-/* The subtitle description of menu item Brave VPN */
-"optionsMenu.braveVPNItemDescription" = "Bảo vệ toàn bộ thiết bị của bạn khi trực tuyến";
-
-/* Brave VPN Item Menu title */
-"optionsMenu.braveVPNItemTitle" = "VPN";
-
-/* The subtitle description of menu item Brave Wallet */
-"optionsMenu.braveWalletItemDescription" = "Ví tiền điện tử bảo mật, không yêu cầu tiện ích";
-
-/* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "Tính năng của Brave";
 
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Cài đặt Quyền riêng tư khác";
@@ -1528,17 +1513,11 @@
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "Đổi Danh sách phát";
 
-/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
-"playlist.deleteForOfflineButtonTitle" = "Xóa bộ nhớ đệm ngoại tuyến";
-
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "Video này là video phát trực tiếp hoặc đã đạt giới hạn thời gian. Vui lòng mở lại liên kết để làm mới.";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "Video đã hết hạn";
-
-/* Text indicator on the table cell If a video is expired */
-"playList.expiredLabelTitle" = "Đã hết hạn";
 
 /* Number of items in the playlsit folder. Example: '10 items' */
 "playlist.folderItemCountPlural" = "%d mục";
@@ -1548,15 +1527,6 @@
 
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Có vấn đề khi tải tài nguyên!";
-
-/* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Khi được bật, một huy hiệu sẽ hiển thị trên biểu tượng menu chính, cho biết đa phương tiện trên trang có thể được thêm vào Danh sách phát Brave.";
-
-/* Title for playlist menu badge option */
-"playlist.menuBadgeOptionTitle" = "Hiển thị huy hiệu thông báo menu";
-
-/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
-"playlist.movePlaylistShareActionMenuTitle" = "Di chuyển...";
 
 /* Detail Text when there are no items in the playlist */
 "playList.noItemLabelDetailLabel" = "Bạn có thể thêm các mục vào Danh sách phát Brave của mình bên trong trình duyệt";
@@ -1572,9 +1542,6 @@
 
 /* Title for opening the playlist */
 "playList.openInPlaylistButtonTitle" = "Mở trong Danh sách phát";
-
-/* The title for the alert that shows up when an item is expired */
-"playList.pictureInPictureErrorTitle" = "Rất tiếc, đã xảy ra lỗi khi hiển thị hình trong hình.";
 
 /* Playlist alert message when playlist is already showing on a different window */
 "playlist.playlistAlreadyShowingBody" = "Danh sách phát đã hoạt động trên một cửa sổ khác";
@@ -1612,9 +1579,6 @@
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Sắp đầy dung lượng lưu trữ";
 
-/* When a video or audio is live and has no duration */
-"playlist.playlistLiveMediaStream" = "Phát trực tiếp";
-
 /* Footer Text for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionFooterText" = "Khi được bật, bạn có thể nhấn và giữ hầu hết các tệp video/âm thanh để thêm vào Danh sách phát của mình.";
 
@@ -1636,41 +1600,8 @@
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
 "playlist.playlistResetPlaylistOptionFooterText" = "Tùy chọn này sẽ xóa tất cả video khỏi Danh sách phát cũng như bộ nhớ của chế độ Ngoại tuyến.";
 
-/* Error message when saving a playlist item for offline fails */
-"playlist.playlistSaveForOfflineErrorMessage" = "Rất tiếc, mục này hiện không thể lưu ở chế độ ngoại tuyến.";
-
-/* Title of alert when saving a playlist item for offline mode */
-"playlist.playlistSaveForOfflineErrorTitle" = "Xin lỗi, đã xảy ra sự cố";
-
-/* Title For the Section that videos are listed */
-"playList.playListSectionTitle" = "Danh sách phát";
-
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Danh sách phát";
-
-/* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "Thư mục này hiện đã có trong Danh sách phát Brave của bạn";
-
-/* Title for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsTitle" = "Xin lỗi";
-
-/* Title for the Section that videos are listed */
-"playList.playlistSharedFolderSectionTitle" = "Được chia sẻ với bạn";
-
-/* Title For the Section that videos are listed */
-"playList.playListSharedFolderSectionTitle" = "Được chia sẻ với bạn";
-
-/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationFooterText" = "Cài đặt này sẽ thay đổi vị trí danh sách video thành bên trái/bên phải.";
-
-/* Option Text for Sidebar Location Left */
-"playlist.playlistSidebarLocationOptionLeft" = "Trái";
-
-/* Option Text for Sidebar Location Right */
-"playlist.playlistSidebarLocationOptionRight" = "Phải";
-
-/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationTitle" = "Vị trí thanh bên";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsFooterText" = "Đối với tệp riêng lẻ, tiếp tục phát từ điểm dừng cuối cùng.";
@@ -1684,50 +1615,8 @@
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
 "playList.removedFromPlaylistMessage" = "Đã xóa khỏi %@";
 
-/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertMessage" = "Thao tác này sẽ xóa tệp đa phương tiện khỏi mục lưu trữ ngoại tuyến. Bạn có chắc muốn tiếp tục?";
-
-/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertTitle" = "Xóa dữ liệu ngoại tuyến";
-
-/* Message for the alert shown when the user tries to remove a video from playlist */
-"playlist.removePlaylistVideoAlertMessage" = "Thao tác này sẽ xóa mục đa phương tiện khỏi danh sách. Bạn có chắc muốn tiếp tục?";
-
-/* Title for the alert shown when the user tries to remove an item from playlist */
-"playlist.removePlaylistVideoAlertTitle" = "Xóa tệp đa phương tiện khỏi Danh sách phát?";
-
 /* Reopen Alert button title */
 "playList.reopenButtonTitle" = "Mở lại";
-
-/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "Đã thêm vào Ngoại tuyến";
-
-/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
-"playlist.saveForOfflineButtonTitle" = "Lưu cho Ngoại tuyến";
-
-/* Text indicator on the table cell while saving a video for offline */
-"playList.savingForOfflineLabelTitle" = "Đang lưu cho Ngoại tuyến…";
-
-/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyDescription" = "Tự động đồng bộ hóa tất cả các thư mục danh sách phát của bạn";
-
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Tự động đồng bộ hóa tất cả thư mục Danh sách phát";
-
-/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionDetailsTitle" = "Bạn có thể mở mục hiện tại trong Tab mới hoặc chia sẻ mục đó qua menu Chia sẻ của hệ thống";
-
-/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Menu Danh sách phát Brave";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Mở trong thẻ riêng tư";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewTabTitle" = "Mở trong thẻ mới";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistShareActionMenuTitle" = "Chia sẻ...";
 
 /* Title for load resources error alert */
 "playList.sorryAlertTitle" = "Xin lỗi";
@@ -1765,56 +1654,11 @@
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "Tạo";
 
-/* The title of the button that allows the user to edit the name of a folder */
-"playlistFolders.editButtonTitle" = "Chỉnh sửa";
-
-/* The title of the screen where the user edits folder names */
-"playlistFolders.editFolderScreenTitle" = "Chỉnh sửa thư mục";
-
-/* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "Chỉnh sửa Danh sách phát";
-
-/* The error shown to the user when we cannot save their changes made on a folder */
-"playlistFolders.errorSavingMessage" = "Xin lỗi, chúng tôi không thể lưu các thay đổi bạn thực hiện cho thư mục này";
-
-/* The title of the button where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderButtonTitle" = "Di chuyển";
-
-/* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "Danh sách phát hiện tại";
-
-/* The title of the screen where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderScreenTitle" = "Di chuyển";
-
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
-"playlistFolders.moveItemDescription" = "%@ và 1 mục khác";
-
-/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld mục";
-
-/* Sometimes an item can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithNoNameTitle" = "1 mục";
-
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
-"playlistFolders.moveMultipleItemDescription" = "%1$@ và %2$lld mục khác";
-
 /* The title of the button to create a new folder */
 "playlistFolders.newFolderButtonTitle" = "Danh sách phát mới";
 
 /* The title of the screen to create a new folder */
 "playlistFolders.newFolderScreenTitle" = "Danh sách phát mới";
-
-/* The sub-title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionSubtitle" = "Nhấn để chọn video";
-
-/* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "Thêm video vào danh sách phát này";
-
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "Chọn danh sách phát để di chuyển %lld mục đến";
-
-/* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "Chọn Danh sách phát để di chuyển 1 mục đến";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld mục";
@@ -1824,45 +1668,6 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Danh sách phát không có tiêu đề";
-
-/* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "Nút Thêm vào Danh sách phát Brave";
-
-/* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "Lưu";
-
-/* Menu Title for removing offline data/cache */
-"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Xóa dữ liệu ngoại tuyến";
-
-/* Menu Title for deleting the playlist */
-"playlistFolderSharing.deletePlaylistMenuTitle" = "Xóa Danh sách phát";
-
-/* Menu Title for editing a folder */
-"playlistFolderSharing.editMenuTitle" = "Chỉnh sửa";
-
-/* Accessibility Title for the playlist menu. */
-"playlistFolderSharing.menuButtonAccessibilityTitle" = "Nút menu Danh sách phát";
-
-/* Button that adds the playlist to the local database */
-"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Thêm danh sách phát ngay";
-
-/* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewDescription" = "Tự động lưu để sử dụng ngoại tuyến đang bật, nghĩa là các nội dung mới được thêm vào danh sách phát, bao gồm danh sách phát được chia sẻ, được lưu vào thiết bị của bạn để xem ngoại tuyến và có thể sử dụng dữ liệu di động của bạn.\n\nTự động lưu để sử dụng ngoại tuyến có thể được quản lý trong cài đặt Danh sách phát.";
-
-/* Button that takes the user to the settings menu */
-"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Cài đặt";
-
-/* Title of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewTitle" = "Quản lý dữ liệu Danh sách phát của bạn";
-
-/* Menu Title for renaming a folder */
-"playlistFolderSharing.renameMenuTitle" = "Đổi tên";
-
-/* Menu Title for saving offline data/cache */
-"playlistFolderSharing.saveOfflineDataMenuTitle" = "Lưu dữ liệu ngoại tuyến";
-
-/* Menu Title for syncing playlist */
-"playlistFolderSharing.syncNowMenuTitle" = "Đồng bộ hóa ngay";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Đóng menu Lá chắn";
@@ -2197,6 +2002,13 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "ReportBrokenAdditionalDetails" = "Chi tiết bổ sung (tùy chọn)";
 
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"reportBrokenAdditionalDetailsRequired" = "Thông tin khác";
+
+/* A label for a drop down where the user provides a category for a web-compatibility report
+A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Chọn một tùy chọn";
+
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Liên hệ với tôi tại: (tùy chọn)";
 
@@ -2207,7 +2019,7 @@
 "ReportBrokenContactMeSuggestions" = "Email, Twitter, v.v.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Hãy thông báo cho các nhà phát triển của Brave biết trang web này không hoạt động đúng cách với Lá chắn:";
+"ReportBrokenSiteBody1" = "Hãy cho các nhà phát triển của Brave biết trang web này không hoạt động như mong đợi:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
 "ReportBrokenSiteBody2" = "Lưu ý: Báo cáo được gửi đến máy chủ Brave sẽ bao gồm địa chỉ trang web, số phiên bản Brave, cài đặt Lá chắn, trạng thái VPN và cài đặt ngôn ngữ.";
@@ -2557,6 +2369,9 @@
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "Gợi ý tìm kiếm từ %@";
 
+/* Action title for open a playlist item in Playlist. */
+"searchSuggestionOpenPlaylistActionTitle" = "Mở trong Danh sách phát";
+
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Chuyển sang thẻ này";
 
@@ -2617,6 +2432,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Cho phép Brave tự động đóng thẻ không được xem gần đây.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "Chặn các yếu tố gây mất tập trung trên YouTube";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "Chặn các yếu tố gây mất tập trung trên YouTube";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "Chặn các thành phần thẻ tiếp theo và thẻ kết thúc trên youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "Chặn nội dung được đề xuất trên YouTube";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Chặn các video ngắn khỏi trang chủ, trang thịnh hành và kết quả tìm kiếm trên youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "Chặn video ngắn trên YouTube";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Chất lượng phát cao nhất";
 
@@ -2646,6 +2479,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Tự động gửi ping sử dụng hằng ngày đến Brave";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Cho phép Brave hiển thị liên kết đến các khảo sát riêng tư trên trang thẻ mới của bạn. Khảo sát giúp chúng tôi phát triển các tính năng tốt hơn và đo lường hiệu quả của các chiến dịch quảng cáo trên trình duyệt. [Tìm hiểu thêm](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Cho phép Brave thực hiện khảo sát";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3061,6 +2900,15 @@
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "Đã xảy ra sự cố khi truy xuất thiết bị trong chuỗi đồng bộ hóa.";
 
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "Có vẻ như thiết bị của bạn đã được khôi phục từ bản sao lưu, điều này có thể ảnh hưởng đến Brave Sync. Để tiếp tục sử dụng Brave Sync, bạn nên đặt lại và tham gia lại chuỗi đồng bộ.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "Phát hiện khôi phục";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "Đặt lại chuỗi đồng bộ";
+
 /* Sync device settings page title. */
 "sync.devices" = "Thiết bị trong chuỗi đồng bộ hóa";
 
@@ -3235,6 +3083,63 @@
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Đóng";
 
+/* Accessibility label for a close button that when tapped opens a new tab */
+"tabGrid.addTabAccessibilityLabel" = "Thẻ mới";
+
+/* A button title which when tapped will close all of the open tabs for the user */
+"tabGrid.closeAllTabsButtonTitle" = "Đóng tất cả thẻ";
+
+/* Accessibility label for a close button that when tapped closes the associated tab */
+"tabGrid.closeTab" = "Đóng thẻ";
+
+/* A button title which when tapped will display a menu with more options */
+"tabGrid.moreMenuButtonTitle" = "Thêm";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneBody" = "Các trang web bạn truy cập trong cửa sổ riêng tư sẽ không xuất hiện trong lịch sử của bạn. Cookie, dữ liệu biểu mẫu và dữ liệu trang web sẽ biến mất sau khi tất cả các cửa sổ riêng tư được đóng.";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneTitle" = "Không để lại dấu vết trên thiết bị của bạn";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeBody" = "Brave VPN mã hóa và bảo vệ mọi hoạt động trực tuyến của bạn, ngay cả khi không sử dụng trình duyệt Brave.";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeTitle" = "Brave VPN";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoBody" = "Lưu ý rằng, ngay cả trong cửa sổ riêng tư, hoạt động duyệt web của bạn vẫn có thể bị ISP, người quan sát hệ thống mạng hoặc người thuê bạn làm việc (nếu bạn đang sử dụng máy/mạng công ty) nhìn thấy.";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoTitle" = "Độ hiển thị khi duyệt";
+
+/* A title shown when in private browsing mode with no tabs open */
+"tabGrid.privateBrowsingInfoTitle" = "thẻ riêng tư";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.privateBrowsingModeAccessibilityLabel" = "Duyệt riêng tư";
+
+/* A button title which when tapped will present settings for private tabs */
+"tabGrid.privateTabsSettingsTitle" = "Cài đặt thẻ riêng tư";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.regularBrowsingModeAccessibilityLabel" = "Duyệt thông thường";
+
+/* A button title that when tapped allows users to shred all of their tabs */
+"tabGrid.shredAllTabsButtonTitle" = "Xóa dữ liệu tất cả thẻ";
+
+/* A button title that when tapped allows users to shred the currently selected tab */
+"tabGrid.shredSelectedTabButtonTitle" = "Xóa dữ liệu thẻ đã chọn";
+
+/* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
+"tabGrid.shredTabsAccessibilityLabel" = "Xóa dữ liệu thẻ";
+
+/* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryAccessibilityLabel" = "Xem lịch sử";
+
+/* Accessibility label for a button that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsAccessibilityLabel" = "Xem thẻ được đồng bộ";
+
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Bật hoặc tắt chế độ riêng tư";
 
@@ -3252,6 +3157,15 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingTitle" = "Giữ Thẻ riêng tư";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionFaceID" = "Yêu cầu Face ID để truy cập các thẻ riêng tư của bạn.";
+
+/* Describes the preference that locks the users private tabs behind their device PIN */
+"tabs.settings.privateBrowsingLockDescriptionPinCode" = "Yêu cầu mã PIN của thiết bị để truy cập các thẻ riêng tư của bạn.";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionTouchID" = "Yêu cầu Touch ID để truy cập các thẻ riêng tư của bạn.";
 
 /* No comment provided by engineer. */
 "tabs.settings.privateBrowsingLockTitleFaceID" = "Yêu cầu Face ID";

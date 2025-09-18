@@ -199,7 +199,8 @@
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Уничтожение данных сайта";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
+A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "Все данные сайта будут уничтожены, а вкладки с ним — закрыты. Это действие нельзя отменить.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
