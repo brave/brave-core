@@ -10,7 +10,7 @@ import Icon from '@brave/leo/react/icon'
 import { useNewTabActions } from '../../context/new_tab_context'
 import { WidgetMenu } from './widget_menu'
 import { getString } from '../../lib/strings'
-import { openLink } from '../common/link'
+import { Link, openLink } from '../common/link'
 
 import { style } from './talk_widget.style'
 
@@ -43,6 +43,9 @@ export function TalkWidget() {
           >
             {getString('talkStartCallLabel')}
           </Button>
+          <Link url='https://brave.com/privacy/browser/#brave-talk-learn'>
+            {getString('talkAboutDataLink')}
+          </Link>
         </div>
       </div>
     </div>

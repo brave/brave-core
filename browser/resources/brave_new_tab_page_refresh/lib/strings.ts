@@ -84,6 +84,7 @@ export type StringKey =
   'statsBandwidthSavedText' |
   'statsTimeSavedText' |
   'statsTitle' |
+  'talkAboutDataLink' |
   'talkDescriptionText' |
   'talkDescriptionTitle' |
   'talkStartCallLabel' |

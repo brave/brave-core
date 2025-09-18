@@ -253,6 +253,10 @@
     STATS
   </message>
 
+  <message name="IDS_NEW_TAB_TALK_ABOUT_DATA_LINK" desc="Text for link to page describing Brave Talk data policies">
+    About your data
+  </message>
+
   <message name="IDS_NEW_TAB_TALK_DESCRIPTION_TEXT" desc="Description text for Brave Talk widget">
     Encrypted video calls with Brave Talk
   </message>
