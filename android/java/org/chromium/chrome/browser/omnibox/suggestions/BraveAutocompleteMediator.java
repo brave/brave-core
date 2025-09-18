@@ -53,7 +53,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     /** Will be deleted in bytecode, value from the parent class will be used instead. */
     private @Nullable DropdownItemViewInfoListBuilder mDropdownViewInfoListBuilder;
 
-    public BraveAutocompleteMediator(
+    BraveAutocompleteMediator(
             Context context,
             AutocompleteDelegate delegate,
             UrlBarEditingTextStateProvider textProvider,
