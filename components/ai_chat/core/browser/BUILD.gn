@@ -172,6 +172,7 @@ source_set("unit_tests") {
     "//brave/components/ai_chat/core/common:test_support",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/api_request_helper",
+    "//brave/components/api_request_helper:test_support",
     "//brave/components/brave_component_updater/browser:test_support",
     "//brave/components/constants",
     "//brave/components/l10n/common:test_support",
