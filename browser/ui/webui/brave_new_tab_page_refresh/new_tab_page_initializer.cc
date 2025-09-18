@@ -251,6 +251,7 @@ void NewTabPageInitializer::AddStrings() {
       {"statsBandwidthSavedText", IDS_NEW_TAB_STATS_BANDWIDTH_SAVED_TEXT},
       {"statsTimeSavedText", IDS_NEW_TAB_STATS_TIME_SAVED_TEXT},
       {"statsTitle", IDS_NEW_TAB_STATS_TITLE},
+      {"talkAboutDataLink", IDS_NEW_TAB_TALK_ABOUT_DATA_LINK},
       {"talkDescriptionText", IDS_NEW_TAB_TALK_DESCRIPTION_TEXT},
       {"talkDescriptionTitle", IDS_NEW_TAB_TALK_DESCRIPTION_TITLE},
       {"talkStartCallLabel", IDS_NEW_TAB_TALK_START_CALL_LABEL},
