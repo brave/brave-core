@@ -1,0 +1,6 @@
+from brave_chromium_utils import inline_file
+inline_file("//chrome/updater/DEPS", globals(), locals())
+
+include_rules += [
+  "+brave/components/update_client/brave_protocol_handler.h",
+]

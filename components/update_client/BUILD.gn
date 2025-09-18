@@ -22,3 +22,16 @@ buildflag_header("buildflags") {
     "UPDATER_PROD_ENDPOINT=\"$updater_prod_endpoint\"",
   ]
 }
+
+static_library("update_client") {
+  sources = [
+    "brave_protocol_handler.cc",
+    "brave_protocol_handler.h",
+    "brave_protocol_serializer_json.cc",
+    "brave_protocol_serializer_json.h",
+  ]
+  deps = [
+    "//base",
+    "//components/update_client",
+  ]
+}
