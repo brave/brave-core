@@ -17,10 +17,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.URLUtil;
 import android.widget.ImageView;
 
 import androidx.fragment.app.DialogFragment;
@@ -236,13 +236,15 @@ public class BraveLocationBarQRDialogFragment
 
         if (getActivity() != null) {
             final String barcodeValue = barcode.displayValue;
-            getActivity().runOnUiThread(() -> {
-                if (URLUtil.isNetworkUrl(barcodeValue)) {
-                    mLocationBarMediator.setSearchQuery(barcodeValue);
-                } else {
-                    mLocationBarMediator.performSearchQuery(barcodeValue, null);
-                }
-            });
+            getActivity()
+                    .runOnUiThread(
+                            () -> {
+                                if (Patterns.WEB_URL.matcher(barcodeValue).matches()) {
+                                    mLocationBarMediator.setSearchQuery(barcodeValue);
+                                } else {
+                                    mLocationBarMediator.performSearchQuery(barcodeValue, null);
+                                }
+                            });
 
             dismiss();
         }
