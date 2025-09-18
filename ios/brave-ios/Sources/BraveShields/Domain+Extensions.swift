@@ -7,10 +7,6 @@ import Data
 import Foundation
 import Preferences
 
-// https://github.com/brave/brave-ios/issues/7611
-/// A list of etld+1s that are always aggressive
-private let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
-
 extension Domain {
   @MainActor var areAllShieldsOff: Bool {
     return shield_allOff?.boolValue ?? false
@@ -52,28 +48,11 @@ extension Domain {
     domainBlockAdsAndTrackingLevel = isEnabled ? .standard : .disabled
   }
 
-  /// Return the shield level for this domain.
-  ///
-  /// - Warning: This does not consider the "all off" setting
-  /// This also takes into consideration certain domains that are always aggressive.
+  /// Return the shield level for this domain, taking into account if all
+  /// shields are disabled for this domain.
   @MainActor var globalBlockAdsAndTrackingLevel: ShieldLevel {
     guard !areAllShieldsOff else { return .disabled }
-    let globalLevel = domainBlockAdsAndTrackingLevel
-
-    switch globalLevel {
-    case .standard:
-      guard let urlString = self.url else { return globalLevel }
-      guard let url = URL(string: urlString) else { return globalLevel }
-      guard let etldPlusOne = url.baseDomain else { return globalLevel }
-
-      if alwaysAggressiveETLDs.contains(etldPlusOne) {
-        return .aggressive
-      } else {
-        return globalLevel
-      }
-    case .disabled, .aggressive:
-      return globalLevel
-    }
+    return domainBlockAdsAndTrackingLevel
   }
 
   /// Whether or not a given shield should be enabled based on domain exceptions and the users global preference
