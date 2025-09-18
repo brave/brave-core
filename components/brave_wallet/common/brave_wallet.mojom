@@ -2340,6 +2340,12 @@ interface PolkadotWalletService {
 
   GetAccountBalance(AccountId account, string chain_id)
       => (PolkadotAccountInfo? account, string? error_message);
+
+  AddObserver(pending_remote<PolkadotWalletServiceObserver> observer);
+};
+
+interface PolkadotWalletServiceObserver {
+  GetPublicKey() => (string pubkey);
 };
 
 enum TransactionStatus {

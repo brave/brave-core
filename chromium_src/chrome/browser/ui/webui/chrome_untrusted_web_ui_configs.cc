@@ -11,6 +11,7 @@
 #include "brave/browser/ui/webui/brave_wallet/line_chart/line_chart_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/polkadot/polkadot_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/trezor/trezor_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -43,6 +44,8 @@ void RegisterChromeUntrustedWebUIConfigs() {
       std::make_unique<market::UntrustedMarketUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<nft::UntrustedNftUIConfig>());
+  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+      std::make_unique<brave_wallet::UntrustedPolkadotUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<line_chart::UntrustedLineChartUIConfig>());
 #if !BUILDFLAG(IS_ANDROID)

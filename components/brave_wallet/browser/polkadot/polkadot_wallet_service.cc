@@ -34,6 +34,9 @@ void PolkadotWalletService::Reset() {
 
 void PolkadotWalletService::GetNetworkName(mojom::AccountIdPtr account_id,
                                            GetNetworkNameCallback callback) {
+  polkadot_remote_->GetPublicKey(base::BindOnce(
+      &PolkadotWalletService::OnGetPubKey, weak_ptr_factory_.GetWeakPtr()));
+
   std::string chain_id = GetNetworkForPolkadotAccount(account_id);
   polkadot_substrate_rpc_.GetChainName(std::move(chain_id),
                                        std::move(callback));
@@ -50,6 +53,19 @@ void PolkadotWalletService::GetAccountBalance(
 
   polkadot_substrate_rpc_.GetAccountBalance(chain_id, *pubkey,
                                             std::move(callback));
+}
+
+void PolkadotWalletService::AddObserver(
+    mojo::PendingRemote<mojom::PolkadotWalletServiceObserver> observer) {
+  polkadot_remote_.Bind(std::move(observer));
+}
+
+std::string PolkadotWalletService::GetPubKey() {
+  return "";
+}
+
+void PolkadotWalletService::OnGetPubKey(const std::string& pubkey) {
+  LOG(INFO) << "received the pubkey from the polkadot-bridge webui: " << pubkey;
 }
 
 }  // namespace brave_wallet
