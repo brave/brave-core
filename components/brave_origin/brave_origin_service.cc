@@ -61,8 +61,28 @@ bool BraveOriginService::SetBrowserPolicyValue(std::string_view pref_name,
     return false;
   }
 
+  // Get policy info to access pref_key and user_settable
+  const BraveOriginPolicyInfo* pref_info =
+      BraveOriginPolicyManager::GetInstance()->GetPrefInfo(pref_name);
+  if (!pref_info) {
+    return false;
+  }
+
+  // Set the policy value in BraveOriginPolicyManager
   BraveOriginPolicyManager::GetInstance()->SetBrowserPolicyValue(pref_name,
                                                                  value);
+
+  // Also set the corresponding pref value in local_state
+  // If not user-settable and value equals default, clear the pref instead
+  // We don't want a user to have a value set in local state if the value is not
+  // user settable as they would be stuck with that value if they stopped being
+  // a Brave Origin user
+  if (!pref_info->user_settable && value == pref_info->default_value) {
+    local_state_->ClearPref(pref_info->pref_name);
+  } else {
+    local_state_->SetBoolean(pref_info->pref_name, value);
+  }
+
   return true;
 }
 
@@ -72,8 +92,28 @@ bool BraveOriginService::SetProfilePolicyValue(std::string_view pref_name,
     return false;
   }
 
+  // Get policy info to access pref_key and user_settable
+  const BraveOriginPolicyInfo* pref_info =
+      BraveOriginPolicyManager::GetInstance()->GetPrefInfo(pref_name);
+  if (!pref_info) {
+    return false;
+  }
+
+  // Set the policy value in BraveOriginPolicyManager
   BraveOriginPolicyManager::GetInstance()->SetProfilePolicyValue(
       pref_name, value, profile_id_);
+
+  // Also set the corresponding pref value in profile_prefs
+  // If not user-settable and value equals default, clear the pref instead
+  // We don't want a user to have a value set in profile prefs if the value is
+  // not user settable as they would be stuck with that value if they stopped
+  // being a Brave Origin user
+  if (!pref_info->user_settable && value == pref_info->default_value) {
+    profile_prefs_->ClearPref(pref_info->pref_name);
+  } else {
+    profile_prefs_->SetBoolean(pref_info->pref_name, value);
+  }
+
   return true;
 }
 
