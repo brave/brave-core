@@ -41,8 +41,8 @@ export function ShieldAccountAlert(props: Props) {
 
   // Safe Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
-  const isPanelOrAndroid = isPanel || isAndroid
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isMobileOrPanel = isPanel || isMobile
 
   return (
     <>
@@ -59,7 +59,7 @@ export function ShieldAccountAlert(props: Props) {
               </Text>
               {getLocale('braveWalletShieldAccountAlertDescription')}
             </Column>
-            {!isPanelOrAndroid && (
+            {!isMobileOrPanel && (
               <div>
                 <Button
                   onClick={() => {
@@ -75,7 +75,7 @@ export function ShieldAccountAlert(props: Props) {
               </div>
             )}
           </Row>
-          {isPanelOrAndroid && (
+          {isMobileOrPanel && (
             <div slot='actions'>
               <Button
                 size='small'
