@@ -167,6 +167,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SELECT_YOUR_COUNTRY_DESCRIPTION"  desc="Text for Select your country so we can show you the right options and ads for your region.">
         Select your country so we can show you the right options and ads for your region.
       </message>
+      <message name="IDS_PASSWORD_SETTINGS_IMPORT_ACTION_TITLE" desc="Title for the password import action in Android settings">
+        Import passwords
+      </message>
+      <message name="IDS_PASSWORD_SETTINGS_IMPORT_ACTION_DESCRIPTION" desc="Description for the password import action in Android settings">
+        Select a .csv file that contains your passwords to import them to Brave's password manager.
+      </message>
       <message name="IDS_REWARDS_ONBOARDING_ALL_SET_DESCRIPTION"  desc="Text for Now you can get rewarded for viewing ads. You’re helping make the web a better place for everyone. And that’s awesome!">
         Now you can get rewarded for viewing ads. You’re helping make the web a better place for everyone. And that’s awesome!
       </message>
@@ -4150,6 +4156,47 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_PASSWORD_SETTINGS_EXPORT_ERROR_DETAILS" desc="A short prefix to introduce a technical error message passed to the user from Android after exporting passwords through a temporary file fails. Both the prefix and the error message are shown in the body of an alert dialog.">
       Details: <ph name="ERROR_DESCRIPTION">%1$s<ex>IOException: No space left on device</ex></ph>
+    </message>
+    <message name="IDS_PASSWORD_MANAGER_UI_SELECT_FILE" desc="A button in the settings page that triggers import of passwords from a CSV file.">
+      Select file
+    </message>
+    <message name="IDS_PASSWORD_MANAGER_UI_IMPORT_ERROR_UNKNOWN" desc="Message is shown on the dialog for importing passwords if no passwords were imported and we don't know the cause of error. Probably error in the backend or in our systems.">
+      Your passwords weren't imported
+    </message>
+    <message name="IDS_PASSWORD_MANAGER_UI_IMPORT_SUCCESS_TITLE" desc="The title of a dialog, which offers the ability for the user to import passwords into Password Manager. Shown when import has successfully finished with no errors.">
+      Import successful!
+    </message>
+    <message name="IDS_PASSWORD_MANAGER_UI_IMPORT_ERROR_BAD_FORMAT" desc="Message is shown on the dialog for importing passwords if no passwords were imported because file is not formated correctly">
+      Can't import passwords. Check <ph name="FILENAME">&lt;span class="bold-text"&gt;$1&lt;/span&gt;<ex>&lt;span class="bold-text"&gt;filename.csv&lt;/span&gt;</ex></ph> and make sure it's formatted correctly. <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_PASSWORD_MANAGER_UI_IMPORT_FILE_SIZE_EXCEEDED" desc="Message is shown on the dialog for importing passwords if no passwords were imported because file size exceeds 1 MB.">
+      Can't import passwords. The file size should be less than 1 MB.
+    </message>
+    <message name="IDS_PASSWORD_MANAGER_UI_IMPORT_ERROR_LIMIT_EXCEEDED" desc="Message is shown on the dialog for importing passwords if no passwords were imported because user tried to import more than `NUMBER` passwords from a single file.">
+      <!-- Silences a build warning, If there is a better way to silence this, please change it. We should never be limiting to 1 password per import -->
+      {COUNT, plural,
+        =1 {Can't import passwords. You can only import 1 password at a time.}
+        other {Can't import passwords. You can only import up to <ph name="COUNT_MANY"><ex>3000</ex>%1$d</ph> passwords at a time.}}
+    </message>
+    <message name="IDS_PASSWORD_MANAGER_UI_IMPORT_CONFLICT_DEVICE" desc="An error message for a row that wasn't imported, because the provided credential is already stored on their device. It is shown on the dialog for importing passwords if some passwords weren't imported.">
+      A password for this account is already saved on this device
+    </message>
+    <message name="IDS_PASSWORD_MANAGER_UI_IMPORT_ALREADY_ACTIVE" desc="Message is shown on the dialog for importing passwords if the import process is already running in another tab.">
+      You're already importing passwords in another tab
+    </message>
+    <message name="IDS_PASSWORD_SETTINGS_IMPORT_FILE_READ_ERROR" desc="The message to display if there is an error reading the CSV file selected by the user.">
+      Failed to read the selected file. <ph name="EXCEPTION_INFO">%1$s</ph>
+    </message>
+    <message name="IDS_PASSWORD_SETTINGS_IMPORT_FILE_SUCCESS_COUNT" desc="Shows the user a brief message along with the total number of passwords imported.">
+      {IMPORT_COUNT, plural,
+        =1 {Successfully imported 1 password.}
+        other {Successfully imported <ph name="IMPORT_COUNT_MANY">%1$d</ph> passwords.}}
+    </message>
+    <message name="IDS_PASSWORD_SETTINGS_IMPORT_FILE_ERROR_TITLE" desc="The title message that shows to the user if there was an error importing their CSV.">
+      Import failed.
+    </message>
+    <message name="IDS_PASSWORD_SETTINGS_MANAGER_NOT_AVAILABLE" desc="The message to display if the app is not able to get an instance of the PasswordManager class.">
+      Password manager not available.
     </message>
     <message name="IDS_LOCKSCREEN_DESCRIPTION_EXPORT" desc="When a user attempts to export saved passwords in Brave's settings, Brave launches a lock screen to verify the user's identity and displays the following explanation.">
       Unlock to export your passwords
