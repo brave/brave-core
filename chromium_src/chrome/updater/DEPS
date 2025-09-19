@@ -1,6 +1,3 @@
-from brave_chromium_utils import inline_file
-inline_file("//chrome/updater/DEPS", globals(), locals())
-
-include_rules += [
+include_rules = [
   "+brave/components/update_client/privacy_preserving_protocol_handler.h",
 ]
