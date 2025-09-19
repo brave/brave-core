@@ -36,7 +36,6 @@ struct Entry {
   using Error = Err;
   using Expected =
       base::expected<std::optional<Response>, std::optional<Error>>;
-  using Callback = base::OnceCallback<void(Expected)>;
 };
 
 template <typename... Ts>
