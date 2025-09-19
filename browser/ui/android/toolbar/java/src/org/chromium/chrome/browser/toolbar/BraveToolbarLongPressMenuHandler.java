@@ -9,6 +9,7 @@ import android.content.Context;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.ui.base.WindowAndroid;
@@ -30,7 +31,7 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
             BooleanSupplier suppressLongPressSupplier,
             ActivityLifecycleDispatcher lifecycleDispatcher,
             WindowAndroid windowAndroid,
-            Supplier<GURL> urlSupplier,
+            Supplier<@Nullable GURL> urlSupplier,
             Supplier<ViewRectProvider> urlBarViewRectProviderSupplier) {
         super(
                 context,
