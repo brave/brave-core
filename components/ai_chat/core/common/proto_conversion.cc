@@ -150,4 +150,19 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
   return true;
 }
 
+mojom::SmartModeEntryPtr DeserializeSmartModeEntry(
+    const store::SmartModeEntryProto& proto_entry) {
+  return mojom::SmartModeEntry::New(proto_entry.shortcut(),
+                                    proto_entry.prompt());
+}
+
+void SerializeSmartModeEntry(const mojom::SmartModeEntryPtr& mojom_entry,
+                             store::SmartModeEntryProto* proto_entry) {
+  CHECK(mojom_entry);
+  CHECK(proto_entry);
+
+  proto_entry->set_shortcut(mojom_entry->shortcut);
+  proto_entry->set_prompt(mojom_entry->prompt);
+}
+
 }  // namespace ai_chat
