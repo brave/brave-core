@@ -3,4 +3,3 @@ URL: https://crates.io/crates/getrandom
 Version: 0.2.15
 License: Apache-2.0
 License File: //brave/ui/webui/resources/wasm/vendor/getrandom/LICENSE-APACHE
-Description: A small cross-platform library for retrieving random data from system source.
