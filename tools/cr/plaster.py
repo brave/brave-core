@@ -255,11 +255,26 @@ class PlasterFile:
         plaster_file = tomllib.loads(info.plaster_contents)
         contents = repository.chromium.read_file(info.source)
 
-        for substitution in plaster_file.get('substitution', []):
-            pattern = substitution.get('re_pattern', '')
-            replace = substitution.get('replace', '')
+        for substitution in plaster_file.get('substitution'):
+            re_pattern = substitution.get('re_pattern')
+            pattern = substitution.get('pattern')
+            replace = substitution.get('replace')
             count = substitution.get('count', 0)
             flags = substitution.get('re_flags', [])
+
+            if re_pattern is not None and pattern is not None:
+                raise ValueError(
+                    f'Please specify either pattern or re_pattern '
+                    f' in {info.source}')
+
+            if re_pattern is None:
+                if pattern is None:
+                    raise ValueError(f'No pattern specified in {info.source}')
+                re_pattern = re.escape(pattern)
+
+            if replace is None:
+                raise ValueError(
+                    f'No replace value specified in {info.source}')
 
             re_flags = 0
             for flag in flags:
@@ -270,7 +285,7 @@ class PlasterFile:
                     raise ValueError(
                         f'Invalid re flag specified: {flag} in {info.source}')
 
-            contents, num_changes = re.subn(pattern,
+            contents, num_changes = re.subn(re_pattern,
                                             replace,
                                             contents,
                                             flags=re_flags,
@@ -278,7 +293,8 @@ class PlasterFile:
 
             if num_changes == 0:
                 raise ValueError(
-                    f'No matches found for pattern {pattern} in {info.source}')
+                    f'No matches found for pattern {re_pattern} in '
+                    f'{info.source}')
 
         has_changed = info.save_source_if_changed(contents, dry_run=dry_run)
         has_changed = info.save_patch_if_changed(
