@@ -84,7 +84,7 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
 
   std::vector<std::unique_ptr<ToolProviderFactory>> tool_provider_factories;
   tool_provider_factories.push_back(
-      std::make_unique<BrowserToolProviderFactory>());
+      std::make_unique<BrowserToolProviderFactory>(context));
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
   bool is_actor_allowed = features::IsAIChatAgentProfileEnabled() &&
