@@ -11,12 +11,14 @@
 #include "base/containers/map_util.h"
 #include "base/no_destructor.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/brave_origin/profile_id.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
 
@@ -37,7 +39,15 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
+namespace policy {
+class PolicyService;
+}
+
 namespace brave_origin {
+
+// Defined in chromium_src/chrome/browser/profiles/profile.cc to avoid a
+// circular dep on chrome/browser for the policy connector include.
+policy::PolicyService* GetPolicyServiceFromProfile(Profile* profile);
 
 namespace {
 
@@ -150,8 +160,20 @@ BraveOriginServiceFactory::~BraveOriginServiceFactory() = default;
 std::unique_ptr<KeyedService>
 BraveOriginServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  std::string profile_id = GetProfileId(context->GetPath());
-  return std::make_unique<BraveOriginService>(profile_id);
+  Profile* profile = Profile::FromBrowserContext(context);
+
+  // Lazy initialization of BraveOriginPolicyManager
+  auto* policy_manager = BraveOriginPolicyManager::GetInstance();
+  std::string profile_id = GetProfileId(profile->GetPath());
+  if (!policy_manager->IsInitialized()) {
+    policy_manager->Init(GetBrowserPolicyDefinitions(),
+                         GetProfilePolicyDefinitions(profile_id),
+                         g_browser_process->local_state());
+  }
+
+  return std::make_unique<BraveOriginService>(
+      g_browser_process->local_state(), profile->GetPrefs(), profile_id,
+      GetPolicyServiceFromProfile(profile));
 }
 
 bool BraveOriginServiceFactory::ServiceIsCreatedWithBrowserContext() const {
