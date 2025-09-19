@@ -17,6 +17,7 @@
 #include "brave/components/psst/common/psst_permission_schema.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
+#include "brave/components/psst/common/psst_ui_common.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 
 class PrefService;
@@ -83,6 +84,13 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                       const std::string& script,
                       InsertScriptInPageCallback callback);
   void OnScriptTimeout(int id);
+
+  void OnUserAcceptedPsstSettings(
+      int nav_entry_id,
+      const bool is_initial,
+      std::unique_ptr<MatchedRule> rule,
+      base::Value user_script_result,
+      const std::vector<std::string>& disabled_checks);
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;

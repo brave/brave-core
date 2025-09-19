@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/containers/contains.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
@@ -33,6 +34,9 @@ namespace {
 constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
 const char kShouldProcessKey[] = "should_process_key";
 const char kSignedUserId[] = "user";
+const char kUserScriptIsInitialPropName[] = "is_initial";
+const char kUserScriptResultTasksPropName[] = "tasks";
+const char kUserScriptResultTaskItemUrlPropName[] = "url";
 
 struct PsstNavigationData : public base::SupportsUserData::Data {
  public:
@@ -187,9 +191,23 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   }
 
   // We should break the flow in case of signed-in user ID is not available
-  if (const auto* user_id =
-          user_script_result.GetDict().FindString(kSignedUserId);
-      !user_id || user_id->empty()) {
+  const auto* user_id = user_script_result.GetDict().FindString(kSignedUserId);
+  if (!user_id || user_id->empty()) {
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    return;
+  }
+
+  const auto permission_info = ui_delegate_->GetPsstPermissionInfo(
+      url::Origin::Create(web_contents()->GetLastCommittedURL()), *user_id);
+  if (permission_info &&
+      permission_info->consent_status == ConsentStatus::kBlock) {
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    return;
+  }
+
+  const auto is_initial =
+      user_script_result.GetDict().FindBool(kUserScriptIsInitialPropName);
+  if (!is_initial.has_value()) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
@@ -239,11 +257,11 @@ void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
   }
 
   RunWithTimeout(
-      id,
+      nav_entry_id,
       MaybeAddParamsToScript(std::move(rule),
                              std::move(user_script_result).TakeDict()),
       base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
-                     weak_factory_.GetWeakPtr(), id));
+                     weak_factory_.GetWeakPtr(), nav_entry_id));
 }
 
 void PsstTabWebContentsObserver::OnPolicyScriptResult(
