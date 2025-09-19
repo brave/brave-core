@@ -3,6 +3,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+brave_components_update_client_sources = [
+  "//brave/components/update_client/privacy_preserving_protocol_handler.cc",
+  "//brave/components/update_client/privacy_preserving_protocol_handler.h",
+  "//brave/components/update_client/privacy_preserving_protocol_serializer.cc",
+  "//brave/components/update_client/privacy_preserving_protocol_serializer.h",
+]
+
 brave_components_update_client_deps = [
   "//brave/components/constants",
   "//brave/components/widevine:constants",
