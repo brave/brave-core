@@ -35,6 +35,7 @@ const localeStrings: Record<StringKey, string>  = {
   newsDisableButtonLabel: 'Disable News',
   newsEnableButtonLabel: 'Turn on Brave News',
   newsEnableText: 'Turn on Brave News, and never miss a story',
+  newsHideButtonLabel: 'Hide News',
   newsSettingsTitle: 'Brave News',
   newsWidgetTitle: 'NEWS',
   photoCreditsText: 'Photo by $1',
