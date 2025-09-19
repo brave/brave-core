@@ -12,7 +12,19 @@ constexpr char kHistogramPrerenderPredictionStatusDirectUrlInput[] =
     "Prerender.Experimental.PredictionStatus.DirectUrlInput";
 }  // namespace internal
 
+PrerenderManager_ChromiumImpl::ScopedPrewarmDisabler::ScopedPrewarmDisabler(
+    base::WeakPtr<PrerenderManager_ChromiumImpl> prerender_manager)
+    : prerender_manager_(std::move(prerender_manager)) {}
+
+PrerenderManager_ChromiumImpl::ScopedPrewarmDisabler::~ScopedPrewarmDisabler() {
+}
+
 PrerenderManager::~PrerenderManager() = default;
+
+std::unique_ptr<PrerenderManager::ScopedPrewarmDisabler>
+PrerenderManager::CreateScopedPrewarmDisabler() {
+  return nullptr;
+}
 
 bool PrerenderManager::MaybeStartPrewarmSearchResult() {
   return false;
