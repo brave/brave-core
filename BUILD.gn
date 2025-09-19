@@ -74,9 +74,7 @@ group("chromium_unit_tests") {
 
 # Only add tests to this list if you want them to run by default for
 # brave_all_unit_tests.
-brave_all_unit_tests_deps = [
-  "//brave/components:brave_components_unittests",
-]
+brave_all_unit_tests_deps = [ "//brave/components:brave_components_unittests" ]
 if (!is_ios) {
   brave_all_unit_tests_deps += [ "//brave/test:brave_unit_tests" ]
 } else {
