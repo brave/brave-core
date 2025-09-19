@@ -10,6 +10,8 @@ import { openLink } from '../common/link'
 import { loadImage } from '../../lib/image_loader'
 import { useWidgetLayoutReady } from '../app_layout_ready'
 import { debounce } from '$web-common/debounce'
+import { useSearchState, useSearchActions } from '../../context/search_context'
+import { AutocompleteMatch } from '../../state/search_state'
 
 import {
   useBackgroundState,
@@ -95,21 +97,53 @@ function SponsoredRichMediaBackground(
 
   useSafeAreaReporter(frameHandle)
 
+  const searchActions = useSearchActions()
+  const searchMatches = useSearchState((s) => s.searchMatches)
+  useSearchMatchesReporter(frameHandle, searchMatches)
+
   return (
     <IframeBackground
       url={props.background.imageUrl}
       expectedOrigin={new URL(sponsoredRichMediaBaseUrl).origin}
       onReady={setFrameHandle}
-      onMessage={(data) => {
-        const eventType = getRichMediaEventType(data)
-        if (eventType) {
-          actions.notifySponsoredRichMediaEvent(eventType)
+      onMessage={(data: SponsoredRichMediaMessage) => {
+        if (!data ||
+          typeof data !== 'object' ||
+          typeof data.type !== 'string') {
+          return
         }
-        if (eventType === NewTabPageAdEventType.kClicked) {
-          const url = props.background.logo?.destinationUrl
-          if (url) {
-            openLink(url)
+
+        switch (data.type) {
+          case 'richMediaEvent': {
+            const value = String(data.value)
+            const eventType = getRichMediaEventType(value)
+            if (eventType) {
+              actions.notifySponsoredRichMediaEvent(eventType)
+              if (eventType === NewTabPageAdEventType.kClicked) {
+                const url = props.background.logo?.destinationUrl
+                if (url) {
+                  openLink(url)
+                }
+              }
+            }
+            break
           }
+          case 'richMediaQueryBraveSearchAutocomplete': {
+            const value = String(data.value)
+            if (value) {
+              searchActions.queryAutocomplete(value, "search.brave.com")
+            }
+            break
+          }
+          case 'richMediaOpenBraveSearchWithQuery': {
+            const value = String(data.value)
+            if (value) {
+              openLink(`https://search.brave.com/search?${value}`)
+            }
+            break
+          }
+          default:
+            break
         }
       }}
     />
@@ -156,19 +190,37 @@ function useSafeAreaReporter(frameHandle?: IframeBackgroundHandle) {
   }, [widgetLayoutReady, frameHandle])
 }
 
-function getRichMediaEventType(data: any): NewTabPageAdEventType | null {
-  if (!data || data.type !== 'richMediaEvent') {
-    return null
-  }
-  const value = String(data.value || '')
+function getRichMediaEventType(value: string): NewTabPageAdEventType | null {
   switch (value) {
     case 'click': return NewTabPageAdEventType.kClicked
     case 'interaction': return NewTabPageAdEventType.kInteraction
     case 'mediaPlay': return NewTabPageAdEventType.kMediaPlay
     case 'media25': return NewTabPageAdEventType.kMedia25
     case 'media100': return NewTabPageAdEventType.kMedia100
+    default: return null
   }
-  return null
+}
+
+// Posts a message to the rich media background iframe containing the current
+// list of search matches.
+function useSearchMatchesReporter(
+  frameHandle?: IframeBackgroundHandle,
+  searchMatches?: AutocompleteMatch[]
+) {
+  React.useEffect(() => {
+    if (!frameHandle) {
+      return
+    }
+
+    const postSearchMatches = debounce(() => {
+      frameHandle.postMessage({
+        type: 'richMediaSearchMatches',
+        value: JSON.stringify(searchMatches ?? [])
+      })
+    }, 120)
+
+    postSearchMatches()
+  }, [frameHandle, searchMatches])
 }
 
 interface IframeBackgroundHandle {
@@ -181,6 +233,12 @@ interface IframeBackgroundProps {
   onReady: (handle: IframeBackgroundHandle) => void
   onMessage: (data: unknown) => void
 }
+
+type SponsoredRichMediaMessage =
+  | { type: 'richMediaEvent'; value?: string }
+  | { type: 'richMediaQueryBraveSearchAutocomplete'; value?: string }
+  | { type: 'richMediaOpenBraveSearchWithQuery'; value?: string }
+  | { type: string; value?: unknown }
 
 function IframeBackground(props: IframeBackgroundProps) {
   const iframeRef = React.useRef<HTMLIFrameElement>(null)
