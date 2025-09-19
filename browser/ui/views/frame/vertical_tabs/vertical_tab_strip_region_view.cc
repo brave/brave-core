@@ -1185,7 +1185,8 @@ void BraveVerticalTabStripRegionView::OnExpandedStatePerWindowPrefChanged() {
   OnExpandedWidthPrefChanged();
 }
 
-void BraveVerticalTabStripRegionView::OnHideComopletelyWhenCollapsedPrefChanged() {
+void BraveVerticalTabStripRegionView::
+    OnHideComopletelyWhenCollapsedPrefChanged() {
   OnFloatingModePrefChanged();
   PreferredSizeChanged();
   if (state_ == State::kCollapsed) {

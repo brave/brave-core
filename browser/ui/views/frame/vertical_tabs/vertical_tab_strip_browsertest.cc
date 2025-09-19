@@ -1218,7 +1218,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInvisible) {
 
   // When we turn off the preference, it should be visible even when collapsed.
   region_view->ToggleState();
-  ASSERT_EQ(VerticalTabStripRegionView::State::kCollapsed,
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kCollapsed,
             region_view->state());
   ASSERT_FALSE(region_view->GetVisible());
   SetHideCompletelyWhenCollapsed(false);
