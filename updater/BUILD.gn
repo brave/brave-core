@@ -5,21 +5,23 @@
 
 import("//testing/test.gni")
 
-test("brave_updater_unittests") {
-  testonly = true
-  sources = [
-    "configurator_unittest.cc",
-    "ping_configurator_unittest.cc",
-    "run_all_unittests.cc",
-  ]
-  deps = [
-    "//base",
-    "//base/test:test_support",
-    "//brave/components/update_client:test_util",
-    "//chrome/updater:base",
-    "//chrome/updater:constants_test",
-    "//components/prefs:test_support",
-    "//components/update_client",
-    "//testing/gtest",
-  ]
+if (is_win || is_mac || is_linux) {
+  test("brave_updater_unittests") {
+    testonly = true
+    sources = [
+      "configurator_unittest.cc",
+      "ping_configurator_unittest.cc",
+      "run_all_unittests.cc",
+    ]
+    deps = [
+      "//base",
+      "//base/test:test_support",
+      "//brave/components/update_client:test_util",
+      "//chrome/updater:base",
+      "//chrome/updater:constants_test",
+      "//components/prefs:test_support",
+      "//components/update_client",
+      "//testing/gtest",
+    ]
+  }
 }
