@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" dir="$i18n{textdirection}">
+  <head>
+    <meta charset="UTF-8">
+    <title>$i18n{CHAT_UI_TITLE}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
+    <link rel="stylesheet" href="//resources/brave/css/reset.css">
+    <link rel="stylesheet" href="//resources/css/text_defaults.css">
+    <link rel="stylesheet" href="//resources/brave/fonts/manrope.css">
+    <link rel="stylesheet" href="//resources/brave/fonts/poppins.css">
+    <link rel="stylesheet" href="//resources/brave/fonts/inter.css">
+    <link rel="stylesheet" href="//resources/brave/leo/css/variables.css">
+    <link rel="stylesheet" href="./styles.css">
+    <!-- TODO(crbug.com/487000): Remove this once injected by web. -->
+    <script src="//resources/js/ios/web_ui.js"></script>
+    <script src="//resources/js/ios/mojo_api.js"></script>
+    <script src="//resources/js/load_time_data_deprecated.js"></script>
+    <script src="/strings.js"></script>
+    <script src="chat_ui.bundle.js" type="module"></script>
+    <link rel="icon" href="//resources/brave-icons/social-leo-favicon-fullheight-color.svg">
+    <link rel="manifest" href="manifest.webmanifest">
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #111114; /* --leo-color-container-background optimization */
+        }
+      }
+      #mountPoint {
+        opacity: 0;
+        transition: opacity .18s ease-out;
+      }
+      #mountPoint.loaded {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mountPoint"></div>
+  </body>
+</html>
+
