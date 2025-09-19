@@ -474,9 +474,6 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_HISTORY_HISTORY_MENU_DESCRIPTION" desc="Tooltip for the history sidebar menu button.">
         Main menu
       </message>
-      <message name="IDS_HISTORY_HISTORY_MENU_ITEM" desc="Label displayed in history sidebar button to display history.">
-        Brave history
-      </message>
       <message name="IDS_HISTORY_NO_SYNCED_RESULTS" desc="Text indicating that there are no synced tabs from other devices.">
         No tabs from other devices
       </message>
@@ -966,7 +963,7 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in Private window command">
             Open Link in &amp;Private Window
           </message>
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKSPLITVIEW" desc="The name of the open a link in split view command">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKSPLITVIEW" desc="In Title Case: The name of the open a link in split view command">
             Open Link in Split View
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKINPROFILES" desc="In Title Case: The name of the open a link as a different user context menu">
@@ -3697,7 +3694,7 @@ are declared in tools/grit/grit_args.gni.
         Notifications from this site may be disruptive
       </message>
       <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_PREDICTION_SERVICE_DESCRIPTION" desc="Text used as notification message when requesting permission for Web Notifications via a notification. Used when the prediction service has decided that the user will be very unlikely to grant this permission.">
-        Notifications were automatically blocked because you usually don't allow them
+        Brave thinks you don't want notifications from this site. So, requests are hidden to reduce interruptions.
       </message>
       <message name="IDS_GEOLOCATION_OFF_EXPLANATORY_TEXT" desc="Explanatory animated text that appears (and then disappears) in the address bar as part of the less-prominent UX, when a website requests the geolocation permission.">
         Location blocked
@@ -3706,7 +3703,7 @@ are declared in tools/grit/grit_args.gni.
         Location blocked
       </message>
       <message name="IDS_GEOLOCATION_QUIET_PERMISSION_BUBBLE_PREDICTION_SERVICE_DESCRIPTION" desc="Text used as notification message when requesting permission for Geolocation. Used when the prediction service has decided that the user will be very unlikely to grant this permission.">
-        This site was blocked from knowing your precise location because you usually don't allow this
+        Brave thinks you don't want to use your location on this site. So, requests are hidden to reduce interruptions.
       </message>
       <message name="IDS_GEOLOCATION_QUIET_PERMISSION_BUBBLE_ALLOW_BUTTON" desc="Text displayed on the button that enables geolocation for a site. This button is part of the geolocation status bubble, which is triggered when a user clicks on the blocked geolocation icon in the omnibox.">
         Allow for this site
@@ -4783,11 +4780,6 @@ are declared in tools/grit/grit_args.gni.
         Parallels Desktop: <ph name="PLUGIN_VM_NAME">$1<ex>PvmDefault</ex></ph>
       </message>
 
-      <if expr="is_chromeos">
-        <message name="IDS_UTILITY_PROCESS_IPP_PARSER_SERVICE_NAME" desc="The name of the utility process used for parsing IPP requests out-of-process.">
-          IPP Parser
-        </message>
-      </if>
       <message name="IDS_UTILITY_PROCESS_FILE_UTILITY_NAME" desc="The name of the utility process used for various Brave specific file operations.">
           Brave File Utilities
       </message>
@@ -4907,22 +4899,6 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_EXTENSION_REPAIR_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt. Asks the user if they want to update the extension/app.">
         Repair "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
       </message>
-      <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_APP" desc="Titlebar of the prompt window for an externally installed app">
-        Another program on your computer added an app that may change the way Brave works.
-
-
-<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
-      </message>
-      <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_EXTENSION" desc="Titlebar of the prompt window for an externally installed extension">
-        Another program on your computer added an extension that may change the way Brave works.
-
-<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
-      </message>
-      <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_THEME" desc="Titlebar of the prompt window for an externally installed theme">
-        Another program on your computer added a theme that may change the way Brave works.
-
-<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
-      </message>
       <if expr="use_titlecase">
         <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ACCEPT_BUTTON_EXTENSION" desc="In Title Case: Button on the external install prompt to enable an extension installed by a third party.">
           Enable Extension
@@ -4945,9 +4921,6 @@ are declared in tools/grit/grit_args.gni.
           Enable theme
         </message>
       </if>
-      <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ABORT_BUTTON" desc="Button on the external install prompt to remove an extension installed by a third party.">
-        Remove from Brave
-      </message>
 
       <!-- Extension alerts. -->
       <message name="IDS_EXTENSION_ALERT_TITLE" desc="Titlebar of the extension notification alert for blocklisted extensions">
@@ -5578,64 +5551,6 @@ are declared in tools/grit/grit_args.gni.
       <!-- Extensions strings, which are not used by chrome://extensions. -->
       <if expr="enable_extensions_core">
         <if expr="not use_titlecase">
-          <message name="IDS_MANAGE_EXTENSIONS" desc="The text of the button in the extensions toolbar menu used to open the chrome://extensions page and manage all extensions (sentence case)." formatter_data="android_java">
-            Manage extensions
-          </message>
-        </if>
-        <if expr="use_titlecase">
-          <message name="IDS_MANAGE_EXTENSIONS" desc="The text for the button in the extensions toolbar menu used to open the chrome://extensions page and manage all extensions (title case).">
-            Manage Extensions
-          </message>
-        </if>
-      </if>
-      <if expr="enable_extensions">
-        <message name="IDS_EXTENSIONS_WANTS_ACCESS_TO_SITE" desc="The message shown on mouseover when an extension wants to run on a specific site.">
-          Wants access to this site
-        </message>
-        <message name="IDS_EXTENSIONS_HAS_ACCESS_TO_SITE" desc="The message shown on mouseover when an extension currently can run on a specific site.">
-          Has access to this site
-        </message>
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON" desc="The text of the request acces button that appears on the toolbar when an extension requests access to the site">
-          Allow <ph name="EXTENSIONS_REQUESTING_ACCESS_COUNT">$1<ex>3</ex></ph>?
-        </message>
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_DISMISSED_TEXT" desc="The text of the button that appears on the toolbar after the user grants access to an extension that requested access to the current site.">
-          Allowed
-        </message>
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_SINGLE_EXTENSION" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
-          Click to allow "<ph name="EXTENSIONS_REQUESTING_ACCESS">$1<ex>Extension A</ex></ph>" on <ph name="ORIGIN">$2<ex>google.com</ex></ph>
-        </message>
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_MULTIPLE_EXTENSIONS" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
-          Click to allow on <ph name="ORIGIN">$1<ex>google.com</ex></ph>:
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_HAS_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when extension has access to the current site.">
-          Allowed to read &amp; change
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_BLOCKED_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when the extension cannot access the current site.">
-          Not allowed to read &amp; change
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_REQUESTS_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when the extension requests access to the current site.">
-          Requesting to read &amp; change
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_ALL_EXTENSIONS_ALLOWED_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when all extensions have access to the current site.">
-          All extensions can read &amp; change <ph name="HOST">$1<ex>google.com</ex></ph>
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_ALL_EXTENSIONS_BLOCKED_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when all extensions cannot access the current site.">
-          You blocked all extensions from <ph name="HOST">$1<ex>google.com</ex></ph>
-        </message>
-         <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_EXTENSION_HAS_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when the extension has access to the current site.">
-          This extension can read and change <ph name="HOST">$1<ex>google.com</ex></ph>
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_EXTENSION_REQUESTS_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when the extension requests access to the current site.">
-          Click this extension's icon to read and change <ph name="HOST">$1<ex>google.com</ex></ph>
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_POLICY_LABEL_PINNED_TEXT" desc="The text in the card that shows up on mouse hover of a toolbar action when extension was pinned by the administrator.">
-          Pinned by your administrator
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_POLICY_LABEL_INSTALLED_TEXT" desc="The text in the card that shows up on mouse hover of a toolbar action when extension was installed by the administrator.">
-          Installed by your administrator
-        </message>
-
-        <if expr="not use_titlecase">
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_SITE_PERMISSIONS" desc="The label in an extension's context menu for the submenu specifying the extension site permissions (sentence case).">
             Site permissions
           </message>
@@ -5687,9 +5602,6 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_EXTENSIONS_INSTALLED_BY_ADMIN" desc="The text indicating that an extension has been installed by the controlling administrator (sentence case).">
             Installed by your administrator
           </message>
-          <message name="IDS_EXTENSIONS_DISABLE" desc="The link for disabling an extension (sentence case).">
-            Disable
-          </message>
           <message name="IDS_EXTENSIONS_PIN_TO_TOOLBAR" desc="The text for the menu item to pin an extension to the toolbar (sentence case).">
             Pin
           </message>
@@ -5699,23 +5611,11 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN" desc="The text indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (sentence case).">
             Pinned by your administrator
           </message>
-          <message name="IDS_EXTENSIONS_PIN_TO_TOOLBAR_ACCESSIBLE_NAME" desc="The accessible name for the menu item to pin an extension to the toolbar (sentence case).">
-            Pin <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>
-          </message>
-          <message name="IDS_EXTENSIONS_UNPIN_FROM_TOOLBAR_ACCESSIBLE_NAME" desc="The accessible name for the menu item to unpin an extension from the toolbar (sentence case).">
-            Unpin <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>
-          </message>
-          <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN_ACCESSIBLE_NAME" desc="The accessible name indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (sentence case).">
-            <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> is pinned by your administrator
-          </message>
-          <message name="IDS_EXTENSIONS_SUBMENU_OPEN_SIDE_PANEL_ITEM" desc="The text for the link in the extensions menu to open the side panel corresponding to the extension (sentence case).">
-            Open side panel
-          </message>
-          <message name="IDS_EXTENSIONS_SUBMENU_CLOSE_SIDE_PANEL_ITEM" desc="The text for the link in the extensions menu to close the side panel corresponding to the extension (sentence case).">
-            Close side panel
-          </message>
           <message name="IDS_MANAGE_EXTENSION" desc="The text for the button in the extension's context menu used to open the chrome://extensions/?id=xxx page and manage a specific extension (sentence case).">
             Manage extension
+          </message>
+          <message name="IDS_MANAGE_EXTENSIONS" desc="The text of the button in the extensions toolbar menu used to open the chrome://extensions page and manage all extensions (sentence case)." formatter_data="android_java">
+            Manage extensions
           </message>
           <message name="IDS_VIEW_WEB_PERMISSIONS" desc="The text for the button in the extension context menu used to open the chrome://settings/content/siteDetails?site=xxx page and view the site details for a specific extension (sentence case).">
             View web permissions
@@ -5776,6 +5676,97 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_EXTENSIONS_INSTALLED_BY_ADMIN" desc="The text indicating that an extension has been installed by the controlling administrator (title case).">
             Installed by Your Administrator
           </message>
+          <message name="IDS_EXTENSIONS_PIN_TO_TOOLBAR" desc="The text for the menu item to pin an extension to the toolbar (title case).">
+            Pin
+          </message>
+          <message name="IDS_EXTENSIONS_UNPIN_FROM_TOOLBAR" desc="The text for the menu item to unpin an extension from the toolbar (title case).">
+            Unpin
+          </message>
+          <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN" desc="The text indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (title case).">
+            Pinned by your Administrator
+          </message>
+          <message name="IDS_MANAGE_EXTENSION" desc="The text for the button in the extension's context menu used to open the chrome://extensions/?id=xxx page and manage a specific extension (title case).">
+            Manage Extension
+          </message>
+          <message name="IDS_MANAGE_EXTENSIONS" desc="The text for the button in the extensions toolbar menu used to open the chrome://extensions page and manage all extensions (title case).">
+            Manage Extensions
+          </message>
+          <message name="IDS_VIEW_WEB_PERMISSIONS" desc="The text for the button in the extension context menu used to open the chrome://settings/content/siteDetails?site=xxx page and view the site details for a specific extension (title case).">
+            View Web Permissions
+          </message>
+          <message name="IDS_EXTENSION_ACTION_INSPECT_POPUP" desc="The text for the right-click menu of page and browser actions which shows the popup and opens the developer tools (title case).">
+            Inspect Popup
+          </message>
+        </if>
+      </if>
+      <if expr="enable_extensions">
+        <message name="IDS_EXTENSIONS_WANTS_ACCESS_TO_SITE" desc="The message shown on mouseover when an extension wants to run on a specific site.">
+          Wants access to this site
+        </message>
+        <message name="IDS_EXTENSIONS_HAS_ACCESS_TO_SITE" desc="The message shown on mouseover when an extension currently can run on a specific site.">
+          Has access to this site
+        </message>
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON" desc="The text of the request acces button that appears on the toolbar when an extension requests access to the site">
+          Allow <ph name="EXTENSIONS_REQUESTING_ACCESS_COUNT">$1<ex>3</ex></ph>?
+        </message>
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_DISMISSED_TEXT" desc="The text of the button that appears on the toolbar after the user grants access to an extension that requested access to the current site.">
+          Allowed
+        </message>
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_SINGLE_EXTENSION" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
+          Click to allow "<ph name="EXTENSIONS_REQUESTING_ACCESS">$1<ex>Extension A</ex></ph>" on <ph name="ORIGIN">$2<ex>google.com</ex></ph>
+        </message>
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_MULTIPLE_EXTENSIONS" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
+          Click to allow on <ph name="ORIGIN">$1<ex>google.com</ex></ph>:
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_HAS_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when extension has access to the current site.">
+          Allowed to read &amp; change
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_BLOCKED_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when the extension cannot access the current site.">
+          Not allowed to read &amp; change
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_REQUESTS_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when the extension requests access to the current site.">
+          Requesting to read &amp; change
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_ALL_EXTENSIONS_ALLOWED_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when all extensions have access to the current site.">
+          All extensions can read &amp; change <ph name="HOST">$1<ex>google.com</ex></ph>
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_ALL_EXTENSIONS_BLOCKED_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when all extensions cannot access the current site.">
+          You blocked all extensions from <ph name="HOST">$1<ex>google.com</ex></ph>
+        </message>
+         <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_EXTENSION_HAS_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when the extension has access to the current site.">
+          This extension can read and change <ph name="HOST">$1<ex>google.com</ex></ph>
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_EXTENSION_REQUESTS_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when the extension requests access to the current site.">
+          Click this extension's icon to read and change <ph name="HOST">$1<ex>google.com</ex></ph>
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_POLICY_LABEL_PINNED_TEXT" desc="The text in the card that shows up on mouse hover of a toolbar action when extension was pinned by the administrator.">
+          Pinned by your administrator
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_POLICY_LABEL_INSTALLED_TEXT" desc="The text in the card that shows up on mouse hover of a toolbar action when extension was installed by the administrator.">
+          Installed by your administrator
+        </message>
+
+        <if expr="not use_titlecase">
+          <message name="IDS_EXTENSIONS_DISABLE" desc="The link for disabling an extension (sentence case).">
+            Disable
+          </message>
+          <message name="IDS_EXTENSIONS_PIN_TO_TOOLBAR_ACCESSIBLE_NAME" desc="The accessible name for the menu item to pin an extension to the toolbar (sentence case).">
+            Pin <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>
+          </message>
+          <message name="IDS_EXTENSIONS_UNPIN_FROM_TOOLBAR_ACCESSIBLE_NAME" desc="The accessible name for the menu item to unpin an extension from the toolbar (sentence case).">
+            Unpin <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>
+          </message>
+          <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN_ACCESSIBLE_NAME" desc="The accessible name indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (sentence case).">
+            <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> is pinned by your administrator
+          </message>
+          <message name="IDS_EXTENSIONS_SUBMENU_OPEN_SIDE_PANEL_ITEM" desc="The text for the link in the extensions menu to open the side panel corresponding to the extension (sentence case).">
+            Open side panel
+          </message>
+          <message name="IDS_EXTENSIONS_SUBMENU_CLOSE_SIDE_PANEL_ITEM" desc="The text for the link in the extensions menu to close the side panel corresponding to the extension (sentence case).">
+            Close side panel
+          </message>
+        </if>
+        <if expr="use_titlecase">
           <message name="IDS_EXTENSIONS_DISABLE" desc="The link for disabling an extension (title case).">
             Disable
           </message>
@@ -5787,15 +5778,6 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_EXTENSIONS_SHOW_BUTTON_IN_TOOLBAR" desc="The text for the menu item to move a button to the toolbar (title case).">
             Show in Toolbar
-          </message>
-          <message name="IDS_EXTENSIONS_PIN_TO_TOOLBAR" desc="The text for the menu item to pin an extension to the toolbar (title case).">
-            Pin
-          </message>
-          <message name="IDS_EXTENSIONS_UNPIN_FROM_TOOLBAR" desc="The text for the menu item to unpin an extension from the toolbar (title case).">
-            Unpin
-          </message>
-          <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN" desc="The text indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (title case).">
-            Pinned by your Administrator
           </message>
           <message name="IDS_EXTENSIONS_PIN_TO_TOOLBAR_ACCESSIBLE_NAME" desc="The accessible name for the menu item to pin an extension to the toolbar (sentence case).">
             Pin <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>
@@ -5811,15 +5793,6 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_EXTENSIONS_SUBMENU_CLOSE_SIDE_PANEL_ITEM" desc="The text for the link in the extensions menu to close the side panel corresponding to the extension (title case).">
             Close Side Panel
-          </message>
-          <message name="IDS_MANAGE_EXTENSION" desc="The text for the button in the extension's context menu used to open the chrome://extensions/?id=xxx page and manage a specific extension (title case).">
-            Manage Extension
-          </message>
-          <message name="IDS_VIEW_WEB_PERMISSIONS" desc="The text for the button in the extension context menu used to open the chrome://settings/content/siteDetails?site=xxx page and view the site details for a specific extension (title case).">
-            View Web Permissions
-          </message>
-          <message name="IDS_EXTENSION_ACTION_INSPECT_POPUP" desc="The text for the right-click menu of page and browser actions which shows the popup and opens the developer tools (title case).">
-            Inspect Popup
           </message>
         </if>
       </if>
@@ -6380,6 +6353,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_EXTENSIONS_CONTROLLED_HOME_DIALOG_DESCRIPTION" desc="Text of a dialog warning users warning users when an extension has changed the home page, and we are not pointing to its icon.">
         "<ph name="EXTENSION_NAME">$1<ex>AdBlock</ex></ph>" has changed what page is shown when you click the Home button.
+      </message>
+      <message name="IDS_EXTENSIONS_CONTROLLED_HOME_DIALOG_LEARN_MORE_LINK" desc="Placeholder for the link displayed in a dialog warning users when an extension has changed the home page.">
+        <ph name="LEARN_MORE">$1<ex>Learn more</ex></ph>
       </message>
       <message name="IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_SEARCH_ENGINE" desc="Second line in the Settings API bubble. Only shown if the secondary change by the extension was just the search engine. The triple single quotes are needed to preserve the space before and after the sentence which is needed when the language (Brave is being translated to) uses space as word separator. Please preserve them, unless the language being translated to does not use space as word separator.">
         ''' It also controls what page is shown when you search from the Omnibox.'''
@@ -7293,11 +7269,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOM_LINKS_EDIT_SHORTCUT" desc="The title for custom link edit shortcut dialog. (On the New Tab Page)">
         Edit shortcut
       </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_SHORTCUT_DETAILS_TITLE" desc="The title of the custom link details dialog. (On the New Tab Page)">
+        Shortcut
+      </message>
       <message name="IDS_NTP_CUSTOM_LINKS_MORE_ACTIONS" desc="The tooltip and accessibility label for the 3 dot menu on a shortcut. (On the New Tab Page)">
         More actions for <ph name="SHORTCUT_TITLE">$1<ex>YouTube</ex></ph> shortcut
       </message>
-      <message name="IDS_NTP_ENTERPRISE_SHORTCUTS_MORE_ACTIONS_DISABLED" desc="The tooltip and accessibility label for the 3 dot menu on an eneterprise shortcut if customization is disabled. (On the New Tab Page)">
-        Customization is disabled by your Admin
+      <message name="IDS_NTP_ENTERPRISE_SHORTCUT_SUBTITLE" desc="The subtitle for the edit shortcut dialog for an enterprise shortcut. (On the New Tab Page)">
+        This setting is managed by your organization
       </message>
       <message name="IDS_UPLOAD_IMAGE_FORMAT" desc="The permitted upload image format for the custom background. (On the New Tab Page)">
         *.jpeg, *.jpg, *.png
@@ -7316,6 +7295,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_CUSTOM_LINKS_DONE" desc="The text label of the custom link done button on the edit shortcut dialog. (On the New Tab Page)">
         Done
+      </message>
+      <message name="IDS_NTP_CUSTOM_LINKS_DETAILS" desc="The text label of the custom link details button. (On the New Tab Page)">
+        Details
       </message>
       <message name="IDS_NTP_CUSTOM_LINKS_INVALID_URL" desc="Error message for when an invalid URL is provided while creating a custom link. (On the New Tab Page)" formatter_data="android_java">
        Type a valid URL
@@ -8815,9 +8797,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Customize toolbar
         </message>
       </if>
-      <message name="IDS_SIDE_PANEL_CUSTOMIZE_CHROME_TITLE" desc="The name of the Customize Brave feature in the side panel combo box.">
-        Customize Brave
-      </message>
       <message name="IDS_SIDE_PANEL_TOOLBAR_BUTTON_CXMENU_UNPIN" desc="The label of the context menu item for unpinning a side panel toolbar button.">
         Unpin
       </message>
@@ -9108,6 +9087,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_READING_MODE_INCREASE_FONT_SIZE_BUTTON_LABEL" desc="Accessibility label for the increase font size button of the reading mode feature.">
         Increase font size
+      </message>
+      <message name="IDS_READING_MODE_INCREASE_FONT_SIZE_ANNOUNCEMENT" desc="Accessibility aria announcement for increasing font size.">
+        Font size increased
+      </message>
+      <message name="IDS_READING_MODE_DECREASE_FONT_SIZE_ANNOUNCEMENT" desc="Accessibility aria announcement for increasing font size.">
+        Font size decreased
       </message>
       <message name="IDS_READING_MODE_DISABLE_LINKS_BUTTON_LABEL" desc="Accessibility label for the button that disables all links in reading mode content.">
         Disable links
@@ -9673,9 +9658,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SPLIT_VIEW_NTP_CLOSE_BUTTON_ARIA_LABEL" desc="The screen reader text describing the split view new tab page close button.">
         Close this view
       </message>
-      <message name="IDS_SPLIT_VIEW_DRAG_ENTRYPOINT_LABEL" desc="A label for the drag entrypoint indicating it can create a split view.">
-        Create split view
-      </message>
       <message name="IDS_SPLIT_VIEW_TITLE_IPH" desc="The title text of the IPH describing pinning split view.">
         Pin it for next time
       </message>
@@ -9699,6 +9681,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_SPLIT_VIEW_TAB_SWITCH_COMPLETION_IPH_BODY" desc="The body for completion of quick tab switch split view IPH tutorial.">
         You can now use split view to compare, multitask, and more
+      </message>
+      <message name="IDS_SPLIT_VIEW_DRAG_ENTRYPOINT_LABEL" desc="A label for the drag entrypoint indicating it can create a split view.">
+        Create split view
       </message>
 
       <!-- Vertical Tab Strings -->
@@ -9789,6 +9774,26 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </if>
       </if>
 
+      <!--Desktop to iOS promo strings-->
+      <if expr="not is_android">
+        <if expr="use_titlecase">
+          <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_BUTTON_DECLINE" desc="In Title Case: The text inside the iOS promo bubble button allowing the user to decline.">
+            No Thanks
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+          <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_BUTTON_DECLINE" desc="The text inside the iOS promo bubble button allowing the user to decline.">
+            No thanks
+          </message>
+        </if>
+        <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_BUTTON_ACCEPT_QR" desc="The text inside the iOS promo bubble button allowing the user to accept by getting the app via QR code.">
+          Get the app
+        </message>
+        <message name="IDS_IOS_DESKTOP_PROMO_BUBBLE_BUTTON_ACCEPT_REMINDER" desc="The text inside the iOS promo bubble button allowing the user to accept by getting a reminder.">
+          Remind me on iOS
+        </message>
+      </if>
+
       <!--Desktop to iOS password promo strings-->
       <if expr="not is_android">
         <if expr="use_titlecase">
@@ -9797,6 +9802,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
           </message>
           <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_TITLE" desc="In Title Case: The title for the footer of the iOS desktop password promo bubble suggesting to users that they can use their passwords on their iOS devices.">
             Use This Password On Your iPhone
+          </message>
+          <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_TITLE_REMINDER" desc="In Title Case: The title for the footer of the iOS desktop password promo bubble.">
+            Use Your Passwords On Your iOS Devices
           </message>
           <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_BUTTON_DECLINE" desc="In Title Case: The text inside the button allowing the user to decline.">
             No Thanks
@@ -9808,6 +9816,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
           </message>
           <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_TITLE" desc="The title for the footer of the iOS desktop password promo bubble suggesting to users that they can use their passwords on their iOS devices.">
             Use this password on your iPhone
+          </message>
+          <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_TITLE_REMINDER" desc="The title for the footer of the iOS desktop password promo bubble.">
+            Use your passwords on your iOS devices
           </message>
           <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_BUTTON_DECLINE" desc="The text inside the button allowing the user to decline.">
             No thanks
@@ -9882,6 +9893,39 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_IOS_DESKTOP_PAYMENT_PROMO_BUBBLE_FOOTER_DESCRIPTION_QR" desc="The description for the iOS desktop payment promo bubble footer which lets the user know how to use their saved payment methods on their phone: follow the QR code, download Brave for iOS and sign in to their account.">
           Download Brave with this QR code, and sign in to your Brave sync chain.
+        </message>
+      </if>
+
+      <!--Desktop to iOS Enhanced Browsing promo strings-->
+      <if expr="not is_android">
+        <message name="IDS_IOS_DESKTOP_ESB_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop ESB promo bubble with a QR code.">
+          Extend Enhanced Safe Browsing
+        </message>
+        <message name="IDS_IOS_DESKTOP_ESB_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop ESB promo bubble with a reminder button.">
+          Enhanced Safe Browsing
+        </message>
+      </if>
+
+      <!--Desktop to iOS Lens promo strings-->
+      <if expr="not is_android">
+        <if expr="use_titlecase">
+          <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_TITLE_QR" desc="In Title Case: The title for the iOS desktop Lens promo bubble with a QR code.">
+            Try Google Lens On Your Phone
+          </message>
+          <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_TITLE_REMINDER" desc="In Title Case: The title for the iOS desktop Lens promo bubble with a reminder button.">
+            Try Google Lens On iOS
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+          <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Lens promo bubble with a QR code.">
+            Try Google Lens on your phone
+          </message>
+          <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Lens promo bubble with a reminder button.">
+            Try Google Lens on iOS
+          </message>
+        </if>
+        <message name="IDS_IOS_DESKTOP_LENS_PROMO_BUBBLE_DESCRIPTION" desc="The description for the iOS desktop Lens promo bubble.">
+          Shop, translate and identify what you see with your camera on the go
         </message>
       </if>
 
@@ -10663,33 +10707,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_PASSWORD_MANAGER_EXPORT_DIALOG_TITLE" desc="The title of the file selection dialog for exporting passwords">
           Export Passwords From Brave
         </message>
-        <message name="IDS_PASSWORD_MANAGER_UNSYNCED_CREDENTIALS_BUBBLE_TITLE_GPM" desc="The title of the 'save unsynced credentials' bubble.">
-          Save passwords?
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_UNSYNCED_CREDENTIALS_BUBBLE_DESCRIPTION_GPM" desc="The description text of the 'save unsynced credentials' bubble.">
-          Brave Password Manager couldn't save these passwords in your Brave sync chain. You can save them to this device.
-        </message>
-
-        <if expr="not use_titlecase">
-          <message name="IDS_PASSWORD_MANAGER_SAVE_UNSYNCED_CREDENTIALS_BUTTON_GPM" desc="Button text for the 'save unsynced credentials' bubble's save option.">
-            Save to device
-          </message>
-        </if>
-        <if expr="use_titlecase">
-          <message name="IDS_PASSWORD_MANAGER_SAVE_UNSYNCED_CREDENTIALS_BUTTON_GPM" desc="In Title Case: Button text for the 'save unsynced credentials' bubble's save option.">
-            Save to Device
-          </message>
-        </if>
-        <if expr="not use_titlecase">
-          <message name="IDS_PASSWORD_MANAGER_DISCARD_UNSYNCED_CREDENTIALS_BUTTON" desc="Button text for the 'save unsynced credentials' bubble's discard option.">
-            No thanks
-          </message>
-        </if>
-        <if expr="use_titlecase">
-          <message name="IDS_PASSWORD_MANAGER_DISCARD_UNSYNCED_CREDENTIALS_BUTTON" desc="In Title Case: Button text for the 'save unsynced credentials' bubble's discard option.">
-            No Thanks
-          </message>
-        </if>
       </if>
       <if expr="is_android">
         <message name="IDS_PASSWORD_MANAGER_SAVE_BUTTON" desc="Mobile: Button text for the 'Save Password' infobar's 'Remember password' option" formatter_data="android_java">
@@ -11755,6 +11772,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_CREATE_NEW_TAB_GROUP" desc="The label of item in Everything menu to create a new tab group.">
           Create new tab group
         </message>
+        <message name="IDS_GROUP_UNGROUPED_TABS" desc="The label of item in system context menu to create a new tab group and put all ungrouped tabs in it.">
+          Group all ungrouped tabs
+        </message>
         <message name="IDS_SAVED_TAB_GROUPS_MENU" desc="The title of the 'Tab groups' menu in the App Menu.">
           Tab groups
         </message>
@@ -11768,6 +11788,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_CREATE_NEW_TAB_GROUP" desc="The label of item in Everything menu to create a new tab group.">
           Create New Tab Group
+        </message>
+        <message name="IDS_GROUP_UNGROUPED_TABS" desc="The label of item in system context menu to create a new tab group and put all ungrouped tabs in it.">
+          Group All Ungrouped Tabs
         </message>
         <message name="IDS_SAVED_TAB_GROUPS_MENU" desc="The title of the 'Tab Groups' menu in the App Menu.">
           Tab Groups
@@ -12430,6 +12453,27 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           To share, join, and collaborate in tab groups, verify it’s you
         </message>
       <!-- /Sign in Sync Flow -->
+
+      <!-- History Sync Opt In Flows -->
+        <message name="IDS_SYNC_HISTORY_TITLE" desc="The title of the dialog that prompts users to sign in and opt in to history sync.">
+          Collaborate with others
+        </message>
+        <message name="IDS_DATA_SHARING_NEED_SIGN_IN_AND_SYNC_HISTORY_BODY" desc="The body of dialog that prompts users to sign in and opt in to history sync.">
+          To share tabs and collaborate with others, sign in to Brave and sync your history and tabs. You’ll also get your passwords and more on all your devices.
+        </message>
+        <message name="IDS_DATA_SHARING_NEED_SYNC_HISTORY_BODY" desc="The body of dialog that prompts users to sign in and opt in to history sync.">
+          To share tabs and collaborate with others, sync your history and tabs
+        </message>
+        <message name="IDS_DATA_SHARING_NEED_VERIFY_ACCOUNT_SYNC_HISTORY_BODY" desc="The body of dialog that prompts users to verify account.">
+          To share tabs and collaborate with others, verify it’s you and sync your history and tabs
+        </message>
+        <message name="IDS_SYNC_HISTORY_BUTTON" desc="The continue button of dialog that prompts users to sign in and opt in to history sync.">
+          Sync history
+        </message>
+        <message name="IDS_SYNC_HISTORY_FOOTER" desc="The footer of dialog that prompts users to sign in and opt in to history sync.">
+          You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+      <!-- /History Sync Opt In Flows -->
 
       <!-- errors and warnings -->
         <message name="IDS_DATA_SHARING_SOMETHING_WRONG_BODY" desc="The body text of the generic failure dialog.">
@@ -17441,6 +17485,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_GPM_PASSKEY_DELETED_LABEL" desc="The label in a bubble that is displayed as a confirmation that a passkey was deleted in Brave Password Manager, explaining that the passkeys can be managed in Brave Password Manager. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'">
         Manage your passwords &amp; passkeys in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph>
       </message>
+      <message name="IDS_WEBAUTHN_GPM_PASSKEY_DOESNT_WORK_LABEL" desc="The label in a bubble that is displayed after a passkey is deleted from a site. Since the passkey is now useless, it will be automatically removed from Brave Password Manager after about 30 days. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'">
+        This passkey doesn't work anymore. It will get deleted soon from <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph>.
+      </message>
       <message name="IDS_WEBAUTHN_GPM_PASSKEY_DELETED_LINK" desc="Link text that directs the user to the Brave Password Manager passwords page within a bubble that is displayed as a confirmation that a passkey was deleted in Brave Password Manager. See IDS_WEBAUTHN_GPM_PASSKEY_DELETED_LABEL for more details.">
         Brave Password Manager
       </message>
@@ -17660,50 +17707,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_BYPASS_JUSTIFICATION_TEXT_LIMIT_LABEL" desc="A label that contains the current amount of characters in the bypass justification text box, as well as the maximum limit of characters. This is displayed to the user so they know when the limit is exceeded.">
       <ph name="ACTUAL_CHAR_COUNT">$1<ex>10</ex></ph>/<ph name="MAX_CHAR_COUNT">$2<ex>280</ex></ph>
-    </message>
-
-    <!-- Data Controls dialog strings -->
-    <message name="IDS_DATA_CONTROLS_CLIPBOARD_PASTE_BLOCK_TITLE" desc="Text displayed at the top of a dialog telling the user their clipboard paste (ctrl-v) has been blocked by their admin.">
-      Pasting this content to this site is not allowed
-    </message>
-    <message name="IDS_DATA_CONTROLS_CLIPBOARD_PASTE_WARN_TITLE" desc="Text displayed at the top of a dialog telling the user their clipboard paste (ctrl-v) is not recommended by their admin.">
-      Pasting this content to this site is not recommended
-    </message>
-    <message name="IDS_DATA_CONTROLS_CLIPBOARD_COPY_BLOCK_TITLE" desc="Text displayed at the top of a dialog telling the user their clipboard copy (ctrl-c) has been blocked by their admin.">
-      Copying from this site is not allowed
-    </message>
-    <message name="IDS_DATA_CONTROLS_CLIPBOARD_COPY_WARN_TITLE" desc="Text displayed at the top of a dialog telling the user their clipboard copy (ctrl-c) is not recommended by their admin.">
-      Copying from this site is not recommended
-    </message>
-    <message name="IDS_DATA_CONTROLS_CLIPBOARD_SHARE_WARN_TITLE" desc="Text displayed at the top of a dialog telling the user their share is not recommended by their admin.">
-      Sharing from this site is not recommended
-    </message>
-    <message name="IDS_DATA_CONTROLS_CLIPBOARD_ACTION_WARN_TITLE" desc="Text displayed at the top of a dialog telling the user their action is not recommended by their admin.">
-      This action is not recommended
-    </message>
-    <message name="IDS_DATA_CONTROLS_BLOCKED_LABEL" desc="Generic text displayed in a dialog telling the user their action has been blocked by their administrator.">
-      Your administrator has blocked this action
-    </message>
-    <message name="IDS_DATA_CONTROLS_WARNED_LABEL" desc="Generic text displayed in a dialog telling the user their action is not recommended by their administrator.">
-      This action might violate your organization's policies
-    </message>
-    <message name="IDS_DATA_CONTROLS_PASTE_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before pasting to a site.">
-      Paste anyway
-    </message>
-    <message name="IDS_DATA_CONTROLS_COPY_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before copying from a site.">
-      Copy anyway
-    </message>
-    <message name="IDS_DATA_CONTROLS_SHARE_WARN_CONTINUE_BUTTON" desc="Continue dialog button label for warning before sharing from a site.">
-      Share anyway
-    </message>
-    <message name="IDS_DATA_CONTROLS_PASTE_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning before pasting to a site.">
-      Don't paste
-    </message>
-    <message name="IDS_DATA_CONTROLS_COPY_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning before copying from a site.">
-      Don't copy
-    </message>
-    <message name="IDS_DATA_CONTROLS_SHARE_WARN_CANCEL_BUTTON" desc="Cancel dialog button label for warning before sharing from a site.">
-      Don't share
     </message>
 
     <!-- Data sharing UI strings -->
@@ -18717,10 +18720,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Any smart card reader
       </message>
       <message name="IDS_ACCESSED_SMART_CARD_READER_TITLE" desc="Title of the info bubble shown when site has an active connection to a smart card reader.">
-        Your smart card readers are being accessed
+        Your smart card readers are being controlled
       </message>
       <message name="IDS_ACCESSED_SMART_CARD_READER_BODY" desc="The body of the info bubble shown when site has an active connection to a smart card reader.">
-        This site is accessing smart card readers connected to your device and potentially smart cards available to them
+        This site is controlling smart card readers connected to your device and potentially smart cards available to them
       </message>
     </if>
 
