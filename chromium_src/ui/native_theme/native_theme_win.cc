@@ -7,13 +7,7 @@ namespace {
 bool s_ignore_system_dark_mode_change = false;
 }  // namespace
 
-#define BRAVE_NATIVETHEMEWIN_UPDATEDARKMODESTATUS \
-  if (s_ignore_system_dark_mode_change) {         \
-    return;                                       \
-  }
-
 #include <ui/native_theme/native_theme_win.cc>
-#undef BRAVE_NATIVETHEMEWIN_UPDATEDARKMODESTATUS
 
 namespace ui {
 
