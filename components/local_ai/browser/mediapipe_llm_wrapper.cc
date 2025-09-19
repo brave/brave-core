@@ -38,18 +38,6 @@ class MediaPipeLLMWrapper::Impl {
     model_settings.model_path = settings.model_path.c_str();
     model_settings.cache_dir = settings.cache_dir.c_str();
     model_settings.max_num_tokens = settings.max_num_tokens;
-    model_settings.max_num_images = settings.max_num_images;
-    model_settings.preferred_backend =
-        settings.use_gpu ? kLlmPreferredBackendGpu : kLlmPreferredBackendCpu;
-    model_settings.llm_activation_data_type = kLlmActivationDataTypeDefault;
-    model_settings.num_decode_steps_per_sync = 3;
-    model_settings.sequence_batch_size = 0;  // Auto-optimize
-    model_settings.number_of_supported_lora_ranks = 0;
-    model_settings.supported_lora_ranks = nullptr;
-    model_settings.max_top_k = 100;
-    model_settings.num_draft_tokens = 0;
-    model_settings.wait_for_weight_uploads = true;
-    model_settings.use_submodel = false;
 
     char* error_msg = nullptr;
     LlmInferenceEngine_Engine* engine_ptr = nullptr;
@@ -80,11 +68,6 @@ class MediaPipeLLMWrapper::Impl {
     session_config.topp = config.topp;
     session_config.temperature = config.temperature;
     session_config.random_seed = config.random_seed;
-    session_config.lora_path =
-        config.lora_path.empty() ? nullptr : config.lora_path.c_str();
-    session_config.include_token_cost_calculator = true;
-    session_config.enable_vision_modality = false;
-    session_config.prompt_templates = nullptr;  // Use defaults
 
     char* error_msg = nullptr;
     LlmInferenceEngine_Session* session_ptr = nullptr;
