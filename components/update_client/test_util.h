@@ -16,7 +16,7 @@ namespace update_client {
 //  - hw[*]
 //  - apps[*].lang
 //  - apps[*].events[*].download_time_ms
-bool StripsPrivacySensitiveData(std::unique_ptr<ProtocolSerializer> serializer);
+bool StripsPrivacySensitiveData(const ProtocolSerializer& serializer);
 
 }  // namespace update_client
 

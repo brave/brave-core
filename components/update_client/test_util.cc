@@ -22,8 +22,7 @@
 
 namespace update_client {
 
-bool StripsPrivacySensitiveData(
-    std::unique_ptr<ProtocolSerializer> serializer) {
+bool StripsPrivacySensitiveData(const ProtocolSerializer& serializer) {
   // Much of this code was copied from protocol_serializer_json_unittest.cc.
   auto pref = std::make_unique<TestingPrefServiceSimple>();
   RegisterPersistedDataPrefs(pref->registry());
@@ -50,7 +49,7 @@ bool StripsPrivacySensitiveData(
       "channel", "OS", "cacheable", std::nullopt, {{"extra", "params"}}, {},
       std::move(apps));
 
-  const auto request_str = serializer->Serialize(request);
+  const auto request_str = serializer.Serialize(request);
   static constexpr char regex[] =
       R"({"request":{"@os":"\w+","@updater":"prod_id",)"
       R"("acceptformat":"[^"]+",)"
