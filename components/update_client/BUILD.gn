@@ -25,10 +25,10 @@ buildflag_header("buildflags") {
 
 static_library("update_client") {
   sources = [
-    "brave_protocol_handler.cc",
-    "brave_protocol_handler.h",
     "brave_protocol_serializer_json.cc",
     "brave_protocol_serializer_json.h",
+    "privacy_preserving_protocol_handler.cc",
+    "privacy_preserving_protocol_handler.h",
   ]
   deps = [
     "//base",
@@ -38,7 +38,7 @@ static_library("update_client") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_protocol_handler_unittest.cc" ]
+  sources = [ "privacy_preserving_protocol_handler_unittest.cc" ]
   deps = [
     ":update_client",
     "//base",
