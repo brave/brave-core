@@ -10,8 +10,6 @@
 #define WEB_PRINTING                                    \
   BRAVE_ADS:                                            \
   return "brave_ads";                                   \
-  case PermissionName::BRAVE_COSMETIC_FILTERING:        \
-    return "brave_cosmetic_filtering";                  \
   case PermissionName::BRAVE_TRACKERS:                  \
     return "brave_trackers";                            \
   case PermissionName::BRAVE_HTTP_UPGRADABLE_RESOURCES: \

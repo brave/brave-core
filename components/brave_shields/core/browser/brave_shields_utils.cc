@@ -10,7 +10,6 @@
 
 #include "base/debug/dump_without_crashing.h"
 #include "base/hash/hash.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -44,15 +43,6 @@ void RecordShieldsToggled(PrefService* local_state) {
 void RecordShieldsSettingChanged(PrefService* local_state) {
   ::brave_shields::MaybeRecordShieldsUsageP3A(
       ::brave_shields::kChangedPerSiteShields, local_state);
-}
-
-ContentSetting GetDefaultAllowFromControlType(ControlType type) {
-  if (type == ControlType::DEFAULT) {
-    return CONTENT_SETTING_DEFAULT;
-  }
-
-  return type == ControlType::BLOCK ? CONTENT_SETTING_BLOCK
-                                    : CONTENT_SETTING_ALLOW;
 }
 
 ContentSetting GetDefaultBlockFromControlType(ControlType type) {
@@ -314,21 +304,15 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
   ControlType prev_setting = GetCosmeticFilteringControlType(map, url);
   content_settings::SettingInfo setting_info;
   base::Value web_setting = map->GetWebsiteSetting(
-      url, GURL(), ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+      url, GURL::EmptyGURL(), CosmeticFilteringSetting::kContentSettingsType,
       &setting_info);
   bool was_default =
       web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts();
 
-  map->SetContentSettingCustomScope(
+  map->SetWebsiteSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-      GetDefaultBlockFromControlType(type));
-
-  map->SetContentSettingCustomScope(
-      primary_pattern,
-      ContentSettingsPattern::FromString("https://firstParty/*"),
-      ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-      GetDefaultAllowFromControlType(type));
+      CosmeticFilteringSetting::kContentSettingsType,
+      CosmeticFilteringSetting::ToValue(type));
 
   if (!map->IsOffTheRecord()) {
     // Only report to P3A if not a guest/incognito profile
@@ -355,20 +339,10 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
       url.SchemeIs(kChromeExtensionScheme)) {
     return ControlType::BLOCK;
   }
-  ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::BRAVE_COSMETIC_FILTERING);
-
-  ContentSetting fp_setting =
-      map->GetContentSetting(url, GURL("https://firstParty/"),
-                             ContentSettingsType::BRAVE_COSMETIC_FILTERING);
-
-  if (setting == CONTENT_SETTING_ALLOW) {
-    return ControlType::ALLOW;
-  } else if (fp_setting != CONTENT_SETTING_BLOCK) {
-    return ControlType::BLOCK_THIRD_PARTY;
-  } else {
-    return ControlType::BLOCK;
-  }
+  const auto setting = CosmeticFilteringSetting::FromValue(
+      map->GetWebsiteSetting(url, GURL::EmptyGURL(),
+                             CosmeticFilteringSetting::kContentSettingsType));
+  return setting;
 }
 
 bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
@@ -819,13 +793,13 @@ bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
 ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map) {
   ContentSettingsForOneType fp_rules =
       map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2);
-  return GetFPSettingCountFromRules(fp_rules);
+  return GetSettingCountFromRules(fp_rules);
 }
 
 ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map) {
   ContentSettingsForOneType cosmetic_rules =
       map->GetSettingsForOneType(ContentSettingsType::BRAVE_COSMETIC_FILTERING);
-  return GetAdsSettingCountFromRules(cosmetic_rules);
+  return GetSettingCountFromCosmeticFilteringRules(cosmetic_rules);
 }
 
 void SetWebcompatEnabled(HostContentSettingsMap* map,
