@@ -221,8 +221,8 @@ BraveWalletService::BraveWalletService(
   }
 
   if (IsPolkadotEnabled()) {
-    polkadot_wallet_service_ =
-        std::make_unique<PolkadotWalletService>(url_loader_factory);
+    polkadot_wallet_service_ = std::make_unique<PolkadotWalletService>(
+        *keyring_service(), *network_manager(), url_loader_factory);
   }
 
   tx_service_ = std::make_unique<TxService>(
