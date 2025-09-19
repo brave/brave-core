@@ -11,7 +11,7 @@ import("//extensions/buildflags/buildflags.gni")
 # content_settings::ContentSettingsPattern, etc..
 deprecated_visibility_allowed = [
   "//brave/components/static_redirect_helper",
-  "//brave/components/url_sanitizer/browser",
+  "//brave/components/url_sanitizer/core/browser",
   "//brave/components/debounce/core/browser",
   "//brave/components/ntp_background_images/browser",
   "//brave/components/psst/browser/core",

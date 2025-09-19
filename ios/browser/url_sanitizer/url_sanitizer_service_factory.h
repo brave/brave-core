@@ -10,11 +10,11 @@
 
 #include "keyed_service_factory_wrapper.h"  // NOLINT
 
-@class URLSanitizerService;
+@protocol URLSanitizerServiceBridge;
 
 OBJC_EXPORT
 @interface URLSanitizerServiceFactory
-    : KeyedServiceFactoryWrapper <URLSanitizerService*>
+    : KeyedServiceFactoryWrapper <id <URLSanitizerServiceBridge>>
 @end
 
 #endif  // BRAVE_IOS_BROWSER_URL_SANITIZER_URL_SANITIZER_SERVICE_FACTORY_H_
