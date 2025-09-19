@@ -76,7 +76,7 @@ group("chromium_unit_tests") {
 # brave_all_unit_tests.
 brave_all_unit_tests_deps = [
   "//brave/components:brave_components_unittests",
-  "//brave/updater:brave_updater_tests",
+  "//brave/updater:brave_updater_unittests",
 ]
 if (!is_ios) {
   brave_all_unit_tests_deps += [ "//brave/test:brave_unit_tests" ]
