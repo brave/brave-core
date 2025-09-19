@@ -10,8 +10,6 @@
 #define PERMISSION_UTIL_GET_PERMISSION_STRING           \
   case PermissionType::BRAVE_ADS:                       \
     return "BraveAds";                                  \
-  case PermissionType::BRAVE_COSMETIC_FILTERING:        \
-    return "BraveCosmeticFiltering";                    \
   case PermissionType::BRAVE_TRACKERS:                  \
     return "BraveTrackers";                             \
   case PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES: \
@@ -46,7 +44,6 @@
   case PermissionType::BRAVE_SOLANA:                            \
     return network::mojom::PermissionsPolicyFeature::kSolana;   \
   case PermissionType::BRAVE_ADS:                               \
-  case PermissionType::BRAVE_COSMETIC_FILTERING:                \
   case PermissionType::BRAVE_TRACKERS:                          \
   case PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES:         \
   case PermissionType::BRAVE_FINGERPRINTING_V2:                 \
@@ -68,8 +65,6 @@
     return PermissionType::BRAVE_SOLANA;                                    \
   case PermissionName::BRAVE_ADS:                                           \
     return PermissionType::BRAVE_ADS;                                       \
-  case PermissionName::BRAVE_COSMETIC_FILTERING:                            \
-    return PermissionType::BRAVE_COSMETIC_FILTERING;                        \
   case PermissionName::BRAVE_TRACKERS:                                      \
     return PermissionType::BRAVE_TRACKERS;                                  \
   case PermissionName::BRAVE_HTTP_UPGRADABLE_RESOURCES:                     \

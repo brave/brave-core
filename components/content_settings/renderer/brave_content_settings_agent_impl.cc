@@ -16,13 +16,12 @@
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
-#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
-#include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/renderer/render_frame.h"
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -303,14 +302,13 @@ bool BraveContentSettingsAgentImpl::IsCosmeticFilteringEnabled(
     const GURL& url) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   const GURL primary_url(GetTopFrameOriginAsURL(frame));
-  GURL secondary_url = GURL();
 
-  ContentSetting setting = CONTENT_SETTING_DEFAULT;
+  brave_shields::ControlType setting = brave_shields::ControlType::DEFAULT;
   if (content_setting_rules_) {
     for (const auto& rule : content_setting_rules_->cosmetic_filtering_rules) {
-      if (rule.primary_pattern.Matches(primary_url) &&
-          rule.secondary_pattern.Matches(secondary_url)) {
-        setting = rule.GetContentSetting();
+      if (rule.primary_pattern.Matches(primary_url)) {
+        setting = brave_shields::CosmeticFilteringSetting::FromValue(
+            rule.setting_value);
         break;
       }
     }
@@ -318,29 +316,28 @@ bool BraveContentSettingsAgentImpl::IsCosmeticFilteringEnabled(
 
   return base::FeatureList::IsEnabled(
              brave_shields::features::kBraveAdblockCosmeticFiltering) &&
-         !IsBraveShieldsDown(primary_url, secondary_url) &&
-         (setting != CONTENT_SETTING_ALLOW);
+         !IsBraveShieldsDown(primary_url, GURL::EmptyGURL()) &&
+         (setting != brave_shields::ControlType::ALLOW);
 }
 
 bool BraveContentSettingsAgentImpl::IsFirstPartyCosmeticFilteringEnabled(
     const GURL& url) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
-  GURL secondary_url = GURL("https://firstParty/");
 
-  ContentSetting setting = CONTENT_SETTING_DEFAULT;
+  brave_shields::ControlType setting = brave_shields::ControlType::DEFAULT;
   if (content_setting_rules_) {
     const GURL& primary_url = GetTopFrameOriginAsURL(frame);
 
     for (const auto& rule : content_setting_rules_->cosmetic_filtering_rules) {
-      if (rule.primary_pattern.Matches(primary_url) &&
-          rule.secondary_pattern.Matches(secondary_url)) {
-        setting = rule.GetContentSetting();
+      if (rule.primary_pattern.Matches(primary_url)) {
+        setting = brave_shields::CosmeticFilteringSetting::FromValue(
+            rule.setting_value);
         break;
       }
     }
   }
 
-  return setting == CONTENT_SETTING_BLOCK;
+  return setting == brave_shields::ControlType::BLOCK;
 }
 
 void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
