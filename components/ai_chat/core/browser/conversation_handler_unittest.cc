@@ -94,6 +94,7 @@ class MockToolProvider : public ToolProvider {
 
   MOCK_METHOD(void, OnNewGenerationLoop, (), (override));
   MOCK_METHOD(std::vector<base::WeakPtr<Tool>>, GetTools, (), (override));
+  MOCK_METHOD(void, StopAllTasks, (), (override));
 };
 
 class MockConversationHandlerClient : public mojom::ConversationUI {
