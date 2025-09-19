@@ -25,10 +25,10 @@ buildflag_header("buildflags") {
 
 static_library("update_client") {
   sources = [
-    "brave_protocol_serializer_json.cc",
-    "brave_protocol_serializer_json.h",
     "privacy_preserving_protocol_handler.cc",
     "privacy_preserving_protocol_handler.h",
+    "privacy_preserving_protocol_serializer.cc",
+    "privacy_preserving_protocol_serializer.h",
   ]
   deps = [
     "//base",

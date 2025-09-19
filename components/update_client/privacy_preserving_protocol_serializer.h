@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_UPDATE_CLIENT_BRAVE_PROTOCOL_SERIALIZER_JSON_H_
-#define BRAVE_COMPONENTS_UPDATE_CLIENT_BRAVE_PROTOCOL_SERIALIZER_JSON_H_
+#ifndef BRAVE_COMPONENTS_UPDATE_CLIENT_PRIVACY_PRESERVING_PROTOCOL_SERIALIZER_H_
+#define BRAVE_COMPONENTS_UPDATE_CLIENT_PRIVACY_PRESERVING_PROTOCOL_SERIALIZER_H_
 
 #include <string>
 
@@ -13,13 +13,14 @@
 
 namespace update_client {
 
-class BraveProtocolSerializerJSON : public ProtocolSerializer {
+class PrivacyPreservingProtocolSerializer : public ProtocolSerializer {
  public:
-  BraveProtocolSerializerJSON() = default;
+  PrivacyPreservingProtocolSerializer() = default;
 
-  BraveProtocolSerializerJSON(const BraveProtocolSerializerJSON&) = delete;
-  BraveProtocolSerializerJSON& operator=(const BraveProtocolSerializerJSON&) =
-      delete;
+  PrivacyPreservingProtocolSerializer(
+      const PrivacyPreservingProtocolSerializer&) = delete;
+  PrivacyPreservingProtocolSerializer& operator=(
+      const PrivacyPreservingProtocolSerializer&) = delete;
 
   // Overrides for ProtocolSerializer.
   std::string Serialize(
@@ -28,4 +29,4 @@ class BraveProtocolSerializerJSON : public ProtocolSerializer {
 
 }  // namespace update_client
 
-#endif  // BRAVE_COMPONENTS_UPDATE_CLIENT_BRAVE_PROTOCOL_SERIALIZER_JSON_H_
+#endif  // BRAVE_COMPONENTS_UPDATE_CLIENT_PRIVACY_PRESERVING_PROTOCOL_SERIALIZER_H_
