@@ -751,7 +751,7 @@ const mojom::NetworkInfo* GetPolkadotTestnet() {
        {},
        0,
        {PolkadotTestnetRpcUrl()},
-       "DOT",
+       "WND",
        "Polkadot",
        12,
        coin,
