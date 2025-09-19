@@ -5,7 +5,7 @@
 
 #include "components/component_updater/configurator_impl.h"
 
-#include "brave/components/update_client/brave_protocol_handler.h"
+#include "brave/components/update_client/privacy_preserving_protocol_handler.h"
 
 #define EnabledBackgroundDownloader EnabledBackgroundDownloader_Unused
 #define EnabledCupSigning EnabledCupSigning_Unused

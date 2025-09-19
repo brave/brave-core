@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_UPDATE_CLIENT_BRAVE_PROTOCOL_HANDLER_H_
-#define BRAVE_COMPONENTS_UPDATE_CLIENT_BRAVE_PROTOCOL_HANDLER_H_
+#ifndef BRAVE_COMPONENTS_UPDATE_CLIENT_PRIVACY_PRESERVING_PROTOCOL_HANDLER_H_
+#define BRAVE_COMPONENTS_UPDATE_CLIENT_PRIVACY_PRESERVING_PROTOCOL_HANDLER_H_
 
 #include <memory>
 
@@ -23,4 +23,4 @@ class BraveProtocolHandlerFactoryJSON : public ProtocolHandlerFactory {
 
 }  // namespace update_client
 
-#endif  // BRAVE_COMPONENTS_UPDATE_CLIENT_BRAVE_PROTOCOL_HANDLER_H_
+#endif  // BRAVE_COMPONENTS_UPDATE_CLIENT_PRIVACY_PRESERVING_PROTOCOL_HANDLER_H_
