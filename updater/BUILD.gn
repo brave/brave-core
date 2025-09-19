@@ -9,6 +9,7 @@ test("brave_updater_tests") {
   testonly = true
   sources = [
     "configurator_unittest.cc",
+    "ping_configurator_unittest.cc",
     "run_all_unittests.cc",
   ]
   deps = [
