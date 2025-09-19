@@ -15,6 +15,7 @@
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class Profile;
 
@@ -45,6 +46,9 @@ class DefaultBraveShieldsHandler
   void OnThirdPartyCookieBlockingChanged(
       bool block_third_party_cookies) override;
 
+  // PrefChangeRegistrar::Observer overrides:
+  void OnAdBlockOnlyModePrefChanged();
+
   void SetAdControlType(const base::Value::List& args);
   void IsAdControlEnabled(const base::Value::List& args);
   void SetCosmeticFilteringControlType(const base::Value::List& args);
@@ -58,6 +62,8 @@ class DefaultBraveShieldsHandler
   void GetFingerprintingBlockEnabled(const base::Value::List& args);
   void SetHttpsUpgradeControlType(const base::Value::List& args);
   void GetHttpsUpgradeControlType(const base::Value::List& args);
+  void SetAdBlockOnlyModeEnabled(const base::Value::List& args);
+  void GetAdBlockOnlyModeEnabled(const base::Value::List& args);
   void SetNoScriptControlType(const base::Value::List& args);
   void GetNoScriptControlType(const base::Value::List& args);
   void SetForgetFirstPartyStorageEnabled(const base::Value::List& args);
@@ -76,6 +82,7 @@ class DefaultBraveShieldsHandler
   base::ScopedObservation<content_settings::CookieSettings,
                           content_settings::CookieSettings::Observer>
       cookie_settings_observation_{this};
+  PrefChangeRegistrar local_state_change_registrar_;
   base::WeakPtrFactory<DefaultBraveShieldsHandler> weak_ptr_factory_{this};
 };
 
