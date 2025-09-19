@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_MINI_TOOLBAR_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_MINI_TOOLBAR_H_
 
-#include <memory>
-
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -19,10 +17,6 @@ class BraveMultiContentsViewMiniToolbar : public MultiContentsViewMiniToolbar {
   ~BraveMultiContentsViewMiniToolbar() override;
 
   // MultiContentsViewMiniToolbar:
-  std::unique_ptr<ui::SimpleMenuModel> CreateBraveSplitTabMenuModel(
-      TabStripModel* tab_strip_model,
-      SplitTabMenuModel::MenuSource source,
-      int split_tab_index) override;
   void UpdateState(bool is_active) override;
   void OnPaint(gfx::Canvas* canvas) override;
   SkPath GetPath(bool border_stroke_only) const override;

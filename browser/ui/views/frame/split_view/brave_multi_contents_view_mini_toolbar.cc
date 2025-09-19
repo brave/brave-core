@@ -25,21 +25,23 @@ constexpr int kMiniToolbarContentPadding = 4;
 constexpr int kMiniToolbarOutlineCornerRadius = 8;
 }  // namespace
 
-const gfx::VectorIcon& GetMoreVerticalIcon() {
+// static
+const gfx::VectorIcon& MultiContentsViewMiniToolbar::GetMoreVerticalIcon() {
   return kLeoMoreVerticalIcon;
 }
 
-BraveMultiContentsViewMiniToolbar::~BraveMultiContentsViewMiniToolbar() =
-    default;
-
+// static
 std::unique_ptr<ui::SimpleMenuModel>
-BraveMultiContentsViewMiniToolbar::CreateBraveSplitTabMenuModel(
+MultiContentsViewMiniToolbar::CreateBraveSplitTabMenuModel(
     TabStripModel* tab_strip_model,
     SplitTabMenuModel::MenuSource source,
     int split_tab_index) {
   return std::make_unique<BraveSplitTabMenuModel>(tab_strip_model, source,
                                                   split_tab_index);
 }
+
+BraveMultiContentsViewMiniToolbar::~BraveMultiContentsViewMiniToolbar() =
+    default;
 
 void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active) {
   MultiContentsViewMiniToolbar::UpdateState(is_active);

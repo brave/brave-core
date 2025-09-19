@@ -7,10 +7,6 @@
 
 #include "chrome/app/vector_icons/vector_icons.h"
 
-// defined at brave_multi_contents_view_mini_toolbar.cc to avoid
-// brave/components/vector_icons dependency here.
-const gfx::VectorIcon& GetMoreVerticalIcon();
-
 // Replace menu model with BraveSplitTabMenuModel to use our strings and icons.
 #define kMiniToolbar                                                  \
   kMiniToolbar, index);                                               \
@@ -24,11 +20,3 @@ const gfx::VectorIcon& GetMoreVerticalIcon();
 
 #undef kBrowserToolsChromeRefreshIcon
 #undef kMiniToolbar
-
-std::unique_ptr<ui::SimpleMenuModel>
-MultiContentsViewMiniToolbar::CreateBraveSplitTabMenuModel(
-    TabStripModel* tab_strip_model,
-    SplitTabMenuModel::MenuSource source,
-    int split_tab_index) {
-  NOTREACHED();
-}
