@@ -22,6 +22,12 @@
 
 namespace update_client {
 
+// This function checks two things. First, that the serializer faithfully
+// encodes the necessary data for update requests. Second, that it does not
+// encode the following fields, which could be used to fingerprint users:
+//  - hw[*]
+//  - apps[*].lang
+//  - apps[*].events[*].download_time_ms
 bool StripsPrivacySensitiveData(const ProtocolSerializer& serializer) {
   // Much of this code was copied from protocol_serializer_json_unittest.cc.
   auto pref = std::make_unique<TestingPrefServiceSimple>();
