@@ -8,6 +8,36 @@ This module provides Brave-specific modifications to the enum parsing behavior,
 particularly for handling comma-separated enum entries on a single line.
 """
 
+import override_utils
+
+@override_utils.override_function(globals())
+def DoParseHeaderFile(original_function, path):
+    """Override DoParseHeaderFile to add Brave-specific enum entry splitting."""
+    with open(path, encoding='utf-8') as f:
+        content = f.read()
+    
+    # Only process files that contain BRAVE_JAVA_ENUM comment
+    if '/* BRAVE_JAVA_ENUM: */' not in content:
+        return original_function(path)
+    
+    # Process the file with Brave-specific logic
+    lines = content.splitlines(keepends=True)
+    lines = SplitBraveJavaEnumEntries(lines)
+    
+    # Create a temporary file with the processed lines and call the original function
+    import tempfile
+    import os
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.h', delete=False) as temp_file:
+        temp_file.writelines(lines)
+        temp_path = temp_file.name
+    
+    try:
+        result = original_function(temp_path)
+    finally:
+        os.unlink(temp_path)
+    
+    return result
+
 
 def SplitBraveJavaEnumEntries(lines):
     """Split lines with BRAVE_JAVA_ENUM comment into separate enum entry lines.
