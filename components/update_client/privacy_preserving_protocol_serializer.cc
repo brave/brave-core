@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/update_client/brave_protocol_serializer_json.h"
+#include "brave/components/update_client/privacy_preserving_protocol_serializer.h"
 
 #include <string>
 
@@ -15,7 +15,7 @@
 
 namespace update_client {
 
-std::string BraveProtocolSerializerJSON::Serialize(
+std::string PrivacyPreservingProtocolSerializer::Serialize(
     const protocol_request::Request& request) const {
   std::string upstream_result = ProtocolSerializerJSON().Serialize(request);
   std::optional<base::Value> root = base::JSONReader::Read(upstream_result);

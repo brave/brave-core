@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "brave/components/update_client/brave_protocol_serializer_json.h"
+#include "brave/components/update_client/privacy_preserving_protocol_serializer.h"
 #include "components/update_client/protocol_handler.h"
 #include "components/update_client/protocol_parser.h"
 
@@ -22,7 +22,7 @@ PrivacyPreservingProtocolHandlerFactory::CreateParser() const {
 
 std::unique_ptr<ProtocolSerializer>
 PrivacyPreservingProtocolHandlerFactory::CreateSerializer() const {
-  return std::make_unique<BraveProtocolSerializerJSON>();
+  return std::make_unique<PrivacyPreservingProtocolSerializer>();
 }
 
 }  // namespace update_client

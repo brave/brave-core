@@ -12,7 +12,7 @@
 
 #include "base/functional/bind.h"
 #include "base/values.h"
-#include "brave/components/update_client/brave_protocol_serializer_json.h"
+#include "brave/components/update_client/privacy_preserving_protocol_serializer.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/update_client/persisted_data.h"
@@ -23,7 +23,7 @@
 
 namespace update_client {
 
-TEST(BraveProtocolSerializerJSON, StripsPrivacySensitiveData) {
+TEST(PrivacyPreservingProtocolSerializer, StripsPrivacySensitiveData) {
   // Much of this code was copied from protocol_serializer_json_unittest.cc.
   auto pref = std::make_unique<TestingPrefServiceSimple>();
   RegisterPersistedDataPrefs(pref->registry());
@@ -46,7 +46,7 @@ TEST(BraveProtocolSerializerJSON, StripsPrivacySensitiveData) {
       MakeProtocolPing("id1", metadata.get(), {}), std::move(events)));
 
   const auto request =
-      std::make_unique<BraveProtocolSerializerJSON>()->Serialize(
+      std::make_unique<PrivacyPreservingProtocolSerializer>()->Serialize(
           MakeProtocolRequest(false, "{15160585-8ADE-4D3C-839B-1281A6035D1F}",
                               "prod_id", "1.0", "channel", "OS", "cacheable",
                               std::nullopt, {{"extra", "params"}}, {},
