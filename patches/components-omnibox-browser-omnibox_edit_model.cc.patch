@@ -1,0 +1,12 @@
+diff --git a/components/omnibox/browser/omnibox_edit_model.cc b/components/omnibox/browser/omnibox_edit_model.cc
+index 4b21882044abbdf922dbdf82f3586128afb1262b..16f92feefa64be50919abd28b04d01b02c0f56a6 100644
+--- a/components/omnibox/browser/omnibox_edit_model.cc
++++ b/components/omnibox/browser/omnibox_edit_model.cc
+@@ -1569,6 +1569,7 @@ void OmniboxEditModel::GetInfoForCurrentText(AutocompleteMatch* match,
+     std::u16string text_for_match_generation =
+         user_input_in_progress() ? user_text_ : url_for_editing_;
+ 
++    BRAVE_OMNIBOX_EDIT_MODEL_GET_INFO_FOR_CURRENT_TEXT
+     controller_->client()->GetAutocompleteClassifier()->Classify(
+         MaybePrependKeyword(text_for_match_generation), is_keyword_selected(),
+         true, GetPageClassification(), match, alternate_nav_url);

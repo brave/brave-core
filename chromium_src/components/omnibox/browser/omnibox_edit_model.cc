@@ -5,8 +5,12 @@
 
 #include "components/omnibox/browser/omnibox_edit_model.h"
 
+#include <optional>
+
 #include "base/memory/raw_ptr.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/omnibox/browser/brave_search_provider.h"
+#include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/omnibox_controller.h"
 #include "components/vector_icons/vector_icons.h"
 
@@ -15,13 +19,36 @@
 #include "brave/components/commander/common/features.h"
 #endif
 
+namespace {
+[[nodiscard]] std::optional<base::AutoReset<bool>>
+SetInputIsPastedFromClipboard(OmniboxController* omnibox_controller,
+                              bool is_input_pasted) {
+  CHECK(omnibox_controller);
+  if (auto* autocomplete_controller = omnibox_controller->client()
+                                          ->GetAutocompleteClassifier()
+                                          ->autocomplete_controller()) {
+    if (auto* search_provider = autocomplete_controller->search_provider()) {
+      return search_provider->AsBraveSearchProvider()
+          ->SetInputIsPastedFromClipboard(is_input_pasted);
+    }
+  }
+  return std::nullopt;
+}
+}  // namespace
+
 #define CanPasteAndGo CanPasteAndGo_Chromium
 #define PasteAndGo PasteAndGo_Chromium
 #define GetSuperGIcon GetSuperGIcon_Unused
+#define BRAVE_OMNIBOX_EDIT_MODEL_GET_INFO_FOR_CURRENT_TEXT \
+  auto pasted =                                            \
+      SetInputIsPastedFromClipboard(controller_, paste_state_ != NONE);
+
 #include <components/omnibox/browser/omnibox_edit_model.cc>
+
 #undef GetSuperGIcon
 #undef CanPasteAndGo
 #undef PasteAndGo
+#undef BRAVE_OMNIBOX_EDIT_MODEL_GET_INFO_FOR_CURRENT_TEXT
 
 bool OmniboxEditModel::CanPasteAndGo(const std::u16string& text) const {
 #if BUILDFLAG(ENABLE_COMMANDER)
