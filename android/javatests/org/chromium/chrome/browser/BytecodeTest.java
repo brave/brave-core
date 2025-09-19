@@ -1009,6 +1009,14 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         PasswordManagerHelper.class,
                         Profile.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ui/appmenu/AppMenu",
+                        "createAppMenuContentView",
+                        MethodModifier.REGULAR,
+                        View.class,
+                        Context.class,
+                        boolean.class));
     }
 
     @Test
@@ -2593,6 +2601,10 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/tabmodel/RedirectTabCreator",
                         "org/chromium/chrome/browser/tabmodel/BraveTabCreator"));
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/ui/appmenu/BraveAppMenu",
+                        "org/chromium/chrome/browser/ui/appmenu/AppMenu"));
     }
 
     @Test

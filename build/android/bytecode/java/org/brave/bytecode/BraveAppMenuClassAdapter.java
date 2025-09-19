@@ -15,12 +15,14 @@ public class BraveAppMenuClassAdapter extends BraveClassVisitor {
     public BraveAppMenuClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
+        changeSuperName(sBraveAppMenuClassName, sAppMenuClassName);
+
         redirectConstructor(sAppMenuClassName, sBraveAppMenuClassName);
 
         changeMethodOwner(sAppMenuClassName, "getPopupPosition", sBraveAppMenuClassName);
 
         makePublicMethod(sAppMenuClassName, "runMenuItemEnterAnimations");
-        addMethodAnnotation(
-                sBraveAppMenuClassName, "runMenuItemEnterAnimations", "Ljava/lang/Override;");
+
+        makePublicMethod(sAppMenuClassName, "createAppMenuContentView");
     }
 }
