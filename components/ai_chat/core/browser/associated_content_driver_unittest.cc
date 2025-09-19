@@ -47,7 +47,9 @@ class MockAssociatedContentDriver : public AssociatedContentDriver {
   ~MockAssociatedContentDriver() override = default;
 
   void SetUrl(GURL url) { url_ = std::move(url); }
-  void SetTitle(std::u16string title) { title_ = std::move(title); }
+  void SetTitle(std::u16string title) {
+    AssociatedContentDelegate::SetTitle(std::move(title));
+  }
 
   MOCK_METHOD(void,
               GetPageContent,
@@ -95,9 +97,9 @@ TEST_F(AssociatedContentDriverUnitTest, GetContent) {
   base::MockCallback<GetPageContentCallback> callback2;
   base::MockCallback<GetPageContentCallback> callback3;
 
-  EXPECT_CALL(callback1, Run(PageContent("content", false))).Times(1);
-  EXPECT_CALL(callback2, Run(PageContent("content", false))).Times(1);
-  EXPECT_CALL(callback3, Run(PageContent("content", false))).Times(1);
+  EXPECT_CALL(callback1, Run(PageContent(u"", "content", false))).Times(1);
+  EXPECT_CALL(callback2, Run(PageContent(u"", "content", false))).Times(1);
+  EXPECT_CALL(callback3, Run(PageContent(u"", "content", false))).Times(1);
 
   // Should only ask content once
   base::RunLoop run_loop;

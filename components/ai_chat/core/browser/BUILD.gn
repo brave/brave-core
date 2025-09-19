@@ -144,6 +144,7 @@ source_set("unit_tests") {
     "engine/conversation_api_parsing_unittest.cc",
     "engine/engine_consumer_conversation_api_unittest.cc",
     "engine/engine_consumer_oai_unittest.cc",
+    "engine/engine_consumer_unittest.cc",
     "engine/oai_api_client_unittest.cc",
     "engine/oai_parsing_unittest.cc",
     "engine/test_utils.cc",
