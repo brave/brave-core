@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -83,7 +84,9 @@ SpeedreaderToolbarUIConfig::SpeedreaderToolbarUIConfig()
 
 bool SpeedreaderToolbarUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return true;
+  // Enable toolbar only if speedreader is available.
+  return speedreader::SpeedreaderServiceFactory::IsAvailableFor(
+      browser_context);
 }
 
 bool SpeedreaderToolbarUIConfig::ShouldAutoResizeHost() {

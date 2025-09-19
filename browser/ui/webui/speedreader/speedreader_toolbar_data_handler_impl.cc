@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_browser_window.h"
@@ -26,7 +25,6 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
-#include "chrome/common/chrome_isolated_world_ids.h"
 #include "ui/color/color_provider.h"
 
 namespace {
