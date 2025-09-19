@@ -222,6 +222,8 @@ template("transpile_web_ui") {
 
     forward_variables_from(invoker,
                            [
+                             "data",
+                             "data_deps",
                              "public_deps",
                              "testonly",
                              "visibility",
@@ -271,6 +273,8 @@ template("pack_web_resources") {
                            [
                              "deps",
                              "public_deps",
+                             "data",
+                             "data_deps",
                              "testonly",
                              "visibility",
                            ])
