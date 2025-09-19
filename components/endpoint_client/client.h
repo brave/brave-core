@@ -77,23 +77,12 @@ class Client {
     }
   };
 
-  template <typename Req>
-  static constexpr bool kIsRequestSupported =
-      requires { typename Endpoint::template EntryFor<Req>; };
-
-  template <typename Req, typename Rsp>
-  static constexpr bool kIsResponseSupported =
-      std::is_same_v<Rsp, typename Endpoint::template EntryFor<Req>::Response>;
-
-  template <typename Req, typename Err>
-  static constexpr bool kIsErrorSupported =
-      std::is_same_v<Err, typename Endpoint::template EntryFor<Req>::Error>;
-
  public:
   template <typename Request, typename Response, typename Error>
-    requires(kIsRequestSupported<Request> &&
-             kIsResponseSupported<Request, Response> &&
-             kIsErrorSupported<Request, Error>)
+    requires(
+        Endpoint::template kIsRequestSupported<Request> &&
+        Endpoint::template kIsResponseSupportedForRequest<Response, Request> &&
+        Endpoint::template kIsErrorSupportedForRequest<Error, Request>)
   static void Send(
       const scoped_refptr<network::SharedURLLoaderFactory>& url_loader_factory,
       Request request,

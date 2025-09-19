@@ -35,16 +35,25 @@ struct WithHeaders<Response> : Response {
 
 namespace detail {
 
+template <typename>
+struct MaybeStripWithHeadersImpl;
+
 template <typename T>
-struct MaybeStripWithHeadersImpl : std::type_identity<T> {};
+  requires(detail::Request<T> || detail::Response<T>)
+struct MaybeStripWithHeadersImpl<T> : std::type_identity<T> {};
 
-template <detail::Request Request>
-struct MaybeStripWithHeadersImpl<WithHeaders<Request>>
-    : std::type_identity<Request> {};
+template <typename T>
+struct MaybeStripWithHeadersImpl<WithHeaders<T>>
+    : MaybeStripWithHeadersImpl<T> {};
 
-template <detail::Response Response>
-struct MaybeStripWithHeadersImpl<WithHeaders<Response>>
-    : std::type_identity<Response> {};
+// This partial participates only if each alternative
+// becomes a detail::Response after stripping.
+template <typename... Ts>
+  requires(detail::Response<typename MaybeStripWithHeadersImpl<Ts>::type> &&
+           ...)
+struct MaybeStripWithHeadersImpl<std::variant<Ts...>>
+    : std::type_identity<
+          std::variant<typename MaybeStripWithHeadersImpl<Ts>::type...>> {};
 
 }  // namespace detail
 

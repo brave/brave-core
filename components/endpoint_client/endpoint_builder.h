@@ -84,6 +84,20 @@ class Endpoint {
     requires kHasEntryFor<MaybeStripWithHeaders<T>>
   using EntryFor =
       typename EntryForImpl<MaybeStripWithHeaders<T>, Entries...>::type;
+
+  template <typename T>
+  static constexpr bool kIsRequestSupported = kHasEntryFor<MaybeStripWithHeaders<T>>;
+
+  template <typename Rsp, typename Req>
+    requires kIsRequestSupported<Req>
+  static constexpr bool kIsResponseSupportedForRequest =
+      std::is_same_v<MaybeStripWithHeaders<Rsp>,
+                     typename EntryFor<Req>::Response>;
+
+  template <typename Err, typename Req>
+    requires kIsRequestSupported<Req>
+  static constexpr bool kIsErrorSupportedForRequest =
+      std::is_same_v<MaybeStripWithHeaders<Err>, typename EntryFor<Req>::Error>;
 };
 
 }  // namespace endpoints

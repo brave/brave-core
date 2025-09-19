@@ -115,8 +115,7 @@ struct TestEndpoint
           //     optional<Response1>,
           //     optional<Error1>
           //   >
-          For<PATCH<Request1>>::ReturnsWith<
-              WithHeaders<Response1>>::FailsWith<Error1>> {
+          For<PATCH<Request1>>::ReturnsWith<Response1>::FailsWith<Error1>> {
   static GURL URL() { return GURL("https://example.com/api/query"); }
 };
 
@@ -127,7 +126,7 @@ struct TestCase {
   std::string raw_reply;
   std::variant<TestEndpoint::EntryFor<POST<Request1>>::Expected,
                TestEndpoint::EntryFor<PATCH<Request2>>::Expected,
-               TestEndpoint::EntryFor<WithHeaders<PATCH<Request1>>>::Expected>
+               TestEndpoint::EntryFor<PATCH<Request1>>::Expected>
       parsed_reply;
 };
 
@@ -329,7 +328,7 @@ INSTANTIATE_TEST_SUITE_P(
             .status_code = net::HTTP_NOT_MODIFIED,
             .raw_reply = R"({"error1": "Error1"})",
             .parsed_reply =
-                TestEndpoint::EntryFor<WithHeaders<PATCH<Request1>>>::Expected(
+                TestEndpoint::EntryFor<PATCH<Request1>>::Expected(
                     base::unexpected(Error1("Error1")))}),
     [](const auto& info) {
       return std::visit(
