@@ -57,13 +57,29 @@ public enum UserAgentOverride: Equatable, Identifiable, Hashable, CaseIterable {
     case .safariDesktop:
       return UserAgent.desktopMasked
     case .chromeMobile:
-      return UserAgent.chromeMobile
+      return UserAgentBuilder(appIdentifier: "CriOS").build(
+        desktopMode: false,
+        useSafariUA: false,
+        useChromiumVersion: true
+      )
     case .chromeDesktop:
-      return UserAgent.chromeDesktop
+      return UserAgentBuilder(appIdentifier: "CriOS").build(
+        desktopMode: true,
+        useSafariUA: false,
+        useChromiumVersion: true
+      )
     case .chromeMobileBraveComment:
-      return UserAgent.chromeMobileBraveComment
+      return UserAgentBuilder(appIdentifier: "CriOS (Brave)").build(
+        desktopMode: false,
+        useSafariUA: false,
+        useChromiumVersion: true
+      )
     case .chromeDesktopBraveComment:
-      return UserAgent.chromeDesktopBraveComment
+      return UserAgentBuilder(appIdentifier: "CriOS (Brave)").build(
+        desktopMode: true,
+        useSafariUA: false,
+        useChromiumVersion: true
+      )
     case .custom:
       return nil
     }

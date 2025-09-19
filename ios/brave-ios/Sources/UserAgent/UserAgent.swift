@@ -11,11 +11,17 @@ public struct UserAgent {
   /// Mobile user agent for Brave
   public static let mobile = UserAgentBuilder().build(desktopMode: false)
   /// Mobile user agent for masking we are Brave
-  public static let mobileMasked = UserAgentBuilder().build(desktopMode: false, maskBrave: true)
+  public static let mobileMasked = UserAgentBuilder().build(
+    desktopMode: false,
+    useSafariUA: true
+  )
   /// Desktop user agent for Brave
   public static let desktop = UserAgentBuilder().build(desktopMode: true)
   /// Desktop user agent for masking we are Brave
-  public static let desktopMasked = UserAgentBuilder().build(desktopMode: true, maskBrave: true)
+  public static let desktopMasked = UserAgentBuilder().build(
+    desktopMode: true,
+    useSafariUA: true
+  )
 
   public static let chromeMobile = """
     Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_1 like Mac OS X) \
