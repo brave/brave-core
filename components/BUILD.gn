@@ -31,6 +31,7 @@ test("brave_components_unittests") {
     "//brave/components/brave_shields/core/browser:unit_tests",
     "//brave/components/brave_shields/core/common:unit_tests",
     "//brave/components/brave_wallet/common:unit_tests",
+    "//brave/components/component_updater:unit_tests",
     "//brave/components/email_aliases:unit_tests",
     "//brave/components/json:unit_tests",
     "//brave/components/static_redirect_helper:unit_tests",
