@@ -7,6 +7,8 @@ static_library("brave_origin") {
   sources = [
     "brave_origin_policy_info.cc",
     "brave_origin_policy_info.h",
+    "brave_origin_policy_manager.cc",
+    "brave_origin_policy_manager.h",
     "brave_origin_prefs.cc",
     "brave_origin_prefs.h",
     "brave_origin_service.cc",
@@ -33,6 +35,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "brave_origin_policy_manager_unittest.cc",
     "brave_origin_utils_unittest.cc",
     "profile_id_unittest.cc",
   ]
@@ -40,6 +43,7 @@ source_set("unit_tests") {
   deps = [
     ":brave_origin",
     "//base/test:test_support",
+    "//components/prefs:test_support",
     "//testing/gtest",
   ]
 }

@@ -14,13 +14,11 @@ BraveOriginPolicyInfo::BraveOriginPolicyInfo() = default;
 BraveOriginPolicyInfo::BraveOriginPolicyInfo(
     const std::string& pref_name,
     bool default_value,
-    BraveOriginPolicyScope scope,
     bool user_settable,
     const std::string& policy_key,
     const std::string& brave_origin_pref_key)
     : pref_name(pref_name),
       default_value(default_value),
-      scope(scope),
       user_settable(user_settable),
       policy_key(policy_key),
       brave_origin_pref_key(brave_origin_pref_key) {}

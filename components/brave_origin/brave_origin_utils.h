@@ -18,11 +18,13 @@ bool IsBraveOriginEnabled();
 // Forward declaration
 struct BraveOriginPolicyInfo;
 
-// Gets the correct brave_origin_pref_key for a preference based on its scope
-// and the provided profile_id. For global prefs, returns pref_name directly.
-// For profile prefs, returns "profile_id.pref_name".
-std::string GetBraveOriginPrefKey(const BraveOriginPolicyInfo& pref_info,
-                                  std::string_view profile_id);
+// Gets the correct brave_origin_pref_key for browser-scoped preferences
+std::string GetBraveOriginBrowserPrefKey(
+    const BraveOriginPolicyInfo& pref_info);
+
+// Gets the correct brave_origin_pref_key for profile-scoped preferences
+std::string GetBraveOriginProfilePrefKey(const BraveOriginPolicyInfo& pref_info,
+                                         std::string_view profile_id);
 
 }  // namespace brave_origin
 
