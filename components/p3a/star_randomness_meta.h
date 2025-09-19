@@ -36,6 +36,10 @@ class SimpleURLLoader;
 
 namespace p3a {
 
+inline constexpr char kCurrentPKPrefKey[] = "current_pk";
+inline constexpr char kCurrentEpochPrefKey[] = "current_epoch";
+inline constexpr char kNextEpochTimePrefKey[] = "next_epoch_time";
+
 struct RandomnessServerInfo {
   RandomnessServerInfo(
       uint8_t current_epoch,

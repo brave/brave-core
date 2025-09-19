@@ -5,6 +5,7 @@
 
 #include "brave/browser/net/brave_network_audit_test_helper.h"
 
+#include <algorithm>
 #include <array>
 #include <string_view>
 
@@ -50,11 +51,13 @@ bool isPrivateURL(const GURL& url) {
 
 bool PerformNetworkAuditProcess(
     base::Value::List* events,
+    AllowListLevel allow_list_level,
     const std::vector<std::string>& extra_allowed_prefixes) {
   DCHECK(events);
 
   bool failed = false;
-  events->EraseIf([&failed, &extra_allowed_prefixes](base::Value& event_value) {
+  events->EraseIf([&failed, allow_list_level,
+                   &extra_allowed_prefixes](base::Value& event_value) {
     base::Value::Dict* event_dict = event_value.GetIfDict();
     EXPECT_TRUE(event_dict);
 
@@ -112,11 +115,24 @@ bool PerformNetworkAuditProcess(
     }
 
     bool found_prefix = false;
-    for (auto prefix : kAllowedUrlPrefixes) {
-      if (!url.spec().rfind(prefix, 0)) {
-        found_prefix = true;
-        break;
-      }
+
+    auto prefix_matches = [&url](std::string_view prefix) {
+      return !url.spec().rfind(prefix, 0);
+    };
+
+    // Check base allowed URL prefixes
+    found_prefix = std::ranges::any_of(kBaseAllowedUrlPrefixes, prefix_matches);
+
+    // Check other allowed URL prefixes based on allow list level
+    if (!found_prefix && allow_list_level != AllowListLevel::kBase) {
+      found_prefix =
+          std::ranges::any_of(kOtherAllowedUrlPrefixes, prefix_matches);
+    }
+
+    // Check opt-in telemetry allowed URL prefixes for full allow list level
+    if (!found_prefix && allow_list_level == AllowListLevel::kFull) {
+      found_prefix = std::ranges::any_of(kOptInTelemetryAllowedUrlPrefixes,
+                                         prefix_matches);
     }
 
     if (!found_prefix) {
@@ -150,6 +166,7 @@ bool PerformNetworkAuditProcess(
 void VerifyNetworkAuditLog(
     const base::FilePath& net_log_path,
     const base::FilePath& audit_results_path,
+    AllowListLevel allow_list_level,
     const std::vector<std::string>& extra_allowed_prefixes) {
   // Read the netlog from disk.
   std::string file_contents;
@@ -169,7 +186,8 @@ void VerifyNetworkAuditLog(
   ASSERT_TRUE(events);
   ASSERT_FALSE(events->empty());
 
-  EXPECT_TRUE(PerformNetworkAuditProcess(events, extra_allowed_prefixes))
+  EXPECT_TRUE(PerformNetworkAuditProcess(events, allow_list_level,
+                                         extra_allowed_prefixes))
       << "network-audit FAILED. Import " << net_log_path.AsUTF8Unsafe()
       << " in chrome://net-internals for more details.";
 
