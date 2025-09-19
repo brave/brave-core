@@ -25,3 +25,7 @@ bool SearchProvider::IsBraveRichSuggestion(bool is_keyword) {
                     client()->GetTemplateURLService()->search_terms_data()) ==
                     SEARCH_ENGINE_BRAVE;
 }
+
+class BraveSearchProvider* SearchProvider::AsBraveSearchProvider() {
+  NOTREACHED() << "We replaces SearchProvider with BraveSearchProvider";
+}

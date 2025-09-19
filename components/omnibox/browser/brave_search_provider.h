@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_SEARCH_PROVIDER_H_
 #define BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_SEARCH_PROVIDER_H_
 
+#include "base/auto_reset.h"
 #include "components/omnibox/browser/search_provider.h"
 
 class BraveSearchProvider : public SearchProvider {
@@ -16,9 +17,17 @@ class BraveSearchProvider : public SearchProvider {
 
   void DoHistoryQuery(bool minimal_changes) override;
   bool IsQueryPotentiallyPrivate() const override;
+  BraveSearchProvider* AsBraveSearchProvider() override;
+
+  [[nodiscard]] base::AutoReset<bool> SetInputIsPastedFromClipboard(
+      bool is_pasted);
+  bool IsInputPastedFromClipboard() const;
 
  protected:
   ~BraveSearchProvider() override;
+
+ private:
+  bool input_is_pasted_from_clipboard_ = false;
 };
 
 #endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_SEARCH_PROVIDER_H_

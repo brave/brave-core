@@ -6,11 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_SEARCH_PROVIDER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_SEARCH_PROVIDER_H_
 
-#define DoHistoryQuery                         \
-  DoHistoryQueryUnused();                      \
-  friend class BraveSearchProvider;            \
-  friend class BraveSearchProviderTest;        \
-  bool IsBraveRichSuggestion(bool is_keyword); \
+#define DoHistoryQuery                                        \
+  DoHistoryQueryUnused();                                     \
+  friend class BraveSearchProvider;                           \
+  friend class BraveSearchProviderTest;                       \
+  bool IsBraveRichSuggestion(bool is_keyword);                \
+                                                              \
+ public:                                                      \
+  virtual class BraveSearchProvider* AsBraveSearchProvider(); \
+                                                              \
+ private:                                                     \
   virtual void DoHistoryQuery
 
 #define IsQueryPotentiallyPrivate virtual IsQueryPotentiallyPrivate
