@@ -251,6 +251,10 @@ inline constexpr char kGoogleAccountHomeAddressURL[] =
 inline constexpr char kGoogleAccountWorkAddressURL[] =
     "https://support.brave.app/";
 
+// URL of the change Google Account name page.
+inline constexpr char kGoogleAccountNameEmailAddressEditURL[] =
+    "https://support.brave.app/";
+
 // URL of the two factor authentication setup required intersitial.
 inline constexpr char kGoogleTwoFactorIntersitialURL[] =
     "https://support.brave.app/";
