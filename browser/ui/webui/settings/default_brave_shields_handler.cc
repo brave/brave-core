@@ -14,7 +14,9 @@
 #include "base/values.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -81,6 +83,16 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
           &DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "getAdBlockOnlyModeEnabled",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::GetAdBlockOnlyModeEnabled,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setAdBlockOnlyModeEnabled",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::SetAdBlockOnlyModeEnabled,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "getHttpsUpgradeControlType",
       base::BindRepeating(
           &DefaultBraveShieldsHandler::GetHttpsUpgradeControlType,
@@ -122,6 +134,13 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       HostContentSettingsMapFactory::GetForProfile(profile_));
   cookie_settings_observation_.Observe(
       CookieSettingsFactory::GetForProfile(profile_).get());
+
+  local_state_change_registrar_.Init(g_browser_process->local_state());
+  local_state_change_registrar_.Add(
+      brave_shields::prefs::kAdBlockOnlyModeEnabled,
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::OnAdBlockOnlyModePrefChanged,
+          weak_ptr_factory_.GetWeakPtr()));
 }
 
 void DefaultBraveShieldsHandler::OnContentSettingChanged(
@@ -160,6 +179,13 @@ void DefaultBraveShieldsHandler::OnThirdPartyCookieBlockingChanged(
     return;
   }
   FireWebUIListener("brave-shields-settings-changed");
+}
+
+void DefaultBraveShieldsHandler::OnAdBlockOnlyModePrefChanged() {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  FireWebUIListener("ad-block-only-mode-enabled-changed");
 }
 
 void DefaultBraveShieldsHandler::IsAdControlEnabled(
@@ -299,6 +325,27 @@ void DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled(
       HostContentSettingsMapFactory::GetForProfile(profile_),
       value ? ControlType::DEFAULT : ControlType::ALLOW, GURL(),
       g_browser_process->local_state());
+}
+
+void DefaultBraveShieldsHandler::GetAdBlockOnlyModeEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool enabled = brave_shields::IsBraveShieldsAdBlockOnlyModeEnabled(
+      g_browser_process->local_state());
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(enabled));
+}
+
+void DefaultBraveShieldsHandler::SetAdBlockOnlyModeEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool enabled = args[0].GetBool();
+  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(
+      g_browser_process->local_state(), enabled);
 }
 
 void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(

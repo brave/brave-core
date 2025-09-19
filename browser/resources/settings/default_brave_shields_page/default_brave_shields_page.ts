@@ -22,8 +22,13 @@ import {
   DefaultBraveShieldsBrowserProxyImpl
 } from './default_brave_shields_browser_proxy.js'
 
+import {
+  AdBlockOnlyModeBrowserProxy, AdBlockOnlyModeBrowserProxyImpl
+} from '../ad_block_only_mode_page/ad_block_only_mode_browser_proxy.js'
+
 import {getTemplate} from './default_brave_shields_page.html.js'
 
+import '../ad_block_only_mode_page/ad_block_only_mode_page.js'
 import '../social_blocking_page/social_blocking_page.js';
 
 interface BraveShieldsPage {
@@ -163,7 +168,18 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           type: chrome.settingsPrivate.PrefType.BOOLEAN,
           value: true,
         }
-      }
+      },
+      isAdBlockOnlyModeEnabled_: {
+        type: Boolean,
+        value: false,
+      },
+      isAdBlockOnlyModeFeatureEnabled_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isAdBlockOnlyModeFeatureEnabled')
+        },
+      },
     }
   }
 
@@ -184,9 +200,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare isHttpsByDefaultEnabled_: boolean
   private declare showStrictFingerprintingMode_: boolean
   private declare isForgetFirstPartyStorageFeatureEnabled_: boolean
+  private declare isAdBlockOnlyModeEnabled_: boolean
+  private declare isAdBlockOnlyModeFeatureEnabled_: boolean
 
   private browserProxy_: DefaultBraveShieldsBrowserProxy =
     DefaultBraveShieldsBrowserProxyImpl.getInstance()
+
+  private adBlockOnlyModeBrowserProxy_: AdBlockOnlyModeBrowserProxy =
+    AdBlockOnlyModeBrowserProxyImpl.getInstance()
 
   override ready () {
     super.ready()
@@ -195,6 +216,11 @@ class BraveShieldsPage extends BraveShieldsPageBase {
 
     this.addWebUiListener('brave-shields-settings-changed',
       () => { this.onShieldsSettingsChanged_() })
+
+    this.onAdBlockOnlyModeChanged_()
+
+    this.addWebUiListener('ad-block-only-mode-enabled-changed',
+      () => { this.onAdBlockOnlyModeChanged_() })
   }
 
   override getAssociatedControlFor(childViewId: string): HTMLElement {
@@ -207,12 +233,23 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   }
 
   onAdblockPageClick_() {
+    if (this.isAdBlockOnlyModeEnabled_) {
+      return
+    }
     const router = Router.getInstance()
     router.navigateTo(router.getRoutes().SHIELDS_ADBLOCK)
   }
 
   controlEqual_ (val1: any, val2: any) {
     return val1 === val2
+  }
+
+  onAdBlockOnlyModeChanged_ () {
+    this.adBlockOnlyModeBrowserProxy_.getAdBlockOnlyModeEnabled(
+    ).then(value => {
+      this.isAdBlockOnlyModeEnabled_ =
+          value && this.isAdBlockOnlyModeFeatureEnabled_
+    })
   }
 
   onShieldsSettingsChanged_ () {
@@ -316,6 +353,9 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     this.browserProxy_.setContactInfoSaveFlag(
       this.$.setContactInfoSaveFlagToggle.checked
     )
+  }
+  onTurnOffAdBlockOnlyMode_() {
+    this.adBlockOnlyModeBrowserProxy_.setAdBlockOnlyModeEnabled(false)
   }
 }
 
