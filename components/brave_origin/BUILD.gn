@@ -27,6 +27,7 @@ static_library("brave_origin") {
   public_deps = [ "//base" ]
   deps = [
     "//components/keyed_service/core",
+    "//components/policy/core/common",
     "//components/prefs",
   ]
 }
