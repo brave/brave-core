@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/contents_container_outline.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/frame/scrim_view.h"
 #include "content/public/browser/web_contents.h"
@@ -52,10 +53,14 @@ BraveContentsContainerView::BraveContentsContainerView(
     {
       auto old_toolbar = RemoveChildViewT(mini_toolbar_);
       mini_toolbar_ = nullptr;
+      auto old_outline = RemoveChildViewT(container_outline_);
+      container_outline_ = nullptr;
     }
     mini_toolbar_ =
         AddChildView(std::make_unique<BraveMultiContentsViewMiniToolbar>(
             browser_view, contents_view_));
+    container_outline_ =
+        AddChildView(std::make_unique<ContentsContainerOutline>(mini_toolbar_));
   }
 }
 

@@ -70,6 +70,12 @@ void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active,
                                     : inactive_interior_margins);
 }
 
+void BraveMultiContentsViewMiniToolbar::OnBoundsChanged(
+    const gfx::Rect& previous_bounds) {
+  // Clip the curved inner side of the mini toolbar.
+  SetClipPath(GetPath(/*border_stroke_only=*/false));
+}
+
 void BraveMultiContentsViewMiniToolbar::OnPaint(gfx::Canvas* canvas) {
   // Bypassing MultiContentsViewMiniToolbar::OnPaint() and Paint the mini
   // toolbar background to match the toolbar.
