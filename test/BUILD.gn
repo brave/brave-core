@@ -666,6 +666,7 @@ static_library("browser_test_support") {
 static_library("browser_tests_runner") {
   testonly = true
   deps = [
+    "//brave/components/constants",
     "//chrome/test:chrome_test_launcher",
     "//chrome/test:test_support",
     "//ui/compositor",

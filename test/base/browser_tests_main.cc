@@ -10,6 +10,7 @@
 #include "base/command_line.h"
 #include "base/test/launcher/test_launcher.h"
 #include "base/test/test_switches.h"
+#include "brave/components/constants/brave_switches.h"
 #include "brave/test/base/brave_test_launcher_delegate.h"
 #include "build/build_config.h"
 #include "chrome/test/base/chrome_test_launcher.h"
@@ -59,6 +60,10 @@ int main(int argc, char** argv) {
     // http://crbug.com/687387.
     command_line->AppendSwitch(switches::kDisableGpu);
 #endif  // BUILDFLAG(IS_WIN)
+
+#if BUILDFLAG(IS_MAC)
+    command_line->AppendSwitch(switches::kDisableBraveUpdate);
+#endif
   }
 
   ChromeTestSuiteRunner runner;
