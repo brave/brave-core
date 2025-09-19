@@ -1014,7 +1014,7 @@ Brave is unable to recover your settings.
         Continue where you left off: Brave can restore your tabs every time you restart. To turn this on, go to
       </message>
       <message name="IDS_SESSION_RESTORE_LINK" desc="Text for the link in the session restore infobar to open the Settings page.">
-        Settings.
+         Settings.
       </message>
 
       <!-- Enterprise sign-in dialog -->
@@ -1650,6 +1650,16 @@ Brave is unable to recover your settings.
         </message>
       </if>
 
+      <!-- Side panel strings -->
+      <message name="IDS_SIDE_PANEL_CUSTOMIZE_CHROME_TITLE" desc="The name of the Customize Brave feature in the side panel combo box.">
+        Customize Brave
+      </message>
+
+      <!-- History Strings -->
+      <message name="IDS_HISTORY_HISTORY_MENU_ITEM" desc="Label displayed in history sidebar button to display history.">
+        Brave history
+      </message>
+
       <!-- Lens Overlay Strings -->
       <if expr="not is_android">
         <!-- Side Panel Pinnable Entrypoint Strings -->
@@ -2068,9 +2078,33 @@ Brave is unable to recover your settings.
       </if>
 
       <!-- Brave parent extension/app install blocking dialog. -->
-      <if expr="enable_extensions">
+      <if expr="enable_extensions_core">
         <message name="IDS_EXTENSION_PERMISSIONS_BLOCKED_BY_PARENT_PROMPT_MESSAGE" desc="Text for the dialog indicating that a parent has blocked extensions and apps.">
          Your parent has turned off "Permissions for sites, apps and extensions" for Brave
+        </message>
+
+        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_APP" desc="Titlebar of the prompt window for an externally installed app">
+          Another program on your computer added an app that may change the way Brave works.
+
+<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
+        </message>
+        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_EXTENSION" desc="Titlebar of the prompt window for an externally installed extension">
+          Another program on your computer added an extension that may change the way Brave works.
+
+<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
+        </message>
+        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_THEME" desc="Titlebar of the prompt window for an externally installed theme">
+          Another program on your computer added a theme that may change the way Brave works.
+
+<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
+        </message>
+        <message name="IDS_EXTENSION_EXTERNAL_INITIAL_INSTALL_PROMPT_TITLE_EXTENSION" desc="">
+          <ph name="PARTNER_NAME">$1<ex>Brave</ex></ph> has added an extension that may change the way Brave works.
+
+<ph name="EXTENSION_NAME">$2<ex>Babylon Toolbar</ex></ph>
+        </message>
+        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ABORT_BUTTON" desc="Button on the external install prompt to remove an extension installed by a third party.">
+          Remove from Brave
         </message>
       </if>
 
@@ -2627,6 +2661,19 @@ Brave is unable to recover your settings.
             Your account in Brave
           </message>
         </if>
+      </if>
+
+      <!--Desktop to iOS promo strings-->
+      <if expr="not is_android">
+        <message name="IDS_IOS_DESKTOP_ESB_PROMO_BUBBLE_DESCRIPTION_QR" desc="The description for the iOS desktop ESB promo bubble with a QR code.">
+          Download Brave on your phone to add an extra layer of protection when you're on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_ESB_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop ESB promo bubble with a reminder button.">
+          Stay safer on the go with Enhanced Safe Browsing on Brave for iOS
+        </message>
+        <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_DESCRIPTION_REMINDER" desc="The description for the footer of the iOS desktop password promo bubble.">
+          Sign in faster to sites using saved passwords for Brave on iOS
+        </message>
       </if>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta
