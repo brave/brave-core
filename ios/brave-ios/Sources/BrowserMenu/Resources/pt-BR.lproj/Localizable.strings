@@ -1,1 +1,66 @@
+/* A button title shown on the menu that presents the Brave News feature. */
+"ActionTitles.braveNews" = "Brave News";
+
+/* A button title shown on the menu that opens a link to the Brave Talk feature. */
+"ActionTitles.braveTalk" = "Brave Talk";
+
+/* A button title shown on the menu that presents the Brave Leo AI feature. */
+"ActionTitles.leoAIChat" = "Bate-papo com IA";
+
+/* A button title shown on the menu that presents the Brave Playlist feature */
+"ActionTitles.playlist" = "Playlist";
+
+/* A button title shown on the menu that when tapped lets the user print the page they're viewing */
+"ActionTitles.print" = "Imprimir";
+
+/* A button title shown on the menu that presents the Brave Rewards feature. */
+"ActionTitles.rewards" = "Rewards";
+
+/* A button title shown on the menu that when tapped lets the user share the current URL or document they're viewing */
+"ActionTitles.share" = "Compartilhar…";
+
+/* A button title shown on the menu that translates the page into a different language. */
+"ActionTitles.translate" = "Traduzir página";
+
+/* A button title shown on the menu that when tapped presents a Brave VPN paywall */
+"ActionTitles.vpn" = "VPN";
+
+/* The title of a button that presents the settings screen */
+"BrowserMenu.allSettingsButtonTitle" = "Todas as configurações";
+
+/* A title shown at the top of the edit/cutsomize actions screen. */
+"BrowserMenu.customizeTitle" = "Personalizar";
+
+/* A button title that when tapped dismisses the customize screen. */
+"BrowserMenu.doneButtonTitle" = "Concluído";
+
+/* The title of a button that shows a screen that lets the user customize which actions are visible on the menu */
+"BrowserMenu.editButtonTitle" = "Editar";
+
+/* A title shown above the list of actions that are hidden on the menu but available for the user to make visible. */
+"BrowserMenu.hiddenActionsTitle" = "Ações disponíveis";
+
+/* The title above a list of the users selected browser actions such as bookmarks, history, etc. */
+"BrowserMenu.myActions" = "Minhas ações";
+
+/* A row in the menu action customization list that divides which items are placed in a grid and which are placed in a list. */
+"BrowserMenu.quickActionDividerTitle" = "Itens de destaque serão exibidos na área principal";
+
+/* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
+"BrowserMenu.resetButtonTitle" = "Redefinir";
+
+/* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
+"BrowserMenu.resetToDefault" = "Redefinir para a configuração padrão";
+
+/* A message presented in a confirmation dialog explaining the destructive action of resetting the menu to its default state */
+"BrowserMenu.resetToDefaultDialogMessage" = "Ao redefinir para a configuração padrão, você perderá quaisquer customizações que fez no Brave. Esta ação não pode ser desfeita. Tem certeza que deseja continuar?";
+
+/* A button title that when taps shows all actions that are hidden by default */
+"BrowserMenu.showAllButtonTitle" = "Mostrar tudo…";
+
+/* A title shown above the list of actions that are visible on the menu. */
+"BrowserMenu.visibleActionsTitle" = "Todas as ações";
+
+/* A title on a button that lets the user switch the active VPN's selected region. */
+"BrowserMenu.vpnButtonTitle" = "VPN";
 

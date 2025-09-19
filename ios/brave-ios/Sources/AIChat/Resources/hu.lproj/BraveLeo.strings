@@ -176,12 +176,6 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "Általános célú csevegés";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaVisionMessageDescription" = "Üdv, Leo vagyok, a Brave AI-asszisztense. A működésem a Llama Vision 3.1 8B modellen alapul, amely egy, a Meta által kifejlesztett nagy teljesítményű modell, és több esetben használható. A Llama Vision a Brave által biztosított, saját biztonságos infrastruktúrán fut.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaVisionModelPurposeDescription" = "Általános célú képfeldolgozás";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Qwen 14B modellen alapul, amelyet az Alibaba Cloud fejlesztett ki, amely számos esetben használható. A Qwen a Brave által biztosított, saját biztonságos infrastruktúrán fut.";
 
 /* The model's purpose - Describes what it can do best */
@@ -225,9 +219,6 @@
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo MI";
-
-/* An indicator to show page content refined is in progress */
-"aichat.leoPageContentRefineInProgress" = "A weboldal releváns részeinek megtalálása...";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Kapcsolja be az oldallal kapcsolatos kérdésekhez. A tartalom továbbítva lesz a Brave Leónak az Ön üzeneteivel együtt.";
@@ -425,7 +416,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Megértettem";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "A Brave Leo egy adatvédelmet szem előtt tartó, mesterséges intelligencián alapuló asszisztens, amely segíti Önt a böngészés során. A Leo ingyenesen is használható, korlátozott hozzáféréssel. A Brave Leo Prémium előfizetés további modelleket, magasabb használati kereteket biztosít, és lehetőséget ad arra, hogy előfizetőként elsőként férjen hozzá új funkciókhoz. További részleteket a Brave **[Súgóközpontban] (%1$@)** talál.\n\nAmikor kérdést tesz fel a Leónak, alapértelmezés szerint előfordulhat, hogy az éppen megtekintett weboldal tartalmát, illetve az Ön által kijelölt szöveget elküldi és felhasználja a válasz megfogalmazásához. Bizonyos esetekben a Leo a kérdés alapján keresést indíthat a Brave keresés segítségével, és az ott kapott eredményeket is felhasználhatja a válasz pontosításához. Fontos tudnia, hogy a válaszok pontossága nem garantált, tartalmazhatnak pontatlan, félrevezető vagy téves információkat. Kérjük, ne osszon meg érzékeny vagy személyes adatokat, és fokozott óvatossággal kezelje az egészséggel, pénzügyekkel, személyes biztonsággal vagy hasonló témákkal kapcsolatos válaszokat. Leo beállításait bármikor módosíthatja a Beállítások > Leo menüpontban.\n\nA Brave Leo nem gyűjt olyan azonosítókat – például az IP-címét –, amelyek Önhöz köthetők lennének. Az AI modellek tanításához nem használják fel a beírt adatokat, és a rendszerek nem őriznek meg személyes információkat (kivéve az Anthropic szolgáltatót, amely 30 napig tárolja az adatokat, majd törli azokat). További információkért olvassa el **[Adatvédelmi tájékoztatónkat.](%2$@)** is.";
+"aichat.termsConditionsDescription" = "A Brave Leo egy privát, mesterséges intelligencián alapuló asszisztens, amely megkönnyíti és hatékonyabbá teszi a böngészést. A Leo ingyenesen használható, korlátozott hozzáféréssel. A Brave Leo Premium több modellt, magasabb limiteket biztosít, valamint korai hozzáférést ad az új funkciókhoz. Az alapértelmezett modell időről időre változhat. További részletek a Brave **[Súgóközpontban](%1$@)** találhatók. \n\nAlapértelmezés szerint, amikor kérdést tesz fel a Leónak egy megnyitott weboldallal vagy az azon kijelölt szöveggel kapcsolatban, az oldal tartalma és a keresési lekérdezése a Brave szervereire kerül, hogy a Leo választ adhasson. Bizonyos esetekben a Leo a bevitelből származó lekérdezéseket a Brave keresés felé küldi, és a találatokat is felhasználja a jobb válasz érdekében. A Brave nem garantálja a válaszok pontosságát, azok tartalmazhatnak pontatlan, félrevezető vagy hibás információkat. Kérjük, ne adjon meg érzékeny vagy személyes adatokat a Leónak, és legyen körültekintő az egészséggel, pénzügyekkel, biztonsággal vagy hasonló témákkal kapcsolatos válaszok esetén. A beállításokat bármikor módosíthatja. A beállításokat a Beállítások > Leo menüpontban találja.\n\nA Leo nem gyűjt olyan azonosítókat, például IP-címet, amelyek Önhöz köthetők lennének. Nem használjuk fel adatait – így a keresési lekérdezéseit vagy a Brave Leo válaszait sem – modelljeink betanításához. A Brave nem tárol és nem őriz meg személyes adatokat a szerverein. További információért tekintse meg az  **[Adatvédelmi szabályzatot](%2$@)** részletes tájékoztatásért.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Csevegjen privátban a Brave Leóval";

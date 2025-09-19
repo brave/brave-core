@@ -176,12 +176,6 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "צ'אט למטרות כלליות";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaVisionMessageDescription" = "היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Llama Vision, מודל שנוצר על ידי Meta לשימוש ויישום במגוון תרחישים. Llama Vision מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaVisionModelPurposeDescription" = "מודל עיבוד ויזואלי למטרות כלליות";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Qwen 14B, מודל שנוצר על ידי Alibaba Cloud לשימוש ויישום במגוון תרחישים. Qwen מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
 
 /* The model's purpose - Describes what it can do best */
@@ -225,9 +219,6 @@
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo המבוסס בינה מלאכותית";
-
-/* An indicator to show page content refined is in progress */
-"aichat.leoPageContentRefineInProgress" = "מוצא את החלקים הרלוונטיים של דף האינטרנט...";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "יש להפעיל כדי לשאול על דף זה. התוכן שלו יישלח ל-Leo של Brave יחד עם ההודעות שלך.";
@@ -425,7 +416,7 @@
 "aichat.termsConditionsApproveActionTitle" = "אני מבינ/ה";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Leo של Brave הוא עוזר AI חכם פרטי שמשפר את השימוש שלך ברשת. Leo הוא כלי חינמי לשימוש עם גישה מוגבלת. Leo פרימיום של Brave מציע יותר מודלים ופחות מגבלות, ומעניק למנויים גישה מוקדמת לפיצ׳רים חדשים. אפשר לבקר ב**[מרכז העזרה](%1$@)** של Brave לפרטים נוספים.\n\nבמצב ברירת המחדל, כששואלים את Leo שאלה, הוא עשוי לשלוח את התוכן של דף האינטרנט שבו צופים באותו רגע או של כל טקסט שהדגשת בעמוד כלשהו, או להשתמש בתוכן זה, כדי לאפשר ל-Leo של Brave לספק תשובה. במקרים מסוימים, Leo ישלח שאילתות שמבוססות על הקלט שהזנת לחיפוש Brave וישתמש בתוצאות החיפוש כדי לענות טוב יותר על השאלה שלך. הדיוק בתשובות אינו מובטח, ועלול לכלול מידע לא מדויק, מטעה או שגוי. אין לשלוח מידע רגיש או פרטי, ויש לנקוט זהירות לגבי כל תשובה הקשורה לבריאות, לכספים, לבטיחות אישית וכדומה. ניתן להתאים את האפשרויות של Leo בהגדרות בכל עת באמצעות מעבר להגדרות > Leo.\n\nLeo לא אוסף פרטים מזהים כמו כתובת ה-IP שלך שעשויים להיות מקושרים אליך. אף נתון לא נאסף כדי לאמן את מודלי ה-AI ואף נתון אישי לא נשמר על ידי מודלי ה-AI (מלבד Anthropic שמחזיק בנתונים למשך 30 יום לפני מחיקתם). אפשר לעיין ב**[מדיניות הפרטיות](%2$@)** למידע נוסף.";
+"aichat.termsConditionsDescription" = "Brave Leo הוא עוזר AI חכם פרטי שמשפר את השימוש שלך ברשת. Leo הוא כלי חינמי לשימוש עם גישה מוגבלת. Leo Brave פרימיום מציע יותר מודלים ופחות מגבלות, ומעניק למנויים גישה מוקדמת לפיצ׳רים חדשים. מודל ברירת המחדל הזה ישתנה מעת לעת. אפשר לבקר ב**[מרכז העזרה](%1$@)** של Brave לפרטים נוספים.\n\nבמצב ברירת המחדל, כששואלים את Leo שאלה לגבי אתר או דף אינטרנט, הוא עשוי לשלוח לשרתי Brave את התוכן של דף האינטרנט שבו צופים באותו רגע או של כל טקסט שהדגשת בעמוד כלשהו, כמו גם את שאילתת החיפוש שלך, כדי לאפשר ל-Leo לספק תשובה. במקרים מסוימים, Leo ישלח שאילתות שמבוססות על הקלט שהזנת לחיפוש Brave וישתמש בתוצאות החיפוש כדי לענות טוב יותר על השאלה שלך. Brave לא מתחייב לדיוק בתשובות, ותשובות עלולות לכלול מידע לא מדויק, מטעה או שגוי. אין לשלוח מידע רגיש או פרטי אל Brave Leo, ויש לנקוט זהירות לגבי כל תשובה הקשורה לבריאות, לכספים, לבטיחות אישית וכדומה. ניתן להתאים את האפשרויות של Leo בהגדרות בכל עת באמצעות מעבר להגדרות > Leo.\n\nLeo לא אוסף פרטים מזהים כמו כתובת ה-IP שלך שעשויים להיות מקושרים אליך. אף נתון שלך לא משמש כדי לאמן את המודלים שלנו, כולל שאילתות החיפוש שלך והתשובות של Brave Leo. אף נתון אישי לא מאוחסן בשרתים שלנו או נשמר על ידי Brave. אפשר לעיין ב**[מדיניות הפרטיות](%2$@)** למידע נוסף.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "נהל/י צ'טים בפרטיות עם Brave Leo";

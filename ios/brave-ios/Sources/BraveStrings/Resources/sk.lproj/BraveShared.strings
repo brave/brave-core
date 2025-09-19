@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Otvoriť všetky";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "Otvoriť Nastavenia synchronizácie";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Minulý týždeň %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "Zariadenia";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "Žiadne synchronizované karty";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "Karty na iných zariadeniach";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "Vaše synchronizované karty sa zobrazia tu";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Odoslať do vášho zariadenia";
@@ -1381,38 +1393,11 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Otvoriť webovú stránku";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
-"optionsMenu.braveLeoItemDescription" = "Leo predstavuje inteligentného asistenta využívajúceho AI, ktorý je integrovaný priamo do prehliadača";
-
-/* The subtitle description of menu item Brave News */
-"optionsMenu.braveNewsItemDescription" = "Dnešné top príbehy v súkromnom kanáli";
-
 /* Brave News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "News";
 
-/* The subtitle description of menu item Brave Playlist */
-"optionsMenu.bravePlaylistItemDescription" = "Uchovávajte si offline zoznam videí alebo streamov";
-
 /* Brave News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "Zoznam";
-
-/* The subtitle description of menu item Brave Talk */
-"optionsMenu.braveTalkItemDescription" = "Súkromné ​​videohovory priamo vo vašom prehliadači";
-
-/* Brave Talk Item Menu title */
-"optionsMenu.braveTalkItemTitle" = "Hovoriť";
-
-/* The subtitle description of menu item Brave VPN */
-"optionsMenu.braveVPNItemDescription" = "Chráňte celé svoje zariadenie online";
-
-/* Brave VPN Item Menu title */
-"optionsMenu.braveVPNItemTitle" = "VPN";
-
-/* The subtitle description of menu item Brave Wallet */
-"optionsMenu.braveWalletItemDescription" = "Bezpečná krypto peňaženka, nevyžaduje sa žiadne rozšírenie";
-
-/* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "Funkcie Brave";
 
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Ďalšie nastavenia ochrany osobných údajov";
@@ -1528,17 +1513,11 @@
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "Zmeniť zoznam skladieb";
 
-/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
-"playlist.deleteForOfflineButtonTitle" = "Vymazať vyrovnávaciu pamäť offline";
-
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "Toto video bolo živé vysielanie alebo bol dosiahnutý časový limit. Opätovným otvorením odkazu ho obnovte.";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "Video s vypršanou platnosťou";
-
-/* Text indicator on the table cell If a video is expired */
-"playList.expiredLabelTitle" = "Platnosť vypršala";
 
 /* Number of items in the playlsit folder. Example: '10 items' */
 "playlist.folderItemCountPlural" = "%d položiek";
@@ -1548,15 +1527,6 @@
 
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Pri načítavaní zdroja sa vyskytol problém!";
-
-/* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Keď je táto možnosť povolená, na ikone hlavnej ponuky sa zobrazí odznak, ktorý naznačuje, že médiá na stránke môžu byť pridané do zoznamu skladieb Brave.";
-
-/* Title for playlist menu badge option */
-"playlist.menuBadgeOptionTitle" = "Zobraziť odznak s upozornením ponuky";
-
-/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
-"playlist.movePlaylistShareActionMenuTitle" = "Presunúť...";
 
 /* Detail Text when there are no items in the playlist */
 "playList.noItemLabelDetailLabel" = "V prehliadači môžete pridávať položky do zoznamu skladieb Brave";
@@ -1572,9 +1542,6 @@
 
 /* Title for opening the playlist */
 "playList.openInPlaylistButtonTitle" = "Otvoriť v zozname skladieb";
-
-/* The title for the alert that shows up when an item is expired */
-"playList.pictureInPictureErrorTitle" = "Ľutujeme, pri pokuse o zobrazenie obrazu v obraze sa vyskytla chyba.";
 
 /* Playlist alert message when playlist is already showing on a different window */
 "playlist.playlistAlreadyShowingBody" = "Zoznam skladieb je už aktívny v inom okne";
@@ -1612,9 +1579,6 @@
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Úložný priestor je takmer plný";
 
-/* When a video or audio is live and has no duration */
-"playlist.playlistLiveMediaStream" = "Živý prenos";
-
 /* Footer Text for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionFooterText" = "Keď je táto možnosť povolená, môžete väčšinu video/audio súborov pridať do zoznamu skladieb dlhým stlačením.";
 
@@ -1636,41 +1600,8 @@
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
 "playlist.playlistResetPlaylistOptionFooterText" = "Táto možnosť odstráni všetky videá zo zoznamu videí, ako aj z úložiska režimu offline.";
 
-/* Error message when saving a playlist item for offline fails */
-"playlist.playlistSaveForOfflineErrorMessage" = "Ľutujeme, túto položku sa momentálne nepodarilo uložiť pre režim offline.";
-
-/* Title of alert when saving a playlist item for offline mode */
-"playlist.playlistSaveForOfflineErrorTitle" = "Prepáčte, niečo sa pokazilo";
-
-/* Title For the Section that videos are listed */
-"playList.playListSectionTitle" = "Zoznamy skladieb";
-
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Zoznam";
-
-/* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "Tento priečinok už vo vašom zozname skladieb Brave existuje";
-
-/* Title for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsTitle" = "Prepáčte";
-
-/* Title for the Section that videos are listed */
-"playList.playlistSharedFolderSectionTitle" = "Zdieľané s vami";
-
-/* Title For the Section that videos are listed */
-"playList.playListSharedFolderSectionTitle" = "Zdieľané s vami";
-
-/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationFooterText" = "Toto nastavenie zmení umiestnenie zoznamu videí medzi ľavou/pravou stranou.";
-
-/* Option Text for Sidebar Location Left */
-"playlist.playlistSidebarLocationOptionLeft" = "Doľava";
-
-/* Option Text for Sidebar Location Right */
-"playlist.playlistSidebarLocationOptionRight" = "Doprava";
-
-/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationTitle" = "Umiestnenie bočného panela";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsFooterText" = "Pre jednotlivé súbory pokračovať v prehrávaní od bodu posledného pozastavenia.";
@@ -1684,50 +1615,8 @@
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
 "playList.removedFromPlaylistMessage" = "Odstránené z %@";
 
-/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertMessage" = "Týmto sa médium odstráni z úložiska offline. Naozaj chcete pokračovať?";
-
-/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertTitle" = "Odstrániť údaje offline";
-
-/* Message for the alert shown when the user tries to remove a video from playlist */
-"playlist.removePlaylistVideoAlertMessage" = "Týmto sa položka média odstráni zo zoznamu. Naozaj chcete pokračovať?";
-
-/* Title for the alert shown when the user tries to remove an item from playlist */
-"playlist.removePlaylistVideoAlertTitle" = "Odstrániť položku média zo zoznamu prehrávania?";
-
 /* Reopen Alert button title */
 "playList.reopenButtonTitle" = "Znovu otvoriť";
-
-/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "Pridané do offline";
-
-/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
-"playlist.saveForOfflineButtonTitle" = "Uložiť do režimu offline";
-
-/* Text indicator on the table cell while saving a video for offline */
-"playList.savingForOfflineLabelTitle" = "Ukladá sa do offline…";
-
-/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyDescription" = "Automaticky synchronizuje všetky vaše priečinky zoznamov skladieb";
-
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Automatická synchronizácia priečinkov zoznamu skladieb";
-
-/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionDetailsTitle" = "Aktuálnu položku môžete otvoriť na novej karte alebo ju zdieľať prostredníctvom ponuky systémového zdieľania";
-
-/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Ponuka zoznamu prehrávania Brave";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Otvoriť na karte Súkromné";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewTabTitle" = "Otvoriť na novej karte";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistShareActionMenuTitle" = "Zdieľať...";
 
 /* Title for load resources error alert */
 "playList.sorryAlertTitle" = "Prepáčte";
@@ -1765,56 +1654,11 @@
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "Vytvořit";
 
-/* The title of the button that allows the user to edit the name of a folder */
-"playlistFolders.editButtonTitle" = "Upravit";
-
-/* The title of the screen where the user edits folder names */
-"playlistFolders.editFolderScreenTitle" = "Upraviť priečinok";
-
-/* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "Upraviť zoznam prehrávania";
-
-/* The error shown to the user when we cannot save their changes made on a folder */
-"playlistFolders.errorSavingMessage" = "Je nám ľúto, že sa nám nepodarilo uložiť zmeny, ktoré ste vykonali v tomto priečinku";
-
-/* The title of the button where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderButtonTitle" = "Presunúť";
-
-/* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "Aktuálny zoznam prehrávania";
-
-/* The title of the screen where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderScreenTitle" = "Presunúť";
-
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
-"playlistFolders.moveItemDescription" = "%@ a 1 ďalšia položka";
-
-/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld položiek";
-
-/* Sometimes an item can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithNoNameTitle" = "1 položka";
-
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
-"playlistFolders.moveMultipleItemDescription" = "%1$@ a %2$ lld ďalšie položky";
-
 /* The title of the button to create a new folder */
 "playlistFolders.newFolderButtonTitle" = "Nový zoznam médií";
 
 /* The title of the screen to create a new folder */
 "playlistFolders.newFolderScreenTitle" = "Nový zoznam médií";
-
-/* The sub-title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionSubtitle" = "Ťuknutím vyberte videá";
-
-/* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "Pridajte videá do tohto zoznamu prehrávania";
-
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "Vyberte zoznam prehrávania, do ktorého chcete presunúť %lld položiek";
-
-/* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "Vyberte zoznam prehrávania, do ktorého chcete presunúť 1 položku";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld položiek";
@@ -1824,45 +1668,6 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Zoznam prehrávania bez názvu";
-
-/* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "Pridať do tlačidla zoznamu prehrávania Brave";
-
-/* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "Uložiť";
-
-/* Menu Title for removing offline data/cache */
-"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Odstrániť údaje offline";
-
-/* Menu Title for deleting the playlist */
-"playlistFolderSharing.deletePlaylistMenuTitle" = "Odstrániť zoznam prehrávania";
-
-/* Menu Title for editing a folder */
-"playlistFolderSharing.editMenuTitle" = "Upravit";
-
-/* Accessibility Title for the playlist menu. */
-"playlistFolderSharing.menuButtonAccessibilityTitle" = "Tlačidlo ponuky zoznamu prehrávania";
-
-/* Button that adds the playlist to the local database */
-"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Pridať zoznam prehrávania teraz";
-
-/* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewDescription" = "Automatické ukladanie na použitie offline je zapnuté, čo znamená, že nové položky do zoznamov prehrávania vrátane zdieľaných zoznamov prehrávania sa ukladajú do vášho zariadenia na prezeranie offline a môžu využívať vaše mobilné dáta.\n\nAutomatické ukladanie na použitie offline je možné spravovať v nastaveniach zoznamu prehrávania.";
-
-/* Button that takes the user to the settings menu */
-"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Nastavenia";
-
-/* Title of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewTitle" = "Správa údajov zoznamu prehrávania";
-
-/* Menu Title for renaming a folder */
-"playlistFolderSharing.renameMenuTitle" = "Premenovať";
-
-/* Menu Title for saving offline data/cache */
-"playlistFolderSharing.saveOfflineDataMenuTitle" = "Uložiť údaje offline";
-
-/* Menu Title for syncing playlist */
-"playlistFolderSharing.syncNowMenuTitle" = "Synchronizovať teraz";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Zatvoriť ponuku Štíty";
@@ -2197,6 +2002,13 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "ReportBrokenAdditionalDetails" = "Ďalšie podrobnosti (voliteľné)";
 
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"reportBrokenAdditionalDetailsRequired" = "Ďalšie podrobnosti";
+
+/* A label for a drop down where the user provides a category for a web-compatibility report
+A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Vyberte jednu možnosť";
+
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Kontaktujte ma na: (voliteľné)";
 
@@ -2207,7 +2019,7 @@
 "ReportBrokenContactMeSuggestions" = "E-mail, Twitter atď.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Oznámte vývojárom Brave, ak táto stránka nefunguje správne so Štítmi:";
+"ReportBrokenSiteBody1" = "Dajte vývojárom Brave vedieť, že táto stránka nefunguje podľa očakávaní:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
 "ReportBrokenSiteBody2" = "Poznámka: Správa odoslaná serverom Brave bude obsahovať adresu lokality, číslo verzie Brave, nastavenia ochrany, stav VPN a jazykové nastavenia.";
@@ -2557,6 +2369,9 @@
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "Návrhy vyhľadávania od %@";
 
+/* Action title for open a playlist item in Playlist. */
+"searchSuggestionOpenPlaylistActionTitle" = "Otvoriť v Playliste";
+
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Prepnúť na túto kartu";
 
@@ -2617,6 +2432,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Povoľte Brave, aby automaticky zatváral karty, ktoré neboli nedávno zobrazené.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "Blokovanie rušivých prvkov na YouTube";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "Blokovanie rušivých prvkov na YouTube";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "Blokuje zobrazenie nasledujúcich videí a prvky na konci videa na youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "Blokovanie odporúčaného obsahu na YouTube";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Blokuje Shorts na domovskej stránke, na stránke s populárnymi videami a vo výsledkoch vyhľadávania na youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "Blokovať krátke videá YouTube";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Najvyššia kvalita prehrávania";
 
@@ -2646,6 +2479,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Automaticky odoslať správu o dennom využívaní službe Brave";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Umožňuje spoločnosti Brave zobrazovať odkazy na súkromné prieskumy na stránke novej karty. Prieskumy nám pomáhajú vytvárať lepšie funkcie a merať účinnosť reklamných kampaní v prehliadači. [Viac informácií](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Povoliť prieskumy od Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3061,6 +2900,15 @@
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "Pri načítavaní zariadení v synchronizačnom reťazci sa vyskytla chyba.";
 
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "Zdá sa, že vaše zariadenie bolo obnovené zo zálohy, čo môže ovplyvniť funkciu Brave Sync. Ak chcete pokračovať v používaní Brave Sync, mali by ste funkciu obnoviť a znovu sa pripojiť k synchronizačnému reťazcu.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "Zistené obnovenie";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "Obnoviť synchronizačný reťazec";
+
 /* Sync device settings page title. */
 "sync.devices" = "Zariadenia v synchronizačnom reťazci";
 
@@ -3235,6 +3083,63 @@
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Zavrieť";
 
+/* Accessibility label for a close button that when tapped opens a new tab */
+"tabGrid.addTabAccessibilityLabel" = "Nová karta";
+
+/* A button title which when tapped will close all of the open tabs for the user */
+"tabGrid.closeAllTabsButtonTitle" = "Zatvoriť všetky karty";
+
+/* Accessibility label for a close button that when tapped closes the associated tab */
+"tabGrid.closeTab" = "Zatvoriť kartu";
+
+/* A button title which when tapped will display a menu with more options */
+"tabGrid.moreMenuButtonTitle" = "Viac";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneBody" = "Stránky, ktoré navštívite v súkromných oknách, sa nezobrazia v histórii. Súbory cookie, údaje z formulárov a údaje o stránkach zmiznú po zatvorení všetkých súkromných okien.";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneTitle" = "Nezanechajte na svojom zariadení žiadne stopy";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeBody" = "Brave VPN šifruje a chráni všetko, čo robíte online, a to aj mimo prehliadača Brave.";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeTitle" = "Brave VPN";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoBody" = "Upozorňujeme, že aj v súkromných oknách môže byť vaša aktivita pri prehliadaní viditeľná pre poskytovateľa internetových služieb, pozorovateľov siete alebo vášho zamestnávateľa (ak používate pracovné zariadenie/sieť).";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoTitle" = "Viditeľnosť prehliadania";
+
+/* A title shown when in private browsing mode with no tabs open */
+"tabGrid.privateBrowsingInfoTitle" = "súkromná karta";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.privateBrowsingModeAccessibilityLabel" = "Súkromné ​​prehliadanie";
+
+/* A button title which when tapped will present settings for private tabs */
+"tabGrid.privateTabsSettingsTitle" = "Nastavenia súkromných kariet";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.regularBrowsingModeAccessibilityLabel" = "Bežné prehliadanie";
+
+/* A button title that when tapped allows users to shred all of their tabs */
+"tabGrid.shredAllTabsButtonTitle" = "Skartovať všetky karty";
+
+/* A button title that when tapped allows users to shred the currently selected tab */
+"tabGrid.shredSelectedTabButtonTitle" = "Skartovať zvolenú kartu";
+
+/* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
+"tabGrid.shredTabsAccessibilityLabel" = "Skartovať karty";
+
+/* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryAccessibilityLabel" = "Zobraziť históriu";
+
+/* Accessibility label for a button that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsAccessibilityLabel" = "Zobraziť synchronizované karty";
+
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Zapne alebo vypne súkromný režim";
 
@@ -3252,6 +3157,15 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingTitle" = "Ponechať súkromné ​​karty";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionFaceID" = "Vyžadovať Face ID na prístup k súkromným kartám.";
+
+/* Describes the preference that locks the users private tabs behind their device PIN */
+"tabs.settings.privateBrowsingLockDescriptionPinCode" = "Vyžadovať PIN vášho zariadenia na prístup k súkromným kartám.";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionTouchID" = "Vyžadovať Touch ID na prístup k súkromným kartám.";
 
 /* No comment provided by engineer. */
 "tabs.settings.privateBrowsingLockTitleFaceID" = "Vyžadovať Face ID";

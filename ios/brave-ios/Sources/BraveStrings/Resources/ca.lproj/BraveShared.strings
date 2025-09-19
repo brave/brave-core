@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Obre tot";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "Obrir la configuració de sincronització";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Darrera setmana %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "Dispositius";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "No hi ha pestanyes sincronitzades";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "Pestanyes d'altres dispositius";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "Les teves pestanyes sincronitzades apareixeran aquí";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Envia al teu dispositiu";
@@ -1381,38 +1393,11 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Obre lloc web";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
-"optionsMenu.braveLeoItemDescription" = "Leo és un assistent intel·ligent amb IA, integrat en el navegador";
-
-/* The subtitle description of menu item Brave News */
-"optionsMenu.braveNewsItemDescription" = "Les notícies principals d'avui en un canal de notícies privat";
-
 /* Brave News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "Notícies";
 
-/* The subtitle description of menu item Brave Playlist */
-"optionsMenu.bravePlaylistItemDescription" = "Manté una llista de reproducció fora de línia de qualsevol vídeo/stream";
-
 /* Brave News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "Llista de reproducció";
-
-/* The subtitle description of menu item Brave Talk */
-"optionsMenu.braveTalkItemDescription" = "Videotrucades privades, directament al teu navegador";
-
-/* Brave Talk Item Menu title */
-"optionsMenu.braveTalkItemTitle" = "Conversa";
-
-/* The subtitle description of menu item Brave VPN */
-"optionsMenu.braveVPNItemDescription" = "Protegeix tot el teu dispositiu en línia";
-
-/* Brave VPN Item Menu title */
-"optionsMenu.braveVPNItemTitle" = "VPN";
-
-/* The subtitle description of menu item Brave Wallet */
-"optionsMenu.braveWalletItemDescription" = "La cartera criptogràfica segura, no requereix cap extensió";
-
-/* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "Funcions de Brave";
 
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Altres configuracions de privacitat";
@@ -1528,17 +1513,11 @@
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "Canvia la llista de reproducció";
 
-/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
-"playlist.deleteForOfflineButtonTitle" = "Suprimeix la memòria cau fora de línia";
-
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "Aquest vídeo era una reproducció en directe o s'ha arribat al límit de temps. Siusplau, torna a obrir l'enllaç per actualitzar.";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "Vídeo caducat";
-
-/* Text indicator on the table cell If a video is expired */
-"playList.expiredLabelTitle" = "Caducat";
 
 /* Number of items in the playlsit folder. Example: '10 items' */
 "playlist.folderItemCountPlural" = "%d elements";
@@ -1548,15 +1527,6 @@
 
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Hi ha hagut un problema en carregar el recurs!";
-
-/* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Quan està activat, es mostrarà una insígnia a la icona del menú principal, que indica que els continguts multimèdia de la pàgina es poden afegir a la Llista de reproducció de Brave.";
-
-/* Title for playlist menu badge option */
-"playlist.menuBadgeOptionTitle" = "Mostra la insígnia de notificació del menú";
-
-/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
-"playlist.movePlaylistShareActionMenuTitle" = "Trasllat...";
 
 /* Detail Text when there are no items in the playlist */
 "playList.noItemLabelDetailLabel" = "Pots afegir elements a la Llista de reproducció de Brave des del navegador";
@@ -1572,9 +1542,6 @@
 
 /* Title for opening the playlist */
 "playList.openInPlaylistButtonTitle" = "Obre a la Llista de reproducció";
-
-/* The title for the alert that shows up when an item is expired */
-"playList.pictureInPictureErrorTitle" = "Disculpa, s'ha produït un error en intentar mostrar imatge-a-imatge.";
 
 /* Playlist alert message when playlist is already showing on a different window */
 "playlist.playlistAlreadyShowingBody" = "La llista de reproducció ja està activa en una altra finestra";
@@ -1612,9 +1579,6 @@
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Emmagatzematge gairebé ple";
 
-/* When a video or audio is live and has no duration */
-"playlist.playlistLiveMediaStream" = "Transmissió en directe";
-
 /* Footer Text for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionFooterText" = "Quan està activat, pots mantenir premut la majoria dels fitxers de vídeo/àudio per afegir-los a la teva llista de reproducció.";
 
@@ -1636,41 +1600,8 @@
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
 "playlist.playlistResetPlaylistOptionFooterText" = "Aquesta opció suprimirà tots els vídeos de la llista de reproducció, així com l'emmagatzematge en mode fora de línia.";
 
-/* Error message when saving a playlist item for offline fails */
-"playlist.playlistSaveForOfflineErrorMessage" = "Disculpa, en aquest moment, aquest element no s'ha pogut desar per al mode fora de línia.";
-
-/* Title of alert when saving a playlist item for offline mode */
-"playlist.playlistSaveForOfflineErrorTitle" = "Ho sento, s'ha produït un error";
-
-/* Title For the Section that videos are listed */
-"playList.playListSectionTitle" = "Llistes de reproducció";
-
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Llista de reproducció";
-
-/* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "Aquesta carpeta ja existeix a la teva Llista de reproducció de Brave";
-
-/* Title for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsTitle" = "Disculpa";
-
-/* Title for the Section that videos are listed */
-"playList.playlistSharedFolderSectionTitle" = "Compartit amb tu";
-
-/* Title For the Section that videos are listed */
-"playList.playListSharedFolderSectionTitle" = "Compartit amb tu";
-
-/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationFooterText" = "Aquesta configuració canviarà la ubicació de la llista de vídeos entre el costat esquerre i el costat dret.";
-
-/* Option Text for Sidebar Location Left */
-"playlist.playlistSidebarLocationOptionLeft" = "A l'esquerra";
-
-/* Option Text for Sidebar Location Right */
-"playlist.playlistSidebarLocationOptionRight" = "A la dreta";
-
-/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationTitle" = "Ubicació de la barra lateral";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsFooterText" = "Per a fitxers individuals, reprèn la reproducció des del punt de l'última pausa.";
@@ -1684,50 +1615,8 @@
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
 "playList.removedFromPlaylistMessage" = "Eliminat de %@";
 
-/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertMessage" = "Això suprimirà el contingut multimèdia de l'emmagatzematge fora de línia. Estàs segur que vols continuar?";
-
-/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertTitle" = "Elimina les dades fora de línia";
-
-/* Message for the alert shown when the user tries to remove a video from playlist */
-"playlist.removePlaylistVideoAlertMessage" = "Això eliminarà l'element multimèdia de la llista. Estàs segur que vols continuar?";
-
-/* Title for the alert shown when the user tries to remove an item from playlist */
-"playlist.removePlaylistVideoAlertTitle" = "Vols suprimir l'element multimèdia de la llista de reproducció?";
-
 /* Reopen Alert button title */
 "playList.reopenButtonTitle" = "Reobre";
-
-/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "S'ha afegit per a fora de línia";
-
-/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
-"playlist.saveForOfflineButtonTitle" = "Desa per fora de línia";
-
-/* Text indicator on the table cell while saving a video for offline */
-"playList.savingForOfflineLabelTitle" = "S'està desant per a fora de línia...";
-
-/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyDescription" = "Sincronitza automàticament totes les carpetes de llistes de reproducció";
-
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Sincronitza automàticament les carpetes de la llista de reproducció";
-
-/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionDetailsTitle" = "Pots obrir l'element actual en una pestanya nova o compartir-lo mitjançant el menú Compartir sistema";
-
-/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Menú de la Llista de reproducció de Brave";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Obre pestanya d'incògnit";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewTabTitle" = "Obre en una pestanya nova";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistShareActionMenuTitle" = "Comparteix...";
 
 /* Title for load resources error alert */
 "playList.sorryAlertTitle" = "Disculpa";
@@ -1765,56 +1654,11 @@
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "Crea";
 
-/* The title of the button that allows the user to edit the name of a folder */
-"playlistFolders.editButtonTitle" = "Edita";
-
-/* The title of the screen where the user edits folder names */
-"playlistFolders.editFolderScreenTitle" = "Edita la carpeta";
-
-/* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "Edita la llista de reproducció";
-
-/* The error shown to the user when we cannot save their changes made on a folder */
-"playlistFolders.errorSavingMessage" = "Disculpa, no hem pogut desar els canvis que has fet en aquesta carpeta";
-
-/* The title of the button where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderButtonTitle" = "Mou";
-
-/* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "Llista de reproducció actual";
-
-/* The title of the screen where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderScreenTitle" = "Mou";
-
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
-"playlistFolders.moveItemDescription" = "%@ i 1 element més";
-
-/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld elements";
-
-/* Sometimes an item can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithNoNameTitle" = "1 element";
-
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
-"playlistFolders.moveMultipleItemDescription" = "%1$@ i %2$lld elements més";
-
 /* The title of the button to create a new folder */
 "playlistFolders.newFolderButtonTitle" = "Nova llista de reproducció";
 
 /* The title of the screen to create a new folder */
 "playlistFolders.newFolderScreenTitle" = "Nova llista de reproducció";
-
-/* The sub-title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionSubtitle" = "Clica per seleccionar vídeos";
-
-/* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "Afegeix vídeos a aquesta llista de reproducció";
-
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "Selecciona una llista de reproducció per moure-hi %lld elements";
-
-/* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "Selecciona una llista de reproducció per moure 1 element a";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld elements";
@@ -1824,45 +1668,6 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Llista de reproducció sense títol";
-
-/* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "Afegeix al botó de la llista de reproducció de Brave";
-
-/* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "Desa";
-
-/* Menu Title for removing offline data/cache */
-"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Elimina les dades fora de línia";
-
-/* Menu Title for deleting the playlist */
-"playlistFolderSharing.deletePlaylistMenuTitle" = "Suprimeix la llista de reproducció";
-
-/* Menu Title for editing a folder */
-"playlistFolderSharing.editMenuTitle" = "Edita";
-
-/* Accessibility Title for the playlist menu. */
-"playlistFolderSharing.menuButtonAccessibilityTitle" = "Botó de menú de llista de reproducció";
-
-/* Button that adds the playlist to the local database */
-"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Afegeix ara la llista de reproducció";
-
-/* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewDescription" = "El desat automàtic per a l'ús fora de línia està activat, és a dir, les noves incorporacions a les llistes de reproducció, incloses les llistes de reproducció compartides, es desaran al dispositiu per veure-les fora de línia i podrien utilitzar les teves dades mòbils.\n\nEl desament automàtic per utilitzar-lo fora de línia es pot gestionar a la configuració de la llista de reproducció.";
-
-/* Button that takes the user to the settings menu */
-"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Configuració";
-
-/* Title of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewTitle" = "Gestionant les dades de la teva llista de reproducció";
-
-/* Menu Title for renaming a folder */
-"playlistFolderSharing.renameMenuTitle" = "Canvia el nom";
-
-/* Menu Title for saving offline data/cache */
-"playlistFolderSharing.saveOfflineDataMenuTitle" = "Desa les dades fora de línia";
-
-/* Menu Title for syncing playlist */
-"playlistFolderSharing.syncNowMenuTitle" = "Sincronitza ara";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Tanca el menú Escuts";
@@ -2197,6 +2002,13 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "ReportBrokenAdditionalDetails" = "Informació addicional (opcional)";
 
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"reportBrokenAdditionalDetailsRequired" = "Detalls addicionals";
+
+/* A label for a drop down where the user provides a category for a web-compatibility report
+A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Selecciona una opció";
+
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Contacta amb mi a través de: (opcional)";
 
@@ -2207,7 +2019,7 @@
 "ReportBrokenContactMeSuggestions" = "Correu electrònic, Twitter, etc.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Fes saber als desenvolupadors de Brave que aquesta web no funciona de forma adequada amb Escuts:";
+"ReportBrokenSiteBody1" = "Fes saber als desenvolupadors de Brave que aquesta web no funciona adequadament:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
 "ReportBrokenSiteBody2" = "Nota: L'informe enviat als servidors de Brave inclourà l'adreça del lloc, el número de la versió de Brave, la configuració d'Escuts, l'estat de la VPN i la configuració de la llengua.";
@@ -2557,6 +2369,9 @@
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "Cerca suggeriments de %@";
 
+/* Action title for open a playlist item in Playlist. */
+"searchSuggestionOpenPlaylistActionTitle" = "Obre a la llista de reproducció";
+
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Canvia a aquesta pestanya";
 
@@ -2617,6 +2432,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Permet que Brave tanqui automàticament les pestanyes que no s'han vist recentment.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "Bloqueja els elements de distracció de YouTube";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "Bloqueja els elements de distracció de YouTube";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "Bloqueja els elements de les pantalles següent i final a youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "Bloqueja el contingut recomanat de YouTube";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Bloqueja els Shorts des de la pàgina d'inici, la pàgina de tendències i els resultats de cerca a youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "Bloqueja els YouTube Shorts";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Reproducció de màxima qualitat";
 
@@ -2646,6 +2479,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Envia automàticament el ping d'ús diari a Brave";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Permet que Brave et mostri enllaços a enquestes privades a la pàgina de nova pestanya. Les enquestes ens ajuden a desenvolupar millors característiques i mesurar l'efectivitat de les campanyes publicitàries basades en el navegador. [Més informació](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Permetre les enquestes de Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3061,6 +2900,15 @@
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "S'ha produït un error en recuperar dispositius en cadena de sincronització.";
 
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "Sembla que el teu dispositiu s'ha restaurat des d'una còpia de seguretat, i això podria afectar a Brave Sync. Per continuar utilitzant Brave Sync, has de restablir i tornar a unir-te a la cadena de sincronització.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "Restauració detectada";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "Restablir cadena de sincronització";
+
 /* Sync device settings page title. */
 "sync.devices" = "Dispositius en cadena de sincronització";
 
@@ -3235,6 +3083,63 @@
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Tanca";
 
+/* Accessibility label for a close button that when tapped opens a new tab */
+"tabGrid.addTabAccessibilityLabel" = "Pestanya nova";
+
+/* A button title which when tapped will close all of the open tabs for the user */
+"tabGrid.closeAllTabsButtonTitle" = "Tanca totes les pestanyes";
+
+/* Accessibility label for a close button that when tapped closes the associated tab */
+"tabGrid.closeTab" = "Tanca la pestanya";
+
+/* A button title which when tapped will display a menu with more options */
+"tabGrid.moreMenuButtonTitle" = "Més";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneBody" = "Els llocs que visitis en finestres d'incògnit no apareixeran al teu hostorial. Les cookies, les dades de forma i les dades del lloc desapareieran un cop es tanquin totes les finestres d'incògnit.";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneTitle" = "No deixa cap rastre al teu dispositiu";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeBody" = "El VPN de Brave xifra i protegeix tota la teva activitat en línia, fins i tot si aquesta té lloc fora del navegador de Brave.";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeTitle" = "VPN de Brave";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoBody" = "Tingues en compte que, fins i tot si estàs en una finestra d'incògnit, la teva activitat en línia pot ser visible per al teu proveïdor d'internet, observadors de xarxa o la teva companyia (si utilitzes una màquina/xarxa de l'empresa).";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoTitle" = "Visibilitat de navegació";
+
+/* A title shown when in private browsing mode with no tabs open */
+"tabGrid.privateBrowsingInfoTitle" = "pestanya d'incògnit";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.privateBrowsingModeAccessibilityLabel" = "Navegació d'incògnit";
+
+/* A button title which when tapped will present settings for private tabs */
+"tabGrid.privateTabsSettingsTitle" = "Ajustos de les Pestanyes d'incògnit";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.regularBrowsingModeAccessibilityLabel" = "Navegació normal";
+
+/* A button title that when tapped allows users to shred all of their tabs */
+"tabGrid.shredAllTabsButtonTitle" = "Eliminar totes les pestanyes";
+
+/* A button title that when tapped allows users to shred the currently selected tab */
+"tabGrid.shredSelectedTabButtonTitle" = "Eliminar la pestanya seleccionada";
+
+/* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
+"tabGrid.shredTabsAccessibilityLabel" = "Pestanyes eliminades";
+
+/* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryAccessibilityLabel" = "Veure historial";
+
+/* Accessibility label for a button that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsAccessibilityLabel" = "Veure pestanyes sincronitzades";
+
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Activa o desactiva el mode d'incògnit";
 
@@ -3252,6 +3157,15 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingTitle" = "Mantingues les pestanyes d'incògnit";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionFaceID" = "Es requereix Face ID per accedir a les teves pestanyes privades.";
+
+/* Describes the preference that locks the users private tabs behind their device PIN */
+"tabs.settings.privateBrowsingLockDescriptionPinCode" = "Es requereix el PIN del teu aparell per accedir a les teves pestanyes privades.";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionTouchID" = "Es requereix Touch ID per accedir a les teves pestanyes privades.";
 
 /* No comment provided by engineer. */
 "tabs.settings.privateBrowsingLockTitleFaceID" = "Requereix ID facial";

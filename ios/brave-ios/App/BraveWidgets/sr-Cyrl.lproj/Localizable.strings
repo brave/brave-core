@@ -1,0 +1,78 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "Обележивачи";
+
+/* The name of the feature */
+"widgets.braveLeo" = "Leo AI";
+
+/* The name of the feature */
+"widgets.braveNews" = "Brave вести";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "Преузимања";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "Брзо приступите својим омиљеним веб-сајтовима.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "Омиљено";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "Историја";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "Пробајте поново касније";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "Прочитајте више";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "Сазнајте најновије вести";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "Најпопуларније вести";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "Отворите Brave да бисте видели своје омиљене веб-сајтове овде";
+
+/* QR Code section title */
+"widgets.QRCode" = "QR код";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "Претрага";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Резиме како вам Brave штеди време и штити вас онлајн.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "Статистички подаци о приватности";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "Статистички подаци о приватности";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "Претражите или унесите URL";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "Нова картица";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "Плејлиста";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "Приватна картица";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "Брз приступ претраживању веба или отварању веб-страница у Brave-у.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "Пречице";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Резиме како вас је Brave заштитио онлајн.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "Статистички подаци о приватности";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Brave новчаник";
+

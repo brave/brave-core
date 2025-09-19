@@ -176,12 +176,6 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "Trò chuyện cho mục đích chung";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaVisionMessageDescription" = "Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Llama Vision, một mô hình do Meta tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. Llama Vision chạy trên cơ sở hạ tầng bảo mật của Brave.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaVisionModelPurposeDescription" = "Hình ảnh cho mục đích chung";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Qwen 14B, một mô hình do Alibaba Cloud tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. Qwen chạy trên cơ sở hạ tầng bảo mật của Brave.";
 
 /* The model's purpose - Describes what it can do best */
@@ -225,9 +219,6 @@
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo AI";
-
-/* An indicator to show page content refined is in progress */
-"aichat.leoPageContentRefineInProgress" = "Tìm các phần có liên quan của trang web...";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Bật để hỏi về trang này. Nội dung của trang sẽ được gửi đến Brave Leo cùng với tin nhắn của bạn.";
@@ -425,7 +416,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Tôi hiểu";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo là trợ lý thông minh AI riêng tư giúp bạn sử dụng web hiệu quả hơn. Có thể sử dụng Leo miễn phí với quyền truy cập hạn chế. Brave Leo Premium cho phép chọn trong số nhiều mô hình AI hơn, có giới hạn cao hơn và cho phép người đăng ký sử dụng sớm các tính năng mới. Tham khảo **[Trung tâm trợ giúp](%1$@)** của Brave để biết thêm chi tiết.\n\nTheo mặc định, khi bạn hỏi Leo một câu hỏi, Leo có thể gửi và sử dụng nội dung của trang web bạn đang xem hoặc bất kỳ văn bản nào bạn đánh dấu trên trang đến Brave Leo để phản hồi. Một số trường hợp, Leo sẽ gửi các truy vấn bắt nguồn từ thông tin bạn nhập đến Brave Tìm kiếm và sử dụng kết quả tìm kiếm để trả lời câu hỏi của bạn tốt hơn. Độ chính xác của phản hồi không được đảm bảo, có thể có thông tin không chính xác, gây hiểu lầm hoặc sai lệch. Không gửi thông tin nhạy cảm hoặc riêng tư và hãy thận trọng với bất kỳ câu trả lời nào liên quan đến sức khỏe, tài chính, an toàn cá nhân hoặc tương tự. Bạn có thể điều chỉnh các tùy chọn của Leo trong mục Cài đặt bất kỳ lúc nào. Vào mục Cài đặt > Leo.\n\nLeo không thu thập các dữ liệu định danh như địa chỉ IP có thể được liên kết với bạn. Không có dữ liệu nào được sử dụng để đào tạo các mô hình AI và không có dữ liệu cá nhân nào được các mô hình AI lưu giữ (ngoại trừ Anthropic lưu giữ dữ liệu trong 30 ngày trước khi xóa). Tham khảo **[chính sách quyền riêng tư](%2$@)** để biết thêm thông tin.";
+"aichat.termsConditionsDescription" = "Brave Leo là trợ lý thông minh AI riêng tư giúp bạn sử dụng web hiệu quả hơn. Có thể sử dụng Leo miễn phí với quyền truy cập hạn chế. Brave Leo Premium cho phép chọn trong số nhiều mô hình AI hơn, có giới hạn cao hơn và cho phép người đăng ký sử dụng sớm các tính năng mới. Mô hình mặc định sẽ thay đổi theo thời gian. Tham khảo **[Trung tâm trợ giúp](%1$@)** của Brave để biết thêm chi tiết.\n\nTheo mặc định, khi bạn hỏi Leo một câu hỏi về trang web hoặc trang bạn đang xem, nội dung của trang web bạn đang xem hoặc bất kỳ đoạn văn bản nào bạn đánh dấu trên trang, cùng truy vấn tìm kiếm của bạn sẽ được gửi đến máy chủ của Brave để Leo cung cấp phản hồi. Một số trường hợp, Leo sẽ gửi các truy vấn bắt nguồn từ thông tin bạn nhập đến Brave Tìm kiếm và sử dụng kết quả tìm kiếm để trả lời câu hỏi của bạn tốt hơn. Brave không đảm bảo độ chính xác của phản hồi, và phản hồi có thể chứa thông tin không chính xác, gây hiểu lầm hoặc sai lệch. Không gửi thông tin nhạy cảm hoặc riêng tư cho Brave Leo, và hãy thận trọng với bất kỳ câu trả lời nào liên quan đến sức khỏe, tài chính, an toàn cá nhân hoặc tương tự. Bạn có thể điều chỉnh các tùy chọn của Leo trong mục Cài đặt bất kỳ lúc nào. Vào mục Cài đặt > Leo.\n\nLeo không thu thập các dữ liệu định danh như địa chỉ IP có thể được liên kết với bạn. Chúng tôi không sử dụng dữ liệu của bạn để đào tạo các mô hình của mình, bao gồm truy vấn tìm kiếm hay phản hồi của Brave Leo. Chúng tôi không lưu trữ dữ liệu cá nhân trên máy chủ của mình, Brave cũng không lưu trữ giữ liệu này. Tham khảo **[chính sách quyền riêng tư](%2$@)** để biết thêm thông tin.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Trò chuyện riêng với Brave Leo";
