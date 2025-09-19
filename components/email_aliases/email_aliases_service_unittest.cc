@@ -345,15 +345,11 @@ TEST_F(EmailAliasesServiceTimingTest, VerifyResult_StopsAfterMaxDuration) {
 // TODO(https://github.com/brave/brave-browser/issues/48696): Add tests for
 // checking cancellation of polling, etc.
 
-}  // namespace email_aliases
-namespace email_aliases {
-
-class AliasObserver : public email_aliases::mojom::EmailAliasesServiceObserver {
+class AliasObserver : public mojom::EmailAliasesServiceObserver {
  public:
-  void OnAuthStateChanged(email_aliases::mojom::AuthStatePtr) override {}
+  void OnAuthStateChanged(mojom::AuthStatePtr) override {}
 
-  void OnAliasesUpdated(
-      std::vector<email_aliases::mojom::AliasPtr> aliases) override {
+  void OnAliasesUpdated(std::vector<mojom::AliasPtr> aliases) override {
     ++alias_updates;
     last_aliases = std::move(aliases);
   }
@@ -363,36 +359,31 @@ class AliasObserver : public email_aliases::mojom::EmailAliasesServiceObserver {
   }
 
   void BindReceiver(
-      mojo::PendingReceiver<email_aliases::mojom::EmailAliasesServiceObserver>
-          pending) {
+      mojo::PendingReceiver<mojom::EmailAliasesServiceObserver> pending) {
     receiver.Bind(std::move(pending));
   }
 
   size_t alias_update_count() const { return alias_updates; }
 
-  const std::vector<email_aliases::mojom::AliasPtr>& get_last_aliases() const {
+  const std::vector<mojom::AliasPtr>& get_last_aliases() const {
     return last_aliases;
   }
 
  private:
   size_t alias_updates = 0;
-  std::vector<email_aliases::mojom::AliasPtr> last_aliases;
-  mojo::Receiver<email_aliases::mojom::EmailAliasesServiceObserver> receiver{
-      this};
+  std::vector<mojom::AliasPtr> last_aliases;
+  mojo::Receiver<mojom::EmailAliasesServiceObserver> receiver{this};
 };
 
 class EmailAliasesAPITest : public ::testing::Test {
  protected:
-  EmailAliasesAPITest() {
-    feature_list_.InitAndEnableFeature(email_aliases::kEmailAliases);
-  }
+  EmailAliasesAPITest() { feature_list_.InitAndEnableFeature(kEmailAliases); }
 
   void SetUp() override {
     service_ = std::make_unique<EmailAliasesService>(
         url_loader_factory_.GetSafeWeakWrapper());
 
-    mojo::PendingRemote<email_aliases::mojom::EmailAliasesServiceObserver>
-        remote;
+    mojo::PendingRemote<mojom::EmailAliasesServiceObserver> remote;
     observer_.BindReceiver(remote.InitWithNewPipeAndPassReceiver());
     service_->AddObserver(std::move(remote));
   }
