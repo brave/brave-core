@@ -31,7 +31,14 @@ std::string PrivacyPreservingProtocolSerializer::Serialize(
     return upstream_result;
   }
 
-  request_dict->Remove("hw");
+  // We don't want to send the information in the hw dictionary, but the
+  // protocol specification requires it to be present. All its fields have
+  // default values and are therefore optional. We therefore remain
+  // spec-compliant by simply sending an empty hw dictionary.
+  base::Value::Dict* hw_dict = request_dict->FindDict("hw");
+  if (hw_dict) {
+    hw_dict->clear();
+  }
 
   base::Value::List* apps = request_dict->FindList("apps");
   if (apps) {

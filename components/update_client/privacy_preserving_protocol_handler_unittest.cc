@@ -74,6 +74,7 @@ TEST(PrivacyPreservingProtocolSerializer, StripsPrivacySensitiveData) {
       R"("targetversionprefix":"33.12",)"
       R"("updatedisabled":true},"version":"1.0"}],"arch":"\w+","dedup":"cr",)"
       R"("dlpref":"cacheable","extra":"params",)"
+      R"("hw":{},)"
       R"("ismachine":false,)"
       R"("os":{"arch":"[_,-.\w]+","platform":"OS",)"
       R"(("sp":"[\s\w]+",)?"version":"[+-.\w]+"},"prodchannel":"channel",)"
