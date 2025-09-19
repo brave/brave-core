@@ -480,6 +480,7 @@ test("brave_unit_tests") {
       "//chrome/browser/history",
       "//chrome/browser/ui/views/bubble",
       "//components/favicon/content",
+      "//components/push_messaging:test_support",
       "//components/user_data_importer/common",
     ]
   }
