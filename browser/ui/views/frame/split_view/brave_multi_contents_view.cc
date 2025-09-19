@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
-#include "brave/browser/ui/views/split_view/split_view_location_bar.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
@@ -125,26 +124,6 @@ int BraveMultiContentsView::GetWebPanelWidth() const {
   }
 
   return web_panel_width_;
-}
-
-void BraveMultiContentsView::UpdateSecondaryLocationBar() {
-  if (!secondary_location_bar_) {
-    secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
-        browser_view_->browser()->profile()->GetPrefs());
-    secondary_location_bar_widget_ = std::make_unique<views::Widget>();
-
-    secondary_location_bar_widget_->Init(
-        SplitViewLocationBar::GetWidgetInitParams(
-            GetWidget()->GetNativeView(), secondary_location_bar_.get()));
-  }
-
-  // Inactive web contents/view should be set to secondary location bar
-  // as it's attached to inactive contents view.
-  int inactive_index = active_index_ == 0 ? 1 : 0;
-  secondary_location_bar_->SetWebContents(
-      GetInactiveContentsView()->web_contents());
-  secondary_location_bar_->SetParentWebView(
-      contents_container_views_[inactive_index]);
 }
 
 void BraveMultiContentsView::UpdateCornerRadius() {
