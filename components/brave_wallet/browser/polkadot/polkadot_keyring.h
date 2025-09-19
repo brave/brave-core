@@ -49,6 +49,10 @@ class PolkadotKeyring {
   // mainnet or the `//westend` testnet.
   bool IsTestnet() const;
 
+  mojom::KeyringId keyring_id() const { return keyring_id_; }
+
+  std::optional<std::string> AddNewHDAccount(uint32_t index);
+
  private:
   HDKeySr25519& EnsureKeyPair(uint32_t account_index);
 

@@ -93,4 +93,8 @@ HDKeySr25519& PolkadotKeyring::EnsureKeyPair(uint32_t account_index) {
   return pos->second;
 }
 
+std::optional<std::string> PolkadotKeyring::AddNewHDAccount(uint32_t index) {
+  return GetAddress(index, 0u);
+}
+
 }  // namespace brave_wallet

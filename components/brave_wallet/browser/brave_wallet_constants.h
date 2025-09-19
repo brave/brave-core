@@ -570,6 +570,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_CARDANO_DESCRIPTION},
     {"braveWalletCreateAccountCardanoTestnetDescription",
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_CARDANO_TESTNET_DESCRIPTION},
+    {"braveWalletCreateAccountPolkadotDescription",
+     IDS_BRAVE_WALLET_CREATE_ACCOUNT_POLKADOT_DESCRIPTION},
     {"braveWalletFilecoinPrivateKeyProtocol",
      IDS_BRAVE_WALLET_FILECOIN_PRIVATE_KEY_PROTOCOL},
     {"braveWalletAddAccountImport", IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT},
@@ -1194,6 +1196,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_CARDANO_ACCOUNT_DESCRIPTION},
     {"braveWalletCardanoTestnetAccountDescription",
      IDS_BRAVE_WALLET_CARDANO_TESTNET_ACCOUNT_DESCRIPTION},
+    {"braveWalletPolkadotMainnetAccountDescription",
+     IDS_BRAVE_WALLET_POLKADOT_MAINNET_ACCOUNT_DESCRIPTION},
     {"braveWalletShowNetworkLogoOnNftsTitle",
      IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_TITLE},
     {"braveWalletShowNetworkLogoOnNftsDescription",
@@ -1786,6 +1790,7 @@ inline constexpr char kEthereumPrefKey[] = "ethereum";
 inline constexpr char kFilecoinPrefKey[] = "filecoin";
 inline constexpr char kSolanaPrefKey[] = "solana";
 inline constexpr char kCardanoPrefKey[] = "cardano";
+inline constexpr char kPolkadotPrefKey[] = "polkadot";
 
 inline constexpr char kEthereumBlockTagEarliest[] = "earliest";
 inline constexpr char kEthereumBlockTagLatest[] = "latest";

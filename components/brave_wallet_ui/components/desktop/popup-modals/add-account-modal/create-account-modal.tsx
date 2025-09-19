@@ -62,6 +62,9 @@ export const CreateAccountModal = () => {
   const isCardanoEnabled = useSafeWalletSelector(
     WalletSelectors.isCardanoEnabled,
   )
+  const isPolkadotEnabled = useSafeWalletSelector(
+    WalletSelectors.isPolkadotEnabled,
+  )
 
   // queries
   const { accounts } = useAccountsQuery()
@@ -82,6 +85,7 @@ export const CreateAccountModal = () => {
       isBitcoinEnabled,
       isZCashEnabled,
       isCardanoEnabled,
+      isPolkadotEnabled,
     })
   }, [visibleNetworks, isBitcoinEnabled, isZCashEnabled, isCardanoEnabled])
 

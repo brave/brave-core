@@ -59,4 +59,5 @@ export const mockWalletState: WalletState = {
   isZCashShieldedTransactionsEnabled: false,
   isCardanoEnabled: true,
   isCardanoDappSupportEnabled: true,
+  isPolkadotEnabled: true,
 }
