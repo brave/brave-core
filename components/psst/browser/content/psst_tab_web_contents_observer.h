@@ -87,7 +87,6 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
 
   void OnUserAcceptedPsstSettings(
       int nav_entry_id,
-      const bool is_initial,
       std::unique_ptr<MatchedRule> rule,
       base::Value user_script_result,
       const std::vector<std::string>& disabled_checks);
