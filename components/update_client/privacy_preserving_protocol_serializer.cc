@@ -35,13 +35,11 @@ std::string PrivacyPreservingProtocolSerializer::Serialize(
   // protocol specification requires it to be present. All its fields have
   // default values and are therefore optional. We therefore remain
   // spec-compliant by simply sending an empty hw dictionary.
-  base::Value::Dict* hw_dict = request_dict->FindDict("hw");
-  if (hw_dict) {
+  if (base::Value::Dict* hw_dict = request_dict->FindDict("hw")) {
     hw_dict->clear();
   }
 
-  base::Value::List* apps = request_dict->FindList("apps");
-  if (apps) {
+  if (base::Value::List* apps = request_dict->FindList("apps")) {
     for (auto& app : *apps) {
       if (!app.is_dict()) {
         continue;
