@@ -94,6 +94,7 @@ public class BraveClassAdapter {
         chain = new BravePasswordsPreferenceClassAdapter(chain);
         chain = new BravePermissionDialogDelegateClassAdapter(chain);
         chain = new BravePermissionDialogModelClassAdapter(chain);
+        chain = new BravePhotoPickerFeaturesClassAdapter(chain);
         chain = new BravePictureInPictureActivityClassAdapter(chain);
         chain = new BravePreferenceFragmentClassAdapter(chain);
         chain = new BravePureJavaExceptionReporterClassAdapter(chain);

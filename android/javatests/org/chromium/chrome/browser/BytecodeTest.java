@@ -1009,6 +1009,12 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         PasswordManagerHelper.class,
                         Profile.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/browser_ui/photo_picker/PhotoPickerFeatures",
+                        "launchViaActionGetContent",
+                        MethodModifier.STATIC,
+                        boolean.class));
     }
 
     @Test
