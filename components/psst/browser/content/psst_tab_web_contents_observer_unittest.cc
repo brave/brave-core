@@ -578,7 +578,6 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       base::Value::Dict()
           .Set("user", signed_user_id)
           .Set("name", site_name)
-          .Set("is_initial", true)
           .Set("tasks",
                base::Value::List().Append(
                    base::Value::Dict()
@@ -612,16 +611,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(1);
   EXPECT_CALL(ui_delegate(),
               GetPsstPermissionInfo(url::Origin::Create(url), signed_user_id))
-      .WillOnce(
-          [](const url::Origin& origin,
-             const std::string& user_id) -> std::optional<PsstPermissionInfo> {
-            PsstPermissionInfo info;
-            info.user_id = user_id;
-            info.consent_status = psst::ConsentStatus::kAllow;
-            info.script_version = 1;
-            info.urls_to_skip = {};
-            return info;
-          });
+      .WillOnce([](const url::Origin& origin,
+                   const std::string&) -> std::optional<PsstPermissionInfo> {
+        return std::nullopt;
+      });
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -676,7 +669,6 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto script_params = base::Value(base::Value::Dict()
                                        .Set("user", signed_user_id)
                                        .Set("name", site_name)
-                                       .Set("is_initial", true)
                                        .Set("tasks", tasks_list.Clone()));
 
   // Policy script result is a dictionary, but it is not deserializable
@@ -703,16 +695,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(1);
   EXPECT_CALL(ui_delegate(),
               GetPsstPermissionInfo(url::Origin::Create(url), signed_user_id))
-      .WillOnce(
-          [](const url::Origin& origin,
-             const std::string& user_id) -> std::optional<PsstPermissionInfo> {
-            PsstPermissionInfo info;
-            info.user_id = user_id;
-            info.consent_status = psst::ConsentStatus::kAllow;
-            info.script_version = 1;
-            info.urls_to_skip = {};
-            return info;
-          });
+      .WillOnce([](const url::Origin& origin,
+                   const std::string&) -> std::optional<PsstPermissionInfo> {
+        return std::nullopt;
+      });
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -993,7 +979,6 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           .Set("prop", base::Value(base::Value::BlobStorage{0x01, 0x02, 0x03}))
           .Set("user", signed_user_id)
           .Set("name", site_name)
-          .Set("is_initial", true)
           .Set("tasks",
                base::Value::List().Append(
                    base::Value::Dict()
@@ -1025,16 +1010,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(1);
   EXPECT_CALL(ui_delegate(),
               GetPsstPermissionInfo(url::Origin::Create(url), signed_user_id))
-      .WillOnce(
-          [](const url::Origin& origin,
-             const std::string& user_id) -> std::optional<PsstPermissionInfo> {
-            PsstPermissionInfo info;
-            info.user_id = user_id;
-            info.consent_status = psst::ConsentStatus::kAllow;
-            info.script_version = 1;
-            info.urls_to_skip = {};
-            return info;
-          });
+      .WillOnce([](const url::Origin& origin,
+                   const std::string&) -> std::optional<PsstPermissionInfo> {
+        return std::nullopt;
+      });
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -1081,22 +1060,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
             info.urls_to_skip = {};
             return info;
           });
-  EXPECT_CALL(ui_delegate(), Show(_))
-      .WillOnce([&](PsstConsentData dialog_data) {
-        EXPECT_EQ(dialog_data.user_id, signed_user_id);
-        EXPECT_EQ(dialog_data.site_name, site_name);
-        EXPECT_EQ(dialog_data.request_infos.size(), 1u);
-        EXPECT_EQ(dialog_data.request_infos,
-                  base::Value::List().Append(
-                      base::Value::Dict()
-                          .Set("url", "https://x.com/settings/ads_preferences")
-                          .Set("description", "Disable personalized ads")));
-        EXPECT_FALSE(dialog_data.apply_changes_callback.is_null());
-
-        // Simulate that user reviewed and applied PSST changes (There are no
-        // URLs to skip)
-        std::move(dialog_data.apply_changes_callback).Run({});
-      });
+  // UI delegate Show method should not be called, as permission was already
+  // granted
+  EXPECT_CALL(ui_delegate(), Show(_)).Times(0);
 
   // UpdateTasks must be called with correct parameters, as policy script
   // returns valid result
@@ -1122,7 +1088,6 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
       base::Value::Dict()
           .Set("user", signed_user_id)
           .Set("name", site_name)
-          .Set("is_initial", true)
           .Set("tasks",
                base::Value::List().Append(
                    base::Value::Dict()

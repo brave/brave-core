@@ -36,7 +36,6 @@ namespace {
 constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
 const char kShouldProcessKey[] = "should_process_key";
 const char kSignedUserId[] = "user";
-const char kUserScriptIsInitialPropName[] = "is_initial";
 const char kUserScriptResultTasksPropName[] = "tasks";
 const char kUserScriptResultTaskItemUrlPropName[] = "url";
 
@@ -207,13 +206,6 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     return;
   }
 
-  const auto is_initial =
-      user_script_result.GetDict().FindBool(kUserScriptIsInitialPropName);
-  if (!is_initial.has_value()) {
-    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
-    return;
-  }
-
   const auto* tasks =
       user_script_result.GetDict().FindList(kUserScriptResultTasksPropName);
   if (!tasks || tasks->empty()) {
@@ -221,11 +213,11 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     return;
   }
 
-  if (!is_initial.value() && permission_info &&
+  if (permission_info &&
       permission_info->consent_status == ConsentStatus::kAllow) {
     // If permission is granted and it is not the initial iteration call we
     // don't need to show the dialog again.
-    OnUserAcceptedPsstSettings(id, false, std::move(rule),
+    OnUserAcceptedPsstSettings(id, std::move(rule),
                                std::move(user_script_result),
                                permission_info->urls_to_skip);
     return;
@@ -237,13 +229,12 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
       {*user_id, web_contents()->GetLastCommittedURL().host(), tasks->Clone(),
        script_version,
        base::BindOnce(&PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
-                      weak_factory_.GetWeakPtr(), id, is_initial.value(),
-                      std::move(rule), std::move(user_script_result))});
+                      weak_factory_.GetWeakPtr(), id, std::move(rule),
+                      std::move(user_script_result))});
 }
 
 void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
     int nav_entry_id,
-    const bool is_initial,
     std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result,
     const std::vector<std::string>& disabled_checks) {
