@@ -8,17 +8,20 @@ import UIKit
 public struct UserAgentBuilder {
   private let device: UIDevice
   private let os: OperatingSystemVersion
-  private let useBraveUserAgent: Bool
+  private let useAppIdentifierEnabled: Bool
+  private let appIdentifier: String
 
   /// - parameter iOSVersion: iOS version of the created UA. Both desktop and mobile UA differ between iOS versions.
   public init(
     device: UIDevice = .current,
     iOSVersion: OperatingSystemVersion = ProcessInfo().operatingSystemVersion,
-    useBraveUserAgent: Bool = FeatureList.kUseBraveUserAgent.enabled
+    useAppIdentifierEnabled: Bool = FeatureList.kUseBraveUserAgent.enabled,
+    appIdentifier: String = "Brave"
   ) {
     self.device = device
     self.os = iOSVersion
-    self.useBraveUserAgent = useBraveUserAgent
+    self.useAppIdentifierEnabled = useAppIdentifierEnabled
+    self.appIdentifier = appIdentifier
   }
 
   private var braveMajorVersion: String {
@@ -32,18 +35,37 @@ public struct UserAgentBuilder {
     return majorVersion
   }
 
+  /// Gets the current chromium version currently used
+  /// - parameter majorVersionOnly: if it should only return the major version
+  /// - returns: The chromium version currently used
+  private func chromiumVersion(majorVersionOnly: Bool) -> String {
+    if majorVersionOnly,
+      let majorVersion = BraveCoreVersionInfo.chromiumVersion.components(separatedBy: ".").first
+    {
+      return majorVersion
+    }
+    return BraveCoreVersionInfo.chromiumVersion
+  }
+
   /// Creates Safari-like user agent.
-  /// - parameter desktopMode: Wheter to use Mac's Safari UA or regular mobile iOS UA.
+  /// - parameter desktopMode: Whether to use Mac's Safari UA or regular mobile iOS UA.
+  /// - parameter useSafariUA: Whether to use Safari's UA or app identifier UA.
+  /// - parameter useChromiumVersion: Whether to use chromium version or brave major version.
   /// The desktop UA is taken from iOS Safari `Request desktop website` feature.
   ///
   /// - returns: A proper user agent to use in WKWebView and url requests.
-  public func build(desktopMode: Bool, maskBrave: Bool = false) -> String {
+  public func build(
+    desktopMode: Bool,
+    useSafariUA: Bool = false,
+    useChromiumVersion: Bool = false
+  ) -> String {
 
-    if desktopMode { return desktopUA(maskBrave: maskBrave) }
+    if desktopMode { return desktopUA(useSafariUA: useSafariUA) }
 
     let version =
-      (useBraveUserAgent && !maskBrave)
-      ? "Brave/\(braveMajorVersion)" : "Version/\(safariVersion)"
+      (useAppIdentifierEnabled && !useSafariUA)
+      ? "\(appIdentifier)/\(useChromiumVersion ? chromiumVersion(majorVersionOnly: false) : braveMajorVersion)"
+      : "Version/\(safariVersion)"
 
     return """
       Mozilla/5.0 (\(cpuInfo)) \
@@ -65,9 +87,14 @@ public struct UserAgentBuilder {
   // These user agents are taken from iOS Safari in desktop mode and hardcoded.
   // These are not super precise because each iOS version can have slighly different desktop UA.
   // The only differences are with exact `Version/XX` and `MAC OS X 10_XX` numbers.
-  private func desktopUA(maskBrave: Bool = false) -> String {
+  private func desktopUA(
+    useSafariUA: Bool = false,
+    useChromiumVersion: Bool = false
+  ) -> String {
     let braveUA =
-      (useBraveUserAgent && !maskBrave) ? "Brave/\(braveMajorVersion) " : ""
+      (useAppIdentifierEnabled && !useSafariUA)
+      ? "\(appIdentifier)/\(useChromiumVersion ? chromiumVersion(majorVersionOnly: true) : braveMajorVersion) "
+      : ""
 
     return
       """
