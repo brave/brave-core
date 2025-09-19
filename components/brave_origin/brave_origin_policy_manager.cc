@@ -11,6 +11,7 @@
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_origin {
 
@@ -110,6 +111,49 @@ PoliciesEnabledMap BraveOriginPolicyManager::GetAllProfilePolicies(
     policies[policy_info.policy_key] = value;
   }
   return policies;
+}
+
+void BraveOriginPolicyManager::SetBrowserPolicyValue(std::string_view pref_name,
+                                                     bool value) {
+  CHECK(initialized_) << "BraveOriginPolicyManager not initialized";
+  CHECK(local_state_) << "BraveOriginPolicyManager local state should exist";
+
+  // Check if this is a valid browser-level pref
+  const BraveOriginPolicyInfo* policy_info =
+      base::FindOrNull(browser_policy_definitions_, pref_name);
+  if (!policy_info) {
+    LOG(ERROR) << "Unknown browser pref name: " << pref_name;
+    return;
+  }
+
+  // Update the value in the dictionary
+  ScopedDictPrefUpdate update(local_state_, kBraveOriginPolicies);
+  std::string browser_key = GetBraveOriginBrowserPrefKey(*policy_info);
+  update->Set(browser_key, base::Value(value));
+}
+
+void BraveOriginPolicyManager::SetProfilePolicyValue(
+    std::string_view pref_name,
+    bool value,
+    std::string_view profile_id) {
+  CHECK(initialized_) << "BraveOriginPolicyManager not initialized";
+  CHECK(local_state_) << "BraveOriginPolicyManager local state should exist";
+  CHECK(!profile_id.empty())
+      << "Profile ID cannot be empty for profile policies";
+
+  // Check if this is a valid profile-level pref
+  const BraveOriginPolicyInfo* policy_info =
+      base::FindOrNull(profile_policy_definitions_, pref_name);
+  if (!policy_info) {
+    LOG(ERROR) << "Unknown profile pref name: " << pref_name;
+    return;
+  }
+
+  // Update the value in the dictionary with profile-scoped key
+  ScopedDictPrefUpdate update(local_state_, kBraveOriginPolicies);
+  std::string profile_key =
+      GetBraveOriginProfilePrefKey(*policy_info, profile_id);
+  update->Set(profile_key, base::Value(value));
 }
 
 // Helper function to get pref info from pref definitions
