@@ -3,5 +3,6 @@ include_rules = [
   "+components/keyed_service",
   "+components/prefs",
   "+components/variations",
+  "+net",
   "-third_party/blink",
 ]

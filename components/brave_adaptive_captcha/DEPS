@@ -1,6 +1,7 @@
 include_rules = [
   "+components/keyed_service",
   "+components/prefs",
+  "+net",
   "+services/network/public",
   "+services/network/test",
   "+services/data_decoder/public",
