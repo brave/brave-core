@@ -19,6 +19,12 @@ import {
 
 const enabledSearchEnginesStorageKey = 'search-engines'
 
+// Previous versions of the NTP used different values for the Google search
+// engine host. If these values are found in local storage or preferences, they
+// must be normalized to the proper host value.
+const deprecatedGoogleSearchHosts = ['', 'google.com']
+const googleSearchHost = 'www.google.com'
+
 function loadEnabledSearchEngines(
   availableEngines: SearchEngineInfo[],
   defaultSearchEngine: string
@@ -34,6 +40,9 @@ function loadEnabledSearchEngines(
   } catch {}
   if (!record || typeof record !== 'object') {
     return set
+  }
+  if (deprecatedGoogleSearchHosts.some((key) => record[key])) {
+    record[googleSearchHost] = true
   }
   set.clear()
   for (const engine of availableEngines) {
@@ -83,7 +92,7 @@ export function createSearchHandler(
   }
 
   async function updatePrefs() {
-    const [
+    let [
       { showSearchBox },
       { enabled: searchSuggestionsEnabled },
       { dismissed: searchSuggestionsPromptDismissed },
@@ -94,6 +103,9 @@ export function createSearchHandler(
       newTabProxy.handler.getSearchSuggestionsPromptDismissed(),
       newTabProxy.handler.getLastUsedSearchEngine()
     ])
+    if (deprecatedGoogleSearchHosts.includes(lastUsedSearchEngine)) {
+      lastUsedSearchEngine = googleSearchHost
+    }
     store.update({
       showSearchBox,
       searchSuggestionsEnabled,
