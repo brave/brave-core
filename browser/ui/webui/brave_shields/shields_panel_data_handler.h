@@ -48,6 +48,8 @@ class ShieldsPanelDataHandler
   void SetHttpsUpgradeMode(HttpsUpgradeMode mode) override;
   void SetIsNoScriptsEnabled(bool is_enabled) override;
   void SetBraveShieldsEnabled(bool is_enabled) override;
+  void SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled) override;
+  void SetBraveShieldsAdBlockOnlyModePromptDismissed() override;
   void SetForgetFirstPartyStorageEnabled(bool is_enabled) override;
   void OpenWebCompatWindow() override;
   void UpdateFavicon() override;

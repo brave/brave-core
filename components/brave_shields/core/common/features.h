@@ -6,10 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_FEATURES_H_
 
+#include <cstddef>
 #include <string>
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "base/time/time.h"
 
 namespace brave_shields {
 namespace features {
@@ -56,6 +58,17 @@ extern const base::FeatureParam<int>
     kAdblockOverrideRegexDiscardPolicyCleanupIntervalSec;
 extern const base::FeatureParam<int>
     kAdblockOverrideRegexDiscardPolicyDiscardUnusedSec;
+
+BASE_DECLARE_FEATURE(kAdblockOnlyMode);
+inline constexpr base::FeatureParam<int> kAdblockOnlyModeShieldsDisabledCount{
+    &kAdblockOnlyMode, "shields_disabled_count", 5};
+inline constexpr base::FeatureParam<base::TimeDelta>
+    kAdblockOnlyModeReloadsCountInterval{
+        &kAdblockOnlyMode, "reloads_count_interval", base::Seconds(10)};
+inline constexpr base::FeatureParam<size_t> kAdblockOnlyModeReloadsCountMin{
+    &kAdblockOnlyMode, "reloads_count_min", 0};
+inline constexpr base::FeatureParam<size_t> kAdblockOnlyModeReloadsCountMax{
+    &kAdblockOnlyMode, "reloads_count_max", 0};
 
 }  // namespace features
 }  // namespace brave_shields
