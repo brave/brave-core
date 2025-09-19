@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/omnibox_edit_model.cc b/components/omnibox/browser/omnibox_edit_model.cc
-index 4b21882044abbdf922dbdf82f3586128afb1262b..16f92feefa64be50919abd28b04d01b02c0f56a6 100644
+index 814e1aa0ee9cc8c308fd1dbbd28f53e3ae920d0a..7c30402cb72b009c938cdc3adce62a4781fabfb1 100644
 --- a/components/omnibox/browser/omnibox_edit_model.cc
 +++ b/components/omnibox/browser/omnibox_edit_model.cc
 @@ -1569,6 +1569,7 @@ void OmniboxEditModel::GetInfoForCurrentText(AutocompleteMatch* match,
