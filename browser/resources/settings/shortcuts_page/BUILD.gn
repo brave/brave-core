@@ -8,6 +8,8 @@ import("//brave/components/common/typescript.gni")
 transpile_web_ui("commands_ui") {
   generate_grdp = true
 
+  output_dir = target_gen_dir
+
   entry_points = [ [
         "commands",
         rebase_path("commands.tsx"),
