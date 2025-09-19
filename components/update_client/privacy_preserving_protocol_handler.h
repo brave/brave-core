@@ -14,6 +14,9 @@
 
 namespace update_client {
 
+// This class returns the same parser as upstream but returns a different
+// serializer (PrivacyPreservingProtocolSerializer) to remove values from update
+// requests that could be used to fingerprint users.
 class PrivacyPreservingProtocolHandlerFactory : public ProtocolHandlerFactory {
  public:
   // Overrides for ProtocolHandlerFactory.

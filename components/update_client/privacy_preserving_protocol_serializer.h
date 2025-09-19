@@ -12,7 +12,9 @@
 #include "components/update_client/protocol_serializer.h"
 
 namespace update_client {
-
+// PrivacyPreservingProtocolSerializer wraps around upstream's
+// ProtocolSerializerJSON, removing values from update requests that could be
+// used to fingerprint users.
 class PrivacyPreservingProtocolSerializer : public ProtocolSerializer {
  public:
   PrivacyPreservingProtocolSerializer() = default;

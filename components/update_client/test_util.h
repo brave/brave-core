@@ -10,12 +10,6 @@
 
 namespace update_client {
 
-// This function checks two things. First, that the serializer faithfully
-// encodes the necessary data for update requests. Second, that it does not
-// encode the following fields, which could be used to fingerprint users:
-//  - hw[*]
-//  - apps[*].lang
-//  - apps[*].events[*].download_time_ms
 bool StripsPrivacySensitiveData(const ProtocolSerializer& serializer);
 
 }  // namespace update_client
