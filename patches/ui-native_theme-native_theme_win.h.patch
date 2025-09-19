@@ -1,10 +1,10 @@
 diff --git a/ui/native_theme/native_theme_win.h b/ui/native_theme/native_theme_win.h
-index ce75852d50a7b349ed1673c8b8465f8f51840e53..d9d85fc442164e73aed4141acf2e47abfee61625 100644
+index f65cbaf56c29c1348ff8df457c92399c246b01bf..5baefa1621653cf4152dab2eb6cf2a6275a96d66 100644
 --- a/ui/native_theme/native_theme_win.h
 +++ b/ui/native_theme/native_theme_win.h
-@@ -56,6 +56,7 @@ class COMPONENT_EXPORT(NATIVE_THEME) NativeThemeWin : public NativeTheme {
-     in_dark_mode_ = in_dark_mode;
-   }
+@@ -27,6 +27,7 @@ class COMPONENT_EXPORT(NATIVE_THEME) NativeThemeWin : public NativeTheme {
+                         State state,
+                         const ExtraParams& extra_params) const override;
  
 +  BRAVE_UI_NATIVE_THEME_NATIVE_THEME_WIN_H_
   protected:
