@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/containers/buildflags",
+  "+brave/components/containers/content/browser",
+]
