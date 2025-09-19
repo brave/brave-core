@@ -101,6 +101,7 @@ import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
+import org.chromium.chrome.browser.omnibox.navattach.NavigationAttachmentsCoordinator;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteUIContext;
@@ -181,7 +182,6 @@ import org.chromium.components.offline_items_collection.OfflineItem;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogDelegate;
-import org.chromium.components.prefs.PrefService;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.signin.base.AccountInfo;
 import org.chromium.components.variations.firstrun.VariationsSeedFetcher;
@@ -768,8 +768,7 @@ public class BytecodeTest {
                         "setUpPostDeprecationWarning",
                         MethodModifier.REGULAR,
                         void.class,
-                        PreferenceViewHolder.class,
-                        PrefService.class));
+                        PreferenceViewHolder.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView", // presubmit: ignore-long-line
@@ -1474,6 +1473,7 @@ public class BytecodeTest {
                         OmniboxSuggestionsDropdownEmbedder.class,
                         WindowAndroid.class,
                         DeferredIMEWindowInsetApplicationCallback.class,
+                        NavigationAttachmentsCoordinator.class,
                         boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1605,7 +1605,8 @@ public class BytecodeTest {
                         BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
                         ObservableSupplier.class,
                         BrowserControlsStateProvider.class,
-                        Supplier.class));
+                        Supplier.class,
+                        ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
@@ -1898,7 +1899,7 @@ public class BytecodeTest {
                         ActivityTabProvider.class,
                         TopUiThemeColorProvider.class,
                         EdgeToEdgeSystemBarColorHelper.class,
-                        OneshotSupplier.class,
+                        DesktopWindowStateManager.class,
                         ObservableSupplier.class,
                         boolean.class));
         Assert.assertTrue(

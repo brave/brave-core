@@ -502,8 +502,8 @@ void PrintPreviewExtractorInternal::PreviewCleanup() {
 void PrintPreviewExtractorInternal::OnPreviewReady() {
   scoped_refptr<base::RefCountedMemory> data;
   CHECK(print_preview_ui_id_);
-  PrintPreviewDataService::GetInstance()->GetDataEntry(
-      *print_preview_ui_id_, printing::COMPLETE_PREVIEW_DOCUMENT_INDEX, &data);
+  data = PrintPreviewDataService::GetInstance()->GetDataEntry(
+      *print_preview_ui_id_, printing::COMPLETE_PREVIEW_DOCUMENT_INDEX);
   if (!data.get()) {
     DLOG(ERROR) << "no data from preview id: " << *print_preview_ui_id_;
     SendError("Failed to get preview data");

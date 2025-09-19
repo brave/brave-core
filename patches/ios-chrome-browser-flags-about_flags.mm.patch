@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index bd5b5641432221e76b5c070069a9170cf262e287..31502fa0dacfe0ac81e6f7868b2d28f0cbf8e1ac 100644
+index b452fe04c1c275f0e4f8e585fd0602408c2432aa..3c15bb196c37bc37b04112d3f92f828f74be3d0c 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1504,6 +1504,7 @@ const FeatureEntry::FeatureVariation kMobilePromoOnDesktopVariations[] = {
+@@ -1516,6 +1516,7 @@ const FeatureEntry::FeatureVariation kDefaultBrowserMagicStackIosVariations[] =
  //
  // When adding a new choice, add it to the end of the list.
  const flags_ui::FeatureEntry kFeatureEntries[] = {

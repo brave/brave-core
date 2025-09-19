@@ -64,8 +64,8 @@
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/ui_features.h"
-#include "chrome/browser/ui/views/frame/browser_frame.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
@@ -236,10 +236,9 @@ BraveBrowserView* BraveBrowserView::From(BrowserView* view) {
   return static_cast<BraveBrowserView*>(view);
 }
 
-BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
-    : BrowserView(std::move(browser)) {
+BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   const bool use_rounded_corners =
-      BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get());
+      BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_);
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // When SideBySide is enabled, each ContentsContainerView in MultiContentsView
   // own ReaderModeToolbarView.
@@ -279,17 +278,17 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 #endif
 
   // Only normal window (tabbed) should have sidebar.
-  const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
+  const bool can_have_sidebar = sidebar::CanUseSidebar(browser_);
   if (can_have_sidebar) {
     // Wrap chromium side panel with our sidebar container
     auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
     sidebar_container_view_ =
         AddChildView(std::make_unique<SidebarContainerView>(
-            browser_.get(), browser_->GetFeatures().side_panel_coordinator(),
+            browser_, browser_->GetFeatures().side_panel_coordinator(),
             std::move(original_side_panel)));
     unified_side_panel_ = sidebar_container_view_->side_panel();
 
-    if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
+    if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_)) {
       sidebar_separator_view_ =
           AddChildView(std::make_unique<SidebarSeparator>());
     }
@@ -312,7 +311,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   }
 
   const bool supports_vertical_tabs =
-      tabs::utils::SupportsVerticalTabs(browser_.get());
+      tabs::utils::SupportsVerticalTabs(browser_);
   if (supports_vertical_tabs) {
     vertical_tab_strip_host_view_ =
         AddChildView(std::make_unique<views::View>());

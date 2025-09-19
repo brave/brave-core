@@ -93,7 +93,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAllowURNsInIframes,
-      &blink::features::kAttributionReportingInBrowserMigration,
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
@@ -159,7 +158,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kReportPakFileIntegrity,
 #endif
       &features::kSCTAuditing,
-      &features::kScrimForBrowserWindowModal,
       &features::kServiceWorkerAutoPreload,
       &features::kTabHoverCardImages,
 #if !BUILDFLAG(IS_ANDROID)
@@ -167,7 +165,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kTrustSafetySentimentSurveyV2,
 #endif
 #if BUILDFLAG(IS_MAC)
-      &features::kUseChromiumUpdater,
       &features::kImmersiveFullscreen,
 #endif
       &features::kWebIdentityDigitalCredentials,

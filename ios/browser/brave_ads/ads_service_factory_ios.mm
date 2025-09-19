@@ -33,8 +33,7 @@ AdsServiceFactoryIOS::AdsServiceFactoryIOS()
 AdsServiceFactoryIOS::~AdsServiceFactoryIOS() = default;
 
 std::unique_ptr<KeyedService> AdsServiceFactoryIOS::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
-  ProfileIOS* profile = ProfileIOS::FromBrowserState(context);
+    ProfileIOS* profile) const {
   CHECK(profile);
   if (profile->IsOffTheRecord()) {
     return nullptr;

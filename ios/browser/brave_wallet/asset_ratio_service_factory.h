@@ -45,7 +45,7 @@ class AssetRatioServiceFactory : public ProfileKeyedServiceFactoryIOS {
 
   // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
+      ProfileIOS* profile) const override;
 
   AssetRatioServiceFactory(const AssetRatioServiceFactory&) = delete;
   AssetRatioServiceFactory& operator=(const AssetRatioServiceFactory&) = delete;

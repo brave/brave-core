@@ -86,7 +86,7 @@ SkBitmap MakeFromData(const NSData* data,
   if (!size.isEmpty()) {
     document->setContainerSize(size);
   } else {
-    const SkRect* viewBox = root_svg_element->getViewBox().getMaybeNull();
+    std::optional<SkRect> viewBox = root_svg_element->getViewBox();
     if (viewBox) {
       size = SkSize::Make(viewBox->width(), viewBox->height());
       document->setContainerSize(size);

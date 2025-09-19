@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/chrome_pref_service_factory.cc b/chrome/browser/prefs/chrome_pref_service_factory.cc
-index ff0117b935bace7c8ef6f0ae80f1e8bcb49dcd86..fade9a2c138ae7de77295bd28d8c9124118bf3f8 100644
+index c7b1c9b4b14afcaf7668a94e9bd3bb5442a59996..af5d95fba535888b5c4c8b3eb006592876b80fe8 100644
 --- a/chrome/browser/prefs/chrome_pref_service_factory.cc
 +++ b/chrome/browser/prefs/chrome_pref_service_factory.cc
-@@ -188,6 +188,7 @@ const auto kTrackedPrefs = std::to_array<prefs::TrackedPreferenceMetadata>({
+@@ -191,6 +191,7 @@ const auto kTrackedPrefs = std::to_array<prefs::TrackedPreferenceMetadata>({
  
      // See note at top, new items added here also need to be added to
      // histograms.xml's TrackedPreference enum.

@@ -1,0 +1,13 @@
+diff --git a/ios/chrome/browser/search_engines/model/search_engine_choice_service_factory.mm b/ios/chrome/browser/search_engines/model/search_engine_choice_service_factory.mm
+index 8571431c68b9e3ff7db499d199276153bf13576e..1cbd6335cb50dec194a38deb02bbd2a92fcc8154 100644
+--- a/ios/chrome/browser/search_engines/model/search_engine_choice_service_factory.mm
++++ b/ios/chrome/browser/search_engines/model/search_engine_choice_service_factory.mm
+@@ -52,7 +52,7 @@ SearchEngineChoiceServiceFactory::BuildServiceInstanceFor(
+           ios::RegionalCapabilitiesServiceFactory::GetForProfile(profile)),
+       CHECK_DEREF(ios::TemplateURLPrepopulateDataResolverFactory::GetForProfile(
+           profile)),
+-      CHECK_DEREF(IdentityManagerFactory::GetForProfile(profile)));
++      IdentityManagerFactory::GetForProfile(profile));
+ 
+   service->Init();
+   return service;

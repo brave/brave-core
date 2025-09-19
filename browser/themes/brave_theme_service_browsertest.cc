@@ -30,6 +30,7 @@
 #include "ui/color/color_provider.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_observer.h"
+#include "ui/native_theme/os_settings_provider.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "base/run_loop.h"
@@ -183,29 +184,31 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ThemeObserverTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
-  const bool initial_mode =
-      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors();
+  ui::NativeTheme::PreferredColorScheme initial_mode =
+      ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme();
 
   // Change to light.
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  EXPECT_FALSE(
-      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
+  EXPECT_NE(ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme(),
+            ui::NativeTheme::PreferredColorScheme::kDark);
 
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
-  EXPECT_TRUE(ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
+  EXPECT_EQ(ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme(),
+            ui::NativeTheme::PreferredColorScheme::kDark);
 
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  EXPECT_FALSE(
-      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
+  EXPECT_NE(ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme(),
+            ui::NativeTheme::PreferredColorScheme::kDark);
 
   ASSERT_TRUE(dark_mode::SystemDarkModeEnabled());
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT);
-  EXPECT_EQ(initial_mode,
-            ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
+  EXPECT_EQ(
+      initial_mode,
+      ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme());
 }
 
 // Check some colors from color provider pipeline.
@@ -253,7 +256,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, MAYBE_DarkModeChangeByRegTest) {
   // And Toggle it twice from initial value to go back to initial value  because
   // reg value changes system value. Otherwise, dark mode config could be
   // changed after running this test.
-  if (!ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported()) {
+  if (!ui::OsSettingsProvider::Get().DarkColorSchemeAvailable()) {
     return;
   }
 
@@ -276,25 +279,21 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, MAYBE_DarkModeChangeByRegTest) {
 
   {
     // Set up theme observer and toggle the system dark mode by writing to the
-    // registry. We should get 2 notifications:
-    //    1 for dark mode change + 1 for reduced transparency.
-    // We get notifications for both because they are watching the same registry
-    // key.
+    // registry
     TestNativeThemeObserver native_theme_observer_for_default;
     ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
         &native_theme_observer_for_default);
 
     EXPECT_CALL(native_theme_observer_for_default,
                 OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi()))
-        .Times(2);
+        .Times(1);
     apps_use_light_theme = !initial_dark_mode ? 0 : 1;
     hkcu_themes_regkey.WriteValue(L"AppsUseLightTheme", apps_use_light_theme);
 
     // Timeout is used to let notifications trickle in.
     RunLoopRunWithTimeout(base::Milliseconds(500));
 
-    // Toggling dark mode to light should result in only one notification since
-    // we aren't touching the registry.
+    // Toggling dark mode to light should result in one notification
     EXPECT_CALL(native_theme_observer_for_default,
                 OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi()))
         .Times(1);
@@ -307,14 +306,14 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, MAYBE_DarkModeChangeByRegTest) {
 
   {
     // Set up theme observer and toggle the system dark mode via the registry
-    // again. We should only get 1 reduced transparency notifications this time
-    // because we short circuit dark mode change system notifications when we
-    // are in non-default dark mode (i.e. dark mode is set to Dark or Light, not
-    // to "Same as Windows").
+    // again. We should only get no notifications this time because we short
+    // circuit the dark mode change system notifications when we are in
+    // non-default dark mode (i.e. dark mode is set to Dark or Light, not to
+    // "Same as Windows").
     TestNativeThemeObserver native_theme_observer_for_light;
     EXPECT_CALL(native_theme_observer_for_light,
                 OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi()))
-        .Times(1);
+        .Times(0);
     ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
         &native_theme_observer_for_light);
 

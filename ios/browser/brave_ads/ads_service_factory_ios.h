@@ -46,7 +46,7 @@ class AdsServiceFactoryIOS : public ProfileKeyedServiceFactoryIOS {
 
   // ProfileKeyedServiceFactoryIOS:
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
+      ProfileIOS* profile) const override;
 };
 
 }  // namespace brave_ads

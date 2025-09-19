@@ -174,7 +174,9 @@ void BraveTooltipPopup::OnPaintBackground(gfx::Canvas* canvas) {
   gfx::Rect bounds(GetWidget()->GetLayer()->bounds());
   bounds.Inset(-GetShadowMargin());
 
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors =
+      GetNativeTheme()->preferred_color_scheme() ==
+      ui::NativeTheme::PreferredColorScheme::kDark;
 
   // Draw border
   canvas->FillRect(gfx::Rect(0, 0, kBorderThickness, bounds.bottom()),

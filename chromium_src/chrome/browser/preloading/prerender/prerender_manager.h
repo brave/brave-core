@@ -14,10 +14,16 @@
 // Completely override PrerendererManager as we don't want to use prerendering.
 class PrerenderManager : public content::WebContentsUserData<PrerenderManager> {
  public:
+  using ScopedPrewarmDisabler =
+      PrerenderManager_ChromiumImpl::ScopedPrewarmDisabler;
+
   PrerenderManager(const PrerenderManager&) = delete;
   PrerenderManager& operator=(const PrerenderManager&) = delete;
 
   ~PrerenderManager() override;
+
+  // This acts as a stub for the the prewarming disabler.
+  std::unique_ptr<ScopedPrewarmDisabler> CreateScopedPrewarmDisabler();
 
   // Maybe start prerendering a prewarm page if we haven't prewarm it yet for
   // the underlying WebContents. Returns true if a new prerender is started.

@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
-index 44f5da292099a35a9d8eba4bd8f6e22fa09d3ff5..a358fa626e6f1a5acaf024bd08a2ead110a40f3f 100644
+index 4a5597b0d238e8ea40db5715f8db3a00a8e5f439..f055317da0a7dc8ac3ffe1f3e9fad94ae5e61c5b 100644
 --- a/components/permissions/permission_request_manager.cc
 +++ b/components/permissions/permission_request_manager.cc
 @@ -553,6 +553,7 @@ void PermissionRequestManager::OnVisibilityChanged(
@@ -36,7 +36,7 @@ index 44f5da292099a35a9d8eba4bd8f6e22fa09d3ff5..a358fa626e6f1a5acaf024bd08a2ead1
    DCHECK(current_request_ui_to_use_);
  
    if (!tab_is_active_) {
-@@ -1760,7 +1762,7 @@ void PermissionRequestManager::OnTabActiveChanged() {
+@@ -1759,7 +1761,7 @@ void PermissionRequestManager::OnTabActiveChanged() {
      return;
    }
  

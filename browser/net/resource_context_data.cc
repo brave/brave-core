@@ -20,6 +20,8 @@
 // User data key for ResourceContextData.
 const void* const kResourceContextUserDataKey = &kResourceContextUserDataKey;
 
+RequestIDGenerator::RequestIDGenerator() = default;
+
 ResourceContextData::ResourceContextData()
     : request_id_generator_(base::MakeRefCounted<RequestIDGenerator>()),
       weak_factory_(this) {
