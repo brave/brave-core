@@ -16,8 +16,7 @@ namespace update_client {
 std::unique_ptr<ProtocolParser>
 PrivacyPreservingProtocolHandlerFactory::CreateParser() const {
   // We're not interested in changing this behavior. Mirror upstream.
-  ProtocolHandlerFactoryJSON upstream_factory;
-  return upstream_factory.CreateParser();
+  return ProtocolHandlerFactoryJSON().CreateParser();
 }
 
 std::unique_ptr<ProtocolSerializer>
