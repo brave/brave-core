@@ -35,3 +35,17 @@ static_library("update_client") {
     "//components/update_client",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_protocol_handler_unittest.cc" ]
+  deps = [
+    ":update_client",
+    "//base",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//components/update_client",
+    "//testing/gtest",
+    "//third_party/re2",
+  ]
+}
