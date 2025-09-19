@@ -80,6 +80,7 @@ if (!is_ios) {
 } else {
   brave_all_unit_tests_deps += [
     "//brave/ios/testing:ios_brave_unit_tests",
+    "//brave/ios/web:ios_brave_web_inttests",
     "//brave/ios/web:ios_brave_web_unittests",
   ]
 }

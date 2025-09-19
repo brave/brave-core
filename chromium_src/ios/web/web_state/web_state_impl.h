@@ -16,7 +16,9 @@ class WebUIIOS;
   ClearWebUI();                       \
   web::WebUIIOS* GetMainFrameWebUI(); \
   size_t GetWebUICountForTesting
+
 #include <ios/web/web_state/web_state_impl.h>  // IWYU pragma: export
+
 #undef ClearWebUI
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_WEB_STATE_WEB_STATE_IMPL_H_

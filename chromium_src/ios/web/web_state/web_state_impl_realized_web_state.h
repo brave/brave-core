@@ -17,14 +17,14 @@
 // The reason we need to allow multiple WebUI's per frame is because some of our
 // WebUI applications such as AI Chat use subframes to host chrome-untrusted
 // frames
-#define web_ui_                                                       \
-  web_ui_;                                                            \
-  std::map<std::string, std::unique_ptr<web::WebUIIOS>> web_uis_;     \
-  void TearDown_ChromiumImpl();                                       \
-  void CreateWebUI_ChromiumImpl(const GURL& url);                     \
-  void ClearWebUI_ChromiumImpl();                                     \
-  bool HasWebUI_ChromiumImpl() const;                                 \
-  void HandleWebUIMessage_ChromiumImpl(const GURL&, std::string_view, \
+#define web_ui_                                                                \
+  web_ui_;                                                                     \
+  std::map<std::string, std::unique_ptr<web::WebUIIOS>, std::less<>> web_uis_; \
+  void TearDown_ChromiumImpl();                                                \
+  void CreateWebUI_ChromiumImpl(const GURL& url);                              \
+  void ClearWebUI_ChromiumImpl();                                              \
+  bool HasWebUI_ChromiumImpl() const;                                          \
+  void HandleWebUIMessage_ChromiumImpl(const GURL&, std::string_view,          \
                                        const base::Value::List&)
 // Exposes an API to obtain the main frame WebUI which is required for some
 // Brave WebUI implementations
@@ -32,7 +32,9 @@
   ClearWebUI();                       \
   web::WebUIIOS* GetMainFrameWebUI(); \
   size_t GetWebUICountForTesting
+
 #include <ios/web/web_state/web_state_impl_realized_web_state.h>  // IWYU pragma: export
+
 #undef ClearWebUI
 #undef web_ui_
 

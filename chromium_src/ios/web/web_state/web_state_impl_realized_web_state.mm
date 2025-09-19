@@ -11,7 +11,9 @@
 #define HandleWebUIMessage HandleWebUIMessage_ChromiumImpl
 #define HasWebUI HasWebUI_ChromiumImpl
 #define TearDown TearDown_ChromiumImpl
+
 #include <ios/web/web_state/web_state_impl_realized_web_state.mm>
+
 #undef TearDown
 #undef HasWebUI
 #undef HandleWebUIMessage
@@ -35,7 +37,7 @@ void WebStateImpl::RealizedWebState::TearDown() {
 }
 
 void WebStateImpl::RealizedWebState::CreateWebUI(const GURL& url) {
-  const std::string host = url.host();
+  const std::string_view host = url.host_piece();
   if (web_uis_.contains(host)) {
     // Don't recreate WebUI for the same host. At the moment this is a required
     // limitation as we don't have the neccessary info to associate a WebUI
@@ -44,7 +46,7 @@ void WebStateImpl::RealizedWebState::CreateWebUI(const GURL& url) {
   }
   auto web_ui = CreateWebUIIOS(url);
   if (web_ui) {
-    web_uis_.insert({host, std::move(web_ui)});
+    web_uis_.insert({std::string(host), std::move(web_ui)});
   }
 }
 
@@ -56,7 +58,7 @@ void WebStateImpl::RealizedWebState::HandleWebUIMessage(
     const GURL& source_url,
     std::string_view message,
     const base::Value::List& args) {
-  const std::string host = source_url.host();
+  const std::string_view host = source_url.host_piece();
   auto web_ui = web_uis_.find(host);
   if (web_ui != web_uis_.end() && web_ui->second) {
     web_ui->second->ProcessWebUIIOSMessage(source_url, message, args);
