@@ -61,6 +61,32 @@ if (brave_build_with_mediapipe_lib) {
       "//brave/third_party/mediapipe:buildflags",
       "//brave/third_party/mediapipe:llm_inference_engine_cpu",
     ]
+
+    deps = [ ":mediapipe_llm_test" ]
+  }
+
+  executable("mediapipe_llm_test") {
+    sources = [
+      "mediapipe_llm_test_main.cc",  # Use our patched version
+    ]
+
+    deps = [
+      "//brave/third_party/mediapipe:llm_inference_engine_cpu",
+      "//third_party/abseil-cpp:absl",
+    ]
+
+    include_dirs = [
+      "//third_party/mediapipe/src",
+    ]
+
+    if (is_mac) {
+      frameworks = [
+        "Foundation.framework",
+      ]
+    }
+
+    configs -= [ "//build/config/compiler:chromium_code" ]
+    configs += [ "//build/config/compiler:no_chromium_code" ]
   }
 }
 
