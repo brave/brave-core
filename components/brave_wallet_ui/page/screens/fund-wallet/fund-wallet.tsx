@@ -130,7 +130,7 @@ export const FundWalletScreen = () => {
 
 function AssetSelection() {
   // Selectors
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   // routing
   const history = useHistory()
@@ -292,8 +292,8 @@ function AssetSelection() {
     return (
       <WalletPageWrapper
         wrapContentInBox={true}
-        hideNav={isAndroid}
-        hideHeader={isAndroid}
+        hideNav={isMobile}
+        hideHeader={isMobile}
         cardHeader={
           <PageTitleHeader
             title={pageTitle}
@@ -320,8 +320,8 @@ function AssetSelection() {
   return (
     <WalletPageWrapper
       wrapContentInBox={true}
-      hideNav={isAndroid}
-      hideHeader={isAndroid}
+      hideNav={isMobile}
+      hideHeader={isMobile}
       useFullHeight={true}
       cardHeader={<PageTitleHeader title={pageTitle} />}
     >
@@ -446,7 +446,7 @@ function AssetSelection() {
 
 function PurchaseOptionSelection() {
   // Selectors
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   // routing
   const history = useHistory()
@@ -650,8 +650,8 @@ function PurchaseOptionSelection() {
   return (
     <WalletPageWrapper
       wrapContentInBox={true}
-      hideNav={isAndroid}
-      hideHeader={isAndroid}
+      hideNav={isMobile}
+      hideHeader={isMobile}
       cardHeader={
         <PageTitleHeader
           title={pageTitle}

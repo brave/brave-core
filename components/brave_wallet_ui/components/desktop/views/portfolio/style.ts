@@ -306,10 +306,10 @@ export const EyeIcon = styled(Icon)`
 `
 
 export const ContentWrapper = styled(Column)<{
-  isAndroidOrPanel: boolean
+  isMobileOrPanel: boolean
 }>`
   background-color: ${(p) =>
-    p.isAndroidOrPanel ? leo.color.container.background : 'transparent'};
+    p.isMobileOrPanel ? leo.color.container.background : 'transparent'};
 `
 
 export const BalanceAndLineChartWrapper = styled(Column)`
@@ -317,11 +317,11 @@ export const BalanceAndLineChartWrapper = styled(Column)`
 `
 
 export const ActivityWrapper = styled(Column)<{
-  isAndroidOrPanel: boolean
+  isMobileOrPanel: boolean
 }>`
   padding: 0px 32px 32px 32px;
   background-color: ${(p) =>
-    p.isAndroidOrPanel ? leo.color.container.background : 'transparent'};
+    p.isMobileOrPanel ? leo.color.container.background : 'transparent'};
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 0px 16px 16px 16px;
   }

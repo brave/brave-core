@@ -52,7 +52,7 @@ export const AddressActionsMenu = (props: Props) => {
   const { account, children } = props
 
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   // State
   const [showMenu, setShowMenu] = React.useState(false)
@@ -94,7 +94,7 @@ export const AddressActionsMenu = (props: Props) => {
         <Button onClick={() => setShowMenu((prev) => !prev)}>{children}</Button>
         {showMenu && (
           <StyledWrapper
-            yPosition={isPanel || isAndroid ? 26 : 46}
+            yPosition={isPanel || isMobile ? 26 : 46}
             left={0}
           >
             <PopupButton onClick={handleCopyAddress}>
