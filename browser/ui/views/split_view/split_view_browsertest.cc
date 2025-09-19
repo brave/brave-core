@@ -32,6 +32,7 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/split_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
@@ -44,6 +45,7 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/tabs/public/split_tab_visual_data.h"
@@ -115,10 +117,6 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
   void ToggleVerticalTabStrip() {
     brave::ToggleVerticalTabStrip(browser());
     browser_non_client_frame_view()->DeprecatedLayoutImmediately();
-  }
-
-  views::Widget* secondary_location_bar_widget() const {
-    return brave_multi_contents_view()->secondary_location_bar_widget_.get();
   }
 
  protected:
@@ -226,12 +224,26 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_TRUE(tab_strip()->tab_at(3)->IsActive());
   EXPECT_TRUE(split_view_separator()->GetVisible());
 
-  // Chromium's mini toolbar should be hidden always as we're using own own mini
-  // urlbar.
-  EXPECT_FALSE(
+  // Chromium's mini toolbar should be visible.
+  EXPECT_TRUE(
       brave_multi_contents_view()->mini_toolbar_for_testing(0)->GetVisible());
-  EXPECT_FALSE(
+  EXPECT_TRUE(
       brave_multi_contents_view()->mini_toolbar_for_testing(1)->GetVisible());
+
+  // Check mini toolbar uses our menu model.
+  brave_multi_contents_view()->mini_toolbar_for_testing(0)->OpenSplitViewMenu();
+  auto* menu_model =
+      static_cast<SplitTabMenuModel*>(brave_multi_contents_view()
+                                          ->mini_toolbar_for_testing(0)
+                                          ->menu_model_.get());
+
+  // This id calc is copied from GetCommandIdInt() at split_tab_menu_model.cc
+  // Check that method if test failed.
+  int command_id =
+      ExistingBaseSubMenuModel::kMinSplitTabMenuModelCommandId +
+      static_cast<int>(SplitTabMenuModel::CommandId::kReversePosition);
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_IDC_SWAP_SPLIT_VIEW),
+            menu_model->GetLabelForCommandId(command_id));
 
   // Activate non split view tab.
   tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
@@ -277,6 +289,21 @@ class SideBySideWithRoundedCornersTest : public SideBySideEnabledBrowserTest {
   }
   ~SideBySideWithRoundedCornersTest() override = default;
 };
+
+IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest, ContentsShadowTest) {
+  // Shadow if split tab is not active.
+  EXPECT_TRUE(brave_browser_view()->contents_shadow_);
+
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kToolbarButton);
+
+  // No shadow if split tab is active.
+  EXPECT_FALSE(brave_browser_view()->contents_shadow_);
+
+  // Shadow if split tab is not active.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_TRUE(brave_browser_view()->contents_shadow_);
+}
 
 // Test multi contents view's rounded corners with fullscreen state w/o split
 // view.

@@ -14,11 +14,6 @@
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
-namespace views {
-class Widget;
-}  // namespace views
-
-class SplitViewLocationBar;
 class BraveContentsContainerView;
 
 class BraveMultiContentsView : public MultiContentsView {
@@ -31,7 +26,6 @@ class BraveMultiContentsView : public MultiContentsView {
                          std::unique_ptr<MultiContentsViewDelegate> delegate);
   ~BraveMultiContentsView() override;
 
-  void UpdateSecondaryLocationBar();
   void UpdateCornerRadius();
 
   BraveContentsContainerView* GetActiveContentsContainerView();
@@ -52,9 +46,6 @@ class BraveMultiContentsView : public MultiContentsView {
       const {
     return contents_container_views_;
   }
-
-  std::unique_ptr<SplitViewLocationBar> secondary_location_bar_;
-  std::unique_ptr<views::Widget> secondary_location_bar_widget_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_

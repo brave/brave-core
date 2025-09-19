@@ -256,7 +256,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     contents_separator_->SetPreferredSize(gfx::Size());
     contents_shadow_ = BraveContentsViewUtil::CreateShadow(contents_container_);
     contents_background_view_ =
-        AddChildView(std::make_unique<ContentsBackground>());
+        AddChildViewAt(std::make_unique<ContentsBackground>(), 0);
   }
 
   pref_change_registrar_.Init(GetProfile()->GetPrefs());
@@ -803,29 +803,47 @@ void BraveBrowserView::GetAccessiblePanes(std::vector<views::View*>* panes) {
   }
 }
 
+void BraveBrowserView::UpdateContentsShadowVisibility() {
+  // With SideBySide, we use chromium's mini toolbar.
+  // Unfortunately, it's not rendered well with contents shadow.
+  // Fixed by hiding contents shadow when split view is active.
+  // As split view has another border around contents, we don't need
+  // contents shadow.
+  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
+    return;
+  }
+
+  if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
+    return;
+  }
+
+  // Hide contents shadow when active tab is in split tab.
+  auto* tab_strip_model = browser()->tab_strip_model();
+  const bool hide_contents_shadow = tab_strip_model->IsActiveTabSplit();
+
+  if (hide_contents_shadow && contents_shadow_) {
+    contents_shadow_.reset();
+    contents_container_->DestroyLayer();
+    return;
+  }
+
+  if (!hide_contents_shadow && !contents_shadow_) {
+    contents_shadow_ = BraveContentsViewUtil::CreateShadow(contents_container_);
+  }
+}
+
 void BraveBrowserView::ShowSplitView(bool focus_active_view) {
   BrowserView::ShowSplitView(focus_active_view);
 
+  UpdateContentsShadowVisibility();
   UpdateContentsSeparatorVisibility();
-  GetBraveMultiContentsView()->UpdateSecondaryLocationBar();
 }
 
 void BraveBrowserView::HideSplitView() {
   BrowserView::HideSplitView();
 
+  UpdateContentsShadowVisibility();
   UpdateContentsSeparatorVisibility();
-}
-
-void BraveBrowserView::UpdateActiveTabInSplitView() {
-  BrowserView::UpdateActiveTabInSplitView();
-  GetBraveMultiContentsView()->UpdateSecondaryLocationBar();
-}
-
-void BraveBrowserView::UpdateContentsInSplitView(
-    const std::vector<std::pair<tabs::TabInterface*, int>>& prev_tabs,
-    const std::vector<std::pair<tabs::TabInterface*, int>>& new_tabs) {
-  BrowserView::UpdateContentsInSplitView(prev_tabs, new_tabs);
-  GetBraveMultiContentsView()->UpdateSecondaryLocationBar();
 }
 
 BraveMultiContentsView* BraveBrowserView::GetBraveMultiContentsView() const {
@@ -872,6 +890,8 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
     split_view_->DidChangeActiveWebContents(
         /*passkey*/ {}, old_contents, new_contents);
   }
+
+  UpdateContentsShadowVisibility();
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   UpdateReaderModeToolbar();
@@ -1014,7 +1034,9 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
 
   // Set the appropriate corner radius for the view that contains both the web
   // contents and devtools.
-  contents_container_->layer()->SetRoundedCornerRadius(corners);
+  if (contents_container_->layer()) {
+    contents_container_->layer()->SetRoundedCornerRadius(corners);
+  }
 
   if (multi_contents_view_) {
     GetBraveMultiContentsView()->UpdateCornerRadius();
