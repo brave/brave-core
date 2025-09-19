@@ -401,18 +401,12 @@
 		44FCE0C52BE9325800A8913F /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		44FCE0C62BE9326400A8913F /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		44FCE0C72BE932AD00A8913F /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = "Supporting Files/ro.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		44FCE0C82BE9341500A8913F /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "Shortcuts/pt-PT.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
-		44FCE0C92BE9341600A8913F /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/BraveWidgets.strings"; sourceTree = "<group>"; };
 		44FCE0CA2BE9373B00A8913F /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = Shortcuts/pt.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		44FCE0CB2BE9373C00A8913F /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
 		44FCE0CC2BE9374A00A8913F /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = "Supporting Files/pt.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		44FCE0CD2BE9376000A8913F /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "Supporting Files/pt-PT.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		44FCE0CE2BE9378100A8913F /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		44FCE0CF2BE9378D00A8913F /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		44FCE0D02BE9379A00A8913F /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		44FCE0D12BE937A200A8913F /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		44FCE0D22BE937C000A8913F /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
-		44FCE0D32BE937D300A8913F /* pt-PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-PT"; path = "pt-PT.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		44FCE0D42BE942F000A8913F /* gsw */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = gsw; path = Shortcuts/gsw.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		44FCE0D52BE942F100A8913F /* gsw */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = gsw; path = gsw.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
 		44FCE0D62BE9430800A8913F /* bs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bs; path = Shortcuts/bs.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
@@ -1180,7 +1174,6 @@
 				hu,
 				sk,
 				ro,
-				"pt-PT",
 				pt,
 				gsw,
 				bs,
@@ -1465,7 +1458,6 @@
 				445881712BE9286F00158EFA /* hu */,
 				445881732BE9287C00158EFA /* sk */,
 				44FCE0C22BE9320B00A8913F /* ro */,
-				44FCE0C82BE9341500A8913F /* pt-PT */,
 				44FCE0CA2BE9373B00A8913F /* pt */,
 				44FCE0D42BE942F000A8913F /* gsw */,
 				44FCE0D62BE9430800A8913F /* bs */,
@@ -1513,7 +1505,6 @@
 				445881902BE92C5D00158EFA /* sk */,
 				44FCE0C42BE9322800A8913F /* ro */,
 				44FCE0D22BE937C000A8913F /* pt */,
-				44FCE0D32BE937D300A8913F /* pt-PT */,
 				44FCE0DA2BE9436F00A8913F /* bs */,
 				44FCE0DB2BE9439D00A8913F /* gsw */,
 				7D866A1F2CC04B2D006A42EC /* ar */,
@@ -1561,7 +1552,6 @@
 				4458817B2BE9291B00158EFA /* sk */,
 				44FCE0C72BE932AD00A8913F /* ro */,
 				44FCE0CC2BE9374A00A8913F /* pt */,
-				44FCE0CD2BE9376000A8913F /* pt-PT */,
 				44FCE0D82BE9434800A8913F /* bs */,
 				44FCE0DD2BE943CE00A8913F /* gsw */,
 				7D866A202CC04B2D006A42EC /* ar */,
@@ -1609,7 +1599,6 @@
 				445881892BE92B0E00158EFA /* sk */,
 				44FCE0C52BE9325800A8913F /* ro */,
 				44FCE0CE2BE9378100A8913F /* pt */,
-				44FCE0CF2BE9378D00A8913F /* pt-PT */,
 				44FCE0DE2BE943EB00A8913F /* bs */,
 				44FCE0DF2BE943F800A8913F /* gsw */,
 				271D3F9C2E007EC40093539A /* he */,
@@ -1654,7 +1643,6 @@
 				445881822BE92A3000158EFA /* sk */,
 				44FCE0C62BE9326400A8913F /* ro */,
 				44FCE0D02BE9379A00A8913F /* pt */,
-				44FCE0D12BE937A200A8913F /* pt-PT */,
 				44FCE0D92BE9436200A8913F /* bs */,
 				44FCE0DC2BE943A700A8913F /* gsw */,
 				271D3FA22E007ED00093539A /* he */,
@@ -1698,7 +1686,6 @@
 				445881722BE9287100158EFA /* hu */,
 				445881742BE9287D00158EFA /* sk */,
 				44FCE0C32BE9321700A8913F /* ro */,
-				44FCE0C92BE9341600A8913F /* pt-PT */,
 				44FCE0CB2BE9373C00A8913F /* pt */,
 				44FCE0D52BE942F100A8913F /* gsw */,
 				44FCE0D72BE9430A00A8913F /* bs */,
