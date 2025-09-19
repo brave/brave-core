@@ -8,13 +8,11 @@
 // Overrides Chrome's Content Blocker Rule List
 // So it doesn't block WebUIs from opening external URLs
 #define CreateLocalBlockingJsonRuleList \
-  CreateLocalBlockingJsonRuleList() { \
-    return @""; \
-  } \
-  \
-  NSString* CreateLocalBlockingJsonRuleList_ChromiumImpl \
-
-
+  CreateLocalBlockingJsonRuleList() {   \
+    return @"";                         \
+  }                                     \
+                                        \
+  NSString* CreateLocalBlockingJsonRuleList_ChromiumImpl
 #include <ios/web/web_state/ui/wk_content_rule_list_util.mm>
 
 #undef CreateLocalBlockingJsonRuleList
