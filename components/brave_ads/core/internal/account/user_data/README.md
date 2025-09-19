@@ -13,7 +13,7 @@ Included as part of the "confirmation" payload. See [non-Brave Rewards user conf
 
 | key  | example  | description  |
 |---|---|---|
-| conversion.action[^2]  | {"conversion":[{"action":"click"}]}  | Conversion attribution to determine which advertising efforts led a user to view or click on an ad and subsequently complete a desired action. Also, see [reporting metrics](https://ads-help.brave.com/campaign-performance/reporting/#available-reporting-metrics-in-brave-ads-manager).<br><br> Supported types:<br><br>Brave Search ads:<br>- click-through<br><br>Brave News ads:<br>- view-through<br>- click-through  |
+| conversion.action[^2]  | {"conversion":[{"action":"click"}]}  | Conversion attribution to determine which advertising efforts led a user to view or click on an ad and subsequently complete a desired action. Also, see [reporting metrics](https://ads-help.brave.com/campaign-performance/reporting/#available-reporting-metrics-in-brave-ads-manager).<br><br> Supported types:<br><br>Brave Search ads:<br>- click-through  |
 
 ## Brave Rewards User
 
