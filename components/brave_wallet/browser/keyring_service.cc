@@ -45,6 +45,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
@@ -881,6 +882,12 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
     cardano_hd_testnet_keyring_ = std::make_unique<CardanoHDKeyring>(
         keyring_seed.entropy, KeyringId::kCardanoTestnet);
   }
+  if (IsKeyringEnabled(KeyringId::kPolkadotMainnet)) {
+    auto polkadot_seed =
+        base::span(keyring_seed.seed).first<kPolkadotSeedSize>();
+    polkadot_mainnet_keyring_ = std::make_unique<PolkadotKeyring>(
+        polkadot_seed, KeyringId::kPolkadotMainnet);
+  }
 }
 
 void KeyringService::ClearKeyrings() {
@@ -903,6 +910,8 @@ void KeyringService::ClearKeyrings() {
 
   cardano_hd_mainnet_keyring_.reset();
   cardano_hd_testnet_keyring_.reset();
+
+  polkadot_mainnet_keyring_.reset();
 }
 
 void KeyringService::CreateDefaultAccounts() {
@@ -1050,6 +1059,17 @@ template <>
 ZCashKeyring* KeyringService::GetKeyring(mojom::KeyringId keyring_id) const {
   for (auto* keyring :
        {zcash_hd_mainnet_keyring_.get(), zcash_hd_testnet_keyring_.get()}) {
+    if (keyring && keyring->keyring_id() == keyring_id) {
+      return keyring;
+    }
+  }
+
+  return nullptr;
+}
+
+template <>
+PolkadotKeyring* KeyringService::GetKeyring(mojom::KeyringId keyring_id) const {
+  for (auto* keyring : {polkadot_mainnet_keyring_.get()}) {
     if (keyring && keyring->keyring_id() == keyring_id) {
       return keyring;
     }
@@ -1572,6 +1592,10 @@ std::optional<std::string> KeyringService::AddHDAccountForKeyringInternal(
   }
 
   if (auto* keyring = GetKeyring<CardanoHDKeyring>(keyring_id)) {
+    return keyring->AddNewHDAccount(index);
+  }
+
+  if (auto* keyring = GetKeyring<PolkadotKeyring>(keyring_id)) {
     return keyring->AddNewHDAccount(index);
   }
 

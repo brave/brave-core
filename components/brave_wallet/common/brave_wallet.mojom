@@ -1095,6 +1095,7 @@ struct WalletInfo {
   bool is_cardano_enabled;
   array<CoinType> enabled_coins;
   bool is_cardano_dapp_support_enabled;
+  bool is_polkadot_enabled;
 };
 
 // Browser-side handler for common panel / page things
@@ -1711,6 +1712,8 @@ const string kZilliqaEVMChainId = "0x8001";
 
 const string kScrollChainId = "0x82750";
 
+const string kPolkadotChainId = "polkadot";
+
 const string kBatTokenContractAddress =
     "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
 
@@ -1722,6 +1725,7 @@ enum CoinType {
   FIL = 461,
   SOL = 501,
   ADA = 1815,
+  DOT = 354,
 };
 
 struct NetworkInfo {

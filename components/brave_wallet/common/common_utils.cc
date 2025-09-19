@@ -314,6 +314,10 @@ mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
     return mojom::CoinType::ADA;
   }
 
+  if (IsPolkadotKeyring(keyring_id)) {
+    return mojom::CoinType::DOT;
+  }
+
   NOTREACHED() << "Unknown keyring: " << keyring_id;
 }
 
@@ -396,6 +400,9 @@ std::vector<mojom::KeyringId> GetEnabledKeyrings() {
     ids.push_back(mojom::KeyringId::kCardanoMainnet);
     ids.push_back(mojom::KeyringId::kCardanoTestnet);
   }
+  if (IsPolkadotEnabled()) {
+    ids.push_back(mojom::KeyringId::kPolkadotMainnet);
+  }
 
   DCHECK_GT(ids.size(), 0u);
   return ids;
@@ -447,6 +454,8 @@ std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
       } else {
         return {mojom::KeyringId::kCardanoTestnet};
       }
+    case mojom::CoinType::DOT:
+      return {mojom::KeyringId::kPolkadotMainnet};
   }
   NOTREACHED();
 }

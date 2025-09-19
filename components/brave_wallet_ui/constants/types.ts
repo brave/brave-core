@@ -217,6 +217,7 @@ export interface WalletState {
   isZCashShieldedTransactionsEnabled: boolean
   isCardanoEnabled: boolean
   isCardanoDappSupportEnabled: boolean
+  isPolkadotEnabled: boolean
 }
 
 export interface PanelState {
