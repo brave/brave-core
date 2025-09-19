@@ -17,7 +17,7 @@ class BraveMultiContentsViewMiniToolbar : public MultiContentsViewMiniToolbar {
   ~BraveMultiContentsViewMiniToolbar() override;
 
   // MultiContentsViewMiniToolbar:
-  void UpdateState(bool is_active) override;
+  void UpdateState(bool is_active, bool is_highlighted) override;
   void OnPaint(gfx::Canvas* canvas) override;
   SkPath GetPath(bool border_stroke_only) const override;
 
