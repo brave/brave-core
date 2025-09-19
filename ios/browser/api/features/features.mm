@@ -350,4 +350,9 @@
       [[Feature alloc] initWithFeature:&brave::features::kModernTabTrayEnabled];
 }
 
++ (Feature*)kBraveSyncDefaultPasswords {
+  return [[Feature alloc]
+      initWithFeature:&brave_sync::features::kBraveSyncDefaultPasswords];
+}
+
 @end
