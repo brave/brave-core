@@ -27,9 +27,6 @@ concept ResponseBody = requires(const base::Value& value) {
 template <typename T>
 struct ResponseImpl : std::bool_constant<ResponseBody<T>> {};
 
-template <typename T>
-struct ResponseImpl<WithHeaders<T>> : ResponseImpl<T> {};
-
 template <typename... Ts>
 struct ResponseImpl<std::variant<Ts...>>
     : std::bool_constant<sizeof...(Ts) >= 2 &&
