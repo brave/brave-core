@@ -43,8 +43,9 @@ MultiContentsViewMiniToolbar::CreateBraveSplitTabMenuModel(
 BraveMultiContentsViewMiniToolbar::~BraveMultiContentsViewMiniToolbar() =
     default;
 
-void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active) {
-  MultiContentsViewMiniToolbar::UpdateState(is_active);
+void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active,
+                                                    bool is_highlighted) {
+  MultiContentsViewMiniToolbar::UpdateState(is_active, is_highlighted);
 
   if (!GetVisible()) {
     return;
