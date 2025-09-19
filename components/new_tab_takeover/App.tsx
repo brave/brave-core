@@ -13,27 +13,57 @@ import {
   SponsoredRichMediaBackgroundInfo, SponsoredRichMediaBackground
 } from '../brave_new_tab_ui/containers/newTab/sponsored_rich_media_background'
 
+function sanitizeId(value: string | null): string | null {
+  if (!value || value.length === 0) {
+    return null;
+  }
+
+  // Restrict input to alphanumeric characters and hyphens to prevent
+  // potential injections.
+  if (!/^[0-9a-fA-F-]+$/.test(value)) {
+    return null;
+  }
+
+  return value;
+}
+
+function useParametersFromQuery(): { placementId: string | null;
+                                     creativeInstanceId: string | null } {
+  return React.useMemo(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const placementId = urlParams.get('placementId');
+    const creativeInstanceId = urlParams.get('creativeInstanceId');
+
+    return {
+      placementId: sanitizeId(placementId),
+      creativeInstanceId: sanitizeId(creativeInstanceId)
+    };
+  }, []);
+}
+
 export default function App(props: React.PropsWithChildren) {
+  const { placementId, creativeInstanceId } = useParametersFromQuery();
   const [sponsoredRichMediaBackgroundInfo, setSponsoredRichMediaBackgroundInfo] = React.useState<SponsoredRichMediaBackgroundInfo | null>(null)
   const [sponsoredRichMediaAdEventHandler, setSponsoredRichMediaAdEventHandler] = React.useState<NTPBackgroundMediaMojom.SponsoredRichMediaAdEventHandlerRemote | null>(null)
   const [newTabTakeover, setNewTabTakeover] = React.useState<NewTabTakeoverMojom.NewTabTakeoverRemote | null>(null)
   const [richMediaHasLoaded, setRichMediaHasLoaded] = React.useState(false)
 
   const getCurrentWallpaper = React.useCallback(async () => {
-    if (!newTabTakeover) {
+    if (!newTabTakeover || !placementId || !creativeInstanceId) {
       return
     }
+
     try {
-      const response = await newTabTakeover.getCurrentWallpaper();
-      if (!response || !response.url || !response.placementId ||
-          !response.creativeInstanceId || !response.targetUrl) {
+      const response =
+          await newTabTakeover.getCurrentWallpaper(creativeInstanceId);
+      if (!response || !response.url || !response.targetUrl) {
         return
       }
 
       const sponsoredRichMediaBackgroundInfo: SponsoredRichMediaBackgroundInfo = {
         url: response.url.url,
-        placementId: response.placementId,
-        creativeInstanceId: response.creativeInstanceId,
+        placementId: placementId,
+        creativeInstanceId: creativeInstanceId,
         shouldMetricsFallbackToP3a: response.shouldMetricsFallbackToP3a,
         targetUrl: response.targetUrl.url
       }
@@ -41,7 +71,7 @@ export default function App(props: React.PropsWithChildren) {
     } catch (error) {
       console.error('Failed to get last displayed branded wallpaper:', error);
     }
-  }, [newTabTakeover]);
+  }, [newTabTakeover, placementId, creativeInstanceId]);
 
   React.useEffect(() => {
     const newTabTakeover = NewTabTakeoverMojom.NewTabTakeover.getRemote();
