@@ -139,7 +139,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/misc_metrics",
   "//brave/browser/misc_metrics:misc_metrics_impl",
   "//brave/browser/ntp_background",
-  "//brave/browser/psst",
   "//brave/browser/skus",
   "//brave/browser/sync",
   "//brave/browser/themes",
@@ -286,6 +285,7 @@ brave_chrome_browser_deps = [
 
 if (enable_psst) {
   brave_chrome_browser_deps += [
+    "//brave/browser/psst",
     "//brave/components/psst/browser/content",
     "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
