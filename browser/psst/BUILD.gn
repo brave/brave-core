@@ -22,6 +22,9 @@ static_library("psst") {
     "//brave/components/constants",
     "//brave/components/psst/browser/content",
     "//brave/components/psst/common",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/profiles",
+    "//components/permissions",
   ]
 }
 
