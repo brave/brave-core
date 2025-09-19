@@ -1,0 +1,23 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/resources/brave_grit.gni")
+import("//tools/grit/repack.gni")
+
+repack("packed_resources") {
+  testonly = true
+  sources = [ "$root_gen_dir/brave/ios/web/test/test_resources.pak" ]
+  deps = [ ":resources" ]
+  output = "$target_gen_dir/resources.pak"
+  copy_data_to_bundle = true
+}
+
+brave_grit("resources") {
+  source = "test_resources.grd"
+  outputs = [
+    "grit/test_resources.h",
+    "test_resources.pak",
+  ]
+}
