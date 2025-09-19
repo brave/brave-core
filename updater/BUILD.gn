@@ -1,0 +1,27 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//testing/test.gni")
+
+if (is_win || is_mac || is_linux) {
+  test("brave_updater_unittests") {
+    testonly = true
+    sources = [
+      "configurator_unittest.cc",
+      "ping_configurator_unittest.cc",
+      "run_all_unittests.cc",
+    ]
+    deps = [
+      "//base",
+      "//base/test:test_support",
+      "//brave/components/update_client:test_util",
+      "//chrome/updater:base",
+      "//chrome/updater:constants_test",
+      "//components/prefs:test_support",
+      "//components/update_client",
+      "//testing/gtest",
+    ]
+  }
+}

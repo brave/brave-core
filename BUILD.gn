@@ -87,6 +87,9 @@ if (!is_ios) {
 if (!is_ios && !is_android) {
   brave_all_unit_tests_deps += [ "//brave/test:brave_installer_unittests" ]
 }
+if (is_win || is_mac || is_linux) {
+  brave_all_unit_tests_deps += [ "//brave/updater:brave_updater_unittests" ]
+}
 
 # This group is for unit tests that run as part of brave_all_unit_tests. Other
 # tests that you only want to build should be added directly to `all` group
