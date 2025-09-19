@@ -14,7 +14,7 @@
 
 namespace update_client {
 
-class BraveProtocolHandlerFactoryJSON : public ProtocolHandlerFactory {
+class PrivacyPreservingProtocolHandlerFactory : public ProtocolHandlerFactory {
  public:
   // Overrides for ProtocolHandlerFactory.
   std::unique_ptr<ProtocolParser> CreateParser() const override;

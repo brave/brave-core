@@ -9,7 +9,7 @@
 
 #define EnabledBackgroundDownloader EnabledBackgroundDownloader_Unused
 #define EnabledCupSigning EnabledCupSigning_Unused
-#define ProtocolHandlerFactoryJSON BraveProtocolHandlerFactoryJSON
+#define ProtocolHandlerFactoryJSON PrivacyPreservingProtocolHandlerFactory
 #include <components/component_updater/configurator_impl.cc>
 #undef ProtocolHandlerFactoryJSON
 #undef EnabledCupSigning

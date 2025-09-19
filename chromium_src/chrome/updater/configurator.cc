@@ -5,6 +5,6 @@
 
 #include "brave/components/update_client/privacy_preserving_protocol_handler.h"
 
-#define ProtocolHandlerFactoryJSON BraveProtocolHandlerFactoryJSON
+#define ProtocolHandlerFactoryJSON PrivacyPreservingProtocolHandlerFactory
 #include <chrome/updater/configurator.cc>
 #undef ProtocolHandlerFactoryJSON
