@@ -78,8 +78,8 @@ void TextClassificationResource::LoadResourceComponentCallback(
                                      << " text classification resource");
   }
 
-  text_processing_pipeline_.emplace(
-      base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}));
+  text_processing_pipeline_.emplace(base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE}));
   text_processing_pipeline_
       ->AsyncCall(&ml::pipeline::TextProcessing::LoadPipeline)
       .WithArgs(std::move(file))

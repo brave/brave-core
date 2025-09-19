@@ -58,7 +58,7 @@ void LoadResourceComponentCallback(
     LoadAndParseResourceComponentCallback<T> callback,
     base::File file) {
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
       base::BindOnce(&LoadAndParseResourceComponentOnBackgroundThread<T>,
                      std::move(file)),
       std::move(callback));
