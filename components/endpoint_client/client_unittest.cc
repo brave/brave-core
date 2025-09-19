@@ -184,10 +184,9 @@ TEST_P(EndpointClientTest, Send) {
         using Entry = TestEndpoint::EntryFor<Request>;
         using Expected = Entry::Expected;
         using Response = Entry::Response;
-        using Callback = Entry::Callback;
 
         base::RunLoop run_loop;
-        base::MockCallback<Callback> callback;
+        base::MockCallback<base::OnceCallback<void(Expected)>> callback;
         EXPECT_CALL(callback, Run).Times(1).WillOnce([&](Expected expected) {
           ASSERT_TRUE(std::holds_alternative<Expected>(test_case.parsed_reply));
           const Expected& got = std::get<Expected>(test_case.parsed_reply);
@@ -223,6 +222,14 @@ TEST_P(EndpointClientTest, Send) {
         Client<TestEndpoint>::Send(
             test_url_loader_factory_.GetSafeWeakWrapper(), request,
             callback.Get());
+
+        // Client<TestEndpoint>::Send(
+        //     test_url_loader_factory_.GetSafeWeakWrapper(),
+        //     PATCH<Request2>{{"POST<Request2>"}},
+        //     base::BindOnce(
+        //         [](base::expected<
+        //             std::optional<Response1>,
+        //             std::optional<std::variant<Error1, Error2>>>) {}));
 
         run_loop.Run();
       },
