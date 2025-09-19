@@ -54,7 +54,7 @@ TEST(PrivacyPreservingProtocolSerializer, StripsPrivacySensitiveData) {
   // The regex below checks two things. First, that the data from above is
   // faithfully reproduced in the serialized request. Second, that the following
   // fields, which could be used for fingerprinting users, do not appear:
-  //  - hw
+  //  - hw[*]
   //  - apps[*].lang
   //  - apps[*].events[*].download_time_ms
   static constexpr char regex[] =
