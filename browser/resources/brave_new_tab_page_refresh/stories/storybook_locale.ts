@@ -91,7 +91,6 @@ const localeStrings: Record<StringKey, string>  = {
   talkStartCallLabel: 'Start call',
   talkWidgetTitle: 'TALK',
   topSiteRemovedText: 'Top site removed',
-  topSiteRemovedTitle: 'Removed',
   topSitesCustomOptionText: 'Top sites are curated by you',
   topSitesCustomOptionTitle: 'Favorites',
   topSitesMostVisitedOptionText: 'Top sites are suggested based on websites you visit often.',
