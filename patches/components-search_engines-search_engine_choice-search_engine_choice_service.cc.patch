@@ -1,8 +1,8 @@
 diff --git a/components/search_engines/search_engine_choice/search_engine_choice_service.cc b/components/search_engines/search_engine_choice/search_engine_choice_service.cc
-index 21b2b5ea3d1d1b26478f085453ac1ef2ac095384..65d605373eee6b57e4b6333dc5685c48cbed9824 100644
+index 8a404ba7c8c94213801f820be224b1b46742321c..a64c347e8bbe197833e6d1579951bbed464544d9 100644
 --- a/components/search_engines/search_engine_choice/search_engine_choice_service.cc
 +++ b/components/search_engines/search_engine_choice/search_engine_choice_service.cc
-@@ -378,7 +378,7 @@ SearchEngineChoiceService::SearchEngineChoiceService(
+@@ -386,7 +386,7 @@ SearchEngineChoiceService::SearchEngineChoiceService(
      PrefService* local_state,
      regional_capabilities::RegionalCapabilitiesService& regional_capabilities,
      TemplateURLPrepopulateData::Resolver& prepopulate_data_resolver,
@@ -11,7 +11,7 @@ index 21b2b5ea3d1d1b26478f085453ac1ef2ac095384..65d605373eee6b57e4b6333dc5685c48
      : client_(std::move(client)),
        profile_prefs_(profile_prefs),
        local_state_(local_state),
-@@ -868,6 +868,7 @@ SearchEngineChoiceService::EvaluateSearchProviderChoice(
+@@ -900,6 +900,7 @@ SearchEngineChoiceService::EvaluateSearchProviderChoice(
    // -- Stage 3: Optional program-controlled DSP checks
  
    // 3.1: Check eligibility based on account type.
