@@ -23,8 +23,14 @@
 
 namespace update_client {
 
+// This test checks two things. First, that the serializer faithfully encodes
+// the necessary data for update requests. Second, that it does not encode the
+// following fields, which could be used to fingerprint users:
+//  - hw[*]
+//  - apps[*].lang
+//  - apps[*].events[*].download_time_ms
+// Much of this test was copied from protocol_serializer_json_unittest.cc.
 TEST(PrivacyPreservingProtocolSerializer, StripsPrivacySensitiveData) {
-  // Much of this code was copied from protocol_serializer_json_unittest.cc.
   auto pref = std::make_unique<TestingPrefServiceSimple>();
   RegisterPersistedDataPrefs(pref->registry());
   auto metadata = CreatePersistedData(
@@ -51,12 +57,6 @@ TEST(PrivacyPreservingProtocolSerializer, StripsPrivacySensitiveData) {
                               "prod_id", "1.0", "channel", "OS", "cacheable",
                               std::nullopt, {{"extra", "params"}}, {},
                               std::move(apps)));
-  // The regex below checks two things. First, that the data from above is
-  // faithfully reproduced in the serialized request. Second, that the following
-  // fields, which could be used for fingerprinting users, do not appear:
-  //  - hw[*]
-  //  - apps[*].lang
-  //  - apps[*].events[*].download_time_ms
   static constexpr char regex[] =
       R"({"request":{"@os":"\w+","@updater":"prod_id",)"
       R"("acceptformat":"[^"]+",)"
