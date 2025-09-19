@@ -15,6 +15,8 @@
 
 namespace update_client {
 
+// This method returns the same result as upstream's ProtocolSerializerJSON,
+// but with some fields removed that could be used to fingerprint users.
 std::string PrivacyPreservingProtocolSerializer::Serialize(
     const protocol_request::Request& request) const {
   std::string upstream_result = ProtocolSerializerJSON().Serialize(request);
