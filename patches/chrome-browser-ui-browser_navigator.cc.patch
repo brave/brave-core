@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index 8701a04e3849edf129adfa0709e7d36db8194ca6..9fb1481a57c956a6f43d48d971894395ea335489 100644
+index 9415742756887acf8bf888a88355931267c5ceb5..cf3e1139a3cd3fc6a7f14345e8c046cb6168d42b 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
 @@ -595,6 +595,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {

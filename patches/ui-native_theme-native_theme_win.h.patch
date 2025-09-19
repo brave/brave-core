@@ -1,8 +1,8 @@
 diff --git a/ui/native_theme/native_theme_win.h b/ui/native_theme/native_theme_win.h
-index ce75852d50a7b349ed1673c8b8465f8f51840e53..d9d85fc442164e73aed4141acf2e47abfee61625 100644
+index 7aaae86c72648e39b0924a534d050a1e25c1dfac..7a0be6680a734e1a211631b9e754b1f346c655b7 100644
 --- a/ui/native_theme/native_theme_win.h
 +++ b/ui/native_theme/native_theme_win.h
-@@ -56,6 +56,7 @@ class COMPONENT_EXPORT(NATIVE_THEME) NativeThemeWin : public NativeTheme {
+@@ -34,6 +34,7 @@ class COMPONENT_EXPORT(NATIVE_THEME) NativeThemeWin : public NativeTheme {
      in_dark_mode_ = in_dark_mode;
    }
  
