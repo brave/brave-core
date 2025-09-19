@@ -21,6 +21,7 @@ import Shared
 import Static
 import SwiftUI
 import UIKit
+import UserAgent
 import Web
 import WebKit
 
@@ -1190,6 +1191,17 @@ class SettingsViewController: TableViewController {
           selection: { [unowned self] in
             self.navigationController?.pushViewController(
               UIHostingController(rootView: AdBlockDebugView()),
+              animated: true
+            )
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
+          text: "User Agent Override",
+          selection: { [unowned self] in
+            self.navigationController?.pushViewController(
+              UIHostingController(rootView: UserAgentOverrideView()),
               animated: true
             )
           },
