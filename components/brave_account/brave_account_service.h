@@ -6,10 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_SERVICE_H_
 
+#include <memory>
+#include <optional>
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_account/endpoints/password_finalize.h"
+#include "brave/components/brave_account/endpoints/password_init.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -25,6 +33,9 @@ namespace brave_account {
 
 class BraveAccountService : public KeyedService, public mojom::Authentication {
  public:
+  using CryptoCallback =
+      base::RepeatingCallback<std::string(const std::string&)>;
+
   BraveAccountService(
       PrefService* pref_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -38,19 +49,43 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
       mojo::PendingReceiver<mojom::Authentication> pending_receiver);
 
  private:
-  void RegisterInitialize(
-      const std::string& email,
-      const std::string& blinded_message,
-      mojom::Authentication::RegisterInitializeCallback callback) override;
+  template <typename TestCase>
+  friend class BraveAccountServiceTest;
 
-  void RegisterFinalize(
+  // Provides dependency injection for testing.
+  BraveAccountService(
+      PrefService* pref_service,
+      std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper,
+      CryptoCallback encrypt_callback,
+      CryptoCallback decrypt_callback);
+
+  void RegisterInitialize(const std::string& email,
+                          const std::string& blinded_message,
+                          RegisterInitializeCallback callback) override;
+
+  void RegisterFinalize(const std::string& encrypted_verification_token,
+                        const std::string& serialized_record,
+                        RegisterFinalizeCallback callback) override;
+
+  void OnRegisterInitialize(
+      RegisterInitializeCallback callback,
+      int response_code,
+      base::expected<std::optional<endpoints::PasswordInit::Response>,
+                     std::optional<endpoints::PasswordInit::Error>> reply);
+
+  void OnRegisterFinalize(
+      RegisterFinalizeCallback callback,
       const std::string& encrypted_verification_token,
-      const std::string& serialized_record,
-      mojom::Authentication::RegisterFinalizeCallback callback) override;
+      int response_code,
+      base::expected<std::optional<endpoints::PasswordFinalize::Response>,
+                     std::optional<endpoints::PasswordFinalize::Error>> reply);
 
   const raw_ptr<PrefService> pref_service_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
+  CryptoCallback encrypt_callback_;
+  CryptoCallback decrypt_callback_;
   mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
+  base::WeakPtrFactory<BraveAccountService> weak_factory_{this};
 };
 
 }  // namespace brave_account

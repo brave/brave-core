@@ -15,6 +15,7 @@ source_set("brave_account") {
 
   deps = [
     "//base",
+    "//brave/components/api_request_helper",
     "//brave/components/brave_account:features",
     "//brave/components/brave_account/endpoint_client",
     "//brave/components/brave_account/endpoints",
@@ -26,11 +27,15 @@ source_set("brave_account") {
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
     "//components/keyed_service/core",
+    "//components/os_crypt/sync",
     "//components/prefs",
     "//mojo/public/cpp/bindings",
+    "//net",
+    "//net/traffic_annotation",
     "//services/network/public/cpp",
     "//services/network/public/mojom:mojom_content_security_policy",
     "//ui/base",
+    "//url",
   ]
 }
 
@@ -41,4 +46,32 @@ source_set("features") {
   ]
 
   deps = [ "//base" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "brave_account_service_test.h",
+    "brave_account_service_unittest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/api_request_helper",
+    "//brave/components/api_request_helper:test_support",
+    "//brave/components/brave_account",
+    "//brave/components/brave_account:features",
+    "//brave/components/brave_account/endpoints",
+    "//brave/components/brave_account/mojom",
+    "//components/prefs:test_support",
+    "//net",
+    "//net/traffic_annotation:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//url",
+  ]
 }
