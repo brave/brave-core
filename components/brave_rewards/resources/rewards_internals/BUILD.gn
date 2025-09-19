@@ -13,8 +13,7 @@ transpile_web_ui("rewards_internals") {
   resource_name = "rewards_internals"
   output_module = true
   data = [
-    "//brave/components/brave_rewards/resources/rewards_internals/",
-    "//brave/components/brave_rewards/shared/",
+    "//brave/components/brave_rewards/resources/",
     "//brave/components/common/",
   ]
   deps = [

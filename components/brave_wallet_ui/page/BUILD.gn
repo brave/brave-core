@@ -14,7 +14,7 @@ transpile_web_ui("brave_wallet_page_ui") {
       ] ]
   resource_name = "brave_wallet_page"
   data = [
-    "//brave/components/brave_wallet_page_ui/",
+    "//brave/components/brave_wallet_ui/",
     "//brave/components/common/",
   ]
   deps = [

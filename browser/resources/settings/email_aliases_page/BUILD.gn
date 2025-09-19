@@ -14,7 +14,7 @@ transpile_web_ui("email_aliases_ui") {
       ] ]
 
   data = [
-    "//brave/components/email_aliases/",
+    "//brave/components/email_aliases_page/",
     "//brave/components/common/",
   ]
 

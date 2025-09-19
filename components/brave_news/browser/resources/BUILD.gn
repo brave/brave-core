@@ -13,7 +13,7 @@ transpile_web_ui("brave_news_internals") {
       ] ]
 
   data = [
-    "//brave/components/brave_news/resources/",
+    "//brave/components/brave_news/browser/resources/",
     "//brave/components/common/",
   ]
 

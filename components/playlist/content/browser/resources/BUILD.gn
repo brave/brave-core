@@ -22,7 +22,7 @@ transpile_web_ui("playlist_ui") {
   ]
 
   data = [
-    "//brave/components/playlist/common/",
+    "//brave/components/playlist/browser/resources/",
     "//brave/components/common/",
   ]
 

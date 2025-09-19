@@ -41,7 +41,7 @@ transpile_web_ui("brave_extension") {
   sync_wasm = true
 
   data = [
-    "//brave/components/brave_extension/resources/brave_extension/",
+    "//brave/components/brave_extension/extension/brave_extension/",
     "//brave/components/common/",
   ]
   deps =
