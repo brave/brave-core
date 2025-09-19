@@ -10,7 +10,8 @@ pub(crate) use self::lexer::{
     AttributeBuffer, AttributeOutline, Lexeme, LexemeSink, NonTagContentLexeme,
     NonTagContentTokenOutline, TagLexeme, TagTokenOutline,
 };
-use self::state_machine::{ActionError, ParsingTermination, StateMachine};
+use self::state_machine::StateMachine;
+pub(crate) use self::state_machine::{ActionError, ActionResult};
 pub(crate) use self::tag_scanner::TagHintSink;
 use self::tag_scanner::TagScanner;
 pub use self::tree_builder_simulator::ParsingAmbiguityError;
@@ -31,6 +32,9 @@ pub(crate) enum ParserDirective {
 pub(crate) struct ParserContext<S> {
     output_sink: S,
     tree_builder_simulator: TreeBuilderSimulator,
+    /// Amount of bytes consumed by previous calls to `parse()`,
+    /// i.e. number of bytes from the start of the document until the start of the current input slice
+    previously_consumed_byte_count: usize,
 }
 
 pub(crate) trait ParserOutputSink: LexemeSink + TagHintSink {}
@@ -51,6 +55,7 @@ impl<S: ParserOutputSink> Parser<S> {
     pub fn new(output_sink: S, initial_directive: ParserDirective, strict: bool) -> Self {
         let context = ParserContext {
             output_sink,
+            previously_consumed_byte_count: 0,
             tree_builder_simulator: TreeBuilderSimulator::new(strict),
         };
 
@@ -62,9 +67,11 @@ impl<S: ParserOutputSink> Parser<S> {
         }
     }
 
+    // generic methods tend to be inlined, but this one is called from a couple of places,
+    // and has cheap-to-pass non-constants args, so it won't benefit from being merged into its callers.
+    // It's better to outline it, and let its callers be inlined.
+    #[inline(never)]
     pub fn parse(&mut self, input: &[u8], last: bool) -> Result<usize, RewritingError> {
-        use ActionError::*;
-
         let mut parse_result = match self.current_directive {
             ParserDirective::WherePossibleScanForTagsOnly => {
                 self.tag_scanner
@@ -74,16 +81,18 @@ impl<S: ParserOutputSink> Parser<S> {
         };
 
         loop {
-            match parse_result {
-                Err(ParsingTermination::EndOfInput {
+            let unboxed = match parse_result {
+                Ok(unreachable) => match unreachable {},
+                Err(boxed) => *boxed,
+            };
+            match unboxed {
+                ActionError::EndOfInput {
                     consumed_byte_count,
-                }) => {
+                } => {
+                    self.context.previously_consumed_byte_count += consumed_byte_count;
                     return Ok(consumed_byte_count);
                 }
-                Err(ParsingTermination::ActionError(ParserDirectiveChangeRequired(
-                    new_directive,
-                    sm_bookmark,
-                ))) => {
+                ActionError::ParserDirectiveChangeRequired(new_directive, sm_bookmark) => {
                     self.current_directive = new_directive;
 
                     trace!(@continue_from_bookmark sm_bookmark, self.current_directive, input);
@@ -100,8 +109,10 @@ impl<S: ParserOutputSink> Parser<S> {
                         ),
                     };
                 }
-                Err(ParsingTermination::ActionError(RewritingError(err))) => return Err(err),
-                Ok(unreachable) => match unreachable {},
+                ActionError::RewritingError(err) => return Err(err),
+                ActionError::Internal(err) => {
+                    return Err(RewritingError::ContentHandlerError(err.into()))
+                }
             }
         }
     }
