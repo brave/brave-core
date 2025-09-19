@@ -220,7 +220,7 @@ public class SearchViewController: UIViewController, LoaderListener {
   }
 
   let dataSource: SearchSuggestionDataSource
-  let playlistFRC = PlaylistItem.frc()
+  let playlistFRC: NSFetchedResultsController<PlaylistItem>?
   public static var userAgent: String?
   private var browserColors: any BrowserColors
   private var allSiteData = [Site]() {
@@ -257,7 +257,7 @@ public class SearchViewController: UIViewController, LoaderListener {
   }
 
   private func updateAvailableOnYourDeviceItems() {
-    let playlistItems = playlistFRC.fetchedObjects ?? []
+    let playlistItems = playlistFRC?.fetchedObjects ?? []
     let result =
       allSiteData.map { OnYourDeviceItem(site: $0) }
       + playlistItems.map { OnYourDeviceItem(playlistItem: $0) }
@@ -308,6 +308,7 @@ public class SearchViewController: UIViewController, LoaderListener {
   init(with dataSource: SearchSuggestionDataSource, browserColors: some BrowserColors) {
     self.dataSource = dataSource
     self.browserColors = browserColors
+    self.playlistFRC = dataSource.isPlaylistAvailable ? PlaylistItem.frc() : nil
 
     super.init(nibName: nil, bundle: nil)
 
@@ -373,7 +374,7 @@ public class SearchViewController: UIViewController, LoaderListener {
 
     KeyboardHelper.defaultHelper.addDelegate(self)
 
-    playlistFRC.delegate = self
+    playlistFRC?.delegate = self
 
     NotificationCenter.default.addObserver(
       self,
@@ -522,11 +523,11 @@ public class SearchViewController: UIViewController, LoaderListener {
       dataSource.querySuggestClient()
     }
     // fetch media
-    if !query.isEmpty {
+    if let playlistFRC, !query.isEmpty {
       playlistFRC.fetchRequest.predicate = NSPredicate(format: "name CONTAINS[c] %@", query)
       try? playlistFRC.performFetch()
-      updateAvailableOnYourDeviceItems()
     }
+    updateAvailableOnYourDeviceItems()
   }
 
   private func reloadSearchEngines() {

@@ -16,8 +16,8 @@
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
-#include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -122,7 +122,6 @@ void PlaylistTabHelper::MoveItemsToNewPlaylist(
 base::WeakPtr<PlaylistTabHelper> PlaylistTabHelper::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
-
 
 void PlaylistTabHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
@@ -288,21 +287,20 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
   // perf improvement? We'll see this really matters.
 
   bool should_notify = false;
-  std::ranges::for_each(
-      service_->GetAllPlaylistItems(),
-      [this, &should_notify](const auto& item) {
-        const auto& current_url =
-            web_contents()->GetLastCommittedURL().GetWithoutRef();
-        const GURL page_source_url = GURL(item->page_source).GetWithoutRef();
-        if (page_source_url != current_url) {
-          return;
-        }
+  std::ranges::for_each(service_->GetAllPlaylistItems(), [this, &should_notify](
+                                                             const auto& item) {
+    const auto& current_url =
+        web_contents()->GetLastCommittedURL().GetWithoutRef();
+    const GURL page_source_url = GURL(item->page_source).GetWithoutRef();
+    if (page_source_url != current_url) {
+      return;
+    }
 
-        DVLOG(2) << __FUNCTION__ << " " << item->page_source.spec() << " "
-                 << item->media_source.spec();
-        saved_items_.push_back(item->Clone());
-        should_notify = true;
-      });
+    DVLOG(2) << __FUNCTION__ << " " << item->page_source.spec() << " "
+             << item->media_source.spec();
+    saved_items_.push_back(item->Clone());
+    should_notify = true;
+  });
 
   if (!should_notify) {
     return;
