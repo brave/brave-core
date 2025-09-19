@@ -34,6 +34,9 @@ inline constexpr char kLinkedInEmbedControlType[] =
     "brave.linkedin_embed_default";
 inline constexpr char kReduceLanguageEnabled[] = "brave.reduce_language";
 
+inline constexpr char kAdBlockOnlyModeEnabled[] =
+    "brave.shields.adblock_only_mode_enabled";
+
 }  // namespace prefs
 }  // namespace brave_shields
 

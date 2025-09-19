@@ -56,6 +56,7 @@ extern const base::FeatureParam<int>
     kAdblockOverrideRegexDiscardPolicyCleanupIntervalSec;
 extern const base::FeatureParam<int>
     kAdblockOverrideRegexDiscardPolicyDiscardUnusedSec;
+BASE_DECLARE_FEATURE(kAdblockOnlyMode);
 
 }  // namespace features
 }  // namespace brave_shields
