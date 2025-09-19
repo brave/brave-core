@@ -24,34 +24,37 @@ static_assert(static_cast<NSInteger>(syncer::UserSelectableType::kCookies) ==
 
 namespace brave {
 namespace ios {
-std::unordered_map<syncer::UserSelectableType, BraveSyncUserSelectableTypes>
-    mapping = {
-        {syncer::UserSelectableType::kBookmarks,
-         BraveSyncUserSelectableTypes_BOOKMARKS},
-        {syncer::UserSelectableType::kPreferences,
-         BraveSyncUserSelectableTypes_PREFERENCES},
-        {syncer::UserSelectableType::kPasswords,
-         BraveSyncUserSelectableTypes_PASSWORDS},
-        {syncer::UserSelectableType::kAutofill,
-         BraveSyncUserSelectableTypes_AUTOFILL},
-        {syncer::UserSelectableType::kThemes,
-         BraveSyncUserSelectableTypes_THEMES},
-        {syncer::UserSelectableType::kHistory,
-         BraveSyncUserSelectableTypes_HISTORY},
-        {syncer::UserSelectableType::kExtensions,
-         BraveSyncUserSelectableTypes_EXTENSIONS},
-        {syncer::UserSelectableType::kApps, BraveSyncUserSelectableTypes_APPS},
-        {syncer::UserSelectableType::kReadingList,
-         BraveSyncUserSelectableTypes_READING_LIST},
-        {syncer::UserSelectableType::kTabs, BraveSyncUserSelectableTypes_TABS},
-        {syncer::UserSelectableType::kSavedTabGroups,
-         BraveSyncUserSelectableTypes_SAVED_TAB_GROUPS},
-        {syncer::UserSelectableType::kPayments,
-         BraveSyncUserSelectableTypes_PAYMENTS},
-        {syncer::UserSelectableType::kProductComparison,
-         BraveSyncUserSelectableTypes_PRODUCT_COMPARISON},
-        {syncer::UserSelectableType::kCookies,
-         BraveSyncUserSelectableTypes_COOKIES}};
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] std::unordered_map<syncer::UserSelectableType,
+                                         BraveSyncUserSelectableTypes> mapping =
+    {{syncer::UserSelectableType::kBookmarks,
+      BraveSyncUserSelectableTypes_BOOKMARKS},
+     {syncer::UserSelectableType::kPreferences,
+      BraveSyncUserSelectableTypes_PREFERENCES},
+     {syncer::UserSelectableType::kPasswords,
+      BraveSyncUserSelectableTypes_PASSWORDS},
+     {syncer::UserSelectableType::kAutofill,
+      BraveSyncUserSelectableTypes_AUTOFILL},
+     {syncer::UserSelectableType::kThemes, BraveSyncUserSelectableTypes_THEMES},
+     {syncer::UserSelectableType::kHistory,
+      BraveSyncUserSelectableTypes_HISTORY},
+     {syncer::UserSelectableType::kExtensions,
+      BraveSyncUserSelectableTypes_EXTENSIONS},
+     {syncer::UserSelectableType::kApps, BraveSyncUserSelectableTypes_APPS},
+     {syncer::UserSelectableType::kReadingList,
+      BraveSyncUserSelectableTypes_READING_LIST},
+     {syncer::UserSelectableType::kTabs, BraveSyncUserSelectableTypes_TABS},
+     {syncer::UserSelectableType::kSavedTabGroups,
+      BraveSyncUserSelectableTypes_SAVED_TAB_GROUPS},
+     {syncer::UserSelectableType::kPayments,
+      BraveSyncUserSelectableTypes_PAYMENTS},
+     {syncer::UserSelectableType::kProductComparison,
+      BraveSyncUserSelectableTypes_PRODUCT_COMPARISON},
+     {syncer::UserSelectableType::kCookies,
+      BraveSyncUserSelectableTypes_COOKIES}};
 
 syncer::UserSelectableTypeSet user_types_from_options(
     BraveSyncUserSelectableTypes options) {

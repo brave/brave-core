@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_MINI_TOOLBAR_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_MINI_TOOLBAR_H_
 
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -16,15 +17,19 @@ class BraveMultiContentsViewMiniToolbar : public MultiContentsViewMiniToolbar {
   using MultiContentsViewMiniToolbar::MultiContentsViewMiniToolbar;
   ~BraveMultiContentsViewMiniToolbar() override;
 
+  // View:
+  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
+
   // MultiContentsViewMiniToolbar:
-  void UpdateState(bool is_active) override;
+  void UpdateState(bool is_active, bool is_highlighted) override;
   void OnPaint(gfx::Canvas* canvas) override;
-  SkPath GetPath(bool border_stroke_only) const override;
 
  private:
   int GetOutlineThickness() const;
+  SkPath GetPath(bool border_stroke_only) const;
 
   bool is_active_ = false;
+  ui::ColorId stroke_color_ = kColorBraveSplitViewInactiveWebViewBorder;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_MINI_TOOLBAR_H_

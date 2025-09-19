@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.build.annotations.NullUnmarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
@@ -40,6 +39,8 @@ import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.WindowAndroid;
+
+import java.util.function.Supplier;
 
 @NullUnmarked // Waiting for upstream parent class to be NullMarked
 public class BraveNewTabPage extends NewTabPage {
@@ -180,8 +181,9 @@ public class BraveNewTabPage extends NewTabPage {
         mFeedSurfaceProvider = feedSurfaceCoordinator;
     }
 
-    public void updateSearchProvider() {
+    public boolean updateSearchProvider() {
         // Search provider logo is not used in Brave's NTP.
         mSearchProviderHasLogo = false;
+        return false;
     }
 }

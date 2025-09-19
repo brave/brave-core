@@ -135,8 +135,8 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
          $i18n{remove}
        </cr-button>
        \${this.shouldShowErrorsButton_() ? html\`
-         <cr-button id=\\"errors-button\\" @click=\\"\${this.onErrorsClick_}\\"
-@@ -168,25 +163,14 @@
+         <cr-button id=\\"errors-button\\"
+@@ -172,25 +167,14 @@
        <cr-button id=\\"terminated-reload-button\\" @click=\\"\${this.onReloadClick_}\\"
            aria-describedby=\\"a11yAssociation\\" class=\\"action-button\\">
          $i18n{itemReload}

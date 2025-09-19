@@ -53,8 +53,8 @@ class BraveWalletPermissionContext
       blink::PermissionType permission,
       content::RenderFrameHost* rfh,
       const std::vector<std::string>& addresses,
-      base::OnceCallback<
-          void(const std::vector<blink::mojom::PermissionStatus>&)> callback);
+      base::OnceCallback<void(const std::vector<content::PermissionResult>&)>
+          callback);
   static bool HasRequestsInProgress(content::RenderFrameHost* rfh,
                                     permissions::RequestType request_type);
   static void AcceptOrCancel(

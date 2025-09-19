@@ -43,8 +43,9 @@ MultiContentsViewMiniToolbar::CreateBraveSplitTabMenuModel(
 BraveMultiContentsViewMiniToolbar::~BraveMultiContentsViewMiniToolbar() =
     default;
 
-void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active) {
-  MultiContentsViewMiniToolbar::UpdateState(is_active);
+void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active,
+                                                    bool is_highlighted) {
+  MultiContentsViewMiniToolbar::UpdateState(is_active, is_highlighted);
 
   if (!GetVisible()) {
     return;
@@ -67,6 +68,12 @@ void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active) {
   static_cast<views::FlexLayout*>(GetLayoutManager())
       ->SetInteriorMargin(is_active ? active_interior_margins
                                     : inactive_interior_margins);
+}
+
+void BraveMultiContentsViewMiniToolbar::OnBoundsChanged(
+    const gfx::Rect& previous_bounds) {
+  // Clip the curved inner side of the mini toolbar.
+  SetClipPath(GetPath(/*border_stroke_only=*/false));
 }
 
 void BraveMultiContentsViewMiniToolbar::OnPaint(gfx::Canvas* canvas) {
