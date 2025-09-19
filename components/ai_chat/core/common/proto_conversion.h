@@ -27,6 +27,14 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
                            store::ToolUseEventProto* proto_event);
 
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+mojom::SmartModeEntryPtr DeserializeSmartModeEntry(
+    const store::SmartModeEntryProto& proto_entry);
+
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+void SerializeSmartModeEntry(const mojom::SmartModeEntryPtr& mojom_entry,
+                             store::SmartModeEntryProto* proto_entry);
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_PROTO_CONVERSION_H_

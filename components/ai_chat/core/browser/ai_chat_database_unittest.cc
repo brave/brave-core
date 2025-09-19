@@ -113,6 +113,9 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     auto history = CreateSampleChatHistory(1u);
     // Edit the prompt to show that the prompt is persisted
     history[0]->prompt = "first entry prompt";
+    // Add smart mode data to test smart mode persistence
+    history[0]->smart_mode =
+        mojom::SmartModeEntry::New("test", "This is a test smart mode prompt");
 
     // Create the conversation metadata which gets persisted
     // when the first entry is asked to be persisted.
@@ -151,6 +154,13 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     // Test getting the conversation entries
     mojom::ConversationArchivePtr result = db_->GetConversationData(uuid);
     ExpectConversationHistoryEquals(FROM_HERE, result->entries, history);
+
+    // Verify smart mode data was persisted correctly
+    ASSERT_TRUE(result->entries[0]->smart_mode);
+    EXPECT_EQ(result->entries[0]->smart_mode->shortcut, "test");
+    EXPECT_EQ(result->entries[0]->smart_mode->prompt,
+              "This is a test smart mode prompt");
+
     EXPECT_EQ(result->associated_content.size(), has_content ? 1u : 0u);
     if (has_content) {
       EXPECT_EQ(result->associated_content[0]->content_uuid, content_uuid);
@@ -1386,6 +1396,57 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
         conversation_data_2->associated_content[0]->conversation_turn_uuid,
         conversation_data_2->entries[0]->uuid.value());
   }
+}
+
+TEST_P(AIChatDatabaseMigrationTest, Migration_Version7To8_SmartModeColumn) {
+  // Skip this test if we're already at the target version or higher
+  if (version() >= 8) {
+    return;
+  }
+
+  // This test verifies that migration from version 7 to 8 correctly adds
+  // the smart_mode_data column to the conversation_entry table.
+
+  // Create and persist a conversation entry before migration
+  auto history = CreateSampleChatHistory(1u);
+  const std::string uuid = "migration_test_v7_to_v8";
+  const mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "migration test title", base::Time::Now(), true, std::nullopt, 0, 0,
+      false, std::vector<mojom::AssociatedContentPtr>());
+
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+
+  // Verify the conversation was created
+  auto conversations = db_->GetAllConversations();
+  EXPECT_GT(conversations.size(), 0u);
+
+  auto conversation_data = db_->GetConversationData(uuid);
+  ASSERT_TRUE(conversation_data);
+  EXPECT_EQ(conversation_data->entries.size(), 1u);
+
+  // After migration (which happens automatically when the test database
+  // is initialized), verify that entries can still be retrieved correctly
+  // and that the smart_mode field is properly handled (should be null
+  // for pre-migration data)
+  EXPECT_FALSE(conversation_data->entries[0]->smart_mode);
+
+  // Test that new entries can be added with smart mode data after migration
+  auto new_history = CreateSampleChatHistory(1u);
+  new_history[0]->smart_mode =
+      mojom::SmartModeEntry::New("summarize", "Please summarize this content");
+
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, new_history[0]->Clone()));
+
+  // Verify the new entry was stored with smart mode data
+  conversation_data = db_->GetConversationData(uuid);
+  ASSERT_TRUE(conversation_data);
+  EXPECT_EQ(conversation_data->entries.size(), 2u);
+
+  // Check that the new entry has the smart mode data
+  auto& latest_entry = conversation_data->entries[1];
+  ASSERT_TRUE(latest_entry->smart_mode);
+  EXPECT_EQ(latest_entry->smart_mode->shortcut, "summarize");
+  EXPECT_EQ(latest_entry->smart_mode->prompt, "Please summarize this content");
 }
 
 }  // namespace ai_chat

@@ -143,6 +143,13 @@ bool MigrateFrom6to7(sql::Database* db) {
   return update_statement.is_valid() && update_statement.Run();
 }
 
+bool MigrateFrom7to8(sql::Database* db) {
+  static constexpr char kAddSmartModeColumnQuery[] =
+      "ALTER TABLE conversation_entry ADD COLUMN smart_mode_data BLOB";
+  sql::Statement statement(db->GetUniqueStatement(kAddSmartModeColumnQuery));
+  return statement.is_valid() && statement.Run();
+}
+
 }  // namespace
 
 // These database versions should roll together unless we develop migrations.
@@ -155,7 +162,7 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 constexpr int kCompatibleDatabaseVersionNumber = 7;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 7;
+constexpr int kCurrentDatabaseVersion = 8;
 
 AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
                                os_crypt_async::Encryptor encryptor)
@@ -272,6 +279,15 @@ sql::InitStatus AIChatDatabase::InitInternal() {
                             meta_table.SetVersionNumber(7);
       }
       current_version = 7;
+    }
+    if (migration_success && current_version == 7) {
+      migration_success = MigrateFrom7to8(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(8);
+      }
+      current_version = 8;
     }
 
     // Migration unsuccessful, raze the database and re-init
@@ -398,7 +414,7 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
   static constexpr char kEntriesQuery[] =
       "SELECT uuid, date, entry_text, prompt, character_type, "
       "editing_entry_uuid, "
-      "action_type, selected_text, model_key"
+      "action_type, selected_text, model_key, smart_mode_data"
       " FROM conversation_entry"
       " WHERE conversation_uuid=?"
       " ORDER BY date ASC";
@@ -431,10 +447,20 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
     auto selected_text = DecryptOptionalColumnToString(statement, index++);
     auto model_key = GetOptionalString(statement, index++);
 
+    // Deserialize smart mode data
+    mojom::SmartModeEntryPtr smart_mode = nullptr;
+    auto smart_mode_data = DecryptOptionalColumnToString(statement, index++);
+    if (smart_mode_data.has_value() && !smart_mode_data.value().empty()) {
+      store::SmartModeEntryProto proto_smart_mode;
+      if (proto_smart_mode.ParseFromString(smart_mode_data.value())) {
+        smart_mode = DeserializeSmartModeEntry(proto_smart_mode);
+      }
+    }
+
     auto entry = mojom::ConversationTurn::New(
         entry_uuid, character_type, action_type, text, prompt, selected_text,
-        std::nullopt, date, std::nullopt, std::nullopt, nullptr, false,
-        model_key);
+        std::nullopt, date, std::nullopt, std::nullopt, std::move(smart_mode),
+        false, model_key);
 
     // events
     struct Event {
@@ -853,16 +879,17 @@ bool AIChatDatabase::AddConversationEntry(
     static constexpr char kInsertEditingConversationEntryQuery[] =
         "INSERT INTO conversation_entry(editing_entry_uuid, uuid,"
         " conversation_uuid, date, entry_text, prompt,"
-        " character_type, action_type, selected_text, model_key)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        " character_type, action_type, selected_text, model_key,"
+        " smart_mode_data)"
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     insert_conversation_entry_statement.Assign(
         GetDB().GetUniqueStatement(kInsertEditingConversationEntryQuery));
   } else {
     static constexpr char kInsertConversationEntryQuery[] =
         "INSERT INTO conversation_entry(uuid, conversation_uuid, date,"
         " entry_text, prompt, character_type, action_type, selected_text,"
-        " model_key)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        " model_key, smart_mode_data)"
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     insert_conversation_entry_statement.Assign(
         GetDB().GetUniqueStatement(kInsertConversationEntryQuery));
   }
@@ -887,6 +914,18 @@ bool AIChatDatabase::AddConversationEntry(
                                entry->selected_text);
   BindOptionalString(insert_conversation_entry_statement, index++,
                      entry->model_key);
+
+  // Serialize and bind smart mode data
+  if (entry->smart_mode) {
+    store::SmartModeEntryProto proto_smart_mode;
+    SerializeSmartModeEntry(entry->smart_mode, &proto_smart_mode);
+    if (!BindAndEncryptString(insert_conversation_entry_statement, index++,
+                              proto_smart_mode.SerializeAsString())) {
+      return false;
+    }
+  } else {
+    insert_conversation_entry_statement.BindNull(index++);
+  }
 
   if (!insert_conversation_entry_statement.Run()) {
     DVLOG(0) << "Failed to execute 'conversation_entry' insert statement: "
@@ -1554,7 +1593,9 @@ bool AIChatDatabase::CreateSchema() {
       "action_type INTEGER,"
       // Encrypted selected text
       "selected_text BLOB,"
-      "model_key TEXT)";
+      "model_key TEXT,"
+      // Encrypted smart mode data
+      "smart_mode_data BLOB)";
   // TODO(petemill): Forking can be achieved by associating each
   // ConversationEntry with a parent ConversationEntry.
   // TODO(petemill): Store a model name with each entry to know when
