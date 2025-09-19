@@ -5,7 +5,7 @@
 
 import("//testing/test.gni")
 
-test("brave_updater_tests") {
+test("brave_updater_unittests") {
   testonly = true
   sources = [
     "configurator_unittest.cc",
