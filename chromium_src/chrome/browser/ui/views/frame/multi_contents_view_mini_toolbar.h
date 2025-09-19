@@ -16,7 +16,6 @@ struct VectorIcon;
 
 // Both static methods are defined at brave_multi_contents_view_mini_toolbar.cc
 // to avoid brave dependency here.
-#define GetPath virtual GetPath
 #define UpdateState(...)                                                    \
   virtual UpdateState(__VA_ARGS__);                                         \
   static const gfx::VectorIcon& GetMoreVerticalIcon();                      \
@@ -29,6 +28,5 @@ struct VectorIcon;
 #include <chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h>  // IWYU pragma: export
 
 #undef UpdateState
-#undef GetPath
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_MULTI_CONTENTS_VIEW_MINI_TOOLBAR_H_
