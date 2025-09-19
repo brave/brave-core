@@ -35,7 +35,7 @@
 "BlockAdsAndTrackingDescription" = "Impede o carregamento de anúncios, pop-ups e rastreadores.";
 
 /* The option the user can select to disable ad and tracker blocking */
-"BlockAdsAndTrackingDisabled" = "Desativado";
+"BlockAdsAndTrackingDisabled" = "Desativada";
 
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Padrão";
@@ -53,7 +53,7 @@
 "BravePlayerConfirmButton" = "Experimentar";
 
 /* A button that ignores the brave player */
-"BravePlayerDismissButton" = "Não agora";
+"BravePlayerDismissButton" = "Agora não";
 
 /* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
 "BravePlayerInfoMessage" = "O Brave Player permite ver vídeos sem interrupções.";
@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "Domínio bloqueado";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "Ativar a API do Controle de privacidade global em JS";
+"EnableGPCDescription" = "Solicite que os sites não vendam ou compartilhem seus dados. [Saiba mais](https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Ativar o Controle de privacidade global";
@@ -160,6 +160,30 @@
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "Listas atualizadas";
 
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Agressivo";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Bloqueado por";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Solicitações bloqueadas";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Bloqueio de conteúdo";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Bloqueio de pedido";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "URL de solicitação";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Tipo de recurso";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "URL de origem";
+
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "Destruir dados";
 
@@ -191,7 +215,7 @@
 "TheConnectionIsNotSecure" = "A conexão com %@ não é segura";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
-"TrackersAndAdsBlocking" = "Rastreadores e bloqueio de anúncios";
+"TrackersAndAdsBlocking" = "Bloqueio de anúncios & rastreadores";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Atualizar listas";

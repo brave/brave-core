@@ -1,0 +1,27 @@
+/* No comment provided by engineer. */
+"1Password Fill Browser Action" = "1Password – активност попуњавања у прегледачу";
+
+/* Privacy - NFC Scan Usage Description */
+"NFCReaderUsageDescription" = "Апликацији је потребан приступ NFC очитавању да би комуницирала са вашим кључем Yubikey.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Ово вам омогућава да снимате и отпремате фотографије.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Тиме се потврђује идентитет ради приступа Brave-у";
+
+/* Privacy - Location When In Use Usage Description */
+"NSLocationWhenInUseUsageDescription" = "Веб-сајтови које посећујете могу тражити вашу локацију.";
+
+/* Privacy - Microphone Usage Description */
+"NSMicrophoneUsageDescription" = "То омогућава Brave-у да шаље упите за претрагу користећи ваш глас.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "То вам омогућава да чувате фотографије.";
+
+/* Privacy - Speech Recognition Usage Description */
+"NSSpeechRecognitionUsageDescription" = "Ова дозвола се користи за активирање функције Apple Advanced Speech Recognition. Ако то није дозвољено, користиће се препознавање „на уређају“ и претраге ће бити потпуно приватне. Brave не чува нити дели ваше гласовне претраге.";
+
+/* No comment provided by engineer. */
+"OPML File" = "OPML фајл";
+

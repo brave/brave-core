@@ -176,12 +176,6 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "通用聊天工具";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaVisionMessageDescription" = "嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Llama Vision 提供支持，这是一个由 Meta 创建的模型，性能卓越，适用于多种用例。Llama Vision 通过我们自己的安全基础设施由 Brave 托管。";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaVisionModelPurposeDescription" = "通用视觉";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen 14B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 通过我们自己的安全基础设施由 Brave 托管。";
 
 /* The model's purpose - Describes what it can do best */
@@ -225,9 +219,6 @@
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo 人工智能";
-
-/* An indicator to show page content refined is in progress */
-"aichat.leoPageContentRefineInProgress" = "查找网页的相关部分...";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "点击询问本页内容。其内容将与您的信息一起发送给 Brave Leo。";
@@ -425,7 +416,7 @@
 "aichat.termsConditionsApproveActionTitle" = "我理解";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo 是私人 AI 智能助理，能够提升您的网络使用体验。Leo 可免费使用，但有一定的访问限制。Brave Leo 高级版支持更多模型，限制更少，订阅用户可以抢先体验新功能。详情可参阅 Brave **[帮助中心](%1$@)**。\n\n在默认设置下，当您向 Leo 提问时，Leo 可能会使用您当前正在浏览的网页内容或您在网页中高亮的文本，并将它们发送给 Brave Leo，以给您提供答复。在一些情况下，Leo 会提炼您输入的内容，将查询发送给 Brave 搜索，通过搜索结果更好地为您提供答复。答复的准确度无可保证，可能会包含不准确、误导性或虚假信息。请勿提交敏感信息或私密信息，谨慎看待所有关于健康、财务、个人安全等方面的答复。您可以随时在设置中调整 Leo 的相关选项，只需前往设置 > Leo 即可。\n\nLeo 不会收集身份识别信息，例如可以关联到您的 IP 地址。任何数据都不会用于训练相关 AI 模型，这些 AI 模型也不会保存个人数据（但根据 Anthropic 的政策，其将保留数据 30 天再删除）。详情可参阅**[隐私政策](%2$@)**。";
+"aichat.termsConditionsDescription" = "Brave Leo 是私人 AI 助理，能提升您的网络使用体验。Leo 可免费使用，但有一定的访问限制。Brave Leo 高级版支持更多模型，限制更少，订阅用户可以抢先体验新功能。默认使用的模型会不时更改。详情可参阅 Brave **[帮助中心](%1$@)**。\n\n在默认设置下，当您针对您正在浏览的网站或网页向 Leo 提问时，您当前正在浏览的网页内容、您在页面中高亮的文本以及您的搜索查询将会发送给 Brave 服务器，以便 Leo 为您提供答复。在一些情况下，Leo 会将您的输入提炼为查询，并发送给 Brave 搜索，然后使用搜索结果为您的问题提供更好的答案。Brave 不保证回复的准确度，并且回复中可能包含不准确、误导性或虚假信息。请勿向 Brave Leo 提交敏感信息或私密信息，并谨慎看待所有关于健康、财务、个人安全等相关方面的答复。您可以随时在设置中调整 Leo 的选项，只需前往“设置 > Leo” 即可。\n\nLeo 不会收集身份识别信息，如 IP 地址等可以指向您的信息。我们不会根据您的数据训练我们的模型，包括您的搜索查询或 Brave Leo 的答复。我们的服务器不会存储个人数据，Brave 也不会将其保留。详情可参阅**[隐私政策](%2$@)**。";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "与 Brave Leo 私密聊天";

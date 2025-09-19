@@ -43,6 +43,18 @@
 /* The title above a list of the users selected browser actions such as bookmarks, history, etc. */
 "BrowserMenu.myActions" = "Οι ενέργειές μου";
 
+/* A row in the menu action customization list that divides which items are placed in a grid and which are placed in a list. */
+"BrowserMenu.quickActionDividerTitle" = "Τα στοιχεία στην κορυφή θα εμφανίζονται στην κύρια περιοχή";
+
+/* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
+"BrowserMenu.resetButtonTitle" = "Επαναφορά";
+
+/* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
+"BrowserMenu.resetToDefault" = "Επαναφορά στην προεπιλογή";
+
+/* A message presented in a confirmation dialog explaining the destructive action of resetting the menu to its default state */
+"BrowserMenu.resetToDefaultDialogMessage" = "Με την επαναφορά στην προεπιλογή, θα χάσετε τυχόν προσαρμογές που έχετε κάνει στο Brave. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί. Θέλετε σίγουρα να συνεχίσετε;";
+
 /* A button title that when taps shows all actions that are hidden by default */
 "BrowserMenu.showAllButtonTitle" = "Εμφάνιση όλων…";
 

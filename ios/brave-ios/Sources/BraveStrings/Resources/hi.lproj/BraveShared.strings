@@ -1,0 +1,3598 @@
+/* About settings section title */
+"About" = "इसके बारे में";
+
+/* The title of the screen explaining Brave Shields */
+"AboutBraveShields" = "Brave शील्ड के बारे में";
+
+/* The body of the screen explaining Brave Shields */
+"AboutBraveShieldsBody" = "साइटों में अक्सर कुकीज़ और स्क्रिप्ट्स शामिल होती हैं, जो आपको और आपके डिवाइस को पहचानने की कोशिश करती हैं। वे जानना चाहती हैं कि आप कौन हैं और पूरे वेब पर आपको फ़ॉलो करती हैं — हर साइट पर आप क्या करते हैं, इस पर नज़र रखती हैं।\n\nBrave इन चीज़ों को ब्लॉक करता है, ताकि आपको कोई फ़ॉलो न करे और आप आराम से ब्राउज़ कर सकें।";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertMessage" = "इससे आप इमेज को अपने कैमरा रोल में सेव कर सकते हैं।";
+
+/* See http://mzl.la/1G7uHo7 */
+"AccessPhotoDeniedAlertTitle" = "Brave आपकी फ़ोटो को ऐक्सेस करना चाहिए";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addBookmarkTitle" = "बुकमार्क लगाएँ";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"addFavouritesTitle" = "पसंदीदा में जोड़ें";
+
+/* Cell title for add folder action */
+"AddFolderActionCellTitle" = "नया फ़ोल्डर";
+
+/* Add to favorites share action. */
+"AddToFavorites" = "पसंदीदा में जोड़ें";
+
+/* Title for the button to add a new website bookmark. */
+"AddToMenuItem" = "बुकमार्क लगाएँ";
+
+/* Text for the toggle switch to clear 'Brave Ads' data in settings */
+"ads.braveAdsDataToggleOption" = "Brave Ads डेटा";
+
+/* individual blocking statistic title */
+"AdsAndTrackers" = "विज्ञापन और ट्रैकर्स";
+
+/* Setting to always request the desktop version of a website. */
+"AlwaysRequestDesktopSite" = "हमेशा डेस्कटॉप साइट का अनुरोध करें";
+
+/* Used as a button label for crash dialog prompt */
+"AlwaysSendButtonTitle" = "हमेशा भेजें";
+
+/* Setting preference to always show the browser tabs bar. */
+"AlwaysShow" = "चालू";
+
+/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "इससे Brave का आपका ऐक्सेस ऑथेंटिकेट हो जाता है";
+
+/* Label for Cancel button */
+"AuthPromptAlertCancelButtonTitle" = "रद्द करना";
+
+/* Authentication prompt log in button */
+"AuthPromptAlertLogInButtonTitle" = "लॉग इन करें";
+
+/* Authentication prompt message with no realm. Parameter is the hostname of the site */
+"AuthPromptAlertMessageText" = "%@ द्वारा यूज़रनेम और पासवर्ड का अनुरोध किया जा रहा है।";
+
+/* Password textbox in Authentication prompt */
+"AuthPromptAlertPasswordPlaceholderText" = "पासवर्ड";
+
+/* Authentication prompt title */
+"AuthPromptAlertTitle" = "ऑथेंटिकेशन की ज़रूरत है";
+
+/* Username textbox in Authentication prompt */
+"AuthPromptAlertUsernamePlaceholderText" = "उपयोगकर्ता नाम";
+
+/* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
+"AutoRedirectAMPPages" = "AMP पेजों को अपने-आप रीडायइरेक्ट करें";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
+"AutoRedirectAMPPagesDescription" = "Google के एक्सीलरेटेड मोबाइल पेज वर्ज़न के बजाय, हमेशा असली (नॉन-AMP) पेज के URL पर जाएँ";
+
+/* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
+"AutoRedirectTrackingURLs" = "ट्रैकिंग URL अपने-आप रीडायरेक्ट करें";
+
+/* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
+"AutoRedirectTrackingURLsDescription" = "अपने-आप दूसरे पेज पर रीडायरेक्ट करने वाले टॉप लेवल ट्रैकिंग URL को छोड़कर आगे बढ़ने के लिए सपोर्ट को चालू करें";
+
+/* cookie settings option */
+"Block3rdPartyCookies" = "3rd पार्टी कुकीज़ को अवरुद्ध करें ";
+
+/* Title for setting to block all website cookies. */
+"BlockAllCookies" = "सभी कुकी को ब्लॉक करें";
+
+/* block all cookies settings action title */
+"BlockAllCookiesAction" = "सभी को ब्लॉक करें";
+
+/* Title of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesAlertTitle" = "सभी कुकी को ब्लॉक करें?";
+
+/* Description of confirmation alert displayed to user when block all cookie toggle is enabled. */
+"blockAllCookiesDescription" = "Shields पहले से ही तीसरे पक्ष की कुकीज़ को ब्लॉक करता है। सभी कुकीज़ को ब्लॉक करने की इस सेटिंग से, कुकीज़ और साइट का मौजूदा डेटा हट जाएगा और वेबसाइट खराब भी हो सकती है।";
+
+/* Message of alert displayed to user when block all cookie operation fails */
+"BlockAllCookiesFailedAlertMsg" = "प्राथमिकता सेट नहीं हो पाई। कृपया फिर से कोशिश करें।";
+
+/* A title for a setting that enables cookie consent notices */
+"BlockCookieConsentNotices" = "कुकी की सहमति के नोटिस को ब्लॉक करें";
+
+/* title for section showing page blocking statistics */
+"BlockingMonitor" = " ब्लॉकिंग मॉनिटर";
+
+/* Setting to enable popup blocking */
+"BlockPopups" = "पॉपअप्स ब्लॉक करें";
+
+/* No comment provided by engineer. */
+"BlockScripts" = "स्क्रिप्ट्स को अवरुद्ध करें";
+
+/* No comment provided by engineer. */
+"BlockScriptsDescription" = "JavaScript (साइटें खराब हो सकती हैं) ब्लॉक करता है।";
+
+/* Action item title of long press for Adding Bookmark for All Tabs in Tab List - The parameter indicates the number of tabs like Add Bookmark for 5 Tabs */
+"BookmarkAllTabsTitle" = "%lld टैब्स के लिए बुकमार्क जोड़ें";
+
+/* Bookmark Folder Section Title */
+"BookmarkFolder" = "फ़ोल्डर को बुकमार्क करें";
+
+/* Bookmark Info Section Title */
+"BookmarkInfo" = "जानकारी को बुकमार्क करें";
+
+/* Title for root level bookmarks cell */
+"BookmarkRootLevelCellTitle" = "बुकमार्क";
+
+/* title for bookmarks panel */
+"Bookmarks" = "बुकमार्क";
+
+/* Action to export bookmarks to another device. */
+"bookmarksExportAction" = "बुकमार्क एक्सपोर्ट करें";
+
+/* Action to import bookmarks from a file. */
+"bookmarksImportAction" = "बुकमार्क इंपोर्ट करें";
+
+/* Title for bookmarks menu item */
+"BookmarksMenuItem" = "बुकमार्क";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkTitlePlaceholderText" = "नाम";
+
+/* Placeholder text for adding or editing a bookmark */
+"BookmarkUrlPlaceholderText" = "पता";
+
+/* Button to show the brave panel */
+"BravePanel" = "Brave पैनल";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave रिवार्ड्स";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "खोलें";
+
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "रिवॉर्ड";
+
+/* Brave Rewards title */
+"BraveRewardsTitle" = "Brave रिवार्ड्स";
+
+/* Brave Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Brave ब्रेव सर्च आपकी प्रोफ़ाइल नहीं बनाता";
+
+/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+"braveSearchPromotion.bannerMaybeLaterButtonTitle" = "शायद बाद में";
+
+/* Brave Search Banner Promotion title in Search Suggestions */
+"braveSearchPromotion.bannerTitle" = "बेहतर प्राइवेसी के साथ स्वतंत्र सर्च करने में मदद करता है";
+
+/* Brave Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Brave सर्च को आज़माएँ";
+
+/* Button title for Bottom Bar Callout View for action later */
+"braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "शायद बाद में";
+
+/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+"braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "खारिज करें";
+
+/* No comment provided by engineer. */
+"BraveShieldsAdvancedControls" = "उन्नत कंट्रोल";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacy" = "Brave Shields & प्राइवेसी";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Shields और प्राइवेसी";
+
+/* The number of ads and trackers blocked will be next to this */
+"BraveShieldsBlockedCountLabel" = "विज्ञापन और अन्य बकवास चीज़ें ब्लॉक की गईं";
+
+/* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "ज़्यादा जानें";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalChangeButton" = "Shields ग्लोबल डिफ़ॉल्ट्स बदलें";
+
+/* No comment provided by engineer. */
+"BraveShieldsGlobalControls" = "ग्लोबल कंट्रोल्स";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "खराब साइटों की रिपोर्ट के लिए संपर्क जानकारी स्टोर करें";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "अगर आप संपर्क जानकारी देते हैं, तो इसे भविष्य की रिपोर्ट के लिए स्टोर किया जाएगा";
+
+/* No comment provided by engineer. */
+"BraveShieldsSiteBroken" = "अगर यह साइट खराब लगती है, तो Shields को बंद करने की कोशिश करें";
+
+/* Context: 'Brave Shields Up' or 'Brave Shields Down' */
+"BraveShieldsStatusTitle" = "Brave शील्ड्स";
+
+/* Context: The 'Down' in 'Brave Shields Down' */
+"BraveShieldsStatusValueDown" = "नीचे ";
+
+/* Context: The 'Up' in 'Brave Shields Up' */
+"BraveShieldsStatusValueUp" = "ऊपर";
+
+/* The accessibility hint spoken when focused on the main shields toggle */
+"BraveShieldsToggleHint" = "Brave Shields को टॉगल करने के लिए डबल टैप करें";
+
+/* The name of the feature */
+"bravetalk.braveTalkTitle" = "Brave Talk";
+
+/* Title for the button that allows you go to the language selection screen, to select a language you want to translate to/from. */
+"BraveTranslate.languageSelectionButtonTitle" = "भाषा चुनें";
+
+/* Title for a text element that lets the user know the page was translated successfully. */
+"BraveTranslate.pageTranslatedTitle" = "पेज का अनुवाद किया गया";
+
+/* Title for the search field in the navigation bar for the translate language selection page. The user can search for a language to translate to or from. */
+"BraveTranslate.searchInputTitle" = "खोज";
+
+/* This text is for the settings menu for all Brave-Translate options. */
+"BraveTranslate.settingsMenuTitle" = "Brave अनुवाद";
+
+/* This text is for the translate settings screen. It's the title of the settings menu. */
+"BraveTranslate.settingsScreenTitle" = "Brave अनुवाद";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionDescription" = "चालू होने पर, Brave अनुवाद अपने-आप आपके पेज की मौजूदा भाषा का पता लगाएगा और URL बार में अनुवाद बटन दिखाएगा।";
+
+/* This text is for a Toggle that allows the user to enable or disable page translation. */
+"BraveTranslate.settingsTranslateEnabledOptionTitle" = "अनुवाद चालू किया गया";
+
+/* The word 'to', is used in the sentenced: Translate [language-a] to [language-b] */
+"BraveTranslate.translateFromToTitle" = "सेवा में";
+
+/* This text is used as a placeholder for languages when the language detected on the page is unsupported or unknown. */
+"BraveTranslate.unknownLanguageTitle" = "अज्ञात भाषा";
+
+/* Title for setting to enable the browser lock privacy feature */
+"BrowserLock" = "ब्राउज़र लॉक";
+
+/* Description for setting to enable the browser lock privacy feature */
+"BrowserLockDescription" = "Touch ID, Face ID या सिस्टम पासकोड से Brave को अनलॉक करें।";
+
+/* Settings item for clearing browsing history */
+"BrowsingHistory" = "ब्राउज़िंग इतिहास";
+
+/* Settings item for clearing the cache */
+"Cache" = "कैश";
+
+/* Button title for Bottom Bar Callout View */
+"callout.bottomBarCalloutButtonTitle" = "टैब्स बार की जगह बदलें";
+
+/* Description for Bottom Bar Callout View */
+"callout.bottomBarCalloutDescription" = "ऐड्रेस बार, टैब्स, बुकमार्क्स और ब्राउज़र के निचले हिस्से में मौजूद दूसरे टूल्स की जगह बदलें।";
+
+/* Title for Bottom Bar Callout View */
+"callout.bottomBarCalloutTitle" = "Brave टैब्स बार कस्टमाइज़ करें";
+
+/* Description - Description used for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutButtonDescription" = "Brave को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें?";
+
+/* Subtitle - Description for Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutDescription" = "जब Brave डिफ़ॉल्ट के तौर पर सेट होता है, तो आप जिस भी लिंक को खोलते हैं, वह Brave की प्राइवेसी सुरक्षा की सुविधा के साथ खुलता है.";
+
+/* Title for main button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutPrimaryButtonTitle" = "डिफ़ॉल्ट के तौर पर सेट करें";
+
+/* Description for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonDescription" = "पहले से डिफ़ॉल्ट है?";
+
+/* Title for secondary button in Default Browser Full Screen Callout */
+"callout.defaultBrowserCalloutSecondaryButtonTitle" = "इसे छोड़ें";
+
+/* Title for Default Browser Full Screen Callout */
+"callout.defaultBrowserTitle" = "प्राइवेसी। आसान हो गई है।";
+
+/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutDescription" = "इससे हमें यह जानने में मदद मिलती है कि कौनसी Brave सुविधाओं का सबसे ज़्यादा इस्तेमाल किया जाता है। Brave Shields और दूसरी प्राइवेसी सेटिंग्स में जाकर Brave सेटिंग्स में कभी भी बदलें।";
+
+/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
+"callout.p3aCalloutLinkTitle" = "हमारे प्राइवेसी संरक्षण प्रोडक्ट अनलिटिक्स (P3A) के बारे में ज़्यादा जानें।";
+
+/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutTitle" = "Brave को बेहतर बनाने में मदद करें.";
+
+/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
+"callout.p3aCalloutToggleTitle" = "प्राइवेसी और अनाम प्रोडक्ट की इनसाइट्स शेयर करें।";
+
+/* Subtitle - Description for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutDescription" = "अपने कंप्यूटर या टैबलेट पर Brave प्राइवेसी पाएँ और डिवाइसों के बीच बुकमार्क & एक्सटेंशन सिंक करें।";
+
+/* Title for button in Default Browser Full Screen Callout */
+"callout.privacyEverywhereCalloutPrimaryButtonTitle" = "अभी सिंक करें";
+
+/* Title for Privacy Everywhere Full Screen Callout */
+"callout.privacyEverywhereCalloutTitle" = "प्राइवेसी। हर कहीं।";
+
+/* Title for 'Tab Received' Callout, This is shown in the message when a Tab information is received from another sync device. */
+"callout.tabReceivedCalloutTitle" = "टैब मिल गया";
+
+/* No comment provided by engineer. */
+"CancelButtonTitle" = "रद्द करना";
+
+/* Title indicating whether the section for the algorithm used */
+"certificateViewer.algorithmTitle" = "एल्गोरिद्म";
+
+/* Title indicating whether or not a private key can be used for 'Anything' (encrypting, deriving, wrapping, verifying, signing, etc) */
+"certificateViewer.anyTitle" = "कोई भी";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bitsUnitTitle" = "बिट्स";
+
+/* A measurement unit used in computing to indicate or how memory is used. */
+"certificateViewer.bytesUnitTitle" = "बाइट्स";
+
+/* The description for when an SSL certificate is valid */
+"certificateViewer.certificateIsValidTitle" = "यह सर्टिफ़िकेट मान्य है";
+
+/* Section Title displaying common information */
+"certificateViewer.commonInfoTitle" = "आम जानकारी";
+
+/* Title of the section for Commonly used Name for the certificate. Example: Alias, Commonly used name, DigiCert High Assurance TLS. */
+"certificateViewer.commonNameTitle" = "सामान्य जानकारी";
+
+/* Title of the section for the certificate's issuing country or region. Example: Canada, or USA */
+"certificateViewer.countryOrRegionTitle" = "देश या क्षेत्र";
+
+/* Title indicating whether or not a private key can be used to derive some data from another piece of data. IE: Use one key to generate another */
+"certificateViewer.deriveTitle" = "डिराइव";
+
+/* Title of the section for the Domain Component such as: DNS or brave.com or a website's domain. */
+"certificateViewer.domainComponentTitle" = "डोमेन कॉम्पोनेंट";
+
+/* Title of the section indication which 'Encryption' algorithm was used. */
+"certificateViewer.encryptionTitle" = "सुरक्षित करने का तरीका";
+
+/* Title indicating whether or not a private key can be used to encrypt data */
+"certificateViewer.encryptTitle" = "एन्क्रिप्ट";
+
+/* Title indicating whether the mathematical exponent used. x³, x², etc. */
+"certificateViewer.exponentTitle" = "एक्सपोनेंट";
+
+/* Fingerprints/Hashes are algorithms used to determine if the certificate is legitimate */
+"certificateViewer.fingerPrintsTitle" = "फ़िंगरप्रिंट";
+
+/* Section Title for Issuer Name in the SSL Certificate */
+"certificateViewer.issuerNameTitle" = "जारी करने वाले का नाम";
+
+/* Title indicating the size of the private or public key used in bytes. Example: KeySize - 1024 Bytes. Key Size - 2048 Bytes. */
+"certificateViewer.keySizeTitle" = "की का आकार";
+
+/* Title indicating what the private or public key can be used for. */
+"certificateViewer.keyUsageTitle" = "की का इस्तेमाल";
+
+/* Title of the section for the certificate's issuing city. Example: Toronto, New York, or San Francisco */
+"certificateViewer.localityTitle" = "लोकैलिटी";
+
+/* Title indicating 'None' or no information or empty. */
+"certificateViewer.noneTitle" = "कुछ नहीं";
+
+/* Certificate is 'not valid after' January 31st, 2022 for example. */
+"certificateViewer.notValidAfterTitle" = "इस समय तक मान्य";
+
+/* Certificate is 'not valid before' January 1st, 2022 for example. */
+"certificateViewer.notValidBeforeTitle" = "इस समय से मान्य";
+
+/* Title of the section for Department of the Company. Example: Human Resources. */
+"certificateViewer.organizationalUnitTitle" = "संगठन इकाई";
+
+/* Title of the section for Name of the Company. Example: Brave Inc. */
+"certificateViewer.organizationTitle" = "संगठन";
+
+/* Title indicating 'Parameters' or Input passed to a function/algorithm. */
+"certificateViewer.parametersTitle" = "पैरामीटर";
+
+/* Information about a Public Key section title. */
+"certificateViewer.publicKeyInfoTitle" = "पब्लिक 'की' की जानकारी";
+
+/* Title indicating whether the key used is public (not private) */
+"certificateViewer.publicKeyTitle" = "पब्लिक की";
+
+/* Certificates have a serial number to identify that it's unique */
+"certificateViewer.serialNumberTitle" = "क्रम संख्या";
+
+/* Do NOT translate the %@. They are place holders. Example: 'SHA256' with 'RSA' Encryption */
+"certificateViewer.signatureAlgorithmEncryptionDescription" = "%2$@ एन्क्रिप्शन वाली %1$@";
+
+/* Do NOT translate the %@. They are place holders. Example: 'ECDSA Signature' with 'SHA-256' */
+"certificateViewer.signatureAlgorithmSignatureDescription" = "%2$@ वाला %1$@ हस्ताक्षर";
+
+/* Title for the section where we display information about the algorithm used to sign the certificate */
+"certificateViewer.signatureAlgorithmTitle" = "हस्ताक्षर की एल्गोरिद्म";
+
+/* Title of the view that states whether or not something was signed with an encryption algorithm or hash. */
+"certificateViewer.signatureTitle" = "हस्ताक्षर";
+
+/* Title of the section for the certificate's issuing state or province. Example: Ontario Province or California State */
+"certificateViewer.stateOrProvinceTitle" = "राज्य/प्रांत";
+
+/* Title of the section for the address of where the certificate came from. */
+"certificateViewer.streetAddressTitle" = "गली का पता";
+
+/* Section Title for Subject Name in the SSL Certificate */
+"certificateViewer.subjectNameTitle" = "विषय का नाम";
+
+/* Title of the section for the User's ID (Identifier). */
+"certificateViewer.userIDTitle" = "उपयोगकर्ता ID";
+
+/* Title of section that determines if the dates on a certificate is valid. */
+"certificateViewer.validityDatesTitle" = "मान्यता की तारीखें";
+
+/* Title indicating whether or not a private key can be used to verify data is legitimate */
+"certificateViewer.verifyTitle" = "सत्यापित करें";
+
+/* Certificates have a version number */
+"certificateViewer.versionNumberTitle" = "वर्शन";
+
+/* Title indicating whether or not a private key can be used to wrap or enclose some data */
+"certificateViewer.wrapTitle" = "रैप";
+
+/* No comment provided by engineer. */
+"ClearData" = "डेटा हटाया गया";
+
+/* Section title in settings panel */
+"ClearPrivateData" = "निजी डेटा हटाएँ";
+
+/* The cancel button when confirming clear private data. */
+"ClearPrivateDataAlertCancelButtonTitle" = "रद्द करना";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertMessage" = "क्या आप आश्वस्त हैं?";
+
+/* The button that clears private data. */
+"ClearPrivateDataAlertOkButtonTitle" = "ठीक है";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertTitle" = "डेटा ";
+
+/* No comment provided by engineer. */
+"ClearPrivateDataAlertYesAction" = "हाँ, हटाएँ";
+
+/* Button in settings that clears private data for the selected items. */
+"ClearPrivateDataNow" = "अभी डेटा हटाएँ";
+
+/* The cancel button when confirming clear history. */
+"ClearSyncedHistoryAlertCancelButtoTitle" = "रद्द करना";
+
+/* Description of the confirmation dialog shown when a user tries to clear history that's synced to another device. */
+"ClearSyncedHistoryAlertMessage" = "इस कार्रवाई से आपका पूरा निजी डेटा हट जाएगा, जिसमें आपके सिंक किए गए डिवाइस की हिस्ट्री शामिल है।";
+
+/* The confirmation button that clears history even when Sync is connected. */
+"ClearSyncedHistoryAlertOkButtoTitle" = "ठीक है";
+
+/* Client is in an invalid state which caused the error */
+"clientErrorMessage" = "क्लाइंट की ओर से गड़बड़ी";
+
+/* Button title to close a menu. */
+"Close" = "बंद करें";
+
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "क्या आप वाकई दूसरे सभी खुले टैब्स बंद करना चाहते हैं?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "सभी दूसरे टैब्स बंद करें";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "क्या आप वाकई सभी खुले टैब्स बंद करना चाहते हैं?";
+
+/* No comment provided by engineer. */
+"CloseAllTabsTitle" = "सभी %i टैब बंद करें";
+
+/* Text to choose for downloading a file (example: saving an image to phone) */
+"CommonDownload" = "डाउनलोड करें";
+
+/* Text to select sharing something (example: image, video, URL) */
+"CommonShare" = "शेयर करें";
+
+/* No comment provided by engineer. */
+"Confirm" = "दुबारा पूछें";
+
+/* Settings item for clearing cookies and site data */
+"Cookies" = "कूकीज़ और साइट का डेटा";
+
+/* Copy app info to clipboard action sheet action. */
+"CopyAppInfoToClipboard" = "ऐप की जानकारी को क्लिपबोर्ड पर कॉपी करें।";
+
+/* Copy app info to clipboard action sheet action. */
+"copyAppSizeInfoToClipboard" = "ऐप के आकार की जानकारी को क्लिपबोर्ड पर कॉपी करें।";
+
+/* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
+"CopyCleanLink" = "क्लीन लिंक को कॉपी करें";
+
+/* Context menu item for copying an image to the clipboard */
+"CopyImageActionTitle" = "इमेज कॉपी करें";
+
+/* Context menu item for copying a link URL to the clipboard */
+"CopyLinkActionTitle" = "लिंक कॉपी करें";
+
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "टैब्स की जानकारी को क्लिपबोर्ड पर कॉपी करें।";
+
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "सहायता जानकारी कॉपी करें";
+
+/* Create PDF share action. */
+"CreatePDF" = "PDF बनाएँ";
+
+/* Currently usedd search engines section name. */
+"CurrentlyUsedSearchEngines" = "अभी इस्तेमाल हो रहे सर्च इंजन";
+
+/* Accessibility Title for the button that adds a new custom search engine to the browser. */
+"customSearchEngine.addCustomSearchEngineAccessibilityTitle" = "कस्टम सर्च इंजन जोडे़ं";
+
+/* Label explaining how to add search engine. */
+"customSearchEngine.addEngineDescription" = "कोई सर्च url लिखें और क्वेरी को %1$s से बदल दें।\nउदाहरण के लिए: https://youtube.com/search?q=%2$s \n(अगर साइट OpenSearch को सपोर्ट करती है, तो इस फ़ील्ड में बदलाव करते समय जोड़ने का विकल्प अपने-आप दिया जाएगा।)";
+
+/* Button title for Auto Add in header */
+"customSearchEngine.autoAddTitle" = "अपने-आप जोडे़ं";
+
+/* A title explaining that an error shown while adding custom search engine */
+"customSearchEngine.customSearchEngineAddErrorTitle" = "कस्टम सर्च इंजन जोड़ने में गड़बड़ी हुई";
+
+/* The warning description shown to user when custom search engine will be deleted while it is default search engine. */
+"customSearchEngine.deleteEngineAlertDescription" = "कस्टम सर्च इंजन के डिफ़ॉल्ट होते हुए उसे मिटाने से डिफ़ॉल्ट इंजन अपने-आप स्विच हो जाएगा।";
+
+/* The alert title shown to user when custom search engine will be deleted while it is default search engine. The parameter will be replace with name of the search engine. */
+"customSearchEngine.deleteEngineAlertTitle" = "क्या आप वाकई %@ को मिटाना चाहते हैं?";
+
+/* The warning description shown to user when custom search engine already exists. */
+"customSearchEngine.engineAlertExistsAlertDescription" = "इसी नाम वाला एक सर्च इंजन पहले से मौजूद है।";
+
+/* A placeholder in the text filed for user to input the custom search engine name. */
+"customSearchEngine.engineTitlePlaceholder" = "सर्च इंजन का नाम दर्ज करें";
+
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+"customSearchEngine.insecureSearchTemplateURLErrorDescription" = "इसके लिए असुरक्षित कस्टम सर्च टेंप्लेट";
+
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+"customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "इसके लिए असुरक्षित कस्टम सुझाव टेंप्लेट";
+
+/* Navigation Bar title */
+"customSearchEngine.navigationTitle" = "सर्च इंजन जोड़ें";
+
+/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.searchTemplateTitle" = "सर्च टेंप्लेट:";
+
+/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+"customSearchEngine.suggestionTemplateTitle" = "सुझाव टेंप्लेट:";
+
+/* The message that asks the user to Add the search provider explaining where the search engine will appear */
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "क्विक सर्च बार में नया सर्च इंजन दिखाई देगा।";
+
+/* The title that asks the user to Add the search provider */
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "सर्च प्रोवाइडर जोडे़ं?";
+
+/* A descriotion explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "कस्टम सर्च इंजन जोड़ा नहीं जा सका। कृपया बाद में कोशिश करें।";
+
+/* A title explaining that there is error while adding a search engine */
+"customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "कस्टम सर्च इंजन में गड़बड़ी";
+
+/* A message explaining a replica search engine is already added */
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "इस शीर्षक या URL वाला सर्च इंजन पहले से जोड़ा जा चुका है।";
+
+/* A description explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "सर्च url लिखें और क्वेरी को %s से बदलें। ";
+
+/* A title explaining that there is a formatting error in URL field */
+"customSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle" = "सर्च URL क्वेरी में गड़बड़ी ";
+
+/* A description explaining the copied url should be secure */
+"customSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription" = "कॉपी किया गया टेक्स्ट एक मान्य सुरक्षित URL होना चाहिए, जो 'https://' से शुरू हो";
+
+/* A descriotion explaining that the fields must filled while adding a search engine. */
+"customSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription" = "कृपया शीर्षक और URL, दोनों फ़ील्ड भरें।";
+
+/* Title for quick-search engines settings section. */
+"CustomSearchEngines" = "कस्टम-सर्च इंजन";
+
+/* The success message that appears after a user sucessfully adds a new search engine */
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "सर्च इंजन जोड़ा गया!";
+
+/* Button text to close the default browser popup. */
+"defaultBrowserCallout.introCancelButtonText" = "अभी नहीं";
+
+/* Button text to open app settings */
+"defaultBrowserCallout.introOpenSettingsButtonText" = "सेटिंग खोलें";
+
+/* Primary text on default browser popup screen */
+"defaultBrowserCallout.introPrimaryText" = "अपनी गोपनीयता की रक्षा के लिए सभी लिंक को Brave के साथ खोलें";
+
+/* Secondary text on default browser popup. */
+"defaultBrowserCallout.introSecondaryText" = "Brave Shields & ऐड्स को ब्लॉक करता है, डेटा सेव करता है और आप जिस भी साइट पर जाते हैं वहाँ आपका समय बचाता है";
+
+/* Tertiary text on default browser popup screen */
+"defaultBrowserCallout.introTertiaryText" = "सेटिंग खोलें, डिफ़ॉल्ट ब्राउज़र ऐप पर टैप करें, और Brave को चुनें।";
+
+/* Notification body to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationBody" = "क्रोमियम को अपने डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें";
+
+/* Notification title to promote setting Brave app as default browser */
+"defaultBrowserCallout.notificationTitle" = "हर लिंक पर Brave की सुरक्षा पाएँ";
+
+/* No comment provided by engineer. */
+"defaultBrowserCalloutCloseAccesabilityLabel" = "डिफ़ॉल्ट ब्राउज़र कॉलआउट बंद करें";
+
+/* Name for default Brave theme. */
+"defaultThemeName" = "Brave डिफ़ॉल्ट";
+
+/* No comment provided by engineer. */
+"Delete" = "हटाएं";
+
+/* Message for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertMessage" = "इससे सभी अंदरूनी फ़ोल्डर्स और बुकमार्क्स हट जाएँगे। क्या आप वाकई जारी रखना चाहते हैं?";
+
+/* Title for the alert shown when the user tries to delete a bookmarks folder */
+"DeleteBookmarksFolderAlertTitle" = "फ़ोल्डर हटाएँ?";
+
+/* Prompt option for cancelling out of deletion */
+"DeleteLoginAlertCancelActionTitle" = "रद्द करना";
+
+/* Prompt message warning the user that deleting non-synced logins will permanently remove them */
+"DeleteLoginAlertLocalMessage" = "लॉगिन हमेशा के लिए हट जाएँगे।";
+
+/* Prompt message warning the user that deleted logins will remove logins from all connected devices */
+"DeleteLoginAlertSyncedDevicesMessage" = "लॉगिन सभी कनेक्ट किए गए डिवाइसों से हट जाएँगे।";
+
+/* Prompt title when deleting logins */
+"DeleteLoginAlertTitle" = "क्या आप आश्वस्त हैं?";
+
+/* Label for the button used to delete the current login. */
+"DeleteLoginButtonTitle" = "हटाएं";
+
+/* Current device model and iOS version copied to clipboard. */
+"DeviceTemplate" = "डिवाइस %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "बदलाव खारिज करें";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "क्या आप वाकई इन बदलावों को खारिज करना चाहते हैं? सभी बदलाव चले जाएँगे।";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "बदलाव खारिज करें?";
+
+/* Button title that when tapped displays a websites HTTPS security certificate information */
+"DisplayCertificate" = "सुरक्षा प्रमाणपत्र";
+
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "डिसप्ले";
+
+/* No comment provided by engineer. */
+"Done" = "पूर्ण";
+
+/* Used as a button label for crash dialog prompt */
+"DontSendButtonTitle" = "न भेजें";
+
+/* Settings item for clearing downloaded files. */
+"DownloadedFiles" = "डाउनलोड की गईं फ़ाइलें";
+
+/* Title for downloads menu item */
+"DownloadsMenuItem" = "डाउनलोड";
+
+/* Title for when a user has nothing downloaded onto their device, and the list is empty. */
+"DownloadsPanelEmptyStateTitle" = "डाउनलोड की गईं फ़ाइलें यहाँ दिखेंगी।";
+
+/* Action item title of long press for Opening the existing - active Tab url in a new Tab */
+"DuplicateActiveTab" = "सक्रिय टैब को डुप्लीकेट करें";
+
+/* History tableview section header that indicated history items earlier than last month */
+"Earlier" = "पहले";
+
+/* No comment provided by engineer. */
+"Edit" = "बदलाव करें";
+
+/* Button to edit a bookmark */
+"EditBookmark" = "बुकमार्क में बदलाव करें";
+
+/* Header title for bookmark save location */
+"EditBookmarkTableLocationHeader" = "स्थान";
+
+/* Title for editing a bookmark */
+"EditBookmarkTitle" = "बुकमार्क में बदलाव करें";
+
+/* Button to edit a favorite */
+"EditFavorite" = "पसंदीदा में बदलाव करें";
+
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "पसंदीदा में बदलाव करें";
+
+/* Title for editing a folder */
+"EditFolderTitle" = "फ़ोल्‍डर में बदलाव करें";
+
+/* Accessibility Title for the button that edits the quick-search engines list. */
+"EditQuickSearchEnginesAccessibilityTitle" = "क्विक-सर्च इंजन में बदलाव करें";
+
+/* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
+"enablePullToRefresh" = "रिफ़्रेश करने के लिए खींचने की सुविधा चालू करें";
+
+/* Description for new folder popup */
+"EnterFolderName" = "फ़ोल्डर के नाम में बदलाव करें";
+
+/* Shown in error pages to suggest a fix to the user. */
+"errorPageCantBeReachedTry" = "URL को फिर से टाइप करने या सर्च इंजन खोलकर नया URL खोजने की कोशिश करें।";
+
+/* Shown in error pages for files that can't be shown and need to be downloaded. */
+"ErrorPageOpenInSafariButtonTitle" = "Safari में खोलें";
+
+/* Shown in error pages on a button that will try to load the page again */
+"ErrorPageReloadButtonTitle" = "फिर लोड करें";
+
+/* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
+"ErrorPagesAdvancedErrorPinningDetails" = "आम तौर पर, %1$@ आपकी जानकारी को सुरक्षित रखने के लिए एन्क्रिप्शन का इस्तेमाल करता है। जब Brave ने इस बार %2$@ से कनेक्ट करने की कोशिश की, तो वेबसाइट ने अजीब और गलत क्रेडेंशियल वापस भेजे। ऐसा तब हो सकता है, जब कोई हमलावर %3$@ की कोशिश कर रहा हो या वाई-फ़ाई साइन इन स्क्रीन ने कनेक्शन में रुकावट डाली हो। आपकी जानकारी अब भी सुरक्षित है, क्योंकि Brave ने किसी भी डेटा के एक्सचेंज होने से पहले कनेक्शन रोक दिया था।<br />आप अभी %4$@ पर नहीं जा सकते, क्योंकि वेबसाइट प्रमाणपत्र को पिन करती है। औम तौर पर, नेटवर्क की गड़बड़ियाँ और हमले अस्थायी होते हैं, इसलिए यह पेज शायद बाद में काम करेगा।";
+
+/* Additional warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningDetails" = "यह सर्वर साबित नहीं कर पाया कि यह %@ है; आपके डिवाइस का ऑपरेटिंग सिस्टम इसके सुरक्षा प्रमाणपत्र पर भरोसा नहीं करता। ऐसा लगत कॉन्फ़िगरेशन के कारण या इस कारण से हो सकता है कि कोई हमलावर आपके कनेक्शन को इंटरसेप्ट करने की कोशिश कर रहा हो।";
+
+/* Warning text when clicking the Advanced button on error pages */
+"ErrorPagesAdvancedWarningTitle" = "ऐसा हो सकता है कि हमलावर %@ से आपकी जानकारी चुराने की कोशिश कर रहा हो (उदाहरण के लिए, पासवर्ड, मैसेज या क्रेडिट कार्ड्स)।";
+
+/* Label for button to go back from the error page */
+"ErrorPagesBackToSafetyButton" = "सुरक्षा में वापस";
+
+/* Title on the certificate error page */
+"ErrorPagesCertErrorTitle" = "यह साइट सुरक्षित कनेक्शन नहीं दे सकती";
+
+/* Title on the certificate error page */
+"ErrorPagesCertWarningTitle" = "आपका कनेक्शन प्राइवेट नहीं है";
+
+/* Label for button to hide advanced actions on the error page */
+"ErrorPagesHideDetailsButton" = "विवरण छुपाएं";
+
+/* Label for learn more link on error page */
+"ErrorPagesLearnMoreButton" = "ज़्यादा जानें";
+
+/* Label for button to perform advanced actions on the error page */
+"ErrorPagesMoreDetailsButton" = "ज़्यादा विवरण";
+
+/* Title of the No Internet error page */
+"ErrorPagesNoInternetTitle" = "इंटरनेट ऐक्सेस नहीं है";
+
+/* Text telling the user to Try: The following list of things */
+"ErrorPagesNoInternetTry" = "ऐसा लगता है कि आप ऑनलाइन नहीं हैं। इसे ठीक करने के लिए,";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem1" = "नेटवर्क केबल, मॉडम और राउटर की जाँच करके देखें";
+
+/* List of things to try when internet is not working */
+"ErrorPagesNoInternetTryItem2" = "वाई-फ़ाई से दोबारा कनेक्ट किया जा रहा है";
+
+/* Button label to temporarily continue to the site from the certificate error page */
+"ErrorPagesProceedAnywayButton" = "%@ पर जाएँ (असुरक्षित)";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ एक बाहरी ऐप्लिकेशन लॉन्च करेगा";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "लिंक को ऐप स्विच करने की अनुमति दें?";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "अनुमति दें";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "अनुमति न दें";
+
+/* Footer text when user selects to save to favorites when editing a bookmark */
+"FavoritesLocationFooterText" = "पसंदीदा आपकी होम स्क्रीन पर होते हैं। इन बुकमार्क को दूसरे डिवाइस से सिंक्रनाइज़ नहीं किया जाता।";
+
+/* Title for favorites cell */
+"FavoritesRootLevelCellTitle" = "पसंदीदा";
+
+/* No comment provided by engineer. */
+"Features" = "सुविधाएँ";
+
+/* Share action title */
+"FindInPage" = "पेज में ढूँढें";
+
+/* Done button in Find in Page Toolbar. */
+"FindInPageDoneButtonAccessibilityLabel" = "पूर्ण";
+
+/* Find `search query` */
+"FindInPageFormat" = "ढूँढें ";
+
+/* Accessibility label for next result button in Find in Page Toolbar. */
+"FindInPageNextResultButtonAccessibilityLabel" = "पेज में अगला नतीजा";
+
+/* Accessibility label for previous result button in Find in Page Toolbar. */
+"FindInPagePreviousResultButtonAccessibilityLabel" = "पेज में पिछला नतीजा";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findInPageTitle" = "पेज में ढूँढें";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findNextTitle" = "अगला खोजें";
+
+/* Section header for find in page option */
+"FindOnPageSectionHeader" = "इस पेज पर";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"findPreviousTitle" = "पिछला खोजें";
+
+/* individual blocking statistic title */
+"FingerprintingMethods" = "फ़िंगरप्रिंटिंग के तरीके";
+
+/* No comment provided by engineer. */
+"FingerprintingProtection" = "फ़िंगरप्रिंटिंग ब्लॉक करें";
+
+/* No comment provided by engineer. */
+"FingerprintingProtectionDescription" = "साइटों के लिए आपके डिवाइस की अलग-अलग विशेषताएँ पहचानना मुश्किल बनाताा है। ";
+
+/* Setting to follow universal links */
+"FollowUniversalLinks" = "बाहरी ऐप्स में खोलने के लिए यूनिवर्सल लिंक की अनुमति दें";
+
+/* A label which when tapped pastes from the users clipboard forcefully (so as to ignore any paste restrictions placed by the website) */
+"ForcePaste" = "फ़ोर्स पेस्ट करें";
+
+/* No comment provided by engineer. */
+"genericErrorBody" = "ओह! कुछ गलत हो गया। कृपया फिर से कोशिश करें।";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "गड़बड़ी";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsing" = "खतरनाक वेबसाइटें ब्लॉक करें";
+
+/* No comment provided by engineer. */
+"GoogleSafeBrowsingUsingWebKitDescription" = "सुरक्षित ब्राउज़िंग ऐसी वेबसाइटों से सुरक्षा करती है जिन्हें खतरनाक माना जाता है। [ज़्यादा जानें](%@)";
+
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "लिंक के प्रीव्यू छिपाएँ";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "Brave रिवार्ड्स आइकन छुपाएं";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "Brave Rewards के चालू न होने पर, Brave Rewards आइकन छिपाता है";
+
+/* Title for history menu item */
+"HistortMenuItem" = "इतिहास";
+
+/* A button title that when taps removes a single item that is selected from history */
+"history.deleteFromHistory" = "हिस्ट्री से मिटाएँ";
+
+/* Title for History Clear All Action */
+"history.historyClearActionTitle" = "हिस्ट्री मिटाएँ";
+
+/* Description for Clear All History Alert Description */
+"history.historyClearAlertDescription" = "इससे पूरी ब्राउज़िंग इतिहास मिट जाएगा।";
+
+/* Title for Clear All History Alert Title */
+"history.historyClearAlertTitle" = "ब्राउज़िंग इतिहास मिटाएँ";
+
+/* Title which is displayed on History screen when you search for something but no results are found */
+"history.historyEmptySearchTitle" = "कोई सर्च नतीजा नहीं";
+
+/* Title which is displayed when History screen is empty. */
+"history.historyEmptyStateSubtitle" = "आपका ब्राउज़िंग इतिहास यहाँ दिखेगा";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyEmptyStateTitle" = "कोई हिस्ट्री नहीं";
+
+/* Title which is displayed on History screen as a overlay when Private Browsing Only enabled */
+"history.historyPrivateModeOnlyStateSubtitle" = "सिर्फ़ प्राइवेट ब्राउज़िंग वाले मोड में हिस्ट्री उपलब्ध नहीं है";
+
+/* Title for a section in the History view that shows recently closed tabs */
+"history.historyRecentlyClosedTabs" = "हाल ही में बंद किए गए टैब्स";
+
+/* Title displayed for placeholder inside Search Bar in History */
+"history.historySearchBarTitle" = "सर्च हिस्ट्री";
+
+/* Title for history screen */
+"HistoryScreenTitle" = "इतिहास";
+
+/* No comment provided by engineer. */
+"Home" = "होम";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhere" = "कनेक्शंस को HTTPS पर अपग्रेड करें";
+
+/* No comment provided by engineer. */
+"HTTPSEverywhereDescription" = "जब संभव हो, तब HTTP के बजाय, सुरक्षित HTTPS का इस्तेमाल करके साइटें खोलें।";
+
+/* individual blocking statistic title */
+"HTTPSUpgrades" = "HTTPS अपग्रेड किया गया";
+
+/* Title of the button in settings where the user can import browsing data from other browsers. */
+"importBrowsingDataSettingsMenuTitle" = "ब्राउज़िंग डेटा इंपोर्ट करें";
+
+/* title for per-site shield toggles */
+"IndividualControls" = "व्यक्तिगत नियंत्रण";
+
+/* Error message if details don't have the right type or values */
+"invalidDetailsMessage" = "पेमेंट अनुरोध में अमान्य जानकारी";
+
+/* History tableview section header */
+"LastMonth" = "पिछले महीने";
+
+/* History tableview section header */
+"LastWeek" = "पिछले हफ़्ते";
+
+/* No comment provided by engineer. */
+"learnMore" = "अधिक जानकारी प्राप्त करें";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "लियो";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginEntryDeleteAlertMessage" = "सेव किए गए लॉगिन हमेशा के लिए हटा दिए जाएँगे।";
+
+/* The message displayed in alert when a login entry deleted */
+"login.loginInfoCreatedHeaderTitle" = "बनाया गया %@";
+
+/* The header title displayed over the details of login entry */
+"login.loginInfoDetailsHeaderTitle" = "लॉगिन की जानकारी";
+
+/* Title for the password field in password detail page */
+"login.loginInfoDetailsPasswordFieldTitle" = "पासवर्ड";
+
+/* Title for the username field in password detail page */
+"login.loginInfoDetailsUsernameFieldTitle" = "उपयोगकर्ता नाम";
+
+/* Title for the website field in password detail page */
+"login.loginInfoDetailsWebsiteFieldTitle" = "वेबसाइट";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"login.loginInfoSetPasscodeAlertDescription" = "पासवर्ड देखने के लिए, आपको पहले अपने डिवाइस पर पासकोड सेट करना होगा।";
+
+/* The title displayed in alert when a user needs to set passcode */
+"login.loginInfoSetPasscodeAlertTitle" = "पासकोड सेट करें";
+
+/* The message displayed on the password list screen when there is not password found */
+"login.loginListEmptyScreenTitle" = "कोई लॉगिन नहीं मिला";
+
+/* Title for navigation bar of the login list screen */
+"login.loginListNavigationTitle" = "लॉगिन & पासवर्ड";
+
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "कभी नहीं सहेजा गया";
+
+/* The header title displayed over the login list */
+"login.loginListSavedLoginsHeaderTitle" = "सेव किए गए लॉगिंस";
+
+/* The text for placeholder inside search bar in login list */
+"login.loginListSearchBarPlaceHolderTitle" = "फ़िल्टर";
+
+/* Footer label describing when the current login was last modified with the timestamp as the parameter. */
+"LoginDetailLastModifiedCellFormatTitle" = "पिछली बार संशोधित करने का समय %@";
+
+/* Label displayed above the password row in Login Detail View. */
+"LoginDetailPasswordCellTitle" = "पासवर्ड";
+
+/* Label displayed above the username row in Login Detail View. */
+"LoginDetailUsernameCellTitle" = "यूज़रनेम";
+
+/* Label displayed above the website row in Login Detail View. */
+"LoginDetailWebsiteCellTitle" = "वेबसाइट";
+
+/* Label for the button used to deselect all logins. */
+"LoginListDeselectAllButtonTitle" = "सभी चुने हुए को हटाएँ";
+
+/* Label displayed when no logins are found after searching. */
+"LoginListNoLoginTitle" = "कोई लॉगिन नहीं मिला";
+
+/* Title for Logins List View screen. */
+"LoginListScreenTitle" = "लॉगिंस";
+
+/* Label for the button used to select all logins. */
+"LoginListSelectAllButtonTitle" = "सभी को चुनें";
+
+/* Setting to allow media to play in the background */
+"MediaAutoBackgrounding" = "बैकग्राउंड ऑडियो चालू करें";
+
+/* Copy password text selection menu item */
+"MenuItemCopyTitle" = "कॉपी बनाएं";
+
+/* Hide password text selection menu item */
+"MenuItemHidePasswordTitle" = "छुपाएं";
+
+/* Open and Fill website text selection menu item */
+"MenuItemOpenTitle" = "वेबसाइट खोलें";
+
+/* Reveal password text selection menu item */
+"MenuItemRevealPasswordTitle" = "देखें";
+
+/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
+"monthAbbreviation" = "महीना";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "ज़्यादा जानने के लिए, यहाँ टैप करें।";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "यह आपका पहला Brave ऐड है";
+
+/* Bookmark title / Device name */
+"Name" = "नाम";
+
+/* Setting preference to always hide the browser tabs bar. */
+"NeverShow" = "बंद";
+
+/* Default name for creating a new bookmark. */
+"NewBookmarkDefaultName" = "नया बुकमार्क";
+
+/* Title for adding new bookmark */
+"NewBookmarkTitle" = "नया बुकमार्क";
+
+/* Title for new folder popup */
+"NewFolder" = "नया फ़ोल्डर";
+
+/* Default name for creating a new folder. */
+"NewFolderDefaultName" = "नया फ़ोल्डर";
+
+/* Title for adding new folder */
+"NewFolderTitle" = "नया फ़ोल्डर";
+
+/* Context menu item for opening a new private browsing window */
+"NewPrivateWindowTitle" = "नई  प्राइवेट विंडो";
+
+/* New Tab title */
+"NewTab" = "नया टैब";
+
+/* Context menu item for opening a new window */
+"NewWindowTitle" = "नई विंडो";
+
+/* It refers to a night mode, to a type of mode a user can change referring to website appearance. */
+"nightMode.modeTitle" = "मोड";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.sectionDescription" = "नाइड मोड से वेबसाइट और सामान्य सिस्टम का रंगरूप एक साथ बदल जाएगा।";
+
+/* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
+"nightMode.settingsDescription" = "नाइड मोड चालू/बंद करें";
+
+/* A table cell title for Night Mode - defining element for the toggle */
+"nightMode.settingsTitle" = "नाइट मोड";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"No" = "नहीं";
+
+/* The information title displayed when there is no search reault found */
+"noSearchResultsfound" = "कोई खोज नतीजा नहीं मिला।";
+
+/* Setting title for option to automatically redirect a url to another url */
+"nprRedirectFooter" = "NPR को उनके टेक्स्ट वाले वर्शन (text.npr.org) में अपने-आप रीडायरेक्ट करता है।";
+
+/* Bookmark title for Brave Support */
+"ntp.braveSupportFavoriteTitle" = "Brave सपोर्ट";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "टोकन क्लेम करें";
+
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "Brave के साथ ब्राउज़ करने पर आपको %@ मिले हैं।";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "ऐसे ही आगे बढ़ते रहें!";
+
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "स्पांसर्ड इमेजों को छिपाएँ";
+
+/* The text description of image type which is being used NTP */
+"ntp.imageTypeSelectionDescription" = "स्पॉन्सर की गई इमेज ब्रैंडेड ब्रैकग्राउंड होती हैं, जो ब्राउज़र में नए खोले गए टैब में दिखती हैं। स्पॉन्सर की गई इन इमेज को चालू करने से, Brave के लक्ष्य का समर्थन होता है।";
+
+/* The text label of image type learn more link */
+"ntp.imageTypeSelectionDescriptionLearnMore" = "ज़्यादा जानें";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Brave Rewards के बारे में ज़्यादा जानें";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "प्रायोजित इमेज के बारे में और जानें";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"ntp.settingsAutoOpenKeyboard" = "कीबोर्ड अपने-आप खोलें";
+
+/* A setting to enable or disable background on the NTP screen. */
+"ntp.settingsBackgroundImages" = "बैकग्राउंड";
+
+/* A button that leads to a 'more' menu, letting users configure additional settings. */
+"ntp.settingsBackgroundImageSubMenu" = "मीडिया का प्रकार";
+
+/* A selection to let the users only see a set of predefined, default images on the background of the app. */
+"ntp.settingsDefaultImagesOnly" = "डिफ़ॉल्ट इमेज";
+
+/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesAndVideosSelection" = "स्पॉन्सर की गईं इमेज & वीडियो";
+
+/* A selection to let the users see sponsored image backgrounds when opening a new tab. */
+"ntp.settingsSponsoredImagesSelection" = "स्पॉन्सर की गईं इमेज";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"ntp.settingsTitle" = "नया टैब पेज";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"ntp.showMoreFavorites" = "ज़्यादा दिखाएँ";
+
+/* No comment provided by engineer. */
+"ntp.sponsoredImageDescription" = "स्पॉन्सर की गईं इमेज को देखकर, आप कॉन्टेंट क्रिएटर्स और पब्लिशर्स को सपोर्ट कर रहे हैं।";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "Rewards को चालू करके, आप %@ से सहमत होते हैं।";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "ब्राउज़ करते समय बढ़िया कॉन्टेंट के लिए टोकन कमाएँ और क्रिएटर्स को रिवॉर्ड दें।";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "ब्राउज़ करते समय बढ़िया कॉन्टेंट के लिए पॉइंट्स कमाएँ और क्रिएटर्स को रिवॉर्ड दें।";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "पेश हैं Brave Ads!";
+
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "में Brave आपके पहले विज्ञापन को दिखाएगा";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "अब आप तैयार हैं।";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "मैंने कोई विज्ञापन नहीं देखा";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "आपका वॉलेट बनाते समय कोई गड़बड़ी हो गई। कृपया फिर से कोशिश करें";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "ठीक है";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "माफ़ करें";
+
+/* Button to finish onboarding and start using the app. */
+"OBFinishButton" = "ब्राउज़ करना शुरू करें";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "शामिल हों";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "मैच करने वाले रेफ़रल कोड के लिए, Brave को मेरे क्लिपबोर्ड की जाँच करने की अनुमति दें";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "शायद आपने अपने रेफ़रर के सपोर्ट में Brave डाउनलोड किया हो। अपने रेफ़रर का पता लगाने के लिए, Brave मैच करने वाला रेफ़रल कोड ढूँढने के लिए आपके क्लिपबोर्ड की एक बार जाँच करेगा। यह जाँच सिर्फ़ कोड के लिए होती है। कोई और व्यक्तिगत डेटा ट्रांसमिट नहीं किया जाता। अगर आप ऑप्ट आउट करते हैं, तो आपके रेफ़रर को Brave से रिवॉर्ड नहीं मिलेंगे।";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "इस जाँच की अनुमति न दें";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "अनाम रेफ़रल कोड जाँच";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "क्लिपबोर्ड की एक बार जाँच की अनुमति दें";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "'हाँ' पर टैप करके, आप इनसे सहमत होते हैं";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "सेवा की शर्तें";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailsAnd" = "और";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave रिवार्ड्स";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetail" = "Brave Private Ads के लिए ऑप्ट इन करने पर, हर देखे गए ऐड से पब्लिशर्स और कॉन्टेंट क्रिएटर्स की मदद होती है।";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "ब्राउज़ करते समय बढ़िया कॉन्टेंट के लिए टोकन कमाएँ और क्रिएटर्स को रिवॉर्ड दें।";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsPrivacyPolicyDetailLink" = "गोपनीयता नीति";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave रिवार्ड्स";
+
+/* Save button to save current selection */
+"OBSaveButton" = "सेव करें";
+
+/* Detail text for search engine onboarding screen */
+"OBSearchEngineDetail" = "अपने डिफ़ॉल्ट खोज इंजन का चयन करें";
+
+/* Title for search engine onboarding screen */
+"OBSearchEngineTitle" = "Brave ब्राउज़र में आपका स्वागत है";
+
+/* Detail text for shields onboarding screen */
+"OBShieldsDetail" = "निजता का उल्लंघन करने वाले ट्रैकर्स को ब्लॉक करें, ताकि वेब पर कोई आप पर नज़र न रखे और आप आराम से ब्राउज़ कर सकें";
+
+/* Title for shields onboarding screen */
+"OBShieldsTitle" = "Brave शील्ड्स";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "मुझे दिखाएँ";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "शुरू करें";
+
+/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ और %2$lld और ऐड & ट्रैकर्स ब्लॉक किए गए";
+
+/* The footnote indicating what Brave shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "वह सभी बेकार चीजें देखें, जो Brave ने हर पेज पर शील्ड के ज़रिए ब्लॉक की हैं.";
+
+/* The text describing user where they should press in order to open Shield panel */
+"onboarding.blockedAdsOnboardingInstructionsText" = "Brave शील्ड देखने के लिए टैप करें";
+
+/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "विज्ञापन और ट्रैकर ब्लॉक किए गए";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "अपनी VPN की सदस्यता को लिंक करें";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "Brave VPN की आपकी सदस्यता Android, iOS और डेक्सटॉप पर 10 डिवाइस तक की सुरक्षा कर सकती है। बस App Store की अपनी सदस्यता को अपने Brave अकाउंट से लिंक करें।";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "अपनी Brave Firewall + VPN की सुरक्षा को बढ़ाएँ";
+
+/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
+"onboarding.navigateSettingsOnboardingScreenDescription" = "'डिफ़ॉल्ट ब्राउज़र ऐप' ढूँढें";
+
+/* Title for Navigate Settings Screen in Onboarding */
+"onboarding.navigateSettingsOnboardingScreenTitle" = "आपको सेटिंग पर ले जाया जा रहा है...";
+
+/* Description for the NTP pop-over that describes the tracking information on NTP */
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "ट्रैकर्स & ऐड्स को ब्लॉक करके, वेबसाइटें कम डेटा इस्तेमाल करती हैं और जल्दी लोड होती हैं।";
+
+/* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverDescription" = "Brave का कमाल देखें:\nकोई ऐड नहीं। कोई ट्रैकर नहीं। पेज बहुत जल्दी खुलते हैं।";
+
+/* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
+"onboarding.omniboxOnboardingPopOverTitle" = "किसी वेबसाइट का नाम या URL टाइप करें";
+
+/* Title for Welcome Screen in Onboarding */
+"onboarding.welcomeScreenTitle" = "Brave में आपका स्वागत है";
+
+/* Continue button to navigate to next onboarding screen. */
+"OnboardingContinueButton" = "जारी रखें";
+
+/* Skip button to skip onboarding and start using the app. */
+"OnboardingSkipButton" = "अभी नहीं";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "%@ पर";
+
+/* Context menu item for opening all folder bookmarks */
+"OpenAllBookmarks" = "सभी खोलें (%i)";
+
+/* Button title for opening the Brave Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Brave Rewards की सेटिंग खोलें";
+
+/* Error description when there is an error while navigating to Files App */
+"OpenDownloadsFolderErrorDescription" = "'फ़ाइलें' ऐप में 'डाउनलोड्स' फ़ोल्डर खोलते समय, कोई अनजानी गड़बड़ी हुई।";
+
+/* This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:' */
+"openExternalAppURLHost" = "%@ पूछ रही है:";
+
+/* This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?' */
+"openExternalAppURLTitle" = "%@ को ऐप्स स्विच करने की अनुमति दें?";
+
+/* Context menu for opening image in new tab */
+"OpenImageInNewTab" = "नए टैब में इमेज खोलें";
+
+/* Context menu item for opening a link in a new private browsing window */
+"OpenInNewPrivateWindowTitle" = "नई प्राइवेट विंडो में खोलें";
+
+/* Context menu item for opening a link in a new window */
+"OpenInNewWindowTitle" = "नई विंडो में खोलें";
+
+/* Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from */
+"OpenMobileConfigurationAlertDescription" = "%@ से कॉन्फ़िगरेशन प्रोफ़ाइल डाउनलोड करना जारी रखें";
+
+/* Title of the alert when a mobile configuration profile is available for download */
+"OpenMobileConfigurationAlertTitle" = "कॉन्फ़िगरेशन प्रोफ़ाइल उपलब्ध है";
+
+/* Context menu option for opening a link in a new private tab */
+"OpenNewPrivateTabButtonTitle" = "नए प्राइवेट टैब में खोलें";
+
+/* Context menu item for opening a link in a new tab */
+"OpenNewTabButtonTitle" = "नए टैब में खोलें";
+
+/* See http://mzl.la/1G7uHo7 */
+"OpenPhoneSettingsActionTitle" = "सेटिंग खोलें";
+
+/* The description indicating the device is active # of days ago. The parameter substituted for "%ld" is the number of days. E.g.: Active 123 Days Ago */
+"opentabs.activePeriodDeviceDaysAgoTitle" = "%ld दिन पहले ऐक्टिव";
+
+/* The description indicating the device is active last time this month */
+"opentabs.activePeriodDeviceThisMonthTitle" = "पिछले महीने ऐक्टिव";
+
+/* The description indicating the device is active last time this week */
+"opentabs.activePeriodDeviceThisWeekTitle" = "पिछले हफ़्ते ऐक्टिव";
+
+/* The description indicating the device is active last time today */
+"opentabs.activePeriodDeviceTodayTitle" = "आज ऐक्टिव";
+
+/* The description indicating the device is active last time yesterday */
+"opentabs.activePeriodDeviceYesterdayTitle" = "कल ऐक्टिव";
+
+/* The description of the view describing tab syncing should be enabled. */
+"opentabs.enableOpenTabsPlaceHolderViewDescription" = "अपने दूसरे डिवाइस से टैब्स देखने के लिए टैब सिंक करना चालू करें।";
+
+/* The description of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewDescription" = "अपना डिवाइस और चालू सिंक प्रकारों को देखने के लिए, सिंक चेन में शामिल हों";
+
+/* The title of the view showing no devices inside sync chain */
+"opentabs.noDevicesSyncChainPlaceholderViewTitle" = "इस सिंक चेन में कोई डिवाइस नहीं है";
+
+/* The description of the view explaining user should join a sync chain. */
+"opentabs.noSyncChainPlaceHolderViewDescription" = "शुरू करने के लिए, सिंक चेन सेट अप करें और सिंक की सेटिंग में \"खुले हुए टैब्स\" को टॉगल करें।";
+
+/* The additional description of the view describing tab syncing should be enabled. */
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "सेटिंग में मैनेज करें कि Brave क्या सिंक करता है।";
+
+/* The description of the view describing no other sessions are active in sync. */
+"opentabs.noSyncSessionPlaceHolderViewDescription" = "आपके दूसरे डिवाइसों से दिखाने के लिए कोई ऐक्टिव सेशन नहीं है।";
+
+/* The title of the view showing no synced sessions */
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "इस जगह पर, दूसरे डिवाइसों में Brave के खुले हुए टैब्स दिखाए जाते हैं";
+
+/* The title for the action to hide open session with all tabs */
+"opentabs.openSessionHideAllActionTitle" = "अभी छिपाएं";
+
+/* The title for the action to open all the tabs in a synced open session */
+"opentabs.openSessionOpenAllActionTitle" = "सभी को खोलें";
+
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "सिंक की सेटिंग खोलें";
+
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+"opentabs.openTabsItemLastSyncedLastWeekTitle" = "पिछले हफ़्ते %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+"opentabs.openTabsItemLastSyncedTodayTitle" = "आज %@";
+
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+"opentabs.openTabsItemLastSyncedYesterdayTitle" = "कल %@";
+
+/* The title displayed on table header for open tabs list from other devices */
+"openTabs.openTabsListTableHeaderTitle" = "डिवाइसेस";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "सिंक किया गया कोई टैब नहीं है";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "दूसरे डिवाइसों पर टैब्स";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "आपके सिंक किए गए टैब्स यहाँ दिखते हैं";
+
+/* Title action button for sending webpage to selected other device */
+"opentabs.sendDeviceButtonTitle" = "अपने डिवाइस पर भेजें";
+
+/* The title displayed on screen showing sending page is already completed */
+"openTabs.sendingWebpageCompletedTitle" = "भेजा गया!";
+
+/* The title displayed on screen showing webpage is being sent */
+"openTabs.sendingWebpageProgressTitle" = "भेजा जा रहा है…";
+
+/* The title displayed on send-webpage screen */
+"openTabs.sendWebpageScreenTitle" = "वेब पेज भेजें";
+
+/* Share action title for sending e url to another device */
+"opentabs.sendWebsiteShareActionTitle" = "अपने डिवाइसों पर भेजें";
+
+/* The button which navigates to screen where user can view sync settings */
+"opentabs.showSettingsSyncButtonTitle" = "सिंक की सेटिंग दिखाएँ";
+
+/* The button which navigates to screen starting a new sync chain */
+"opentabs.startASyncChainButtonTitle" = "सिंक चेन शुरू करें";
+
+/* The button which navigates to screen where Tab Sync functionality toggle can be adjusted */
+"opentabs.tabSyncEnableButtonTitle" = "टैब सिंक करना चालू करें";
+
+/* The placeholder written in seach bar while tab-tray is showing open tabs. */
+"opentabs.tabTrayOpenSearchBarTitle" = "दूसरे डिवाइसों के टैब्स सर्च करें";
+
+/* Title for open tabs menu item */
+"OpenTabsMenuItem" = "खुले सत्र";
+
+/* Title of the alert when a calendar event is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from */
+"OpenTextCalendarAlertDescription" = "%@ से कैलेंडर इवेंट डाउनलोड करना जारी रखें";
+
+/* Title of the alert when a calendar event is available for download */
+"OpenTextCalendarAlertTitle" = "कैलेंडर इवेंट उपलब्ध है";
+
+/* Button title to that opens a website. */
+"OpenWebsite" = "वेबसाइट खोलें";
+
+/* Brave News Item Menu title */
+"optionsMenu.braveNewsItemTitle" = "समाचार";
+
+/* Brave News Item Menu title */
+"optionsMenu.bravePlaylistItemTitle" = "प्लेलिस्ट";
+
+/* Section name for other privacy settings */
+"OtherPrivacySettingsSection" = "अन्य प्राइवेसी सेटिंग";
+
+/* Section name for other settings. */
+"OtherSettingsSection" = "अन्य सेटिंग";
+
+/* A button to proceed with the rest of the user onboarding after they see the P3A introduction. It means to continue browsing or continue with the rest of the onboarding */
+"p3a.continue" = "जारी रखें";
+
+/* A subtitle shown on the setting that toggles analytics on Brave. */
+"p3a.settingSubtitle" = "ये प्राइवेट रिस्पॉन्स, कुछ फ़ीचर्स के कुल उपयोग का अनुमान लगाने और उन्हें आपके लिए बेहतर बनाने में Brave की मदद करते हैं।";
+
+/* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
+"p3a.settingTitle" = "गोपनीयता-संरक्षण प्रोडक्ट एनालिटिक्स की अनुमति दें (P3A)";
+
+/* No comment provided by engineer. */
+"p3aCalloutCloseAccessibilityLabel" = "गोपनीयता संरक्षण प्रोडक्ट कॉलआउट बंद करें";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotFullySecureTitle" = "इस साइट से आपका कनेक्शन पूरी तरह सुरक्षित नहीं है।";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureDetailedWarning" = "आपको इस साइट पर कोई भी संवेदनशील जानकारी दर्ज नहीं करनी चाहिए (उदाहरण के लिए, पासवर्ड या क्रेडिट कार्ड), क्योंकि उसे हमलावर चुरा सकते हैं।";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageNotSecureTitle" = "इस साइट से आपका कनेक्शन सुरक्षित नहीं है।";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "साइट कनेक्शन वेरिफ़ाइड नहीं है।";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "इस साइट से आपके कनेक्शन को पूरी तरह वेरिफ़ाय नहीं किया जा सका। आप आगे बढ़ सकते हैं या सुरक्षित कनेक्शन बनाने के लिए पेज को फिर से लोड करने की कोशिश कर सकते हैं।";
+
+/* No comment provided by engineer. */
+"pageSecurityView.signIntoWebsiteURLBarTitle" = "वेबसाइट में साइन इन करें";
+
+/* No comment provided by engineer. */
+"pageSecurityView.viewCertificateButtonTitle" = "सर्टिफ़िकेट देखें";
+
+/* Title for the section for the global/default zoom level */
+"pagezoom.settings.defaultZoomLevelSectionTitle" = "वेब-पेज का डिफ़ॉल्ट ज़ूम लेवल";
+
+/* Description for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesDescription" = "किसी वेबसाइट का ज़ूम-लेवल बदलने पर, वेबसाइट इस सूची में दिखाई देगी। फ़िलहाल, ज़ूम इन या आउट की गई कोई वेबसाइट नहीं है।";
+
+/* Title for the empty Web-Page zoom view */
+"pagezoom.settings.emptyWebsitesTitle" = "कोई वेबसाइट नहीं जोड़ी गई";
+
+/* Title for the section for the Web-Page zoom level of other websites */
+"pagezoom.settings.otherWebsitesZoomLevelSectionTitle" = "बाकी सभी वेबसाइटें";
+
+/* Title of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all" = "सभी को रीसेट करें";
+
+/* Description of the Web-Page Zoom reset all option */
+"pagezoom.settings.reset-all-description" = "वेबसाइट ज़ूम लेवल रीसेट करें";
+
+/* Title for list of websites shown in settings screen */
+"pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "पेज की खास सेटिंग";
+
+/* Title of the Web-Page Zoom screen */
+"pagezoom.settings.title" = "पेज ज़ूम";
+
+/* Title for the web-page zoom level view */
+"pagezoom.zoomView.text" = "पेज ज़ूम";
+
+/* Title for passwords menu item */
+"PasswordsMenuItem" = "पासवर्ड";
+
+/* Setting to allow the app to restore private browsing tabs */
+"PersistentPrivateBrowsing" = "लगातार प्राइवेट ब्राउज़िंग";
+
+/* Persistent private browsing alert message to existing users */
+"PersistentPrivateBrowsingAlertMessage" = "आपके ऐप बंद / फिर से खोलने के बाद भी, Brave को प्राइवेट ब्राउज़िंग टैब्स खोलने की अनुमति देता है";
+
+/* Persistent private browsing alert title to existing users */
+"PersistentPrivateBrowsingAlertTitle" = "प्राइवेट टैब रीस्टोर करें";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "%@ द्वारा फ़ोटो";
+
+/* A message shown when the user adds media to the playlist. '%@' will be replaced by the folder it was added to. Example: 'Added to Play Later' */
+"playList.addedToPlaylistMessage" = "%@ में जोड़ा गया";
+
+/* Alert Description for adding videos to playlist */
+"playList.addToPlayListAlertDescription" = "क्या आप इस वीडियो को अपनी प्लेलिस्ट में जोड़ना चाहेंगे?";
+
+/* Alert Title for adding videos to playlist */
+"playList.addToPlayListAlertTitle" = "Brave Playlist में जोडे़ं";
+
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "प्लेबैक के विकल्प";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "बंद किया गया। प्लेबैक रीस्टार्टिंग चालू करने के लिए टैप करें।";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "चालू किया गया। प्लेबैक रीस्टार्टिंग बंद करने के लिए टैप करें।";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "तय करें कि पहले से चल रहे आइटम को चुनने से प्लेबैक रीस्टार्ट होगा या नहीं या फिर जहाँ पिछली बार छोड़ा ता, वहीं से चलाना जारी रखें";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "प्लेबैक रीस्टार्ट करें";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "सेटिंग";
+
+/* The title of the playlist when in Carplay mode */
+"playlist.carplayTitle" = "Brave प्लेलिस्ट";
+
+/* Title for changing the folder of the current media playlist item */
+"playList.changeFoldersButtonTitle" = "प्लेलिस्ट बदलें";
+
+/* The description for the alert that shows up when an item is expired */
+"playList.expiredAlertDescription" = "यह वीडियो एक लाइव स्ट्रीम था या समयसीमा खत्म हो घई थी। रीफ़्रेश करने के लिए, कृपया लिंक फिर से खोलें।";
+
+/* The title for the alert that shows up when an item is expired */
+"playList.expiredAlertTitle" = "खत्म समयसीमा वाला वीडियो";
+
+/* Number of items in the playlsit folder. Example: '10 items' */
+"playlist.folderItemCountPlural" = "%d आइटम";
+
+/* Title for when there's a single item inside of a folder */
+"playlist.foldersCountSingular" = "%d आइटम";
+
+/* Description for load resources error alert */
+"playList.loadResourcesErrorAlertDescription" = "रिसोर्स लोड करने में कोई समस्या हुई!";
+
+/* Detail Text when there are no items in the playlist */
+"playList.noItemLabelDetailLabel" = "आप ब्राउज़र में अपनी Brave Playlist में आइटम जोड़ सकते हैं";
+
+/* Text when there are no items in the playlist */
+"playList.noItemLabelTitle" = "कोई आइटम उपलब्ध नहीं है";
+
+/* Title for download video error alert */
+"playList.noticeAlertTitle" = "नोटिस";
+
+/* Okay Alert button title */
+"playList.okayButtonTitle" = "ठीक है";
+
+/* Title for opening the playlist */
+"playList.openInPlaylistButtonTitle" = "प्लेलिस्ट में खोलें";
+
+/* Playlist alert message when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingBody" = "प्लेलिस्ट पहले से ही किसी और विंडो में ऐक्टिव है";
+
+/* Playlist alert title when playlist is already showing on a different window */
+"playlist.playlistAlreadyShowingTitle" = "माफ़ करें";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "प्लेलिस्ट खुली होने पर, यह विकल्प ऑटो-प्ले को चालू/बंद कर देगा। हालाँकि, लिस्ट में अगले वीडियो के लोड होने पर इस विकल्प से ऑटो-प्ले पर असर नहीं पड़ेगा।";
+
+/* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
+"playlist.playlistAutoPlaySettingsOptionTitle" = "ऑटो-प्ले";
+
+/* Auto Download turn Off Option */
+"playlist.playlistAutoSaveOptionOff" = "बंद";
+
+/* Auto Save turn On Option */
+"playlist.playlistAutoSaveOptionOn" = "चालू";
+
+/* Option Text for Auto Save Only Wi-Fi Option */
+"playlist.playlistAutoSaveOptionOnlyWifi" = "सिर्फ़ वाई-फ़ाई";
+
+/* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsDescription" = "ऑफ़लाइन इस्तेमाल के लिए वीडियो और ऑडियो फ़ाइलें जोड़ने से, आपके डिवाइस की बहुत सारी स्टोरेज और आपका मोबाइल डेटा इस्तेमाल हो सकता है";
+
+/* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
+"playlist.playlistAutoSaveSettingsFooterText" = "आपके प्लेलिस्ट में कॉन्टेंट खोलने पर, यह विकल्प आपके डिवाइस पर प्लेलिस्ट के आइटम खुले रखेगा, ताकि आप बिना इंटरनेट कनेक्शन के उन्हें चला सकें।";
+
+/* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
+"playlist.playlistAutoSaveSettingsTitle" = "ऑफ़लाइन प्लेबैक के लिए कॉन्टेंट सेव करें";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningMessage" = "ऑफ़लाइन इस्तेमाल के लिए वीडियो और ऑडियो फ़ाइलें जोड़ने से, आपके डिवाइस की बहुत सारी स्टोरेज इस्तेमाल हो सकती है। स्टोरेज स्पेस खाली करने के लिए कुछ फ़ाइलें हटाएँ।";
+
+/* When the user's disk space is almost full */
+"playlist.playlistDiskSpaceWarningTitle" = "स्टोरेज लगभग पूरी भरी है";
+
+/* Footer Text for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionFooterText" = "चालू होने पर, आप ज़्यादातर वीडियो/ऑडियो फ़ाइलों को अपनी प्लेलिस्ट में जोड़ने के लिए उन्हें लंबी देर तक दबाए रख सकते हैं।";
+
+/* Title for the Playlist Settings Option for long press gesture */
+"playlist.playlistLongPressSettingsOptionTitle" = "लंबे समय तक दबाने की सुविधा चालू करें";
+
+/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistMediaAndOfflineDataToggleOption" = "प्लेलिस्ट मीडिया & ऑफ़लाइन डेटा";
+
+/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
+"playlist.playlistOfflineDataToggleOption" = "प्लेलिस्ट ऑफ़लाइन डेटा";
+
+/* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
+"playlist.playlistPopoverChangeFoldersButtonTitle" = "बदलें";
+
+/* The title for the alert that shows up when removing all videos and their offline mode storage. */
+"playList.playlistResetAlertTitle" = "रीसेट करें";
+
+/* Footer Text for the Playlist Settings Option for resetting Playlist. */
+"playlist.playlistResetPlaylistOptionFooterText" = "यह विकल्प प्लेलिस्ट के साथ-साथ ऑफ़लाइन मोड स्टोरेज से भी सभी वीडियो हटा देगा।";
+
+/* Title Playlist (used for back button, and playlist settings) */
+"playList.playListSettingTitle" = "प्लेलिस्ट";
+
+/* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsFooterText" = "एक-एक फ़ाइल के लिए, पिछली बार जहाँ रोका गया था, वहीं से चलाएँ।";
+
+/* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
+"playlist.playlistStartPlaybackSettingsOptionTitle" = "फ़ाइल की प्लेबैक की स्थिति को याद रखें";
+
+/* Title for removing offline mode storage */
+"playList.removeActionButtonTitle" = "हटाएं";
+
+/* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
+"playList.removedFromPlaylistMessage" = "%@ से हटाया गया";
+
+/* Reopen Alert button title */
+"playList.reopenButtonTitle" = "फिर से खोलें";
+
+/* Title for load resources error alert */
+"playList.sorryAlertTitle" = "माफ़ करें";
+
+/* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
+"playList.toastAddedToPlaylistTitle" = "प्लेलिस्ट में देखें";
+
+/* The title for the toast button when an item was added to playlist */
+"playList.toastAddToPlaylistOpenButton" = "खोलें";
+
+/* The title for the toast that shows up on a page containing a playlist item */
+"playList.toastAddToPlaylistTitle" = "प्लेलिस्ट में जोड़ें";
+
+/* The title for the toast that shows up on a page when an item that has already been added, was updated. */
+"playList.toastExitingItemPlaylistTitle" = "Brave Playlist में देखें";
+
+/* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
+"playList.undoRemoveButtonTitle" = "अनकिया करें";
+
+/* Footer for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionFooter" = "Brave ब्राउज़र में ऐड्रेस बार के पास प्लेलिस्ट बटन जोड़ता है। इस बटन से आपको प्लेलिस्ट खोलने या मीडिया जोड़ने या हटाने का जल्दी ऐक्सेस मिलता है।";
+
+/* Title for option to disable URL-Bar button */
+"playlist.urlBarButtonOptionTitle" = "जल्दी ऐक्सेस वाला बटन चालू करें";
+
+/* The title of the screen that allows you to change the folder where a playlist item was saved to */
+"playlistFolders.changeFoldersTitle" = "यहाँ ले जाएँ";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldLabel" = "प्लेलिस्ट का नाम";
+
+/* A label shown above the text field that allows the user to type a name of the playlist they are going to create */
+"playlistFolders.createFolderTextFieldPlaceholder" = "अपनी प्लेलिस्ट का नाम दर्ज करें";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "बनाएं";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "नई प्लेलिस्ट";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "नई प्लेलिस्ट";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "%lld आइटम";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "1 आइटम";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "बिना नाम वाली प्लेलिस्ट";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "Shields मेन्यू बंद करें";
+
+/* Settings privacy section title */
+"Privacy" = "निजता";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"privacy.tab.tray.passcode.alert" = "प्राइवेट ब्राउज़िंग मोड स्विच करने के लिए, आपको पहले अपने डिवाइस पर पासकोड सेट करना होगा।";
+
+/* Button text that takes user to a list of all trackers and ads we blocked. 'All time lists' refer to list of blocked trackers or websites which have the most trackers */
+"privacyHub.allTimeListsButtonText" = "सभी ब्लॉक्ड चीज़ों की सूची";
+
+/* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
+"privacyHub.allTimeListsHeader" = "हमेशा";
+
+/* Title of a section to show total count of trackers blocked by Brave */
+"privacyHub.allTimeListsTrackersView" = "ट्रैकर  & ऐड";
+
+/* Title of a section to show websites containing highest amount of trackers */
+"privacyHub.allTimeListsWebsitesView" = "वेबसाइट";
+
+/* Header title for a list of most frequent ads and trackers detected. */
+"privacyHub.allTimeListTrackersHeaderTitle" = "आप जिन साइटों पर जाते हैं उन पर सबसे ज़्यादा मिलने वाले ट्रैकर्स & ऐड्स";
+
+/* Header title for a list of websites with ads and trackers. */
+"privacyHub.allTimeListWebsitesHeaderTitle" = "सबसे ज़्यादा ट्रैकर्स & ऐड्स वाली वेबसाइटें";
+
+/* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
+"privacyHub.allTimeSitesCount" = "%lld साइटें";
+
+/* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
+"privacyHub.allTimeTrackersCount" = "%lld ट्रैकर्स & ऐड्स";
+
+/* Title under which we display most name of the most blocked tracker or ad. */
+"privacyHub.allTimeTrackerTitle" = "ट्रैकर & ऐड";
+
+/* Title under which we display a website on which there's the highest number of trackers or ads. */
+"privacyHub.allTimeWebsiteTitle" = "वेबसाइट";
+
+/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+"privacyHub.allVPNAlertsButtonText" = "सभी चेतावनियाँ";
+
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+"privacyHub.blockedBy" = "इसके द्वारा ब्लॉक किया गया";
+
+/* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
+"privacyHub.blockedLabel" = "अवरोधित";
+
+/* Accessibility label for the 'clear all data' button. */
+"privacyHub.clearAllDataAccessibility" = "Privacy Hub का डेटा हटाएँ";
+
+/* A prompt message we show to the user if they want to clear all data gathered by the Privacy Reports Feature */
+"privacyHub.clearAllDataPrompt" = "Shields का पूरा डेटा हटाएँ?";
+
+/* Hide Privacy Hub Alert Hide Button */
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "छुपाएं";
+
+/* The title of the button action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetActionTitle" = "प्राइवेसी के आँकड़े हटाएँ";
+
+/* The description in alert of the hide action which hides the privacy hub */
+"privacyHub.hidePrivacyHubWidgetAlertDescription" = "\"प्राइवेसी के आँकड़े\" विजेट हटाने के लिए, \"छिपाएँ\" पर टैप करें। आप सेटिंग में जाकर नए टैब पेज पर कभी भी फिर से चालू कर सकते हैं";
+
+/* Header text, under it we display blocked items from last week */
+"privacyHub.lastWeekHeader" = "पिछले हफ़्ते";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "Brave Shields ने **%2$lld** साइटों पर **%1$@** को ब्लॉक किया";
+
+/* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
+"privacyHub.mostFrequentTrackerAndAdTitle" = "सबसे आम ट्रैकर & ऐड";
+
+/* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
+"privacyHub.noDataCalloutBody" = "यहाँ डेटा देखने के लिए, कुछ वेबसाइटों पर जाएँ।";
+
+/* This text is diplayed when there is no data to display to the user. The data is about blocked trackers or sites with trackers on them. */
+"privacyHub.noDataToShow" = "अभी तक दिखाने के लिए कोई डेटा नहीं है।";
+
+/* Text of a callout to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutBody" = "ब्लॉक किए गए ट्रैकर और विज्ञापन पर साप्ताहिक अपडेट पाएँ.";
+
+/* Text of a button to encourage user to enable Apple notification system. */
+"privacyHub.notificationCalloutButtonText" = "नोटिफ़िकेशन चालू करें";
+
+/* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationMessage" = "इस हफ़्ते Brave ने आपको ऑनलाइन कैसे सुरक्षित रखा, इसका एक रीकैप।";
+
+/* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
+"privacyHub.notificationTitle" = "साप्ताहिक प्राइवेसी रिपोर्ट";
+
+/* Text of a button that opens up a Privacy Reports screen. */
+"privacyHub.onboardingButtonTitle" = "Privacy Hub खोलें";
+
+/* The title of the button action which open the privacy hub */
+"privacyHub.openPrivacyHubWidgetActionTitle" = "Privacy Hub खोलें";
+
+/* Text of a disclaimer that explains how the data for generating privacy reprots is stored. */
+"privacyHub.privacyReportsDisclaimer" = "Privacy Hub का डेटा लोकल रूप से सेव किया जाता है और कभी भी, कहीं भी भेजा नहीं जाता।";
+
+/* Title of main privacy hub screen. This screen shows various stats caught by Brave's ad blockers. */
+"privacyHub.privacyReportsTitle" = "Privacy Hub";
+
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
+"privacyHub.riskiestWebsiteBody" = "हर विज़िट पर **%1$@** के औसत **%2$lld** ट्रैकर्स & ऐड्स ब्लॉक किए गए";
+
+/* Title of a website that contained the most trackers per visit. */
+"privacyHub.riskiestWebsiteTitle" = "सबसे ज़्यादा ट्रैकर्स वाली साइटें";
+
+/* This text explains a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsFooter" = "Privacy Hub उनकी संख्या दिखाता है जिन्हें Shields ने ब्लॉक किया है। सेटिंग से नए टैब पेज पर Shields काउंटर पर असर नहीं पड़ेगा। Shields डेटा को प्राइवेट विंडो में नहीं गिना जाता।";
+
+/* Title of a setting that lets Brave monitor blocked network requests */
+"privacyHub.settingsEnableShieldsTitle" = "Shields डेटा दिखाएँ";
+
+/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsFooter" = "सेटिंग सिर्फ़ तब लागू होता है, जब आपने VPN सब्सक्रिप्शन खरीदा हो।";
+
+/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+"privacyHub.settingsEnableVPNAlertsTitle" = "VPN चेतावनियाँ दिखाएँ";
+
+/* This text explains what the button to clear datain the Privacy Hub is for. */
+"privacyHub.settingsSlearDataFooter" = "Shields ने जो भी ब्लॉक किया है उसकी गिनती रीसेट करता है।";
+
+/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+"privacyHub.settingsSlearDataTitle" = "Shields डेटा हटाएँ";
+
+/* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
+"privacyHub.shieldsLabel" = "Shields";
+
+/* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
+"privacyHub.trackingDisabledCalloutBody" = "यहाँ डेटा देखने के लिए '%@' चालू करें";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypePlural" = "ईमेल ट्रैकर्स";
+
+/* Type of tracker blocked by the VPN, it's a tracker contained in an email. */
+"privacyHub.vpnAlertEmailTrackerTypeSingular" = "ईमेल ट्रैकर";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypePlural" = "लोकेशन पिंग्स";
+
+/* Type of tracker blocked by the VPN, it's a tracker that asks you for your location. */
+"privacyHub.vpnAlertLocationTrackerTypeSingular" = "लोकेशन पिंग";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "ट्रैकर्स & ऐड्स";
+
+/* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
+"privacyHub.vpnAlertRegularTrackerTypeSingular" = "ट्रैकर या ऐड";
+
+/* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
+"privacyHub.vpnAlertsHeader" = "Brave Firewall + VPN चेतावनियाँ";
+
+/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+"privacyHub.vpnLabel" = "फ़ायरवॉल + VPN ";
+
+/* It shows a total count of items blocked by our VPN shields */
+"privacyHub.vpvnAlertsTotalCount" = "कुल गिनती";
+
+/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+"PrivacyPolicy" = "गोपनीयता नीति";
+
+/* Private button title */
+"Private" = "निजी";
+
+/* No comment provided by engineer. */
+"PrivateBrowsing" = "प्राइवेट ब्राउज़िंग";
+
+/* Setting to keep app in private mode */
+"PrivateBrowsingOnly" = "सिर्फ़ प्राइवेट ब्राउज़िंग";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "'सिर्फ़ प्राइवेट ब्राउज़िंग' मोड आपके सभी मौजूदा टैब बंद कर देगा और आपको सभी साइटों से लॉग आउट कर देगा।";
+
+/* Private tab details */
+"PrivateTabBody" = "प्राइवेट टैब्स को Brave में सेव नहीं किया जाता, लेकिन वे आपको ऑनलाइन अनाम नहीं बनाते। आप जिन साइटों पर प्राइवेट टैब में जाते हैं वे आपकी हिस्ट्री में नहीं दिखतीं और उन्हें बंद करने पर आपकी कुकीज़ हमेशा मिट जाती हैं — Brave में उनका कोई नामोंनिशान नहीं रह जाएगा। हालाँकि, डाउनलोड सेव होंगे।\nआपका मोबाइल कैरियर (या उस वाई-फ़ाई नेटवर्क या VPN का मालिक जिससे आप कनेक्ट हैं) देख सकता है आप किन साइटों पर जाते हैं और उन साइटों को आपके सार्वजनिक IP address पता चल जाएगा, प्राइवेट टैब्स में भी।";
+
+/* Private tab detail text */
+"PrivateTabDetails" = "प्राइवेट टैब्स इस्तेमाल करने से, सिर्फ़ यह बदलेगा कि Brave आपके डिवाइस के साथ क्या करता है, इससे किसी और का व्यवहार नहीं बदलेगा।\n\nआप जब साइटों पर जाते हैं, तो आपको हमेशा आपका IP address पता चल जाता है। इससे, अक्सर उन्हें इस बात का अंदाज़ा हो जाता है कि आप किस जगह से हैं — आम तौर पर, आपका शहर। कभी-कभी, लोकेशन का अंदाज़ा और भी बारीकी से लगाया जा सकता है। साइटों को वे बातें भी पता चल जाती हैं जो आप खास तौर पर उन्हें बताते हैं, जैसे कि खोजे गए शब्द। अगर आप किसी साइट में लॉग इन करते हैं, तो उन्हें पता चल जाएगा कि आप उस अकाउंट के मालिक हैं। प्राइवेट टैब्स को बंद करने पर, आप लॉग आउट हो जाएँगे, क्योंकि Brave उन कुकीज़ को हटा देगा जो आपको लॉग इन रखती हैं।\n\nआपको जो भी इंटरनेट से कनेक्ट करता है (आपका ISP) वह आपकी सभी नेटवर्क गतिविधि देख सकता है। अक्सर, यह आपका मोबाइल कैरियर होता है। अगर आप वाई-फ़ाई नेटवर्क से कनेक्ट हैं, तो यह उस नेटवर्क का मालिक है और अगर आप VPN का इस्तेमाल कर रहे हैं, तो यह वही है जो VPN चला रहा है। आपके साइटों पर जाने पर, आपका ISP देख सकता है कि आप किन साइटों पर जा रहे हैं। अगर वे साइटें HTTPS का इस्तेमाल करती हैं, तो वे सिर्फ़ अंदाज़ा लगा सकती हैं कि आप उन साइटों पर क्या करते हैं। मगर कोई साइट सिर्फ़ HTTP का इस्तेमाल करती है, तो आपका ISP सब कुछ देख सकता है: आपके खोजे गए शब्द, आप कौनसे पेज पढ़ते हैं और किन लिंक्स को फ़ॉलो करते हैं।\n\nअगर कोई कर्मचारी आपके डिवाइस को मैनेज करता है, तो वे इस बात पर भी नज़र रख सकते हैं कि आप इस पर क्या करते हैं। प्राइवेट टैब्स इस्तेमाल करने से शायद उन्हें यह जानने से नहीं रोका जा सकता कि आप किन साइटों पर गए हैं। आपके डिवाइस के ऐक्सस वाला कोई और व्यक्ति भी ऐसा सॉफ़्टवेयर इंस्टॉल कर सकता है जो आपकी गतिविधि पर नज़र रखता हो और प्राइवेट टैबआपको इससे भी सुरक्षित नहीं रखेंगे।";
+
+/* Private tab information link */
+"PrivateTabLink" = "प्राइवेट टैब के बारे में जानें।";
+
+/* Default engine for private search. */
+"PrivateTabSearch" = "प्राइवेट टैब";
+
+/* Title for quick-search engines settings section. */
+"QuickSearchEngines" = "क्विक सर्च इंजन";
+
+/* Open the App Store to rate Brave. */
+"RateBrave" = "Brave का मूल्यांकन करें";
+
+/* Accessibility label for button increasing font size in display settings of reader mode */
+"ReaderModeBiggerFontButtonAccessibilityLabel" = "टेक्स्ट का आकार बढ़ाएँ";
+
+/* Button for larger reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeBiggerFontButtonTitle" = "+";
+
+/* Accessibility label for brightness adjustment slider in Reader Mode display settings */
+"ReaderModeBrightSliderAccessibilityLabel" = "स्क्रीन की रोशनी";
+
+/* Name for display settings button in reader mode. Display in the meaning of presentation, not monitor. */
+"ReaderModeDisplaySettingsButtonTitle" = "डिसप्ले की सेटिंग";
+
+/* Error displayed when reader mode cannot be enabled */
+"ReaderModeErrorConvertDisplayText" = "पेज को कन्वर्ट करने में कोई गड़बड़ी हुई";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSansSerifTitle" = "Sans-serif";
+
+/* Font type setting in the reading view settings */
+"ReaderModeFontButtonSerifTitle" = "Serif";
+
+/* Button for reader mode font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeFontSizeLabelText" = "Aa";
+
+/* Accessibility hint for the font type buttons in reader mode display settings */
+"ReaderModeFontTypeButtonAccessibilityHint" = "फ़ॉन्ट का आकार बदलता है।";
+
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadingContentDisplayText" = "कॉन्टेंट लोड हो रहा है…";
+
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModeLoadOriginalLinkText" = "मूल पेज लोड करें";
+
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+"ReaderModePageCantShowDisplayText" = "पेज को रीडर व्यू में नहीं दिखाया जा सकता।";
+
+/* Title of a bar that show up when you enter reader mode. */
+"readerModeSettingsButton" = "रीडर मोड";
+
+/* Accessibility label for button decreasing font size in display settings of reader mode */
+"ReaderModeSmallerFontButtonAccessibilityLabel" = "टेक्स्ट का आकार घटाएँ";
+
+/* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
+"ReaderModeSmallerFontButtonTitle" = "-";
+
+/* Accessibility hint for the color theme setting buttons in reader mode display settings */
+"ReaderModeThemeButtonAccessibilityHint" = "रंग की थीम बदलता है।";
+
+/* Title for Clear Button inside Recently Closed Tabs */
+"recently.closed.action.clear" = "साफ़ करें";
+
+/* Confirmation message for Clear Button action inside Recently Closed Tabs */
+"recently.closed.confirmation.clear.title" = "हाल ही में बंद किए सभी टैब्स हटाएँ?";
+
+/* Title for empty screen Recently Closed Tabs */
+"recently.closed.empty.list.title" = "हाल ही में बंद किया गया कोई टैब नहीं है।";
+
+/* Open Tab action title */
+"recently.closed.open" = "खोलें";
+
+/* Re-open Last Tab action title */
+"recently.closed.reopen.latest" = "आखिर में बंद किया गया टैब फिर से खोलें";
+
+/* Description for alert to ask user for opening last closed tab in list */
+"recently.closed.shake.description" = "क्या आप हाल ही बंद किया गया टैब खोलना चाहते हैं?";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.title" = "हाल ही में बंद किए गए टैब्स";
+
+/* Action item title of long press for Opening recently closed tab view */
+"recently.closed.view.tab" = "हाल ही में बंद किए गए टैब्स देखें";
+
+/* Recent Search Clear Button */
+"RecentSearchClear" = "साफ़ करें";
+
+/* The button title that shows when you clear all recent searches */
+"RecentSearchClearAlertButton" = "हाल ही की हटाएँ";
+
+/* Recent Search setting title to clear recent searches */
+"RecentSearchClearDataToggleOption" = "हाल ही का सर्च डेटा";
+
+/* Recent Search button title to disable suggestions */
+"RecentSearchDisableSuggestions" = "बंद करें";
+
+/* Recent Search button title to enable suggestions */
+"RecentSearchEnableSuggestions" = "सक्षम करें";
+
+/* Recent Search Favorites Section Title */
+"RecentSearchFavorites" = "पसंदीदा";
+
+/* Recent Search Hide Button */
+"RecentSearchHide" = "छुपाएं";
+
+/* Recent Search 'on' text when a user searches 'on' a website */
+"RecentSearchQuickSearchOnWebsite" = "पर";
+
+/* Recent Search Scanned text when a user scans a qr code */
+"RecentSearchScanned" = "स्कैन किया गया";
+
+/* Scanning a QR Code for searching body */
+"RecentSearchScannerDescriptionBody" = "QR कोड से सर्च करने के लिए, QR कोड को फ़्रेम के बीच में रखें।";
+
+/* Scanning a QR Code for title */
+"RecentSearchScannerDescriptionTitle" = "निर्देश";
+
+/* Scanning a QR Code for searching */
+"RecentSearchScannerTitle" = "QR कोड स्कैन करें";
+
+/* Recent Search Section Description */
+"RecentSearchSectionDescription" = "क्या आप हाल ही सर्च चालू करना चाहेंगे?";
+
+/* Recent Search Section Header Title */
+"recentSearchSectionHeaderTitle" = "हाल ही की सर्च";
+
+/* Recent Search Section Title */
+"RecentSearchSectionTitle" = "हाल की सर्च की मदद से, आप पुरानी सर्च प्राइवेट तरीके से ऐक्सेस कर सकते हैं।";
+
+/* Recent Search Show Button */
+"RecentSearchShow" = "दिखाएं";
+
+/* Recent Search Show More button */
+"RecentSearchShowMore" = "और दिखाएं";
+
+/* Recent Search suggestions title when prompting to turn on suggestions */
+"RecentSearchSuggestionsTitle" = "सर्च के सुझाव";
+
+/* Setting title for option to automatically redirect a url to another url */
+"redditRedirectFooter" = "Reddit लिंक्स को पुराने इंटरफ़ेस (old.reddit.com) पर अपने-आप रीडायरेक्ट करता है। नया Reddit इंटरफ़ेस फ़ोर्स करने के लिए, इसके बजाय new.reddit.com इस्तेमाल करें।";
+
+/* Button to remove a favorite */
+"RemoveFavorite" = "पसंदीदा हटाएँ";
+
+/* No comment provided by engineer. */
+"ReportABrokenSite" = "एक ब्रेक हुई साइट की रिपोर्ट करें";
+
+/* Providers the user an email page where they can submit a but report. */
+"ReportABug" = "गड़बड़ी की शिकायत करें";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"ReportBrokenAdditionalDetails" = "अधिक जानकारी (वैकल्पिक)";
+
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"reportBrokenAdditionalDetailsRequired" = "अतिरिक्त विवरण";
+
+/* A label for a drop down where the user provides a category for a web-compatibility report
+A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "एक विकल्प चुनें";
+
+/* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
+"ReportBrokenContactMe" = "मुझसे संपर्क करें: (वैकल्पिक)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "अगर आप संपर्क जानकारी देते हैं, तो उसे भविष्य में खराब साइटों की शिकायत के लिए स्टोर किया जाएगा।";
+
+/* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
+"ReportBrokenContactMeSuggestions" = "ईमेल, Twitter, वगैरह.";
+
+/* First part of the report a broken site copy. After the colon is a new line and then a website address */
+"ReportBrokenSiteBody1" = "Brave डेवलपर्स को बताएँ कि यह साइट उम्मीद के मुताबिक काम नहीं कर रही है:";
+
+/* This is the info text that is presented when a user is submitting a web-compatibility report. */
+"ReportBrokenSiteBody2" = "ध्यान दें : Brave सर्वर को भेजी जाने वाली रिपोर्ट में वेबसाइट का एड्रेस, Brave का वर्ज़न नंबर, शील्ड की सेटिंग्स, VPN स्टेटस और भाषा की सेटिंग्स की जानकारी होंगी.";
+
+/* No comment provided by engineer. */
+"ReportBrokenSubmitButtonTitle" = "सबमिट करें";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
+"requestCameraAndMicrophonePermissionPrompt" = "\"%@\" कैमरा और माइक्रोफ़ोन को ऐक्सेस करना चाहेगा";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: "talk.brave.com") */
+"requestCameraPermissionPrompt" = "\"%@\" कैमरा को ऐक्सेस करना चाहेगा";
+
+/* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
+"requestCaptureDevicePermissionAllowButtonTitle" = "अनुमति दें";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
+"requestCaptureDevicePermissionPrompt" = "\"%@\" मीडिया कैप्चर डिवाइस को ऐक्सेस करना चाहेगा";
+
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
+"requestMicrophonePermissionPrompt" = "\"%@\" माइक्रोफ़ोन को ऐक्सेस करना चाहेगा";
+
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "रीस्टोर किए गए बुकमार्क";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "रीस्टोर किए गए पसंदीदा";
+
+/* Restore Tabs Affirmative Action */
+"RestoreTabAffirmativeButtonTitle" = "हां";
+
+/* Restore Tabs Negative Action */
+"RestoreTabNegativeButtonTitle" = "नहीं";
+
+/* Restore Tabs Prompt Description */
+"RestoreTabOnCrashAlertMessage" = "माफ़ करें, Brave क्रैश हो गया या अच्छे से बंद नहीं हुआ।\nअपने टैब्स रीस्टोर करें?";
+
+/* Restore Tabs Prompt Title */
+"RestoreTabOnCrashAlertTitle" = "Brave अचानक बंद हो गया।";
+
+/* Body for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "Brave Rewards के साथ, आप Brave Ads नेटवर्क से प्राइवेसी की सुरक्षा करने वाले ऐड्स देख सकते हैं। कोई ट्रैकर नहीं। कोई धीमी गति नहीं। और आपका डेटा पूरी तरह सुरक्षित रहता है।";
+
+/* Title for Brave Talk rewards opt-in screen button */
+"rewards.braveTalkRewardsOptInButtonTitle" = "रिवॉर्ड शुरू करें";
+
+/* Body for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Brave Talk जारी रखने के लिए स्क्रीन पर कहीं भी क्लिक करें.";
+
+/* Title for successful Brave Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessTitle" = "अब आप फ़्री कॉल  शुरू कर सकते हैं";
+
+/* Title for Brave Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "फ़्री कॉल शुरू करने के लिए,  Brave Rewards चालू करें";
+
+/* Displayed when Brave Rewards is disabled */
+"rewards.disabledBody" = "Brave और BAT कम्युनिटी की मदद के लिए चालू करें।";
+
+/* Displayed in the status container when rewards is disabled */
+"rewards.disabledStatusBody" = "Brave Rewards इस्तेमाल करने से, Brave और BAT कम्युनिटी की सहायता करने में मदद मिलती है।";
+
+/* Displayed when Brave Rewards is enabled */
+"rewards.enabledBody" = "आप Brave और BAT समुदाय को सहायता दे रहे हैं।";
+
+/* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
+"rewards.enabledStatusBody" = "Brave और BAT कम्युनिटी को सहायता देने के लिए शुक्रिया!";
+
+/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
+"rewards.optInDisclaimer" = "क्लिक करके, आप %1$@ और %2$@ से सहमत होते हैं। सेटिंग में जाकर कभी भी बंद करें।";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleMessage" = "Brave Rewards चालू करके और Brave Ads देखकर, Brave और BAT कम्युनिटी की सहायता करें।";
+
+/* No comment provided by engineer. */
+"rewards.settingsToggleTitle" = "Brave रिवार्ड्स को सक्षम करें";
+
+/* Displayed under verified publishers */
+"rewards.supportingPublisher" = "यह कॉन्टेंट क्रिएटर Brave Creators के साथ वेरिफ़ाइड है";
+
+/* Displayed next to a number representing the total number of publishers supported */
+"rewards.totalSupportedCount" = "उन कॉन्टेंट क्रिएटर्स की संख्या जिनकी आप इस महीने सहायता कर रहे हैं।";
+
+/* Displayed under unverified publishers */
+"rewards.unverifiedPublisher" = "यह क्रिएटर वेरिफ़ाइड नहीं है और उसे क्रिएटर सपोर्ट में शामिल नहीं किया जाएगा";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAmount" = "राशि";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "अनाम";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "बैलेंस की जानकारी";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "क्या आप वाकई Rewards के सभी लॉग्स हटाना चाहते हैं?";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "लॉग्स हटाएँ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "योगदान की राशि";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "Brave टोकंस";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "कुछ नहीं";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "बनाए रखें";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "यूज़र फ़ंड्स";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "अपने-आप योगदान बंद है";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "AC टेबल खाली है";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "पूरा हुआ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "क्रेडेंशियल्स";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "बाहरी लेन-देन";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "असफल हुआ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "पर्याप्त फ़ंड नहीं है";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "तैयार करें";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "रिज़र्व";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Rewards बंद है";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "शुरू करें";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "योगदान";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "बनाने का समय";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "डिवाइस की जानकारी";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "नामांकन किया गया";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "नामांकन की स्थिति";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "खत्म होने का समय";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "अमान्य";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "मुख्य जानकारी बिंदु";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "%d लॉग्स दिखाए गए";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "लॉग्स";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "नामांकित नहीं है";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "सपोर्टेड नहीं है";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "प्रोसेसर";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "पब्लिशर";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "पब्लिशर";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "फिर से कोशिश करने की संख्या";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "स्वतः-योगदान";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "एक बार टिप";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "आवर्ती बख्शीश";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "Rewards प्रोफ़ाइल, डिवाइस & बैलेंस की जानकारी (हमेशा शेयर की जाती है)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "बुनियादी जानकारी";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "टिप या अपने-आप योगदान के ज़रिए पब्लिशर्स को दिया गया कोई भी योगदान";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "इंटर्नल डेटा स्टोर";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "Rewards डेटाबेस";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "खास Rewards की लॉगिंग";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "शेयर करें";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "Rewards Internals शेयर करें";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "इन पेजों का डेटा संवेदनशील हो सकता है। आप इन्हें किनके साथ शेयर कर रहे हैं, इसे लेकर सावधानी बरतें।";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "चेतावनी";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "स्थिति";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "स्टेप";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "सपोर्टेड";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "Rewards Internals";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "कुल राशि";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "कुल बैलेंस";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "प्रकार";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "मान्य";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "वर्शन";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "Rewards प्रोफ़ाइल बनाने की तारीख";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "Rewards प्रोफ़ाइल की जानकारी";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "Rewards पेमेंट ID";
+
+/* Button to show the rewards panel */
+"RewardsPanel" = "Rewards पैनल";
+
+/* Label for the button used to save data */
+"SaveButtonTitle" = "सेव करें";
+
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "बदलाव सेव करें";
+
+/* Settings item for clearing passwords and login data */
+"SavedLogins" = "सेव किए गए लॉगिंस";
+
+/* The title for the folder created when all bookmarks are being */
+"SavedTabsFolderTitle" = "सेव किए गए टैब्स";
+
+/* Context menu item for saving an image */
+"SaveImageActionTitle" = "इमेज सेव करें";
+
+/* Setting to enable the built-in password manager */
+"SaveLogins" = "लॉगिंस सेव करें";
+
+/* individual blocking statistic title */
+"ScriptsBlocked" = "स्क्रिप्ट रोक दी गयी हैं";
+
+/* The placeholder text for bookmark search */
+"searchBookmarksTitle" = "बुकमार्क्स सर्च करें";
+
+/* Label for search engine buttons. The argument corresponds to the name of the search engine. */
+"SearchEngineFormatText" = "%@ सर्च";
+
+/* Search engines section of settings */
+"SearchEngines" = "खोज इंजन";
+
+/* Accessibility hint describing the action performed when a search suggestion is clicked */
+"SearchesForSuggestionButtonAccessibilityText" = "सुझाव के लिए सर्च करता है";
+
+/* Section header for history and bookmarks and open tabs option */
+"SearchHistorySectionHeader" = "आपके डिवाइस पर";
+
+/* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
+"SearchInputViewClearButtonTitle" = "सर्च हटाएँ";
+
+/* Accessibility label for entering search mode for logins */
+"SearchInputViewOverlayAccessibilityLabel" = "सर्च मोड में जाएँ";
+
+/* Accessibility label for the search input field in the Logins list */
+"SearchInputViewTextFieldAccessibilityLabel" = "इनपुट फ़ील्ड सर्च करें";
+
+/* Title for the search field at the top of the Logins list screen */
+"SearchInputViewTitle" = "खोज";
+
+/* The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list. */
+"searchQuickBarPrefix" = "\"%@\" सर्च करें";
+
+/* Add Custom Search Engine Table Cell Row Title */
+"searchSettingAddCustomEngineCellTitle" = "कस्टम सर्च इंजन जोडे़ं";
+
+/* Label for showing browser suggestion setting description */
+"SearchSettingBrowserSuggestionCellDescription" = "सर्च करते समय आपकी हिस्ट्री और बुकमार्क्स से नतीजे शामिल करने के लिए इसे चालू करें";
+
+/* Label for showing browser suggestion setting */
+"SearchSettingBrowserSuggestionCellTitle" = "ब्राउज़र के सुझाव दिखाएँ";
+
+/* Navigation title for search settings. */
+"SearchSettingNavTitle" = "खोज";
+
+/* Label for showing recent search setting. */
+"SearchSettingRecentSearchesCellTitle" = "हाल ही की सर्च दिखाएँ";
+
+/* Label for search settings button. */
+"SearchSettingsButtonTitle" = "सर्च की सेटिंग";
+
+/* Label for show search suggestions setting. */
+"SearchSettingSuggestionCellTitle" = "सर्च के सुझाव दिखाएँ";
+
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
+"SearchSuggestionFromFormatText" = "%@ से सर्च के सुझाव";
+
+/* Action title for open a playlist item in Playlist. */
+"searchSuggestionOpenPlaylistActionTitle" = "प्लेलिस्ट में खोलें";
+
+/* Action title for Switching to an existing tab for the suggestion item shown on the table list */
+"searchSuggestionOpenTabActionTitle" = "इस टैब पर स्विच करें";
+
+/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
+"SearchSuggestionSectionTitleFormat" = "%@ सर्च";
+
+/* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
+"SearchSuggestionSectionTitleNoSearchFormat" = "खोज";
+
+/* Section header for search suggestions option */
+"SearchSuggestionsSectionHeader" = "सर्च के सुझाव";
+
+/* Search suggestions optin subtitle when prompting to turn on suggestions */
+"searchSuggestionsSubtitle" = "क्या आप सर्च के सुझाव चालू करना चाहेंगे?";
+
+/* Title of an action that allows user to perform a one-click web search for selected text */
+"SearchWithBrave" = "Brave पर सर्च करें";
+
+/* Settings security section title */
+"Security" = "सुरक्षा";
+
+/* No comment provided by engineer. */
+"sendButtonTitle" = "भेजें";
+
+/* Message displayed in the crash dialog above the buttons used to select when sending reports */
+"SendCrashReportAlertMessage" = "क्रैश रिपोर्ट भेजता है, ताकि Brave समस्या को ठीक कर सके?";
+
+/* Title for prompt displayed to user after the app crashes */
+"SendCrashReportAlertTitle" = "ओह! Brave क्रैश हो गया";
+
+/* Used as a button label for crash dialog prompt */
+"SendReportButtonTitle" = "रिपोर्ट भेजें";
+
+/* No comment provided by engineer. */
+"setDefaultBrowserCalloutTitle" = "अब Brave को iOS में आपके डिफ़ॉल्ट ब्राउज़र के तौर पर सेट किया जा सकता है। सेटिंग खोलने के लिए यहाँ टैप करें।";
+
+/* Settings item to set the Brave as a default browser on the iOS device. */
+"setDefaultBrowserSettingsCell" = "डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें";
+
+/* No comment provided by engineer. */
+"Settings" = "सेटिंग";
+
+/* Settings option to never close tabs automatically, must be done manually */
+"settings.autocloseTabsManualOption" = "मैन्युअल तरीके से";
+
+/* Settings option to close old tabs after 1 day */
+"settings.autocloseTabsOneDayOption" = "एक दिन बाद";
+
+/* Settings option to close old tabs after 1 month */
+"settings.autocloseTabsOneMonthOption" = "एक महीने बाद";
+
+/* Settings option to close old tabs after 1 week */
+"settings.autocloseTabsOneWeekOption" = "एक हफ़्ते बाद";
+
+/* Name of app setting that allows users to automatically close tabs. */
+"settings.autocloseTabsSetting" = "टैब बंद करें";
+
+/* Description of autoclose tabs feature. */
+"settings.autocloseTabsSettingFooter" = "Brave को अनुमति दें कि वह हाल ही न देखे गए टैब्स को अपने-आप बंद कर दे।";
+
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "YouTube की ध्यान बँटाने वाली चीज़ों को ब्लॉक करें";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "YouTube की ध्यान बँटाने वाली चीज़ों को ब्लॉक करें";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "YouTube पर 'अगला क्या है' और आखिर में दिखाए जाने वाले कार्ड को ब्लॉक करता है";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "YouTube के सुझाए गए कॉन्टेंट को ब्लॉक करें";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Youtube.com पर होम पेज, ट्रेंडिंग पेज और सर्च रिज़ल्ट से Shorts को ब्लॉक करें";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "YouTube Shorts को ब्लॉक करें";
+
+/* Label for the navigation link to quality settings view */
+"settings.highestQualityPlayback" = "सबसे बढ़िया क्वॉलिटी का प्लेबैक";
+
+/* Detail text for the navigation link to quality settings view */
+"settings.highestQualityPlaybackDetail" = "सबसे बढ़िया क्वॉलिटी के रिज़ॉल्यूशन की अनुमति देता है";
+
+/* Header for the general settings section */
+"settings.media.general" = "सामान्य";
+
+/* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
+"settings.media.rootSetting" = "मीडिया";
+
+/* A toggle label which lets the user always open YouTube urls in Brave */
+"settings.openYouTubeInBrave" = "YouTube लिंक Brave पर खोलें";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSetting" = "स्क्रीन टाइम चालू करें";
+
+/* No comment provided by engineer. */
+"settings.privacy.screenTimeSettingDescription" = "देखें कि आप किन वेबसाइटों पर सबसे ज़्यादा समय बिताते हैं और ब्राउज़िंग की सीमाएँ सेट करें। [ज़्यादा जानें](%@)";
+
+/* Title for the quality settings view */
+"settings.qualitySettings" = "क्वॉलिटी की सेटिंग";
+
+/* Description to explain the daily usage ping toggle */
+"settings.sendUsagePingDescription" = "यह प्राइवेट पिंग, Brave को सक्रिय उपयोगकर्ताओं का अनुमान लगाने देता है।";
+
+/* Title to explain the daily usage ping toggle */
+"settings.sendUsagePingTitle" = "हर दिन के उपयोग पिंग Brave को अपने आप भेजें";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Brave को नए टैब पेज में प्राइवेट सर्वे के लिंक दिखाने की अनुमति दें। सर्वे की मदद से, हम बेहतर सुविधाएँ बना सकते हैं और ब्राउज़र पर आधारित ऐड कैंपेन के असर को माप सकते हैं। [ज़्यादा जानें](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Brave के सर्वे को अनुमति दें";
+
+/* Header for the YouTube settings section */
+"settings.youtube" = "यूट्यूब";
+
+/* Row name for licenses. */
+"SettingsLicenses" = "लाइसेंस";
+
+/* Title for settings menu item */
+"SettingsMenuItem" = "सेटिंग";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionBottomBar" = "नीचे वाला बार";
+
+/* An option for the URL bar position. (Top Bar and Bottom Bar). Refers to the location of the url bar */
+"SettingsTabsOptionTopBar" = "ऊपर वाला बार";
+
+/* Tabs settings section title */
+"SettingsTabsSectionTitle" = "टैब";
+
+/* Context menu item for sharing a link URL */
+"ShareLinkActionTitle" = "लिंक शेयर करें";
+
+/* Title for sharing url menu item */
+"ShareWithMenuItem" = "इससे शेयर करें...";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"shareWithTitle" = "इससे शेयर करें...";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkAnyTierTitle" = "इस प्राइवेसी माइलस्टोन पर पहुँचने के लिए बधाई हो।";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkExclusiveTierTitle" = "बधाई हो. आप एक विशिष्ट क्लब का हिस्सा हैं.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkGrandTierTitle" = "बधाई हो. आप ’, ग्रैंड मास्टर बन गए हैं.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkLegendaryTierTitle" = "बधाई हो. आप महान हैं.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkPrimeTierTitle" = "बधाई हो. आप मास्टर बन गए.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkProfessionalTierTitle" = "बधाई हो. आप पेशेवरों में शामिल हो गए हैं.";
+
+/* Subtitle for tracker benchmark Share */
+"shieldEducation.benchmarkSpecialTierTitle" = "बधाई हो। आप बहुत खास हैं।";
+
+/* Subtitle for  The parameter substituted for "%@" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+"shieldEducation.domainSpecificDataSavedSubtitle" = "सेव किया गया औसत डेटा\n%@ MB";
+
+/* Action title for button at domain specific data saved pop-up */
+"shieldEducation.dontShowThisTitle" = "इसे फिर से न दिखाएँँ";
+
+/* Action title for actionable Share warnings */
+"shieldEducation.shareTheNewsTitle" = "न्यूज़ शेयर करें";
+
+/* Subtitle for Shield Education Tracker Ad Warning */
+"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields ने अभी आपकी ऑनलाइन प्राइवेसी को सुरक्षित किया है।";
+
+/* Subtitle for Shield Education Tracker Count Share */
+"shieldEducation.trackerCountShareSubtitle" = "बधाई हो। आप बहुत खास हैं।";
+
+/* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+"shieldEducation.trackerCountShareTitle" = "%ld ट्रैकर्स & ऐड्स को ब्लॉक किया गया!";
+
+/* Subtitle for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockSubtitle" = "विज्ञापन रहित वीडियो कम डेटा का उपयोग करते हैं।";
+
+/* Title for Shield Education Tracker Video Ad Block */
+"shieldEducation.videoAdBlockTitle" = "इस वेबसाइट पर वीडियो देखने के दौरान विज्ञापन ब्लॉक किए गए हैं।";
+
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Brave Shields ग्लोबल डिफ़ॉल्ट्स";
+
+/* Section footer for global shields defaults */
+"ShieldsDefaultsFooter" = "ये नई साइटों के लिए डिफ़ॉल्ट शील्ड सेटिंग्स हैं. इन्हें बदलने से आपकी मौजूदा प्रति-साइट सेटिंग्स पर कोई फ़र्क नहीं पड़ेगा.";
+
+/* No comment provided by engineer. */
+"ShieldsDownDisclaimer" = "आप Brave की गोपनीयता सुरक्षा के बिना इस साइट को ब्राउज़ कर रहे हैं। क्या यह शील्ड के साथ सही तरीके से काम नहीं करता है?";
+
+/* shields overview message */
+"ShieldsOverview" = "साइट Shields आपको नियंत्रित करने देती है कि आप जिस भी साइट पर जाते हैं उस पर ऐड्स और ट्रैकर्स को कब ब्लॉक किया जाता है। अगर आप किसी खास साइट पर ऐड्स देखना चाहें, तो आप उन्हें यहाँ चालू कर सकते हैं।";
+
+/* shields overview footer message */
+"ShieldsOverviewFooter" = "ध्यान दें: शायद कुछ साइटों के ज़रूरी हों कि स्क्रिप्ट्स ठीक से काम करें, इसलिए यह शील्ड डिफ़ॉल्ट रूप से बंद है।";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewPrivateTab" = "नया प्राइवेट टैब";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleNewTab" = "नया टैब";
+
+/* Quick Action for 3D-Touch on the Application Icon */
+"ShortcutItemTitleQRCode" = "QR कोड स्कैन करें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeBraveNewsDescription" = "Brave News खोलें और आज की टॉप स्टोरीज़ देखें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryDescription" = "नए टैब में ब्राउज़र खोलें और प्राइवेट ब्राउज़र के पूरे हिस्ट्री डेटा को मिटाएँ";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "ब्राउज़र हिस्ट्री मिटाएँ";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeClearHistoryTitle" = "Brave की ब्राउज़िंग हिस्ट्री मिटाएँ";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNDescription" = "नए टैब में ब्राउज़र खोलें और VPN चालू करें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "VPN चालू करें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeEnableVPNTitle" = "Brave ब्राउज़र खोलें और VPN चालू करें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "नया प्राइवेट टैब खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewPrivateTabTitle" = "नया प्राइवेट ब्राउज़र टैब खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "नया टैब खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeNewTabTitle" = "नया ब्राउज़र टैब खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksDescription" = "ब्राउज़र बुकमार्क्स स्क्रीन खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "बुकमार्क्स खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBookmarksTitle" = "Brave ब्राउज़र बुकमार्क्स खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Brave News खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Brave News खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListDescription" = "ब्राउज़र हिस्ट्री स्क्रीन खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "ब्राउज़र हिस्ट्री खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenHistoryListTitle" = "Brave ब्राउज़र हिस्ट्री खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistDescription" = "प्लेलिस्ट में अपने वीडियो चलाना शुरू करें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "प्लेलिस्ट खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenPlaylistTitle" = "प्लेलिस्ट खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "दूसरे डिवाइसों में खुले Brave टैब्स खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "दूसरे डिवाइसों के टैब्स खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "दूसरे डिवाइसों के टैब्स खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.activityTypeTabDescription" = "Brave के साथ वेब पर सुरक्षित रूप से सर्च शुरू करें";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "बुकमार्क वेबसाइट खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "हिस्ट्री वेबसाइट खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "वेबसाइट खोलें";
+
+/* Description for opening Brave Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "इस विकल्प से Brave सेटिंग खुल जाएँगी। अलग-अलग Siri विकल्प बदलने के लिए, कृपया 'Siri & सर्च' मेम्यू आइटम चुनें और अपनी पसंद कस्टमाइज़ करें।";
+
+/* Button title that open application settings */
+"shortcuts.shortcutOpenApplicationSettingsTitle" = "सेटिंग खोलें";
+
+/* Description of Clear Browser History Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "नया टैब खोलने के लिए शॉर्टकट्स इस्तेमाल करें & Siri के ज़रिए ब्राउज़र हिस्ट्री हटाएँ - वॉइस असिस्टेंट";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "ब्राउज़र हिस्ट्री मिटाएँ";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Siri के ज़रिए Brave VPN चालू करने के लिए शॉर्टकट्स इस्तेमाल करें - वॉइस असिस्टेंट";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsEnableVPNTitle" = "VPN चालू करें";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksDescription" = "Siri के ज़रिए बुकमार्क्स खोलने के लिए शॉर्टकट्स इस्तेमाल करें - वॉइस असिस्टेंट";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBookmarksTitle" = "बुकमार्क्स खोलें";
+
+/* Description of Open Brave News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "नया टैब खोलने के लिए शॉर्टकट्स इस्तेमाल करें & Siri के ज़रिए Brave News फ़ीड दिखाएँ - वॉइस असिस्टेंट";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Brave News खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListDescription" = "Siri के ज़रिए ब्राउज़र हिस्ट्री स्क्रीन खोलने के लिए शॉर्टकट्स इस्तेमाल करें - वॉइस असिस्टेंट";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "ब्राउज़र हिस्ट्री खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Siri के ज़रिए नया प्राइवेट टैब खोलने के लिए शॉर्टकट्स इस्तेमाल करें - वॉइस असिस्टेंट";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "नया प्राइवेट टैब खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabDescription" = "Siri के ज़रिए नया टैब खोलने के लिए शॉर्टकट्स इस्तेमाल करें - वॉइस असिस्टेंट";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "नया टैब खोलें";
+
+/* Description of Open Playlist Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Siri के ज़रिए प्लेलिस्ट खोलने के लिए शॉर्टकट्स इस्तेमाल करें - वॉइस असिस्टेंट";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "प्लेलिस्ट खोलें";
+
+/* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Siri के ज़रिए दूसरे डिवाइसों के टैब्स खोलने के लिए शॉर्टकट्स इस्तेमाल करें - वॉइस असिस्टेंट";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "दूसरे डिवाइसों के टैब्स खोलें";
+
+/* No comment provided by engineer. */
+"shortcuts.shortcutSettingsTitle" = "Siri शॉर्टकट्स";
+
+/* Button to show the bookmarks list */
+"ShowBookmarks" = "बुकमार्क दिखाएँ";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showDownloadsTitle" = "डाउनलोड्स देखें";
+
+/* Button to show the history list */
+"ShowHistory" = "हिस्ट्री दिखाएँ";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showHistoryTitle" = "हिस्ट्री दिखाएँ";
+
+/* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
+"ShowInLandscapeOnly" = "सिर्फ़ लैंडस्केप";
+
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "लिंक के प्रीव्यू दिखाएँ";
+
+/* Accessibility Label for the tabs button in the browser toolbar */
+"ShowTabs" = "टैब्स दिखाएँ";
+
+/* Setting to show/hide the tabs bar */
+"ShowTabsBar" = "टैब्स बार";
+
+/* No comment provided by engineer. */
+"SiteReportedBody" = "इस साइट की समस्या के बारे में Brave के डेवलपर्स को बताने के लिए धन्यवाद। हम इसे ठीक करने की पूरी कोशिश करेंगे!";
+
+/* No comment provided by engineer. */
+"SiteReportedTitle" = "शुक्रिया";
+
+/* Brave panel topmost title */
+"SiteShieldSettings" = "Shields";
+
+/* Title used when in warning pop-over when domain specific data save appears */
+"socialSharing.domainSpecificDataSavedTitle" = "Brave से हरदिन मैं वेब ब्राउज़ करके डेटा बचाता हूँ ";
+
+/* Text used for social sharing together with Brave Shield values */
+"socialSharing.shareDescriptionTitle" = "Brave से हरदिन मैं वेब ब्राउज़ करके डेटा बचाता हूँ ";
+
+/* Open search section of settings */
+"StandardTabSearch" = "साधारण टैब";
+
+/* Support section title */
+"Support" = "सपोर्ट";
+
+/* Message body of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionMessage" = "इस पेज को अतिरिक्त चेतावनियाँ बनाने से रोकें";
+
+/* Title of alert that seeks permission from user to suppress future JS alerts */
+"SuppressAlertsActionTitle" = "चेतावनियाँ बंद करें";
+
+/* Add New Device cell button. */
+"sync.addAnotherDevice" = "नए डिवाइस जोड़ें";
+
+/* Add a Computer title */
+"sync.addComputerTitle" = "एक कंप्यूटर जोड़ें";
+
+/* Add mobile device to sync with scan */
+"sync.addDeviceScan" = "सिंक चेन QR कोड";
+
+/* Sync add device description */
+"sync.addDeviceScanDescription" = "अपने दूसरे मोबाइल डिवाइस पर, सेटिंग पैनल में सिंक पर नेविगेट करें और \"सिंक कोड स्कैन करें\" बटन पर टैप करें। नीचे दिया गया QR Code स्कैन करने के लिए अपना कैमरा इस्तेमाल करें।\n\nइस कोड को पासवर्ड की तरह इस्तेमाल करें। अगर यह किसी को मिल जाता है, तो वे आपके सिंक किए गए डेटा को पढ़ सकते हैं और उसमें संशोधन कर सकते हैं।";
+
+/* Add device to sync with code words */
+"sync.addDeviceWords" = "सिंक कोड दर्ज करें";
+
+/* Sync add device description */
+"sync.addDeviceWordsDescription" = "अपने डिवाइस पर, सेटिंग पैनल में सिंक पर नेविगेट करें और \"%@\" बटन पर टैप करें। नीचे दिए गए सिंक चेन कोड वर्ड्स दर्ज करें।\n\nइस कोड को पासवर्ड की तरह इस्तेमाल करें। अगर यह किसी को मिल जाता है, तो वे आपके सिंक किए गए डेटा को पढ़ सकते हैं और उसमें संशोधन कर सकते हैं।";
+
+/* Add device to sync with code words navigation title */
+"sync.addDeviceWordsTitle" = "कोड वर्ड्स दर्ज करें";
+
+/* Add Tablet or phone title */
+"sync.addTabletOrPhoneTitle" = "कोई टैबलेट या फ़ोन जोड़ें";
+
+/* Message of the popup if bookmark export succeeds. */
+"sync.bookmarksExportPopupSuccessMessage" = "बुकमार्क को एक्सपोर्ट किया गया";
+
+/* Message of the popup if bookmark export fails. */
+"sync.bookmarksIExportPopupFailureMessage" = "बुकमार्क का एक्सपोर्ट नहीं हो पाया";
+
+/* Title of the bookmark import popup. */
+"sync.bookmarksImportPopupErrorTitle" = "बुकमार्क";
+
+/* Message of the popup if bookmark import fails. */
+"sync.bookmarksImportPopupFailureMessage" = "बुकमार्क का इंपोर्ट नहीं हो पाया";
+
+/* Message of the popup if bookmark import succeeds. */
+"sync.bookmarksImportPopupSuccessMessage" = "बुकमार्क को इंपोर्ट किया गया";
+
+/* Alert description for error while deleting sync chain */
+"sync.chainAccountDeletionErrorDescription" = "डिवाइस सिंक करें";
+
+/* Alert title for error while deleting sync chain */
+"sync.chainAccountDeletionErrorTitle" = "डिवाइस सिंक करें";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.chainAlreadyDeletedAlertDescription" = "इस चेन में शामिल नहीं हो सकते। अकाउंट मिटा दिया गया।";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.chainAlreadyDeletedAlertTitle" = "डिवाइस सिंक करें";
+
+/* Choose device type for sync */
+"sync.chooseDevice" = "डिवाइस प्रकार चुनें";
+
+/* Header for device choosing screen. */
+"sync.chooseDeviceHeader" = "सिंक करने के लिए डिवाइस के प्रकार का चयन करें।";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"sync.codeExpirationTitleLabel" = "कोड एक्सपायर हो गया है। नीचे दिए गए बटन पर टैप करके नया कोड जेनरेट करें।";
+
+/* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
+"sync.codeTimeMinutesAbbreviation" = "मि.";
+
+/* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
+"sync.codeTimeMultipleHourText" = "घंटे";
+
+/* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
+"sync.codeTimeMultipleSecondsText" = "सेकंड्स";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"sync.codeTimeRemainingTitleLabel" = "यह अस्थायी कोड अगले %@ के लिए मान्य है";
+
+/* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
+"sync.codeTimeSingleHourText" = "घंटा";
+
+/* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
+"sync.codeTimeSingleSecondText" = "सेकंड";
+
+/* Code words input help */
+"sync.codeWordInputHelp" = "नीचे दिए गए फॉर्म में आपको पहुँचाया गया सिंक चेन कोड दर्ज़ करें।";
+
+/* Code words section title */
+"sync.codeWords" = "कोड शब्द";
+
+/* Computer device button title */
+"sync.computerDevice" = "कंप्यूटर";
+
+/* Information Text underneath the toggles for enable/disable different sync types for the device */
+"sync.configurationInformationText" = "प्रबंधित करें कि आप किन सूचनाओं को डिवाइसों के बीच सिंक करना चाहते हैं। ये सेटिंग्स केवल इस डिवाइस को प्रभावित करती हैं।";
+
+/* Copied action complete title */
+"sync.copied" = "कॉपी की गई!";
+
+/* Copied codewords title */
+"sync.copiedToClipboard" = "क्लिपबोर्ड पर कॉपी किया गया!";
+
+/* Copy codewords title */
+"sync.copyToClipboard" = "क्लिपबोर्ड पर कॉपी करें";
+
+/* Delete Sync Account cell title for button. */
+"sync.deleteAccount" = "सिंक अकाउंट को मिटाएँ";
+
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertDescriptionPart1" = "अपना अकाउंट मिटाने से Brave के सर्वर पर आपका एन्क्रिप्ट किया हुआ डेटा हट जाएगा और आपके कनेक्ट किए हुए सभी डिवाइस पर सिंक बंद हो जाएगा.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertDescriptionPart2" = "हालाँकि इससे उन डिवाइस पर लोकल तौर पर स्टोर किया गया डेटा नहीं मिटेगा.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.deleteAccountAlertTitle" = "सिंक अकाउंट को मिटाएँ";
+
+/* Sync Error Description */
+"sync.deprecatedVersionError" = "ऐसा लगता है कि इस कोड को किसी ऐसे डिवाइस पर बनाया गया था जो Brave के पुराने वर्शन पर चल रहा था। कृपया अपने दूसरे डिवाइस पर Brave के नए वर्शन पर अपडेट करें और फिर नया सिंक कोड बनाएँ।";
+
+/* The message displayed in alert when a there is a problem with fetching devices */
+"sync.deviceFetchErrorAlertDescription" = "सिंक चेन से डिवाइस रिट्रीव करते समय कोई गड़बड़ी हुई।";
+
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "ऐसा लगता है कि आपके डिवाइस को बैकअप से रीस्टोर किया गया, जिससे Brave सिंक पर असर पड़ सकता है। Brave सिंक इस्तेमाल करना जारी रखने के लिए, आपको रीसेट करके सिंक चेन में फिर से शामिल होना होगा।";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "रीस्टोर का पता चला";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "सिंक चेन रीसेट करें";
+
+/* Sync device settings page title. */
+"sync.devices" = "सिंक चेन में डिवाइस";
+
+/* The message displayed in alert when a list of devices will be shown */
+"sync.devicesInSyncChainTitle" = "सिंक चेन में डिवाइस";
+
+/* Sync enter code words */
+"sync.enterCodeWords" = "कोड शब्द दर्ज करें";
+
+/* Enter sync code words below */
+"sync.enterCodeWordsBelow" = "नीचे दिए गए कोड वर्ड्स दर्ज करें";
+
+/* Sync Error message for when the sync code is expired */
+"sync.expiredError" = "यह सिंक कोड एक्सपायर हो गया है, कृपया नया सिंक कोड जनरेट करके फिर से कोशिश करें।";
+
+/* Generic Sync Error Description */
+"sync.genericError" = "माफ़ करें, कुछ गड़बड़ी हुई";
+
+/* Grand camera access */
+"sync.grantCameraAccess" = "कैमरा चालू करें";
+
+/* Message for sync initialization error alert */
+"sync.initErrorMessage" = "यह सिंक एजेंट अभी ऑफ़लाइन है या रीचेबल नहीं है। कृपया बाद में कोशिश करें।";
+
+/* Title for sync initialization error alert */
+"sync.initErrorTitle" = "सिंक कम्युनिकेशन से जुड़ी गड़बड़ी";
+
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"sync.internalsTitle" = "सिंक इंटर्नल्स";
+
+/* Generic error message for when the sync code is invalid */
+"sync.invalidSyncCodeDescription" = "अमान्य सिंक कोड, कृपया जाँच करें और पुनः प्रयास करें।";
+
+/* A warning when user adds more than 5 device to sync chain */
+"sync.joinChainCodewordsWarning" = "ध्यान दें: आपको वेरिफ़ाय करना होगा कि आप ऊपर दी गई लिस्ट में हर डिवाइस को पहचानते हैं। सिंक चेन के डिवाइसों को पासवर्ड और ब्राउज़िंग हिस्ट्री जैसा व्यक्तिगत डेटा मिल सकता है।";
+
+/* Title for alert error for device confirmation */
+"sync.joinChainWarningTitle" = "डिवाइस की पुष्टि";
+
+/* The message displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorDescription" = "आपने सिंक चेन में अनुमति वाले डिवाइसों की अधिकतम संख्या (10) को पार कर लिया है। जारी रखने के लिए कोई डिवाइस हटाएँ।";
+
+/* The warning displayed in alert when the maxmium of devices is reached */
+"sync.maximumDeviceReachedErrorTitle" = "डिवाइस की सीमा";
+
+/* New sync code button title */
+"sync.newSyncCode" = "नयी सिंक चेन की शुरुआत करें";
+
+/* No internet connection alert body. */
+"sync.noConnectionBody" = "अपने इंटरनेट कनेक्शन की जाँच करके फिर से कोशिश करें।";
+
+/* No internet connection alert title. */
+"sync.noConnectionTitle" = "सिंक से कनेक्शन नहीं हो सका";
+
+/* Error message for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsDescription" = "कृपया सभी शब्द दर्ज करके फिर से कोशिश करें।";
+
+/* Error title for when the sync code does not have the correct amount of words */
+"sync.notEnoughWordsTitle" = "शब्द काफ़ी नहीं हैं";
+
+/* Sync pair device settings section title */
+"sync.pair" = "युग्‍मित करें";
+
+/* QR Code section title */
+"sync.qrCode" = "QR कोड";
+
+/* Message for removing the current device from Sync */
+"sync.removeCurrentDeviceMessage" = "लोकल डिवाइस डेटा सभी डिवाइसों पर वैसा ही रहेगा। इस सिंक चेन में दूसरे डिवाइस सिंक रहेंगे। ";
+
+/* Title for removing the current device from Sync */
+"sync.removeCurrentDeviceTitle" = "%@ को सिंक चेन से हटाएँ?";
+
+/* Action button for removing sync device. */
+"sync.removeDevice" = "हटाएं";
+
+/* Remove device button for action sheet. */
+"sync.removeDeviceAction" = "डिवाइस हटाएं";
+
+/* Default name for a device */
+"sync.removeDeviceDefaultName" = "डिवाइस";
+
+/* Message for removing last device from Sync */
+"sync.removeLastDeviceMessage" = "जो डेटा अभी सिंक है उसे रखा जाएगा, लेकिन Brave की सिंक कैश का सभी डेटा मिटा दिया जाएगा। अपने डिवाइस का डेटा फिर से सिंक करने के लिए, आपको नई सिंक चेन शुरू करनी होगी।";
+
+/* Button name for removing last device from Sync */
+"sync.removeLastDeviceRemoveButtonName" = "सिंक चेन मिटाएँ";
+
+/* Title for removing last device from Sync */
+"sync.removeLastDeviceTitle" = "%@ हटाने से सिंक चेन मिट जाएगी।";
+
+/* Message for removing other device from Sync */
+"sync.removeOtherDeviceMessage" = "सिंक चेन से डिवाइस हटाने पर, डिवाइस से पहले सिंक किया गया डेटा नहीं हटेगा।";
+
+/* Title for removing other device from Sync */
+"sync.removeOtherDeviceTitle" = "%@ को सिंक चेन से हटाएँ?";
+
+/* Sync remove device. */
+"sync.removeThisDevice" = "इस डिवाइस को हटाएं";
+
+/* Sync remove device? */
+"sync.removeThisDeviceQuestionDesc" = "इस डिवाइस को सिंक ग्रुप से डिसकनेक्ट कर दिया जाएगा और यह अब सिंक डेटा नहीं पा या भेज सकेगा। सभी मौजूदा डेटा डिवाइस पर रहेगा।";
+
+/* Scan sync code title */
+"sync.scan" = "स्कैन करें";
+
+/* Scan sync code button title */
+"sync.scanSyncCode" = "मेरे पास एक सिंक कोड है";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"sync.setPasscodeAlertDescription" = "सिंक चेन से डिवाइस जोड़ने या पासवर्ड सिंक टॉगल करने के लिए, आपको पहले अपने डिवाइस पर पासकोड सेट करना होगा।";
+
+/* The title displayed in alert when a user needs to set passcode */
+"sync.setPasscodeAlertTitle" = "पासकोड सेट करें";
+
+/* Header title for Sync settings */
+"sync.settingsHeader" = "नीचे दी गयी डिवाइस सूची में आपकी सिंक चेन की सभी डिवाइस सम्मिलित हैं। किसी भी डिवाइस को किसी अन्य डिवाइस से प्रबन्धित किया है।";
+
+/* Title for Sync Settings Toggle Header */
+"sync.settingsTitle" = "सिंक सेटिंग";
+
+/* Show code words instead */
+"sync.showCodeWords" = "इसके बजाय कोड वर्ड्स दिखाएँ";
+
+/* Switch back to camera button */
+"sync.switchBackToCameraButton" = "मैं अपने कैमरे का उपयोग करूँगा ...";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "मिटाने की यह प्रक्रिया स्थायी होगी और डेटा को वापस नहीं पाया जा सकेगा। अगर आप फिर से सिंक इस्तेमाल करने के बारे में सोचते हैं, तो आपको एक नया अकाउंट बनाना होगा और हर डिवाइस को एक-एक करके फिर से जोड़ना होगा।";
+
+/* Sync you browser settings across devices. */
+"sync.Syncdevices" = "डिवाइस & सेटिंग";
+
+/* Sync remove device? */
+"sync.syncRemoveThisDeviceQuestion" = "इस डिवाइस को हटाएँ?";
+
+/* Sync settings section title */
+"sync.syncTitle" = "सिंक";
+
+/* No comment provided by engineer. */
+"sync.syncUnsuccessful" = "असफल";
+
+/* Tablet or phone button title */
+"sync.tabletOrMobileDevice" = "टैबलेट या फ़ोन";
+
+/* This device cell */
+"sync.thisDevice" = "यह डिवाइस";
+
+/* Sync to existing device */
+"sync.toDevice" = "डिवाइस से सिंक करें";
+
+/* Sync to existing device description */
+"sync.toDeviceDescription" = "अभी जो डिवाइस सिंक है उसका इस्तेमाल करके Brave की सेटिंग खोलें और सेटिंग -> सिंक करें पर जाएँ। \"डिवाइस जोड़ें\" को चुनें और स्क्रीन पर दिखाया गया कोड स्कैन करें।";
+
+/* Description on popup when setting up a sync group fails */
+"sync.unableCreateGroup" = "इस डिवाइस को सिंक नहीं किया जा सकता";
+
+/* Sync Alert */
+"sync.unableToConnectDescription" = "सिंक ग्रुप में शामिल नहीं हो पाए। कृपया दर्ज किए गए शब्दों की जाँच करके फिर से कोशिश करें।";
+
+/* Sync Alert */
+"sync.unableToConnectTitle" = "कनेक्ट नहीं हो पाया";
+
+/* Sync Error Description */
+"sync.validForTooLongError" = "यह कोड अमान्य है। कृपया जांच लें कि आपके डिवाइस पर टाइम और टाइमज़ोन सही ढंग से सेट हैं.";
+
+/* Sync settings welcome */
+"sync.welcome" = "शुरूआत करने के लिए, आपको उन सभी डिवाइसों पर Brave इंस्टॉल करना होगा जिन्हें आप सिंक करना चाहते हैं। उन्हें एक साथ रखने के लिए, सिंक चेन को शुरू करें जिसे आप सभी डिवाइस को सुरक्षापूर्वक जोड़ने के लिए किये प्रयोग करेंगे।";
+
+/* Word count title */
+"sync.wordCount" = "शब्दों की संख्या: %i";
+
+/* Accessibility label for action denoting closing a tab in tab list (tray) */
+"TabAccessibilityCloseActionLabel" = "बंद करें";
+
+/* Accessibility label for a close button that when tapped opens a new tab */
+"tabGrid.addTabAccessibilityLabel" = "नया टैब";
+
+/* A button title which when tapped will close all of the open tabs for the user */
+"tabGrid.closeAllTabsButtonTitle" = "सभी टैब बंद करें";
+
+/* Accessibility label for a close button that when tapped closes the associated tab */
+"tabGrid.closeTab" = "टैब बंद करें";
+
+/* A button title which when tapped will display a menu with more options */
+"tabGrid.moreMenuButtonTitle" = "अधिक";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneBody" = "आप जो साइटें प्राइवेट विंडो में खोलते हैं वे आपके इतिहास में दिखाई नहीं देंगे। प्राइवेट विंडो बंद होने पर, कुकी, फ़ॉर्म डेटा और साइट डेटा गायब हो जाता है।";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneTitle" = "अपने डिवाइस पर कोई सबूत न छोड़ें";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeBody" = "Brave VPN उन सभी गतिविधियों को एन्क्रिप्ट और सुरक्षित करता है जो आप ऑनलाइन करते हैं, Brave ब्राउज़र के बाहर भी।";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeTitle" = "Brave VPN";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoBody" = "ध्यान दें—प्राइवेट विंडो में भी—आपकी ब्राउज़िंग गतिविधि आपके ISP, नेटवर्क ऑब्ज़र्वर या आपके नियोक्ता (अगर आप दफ़्तर की मशीन/नेटवर्क इस्तेमाल कर रहे हैं) को दिख सकती है।";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoTitle" = "ब्राउज़ करने की विज़िबिलिटी";
+
+/* A title shown when in private browsing mode with no tabs open */
+"tabGrid.privateBrowsingInfoTitle" = "प्राइवेट टैब";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.privateBrowsingModeAccessibilityLabel" = "प्राइवेट ब्राउज़िंग";
+
+/* A button title which when tapped will present settings for private tabs */
+"tabGrid.privateTabsSettingsTitle" = "प्राइवेट टैब की सेटिंग";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.regularBrowsingModeAccessibilityLabel" = "सामान्य ब्राउज़िंग";
+
+/* A button title that when tapped allows users to shred all of their tabs */
+"tabGrid.shredAllTabsButtonTitle" = "सभी टैब्स श्रेड करें";
+
+/* A button title that when tapped allows users to shred the currently selected tab */
+"tabGrid.shredSelectedTabButtonTitle" = "चुने गए टैब्स श्रेड करें";
+
+/* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
+"tabGrid.shredTabsAccessibilityLabel" = "टैब्स श्रेड करें";
+
+/* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryAccessibilityLabel" = "हिस्ट्री देखें";
+
+/* Accessibility label for a button that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsAccessibilityLabel" = "सिंक किए गए टैब्स देखें";
+
+/* Accessiblity hint for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityHint" = "प्राइवेट मोड को चालू या बंद करें";
+
+/* Accessibility label for toggling on/off private mode */
+"TabPrivateModeToggleAccessibilityLabel" = "प्राइवेट मोड";
+
+/* Toggled OFF accessibility value */
+"TabPrivateModeToggleAccessibilityValueOff" = "बंद";
+
+/* Toggled ON accessibility value */
+"TabPrivateModeToggleAccessibilityValueOn" = "चालू";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingDescription" = "ऐप बंद करने पर प्राइवेट ब्राउज़िंग टैब्स खुले रखें, ताकि प्राइवेट ब्राउज़िंग सेशन बिना परेशानी के जारी रहें।";
+
+/* No comment provided by engineer. */
+"tabs.settings.persistentPrivateBrowsingTitle" = "प्राइवेट टैब्स रखें";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionFaceID" = "आपके प्राइवेट टैब्स को ऐक्सेस करने के लिए Face ID की ज़रूरत है।";
+
+/* Describes the preference that locks the users private tabs behind their device PIN */
+"tabs.settings.privateBrowsingLockDescriptionPinCode" = "आपके प्राइवेट टैब्स को ऐक्सेस करने के लिए आपके डिवाइस के PIN की ज़रूरत है।";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionTouchID" = "आपके प्राइवेट टैब्स को ऐक्सेस करने के लिए Touch ID की ज़रूरत है।";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleFaceID" = "Face ID की ज़रूरत है";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitlePinCode" = "पिन कोड की ज़रूरत है";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateBrowsingLockTitleTouchID" = "Touch ID की ज़रूरत है";
+
+/* No comment provided by engineer. */
+"tabs.settings.privateTabsSettingsTitle" = "निजी टैब";
+
+/* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
+"TabToolbarAccessibilityLabel" = "नेविगेशन टूलबार";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabToolbarAddTabButtonAccessibilityLabel" = "टैब जोड़ें";
+
+/* Accessibility Label for the tab toolbar Add to Playlist button */
+"tabToolbarAddToPlaylistButtonAccessibilityLabel" = "प्लेलिस्ट में जोड़ें";
+
+/* Accessibility label for the Back button in the tab toolbar. */
+"TabToolbarBackButtonAccessibilityLabel" = "वापस";
+
+/* Accessibility Label for the tab toolbar Forward button */
+"TabToolbarForwardButtonAccessibilityLabel" = "आगे जाएं";
+
+/* Accessibility label for the lock icon, which is only present if the connection is secure */
+"TabToolbarLockImageAccessibilityLabel" = "सुरक्षित कनेक्शन";
+
+/* Accessibility Label for the browser toolbar Menu button */
+"TabToolbarMenuButtonAccessibilityLabel" = "मेनू";
+
+/* A label shown next to a URL that loaded in some insecure way */
+"tabToolbarNotSecureTitle" = "सुरक्षित नहीं है";
+
+/* Accessibility Label for the tab toolbar paste and go button */
+"tabToolbarPasteAndGoButtonAccessibilityLabel" = "पेस्ट करें और जाएँ";
+
+/* Accessibility Label for the tab toolbar Playlist button */
+"TabToolbarPlaylistButtonAccessibilityLabel" = "प्लेलिस्ट";
+
+/* Accessibility label for the Reader View button */
+"TabToolbarReaderViewButtonAccessibilityLabel" = "रीडर व्यू";
+
+/* Accessibility label for action adding current page to reading list. */
+"TabToolbarReaderViewButtonTitle" = "रीडिंग लिस्ट में जोडे़ं";
+
+/* Accessibility Label for the tab toolbar Reload button */
+"TabToolbarReloadButtonAccessibilityLabel" = "फिर लोड करें";
+
+/* The text shown in the URL bar on about:home */
+"TabToolbarSearchAddressPlaceholderText" = "ऐड्रेस सर्च या दर्ज करें";
+
+/* Accessibility Label for the browser toolbar Share button */
+"TabToolbarShareButtonAccessibilityLabel" = "शेयर करें";
+
+/* Accessibility Label for the tab toolbar Stop button */
+"TabToolbarStopButtonAccessibilityLabel" = "रोकें";
+
+/* Accessibility Label for the tab toolbar voice search button */
+"tabToolbarVoiceSearchButtonAccessibilityLabel" = "आवाज़ से सर्च";
+
+/* Accessibility label for the lock icon, which is only present if the connection is insecure */
+"TabToolbarWarningImageAccessibilityLabel" = "असुरक्षित कनेक्शन";
+
+/* Accessibility label for the Tabs Tray view. */
+"TabTrayAccessibilityLabel" = "टैब्स ट्रे";
+
+/* Accessibility label for the Add Tab button in the Tab Tray. */
+"TabTrayAddTabAccessibilityLabel" = "टैब जोड़ें";
+
+/* Accessibility hint for tab tray's displayed tab. */
+"TabTrayCellCloseAccessibilityHint" = "टैब बंद करने के लिए, तीन उंगलियों से दाएँ या बाएँ स्वाइप करें।";
+
+/* Accessibility label (used by assistive technology) notifying the user that the tab is being closed. */
+"TabTrayClosingTabAccessibilityNotificationText" = "टैब बंद किया जा रहा है";
+
+/* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
+"TabTrayEmptyVoiceOverText" = "कोई टैब नहीं";
+
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+"TabTrayMultiTabPositionFormatVoiceOverText" = "%3$@ में से टैब %1$@ से %2$@";
+
+/* Accessibility label for the New Tab button in the tab toolbar. */
+"TabTrayNewTabButtonAccessibilityLabel" = "नया टैब";
+
+/* Title displayed for placeholder inside Search Bar in Tab Tray */
+"TabTraySearchBarTitle" = "सर्च टैब्स";
+
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+"TabTraySingleTabPositionFormatVoiceOverText" = "%2$@ में से टैब %1$@";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "सेवा की शर्तें";
+
+/* Show Brave Browser TOS page from the Privacy section in the settings. */
+"TermsOfUse" = "उपयोग की शर्तें";
+
+/* Text for button to share referral's QR code. */
+"themeQRCodeShareButton" = "शेयर करें...";
+
+/* Title for QR popup encouraging users to share the code with their friends. */
+"themeQRCodeShareTitle" = "Brave को अपने दोस्तों के साथ शेयर करें!";
+
+/* Selection to automatically color/style the user interface. */
+"ThemesAutomaticOption" = "स्वचालित";
+
+/* Selection to color/style the user interface with a dark theme */
+"ThemesDarkOption" = "गाढ़ा";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "प्रकटन";
+
+/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
+"ThemesDisplayBrightnessFooter" = "ये सेटिंग प्राइवेट ब्राउज़िंग मोड पर लागू नहीं होतीं।";
+
+/* Selection to color/style the user interface with a light theme. */
+"ThemesLightOption" = "मन्द";
+
+/* Name for app theme settings */
+"themesSettings" = "थीम";
+
+/* No comment provided by engineer. */
+"Title" = "शीर्षक";
+
+/* History tableview section header */
+"Today" = "आज";
+
+/* To add a list of 1 or more rss feeds */
+"today.addSourceAddButtonTitle" = "जोड़ें";
+
+/* The title in the alert when a source fails to add */
+"today.addSourceFailureTitle" = "सोर्स नहीं जोड़ पाए";
+
+/* No comment provided by engineer. */
+"today.addSourceInvalidDataMessage" = "माफ़ करें, फ़ीड ऐड्रेस को पहचान नहीं पाए।";
+
+/* No comment provided by engineer. */
+"today.addSourceNetworkFailureMessage" = "माफ़ करें, हमें वह फ़ीड ऐड्रेस नहीं मिला।";
+
+/* No comment provided by engineer. */
+"today.addSourceNoFeedsFoundMessage" = "माफ़ करें, उस फ़ीड ऐड्रेस में कोई कॉन्टेंट नहीं है।";
+
+/* The action title displayed in the iOS share menu */
+"today.addSourceShareTitle" = "सोर्स को Brave News में जोडे़ं";
+
+/* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
+"today.availableRSSFeedsHeaderTitle" = "उपलब्ध RSS फ़ीड्स";
+
+/* The name of the feature */
+"today.braveToday" = "Brave News";
+
+/* The name of the feature in settings */
+"today.braveToday.title" = "समाचार";
+
+/* Shown below 'Channels' explaining what will be shown when tapping on it. */
+"today.channelsButtonSubtitle" = "वह विषय फ़ॉलो करें जिनमें आपको दिलचस्पी है";
+
+/* A button title that when tapped shows users a list of channels/topics that they can follow */
+"today.channelsButtonTitle" = "चैनल";
+
+/* A header title shown over a list of channels (i.e. Cars, Business, Fashion, etc.) */
+"today.channelsHeaderTitle" = "चैनल";
+
+/* A title at the top of the screen that shows a list of topics the user can follow */
+"today.channelsTitle" = "चैनल";
+
+/* No comment provided by engineer. */
+"today.contentAvailableButtonTitle" = "नया कॉन्टेंट उपलब्ध है";
+
+/* No comment provided by engineer. */
+"today.deals" = "डील्स";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disabledAlertBody" = "Brave News %@ का कॉन्टेंट दिखाना रोक देगा";
+
+/* No comment provided by engineer. */
+"today.disabledAlertTitle" = "अक्षम";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.disablePublisherContent" = "%@ का कॉन्टेंट छिपाएँ";
+
+/* No comment provided by engineer. */
+"today.emptyFeedBody" = "कोई न्यूज़ सोर्स चालू करने की कोशिश करें";
+
+/* No comment provided by engineer. */
+"today.emptyFeedTitle" = "दिखाने के लिए कोई लेख नहीं है";
+
+/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+"today.enablePublisherContent" = "%@ के कॉन्टेंट को अनुमति दें";
+
+/* No comment provided by engineer. */
+"today.errorGeneralBody" = "Brave News में कुछ समस्याएँ आ रही हैं। फिर से कोशिश करें।";
+
+/* No comment provided by engineer. */
+"today.errorGeneralTitle" = "ओह...";
+
+/* Shown below 'Following' explaining that they can manage their list of followed sources by tapping on it */
+"today.followingButtonSubtitle" = "अपने फ़ीड के लिए सोर्स को मैनेज करें";
+
+/* A button title that when tapped shows users a list of sources & channels they are currently following */
+"today.followingButtonTitle" = "फ़ॉलो कर रहे हैं";
+
+/* A title at the top of the screen that shows a list of the news content the user is following */
+"today.followingTitle" = "फ़ॉलो कर रहे हैं";
+
+/* A toggle title shown next to a source or channel that the user can follow. When tapped switches to 'Unfollow' */
+"today.followToggleTitle" = "फ़ॉलो करें";
+
+/* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
+"today.getFeedsFromSiteButtonTitle" = "इससे फ़ीड पाएँ";
+
+/* "OPML" is a file extension that contains a list of rss feeds. */
+"today.importOPML" = "OPML इंपोर्ट करें";
+
+/* The header above the list of insecure sources */
+"today.insecureSourcesHeader" = "असुरक्षित सोर्स - अपने जोखिम पर जोड़ें";
+
+/* Shown above a button that turns on the "Brave News" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "एक ही फ़ीड में अपने पसंदीदा सोर्स को फ़ॉलो करें। बस Brave में एक टैब खोलें, नीचे स्क्रॉल करें और… लुत्फ़ उठाएँ! Brave News को गुप्त और अनाम ऐड्स से मदद मिलती है।";
+
+/* Shown above a button that turns on the "Brave News" product in the app. */
+"today.introCardTitle" = "Brave न्यूज़ चालू करें और कभी भी कोई स्टोरी छूटने न दें";
+
+/* No comment provided by engineer. */
+"today.isEnabledToggleLabel" = "Brave न्यूज़ दिखाएँ";
+
+/* No comment provided by engineer. */
+"today.learnMoreTitle" = "डेटा के बारे में अधिक जानें";
+
+/* 'Brave Offers' is a product name */
+"today.moreBraveOffers" = "Brave के अन्य ऑफ़र";
+
+/* No comment provided by engineer. */
+"today.noInternet" = "इंटरनेट नहीं है";
+
+/* No comment provided by engineer. */
+"today.noInternetBody" = "अपना कनेक्शन जाँचने या वाई-फ़ाई से दोबारा कनेक्ट करने की कोशिश करें।";
+
+/* Shown on the screen when a user searches for sources/channels but finds no results. */
+"today.noResultsFound" = "कोई नतीजा नहीं मिला";
+
+/* Shown below 'Popular Sources' explaining what sources will be shown. */
+"today.popularSourcesButtonSubtitle" = "सोर्स की रैंक की गई लिस्ट";
+
+/* A button title that when tapped shows users a list of news sources that are ranked the highest */
+"today.popularSourcesDestinationTitle" = "मशहूर";
+
+/* A title at the top of the screen that shows a list of sources that are ranked the highest */
+"today.popularSourcesTitle" = "लोकप्रिय सोर्स";
+
+/* A button title that is placed on promoted cards */
+"today.promoted" = "प्रमोट कर दिया गया";
+
+/* Title for long press action sheet list which has item for rate / hide */
+"today.rateBraveCardActionSheetTitle" = "App Store में Brave को रेटिंग दें";
+
+/* Title for long press action that will hide Brave Rate Card */
+"today.rateBraveCardHideActionTitle" = "छुपाएं";
+
+/* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
+"today.rateBraveCardRateActionTitle" = "Brave का मूल्यांकन करें";
+
+/* Subtitle shown on the Rate Brave Card */
+"today.rateBraveCardSubtitle" = "हमें बताएँ कि आप क्या सोचते हैं!";
+
+/* Title shown on the Rate Brave Card */
+"today.rateBraveCardTitle" = "Brave पसंद है?";
+
+/* No comment provided by engineer. */
+"today.refresh" = "रीफ्रेश करें";
+
+/* Placeholder text that appears in the search bar when empty. Site as in website. */
+"today.searchPlaceholder" = "साइट, विषय या RSS फ़ीड सर्च करें";
+
+/* Shown on a row displaying a source. '%@' will be replaced with another sources name. For example: 'Similar to 9to5Mac' */
+"today.similarToSourceSubtitle" = "%@ से मिलता-जुलता";
+
+/* No comment provided by engineer. */
+"today.sourcesAndSettings" = "सोर्स & सेटिंग";
+
+/* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
+"today.sourcesHeaderTitle" = "स्रोत";
+
+/* Shown below 'Suggested' explaining what sources will be shown. */
+"today.suggestedSourcesButtonSubtitle" = "कुछ सोर्स जो आपको पसंद आ सकते हैं";
+
+/* A button title that when tapped shows users a list of news sources that are suggested based on the ones they currently follow */
+"today.suggestedSourcesButtonTitle" = "सुझाया गए";
+
+/* A title at the top of the screen that shows a list of the news content the user is being suggested */
+"today.suggestedTitle" = "सुझाया गए";
+
+/* No comment provided by engineer. */
+"today.turnOnBraveToday" = "Brave न्यूज़ शुरू करें";
+
+/* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
+"today.unfollowToggleTitle" = "अनफ़ॉलो करें";
+
+/* A header title shown over a list of news sources the user has subscribed to manually via RSS. */
+"today.userSourcesHeaderTitle" = "यूज़र सोर्स";
+
+/* Button title that when tapped toggles the web page in our out of reader mode */
+"ToggleReaderMode" = "रीडर मोड टॉगल करें";
+
+/* Title of an action that allows the user to translate the current web-page to another language */
+"TranslatePage" = "पेज का अनुवाद करें";
+
+/* Prompt shown before enabling provider search queries */
+"Turn on search suggestions?" = "सर्च के सुझाव चालू करें?";
+
+/* No comment provided by engineer. */
+"UnlockButtonTitle" = "अनलॉक करें";
+
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "सपोर्ट न किए जाने वाले पेमेंट इंस्ट्रूमेंट";
+
+/* Bookmark URL */
+"URL" = "URL";
+
+/* Accessibility label for address and search field, both words (Address, Search) are therefore nouns. */
+"URLBarViewLocationTextViewAccessibilityLabel" = "ऐड्रेस और सर्च";
+
+/* Setting title for option to automatically redirect a url to another url */
+"urlRedirectsSettings" = "वेबसाइट रीडायरेक्ट करती है";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "यूज़र ने रद्द किया";
+
+/* Setting to allow user in non-english locale to use adblock rules specifc to their language */
+"UseRegionalAdblock" = "स्थानीय ऐडब्लॉक इस्तेमाल करें";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "बंद करें";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "आपके Uphold अकाउंट में लॉग इन करने में समस्या हुई। कृपया फिर से कोशिश करें";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "माफ़ करें, कुछ गड़बड़ी हुई";
+
+/* Version number of Brave shown in settings */
+"VersionTemplate" = "वर्शन %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "%@ पर देखें";
+
+/* Explanation for warning alert why the microphone access required. */
+"voice.search.microphone.description.required" = "अनाम वॉइस सर्च इस्तेमाल करने के लिए, कृपया Brave के लिए iOS सिस्टम सेटिंग में माइक्रोफ़ोन ऐक्सेस की अनुमति दें।";
+
+/* Title for warning alert microphone access is required. */
+"voice.search.microphone.title.required" = "माइक्रोफ़ोन ऐक्सेस की ज़रूरत है";
+
+/* Disclaimer for screen to search using voice. */
+"voice.search.screen.disclaimer" = "Brave आपकी वॉइस सर्च को स्टोर या शेयर नहीं करता है।";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "वॉलेट बनाने की तारीख";
+
+/* Accessibility label for the main web content view */
+"WebContentAccessibilityLabel" = "वेब सामग्री";
+
+/* Temporary data that is stored on the users device to speed up future requests and interactions. */
+"websiteData.dataRecordCache" = "कैश";
+
+/* The word used to describe small bits of state stored locally in a web browser (e.g. Browser cookies) */
+"websiteData.dataRecordCookies" = "कुकीज़ के द्वारा ";
+
+/* Some data stored on disk that is a kind of database (such as WebSQL or IndexedDB.) */
+"websiteData.dataRecordDatabases" = "डेटाबेस";
+
+/* A kind of browser storage particularely for saving data on the users device for a specific webpage for the given session or longer time periods. */
+"websiteData.dataRecordLocalStorage" = "स्थानीय मेमोरी";
+
+/* A message displayed to users while the system fetches all website data to display. */
+"websiteData.loadingWebsiteData" = "वेबसाइट डेटा लोड हो रहा है…";
+
+/* A button or screen title describing that the user is there to manually manage website data that is persisted to their device. I.e. to manage data specific to a web page the user has visited */
+"websiteData.manageWebsiteDataTitle" = "वेबसाइट डेटा मैनेज करें";
+
+/* Shown when the user has no website data (such as cookies, caches, or local storage) persisted to their device. */
+"websiteData.noSavedWebsiteData" = "सेव किया गया कोई वेबसाइट डेटा नहीं है";
+
+/* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeAllDataRecords" = "सभी को निकालें";
+
+/* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
+"websiteData.removeDataRecord" = "हटाएं";
+
+/* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
+"websiteData.removeSelectedDataRecord" = "%ld आइटम हटाएँ";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "पसंदीदा";
+
+/* Title of the settings for widgets part */
+"widgets.widgetTitle" = "विजेट";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "साल";
+
+/* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
+"Yes" = "हां";
+
+/* Button title to confirm the deletion of a bookmarks folder */
+"YesDeleteButtonTitle" = "हाँ, हटाएँ";
+
+/* History tableview section header */
+"Yesterday" = "बीता कल";
+
+/* Setting to enable high quality youtube videos */
+"YoutubeMediaQuality" = "अच्छी क्वॉलिटी वाले YouTube वीडियो चालू करें";
+
+/* Description of setting to enable high quality youtube videos */
+"YoutubeMediaQualityDetails" = "प्रयोग वाली इस सुविधा को चालू करने से, वीडियो सबसे अच्छी उपलब्ध क्वॉलिटी पर चलेगा और अतिरिक्त डेटा इस्तेमाल होगा।";
+
+/* Setting that disables highest quality video playback */
+"YoutubeMediaQualityOff" = "बंद";
+
+/* Setting that enables high quality playback always */
+"YoutubeMediaQualityOn" = "चालू";
+
+/* Title for youtube playback quality settings */
+"YoutubeMediaQualitySettingsTitle" = "YouTube प्लेबैक की क्वॉलिटी";
+
+/* Setting that enables high quality playback on wifi only */
+"YoutubeMediaQualityWifi" = "वाई-फ़ाई पर अनुमति दें";
+
