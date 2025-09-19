@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
-
 #include "brave/components/update_client/privacy_preserving_protocol_serializer.h"
 #include "brave/components/update_client/test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -12,8 +10,8 @@
 namespace update_client {
 
 TEST(PrivacyPreservingProtocolSerializer, StripsPrivacySensitiveData) {
-  EXPECT_TRUE(StripsPrivacySensitiveData(
-      std::make_unique<PrivacyPreservingProtocolSerializer>()));
+  EXPECT_TRUE(
+      StripsPrivacySensitiveData(PrivacyPreservingProtocolSerializer()));
 }
 
 }  // namespace update_client
