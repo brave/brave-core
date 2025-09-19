@@ -7,9 +7,9 @@ import {html, RegisterPolymerTemplateModifications} from 'chrome://resources/bra
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {loadTimeData} from '../i18n_setup.js'
 
-function InsertGoogleSignInSubpage (pages: Element)
+function InsertGoogleSignInSubpage (section: Element)
 {
-  pages.appendChild(
+  section.appendChild(
     html`
       <template is="dom-if" route-path="/content/googleSignIn" no-search>
         <settings-subpage
@@ -40,9 +40,9 @@ function InsertGoogleSignInSubpage (pages: Element)
     `)
 }
 
-function InsertLocalhostAccessSubpage (pages: Element)
+function InsertLocalhostAccessSubpage (section: Element)
 {
-  pages.appendChild(
+  section.appendChild(
     html`
       <template is="dom-if" route-path="/content/localhostAccess" no-search>
         <settings-subpage
@@ -73,9 +73,9 @@ function InsertLocalhostAccessSubpage (pages: Element)
     `)
 }
 
-function InsertAutoplaySubpage (pages: Element)
+function InsertAutoplaySubpage (section: Element)
 {
-  pages.appendChild(
+  section.appendChild(
     html`
       <template is="dom-if" route-path="/content/autoplay" no-search>
         <settings-subpage
@@ -102,9 +102,9 @@ function InsertAutoplaySubpage (pages: Element)
     `)
 }
 
-function InsertEthereumSubpage (pages: Element)
+function InsertEthereumSubpage (section: Element)
 {
-  pages.appendChild(
+  section.appendChild(
     html`
       <template is="dom-if" route-path="/content/ethereum" no-search>
         <settings-subpage
@@ -132,9 +132,9 @@ function InsertEthereumSubpage (pages: Element)
     `)
 }
 
-function InsertSolanaSubpage (pages: Element)
+function InsertSolanaSubpage (section: Element)
 {
-  pages.appendChild(
+  section.appendChild(
     html`
       <template is="dom-if" route-path="/content/solana" no-search>
         <settings-subpage
@@ -162,9 +162,9 @@ function InsertSolanaSubpage (pages: Element)
     `)
 }
 
-function InsertCardanoSubpage (pages: Element)
+function InsertCardanoSubpage (section: Element)
 {
-  pages.appendChild(
+  section.appendChild(
     html`
       <template is="dom-if" route-path="/content/cardano" no-search>
         <settings-subpage
@@ -192,9 +192,9 @@ function InsertCardanoSubpage (pages: Element)
     `)
 }
 
-function InsertShieldsSubpage (pages: Element)
+function InsertShieldsSubpage (section: Element)
 {
-  pages.appendChild(
+  section.appendChild(
     html`
       <template is="dom-if" route-path="/content/braveShields" no-search>
         <settings-subpage
@@ -211,9 +211,9 @@ function InsertShieldsSubpage (pages: Element)
     `)
 }
 
-function InsertBraveOpenAIChatSubpage (pages: Element)
+function InsertBraveOpenAIChatSubpage (section: Element)
 {
-  pages.appendChild(
+  section.appendChild(
     html`
       <template is="dom-if" route-path="/content/braveOpenAIChat" no-search>
         <settings-subpage
@@ -243,64 +243,65 @@ function InsertBraveOpenAIChatSubpage (pages: Element)
 
 RegisterPolymerTemplateModifications({
   'settings-privacy-page': (templateContent) => {
-    const pages = templateContent.getElementById('pages')
-    if (!pages) {
+    const section = templateContent.querySelector('settings-section')
+    if (!section) {
       console.error(
-        `[Brave Settings Overrides] Couldn't find privacy_page #pages`)
-    } else {
-      const isGoogleSignInFeatureEnabled =
-        loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
-      if (isGoogleSignInFeatureEnabled) {
-        InsertGoogleSignInSubpage(pages)
-      }
-      const isLocalhostAccessFeatureEnabled =
-        loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
-      if (isLocalhostAccessFeatureEnabled) {
-        InsertLocalhostAccessSubpage(pages)
-      }
-      const isOpenAIChatFromBraveSearchEnabled =
-        loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')
-      if (isOpenAIChatFromBraveSearchEnabled) {
-        InsertBraveOpenAIChatSubpage(pages)
-      }
-      InsertAutoplaySubpage(pages)
-      const isNativeBraveWalletEnabled =
-        loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
-      const isCardanoDappSupportFeatureEnabled =
-        loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
-      const isBraveWalletAllowed =
-        loadTimeData.getBoolean('isBraveWalletAllowed')
-      if (isNativeBraveWalletEnabled && isBraveWalletAllowed) {
-        InsertEthereumSubpage(pages)
-        InsertSolanaSubpage(pages)
-        if (isCardanoDappSupportFeatureEnabled) {
-          InsertCardanoSubpage(pages)
-        }
-      }
-      InsertShieldsSubpage(pages)
-      const permissionsLinkRow =
-        templateContent.getElementById('permissionsLinkRow')
-      if (!permissionsLinkRow) {
-        console.error(
-          '[Brave Settings Overrides] Couldn\'t find permissionsLinkRow')
-      } else {
-        permissionsLinkRow.insertAdjacentHTML(
-          'afterend',
-          getTrustedHTML`
-            <settings-brave-personalization-options prefs="{{prefs}}">
-            </settings-brave-personalization-options>
-          `)
-      }
-      const thirdPartyCookiesLinkRow =
-        templateContent.getElementById('thirdPartyCookiesLinkRow')
-      if (!thirdPartyCookiesLinkRow) {
-        console.error(
-          '[Brave Settings Overrides] Could not find ' +
-          'thirdPartyCookiesLinkRow id on privacy page.')
-      } else {
-        thirdPartyCookiesLinkRow.setAttribute('hidden', 'true')
+        `[Settings] Couldn't find privacy_page settings-section`)
+      return
+    }
+    const isGoogleSignInFeatureEnabled =
+      loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
+    if (isGoogleSignInFeatureEnabled) {
+      InsertGoogleSignInSubpage(section)
+    }
+    const isLocalhostAccessFeatureEnabled =
+      loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
+    if (isLocalhostAccessFeatureEnabled) {
+      InsertLocalhostAccessSubpage(section)
+    }
+    const isOpenAIChatFromBraveSearchEnabled =
+      loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')
+    if (isOpenAIChatFromBraveSearchEnabled) {
+      InsertBraveOpenAIChatSubpage(section)
+    }
+    InsertAutoplaySubpage(section)
+    const isNativeBraveWalletEnabled =
+      loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
+    const isCardanoDappSupportFeatureEnabled =
+      loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
+    const isBraveWalletAllowed =
+      loadTimeData.getBoolean('isBraveWalletAllowed')
+    if (isNativeBraveWalletEnabled && isBraveWalletAllowed) {
+      InsertEthereumSubpage(section)
+      InsertSolanaSubpage(section)
+      if (isCardanoDappSupportFeatureEnabled) {
+        InsertCardanoSubpage(section)
       }
     }
+    InsertShieldsSubpage(section)
+    const permissionsLinkRow =
+      templateContent.getElementById('permissionsLinkRow')
+    if (!permissionsLinkRow) {
+      console.error(
+        '[Brave Settings Overrides] Couldn\'t find permissionsLinkRow')
+    } else {
+      permissionsLinkRow.insertAdjacentHTML(
+        'afterend',
+        getTrustedHTML`
+          <settings-brave-personalization-options prefs="{{prefs}}">
+          </settings-brave-personalization-options>
+        `)
+    }
+    const thirdPartyCookiesLinkRow =
+      templateContent.getElementById('thirdPartyCookiesLinkRow')
+    if (!thirdPartyCookiesLinkRow) {
+      console.error(
+        '[Brave Settings Overrides] Could not find ' +
+        'thirdPartyCookiesLinkRow id on privacy page.')
+    } else {
+      thirdPartyCookiesLinkRow.setAttribute('hidden', 'true')
+    }
+
     if (!loadTimeData.getBoolean('isPrivacySandboxRestricted')) {
       const privacySandboxSettings3Template = templateContent.
         querySelector(`template[if*='isPrivacySandboxSettings3Enabled_']`)
@@ -348,7 +349,7 @@ RegisterPolymerTemplateModifications({
     }
 
     const showPrivacyGuideEntryPointTemplate =
-        templateContent.querySelector(`template[if*='isPrivacyGuideAvailable']`)
+      templateContent.querySelector(`template[if*='isPrivacyGuideAvailable']`)
     if (!showPrivacyGuideEntryPointTemplate) {
       console.error(
         '[Brave Settings Overrides] Could not find template with' +
@@ -364,5 +365,5 @@ RegisterPolymerTemplateModifications({
         privacyGuideLinkRow.setAttribute('hidden', 'true')
       }
     }
-  },
+  }
 })
