@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
@@ -34,9 +33,6 @@ namespace {
 constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
 const char kShouldProcessKey[] = "should_process_key";
 const char kSignedUserId[] = "user";
-const char kUserScriptIsInitialPropName[] = "is_initial";
-const char kUserScriptResultTasksPropName[] = "tasks";
-const char kUserScriptResultTaskItemUrlPropName[] = "url";
 
 struct PsstNavigationData : public base::SupportsUserData::Data {
  public:
@@ -191,71 +187,19 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   }
 
   // We should break the flow in case of signed-in user ID is not available
-  const auto* user_id = user_script_result.GetDict().FindString(kSignedUserId);
-  if (!user_id || user_id->empty()) {
+  if (const auto* user_id =
+          user_script_result.GetDict().FindString(kSignedUserId);
+      !user_id || user_id->empty()) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
-  }
-
-  const auto permission_info = ui_delegate_->GetPsstPermissionInfo(
-      url::Origin::Create(web_contents()->GetLastCommittedURL()), *user_id);
-  if (permission_info &&
-      permission_info->consent_status == ConsentStatus::kBlock) {
-    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
-    return;
-  }
-
-  const auto is_initial =
-      user_script_result.GetDict().FindBool(kUserScriptIsInitialPropName);
-  if (!is_initial.has_value()) {
-    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
-    return;
-  }
-
-  if (!is_initial.value() && permission_info &&
-      permission_info->consent_status == ConsentStatus::kAllow) {
-    // If permission is granted and it is not the initial iteration call we
-    // don't need to show the dialog again.
-    OnUserAcceptedPsstSettings(id, false, std::move(rule),
-                               std::move(user_script_result),
-                               permission_info->urls_to_skip);
-    return;
-  }
-
-  const int script_version = rule->version();
-  auto request_infos = user_script_result.Clone().TakeList();
-  // Show the PSST settings dialog to the user
-  ui_delegate_->Show(
-      {*user_id, web_contents()->GetLastCommittedURL().host(),
-       std::move(request_infos), script_version,
-       base::BindOnce(&PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
-                      weak_factory_.GetWeakPtr(), id, is_initial.value(),
-                      std::move(rule), std::move(user_script_result))});
-}
-
-void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
-    int nav_entry_id,
-    const bool is_initial,
-    std::unique_ptr<MatchedRule> rule,
-    base::Value user_script_result,
-    const std::vector<std::string>& disabled_checks) {
-  // Exclude disabled URLs by the user
-  if (auto* tasks = user_script_result.GetDict().FindList(
-          kUserScriptResultTasksPropName)) {
-    tasks->EraseIf([&](const base::Value& v) {
-      const auto& item_dict = v.GetDict();
-      const auto* url =
-          item_dict.FindString(kUserScriptResultTaskItemUrlPropName);
-      return url && base::Contains(disabled_checks, *url);
-    });
   }
 
   RunWithTimeout(
-      nav_entry_id,
+      id,
       MaybeAddParamsToScript(std::move(rule),
                              std::move(user_script_result).TakeDict()),
       base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
-                     weak_factory_.GetWeakPtr(), nav_entry_id));
+                     weak_factory_.GetWeakPtr(), id));
 }
 
 void PsstTabWebContentsObserver::OnPolicyScriptResult(

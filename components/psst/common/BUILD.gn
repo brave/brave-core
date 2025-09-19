@@ -18,8 +18,6 @@ static_library("common") {
     "features.h",
     "pref_names.cc",
     "pref_names.h",
-    "psst_consent_data.cc",
-    "psst_consent_data.h",
   ]
 
   public_deps = [
