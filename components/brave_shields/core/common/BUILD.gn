@@ -61,11 +61,17 @@ mojom_component("mojom") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "brave_shields_settings_values_unittest.cc" ]
+  sources = [
+    "brave_shield_utils_unittest.cc",
+    "brave_shields_settings_values_unittest.cc",
+  ]
 
   deps = [
     ":common",
     "//base",
+    "//base/test:test_support",
+    "//components/prefs",
+    "//components/prefs:test_support",
     "//testing/gtest",
   ]
 }
