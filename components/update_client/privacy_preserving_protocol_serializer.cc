@@ -48,8 +48,7 @@ std::string PrivacyPreservingProtocolSerializer::Serialize(
       base::Value::Dict& app_dict = app.GetDict();
       app_dict.Remove("lang");
 
-      base::Value::List* events = app_dict.FindList("events");
-      if (events) {
+      if (base::Value::List* events = app_dict.FindList("events")) {
         for (auto& event : *events) {
           if (event.is_dict()) {
             event.GetDict().Remove("download_time_ms");
