@@ -7,7 +7,7 @@ include_rules = [
   "+services/network/public",
   "+services/network/test",
   "+services/data_decoder/public",
-  "+ui/gfx/native_widget_types.h",
+  "+ui/gfx/native_ui_types.h",
 ]
 
 specific_include_rules = {

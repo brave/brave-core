@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_NOTIFICATION_AD_POPUP_WIDGET_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_NOTIFICATION_AD_POPUP_WIDGET_H_
 
-#include "ui/gfx/native_widget_types.h"
+#include "ui/gfx/native_ui_types.h"
 #include "ui/views/widget/widget.h"
 
 namespace gfx {
