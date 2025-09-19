@@ -37,6 +37,7 @@ const defaultState: WalletState = {
   isZCashShieldedTransactionsEnabled: false,
   isCardanoEnabled: false,
   isCardanoDappSupportEnabled: false,
+  isPolkadotEnabled: false,
 }
 
 // async actions
@@ -89,6 +90,7 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isCardanoEnabled = payload.walletInfo.isCardanoEnabled
         state.isCardanoDappSupportEnabled =
           payload.walletInfo.isCardanoDappSupportEnabled
+        state.isPolkadotEnabled = payload.walletInfo.isPolkadotEnabled
       },
 
       setAssetAutoDiscoveryCompleted(

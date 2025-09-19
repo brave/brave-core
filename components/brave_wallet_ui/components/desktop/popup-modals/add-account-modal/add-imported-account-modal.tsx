@@ -123,6 +123,7 @@ export const ImportAccountModal = () => {
       isBitcoinEnabled: isBitcoinImportEnabled,
       isZCashEnabled: false, // No zcash imported accounts by now.
       isCardanoEnabled: false, // No cardano imported accounts by now.
+      isPolkadotEnabled: false, // No polkadot imported accounts by now.
     })
   }, [visibleNetworks, isBitcoinImportEnabled])
 

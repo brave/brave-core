@@ -745,6 +745,46 @@ TEST_F(KeyringServiceUnitTest, BackupComplete) {
   EXPECT_FALSE(IsWalletBackedUp(&service));
 }
 
+TEST_F(KeyringServiceUnitTest, AccountMetasForKeyring_PolkadotDisabled) {
+  base::test::ScopedFeatureList feature_list;
+
+  feature_list.InitAndDisableFeature(features::kBraveWalletPolkadotFeature);
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicDivideCruise, "brave", false));
+  EXPECT_FALSE(AddAccount(&service, mojom::CoinType::DOT,
+                          mojom::KeyringId::kPolkadotMainnet, "PolkadotAcc1"));
+}
+
+TEST_F(KeyringServiceUnitTest, AccountMetasForKeyring_PolkadotEnabled) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletPolkadotFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicDivideCruise, "brave", false));
+  EXPECT_TRUE(AddAccount(&service, mojom::CoinType::DOT,
+                         mojom::KeyringId::kPolkadotMainnet, "PolkadotAcc1"));
+  EXPECT_TRUE(AddAccount(&service, mojom::CoinType::DOT,
+                         mojom::KeyringId::kPolkadotMainnet, "PolkadotAcc2"));
+
+  EXPECT_EQ(*GetPrefForKeyring(GetPrefs(), kAccountMetas,
+                               mojom::KeyringId::kPolkadotMainnet),
+            base::test::ParseJson(R"(
+  [
+    {
+        "account_index" : "0",
+        "account_address": "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb",
+        "account_name": "PolkadotAcc1"
+    },
+    {
+        "account_index" : "1",
+        "account_address": "16HxitzrPKoiCgUdhhMvuJBsxTa3W7hEKFhet1LD6vkk4CRb",
+        "account_name": "PolkadotAcc2"
+    }
+  ]
+  )"));
+}
+
 TEST_F(KeyringServiceUnitTest, AccountMetasForKeyring) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
 
