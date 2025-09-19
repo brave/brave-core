@@ -59,9 +59,7 @@ std::string PrivacyPreservingProtocolSerializer::Serialize(
     }
   }
 
-  std::string output;
-  base::JSONWriter::Write(*root, &output);
-  return output;
+  return base::WriteJson(*root).value_or(upstream_result);
 }
 
 }  // namespace update_client
