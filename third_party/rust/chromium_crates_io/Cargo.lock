@@ -262,6 +262,7 @@ version = "1.0.0"
 dependencies = [
  "bech32",
  "bls-signatures",
+ "ciborium",
  "curve25519-dalek",
  "cxx",
  "schnorrkel",
@@ -373,6 +374,30 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "num-traits",
  "serde",
+]
+
+[[package]]
+name = "ciborium"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "ciborium-io",
+ "ciborium-ll",
+ "serde",
+]
+
+[[package]]
+name = "ciborium-io"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "ciborium-ll"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "ciborium-io",
+ "half",
 ]
 
 [[package]]
@@ -940,6 +965,15 @@ dependencies = [
  "memuse",
  "rand_core 0.6.4",
  "subtle",
+]
+
+[[package]]
+name = "half"
+version = "2.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "cfg-if",
+ "crunchy",
 ]
 
 [[package]]
