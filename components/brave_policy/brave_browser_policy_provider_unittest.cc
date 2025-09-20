@@ -39,7 +39,14 @@ TEST_F(BraveBrowserPolicyProviderTest, InitAndPolicyLoadComplete) {
   // Initialize the provider
   provider_.Init(&schema_registry_);
 
-  // After initialization, policies should be loaded
+  // Policies should still not be loaded until observer event fires
+  EXPECT_FALSE(
+      provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
+
+  // Fire the observer event to trigger policy loading
+  provider_.OnBraveOriginPoliciesReady();
+
+  // Now policies should be loaded
   EXPECT_TRUE(
       provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
 }
@@ -47,6 +54,9 @@ TEST_F(BraveBrowserPolicyProviderTest, InitAndPolicyLoadComplete) {
 TEST_F(BraveBrowserPolicyProviderTest, EmptyPolicyBundle) {
   // Initialize the provider
   provider_.Init(&schema_registry_);
+
+  // Fire the observer event to trigger policy loading
+  provider_.OnBraveOriginPoliciesReady();
 
   // Get the policy bundle
   const policy::PolicyBundle& bundle = provider_.policies();
@@ -64,7 +74,10 @@ TEST_F(BraveBrowserPolicyProviderTest, RefreshPolicies) {
   // Initialize the provider
   provider_.Init(&schema_registry_);
 
-  // Policies should be loaded after initialization
+  // Fire the observer event to trigger policy loading
+  provider_.OnBraveOriginPoliciesReady();
+
+  // Policies should be loaded after observer event
   EXPECT_TRUE(
       provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
 
@@ -82,6 +95,9 @@ TEST_F(BraveBrowserPolicyProviderTest, ShutdownHandling) {
   // Initialize the provider
   provider_.Init(&schema_registry_);
 
+  // Fire the observer event to trigger policy loading
+  provider_.OnBraveOriginPoliciesReady();
+
   // Verify initialized state
   EXPECT_TRUE(
       provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
@@ -97,6 +113,10 @@ TEST_F(BraveBrowserPolicyProviderTest, ShutdownHandling) {
 TEST_F(BraveBrowserPolicyProviderTest, BasicInitialization) {
   // Basic initialization should succeed
   provider_.Init(&schema_registry_);
+
+  // Fire the observer event to trigger policy loading
+  provider_.OnBraveOriginPoliciesReady();
+
   EXPECT_TRUE(
       provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
 }
@@ -104,6 +124,9 @@ TEST_F(BraveBrowserPolicyProviderTest, BasicInitialization) {
 TEST_F(BraveBrowserPolicyProviderTest, PolicyDomainHandling) {
   // Initialize the provider
   provider_.Init(&schema_registry_);
+
+  // Fire the observer event to trigger policy loading
+  provider_.OnBraveOriginPoliciesReady();
 
   // Test policy load complete for different domains
   EXPECT_TRUE(
