@@ -26,12 +26,15 @@ class CardanoCip30Serializer {
   struct RestoredTransactionInput {
     RestoredTransactionInput();
     RestoredTransactionInput(const RestoredTransactionInput&);
+    RestoredTransactionInput& operator=(const RestoredTransactionInput&);
     RestoredTransactionInput(RestoredTransactionInput&&);
+    RestoredTransactionInput& operator=(RestoredTransactionInput&&);
     ~RestoredTransactionInput();
+
     std::array<uint8_t, kCardanoTxHashSize> tx_hash = {};
     uint32_t index = 0;
-    std::optional<CardanoAddress> address;
-    std::optional<uint64_t> amount;
+    std::optional<CardanoAddress> address;  // nullopt for unknown input.
+    std::optional<uint64_t> amount;         // nullopt for unknown input.
   };
 
   struct RestoredTransactionOutput {
@@ -46,22 +49,25 @@ class CardanoCip30Serializer {
     ~RestoredTransactionBody();
     RestoredTransactionBody(const RestoredTransactionBody&);
     RestoredTransactionBody(RestoredTransactionBody&&);
+    RestoredTransactionBody& operator=(const RestoredTransactionBody&);
     RestoredTransactionBody& operator=(RestoredTransactionBody&&);
 
-    std::vector<RestoredTransactionInput> inputs_;
-    std::vector<RestoredTransactionOutput> outputs_;
+    std::vector<RestoredTransactionInput> inputs;
+    std::vector<RestoredTransactionOutput> outputs;
   };
 
   struct RestoredTransaction {
     RestoredTransaction();
     ~RestoredTransaction();
     RestoredTransaction(const RestoredTransaction&);
+    RestoredTransaction& operator=(const RestoredTransaction&);
     RestoredTransaction(RestoredTransaction&&);
+    RestoredTransaction& operator=(RestoredTransaction&&);
 
-    RestoredTransactionBody tx_body_;
-    std::vector<InputWitness> witness_set_;
+    RestoredTransactionBody tx_body;
+    std::vector<InputWitness> witness_set;
 
-    std::vector<uint8_t> raw_bytes_;
+    std::vector<uint8_t> raw_bytes;
   };
 
   CardanoCip30Serializer();

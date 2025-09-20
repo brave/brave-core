@@ -31,7 +31,7 @@ import {
 import {
   WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
-import { SignTransactionPanel } from './sign-transaction-panel'
+import { SignSolanaTxsPanel } from './sign_solana_txs_panel'
 import { SignInWithEthereum } from './sign_in_with_ethereum'
 
 export const _SignAllSolanaTxPanel = {
@@ -52,7 +52,7 @@ export const _SignAllSolanaTxPanel = {
           ],
         }}
       >
-        <SignTransactionPanel
+        <SignSolanaTxsPanel
           isSigningDisabled={false}
           network={mockSolanaMainnetNetwork}
           queueNextSignTransaction={function (): void {

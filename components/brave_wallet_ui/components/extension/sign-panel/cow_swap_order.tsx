@@ -6,7 +6,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-// Types / contants
+// Types / constants
 import { BraveWallet } from '../../../constants/types'
 import { UNKNOWN_TOKEN_COINGECKO_ID } from '../../../common/constants/magics'
 

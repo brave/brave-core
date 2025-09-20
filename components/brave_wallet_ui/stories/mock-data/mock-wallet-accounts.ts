@@ -44,6 +44,24 @@ export const mockBitcoinAccount = {
   hardware: undefined,
 }
 
+export const mockCardanoAccount = {
+  address: '',
+  accountId: {
+    coin: BraveWallet.CoinType.ADA,
+    keyringId: BraveWallet.KeyringId.kCardanoMainnet,
+    kind: BraveWallet.AccountKind.kDerived,
+    address: '',
+    accountIndex: 0,
+    uniqueKey: 'mockCardanoAccount_uniqueKey',
+  },
+  name: 'Cardano Account',
+  tokenBalanceRegistry: {},
+  nativeBalanceRegistry: {
+    [BraveWallet.CARDANO_MAINNET]: '123456789',
+  },
+  hardware: undefined,
+}
+
 export const mockAccounts: BraveWallet.AccountInfo[] = [
   mockEthAccount,
   {
@@ -86,6 +104,7 @@ export const mockAccounts: BraveWallet.AccountInfo[] = [
     hardware: undefined,
   },
   mockBitcoinAccount,
+  mockCardanoAccount,
 ]
 
 export const mockAccountsFromDevice: AccountFromDevice[] = [

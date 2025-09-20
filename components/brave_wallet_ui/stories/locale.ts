@@ -767,6 +767,8 @@ provideStrings({
   // Transaction Details Labels
   braveWalletInput: 'Input',
   braveWalletOutput: 'Output',
+  braveWalletInputs: 'Inputs',
+  braveWalletOutputs: 'Outputs',
   braveWalletValue: 'Value',
 
   // Encryption Key Panel
