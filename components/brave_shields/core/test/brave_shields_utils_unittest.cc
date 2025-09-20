@@ -13,6 +13,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -769,6 +770,58 @@ TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_ForOrigin) {
   // override should not apply to default
   type = brave_shields::GetFingerprintingControlType(map, GURL());
   EXPECT_EQ(ControlType::DEFAULT, type);
+}
+
+/* REDUCE LANGUAGE */
+TEST_F(BraveShieldsUtilTest, ReduceLanguageEnabledForProfileFeatureDisabled) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(
+      brave_shields::features::kBraveReduceLanguage);
+  EXPECT_FALSE(
+      brave_shields::IsReduceLanguageEnabledForProfile(profile()->GetPrefs()));
+}
+
+TEST_F(BraveShieldsUtilTest, IsReduceLanguageEnabledForProfile) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeature(
+      brave_shields::features::kBraveReduceLanguage);
+
+  EXPECT_TRUE(
+      brave_shields::IsReduceLanguageEnabledForProfile(profile()->GetPrefs()));
+  profile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kReduceLanguageEnabled, false);
+  EXPECT_FALSE(
+      brave_shields::IsReduceLanguageEnabledForProfile(profile()->GetPrefs()));
+  profile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kReduceLanguageEnabled, true);
+  EXPECT_TRUE(
+      brave_shields::IsReduceLanguageEnabledForProfile(profile()->GetPrefs()));
+}
+
+TEST_F(BraveShieldsUtilTest, SetManagedIsReduceLanguageEnabledForProfile) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeature(
+      brave_shields::features::kBraveReduceLanguage);
+  profile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kReduceLanguageEnabled, true);
+
+  profile()->GetTestingPrefService()->SetManagedPref(
+      brave_shields::prefs::kReduceLanguageEnabled, base::Value(false));
+
+  EXPECT_FALSE(
+      brave_shields::IsReduceLanguageEnabledForProfile(profile()->GetPrefs()));
+
+  profile()->GetPrefs()->SetBoolean(
+      brave_shields::prefs::kReduceLanguageEnabled, true);
+
+  EXPECT_FALSE(
+      brave_shields::IsReduceLanguageEnabledForProfile(profile()->GetPrefs()));
+
+  profile()->GetTestingPrefService()->RemoveManagedPref(
+      brave_shields::prefs::kReduceLanguageEnabled);
+
+  EXPECT_TRUE(
+      brave_shields::IsReduceLanguageEnabledForProfile(profile()->GetPrefs()));
 }
 
 /* NOSCRIPT CONTROL */

@@ -1,0 +1,41 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/browser/policy/brave_simple_policy_map.h"
+
+#include "brave/components/brave_shields/core/common/pref_names.h"
+#include "components/policy/core/browser/configuration_policy_handler.h"
+#include "components/policy/core/browser/configuration_policy_pref_store.h"
+#include "components/policy/core/browser/configuration_policy_pref_store_test.h"
+#include "components/policy/core/common/policy_types.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+namespace policy {
+
+class BraveSimplePolicyMapTest : public ConfigurationPolicyPrefStoreTest {
+  void SetUp() override {
+    for (const auto& entry : kBraveSimplePolicyMap) {
+      handler_list_.AddHandler(std::make_unique<SimplePolicyHandler>(
+          entry.policy_name, entry.preference_path, entry.value_type));
+    }
+  }
+};
+
+TEST_F(BraveSimplePolicyMapTest, BraveReduceLanguageEnabled) {
+  EXPECT_FALSE(
+      store_->GetValue(brave_shields::prefs::kReduceLanguageEnabled, nullptr));
+
+  const base::Value* value = nullptr;
+  PolicyMap policy;
+  policy.Set(key::kBraveReduceLanguageEnabled, POLICY_LEVEL_MANDATORY,
+             POLICY_SCOPE_USER, POLICY_SOURCE_BRAVE, base::Value(true),
+             nullptr);
+  UpdateProviderPolicy(policy);
+  EXPECT_TRUE(
+      store_->GetValue(brave_shields::prefs::kReduceLanguageEnabled, &value));
+  EXPECT_EQ(base::Value(true), *value);
+}
+
+}  // namespace policy
