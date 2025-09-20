@@ -17,8 +17,8 @@ import {
 import {
   mockAccount,
   mockBitcoinAccount,
-  mockBitcoinTestAccount,
-  mockEthAccountInfo,
+  mockBitcoinTestnetAccount,
+  mockEthAccount,
   mockFilecoinAccount,
   mockSolanaAccount,
   mockZecAccount,
@@ -167,11 +167,11 @@ describe('getPercentAmount', () => {
 })
 
 const mockAccounts = [
-  mockEthAccountInfo,
+  mockEthAccount,
   mockSolanaAccount,
   mockFilecoinAccount,
   mockBitcoinAccount,
-  mockBitcoinTestAccount,
+  mockBitcoinTestnetAccount,
   mockZecAccount,
 ]
 
@@ -180,7 +180,7 @@ const createMockRegistry = (balance: string) => {
 
   // Native ETH
   setBalance({
-    accountId: mockEthAccountInfo.accountId,
+    accountId: mockEthAccount.accountId,
     chainId: BraveWallet.MAINNET_CHAIN_ID,
     contractAddress: '',
     balance,
@@ -192,7 +192,7 @@ const createMockRegistry = (balance: string) => {
 
   // Native MATIC
   setBalance({
-    accountId: mockEthAccountInfo.accountId,
+    accountId: mockEthAccount.accountId,
     chainId: BraveWallet.POLYGON_MAINNET_CHAIN_ID,
     contractAddress: '',
     balance,
@@ -240,7 +240,7 @@ const createMockRegistry = (balance: string) => {
 
   // NATIVE TESTNET BTC
   setBalance({
-    accountId: mockBitcoinTestAccount.accountId,
+    accountId: mockBitcoinTestnetAccount.accountId,
     chainId: BraveWallet.BITCOIN_TESTNET,
     contractAddress: '',
     balance,
@@ -296,7 +296,7 @@ describe('getActiveWalletCount', () => {
 
     // SEPOLIA ETH
     setBalance({
-      accountId: mockEthAccountInfo.accountId,
+      accountId: mockEthAccount.accountId,
       chainId: BraveWallet.SEPOLIA_CHAIN_ID,
       contractAddress: '',
       balance: '1',
@@ -308,7 +308,7 @@ describe('getActiveWalletCount', () => {
 
     // TESTNET BTC
     setBalance({
-      accountId: mockBitcoinTestAccount.accountId,
+      accountId: mockBitcoinTestnetAccount.accountId,
       chainId: BraveWallet.BITCOIN_TESTNET,
       contractAddress: '',
       balance: '1',
@@ -334,7 +334,7 @@ describe('getActiveWalletCount', () => {
 
     // SEPOLIA ETH
     setBalance({
-      accountId: mockEthAccountInfo.accountId,
+      accountId: mockEthAccount.accountId,
       chainId: BraveWallet.SEPOLIA_CHAIN_ID,
       contractAddress: '',
       balance: '1',
@@ -346,7 +346,7 @@ describe('getActiveWalletCount', () => {
 
     // TESTNET BTC
     setBalance({
-      accountId: mockBitcoinTestAccount.accountId,
+      accountId: mockBitcoinTestnetAccount.accountId,
       chainId: BraveWallet.BITCOIN_TESTNET,
       contractAddress: '',
       balance: '1',
@@ -382,7 +382,7 @@ describe('getActiveWalletCount', () => {
   it('should report many active accounts', () => {
     const tokenBalancesRegistry = createMockRegistry('1')
 
-    const mockEthAccountInfo2 = { ...mockEthAccountInfo }
+    const mockEthAccountInfo2 = { ...mockEthAccount }
     mockEthAccountInfo2.accountId.uniqueKey = 'mockEthAccountInfo2'
 
     // MOCK ETH ERC TOKEN

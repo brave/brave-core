@@ -175,19 +175,19 @@ GURL SimulationService::GetScanMessageURL(const std::string& chain_id,
 }
 
 void SimulationService::HasTransactionScanSupport(
-    const std::string& chain_id,
-    mojom::CoinType coin,
+    mojom::ChainIdPtr chain_id,
     HasTransactionScanSupportCallback callback) {
-  std::move(callback).Run(IsTransactionSimulationsEnabled() &&
-                          HasTransactionScanSupportInternal(chain_id, coin));
+  std::move(callback).Run(
+      IsTransactionSimulationsEnabled() &&
+      HasTransactionScanSupportInternal(chain_id->chain_id, chain_id->coin));
 }
 
 void SimulationService::HasMessageScanSupport(
-    const std::string& chain_id,
-    mojom::CoinType coin,
+    mojom::ChainIdPtr chain_id,
     HasMessageScanSupportCallback callback) {
-  std::move(callback).Run(IsTransactionSimulationsEnabled() &&
-                          HasMessageScanSupportInternal(chain_id, coin));
+  std::move(callback).Run(
+      IsTransactionSimulationsEnabled() &&
+      HasMessageScanSupportInternal(chain_id->chain_id, chain_id->coin));
 }
 
 std::optional<std::string> SimulationService::CanScanTransaction(
@@ -324,15 +324,15 @@ void SimulationService::ScanSignSolTransactionsRequestInternal(
     ScanSignSolTransactionsRequestCallback callback)
 
 {
-  if (auto error =
-          CanScanTransaction(request->chain_id, mojom::CoinType::SOL)) {
+  if (auto error = CanScanTransaction(request->chain_id->chain_id,
+                                      request->chain_id->coin)) {
     std::move(callback).Run(nullptr, "", *error);
     return;
   }
 
   auto has_empty_recent_blockhash = solana::HasEmptyRecentBlockhash(*request);
   if (has_empty_recent_blockhash) {
-    auto chain_id = request->chain_id;
+    auto chain_id = request->chain_id->chain_id;
     brave_wallet_service_->json_rpc_service()->GetSolanaLatestBlockhash(
         chain_id,
         base::BindOnce(
@@ -389,7 +389,8 @@ void SimulationService::ContinueScanSignSolTransactionsRequest(
 
   api_request_helper_.Request(
       net::HttpRequestHeaders::kPostMethod,
-      GetScanTransactionURL(request->chain_id, mojom::CoinType::SOL, language),
+      GetScanTransactionURL(request->chain_id->chain_id, mojom::CoinType::SOL,
+                            language),
       *encoded_params, "application/json", std::move(internal_callback),
       GetHeaders(), {.auto_retry_on_network_change = true},
       std::move(conversion_callback));

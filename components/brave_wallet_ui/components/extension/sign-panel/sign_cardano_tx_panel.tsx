@@ -1,4 +1,4 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
@@ -10,27 +10,24 @@ import { BraveWallet, SignDataSteps } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import {
-  getSolanaTransactionInstructionParamsAndType as getTypedSolTxInstruction, //
-} from '../../../utils/solana-instruction-utils'
 
 // Hooks
 import { useAccountOrb } from '../../../common/hooks/use-orb'
 import {
-  useProcessSignSolanaTransaction, //
-} from '../../../common/hooks/use_sign_solana_tx_queue'
+  useProcessSignCardanoTransaction, //
+} from '../../../common/hooks/use_sign_cardano_tx_queue'
 
 // Components
 import NavButton from '../buttons/nav-button/index'
 import PanelTab from '../panel-tab/index'
 import CreateSiteOrigin from '../../shared/create-site-origin/index'
-import SolanaTransactionInstruction from '../../shared/solana-transaction-instruction/solana-transaction-instruction'
+import { TransactionQueueSteps } from '../confirm-transaction-panel/common/queue'
 import {
-  TxWarningBanner, //
-} from '../confirm-transaction-panel/common/tx_warnings'
-import {
-  TransactionSimulationNotSupportedSheet, //
-} from '../transaction_simulation_not_supported_sheet/transaction_simulation_not_supported_sheet'
+  DetailColumn,
+  DetailText,
+  LabelText,
+} from '../pending_transaction_details/pending_transaction_details.styles'
+import DividerLine from '../divider'
 
 // Styled Components
 import {
@@ -43,13 +40,8 @@ import {
   MessageBox,
   SignPanelButtonRow,
   WarningTitleRow,
+  MessageHeaderSection,
 } from './style'
-
-import {
-  QueueStepRow,
-  QueueStepButton,
-  QueueStepText,
-} from '../confirm-transaction-panel/common/style'
 
 import {
   TabRow,
@@ -61,20 +53,17 @@ import {
   WarningIcon,
 } from '../shared-panel-styles'
 
-import { DetailColumn } from '../transaction-box/style'
 import { Tooltip } from '../../shared/tooltip/index'
-import { Column } from '../../shared/style'
+import { Column, VerticalDivider } from '../../shared/style'
 
 interface Props {
-  selectedRequest: BraveWallet.SignSolTransactionsRequest
+  selectedRequest: BraveWallet.SignCardanoTransactionRequest
   isSigningDisabled: boolean
   network: BraveWallet.NetworkInfo
   queueNextSignTransaction: () => void
   signingAccount: BraveWallet.AccountInfo
   queueLength: number
   queueNumber: number
-  retrySimulation?: () => void
-  showSimulationNotSupportedMessage?: boolean
 }
 
 // TODO: broken article link
@@ -87,7 +76,9 @@ const onClickLearnMore = () => {
   )
 }
 
-export const SignTransactionPanel = ({
+type TabName = 'rawTransaction' | 'details'
+
+export const SignCardanoTxPanel = ({
   selectedRequest,
   isSigningDisabled,
   network,
@@ -95,8 +86,6 @@ export const SignTransactionPanel = ({
   queueNextSignTransaction,
   queueNumber,
   signingAccount,
-  retrySimulation,
-  showSimulationNotSupportedMessage,
 }: Props) => {
   // custom hooks
   const orb = useAccountOrb(signingAccount)
@@ -105,36 +94,33 @@ export const SignTransactionPanel = ({
   const [signStep, setSignStep] = React.useState<SignDataSteps>(
     SignDataSteps.SignRisk,
   )
-  const [isSimulationWarningDismissed, setIsSimulationWarningDismissed] =
-    React.useState(false)
+  const [selectedTab, setSelectedTab] = React.useState<TabName>('details')
 
   // methods
   const onAcceptSigningRisks = React.useCallback(() => {
     setSignStep(SignDataSteps.SignData)
   }, [])
 
+  const onSelectTab = React.useCallback(
+    (tab: TabName) => () => setSelectedTab(tab),
+    [],
+  )
+
   const { cancelSign: onCancelSign, sign: onSign } =
-    useProcessSignSolanaTransaction({
-      signSolTransactionsRequest: selectedRequest,
+    useProcessSignCardanoTransaction({
+      request: selectedRequest,
     })
 
   // render
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{network?.chainName ?? ''}</NetworkText>
-        {queueLength > 1 && (
-          <QueueStepRow>
-            <QueueStepText>
-              {queueNumber} {getLocale('braveWalletQueueOf')} {queueLength}
-            </QueueStepText>
-            <QueueStepButton onClick={queueNextSignTransaction}>
-              {queueNumber === queueLength
-                ? getLocale('braveWalletQueueFirst')
-                : getLocale('braveWalletQueueNext')}
-            </QueueStepButton>
-          </QueueStepRow>
-        )}
+        <NetworkText> {network.chainName} </NetworkText>
+        <TransactionQueueSteps
+          queueNextTransaction={queueNextSignTransaction}
+          transactionQueueNumber={queueNumber}
+          transactionsQueueLength={queueLength}
+        />
       </TopRow>
       <AccountCircle orb={orb} />
       <URLText>
@@ -168,40 +154,66 @@ export const SignTransactionPanel = ({
         <>
           <TabRow>
             <PanelTab
-              isSelected={true}
-              text={getLocale('braveWalletDetails')}
+              isSelected={selectedTab === 'details'}
+              onSubmit={onSelectTab('details')}
+              text='Details'
+            />
+            <PanelTab
+              isSelected={selectedTab === 'rawTransaction'}
+              onSubmit={onSelectTab('rawTransaction')}
+              text='Transaction'
             />
           </TabRow>
-          <MessageBox>
-            {selectedRequest.txDatas.map(({ instructions, txType }, i) => {
-              return (
-                <DetailColumn key={`${txType}-${i}`}>
-                  {instructions?.map((instruction, index) => {
-                    return (
-                      <SolanaTransactionInstruction
-                        key={index}
-                        typedInstructionWithParams={getTypedSolTxInstruction(
-                          instruction,
-                        )}
-                      />
-                    )
-                  })}
-                </DetailColumn>
-              )
-            })}
-          </MessageBox>
+          {selectedTab === 'rawTransaction' ? (
+            <MessageBox width='100%'>
+              <DetailText>{`${selectedRequest.rawTxData}`}</DetailText>
+            </MessageBox>
+          ) : (
+            <MessageBox width='100%'>
+              <MessageHeaderSection>
+                {getLocale('braveWalletInputs')}
+              </MessageHeaderSection>
+              {selectedRequest.inputs?.map((input, index) => {
+                return (
+                  <DetailColumn
+                    gap='4px'
+                    key={'input' + index}
+                  >
+                    <LabelText>{getLocale('braveWalletInput')}:</LabelText>
+                    <DetailText>{`${input.outpointTxid}:${input.outpointIndex}`}</DetailText>
+                    <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+                    <DetailText>{`${input.value ? input.value : 'N/A'}`}</DetailText>
+                    <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+                    <DetailText>{`${input.address ? input.address : 'N/A'}`}</DetailText>
+                    <DividerLine />
+                  </DetailColumn>
+                )
+              })}
+              <VerticalDivider></VerticalDivider>
+              <MessageHeaderSection>
+                {getLocale('braveWalletOutputs')}
+              </MessageHeaderSection>
+              {selectedRequest.outputs?.map((output, index) => {
+                return (
+                  <DetailColumn
+                    gap='4px'
+                    key={'output-external' + index}
+                  >
+                    <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+                    <DetailText>{`${output.address}`}</DetailText>
+                    <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+                    <DetailText>{`${output.value}`}</DetailText>
+                  </DetailColumn>
+                )
+              })}
+            </MessageBox>
+          )}
         </>
       )}
       <Column
         fullWidth
         gap={'8px'}
       >
-        {retrySimulation && !isSimulationWarningDismissed && (
-          <TxWarningBanner
-            onDismiss={() => setIsSimulationWarningDismissed(true)}
-            retrySimulation={retrySimulation}
-          />
-        )}
         <SignPanelButtonRow>
           <NavButton
             buttonType='secondary'
@@ -225,11 +237,8 @@ export const SignTransactionPanel = ({
           />
         </SignPanelButtonRow>
       </Column>
-      {showSimulationNotSupportedMessage && (
-        <TransactionSimulationNotSupportedSheet />
-      )}
     </StyledWrapper>
   )
 }
 
-export default SignTransactionPanel
+export default SignCardanoTxPanel

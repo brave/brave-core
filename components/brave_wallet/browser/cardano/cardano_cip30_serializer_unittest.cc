@@ -20,7 +20,7 @@ namespace brave_wallet {
 
 namespace {
 
-CardanoTransaction GetUnsigedReferenceTransaction() {
+CardanoTransaction GetUnsignedReferenceTransaction() {
   // https://adastat.net/transactions/a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba
 
   CardanoTransaction tx;
@@ -204,29 +204,29 @@ TEST(CardanoCip30SerializerTest, RestoreTransaction) {
       CardanoCip30Serializer::DeserializeTransaction(tx_bytes);
   EXPECT_TRUE(deserialize_result);
 
-  EXPECT_EQ(deserialize_result->raw_bytes_, tx_bytes);
+  EXPECT_EQ(deserialize_result->raw_bytes, tx_bytes);
 
   // Validate inputs
-  EXPECT_EQ(deserialize_result->tx_body_.inputs_.size(), tx.inputs().size());
+  EXPECT_EQ(deserialize_result->tx_body.inputs.size(), tx.inputs().size());
   for (size_t i = 0; i < tx.inputs().size(); i++) {
-    EXPECT_EQ(deserialize_result->tx_body_.inputs_[i].tx_hash,
+    EXPECT_EQ(deserialize_result->tx_body.inputs[i].tx_hash,
               tx.inputs()[i].utxo_outpoint.txid);
-    EXPECT_EQ(deserialize_result->tx_body_.inputs_[i].index,
+    EXPECT_EQ(deserialize_result->tx_body.inputs[i].index,
               tx.inputs()[i].utxo_outpoint.index);
   }
 
   // Validate outputs
-  EXPECT_EQ(deserialize_result->tx_body_.outputs_.size(), tx.outputs().size());
+  EXPECT_EQ(deserialize_result->tx_body.outputs.size(), tx.outputs().size());
   for (size_t i = 0; i < tx.outputs().size(); i++) {
-    EXPECT_EQ(deserialize_result->tx_body_.outputs_[i].address,
+    EXPECT_EQ(deserialize_result->tx_body.outputs[i].address,
               tx.outputs()[i].address);
-    EXPECT_EQ(deserialize_result->tx_body_.outputs_[i].amount,
+    EXPECT_EQ(deserialize_result->tx_body.outputs[i].amount,
               tx.outputs()[i].amount);
   }
 }
 
 TEST(CardanoCip30SerializerTest, ApplySignatures) {
-  auto tx = GetUnsigedReferenceTransaction();
+  auto tx = GetUnsignedReferenceTransaction();
   auto tx_bytes = CardanoTransactionSerializer().SerializeTransaction(tx);
 
   std::vector<CardanoSignMessageResult> sign_results;
@@ -241,7 +241,7 @@ TEST(CardanoCip30SerializerTest, ApplySignatures) {
   sign_result2.signature.fill(3);
   sign_results.push_back(std::move(sign_result2));
 
-  auto tx_with_signatures = GetUnsigedReferenceTransaction();
+  auto tx_with_signatures = GetUnsignedReferenceTransaction();
   std::vector<CardanoTransaction::TxWitness> witnesses;
   for (const auto& sign_result : sign_results) {
     CardanoTransaction::TxWitness witness;

@@ -13,7 +13,7 @@ import Amount from './amount'
 // mocks
 import {
   getMockedTransactionInfo,
-  mockEthAccountInfo,
+  mockEthAccount,
 } from '../common/constants/mocks'
 import {
   findTransactionToken,
@@ -48,12 +48,12 @@ describe('Transaction Parsing utils', () => {
         const mockTransaction: SerializableTransactionInfo = {
           ...getMockedTransactionInfo(),
           txType,
-          txArgs: [mockEthAccountInfo.address, 'foo'],
+          txArgs: [mockEthAccount.address, 'foo'],
         }
 
         const sameAddressError = transactionHasSameAddressError(
           mockTransaction,
-          mockEthAccountInfo,
+          mockEthAccount,
         )
 
         expect(sameAddressError).toBeTruthy()
@@ -68,7 +68,7 @@ describe('Transaction Parsing utils', () => {
 
         const sameAddressError = transactionHasSameAddressError(
           mockTransaction,
-          mockEthAccountInfo,
+          mockEthAccount,
         )
 
         expect(sameAddressError).toBeFalsy()
@@ -86,12 +86,12 @@ describe('Transaction Parsing utils', () => {
         const mockTransaction: SerializableTransactionInfo = {
           ...getMockedTransactionInfo(),
           txType,
-          txArgs: ['mockOwner', mockEthAccountInfo.address, 'mockTokenID'],
+          txArgs: ['mockOwner', mockEthAccount.address, 'mockTokenID'],
         }
 
         const sameAddressError = transactionHasSameAddressError(
           mockTransaction,
-          mockEthAccountInfo,
+          mockEthAccount,
         )
 
         expect(sameAddressError).toBeFalsy()
@@ -106,7 +106,7 @@ describe('Transaction Parsing utils', () => {
 
         const sameAddressError = transactionHasSameAddressError(
           mockTransaction,
-          mockEthAccountInfo,
+          mockEthAccount,
         )
 
         expect(sameAddressError).toBeTruthy()
@@ -121,7 +121,7 @@ describe('Transaction Parsing utils', () => {
 
         const sameAddressError = transactionHasSameAddressError(
           mockTransaction,
-          mockEthAccountInfo,
+          mockEthAccount,
         )
 
         expect(sameAddressError).toBeFalsy()
@@ -153,7 +153,7 @@ describe('Transaction Parsing utils', () => {
                 to:
                   name === '0x Swap'
                     ? SwapExchangeProxy
-                    : mockEthAccountInfo.address,
+                    : mockEthAccount.address,
               },
             },
           },
@@ -161,7 +161,7 @@ describe('Transaction Parsing utils', () => {
 
         const sameAddressError = transactionHasSameAddressError(
           mockTransaction,
-          mockEthAccountInfo,
+          mockEthAccount,
         )
 
         expect(sameAddressError).toBeFalsy()

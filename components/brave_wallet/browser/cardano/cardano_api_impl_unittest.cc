@@ -1452,30 +1452,27 @@ TEST_F(CardanoApiImplTest, SignTx) {
   EXPECT_EQ(request->origin_info->origin_spec, "https://brave.com");
   EXPECT_EQ(request->raw_tx_data, ToHex(unsigned_tx_bytes));
 
-  EXPECT_EQ(request->signed_inputs.size(), 2u);
-  EXPECT_EQ(request->signed_inputs[0]->address, addr1);
-  EXPECT_EQ(request->signed_inputs[0]->value, 34451133u);
+  EXPECT_EQ(request->inputs.size(), 2u);
+  EXPECT_EQ(request->inputs[0]->address, addr1);
+  EXPECT_EQ(request->inputs[0]->value, 34451133u);
 
-  EXPECT_EQ(request->signed_inputs[1]->address, addr2);
-  EXPECT_EQ(request->signed_inputs[1]->value, 34451133u);
+  EXPECT_EQ(request->inputs[1]->address, addr2);
+  EXPECT_EQ(request->inputs[1]->value, 34451133u);
 
-  EXPECT_EQ(request->external_outputs.size(), 2u);
-  EXPECT_EQ(request->external_outputs[0]->address,
+  EXPECT_EQ(request->outputs.size(), 2u);
+  EXPECT_EQ(request->outputs[0]->address,
             "addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zz"
             "mj4z53l7lh5u7z08l0rvp49ht88s5uskl6tsl");
-  EXPECT_EQ(request->external_outputs[0]->value, 10000000u);
+  EXPECT_EQ(request->outputs[0]->value, 10000000u);
 
-  EXPECT_EQ(request->external_outputs[1]->address,
+  EXPECT_EQ(request->outputs[1]->address,
             "addr1q8s90ehlgwwkq637d3r6qzuxwu6qnprphqadn9pjg2mtcp9hkfmyv4zfhyefv"
             "jmpww7f7w9gwem3x6gcm3ulw3kpcgws9sgrhg");
-  EXPECT_EQ(request->external_outputs[1]->value, 24282816u);
+  EXPECT_EQ(request->outputs[1]->value, 24282816u);
 
-  EXPECT_EQ(request->account_outputs.size(), 1u);
-  EXPECT_EQ(request->account_outputs[0]->address, addr1);
-  EXPECT_EQ(request->account_outputs[0]->value, 24282816u);
-
-  EXPECT_EQ(request->total_signed_inputs_amount, 34451133u + 34451133u);
-  EXPECT_EQ(request->total_outputs_amount, 24282816u + 24282816u + 10000000u);
+  EXPECT_EQ(request->outputs.size(), 1u);
+  EXPECT_EQ(request->outputs[0]->address, addr1);
+  EXPECT_EQ(request->outputs[0]->value, 24282816u);
 
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();
@@ -1632,30 +1629,27 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
   EXPECT_EQ(request->origin_info->origin_spec, "https://brave.com");
   EXPECT_EQ(request->raw_tx_data, ToHex(unsinged_tx_bytes));
 
-  EXPECT_EQ(request->signed_inputs.size(), 2u);
-  EXPECT_EQ(request->signed_inputs[0]->address, addr1);
-  EXPECT_EQ(request->signed_inputs[0]->value, 34451133u);
+  EXPECT_EQ(request->inputs.size(), 2u);
+  EXPECT_EQ(request->inputs[0]->address, addr1);
+  EXPECT_EQ(request->inputs[0]->value, 34451133u);
 
-  EXPECT_EQ(request->signed_inputs[1]->address, addr2);
-  EXPECT_EQ(request->signed_inputs[1]->value, 34451133u);
+  EXPECT_EQ(request->inputs[1]->address, addr2);
+  EXPECT_EQ(request->inputs[1]->value, 34451133u);
 
-  EXPECT_EQ(request->external_outputs.size(), 2u);
-  EXPECT_EQ(request->external_outputs[0]->address,
+  EXPECT_EQ(request->outputs.size(), 2u);
+  EXPECT_EQ(request->outputs[0]->address,
             "addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zz"
             "mj4z53l7lh5u7z08l0rvp49ht88s5uskl6tsl");
-  EXPECT_EQ(request->external_outputs[0]->value, 10000000u);
+  EXPECT_EQ(request->outputs[0]->value, 10000000u);
 
-  EXPECT_EQ(request->external_outputs[1]->address,
+  EXPECT_EQ(request->outputs[1]->address,
             "addr1q8s90ehlgwwkq637d3r6qzuxwu6qnprphqadn9pjg2mtcp9hkfmyv4zfhyefv"
             "jmpww7f7w9gwem3x6gcm3ulw3kpcgws9sgrhg");
-  EXPECT_EQ(request->external_outputs[1]->value, 24282816u);
+  EXPECT_EQ(request->outputs[1]->value, 24282816u);
 
-  EXPECT_EQ(request->account_outputs.size(), 1u);
-  EXPECT_EQ(request->account_outputs[0]->address, addr1);
-  EXPECT_EQ(request->account_outputs[0]->value, 24282816u);
-
-  EXPECT_EQ(request->total_signed_inputs_amount, 34451133u + 34451133u);
-  EXPECT_EQ(request->total_outputs_amount, 24282816u + 24282816u + 10000000u);
+  EXPECT_EQ(request->outputs.size(), 1u);
+  EXPECT_EQ(request->outputs[0]->address, addr1);
+  EXPECT_EQ(request->outputs[0]->value, 24282816u);
 
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();

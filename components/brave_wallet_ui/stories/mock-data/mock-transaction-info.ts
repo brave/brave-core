@@ -25,7 +25,6 @@ import {
   mockBtcAccount,
   mockFilecoinAccount,
   mockSolanaAccount,
-  mockSolanaAccountInfo,
   mockSpotPriceRegistry,
   mockZecAccount,
 } from '../../common/constants/mocks'
@@ -114,7 +113,7 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
       feeEstimation: undefined,
       tokenAddress: '',
       staticAccountKeys: [],
-      toWalletAddress: mockSolanaAccountInfo.address,
+      toWalletAddress: mockSolanaAccount.address,
       txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
       version: 1,
     },
@@ -170,13 +169,13 @@ export const mockSOLTXInstructions: SerializableTransactionInfo = {
           programId: '11111111111111111111111111111111',
           accountMetas: [
             {
-              pubkey: mockSolanaAccountInfo.address,
+              pubkey: mockSolanaAccount.address,
               addrTableLookupIndex: undefined,
               isSigner: true,
               isWritable: true,
             },
             {
-              pubkey: mockSolanaAccountInfo.address,
+              pubkey: mockSolanaAccount.address,
               addrTableLookupIndex: undefined,
               isSigner: false,
               isWritable: true,
@@ -225,7 +224,7 @@ export const mockSOLTXInstructions: SerializableTransactionInfo = {
       },
       tokenAddress: '',
       staticAccountKeys: [],
-      toWalletAddress: mockSolanaAccountInfo.address,
+      toWalletAddress: mockSolanaAccount.address,
       txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
       version: 1,
     },

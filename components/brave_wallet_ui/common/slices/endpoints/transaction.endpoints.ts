@@ -67,6 +67,12 @@ interface ProcessSignSolTransactionsRequestPayload {
   error: string | null
 }
 
+interface ProcessSignCardanoTransactionRequestPayload {
+  approved: boolean
+  id: number
+  error: string | null
+}
+
 export const transactionEndpoints = ({
   mutation,
   query,
@@ -544,6 +550,60 @@ export const transactionEndpoints = ({
         }
       },
       invalidatesTags: ['PendingSignSolTransactionsRequests'],
+    }),
+
+    getPendingSignCardanoTransactionRequests: query<
+      BraveWallet.SignCardanoTransactionRequest[],
+      void
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+
+          const { requests } =
+            await api.braveWalletService.getPendingSignCardanoTransactionRequests()
+
+          return {
+            data: requests,
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to get pending Sign Cardano Transaction Requests',
+            error,
+          )
+        }
+      },
+      providesTags: ['PendingSignCardanoTransactionRequests'],
+    }),
+
+    processSignCardanoTransactionRequest: mutation<
+      /** success */
+      true,
+      ProcessSignCardanoTransactionRequestPayload
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+
+          await processSignCardanoTransactionRequest(
+            api.braveWalletService,
+            arg,
+            api.panelHandler,
+          )
+
+          return {
+            data: true,
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to Sign Cardano Transaction',
+            error,
+          )
+        }
+      },
+      invalidatesTags: ['PendingSignCardanoTransactionRequests'],
     }),
 
     // BTC
@@ -1707,6 +1767,24 @@ async function processSignSolTransactionsRequest(
     arg.approved,
     arg.id,
     arg.hwSignatures,
+    arg.error || null,
+  )
+
+  const hasPendingRequests = await getHasPendingRequests()
+
+  if (!hasPendingRequests) {
+    panelHandler?.closeUI()
+  }
+}
+
+async function processSignCardanoTransactionRequest(
+  braveWalletService: BraveWallet.BraveWalletServiceRemote,
+  arg: ProcessSignCardanoTransactionRequestPayload,
+  panelHandler: BraveWallet.PanelHandlerRemote | undefined,
+) {
+  braveWalletService.notifySignCardanoTransactionRequestProcessed(
+    arg.approved,
+    arg.id,
     arg.error || null,
   )
 
