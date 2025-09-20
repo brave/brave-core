@@ -104,7 +104,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {policy::key::kIPFSEnabled, ipfs::prefs::kIPFSEnabledByPolicy,
      base::Value::Type::BOOLEAN},
 #endif  // BUILDFLAG(DEPRECATE_IPFS)
-
+    {policy::key::kDefaultBraveFingerprintingV2Setting,
+     kManagedDefaultBraveFingerprintingV2, base::Value::Type::INTEGER},
 };
 
 }  // namespace policy
