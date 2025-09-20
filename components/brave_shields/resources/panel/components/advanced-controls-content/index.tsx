@@ -38,7 +38,7 @@ const httpsUpgradeModeOptions = [
   { value: HttpsUpgradeMode.DISABLED_MODE, text: getLocale('braveShieldsHttpsUpgradeModeDisabled') }
 ]
 
-function GlobalSettings () {
+export function GlobalSettings () {
   const onAdBlockListsClick = () => {
     chrome.tabs.create({ url: 'chrome://settings/shields/filters', active: true })
   }
