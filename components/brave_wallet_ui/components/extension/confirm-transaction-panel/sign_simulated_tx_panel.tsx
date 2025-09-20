@@ -98,7 +98,7 @@ export const SignSimulatedTransactionPanel = ({
   // custom hooks
   const { cancelSign: onCancelSign, sign: onSign } =
     useProcessSignSolanaTransaction({
-      signSolTransactionsRequest,
+      request: signSolTransactionsRequest,
     })
 
   // state

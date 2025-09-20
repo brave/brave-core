@@ -53,6 +53,7 @@ import {
   useGetPendingSignMessageRequestsQuery,
   useGetPendingSwitchChainRequestQuery,
   useGetPendingSignSolTransactionsRequestsQuery,
+  useGetPendingSignCardanoTransactionRequestsQuery,
   useGetPendingTokenSuggestionRequestsQuery,
 } from '../common/slices/api.slice'
 import { useAccountsQuery } from '../common/slices/api.slice.extra'
@@ -67,8 +68,11 @@ import {
   PendingTransactionPanel, //
 } from '../components/extension/pending_transaction_panel/pending_transaction_panel'
 import {
-  PendingSignatureRequestsPanel, //
-} from '../components/extension/pending_signature_requests_panel/pending_signature_requests_panel'
+  PendingSignSolanaTransactionsRequestsPanel, //
+} from '../components/extension/pending_sign_solana_txs_requests_panel/pending_sign_solana_txs_requests_panel'
+import {
+  PendingSignCardanoTransactionRequestsPanel, //
+} from '../components/extension/pending_sign_cardano_tx_requests_panel/pending_sign_cardano_tx_requests_panel'
 
 // Allow BigInts to be stringified
 ;(BigInt.prototype as any).toJSON = function () {
@@ -111,6 +115,10 @@ function Container() {
     data: signSolTransactionsRequests,
     isLoading: isLoadingSignSolTransactionsRequests,
   } = useGetPendingSignSolTransactionsRequestsQuery()
+  const {
+    data: signCardanoTransactionRequests,
+    isLoading: isLoadingSignCardanoTransactionRequests,
+  } = useGetPendingSignCardanoTransactionRequestsQuery()
   const { data: signMessageData, isLoading: isLoadingSignMessageData } =
     useGetPendingSignMessageRequestsQuery()
   const {
@@ -129,6 +137,7 @@ function Container() {
     isLoadingPendingTransactions
     || isLoadingPendingPublicKeyRequest
     || isLoadingSignSolTransactionsRequests
+    || isLoadingSignCardanoTransactionRequests
     || isLoadingSignMessageData
     || isLoadingSignMessageErrorData
     || isLoadingAddTokenRequests
@@ -311,7 +320,17 @@ function Container() {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper padding='0px'>
-          <PendingSignatureRequestsPanel />
+          <PendingSignSolanaTransactionsRequestsPanel />
+        </LongWrapper>
+      </PanelWrapper>
+    )
+  }
+
+  if (signCardanoTransactionRequests?.length) {
+    return (
+      <PanelWrapper isLonger={true}>
+        <LongWrapper padding='0px'>
+          <PendingSignCardanoTransactionRequestsPanel />
         </LongWrapper>
       </PanelWrapper>
     )

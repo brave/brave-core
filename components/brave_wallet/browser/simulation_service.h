@@ -50,12 +50,10 @@ class SimulationService : public KeyedService, public mojom::SimulationService {
                                     const std::string& language);
 
   void HasTransactionScanSupport(
-      const std::string& chain_id,
-      mojom::CoinType coin,
+      mojom::ChainIdPtr chain_id,
       HasTransactionScanSupportCallback callback) override;
 
-  void HasMessageScanSupport(const std::string& chain_id,
-                             mojom::CoinType coin,
+  void HasMessageScanSupport(mojom::ChainIdPtr chain_id,
                              HasMessageScanSupportCallback callback) override;
 
   void ScanEVMTransaction(const std::string& tx_meta_id,

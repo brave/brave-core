@@ -97,7 +97,9 @@ export const createMockStore = (
     },
     devTools: true,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(api.middleware),
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }).concat(api.middleware),
   })
 
   const proxy = getAPIProxy()

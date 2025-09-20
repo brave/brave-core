@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/extend.h"
 #include "base/containers/span_writer.h"
 #include "base/containers/to_vector.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
@@ -48,7 +49,13 @@ CardanoCip30Serializer::RestoredTransactionInput::~RestoredTransactionInput() =
     default;
 CardanoCip30Serializer::RestoredTransactionInput::RestoredTransactionInput(
     const CardanoCip30Serializer::RestoredTransactionInput&) = default;
+CardanoCip30Serializer::RestoredTransactionInput&
+CardanoCip30Serializer::RestoredTransactionInput::operator=(
+    const CardanoCip30Serializer::RestoredTransactionInput&) = default;
 CardanoCip30Serializer::RestoredTransactionInput::RestoredTransactionInput(
+    CardanoCip30Serializer::RestoredTransactionInput&&) = default;
+CardanoCip30Serializer::RestoredTransactionInput&
+CardanoCip30Serializer::RestoredTransactionInput::operator=(
     CardanoCip30Serializer::RestoredTransactionInput&&) = default;
 
 CardanoCip30Serializer::RestoredTransactionOutput::RestoredTransactionOutput() =
@@ -62,6 +69,9 @@ CardanoCip30Serializer::RestoredTransactionBody::~RestoredTransactionBody() =
     default;
 CardanoCip30Serializer::RestoredTransactionBody::RestoredTransactionBody(
     const RestoredTransactionBody&) = default;
+CardanoCip30Serializer::RestoredTransactionBody&
+CardanoCip30Serializer::RestoredTransactionBody::operator=(
+    const RestoredTransactionBody&) = default;
 CardanoCip30Serializer::RestoredTransactionBody::RestoredTransactionBody(
     RestoredTransactionBody&&) = default;
 CardanoCip30Serializer::RestoredTransactionBody&
@@ -72,8 +82,14 @@ CardanoCip30Serializer::RestoredTransaction::RestoredTransaction() = default;
 CardanoCip30Serializer::RestoredTransaction::~RestoredTransaction() = default;
 CardanoCip30Serializer::RestoredTransaction::RestoredTransaction(
     const RestoredTransaction&) = default;
+CardanoCip30Serializer::RestoredTransaction&
+CardanoCip30Serializer::RestoredTransaction::operator=(
+    const RestoredTransaction&) = default;
 CardanoCip30Serializer::RestoredTransaction::RestoredTransaction(
     RestoredTransaction&&) = default;
+CardanoCip30Serializer::RestoredTransaction&
+CardanoCip30Serializer::RestoredTransaction::operator=(RestoredTransaction&&) =
+    default;
 
 CardanoCip30Serializer::CardanoCip30Serializer() = default;
 CardanoCip30Serializer::~CardanoCip30Serializer() = default;
@@ -235,8 +251,8 @@ CardanoCip30Serializer::DeserializeTransaction(
 
   RestoredTransaction result;
 
-  result.raw_bytes_ = base::ToVector(bytes);
-  result.tx_body_ = std::move(tx_body.value());
+  result.raw_bytes = base::ToVector(bytes);
+  result.tx_body = std::move(tx_body.value());
 
   return result;
 }
@@ -356,10 +372,6 @@ CardanoCip30Serializer::DeserializeWitnessSet(
 // static
 std::optional<CardanoCip30Serializer::RestoredTransactionBody>
 CardanoCip30Serializer::DeserializeTxBody(const cbor::Value::MapValue& data) {
-  if (data.size() != 4) {
-    return std::nullopt;
-  }
-
   auto map_iterator = data.find(cbor::Value(0));
 
   if (map_iterator == data.end() || !map_iterator->second.is_array()) {
@@ -379,8 +391,8 @@ CardanoCip30Serializer::DeserializeTxBody(const cbor::Value::MapValue& data) {
   auto outputs = DeserializeOutputs(map_iterator->second.GetArray());
 
   RestoredTransactionBody result;
-  result.inputs_ = std::move(inputs.value());
-  result.outputs_ = std::move(outputs.value());
+  result.inputs = std::move(inputs.value());
+  result.outputs = std::move(outputs.value());
 
   return result;
 }

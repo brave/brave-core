@@ -152,6 +152,20 @@ export const mockBNBChainNetwork: BraveWallet.NetworkInfo = {
   supportedKeyrings: [BraveWallet.KeyringId.kDefault],
 }
 
+export const mockCardanoMainnetNetwork: BraveWallet.NetworkInfo = {
+  chainId: 'cardano_mainnet',
+  chainName: 'Cardano Mainnet',
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [{ url: 'https://cardano-mainnet.wallet.brave.com/' }],
+  blockExplorerUrls: ['https://cexplorer.io'],
+  symbol: 'ADA',
+  symbolName: 'Cardano',
+  decimals: 6,
+  iconUrls: [],
+  coin: BraveWallet.CoinType.ADA,
+  supportedKeyrings: [BraveWallet.KeyringId.kCardanoMainnet],
+}
+
 export const mockNetworks: BraveWallet.NetworkInfo[] = [
   mockEthMainnet,
   mockSepolia,
@@ -162,4 +176,5 @@ export const mockNetworks: BraveWallet.NetworkInfo[] = [
   mockEthLocalhost,
   mockBitcoinMainnet,
   mockBNBChainNetwork,
+  mockCardanoMainnetNetwork,
 ]

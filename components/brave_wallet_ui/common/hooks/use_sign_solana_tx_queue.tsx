@@ -4,14 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // types
 import { BraveWallet } from '../../constants/types'
 
 // hooks
 import {
-  useGetNetworkQuery,
   useGetPendingSignSolTransactionsRequestsQuery,
   useProcessSignSolTransactionsRequestHardwareMutation,
   useProcessSignSolTransactionsRequestMutation,
@@ -19,7 +17,7 @@ import {
 import { useAccountQuery } from '../slices/api.slice.extra'
 
 export interface UseProcessSolTxProps {
-  signSolTransactionsRequest: BraveWallet.SignSolTransactionsRequest
+  request: BraveWallet.SignSolTransactionsRequest
 }
 
 export const useProcessSignSolanaTransaction = (
@@ -35,7 +33,7 @@ export const useProcessSignSolanaTransaction = (
   const cancelSign = React.useCallback(async () => {
     await processSignSolTransactionsRequest({
       approved: false,
-      id: props.signSolTransactionsRequest.id,
+      id: props.request.id,
       hwSignatures: [],
       error: null,
     }).unwrap()
@@ -43,17 +41,16 @@ export const useProcessSignSolanaTransaction = (
 
   const sign = React.useCallback(async () => {
     const isHwAccount =
-      props.signSolTransactionsRequest.fromAccountId.kind
-      === BraveWallet.AccountKind.kHardware
+      props.request.fromAccountId.kind === BraveWallet.AccountKind.kHardware
 
     if (isHwAccount) {
       await processSignSolTransactionsRequestHardware({
-        request: props.signSolTransactionsRequest,
+        request: props.request,
       }).unwrap()
     } else {
       await processSignSolTransactionsRequest({
         approved: true,
-        id: props.signSolTransactionsRequest.id,
+        id: props.request.id,
         hwSignatures: [],
         error: null,
       }).unwrap()
@@ -82,11 +79,7 @@ export const useSignSolanaTransactionsQueue = () => {
   const selectedRequest = signSolTransactionsRequests
     ? signSolTransactionsRequests.at(queueIndex)
     : undefined
-  const { data: network } = useGetNetworkQuery(
-    selectedRequest
-      ? { coin: BraveWallet.CoinType.SOL, chainId: selectedRequest.chainId }
-      : skipToken,
-  )
+
   const { account } = useAccountQuery(selectedRequest?.fromAccountId)
 
   // computed
@@ -104,7 +97,6 @@ export const useSignSolanaTransactionsQueue = () => {
   return {
     selectedRequest,
     isDisabled,
-    network,
     signingAccount: account,
     queueNextSignTransaction,
     queueLength,

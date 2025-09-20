@@ -2885,7 +2885,7 @@ struct SignSolTransactionsRequest {
   AccountId from_account_id;
   array<SolanaTxData> tx_datas;
   array<array<uint8>> raw_messages;
-  string chain_id;
+  ChainId chain_id;
 };
 
 struct SignCardanoTransactionRequest {
@@ -2893,18 +2893,15 @@ struct SignCardanoTransactionRequest {
 
   AccountId account_id;
   OriginInfo origin_info;
+  ChainId chain_id;
+
   string raw_tx_data;
 
-  // Inputs that belong to the selected account and
-  // that are being signed.
-  array<CardanoTxInput> signed_inputs;
-  // Outputs that are not belong to the selected account.
-  array<CardanoTxOutput> external_outputs;
-  // Outputs that belong to the selected account.
-  array<CardanoTxOutput> account_outputs;
-
-  uint64 total_signed_inputs_amount;
-  uint64 total_outputs_amount;
+  // Transaction inputs.
+  // Inputs that belong to the selected account has address and value filled.
+  array<CardanoTxInput> inputs;
+  // Transaction outputs.
+  array<CardanoTxOutput> outputs;
 };
 
 enum ExternalWalletType {
@@ -3821,9 +3818,9 @@ struct SolanaSimulationResponse {
 // Implements transaction and message scanning functionality through the
 // Blowfish API.
 interface SimulationService {
-  HasTransactionScanSupport(string chain_id, CoinType coin) => (bool result);
+  HasTransactionScanSupport(ChainId chain_id) => (bool result);
 
-  HasMessageScanSupport(string chain_id, CoinType coin) => (bool result);
+  HasMessageScanSupport(ChainId chain_id) => (bool result);
 
   // Scans an EVM transaction to obtain simulation results.
   //

@@ -8,9 +8,9 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { useGetTransactionsQuery } from './api.slice'
 
 import {
-  mockEthAccountInfo,
-  mockFilecoinAccountInfo,
-  mockSolanaAccountInfo,
+  mockEthAccount,
+  mockFilecoinAccount,
+  mockSolanaAccount,
 } from '../constants/mocks'
 import {
   createMockStore,
@@ -29,7 +29,7 @@ import {
 const mockSolanaSendTokenTx = createMockTransactionInfo({
   chainId: BraveWallet.SOLANA_MAINNET,
   coinType: BraveWallet.CoinType.SOL,
-  fromAccount: mockSolanaAccountInfo,
+  fromAccount: mockSolanaAccount,
   toAddress: 'sSolanaAccount2',
   sendApproveOrSellAssetContractAddress:
     mockBasicAttentionToken.contractAddress,
@@ -39,7 +39,7 @@ const mockSolanaSendTokenTx = createMockTransactionInfo({
 const mockFilSendTx = createMockTransactionInfo({
   chainId: BraveWallet.FILECOIN_MAINNET,
   coinType: BraveWallet.CoinType.FIL,
-  fromAccount: mockFilecoinAccountInfo,
+  fromAccount: mockFilecoinAccount,
   toAddress: mockAccounts[1].address,
   sendApproveOrSellAssetContractAddress: '',
   isERC20Send: false,
@@ -49,7 +49,7 @@ const mockFilSendTx = createMockTransactionInfo({
 const mockAvaxErc20SendTx = createMockTransactionInfo({
   chainId: BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
   coinType: BraveWallet.CoinType.ETH,
-  fromAccount: mockEthAccountInfo,
+  fromAccount: mockEthAccount,
   toAddress: mockAccounts[1].address,
   sendApproveOrSellAssetContractAddress: mockBitcoinErc20Token.contractAddress,
   isERC20Send: true,
@@ -59,7 +59,7 @@ const mockAvaxErc20SendTx = createMockTransactionInfo({
 const mockEthErc20SendTx = createMockTransactionInfo({
   chainId: BraveWallet.MAINNET_CHAIN_ID,
   coinType: BraveWallet.CoinType.ETH,
-  fromAccount: mockEthAccountInfo,
+  fromAccount: mockEthAccount,
   toAddress: mockAccounts[1].address,
   sendApproveOrSellAssetContractAddress:
     mockBasicAttentionToken.contractAddress,

@@ -16,11 +16,12 @@ import {
 import {
   useGetHasTransactionSimulationSupportQuery,
   useGetIsTxSimulationOptInStatusQuery,
+  useGetNetworkQuery,
   useGetSolanaSignTransactionsRequestSimulationQuery,
 } from '../../../common/slices/api.slice'
 
 // Components
-import SignTransactionPanel from '../sign-panel/sign-transaction-panel'
+import SignSolanaTxsPanel from '../sign-panel/sign_solana_txs_panel'
 import { LoadingPanel } from '../loading_panel/loading_panel'
 import {
   EnableTransactionSimulations, //
@@ -33,11 +34,10 @@ import {
 // Style
 import { LongWrapper } from '../../../stories/style'
 
-export const PendingSignatureRequestsPanel: React.FC = () => {
+export const PendingSignSolanaTransactionsRequestsPanel: React.FC = () => {
   // custom hooks
   const {
     isDisabled,
-    network,
     queueLength,
     queueNextSignTransaction,
     queueNumber,
@@ -53,16 +53,15 @@ export const PendingSignatureRequestsPanel: React.FC = () => {
   const isSimulationPermitted =
     txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kAllowed
 
+  const { data: network } = useGetNetworkQuery(
+    selectedRequest ? selectedRequest.chainId : skipToken,
+  )
+
   const {
     data: networkHasTxSimulationSupport,
     isLoading: isCheckingSimulationNetworkSupport,
   } = useGetHasTransactionSimulationSupportQuery(
-    network
-      ? {
-          chainId: network.chainId,
-          coinType: network.coin,
-        }
-      : skipToken,
+    selectedRequest ? selectedRequest.chainId : skipToken,
   )
 
   const {
@@ -72,10 +71,7 @@ export const PendingSignatureRequestsPanel: React.FC = () => {
     isError: hasSimulationError,
     refetch: retrySimulation,
   } = useGetSolanaSignTransactionsRequestSimulationQuery(
-    isSimulationPermitted
-      && network
-      && networkHasTxSimulationSupport
-      && selectedRequest
+    isSimulationPermitted && networkHasTxSimulationSupport && selectedRequest
       ? {
           signSolTransactionsRequestId: selectedRequest.id,
         }
@@ -138,7 +134,7 @@ export const PendingSignatureRequestsPanel: React.FC = () => {
   // Default (not simulated)
   return (
     <LongWrapper>
-      <SignTransactionPanel
+      <SignSolanaTxsPanel
         isSigningDisabled={isDisabled}
         network={network}
         queueLength={queueLength}
@@ -161,4 +157,4 @@ export const PendingSignatureRequestsPanel: React.FC = () => {
   )
 }
 
-export default PendingSignatureRequestsPanel
+export default PendingSignSolanaTransactionsRequestsPanel
