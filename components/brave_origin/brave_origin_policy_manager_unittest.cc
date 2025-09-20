@@ -282,4 +282,137 @@ TEST_F(BraveOriginPolicyManagerTest, RemoveObserver_StopsNotifications) {
   EXPECT_FALSE(observer.ready_called());
 }
 
+TEST_F(BraveOriginPolicyManagerTest, SetBrowserPolicyValue_UpdatesValue) {
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+
+  // Initially should return default value (false)
+  auto result = manager->GetPolicyValue("test.global.pref");
+  EXPECT_TRUE(result.has_value());
+  EXPECT_FALSE(result.value());
+
+  // Set the value to true
+  manager->SetBrowserPolicyValue("test.global.pref", true);
+
+  // Should now return the updated value
+  result = manager->GetPolicyValue("test.global.pref");
+  EXPECT_TRUE(result.has_value());
+  EXPECT_TRUE(result.value());
+
+  // Set the value back to false
+  manager->SetBrowserPolicyValue("test.global.pref", false);
+
+  // Should return the updated value
+  result = manager->GetPolicyValue("test.global.pref");
+  EXPECT_TRUE(result.has_value());
+  EXPECT_FALSE(result.value());
+}
+
+TEST_F(BraveOriginPolicyManagerTest, SetProfilePolicyValue_UpdatesValue) {
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  const std::string profile_id = "test-profile";
+
+  // Initially should return default value (true)
+  auto result = manager->GetPolicyValue("test.profile.pref", profile_id);
+  EXPECT_TRUE(result.has_value());
+  EXPECT_TRUE(result.value());
+
+  // Set the value to false
+  manager->SetProfilePolicyValue("test.profile.pref", false, profile_id);
+
+  // Should now return the updated value
+  result = manager->GetPolicyValue("test.profile.pref", profile_id);
+  EXPECT_TRUE(result.has_value());
+  EXPECT_FALSE(result.value());
+
+  // Set the value back to true
+  manager->SetProfilePolicyValue("test.profile.pref", true, profile_id);
+
+  // Should return the updated value
+  result = manager->GetPolicyValue("test.profile.pref", profile_id);
+  EXPECT_TRUE(result.has_value());
+  EXPECT_TRUE(result.value());
+}
+
+TEST_F(BraveOriginPolicyManagerTest,
+       SetBrowserPolicyValue_RequiresInitialization) {
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  // Should crash/check fail when not initialized
+  EXPECT_DEATH_IF_SUPPORTED(
+      manager->SetBrowserPolicyValue("test.global.pref", true), "");
+}
+
+TEST_F(BraveOriginPolicyManagerTest,
+       SetProfilePolicyValue_RequiresInitialization) {
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  // Should crash/check fail when not initialized
+  EXPECT_DEATH_IF_SUPPORTED(
+      manager->SetProfilePolicyValue("test.profile.pref", true, "profile"), "");
+}
+
+TEST_F(BraveOriginPolicyManagerTest, SetBrowserPolicyValue_RejectsUnknownPref) {
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+
+  // Setting unknown pref should not crash but should be ignored
+  manager->SetBrowserPolicyValue("unknown.pref", true);
+
+  // Verify it's still unknown
+  auto result = manager->GetPolicyValue("unknown.pref");
+  EXPECT_FALSE(result.has_value());
+}
+
+TEST_F(BraveOriginPolicyManagerTest, SetProfilePolicyValue_RejectsUnknownPref) {
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+
+  // Setting unknown pref should not crash but should be ignored
+  manager->SetProfilePolicyValue("unknown.pref", true, "profile");
+
+  // Verify it's still unknown
+  auto result = manager->GetPolicyValue("unknown.pref", "profile");
+  EXPECT_FALSE(result.has_value());
+}
+
+TEST_F(BraveOriginPolicyManagerTest,
+       SetProfilePolicyValue_RequiresNonEmptyProfileId) {
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+
+  // Should crash/check fail with empty profile ID
+  EXPECT_DEATH_IF_SUPPORTED(
+      manager->SetProfilePolicyValue("test.profile.pref", true, ""), "");
+}
+
+TEST_F(BraveOriginPolicyManagerTest, SetValues_UpdatesGetAllPoliciesMethods) {
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  const std::string profile_id = "test-profile";
+
+  // Set browser policy value
+  manager->SetBrowserPolicyValue("test.global.pref", true);
+
+  // Set profile policy value
+  manager->SetProfilePolicyValue("test.profile.pref", false, profile_id);
+
+  // Verify GetAllBrowserPolicies reflects the change
+  const auto browser_policies = manager->GetAllBrowserPolicies();
+  EXPECT_EQ(browser_policies.size(), 1u);
+  EXPECT_TRUE(browser_policies.contains("Testtest.global.prefPolicy"));
+  EXPECT_TRUE(browser_policies.at("Testtest.global.prefPolicy"));
+
+  // Verify GetAllProfilePolicies reflects the change
+  const auto profile_policies = manager->GetAllProfilePolicies(profile_id);
+  EXPECT_EQ(profile_policies.size(), 1u);
+  EXPECT_TRUE(profile_policies.contains("Testtest.profile.prefPolicy"));
+  EXPECT_FALSE(profile_policies.at("Testtest.profile.prefPolicy"));
+}
+
 }  // namespace brave_origin
