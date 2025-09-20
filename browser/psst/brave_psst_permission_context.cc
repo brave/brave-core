@@ -52,11 +52,8 @@ bool IsAllowedToProcess(const url::Origin& origin, const std::string& user_id) {
 
 BravePsstPermissionContext::BravePsstPermissionContext(
     HostContentSettingsMap* host_content_settings_map)
-    : ObjectPermissionContextBase(
-          ContentSettingsType::BRAVE_CARDANO /* Later it should be changed to
-                                          ContentSettingsType::BRAVE_PSST because of splitted PR*/
-          ,
-          host_content_settings_map) {}
+    : ObjectPermissionContextBase(ContentSettingsType::BRAVE_PSST,
+                                  host_content_settings_map) {}
 BravePsstPermissionContext::~BravePsstPermissionContext() = default;
 
 std::string BravePsstPermissionContext::GetKeyForObject(
