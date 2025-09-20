@@ -239,8 +239,6 @@ TEST_F(EmailAliasesServiceTest,
 // rate limiting and total polling duration.
 class EmailAliasesServiceTimingTest : public ::testing::Test {
  protected:
-  EmailAliasesServiceTimingTest() : url_loader_factory_(/*no args*/) {}
-
   void SetUp() override {
     feature_list_.InitAndEnableFeature(email_aliases::kEmailAliases);
     service_ = std::make_unique<EmailAliasesService>(
