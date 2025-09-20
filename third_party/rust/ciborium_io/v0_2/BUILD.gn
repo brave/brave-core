@@ -9,32 +9,25 @@
 import("//build/rust/cargo_crate.gni")
 
 cargo_crate("lib") {
-  crate_name = "crunchy"
+  crate_name = "ciborium_io"
   epoch = "0.2"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/src/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/src/lib.rs" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-io-v0_2/src/lib.rs"
+  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-io-v0_2/src/lib.rs" ]
   inputs = []
 
   build_native_rust_unit_tests = false
-  edition = "2015"
-  cargo_pkg_authors = "Vurich <jackefransham@hotmail.co.uk>"
-  cargo_pkg_name = "crunchy"
-  cargo_pkg_description =
-      "Crunchy unroller: deterministically unroll constant loops"
+  edition = "2021"
+  cargo_pkg_authors = "Nathaniel McCallum <npmccallum@profian.com>"
+  cargo_pkg_name = "ciborium-io"
+  cargo_pkg_description = "Simplified Read/Write traits for no_std usage"
+  cargo_pkg_repository = "https://github.com/enarx/ciborium"
   cargo_pkg_version = "0.2.2"
 
   features = [
-    "default",
-    "limit_128",
+    "alloc",
     "std",
   ]
-  build_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/build.rs"
-  build_sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/build.rs",
-  ]
-  build_script_outputs = [ "lib.rs" ]
   rustenv = []
   rustflags = []
 
