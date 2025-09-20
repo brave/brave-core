@@ -491,13 +491,12 @@ void ExpectResultStateMatches(const base::expected<T, std::string>& result,
                               const EmailAliasesApiCase& p) {
   if (p.expected_error) {
     ASSERT_FALSE(result.has_value());
-    std::string error_string;
-    if (std::holds_alternative<int>(*p.expected_error)) {
-      const int id = std::get<int>(*p.expected_error);
-      error_string = l10n_util::GetStringUTF8(id);
-    } else {
-      error_string = std::get<std::string>(*p.expected_error);
-    }
+    const std::string error_string =
+    std::visit(absl::Overload{
+                    [](int id) { return l10n_util::GetStringUTF8(id); },
+                    [](std::string string) { return string; },
+                },
+                *p.expected_error);
     EXPECT_TRUE(base::Contains(result.error(), error_string));
   } else {
     ASSERT_TRUE(result.has_value());
