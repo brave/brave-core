@@ -207,6 +207,13 @@ class BraveBrowserViewWithRoundedCornersTest
          {features::kSideBySide, IsSideBySideEnabled()}});
   }
 
+  void NewSplitTab() {
+    IsSideBySideEnabled()
+        ? chrome::NewSplitTab(browser(),
+                              split_tabs::SplitTabCreatedSource::kToolbarButton)
+        : brave::NewSplitViewForTab(browser());
+  }
+
   bool IsRoundedCornersEnabled() const { return std::get<0>(GetParam()); }
 
   bool IsBraveSplitViewEnabled() const { return std::get<1>(GetParam()); }
@@ -219,11 +226,7 @@ class BraveBrowserViewWithRoundedCornersTest
 
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        ContentsBackgroundEventHandleTest) {
-  if (!IsRoundedCornersEnabled()) {
-    EXPECT_FALSE(brave_browser_view()->contents_background_view_);
-    return;
-  }
-
+  EXPECT_TRUE(brave_browser_view()->contents_background_view_);
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   gfx::Point screen_point = web_contents->GetContainerBounds().CenterPoint();
@@ -233,6 +236,26 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   views::View::ConvertPointFromScreen(browser_view(), &screen_point);
   EXPECT_NE(brave_browser_view()->contents_background_view_,
             browser_view()->GetEventHandlerForPoint(screen_point));
+}
+
+IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
+                       RoundedCornersForContentsTest) {
+  // This test checks roundeded corners/contents margin is used
+  // when rounded corners feature is off for split view active state.
+  if (IsRoundedCornersEnabled() ||
+      (!IsBraveSplitViewEnabled() && !IsSideBySideEnabled())) {
+    return;
+  }
+
+  // views::View* contents_container =
+  // browser_view()->GetContentsContainerForLayoutManager(); auto
+  // contents_container_bounds = contents_container->bounds();
+
+  // NewSplitTab();
+
+  // auto contents_container_bounds_with_split_view =
+  // contents_container->bounds(); EXPECT_EQ(contents_container_bounds,
+  // contents_container_bounds_with_split_view);
 }
 
 INSTANTIATE_TEST_SUITE_P(

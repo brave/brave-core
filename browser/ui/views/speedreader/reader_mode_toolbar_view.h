@@ -42,6 +42,7 @@ class ReaderModeToolbarView : public views::View {
   void SetDelegate(Delegate* delegate);
   void SwapToolbarContents(ReaderModeToolbarView* toolbar);
   void RestoreToolbarContents(ReaderModeToolbarView* toolbar);
+  void SetUseRoundedCorners(bool use_rounded_corners);
 
   void ActivateContents();
 
@@ -50,6 +51,8 @@ class ReaderModeToolbarView : public views::View {
       const views::SizeBounds& available_size) const override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
   bool OnMousePressed(const ui::MouseEvent& event) override;
+
+  void UpdateBorderAndBackground();
 
   bool use_rounded_corners_ = false;
   std::unique_ptr<views::WebView> toolbar_;

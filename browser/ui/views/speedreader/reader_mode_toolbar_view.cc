@@ -73,15 +73,7 @@ ReaderModeToolbarView::ReaderModeToolbarView(
 
   toolbar_ = std::make_unique<Toolbar>(this, browser_context);
   AddChildView(toolbar_.get());
-
-  if (use_rounded_corners_) {
-    SetBackground(
-        views::CreateRoundedRectBackground(kColorToolbar, kRoundedCorners));
-  } else {
-    SetBorder(views::CreateSolidSidedBorder(gfx::Insets::TLBR(0, 0, 1, 0),
-                                            kColorToolbarContentAreaSeparator));
-    SetBackground(views::CreateSolidBackground(kColorToolbar));
-  }
+  UpdateBorderAndBackground();
 }
 
 ReaderModeToolbarView::~ReaderModeToolbarView() = default;
@@ -97,11 +89,10 @@ void ReaderModeToolbarView::SetVisible(bool visible) {
     toolbar_contents_->GetController().LoadURLWithParams(params);
 
     toolbar_->SetWebContents(toolbar_contents_.get());
-    if (use_rounded_corners_) {
-      toolbar_->holder()->SetCornerRadii(kRoundedCorners);
-    }
   }
   views::View::SetVisible(visible);
+
+  UpdateBorderAndBackground();
 }
 
 content::WebContents* ReaderModeToolbarView::GetWebContentsForTesting() {
@@ -142,6 +133,29 @@ void ReaderModeToolbarView::RestoreToolbarContents(
   toolbar_->SetWebContents(toolbar_contents_.get());
   another_toolbar->toolbar_->SetWebContents(
       another_toolbar->toolbar_contents_.get());
+}
+
+void ReaderModeToolbarView::SetUseRoundedCorners(bool use_rounded_corners) {
+  use_rounded_corners_ = use_rounded_corners;
+  UpdateBorderAndBackground();
+}
+
+void ReaderModeToolbarView::UpdateBorderAndBackground() {
+  if (!GetVisible()) {
+    return;
+  }
+
+  if (use_rounded_corners_) {
+    SetBorder(nullptr);
+    SetBackground(
+        views::CreateRoundedRectBackground(kColorToolbar, kRoundedCorners));
+    toolbar_->holder()->SetCornerRadii(kRoundedCorners);
+  } else {
+    SetBorder(views::CreateSolidSidedBorder(gfx::Insets::TLBR(0, 0, 1, 0),
+                                            kColorToolbarContentAreaSeparator));
+    SetBackground(views::CreateSolidBackground(kColorToolbar));
+    toolbar_->holder()->SetCornerRadii(gfx::RoundedCornersF(0));
+  }
 }
 
 gfx::Size ReaderModeToolbarView::CalculatePreferredSize(

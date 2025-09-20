@@ -27,6 +27,10 @@ class BraveBrowser : public Browser {
 
   static bool ShouldUseBraveWebViewRoundedCorners(Browser* browser);
 
+  // Need this method because we can have rounded corners with margin only
+  // around the contents when split view is active.
+  static bool ShouldUseBraveWebViewRoundedCornersForContents(Browser* browser);
+
   // Browser overrides:
   void ScheduleUIUpdate(content::WebContents* source,
                         unsigned changed_flags) override;

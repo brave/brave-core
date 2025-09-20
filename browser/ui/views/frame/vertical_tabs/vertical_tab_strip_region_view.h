@@ -81,6 +81,7 @@ class VerticalTabStripRegionView : public views::View,
   void UpdateNewTabButtonVisibility();
 
   int GetTabStripViewportMaxHeight() const;
+  void UpdateBorder();
 
   void ResetExpandedWidth();
   bool IsMenuShowing() const;
@@ -146,8 +147,6 @@ class VerticalTabStripRegionView : public views::View,
   void OnBrowserPanelsMoved();
 
   void UpdateLayout(bool in_destruction = false);
-
-  void UpdateBorder();
 
   void OnCollapsedPrefChanged();
   void OnFloatingModePrefChanged();
