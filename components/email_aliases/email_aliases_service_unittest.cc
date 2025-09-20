@@ -28,6 +28,7 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/functional/overload.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace email_aliases {
@@ -375,8 +376,6 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
 
 class EmailAliasesAPITest : public ::testing::Test {
  protected:
-  EmailAliasesAPITest() { feature_list_.InitAndEnableFeature(kEmailAliases); }
-
   void SetUp() override {
     service_ = std::make_unique<EmailAliasesService>(
         url_loader_factory_.GetSafeWeakWrapper());
@@ -451,7 +450,7 @@ class EmailAliasesAPITest : public ::testing::Test {
     return result_out;
   }
 
-  base::test::ScopedFeatureList feature_list_;
+  base::test::ScopedFeatureList feature_list_{kEmailAliases};
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<EmailAliasesService> service_;
@@ -492,11 +491,11 @@ void ExpectResultStateMatches(const base::expected<T, std::string>& result,
   if (p.expected_error) {
     ASSERT_FALSE(result.has_value());
     const std::string error_string =
-    std::visit(absl::Overload{
-                    [](int id) { return l10n_util::GetStringUTF8(id); },
-                    [](std::string string) { return string; },
-                },
-                *p.expected_error);
+        std::visit(absl::Overload{
+                       [](int id) { return l10n_util::GetStringUTF8(id); },
+                       [](std::string string) { return string; },
+                   },
+                   *p.expected_error);
     EXPECT_TRUE(base::Contains(result.error(), error_string));
   } else {
     ASSERT_TRUE(result.has_value());
@@ -527,7 +526,7 @@ INSTANTIATE_TEST_SUITE_P(
                             .expected_error = std::nullopt},
         EmailAliasesApiCase{
             .name = "BackendError",
-            .body = "{\"message\":\"alias_unavailable\"}",
+            .body = R"({"message":"alias_unavailable"})",
             .expected_error = IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE},
         EmailAliasesApiCase{
             .name = "NoBody",
@@ -561,13 +560,13 @@ INSTANTIATE_TEST_SUITE_P(
     UpdateAliasParamTest,
     testing::Values(
         EmailAliasesApiCase{.name = "Success",
-                            .body = "{\"message\":\"updated\"}",
+                            .body = R"({"message":"updated"})",
                             .expected_error = std::nullopt},
         EmailAliasesApiCase{.name = "BackendError",
-                            .body = "{\"message\":\"backend_error\"}",
+                            .body = R"({"message":"backend_error"})",
                             .expected_error = "backend_error"},
         EmailAliasesApiCase{.name = "NonUpdatedMessage",
-                            .body = "{\"message\":\"not_updated\"}",
+                            .body = R"({"message":"not_updated"})",
                             .expected_error = "not_updated"},
         EmailAliasesApiCase{
             .name = "NoBody",
@@ -575,7 +574,7 @@ INSTANTIATE_TEST_SUITE_P(
             .expected_error = IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY},
         EmailAliasesApiCase{
             .name = "InvalidJSON",
-            .body = "not a json",
+            .body = R"("not a json")",
             .expected_error =
                 IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY}),
     ParamName);
@@ -597,10 +596,10 @@ INSTANTIATE_TEST_SUITE_P(
     DeleteAliasParamTest,
     testing::Values(
         EmailAliasesApiCase{.name = "Success",
-                            .body = "{\"message\":\"deleted\"}",
+                            .body = R"({"message":"deleted"})",
                             .expected_error = std::nullopt},
         EmailAliasesApiCase{.name = "BackendError",
-                            .body = "{\"message\":\"backend_error\"}",
+                            .body = R"({"message":"backend_error"})",
                             .expected_error = "backend_error"},
         EmailAliasesApiCase{
             .name = "NoBody",
@@ -617,7 +616,7 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
   const std::string alias_email = "alias@example.com";
   auto result_out = CallUpdateAliasWith(
       alias_email,
-      /*put_body=*/"{\"message\":\"updated\"}",
+      /*put_body=*/R"({"message":"updated"})",
       /*refresh_body=*/
       std::string("[{\"email\":\"dest@example.com\",\"alias\":\"") +
           alias_email +
@@ -631,8 +630,8 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
 TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
   auto result_out =
       CallUpdateAliasWith("alias@example.com",
-                          /*put_body=*/"{\"message\":\"updated\"}",
-                          /*refresh_body=*/"{\"message\":\"backend_error\"}",
+                          /*put_body=*/R"({"message":"updated"})",
+                          /*refresh_body=*/R"({"message":"backend_error"})",
                           /*wait_for_update=*/false);
   ASSERT_TRUE(result_out.has_value());
   EXPECT_EQ(observer_.alias_update_count(), 0u);
@@ -640,10 +639,9 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
 
 TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
   // Authenticate to set a non-empty auth token.
-  const std::string init_body = "{\"verificationToken\":\"token123\"}";
+  const std::string init_body = R"({"verificationToken":"token123"})";
   const std::string result_body =
-      "{\"authToken\":\"auth456\", \"verified\":true, "
-      "\"service\":\"email-aliases\"}";
+      R"({"authToken":"auth456", "verified":true, "service":"email-aliases"})";
   url_loader_factory_.AddResponse(
       EmailAliasesService::GetAccountsServiceVerifyInitURL().spec(), init_body);
   url_loader_factory_.AddResponse(
@@ -684,8 +682,8 @@ TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
   // Provide a successful GenerateAlias response to trigger ApiFetch.
   const std::string alias_email = "mock-1234@bravealias.com";
   url_loader_factory_.AddResponse(
-      manage_url.spec(), std::string("{\"message\":\"created\",\"alias\":\"") +
-                             alias_email + "\"}");
+      manage_url.spec(),
+      std::string(R"({"message":"created","alias":"")") + alias_email + "\"}");
 
   auto gen_result = CallGenerateAliasWith(std::nullopt);
   // The helper enqueues the request body separately; here we just ensure it
