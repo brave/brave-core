@@ -27,6 +27,7 @@ static_library("brave_origin") {
   public_deps = [ "//base" ]
   deps = [
     "//components/keyed_service/core",
+    "//components/policy/core/common",
     "//components/prefs",
   ]
 }
@@ -36,6 +37,7 @@ source_set("unit_tests") {
 
   sources = [
     "brave_origin_policy_manager_unittest.cc",
+    "brave_origin_service_unittest.cc",
     "brave_origin_utils_unittest.cc",
     "profile_id_unittest.cc",
   ]
@@ -43,6 +45,7 @@ source_set("unit_tests") {
   deps = [
     ":brave_origin",
     "//base/test:test_support",
+    "//components/policy/core/common:test_support",
     "//components/prefs:test_support",
     "//testing/gtest",
   ]
