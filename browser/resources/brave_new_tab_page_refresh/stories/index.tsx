@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import './storybook_locale'
 
@@ -23,36 +24,42 @@ import { createSearchHandler } from './search_handler'
 import { createTopSitesHandler } from './top_sites_handler'
 import { createVpnHandler } from './vpn_handler'
 
+import { StorybookArgs } from './storybook_args'
+
 import { App } from '../components/app'
 
-export default {
-  title: 'New Tab/Refresh'
-}
-
-function StorybookAppProvider(props: { children: React.ReactNode }) {
+function StorybookApp(props: StorybookArgs) {
   return (
     <NewTabProvider createHandler={createNewTabHandler}>
-      <BackgroundProvider createHandler={createBackgroundHandler}>
-          <SearchProvider createHandler={createSearchHandler}>
-            <TopSitesProvider createHandler={createTopSitesHandler}>
-              <VpnProvider createHandler={createVpnHandler}>
-                <RewardsProvider createHandler={createRewardsHandler}>
-                  {props.children}
-                </RewardsProvider>
-              </VpnProvider>
-            </TopSitesProvider>
-          </SearchProvider>
+      <BackgroundProvider
+        createHandler={(s) => createBackgroundHandler(s, props)}
+      >
+        <SearchProvider createHandler={createSearchHandler}>
+          <TopSitesProvider createHandler={createTopSitesHandler}>
+            <VpnProvider createHandler={createVpnHandler}>
+              <RewardsProvider createHandler={createRewardsHandler}>
+                <div style={{ position: 'absolute', inset: 0 }}>
+                  <App />
+                </div>
+              </RewardsProvider>
+            </VpnProvider>
+          </TopSitesProvider>
+        </SearchProvider>
       </BackgroundProvider>
     </NewTabProvider>
   )
 }
 
-export function NTPRefresh() {
-  return (
-    <StorybookAppProvider>
-      <div style={{ position: 'absolute', inset: 0 }}>
-        <App />
-      </div>
-    </StorybookAppProvider>
-  )
+export default {
+  title: 'New Tab Page/App',
+  component: StorybookApp,
+} satisfies Meta<typeof StorybookApp>
+
+export const NewTabPage: StoryObj<typeof StorybookApp> = {
+  argTypes: {
+    sponsoredBackgroundType: {
+      control: 'select',
+      options: ['none', 'image', 'rich'],
+    },
+  },
 }
