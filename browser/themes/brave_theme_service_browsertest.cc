@@ -161,7 +161,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ThemeObserverTest) {
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
 
-  // Check theme oberver is called twice by changing theme.
+  // Check theme observer is called twice by changing theme.
   // One for changing to dark and the other for changing to light.
   TestNativeThemeObserver native_theme_observer;
   EXPECT_CALL(native_theme_observer,
@@ -181,6 +181,10 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ThemeObserverTest) {
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
+
+  ui::NativeTheme::GetInstanceForNativeUi()->RemoveObserver(
+      &native_theme_observer);
+  ui::NativeTheme::GetInstanceForWeb()->RemoveObserver(&web_theme_observer);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
