@@ -142,6 +142,10 @@ inline constexpr char kCookieListEnabledHistogram[] =
 inline constexpr char kCookieListPromptHistogram[] =
     "Brave.Shields.CookieListPrompt";
 
+// The list of UUIDs of filter lists that will be loaded by AdBlockOnlyMode.
+inline constexpr auto kAdblockOnlyModeFilerListUUIDs =
+    base::MakeFixedFlatSet<std::string_view>({"default"});
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_CONSTANTS_H_
