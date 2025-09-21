@@ -15,26 +15,28 @@
 
 namespace endpoints::detail {
 
-template <typename>
-struct MaybeStripWithHeadersImpl;
-
+// Primary template: leaves types unchanged unless
+// matched by a partial specialization below.
 template <typename T>
-  requires(detail::Request<T> || detail::Response<T>)
-struct MaybeStripWithHeadersImpl<T> : std::type_identity<T> {};
+struct MaybeStripWithHeadersImpl : std::type_identity<T> {};
 
+// Partial specialization: strips WithHeaders<> if
+// the inner T satisfies Request or Response.
 template <typename T>
+  requires(Request<T> || Response<T>)
 struct MaybeStripWithHeadersImpl<WithHeaders<T>>
     : MaybeStripWithHeadersImpl<T> {};
 
-// This partial participates only if each alternative
-// becomes a detail::Response after stripping.
+// Partial specialization: strips WithHeaders<> inside a std::variant<> if
+// each alternative satisfies Response after stripping.
 template <typename... Ts>
-  requires(detail::Response<typename MaybeStripWithHeadersImpl<Ts>::type> &&
-           ...)
+  requires(Response<typename MaybeStripWithHeadersImpl<Ts>::type> && ...)
 struct MaybeStripWithHeadersImpl<std::variant<Ts...>>
     : std::type_identity<
           std::variant<typename MaybeStripWithHeadersImpl<Ts>::type...>> {};
 
+// Alias: a type with WithHeaders<> removed if
+// its MaybeStripWithHeadersImpl specialization applies.
 template <typename T>
 using MaybeStripWithHeaders =
     typename detail::MaybeStripWithHeadersImpl<T>::type;
