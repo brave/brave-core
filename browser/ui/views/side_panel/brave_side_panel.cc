@@ -219,6 +219,8 @@ void BraveSidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
   header_view_ = std::move(view);
 }
 
+void BraveSidePanel::SetHeaderVisibility(bool visible) {}
+
 void BraveSidePanel::OnChildViewAdded(View* observed_view, View* child) {
   if (observed_view != this) {
     return;
