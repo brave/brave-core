@@ -21,6 +21,7 @@
 #include "base/values.h"
 #include "brave/components/endpoint_client/endpoint.h"
 #include "brave/components/endpoint_client/endpoint_builder.h"
+#include "brave/components/endpoint_client/parse.h"
 #include "brave/components/endpoint_client/with_headers.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
@@ -32,52 +33,7 @@
 namespace endpoint_client {
 
 template <endpoints::detail::Endpoint Endpoint>
-class Client {
-  template <endpoints::detail::Response Response>
-  struct Parse {
-    static auto From(const std::optional<base::Value>& value,
-                     scoped_refptr<net::HttpResponseHeaders>) {
-      return value ? Response::FromValue(*value) : std::nullopt;
-    }
-  };
-
-  template <endpoints::detail::Response Response>
-  struct Parse<endpoints::WithHeaders<Response>> {
-    static auto From(const std::optional<base::Value>& value,
-                     scoped_refptr<net::HttpResponseHeaders> headers) {
-      std::optional<endpoints::WithHeaders<Response>> result;
-      auto response = Parse<Response>::From(value, nullptr);
-      if (!response) {
-        return result;
-      }
-
-      result.emplace(std::move(*response));
-      result->headers = std::move(headers);
-      return result;
-    }
-  };
-
-  template <endpoints::detail::Response... Responses>
-  struct Parse<std::variant<Responses...>> {
-    static auto From(const std::optional<base::Value>& value,
-                     scoped_refptr<net::HttpResponseHeaders> headers) {
-      std::optional<std::variant<Responses...>> result;
-      (
-          [&] {
-            if (result) {
-              return;
-            }
-
-            if (auto response = Parse<Responses>::From(value, headers)) {
-              result = std::move(*response);
-            }
-          }(),
-          ...);
-      return result;
-    }
-  };
-
- public:
+struct Client {
   template <typename Request, typename Response, typename Error>
     requires(
         Endpoint::template kIsRequestSupported<Request> &&
@@ -107,13 +63,13 @@ class Client {
             return std::move(callback).Run(base::unexpected(std::nullopt));
           }
 
-          const auto status_code = headers->response_code();
           const auto value = base::JSONReader::Read(response_body.value_or(""));
           std::move(callback).Run(
-              status_code >= 200 && status_code < 300
-                  ? Expected(Parse<Response>::From(value, std::move(headers)))
+              headers->response_code() / 100 == 2  // 2xx
+                  ? Expected(detail::Parse<Response>::From(value,
+                                                           std::move(headers)))
                   : base::unexpected(
-                        Parse<Error>::From(value, std::move(headers))));
+                        detail::Parse<Error>::From(value, std::move(headers))));
         };
 
     const auto json = base::WriteJson(request.ToValue());
