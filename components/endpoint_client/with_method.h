@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_HTTP_METHOD_H_
 #define BRAVE_COMPONENTS_ENDPOINT_CLIENT_HTTP_METHOD_H_
 
-#include <concepts>
 #include <string_view>
 #include <type_traits>
 

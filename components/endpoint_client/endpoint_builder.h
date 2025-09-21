@@ -23,11 +23,24 @@
 #include "base/types/is_instantiation.h"
 #include "base/types/same_as_any.h"
 #include "base/values.h"
+#include "brave/components/endpoint_client/maybe_strip_with_headers.h"
+#include "brave/components/endpoint_client/maybe_variant.h"
 #include "brave/components/endpoint_client/request.h"
 #include "brave/components/endpoint_client/response.h"
-#include "brave/components/endpoint_client/with_headers.h"
 
 namespace endpoints::detail {
+
+template <typename... Ts>
+concept UniqueTypes = requires {
+  [] {
+    struct Unique : std::type_identity<Ts>... {};
+  };
+};
+
+}  // namespace endpoints::detail
+
+namespace endpoints {
+namespace detail {
 
 template <Request Req, Response Ok, Response Err>
 struct Entry {
@@ -38,30 +51,7 @@ struct Entry {
       base::expected<std::optional<Response>, std::optional<Error>>;
 };
 
-template <typename... Ts>
-concept UniqueTypes = requires {
-  [] {
-    struct Unique : std::type_identity<Ts>... {};
-  };
-};
-
-template <typename...>
-struct MaybeVariantImpl;
-
-template <typename T>
-struct MaybeVariantImpl<T> : std::type_identity<T> {};
-
-template <typename... Ts>
-  requires(sizeof...(Ts) > 1)
-struct MaybeVariantImpl<Ts...> : std::type_identity<std::variant<Ts...>> {};
-
-template <typename... Ts>
-  requires(sizeof...(Ts) > 0)
-using MaybeVariant = typename MaybeVariantImpl<Ts...>::type;
-
-}  // namespace endpoints::detail
-
-namespace endpoints {
+}  // namespace detail
 
 template <detail::Request Request>
 struct For {
@@ -94,24 +84,25 @@ class Endpoint {
 
  public:
   template <typename T>
-    requires kHasEntryFor<MaybeStripWithHeaders<T>>
+    requires kHasEntryFor<detail::MaybeStripWithHeaders<T>>
   using EntryFor =
-      typename EntryForImpl<MaybeStripWithHeaders<T>, Entries...>::type;
+      typename EntryForImpl<detail::MaybeStripWithHeaders<T>, Entries...>::type;
 
   template <typename T>
   static constexpr bool kIsRequestSupported =
-      kHasEntryFor<MaybeStripWithHeaders<T>>;
+      kHasEntryFor<detail::MaybeStripWithHeaders<T>>;
 
   template <typename Rsp, typename Req>
     requires kIsRequestSupported<Req>
   static constexpr bool kIsResponseSupportedForRequest =
-      std::is_same_v<MaybeStripWithHeaders<Rsp>,
+      std::is_same_v<detail::MaybeStripWithHeaders<Rsp>,
                      typename EntryFor<Req>::Response>;
 
   template <typename Err, typename Req>
     requires kIsRequestSupported<Req>
   static constexpr bool kIsErrorSupportedForRequest =
-      std::is_same_v<MaybeStripWithHeaders<Err>, typename EntryFor<Req>::Error>;
+      std::is_same_v<detail::MaybeStripWithHeaders<Err>,
+                     typename EntryFor<Req>::Error>;
 };
 
 }  // namespace endpoints

@@ -33,34 +33,6 @@ struct WithHeaders<Response> : Response {
   scoped_refptr<net::HttpResponseHeaders> headers;
 };
 
-namespace detail {
-
-template <typename>
-struct MaybeStripWithHeadersImpl;
-
-template <typename T>
-  requires(detail::Request<T> || detail::Response<T>)
-struct MaybeStripWithHeadersImpl<T> : std::type_identity<T> {};
-
-template <typename T>
-struct MaybeStripWithHeadersImpl<WithHeaders<T>>
-    : MaybeStripWithHeadersImpl<T> {};
-
-// This partial participates only if each alternative
-// becomes a detail::Response after stripping.
-template <typename... Ts>
-  requires(detail::Response<typename MaybeStripWithHeadersImpl<Ts>::type> &&
-           ...)
-struct MaybeStripWithHeadersImpl<std::variant<Ts...>>
-    : std::type_identity<
-          std::variant<typename MaybeStripWithHeadersImpl<Ts>::type...>> {};
-
-}  // namespace detail
-
-template <typename T>
-using MaybeStripWithHeaders =
-    typename detail::MaybeStripWithHeadersImpl<T>::type;
-
 }  // namespace endpoints
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_WITH_HEADERS_H_

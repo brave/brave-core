@@ -10,6 +10,8 @@ source_set("endpoint_client") {
     "client.h",
     "endpoint_builder.h",
     "endpoint.h",
+    "maybe_variant.h",
+    "maybe_strip_with_headers.h",
     "methods.h",
     "request.h",
     "response.h",
