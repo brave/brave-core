@@ -15,19 +15,22 @@
 
 namespace endpoints {
 
+// Primary template: a type cannot be wrapped in WithHeaders<> unless
+// matched by a partial specialization below.
 template <typename T>
 struct WithHeaders {
   static_assert(base::AlwaysFalse<T>,
-                "Invalid use of WithHeaders<T>: "
                 "T must satisfy endpoints::detail::Request or "
                 "endpoints::detail::Response!");
 };
 
+// Partial specialization: wraps a Request with HTTP request headers.
 template <detail::Request Request>
 struct WithHeaders<Request> : Request {
   net::HttpRequestHeaders headers;
 };
 
+// Partial specialization: wraps a Response with HTTP response headers.
 template <detail::Response Response>
 struct WithHeaders<Response> : Response {
   scoped_refptr<net::HttpResponseHeaders> headers;
