@@ -9,20 +9,33 @@
 #include <type_traits>
 
 #include "base/json/json_writer.h"
-#include "brave/components/endpoint_client/with_method.h"
 
 namespace endpoints::detail {
 
+// Concept: a type is a RequestBody if
+// - it defines a non-static member function ToValue(),
+// - whose result can be passed to base::WriteJson().
 template <typename T>
 concept RequestBody = requires(T t) { base::WriteJson(t.ToValue()); } &&
                       std::is_member_function_pointer_v<decltype(&T::ToValue)>;
 
+// Forward declarations.
+enum class Method;
+template <RequestBody, Method>
+struct WithMethod;
+
+// Primary template: a type is not a Request unless
+// matched by the partial specialization below.
 template <typename>
 struct RequestImpl : std::false_type {};
 
-template <typename T, Method M>
-struct RequestImpl<WithMethod<T, M>> : std::bool_constant<RequestBody<T>> {};
+// Partial specialization: WithMethod<Body, M> is a Request if
+// Body satisfies RequestBody.
+template <RequestBody Body, Method M>
+struct RequestImpl<WithMethod<Body, M>> : std::true_type {};
 
+// Concept: a type is a Request if
+// its RequestImpl specialization evaluates to true.
 template <typename T>
 concept Request = RequestImpl<T>::value;
 

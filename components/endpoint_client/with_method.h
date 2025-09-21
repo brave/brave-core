@@ -11,6 +11,7 @@
 #include <type_traits>
 
 #include "base/types/always_false.h"
+#include "brave/components/endpoint_client/request.h"
 #include "net/http/http_request_headers.h"
 
 namespace endpoints::detail {
@@ -28,12 +29,7 @@ enum class Method {
   kTrack
 };
 
-// Note: we intentionally do not constrain `Body` with `RequestBody` here.
-// Doing so would require including request.h, which would create a circular
-// dependency (since request.h itself relies on HasMethod defined here).
-// The restriction is instead enforced by the template aliases in methods.h
-// (e.g. `CONNECT`, `DELETE`, etc.), which already require `RequestBody`.
-template <typename Body, detail::Method M>
+template <RequestBody Body, Method M>
 struct WithMethod : Body {
   static constexpr std::string_view Method() {
     if constexpr (M == Method::kConnect) {
