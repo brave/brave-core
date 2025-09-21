@@ -43,6 +43,18 @@
 /* The title above a list of the users selected browser actions such as bookmarks, history, etc. */
 "BrowserMenu.myActions" = "Moje akce";
 
+/* A row in the menu action customization list that divides which items are placed in a grid and which are placed in a list. */
+"BrowserMenu.quickActionDividerTitle" = "Položky nahoře se zobrazí na hlavní ploše";
+
+/* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
+"BrowserMenu.resetButtonTitle" = "Resetovat";
+
+/* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
+"BrowserMenu.resetToDefault" = "Obnovit výchozí nastavení";
+
+/* A message presented in a confirmation dialog explaining the destructive action of resetting the menu to its default state */
+"BrowserMenu.resetToDefaultDialogMessage" = "Obnovením výchozího nastavení ztratíte všechny úpravy, které jste v Brave provedli. Tuto akci nelze vrátit zpět. Opravdu chcete pokračovat?";
+
 /* A button title that when taps shows all actions that are hidden by default */
 "BrowserMenu.showAllButtonTitle" = "Zobrazit vše…";
 

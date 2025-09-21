@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Άνοιγμα όλων";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "Άνοιγμα ρυθμίσεων συγχρονισμού";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Προηγούμενη εβδομάδα %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "Συσκευές";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "Δεν υπάρχουν συγχρονισμένες καρτέλες";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "Άνοιγμα καρτελών σε άλλες συσκευές";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "Οι συγχρονισμένες καρτέλες σας εμφανίζονται εδώ";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "Αποστολή στη συσκευή σας";
@@ -1381,38 +1393,11 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Άνοιγμα ιστότοπου";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
-"optionsMenu.braveLeoItemDescription" = "Το Leo είναι ένας έξυπνος βοηθός που υποστηρίζεται από AI και είναι ενσωματωμένος στο πρόγραμμα περιήγησης";
-
-/* The subtitle description of menu item Brave News */
-"optionsMenu.braveNewsItemDescription" = "Οι κορυφαίες ειδήσεις της ημέρας σε μια ιδιωτική ροή ειδήσεων";
-
 /* Brave News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "Ειδήσεις";
 
-/* The subtitle description of menu item Brave Playlist */
-"optionsMenu.bravePlaylistItemDescription" = "Διατήρηση λίστας αναπαραγωγής εκτός σύνδεσης τυχόν βίντεο/ροής";
-
 /* Brave News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "Λίστα αναπαραγωγής";
-
-/* The subtitle description of menu item Brave Talk */
-"optionsMenu.braveTalkItemDescription" = "Ιδιωτικές βιντεοκλήσεις, απευθείας στο πρόγραμμα περιήγησής σας";
-
-/* Brave Talk Item Menu title */
-"optionsMenu.braveTalkItemTitle" = "Συνομιλία";
-
-/* The subtitle description of menu item Brave VPN */
-"optionsMenu.braveVPNItemDescription" = "Προστασία ολόκληρης της συσκευής σας online";
-
-/* Brave VPN Item Menu title */
-"optionsMenu.braveVPNItemTitle" = "VPN";
-
-/* The subtitle description of menu item Brave Wallet */
-"optionsMenu.braveWalletItemDescription" = "Το ασφαλές πορτοφόλι κρυπτονομισμάτων, χωρίς απαίτηση επέκτασης";
-
-/* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "Λειτουργίες Brave";
 
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Άλλες ρυθμίσεις απορρήτου";
@@ -1528,17 +1513,11 @@
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "Αλλαγή λίστας αναπαραγωγής";
 
-/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
-"playlist.deleteForOfflineButtonTitle" = "Διαγραφή cache εκτός σύνδεσης";
-
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "Αυτό το βίντεο ήταν ζωντανή ροή ή συμπληρώθηκε το χρονικό όριο. Ανοίξτε ξανά τον σύνδεσμο για ανανέωση.";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "Ληγμένο βίντεο";
-
-/* Text indicator on the table cell If a video is expired */
-"playList.expiredLabelTitle" = "Έχει λήξει";
 
 /* Number of items in the playlsit folder. Example: '10 items' */
 "playlist.folderItemCountPlural" = "%d στοιχεία";
@@ -1548,15 +1527,6 @@
 
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Παρουσιάστηκε πρόβλημα κατά τη φόρτωση του πόρου!";
-
-/* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Όταν η επιλογή είναι ενεργοποιημένη, θα εμφανίζεται ένα σήμα στο εικονίδιο του κύριου μενού, που υποδεικνύει ότι τα μέσα στη σελίδα μπορεί να προστεθούν στη Λίστα αναπαραγωγής Brave.";
-
-/* Title for playlist menu badge option */
-"playlist.menuBadgeOptionTitle" = "Εμφάνιση σήματος ειδοποίησης μενού";
-
-/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
-"playlist.movePlaylistShareActionMenuTitle" = "Μετακίνηση…";
 
 /* Detail Text when there are no items in the playlist */
 "playList.noItemLabelDetailLabel" = "Μπορείτε να προσθέσετε στοιχεία στη Λίστα αναπαραγωγής Brave μέσα από το πρόγραμμα περιήγησης";
@@ -1572,9 +1542,6 @@
 
 /* Title for opening the playlist */
 "playList.openInPlaylistButtonTitle" = "Άνοιγμα στη λίστα αναπαραγωγής";
-
-/* The title for the alert that shows up when an item is expired */
-"playList.pictureInPictureErrorTitle" = "Λυπούμαστε, παρουσιάστηκε σφάλμα κατά την προσπάθεια εμφάνισης εικόνας εντός εικόνας.";
 
 /* Playlist alert message when playlist is already showing on a different window */
 "playlist.playlistAlreadyShowingBody" = "Η λίστα αναπαραγωγής είναι ήδη ενεργή σε άλλο παράθυρο";
@@ -1612,9 +1579,6 @@
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Ο χώρος αποθήκευσης είναι σχεδόν πλήρης";
 
-/* When a video or audio is live and has no duration */
-"playlist.playlistLiveMediaStream" = "Ζωντανή ροή";
-
 /* Footer Text for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionFooterText" = "Όταν η επιλογή είναι ενεργοποιημένη, μπορείτε να πατήσετε παρατεταμένα τα περισσότερα αρχεία βίντεο/ήχου για να τα προσθέσετε στη Λίστα αναπαραγωγής σας.";
 
@@ -1636,41 +1600,8 @@
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
 "playlist.playlistResetPlaylistOptionFooterText" = "Αυτή η επιλογή θα καταργήσει όλα τα βίντεο από τη Λίστα αναπαραγωγής, καθώς και από τον χώρο αποθήκευσης της λειτουργίας εκτός σύνδεσης.";
 
-/* Error message when saving a playlist item for offline fails */
-"playlist.playlistSaveForOfflineErrorMessage" = "Δυστυχώς, δεν ήταν δυνατή η αποθήκευση αυτού του στοιχείου για λειτουργία εκτός σύνδεσης προς το παρόν.";
-
-/* Title of alert when saving a playlist item for offline mode */
-"playlist.playlistSaveForOfflineErrorTitle" = "Δυστυχώς, παρουσιάστηκε πρόβλημα";
-
-/* Title For the Section that videos are listed */
-"playList.playListSectionTitle" = "Λίστες αναπαραγωγής";
-
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "Λίστα αναπαραγωγής";
-
-/* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "Αυτός ο φάκελος υπάρχει ήδη στη Λίστα αναπαραγωγής Brave";
-
-/* Title for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsTitle" = "Λυπούμαστε";
-
-/* Title for the Section that videos are listed */
-"playList.playlistSharedFolderSectionTitle" = "Σε κοινή χρήση με εσάς";
-
-/* Title For the Section that videos are listed */
-"playList.playListSharedFolderSectionTitle" = "Σε κοινή χρήση με εσάς";
-
-/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationFooterText" = "Αυτή η ρύθμιση θα αλλάξει τη θέση της λίστας βίντεο μεταξύ αριστερής/δεξιάς πλευράς.";
-
-/* Option Text for Sidebar Location Left */
-"playlist.playlistSidebarLocationOptionLeft" = "Αριστερά";
-
-/* Option Text for Sidebar Location Right */
-"playlist.playlistSidebarLocationOptionRight" = "Δεξιά";
-
-/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationTitle" = "Τοποθεσία πλευρικής γραμμής";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsFooterText" = "Για μεμονωμένα αρχεία, συνεχίστε την αναπαραγωγή από το σημείο της τελευταίας παύσης.";
@@ -1684,50 +1615,8 @@
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
 "playList.removedFromPlaylistMessage" = "Καταργήθηκε από τον φάκελο %@";
 
-/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertMessage" = "Αυτή η ενέργεια θα διαγράψει τα μέσα από τον χώρο αποθήκευσης εκτός σύνδεσης. Είστε βέβαιοι ότι θέλετε να συνεχίσετε;";
-
-/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertTitle" = "Κατάργηση δεδομένων εκτός σύνδεσης";
-
-/* Message for the alert shown when the user tries to remove a video from playlist */
-"playlist.removePlaylistVideoAlertMessage" = "Αυτή η ενέργεια θα καταργήσει το στοιχείο μέσων από τη λίστα. Είστε βέβαιοι ότι θέλετε να συνεχίσετε;";
-
-/* Title for the alert shown when the user tries to remove an item from playlist */
-"playlist.removePlaylistVideoAlertTitle" = "Κατάργηση στοιχείου πολυμέσων από τη λίστα αναπαραγωγής;";
-
 /* Reopen Alert button title */
 "playList.reopenButtonTitle" = "Εκ νέου άνοιγμα";
-
-/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "Προστέθηκε στη λειτουργία εκτός σύνδεσης";
-
-/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
-"playlist.saveForOfflineButtonTitle" = "Αποθήκευση για λειτουργία εκτός σύνδεσης";
-
-/* Text indicator on the table cell while saving a video for offline */
-"playList.savingForOfflineLabelTitle" = "Αποθήκευση για λειτουργία εκτός σύνδεσης…";
-
-/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyDescription" = "Συγχρονίζει αυτόματα όλους τους φακέλους της λίστας αναπαραγωγής σας";
-
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "Αυτόματος συγχρονισμός φακέλων λίστας αναπαραγωγής";
-
-/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionDetailsTitle" = "Μπορείτε να ανοίξετε το τρέχον στοιχείο σε νέα καρτέλα ή να το μοιραστείτε μέσω του μενού κοινοποίησης του συστήματος";
-
-/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Μενού Λίστας αναπαραγωγής Brave";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Άνοιγμα σε ιδιωτική καρτέλα";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewTabTitle" = "Άνοιγμα σε νέα καρτέλα";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistShareActionMenuTitle" = "Κοινοποίηση...";
 
 /* Title for load resources error alert */
 "playList.sorryAlertTitle" = "Λυπούμαστε";
@@ -1765,56 +1654,11 @@
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "Δημιουργία";
 
-/* The title of the button that allows the user to edit the name of a folder */
-"playlistFolders.editButtonTitle" = "Επεξεργασία";
-
-/* The title of the screen where the user edits folder names */
-"playlistFolders.editFolderScreenTitle" = "Επεξεργασία φακέλου";
-
-/* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "Επεξεργασία λίστας αναπαραγωγής";
-
-/* The error shown to the user when we cannot save their changes made on a folder */
-"playlistFolders.errorSavingMessage" = "Δυστυχώς, δεν μπορέσαμε να αποθηκεύσουμε τις αλλαγές που κάνατε σε αυτόν τον φάκελο";
-
-/* The title of the button where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderButtonTitle" = "Μεταφορά";
-
-/* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "Τρέχουσα λίστα αναπαραγωγής";
-
-/* The title of the screen where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderScreenTitle" = "Μεταφορά";
-
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
-"playlistFolders.moveItemDescription" = "%@ και 1 ακόμη στοιχείο";
-
-/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld στοιχεία";
-
-/* Sometimes an item can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithNoNameTitle" = "1 στοιχείο";
-
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
-"playlistFolders.moveMultipleItemDescription" = "%1$@ και %2$lld ακόμη στοιχεία";
-
 /* The title of the button to create a new folder */
 "playlistFolders.newFolderButtonTitle" = "Νέα λίστα αναπαραγωγής";
 
 /* The title of the screen to create a new folder */
 "playlistFolders.newFolderScreenTitle" = "Νέα λίστα αναπαραγωγής";
-
-/* The sub-title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionSubtitle" = "Πατήστε για να επιλέξετε βίντεο";
-
-/* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "Προσθήκη βίντεο σε αυτήν τη λίστα αναπαραγωγής";
-
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "Επιλέξτε μια λίστα αναπαραγωγής για να μετακινήσετε %lld στοιχεία";
-
-/* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "Επιλέξτε μια λίστα αναπαραγωγής για να μετακινήσετε 1 στοιχείο";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld στοιχεία";
@@ -1824,45 +1668,6 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Λίστα αναπαραγωγής χωρίς τίτλο";
-
-/* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "Κουμπί προσθήκης στη Λίστα αναπαραγωγής Brave";
-
-/* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "Αποθήκευση";
-
-/* Menu Title for removing offline data/cache */
-"playlistFolderSharing.deleteOfflineDataMenuTitle" = "Κατάργηση δεδομένων εκτός σύνδεσης";
-
-/* Menu Title for deleting the playlist */
-"playlistFolderSharing.deletePlaylistMenuTitle" = "Διαγραφή λίστας αναπαραγωγής";
-
-/* Menu Title for editing a folder */
-"playlistFolderSharing.editMenuTitle" = "Επεξεργασία";
-
-/* Accessibility Title for the playlist menu. */
-"playlistFolderSharing.menuButtonAccessibilityTitle" = "Κουμπί μενού λίστας αναπαραγωγής";
-
-/* Button that adds the playlist to the local database */
-"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Προσθήκη λίστας αναπαραγωγής τώρα";
-
-/* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewDescription" = "Η αυτόματη αποθήκευση για χρήση εκτός σύνδεσης είναι ενεργοποιημένη, πράγμα που σημαίνει ότι οι νέες προσθήκες σε λίστες αναπαραγωγής, συμπεριλαμβανομένων των κοινόχρηστων λιστών αναπαραγωγής, αποθηκεύονται στη συσκευή σας για προβολή εκτός σύνδεσης και θα μπορούσαν να χρησιμοποιήσουν τα δεδομένα κινητής τηλεφωνίας σας.\n\nΜπορείτε να διαχειρίζεστε την αυτόματη αποθήκευση για χρήση εκτός σύνδεσης στις Ρυθμίσεις λίστας αναπαραγωγής.";
-
-/* Button that takes the user to the settings menu */
-"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "Ρυθμίσεις";
-
-/* Title of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewTitle" = "Διαχείριση δεδομένων Λίστας αναπαραγωγής";
-
-/* Menu Title for renaming a folder */
-"playlistFolderSharing.renameMenuTitle" = "Μετονομασία";
-
-/* Menu Title for saving offline data/cache */
-"playlistFolderSharing.saveOfflineDataMenuTitle" = "Αποθήκευση δεδομένων εκτός σύνδεσης";
-
-/* Menu Title for syncing playlist */
-"playlistFolderSharing.syncNowMenuTitle" = "Συγχρονισμός τώρα";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "Κλείσιμο μενού Ασπίδων";
@@ -2197,6 +2002,13 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "ReportBrokenAdditionalDetails" = "Επιπλέον λεπτομέρειες (προαιρετικό)";
 
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"reportBrokenAdditionalDetailsRequired" = "Πρόσθετες λεπτομέρειες";
+
+/* A label for a drop down where the user provides a category for a web-compatibility report
+A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Κάντε μία επιλογή";
+
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Επικοινωνήστε μαζί μου στο: (προαιρετικό)";
 
@@ -2207,7 +2019,7 @@
 "ReportBrokenContactMeSuggestions" = "Email, Twitter κ.λπ.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Ενημερώστε τους προγραμματιστές του Brave ότι ο ιστότοπος αυτός δεν λειτουργεί σωστά με τις Ασπίδες:";
+"ReportBrokenSiteBody1" = "Ενημερώστε τους προγραμματιστές του Brave ότι ο ιστότοπος αυτός δεν λειτουργεί όπως αναμενόταν:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
 "ReportBrokenSiteBody2" = "Σημείωση: Η αναφορά που αποστέλλεται στους διακομιστές Brave θα περιλαμβάνει τη διεύθυνση τοποθεσίας, τον αριθμό έκδοσης Brave, τις ρυθμίσεις Ασπίδων, την κατάσταση VPN και τις ρυθμίσεις γλώσσας.";
@@ -2557,6 +2369,9 @@
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "Προτάσεις αναζήτησης από το %@";
 
+/* Action title for open a playlist item in Playlist. */
+"searchSuggestionOpenPlaylistActionTitle" = "Άνοιγμα στη λίστα αναπαραγωγής";
+
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Μετάβαση σε αυτή την καρτέλα";
 
@@ -2617,6 +2432,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "Επιτρέψτε στο Brave να κλείνει αυτόματα τις καρτέλες που δεν έχουν προβληθεί πρόσφατα.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "Αποκλεισμός στοιχείων που αποσπούν την προσοχή εντός YouTube";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "Αποκλεισμός στοιχείων που αποσπούν την προσοχή εντός YouTube";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "Αποκλείει τα επερχόμενα και τα τελικά στοιχεία κάρτας στο youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "Αποκλεισμός προτεινόμενου περιεχομενου του YouTube";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "Αποκλείει τα Shorts από την αρχική σελίδα, τη σελίδα τάσεων και τα αποτελέσματα αναζήτησης στο youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "Αποκλεισμός YouTube Shorts";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Υψηλότερη ποιότητα αναπαραγωγής";
 
@@ -2646,6 +2479,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Αυτόματη αποστολή ping καθημερινής χρήσης στο Brave";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Επιτρέπει στο Brave να εμφανίζει συνδέσμους για ιδιωτικές έρευνες στη νέα σελίδα καρτέλας. Οι έρευνες μας βοηθούν να δημιουργήσουμε καλύτερες λειτουργίες και να μετρήσουμε την αποτελεσματικότητα των διαφημιστικών εκστρατειών που βασίζονται στο πρόγραμμα περιήγησης. [Μάθετε περισσότερα](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Να επιτρέπονται οι έρευνες Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3061,6 +2900,15 @@
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "Παρουσιάστηκε πρόβλημα κατά την ανάκτηση των συσκευών στην αλυσίδα συγχρονισμού.";
 
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "Φαίνεται ότι έγινε επαναφορά της συσκευ'ης σας από αντίγραφο ασφαλείας, γεγονός που μπορεί να επηρεάσει τον Συγχρονισμό Brave. Για να συνεχίσετε να χρησιμοποιείτε τον Συγχρονισμό Brave, θα πρέπει να επαναφέρετε και να επανασυνδέσετε την αλυσίδα συγχρονισμού.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "Ανιχνεύθηκε η επαναφορά";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "Επαναφορά αλυσίδας συγχρονισμού";
+
 /* Sync device settings page title. */
 "sync.devices" = "Συσκευές σε αλυσίδα συγχρονισμού";
 
@@ -3235,6 +3083,63 @@
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "Κλείσιμο";
 
+/* Accessibility label for a close button that when tapped opens a new tab */
+"tabGrid.addTabAccessibilityLabel" = "Νέα καρτέλα";
+
+/* A button title which when tapped will close all of the open tabs for the user */
+"tabGrid.closeAllTabsButtonTitle" = "Κλείσιμο όλων των καρτελών";
+
+/* Accessibility label for a close button that when tapped closes the associated tab */
+"tabGrid.closeTab" = "Κλείσιμο Καρτέλας";
+
+/* A button title which when tapped will display a menu with more options */
+"tabGrid.moreMenuButtonTitle" = "Περισσότερα";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneBody" = "Οι ιστότοποι που επισκέπτεστε σε ιδιωτικά παράθυρα δεν θα εμφανίζονται στο ιστορικό σας. Τα cookies, τα δεδομένα φορμών και τα δεδομένα ιστότοπου εξαφανίζονται μόλις κλείσουν όλα τα ιδιωτικά παράθυρα.";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneTitle" = "Χωρίς να αφήνετε ίχνη στη συσκευή σας";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeBody" = "Το Brave VPN κρυπτογραφεί και προστατεύει οτιδήποτε κάνετε στο διαδίκτυο, ακόμη και εκτός του προγράμματος περιήγησης Brave.";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeTitle" = "VPN Brave";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoBody" = "Λάβετε υπόψη, ότι ακόμη και σε ιδιωτικά παράθυρα, η δραστηριότητα περιήγησής σας μπορεί να εξακολουθεί να είναι ορατή στον πάροχο υπηρεσιών διαδικτύου, σε παρατηρητές δικτύου ή στον εργοδότη σας (αν χρησιμοποιείτε συσκευή/δίκτυο εργασίας).";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoTitle" = "Εμφάνιση περιήγησης";
+
+/* A title shown when in private browsing mode with no tabs open */
+"tabGrid.privateBrowsingInfoTitle" = "ιδιωτική καρτέλα";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.privateBrowsingModeAccessibilityLabel" = "Ιδιωτική περιήγηση";
+
+/* A button title which when tapped will present settings for private tabs */
+"tabGrid.privateTabsSettingsTitle" = "Ρυθμίσεις ιδιωτικών καρτελών";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.regularBrowsingModeAccessibilityLabel" = "Κανονική περιήγηση";
+
+/* A button title that when tapped allows users to shred all of their tabs */
+"tabGrid.shredAllTabsButtonTitle" = "Κατάργηση όλων των καρτελών";
+
+/* A button title that when tapped allows users to shred the currently selected tab */
+"tabGrid.shredSelectedTabButtonTitle" = "Κατάργηση επιλεγμένης καρτέλας";
+
+/* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
+"tabGrid.shredTabsAccessibilityLabel" = "Κατάργηση καρτελών";
+
+/* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryAccessibilityLabel" = "Προβολή ιστορικού";
+
+/* Accessibility label for a button that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsAccessibilityLabel" = "Προβολή συγχρονισμένων καρτελών";
+
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Ενεργοποιεί ή απενεργοποιεί την ιδιωτική λειτουργία";
 
@@ -3252,6 +3157,15 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingTitle" = "Διατήρηση ιδιωτικών καρτελών";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionFaceID" = "Απαιτείται Face ID για πρόσβαση στις ιδιωτικές καρτέλες σας.";
+
+/* Describes the preference that locks the users private tabs behind their device PIN */
+"tabs.settings.privateBrowsingLockDescriptionPinCode" = "Απαιτείται το PIN της συσκευής σας για πρόσβαση στις ιδιωτικές καρτέλες σας.";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionTouchID" = "Απαιτείται Touch ID για την πρόσβαση στις ιδιωτικές καρτέλες σας.";
 
 /* No comment provided by engineer. */
 "tabs.settings.privateBrowsingLockTitleFaceID" = "Απαίτηση Face ID";

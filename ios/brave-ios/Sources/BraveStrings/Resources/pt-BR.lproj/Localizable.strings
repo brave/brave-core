@@ -1,5 +1,20 @@
+/* A label shown above a list of icons designed by Brave */
+"altAppIcon.braveIconsHeader" = "Ícones do Brave";
+
+/* The title for the screen that lets the user select a custom app icon */
+"altAppIcon.changeAppIcon" = "Alterar ícone do aplicativo";
+
+/* A label shown next to the default Brave app icon */
+"altAppIcon.defaultAppIcon" = "Padrão";
+
+/* A title shown if some sort of error occurs while changing the app icon */
+"altAppIcon.errorTitle" = "Falha ao alterar ícone do aplicativo";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "BackTitle" = "Voltar";
+
+/* Accessibility message e.g. spoken by VoiceOver when page translation becomes available. */
+"BraveTranslate.availableVoiceOverAnnouncement" = "Tradução de página disponível";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Fechar todas as abas";
@@ -16,8 +31,14 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Nova guia privada";
 
+/* The text of new tab takeover learn more / opt out choices link. */
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Saiba mais/opções de desativação";
+
+/* The text of new tab takeover infobar message. */
+"NewTabTakeoverInfoBarMessage" = "As imagens de fundo patrocinadas apoiam a missão do Brave de criar uma web independente que prioriza o usuário. Ao contrário das grandes empresas de tecnologia, medimos o desempenho dos anúncios de forma anônima para preservar sua privacidade.";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewTabTitle" = "Nova guia";
+"NewTabTitle" = "Nova aba";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenNewTabFromTabTrayKeyCodeTitle" = "Abrir nova aba";
@@ -28,14 +49,44 @@
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Já comprou em brave.com?";
 
+/* A subtitle shown on the checkout button that denotes that this checkout option is full price */
+"paywall.appStoreCheckoutOptionSubtitle" = "Preço total";
+
+/* The checkout option that lets the user use Apple's standard App Store puchase flow */
+"paywall.appStoreCheckoutOptionTitle" = "App Store";
+
+/* A subtitle shown on the checkout button that denotes that this checkout option is discounted. The first `%@` is replaced with a promo code, the second `%@` is replaced by the discount percentage */
+"paywall.braveAccountCheckoutOptionSubtitle" = "Código **%1$@** para %2$@ de desconto";
+
+/* The checkout option that lets the user use Brave's own purchase flow */
+"paywall.braveAccountCheckoutOptionTitle" = "Conta Brave";
+
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Você tem um código promocional?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Resgatar código promocional";
+
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Atualize suas credenciais";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"paywall.startTrialSubtitle" = "Escolha o método de check-out que funciona para você!";
+
+/* Text shown above buttons that give the user the option to start a trial */
+"paywall.startTrialTitle" = "Comece seu teste gratuito de 7 dias";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts used for opening recently closed tab. */
 "RecentlyClosedTabTitle" = "Reabrir separador fechado";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ReloadPageTitle" = "Recarregar página";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Saiba mais/opções de desativação";
+
+/* The text label of creative search result ad infobar message. */
+"searchResultAdClickedInfoBarMessage" = "Obrigado por apoiar a Pesquisa Brave clicando em um anúncio privado. Ao contrário da Big Tech, medimos o desempenho de anúncios anonimamente para preservar sua privacidade.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Selecionar barra de local";
@@ -77,10 +128,10 @@
 "storekitReceiptViewer.receiptCancellationDate" = "Data de cancelamento";
 
 /* The title of the label that shows the date the receipt was created */
-"storekitReceiptViewer.receiptDateTitle" = "Data de recebimento";
+"storekitReceiptViewer.receiptDateTitle" = "Data do recibo";
 
 /* The title of the label that shows the date when the product subscription expired */
-"storekitReceiptViewer.receiptExpirationDate" = "Data de expiração";
+"storekitReceiptViewer.receiptExpirationDate" = "Data de validade";
 
 /* The title of the label that shows any invalid date - Not Available or N/A for short is displayed */
 "storekitReceiptViewer.receiptInvalidDate" = "N/D";
@@ -101,25 +152,31 @@
 "storekitReceiptViewer.receiptTransactionIDTitle" = "ID da transação";
 
 /* The title of the label that shows when the Receipt Viewer is still loading resources and subscription information */
-"storekitReceiptViewer.receiptViewerLoadingTitle" = "Carregando Aguarde, por favor...";
+"storekitReceiptViewer.receiptViewerLoadingTitle" = "Carregando, por favor aguarde...";
 
 /* The title of the screen that shows the App Store Receipt */
 "storekitReceiptViewer.receiptViewerTitle" = "Recibo da App Store";
 
 /* The title of the button that shows a system action sheet, to share the receipt */
-"storekitReceiptViewer.shareReceiptTitle" = "Recebimento de ações";
+"storekitReceiptViewer.shareReceiptTitle" = "Compartilhar recibo";
 
 /* The title of the product subscription the user purchased (Monthly subscription) */
-"storekitReceiptViewer.vpnMonthlySubscriptionName" = "Brave VPN mensal";
+"storekitReceiptViewer.vpnMonthlySubscriptionName" = "VPN Brave Mensal";
 
 /* The title of the product subscription the user purchased (Yearly subscription) */
-"storekitReceiptViewer.vpnYearlySubscriptionName" = "Brave VPN anual";
+"storekitReceiptViewer.vpnYearlySubscriptionName" = "VPN Brave Anual";
 
 /* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToNonPBMKeyCodeTitle" = "Modo de navegação normal";
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Modo de navegação privada";
+
+/* A message shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorMessage" = "Ocorreu um erro ao baixar o arquivo. Tente novamente mais tarde.";
+
+/* A title shown when a file fails to download for some reason */
+"UnableToDownloadFileErrorTitle" = "Não foi possível baixar o arquivo";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Ampliar";

@@ -43,6 +43,18 @@
 /* The title above a list of the users selected browser actions such as bookmarks, history, etc. */
 "BrowserMenu.myActions" = "إجراءاتي";
 
+/* A row in the menu action customization list that divides which items are placed in a grid and which are placed in a list. */
+"BrowserMenu.quickActionDividerTitle" = "ستظهر العناصر الموجودة في الأعلى في المنطقة الرئيسية";
+
+/* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
+"BrowserMenu.resetButtonTitle" = "إعادة الضبط";
+
+/* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
+"BrowserMenu.resetToDefault" = "إعادة التعيين إلى الوضع الافتراضي";
+
+/* A message presented in a confirmation dialog explaining the destructive action of resetting the menu to its default state */
+"BrowserMenu.resetToDefaultDialogMessage" = "من خلال إعادة التعيين إلى الوضع الافتراضي، ستفقد أي تخصيصات قمت بها في Brave. لا يمكن التراجع عن هذا الإجراء. هل أنت متأكد من أنك تريد المتابعة؟";
+
 /* A button title that when taps shows all actions that are hidden by default */
 "BrowserMenu.showAllButtonTitle" = "إظهار الكل…";
 
