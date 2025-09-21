@@ -78,8 +78,8 @@ class BraveOriginPolicyManager {
   // Helper function to get pref info from pref definitions
   const BraveOriginPolicyInfo* GetPrefInfo(std::string_view pref_name);
 
-  // Reset the singleton state for testing
-  void ResetForTesting();
+  // Shutdown the policy manager, clearing state and observers
+  void Shutdown();
 
   BraveOriginPolicyManager(const BraveOriginPolicyManager&) = delete;
   BraveOriginPolicyManager& operator=(const BraveOriginPolicyManager&) = delete;

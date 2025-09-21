@@ -28,7 +28,7 @@ class BraveOriginPolicyManagerTest : public testing::Test {
 
   void TearDown() override {
     auto* manager = BraveOriginPolicyManager::GetInstance();
-    manager->ResetForTesting();
+    manager->Shutdown();
   }
 
  protected:

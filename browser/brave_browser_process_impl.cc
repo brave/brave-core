@@ -67,6 +67,8 @@
 #include "brave/browser/ai_chat/ai_chat_agent_profile_manager.h"
 #endif
 
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
+
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
@@ -218,6 +220,8 @@ void BraveBrowserProcessImpl::StartTearDown() {
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
   ai_chat_agent_profile_manager_.reset();
 #endif
+  // Reset BraveOriginPolicyManager to prevent dangling pointer to local_state_
+  brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
   brave_sync::NetworkTimeHelper::GetInstance()->Shutdown();
   BrowserProcessImpl::StartTearDown();
 }

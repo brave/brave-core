@@ -175,7 +175,7 @@ bool BraveOriginPolicyManager::IsInitialized() const {
   return initialized_;
 }
 
-void BraveOriginPolicyManager::ResetForTesting() {
+void BraveOriginPolicyManager::Shutdown() {
   initialized_ = false;
   browser_policy_definitions_.clear();
   profile_policy_definitions_.clear();

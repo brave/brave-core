@@ -64,7 +64,7 @@ class BraveOriginServiceTest : public testing::Test {
   void TearDown() override {
     service_.reset();
     auto* manager = BraveOriginPolicyManager::GetInstance();
-    manager->ResetForTesting();
+    manager->Shutdown();
   }
 
  protected:
@@ -400,7 +400,7 @@ class BraveOriginServiceDisabledTest : public testing::Test {
   void TearDown() override {
     service_.reset();
     auto* manager = BraveOriginPolicyManager::GetInstance();
-    manager->ResetForTesting();
+    manager->Shutdown();
   }
 
  protected:
