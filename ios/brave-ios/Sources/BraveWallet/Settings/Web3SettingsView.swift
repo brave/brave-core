@@ -136,7 +136,7 @@ private struct WalletSettingsView: View {
       footer: Text(Strings.Wallet.autoLockFooter)
         .foregroundColor(Color(.secondaryBraveLabel))
     ) {
-      Picker(selection: $settingsStore.autoLockInterval) {
+      FormPicker(selection: $settingsStore.autoLockInterval) {
         ForEach(autoLockIntervals) { interval in
           Text(interval.label)
             .foregroundColor(Color(.secondaryBraveLabel))
@@ -150,7 +150,7 @@ private struct WalletSettingsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section {
-      Picker(selection: $settingsStore.currencyCode) {
+      FormPicker(selection: $settingsStore.currencyCode) {
         ForEach(CurrencyCode.allCodes) { currencyCode in
           Text(currencyCode.code)
             .foregroundColor(Color(.secondaryBraveLabel))
@@ -314,7 +314,7 @@ private struct Web3DomainSettingsView: View {
   }
 
   @ViewBuilder private var ensResolveMethodPreference: some View {
-    Picker(selection: $settingsStore.ensResolveMethod) {
+    FormPicker(selection: $settingsStore.ensResolveMethod) {
       ForEach(BraveWallet.ResolveMethod.allCases) { option in
         Text(option.name)
           .foregroundColor(Color(.secondaryBraveLabel))
@@ -328,7 +328,7 @@ private struct Web3DomainSettingsView: View {
   }
 
   @ViewBuilder private var ensOffchainResolveMethodPreference: some View {
-    Picker(selection: $settingsStore.ensOffchainResolveMethod) {
+    FormPicker(selection: $settingsStore.ensOffchainResolveMethod) {
       ForEach(BraveWallet.ResolveMethod.allCases) { option in
         Text(option.name)
           .foregroundColor(Color(.secondaryBraveLabel))
@@ -355,7 +355,7 @@ private struct Web3DomainSettingsView: View {
   }
 
   @ViewBuilder private var snsResolveMethodPreference: some View {
-    Picker(selection: $settingsStore.snsResolveMethod) {
+    FormPicker(selection: $settingsStore.snsResolveMethod) {
       ForEach(BraveWallet.ResolveMethod.allCases) { option in
         Text(option.name)
           .foregroundColor(Color(.secondaryBraveLabel))
@@ -369,7 +369,7 @@ private struct Web3DomainSettingsView: View {
   }
 
   @ViewBuilder private var udResolveMethodPreference: some View {
-    Picker(selection: $settingsStore.udResolveMethod) {
+    FormPicker(selection: $settingsStore.udResolveMethod) {
       ForEach(BraveWallet.ResolveMethod.allCases) { option in
         Text(option.name)
           .foregroundColor(Color(.secondaryBraveLabel))

@@ -24,7 +24,7 @@ struct ShredSettingsView: View {
   var body: some View {
     Form {
       Section {
-        Picker(selection: $settings.shredLevel) {
+        FormPicker(selection: $settings.shredLevel) {
           ForEach(SiteShredLevel.allCases) { level in
             Text(level.localizedTitle)
               .foregroundColor(Color(.secondaryBraveLabel))
