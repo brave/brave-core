@@ -19,7 +19,6 @@
 #include "base/json/json_writer.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "brave/components/endpoint_client/endpoint.h"
 #include "brave/components/endpoint_client/endpoint_builder.h"
 #include "brave/components/endpoint_client/parse.h"
 #include "brave/components/endpoint_client/with_headers.h"
@@ -32,13 +31,12 @@
 
 namespace endpoint_client {
 
-template <detail::Endpoint Endpoint>
+template <IsEndpoint Ept>
 struct Client {
   template <typename Request, typename Response, typename Error>
-    requires(
-        Endpoint::template kIsRequestSupported<Request> &&
-        Endpoint::template kIsResponseSupportedForRequest<Response, Request> &&
-        Endpoint::template kIsErrorSupportedForRequest<Error, Request>)
+    requires(Ept::template kIsRequestSupported<Request> &&
+             Ept::template kIsResponseSupportedForRequest<Response, Request> &&
+             Ept::template kIsErrorSupportedForRequest<Error, Request>)
   static void Send(
       const scoped_refptr<network::SharedURLLoaderFactory>& url_loader_factory,
       Request request,
@@ -76,7 +74,7 @@ struct Client {
     CHECK(json) << "Failed to serialize request to JSON!";
 
     auto resource_request = std::make_unique<network::ResourceRequest>();
-    resource_request->url = Endpoint::URL();
+    resource_request->url = Ept::URL();
     resource_request->method = request.Method();
     if constexpr (base::is_instantiation<Request, WithHeaders>) {
       resource_request->headers = std::move(request.headers);

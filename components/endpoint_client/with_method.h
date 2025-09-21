@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_HTTP_METHOD_H_
-#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_HTTP_METHOD_H_
+#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_WITH_METHOD_H_
+#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_WITH_METHOD_H_
 
 #include <string_view>
 #include <type_traits>
@@ -65,4 +65,4 @@ struct WithMethod : Body {
 
 }  // namespace endpoint_client::detail
 
-#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_HTTP_METHOD_H_
+#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_WITH_METHOD_H_

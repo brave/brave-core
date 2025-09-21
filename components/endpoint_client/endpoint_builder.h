@@ -65,7 +65,13 @@ struct For {
   };
 };
 
-template <base::is_instantiation<detail::Entry>... Entries>
+template <std::size_t N>
+struct FixedString {
+  constexpr FixedString(const char (&str)[N]) { std::copy_n(str, N, value); }
+  char value[N];
+};
+
+template <FixedString path, base::is_instantiation<detail::Entry>... Entries>
   requires(detail::UniqueTypes<typename Entries::Request...>)
 class Endpoint {
   template <typename, typename...>
@@ -102,7 +108,18 @@ class Endpoint {
   static constexpr bool kIsErrorSupportedForRequest =
       std::is_same_v<detail::MaybeStripWithHeaders<Err>,
                      typename EntryFor<Req>::Error>;
+
+  static GURL URL() { return GURL(path.value); }
 };
+
+template <typename>
+struct is_endpoint : std::false_type {};
+
+template <fixed_string P, base::is_instantiation<detail::Entry>... Es>
+struct is_endpoint<Endpoint<P, Es...>> : std::true_type {};
+
+template <typename T>
+concept IsEndpoint = is_endpoint<T>::value;
 
 }  // namespace endpoint_client
 

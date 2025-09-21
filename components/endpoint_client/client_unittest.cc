@@ -88,30 +88,26 @@ using Response2 = Message<kResponse2Key>;
 using Error1 = Message<kError1Key>;
 using Error2 = Message<kError2Key>;
 
-struct TestEndpoint
-    : Endpoint<
-          // POST<Request1> =>
-          //   expected<
-          //     optional<variant<Response1, Response2>>,
-          //     optional<Error1>
-          //   >
-          For<POST<Request1>>::ReturnsWith<Response1,
-                                           Response2>::FailsWith<Error1>,
-          // PATCH<Request2> =>
-          //   expected<
-          //     optional<Response1>,
-          //     optional<variant<Error1, Error2>>
-          //   >
-          For<PATCH<Request2>>::ReturnsWith<Response1>::FailsWith<Error1,
-                                                                  Error2>,
-          // PATCH<Request1> =>
-          //   expected<
-          //     optional<Response1>,
-          //     optional<Error1>
-          //   >
-          For<PATCH<Request1>>::ReturnsWith<Response1>::FailsWith<Error1>> {
-  static GURL URL() { return GURL("https://example.com/api/query"); }
-};
+using TestEndpoint = Endpoint<
+    "https://example.com/api/query",
+    // POST<Request1> =>
+    //   expected<
+    //     optional<variant<Response1, Response2>>,
+    //     optional<Error1>
+    //   >
+    For<POST<Request1>>::ReturnsWith<Response1, Response2>::FailsWith<Error1>,
+    // PATCH<Request2> =>
+    //   expected<
+    //     optional<Response1>,
+    //     optional<variant<Error1, Error2>>
+    //   >
+    For<PATCH<Request2>>::ReturnsWith<Response1>::FailsWith<Error1, Error2>,
+    // PATCH<Request1> =>
+    //   expected<
+    //     optional<Response1>,
+    //     optional<Error1>
+    //   >
+    For<PATCH<Request1>>::ReturnsWith<Response1>::FailsWith<Error1>>;
 
 struct TestCase {
   std::variant<POST<Request1>, PATCH<Request2>, WithHeaders<PATCH<Request1>>>
@@ -189,8 +185,7 @@ TEST_P(EndpointClientTest, Send) {
           // WithHeaders<T> inherits from T. Check headers for equality.
           // Below is a workaround, as HttpResponseHeaders::StrictlyEquals()
           // doesn't work because of a space difference.
-          if constexpr (base::is_instantiation<Response,
-                                               WithHeaders>) {
+          if constexpr (base::is_instantiation<Response, WithHeaders>) {
             if (expected.has_value() && expected.value() &&
                 expected.value()->headers) {
               ASSERT_TRUE(got.has_value() && got.value() &&
@@ -321,9 +316,8 @@ INSTANTIATE_TEST_SUITE_P(
                 WithHeaders<PATCH<Request1>>{{"WithHeaders<PATCH<Request1>>"}},
             .status_code = net::HTTP_NOT_MODIFIED,
             .raw_reply = R"({"error1": "Error1"})",
-            .parsed_reply =
-                TestEndpoint::EntryFor<PATCH<Request1>>::Expected(
-                    base::unexpected(Error1("Error1")))}),
+            .parsed_reply = TestEndpoint::EntryFor<PATCH<Request1>>::Expected(
+                base::unexpected(Error1("Error1")))}),
     [](const auto& info) {
       return std::visit(
           [&](const auto& request) {
