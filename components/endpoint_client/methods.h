@@ -9,6 +9,9 @@
 #include "brave/components/endpoint_client/request.h"
 #include "brave/components/endpoint_client/with_method.h"
 
+// Aliases that bind a RequestBody to a specific HTTP method.
+// These are the only way to form a valid Request type.
+
 namespace endpoints {
 
 template <detail::RequestBody Body>
