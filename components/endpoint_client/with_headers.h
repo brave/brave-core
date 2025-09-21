@@ -13,29 +13,29 @@
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 
-namespace endpoints {
+namespace endpoint_client {
 
 // Primary template: a type cannot be wrapped in WithHeaders<> unless
 // matched by a partial specialization below.
 template <typename T>
 struct WithHeaders {
   static_assert(base::AlwaysFalse<T>,
-                "T must satisfy endpoints::detail::Request or "
-                "endpoints::detail::Response!");
+                "T must satisfy endpoint_client::detail::Request or "
+                "endpoint_client::detail::Response!");
 };
 
 // Partial specialization: wraps a Request with HTTP request headers.
-template <detail::Request Request>
-struct WithHeaders<Request> : Request {
+template <detail::Request Req>
+struct WithHeaders<Req> : Req {
   net::HttpRequestHeaders headers;
 };
 
 // Partial specialization: wraps a Response with HTTP response headers.
-template <detail::Response Response>
-struct WithHeaders<Response> : Response {
+template <detail::Response Rsp>
+struct WithHeaders<Rsp> : Rsp {
   scoped_refptr<net::HttpResponseHeaders> headers;
 };
 
-}  // namespace endpoints
+}  // namespace endpoint_client
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_WITH_HEADERS_H_

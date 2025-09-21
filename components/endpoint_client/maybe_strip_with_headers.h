@@ -13,7 +13,7 @@
 #include "brave/components/endpoint_client/response.h"
 #include "brave/components/endpoint_client/with_headers.h"
 
-namespace endpoints::detail {
+namespace endpoint_client::detail {
 
 // Primary template: leaves types unchanged unless
 // matched by a partial specialization below.
@@ -38,9 +38,8 @@ struct MaybeStripWithHeadersImpl<std::variant<Ts...>>
 // Alias: a type with WithHeaders<> removed if
 // its MaybeStripWithHeadersImpl specialization applies.
 template <typename T>
-using MaybeStripWithHeaders =
-    typename detail::MaybeStripWithHeadersImpl<T>::type;
+using MaybeStripWithHeaders = typename MaybeStripWithHeadersImpl<T>::type;
 
-}  // namespace endpoints::detail
+}  // namespace endpoint_client::detail
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_MAYBE_STRIP_WITH_HEADERS_H_

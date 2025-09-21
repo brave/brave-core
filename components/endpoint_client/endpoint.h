@@ -10,7 +10,7 @@
 
 #include "url/gurl.h"
 
-namespace endpoints::detail {
+namespace endpoint_client::detail {
 
 template <typename T>
 concept HasURL = requires {
@@ -20,6 +20,6 @@ concept HasURL = requires {
 template <typename T>
 concept Endpoint = HasURL<T>;
 
-}  // namespace endpoints::detail
+}  // namespace endpoint_client::detail
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_ENDPOINT_H_

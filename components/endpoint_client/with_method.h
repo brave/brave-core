@@ -13,7 +13,7 @@
 #include "brave/components/endpoint_client/request.h"
 #include "net/http/http_request_headers.h"
 
-namespace endpoints::detail {
+namespace endpoint_client::detail {
 
 // HTTP methods
 enum class Method {
@@ -63,6 +63,6 @@ struct WithMethod : Body {
   }
 };
 
-}  // namespace endpoints::detail
+}  // namespace endpoint_client::detail
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_HTTP_METHOD_H_

@@ -13,7 +13,7 @@
 
 #include "base/values.h"
 
-namespace endpoints::detail {
+namespace endpoint_client::detail {
 
 // Concept: a type T is a ResponseBody if
 // it defines static std::optional<T> FromValue(const base::Value&).
@@ -44,6 +44,6 @@ struct ResponseImpl<std::variant<Bodies...>> : std::true_type {};
 template <typename T>
 concept Response = ResponseImpl<T>::value;
 
-}  // namespace endpoints::detail
+}  // namespace endpoint_client::detail
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_RESPONSE_H_

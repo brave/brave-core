@@ -9,7 +9,7 @@
 #include <type_traits>
 #include <variant>
 
-namespace endpoints::detail {
+namespace endpoint_client::detail {
 
 // Primary template: would only match the empty parameter pack,
 // which is excluded by the alias' requires-clause below.
@@ -33,6 +33,6 @@ template <typename... Ts>
   requires(sizeof...(Ts) > 0)
 using MaybeVariant = typename MaybeVariantImpl<Ts...>::type;
 
-}  // namespace endpoints::detail
+}  // namespace endpoint_client::detail
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_MAYBE_VARIANT_H_

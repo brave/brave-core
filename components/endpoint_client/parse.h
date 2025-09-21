@@ -18,20 +18,20 @@
 
 namespace endpoint_client::detail {
 
-template <endpoints::detail::Response Response>
+template <Response Rsp>
 struct Parse {
   static auto From(const std::optional<base::Value>& value,
                    scoped_refptr<net::HttpResponseHeaders> = nullptr) {
-    return value ? Response::FromValue(*value) : std::nullopt;
+    return value ? Rsp::FromValue(*value) : std::nullopt;
   }
 };
 
-template <endpoints::detail::Response Response>
-struct Parse<endpoints::WithHeaders<Response>> {
+template <Response Rsp>
+struct Parse<WithHeaders<Rsp>> {
   static auto From(const std::optional<base::Value>& value,
                    scoped_refptr<net::HttpResponseHeaders> headers) {
-    std::optional<endpoints::WithHeaders<Response>> result;
-    auto response = Parse<Response>::From(value);
+    std::optional<WithHeaders<Rsp>> result;
+    auto response = Parse<Rsp>::From(value);
     if (!response) {
       return result;
     }
@@ -42,18 +42,18 @@ struct Parse<endpoints::WithHeaders<Response>> {
   }
 };
 
-template <endpoints::detail::Response... Responses>
-struct Parse<std::variant<Responses...>> {
+template <Response... Rsps>
+struct Parse<std::variant<Rsps...>> {
   static auto From(const std::optional<base::Value>& value,
                    scoped_refptr<net::HttpResponseHeaders> headers) {
-    std::optional<std::variant<Responses...>> result;
+    std::optional<std::variant<Rsps...>> result;
     (
         [&] {
           if (result) {
             return;
           }
 
-          if (auto response = Parse<Responses>::From(value, headers)) {
+          if (auto response = Parse<Rsps>::From(value, headers)) {
             result = std::move(*response);
           }
         }(),

@@ -12,7 +12,7 @@
 // Aliases that bind a RequestBody to a specific HTTP method.
 // These are the only way to form a valid Request type.
 
-namespace endpoints {
+namespace endpoint_client {
 
 template <detail::RequestBody Body>
 using CONNECT = detail::WithMethod<Body, detail::Method::kConnect>;
@@ -44,6 +44,6 @@ using TRACE = detail::WithMethod<Body, detail::Method::kTrace>;
 template <detail::RequestBody Body>
 using TRACK = detail::WithMethod<Body, detail::Method::kTrack>;
 
-}  // namespace endpoints
+}  // namespace endpoint_client
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_METHODS_H_

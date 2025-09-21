@@ -10,7 +10,7 @@
 
 #include "base/json/json_writer.h"
 
-namespace endpoints::detail {
+namespace endpoint_client::detail {
 
 // Concept: a type is a RequestBody if
 // - it defines a non-static member function ToValue(),
@@ -39,6 +39,6 @@ struct RequestImpl<WithMethod<Body, M>> : std::true_type {};
 template <typename T>
 concept Request = RequestImpl<T>::value;
 
-}  // namespace endpoints::detail
+}  // namespace endpoint_client::detail
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_

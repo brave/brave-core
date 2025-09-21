@@ -39,12 +39,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-using endpoints::Endpoint;
-using endpoints::For;
-using endpoints::PATCH;
-using endpoints::POST;
-using endpoints::WithHeaders;
-
 namespace {
 template <const char* Key>
 struct Message {
@@ -196,7 +190,7 @@ TEST_P(EndpointClientTest, Send) {
           // Below is a workaround, as HttpResponseHeaders::StrictlyEquals()
           // doesn't work because of a space difference.
           if constexpr (base::is_instantiation<Response,
-                                               endpoints::WithHeaders>) {
+                                               WithHeaders>) {
             if (expected.has_value() && expected.value() &&
                 expected.value()->headers) {
               ASSERT_TRUE(got.has_value() && got.value() &&

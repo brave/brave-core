@@ -32,7 +32,7 @@
 
 namespace endpoint_client {
 
-template <endpoints::detail::Endpoint Endpoint>
+template <detail::Endpoint Endpoint>
 struct Client {
   template <typename Request, typename Response, typename Error>
     requires(
@@ -78,7 +78,7 @@ struct Client {
     auto resource_request = std::make_unique<network::ResourceRequest>();
     resource_request->url = Endpoint::URL();
     resource_request->method = request.Method();
-    if constexpr (base::is_instantiation<Request, endpoints::WithHeaders>) {
+    if constexpr (base::is_instantiation<Request, WithHeaders>) {
       resource_request->headers = std::move(request.headers);
     }
 

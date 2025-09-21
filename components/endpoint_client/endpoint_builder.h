@@ -28,7 +28,7 @@
 #include "brave/components/endpoint_client/request.h"
 #include "brave/components/endpoint_client/response.h"
 
-namespace endpoints::detail {
+namespace endpoint_client::detail {
 
 template <typename... Ts>
 concept UniqueTypes = requires {
@@ -37,9 +37,9 @@ concept UniqueTypes = requires {
   };
 };
 
-}  // namespace endpoints::detail
+}  // namespace endpoint_client::detail
 
-namespace endpoints {
+namespace endpoint_client {
 namespace detail {
 
 template <Request Req, Response Ok, Response Err>
@@ -53,16 +53,15 @@ struct Entry {
 
 }  // namespace detail
 
-template <detail::Request Request>
+template <detail::Request Req>
 struct For {
   template <detail::Response... Oks>
     requires(sizeof...(Oks) > 0)
   struct ReturnsWith {
-    template <detail::Response... Errors>
-      requires(sizeof...(Errors) > 0)
-    using FailsWith = detail::Entry<Request,
-                                    detail::MaybeVariant<Oks...>,
-                                    detail::MaybeVariant<Errors...>>;
+    template <detail::Response... Errs>
+      requires(sizeof...(Errs) > 0)
+    using FailsWith = detail::
+        Entry<Req, detail::MaybeVariant<Oks...>, detail::MaybeVariant<Errs...>>;
   };
 };
 
@@ -105,6 +104,6 @@ class Endpoint {
                      typename EntryFor<Req>::Error>;
 };
 
-}  // namespace endpoints
+}  // namespace endpoint_client
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_ENDPOINT_BUILDER_H_
