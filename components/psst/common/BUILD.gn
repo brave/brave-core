@@ -21,6 +21,8 @@ static_library("common") {
   ]
 
   sources = [
+    "brave_psst_permission_context.cc",
+    "brave_psst_permission_context.h",
     "features.cc",
     "pref_names.cc",
     "psst_consent_data.cc",
