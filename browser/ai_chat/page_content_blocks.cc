@@ -47,6 +47,12 @@ bool ShouldFlattenContainer(const ContentNode& node) {
     return false;
   }
 
+  // Don't flatten the root node
+  if (node.content_attributes().attribute_type() ==
+      ContentAttributeType::CONTENT_ATTRIBUTE_ROOT) {
+    return false;
+  }
+
   return true;
 }
 
@@ -66,7 +72,8 @@ std::string XmlEscapeAndSanitizeText(const std::string& input) {
   return output;
 }
 
-std::string BuildAttributes(const ContentAttributes& attrs) {
+std::string BuildAttributes(const ContentAttributes& attrs,
+                            bool id_only_for_interactive = true) {
   // Helper function to build interaction attributes
   std::string attr_result;
 
@@ -74,14 +81,23 @@ std::string BuildAttributes(const ContentAttributes& attrs) {
   bool is_interactive = false;
   if (attrs.has_interaction_info()) {
     const auto& interaction = attrs.interaction_info();
-    if (interaction.is_clickable() || interaction.is_editable()) {
+    if (interaction.has_scroller_info()) {
+      const auto& scroller_info = interaction.scroller_info();
+      if (scroller_info.user_scrollable_horizontal() ||
+          scroller_info.user_scrollable_vertical()) {
+        is_interactive = true;
+      }
+    }
+    if (!is_interactive &&
+        (interaction.is_clickable() || interaction.is_editable())) {
       // ignore selectable, focusable and draggable for now
       is_interactive = true;
     }
   }
 
   // Add DOM node ID if available
-  if (is_interactive && attrs.has_common_ancestor_dom_node_id()) {
+  if ((is_interactive || !id_only_for_interactive) &&
+      attrs.has_common_ancestor_dom_node_id()) {
     attr_result +=
         absl::StrFormat(" dom_id=\"%d\"", attrs.common_ancestor_dom_node_id());
   }
@@ -103,6 +119,22 @@ std::string BuildAttributes(const ContentAttributes& attrs) {
     }
     if (interaction.is_editable()) {
       attr_result += " editable";
+    }
+    if (interaction.has_scroller_info()) {
+      const auto& scroller_info = interaction.scroller_info();
+      if (scroller_info.user_scrollable_horizontal() ||
+          scroller_info.user_scrollable_vertical()) {
+        auto size = scroller_info.scrolling_bounds();
+        auto visible_area = scroller_info.visible_area();
+        attr_result += " scrollable";
+        // Size in XxY
+        attr_result +=
+            absl::StrFormat(" size=\"%dx%d\"", size.width(), size.height());
+        // Visible area size and position
+        attr_result += absl::StrFormat(
+            " visible_area=\"%dx%d,%d,%d\"", visible_area.width(),
+            visible_area.height(), visible_area.x(), visible_area.y());
+      }
     }
     // if (interaction.is_focusable()) {
     //   attr_result += " focusable=\"true\"";
@@ -350,11 +382,11 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
       return content;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_ROOT:
-      content += base::StrCat({indent, "<page", BuildAttributes(attrs), ">\n"});
+      content += base::StrCat({indent, "<root", BuildAttributes(attrs, false), ">\n"});
       for (const auto& child : node.children_nodes()) {
         content += GenerateContentStructure(child, depth + 1);
       }
-      content += base::StrCat({indent, "</page>\n"});
+      content += base::StrCat({indent, "</root>\n"});
       return content;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_CONTAINER:
@@ -453,15 +485,30 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
     result += "\n";
   }
 
+  const auto& root_node = page_content.root_node();
+
   // Add viewport information for coordinate references
   if (page_content.has_viewport_geometry()) {
     const auto& viewport = page_content.viewport_geometry();
+
     result += absl::StrFormat(
-        "VIEWPORT: %dx%d pixels, currently scrolled at %d,%d\n",
+        "VIEWPORT: %dx%d pixels, currently scrolled at %d,%d",
         viewport.width(), viewport.height(), viewport.x(), viewport.y());
+
+    if (root_node.content_attributes().has_interaction_info() &&
+        root_node.content_attributes().interaction_info().has_scroller_info()) {
+      const auto& scroller_info =
+          root_node.content_attributes().interaction_info().scroller_info();
+      result += absl::StrFormat(" within a document of size %dx%d",
+                                scroller_info.scrolling_bounds().width(),
+                                scroller_info.scrolling_bounds().height());
+    }
+
+    result += "\n";
+
   }
 
-  std::string tree_string = GenerateContentStructure(page_content.root_node());
+  std::string tree_string = GenerateContentStructure(root_node);
   if (tree_string.length() > kMaxTreeStringLength) {
     // TODO(https://github.com/brave/brave-browser/issues/49262): prioritize
     // viewport elements - the consumer can then scroll to "paginate."
@@ -483,7 +530,7 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
   result += "\n=== INTERACTION INSTRUCTIONS ===\n";
   result +=
       "The page structure represents the entire page and not just the "
-      "viewport. Use scroll only if neccessary or to show the user something. "
+      "viewport. Use scroll if neccessary to interact with an element not within the viewport, or to show the user something. "
       "Use the XML attributes to guide interaction:\n";
   result +=
       "- dom_id: Use for precise element targeting but you must provide the "

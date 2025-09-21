@@ -27,22 +27,37 @@ std::string_view TypeTool::Name() const {
 }
 
 std::string_view TypeTool::Description() const {
-  return "Type text into an input field on the current web page. Element must "
+  return "Type keyboard characters into an input field on the current web "
+         "page. Element must "
          "be editable and focusable. Prefer input over container elements. "
          "Use the 'target' object to specify either DOM element identifiers "
          "or screen coordinates. Supports different modes for handling "
-         "existing text and can optionally press Enter after typing.";
+         "existing text and can optionally press Enter after typing. Only "
+         "supports a series of ascii characters and no newline characters. If "
+         "requiring excplicit new lines, and the element type supports new "
+         "lines, break each line up in to a separate tool action and specify "
+         "to press enter after each one. The field does not need to "
+         "be clicked first as that will be done automatically. For example: [\n"
+          "{ name: \"type_text\", target: { ... }, text: \"This is the first paragraph of text without a newline\", follow_by_enter: true },\n"
+          "{ name: \"type_text\", target: { ... }, text: \"And this is the next paragraph of text without a newline\", follow_by_enter: false },\n"
+         "]";
 }
 
 std::optional<base::Value::Dict> TypeTool::InputProperties() const {
   return CreateInputProperties(
       {{"target", target_util::TargetProperty("Element to type into")},
-       {"text", StringProperty("The text to type into the element")},
+       {"text",
+        StringProperty("A single line of text: a string of keyboard ascii "
+                       "characters to press "
+                       "in sequence after the field is clicked. CANNOT INCLUDE "
+                       "MULTIPLE LINES OR NEW LINE CHARACTERS!")},
        {"follow_by_enter",
         BooleanProperty("Whether to press Enter after typing the text")},
-       {"mode", StringProperty("How to handle existing text in the element",
-                               std::vector<std::string>{"replace", "prepend",
-                                                        "append"})}});
+       {"mode",
+        StringProperty(
+            "How to handle existing text in the element. Prefer \"append\" for "
+            "fields with no existing text.",
+            std::vector<std::string>{"replace", "prepend", "append"})}});
 }
 
 std::optional<std::vector<std::string>> TypeTool::RequiredProperties() const {

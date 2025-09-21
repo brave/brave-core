@@ -7,6 +7,7 @@
 
 #include "base/notreached.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
+#include "chrome/common/actor/actor_constants.h"
 
 namespace ai_chat::target_util {
 
@@ -14,17 +15,18 @@ base::Value::Dict TargetProperty(const std::string& description) {
   base::Value::Dict target_property;
   target_property.Set("description", description);
   base::Value::List* any_of = target_property.EnsureList("anyOf");
+
+  any_of->Append(ObjectProperty(
+      "DOM element identifiers of target (preferred)",
+      {{"document_identifier",
+        StringProperty("Document identifier for the target frame")},
+       {"content_node_id", IntegerProperty("DOM node ID of the target element "
+                                           "within the frame (optional)")}}));
+
   any_of->Append(
       ObjectProperty("Screen coordinates of target (less stable)",
                      {{"x", NumberProperty("X coordinate in pixels")},
                       {"y", NumberProperty("Y coordinate in pixels")}}));
-
-  any_of->Append(ObjectProperty(
-      "DOM element identifiers of target (preferred)",
-      {{"content_node_id",
-        IntegerProperty("DOM node ID of the target element")},
-       {"document_identifier",
-        StringProperty("Document identifier for the content node")}}));
 
   return target_property;
 }
@@ -39,11 +41,11 @@ std::optional<optimization_guide::proto::ActionTarget> ParseTargetInput(
   auto* document_identifier = target_dict.FindString("document_identifier");
 
   // Ensure exactly one approach is used
-  if (x_value && y_value && content_node_id && document_identifier) {
+  if (x_value && y_value && document_identifier) {
     if (out_error) {
       *out_error =
-          "Target must contain either 'x' and 'y' or 'content_node_id' and "
-          "'document_identifier', not both";
+          "Target must contain either 'x' and 'y' or "
+          "'document_identifier' with optional 'content_node_id', not both";
     }
     return std::nullopt;
   }
@@ -51,9 +53,9 @@ std::optional<optimization_guide::proto::ActionTarget> ParseTargetInput(
   if (!x_value && !y_value && !content_node_id && !document_identifier) {
     if (out_error) {
       *out_error =
-          "Target must contain one of either 'x' and 'y' or 'content_node_id' "
-          "and "
-          "'document_identifier'";
+          "Target must contain one of either 'x' and 'y' or "
+          "'document_identifier' "
+          "and optional 'content_node_id'";
     }
     return std::nullopt;
   }
@@ -76,14 +78,19 @@ std::optional<optimization_guide::proto::ActionTarget> ParseTargetInput(
 
   // Parse identifiers approach
   if (content_node_id || document_identifier) {
-    if (!content_node_id || !document_identifier) {
+    if (!document_identifier) {
       if (out_error) {
         *out_error =
-            "Invalid identifiers: both 'content_node_id' and "
-            "'document_identifier' are required";
+            "Invalid identifiers: 'document_identifier' is required when "
+            "specifying 'content_node_id'";
       }
       return std::nullopt;
     }
+
+    if (!content_node_id) {
+      content_node_id = actor::kRootElementDomNodeId;
+    }
+
 
     optimization_guide::proto::ActionTarget target;
     target.set_content_node_id(content_node_id.value());

@@ -244,6 +244,34 @@ IN_PROC_BROWSER_TEST_F(BrowserToolsTest, ScrollTool_NodeIdTarget) {
   EXPECT_GT(final_scroll, initial_scroll);
 }
 
+// Test scroll tool with Node ID targeting
+IN_PROC_BROWSER_TEST_F(BrowserToolsTest, ScrollTool_DocumentTarget) {
+  NavigateToChromiumTestFile("/actor/scrollable_page.html");
+
+  auto scroll_tool = FindToolByName("scroll_element");
+  ASSERT_TRUE(scroll_tool);
+
+  int scroll_distance = 50;
+
+  ASSERT_EQ(0, EvalJs(web_contents(), "window.scrollY"));
+
+  auto target_dict = target_test_util::GetDocumentTargetDict(
+      *optimization_guide::DocumentIdentifierUserData::GetDocumentIdentifier(
+          web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()));
+
+  base::Value::Dict input;
+  input.Set("target", std::move(target_dict));
+  input.Set("direction", "down");
+  input.Set("distance", scroll_distance);
+
+  auto result = ExecuteToolAndWait(scroll_tool, CreateToolInput(input));
+  EXPECT_GT(result.size(), 0u);
+
+  // Verify the element was scrolled down
+  ASSERT_EQ(50, EvalJs(web_contents(), "window.scrollY"));
+  EXPECT_GT(scroll_distance, EvalJs(web_contents(), "window.scrollY"));
+}
+
 // Test select tool with Node ID targeting
 IN_PROC_BROWSER_TEST_F(BrowserToolsTest, SelectTool_NodeIdTarget) {
   NavigateToChromiumTestFile("/actor/select_tool.html");

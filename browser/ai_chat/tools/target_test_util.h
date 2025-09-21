@@ -20,6 +20,11 @@ void VerifyContentNodeTarget(
     int expected_content_node_id,
     const std::string& expected_doc_id);
 
+// Verify that an ActionTarget contains the expected document information
+// with no node id.
+void VerifyDocumentTarget(const optimization_guide::proto::ActionTarget& target,
+                          const std::string& expected_doc_id);
+
 // Verify that an ActionTarget contains the expected coordinate information
 void VerifyCoordinateTarget(
     const optimization_guide::proto::ActionTarget& target,
@@ -28,6 +33,10 @@ void VerifyCoordinateTarget(
 
 // Verify that an ActionTarget is a content node target (vs coordinate)
 void ExpectContentNodeTarget(
+    const optimization_guide::proto::ActionTarget& target);
+
+// Verify that an ActionTarget is a document target, with no node id
+void ExpectDocumentTarget(
     const optimization_guide::proto::ActionTarget& target);
 
 // Verify that an ActionTarget is a coordinate target (vs content node)
@@ -39,6 +48,10 @@ optimization_guide::proto::ActionTarget GetContentNodeTarget(
     int content_node_id = 42,
     const std::string& doc_id = "doc123");
 
+// Creates a standard document target for testing
+optimization_guide::proto::ActionTarget GetDocumentTarget(
+    const std::string& doc_id = "doc123");
+
 // Creates a standard coordinate target for testing
 optimization_guide::proto::ActionTarget GetCoordinateTarget(int x = 100,
                                                             int y = 200);
@@ -47,6 +60,9 @@ optimization_guide::proto::ActionTarget GetCoordinateTarget(int x = 100,
 base::Value::Dict GetContentNodeTargetDict(
     int content_node_id = 42,
     const std::string& doc_id = "doc123");
+
+// Creates a standard document target JSON for testing
+base::Value::Dict GetDocumentTargetDict(const std::string& doc_id = "doc123");
 
 // Creates a standard coordinate target JSON for testing
 base::Value::Dict GetCoordinateTargetDict(double x = 100.5, double y = 200.5);

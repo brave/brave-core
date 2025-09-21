@@ -7,6 +7,7 @@
 
 #include "base/test/values_test_util.h"
 #include "base/values.h"
+#include "chrome/common/actor/actor_constants.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -31,32 +32,31 @@ TEST_F(TargetUtilTest, TargetProperty_CompleteSchemaStructure) {
     "description": "Click target element",
     "anyOf": [
       {
-        "type": "object",
-        "description": "Screen coordinates of target (less stable)",
-        "properties": {
-          "x": {
-            "type": "number",
-            "description": "X coordinate in pixels"
-          },
-          "y": {
-            "type": "number",
-            "description": "Y coordinate in pixels"
-          }
-        }
-      },
-      {
-        "type": "object",
         "description": "DOM element identifiers of target (preferred)",
         "properties": {
-          "content_node_id": {
-            "type": "integer",
-            "description": "DOM node ID of the target element"
-          },
-          "document_identifier": {
-            "type": "string",
-            "description": "Document identifier for the content node"
-          }
-        }
+            "content_node_id": {
+              "description": "DOM node ID of the target element within the frame (optional)",
+              "type": "integer"
+            },
+            "document_identifier": {
+              "description": "Document identifier for the target frame",
+              "type": "string"
+            }
+        },
+        "type": "object"
+      }, {
+        "description": "Screen coordinates of target (less stable)",
+        "properties": {
+            "x": {
+              "description": "X coordinate in pixels",
+              "type": "number"
+            },
+            "y": {
+              "description": "Y coordinate in pixels",
+              "type": "number"
+            }
+        },
+        "type": "object"
       }
     ]
   })JSON"));
@@ -85,7 +85,29 @@ TEST_F(TargetUtilTest, ParseTargetInput_ValidCoordinates) {
   EXPECT_EQ(coordinate.y(), 250);  // Truncated to int32
 }
 
-TEST_F(TargetUtilTest, ParseTargetInput_ValidIdentifiers) {
+TEST_F(TargetUtilTest, ParseTargetInput_ValidDocumentIdentifier) {
+  auto target_dict = base::test::ParseJsonDict(R"JSON({
+    "document_identifier": "test_doc"
+  })JSON");
+
+  std::string error;
+  auto result = ParseTargetInput(target_dict, &error);
+
+  ASSERT_TRUE(result.has_value());
+  EXPECT_TRUE(error.empty());
+
+  const auto& target = result.value();
+  EXPECT_FALSE(target.has_coordinate());
+  // Should default to root node id
+  EXPECT_TRUE(target.has_content_node_id());
+  EXPECT_EQ(target.content_node_id(), actor::kRootElementDomNodeId);
+
+  EXPECT_TRUE(target.has_document_identifier());
+
+  EXPECT_EQ(target.document_identifier().serialized_token(), "test_doc");
+}
+
+TEST_F(TargetUtilTest, ParseTargetInput_ValidContentNodeId) {
   auto target_dict = base::test::ParseJsonDict(R"JSON({
     "content_node_id": 42,
     "document_identifier": "test_doc_123"
@@ -130,20 +152,6 @@ TEST_F(TargetUtilTest, ParseTargetInput_MissingY) {
   EXPECT_EQ(error, "Invalid coordinates: both 'x' and 'y' are required");
 }
 
-TEST_F(TargetUtilTest, ParseTargetInput_MissingContentNodeId) {
-  auto target_dict = base::test::ParseJsonDict(R"JSON({
-    "document_identifier": "test_doc"
-  })JSON");
-
-  std::string error;
-  auto result = ParseTargetInput(target_dict, &error);
-
-  EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(error,
-            "Invalid identifiers: both 'content_node_id' and "
-            "'document_identifier' are required");
-}
-
 TEST_F(TargetUtilTest, ParseTargetInput_MissingDocumentIdentifier) {
   auto target_dict = base::test::ParseJsonDict(R"JSON({
     "content_node_id": 42
@@ -154,8 +162,8 @@ TEST_F(TargetUtilTest, ParseTargetInput_MissingDocumentIdentifier) {
 
   EXPECT_FALSE(result.has_value());
   EXPECT_EQ(error,
-            "Invalid identifiers: both 'content_node_id' and "
-            "'document_identifier' are required");
+            "Invalid identifiers: 'document_identifier' is required when "
+            "specifying 'content_node_id'");
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_BothApproaches) {
@@ -171,8 +179,8 @@ TEST_F(TargetUtilTest, ParseTargetInput_BothApproaches) {
 
   EXPECT_FALSE(result.has_value());
   EXPECT_EQ(error,
-            "Target must contain either 'x' and 'y' or 'content_node_id' and "
-            "'document_identifier', not both");
+            "Target must contain either 'x' and 'y' or "
+            "'document_identifier' with optional 'content_node_id', not both");
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_NeitherApproach) {
@@ -182,9 +190,10 @@ TEST_F(TargetUtilTest, ParseTargetInput_NeitherApproach) {
   auto result = ParseTargetInput(target_dict, &error);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(error,
-            "Target must contain one of either 'x' and 'y' or "
-            "'content_node_id' and 'document_identifier'");
+  EXPECT_EQ(
+      error,
+      "Target must contain one of either 'x' and 'y' or 'document_identifier' "
+      "and optional 'content_node_id'");
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_PartialCoordinatesBothPresent) {

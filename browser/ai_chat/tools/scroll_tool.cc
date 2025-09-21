@@ -29,16 +29,22 @@ std::string_view ScrollTool::Name() const {
 std::string_view ScrollTool::Description() const {
   return "Scroll an element or the viewport in the current web page. Use the "
          "'target' object to specify either DOM element identifiers or screen "
-         "coordinates to identify the scrollable element.";
+         "coordinates to identify the scrollable element. This tool should be "
+         "used to ensure elements that need to be interacted with are in the "
+         "viewport.";
 }
 
 std::optional<base::Value::Dict> ScrollTool::InputProperties() const {
   return CreateInputProperties(
-      {{"target", target_util::TargetProperty("Element to scroll")},
+      {{"target", target_util::TargetProperty("Document or Element to scroll")},
        {"direction", StringProperty("Direction to scroll",
                                     std::vector<std::string>{"left", "right",
                                                              "up", "down"})},
-       {"distance", NumberProperty("Distance to scroll in pixels")}});
+       {"distance",
+        NumberProperty("Distance to scroll in pixels. It is suggested to use a "
+                       "value that will enable an interactive element to be "
+                       "used given the element's specified position and the "
+                       "specified viewport dimensions and position.")}});
 }
 
 std::optional<std::vector<std::string>> ScrollTool::RequiredProperties() const {

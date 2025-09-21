@@ -176,6 +176,33 @@ class ScrollToolTest : public testing::Test {
   actor::TaskId test_task_id_;
 };
 
+TEST_F(ScrollToolTest, ValidInputWithDocumentTargetDown) {
+  // Use standard content node target from target_test_util
+  auto target_dict = target_test_util::GetDocumentTargetDict();
+  std::string input_json = CreateValidScrollJson(target_dict, "down", 150.0);
+  base::RunLoop run_loop;
+
+  optimization_guide::proto::Actions captured_actions;
+  EXPECT_CALL(*mock_task_provider_, ExecuteActions(testing::_, testing::_))
+      .WillOnce(testing::Invoke([&captured_actions, &run_loop](
+                                    optimization_guide::proto::Actions actions,
+                                    Tool::UseToolCallback callback) {
+        captured_actions = std::move(actions);
+        run_loop.Quit();
+      }));
+
+  scroll_tool_->UseTool(input_json, base::DoNothing());
+  run_loop.Run();
+
+  // Verify scroll action properties
+  VerifyScrollAction(captured_actions,
+                     optimization_guide::proto::ScrollAction::DOWN, 150.0f);
+
+  // Verify target separately using target_test_util
+  const auto& target = captured_actions.actions(0).scroll().target();
+  target_test_util::VerifyDocumentTarget(target, "doc123");
+}
+
 TEST_F(ScrollToolTest, ValidInputWithContentNodeDown) {
   // Use standard content node target from target_test_util
   auto target_dict = target_test_util::GetContentNodeTargetDict();
@@ -377,8 +404,8 @@ TEST_F(ScrollToolTest, MissingDocumentIdentifier) {
   base::JSONWriter::Write(dict, &input_json);
 
   RunWithExpectedError(input_json,
-                       "Invalid identifiers: both 'content_node_id' and "
-                       "'document_identifier' are required");
+                       "Invalid identifiers: 'document_identifier' is required "
+                       "when specifying 'content_node_id'");
 }
 
 TEST_F(ScrollToolTest, MissingTargetObject) {
@@ -400,7 +427,7 @@ TEST_F(ScrollToolTest, InvalidTargetValidation) {
   // and returns appropriate error messages from target_util
   RunWithExpectedError(CreateInvalidTargetJson("{}"),
                        "Target must contain one of either 'x' and 'y' or "
-                       "'content_node_id' and 'document_identifier'");
+                       "'document_identifier' and optional 'content_node_id'");
 }
 
 TEST_F(ScrollToolTest, ToolMetadata) {

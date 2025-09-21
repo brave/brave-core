@@ -268,7 +268,7 @@ TEST_F(SelectToolTest, InvalidTargetValidation) {
   // and returns appropriate error messages from target_util
   RunWithExpectedError(CreateInvalidTargetJson("{}"),
                        "Target must contain one of either 'x' and 'y' or "
-                       "'content_node_id' and 'document_identifier'");
+                       "'document_identifier' and optional 'content_node_id'");
 }
 
 TEST_F(SelectToolTest, MissingDocumentIdentifierWithContentNode) {
@@ -284,8 +284,8 @@ TEST_F(SelectToolTest, MissingDocumentIdentifierWithContentNode) {
   base::JSONWriter::Write(dict, &input_json);
 
   RunWithExpectedError(input_json,
-                       "Invalid identifiers: both 'content_node_id' and "
-                       "'document_identifier' are required");
+                       "Invalid identifiers: 'document_identifier' is required "
+                       "when specifying 'content_node_id'");
 }
 
 TEST_F(SelectToolTest, InvalidValueType) {

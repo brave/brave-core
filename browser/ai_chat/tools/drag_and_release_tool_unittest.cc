@@ -255,7 +255,7 @@ TEST_F(DragAndReleaseToolTest, InvalidFromTarget) {
   RunWithExpectedError(
       FROM_HERE, R"({ "from": {} })",
       "Invalid 'from' target: Target must contain one of either 'x' and 'y' or "
-      "'content_node_id' and 'document_identifier'");
+      "'document_identifier' and optional 'content_node_id'");
 }
 
 // Test invalid to target
@@ -267,7 +267,7 @@ TEST_F(DragAndReleaseToolTest, InvalidToTarget) {
   RunWithExpectedError(
       FROM_HERE, input_json,
       "Invalid 'to' target: Target must contain one of either 'x' and 'y' or "
-      "'content_node_id' and 'document_identifier'");
+      "'document_identifier' and optional 'content_node_id'");
 }
 
 // Test tool metadata
