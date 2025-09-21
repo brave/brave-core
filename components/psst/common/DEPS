@@ -1,3 +1,4 @@
 include_rules = [
   "+components/prefs",
+  "+components/permissions/object_permission_context_base.h",
 ]
