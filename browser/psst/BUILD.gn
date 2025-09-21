@@ -5,13 +5,11 @@
 
 static_library("psst") {
   public = [
-    "brave_psst_permission_context.h",
     "brave_psst_permission_context_factory.h",
     "psst_ui_delegate_impl.h",
   ]
 
   sources = [
-    "brave_psst_permission_context.cc",
     "brave_psst_permission_context_factory.cc",
     "psst_ui_delegate_impl.cc",
   ]

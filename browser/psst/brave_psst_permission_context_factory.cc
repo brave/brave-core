@@ -5,7 +5,8 @@
 
 #include "brave/browser/psst/brave_psst_permission_context_factory.h"
 
-#include "brave/browser/psst/brave_psst_permission_context.h"
+#include "brave/components/psst/common/brave_psst_permission_context.h"
+#include "brave/components/psst/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 
@@ -23,6 +24,7 @@ BravePsstPermissionContext*
 BravePsstPermissionContextFactory::GetForBrowserContext(
     content::BrowserContext* context) {
   CHECK(context);
+  CHECK(base::FeatureList::IsEnabled(psst::features::kEnablePsst));
   return static_cast<BravePsstPermissionContext*>(
       GetInstance()->GetServiceForContext(context, true));
 }

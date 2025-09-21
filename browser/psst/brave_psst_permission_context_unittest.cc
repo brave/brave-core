@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/psst/brave_psst_permission_context.h"
+#include "brave/components/psst/common/brave_psst_permission_context.h"
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/psst/brave_psst_permission_context.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/psst/brave_psst_permission_context_factory.h"
+#include "brave/components/psst/common/brave_psst_permission_context.h"
+#include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/psst_permission_schema.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -55,6 +57,9 @@ base::Value::Dict CreatePsstPermissionDict(
 namespace psst {
 class BravePsstPermissionContextUnitTest : public testing::Test {
  public:
+  BravePsstPermissionContextUnitTest() {
+    feature_list_.InitAndEnableFeature(psst::features::kEnablePsst);
+  }
   void SetUp() override {
     psst_permission_context_ =
         BravePsstPermissionContextFactory::GetForBrowserContext(&profile_);
@@ -77,6 +82,7 @@ class BravePsstPermissionContextUnitTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   TestingProfile profile_;
   raw_ptr<BravePsstPermissionContext> psst_permission_context_;
+  base::test::ScopedFeatureList feature_list_;
 };
 
 TEST_F(BravePsstPermissionContextUnitTest,
