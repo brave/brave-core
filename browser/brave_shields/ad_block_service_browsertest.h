@@ -20,6 +20,7 @@
 class HostContentSettingsMap;
 
 namespace brave_shields {
+class AdBlockComponentServiceManager;
 class AdBlockService;
 class FilterListCatalogEntry;
 }  // namespace brave_shields
@@ -43,6 +44,7 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
 
   HostContentSettingsMap* content_settings();
+  brave_shields::AdBlockComponentServiceManager* component_service_manager();
   void AddNewRules(const std::string& rules,
                    uint8_t permission_mask = 0,
                    bool first_party_protections = false);

@@ -23,9 +23,11 @@
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
@@ -58,6 +60,10 @@ constexpr ListDefaultOverrideConstants kOverrideConstants[] = {
     kCookieListConstants, kMobileNotificationsListConstants,
     kExperimentalListConstants};
 
+bool IsAdBlockOnlyModeFilterList(const std::string& uuid) {
+  return kAdblockOnlyModeFilerListUUIDs.contains(uuid);
+}
+
 }  // namespace
 
 AdBlockComponentServiceManager::AdBlockComponentServiceManager(
@@ -75,10 +81,21 @@ AdBlockComponentServiceManager::AdBlockComponentServiceManager(
       base::BindOnce(&AdBlockComponentServiceManager::OnFilterListCatalogLoaded,
                      weak_factory_.GetWeakPtr()));
   catalog_provider_->AddObserver(this);
+
+  if (IsAdblockOnlyModeFeatureEnabled()) {
+    local_state_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
+    local_state_change_registrar_->Init(local_state_);
+    local_state_change_registrar_->Add(
+        prefs::kAdBlockOnlyModeEnabled,
+        base::BindRepeating(
+            &AdBlockComponentServiceManager::OnAdBlockOnlyModePrefChanged,
+            base::Unretained(this)));
+  }
 }
 
 AdBlockComponentServiceManager::~AdBlockComponentServiceManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  local_state_change_registrar_.reset();
   catalog_provider_->RemoveObserver(this);
 }
 
@@ -105,6 +122,12 @@ bool AdBlockComponentServiceManager::NeedsLocaleListsMigration(
   }
 
   return true;
+}
+
+void AdBlockComponentServiceManager::OnAdBlockOnlyModePrefChanged() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  component_filters_providers_.clear();
+  LoadComponentFiltersProviders();
 }
 
 void AdBlockComponentServiceManager::StartRegionalServices() {
@@ -155,6 +178,12 @@ void AdBlockComponentServiceManager::StartRegionalServices() {
       }
     }
   }
+}
+
+void AdBlockComponentServiceManager::LoadComponentFiltersProviders() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  StartRegionalServices();
+  RecordP3ACookieListEnabled();
 }
 
 void AdBlockComponentServiceManager::UpdateFilterListPrefs(
@@ -209,6 +238,12 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
   DCHECK(!uuid.empty());
   DCHECK(local_state_);
 
+  if (IsAdblockOnlyModeFeatureEnabled() &&
+      IsBraveShieldsAdBlockOnlyModeEnabled(local_state_) &&
+      !IsAdBlockOnlyModeFilterList(uuid)) {
+    return false;
+  }
+
   // Retrieve user's setting for the list from preferences
   const auto& regional_filters_dict =
       local_state_->GetDict(prefs::kAdBlockRegionalFilters);
@@ -257,6 +292,13 @@ void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
   if (catalog_entry == filter_list_catalog_.end()) {
     return;
   }
+
+  if (IsAdblockOnlyModeFeatureEnabled() &&
+      IsBraveShieldsAdBlockOnlyModeEnabled(local_state_) &&
+      !IsAdBlockOnlyModeFilterList(uuid)) {
+    return;
+  }
+
   // Enable or disable the specified filter list
   auto it = component_filters_providers_.find(uuid);
   if (enabled) {
@@ -316,8 +358,7 @@ void AdBlockComponentServiceManager::SetFilterListCatalog(
     std::vector<FilterListCatalogEntry> catalog) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   filter_list_catalog_ = std::move(catalog);
-  StartRegionalServices();
-  RecordP3ACookieListEnabled();
+  LoadComponentFiltersProviders();
 
   list_p3a_->OnFilterListCatalogLoaded(filter_list_catalog_);
 }
