@@ -39,11 +39,25 @@ struct Entry {
 };
 
 template <typename... Ts>
-concept UniqueRequests = (Request<Ts> && ...) && requires {
+concept UniqueTypes = requires {
   [] {
     struct Unique : std::type_identity<Ts>... {};
   };
 };
+
+template <typename...>
+struct MaybeVariantImpl;
+
+template <typename T>
+struct MaybeVariantImpl<T> : std::type_identity<T> {};
+
+template <typename... Ts>
+  requires(sizeof...(Ts) > 1)
+struct MaybeVariantImpl<Ts...> : std::type_identity<std::variant<Ts...>> {};
+
+template <typename... Ts>
+  requires(sizeof...(Ts) > 0)
+using MaybeVariant = typename MaybeVariantImpl<Ts...>::type;
 
 }  // namespace endpoints::detail
 
@@ -51,20 +65,19 @@ namespace endpoints {
 
 template <detail::Request Request>
 struct For {
-  template <detail::Response Ok, detail::Response... Oks>
+  template <detail::Response... Oks>
+    requires(sizeof...(Oks) > 0)
   struct ReturnsWith {
-    template <detail::Response Error, detail::Response... Errors>
-    using FailsWith = detail::Entry<
-        Request,
-        std::conditional_t<sizeof...(Oks), std::variant<Ok, Oks...>, Ok>,
-        std::conditional_t<sizeof...(Errors),
-                           std::variant<Error, Errors...>,
-                           Error>>;
+    template <detail::Response... Errors>
+      requires(sizeof...(Errors) > 0)
+    using FailsWith = detail::Entry<Request,
+                                    detail::MaybeVariant<Oks...>,
+                                    detail::MaybeVariant<Errors...>>;
   };
 };
 
 template <base::is_instantiation<detail::Entry>... Entries>
-  requires(detail::UniqueRequests<typename Entries::Request...>)
+  requires(detail::UniqueTypes<typename Entries::Request...>)
 class Endpoint {
   template <typename, typename...>
   struct EntryForImpl {};
@@ -86,7 +99,8 @@ class Endpoint {
       typename EntryForImpl<MaybeStripWithHeaders<T>, Entries...>::type;
 
   template <typename T>
-  static constexpr bool kIsRequestSupported = kHasEntryFor<MaybeStripWithHeaders<T>>;
+  static constexpr bool kIsRequestSupported =
+      kHasEntryFor<MaybeStripWithHeaders<T>>;
 
   template <typename Rsp, typename Req>
     requires kIsRequestSupported<Req>
