@@ -15,6 +15,7 @@
 
 namespace endpoints::detail {
 
+// HTTP methods
 enum class Method {
   kConnect,
   kDelete,
@@ -28,6 +29,9 @@ enum class Method {
   kTrack
 };
 
+// Wrapper that binds a RequestBody to a specific HTTP method.
+// Inherits from Body to expose its ToValue() interface, and
+// adds a static Method() accessor returning the canonical HTTP method string.
 template <RequestBody Body, Method M>
 struct WithMethod : Body {
   static constexpr std::string_view Method() {
