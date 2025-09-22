@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 
-import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
@@ -42,7 +41,6 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             Activity activity,
             SnackbarManager snackbarManager,
             WindowAndroid windowAndroid,
-            @Nullable JankTracker jankTracker,
             @Nullable SnapScrollHelper snapScrollHelper,
             @Nullable View ntpHeader,
             @Px int toolbarHeight,
@@ -66,7 +64,6 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
                 activity,
                 snackbarManager,
                 windowAndroid,
-                jankTracker,
                 snapScrollHelper,
                 ntpHeader,
                 toolbarHeight,
