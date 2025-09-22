@@ -6,43 +6,43 @@
 #ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_METHODS_H_
 #define BRAVE_COMPONENTS_ENDPOINT_CLIENT_METHODS_H_
 
-#include "brave/components/endpoint_client/request.h"
+#include "brave/components/endpoint_client/is_request.h"
 #include "brave/components/endpoint_client/with_method.h"
 
-// Aliases that bind a RequestBody to a specific HTTP method.
-// These are the only way to form a valid Request type.
+// Aliases that bind an IsRequestBody to a specific HTTP method.
+// These are the only way to form a valid IsRequest type.
 
 namespace endpoint_client {
 
-template <detail::RequestBody Body>
-using CONNECT = detail::WithMethod<Body, detail::Method::kConnect>;
+template <detail::IsRequestBody RequestBody>
+using CONNECT = detail::WithMethod<RequestBody, detail::Method::kConnect>;
 
-template <detail::RequestBody Body>
-using DELETE = detail::WithMethod<Body, detail::Method::kDelete>;
+template <detail::IsRequestBody RequestBody>
+using DELETE = detail::WithMethod<RequestBody, detail::Method::kDelete>;
 
-template <detail::RequestBody Body>
-using GET = detail::WithMethod<Body, detail::Method::kGet>;
+template <detail::IsRequestBody RequestBody>
+using GET = detail::WithMethod<RequestBody, detail::Method::kGet>;
 
-template <detail::RequestBody Body>
-using HEAD = detail::WithMethod<Body, detail::Method::kHead>;
+template <detail::IsRequestBody RequestBody>
+using HEAD = detail::WithMethod<RequestBody, detail::Method::kHead>;
 
-template <detail::RequestBody Body>
-using OPTIONS = detail::WithMethod<Body, detail::Method::kOptions>;
+template <detail::IsRequestBody RequestBody>
+using OPTIONS = detail::WithMethod<RequestBody, detail::Method::kOptions>;
 
-template <detail::RequestBody Body>
-using PATCH = detail::WithMethod<Body, detail::Method::kPatch>;
+template <detail::IsRequestBody RequestBody>
+using PATCH = detail::WithMethod<RequestBody, detail::Method::kPatch>;
 
-template <detail::RequestBody Body>
-using POST = detail::WithMethod<Body, detail::Method::kPost>;
+template <detail::IsRequestBody RequestBody>
+using POST = detail::WithMethod<RequestBody, detail::Method::kPost>;
 
-template <detail::RequestBody Body>
-using PUT = detail::WithMethod<Body, detail::Method::kPut>;
+template <detail::IsRequestBody RequestBody>
+using PUT = detail::WithMethod<RequestBody, detail::Method::kPut>;
 
-template <detail::RequestBody Body>
-using TRACE = detail::WithMethod<Body, detail::Method::kTrace>;
+template <detail::IsRequestBody RequestBody>
+using TRACE = detail::WithMethod<RequestBody, detail::Method::kTrace>;
 
-template <detail::RequestBody Body>
-using TRACK = detail::WithMethod<Body, detail::Method::kTrack>;
+template <detail::IsRequestBody RequestBody>
+using TRACK = detail::WithMethod<RequestBody, detail::Method::kTrack>;
 
 }  // namespace endpoint_client
 

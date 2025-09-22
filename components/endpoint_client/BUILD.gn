@@ -11,7 +11,7 @@ source_set("endpoint_client") {
     "maybe_variant.h",
     "methods.h",
     "parse.h",
-    "request.h",
+    "is_request.h",
     "response.h",
     "with_headers.h",
     "with_method.h",

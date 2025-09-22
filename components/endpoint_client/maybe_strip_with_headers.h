@@ -9,7 +9,7 @@
 #include <type_traits>
 #include <variant>
 
-#include "brave/components/endpoint_client/request.h"
+#include "brave/components/endpoint_client/is_request.h"
 #include "brave/components/endpoint_client/response.h"
 #include "brave/components/endpoint_client/with_headers.h"
 
@@ -21,9 +21,9 @@ template <typename T>
 struct MaybeStripWithHeadersImpl : std::type_identity<T> {};
 
 // Partial specialization: strips WithHeaders<> if
-// the inner T satisfies Request or Response.
+// the inner T satisfies IsRequest or Response.
 template <typename T>
-  requires(Request<T> || Response<T>)
+  requires(IsRequest<T> || Response<T>)
 struct MaybeStripWithHeadersImpl<WithHeaders<T>>
     : MaybeStripWithHeadersImpl<T> {};
 

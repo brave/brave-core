@@ -9,7 +9,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/types/always_false.h"
 #include "base/types/is_instantiation.h"
-#include "brave/components/endpoint_client/request.h"
+#include "brave/components/endpoint_client/is_request.h"
 #include "brave/components/endpoint_client/response.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
@@ -21,13 +21,13 @@ namespace endpoint_client {
 template <typename T>
 struct WithHeaders {
   static_assert(base::AlwaysFalse<T>,
-                "T must satisfy endpoint_client::detail::Request or "
+                "T must satisfy endpoint_client::detail::IsRequest or "
                 "endpoint_client::detail::Response!");
 };
 
-// Partial specialization: wraps a Request with HTTP request headers.
-template <detail::Request Req>
-struct WithHeaders<Req> : Req {
+// Partial specialization: wraps an IsRequest with HTTP request headers.
+template <detail::IsRequest Request>
+struct WithHeaders<Request> : Request {
   net::HttpRequestHeaders headers;
 };
 

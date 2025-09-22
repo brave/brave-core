@@ -10,7 +10,7 @@
 #include <type_traits>
 
 #include "base/types/always_false.h"
-#include "brave/components/endpoint_client/request.h"
+#include "brave/components/endpoint_client/is_request.h"
 #include "net/http/http_request_headers.h"
 
 namespace endpoint_client::detail {
@@ -32,8 +32,8 @@ enum class Method {
 // Wrapper that binds a RequestBody to a specific HTTP method.
 // Inherits from Body to expose its ToValue() interface, and
 // adds a static Method() accessor returning the canonical HTTP method string.
-template <RequestBody Body, Method M>
-struct WithMethod : Body {
+template <IsRequestBody RequestBody, Method M>
+struct WithMethod : RequestBody {
   static constexpr std::string_view Method() {
     if constexpr (M == Method::kConnect) {
       return net::HttpRequestHeaders::kConnectMethod;

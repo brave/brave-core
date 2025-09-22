@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_ENDPOINT_BUILDER_H_
-#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_ENDPOINT_BUILDER_H_
+#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_ENDPOINT_H_
+#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_ENDPOINT_H_
 
 #include <optional>
 #include <string>
@@ -26,7 +26,7 @@
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/endpoint_client/maybe_strip_with_headers.h"
 #include "brave/components/endpoint_client/maybe_variant.h"
-#include "brave/components/endpoint_client/request.h"
+#include "brave/components/endpoint_client/is_request.h"
 #include "brave/components/endpoint_client/response.h"
 
 namespace endpoint_client::detail {
@@ -43,7 +43,7 @@ concept UniqueTypes = requires {
 namespace endpoint_client {
 namespace detail {
 
-template <Request Req, Response Ok, Response Err>
+template <IsRequest Req, Response Ok, Response Err>
 struct Entry {
   using Request = Req;
   using Response = Ok;
@@ -54,7 +54,7 @@ struct Entry {
 
 }  // namespace detail
 
-template <detail::Request Req>
+template <detail::IsRequest Request>
 struct For {
   template <detail::Response... Oks>
     requires(sizeof...(Oks) > 0)
@@ -62,7 +62,7 @@ struct For {
     template <detail::Response... Errs>
       requires(sizeof...(Errs) > 0)
     using FailsWith = detail::
-        Entry<Req, detail::MaybeVariant<Oks...>, detail::MaybeVariant<Errs...>>;
+        Entry<Request, detail::MaybeVariant<Oks...>, detail::MaybeVariant<Errs...>>;
   };
 };
 
@@ -80,13 +80,13 @@ class Endpoint {
   template <typename, typename...>
   struct EntryForImpl {};
 
-  template <detail::Request Request, typename E, typename... Es>
+  template <detail::IsRequest Request, typename E, typename... Es>
   struct EntryForImpl<Request, E, Es...>
       : std::conditional_t<std::is_same_v<Request, typename E::Request>,
                            std::type_identity<E>,
                            EntryForImpl<Request, Es...>> {};
 
-  template <detail::Request Request>
+  template <detail::IsRequest Request>
   static constexpr bool kHasEntryFor =
       requires { typename EntryForImpl<Request, Entries...>::type; };
 
@@ -135,4 +135,4 @@ concept IsEndpoint = kIsEndpoint<T>;
 
 }  // namespace endpoint_client
 
-#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_ENDPOINT_BUILDER_H_
+#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_ENDPOINT_H_
