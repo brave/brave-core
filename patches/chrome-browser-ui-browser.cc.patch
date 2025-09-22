@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index e099f30e5fdad38660acba7c2b6edea745991c61..30c515c696ad4146a883b34a4cf9c5d5c3023822 100644
+index 252d06cedda562f052816b70a4d32a6e93d5b4c4..136e1e42351037c907d8a08978e41b0cfc829953 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -588,6 +588,7 @@ Browser* Browser::Create(const CreateParams& params) {
+@@ -577,6 +577,7 @@ Browser* Browser::Create(const CreateParams& params) {
    // not possible, e.g. using the wrong profile or during shutdown. The caller
    // should handle this; see e.g. crbug.com/1141608 and crbug.com/1261628.
    CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
@@ -10,7 +10,7 @@ index e099f30e5fdad38660acba7c2b6edea745991c61..30c515c696ad4146a883b34a4cf9c5d5
    return new Browser(params);
  }
  
-@@ -609,7 +610,7 @@ Browser::Browser(const CreateParams& params)
+@@ -598,7 +599,7 @@ Browser::Browser(const CreateParams& params)
        window_(nullptr),
        tab_strip_model_delegate_(
            std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),
@@ -18,4 +18,4 @@ index e099f30e5fdad38660acba7c2b6edea745991c61..30c515c696ad4146a883b34a4cf9c5d5
 +      tab_strip_model_(std::make_unique<BraveTabStripModel>(
            tab_strip_model_delegate_.get(),
            params.profile,
-           params.are_tab_groups_enabled ? TabGroupModelFactory::GetInstance()
+           // Tab groups are disabled for app browsers.

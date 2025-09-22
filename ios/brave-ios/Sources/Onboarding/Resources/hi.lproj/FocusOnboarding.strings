@@ -1,0 +1,42 @@
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "जारी रखें";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "आज ही Brave को अपना डिफ़ॉल्ट ब्राउज़र सेट करें।";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "आप जिस भी साइट पर जाते हैं उस पर ऐड ब्लॉकिंग पाएँ";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "अभी नहीं";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "अपनी पसंदीदा स्ट्रीमिंग साइटों पर परेशान करने वाली रुकावटें ब्लॉक करें।";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "स्ट्रीम करते समय रुकावटें ब्लॉक करें";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "हमें बताएँ कि आप किन फ़ीचर्स का सबसे ज़्यादा लुत्फ़ उठाते हैं।";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "Brave को बेहतर बनाएँ";
+
+/* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
+"focusOnboarding.p3aToggleDescription" = "आप **Shields और प्राइवेसी** में जाकर सेटिंग में कभी भी ऑप्ट-आउट कर सकते हैं। अपनी प्राइवेसी संरक्षण प्रोडक्ट अनलिटिक्स के बारे में [ज़्यादा जानें](#p3a-learn-more)।";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "प्रोडक्ट की **पूरी तरह प्राइवेट & अनाम** इनसाइट्स शेयर करें।";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "ब्राउज़ करना शुरू करें";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "डिफ़ॉल्ट सेट करें";
+
+/* The description of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorDescription" = "स्ट्रीम करना शुरू करें और कम ऐड्स & ट्रैकर्स का आनंद लें।";
+
+/* The title of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorTitle" = "Brave का कमाल देखें";
+

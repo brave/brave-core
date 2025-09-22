@@ -144,8 +144,8 @@ export const TokenLists = ({
     WalletSelectors.assetAutoDiscoveryCompleted,
   )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
-  const isAndroidOrPanel = isAndroid || isPanel
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isMobileOrPanel = isMobile || isPanel
 
   // queries
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
@@ -632,9 +632,9 @@ export const TokenLists = ({
   return (
     <ContentWrapper
       fullWidth={true}
-      fullHeight={isAndroidOrPanel}
+      fullHeight={isMobileOrPanel}
       justifyContent='flex-start'
-      isAndroidOrPanel={isAndroidOrPanel}
+      isMobileOrPanel={isMobileOrPanel}
     >
       <ControlBarWrapper
         justifyContent='space-between'

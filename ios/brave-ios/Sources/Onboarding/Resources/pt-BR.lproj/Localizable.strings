@@ -4,6 +4,15 @@
 /* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
 "advanceStep2OnboardingButtonTitle" = "Experimente!";
 
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "Desativar esse recurso";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "As páginas podem ser traduzidas para os idiomas suportados pelo seu dispositivo iOS. Talvez você precise configurar os idiomas se for a primeira vez que usa esse recurso.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "Traduções da página";
+
 /* A button title that when tapped opens Brave Playlist */
 "confirmationActionButtonTitle" = "Leve-me para a Playlist";
 
@@ -29,7 +38,7 @@
 "introducingBravePlaylist" = "Introdução à Brave Playlist";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointSubtitleOne" = "Crie playlists do seu conteúdo favorito. Economize dados móveis e assista sem anúncios.";
+"playlistInfoFeaturePointSubtitleOne" = "Crie listas de reprodução do seu conteúdo favorito. Economize dados móveis e assista sem anúncios.";
 
 /* A list of features in Playlist */
 "playlistInfoFeaturePointSubtitleThree" = "Ecrã no ecrã. Reprodução em segundo plano. Controlo a partir do ecrã bloqueado. Entre outros...";
@@ -41,10 +50,10 @@
 "playlistInfoFeaturePointTitleOne" = "Adicione vídeos à Brave Playlist. Reproduza-os em qualquer altura. Mesmo offline";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleThree" = "A música soa melhor com o Brave Playlist";
+"playlistInfoFeaturePointTitleThree" = "A reprodução é melhor na lista de reprodução";
 
 /* A list of features in Playlist */
-"playlistInfoFeaturePointTitleTwo" = "Toque no botão para adicionar vídeos a uma playlist";
+"playlistInfoFeaturePointTitleTwo" = "Toque no botão para adicionar vídeos a uma lista de reprodução";
 
 /* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
 "playlistOnboardingDescription" = "Crie playlists com o seu conteúdo preferido. Adicione multimédia a partir de qualquer página.\nReproduza os conteúdos em qualquer altura. Mesmo offline!";
@@ -53,5 +62,5 @@
 "userActionPrompt" = "Toque em %@ para adicionar o seu primeiro item";
 
 /* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
-"userActionPromptFill" = "Adicionar à playlist";
+"userActionPromptFill" = "Adicionar à lista de reprodução";
 

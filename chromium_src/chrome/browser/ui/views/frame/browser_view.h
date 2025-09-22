@@ -26,7 +26,7 @@
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
 
-#define UpdateDevToolsForContents virtual UpdateDevToolsForContents
+#define MaybeUpdateDevtools virtual MaybeUpdateDevtools
 #define GetTabStripVisible virtual GetTabStripVisible
 
 #define GetTabSearchBubbleHost     \
@@ -50,13 +50,9 @@
 #define LoadAccelerators virtual LoadAccelerators
 #define ShowSplitView virtual ShowSplitView
 #define HideSplitView virtual HideSplitView
-#define UpdateActiveTabInSplitView virtual UpdateActiveTabInSplitView
-#define UpdateContentsInSplitView virtual UpdateContentsInSplitView
 
 #include <chrome/browser/ui/views/frame/browser_view.h>  // IWYU pragma: export
 
-#undef UpdateActiveTabInSplitView
-#undef UpdateContentsInSplitView
 #undef HideSplitView
 #undef ShowSplitView
 #undef LoadAccelerators
@@ -67,7 +63,7 @@
 #undef UpdateExclusiveAccessBubble
 #undef GetTabSearchBubbleHost
 #undef GetTabStripVisible
-#undef UpdateDevToolsForContents
+#undef MaybeUpdateDevtools
 #undef MaybeShowReadingListInSidePanelIPH
 #undef BookmarkBarView
 #undef SidePanel

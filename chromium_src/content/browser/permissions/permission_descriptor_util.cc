@@ -8,9 +8,6 @@
 #define NUM                                                                   \
   BRAVE_ADS:                                                                  \
   return CreatePermissionDescriptor(blink::mojom::PermissionName::BRAVE_ADS); \
-  case blink::PermissionType::BRAVE_COSMETIC_FILTERING:                       \
-    return CreatePermissionDescriptor(                                        \
-        blink::mojom::PermissionName::BRAVE_COSMETIC_FILTERING);              \
   case blink::PermissionType::BRAVE_TRACKERS:                                 \
     return CreatePermissionDescriptor(                                        \
         blink::mojom::PermissionName::BRAVE_TRACKERS);                        \

@@ -22,6 +22,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
 
 namespace content {
 class WebContents;
@@ -124,6 +125,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   std::unique_ptr<UploadFileHelper> upload_file_helper_;
   base::ScopedObservation<UploadFileHelper, UploadFileHelper::Observer>
       upload_file_helper_observation_{this};
+
+  // DataDecoder instance for processing image data
+  data_decoder::DataDecoder data_decoder_;
 
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;

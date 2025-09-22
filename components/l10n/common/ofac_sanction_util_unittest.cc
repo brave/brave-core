@@ -25,7 +25,13 @@ struct ParamInfo final {
   std::string expected_language_code;
   std::string expected_country_code;
   bool expected_is_ofac_sanctioned;
-} kTests[] = {
+};
+
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const ParamInfo kTests[] = {
     {{}, false, "en", "US", false},
     {{}, true, "en", "US", false},
 

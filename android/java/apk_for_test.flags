@@ -110,6 +110,7 @@
     public <init>(...);
     *** getPopupPosition(...);
     *** runMenuItemEnterAnimations(...);
+    *** createAppMenuContentView(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.appmenu.BraveAppMenu {
@@ -375,14 +376,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.status.StatusMediator {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.omnibox.status.BraveStatusMediator {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
     *** mActivity;
     *** mNtpHeader;
@@ -492,7 +485,6 @@
 
 -keep class org.chromium.chrome.browser.multiwindow.MultiInstanceManagerApi31 {
     *** mInstanceId;
-    moveTabToWindow(...);
     handleMenuOrKeyboardAction(...);
     <init>(...);
 }
@@ -577,6 +569,7 @@
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.DropdownItemViewInfoListBuilder {
     <init>(...);
+    *** createUIContext(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListBuilder {
@@ -821,11 +814,11 @@
     protected <init>(...);
 }
 
--keep class org.chromium.components.signin.SystemAccountManagerDelegate {
+-keep class org.chromium.components.signin.NullAccountManagerDelegate {
     public <init>(...);
 }
 
--keep class org.chromium.components.signin.BraveSystemAccountManagerDelegate {
+-keep class org.chromium.components.signin.BraveNullAccountManagerDelegate {
     public <init>(...);
 }
 
@@ -1028,4 +1021,39 @@
 
 -keep class org.chromium.chrome.browser.download.home.search.BraveSearchBarCoordinator {
     <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ui.AdaptiveToolbarUiCoordinator {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ui.BraveAdaptiveToolbarUiCoordinator {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarStatePredictor {
+    *** isValidSegment(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.adaptive.settings.RadioButtonGroupAdaptiveToolbarPreference {
+    *** mIsBound;
+    *** mAutoButton;
+    *** mNewTabButton;
+    *** mShareButton;
+}
+
+-keep class org.chromium.chrome.browser.ui.AdaptiveToolbarUiCoordinator {
+    *** mContext;
+    *** mActivityTabProvider;
+    *** mModalDialogManagerSupplier;
+    *** mProfileSupplier;
+    *** mAdaptiveToolbarButtonController;
+}
+
+-keep class org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarStatePredictor {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.adaptive.BraveAdaptiveToolbarStatePredictor {
+    public <init>(...);
 }

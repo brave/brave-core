@@ -67,7 +67,9 @@ SettingsBraveContentPageIndexElementBase implements SettingsPlugin {
     if (this.showPage_(this.pageVisibility_.playlist)) {
       views.push('playlist');
     }
-    views.push('speedreader');
+    if (this.showPage_(this.pageVisibility_.speedreader)) {
+      views.push('speedreader');
+    }
     this.$.viewManager.switchViews(views, 'no-animation', 'no-animation');
   }
 

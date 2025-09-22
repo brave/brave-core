@@ -31,10 +31,13 @@ class BraveProfilePolicyProvider : public policy::ConfigurationPolicyProvider {
   void RefreshPolicies(policy::PolicyFetchReason reason) override;
   bool IsFirstPolicyLoadComplete(policy::PolicyDomain domain) const override;
 
+  void SetProfileID(const std::string& profile_id);
+
  private:
   policy::PolicyBundle LoadPolicies();
 
   bool first_policies_loaded_ = false;
+  std::string profile_id_;
 
   base::WeakPtrFactory<BraveProfilePolicyProvider> weak_factory_{this};
 };

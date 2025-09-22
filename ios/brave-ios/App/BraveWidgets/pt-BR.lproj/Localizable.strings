@@ -14,7 +14,7 @@
 "widgets.favoritesWidgetDescription" = "Acesse rapidamente seus sites favoritos.";
 
 /* Title for favorites widget on 'add widget' screen. */
-"widgets.favoritesWidgetTitle" = "Favoritos";
+"widgets.favoritesWidgetTitle" = "Favoritos em destaque";
 
 /* Title for history menu item */
 "widgets.HistoryMenuItem" = "Histórico";
@@ -53,13 +53,13 @@
 "widgets.shortcutsEnterURLButton" = "Pesquise ou digite um URL";
 
 /* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "Nova guia";
+"widgets.shortcutsNewTabButton" = "Nova aba";
 
 /* Button to open video playlist window. */
 "widgets.shortcutsPlaylistButton" = "Playlist";
 
 /* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "Guia privada";
+"widgets.shortcutsPrivateTabButton" = "Aba privada";
 
 /* Description for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetDescription" = "Acesso rápido para pesquisar na web ou abrir páginas da web no Brave.";

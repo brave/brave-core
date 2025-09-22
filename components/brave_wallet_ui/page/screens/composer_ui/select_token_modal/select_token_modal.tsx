@@ -219,8 +219,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     // Selectors
     const isPanel = useSafeUISelector(UISelectors.isPanel)
-    const isAndroid = useSafeUISelector(UISelectors.isAndroid)
-    const isAndroidOrPanel = isAndroid || isPanel
+    const isMobile = useSafeUISelector(UISelectors.isMobile)
+    const isMobileOrPanel = isMobile || isPanel
 
     // Queries & Mutations
     const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
@@ -737,7 +737,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     // render
 
-    if (!isAndroidOrPanel && pendingSelectedAsset) {
+    if (!isMobileOrPanel && pendingSelectedAsset) {
       return (
         <PopupModal
           title=''
@@ -761,7 +761,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       )
     }
 
-    if (!isAndroidOrPanel && tokenDetails) {
+    if (!isMobileOrPanel && tokenDetails) {
       return (
         <PopupModal
           title=''
@@ -788,7 +788,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           )}
           width='560px'
           height='90vh'
-          ref={isAndroidOrPanel ? undefined : forwardedRef}
+          ref={isMobileOrPanel ? undefined : forwardedRef}
         >
           {onSelectSendOption && selectedSendOption && (
             <Row
@@ -852,7 +852,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             {tokenList}
           </ScrollContainer>
         </PopupModal>
-        {isAndroidOrPanel && (
+        {isMobileOrPanel && (
           <BottomSheet
             onClose={handleOnBack}
             isOpen={pendingSelectedAsset !== undefined}
@@ -875,7 +875,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             )}
           </BottomSheet>
         )}
-        {isAndroidOrPanel && (
+        {isMobileOrPanel && (
           <BottomSheet
             onClose={() => setTokenDetails(undefined)}
             isOpen={tokenDetails !== undefined}

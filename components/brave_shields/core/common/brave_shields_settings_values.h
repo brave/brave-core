@@ -102,6 +102,11 @@ struct BraveShieldsSetting
 
 }  // namespace traits
 
+using CosmeticFilteringSetting = traits::BraveShieldsSetting<
+    /*content_settings_type=*/ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+    /*SettingType=*/ControlType,
+    /*default_value=*/ControlType::BLOCK_THIRD_PARTY>;
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELDS_SETTINGS_VALUES_H_

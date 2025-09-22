@@ -24,7 +24,7 @@ export function EngineIcon(props: Props) {
 
 function getNamedIcon(engineHost: string) {
   switch (engineHost) {
-    case 'google.com':
+    case 'www.google.com':
       return 'google-color'
     case 'duckduckgo.com':
       return 'duckduckgo-color'

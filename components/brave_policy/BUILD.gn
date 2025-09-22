@@ -7,12 +7,14 @@ static_library("brave_policy") {
   sources = [
     "brave_browser_policy_provider.cc",
     "brave_browser_policy_provider.h",
+    "brave_policy_profile_id.cc",
     "brave_profile_policy_provider.cc",
     "brave_profile_policy_provider.h",
   ]
 
   deps = [
     "//base",
+    "//brave/components/brave_origin",
     "//components/policy/core/browser",
     "//components/policy/core/common",
     "//components/prefs",

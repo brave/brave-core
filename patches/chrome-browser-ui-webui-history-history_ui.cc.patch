@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/webui/history/history_ui.cc b/chrome/browser/ui/webui/history/history_ui.cc
-index 6466c55e6a9386957fda73235451c16897b388f0..9d70eada665649e3bdbc296b38ed37cc862d2f21 100644
+index f4b17227d48377b22771c1a3c63d4b906cef18d6..3055661c5dc07a11708a0fc35f7c5bb5a8b97392 100644
 --- a/chrome/browser/ui/webui/history/history_ui.cc
 +++ b/chrome/browser/ui/webui/history/history_ui.cc
-@@ -72,6 +72,7 @@ content::WebUIDataSource* CreateAndAddHistoryUIHTMLSource(Profile* profile) {
-       profile, chrome::kChromeUIHistoryHost);
+@@ -84,6 +84,7 @@ content::WebUIDataSource* CreateAndAddHistoryUIHTMLSource(Profile* profile) {
+       base::FeatureList::IsEnabled(syncer::kReplaceSyncPromosWithSignInPromos));
  
-   HistoryUtil::PopulateSourceForSidePanelHistory(source, profile);
+   HistoryUtil::PopulateCommonSourceForHistory(source, profile);
 +  BRAVE_CREATE_HISTORY_UI_HTML_SOURCE
  
    static constexpr webui::LocalizedString kStrings[] = {

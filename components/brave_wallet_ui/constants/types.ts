@@ -188,7 +188,7 @@ export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   isPanel: boolean
-  isAndroid: boolean
+  isMobile: boolean
 }
 
 export interface WalletState {

@@ -420,6 +420,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/tasks/BraveReturnToChromeUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveHomeButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveToolbarManager.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/adaptive/BraveBookmarksButtonController.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarConfiguration.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java",
@@ -440,6 +441,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayoutImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ui/BraveAdaptiveToolbarUiCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/ui/messages/infobar/BraveSimpleConfirmInfoBarBuilder.java",
   "../../brave/android/java/org/chromium/chrome/browser/ui/system/BraveStatusBarColorController.java",
   "../../brave/android/java/org/chromium/chrome/browser/undo_tab_close_snackbar/BraveUndoBarControllerBase.java",
@@ -518,7 +520,10 @@ brave_java_sources += brave_share_java_sources
 brave_java_sources += brave_app_billing_sources
 brave_java_sources += brave_fullscreen_java_sources
 
-brave_browser_ui_android_appmenu_internal_sources = [ "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java" ]
+brave_browser_ui_android_appmenu_internal_sources = [
+  "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenu.java",
+  "//brave/browser/ui/android/appmenu/internal/java/src/org/chromium/chrome/browser/ui/appmenu/BraveAppMenuDummySuper.java",
+]
 
 brave_browser_ui_android_default_browser_promo_java_sources = [
   # TODO(alexeybarabash): BraveDefaultBrowserPromoUtils now causes crash on debug build at start app

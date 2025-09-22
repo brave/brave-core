@@ -59,8 +59,8 @@ export const WalletSettingsMenu = (props: Props) => {
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
-  const isAndroidOrPanel = isAndroid || isPanel
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isMobileOrPanel = isMobile || isPanel
 
   // Routing
   const history = useHistory()
@@ -171,7 +171,7 @@ export const WalletSettingsMenu = (props: Props) => {
   }
 
   const onClickBackup = React.useCallback(() => {
-    if (isAndroid) {
+    if (isMobile) {
       getWalletPageApiProxy().pageHandler.showWalletBackupUI()
       return
     }
@@ -192,17 +192,17 @@ export const WalletSettingsMenu = (props: Props) => {
       return
     }
     history.push(WalletRoutes.Backup)
-  }, [isAndroid, isPanel, history])
+  }, [isMobile, isPanel, history])
 
   // Memos
   const accountSettingsOptions = React.useMemo(() => {
-    if (isAndroid) {
+    if (isMobile) {
       return CreateAccountOptions.filter(
         (option) => option.name !== 'braveWalletConnectHardwareWallet',
       )
     }
     return CreateAccountOptions
-  }, [isAndroid])
+  }, [isMobile])
 
   return (
     <StyledWrapper
@@ -233,7 +233,7 @@ export const WalletSettingsMenu = (props: Props) => {
 
         {(selectedNetwork?.coin === BraveWallet.CoinType.ETH
           || selectedNetwork?.coin === BraveWallet.CoinType.SOL)
-          && !isAndroid && (
+          && !isMobile && (
             <PopupButton onClick={onClickConnectedSites}>
               <ButtonIcon name='link-normal' />
               <PopupButtonText>
@@ -242,7 +242,7 @@ export const WalletSettingsMenu = (props: Props) => {
             </PopupButton>
           )}
 
-        {!isAndroid && (
+        {!isMobile && (
           <PopupButton onClick={onClickSettings}>
             <ButtonIcon name='settings' />
             <PopupButtonText>
@@ -308,7 +308,7 @@ export const WalletSettingsMenu = (props: Props) => {
         </>
       )}
 
-      {walletLocation === WalletRoutes.Accounts && isAndroidOrPanel && (
+      {walletLocation === WalletRoutes.Accounts && isMobileOrPanel && (
         <>
           <SectionLabel justifyContent='flex-start'>
             {getLocale('braveWalletAccountSettings')}

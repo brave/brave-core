@@ -195,6 +195,28 @@ class MojoFacadeTest : public WebTest {
   std::unique_ptr<MojoFacade> facade_;
 };
 
+// Test to ensure that even when an invalid frame ID is pased into the watcher
+// it will execute the callback on the main frame by default
+TEST_F(MojoFacadeTest, WatchWithInvalidFrameId) {
+  uint32_t handle0, handle1;
+  CreateMessagePipe(&handle0, &handle1);
+
+  // Start watching one end of the pipe.
+  const int kCallbackId = 99;
+  WatchHandle(handle0, kCallbackId, "invalid");
+
+  // Write to the other end of the pipe.
+  WriteMessage(handle1, @"QUJDRA==");  // "ABCD" in base-64
+
+  const auto expected_script =
+      absl::StrFormat("Mojo.internal.watchCallbacksHolder.callCallback(%d, %d)",
+                      kCallbackId, MOJO_RESULT_OK);
+  EXPECT_EQ(expected_script, WaitForLastJavaScriptCallOnFrame(main_frame()));
+
+  CloseHandle(handle0);
+  CloseHandle(handle1);
+}
+
 // Parameterized test fixture for frame-specific tests. The actual logic being
 // tested is copied from //ios/web/webui/mojo_facade_unittest.mm with the
 // exception that we are testing it on both the main & child frames rather

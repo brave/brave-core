@@ -4480,7 +4480,7 @@ extension Strings {
 
     /// A placeholder for the drop down where the user can provide a category for a web-compatibility report
     public static let reportBrokenPlaceholder = NSLocalizedString(
-      "reportBrokenCategory",
+      "ReportBrokenPlaceholder",
       tableName: "BraveShared",
       bundle: .module,
       value: "Select one option",

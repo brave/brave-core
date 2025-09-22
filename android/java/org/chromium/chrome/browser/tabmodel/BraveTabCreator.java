@@ -10,7 +10,6 @@ import android.os.Build;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -26,6 +25,8 @@ import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.WindowAndroid;
+
+import java.util.function.Supplier;
 
 public class BraveTabCreator extends ChromeTabCreator {
     public BraveTabCreator(

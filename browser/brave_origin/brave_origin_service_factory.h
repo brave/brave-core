@@ -30,10 +30,14 @@ class BraveOriginServiceFactory : public ProfileKeyedServiceFactory {
   BraveOriginServiceFactory& operator=(const BraveOriginServiceFactory&) =
       delete;
 
-  // Build policy definitions.
+  // Build browser-level policy definitions.
   // This is done in this layer because of all the dependencies needed
   // to gather this information.
-  static BraveOriginPolicyMap BuildBraveOriginPolicyDefinitions();
+  static BraveOriginPolicyMap GetBrowserPolicyDefinitions();
+
+  // Build profile-level policy definitions for a specific profile.
+  static BraveOriginPolicyMap GetProfilePolicyDefinitions(
+      std::string_view profile_id);
 
   // Static BraveOrigin-specific metadata for policy preferences.
   // This defines which preferences from kBraveSimplePolicyMap should have
@@ -42,10 +46,8 @@ class BraveOriginServiceFactory : public ProfileKeyedServiceFactory {
   // to populate BraveOriginPrefInfo structs.
   struct BraveOriginPrefMetadata {
     constexpr BraveOriginPrefMetadata(bool origin_default_value,
-                                      BraveOriginPolicyScope scope,
                                       bool user_settable)
         : origin_default_value(origin_default_value),
-          scope(scope),
           user_settable(user_settable) {}
     constexpr ~BraveOriginPrefMetadata() = default;
 
@@ -59,7 +61,6 @@ class BraveOriginServiceFactory : public ProfileKeyedServiceFactory {
         default;
 
     bool origin_default_value;
-    BraveOriginPolicyScope scope;
     bool user_settable;
   };
 

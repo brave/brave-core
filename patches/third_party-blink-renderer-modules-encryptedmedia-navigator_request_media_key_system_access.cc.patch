@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/encryptedmedia/navigator_request_media_key_system_access.cc b/third_party/blink/renderer/modules/encryptedmedia/navigator_request_media_key_system_access.cc
-index bb2b814fb9399ea9c3bd1ecfa3042ca0eaa403cb..8360c53e9d02eded2032bb4afc165f18209d6241 100644
+index 1e8d7ec85167d625a729cd8dd6729efee913f3b9..b8737b3367cbf31959c4a4c28ef01f02a46df602 100644
 --- a/third_party/blink/renderer/modules/encryptedmedia/navigator_request_media_key_system_access.cc
 +++ b/third_party/blink/renderer/modules/encryptedmedia/navigator_request_media_key_system_access.cc
 @@ -203,6 +203,7 @@ NavigatorRequestMediaKeySystemAccess::requestMediaKeySystemAccess(

@@ -176,12 +176,6 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "一般チャット";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaVisionMessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Llama Visionを搭載しています。このモデルはMetaによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。Llama VisionはBrave独自の安全なインフラを通じてホストされています。";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaVisionModelPurposeDescription" = "General Purpose Vision";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Qwen 14Bを搭載しています。このモデルはAlibaba Cloudによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。QwenはBrave独自の安全なインフラを通じてホストされています。";
 
 /* The model's purpose - Describes what it can do best */
@@ -225,9 +219,6 @@
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo AI";
-
-/* An indicator to show page content refined is in progress */
-"aichat.leoPageContentRefineInProgress" = "Webページの関連する部分を探しています...";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "このページについて質問するには、トグルをクリックしてください。あなたが入力したメッセージとともに、ページのコンテンツがBrave Leoに送信されます。";
@@ -425,7 +416,7 @@
 "aichat.termsConditionsApproveActionTitle" = "了解しました";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leoは、Webの利用を向上させるプライベートなAIスマートアシスタントです。Leoは無料でご利用いただけますが、アクセスには制限があります。有料版のBrave Leo Premiumではより多くのモデルと高い上限を提供しており、サブスクリプションをご利用の方は新機能にいち早くアクセスすることができます。詳細はBraveの**[ヘルプセンター](%1$@)**をご覧ください。\n\nデフォルトでは、Leoに質問をすると、閲覧中のWebページの内容やページ上でハイライトしたテキストがBrave Leoに送信され、回答を提供します。場合によっては、Leoは、お客様の入力から派生したクエリをBrave Searchに送信し、検索結果を使用してお客様の質問により適切に回答します。回答の正確性は保証されず、不正確、誤解を招く、または虚偽の情報が含まれる場合があります。機密・個人情報は送信しないでください。また、健康、金融、個人の安全などに関連する回答の内容にもご注意ください。Leoのオプションはいつでも設定 >Leoから調整できます。\n\nLeoは、IPアドレスのように個人の特定につながる識別子を収集しません。LeoのデータがAIモデルのトレーニングに使用されたり、AIモデルが個人データを保持することはありません (データを削除する前に30日間保持するAnthropicを除きます)。詳しくは、**[プライバシーポリシー](%2$@)**をご覧ください。";
+"aichat.termsConditionsDescription" = "Brave Leoは、Webの利用を向上させるプライベートなAIスマートアシスタントです。Leoは無料でご利用いただけますが、アクセスには制限があります。サブスクリプションサービスのBrave Leo Premiumでは制限が緩和され、より多くのモデルが提供されており、新機能にいち早くアクセスすることができます。デフォルトモデルは随時変わります。詳細はBraveの**[ヘルプセンター](%1$@)**をご覧ください。\n\nデフォルトでは、閲覧中のWebページやページ上でハイライトしたテキストについてLeoに質問すると、Leoが回答できるよう、検索クエリ同様にBrave サーバーに送信されます。場合によっては、Leoはあなたの入力から引き出したクエリをBrave検索に送信し、その検索結果を使用してより適切に回答します。Braveは回答の正確性を保証しておらず、回答には不正確な、誤解を招く、あるいは虚偽の情報が含まれる場合があります。Brave Leoに機密・個人情報は送信しないでください。また、健康、金融、個人の安全などに関する回答には十分ご注意ください。Leoのオプションは、設定 > Leoからいつでも調整できます。\n\nLeoは、IPアドレスのような個人を特定できる識別子を収集しません。検索クエリやBrave Leoの回答を含むあなたのデータが、AIモデルのトレーニングに使用されることはありません。また個人データがBraveのサーバーに保管されたり、Braveにより保持されることはありません。詳しくは、**[プライバシーポリシー](%2$@)**をご覧ください。";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Brave Leoとプライベートチャット";

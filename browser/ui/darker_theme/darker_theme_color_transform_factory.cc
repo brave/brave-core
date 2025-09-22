@@ -6,6 +6,8 @@
 #include "brave/browser/ui/darker_theme/darker_theme_color_transform_factory.h"
 
 #include "base/functional/bind.h"
+#include "brave/ui/color/nala/nala_color_id.h"
+#include "ui/color/color_id.h"
 #include "ui/color/color_mixer.h"
 #include "ui/color/color_transform.h"
 #include "ui/gfx/color_utils.h"

@@ -35,6 +35,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/api_request_helper/mock_api_request_helper.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
@@ -68,6 +69,7 @@ using ResultCallback = api_request_helper::APIRequestHelper::ResultCallback;
 using Ticket = api_request_helper::APIRequestHelper::Ticket;
 using ResponseConversionCallback =
     api_request_helper::APIRequestHelper::ResponseConversionCallback;
+using api_request_helper::MockAPIRequestHelper;
 
 namespace ai_chat {
 
@@ -283,35 +285,6 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
   MOCK_METHOD(void,
               FetchPremiumCredential,
               (base::OnceCallback<void(std::optional<CredentialCacheEntry>)>),
-              (override));
-};
-
-// Mock the APIRequestHelper to intercept requests and provide responses
-class MockAPIRequestHelper : public api_request_helper::APIRequestHelper {
- public:
-  using api_request_helper::APIRequestHelper::APIRequestHelper;
-  ~MockAPIRequestHelper() override = default;
-  MOCK_METHOD(Ticket,
-              RequestSSE,
-              (const std::string&,
-               const GURL&,
-               const std::string&,
-               const std::string&,
-               DataReceivedCallback,
-               ResultCallback,
-               (const base::flat_map<std::string, std::string>&),
-               const api_request_helper::APIRequestOptions&),
-              (override));
-  MOCK_METHOD(Ticket,
-              Request,
-              (const std::string&,
-               const GURL&,
-               const std::string&,
-               const std::string&,
-               ResultCallback,
-               (const base::flat_map<std::string, std::string>&),
-               const api_request_helper::APIRequestOptions&,
-               ResponseConversionCallback),
               (override));
 };
 

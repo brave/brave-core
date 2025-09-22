@@ -12,6 +12,7 @@
 #include "base/run_loop.h"
 #include "base/scoped_multi_source_observation.h"
 #include "base/trace_event/trace_event.h"
+#include "base/values.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/lifetime/browser_shutdown.h"
@@ -41,9 +42,6 @@ class BrowsingDataRemovalWatcher
   void OnBrowsingDataRemoverDone(uint64_t failed_data_types) override;
 
  private:
-  bool GetClearBrowsingDataOnExitSettings(const Profile* profile,
-                                          uint64_t* remove_mask,
-                                          uint64_t* origin_mask);
   void Wait();
 
   int num_profiles_to_clear_ = 0;
@@ -58,10 +56,9 @@ class BrowsingDataRemovalWatcher
 
 // See ClearBrowsingDataHandler::HandleClearBrowsingData which constructs the
 // remove_mask and the origin_mask for the same functionality not on exit.
-bool BrowsingDataRemovalWatcher::GetClearBrowsingDataOnExitSettings(
-    const Profile* profile,
-    uint64_t* remove_mask,
-    uint64_t* origin_mask) {
+bool GetClearBrowsingDataOnExitSettings(const Profile* profile,
+                                        uint64_t* remove_mask,
+                                        uint64_t* origin_mask) {
   DCHECK(remove_mask);
   DCHECK(origin_mask);
   const PrefService* prefs = profile->GetPrefs();
@@ -192,6 +189,17 @@ void BraveClearBrowsingData::ClearOnExit() {
   }
   BrowsingDataRemovalWatcher watcher;
   watcher.ClearBrowsingDataForLoadedProfiles(on_exit_testing_callback_);
+}
+
+bool BraveClearBrowsingData::IsClearOnExitEnabledForAnyType(Profile* profile) {
+  uint64_t remove_mask;
+  uint64_t origin_mask;
+  if (GetClearBrowsingDataOnExitSettings(profile, &remove_mask, &origin_mask)) {
+    return true;
+  }
+  const base::Value::List& clear_on_exit_list = profile->GetPrefs()->GetList(
+      browsing_data::prefs::kClearBrowsingDataOnExitList);
+  return !clear_on_exit_list.empty();
 }
 
 // static

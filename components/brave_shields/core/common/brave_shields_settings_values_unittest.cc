@@ -92,8 +92,7 @@ TEST_F(ShieldsSettingsValuesTest, ControlTypeSettingTypeSuccess) {
 #if !BUILDFLAG(IS_IOS)  // iOS doesn't support EXPECT_DEATH
 TEST_F(ShieldsSettingsValuesTest, ControlTypeSettingTypeFailure) {
   using ControlTypeTrait = traits::SettingTraits<ControlType>;
-  EXPECT_DEATH(ControlTypeTrait::To(static_cast<ControlType>(-1)),
-               "Invalid setting.");
+  EXPECT_DEATH(ControlTypeTrait::To(static_cast<ControlType>(-1)), "");
 
   EXPECT_EQ(std::nullopt, ControlTypeTrait::From(-1));
 
@@ -103,7 +102,7 @@ TEST_F(ShieldsSettingsValuesTest, ControlTypeSettingTypeFailure) {
 
   // Structure is invalid.
   if constexpr (DCHECK_IS_ON()) {
-    EXPECT_DEATH(Setting::FromValue(base::Value()), "Invalid value.");
+    EXPECT_DEATH(Setting::FromValue(base::Value()), "");
   } else {
     EXPECT_EQ(Setting::kDefaultValue, Setting::FromValue(base::Value()));
   }

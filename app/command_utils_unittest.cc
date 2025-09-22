@@ -10,7 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/commands/common/features.h"
 #include "chrome/app/chrome_command_ids.h"
-#include "chrome/browser/ui/views/accelerator_table.h"
+#include "chrome/browser/ui/accelerator_table.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // Note: If this test fails because an accelerated command isn't present just

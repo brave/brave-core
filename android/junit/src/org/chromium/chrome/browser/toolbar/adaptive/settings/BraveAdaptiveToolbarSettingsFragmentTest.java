@@ -49,7 +49,6 @@ import org.chromium.chrome.browser.toolbar.adaptive.BraveAdaptiveToolbarPrefs;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.prefs.PrefService;
-import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.components.user_prefs.UserPrefsJni;
 
@@ -70,7 +69,6 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
     @Mock private UserPrefsJni mUserPrefsNatives;
     @Mock private PrefService mPrefService;
     @Mock private TemplateUrlService mTemplateUrlService;
-    @Mock private TemplateUrl mSearchEngine;
 
     private ChromeSwitchPreference mSwitchPreference;
     private RadioButtonGroupAdaptiveToolbarPreference mRadioPreference;
@@ -190,6 +188,30 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
                             AdaptiveToolbarButtonVariant.VOICE, mRadioPreference.getSelection());
                     Assert.assertEquals(
                             AdaptiveToolbarButtonVariant.VOICE,
+                            ChromeSharedPreferences.getInstance()
+                                    .readInt(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS));
+
+                    // Check indexes of Bookmarks button (as a first Brave-specific button) and
+                    // MAX_VALUE
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.BOOKMARKS,
+                            AdaptiveToolbarButtonVariant.TAB_GROUPING + 1);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.NEWS,
+                            AdaptiveToolbarButtonVariant.MAX_VALUE);
+
+                    // Test Bookmarks button
+                    Assert.assertEquals(
+                            R.id.adaptive_option_bookmarks,
+                            getButton(AdaptiveToolbarButtonVariant.BOOKMARKS).getId());
+                    selectButton(AdaptiveToolbarButtonVariant.BOOKMARKS);
+                    assertButtonCheckedCorrectly(
+                            "Bookmarks", AdaptiveToolbarButtonVariant.BOOKMARKS);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.BOOKMARKS,
+                            mRadioPreference.getSelection());
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.BOOKMARKS,
                             ChromeSharedPreferences.getInstance()
                                     .readInt(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS));
                 });

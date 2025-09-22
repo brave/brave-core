@@ -24,6 +24,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/api_request_helper/mock_api_request_helper.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
@@ -42,6 +43,7 @@ using DataReceivedCallback =
 using ResultCallback = api_request_helper::APIRequestHelper::ResultCallback;
 using Ticket = api_request_helper::APIRequestHelper::Ticket;
 using GenerationResult = ai_chat::OAIAPIClient::GenerationResult;
+using api_request_helper::MockAPIRequestHelper;
 
 namespace ai_chat {
 
@@ -60,23 +62,6 @@ class MockCallbacks {
  public:
   MOCK_METHOD(void, OnDataReceived, (EngineConsumer::GenerationResultData));
   MOCK_METHOD(void, OnCompleted, (GenerationResult));
-};
-
-class MockAPIRequestHelper : public api_request_helper::APIRequestHelper {
- public:
-  using api_request_helper::APIRequestHelper::APIRequestHelper;
-  ~MockAPIRequestHelper() override = default;
-  MOCK_METHOD(Ticket,
-              RequestSSE,
-              (const std::string&,
-               const GURL&,
-               const std::string&,
-               const std::string&,
-               DataReceivedCallback,
-               ResultCallback,
-               (const base::flat_map<std::string, std::string>&),
-               const api_request_helper::APIRequestOptions&),
-              (override));
 };
 
 class TestOAIAPIClient : public OAIAPIClient {

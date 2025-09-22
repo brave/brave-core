@@ -18,11 +18,6 @@ namespace sidebar {
 FORWARD_DECLARE_TEST(SidebarBrowserWithWebPanelTest, WebPanelTest);
 }  // namespace sidebar
 
-namespace views {
-class Widget;
-}  // namespace views
-
-class SplitViewLocationBar;
 class BraveContentsContainerView;
 
 class BraveMultiContentsView : public MultiContentsView {
@@ -35,7 +30,6 @@ class BraveMultiContentsView : public MultiContentsView {
                          std::unique_ptr<MultiContentsViewDelegate> delegate);
   ~BraveMultiContentsView() override;
 
-  void UpdateSecondaryLocationBar();
   void UpdateCornerRadius();
   void UseContentsContainerViewForWebPanel();
   void SetWebPanelVisible(bool visible);
@@ -68,9 +62,6 @@ class BraveMultiContentsView : public MultiContentsView {
       const {
     return contents_container_views_;
   }
-
-  std::unique_ptr<SplitViewLocationBar> secondary_location_bar_;
-  std::unique_ptr<views::Widget> secondary_location_bar_widget_;
 
   int web_panel_width_ = 0;
   bool web_panel_on_left_ = false;

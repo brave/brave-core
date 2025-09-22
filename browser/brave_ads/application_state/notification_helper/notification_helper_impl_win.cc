@@ -117,7 +117,8 @@ NotificationHelperImplWin::~NotificationHelperImplWin() = default;
 void NotificationHelperImplWin::InitSystemNotifications(
     base::OnceClosure callback) {
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()}, base::BindOnce(&InitializeToastNotifier),
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(&InitializeToastNotifier),
       base::BindOnce(
           &NotificationHelperImplWin::InitSystemNotificationsCallback,
           weak_factory_.GetWeakPtr(), std::move(callback)));

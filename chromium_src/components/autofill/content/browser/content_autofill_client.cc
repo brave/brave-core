@@ -9,8 +9,9 @@
 
 namespace autofill {
 
-AutofillOptimizationGuide*
-BraveContentAutofillClientUnused::GetAutofillOptimizationGuide_Unused() const {
+AutofillOptimizationGuideDecider*
+BraveContentAutofillClientUnused::GetAutofillOptimizationGuideDecider_Unused()
+    const {
   return nullptr;
 }
 

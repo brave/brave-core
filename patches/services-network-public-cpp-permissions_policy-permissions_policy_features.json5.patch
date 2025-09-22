@@ -1,8 +1,8 @@
 diff --git a/services/network/public/cpp/permissions_policy/permissions_policy_features.json5 b/services/network/public/cpp/permissions_policy/permissions_policy_features.json5
-index 625ad1199eeb53dc7bab716388b68f2078846c98..6dd43360711fbb082a9ad6dc17ec7470d6301be3 100644
+index c289175c900b5d2298ff409546bec85be64b5628..e18129d00a0e25b1cc50a37a67a99c5268393645 100644
 --- a/services/network/public/cpp/permissions_policy/permissions_policy_features.json5
 +++ b/services/network/public/cpp/permissions_policy/permissions_policy_features.json5
-@@ -620,6 +620,18 @@
+@@ -624,6 +624,18 @@
        permissions_policy_name: "writer",
        depends_on: ["AIWriterAPI"],
      },
@@ -19,5 +19,5 @@ index 625ad1199eeb53dc7bab716388b68f2078846c98..6dd43360711fbb082a9ad6dc17ec7470
 +      permissions_policy_name: "cardano"
 +    },
    ],
-   // LINT.ThenChange(//third_party/blink/public/devtools_protocol/browser_protocol.pdl:PermissionsPolicyFeature)
+   // LINT.ThenChange(//third_party/blink/public/devtools_protocol/domains/Page.pdl:PermissionsPolicyFeature)
  }

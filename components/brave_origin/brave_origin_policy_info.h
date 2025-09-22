@@ -13,10 +13,6 @@
 
 namespace brave_origin {
 
-enum class BraveOriginPolicyScope {
-  kGlobal,  // Stored in local state
-  kProfile  // Stored in profile prefs
-};
 
 // Complete runtime information for a BraveOrigin-controlled preference.
 // This combines data from kBraveSimplePolicyMap (pref_name, policy_key) with
@@ -26,7 +22,6 @@ struct BraveOriginPolicyInfo {
   BraveOriginPolicyInfo();
   BraveOriginPolicyInfo(const std::string& pref_name,
                         bool default_value,
-                        BraveOriginPolicyScope scope,
                         bool user_settable,
                         const std::string& policy_key,
                         const std::string& brave_origin_pref_key);
@@ -41,7 +36,6 @@ struct BraveOriginPolicyInfo {
 
   std::string pref_name;
   bool default_value;
-  BraveOriginPolicyScope scope;
   bool user_settable;      // Whether this pref has UI for user control
   std::string policy_key;  // Policy key that controls this pref
   std::string brave_origin_pref_key;  // Key used in brave_policies dictionary

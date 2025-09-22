@@ -9,6 +9,7 @@
 
 #include "base/logging.h"
 #include "base/values.h"
+#include "brave/components/brave_origin/brave_origin_utils.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
@@ -51,9 +52,13 @@ bool BraveProfilePolicyProvider::IsFirstPolicyLoadComplete(
 policy::PolicyBundle BraveProfilePolicyProvider::LoadPolicies() {
   policy::PolicyBundle bundle;
 
-  // Future work will add Brave Origin profile policies here
+  // Future work will add policies here
 
   return bundle;
+}
+
+void BraveProfilePolicyProvider::SetProfileID(const std::string& profile_id) {
+  profile_id_ = profile_id;
 }
 
 std::unique_ptr<policy::ConfigurationPolicyProvider>

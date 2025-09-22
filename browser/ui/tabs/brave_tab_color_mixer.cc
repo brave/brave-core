@@ -6,6 +6,7 @@
 #include "brave/browser/ui/tabs/brave_tab_color_mixer.h"
 
 #include "base/containers/fixed_flat_map.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
@@ -14,12 +15,18 @@
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "ui/color/color_id.h"
 #include "ui/color/color_mixer.h"
 #include "ui/color/color_provider.h"
 #include "ui/color/color_provider_key.h"
 #include "ui/color/color_recipe.h"
 #include "ui/color/color_transform.h"
 #include "ui/gfx/color_utils.h"
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/darker_theme/darker_theme_color_transform_factory.h"
+#include "brave/browser/ui/darker_theme/features.h"
+#endif  // defined(TOOLKIT_VIEWS)
 
 namespace tabs {
 
@@ -150,6 +157,82 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
       nala::kColorContainerBackground};
   mixer[kColorBraveSplitViewInactiveWebViewBorder] = {
       nala::kColorDesktopbrowserToolbarButtonOutline};
+
+#if defined(TOOLKIT_VIEWS)
+  if (!base::FeatureList::IsEnabled(
+          darker_theme::features::kBraveDarkerTheme) ||
+      key.custom_theme ||
+      key.scheme_variant != ui::ColorProviderKey::SchemeVariant::kDarker) {
+    return;
+  }
+
+  auto& postprocessing_mixer = provider->AddPostprocessingMixer();
+  // Tab background
+  // : active/inactive tab X active/inactive frame
+  postprocessing_mixer[kColorTabBackgroundActiveFrameActive] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral20);
+  postprocessing_mixer[kColorTabBackgroundActiveFrameInactive] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral20);
+  postprocessing_mixer[kColorTabBackgroundInactiveFrameActive] = {
+      ui::kColorFrameActive};
+  postprocessing_mixer[kColorTabBackgroundInactiveFrameInactive] = {
+      ui::kColorFrameInactive};
+
+  // Tab foreground - such as title text
+  // : active/inactive tab X active/inactive frame
+  postprocessing_mixer[kColorTabForegroundActiveFrameActive] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral80);
+  postprocessing_mixer[kColorTabForegroundActiveFrameInactive] = {
+      kColorTabForegroundActiveFrameActive};
+  postprocessing_mixer[kColorTabForegroundInactiveFrameActive] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral40);
+  postprocessing_mixer[kColorTabForegroundInactiveFrameInactive] = {
+      kColorTabForegroundInactiveFrameActive};
+
+  // Tab hovered background
+  postprocessing_mixer[kColorTabBackgroundInactiveHoverFrameActive] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral10);
+
+  // Split view tile background - horizontal/vertical
+  postprocessing_mixer[kColorBraveSplitViewTileBackgroundHorizontal] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral5);
+  postprocessing_mixer[kColorBraveSplitViewTileBackgroundVertical] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral0);
+
+  // NewTabButton
+  postprocessing_mixer[kColorNewTabButtonForegroundFrameActive] = {
+      kColorTabForegroundActiveFrameActive};
+  postprocessing_mixer[kColorNewTabButtonForegroundFrameInactive] = {
+      kColorTabForegroundActiveFrameInactive};
+  postprocessing_mixer[kColorNewTabButtonBackgroundFrameActive] = {
+      ui::kColorFrameActive};
+  postprocessing_mixer[kColorNewTabButtonBackgroundFrameInactive] = {
+      ui::kColorFrameInactive};
+
+  // Vertical tabs
+  postprocessing_mixer[kColorBraveVerticalTabActiveBackground] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral20);
+  postprocessing_mixer[kColorBraveVerticalTabHoveredBackground] =
+      darker_theme::CreateDarkerThemeColorTransform(
+          nala::kColorPrimitiveNeutral10);
+  postprocessing_mixer[kColorBraveVerticalTabInactiveBackground] = {
+      kColorToolbar};
+
+  const SkColor ntb_forground = postprocessing_mixer.GetResultColor(
+      kColorTabForegroundInactiveFrameActive);
+  postprocessing_mixer[kColorBraveVerticalTabNTBIconColor] = {ntb_forground};
+  postprocessing_mixer[kColorBraveVerticalTabNTBTextColor] = {ntb_forground};
+  postprocessing_mixer[kColorBraveVerticalTabNTBShortcutTextColor] = {
+      ntb_forground};
+#endif  // defined(TOOLKIT_VIEWS)
 }
 
 void AddBraveTabPrivateThemeColorMixer(ui::ColorProvider* provider,

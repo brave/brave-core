@@ -1330,6 +1330,9 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "פתיחת הכול";
 
+/* The button which open the sync settings screen */
+"opentabs.openSyncSettingsButtonTitle" = "פתיחת הגדרות סנכרון";
+
 /* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "השבוע שעבר %@";
 
@@ -1341,6 +1344,15 @@
 
 /* The title displayed on table header for open tabs list from other devices */
 "openTabs.openTabsListTableHeaderTitle" = "התקנים";
+
+/* A title shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsNoSyncedTabsTitle" = "אין כרטיסיות מסונכרנות";
+
+/* The title shown on the screen that shows tabs synced from other devices */
+"opentabs.openTabsOnOtherDevices" = "כרטיסיות ממכשירים אחרים";
+
+/* A description shown when there are no synced open tabs to show in the list */
+"opentabs.openTabsYourTabsAppearHere" = "הכרטיסיות המסונכרנות שלך מופיעות כאן";
 
 /* Title action button for sending webpage to selected other device */
 "opentabs.sendDeviceButtonTitle" = "שליחה למכשיר שלך";
@@ -1381,38 +1393,11 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "פתיחת אתר";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
-"optionsMenu.braveLeoItemDescription" = "Leo הוא עוזר חכם המופעל על ידי AI, המובנה ישירות בדפדפן";
-
-/* The subtitle description of menu item Brave News */
-"optionsMenu.braveNewsItemDescription" = "הידיעות החשובות של היום בפיד חדשות פרטי";
-
 /* Brave News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "חדשות";
 
-/* The subtitle description of menu item Brave Playlist */
-"optionsMenu.bravePlaylistItemDescription" = "שמירת פלייליסט לא מקוון של כל סרטון/פריט נגינה";
-
 /* Brave News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "רשימת השמעה";
-
-/* The subtitle description of menu item Brave Talk */
-"optionsMenu.braveTalkItemDescription" = "שיחות וידאו פרטיות, ממש בתוך הדפדפן שלך";
-
-/* Brave Talk Item Menu title */
-"optionsMenu.braveTalkItemTitle" = "שיחות";
-
-/* The subtitle description of menu item Brave VPN */
-"optionsMenu.braveVPNItemDescription" = "הגנה כוללת על המכשיר שלך ברשת";
-
-/* Brave VPN Item Menu title */
-"optionsMenu.braveVPNItemTitle" = "VPN";
-
-/* The subtitle description of menu item Brave Wallet */
-"optionsMenu.braveWalletItemDescription" = "ארנק הקריפטו המאובטח, בלי שום תוסף";
-
-/* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "הפיצ׳רים של Brave";
 
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "הגדרות פרטיות אחרות";
@@ -1528,17 +1513,11 @@
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "שינוי פלייליסט";
 
-/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
-"playlist.deleteForOfflineButtonTitle" = "מחיקת מטמון לא מקוון";
-
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "הסרטון הזה היה בשידור חי או שמגבלת הזמן פקעה. יש לפתוח מחדש את הקישור כדי לרענן.";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "סרטון פג תוקף";
-
-/* Text indicator on the table cell If a video is expired */
-"playList.expiredLabelTitle" = "פג תוקף";
 
 /* Number of items in the playlsit folder. Example: '10 items' */
 "playlist.folderItemCountPlural" = "%d פריטים";
@@ -1548,15 +1527,6 @@
 
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "הייתה בעיה בטעינת המקור!";
-
-/* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "כשאפשרות זו מופעלת, יוצג תג בסמל התפריט הראשי שיצביע על כך שמדיה בדף זה יכולה להתווסף לפלייליסט Brave";
-
-/* Title for playlist menu badge option */
-"playlist.menuBadgeOptionTitle" = "הצגת תג התראות בתפריט";
-
-/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
-"playlist.movePlaylistShareActionMenuTitle" = "העברה...";
 
 /* Detail Text when there are no items in the playlist */
 "playList.noItemLabelDetailLabel" = "אפשר להוסיף פריטים לפלייליסט Brave שלך בתוך הדפדפן";
@@ -1572,9 +1542,6 @@
 
 /* Title for opening the playlist */
 "playList.openInPlaylistButtonTitle" = "פתיחה בפלייליסט";
-
-/* The title for the alert that shows up when an item is expired */
-"playList.pictureInPictureErrorTitle" = "מצטערים, אירעה שגיאה בזמן הניסיון להציג תמונה בתוך תמונה.";
 
 /* Playlist alert message when playlist is already showing on a different window */
 "playlist.playlistAlreadyShowingBody" = "הפלייליסט כבר פעיל בחלון אחר";
@@ -1612,9 +1579,6 @@
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "האחסון כמעט מלא";
 
-/* When a video or audio is live and has no duration */
-"playlist.playlistLiveMediaStream" = "שידור חי";
-
 /* Footer Text for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionFooterText" = "כשאפשרות זו מופעלת, אפשר ללחוץ לחיצה ארוכה על מרבית קובצי הוידאו/שמע ולהוסיף אותם לפלייליסט שלך.";
 
@@ -1636,41 +1600,8 @@
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
 "playlist.playlistResetPlaylistOptionFooterText" = "האפשרות הזו תסיר את כל הסרטונים מהפלייליסט, כמו גם מהאחסון של מצב לא מקוון.";
 
-/* Error message when saving a playlist item for offline fails */
-"playlist.playlistSaveForOfflineErrorMessage" = "מצטערים, לא ניתן לשמור את הפריט הזה למצב לא מקוון כעת.";
-
-/* Title of alert when saving a playlist item for offline mode */
-"playlist.playlistSaveForOfflineErrorTitle" = "מצטערים, משהו השתבש";
-
-/* Title For the Section that videos are listed */
-"playList.playListSectionTitle" = "רשימות השמעה";
-
 /* Title Playlist (used for back button, and playlist settings) */
 "playList.playListSettingTitle" = "רשימת השמעה";
-
-/* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "התיקייה הזו כבר קיימת בפלייליסט Brave שלך";
-
-/* Title for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsTitle" = "מצטערים";
-
-/* Title for the Section that videos are listed */
-"playList.playlistSharedFolderSectionTitle" = "שותף איתך";
-
-/* Title For the Section that videos are listed */
-"playList.playListSharedFolderSectionTitle" = "שותף איתך";
-
-/* Footer Text for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationFooterText" = "ההגדרה הזו תזיז את מיקום רשימת הסרטונים בין צד שמאל לצד ימין.";
-
-/* Option Text for Sidebar Location Left */
-"playlist.playlistSidebarLocationOptionLeft" = "שמאלה";
-
-/* Option Text for Sidebar Location Right */
-"playlist.playlistSidebarLocationOptionRight" = "ימינה";
-
-/* Title for the Playlist Settings Option for Sidebar Location (Left/Right) */
-"playlist.playlistSidebarLocationTitle" = "מיקום סרגל הצד";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsFooterText" = "עבור קבצים בודדים, להמשיך את הנגינה מנקודת העצירה האחרונה.";
@@ -1684,50 +1615,8 @@
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
 "playList.removedFromPlaylistMessage" = "הוסר מתוך %@";
 
-/* Message for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertMessage" = "זה ימחק את המדיה מהאחסון הלא מקוון שלך. בטוח שבא לך להמשיך?";
-
-/* Title for the alert shown when the user tries to remove offline data of an item from playlist */
-"playlist.removePlaylistOfflineDataAlertTitle" = "הסרת נתונים לא מקוונים";
-
-/* Message for the alert shown when the user tries to remove a video from playlist */
-"playlist.removePlaylistVideoAlertMessage" = "זה יסיר את פריט המדיה מהרשימה. בטוח שבא לך להמשיך?";
-
-/* Title for the alert shown when the user tries to remove an item from playlist */
-"playlist.removePlaylistVideoAlertTitle" = "להסיר את פריט המדיה מהפלייליסט?";
-
 /* Reopen Alert button title */
 "playList.reopenButtonTitle" = "פתיחה מחדש";
-
-/* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
-"playList.savedForOfflineLabelTitle" = "נוסף ל״לא מקוון״";
-
-/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
-"playlist.saveForOfflineButtonTitle" = "שמירה למצב לא מקוון";
-
-/* Text indicator on the table cell while saving a video for offline */
-"playList.savingForOfflineLabelTitle" = "בשמירה עבור מצב לא מקוון...";
-
-/* Description of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyDescription" = "מסנכרן את כל תיקיות הפלייליסט שלך באופן אוטומטי";
-
-/* Title of the settings option to sync folders with the server automatically, every 4 hours. */
-"playList.sharedFolderSyncAutomaticallyTitle" = "סנכרון אוטומטי של תיקיות פלייליסט";
-
-/* Details Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionDetailsTitle" = "אפשר לפתוח את הפריט הנוכחי בכרטיסיה חדשה, או לשתף אותו באמצעות תפריט השיתוף של המערכת.";
-
-/* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "תפריט פלייליסט Brave";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewPrivateTabTitle" = "פתיחה בכרטיסיה פרטית";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistOpenInNewTabTitle" = "פתיחה בכרטיסיה חדשה";
-
-/* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistShareActionMenuTitle" = "שיתוף...";
 
 /* Title for load resources error alert */
 "playList.sorryAlertTitle" = "מצטערים";
@@ -1765,56 +1654,11 @@
 /* The title of the button to create a new folder */
 "playlistFolders.createNewFolderButtonTitle" = "צור";
 
-/* The title of the button that allows the user to edit the name of a folder */
-"playlistFolders.editButtonTitle" = "ערוך";
-
-/* The title of the screen where the user edits folder names */
-"playlistFolders.editFolderScreenTitle" = "עריכת תיקיה";
-
-/* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "עריכת פלייליסט";
-
-/* The error shown to the user when we cannot save their changes made on a folder */
-"playlistFolders.errorSavingMessage" = "מצטערים שלא יכולנו לשמור את השינויים שביצעת בתיקיה זו";
-
-/* The title of the button where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderButtonTitle" = "העבר";
-
-/* The title of the section indicating the currently selected folder */
-"playlistFolders.moveFolderCurrentSectionTitle" = "פלייליסט נוכחי";
-
-/* The title of the screen where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderScreenTitle" = "העבר";
-
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
-"playlistFolders.moveItemDescription" = "%@  ועוד פריט 1";
-
-/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld פריטים";
-
-/* Sometimes an item can have no name. So this is a generic title to use */
-"playlistFolders.moveItemWithNoNameTitle" = "פריט 1";
-
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
-"playlistFolders.moveMultipleItemDescription" = "%1$@ ועוד %2$lld פריטים";
-
 /* The title of the button to create a new folder */
 "playlistFolders.newFolderButtonTitle" = "רשימת השמעה חדשה";
 
 /* The title of the screen to create a new folder */
 "playlistFolders.newFolderScreenTitle" = "רשימת השמעה חדשה";
-
-/* The sub-title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionSubtitle" = "יש ללחוץ כדי לבחור סרטונים";
-
-/* The title of the section where the user can select videos to add to the new folder being created */
-"playlistFolders.newFolderSectionTitle" = "הוספת סרטונים לפלייליסט זה";
-
-/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.' */
-"playlistFolders.selectAFolderTitle" = "יש לבחור פלייליסט להעביר אליו %lld פריטים";
-
-/* The title of the section indicating that the user should select a folder to move 1 item to. */
-"playlistFolders.selectASingleFolderTitle" = "יש לבחור פלייליסט להעביר אליו פריט 1";
 
 /* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
 "playlistFolders.subtitleItemCount" = "%lld פריטים";
@@ -1824,45 +1668,6 @@
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "פלייליסט ללא שם";
-
-/* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "כפתור הוספה לפלייליסט Brave";
-
-/* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "שמור";
-
-/* Menu Title for removing offline data/cache */
-"playlistFolderSharing.deleteOfflineDataMenuTitle" = "הסרת נתונים לא מקוונים";
-
-/* Menu Title for deleting the playlist */
-"playlistFolderSharing.deletePlaylistMenuTitle" = "מחיקת פלייליסט";
-
-/* Menu Title for editing a folder */
-"playlistFolderSharing.editMenuTitle" = "ערוך";
-
-/* Accessibility Title for the playlist menu. */
-"playlistFolderSharing.menuButtonAccessibilityTitle" = "כפתור תפריט פלייליסט";
-
-/* Button that adds the playlist to the local database */
-"playlistFolderSharing.offlineManagementViewAddButtonTitle" = "הוספת פלייליסט כעת";
-
-/* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewDescription" = "שמירת אוטומטית למצב לא מקוון מופעלת, כלומר, תוספות חדשות לפלייליסט, כולל פלייליסטים ששותפו, ישמרו במכשיר שלך לצפייה במצב לא מקוון ועשויות לעשות שימוש בנתונים הניידים שלך.\n\nניתן לנהל שמירה אוטומטית למצב לא מקוון בהגדרות הפלייליסט.";
-
-/* Button that takes the user to the settings menu */
-"playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "הגדרות";
-
-/* Title of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewTitle" = "ניהול נתונים הפלייליסט";
-
-/* Menu Title for renaming a folder */
-"playlistFolderSharing.renameMenuTitle" = "שנה שם";
-
-/* Menu Title for saving offline data/cache */
-"playlistFolderSharing.saveOfflineDataMenuTitle" = "שמירת נתונים לא מקוונים";
-
-/* Menu Title for syncing playlist */
-"playlistFolderSharing.syncNowMenuTitle" = "סנכרון כעת";
 
 /* Description for closing the `Brave Shields` popover menu that is displayed. */
 "PopoverShieldsMenuClose" = "סגירת תפריט מגנים";
@@ -2197,6 +2002,13 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "ReportBrokenAdditionalDetails" = "פרטים נוספים (אופציונלי)";
 
+/* A label for a text entry field where the user can provide additional details for a web-compatibility report */
+"reportBrokenAdditionalDetailsRequired" = "פרטים נוספים";
+
+/* A label for a drop down where the user provides a category for a web-compatibility report
+A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "יש לבחור אפשרות אחת";
+
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "צור איתי קשר בכתובת: (לא חובה)";
 
@@ -2207,7 +2019,7 @@
 "ReportBrokenContactMeSuggestions" = "דואר אלקטרוני, טוויטר וכו'.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "הודע/י למפתחים של Brave כי אתר זה אינו עובד בצורה תקינה עם Shields:";
+"ReportBrokenSiteBody1" = "אפשר להודיע למפתחים של Brave שהאתר הזה לא עובד כצפוי:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
 "ReportBrokenSiteBody2" = "הערה: הדוח שנשלח לשרתי Brave יכלול את כתובת האתר, מספר גרסה של Brave, הגדרות Shields, סטטוס VPN והגדרות שפה.";
@@ -2557,6 +2369,9 @@
 /* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "הצעות חיפוש מאת %@";
 
+/* Action title for open a playlist item in Playlist. */
+"searchSuggestionOpenPlaylistActionTitle" = "פתח ברשימת השמעה";
+
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "החלפה לכרטיסיה זו";
 
@@ -2617,6 +2432,24 @@
 /* Description of autoclose tabs feature. */
 "settings.autocloseTabsSettingFooter" = "מאפשר ל-Brave לסגור אוטומטית כרטיסיות שלא נצפו לאחרונה.";
 
+/* Description beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsDesc" = "חסימת אלמנטים מסיחים ב-YouTube";
+
+/* Title beside the toggle for blocking YouTube distracting elements */
+"settings.blockYouTubeDistractingElementsTitle" = "חסימת רכיבים מסיחים ב-YouTube";
+
+/* Description beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsDesc" = "חוסם את הרכיב ׳הבא׳ ואת כרטיסיות הסיום ב-youtube.com";
+
+/* Title beside the toggle for blocking YouTube recommendations */
+"settings.blockYoutubeRecommendationsTitle" = "חסימת תוכן מומלץ ב-YouTube";
+
+/* Description beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsDesc" = "חוסם את Shorts מדף הבית, דף trending ותוצאות החיפוש ב-youtube.com";
+
+/* Title beside the toggle for blocking YouTube shorts */
+"settings.blockYouTubeShortsTitle" = "חסום YouTube Shorts";
+
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "הפעלה באיכות הגבוהה ביותר";
 
@@ -2646,6 +2479,12 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "שלח/י PING של שימוש יומי ל-Brave";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "מאפשר ל-Brave להציג לינקים לסקרים פרטיים בדף הכרטיסייה החדשה. סקרים עוזרים לנו לבנות פיצ׳רים טובים יותר ולמדוד את היעילות של קמפיינים פרסומיים בדפדפן. [למידע נוסף](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "הפעלת סקרי Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3061,6 +2900,15 @@
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.deviceFetchErrorAlertDescription" = "משהו השתבש במהלך שליפת המכשירים בשרשרת הסנכרון.";
 
+/* Message for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedMessage" = "נראה שהמכשיר שלך שוחזר מגיבוי, מה שעלול להשפיע על סנכרון Brave. כדי להמשיך להשתמש בסנכרון Brave, יש לאפס את שרשרת הסנכרון ולהצטרף אליה מחדש.";
+
+/* Title for alert when the user has restored their device from a backup */
+"sync.deviceRestoreDetectedTitle" = "שחזור זוהה";
+
+/* Alert button title when the user has restored their device from a backup, to reset their sync chain */
+"sync.deviceRestoreResetActionTitle" = "איפוס שרשרת סנכרון";
+
 /* Sync device settings page title. */
 "sync.devices" = "מכשירים בשרשרת הסנכרון";
 
@@ -3235,6 +3083,63 @@
 /* Accessibility label for action denoting closing a tab in tab list (tray) */
 "TabAccessibilityCloseActionLabel" = "סגור";
 
+/* Accessibility label for a close button that when tapped opens a new tab */
+"tabGrid.addTabAccessibilityLabel" = "כרטיסייה חדשה";
+
+/* A button title which when tapped will close all of the open tabs for the user */
+"tabGrid.closeAllTabsButtonTitle" = "סגירת כל הכרטיסיות";
+
+/* Accessibility label for a close button that when tapped closes the associated tab */
+"tabGrid.closeTab" = "סגור כרטיסייה";
+
+/* A button title which when tapped will display a menu with more options */
+"tabGrid.moreMenuButtonTitle" = "עוד";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneBody" = "אתרים שביקרת בהם בחלונות פרטיים לא יופיעו בהיסטוריה שלך. קובצי cookie, נתוני טפסים, ונתוני אתרים נעלמים ברגע שכל החלונות הפרטיים נסגרו.";
+
+/* A bullet point explaining the benefits of private browsing */
+"tabGrid.privateBrowsingInfoBulletOneTitle" = "בלי להשאיר עקבות במכשיר שלך";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeBody" = "Brave VPN מצפין ומגן על כל מה שעשית ברשת, אפילו מחוץ לדפדפן Brave.";
+
+/* A bullet point explaining the benefits of Brave VPN */
+"tabGrid.privateBrowsingInfoBulletThreeTitle" = "Brave VPN";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoBody" = "לתשומך לבך — אפילו בחלונות פרטיים — פעילות הגלישה שלך עדיין עשויה להיות גלויה לספק האינטרנט שלך, לצופים ברשת, או למעסיק שלך (אם השתמשת במכשיר או רשת מטעם העבודה).";
+
+/* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
+"tabGrid.privateBrowsingInfoBulletTwoTitle" = "גלישה גלויה";
+
+/* A title shown when in private browsing mode with no tabs open */
+"tabGrid.privateBrowsingInfoTitle" = "כרטיסיה פרטית";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.privateBrowsingModeAccessibilityLabel" = "גלישה פרטית";
+
+/* A button title which when tapped will present settings for private tabs */
+"tabGrid.privateTabsSettingsTitle" = "הגדרות כרטיסיות פרטיות";
+
+/* Accessibility label for the regular browsing option in the browsing mode picker */
+"tabGrid.regularBrowsingModeAccessibilityLabel" = "גלישה רגילה";
+
+/* A button title that when tapped allows users to shred all of their tabs */
+"tabGrid.shredAllTabsButtonTitle" = "גריסת כל הכרטיסיות";
+
+/* A button title that when tapped allows users to shred the currently selected tab */
+"tabGrid.shredSelectedTabButtonTitle" = "גריסת כרטיסיה שנבחרה";
+
+/* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
+"tabGrid.shredTabsAccessibilityLabel" = "גריסת כרטיסיות";
+
+/* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryAccessibilityLabel" = "הצגת היסטוריה";
+
+/* Accessibility label for a button that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsAccessibilityLabel" = "הצגת כרטיסיות מסונכרנות";
+
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "מפעיל או מכבה מצב פרטי";
 
@@ -3252,6 +3157,15 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingTitle" = "שמירת כרטיסיות פרטיות";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionFaceID" = "הגדרת Face ID כאימות נדרש כדי לגשת לכרטיסיות הפרטיות שלך.";
+
+/* Describes the preference that locks the users private tabs behind their device PIN */
+"tabs.settings.privateBrowsingLockDescriptionPinCode" = "הגדרת PIN המכשיר שלך כאימות נדרש כדי לגשת לכרטיסיות הפרטיות שלך.";
+
+/* Describes the preference that locks the users private tabs behind their device biometrics */
+"tabs.settings.privateBrowsingLockDescriptionTouchID" = "הגדרת Touch ID המכשיר שלך כאימות נדרש כדי לגשת לכרטיסיות הפרטיות שלך.";
 
 /* No comment provided by engineer. */
 "tabs.settings.privateBrowsingLockTitleFaceID" = "דרישת זיהוי פנים";

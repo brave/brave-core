@@ -17,6 +17,7 @@
 #include "base/observer_list_types.h"
 #include "base/sequence_checker.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
 #include "ui/shell_dialogs/select_file_policy.h"
 
@@ -54,6 +55,7 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener {
 
   // Process image data (sanitization and resizing)
   static void ProcessImageData(
+      data_decoder::DataDecoder* data_decoder,
       const std::vector<uint8_t>& image_data,
       base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback);
 
@@ -74,6 +76,9 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener {
   raw_ptr<Profile> profile_ = nullptr;
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
   mojom::AIChatUIHandler::UploadFileCallback upload_file_callback_;
+
+  // DataDecoder instance for processing image data
+  data_decoder::DataDecoder data_decoder_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<UploadFileHelper> weak_ptr_factory_{this};

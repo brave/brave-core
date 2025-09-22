@@ -408,12 +408,12 @@ program
   .option(
     '--ios_simulator_platform <simulator_platform>',
     'platform to use for ios simulator',
-    'iPhone 16',
+    'iPhone 17',
   )
   .option(
     '--ios_simulator_version <simulator_version>',
     'ios version for simulator',
-    '18.4',
+    '26.0',
   ) // should match ios_deployment_target
   .option('--offline', 'use offline mode for RBE')
   .arguments('[build_config]')

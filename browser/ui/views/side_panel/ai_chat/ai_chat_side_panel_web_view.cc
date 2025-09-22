@@ -7,8 +7,8 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"

@@ -176,12 +176,6 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "Yleiskäyttöinen chat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaVisionMessageDescription" = "Hei, olen Leo. Olen Braven kokonaan isännöimä tekoälyavustaja. Toimintani perustuu Llama Visioniin, Metan luomaan malliin, joka on tehokas ja soveltuu moniin käyttötarkoituksiin. Brave ylläpitää Llama Visionia oman suojatun infrastruktuurinsa kautta.";
-
-/* The model's purpose - Describes what it can do best */
-"aichat.introMessageLlamaVisionModelPurposeDescription" = "Yleiskäyttöinen vision";
-
-/* The model intro message when you first enter the chat assistant */
 "aichat.introMessageQwenMessageDescription" = "Hei, olen Leo. Olen Braven kokonaan ylläpitämä tekoälyavustaja. Toimintani perustuu Qwen 14B:hen, Alibaba Cloudin luomaan malliin, joka on tehokas ja soveltuu moniin käyttötarkoituksiin. Brave ylläpitää Qwenia oman suojatun infrastruktuurinsa kautta.";
 
 /* The model's purpose - Describes what it can do best */
@@ -225,9 +219,6 @@
 
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo-tekoäly";
-
-/* An indicator to show page content refined is in progress */
-"aichat.leoPageContentRefineInProgress" = "Verkkosivun asiaankuuluvien osien löytäminen...";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Siirry kysymään tietoa tästä verkkosivusta. Sen sisältö lähetetään Brave Leolle yhdessä viestisi kanssa.";
@@ -425,7 +416,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Ymmärrän";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo on yksityinen tekoälyavustaja, joka kehittää verkon käyttöäsi. Leon käyttö on ilmaista rajoitetulla käyttöoikeudella. Brave Leo Premium tarjoaa enemmän malleja, laajemmat käyttöoikeudet ja antaa tilaajille pääsyn uusiin ominaisuuksiin muita aikaisemmin. Lue lisätietoja Braven **[Ohjekeskuksesta](%1$@)**.\n\nKun kysyt Leolta kysymyksen, se voi oletusarvoisesti käyttää katselemasi verkkosivun tietoja tai sivulla korostamaasi tekstiä tai lähettää niitä Brave Leolle löytääkseen kysymykseen vastauksen. Joissakin tapauksissa Leo voi lähettää kysymyksestäsi johdettuja hakuja Brave-hakuun ja käyttää hakutuloksia vastauksen parantamiseen. Vastausten tarkkuudesta ei anneta takeita, ja vastaukset voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Älä lähetä arkaluontoisia äläkä yksityisiä tietoja, ja ole varovainen vastausten kanssa, jotka liittyvät terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai muuhun vastaavaan. Voit mukauttaa Leon asetuksia milloin tahansa Asetuksissa. Siirry kohtaan Asetukset > Leo.\n\nLeo ei kerää yksilöiviä tietoja, jotka voidaan liittää sinuun, kuten IP-osoitettasi. Mitään tietoja ei käytetä tekoälymallien kouluttamiseen, eivätkä tekoälymallit säilytä henkilötietoja (paitsi Anthropic, joka säilyttää tietoja 30 päivää ennen niiden poistamista). Lue lisätietoja **[tietosuojakäytännöstä](%2$@)**.";
+"aichat.termsConditionsDescription" = "Brave Leo on yksityinen tekoälyavustaja, joka kehittää verkon käyttöäsi. Leon käyttö on ilmaista rajoitetulla käyttöoikeudella. Brave Leo Premium tarjoaa enemmän malleja, laajemmat käyttöoikeudet ja tilaajille pääsyn uusiin ominaisuuksiin muita aikaisemmin. Oletusmalli vaihtuu aika ajoin. Katso lisätiedot Braven **[Ohjekeskuksesta](%1$@)**.\n\nKun Leolta kysyy kysymyksen, se voi käyttää katselemasi verkkosivun tietoja tai sivulla korostamaasi tekstiä tai lähettää niitä Brave-palvelimille, jotta Leo voi tarjota vastauksen. Joissakin tapauksissa Leo voi lähettää kysymyksestäsi johdettuja hakuja Brave-hakuun ja käyttää hakutuloksia vastauksen parantamiseen. Vastausten tarkkuudesta ei anneta takeita, ja vastaukset voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Älä lähetä arkaluontoisa tai yksityisiä tietoja, ja ole varovainen vastausten kanssa, jotka liittyvät terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai muuhun vastaavaan. Voit mukauttaa Leon asetuksia milloin tahansa Asetuksissa. Siirry kohtaan Asetukset > Leo.\n\nLeo ei kerää yksilöiviä tietoja, kuten IP-osoitettasi, jotka voidaan liittää sinuun. Mitään tietoja ei käytetä tekoälymallien kouluttamiseen, mukaan lukien hakujasi tai Brave Leon vastauksia. Henkilötietoja ei säilytetä palvelimilla eikä Braven toimesta. Katso lisätiedot **[tietosuojakäytännöstä](%2$@)**.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Juttele Brave Leon kanssa yksityisesti ";

@@ -26,12 +26,6 @@
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/shell_dialogs/selected_file_info.h"
 
-namespace {
-data_decoder::DataDecoder* GetDataDecoder() {
-  static base::NoDestructor<data_decoder::DataDecoder> data_decoder;
-  return data_decoder.get();
-}
-}  // namespace
 
 namespace ai_chat {
 
@@ -154,11 +148,12 @@ void UploadFileHelper::RemoveObserver(Observer* observer) {
 
 // static
 void UploadFileHelper::ProcessImageData(
+    data_decoder::DataDecoder* data_decoder,
     const std::vector<uint8_t>& image_data,
     base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback) {
   data_decoder::DecodeImage(
-      GetDataDecoder(), image_data, data_decoder::mojom::ImageCodec::kDefault,
-      true, data_decoder::kDefaultMaxSizeInBytes, gfx::Size(),
+      data_decoder, image_data, data_decoder::mojom::ImageCodec::kDefault, true,
+      data_decoder::kDefaultMaxSizeInBytes, gfx::Size(),
       base::BindOnce(&OnImageDecoded, std::move(callback)));
 }
 
@@ -219,7 +214,8 @@ void UploadFileHelper::MultiFilesSelected(
     auto read_file = base::BindOnce(&ReadSelectedFile, file);
 
     auto on_file_read = base::BindOnce(
-        [](base::OnceCallback<void(
+        [](data_decoder::DataDecoder* data_decoder,
+           base::OnceCallback<void(
                std::tuple<std::optional<std::vector<uint8_t>>, base::FilePath,
                           std::optional<mojom::UploadedFileType>>)> callback,
            std::tuple<std::optional<std::vector<uint8_t>>, base::FilePath>
@@ -245,7 +241,7 @@ void UploadFileHelper::MultiFilesSelected(
                      *file_type_opt == mojom::UploadedFileType::kImage) {
             // For images, process them as before
             UploadFileHelper::ProcessImageData(
-                *file_data,
+                data_decoder, *file_data,
                 base::BindOnce(
                     [](base::OnceCallback<void(
                            std::tuple<std::optional<std::vector<uint8_t>>,
@@ -266,7 +262,7 @@ void UploadFileHelper::MultiFilesSelected(
                 std::nullopt, std::move(filepath), std::nullopt));
           }
         },
-        barrier_callback);
+        &data_decoder_, barrier_callback);
 
     base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
                                                  std::move(read_file),
@@ -304,9 +300,10 @@ void UploadFileHelper::OnFileRead(
              *file_type_opt == mojom::UploadedFileType::kImage) {
     // For images, process them as before
     UploadFileHelper::ProcessImageData(
-        *file_data, base::BindOnce(&UploadFileHelper::OnImageEncoded,
-                                   weak_ptr_factory_.GetWeakPtr(),
-                                   std::get<1>(result).AsUTF8Unsafe()));
+        &data_decoder_, *file_data,
+        base::BindOnce(&UploadFileHelper::OnImageEncoded,
+                       weak_ptr_factory_.GetWeakPtr(),
+                       std::get<1>(result).AsUTF8Unsafe()));
   } else {
     // Fail if we cannot handle this file type
     std::move(upload_file_callback_).Run(std::nullopt);

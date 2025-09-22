@@ -463,6 +463,20 @@ bool NTPSponsoredImagesData::IsSuperReferral() const {
   return IsValid() && !theme_name.empty();
 }
 
+const Creative* NTPSponsoredImagesData::GetCreativeByInstanceId(
+    const std::string& creative_instance_id) const {
+  // TODO(https://github.com/brave/brave-browser/issues/49222):
+  // Use a map-based lookup for creatives to improve performance.
+  for (const Campaign& campaign : campaigns) {
+    for (const Creative& creative : campaign.creatives) {
+      if (creative.creative_instance_id == creative_instance_id) {
+        return &creative;
+      }
+    }
+  }
+  return nullptr;
+}
+
 std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackgroundAt(
     size_t campaign_index,
     size_t creative_index) const {

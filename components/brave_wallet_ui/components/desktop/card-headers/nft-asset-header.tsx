@@ -40,12 +40,12 @@ export const NftAssetHeader = ({
 }: Props) => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
-  const isAndroidOrPanel = isAndroid || isPanel
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isMobileOrPanel = isMobile || isPanel
 
   return (
     <Row
-      padding={isAndroidOrPanel ? '12px 20px' : '26px 0px'}
+      padding={isMobileOrPanel ? '12px 20px' : '26px 0px'}
       justifyContent='space-between'
       alignItems='center'
     >
@@ -62,9 +62,7 @@ export const NftAssetHeader = ({
             name='arrow-left'
           />
         </MenuButton>
-        <HeaderTitle isAndroidOrPanel={isAndroidOrPanel}>
-          {assetName}
-        </HeaderTitle>
+        <HeaderTitle isMobileOrPanel={isMobileOrPanel}>{assetName}</HeaderTitle>
       </Row>
       {onSend && (
         <SendButton onClick={onSend}>{getLocale('braveWalletSend')}</SendButton>
