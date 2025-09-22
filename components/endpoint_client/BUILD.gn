@@ -3,12 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//tools/json_schema_compiler/json_schema_api.gni")
-
 source_set("endpoint_client") {
   sources = [
     "client.h",
-    "endpoint_builder.h",
+    "endpoint.h",
     "maybe_strip_with_headers.h",
     "maybe_variant.h",
     "methods.h",
@@ -27,18 +25,6 @@ source_set("endpoint_client") {
   ]
 }
 
-generated_types("generated_api_types") {
-  sources = [
-    "test_error.idl",
-    "test_request.idl",
-    "test_response.idl",
-  ]
-
-  deps = [ "//base" ]
-
-  root_namespace = "%(namespace)s"
-}
-
 source_set("unit_tests") {
   testonly = true
 
@@ -49,7 +35,6 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/api_request_helper",
     "//brave/components/endpoint_client",
-    "//brave/components/endpoint_client:generated_api_types",
     "//net",
     "//net/traffic_annotation:test_support",
     "//services/network:test_support",

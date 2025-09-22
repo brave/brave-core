@@ -19,7 +19,7 @@
 #include "base/json/json_writer.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "brave/components/endpoint_client/endpoint_builder.h"
+#include "brave/components/endpoint_client/endpoint.h"
 #include "brave/components/endpoint_client/parse.h"
 #include "brave/components/endpoint_client/with_headers.h"
 #include "net/http/http_request_headers.h"
