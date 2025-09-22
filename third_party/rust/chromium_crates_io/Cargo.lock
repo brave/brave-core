@@ -1064,7 +1064,7 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.11.0"
+version = "2.11.3"
 dependencies = [
  "equivalent",
  "hashbrown",
