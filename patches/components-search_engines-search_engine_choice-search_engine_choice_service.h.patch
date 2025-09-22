@@ -1,0 +1,30 @@
+diff --git a/components/search_engines/search_engine_choice/search_engine_choice_service.h b/components/search_engines/search_engine_choice/search_engine_choice_service.h
+index 87fb32c4b61f07025743431d866306e0ba0ca395..6bfd9e74cb6713e2cdd55216ca41d5884f8e72b1 100644
+--- a/components/search_engines/search_engine_choice/search_engine_choice_service.h
++++ b/components/search_engines/search_engine_choice/search_engine_choice_service.h
+@@ -7,6 +7,7 @@
+ 
+ #include <optional>
+ 
++#include "base/memory/raw_ptr.h"
+ #include "base/memory/raw_ref.h"
+ #include "base/memory/weak_ptr.h"
+ #include "base/observer_list.h"
+@@ -98,7 +99,7 @@ class SearchEngineChoiceService : public KeyedService {
+       PrefService* local_state,
+       regional_capabilities::RegionalCapabilitiesService& regional_capabilities,
+       TemplateURLPrepopulateData::Resolver& prepopulate_data_resolver,
+-      signin::IdentityManager& identity_manager,
++      signin::IdentityManager* identity_manager,
+       policy::ManagementService& management_service);
+   ~SearchEngineChoiceService() override;
+ 
+@@ -277,7 +278,7 @@ class SearchEngineChoiceService : public KeyedService {
+       regional_capabilities_service_;
+   const raw_ref<TemplateURLPrepopulateData::Resolver>
+       prepopulate_data_resolver_;
+-  const raw_ref<signin::IdentityManager> identity_manager_;
++  const raw_ptr<signin::IdentityManager> identity_manager_;
+   const raw_ref<policy::ManagementService> management_service_;
+   base::ObserverList<Observer> observers_;
+ 
