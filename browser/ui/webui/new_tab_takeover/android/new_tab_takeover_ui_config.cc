@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -39,6 +40,12 @@ NewTabTakeoverUIConfig::CreateWebUIController(content::WebUI* web_ui,
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
       brave_ads::AdsServiceFactory::GetForProfile(profile), ntp_p3a_helper);
 
+  ntp_background_images::NTPBackgroundImagesService*
+      ntp_background_images_service =
+          g_brave_browser_process->ntp_background_images_service();
+  CHECK(ntp_background_images_service);
+
   return std::make_unique<NewTabTakeoverUI>(
-      web_ui, view_counter_service, std::move(rich_media_ad_event_handler));
+      web_ui, *ntp_background_images_service,
+      std::move(rich_media_ad_event_handler));
 }

@@ -13,7 +13,6 @@
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
@@ -375,7 +374,7 @@ class ViewCounterServiceTest : public testing::Test {
     return view_counter_service_->GetCurrentWallpaperForDisplay();
   }
 
-  void VerifyGetCurrentBrandedWallpaperExpectation() {
+  void VerifyGetNewTabTakeoverWallpaperExpectation() {
     EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd)
         .Times(GetInitialCountToBrandedWallpaper());
     const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
@@ -400,17 +399,9 @@ class ViewCounterServiceTest : public testing::Test {
     const std::string* target_url =
         wallpaper->FindStringByDottedPath(kLogoDestinationURLPath);
     ASSERT_TRUE(target_url);
-
-    base::MockCallback<GetCurrentBrandedWallpaperCallback> callback;
-    EXPECT_CALL(callback, Run(::testing::Optional(GURL(*url)),
-                              ::testing::Optional(*placement_id),
-                              ::testing::Optional(*creative_instance_id),
-                              /*should_metrics_fallback_to_p3a=*/false,
-                              ::testing::Optional(GURL(*target_url))));
-    view_counter_service_->GetCurrentBrandedWallpaper(callback.Get());
   }
 
-  void VerifyDoNotGetCurrentBrandedWallpaperExpectation() {
+  void VerifyDoNotGetNewTabTakeoverWallpaperExpectation() {
     EXPECT_EQ(base::test::ParseJsonDict(R"JSON(
       {
         "author": "Brave",
@@ -422,13 +413,6 @@ class ViewCounterServiceTest : public testing::Test {
         "wallpaperImageUrl": "chrome://background-wallpaper/wallpaper1.jpg"
       })JSON"),
               CycleThroughPageViewsAndMaybeGetNewTabTakeoverWallpaper());
-
-    base::MockCallback<GetCurrentBrandedWallpaperCallback> callback;
-    EXPECT_CALL(
-        callback,
-        Run(::testing::Eq(std::nullopt), ::testing::Eq(std::nullopt),
-            ::testing::Eq(std::nullopt), false, ::testing::Eq(std::nullopt)));
-    view_counter_service_->GetCurrentBrandedWallpaper(callback.Get());
   }
 
  protected:
@@ -755,7 +739,7 @@ TEST_F(ViewCounterServiceTest,
   EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
       .WillOnce(::testing::Return(ad));
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd);
-  VerifyDoNotGetCurrentBrandedWallpaperExpectation();
+  VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -767,7 +751,7 @@ TEST_F(ViewCounterServiceTest,
       base::Minutes(1);
   task_environment_.AdvanceClock(base::Minutes(1));
 
-  VerifyGetCurrentBrandedWallpaperExpectation();
+  VerifyGetNewTabTakeoverWallpaperExpectation();
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -782,7 +766,7 @@ TEST_F(ViewCounterServiceTest,
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd).Times(0);
   EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  VerifyDoNotGetCurrentBrandedWallpaperExpectation();
+  VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -796,7 +780,7 @@ TEST_F(ViewCounterServiceTest,
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd).Times(0);
   EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  VerifyDoNotGetCurrentBrandedWallpaperExpectation();
+  VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -808,7 +792,7 @@ TEST_F(ViewCounterServiceTest,
       base::Minutes(1);
   task_environment_.AdvanceClock(base::Minutes(1));
 
-  VerifyGetCurrentBrandedWallpaperExpectation();
+  VerifyGetNewTabTakeoverWallpaperExpectation();
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -823,7 +807,7 @@ TEST_F(ViewCounterServiceTest,
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd).Times(0);
   EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  VerifyDoNotGetCurrentBrandedWallpaperExpectation();
+  VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -837,7 +821,7 @@ TEST_F(ViewCounterServiceTest,
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd).Times(0);
   EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  VerifyDoNotGetCurrentBrandedWallpaperExpectation();
+  VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
 }
 
 }  // namespace ntp_background_images

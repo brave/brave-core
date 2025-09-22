@@ -49,13 +49,6 @@ class WeeklyStorage;
 
 namespace ntp_background_images {
 
-using GetCurrentBrandedWallpaperCallback = base::OnceCallback<void(
-    const std::optional<GURL>& url,
-    const std::optional<std::string>& placement_id,
-    const std::optional<std::string>& creative_instance_id,
-    bool should_metrics_fallback_to_p3a,
-    const std::optional<GURL>& target_url)>;
-
 class BraveNTPCustomBackgroundService;
 class NTPP3AHelper;
 
@@ -101,8 +94,6 @@ class ViewCounterService : public KeyedService,
   std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();
   std::optional<base::Value::Dict> GetCurrentWallpaper() const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaper() const;
-  void GetCurrentBrandedWallpaper(
-      GetCurrentBrandedWallpaperCallback callback) const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromAdsService()
       const;
   std::optional<base::Value::Dict> GetCurrentBrandedWallpaperFromModel() const;
@@ -219,7 +210,6 @@ class ViewCounterService : public KeyedService,
   PrefChangeRegistrar pref_change_registrar_;
   ViewCounterModel model_;
   base::WallClockTimer p3a_update_timer_;
-  std::optional<base::Value::Dict> current_wallpaper_;
 
   // Can be null if custom background is not supported.
   const raw_ptr<BraveNTPCustomBackgroundService> custom_background_service_ =
