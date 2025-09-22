@@ -1029,3 +1029,7 @@
 -keep class org.chromium.chrome.browser.download.home.search.BraveSearchBarCoordinator {
     <init>(...);
 }
+
+-keep class org.chromium.components.browser_ui.photo_picker.PhotoPickerFeatures {
+    *** launchViaActionGetContent(...);
+}
