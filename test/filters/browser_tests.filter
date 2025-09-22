@@ -3225,3 +3225,5 @@
 -WebViewTests/WebViewTest.TestContextMenu/SiteIsolationForGuestsEnabled
 -WebViewWithDefaultSiteInstanceTest.IsolatedOrigin
 -WithAndWithoutReset/SessionRestoreTabGroupsTest.*
+# Disable ExtensionAILanguageModelBrowserTest - failing due to AI API being disabled by default
+-ExtensionAILanguageModelBrowserTest.*
