@@ -135,3 +135,24 @@ fn batch_inversion() {
         }
     }
 }
+
+#[test]
+fn sqrt() {
+    use ff::{Field, PrimeField};
+    // A field modulo a prime such that p = 1 mod 4 and p != 1 mod 16
+    #[derive(PrimeField)]
+    #[PrimeFieldModulus = "357686312646216567629137"]
+    #[PrimeFieldGenerator = "5"]
+    #[PrimeFieldReprEndianness = "little"]
+    struct Fp([u64; 2]);
+    fn test(square_root: Fp) {
+        let square = square_root.square();
+        let square_root = square.sqrt().unwrap();
+        assert_eq!(square_root.square(), square);
+    }
+
+    test(Fp::ZERO);
+    test(Fp::ONE);
+    use rand::rngs::OsRng;
+    test(Fp::random(OsRng));
+}

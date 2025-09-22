@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+    <category term="homelab" label="r/homelab" />
+    <updated>2023-07-23T17:57:55+00:00</updated>
+    <icon>https://www.redditstatic.com/icon.png/</icon>
+    <id>/r/homelab/new/.rss</id>
+    <link rel="self" href="https://ud.reddit.com/r/homelab/new/.rss" type="application/atom+xml" />
+    <link rel="alternate" href="https://ud.reddit.com/r/homelab/new/" type="text/html" />
+    <logo>https://e.thumbs.redditmedia.com/s7R-FOvH28Z3Q2B4.png</logo>
+    <subtitle>Welcome to your friendly /r/homelab, where techies and sysadmin from everywhere are welcome to share their labs, projects, builds, etc.</subtitle>
+    <title>newest submissions : homelab</title>
+    <entry>
+        <author>
+            <name>/u/Remarkable_Housing61</name>
+            <uri>https://ud.reddit.com/user/Remarkable_Housing61</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Hello all, I recently acquired a 40G switch and some 40G cards for my rack and was wondering if there really is any reason to even keep 1G connections to my servers if I already have a 40G connection.&lt;/p&gt; &lt;p&gt;My 40G network is bridged to my 1G network currently so all of my 40G devices have access to all of the 1G resources.&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/Remarkable_Housing61"&gt; /u/Remarkable_Housing61 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157kyrd/any_reason_to_keep_1g_connections_to_my_servers/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157kyrd/any_reason_to_keep_1g_connections_to_my_servers/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157kyrd</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157kyrd/any_reason_to_keep_1g_connections_to_my_servers/" />
+        <updated>2023-07-23T17:38:30+00:00</updated>
+        <published>2023-07-23T17:38:30+00:00</published>
+        <title>Any reason to keep 1G connections to my servers?</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/FaTheArmorShell</name>
+            <uri>https://ud.reddit.com/user/FaTheArmorShell</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;I had a power outage a couple weeks ago and even though it was just a blip of an outage, it still shut everything down. Now my home lab is still fairly new so I don&amp;#39;t have any battery backups installed, so I&amp;#39;ve been looking around at getting a few. I know at work we usually use a 2500VA one for the servers, but I don&amp;#39;t think I need that big of one, I hope. I would love to get a couple of rack mounted ones to save some space, but right now it&amp;#39;s mostly price that I&amp;#39;m worried about. I&amp;#39;ve also been looking at getting/replacing the batteries with Lithium ones, but am having a hard time finding a solution that would work.&lt;/p&gt; &lt;p&gt;My lab consists of the following:&lt;/p&gt; &lt;p&gt;- Dell R730XD 24 bay + 2 bay in the back, 2x 2690v4, 2x 750w PS. On average it seems to use about 220w-250w, on start up, I think it uses about 500-600w.&lt;br/&gt; - Dell R630 10 bay, 2x 2680v4, 2x 750w PS, it uses similar wattage as the 730&lt;br/&gt; - Cisco 3650 48port switch, it uses about 120w&lt;br/&gt; - 5x Misc devices ranging from 10w-40w&lt;/p&gt; &lt;p&gt;My main concerns are the R730XD and the switch.&lt;/p&gt; &lt;p&gt;I&amp;#39;ve been looking on Amazon at an &lt;a href="https://www.amazon.com/APC-Battery-Protector-BackUPS-BX1500M/dp/B06VY6FXMM/ref=pd_bxgy_sccl_2/147-9580957-3644042?pd_rd_w=hpRrH&amp;amp;content-id=amzn1.sym.26a5c67f-1a30-486b-bb90-b523ad38d5a0&amp;amp;pf_rd_p=26a5c67f-1a30-486b-bb90-b523ad38d5a0&amp;amp;pf_rd_r=HMD2PN694SZC3TBZAY0G&amp;amp;pd_rd_wg=bHhM8&amp;amp;pd_rd_r=b27684f1-2208-42c8-a644-650286c79264&amp;amp;pd_rd_i=B06VY6FXMM&amp;amp;th=1"&gt;APC 1500VA&lt;/a&gt; one, but then was reading that someone had a similar one that wouldn&amp;#39;t hold up when they started their server. I&amp;#39;ve also found some used PR750LCDRTXLU on E-bay, that I was thinking/hoping I would be able to get and use some 12V 10ah lithium batteries in but I&amp;#39;m not sure if that would be enough for when the server and switch start up. &lt;/p&gt; &lt;p&gt;Any advice or recommendations would be greatly appreciated.&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/FaTheArmorShell"&gt; /u/FaTheArmorShell &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157kx9b/looking_into_ups_for_server_rack/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157kx9b/looking_into_ups_for_server_rack/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157kx9b</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157kx9b/looking_into_ups_for_server_rack/" />
+        <updated>2023-07-23T17:36:48+00:00</updated>
+        <published>2023-07-23T17:36:48+00:00</published>
+        <title>Looking into UPS for server rack</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/bardodev</name>
+            <uri>https://ud.reddit.com/user/bardodev</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;What&amp;#39;s up guys?&lt;/p&gt; &lt;p&gt;I&amp;#39;ve got one of these mini lenovos as a media server connected to an external hard disk. I&amp;#39;m slowly building on top of it and as of now, I don&amp;#39;t have any power backup. If the power goes out, that&amp;#39;s it for my small media server.&lt;/p&gt; &lt;p&gt;I&amp;#39;d like to by a UPS that could power this media server and a future Synology NAS solution (still deciding between DS423+ and DS1821+) for at least 10 minutes (hopefully a bit more) so that I can gracefully shut everything down, which is a segway to my next question:&lt;/p&gt; &lt;p&gt;How does my server (and Synology NAS) get to know there&amp;#39;s a power outage and therefore shuts itself down?&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/bardodev"&gt; /u/bardodev &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157kwjw/what_should_i_look_for_when_buying_a_ups/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157kwjw/what_should_i_look_for_when_buying_a_ups/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157kwjw</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157kwjw/what_should_i_look_for_when_buying_a_ups/" />
+        <updated>2023-07-23T17:36:04+00:00</updated>
+        <published>2023-07-23T17:36:04+00:00</published>
+        <title>What should I look for when buying a UPS?</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/teapots12</name>
+            <uri>https://ud.reddit.com/user/teapots12</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Hi i’m looking to build a server that i eventually want to colocate and so I want to go 1u if possible (i live in hawaii where server space is extremely expensive). If this doesn’t exist i’ll just have to go with a 2u server. &lt;/p&gt; &lt;p&gt;Is this even possible in a 1u form factor? I’ve been looking online with no success. I’ll be using active cooling for my cpu so i probably wont need insane airflow&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/teapots12"&gt; /u/teapots12 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157knaz/are_there_any_1u_cases_that_are_atx_and_support_2/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157knaz/are_there_any_1u_cases_that_are_atx_and_support_2/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157knaz</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157knaz/are_there_any_1u_cases_that_are_atx_and_support_2/" />
+        <updated>2023-07-23T17:26:10+00:00</updated>
+        <published>2023-07-23T17:26:10+00:00</published>
+        <title>Are there any 1u cases that are ATX and support 2 3.5” hard drives?</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/liltrublmakr56</name>
+            <uri>https://ud.reddit.com/user/liltrublmakr56</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;I am planning to make a rack mounted NAS build and just wanted a sanity check before I pull the trigger.&lt;/p&gt; &lt;p&gt;First of all, this is going to be replacing a Dell R720xd that is running UNRAID because: JBOD. Unfortunately, UNRAID has been acting up a ton lately and I either need to completely start from scratch or move to a new system. I am trying to go low power because the Dell is pulling consistently pulling ~190W of power at near idle. This is with 7 spinning drives and 2 SSD.&lt;/p&gt; &lt;p&gt;I am looking to go to a rack mounted solution (preferred since I don&amp;#39;t like shelves) that will run TrueNAS Core that will basically just be a NAS with ZFS. All of my services are getting moved to a Proxmox cluster with various mini/micro PCs. I also have a HP T620 Plus that is running OPNsense that I am wanting to possibly move to this setup as well. (More on that later.)&lt;/p&gt; &lt;p&gt;Here is what I am thinking so far:&lt;/p&gt; &lt;ul&gt; &lt;li&gt;Case: &lt;a href="https://genesysgroup.com.tw/s208b-twinitx.htm"&gt;Genesys Group S208B-TWIN-ITX 2U Rack Mount Case&lt;/a&gt; (Able to mount 2 Mini ITX boards), 2x 250W power supplies, rack rails, and 2x 4SATA-1MSAS-500MM. ~$800 shipped&lt;/li&gt; &lt;li&gt;Mainboards: &lt;ul&gt; &lt;li&gt;&lt;a href="https://www.aliexpress.us/item/3256804571639255.html"&gt;Topton CW-N5105-NAS&lt;/a&gt; for TrueNAS ~$220 shipped (because, method w/ tracking) &lt;ul&gt; &lt;li&gt;64GB SO-DIMM RAM (Max supported is 16 but its been able to take up to 64) ~$110 on the high end?&lt;/li&gt; &lt;/ul&gt;&lt;/li&gt; &lt;li&gt;&lt;a href="https://www.aliexpress.us/item/3256804571639255.html"&gt;Topton CW-N5105-NAS&lt;/a&gt; for OPNsense (open to suggestions since I don&amp;#39;t need the 6 SATA ports. Would like at least one with a PCI slot that can take a SFP+ card down the road.) ~$220 shipped (because, method w/ tracking) &lt;ul&gt; &lt;li&gt;8GB SO-DIMM RAM $0 (I have a stick laying around from Mini PCs)&lt;/li&gt; &lt;/ul&gt;&lt;/li&gt; &lt;/ul&gt;&lt;/li&gt; &lt;li&gt;Hard Drives &lt;ul&gt; &lt;li&gt;IronWolf NAS drives (I am thinking 10TB, 12TB, or 14TB) (Also open to suggestions) &lt;/li&gt; &lt;li&gt;2TB SSD for LAN Cache (Already have. Stupid ISPs with data caps.)&lt;/li&gt; &lt;li&gt;1TB or 2TB M.2 for cache (Leaning towards 2TB)&lt;/li&gt; &lt;li&gt;256/512GB M.2 for NAS OS&lt;/li&gt; &lt;li&gt;256/512GB M.2 for OPNsense OS&lt;/li&gt; &lt;/ul&gt;&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;Without drives, the setup is looking to cost ~$1350 for a rackmount solution. $800 of that is the the chassis alone but would house both systems. Is this sensible or should I suck it up and go for something not rack mountable and put it on a shelf? I am open to opinions and suggestions for other options. &lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/liltrublmakr56"&gt; /u/liltrublmakr56 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157kgnz/sanity_check_nas_build/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157kgnz/sanity_check_nas_build/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157kgnz</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157kgnz/sanity_check_nas_build/" />
+        <updated>2023-07-23T17:18:40+00:00</updated>
+        <published>2023-07-23T17:18:40+00:00</published>
+        <title>Sanity Check (NAS Build)</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/acscchu</name>
+            <uri>https://ud.reddit.com/user/acscchu</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Trying to setup my first homelab with a R730 with the following specs:&lt;/p&gt; &lt;ul&gt; &lt;li&gt;2.40GHz Intel Xeon E5-2620 v3 (x2)&lt;/li&gt; &lt;li&gt;64GB(8x8GB) ECC DDR4 1866MHz&lt;/li&gt; &lt;li&gt;PERC H730 Mini&lt;/li&gt; &lt;li&gt;2x Intel DC S3610 (200GB), 1x Crucial MX500 (1TB)&lt;/li&gt; &lt;li&gt;iDRAC Enterprise&lt;/li&gt; &lt;/ul&gt; &lt;p&gt;Have updated the BIOS and iDRAC to their latest versions (2.16.0 and 2.83.83.83 respectively) and installed the drives. Was able to see the drives successfully show up in iDRAC. CPUs and RAM also show up successfully in iDRAC. &lt;/p&gt; &lt;p&gt;At this point I moved on to try to install Proxmox VE 8 via flashed USB made with Balena Etcher and Rufus (tried both), and started to run into issues.&lt;/p&gt; &lt;p&gt;Using any of the graphical, debug, console, and console &lt;code&gt;nomodeset&lt;/code&gt; install options, I either get a black/blank screen (graphical and debug) after selecting the option, or the console output hangs (console and console &lt;code&gt;nomodeset&lt;/code&gt;). &lt;/p&gt; &lt;p&gt;This happens both when trying to install via a physical monitor (Dell 27&amp;quot; UltraSharp via VGA) or the iDRAC virtual console (HTML5).&lt;/p&gt; &lt;p&gt;After reading some forums and other sources, I also tried installing Proxmox VE 7.1-2, as well as Debian 11.7 (also flashed USB) as workarounds, but encountered the same problems as described above for either installations&amp;#39; comparable options. Tried also switching boot from BIOS to UEFI, and UEFI + Legacy Option ROM Support, but to no avail.&lt;/p&gt; &lt;p&gt;Anyone have any experience or advice on what to try next? Was thinking I could try to grab &amp;lt;= 24&amp;quot; 1080p monitor and try with that (based on some other suggestions), but am not sure if this would help at all as I see the same problems in iDRAC virtual console as the monitor.&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/acscchu"&gt; /u/acscchu &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157kf6g/blackblank_screen_on_install_for_proxmox_ve/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157kf6g/blackblank_screen_on_install_for_proxmox_ve/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157kf6g</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157kf6g/blackblank_screen_on_install_for_proxmox_ve/" />
+        <updated>2023-07-23T17:16:53+00:00</updated>
+        <published>2023-07-23T17:16:53+00:00</published>
+        <title>Black/blank screen on install for Proxmox VE, Debian 11 on R730</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/dnkylv</name>
+            <uri>https://ud.reddit.com/user/dnkylv</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Hi all! So I installed Observium and it&amp;#39;s all fine except for one thing. I have a Fujitsu box with AMD GX-415GA CPU with OPNSense for my router and I am not getting the temps... I can see them in the OPNSense interface though. The same goes for my AMD PC - no temps. Can anyone give me a hint? Thanks!&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/dnkylv"&gt; /u/dnkylv &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157k2bx/observium_and_amd_temperatures_question/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157k2bx/observium_and_amd_temperatures_question/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157k2bx</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157k2bx/observium_and_amd_temperatures_question/" />
+        <updated>2023-07-23T17:02:15+00:00</updated>
+        <published>2023-07-23T17:02:15+00:00</published>
+        <title>Observium and AMD temperatures question</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/Pommes254</name>
+            <uri>https://ud.reddit.com/user/Pommes254</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;So i was wondering if it is possible to pass through an entire slot instead of doing it device based (similar to usb port pass through, where you can choose a fixed port and everything that is then plugged into it is automatically passed through to the vm)&lt;/p&gt; &lt;p&gt;What i want to achieve is a setup where any device that is plugged into pcle slot X is automatically passed through, so i can switch around pcle devices for testing without the need to configure each one individually.&lt;/p&gt; &lt;p&gt;Is that possible on kvm/proxmox? &lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/Pommes254"&gt; /u/Pommes254 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157jw0w/pcie_passthrough_entire_slot_not_on_a_per_device/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157jw0w/pcie_passthrough_entire_slot_not_on_a_per_device/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157jw0w</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157jw0w/pcie_passthrough_entire_slot_not_on_a_per_device/" />
+        <updated>2023-07-23T16:55:34+00:00</updated>
+        <published>2023-07-23T16:55:34+00:00</published>
+        <title>Pcie Passthrough entire slot | Not on a per device base</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/TryllZ</name>
+            <uri>https://ud.reddit.com/user/TryllZ</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Hi All,&lt;/p&gt; &lt;p&gt;I&amp;#39;m facing an issue in a Nested environment where the NSX Edge won&amp;#39;t start due to the below error.&lt;/p&gt; &lt;p&gt;&lt;a href="https://i.ibb.co/ThYD48N/error.png"&gt;error.png (855×516) (ibb.co)&lt;/a&gt;&lt;/p&gt; &lt;p&gt;ESXi - 7.0.3, 21424296&lt;/p&gt; &lt;p&gt;vCenter - 7.0.3, 21477706&lt;/p&gt; &lt;p&gt;NSX - 4.0.0.1.0.20159694&lt;/p&gt; &lt;p&gt;NSX Edge - 4.0.0.1.0.20159697&lt;/p&gt; &lt;p&gt;When Edge is installed on ESXi (which is on Bare Metal), Edge installs fine, and boots up, does not boot up in the Nested Environment with the below error, EVC is disabled on cluster.&lt;/p&gt; &lt;p&gt;Have gone through many forums, including vmware, everyone has suggested the following configurations on both the Nested ESXi and the Edge VM on the Nested ESXi.&lt;/p&gt; &lt;p&gt;featMask.vm.cpuid.PDPE1GB = Val:1&lt;br/&gt; sched.mem.lpage.enable1GPage = &amp;quot;TRUE&amp;quot;&lt;br/&gt; monitor_control.enable_fullcpuid = &amp;quot;TRUE&amp;quot;&lt;/p&gt; &lt;p&gt;Have made these changes but without success.&lt;/p&gt; &lt;p&gt;Any thoughts ?&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/TryllZ"&gt; /u/TryllZ &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157jq1l/nsx_edge_fails_to_start_in_nested_environment/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157jq1l/nsx_edge_fails_to_start_in_nested_environment/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157jq1l</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157jq1l/nsx_edge_fails_to_start_in_nested_environment/" />
+        <updated>2023-07-23T16:48:56+00:00</updated>
+        <published>2023-07-23T16:48:56+00:00</published>
+        <title>NSX Edge Fails To Start in Nested Environment ?!</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/Ok_Relative5802</name>
+            <uri>https://ud.reddit.com/user/Ok_Relative5802</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Hi! I decide to choose LSI 9300-i8 because it got pcie 3.0 and SAS3 &lt;em&gt;sas3 support trim&lt;/em&gt; but Does kingston dc600m have TRIM? I Heard that only consumer ssd need trim for healthy work. If dc600m doesn’t had trim should I bought LSI 9207-i8 because it is cheaper and had PCIe 3.0 with sas2? Tbh I m newbie and will be glad for explain&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/Ok_Relative5802"&gt; /u/Ok_Relative5802 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157jj5n/trim_dc600m/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157jj5n/trim_dc600m/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157jj5n</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157jj5n/trim_dc600m/" />
+        <updated>2023-07-23T16:41:04+00:00</updated>
+        <published>2023-07-23T16:41:04+00:00</published>
+        <title>TRIM DC600M</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/TitanXD</name>
+            <uri>https://ud.reddit.com/user/TitanXD</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;My home server is used for opnsense / router, nas, jellyfin, camera dvr and hosting game servers.&lt;/p&gt; &lt;p&gt;Hardware: Amd 5600g 32gb ddr4 500gb M.2 Data hdds Pcie nic for opnsense &lt;/p&gt; &lt;p&gt;Software: Ubuntu opnsense running on kvm Zfs on linux Docker&lt;/p&gt; &lt;p&gt;Upgrade ideas: Purpose: Want to isolate zfs, opnsense and my docker containers and have a fun project.&lt;/p&gt; &lt;p&gt;Switch to proxmox: Lxc debian (its lightweight right?) to run docker Opsense vm Truenas vm LSI SAS9207-8i IT mode hba for Truenas&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/TitanXD"&gt; /u/TitanXD &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157icui/thoughts_on_my_home_server_and_potential_upgrades/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157icui/thoughts_on_my_home_server_and_potential_upgrades/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157icui</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157icui/thoughts_on_my_home_server_and_potential_upgrades/" />
+        <updated>2023-07-23T15:54:19+00:00</updated>
+        <published>2023-07-23T15:54:19+00:00</published>
+        <title>Thoughts on my home server and potential upgrades?</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/TheCorreia</name>
+            <uri>https://ud.reddit.com/user/TheCorreia</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Hello, recently I converted my ISP router to an opnsense VM to make my network safer. I host some internal stuff like almost everyone here does (pihole, media stack, NAS, etc) but I also host some public-facing websites for some clients/friends.&lt;br/&gt; The issue I&amp;#39;m having is figuring out how can I get all of this working with only 1 reverse proxy.&lt;/p&gt; &lt;p&gt;I am thinking of creating a DMZ with all my public websites and a specific VLAN for internal services. The problem is that I have some internal services that are exposed to the exterior (like jellyfin) and I like to have everything internally routed through a reverse proxy to have SSL certificates on every webpage. &lt;/p&gt; &lt;p&gt;I am thinking of doing something like this:&lt;/p&gt; &lt;pre&gt;&lt;code&gt;Internet | [Modem/Router] | [Reverse Proxy VLAN] - [Reverse Proxy] - [DMZ VLAN] -- [VMs with Public Services] | |-- [Internal VLAN] -- [VMs with Local Services] (reverse proxy in its own vlan) &lt;/code&gt;&lt;/pre&gt; &lt;p&gt;I don&amp;#39;t know if it is the best solution and if you guys are rocking a similar setup what is your approach to this problem? &lt;/p&gt; &lt;p&gt;Thank you in advance.&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/TheCorreia"&gt; /u/TheCorreia &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157i3cp/trouble_with_dmz_vlans_and_reverse_proxy/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157i3cp/trouble_with_dmz_vlans_and_reverse_proxy/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157i3cp</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157i3cp/trouble_with_dmz_vlans_and_reverse_proxy/" />
+        <updated>2023-07-23T15:43:50+00:00</updated>
+        <published>2023-07-23T15:43:50+00:00</published>
+        <title>Trouble with DMZ, VLANS and Reverse Proxy</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/reddit0r_9</name>
+            <uri>https://ud.reddit.com/user/reddit0r_9</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Well, I currently work in the data center area, where we support the storage server and backup infrastructure for customers. I would like to build a test environment at home. I already have VMware and a few vms running on a dl360p gen8 (DNS DC and veeam community edition). However, I&amp;#39;m now looking for some alternatives that I could install to learn some more things of my remit. Unfortunately I don&amp;#39;t have a storage system at home to practice on. Does anyone have suggestions for me which vms I could still install or which software would be useful for me for my area of responsibility?&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/reddit0r_9"&gt; /u/reddit0r_9 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157h5xe/recommendations_for_my_homelab/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157h5xe/recommendations_for_my_homelab/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157h5xe</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157h5xe/recommendations_for_my_homelab/" />
+        <updated>2023-07-23T15:06:17+00:00</updated>
+        <published>2023-07-23T15:06:17+00:00</published>
+        <title>Recommendations for my homelab?</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/carp3tguy</name>
+            <uri>https://ud.reddit.com/user/carp3tguy</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Currently I’m using some Cisco 3702i APs (4 broadcasting, 1 monitoring) in FlexConnect mode connecting back to a vWLC for management only. The APs connect to a stack of Cisco 3750X switches. &lt;/p&gt; &lt;p&gt;I have a couple of Apple TVs that use HomePods for their default audio output, these all get placed into a VLAN together by RADIUS when they connect to the network. &lt;/p&gt; &lt;p&gt;Everything usually works great, until a HomePod decides its going to roam to another AP. If the HomePod is not on the same AP as the Apple TV it is paired with, I get the dreaded “Apple TV couldn’t make HomePod the default audio output” error message. &lt;/p&gt; &lt;p&gt;The thing that baffles me is, it works completely fine when set as a “temporary” output. Multicast/bonjour traffic definitely works fine as I can AirPlay across the entire VLAN regardless of what AP the devices are attached to and HomeKit works fine too. It’s just this one feature that breaks. &lt;/p&gt; &lt;p&gt;If I can coax the HomePod back to the same AP again (usually by changing the radio TX power), everything is fine. I tried setting the radios so that only one would be strongest from where the HomePod and ATV are situated, but the stupid thing still roams even for a significantly weaker signal. &lt;/p&gt; &lt;p&gt;Am at a bit off a loss and so is my audio. Hopefully someone smarter than me can give me a nudge in the right direction&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/carp3tguy"&gt; /u/carp3tguy &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157gyqn/cisco_aps_and_apple_tv_homepod_audio/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157gyqn/cisco_aps_and_apple_tv_homepod_audio/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157gyqn</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157gyqn/cisco_aps_and_apple_tv_homepod_audio/" />
+        <updated>2023-07-23T14:58:19+00:00</updated>
+        <published>2023-07-23T14:58:19+00:00</published>
+        <title>Cisco APs and Apple TV HomePod Audio</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/CulturalRecording347</name>
+            <uri>https://ud.reddit.com/user/CulturalRecording347</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;hey guys, &lt;/p&gt; &lt;p&gt;is there any way to read ILO/ Server Health stats without ILO connected to Lan ?&lt;/p&gt; &lt;p&gt;using Windows Server 2019.&lt;/p&gt; &lt;p&gt;iam already using SmartStorage Administator for Raid and Storage Monitoring.&lt;/p&gt; &lt;p&gt;iam missing a gui for monitoring fans/ post bios errors/ ram errors.&lt;/p&gt; &lt;p&gt;best regards&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/CulturalRecording347"&gt; /u/CulturalRecording347 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157gmer/dell_proliant_360_g9_server_health/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157gmer/dell_proliant_360_g9_server_health/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157gmer</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157gmer/dell_proliant_360_g9_server_health/" />
+        <updated>2023-07-23T14:44:16+00:00</updated>
+        <published>2023-07-23T14:44:16+00:00</published>
+        <title>Dell Proliant 360 G9 - Server Health</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/teapots12</name>
+            <uri>https://ud.reddit.com/user/teapots12</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Hi everyone! I’m building a 1u server and was wondering if this hardware is sufficient. I did as much research as I could but i wanted to make sure one last time&lt;/p&gt; &lt;p&gt;CPU: i5 12400 6 core (has igpu) Cooler: Dynatron Q3 Motherboard: Asus pro WS 680 IPMI (I went with ipmi as i want to be able to easily colocate it in the future if needed)&lt;/p&gt; &lt;p&gt;Memory: 32 gb DDR5 6000 team group Storage: 1tb nvme ssd + 2x 10tb ssd’s for plex storage Case: Rackchoice 1u ATX chassis (going with 1u as i know of a lot of cheap 1u colocation options) PSU: Seasonic Flex SSP-300SUB 300w PSU&lt;/p&gt; &lt;p&gt;Do you think this will all work together and work for my needs? I usually would use pcpsrtpicker but they don’t have a lot of these parts. Noise is not a concern as I will likely colocate it after a while! Thanks&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/teapots12"&gt; /u/teapots12 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157fsut/will_this_hardware_be_enough_for_a_minecraft_plex/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157fsut/will_this_hardware_be_enough_for_a_minecraft_plex/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157fsut</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157fsut/will_this_hardware_be_enough_for_a_minecraft_plex/" />
+        <updated>2023-07-23T14:09:32+00:00</updated>
+        <published>2023-07-23T14:09:32+00:00</published>
+        <title>Will this hardware be enough for a Minecraft + Plex server?</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/Alexiled</name>
+            <uri>https://ud.reddit.com/user/Alexiled</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;As i am expanding my homelab with more services and i am currently looking to upgrade my networking for fun mostly. (Currently on 1gbe speeds) I was looking into 10gbe but i see that available/used mellanox connectx-3 cards and 10hbe switches are getting quite old.&lt;/p&gt; &lt;p&gt;Which is the logical next/newer step that is still reasonable to use in homelab? (Also confused about some 40gbe being split 4x 10gbe and some 100gbe being split 4x 25gbe)&lt;/p&gt; &lt;p&gt;Where do i start looking/ researching? (Also based in europe so used market can be brutal)&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/Alexiled"&gt; /u/Alexiled &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157faup/10gbe_or_25gbe_or/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157faup/10gbe_or_25gbe_or/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157faup</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157faup/10gbe_or_25gbe_or/" />
+        <updated>2023-07-23T13:47:53+00:00</updated>
+        <published>2023-07-23T13:47:53+00:00</published>
+        <title>10gbe or 25gbe or...</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/orig_peanuthead</name>
+            <uri>https://ud.reddit.com/user/orig_peanuthead</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;So I loaded a Windows server 2022 VM and loaded docker for desktop. The service does start, however I’m finding the general usability and functionality to be lacking. Anywhere from just checking if a container is running to the simplest of installing bitwarden via Powershell script. I’ve never played with containers, so I imagine part of this is due to ignorance. I also expect this to be a little easier than it has been. What is the general consensus on getting started with containers? I want to test drive it, learn from it, test backup/restoration scenarios before I deploy it as a solution in my home.&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/orig_peanuthead"&gt; /u/orig_peanuthead &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157f867/docker_for_desktop_or_other_os/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157f867/docker_for_desktop_or_other_os/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157f867</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157f867/docker_for_desktop_or_other_os/" />
+        <updated>2023-07-23T13:44:32+00:00</updated>
+        <published>2023-07-23T13:44:32+00:00</published>
+        <title>Docker for Desktop or Other OS?</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/Snowtigerclaw</name>
+            <uri>https://ud.reddit.com/user/Snowtigerclaw</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Hello Homelab-community! I’m planning an overhaul of my home network and homelab. Home network is 2 desktops + 1 laptop. In the lab I have 3 NUCs, 3 Synology + 1 Asustor NAS, and a few smaller devices (old Zotac EN860, etc.). I’m looking for advice on (better) security device(s) including active network sniffer, monitoring and logging. What is used out there? Thanks for helping and/or pointing me to info sources.&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/Snowtigerclaw"&gt; /u/Snowtigerclaw &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157e6rp/security/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157e6rp/security/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157e6rp</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157e6rp/security/" />
+        <updated>2023-07-23T12:56:13+00:00</updated>
+        <published>2023-07-23T12:56:13+00:00</published>
+        <title>Security</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/m0ddas</name>
+            <uri>https://ud.reddit.com/user/m0ddas</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;I&amp;#39;m about to set up my first dns server for my homelab and i can&amp;#39;t seem to get a straight answer regaring domains through googling. &lt;/p&gt; &lt;p&gt;Let&amp;#39;s say I own the domain &amp;quot;example.com&amp;quot; and i want to use that domain on my local network. Do i need to add &amp;quot;homelab&amp;quot; to example.com as a subdomain? Or can i just use example.com?&lt;/p&gt; &lt;p&gt;Example:&lt;/p&gt; &lt;p&gt;service1.homelab.example.com&lt;/p&gt; &lt;p&gt;or can i simply use&lt;/p&gt; &lt;p&gt;service1.example.com&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/m0ddas"&gt; /u/m0ddas &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157dm0w/setting_up_internal_dns_server_a_few_noob/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157dm0w/setting_up_internal_dns_server_a_few_noob/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157dm0w</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157dm0w/setting_up_internal_dns_server_a_few_noob/" />
+        <updated>2023-07-23T12:28:44+00:00</updated>
+        <published>2023-07-23T12:28:44+00:00</published>
+        <title>Setting up internal dns server, a few noob questions &#x1f605;</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/noxitbyt</name>
+            <uri>https://ud.reddit.com/user/noxitbyt</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Ok so i have tested alot of stuff and i am running alot of stuff on my homelab i have alot of the commen stuff like proxmox truenas nginx pihole media server file servers backup servers filecloud storj and alot fo docker containers i just need some ideas of things i can run because when i cant find things to test i find new hardware to buy and test and thats a bad thing so i would appreciate and suggestions &lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/noxitbyt"&gt; /u/noxitbyt &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157c73b/i_need_some_ideas_of_what_i_can_test_out_on_my/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157c73b/i_need_some_ideas_of_what_i_can_test_out_on_my/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157c73b</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157c73b/i_need_some_ideas_of_what_i_can_test_out_on_my/" />
+        <updated>2023-07-23T11:15:38+00:00</updated>
+        <published>2023-07-23T11:15:38+00:00</published>
+        <title>I need some ideas of what i can test out on my homelab</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/DaKi_B</name>
+            <uri>https://ud.reddit.com/user/DaKi_B</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Hello everyone, I hope you are all having a better time than me.&lt;/p&gt; &lt;p&gt;There was a storm that passed through my city not long ago and it seems to have fried my router. Thankfully the frying seems to have stopped at the LAN ports of the router and none of the servers ports downstream seem to have been damaged.&lt;/p&gt; &lt;p&gt;Now i know i should have already had all this on an UPS, but as things go, the batteries in my UPS needed to be replaced and so it was out of service waiting for me to replace them (because i am a little lazy from time to time when it comes to my homelab).&lt;/p&gt; &lt;p&gt;Anyway this has sparked, no pun intended, my interest in getting a good quality UPS for all my gear, 2 Servers, 1 PC and some networking equipment.&lt;/p&gt; &lt;p&gt;I was scrolling on my local version of craigslist and came across an add for an Eaton 9130 3kVA + Eaton 9130N3000R-EBM2U for what seems to be a good price (350EUR or about 390 USD) as well as without the extender battery pack for just 260EUR and with the option to install new batteries with a 1-year warranty on them for an extra 150EUR.&lt;/p&gt; &lt;p&gt;He also offers a 5PX3000iRT2U 280EUR&lt;/p&gt; &lt;p&gt;My two servers at full load draw about 400W(they are very very rarely at full load) of power and my PC has a 3080ti and a 7950x (2 monitors and 100w speakers as well as router/switch) so i think 3000VA should be sufficient.&lt;/p&gt; &lt;p&gt;Now my question is, is this worth it, it seems like a steal. if it is which one is better? The seller looks verified to me, with a lot of good reviews and seems to sell a lot of UPS&amp;#39;s and server.&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/DaKi_B"&gt; /u/DaKi_B &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157bqfb/help_picking_a_ups/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157bqfb/help_picking_a_ups/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157bqfb</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157bqfb/help_picking_a_ups/" />
+        <updated>2023-07-23T10:50:44+00:00</updated>
+        <published>2023-07-23T10:50:44+00:00</published>
+        <title>Help picking a UPS</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/sala81</name>
+            <uri>https://ud.reddit.com/user/sala81</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/sala81"&gt; /u/sala81 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="/r/Proxmox/comments/157az74/newbie_nas_on_proxmox_best_configuration_for/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157bpdd/newbie_nas_on_proxmox_best_configuration_for/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157bpdd</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157bpdd/newbie_nas_on_proxmox_best_configuration_for/" />
+        <updated>2023-07-23T10:49:06+00:00</updated>
+        <published>2023-07-23T10:49:06+00:00</published>
+        <title>[Newbie] NAS on proxmox - best configuration for given situation and tips and tricks?</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/midmoto</name>
+            <uri>https://ud.reddit.com/user/midmoto</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;table&gt; &lt;tr&gt;&lt;td&gt; &lt;a href="https://ud.reddit.com/r/homelab/comments/157bhrw/cleaned_up_the_lack_rack/"&gt; &lt;img src="https://b.thumbs.redditmedia.com/_MXt-0n8VXQc-EQ7Q0vFioALFWFITAgVWu4Wf8dThhU.jpg" alt="Cleaned up the Lack Rack" title="Cleaned up the Lack Rack" /&gt; &lt;/a&gt; &lt;/td&gt;&lt;td&gt; &lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Decided to do some re-arranging while installing new Mellanox NICs in my Unraid box and gaming rig (not pictured), here&amp;#39;s the end result!&lt;/p&gt; &lt;p&gt;&lt;a href="https://preview.redd.it/p6u83lwq0pdb1.jpg?width=3024&amp;amp;format=pjpg&amp;amp;auto=webp&amp;amp;s=f62cd5bca8f3fd6ac0737fc25ced7bc3167794f7"&gt;https://preview.redd.it/p6u83lwq0pdb1.jpg?width=3024&amp;amp;format=pjpg&amp;amp;auto=webp&amp;amp;s=f62cd5bca8f3fd6ac0737fc25ced7bc3167794f7&lt;/a&gt;&lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/midmoto"&gt; /u/midmoto &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157bhrw/cleaned_up_the_lack_rack/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157bhrw/cleaned_up_the_lack_rack/"&gt;[comments]&lt;/a&gt;&lt;/span&gt; &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</content>
+        <id>t3_157bhrw</id>
+        <media:thumbnail url="https://b.thumbs.redditmedia.com/_MXt-0n8VXQc-EQ7Q0vFioALFWFITAgVWu4Wf8dThhU.jpg" />
+        <link href="https://ud.reddit.com/r/homelab/comments/157bhrw/cleaned_up_the_lack_rack/" />
+        <updated>2023-07-23T10:37:11+00:00</updated>
+        <published>2023-07-23T10:37:11+00:00</published>
+        <title>Cleaned up the Lack Rack</title>
+    </entry>
+    <entry>
+        <author>
+            <name>/u/ThatFeature3175</name>
+            <uri>https://ud.reddit.com/user/ThatFeature3175</uri>
+        </author>
+        <category term="homelab" label="r/homelab" />
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Am I right in thinking this board is not compatible? The website only lists VMWare® ESXi 6.5 u3 / 6.7 u3 &lt;/p&gt; &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href="https://ud.reddit.com/user/ThatFeature3175"&gt; /u/ThatFeature3175 &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157awnr/romed82t_esxi_80u1_compatibility/"&gt;[link]&lt;/a&gt;&lt;/span&gt; &amp;#32; &lt;span&gt;&lt;a href="https://ud.reddit.com/r/homelab/comments/157awnr/romed82t_esxi_80u1_compatibility/"&gt;[comments]&lt;/a&gt;&lt;/span&gt;</content>
+        <id>t3_157awnr</id>
+        <link href="https://ud.reddit.com/r/homelab/comments/157awnr/romed82t_esxi_80u1_compatibility/" />
+        <updated>2023-07-23T10:04:53+00:00</updated>
+        <published>2023-07-23T10:04:53+00:00</published>
+        <title>ROMED8-2T ESXI 8.0U1 compatibility</title>
+    </entry>
+</feed>

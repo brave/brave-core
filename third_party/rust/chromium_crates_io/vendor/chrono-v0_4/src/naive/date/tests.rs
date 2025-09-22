@@ -1,5 +1,5 @@
-use super::{Days, Months, NaiveDate, MAX_YEAR, MIN_YEAR};
-use crate::naive::internals::{YearFlags, A, AG, B, BA, C, CB, D, DC, E, ED, F, FE, G, GF};
+use super::{Days, MAX_YEAR, MIN_YEAR, Months, NaiveDate};
+use crate::naive::internals::{A, AG, B, BA, C, CB, D, DC, E, ED, F, FE, G, GF, YearFlags};
 use crate::{Datelike, TimeDelta, Weekday};
 
 // as it is hard to verify year flags in `NaiveDate::MIN` and `NaiveDate::MAX`,
@@ -26,8 +26,7 @@ fn test_date_bounds() {
     let maxsecs = maxsecs + 86401; // also take care of DateTime
     assert!(
         maxsecs < (1 << MAX_BITS),
-        "The entire `NaiveDate` range somehow exceeds 2^{} seconds",
-        MAX_BITS
+        "The entire `NaiveDate` range somehow exceeds 2^{MAX_BITS} seconds"
     );
 
     const BEFORE_MIN: NaiveDate = NaiveDate::BEFORE_MIN;
@@ -181,7 +180,7 @@ fn test_date_from_yo() {
     assert_eq!(from_yo(2012, 300), Some(ymd(2012, 10, 26)));
     assert_eq!(from_yo(2012, 366), Some(ymd(2012, 12, 31)));
     assert_eq!(from_yo(2012, 367), None);
-    assert_eq!(from_yo(2012, 1 << 28 | 60), None);
+    assert_eq!(from_yo(2012, (1 << 28) | 60), None);
 
     assert_eq!(from_yo(2014, 0), None);
     assert_eq!(from_yo(2014, 1), Some(ymd(2014, 1, 1)));
@@ -303,6 +302,39 @@ fn test_date_from_num_days_from_ce() {
 }
 
 #[test]
+fn test_date_from_epoch_days() {
+    let from_epoch_days = NaiveDate::from_epoch_days;
+    assert_eq!(from_epoch_days(-719_162), Some(NaiveDate::from_ymd_opt(1, 1, 1).unwrap()));
+    assert_eq!(from_epoch_days(0), Some(NaiveDate::from_ymd_opt(1970, 1, 1).unwrap()));
+    assert_eq!(from_epoch_days(1), Some(NaiveDate::from_ymd_opt(1970, 1, 2).unwrap()));
+    assert_eq!(from_epoch_days(2), Some(NaiveDate::from_ymd_opt(1970, 1, 3).unwrap()));
+    assert_eq!(from_epoch_days(30), Some(NaiveDate::from_ymd_opt(1970, 1, 31).unwrap()));
+    assert_eq!(from_epoch_days(31), Some(NaiveDate::from_ymd_opt(1970, 2, 1).unwrap()));
+    assert_eq!(from_epoch_days(58), Some(NaiveDate::from_ymd_opt(1970, 2, 28).unwrap()));
+    assert_eq!(from_epoch_days(59), Some(NaiveDate::from_ymd_opt(1970, 3, 1).unwrap()));
+    assert_eq!(from_epoch_days(364), Some(NaiveDate::from_ymd_opt(1970, 12, 31).unwrap()));
+    assert_eq!(from_epoch_days(365), Some(NaiveDate::from_ymd_opt(1971, 1, 1).unwrap()));
+    assert_eq!(from_epoch_days(365 * 2), Some(NaiveDate::from_ymd_opt(1972, 1, 1).unwrap()));
+    assert_eq!(from_epoch_days(365 * 3 + 1), Some(NaiveDate::from_ymd_opt(1973, 1, 1).unwrap()));
+    assert_eq!(from_epoch_days(365 * 4 + 1), Some(NaiveDate::from_ymd_opt(1974, 1, 1).unwrap()));
+    assert_eq!(from_epoch_days(13036), Some(NaiveDate::from_ymd_opt(2005, 9, 10).unwrap()));
+    assert_eq!(from_epoch_days(-365), Some(NaiveDate::from_ymd_opt(1969, 1, 1).unwrap()));
+    assert_eq!(from_epoch_days(-366), Some(NaiveDate::from_ymd_opt(1968, 12, 31).unwrap()));
+
+    for days in (-9999..10001).map(|x| x * 100) {
+        assert_eq!(from_epoch_days(days).map(|d| d.to_epoch_days()), Some(days));
+    }
+
+    assert_eq!(from_epoch_days(NaiveDate::MIN.to_epoch_days()), Some(NaiveDate::MIN));
+    assert_eq!(from_epoch_days(NaiveDate::MIN.to_epoch_days() - 1), None);
+    assert_eq!(from_epoch_days(NaiveDate::MAX.to_epoch_days()), Some(NaiveDate::MAX));
+    assert_eq!(from_epoch_days(NaiveDate::MAX.to_epoch_days() + 1), None);
+
+    assert_eq!(from_epoch_days(i32::MIN), None);
+    assert_eq!(from_epoch_days(i32::MAX), None);
+}
+
+#[test]
 fn test_date_from_weekday_of_month_opt() {
     let ymwd = NaiveDate::from_weekday_of_month_opt;
     assert_eq!(ymwd(2018, 8, Weekday::Tue, 0), None);
@@ -406,7 +438,7 @@ fn test_date_with_ordinal() {
     assert_eq!(d.with_ordinal(61), Some(NaiveDate::from_ymd_opt(2000, 3, 1).unwrap()));
     assert_eq!(d.with_ordinal(366), Some(NaiveDate::from_ymd_opt(2000, 12, 31).unwrap()));
     assert_eq!(d.with_ordinal(367), None);
-    assert_eq!(d.with_ordinal(1 << 28 | 60), None);
+    assert_eq!(d.with_ordinal((1 << 28) | 60), None);
     let d = NaiveDate::from_ymd_opt(1999, 5, 5).unwrap();
     assert_eq!(d.with_ordinal(366), None);
     assert_eq!(d.with_ordinal(u32::MAX), None);
@@ -420,6 +452,18 @@ fn test_date_num_days_from_ce() {
         assert_eq!(
             NaiveDate::from_ymd_opt(year, 1, 1).unwrap().num_days_from_ce(),
             NaiveDate::from_ymd_opt(year - 1, 12, 31).unwrap().num_days_from_ce() + 1
+        );
+    }
+}
+
+#[test]
+fn test_date_to_epoch_days() {
+    assert_eq!(NaiveDate::from_ymd_opt(1970, 1, 1).unwrap().to_epoch_days(), 0);
+
+    for year in -9999..10001 {
+        assert_eq!(
+            NaiveDate::from_ymd_opt(year, 1, 1).unwrap().to_epoch_days(),
+            NaiveDate::from_ymd_opt(year - 1, 12, 31).unwrap().to_epoch_days() + 1
         );
     }
 }
@@ -607,29 +651,26 @@ fn test_date_from_str() {
         "+00007-2-18",
     ];
     for &s in &valid {
-        eprintln!("test_date_from_str valid {:?}", s);
+        eprintln!("test_date_from_str valid {s:?}");
         let d = match s.parse::<NaiveDate>() {
             Ok(d) => d,
-            Err(e) => panic!("parsing `{}` has failed: {}", s, e),
+            Err(e) => panic!("parsing `{s}` has failed: {e}"),
         };
-        eprintln!("d {:?} (NaiveDate)", d);
-        let s_ = format!("{:?}", d);
-        eprintln!("s_ {:?}", s_);
+        eprintln!("d {d:?} (NaiveDate)");
+        let s_ = format!("{d:?}");
+        eprintln!("s_ {s_:?}");
         // `s` and `s_` may differ, but `s.parse()` and `s_.parse()` must be same
         let d_ = match s_.parse::<NaiveDate>() {
             Ok(d) => d,
             Err(e) => {
-                panic!("`{}` is parsed into `{:?}`, but reparsing that has failed: {}", s, d, e)
+                panic!("`{s}` is parsed into `{d:?}`, but reparsing that has failed: {e}")
             }
         };
-        eprintln!("d_ {:?} (NaiveDate)", d_);
+        eprintln!("d_ {d_:?} (NaiveDate)");
         assert!(
             d == d_,
-            "`{}` is parsed into `{:?}`, but reparsed result \
-                            `{:?}` does not match",
-            s,
-            d,
-            d_
+            "`{s}` is parsed into `{d:?}`, but reparsed result \
+                            `{d_:?}` does not match"
         );
     }
 
@@ -653,7 +694,7 @@ fn test_date_from_str() {
         "9999999-9-9",          // invalid year (out of bounds)
     ];
     for &s in &invalid {
-        eprintln!("test_date_from_str invalid {:?}", s);
+        eprintln!("test_date_from_str invalid {s:?}");
         assert!(s.parse::<NaiveDate>().is_err());
     }
 }
@@ -666,13 +707,15 @@ fn test_date_parse_from_str() {
         Ok(ymd(2014, 5, 7))
     ); // ignore time and offset
     assert_eq!(
-        NaiveDate::parse_from_str("2015-W06-1=2015-033", "%G-W%V-%u = %Y-%j"),
+        NaiveDate::parse_from_str("2015-W06-1=2015-033 Q1", "%G-W%V-%u = %Y-%j Q%q"),
         Ok(ymd(2015, 2, 2))
     );
     assert_eq!(NaiveDate::parse_from_str("Fri, 09 Aug 13", "%a, %d %b %y"), Ok(ymd(2013, 8, 9)));
     assert!(NaiveDate::parse_from_str("Sat, 09 Aug 2013", "%a, %d %b %Y").is_err());
     assert!(NaiveDate::parse_from_str("2014-57", "%Y-%m-%d").is_err());
     assert!(NaiveDate::parse_from_str("2014", "%Y").is_err()); // insufficient
+
+    assert!(NaiveDate::parse_from_str("2014-5-7 Q3", "%Y-%m-%d Q%q").is_err()); // mismatched quarter
 
     assert_eq!(
         NaiveDate::parse_from_str("2020-01-0", "%Y-%W-%w").ok(),

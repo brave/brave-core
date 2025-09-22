@@ -2,9 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [auto]
+    branches: [v1]
   pull_request:
   workflow_dispatch:
+  merge_group:
+    types: [checks_requested]
 
 jobs:
   ci:
@@ -15,29 +17,25 @@ jobs:
         os: [ubuntu-latest]
         include:
           - toolchain: stable
-            env:
-              DO_FUZZ: 1
+            fuzz: 0
           - toolchain: beta
-            env:
-              DO_FUZZ: 1
+            fuzz: 0
           - os: windows-latest
             toolchain: nightly
 
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Install packages
-        if: matrix.os == 'ubuntu-latest'
-        run: sudo apt-get install -y binutils-dev libunwind8-dev libcurl4-openssl-dev libelf-dev libdw-dev cmake gcc libiberty-dev
+      - name: Install packages for fuzzing
+        if: runner.os == 'Linux' && matrix.fuzz == 1
+        run: sudo apt-get update -y && sudo apt-get install -y binutils-dev libunwind8-dev libcurl4-openssl-dev libelf-dev libdw-dev cmake gcc libiberty-dev
 
       - name: Install toolchain
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@master
         with:
-          profile: minimal
           toolchain: ${{ matrix.toolchain }}
-          override: true
 
       - name: Cargo build
         run: cargo build --verbose
@@ -49,6 +47,10 @@ jobs:
       - name: Cargo test w/ serde
         if: matrix.toolchain != '1.36.0'
         run: cargo test --verbose --features serde
+
+      - name: Cargo test w/ malloc_size_of
+        if: matrix.toolchain != '1.36.0'
+        run: cargo test --verbose --features malloc_size_of
 
       - name: Cargo check w/o default features
         if: matrix.toolchain == 'nightly'
@@ -77,19 +79,31 @@ jobs:
       - name: miri
         if: matrix.toolchain == 'nightly' && matrix.os == 'ubuntu-latest'
         run: bash ./scripts/run_miri.sh
-        env:
-          MIRIFLAGS: '-Zmiri-tag-raw-pointers'
 
       - name: fuzz
-        if: env.DO_FUZZ == '1'
+        if: matrix.fuzz == 1
         working-directory: fuzz
-        run: ./travis_fuzz.sh
+        run: ./travis-fuzz.sh
+
+  no-std:
+    name: no_std
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+          target: thumbv7m-none-eabi
+      - name: Cargo build
+        run: cargo build --verbose
 
   build_result:
-    name: homu build finished
+    name: Result
     runs-on: ubuntu-latest
     needs:
       - "ci"
+      - "no-std"
 
     steps:
       - name: Mark the job as successful
@@ -98,4 +112,3 @@ jobs:
       - name: Mark the job as unsuccessful
         run: exit 1
         if: "!success()"
-

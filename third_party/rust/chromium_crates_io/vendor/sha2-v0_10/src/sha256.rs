@@ -1,7 +1,10 @@
 use digest::{generic_array::GenericArray, typenum::U64};
 
 cfg_if::cfg_if! {
-    if #[cfg(feature = "force-soft")] {
+    if #[cfg(feature = "force-soft-compact")] {
+        mod soft_compact;
+        use soft_compact::compress;
+    } else if #[cfg(feature = "force-soft")] {
         mod soft;
         use soft::compress;
     } else if #[cfg(any(target_arch = "x86", target_arch = "x86_64"))] {

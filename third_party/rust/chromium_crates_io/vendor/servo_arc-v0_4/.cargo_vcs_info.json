@@ -1,6 +1,6 @@
 {
   "git": {
-    "sha1": "eb13715da7ad499b54637d037aaa8ce7578dfdfc"
+    "sha1": "47c2a67d4cf4441d46274b8298915ad745099168"
   },
-  "path_in_vcs": "servo/components/servo_arc"
+  "path_in_vcs": "servo_arc"
 }

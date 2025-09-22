@@ -55,7 +55,7 @@ impl Backend {
             ptr::null_mut(),
             backend_ptr,
             Ordering::Release,
-            Ordering::Relaxed,
+            Ordering::Acquire,
         ) {
             Ok(_) => unsafe { &*backend_ptr },
             Err(global_backend_ptr) => {

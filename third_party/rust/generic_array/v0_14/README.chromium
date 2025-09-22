@@ -1,7 +1,7 @@
 Name: generic-array
 URL: https://crates.io/crates/generic-array
-Version: 0.14.6
-Revision: bd2832933f655cd58b59a0e5a57dd6941a3d0322
+Version: 0.14.7
+Revision: 1397d2bb40c406901b7827161b73b34b056cbe3a
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/generic-array-v0_14/LICENSE
 Shipped: yes

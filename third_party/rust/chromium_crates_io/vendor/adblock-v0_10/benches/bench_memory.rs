@@ -9,7 +9,6 @@ use std::alloc::{GlobalAlloc, Layout, System};
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 use adblock::request::Request;
-use adblock::resources::Resource;
 use adblock::Engine;
 
 #[path = "../tests/test_utils.rs"]
@@ -148,12 +147,7 @@ fn bench_memory_usage(c: &mut Criterion) {
             for _ in 0..iters {
                 ALLOCATOR.reset();
                 let rules = rules_from_lists(&["data/brave/brave-main-list.txt"]);
-                let mut engine = Engine::from_rules(rules, Default::default());
-                let resource_json =
-                    std::fs::read_to_string("data/brave/brave-resources.json").unwrap();
-                let resource_list: Vec<Resource> = serde_json::from_str(&resource_json).unwrap();
-                std::mem::drop(resource_json);
-                engine.use_resources(resource_list);
+                let engine = Engine::from_rules(rules, Default::default());
 
                 if run_requests {
                     ALLOCATOR.reset();

@@ -1,6 +1,9 @@
+* **`0.14.7`**
+    * Backport [#133](https://github.com/fizyk20/generic-array/pull/133) and [#134](https://github.com/fizyk20/generic-array/pull/134)
+
 * **`0.14.6`**
-    * Add an optional `Zeroize` impl for `GenericArray` (#126 and #112)
-    * Cleanup some unsafe (#125) and typos (#114)
+    * Add an optional `Zeroize` impl for `GenericArray` ([#126](https://github.com/fizyk20/generic-array/pull/126) and [#112](https://github.com/fizyk20/generic-array/pull/112))
+    * Cleanup some unsafe ([#125](https://github.com/fizyk20/generic-array/pull/125)) and typos ([#114](https://github.com/fizyk20/generic-array/pull/114))
     * Use `include` in `Cargo.toml` to reduce package size
 
 * **`0.14.5`**

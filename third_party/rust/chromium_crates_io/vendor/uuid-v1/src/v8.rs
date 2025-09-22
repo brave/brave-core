@@ -24,8 +24,8 @@ impl Uuid {
     ///
     /// # References
     ///
-    /// * [Version 8 UUIDs in Draft RFC: New UUID Formats, Version 4](https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04#section-5.3)
-    pub fn new_v8(buf: [u8; 16]) -> Uuid {
+    /// * [UUID Version 8 in RFC 9562](https://www.ietf.org/rfc/rfc9562.html#section-5.8)
+    pub const fn new_v8(buf: [u8; 16]) -> Uuid {
         Builder::from_custom_bytes(buf).into_uuid()
     }
 }
@@ -36,11 +36,14 @@ mod tests {
     use crate::{Variant, Version};
     use std::string::ToString;
 
-    #[cfg(target_arch = "wasm32")]
+    #[cfg(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")))]
     use wasm_bindgen_test::*;
 
     #[test]
-    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+    #[cfg_attr(
+        all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")),
+        wasm_bindgen_test
+    )]
     fn test_new() {
         let buf: [u8; 16] = [
             0xf, 0xe, 0xd, 0xc, 0xb, 0xa, 0x9, 0x8, 0x7, 0x6, 0x5, 0x4, 0x3, 0x2, 0x1, 0x0,

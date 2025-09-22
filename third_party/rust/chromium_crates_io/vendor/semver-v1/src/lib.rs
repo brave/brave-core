@@ -60,19 +60,19 @@
 //!
 //! [Specifying Dependencies]: https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html
 
-#![doc(html_root_url = "https://docs.rs/semver/1.0.26")]
+#![doc(html_root_url = "https://docs.rs/semver/1.0.27")]
 #![cfg_attr(docsrs, feature(doc_cfg))]
-#![cfg_attr(all(not(feature = "std"), not(no_alloc_crate)), no_std)]
-#![cfg_attr(not(no_unsafe_op_in_unsafe_fn_lint), deny(unsafe_op_in_unsafe_fn))]
-#![cfg_attr(no_unsafe_op_in_unsafe_fn_lint, allow(unused_unsafe))]
-#![cfg_attr(no_str_strip_prefix, allow(unstable_name_collisions))]
+#![cfg_attr(not(feature = "std"), no_std)]
+#![deny(unsafe_op_in_unsafe_fn)]
 #![allow(
     clippy::cast_lossless,
     clippy::cast_possible_truncation,
+    clippy::checked_conversions,
     clippy::doc_markdown,
     clippy::incompatible_msrv,
     clippy::items_after_statements,
     clippy::manual_map,
+    clippy::manual_range_contains,
     clippy::match_bool,
     clippy::missing_errors_doc,
     clippy::must_use_candidate,
@@ -81,15 +81,14 @@
     clippy::redundant_else,
     clippy::semicolon_if_nothing_returned, // https://github.com/rust-lang/rust-clippy/issues/7324
     clippy::similar_names,
+    clippy::uninlined_format_args,
     clippy::unnested_or_patterns,
     clippy::unseparated_literal_suffix,
     clippy::wildcard_imports
 )]
 
-#[cfg(not(no_alloc_crate))]
 extern crate alloc;
 
-mod backport;
 mod display;
 mod error;
 mod eval;
@@ -101,11 +100,9 @@ mod parse;
 mod serde;
 
 use crate::identifier::Identifier;
+use alloc::vec::Vec;
 use core::cmp::Ordering;
 use core::str::FromStr;
-
-#[allow(unused_imports)]
-use crate::backport::*;
 
 pub use crate::parse::Error;
 
@@ -185,7 +182,6 @@ pub struct Version {
 ///   not permitted within a partial version, i.e. anywhere between the major
 ///   version number and its minor, patch, pre-release, or build metadata.
 #[derive(Clone, Eq, PartialEq, Hash, Debug)]
-#[cfg_attr(no_const_vec_new, derive(Default))]
 pub struct VersionReq {
     pub comparators: Vec<Comparator>,
 }
@@ -249,7 +245,7 @@ pub struct Comparator {
 /// - &ensp;**`I.J.*`**&emsp;&mdash;&emsp;equivalent to `=I.J`
 /// - &ensp;**`I.*`**&ensp;or&ensp;**`I.*.*`**&emsp;&mdash;&emsp;equivalent to `=I`
 #[derive(Copy, Clone, Eq, PartialEq, Hash, Debug)]
-#[cfg_attr(not(no_non_exhaustive), non_exhaustive)]
+#[non_exhaustive]
 pub enum Op {
     Exact,
     Greater,
@@ -259,10 +255,6 @@ pub enum Op {
     Tilde,
     Caret,
     Wildcard,
-
-    #[cfg(no_non_exhaustive)] // rustc <1.40
-    #[doc(hidden)]
-    __NonExhaustive,
 }
 
 /// Optional pre-release identifier on a version string. This comes after `-` in
@@ -494,7 +486,6 @@ impl VersionReq {
     /// pre-release component. Since `*` is not written with an explicit major,
     /// minor, and patch version, and does not contain a nonempty pre-release
     /// component, it does not match any pre-release versions.
-    #[cfg(not(no_const_vec_new))] // rustc <1.39
     pub const STAR: Self = VersionReq {
         comparators: Vec::new(),
     };
@@ -526,7 +517,6 @@ impl VersionReq {
 }
 
 /// The default VersionReq is the same as [`VersionReq::STAR`].
-#[cfg(not(no_const_vec_new))]
 impl Default for VersionReq {
     fn default() -> Self {
         VersionReq::STAR

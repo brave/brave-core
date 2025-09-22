@@ -1,7 +1,7 @@
 error: lifetime may not live long enough
-  --> tests/ui-nightly/ptr-is-invariant-over-v.rs:10:5
-   |
-6  | fn _when_exclusive<'big: 'small, 'small>(
+ --> tests/ui-nightly/ptr-is-invariant-over-v.rs:10:5
+  |
+ 6 | fn _when_exclusive<'big: 'small, 'small>(
    |                    ----          ------ lifetime `'small` defined here
    |                    |
    |                    lifetime `'big` defined here

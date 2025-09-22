@@ -1,8 +1,8 @@
 //! Implementation of the [Bytes] type
 
-use core::fmt::{Display, Formatter};
-use crate::decode::RmpReadErr;
 use super::RmpRead;
+use crate::decode::RmpReadErr;
+use core::fmt::{Display, Formatter};
 
 /// Indicates that an error occurred reading from [Bytes]
 #[derive(Debug)]
@@ -13,15 +13,15 @@ pub enum BytesReadError {
     InsufficientBytes {
         expected: usize,
         actual: usize,
-        position: u64
-    }
+        position: u64,
+    },
 }
 
 impl Display for BytesReadError {
     fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
         match *self {
             BytesReadError::InsufficientBytes { expected, actual, position } => {
-                write!(f, "Expected at least bytes {}, but only got {} (pos {})", expected, actual, position)
+                write!(f, "Expected at least bytes {expected}, but only got {actual} (pos {position})")
             }
         }
     }
@@ -39,16 +39,16 @@ impl RmpReadErr for BytesReadError {}
 ///
 /// See also [serde_bytes::Bytes](https://docs.rs/serde_bytes/0.11/serde_bytes/struct.Bytes.html)
 ///
-/// Unlike a plain `&[u8]` this also tracks an internal offset in the input (See [Self::position]).
+/// Unlike a plain `&[u8]` this also tracks an internal offset in the input (See [`Self::position`]).
 ///
-/// This is used for (limited) compatibility with [std::io::Cursor]. Unlike a [Cursor](std::io::Cursor) it does
+/// This is used for (limited) compatibility with [`std::io::Cursor`]. Unlike a [Cursor](std::io::Cursor) it does
 /// not support mark/reset.
 #[derive(Debug, Copy, Clone, Default, Eq, PartialEq, Hash, Ord, PartialOrd)]
 pub struct Bytes<'a> {
     /// The internal position of the input buffer.
     ///
     /// This is not required for correctness.
-    /// It is only used for error reporting (and to implement [Self::position])
+    /// It is only used for error reporting (and to implement [`Self::position`])
     current_position: u64,
     bytes: &'a [u8],
 }
@@ -57,19 +57,22 @@ impl<'a> Bytes<'a> {
     ///
     /// This sets the internal position to zero.
     #[inline]
+    #[must_use]
     pub fn new(bytes: &'a [u8]) -> Self {
         Bytes { bytes, current_position: 0 }
     }
     /// Get a reference to the remaining bytes in the buffer.
     #[inline]
+    #[must_use]
     pub fn remaining_slice(&self) -> &'a [u8] {
         self.bytes
     }
     /// Return the position of the input buffer.
     ///
     /// This is not required for correctness, it only exists to help mimic
-    /// [Cursor::position](std::io::Cursor::position)
+    /// [`Cursor::position`](std::io::Cursor::position)
     #[inline]
+    #[must_use]
     pub fn position(&self) -> u64 {
         self.current_position
     }
@@ -94,7 +97,7 @@ impl RmpRead for Bytes<'_> {
             Err(BytesReadError::InsufficientBytes {
                 expected: 1,
                 actual: 0,
-                position: self.current_position
+                position: self.current_position,
             })
         }
     }
@@ -112,7 +115,7 @@ impl RmpRead for Bytes<'_> {
             Err(BytesReadError::InsufficientBytes {
                 expected: to_read,
                 actual: self.bytes.len(),
-                position: self.current_position
+                position: self.current_position,
             })
         }
     }
@@ -130,7 +133,7 @@ impl<'a> RmpRead for &'a [u8] {
             Err(BytesReadError::InsufficientBytes {
                 expected: 1,
                 actual: 0,
-                position: 0
+                position: 0,
             })
         }
     }
@@ -146,7 +149,7 @@ impl<'a> RmpRead for &'a [u8] {
             Err(BytesReadError::InsufficientBytes {
                 expected: to_read,
                 actual: self.len(),
-                position: 0
+                position: 0,
             })
         }
     }

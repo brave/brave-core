@@ -11,7 +11,7 @@
 
 [package]
 name = "generic-array"
-version = "0.14.6"
+version = "0.14.7"
 authors = [
     "Bartłomiej Kamiński <fizyk20@gmail.com>",
     "Aaron Trent <novacrazy@gmail.com>",

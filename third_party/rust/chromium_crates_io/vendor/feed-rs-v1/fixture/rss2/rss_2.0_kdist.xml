@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Latest Linux Kernel Versions</title>
+        <link>http://www.kernel.org</link>
+        <description>Latest Linux Kernel Versions</description>
+        <lastBuildDate>Fri, 08 May 2020 11:11:02 -0000</lastBuildDate>
+        <item>
+            <title>5.7-rc4: mainline</title>
+            <link>http://www.kernel.org/</link>
+            <description>
+                &lt;table&gt;
+                &lt;tr&gt;&lt;th align="right"&gt;Version:&lt;/th&gt;&lt;td&gt;&lt;strong&gt;5.7-rc4&lt;/strong&gt;
+                (mainline)&lt;/td&gt;&lt;/tr&gt;
+                &lt;tr&gt;&lt;th align="right"&gt;Released:&lt;/th&gt;&lt;td&gt;2020-05-03&lt;/td&gt;&lt;/tr&gt;
+
+                &lt;tr&gt;&lt;th align="right"&gt;Source:&lt;/th&gt;&lt;td&gt;&lt;a
+                href="https://git.kernel.org/torvalds/t/linux-5.7-rc4.tar.gz"&gt;linux-5.7-rc4.tar.gz&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+                &lt;tr&gt;&lt;th align="right"&gt;Patch:&lt;/th&gt;&lt;td&gt;&lt;a
+                href="https://git.kernel.org/torvalds/p/v5.7-rc4/v5.6"&gt;full&lt;/a&gt; (&lt;a
+                href="https://git.kernel.org/torvalds/p/v5.7-rc4/v5.7-rc3"&gt;incremental&lt;/a&gt;)&lt;/td&gt;&lt;/tr&gt;
+                &lt;/table&gt;
+            </description>
+            <pubDate>Sun, 03 May 2020 21:56:15 -0000</pubDate>
+            <guid isPermaLink="false">kernel.org,mainline,5.7-rc4,2020-05-03</guid>
+        </item>
+    </channel>
+</rss>

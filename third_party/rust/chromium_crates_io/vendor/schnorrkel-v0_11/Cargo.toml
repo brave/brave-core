@@ -12,12 +12,18 @@
 [package]
 edition = "2021"
 name = "schnorrkel"
-version = "0.11.4"
+version = "0.11.5"
 authors = ["Jeff Burdges <jeff@web3.foundation>"]
+build = false
 exclude = [
     ".gitignore",
     "res/*",
 ]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Schnorr VRF, signatures, etc. using the Ristretto group"
 documentation = "https://docs.rs/schnorrkel"
 readme = "README.md"
@@ -35,8 +41,46 @@ categories = [
 license = "BSD-3-Clause"
 repository = "https://github.com/w3f/schnorrkel"
 
+[features]
+aead = ["dep:aead"]
+alloc = [
+    "curve25519-dalek/alloc",
+    "rand_core/alloc",
+    "getrandom_or_panic/alloc",
+    "serde_bytes/alloc",
+]
+asm = ["sha2/asm"]
+default = [
+    "std",
+    "getrandom",
+]
+getrandom = [
+    "rand_core/getrandom",
+    "getrandom_or_panic/getrandom",
+    "aead?/getrandom",
+]
+nightly = []
+preaudit_deprecated = []
+serde = [
+    "serde_crate",
+    "serde_bytes",
+    "cfg-if",
+]
+std = [
+    "alloc",
+    "getrandom",
+    "serde_bytes/std",
+    "rand_core/std",
+    "getrandom_or_panic/std",
+]
+
+[lib]
+name = "schnorrkel"
+path = "src/lib.rs"
+
 [[bench]]
 name = "schnorr_benchmarks"
+path = "benches/schnorr_benchmarks.rs"
 harness = false
 
 [dependencies.aead]
@@ -57,7 +101,7 @@ version = "1.0.0"
 optional = true
 
 [dependencies.curve25519-dalek]
-version = "4.1.0"
+version = "4.1.3"
 features = [
     "digest",
     "zeroize",
@@ -128,36 +172,3 @@ version = "1.0.68"
 
 [dev-dependencies.sha3]
 version = "0.10.8"
-
-[features]
-aead = ["dep:aead"]
-alloc = [
-    "curve25519-dalek/alloc",
-    "rand_core/alloc",
-    "getrandom_or_panic/alloc",
-    "serde_bytes/alloc",
-]
-asm = ["sha2/asm"]
-default = [
-    "std",
-    "getrandom",
-]
-getrandom = [
-    "rand_core/getrandom",
-    "getrandom_or_panic/getrandom",
-    "aead?/getrandom",
-]
-nightly = []
-preaudit_deprecated = []
-serde = [
-    "serde_crate",
-    "serde_bytes",
-    "cfg-if",
-]
-std = [
-    "alloc",
-    "getrandom",
-    "serde_bytes/std",
-    "rand_core/std",
-    "getrandom_or_panic/std",
-]

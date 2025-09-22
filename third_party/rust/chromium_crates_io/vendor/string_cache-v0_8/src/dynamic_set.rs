@@ -7,13 +7,13 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use once_cell::sync::Lazy;
 use parking_lot::Mutex;
 use std::borrow::Cow;
 use std::mem;
 use std::ptr::NonNull;
 use std::sync::atomic::AtomicIsize;
 use std::sync::atomic::Ordering::SeqCst;
+use std::sync::OnceLock;
 
 const NB_BUCKETS: usize = 1 << 12; // 4096
 const BUCKET_MASK: u32 = (1 << 12) - 1;
@@ -38,16 +38,20 @@ fn entry_alignment_is_sufficient() {
     assert!(mem::align_of::<Entry>() >= ENTRY_ALIGNMENT);
 }
 
-pub(crate) static DYNAMIC_SET: Lazy<Set> = Lazy::new(|| {
+pub(crate) fn dynamic_set() -> &'static Set {
     // NOTE: Using const initialization for buckets breaks the small-stack test.
     // ```
     // // buckets: [Mutex<Option<Box<Entry>>>; NB_BUCKETS],
     // const MUTEX: Mutex<Option<Box<Entry>>> = Mutex::new(None);
     // let buckets = Box::new([MUTEX; NB_BUCKETS]);
     // ```
-    let buckets = (0..NB_BUCKETS).map(|_| Mutex::new(None)).collect();
-    Set { buckets }
-});
+    static DYNAMIC_SET: OnceLock<Set> = OnceLock::new();
+
+    DYNAMIC_SET.get_or_init(|| {
+        let buckets = (0..NB_BUCKETS).map(|_| Mutex::new(None)).collect();
+        Set { buckets }
+    })
+}
 
 impl Set {
     pub(crate) fn insert(&self, string: Cow<str>, hash: u32) -> NonNull<Entry> {

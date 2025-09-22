@@ -33,6 +33,8 @@
 
 #[cfg(all(feature = "alloc", not(feature = "std"), not(test)))]
 use alloc::boxed::Box;
+#[cfg(all(feature = "core-error", not(feature = "std")))]
+use core::error::Error;
 use core::fmt;
 use core::str::FromStr;
 #[cfg(feature = "std")]
@@ -54,15 +56,15 @@ pub mod strftime;
 // not require `alloc`.
 pub(crate) mod locales;
 
+pub use formatting::SecondsFormat;
 pub(crate) use formatting::write_hundreds;
 #[cfg(feature = "alloc")]
 pub(crate) use formatting::write_rfc2822;
 #[cfg(any(feature = "alloc", feature = "serde"))]
 pub(crate) use formatting::write_rfc3339;
-pub use formatting::SecondsFormat;
 #[cfg(feature = "alloc")]
 #[allow(deprecated)]
-pub use formatting::{format, format_item, DelayedFormat};
+pub use formatting::{DelayedFormat, format, format_item};
 #[cfg(feature = "unstable-locales")]
 pub use locales::Locale;
 pub(crate) use parse::parse_rfc3339;
@@ -115,6 +117,8 @@ pub enum Numeric {
     IsoYearDiv100,
     /// Year in the ISO week date, modulo 100 (FW=PW=2). Cannot be negative.
     IsoYearMod100,
+    /// Quarter (FW=PW=1).
+    Quarter,
     /// Month (FW=PW=2).
     Month,
     /// Day of the month (FW=PW=2).
@@ -448,7 +452,7 @@ impl fmt::Display for ParseError {
     }
 }
 
-#[cfg(feature = "std")]
+#[cfg(any(feature = "core-error", feature = "std"))]
 impl Error for ParseError {
     #[allow(deprecated)]
     fn description(&self) -> &str {

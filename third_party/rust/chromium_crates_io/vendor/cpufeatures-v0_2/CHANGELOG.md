@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.2.17 (2025-01-24)
+### Fixed
+- Don't link `std` when linking `libc` ([#1142])
+
+[#1142]: https://github.com/RustCrypto/utils/pull/1142
+
+## 0.2.16 (2024-11-22)
+### Fixed
+- `cfg` for freestanding x86 targets ([#1137])
+
+[#1137]: https://github.com/RustCrypto/utils/pull/1137
+
+## 0.2.15 (2024-11-11)
+### Fixed
+- Relax XSAVE checks ([#1130])
+
+[#1130]: https://github.com/RustCrypto/utils/pull/1130
+
+## 0.2.14 (2024-09-05)
+### Added
+- Support for detecting Data Independent Timing (DIT) on AArch64 ([#1100], [#1101])
+
+[#1100]: https://github.com/RustCrypto/utils/pull/1100
+[#1101]: https://github.com/RustCrypto/utils/pull/1101
+
+## 0.2.13 (2024-08-12)
+### Changed
+- Use `#[cold]` for initialization code ([#1096])
+
+[#1096]: https://github.com/RustCrypto/utils/pull/1096
+
+## 0.2.12 (2024-01-04)
+### Added
+- Support for x86-64 AVX-512 target features: `gfni`, `vaes`, `vpclmulqdq`, `avx512bitalg`, `avx512vpopcntdq` ([#1035])
+
+[#1035]: https://github.com/RustCrypto/utils/pull/1035
+
 ## 0.2.11 (2023-10-26)
 ### Added
 - Support for AArch64's `sm4` target feature ([#972])

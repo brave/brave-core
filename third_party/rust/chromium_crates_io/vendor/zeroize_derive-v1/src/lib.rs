@@ -4,90 +4,117 @@
 #![forbid(unsafe_code)]
 #![warn(rust_2018_idioms, trivial_casts, unused_qualifications)]
 
-use proc_macro2::TokenStream;
-use quote::quote;
+use proc_macro2::{Ident, TokenStream};
+use quote::{format_ident, quote};
 use syn::{
     parse::{Parse, ParseStream},
+    parse_quote,
     punctuated::Punctuated,
     token::Comma,
-    Attribute, Lit, Meta, NestedMeta, Result, WherePredicate,
+    visit::Visit,
+    Attribute, Data, DeriveInput, Expr, ExprLit, Field, Fields, Lit, Meta, Result, Variant,
+    WherePredicate,
 };
-use synstructure::{decl_derive, AddBounds, BindStyle, BindingInfo, VariantInfo};
-
-decl_derive!(
-    [Zeroize, attributes(zeroize)] =>
-
-    /// Derive the `Zeroize` trait.
-    ///
-    /// Supports the following attributes:
-    ///
-    /// On the item level:
-    /// - `#[zeroize(drop)]`: *deprecated* use `ZeroizeOnDrop` instead
-    /// - `#[zeroize(bound = "T: MyTrait")]`: this replaces any trait bounds
-    ///   inferred by zeroize-derive
-    ///
-    /// On the field level:
-    /// - `#[zeroize(skip)]`: skips this field or variant when calling `zeroize()`
-    derive_zeroize
-);
-
-decl_derive!(
-    [ZeroizeOnDrop, attributes(zeroize)] =>
-
-    /// Derive the `ZeroizeOnDrop` trait.
-    ///
-    /// Supports the following attributes:
-    ///
-    /// On the field level:
-    /// - `#[zeroize(skip)]`: skips this field or variant when calling `zeroize()`
-    derive_zeroize_on_drop
-);
 
 /// Name of zeroize-related attributes
 const ZEROIZE_ATTR: &str = "zeroize";
 
-/// Custom derive for `Zeroize`
-fn derive_zeroize(mut s: synstructure::Structure<'_>) -> TokenStream {
-    let attributes = ZeroizeAttrs::parse(&s);
-
-    if let Some(bounds) = attributes.bound {
-        s.add_bounds(AddBounds::None);
-
-        for bound in bounds.0 {
-            s.add_where_predicate(bound);
-        }
-    }
-
-    // NOTE: These are split into named functions to simplify testing with
-    // synstructure's `test_derive!` macro.
-    if attributes.drop {
-        derive_zeroize_with_drop(s)
-    } else {
-        derive_zeroize_without_drop(s)
-    }
+/// Derive the `Zeroize` trait.
+///
+/// Supports the following attributes:
+///
+/// On the item level:
+/// - `#[zeroize(drop)]`: *deprecated* use `ZeroizeOnDrop` instead
+/// - `#[zeroize(bound = "T: MyTrait")]`: this replaces any trait bounds
+///   inferred by zeroize-derive
+///
+/// On the field level:
+/// - `#[zeroize(skip)]`: skips this field or variant when calling `zeroize()`
+#[proc_macro_derive(Zeroize, attributes(zeroize))]
+pub fn derive_zeroize(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    derive_zeroize_impl(syn::parse_macro_input!(input as DeriveInput)).into()
 }
 
-/// Custom derive for `ZeroizeOnDrop`
-fn derive_zeroize_on_drop(mut s: synstructure::Structure<'_>) -> TokenStream {
-    let zeroizers = generate_fields(&mut s, quote! { zeroize_or_on_drop });
+fn derive_zeroize_impl(input: DeriveInput) -> TokenStream {
+    let attributes = ZeroizeAttrs::parse(&input);
 
-    let drop_impl = s.add_bounds(AddBounds::None).gen_impl(quote! {
-        gen impl Drop for @Self {
-            fn drop(&mut self) {
-                use zeroize::__internal::AssertZeroize;
-                use zeroize::__internal::AssertZeroizeOnDrop;
-                match self {
-                    #zeroizers
+    let mut generics = input.generics.clone();
+
+    let extra_bounds = match attributes.bound {
+        Some(bounds) => bounds.0,
+        None => attributes
+            .auto_params
+            .iter()
+            .map(|type_param| -> WherePredicate {
+                parse_quote! {#type_param: Zeroize}
+            })
+            .collect(),
+    };
+
+    generics.make_where_clause().predicates.extend(extra_bounds);
+
+    let ty_name = &input.ident;
+
+    let (impl_gen, type_gen, where_) = generics.split_for_impl();
+
+    let drop_impl = if attributes.drop {
+        quote! {
+            #[doc(hidden)]
+            impl #impl_gen Drop for #ty_name #type_gen #where_ {
+                fn drop(&mut self) {
+                    self.zeroize()
                 }
             }
         }
-    });
+    } else {
+        quote! {}
+    };
 
-    let zeroize_on_drop_impl = impl_zeroize_on_drop(&s);
+    let zeroizers = generate_fields(&input, quote! { zeroize });
+    let zeroize_impl = quote! {
+        impl #impl_gen ::zeroize::Zeroize for #ty_name #type_gen #where_ {
+            fn zeroize(&mut self) {
+                #zeroizers
+            }
+        }
+    };
+
+    quote! {
+        #zeroize_impl
+        #drop_impl
+    }
+}
+
+/// Derive the `ZeroizeOnDrop` trait.
+///
+/// Supports the following attributes:
+///
+/// On the field level:
+/// - `#[zeroize(skip)]`: skips this field or variant when calling `zeroize()`
+#[proc_macro_derive(ZeroizeOnDrop, attributes(zeroize))]
+pub fn derive_zeroize_on_drop(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    derive_zeroize_on_drop_impl(syn::parse_macro_input!(input as DeriveInput)).into()
+}
+
+fn derive_zeroize_on_drop_impl(input: DeriveInput) -> TokenStream {
+    let zeroizers = generate_fields(&input, quote! { zeroize_or_on_drop });
+
+    let (impl_gen, type_gen, where_) = input.generics.split_for_impl();
+    let name = input.ident.clone();
+
+    let drop_impl = quote! {
+        impl #impl_gen Drop for #name #type_gen #where_ {
+            fn drop(&mut self) {
+                use ::zeroize::__internal::AssertZeroize;
+                use ::zeroize::__internal::AssertZeroizeOnDrop;
+                #zeroizers
+            }
+        }
+    };
+    let zeroize_on_drop_impl = impl_zeroize_on_drop(&input);
 
     quote! {
         #drop_impl
-
         #zeroize_on_drop_impl
     }
 }
@@ -99,6 +126,8 @@ struct ZeroizeAttrs {
     drop: bool,
     /// Custom bounds as defined by the user
     bound: Option<Bounds>,
+    /// Type parameters in use by fields
+    auto_params: Vec<Ident>,
 }
 
 /// Parsing helper for custom bounds
@@ -110,42 +139,79 @@ impl Parse for Bounds {
     }
 }
 
+struct BoundAccumulator<'a> {
+    generics: &'a syn::Generics,
+    params: Vec<Ident>,
+}
+
+impl<'ast> Visit<'ast> for BoundAccumulator<'ast> {
+    fn visit_path(&mut self, path: &'ast syn::Path) {
+        if path.segments.len() != 1 {
+            return;
+        }
+
+        if let Some(segment) = path.segments.first() {
+            for param in &self.generics.params {
+                if let syn::GenericParam::Type(type_param) = param {
+                    if type_param.ident == segment.ident && !self.params.contains(&segment.ident) {
+                        self.params.push(type_param.ident.clone());
+                    }
+                }
+            }
+        }
+    }
+}
+
 impl ZeroizeAttrs {
     /// Parse attributes from the incoming AST
-    fn parse(s: &synstructure::Structure<'_>) -> Self {
+    fn parse(input: &DeriveInput) -> Self {
         let mut result = Self::default();
+        let mut bound_accumulator = BoundAccumulator {
+            generics: &input.generics,
+            params: Vec::new(),
+        };
 
-        for attr in s.ast().attrs.iter() {
+        for attr in &input.attrs {
             result.parse_attr(attr, None, None);
         }
-        for v in s.variants().iter() {
-            // only process actual enum variants here, as we don't want to process struct attributes twice
-            if v.prefix.is_some() {
-                for attr in v.ast().attrs.iter() {
-                    result.parse_attr(attr, Some(v), None);
+
+        match &input.data {
+            syn::Data::Enum(enum_) => {
+                for variant in &enum_.variants {
+                    for attr in &variant.attrs {
+                        result.parse_attr(attr, Some(variant), None);
+                    }
+                    for field in &variant.fields {
+                        for attr in &field.attrs {
+                            result.parse_attr(attr, Some(variant), Some(field));
+                        }
+                        if !attr_skip(&field.attrs) {
+                            bound_accumulator.visit_type(&field.ty);
+                        }
+                    }
                 }
             }
-            for binding in v.bindings().iter() {
-                for attr in binding.ast().attrs.iter() {
-                    result.parse_attr(attr, Some(v), Some(binding));
+            syn::Data::Struct(struct_) => {
+                for field in &struct_.fields {
+                    for attr in &field.attrs {
+                        result.parse_attr(attr, None, Some(field));
+                    }
+                    if !attr_skip(&field.attrs) {
+                        bound_accumulator.visit_type(&field.ty);
+                    }
                 }
             }
+            syn::Data::Union(union_) => panic!("Unsupported untagged union {:?}", union_),
         }
+
+        result.auto_params = bound_accumulator.params;
 
         result
     }
 
     /// Parse attribute and handle `#[zeroize(...)]` attributes
-    fn parse_attr(
-        &mut self,
-        attr: &Attribute,
-        variant: Option<&VariantInfo<'_>>,
-        binding: Option<&BindingInfo<'_>>,
-    ) {
-        let meta_list = match attr
-            .parse_meta()
-            .unwrap_or_else(|e| panic!("error parsing attribute: {:?} ({})", attr, e))
-        {
+    fn parse_attr(&mut self, attr: &Attribute, variant: Option<&Variant>, binding: Option<&Field>) {
+        let meta_list = match &attr.meta {
             Meta::List(list) => list,
             _ => return,
         };
@@ -155,29 +221,23 @@ impl ZeroizeAttrs {
             return;
         }
 
-        for nested_meta in &meta_list.nested {
-            if let NestedMeta::Meta(meta) = nested_meta {
-                self.parse_meta(meta, variant, binding);
-            } else {
-                panic!("malformed #[zeroize] attribute: {:?}", nested_meta);
-            }
+        for meta in attr
+            .parse_args_with(Punctuated::<Meta, Comma>::parse_terminated)
+            .unwrap_or_else(|e| panic!("error parsing attribute: {:?} ({})", attr, e))
+        {
+            self.parse_meta(&meta, variant, binding);
         }
     }
 
     /// Parse `#[zeroize(...)]` attribute metadata (e.g. `drop`)
-    fn parse_meta(
-        &mut self,
-        meta: &Meta,
-        variant: Option<&VariantInfo<'_>>,
-        binding: Option<&BindingInfo<'_>>,
-    ) {
+    fn parse_meta(&mut self, meta: &Meta, variant: Option<&Variant>, binding: Option<&Field>) {
         if meta.path().is_ident("drop") {
             assert!(!self.drop, "duplicate #[zeroize] drop flags");
 
             match (variant, binding) {
                 (_variant, Some(_binding)) => {
                     // structs don't have a variant prefix, and only structs have bindings outside of a variant
-                    let item_kind = match variant.and_then(|variant| variant.prefix) {
+                    let item_kind = match variant {
                         Some(_) => "enum",
                         None => "struct",
                     };
@@ -203,7 +263,7 @@ impl ZeroizeAttrs {
             match (variant, binding) {
                 (_variant, Some(_binding)) => {
                     // structs don't have a variant prefix, and only structs have bindings outside of a variant
-                    let item_kind = match variant.and_then(|variant| variant.prefix) {
+                    let item_kind = match variant {
                         Some(_) => "enum",
                         None => "struct",
                     };
@@ -221,7 +281,10 @@ impl ZeroizeAttrs {
                 )),
                 (None, None) => {
                     if let Meta::NameValue(meta_name_value) = meta {
-                        if let Lit::Str(lit) = &meta_name_value.lit {
+                        if let Expr::Lit(ExprLit {
+                            lit: Lit::Str(lit), ..
+                        }) = &meta_name_value.value
+                        {
                             if lit.value().is_empty() {
                                 self.bound = Some(Bounds(Punctuated::new()));
                             } else {
@@ -253,277 +316,278 @@ impl ZeroizeAttrs {
     }
 }
 
-fn generate_fields(s: &mut synstructure::Structure<'_>, method: TokenStream) -> TokenStream {
-    s.bind_with(|_| BindStyle::RefMut);
-
-    s.filter_variants(|vi| {
-        let result = filter_skip(vi.ast().attrs, true);
-
-        // check for duplicate `#[zeroize(skip)]` attributes in nested variants
-        for field in vi.ast().fields {
-            filter_skip(&field.attrs, result);
-        }
-
-        result
-    })
-    .filter(|bi| filter_skip(&bi.ast().attrs, true))
-    .each(|bi| quote! { #bi.#method(); })
+fn field_ident(n: usize, field: &Field) -> Ident {
+    if let Some(ref name) = field.ident {
+        name.clone()
+    } else {
+        format_ident!("__zeroize_field_{}", n)
+    }
 }
 
-fn filter_skip(attrs: &[Attribute], start: bool) -> bool {
-    let mut result = start;
+fn generate_fields(input: &DeriveInput, method: TokenStream) -> TokenStream {
+    let input_id = &input.ident;
+    let fields: Vec<_> = match input.data {
+        Data::Enum(ref enum_) => enum_
+            .variants
+            .iter()
+            .filter_map(|variant| {
+                if attr_skip(&variant.attrs) {
+                    if variant.fields.iter().any(|field| attr_skip(&field.attrs)) {
+                        panic!("duplicate #[zeroize] skip flags")
+                    }
+                    None
+                } else {
+                    let variant_id = &variant.ident;
+                    Some((quote! { #input_id :: #variant_id }, &variant.fields))
+                }
+            })
+            .collect(),
+        Data::Struct(ref struct_) => vec![(quote! { #input_id }, &struct_.fields)],
+        Data::Union(ref union_) => panic!("Cannot generate fields for untagged union {:?}", union_),
+    };
 
-    for attr in attrs.iter().filter_map(|attr| attr.parse_meta().ok()) {
+    let arms = fields.into_iter().map(|(name, fields)| {
+        let method_field = fields.iter().enumerate().filter_map(|(n, field)| {
+            if attr_skip(&field.attrs) {
+                None
+            } else {
+                let name = field_ident(n, field);
+                Some(quote! { #name.#method() })
+            }
+        });
+
+        let field_bindings = fields
+            .iter()
+            .enumerate()
+            .map(|(n, field)| field_ident(n, field));
+
+        let binding = match fields {
+            Fields::Named(_) => quote! {
+                #name { #(#field_bindings),* }
+            },
+            Fields::Unnamed(_) => quote! {
+                #name ( #(#field_bindings),* )
+            },
+            Fields::Unit => quote! {
+                #name
+            },
+        };
+
+        quote! {
+            #[allow(unused_variables)]
+            #binding => {
+                #(#method_field);*
+            }
+        }
+    });
+
+    quote! {
+        match self {
+            #(#arms),*
+            _ => {}
+        }
+    }
+}
+
+fn attr_skip(attrs: &[Attribute]) -> bool {
+    let mut result = false;
+    for attr in attrs.iter().map(|attr| &attr.meta) {
         if let Meta::List(list) = attr {
             if list.path.is_ident(ZEROIZE_ATTR) {
-                for nested in list.nested {
-                    if let NestedMeta::Meta(Meta::Path(path)) = nested {
+                for meta in list
+                    .parse_args_with(Punctuated::<Meta, Comma>::parse_terminated)
+                    .unwrap_or_else(|e| panic!("error parsing attribute: {:?} ({})", list, e))
+                {
+                    if let Meta::Path(path) = meta {
                         if path.is_ident("skip") {
-                            assert!(result, "duplicate #[zeroize] skip flags");
-                            result = false;
+                            assert!(!result, "duplicate #[zeroize] skip flags");
+                            result = true;
                         }
                     }
                 }
             }
         }
     }
-
     result
 }
 
-/// Custom derive for `Zeroize` (without `Drop`)
-fn derive_zeroize_without_drop(mut s: synstructure::Structure<'_>) -> TokenStream {
-    let zeroizers = generate_fields(&mut s, quote! { zeroize });
-
-    s.bound_impl(
-        quote!(zeroize::Zeroize),
-        quote! {
-            fn zeroize(&mut self) {
-                match self {
-                    #zeroizers
-                }
-            }
-        },
-    )
-}
-
-/// Custom derive for `Zeroize` and `Drop`
-fn derive_zeroize_with_drop(s: synstructure::Structure<'_>) -> TokenStream {
-    let drop_impl = s.gen_impl(quote! {
-        gen impl Drop for @Self {
-            fn drop(&mut self) {
-                self.zeroize();
-            }
-        }
-    });
-
-    let zeroize_impl = derive_zeroize_without_drop(s);
-
+fn impl_zeroize_on_drop(input: &DeriveInput) -> TokenStream {
+    let name = input.ident.clone();
+    let (impl_gen, type_gen, where_) = input.generics.split_for_impl();
     quote! {
-        #zeroize_impl
-
         #[doc(hidden)]
-        #drop_impl
+        impl #impl_gen ::zeroize::ZeroizeOnDrop for #name #type_gen #where_ {}
     }
-}
-
-fn impl_zeroize_on_drop(s: &synstructure::Structure<'_>) -> TokenStream {
-    #[allow(unused_qualifications)]
-    s.bound_impl(quote!(zeroize::ZeroizeOnDrop), Option::<TokenStream>::None)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use syn::parse_str;
-    use synstructure::{test_derive, Structure};
+
+    #[track_caller]
+    fn test_derive(
+        f: impl Fn(DeriveInput) -> TokenStream,
+        input: TokenStream,
+        expected_output: TokenStream,
+    ) {
+        let output = f(syn::parse2(input).unwrap());
+        assert_eq!(format!("{output}"), format!("{expected_output}"));
+    }
+
+    #[track_caller]
+    fn parse_zeroize_test(unparsed: &str) -> TokenStream {
+        derive_zeroize_impl(syn::parse_str(unparsed).expect("Failed to parse test input"))
+    }
 
     #[test]
     fn zeroize_without_drop() {
-        test_derive! {
-            derive_zeroize_without_drop {
+        test_derive(
+            derive_zeroize_impl,
+            quote! {
                 struct Z {
                     a: String,
                     b: Vec<u8>,
                     c: [u8; 3],
                 }
-            }
-            expands to {
-                #[allow(non_upper_case_globals)]
-                #[doc(hidden)]
-                const _DERIVE_zeroize_Zeroize_FOR_Z: () = {
-                    extern crate zeroize;
-                    impl zeroize::Zeroize for Z {
-                        fn zeroize(&mut self) {
-                            match self {
-                                Z {
-                                    a: ref mut __binding_0,
-                                    b: ref mut __binding_1,
-                                    c: ref mut __binding_2,
-                                } => {
-                                    { __binding_0.zeroize(); }
-                                    { __binding_1.zeroize(); }
-                                    { __binding_2.zeroize(); }
-                                }
+            },
+            quote! {
+                impl ::zeroize::Zeroize for Z {
+                    fn zeroize(&mut self) {
+                        match self {
+                            #[allow(unused_variables)]
+                            Z { a, b, c } => {
+                                a.zeroize();
+                                b.zeroize();
+                                c.zeroize()
                             }
+                            _ => {}
                         }
                     }
-                };
-            }
-            no_build // tests the code compiles are in the `zeroize` crate
-        }
+                }
+            },
+        )
     }
 
     #[test]
     fn zeroize_with_drop() {
-        test_derive! {
-            derive_zeroize_with_drop {
+        test_derive(
+            derive_zeroize_impl,
+            quote! {
+                #[zeroize(drop)]
                 struct Z {
                     a: String,
                     b: Vec<u8>,
                     c: [u8; 3],
                 }
-            }
-            expands to {
-                #[allow(non_upper_case_globals)]
-                #[doc(hidden)]
-                const _DERIVE_zeroize_Zeroize_FOR_Z: () = {
-                    extern crate zeroize;
-                    impl zeroize::Zeroize for Z {
-                        fn zeroize(&mut self) {
-                            match self {
-                                Z {
-                                    a: ref mut __binding_0,
-                                    b: ref mut __binding_1,
-                                    c: ref mut __binding_2,
-                                } => {
-                                    { __binding_0.zeroize(); }
-                                    { __binding_1.zeroize(); }
-                                    { __binding_2.zeroize(); }
-                                }
+            },
+            quote! {
+                impl ::zeroize::Zeroize for Z {
+                    fn zeroize(&mut self) {
+                        match self {
+                            #[allow(unused_variables)]
+                            Z { a, b, c } => {
+                                a.zeroize();
+                                b.zeroize();
+                                c.zeroize()
                             }
+                            _ => {}
                         }
                     }
-                };
+                }
                 #[doc(hidden)]
-                #[allow(non_upper_case_globals)]
-                const _DERIVE_Drop_FOR_Z: () = {
-                    impl Drop for Z {
-                        fn drop(&mut self) {
-                            self.zeroize();
-                        }
+                impl Drop for Z {
+                    fn drop(&mut self) {
+                        self.zeroize()
                     }
-                };
-            }
-            no_build // tests the code compiles are in the `zeroize` crate
-        }
+                }
+            },
+        )
     }
 
     #[test]
     fn zeroize_with_skip() {
-        test_derive! {
-            derive_zeroize_without_drop {
+        test_derive(
+            derive_zeroize_impl,
+            quote! {
                 struct Z {
                     a: String,
                     b: Vec<u8>,
                     #[zeroize(skip)]
                     c: [u8; 3],
                 }
-            }
-            expands to {
-                #[allow(non_upper_case_globals)]
-                #[doc(hidden)]
-                const _DERIVE_zeroize_Zeroize_FOR_Z: () = {
-                    extern crate zeroize;
-                    impl zeroize::Zeroize for Z {
-                        fn zeroize(&mut self) {
-                            match self {
-                                Z {
-                                    a: ref mut __binding_0,
-                                    b: ref mut __binding_1,
-                                    ..
-                                } => {
-                                    { __binding_0.zeroize(); }
-                                    { __binding_1.zeroize(); }
-                                }
+            },
+            quote! {
+                impl ::zeroize::Zeroize for Z {
+                    fn zeroize(&mut self) {
+                        match self {
+                            #[allow(unused_variables)]
+                            Z { a, b, c } => {
+                                a.zeroize();
+                                b.zeroize()
                             }
+                            _ => {}
                         }
                     }
-                };
-            }
-            no_build // tests the code compiles are in the `zeroize` crate
-        }
+                }
+            },
+        )
     }
 
     #[test]
     fn zeroize_with_bound() {
-        test_derive! {
-            derive_zeroize {
+        test_derive(
+            derive_zeroize_impl,
+            quote! {
                 #[zeroize(bound = "T: MyTrait")]
                 struct Z<T>(T);
-            }
-            expands to {
-                #[allow(non_upper_case_globals)]
-                #[doc(hidden)]
-                const _DERIVE_zeroize_Zeroize_FOR_Z: () = {
-                    extern crate zeroize;
-                    impl<T> zeroize::Zeroize for Z<T>
-                    where T: MyTrait
-                    {
-                        fn zeroize(&mut self) {
-                            match self {
-                                Z(ref mut __binding_0,) => {
-                                    { __binding_0.zeroize(); }
-                                }
+            },
+            quote! {
+                impl<T> ::zeroize::Zeroize for Z<T> where T: MyTrait {
+                    fn zeroize(&mut self) {
+                        match self {
+                            #[allow(unused_variables)]
+                            Z(__zeroize_field_0) => {
+                                __zeroize_field_0.zeroize()
                             }
+                            _ => {}
                         }
                     }
-                };
-            }
-            no_build // tests the code compiles are in the `zeroize` crate
-        }
+                }
+            },
+        )
     }
 
     #[test]
     fn zeroize_only_drop() {
-        test_derive! {
-            derive_zeroize_on_drop {
+        test_derive(
+            derive_zeroize_on_drop_impl,
+            quote! {
                 struct Z {
                     a: String,
                     b: Vec<u8>,
                     c: [u8; 3],
                 }
-            }
-            expands to {
-                #[allow(non_upper_case_globals)]
-                const _DERIVE_Drop_FOR_Z: () = {
-                    impl Drop for Z {
-                        fn drop(&mut self) {
-                            use zeroize::__internal::AssertZeroize;
-                            use zeroize::__internal::AssertZeroizeOnDrop;
-                            match self {
-                                Z {
-                                    a: ref mut __binding_0,
-                                    b: ref mut __binding_1,
-                                    c: ref mut __binding_2,
-                                } => {
-                                    { __binding_0.zeroize_or_on_drop(); }
-                                    { __binding_1.zeroize_or_on_drop(); }
-                                    { __binding_2.zeroize_or_on_drop(); }
-                                }
+            },
+            quote! {
+                impl Drop for Z {
+                    fn drop(&mut self) {
+                        use ::zeroize::__internal::AssertZeroize;
+                        use ::zeroize::__internal::AssertZeroizeOnDrop;
+                        match self {
+                            #[allow(unused_variables)]
+                            Z { a, b, c } => {
+                                a.zeroize_or_on_drop();
+                                b.zeroize_or_on_drop();
+                                c.zeroize_or_on_drop()
                             }
+                            _ => {}
                         }
                     }
-                };
-                #[allow(non_upper_case_globals)]
+                }
                 #[doc(hidden)]
-                const _DERIVE_zeroize_ZeroizeOnDrop_FOR_Z: () = {
-                    extern crate zeroize;
-                    impl zeroize::ZeroizeOnDrop for Z {}
-                };
-            }
-            no_build // tests the code compiles are in the `zeroize` crate
-        }
+                impl ::zeroize::ZeroizeOnDrop for Z {}
+            },
+        )
     }
 
     #[test]
@@ -800,11 +864,5 @@ mod tests {
             #[zeroize(bound = "T")]
             struct Z<T>(T);
         ));
-    }
-
-    fn parse_zeroize_test(unparsed: &str) -> TokenStream {
-        derive_zeroize(Structure::new(
-            &parse_str(unparsed).expect("Failed to parse test input"),
-        ))
     }
 }

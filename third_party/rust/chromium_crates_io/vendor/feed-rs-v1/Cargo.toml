@@ -12,7 +12,7 @@
 [package]
 edition = "2021"
 name = "feed-rs"
-version = "1.3.0"
+version = "1.5.3"
 authors = [
     "Hiroki Kumamoto <kumabook@live.jp>",
     "Mark Pritchard <mpritcha@gmail.com>",
@@ -37,40 +37,36 @@ keywords = [
 categories = ["parser-implementations"]
 license = "MIT"
 repository = "https://github.com/feed-rs/feed-rs.git"
-resolver = "1"
 
 [dependencies.chrono]
-version = "0.4.23"
+version = "0.4.38"
 default-features = false
 
-[dependencies.lazy_static]
-version = "1.4"
-
 [dependencies.mime]
-version = "0.3"
+version = "0.3.17"
 
 [dependencies.quick-xml]
-version = "0.27.1"
+version = "0.31.0"
 features = ["encoding"]
 
 [dependencies.regex]
-version = "1.7"
+version = "1.10.4"
 
 [dependencies.serde]
-version = "1.0"
+version = "1.0.198"
 features = ["derive"]
 
 [dependencies.serde_json]
-version = "1.0"
+version = "1.0.116"
 
 [dependencies.siphasher]
-version = "0.3"
+version = "1.0.1"
 
 [dependencies.url]
-version = "2.3"
+version = "2.5.0"
 
 [dependencies.uuid]
-version = "1.3"
+version = "1.8.0"
 features = ["v4"]
 
 [badges.travis-ci]

@@ -4,7 +4,7 @@
 //! [![Latest Version](https://img.shields.io/crates/v/derive_more.svg)](https://crates.io/crates/derive_more)
 //! [![Rust Documentation](https://img.shields.io/badge/api-rustdoc-blue.svg)](https://jeltef.github.io/derive_more/derive_more/)
 //! [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/JelteF/derive_more/master/LICENSE)
-//! [![Rust 1.36+](https://img.shields.io/badge/rustc-1.36+-lightgray.svg)](https://blog.rust-lang.org/2019/07/04/Rust-1.36.0.html)
+//! [![Rust 1.65+](https://img.shields.io/badge/rustc-1.65+-lightgray.svg)](https://blog.rust-lang.org/2022/11/03/Rust-1.65.0.html)
 //!
 //! Rust has lots of builtin traits that are implemented for its basic types, such
 //! as `Add`, `Not`, `From` or `Display`.
@@ -126,7 +126,7 @@
 //!
 //! ## Installation
 //!
-//! This library requires Rust 1.36 or higher and it supports `no_std` out of the box.
+//! This library requires Rust 1.65 or higher and it supports `no_std` out of the box.
 //! Then add the following to `Cargo.toml`:
 //!
 //! ```toml
@@ -190,6 +190,7 @@ extern crate proc_macro;
 use proc_macro::TokenStream;
 use syn::parse::Error as ParseError;
 
+mod syn_compat;
 mod utils;
 
 #[cfg(any(feature = "add_assign", feature = "mul_assign"))]

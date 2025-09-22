@@ -13,6 +13,7 @@ use crate::transcript::{EncodedChallenge, TranscriptWrite};
 use ff::Field;
 use group::Curve;
 use rand_core::RngCore;
+use std::hash::Hash;
 use std::io;
 use std::marker::PhantomData;
 
@@ -36,7 +37,12 @@ where
     let x_1: ChallengeX1<_> = transcript.squeeze_challenge_scalar();
     let x_2: ChallengeX2<_> = transcript.squeeze_challenge_scalar();
 
-    let (poly_map, point_sets) = construct_intermediate_sets(queries);
+    let (poly_map, point_sets) = construct_intermediate_sets(queries).ok_or_else(|| {
+        io::Error::new(
+            io::ErrorKind::InvalidInput,
+            "queries iterator contains mismatching evaluations",
+        )
+    })?;
 
     // Collapse openings at same point sets together into single openings using
     // x_1 challenge.
@@ -102,7 +108,7 @@ where
 
     let x_4: ChallengeX4<_> = transcript.squeeze_challenge_scalar();
 
-    let (p_poly, p_poly_blind) = q_polys.into_iter().zip(q_blinds.into_iter()).fold(
+    let (p_poly, p_poly_blind) = q_polys.into_iter().zip(q_blinds).fold(
         (q_prime_poly, q_prime_blind),
         |(q_prime_poly, q_prime_blind), (poly, blind)| {
             (
@@ -125,6 +131,14 @@ pub struct PolynomialPointer<'a, C: CurveAffine> {
 impl<'a, C: CurveAffine> PartialEq for PolynomialPointer<'a, C> {
     fn eq(&self, other: &Self) -> bool {
         std::ptr::eq(self.poly, other.poly)
+    }
+}
+
+impl<'a, C: CurveAffine> Eq for PolynomialPointer<'a, C> {}
+
+impl<'a, C: CurveAffine> Hash for PolynomialPointer<'a, C> {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        std::ptr::hash(self.poly, state)
     }
 }
 

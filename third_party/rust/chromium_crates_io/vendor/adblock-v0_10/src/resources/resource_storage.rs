@@ -9,45 +9,11 @@ use thiserror::Error;
 
 use super::{PermissionMask, Resource, ResourceType};
 
-#[derive(Clone)]
-enum ResourceContent {
-    /// A valid utf8 string. Used for text/* mime types or for ResourceType:Template
-    Text(String),
-
-    /// Raw content in the form of a byte array. Used for other mime types like
-    /// "image/gif" or "audio/mp3"
-    Raw(Vec<u8>),
-}
-
-impl ResourceContent {
-    fn text_from_base64(base64: &str) -> Result<Self, AddResourceError> {
-        let decoded = BASE64_STANDARD.decode(base64)?;
-        Ok(Self::Text(String::from_utf8(decoded)?))
-    }
-
-    fn raw_from_base64(base64: &str) -> Result<Self, AddResourceError> {
-        let decoded = BASE64_STANDARD.decode(base64)?;
-        Ok(Self::Raw(decoded))
-    }
-}
-
-#[derive(Clone)]
-/// A internal representation of a Resource to store. Stores the content
-/// in the decoded form to use less memory.
-/// See [Resource] for details
-struct ResourceImpl {
-    name: String,
-    kind: ResourceType,
-    content: ResourceContent,
-    dependencies: Vec<String>,
-    permission: PermissionMask,
-}
-
 /// Unified resource storage for both redirects and scriptlets.
 #[derive(Default)]
 pub struct ResourceStorage {
     /// Stores each resource by its canonical name
-    resources: HashMap<String, ResourceImpl>,
+    resources: HashMap<String, Resource>,
     /// Stores mappings from aliases to their canonical resource names
     aliases: HashMap<String, String>,
 }
@@ -164,20 +130,16 @@ impl ResourceStorage {
 
     /// Adds a resource to storage so that it can be retrieved later.
     pub fn add_resource(&mut self, resource: Resource) -> Result<(), AddResourceError> {
-        let resource_content: ResourceContent;
-
         if let ResourceType::Mime(content_type) = &resource.kind {
             if !resource.dependencies.is_empty() && !content_type.supports_dependencies() {
                 return Err(AddResourceError::ContentTypeDoesNotSupportDependencies);
             }
 
+            // Ensure the resource contents are valid base64 (and utf8 if applicable)
+            let decoded = BASE64_STANDARD.decode(&resource.content)?;
             if content_type.is_textual() {
-                resource_content = ResourceContent::text_from_base64(&resource.content)?;
-            } else {
-                resource_content = ResourceContent::raw_from_base64(&resource.content)?;
+                let _ = String::from_utf8(decoded)?;
             }
-        } else {
-            resource_content = ResourceContent::text_from_base64(&resource.content)?;
         }
 
         for ident in std::iter::once(&resource.name).chain(resource.aliases.iter()) {
@@ -189,14 +151,7 @@ impl ResourceStorage {
         resource.aliases.iter().for_each(|alias| {
             self.aliases.insert(alias.clone(), resource.name.clone());
         });
-        let resource_impl = ResourceImpl {
-            name: resource.name.clone(),
-            kind: resource.kind,
-            content: resource_content,
-            dependencies: resource.dependencies,
-            permission: resource.permission,
-        };
-        self.resources.insert(resource.name, resource_impl);
+        self.resources.insert(resource.name.clone(), resource);
 
         Ok(())
     }
@@ -221,9 +176,11 @@ impl ResourceStorage {
         let mut result = String::new();
 
         for dep in deps.iter() {
-            if let ResourceContent::Text(content) = &dep.content {
-                result += content;
-                result += "\n";
+            if let Ok(decoded) = BASE64_STANDARD.decode(&dep.content) {
+                if let Ok(dep) = core::str::from_utf8(&decoded) {
+                    result += dep;
+                    result += "\n";
+                }
             }
         }
 
@@ -240,7 +197,7 @@ impl ResourceStorage {
     fn recursive_dependencies<'a: 'b, 'b>(
         &'a self,
         new_dep: &str,
-        prev_deps: &mut Vec<&'b ResourceImpl>,
+        prev_deps: &mut Vec<&'b Resource>,
         filter_permission: PermissionMask,
     ) -> Result<(), ScriptletResourceError> {
         if prev_deps.iter().any(|dep| dep.name == new_dep) {
@@ -264,7 +221,7 @@ impl ResourceStorage {
         &'a self,
         scriptlet_args: &str,
         filter_permission: PermissionMask,
-        required_deps: &mut Vec<&'b ResourceImpl>,
+        required_deps: &mut Vec<&'b Resource>,
     ) -> Result<String, ScriptletResourceError> {
         // `unwrap` is safe because these are guaranteed valid at filter parsing.
         let scriptlet_args = parse_scriptlet_args(scriptlet_args).unwrap();
@@ -290,12 +247,7 @@ impl ResourceStorage {
             self.recursive_dependencies(dep, required_deps, filter_permission)?;
         }
 
-        let template = match &resource.content {
-            ResourceContent::Raw(_content) => {
-                return Err(ScriptletResourceError::ContentTypeNotInjectable);
-            }
-            ResourceContent::Text(content) => content.clone(),
-        };
+        let template = String::from_utf8(BASE64_STANDARD.decode(&resource.content)?)?;
 
         if let Some(function_name) = extract_function_name(&template) {
             // newer function-style resource: pass args using function call syntax
@@ -332,12 +284,7 @@ impl ResourceStorage {
                 return None;
             }
             if let ResourceType::Mime(mime) = &resource.kind {
-                let bytes = match &resource.content {
-                    ResourceContent::Raw(content) => content,
-                    ResourceContent::Text(content) => content.as_bytes(),
-                };
-                let encoded = BASE64_STANDARD.encode(bytes);
-                Some(format!("data:{};base64,{}", mime, encoded))
+                Some(format!("data:{};base64,{}", mime, &resource.content))
             } else {
                 None
             }
@@ -345,7 +292,7 @@ impl ResourceStorage {
     }
 
     /// Gets the resource associated with `resource_ident`, respecting aliases if necessary.
-    fn get_internal_resource(&self, resource_ident: &str) -> Option<&ResourceImpl> {
+    fn get_internal_resource(&self, resource_ident: &str) -> Option<&Resource> {
         let resource = if let Some(resource) = self.resources.get(resource_ident) {
             Some(resource)
         } else if let Some(canonical_name) = self.aliases.get(resource_ident) {
@@ -361,7 +308,7 @@ impl ResourceStorage {
         &self,
         scriptlet_name: &str,
         filter_permission: PermissionMask,
-    ) -> Result<&ResourceImpl, ScriptletResourceError> {
+    ) -> Result<&Resource, ScriptletResourceError> {
         let resource = self
             .get_internal_resource(scriptlet_name)
             .ok_or(ScriptletResourceError::NoMatchingScriptlet)?;

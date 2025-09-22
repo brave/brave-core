@@ -27,7 +27,8 @@ impl Uuid {
     ///
     /// # References
     ///
-    /// * [Version 3 and 5 UUIDs in RFC4122](https://www.rfc-editor.org/rfc/rfc4122#section-4.3)
+    /// * [UUID Version 3 in RFC 9562](https://www.ietf.org/rfc/rfc9562.html#section-5.3)
+    /// * [Name-Based UUID Generation in RFC 9562](https://www.ietf.org/rfc/rfc9562.html#section-6.5)
     ///
     /// [`NAMESPACE_DNS`]: #associatedconstant.NAMESPACE_DNS
     /// [`NAMESPACE_OID`]: #associatedconstant.NAMESPACE_OID
@@ -42,7 +43,7 @@ impl Uuid {
 mod tests {
     use super::*;
 
-    #[cfg(target_arch = "wasm32")]
+    #[cfg(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")))]
     use wasm_bindgen_test::*;
 
     use crate::{std::string::ToString, Variant, Version};
@@ -131,7 +132,10 @@ mod tests {
     ];
 
     #[test]
-    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+    #[cfg_attr(
+        all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")),
+        wasm_bindgen_test
+    )]
     fn test_new() {
         for &(ref ns, ref name, _) in FIXTURE {
             let uuid = Uuid::new_v3(*ns, name.as_bytes());
@@ -141,7 +145,10 @@ mod tests {
     }
 
     #[test]
-    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+    #[cfg_attr(
+        all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")),
+        wasm_bindgen_test
+    )]
     fn test_hyphenated_string() {
         for &(ref ns, ref name, ref expected) in FIXTURE {
             let uuid = Uuid::new_v3(*ns, name.as_bytes());

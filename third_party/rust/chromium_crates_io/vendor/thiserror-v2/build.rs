@@ -120,6 +120,7 @@ fn compile_probe(rustc_bootstrap: bool) -> bool {
         .arg("--crate-type=lib")
         .arg("--cap-lints=allow")
         .arg("--emit=dep-info,metadata")
+        .arg("--cap-lints=allow")
         .arg("--out-dir")
         .arg(&out_subdir)
         .arg(probefile);
@@ -146,7 +147,16 @@ fn compile_probe(rustc_bootstrap: bool) -> bool {
     // file in OUT_DIR, which causes nonreproducible builds in build systems
     // that treat the entire OUT_DIR as an artifact.
     if let Err(err) = fs::remove_dir_all(&out_subdir) {
-        if err.kind() != ErrorKind::NotFound {
+        // libc::ENOTEMPTY
+        // Some filesystems (NFSv3) have timing issues under load where '.nfs*'
+        // dummy files can continue to get created for a short period after the
+        // probe command completes, breaking remove_dir_all.
+        // To be replaced with ErrorKind::DirectoryNotEmpty (Rust 1.83+).
+        const ENOTEMPTY: i32 = 39;
+
+        if !(err.kind() == ErrorKind::NotFound
+            || (cfg!(target_os = "linux") && err.raw_os_error() == Some(ENOTEMPTY)))
+        {
             eprintln!("Failed to clean up {}: {}", out_subdir.display(), err);
             process::exit(1);
         }

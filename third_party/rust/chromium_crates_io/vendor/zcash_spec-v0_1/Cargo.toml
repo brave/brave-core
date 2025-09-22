@@ -13,13 +13,23 @@
 edition = "2021"
 rust-version = "1.56"
 name = "zcash_spec"
-version = "0.1.0"
+version = "0.1.2"
 authors = ["Jack Grigg <jack@electriccoin.co>"]
+build = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Low-level types for implementing Zcash specifications"
 homepage = "https://github.com/zcash/zcash_spec"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/zcash/zcash_spec"
 
+[lib]
+name = "zcash_spec"
+path = "src/lib.rs"
+
 [dependencies.blake2b_simd]
 version = "1"
+default-features = false

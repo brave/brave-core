@@ -7,9 +7,20 @@ against this Rust version.
 
 ### Unreleased
 
+### 1.18.0 (2025-02-17)
+- [changed] Remove build scripts; instead check-in the built code (PR #219)
+- [added] Constants for 3600 (PR #220)
+- [added] Elixir-style syntax for `tarr!` macro (PR #214)
+- [added] `FoldAdd` and `FoldMul` to get the sum/product of an array (PR #209)
+
+### 1.17.0 (2023-09-15)
+- [removed] Remove `force_unix_path_separator` feature, make it the default
+- [added] docs.rs metadata and cfg options
+- [added] Playground metadata
+
 ### 1.16.0 (2022-12-05)
 - [added] `const INT` field to the `ToInt` trait.
-- [added] `const-generics` field with `U<N>` mapping wher `N` is a const generic.
+- [added] `const-generics` field with `U<N>` mapping where `N` is a const generic.
 
 ### 1.15.0 (2021-12-25)
 - [fixed] Cross-compilation issue due to doing math in build script. (PR #177)
@@ -62,7 +73,7 @@ against this Rust version.
 - [added] Associated constants for `Bit`, `Unsigned`, and `Integer`.
 
 ### 1.9.0 (2017-05-14)
-- [added] The `Abs` type operater and corresponding `AbsVal` alias.
+- [added] The `Abs` type operator and corresponding `AbsVal` alias.
 - [added] The feature `i128` that enables creating 128-bit integers from
   typenums.
 - [added] The `assert_type!` and `assert_type_eq!` macros.

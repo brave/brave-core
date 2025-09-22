@@ -75,12 +75,11 @@ where
             key_chunk
                 .iter()
                 .zip(ivks.iter().enumerate())
-                .filter_map(|(key, (i, ivk))| {
+                .find_map(|(key, (i, ivk))| {
                     key.as_ref()
                         .and_then(|key| decrypt_inner(domain, ivk, ephemeral_key, output, key))
                         .map(|out| (out, i))
                 })
-                .next()
         })
         .collect::<Vec<Option<_>>>()
 }

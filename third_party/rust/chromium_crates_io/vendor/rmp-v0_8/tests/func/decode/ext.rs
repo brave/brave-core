@@ -1,6 +1,6 @@
 use super::Cursor;
 
-use crate::msgpack::decode::*;
+use rmp::decode::*;
 
 #[test]
 fn from_fixext1_read_fixext1() {

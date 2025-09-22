@@ -2,10 +2,7 @@ error[E0277]: the trait bound `NotZerocopy: zerocopy::FromBytes` is not satisfie
   --> tests/ui-stable/transmute-dst-not-frombytes.rs:19:41
    |
 19 | const DST_NOT_FROM_BYTES: NotZerocopy = transmute!(AU16(0));
-   |                                         ^^^^^^^^^^^^^^^^^^^
-   |                                         |
-   |                                         the trait `zerocopy::FromBytes` is not implemented for `NotZerocopy`
-   |                                         required by a bound introduced by this call
+   |                                         ^^^^^^^^^^^^^^^^^^^ the trait `zerocopy::FromBytes` is not implemented for `NotZerocopy`
    |
    = note: Consider adding `#[derive(FromBytes)]` to `NotZerocopy`
    = help: the following other types implement trait `zerocopy::FromBytes`:
@@ -18,9 +15,12 @@ error[E0277]: the trait bound `NotZerocopy: zerocopy::FromBytes` is not satisfie
              AtomicIsize
              AtomicU16
            and $N others
-note: required by a bound in `AssertIsFromBytes`
+note: required by a bound in `DST_NOT_FROM_BYTES::transmute`
   --> tests/ui-stable/transmute-dst-not-frombytes.rs:19:41
    |
 19 | const DST_NOT_FROM_BYTES: NotZerocopy = transmute!(AU16(0));
-   |                                         ^^^^^^^^^^^^^^^^^^^ required by this bound in `AssertIsFromBytes`
+   |                                         ^^^^^^^^^^^^^^^^^^^
+   |                                         |
+   |                                         required by a bound in this function
+   |                                         required by this bound in `transmute`
    = note: this error originates in the macro `transmute` (in Nightly builds, run with -Z macro-backtrace for more info)

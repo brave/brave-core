@@ -11,16 +11,22 @@
 
 [package]
 edition = "2021"
-rust-version = "1.59"
+rust-version = "1.60"
 name = "halo2_gadgets"
-version = "0.3.0"
+version = "0.3.1"
 authors = [
     "Sean Bowe <sean@electriccoin.co>",
     "Jack Grigg <jack@electriccoin.co>",
-    "Daira Hopwood <daira@jacaranda.org>",
+    "Daira Emma Hopwood <daira@jacaranda.org>",
     "Ying Tong Lai <yingtong@electriccoin.co>",
     "Kris Nuttycombe <kris@electriccoin.co>",
 ]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Reusable gadgets and chip implementations for Halo 2"
 readme = "README.md"
 keywords = [
@@ -33,6 +39,7 @@ keywords = [
 categories = ["cryptography"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/zcash/halo2"
+resolver = "1"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -44,18 +51,23 @@ rustdoc-args = [
 ]
 
 [lib]
+name = "halo2_gadgets"
+path = "src/lib.rs"
 bench = false
 
 [[bench]]
-name = "primitives"
+name = "poseidon"
+path = "benches/poseidon.rs"
 harness = false
 
 [[bench]]
-name = "poseidon"
+name = "primitives"
+path = "benches/primitives.rs"
 harness = false
 
 [[bench]]
 name = "sha256"
+path = "benches/sha256.rs"
 harness = false
 required-features = ["unstable-sha256-gadget"]
 
@@ -70,6 +82,10 @@ version = "0.13"
 
 [dependencies.group]
 version = "0.13"
+
+[dependencies.halo2_poseidon]
+version = "0.1"
+default-features = false
 
 [dependencies.halo2_proofs]
 version = "0.3"
@@ -93,6 +109,9 @@ optional = true
 [dependencies.rand]
 version = "0.8"
 
+[dependencies.sinsemilla]
+version = "0.1"
+
 [dependencies.subtle]
 version = "2.3"
 
@@ -102,8 +121,17 @@ version = "0.9.2"
 [dev-dependencies.criterion]
 version = "0.3"
 
+[dev-dependencies.halo2_poseidon]
+version = "0.1"
+features = ["test-dependencies"]
+default-features = false
+
 [dev-dependencies.proptest]
 version = "1.0.0"
+
+[dev-dependencies.sinsemilla]
+version = "0.1"
+features = ["test-dependencies"]
 
 [features]
 beta = ["halo2_proofs/beta"]
@@ -112,12 +140,16 @@ nightly = [
     "halo2_proofs/nightly",
     "unstable-sha256-gadget",
 ]
-test-dependencies = ["proptest"]
+test-dependencies = [
+    "proptest",
+    "sinsemilla/test-dependencies",
+]
 test-dev-graph = [
     "halo2_proofs/dev-graph",
     "plotters",
     "plotters/bitmap_backend",
     "plotters/bitmap_encoder",
+    "plotters/ttf",
 ]
 unstable-sha256-gadget = []
 

@@ -1,6 +1,5 @@
 //! The Poseidon algebraic hash function.
 
-use std::convert::TryInto;
 use std::fmt;
 use std::marker::PhantomData;
 
@@ -13,7 +12,7 @@ use halo2_proofs::{
 mod pow5;
 pub use pow5::{Pow5Chip, Pow5Config, StateWord};
 
-pub mod primitives;
+pub use ::halo2_poseidon as primitives;
 use primitives::{Absorbing, ConstantLength, Domain, Spec, SpongeMode, Squeezing, State};
 
 /// A word from the padded input to a Poseidon sponge.
@@ -148,13 +147,7 @@ impl<
     pub fn new(chip: PoseidonChip, mut layouter: impl Layouter<F>) -> Result<Self, Error> {
         chip.initial_state(&mut layouter).map(|state| Sponge {
             chip,
-            mode: Absorbing(
-                (0..RATE)
-                    .map(|_| None)
-                    .collect::<Vec<_>>()
-                    .try_into()
-                    .unwrap(),
-            ),
+            mode: Absorbing::init_empty(),
             state,
             _marker: PhantomData::default(),
         })
@@ -166,12 +159,10 @@ impl<
         mut layouter: impl Layouter<F>,
         value: PaddedWord<F>,
     ) -> Result<(), Error> {
-        for entry in self.mode.0.iter_mut() {
-            if entry.is_none() {
-                *entry = Some(value);
-                return Ok(());
-            }
-        }
+        let value = match self.mode.absorb(value) {
+            Ok(()) => return Ok(()),
+            Err(value) => value,
+        };
 
         // We've already absorbed as many elements as we can
         let _ = poseidon_sponge(
@@ -180,7 +171,8 @@ impl<
             &mut self.state,
             Some(&self.mode),
         )?;
-        self.mode = Absorbing::init_with(value);
+        self.mode = Absorbing::init_empty();
+        self.mode.absorb(value).expect("state is not full");
 
         Ok(())
     }
@@ -220,10 +212,8 @@ impl<
     /// Squeezes an element from the sponge.
     pub fn squeeze(&mut self, mut layouter: impl Layouter<F>) -> Result<AssignedCell<F, F>, Error> {
         loop {
-            for entry in self.mode.0.iter_mut() {
-                if let Some(inner) = entry.take() {
-                    return Ok(inner.into());
-                }
+            if let Some(value) = self.mode.squeeze() {
+                return Ok(value.into());
             }
 
             // We've already squeezed out all available elements

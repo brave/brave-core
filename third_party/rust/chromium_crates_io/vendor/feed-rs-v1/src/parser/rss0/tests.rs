@@ -6,7 +6,7 @@ use crate::util::test;
 #[test]
 fn test_0_91_spec_1() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_0.91_spec_1.xml");
+    let test_data = test::fixture_as_string("rss0/rss_0.91_spec_1.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -48,7 +48,7 @@ fn test_0_91_spec_1() {
 // Verifies that we can handle non-UTF8 streams
 #[test]
 fn test_0_91_encoding_1() {
-    let test_data = test::fixture_as_raw("rss_0.91_encoding_1.xml");
+    let test_data = test::fixture_as_raw("rss0/rss_0.91_encoding_1.xml");
     let feed = parser::parse(test_data.as_slice()).unwrap();
     assert_eq!(feed.description.unwrap().content, "Dicas-L: Informações Úteis para Administradores de Sistemas");
 }
@@ -56,7 +56,7 @@ fn test_0_91_encoding_1() {
 // Verifies that we can handle non-UTF8 streams
 #[test]
 fn test_0_91_encoding_2() {
-    let test_data = test::fixture_as_raw("rss_0.91_encoding_2.xml");
+    let test_data = test::fixture_as_raw("rss0/rss_0.91_encoding_2.xml");
     let feed = parser::parse(test_data.as_slice()).unwrap();
     assert_eq!(feed.title.unwrap().content, "Tribunal de Justiça do Estado do Rio Grande do Sul");
     assert!(feed.entries[0].title.as_ref().unwrap().content.contains("atuação"));
@@ -66,7 +66,7 @@ fn test_0_91_encoding_2() {
 // Verifies that we can handle feeds without IDs and links
 #[test]
 fn test_0_91_missing_id() {
-    let test_data = test::fixture_as_raw("rss_0.91_missing_id.xml");
+    let test_data = test::fixture_as_raw("rss0/rss_0.91_missing_id.xml");
     let feed = parser::parse_with_uri(test_data.as_slice(), Some("https://feeds.feedburner.com/ingreso_dival")).unwrap();
     assert_eq!(feed.id, "f17ff7bbd6c6bd74733bbf47cb8592d5");
     assert_eq!(feed.title.unwrap().content, "Servicio de Personal - Ingreso - Diputación de valencia");
@@ -81,7 +81,7 @@ fn test_0_91_missing_id() {
 #[test]
 fn test_0_92_spec_1() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_0.92_spec_1.xml");
+    let test_data = test::fixture_as_string("rss0/rss_0.92_spec_1.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -93,7 +93,7 @@ fn test_0_92_spec_1() {
         .title(Text::new("Dave Winer: Grateful Dead".into()))
         .link(Link::new("http://www.scripting.com/blog/categories/gratefulDead.html", None))
         .description(Text::new("A high-fidelity Grateful Dead song every day. This is where we're experimenting with\n            enclosures on RSS news items that download when you're not using your computer. If it works (it will)\n            it will be the end of the Click-And-Wait multimedia experience on the Internet.".into()))
-        .updated_rfc2822("Fri, 13 Apr 2001 19:23:02 GMT")
+        .updated_parsed("Fri, 13 Apr 2001 19:23:02 GMT")
         .contributor(Person::new("managingEditor").email("dave@userland.com (Dave Winer)"))
         .contributor(Person::new("webMaster").email("dave@userland.com (Dave Winer)"))
         .entry(Entry::default()

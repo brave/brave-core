@@ -34,6 +34,8 @@
 //! ## Usage
 //!
 //! ```
+//! # #[cfg(feature = "std")]
+//! # {
 //! # use std::collections::HashMap;
 //! use memuse::DynamicUsage;
 //!
@@ -55,14 +57,25 @@
 //! let map: HashMap<u8, u64> = HashMap::with_capacity(27);
 //! let (lower, upper): (usize, Option<usize>) = map.dynamic_usage_bounds();
 //! assert!(upper.is_none());
+//! # }
 //! ```
 
+#![no_std]
 #![forbid(unsafe_code)]
 // Catch documentation errors caused by code changes.
 #![deny(broken_intra_doc_links)]
 
+#[cfg_attr(test, macro_use)]
+extern crate alloc;
+
+#[cfg(feature = "std")]
+extern crate std;
+
+use alloc::boxed::Box;
+use alloc::collections::{BinaryHeap, LinkedList, VecDeque};
+use alloc::string::String;
+use alloc::vec::Vec;
 use core::mem;
-use std::collections::{BinaryHeap, LinkedList, VecDeque};
 
 /// Trait for measuring the dynamic memory usage of types.
 pub trait DynamicUsage {
@@ -81,6 +94,8 @@ pub trait DynamicUsage {
     /// [`DynamicUsage::dynamic_usage_bounds`]:
     ///
     /// ```
+    /// # #[cfg(feature = "std")]
+    /// # {
     /// use std::collections::HashMap;
     /// use memuse::DynamicUsage;
     ///
@@ -92,6 +107,7 @@ pub trait DynamicUsage {
     /// if let Some(upper) = upper {
     ///     assert!(usage <= upper);
     /// }
+    /// # }
     /// ```
     fn dynamic_usage(&self) -> usize;
 
@@ -308,6 +324,7 @@ impl_iterable_dynamic_usage!(VecDeque<T>, |c: &VecDeque<T>| {
     (c.capacity() + 1) * mem::size_of::<T>()
 });
 
+#[cfg(feature = "std")]
 mod hash;
 
 //
@@ -329,6 +346,8 @@ mod tuple;
 
 #[cfg(test)]
 mod tests {
+    use alloc::string::ToString;
+
     use super::*;
 
     #[test]

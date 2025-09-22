@@ -4,7 +4,7 @@
 extern crate keccak;
 extern crate test;
 
-use keccak::{f1600, f200, f400, f800};
+use keccak::{f1600, f200, f400, f800, p1600};
 
 macro_rules! impl_bench {
     ($name:ident, $fn:ident, $type:expr) => {
@@ -20,6 +20,18 @@ impl_bench!(b_f200, f200, 0u8);
 impl_bench!(b_f400, f400, 0u16);
 impl_bench!(b_f800, f800, 0u32);
 impl_bench!(b_f1600, f1600, 0u64);
+
+#[bench]
+fn b_p1600_24(b: &mut test::Bencher) {
+    let mut data = [0u64; 25];
+    b.iter(|| p1600(&mut data, 24));
+}
+
+#[bench]
+fn b_p1600_16(b: &mut test::Bencher) {
+    let mut data = [0u64; 25];
+    b.iter(|| p1600(&mut data, 16));
+}
 
 #[cfg(feature = "simd")]
 mod simd {

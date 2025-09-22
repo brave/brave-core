@@ -1,4 +1,8 @@
-use crate::{std::convert::TryInto, Builder, Uuid};
+use crate::{
+    non_nil::NonNilUuid,
+    std::convert::{TryFrom, TryInto},
+    Builder, Uuid,
+};
 
 use arbitrary::{Arbitrary, Unstructured};
 
@@ -12,7 +16,17 @@ impl Arbitrary<'_> for Uuid {
         Ok(Builder::from_random_bytes(b).into_uuid())
     }
 
-    fn size_hint(depth: usize) -> (usize, Option<usize>) {
+    fn size_hint(_: usize) -> (usize, Option<usize>) {
+        (16, Some(16))
+    }
+}
+impl arbitrary::Arbitrary<'_> for NonNilUuid {
+    fn arbitrary(u: &mut arbitrary::Unstructured<'_>) -> arbitrary::Result<Self> {
+        let uuid = Uuid::arbitrary(u)?;
+        Self::try_from(uuid).map_err(|_| arbitrary::Error::IncorrectFormat)
+    }
+
+    fn size_hint(_: usize) -> (usize, Option<usize>) {
         (16, Some(16))
     }
 }
@@ -41,5 +55,17 @@ mod tests {
         let uuid = Uuid::arbitrary(&mut bytes);
 
         assert!(uuid.is_err());
+    }
+
+    #[test]
+    fn test_arbitrary_non_nil() {
+        let mut bytes = Unstructured::new(&[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+
+        let non_nil_uuid = NonNilUuid::arbitrary(&mut bytes).unwrap();
+        let uuid: Uuid = non_nil_uuid.into();
+
+        assert_eq!(Some(Version::Random), uuid.get_version());
+        assert_eq!(Variant::RFC4122, uuid.get_variant());
+        assert!(!uuid.is_nil());
     }
 }

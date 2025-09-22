@@ -147,7 +147,11 @@ where
                         .collect();
 
                     let hasher_S = pallas::Point::hash_to_curve(S_PERSONALIZATION);
-                    let S = |chunk: &[bool]| hasher_S(&lebs2ip_k(chunk).to_le_bytes());
+                    let S = |chunk: &[bool]| {
+                        hasher_S(
+                            &lebs2ip_k(chunk.try_into().expect("correct length")).to_le_bytes(),
+                        )
+                    };
 
                     // We can use complete addition here because it differs from
                     // incomplete addition with negligible probability.
@@ -249,6 +253,7 @@ where
         let words: Value<Vec<u32>> = bitstring.map(|bitstring| {
             bitstring
                 .chunks_exact(sinsemilla::K)
+                .map(|chunk| chunk.try_into().expect("correct length"))
                 .map(lebs2ip_k)
                 .collect()
         });

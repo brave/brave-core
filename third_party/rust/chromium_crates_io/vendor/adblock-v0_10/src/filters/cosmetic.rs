@@ -365,7 +365,7 @@ impl CosmeticFilter {
         if let Some(sharp_index) = find_char(b'#', line.as_bytes()) {
             let after_sharp_index = sharp_index + 1;
 
-            let second_sharp_index = match find_char(b'#', &line.as_bytes()[after_sharp_index..]) {
+            let second_sharp_index = match find_char(b'#', line[after_sharp_index..].as_bytes()) {
                 Some(i) => i + after_sharp_index,
                 None => return Err(CosmeticFilterError::UnsupportedSyntax),
             };
@@ -548,7 +548,7 @@ fn get_hashes_from_labels(hostname: &str, end: usize, start_of_domain: usize) ->
     }
     let mut dot_ptr = start_of_domain;
 
-    while let Some(dot_index) = find_char_reverse(b'.', &hostname.as_bytes()[..dot_ptr]) {
+    while let Some(dot_index) = find_char_reverse(b'.', hostname[..dot_ptr].as_bytes()) {
         dot_ptr = dot_index;
         hashes.push(crate::utils::fast_hash(&hostname[dot_ptr + 1..end]));
     }
@@ -606,7 +606,6 @@ mod css_validation {
     use super::{CosmeticFilterError, CosmeticFilterOperator};
     use core::fmt::{Result as FmtResult, Write};
     use cssparser::{CowRcStr, ParseError, Parser, ParserInput, SourceLocation, ToCss, Token};
-    use precomputed_hash::PrecomputedHash;
     use selectors::parser::SelectorParseErrorKind;
 
     /// Returns a validated canonical CSS selector for the given input, or nothing if one can't be
@@ -637,10 +636,12 @@ mod css_validation {
         let mock_stylesheet = format!("{}{{mock-stylesheet-marker}}", selector);
         let mut pi = ParserInput::new(&mock_stylesheet);
         let mut parser = Parser::new(&mut pi);
-        let mut parser_impl = QualifiedRuleParserImpl {
-            accept_abp_selectors,
-        };
-        let mut rule_list_parser = cssparser::StyleSheetParser::new(&mut parser, &mut parser_impl);
+        let mut rule_list_parser = cssparser::RuleListParser::new_for_stylesheet(
+            &mut parser,
+            QualifiedRuleParserImpl {
+                accept_abp_selectors,
+            },
+        );
 
         let prelude = rule_list_parser.next().and_then(|r| r.ok());
 
@@ -681,7 +682,7 @@ mod css_validation {
         }
 
         if let Some(prelude) = prelude {
-            if !prelude.slice().iter().any(has_procedural_operator) {
+            if !prelude.0.iter().any(has_procedural_operator) {
                 // There are no procedural filters, so all selectors use standard CSS.
                 // It's ok to return that as a "single" selector.
                 return Ok(vec![CosmeticFilterOperator::CssSelector(
@@ -689,13 +690,13 @@ mod css_validation {
                 )]);
             }
 
-            if prelude.slice().len() != 1 {
+            if prelude.0.len() != 1 {
                 // Procedural filters don't work well with multiple selectors
                 return Err(CosmeticFilterError::ProceduralFilterWithMultipleSelectors);
             }
 
             // Safe; early return if length is not 1
-            let selector = prelude.slice().iter().next().unwrap();
+            let selector = prelude.0.into_iter().next().unwrap();
 
             /// Shim for items returned by `selectors::parser::SelectorIter`. Sequences and
             /// components iterate in opposite directions, but we want to process them in a
@@ -791,7 +792,6 @@ mod css_validation {
                     accept_abp_selectors: self.accept_abp_selectors,
                 },
                 input,
-                selectors::parser::ParseRelative::No,
             )
             .map_err(|_| ParseError {
                 kind: cssparser::ParseErrorKind::Custom(()),
@@ -908,7 +908,6 @@ mod css_validation {
             &self,
             name: CowRcStr<'i>,
             arguments: &mut Parser<'i, 't>,
-            _after_part: bool,
         ) -> Result<
             <Self::Impl as selectors::parser::SelectorImpl>::NonTSPseudoClass,
             ParseError<'i, Self::Error>,
@@ -1005,25 +1004,16 @@ mod css_validation {
     struct SelectorImpl;
 
     impl selectors::parser::SelectorImpl for SelectorImpl {
-        type ExtraMatchingData<'a> = ();
+        type ExtraMatchingData = ();
         type AttrValue = CssString;
         type Identifier = CssIdent;
-        type LocalName = CssIdent;
+        type LocalName = CssString;
         type NamespaceUrl = DummyValue;
         type NamespacePrefix = DummyValue;
         type BorrowedNamespaceUrl = DummyValue;
-        type BorrowedLocalName = CssIdent;
+        type BorrowedLocalName = CssString;
         type NonTSPseudoClass = NonTSPseudoClass;
         type PseudoElement = PseudoElement;
-    }
-
-    /// Simple implementation of [PrecomputedHash] that just uses the default hasher for its
-    /// argument.
-    fn precomputed_hash_impl<H: std::hash::Hash>(this: &H) -> u32 {
-        use std::hash::{DefaultHasher, Hasher};
-        let mut hasher = DefaultHasher::new();
-        this.hash(&mut hasher);
-        hasher.finish() as u32
     }
 
     /// Serialized using `CssStringWriter`.
@@ -1032,24 +1022,13 @@ mod css_validation {
 
     impl ToCss for CssString {
         fn to_css<W: Write>(&self, dest: &mut W) -> core::fmt::Result {
-            dest.write_str("\"")?;
-            {
-                let mut dest = cssparser::CssStringWriter::new(dest);
-                dest.write_str(&self.0)?;
-            }
-            dest.write_str("\"")
+            cssparser::CssStringWriter::new(dest).write_str(&self.0)
         }
     }
 
     impl<'a> From<&'a str> for CssString {
         fn from(s: &'a str) -> Self {
             CssString(s.to_string())
-        }
-    }
-
-    impl PrecomputedHash for CssString {
-        fn precomputed_hash(&self) -> u32 {
-            precomputed_hash_impl(&self.0)
         }
     }
 
@@ -1069,12 +1048,6 @@ mod css_validation {
         }
     }
 
-    impl PrecomputedHash for CssIdent {
-        fn precomputed_hash(&self) -> u32 {
-            precomputed_hash_impl(&self.0)
-        }
-    }
-
     /// For performance, individual fields of parsed selectors are discarded. Instead, they are
     /// parsed into a `DummyValue` with no fields.
     #[derive(Debug, Clone, PartialEq, Eq, Default)]
@@ -1089,12 +1062,6 @@ mod css_validation {
     impl<'a> From<&'a str> for DummyValue {
         fn from(s: &'a str) -> Self {
             DummyValue(s.to_string())
-        }
-    }
-
-    impl PrecomputedHash for DummyValue {
-        fn precomputed_hash(&self) -> u32 {
-            precomputed_hash_impl(&self.0)
         }
     }
 

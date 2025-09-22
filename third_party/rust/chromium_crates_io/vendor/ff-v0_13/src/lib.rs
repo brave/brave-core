@@ -1,8 +1,8 @@
 //! This crate provides traits for working with finite fields.
 
-// Catch documentation errors caused by code changes.
 #![no_std]
 #![cfg_attr(docsrs, feature(doc_cfg))]
+// Catch documentation errors caused by code changes.
 #![deny(rustdoc::broken_intra_doc_links)]
 #![forbid(unsafe_code)]
 
@@ -358,7 +358,7 @@ pub trait PrimeField: Field + From<u64> {
 pub trait WithSmallOrderMulGroup<const N: u8>: PrimeField {
     /// A field element of small multiplicative order $N$.
     ///
-    /// The presense of this element allows you to perform (certain types of)
+    /// The presence of this element allows you to perform (certain types of)
     /// endomorphisms on some elliptic curves.
     ///
     /// It can be calculated using [SageMath] as

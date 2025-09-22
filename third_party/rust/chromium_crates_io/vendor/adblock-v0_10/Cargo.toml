@@ -12,7 +12,7 @@
 [package]
 edition = "2021"
 name = "adblock"
-version = "0.10.3"
+version = "0.10.1"
 authors = [
     "Anton Lazarev <alazarev@brave.com>",
     "Andrius Aucinas",
@@ -65,7 +65,6 @@ bench = false
 [[bench]]
 name = "bench_cosmetic_matching"
 path = "benches/bench_cosmetic_matching.rs"
-harness = false
 
 [[bench]]
 name = "bench_matching"
@@ -116,7 +115,7 @@ version = "2.9.0"
 features = ["serde"]
 
 [dependencies.cssparser]
-version = "0.34"
+version = "0.29"
 optional = true
 
 [dependencies.flatbuffers]
@@ -137,9 +136,6 @@ version = "1.8"
 [dependencies.percent-encoding]
 version = "2.1"
 
-[dependencies.precomputed-hash]
-version = "0.1"
-
 [dependencies.regex]
 version = "1.5"
 
@@ -150,7 +146,7 @@ version = "0.15"
 version = "4.1.0"
 
 [dependencies.selectors]
-version = "0.26"
+version = "0.24"
 optional = true
 
 [dependencies.serde]
@@ -194,5 +190,8 @@ version = "=1.45.1"
 features = ["rt-multi-thread"]
 
 [lints.clippy]
+large-enum-variant = "allow"
 len_zero = "allow"
-uninlined_format_args = "allow"
+or-then-unwrap = "allow"
+search-is-some = "allow"
+sliced-string-as-bytes = "allow"

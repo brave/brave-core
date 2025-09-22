@@ -1,6 +1,6 @@
-use msgpack::decode::Bytes;
-use msgpack::encode::ByteBuf;
-use crate::msgpack::{decode, encode};
+use rmp::decode::Bytes;
+use rmp::encode::ByteBuf;
+use rmp::{decode, encode};
 
 quickcheck! {
     fn mirror_uint(xs: u64) -> bool {

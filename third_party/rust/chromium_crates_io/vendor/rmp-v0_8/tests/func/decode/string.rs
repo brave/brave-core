@@ -1,7 +1,7 @@
 use super::Cursor;
 
-use crate::msgpack::decode::*;
-use crate::msgpack::Marker;
+use rmp::decode::*;
+use rmp::Marker;
 
 #[test]
 fn from_fixstr_min_read_str_len() {
@@ -127,7 +127,7 @@ fn from_null_read_str_len() {
 
     match read_str_len(&mut cur) {
         Err(ValueReadError::TypeMismatch(Marker::Null)) => (),
-        other => panic!("unexpected result: {:?}", other),
+        other => panic!("unexpected result: {other:?}"),
     }
     assert_eq!(1, cur.position());
 }
@@ -177,7 +177,7 @@ fn from_str_strfix_invalid_utf8() {
         Err(DecodeStringError::InvalidUtf8(raw, _)) => {
             assert_eq!(&[0xc3, 0x28], raw);
         }
-        other => panic!("unexpected result: {:?}", other)
+        other => panic!("unexpected result: {other:?}"),
     }
 
     assert_eq!(3, cur.position());
@@ -192,7 +192,7 @@ fn from_str_strfix_buffer_too_small() {
 
     match read_str(&mut cur, out) {
         Err(DecodeStringError::BufferSizeTooSmall(10)) => (),
-        other => panic!("unexpected result: {:?}", other)
+        other => panic!("unexpected result: {other:?}"),
     }
     assert_eq!(1, cur.position());
 }
@@ -211,7 +211,7 @@ fn from_str_strfix_decode_from_slice() {
 #[test]
 fn from_str_strfix_decode_from_slice_with_trailing_bytes() {
     let buf = vec![
-        0xaa, 0x6c, 0x65, 0x20, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x01, 0x02, 0x03
+        0xaa, 0x6c, 0x65, 0x20, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x01, 0x02, 0x03,
     ];
 
     assert_eq!(("le message", &[0x01, 0x02, 0x03][..]), read_str_from_slice(&buf).unwrap());
@@ -220,7 +220,7 @@ fn from_str_strfix_decode_from_slice_with_trailing_bytes() {
 #[test]
 fn example_process_sequence_of_strings() {
     // Encoded: 'Unpacking', 'multiple', 'strings'.
-    let vec = vec![
+    let vec = [
         0xa9, 0x55, 0x6e, 0x70, 0x61, 0x63, 0x6b, 0x69, 0x6e, 0x67,
         0xa8, 0x6d, 0x75, 0x6c, 0x74, 0x69, 0x70, 0x6c, 0x65, 0xa7,
         0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x73
@@ -238,5 +238,5 @@ fn example_process_sequence_of_strings() {
         }
     }
 
-    assert_eq!(vec!["Unpacking", "multiple", "strings"], chunks);
+    assert_eq!(["Unpacking", "multiple", "strings"], chunks[..]);
 }

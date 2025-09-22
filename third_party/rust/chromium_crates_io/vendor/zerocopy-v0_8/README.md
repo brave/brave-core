@@ -12,21 +12,18 @@ made in the doc comment on `src/lib.rs` or in `tools/generate-readme`.
 
 # zerocopy
 
-*<span style="font-size: 100%; color:grey;">Need more out of zerocopy?
-Submit a [customer request issue][customer-request-issue]!</span>*
-
 ***<span style="font-size: 140%">Fast, safe, <span
 style="color:red;">compile error</span>. Pick two.</span>***
 
 Zerocopy makes zero-cost memory manipulation effortless. We write `unsafe`
 so you don't have to.
 
-*Thanks for using zerocopy 0.8! For an overview of what changes from 0.7,
-check out our [release notes][release-notes], which include a step-by-step
-guide for upgrading from 0.7.*
+*For an overview of what's changed from zerocopy 0.7, check out our [release
+notes][release-notes], which include a step-by-step upgrading guide.*
 
-*Have questions? Need help? Ask the maintainers on [GitHub][github-q-a] or
-on [Discord][discord]!*
+*Have questions? Need more out of zerocopy? Submit a [customer request
+issue][customer-request-issue] or ask the maintainers on
+[GitHub][github-q-a] or [Discord][discord]!*
 
 [customer-request-issue]: https://github.com/google/zerocopy/issues/new/choose
 [release-notes]: https://github.com/google/zerocopy/discussions/1680

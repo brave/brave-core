@@ -15,7 +15,7 @@
 [package]
 edition = "2021"
 name = "zerocopy"
-version = "0.8.24"
+version = "0.8.27"
 authors = ["Joshua Liebow-Feeser <joshlf@google.com>", "Jack Wrenn <jswrenn@amazon.com>"]
 description = "Zerocopy makes zero-cost memory manipulation effortless. We write \"unsafe\" so you don't have to."
 categories = ["embedded", "encoding", "no-std::no-alloc", "parsing", "rust-patterns"]
@@ -59,8 +59,8 @@ zerocopy-panic-in-const-and-vec-try-reserve-1-57-0 = "1.57.0"
 
 [package.metadata.ci]
 # The versions of the stable and nightly compiler toolchains to use in CI.
-pinned-stable = "1.85.1"
-pinned-nightly = "nightly-2025-03-19"
+pinned-stable = "1.89.0"
+pinned-nightly = "nightly-2025-09-05"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -82,19 +82,21 @@ std = ["alloc"]
 __internal_use_only_features_that_work_on_stable = ["alloc", "derive", "simd", "std"]
 
 [dependencies]
-zerocopy-derive = { version = "=0.8.24", path = "zerocopy-derive", optional = true }
+zerocopy-derive = { version = "=0.8.27", path = "zerocopy-derive", optional = true }
 
 # The "associated proc macro pattern" ensures that the versions of zerocopy and
 # zerocopy-derive remain equal, even if the 'derive' feature isn't used.
 # See: https://github.com/matklad/macro-dep-test
 [target.'cfg(any())'.dependencies]
-zerocopy-derive = { version = "=0.8.24", path = "zerocopy-derive" }
+zerocopy-derive = { version = "=0.8.27", path = "zerocopy-derive" }
 
 [dev-dependencies]
 # More recent versions of `either` have an MSRV higher than ours.
 either = "=1.13.0"
-# TODO(#381) Remove this dependency once we have our own layout gadgets.
+# FIXME(#381) Remove this dependency once we have our own layout gadgets.
 elain = "0.3.0"
+# More recent versions of `glob` have an MSRV higher than ours.
+glob = "=0.3.2"
 itertools = "0.11"
 rand = { version = "0.8.5", default-features = false, features = ["small_rng"] }
 rustversion = "1.0"
@@ -106,4 +108,4 @@ testutil = { path = "testutil" }
 # CI test failures.
 trybuild = { version = "=1.0.89", features = ["diff"] }
 # In tests, unlike in production, zerocopy-derive is not optional
-zerocopy-derive = { version = "=0.8.24", path = "zerocopy-derive" }
+zerocopy-derive = { version = "=0.8.27", path = "zerocopy-derive" }

@@ -4,7 +4,7 @@
 //! A collection of parsed date and time items.
 //! They can be constructed incrementally while being checked for consistency.
 
-use super::{ParseResult, IMPOSSIBLE, NOT_ENOUGH, OUT_OF_RANGE};
+use super::{IMPOSSIBLE, NOT_ENOUGH, OUT_OF_RANGE, ParseResult};
 use crate::naive::{NaiveDate, NaiveDateTime, NaiveTime};
 use crate::offset::{FixedOffset, MappedLocalTime, Offset, TimeZone};
 use crate::{DateTime, Datelike, TimeDelta, Timelike, Weekday};
@@ -93,7 +93,7 @@ use crate::{DateTime, Datelike, TimeDelta, Timelike, Weekday};
 /// # Ok::<(), chrono::ParseError>(())
 /// ```
 ///
-/// The same using chrono's build-in parser for RFC 2822 (the [RFC2822 formatting item]) and
+/// The same using chrono's built-in parser for RFC 2822 (the [RFC2822 formatting item]) and
 /// [`format::parse()`] showing how to inspect a field on failure.
 ///
 /// [RFC2822 formatting item]: crate::format::Fixed::RFC2822
@@ -140,6 +140,8 @@ pub struct Parsed {
     #[doc(hidden)]
     pub isoyear_mod_100: Option<i32>,
     #[doc(hidden)]
+    pub quarter: Option<u32>,
+    #[doc(hidden)]
     pub month: Option<u32>,
     #[doc(hidden)]
     pub week_from_sun: Option<u32>,
@@ -175,15 +177,12 @@ pub struct Parsed {
 /// and if it is empty, set `old` to `new` as well.
 #[inline]
 fn set_if_consistent<T: PartialEq>(old: &mut Option<T>, new: T) -> ParseResult<()> {
-    if let Some(ref old) = *old {
-        if *old == new {
+    match old {
+        Some(old) if *old != new => Err(IMPOSSIBLE),
+        _ => {
+            *old = Some(new);
             Ok(())
-        } else {
-            Err(IMPOSSIBLE)
         }
-    } else {
-        *old = Some(new);
-        Ok(())
     }
 }
 
@@ -305,6 +304,23 @@ impl Parsed {
             return Err(OUT_OF_RANGE);
         }
         set_if_consistent(&mut self.isoyear_mod_100, value as i32)
+    }
+
+    /// Set the [`quarter`](Parsed::quarter) field to the given value.
+    ///
+    /// Quarter 1 starts in January.
+    ///
+    /// # Errors
+    ///
+    /// Returns `OUT_OF_RANGE` if `value` is not in the range 1-4.
+    ///
+    /// Returns `IMPOSSIBLE` if this field was already set to a different value.
+    #[inline]
+    pub fn set_quarter(&mut self, value: i64) -> ParseResult<()> {
+        if !(1..=4).contains(&value) {
+            return Err(OUT_OF_RANGE);
+        }
+        set_if_consistent(&mut self.quarter, value as u32)
     }
 
     /// Set the [`month`](Parsed::month) field to the given value.
@@ -701,11 +717,15 @@ impl Parsed {
             (_, _, _) => return Err(NOT_ENOUGH),
         };
 
-        if verified {
-            Ok(parsed_date)
-        } else {
-            Err(IMPOSSIBLE)
+        if !verified {
+            return Err(IMPOSSIBLE);
+        } else if let Some(parsed) = self.quarter {
+            if parsed != parsed_date.quarter() {
+                return Err(IMPOSSIBLE);
+            }
         }
+
+        Ok(parsed_date)
     }
 
     /// Returns a parsed naive time out of given fields.
@@ -812,7 +832,7 @@ impl Parsed {
 
             // reconstruct date and time fields from timestamp
             let ts = timestamp.checked_add(i64::from(offset)).ok_or(OUT_OF_RANGE)?;
-            let mut datetime = DateTime::from_timestamp(ts, 0).ok_or(OUT_OF_RANGE)?.naive_utc();
+            let mut datetime = DateTime::from_timestamp_secs(ts).ok_or(OUT_OF_RANGE)?.naive_utc();
 
             // fill year, ordinal, hour, minute and second fields from timestamp.
             // if existing fields are consistent, this will allow the full date/time reconstruction.
@@ -1020,6 +1040,14 @@ impl Parsed {
         self.isoyear_mod_100
     }
 
+    /// Get the `quarter` field if set.
+    ///
+    /// See also [`set_quarter()`](Parsed::set_quarter).
+    #[inline]
+    pub fn quarter(&self) -> Option<u32> {
+        self.quarter
+    }
+
     /// Get the `month` field if set.
     ///
     /// See also [`set_month()`](Parsed::set_month).
@@ -1166,10 +1194,10 @@ fn resolve_week_date(
 mod tests {
     use super::super::{IMPOSSIBLE, NOT_ENOUGH, OUT_OF_RANGE};
     use super::Parsed;
-    use crate::naive::{NaiveDate, NaiveTime};
-    use crate::offset::{FixedOffset, TimeZone, Utc};
     use crate::Datelike;
     use crate::Weekday::*;
+    use crate::naive::{NaiveDate, NaiveTime};
+    use crate::offset::{FixedOffset, TimeZone, Utc};
 
     #[test]
     fn test_parsed_set_fields() {
@@ -1273,6 +1301,11 @@ mod tests {
         assert!(Parsed::new().set_isoyear_mod_100(0).is_ok());
         assert!(Parsed::new().set_isoyear_mod_100(99).is_ok());
         assert_eq!(Parsed::new().set_isoyear_mod_100(100), Err(OUT_OF_RANGE));
+
+        assert_eq!(Parsed::new().set_quarter(0), Err(OUT_OF_RANGE));
+        assert!(Parsed::new().set_quarter(1).is_ok());
+        assert!(Parsed::new().set_quarter(4).is_ok());
+        assert_eq!(Parsed::new().set_quarter(5), Err(OUT_OF_RANGE));
 
         assert_eq!(Parsed::new().set_month(0), Err(OUT_OF_RANGE));
         assert!(Parsed::new().set_month(1).is_ok());
@@ -1431,6 +1464,17 @@ mod tests {
         );
         assert_eq!(parse!(year: -1, year_div_100: 0, month: 1, day: 1), Err(IMPOSSIBLE));
         assert_eq!(parse!(year: -1, year_mod_100: 99, month: 1, day: 1), Err(IMPOSSIBLE));
+
+        // quarters
+        assert_eq!(parse!(year: 2000, quarter: 1), Err(NOT_ENOUGH));
+        assert_eq!(parse!(year: 2000, quarter: 1, month: 1, day: 1), ymd(2000, 1, 1));
+        assert_eq!(parse!(year: 2000, quarter: 2, month: 4, day: 1), ymd(2000, 4, 1));
+        assert_eq!(parse!(year: 2000, quarter: 3, month: 7, day: 1), ymd(2000, 7, 1));
+        assert_eq!(parse!(year: 2000, quarter: 4, month: 10, day: 1), ymd(2000, 10, 1));
+
+        // quarter: conflicting inputs
+        assert_eq!(parse!(year: 2000, quarter: 2, month: 3, day: 31), Err(IMPOSSIBLE));
+        assert_eq!(parse!(year: 2000, quarter: 4, month: 3, day: 31), Err(IMPOSSIBLE));
 
         // weekdates
         assert_eq!(parse!(year: 2000, week_from_mon: 0), Err(NOT_ENOUGH));

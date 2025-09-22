@@ -11,8 +11,9 @@
 
 [package]
 edition = "2021"
+rust-version = "1.56"
 name = "ff_derive"
-version = "0.13.0"
+version = "0.13.1"
 authors = ["Sean Bowe <ewillbefull@gmail.com>", "Jack Grigg <thestr4d@gmail.com>"]
 description = "Procedural macro library used to build custom prime field implementations"
 homepage = "https://github.com/zkcrypto/ff"
@@ -25,9 +26,6 @@ resolver = "2"
 proc-macro = true
 [dependencies.addchain]
 version = "0.2"
-
-[dependencies.cfg-if]
-version = "1"
 
 [dependencies.num-bigint]
 version = "0.3"

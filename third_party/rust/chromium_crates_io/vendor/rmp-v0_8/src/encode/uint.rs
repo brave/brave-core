@@ -1,5 +1,5 @@
-use super::{RmpWrite, write_marker};
-use crate::encode::{ValueWriteError};
+use super::{write_marker, RmpWrite};
+use crate::encode::ValueWriteError;
 use crate::Marker;
 
 /// Encodes and attempts to write an unsigned small integer value as a positive fixint into the
@@ -121,6 +121,20 @@ pub fn write_u64<W: RmpWrite>(wr: &mut W, val: u64) -> Result<(), ValueWriteErro
     Ok(())
 }
 
+/// Encodes and attempts to write an `u8` value into the given write using the most efficient
+/// representation, returning the marker used.
+///
+/// See [`write_uint`] for more info.
+pub fn write_uint8<W: RmpWrite>(wr: &mut W, val: u8) -> Result<Marker, ValueWriteError<W::Error>> {
+    if val < 128 {
+        write_pfix(wr, val)
+            .and(Ok(Marker::FixPos(val)))
+            .map_err(ValueWriteError::InvalidMarkerWrite)
+    } else {
+        write_u8(wr, val).and(Ok(Marker::U8))
+    }
+}
+
 /// Encodes and attempts to write an `u64` value into the given write using the most efficient
 /// representation, returning the marker used.
 ///
@@ -135,12 +149,8 @@ pub fn write_u64<W: RmpWrite>(wr: &mut W, val: u64) -> Result<(), ValueWriteErro
 /// This function will return `ValueWriteError` on any I/O error occurred while writing either the
 /// marker or the data.
 pub fn write_uint<W: RmpWrite>(wr: &mut W, val: u64) -> Result<Marker, ValueWriteError<W::Error>> {
-    if val < 128 {
-        write_pfix(wr, val as u8)
-            .and(Ok(Marker::FixPos(val as u8)))
-            .map_err(ValueWriteError::InvalidMarkerWrite)
-    } else if val < 256 {
-        write_u8(wr, val as u8).and(Ok(Marker::U8))
+    if val < 256 {
+        write_uint8(wr, val as u8)
     } else if val < 65536 {
         write_u16(wr, val as u16).and(Ok(Marker::U16))
     } else if val < 4294967296 {

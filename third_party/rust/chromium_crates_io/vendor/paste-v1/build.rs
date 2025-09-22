@@ -10,6 +10,11 @@ fn main() {
         None => return,
     };
 
+    if version.minor >= 80 {
+        println!("cargo:rustc-check-cfg=cfg(no_literal_fromstr)");
+        println!("cargo:rustc-check-cfg=cfg(feature, values(\"protocol_feature_paste\"))");
+    }
+
     if version.minor < 54 {
         // https://github.com/rust-lang/rust/pull/84717
         println!("cargo:rustc-cfg=no_literal_fromstr");

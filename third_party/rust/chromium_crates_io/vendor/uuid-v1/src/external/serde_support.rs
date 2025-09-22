@@ -10,8 +10,10 @@
 // except according to those terms.
 
 use crate::{
+    convert::TryFrom,
     error::*,
     fmt::{Braced, Hyphenated, Simple, Urn},
+    non_nil::NonNilUuid,
     std::fmt,
     Uuid,
 };
@@ -27,6 +29,15 @@ impl Serialize for Uuid {
         } else {
             serializer.serialize_bytes(self.as_bytes())
         }
+    }
+}
+
+impl Serialize for NonNilUuid {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        Uuid::from(*self).serialize(serializer)
     }
 }
 
@@ -84,22 +95,22 @@ impl<'de> Deserialize<'de> for Uuid {
                 {
                     #[rustfmt::skip]
                     let bytes = [
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
-                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(16, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(0, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(1, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(2, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(3, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(4, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(5, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(6, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(7, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(8, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(9, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(10, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(11, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(12, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(13, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(14, &self)) },
+                        match seq.next_element()? { Some(e) => e, None => return Err(A::Error::invalid_length(15, &self)) },
                     ];
 
                     Ok(Uuid::from_bytes(bytes))
@@ -124,6 +135,46 @@ impl<'de> Deserialize<'de> for Uuid {
 
             deserializer.deserialize_bytes(UuidBytesVisitor)
         }
+    }
+}
+
+impl<'de> Deserialize<'de> for NonNilUuid {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let uuid = Uuid::deserialize(deserializer)?;
+
+        NonNilUuid::try_from(uuid).map_err(|_| {
+            de::Error::invalid_value(de::Unexpected::Other("nil UUID"), &"a non-nil UUID")
+        })
+    }
+}
+
+enum ExpectedFormat {
+    Simple,
+    Braced,
+    Urn,
+}
+
+impl std::fmt::Display for ExpectedFormat {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let s = match self {
+            ExpectedFormat::Simple => "a simple Uuid string like 67e5504410b1426f9247bb680e5fe0c8",
+            ExpectedFormat::Braced => {
+                "a braced Uuid string like {67e55044-10b1-426f-9247-bb680e5fe0c8}"
+            }
+            ExpectedFormat::Urn => {
+                "a URN Uuid string like urn:uuid:67e55044-10b1-426f-9247-bb680e5fe0c8"
+            }
+        };
+        f.write_str(s)
+    }
+}
+
+impl de::Expected for ExpectedFormat {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        <ExpectedFormat as std::fmt::Display>::fmt(self, formatter)
     }
 }
 
@@ -157,7 +208,7 @@ pub mod compact {
     #[cfg(test)]
     mod tests {
         use serde_derive::*;
-        use serde_test::{self, Configure};
+        use serde_test::Configure;
 
         #[test]
         fn test_serialize_compact() {
@@ -203,6 +254,401 @@ pub mod compact {
                     serde_test::Token::StructEnd,
                 ],
             )
+        }
+    }
+}
+
+/// Serialize from a [`Uuid`] as a `uuid::fmt::Simple`
+///
+/// [`Uuid`]: ../../struct.Uuid.html
+///
+/// ## Example
+///
+/// ```rust
+/// #[derive(serde_derive::Serialize, serde_derive::Deserialize)]
+/// struct StructA {
+///     // This will change both serailization and deserialization
+///     #[serde(with = "uuid::serde::simple")]
+///     id: uuid::Uuid,
+/// }
+///
+/// #[derive(serde_derive::Serialize, serde_derive::Deserialize)]
+/// struct StructB {
+///     // This will be serialized as uuid::fmt::Simple and deserialize from all valid formats
+///     #[serde(serialize_with = "uuid::serde::simple::serialize")]
+///     id: uuid::Uuid,
+/// }
+/// ```
+pub mod simple {
+    use serde::{de, Deserialize};
+
+    use crate::{parser::parse_simple, Uuid};
+
+    use super::ExpectedFormat;
+
+    /// Serialize from a [`Uuid`] as a `uuid::fmt::Simple`
+    ///
+    /// [`Uuid`]: ../../struct.Uuid.html
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// #[derive(serde_derive::Serialize)]
+    /// struct Struct {
+    ///     // This will be serialize as uuid::fmt::Simple
+    ///     #[serde(serialize_with = "uuid::serde::simple::serialize")]
+    ///     id: uuid::Uuid,
+    /// }
+    ///
+    /// ```
+    pub fn serialize<S>(u: &crate::Uuid, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serde::Serialize::serialize(u.as_simple(), serializer)
+    }
+
+    /// Deserialize a simple Uuid string as a [`Uuid`]
+    ///
+    /// [`Uuid`]: ../../struct.Uuid.html
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<Uuid, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let s = <&str as Deserialize>::deserialize(deserializer)?;
+        let bytes = parse_simple(s.as_bytes()).map_err(|_| {
+            de::Error::invalid_value(de::Unexpected::Str(s), &ExpectedFormat::Simple)
+        })?;
+        Ok(Uuid::from_bytes(bytes))
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use serde::de::{self, Error};
+        use serde_test::{Readable, Token};
+
+        use crate::{external::serde_support::ExpectedFormat, Uuid};
+
+        const HYPHENATED_UUID_STR: &'static str = "f9168c5e-ceb2-4faa-b6bf-329bf39fa1e4";
+        const SIMPLE_UUID_STR: &'static str = "f9168c5eceb24faab6bf329bf39fa1e4";
+
+        #[test]
+        fn test_serialize_as_simple() {
+            #[derive(serde_derive::Serialize)]
+            struct Struct(#[serde(with = "super")] crate::Uuid);
+
+            let u = Struct(Uuid::parse_str(HYPHENATED_UUID_STR).unwrap());
+            serde_test::assert_ser_tokens(
+                &u,
+                &[
+                    Token::NewtypeStruct { name: "Struct" },
+                    Token::Str(SIMPLE_UUID_STR),
+                ],
+            );
+        }
+
+        #[test]
+        fn test_de_from_simple() {
+            #[derive(PartialEq, Debug, serde_derive::Deserialize)]
+            struct Struct(#[serde(with = "super")] crate::Uuid);
+            let s = Struct(HYPHENATED_UUID_STR.parse().unwrap());
+            serde_test::assert_de_tokens::<Struct>(
+                &s,
+                &[
+                    Token::TupleStruct {
+                        name: "Struct",
+                        len: 1,
+                    },
+                    Token::BorrowedStr(SIMPLE_UUID_STR),
+                    Token::TupleStructEnd,
+                ],
+            );
+        }
+
+        #[test]
+        fn test_de_reject_hypenated() {
+            #[derive(PartialEq, Debug, serde_derive::Deserialize)]
+            struct Struct(#[serde(with = "super")] crate::Uuid);
+            serde_test::assert_de_tokens_error::<Readable<Struct>>(
+                &[
+                    Token::TupleStruct {
+                        name: "Struct",
+                        len: 1,
+                    },
+                    Token::BorrowedStr(HYPHENATED_UUID_STR),
+                    Token::TupleStructEnd,
+                ],
+                &format!(
+                    "{}",
+                    de::value::Error::invalid_value(
+                        de::Unexpected::Str(HYPHENATED_UUID_STR),
+                        &ExpectedFormat::Simple,
+                    )
+                ),
+            );
+        }
+    }
+}
+
+/// Serialize from a [`Uuid`] as a `uuid::fmt::Braced`
+///
+/// [`Uuid`]: ../../struct.Uuid.html
+///
+/// ## Example
+///
+/// ```rust
+/// #[derive(serde_derive::Serialize, serde_derive::Deserialize)]
+/// struct StructA {
+///     // This will change both serailization and deserialization
+///     #[serde(with = "uuid::serde::braced")]
+///     id: uuid::Uuid,
+/// }
+///
+/// #[derive(serde_derive::Serialize, serde_derive::Deserialize)]
+/// struct StructB {
+///     // This will be serialized as uuid::fmt::Urn and deserialize from all valid formats
+///     #[serde(serialize_with = "uuid::serde::braced::serialize")]
+///     id: uuid::Uuid,
+/// }
+/// ```
+pub mod braced {
+    use serde::{de, Deserialize};
+
+    use crate::parser::parse_braced;
+
+    use super::ExpectedFormat;
+
+    /// Serialize from a [`Uuid`] as a `uuid::fmt::Braced`
+    ///
+    /// [`Uuid`]: ../../struct.Uuid.html
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// #[derive(serde_derive::Serialize)]
+    /// struct Struct {
+    ///     // This will be serialize as uuid::fmt::Braced
+    ///     #[serde(serialize_with = "uuid::serde::braced::serialize")]
+    ///     id: uuid::Uuid,
+    /// }
+    ///
+    /// ```
+    pub fn serialize<S>(u: &crate::Uuid, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serde::Serialize::serialize(u.as_braced(), serializer)
+    }
+
+    /// Deserialize a braced Uuid string as a [`Uuid`]
+    ///
+    /// [`Uuid`]: ../../struct.Uuid.html
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<crate::Uuid, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let s = <&str as Deserialize>::deserialize(deserializer)?;
+        let bytes = parse_braced(s.as_bytes()).map_err(|_| {
+            de::Error::invalid_value(de::Unexpected::Str(s), &ExpectedFormat::Braced)
+        })?;
+        Ok(crate::Uuid::from_bytes(bytes))
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use serde::de::{self, Error};
+        use serde_test::{Readable, Token};
+
+        use crate::{external::serde_support::ExpectedFormat, Uuid};
+
+        const HYPHENATED_UUID_STR: &'static str = "f9168c5e-ceb2-4faa-b6bf-329bf39fa1e4";
+        const BRACED_UUID_STR: &'static str = "{f9168c5e-ceb2-4faa-b6bf-329bf39fa1e4}";
+
+        #[test]
+        fn test_serialize_as_braced() {
+            #[derive(serde_derive::Serialize)]
+            struct Struct(#[serde(with = "super")] crate::Uuid);
+
+            let u = Struct(Uuid::parse_str(HYPHENATED_UUID_STR).unwrap());
+            serde_test::assert_ser_tokens(
+                &u,
+                &[
+                    Token::NewtypeStruct { name: "Struct" },
+                    Token::Str(BRACED_UUID_STR),
+                ],
+            );
+        }
+
+        #[test]
+        fn test_de_from_braced() {
+            #[derive(PartialEq, Debug, serde_derive::Deserialize)]
+            struct Struct(#[serde(with = "super")] crate::Uuid);
+            let s = Struct(HYPHENATED_UUID_STR.parse().unwrap());
+            serde_test::assert_de_tokens::<Struct>(
+                &s,
+                &[
+                    Token::TupleStruct {
+                        name: "Struct",
+                        len: 1,
+                    },
+                    Token::BorrowedStr(BRACED_UUID_STR),
+                    Token::TupleStructEnd,
+                ],
+            );
+        }
+
+        #[test]
+        fn test_de_reject_hypenated() {
+            #[derive(PartialEq, Debug, serde_derive::Deserialize)]
+            struct Struct(#[serde(with = "super")] crate::Uuid);
+            serde_test::assert_de_tokens_error::<Readable<Struct>>(
+                &[
+                    Token::TupleStruct {
+                        name: "Struct",
+                        len: 1,
+                    },
+                    Token::BorrowedStr(HYPHENATED_UUID_STR),
+                    Token::TupleStructEnd,
+                ],
+                &format!(
+                    "{}",
+                    de::value::Error::invalid_value(
+                        de::Unexpected::Str(HYPHENATED_UUID_STR),
+                        &ExpectedFormat::Braced,
+                    )
+                ),
+            );
+        }
+    }
+}
+
+/// Serialize from a [`Uuid`] as a `uuid::fmt::Urn`
+///
+/// [`Uuid`]: ../../struct.Uuid.html
+///
+/// ## Example
+///
+/// ```rust
+/// #[derive(serde_derive::Serialize, serde_derive::Deserialize)]
+/// struct StructA {
+///     // This will change both serailization and deserialization
+///     #[serde(with = "uuid::serde::urn")]
+///     id: uuid::Uuid,
+/// }
+///
+/// #[derive(serde_derive::Serialize, serde_derive::Deserialize)]
+/// struct StructB {
+///     // This will be serialized as uuid::fmt::Urn and deserialize from all valid formats
+///     #[serde(serialize_with = "uuid::serde::urn::serialize")]
+///     id: uuid::Uuid,
+/// }
+/// ```
+pub mod urn {
+    use serde::{de, Deserialize};
+
+    use crate::parser::parse_urn;
+
+    use super::ExpectedFormat;
+
+    /// Serialize from a [`Uuid`] as a `uuid::fmt::Urn`
+    ///
+    /// [`Uuid`]: ../../struct.Uuid.html
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// #[derive(serde_derive::Serialize)]
+    /// struct Struct {
+    ///     // This will be serialize as uuid::fmt::Urn
+    ///     #[serde(serialize_with = "uuid::serde::urn::serialize")]
+    ///     id: uuid::Uuid,
+    /// }
+    ///
+    /// ```
+    pub fn serialize<S>(u: &crate::Uuid, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serde::Serialize::serialize(u.as_urn(), serializer)
+    }
+
+    /// Deserialize a urn Uuid string as a [`Uuid`]
+    ///
+    /// [`Uuid`]: ../../struct.Uuid.html
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<crate::Uuid, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let s = <&str as Deserialize>::deserialize(deserializer)?;
+        let bytes = parse_urn(s.as_bytes())
+            .map_err(|_| de::Error::invalid_value(de::Unexpected::Str(s), &ExpectedFormat::Urn))?;
+        Ok(crate::Uuid::from_bytes(bytes))
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use serde::de::{self, Error};
+        use serde_test::{Readable, Token};
+
+        use crate::{external::serde_support::ExpectedFormat, Uuid};
+
+        const HYPHENATED_UUID_STR: &'static str = "f9168c5e-ceb2-4faa-b6bf-329bf39fa1e4";
+        const URN_UUID_STR: &'static str = "urn:uuid:f9168c5e-ceb2-4faa-b6bf-329bf39fa1e4";
+
+        #[test]
+        fn test_serialize_as_urn() {
+            #[derive(serde_derive::Serialize)]
+            struct Struct(#[serde(with = "super")] crate::Uuid);
+
+            let u = Struct(Uuid::parse_str(HYPHENATED_UUID_STR).unwrap());
+            serde_test::assert_ser_tokens(
+                &u,
+                &[
+                    Token::NewtypeStruct { name: "Struct" },
+                    Token::Str(URN_UUID_STR),
+                ],
+            );
+        }
+
+        #[test]
+        fn test_de_from_urn() {
+            #[derive(PartialEq, Debug, serde_derive::Deserialize)]
+            struct Struct(#[serde(with = "super")] crate::Uuid);
+            let s = Struct(HYPHENATED_UUID_STR.parse().unwrap());
+            serde_test::assert_de_tokens::<Struct>(
+                &s,
+                &[
+                    Token::TupleStruct {
+                        name: "Struct",
+                        len: 1,
+                    },
+                    Token::BorrowedStr(URN_UUID_STR),
+                    Token::TupleStructEnd,
+                ],
+            );
+        }
+
+        #[test]
+        fn test_de_reject_hypenated() {
+            #[derive(PartialEq, Debug, serde_derive::Deserialize)]
+            struct Struct(#[serde(with = "super")] crate::Uuid);
+            serde_test::assert_de_tokens_error::<Readable<Struct>>(
+                &[
+                    Token::TupleStruct {
+                        name: "Struct",
+                        len: 1,
+                    },
+                    Token::BorrowedStr(HYPHENATED_UUID_STR),
+                    Token::TupleStructEnd,
+                ],
+                &format!(
+                    "{}",
+                    de::value::Error::invalid_value(
+                        de::Unexpected::Str(HYPHENATED_UUID_STR),
+                        &ExpectedFormat::Urn,
+                    )
+                ),
+            );
         }
     }
 }
@@ -309,5 +755,15 @@ mod serde_tests {
             &[Token::Bytes(b"hello_world")],
             "UUID parsing failed: invalid length: expected 16 bytes, found 11",
         );
+    }
+
+    #[test]
+    fn test_serde_non_nil_uuid() {
+        let uuid_str = "f9168c5e-ceb2-4faa-b6bf-329bf39fa1e4";
+        let uuid = Uuid::parse_str(uuid_str).unwrap();
+        let non_nil_uuid = NonNilUuid::try_from(uuid).unwrap();
+
+        serde_test::assert_ser_tokens(&non_nil_uuid.readable(), &[Token::Str(uuid_str)]);
+        serde_test::assert_de_tokens(&non_nil_uuid.readable(), &[Token::Str(uuid_str)]);
     }
 }

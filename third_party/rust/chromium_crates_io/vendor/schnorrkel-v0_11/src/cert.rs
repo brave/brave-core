@@ -7,7 +7,6 @@
 // Authors:
 // - Jeffrey Burdges <jeff@web3.foundation>
 
-
 //! ### Adaptor signature-based implicit certificate scheme for Ristretto
 //!
 //! [Implicit certificates](https://en.wikipedia.org/wiki/Implicit_certificate)
@@ -57,7 +56,6 @@ use curve25519_dalek::scalar::Scalar;
 use super::*;
 use crate::context::SigningTranscript;
 
-
 /// Adaptor Implicit Certificate Secret
 ///
 /// Issuing an Adaptor implicit certificate requires producing
@@ -93,7 +91,7 @@ impl Keypair {
     /// Issue an Adaptor implicit certificate
     ///
     /// Aside from the issuing `Keypair` supplied as `self`, you provide both
-    /// (1) a `SigningTranscript` called `t` that incorporates both the context 
+    /// (1) a `SigningTranscript` called `t` that incorporates both the context
     ///     and the certificate requester's identity, and
     /// (2) the `seed_public_key` supplied by the certificate recipient
     ///     in their certificate request.
@@ -101,20 +99,24 @@ impl Keypair {
     /// certificate requester, ans from which the certificate requester
     /// derives their certified key pair.
     pub fn issue_adaptor_cert<T>(&self, mut t: T, seed_public_key: &PublicKey) -> AdaptorCertSecret
-    where T: SigningTranscript
+    where
+        T: SigningTranscript,
     {
         t.proto_name(b"Adaptor");
-        t.commit_point(b"issuer-pk",self.public.as_compressed());
+        t.commit_point(b"issuer-pk", self.public.as_compressed());
 
         // We cannot commit the `seed_public_key` to the transcript
         // because the whole point is to keep the transcript minimal.
         // Instead we consume it as witness datathat influences only k.
-        let k = t.witness_scalar(b"issuing",&[ &self.secret.nonce, seed_public_key.as_compressed().as_bytes() ]);
+        let k = t.witness_scalar(
+            b"issuing",
+            &[&self.secret.nonce, seed_public_key.as_compressed().as_bytes()],
+        );
 
         // Compute the public key reconstruction data
         let gamma = seed_public_key.as_point() + &k * constants::RISTRETTO_BASEPOINT_TABLE;
         let gamma = gamma.compress();
-        t.commit_point(b"gamma",&gamma);
+        t.commit_point(b"gamma", &gamma);
         let cert_public = AdaptorCertPublic(gamma.0);
 
         // Compute the secret key reconstruction data
@@ -150,27 +152,28 @@ impl PublicKey {
         &self,
         mut t: T,
         seed_secret_key: &SecretKey,
-        cert_secret: AdaptorCertSecret
+        cert_secret: AdaptorCertSecret,
     ) -> SignatureResult<(AdaptorCertPublic, SecretKey)>
-    where T: SigningTranscript
+    where
+        T: SigningTranscript,
     {
         t.proto_name(b"Adaptor");
-        t.commit_point(b"issuer-pk",self.as_compressed());
+        t.commit_point(b"issuer-pk", self.as_compressed());
 
         // Again we cannot commit much to the transcript, but we again
         // treat anything relevant as a witness when defining the
         let mut nonce = [0u8; 32];
-        t.witness_bytes(b"accepting",&mut nonce, &[&cert_secret.0[..],&seed_secret_key.nonce]);
+        t.witness_bytes(b"accepting", &mut nonce, &[&cert_secret.0[..], &seed_secret_key.nonce]);
 
         let mut s = [0u8; 32];
         s.copy_from_slice(&cert_secret.0[32..64]);
-        let s = crate::scalar_from_canonical_bytes(s).ok_or(SignatureError::ScalarFormatError) ?;
-        let cert_public : AdaptorCertPublic = cert_secret.into();
+        let s = crate::scalar_from_canonical_bytes(s).ok_or(SignatureError::ScalarFormatError)?;
+        let cert_public: AdaptorCertPublic = cert_secret.into();
         let gamma = CompressedRistretto(cert_public.0);
-        t.commit_point(b"gamma",&gamma);
+        t.commit_point(b"gamma", &gamma);
 
         let key = s + seed_secret_key.key;
-        Ok(( cert_public, SecretKey { key, nonce } ))
+        Ok((cert_public, SecretKey { key, nonce }))
     }
 }
 
@@ -191,10 +194,15 @@ impl Keypair {
     /// only a digest `h` that incorporates any context and metadata
     /// pertaining to the issued key.
     pub fn issue_self_adaptor_cert<T>(&self, t: T) -> (AdaptorCertPublic, SecretKey)
-    where T: SigningTranscript+Clone
+    where
+        T: SigningTranscript + Clone,
     {
         let mut bytes = [0u8; 96];
-        t.witness_bytes(b"issue_self_adaptor_cert", &mut bytes, &[&self.secret.nonce, &self.secret.to_bytes() as &[u8]]);
+        t.witness_bytes(
+            b"issue_self_adaptor_cert",
+            &mut bytes,
+            &[&self.secret.nonce, &self.secret.to_bytes() as &[u8]],
+        );
 
         let mut nonce = [0u8; 32];
         nonce.copy_from_slice(&bytes[64..96]);
@@ -205,25 +213,32 @@ impl Keypair {
 
         let seed = SecretKey { key, nonce }.to_keypair();
         let cert_secret = self.issue_adaptor_cert(t.clone(), &seed.public);
-        self.public.accept_adaptor_cert(t, &seed.secret, cert_secret).expect("Cert issued above and known to produce signature errors; qed")
+        self.public
+            .accept_adaptor_cert(t, &seed.secret, cert_secret)
+            .expect("Cert issued above and known to produce signature errors; qed")
     }
 }
 
 impl PublicKey {
     /// Extract the certified pulic key from an adaptor certificate
-    /// 
+    ///
     /// We've no confirmation that this public key was certified
     /// until we use it in some authenticated setting, like an AEAD
     /// or another signature.
-    pub fn open_adaptor_cert<T>(&self, mut t: T, cert_public: &AdaptorCertPublic) -> SignatureResult<PublicKey>
-    where T: SigningTranscript
+    pub fn open_adaptor_cert<T>(
+        &self,
+        mut t: T,
+        cert_public: &AdaptorCertPublic,
+    ) -> SignatureResult<PublicKey>
+    where
+        T: SigningTranscript,
     {
         t.proto_name(b"Adaptor");
-        t.commit_point(b"issuer-pk",self.as_compressed());
+        t.commit_point(b"issuer-pk", self.as_compressed());
 
         let gamma = CompressedRistretto(cert_public.0);
-        t.commit_point(b"gamma",&gamma);
-        let gamma = gamma.decompress().ok_or(SignatureError::PointDecompressionError) ?;
+        t.commit_point(b"gamma", &gamma);
+        let gamma = gamma.decompress().ok_or(SignatureError::PointDecompressionError)?;
 
         let point = cert_public.derive_e(t) * self.as_point() + gamma;
         Ok(PublicKey::from_point(point))
@@ -242,8 +257,8 @@ mod tests {
         let mut csprng = rand_core::OsRng;
         let issuer = Keypair::generate_with(&mut csprng);
 
-        let (cert_public,secret_key) = issuer.issue_self_adaptor_cert(t.clone());
-        let public_key = issuer.public.open_adaptor_cert(t,&cert_public).unwrap();
+        let (cert_public, secret_key) = issuer.issue_self_adaptor_cert(t.clone());
+        let public_key = issuer.public.open_adaptor_cert(t, &cert_public).unwrap();
         assert_eq!(secret_key.to_public(), public_key);
     }
 }

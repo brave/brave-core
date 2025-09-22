@@ -1,4 +1,4 @@
-use crate::msgpack::encode::*;
+use rmp::encode::*;
 
 #[test]
 fn pass_pack() {

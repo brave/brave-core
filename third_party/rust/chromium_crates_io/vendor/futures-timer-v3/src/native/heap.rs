@@ -66,7 +66,7 @@ impl<T: Ord> Heap<T> {
 
     pub fn peek(&self) -> Option<&T> {
         self.assert_consistent();
-        self.items.get(0).map(|i| &i.0)
+        self.items.first().map(|i| &i.0)
     }
 
     pub fn pop(&mut self) -> Option<T> {
@@ -191,7 +191,7 @@ impl<T: Ord> Heap<T> {
             }
         }
 
-        for (i, &(ref item, _)) in self.items.iter().enumerate() {
+        for (i, (item, _)) in self.items.iter().enumerate() {
             if i > 0 {
                 assert!(*item >= self.items[(i - 1) / 2].0, "bad at index: {}", i);
             }
@@ -272,7 +272,7 @@ mod tests {
         for t in v {
             h.push(t);
         }
-        return h;
+        h
     }
 
     #[test]

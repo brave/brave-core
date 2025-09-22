@@ -3,6 +3,7 @@ use std::fmt;
 use std::result;
 
 use crate::header;
+use crate::header::MaxSizeReached;
 use crate::method;
 use crate::status;
 use crate::uri;
@@ -27,6 +28,7 @@ enum ErrorKind {
     UriParts(uri::InvalidUriParts),
     HeaderName(header::InvalidHeaderName),
     HeaderValue(header::InvalidHeaderValue),
+    MaxSizeReached(MaxSizeReached),
 }
 
 impl fmt::Debug for Error {
@@ -61,6 +63,7 @@ impl Error {
             UriParts(ref e) => e,
             HeaderName(ref e) => e,
             HeaderValue(ref e) => e,
+            MaxSizeReached(ref e) => e,
         }
     }
 }
@@ -70,6 +73,14 @@ impl error::Error for Error {
     // not itself the cause.
     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         self.get_ref().source()
+    }
+}
+
+impl From<MaxSizeReached> for Error {
+    fn from(err: MaxSizeReached) -> Error {
+        Error {
+            inner: ErrorKind::MaxSizeReached(err),
+        }
     }
 }
 

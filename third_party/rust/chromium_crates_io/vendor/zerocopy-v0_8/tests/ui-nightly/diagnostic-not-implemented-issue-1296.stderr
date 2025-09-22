@@ -22,10 +22,15 @@ error[E0277]: the trait bound `NotZerocopy: zerocopy::IntoBytes` is not satisfie
   --> tests/ui-nightly/diagnostic-not-implemented-issue-1296.rs:52:19
    |
 52 |     Foo.write_obj(NotZerocopy(()));
-   |         --------- ^^^^^^^^^^^^^^^ the trait `zerocopy::IntoBytes` is not implemented for `NotZerocopy`
+   |         --------- ^^^^^^^^^^^^^^^ unsatisfied trait bound
    |         |
    |         required by a bound introduced by this call
    |
+help: the trait `zerocopy::IntoBytes` is not implemented for `NotZerocopy`
+  --> tests/ui-nightly/../../zerocopy-derive/tests/include.rs
+   |
+   |     pub struct NotZerocopy<T = ()>(pub T);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    = note: Consider adding `#[derive(IntoBytes)]` to `NotZerocopy`
    = help: the following other types implement trait `zerocopy::IntoBytes`:
              ()

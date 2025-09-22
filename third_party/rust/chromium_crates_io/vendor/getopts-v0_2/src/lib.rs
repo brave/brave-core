@@ -104,7 +104,6 @@
 #[cfg(test)]
 #[macro_use]
 extern crate log;
-extern crate unicode_width;
 
 use self::Fail::*;
 use self::HasArg::*;
@@ -119,7 +118,20 @@ use std::iter::{repeat, IntoIterator};
 use std::result;
 use std::str::FromStr;
 
+#[cfg(feature = "unicode")]
 use unicode_width::UnicodeWidthStr;
+
+#[cfg(not(feature = "unicode"))]
+trait UnicodeWidthStr {
+    fn width(&self) -> usize;
+}
+
+#[cfg(not(feature = "unicode"))]
+impl UnicodeWidthStr for str {
+    fn width(&self) -> usize {
+        self.len()
+    }
+}
 
 #[cfg(test)]
 mod tests;

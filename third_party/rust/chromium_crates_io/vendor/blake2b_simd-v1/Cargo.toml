@@ -10,10 +10,16 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
+edition = "2021"
 name = "blake2b_simd"
-version = "1.0.1"
+version = "1.0.3"
 authors = ["Jack O'Connor"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "a pure Rust BLAKE2b implementation with dynamic SIMD"
 documentation = "https://docs.rs/blake2b_simd"
 readme = "README.md"
@@ -25,6 +31,10 @@ keywords = [
 license = "MIT"
 repository = "https://github.com/oconnor663/blake2_simd"
 
+[lib]
+name = "blake2b_simd"
+path = "src/lib.rs"
+
 [dependencies.arrayref]
 version = "0.3.5"
 
@@ -33,7 +43,7 @@ version = "0.7.0"
 default-features = false
 
 [dependencies.constant_time_eq]
-version = "0.2.4"
+version = "0.3.0"
 
 [features]
 default = ["std"]

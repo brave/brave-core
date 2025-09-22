@@ -247,6 +247,7 @@ impl<'h, H: HandlerTypes> ContentHandlersDispatcher<'h, H> {
                     self.matched_elements_with_removed_content += 1;
                 }
 
+                debug_assert!(element.can_have_content());
                 if let Some(handler) = element.into_end_tag_handler() {
                     elem_desc.end_tag_handler_idx = Some(self.end_tag_handlers.len());
 

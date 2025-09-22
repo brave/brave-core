@@ -79,20 +79,20 @@ __expand_check_macro! {
 pub mod hwcaps {
     use libc::c_ulong;
 
-    pub const CPUCFG: c_ulong = libc::HWCAP_CPUCFG;
-    pub const LAM: c_ulong = libc::HWCAP_LAM;
-    pub const UAL: c_ulong = libc::HWCAP_UAL;
-    pub const FPU: c_ulong = libc::HWCAP_FPU;
-    pub const LSX: c_ulong = libc::HWCAP_LSX;
-    pub const LASX: c_ulong = libc::HWCAP_LASX;
-    pub const CRC32: c_ulong = libc::HWCAP_CRC32;
-    pub const COMPLEX: c_ulong = libc::HWCAP_COMPLEX;
-    pub const CRYPTO: c_ulong = libc::HWCAP_CRYPTO;
-    pub const LVZ: c_ulong = libc::HWCAP_LVZ;
-    pub const LBT_X86: c_ulong = libc::HWCAP_LBT_X86;
-    pub const LBT_ARM: c_ulong = libc::HWCAP_LBT_ARM;
-    pub const LBT_MIPS: c_ulong = libc::HWCAP_LBT_MIPS;
-    pub const PTW: c_ulong = libc::HWCAP_PTW;
+    pub const CPUCFG: c_ulong = libc::HWCAP_LOONGARCH_CPUCFG;
+    pub const LAM: c_ulong = libc::HWCAP_LOONGARCH_LAM;
+    pub const UAL: c_ulong = libc::HWCAP_LOONGARCH_UAL;
+    pub const FPU: c_ulong = libc::HWCAP_LOONGARCH_FPU;
+    pub const LSX: c_ulong = libc::HWCAP_LOONGARCH_LSX;
+    pub const LASX: c_ulong = libc::HWCAP_LOONGARCH_LASX;
+    pub const CRC32: c_ulong = libc::HWCAP_LOONGARCH_CRC32;
+    pub const COMPLEX: c_ulong = libc::HWCAP_LOONGARCH_COMPLEX;
+    pub const CRYPTO: c_ulong = libc::HWCAP_LOONGARCH_CRYPTO;
+    pub const LVZ: c_ulong = libc::HWCAP_LOONGARCH_LVZ;
+    pub const LBT_X86: c_ulong = libc::HWCAP_LOONGARCH_LBT_X86;
+    pub const LBT_ARM: c_ulong = libc::HWCAP_LOONGARCH_LBT_ARM;
+    pub const LBT_MIPS: c_ulong = libc::HWCAP_LOONGARCH_LBT_MIPS;
+    pub const PTW: c_ulong = libc::HWCAP_LOONGARCH_PTW;
 }
 
 // On other targets, runtime CPU feature detection is unavailable

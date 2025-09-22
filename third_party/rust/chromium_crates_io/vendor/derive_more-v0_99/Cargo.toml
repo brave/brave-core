@@ -12,36 +12,140 @@
 [package]
 edition = "2018"
 name = "derive_more"
-version = "0.99.17"
+version = "0.99.20"
 authors = ["Jelte Fennema <github-tech@jeltef.nl>"]
-include = ["src/**/*.rs", "Cargo.toml", "LICENSE", "README.md", "CHANGELOG.md", "tests/**/*.rs"]
-autotests = true
+build = false
+include = [
+    "src/**/*.rs",
+    "Cargo.toml",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md",
+    "tests/**/*.rs",
+    "examples/**/*.rs",
+]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Adds #[derive(x)] macros for more traits"
 documentation = "https://jeltef.github.io/derive_more/derive_more/"
 readme = "README.md"
-keywords = ["derive", "Add", "From", "Display", "IntoIterator"]
-categories = ["development-tools", "development-tools::procedural-macro-helpers", "no-std"]
+keywords = [
+    "derive",
+    "Add",
+    "From",
+    "Display",
+    "IntoIterator",
+]
+categories = [
+    "development-tools",
+    "development-tools::procedural-macro-helpers",
+    "no-std",
+]
 license = "MIT"
 repository = "https://github.com/JelteF/derive_more"
 
+[badges.github]
+repository = "JelteF/derive_more"
+workflow = "CI"
+
+[features]
+add = []
+add_assign = []
+as_mut = []
+as_ref = []
+constructor = []
+default = [
+    "add_assign",
+    "add",
+    "as_mut",
+    "as_ref",
+    "constructor",
+    "deref",
+    "deref_mut",
+    "display",
+    "error",
+    "from",
+    "from_str",
+    "index",
+    "index_mut",
+    "into",
+    "into_iterator",
+    "iterator",
+    "mul_assign",
+    "mul",
+    "not",
+    "sum",
+    "try_into",
+    "is_variant",
+    "unwrap",
+]
+deref = []
+deref_mut = []
+display = ["syn/extra-traits"]
+error = ["syn/extra-traits"]
+from = ["syn/extra-traits"]
+from_str = []
+generate-parsing-rs = ["peg"]
+index = []
+index_mut = []
+into = ["syn/extra-traits"]
+into_iterator = []
+is_variant = ["convert_case"]
+iterator = []
+mul = ["syn/extra-traits"]
+mul_assign = ["syn/extra-traits"]
+nightly = []
+not = ["syn/extra-traits"]
+sum = []
+testing-helpers = ["rustc_version"]
+track-caller = []
+try_into = ["syn/extra-traits"]
+unwrap = [
+    "convert_case",
+    "rustc_version",
+]
+
 [lib]
 name = "derive_more"
+path = "src/lib.rs"
 proc-macro = true
 
 [[example]]
 name = "deny_missing_docs"
 path = "examples/deny_missing_docs.rs"
-required-features = ["add_assign", "add", "as_mut", "as_ref", "constructor", "deref", "deref_mut", "display", "from", "from_str", "index", "index_mut", "into", "mul_assign", "mul", "not", "try_into", "is_variant"]
-
-[[test]]
-name = "add_assign"
-path = "tests/add_assign.rs"
-required-features = ["add_assign"]
+required-features = [
+    "add_assign",
+    "add",
+    "as_mut",
+    "as_ref",
+    "constructor",
+    "deref",
+    "deref_mut",
+    "display",
+    "from",
+    "from_str",
+    "index",
+    "index_mut",
+    "into",
+    "mul_assign",
+    "mul",
+    "not",
+    "try_into",
+    "is_variant",
+]
 
 [[test]]
 name = "add"
 path = "tests/add.rs"
 required-features = ["add"]
+
+[[test]]
+name = "add_assign"
+path = "tests/add_assign.rs"
+required-features = ["add_assign"]
 
 [[test]]
 name = "as_mut"
@@ -94,14 +198,38 @@ path = "tests/from_str.rs"
 required-features = ["from_str"]
 
 [[test]]
-name = "index_mut"
-path = "tests/index_mut.rs"
-required-features = ["index_mut"]
+name = "generics"
+path = "tests/generics.rs"
+required-features = [
+    "add_assign",
+    "add",
+    "as_mut",
+    "as_ref",
+    "constructor",
+    "deref",
+    "deref_mut",
+    "display",
+    "from",
+    "from_str",
+    "index",
+    "index_mut",
+    "into",
+    "mul_assign",
+    "mul",
+    "not",
+    "try_into",
+    "is_variant",
+]
 
 [[test]]
 name = "index"
 path = "tests/index.rs"
 required-features = ["index"]
+
+[[test]]
+name = "index_mut"
+path = "tests/index_mut.rs"
+required-features = ["index_mut"]
 
 [[test]]
 name = "into"
@@ -114,14 +242,68 @@ path = "tests/into_iterator.rs"
 required-features = ["into_iterator"]
 
 [[test]]
-name = "mul_assign"
-path = "tests/mul_assign.rs"
-required-features = ["mul_assign"]
+name = "is_variant"
+path = "tests/is_variant.rs"
+required-features = ["is_variant"]
+
+[[test]]
+name = "lib"
+path = "tests/lib.rs"
+required-features = [
+    "add_assign",
+    "add",
+    "as_mut",
+    "as_ref",
+    "constructor",
+    "deref",
+    "deref_mut",
+    "display",
+    "from",
+    "from_str",
+    "index",
+    "index_mut",
+    "into",
+    "mul_assign",
+    "mul",
+    "not",
+    "try_into",
+    "is_variant",
+]
 
 [[test]]
 name = "mul"
 path = "tests/mul.rs"
 required-features = ["mul"]
+
+[[test]]
+name = "mul_assign"
+path = "tests/mul_assign.rs"
+required-features = ["mul_assign"]
+
+[[test]]
+name = "no_std"
+path = "tests/no_std.rs"
+required-features = [
+    "add_assign",
+    "add",
+    "as_mut",
+    "as_ref",
+    "constructor",
+    "deref",
+    "deref_mut",
+    "display",
+    "from",
+    "from_str",
+    "index",
+    "index_mut",
+    "into",
+    "mul_assign",
+    "mul",
+    "not",
+    "sum",
+    "try_into",
+    "is_variant",
+]
 
 [[test]]
 name = "not"
@@ -139,29 +321,10 @@ path = "tests/try_into.rs"
 required-features = ["try_into"]
 
 [[test]]
-name = "is_variant"
-path = "tests/is_variant.rs"
-required-features = ["is_variant"]
-
-[[test]]
 name = "unwrap"
 path = "tests/unwrap.rs"
 required-features = ["unwrap"]
 
-[[test]]
-name = "no_std"
-path = "tests/no_std.rs"
-required-features = ["add_assign", "add", "as_mut", "as_ref", "constructor", "deref", "deref_mut", "display", "from", "from_str", "index", "index_mut", "into", "mul_assign", "mul", "not", "sum", "try_into", "is_variant"]
-
-[[test]]
-name = "generics"
-path = "tests/generics.rs"
-required-features = ["add_assign", "add", "as_mut", "as_ref", "constructor", "deref", "deref_mut", "display", "from", "from_str", "index", "index_mut", "into", "mul_assign", "mul", "not", "try_into", "is_variant"]
-
-[[test]]
-name = "lib"
-path = "tests/lib.rs"
-required-features = ["add_assign", "add", "as_mut", "as_ref", "constructor", "deref", "deref_mut", "display", "from", "from_str", "index", "index_mut", "into", "mul_assign", "mul", "not", "try_into", "is_variant"]
 [dependencies.convert_case]
 version = "0.4"
 optional = true
@@ -173,7 +336,8 @@ version = "1.0"
 version = "1.0"
 
 [dependencies.syn]
-version = "1.0.3"
+version = "2"
+
 [build-dependencies.peg]
 version = "0.5"
 optional = true
@@ -181,36 +345,3 @@ optional = true
 [build-dependencies.rustc_version]
 version = "0.4"
 optional = true
-
-[features]
-add = []
-add_assign = []
-as_mut = []
-as_ref = []
-constructor = []
-default = ["add_assign", "add", "as_mut", "as_ref", "constructor", "deref", "deref_mut", "display", "error", "from", "from_str", "index", "index_mut", "into", "into_iterator", "iterator", "mul_assign", "mul", "not", "sum", "try_into", "is_variant", "unwrap"]
-deref = []
-deref_mut = []
-display = ["syn/extra-traits"]
-error = ["syn/extra-traits"]
-from = ["syn/extra-traits"]
-from_str = []
-generate-parsing-rs = ["peg"]
-index = []
-index_mut = []
-into = ["syn/extra-traits"]
-into_iterator = []
-is_variant = ["convert_case"]
-iterator = []
-mul = ["syn/extra-traits"]
-mul_assign = ["syn/extra-traits"]
-nightly = []
-not = ["syn/extra-traits"]
-sum = []
-testing-helpers = ["rustc_version"]
-track-caller = []
-try_into = ["syn/extra-traits"]
-unwrap = ["convert_case", "rustc_version"]
-[badges.github]
-repository = "JelteF/derive_more"
-workflow = "CI"

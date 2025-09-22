@@ -3,6 +3,7 @@ use std::time::Duration;
 
 use crate::model::*;
 use crate::parser;
+use crate::parser::util;
 use crate::util::test;
 use url::Url;
 
@@ -10,7 +11,7 @@ use url::Url;
 #[test]
 fn test_example_1() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_2.0_example_1.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_example_1.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -19,8 +20,8 @@ fn test_example_1() {
         .title(Text::new("RSS Title".into()))
         .description(Text::new("This is an example of an RSS feed".into()))
         .link(Link::new("http://www.example.com/main.html", None))
-        .updated_rfc2822("Mon, 06 Sep 2010 00:01:00 +0000")
-        .published_rfc2822("Sun, 06 Sep 2009 16:20:00 +0000")
+        .updated_parsed("Mon, 06 Sep 2010 00:01:00 +0000")
+        .published("Sun, 06 Sep 2009 16:20:00 +0000")
         .ttl(1800)
         .entry(
             Entry::default()
@@ -28,8 +29,8 @@ fn test_example_1() {
                 .summary(Text::html("Here is some text containing an interesting description.".into()))
                 .link(Link::new("http://www.example.com/blog/post/1", None))
                 .id("7bd204c6-1655-4c27-aeee-53f933c5395f")
-                .published_rfc2822("Sun, 06 Sep 2009 16:20:00 +0000")
-                .updated_rfc2822("Mon, 06 Sep 2010 00:01:00 +0000"),
+                .published("Sun, 06 Sep 2009 16:20:00 +0000")
+                .updated_parsed("Mon, 06 Sep 2010 00:01:00 +0000"),
         ); // copy from feed
 
     // Check
@@ -40,7 +41,7 @@ fn test_example_1() {
 #[test]
 fn test_example_2() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_2.0_example_2.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_example_2.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -65,7 +66,7 @@ fn test_example_2() {
                 depart the orbiting laboratory Tuesday, Aug. 6.
             "#.to_owned()))
             .id("http://www.nasa.gov/press-release/nasa-television-to-broadcast-space-station-departure-of-cygnus-cargo-ship")
-            .published_rfc2822("Thu, 01 Aug 2019 16:15 EDT")
+            .published("Thu, 01 Aug 2019 16:15 EDT")
             .updated(actual.updated)
             .media(MediaObject::default()
                 .content(MediaContent::new()
@@ -81,7 +82,7 @@ fn test_example_2() {
 #[test]
 fn test_example_3() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_2.0_example_3.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_example_3.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -95,7 +96,7 @@ fn test_example_3() {
             .media_type("application/atom+xml"))
         .rights(Text::new("© Condé Nast 2019".into()))
         .language("en")
-        .updated_rfc2822("Tue, 06 Aug 2019 10:46:05 +0000")
+        .updated_parsed("Tue, 06 Aug 2019 10:46:05 +0000")
         .entry(Entry::default()
             .title(Text::new("How a Historian Uncovered Ronald Reagan’s Racist Remarks to Richard Nixon".into()))
             .link(Link::new("https://www.newyorker.com/news/q-and-a/how-a-historian-uncovered-ronald-reagans-racist-remarks-to-richard-nixon", None))
@@ -103,7 +104,7 @@ fn test_example_3() {
             .author(Person::new("Isaac Chotiner"))
             .summary(Text::html("Isaac Chotiner talks with the historian Tim Naftali, who published the text and audio of a\n                taped call, from 1971, in which Reagan described the African delegates to the U.N. in luridly racist\n                terms.\n            ".into()))
             .category(Category::new("News / Q. & A."))
-            .published_rfc2822("Fri, 02 Aug 2019 15:35:34 +0000")
+            .published("Fri, 02 Aug 2019 15:35:34 +0000")
             .updated(actual.updated)
             .media(MediaObject::default()
                 .thumbnail(MediaThumbnail::new(Image::new("https://media.newyorker.com/photos/5d4211a4ba8a9c0009a57cfd/master/pass/Chotiner-ReaganRacismNaftali-3.jpg".into()).width(2560).height(1819)))
@@ -118,7 +119,7 @@ fn test_example_3() {
 #[test]
 fn test_example_4() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_2.0_example_4.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_example_4.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -130,14 +131,14 @@ fn test_example_4() {
             .media_type("application/rss+xml"))
         .link(Link::new("http://www.earthquakenewstoday.com", None))
         .description(Text::new("Current and latest world earthquakes breaking news, activity and articles today".into()))
-        .updated_rfc2822("Tue, 06 Aug 2019 05:01:15 +0000")
+        .updated_parsed("Tue, 06 Aug 2019 05:01:15 +0000")
         .language("en-us")
         .generator(Generator::new("https://wordpress.org/?v=5.1.1"))
         .entry(Entry::default()
             .title(Text::new("Minor earthquake, 3.5 mag was detected near Aris in Greece".into()))
             .author(Person::new("admin"))
             .link(Link::new("http://www.earthquakenewstoday.com/2019/08/06/minor-earthquake-3-5-mag-was-detected-near-aris-in-greece/", None))
-            .published_rfc2822("Tue, 06 Aug 2019 05:01:15 +0000")
+            .published("Tue, 06 Aug 2019 05:01:15 +0000")
             .category(Category::new("Earthquake breaking news"))
             .category(Category::new("Minor World Earthquakes Magnitude -3.9"))
             .category(Category::new("Spárti"))
@@ -156,7 +157,7 @@ fn test_example_4() {
 #[test]
 fn test_example_5() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_2.0_example_5.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_example_5.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -173,7 +174,7 @@ fn test_example_5() {
         .description(Text::new(
             "Serving the Technologist for more than a decade. IT news, reviews, and analysis.".into(),
         ))
-        .updated_rfc2822("Tue, 06 Aug 2019 00:03:56 +0000")
+        .updated_parsed("Tue, 06 Aug 2019 00:03:56 +0000")
         .language("en-us")
         .generator(Generator::new("https://wordpress.org/?v=4.8.3"))
         .logo(
@@ -189,7 +190,7 @@ fn test_example_5() {
                     "Apple isn’t the most cash-rich company in the world anymore, but it doesn’t matter".into(),
                 ))
                 .link(Link::new("https://arstechnica.com/?p=1546121", None))
-                .published_rfc2822("Mon, 05 Aug 2019 23:11:09 +0000")
+                .published("Mon, 05 Aug 2019 23:11:09 +0000")
                 .category(Category::new("Tech"))
                 .category(Category::new("alphabet"))
                 .category(Category::new("apple"))
@@ -213,7 +214,7 @@ fn test_example_5() {
 #[test]
 fn test_example_6() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_2.0_example_6.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_example_6.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -223,7 +224,7 @@ fn test_example_6() {
         .link(Link::new("https://trailers.apple.com/", None))
         .description(Text::new("Recently added Movie Trailers.".into()))
         .language("en-us")
-        .updated_rfc3339("2020-02-07T15:30:28Z")
+        .updated_parsed("2020-02-07T15:30:28Z")
         .generator(Generator::new("Custom"))
         .rights(Text::new("2020 Apple Inc.".into()))
         .entry(Entry::default()
@@ -233,7 +234,7 @@ fn test_example_6() {
             .content(Content::default()
                 .body(r#"<span style="font-size: 16px; font-weight: 900; text-decoration: underline;">Vitalina Varela - Trailer</span>"#)
                 .content_type("text/html"))
-            .published_rfc3339("2020-02-06T08:00:00Z")
+            .published("2020-02-06T08:00:00Z")
             .id("73226f21f249d758bd97a1fac90897d2")        // hash of the link
             .updated(actual.updated));
 
@@ -243,7 +244,7 @@ fn test_example_6() {
 
 #[test]
 fn test_wirecutter() {
-    let test_data = test::fixture_as_string("rss_2.0_wirecutter.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_wirecutter.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     let entry = actual.entries.get(0).expect("sample feed has one entry");
@@ -258,7 +259,7 @@ fn test_wirecutter() {
 #[test]
 fn test_spec_1() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_2.0_spec_1.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_spec_1.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -269,7 +270,7 @@ fn test_spec_1() {
         .description(Text::new("A weblog about scripting and stuff like that.".into()))
         .language("en-us")
         .rights(Text::new("Copyright 1997-2002 Dave Winer".into()))
-        .updated_rfc2822("Mon, 30 Sep 2002 11:00:00 GMT")
+        .updated_parsed("Mon, 30 Sep 2002 11:00:00 GMT")
         .generator(Generator::new("Radio UserLand v8.0.5"))
         .category(Category::new("1765").scheme("Syndic8"))
         .contributor(Person::new("managingEditor").email("dave@userland.com"))
@@ -283,9 +284,9 @@ fn test_spec_1() {
             "#
                     .to_owned(),
                 ))
-                .published_rfc2822("Sun, 29 Sep 2002 19:59:01 GMT")
+                .published("Sun, 29 Sep 2002 19:59:01 GMT")
                 .id("http://scriptingnews.userland.com/backissues/2002/09/29#When:12:59:01PM")
-                .updated_rfc2822("Mon, 30 Sep 2002 11:00:00 GMT"),
+                .updated_parsed("Mon, 30 Sep 2002 11:00:00 GMT"),
         ) // copy from feed
         .entry(
             Entry::default()
@@ -296,9 +297,9 @@ fn test_spec_1() {
             "#
                     .to_owned(),
                 ))
-                .published_rfc2822("Mon, 30 Sep 2002 01:52:02 GMT")
+                .published("Mon, 30 Sep 2002 01:52:02 GMT")
                 .id("http://scriptingnews.userland.com/backissues/2002/09/29#When:6:52:02PM")
-                .updated_rfc2822("Mon, 30 Sep 2002 11:00:00 GMT"),
+                .updated_parsed("Mon, 30 Sep 2002 11:00:00 GMT"),
         ); // copy from feed
 
     // Check
@@ -309,7 +310,7 @@ fn test_spec_1() {
 #[test]
 fn test_invalid_1() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_2.0_invalid_1.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_invalid_1.xml");
     let feed = parser::parse(test_data.as_bytes());
     assert!(feed.is_err());
 }
@@ -317,7 +318,7 @@ fn test_invalid_1() {
 // Verifies that we can handle non-UTF8 streams
 #[test]
 fn test_encoding_1() {
-    let test_data = test::fixture_as_raw("rss_2.0_encoding_1.xml");
+    let test_data = test::fixture_as_raw("rss2/rss_2.0_encoding_1.xml");
     let feed = parser::parse(test_data.as_slice()).unwrap();
     assert_eq!(feed.title.unwrap().content, "RSS Feed do Site Inovação Tecnológica");
 }
@@ -325,7 +326,7 @@ fn test_encoding_1() {
 // Verifies we extract the content:encoded element
 #[test]
 fn test_heated() {
-    let test_data = test::fixture_as_raw("rss_2.0_heated.xml");
+    let test_data = test::fixture_as_raw("rss2/rss_2.0_heated.xml");
     let feed = parser::parse(test_data.as_slice()).unwrap();
     let content = &feed.entries[0].content.as_ref().unwrap();
     assert!(content.body.as_ref().unwrap().contains("I have some good news and some bad news"));
@@ -335,7 +336,7 @@ fn test_heated() {
 // Check reported issue that RockPaperShotgun does not extract summary
 #[test]
 fn test_rockpapershotgun() {
-    let test_data = test::fixture_as_raw("rss_2.0_rps.xml");
+    let test_data = test::fixture_as_raw("rss2/rss_2.0_rps.xml");
     let feed = parser::parse(test_data.as_slice()).unwrap();
 
     // Feed should have a description
@@ -350,7 +351,7 @@ fn test_rockpapershotgun() {
 #[test]
 fn test_spiegel() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_2.0_spiegel.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_spiegel.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -384,14 +385,14 @@ fn test_spiegel() {
             Entry::default()
                 .title(Text::new("07.02. – die Wochenvorschau: Lockdown-Verlängerung, Kriegsverbrecher vor Gericht, Super Bowl, Karneval".into()))
                 .content(Content::default().body(r#"Die wichtigsten Nachrichten aus der SPIEGEL-Redaktion. <br><br><p>See <a href="https://omnystudio.com/listener">omnystudio.com/listener</a> for privacy information.</p>"#).content_type("text/html"))
-                .summary(Text::html("Die wichtigsten Nachrichten aus der SPIEGEL-Redaktion. \r\nSee omnystudio.com/listener for privacy information.".into()))
+                .summary(Text::html("Die wichtigsten Nachrichten aus der SPIEGEL-Redaktion. \nSee omnystudio.com/listener for privacy information.".into()))
                 .link(Link::new("https://omny.fm/shows/spiegel-update-die-nachrichten/07-02-die-wochenvorschau-lockdown-verl-ngerung-kri", None))
-                .published_rfc3339("2021-02-06T23:01:00Z")
+                .published("2021-02-06T23:01:00Z")
                 .id("c7e3cca2-665e-4bc4-bcac-acc6011b9fa2")
                 // <enclosure>, media: and itunes: tags
                 .media(MediaObject::default()
                     .title("07.02. – die Wochenvorschau: Lockdown-Verlängerung, Kriegsverbrecher vor Gericht, Super Bowl, Karneval ")
-                    .description("Die wichtigsten Nachrichten aus der SPIEGEL-Redaktion. \r\nSee omnystudio.com/listener for privacy information.")
+                    .description("Die wichtigsten Nachrichten aus der SPIEGEL-Redaktion. \nSee omnystudio.com/listener for privacy information.")
                     .credit("DER SPIEGEL")
                     .thumbnail(MediaThumbnail::new(Image::new("https://www.omnycontent.com/d/programs/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/bb17ca27-51f4-4349-bc1e-abc00102c975/image.jpg?t=1589902935&size=Large".into())))
                     .content(MediaContent::new()
@@ -419,7 +420,7 @@ fn test_spiegel() {
 // In the case of this feed, we ignore googleplay, and don't overwrite the RSS2 image
 #[test]
 fn test_spreaker_ignore_unknown_ns() {
-    let test_data = test::fixture_as_raw("rss_2.0_spreaker.xml");
+    let test_data = test::fixture_as_raw("rss2/rss_2.0_spreaker.xml");
     let feed = parser::parse(test_data.as_slice()).unwrap();
 
     // Feed should have a logo
@@ -430,7 +431,7 @@ fn test_spreaker_ignore_unknown_ns() {
 #[test]
 fn test_bbc() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_2.0_bbc.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_bbc.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -454,12 +455,12 @@ fn test_bbc() {
                 .link("http://www.bbc.co.uk/programmes/b006qykl"),
         )
         .rights(Text::new("(C) BBC 2021".into()))
-        .published_rfc2822("Thu, 25 Feb 2021 10:15:00 +0000")
+        .published("Thu, 25 Feb 2021 10:15:00 +0000")
         .entry(
             Entry::default()
                 .title(Text::new("Marcus Aurelius".into()))
                 .summary(Text::html("Melvyn Bragg and guests discuss...".into()))
-                .published_rfc2822("Thu, 25 Feb 2021 10:15:00 +0000")
+                .published("Thu, 25 Feb 2021 10:15:00 +0000")
                 .id("urn:bbc:podcast:m000sjxt")
                 .link(Link::new("http://www.bbc.co.uk/programmes/m000sjxt", None))
                 // <enclosure>,  media: and itunes: tags
@@ -492,7 +493,7 @@ fn test_bbc() {
 #[test]
 fn test_ch9() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_2.0_ch9.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_ch9.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -516,8 +517,8 @@ fn test_ch9() {
         .link(Link::new("https://s.ch9.ms/Shows/Azure-Friday", None))
         .category(Category::new("Technology"))
         .language("en")
-        .published_rfc2822("Sat, 27 Feb 2021 06:55:01 GMT")
-        .updated_rfc2822("Sat, 27 Feb 2021 06:55:01 GMT")
+        .published("Sat, 27 Feb 2021 06:55:01 GMT")
+        .updated_parsed("Sat, 27 Feb 2021 06:55:01 GMT")
         .author(Person::new("Microsoft"))
         .generator(Generator::new("Rev9"))
         .entry(
@@ -528,8 +529,8 @@ fn test_ch9() {
                     "https://channel9.msdn.com/Shows/Azure-Friday/Troubleshoot-AKS-cluster-issues-with-AKS-Diagnostics-and-AKS-Periscope",
                     None,
                 ))
-                .published_rfc2822("Fri, 26 Feb 2021 20:00:00 GMT")
-                .updated_rfc2822("Sat, 27 Feb 2021 06:55:01 GMT")
+                .published("Fri, 26 Feb 2021 20:00:00 GMT")
+                .updated_parsed("Sat, 27 Feb 2021 06:55:01 GMT")
                 .id("https://channel9.msdn.com/Shows/Azure-Friday/Troubleshoot-AKS-cluster-issues-with-AKS-Diagnostics-and-AKS-Periscope")
                 .author(Person::new("Scott Hanselman, Rob Caron"))
                 .category(Category::new("Azure"))
@@ -623,7 +624,7 @@ fn test_ch9() {
 #[test]
 fn test_relurl_1() {
     // This example feed uses the xml:base standard so we don't need to pass the source URI
-    let test_data = test::fixture_as_string("rss_2.0_relurl_1.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_relurl_1.xml");
     let actual = parser::parse_with_uri(test_data.as_bytes(), None).unwrap();
 
     // Check the links in the feed
@@ -643,7 +644,7 @@ fn test_relurl_1() {
 #[test]
 fn test_relurl_2() {
     // This example feed does not use the xml:base standard so we test using a provided feed URI
-    let test_data = test::fixture_as_string("rss_2.0_relurl_2.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_relurl_2.xml");
     let actual = parser::parse_with_uri(test_data.as_bytes(), Some("http://example.com")).unwrap();
 
     // The link for the enclosure should be absolute
@@ -654,7 +655,7 @@ fn test_relurl_2() {
 // Verify that attributes containing escaped characters are decoded correctly
 #[test]
 fn test_escaped_attributes() {
-    let test_data = test::fixture_as_raw("rss_2.0_reddit.xml");
+    let test_data = test::fixture_as_raw("rss2/rss_2.0_reddit.xml");
     let feed = parser::parse(test_data.as_slice()).unwrap();
 
     assert_eq!(
@@ -666,7 +667,7 @@ fn test_escaped_attributes() {
 // Verify that valid XML with no whitespace separation is parsed correctly
 #[test]
 fn test_ghost_no_ws() {
-    let test_data = test::fixture_as_raw("rss_2.0_ghost_1.xml");
+    let test_data = test::fixture_as_raw("rss2/rss_2.0_ghost_1.xml");
     let feed = parser::parse(test_data.as_slice()).unwrap();
 
     // Entry should have content
@@ -679,7 +680,7 @@ fn test_ghost_no_ws() {
 fn test_ghost_feeds() {
     let files = vec!["rss_2.0_ghost_2.xml", "rss_2.0_cloudflare.xml", "rss_2.0_element_io.xml"];
     for file in files {
-        let test_data = test::fixture_as_string(file);
+        let test_data = test::fixture_as_string(&format!("rss2/{}", file));
         let actual = parser::parse(test_data.as_bytes()).unwrap();
         for entry in actual.entries {
             assert!(entry.content.is_some());
@@ -690,7 +691,7 @@ fn test_ghost_feeds() {
 // Verifies that content is not set (as there is no enclosure in this case)
 #[test]
 fn test_matrix() {
-    let test_data = test::fixture_as_string("rss_2.0_matrix.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_matrix.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
     let entry = actual.entries.get(0).expect("feed has 1 entry");
 
@@ -701,7 +702,7 @@ fn test_matrix() {
 // Verifies we can handle an RFC1123 date in an RSS 2.0 feed
 #[test]
 fn test_rfc1123_ilgiornale() {
-    let test_data = test::fixture_as_string("rss_2.0_ilgiornale.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_ilgiornale.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
     let entry = actual.entries.get(0).expect("feed has 1 entry");
 
@@ -712,7 +713,7 @@ fn test_rfc1123_ilgiornale() {
 // Verifies we can handle an RFC1123 date in an RSS 2.0 feed where the week day name is in a different language
 #[test]
 fn test_rfc1123_ilmessaggero() {
-    let test_data = test::fixture_as_string("rss_2.0_ilmessaggero.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_ilmessaggero.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
     let entry = actual.entries.get(0).expect("feed has 1 entry");
 
@@ -724,7 +725,7 @@ fn test_rfc1123_ilmessaggero() {
 // e.g. those with newlines before the CDATA
 #[test]
 fn test_trim_whitespace_text_nodes() {
-    let test_data = test::fixture_as_string("rss_2.0_nightvale.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_nightvale.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     assert!(actual.description.unwrap().content.starts_with("<p>Twice-monthly community updates"));
@@ -739,8 +740,41 @@ fn test_trim_whitespace_text_nodes() {
 // Verifies we use DublinCore date as entry published date if present
 #[test]
 fn test_published_from_dc_date() {
-    let test_data = test::fixture_as_string("rss_2.0_dbengines.xml");
+    let test_data = test::fixture_as_string("rss2/rss_2.0_dbengines.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
     let entry = actual.entries.get(0).expect("feed has 1 entry");
     assert_eq!(entry.published.unwrap(), Utc.with_ymd_and_hms(2023, 1, 3, 15, 0, 0).unwrap());
+}
+
+// Verifies that an custom parser is correctly called and can return a useful date
+#[test]
+fn test_custom_timestamp_parser() {
+    let test_data = test::fixture_as_string("rss2/rss_2.0_nbcny.xml");
+
+    let actual = parser::Builder::new()
+        .timestamp_parser(|text| {
+            if text == "Sat, Dec 16 2023 02:02:33 PM" {
+                util::parse_timestamp_lenient("Sat, 16 Dec 2023 19:02:33 UTC")
+            } else {
+                None
+            }
+        })
+        .build()
+        .parse(test_data.as_bytes())
+        .unwrap();
+    let entry = actual.entries.get(0).expect("feed has 1 entry");
+    assert_eq!(entry.published.unwrap(), Utc.with_ymd_and_hms(2023, 12, 16, 19, 2, 33).unwrap());
+}
+
+// Verifies we correctly extract subcategories from the iTunes NS
+#[test]
+fn test_subcategories() {
+    let test_data = test::fixture_as_string("rss2/rss_2.0_anchorfm.xml");
+    let actual = parser::parse(test_data.as_bytes()).unwrap();
+
+    let category = &actual.categories[0];
+    assert_eq!("Kids & Family", category.term.as_str());
+
+    let subcat = &category.subcategories[0];
+    assert_eq!("Parenting", subcat.term.as_str());
 }

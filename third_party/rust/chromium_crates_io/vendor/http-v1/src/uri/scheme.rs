@@ -132,7 +132,7 @@ impl PartialEq for Scheme {
         match (&self.inner, &other.inner) {
             (&Standard(Http), &Standard(Http)) => true,
             (&Standard(Https), &Standard(Https)) => true,
-            (&Other(ref a), &Other(ref b)) => a.eq_ignore_ascii_case(b),
+            (Other(a), Other(b)) => a.eq_ignore_ascii_case(b),
             (&None, _) | (_, &None) => unreachable!(),
             _ => false,
         }
@@ -185,10 +185,7 @@ impl Hash for Scheme {
 
 impl<T> Scheme2<T> {
     pub(super) fn is_none(&self) -> bool {
-        match *self {
-            Scheme2::None => true,
-            _ => false,
-        }
+        matches!(*self, Scheme2::None)
     }
 }
 
@@ -204,6 +201,7 @@ const MAX_SCHEME_LEN: usize = 64;
 // important characteristic of this table is that all entries above 127 are
 // invalid. This makes all of the valid entries a valid single-byte UTF-8 code
 // point. This means that a slice of such valid entries is valid UTF-8.
+#[rustfmt::skip]
 const SCHEME_CHARS: [u8; 256] = [
     //  0      1      2      3      4      5      6      7      8      9
         0,     0,     0,     0,     0,     0,     0,     0,     0,     0, //   x
@@ -304,7 +302,7 @@ impl Scheme2<usize> {
                         // Return scheme
                         return Ok(Scheme2::Other(i));
                     }
-                    // Invald scheme character, abort
+                    // Invalid scheme character, abort
                     0 => break,
                     _ => {}
                 }
@@ -351,10 +349,10 @@ mod test {
 
     #[test]
     fn invalid_scheme_is_error() {
-        Scheme::try_from("my_funky_scheme").expect_err("Unexpectly valid Scheme");
+        Scheme::try_from("my_funky_scheme").expect_err("Unexpectedly valid Scheme");
 
         // Invalid UTF-8
-        Scheme::try_from([0xC0].as_ref()).expect_err("Unexpectly valid Scheme");
+        Scheme::try_from([0xC0].as_ref()).expect_err("Unexpectedly valid Scheme");
     }
 
     fn scheme(s: &str) -> Scheme {

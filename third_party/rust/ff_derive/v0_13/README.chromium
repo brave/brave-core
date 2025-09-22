@@ -1,7 +1,7 @@
 Name: ff_derive
 URL: https://crates.io/crates/ff_derive
-Version: 0.13.0
-Revision: 69c845b4052c65be5c4479176c2756533271c595
+Version: 0.13.1
+Revision: 851b0f61bbcf9a5b61027307144d8bd1f9b756ba
 License: Apache-2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/ff_derive-v0_13/../../../../../common/licenses/Apache-2.0
 Shipped: yes

@@ -250,4 +250,6 @@ mod tests {{
 "#, limit).as_str());
 
     f.write_all(output.as_bytes()).unwrap();
+
+    println!("cargo:rustc-env=CRUNCHY_LIB_SUFFIX={}lib.rs", std::path::MAIN_SEPARATOR);
 }

@@ -3,10 +3,10 @@ use std::io::BufRead;
 use mime::Mime;
 
 use crate::model::{Category, Content, Entry, Feed, FeedType, Generator, Image, Link, MediaObject, Person, Text};
-use crate::parser::mediarss;
 use crate::parser::mediarss::handle_media_element;
 use crate::parser::util;
-use crate::parser::util::{if_some_then, timestamp_rfc3339_lenient};
+use crate::parser::util::if_some_then;
+use crate::parser::{mediarss, Parser};
 use crate::parser::{ParseErrorKind, ParseFeedError, ParseFeedResult};
 use crate::xml::{Element, NS};
 
@@ -14,8 +14,11 @@ use crate::xml::{Element, NS};
 mod tests;
 
 /// Parses an Atom feed into our model
-pub(crate) fn parse_feed<R: BufRead>(root: Element<R>) -> ParseFeedResult<Feed> {
+pub(crate) fn parse_feed<R: BufRead>(parser: &Parser, root: Element<R>) -> ParseFeedResult<Feed> {
     let mut feed = Feed::new(FeedType::Atom);
+
+    feed.language = util::handle_language_attr(&root);
+
     for child in root.children() {
         let child = child?;
         match child.ns_and_tag() {
@@ -23,7 +26,7 @@ pub(crate) fn parse_feed<R: BufRead>(root: Element<R>) -> ParseFeedResult<Feed> 
 
             (NS::Atom, "title") => feed.title = handle_text(child)?,
 
-            (NS::Atom, "updated") => if_some_then(child.child_as_text(), |text| feed.updated = timestamp_rfc3339_lenient(&text)),
+            (NS::Atom, "updated") => if_some_then(child.child_as_text(), |text| feed.updated = parser.parse_timestamp(&text)),
 
             (NS::Atom, "author") => if_some_then(handle_person(child)?, |person| feed.authors.push(person)),
 
@@ -43,7 +46,7 @@ pub(crate) fn parse_feed<R: BufRead>(root: Element<R>) -> ParseFeedResult<Feed> 
 
             (NS::Atom, "subtitle") => feed.description = handle_text(child)?,
 
-            (NS::Atom, "entry") => if_some_then(handle_entry(child)?, |entry| feed.entries.push(entry)),
+            (NS::Atom, "entry") => if_some_then(handle_entry(parser, child)?, |entry| feed.entries.push(entry)),
 
             // Nothing required for unknown elements
             _ => {}
@@ -56,10 +59,10 @@ pub(crate) fn parse_feed<R: BufRead>(root: Element<R>) -> ParseFeedResult<Feed> 
 /// Parses an Atom entry into our model
 ///
 /// Note that the entry is wrapped in an empty Feed to keep the API consistent
-pub(crate) fn parse_entry<R: BufRead>(root: Element<R>) -> ParseFeedResult<Feed> {
+pub(crate) fn parse_entry<R: BufRead>(parser: &Parser, root: Element<R>) -> ParseFeedResult<Feed> {
     let mut feed = Feed::new(FeedType::Atom);
 
-    if_some_then(handle_entry(root)?, |entry| feed.entries.push(entry));
+    if_some_then(handle_entry(parser, root)?, |entry| feed.entries.push(entry));
 
     Ok(feed)
 }
@@ -95,7 +98,7 @@ fn handle_content<R: BufRead>(element: Element<R>) -> ParseFeedResult<Option<Con
     // from http://www.atomenabled.org/developers/syndication/#contentElement
     match content_type.as_deref() {
         // Should be handled as a text element per "In the most common case, the type attribute is either text, html, xhtml, in which case the content element is defined identically to other text constructs"
-        Some("text") | Some("html") | Some("xhtml") | None => {
+        Some("text") | Some("html") | Some("xhtml") | Some("text/html") | None => {
             handle_text(element)?
                 .map(|text| {
                     let mut content = Content::default();
@@ -144,7 +147,7 @@ fn handle_content<R: BufRead>(element: Element<R>) -> ParseFeedResult<Option<Con
 }
 
 // Handles an Atom <entry>
-fn handle_entry<R: BufRead>(element: Element<R>) -> ParseFeedResult<Option<Entry>> {
+fn handle_entry<R: BufRead>(parser: &Parser, element: Element<R>) -> ParseFeedResult<Option<Entry>> {
     // Create a default MediaRSS content object for non-grouped elements
     let mut media_obj = MediaObject::default();
 
@@ -158,11 +161,15 @@ fn handle_entry<R: BufRead>(element: Element<R>) -> ParseFeedResult<Option<Entry
 
             (NS::Atom, "title") => entry.title = handle_text(child)?,
 
-            (NS::Atom, "updated") => if_some_then(child.child_as_text(), |text| entry.updated = timestamp_rfc3339_lenient(&text)),
+            (NS::Atom, "updated") => if_some_then(child.child_as_text(), |text| entry.updated = parser.parse_timestamp(&text)),
 
             (NS::Atom, "author") => if_some_then(handle_person(child)?, |person| entry.authors.push(person)),
 
-            (NS::Atom, "content") => entry.content = handle_content(child)?,
+            (NS::Atom, "content") => {
+                entry.base = util::handle_base_attr(&child);
+                entry.language = util::handle_language_attr(&child);
+                entry.content = handle_content(child)?;
+            }
 
             (NS::Atom, "link") => if_some_then(handle_link(child), |link| entry.links.push(link)),
 
@@ -173,7 +180,7 @@ fn handle_entry<R: BufRead>(element: Element<R>) -> ParseFeedResult<Option<Entry
             (NS::Atom, "contributor") => if_some_then(handle_person(child)?, |person| entry.contributors.push(person)),
 
             // Some feeds have "pubDate" instead of "published"
-            (NS::Atom, "published") | (NS::Atom, "pubDate") => if_some_then(child.child_as_text(), |text| entry.published = timestamp_rfc3339_lenient(&text)),
+            (NS::Atom, "published") | (NS::Atom, "pubDate") => if_some_then(child.child_as_text(), |text| entry.published = parser.parse_timestamp(&text)),
 
             (NS::Atom, "rights") => entry.rights = handle_text(child)?,
 
@@ -188,8 +195,8 @@ fn handle_entry<R: BufRead>(element: Element<R>) -> ParseFeedResult<Option<Entry
         }
     }
 
-    // If a media:content item was found in this entry, then attach it
-    if !media_obj.content.is_empty() {
+    // If a media:content or media:thumbnail item was found in this entry, then attach it
+    if !media_obj.content.is_empty() || !media_obj.thumbnails.is_empty() {
         entry.media.push(media_obj);
     }
 
@@ -283,7 +290,7 @@ pub(crate) fn handle_text<R: BufRead>(element: Element<R>) -> ParseFeedResult<Op
 
     let mime = match type_attr {
         "text" => Ok(mime::TEXT_PLAIN),
-        "html" | "xhtml" => Ok(mime::TEXT_HTML),
+        "html" | "xhtml" | "text/html" => Ok(mime::TEXT_HTML),
 
         // Unknown content type
         _ => Err(ParseFeedError::ParseError(ParseErrorKind::UnknownMimeType(type_attr.into()))),

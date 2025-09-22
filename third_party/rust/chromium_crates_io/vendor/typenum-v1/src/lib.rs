@@ -47,19 +47,8 @@
 #![warn(missing_docs)]
 #![cfg_attr(feature = "strict", deny(missing_docs))]
 #![cfg_attr(feature = "strict", deny(warnings))]
-#![cfg_attr(
-    feature = "cargo-clippy",
-    allow(
-        clippy::len_without_is_empty,
-        clippy::many_single_char_names,
-        clippy::new_without_default,
-        clippy::suspicious_arithmetic_impl,
-        clippy::type_complexity,
-        clippy::wrong_self_convention,
-    )
-)]
-#![cfg_attr(feature = "cargo-clippy", deny(clippy::missing_inline_in_public_items))]
-#![doc(html_root_url = "https://docs.rs/typenum/1.16.0")]
+#![doc(html_root_url = "https://docs.rs/typenum/1.18.0")]
+#![cfg_attr(docsrs, feature(doc_auto_cfg, doc_cfg))]
 
 // For debugging macros:
 // #![feature(trace_macros)]
@@ -67,23 +56,8 @@
 
 use core::cmp::Ordering;
 
-#[cfg(feature = "force_unix_path_separator")]
-mod generated {
-    include!(concat!(env!("OUT_DIR"), "/op.rs"));
-    include!(concat!(env!("OUT_DIR"), "/consts.rs"));
-    #[cfg(feature = "const-generics")]
-    include!(concat!(env!("OUT_DIR"), "/generic_const_mappings.rs"));
-}
-
-#[cfg(not(feature = "force_unix_path_separator"))]
-mod generated {
-    include!(env!("TYPENUM_BUILD_OP"));
-    include!(env!("TYPENUM_BUILD_CONSTS"));
-    #[cfg(feature = "const-generics")]
-    include!(env!("TYPENUM_BUILD_GENERIC_CONSTS"));
-}
-
 pub mod bit;
+mod gen;
 pub mod int;
 pub mod marker_traits;
 pub mod operator_aliases;
@@ -95,7 +69,7 @@ pub mod array;
 
 pub use crate::{
     array::{ATerm, TArr},
-    generated::consts,
+    gen::consts,
     int::{NInt, PInt},
     marker_traits::*,
     operator_aliases::*,
@@ -105,14 +79,10 @@ pub use crate::{
 
 #[doc(no_inline)]
 #[rustfmt::skip]
-pub use consts::{
-    False, True, B0, B1,
-    U0, U1, U2, *,
-    N1, N2, Z0, P1, P2, *,
-};
+pub use consts::*;
 
 #[cfg(feature = "const-generics")]
-pub use crate::generated::generic_const_mappings;
+pub use crate::gen::generic_const_mappings;
 
 #[cfg(feature = "const-generics")]
 #[doc(no_inline)]

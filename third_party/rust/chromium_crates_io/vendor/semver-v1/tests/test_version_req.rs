@@ -2,6 +2,7 @@
     clippy::missing_panics_doc,
     clippy::shadow_unrelated,
     clippy::toplevel_ref_arg,
+    clippy::uninlined_format_args,
     clippy::wildcard_imports
 )]
 
@@ -17,7 +18,7 @@ use node::{req, VersionReq};
 #[cfg(not(test_node_semver))]
 use semver::VersionReq;
 
-#[cfg_attr(not(no_track_caller), track_caller)]
+#[track_caller]
 fn assert_match_all(req: &VersionReq, versions: &[&str]) {
     for string in versions {
         let parsed = version(string);
@@ -25,7 +26,7 @@ fn assert_match_all(req: &VersionReq, versions: &[&str]) {
     }
 }
 
-#[cfg_attr(not(no_track_caller), track_caller)]
+#[track_caller]
 fn assert_match_none(req: &VersionReq, versions: &[&str]) {
     for string in versions {
         let parsed = version(string);
@@ -42,7 +43,6 @@ fn test_basic() {
 }
 
 #[test]
-#[cfg(not(no_const_vec_new))]
 fn test_default() {
     let ref r = VersionReq::default();
     assert_eq!(r, &VersionReq::STAR);
@@ -319,12 +319,7 @@ pub fn test_logical_or() {
 
 #[test]
 pub fn test_any() {
-    #[cfg(not(no_const_vec_new))]
     let ref r = VersionReq::STAR;
-    #[cfg(no_const_vec_new)]
-    let ref r = VersionReq {
-        comparators: Vec::new(),
-    };
     assert_match_all(r, &["0.0.1", "0.1.0", "1.0.0"]);
 }
 

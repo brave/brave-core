@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.24](https://github.com/rust-lang/getopts/compare/v0.2.23...v0.2.24) - 2025-08-29
+
+### Other
+
+- Make unicode-width an optional default dependency ([#133](https://github.com/rust-lang/getopts/pull/133))
+
 ## [0.2.23](https://github.com/rust-lang/getopts/compare/v0.2.22...v0.2.23) - 2025-06-09
 
 ### Other

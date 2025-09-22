@@ -6,17 +6,17 @@
 // This file may not be copied, modified, or distributed except according to
 // those terms.
 
-use core::{marker::PhantomData, ops::Range, ptr::NonNull};
+use core::{marker::PhantomData, mem, ops::Range, ptr::NonNull};
+
+pub use _def::PtrInner;
 
 #[allow(unused_imports)]
 use crate::util::polyfills::NumExt as _;
 use crate::{
-    layout::{CastType, DstLayout, MetadataCastError},
+    layout::{CastType, MetadataCastError},
     util::AsAddress,
-    AlignmentError, CastError, KnownLayout, PointerMetadata, SizeError,
+    AlignmentError, CastError, KnownLayout, MetadataOf, SizeError, SplitAt,
 };
-
-pub(crate) use _def::PtrInner;
 
 mod _def {
     use super::*;
@@ -25,7 +25,8 @@ mod _def {
     /// `PtrInner<'a, T>` is [covariant] in `'a` and invariant in `T`.
     ///
     /// [covariant]: https://doc.rust-lang.org/reference/subtyping.html
-    pub(crate) struct PtrInner<'a, T>
+    #[allow(missing_debug_implementations)]
+    pub struct PtrInner<'a, T>
     where
         T: ?Sized,
     {
@@ -68,6 +69,7 @@ mod _def {
 
     impl<'a, T: 'a + ?Sized> Copy for PtrInner<'a, T> {}
     impl<'a, T: 'a + ?Sized> Clone for PtrInner<'a, T> {
+        #[inline(always)]
         fn clone(&self) -> PtrInner<'a, T> {
             // SAFETY: None of the invariants on `ptr` are affected by having
             // multiple copies of a `PtrInner`.
@@ -87,7 +89,9 @@ mod _def {
         ///    Rust allocation, `A`.
         /// 1. If `ptr`'s referent is not zero sized, `A` is guaranteed to live
         ///    for at least `'a`.
-        pub(crate) const unsafe fn new(ptr: NonNull<T>) -> PtrInner<'a, T> {
+        #[inline(always)]
+        #[must_use]
+        pub const unsafe fn new(ptr: NonNull<T>) -> PtrInner<'a, T> {
             // SAFETY: The caller has promised to satisfy all safety invariants
             // of `PtrInner`.
             Self { ptr, _marker: PhantomData }
@@ -98,7 +102,9 @@ mod _def {
         /// Note that this method does not consume `self`. The caller should
         /// watch out for `unsafe` code which uses the returned `NonNull` in a
         /// way that violates the safety invariants of `self`.
-        pub(crate) const fn as_non_null(&self) -> NonNull<T> {
+        #[inline(always)]
+        #[must_use]
+        pub const fn as_non_null(&self) -> NonNull<T> {
             self.ptr
         }
     }
@@ -156,6 +162,230 @@ impl<'a, T: ?Sized> PtrInner<'a, T> {
         //   single allocated object.
         unsafe { Self::new(ptr) }
     }
+
+    #[must_use]
+    #[inline(always)]
+    pub fn cast_sized<U>(self) -> PtrInner<'a, U>
+    where
+        T: Sized,
+    {
+        static_assert!(T, U => mem::size_of::<T>() >= mem::size_of::<U>());
+        // SAFETY: By the preceding assert, `U` is no larger than `T`, which is
+        // the size of `self`'s referent.
+        unsafe { self.cast() }
+    }
+
+    /// # Safety
+    ///
+    /// `U` must not be larger than the size of `self`'s referent.
+    #[must_use]
+    #[inline(always)]
+    pub unsafe fn cast<U>(self) -> PtrInner<'a, U> {
+        let ptr = self.as_non_null().cast::<U>();
+
+        // SAFETY: The caller promises that `U` is no larger than `self`'s
+        // referent. Thus, `ptr` addresses a subset of the bytes addressed by
+        // `self`.
+        //
+        // 0. By invariant on `self`, if `self`'s referent is not zero sized,
+        //    then `self` has valid provenance for its referent, which is
+        //    entirely contained in some Rust allocation, `A`. Thus, the same
+        //    holds of `ptr`.
+        // 1. By invariant on `self`, if `self`'s referent is not zero sized,
+        //    then `A` is guaranteed to live for at least `'a`.
+        unsafe { PtrInner::new(ptr) }
+    }
+}
+
+#[allow(clippy::needless_lifetimes)]
+impl<'a, T> PtrInner<'a, T>
+where
+    T: ?Sized + KnownLayout,
+{
+    /// Extracts the metadata of this `ptr`.
+    pub(crate) fn meta(self) -> MetadataOf<T> {
+        let meta = T::pointer_to_metadata(self.as_non_null().as_ptr());
+        // SAFETY: By invariant on `PtrInner`, `self.as_non_null()` addresses no
+        // more than `isize::MAX` bytes.
+        unsafe { MetadataOf::new_unchecked(meta) }
+    }
+
+    /// Produces a `PtrInner` with the same address and provenance as `self` but
+    /// the given `meta`.
+    ///
+    /// # Safety
+    ///
+    /// The caller promises that if `self`'s referent is not zero sized, then
+    /// a pointer constructed from its address with the given `meta` metadata
+    /// will address a subset of the allocation pointed to by `self`.
+    #[inline]
+    pub(crate) unsafe fn with_meta(self, meta: T::PointerMetadata) -> Self
+    where
+        T: KnownLayout,
+    {
+        let raw = T::raw_from_ptr_len(self.as_non_null().cast(), meta);
+
+        // SAFETY:
+        //
+        // Lemma 0: `raw` either addresses zero bytes, or addresses a subset of
+        //          the allocation pointed to by `self` and has the same
+        //          provenance as `self`. Proof: `raw` is constructed using
+        //          provenance-preserving operations, and the caller has
+        //          promised that, if `self`'s referent is not zero-sized, the
+        //          resulting pointer addresses a subset of the allocation
+        //          pointed to by `self`.
+        //
+        // 0. Per Lemma 0 and by invariant on `self`, if `ptr`'s referent is not
+        //    zero sized, then `ptr` is derived from some valid Rust allocation,
+        //    `A`.
+        // 1. Per Lemma 0 and by invariant on `self`, if `ptr`'s referent is not
+        //    zero sized, then `ptr` has valid provenance for `A`.
+        // 2. Per Lemma 0 and by invariant on `self`, if `ptr`'s referent is not
+        //    zero sized, then `ptr` addresses a byte range which is entirely
+        //    contained in `A`.
+        // 3. Per Lemma 0 and by invariant on `self`, `ptr` addresses a byte
+        //    range whose length fits in an `isize`.
+        // 4. Per Lemma 0 and by invariant on `self`, `ptr` addresses a byte
+        //    range which does not wrap around the address space.
+        // 5. Per Lemma 0 and by invariant on `self`, if `ptr`'s referent is not
+        //    zero sized, then `A` is guaranteed to live for at least `'a`.
+        unsafe { PtrInner::new(raw) }
+    }
+
+    pub(crate) fn as_bytes(self) -> PtrInner<'a, [u8]> {
+        let ptr = self.as_non_null();
+        let bytes = match T::size_of_val_raw(ptr) {
+            Some(bytes) => bytes,
+            // SAFETY: `KnownLayout::size_of_val_raw` promises to always
+            // return `Some` so long as the resulting size fits in a
+            // `usize`. By invariant on `PtrInner`, `self` refers to a range
+            // of bytes whose size fits in an `isize`, which implies that it
+            // also fits in a `usize`.
+            None => unsafe { core::hint::unreachable_unchecked() },
+        };
+
+        let ptr = core::ptr::slice_from_raw_parts_mut(ptr.cast::<u8>().as_ptr(), bytes);
+
+        // SAFETY: `ptr` has the same address as `ptr = self.as_non_null()`,
+        // which is non-null by construction.
+        let ptr = unsafe { NonNull::new_unchecked(ptr) };
+
+        // SAFETY: `ptr` points to `bytes` `u8`s starting at the same address as
+        // `self`'s referent. Since `bytes` is the length of `self`'s referent,
+        // `ptr` addresses the same byte range as `self`. Thus, by invariant on
+        // `self` (as a `PtrInner`):
+        //
+        // 0. If `ptr`'s referent is not zero sized, then `ptr` has valid
+        //    provenance for its referent, which is entirely contained in some
+        //    Rust allocation, `A`.
+        // 1. If `ptr`'s referent is not zero sized, `A` is guaranteed to live
+        //    for at least `'a`.
+        unsafe { PtrInner::new(ptr) }
+    }
+}
+
+#[allow(clippy::needless_lifetimes)]
+impl<'a, T> PtrInner<'a, T>
+where
+    T: ?Sized + KnownLayout<PointerMetadata = usize>,
+{
+    /// Splits `T` in two.
+    ///
+    /// # Safety
+    ///
+    /// The caller promises that:
+    ///  - `l_len.get() <= self.meta()`.
+    ///
+    /// ## (Non-)Overlap
+    ///
+    /// Given `let (left, right) = ptr.split_at(l_len)`, it is guaranteed that
+    /// `left` and `right` are contiguous and non-overlapping if
+    /// `l_len.padding_needed_for() == 0`. This is true for all `[T]`.
+    ///
+    /// If `l_len.padding_needed_for() != 0`, then the left pointer will overlap
+    /// the right pointer to satisfy `T`'s padding requirements.
+    pub(crate) unsafe fn split_at_unchecked(
+        self,
+        l_len: crate::util::MetadataOf<T>,
+    ) -> (Self, PtrInner<'a, [T::Elem]>)
+    where
+        T: SplitAt,
+    {
+        let l_len = l_len.get();
+
+        // SAFETY: The caller promises that `l_len.get() <= self.meta()`.
+        // Trivially, `0 <= l_len`.
+        let left = unsafe { self.with_meta(l_len) };
+
+        let right = self.trailing_slice();
+        // SAFETY: The caller promises that `l_len <= self.meta() = slf.meta()`.
+        // Trivially, `slf.meta() <= slf.meta()`.
+        let right = unsafe { right.slice_unchecked(l_len..self.meta().get()) };
+
+        // SAFETY: If `l_len.padding_needed_for() == 0`, then `left` and `right`
+        // are non-overlapping. Proof: `left` is constructed `slf` with `l_len`
+        // as its (exclusive) upper bound. If `l_len.padding_needed_for() == 0`,
+        // then `left` requires no trailing padding following its final element.
+        // Since `right` is constructed from `slf`'s trailing slice with `l_len`
+        // as its (inclusive) lower bound, no byte is referred to by both
+        // pointers.
+        //
+        // Conversely, `l_len.padding_needed_for() == N`, where `N
+        // > 0`, `left` requires `N` bytes of trailing padding following its
+        // final element. Since `right` is constructed from the trailing slice
+        // of `slf` with `l_len` as its (inclusive) lower bound, the first `N`
+        // bytes of `right` are aliased by `left`.
+        (left, right)
+    }
+
+    /// Produces the trailing slice of `self`.
+    pub(crate) fn trailing_slice(self) -> PtrInner<'a, [T::Elem]>
+    where
+        T: SplitAt,
+    {
+        let offset = crate::trailing_slice_layout::<T>().offset;
+
+        let bytes = self.as_non_null().cast::<u8>().as_ptr();
+
+        // SAFETY:
+        // - By invariant on `T: KnownLayout`, `T::LAYOUT` describes `T`'s
+        //   layout. `offset` is the offset of the trailing slice within `T`,
+        //   which is by definition in-bounds or one byte past the end of any
+        //   `T`, regardless of metadata. By invariant on `PtrInner`, `self`
+        //   (and thus `bytes`) points to a byte range of size `<= isize::MAX`,
+        //   and so `offset <= isize::MAX`. Since `size_of::<u8>() == 1`,
+        //   `offset * size_of::<u8>() <= isize::MAX`.
+        // - If `offset > 0`, then by invariant on `PtrInner`, `self` (and thus
+        //   `bytes`) points to a byte range entirely contained within the same
+        //   allocated object as `self`. As explained above, this offset results
+        //   in a pointer to or one byte past the end of this allocated object.
+        let bytes = unsafe { bytes.add(offset) };
+
+        // SAFETY: By the preceding safety argument, `bytes` is within or one
+        // byte past the end of the same allocated object as `self`, which
+        // ensures that it is non-null.
+        let bytes = unsafe { NonNull::new_unchecked(bytes) };
+
+        let ptr = KnownLayout::raw_from_ptr_len(bytes, self.meta().get());
+
+        // SAFETY:
+        // 0. If `ptr`'s referent is not zero sized, then `ptr` is derived from
+        //    some valid Rust allocation, `A`, because `ptr` is derived from
+        //    the same allocated object as `self`.
+        // 1. If `ptr`'s referent is not zero sized, then `ptr` has valid
+        //    provenance for `A` because `raw` is derived from the same
+        //    allocated object as `self` via provenance-preserving operations.
+        // 2. If `ptr`'s referent is not zero sized, then `ptr` addresses a byte
+        //    range which is entirely contained in `A`, by previous safety proof
+        //    on `bytes`.
+        // 3. `ptr` addresses a byte range whose length fits in an `isize`, by
+        //    consequence of #2.
+        // 4. `ptr` addresses a byte range which does not wrap around the
+        //    address space, by consequence of #2.
+        // 5. If `ptr`'s referent is not zero sized, then `A` is guaranteed to
+        //    live for at least `'a`, because `ptr` is derived from `self`.
+        unsafe { PtrInner::new(ptr) }
+    }
 }
 
 #[allow(clippy::needless_lifetimes)]
@@ -164,11 +394,11 @@ impl<'a, T> PtrInner<'a, [T]> {
     ///
     /// # Safety
     ///
-    /// `range` is a valid range (`start <= end`) and `end <= self.len()`.
+    /// `range` is a valid range (`start <= end`) and `end <= self.meta()`.
     pub(crate) unsafe fn slice_unchecked(self, range: Range<usize>) -> Self {
         let base = self.as_non_null().cast::<T>().as_ptr();
 
-        // SAFETY: The caller promises that `start <= end <= self.len()`. By
+        // SAFETY: The caller promises that `start <= end <= self.meta()`. By
         // invariant, if `self`'s referent is not zero-sized, then `self` refers
         // to a byte range which is contained within a single allocation, which
         // is no more than `isize::MAX` bytes long, and which does not wrap
@@ -182,7 +412,7 @@ impl<'a, T> PtrInner<'a, [T]> {
 
         // SAFETY: The caller promises that `start <= end`, and so this will not
         // underflow.
-        #[allow(unstable_name_collisions, clippy::incompatible_msrv)]
+        #[allow(unstable_name_collisions)]
         let len = unsafe { range.end.unchecked_sub(range.start) };
 
         let ptr = core::ptr::slice_from_raw_parts_mut(base, len);
@@ -196,9 +426,9 @@ impl<'a, T> PtrInner<'a, [T]> {
         //
         // Lemma 0: `ptr` addresses a subset of the bytes addressed by `self`,
         //          and has the same provenance. Proof: The caller guarantees
-        //          that `start <= end <= self.len()`. Thus, `base` is in-bounds
-        //          of `self`, and `base + (end - start)` is also in-bounds of
-        //          self. Finally, `ptr` is constructed using
+        //          that `start <= end <= self.meta()`. Thus, `base` is
+        //          in-bounds of `self`, and `base + (end - start)` is also
+        //          in-bounds of self. Finally, `ptr` is constructed using
         //          provenance-preserving operations.
         //
         // 0. Per Lemma 0 and by invariant on `self`, if `ptr`'s referent is not
@@ -209,38 +439,13 @@ impl<'a, T> PtrInner<'a, [T]> {
         unsafe { PtrInner::new(ptr) }
     }
 
-    /// Splits the slice in two.
-    ///
-    /// # Safety
-    ///
-    /// The caller promises that `l_len <= self.len()`.
-    ///
-    /// Given `let (left, right) = ptr.split_at(l_len)`, it is guaranteed
-    /// that `left` and `right` are contiguous and non-overlapping.
-    pub(crate) unsafe fn split_at(self, l_len: usize) -> (Self, Self) {
-        // SAFETY: The caller promises that `l_len <= self.len()`.
-        // Trivially, `0 <= l_len`.
-        let left = unsafe { self.slice_unchecked(0..l_len) };
-
-        // SAFETY: The caller promises that `l_len <= self.len() =
-        // slf.len()`. Trivially, `slf.len() <= slf.len()`.
-        let right = unsafe { self.slice_unchecked(l_len..self.len()) };
-
-        // SAFETY: `left` and `right` are non-overlapping. Proof: `left` is
-        // constructed from `slf` with `l_len` as its (exclusive) upper
-        // bound, while `right` is constructed from `slf` with `l_len` as
-        // its (inclusive) lower bound. Thus, no index is a member of both
-        // ranges.
-        (left, right)
-    }
-
     /// Iteratively projects the elements `PtrInner<T>` from `PtrInner<[T]>`.
     pub(crate) fn iter(&self) -> impl Iterator<Item = PtrInner<'a, T>> {
-        // TODO(#429): Once `NonNull::cast` documents that it preserves
+        // FIXME(#429): Once `NonNull::cast` documents that it preserves
         // provenance, cite those docs.
         let base = self.as_non_null().cast::<T>().as_ptr();
-        (0..self.len()).map(move |i| {
-            // TODO(https://github.com/rust-lang/rust/issues/74265): Use
+        (0..self.meta().get()).map(move |i| {
+            // FIXME(https://github.com/rust-lang/rust/issues/74265): Use
             // `NonNull::get_unchecked_mut`.
 
             // SAFETY: If the following conditions are not satisfied
@@ -263,8 +468,8 @@ impl<'a, T> PtrInner<'a, [T]> {
             // - If the computed offset is non-zero, then this means that the
             //   referent is not zero-sized. In this case, `base` points to an
             //   allocated object (by invariant on `self`). Thus:
-            //   - By contract, `self.len()` accurately reflects the number of
-            //     elements in the slice. `i` is in bounds of `c.len()` by
+            //   - By contract, `self.meta()` accurately reflects the number of
+            //     elements in the slice. `i` is in bounds of `c.meta()` by
             //     construction, and so the result of this addition cannot
             //     overflow past the end of the allocation referred to by `c`.
             //   - By invariant on `Ptr`, `self` addresses a byte range which
@@ -272,7 +477,7 @@ impl<'a, T> PtrInner<'a, [T]> {
             //     contained in `self`, the computed offset of `elem` must wrap
             //     around the address space.
             //
-            // TODO(#429): Once `pointer::add` documents that it preserves
+            // FIXME(#429): Once `pointer::add` documents that it preserves
             // provenance, cite those docs.
             let elem = unsafe { base.add(i) };
 
@@ -280,7 +485,7 @@ impl<'a, T> PtrInner<'a, [T]> {
             // `NonNull` pointer, and the addition that produces `elem` must not
             // overflow or wrap around, so `elem >= base > 0`.
             //
-            // TODO(#429): Once `NonNull::new_unchecked` documents that it
+            // FIXME(#429): Once `NonNull::new_unchecked` documents that it
             // preserves provenance, cite those docs.
             let elem = unsafe { NonNull::new_unchecked(elem) };
 
@@ -298,32 +503,6 @@ impl<'a, T> PtrInner<'a, [T]> {
             //    by invariant on `Ptr`.
             unsafe { PtrInner::new(elem) }
         })
-    }
-
-    /// The number of slice elements in the object referenced by `self`.
-    ///
-    /// # Safety
-    ///
-    /// Unsafe code my rely on `len` satisfying the above contract.
-    pub(crate) fn len(&self) -> usize {
-        self.trailing_slice_len()
-    }
-}
-
-#[allow(clippy::needless_lifetimes)]
-impl<'a, T> PtrInner<'a, T>
-where
-    T: ?Sized + KnownLayout<PointerMetadata = usize>,
-{
-    /// The number of trailing slice elements in the object referenced by
-    /// `self`.
-    ///
-    /// # Safety
-    ///
-    /// Unsafe code my rely on `trailing_slice_len` satisfying the above
-    /// contract.
-    pub(super) fn trailing_slice_len(&self) -> usize {
-        T::pointer_to_metadata(self.as_non_null().as_ptr())
     }
 }
 
@@ -391,18 +570,6 @@ impl<'a> PtrInner<'a, [u8]> {
     where
         U: 'a + ?Sized + KnownLayout,
     {
-        let layout = match meta {
-            None => U::LAYOUT,
-            // This can return `None` if the metadata describes an object
-            // which can't fit in an `isize`.
-            Some(meta) => {
-                let size = match meta.size_for_metadata(U::LAYOUT) {
-                    Some(size) => size,
-                    None => return Err(CastError::Size(SizeError::new(self))),
-                };
-                DstLayout { align: U::LAYOUT.align, size_info: crate::SizeInfo::Sized { size } }
-            }
-        };
         // PANICS: By invariant, the byte range addressed by
         // `self.as_non_null()` does not wrap around the address space. This
         // implies that the sum of the address (represented as a `usize`) and
@@ -410,10 +577,11 @@ impl<'a> PtrInner<'a, [u8]> {
         // `validate_cast_and_convert_metadata`. Thus, this call to
         // `validate_cast_and_convert_metadata` will only panic if `U` is a DST
         // whose trailing slice element is zero-sized.
-        let maybe_metadata = layout.validate_cast_and_convert_metadata(
+        let maybe_metadata = MetadataOf::<U>::validate_cast_and_convert_metadata(
             AsAddress::addr(self.as_non_null().as_ptr()),
-            self.len(),
+            self.meta(),
             cast_type,
+            meta,
         );
 
         let (elems, split_at) = match maybe_metadata {
@@ -429,8 +597,12 @@ impl<'a> PtrInner<'a, [u8]> {
         };
 
         // SAFETY: `validate_cast_and_convert_metadata` promises to return
-        // `split_at <= self.len()`.
-        let (l_slice, r_slice) = unsafe { self.split_at(split_at) };
+        // `split_at <= self.meta()`.
+        //
+        // Lemma 0: `l_slice` and `r_slice` are non-overlapping. Proof: By
+        // contract on `PtrInner::split_at_unchecked`, the produced `PtrInner`s
+        // are always non-overlapping if `self` is a `[T]`; here it is a `[u8]`.
+        let (l_slice, r_slice) = unsafe { self.split_at_unchecked(split_at) };
 
         let (target, remainder) = match cast_type {
             CastType::Prefix => (l_slice, r_slice),
@@ -439,16 +611,7 @@ impl<'a> PtrInner<'a, [u8]> {
 
         let base = target.as_non_null().cast::<u8>();
 
-        let elems = <U as KnownLayout>::PointerMetadata::from_elem_count(elems);
-        // For a slice DST type, if `meta` is `Some(elems)`, then we synthesize
-        // `layout` to describe a sized type whose size is equal to the size of
-        // the instance that we are asked to cast. For sized types,
-        // `validate_cast_and_convert_metadata` returns `elems == 0`. Thus, in
-        // this case, we need to use the `elems` passed by the caller, not the
-        // one returned by `validate_cast_and_convert_metadata`.
-        let elems = meta.unwrap_or(elems);
-
-        let ptr = U::raw_from_ptr_len(base, elems);
+        let ptr = U::raw_from_ptr_len(base, elems.get());
 
         // SAFETY:
         // 0. By invariant, if `target`'s referent is not zero sized, then
@@ -469,31 +632,116 @@ impl<'a> PtrInner<'a, [u8]> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::*;
+
+    #[test]
+    fn test_meta() {
+        let arr = [1; 16];
+        let dst = <[u8]>::ref_from_bytes(&arr[..]).unwrap();
+        let ptr = PtrInner::from_ref(dst);
+        assert_eq!(ptr.meta().get(), 16);
+
+        // SAFETY: 8 is less than 16
+        let ptr = unsafe { ptr.with_meta(8) };
+
+        assert_eq!(ptr.meta().get(), 8);
+    }
 
     #[test]
     fn test_split_at() {
-        const N: usize = 16;
-        let arr = [1; N];
-        let ptr = PtrInner::from_ref(&arr).as_slice();
-        for i in 0..=N {
-            assert_eq!(ptr.len(), N);
-            // SAFETY: `i` is in bounds by construction.
-            let (l, r) = unsafe { ptr.split_at(i) };
-            // SAFETY: Points to a valid value by construction.
-            #[allow(clippy::undocumented_unsafe_blocks)] // Clippy false positive
-            let l_sum: usize = l
-                .iter()
-                .map(|ptr| unsafe { core::ptr::read_unaligned(ptr.as_non_null().as_ptr()) })
-                .sum();
-            // SAFETY: Points to a valid value by construction.
-            #[allow(clippy::undocumented_unsafe_blocks)] // Clippy false positive
-            let r_sum: usize = r
-                .iter()
-                .map(|ptr| unsafe { core::ptr::read_unaligned(ptr.as_non_null().as_ptr()) })
-                .sum();
-            assert_eq!(l_sum, i);
-            assert_eq!(r_sum, N - i);
-            assert_eq!(l_sum + r_sum, N);
+        fn test_split_at<const OFFSET: usize, const BUFFER_SIZE: usize>() {
+            #[derive(FromBytes, KnownLayout, SplitAt, Immutable)]
+            #[repr(C)]
+            struct SliceDst<const OFFSET: usize> {
+                prefix: [u8; OFFSET],
+                trailing: [u8],
+            }
+
+            let n: usize = BUFFER_SIZE - OFFSET;
+            let arr = [1; BUFFER_SIZE];
+            let dst = SliceDst::<OFFSET>::ref_from_bytes(&arr[..]).unwrap();
+            let ptr = PtrInner::from_ref(dst);
+            for i in 0..=n {
+                assert_eq!(ptr.meta().get(), n);
+                // SAFETY: `i` is in bounds by construction.
+                let i = unsafe { MetadataOf::new_unchecked(i) };
+                // SAFETY: `i` is in bounds by construction.
+                let (l, r) = unsafe { ptr.split_at_unchecked(i) };
+                // SAFETY: Points to a valid value by construction.
+                #[allow(clippy::undocumented_unsafe_blocks, clippy::as_conversions)]
+                // Clippy false positive
+                let l_sum: usize = l
+                    .trailing_slice()
+                    .iter()
+                    .map(|ptr| unsafe { core::ptr::read_unaligned(ptr.as_non_null().as_ptr()) }
+                        as usize)
+                    .sum();
+                // SAFETY: Points to a valid value by construction.
+                #[allow(clippy::undocumented_unsafe_blocks, clippy::as_conversions)]
+                // Clippy false positive
+                let r_sum: usize = r
+                    .iter()
+                    .map(|ptr| unsafe { core::ptr::read_unaligned(ptr.as_non_null().as_ptr()) }
+                        as usize)
+                    .sum();
+                assert_eq!(l_sum, i.get());
+                assert_eq!(r_sum, n - i.get());
+                assert_eq!(l_sum + r_sum, n);
+            }
         }
+
+        test_split_at::<0, 16>();
+        test_split_at::<1, 17>();
+        test_split_at::<2, 18>();
+    }
+
+    #[test]
+    fn test_trailing_slice() {
+        fn test_trailing_slice<const OFFSET: usize, const BUFFER_SIZE: usize>() {
+            #[derive(FromBytes, KnownLayout, SplitAt, Immutable)]
+            #[repr(C)]
+            struct SliceDst<const OFFSET: usize> {
+                prefix: [u8; OFFSET],
+                trailing: [u8],
+            }
+
+            let n: usize = BUFFER_SIZE - OFFSET;
+            let arr = [1; BUFFER_SIZE];
+            let dst = SliceDst::<OFFSET>::ref_from_bytes(&arr[..]).unwrap();
+            let ptr = PtrInner::from_ref(dst);
+
+            assert_eq!(ptr.meta().get(), n);
+            let trailing = ptr.trailing_slice();
+            assert_eq!(trailing.meta().get(), n);
+
+            assert_eq!(
+                // SAFETY: We assume this to be sound for the sake of this test,
+                // which will fail, here, in miri, if the safety precondition of
+                // `offset_of` is not satisfied.
+                unsafe {
+                    #[allow(clippy::as_conversions)]
+                    let offset = (trailing.as_non_null().as_ptr() as *mut u8)
+                        .offset_from(ptr.as_non_null().as_ptr() as *mut _);
+                    offset
+                },
+                isize::try_from(OFFSET).unwrap(),
+            );
+
+            // SAFETY: Points to a valid value by construction.
+            #[allow(clippy::undocumented_unsafe_blocks, clippy::as_conversions)]
+            // Clippy false positive
+            let trailing: usize =
+                trailing
+                    .iter()
+                    .map(|ptr| unsafe { core::ptr::read_unaligned(ptr.as_non_null().as_ptr()) }
+                        as usize)
+                    .sum();
+
+            assert_eq!(trailing, n);
+        }
+
+        test_trailing_slice::<0, 16>();
+        test_trailing_slice::<1, 17>();
+        test_trailing_slice::<2, 18>();
     }
 }

@@ -1,7 +1,5 @@
 use super::{write_marker, RmpWrite};
-use crate::encode::{
-    write_pfix, write_u16, write_u32, write_u64, write_u8, ValueWriteError,
-};
+use crate::encode::{write_pfix, write_u16, write_u32, write_u64, write_u8, ValueWriteError};
 use crate::Marker;
 
 /// Encodes and attempts to write a negative small integer value as a negative fixnum into the

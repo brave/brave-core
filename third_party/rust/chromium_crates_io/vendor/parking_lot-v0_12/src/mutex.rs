@@ -6,7 +6,6 @@
 // copied, modified, or distributed except according to those terms.
 
 use crate::raw_mutex::RawMutex;
-use lock_api;
 
 /// A mutual exclusion primitive useful for protecting shared data
 ///
@@ -216,13 +215,13 @@ mod tests {
         let _t = thread::spawn(move || {
             // wait until parent gets in
             rx.recv().unwrap();
-            let &(ref lock, ref cvar) = &*packet2.0;
+            let (lock, cvar) = &*packet2.0;
             let mut lock = lock.lock();
             *lock = true;
             cvar.notify_one();
         });
 
-        let &(ref lock, ref cvar) = &*packet.0;
+        let (lock, cvar) = &*packet.0;
         let mut lock = lock.lock();
         tx.send(()).unwrap();
         assert!(!*lock);

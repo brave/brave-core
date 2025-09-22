@@ -1,8 +1,8 @@
 name: CI
 on: [push, pull_request]
 
-env:
-  RUSTFLAGS: -Dwarnings
+# env:
+#   RUSTFLAGS: -Dwarnings
 
 jobs:
   test:
@@ -11,10 +11,7 @@ jobs:
     strategy:
       matrix:
         rust:
-          - 1.39.0
           - stable
-          - beta
-          - nightly
     steps:
       - uses: actions/checkout@master
       - name: Install Rust

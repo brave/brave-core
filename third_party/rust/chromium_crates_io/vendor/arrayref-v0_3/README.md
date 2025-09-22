@@ -106,4 +106,4 @@ explicit.  Moreover (although I have not tested this), the use of
 array references rather than slices *should* result in far fewer
 bounds checks, since almost all sizes are known at compile time.
 
-[2]: https://github.com/droundy/onionsalt/blob/master/src/crypto.rs
+[2]: https://github.com/droundy/onionsalt/blob/master/src/crypto/mod.rs

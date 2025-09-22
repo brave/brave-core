@@ -338,7 +338,7 @@ impl Regex {
     /// The `0`th capture group is always unnamed, so it must always be
     /// accessed with `get(0)` or `[0]`.
     ///
-    /// Finally, one other way to to get the matched substrings is with the
+    /// Finally, one other way to get the matched substrings is with the
     /// [`Captures::extract`] API:
     ///
     /// ```
@@ -969,7 +969,7 @@ impl Regex {
     /// Returns the end byte offset of the first match in the haystack given.
     ///
     /// This method may have the same performance characteristics as
-    /// `is_match`. Behaviorlly, it doesn't just report whether it match
+    /// `is_match`. Behaviorally, it doesn't just report whether it match
     /// occurs, but also the end offset for a match. In particular, the offset
     /// returned *may be shorter* than the proper end of the leftmost-first
     /// match that you would find via [`Regex::find`].
@@ -1743,7 +1743,7 @@ impl<'h> Captures<'h> {
     /// use regex::Regex;
     ///
     /// let re = Regex::new(r"([0-9]{4})-([0-9]{2})-([0-9]{2})").unwrap();
-    /// let hay = "On 2010-03-14, I became a Tenneessee lamb.";
+    /// let hay = "On 2010-03-14, I became a Tennessee lamb.";
     /// let Some((full, [year, month, day])) =
     ///     re.captures(hay).map(|caps| caps.extract()) else { return };
     /// assert_eq!("2010-03-14", full);
@@ -1797,7 +1797,7 @@ impl<'h> Captures<'h> {
             .expect("number of capture groups can vary in a match")
             .checked_sub(1)
             .expect("number of groups is always greater than zero");
-        assert_eq!(N, len, "asked for {} groups, but must ask for {}", N, len);
+        assert_eq!(N, len, "asked for {N} groups, but must ask for {len}");
         // The regex-automata variant of extract is a bit more permissive.
         // It doesn't require the number of matching capturing groups to be
         // static, and you can even request fewer groups than what's there. So
@@ -1852,7 +1852,7 @@ impl<'h> Captures<'h> {
     /// let re = Regex::new(
     ///     r"(?<day>[0-9]{2})-(?<month>[0-9]{2})-(?<year>[0-9]{4})",
     /// ).unwrap();
-    /// let hay = "On 14-03-2010, I became a Tenneessee lamb.";
+    /// let hay = "On 14-03-2010, I became a Tennessee lamb.";
     /// let caps = re.captures(hay).unwrap();
     ///
     /// let mut dst = String::new();
@@ -1952,7 +1952,7 @@ impl<'h> core::fmt::Debug for Captures<'h> {
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
                 write!(f, "{}", self.0)?;
                 if let Some(name) = self.1 {
-                    write!(f, "/{:?}", name)?;
+                    write!(f, "/{name:?}")?;
                 }
                 Ok(())
             }
@@ -2593,7 +2593,7 @@ impl<'s> Replacer for NoExpand<'s> {
 /// no `$` anywhere, then interpolation definitely does not need to be done. In
 /// that case, the given string is returned as a borrowed `Cow`.
 ///
-/// This is meant to be used to implement the `Replacer::no_expandsion` method
+/// This is meant to be used to implement the [`Replacer::no_expansion`] method
 /// in its various trait impls.
 fn no_expansion<T: AsRef<str>>(replacement: &T) -> Option<Cow<'_, str>> {
     let replacement = replacement.as_ref();

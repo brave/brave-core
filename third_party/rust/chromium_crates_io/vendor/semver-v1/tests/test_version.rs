@@ -1,6 +1,7 @@
 #![allow(
     clippy::nonminimal_bool,
     clippy::too_many_lines,
+    clippy::uninlined_format_args,
     clippy::wildcard_imports
 )]
 

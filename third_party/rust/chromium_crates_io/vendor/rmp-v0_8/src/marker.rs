@@ -4,12 +4,26 @@ const FIXMAP_SIZE   : u8 = 0x0f;
 
 /// Format markers.
 #[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(u8)]
 pub enum Marker {
-    FixPos(u8),
-    FixNeg(i8),
-    Null,
-    True,
+    FixPos(u8) = 0x00,
+    FixNeg(i8) = 0xe0,
+    FixMap(u8) = 0x80,
+    FixArray(u8) = 0x90,
+    FixStr(u8) = 0xa0,
+    Null = 0xc0,
+    // Marked in MessagePack spec as never used.
+    Reserved,
     False,
+    True,
+    Bin8,
+    Bin16,
+    Bin32,
+    Ext8,
+    Ext16,
+    Ext32,
+    F32,
+    F64,
     U8,
     U16,
     U32,
@@ -18,34 +32,24 @@ pub enum Marker {
     I16,
     I32,
     I64,
-    F32,
-    F64,
-    FixStr(u8),
-    Str8,
-    Str16,
-    Str32,
-    Bin8,
-    Bin16,
-    Bin32,
-    FixArray(u8),
-    Array16,
-    Array32,
-    FixMap(u8),
-    Map16,
-    Map32,
     FixExt1,
     FixExt2,
     FixExt4,
     FixExt8,
     FixExt16,
-    Ext8,
-    Ext16,
-    Ext32,
-    Reserved,
+    Str8,
+    Str16,
+    Str32,
+    Array16,
+    Array32,
+    Map16,
+    Map32,
 }
 
 impl Marker {
     /// Construct a msgpack marker from a single byte.
+    #[must_use]
+    #[inline]
     pub fn from_u8(n: u8) -> Marker {
         match n {
             0x00 ..= 0x7f => Marker::FixPos(n),
@@ -90,6 +94,8 @@ impl Marker {
     }
 
     /// Converts a marker object into a single-byte representation.
+    #[must_use]
+    #[inline]
     pub fn to_u8(&self) -> u8 {
         match *self {
             Marker::FixPos(val)   => val,
@@ -145,15 +151,15 @@ impl Marker {
 }
 
 impl From<u8> for Marker {
-    #[inline]
+    #[inline(always)]
     fn from(val: u8) -> Marker {
         Marker::from_u8(val)
     }
 }
 
-impl Into<u8> for Marker {
-    #[inline]
-    fn into(self) -> u8 {
-        self.to_u8()
+impl From<Marker> for u8 {
+    #[inline(always)]
+    fn from(val: Marker) -> Self {
+        val.to_u8()
     }
 }

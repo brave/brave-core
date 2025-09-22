@@ -2,8 +2,13 @@ error[E0277]: the trait bound `NotZerocopy: zerocopy::TryFromBytes` is not satis
   --> tests/ui-nightly/diagnostic-not-implemented-try-from-bytes.rs:18:28
    |
 18 |     takes_try_from_bytes::<NotZerocopy>();
-   |                            ^^^^^^^^^^^ the trait `zerocopy::TryFromBytes` is not implemented for `NotZerocopy`
+   |                            ^^^^^^^^^^^ unsatisfied trait bound
    |
+help: the trait `zerocopy::TryFromBytes` is not implemented for `NotZerocopy`
+  --> tests/ui-nightly/../../zerocopy-derive/tests/include.rs
+   |
+   |     pub struct NotZerocopy<T = ()>(pub T);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    = note: Consider adding `#[derive(TryFromBytes)]` to `NotZerocopy`
    = help: the following other types implement trait `zerocopy::TryFromBytes`:
              ()

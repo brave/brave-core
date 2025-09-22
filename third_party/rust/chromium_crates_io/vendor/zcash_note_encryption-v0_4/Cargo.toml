@@ -13,18 +13,22 @@
 edition = "2021"
 rust-version = "1.56.1"
 name = "zcash_note_encryption"
-version = "0.4.0"
+version = "0.4.1"
 authors = [
     "Jack Grigg <jack@electriccoin.co>",
     "Kris Nuttycombe <kris@electriccoin.co>",
 ]
+build = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Note encryption for Zcash transactions"
 homepage = "https://github.com/zcash/librustzcash"
 readme = "README.md"
 categories = ["cryptography::cryptocurrencies"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/zcash/librustzcash"
-resolver = "1"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -34,6 +38,8 @@ rustdoc-args = [
 ]
 
 [lib]
+name = "zcash_note_encryption"
+path = "src/lib.rs"
 bench = false
 
 [dependencies.chacha20]

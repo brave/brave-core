@@ -1,3 +1,29 @@
+# 1.3.1 (March 11, 2025)
+
+* Fix validation that all characters are UTF-8 in URI path and query.
+
+# 1.3.0 (March 11, 2025)
+
+* Allow most UTF-8 characters in URI path and query.
+* Fix `HeaderMap::reserve()` to allocate sufficient capacity.
+
+# 1.2.0 (December 3, 2024)
+
+* Add `StatusCode::TOO_EARLY` constant for 425 status.
+* Loosen `TryFrom<HashMap>` for `HeaderMap` to work with any state generic.
+* Change `Builder` methods to use `TryInto` instead of `TryFrom` arguments.
+* Make `StatusCode::as_u16` a `const` function.
+* Fix `Method` parsing to allow `#$%&'` characters.
+* Fix `HeaderName` parsing to reject `"` characters.
+* Fix off by 1 error in `Method::from_bytes` that could cause extra allocations.
+
+# 1.1.0 (March 4, 2024)
+
+* Add methods to allow trying to allocate in the `HeaderMap`, returning an error if oversize instead of panicking.
+* Add `Extensions::get_or_insert()` method.
+* Implement `From<Uri>` for `uri::Builder`.
+* Fix `HeaderName::from_lowercase` that could allow NUL bytes in some cases.
+
 # 1.0.0 (November 15, 2023)
 
 - Implement `Clone` for `Request`, `Response`, and `Extensions`. This breaking change requires

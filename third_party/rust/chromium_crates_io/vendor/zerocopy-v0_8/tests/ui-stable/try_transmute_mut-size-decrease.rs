@@ -17,5 +17,5 @@ use zerocopy::try_transmute_mut;
 // size of the destination type is not smaller than the size of the source type.
 fn main() {
     let src = &mut AU16(0);
-    let decrease_size: Result<&mut u8, _> = try_transmute_mut!(src);
+    let _decrease_size: Result<&mut u8, _> = try_transmute_mut!(src);
 }

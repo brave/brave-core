@@ -2,7 +2,7 @@
 
 We are pleased to announce the wire format stabilisation of the primary feature set of our [schnorrkel](https://github.com/w3f/schnorrkel) crate ([docs](https://docs.rs/schnorrkel)), which provides safer access to basic functionality now expected from signatures on blockchains.  In particular, schnorrkel provides Schnorr signatures, a fast Schnorr DLEQ proof based VRF, hierarchical deterministic key derivation (HDKD), and the safest currently known three round trip Schnorr multi-signature variant.
 
-We want more diverse functionality from signatures used in blockchain applications than from signatures used only in TLS, PGP, etc.  Schnorr signatures support more [functionality](https://github.com/sipa/bips/blob/bip-schnorr/bip-schnorr.mediawiki) than ECDSA, and do so far more simply.  In particular, multi-signatures and threshold signatures are vastly simpler with Schnorr signatures.  
+We want more diverse functionality from signatures used in blockchain applications than from signatures used only in TLS, PGP, etc.  Schnorr signatures support more [functionality](https://github.com/sipa/bips/blob/bip-taproot/bip-0340.mediawiki) than ECDSA, and do so far more simply.  In particular, multi-signatures and threshold signatures are vastly simpler with Schnorr signatures.  
 
 Also, the security arguments for Schnorr signatures require only standard assumptions plus the hash function being a random oracle.  By comparison, ECDSA arguments employ ad hoc dubious assumptions like an elliptic curve point compression function being a random oracle.  The simpler arguments ror Schnorr more often provide clear answers about the security of Schnorr composed with other protocols.
 
@@ -28,7 +28,7 @@ In 2015, Mike Hamburg resolved this conflict in his [Decaf](https://eprint.iacr.
 
 We employ Ristretto throughout schnorrkel, which reduces malleability, simplifies the analysis of our higher level protocols, and makes it safer to compose schnorrkel protocols with each other and with other similar protocols.
 
-Also, there are minor practical hiccups with the hash functions designed for NIST competitions, but most especially that they create a byte stream oriented interface over a block oriented permutation.  This improves performance of computing MACs on data that arrives in order but piecemeal, but weakens the permutation's natural domain seperation.  We need strong domain seperation in more complex protocols like signatures and NIZKs.  [STROBE](https://strobe.sourceforge.io/) is a strong general purpose symmetric cryptography construction based on Keccak-f(1600), the permutation driving the SHA3 competition winner.  [Merlin](https://doc.dalek.rs/merlin/index.html) is a STROBE scheme for NIZKs, which does almost perfect domain seperation.  
+Also, there are minor practical hiccups with the hash functions designed for NIST competitions, but most especially that they create a byte stream oriented interface over a block oriented permutation.  This improves performance of computing MACs on data that arrives in order but piecemeal, but weakens the permutation's natural domain separation.  We need strong domain separation in more complex protocols like signatures and NIZKs.  [STROBE](https://strobe.sourceforge.io/) is a strong general purpose symmetric cryptography construction based on Keccak-f(1600), the permutation driving the SHA3 competition winner.  [Merlin](https://doc.dalek.rs/merlin/index.html) is a STROBE scheme for NIZKs, which does almost perfect domain separation.  
 
 In principle, ristretto and merlin together should let schnorrkel play nicely with other future dalek ecosystem crates, like [bulletproofs](https://github.com/dalek-cryptography/bulletproofs).  We've no current plans to exploit this, but this should simplify weak anonymity parachains analogous to Monero or Mimblewimble. 
 
@@ -107,7 +107,7 @@ As an aside, there are now several approaches to doing threshold multi-signature
 
 ### Future 
 
-In future, we want schnorrkel to grow by providing an even more diverse array of cryptographic building blocks, while retaining our existing safety promisses.  We therefore welcome discussions with other implementors around our future directions, like threshold multi-signatures, but also tooling for layer two solutions, like adaptor, blind, and ring signatures.
+In future, we want schnorrkel to grow by providing an even more diverse array of cryptographic building blocks, while retaining our existing safety promises.  We therefore welcome discussions with other implementors around our future directions, like threshold multi-signatures, but also tooling for layer two solutions, like adaptor, blind, and ring signatures.
 
 
 

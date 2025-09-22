@@ -1,428 +1,518 @@
-error: no rules expected the token `:`
- --> tests/ui/pin_project/invalid-bounds.rs:4:33
+error: no rules expected `:`
+ --> tests/ui/pin_project/invalid-bounds.rs:6:33
   |
-4 |     struct Generics1<T: 'static : Sized> { //~ ERROR no rules expected the token `:`
+6 |     struct Generics1<T: 'static : Sized> { //~ ERROR no rules expected the token `:`
   |                                 ^ no rules expected this token in macro call
+  |
+note: while trying to match `>`
+ --> src/lib.rs
+  |
+  |         >)?
+  |         ^
 
-error: no rules expected the token `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:10:33
+error: no rules expected `:`
+  --> tests/ui/pin_project/invalid-bounds.rs:12:33
    |
-10 |     struct Generics2<T: 'static : ?Sized> { //~ ERROR no rules expected the token `:`
+12 |     struct Generics2<T: 'static : ?Sized> { //~ ERROR no rules expected the token `:`
    |                                 ^ no rules expected this token in macro call
+   |
+note: while trying to match `>`
+  --> src/lib.rs
+   |
+   |         >)?
+   |         ^
 
 error: expected one of `+`, `,`, `=`, or `>`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:15:1
+  --> tests/ui/pin_project/invalid-bounds.rs:17:1
    |
-15 | / pin_project! {
-16 | |     struct Generics3<T: Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
-17 | |         field: T,
-18 | |     }
-19 | | }
+17 | / pin_project! {
+18 | |     struct Generics3<T: Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
+19 | |         field: T,
+20 | |     }
+21 | | }
    | | ^
    | | |
    | | expected one of `+`, `,`, `=`, or `>`
    | |_unexpected token
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you might have meant to end the type parameters here
+  --> src/lib.rs
+   |
+   |                     $(: $generics_bound>)?
+   |                                        +
 
 error: expected one of `+`, `,`, `=`, or `>`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:15:1
+  --> tests/ui/pin_project/invalid-bounds.rs:17:1
    |
-15 | / pin_project! {
-16 | |     struct Generics3<T: Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
-17 | |         field: T,
-18 | |     }
-19 | | }
+17 | / pin_project! {
+18 | |     struct Generics3<T: Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
+19 | |         field: T,
+20 | |     }
+21 | | }
    | | ^
    | | |
    | |_expected one of `+`, `,`, `=`, or `>`
    |   unexpected token
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: type ascription syntax has been removed, see issue #101728 <https://github.com/rust-lang/rust/issues/101728>
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you might have meant to end the type parameters here
+  --> src/lib.rs
+   |
+   |                     $(: $generics_bound>)?
+   |                                        +
 
 error: expected one of `+`, `,`, `=`, or `>`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:15:1
+  --> tests/ui/pin_project/invalid-bounds.rs:17:1
    |
-15 | / pin_project! {
-16 | |     struct Generics3<T: Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
-17 | |         field: T,
-18 | |     }
-19 | | }
+17 | / pin_project! {
+18 | |     struct Generics3<T: Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
+19 | |         field: T,
+20 | |     }
+21 | | }
    | | ^
    | | |
    | | expected one of `+`, `,`, `=`, or `>`
    | |_unexpected token
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you might have meant to end the type parameters here
+  --> src/lib.rs
+   |
+   |                     $(: $generics_bound>)?
+   |                                        +
 
 error: expected one of `+`, `,`, `=`, or `>`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:15:1
+  --> tests/ui/pin_project/invalid-bounds.rs:17:1
    |
-15 | / pin_project! {
-16 | |     struct Generics3<T: Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
-17 | |         field: T,
-18 | |     }
-19 | | }
+17 | / pin_project! {
+18 | |     struct Generics3<T: Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
+19 | |         field: T,
+20 | |     }
+21 | | }
    | | ^
    | | |
    | | expected one of `+`, `,`, `=`, or `>`
    | |_unexpected token
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you might have meant to end the type parameters here
+  --> src/lib.rs
+   |
+   |                     $(: $generics_bound>)?
+   |                                        +
 
 error: expected one of `+`, `,`, `=`, or `>`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:21:1
+  --> tests/ui/pin_project/invalid-bounds.rs:23:1
    |
-21 | / pin_project! {
-22 | |     struct Generics4<T: ?Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
-23 | |         field: T,
-24 | |     }
-25 | | }
+23 | / pin_project! {
+24 | |     struct Generics4<T: ?Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
+25 | |         field: T,
+26 | |     }
+27 | | }
    | | ^
    | | |
    | | expected one of `+`, `,`, `=`, or `>`
    | |_unexpected token
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you might have meant to end the type parameters here
+  --> src/lib.rs
+   |
+   |                     $(: ?$generics_unsized_bound>)?
+   |                                                 +
 
 error: expected one of `+`, `,`, `=`, or `>`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:21:1
+  --> tests/ui/pin_project/invalid-bounds.rs:23:1
    |
-21 | / pin_project! {
-22 | |     struct Generics4<T: ?Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
-23 | |         field: T,
-24 | |     }
-25 | | }
+23 | / pin_project! {
+24 | |     struct Generics4<T: ?Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
+25 | |         field: T,
+26 | |     }
+27 | | }
    | | ^
    | | |
    | |_expected one of `+`, `,`, `=`, or `>`
    |   unexpected token
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: type ascription syntax has been removed, see issue #101728 <https://github.com/rust-lang/rust/issues/101728>
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you might have meant to end the type parameters here
+  --> src/lib.rs
+   |
+   |                     $(: ?$generics_unsized_bound>)?
+   |                                                 +
 
 error: expected one of `+`, `,`, `=`, or `>`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:21:1
+  --> tests/ui/pin_project/invalid-bounds.rs:23:1
    |
-21 | / pin_project! {
-22 | |     struct Generics4<T: ?Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
-23 | |         field: T,
-24 | |     }
-25 | | }
+23 | / pin_project! {
+24 | |     struct Generics4<T: ?Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
+25 | |         field: T,
+26 | |     }
+27 | | }
    | | ^
    | | |
    | | expected one of `+`, `,`, `=`, or `>`
    | |_unexpected token
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you might have meant to end the type parameters here
+  --> src/lib.rs
+   |
+   |                     $(: ?$generics_unsized_bound>)?
+   |                                                 +
 
 error: expected one of `+`, `,`, `=`, or `>`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:21:1
+  --> tests/ui/pin_project/invalid-bounds.rs:23:1
    |
-21 | / pin_project! {
-22 | |     struct Generics4<T: ?Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
-23 | |         field: T,
-24 | |     }
-25 | | }
+23 | / pin_project! {
+24 | |     struct Generics4<T: ?Sized : 'static> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
+25 | |         field: T,
+26 | |     }
+27 | | }
    | | ^
    | | |
    | | expected one of `+`, `,`, `=`, or `>`
    | |_unexpected token
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you might have meant to end the type parameters here
+  --> src/lib.rs
+   |
+   |                     $(: ?$generics_unsized_bound>)?
+   |                                                 +
 
 error: expected one of `+`, `,`, `=`, or `>`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:27:1
+  --> tests/ui/pin_project/invalid-bounds.rs:29:1
    |
-27 | / pin_project! {
-28 | |     struct Generics5<T: Sized : ?Sized> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
-29 | |         field: T,
-30 | |     }
-31 | | }
+29 | / pin_project! {
+30 | |     struct Generics5<T: Sized : ?Sized> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
+31 | |         field: T,
+32 | |     }
+33 | | }
    | | ^
    | | |
    | | expected one of `+`, `,`, `=`, or `>`
    | |_unexpected token
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you might have meant to end the type parameters here
+  --> src/lib.rs
+   |
+   |                     $(: $generics_bound>)?
+   |                                        +
 
 error: expected one of `+`, `,`, `=`, or `>`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:27:1
+  --> tests/ui/pin_project/invalid-bounds.rs:29:1
    |
-27 | / pin_project! {
-28 | |     struct Generics5<T: Sized : ?Sized> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
-29 | |         field: T,
-30 | |     }
-31 | | }
+29 | / pin_project! {
+30 | |     struct Generics5<T: Sized : ?Sized> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
+31 | |         field: T,
+32 | |     }
+33 | | }
    | | ^
    | | |
    | |_expected one of `+`, `,`, `=`, or `>`
    |   unexpected token
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: type ascription syntax has been removed, see issue #101728 <https://github.com/rust-lang/rust/issues/101728>
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you might have meant to end the type parameters here
+  --> src/lib.rs
+   |
+   |                     $(: $generics_bound>)?
+   |                                        +
 
 error: expected one of `+`, `,`, `=`, or `>`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:27:1
+  --> tests/ui/pin_project/invalid-bounds.rs:29:1
    |
-27 | / pin_project! {
-28 | |     struct Generics5<T: Sized : ?Sized> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
-29 | |         field: T,
-30 | |     }
-31 | | }
+29 | / pin_project! {
+30 | |     struct Generics5<T: Sized : ?Sized> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
+31 | |         field: T,
+32 | |     }
+33 | | }
    | | ^
    | | |
    | | expected one of `+`, `,`, `=`, or `>`
    | |_unexpected token
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you might have meant to end the type parameters here
+  --> src/lib.rs
+   |
+   |                     $(: $generics_bound>)?
+   |                                        +
 
 error: expected one of `+`, `,`, `=`, or `>`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:27:1
+  --> tests/ui/pin_project/invalid-bounds.rs:29:1
    |
-27 | / pin_project! {
-28 | |     struct Generics5<T: Sized : ?Sized> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
-29 | |         field: T,
-30 | |     }
-31 | | }
+29 | / pin_project! {
+30 | |     struct Generics5<T: Sized : ?Sized> { //~ ERROR expected one of `+`, `,`, `=`, or `>`, found `:`
+31 | |         field: T,
+32 | |     }
+33 | | }
    | | ^
    | | |
    | | expected one of `+`, `,`, `=`, or `>`
    | |_unexpected token
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
-
-error: no rules expected the token `Sized`
-  --> tests/ui/pin_project/invalid-bounds.rs:34:34
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you might have meant to end the type parameters here
+  --> src/lib.rs
    |
-34 |     struct Generics6<T: ?Sized : Sized> { //~ ERROR no rules expected the token `Sized`
+   |                     $(: $generics_bound>)?
+   |                                        +
+
+error: no rules expected `Sized`
+  --> tests/ui/pin_project/invalid-bounds.rs:36:34
+   |
+36 |     struct Generics6<T: ?Sized : Sized> { //~ ERROR no rules expected the token `Sized`
    |                                  ^^^^^ no rules expected this token in macro call
-
-error: no rules expected the token `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:42:20
    |
-42 |         T: 'static : Sized //~ ERROR no rules expected the token `:`
+note: while trying to match meta-variable `$generics_lifetime_bound:lifetime`
+  --> src/lib.rs
+   |
+   |                 $(: $generics_lifetime_bound:lifetime)?
+   |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: no rules expected `:`
+  --> tests/ui/pin_project/invalid-bounds.rs:44:20
+   |
+44 |         T: 'static : Sized //~ ERROR no rules expected the token `:`
    |                    ^ no rules expected this token in macro call
-
-error: no rules expected the token `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:51:20
    |
-51 |         T: 'static : ?Sized //~ ERROR no rules expected the token `:`
+note: while trying to match `{`
+  --> src/lib.rs
+   |
+   |         {
+   |         ^
+
+error: no rules expected `:`
+  --> tests/ui/pin_project/invalid-bounds.rs:53:20
+   |
+53 |         T: 'static : ?Sized //~ ERROR no rules expected the token `:`
    |                    ^ no rules expected this token in macro call
+   |
+note: while trying to match `{`
+  --> src/lib.rs
+   |
+   |         {
+   |         ^
 
 error: expected `{` after struct name, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:57:1
+  --> tests/ui/pin_project/invalid-bounds.rs:59:1
    |
-57 | / pin_project! {
-58 | |     struct WhereClause3<T>
-59 | |     where
-60 | |         T: Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
+59 | / pin_project! {
+60 | |     struct WhereClause3<T>
+61 | |     where
+62 | |         T: Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
 ...  |
-63 | |     }
-64 | | }
+66 | | }
    | | ^
    | | |
    | |_expected `{` after struct name
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error: expected one of `+`, `,`, or `{`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:57:1
+  --> tests/ui/pin_project/invalid-bounds.rs:59:1
    |
-57 | / pin_project! {
-58 | |     struct WhereClause3<T>
-59 | |     where
-60 | |         T: Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
+59 | / pin_project! {
+60 | |     struct WhereClause3<T>
+61 | |     where
+62 | |         T: Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
 ...  |
-63 | |     }
-64 | | }
+66 | | }
    | | ^
    | | |
    | |_expected one of `+`, `,`, or `{`
    |   unexpected token
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: type ascription syntax has been removed, see issue #101728 <https://github.com/rust-lang/rust/issues/101728>
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error: expected `{` after struct name, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:57:1
+  --> tests/ui/pin_project/invalid-bounds.rs:59:1
    |
-57 | / pin_project! {
-58 | |     struct WhereClause3<T>
-59 | |     where
-60 | |         T: Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
+59 | / pin_project! {
+60 | |     struct WhereClause3<T>
+61 | |     where
+62 | |         T: Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
 ...  |
-63 | |     }
-64 | | }
+66 | | }
    | | ^
    | | |
    | |_expected `{` after struct name
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error: expected `{` after struct name, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:57:1
+  --> tests/ui/pin_project/invalid-bounds.rs:59:1
    |
-57 | / pin_project! {
-58 | |     struct WhereClause3<T>
-59 | |     where
-60 | |         T: Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
+59 | / pin_project! {
+60 | |     struct WhereClause3<T>
+61 | |     where
+62 | |         T: Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
 ...  |
-63 | |     }
-64 | | }
+66 | | }
    | | ^
    | | |
    | |_expected `{` after struct name
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error: expected `{` after struct name, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:66:1
+  --> tests/ui/pin_project/invalid-bounds.rs:68:1
    |
-66 | / pin_project! {
-67 | |     struct WhereClause4<T>
-68 | |     where
-69 | |         T: ?Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
+68 | / pin_project! {
+69 | |     struct WhereClause4<T>
+70 | |     where
+71 | |         T: ?Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
 ...  |
-72 | |     }
-73 | | }
+75 | | }
    | | ^
    | | |
    | |_expected `{` after struct name
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error: expected one of `+`, `,`, or `{`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:66:1
+  --> tests/ui/pin_project/invalid-bounds.rs:68:1
    |
-66 | / pin_project! {
-67 | |     struct WhereClause4<T>
-68 | |     where
-69 | |         T: ?Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
+68 | / pin_project! {
+69 | |     struct WhereClause4<T>
+70 | |     where
+71 | |         T: ?Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
 ...  |
-72 | |     }
-73 | | }
+75 | | }
    | | ^
    | | |
    | |_expected one of `+`, `,`, or `{`
    |   unexpected token
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: type ascription syntax has been removed, see issue #101728 <https://github.com/rust-lang/rust/issues/101728>
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error: expected `{` after struct name, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:66:1
+  --> tests/ui/pin_project/invalid-bounds.rs:68:1
    |
-66 | / pin_project! {
-67 | |     struct WhereClause4<T>
-68 | |     where
-69 | |         T: ?Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
+68 | / pin_project! {
+69 | |     struct WhereClause4<T>
+70 | |     where
+71 | |         T: ?Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
 ...  |
-72 | |     }
-73 | | }
+75 | | }
    | | ^
    | | |
    | |_expected `{` after struct name
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error: expected `{` after struct name, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:66:1
+  --> tests/ui/pin_project/invalid-bounds.rs:68:1
    |
-66 | / pin_project! {
-67 | |     struct WhereClause4<T>
-68 | |     where
-69 | |         T: ?Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
+68 | / pin_project! {
+69 | |     struct WhereClause4<T>
+70 | |     where
+71 | |         T: ?Sized : 'static //~ ERROR expected `where`, or `{` after struct name, found `:`
 ...  |
-72 | |     }
-73 | | }
+75 | | }
    | | ^
    | | |
    | |_expected `{` after struct name
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error: expected `{` after struct name, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:75:1
+  --> tests/ui/pin_project/invalid-bounds.rs:77:1
    |
-75 | / pin_project! {
-76 | |     struct WhereClause5<T>
-77 | |     where
-78 | |         T: Sized : ?Sized //~ ERROR expected `where`, or `{` after struct name, found `:`
+77 | / pin_project! {
+78 | |     struct WhereClause5<T>
+79 | |     where
+80 | |         T: Sized : ?Sized //~ ERROR expected `where`, or `{` after struct name, found `:`
 ...  |
-81 | |     }
-82 | | }
+84 | | }
    | | ^
    | | |
    | |_expected `{` after struct name
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error: expected one of `+`, `,`, or `{`, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:75:1
+  --> tests/ui/pin_project/invalid-bounds.rs:77:1
    |
-75 | / pin_project! {
-76 | |     struct WhereClause5<T>
-77 | |     where
-78 | |         T: Sized : ?Sized //~ ERROR expected `where`, or `{` after struct name, found `:`
+77 | / pin_project! {
+78 | |     struct WhereClause5<T>
+79 | |     where
+80 | |         T: Sized : ?Sized //~ ERROR expected `where`, or `{` after struct name, found `:`
 ...  |
-81 | |     }
-82 | | }
+84 | | }
    | | ^
    | | |
    | |_expected one of `+`, `,`, or `{`
    |   unexpected token
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: type ascription syntax has been removed, see issue #101728 <https://github.com/rust-lang/rust/issues/101728>
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error: expected `{` after struct name, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:75:1
+  --> tests/ui/pin_project/invalid-bounds.rs:77:1
    |
-75 | / pin_project! {
-76 | |     struct WhereClause5<T>
-77 | |     where
-78 | |         T: Sized : ?Sized //~ ERROR expected `where`, or `{` after struct name, found `:`
+77 | / pin_project! {
+78 | |     struct WhereClause5<T>
+79 | |     where
+80 | |         T: Sized : ?Sized //~ ERROR expected `where`, or `{` after struct name, found `:`
 ...  |
-81 | |     }
-82 | | }
+84 | | }
    | | ^
    | | |
    | |_expected `{` after struct name
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
 
 error: expected `{` after struct name, found `:`
-  --> tests/ui/pin_project/invalid-bounds.rs:75:1
+  --> tests/ui/pin_project/invalid-bounds.rs:77:1
    |
-75 | / pin_project! {
-76 | |     struct WhereClause5<T>
-77 | |     where
-78 | |         T: Sized : ?Sized //~ ERROR expected `where`, or `{` after struct name, found `:`
+77 | / pin_project! {
+78 | |     struct WhereClause5<T>
+79 | |     where
+80 | |         T: Sized : ?Sized //~ ERROR expected `where`, or `{` after struct name, found `:`
 ...  |
-81 | |     }
-82 | | }
+84 | | }
    | | ^
    | | |
    | |_expected `{` after struct name
    |   in this macro invocation
    |
-   = note: this error originates in the macro `$crate::__pin_project_parse_generics` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = note: this error originates in the macro `$crate::__pin_project_parse_generics` which comes from the expansion of the macro `pin_project` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error: no rules expected the token `Sized`
-  --> tests/ui/pin_project/invalid-bounds.rs:87:21
+error: no rules expected `Sized`
+  --> tests/ui/pin_project/invalid-bounds.rs:89:21
    |
-87 |         T: ?Sized : Sized //~ ERROR no rules expected the token `Sized`
+89 |         T: ?Sized : Sized //~ ERROR no rules expected the token `Sized`
    |                     ^^^^^ no rules expected this token in macro call
+   |
+note: while trying to match meta-variable `$where_clause_lifetime_bound:lifetime`
+  --> src/lib.rs
+   |
+   |                 $(: $where_clause_lifetime_bound:lifetime)?
+   |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

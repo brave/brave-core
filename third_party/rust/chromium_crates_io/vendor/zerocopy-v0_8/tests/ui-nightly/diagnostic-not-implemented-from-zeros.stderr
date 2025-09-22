@@ -2,8 +2,13 @@ error[E0277]: the trait bound `NotZerocopy: FromZeros` is not satisfied
   --> tests/ui-nightly/diagnostic-not-implemented-from-zeros.rs:18:24
    |
 18 |     takes_from_zeros::<NotZerocopy>();
-   |                        ^^^^^^^^^^^ the trait `FromZeros` is not implemented for `NotZerocopy`
+   |                        ^^^^^^^^^^^ unsatisfied trait bound
    |
+help: the trait `FromZeros` is not implemented for `NotZerocopy`
+  --> tests/ui-nightly/../../zerocopy-derive/tests/include.rs
+   |
+   |     pub struct NotZerocopy<T = ()>(pub T);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    = note: Consider adding `#[derive(FromZeros)]` to `NotZerocopy`
    = help: the following other types implement trait `FromZeros`:
              ()

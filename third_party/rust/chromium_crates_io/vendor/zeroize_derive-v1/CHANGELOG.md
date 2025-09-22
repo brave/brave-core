@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.4.2 (2023-03-30)
+### Changed
+- Inject where clauses; skip unused ([#882])
+
+[#882]: https://github.com/RustCrypto/utils/pull/882
+
+## 1.4.1 (2023-03-27)
+### Changed
+- Do not automatically inject bounds ([#879])
+
+[#879]: https://github.com/RustCrypto/utils/pull/879
+
+## 1.4.0 (2023-03-26)
+### Changed
+- 2021 edition upgrade; MSRV 1.56 ([#869])
+- Bump `syn` to v2 ([#858])
+
+### Removed
+- `synstructure` dependency ([#858])
+
+[#858]: https://github.com/RustCrypto/utils/pull/858
+[#869]: https://github.com/RustCrypto/utils/pull/869
+
 ## 1.3.3 (2022-11-30)
 ### Fixed
 - Deriving `ZeroizeOnDrop` on items with generics ([#787])

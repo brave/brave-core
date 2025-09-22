@@ -1,17 +1,19 @@
 use crate::ast::Field;
 use crate::attr::{Display, Trait};
-use proc_macro2::TokenTree;
-use quote::{format_ident, quote_spanned};
+use crate::scan_expr::scan_expr;
+use proc_macro2::{TokenStream, TokenTree};
+use quote::{format_ident, quote, quote_spanned};
 use std::collections::{BTreeSet as Set, HashMap as Map};
 use syn::ext::IdentExt;
+use syn::parse::discouraged::Speculative;
 use syn::parse::{ParseStream, Parser};
-use syn::{Ident, Index, LitStr, Member, Result, Token};
+use syn::{Expr, Ident, Index, LitStr, Member, Result, Token};
 
 impl Display<'_> {
     // Transform `"error {var}"` to `"error {}", var`.
     pub fn expand_shorthand(&mut self, fields: &[Field]) {
         let raw_args = self.args.clone();
-        let mut named_args = explicit_named_args.parse2(raw_args).unwrap();
+        let mut named_args = explicit_named_args.parse2(raw_args).unwrap().named;
         let mut member_index = Map::new();
         for (i, field) in fields.iter().enumerate() {
             member_index.insert(&field.member, i);
@@ -93,11 +95,6 @@ impl Display<'_> {
             if formatvar.to_string().starts_with("r#") {
                 formatvar = format_ident!("r_{}", formatvar);
             }
-            if formatvar.to_string().starts_with('_') {
-                // Work around leading underscore being rejected by 1.40 and
-                // older compilers. https://github.com/rust-lang/rust/pull/66847
-                formatvar = format_ident!("field_{}", formatvar);
-            }
             out += &formatvar.to_string();
             if !named_args.insert(formatvar.clone()) {
                 // Already specified in the format argument list.
@@ -122,21 +119,104 @@ impl Display<'_> {
     }
 }
 
-fn explicit_named_args(input: ParseStream) -> Result<Set<Ident>> {
-    let mut named_args = Set::new();
+struct FmtArguments {
+    named: Set<Ident>,
+    unnamed: bool,
+}
+
+#[allow(clippy::unnecessary_wraps)]
+fn explicit_named_args(input: ParseStream) -> Result<FmtArguments> {
+    let ahead = input.fork();
+    if let Ok(set) = try_explicit_named_args(&ahead) {
+        input.advance_to(&ahead);
+        return Ok(set);
+    }
+
+    let ahead = input.fork();
+    if let Ok(set) = fallback_explicit_named_args(&ahead) {
+        input.advance_to(&ahead);
+        return Ok(set);
+    }
+
+    input.parse::<TokenStream>().unwrap();
+    Ok(FmtArguments {
+        named: Set::new(),
+        unnamed: false,
+    })
+}
+
+fn try_explicit_named_args(input: ParseStream) -> Result<FmtArguments> {
+    let mut syn_full = None;
+    let mut args = FmtArguments {
+        named: Set::new(),
+        unnamed: false,
+    };
 
     while !input.is_empty() {
-        if input.peek(Token![,]) && input.peek2(Ident::peek_any) && input.peek3(Token![=]) {
+        input.parse::<Token![,]>()?;
+        if input.is_empty() {
+            break;
+        }
+        if input.peek(Ident::peek_any) && input.peek2(Token![=]) && !input.peek2(Token![==]) {
+            let ident = input.call(Ident::parse_any)?;
+            input.parse::<Token![=]>()?;
+            args.named.insert(ident);
+        } else {
+            args.unnamed = true;
+        }
+        if *syn_full.get_or_insert_with(is_syn_full) {
+            let ahead = input.fork();
+            if ahead.parse::<Expr>().is_ok() {
+                input.advance_to(&ahead);
+                continue;
+            }
+        }
+        scan_expr(input)?;
+    }
+
+    Ok(args)
+}
+
+fn fallback_explicit_named_args(input: ParseStream) -> Result<FmtArguments> {
+    let mut args = FmtArguments {
+        named: Set::new(),
+        unnamed: false,
+    };
+
+    while !input.is_empty() {
+        if input.peek(Token![,])
+            && input.peek2(Ident::peek_any)
+            && input.peek3(Token![=])
+            && !input.peek3(Token![==])
+        {
             input.parse::<Token![,]>()?;
             let ident = input.call(Ident::parse_any)?;
             input.parse::<Token![=]>()?;
-            named_args.insert(ident);
+            args.named.insert(ident);
         } else {
             input.parse::<TokenTree>()?;
         }
     }
 
-    Ok(named_args)
+    Ok(args)
+}
+
+fn is_syn_full() -> bool {
+    // Expr::Block contains syn::Block which contains Vec<syn::Stmt>. In the
+    // current version of Syn, syn::Stmt is exhaustive and could only plausibly
+    // represent `trait Trait {}` in Stmt::Item which contains syn::Item. Most
+    // of the point of syn's non-"full" mode is to avoid compiling Item and the
+    // entire expansive syntax tree it comprises. So the following expression
+    // being parsed to Expr::Block is a reliable indication that "full" is
+    // enabled.
+    let test = quote!({
+        trait Trait {}
+    });
+    match syn::parse2(test) {
+        Ok(Expr::Verbatim(_)) | Err(_) => false,
+        Ok(Expr::Block(_)) => true,
+        Ok(_) => unreachable!(),
+    }
 }
 
 fn take_int(read: &mut &str) -> String {
