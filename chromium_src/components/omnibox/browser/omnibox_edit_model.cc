@@ -39,9 +39,6 @@ SetInputIsPastedFromClipboard(OmniboxController* omnibox_controller,
 #define CanPasteAndGo CanPasteAndGo_Chromium
 #define PasteAndGo PasteAndGo_Chromium
 #define GetSuperGIcon GetSuperGIcon_Unused
-#define BRAVE_OMNIBOX_EDIT_MODEL_GET_INFO_FOR_CURRENT_TEXT \
-  auto pasted =                                            \
-      SetInputIsPastedFromClipboard(controller_, paste_state_ != NONE);
 #define BRAVE_OMNIBOX_EDIT_MODEL_START_AUTOCOMPLETE \
   auto pasted =                                     \
       SetInputIsPastedFromClipboard(controller_, paste_state_ != NONE);
@@ -51,7 +48,6 @@ SetInputIsPastedFromClipboard(OmniboxController* omnibox_controller,
 #undef GetSuperGIcon
 #undef CanPasteAndGo
 #undef PasteAndGo
-#undef BRAVE_OMNIBOX_EDIT_MODEL_GET_INFO_FOR_CURRENT_TEXT
 #undef BRAVE_OMNIBOX_EDIT_MODEL_START_AUTOCOMPLETE
 
 bool OmniboxEditModel::CanPasteAndGo(const std::u16string& text) const {
