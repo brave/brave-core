@@ -14,7 +14,7 @@ import { ResultOption } from './search_results'
 import { useSearchState, useSearchActions } from '../../context/search_context'
 import { urlFromInput } from '../../lib/url_input'
 
-export function useSearchInputState() {
+export function useSearchInputState(inputKey: string) {
   const actions = useSearchActions()
 
   const showSearchBox = useSearchState((s) => s.showSearchBox)
@@ -22,6 +22,7 @@ export function useSearchInputState() {
   const enabledSearchEngines = useSearchState((s) => s.enabledSearchEngines)
   const defaultSearchEngine = useSearchState((s) => s.defaultSearchEngine)
   const lastUsedSearchEngine = useSearchState((s) => s.lastUsedSearchEngine)
+  const activeSearchInputKey = useSearchState((s) => s.activeSearchInputKey)
   const searchMatches = useSearchState((s) => s.searchMatches)
   const searchSuggestionsEnabled =
       useSearchState((s) => s.searchSuggestionsEnabled)
@@ -49,10 +50,15 @@ export function useSearchInputState() {
   }, [enabledSearchEngines, defaultSearchEngine])
 
   // Build the list of result options. The result options can contain a direct
-  // URL (if the user has typed a URL) or a list of autocomplete options.
-  const resultOptions = React.useMemo(
-      () => getResultOptions(query, searchMatches),
-      [query, searchMatches])
+  // URL (if the user has typed a URL) or a list of autocomplete options. If
+  // this input is not the currently active search input, then the list will be
+  // empty.
+  const resultOptions = React.useMemo(() => {
+    if (inputKey !== activeSearchInputKey) {
+      return []
+    }
+    return getResultOptions(query, searchMatches)
+  }, [query, searchMatches, inputKey, activeSearchInputKey])
 
   // When the result option list changes, select the first available option that
   // is allowed to be the default match.
@@ -142,6 +148,10 @@ export function useSearchInputState() {
     }
   }
 
+  function setActiveInput() {
+    actions.setActiveSearchInputKey(inputKey)
+  }
+
   function handleActionKeyDown(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       if (selectedResultOption !== null) {
@@ -165,6 +175,7 @@ export function useSearchInputState() {
   return {
     query,
     setQuery,
+    setActiveInput,
     handleActionKeyDown,
     openSearch,
     resultOptions,
