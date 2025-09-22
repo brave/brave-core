@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.ntp;
 import android.app.Activity;
 import android.view.LayoutInflater;
 
-import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.NullUnmarked;
@@ -44,8 +43,6 @@ import java.util.function.Supplier;
 
 @NullUnmarked // Waiting for upstream parent class to be NullMarked
 public class BraveNewTabPage extends NewTabPage {
-    private final JankTracker mJankTracker;
-
     // To delete in bytecode, members from parent class will be used instead.
     private BrowserControlsStateProvider mBrowserControlsStateProvider;
     private NewTabPageLayout mNewTabPageLayout;
@@ -73,7 +70,6 @@ public class BraveNewTabPage extends NewTabPage {
             BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier,
             WindowAndroid windowAndroid,
-            JankTracker jankTracker,
             Supplier<Toolbar> toolbarSupplier,
             HomeSurfaceTracker homeSurfaceTracker,
             ObservableSupplier<TabContentManager> tabContentManagerSupplier,
@@ -98,7 +94,6 @@ public class BraveNewTabPage extends NewTabPage {
                 bottomSheetController,
                 shareDelegateSupplier,
                 windowAndroid,
-                jankTracker,
                 toolbarSupplier,
                 homeSurfaceTracker,
                 tabContentManagerSupplier,
@@ -107,8 +102,6 @@ public class BraveNewTabPage extends NewTabPage {
                 edgeToEdgeControllerSupplier,
                 topInsetCoordinatorSupplier,
                 startupMetricsTracker);
-
-        mJankTracker = jankTracker;
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
@@ -157,7 +150,6 @@ public class BraveNewTabPage extends NewTabPage {
                         activity,
                         snackbarManager,
                         windowAndroid,
-                        mJankTracker,
                         new SnapScrollHelperImpl(mNewTabPageManager, mNewTabPageLayout),
                         mNewTabPageLayout,
                         mBrowserControlsStateProvider.getTopControlsHeight(),
