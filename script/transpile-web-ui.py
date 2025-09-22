@@ -13,6 +13,7 @@ from lib.util import execute_stdout, scoped_cwd
 
 from pathlib import Path
 
+
 def getNonContained(srcRoots, paths):
     """
     Check whether all given paths are contained within the source roots.
@@ -20,9 +21,6 @@ def getNonContained(srcRoots, paths):
     """
     roots = [Path(r).resolve() for r in srcRoots]
     test_paths = [Path(p).resolve() for p in paths]
-
-    def should_ignore(p, ignore):
-        return any(p.is_relative_to(ig) for ig in ignore)
 
     not_contained = []
 
@@ -32,34 +30,37 @@ def getNonContained(srcRoots, paths):
 
     return not_contained
 
-    
 
-def verify_webpack_srcs(root_gen_dir, data_deps_path, depfile_path, extra_modules):
+def verify_webpack_srcs(root_gen_dir, data_deps_path, depfile_path,
+                        extra_modules):
     srcFolder = os.path.abspath(os.path.join(root_gen_dir, '..', '..', '..'))
     outDir = os.path.abspath(os.path.join(root_gen_dir, '..'))
     srcRoots = []
 
     with open(data_deps_path) as f:
         srcRoots = json.loads(f.read())
-        srcRoots = list([ root.replace('//', srcFolder+'/') for root in srcRoots])
-        
+        srcRoots = [root.replace('//', srcFolder + '/') for root in srcRoots]
 
     with open(depfile_path) as f:
-        files = list(f.read().split(' ')[1:])
+        files = f.read().split(' ')[1:]
 
     allRoots = srcRoots + [
-        srcFolder + '/brave/node_modules', # handled via package.json
-        outDir # generated assets are deps and handled by gn already
+        srcFolder + '/brave/node_modules',  # handled via package.json
+        outDir  # generated assets are deps and handled by gn already
     ] + extra_modules
 
     notContained = getNonContained(allRoots, files)
 
-    if len(notContained):
-        print("error occured cross-referencing data folders. Expected following srcRoots:")
+    if len(notContained) > 0:
+        print(
+            "error occured cross-referencing data folders. Expected following srcRoots:"
+        )
         print("  " + ", ".join(srcRoots))
         print("to contain:")
-        print("  " + ", ".join([ str(file) for file in notContained]))
-        print("fix this issue by adding the containing source folders into the transpile_web_ui target")
+        print("  " + ", ".join([str(file) for file in notContained]))
+        print(
+            "fix this issue by adding the containing source folders into the transpile_web_ui target"
+        )
         sys.exit(1)
 
 
@@ -100,8 +101,9 @@ def main():
     transpile_web_uis(transpile_options)
     generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0],
                  resource_path_prefix)
-    
-    verify_webpack_srcs(root_gen_dir, data_deps_path, depfile_path, args.extra_modules)
+
+    verify_webpack_srcs(root_gen_dir, data_deps_path, depfile_path,
+                        args.extra_modules)
 
 
 
