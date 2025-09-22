@@ -21,3 +21,12 @@ const windowAsAny = window as any
 
 windowAsAny.chrome = getMockChrome()
 windowAsAny.loadTimeData = getMockLoadTimeData()
+
+windowAsAny.ResizeObserver = class {
+  observe() {
+  }
+  unobserve() {
+  }
+  disconnect() {
+  }
+}
