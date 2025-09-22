@@ -92,6 +92,36 @@ SkColor GetHoveredTabBackgroundColor(const ui::ColorProviderKey& key,
   return color_utils::HSLShift(default_color, shift);
 }
 
+SkColor GetSplitViewTileBackgroundColor(const ui::ColorProviderKey& key,
+                                        nala::Color default_color_id,
+                                        SkColor input,
+                                        const ui::ColorMixer& mixer) {
+  const auto default_color = mixer.GetResultColor(default_color_id);
+  if (!key.user_color.has_value()) {
+    return default_color;
+  }
+
+  CHECK_EQ(base::to_underlying(ui::ColorProviderKey::ColorMode::kLight), 0);
+  CHECK_EQ(base::to_underlying(ui::ColorProviderKey::ColorMode::kDark), 1);
+
+  // Derive split view tile backgrounds similarly to hovered tab backgrounds,
+  // keeping the original hue while adjusting saturation and lightness
+  // depending on the color mode and orientation.
+  constexpr auto kHSLShiftMap =
+      base::MakeFixedFlatMap<nala::Color, std::array<color_utils::HSL, 2>>({
+          {nala::kColorDesktopbrowserTabbarSplitViewBackgroundHorizontal,
+           {color_utils::HSL{.h = -1, .s = 0.65, .l = 0.59},   // Light mode
+            color_utils::HSL{.h = -1, .s = 0.55, .l = 0.4}}},  // Dark mode
+          {nala::kColorDesktopbrowserTabbarSplitViewBackgroundVertical,
+           {color_utils::HSL{.h = -1, .s = 0.5, .l = 0.52},   // Light mode
+            color_utils::HSL{.h = -1, .s = 0.6, .l = 0.52}}},   // Dark mode
+      });
+
+  const color_utils::HSL& shift =
+      kHSLShiftMap.at(default_color_id).at(base::to_underlying(key.color_mode));
+  return color_utils::HSLShift(default_color, shift);
+}
+
 }  // namespace
 
 void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
@@ -114,9 +144,11 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
                        /* 40% opacity */ 0.4 * SK_AlphaOPAQUE)};
   } else {
     mixer[kColorBraveSplitViewTileBackgroundHorizontal] = {
-        nala::kColorDesktopbrowserTabbarSplitViewBackgroundHorizontal};
+        base::BindRepeating(&GetSplitViewTileBackgroundColor, key,
+                            nala::kColorDesktopbrowserTabbarSplitViewBackgroundHorizontal)};
     mixer[kColorBraveSplitViewTileBackgroundVertical] = {
-        nala::kColorDesktopbrowserTabbarSplitViewBackgroundVertical};
+        base::BindRepeating(&GetSplitViewTileBackgroundColor, key,
+                            nala::kColorDesktopbrowserTabbarSplitViewBackgroundVertical)};
     mixer[kColorBraveSplitViewTileBackgroundBorder] = {SK_ColorTRANSPARENT};
     mixer[kColorBraveSplitViewTileDivider] = {
         nala::kColorDesktopbrowserTabbarSplitViewDivider};
