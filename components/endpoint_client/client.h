@@ -6,37 +6,39 @@
 #ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_CLIENT_H_
 #define BRAVE_COMPONENTS_ENDPOINT_CLIENT_CLIENT_H_
 
+#include <memory>
 #include <optional>
 #include <string>
-#include <type_traits>
 #include <utility>
 
-#include "base/check.h"
-#include "base/containers/to_vector.h"
+#include "base/check_deref.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_forward.h"
+#include "base/functional/callback.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/endpoint_client/endpoint.h"
 #include "brave/components/endpoint_client/parse.h"
 #include "brave/components/endpoint_client/with_headers.h"
-#include "net/http/http_request_headers.h"
-#include "net/http/http_status_code.h"
+#include "net/http/http_response_headers.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "url/gurl.h"
 
 namespace endpoint_client {
 
-template <detail::IsEndpoint Ept>
+template <detail::IsEndpoint Endpoint>
 struct Client {
   template <typename Request, typename Response, typename Error>
-    requires(Ept::template kIsRequestSupported<Request> &&
-             Ept::template kIsResponseSupportedForRequest<Response, Request> &&
-             Ept::template kIsErrorSupportedForRequest<Error, Request>)
+    requires(
+        Endpoint::template kIsRequestSupported<Request> &&
+        Endpoint::template kIsResponseSupportedForRequest<Response, Request> &&
+        Endpoint::template kIsErrorSupportedForRequest<Error, Request>)
   static void Send(
       const scoped_refptr<network::SharedURLLoaderFactory>& url_loader_factory,
       Request request,
@@ -49,9 +51,8 @@ struct Client {
           using Expected =
               base::expected<std::optional<Response>, std::optional<Error>>;
 
-          CHECK(simple_url_loader);
-
-          const auto* response_info = simple_url_loader->ResponseInfo();
+          const auto* response_info =
+              CHECK_DEREF(simple_url_loader.get()).ResponseInfo();
           if (!response_info) {
             return std::move(callback).Run(base::unexpected(std::nullopt));
           }
@@ -74,7 +75,7 @@ struct Client {
     CHECK(json) << "Failed to serialize request to JSON!";
 
     auto resource_request = std::make_unique<network::ResourceRequest>();
-    resource_request->url = Ept::URL();
+    resource_request->url = Endpoint::URL();
     resource_request->method = request.Method();
     if constexpr (detail::IsWithHeaders<Request>) {
       resource_request->headers = std::move(request.headers);
