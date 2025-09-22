@@ -16,8 +16,6 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
-#include "brave/browser/resources/settings/grit/brave_settings_resources.h"
-#include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -167,8 +165,6 @@ BraveSettingsUI::~BraveSettingsUI() = default;
 // static
 void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                    Profile* profile) {
-  html_source->AddResourcePaths(kBraveSettingsResources);
-
   html_source->AddBoolean("isSyncDisabled", !syncer::IsSyncAllowedByFlag());
   html_source->AddString(
       "braveProductVersion",

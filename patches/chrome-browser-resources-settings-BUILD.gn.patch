@@ -1,10 +1,13 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index eb8851ba3e5408c00dfa18ec7ed17994218ee633..3f45937e2ff5eaf0cbd1be2869b6b11925781e44 100644
+index f99153b36f3fac6024c6f57659c5c58aeed151df..0db4082da608eef286989fe2b34b70a8bd255b56 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -453,4 +453,5 @@ build_webui("build") {
-               "$root_gen_dir/chrome/browser/resources/settings_shared/tsc",
-               root_build_dir) ]
-   }
-+  import("//brave/browser/resources/settings/sources.gni") web_component_files += brave_settings_web_component_files ts_files += brave_settings_ts_files css_files += brave_settings_local_css_files exclude_html_css_preprocess_files = brave_settings_local_html_files + brave_settings_local_css_files exclude_ts_preprocess_files = brave_settings_local_ts_files preprocess_deps = brave_settings_preprocess_deps ts_extra_deps = brave_settings_ts_extra_deps ts_definitions += brave_settings_ts_definitions if (optimize_webui) { extra_grdp_deps = [ "//brave/browser/resources/settings:resources" ] extra_grdp_files = [] } mojo_files = brave_settings_mojo_files mojo_files_deps = brave_settings_mojo_files_deps ts_deps += brave_settings_ts_deps
- }
+@@ -10,7 +10,7 @@ import("./settings.gni")
+ 
+ assert(!is_android, "Android does not use these settings")
+ 
+-build_webui("build") {
++import("//brave/browser/resources/settings/build_webui.gni") brave_settings_build_webui("build") {
+   grd_prefix = "settings"
+ 
+   static_files = [
