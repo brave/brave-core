@@ -1311,17 +1311,33 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         ViewTreeObserver observer = mBgImageView.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
+                    private int mLastWidth;
+                    private int mLastHeight;
+
                     @Override
                     public void onGlobalLayout() {
-                        mWorkerTask =
-                                new FetchWallpaperWorkerTask(
-                                        ntpImage,
-                                        mBgImageView.getMeasuredWidth(),
-                                        mBgImageView.getMeasuredHeight(),
-                                        mWallpaperRetrievedCallback);
-                        mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        int currentWidth = mBgImageView.getMeasuredWidth();
+                        int currentHeight = mBgImageView.getMeasuredHeight();
 
-                        mBgImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        // Only re-fetch if dimensions actually changed
+                        if (currentWidth > 0
+                                && currentHeight > 0
+                                && (currentWidth != mLastWidth || currentHeight != mLastHeight)) {
+                            mLastWidth = currentWidth;
+                            mLastHeight = currentHeight;
+
+                            if (mWorkerTask != null) {
+                                mWorkerTask.cancel(true);
+                            }
+
+                            mWorkerTask =
+                                    new FetchWallpaperWorkerTask(
+                                            ntpImage,
+                                            currentWidth,
+                                            currentHeight,
+                                            mWallpaperRetrievedCallback);
+                            mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        }
                     }
                 });
     }
