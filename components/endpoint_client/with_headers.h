@@ -8,6 +8,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/types/always_false.h"
+#include "base/types/is_instantiation.h"
 #include "brave/components/endpoint_client/request.h"
 #include "brave/components/endpoint_client/response.h"
 #include "net/http/http_request_headers.h"
@@ -35,6 +36,14 @@ template <detail::Response Rsp>
 struct WithHeaders<Rsp> : Rsp {
   scoped_refptr<net::HttpResponseHeaders> headers;
 };
+
+namespace detail {
+
+// Concept: true if T is an instantiation of WithHeaders<>.
+template <typename T>
+concept IsWithHeaders = base::is_instantiation<T, WithHeaders>;
+
+}  // namespace detail
 
 }  // namespace endpoint_client
 

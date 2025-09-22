@@ -76,7 +76,7 @@ struct Client {
     auto resource_request = std::make_unique<network::ResourceRequest>();
     resource_request->url = Ept::URL();
     resource_request->method = request.Method();
-    if constexpr (base::is_instantiation<Request, WithHeaders>) {
+    if constexpr (detail::IsWithHeaders<Request>) {
       resource_request->headers = std::move(request.headers);
     }
 
