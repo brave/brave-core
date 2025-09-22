@@ -5,12 +5,12 @@
 
 #include "base/feature_override.h"
 
-#include <components/omnibox/browser/aim_eligibility_service.cc>
+#include <components/omnibox/browser/aim_eligibility_service_features.cc>
 
-namespace {
+namespace omnibox {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAimEnabled, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
-}  // namespace
+}  // namespace omnibox
