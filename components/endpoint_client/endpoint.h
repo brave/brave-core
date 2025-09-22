@@ -6,28 +6,19 @@
 #ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_ENDPOINT_H_
 #define BRAVE_COMPONENTS_ENDPOINT_CLIENT_ENDPOINT_H_
 
+#include <algorithm>
+#include <cstddef>
 #include <optional>
-#include <string>
-#include <tuple>
 #include <type_traits>
-#include <utility>
-#include <variant>
 
-#include "base/check.h"
-#include "base/containers/to_vector.h"
-#include "base/functional/bind.h"
-#include "base/functional/callback_forward.h"
-#include "base/json/json_writer.h"
-#include "base/types/always_false.h"
 #include "base/types/expected.h"
 #include "base/types/is_instantiation.h"
-#include "base/types/same_as_any.h"
-#include "base/values.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/endpoint_client/maybe_strip_with_headers.h"
 #include "brave/components/endpoint_client/maybe_variant.h"
 #include "brave/components/endpoint_client/request.h"
 #include "brave/components/endpoint_client/response.h"
+#include "url/gurl.h"
 
 namespace endpoint_client::detail {
 
@@ -61,8 +52,9 @@ struct For {
   struct ReturnsWith {
     template <detail::IsResponse... Errs>
       requires(sizeof...(Errs) > 0)
-    using FailsWith = detail::
-        Entry<Request, detail::MaybeVariant<Oks...>, detail::MaybeVariant<Errs...>>;
+    using FailsWith = detail::Entry<Request,
+                                    detail::MaybeVariant<Oks...>,
+                                    detail::MaybeVariant<Errs...>>;
   };
 };
 
