@@ -22,6 +22,8 @@ static_library("common") {
   sources = [
     "features.cc",
     "pref_names.cc",
+    "pref_names.h",
+    "psst_consent_data.cc",
   ]
 
   public_deps = [
