@@ -9,7 +9,6 @@ import {
   BackgroundState,
   BackgroundActions,
   NewTabPageAdMetricType,
-  SponsoredImageBackground,
   SelectedBackgroundType } from '../state/background_state'
 
 function delay(ms: number) {
@@ -21,7 +20,7 @@ function delay(ms: number) {
 const sampleBackground =
     'https://brave.com/static-assets/images/coding-background-texture.jpg'
 
-const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
+const sponsoredBackgrounds = {
   image: {
     wallpaperType: '',
     imageUrl: sampleBackground,
@@ -70,7 +69,8 @@ export function createBackgroundHandler(
   })
 
   store.update({
-    sponsoredRichMediaBaseUrl: 'https://brave.com'
+    sponsoredRichMediaBaseUrl:
+      new URL(sponsoredBackgrounds.richMedia.imageUrl).origin
   })
 
   return {
@@ -115,6 +115,8 @@ export function createBackgroundHandler(
 
     notifySponsoredImageLogoClicked() {},
 
-    notifySponsoredRichMediaEvent(type) {}
+    notifySponsoredRichMediaEvent(type) {
+      console.log('richMediaEvent', type)
+    }
   }
 }
