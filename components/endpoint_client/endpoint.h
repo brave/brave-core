@@ -27,7 +27,7 @@
 #include "brave/components/endpoint_client/maybe_strip_with_headers.h"
 #include "brave/components/endpoint_client/maybe_variant.h"
 #include "brave/components/endpoint_client/is_request.h"
-#include "brave/components/endpoint_client/response.h"
+#include "brave/components/endpoint_client/is_response.h"
 
 namespace endpoint_client::detail {
 
@@ -43,7 +43,7 @@ concept UniqueTypes = requires {
 namespace endpoint_client {
 namespace detail {
 
-template <IsRequest Req, Response Ok, Response Err>
+template <IsRequest Req, IsResponse Ok, IsResponse Err>
 struct Entry {
   using Request = Req;
   using Response = Ok;
@@ -56,10 +56,10 @@ struct Entry {
 
 template <detail::IsRequest Request>
 struct For {
-  template <detail::Response... Oks>
+  template <detail::IsResponse... Oks>
     requires(sizeof...(Oks) > 0)
   struct ReturnsWith {
-    template <detail::Response... Errs>
+    template <detail::IsResponse... Errs>
       requires(sizeof...(Errs) > 0)
     using FailsWith = detail::
         Entry<Request, detail::MaybeVariant<Oks...>, detail::MaybeVariant<Errs...>>;

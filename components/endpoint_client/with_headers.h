@@ -10,7 +10,7 @@
 #include "base/types/always_false.h"
 #include "base/types/is_instantiation.h"
 #include "brave/components/endpoint_client/is_request.h"
-#include "brave/components/endpoint_client/response.h"
+#include "brave/components/endpoint_client/is_response.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 
@@ -22,7 +22,7 @@ template <typename T>
 struct WithHeaders {
   static_assert(base::AlwaysFalse<T>,
                 "T must satisfy endpoint_client::detail::IsRequest or "
-                "endpoint_client::detail::Response!");
+                "endpoint_client::detail::IsResponse!");
 };
 
 // Partial specialization: wraps an IsRequest with HTTP request headers.
@@ -31,9 +31,9 @@ struct WithHeaders<Request> : Request {
   net::HttpRequestHeaders headers;
 };
 
-// Partial specialization: wraps a Response with HTTP response headers.
-template <detail::Response Rsp>
-struct WithHeaders<Rsp> : Rsp {
+// Partial specialization: wraps an IsResponse with HTTP response headers.
+template <detail::IsResponse Response>
+struct WithHeaders<Response> : Response {
   scoped_refptr<net::HttpResponseHeaders> headers;
 };
 

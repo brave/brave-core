@@ -12,7 +12,7 @@ source_set("endpoint_client") {
     "methods.h",
     "parse.h",
     "is_request.h",
-    "response.h",
+    "is_response.h",
     "with_headers.h",
     "with_method.h",
   ]

@@ -36,7 +36,7 @@ template <IsRequestBody Body, Method M>
 inline constexpr bool kIsRequest<WithMethod<Body, M>> = true;
 
 // Concept: a type satisfies IsRequest if
-// its IsRequestImpl specialization evaluates to true.
+// its kIsRequest specialization evaluates to true.
 template <typename T>
 concept IsRequest = kIsRequest<T>;
 
