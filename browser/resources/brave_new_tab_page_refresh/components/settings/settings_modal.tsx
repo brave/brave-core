@@ -125,14 +125,8 @@ export function SettingsModal(props: Props) {
       <Dialog
         isOpen={props.isOpen}
         showClose
-        onClose={() => {
-          // If the News dialog is open, keep the settings dialog open so that
-          // closing the News dialog will bring the user back to the settings
-          // dialog.
-          if (!braveNews.customizePage) {
-            props.onClose()
-          }
-        }}
+        onClose={() => props.onClose()}
+        backdropClickCloses={!braveNews.customizePage}
       >
         <h3>
           {getString('settingsTitle')}

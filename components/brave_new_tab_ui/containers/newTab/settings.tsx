@@ -140,13 +140,12 @@ export default function Settings(props: Props) {
     changeTab(props.setActiveTab)
   }, [props.setActiveTab])
 
-  return <SettingsDialog isOpen={props.showSettingsMenu} showClose onClose={() => {
-    if (customizePage) {
-      return
-    }
-
-    props.onClose?.()
-  }}>
+  return <SettingsDialog
+    isOpen={props.showSettingsMenu}
+    showClose
+    onClose={() => { props.onClose?.() }}
+    backdropClickCloses={!customizePage}
+  >
     <SettingsTitle slot='title'>
       {getLocale('dashboardSettingsTitle')}
     </SettingsTitle>
