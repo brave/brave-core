@@ -32,10 +32,6 @@ namespace gfx {
 class Image;
 }  // namespace gfx
 
-namespace image_fetcher {
-class ImageDecoder;
-}  // namespace image_fetcher
-
 class Profile;
 
 // * Register new custom image file
@@ -192,8 +188,6 @@ class CustomBackgroundFileManager final {
                       const gfx::Image& image);
 
   raw_ptr<Profile> profile_ = nullptr;
-
-  std::unique_ptr<image_fetcher::ImageDecoder> image_decoder_;
 
   base::WeakPtrFactory<CustomBackgroundFileManager> weak_factory_{this};
 };

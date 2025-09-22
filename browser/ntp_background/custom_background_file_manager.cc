@@ -15,9 +15,9 @@
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/ntp_background/constants.h"
-#include "chrome/browser/image_fetcher/image_decoder_impl.h"
 #include "chrome/browser/profiles/profile.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
+#include "ipc/constants.mojom.h"
+#include "services/data_decoder/public/cpp/decode_image.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/codec/png_codec.h"
@@ -35,8 +35,9 @@ void CustomBackgroundFileManager::SaveImage(
       [](base::WeakPtr<CustomBackgroundFileManager> self,
          const base::FilePath& source_file_path, SaveFileCallback callback,
          bool dir_exists) {
-        if (!self)
+        if (!self) {
           return;
+        }
 
         if (!dir_exists) {
           DVLOG(2) << "Failed to create custom background directory";
@@ -164,29 +165,18 @@ void CustomBackgroundFileManager::DecodeImageInIsolatedProcess(
     base::OnceCallback<void(const gfx::Image&)> on_decode) {
   DCHECK(!input.empty());
 
-  if (!image_decoder_)
-    image_decoder_ = std::make_unique<ImageDecoderImpl>();
+  base::span<const uint8_t> image_data_span(base::as_byte_span(input));
 
-  std::unique_ptr<data_decoder::DataDecoder> data_decoder =
-      std::make_unique<data_decoder::DataDecoder>();
-  auto* data_decoder_ptr = data_decoder.get();
+  auto skbitmap_to_image = base::BindOnce([](const SkBitmap& bitmap) {
+    return gfx::Image::CreateFrom1xBitmap(bitmap);
+  });
 
-  // Make a callback owning the data_decoder to keep it alive until the
-  // decoding is done.
-  auto wrapped_callback = base::BindOnce(
-      [](std::unique_ptr<data_decoder::DataDecoder> data_decoder,
-         base::OnceCallback<void(const gfx::Image&)> on_decode,
-         const gfx::Image& image) {
-        std::move(on_decode).Run(image);
-        // Ensure the DataDecoder outlives the ImageDecoder::ImageRequest.
-        base::SequencedTaskRunner::GetCurrentDefault()->DeleteSoon(
-            FROM_HERE, std::move(data_decoder));
-      },
-      std::move(data_decoder), std::move(on_decode));
-
-  image_decoder_->DecodeImage(input,
-                              gfx::Size() /* No particular size desired. */,
-                              data_decoder_ptr, std::move(wrapped_callback));
+  data_decoder::DecodeImageIsolated(
+      image_data_span, data_decoder::mojom::ImageCodec::kDefault,
+      /*shrink_to_fit=*/false,
+      static_cast<uint64_t>(IPC::mojom::kChannelMaximumMessageSize),
+      gfx::Size() /* No particular size desired. */,
+      std::move(skbitmap_to_image).Then(std::move(on_decode)));
 }
 
 void CustomBackgroundFileManager::SaveImageAsPNG(
