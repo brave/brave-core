@@ -42,7 +42,6 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.Callback;
 import org.chromium.base.FeatureMap;
-import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.shared_preferences.PreferenceKeyRegistry;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.supplier.ObservableSupplier;
@@ -1394,7 +1393,6 @@ public class BytecodeTest {
                         BottomSheetController.class,
                         Supplier.class,
                         WindowAndroid.class,
-                        JankTracker.class,
                         Supplier.class,
                         HomeSurfaceTracker.class,
                         ObservableSupplier.class,
