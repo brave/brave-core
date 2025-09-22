@@ -15,7 +15,7 @@ namespace darker_theme {
 // user has enabled the darker theme. Note that we're using `int` for
 // |reference_color_id|'s type so that we can pass various color id types like
 // ui::ColorId or nala::ColorId.
-ui::ColorTransform CreateDarkerThemeColorTransform(int reference_color_id);
+ui::ColorTransform ApplyDarknessFromColor(int reference_color_id);
 
 }  // namespace darker_theme
 
