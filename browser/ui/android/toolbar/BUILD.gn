@@ -10,7 +10,11 @@ import("//extensions/buildflags/buildflags.gni")
 import("//third_party/jni_zero/jni_zero.gni")
 
 android_library("java") {
-  sources = [ "java/src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandler.java" ]
+  sources = [
+    "java/src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandler.java",
+    "java/src/org/chromium/chrome/browser/toolbar/adaptive/BraveAdaptiveToolbarStatePredictor.java",
+    "java/src/org/chromium/chrome/browser/toolbar/adaptive/BraveAdaptiveToolbarStatePredictorDummySuper.java",
+  ]
 
   deps = [
     "//base:supplier_java",
@@ -20,4 +24,8 @@ android_library("java") {
     "//ui/android:ui_no_recycler_view_java",
     "//url:url_java",
   ]
+}
+
+android_resources("java_resources") {
+  sources = [ "java/brave-res/layout/brave_adaptive_preference_buttons.xml" ]
 }

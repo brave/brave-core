@@ -22,6 +22,7 @@ import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
+import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpenerImpl;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
@@ -44,6 +45,7 @@ import org.chromium.chrome.browser.tab_ui.TabSwitcher;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarIntentMetadata;
+import org.chromium.chrome.browser.ui.BraveAdaptiveToolbarUiCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
@@ -205,5 +207,17 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                     }
                     hubManager.setStatusIndicatorHeight(bottomToolbarHeight);
                 });
+    }
+
+    @Override
+    protected void initializeToolbar() {
+        super.initializeToolbar();
+
+        assert mAdaptiveToolbarUiCoordinator instanceof BraveAdaptiveToolbarUiCoordinator
+                : "Bytecode change was not applied!";
+        if (mAdaptiveToolbarUiCoordinator
+                instanceof BraveAdaptiveToolbarUiCoordinator braveCoordinator) {
+            braveCoordinator.initializeBrave(new BookmarkManagerOpenerImpl());
+        }
     }
 }
