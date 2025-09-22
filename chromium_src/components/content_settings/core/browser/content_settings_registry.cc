@@ -10,6 +10,7 @@
 #include "base/containers/fixed_flat_map.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings.mojom.h"
 #include "net/base/features.h"
@@ -396,12 +397,15 @@ void ContentSettingsRegistry::BraveInit() {
           WebsiteSettingsRegistry::PLATFORM_ANDROID |
           WebsiteSettingsRegistry::PLATFORM_IOS,
       WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
+
+#if BUILDFLAG(ENABLE_PSST)
   website_settings_registry_->Register(
       ContentSettingsType::BRAVE_PSST, brave_shields::kBravePsst, base::Value(),
       WebsiteSettingsInfo::UNSYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
-      WebsiteSettingsInfo::REQUESTING_SCHEMEFUL_SITE_ONLY_SCOPE,
-      WebsiteSettingsRegistry::DESKTOP,
+      WebsiteSettingsInfo::REQUESTING_ORIGIN_ONLY_SCOPE,
+      WebsiteSettingsRegistry::DESKTOP |
+          WebsiteSettingsRegistry::PLATFORM_ANDROID,
       WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
-}
+#endif  // BUILDFLAG(ENABLE_PSST)}
 
 }  // namespace content_settings
