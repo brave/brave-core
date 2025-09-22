@@ -3,60 +3,177 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-.box {
+.wrapper {
+  --leo-button-color: var(--leo-color-text-tertiary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   padding: var(--leo-spacing-xl) var(--leo-spacing-xl) 0;
-  overflow: auto;
-
-  p {
-    margin: 0;
-  }
+  gap: var(--leo-spacing-4xl);
+  container-type: inline-size;
 }
 
 .header {
-  padding: var(--leo-spacing-2xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--leo-spacing-l);
 }
 
 .title {
   font: var(--leo-font-heading-h1);
-  margin: 0;
-  margin-bottom: var(--leo-spacing-m);
+  color: var(--leo-color-text-primary);
+  text-align: center;
 }
 
 .subtitle {
   font: var(--leo-font-heading-h2);
-  color: var(--leo-color-text-tertiary);
-  margin: var(--leo-spacing-m) 0;
+  color: var(--leo-color-text-secondary);
+  text-align: center;
+}
+
+.subtitlePurple {
+  color: var(--leo-color-private-window-40);
+}
+
+.cardWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-l);
 }
 
 .card {
-  border-radius: var(--leo-radius-m);
-  padding: var(--leo-spacing-2xl);
-  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--leo-radius-xxl);
+  border: 1px solid var(--leo-color-neutral-10);
+  gap: var(--leo-spacing-m);
+  box-shadow: var(--leo-effect-elevation-01);
+  max-width: 420px;
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
 
-  p {
-    font: var(--leo-font-default-regular);
-    color: var(--leo-color-text-secondary);
-  }
+.cardGraphic {
+  display: flex;
+  width: 100%;
+  max-height: 190px;
+  transition: all 0.3s ease-in-out;
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  padding: var(--leo-spacing-l) var(--leo-spacing-2xl) var(--leo-spacing-2xl)
+    var(--leo-spacing-2xl);
+  transition: all 0.3s ease-in-out;
 }
 
 .cardTitle {
-  font: var(--leo-font-heading-h4);
+  font: var(--leo-font-heading-h3);
   color: var(--leo-color-text-primary);
-  margin: 0 0 8px 0;
+  margin: 0;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
 }
 
-.cardDesc {
+.cardDescription {
+  font: var(--leo-font-default-regular);
   color: var(--leo-color-text-secondary);
+  text-align: center;
+  transition: all 0.3s ease-in-out;
 }
 
-.siteHelpCard {
-  background-color: var(--leo-color-purple-10);
+// Collapsed state styles (mobile/tablet only - NOT on desktop)
+.cardCollapsed {
+  cursor: pointer;
+  gap: 0px;
+  transition: all 0.3s ease-in-out;
 }
 
-.chatCard {
-  background-color: var(--leo-color-teal-10);
+.cardCollapsed .cardGraphic {
+  max-height: 0px;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
 }
 
-.actions {
-  margin-top: 16px;
+.contentHidden {
+  height: 0px;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.cardCollapsed .cardInfo {
+  padding: var(--leo-spacing-l);
+  gap: 0px;
+  transition: all 0.3s ease-in-out;
+}
+
+.cardCollapsed .cardTitle {
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-tertiary);
+  transition: all 0.3s ease-in-out;
+}
+
+// Mobile-first responsive design
+// Base styles above are for mobile (up to 668px)
+
+// Tablet and up (668px+)
+@container (min-width: 668px) {
+  .title {
+    font: var(--leo-font-heading-display3);
+  }
+
+  .subtitle {
+    font: var(--leo-font-heading-h1);
+  }
+}
+
+// Desktop and up (1280px+)
+@container (min-width: 1280px) {
+  .cardWrapper {
+    flex-direction: row;
+  }
+
+  .card {
+    max-width: 368px;
+    min-width: 368px;
+  }
+
+  .cardGraphic {
+    height: 167px;
+  }
+
+  // Disable collapsed functionality on desktop
+  .cardCollapsed {
+    cursor: default;
+    gap: var(--leo-spacing-m);
+  }
+
+  .contentHidden {
+    height: unset;
+    opacity: 1;
+  }
+
+  .cardCollapsed .cardGraphic {
+    max-height: 167px;
+    opacity: 1;
+  }
+
+  .cardCollapsed .cardInfo {
+    padding: var(--leo-spacing-l) var(--leo-spacing-2xl) var(--leo-spacing-2xl)
+      var(--leo-spacing-2xl);
+    gap: var(--leo-spacing-m);
+  }
+
+  .cardCollapsed .cardTitle {
+    font: var(--leo-font-heading-h3);
+    color: var(--leo-color-text-primary);
+  }
 }

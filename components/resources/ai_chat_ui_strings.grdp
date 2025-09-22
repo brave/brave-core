@@ -12,9 +12,6 @@
   <message name="IDS_CHAT_UI_ACCEPT_BUTTON_LABEL" desc="Label for button to accept agreement" formatter_data="webui=AiChat">
     I understand
   </message>
-  <message name="IDS_CHAT_UI_SUMMARIZE_BUTTON_LABEL" desc="Label for button to summarize the current page's content" formatter_data="webui=AiChat">
-    Summarize
-  </message>
   <message name="IDS_CHAT_UI_ABOUT_TITLE" desc="A concise title that summarizes the purpose of AIChat" formatter_data="webui=AiChat">
     About Leo
   </message>
@@ -475,25 +472,31 @@
     Leo settings
   </message>
   <message name="IDS_CHAT_UI_WELCOME_GUIDE_TITLE" desc="A title for welcome guide component presented for first time users" formatter_data="webui=AiChat">
-    Hi, I'm Leo!
+    Introducing Leo AI
   </message>
   <message name="IDS_CHAT_UI_WELCOME_GUIDE_SUBTITLE" desc="A subtitle for welcome guide component presented for first time users" formatter_data="webui=AiChat">
-    An AI-powered intelligent assistant, built right into Brave.
+    Your <ph name="TEXT_BEFORE">$1</ph>private<ph name="TEXT_AFTER">/$1</ph> AI assistant, built right into the browser.
   </message>
-  <message name="IDS_CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_TITLE" desc="This is the title for a user prompt card designed to offer assistance with website-related tasks." formatter_data="webui=AiChat">
-    Need help with a website?
+  <message name="IDS_CHAT_UI_WELCOME_CARD_TRULY_PRIVATE_TITLE" desc="A title for welcome guide component presented for first time users" formatter_data="webui=AiChat">
+    Truly private AI
   </message>
-  <message name="IDS_CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_DESC" desc="This description informs the user that the chatbot is capable of assisting with various website-related tasks such as summarizing articles and elaborating on website content. There is no specific call to action in this message." formatter_data="webui=AiChat">
-    I can help you summarizing articles, expanding on a site's content and much more.
+  <message name="IDS_CHAT_UI_WELCOME_CARD_TRULY_PRIVATE_SUBTITLE" desc="A subtitle for welcome guide component presented for first time users" formatter_data="webui=AiChat">
+    Leo doesn’t retain or share chats, or use them for  model training. No account or login is required. Just open and chat. Privately.
   </message>
-  <message name="IDS_CHAT_UI_WELCOME_GUIDE_SITE_HELP_CARD_WITH_ACTION" desc="This description provides similar information to the previous message but concludes with a specific call to action or suggestion for the user to get started with assistance." formatter_data="webui=AiChat">
-    I can help you summarizing articles, expanding on a site's content and much more. Not sure where to start? Try this:
+  <message name="IDS_CHAT_UI_WELCOME_CARD_TABS_AND_FILES_TITLE" desc="A title for welcome guide component presented for first time users" formatter_data="webui=AiChat">
+    Chat with your tabs and files
   </message>
-  <message name="IDS_CHAT_UI_WELCOME_GUIDE_CHAT_CARD_TITLE" desc="Title for the chat card option." formatter_data="webui=AiChat">
-    Just want to chat?
+  <message name="IDS_CHAT_UI_WELCOME_CARD_TABS_AND_FILES_SUBTITLE" desc="A subtitle for welcome guide component presented for first time users" formatter_data="webui=AiChat">
+    Need to know more about the sites you’re visiting? Just add them to a chat. Attach your tabs and local files for fast, relevant answers.
   </message>
-  <message name="IDS_CHAT_UI_WELCOME_GUIDE_CHAT_CARD_DESC" desc="Description prompting the user to engage in a casual conversation with the chatbot." formatter_data="webui=AiChat">
-    Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.
+  <message name="IDS_CHAT_UI_WELCOME_CARD_AUTOMATE_WORK_TITLE" desc="A title for welcome guide component presented for first time users" formatter_data="webui=AiChat">
+    Automate the boring work
+  </message>
+  <message name="IDS_CHAT_UI_WELCOME_CARD_AUTOMATE_WORK_SUBTITLE" desc="A subtitle for welcome guide component presented for first time users" formatter_data="webui=AiChat">
+    Let Brave browse with you and interact with everything you do in the browser. Offload the tedious tasks, and save your time for the important stuff.
+  </message>
+  <message name="IDS_CHAT_UI_LEARN_MORE_ABOUT_LEO_AI" desc="A link text to learn more about Leo AI" formatter_data="webui=AiChat">
+    Learn more about Leo AI
   </message>
   <message name="IDS_CHAT_UI_PRIVACY_TITLE" desc="Title for privacy agreement modal." formatter_data="webui=AiChat">
     Chat Privately with Brave Leo
