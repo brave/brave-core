@@ -406,6 +406,7 @@ void ContentSettingsRegistry::BraveInit() {
       WebsiteSettingsRegistry::DESKTOP |
           WebsiteSettingsRegistry::PLATFORM_ANDROID,
       WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
-#endif  // BUILDFLAG(ENABLE_PSST)}
+#endif  // BUILDFLAG(ENABLE_PSST)
+}
 
 }  // namespace content_settings
