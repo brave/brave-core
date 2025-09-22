@@ -246,6 +246,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         if (originInfo == null || !URLUtil.isValidUrl(originInfo.originSpec)) return;
         ImageLoader.fetchFavIcon(
                 originInfo.originSpec,
+                false,
                 new WeakReference<>(getContext()),
                 bitmap -> {
                     if (bitmap != null) {
