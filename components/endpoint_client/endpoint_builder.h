@@ -23,6 +23,7 @@
 #include "base/types/is_instantiation.h"
 #include "base/types/same_as_any.h"
 #include "base/values.h"
+#include "brave/brave_domains/service_domains.h"
 #include "brave/components/endpoint_client/maybe_strip_with_headers.h"
 #include "brave/components/endpoint_client/maybe_variant.h"
 #include "brave/components/endpoint_client/request.h"
@@ -71,7 +72,9 @@ struct FixedString {
   char value[N];
 };
 
-template <FixedString path, base::is_instantiation<detail::Entry>... Entries>
+template <FixedString Prefix,
+          FixedString Path,
+          base::is_instantiation<detail::Entry>... Entries>
   requires(detail::UniqueTypes<typename Entries::Request...>)
 class Endpoint {
   template <typename, typename...>
@@ -109,17 +112,26 @@ class Endpoint {
       std::is_same_v<detail::MaybeStripWithHeaders<Err>,
                      typename EntryFor<Req>::Error>;
 
-  static GURL URL() { return GURL(path.value); }
+  static GURL URL() {
+    return brave_domains::GetServicesDomainUrl(Prefix.value)
+        .Resolve(Path.value);
+  }
 };
 
-template <typename>
-struct is_endpoint : std::false_type {};
+namespace detail {
 
-template <fixed_string P, base::is_instantiation<detail::Entry>... Es>
-struct is_endpoint<Endpoint<P, Es...>> : std::true_type {};
+template <typename>
+inline constexpr bool kIsEndpoint = false;
+
+template <FixedString Prefix,
+          FixedString Path,
+          base::is_instantiation<Entry>... Entries>
+inline constexpr bool kIsEndpoint<Endpoint<Prefix, Path, Entries...>> = true;
 
 template <typename T>
-concept IsEndpoint = is_endpoint<T>::value;
+concept IsEndpoint = kIsEndpoint<T>;
+
+}  // namespace detail
 
 }  // namespace endpoint_client
 

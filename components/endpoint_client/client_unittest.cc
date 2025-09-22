@@ -20,6 +20,7 @@
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/types/always_false.h"
 #include "base/types/expected.h"
 #include "base/values.h"
@@ -89,7 +90,8 @@ using Error1 = Message<kError1Key>;
 using Error2 = Message<kError2Key>;
 
 using TestEndpoint = Endpoint<
-    "https://example.com/api/query",
+    "example",
+    "/api/query",
     // POST<Request1> =>
     //   expected<
     //     optional<variant<Response1, Response2>>,
@@ -142,7 +144,7 @@ TEST_P(EndpointClientTest, Send) {
               EXPECT_EQ(resource_request.method, request.Method());
               // URL
               EXPECT_EQ(resource_request.url,
-                        GURL("https://example.com/api/query"));
+                        GURL("https://example.brave.com/api/query"));
               // Request body
               if (!resource_request.request_body) {
                 return ADD_FAILURE()
@@ -174,42 +176,36 @@ TEST_P(EndpointClientTest, Send) {
         using Expected = Entry::Expected;
         using Response = Entry::Response;
 
-        base::RunLoop run_loop;
-        base::MockCallback<base::OnceCallback<void(Expected)>> callback;
-        EXPECT_CALL(callback, Run).Times(1).WillOnce([&](Expected expected) {
-          ASSERT_TRUE(std::holds_alternative<Expected>(test_case.parsed_reply));
-          const Expected& got = std::get<Expected>(test_case.parsed_reply);
-          EXPECT_EQ(expected, got);
-          // TODO(sszaloki): currently, if a Response/Error type is
-          // WithHeaders<T>, EXPECT_EQ() will use T::operator==(), which
-          // WithHeaders<T> inherits from T. Check headers for equality.
-          // Below is a workaround, as HttpResponseHeaders::StrictlyEquals()
-          // doesn't work because of a space difference.
-          if constexpr (base::is_instantiation<Response, WithHeaders>) {
-            if (expected.has_value() && expected.value() &&
-                expected.value()->headers) {
-              ASSERT_TRUE(got.has_value() && got.value() &&
-                          got.value()->headers);
-
-              const auto& expected_headers = expected.value()->headers;
-              const auto& got_headers = got.value()->headers;
-
-              std::string expected_raw_no_ws;
-              std::string got_raw_no_ws;
-              base::RemoveChars(expected_headers->raw_headers(), " ",
-                                &expected_raw_no_ws);
-              base::RemoveChars(got_headers->raw_headers(), " ",
-                                &got_raw_no_ws);
-
-              EXPECT_EQ(expected_raw_no_ws, got_raw_no_ws);
-            }
-          }
-          run_loop.Quit();
-        });
-
+        base::test::TestFuture<Expected> future;
         Client<TestEndpoint>::Send(
             test_url_loader_factory_.GetSafeWeakWrapper(), request,
-            callback.Get());
+            future.GetCallback());
+        auto expected = future.Take();
+        ASSERT_TRUE(std::holds_alternative<Expected>(test_case.parsed_reply));
+        const Expected& got = std::get<Expected>(test_case.parsed_reply);
+        EXPECT_EQ(expected, got);
+        // TODO(sszaloki): currently, if a Response/Error type is
+        // WithHeaders<T>, EXPECT_EQ() will use T::operator==(), which
+        // WithHeaders<T> inherits from T. Check headers for equality.
+        // Below is a workaround, as HttpResponseHeaders::StrictlyEquals()
+        // doesn't work because of a space difference.
+        if constexpr (base::is_instantiation<Response, WithHeaders>) {
+          if (expected.has_value() && expected.value() &&
+              expected.value()->headers) {
+            ASSERT_TRUE(got.has_value() && got.value() && got.value()->headers);
+
+            const auto& expected_headers = expected.value()->headers;
+            const auto& got_headers = got.value()->headers;
+
+            std::string expected_raw_no_ws;
+            std::string got_raw_no_ws;
+            base::RemoveChars(expected_headers->raw_headers(), " ",
+                              &expected_raw_no_ws);
+            base::RemoveChars(got_headers->raw_headers(), " ", &got_raw_no_ws);
+
+            EXPECT_EQ(expected_raw_no_ws, got_raw_no_ws);
+          }
+        }
 
         // Client<TestEndpoint>::Send(
         //     test_url_loader_factory_.GetSafeWeakWrapper(),
@@ -218,8 +214,6 @@ TEST_P(EndpointClientTest, Send) {
         //         [](base::expected<
         //             std::optional<Response1>,
         //             std::optional<std::variant<Error1, Error2>>>) {}));
-
-        run_loop.Run();
       },
       test_case.request);
 }

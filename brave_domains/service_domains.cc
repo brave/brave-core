@@ -122,4 +122,12 @@ std::string GetServicesDomain(
       {prefix, ".", GetServicesDomainForSwitchValue(env_value)});
 }
 
+GURL GetServicesDomainUrl(std::string prefix,
+                          ServicesEnvironment env_value_default_override,
+                          base::CommandLine* command_line) {
+  return GURL(base::StrCat(
+      {url::kHttpsScheme, url::kStandardSchemeSeparator,
+       GetServicesDomain(prefix, env_value_default_override, command_line)}));
+}
+
 }  // namespace brave_domains

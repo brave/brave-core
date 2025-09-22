@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/command_line.h"
+#include "url/gurl.h"
 
 namespace brave_domains {
 
@@ -31,6 +32,11 @@ enum ServicesEnvironment { DEV, STAGING, PROD };
 // 3. Default env override parameter
 // 4. Default env (production)
 std::string GetServicesDomain(
+    std::string prefix,
+    ServicesEnvironment env_value_default_override = PROD,
+    base::CommandLine* command_line = base::CommandLine::ForCurrentProcess());
+
+GURL GetServicesDomainUrl(
     std::string prefix,
     ServicesEnvironment env_value_default_override = PROD,
     base::CommandLine* command_line = base::CommandLine::ForCurrentProcess());

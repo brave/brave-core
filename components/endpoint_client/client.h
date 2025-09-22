@@ -31,7 +31,7 @@
 
 namespace endpoint_client {
 
-template <IsEndpoint Ept>
+template <detail::IsEndpoint Ept>
 struct Client {
   template <typename Request, typename Response, typename Error>
     requires(Ept::template kIsRequestSupported<Request> &&
