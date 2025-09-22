@@ -1,0 +1,21 @@
+diff --git a/components/search_engines/search_engine_choice/search_engine_choice_service.cc b/components/search_engines/search_engine_choice/search_engine_choice_service.cc
+index b52df90eac9f3e09fb65613d41efeac070a400b2..65e6125d8a928368f6274e779a1e10081413edd6 100644
+--- a/components/search_engines/search_engine_choice/search_engine_choice_service.cc
++++ b/components/search_engines/search_engine_choice/search_engine_choice_service.cc
+@@ -411,7 +411,7 @@ SearchEngineChoiceService::SearchEngineChoiceService(
+     PrefService* local_state,
+     regional_capabilities::RegionalCapabilitiesService& regional_capabilities,
+     TemplateURLPrepopulateData::Resolver& prepopulate_data_resolver,
+-    signin::IdentityManager& identity_manager,
++    signin::IdentityManager* identity_manager,
+     policy::ManagementService& management_service)
+     : client_(std::move(client)),
+       profile_prefs_(profile_prefs),
+@@ -939,6 +939,7 @@ SearchEngineChoiceService::EvaluateSearchProviderChoice(
+   }
+ 
+   // 3.2: Check eligibility based on account type.
++  if (identity_manager_)
+   if (!AccountCanMakeChoiceScreenChoice(eligibility_config,
+                                         *identity_manager_)) {
+     return ChoiceStatus::kAccountNotEligible;
