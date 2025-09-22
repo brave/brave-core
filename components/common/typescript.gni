@@ -138,6 +138,7 @@ template("transpile_web_ui") {
     # https://gn.googlesource.com/gn/+/master/docs/reference.md#var_depfile
     # https://chromium.googlesource.com/chromium/src/build/+/HEAD/docs/writing_gn_templates.md#inputs-and-depfiles
     depfile = "${target_gen_dir}/${target_name}.d"
+    data_deps_path = "${target_gen_dir}/${target_name}.data_deps.json"
 
     resource_name = invoker.resource_name
 
@@ -168,6 +169,7 @@ template("transpile_web_ui") {
       # depfile header format is correct (see docs above).
       "--output_path=" + rebase_path(gen_output_dir, root_build_dir),
       "--root_gen_dir=" + rebase_path(root_gen_dir),
+      "--data_deps_path=" + rebase_path(data_deps_path),
       "--grd_name=$grd_name",
       "--resource_name=$resource_name",
       "--depfile_path=" + rebase_path(depfile),
@@ -230,6 +232,8 @@ template("transpile_web_ui") {
                              "testonly",
                              "visibility",
                            ])
+
+    write_file(data_deps_path, invoker.data, "json")
   }
 }
 

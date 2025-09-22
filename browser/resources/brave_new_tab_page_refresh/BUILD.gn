@@ -16,7 +16,10 @@ transpile_web_ui("resources") {
   output_module = true
   data = [
     "//brave/browser/resources/brave_new_tab_page_refresh/",
+    "//brave/components/brave_news/browser/resources/",
+    "//brave/components/brave_rewards/resources/",
     "//brave/components/common/",
+    "//brave/components/web-components/",
   ]
   deps = [
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom_js",
