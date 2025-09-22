@@ -11,8 +11,8 @@
   CreateLocalBlockingJsonRuleList() {   \
     return @"";                         \
   }                                     \
-                                        \
   NSString* CreateLocalBlockingJsonRuleList_ChromiumImpl
+
 #include <ios/web/web_state/ui/wk_content_rule_list_util.mm>
 
 #undef CreateLocalBlockingJsonRuleList
