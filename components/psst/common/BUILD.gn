@@ -24,6 +24,8 @@ static_library("common") {
     "brave_psst_permission_context.cc",
     "features.cc",
     "pref_names.cc",
+    "pref_names.h",
+    "psst_consent_data.cc",
   ]
 
   public_deps = [
