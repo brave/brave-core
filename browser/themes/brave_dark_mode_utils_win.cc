@@ -10,17 +10,6 @@
 #include "ui/native_theme/native_theme_win.h"
 #include "ui/native_theme/os_settings_provider.h"
 
-namespace ui {
-// This resets dark mode to os theme when user changes brave theme from
-// dark or light to Same as Windows by using the value of registry because
-// we changed ui::NativeTheme::dark_mode_ explicitly for using brave theme
-// like a system theme.
-void UpdateDarkModeStatus() {
-  static_cast<ui::NativeThemeWin*>(
-      ui::NativeTheme::GetInstanceForNativeUi())->UpdateDarkModeStatus();
-}
-}  // namespace ui
-
 namespace dark_mode {
 
 void SetSystemDarkMode(BraveDarkModeType type) {
@@ -28,14 +17,16 @@ void SetSystemDarkMode(BraveDarkModeType type) {
   // choose same as Windows option. Windows doesn't support per-application
   // theme mode. If users stick to dark or light, we should prevent it.
   // On macOS, this isn't needed because it supports per-application theme.
-  // So, if application set dark/light appearance explicitely, macOS respect it.
+  // So, if application set dark/light appearance explicitly, macOS respect it.
   ui::IgnoreSystemDarkModeChange(
       type != dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT);
   // Reset and follow os dark mode.
   if (type == BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT) {
     DCHECK(ui::OsSettingsProvider::Get().DarkColorSchemeAvailable());
     // This sets preferred color scheme on its own.
-    ui::UpdateDarkModeStatus();
+    ui::NativeTheme::GetInstanceForNativeUi()->set_preferred_color_scheme(
+        ui::OsSettingsProvider::Get().PreferredColorScheme());
+    ui::NativeTheme::GetInstanceForNativeUi()->NotifyOnNativeThemeUpdated();
     return;
   }
 

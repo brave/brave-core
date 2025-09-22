@@ -290,7 +290,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, MAYBE_DarkModeChangeByRegTest) {
 
     EXPECT_CALL(native_theme_observer_for_default,
                 OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi()))
-        .Times(1);
+        .Times(0);
     apps_use_light_theme = !initial_dark_mode ? 0 : 1;
     hkcu_themes_regkey.WriteValue(L"AppsUseLightTheme", apps_use_light_theme);
 
