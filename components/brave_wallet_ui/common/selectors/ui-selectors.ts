@@ -11,7 +11,7 @@ type State = { ui: UIState }
 export const selectedPendingTransactionId = ({ ui }: State) =>
   ui.selectedPendingTransactionId
 export const isPanel = ({ ui }: State) => ui.isPanel
-export const isAndroid = ({ ui }: State) => ui.isAndroid
+export const isMobile = ({ ui }: State) => ui.isMobile
 
 // unsafe
 export const transactionProviderErrorRegistry = ({ ui }: State) =>

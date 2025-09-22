@@ -154,7 +154,7 @@ source_set("unit_tests") {
     "//components/page_info/core",
     "//components/performance_manager",
     "//components/permissions",
-    "//components/plus_addresses:features",
+    "//components/plus_addresses/core/common:features",
     "//components/privacy_sandbox",
     "//components/safe_browsing/core/common",
     "//components/search",

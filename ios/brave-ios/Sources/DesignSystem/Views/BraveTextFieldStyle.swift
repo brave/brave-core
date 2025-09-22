@@ -86,7 +86,7 @@ public struct BraveValidatedTextFieldStyle<Failure: LocalizedError & Equatable>:
         )
       if let error = error {
         HStack(alignment: .firstTextBaseline, spacing: 4) {
-          Image(systemName: "exclamationmark.circle.fill")
+          Image(braveSystemName: "leo.warning.circle-filled")
           Text(error.localizedDescription)
             .fixedSize(horizontal: false, vertical: true)
             // Dont animate the text change, just alpha

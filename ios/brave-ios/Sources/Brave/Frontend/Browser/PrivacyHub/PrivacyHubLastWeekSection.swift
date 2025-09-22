@@ -28,7 +28,7 @@ extension PrivacyReportsView {
 
     private func emptyCalloutView(text: String) -> some View {
       HStack {
-        Image(systemName: "info.circle.fill")
+        Image(braveSystemName: "leo.info.ios-only")
         Text(text)
       }
       .foregroundColor(Color.white)

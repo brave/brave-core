@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { loadImage, placeholderImageSrc } from '../../lib/image_loader'
+import { placeholderImageSrc } from '../../lib/image_loader'
 
 interface Props {
   src: string
@@ -13,14 +13,16 @@ interface Props {
 }
 
 export function SafeImage(props: Props) {
-  const [imageURL, setImageURL] = React.useState(placeholderImageSrc)
-
-  React.useEffect(() => {
-    const url = 'chrome://image?url=' + encodeURIComponent(props.src || '')
-    loadImage(url).then((loaded) => {
-      setImageURL(loaded ? url : placeholderImageSrc)
-    })
-  }, [props.src])
-
-  return <img src={imageURL} loading='lazy' className={props.className} />
+  return (
+    <img
+      src={
+        props.src
+          ? 'chrome://image?url=' + encodeURIComponent(props.src)
+          : placeholderImageSrc
+      }
+      loading='lazy'
+      className={props.className}
+      onError={(event) => { event.currentTarget.src = placeholderImageSrc }}
+    />
+  )
 }

@@ -14,7 +14,7 @@ import { UISelectors } from '../../../common/selectors'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import {
-  getPriceIdForToken,
+  getPriceRequestsForTokens,
   getTokenPriceFromRegistry,
 } from '../../../utils/pricing-utils'
 import { BraveWallet } from '../../../constants/types'
@@ -90,13 +90,12 @@ export const AssetDetailsHeader = (props: Props) => {
     onClickTokenDetails,
     onClickEditToken,
     isShowingMarketData,
-    selectedTimeline,
   } = props
 
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
-  const isAndroidOrPanel = isAndroid || isPanel
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isMobileOrPanel = isMobile || isPanel
 
   // queries
   const { data: selectedAssetsNetwork, isLoading: isLoadingNetwork } =
@@ -143,18 +142,17 @@ export const AssetDetailsHeader = (props: Props) => {
     }
   }, [openExplorer, selectedAsset])
 
-  const tokenPriceIds = React.useMemo(
-    () => (selectedAsset ? [getPriceIdForToken(selectedAsset)] : []),
+  const tokenPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens([selectedAsset]),
     [selectedAsset],
   )
 
   // queries
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length && defaultFiatCurrency
+  const { data: spotPrices } = useGetTokenSpotPricesQuery(
+    tokenPriceRequests.length && defaultFiatCurrency
       ? {
-          ids: tokenPriceIds,
-          timeframe: selectedTimeline,
-          toCurrency: defaultFiatCurrency,
+          requests: tokenPriceRequests,
+          vsCurrency: defaultFiatCurrency,
         }
       : skipToken,
     querySubscriptionOptions60s,
@@ -175,20 +173,20 @@ export const AssetDetailsHeader = (props: Props) => {
 
   const selectedAssetFiatPrice =
     selectedAsset
-    && spotPriceRegistry
-    && getTokenPriceFromRegistry(spotPriceRegistry, selectedAsset)
+    && spotPrices
+    && getTokenPriceFromRegistry(spotPrices, selectedAsset)
 
   const isSelectedAssetPriceDown = selectedAssetFiatPrice
-    ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0
+    ? Number(selectedAssetFiatPrice.percentageChange24h) < 0
     : false
 
   return (
     <Row
-      padding={isAndroidOrPanel ? '20px 16px' : '24px 0px'}
+      padding={isMobileOrPanel ? '20px 16px' : '24px 0px'}
       justifyContent='space-between'
     >
       <Row width='unset'>
-        {isAndroidOrPanel ? (
+        {isMobileOrPanel ? (
           <Row
             width='unset'
             margin='0px 12px 0px 0px'
@@ -295,7 +293,7 @@ export const AssetDetailsHeader = (props: Props) => {
               }
             />
             {selectedAssetFiatPrice
-              ? Number(selectedAssetFiatPrice.assetTimeframeChange).toFixed(2)
+              ? Number(selectedAssetFiatPrice.percentageChange24h).toFixed(2)
               : '0.00'}
             %
           </PercentChange>
@@ -305,7 +303,7 @@ export const AssetDetailsHeader = (props: Props) => {
           && !selectedAsset.isNft
           && !isRewardsToken && (
             <>
-              {isAndroidOrPanel ? (
+              {isMobileOrPanel ? (
                 <HorizontalSpace space='12px' />
               ) : (
                 <>
@@ -315,7 +313,7 @@ export const AssetDetailsHeader = (props: Props) => {
                 </>
               )}
               <MenuWrapper ref={assetDetailsMenuRef}>
-                {isAndroidOrPanel ? (
+                {isMobileOrPanel ? (
                   <Button
                     onClick={() => setShowAssetDetailsMenu((prev) => !prev)}
                   >

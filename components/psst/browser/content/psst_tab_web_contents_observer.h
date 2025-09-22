@@ -11,8 +11,10 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/psst/common/psst_script_responses.h"
+#include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "content/public/browser/web_contents_observer.h"
 
 class PrefService;
@@ -25,6 +27,8 @@ class PsstRuleRegistry;
 class PsstTabWebContentsObserver : public content::WebContentsObserver {
  public:
   using InsertScriptInPageCallback = base::OnceCallback<void(base::Value)>;
+  using InsertScriptInPageTimeoutCallback =
+      base::RepeatingCallback<void(const int)>;
   using InjectScriptCallback = base::RepeatingCallback<void(
       const std::string&,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
@@ -37,7 +41,8 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
     virtual ~PsstUiDelegate() = default;
     // Update the UI state based on the applied tasks and progress.
     virtual void UpdateTasks(long progress,
-                             const std::vector<PolicyTask>& applied_tasks) = 0;
+                             const std::vector<PolicyTask>& applied_tasks,
+                             const mojom::PsstStatus status) = 0;
   };
 
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
@@ -68,6 +73,10 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                           std::unique_ptr<MatchedRule> rule,
                           base::Value script_result);
   void OnPolicyScriptResult(int nav_entry_id, base::Value script_result);
+  void RunWithTimeout(const int last_committed_entry_id,
+                      const std::string& script,
+                      InsertScriptInPageCallback callback);
+  void OnScriptTimeout(int id);
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
@@ -77,7 +86,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   const raw_ptr<PrefService> prefs_;
   InjectScriptCallback inject_script_callback_;
   std::unique_ptr<PsstUiDelegate> ui_delegate_;
-
+  base::OneShotTimer timeout_timer_;
   base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};
 };
 

@@ -10,13 +10,11 @@ import android.os.Build;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -26,8 +24,9 @@ import org.chromium.chrome.browser.tab.TabDelegateFactory;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.user_prefs.UserPrefs;
-import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.base.WindowAndroid;
+
+import java.util.function.Supplier;
 
 public class BraveTabCreator extends ChromeTabCreator {
     public BraveTabCreator(
@@ -55,9 +54,9 @@ public class BraveTabCreator extends ChromeTabCreator {
     @Override
     public Tab launchUrl(String url, @TabLaunchType int type) {
         if (url.equals(UrlConstants.NTP_URL)
-                && (type == TabLaunchType.FROM_CHROME_UI || type == TabLaunchType.FROM_STARTUP
+                && (type == TabLaunchType.FROM_CHROME_UI
+                        || type == TabLaunchType.FROM_STARTUP
                         || type == TabLaunchType.FROM_TAB_SWITCHER_UI)) {
-            registerPageView();
             ChromeTabbedActivity chromeTabbedActivity = BraveActivity.getChromeTabbedActivity();
             if (chromeTabbedActivity != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
                 TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
@@ -81,19 +80,5 @@ public class BraveTabCreator extends ChromeTabCreator {
             }
         }
         return super.launchUrl(url, type);
-    }
-
-    @Override
-    public Tab createNewTab(LoadUrlParams loadUrlParams, @TabLaunchType int type, Tab parent) {
-        if (loadUrlParams.getUrl().equals(UrlConstants.NTP_URL)
-                && type == TabLaunchType.FROM_TAB_GROUP_UI) {
-            registerPageView();
-        }
-        return super.createNewTab(loadUrlParams, type, parent, null);
-    }
-
-    private void registerPageView() {
-        NTPBackgroundImagesBridge.getInstance(ProfileManager.getLastUsedRegularProfile())
-                .registerPageView();
     }
 }

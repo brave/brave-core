@@ -5,13 +5,11 @@
 
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 
-#include <algorithm>
 #include <optional>
 
 #include "base/check.h"
 #include "base/containers/contains.h"
-#include "base/no_destructor.h"
-#include "base/notreached.h"
+#include "base/containers/map_util.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "url/gurl.h"
@@ -27,20 +25,23 @@ bool CanPatternBeConvertedToWildcardSchemeAndPort(
   // like "http://*:80/*" should be left alone.
   if (pattern == ContentSettingsPattern::Wildcard() ||
       pattern == ContentSettingsPattern::FromString("https://firstParty/*") ||
-      pattern.GetScheme() == ContentSettingsPattern::SCHEME_FILE ||
-      pattern.MatchesAllHosts() || pattern.GetHost().empty())
+      pattern.GetSchemeType() == ContentSettingsPattern::SCHEME_FILE ||
+      pattern.MatchesAllHosts() || pattern.GetHost().empty()) {
     return false;
+  }
   // Check for the case when the scheme is wildcard, but the port isn't.
-  if (pattern.GetScheme() == ContentSettingsPattern::SCHEME_WILDCARD) {
+  if (pattern.GetSchemeType() == ContentSettingsPattern::SCHEME_WILDCARD) {
     GURL check_for_port_url("http://" + pattern.ToString());
     return check_for_port_url.has_port();
   }
   GURL url(pattern.ToString());
-  if (!url.is_valid() || url.is_empty() || !url.has_host())
+  if (!url.is_valid() || url.is_empty() || !url.has_host()) {
     return false;
-  if (url.has_scheme())
+  }
+  if (url.has_scheme()) {
     return !ContentSettingsPattern::IsNonWildcardDomainNonPortScheme(
         url.scheme_piece());
+  }
   return url.has_port();
 }
 
@@ -48,44 +49,19 @@ bool CanPatternBeConvertedToWildcardSchemeAndPort(
 
 namespace content_settings {
 
-const std::vector<ContentSettingsType>& GetShieldsContentSettingsTypes() {
-  static const base::NoDestructor<std::vector<ContentSettingsType>>
-      kShieldsContentSettingsTypes({
-          ContentSettingsType::BRAVE_ADS,
-          ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-          ContentSettingsType::BRAVE_TRACKERS,
-          ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
-          ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-          ContentSettingsType::BRAVE_SHIELDS,
-          ContentSettingsType::BRAVE_REFERRERS,
-          ContentSettingsType::BRAVE_COOKIES,
-      });
-
-  return *kShieldsContentSettingsTypes;
+const brave_shields::ShieldsContentSettingsTypes&
+GetShieldsContentSettingsTypes() {
+  return brave_shields::kShieldsContentSettingsTypes;
 }
 
 std::string GetShieldsContentTypeName(const ContentSettingsType& content_type) {
-  switch (content_type) {
-    case ContentSettingsType::BRAVE_ADS:
-      return brave_shields::kAds;
-    case ContentSettingsType::BRAVE_COSMETIC_FILTERING:
-      return brave_shields::kCosmeticFiltering;
-    case ContentSettingsType::BRAVE_TRACKERS:
-      return brave_shields::kTrackers;
-    case ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES:
-      return brave_shields::kHTTPUpgradableResources;
-    case ContentSettingsType::BRAVE_FINGERPRINTING_V2:
-      return brave_shields::kFingerprintingV2;
-    case ContentSettingsType::BRAVE_SHIELDS:
-      return brave_shields::kBraveShields;
-    case ContentSettingsType::BRAVE_REFERRERS:
-      return brave_shields::kReferrers;
-    case ContentSettingsType::BRAVE_COOKIES:
-      return brave_shields::kCookies;
-    default:
-      break;
-  }
-  NOTREACHED() << "All handled shields content type above.";
+  const auto* name =
+      IsShieldsContentSettingsType(content_type)
+          ? base::FindOrNull(brave_shields::kShieldsContentTypeNames,
+                             content_type)
+          : nullptr;
+  CHECK(name) << "Content type isn't a shield content type.";
+  return *name;
 }
 
 bool IsShieldsContentSettingsType(const ContentSettingsType& content_type) {
@@ -94,16 +70,18 @@ bool IsShieldsContentSettingsType(const ContentSettingsType& content_type) {
 
 bool IsShieldsContentSettingsTypeName(const std::string& content_type_name) {
   for (auto content_type : GetShieldsContentSettingsTypes()) {
-    if (GetShieldsContentTypeName(content_type) == content_type_name)
+    if (GetShieldsContentTypeName(content_type) == content_type_name) {
       return true;
+    }
   }
   return false;
 }
 
 std::optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern) {
-  if (!CanPatternBeConvertedToWildcardSchemeAndPort(pattern))
+  if (!CanPatternBeConvertedToWildcardSchemeAndPort(pattern)) {
     return std::nullopt;
+  }
   DCHECK(!pattern.GetHost().empty());
   std::optional<ContentSettingsPattern> new_pattern =
       ContentSettingsPattern::FromString("*://" + pattern.GetHost() + "/*");

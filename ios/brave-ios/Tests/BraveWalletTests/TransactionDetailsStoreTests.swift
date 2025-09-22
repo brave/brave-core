@@ -40,9 +40,28 @@ class TransactionDetailsStoreTests: XCTestCase {
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
     let rpcService = MockJsonRpcService()
     let assetRatioService = BraveWallet.TestAssetRatioService()
-    assetRatioService._price = { _, _, _, completion in
+    assetRatioService._price = { _, _, completion in
       let mockAssetPrices: [BraveWallet.AssetPrice] = [
-        .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23")
+        .init(
+          coin: .eth,
+          chainId: BraveWallet.MainnetChainId,
+          address: "",
+          price: "3059.99",
+          vsCurrency: "usd",
+          cacheStatus: .hit,
+          source: .coingecko,
+          percentageChange24h: "-57.23"
+        ),
+        .init(
+          coin: .eth,
+          chainId: BraveWallet.SepoliaChainId,
+          address: "",
+          price: "3059.99",
+          vsCurrency: "usd",
+          cacheStatus: .hit,
+          source: .coingecko,
+          percentageChange24h: "-57.23"
+        ),
       ]
       completion(true, mockAssetPrices)
     }

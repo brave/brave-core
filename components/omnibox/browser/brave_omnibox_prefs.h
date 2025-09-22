@@ -14,11 +14,13 @@ namespace omnibox {
 // the individual prefs listed below.
 inline constexpr char kAutocompleteEnabled[] = "brave.autocomplete_enabled";
 
-// Determines whether top suggestions show up in the omnibox results. See
-// TopSitesProvider and BraveOnDeviceHeadProvider.
-// Note: Originally this only controlled TopSitesProvider, but now it also
-// controls BraveOnDeviceHeadProvider, hence the pref name.
-inline constexpr char kTopSuggestionsEnabled[] =
+// Determines whether on-device head suggestions show up in the omnibox results.
+// This controls the BraveOnDeviceHeadProvider which provides ML-based
+// autocomplete suggestions generated locally on the device. Note: This
+// preference previously controlled both TopSitesProvider and
+// BraveOnDeviceHeadProvider. TopSitesProvider has been removed, so now this
+// only controls on-device suggestions.
+inline constexpr char kOnDeviceSuggestionsEnabled[] =
     "brave.top_site_suggestions_enabled";
 
 // Determines whether history suggestions show up in the omnibox results. This

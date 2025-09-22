@@ -20,7 +20,7 @@
                                                                    \
  private:                                                          \
   std::optional<std::u16string> custom_title_;                     \
-  url::Origin last_origin_;                                        \
+  std::optional<url::Origin> last_origin_;                         \
                                                                    \
  public:                                                           \
   std::u16string GetTitle(__VA_ARGS__)

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_ITEM_H_
 #define BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_ITEM_H_
 
+#include "brave/components/sidebar/common/features.h"
 #include "url/gurl.h"
 
 namespace sidebar {
@@ -53,6 +54,10 @@ struct SidebarItem {
     return type == SidebarItem::Type::kTypeBuiltIn;
   }
   bool is_web_type() const { return type == SidebarItem::Type::kTypeWeb; }
+  bool is_web_panel_type() const {
+    return base::FeatureList::IsEnabled(features::kSidebarWebPanel) &&
+           type == SidebarItem::Type::kTypeWeb && open_in_panel;
+  }
   bool IsValidItem() const;
 
   bool operator==(const SidebarItem& item) const;

@@ -221,12 +221,14 @@ void NewTabPageHandler::GetAvailableSearchEngines(
         BuiltinEngineType::KEYWORD_MODE_PREPOPULATED_ENGINE) {
       continue;
     }
+    const GURL url(template_url->GenerateSearchURL(
+        template_url_service_->search_terms_data()));
+    if (!url.is_valid() || !url.has_host()) {
+      continue;
+    }
     auto search_engine = mojom::SearchEngineInfo::New();
     search_engine->prepopulate_id = template_url->prepopulate_id();
-    search_engine->host = GURL(template_url->url()).host();
-    if (search_engine->host.empty()) {
-      search_engine->host = "google.com";
-    }
+    search_engine->host = url.host();
     search_engine->name = base::UTF16ToUTF8(template_url->short_name());
     search_engine->keyword = base::UTF16ToUTF8(template_url->keyword());
     search_engine->favicon_url = template_url->favicon_url().spec();

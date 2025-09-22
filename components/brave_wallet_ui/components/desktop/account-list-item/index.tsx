@@ -56,7 +56,6 @@ import {
   BraveWallet,
   AccountButtonOptionsObjectType,
   AccountModalTypes,
-  SpotPriceRegistry,
   WalletStatus,
 } from '../../../constants/types'
 
@@ -107,7 +106,7 @@ interface Props {
   account: BraveWallet.AccountInfo
   tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
   isLoadingBalances: boolean
-  spotPriceRegistry: SpotPriceRegistry | undefined
+  spotPrices: BraveWallet.AssetPrice[] | undefined
   isLoadingSpotPrices: boolean
   isShieldingAvailable: boolean | undefined
 }
@@ -116,7 +115,7 @@ export const AccountListItem = ({
   account,
   onClick,
   tokenBalancesRegistry,
-  spotPriceRegistry,
+  spotPrices,
   isLoadingBalances,
   isLoadingSpotPrices,
   isShieldingAvailable,
@@ -126,7 +125,7 @@ export const AccountListItem = ({
 
   // selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   // redux
   const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
@@ -283,7 +282,7 @@ export const AccountListItem = ({
     }
 
     // Wait for spot prices
-    if (!spotPriceRegistry) {
+    if (!spotPrices) {
       return Amount.empty()
     }
 
@@ -296,7 +295,7 @@ export const AccountListItem = ({
               .format()
           : getBalance(account.accountId, asset, tokenBalancesRegistry)
       return computeFiatAmount({
-        spotPriceRegistry,
+        spotPrices,
         value: balance,
         token: asset,
       })
@@ -312,7 +311,7 @@ export const AccountListItem = ({
     userTokensRegistry,
     accountsFungibleTokens,
     tokenBalancesRegistry,
-    spotPriceRegistry,
+    spotPrices,
     rewardsBalance,
     isLoadingBalances,
     isLoadingSpotPrices,
@@ -447,7 +446,7 @@ export const AccountListItem = ({
 
             {!isDisconnectedRewardsAccount && (
               <Row width='unset'>
-                {!isAndroid && !isPanel && !accountsFiatValue.isZero() ? (
+                {!isMobile && !isPanel && !accountsFiatValue.isZero() ? (
                   tokensWithBalances.length ? (
                     <TokenIconsStack tokens={tokensWithBalances} />
                   ) : (

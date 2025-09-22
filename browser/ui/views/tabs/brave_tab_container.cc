@@ -765,7 +765,7 @@ gfx::Rect BraveTabContainer::GetDropBounds(int drop_index,
                         drop_image->height());
 
   // If the rect doesn't fit on the monitor, push the arrow to the bottom.
-  display::Screen* screen = display::Screen::GetScreen();
+  display::Screen* screen = display::Screen::Get();
   display::Display display = screen->GetDisplayMatching(drop_bounds);
   *is_beneath = !display.bounds().Contains(drop_bounds);
 

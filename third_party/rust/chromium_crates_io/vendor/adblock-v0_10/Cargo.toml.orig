@@ -1,6 +1,6 @@
 [package]
 name = "adblock"
-version = "0.10.0"
+version = "0.10.3"
 authors = ["Anton Lazarev <alazarev@brave.com>", "Andrius Aucinas"]
 edition = "2021"
 
@@ -37,8 +37,9 @@ seahash = "4.1.0"
 memchr = "2.4"
 base64 = "0.22"
 rmp-serde = "0.15"
-cssparser = { version = "0.29", optional = true }
-selectors = { version = "0.24", optional = true }
+cssparser = { version = "0.34", optional = true }
+selectors = { version = "0.26", optional = true }
+precomputed-hash = "0.1"
 thiserror = "1.0"
 flatbuffers = { version = "25.2.10" }
 
@@ -84,11 +85,9 @@ harness = false
 name = "bench_serialization"
 harness = false
 
-# Currently disabled, as cosmetic filter internals
-# are no longer part of the crate's public API
-#[[bench]]
-#name = "bench_cosmetic_matching"
-#harness = false
+[[bench]]
+name = "bench_cosmetic_matching"
+harness = false
 
 [features]
 # If disabling default features, consider explicitly re-enabling the
@@ -104,11 +103,8 @@ resource-assembler = []
 
 [lints.clippy]
 len_zero = "allow"
-# Temporary disabled until the code isn't fixed:
-sliced-string-as-bytes = "allow"
-or-then-unwrap = "allow"
-large-enum-variant = "allow"
-search-is-some = "allow"
+# TODO: https://github.com/brave/adblock-rust/issues/501
+uninlined_format_args = "allow"
 
 [workspace]
 members = ["js", "fuzz"]

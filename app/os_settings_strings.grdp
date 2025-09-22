@@ -4455,6 +4455,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_PRINTING_CUPS_VIEW_PRINTER_DIALOG_TITLE" desc="Text for the title of the dialog that is used to view a CUPS managed printer's information.">
     View printer
   </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_VIEW_PRINTER_DIALOG_MANAGED_LABEL" desc="A11y text for the managed icon displayed next to the dialog title." is_accessibility_with_no_ui="true">
+    Managed printer
+  </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_EDIT_PRINTER_BUTTON" desc="Text for the button which allows the user to save the modification of a CUPS printer.">
     Save
   </message>
@@ -5927,17 +5930,23 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_POWER_ADAPTIVE_CHARGING_SUBTEXT" desc="In Device Settings &gt; Power, description of the behavior of the adaptive charging feature.">
     Extends battery life by keeping your battery around 80%. Battery will fully charge before you typically disconnect from power.
   </message>
-  <message name="IDS_SETTINGS_POWER_OPTIMIZED_CHARGING_LABEL" desc="In Device Settings &gt; Power, the title of the settings row of the optimized charging feature." translateable="false">
+  <message name="IDS_SETTINGS_POWER_ADAPTIVE_CHARGING_LEARN_MORE_ARIA_LABEL" desc="In Device Settings &gt; Power &gt; Optimized Charging &gt; Change, aria label for the learn more link for adaptive charging.">
+    Learn more about Adaptive charging.
+  </message>
+  <message name="IDS_SETTINGS_POWER_OPTIMIZED_CHARGING_LABEL" desc="In Device Settings &gt; Power, the title of the settings row of the optimized charging feature.">
     Optimized charging
   </message>
-  <message name="IDS_SETTINGS_POWER_OPTIMIZED_CHARGING_MODE_CHANGE_LABEL" desc="In Device Settings &gt; Power, the text of the optimized charging change mode button, which creates a dialog that allows the user to pick between adaptive charging and a charge limit." translateable="false">
+  <message name="IDS_SETTINGS_POWER_OPTIMIZED_CHARGING_MODE_CHANGE_LABEL" desc="In Device Settings &gt; Power, the text of the optimized charging change mode button, which creates a dialog that allows the user to pick between adaptive charging and a charge limit.">
     Change
   </message>
-  <message name="IDS_SETTINGS_POWER_BATTERY_CHARGE_LIMIT_LABEL" desc="In Device Settings &gt; Power &gt; Optimized Charging &gt; Change, the title of the battery charge limit feature, which explicitly limits the battery charging to 80%." translateable="false">
+  <message name="IDS_SETTINGS_POWER_OPTIMIZED_CHARGING_MODE_CHANGE_ARIA_LABEL" desc="In Device Settings &gt; Power, aria label for the button which changes the optimized charging strategy.">
+    Change the optimized charging strategy.
+  </message>
+  <message name="IDS_SETTINGS_POWER_BATTERY_CHARGE_LIMIT_LABEL" desc="In Device Settings &gt; Power &gt; Optimized Charging &gt; Change, the title of the battery charge limit feature, which explicitly limits the battery charging to 80%.">
     Charge limit
   </message>
-  <message name="IDS_SETTINGS_POWER_BATTERY_CHARGE_LIMIT_SUBTEXT" desc="In Device Settings &gt; Power &gt; Optimized Charging &gt; Change, description of the behavior of the battery charge limit feature." translateable="false">
-    Limits maximum battery charge to 80% to extend battery lifespan.
+  <message name="IDS_SETTINGS_POWER_BATTERY_CHARGE_LIMIT_SUBTEXT" desc="In Device Settings &gt; Power &gt; Optimized Charging &gt; Change, description of the behavior of the battery charge limit feature.">
+    Stops charging at 80% to help your battery last longer.
   </message>
   <message name="IDS_SETTINGS_POWER_IDLE_DISPLAY_OFF_SLEEP" desc="In Device Settings &gt; Power, menu item for idle behavior that turns the screen off and later puts the device to sleep. String must be short enough to fit in a drop-down menu.">
     Sleep
@@ -5972,7 +5981,7 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_BATTERY_STATUS_SHORT" desc="In Device Settings &gt; Power, the battery status when the time left cannot be shown.">
     <ph name="percentage">$1<ex>56</ex></ph>%
   </message>
-  <message name="IDS_SETTINGS_BATTERY_STATUS_CHARGING_ON_HOLD" desc="In Device Settings &gt; Power, the battery status while a charger is plugged in, showing the battery power as a percentage and that charging has stopped." translateable="false">
+  <message name="IDS_SETTINGS_BATTERY_STATUS_CHARGING_ON_HOLD" desc="In Device Settings &gt; Power, the battery status while a charger is plugged in, showing the battery power as a percentage and that charging has stopped.">
     <ph name="percentage">$1<ex>80</ex></ph>% - Charging on hold
   </message>
   <message name="IDS_SETTINGS_POWER_BATTERY_SAVER_LABEL" desc="In Device Settings &gt; Power, label for toggling battery saver mode">
@@ -6971,18 +6980,18 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <!-- Privacy Page -->
   <if expr="reven">
     <message name="IDS_OS_SETTINGS_ENABLE_LOGGING_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable crash and user metrics logging in ChromeOS Flex.">
-      Send crash reports as well as diagnostic and usage data to ChromeOS Flex
+      Send diagnostic and usage data
     </message>
     <message name="IDS_OS_SETTINGS_ENABLE_LOGGING_TOGGLE_DESCRIPTION" desc="The description of the checkbox to enable/disable crash and user metrics logging in ChromeOS Flex for user of the device.">
-      Help improve Brave and ChromeOS Flex features and performance. Personal information is removed when collecting this data.
+      Help improve Brave and ChromeOS Flex features and performance by automatically sending crash reports as well as diagnostic and usage data to Brave.
     </message>
   </if>
   <if expr="not reven">
     <message name="IDS_OS_SETTINGS_ENABLE_LOGGING_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable crash and user metrics logging in ChromeOS.">
-      Send crash reports as well as diagnostic and usage data to ChromeOS
+      Send diagnostic and usage data
     </message>
     <message name="IDS_OS_SETTINGS_ENABLE_LOGGING_TOGGLE_DESCRIPTION" desc="The description of the checkbox to enable/disable crash and user metrics logging in ChromeOS for user of the device.">
-      Help improve Brave and ChromeOS features and performance. Personal information is removed when collecting this data.
+      Help improve Brave and ChromeOS features and performance by automatically sending crash reports as well as diagnostic and usage data to Brave.
     </message>
   </if>
   <message name="IDS_OS_SETTINGS_PRIVACY_TITLE" desc="Name of the privacy settings page.">
@@ -7339,6 +7348,118 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   </message>
 
   <!-- App Management -->
+  <message name="IDS_APP_MANAGEMENT_NO_APPS_FOUND" desc="Text shown when a search of apps yeilds no results.">
+    No apps found
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PIN_TO_SHELF" desc="Label for the pin to shelf button in the app settings page.">
+    Pin to shelf
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PRESET_WINDOW_SIZES" desc="Label for the preset window sizes toggle in the app settings page.">
+    Preset window sizes
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PRESET_WINDOW_SIZES_TEXT" desc="Label for the description of the window preset toggle in the app settings page.">
+    Use presets for phone, tablet, or resizable windows to prevent app from misbehaving
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PRINTING" desc="Label for the printing permission toggle.">
+    Printers
+  </message>
+  <message name="IDS_APP_MANAGEMENT_SEARCH_PROMPT" desc="Prompt in search bar of main app management page.">
+    Search apps
+  </message>
+  <message name="IDS_APP_MANAGEMENT_CONTACTS" desc="Label for the Android contacts (address book) permission toggle.">
+    Contacts
+  </message>
+  <message name="IDS_APP_MANAGEMENT_STORAGE" desc="Label for the Android storage permission toggle.">
+    Storage
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TITLE" desc="Title for App Details Section">
+    App details
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TOOLTIP_WEB_A11Y" desc="Text to be read out by ChromeVox, when highlighting an info icon for Web Apps downloaded from the Brave browser, stating the source URL of the app">
+    From <ph name="APP_URL">$1<ex>https://google.com</ex></ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_WEB_STORE" desc="Text for Web Store installation source">
+    Web Store
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_PLAY_STORE" desc="Text for Google Play Store installation source">
+    Google Play Store
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_BROWSER" desc="Text for Brave browser installation source for Web App">
+    Web App installed from Brave browser
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_AND_SOURCE_COMBINED" desc="Full text for installation source and app type line">
+    <ph name="APP_TYPE">$1<ex>Web App</ex></ph> installed from <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph><ph name="INSTALL_SOURCE">$2<ex>Google Play Store</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_AND_SOURCE_PREINSTALLED_APP" desc="Explanation text for the installation source of an app, describing the type of the app, and that it came automatically installed with the device (preinstalled).">
+    <ph name="APP_TYPE">$1<ex>ChromeOS System App</ex></ph> preinstalled on your <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_VERSION" desc="Text for application version">
+    Version: <ph name="APP_VERSION">$1<ex>17.2</ex></ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_STORAGE_TITLE" desc="Text for title of storage section for storage related to the app and its associated files">
+    Storage
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_APP_SIZE" desc="Text for app size label for the amount of storage the app itself is using">
+    App size: <ph name="APP_SIZE">$1<ex>100 MB</ex></ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_DATA_SIZE" desc="Text for data size label for the amount of storage the app's associated files is using">
+    Data stored in app: <ph name="APP_SIZE">$1<ex>100 MB</ex></ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_LANGUAGE_LABEL" desc="The label for the settings row button to manage app language selection section of OS Settings which opens a dialog.">
+    App language
+  </message>
+  <message name="IDS_APP_MANAGEMENT_ARC_MANAGE_PERMISSIONS" desc="Label for a link to manage permissions for an app.">
+    Manage permissions
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ASK" desc="Label explaining that the user will be asked whether an app can access a permission (e.g. camera access) every time it is used.">
+    Ask every time
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED" desc="Label explaining that access to a permission (e.g. camera access) is allowed for an app.">
+    Allowed
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED_WITH_DETAILS" desc="Label explaining that access to a permission (e.g. camera access) is allowed for an app. The placeholder after the dash provides additional details about what access is allowed.">
+    Allowed – <ph name="PERMISSION_DETAILS">$1<ex>While in use</ex></ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_DENIED" desc="Label explaining that access to a permission (e.g. camera access) is denied for an app.">
+    Denied
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED_TEXT_WITH_TURN_ON_SYSTEM_CAMERA_ACCESS_BUTTON" desc="Label explaining that access to camera is allowed for an app followed by a button to turn on system camera access.">
+    Allowed. Turn on <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>system camera access<ph name="LINK_END">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED_TEXT_WITH_TURN_ON_SYSTEM_MICROPHONE_ACCESS_BUTTON" desc="Label explaining that access to microphone is allowed for an app followed by a button to turn on system microphone access.">
+    Allowed. Turn on <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>system microphone access<ph name="LINK_END">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED_TEXT_WITH_TURN_ON_SYSTEM_LOCATION_ACCESS_BUTTON" desc="Label explaining that access to location is allowed for an app followed by a button to turn on system location access.">
+    Allowed. Turn on <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>system location access<ph name="LINK_END">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED_TEXT_WITH_DETAILS_AND_TURN_ON_SYSTEM_CAMERA_ACCESS_BUTTON" desc="Label explaining that access to camera is allowed for an app followed by a button to turn on system camera access.">
+    Allowed – <ph name="PERMISSION_DETAILS">$1<ex>While in use</ex></ph>. Turn on <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>system camera access<ph name="LINK_END">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED_TEXT_WITH_DETAILS_AND_TURN_ON_SYSTEM_MICROPHONE_ACCESS_BUTTON" desc="Label explaining that access to microphone is allowed for an app followed by a button to turn on system microphone access.">
+    Allowed – <ph name="PERMISSION_DETAILS">$1<ex>While in use</ex></ph>. Turn on <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>system microphone access<ph name="LINK_END">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED_TEXT_WITH_DETAILS_AND_TURN_ON_SYSTEM_LOCATION_ACCESS_BUTTON" desc="Label explaining that access to location is allowed for an app followed by a button to turn on system location access.">
+    Allowed – <ph name="PERMISSION_DETAILS">$1<ex>While in use</ex></ph>. Turn on <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>system location access<ph name="LINK_END">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED_BUT_NO_CAMERA_CONNECTED_TEXT" desc="Label explaining that access to camera is allowed for an app but no camera is connected to the device.">
+    Allowed. Connect a camera to your device.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED_BUT_NO_MICROPHONE_CONNECTED_TEXT" desc="Label explaining that access to microphone is allowed for an app but no microphone is connected to the device.">
+    Allowed. Connect a microphone to your device.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED_BUT_NO_CAMERA_CONNECTED_TEXT_WITH_DETAILS" desc="Label explaining that access to camera is allowed for an app but no camera is connected to the device with details.">
+    Allowed – <ph name="PERMISSION_DETAILS">$1<ex>While in use</ex></ph>. Connect a camera to your device.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED_BUT_NO_MICROPHONE_CONNECTED_TEXT_WITH_DETAILS" desc="Label explaining that access to microphone is allowed for an app but no microphone is connected to the device with details.">
+    Allowed – <ph name="PERMISSION_DETAILS">$1<ex>While in use</ex></ph>. Connect a microphone to your device.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED_BUT_MICROPHONE_HW_SWITCH_ACTIVE_TEXT" desc="Label explaining that access to microphone is allowed for an app but microphone is blocked by hardware switch.">
+    Allowed. Turn on microphone using physical switch.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSION_ALLOWED_BUT_MICROPHONE_HW_SWITCH_ACTIVE_TEXT_WITH_DETAILS" desc="Label explaining that access to microphone is allowed for an app but microphone is blocked by hardware switch with details.">
+    Allowed – <ph name="PERMISSION_DETAILS">$1<ex>While in use</ex></ph>. Turn on microphone using physical switch.
+  </message>
+
   <message name="IDS_OS_SETTINGS_PERMISSION_ITEM_CLICK_TOGGLE_PERMISSION" desc="Text to be spoken by a screen reader to describe the toggle button to enable or disable a specific permission for an app.">
     Click to toggle permission.
   </message>
@@ -7362,6 +7483,17 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   </message>
   <message name="IDS_OS_SETTINGS_APP_DETAILS_TYPE_WEB_INSTALL_REASON_POLICY" desc="Explanation text for the web app installation reason, describing the type of the app, and that it is installed by the administrator.">
     Web app installed by your device administrator.
+  </message>
+
+  <!-- Multi Apps API -->
+  <message name="IDS_APP_MANAGEMENT_SUB_APPS_LIST_HEADING" desc="Label for the sub-app section in an app's settings page. The section lists all sub-applications that got installed by the current app. These sub-applications might be installed locally, or streamed from a remote location via the parent app.">
+    Installed and streamed applications from <ph name="APP_NAME">$1<ex>Citrix</ex></ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PARENT_APP_PERMISSION_EXPLANATION" desc="Explanation text that appears underneath the Permission header on an app's settings page. Any changes the user makes to this app's permissions also apply to any installed ('sub') apps.">
+    Permissions that you allow for <ph name="APP_NAME">$1<ex>Citrix</ex></ph> will also be allowed for its installed and streamed apps.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_SUB_APP_PERMISSION_EXPLANATION" desc="Explanation text that appears underneath the Permission header on an app's settings page. Any changes the user makes to the app's parent app's permissions also apply to this app. The 'Manage' link takes the user to the parent app's settings page where they can change the permissions.">
+    Permissions that you allow for <ph name="APP_NAME">$1<ex>Citrix</ex></ph> will also be allowed for this app. <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>Manage<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
 
   <!-- Safety Hub -->

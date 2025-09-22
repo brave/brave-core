@@ -50,13 +50,23 @@ std::vector<GURL> GetFeedURLsFromHTMLDocument(const std::string& charset,
   VLOG(1) << "GetFeedURLsFromHTMLDocument";
   std::vector<GURL> results;
   // Find most `<link` elements from most types of html documents
-  static const re2::RE2 link_pattern("(?i)(<\\s*link [^>]+>)");
+  // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case
+  // of `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+  // added in the meantime to fix the build error. Remove this attribute and
+  // provide a proper fix.
+  [[clang::no_destroy]] static const re2::RE2 link_pattern(
+      "(?i)(<\\s*link [^>]+>)");
   std::string link_text;
   std::string_view input(html_body);
   while (re2::RE2::FindAndConsume(&input, link_pattern, &link_text)) {
     VLOG(1) << "Found link: " << link_text;
     // Extract rel
-    static const re2::RE2 rel_pattern("(?i)rel=\"([^\"]*)\"");
+    // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case
+    // of `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has
+    // been added in the meantime to fix the build error. Remove this attribute
+    // and provide a proper fix.
+    [[clang::no_destroy]] static const re2::RE2 rel_pattern(
+        "(?i)rel=\"([^\"]*)\"");
     std::string rel;
     if (!rel_pattern.PartialMatch(link_text, rel_pattern, &rel)) {
       VLOG(1) << "no valid matching rel: " << link_text;
@@ -68,7 +78,12 @@ std::vector<GURL> GetFeedURLsFromHTMLDocument(const std::string& charset,
       continue;
     }
     // Extract type attribute
-    static const re2::RE2 type_pattern("(?i)type=\"([^\"]+)\"");
+    // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case
+    // of `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has
+    // been added in the meantime to fix the build error. Remove this attribute
+    // and provide a proper fix.
+    [[clang::no_destroy]] static const re2::RE2 type_pattern(
+        "(?i)type=\"([^\"]+)\"");
     std::string content_type;
     if (!type_pattern.PartialMatch(link_text, type_pattern, &content_type)) {
       VLOG(1) << "no valid matching type: " << link_text;
@@ -81,7 +96,12 @@ std::vector<GURL> GetFeedURLsFromHTMLDocument(const std::string& charset,
       continue;
     }
     // Extract href attribute
-    static const re2::RE2 href_pattern("(?i)href=\"([^\"]+)\"");
+    // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case
+    // of `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has
+    // been added in the meantime to fix the build error. Remove this attribute
+    // and provide a proper fix.
+    [[clang::no_destroy]] static const re2::RE2 href_pattern(
+        "(?i)href=\"([^\"]+)\"");
     std::string href;
     if (!href_pattern.PartialMatch(link_text, href_pattern, &href)) {
       VLOG(1) << "no valid href: " << link_text;

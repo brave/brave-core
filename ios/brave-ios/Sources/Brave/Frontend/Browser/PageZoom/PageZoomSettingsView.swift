@@ -85,7 +85,7 @@ struct PageZoomSettingsView: View {
                 let zoomLevel = Int(step * 100.0)
                 let preferredZoomLevel = Int(defaultZoomLevel * 100.0)
                 if preferredZoomLevel == zoomLevel {
-                  Image(systemName: "checkmark")
+                  Image(braveSystemName: "leo.check.normal")
                     .font(.system(.body).weight(.medium))
                     .foregroundColor(Color(.braveBlurpleTint))
                 }

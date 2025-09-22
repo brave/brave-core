@@ -6,7 +6,7 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/execute/edge_execute_attr.h"
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
-#include "third_party/blink/renderer/platform/wtf/text/string_builder_stream.h"
+#include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 
 namespace brave_page_graph {
 
@@ -25,9 +25,8 @@ ItemName EdgeExecuteAttr::GetItemName() const {
 }
 
 ItemDesc EdgeExecuteAttr::GetItemDesc() const {
-  blink::StringBuilder ts;
-  ts << EdgeExecute::GetItemDesc() << " [" << attribute_name_ << "]";
-  return ts.ReleaseString();
+  return blink::StrCat(
+      {EdgeExecute::GetItemDesc(), " [", attribute_name_, "]"});
 }
 
 void EdgeExecuteAttr::AddGraphMLAttributes(xmlDocPtr doc,

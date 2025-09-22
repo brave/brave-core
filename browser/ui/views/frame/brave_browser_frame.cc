@@ -6,6 +6,8 @@
 #include "brave/browser/ui/views/frame/brave_browser_frame.h"
 
 #include "brave/browser/themes/brave_private_window_theme_supplier.h"
+#include "brave/browser/ui/darker_theme/features.h"
+#include "brave/browser/ui/darker_theme/pref_names.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
@@ -16,6 +18,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_frame.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/prefs/pref_service.h"
 #include "ui/color/color_provider_key.h"
 
 BraveBrowserFrame::BraveBrowserFrame(BrowserView* browser_view)
@@ -73,4 +76,22 @@ void BraveBrowserFrame::SetTabDragKind(TabDragKind kind) {
     SharedPinnedTabServiceFactory::GetForProfile(browser_view_->GetProfile())
         ->TabDraggingEnded(browser_view_->browser());
   }
+}
+
+ui::ColorProviderKey BraveBrowserFrame::GetColorProviderKey() const {
+  auto key = BrowserFrame::GetColorProviderKey();
+
+  if (base::FeatureList::IsEnabled(darker_theme::features::kBraveDarkerTheme)) {
+    // Note that we don't change set SchemeVariant to kDarker if
+    // |theme_supplier_| exists because |theme_supplier_| is for
+    // private/tor/guest window and we don't want to set kDarker for them.
+    if (!theme_supplier_ &&
+        key.color_mode == ui::ColorProviderKey::ColorMode::kDark &&
+        browser_view_->browser()->profile()->GetPrefs()->GetBoolean(
+            darker_theme::prefs::kBraveDarkerMode)) {
+      key.scheme_variant = ui::ColorProviderKey::SchemeVariant::kDarker;
+    }
+  }
+
+  return key;
 }

@@ -233,7 +233,7 @@ mojom::DBTransactionResultInfo::StatusCode Database::Initialize(
     }
 
     memory_pressure_listener_ = std::make_unique<base::MemoryPressureListener>(
-        FROM_HERE,
+        FROM_HERE, base::MemoryPressureListenerTag::kAdsDatabase,
         base::BindRepeating(&Database::MemoryPressureListenerCallback,
                             weak_factory_.GetWeakPtr()));
 

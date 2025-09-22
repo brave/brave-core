@@ -16,9 +16,11 @@
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/strings/strcat.h"
+#include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
@@ -42,6 +44,10 @@ using ::testing::_;
 using ::testing::InvokeArgument;
 
 namespace psst {
+
+namespace {
+constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
+}  // namespace
 
 class DocumentOnLoadObserver : public content::WebContentsObserver {
  public:
@@ -97,6 +103,30 @@ ACTION_P(InsertScriptInPageCallback, future, value) {
   future->SetValue(value.Clone());
 }
 
+ACTION_P(InsertScriptInPageDelayedCallback,
+         future,
+         task_environment,
+         delay_in_secs,
+         value) {
+  task_environment->GetMainThreadTaskRunner()->PostDelayedTask(
+      FROM_HERE,
+      base::BindLambdaForTesting(
+          [callback = std::move(
+               const_cast<
+                   PsstTabWebContentsObserver::InsertScriptInPageCallback&>(
+                   arg1)),
+           fut = future, val = value.Clone()]() {
+            std::move(
+                const_cast<
+                    PsstTabWebContentsObserver::InsertScriptInPageCallback&>(
+                    callback))
+                .Run(val.Clone());
+            fut->SetValue(val.Clone());
+          }),
+      base::Seconds(delay_in_secs));
+  task_environment->FastForwardBy(base::Seconds(delay_in_secs));
+}
+
 class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
  public:
   MockUiDelegate() = default;
@@ -104,13 +134,20 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
 
   MOCK_METHOD(void,
               UpdateTasks,
-              (long progress, const std::vector<PolicyTask>& applied_tasks),
+              (long progress,
+               const std::vector<PolicyTask>& applied_tasks,
+               const mojom::PsstStatus status),
               (override));
 };
 
 class PsstTabWebContentsObserverUnitTestBase
     : public content::RenderViewHostTestHarness {
  public:
+  PsstTabWebContentsObserverUnitTestBase()
+      : content::RenderViewHostTestHarness(
+            base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+  ~PsstTabWebContentsObserverUnitTestBase() override = default;
+
   void SetUp() override {
     content::RenderViewHostTestHarness::SetUp();
 
@@ -255,6 +292,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           &first_nav_check_loop,
           CreateMatchedRule(first_nav_user_script, policy_script)));
 
+  // Called twice, once for each navigation, with Failed status as user script
+  // result is empty in both cases
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(2);
+
   base::test::TestFuture<base::Value> first_nav_user_script_insert_future;
   EXPECT_CALL(inject_script_callback(), Run(first_nav_user_script, _))
       .WillOnce(InsertScriptInPageCallback(&first_nav_user_script_insert_future,
@@ -302,6 +344,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(redirect_target, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
+
+  // Called once, with Failed status as user script result is empty
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
 
   base::test::TestFuture<base::Value> user_script_insert_future;
   auto value = base::Value();
@@ -418,6 +464,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::test::TestFuture<base::Value> user_script_insert_future;
 
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
+
   // User script result is not a dictionary
   auto script_params = base::Value();
 
@@ -445,6 +494,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
+
+  // Called once, with Failed status as user script result is empty dictionary
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
+
   base::test::TestFuture<base::Value> user_script_insert_future;
   auto script_params = base::Value(base::Value::Dict());
 
@@ -473,6 +527,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::test::TestFuture<base::Value> user_script_insert_future;
+
+  // Called once, with Failed status as user script result is empty dictionary
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
 
   // User script result is an empty dictionary
   auto script_params = base::Value(base::Value::Dict());
@@ -511,8 +569,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto policy_script_result =
       base::Value(base::Value::Dict().Set("prop", "value"));
 
-  // Any UI delegate method must not be called, as policy_script_result is empty
-  EXPECT_CALL(ui_delegate(), UpdateTasks(_, _)).Times(0);
+  // Call UI delegate method once (Failed state) as policy_script_result
+  // is not deserializable
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -550,6 +610,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .WillOnce(CheckIfMatchCallback(
           &check_loop, CreateMatchedRule(user_script, policy_script)));
   base::test::TestFuture<base::Value> user_script_insert_future;
+
+  // Call UI delegate method once (Failed state) as user_script_result
+  // has empty user value
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
 
   // User script result is an dictionary, but user key is empty
   auto script_params = base::Value(base::Value::Dict().Set("user", ""));
@@ -590,8 +655,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                base::Value(base::Value::BlobStorage{0x01, 0x02, 0x03})));
   auto policy_script_result = base::Value();
 
-  // Any UI delegate method must not be called, as policy_script_result is empty
-  EXPECT_CALL(ui_delegate(), UpdateTasks(_, _)).Times(0);
+  // Call UI delegate method once (Failed state) as policy_script_result is
+  // empty
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
 
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
@@ -626,10 +693,12 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
 
   // UpdateTasks must be called with correct parameters, as policy script
   // returns valid result
-  EXPECT_CALL(ui_delegate(), UpdateTasks(progress, _))
+  EXPECT_CALL(ui_delegate(),
+              UpdateTasks(progress, _, mojom::PsstStatus::kInProgress))
       .WillOnce([&progress_future, &applied_tasks_future](
                     long progress_value,
-                    const std::vector<PolicyTask>& applied_tasks) {
+                    const std::vector<PolicyTask>& applied_tasks,
+                    const mojom::PsstStatus status) {
         std::vector<PolicyTask> tasks;
         std::ranges::for_each(applied_tasks, [&tasks](const PolicyTask& task) {
           tasks.push_back(task.Clone());
@@ -685,6 +754,62 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   EXPECT_EQ(task_description, applied_tasks[0].description);
 }
 
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       UiDelegateUpdateTasksCalledAsUserScriptTimeout) {
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  const std::string task_description = "task description";
+  const int progress = 100;
+  base::RunLoop check_loop;
+  base::test::TestFuture<long> progress_future;
+  base::test::TestFuture<std::vector<PolicyTask>> applied_tasks_future;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script)));
+
+  // UpdateTasks must be called with in case of timeout failure, to indicate
+  // that the complete workflow has ended with error.
+  EXPECT_CALL(ui_delegate(),
+              UpdateTasks(progress, _, mojom::PsstStatus::kFailed))
+      .WillOnce([&progress_future, &applied_tasks_future](
+                    long progress_value,
+                    const std::vector<PolicyTask>& applied_tasks,
+                    const mojom::PsstStatus status) {
+        std::vector<PolicyTask> tasks;
+        std::ranges::for_each(applied_tasks, [&tasks](const PolicyTask& task) {
+          tasks.push_back(task.Clone());
+        });
+        applied_tasks_future.SetValue(std::move(tasks));
+        progress_future.SetValue(progress_value);
+      });
+
+  base::test::TestFuture<base::Value> user_script_insert_future;
+
+  // Create a user script return value
+  auto script_params = base::Value(base::Value::Dict().Set("user", "value"));
+
+  // User script's callback is delayed, causing the flow to fail
+  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+      .WillOnce(InsertScriptInPageDelayedCallback(
+          &user_script_insert_future, task_environment(),
+          kScriptTimeout.InSeconds() + 1, script_params.Clone()));
+
+  // No policy script executed
+  EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+  check_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
+  EXPECT_EQ(progress, progress_future.Take());
+
+  EXPECT_TRUE(applied_tasks_future.Take().empty());
+  // TODO(https://github.com/brave/brave-browser/issues/49317) We need to check
+  // that script result callbacks are not in queue
+}
 class PsstTabWebContentsObserverFeatureDisabledUnitTest
     : public PsstTabWebContentsObserverUnitTestBase {
  public:

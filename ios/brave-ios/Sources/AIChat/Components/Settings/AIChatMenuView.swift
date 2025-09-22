@@ -294,7 +294,8 @@ struct AIChatMenuView_Preview: PreviewProvider {
           key: "mixtral_8x7b",
           displayName: "Mixtral 8x7b",
           visionSupport: false,
-          supportsTools: false
+          supportsTools: false,
+          isSuggestedModel: false
         ),
       modelOptions: [
         .init(
@@ -311,7 +312,8 @@ struct AIChatMenuView_Preview: PreviewProvider {
           key: "mixtral_8x7b",
           displayName: "Mixtral 8x7b",
           visionSupport: false,
-          supportsTools: false
+          supportsTools: false,
+          isSuggestedModel: false
         ),
         .init(
           options: .init(
@@ -327,7 +329,8 @@ struct AIChatMenuView_Preview: PreviewProvider {
           key: "claude_instant",
           displayName: "Claude-Instant",
           visionSupport: false,
-          supportsTools: false
+          supportsTools: false,
+          isSuggestedModel: false
         ),
         .init(
           options: .init(
@@ -343,7 +346,8 @@ struct AIChatMenuView_Preview: PreviewProvider {
           key: "llama_2x13b",
           displayName: "Llama-2 13b",
           visionSupport: false,
-          supportsTools: false
+          supportsTools: false,
+          isSuggestedModel: false
         ),
         .init(
           options: .init(
@@ -359,7 +363,8 @@ struct AIChatMenuView_Preview: PreviewProvider {
           key: "llama_2x70b",
           displayName: "Llama-2 70b",
           visionSupport: false,
-          supportsTools: false
+          supportsTools: false,
+          isSuggestedModel: false
         ),
       ],
       onModelChanged: {

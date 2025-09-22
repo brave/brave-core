@@ -33,6 +33,11 @@ enum CharacterType {
   ASSISTANT
 };
 
+enum ConversationCapability {
+  CHAT,
+  CONTENT_AGENT
+};
+
 enum APIError {
   None,
   InternalError,
@@ -389,6 +394,8 @@ struct Model {
   bool vision_support;
   // Model supports tool use
   bool supports_tools = false;
+  // Is a suggested model
+  bool is_suggested_model;
 };
 
 struct ModelWithSubtitle {
@@ -545,6 +552,7 @@ struct ConversationState {
   bool is_request_in_progress;
   array<Model> all_models;
   string current_model_key;
+  string default_model_key;
   array<string> suggested_questions;
   SuggestionGenerationStatus suggestion_status;
   array<AssociatedContent> associated_content;
@@ -578,6 +586,7 @@ struct ConversationEntriesState {
   uint64 total_tokens;
   // Indicates the number of tokens that were trimmed from the conversation
   uint64 trimmed_tokens;
+  ConversationCapability conversation_capability;
 };
 
 // Browser-side handler for a Conversation
@@ -684,7 +693,9 @@ interface ConversationUI {
   // it could be changed from the browser.
   // When the browser changes the model, it will also provide a new list
   // of models.
-  OnModelDataChanged(string conversation_model_key, array<Model> all_models);
+  OnModelDataChanged(string conversation_model_key,
+                     string default_model_key,
+                     array<Model> all_models);
   // Provides the full list of questions for the active tab in the page's
   // Browser window.
   OnSuggestedQuestionsChanged(

@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import DesignSystem
 import SwiftUI
 
 /// Displays the favicon for the OriginInfo, or the Brave Wallet logo for BraveWallet origin.
@@ -43,7 +44,7 @@ struct OriginInfoFavicon: View {
   }
 
   private var globeFavicon: some View {
-    Image(systemName: "globe")
+    Image(braveSystemName: "leo.internet")
       .resizable()
       .aspectRatio(contentMode: .fit)
       .padding(8)

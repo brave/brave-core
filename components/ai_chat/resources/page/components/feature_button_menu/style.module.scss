@@ -33,11 +33,10 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 
   & > leo-icon {
-    margin-left: 12px;
-    margin-right: 6px;
+    margin-left: 8px;
   }
 }
 

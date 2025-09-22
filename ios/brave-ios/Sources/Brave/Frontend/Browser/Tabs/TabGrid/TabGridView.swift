@@ -58,7 +58,7 @@ struct TabGridView: View {
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
   @State private var editMode: EditMode = .inactive
-  @State private var selectedTabs: [TabState.ID] = []
+  @State private var selectedTabs: Set<TabState.ID> = []
 
   @ObservedObject private var privateBrowsingOnly = Preferences.Privacy.privateBrowsingOnly
 
@@ -143,6 +143,9 @@ struct TabGridView: View {
           tabs: viewModel.tabs,
           isPrivateBrowsing: viewModel.isPrivateBrowsing,
           insets: gridMaskInsets,
+          contextMenuForTabs: { tabs in
+            contextMenu(for: tabs)
+          },
           selectedTabList: $selectedTabs
         )
       }
@@ -552,6 +555,80 @@ struct TabGridView: View {
     }
     .padding(.horizontal, 16)
     .padding(.vertical, 8)
+  }
+
+  private func contextMenu(for tabs: [any TabState]) -> UIMenu? {
+    let tabIDs = Set(tabs.map(\.id))
+    let isShredAvailable = viewModel.isShredAvailableForSelectedTabs(tabIDs)
+    let allTabsAreSelected = editMode == .active && selectedTabs == tabIDs
+    let selectAndShred = UIMenu(
+      options: .displayInline,
+      children: [
+        UIAction(
+          title: allTabsAreSelected
+            ? Strings.TabGrid.deselectTabsButtonTitle : Strings.TabGrid.selectTabsButtonTitle,
+          image: UIImage(braveSystemNamed: "leo.check.circle-outline"),
+          handler: { _ in
+            withAnimation {
+              if allTabsAreSelected {
+                // Deselect tabs
+                selectedTabs = []
+              } else {
+                selectedTabs.formUnion(tabIDs)
+              }
+              editMode = .active
+            }
+          }
+        ),
+        UIAction(
+          title: Strings.Shields.shredSiteData,
+          image: UIImage(braveSystemNamed: "leo.shred.data"),
+          attributes: .destructive.union(!isShredAvailable ? .disabled : []),
+          handler: { _ in
+            selectedTabs.formUnion(tabIDs)
+            activeShredMode = .selectedTabs
+            isShredAlertPresented = true
+          }
+        ),
+      ]
+    )
+    let closeTabs = UIMenu(
+      options: .displayInline,
+      children: [
+        UIAction(
+          title: Strings.closeAllOtherTabsTitle,
+          image: UIImage(braveSystemNamed: "leo.close"),
+          attributes: .destructive.union(viewModel.tabs.count == tabIDs.count ? .disabled : []),
+          handler: { _ in
+            withAnimation {
+              viewModel.closeOtherTabs(tabIDs)
+              editMode = .inactive
+              selectedTabs = []
+            }
+          }
+        ),
+        UIAction(
+          title: tabIDs.count == 1 ? Strings.TabGrid.closeTab : Strings.TabGrid.closeTabs,
+          image: UIImage(braveSystemNamed: "leo.close"),
+          attributes: .destructive,
+          handler: { _ in
+            withAnimation {
+              let dismissAfterClose = tabIDs.count == viewModel.tabs.count
+              editMode = .inactive
+              viewModel.closeTabs(tabIDs)
+              selectedTabs = []
+              if dismissAfterClose {
+                dismiss()
+              }
+            }
+          }
+        ),
+      ]
+    )
+    return UIMenu(children: [
+      selectAndShred,
+      closeTabs,
+    ])
   }
 }
 

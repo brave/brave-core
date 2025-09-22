@@ -1,5 +1,5 @@
 /* (No Comment) */
-"0W40Cl" = "Nova guia";
+"0W40Cl" = "Nova aba";
 
 /* (No Comment) */
 "5ixvGX-tYwiRd" = "Há ${count} opções que correspondem a \"Economia de tempo estimada\".";
@@ -125,7 +125,7 @@
 "joEZJM" = "nº 2";
 
 /* (No Comment) */
-"jXiFQY" = "Carteira Brave";
+"jXiFQY" = "Brave Wallet";
 
 /* (No Comment) */
 "L1fziM-0W40Cl" = "Há ${count} opções que correspondem a \"Nova guia\".";
@@ -233,7 +233,7 @@
 "tNCrcE-qKrzyX" = "Há ${count} opções que correspondem a \"Ler código QR\".";
 
 /* (No Comment) */
-"tNCrcE-U0eRbw" = "Há ${count} opções que correspondem a \"Leo AI\".";
+"tNCrcE-U0eRbw" = "Existem ${count} opções que correspondem a ‘Leo AI’.";
 
 /* (No Comment) */
 "tNCrcE-VBH4G6" = "Há ${count} opções que correspondem a \"Histórico\".";
@@ -269,7 +269,7 @@
 "TxuMja-qKrzyX" = "Há ${count} opções que correspondem a \"Ler código QR\".";
 
 /* (No Comment) */
-"TxuMja-U0eRbw" = "Há ${count} opções que correspondem a \"Leo AI\".";
+"TxuMja-U0eRbw" = "Existem ${count} opções que correspondem a ‘Leo AI’.";
 
 /* (No Comment) */
 "TxuMja-VBH4G6" = "Há ${count} opções que correspondem a \"Histórico\".";
@@ -362,7 +362,7 @@
 "z517nu-qKrzyX" = "Há ${count} opções que correspondem a \"Ler código QR\".";
 
 /* (No Comment) */
-"z517nu-U0eRbw" = "Há ${count} opções que correspondem a \"Leo AI\".";
+"z517nu-U0eRbw" = "Existem ${count} opções que correspondem a ‘Leo AI’.";
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "Há ${count} opções que correspondem a \"Histórico\".";

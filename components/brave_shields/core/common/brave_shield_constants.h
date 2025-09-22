@@ -6,12 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_CONSTANTS_H_
 
+#include "base/containers/fixed_flat_map.h"
+#include "base/containers/fixed_flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/files/file_path.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 
 namespace brave_shields {
 
+// Content/Web settings:
 inline constexpr char kAds[] = "shieldsAds";
-inline constexpr char kCosmeticFiltering[] = "cosmeticFiltering";
+inline constexpr char kCosmeticFiltering[] = "cosmeticFilteringV2";
 inline constexpr char kTrackers[] = "trackers";
 inline constexpr char kHTTPUpgradableResources[] = "httpUpgradableResources";
 inline constexpr char kHTTPSUpgrades[] = "httpsUpgrades";
@@ -21,15 +26,71 @@ inline constexpr char kBraveShields[] = "braveShields";
 inline constexpr char kBraveShieldsMetadata[] = "braveShieldsMetadata";
 inline constexpr char kReferrers[] = "referrers";
 inline constexpr char kCookies[] = "shieldsCookiesV3";
+
+// Prefs:
 inline constexpr char kFacebookEmbeds[] = "fb-embeds";
 inline constexpr char kTwitterEmbeds[] = "twitter-embeds";
 inline constexpr char kLinkedInEmbeds[] = "linked-in-embeds";
 
-// Values used before the migration away from ResourceIdentifier, kept around
-// for migration purposes only.
+inline constexpr auto kShieldsContentSettingsTypes =
+    base::MakeFixedFlatSet<ContentSettingsType>({
+        ContentSettingsType::BRAVE_ADS,
+        ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+        ContentSettingsType::BRAVE_TRACKERS,
+        ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
+        ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+        ContentSettingsType::BRAVE_SHIELDS,
+        ContentSettingsType::BRAVE_REFERRERS,
+        ContentSettingsType::BRAVE_COOKIES,
+    });
+
+using ShieldsContentSettingsTypes = decltype(kShieldsContentSettingsTypes);
+
+inline constexpr auto kShieldsContentTypeNames =
+    base::MakeFixedFlatMap<ContentSettingsType, const char*>({
+        {ContentSettingsType::BRAVE_ADS, kAds},
+        {ContentSettingsType::BRAVE_COSMETIC_FILTERING, kCosmeticFiltering},
+        {ContentSettingsType::BRAVE_TRACKERS, kTrackers},
+        {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
+         kHTTPUpgradableResources},
+        {ContentSettingsType::BRAVE_HTTPS_UPGRADE, kHTTPSUpgrades},
+        {ContentSettingsType::JAVASCRIPT, kJavaScript},
+        {ContentSettingsType::BRAVE_FINGERPRINTING_V2, kFingerprintingV2},
+        {ContentSettingsType::BRAVE_SHIELDS, kBraveShields},
+        {ContentSettingsType::BRAVE_SHIELDS_METADATA, kBraveShieldsMetadata},
+        {ContentSettingsType::BRAVE_REFERRERS, kReferrers},
+        {ContentSettingsType::BRAVE_COOKIES, kCookies},
+    });
+
+using ShieldsContentTypeNames = decltype(kShieldsContentTypeNames);
+
+namespace internal {
+consteval bool CheckShieldsContentTypeNames() {
+  for (const auto& [key_a, value_a] : kShieldsContentTypeNames) {
+    for (const auto& [key_b, value_b] : kShieldsContentTypeNames) {
+      if (key_a == key_b) {
+        continue;
+      }
+      if (!value_a || !value_b || value_a == value_b) {
+        // Name is null or not unique.
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+static_assert(
+    CheckShieldsContentTypeNames(),
+    "Invalid kShieldsContentTypeNames. Name should be unique and non-null.");
+}  // namespace internal
+
+// Values used before the migration away from ResourceIdentifier, kept
+// around for migration purposes only.
 inline constexpr char kObsoleteAds[] = "ads";
 inline constexpr char kObsoleteCookies[] = "cookies";
 inline constexpr char kObsoleteShieldsCookies[] = "shieldsCookies";
+inline constexpr char kObsoleteCosmeticFiltering[] = "cosmeticFiltering";
 
 // Some users were not properly migrated from fingerprinting V1.
 inline constexpr char kObsoleteFingerprinting[] = "fingerprinting";

@@ -21,10 +21,6 @@ RegisterPolymerPrototypeModification({
         case routes.APPEARANCE:
           showDefaultViews();
           break;
-        case routes.FONTS:
-          this.$.viewManager.switchView(
-            'fonts', 'no-animation', 'no-animation');
-          break;
       }
     }
   }

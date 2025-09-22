@@ -162,7 +162,7 @@ extension WidgetShortcut {
       assertionFailure()
       return Image(systemName: "xmark.octagon")
     case .newTab:
-      return Image(braveSystemName: "leo.plus.add")
+      return Image(braveSystemName: "leo.browser.mobile-tab-new")
     case .newPrivateTab:
       return Image(braveSystemName: "leo.product.private-window")
     case .bookmarks:

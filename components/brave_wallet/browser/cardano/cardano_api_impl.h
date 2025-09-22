@@ -12,6 +12,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_cip30_serializer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
@@ -56,7 +57,42 @@ class CardanoApiImpl final : public mojom::CardanoApi {
                                      mojom::EthereumSignatureBytesPtr signature,
                                      const std::optional<std::string>& error);
 
+  void OnGetBalance(GetBalanceCallback callback,
+                    mojom::CardanoBalancePtr balance,
+                    const std::optional<std::string>& error);
+  void OnGetUtxos(
+      const std::optional<std::string>& amount,
+      mojom::CardanoProviderPaginationPtr paginate,
+      GetUtxosCallback callback,
+      base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result);
+  void OnSubmitTx(SubmitTxCallback callback,
+                  base::expected<std::string, std::string> txid);
+  void OnGetUtxosForSignTx(
+      CardanoCip30Serializer::RestoredTransaction tx,
+      bool partial_sign,
+      SignTxCallback callback,
+      base::expected<GetCardanoUtxosTask::UtxoMap, std::string>);
+
   mojom::CardanoProviderErrorBundlePtr CheckSelectedAccountValid();
+
+  void OnAddUnapprovedTransaction(SubmitTxCallback callback,
+                                  bool success,
+                                  const std::string& tx_meta_id,
+                                  const std::string& error_message);
+
+  bool InsertKnowInputAddresses(
+      const GetCardanoUtxosTask::UtxoMap& utxo_map,
+      CardanoCip30Serializer::RestoredTransaction& transaction,
+      bool partial_sign);
+
+  void OnSignTransactionRequestProcessed(
+      CardanoCip30Serializer::RestoredTransaction tx,
+      SignTxCallback callback,
+      bool approved,
+      const std::optional<std::string>& error);
+
+  mojom::SignCardanoTransactionRequestPtr FromRestoredTransaction(
+      const CardanoCip30Serializer::RestoredTransaction& tx);
 
   BraveWalletProviderDelegate* delegate();
 

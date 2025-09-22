@@ -85,17 +85,17 @@
       $i18n{searchEnginesSettingsDialogSubtitle}
     </div>
   </div>
-  <template is="dom-if" if="[[braveSearchEngine_]]">
+  <template is="dom-if" if="[[promotedEngine_]]">
     <div slot="header" class="dialog-header">
       <cr-radio-group selected="{{selectedEngineId_}}">
-        <cr-radio-button class="label-first" name="[[braveSearchEngine_.id]]">
+        <cr-radio-button class="label-first" name="[[promotedEngine_.id]]">
           <div class="search-engine">
-            <site-favicon favicon-url="[[braveSearchEngine_.iconURL]]"
-                url="[[braveSearchEngine_.url]]"
-                icon-path="[[braveSearchEngine_.iconPath]]">
+            <site-favicon favicon-url="[[promotedEngine_.iconURL]]"
+                url="[[promotedEngine_.url]]"
+                icon-path="[[promotedEngine_.iconPath]]">
             </site-favicon>
             <div id="name-description">
-              [[braveSearchEngine_.name]]
+              [[promotedEngine_.name]]
               <div id="description">
                 $i18n{searchEngineListBraveSearchDescription}
               </div>
@@ -112,7 +112,7 @@
     <cr-radio-group selected="{{selectedEngineId_}}">
       <template is="dom-repeat" items="[[searchEngines]]">
         <cr-radio-button class="label-first" name="[[item.id]]"
-                         hidden="[[isBraveSearchEngine_(item)]]">
+                         hidden="[[isPromotedEngine_(item)]]">
           <div class="search-engine">
             <site-favicon favicon-url="[[item.iconURL]]" url="[[item.url]]"
                  icon-path="[[item.iconPath]]">

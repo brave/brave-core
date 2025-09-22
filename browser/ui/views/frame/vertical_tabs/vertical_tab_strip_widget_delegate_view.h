@@ -14,9 +14,9 @@
 #include "ui/views/widget/widget_observer.h"
 
 class BrowserView;
-class VerticalTabStripRegionView;
+class BraveVerticalTabStripRegionView;
 
-// This class wraps VerticalTabStripRegionView and show them atop a Widget.
+// This class wraps BraveVerticalTabStripRegionView and show them atop a Widget.
 // Vertical tab strip could be overlaps with contents web view and
 // we need a Widget to accept user events ahead of contents web view.
 // This Widget's coordinates and visibility are synchronized with a host view
@@ -42,7 +42,7 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
                                                views::View* host_view);
   ~VerticalTabStripWidgetDelegateView() override;
 
-  VerticalTabStripRegionView* vertical_tab_strip_region_view() const {
+  BraveVerticalTabStripRegionView* vertical_tab_strip_region_view() const {
     return region_view_;
   }
 
@@ -70,11 +70,12 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
 
 #if BUILDFLAG(IS_MAC)
   void UpdateClip();
+  int GetVerticalTabStripCornerRadiusMac() const;
 #endif
 
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<views::View> host_ = nullptr;
-  raw_ptr<VerticalTabStripRegionView> region_view_ = nullptr;
+  raw_ptr<BraveVerticalTabStripRegionView> region_view_ = nullptr;
 
   base::ScopedObservation<views::View, views::ViewObserver>
       host_view_observation_{this};

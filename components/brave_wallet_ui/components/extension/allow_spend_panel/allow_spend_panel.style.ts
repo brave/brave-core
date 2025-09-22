@@ -7,15 +7,15 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
-import { Column, Row, Text, WalletButton } from '../../shared/style'
+import { Column, Row, Text } from '../../shared/style'
+import { ConfirmationButtonLink } from '../shared-panel-styles'
 
 export const StyledWrapper = styled(Column)`
   background-color: ${leo.color.page.background};
 `
 
-export const HeaderText = styled(Text)`
-  font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.headings};
+export const ContentWrapper = styled(Column)`
+  overflow: hidden;
 `
 
 export const Title = styled(Row)`
@@ -39,16 +39,7 @@ export const Card = styled(Column)`
 export const InfoBox = styled(Column)`
   background-color: ${leo.color.container.highlight};
   border-radius: ${leo.radius.xl};
-`
-
-export const InfoLabel = styled(Text)`
-  font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
-`
-
-export const InfoText = styled(Text)`
-  font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
+  overflow: hidden;
 `
 
 export const AmountText = styled(Text)`
@@ -56,22 +47,7 @@ export const AmountText = styled(Text)`
   letter-spacing: ${leo.typography.letterSpacing.small};
 `
 
-export const ButtonLink = styled(WalletButton)`
-  --leo-icon-size: 16px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  gap: 2px;
-  padding: 0px;
-  margin: 0px;
-  border: none;
-  background: none;
-  font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
-  color: ${leo.color.text.interactive};
-`
-
-export const TokenButtonLink = styled(ButtonLink)`
+export const TokenButtonLink = styled(ConfirmationButtonLink)`
   font: ${leo.font.heading.h4};
   letter-spacing: ${leo.typography.letterSpacing.headings};
 `

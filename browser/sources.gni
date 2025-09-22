@@ -125,6 +125,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_ads:impl",
   "//brave/browser/brave_ads/creatives/search_result_ad",
   "//brave/browser/brave_ads/tabs",
+  "//brave/browser/brave_origin",
   "//brave/browser/brave_rewards:brave_rewards_impl",
   "//brave/browser/brave_rewards:util",
   "//brave/browser/brave_search",
@@ -153,7 +154,9 @@ brave_chrome_browser_deps = [
   "//brave/components/ai_chat/core/common/mojom",
   "//brave/components/ai_rewriter/common/buildflags",
   "//brave/components/body_sniffer",
+  "//brave/components/brave_account",
   "//brave/components/brave_account:features",
+  "//brave/components/brave_account/mojom",
   "//brave/components/brave_adaptive_captcha",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/core",
@@ -314,7 +317,6 @@ if (!is_android) {
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom",
     "//brave/browser/ui/webui/brave_news_internals",
     "//brave/browser/user_education:features",
-    "//brave/components/brave_account/mojom",
     "//chrome/browser/regional_capabilities",
     "//chrome/browser/ui/thumbnails",
     "//components/feed:feature_list",
@@ -702,3 +704,20 @@ if (!is_android) {
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/ui/webui/brave_new_tab_page_refresh" ]
 }
+
+if (is_mac) {
+  brave_chrome_browser_deps += [ "//brave/browser/upgrade_when_idle" ]
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/upgrade_when_idle" ]
+}
+
+# brave/browser/ui/brave_layout_constants.cc includes some headers (e.g. from
+# brave/browser/ui/tabs) that are currently in //brave/browser/ui:ui target,
+# which depends on //chrome/browser:browser_public_dependencies.
+# This approach is only done as a one-off here because
+# "//chrome/browser/ui/views" target is a `component` and it depends on
+# "//chrome/browser/ui:layout_constants".
+brave_chrome_browser_ui_layout_constants_public_deps =
+    [ "//brave/browser/ui:brave_layout_constants" ]
+brave_chrome_browser_ui_layout_constants_allow_circular_includes_from =
+    [ "//brave/browser/ui:brave_layout_constants" ]

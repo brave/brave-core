@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import * as S from './style'
+import * as Styles from './style'
 import SettingsPanel from '../settings-panel'
 import ContactSupport from '../contact-support'
 import PanelBox from '../panel-box'
@@ -41,15 +41,15 @@ function LoadingPanel() {
   return (
     <PanelBox>
       <PanelHeader
-        title={getLocale('braveVpn')}
-        settingsTooltip={getLocale('braveVpnSettingsTooltip')}
+        title={getLocale(S.BRAVE_VPN)}
+        settingsTooltip={getLocale(S.BRAVE_VPN_MAIN_PANEL_VPN_SETTINGS_TITLE)}
         settingsOnClick={handleSettingsButtonClick}
       />
       <PanelContent>
-        <S.Status>
-          <S.LoadingIcon />
-          <S.PanelDesc>{getLocale('braveVpnLoading')}</S.PanelDesc>
-        </S.Status>
+        <Styles.Status>
+          <Styles.LoadingIcon />
+          <Styles.PanelDesc>{getLocale(S.BRAVE_VPN_LOADING)}</Styles.PanelDesc>
+        </Styles.Status>
       </PanelContent>
     </PanelBox>
   )

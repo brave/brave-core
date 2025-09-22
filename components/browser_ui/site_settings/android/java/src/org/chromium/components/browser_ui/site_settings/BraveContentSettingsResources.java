@@ -8,7 +8,7 @@ package org.chromium.components.browser_ui.site_settings;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.components.content_settings.ContentSettingValues;
+import org.chromium.components.content_settings.ContentSetting;
 import org.chromium.components.content_settings.ContentSettingsType;
 
 @NullMarked
@@ -18,8 +18,8 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
         ResourceItem(
                 int icon,
                 int title,
-                @ContentSettingValues @Nullable Integer defaultEnabledValue,
-                @ContentSettingValues @Nullable Integer defaultDisabledValue,
+                @ContentSetting @Nullable Integer defaultEnabledValue,
+                @ContentSetting @Nullable Integer defaultDisabledValue,
                 int enabledSummary,
                 int disabledSummary,
                 int summaryOverrideForScreenReader,
@@ -37,8 +37,8 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
                 return new ResourceItem(
                         R.drawable.ic_volume_up_grey600_24dp,
                         R.string.autoplay_title,
-                        ContentSettingValues.ALLOW,
-                        ContentSettingValues.BLOCK,
+                        ContentSetting.ALLOW,
+                        ContentSetting.BLOCK,
                         R.string.website_settings_category_autoplay_allowed,
                         0,
                         0,
@@ -49,8 +49,8 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
                 return new ResourceItem(
                         R.drawable.ic_person_24dp,
                         R.string.google_sign_in_title,
-                        ContentSettingValues.ASK,
-                        ContentSettingValues.BLOCK,
+                        ContentSetting.ASK,
+                        ContentSetting.BLOCK,
                         R.string.website_settings_category_google_sign_in_ask,
                         R.string.website_settings_category_google_sign_in_block,
                         0,
@@ -61,8 +61,8 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
                 return new ResourceItem(
                         R.drawable.ic_desktop_windows,
                         R.string.localhost_title,
-                        ContentSettingValues.ASK,
-                        ContentSettingValues.BLOCK,
+                        ContentSetting.ASK,
+                        ContentSetting.BLOCK,
                         R.string.website_settings_category_localhost_ask,
                         R.string.website_settings_category_localhost_block,
                         0,

@@ -40,12 +40,13 @@ std::optional<SidePanelEntry::Id> GetDefaultEntryId(Profile* profile) {
 BraveSidePanelCoordinator::~BraveSidePanelCoordinator() = default;
 
 void BraveSidePanelCoordinator::Show(
-    SidePanelEntry::Key entry_key,
-    std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger) {
+    const UniqueKey& entry,
+    std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger,
+    bool suppress_animations) {
   sidebar::SetLastUsedSidePanel(browser_view_->GetProfile()->GetPrefs(),
-                                entry_key.id());
+                                entry.key.id());
 
-  SidePanelCoordinator::Show(entry_key, open_trigger);
+  SidePanelCoordinator::Show(entry, open_trigger, suppress_animations);
 }
 
 void BraveSidePanelCoordinator::OnTabStripModelChanged(
@@ -82,7 +83,8 @@ void BraveSidePanelCoordinator::Toggle() {
       !browser_view_->unified_side_panel()->IsClosing()) {
     Close();
   } else if (const auto key = GetLastActiveEntryKey()) {
-    Show(*key, SidePanelUtil::SidePanelOpenTrigger::kToolbarButton);
+    SidePanelUIBase::Show(*key,
+                          SidePanelUtil::SidePanelOpenTrigger::kToolbarButton);
   }
 }
 

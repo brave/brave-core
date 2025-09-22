@@ -130,7 +130,7 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
       [unowned self] _ in
       let openInNewTabAction = UIAction(
         title: Strings.openNewTabButtonTitle,
-        image: UIImage(systemName: "plus.square.on.square"),
+        image: UIImage(braveSystemNamed: "leo.browser.mobile-tab-new"),
         handler: UIAction.deferredActionHandler { _ in
           self.toolbarUrlActionsDelegate?.openInNewTab(distantTab.url, isPrivate: false)
           self.presentingViewController?.dismiss(animated: true)
@@ -139,7 +139,7 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
 
       let copyAction = UIAction(
         title: Strings.copyLinkActionTitle,
-        image: UIImage(systemName: "doc.on.doc"),
+        image: UIImage(braveSystemNamed: "leo.copy"),
         handler: UIAction.deferredActionHandler { _ in
           self.toolbarUrlActionsDelegate?.copy(distantTab.url)
         }
@@ -147,7 +147,7 @@ extension TabTrayController: UITableViewDataSource, UITableViewDelegate {
 
       let shareAction = UIAction(
         title: Strings.shareLinkActionTitle,
-        image: UIImage(systemName: "square.and.arrow.up"),
+        image: UIImage(braveSystemNamed: "leo.share.macos"),
         handler: UIAction.deferredActionHandler { _ in
           self.toolbarUrlActionsDelegate?.share(distantTab.url)
         }

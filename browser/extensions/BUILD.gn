@@ -94,7 +94,6 @@ source_set("extensions") {
     ":brave_prefs_util_impl",
     ":resources",
     "//base",
-    "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser:browser_process",
     "//brave/browser/brave_adaptive_captcha",

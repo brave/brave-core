@@ -121,6 +121,19 @@ ConversationHandler::ConversationHandler(
       credential_manager_(credential_manager),
       feedback_api_(feedback_api),
       url_loader_factory_(url_loader_factory) {
+  // Set conversation capability based on profile-global state.
+  // TODO(https://github.com/brave/brave-browser/issues/49261): This is
+  // temporary whilst content agent conversations are
+  // 1) not toggleable by the user and
+  // 2) only for specific profiles.
+  // When this is toggleable by the user,
+  // we should have some client function that changes the conversation
+  // capability. And when this is not global to a Profile, we should not have
+  // the service make the determination.
+  if (ai_chat_service_->GetIsContentAgentAllowed()) {
+    conversation_capability_ = mojom::ConversationCapability::CONTENT_AGENT;
+  }
+
   // When a client disconnects, let observers know
   receivers_.set_disconnect_handler(
       base::BindRepeating(&ConversationHandler::OnClientConnectionChanged,
@@ -344,6 +357,7 @@ void ConversationHandler::GetState(GetStateCallback callback) {
   std::transform(models.cbegin(), models.cend(), models_copy.begin(),
                  [](auto& model) { return model.Clone(); });
   auto model_key = GetCurrentModel().key;
+  auto default_model_key = model_service_->GetDefaultModelKey();
 
   std::vector<std::string> suggestions;
   std::ranges::transform(suggestions_, std::back_inserter(suggestions),
@@ -351,7 +365,8 @@ void ConversationHandler::GetState(GetStateCallback callback) {
 
   mojom::ConversationStatePtr state = mojom::ConversationState::New(
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
-      model_key, std::move(suggestions), suggestion_generation_status_,
+      model_key, default_model_key, std::move(suggestions),
+      suggestion_generation_status_,
       associated_content_manager_->GetAssociatedContent(), current_error_,
       metadata_->temporary);
 
@@ -1082,7 +1097,7 @@ void ConversationHandler::PerformAssistantGeneration() {
   engine_->GenerateAssistantResponse(
       associated_content_manager_->GetCachedContentsMap(), chat_history_,
       selected_language_, IsTemporaryChat(), GetTools(),
-      std::nullopt /* preferred_tool_name */,
+      std::nullopt /* preferred_tool_name */, conversation_capability_,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
@@ -1509,6 +1524,12 @@ void ConversationHandler::OnDefaultModelChanged(const std::string& old_key,
   DVLOG(1) << "Default model changed from " << old_key << " to " << new_key;
   if (model_key_ == old_key) {
     ChangeModel(new_key);
+  } else {
+    // If this conversation is not using the old default model, we still need to
+    // notify the UI about the default model change without changing the current
+    // model. This ensures the UI gets updated with the new default model
+    // information even when the conversation is using a different model.
+    OnModelDataChanged();
   }
 }
 
@@ -1526,13 +1547,15 @@ void ConversationHandler::OnModelRemoved(const std::string& removed_key) {
 
 void ConversationHandler::OnModelDataChanged() {
   const std::vector<mojom::ModelPtr>& models = model_service_->GetModels();
+  auto default_model_key = model_service_->GetDefaultModelKey();
 
   for (const mojo::Remote<mojom::ConversationUI>& client :
        conversation_ui_handlers_) {
     std::vector<mojom::ModelPtr> models_copy(models.size());
     std::transform(models.cbegin(), models.cend(), models_copy.begin(),
                    [](auto& model) { return model.Clone(); });
-    client->OnModelDataChanged(model_key_, std::move(models_copy));
+    client->OnModelDataChanged(model_key_, default_model_key,
+                               std::move(models_copy));
   }
   OnStateForConversationEntriesChanged();
 }
@@ -1657,6 +1680,7 @@ ConversationHandler::GetStateForConversationEntries() {
       (ai_chat_service_->IsPremiumStatus() || !is_leo_model ||
        model.options->get_leo_model_options()->access !=
            mojom::ModelAccess::PREMIUM);
+  entries_state->conversation_capability = conversation_capability_;
   return entries_state;
 }
 
@@ -1739,9 +1763,8 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
             return (!tool->IsSupportedByModel(model) ||
                     !tool->SupportsConversation(
                         GetIsTemporary(),
-                        associated_content_manager_->HasAssociatedContent()) ||
-                    (tool->IsContentAssociationRequired() &&
-                     !associated_content_manager_->HasAssociatedContent()));
+                        associated_content_manager_->HasAssociatedContent(),
+                        conversation_capability_));
           }),
       tools.end());
 

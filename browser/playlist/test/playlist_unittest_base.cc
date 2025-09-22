@@ -14,8 +14,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 
 namespace playlist {
-PlaylistUnitTestBase::PlaylistUnitTestBase()
-    : scoped_testing_local_state_(TestingBrowserProcess::GetGlobal()) {}
+PlaylistUnitTestBase::PlaylistUnitTestBase() = default;
 
 PlaylistUnitTestBase::~PlaylistUnitTestBase() = default;
 

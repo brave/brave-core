@@ -16,31 +16,85 @@ class AccountActivityStoreTests: XCTestCase {
 
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [:]
   let mockAssetPrices: [BraveWallet.AssetPrice] = [
-    .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23"),
     .init(
-      fromAsset: BraveWallet.BlockchainToken.mockUSDCToken.assetRatioId,
-      toAsset: "usd",
+      coin: .eth,
+      chainId: BraveWallet.MainnetChainId,
+      address: "",
+      price: "3059.99",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coin: .eth,
+      chainId: BraveWallet.MainnetChainId,
+      address: BraveWallet.BlockchainToken.mockUSDCToken.contractAddress,
       price: "1.00",
-      assetTimeframeChange: "-57.23"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
     ),
-    .init(fromAsset: "sol", toAsset: "usd", price: "2.00", assetTimeframeChange: "-57.23"),
     .init(
-      fromAsset: BraveWallet.BlockchainToken.mockSpdToken.assetRatioId.lowercased(),
-      toAsset: "usd",
+      coin: .sol,
+      chainId: BraveWallet.SolanaMainnet,
+      address: "",
+      price: "2.00",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coin: .sol,
+      chainId: BraveWallet.SolanaTestnet,
+      address: "",
+      price: "2.00",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coin: .sol,
+      chainId: BraveWallet.SolanaMainnet,
+      address: BraveWallet.BlockchainToken.mockSpdToken.contractAddress,
       price: "0.50",
-      assetTimeframeChange: "-57.23"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
     ),
     .init(
-      fromAsset: BraveWallet.BlockchainToken.mockFilToken.assetRatioId.lowercased(),
-      toAsset: "usd",
+      coin: .fil,
+      chainId: BraveWallet.FilecoinMainnet,
+      address: "",
       price: "4.00",
-      assetTimeframeChange: "-57.23"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
     ),
     .init(
-      fromAsset: BraveWallet.BlockchainToken.mockZecToken.assetRatioId.lowercased(),
-      toAsset: "usd",
-      price: "$31.10",
-      assetTimeframeChange: "0.12"
+      coin: .fil,
+      chainId: BraveWallet.FilecoinTestnet,
+      address: "",
+      price: "4.00",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
+    ),
+    .init(
+      coin: .zec,
+      chainId: BraveWallet.ZCashMainnet,
+      address: "",
+      price: "31.10",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "0.12"
     ),
   ]
   let solTestnetBalance: UInt64 = 1_000_000_000  // 1 SOL
@@ -137,7 +191,7 @@ class AccountActivityStoreTests: XCTestCase {
     }
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
-    assetRatioService._price = { _, _, _, completion in
+    assetRatioService._price = { _, _, completion in
       completion(true, self.mockAssetPrices)
     }
 
@@ -512,7 +566,7 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockSpdTokenDecimalBalance)
         XCTAssertEqual(
           lastUpdatedAssets[safe: 0]?.price,
-          self.mockAssetPrices[safe: 3]?.price ?? ""
+          self.mockAssetPrices[safe: 4]?.price ?? ""
         )
 
         XCTAssertEqual(
@@ -732,7 +786,7 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockFilDecimalBalance)
         XCTAssertEqual(
           lastUpdatedAssets[safe: 0]?.price,
-          self.mockAssetPrices[safe: 4]?.price ?? ""
+          self.mockAssetPrices[safe: 5]?.price ?? ""
         )
 
         XCTAssertEqual(
@@ -746,7 +800,7 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedAssets[safe: 1]?.totalBalance, mockFileTestnetDecimalBalance)
         XCTAssertEqual(
           lastUpdatedAssets[safe: 1]?.price,
-          self.mockAssetPrices[safe: 4]?.price ?? ""
+          self.mockAssetPrices[safe: 5]?.price ?? ""
         )
       }
       .store(in: &cancellables)
@@ -850,7 +904,7 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockZecDecimalBalance)
         XCTAssertEqual(
           lastUpdatedAssets[safe: 0]?.price,
-          self.mockAssetPrices[safe: 5]?.price ?? ""
+          self.mockAssetPrices[safe: 7]?.price ?? ""
         )
       }
       .store(in: &cancellables)

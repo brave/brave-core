@@ -63,8 +63,12 @@ SolanaInstruction SetComputeUnitPrice(uint64_t price);
 
 namespace bubblegum_program {
 
-const std::vector<uint8_t> kTransferInstructionDiscriminator = {
-    163, 52, 200, 231, 140, 3, 69, 186};
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const std::vector<uint8_t>
+    kTransferInstructionDiscriminator = {163, 52, 200, 231, 140, 3, 69, 186};
 
 // https://github.com/metaplex-foundation/mpl-bubblegum/blob/5b3cdfc6b236773be70dc1f0b0cb84badf881248/clients/js-solita/src/generated/instructions/transfer.ts#L81
 std::optional<SolanaInstruction> Transfer(

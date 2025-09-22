@@ -15,7 +15,14 @@ use crate::regex_manager::RegexManager;
 use crate::request::Request;
 use crate::utils::{Hash, ShortHash};
 
-#[allow(dead_code, clippy::all, unused_imports, unsafe_code)]
+#[allow(unknown_lints)]
+#[allow(
+    dead_code,
+    clippy::all,
+    unused_imports,
+    unsafe_code,
+    mismatched_lifetime_syntaxes
+)]
 #[path = "../flatbuffers/fb_network_filter_generated.rs"]
 pub mod flat;
 use flat::fb;
@@ -173,7 +180,7 @@ impl<'a> FlatPatterns<'a> {
     }
 
     #[inline(always)]
-    pub fn iter(&self) -> FlatPatternsIterator {
+    pub fn iter(&self) -> FlatPatternsIterator<'_> {
         FlatPatternsIterator {
             patterns: self,
             len: self.patterns.map_or(0, |d| d.len()),
@@ -272,7 +279,7 @@ impl<'a> FlatNetworkFilter<'a> {
     }
 
     #[inline(always)]
-    pub fn patterns(&self) -> FlatPatterns {
+    pub fn patterns(&self) -> FlatPatterns<'_> {
         FlatPatterns::new(self.fb_filter.patterns())
     }
 

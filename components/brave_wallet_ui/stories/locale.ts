@@ -645,6 +645,10 @@ provideStrings({
   braveWalletExchangeNamePlusSteps: '$1 + $2 $3',
   braveWalletExchangeViaProvider: '$1 via $2',
   braveWalletSortBy: 'Sort by',
+  braveWalletConfirmSwap: 'Confirm swap',
+  braveWalletConfirmBridge: 'Confirm bridge',
+  braveWalletConfirmSend: 'Confirm send',
+  braveWalletSpend: 'Spend',
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',
@@ -820,7 +824,7 @@ provideStrings({
   braveWalletConfirmTransactionTransactionFee: 'Transaction fee',
   braveWalletConfirmTransactionBid: 'Bid',
   braveWalletConfirmTransactionAmountGas: 'Amount + gas',
-  braveWalletConfirmTransactionAmountFee: 'Amount + fee',
+  braveWalletConfirmTransactionAmountFee: 'Amount + Network fee',
   braveWalletConfirmTransactionNoData: 'No data.',
   braveWalletConfirmTransactionNext: 'next',
   braveWalletConfirmTransactionFirst: 'first',

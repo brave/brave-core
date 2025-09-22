@@ -808,6 +808,11 @@
         Test string for <ph name="PART_ONE">$1</ph>place holders<ph name="PART_ONE_END">$2</ph>. <ph name="PART_TWO">$3</ph>Learn more<ph name="PART_TWO_END">$4</ph>
       </message>
 
+       <!-- Policy UI -->
+      <message name="IDS_POLICY_SOURCE_BRAVE" desc="Indicates that a policy is set by Brave" translateable="false">
+        Brave
+      </message>
+
       <if expr="not is_ios">
         <part file="decentralized_dns_strings.grdp" />
       </if>

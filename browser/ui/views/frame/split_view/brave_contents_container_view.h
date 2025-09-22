@@ -24,6 +24,8 @@ class BraveContentsContainerView :
     public ContentsContainerView {
   METADATA_HEADER(BraveContentsContainerView, ContentsContainerView)
  public:
+  static constexpr int kBorderThickness = 2;
+
   static BraveContentsContainerView* From(ContentsContainerView* view);
 
   explicit BraveContentsContainerView(BrowserView* browser_view);
@@ -47,8 +49,6 @@ class BraveContentsContainerView :
  private:
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
                            BraveMultiContentsViewTest);
-
-  static constexpr int kBorderThickness = 2;
 
   float GetCornerRadius(bool for_border) const;
 

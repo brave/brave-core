@@ -744,6 +744,7 @@ const MODELS: Mojom.Model[] = [
     displayName: 'Model One',
     visionSupport: false,
     supportsTools: false,
+    isSuggestedModel: true,
     options: {
       leoModelOptions: {
         name: 'model-one',
@@ -761,6 +762,7 @@ const MODELS: Mojom.Model[] = [
     displayName: 'Model Two',
     visionSupport: true,
     supportsTools: true,
+    isSuggestedModel: true,
     options: {
       leoModelOptions: {
         name: 'model-two-premium',
@@ -778,6 +780,7 @@ const MODELS: Mojom.Model[] = [
     displayName: 'Model Three',
     visionSupport: false,
     supportsTools: false,
+    isSuggestedModel: false,
     options: {
       leoModelOptions: {
         name: 'model-three-freemium',
@@ -795,6 +798,7 @@ const MODELS: Mojom.Model[] = [
     displayName: 'Microsoft Phi-3',
     visionSupport: false,
     supportsTools: true,
+    isSuggestedModel: false,
     options: {
       leoModelOptions: undefined,
       customModelOptions: {
@@ -867,7 +871,7 @@ type CustomArgs = {
   totalTokens: number
   trimmedTokens: number
   isGenerating: boolean
-  showAttachments: boolean
+  attachmentsDialog: 'tabs' | null
   isNewConversation: boolean
   generatedUrlToBeOpened: Url | undefined
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
@@ -910,7 +914,7 @@ const args: CustomArgs = {
   totalTokens: 0,
   trimmedTokens: 0,
   isGenerating: false,
-  showAttachments: true,
+  attachmentsDialog: 'tabs',
   isNewConversation: false,
   generatedUrlToBeOpened: undefined,
   ratingTurnUuid: undefined,
@@ -1145,8 +1149,8 @@ function StoryContext(
     setIsToolsMenuOpen,
     handleFeedbackFormCancel: () => {},
     handleFeedbackFormSubmit: () => Promise.resolve(),
-    setShowAttachments: (show: boolean) => setArgs({ showAttachments: show }),
-    showAttachments: options.args.showAttachments,
+    setAttachmentsDialog: (attachmentsDialog) => setArgs({ attachmentsDialog }),
+    attachmentsDialog: options.args.attachmentsDialog,
     removeFile: () => {},
     uploadFile: () => {},
     getScreenshots: () => {},
@@ -1164,12 +1168,13 @@ function StoryContext(
     isDragOver: options.args.isDragOver,
     clearDragState: () => {},
     attachImages: (images: Mojom.UploadedFile[]) => {},
-    unassociatedTabs: [],
+    unassociatedTabs: aiChatContext.tabs,
     associateDefaultContent: async () => {},
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {
     conversationHistory: conversationContext.conversationHistory,
+    conversationCapability: Mojom.ConversationCapability.CONTENT_AGENT,
     isGenerating: conversationContext.isGenerating,
     isLeoModel: conversationContext.isCurrentModelLeo,
     contentUsedPercentage: options.args.shouldShowLongPageWarning ? 48 : 100,

@@ -542,7 +542,7 @@ struct SwapCryptoView: View {
           Text(dexAggregator.swapDexAggrigatorNote)
             .multilineTextAlignment(.center)
             .foregroundColor(Color(.braveLabel))
-          Image(systemName: "info.circle")
+          Image(braveSystemName: "leo.info.ios-only")
             .foregroundColor(Color(.braveBlurpleTint))
             .accessibilityHidden(true)
         }

@@ -34,3 +34,20 @@ source_set("unit_tests") {
     "//testing/gtest",
   ]
 }
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "mock_api_request_helper.cc",
+    "mock_api_request_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/api_request_helper",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp",
+    "//testing/gmock",
+  ]
+}

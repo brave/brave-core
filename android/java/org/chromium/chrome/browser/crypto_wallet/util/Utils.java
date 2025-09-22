@@ -48,6 +48,7 @@ import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -1124,7 +1125,7 @@ public class Utils {
             BlockchainToken[] filterByTokens,
             boolean userAssetsOnly,
             Callbacks.Callback4<
-                            HashMap<String, Double>,
+                            List<AssetPrice>,
                             BlockchainToken[],
                             HashMap<String, Double>,
                             HashMap<String, HashMap<String, Double>>>

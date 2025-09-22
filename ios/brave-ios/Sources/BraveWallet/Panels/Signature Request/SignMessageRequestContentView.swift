@@ -208,7 +208,7 @@ private struct MessageWarningView: View {
     VStack(spacing: 8) {
       if needsPilcrowFormatted {
         Text(
-          "\(Image(systemName: "exclamationmark.triangle.fill")) \(Strings.Wallet.signMessageConsecutiveNewlineWarning)"
+          "\(Image(braveSystemName: "leo.warning.triangle-filled")) \(Strings.Wallet.signMessageConsecutiveNewlineWarning)"
         )
         .font(.subheadline.weight(.medium))
         .foregroundColor(Color(.braveLabel))
@@ -216,7 +216,7 @@ private struct MessageWarningView: View {
       }
       if hasUnknownUnicode {
         Text(
-          "\(Image(systemName: "exclamationmark.triangle.fill"))  \(Strings.Wallet.signMessageRequestUnknownUnicodeWarning)"
+          "\(Image(braveSystemName: "leo.warning.triangle-filled"))  \(Strings.Wallet.signMessageRequestUnknownUnicodeWarning)"
         )
         .font(.subheadline.weight(.medium))
         .foregroundColor(Color(.braveLabel))

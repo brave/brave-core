@@ -1,0 +1,26 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//testing/test.gni")
+
+test("ios_brave_web_unittests") {
+  testonly = true
+  deps = [
+    "//ios/web:run_all_unittests",
+
+    # Add individual test source_set targets here.
+    "//brave/ios/web/webui:ios_web_webui_unittests",
+  ]
+}
+
+test("ios_brave_web_inttests") {
+  testonly = true
+  deps = [
+    "//ios/web:run_all_unittests",
+
+    # Add individual test source_set targets here.
+    "//brave/ios/web/webui:ios_web_webui_inttests",
+  ]
+}

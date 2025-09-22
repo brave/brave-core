@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "components/prefs/pref_member.h"
 
 class BraveTabStripModel : public TabStripModel {
  public:
@@ -53,8 +54,20 @@ class BraveTabStripModel : public TabStripModel {
   void CloseSelectedTabsWithSplitView() override;
 
  private:
+  friend class TreeTabsBrowserTest;
+
+  void OnTreeTabRelatedPrefChanged();
+  void BuildTreeTabs();
+  void FlattenTreeTabs();
+
+  tabs::TabStripCollection& GetTabStripCollectionForTesting();
+
   // List of tab indexes sorted by most recently used
   std::vector<int> mru_cycle_list_;
+
+  BooleanPrefMember tree_tabs_enabled_;
+  BooleanPrefMember vertical_tabs_enabled_;
+  bool in_tree_mode_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_

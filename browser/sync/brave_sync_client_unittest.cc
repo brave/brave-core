@@ -15,10 +15,10 @@
 #include "chrome/browser/sync/chrome_sync_client.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/common/chrome_paths.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
+#include "components/prefs/testing_pref_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/sync/test/test_sync_service.h"
 #include "components/sync_preferences/pref_service_mock_factory.h"
@@ -78,8 +78,6 @@ class BraveSyncClientTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<Profile> profile_;
   base::ScopedTempDir temp_dir_;
-
-  std::unique_ptr<ScopedTestingLocalState> local_state_;
 };
 
 // We need this because otherwise we'll get crash on uninitialized
@@ -88,16 +86,13 @@ class BraveSyncClientTest : public testing::Test {
 //    CreateAdBlockSubscriptionDownloadClient() =>
 //    g_brave_browser_process->ad_block_service()
 void BraveSyncClientTest::SetupAdblockServiceForBraveBrowserProcess() {
-  local_state_ = std::make_unique<ScopedTestingLocalState>(
-      TestingBrowserProcess::GetGlobal());
-
   base::FilePath user_data_dir;
   DCHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
   auto adblock_service = std::make_unique<brave_shields::AdBlockService>(
-      local_state_->Get(), "en", nullptr,
+      TestingBrowserProcess::GetGlobal()->GetTestingLocalState(), "en", nullptr,
       base::SingleThreadTaskRunner::GetCurrentDefault(),
       std::make_unique<brave_shields::AdBlockSubscriptionServiceManager>(
-          local_state_->Get(),
+          TestingBrowserProcess::GetGlobal()->GetTestingLocalState(),
           base::SingleThreadTaskRunner::GetCurrentDefault(),
           base::BindOnce(&FakeAdBlockSubscriptionDownloadManagerGetter),
           user_data_dir));

@@ -209,8 +209,8 @@ class TabsBarViewController: UIViewController {
     let openNewTab = UIAction(
       title: isPrivateBrowsing ? Strings.Hotkey.newPrivateTabTitle : Strings.Hotkey.newTabTitle,
       image: isPrivateBrowsing
-        ? UIImage(systemName: "plus.square.fill.on.square.fill")
-        : UIImage(systemName: "plus.square.on.square"),
+        ? UIImage(braveSystemNamed: "leo.product.private-window")
+        : UIImage(braveSystemNamed: "leo.browser.mobile-tab-new"),
       handler: UIAction.deferredActionHandler { [unowned self] _ in
         self.delegate?.tabsBarDidSelectAddNewTab(isPrivateBrowsing)
       }
@@ -221,7 +221,7 @@ class TabsBarViewController: UIViewController {
     if !isPrivateBrowsing {
       let openNewPrivateTab = UIAction(
         title: Strings.Hotkey.newPrivateTabTitle,
-        image: UIImage(systemName: "plus.square.fill.on.square.fill"),
+        image: UIImage(braveSystemNamed: "leo.product.private-window"),
         handler: UIAction.deferredActionHandler { [unowned self] _ in
           self.delegate?.tabsBarDidSelectAddNewTab(true)
         }
@@ -233,7 +233,7 @@ class TabsBarViewController: UIViewController {
     newTabMenu.append(
       UIAction(
         title: Strings.newWindowTitle,
-        image: UIImage(braveSystemNamed: "leo.window"),
+        image: UIImage(braveSystemNamed: "leo.window.tab-new"),
         handler: UIAction.deferredActionHandler { [unowned self] _ in
           self.delegate?.tabsBarDidSelectAddNewWindow(false)
         }

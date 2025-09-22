@@ -43,7 +43,7 @@ import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { getAddressLabel, getAccountLabel } from '../../../utils/account-utils'
 import {
   computeFiatAmount,
-  getPriceIdForToken,
+  getPriceRequestsForTokens,
 } from '../../../utils/pricing-utils'
 import { isNativeAsset } from '../../../utils/asset-utils'
 
@@ -222,24 +222,17 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       },
     )
 
-    const networkAssetPriceId = networkAsset
-      ? getPriceIdForToken(networkAsset)
-      : ''
-    const txTokenPriceId = txToken ? getPriceIdForToken(txToken) : ''
-    const sellTokenPriceId = sellToken ? getPriceIdForToken(sellToken) : ''
-    const buyTokenPriceId = buyToken ? getPriceIdForToken(buyToken) : ''
-    const priceIds = [
-      networkAssetPriceId,
-      txTokenPriceId,
-      sellTokenPriceId,
-      buyTokenPriceId,
-    ].filter(Boolean)
+    const priceRequests = React.useMemo(
+      () =>
+        getPriceRequestsForTokens([networkAsset, txToken, sellToken, buyToken]),
+      [networkAsset, txToken, sellToken, buyToken],
+    )
 
     // price queries
-    const { data: spotPriceRegistry, isLoading: isLoadingTxTokenSpotPrice } =
+    const { data: spotPrices = [], isLoading: isLoadingTxTokenSpotPrice } =
       useGetTokenSpotPricesQuery(
-        priceIds.length && defaultFiatCurrency
-          ? { ids: priceIds, toCurrency: defaultFiatCurrency }
+        priceRequests.length && defaultFiatCurrency
+          ? { requests: priceRequests, vsCurrency: defaultFiatCurrency }
           : skipToken,
       )
 
@@ -255,7 +248,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
     const computedSendFiatAmount = sendToken
       ? computeFiatAmount({
-          spotPriceRegistry,
+          spotPrices,
           value: transferredValueWei.format(),
           token: sendToken,
         }).formatAsFiat(defaultFiatCurrency)

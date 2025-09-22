@@ -95,11 +95,31 @@ def PreRebaseCleanup(cfg: RunnerConfig, options: CommonOptions):
   # Remove safe browsing database
   shutil.rmtree(_GetSafeBrowsingDir(profile_dir), ignore_errors=True)
 
+  _FixupPreferences(profile_dir)
+
 
 def CleanProfileCaches(profile_dir: str):
   for path in _CACHE_DIRECTORIES:
     shutil.rmtree(os.path.join(profile_dir, path), ignore_errors=True)
 
+
+def _FixupPreferences(profile_dir: str):
+  """Cleanup possible invalid entries in Preferences file"""
+
+  preferences_path = os.path.join(profile_dir, 'Default', 'Preferences')
+  if not os.path.isfile(preferences_path):
+    return
+
+  # Cleanup Brave News preferences. They could vary depending on the locale.
+  with open(preferences_path, 'r', encoding='utf8') as f:
+    preferences = json.load(f)
+    if brave := preferences.get('brave'):
+      brave.pop('news', None)
+      if new_tab_page := brave.get('new_tab_page'):
+        new_tab_page.pop('show_brave_news', None)
+
+  with open(preferences_path, 'w', encoding='utf8') as f:
+    json.dump(preferences, f)
 
 def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions,
                               extra_dirs_to_add: List[str]) -> str:

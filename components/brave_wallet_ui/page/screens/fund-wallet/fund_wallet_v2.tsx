@@ -71,7 +71,7 @@ export const FundWalletScreen = () => {
 
   // Hooks
   const {
-    selectedAsset,
+    selectedMeldAsset,
     selectedCurrency,
     selectedAccount,
     amount,
@@ -109,8 +109,8 @@ export const FundWalletScreen = () => {
 
   // Redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
-  const isAndroidOrPanel = isAndroid || isPanel
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isMobileOrPanel = isMobile || isPanel
 
   // Computed
   const selectedCountry = countries?.find(
@@ -121,7 +121,7 @@ export const FundWalletScreen = () => {
   const isStorybook = isComponentInStorybook()
   const pageTitle = getLocale('braveWalletBuyAsset').replace(
     '$1',
-    getAssetSymbol(selectedAsset),
+    getAssetSymbol(selectedMeldAsset),
   )
   const isFetchingFirstTimeQuotes = isFetchingQuotes && quotes?.length === 0
 
@@ -129,10 +129,10 @@ export const FundWalletScreen = () => {
     <>
       <WalletPageWrapper
         wrapContentInBox={true}
-        hideNav={isAndroidOrPanel}
-        hideHeader={isAndroidOrPanel}
+        hideNav={isMobileOrPanel}
+        hideHeader={isMobileOrPanel}
         cardHeader={
-          isAndroidOrPanel ? (
+          isMobileOrPanel ? (
             <PanelActionHeader
               title={pageTitle}
               expandRoute={WalletRoutes.FundWalletPageStart}
@@ -141,9 +141,9 @@ export const FundWalletScreen = () => {
             <PageTitleHeader title={pageTitle} />
           )
         }
-        useDarkBackground={isAndroidOrPanel}
-        noPadding={isAndroidOrPanel}
-        noCardPadding={isAndroidOrPanel}
+        useDarkBackground={isMobileOrPanel}
+        noPadding={isMobileOrPanel}
+        noCardPadding={isMobileOrPanel}
       >
         <ContentWrapper
           width='100%'
@@ -153,7 +153,7 @@ export const FundWalletScreen = () => {
           <ControlPanel width='100%'>
             <SelectAssetButton
               labelText={getLocale('braveWalletAsset')}
-              selectedAsset={selectedAsset}
+              selectedAsset={selectedMeldAsset}
               onClick={() => setIsAssetDialogOpen(true)}
             />
             <SelectAccountButton
@@ -282,7 +282,7 @@ export const FundWalletScreen = () => {
                     >
                       {getLocale('braveWalletNoProviderFound').replace(
                         '$1',
-                        getAssetSymbol(selectedAsset),
+                        getAssetSymbol(selectedMeldAsset),
                       )}
                     </Text>
                     <Text
@@ -340,7 +340,7 @@ export const FundWalletScreen = () => {
                               isCreatingWidgetFor === quote.serviceProvider
                             }
                             onBuy={onBuy}
-                            selectedAsset={selectedAsset}
+                            selectedAsset={selectedMeldAsset}
                           />
                         ))}
                       </Column>
@@ -356,7 +356,7 @@ export const FundWalletScreen = () => {
       <SelectAsset
         isOpen={isAssetDialogOpen}
         assets={cryptoCurrencies || []}
-        selectedAsset={selectedAsset}
+        selectedAsset={selectedMeldAsset}
         isLoadingAssets={isLoadingAssets}
         onSelectAsset={(asset) => {
           onSelectToken(asset)
@@ -383,13 +383,13 @@ export const FundWalletScreen = () => {
           onSelectAccount(account)
           setIsAccountDialogOpen(false)
         }}
-        selectedAsset={selectedAsset}
+        selectedAsset={selectedMeldAsset}
         onClose={() => setIsAccountDialogOpen(false)}
       />
 
       <CreateAccount
         isOpen={showCreateAccount}
-        token={pendingSelectedToken || selectedAsset}
+        token={pendingSelectedToken || selectedMeldAsset}
         onClose={onCloseCreateAccount}
         onSelectToken={onSelectToken}
       />

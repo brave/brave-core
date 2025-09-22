@@ -28,7 +28,6 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -65,8 +64,7 @@ void UpdateCustomNetworks(PrefService* prefs,
 class TestBraveWalletHandler : public BraveWalletHandler {
  public:
   TestBraveWalletHandler()
-      : local_state_(TestingBrowserProcess::GetGlobal()),
-        shared_url_loader_factory_(
+      : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
     TestingProfile::Builder builder;
@@ -148,7 +146,6 @@ class TestBraveWalletHandler : public BraveWalletHandler {
   }
 
  private:
-  ScopedTestingLocalState local_state_;
   content::BrowserTaskEnvironment browser_task_environment_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<content::WebContents> web_contents_;

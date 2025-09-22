@@ -33,7 +33,7 @@ import {
 import { reduceAddress } from '../../../../utils/reduce-address'
 import {
   computeFiatAmount,
-  getPriceIdForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import Amount from '../../../../utils/amount'
@@ -116,14 +116,14 @@ export const SelectAccountItem = (props: Props) => {
     selectedNetwork?.chainId,
   ])
 
-  const tokenPriceIds = React.useMemo(
-    () => tokenListByAccount.map(getPriceIdForToken),
+  const tokenPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens(tokenListByAccount),
     [tokenListByAccount],
   )
 
-  const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    tokenPriceIds.length && defaultFiatCurrency
-      ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+  const { data: spotPrices = [] } = useGetTokenSpotPricesQuery(
+    tokenPriceRequests.length && defaultFiatCurrency
+      ? { requests: tokenPriceRequests, vsCurrency: defaultFiatCurrency }
       : skipToken,
     querySubscriptionOptions60s,
   )
@@ -137,7 +137,7 @@ export const SelectAccountItem = (props: Props) => {
       )
 
       return computeFiatAmount({
-        spotPriceRegistry,
+        spotPrices,
         value: balance,
         token,
       }).format()
@@ -156,7 +156,7 @@ export const SelectAccountItem = (props: Props) => {
     defaultFiatCurrency,
     account.accountId,
     tokenBalancesRegistry,
-    spotPriceRegistry,
+    spotPrices,
   ])
 
   return (

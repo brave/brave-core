@@ -75,8 +75,10 @@ bool MemoryStorageTool::RequiresUserInteractionBeforeHandling() const {
   return false;
 }
 
-bool MemoryStorageTool::SupportsConversation(bool is_temporary,
-                                             bool has_untrusted_content) const {
+bool MemoryStorageTool::SupportsConversation(
+    bool is_temporary,
+    bool has_untrusted_content,
+    mojom::ConversationCapability conversation_capability) const {
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
   return false;
 #else

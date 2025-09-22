@@ -5,7 +5,7 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
-import { WalletButton } from '../shared/style'
+import { WalletButton, Text, Column } from '../shared/style'
 import WarningTriangle from '../../assets/svg-icons/warning-triangle.svg'
 import IThemeProps from 'brave-ui/theme/theme-interface'
 
@@ -229,4 +229,34 @@ export const FloatingCard = styled.div`
   border-radius: 8px;
   background-color: ${leo.color.container.background};
   box-shadow: 0px 10px 48px 0px ${leo.effect.elevation['05']};
+`
+
+export const ConfirmationInfoLabel = styled(Text)`
+  font: ${leo.font.small.semibold};
+  letter-spacing: ${leo.typography.letterSpacing.small};
+`
+
+export const ConfirmationInfoText = styled(Text)`
+  font: ${leo.font.small.regular};
+  letter-spacing: ${leo.typography.letterSpacing.small};
+`
+
+export const ConfirmationButtonLink = styled(WalletButton)`
+  --leo-icon-size: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  background: none;
+  font: ${leo.font.small.semibold};
+  letter-spacing: ${leo.typography.letterSpacing.small};
+  color: ${leo.color.text.interactive};
+`
+
+export const ScrollableColumn = styled(Column)`
+  overflow-x: hidden;
+  overflow-y: auto;
 `

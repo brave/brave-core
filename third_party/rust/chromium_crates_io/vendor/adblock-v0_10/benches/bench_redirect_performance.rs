@@ -194,8 +194,7 @@ pub fn build_custom_requests(rules: Vec<NetworkFilter>) -> Vec<Request> {
                 let domain_end = from_start
                     .find('|')
                     .or_else(|| from_start.find(","))
-                    .or(Some(from_start.len()))
-                    .unwrap()
+                    .unwrap_or(from_start.len())
                     + domain_start;
 
                 &raw_line[domain_start..domain_end]

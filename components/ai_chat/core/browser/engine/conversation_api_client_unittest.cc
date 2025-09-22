@@ -35,6 +35,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/api_request_helper/mock_api_request_helper.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
@@ -68,6 +69,7 @@ using ResultCallback = api_request_helper::APIRequestHelper::ResultCallback;
 using Ticket = api_request_helper::APIRequestHelper::Ticket;
 using ResponseConversionCallback =
     api_request_helper::APIRequestHelper::ResponseConversionCallback;
+using api_request_helper::MockAPIRequestHelper;
 
 namespace ai_chat {
 
@@ -286,35 +288,6 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
               (override));
 };
 
-// Mock the APIRequestHelper to intercept requests and provide responses
-class MockAPIRequestHelper : public api_request_helper::APIRequestHelper {
- public:
-  using api_request_helper::APIRequestHelper::APIRequestHelper;
-  ~MockAPIRequestHelper() override = default;
-  MOCK_METHOD(Ticket,
-              RequestSSE,
-              (const std::string&,
-               const GURL&,
-               const std::string&,
-               const std::string&,
-               DataReceivedCallback,
-               ResultCallback,
-               (const base::flat_map<std::string, std::string>&),
-               const api_request_helper::APIRequestOptions&),
-              (override));
-  MOCK_METHOD(Ticket,
-              Request,
-              (const std::string&,
-               const GURL&,
-               const std::string&,
-               const std::string&,
-               ResultCallback,
-               (const base::flat_map<std::string, std::string>&),
-               const api_request_helper::APIRequestOptions&,
-               ResponseConversionCallback),
-              (override));
-};
-
 // Create a version of the ConversationAPIClient that contains our mocks
 class TestConversationAPIClient : public ConversationAPIClient {
  public:
@@ -364,12 +337,10 @@ class ConversationAPIUnitTest : public testing::Test {
 
   void TearDown() override {}
 
-  base::Value::List GetEvents(std::string_view body_json) {
-    auto dict = base::JSONReader::ReadDict(body_json);
-    EXPECT_TRUE(dict.has_value());
-    base::Value::List* events = dict->FindList("events");
+  base::Value::List& GetEvents(base::Value::Dict& body) {
+    base::Value::List* events = body.FindList("events");
     EXPECT_TRUE(events);
-    return std::move(*events);
+    return *events;
   }
 
   // Returns a pair of system_language and selected_langauge
@@ -377,19 +348,12 @@ class ConversationAPIUnitTest : public testing::Test {
   // The selected language is the language the server side determined the
   // conversation is in
   std::pair<std::string, std::optional<std::string>> GetLanguage(
-      std::string_view body_json) {
-    auto dict = base::JSONReader::ReadDict(body_json);
-    EXPECT_TRUE(dict.has_value());
-    if (!dict.has_value()) {
-      return {"", std::nullopt};
-    }
-
-    const std::string* system_language = dict->FindString("system_language");
+      const base::Value::Dict& body) {
+    const std::string* system_language = body.FindString("system_language");
     // The system language should always be present
     EXPECT_TRUE(system_language != nullptr);
 
-    const std::string* selected_language =
-        dict->FindString("selected_language");
+    const std::string* selected_language = body.FindString("selected_language");
     if (selected_language) {
       return {*system_language, *selected_language};
     } else {
@@ -421,6 +385,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
       expected_system_language);
   std::string expected_completion_response = "Yes, Star Wars";
   std::string expected_selected_language = "fr";
+  std::string expected_capability = "chat";
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
@@ -450,14 +415,23 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
                   "__Secure-sku#brave-leo-premium=" + expected_crediential);
         EXPECT_NE(headers.find("x-brave-key"), headers.end());
 
+        base::Value::Dict body_dict = base::test::ParseJsonDict(body);
+        EXPECT_TRUE(!body_dict.empty());
+
         // Verify input body contains input events in expected json format
-        EXPECT_THAT(expected_events_body, base::test::IsJson(GetEvents(body)));
+        EXPECT_THAT(expected_events_body,
+                    base::test::IsJson(GetEvents(body_dict)));
 
         // Verify body contains the language
-        auto [system_language, selected_language] = GetLanguage(body);
+        auto [system_language, selected_language] = GetLanguage(body_dict);
         EXPECT_EQ(system_language, expected_system_language);
         EXPECT_TRUE(selected_language.has_value());
         EXPECT_TRUE(selected_language.value().empty());
+
+        // Verify body contains the capability
+        const std::string* capability = body_dict.FindString("capability");
+        EXPECT_TRUE(capability);
+        EXPECT_EQ(*capability, expected_capability);
 
         // Send some event responses so that we can verify they are passed
         // through to the PerformRequest callbacks as events.
@@ -614,6 +588,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
       std::move(events), "" /* selected_language */,
       std::nullopt, /* oai_tool_definitions */
       std::nullopt, /* preferred_tool_name */
+      mojom::ConversationCapability::CHAT,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -642,6 +617,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
       expected_system_language);
   std::string expected_completion_response = "Yes, Star Wars";
   std::string expected_selected_language = "fr";
+  std::string expected_capability = "content_agent";
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
@@ -665,13 +641,20 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
         EXPECT_NE(headers.find("x-brave-key"), headers.end());
 
         // Verify body contains events in expected json format
-        EXPECT_THAT(expected_events_body, base::test::IsJson(GetEvents(body)));
+        base::Value::Dict body_dict = base::test::ParseJsonDict(body);
+        EXPECT_THAT(expected_events_body,
+                    base::test::IsJson(GetEvents(body_dict)));
 
         // Verify body contains the language
-        auto [system_language, selected_language] = GetLanguage(body);
+        auto [system_language, selected_language] = GetLanguage(body_dict);
         EXPECT_EQ(system_language, expected_system_language);
         EXPECT_TRUE(selected_language.has_value());
         EXPECT_TRUE(selected_language.value().empty());
+
+        // Verify body contains the capability
+        const std::string* capability = body_dict.FindString("capability");
+        EXPECT_TRUE(capability);
+        EXPECT_EQ(*capability, expected_capability);
 
         // Send a simple completion response so that we can verify it is passed
         // through to the PerformRequest callbacks.
@@ -735,6 +718,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
       std::move(events), "" /* selected_language */,
       std::nullopt, /* oai_tool_definitions */
       std::nullopt, /* preferred_tool_name */
+      mojom::ConversationCapability::CONTENT_AGENT,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -847,6 +831,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_WithToolUseResponse) {
       std::move(events), "" /* selected_language */,
       std::nullopt, /* oai_tool_definitions */
       std::nullopt, /* preferred_tool_name */
+      mojom::ConversationCapability::CHAT,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -923,6 +908,7 @@ TEST_F(ConversationAPIUnitTest,
       std::move(events), "" /* selected_language */,
       std::nullopt, /* oai_tool_definitions */
       std::nullopt, /* preferred_tool_name */
+      mojom::ConversationCapability::CHAT,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,
@@ -993,6 +979,7 @@ TEST_F(ConversationAPIUnitTest,
   client_->PerformRequest(std::move(events), "" /* selected_language */,
                           std::nullopt, /* oai_tool_definitions */
                           std::nullopt, /* preferred_tool_name */
+                          mojom::ConversationCapability::CHAT,
                           base::NullCallback(),
                           base::BindOnce(&MockCallbacks::OnCompleted,
                                          base::Unretained(&mock_callbacks)),
@@ -1027,6 +1014,7 @@ TEST_F(ConversationAPIUnitTest, FailNoConversationEvents) {
       std::move(events), "" /* selected_language */,
       std::nullopt, /* oai_tool_definitions */
       std::nullopt, /* preferred_tool_name */
+      mojom::ConversationCapability::CHAT,
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,

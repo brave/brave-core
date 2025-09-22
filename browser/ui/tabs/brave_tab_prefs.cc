@@ -23,12 +23,23 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
 #else
   registry->RegisterBooleanPref(kVerticalTabsShowTitleOnWindow, false);
 #endif
+
+  if (base::FeatureList::IsEnabled(
+          tabs::features::kBraveVerticalTabHideCompletely)) {
+    registry->RegisterBooleanPref(kVerticalTabsHideCompletelyWhenCollapsed,
+                                  false);
+  }
+
   registry->RegisterBooleanPref(kVerticalTabsFloatingEnabled, true);
   registry->RegisterIntegerPref(kVerticalTabsExpandedWidth, 220);
   registry->RegisterBooleanPref(kVerticalTabsOnRight, false);
   registry->RegisterBooleanPref(kVerticalTabsShowScrollbar, false);
 
   registry->RegisterBooleanPref(kSharedPinnedTab, false);
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab)) {
+    registry->RegisterBooleanPref(kTreeTabsEnabled, false);
+  }
 }
 
 void MigrateBraveProfilePrefs(PrefService* prefs) {

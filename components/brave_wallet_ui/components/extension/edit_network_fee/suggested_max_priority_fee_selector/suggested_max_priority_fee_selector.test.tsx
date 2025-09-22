@@ -7,6 +7,9 @@ import * as React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
+// Types
+import { BraveWallet } from '../../../../constants/types'
+
 // Components
 import {
   SuggestedMaxPriorityFeeSelector, //
@@ -41,14 +44,18 @@ jest.mock('../../../../common/slices/api.slice', () => {
       data: 'USD',
     }),
     useGetTokenSpotPricesQuery: () => ({
-      data: {
-        'ethereum': {
-          usd: 1600.92,
-          usd_24h_change: -0.69088,
-          usd_24h_vol: 6076168182,
-          usd_market_cap: 223895622340,
+      data: [
+        {
+          coinType: 60, // ETH
+          chainId: '0x1',
+          address: '0x0000000000000000000000000000000000000000',
+          price: '1600.92',
+          percentageChange24h: '-0.69088',
+          vsCurrency: 'USD',
+          cacheStatus: BraveWallet.Gate3CacheStatus.kHit,
+          source: BraveWallet.AssetPriceSource.kCoingecko,
         },
-      },
+      ],
     }),
   }
 })

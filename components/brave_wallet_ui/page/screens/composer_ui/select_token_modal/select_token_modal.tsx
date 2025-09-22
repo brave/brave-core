@@ -40,7 +40,7 @@ import { getBalance } from '../../../../utils/balance-utils'
 import {
   computeFiatAmount,
   getTokenPriceFromRegistry,
-  getPriceIdForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
 import {
@@ -219,8 +219,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     // Selectors
     const isPanel = useSafeUISelector(UISelectors.isPanel)
-    const isAndroid = useSafeUISelector(UISelectors.isAndroid)
-    const isAndroidOrPanel = isAndroid || isPanel
+    const isMobile = useSafeUISelector(UISelectors.isMobile)
+    const isMobileOrPanel = isMobile || isPanel
 
     // Queries & Mutations
     const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
@@ -388,28 +388,29 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       selectedAccountFilter,
     ])
 
-    const tokenPriceIds = React.useMemo(
+    const tokenPriceRequests = React.useMemo(
       () =>
-        tokensBySelectedComposerOption
-          .filter(
-            (token) => !token.isNft && !token.isErc721 && !token.isErc1155,
-          )
-          .filter((token) =>
-            new Amount(userTokenBalances[getAssetIdKey(token)]).gt(0),
-          )
-          .map((token) => getPriceIdForToken(token)),
+        getPriceRequestsForTokens(
+          tokensBySelectedComposerOption
+            .filter(
+              (token) => !token.isNft && !token.isErc721 && !token.isErc1155,
+            )
+            .filter((token) =>
+              new Amount(userTokenBalances[getAssetIdKey(token)]).gt(0),
+            ),
+        ),
       [tokensBySelectedComposerOption, userTokenBalances],
     )
 
-    const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
+    const { data: spotPrices = [], isLoading: isLoadingSpotPrices } =
       useGetTokenSpotPricesQuery(
-        tokenPriceIds.length
+        !isLoadingBalances
+          && tokenPriceRequests.length
           && defaultFiatCurrency
           && selectedSendOption !== '#nft'
           ? {
-              ids: tokenPriceIds,
-              timeframe: BraveWallet.AssetPriceTimeframe.OneDay,
-              toCurrency: defaultFiatCurrency,
+              requests: tokenPriceRequests,
+              vsCurrency: defaultFiatCurrency,
             }
           : skipToken,
         querySubscriptionOptions60s,
@@ -421,20 +422,20 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         const bBalance = userTokenBalances[getAssetIdKey(b)]
 
         const bFiatBalance = computeFiatAmount({
-          spotPriceRegistry,
+          spotPrices,
           value: bBalance,
           token: b,
         })
 
         const aFiatBalance = computeFiatAmount({
-          spotPriceRegistry,
+          spotPrices,
           value: aBalance,
           token: a,
         })
 
         return bFiatBalance.minus(aFiatBalance).toNumber()
       })
-    }, [tokensBySelectedComposerOption, userTokenBalances, spotPriceRegistry])
+    }, [tokensBySelectedComposerOption, userTokenBalances, spotPrices])
 
     const tokensFilteredByNetwork = React.useMemo(() => {
       if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
@@ -700,7 +701,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           selectedFromToken={selectedFromToken}
           selectedToToken={selectedToToken}
           selectingFromOrTo={selectingFromOrTo}
-          spotPriceRegistry={spotPriceRegistry}
+          spotPrices={spotPrices}
           isLoadingSpotPrices={isLoadingSpotPrices}
           getAllAccountsWithBalance={getAllAccountsWithBalance}
           firstNoBalanceTokenKey={firstNoBalanceTokenKey}
@@ -717,7 +718,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       selectedToToken,
       selectingFromOrTo,
       tokensBySearchValue,
-      spotPriceRegistry,
+      spotPrices,
       isLoadingSpotPrices,
       isLoadingCombinedTokenRegistry,
       firstNoBalanceTokenKey,
@@ -736,7 +737,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     // render
 
-    if (!isAndroidOrPanel && pendingSelectedAsset) {
+    if (!isMobileOrPanel && pendingSelectedAsset) {
       return (
         <PopupModal
           title=''
@@ -750,11 +751,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             accounts={accountsForPendingSelectedAsset}
             tokenBalancesRegistry={tokenBalancesRegistry}
             spotPrice={
-              spotPriceRegistry
-                ? getTokenPriceFromRegistry(
-                    spotPriceRegistry,
-                    pendingSelectedAsset,
-                  )
+              spotPrices
+                ? getTokenPriceFromRegistry(spotPrices, pendingSelectedAsset)
                 : undefined
             }
             onSelectAccount={handleSelectAccount}
@@ -763,7 +761,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       )
     }
 
-    if (!isAndroidOrPanel && tokenDetails) {
+    if (!isMobileOrPanel && tokenDetails) {
       return (
         <PopupModal
           title=''
@@ -790,7 +788,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           )}
           width='560px'
           height='90vh'
-          ref={isAndroidOrPanel ? undefined : forwardedRef}
+          ref={isMobileOrPanel ? undefined : forwardedRef}
         >
           {onSelectSendOption && selectedSendOption && (
             <Row
@@ -854,7 +852,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             {tokenList}
           </ScrollContainer>
         </PopupModal>
-        {isAndroidOrPanel && (
+        {isMobileOrPanel && (
           <BottomSheet
             onClose={handleOnBack}
             isOpen={pendingSelectedAsset !== undefined}
@@ -865,9 +863,9 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
                 accounts={accountsForPendingSelectedAsset}
                 tokenBalancesRegistry={tokenBalancesRegistry}
                 spotPrice={
-                  spotPriceRegistry
+                  spotPrices
                     ? getTokenPriceFromRegistry(
-                        spotPriceRegistry,
+                        spotPrices,
                         pendingSelectedAsset,
                       )
                     : undefined
@@ -877,7 +875,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             )}
           </BottomSheet>
         )}
-        {isAndroidOrPanel && (
+        {isMobileOrPanel && (
           <BottomSheet
             onClose={() => setTokenDetails(undefined)}
             isOpen={tokenDetails !== undefined}

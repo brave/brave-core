@@ -8,6 +8,9 @@ source_set("brave_account") {
     "brave_account_service.cc",
     "brave_account_service.h",
     "brave_account_ui_base.h",
+    "pref_names.h",
+    "prefs.cc",
+    "prefs.h",
   ]
 
   deps = [
@@ -15,6 +18,7 @@ source_set("brave_account") {
     "//brave/components/brave_account:features",
     "//brave/components/brave_account/endpoint_client",
     "//brave/components/brave_account/endpoints",
+    "//brave/components/brave_account/mojom",
     "//brave/components/brave_account/resources",
     "//brave/components/constants",
     "//brave/components/password_strength_meter",

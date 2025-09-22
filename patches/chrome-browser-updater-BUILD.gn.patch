@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/updater/BUILD.gn b/chrome/browser/updater/BUILD.gn
-index 3a3ce492e016145c9d5766ec468ce6f8118d4250..e67274baff6e3df322ed509948b6925e25c25a78 100644
+index 8e95c0a6257c9d63e4f439b96e951b8513bb65d4..4fda0a49110f2bffad8126983441c3d821786cb8 100644
 --- a/chrome/browser/updater/BUILD.gn
 +++ b/chrome/browser/updater/BUILD.gn
-@@ -80,6 +80,7 @@ source_set("scheduler") {
+@@ -81,6 +81,7 @@ source_set("scheduler") {
    ]
  
    deps = [ "//base" ]

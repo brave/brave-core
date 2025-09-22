@@ -221,83 +221,103 @@ const char on_ramp_currency_lists_json[] = R"({
   ]
 })";
 
-mojom::BlockchainTokenPtr wrapped_sol = mojom::BlockchainToken::New(
-    "So11111111111111111111111111111111111111112",
-    "Wrapped SOL",
-    "So11111111111111111111111111111111111111112.png",
-    false,
-    false,
-    false,
-    false,
-    mojom::SPLTokenProgram::kToken,
-    false,
-    false,
-    "SOL",
-    9,
-    true,
-    "",
-    "solana",
-    "0x65",
-    mojom::CoinType::SOL,
-    false);
-mojom::BlockchainTokenPtr usdc = mojom::BlockchainToken::New(
-    "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-    "USD Coin",
-    "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
-    false,
-    false,
-    false,
-    false,
-    mojom::SPLTokenProgram::kToken,
-    false,
-    false,
-    "USDC",
-    6,
-    true,
-    "",
-    "usd-coin",
-    "0x65",
-    mojom::CoinType::SOL,
-    false);
-mojom::BlockchainTokenPtr tsla = mojom::BlockchainToken::New(
-    "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ",
-    "Tesla Inc.",
-    "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
-    false,
-    false,
-    false,
-    false,
-    mojom::SPLTokenProgram::kToken,
-    false,
-    false,
-    "TSLA",
-    8,
-    true,
-    "",
-    "",
-    "0x65",
-    mojom::CoinType::SOL,
-    false);
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] mojom::BlockchainTokenPtr wrapped_sol =
+    mojom::BlockchainToken::New(
+        "So11111111111111111111111111111111111111112",
+        "Wrapped SOL",
+        "So11111111111111111111111111111111111111112.png",
+        false,
+        false,
+        false,
+        false,
+        mojom::SPLTokenProgram::kToken,
+        false,
+        false,
+        "SOL",
+        9,
+        true,
+        "",
+        "solana",
+        "0x65",
+        mojom::CoinType::SOL,
+        false);
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] mojom::BlockchainTokenPtr usdc =
+    mojom::BlockchainToken::New(
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "USD Coin",
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
+        false,
+        false,
+        false,
+        false,
+        mojom::SPLTokenProgram::kToken,
+        false,
+        false,
+        "USDC",
+        6,
+        true,
+        "",
+        "usd-coin",
+        "0x65",
+        mojom::CoinType::SOL,
+        false);
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] mojom::BlockchainTokenPtr tsla =
+    mojom::BlockchainToken::New(
+        "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ",
+        "Tesla Inc.",
+        "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+        false,
+        false,
+        false,
+        false,
+        mojom::SPLTokenProgram::kToken,
+        false,
+        false,
+        "TSLA",
+        8,
+        true,
+        "",
+        "",
+        "0x65",
+        mojom::CoinType::SOL,
+        false);
 
-mojom::BlockchainTokenPtr moon = mojom::BlockchainToken::New(
-    "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi",
-    "SolarMoon",
-    "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi.png",
-    false,
-    false,
-    false,
-    false,
-    mojom::SPLTokenProgram::kToken2022,
-    false,
-    false,
-    "MOON",
-    5,
-    true,
-    "",
-    "",
-    "0x65",
-    mojom::CoinType::SOL,
-    false);
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] mojom::BlockchainTokenPtr moon =
+    mojom::BlockchainToken::New(
+        "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi",
+        "SolarMoon",
+        "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi.png",
+        false,
+        false,
+        false,
+        false,
+        mojom::SPLTokenProgram::kToken2022,
+        false,
+        false,
+        "MOON",
+        5,
+        true,
+        "",
+        "",
+        "0x65",
+        mojom::CoinType::SOL,
+        false);
 
 const char chain_list_json[] = R"(
   [

@@ -11,7 +11,7 @@ namespace omnibox {
 
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kAutocompleteEnabled, true);
-  registry->RegisterBooleanPref(kTopSuggestionsEnabled, true);
+  registry->RegisterBooleanPref(kOnDeviceSuggestionsEnabled, true);
   registry->RegisterBooleanPref(kHistorySuggestionsEnabled, true);
   registry->RegisterBooleanPref(kBookmarkSuggestionsEnabled, true);
   registry->RegisterBooleanPref(kCommanderSuggestionsEnabled, true);

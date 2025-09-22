@@ -37,11 +37,13 @@
 }
 
 .link {
-  --leo-button-padding: 0;
+  font: var(--leo-font-small-regular);
   text-decoration: underline;
+  color: var(--leo-color-text-tertiary);
+  border: none;
+  background: none;
   cursor: pointer;
-
-  span {
-    font: var(--leo-font-small-regular);
+  &:hover {
+    color: var(--leo-color-text-primary);
   }
 }

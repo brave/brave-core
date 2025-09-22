@@ -18,6 +18,9 @@ void AddBraveMaterialSidePanelColorMixer(ui::ColorProvider* provider,
   // We don't use card background.
   mixer[kColorSidePanelCardBackground] = {SK_ColorTRANSPARENT};
 
+  // We don't use upstream's resize handle.
+  mixer[kColorSidePanelHoverResizeAreaHandle] = {SK_ColorTRANSPARENT};
+
   // Use leo color when it's ready.
   mixer[kColorSidePanelScrollbarThumb] = {
       is_dark ? SkColorSetRGB(0x58, 0x58, 0x58)

@@ -16,12 +16,12 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
+import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpenerImpl;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
@@ -44,27 +44,29 @@ import org.chromium.chrome.browser.tab_ui.TabSwitcher;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarIntentMetadata;
+import org.chromium.chrome.browser.ui.BraveAdaptiveToolbarUiCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
-import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeManager;
-import org.chromium.components.browser_ui.edge_to_edge.SystemBarColorHelper;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
+import org.chromium.ui.edge_to_edge.EdgeToEdgeManager;
+import org.chromium.ui.edge_to_edge.SystemBarColorHelper;
 import org.chromium.ui.insets.InsetObserver;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
-    private final AppCompatActivity mActivity;
+    private final AppCompatActivity mBraveActivity;
     private final OneshotSupplier<HubManager> mHubManagerSupplier;
-    private final ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
+    private final ObservableSupplier<EdgeToEdgeController> mBraveEdgeToEdgeControllerSupplier;
 
     public BraveTabbedRootUiCoordinator(
             @NonNull AppCompatActivity activity,
@@ -168,21 +170,21 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 bookmarkManagerOpenerSupplier,
                 xrSpaceModeObservableSupplier);
 
-        mActivity = activity;
+        mBraveActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;
-        mEdgeToEdgeControllerSupplier = edgeToEdgeSupplier;
+        mBraveEdgeToEdgeControllerSupplier = edgeToEdgeSupplier;
     }
 
     @Override
     public void onPostInflationStartup() {
         super.onPostInflationStartup();
 
-        assert mActivity instanceof BraveActivity;
+        assert mBraveActivity instanceof BraveActivity;
 
-        if (mActivity instanceof BraveActivity) {
-            ((BraveActivity) mActivity)
+        if (mBraveActivity instanceof BraveActivity) {
+            ((BraveActivity) mBraveActivity)
                     .updateBottomSheetPosition(
-                            mActivity.getResources().getConfiguration().orientation);
+                            mBraveActivity.getResources().getConfiguration().orientation);
         }
     }
 
@@ -194,16 +196,28 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 hubManager -> {
                     // Make it negative to indicate that we adjust the bottom margin.
                     int bottomToolbarHeight =
-                            mActivity
+                            mBraveActivity
                                             .getResources()
                                             .getDimensionPixelSize(R.dimen.bottom_controls_height)
                                     * -1;
-                    if (EdgeToEdgeUtils.isEdgeToEdgeBottomChinEnabled(mActivity)
-                            && mEdgeToEdgeControllerSupplier.get() != null) {
+                    if (EdgeToEdgeUtils.isEdgeToEdgeBottomChinEnabled(mBraveActivity)
+                            && mBraveEdgeToEdgeControllerSupplier.get() != null) {
                         bottomToolbarHeight -=
-                                mEdgeToEdgeControllerSupplier.get().getBottomInsetPx();
+                                mBraveEdgeToEdgeControllerSupplier.get().getBottomInsetPx();
                     }
                     hubManager.setStatusIndicatorHeight(bottomToolbarHeight);
                 });
+    }
+
+    @Override
+    protected void initializeToolbar() {
+        super.initializeToolbar();
+
+        assert mAdaptiveToolbarUiCoordinator instanceof BraveAdaptiveToolbarUiCoordinator
+                : "Bytecode change was not applied!";
+        if (mAdaptiveToolbarUiCoordinator
+                instanceof BraveAdaptiveToolbarUiCoordinator braveCoordinator) {
+            braveCoordinator.initializeBrave(new BookmarkManagerOpenerImpl());
+        }
     }
 }

@@ -139,7 +139,9 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void,
               OnModelDataChanged,
-              (const std::string&, std::vector<mojom::ModelPtr>),
+              (const std::string& conversation_model_key,
+               const std::string& default_model_key,
+               std::vector<mojom::ModelPtr> all_models),
               (override));
 
   MOCK_METHOD(void,
@@ -473,6 +475,7 @@ TEST_P(AIChatServiceUnitTest,
                      bool is_temporary_chat,
                      const std::vector<base::WeakPtr<Tool>>& tools,
                      std::optional<std::string_view> preferred_tool_name,
+                     mojom::ConversationCapability conversation_capability,
                      base::RepeatingCallback<void(
                          EngineConsumer::GenerationResultData)> callback,
                      base::OnceCallback<void(

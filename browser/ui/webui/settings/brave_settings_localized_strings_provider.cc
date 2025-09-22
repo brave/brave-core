@@ -201,8 +201,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_NEVER_SHOW_BOOKMARK_BAR_DESC},
       {"appearanceSettingsShowAutocompleteInAddressBar",
        IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR},
-      {"appearanceSettingsUseTopSuggestions",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_TOP_SUGGESTIONS},
+      {"appearanceSettingsUseOnDeviceSuggestions",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_ON_DEVICE},
       {"appearanceSettingsUseHistorySuggestions",
        IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_HISTORY},
       {"appearanceSettingsUseBookmarkSuggestions",
@@ -1247,7 +1247,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   html_source->AddBoolean("braveTorDisabledByPolicy",
                           TorProfileServiceFactory::IsTorDisabled(profile));
 #endif
-
 
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {

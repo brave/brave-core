@@ -15,6 +15,7 @@ import androidx.preference.PreferenceViewHolder;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.toolbar.R;
+import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.ui.base.DeviceFormFactor;
 
@@ -22,10 +23,17 @@ import org.chromium.ui.base.DeviceFormFactor;
 @NullMarked
 public class BraveRadioButtonGroupAdaptiveToolbarPreference
         extends RadioButtonGroupAdaptiveToolbarPreference {
-    private final Context mContext;
+    // Variables below are to be removed in the bytecode, variables from the parent class will be
+    // used instead.
+    private @AdaptiveToolbarButtonVariant int mSelected;
+    private boolean mIsBound;
     private @Nullable RadioButtonWithDescription mAutoButton;
     private @Nullable RadioButtonWithDescription mNewTabButton;
     private @Nullable RadioButtonWithDescription mShareButton;
+
+    // Own members.
+    private final Context mContext;
+    private @Nullable RadioButtonWithDescription mBookmarksButton;
 
     public BraveRadioButtonGroupAdaptiveToolbarPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -35,21 +43,24 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
 
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
+        // Needs to be done before super is called, otherwise the button will be null in getButton
+        // method.
+        mBookmarksButton =
+                (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_bookmarks);
+
         super.onBindViewHolder(holder);
 
-        mAutoButton =
-                (RadioButtonWithDescription)
-                        holder.findViewById(R.id.adaptive_option_based_on_usage);
         // We don't have Auto option in Brave, so we hide it.
-        mAutoButton.setVisibility(View.GONE);
-
-        mNewTabButton =
-                (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_new_tab);
-        mShareButton = (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_share);
+        assert mAutoButton != null : "mAutoButton should not be null at this point";
+        if (mAutoButton != null) {
+            mAutoButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onCheckedChanged(@Nullable RadioGroup group, int checkedId) {
+        if (!mIsBound) return;
+
         RadioButtonWithDescription defaultButton =
                 DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext)
                         ? mShareButton
@@ -60,6 +71,26 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
             defaultButton.setChecked(mAutoButton.isChecked());
         }
 
+        boolean isOnCheckedChangedHandled = false;
+        if (mBookmarksButton != null && mBookmarksButton.isChecked()) {
+            mSelected = AdaptiveToolbarButtonVariant.BOOKMARKS;
+            isOnCheckedChangedHandled = true;
+        }
+        if (isOnCheckedChangedHandled) {
+            callChangeListener(mSelected);
+            return;
+        }
+
         super.onCheckedChanged(group, checkedId);
+    }
+
+    @Override
+    @Nullable RadioButtonWithDescription getButton(@AdaptiveToolbarButtonVariant int variant) {
+        switch (variant) {
+            case AdaptiveToolbarButtonVariant.BOOKMARKS:
+                return mBookmarksButton;
+        }
+
+        return super.getButton(variant);
     }
 }

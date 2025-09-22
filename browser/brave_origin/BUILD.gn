@@ -1,0 +1,85 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
+import("//build/config/features.gni")
+
+source_set("brave_origin") {
+  sources = [
+    "brave_origin_service_factory.cc",
+    "brave_origin_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/policy:brave_simple_policy_map",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_origin",
+    "//brave/components/brave_policy",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/common:pref_names",
+    "//brave/components/brave_wayback_machine/buildflags",
+    "//brave/components/constants",
+    "//brave/components/ipfs/buildflags",
+    "//brave/components/p3a",
+    "//brave/components/speedreader/common/buildflags",
+    "//brave/components/tor/buildflags",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles",
+    "//components/keyed_service/content",
+    "//components/policy/core/common",
+  ]
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn/common" ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    deps += [ "//brave/components/brave_wayback_machine" ]
+  }
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader" ]
+  }
+
+  if (enable_tor) {
+    deps += [ "//brave/components/tor:pref_names" ]
+  }
+
+  if (deprecate_ipfs) {
+    deps += [ "//brave/components/ipfs" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_origin_service_factory_unittest.cc" ]
+
+  deps = [
+    ":brave_origin",
+    "//base/test:test_support",
+    "//brave/browser/policy:brave_simple_policy_map",
+    "//brave/components/brave_origin",
+    "//brave/components/constants",
+    "//brave/components/p3a",
+    "//components/policy/core/common:test_support",
+    "//testing/gtest",
+  ]
+
+  if (enable_tor) {
+    deps += [ "//brave/components/tor:pref_names" ]
+  }
+
+  if (is_win || is_mac || is_linux) {
+    deps += [ "//brave/components/brave_rewards/core" ]
+  }
+}

@@ -493,6 +493,24 @@ are declared in tools/grit/grit_args.gni.
         To get your tabs from your other devices, turn on sync
       </message>
 
+<!-- TODO: crbug.com/418144047 - Remove translateable="false" once strings are finalized. -->
+      <message translateable="false" name="IDS_HISTORY_SYNC_HISTORY_PROMO" desc="Text of the sync hystory promo. This will show up if a user is not logged in and has no synced tabs.">
+        Browse across devices
+      </message>
+      <message translateable="false" name="IDS_HISTORY_SYNC_HISTORY_PROMO_DESC" desc="Description of the sync hystory promo. Further tells users to sign in and sync hystory to see synced tabs from other devices.">
+        To get your tabs from your other devices, sign in and sync history. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+      </message>
+      <message translateable="false" name="IDS_HISTORY_SIGNED_IN_SYNC_HISTORY_PROMO" desc="Text of the sync hystory promo. This will show up if a user is not logged in and has no synced tabs.">
+        Continue from another device
+      </message>
+      <message translateable="false" name="IDS_HISTORY_SIGNED_IN_SYNC_HISTORY_PROMO_DESC" desc="Description of the sync hystory promo. Further tells users to sign in and sync hystory to see synced tabs from other devices.">
+        To get your tabs from your other devices, sync your tabs and History to . You can stop syncing anytime in settings. Brave may personalize Search and other services based on your History.
+      </message>
+
+      <message translateable="false" name="IDS_HISTORY_SYNC_HISTORY_BUTTON" desc="Label displayed on a button to let user turn on sync history or sign in to Brave to get synced tab history.">
+        Sync history
+      </message>
+
       <!-- Generic terms -->
       <message name="IDS_EDIT" desc="Edit menu item">
         &amp;Edit
@@ -636,7 +654,7 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="The name of the open a link in Private window command">
             Open link in &amp;private window
           </message>
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKSPLITVIEW" translateable="false" desc="The name of the open a link in split view command">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKSPLITVIEW" desc="The name of the open a link in split view command">
             Open link in split view
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKINPROFILES" desc="The name of the open a link as a different user context menu">
@@ -948,7 +966,7 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in Private window command">
             Open Link in &amp;Private Window
           </message>
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKSPLITVIEW" translateable="false" desc="The name of the open a link in split view command">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKSPLITVIEW" desc="The name of the open a link in split view command">
             Open Link in Split View
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKINPROFILES" desc="In Title Case: The name of the open a link as a different user context menu">
@@ -3180,6 +3198,14 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_BOOKMARK_APP_BUBBLE_OPEN_AS_TABBED_WINDOW" desc="Checkbox text for opening the bookmark app as a tabbed window.">
         Open as tabbed window
+      </message>
+
+      <!-- Web app install not supported dialog -->
+      <message name="IDS_WEB_APP_INSTALL_NOT_SUPPORTED_DIALOG_TITLE_INCOGNITO_MODE" desc="Title for the dialog shown when a web app cannot be installed in Private Mode.">
+        Web app installs aren't supported in Private mode
+      </message>
+      <message name="IDS_WEB_APP_INSTALL_NOT_SUPPORTED_DIALOG_TITLE_GUEST_MODE" desc="Title for the dialog shown when a web app cannot be installed in Guest Mode.">
+        Web app installs aren't supported in Guest mode
       </message>
 
       <!-- WebApp name/icon update dialog -->
@@ -5850,7 +5876,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Proceed with caution
       </message>
       <message name="IDS_EXTENSION_PROMPT_INSTALL_FRICTION_WARNING_TEXT" desc="The warning text displayed in the install friction dialog">
-        This extension is not trusted by Enhanced Safe Browsing.
+        This extension is not trusted by Enhanced Safe Browsing. <ph name="LEARN_MORE_LINK">$1<ex>Learn more</ex></ph>
       </message>
       <message name="IDS_EXTENSION_INSTALL_PROMPT_ACCEPT_BUTTON_EXTENSION" desc="Text for the install button on the extension install prompt, for an extension (i.e. not app or theme).">
         Add extension
@@ -6348,18 +6374,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Runs automatically on all sites you visit
       </message>
 
-      <!-- Settings API bubble -->
-      <message name="IDS_EXTENSIONS_SETTINGS_API_TITLE_HOME_PAGE_BUBBLE" desc="Title of a bubble warning users that an extension has overridden their home page setting">
+      <!-- Controlled home dialog -->
+      <message name="IDS_EXTENSIONS_CONTROLLED_HOME_DIALOG_TITLE" desc="Title of a dialog warning users when an extension has changed the home page">
         Is this the home page you were expecting?
       </message>
-
-      <message name="IDS_EXTENSIONS_SETTINGS_API_FIRST_LINE_HOME_PAGE_SPECIFIC" desc="Text displayed in the Settings API bubble as first line when an extension has changed the home page, and we are pointing to its icon.">
-        This extension has changed what page is shown when you click the Home button.
+      <message name="IDS_EXTENSIONS_CONTROLLED_HOME_DIALOG_DESCRIPTION" desc="Text of a dialog warning users warning users when an extension has changed the home page, and we are not pointing to its icon.">
+        "<ph name="EXTENSION_NAME">$1<ex>AdBlock</ex></ph>" has changed what page is shown when you click the Home button.
       </message>
-      <message name="IDS_EXTENSIONS_SETTINGS_API_FIRST_LINE_HOME_PAGE" desc="Text displayed in the Settings API bubble as first line when an extension has changed the home page, and we are not pointing to its icon.">
-        The extension "<ph name="EXTENSION_NAME">$1<ex>AdBlock</ex></ph>" has changed what page is shown when you click the Home button.
-      </message>
-
       <message name="IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_SEARCH_ENGINE" desc="Second line in the Settings API bubble. Only shown if the secondary change by the extension was just the search engine. The triple single quotes are needed to preserve the space before and after the sentence which is needed when the language (Brave is being translated to) uses space as word separator. Please preserve them, unless the language being translated to does not use space as word separator.">
         ''' It also controls what page is shown when you search from the Omnibox.'''
       </message>
@@ -6591,14 +6612,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_COMPONENTS_SVC_STATUS_UPDATE" desc="Service Status">
         Update
       </message>
-      <message name="IDS_COMPONENTS_SVC_STATUS_DNL_DIFF" desc="Service Status">
-        Downloading diff
-      </message>
       <message name="IDS_COMPONENTS_SVC_STATUS_DNL" desc="Service Status">
         Downloading
       </message>
-      <message name="IDS_COMPONENTS_SVC_STATUS_UPDT_DIFF" desc="Service Status">
-        Updating diff
+      <message name="IDS_COMPONENTS_SVC_STATUS_DECOMPRESSING" desc="Service status displayed when decompressing a compressed file.">
+        Decompressing
+      </message>
+      <message name="IDS_COMPONENTS_SVC_STATUS_PATCHING" desc="Service status displayed when applying a patch file.">
+        Patching
       </message>
       <message name="IDS_COMPONENTS_SVC_STATUS_UPDATING" desc="Service Status">
         Updating
@@ -6685,23 +6706,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PASSWORD_ERROR_DESCRIPTION_SIGN_UP" desc="The description of the password manager error message during sign up flow.">
         Keep saving passwords in your Brave sync chain
       </message>
-      <if expr="is_android">
-        <message name="IDS_UPDATE_GMS" desc="The title of the password manager error message when the user needs update Google Play services to save account passwords.">
-          Update Google Play services
-        </message>
-        <message name="IDS_UPDATE_TO_SAVE_PASSWORDS" desc="The title of the password manager error message when the user needs update Google Play services to save passwords.">
-          Update to save passwords
-        </message>
-        <message name="IDS_UPDATE_GMS_TO_SAVE_PASSWORDS_TO_ACCOUNT" desc="The description of the password manager error message when the user needs update Google Play services to save account passwords.">
-          Password saved on this device only. To save new passwords in your Brave sync chain, update Google Play services.
-        </message>
-        <message name="IDS_UPDATE_GMS_TO_SAVE_PASSWORDS" desc="The description of the password manager error message when the user needs update Google Play services to save passwords.">
-          To start saving passwords to Brave Password Manager again, update Google Play services
-        </message>
-        <message name="IDS_UPDATE_GMS_BUTTON_TITLE" desc="Label for the button that appears on the error message saying that Google Play Services needs to be updated to use the Brave Password Manager. Clicking on this button opens the Google Play services page in the Google Play Store.">
-          Update
-        </message>
-      </if>
       <message name="IDS_PASSWORD_ERROR_VERIFY_BUTTON_TITLE" desc="The title of the verify button in the password manager error message.">
         Verify
       </message>
@@ -7132,6 +7136,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_IGNORE_TABLE_COLUMN_SOURCE" desc="about:browser-switch/internals description of the column Source in the table of the section Ignore">
           Source
         </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_INTERNALS_POLICIES_DOWNLOAD_BUTTON" desc="about:browser-switch/internals download button for used policies in legacy browser support">
+          Export LBS policies
+        </message>
       </if>
 
       <!-- About box strings -->
@@ -7156,7 +7163,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_OMNIBOX_PLACEHOLDER_TEXT" desc="The text displayed in the Omnibox when it is empty and unfocused.">
         Search <ph name="SEARCH_ENGINE_NAME">$1<ex>Brave</ex></ph> or type a URL
       </message>
-      <message name="IDS_OMNIBOX_AIM_PLACEHOLDER_TEXT" desc="The text displayed in the Omnibox when it is focused with no input and AI Mode is enabled." translateable="false">
+      <message name="IDS_OMNIBOX_AIM_PLACEHOLDER_TEXT" desc="The text displayed in the Omnibox when it is focused with no input and AI Mode is enabled.">
         ⇥ Press tab then enter to ask AI Mode
       </message>
       <if expr="not use_titlecase">
@@ -7289,6 +7296,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOM_LINKS_MORE_ACTIONS" desc="The tooltip and accessibility label for the 3 dot menu on a shortcut. (On the New Tab Page)">
         More actions for <ph name="SHORTCUT_TITLE">$1<ex>YouTube</ex></ph> shortcut
       </message>
+      <message name="IDS_NTP_ENTERPRISE_SHORTCUTS_MORE_ACTIONS_DISABLED" desc="The tooltip and accessibility label for the 3 dot menu on an eneterprise shortcut if customization is disabled. (On the New Tab Page)">
+        Customization is disabled by your Admin
+      </message>
       <message name="IDS_UPLOAD_IMAGE_FORMAT" desc="The permitted upload image format for the custom background. (On the New Tab Page)">
         *.jpeg, *.jpg, *.png
       </message>
@@ -7379,7 +7389,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOM_BG_CUSTOMIZE_NTP_WALLPAPER_SEARCH_LABEL" desc="Accessibility label for the wallpaper search gear icon. (On the New Tab Page)">
         Customize this page with AI
       </message>
-       <message name="IDS_NTP_DISMISS" desc="Used for Dismiss buttons" translateable="false">
+       <message name="IDS_NTP_DISMISS" desc="Used for Dismiss buttons">
         Dismiss
       </message>
       <message name="IDS_NTP_DISMISS_PROMO" desc="The tooltip title and accessibility label for the (X) button to dismiss promotional messages on the middle / bottom of the New Tab page.">
@@ -7481,11 +7491,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_MOST_VISITED_LABEL" desc="The label for the option to show most visited sites in the customization menu on the New Tab Page">
         Most visited sites
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_ENTERPRISE_SHORTCUTS_LABEL" desc="The label for the option to show enterprise shortcuts in the customization menu on the New Tab Page">
+        My organization's shortcuts
+      </message>
       <message name="IDS_NTP_CUSTOMIZE_MOST_VISITED_DESC" desc="The description for the option to show user selected shortcuts in the customization menu on the New Tab Page">
         Shortcuts are suggested based on websites you visit often
       </message>
       <message name="IDS_NTP_CUSTOMIZE_MY_SHORTCUTS_DESC" desc="The description for the option to show most visited sites in the customization menu on the New Tab Page">
         Shortcuts are curated by you
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_ENTERPRISE_SHORTCUTS_DESC" desc="The description for the option to show enterprise shortcuts in the customization menu on the New Tab Page">
+        Shortcuts are curated by your organization
       </message>
       <message name="IDS_NTP_CUSTOMIZE_COLOR_PICKER_LABEL" desc="The label for the color picker in the customization menu on the New Tab Page">
         Custom color
@@ -8155,7 +8171,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Ask Brave AI Mode
       </message>
       <message name="IDS_NTP_COMPOSE_PLACEHOLDER_TEXT" desc="The placeholder for the input in the compose box.">
-        Ask anything
+        Ask AI Mode
       </message>
       <message name="IDS_NTP_COMPOSE_CANCEL_BUTTON_A11Y_LABEL" desc="The accessibility label for the cancel button on the compose box when there is no input.">
         Dismiss
@@ -8178,7 +8194,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COMPOSE_FILE_UPLOAD_STARTED_A11Y_TEXT" desc="Text for a screenreader to read aloud when the user starts uploading a file.">
         Uploading file
       </message>
-      <message name="IDS_NTP_COMPOSE_FILE_UPLOAD_COMPLETE_A11Y_TEXT" desc="Text for a screenreader to read aloud when the user's file upload completes successfully.">&gt;
+      <message name="IDS_NTP_COMPOSE_FILE_UPLOAD_COMPLETE_A11Y_TEXT" desc="Text for a screenreader to read aloud when the user's file upload completes successfully.">
         File upload complete
       </message>
       <message name="IDS_NTP_COMPOSE_FILE_UPLOAD_INVALID_EMPTY_SIZE" desc="The text to display when a file upload is empty.">
@@ -8199,8 +8215,44 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COMPOSE_FILE_UPLOAD_EXPIRED">
         File upload has expired and been removed.
       </message>
+      <message name="IDS_NTP_COMPOSE_ADD_TAB" desc="Heading for a list of tabs that can be added to a contextual search. This is a subsection of a menu.">
+        Add tab
+      </message>
+      <message name="IDS_NTP_COMPOSE_ADD_IMAGE" desc="Text for a button label that opens a menu so users can add an image to their search.">
+        Add image
+      </message>
+      <message name="IDS_NTP_COMPOSE_UPLOAD_FILE" desc="Text for a button label that opens a menu so users can add a file to their search.">
+        Upload file
+      </message>
+      <message name="IDS_NTP_COMPOSE_ADD_CONTEXT" desc="The text to display to ask user to add context to their search e.g. pdf or image.">
+        Add tab or file
+      </message>
+      <message name="IDS_NTP_COMPOSE_ADD_CONTEXT_TITLE" desc="The a11y title for a button that allows users to add context to their search e.g. pdf or image.">
+        Add a tab or file to your search
+      </message>
+      <message name="IDS_NTP_COMPOSE_SUGGESTIONS_INFO" desc="The text underneath the composebox that explains to users how suggestions are generated.">
+        Suggestions based on your <ph name="BEGIN_LINK_GOOGLE_ACTIVITY">&lt;a target="_blank" href="$1"&gt;</ph>Brave activity<ph name="END_LINK_GOOGLE_ACTIVITY">&lt;/a&gt;</ph>
+      </message>
+      <message name="IDS_NTP_COMPOSE_SMART_COMPOSE_TAB" desc="The label for the call to action to accept the inline suggestion.">
+        Tab
+      </message>
 
       <!-- NTP Modules -->
+      <message name="IDS_NTP_MODULES_SETUP_LIST_DISABLE_TOAST_MESSAGE" desc="Text shown in the toast confirming a module has been disabled.">
+        You won't see <ph name="MODULE_NAME">$1<ex>Make Brave Yours</ex></ph> on this page again
+      </message>
+      <message name="IDS_NTP_MODULES_SETUP_LIST_DISMISS_TOAST_MESSAGE" desc="Text shown in the toast confirming a module has been dismissed.">
+        <ph name="MODULE_NAME">$1<ex>Make Brave Yours</ex></ph> hidden
+      </message>
+      <message name="IDS_NTP_MODULES_SETUP_LIST_TITLE" desc="Title shown at the top of the Setup List card.">
+        Make Brave Yours
+      </message>
+      <message name="IDS_NTP_MODULES_SETUP_LIST_INFO" desc="Text shown in the body of the info dialog of the Make Brave Yours card.">
+        You're seeing suggestions on how to personalize Brave and make it more powerful for your daily needs.
+        <ph name="BREAK">&lt;br&gt;</ph>
+        <ph name="BREAK">&lt;br&gt;</ph>
+        You can manage settings from the card menu or see more options in Customize Brave.
+      </message>
       <message name="IDS_NTP_MODULES_INFO_BUTTON_TITLE" desc="Text shown in tooltip of info button of an NTP module.">
         About this card
       </message>
@@ -8308,6 +8360,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_DISMISS_FOR_HOURS_BUTTON_TEXT" desc="Text shown on the dismiss button of an NTP module that specifies length of time in hours.">
         Hide for <ph name="MODULE_TITLE">$1<ex>5</ex></ph> hours
+      </message>
+      <message name="IDS_NTP_MODULES_DISMISS_FOR_DAYS_BUTTON_TEXT" desc="Text shown on the dismiss button of an NTP module that specifies length of time in days.">
+        Hide for <ph name="DISMISS_DAYS">$1<ex>5</ex></ph> days
       </message>
       <message name="IDS_NTP_MODULES_GOOGLE_CALENDAR_DISMISS_TOAST_MESSAGE" desc="Text shown on the toast on the NTP indicating that the Brave Calendar card has been dismissed.">
         Brave Calendar hidden
@@ -8486,8 +8541,31 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_MICROSOFT_AUTHENTICATION_NAME" desc="Name of the Microsoft Authentication module as shown in various UIs.">
         Microsoft Authentication
       </message>
+      <message name="IDS_NTP_MODULES_TAB_GROUPS_DISMISS_TOAST_MESSAGE" desc="Text shown on the toast on the NTP indicating that the Tab Groups card has been dismissed.">
+        Tab Groups hidden
+      </message>
+      <message name="IDS_NTP_MODULES_TAB_GROUPS_DISABLE_TOAST_MESSAGE" desc="Text shown on the toast on the NTP indicating that the Tab Groups card has been disabled.">
+        You won't see Tab Groups on this page again
+      </message>
+      <message name="IDS_NTP_MODULES_TAB_GROUPS_INFO" desc="Text shown in the body of the info dialog of the Tab Groups module.">
+        You’re seeing your recently used tab groups to help you easily pick up where you left off.
+        <ph name="BREAK">&lt;br&gt;</ph>
+        <ph name="BREAK">&lt;br&gt;</ph>
+        You can manage settings from the card menu or see more options in Customize Brave.
+      </message>
       <message name="IDS_NTP_MODULES_TAB_GROUPS_TITLE" desc="Title for Tab Groups NTP module on the new tab page.">
         Your tab groups
+      </message>
+      <message name="IDS_NTP_MODULES_TAB_GROUPS_TIME_DELTA" desc="Text on a tab group that indicates the time duration that has passed since the interaction.">
+        {TIME_DIMENSION, plural,
+          =0 {Used <ph name="TIME_COUNT">$1<ex>2</ex></ph> day ago}
+          =1 {Used <ph name="TIME_COUNT">$1<ex>2</ex></ph> days ago}
+          =2 {Used <ph name="TIME_COUNT">$1<ex>2</ex></ph> week ago}
+          other {Used <ph name="TIME_COUNT">$1<ex>2</ex></ph> weeks ago}
+        }
+      </message>
+      <message name="IDS_NTP_MODULES_TAB_GROUPS_RECENTLY_USED" desc="The timestamp text on a tab group when the last interaction is less than 1 day ago.">
+        Recently used
       </message>
       <message name="IDS_NTP_MODULES_TAB_GROUPS_ZERO_STATE_TITLE" desc="Title shown in the zero state tab groups module.">
         Stay organized with tab groups
@@ -9019,7 +9097,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_READ_ALOUD_TOOLBAR_LABEL" desc="Accessibility label for the Reading Mode toolbar that has options for text formating and reading aloud text. Spoken by screen readers.">
         Read Aloud and Text formatting
       </message>
-      <message name="IDS_READING_MODE_FONT_SIZE" desc="Accessibility label for button that opens a dropdown with options for changing the font size for reading mode." translateable="false">
+      <message name="IDS_READING_MODE_FONT_SIZE" desc="Accessibility label for button that opens a dropdown with options for changing the font size for reading mode.">
         Font size
       </message>
       <message name="IDS_READING_MODE_FONT_NAME_COMBOBOX_LABEL" desc="Accessibility label for the font name combobox of the reading mode feature.">
@@ -9589,9 +9667,48 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SPLIT_VIEW_NTP_TAB_TITLE" desc="The title of the split view new tab page as displayed in the tab strip.">
         Choose a tab
       </message>
-      <message name="IDS_SPLIT_VIEW_MINI_TOOLBAR_MENU_BUTTON_TOOLTIP" desc="The tooltip for the menu button in the minitoolbar of the inactive view in the split.">
-        More options for split view
+      <message name="IDS_ACCNAME_SPLIT_VIEW_MINI_TOOLBAR_MENU_BUTTON" desc="The accessible name and tooltip for the menu button of the minitoolbar in a split view.">
+        Arrange split view
       </message>
+      <message name="IDS_SPLIT_VIEW_NTP_CLOSE_BUTTON_ARIA_LABEL" desc="The screen reader text describing the split view new tab page close button.">
+        Close this view
+      </message>
+      <message name="IDS_SPLIT_VIEW_DRAG_ENTRYPOINT_LABEL" desc="A label for the drag entrypoint indicating it can create a split view.">
+        Create split view
+      </message>
+      <message name="IDS_SPLIT_VIEW_TITLE_IPH" desc="The title text of the IPH describing pinning split view.">
+        Pin it for next time
+      </message>
+      <message name="IDS_SPLIT_VIEW_BODY_IPH" desc="The body text of the IPH describing pinning split view.">
+        Quickly create a split view when you need it
+      </message>
+      <message name="IDS_SPLIT_VIEW_PIN_ACTION_IPH" desc="The pin confirmation button of the IPH describing split view.">
+        Pin split view
+      </message>
+      <message name="IDS_SPLIT_VIEW_DISMISS_ACTION_IPH" desc="The pin confirmation button of the IPH describing split view.">
+        No thanks
+      </message>
+      <message name="IDS_SPLIT_VIEW_TAB_SWITCH_ENTRY_IPH_TITLE" desc="The title for intro of quick tab switch split view IPH tutorial.">
+        Split view makes it easier to multitask
+      </message>
+      <message name="IDS_SPLIT_VIEW_TAB_SWITCH_ENTRY_IPH_BODY" desc="The body for intro of quick tab switch split view IPH tutorial.">
+        Put pages side-by-side in the same tab so you can easily compare options and more
+      </message>
+      <message name="IDS_SPLIT_VIEW_TAB_SWITCH_STEP_IPH_BODY" desc="The body for first step of quick tab switch split view IPH tutorial.">
+        Right-click on this tab and select “Add tab to new split view”
+      </message>
+      <message name="IDS_SPLIT_VIEW_TAB_SWITCH_COMPLETION_IPH_BODY" desc="The body for completion of quick tab switch split view IPH tutorial.">
+        You can now use split view to compare, multitask, and more
+      </message>
+
+      <!-- Vertical Tab Strings -->
+      <message name="IDS_SWITCH_TO_VERTICAL_TAB" desc="The button in context menu that switches to vertical tab view.">
+          Show tabs to the side
+      </message>
+      <message name="IDS_SWITCH_TO_HORIZONTAL_TAB" desc="The button in context menu that switches to horizontal tab view.">
+          Show tabs at the top
+      </message>
+      <!-- /Vertical Tab Strings -->
 
       <!-- Strings for intent picker -->
       <if expr="not is_android">
@@ -9796,8 +9913,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCNAME_RELOAD" desc="The accessible name for the reload/stop button.">
         Reload
       </message>
-      <message name="IDS_ACCNAME_SPLIT_TABS" is_accessibility_with_no_ui="true" desc="The accessible name for the toolbar button for the split tabs feature.">
-        Side-by-side
+      <message name="IDS_ACCNAME_SPLIT_TABS_TOOLBAR_BUTTON_PINNED" desc="The accessible name for the toolbar button for the split tabs feature, when it is pinned and disabled.">
+        Open tab in split view
+      </message>
+      <message name="IDS_ACCNAME_SPLIT_TABS_TOOLBAR_BUTTON_ENABLED" desc="The accessible name for the toolbar button for the split tabs feature, when it is enabled.">
+        Arrange split view
       </message>
       <message name="IDS_ACCNAME_FIND" desc="The accessible name for the find button.">
         Find
@@ -11284,95 +11404,89 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </if>
 
       <!-- Side By Side -->
-      <message name="IDS_ACCNAME_SPLIT_TABS_RESIZE" is_accessibility_with_no_ui="true" desc="Screen reader announcement when the side by side resize handle is focused.">
-        Side By Side Resize Handle
+      <message name="IDS_ACCNAME_SPLIT_TABS_RESIZE" desc="Screen reader announcement when the side by side resize handle is focused.">
+        Split View Resize Handle (draggable)
       </message>
       <if expr="not use_titlecase">
-        <message name="IDS_PIN_SPLIT_TAB_TOGGLE" translateable="false" desc="Pins the split tabs button to the toolbar when toggled on.">
+        <message name="IDS_PIN_SPLIT_TAB_TOGGLE" desc="Pins the split tabs button to the toolbar when toggled on.">
           Open in split view
         </message>
-        <message name="IDS_SPLIT_TAB_REVERSE_VIEWS" translateable="false" desc="The label for a menu item that swaps the inactive split tab to the other side when clicked.">
+        <message name="IDS_SPLIT_TAB_REVERSE_VIEWS" desc="The label for a menu item that swaps the inactive split tab to the other side when clicked.">
           Reverse views
         </message>
-        <message name="IDS_SPLIT_TAB_HORIZONTAL_LAYOUT" translateable="false" desc="The label for a menu item that switches the split tab layout from vertical to horizontal when clicked.">
-          Switch to horizontal layout
-        </message>
-        <message name="IDS_SPLIT_TAB_VERTICAL_LAYOUT" translateable="false" desc="The label for a menu item that switches the split tab layout from horizontal to vertical when clicked.">
-          Switch to vertical layout
-        </message>
-        <message name="IDS_SPLIT_TAB_CLOSE" translateable="false" desc="The label for a menu item that closes the inactive split tab when clicked.">
+        <message name="IDS_SPLIT_TAB_CLOSE" desc="The label for a menu item that closes the inactive split tab when clicked.">
           Close this view
         </message>
-        <message name="IDS_SPLIT_TAB_CLOSE_LEFT_VIEW" translateable="false" desc="The label for a menu item that closes the left view in the active split.">
+        <message name="IDS_SPLIT_TAB_CLOSE_LEFT_VIEW" desc="The label for a menu item that closes the left view in the active split.">
           Close left view
         </message>
-        <message name="IDS_SPLIT_TAB_CLOSE_RIGHT_VIEW" translateable="false" desc="The label for a menu item that closes the right view in the active split.">
+        <message name="IDS_SPLIT_TAB_CLOSE_RIGHT_VIEW" desc="The label for a menu item that closes the right view in the active split.">
           Close right view
         </message>
-        <message name="IDS_SPLIT_TAB_CLOSE_TOP_VIEW" translateable="false" desc="The label for a menu item that closes the top view in the active split.">
+        <message name="IDS_SPLIT_TAB_CLOSE_TOP_VIEW" desc="The label for a menu item that closes the top view in the active split.">
           Close top view
         </message>
-        <message name="IDS_SPLIT_TAB_CLOSE_BOTTOM_VIEW" translateable="false" desc="The label for a menu item that closes the bottom view in the active split.">
+        <message name="IDS_SPLIT_TAB_CLOSE_BOTTOM_VIEW" desc="The label for a menu item that closes the bottom view in the active split.">
           Close bottom view
         </message>
-        <message name="IDS_SPLIT_TAB_SEPARATE_VIEWS" translateable="false" desc="The label for a menu item that unsplits the split tab when clicked.">
+        <message name="IDS_SPLIT_TAB_SEPARATE_VIEWS" desc="The label for a menu item that unsplits the split tab when clicked.">
           Separate views
         </message>
-        <message name="IDS_SPLIT_TAB_SWAP_LEFT_VIEW" translateable="false" desc="The label for a menu item that swaps the left view in the active split with the selected tab.">
+        <message name="IDS_SPLIT_TAB_SWAP_LEFT_VIEW" desc="The label for a menu item that swaps the left view in the active split with the selected tab.">
           Swap with left view
         </message>
-        <message name="IDS_SPLIT_TAB_SWAP_RIGHT_VIEW" translateable="false" desc="The label for a menu item that swaps the right view in the active split with the selected tab.">
+        <message name="IDS_SPLIT_TAB_SWAP_RIGHT_VIEW" desc="The label for a menu item that swaps the right view in the active split with the selected tab.">
           Swap with right view
         </message>
-        <message name="IDS_SPLIT_TAB_SWAP_TOP_VIEW" translateable="false" desc="The label for a menu item that swaps the top view in the active split with the selected tab.">
+        <message name="IDS_SPLIT_TAB_SWAP_TOP_VIEW" desc="The label for a menu item that swaps the top view in the active split with the selected tab.">
           Swap with top view
         </message>
-        <message name="IDS_SPLIT_TAB_SWAP_BOTTOM_VIEW" translateable="false" desc="The label for a menu item that swaps the bottom view in the active split with the selected tab.">
+        <message name="IDS_SPLIT_TAB_SWAP_BOTTOM_VIEW" desc="The label for a menu item that swaps the bottom view in the active split with the selected tab.">
           Swap with bottom view
+        </message>
+        <message name="IDS_SPLIT_TAB_SEND_FEEDBACK" desc="The label for a menu item that opens a dialog to send feedback.">
+          Send feedback
         </message>
       </if>
       <if expr="use_titlecase">
-        <message name="IDS_PIN_SPLIT_TAB_TOGGLE" translateable="false" desc="In title case: pins the split tabs button to the toolbar when toggled on.">
+        <message name="IDS_PIN_SPLIT_TAB_TOGGLE" desc="In title case: pins the split tabs button to the toolbar when toggled on.">
           Open In Split View
         </message>
-        <message name="IDS_SPLIT_TAB_REVERSE_VIEWS" translateable="false" desc="In title case: the label for a menu item that swaps the inactive split tab to the other side when clicked.">
+        <message name="IDS_SPLIT_TAB_REVERSE_VIEWS" desc="In title case: the label for a menu item that swaps the inactive split tab to the other side when clicked.">
           Reverse Views
         </message>
-        <message name="IDS_SPLIT_TAB_HORIZONTAL_LAYOUT" translateable="false" desc="In title case: the label for a menu item that switches the split tab layout from vertical to horizontal when clicked.">
-          Switch to Horizontal Layout
-        </message>
-        <message name="IDS_SPLIT_TAB_VERTICAL_LAYOUT" translateable="false" desc="In title case: the label for a menu item that switches the split tab layout from horizontal to vertical when clicked.">
-          Switch to Vertical Layout
-        </message>
-        <message name="IDS_SPLIT_TAB_CLOSE" translateable="false" desc="In title case: the label for a menu item that closes the inactive split tab when clicked.">
+        <message name="IDS_SPLIT_TAB_CLOSE" desc="In title case: the label for a menu item that closes the inactive split tab when clicked.">
           Close This View
         </message>
-        <message name="IDS_SPLIT_TAB_CLOSE_LEFT_VIEW" translateable="false" desc="In title case: the label for a menu item that closes the left view in the active split.">
+        <message name="IDS_SPLIT_TAB_CLOSE_LEFT_VIEW" desc="In title case: the label for a menu item that closes the left view in the active split.">
           Close Left View
         </message>
-        <message name="IDS_SPLIT_TAB_CLOSE_RIGHT_VIEW" translateable="false" desc="In title case: the label for a menu item that closes the right view in the active split.">
+        <message name="IDS_SPLIT_TAB_CLOSE_RIGHT_VIEW" desc="In title case: the label for a menu item that closes the right view in the active split.">
           Close Right View
         </message>
-        <message name="IDS_SPLIT_TAB_CLOSE_TOP_VIEW" translateable="false" desc="In title case: the label for a menu item that closes the top view in the active split.">
+        <message name="IDS_SPLIT_TAB_CLOSE_TOP_VIEW" desc="In title case: the label for a menu item that closes the top view in the active split.">
           Close Top View
         </message>
-        <message name="IDS_SPLIT_TAB_CLOSE_BOTTOM_VIEW" translateable="false" desc="In title case: the label for a menu item that closes the bottom view in the active split.">
+        <message name="IDS_SPLIT_TAB_CLOSE_BOTTOM_VIEW" desc="In title case: the label for a menu item that closes the bottom view in the active split.">
           Close Bottom View
         </message>
-        <message name="IDS_SPLIT_TAB_SEPARATE_VIEWS" translateable="false" desc="In title case: the label for a menu item that unsplits the split tab when clicked.">
+        <message name="IDS_SPLIT_TAB_SEPARATE_VIEWS" desc="In title case: the label for a menu item that unsplits the split tab when clicked.">
           Separate Views
         </message>
-        <message name="IDS_SPLIT_TAB_SWAP_LEFT_VIEW" translateable="false" desc="In title case: The label for a menu item that swaps the left view in the active split with the selected tab.">
+        <message name="IDS_SPLIT_TAB_SWAP_LEFT_VIEW" desc="In title case: The label for a menu item that swaps the left view in the active split with the selected tab.">
           Swap with Left View
         </message>
-        <message name="IDS_SPLIT_TAB_SWAP_RIGHT_VIEW" translateable="false" desc="In title case: The label for a menu item that swaps the right view in the active split with the selected tab.">
+        <message name="IDS_SPLIT_TAB_SWAP_RIGHT_VIEW" desc="In title case: The label for a menu item that swaps the right view in the active split with the selected tab.">
           Swap with Right View
         </message>
-        <message name="IDS_SPLIT_TAB_SWAP_TOP_VIEW" translateable="false" desc="In title case: The label for a menu item that swaps the top view in the active split with the selected tab.">
+        <message name="IDS_SPLIT_TAB_SWAP_TOP_VIEW" desc="In title case: The label for a menu item that swaps the top view in the active split with the selected tab.">
           Swap with Top View
         </message>
-        <message name="IDS_SPLIT_TAB_SWAP_BOTTOM_VIEW" translateable="false" desc="In title case: The label for a menu item that swaps the bottom view in the active split with the selected tab.">
+        <message name="IDS_SPLIT_TAB_SWAP_BOTTOM_VIEW" desc="In title case: The label for a menu item that swaps the bottom view in the active split with the selected tab.">
           Swap with Bottom View
+        </message>
+        <message name="IDS_SPLIT_TAB_SEND_FEEDBACK" desc="The label for a menu item that opens a dialog to send feedback.">
+          Send Feedback
         </message>
       </if>
 
@@ -11837,6 +11951,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNPIN_GROUP" desc="The label of the saved tab group button context menu item to unpin a gruop">
           Unpin group from bookmarks
         </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_CONVERT_GROUP_TO_BOOKMARK_FOLDER" desc="The label of the tab group header context menu item for moving the entire group to a new window.">
+          Convert group to bookmark folder
+        </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_SEND_FEEDBACK" desc="The label of the tab group header context menu item for sending feedback for tab groups.">
           Send feedback
         </message>
@@ -11881,6 +11998,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNPIN_GROUP" desc="The label of the saved tab group button context menu item to unpin a gruop">
           Unpin Group from Bookmarks
+        </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_CONVERT_GROUP_TO_BOOKMARK_FOLDER" desc="The label of the tab group header context menu item for moving the entire group to a new window.">
+          Convert Group to Bookmark Folder
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_SEND_FEEDBACK" desc="In Title Case: The label of the tab group header context menu item for sending feedback for tab groups.">
           Send Feedback
@@ -12509,6 +12629,18 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_APP_MENU_BUTTON_ERROR" desc="Short label next to app-menu button when the user needs to resolve something.">
         Error
       </message>
+      <if expr="not use_titlecase">
+        <then>
+          <message name="IDS_APP_MENU_BUTTON_ACTION_REQUIRED" desc="Short label next to app-menu button when the user needs to resolve something that is not an error.">
+            Action required
+          </message>
+        </then>
+        <else>
+          <message name="IDS_APP_MENU_BUTTON_ACTION_REQUIRED" desc="Short label next to app-menu button when the user needs to resolve something that is not an error.">
+            Action Required
+          </message>
+        </else>
+      </if>
 
       <!-- Screen Capture strings -->
       <message name="IDS_MEDIA_SCREEN_CAPTURE_CONFIRMATION_TITLE" desc="Title for the prompt shown when screen capturing is requrested by an app.">
@@ -14372,6 +14504,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_SYNC_FULL_ENCRYPTION_BODY_CUSTOM_WITH_DATE" desc="Text of the radio that when selected enables full encryption.">
         Data was encrypted with your sync passphrase on <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>. This doesn't include payment methods and addresses from Google Pay.
       </message>
+      <message name="IDS_SYNC_FULL_ACCOUNT_DATA_ENCRYPTION_BODY_CUSTOM" desc="Text of the radio that when selected enables full encryption.">
+        Data is encrypted with your sync passphrase. This doesn’t include payment methods and addresses from Google Pay.
+      </message>
+      <message name="IDS_SYNC_FULL_ACCOUNT_DATA_ENCRYPTION_BODY_CUSTOM_WITH_DATE" desc="Text of the radio that when selected enables full encryption.">
+        Data was encrypted with your sync passphrase on <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>. This doesn’t include payment methods and addresses from Google Pay.
+      </message>
 
       <!-- Translate Bubble -->
       <if expr="toolkit_views">
@@ -15853,6 +15991,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
           $1<ex>A VR-enabled website</ex>
         </ph> - VR presenting to headset
       </message>
+      <message name="IDS_TAB_AX_LABEL_SPLIT_TAB_LEFT_VIEW_FORMAT" desc="Accessibility label text for a tab, when it is the left tab of a split view. Example: 'Brave Search - Left view'">
+        <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Left view
+      </message>
+      <message name="IDS_TAB_AX_LABEL_SPLIT_TAB_RIGHT_VIEW_FORMAT" desc="Accessibility label text for a tab, when it is the right tab of a split view. Example: 'Brave Search - Right view'">
+        <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Right view
+      </message>
       <message name="IDS_TAB_AX_LABEL_UNNAMED_GROUP_FORMAT" desc="Accessibility label text for a tab, when it is in a group that has not been named by the user. Example: 'Brave Search - Part of unnamed group'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Part of unnamed group
       </message>
@@ -16864,17 +17008,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
       </if>
 
-      <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_USB" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using a security key (an external physical device for user authentication) plugged in to the USB port of the computer.">
-        Verify via USB
-      </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_PAIR_PHONE" desc="Menu item text. The user selects this to begin the process of pairing with a previously unknown smartphone.">
         Pair with new phone
-      </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_INTERNAL" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using a hardware-based authentication mechanism that is built in to the computer, such as a fingerprint reader.">
-        Use this device
-      </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_CABLE" desc="Menu item text. The user selects this to verify their identity on a web site (i.e. sign in) using their phone. They wirelessly connect their phone to their computer over Bluetooth Low Energy, and then use the phone to sign in to web sites on their computer.">
-        Verify via your phone
       </message>
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_TITLE" desc="Title of the dialog shown when the user tries to sign-in using a phone as a security key.">
         Check your phone
@@ -18716,6 +18851,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <if expr="not is_android">
       <message name="IDS_NTP_CUSTOMIZATION_PROMO" desc="The text shown in the body of the New Tab Page browser customization promotion">
         Customize Brave to give your browser a new look
+      </message>
+      <message name="IDS_NTP_CUSTOMIZATION_PROMO_ACTION_BUTTON" is_accessibility_with_no_ui="true" desc="The screenreader text for the action button on the Customization New Tab Page promo">
+        Customize Brave
       </message>
       <message name="IDS_NTP_EXTENSIONS_PROMO" desc="The text shown in the body of the New Tab Page extensions promotion">
         Add extensions to stay organized, simplify tasks, and enhance your browsing

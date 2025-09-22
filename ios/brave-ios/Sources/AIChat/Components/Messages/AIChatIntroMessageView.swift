@@ -113,7 +113,8 @@ struct AIChatIntroMessageView_Previews: PreviewProvider {
           key: "mixtral_8x7b",
           displayName: "Mixtral 8x7b",
           visionSupport: false,
-          supportsTools: false
+          supportsTools: false,
+          isSuggestedModel: false
         )
     )
     .previewLayout(.sizeThatFits)

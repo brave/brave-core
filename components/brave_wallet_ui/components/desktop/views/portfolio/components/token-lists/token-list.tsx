@@ -30,7 +30,6 @@ import {
 // Types
 import {
   BraveWallet,
-  SpotPriceRegistry,
   UserAssetInfoType,
   WalletRoutes,
 } from '../../../../../../constants/types'
@@ -111,7 +110,7 @@ interface Props {
   hideSmallBalances?: boolean
   onShowPortfolioSettings?: () => void
   tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
-  spotPriceRegistry: SpotPriceRegistry | undefined
+  spotPrices: BraveWallet.AssetPrice[] | undefined
 }
 
 export const TokenLists = ({
@@ -125,7 +124,7 @@ export const TokenLists = ({
   hideSmallBalances,
   onShowPortfolioSettings,
   tokenBalancesRegistry,
-  spotPriceRegistry,
+  spotPrices,
 }: Props) => {
   // routing
   const history = useHistory()
@@ -145,8 +144,8 @@ export const TokenLists = ({
     WalletSelectors.assetAutoDiscoveryCompleted,
   )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
-  const isAndroidOrPanel = isAndroid || isPanel
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isMobileOrPanel = isMobile || isPanel
 
   // queries
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
@@ -177,14 +176,14 @@ export const TokenLists = ({
     if (hideSmallBalances) {
       return userAssetList.filter((token) =>
         computeFiatAmount({
-          spotPriceRegistry,
+          spotPrices,
           value: token.assetBalance,
           token: token.asset,
         }).gt(HIDE_SMALL_BALANCES_FIAT_THRESHOLD),
       )
     }
     return userAssetList
-  }, [userAssetList, hideSmallBalances, spotPriceRegistry])
+  }, [userAssetList, hideSmallBalances, spotPrices])
 
   const assetFilterItemInfo = React.useMemo(() => {
     return (
@@ -220,13 +219,13 @@ export const TokenLists = ({
           const bBalance = b.assetBalance
 
           const bFiatBalance = computeFiatAmount({
-            spotPriceRegistry,
+            spotPrices,
             value: bBalance,
             token: b.asset,
           })
 
           const aFiatBalance = computeFiatAmount({
-            spotPriceRegistry,
+            spotPrices,
             value: aBalance,
             token: a.asset,
           })
@@ -250,7 +249,7 @@ export const TokenLists = ({
       }
       return tokens
     },
-    [assetFilterItemInfo.id, spotPriceRegistry],
+    [assetFilterItemInfo.id, spotPrices],
   )
 
   // Returns a list of assets based on provided network
@@ -286,7 +285,7 @@ export const TokenLists = ({
 
       const amounts = networksAssets.map((asset) =>
         computeFiatAmount({
-          spotPriceRegistry,
+          spotPrices,
           value: asset.assetBalance,
           token: asset.asset,
         }),
@@ -298,7 +297,7 @@ export const TokenLists = ({
 
       return !reducedAmounts.isUndefined() ? reducedAmounts : Amount.empty()
     },
-    [getAssetsByNetwork, filteredAssetList, spotPriceRegistry],
+    [getAssetsByNetwork, filteredAssetList, spotPrices],
   )
 
   const doesNetworkHaveBalance = React.useCallback(
@@ -342,7 +341,7 @@ export const TokenLists = ({
       if (hideSmallBalances) {
         return getAssetsByCoin(account).filter((token) =>
           computeFiatAmount({
-            spotPriceRegistry,
+            spotPrices,
             value: isRewardsAccount
               ? token.assetBalance
               : getBalance(
@@ -357,12 +356,7 @@ export const TokenLists = ({
 
       return getAssetsByCoin(account)
     },
-    [
-      getAssetsByCoin,
-      hideSmallBalances,
-      spotPriceRegistry,
-      tokenBalancesRegistry,
-    ],
+    [getAssetsByCoin, hideSmallBalances, spotPrices, tokenBalancesRegistry],
   )
 
   // Returns a new list of assets with the accounts
@@ -406,7 +400,7 @@ export const TokenLists = ({
 
       const amounts = accountsAssets.map((asset) => {
         return computeFiatAmount({
-          spotPriceRegistry,
+          spotPrices,
           value: asset.assetBalance,
           token: asset.asset,
         })
@@ -418,7 +412,7 @@ export const TokenLists = ({
 
       return !reducedAmounts.isUndefined() ? reducedAmounts : Amount.empty()
     },
-    [filteredAssetList.length, getSortedAssetsByAccount, spotPriceRegistry],
+    [filteredAssetList.length, getSortedAssetsByAccount, spotPrices],
   )
 
   const doesAccountHaveBalance = React.useCallback(
@@ -638,9 +632,9 @@ export const TokenLists = ({
   return (
     <ContentWrapper
       fullWidth={true}
-      fullHeight={isAndroidOrPanel}
+      fullHeight={isMobileOrPanel}
       justifyContent='flex-start'
-      isAndroidOrPanel={isAndroidOrPanel}
+      isMobileOrPanel={isMobileOrPanel}
     >
       <ControlBarWrapper
         justifyContent='space-between'

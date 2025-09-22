@@ -88,7 +88,7 @@ struct SuggestedNetworkView: View {
   }
 
   private var globeFavicon: some View {
-    Image(systemName: "globe")
+    Image(braveSystemName: "leo.internet")
       .resizable()
       .aspectRatio(contentMode: .fit)
       .padding(8)
@@ -311,7 +311,7 @@ struct SuggestedNetworkView: View {
       handleAction(approved: false)
     } label: {
       HStack {
-        Image(systemName: "xmark")
+        Image(braveSystemName: "leo.close")
         Text(Strings.cancelButtonTitle)
       }
     }

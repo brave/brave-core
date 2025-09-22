@@ -63,7 +63,7 @@ private struct EditTokenView: View {
         }
         .font(.footnote)
         Spacer()
-        Image(systemName: "checkmark")
+        Image(braveSystemName: "leo.check.normal")
           .opacity(assetStore.isVisible ? 1 : 0)
       }
       .padding(.vertical, 8)
@@ -116,7 +116,7 @@ struct EditUserAssetsView: View {
     Button {
       isAddingCustomAsset = true
     } label: {
-      Image(systemName: "plus")
+      Image(braveSystemName: "leo.plus.add")
     }
   }
 

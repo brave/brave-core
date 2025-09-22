@@ -219,13 +219,31 @@ std::array<uint8_t, 32> CardanoTestRpcServer::CreateNewTxHash() {
   return result;
 }
 
+const std::map<std::string,
+               std::vector<cardano_rpc::blockfrost_api::UnspentOutput>>&
+CardanoTestRpcServer::GetUtxos() {
+  return utxos_map_;
+}
+
 void CardanoTestRpcServer::AddUtxo(const std::string& address,
-                                   uint32_t amount) {
+                                   uint64_t amount) {
   auto& utxo = utxos_map_[address].emplace_back();
   utxo.tx_hash = HexEncodeLower(CreateNewTxHash());
   utxo.output_index = "13";
   utxo.amount.emplace_back();
   utxo.amount.back().quantity = base::NumberToString(amount);
+  utxo.amount.back().unit = "lovelace";
+}
+
+void CardanoTestRpcServer::AddUtxo(const std::string& address,
+                                   const std::string& tx_hash,
+                                   const std::string& index,
+                                   const std::string& amount) {
+  auto& utxo = utxos_map_[address].emplace_back();
+  utxo.tx_hash = tx_hash;
+  utxo.output_index = index;
+  utxo.amount.emplace_back();
+  utxo.amount.back().quantity = amount;
   utxo.amount.back().unit = "lovelace";
 }
 

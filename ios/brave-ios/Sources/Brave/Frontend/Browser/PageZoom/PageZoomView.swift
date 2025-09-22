@@ -25,7 +25,7 @@ private struct ZoomView: View {
   var body: some View {
     HStack(spacing: 0.0) {
       Button(action: onDecrement) {
-        Image(systemName: "minus")
+        Image(braveSystemName: "leo.minus")
           .font(.system(.footnote).weight(.medium))
           .foregroundColor(value == minValue ? .accentColor : Color(UIColor.braveLabel))
           .frame(width: buttonWidth)
@@ -47,7 +47,7 @@ private struct ZoomView: View {
       Divider()
 
       Button(action: onIncrement) {
-        Image(systemName: "plus")
+        Image(braveSystemName: "leo.plus.add")
           .font(.system(.footnote).weight(.medium))
           .foregroundColor(value == maxValue ? .accentColor : Color(UIColor.braveLabel))
           .frame(width: buttonWidth)
@@ -124,7 +124,7 @@ struct PageZoomView: View {
         Button {
           dismiss?()
         } label: {
-          Image(systemName: "xmark")
+          Image(braveSystemName: "leo.close")
             .foregroundColor(Color(UIColor.braveBlurpleTint))
             .font(.system(.footnote).weight(.medium))
         }

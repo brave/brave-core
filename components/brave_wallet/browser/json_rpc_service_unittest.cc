@@ -8287,7 +8287,7 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
 
   std::map<GURL, std::string> responses_eth;
   responses_eth[GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "assets?nft_ids=ethereum.0xED5AF388653567Af2F388E6224dC7C4b3241C544.2767%"
       "2Cethereum.0xAbc1230000000000000000000000000000000000.1234")] = R"({
     "nfts": [
@@ -8359,7 +8359,7 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
 
   std::map<GURL, std::string> responses_sol;
   responses_sol[GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "assets?nft_ids=solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR%"
       "2Csolana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8")] = R"({
     "nfts": [
@@ -8586,7 +8586,7 @@ TEST_F(JsonRpcServiceUnitTest, GetNftBalances) {
 
   std::map<GURL, std::string> responses;
   responses[GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "https://gate3.wallet.brave.com/simplehash/api/v0/nfts/"
       "assets?nft_ids=solana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8%"
       "2Csolana.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr")] = json;
 

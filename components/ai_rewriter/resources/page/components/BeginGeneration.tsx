@@ -72,7 +72,7 @@ export default function BeginGeneration() {
             isUploadingFiles: false,
             disassociateContent: () => {},
             getPluralString: () => Promise.resolve(''),
-            setShowAttachments: () => {},
+            setAttachmentsDialog: () => {},
             unassociatedTabs: [],
             attachImages: () => {},
           }}

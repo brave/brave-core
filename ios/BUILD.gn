@@ -103,6 +103,9 @@ brave_core_public_headers = [
   "//brave/ios/components/prefs/pref_service_bridge.h",
   "//brave/ios/components/prefs/pref_change_registrar_bridge.h",
   "//brave/ios/components/constants/pref_names_bridge.h",
+  "//brave/ios/browser/safari_data_import/safari_data_import_client_delegate.h",
+  "//brave/ios/browser/safari_data_import/safari_data_importer_bridge.h",
+  "//brave/ios/browser/safari_data_import/safari_data_importer_coordinator.h",
 ]
 
 brave_core_public_headers += ads_public_headers

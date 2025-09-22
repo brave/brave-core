@@ -30,7 +30,10 @@ describe('MainEmailDisplay', () => {
     expect(screen.getByText('test@example.com')).toBeInTheDocument()
 
     const signOutButton = screen.getByTitle('emailAliasesSignOutTitle')
-    clickLeoButton(signOutButton)
+
+    await act(async () => {
+      clickLeoButton(signOutButton)
+    })
 
     expect(mockEmailAliasesService.cancelAuthenticationOrLogout)
       .toHaveBeenCalled()

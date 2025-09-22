@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveUI
+import DesignSystem
 import Shared
 import Strings
 import SwiftUI
@@ -28,7 +29,7 @@ struct NetworkTextField: View {
         .foregroundColor(Color(.braveLabel))
       if let error = item.error {
         HStack(alignment: .firstTextBaseline, spacing: 4) {
-          Image(systemName: "exclamationmark.circle.fill")
+          Image(braveSystemName: "leo.warning.circle-filled")
           Text(error)
             .fixedSize(horizontal: false, vertical: true)
             .animation(nil, value: error)

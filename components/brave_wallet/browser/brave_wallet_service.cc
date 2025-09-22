@@ -220,6 +220,11 @@ BraveWalletService::BraveWalletService(
         *keyring_service(), *network_manager(), url_loader_factory);
   }
 
+  if (IsPolkadotEnabled()) {
+    polkadot_wallet_service_ =
+        std::make_unique<PolkadotWalletService>(url_loader_factory);
+  }
+
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
       GetCardanoWalletService(), *keyring_service(), profile_prefs,
@@ -318,6 +323,14 @@ void BraveWalletService::Bind(
     mojo::PendingReceiver<mojom::BitcoinWalletService> receiver) {
   if (GetBitcoinWalletService()) {
     GetBitcoinWalletService()->Bind(std::move(receiver));
+  }
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::PolkadotWalletService> receiver) {
+  if (GetPolkadotWalletService()) {
+    GetPolkadotWalletService()->Bind(std::move(receiver));
   }
 }
 
@@ -1166,6 +1179,10 @@ BitcoinWalletService* BraveWalletService::GetBitcoinWalletService() {
   return bitcoin_wallet_service_.get();
 }
 
+PolkadotWalletService* BraveWalletService::GetPolkadotWalletService() {
+  return polkadot_wallet_service_.get();
+}
+
 ZCashWalletService* BraveWalletService::GetZcashWalletService() {
   return zcash_wallet_service_.get();
 }
@@ -1252,6 +1269,26 @@ void BraveWalletService::GetPendingSignSolTransactionsRequests(
   std::move(callback).Run(std::move(requests));
 }
 
+void BraveWalletService::GetPendingSignCardanoTransactionRequests(
+    GetPendingSignCardanoTransactionRequestsCallback callback) {
+  std::vector<mojom::SignCardanoTransactionRequestPtr> requests;
+  if (sign_cardano_transaction_requests_.empty()) {
+    std::move(callback).Run(std::move(requests));
+    return;
+  }
+
+  for (const auto& request : sign_cardano_transaction_requests_) {
+    requests.push_back(request.Clone());
+  }
+
+  std::move(callback).Run(std::move(requests));
+}
+
+const base::circular_deque<mojom::SignCardanoTransactionRequestPtr>&
+BraveWalletService::GetPendingSignCardanoTransactionRequestsSync() const {
+  return sign_cardano_transaction_requests_;
+}
+
 void BraveWalletService::NotifySignSolTransactionsRequestProcessed(
     bool approved,
     int id,
@@ -1268,6 +1305,21 @@ void BraveWalletService::NotifySignSolTransactionsRequestProcessed(
   sign_sol_transactions_callbacks_.pop_front();
 
   std::move(callback).Run(approved, std::move(hw_signatures), error);
+}
+
+void BraveWalletService::NotifySignCardanoTransactionRequestProcessed(
+    bool approved,
+    int id,
+    const std::optional<std::string>& error) {
+  if (sign_cardano_transaction_requests_.empty() ||
+      sign_cardano_transaction_requests_.front()->id != id) {
+    return;
+  }
+  auto callback = std::move(sign_cardano_transaction_callbacks_.front());
+  sign_cardano_transaction_requests_.pop_front();
+  sign_cardano_transaction_callbacks_.pop_front();
+
+  std::move(callback).Run(approved, error);
 }
 
 void BraveWalletService::AddObserver(
@@ -1367,7 +1419,7 @@ void BraveWalletService::AddSignMessageRequest(
   request->id = sign_message_id_++;
   sign_message_requests_.emplace_back(std::move(request), std::move(callback));
 
-  sign_message_added_callback_list_.Notify();
+  sign_message_added_callback_list_for_testing_.Notify();
 }
 
 void BraveWalletService::AddSignMessageError(mojom::SignMessageErrorPtr error) {
@@ -1385,6 +1437,18 @@ void BraveWalletService::AddSignSolTransactionsRequest(
   if (sign_sol_txs_request_added_cb_for_testing_) {
     std::move(sign_sol_txs_request_added_cb_for_testing_).Run();
   }
+}
+
+void BraveWalletService::AddSignCardanoTransactionRequest(
+    mojom::SignCardanoTransactionRequestPtr request,
+    SignCardanoTransactionRequestCallback callback) {
+  if (request->id < 0) {
+    request->id = sign_cardano_transactions_id_++;
+  }
+  sign_cardano_transaction_requests_.push_back(std::move(request));
+  sign_cardano_transaction_callbacks_.push_back(std::move(callback));
+
+  sign_transaction_added_callback_list_for_testing_.Notify();
 }
 
 mojom::SignSolTransactionsRequestPtr
@@ -1933,6 +1997,9 @@ void BraveWalletService::Reset() {
   if (cardano_wallet_service_) {
     cardano_wallet_service_->Reset();
   }
+  if (polkadot_wallet_service_) {
+    polkadot_wallet_service_->Reset();
+  }
 
   // Clear BraveWalletService
   ClearBraveWalletServicePrefs(profile_prefs_);
@@ -2010,7 +2077,13 @@ void BraveWalletService::WriteToClipboard(const std::string& text,
 base::CallbackListSubscription
 BraveWalletService::RegisterSignMessageRequestAddedCallback(
     base::RepeatingClosure cb) {
-  return sign_message_added_callback_list_.Add(std::move(cb));
+  return sign_message_added_callback_list_for_testing_.Add(std::move(cb));
+}
+
+base::CallbackListSubscription
+BraveWalletService::RegisterSignTransactionRequestAddedCallback(
+    base::RepeatingClosure cb) {
+  return sign_transaction_added_callback_list_for_testing_.Add(std::move(cb));
 }
 
 }  // namespace brave_wallet

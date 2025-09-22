@@ -9,7 +9,6 @@ import org.chromium.build.annotations.NullMarked;
 
 @NullMarked
 public final class BravePreferenceKeys {
-    public static final String BRAVE_TOOLBAR_TOP_ANCHORED = "Chrome.Toolbar.TopAnchored";
     public static final String BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY =
             "brave_bottom_toolbar_enabled_key";
     public static final String BRAVE_BOTTOM_TOOLBAR_SET_KEY = "brave_bottom_toolbar_enabled";
@@ -63,6 +62,9 @@ public final class BravePreferenceKeys {
 
     public static final String BRAVE_LEO_AUTOCOMPLETE =
             "org.chromium.chrome.browser.Brave_Leo_AutoComplete";
+
+    public static final String CUSTOMIZABLE_BRAVE_MENU_ITEM_ID_FORMAT =
+            "customizable_brave_menu_item_id_%s";
 
     // Playlist preference keys
     public static final String PREF_ENABLE_PLAYLIST = "enable_playlist";

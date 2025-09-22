@@ -20,6 +20,7 @@ from telemetry.util import wpr_modes
 class _BraveLoadingStory(system_health_story.SystemHealthStory):
   """Abstract base class for single-page System Health user stories."""
   ABSTRACT_STORY = True
+  EXTRA_FINISH_DELAY = 0
 
   SCROLL_PAGE = True
 
@@ -38,6 +39,9 @@ class _BraveLoadingStory(system_health_story.SystemHealthStory):
 
     if self.SCROLL_PAGE:
       action_runner.RepeatableBrowserDrivenScroll(repeat_count=4)
+
+    action_runner.Wait(self.EXTRA_FINISH_DELAY)
+
 
   @classmethod
   def GenerateStoryDescription(cls):
@@ -161,6 +165,24 @@ class LoadBraveNewsStory2024(_BraveLoadingStory):
   NAME = 'load:ntp:brave_news:2024'
   URL = 'chrome://newtab/'
   TAGS = [story_tags.YEAR_2024]
+  SCROLL_PAGE = False
+  EXTRA_FINISH_DELAY = 25
+
+  def _Login(self, action_runner):
+    browser = action_runner.tab.browser
+    # Resize window to 1400px to see the Brave News block.
+    tab_id = browser.tabs[0].id
+    window_id = browser.GetWindowForTarget(tab_id)['result']['windowId']
+    browser.SetWindowBounds(window_id, {
+        'left': 0,
+        'top': 0,
+        'width': 1400,
+        'height': 1000
+    })
+
+    action_runner.Wait(1)
+    inner_width = action_runner.EvaluateJavaScript('window.innerWidth')
+    assert inner_width >= 1300, 'Window size is to small for Brave News block'
 
 
 class MultiTabLoadExampleStory2024(_BraveMultiTabLoadingStory):

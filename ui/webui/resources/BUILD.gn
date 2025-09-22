@@ -52,11 +52,7 @@ if (include_polymer) {
     mojo_files = [ "$root_gen_dir/brave/ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom-webui.ts" ]
     mojo_files_deps = [ "js/brave_browser_command:mojo_bindings_ts__generator" ]
 
-    css_files = [
-      "br_elements/br_shared_style.css",
-      "br_elements/br_shared_vars.css",
-      "page_specific/settings/br_settings_shared.css",
-    ]
+    css_files = [ "page_specific/settings/br_settings_shared.css" ]
 
     ts_composite = true
     generate_grdp = true

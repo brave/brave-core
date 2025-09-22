@@ -54,7 +54,10 @@
 #include "brave/components/version_info/version_info.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
+#include "components/regional_capabilities/regional_capabilities_country_id.h"
+#include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/web_contents.h"
@@ -106,6 +109,20 @@
 #include "brave/components/containers/core/browser/containers_settings_handler.h"
 #include "brave/components/containers/core/common/features.h"
 #endif
+
+namespace {
+
+bool IsLocaleJapan(Profile* profile) {
+  if (auto* regional_capabilities = regional_capabilities::
+          RegionalCapabilitiesServiceFactory::GetForProfile(profile)) {
+    return regional_capabilities->GetCountryId() ==
+           regional_capabilities::CountryIdHolder(
+               country_codes::CountryId("JP"));
+  }
+  return false;
+}
+
+}  // namespace
 
 using ntp_background_images::ViewCounterServiceFactory;
 
@@ -245,6 +262,10 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
   html_source->AddString("braveSearchEngineName",
                          TemplateURLPrepopulateData::brave_search.name);
+  html_source->AddBoolean("isLocaleJapan", IsLocaleJapan(profile));
+  html_source->AddBoolean("isHideVerticalTabCompletelyFlagEnabled",
+                          base::FeatureList::IsEnabled(
+                              tabs::features::kBraveVerticalTabHideCompletely));
 }
 
 // static

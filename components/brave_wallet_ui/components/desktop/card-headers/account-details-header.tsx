@@ -31,7 +31,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { getBalance } from '../../../utils/balance-utils'
 import {
   computeFiatAmount,
-  getPriceIdForToken,
+  getPriceRequestsForTokens,
 } from '../../../utils/pricing-utils'
 import { getAccountTypeDescription } from '../../../utils/account-utils'
 import { getLocale } from '../../../../common/locale'
@@ -89,9 +89,9 @@ export const AccountDetailsHeader = (props: Props) => {
   const { account, onClickMenuOption, tokenBalancesRegistry } = props
 
   // UI Selectors (safe)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroidOrPanel = isAndroid || isPanel
+  const isMobileOrPanel = isMobile || isPanel
 
   // routing
   const history = useHistory()
@@ -126,15 +126,15 @@ export const AccountDetailsHeader = (props: Props) => {
       .filter((token) => !token.isErc721 && !token.isErc1155 && !token.isNft)
   }, [userVisibleTokensInfo, account])
 
-  const tokenPriceIds = React.useMemo(
-    () => accountsFungibleTokens.map((token) => getPriceIdForToken(token)),
+  const tokenPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens(accountsFungibleTokens),
     [accountsFungibleTokens],
   )
 
-  const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
+  const { data: spotPrices, isLoading: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(
-      tokenPriceIds.length && defaultFiatCurrency
-        ? { ids: tokenPriceIds, toCurrency: defaultFiatCurrency }
+      tokenPriceRequests.length && defaultFiatCurrency
+        ? { requests: tokenPriceRequests, vsCurrency: defaultFiatCurrency }
         : skipToken,
       querySubscriptionOptions60s,
     )
@@ -157,8 +157,13 @@ export const AccountDetailsHeader = (props: Props) => {
         asset,
         tokenBalancesRegistry,
       )
+
+      if (!spotPrices) {
+        return Amount.empty()
+      }
+
       return computeFiatAmount({
-        spotPriceRegistry,
+        spotPrices,
         value: balance,
         token: asset,
       })
@@ -174,7 +179,7 @@ export const AccountDetailsHeader = (props: Props) => {
     userVisibleTokensInfo,
     accountsFungibleTokens,
     tokenBalancesRegistry,
-    spotPriceRegistry,
+    spotPrices,
     isLoadingSpotPrices,
   ])
 
@@ -216,11 +221,11 @@ export const AccountDetailsHeader = (props: Props) => {
   }, [account])
 
   const headerPadding = React.useMemo(() => {
-    if (isAndroidOrPanel) {
+    if (isMobileOrPanel) {
       return '16px'
     }
     return '24px 0px'
-  }, [isAndroidOrPanel])
+  }, [isMobileOrPanel])
 
   // Methods
   const goBack = React.useCallback(() => {
@@ -234,7 +239,7 @@ export const AccountDetailsHeader = (props: Props) => {
       data-key='account-details-header'
     >
       <Row width='unset'>
-        {isAndroidOrPanel ? (
+        {isMobileOrPanel ? (
           <Row
             width='unset'
             margin='0px 12px 0px 0px'
@@ -285,7 +290,7 @@ export const AccountDetailsHeader = (props: Props) => {
       </Row>
 
       <Row width='unset'>
-        {!isAndroidOrPanel && (
+        {!isMobileOrPanel && (
           <>
             <Column
               alignItems='flex-end'
@@ -311,7 +316,7 @@ export const AccountDetailsHeader = (props: Props) => {
           </>
         )}
         <MenuWrapper ref={accountDetailsMenuRef}>
-          {isAndroidOrPanel ? (
+          {isMobileOrPanel ? (
             <Button onClick={() => setShowAccountDetailsMenu((prev) => !prev)}>
               <ButtonIcon name='more-vertical' />
             </Button>

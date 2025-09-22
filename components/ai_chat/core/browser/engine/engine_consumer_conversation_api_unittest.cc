@@ -105,14 +105,16 @@ class MockConversationAPIClient : public ConversationAPIClient {
                const std::string& selected_language,
                std::optional<base::Value::List> oai_tool_definitions,
                const std::optional<std::string>& preferred_tool_name,
+               mojom::ConversationCapability conversation_capability,
                EngineConsumer::GenerationDataCallback,
                EngineConsumer::GenerationCompletedCallback,
                const std::optional<std::string>& model_name),
               (override));
 
   std::string GetEventsJson(std::vector<ConversationEvent> conversation) {
-    auto body = CreateJSONRequestBody(std::move(conversation), "", std::nullopt,
-                                      std::nullopt, std::nullopt, true);
+    auto body = CreateJSONRequestBody(
+        std::move(conversation), "", std::nullopt, std::nullopt,
+        mojom::ConversationCapability::CHAT, std::nullopt, true);
     auto dict = base::test::ParseJsonDict(body);
     base::Value::List* events = dict.FindList("events");
     EXPECT_TRUE(events);
@@ -212,6 +214,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -243,7 +246,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -278,6 +281,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -312,7 +316,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content_1, page_content_2}}}}, history, "", false, {},
-      std::nullopt, base::DoNothing(),
+      std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -333,6 +337,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -363,7 +368,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
 
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -405,6 +410,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -427,7 +433,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       });
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -446,6 +452,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_Rewrite) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -528,6 +535,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -543,7 +551,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
       });
 
   engine_->GenerateAssistantResponse(
-      {}, history, "", false, {}, std::nullopt, base::DoNothing(),
+      {}, history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -641,6 +650,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -657,7 +667,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
       });
 
   engine_->GenerateAssistantResponse(
-      {}, history, "", false, {}, std::nullopt, base::DoNothing(),
+      {}, history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -823,6 +834,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -837,7 +849,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      {}, history, "", false, {}, std::nullopt, base::DoNothing(),
+      {}, history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -888,6 +901,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -902,7 +916,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
       });
 
   engine_->GenerateAssistantResponse(
-      {}, history, "", false, {}, std::nullopt, base::DoNothing(),
+      {}, history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -966,6 +981,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -987,7 +1003,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
       });
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1006,6 +1022,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1029,7 +1046,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
   PageContent page_content("This is a sample page content.", false);
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -1055,6 +1072,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1093,6 +1111,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
+                                     mojom::ConversationCapability::CHAT,
                                      base::DoNothing(), future.GetCallback());
   EXPECT_EQ(future.Take(),
             EngineConsumer::GenerationResultData(
@@ -1124,6 +1143,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1142,6 +1162,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1160,6 +1181,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1195,6 +1217,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1213,6 +1236,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1237,6 +1261,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1255,6 +1280,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1273,6 +1299,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1300,6 +1327,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1318,6 +1346,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1334,6 +1363,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1366,6 +1396,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1384,6 +1415,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1402,6 +1434,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1431,6 +1464,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                           const std::string& selected_language,
                           std::optional<base::Value::List> oai_tool_definitions,
                           const std::optional<std::string>& preferred_tool_name,
+                          mojom::ConversationCapability conversation_capability,
                           EngineConsumer::GenerationDataCallback data_callback,
                           EngineConsumer::GenerationCompletedCallback callback,
                           const std::optional<std::string>& model_name) {
@@ -1469,6 +1503,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1518,6 +1553,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1535,6 +1571,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1580,6 +1617,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1597,6 +1635,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1628,6 +1667,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1642,6 +1682,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1665,6 +1706,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1679,6 +1721,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -1809,6 +1852,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
                       const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -1842,6 +1886,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
                       const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -1867,6 +1912,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
                       const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -1895,6 +1941,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
                       const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -1920,6 +1967,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
                       const std::string& language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -1974,6 +2022,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -2004,7 +2053,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContent page_content("This is a test page content.", false);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, std::move(history), "", false, {},
-        std::nullopt, base::DoNothing(),
+        std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -2042,6 +2091,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -2068,7 +2118,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContent page_content("This is a test page content.", false);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, std::move(history), "", false, {},
-        std::nullopt, base::DoNothing(),
+        std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -2108,6 +2158,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -2134,7 +2185,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContent page_content("This is a test page content.", false);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, std::move(history), "", false, {},
-        std::nullopt, base::DoNothing(),
+        std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -2159,6 +2210,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -2187,7 +2239,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContent page_content("This is a test page content.", false);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, std::move(history), "", false, {},
-        std::nullopt, base::DoNothing(),
+        std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -2217,6 +2269,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -2245,7 +2298,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContent page_content("This is a test page content.", false);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, std::move(history), "", false, {},
-        std::nullopt, base::DoNothing(),
+        std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -2274,6 +2327,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -2302,7 +2356,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     PageContent page_content("This is a test page content.", false);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, std::move(history), "", false, {},
-        std::nullopt, base::DoNothing(),
+        std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
         base::BindLambdaForTesting(
             [&run_loop](EngineConsumer::GenerationResult) {
               run_loop.Quit();
@@ -2342,6 +2396,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2373,7 +2428,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content}}}, std::move(history), "",
       true,  // is_temporary_chat = true
-      {}, std::nullopt, base::DoNothing(),
+      {}, std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2388,13 +2443,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // Expect PerformRequest with the overridden model name
   EXPECT_CALL(
       *mock_api_client,
-      PerformRequest(_, _, _, _, _, _,
+      PerformRequest(_, _, _, _, _, _, _,
                      testing::Eq(std::optional<std::string>(
                          model_service_->GetLeoModelNameByKey(kModelKey)))))
       .WillOnce([&](std::vector<ConversationEvent> conversation,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2419,7 +2475,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       std::move(page_contents), std::move(history), "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2433,13 +2489,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   base::RunLoop run_loop;
 
   EXPECT_CALL(*mock_api_client,
-              PerformRequest(_, _, testing::Eq(std::nullopt), _, _, _, _))
+              PerformRequest(_, _, testing::Eq(std::nullopt), _, _, _, _, _))
       .WillOnce([&]() { run_loop.Quit(); });
 
   auto history = CreateSampleChatHistory(2);
 
   engine_->GenerateAssistantResponse(
-      {}, std::move(history), "", false, {}, std::nullopt, base::DoNothing(),
+      {}, std::move(history), "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2489,14 +2546,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       *mock_api_client,
       PerformRequest(_, _,
                      testing::Optional(base::test::IsJson(expected_tools_json)),
-                     _, _, _, _))
+                     _, _, _, _, _))
       .WillOnce([&]() { run_loop.Quit(); });
 
   auto history = CreateSampleChatHistory(2);
 
   engine_->GenerateAssistantResponse(
       {}, std::move(history), "", false, {mock_tool->GetWeakPtr()},
-      std::nullopt, base::DoNothing(),
+      std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2536,7 +2593,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
     mock_engine_consumer->GenerateAssistantResponse(
         {{{"turn-1", {page_content_1, page_content_2}}}}, history, "", false,
-        {}, std::nullopt, base::DoNothing(), base::DoNothing());
+        {}, std::nullopt, mojom::ConversationCapability::CHAT,
+        base::DoNothing(), base::DoNothing());
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
 
@@ -2579,6 +2637,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2618,7 +2677,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content}}}, history, "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2681,6 +2740,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2728,7 +2788,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content}}}, history, "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2757,6 +2817,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithOnlyPdfFiles) {
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2791,7 +2852,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithOnlyPdfFiles) {
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      {}, history, "", false, {}, std::nullopt, base::DoNothing(),
+      {}, history, "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2829,6 +2891,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2868,7 +2931,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content}}}, history, "", false, {}, std::nullopt,
-      base::DoNothing(),
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -2885,6 +2948,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2922,7 +2986,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content}}}, std::move(history), "", false, {},
-      std::nullopt, base::DoNothing(),
+      std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::
                   GenerationResult) { /* callback handled above */ }));
@@ -2941,6 +3005,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -2977,7 +3042,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"missing-turn", {page_content}}}, std::move(history), "", false, {},
-      std::nullopt, base::DoNothing(),
+      std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::
                   GenerationResult) { /* callback handled above */ }));
@@ -2996,6 +3061,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -3040,7 +3106,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content1, video_content}}}, std::move(history), "",
-      false, {}, std::nullopt, base::DoNothing(),
+      false, {}, std::nullopt, mojom::ConversationCapability::CHAT,
+      base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::
                   GenerationResult) { /* callback handled above */ }));
@@ -3059,6 +3126,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::string& selected_language,
                     std::optional<base::Value::List> oai_tool_definitions,
                     const std::optional<std::string>& preferred_tool_name,
+                    mojom::ConversationCapability conversation_capability,
                     EngineConsumer::GenerationDataCallback data_callback,
                     EngineConsumer::GenerationCompletedCallback callback,
                     const std::optional<std::string>& model_name) {
@@ -3119,7 +3187,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content1}}, {"turn-2", {page_content2}}},
-      std::move(history), "", false, {}, std::nullopt, base::DoNothing(),
+      std::move(history), "", false, {}, std::nullopt,
+      mojom::ConversationCapability::CHAT, base::DoNothing(),
       base::BindLambdaForTesting(
           [&](EngineConsumer::
                   GenerationResult) { /* callback handled above */ }));
@@ -3164,6 +3233,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                       const std::string& selected_language,
                       std::optional<base::Value::List> oai_tool_definitions,
                       const std::optional<std::string>& preferred_tool_name,
+                      mojom::ConversationCapability conversation_capability,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback,
                       const std::optional<std::string>& model_name) {
@@ -3185,7 +3255,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content_1, page_content_2}},
          {"turn-2", {page_content_3}}},
-        history, "", false, {}, std::nullopt, base::DoNothing(),
+        history, "", false, {}, std::nullopt,
+        mojom::ConversationCapability::CHAT, base::DoNothing(),
         base::DoNothing());
     run_loop.Run();
     testing::Mock::VerifyAndClearExpectations(mock_api_client);

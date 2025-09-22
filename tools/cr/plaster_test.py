@@ -255,6 +255,113 @@ class PlasterTest(unittest.TestCase):
             output = stderr.getvalue()
             self.assertIn(str(changed_path), output)
 
+    def test_regex_flags_array_works(self):
+        """Test that multiple flags in array are passed through correctly."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_flags_array.idl')
+
+        # Write and commit file with mixed case content
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Content with CHROMIUM word.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_flags_array.idl',
+                                      self.fake_chromium_src.chromium)
+
+        # Create a PlasterFile with multiple flags in array
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.toml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('''
+          [[substitution]]
+          description = 'Test multiple flags in array work'
+          re_pattern = 'chromium'
+          replace = 'Brave'
+          re_flags = ['IGNORECASE', 'MULTILINE']
+        ''')
+
+        plaster_file = plaster.PlasterFile(plaster_path)
+        plaster_file.apply()
+
+        # Should match uppercase CHROMIUM due to IGNORECASE flag
+        result = (self.fake_chromium_src.chromium /
+                  test_file_chromium).read_text()
+        self.assertEqual(result, 'Content with Brave word.')
+
+    def test_regex_flags_invalid_cases_fail(self):
+        """Test that invalid regex flags (nonexistent, lowercase, etc.) raise
+           ValueError."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_invalid_flags.idl')
+
+        # Write and commit file
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Content with Chromium word.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_invalid_flags.idl',
+                                      self.fake_chromium_src.chromium)
+
+        # Test various invalid flag cases
+        invalid_flags_cases = [
+            'INVALID_FLAG',  # Nonexistent flag
+            'ignorecase',  # Lowercase (should be IGNORECASE)
+            'fake_flag',  # Another nonexistent flag
+            'NOTREAL'  # Another invalid flag
+        ]
+
+        for invalid_flag in invalid_flags_cases:
+            with self.subTest(flag=invalid_flag):
+                # Create a PlasterFile with invalid flag
+                plaster_path = plaster.PLASTER_FILES_PATH / (
+                    str(test_file_chromium) + '.toml')
+                plaster_path.parent.mkdir(parents=True, exist_ok=True)
+                plaster_path.write_text(f'''
+                  [[substitution]]
+                  description = 'Test invalid flag rejection'
+                  re_pattern = 'Chromium'
+                  replace = 'Brave'
+                  re_flags = ['{invalid_flag}']
+                ''')
+
+                plaster_file = plaster.PlasterFile(plaster_path)
+                with self.assertRaises(ValueError) as context:
+                    plaster_file.apply()
+
+                self.assertIn(f'Invalid re flag specified: {invalid_flag}',
+                              str(context.exception))
+
+    def test_regex_flags_empty_list_works(self):
+        """Test that empty flag list works (no flags applied)."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_no_flags.idl')
+
+        # Write and commit file with mixed case content
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Content with CHROMIUM and chromium words.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_no_flags.idl',
+                                      self.fake_chromium_src.chromium)
+
+        # Create a PlasterFile with empty flags list
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.toml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('''
+          [[substitution]]
+          description = 'Test empty flags list'
+          re_pattern = 'chromium'
+          replace = 'Brave'
+          re_flags = []
+        ''')
+
+        plaster_file = plaster.PlasterFile(plaster_path)
+        plaster_file.apply()
+
+        # Should only match lowercase 'chromium', not uppercase 'CHROMIUM'
+        result = (self.fake_chromium_src.chromium /
+                  test_file_chromium).read_text()
+        self.assertEqual(result, 'Content with CHROMIUM and Brave words.')
+
+
 
 if __name__ == '__main__':
     unittest.main()

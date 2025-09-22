@@ -185,23 +185,23 @@ void BraveWalletPermissionContext::RequestPermissions(
     blink::PermissionType permission,
     content::RenderFrameHost* rfh,
     const std::vector<std::string>& addresses,
-    base::OnceCallback<void(const std::vector<blink::mojom::PermissionStatus>&)>
+    base::OnceCallback<void(const std::vector<content::PermissionResult>&)>
         callback) {
   if (!rfh) {
-    std::move(callback).Run(std::vector<blink::mojom::PermissionStatus>());
+    std::move(callback).Run(std::vector<content::PermissionResult>());
     return;
   }
 
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
   if (!web_contents) {
-    std::move(callback).Run(std::vector<blink::mojom::PermissionStatus>());
+    std::move(callback).Run(std::vector<content::PermissionResult>());
     return;
   }
 
   content::PermissionControllerDelegate* delegate =
       web_contents->GetBrowserContext()->GetPermissionControllerDelegate();
   if (!delegate) {
-    std::move(callback).Run(std::vector<blink::mojom::PermissionStatus>());
+    std::move(callback).Run(std::vector<content::PermissionResult>());
     return;
   }
 
@@ -215,7 +215,7 @@ void BraveWalletPermissionContext::RequestPermissions(
   auto origin = brave_wallet::GetConcatOriginFromWalletAddresses(
       rfh->GetLastCommittedOrigin(), addresses);
   if (!origin) {
-    std::move(callback).Run(std::vector<blink::mojom::PermissionStatus>());
+    std::move(callback).Run(std::vector<content::PermissionResult>());
     return;
   }
 

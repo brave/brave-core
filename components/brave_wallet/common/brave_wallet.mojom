@@ -196,8 +196,9 @@ interface EthereumProvider {
 };
 
 struct CardanoProviderPagination {
-  uint32 page;
-  uint32 limit;
+  // Use signed types since JS numeric translates to int.
+  int32 page;
+  int32 limit;
 };
 
 struct CardanoProviderPaginationErrorPayload {
@@ -371,6 +372,7 @@ interface PanelHandlerFactory {
       pending_receiver<WalletHandler> wallet_handler,
       pending_receiver<JsonRpcService> json_rpc_service,
       pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
+      pending_receiver<PolkadotWalletService> polkadot_wallet_service,
       pending_receiver<ZCashWalletService> zcash_wallet_service,
       pending_receiver<CardanoWalletService> cardano_wallet_service,
       pending_receiver<SwapService> swap_service,
@@ -396,6 +398,7 @@ interface PageHandlerFactory {
       pending_receiver<WalletHandler> wallet_handler,
       pending_receiver<JsonRpcService> json_rpc_service,
       pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
+      pending_receiver<PolkadotWalletService> polkadot_wallet_service,
       pending_receiver<ZCashWalletService> zcash_wallet_service,
       pending_receiver<CardanoWalletService> cardano_wallet_service,
       pending_receiver<SwapService> swap_service,
@@ -474,11 +477,32 @@ struct AssetTimePrice {
   string price;
 };
 
+struct AssetPriceRequest {
+  CoinType coin;
+  string chain_id;
+  string? address;
+};
+
+enum AssetPriceSource {
+  kCoingecko,
+  kJupiter,
+  kUnknown,
+};
+
+enum Gate3CacheStatus {
+  kHit,
+  kMiss,
+};
+
 struct AssetPrice {
-  string from_asset;
-  string to_asset;
+  CoinType coin;
+  string chain_id;
+  string address;
   string price;
-  string asset_timeframe_change;
+  string vs_currency;
+  Gate3CacheStatus cache_status;
+  AssetPriceSource source;
+  string percentage_change_24h;
 };
 
 struct CoinMarket {
@@ -1367,12 +1391,8 @@ interface AssetRatioService {
              string amount,
              string currencyCode) => (string url, string? error);
 
-  // Obtains the prices from a list of assets to a list of assets
-  // Each from asset is represented in the to asset and includes the timeframe
-  // change as well.
-  GetPrice(array<string> from_assets,
-           array<string> to_assets,
-           AssetPriceTimeframe timeframe)
+  // Obtains the prices from a list of requests
+  GetPrice(array<AssetPriceRequest> requests, string vs_currency)
       => (bool success, array<AssetPrice> values);
 
   // Obtains the price history for a specific asset
@@ -2290,6 +2310,10 @@ interface ZCashWalletService {
       => (ZCashChainTipStatus? status, string? error_message);
 };
 
+interface PolkadotWalletService {
+  GetNetworkName() => (string? network, string? error_message);
+};
+
 enum TransactionStatus {
   Unapproved = 0,
   Approved = 1,
@@ -2858,6 +2882,25 @@ struct SignSolTransactionsRequest {
   string chain_id;
 };
 
+struct SignCardanoTransactionRequest {
+  int32 id;
+
+  AccountId account_id;
+  OriginInfo origin_info;
+  string raw_tx_data;
+
+  // Inputs that belong to the selected account and
+  // that are being signed.
+  array<CardanoTxInput> signed_inputs;
+  // Outputs that are not belong to the selected account.
+  array<CardanoTxOutput> external_outputs;
+  // Outputs that belong to the selected account.
+  array<CardanoTxOutput> account_outputs;
+
+  uint64 total_signed_inputs_amount;
+  uint64 total_outputs_amount;
+};
+
 enum ExternalWalletType {
   MetaMask = 1,
 };
@@ -3005,6 +3048,9 @@ interface BraveWalletService {
   GetPendingSignSolTransactionsRequests()
       => (array<SignSolTransactionsRequest> requests);
 
+  GetPendingSignCardanoTransactionRequests()
+      => (array<SignCardanoTransactionRequest> requests);
+
   // Used for UI notifying native when the user approve/reject sign all
   // transactions request.
   NotifySignSolTransactionsRequestProcessed(
@@ -3012,6 +3058,9 @@ interface BraveWalletService {
       int32 id,
       array<SolanaSignature> hw_signatures,
       string? error);
+
+  NotifySignCardanoTransactionRequestProcessed(
+      bool approved, int32 id, string? error);
 
   // Used for UI notifying native when the user approve/reject add suggest
   // token requests.

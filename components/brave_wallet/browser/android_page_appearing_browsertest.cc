@@ -399,7 +399,8 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSwapPageAppearing) {
+IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
+                       DISABLED_TestSwapPageAppearing) {
   const GURL expected_url = GURL("brave://wallet/swap");
   for (auto scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/swap"}));

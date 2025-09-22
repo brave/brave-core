@@ -352,7 +352,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   ToggleVerticalTabStrip();
 
   // Pre-condition: Floating mode is enabled by default.
-  using State = VerticalTabStripRegionView::State;
+  using State = BraveVerticalTabStripRegionView::State;
   ASSERT_TRUE(tabs::utils::IsFloatingVerticalTabsEnabled(browser()));
   auto* widget_delegate_view =
       browser_view()->vertical_tab_strip_widget_delegate_view_.get();
@@ -496,13 +496,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
 
   auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
-  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
 
   auto* model = browser()->tab_strip_model();
   ASSERT_EQ(2, model->count());
   model->SetTabPinned(0, true);
 
-  browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
+  browser_view()->tabstrip()->StopAnimating();
 
   // Test if every tabs are laid out inside tab strip region -------------------
   // This is a regression test for
@@ -524,17 +525,18 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
 
   auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
-  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
 
   auto* model = browser()->tab_strip_model();
   model->SetTabPinned(0, true);
   ASSERT_EQ(1, model->count());
 
-  browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
+  browser_view()->tabstrip()->StopAnimating();
 
   int contents_view_height = region_view->contents_view_->height();
   AppendTab(browser());
-  browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
+  browser_view()->tabstrip()->StopAnimating();
 
   // When first tab is added, height should have tab's height plus top & bottom
   // margin.
@@ -545,7 +547,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   }));
 
   AppendTab(browser());
-  browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
+  browser_view()->tabstrip()->StopAnimating();
 
   // When second tab is added, height should be increased with tab height plus
   // tab spacing.
@@ -603,7 +605,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
       prefs->GetBoolean(brave_tabs::kVerticalTabsExpandedStatePerWindow));
 
   // When clicking the toggle button,
-  using State = VerticalTabStripRegionView::State;
+  using State = BraveVerticalTabStripRegionView::State;
   auto* region_view_1 = browser_view()
                             ->vertical_tab_strip_widget_delegate_view_
                             ->vertical_tab_strip_region_view();
@@ -658,7 +660,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedWidth) {
       prefs->GetBoolean(brave_tabs::kVerticalTabsExpandedStatePerWindow));
 
   // When setting the expanded width,
-  using State = VerticalTabStripRegionView::State;
+  using State = BraveVerticalTabStripRegionView::State;
   auto* region_view_1 = browser_view()
                             ->vertical_tab_strip_widget_delegate_view_
                             ->vertical_tab_strip_region_view();
@@ -781,11 +783,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, PinningGroupedTab) {
   AddTabToExistingGroup(browser(), 3, group);
 
   browser()->tab_strip_model()->SetTabPinned(1, true);
-  browser_view()->tabstrip()->StopAnimating(true);
+  browser_view()->tabstrip()->StopAnimating();
   EXPECT_EQ(GetTabStrip(browser())->tab_at(0)->group(), std::nullopt);
 
   browser()->tab_strip_model()->SetTabPinned(2, true);
-  browser_view()->tabstrip()->StopAnimating(true);
+  browser_view()->tabstrip()->StopAnimating();
   EXPECT_EQ(GetTabStrip(browser())->tab_at(1)->group(), std::nullopt);
 
   ASSERT_TRUE(GetTabStrip(browser())->tab_at(2)->group().has_value());
@@ -888,12 +890,12 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
 
   auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
-  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
 
   // Drag and drop a tab to reorder it -----------------------------------------
-  GetTabStrip(browser())->StopAnimating(
-      /* layout= */ true);  // Drag-and-drop doesn't start when animation is
-                            // running.
+  GetTabStrip(browser())->StopAnimating();  // Drag-and-drop doesn't start when
+                                            // animation is running.
   auto* pressed_tab = GetTabAt(browser(), 0);
   PressTabAt(browser(), 0);
   auto point_to_move_to = GetCenterPointInScreen(GetTabAt(browser(), 1));
@@ -915,8 +917,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
 
   EXPECT_TRUE(IsDraggingTabStrip(browser()));
   ReleaseMouse();
-  GetTabStrip(browser())->StopAnimating(
-      true);  // Drag-and-drop doesn't start when animation is running.
+  GetTabStrip(browser())->StopAnimating();  // Drag-and-drop doesn't start when
+                                            // animation is running.
   {
     // Regression test for https://github.com/brave/brave-browser/issues/28488
     // Check if the tab is positioned properly after drag-and-drop.
@@ -937,8 +939,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
   AppendTab(browser());
 
   // Drag a tab out of tab strip to create browser -----------------------------
-  GetTabStrip(browser())->StopAnimating(
-      true);  // Drag-and-drop doesn't start when animation is running.
+  GetTabStrip(browser())->StopAnimating();  // Drag-and-drop doesn't start when
+                                            // animation is running.
   PressTabAt(browser(), 0);
   gfx::Point point_out_of_tabstrip =
       GetCenterPointInScreen(GetTabAt(browser(), 0));
@@ -1148,6 +1150,17 @@ class VerticalTabStripHideCompletelyTest : public VerticalTabStripBrowserTest {
 
   ~VerticalTabStripHideCompletelyTest() override = default;
 
+  void SetHideCompletelyWhenCollapsed(bool hide) {
+    browser()->profile()->GetPrefs()->SetBoolean(
+        brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed, hide);
+  }
+
+  void SetUpOnMainThread() override {
+    VerticalTabStripBrowserTest::SetUpOnMainThread();
+
+    SetHideCompletelyWhenCollapsed(true);
+  }
+
  private:
   base::test::ScopedFeatureList feature_list_;
 };
@@ -1163,15 +1176,19 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
   ASSERT_TRUE(region_view);
 
   region_view->ToggleState();
-  ASSERT_EQ(VerticalTabStripRegionView::State::kCollapsed,
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kCollapsed,
             region_view->state());
 
   // The minimum width of the region view should be 4px, which is narrower than
   // it used to be.
   EXPECT_EQ(4, region_view->GetMinimumSize().width());
+
+  // When the preference is disabled, the minimum width should be back to 41px.
+  SetHideCompletelyWhenCollapsed(false);
+  EXPECT_EQ(41, region_view->GetMinimumSize().width());
 }
 
-IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInVisible) {
+IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInvisible) {
   ToggleVerticalTabStrip();
 
   const gfx::AnimationTestApi::RenderModeResetter render_mode_resetter =
@@ -1186,15 +1203,24 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInVisible) {
   ASSERT_TRUE(region_view);
 
   region_view->ToggleState();
-  ASSERT_EQ(VerticalTabStripRegionView::State::kCollapsed,
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kCollapsed,
             region_view->state());
 
   // When collapsed, it should be inivisible.
   EXPECT_FALSE(region_view->GetVisible());
 
   region_view->ToggleState();
-  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
 
   // When expanded, it should get visible again.
+  EXPECT_TRUE(region_view->GetVisible());
+
+  // When we turn off the preference, it should be visible even when collapsed.
+  region_view->ToggleState();
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kCollapsed,
+            region_view->state());
+  ASSERT_FALSE(region_view->GetVisible());
+  SetHideCompletelyWhenCollapsed(false);
   EXPECT_TRUE(region_view->GetVisible());
 }

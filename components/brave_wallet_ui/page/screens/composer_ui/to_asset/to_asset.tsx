@@ -10,7 +10,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import { getLocale, formatLocale } from '$web-common/locale'
 import {
   computeFiatAmount,
-  getPriceIdForToken,
+  getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
 import {
   getDominantColorFromImageURL, //
@@ -97,12 +97,17 @@ export const ToAsset = (props: Props) => {
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
-  const { data: spotPriceRegistry, isFetching: isLoadingSpotPrices } =
+  const tokenPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens([token]),
+    [token],
+  )
+
+  const { data: spotPrices = [], isFetching: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(
-      token && defaultFiatCurrency
+      tokenPriceRequests.length && defaultFiatCurrency
         ? {
-            ids: [getPriceIdForToken(token)],
-            toCurrency: defaultFiatCurrency,
+            requests: tokenPriceRequests,
+            vsCurrency: defaultFiatCurrency,
           }
         : skipToken,
       querySubscriptionOptions60s,
@@ -131,19 +136,13 @@ export const ToAsset = (props: Props) => {
     }
 
     return computeFiatAmount({
-      spotPriceRegistry,
+      spotPrices,
       value: new Amount(inputValue !== '' ? inputValue : '0')
         .multiplyByDecimals(token.decimals)
         .toHex(),
       token: token,
     }).formatAsFiat(defaultFiatCurrency)
-  }, [
-    spotPriceRegistry,
-    token,
-    inputValue,
-    defaultFiatCurrency,
-    selectedSendOption,
-  ])
+  }, [spotPrices, token, inputValue, defaultFiatCurrency, selectedSendOption])
 
   const tokenColor = React.useMemo(() => {
     return getDominantColorFromImageURL(token?.logo ?? '')

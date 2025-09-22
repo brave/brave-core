@@ -16,4 +16,11 @@ WebContents* WebContentsDelegate::AddNewContents_ChromiumImpl(
     bool* was_blocked) {
   return nullptr;
 }
+
+bool WebContentsDelegate::PreHandleMouseEvent(
+    WebContents* source,
+    const blink::WebMouseEvent& event) {
+  return false;
+}
+
 }  // namespace content

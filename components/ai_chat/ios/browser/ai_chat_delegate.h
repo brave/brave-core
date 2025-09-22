@@ -28,6 +28,7 @@ OBJC_EXPORT
 - (void)onAPIRequestInProgress:(bool)inProgress;
 - (void)onAPIResponseError:(AiChatAPIError)error;
 - (void)onModelChanged:(NSString*)modelKey
+       defaultModelKey:(NSString*)defaultModelKey
              modelList:(NSArray<AiChatModel*>*)modelList;
 - (void)onSuggestedQuestionsChanged:(NSArray<NSString*>*)questions
                              status:(AiChatSuggestionGenerationStatus)status;

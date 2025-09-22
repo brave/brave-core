@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.ui.appmenu;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.view.View;
@@ -14,9 +15,12 @@ import android.widget.PopupWindow;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.SysUtils;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ui.appmenu.internal.R;
 
-class BraveAppMenu extends AppMenu {
+@NullMarked
+class BraveAppMenu extends BraveAppMenuDummySuper {
     private static final int BOTTOM_MENU_VERTICAL_OFFSET_DP = 44;
     private static int sMenuHeight;
     private static int sNegativeVerticalOffsetNotTopAnchored;
@@ -27,6 +31,27 @@ class BraveAppMenu extends AppMenu {
         final float scale = res.getDisplayMetrics().density;
         sNegativeVerticalOffsetNotTopAnchored =
                 (int) (BOTTOM_MENU_VERTICAL_OFFSET_DP * scale + 0.5f);
+    }
+
+    @Nullable
+    @Override
+    public View createAppMenuContentView(Context context, boolean addTopPaddingBeforeFirstRow) {
+        return maybeRemovePaddingFromBottom(
+                super.createAppMenuContentView(context, addTopPaddingBeforeFirstRow));
+    }
+
+    @Nullable
+    private View maybeRemovePaddingFromBottom(@Nullable View contentView) {
+        if (!isMenuFromBottom() || contentView == null) return contentView;
+
+        // Remove the padding from the bottom of the content view
+        contentView.setPadding(
+                contentView.getPaddingLeft(),
+                contentView.getPaddingTop(),
+                contentView.getPaddingRight(),
+                0);
+
+        return contentView;
     }
 
     @SuppressLint("VisibleForTests")
@@ -65,11 +90,15 @@ class BraveAppMenu extends AppMenu {
         return isMenuFromBottom() ? R.style.EndIconMenuAnimBottom : R.style.EndIconMenuAnim;
     }
 
+    // We shouldn't determine menu position by reading preference.
+    // Ideally we should add this method to AppMenuHandler interface.
+    @SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
     public static boolean isMenuFromBottom() {
         return ContextUtils.getAppSharedPreferences()
                 .getBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, false);
     }
 
+    @Override
     public void runMenuItemEnterAnimations() {
         // We do nothing here as we don't want any fancy animation for the menu.
     }

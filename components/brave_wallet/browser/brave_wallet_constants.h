@@ -45,11 +45,10 @@ inline constexpr char kTransakURL[] = "https://global.transak.com/";
 inline constexpr char kTransakApiKey[] = "985d14f0-4cf5-4a4c-8917-78107620d3b7";
 inline constexpr char kCoinbaseURL[] = "https://pay.coinbase.com";
 inline constexpr char kCoinbaseAppId[] = "8072ff71-8469-4fef-9404-7c905e2359c9";
-inline constexpr char kSimpleHashUrl[] = "https://api.simplehash.com";
-inline constexpr char kSimpleHashBraveProxyUrl[] =
-    "https://simplehash.wallet.brave.com";
-
 inline constexpr size_t kSimpleHashMaxBatchSize = 50;
+inline constexpr char kSimpleHashBraveProxyUrl[] =
+    "https://gate3.wallet.brave.com/simplehash";
+inline constexpr char kGate3URL[] = "https://gate3.wallet.brave.com";
 
 inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPasswordIsRequiredToTakeThisAction",
@@ -417,6 +416,10 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS},
     {"braveWalletExchangeViaProvider", IDS_BRAVE_WALLET_EXCHANGE_VIA_PROVIDER},
     {"braveWalletSortBy", IDS_BRAVE_WALLET_SORT_BY},
+    {"braveWalletConfirmSwap", IDS_BRAVE_WALLET_CONFIRM_SWAP},
+    {"braveWalletConfirmBridge", IDS_BRAVE_WALLET_CONFIRM_BRIDGE},
+    {"braveWalletConfirmSend", IDS_BRAVE_WALLET_CONFIRM_SEND},
+    {"braveWalletSpend", IDS_BRAVE_WALLET_SPEND},
     {"braveWalletEstTime", IDS_BRAVE_WALLET_EST_TIME},
     {"braveWalletExchangeRate", IDS_BRAVE_WALLET_EXCHANGE_RATE},
     {"braveWalletExchangeFor", IDS_BRAVE_WALLET_EXCHANGE_FOR},
@@ -1724,7 +1727,8 @@ inline constexpr char kZeroExAPIVersionHeader[] = "0x-version";
 inline constexpr char kZeroExAPIVersion[] = "v2";
 
 // Jupiter swap constants
-inline constexpr char kJupiterBaseAPIURL[] = "https://jupiter.wallet.brave.com";
+inline constexpr char kJupiterBaseAPIURL[] =
+    "https://jupiter-lite.wallet.brave.com";
 inline constexpr char kJupiterReferralKey[] =
     "7yke2kxg6ewNsun61qBkdsLdxuXcUiB8CMB47Zv39Aoy";
 inline constexpr char kJupiterReferralProgram[] =
@@ -1846,6 +1850,9 @@ std::string GetAssetRatioBaseURL();
 
 std::optional<std::string_view> GetZeroExAllowanceHolderAddress(
     std::string_view chain_id);
+
+std::optional<mojom::CoinType> GetCoinTypeFromString(const std::string& coin);
+std::optional<std::string> GetStringFromCoinType(mojom::CoinType coin_type);
 
 }  // namespace brave_wallet
 

@@ -88,7 +88,7 @@ import org.chromium.components.browser_ui.site_settings.WebsitePreferenceBridgeJ
 import org.chromium.components.commerce.core.CommerceFeatureUtils;
 import org.chromium.components.commerce.core.CommerceFeatureUtilsJni;
 import org.chromium.components.commerce.core.ShoppingService;
-import org.chromium.components.content_settings.ContentSettingValues;
+import org.chromium.components.content_settings.ContentSetting;
 import org.chromium.components.dom_distiller.core.DomDistillerFeatures;
 import org.chromium.components.power_bookmarks.PowerBookmarkMeta;
 import org.chromium.components.prefs.PrefService;
@@ -165,7 +165,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Mock private PrefService mPrefService;
     @Mock private SyncService mSyncService;
     @Mock private WebFeedBridge.Natives mWebFeedBridgeJniMock;
-    @Mock private AppMenuHandler mAppMenuHandler;
     @Mock private TranslateBridge.Natives mTranslateBridgeJniMock;
 
     private ShadowPackageManager mShadowPackageManager;
@@ -327,6 +326,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         Integer[] expectedItems = {
             R.id.new_tab_menu_id,
             R.id.new_incognito_tab_menu_id,
+            R.id.add_to_group_menu_id,
             R.id.divider_line_id,
             R.id.open_history_menu_id,
             R.id.downloads_menu_id,
@@ -338,6 +338,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.preferences_id,
             R.id.set_default_browser,
             R.id.brave_news_id,
+            R.id.brave_customize_menu_id,
             R.id.exit_id,
         };
         assertMenuItemsAreEqual(modelList, expectedItems);
@@ -360,6 +361,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
 
         expectedItems.add(R.id.new_tab_menu_id);
         expectedItems.add(R.id.new_incognito_tab_menu_id);
+        expectedItems.add(R.id.add_to_group_menu_id);
         expectedItems.add(R.id.divider_line_id);
         expectedItems.add(R.id.open_history_menu_id);
         expectedItems.add(R.id.downloads_menu_id);
@@ -377,6 +379,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.set_default_browser);
         expectedItems.add(R.id.preferences_id);
         expectedItems.add(R.id.brave_news_id);
+        expectedItems.add(R.id.brave_customize_menu_id);
         expectedItems.add(R.id.exit_id);
 
         assertMenuItemsAreEqual(modelList, expectedItems.toArray(new Integer[0]));
@@ -523,7 +526,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         when(mWebsitePreferenceBridgeJniMock.getContentSetting(any(), anyInt(), any(), any()))
                 .thenReturn(
                         options.isAutoDarkEnabled()
-                                ? ContentSettingValues.DEFAULT
-                                : ContentSettingValues.BLOCK);
+                                ? ContentSetting.DEFAULT
+                                : ContentSetting.BLOCK);
     }
 }

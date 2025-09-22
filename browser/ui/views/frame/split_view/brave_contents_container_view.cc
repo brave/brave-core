@@ -10,11 +10,14 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/contents_container_outline.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/frame/scrim_view.h"
 #include "content/public/browser/web_contents.h"
@@ -44,6 +47,21 @@ BraveContentsContainerView::BraveContentsContainerView(
       browser->profile(), use_rounded_corners));
   reader_mode_toolbar_->SetDelegate(this);
 #endif
+
+  if (base::FeatureList::IsEnabled(features::kSideBySide)) {
+    // To prevent |mini_toolbar_| becomes dangling pointer.
+    {
+      auto old_toolbar = RemoveChildViewT(mini_toolbar_);
+      mini_toolbar_ = nullptr;
+      auto old_outline = RemoveChildViewT(container_outline_);
+      container_outline_ = nullptr;
+    }
+    mini_toolbar_ =
+        AddChildView(std::make_unique<BraveMultiContentsViewMiniToolbar>(
+            browser_view, contents_view_));
+    container_outline_ =
+        AddChildView(std::make_unique<ContentsContainerOutline>(mini_toolbar_));
+  }
 }
 
 BraveContentsContainerView::~BraveContentsContainerView() = default;
@@ -51,21 +69,16 @@ BraveContentsContainerView::~BraveContentsContainerView() = default;
 void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
                                                         bool is_active,
                                                         bool show_scrim) {
-  // We don't show scrim view always.
-  GetInactiveSplitScrimView()->SetVisible(false);
-
-  // We have our own secondary toolbar.
-  GetMiniToolbar()->SetVisible(false);
-
+  ContentsContainerView::UpdateBorderAndOverlay(is_in_split, is_active,
+                                                show_scrim);
   gfx::RoundedCornersF contents_corner_radius(GetCornerRadius(false));
-  auto* contents_web_view = GetContentsView();
+  auto* contents_web_view = contents_view();
   contents_web_view->layer()->SetRoundedCornerRadius(contents_corner_radius);
   if (contents_web_view->holder()->native_view()) {
     contents_web_view->holder()->SetCornerRadii(contents_corner_radius);
   }
 
   if (!is_in_split) {
-    SetBorder(nullptr);
     return;
   }
 

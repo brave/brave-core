@@ -25,41 +25,61 @@ class TransactionConfirmationStoreTests: XCTestCase {
     setDataForUnapprovedTransactionSuccess: Bool = true
   ) -> TransactionConfirmationStore {
     let mockEthAssetPrice: BraveWallet.AssetPrice = .init(
-      fromAsset: "eth",
-      toAsset: "usd",
+      coin: .eth,
+      chainId: BraveWallet.MainnetChainId,
+      address: "",
       price: "3059.99",
-      assetTimeframeChange: "-57.23"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
     )
     let mockSolAssetPrice: BraveWallet.AssetPrice = .init(
-      fromAsset: "sol",
-      toAsset: "usd",
+      coin: .sol,
+      chainId: BraveWallet.SolanaMainnet,
+      address: "",
       price: "39.57",
-      assetTimeframeChange: "-57.23"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
     )
     let mockFilAssetPrice: BraveWallet.AssetPrice = .init(
-      fromAsset: "fil",
-      toAsset: "usd",
+      coin: .fil,
+      chainId: BraveWallet.FilecoinMainnet,
+      address: "",
       price: "4.0",
-      assetTimeframeChange: "-57.23"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
     )
     let mockBtcAssetPrice: BraveWallet.AssetPrice = .init(
-      fromAsset: "btc",
-      toAsset: "usd",
+      coin: .btc,
+      chainId: BraveWallet.BitcoinMainnet,
+      address: "",
       price: "62117.0",
-      assetTimeframeChange: "-57.23"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-57.23"
     )
     let mockZECAssetPrice: BraveWallet.AssetPrice = .init(
-      fromAsset: "zec",
-      toAsset: "usd",
+      coin: .zec,
+      chainId: BraveWallet.ZCashMainnet,
+      address: "",
       price: "36.24",
-      assetTimeframeChange: "-0.13"
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "-0.13"
     )
     let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockBalanceWei = formatter.weiString(from: 0.0896, radix: .hex, decimals: 18) ?? ""
     let mockFILBalanceWei = formatter.weiString(from: 1, decimals: 18) ?? ""
     // setup test services
     let assetRatioService = BraveWallet.TestAssetRatioService()
-    assetRatioService._price = { _, _, _, completion in
+    assetRatioService._price = { _, _, completion in
       completion(
         true,
         [

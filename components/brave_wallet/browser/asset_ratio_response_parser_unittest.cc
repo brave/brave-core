@@ -35,75 +35,170 @@ TEST(AssetRatioResponseParserUnitTest, ParseSardineAuthToken) {
   EXPECT_FALSE(ParseSardineAuthToken(ParseJson(json)));
 }
 
-TEST(AssetRatioResponseParserUnitTest, ParseAssetPrice) {
-  std::string json(R"({
-     "payload":{
-       "basic-attention-token":{
-         "btc":0.00001732,
-         "btc_timeframe_change":8.021672460190562,
-         "usd":0.55393,
-         "usd_timeframe_change":9.523443444373276
-       },
-       "bat":{
-          "btc":0.00001732,
-          "btc_timeframe_change":8.021672460190562,
-          "usd":0.55393,
-          "usd_timeframe_change":9.523443444373276
-        },
-        "link":{
-          "btc":0.00261901,
-          "btc_timeframe_change":0.5871625385632929,
-          "usd":83.77,
-          "usd_timeframe_change":1.7646208048244043
-        }
-      },
-      "lastUpdated":"2021-07-16T19:11:28.907Z"
-    })");
+TEST(AssetRatioResponseParserUnitTest, ParseAssetPrices) {
+  std::string json(R"([
+    {
+      "coin": "ETH",
+      "chain_id": "0x1",
+      "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+      "price": "0.55393",
+      "percentage_change_24h": "8.021672460190562",
+      "vs_currency": "USD",
+      "cache_status": "HIT",
+      "source": "coingecko"
+    },
+    {
+      "coin": "ETH",
+      "chain_id": "0x1",
+      "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+      "price": "83.77",
+      "percentage_change_24h": "0.5871625385632929",
+      "vs_currency": "USD",
+      "cache_status": "HIT",
+      "source": "jupiter"
+    }
+  ])");
 
-  std::vector<brave_wallet::mojom::AssetPricePtr> prices;
-  ASSERT_TRUE(ParseAssetPrice(ParseJson(json), {"bat", "link", "eth"},
-                              {"btc", "usd"}, &prices));
-  ASSERT_EQ(prices.size(), 4UL);
-  EXPECT_EQ(prices[0]->from_asset, "bat");
-  EXPECT_EQ(prices[0]->to_asset, "btc");
-  EXPECT_EQ(prices[0]->price, "0.00001732");
-  EXPECT_EQ(prices[0]->asset_timeframe_change, "8.021672460190562");
+  std::vector<brave_wallet::mojom::AssetPricePtr> prices =
+      ParseAssetPrices(ParseJson(json));
+  ASSERT_EQ(prices.size(), 2UL);
 
-  EXPECT_EQ(prices[1]->from_asset, "bat");
-  EXPECT_EQ(prices[1]->to_asset, "usd");
-  EXPECT_EQ(prices[1]->price, "0.55393");
-  EXPECT_EQ(prices[1]->asset_timeframe_change, "9.523443444373276");
+  // Check BAT token (ETH chain with contract address)
+  EXPECT_EQ(prices[0]->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(prices[0]->chain_id, "0x1");
+  EXPECT_EQ(prices[0]->address, "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
+  EXPECT_EQ(prices[0]->price, "0.55393");
+  EXPECT_EQ(prices[0]->vs_currency, "USD");
+  EXPECT_EQ(prices[0]->percentage_change_24h, "8.021672460190562");
+  EXPECT_EQ(prices[0]->source, mojom::AssetPriceSource::kCoingecko);
 
-  EXPECT_EQ(prices[2]->from_asset, "link");
-  EXPECT_EQ(prices[2]->to_asset, "btc");
-  EXPECT_EQ(prices[2]->price, "0.00261901");
-  EXPECT_EQ(prices[2]->asset_timeframe_change, "0.5871625385632929");
+  // Check LINK token (ETH chain with contract address)
+  EXPECT_EQ(prices[1]->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(prices[1]->chain_id, "0x1");
+  EXPECT_EQ(prices[1]->address, "0x514910771AF9Ca656af840dff83E8264EcF986CA");
+  EXPECT_EQ(prices[1]->price, "83.77");
+  EXPECT_EQ(prices[1]->vs_currency, "USD");
+  EXPECT_EQ(prices[1]->percentage_change_24h, "0.5871625385632929");
+  EXPECT_EQ(prices[1]->source, mojom::AssetPriceSource::kJupiter);
 
-  EXPECT_EQ(prices[3]->from_asset, "link");
-  EXPECT_EQ(prices[3]->to_asset, "usd");
-  EXPECT_EQ(prices[3]->price, "83.77");
-  EXPECT_EQ(prices[3]->asset_timeframe_change, "1.7646208048244043");
-
-  // Missing from_asset in payload
+  // Test with native tokens
   prices.clear();
-  EXPECT_TRUE(ParseAssetPrice(ParseJson(json), {"A1", "A2", "A3"},
-                              {"B1", "B2", "B3"}, &prices));
-  EXPECT_EQ(prices.size(), 0UL);
+  json = R"([
+    {
+      "coin": "BTC",
+      "chain_id": "bitcoin_mainnet",
+      "price": "45000.0",
+      "percentage_change_24h": "2.5",
+      "vs_currency": "USD",
+      "cache_status": "HIT",
+      "source": "coingecko"
+    },
+    {
+      "coin": "ETH",
+      "chain_id": "0x1",
+      "price": "2800.0",
+      "percentage_change_24h": "-1.2",
+      "vs_currency": "USD",
+      "cache_status": "HIT",
+      "source": "coingecko"
+    }
+  ])";
+  prices = ParseAssetPrices(ParseJson(json));
+  ASSERT_EQ(prices.size(), 2UL);
+
+  // Check BTC native token
+  EXPECT_EQ(prices[0]->coin, mojom::CoinType::BTC);
+  EXPECT_EQ(prices[0]->price, "45000.0");
+  EXPECT_EQ(prices[0]->vs_currency, "USD");
+  EXPECT_EQ(prices[0]->percentage_change_24h, "2.5");
+  EXPECT_EQ(prices[0]->source, mojom::AssetPriceSource::kCoingecko);
+
+  // Check ETH native token
+  EXPECT_EQ(prices[1]->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(prices[1]->chain_id, "0x1");
+  EXPECT_EQ(prices[1]->price, "2800.0");
+  EXPECT_EQ(prices[1]->vs_currency, "USD");
+  EXPECT_EQ(prices[1]->percentage_change_24h, "-1.2");
+  EXPECT_EQ(prices[1]->source, mojom::AssetPriceSource::kCoingecko);
+
+  // Test with EUR currency
   prices.clear();
-  EXPECT_TRUE(ParseAssetPrice(ParseJson(json), {"A1"}, {"B1", "B2"}, &prices));
-  EXPECT_EQ(prices.size(), 0UL);
+  json = R"([
+    {
+      "coin": "BTC",
+      "chain_id": "bitcoin_mainnet",
+      "price": "42000.0",
+      "percentage_change_24h": "0.1",
+      "vs_currency": "EUR",
+      "cache_status": "HIT",
+      "source": "coingecko"
+    }
+  ])";
+  prices = ParseAssetPrices(ParseJson(json));
+  ASSERT_EQ(prices.size(), 1UL);
+  EXPECT_EQ(prices[0]->coin, mojom::CoinType::BTC);
+  EXPECT_EQ(prices[0]->price, "42000.0");
+  EXPECT_EQ(prices[0]->vs_currency, "EUR");
+  EXPECT_EQ(prices[0]->percentage_change_24h, "0.1");
+  EXPECT_EQ(prices[0]->source, mojom::AssetPriceSource::kCoingecko);
+
+  // Test with empty percentage change 24h
   prices.clear();
-  EXPECT_TRUE(ParseAssetPrice(ParseJson(json), {"A1", "A2"}, {"B1"}, &prices));
-  EXPECT_EQ(prices.size(), 0UL);
+  json = R"([
+    {
+      "coin": "BTC",
+      "chain_id": "bitcoin_mainnet",
+      "price": "42000.0",
+      "percentage_change_24h": "",
+      "vs_currency": "EUR",
+      "cache_status": "HIT",
+      "source": "coingecko"
+    }
+  ])";
+  prices = ParseAssetPrices(ParseJson(json));
+  ASSERT_EQ(prices.size(), 1UL);
+  EXPECT_EQ(prices[0]->coin, mojom::CoinType::BTC);
+  EXPECT_EQ(prices[0]->price, "42000.0");
+  EXPECT_EQ(prices[0]->vs_currency, "EUR");
+  EXPECT_EQ(prices[0]->percentage_change_24h, "");
+  EXPECT_EQ(prices[0]->source, mojom::AssetPriceSource::kCoingecko);
+
+  // Test with unknown source
   prices.clear();
+  json = R"([
+    {
+      "coin": "BTC",
+      "chain_id": "bitcoin_mainnet",
+      "price": "42000.0",
+      "percentage_change_24h": "0.1",
+      "vs_currency": "EUR",
+      "cache_status": "HIT",
+      "source": "unknown"
+    }
+  ])";
+  prices = ParseAssetPrices(ParseJson(json));
+  ASSERT_EQ(prices.size(), 1UL);
+  EXPECT_EQ(prices[0]->source, mojom::AssetPriceSource::kUnknown);
 
   // Invalid json input
-  EXPECT_FALSE(
-      ParseAssetPrice(ParseJson("{\"result\": \"no payload property\"}"), {"A"},
-                      {"B"}, &prices));
-  EXPECT_FALSE(ParseAssetPrice(ParseJson("3615"), {"A"}, {"B"}, &prices));
-  EXPECT_FALSE(ParseAssetPrice(ParseJson("[3615]"), {"A"}, {"B"}, &prices));
-  EXPECT_FALSE(ParseAssetPrice(base::Value(), {"A"}, {"B"}, &prices));
+  prices = ParseAssetPrices(ParseJson("{\"result\": \"not an array\"}"));
+  EXPECT_EQ(prices.size(),
+            0UL);  // Should return empty vector for invalid input
+
+  prices = ParseAssetPrices(ParseJson("3615"));
+  EXPECT_EQ(prices.size(), 0UL);
+
+  prices = ParseAssetPrices(base::Value());
+  EXPECT_EQ(prices.size(), 0UL);
+
+  // Empty response array
+  prices = ParseAssetPrices(ParseJson("[]"));
+  EXPECT_EQ(prices.size(), 0UL);
+
+  // Response missing required fields
+  json = R"([{"coin": "BTC"}])";  // missing price
+  prices = ParseAssetPrices(ParseJson(json));
+  EXPECT_EQ(prices.size(), 0UL);  // Should skip invalid entries
 }
 
 TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {

@@ -43,6 +43,7 @@ export type ConversationContext = SendFeedbackState
     associatedContentInfo: Mojom.AssociatedContent[]
     allModels: Mojom.Model[]
     currentModel?: Mojom.Model
+    userDefaultModel?: Mojom.Model
     suggestedQuestions: string[]
     isGenerating: boolean
     suggestionStatus: Mojom.SuggestionGenerationStatus
@@ -78,8 +79,8 @@ export type ConversationContext = SendFeedbackState
     conversationHandler?: Mojom.ConversationHandlerRemote
 
     isTemporaryChat: boolean
-    showAttachments: boolean
-    setShowAttachments: (show: boolean) => void
+    attachmentsDialog: 'tabs' | null
+    setAttachmentsDialog: (show: 'tabs' | null) => void
     uploadFile: (useMediaCapture: boolean) => void
     getScreenshots: () => void
     removeFile: (index: number) => void
@@ -133,8 +134,8 @@ export const defaultContext: ConversationContext = {
   setIsToolsMenuOpen: () => {},
   isTemporaryChat: false,
   disassociateContent: () => {},
-  showAttachments: false,
-  setShowAttachments: () => {},
+  attachmentsDialog: null,
+  setAttachmentsDialog: () => {},
   uploadFile: (useMediaCapture: boolean) => {},
   getScreenshots: () => {},
   removeFile: () => {},
@@ -166,10 +167,10 @@ export const ConversationReactContext =
 export function ConversationContextProvider(props: React.PropsWithChildren) {
   const [context, setContext] = React.useState<ConversationContext>({
     ...defaultContext,
-    setShowAttachments: (showAttachments: boolean) => {
+    setAttachmentsDialog: (attachmentsDialog: 'tabs' | null) => {
       setContext((value) => ({
         ...value,
-        showAttachments,
+        attachmentsDialog,
       }))
     },
   })
@@ -197,7 +198,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   React.useEffect(() => {
     if (unassociatedTabs.length === 0) {
       setPartialContext({
-        showAttachments: false,
+        attachmentsDialog: null,
       })
     }
   }, [unassociatedTabs])
@@ -226,11 +227,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   const getModelContext = (
     currentModelKey: string,
+    defaultModelKey: string,
     allModels: Mojom.Model[],
   ): Partial<ConversationContext> => {
     return {
       allModels,
       currentModel: allModels.find((m) => m.key === currentModelKey),
+      userDefaultModel: allModels.find((m) => m.key === defaultModelKey),
     }
   }
 
@@ -265,6 +268,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
           isRequestInProgress: isGenerating,
           allModels: models,
           currentModelKey,
+          defaultModelKey,
           suggestedQuestions,
           suggestionStatus,
           associatedContent,
@@ -275,7 +279,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       setPartialContext({
         conversationUuid,
         isGenerating,
-        ...getModelContext(currentModelKey, models),
+        ...getModelContext(currentModelKey, defaultModelKey, models),
         suggestedQuestions,
         suggestionStatus,
         associatedContentInfo: associatedContent,
@@ -312,8 +316,15 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     listenerIds.push(id)
 
     id = callbackRouter.onModelDataChanged.addListener(
-      (conversationModelKey: string, allModels: Mojom.Model[]) =>
-        setPartialContext(getModelContext(conversationModelKey, allModels)),
+      (
+        conversationModelKey: string,
+        defaultModelKey: string,
+        allModels: Mojom.Model[],
+      ) => {
+        setPartialContext(
+          getModelContext(conversationModelKey, defaultModelKey, allModels),
+        )
+      },
     )
     listenerIds.push(id)
 

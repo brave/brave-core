@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 7d88b0ae8b22a4b329c1e9e9c7e89ad7a49e0ee3..4fb1468cff9b0538d0fc938a5fe9fe4013010f09 100644
+index 307d4ddd0e384fc0fc1e609eb7f23799c83ccd9f..fef38e7ad5f1f4f450786409be25a0e0340201fe 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -681,6 +681,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -696,6 +696,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
        prefs::kNTPHomeCustomizationNewBadgeImpressionCount, 0);
  
    registry->RegisterBooleanPref(prefs::kWidgetsForMultiProfile, false);
@@ -10,10 +10,10 @@ index 7d88b0ae8b22a4b329c1e9e9c7e89ad7a49e0ee3..4fb1468cff9b0538d0fc938a5fe9fe40
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1124,6 +1125,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   // Deprecated 08/2025.
-   registry->RegisterDictionaryPref(kInvalidationClientIDCache);
-   registry->RegisterDictionaryPref(kInvalidationTopicsToHandler);
+@@ -1148,6 +1149,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   registry->RegisterBooleanPref(kParcelTrackingDisabled, false);
+   registry->RegisterBooleanPref(
+       kHomeCustomizationMagicStackParcelTrackingEnabled, false);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  

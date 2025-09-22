@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/new_tab_takeover/mojom/new_tab_takeover.mojom.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -17,8 +18,8 @@
 #include "ui/webui/mojo_web_ui_controller.h"
 
 namespace ntp_background_images {
+class NTPBackgroundImagesService;
 class NTPSponsoredRichMediaAdEventHandler;
-class ViewCounterService;
 }  // namespace ntp_background_images
 
 // On desktop, we use a Web UI to display new tab pages. On Android, however,
@@ -33,7 +34,8 @@ class NewTabTakeoverUI : public ui::MojoWebUIController,
  public:
   NewTabTakeoverUI(
       content::WebUI* const web_ui,
-      ntp_background_images::ViewCounterService* view_counter_service,
+      ntp_background_images::NTPBackgroundImagesService&
+          ntp_background_images_service,
       std::unique_ptr<
           ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
           rich_media_ad_event_handler);
@@ -53,14 +55,15 @@ class NewTabTakeoverUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<
           ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
           event_handler) override;
-  void GetCurrentWallpaper(GetCurrentWallpaperCallback callback) override;
+  void GetCurrentWallpaper(const std::string& creative_instance_id,
+                           GetCurrentWallpaperCallback callback) override;
   void NavigateToUrl(const GURL& url) override;
 
   mojo::Receiver<new_tab_takeover::mojom::NewTabTakeover>
       new_tab_takeover_receiver_{this};
 
-  raw_ptr<ntp_background_images::ViewCounterService>
-      view_counter_service_;  // Not owned.
+  const raw_ref<ntp_background_images::NTPBackgroundImagesService>
+      ntp_background_images_service_;  // Not owned.
 
   std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
       rich_media_ad_event_handler_;

@@ -834,8 +834,8 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
                                 mojom::CardanoProviderPaginationPtr paginate,
                                 TestCardanoApi::GetUtxosCallback callback) {
             EXPECT_EQ("1", amount.value());
-            EXPECT_EQ(2u, paginate->page);
-            EXPECT_EQ(3u, paginate->limit);
+            EXPECT_EQ(2, paginate->page);
+            EXPECT_EQ(3, paginate->limit);
             std::move(callback).Run(std::vector<std::string>({"1", "2"}),
                                     nullptr);
           }));
@@ -977,6 +977,34 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_WrongPagination) {
     dict_value.Set("maxNumber", base::Value(2));
 
     EXPECT_EQ(dict_value, result);
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_NullResult) {
+  TestCardanoProvider* provider = test_content_browser_client_.GetProvider(
+      web_contents(browser())->GetPrimaryMainFrame());
+  auto cardano_api = std::make_unique<TestCardanoApi>();
+  ON_CALL(*provider, Enable(_, _))
+      .WillByDefault(::testing::Invoke(
+          [&](mojo::PendingReceiver<mojom::CardanoApi> receiver,
+              TestCardanoProvider::EnableCallback callback) {
+            cardano_api->BindReceiver(std::move(receiver));
+            std::move(callback).Run(nullptr);
+          }));
+  ON_CALL(*cardano_api, GetUtxos(_, _, _))
+      .WillByDefault(
+          ::testing::Invoke([&](const std::optional<std::string>& amount,
+                                mojom::CardanoProviderPaginationPtr paginate,
+                                TestCardanoApi::GetUtxosCallback callback) {
+            std::move(callback).Run(std::nullopt, nullptr);
+          }));
+
+  {
+    auto result = EvalJs(web_contents(browser()),
+                         "(async () => { try { return await (await "
+                         "window.cardano.brave.enable()).getUtxos() } "
+                         "catch(error) {return error} })();");
+    EXPECT_EQ(base::Value(), result);
   }
 }
 

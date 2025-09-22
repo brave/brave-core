@@ -12,7 +12,7 @@ import { getAssetIdKey } from '../../../../utils/asset-utils'
 import { getTokenPriceFromRegistry } from '../../../../utils/pricing-utils'
 
 // Types
-import { BraveWallet, SpotPriceRegistry } from '../../../../constants/types'
+import { BraveWallet } from '../../../../constants/types'
 
 // Components
 import {
@@ -30,7 +30,7 @@ interface VirtualizedTokensListProps {
   selectedFromToken?: BraveWallet.BlockchainToken
   selectedToToken?: BraveWallet.BlockchainToken
   selectingFromOrTo: 'from' | 'to'
-  spotPriceRegistry?: SpotPriceRegistry
+  spotPrices?: BraveWallet.AssetPrice[]
   isLoadingSpotPrices?: boolean
   firstNoBalanceTokenKey?: string
   modalType: 'send' | 'swap' | 'bridge'
@@ -67,7 +67,7 @@ const ListItem = (props: ListItemProps) => {
     selectedToToken,
     selectingFromOrTo,
     setSize,
-    spotPriceRegistry,
+    spotPrices,
     isLoadingSpotPrices,
     firstNoBalanceTokenKey,
     modalType,
@@ -126,9 +126,7 @@ const ListItem = (props: ListItemProps) => {
         disabledText={disabledText}
         isLoadingSpotPrice={isLoadingSpotPrices}
         spotPrice={
-          spotPriceRegistry
-            ? getTokenPriceFromRegistry(spotPriceRegistry, token)
-            : undefined
+          spotPrices ? getTokenPriceFromRegistry(spotPrices, token) : undefined
         }
         ref={handleSetSize}
         tokenHasMultipleAccounts={getAllAccountsWithBalance(token).length > 1}
@@ -146,7 +144,7 @@ export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
     selectedFromToken,
     selectedToToken,
     selectingFromOrTo,
-    spotPriceRegistry,
+    spotPrices,
     isLoadingSpotPrices,
     firstNoBalanceTokenKey,
     modalType,
@@ -217,7 +215,7 @@ export const VirtualizedTokenList = (props: VirtualizedTokensListProps) => {
                 selectingFromOrTo={selectingFromOrTo}
                 onSelectToken={onSelectToken}
                 setSize={setSize}
-                spotPriceRegistry={spotPriceRegistry}
+                spotPrices={spotPrices}
                 isLoadingSpotPrices={isLoadingSpotPrices}
                 getAllAccountsWithBalance={getAllAccountsWithBalance}
                 firstNoBalanceTokenKey={firstNoBalanceTokenKey}

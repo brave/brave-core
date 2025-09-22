@@ -10,14 +10,20 @@
 
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
+#include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
+#include "base/timer/timer.h"
+#include "base/values.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
@@ -26,6 +32,7 @@ namespace psst {
 
 namespace {
 
+constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
 const char kShouldProcessKey[] = "should_process_key";
 const char kSignedUserId[] = "user";
 
@@ -157,10 +164,9 @@ void PsstTabWebContentsObserver::InsertUserScript(
   if (!rule || !ShouldInsertScriptForPage(id)) {
     return;
   }
-
   const std::string user_script = rule->user_script();
-  inject_script_callback_.Run(
-      user_script,
+  RunWithTimeout(
+      id, user_script,
       base::BindOnce(&PsstTabWebContentsObserver::OnUserScriptResult,
                      weak_factory_.GetWeakPtr(), id, std::move(rule)));
 }
@@ -169,10 +175,16 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     int id,
     std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result) {
+  if (!ShouldInsertScriptForPage(id)) {
+    return;
+  }
+
+  timeout_timer_.Stop();
+
   // We should break the flow in case of policy script is not available or user
   // script result is not a dictionary
-  if (!rule || !ShouldInsertScriptForPage(id) ||
-      rule->policy_script().empty() || !user_script_result.is_dict()) {
+  if (!rule || rule->policy_script().empty() || !user_script_result.is_dict()) {
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
 
@@ -180,10 +192,12 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   if (const auto* user_id =
           user_script_result.GetDict().FindString(kSignedUserId);
       !user_id || user_id->empty()) {
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
 
-  inject_script_callback_.Run(
+  RunWithTimeout(
+      id,
       MaybeAddParamsToScript(std::move(rule),
                              std::move(user_script_result).TakeDict()),
       base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
@@ -193,14 +207,45 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
 void PsstTabWebContentsObserver::OnPolicyScriptResult(
     int nav_entry_id,
     base::Value script_result) {
-  const auto script_result_parsed =
-      PolicyScriptResult::FromValue(script_result);
-  if (!script_result_parsed || !ShouldInsertScriptForPage(nav_entry_id)) {
+  if (!ShouldInsertScriptForPage(nav_entry_id)) {
     return;
   }
 
-  ui_delegate_->UpdateTasks(script_result_parsed->progress,
-                            script_result_parsed->applied_tasks);
+  timeout_timer_.Stop();
+
+  const auto script_result_parsed =
+      PolicyScriptResult::FromValue(script_result);
+  if (!script_result_parsed) {
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    return;
+  }
+
+  ui_delegate_->UpdateTasks(
+      script_result_parsed->progress, script_result_parsed->applied_tasks,
+      script_result_parsed->progress == 100 ? mojom::PsstStatus::kCompleted
+                                            : mojom::PsstStatus::kInProgress);
+}
+
+void PsstTabWebContentsObserver::RunWithTimeout(
+    const int last_committed_entry_id,
+    const std::string& script,
+    InsertScriptInPageCallback callback) {
+  timeout_timer_.Start(
+      FROM_HERE, kScriptTimeout,
+      base::BindOnce(&PsstTabWebContentsObserver::OnScriptTimeout,
+                     weak_factory_.GetWeakPtr(), last_committed_entry_id));
+  inject_script_callback_.Run(script, std::move(callback));
+}
+
+void PsstTabWebContentsObserver::OnScriptTimeout(int id) {
+  if (!ShouldInsertScriptForPage(id)) {
+    return;
+  }
+
+  // Make sure any in-progress script that returns after the timeout is a no-op
+  weak_factory_.InvalidateWeakPtrs();
+
+  ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
 }
 
 }  // namespace psst

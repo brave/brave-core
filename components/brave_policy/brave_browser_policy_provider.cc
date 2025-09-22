@@ -9,6 +9,7 @@
 
 #include "base/logging.h"
 #include "base/values.h"
+#include "brave/components/brave_origin/brave_origin_utils.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
@@ -27,6 +28,7 @@ void BraveBrowserPolicyProvider::Init(policy::SchemaRegistry* registry) {
 
   // Trigger immediate policy loading to ensure policies are available in
   // chrome://policy
+  // The actual policies will be conditionally added in LoadPolicies.
   RefreshPolicies(policy::PolicyFetchReason::kBrowserStart);
 }
 

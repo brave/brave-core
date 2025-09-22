@@ -6,11 +6,11 @@
 #include "base/check.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -26,7 +26,6 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
-#include "chrome/browser/ui/omnibox/clipboard_utils.h"
 #endif  // BUILDFLAG(!IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -133,13 +132,5 @@ bool ChromeAutocompleteProviderClient::IsLeoProviderEnabled() {
   return profile_->IsRegularProfile() &&
          GetPrefs()->GetBoolean(
              ai_chat::prefs::kBraveChatAutocompleteProviderEnabled);
-#endif
-}
-
-std::u16string ChromeAutocompleteProviderClient::GetClipboardText() const {
-#if !BUILDFLAG(IS_ANDROID)
-  return ::GetClipboardText(/*notify_if_restricted*/ false);
-#else
-  return u"";
 #endif
 }

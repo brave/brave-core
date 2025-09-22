@@ -16,14 +16,13 @@ void AdjustBoundsToFitWorkAreaForNativeView(gfx::Rect* bounds,
   DCHECK(bounds);
 
   gfx::Rect work_area =
-      display::Screen::GetScreen()->GetDisplayMatching(*bounds).work_area();
+      display::Screen::Get()->GetDisplayMatching(*bounds).work_area();
 
   if (work_area.IsEmpty()) {
     // There is no matching display for these bounds so we should move the ad
     // tooltip to the nearest display
-    work_area = display::Screen::GetScreen()
-                    ->GetDisplayNearestView(native_view)
-                    .work_area();
+    work_area =
+        display::Screen::Get()->GetDisplayNearestView(native_view).work_area();
   }
 
   bounds->AdjustToFit(work_area);

@@ -126,7 +126,7 @@ public struct BraveVPNRegionListView: View {
         }
       },
       label: {
-        Image(systemName: "info.circle")
+        Image(braveSystemName: "leo.info.ios-only")
           .foregroundStyle(Color(braveSystemName: .iconInteractive))
       }
     )

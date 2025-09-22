@@ -30,7 +30,7 @@ import {
   makeNetworkAsset, //
 } from '../../../../options/asset-options'
 import {
-  getPriceIdForToken,
+  getPriceRequestsForTokens,
   getTokenPriceAmountFromRegistry,
 } from '../../../../utils/pricing-utils'
 import {
@@ -86,16 +86,16 @@ export function SuggestedMaxPriorityFeeSelector(props: Props) {
     return makeNetworkAsset(selectedNetwork)
   }, [selectedNetwork])
 
-  const networkTokenPriceIds = React.useMemo(
-    () => (networkAsset ? [getPriceIdForToken(networkAsset)] : []),
+  const networkTokenPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens([networkAsset]),
     [networkAsset],
   )
 
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
 
   const { data: spotPriceRegistry } = useGetTokenSpotPricesQuery(
-    networkTokenPriceIds.length && defaultFiatCurrency
-      ? { ids: networkTokenPriceIds, toCurrency: defaultFiatCurrency }
+    networkTokenPriceRequests.length && defaultFiatCurrency
+      ? { requests: networkTokenPriceRequests, vsCurrency: defaultFiatCurrency }
       : skipToken,
     querySubscriptionOptions60s,
   )

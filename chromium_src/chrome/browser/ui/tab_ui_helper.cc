@@ -8,6 +8,7 @@
 #include <string>
 
 #include "brave/browser/ui/tabs/features.h"
+#include "content/public/browser/navigation_controller.h"
 
 #define GetTitle GetTitle_ChromiumImpl
 
@@ -38,10 +39,23 @@ void TabUIHelper::UpdateLastOrigin() {
   // custom title. This is to ensure that the custom title is not stale.
   const auto origin =
       web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
-  if (last_origin_.IsSameOriginWith(origin)) {
+  if (last_origin_ && last_origin_->IsSameOriginWith(origin)) {
     return;
   }
 
-  custom_title_.reset();
+  // In case this tab is newly created one and has not yet commited real page,
+  // e.g. restoring tabs, we do not reset the custom title. In case of
+  // restoring, the real page will be commited soon and the custom title will be
+  // reset or persisted based on the origin of the real page.
+  if (web_contents()->GetController().IsInitialNavigation()) {
+    return;
+  }
+
+  // We reset the custom title only when the last origin is initialized. When
+  // restoring tabs, last origin could be uninitialized yet, and we do not want
+  // to reset the custom title in that case.
+  if (last_origin_) {
+    custom_title_.reset();
+  }
   last_origin_ = origin;
 }

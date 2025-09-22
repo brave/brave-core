@@ -32,12 +32,12 @@ import { Row } from '../../shared/style'
 export const PortfolioOverviewHeader = () => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   // Routing
   const history = useHistory()
 
-  return isPanel || isAndroid ? (
+  return isPanel || isMobile ? (
     <DefaultPanelHeader
       expandRoute={WalletRoutes.PortfolioAssets}
       title={getLocale('braveWalletTopNavPortfolio')}

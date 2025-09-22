@@ -15,6 +15,9 @@
 
 # This test fails because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
+-All/AppMenuModelSigninPromoTest.SignedIn/*
+-All/CanOfferSigninWithSigninToSyncFeatureTest.*
+-CanOfferSigninTest.ProfileConnected
 -ChromeAutofillAiClientTest.EligibilityOf*
 -TabOrganizationServiceTest.*
 
@@ -113,6 +116,11 @@
 -ComposeEnablingTest.*
 -ComposePopupAutofillDriverTest.*
 -DigitalIdentityLowRiskOriginsTest.*
+-LoginStateCheckerTest.CachesOnlyLastPageContent
+-LoginStateCheckerTest.CachesPageContentIfRequestInFlight
+-LoginStateCheckerTest.ExceedsMaxLoginChecksAndFails
+-LoginStateCheckerTest.UserIsLoggedInOnFirstAttempt
+-LoginStateCheckerTest.UserIsLoggedInOnSecondAttempt
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
 -PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
 -PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
@@ -229,6 +237,9 @@
 # features::kEarlyHintsPreloadForNavigation
 -PreconnectManagerTest.*
 
+# This test fails because we disable kBookmarkTriggerForPrerender2KillSwitch
+-BookmarkBarPreloadPipelineManagerTest.DisallowSearchUrlBookmarkBar
+
 # This test is disabled because the Brave NTP doesn't support this feature
 -NewTabPageModulesTest.HasModulesEnabled_SignedInAccount
 
@@ -318,6 +329,7 @@
 -ClientSideDetectionHostTest.CSDFeaturesCacheContainsVerdictAndFullDebuggingMetadata
 -ClientSideDetectionHostTest.ClipboardCopyApiCallDoesNotProceedWithClassification
 -ClientSideDetectionHostTest.ClipboardCopyApiCallDoesNotProceedWithClassificationWithHighHCAcceptanceRate
+-ClientSideDetectionHostTest.ClipboardCopyApiCallDoesNotProceedWithClassificationWithZeroSampleRate
 -ClientSideDetectionHostTest.ClipboardCopyApiCallProceedsWithClassification
 -ClientSideDetectionHostTest.NoRTLookupResponseInRedirectChainContainsForceRequest
 -ClientSideDetectionHostTest.PhishingDetectionDoneCalledTwiceShouldSucceed
@@ -341,7 +353,10 @@
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
+-NotificationTelemetryServiceTest.EmptyDbFoundOverTime/*
+-NotificationTelemetryServiceTest.NonEmptyTelemetryStoreAtConstruction/*
 -NotificationTelemetryServiceTest.SendsTelemetryReport/*
+-NotificationTelemetryServiceTest.ServiceWorkerSubscriptionRecordsServiceWorkerBehavior/*
 -SafeBrowsingResultTest.GetState_EnabledEnhanced
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains_EsbEnabledOnStartup
@@ -398,6 +413,7 @@
 -WhatsNewUtilTests.ShouldShowForStateUsesChromeVersionForRefresh
 
 # This test fails because we disable page_image_service::kImageService feature.
+-NewTabPageModulesTest.MakeModuleIdDetails_*
 -NewTabPageModulesTest.MakeModuleIdNames
 
 # These tests fail because we disable
@@ -419,6 +435,7 @@
 -All/PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
 -All/PageInfoCookiesContentView3pcdCookieToggleTest.*
 -CookieControlsUserBypassTest.*
+-PageInfoCookiesContentViewTest.*
 -PageInfoCookiesContentView3pcdCookieToggleTest.*
 -PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
 -PageInfoCookiesContentViewAlwaysBlock3pcsIncognito.DisplaysIncognitoDescriptionWhenInIncognito
@@ -520,6 +537,7 @@
 # brave://settings/safetyCheck which also involves always returning a "safe"
 # password card state
 -All/PasswordStatusCheckServiceParameterizedCardTest.PasswordCardState/*
+-PasswordStatusCheckServiceBaseTest.CheckTimeUpdatedAfterRunScheduledInTheFuture
 -PasswordStatusCheckServiceBaseTest.PasswordCardCheckTime
 -PasswordStatusCheckServiceBaseTest.PasswordCheckNoPasswords
 -SafetyHubCardDataHelperTest.GetOverallState_Multi
@@ -640,6 +658,7 @@
 # This test fails because CONTENT_SETTING_DEFAULT cannot be used as the default
 # setting any more. https://github.com/brave/brave-browser/issues/48374
 -HostContentSettingsMapTest.IncognitoChangesDoNotPersist
+-HostContentSettingsMapTest.SetOneTimeGeolocationSetting
 
 # These tests fail because we enable features::kTabstripComboButton and stub
 # features::HasTabSearchToolbarButton() to return true
@@ -679,6 +698,7 @@
 -CountingPolicyTest.*
 -CWSInfoServiceTest.IgnoresNonCWSExtensions
 -DeclarativeContentActionTest.*
+-DeviceAPIServiceWebAppTest.ReportErrorForDefaultUser
 -DevToolsUIBindingsTest.SanitizeFrontendURL
 -DevToolsUIDataSourceTest.TestDevToolsRemoteURL
 -DownloadProtectionServiceTest.*

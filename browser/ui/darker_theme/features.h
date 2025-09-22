@@ -10,7 +10,7 @@
 
 namespace darker_theme::features {
 
-// Feature to enable "Darker Theme"
+// Feature to enable "Midnight Theme" which is darker than usual dark themes.
 BASE_DECLARE_FEATURE(kBraveDarkerTheme);
 
 }  // namespace darker_theme::features

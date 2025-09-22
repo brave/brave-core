@@ -31,14 +31,14 @@ export const AccountsMenu = () => {
   const history = useHistory()
 
   // Selectors
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   return (
     <StyledWrapper yPosition={42}>
       {CreateAccountOptions.filter(
         (option) =>
           // Filter out hardware wallet item on Android.
-          !isAndroid || option.name !== 'braveWalletConnectHardwareWallet',
+          !isMobile || option.name !== 'braveWalletConnectHardwareWallet',
       ).map((option) => (
         <PopupButton
           key={option.name}

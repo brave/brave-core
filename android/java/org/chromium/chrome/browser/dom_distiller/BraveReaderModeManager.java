@@ -9,7 +9,6 @@ import android.app.Activity;
 
 import androidx.annotation.VisibleForTesting;
 
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -17,6 +16,8 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabUtils;
 import org.chromium.components.messages.MessageDispatcher;
 import org.chromium.components.user_prefs.UserPrefs;
+
+import java.util.function.Supplier;
 
 public class BraveReaderModeManager extends ReaderModeManager {
     // To be removed in bytecode, parent variable will be used instead.

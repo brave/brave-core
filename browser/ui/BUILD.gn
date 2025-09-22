@@ -181,8 +181,6 @@ source_set("ui") {
       "brave_file_select_utils.h",
       "brave_icon_with_badge_image_source.cc",
       "brave_icon_with_badge_image_source.h",
-      "brave_layout_constants.cc",
-      "brave_layout_constants.h",
       "brave_pages.cc",
       "brave_pages.h",
       "brave_scheme_utils.cc",
@@ -209,8 +207,6 @@ source_set("ui") {
       "startup/brave_startup_tab_provider_impl.h",
       "tabs/brave_tab_color_mixer.cc",
       "tabs/brave_tab_color_mixer.h",
-      "tabs/brave_tab_layout_constants.cc",
-      "tabs/brave_tab_layout_constants.h",
       "tabs/brave_tab_menu_model.cc",
       "tabs/brave_tab_menu_model.h",
       "tabs/shared_pinned_tab_dummy_view.h",
@@ -325,13 +321,16 @@ source_set("ui") {
       "//brave/components/sidebar/common",
       "//brave/components/speedreader/common/buildflags",
       "//chrome/app:generated_resources",
+      "//chrome/browser/app_mode",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/favicon",
       "//chrome/browser/importer",
       "//chrome/browser/profiles",
       "//chrome/browser/search",
+      "//chrome/browser/send_tab_to_self",
       "//chrome/browser/sync",
       "//chrome/browser/themes",
+      "//chrome/browser/ui:layout_constants",
       "//chrome/browser/ui:url_identity",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/content_settings",
@@ -340,10 +339,12 @@ source_set("ui") {
       "//chrome/browser/ui/prefs",
       "//chrome/browser/ui/profiles",
       "//chrome/browser/ui/tabs:tab_menu",
+      "//chrome/browser/ui/views/page_action",
       "//chrome/browser/ui/views/side_panel",
       "//chrome/browser/ui/webui/searchbox",
       "//chrome/browser/ui/webui/settings",
       "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings",
+      "//chrome/browser/ui/webui_browser:feature_flag",
       "//chrome/common:channel_info",
       "//components/bookmarks/common",
       "//components/google/core/common",
@@ -441,7 +442,6 @@ source_set("ui") {
       "commander/commander_service.cc",
       "commander/commander_service.h",
       "commander/commander_service_factory.cc",
-      "commander/commander_service_factory.h",
       "commander/commander_service_factory.h",
       "commander/entity_match.cc",
       "commander/entity_match.h",
@@ -609,10 +609,12 @@ source_set("ui") {
     ]
 
     deps += [
+      "//brave/browser/ui/darker_theme",
       "//brave/browser/ui/side_panel",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
       "//chrome/browser/enterprise/watermark:watermark_view_lib",
+      "//chrome/browser/sharing_hub",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
       "//chrome/browser/ui/javascript_dialogs",
@@ -620,6 +622,7 @@ source_set("ui") {
       "//chrome/browser/ui/views/bubble",
       "//chrome/browser/ui/views/download",
       "//chrome/browser/ui/views/infobars",
+      "//chrome/browser/ui/views/interaction",
       "//chrome/browser/ui/views/toolbar",
       "//components/bookmarks/browser",
     ]
@@ -1005,7 +1008,6 @@ source_set("ui") {
 
   if (enable_speedreader) {
     deps += [ "//brave/browser/ui/speedreader" ]
-
     if (toolkit_views) {
       deps += [ "//brave/browser/ui/views/speedreader" ]
     }
@@ -1178,8 +1180,6 @@ source_set("ui") {
     sources += [
       "toolbar/brave_vpn_menu_model.cc",
       "toolbar/brave_vpn_menu_model.h",
-      "webui/brave_vpn/brave_vpn_localized_string_provider.cc",
-      "webui/brave_vpn/brave_vpn_localized_string_provider.h",
       "webui/brave_vpn/vpn_panel_handler.cc",
       "webui/brave_vpn/vpn_panel_handler.h",
       "webui/brave_vpn/vpn_panel_ui.cc",
@@ -1379,6 +1379,26 @@ source_set("ui") {
       "//brave/components/containers/core/mojom",
     ]
   }
+}
+
+source_set("brave_layout_constants") {
+  visibility = [ "//chrome/browser/ui:layout_constants" ]
+  sources = [
+    "brave_layout_constants.cc",
+    "brave_layout_constants.h",
+    "tabs/brave_tab_layout_constants.cc",
+    "tabs/brave_tab_layout_constants.h",
+  ]
+
+  # Circular dependency on "//chrome/browser/ui:layout_constants" is addressed
+  # via brave_chrome_browser_ui_layout_constants_allow_circular_includes_from
+  # in brave/browser/sources.gni. This approach is only done as a one-off
+  # because "//chrome/browser/ui/views" target is a `component` and it depends
+  # on "//chrome/browser/ui:layout_constants".
+  deps = [
+    ":brave_tab_features",
+    "//ui/base",
+  ]
 }
 
 source_set("brave_tab_prefs") {

@@ -75,6 +75,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesCallback;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesModel;
@@ -182,6 +183,7 @@ import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tab.TabSelectionType;
+import org.chromium.chrome.browser.tabbed_mode.BraveTabbedAppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabList;
 import org.chromium.chrome.browser.tabmodel.TabModel;
@@ -190,6 +192,7 @@ import org.chromium.chrome.browser.toolbar.BraveToolbarManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
@@ -445,6 +448,24 @@ public abstract class BraveActivity extends ChromeActivity
             return true;
         } else if (id == R.id.reload_menu_id) {
             setComesFromNewTab(true);
+        } else if (id == R.id.preferences_id) {
+            final AppMenuPropertiesDelegate delegate = createAppMenuPropertiesDelegate();
+            assert delegate instanceof BraveTabbedAppMenuPropertiesDelegate;
+            final BraveTabbedAppMenuPropertiesDelegate braveTabbedAppMenuPropertiesDelegate =
+                    (BraveTabbedAppMenuPropertiesDelegate) delegate;
+
+            final Bundle bundle =
+                    CustomizeBraveMenu.populateBundle(
+                            getResources(),
+                            new Bundle(),
+                            braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelList(),
+                            braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
+            SettingsNavigation settingsNavigation =
+                    SettingsNavigationFactory.createSettingsNavigation();
+            // Follow upstream code and pass null as fragment to show
+            // that defaults to main settings screen.
+            settingsNavigation.startSettings(this, null, bundle);
+            return true;
         }
 
         if (super.onMenuOrKeyboardAction(id, fromMenu, triggeringMotion)) {
@@ -503,6 +524,16 @@ public abstract class BraveActivity extends ChromeActivity
             enableSpeedreaderMode();
         } else if (id == R.id.brave_leo_id) {
             openBraveLeo();
+        } else if (id == CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID) {
+            final AppMenuPropertiesDelegate delegate = createAppMenuPropertiesDelegate();
+            assert delegate instanceof BraveTabbedAppMenuPropertiesDelegate;
+            final BraveTabbedAppMenuPropertiesDelegate braveTabbedAppMenuPropertiesDelegate =
+                    (BraveTabbedAppMenuPropertiesDelegate) delegate;
+            // Get full menu items and pass them to settings.
+            CustomizeBraveMenu.openCustomizeMenuSettings(
+                    this,
+                    braveTabbedAppMenuPropertiesDelegate.buildMainMenuModelList(),
+                    braveTabbedAppMenuPropertiesDelegate.buildPageActionsModelList());
         } else {
             return false;
         }
@@ -1469,7 +1500,7 @@ public abstract class BraveActivity extends ChromeActivity
                                 Snackbar.TYPE_ACTION,
                                 Snackbar.UMA_UNKNOWN)
                         .setAction(getResources().getString(R.string.update), null)
-                        .setSingleLine(false)
+                        .setDefaultLines(false)
                         .setDuration(10000);
         Tab currentTab = getActivityTabProvider().get();
         if (currentTab != null) {

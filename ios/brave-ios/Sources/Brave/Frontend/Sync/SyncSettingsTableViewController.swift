@@ -82,7 +82,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
     overlayDetails: EmptyOverlayStateDetails(
       title: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewTitle,
       description: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewDescription,
-      icon: UIImage(systemName: "exclamationmark.arrow.triangle.2.circlepath")
+      icon: UIImage(braveSystemNamed: "leo.product.sync")
     )
   )
 

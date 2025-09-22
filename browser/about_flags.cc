@@ -21,6 +21,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -78,6 +79,10 @@
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
+#endif
+
+#if BUILDFLAG(IS_MAC)
+#include "brave/browser/brave_browser_main_parts_mac.h"
 #endif
 
 #if BUILDFLAG(IS_WIN)
@@ -481,12 +486,24 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #define BRAVE_TABS_FEATURE_ENTRIES
 #endif
 
+#define BRAVE_UPGRADE_WHEN_IDLE_FEATURE_ENTRY                                  \
+  IF_BUILDFLAG(                                                                \
+      IS_MAC,                                                                  \
+      EXPAND_FEATURE_ENTRIES({                                                 \
+          "upgrade-when-idle",                                                 \
+          "Upgrade when idle",                                                 \
+          "Restart the browser to apply a pending update when no windows are " \
+          "open, the system is idle, and no data would be cleared on exit.",   \
+          kOsMac,                                                              \
+          FEATURE_VALUE_TYPE(brave::kUpgradeWhenIdle),                         \
+      }))
+
 #if defined(TOOLKIT_VIEWS)
 #define BRAVE_DARKER_THEME_FEATURE_ENTRIES                           \
   EXPAND_FEATURE_ENTRIES({                                           \
-      "brave-darker-theme",                                          \
-      "Brave Darker Theme",                                          \
-      "Enables the Brave Darker theme",                              \
+      "brave-midnight-theme",                                        \
+      "Brave Midnight Theme",                                        \
+      "Enables the Brave Midnight theme",                            \
       kOsWin | kOsMac | kOsLinux,                                    \
       FEATURE_VALUE_TYPE(darker_theme::features::kBraveDarkerTheme), \
   })
@@ -1178,6 +1195,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsAll,                                                              \
           ORIGIN_LIST_VALUE_TYPE(syncer::kSyncServiceURL, ""),                 \
           kBraveSyncImplLink,                                                  \
+      },                                                                       \
+      {                                                                        \
+          "brave-sync-default-passwords",                                      \
+          "Enable password syncing by default",                                \
+          "Turn on password syncing when Sync is enabled.",                    \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_sync::features::kBraveSyncDefaultPasswords),               \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
@@ -1200,6 +1225,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_AI_REWRITER                                                            \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
+  BRAVE_UPGRADE_WHEN_IDLE_FEATURE_ENTRY                                        \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
   BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \
   BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS                                              \

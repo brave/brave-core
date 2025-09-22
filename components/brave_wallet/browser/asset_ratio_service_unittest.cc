@@ -66,6 +66,33 @@ class AssetRatioServiceUnitTest : public testing::Test {
         std::make_unique<AssetRatioService>(shared_url_loader_factory_);
   }
 
+  // Helper function to create AssetPriceRequest
+  std::vector<mojom::AssetPriceRequestPtr> CreatePriceRequests() {
+    std::vector<mojom::AssetPriceRequestPtr> requests;
+
+    // ETH token (BAT)
+    auto eth_request = mojom::AssetPriceRequest::New();
+    eth_request->coin = mojom::CoinType::ETH;
+    eth_request->chain_id = "0x1";
+    eth_request->address = "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
+    requests.push_back(std::move(eth_request));
+
+    // SOL token (USDC)
+    auto sol_request = mojom::AssetPriceRequest::New();
+    sol_request->coin = mojom::CoinType::SOL;
+    sol_request->chain_id = "0x65";
+    sol_request->address = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+    requests.push_back(std::move(sol_request));
+
+    // BTC native token
+    auto btc_request = mojom::AssetPriceRequest::New();
+    btc_request->coin = mojom::CoinType::BTC;
+    btc_request->chain_id = "bitcoin_mainnet";
+    requests.push_back(std::move(btc_request));
+
+    return requests;
+  }
+
   ~AssetRatioServiceUnitTest() override = default;
 
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
@@ -190,88 +217,79 @@ TEST_F(AssetRatioServiceUnitTest, GetSellUrl) {
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetPrice) {
-  SetInterceptor(R"(
-      {
-         "payload":{
-           "bat":{
-             "btc":0.00001732,
-             "btc_timeframe_change":8.021672460190562,
-             "usd":0.55393,
-             "usd_timeframe_change":9.523443444373276
-           },
-           "link":{
-             "btc":0.00261901,
-             "btc_timeframe_change":0.5871625385632929,
-             "usd":83.77,
-             "usd_timeframe_change":1.7646208048244043
-           }
-         },
-         "lastUpdated":"2021-07-16T19:11:28.907Z"
-       })");
+  SetInterceptor(R"([
+    {
+      "coin": "ETH",
+      "chain_id": "0x1",
+      "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+      "price": "0.55393",
+      "percentage_change_24h": "0.012",
+      "vs_currency": "USD",
+      "cache_status": "HIT",
+      "source": "coingecko"
+    },
+    {
+      "coin": "SOL",
+      "chain_id": "0x65",
+      "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "price": "0.998",
+      "percentage_change_24h": "0.02",
+      "vs_currency": "USD",
+      "cache_status": "MISS",
+      "source": "jupiter"
+    },
+    {
+      "coin": "BTC",
+      "chain_id": "bitcoin_mainnet",
+      "price": "102000",
+      "percentage_change_24h": "5.2",
+      "vs_currency": "USD",
+      "cache_status": "MISS",
+      "source": "coingecko"
+    }
+  ])");
 
   std::vector<brave_wallet::mojom::AssetPricePtr> expected_prices_response;
-  auto asset_price = brave_wallet::mojom::AssetPrice::New();
-  asset_price->from_asset = "bat";
-  asset_price->to_asset = "btc";
-  asset_price->price = "0.00001732";
-  asset_price->asset_timeframe_change = "8.021672460190562";
-  expected_prices_response.push_back(std::move(asset_price));
 
-  asset_price = brave_wallet::mojom::AssetPrice::New();
-  asset_price->from_asset = "bat";
-  asset_price->to_asset = "usd";
+  // ETH token (BAT)
+  auto asset_price = brave_wallet::mojom::AssetPrice::New();
+  asset_price->coin = mojom::CoinType::ETH;
+  asset_price->chain_id = "0x1";
+  asset_price->address = "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
   asset_price->price = "0.55393";
-  asset_price->asset_timeframe_change = "9.523443444373276";
+  asset_price->vs_currency = "USD";
+  asset_price->cache_status = mojom::Gate3CacheStatus::kHit;
+  asset_price->source = mojom::AssetPriceSource::kCoingecko;
+  asset_price->percentage_change_24h = "0.012";
   expected_prices_response.push_back(std::move(asset_price));
 
+  // SOL token (USDC)
   asset_price = brave_wallet::mojom::AssetPrice::New();
-  asset_price->from_asset = "link";
-  asset_price->to_asset = "btc";
-  asset_price->price = "0.00261901";
-  asset_price->asset_timeframe_change = "0.5871625385632929";
+  asset_price->coin = mojom::CoinType::SOL;
+  asset_price->chain_id = "0x65";
+  asset_price->address = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  asset_price->price = "0.998";
+  asset_price->vs_currency = "USD";
+  asset_price->cache_status = mojom::Gate3CacheStatus::kMiss;
+  asset_price->source = mojom::AssetPriceSource::kJupiter;
+  asset_price->percentage_change_24h = "0.02";
   expected_prices_response.push_back(std::move(asset_price));
 
+  // BTC native token
   asset_price = brave_wallet::mojom::AssetPrice::New();
-  asset_price->from_asset = "link";
-  asset_price->to_asset = "usd";
-  asset_price->price = "83.77";
-  asset_price->asset_timeframe_change = "1.7646208048244043";
+  asset_price->coin = mojom::CoinType::BTC;
+  asset_price->chain_id = "bitcoin_mainnet";
+  asset_price->price = "102000";
+  asset_price->vs_currency = "USD";
+  asset_price->cache_status = mojom::Gate3CacheStatus::kMiss;
+  asset_price->source = mojom::AssetPriceSource::kCoingecko;
+  asset_price->percentage_change_24h = "5.2";
   expected_prices_response.push_back(std::move(asset_price));
 
   bool callback_run = false;
+  auto requests = CreatePriceRequests();
   asset_ratio_service_->GetPrice(
-      {"bat", "link"}, {"btc", "usd"},
-      brave_wallet::mojom::AssetPriceTimeframe::OneDay,
-      base::BindOnce(&OnGetPrice, &callback_run, true,
-                     std::move(expected_prices_response)));
-
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_run);
-}
-
-TEST_F(AssetRatioServiceUnitTest, GetPriceUppercase) {
-  SetInterceptor(R"(
-       {
-         "payload":{
-           "bat":{
-             "btc":0.00001732,
-             "btc_timeframe_change":8.021672460190562
-           }
-         },
-         "lastUpdated":"2021-07-16T19:11:28.907Z"
-       })");
-
-  std::vector<brave_wallet::mojom::AssetPricePtr> expected_prices_response;
-  auto asset_price = brave_wallet::mojom::AssetPrice::New();
-  asset_price->from_asset = "bat";
-  asset_price->to_asset = "btc";
-  asset_price->price = "0.00001732";
-  asset_price->asset_timeframe_change = "8.021672460190562";
-  expected_prices_response.push_back(std::move(asset_price));
-
-  bool callback_run = false;
-  asset_ratio_service_->GetPrice(
-      {"BAT"}, {"BTC"}, brave_wallet::mojom::AssetPriceTimeframe::OneDay,
+      std::move(requests), "USD",
       base::BindOnce(&OnGetPrice, &callback_run, true,
                      std::move(expected_prices_response)));
 
@@ -284,8 +302,9 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceError) {
   SetErrorInterceptor(error);
   std::vector<brave_wallet::mojom::AssetPricePtr> expected_prices_response;
   bool callback_run = false;
+  auto requests = CreatePriceRequests();
   asset_ratio_service_->GetPrice(
-      {"bat"}, {"btc"}, brave_wallet::mojom::AssetPriceTimeframe::OneDay,
+      std::move(requests), "USD",
       base::BindOnce(&OnGetPrice, &callback_run, false,
                      std::move(expected_prices_response)));
 
@@ -297,8 +316,9 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceUnexpectedResponse) {
   SetInterceptor("expecto patronum");
   std::vector<brave_wallet::mojom::AssetPricePtr> expected_prices_response;
   bool callback_run = false;
+  auto requests = CreatePriceRequests();
   asset_ratio_service_->GetPrice(
-      {"bat"}, {"btc"}, brave_wallet::mojom::AssetPriceTimeframe::OneDay,
+      std::move(requests), "USD",
       base::BindOnce(&OnGetPrice, &callback_run, false,
                      std::move(expected_prices_response)));
 

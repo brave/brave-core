@@ -37,7 +37,7 @@ export const PanelActionHeader = (props: Props) => {
   const { title, expandRoute, onBack } = props
 
   // UI Selectors (safe)
-  const isAndroid = useSafeUISelector(UISelectors.isAndroid)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   // Routing
   const history = useHistory()
@@ -60,7 +60,7 @@ export const PanelActionHeader = (props: Props) => {
         width='unset'
         justifyContent='flex-start'
       >
-        {!isAndroid && (
+        {!isMobile && (
           <Button onClick={() => openWalletRouteTab(expandRoute)}>
             <ButtonIcon name='expand' />
           </Button>
@@ -71,7 +71,7 @@ export const PanelActionHeader = (props: Props) => {
           </Button>
         )}
       </LeftRightContainer>
-      <HeaderTitle isAndroidOrPanel={true}>{title}</HeaderTitle>
+      <HeaderTitle isMobileOrPanel={true}>{title}</HeaderTitle>
       <LeftRightContainer
         width='unset'
         justifyContent='flex-end'

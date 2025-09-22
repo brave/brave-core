@@ -6,7 +6,6 @@
 // Types/constants
 import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
 import {
-  SpotPriceRegistry,
   BraveWallet,
   externalWalletProviders,
   SupportedTestNetworks,
@@ -16,53 +15,57 @@ import {
 import Amount from './amount'
 
 export const getTokenPriceFromRegistry = (
-  spotPriceRegistry: SpotPriceRegistry,
+  registry: BraveWallet.AssetPrice[] | undefined,
   token: Pick<
     BraveWallet.BlockchainToken,
-    'symbol' | 'contractAddress' | 'chainId' | 'coingeckoId' | 'isShielded'
+    'coin' | 'chainId' | 'contractAddress'
   >,
 ): BraveWallet.AssetPrice | undefined => {
-  return spotPriceRegistry[getPriceIdForToken(token)]
+  if (!registry) {
+    return undefined
+  }
+
+  return registry.find(
+    (p) =>
+      p.coin === token.coin
+      && p.chainId === token.chainId
+      && p.address.toLowerCase()
+        === (token.contractAddress?.toLowerCase() || ''),
+  )
 }
 
 export const getTokenPriceAmountFromRegistry = (
-  spotPriceRegistry: SpotPriceRegistry,
+  registry: BraveWallet.AssetPrice[] | undefined,
   token: Pick<
     BraveWallet.BlockchainToken,
-    'symbol' | 'contractAddress' | 'chainId' | 'coingeckoId' | 'isShielded'
+    'coin' | 'chainId' | 'contractAddress'
   >,
 ) => {
-  const value = getTokenPriceFromRegistry(spotPriceRegistry, token)
+  const value = getTokenPriceFromRegistry(registry, token)
   return value ? new Amount(value.price) : Amount.zero()
 }
 
 export const computeFiatAmount = ({
-  spotPriceRegistry,
+  spotPrices,
   value,
   token,
 }: {
-  spotPriceRegistry?: SpotPriceRegistry
+  spotPrices: BraveWallet.AssetPrice[] | undefined
   value: string
   token: Pick<
     BraveWallet.BlockchainToken,
-    | 'symbol'
-    | 'contractAddress'
-    | 'coingeckoId'
-    | 'chainId'
-    | 'coin'
-    | 'decimals'
-    | 'isShielded'
+    'coin' | 'chainId' | 'contractAddress' | 'decimals'
   >
 }): Amount => {
-  if (!spotPriceRegistry && value === '0') {
+  if (!spotPrices && value === '0') {
     return Amount.zero()
   }
 
-  if (!spotPriceRegistry || !value) {
+  if (!spotPrices || !value) {
     return Amount.empty()
   }
 
-  const price = getTokenPriceFromRegistry(spotPriceRegistry, token)
+  const price = getTokenPriceFromRegistry(spotPrices, token)
   if (!price) {
     return Amount.zero()
   }
@@ -73,28 +76,22 @@ export const computeFiatAmount = ({
 }
 
 export const computeFiatAmountToAssetValue = ({
-  spotPriceRegistry,
+  spotPrices,
   value,
   token,
 }: {
-  spotPriceRegistry?: SpotPriceRegistry
+  spotPrices?: BraveWallet.AssetPrice[]
   value: string
   token: Pick<
     BraveWallet.BlockchainToken,
-    | 'symbol'
-    | 'contractAddress'
-    | 'coingeckoId'
-    | 'chainId'
-    | 'coin'
-    | 'decimals'
-    | 'isShielded'
+    'coin' | 'chainId' | 'contractAddress' | 'decimals'
   >
 }): Amount => {
-  if (!spotPriceRegistry || !value) {
+  if (!spotPrices || !value) {
     return Amount.empty()
   }
 
-  const priceInfo = getTokenPriceFromRegistry(spotPriceRegistry, token)
+  const priceInfo = getTokenPriceFromRegistry(spotPrices, token)
   if (!priceInfo) {
     return Amount.zero()
   }
@@ -126,4 +123,29 @@ export const getPriceIdForToken = (
   }
 
   return token.symbol.toLowerCase()
+}
+
+const getPriceRequestForToken = (
+  token: Pick<
+    BraveWallet.BlockchainToken,
+    'coin' | 'chainId' | 'contractAddress'
+  >,
+): BraveWallet.AssetPriceRequest | undefined => {
+  return {
+    coin: token.coin,
+    chainId: token.chainId,
+    address: token.contractAddress || undefined,
+  } satisfies BraveWallet.AssetPriceRequest
+}
+
+export const getPriceRequestsForTokens = (
+  tokens: (
+    | Pick<BraveWallet.BlockchainToken, 'coin' | 'chainId' | 'contractAddress'>
+    | undefined
+  )[],
+): BraveWallet.AssetPriceRequest[] => {
+  return tokens
+    .filter((token) => token !== undefined)
+    .map(getPriceRequestForToken)
+    .filter((request) => request !== undefined)
 }

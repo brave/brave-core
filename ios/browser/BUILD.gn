@@ -52,6 +52,7 @@ group("browser") {
     "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/policy",
     "//brave/ios/browser/profile/model",
+    "//brave/ios/browser/safari_data_import",
     "//brave/ios/browser/shared/prefs",
     "//brave/ios/browser/ui/webui",
     "//brave/ios/browser/web",

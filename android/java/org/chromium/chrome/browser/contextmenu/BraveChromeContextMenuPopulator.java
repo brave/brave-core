@@ -9,7 +9,6 @@ import android.content.Context;
 
 import androidx.browser.customtabs.CustomContentAction;
 
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -21,6 +20,7 @@ import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.url_sanitizer.mojom.UrlSanitizerService;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator {
     // To be deleted via bytecode and super field to be used

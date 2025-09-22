@@ -1124,6 +1124,13 @@ extension Strings {
       value: "Select Tabs",
       comment: "A button title which when tapped will allow the user to select multiple tabs in the tab grid"
     )
+    public static let deselectTabsButtonTitle = NSLocalizedString(
+      "tabGrid.deselectTabsButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Deselect Tabs",
+      comment: "A button title which when tapped will allow the user to deselect multiple tabs in the tab grid"
+    )
     public static let moreMenuButtonTitle = NSLocalizedString(
       "tabGrid.moreMenuButtonTitle",
       tableName: "BraveShared",
@@ -1138,12 +1145,19 @@ extension Strings {
       value: "New Tab",
       comment: "Accessibility label for a close button that when tapped opens a new tab"
     )
-    public static let closeTabAccessibilityLabel = NSLocalizedString(
+    public static let closeTab = NSLocalizedString(
       "tabGrid.closeTab",
       tableName: "BraveShared",
       bundle: .module,
       value: "Close Tab",
-      comment: "Accessibility label for a close button that when tapped closes the associated tab"
+      comment: "Label for a close button that when tapped closes the associated tab"
+    )
+    public static let closeTabs = NSLocalizedString(
+      "tabGrid.closeTabs",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Close Tabs",
+      comment: "Label for a close button that when tapped closes the associated tabs"
     )
     public static let shredTabsAccessibilityLabel = NSLocalizedString(
       "tabGrid.shredTabsAccessibilityLabel",
@@ -4466,7 +4480,7 @@ extension Strings {
 
     /// A placeholder for the drop down where the user can provide a category for a web-compatibility report
     public static let reportBrokenPlaceholder = NSLocalizedString(
-      "reportBrokenCategory",
+      "ReportBrokenPlaceholder",
       tableName: "BraveShared",
       bundle: .module,
       value: "Select one option",
@@ -5061,9 +5075,19 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Adding video and audio files for offline use can use a lot of storage on your device. Please remove some files to free up storage space.",
+          "Your device is low on space. Adding this video to Playlist may fail or affect other downloads.",
         comment: "When the user's disk space is almost full"
       )
+
+    public static let playlistDiskSpaceAddAnywayButtonTitle =
+    NSLocalizedString(
+      "playlist.playlistDiskSpaceAddAnywayButtonTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value:
+        "Add Anyway",
+      comment: "The title of the button for the user to proceed adding playlist item when the user's disk space is almost full"
+    )
 
     public static let playlistPopoverChangeFoldersButtonTitle =
       NSLocalizedString(

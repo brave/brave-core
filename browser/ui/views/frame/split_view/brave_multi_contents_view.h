@@ -11,24 +11,16 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/ui/views/split_view/split_view_separator_delegate.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
 namespace sidebar {
-FORWARD_DECLARE_TEST(SidebarBrowserWithWebPanelTest,
-                     ContentsContainerViewForWebPanelTest);
+FORWARD_DECLARE_TEST(SidebarBrowserWithWebPanelTest, WebPanelTest);
 }  // namespace sidebar
 
-namespace views {
-class Widget;
-}  // namespace views
-
-class SplitViewLocationBar;
 class BraveContentsContainerView;
 
-class BraveMultiContentsView : public MultiContentsView,
-                               public SplitViewSeparatorDelegate {
+class BraveMultiContentsView : public MultiContentsView {
   METADATA_HEADER(BraveMultiContentsView, MultiContentsView)
 
  public:
@@ -38,9 +30,10 @@ class BraveMultiContentsView : public MultiContentsView,
                          std::unique_ptr<MultiContentsViewDelegate> delegate);
   ~BraveMultiContentsView() override;
 
-  void UpdateSecondaryLocationBar();
   void UpdateCornerRadius();
   void UseContentsContainerViewForWebPanel();
+  void SetWebPanelVisible(bool visible);
+  bool IsWebPanelVisible() const;
 
   void SetWebPanelWidth(int width);
   void SetWebPanelOnLeft(bool left);
@@ -55,15 +48,13 @@ class BraveMultiContentsView : public MultiContentsView,
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
                            BraveMultiContentsViewTest);
   FRIEND_TEST_ALL_PREFIXES(sidebar::SidebarBrowserWithWebPanelTest,
-                           ContentsContainerViewForWebPanelTest);
+                           WebPanelTest);
 
   // MultiContentsView:
   void Layout(PassKey) override;
   views::ProposedLayout CalculateProposedLayout(
       const views::SizeBounds& size_bounds) const override;
-
-  // SplitViewSeparatorDelegate:
-  void OnDoubleClicked() override;
+  void ResetResizeArea() override;
 
   int GetWebPanelWidth() const;
 
@@ -71,9 +62,6 @@ class BraveMultiContentsView : public MultiContentsView,
       const {
     return contents_container_views_;
   }
-
-  std::unique_ptr<SplitViewLocationBar> secondary_location_bar_;
-  std::unique_ptr<views::Widget> secondary_location_bar_widget_;
 
   int web_panel_width_ = 0;
   bool web_panel_on_left_ = false;

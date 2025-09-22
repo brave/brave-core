@@ -32,6 +32,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -272,7 +273,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                                                             txNetwork,
                                                             txAccountInfo,
                                                             accounts,
-                                                            new HashMap<>(),
+                                                            new ArrayList<>(),
                                                             tokenList,
                                                             mSolanaEstimatedTxFee);
 
@@ -398,7 +399,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             NetworkInfo txNetwork,
             AccountInfo txAccountInfo,
             AccountInfo[] accounts,
-            HashMap<String, Double> assetPrices,
+            List<AssetPrice> assetPrices,
             BlockchainToken[] fullTokenList,
             long solanaEstimatedTxFee) {
         ParsedTransaction parsedTx =
@@ -480,7 +481,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             final View view,
             NetworkInfo txNetwork,
             AccountInfo[] accounts,
-            HashMap<String, Double> assetPrices,
+            List<AssetPrice> assetPrices,
             BlockchainToken[] fullTokenList) {
         ViewPager viewPager = view.findViewById(R.id.navigation_view_pager);
         ApproveTxFragmentPageAdapter adapter =

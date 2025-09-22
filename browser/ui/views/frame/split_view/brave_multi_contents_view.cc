@@ -10,8 +10,6 @@
 #include "base/check.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
-#include "brave/browser/ui/views/split_view/split_view_location_bar.h"
-#include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
@@ -33,20 +31,8 @@ BraveMultiContentsView::BraveMultiContentsView(
     BrowserView* browser_view,
     std::unique_ptr<MultiContentsViewDelegate> delegate)
     : MultiContentsView(browser_view, std::move(delegate)) {
-  // Replace upstream's resize area with ours.
-  // To prevent making |resize_area_| dangling pointer,
-  // reset it after setting null to |resize_area_|.
-  {
-    std::unique_ptr<views::View> resize_area = RemoveChildViewT(resize_area_);
-    resize_area_ = nullptr;
-  }
-  auto* separator = AddChildView(
-      std::make_unique<SplitViewSeparator>(browser_view_->browser()));
-  separator->set_resize_delegate(this);
-  separator->set_separator_delegate(this);
-  separator->SetPreferredSize(
+  resize_area_->SetPreferredSize(
       gfx::Size(kSpacingBetweenContentsContainerViews, 0));
-  resize_area_ = separator;
   start_contents_view_inset_ = gfx::Insets();
   end_contents_view_inset_ = gfx::Insets();
 }
@@ -65,6 +51,18 @@ void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
         std::make_unique<BraveContentsContainerView>(browser_view_));
     contents_container_view_for_web_panel_->SetVisible(false);
   }
+}
+
+void BraveMultiContentsView::SetWebPanelVisible(bool visible) {
+  CHECK(contents_container_view_for_web_panel_);
+  contents_container_view_for_web_panel_->SetVisible(visible);
+  contents_container_view_for_web_panel_->UpdateBorderAndOverlay(true, true,
+                                                                 false);
+}
+
+bool BraveMultiContentsView::IsWebPanelVisible() const {
+  CHECK(contents_container_view_for_web_panel_);
+  return contents_container_view_for_web_panel_->GetVisible();
 }
 
 void BraveMultiContentsView::SetWebPanelWidth(int width) {
@@ -111,7 +109,7 @@ views::ProposedLayout BraveMultiContentsView::CalculateProposedLayout(
   return layouts;
 }
 
-void BraveMultiContentsView::OnDoubleClicked() {
+void BraveMultiContentsView::ResetResizeArea() {
   // Give same width on both contents view.
   // Pass true to make delegate save ratio in session service like resizing
   // complete.
@@ -126,32 +124,6 @@ int BraveMultiContentsView::GetWebPanelWidth() const {
   }
 
   return web_panel_width_;
-}
-
-void BraveMultiContentsView::UpdateSecondaryLocationBar() {
-  if (!secondary_location_bar_) {
-    secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
-        browser_view_->browser()->profile()->GetPrefs());
-    secondary_location_bar_widget_ = std::make_unique<views::Widget>();
-
-    secondary_location_bar_widget_->Init(
-        SplitViewLocationBar::GetWidgetInitParams(
-            GetWidget()->GetNativeView(), secondary_location_bar_.get()));
-  }
-
-  // Inactive web contents/view should be set to secondary location bar
-  // as it's attached to inactive contents view.
-  int inactive_index = active_index_ == 0 ? 1 : 0;
-  secondary_location_bar_->SetWebContents(
-      GetInactiveContentsView()->web_contents());
-  secondary_location_bar_->SetParentWebView(
-      contents_container_views_[inactive_index]);
-
-  // Set separator's menu widget visibility after setting location bar's to make
-  // separator's menu widget locate above the location bar.
-  auto* separator = static_cast<SplitViewSeparator*>(resize_area_);
-  CHECK(separator);
-  separator->ShowMenuButtonWidget();
 }
 
 void BraveMultiContentsView::UpdateCornerRadius() {

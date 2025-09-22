@@ -6,7 +6,10 @@
 #ifndef BRAVE_BROWSER_MISC_METRICS_USAGE_CLOCK_H_
 #define BRAVE_BROWSER_MISC_METRICS_USAGE_CLOCK_H_
 
+#include <optional>
+
 #include "base/time/time.h"
+#include "base/timer/elapsed_timer.h"
 #include "chrome/browser/metrics/desktop_session_duration/desktop_session_duration_tracker.h"
 
 namespace misc_metrics {
@@ -33,8 +36,6 @@ class UsageClock : public metrics::DesktopSessionDurationTracker::Observer {
   // Returns true if Chrome is currently considered to be in use.
   bool IsInUse() const;
 
-  void SetTickClockForTesting(const base::TickClock* tick_clock);
-
  private:
   // DesktopSessionDurationTracker::Observer:
   void OnSessionStarted(base::TimeTicks session_start) override;
@@ -46,9 +47,9 @@ class UsageClock : public metrics::DesktopSessionDurationTracker::Observer {
   // time of Chrome.
   base::TimeDelta usage_time_in_completed_sessions_;
 
-  // The time at which the current session started, or a null TimeTicks if not
-  // currently in a session.
-  base::TimeTicks current_usage_session_start_time_;
+  // Elapsed timer for the current session, or nullopt if not currently in a
+  // session.
+  std::optional<base::ElapsedTimer> current_session_elapsed_timer_;
 };
 
 }  // namespace misc_metrics

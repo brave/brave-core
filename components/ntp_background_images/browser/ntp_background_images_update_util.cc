@@ -75,6 +75,13 @@ void CheckAndUpdateSponsoredImagesComponent(const std::string& component_id) {
   VLOG(6) << "Checking for updates to NTP Sponsored Images component with ID "
           << component_id;
 
+  if (brave_component_updater::BraveOnDemandUpdater::GetInstance()
+          ->is_component_update_disabled()) {
+    CheckAndUpdateSponsoredImagesComponentCallback(
+        component_id, update_client::Error::UPDATE_CHECK_ERROR);
+    return;
+  }
+
   brave_component_updater::BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
       component_id, component_updater::OnDemandUpdater::Priority::FOREGROUND,
       base::BindOnce(&CheckAndUpdateSponsoredImagesComponentCallback,

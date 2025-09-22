@@ -253,11 +253,27 @@ struct FilterListsView: View {
   }
 
   @ViewBuilder private var externalFilterListRows: some View {
-    let searchText = searchText.lowercased()
-    ForEach($customFilterListStorage.filterListsURLs) { $filterListURL in
+    // Using a Binding ForEach crashes after onDelete of the last item due to
+    // index out-of-bounds for the Toggle on iOS 26+ regardless of SDK version.
+    ForEach(customFilterListStorage.filterListsURLs) { filterListURL in
       if filterListURL.satisfies(searchText: searchText) {
         VStack(alignment: .leading, spacing: 4) {
-          Toggle(isOn: $filterListURL.setting.isEnabled) {
+          Toggle(
+            isOn: Binding(
+              get: {
+                filterListURL.setting.isEnabled
+              },
+              set: { isEnabled in
+                guard
+                  let item = customFilterListStorage.filterListsURLs.first(where: {
+                    $0.id == filterListURL.id
+                  })
+                else { return }
+                item.setting.isEnabled = isEnabled
+                CustomFilterListSetting.save(inMemory: !customFilterListStorage.persistChanges)
+              }
+            )
+          ) {
             VStack(alignment: .leading, spacing: 4) {
               Text(filterListURL.title)
                 .foregroundColor(Color(.bravePrimary))
@@ -283,11 +299,6 @@ struct FilterListsView: View {
                   .font(.caption)
                   .foregroundColor(Color(.braveLabel))
               }
-            }
-          }
-          .onChange(of: filterListURL.setting.isEnabled) { isEnabled in
-            Task {
-              CustomFilterListSetting.save(inMemory: !customFilterListStorage.persistChanges)
             }
           }
 
