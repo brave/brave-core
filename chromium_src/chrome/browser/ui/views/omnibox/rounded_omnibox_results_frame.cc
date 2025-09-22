@@ -3,17 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.h"
+
 #include "base/check_op.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/views/layout/layout_provider.h"
 
-// Set our radius value directly as kOmniboxExpandedRadius is mapped to
-// more general token ShapeSysTokens::kMedium.
-#define kOmniboxExpandedRadius kOmniboxExpandedRadius) ? 4 : 4; \
-  DCHECK_EQ(corner_radius, 4
+// Replacing for `ShapeContextTokensOverride` to select the override call for
+// the desired value, which is mapped to a particular value for Brave.
+#define ShapeContextTokens ShapeContextTokensOverride
 
 #include <chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc>
 
-#undef kOmniboxExpandedRadius
+#undef ShapeContextTokens
 
 // static
 int RoundedOmniboxResultsFrame::GetShadowElevation() {
