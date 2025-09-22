@@ -5,11 +5,11 @@
 
 import * as React from 'react'
 
-import { NewTabPageAdEventType, SponsoredImageBackground } from '../../state/background_state'
-import { openLink } from '../common/link'
+import { SponsoredImageBackground } from '../../state/background_state'
 import { loadImage } from '../../lib/image_loader'
-import { useWidgetLayoutReady } from '../app_layout_ready'
-import { debounce } from '$web-common/debounce'
+import { IframeBackground, IframeBackgroundHandle } from './iframe_background'
+import { useRichMediaMessageHandler } from './rich_media_message_handler'
+import { useSafeAreaReporter } from './safe_area_reporter'
 
 import {
   useBackgroundState,
@@ -88,10 +88,11 @@ function ImageBackground(props: { url: string, onLoadError?: () => void }) {
 function SponsoredRichMediaBackground(
   props: { background: SponsoredImageBackground }
 ) {
-  const actions = useBackgroundActions()
   const sponsoredRichMediaBaseUrl =
     useBackgroundState((s) => s.sponsoredRichMediaBaseUrl)
   const [frameHandle, setFrameHandle] = React.useState<IframeBackgroundHandle>()
+  const messageHandler = useRichMediaMessageHandler(
+    props.background.logo?.destinationUrl, frameHandle)
 
   useSafeAreaReporter(frameHandle)
 
@@ -100,146 +101,7 @@ function SponsoredRichMediaBackground(
       url={props.background.imageUrl}
       expectedOrigin={new URL(sponsoredRichMediaBaseUrl).origin}
       onReady={setFrameHandle}
-      onMessage={(data) => {
-        const eventType = getRichMediaEventType(data)
-        if (eventType) {
-          actions.notifySponsoredRichMediaEvent(eventType)
-        }
-        if (eventType === NewTabPageAdEventType.kClicked) {
-          const url = props.background.logo?.destinationUrl
-          if (url) {
-            openLink(url)
-          }
-        }
-      }}
+      onMessage={messageHandler}
     />
   )
-}
-
-// Posts a message to the rich media background iframe containing a rectangle
-// that is empty of content and can be used to display interactive elements.
-function useSafeAreaReporter(frameHandle?: IframeBackgroundHandle) {
-  const widgetLayoutReady = useWidgetLayoutReady()
-
-  React.useEffect(() => {
-    if (!widgetLayoutReady || !frameHandle) {
-      return
-    }
-
-    const selector = '.sponsored-background-safe-area'
-    const safeArea = document.querySelector<HTMLDivElement>(selector)
-    if (!safeArea) {
-      return
-    }
-
-    const postSafeArea = debounce(() => {
-      if (!safeArea) {
-        return
-      }
-      const rect = safeArea.getBoundingClientRect()
-      frameHandle.postMessage({
-        type: 'richMediaSafeRect',
-        value: {
-          x: rect.x + window.scrollX,
-          y: rect.y + window.scrollY,
-          width: rect.width,
-          height: rect.height
-        }
-      })
-    }, 120)
-
-    postSafeArea()
-
-    const resizeObserver = new ResizeObserver(postSafeArea)
-    resizeObserver.observe(safeArea)
-    return () => { resizeObserver.disconnect() }
-  }, [widgetLayoutReady, frameHandle])
-}
-
-function getRichMediaEventType(data: any): NewTabPageAdEventType | null {
-  if (!data || data.type !== 'richMediaEvent') {
-    return null
-  }
-  const value = String(data.value || '')
-  switch (value) {
-    case 'click': return NewTabPageAdEventType.kClicked
-    case 'interaction': return NewTabPageAdEventType.kInteraction
-    case 'mediaPlay': return NewTabPageAdEventType.kMediaPlay
-    case 'media25': return NewTabPageAdEventType.kMedia25
-    case 'media100': return NewTabPageAdEventType.kMedia100
-  }
-  return null
-}
-
-interface IframeBackgroundHandle {
-  postMessage: (data: unknown) => void
-}
-
-interface IframeBackgroundProps {
-  url: string
-  expectedOrigin: string
-  onReady: (handle: IframeBackgroundHandle) => void
-  onMessage: (data: unknown) => void
-}
-
-function IframeBackground(props: IframeBackgroundProps) {
-  const iframeRef = React.useRef<HTMLIFrameElement>(null)
-  const [contentLoaded, setContentLoaded] = React.useState(false)
-
-  React.useEffect(() => {
-    function listener(event: MessageEvent) {
-      if (!event.origin || event.origin !== props.expectedOrigin) {
-        return
-      }
-      if (!event.source || event.source !== iframeRef.current?.contentWindow) {
-        return
-      }
-      props.onMessage(event.data)
-    }
-
-    window.addEventListener('message', listener)
-    return () => { window.removeEventListener('message', listener) }
-  }, [props.expectedOrigin, props.onMessage])
-
-  React.useEffect(() => {
-    if (!props.onReady || !contentLoaded) {
-      return
-    }
-    props.onReady({
-      postMessage: (data) => {
-        const window = iframeRef.current?.contentWindow
-        window?.postMessage(data, props.expectedOrigin)
-      }
-    })
-  }, [props.onReady, props.expectedOrigin, contentLoaded])
-
-  return (
-    <iframe
-      ref={iframeRef}
-      className={contentLoaded ? '' : 'loading'}
-      src={props.url}
-      sandbox='allow-scripts allow-same-origin'
-      allow={allowNoneList([
-        'accelerometer',
-        'ambient-light-sensor',
-        'camera',
-        'display-capture',
-        'document-domain',
-        'fullscreen',
-        'geolocation',
-        'gyroscope',
-        'magnetometer',
-        'microphone',
-        'midi',
-        'payment',
-        'publickey-credentials-get',
-        'usb'
-      ])}
-      onLoad={() => setContentLoaded(true)}
-    />
-  )
-}
-
-function allowNoneList(items: string[]) {
-  return items.map((key) => `${key} 'none'`).join('; ')
 }

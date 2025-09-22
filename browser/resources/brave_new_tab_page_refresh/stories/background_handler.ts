@@ -114,6 +114,8 @@ export function createBackgroundHandler(
 
     notifySponsoredImageLogoClicked() {},
 
-    notifySponsoredRichMediaEvent(type) {}
+    notifySponsoredRichMediaEvent(type) {
+      console.log('notifySponsoredRichMediaEvent', type)
+    }
   }
 }
