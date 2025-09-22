@@ -172,7 +172,9 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
     private void onFaviconAvailable(GURL pageUrl, Bitmap favicon) {
         if (favicon == null) {
             if (mDefaultFaviconHelper == null) mDefaultFaviconHelper = new DefaultFaviconHelper();
-            favicon = mDefaultFaviconHelper.getDefaultFaviconBitmap(getActivity(), pageUrl, true);
+            favicon =
+                    mDefaultFaviconHelper.getDefaultFaviconBitmap(
+                            getActivity(), pageUrl, true, false);
         }
         mFavicon.setImageBitmap(favicon);
         mFavicon.setVisibility(View.VISIBLE);
