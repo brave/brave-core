@@ -21,6 +21,10 @@ interface Props {
   isGenerating: boolean
 }
 
+// Variation whereby the "steps" tab shows the text events in addition to the
+// tool use events.
+const STEPS_SHOWS_TEXT_CONTENT = true
+
 const interactiveToolNames = [Mojom.USER_CHOICE_TOOL_NAME]
 
 const importantToolNames = [Mojom.NAVIGATE_TOOL_NAME, Mojom.TODO_TOOL_NAME]
@@ -49,7 +53,7 @@ export default function AssistantTask(props: Props) {
     )
 
     return () => {
-      API.getInstance().uiObserver.thumbnailUpdated.removeListener(id)
+      API.getInstance().uiObserver.removeListener(id)
     }
   }, [props.isActiveTask, conversationContext.contentTaskTabId])
 
@@ -69,10 +73,12 @@ export default function AssistantTask(props: Props) {
         <div className={styles.taskData}>
           {showSteps
             && props.assistantEntries.map((entry, index) => {
-              // Show all the tool use events, excluding todo
               const lastEntryEdit = entry.edits?.at(-1) ?? entry
               const toolUseEvents =
-                lastEntryEdit.events?.filter(
+              STEPS_SHOWS_TEXT_CONTENT
+                ? lastEntryEdit.events!
+                // Show all the tool use events, excluding todo
+                : lastEntryEdit.events?.filter(
                   (event) =>
                     !!event
                     && event.toolUseEvent
