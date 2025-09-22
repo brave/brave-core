@@ -20,9 +20,7 @@ namespace brave_policy {
 
 BraveBrowserPolicyProvider::BraveBrowserPolicyProvider() = default;
 
-BraveBrowserPolicyProvider::~BraveBrowserPolicyProvider() {
-  brave_origin::BraveOriginPolicyManager::GetInstance()->RemoveObserver(this);
-}
+BraveBrowserPolicyProvider::~BraveBrowserPolicyProvider() = default;
 
 void BraveBrowserPolicyProvider::Init(policy::SchemaRegistry* registry) {
   // Call base class Init first
@@ -31,7 +29,8 @@ void BraveBrowserPolicyProvider::Init(policy::SchemaRegistry* registry) {
   // Register as BraveOriginPolicyManager observer.
   // This ensures feature flags and local state are available before policy
   // loading.
-  brave_origin::BraveOriginPolicyManager::GetInstance()->AddObserver(this);
+  policy_manager_observation_.Observe(
+      brave_origin::BraveOriginPolicyManager::GetInstance());
 }
 
 void BraveBrowserPolicyProvider::RefreshPolicies(

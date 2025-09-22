@@ -98,6 +98,12 @@ class BraveOriginPolicyManager {
       const base::Value::Dict& policies_dict,
       std::optional<std::string_view> profile_id = std::nullopt) const;
 
+  // Internal helper to set policy value in local state
+  void SetPolicyValueInternal(std::string_view pref_name,
+                              bool value,
+                              const BraveOriginPolicyMap& policy_definitions,
+                              std::optional<std::string_view> profile_id);
+
   bool initialized_ = false;
   BraveOriginPolicyMap browser_policy_definitions_;
   BraveOriginPolicyMap profile_policy_definitions_;

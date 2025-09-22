@@ -52,6 +52,10 @@ class BraveProfilePolicyProvider
   bool policies_ready_ = false;
   std::string profile_id_;
 
+  base::ScopedObservation<brave_origin::BraveOriginPolicyManager,
+                          brave_origin::BraveOriginPolicyManager::Observer>
+      brave_origin_observation_{this};
+
   base::WeakPtrFactory<BraveProfilePolicyProvider> weak_factory_{this};
 };
 

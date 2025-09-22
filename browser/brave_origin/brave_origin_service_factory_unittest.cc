@@ -73,7 +73,7 @@ TEST(BraveOriginServiceFactoryTest,
 TEST(BraveOriginServiceFactoryTest,
      GetProfilePolicyDefinitions_ContainsExpectedProfilePolicies) {
   auto profile_policy_definitions =
-      BraveOriginServiceFactory::GetProfilePolicyDefinitions("test_profile");
+      BraveOriginServiceFactory::GetProfilePolicyDefinitions();
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   // Test that Brave Rewards disabled policy is correctly built (profile-level)
@@ -125,7 +125,7 @@ TEST(BraveOriginServiceFactoryTest,
   auto browser_policy_definitions =
       BraveOriginServiceFactory::GetBrowserPolicyDefinitions();
   auto profile_policy_definitions =
-      BraveOriginServiceFactory::GetProfilePolicyDefinitions("test_profile");
+      BraveOriginServiceFactory::GetProfilePolicyDefinitions();
 
   // Test browser policy definitions
   for (const auto& [pref_name, policy_info] : browser_policy_definitions) {

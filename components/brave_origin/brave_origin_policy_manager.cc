@@ -115,45 +115,45 @@ PoliciesEnabledMap BraveOriginPolicyManager::GetAllProfilePolicies(
 
 void BraveOriginPolicyManager::SetBrowserPolicyValue(std::string_view pref_name,
                                                      bool value) {
-  CHECK(initialized_) << "BraveOriginPolicyManager not initialized";
-  CHECK(local_state_) << "BraveOriginPolicyManager local state should exist";
-
-  // Check if this is a valid browser-level pref
-  const BraveOriginPolicyInfo* policy_info =
-      base::FindOrNull(browser_policy_definitions_, pref_name);
-  if (!policy_info) {
-    LOG(ERROR) << "Unknown browser pref name: " << pref_name;
-    return;
-  }
-
-  // Update the value in the dictionary
-  ScopedDictPrefUpdate update(local_state_, kBraveOriginPolicies);
-  std::string browser_key = GetBraveOriginBrowserPrefKey(*policy_info);
-  update->Set(browser_key, base::Value(value));
+  SetPolicyValueInternal(pref_name, value, browser_policy_definitions_,
+                         /*profile_id=*/std::nullopt);
 }
 
 void BraveOriginPolicyManager::SetProfilePolicyValue(
     std::string_view pref_name,
     bool value,
     std::string_view profile_id) {
-  CHECK(initialized_) << "BraveOriginPolicyManager not initialized";
-  CHECK(local_state_) << "BraveOriginPolicyManager local state should exist";
   CHECK(!profile_id.empty())
       << "Profile ID cannot be empty for profile policies";
 
-  // Check if this is a valid profile-level pref
+  SetPolicyValueInternal(pref_name, value, profile_policy_definitions_,
+                         profile_id);
+}
+
+void BraveOriginPolicyManager::SetPolicyValueInternal(
+    std::string_view pref_name,
+    bool value,
+    const BraveOriginPolicyMap& policy_definitions,
+    std::optional<std::string_view> profile_id) {
+  CHECK(initialized_) << "BraveOriginPolicyManager not initialized";
+  CHECK(local_state_) << "BraveOriginPolicyManager local state should exist";
+
+  // Check if this is a valid pref
   const BraveOriginPolicyInfo* policy_info =
-      base::FindOrNull(profile_policy_definitions_, pref_name);
+      base::FindOrNull(policy_definitions, pref_name);
   if (!policy_info) {
-    LOG(ERROR) << "Unknown profile pref name: " << pref_name;
+    LOG(ERROR) << "Unknown " << (profile_id.has_value() ? "profile" : "browser")
+               << " pref name: " << pref_name;
     return;
   }
 
-  // Update the value in the dictionary with profile-scoped key
+  // Update the value in the dictionary
   ScopedDictPrefUpdate update(local_state_, kBraveOriginPolicies);
-  std::string profile_key =
-      GetBraveOriginProfilePrefKey(*policy_info, profile_id);
-  update->Set(profile_key, base::Value(value));
+  std::string key =
+      profile_id.has_value()
+          ? GetBraveOriginProfilePrefKey(*policy_info, *profile_id)
+          : GetBraveOriginBrowserPrefKey(*policy_info);
+  update->Set(key, value);
 }
 
 // Helper function to get pref info from pref definitions

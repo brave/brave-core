@@ -36,8 +36,7 @@ class BraveOriginServiceFactory : public ProfileKeyedServiceFactory {
   static BraveOriginPolicyMap GetBrowserPolicyDefinitions();
 
   // Build profile-level policy definitions for a specific profile.
-  static BraveOriginPolicyMap GetProfilePolicyDefinitions(
-      std::string_view profile_id);
+  static BraveOriginPolicyMap GetProfilePolicyDefinitions();
 
   // Static BraveOrigin-specific metadata for policy preferences.
   // This defines which preferences from kBraveSimplePolicyMap should have

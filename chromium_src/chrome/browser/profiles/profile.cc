@@ -74,10 +74,9 @@ bool Profile::OTRProfileID::IsSearchBackupResults() const {
 // the brave_origin keyed service.
 namespace brave_origin {
 policy::PolicyService* GetPolicyServiceFromProfile(Profile* profile) {
-  policy::PolicyService* policy_service = nullptr;
   if (auto* connector = profile->GetProfilePolicyConnector()) {
-    policy_service = connector->policy_service();
+    return connector->policy_service();
   }
-  return policy_service;
+  return nullptr;
 }
 }  // namespace brave_origin

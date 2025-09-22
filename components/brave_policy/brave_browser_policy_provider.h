@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "components/policy/core/common/configuration_policy_provider.h"
@@ -48,6 +49,10 @@ class BraveBrowserPolicyProvider
                              bool enabled);
 
   bool first_policies_loaded_ = false;
+
+  base::ScopedObservation<brave_origin::BraveOriginPolicyManager,
+                          brave_origin::BraveOriginPolicyManager::Observer>
+      policy_manager_observation_{this};
 
   base::WeakPtrFactory<BraveBrowserPolicyProvider> weak_factory_{this};
 };

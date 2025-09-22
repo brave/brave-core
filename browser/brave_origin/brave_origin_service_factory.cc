@@ -164,13 +164,13 @@ BraveOriginServiceFactory::BuildServiceInstanceForBrowserContext(
 
   // Lazy initialization of BraveOriginPolicyManager
   auto* policy_manager = BraveOriginPolicyManager::GetInstance();
-  std::string profile_id = GetProfileId(profile->GetPath());
   if (!policy_manager->IsInitialized()) {
     policy_manager->Init(GetBrowserPolicyDefinitions(),
-                         GetProfilePolicyDefinitions(profile_id),
+                         GetProfilePolicyDefinitions(),
                          g_browser_process->local_state());
   }
 
+  std::string profile_id = GetProfileId(profile->GetPath());
   return std::make_unique<BraveOriginService>(
       g_browser_process->local_state(), profile->GetPrefs(), profile_id,
       GetPolicyServiceFromProfile(profile));
@@ -203,8 +203,7 @@ BraveOriginPolicyMap BraveOriginServiceFactory::GetBrowserPolicyDefinitions() {
 }
 
 // static
-BraveOriginPolicyMap BraveOriginServiceFactory::GetProfilePolicyDefinitions(
-    std::string_view profile_id) {
+BraveOriginPolicyMap BraveOriginServiceFactory::GetProfilePolicyDefinitions() {
   BraveOriginPolicyMap profile_policy_definitions;
 
   // Build profile-level preference definitions
