@@ -382,7 +382,8 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
       return content;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_ROOT:
-      content += base::StrCat({indent, "<root", BuildAttributes(attrs, false), ">\n"});
+      content +=
+          base::StrCat({indent, "<root", BuildAttributes(attrs, false), ">\n"});
       for (const auto& child : node.children_nodes()) {
         content += GenerateContentStructure(child, depth + 1);
       }
@@ -492,8 +493,8 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
     const auto& viewport = page_content.viewport_geometry();
 
     result += absl::StrFormat(
-        "VIEWPORT: %dx%d pixels, currently scrolled at %d,%d",
-        viewport.width(), viewport.height(), viewport.x(), viewport.y());
+        "VIEWPORT: %dx%d pixels, currently scrolled at %d,%d", viewport.width(),
+        viewport.height(), viewport.x(), viewport.y());
 
     if (root_node.content_attributes().has_interaction_info() &&
         root_node.content_attributes().interaction_info().has_scroller_info()) {
@@ -505,7 +506,6 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
     }
 
     result += "\n";
-
   }
 
   std::string tree_string = GenerateContentStructure(root_node);
@@ -530,7 +530,8 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
   result += "\n=== INTERACTION INSTRUCTIONS ===\n";
   result +=
       "The page structure represents the entire page and not just the "
-      "viewport. Use scroll if neccessary to interact with an element not within the viewport, or to show the user something. "
+      "viewport. Use scroll if neccessary to interact with an element not "
+      "within the viewport, or to show the user something. "
       "Use the XML attributes to guide interaction:\n";
   result +=
       "- dom_id: Use for precise element targeting but you must provide the "

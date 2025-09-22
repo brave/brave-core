@@ -74,18 +74,17 @@ export default function AssistantTask(props: Props) {
           {showSteps
             && props.assistantEntries.map((entry, index) => {
               const lastEntryEdit = entry.edits?.at(-1) ?? entry
-              const toolUseEvents =
-              STEPS_SHOWS_TEXT_CONTENT
+              const toolUseEvents = STEPS_SHOWS_TEXT_CONTENT
                 ? lastEntryEdit.events!
-                // Show all the tool use events, excluding todo
-                : lastEntryEdit.events?.filter(
-                  (event) =>
-                    !!event
-                    && event.toolUseEvent
-                    && !skipStepsToolNames.includes(
-                      event.toolUseEvent?.toolName ?? '',
-                    ),
-                ) ?? []
+                : // Show all the tool use events, excluding todo
+                  (lastEntryEdit.events?.filter(
+                    (event) =>
+                      !!event
+                      && event.toolUseEvent
+                      && !skipStepsToolNames.includes(
+                        event.toolUseEvent?.toolName ?? '',
+                      ),
+                  ) ?? [])
               const isLastEntry = index === props.assistantEntries.length - 1
               return (
                 <AssistantResponse

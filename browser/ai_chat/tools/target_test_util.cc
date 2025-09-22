@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ai_chat/tools/target_test_util.h"
+
 #include "chrome/common/actor/actor_constants.h"
 
 namespace ai_chat::target_test_util {

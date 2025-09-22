@@ -91,7 +91,6 @@ std::optional<optimization_guide::proto::ActionTarget> ParseTargetInput(
       content_node_id = actor::kRootElementDomNodeId;
     }
 
-
     optimization_guide::proto::ActionTarget target;
     target.set_content_node_id(content_node_id.value());
     auto* doc_id = target.mutable_document_identifier();

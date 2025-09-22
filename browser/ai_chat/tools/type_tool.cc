@@ -38,8 +38,10 @@ std::string_view TypeTool::Description() const {
          "lines, break each line up in to a separate tool action and specify "
          "to press enter after each one. The field does not need to "
          "be clicked first as that will be done automatically. For example: [\n"
-          "{ name: \"type_text\", target: { ... }, text: \"This is the first paragraph of text without a newline\", follow_by_enter: true },\n"
-          "{ name: \"type_text\", target: { ... }, text: \"And this is the next paragraph of text without a newline\", follow_by_enter: false },\n"
+         "{ name: \"type_text\", target: { ... }, text: \"This is the first "
+         "paragraph of text without a newline\", follow_by_enter: true },\n"
+         "{ name: \"type_text\", target: { ... }, text: \"And this is the next "
+         "paragraph of text without a newline\", follow_by_enter: false },\n"
          "]";
 }
 
