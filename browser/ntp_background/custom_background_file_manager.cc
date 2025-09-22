@@ -23,15 +23,6 @@
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/image/image.h"
 
-namespace {
-
-data_decoder::DataDecoder* GetDataDecoder() {
-  static base::NoDestructor<data_decoder::DataDecoder> data_decoder;
-  return data_decoder.get();
-}
-
-}  // namespace
-
 CustomBackgroundFileManager::CustomBackgroundFileManager(Profile* profile)
     : profile_(profile) {}
 
@@ -176,9 +167,26 @@ void CustomBackgroundFileManager::DecodeImageInIsolatedProcess(
   if (!image_decoder_)
     image_decoder_ = std::make_unique<ImageDecoderImpl>();
 
+  std::unique_ptr<data_decoder::DataDecoder> data_decoder =
+      std::make_unique<data_decoder::DataDecoder>();
+  auto* data_decoder_ptr = data_decoder.get();
+
+  // Make a callback owning the data_decoder to keep it alive until the
+  // decoding is done.
+  auto wrapped_callback = base::BindOnce(
+      [](std::unique_ptr<data_decoder::DataDecoder> data_decoder,
+         base::OnceCallback<void(const gfx::Image&)> on_decode,
+         const gfx::Image& image) {
+        std::move(on_decode).Run(image);
+        // Ensure the DataDecoder outlives the ImageDecoder::ImageRequest.
+        base::SequencedTaskRunner::GetCurrentDefault()->DeleteSoon(
+            FROM_HERE, std::move(data_decoder));
+      },
+      std::move(data_decoder), std::move(on_decode));
+
   image_decoder_->DecodeImage(input,
                               gfx::Size() /* No particular size desired. */,
-                              GetDataDecoder(), std::move(on_decode));
+                              data_decoder_ptr, std::move(wrapped_callback));
 }
 
 void CustomBackgroundFileManager::SaveImageAsPNG(
