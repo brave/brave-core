@@ -42,6 +42,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 
@@ -226,7 +227,7 @@ void AIChatUIPageHandler::ProcessImageFile(
     const std::string& filename,
     ProcessImageFileCallback callback) {
   UploadFileHelper::ProcessImageData(
-      file_data,
+      &data_decoder_, file_data,
       base::BindOnce(
           [](const std::string& filename, ProcessImageFileCallback callback,
              std::optional<std::vector<uint8_t>> processed_data) {
