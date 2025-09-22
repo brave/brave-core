@@ -36,8 +36,10 @@ static_library("common") {
 
   deps = [
     "//base",
+    "//components/permissions",
     "//components/pref_registry",
     "//components/prefs",
+    "//url",
   ]
 }
 
