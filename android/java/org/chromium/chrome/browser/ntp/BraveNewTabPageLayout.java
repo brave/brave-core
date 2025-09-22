@@ -1596,5 +1596,16 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         }
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        // This is an attempt to fix the occasional issue where the browser is restarted
+        // and the NTP cuts off the bottom of the background image. There may well be a
+        // cleaner fix (assuming this fixes it at all) but I have not managed to ascertain
+        // exactly how the problem is able to occur.
+        if (mBgImageView != null && mBgImageView.getMeasuredHeight() < getMeasuredHeight()) {
+            int bgWidthSpec = MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY);
+            int bgHeightSpec =
+                    MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.EXACTLY);
+            mBgImageView.measure(bgWidthSpec, bgHeightSpec);
+        }
     }
 }
