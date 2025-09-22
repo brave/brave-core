@@ -260,7 +260,9 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
         ]
       )
     )
-    if item.duration != 0 {
+
+    let isItemLive = !item.duration.isFinite || item.duration == .greatestFiniteMagnitude
+    if item.duration != 0, !isItemLive {
       detailTextForPlaylistSuggestions.append(
         NSAttributedString(
           string: " · \(Duration.seconds(item.duration).formatted(.timestamp))",
