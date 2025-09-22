@@ -327,7 +327,7 @@ const Config = function () {
     'zebpay_sandbox_client_secret',
     'zebpay_sandbox_oauth_url',
     'use_clang_coverage',
-    'coverage_instrumentation_input_file'
+    'coverage_instrumentation_input_file',
   ]
 }
 
@@ -377,10 +377,6 @@ Config.prototype.isAsan = function () {
     return true
   }
   return false
-}
-
-Config.prototype.useClangCoverage = function () {
-  return this.use_clang_coverage
 }
 
 Config.prototype.isOfficialBuild = function () {
@@ -571,7 +567,7 @@ Config.prototype.buildArgs = function () {
     args.symbol_level = 1
   }
 
-  if (this.useClangCoverage()) {
+  if (this.use_clang_coverage) {
     const buildDir = path.relative(this.srcDir, this.outputDir)
     args.use_clang_coverage = true
     args.coverage_instrumentation_input_file = `//${buildDir}/files-to-instrument.txt`

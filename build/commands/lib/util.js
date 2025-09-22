@@ -634,7 +634,7 @@ const util = {
   ) => {
     assert(Array.isArray(targets))
 
-    if (config.useClangCoverage()) {
+    if (config.use_clang_coverage) {
       const instrumentationFile = path.join(
         config.outputDir,
         'files-to-instrument.txt',
