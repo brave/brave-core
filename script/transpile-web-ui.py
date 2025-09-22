@@ -8,7 +8,59 @@ import argparse
 import os
 import sys
 import shutil
+import json
 from lib.util import execute_stdout, scoped_cwd
+
+from pathlib import Path
+
+def getNonContained(srcRoots, paths):
+    """
+    Check whether all given paths are contained within the source roots.
+    Returns list of paths that were not contained
+    """
+    roots = [Path(r).resolve() for r in srcRoots]
+    test_paths = [Path(p).resolve() for p in paths]
+
+    def should_ignore(p, ignore):
+        return any(p.is_relative_to(ig) for ig in ignore)
+
+    not_contained = []
+
+    for p in test_paths:
+        if not any(p.is_relative_to(root) for root in roots):
+            not_contained.append(p)
+
+    return not_contained
+
+    
+
+def verify_webpack_srcs(root_gen_dir, data_deps_path, depfile_path, extra_modules):
+    srcFolder = os.path.abspath(os.path.join(root_gen_dir, '..', '..', '..'))
+    outDir = os.path.abspath(os.path.join(root_gen_dir, '..'))
+    srcRoots = []
+
+    with open(data_deps_path) as f:
+        srcRoots = json.loads(f.read())
+        srcRoots = list([ root.replace('//', srcFolder+'/') for root in srcRoots])
+        
+
+    with open(depfile_path) as f:
+        files = list(f.read().split(' ')[1:])
+
+    allRoots = srcRoots + [
+        srcFolder + '/brave/node_modules', # handled via package.json
+        outDir # generated assets are deps and handled by gn already
+    ] + extra_modules
+
+    notContained = getNonContained(allRoots, files)
+
+    if len(notContained):
+        print("error occured cross-referencing data folders. Expected following srcRoots:")
+        print("  " + ", ".join(srcRoots))
+        print("to contain:")
+        print("  " + ", ".join([ str(file) for file in notContained]))
+        print("fix this issue by adding the containing source folders into the transpile_web_ui target")
+        sys.exit(1)
 
 
 NPM = 'npm'
@@ -32,6 +84,7 @@ def main():
     webpack_gen_dir = output_path_absolute
 
     depfile_path = os.path.abspath(args.depfile_path[0])
+    data_deps_path = os.path.abspath(args.data_deps_path[0])
     transpile_options = dict(production=args.production,
                              target_gen_dir=webpack_gen_dir,
                              root_gen_dir=root_gen_dir,
@@ -47,6 +100,9 @@ def main():
     transpile_web_uis(transpile_options)
     generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0],
                  resource_path_prefix)
+    
+    verify_webpack_srcs(root_gen_dir, data_deps_path, depfile_path, args.extra_modules)
+
 
 
 def parse_args():
@@ -61,6 +117,7 @@ def parse_args():
     parser.add_argument('--output_path', nargs=1)
     parser.add_argument('--root_gen_dir', nargs=1)
     parser.add_argument('--depfile_path', nargs=1)
+    parser.add_argument('--data_deps_path', nargs=1)
     parser.add_argument('--grd_name', nargs=1)
     parser.add_argument('--resource_name', nargs=1)
     parser.add_argument('--public_asset_path', nargs='?')
@@ -147,7 +204,6 @@ def transpile_web_uis(options):
     dirname = os.path.abspath(os.path.join(__file__, '..', '..'))
     with scoped_cwd(dirname):
         execute_stdout(args, env)
-
 
 def generate_grd(target_include_dir, grd_name, resource_name,
                  resource_path_prefix):
