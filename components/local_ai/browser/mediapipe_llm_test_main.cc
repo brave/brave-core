@@ -28,6 +28,12 @@
 #include "absl/log/absl_check.h"
 #include "absl/log/absl_log.h"
 #include "absl/strings/string_view.h"
+#include "base/at_exit.h"
+#include "base/command_line.h"
+#include "base/logging.h"
+#include "base/message_loop/message_pump_type.h"
+#include "base/task/single_thread_task_executor.h"
+#include "base/task/thread_pool/thread_pool_instance.h"
 #include "mediapipe/framework/deps/file_path.h"
 #include "mediapipe/tasks/cc/genai/inference/c/llm_inference_engine.h"
 
@@ -60,18 +66,16 @@ ABSL_FLAG(
     "The input prompt to be fed to the model. The flag is not relevant when "
     "running the benchmark, i.e. the input_token_limit value is set.");
 
-namespace {
-
-// Only cout the first response
-void async_callback_print(void*, LlmResponseContext* response_context) {
-  std::cout << response_context->response_array[0] << std::flush;
-  LlmInferenceEngine_CloseResponseContext(response_context);
-}
-
-}  // namespace
 
 int main(int argc, char** argv) {
-  // BRAVE: Use simple C++ iostream output
+  // BRAVE: Initialize base infrastructure for Chromium compatibility
+  base::AtExitManager exit_manager;
+  base::CommandLine::Init(argc, argv);
+  logging::LoggingSettings settings;
+  settings.logging_dest = logging::LOG_TO_STDERR;
+  logging::InitLogging(settings);
+  base::SingleThreadTaskExecutor io_task_executor(base::MessagePumpType::IO);
+  base::ThreadPoolInstance::CreateAndStartWithDefaultParams("MediaPipeLLMTest");
 
   absl::ParseCommandLine(argc, argv);
 
@@ -158,32 +162,38 @@ int main(int argc, char** argv) {
   //     llm_engine_session, prompt_str, /** error_msg=*/nullptr);
   // std::cout << "INFO: Number of tokens for input prompt: " << num_tokens << std::endl;
 
-  std::cout << "INFO: Starting prediction (async)" << std::endl;
-  error_code = LlmInferenceEngine_Session_PredictAsync(
-      llm_engine_session,
-      /*callback_context=*/nullptr, &error_msg, async_callback_print);
-  if (error_code) {
-    std::cerr << "ERROR: Failed to predict asyncously: " << std::string(error_msg) << std::endl;
-    free(error_msg);
-    return EXIT_FAILURE;
-  }
-  std::cout << "INFO: Prediction started successfully" << std::endl;
-
-  // Optional to use the following for the sync version.
-  // LOG(INFO) << "PredictSync";
-  // auto output =
-  //     LlmInferenceEngine_Session_PredictSync(llm_engine_session);
-  // for (int i = 0; output.response_array[0][i] != '\0'; ++i) {
-  //   std::cout << output.response_array[0][i] << std::flush;
+  // std::cout << "INFO: Starting prediction (async)" << std::endl;
+  // error_code = LlmInferenceEngine_Session_PredictAsync(
+  //     llm_engine_session,
+  //     /*callback_context=*/nullptr, &error_msg, async_callback_print);
+  // if (error_code) {
+  //   std::cerr << "ERROR: Failed to predict asyncously: " << std::string(error_msg) << std::endl;
+  //   free(error_msg);
+  //   return EXIT_FAILURE;
   // }
-  // std::cout << std::endl;
-  //
-  // LlmInferenceEngine_CloseResponseContext(&output);
+  // std::cout << "INFO: Prediction started successfully" << std::endl;
+
+   // Optional to use the following for the sync version.
+   LlmResponseContext output;
+   error_code = LlmInferenceEngine_Session_PredictSync(llm_engine_session, &output, &error_msg);
+   if (error_code) {
+     std::cerr << "ERROR: Failed to predict synchronously: " << std::string(error_msg) << std::endl;
+     free(error_msg);
+     return EXIT_FAILURE;
+   }
+   if (output.response_array && output.response_array[0]) {
+     std::cout << output.response_array[0];
+   }
+   std::cout << std::endl;
+
+   LlmInferenceEngine_CloseResponseContext(&output);
 
   std::cout << "INFO: Deleting session and engine" << std::endl;
   LlmInferenceEngine_Session_Delete(llm_engine_session);
   LlmInferenceEngine_Engine_Delete(llm_engine);
 
   std::cout << "INFO: Cleanup completed successfully" << std::endl;
+
+  base::ThreadPoolInstance::Get()->Shutdown();
   return EXIT_SUCCESS;
 }

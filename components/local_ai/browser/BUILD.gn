@@ -71,6 +71,7 @@ if (brave_build_with_mediapipe_lib) {
     ]
 
     deps = [
+      "//base",
       "//brave/third_party/mediapipe:llm_inference_engine_cpu",
       "//third_party/abseil-cpp:absl",
     ]
