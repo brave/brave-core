@@ -26,8 +26,8 @@
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/endpoint_client/maybe_strip_with_headers.h"
 #include "brave/components/endpoint_client/maybe_variant.h"
-#include "brave/components/endpoint_client/is_request.h"
-#include "brave/components/endpoint_client/is_response.h"
+#include "brave/components/endpoint_client/request.h"
+#include "brave/components/endpoint_client/response.h"
 
 namespace endpoint_client::detail {
 

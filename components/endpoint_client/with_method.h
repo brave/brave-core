@@ -10,7 +10,7 @@
 #include <type_traits>
 
 #include "base/types/always_false.h"
-#include "brave/components/endpoint_client/is_request.h"
+#include "brave/components/endpoint_client/request.h"
 #include "net/http/http_request_headers.h"
 
 namespace endpoint_client::detail {

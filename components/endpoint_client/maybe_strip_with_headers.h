@@ -9,8 +9,8 @@
 #include <type_traits>
 #include <variant>
 
-#include "brave/components/endpoint_client/is_request.h"
-#include "brave/components/endpoint_client/is_response.h"
+#include "brave/components/endpoint_client/request.h"
+#include "brave/components/endpoint_client/response.h"
 #include "brave/components/endpoint_client/with_headers.h"
 
 namespace endpoint_client::detail {

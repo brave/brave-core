@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_RESPONSE_H_
-#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_RESPONSE_H_
+#ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_RESPONSE_H_
+#define BRAVE_COMPONENTS_ENDPOINT_CLIENT_RESPONSE_H_
 
 #include <concepts>
 #include <optional>
@@ -45,4 +45,4 @@ concept IsResponse = kIsResponse<T>;
 
 }  // namespace endpoint_client::detail
 
-#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_RESPONSE_H_
+#endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_RESPONSE_H_

@@ -12,7 +12,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/values.h"
-#include "brave/components/endpoint_client/is_response.h"
+#include "brave/components/endpoint_client/response.h"
 #include "brave/components/endpoint_client/with_headers.h"
 #include "net/http/http_response_headers.h"
 

@@ -9,8 +9,8 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/types/always_false.h"
 #include "base/types/is_instantiation.h"
-#include "brave/components/endpoint_client/is_request.h"
-#include "brave/components/endpoint_client/is_response.h"
+#include "brave/components/endpoint_client/request.h"
+#include "brave/components/endpoint_client/response.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 
