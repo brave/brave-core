@@ -173,7 +173,8 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         if (iconBitmap == null) {
             if (mDefaultFaviconHelper == null) mDefaultFaviconHelper = new DefaultFaviconHelper();
             iconBitmap =
-                    mDefaultFaviconHelper.getDefaultFaviconBitmap(getActivity(), pageUrl, true);
+                    mDefaultFaviconHelper.getDefaultFaviconBitmap(
+                            getActivity(), pageUrl, true, false);
         }
         mFavicon.setImageBitmap(iconBitmap);
         mFavicon.setVisibility(View.VISIBLE);
