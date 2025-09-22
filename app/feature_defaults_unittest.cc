@@ -88,9 +88,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &autofill::features::kAutofillEnableCardBenefitsForAmericanExpress,
       &autofill::features::kAutofillEnableCardBenefitsForBmo,
       &autofill::features::test::kAutofillServerCommunication,
-#if BUILDFLAG(IS_ANDROID)
-      &base::features::kCollectAndroidFrameTimelineMetrics,
-#endif
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAIProofreadingAPI,
       &blink::features::kAIPromptAPI,
