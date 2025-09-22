@@ -17,6 +17,7 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
+import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.tab.Tab;
@@ -89,7 +90,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             @Nullable BackButtonCoordinator backButtonCoordinator,
             @Nullable ForwardButtonCoordinator forwardButtonCoordinator,
             @Nullable HomeButtonDisplay homeButtonDisplay,
-            @Nullable ExtensionToolbarCoordinator extensionToolbarCoordinator) {
+            @Nullable ExtensionToolbarCoordinator extensionToolbarCoordinator,
+            TopControlsStacker topControlsStacker) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -123,7 +125,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 backButtonCoordinator,
                 forwardButtonCoordinator,
                 homeButtonDisplay,
-                extensionToolbarCoordinator);
+                extensionToolbarCoordinator,
+                topControlsStacker);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
