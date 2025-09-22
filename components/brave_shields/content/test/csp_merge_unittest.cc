@@ -13,9 +13,17 @@ namespace brave_shields {
 
 const std::optional<std::string> NO_POLICY = std::nullopt;
 
-const auto POLICY1 =
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const auto POLICY1 =
     std::optional<std::string>("script-src 'self' 'unsafe-inline'");
-const auto POLICY2 =
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const auto POLICY2 =
     std::optional<std::string>("media-src 'self' https://example.com");
 
 TEST(CspMergeTest, MergeTwoEmptyPolicies) {

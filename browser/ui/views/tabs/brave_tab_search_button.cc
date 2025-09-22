@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/background.h"
 
 BraveTabSearchButton::BraveTabSearchButton(
     TabStripController* tab_strip_controller,

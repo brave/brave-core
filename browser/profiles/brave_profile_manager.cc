@@ -107,8 +107,7 @@ void RecordInitialP3AValues(Profile* profile) {
 }  // namespace
 
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
-    : ProfileManager(user_data_dir) {
-}
+    : ProfileManager(user_data_dir) {}
 
 size_t BraveProfileManager::GetNumberOfProfiles() {
   size_t count = ProfileManager::GetNumberOfProfiles();
@@ -157,7 +156,7 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
   RecordInitialP3AValues(profile);
   brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
   brave::SetDefaultThirdPartyCookieBlockValue(profile);
-  perf::MaybeEnableBraveFeatureForPerfTesting(profile);
+  perf::MaybeEnableBraveFeaturesPrefsForPerfTesting(profile);
   MigrateHttpsUpgradeSettings(profile);
 }
 
@@ -166,6 +165,7 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
   if (!do_final_services_init_)
     return;
+  perf::MaybeEnableBraveFeaturesServicesAndComponentsForPerfTesting(profile);
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
   brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
@@ -229,7 +229,6 @@ void BraveProfileManager::SetNonPersonalProfilePrefs(Profile* profile) {
   prefs->SetBoolean(bookmarks::prefs::kEditBookmarksEnabled, false);
   prefs->SetBoolean(bookmarks::prefs::kShowBookmarkBar, false);
 }
-
 
 BraveProfileManagerWithoutInit::BraveProfileManagerWithoutInit(
     const base::FilePath& user_data_dir)

@@ -9,7 +9,6 @@ import android.content.Context;
 import android.os.Bundle;
 
 import org.chromium.base.Log;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -18,10 +17,17 @@ import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.components.browser_ui.settings.SettingsCustomTabLauncher;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
+import java.util.function.Supplier;
+
 @NullMarked
 public class BravePasswordManagerHelper extends PasswordManagerHelper {
     private static final String TAG = "BravePasswords";
     protected static @Nullable ProfileKeyedMap<PasswordManagerHelper> sProfileMap;
+
+    // Key for the argument with which PasswordsSettings will be launched. The value for
+    // this argument should be part of the ManagePasswordsReferrer enum, which contains
+    // all points of entry to the passwords settings.
+    public static final String MANAGE_PASSWORDS_REFERRER = "manage-passwords-referrer";
 
     BravePasswordManagerHelper(Profile profile) {
         super(profile);
@@ -31,7 +37,7 @@ public class BravePasswordManagerHelper extends PasswordManagerHelper {
     public void showPasswordSettings(
             Context context,
             @ManagePasswordsReferrer int referrer,
-            Supplier<ModalDialogManager> modalDialogManagerSupplier,
+            Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             boolean managePasskeys,
             @Nullable String account,
             SettingsCustomTabLauncher settingsCustomTabLauncher) {

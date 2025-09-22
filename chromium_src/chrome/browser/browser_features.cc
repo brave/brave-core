@@ -10,10 +10,11 @@
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kBookmarkTriggerForPrerender2KillSwitch, base::FEATURE_ENABLED_BY_DEFAULT},
     {kCertificateTransparencyAskBeforeEnabling,
      base::FEATURE_ENABLED_BY_DEFAULT},
 
-    {kBookmarkTriggerForPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kBookmarkTriggerForPrefetch, base::FEATURE_DISABLED_BY_DEFAULT},
     {kDestroyProfileOnBrowserClose, base::FEATURE_DISABLED_BY_DEFAULT},
     // Google has asked embedders not to enforce these pins:
     // https://groups.google.com/a/chromium.org/g/embedder-dev/c/XsNTwEiN1lI/m/TMXh-ZvOAAAJ

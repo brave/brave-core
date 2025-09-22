@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/android/apk_info.h"
 #include "base/android/jni_string.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/android/chrome_jni_headers/AboutSettingsBridge_jni.h"
@@ -15,9 +16,7 @@
 static std::string JNI_AboutSettingsBridge_GetApplicationVersion(JNIEnv* env) {
   JNI_AboutSettingsBridge_GetApplicationVersion_ChromiumImpl(env);
 
-  base::android::BuildInfo* android_build_info =
-      base::android::BuildInfo::GetInstance();
-  std::string application(android_build_info->host_package_label());
+  std::string application(base::android::apk_info::host_package_label());
   application.append(" ");
   application.append(
       version_info::GetBraveVersionWithoutChromiumMajorVersion());

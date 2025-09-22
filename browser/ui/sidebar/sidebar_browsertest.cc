@@ -641,7 +641,7 @@ class SidebarBrowserWithSplitViewTest
           ->GetInactiveContentsContainerView();
     }
 
-    return browser_view()->split_view()->secondary_contents_container();
+    return browser_view()->split_view()->secondary_contents_container_view();
   }
 
   BraveBrowserView* browser_view() {

@@ -75,13 +75,14 @@ void BandwidthSavingsPredictor::OnResourceLoadComplete(
   if (is_third_party) {
     feature_map_["resources.third-party.requestCount"] += 1;
     feature_map_["resources.third-party.size"] +=
-        resource_load_info.raw_body_bytes;
+        resource_load_info.raw_body_bytes.InBytes();
   }
 
   feature_map_["resources.total.requestCount"] += 1;
-  feature_map_["resources.total.size"] += resource_load_info.raw_body_bytes;
+  feature_map_["resources.total.size"] +=
+      resource_load_info.raw_body_bytes.InBytes();
   feature_map_["transfer.total.size"] +=
-      resource_load_info.total_received_bytes;
+      resource_load_info.total_received_bytes.InBytes();
   std::string resource_type;
   switch (resource_load_info.request_destination) {
     case network::mojom::RequestDestination::kDocument:
@@ -113,7 +114,7 @@ void BandwidthSavingsPredictor::OnResourceLoadComplete(
   }
   feature_map_["resources." + resource_type + ".requestCount"] += 1;
   feature_map_["resources." + resource_type + ".size"] +=
-      resource_load_info.raw_body_bytes;
+      resource_load_info.raw_body_bytes.InBytes();
 }
 
 double BandwidthSavingsPredictor::PredictSavingsBytes() const {

@@ -9,7 +9,6 @@ namespace autofill {
 
 // static
 std::unique_ptr<WebViewAutofillClientIOS> WebViewAutofillClientIOS::Create(
-    FromWebStateImpl from_web_state_impl,
     web::WebState* web_state,
     id<CWVAutofillClientIOSBridge, AutofillDriverIOSBridge> bridge) {
   return nullptr;

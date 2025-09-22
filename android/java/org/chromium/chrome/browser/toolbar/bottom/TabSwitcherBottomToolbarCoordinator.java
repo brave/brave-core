@@ -14,7 +14,6 @@ import android.view.ViewStub;
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneShotCallback;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.omaha.UpdateMenuItemHelper;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -26,11 +25,13 @@ import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonState;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
 
+import java.util.function.Supplier;
+
 /**
  * The coordinator for the tab switcher mode bottom toolbar. This class handles all interactions
- * that the tab switcher bottom toolbar has with the outside world.
- * TODO(crbug.com/1036474): This coordinator is not used currently and can be removed if the final
- *                          duet design doesn't need a stand-alone toolbar in tab switcher mode.
+ * that the tab switcher bottom toolbar has with the outside world. TODO(crbug.com/1036474): This
+ * coordinator is not used currently and can be removed if the final duet design doesn't need a
+ * stand-alone toolbar in tab switcher mode.
  */
 public class TabSwitcherBottomToolbarCoordinator {
     /** The mediator that handles events from outside the tab switcher bottom toolbar. */

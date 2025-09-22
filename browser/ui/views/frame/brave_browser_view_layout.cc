@@ -44,12 +44,11 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     WebAppFrameToolbarView* web_app_frame_toolbar,
     views::Label* web_app_window_title,
     TabStripRegionView* tab_strip_region_view,
-    TabStrip* tab_strip,
+    views::View* vertical_tab_strip_container,
     views::View* toolbar,
     InfoBarContainerView* infobar_container,
     views::View* contents_container,
     MultiContentsView* multi_contents_view,
-    views::View* vertical_tab_strip_container,
     views::View* left_aligned_side_panel_separator,
     views::View* unified_side_panel,
     views::View* right_aligned_side_panel_separator,
@@ -63,13 +62,12 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
           web_app_frame_toolbar,
           web_app_window_title,
           tab_strip_region_view,
-          tab_strip,
+          vertical_tab_strip_container,
           toolbar,
           infobar_container,
           (browser_view ? browser_view->GetContentsContainerForLayoutManager()
                         : browser_view),
           multi_contents_view,
-          vertical_tab_strip_container,
           left_aligned_side_panel_separator,
           unified_side_panel,
           right_aligned_side_panel_separator,
@@ -140,8 +138,8 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
   // above. In order to avoid tabstrip position changes when switching to a
   // different tab, add some spacing as if the separator were above and
   // invisible.
-  if (contents_separator_ && ShouldPushBookmarkBarForVerticalTabs()) {
-    insets.set_top(contents_separator_->GetPreferredSize().height());
+  if (top_container_separator_ && ShouldPushBookmarkBarForVerticalTabs()) {
+    insets.set_top(top_container_separator_->GetPreferredSize().height());
   }
 #endif  // BUILDFLAG(IS_LINUX)
 
@@ -240,10 +238,6 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(
   UpdateContentsContainerInsets(contents_container_bounds);
 
   contents_container_->SetBoundsRect(contents_container_bounds);
-}
-
-void BraveBrowserViewLayout::UpdateSplitViewInsets() {
-  // We don't use chromium's split view insets.
 }
 
 void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {

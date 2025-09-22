@@ -25,7 +25,6 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
@@ -68,14 +67,15 @@ import org.chromium.ui.modelutil.PropertyModel;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 /** Brave's extension for TabbedAppMenuPropertiesDelegate */
 @NullMarked
 public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
-    private final AppMenuDelegate mAppMenuDelegate;
+    private final AppMenuDelegate mBraveAppMenuDelegate;
     private final ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private boolean mJunitIsTesting;
-    private final Context mContext;
+    private final Context mBraveContext;
 
     public BraveTabbedAppMenuPropertiesDelegate(
             Context context,
@@ -110,9 +110,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 incognitoReauthControllerOneshotSupplier,
                 readAloudControllerSupplier);
 
-        mAppMenuDelegate = appMenuDelegate;
+        mBraveAppMenuDelegate = appMenuDelegate;
         mBookmarkModelSupplier = bookmarkModelSupplier;
-        mContext = context;
+        mBraveContext = context;
     }
 
     private void onFooterViewInflated(AppMenuHandler appMenuHandler, View view) {
@@ -132,7 +132,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                             appMenuHandler,
                             mBookmarkModelSupplier.get(),
                             mActivityTabProvider.get(),
-                            mAppMenuDelegate);
+                            mBraveAppMenuDelegate);
         }
 
         // Hide bookmark button if bottom toolbar is enabled and address bar is on top.
@@ -175,7 +175,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     public @Nullable View buildFooterView(AppMenuHandler appMenuHandler) {
         if (isMenuButtonInBottomToolbar() && shouldShowPageMenu()) {
             View footer =
-                    LayoutInflater.from(mContext).inflate(R.layout.icon_row_menu_footer, null);
+                    LayoutInflater.from(mBraveContext).inflate(R.layout.icon_row_menu_footer, null);
 
             this.onFooterViewInflated(appMenuHandler, footer);
 
@@ -199,37 +199,46 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             if (itemId == R.id.new_tab_menu_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(mContext, R.drawable.ic_new_tab_page));
+                        AppCompatResources.getDrawable(mBraveContext, R.drawable.ic_new_tab_page));
             } else if (itemId == R.id.new_incognito_tab_menu_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
                         AppCompatResources.getDrawable(
-                                mContext, R.drawable.brave_menu_new_private_tab));
+                                mBraveContext, R.drawable.brave_menu_new_private_tab));
+            } else if (itemId == R.id.new_tab_group_menu_id
+                    || itemId == R.id.add_to_group_menu_id) {
+                item.model.set(
+                        AppMenuItemProperties.ICON,
+                        AppCompatResources.getDrawable(mBraveContext, R.drawable.browser_group));
             } else if (itemId == R.id.all_bookmarks_menu_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_bookmarks));
+                        AppCompatResources.getDrawable(
+                                mBraveContext, R.drawable.brave_menu_bookmarks));
             } else if (itemId == R.id.recent_tabs_menu_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
                         AppCompatResources.getDrawable(
-                                mContext, R.drawable.brave_menu_recent_tabs));
+                                mBraveContext, R.drawable.brave_menu_recent_tabs));
             } else if (itemId == R.id.open_history_menu_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_history));
+                        AppCompatResources.getDrawable(
+                                mBraveContext, R.drawable.brave_menu_history));
             } else if (itemId == R.id.downloads_menu_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_downloads));
+                        AppCompatResources.getDrawable(
+                                mBraveContext, R.drawable.brave_menu_downloads));
             } else if (itemId == R.id.preferences_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_settings));
+                        AppCompatResources.getDrawable(
+                                mBraveContext, R.drawable.brave_menu_settings));
             } else if (itemId == R.id.download_page_id) {
                 item.model.set(
                         AppMenuItemProperties.ICON,
-                        AppCompatResources.getDrawable(mContext, R.drawable.ic_download));
+                        AppCompatResources.getDrawable(mBraveContext, R.drawable.ic_download));
             }
         }
     }
@@ -319,11 +328,11 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         modelList, buildBraveSpeedreaderItem(), Arrays.asList(R.id.page_zoom_id));
             }
         }
-        if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mContext)) {
+        if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mBraveContext)) {
             modelList.add(buildSetDefaultBrowserItem());
         }
         if (!mJunitIsTesting) {
-            if (BraveVpnUtils.isVpnFeatureSupported(mContext)) {
+            if (BraveVpnUtils.isVpnFeatureSupported(mBraveContext)) {
                 modelList.add(buildBraveVpnItem());
                 if (BraveVpnPrefUtils.isSubscriptionPurchase()
                         && !TextUtils.isEmpty(BraveVpnPrefUtils.getRegionIsoCode())) {
@@ -472,7 +481,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         R.string.brave_vpn,
                         shouldShowIconBeforeItem() ? R.drawable.ic_vpn : 0,
                         R.id.request_brave_vpn_check_id,
-                        BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mContext)));
+                        BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mBraveContext)));
     }
 
     private MVCListAdapter.ListItem buildBraveVpnLocationIconItem() {
@@ -480,14 +489,14 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         String regionName =
                 BraveVpnPrefUtils.getRegionPrecision()
                                 .equals(BraveVpnConstants.REGION_PRECISION_COUNTRY)
-                        ? mContext.getString(R.string.optimal_text)
+                        ? mBraveContext.getString(R.string.optimal_text)
                         : BraveVpnPrefUtils.getRegionNamePretty();
         Drawable secondaryActionIcon =
-                AppCompatResources.getDrawable(mContext, R.drawable.ic_chevron_right);
+                AppCompatResources.getDrawable(mBraveContext, R.drawable.ic_chevron_right);
         secondaryActionIcon = DrawableCompat.wrap(secondaryActionIcon);
         DrawableCompat.setTint(
                 secondaryActionIcon,
-                ContextCompat.getColor(mContext, R.color.vpn_timer_icon_color));
+                ContextCompat.getColor(mBraveContext, R.color.vpn_timer_icon_color));
         PropertyModel model =
                 buildModelForMenuItemWithSecondaryButton(
                         R.id.request_vpn_location_id,

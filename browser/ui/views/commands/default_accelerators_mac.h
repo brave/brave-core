@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "chrome/browser/ui/views/accelerator_table.h"
+#include "chrome/browser/ui/accelerator_table.h"
 
 namespace commands {
 

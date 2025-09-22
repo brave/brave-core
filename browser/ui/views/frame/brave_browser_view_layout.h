@@ -21,12 +21,11 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
                          WebAppFrameToolbarView* web_app_frame_toolbar,
                          views::Label* web_app_window_title,
                          TabStripRegionView* tab_strip_region_view,
-                         TabStrip* tab_strip,
+                         views::View* vertical_tab_strip_container,
                          views::View* toolbar,
                          InfoBarContainerView* infobar_container,
                          views::View* contents_container,
                          MultiContentsView* multi_contents_view,
-                         views::View* vertical_tab_strip_container,
                          views::View* left_aligned_side_panel_separator,
                          views::View* unified_side_panel,
                          views::View* right_aligned_side_panel_separator,
@@ -63,7 +62,6 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
   void LayoutBookmarkBar(gfx::Rect& available_bounds) override;
   void LayoutInfoBar(gfx::Rect& available_bounds) override;
   void LayoutContentsContainerView(const gfx::Rect& available_bounds) override;
-  void UpdateSplitViewInsets() override;
 
  private:
   void LayoutVerticalTabs();

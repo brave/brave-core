@@ -10,19 +10,20 @@ namespace syncer {
 class BraveSyncAuthManager;
 }  // namespace syncer
 
-// Header guard to prevent DetermineAccountToUse from getting overriden in it
-#include "components/sync/service/sync_auth_manager.h"
-
 #define RequestAccessToken virtual RequestAccessToken
-#define DetermineAccountToUse      \
-  DetermineAccountToUse_Unused() { \
-    return SyncAccountInfo();      \
-  }                                \
-  friend BraveSyncAuthManager;     \
-  virtual SyncAccountInfo DetermineAccountToUse
+
+// Add DetermineAccountToUse method that would hide the function with the same
+// signature in the anonymous namespace in the .cc file. Also, add friend for
+// our derived class.
+#define UpdateSyncAccountIfNecessary                          \
+  UpdateSyncAccountIfNecessary_Unused();                      \
+  virtual SyncAccountInfo DetermineAccountToUse(              \
+      const signin::IdentityManager* identity_manager) const; \
+  friend BraveSyncAuthManager;                                \
+  bool UpdateSyncAccountIfNecessary
 
 #include <components/sync/service/sync_auth_manager.h>  // IWYU pragma: export
 
 #undef RequestAccessToken
-#undef DetermineAccountToUse
+#undef UpdateSyncAccountIfNecessary
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_SERVICE_SYNC_AUTH_MANAGER_H_

@@ -6,10 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_SCROLL_CONTAINER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_STRIP_SCROLL_CONTAINER_H_
 
-#define GetTabStripAvailableWidth                   \
-  GetTabStripAvailableWidth_Unused() { return {}; } \
-  friend class VerticalTabStripRegionView;          \
-  friend class BraveTabStrip;                       \
+#define GetTabStripAvailableWidth               \
+  GetTabStripAvailableWidth_Unused() {          \
+    return {};                                  \
+  }                                             \
+  friend class BraveVerticalTabStripRegionView; \
+  friend class BraveTabStrip;                   \
   int GetTabStripAvailableWidth
 
 #include <chrome/browser/ui/views/tabs/tab_strip_scroll_container.h>  // IWYU pragma: export
