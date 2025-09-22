@@ -16,12 +16,14 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui.h"
+#include "brave/ios/browser/ui/webui/new_tab_takeover_ui/new_tab_takeover_ui_ios.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #include "url/gurl.h"
+#include "brave/ios/browser/ui/webui/new_tab_takeover_ui/ntp_sponsored_rich_media_controller.h"
 
 using web::WebUIIOS;
 using web::WebUIIOSController;
@@ -72,6 +74,10 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
   } else if (url_host == kSkusInternalsHost) {
     return &NewWebUIIOS<SkusInternalsUI>;
   }
+
+  //  else if (url_host == kNewTabTakeoverHost) {
+  //   return &NewWebUIIOS<NTPSponsoredRichMediaController>;
+  // }
   return nullptr;
 }
 
@@ -81,6 +87,11 @@ NSInteger BraveWebUIControllerFactory::GetErrorCodeForWebUIURL(
     const GURL& url) const {
   if (url.host() == kChromeUIDinoHost) {
     return NSURLErrorNotConnectedToInternet;
+  }
+
+  const std::string url_host = url.host();
+  if (url_host == kNewTabTakeoverHost || url_host == kNewTabTakeoverPageHost) {
+    return 0;
   }
 
   if (brave::GetWebUIIOSFactoryFunction(url)) {
@@ -94,6 +105,13 @@ std::unique_ptr<WebUIIOSController>
 BraveWebUIControllerFactory::CreateWebUIIOSControllerForURL(
     WebUIIOS* web_ui,
     const GURL& url) const {
+  const std::string url_host = url.host();
+  if (url_host == kNewTabTakeoverHost) {
+    return std::make_unique<NTPSponsoredRichMediaController>(web_ui, url, ntp_background_images_service_);
+  } else if (url_host == kNewTabTakeoverPageHost) {
+    return std::make_unique<NewTabTakeoverUIIOS>(web_ui, url, ntp_background_images_service_);
+  }
+
   brave::WebUIIOSFactoryFunction function =
       brave::GetWebUIIOSFactoryFunction(url);
   if (!function) {
@@ -103,6 +121,12 @@ BraveWebUIControllerFactory::CreateWebUIIOSControllerForURL(
 
   return (*function)(web_ui, url);
 }
+
+void BraveWebUIControllerFactory::SetNTPBackgroundImagesService(
+    ntp_background_images::NTPBackgroundImagesService* service) {
+  ntp_background_images_service_ = service;
+}
+
 
 // static
 BraveWebUIControllerFactory* BraveWebUIControllerFactory::GetInstance() {

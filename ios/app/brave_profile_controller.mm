@@ -21,6 +21,7 @@
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_background_images_service_ios+private.h"
+//#include "brave/ios/browser/api/ntp_background_images/ntp_sponsored_rich_media_source_ios.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api+private.h"
 #include "brave/ios/browser/api/opentabs/brave_tabgenerator_api+private.h"
@@ -67,10 +68,12 @@
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
+#include "ios/web/public/webui/url_data_source_ios.h"
 #include "ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #include "ios/web_view/internal/web_view_browser_state.h"
 #include "ios/web_view/internal/web_view_download_manager.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
 #include "ios/chrome/browser/credential_provider/model/credential_provider_service_factory.h"
@@ -151,12 +154,19 @@
         std::make_unique<ios_web_view::WebViewDownloadManager>(
             _profile->GetOffTheRecordProfile());
 
+    auto service = std::make_unique<ntp_background_images::NTPBackgroundImagesService>(
+        GetApplicationContext()->GetVariationsService(),
+        GetApplicationContext()->GetComponentUpdateService(),
+        GetApplicationContext()->GetLocalState());
+
+    // web::URLDataSourceIOS::Add(
+    //     _profile, new ntp_background_images::NTPSponsoredRichMediaSourceIOS(
+    //                   service.get()));
+    BraveWebUIControllerFactory::GetInstance()->SetNTPBackgroundImagesService(service.get());
+
+
     _backgroundImagesService = [[NTPBackgroundImagesService alloc]
-        initWithBackgroundImagesService:
-            std::make_unique<ntp_background_images::NTPBackgroundImagesService>(
-                GetApplicationContext()->GetVariationsService(),
-                GetApplicationContext()->GetComponentUpdateService(),
-                GetApplicationContext()->GetLocalState())
+        initWithBackgroundImagesService:std::move(service)
                             ads_service:brave_ads::AdsServiceFactoryIOS::
                                             GetForProfile(_profile)];
   }

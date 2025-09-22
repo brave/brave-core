@@ -106,7 +106,7 @@
       <part file="../ai_rewriter/resources/page/ai_rewriter_ui_resources.grdp" />
       <part file="brave_wallet_resources.grdp" />
 
-      <if expr="is_android">
+      <if expr="is_android or is_ios">
         <part file="../new_tab_takeover/new_tab_takeover_resources.grdp" />
       </if>
       <part file="../brave_account/resources/brave_account_resources.grdp" />
