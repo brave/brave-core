@@ -10,7 +10,6 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/playlist/common/features.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/test_renderer_host.h"
 
@@ -31,7 +30,6 @@ class PlaylistUnitTestBase : public content::RenderViewHostTestHarness {
   // content::RenderViewHostTestHarness:
   std::unique_ptr<content::BrowserContext> CreateBrowserContext() override;
 
-  ScopedTestingLocalState scoped_testing_local_state_;
   base::test::ScopedFeatureList feature_list_{features::kPlaylist};
 };
 }  // namespace playlist

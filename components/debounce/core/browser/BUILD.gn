@@ -20,7 +20,6 @@ source_set("browser") {
     "//brave/extensions:common",
     "//components/keyed_service/core",
     "//components/prefs",
-    "//components/prefs",
     "//components/user_prefs",
     "//net",
     "//third_party/re2",

@@ -133,7 +133,7 @@ public class SafariDataImportModel: SafariDataImportClientDelegate {
     readyTypes.insert(.bookmarks)
   }
 
-  public func onHistoryReady(_ estimatedCount: Int, profiles: [String]) {
+  public func onHistoryReady(_ estimatedCount: Int) {
     readyTypes.insert(.history)
   }
 

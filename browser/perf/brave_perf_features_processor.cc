@@ -53,7 +53,7 @@ void EnableAdblockCookieList(base::WeakPtr<Profile> profile) {
 
 namespace perf {
 
-void MaybeEnableBraveFeatureForPerfTesting(Profile* profile) {
+void MaybeEnableBraveFeaturesPrefsForPerfTesting(Profile* profile) {
   auto* cmd = base::CommandLine::ForCurrentProcess();
   if (!cmd->HasSwitch(switches::kEnableBraveFeaturesForPerfTesting) ||
       !cmd->HasSwitch(::switches::kUserDataDir)) {
@@ -63,11 +63,6 @@ void MaybeEnableBraveFeatureForPerfTesting(Profile* profile) {
   // Notification Ads
   profile->GetPrefs()->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds,
                                   true);
-
-  // Rewards
-  auto* rewards_service =
-      brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-  rewards_service->CreateRewardsWallet("US", base::BindOnce(&FakeCallback));
 
   // Brave news
   profile->GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
@@ -86,6 +81,20 @@ void MaybeEnableBraveFeatureForPerfTesting(Profile* profile) {
                                base::Time::Now());
   profile->GetPrefs()->SetBoolean(
       ai_chat::prefs::kBraveChatAutocompleteProviderEnabled, true);
+}
+
+void MaybeEnableBraveFeaturesServicesAndComponentsForPerfTesting(
+    Profile* profile) {
+  auto* cmd = base::CommandLine::ForCurrentProcess();
+  if (!cmd->HasSwitch(switches::kEnableBraveFeaturesForPerfTesting) ||
+      !cmd->HasSwitch(::switches::kUserDataDir)) {
+    return;
+  }
+
+  // Rewards
+  auto* rewards_service =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  rewards_service->CreateRewardsWallet("US", base::BindOnce(&FakeCallback));
 
   // Adblock
   EnableAdblockCookieList(profile->GetWeakPtr());

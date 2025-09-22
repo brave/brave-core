@@ -106,8 +106,8 @@ BraveJavaScriptTabModalDialogViewViews::GetModalDialogHost() {
           base::to_address(web_contents_));
   CHECK(manager);
 
-  auto* modal_dialog_host =
-      manager->delegate()->GetWebContentsModalDialogHost();
+  auto* modal_dialog_host = manager->delegate()->GetWebContentsModalDialogHost(
+      base::to_address(web_contents_));
   CHECK(modal_dialog_host);
 
   return *modal_dialog_host;

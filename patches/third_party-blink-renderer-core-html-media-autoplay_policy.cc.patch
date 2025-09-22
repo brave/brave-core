@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index b876f630328ea337384d7d2456e95e95434ce422..9a88b818f9db1d49c968a43a6ad8436f52b3fb47 100644
+index 7767e353a24c0bfbfa3ba63f75946aeec2452794..d457ef6f38efea3940133f264446c280ebd4ec2b 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 @@ -66,6 +66,7 @@ bool ComputeLockPendingUserGestureRequired(const Document& document) {

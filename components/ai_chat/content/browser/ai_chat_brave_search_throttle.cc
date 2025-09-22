@@ -146,8 +146,8 @@ void AIChatBraveSearchThrottle::OnGetOpenAIChatButtonNonce(
 }
 
 void AIChatBraveSearchThrottle::OnPermissionPromptResult(
-    content::PermissionStatus status) {
-  if (status == content::PermissionStatus::GRANTED) {
+    content::PermissionResult status) {
+  if (status.status == content::PermissionStatus::GRANTED) {
     OpenAIChatWithStagedEntries();
   }
 

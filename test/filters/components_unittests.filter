@@ -45,6 +45,7 @@
 # optimization_guide::features::IsModelDownloadingEnabled
 -HintsManagerFetchingTest.*
 -HintsManagerProactivePersonalizationFetchingTest.*
+-ModelBrokerClientTest.*
 -OnDeviceModelAdaptationLoaderTest2.UnavailableAdaptationRejectsSession
 -OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsDefaultUserAnonymousDataCollectionEnabled
 -PDPMetricsTest.TestFalseOptGuideResponseIsRecorded
@@ -56,6 +57,13 @@
 
 # This test fails because we disable omnibox::kDocumentProviderNoSyncRequirement
 -DocumentProviderTest.IsDocumentProviderAllowed
+
+# These tests fail because we override SyncAuthManager::DetermineAccountToUse.
+-SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithConsumerAccount
+-SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithManagedAccount
+
+# This test fails because we use different search engine keywords.
+-SearchEngineChoiceEligibilityTest.ChoiceScreenConditions_SkipFor3p_Waffle
 
 # These tests fail because upstream doesn't expect passwords to be syncable
 -SyncPrefsMigrationTest.DoNotMigratePasswordsToPerAccountPrefIfLastGaiaIdMissing
@@ -145,8 +153,6 @@
 -LeakDetectionDelegateTest.StartCheckWithEnhancedProtection
 -LocationBarModelUtilTest.GetSecurityVectorIconWithSecureLevel
 -MirrorTableMultilogin/AccountReconcilorTestMirrorMultilogin.TableRowTest/*
--ModelBrokerClientTest.PendingClient
--ModelBrokerClientTest.ReadyWithSetupClient
 -MostVisitedSitesTest.ShouldDeduplicatePopularSitesWithMostVisitedIffHostAndTitleMatches
 -MostVisitedSitesTest.ShouldHandleTopSitesCacheHit
 -MostVisitedSitesWithCustomLinksTest.DisableCustomLinksWhenInitialized

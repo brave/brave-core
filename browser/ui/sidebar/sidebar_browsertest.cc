@@ -663,7 +663,7 @@ class SidebarBrowserWithSplitViewTest
     }
 
     if (IsBraveSplitViewEnabled()) {
-      return browser_view()->split_view()->secondary_contents_container();
+      return browser_view()->split_view()->secondary_contents_container_view();
     }
 
     NOTREACHED();
@@ -875,17 +875,19 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
   }));
   EXPECT_EQ(contents_container_view_for_web_panel->bounds().origin(),
             GetBraveMultiContentsView()
-                ->GetActiveContentsContainerView()
-                ->bounds()
-                .top_right());
+                    ->GetActiveContentsContainerView()
+                    ->bounds()
+                    .top_right() -
+                gfx::Vector2d(0, /*contents separator=*/1));
 
   GetBraveMultiContentsView()->SetWebPanelOnLeft(true);
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return contents_container_view_for_web_panel->bounds().top_right() ==
            GetBraveMultiContentsView()
-               ->GetActiveContentsContainerView()
-               ->bounds()
-               .origin();
+                   ->GetActiveContentsContainerView()
+                   ->bounds()
+                   .origin() -
+               gfx::Vector2d(0, /*contents separator*/ 1);
   }));
 
   contents_container_view_for_web_panel->SetVisible(false);

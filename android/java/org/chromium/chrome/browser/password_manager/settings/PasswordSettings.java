@@ -28,7 +28,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceGroup;
 
-import org.chromium.base.BuildInfo;
+import org.chromium.base.DeviceInfo;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -36,8 +36,8 @@ import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.password_manager.BravePasswordManagerHelper;
 import org.chromium.chrome.browser.password_manager.ManagePasswordsReferrer;
-import org.chromium.chrome.browser.password_manager.PasswordManagerHelper;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
@@ -112,7 +112,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         mExportFlow.onCreate(
                 savedInstanceState,
-                new ExportFlow.Delegate() {
+                new ExportFlowInterface.Delegate() {
                     @Override
                     public Activity getActivity() {
                         return PasswordSettings.this.getActivity();
@@ -163,14 +163,14 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             @Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null
                 && savedInstanceState.containsKey(
-                        PasswordManagerHelper.MANAGE_PASSWORDS_REFERRER)) {
-            return savedInstanceState.getInt(PasswordManagerHelper.MANAGE_PASSWORDS_REFERRER);
+                        BravePasswordManagerHelper.MANAGE_PASSWORDS_REFERRER)) {
+            return savedInstanceState.getInt(BravePasswordManagerHelper.MANAGE_PASSWORDS_REFERRER);
         }
         Bundle extras = getArguments();
-        assert extras.containsKey(PasswordManagerHelper.MANAGE_PASSWORDS_REFERRER)
+        assert extras.containsKey(BravePasswordManagerHelper.MANAGE_PASSWORDS_REFERRER)
                 : "PasswordSettings must be launched with a manage-passwords-referrer fragment"
                         + "argument, but none was provided.";
-        return extras.getInt(PasswordManagerHelper.MANAGE_PASSWORDS_REFERRER);
+        return extras.getInt(BravePasswordManagerHelper.MANAGE_PASSWORDS_REFERRER);
     }
 
     @Override
@@ -287,7 +287,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     }
 
     private boolean shouldShowAutoSigninOption() {
-        return !BuildInfo.getInstance().isAutomotive;
+        return !DeviceInfo.isAutomotive();
     }
 
     /**
@@ -454,7 +454,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         if (mSearchQuery != null) {
             outState.putString(SAVED_STATE_SEARCH_QUERY, mSearchQuery);
         }
-        outState.putInt(PasswordManagerHelper.MANAGE_PASSWORDS_REFERRER, mManagePasswordsReferrer);
+        outState.putInt(
+                BravePasswordManagerHelper.MANAGE_PASSWORDS_REFERRER, mManagePasswordsReferrer);
     }
 
     @Override

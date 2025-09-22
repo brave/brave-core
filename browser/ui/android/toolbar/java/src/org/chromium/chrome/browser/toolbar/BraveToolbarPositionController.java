@@ -10,7 +10,6 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider
 /** Class responsible for managing the position (top, bottom) of the browsing mode toolbar. */
 public class BraveToolbarPositionController {
     static int calculateStateTransition(
-            boolean formFieldStateChanged,
             boolean prefStateChanged,
             boolean ntpShowing,
             boolean tabSwitcherShowing,
@@ -21,7 +20,6 @@ public class BraveToolbarPositionController {
             @ControlsPosition int currentPosition) {
         // We want it to be shown on the NTP and tab switcher.
         return ToolbarPositionController.calculateStateTransition(
-                formFieldStateChanged,
                 prefStateChanged,
                 false /*ntpShowing*/,
                 false /*tabSwitcherShowing*/,

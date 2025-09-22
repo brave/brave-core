@@ -5,19 +5,15 @@
 
 package org.chromium.chrome.browser.omnibox.suggestions.brave_leo;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.omnibox.R;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.styles.OmniboxDrawableState;
-import org.chromium.chrome.browser.omnibox.styles.OmniboxImageSupplier;
 import org.chromium.chrome.browser.omnibox.styles.SuggestionSpannable;
+import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteUIContext;
 import org.chromium.chrome.browser.omnibox.suggestions.BraveLeoAutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.BraveOmniboxSuggestionUiType;
-import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.base.BaseSuggestionViewProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.base.BaseSuggestionViewProperties;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.SuggestionViewProperties;
@@ -25,27 +21,24 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.ui.modelutil.PropertyModel;
 
-import java.util.Optional;
+import java.util.function.Supplier;
 
 /** A class that handles model and view creation for the Brave Leo suggestion. */
 public class BraveLeoSuggestionProcessor extends BaseSuggestionViewProcessor {
     private final UrlBarEditingTextStateProvider mUrlBarEditingTextProvider;
-    private final BraveLeoAutocompleteDelegate mDelegate;
+    private BraveLeoAutocompleteDelegate mBraveLeoAutocompleteDelegate;
     private final String mAskLeo;
     private final @NonNull Supplier<Tab> mActivityTabSupplier;
 
-    public BraveLeoSuggestionProcessor(
-            Context context,
-            SuggestionHost suggestionHost,
-            UrlBarEditingTextStateProvider editingTextProvider,
-            @NonNull Optional<OmniboxImageSupplier> imageSupplier,
-            BraveLeoAutocompleteDelegate delegate,
-            @NonNull Supplier<Tab> tabSupplier) {
-        super(context, suggestionHost, imageSupplier);
-        mActivityTabSupplier = tabSupplier;
-        mUrlBarEditingTextProvider = editingTextProvider;
-        mDelegate = delegate;
-        mAskLeo = context.getResources().getString(R.string.ask_leo_auto_suggestion);
+    public BraveLeoSuggestionProcessor(AutocompleteUIContext uiContext) {
+        super(uiContext);
+        mActivityTabSupplier = uiContext.activityTabSupplier;
+        mUrlBarEditingTextProvider = uiContext.textProvider;
+        mAskLeo = uiContext.context.getResources().getString(R.string.ask_leo_auto_suggestion);
+    }
+
+    public void setBraveLeoAutocompleteDelegate(BraveLeoAutocompleteDelegate delegate) {
+        mBraveLeoAutocompleteDelegate = delegate;
     }
 
     public void populateModel(final PropertyModel model) {
@@ -62,7 +55,7 @@ public class BraveLeoSuggestionProcessor extends BaseSuggestionViewProcessor {
                 () -> {
                     Tab tab = mActivityTabSupplier.get();
                     if (tab != null) {
-                        mDelegate.openLeoQuery(
+                        mBraveLeoAutocompleteDelegate.openLeoQuery(
                                 tab.getWebContents(),
                                 "",
                                 mUrlBarEditingTextProvider.getTextWithoutAutocomplete());

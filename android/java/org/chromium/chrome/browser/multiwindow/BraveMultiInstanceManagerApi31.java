@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.multiwindow;
 import android.app.Activity;
 
 import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.build.annotations.NullUnmarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.tabmodel.TabModelOrchestrator;
@@ -23,6 +22,9 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManagerProvider;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.modaldialog.ModalDialogManager;
+
+import java.util.List;
+import java.util.function.Supplier;
 
 @NullUnmarked // Waiting for upstream parent class to be NullMarked
 class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
@@ -58,9 +60,10 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
     }
 
     @Override
-    public void moveTabToWindow(InstanceInfo info, Tab tab, int tabAtIndex) {
-        super.moveTabToWindow(info, tab, tabAtIndex);
-        if (mIsMoveTabsFromSettings) {
+    public void moveTabsToWindow(InstanceInfo info, List<Tab> tabs, int tabAtIndex) {
+        super.moveTabsToWindow(info, tabs, tabAtIndex);
+
+        if (mIsMoveTabsFromSettings && !tabs.isEmpty()) {
             mIsMoveTabsFromSettings = false;
             TabModelSelector selector =
                     TabWindowManagerSingleton.getInstance().getTabModelSelectorById(mInstanceId);
@@ -89,10 +92,11 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
                                 .setAction(
                                         mActivity.getResources().getString(R.string.merge_windows),
                                         null)
-                                .setSingleLine(false)
+                                .setDefaultLines(false)
                                 .setDuration(10000);
+                Tab firstTab = tabs.get(0);
                 SnackbarManager snackbarManager =
-                        SnackbarManagerProvider.from(tab.getWindowAndroid());
+                        SnackbarManagerProvider.from(firstTab.getWindowAndroid());
                 snackbarManager.showSnackbar(snackbar);
             }
         }

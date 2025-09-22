@@ -10,6 +10,7 @@
 #include "base/notreached.h"
 #include "base/test/test_future.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "components/paint_preview/common/mock_paint_preview_recorder.h"
 #include "components/paint_preview/common/mojom/paint_preview_recorder.mojom.h"
 #include "components/services/paint_preview_compositor/public/mojom/paint_preview_compositor.mojom.h"
 #include "content/public/test/test_renderer_host.h"
@@ -39,41 +40,13 @@ class TestView : public content::TestRenderWidgetHostView {
   gfx::Rect view_bounds_;
 };
 
-class MockPaintPreviewRecorder
-    : public paint_preview::mojom::PaintPreviewRecorder {
+class LaxMockPaintPreviewRecorder
+    : public paint_preview::MockPaintPreviewRecorder {
  public:
-  MockPaintPreviewRecorder() = default;
-  ~MockPaintPreviewRecorder() override = default;
-
-  MockPaintPreviewRecorder(const MockPaintPreviewRecorder&) = delete;
-  MockPaintPreviewRecorder& operator=(const MockPaintPreviewRecorder&) = delete;
-
-  void CapturePaintPreview(
-      paint_preview::mojom::PaintPreviewCaptureParamsPtr params,
-      paint_preview::mojom::PaintPreviewRecorder::CapturePaintPreviewCallback
-          callback) override {
-    std::move(callback).Run(status_, std::move(response_));
-  }
-
-  void SetResponse(
-      paint_preview::mojom::PaintPreviewStatus status,
-      paint_preview::mojom::PaintPreviewCaptureResponsePtr&& response) {
-    status_ = status;
-    response_ = std::move(response);
-  }
-
-  void BindRequest(mojo::ScopedInterfaceEndpointHandle handle) {
-    binding_.reset();
-    binding_.Bind(
-        mojo::PendingAssociatedReceiver<
-            paint_preview::mojom::PaintPreviewRecorder>(std::move(handle)));
-  }
-
- private:
-  paint_preview::mojom::PaintPreviewStatus status_;
-  paint_preview::mojom::PaintPreviewCaptureResponsePtr response_;
-  mojo::AssociatedReceiver<paint_preview::mojom::PaintPreviewRecorder> binding_{
-      this};
+  LaxMockPaintPreviewRecorder() = default;
+  ~LaxMockPaintPreviewRecorder() override = default;
+  void CheckParams(const paint_preview::mojom::PaintPreviewCaptureParamsPtr&
+                       params) override {}
 };
 
 class MockPaintPreviewCompositorClient
@@ -301,12 +274,12 @@ class FullScreenshotterTest : public ChromeRenderViewHostTestHarness {
 
   void SetSize(const gfx::Size& size) { rwhv_->SetViewBounds(gfx::Rect(size)); }
 
-  void OverrideInterface(MockPaintPreviewRecorder* recorder) {
+  void OverrideInterface(LaxMockPaintPreviewRecorder* recorder) {
     blink::AssociatedInterfaceProvider* remote_interfaces =
         web_contents()->GetPrimaryMainFrame()->GetRemoteAssociatedInterfaces();
     remote_interfaces->OverrideBinderForTesting(
         paint_preview::mojom::PaintPreviewRecorder::Name_,
-        base::BindRepeating(&MockPaintPreviewRecorder::BindRequest,
+        base::BindRepeating(&LaxMockPaintPreviewRecorder::BindRequest,
                             base::Unretained(recorder)));
   }
 
@@ -359,9 +332,8 @@ TEST_F(FullScreenshotterTest, CaptureFailedAllErrorStates) {
   };
 
   for (auto status : kErrorStatuses) {
-    MockPaintPreviewRecorder recorder;
-    recorder.SetResponse(
-        status, paint_preview::mojom::PaintPreviewCaptureResponse::New());
+    LaxMockPaintPreviewRecorder recorder;
+    recorder.SetResponse(status);
     OverrideInterface(&recorder);
 
     auto result = CaptureScreenshots(web_contents());
@@ -390,8 +362,10 @@ TEST_F(FullScreenshotterTest, BeginMainFrameCompositeFailed) {
     AsMockClient(full_screenshotter()->GetCompositorClientForTest())
         ->SetBeginMainFrameResponseStatus(status);
 
-    MockPaintPreviewRecorder recorder;
+    LaxMockPaintPreviewRecorder recorder;
     auto response = paint_preview::mojom::PaintPreviewCaptureResponse::New();
+    response->geometry_metadata =
+        paint_preview::mojom::GeometryMetadataResponse::New();
     response->skp.emplace(mojo_base::BigBuffer(true));
     recorder.SetResponse(paint_preview::mojom::PaintPreviewStatus::kOk,
                          std::move(response));
@@ -450,8 +424,10 @@ TEST_F(FullScreenshotterTest, CompositionSucceeded) {
     client->SetCompositeResponse(std::move(frames), token);
 
     // Setup successful capture response
-    MockPaintPreviewRecorder recorder;
+    LaxMockPaintPreviewRecorder recorder;
     auto response = paint_preview::mojom::PaintPreviewCaptureResponse::New();
+    response->geometry_metadata =
+        paint_preview::mojom::GeometryMetadataResponse::New();
     response->skp.emplace(mojo_base::BigBuffer(true));
     recorder.SetResponse(paint_preview::mojom::PaintPreviewStatus::kOk,
                          std::move(response));
@@ -497,8 +473,10 @@ TEST_F(FullScreenshotterTest, BitmapForMainFrameFailed) {
     frames.insert({token, std::move(root_frame)});
     client->SetCompositeResponse(std::move(frames), token);
 
-    MockPaintPreviewRecorder recorder;
+    LaxMockPaintPreviewRecorder recorder;
     auto response = paint_preview::mojom::PaintPreviewCaptureResponse::New();
+    response->geometry_metadata =
+        paint_preview::mojom::GeometryMetadataResponse::New();
     response->skp.emplace(mojo_base::BigBuffer(true));
     recorder.SetResponse(paint_preview::mojom::PaintPreviewStatus::kOk,
                          std::move(response));

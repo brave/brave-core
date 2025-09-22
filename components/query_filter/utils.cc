@@ -146,7 +146,11 @@ static constexpr auto kConditionalQueryStringTrackers =
 // parameter is scoped to example.com below, it will be removed from
 // https://example.com/index.php and from http://www.example.com/ for
 // example.
-static const auto kScopedQueryStringTrackers =
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] static const auto kScopedQueryStringTrackers =
     std::map<std::string_view, std::vector<std::string_view>>({
         // https://github.com/brave/brave-browser/issues/35094
         {"igsh", {"instagram.com"}},

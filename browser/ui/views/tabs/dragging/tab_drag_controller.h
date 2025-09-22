@@ -49,7 +49,8 @@ class TabDragController : public TabDragControllerChromium {
   gfx::Point mouse_offset_;
   bool is_showing_vertical_tabs_ = false;
 
-  VerticalTabStripRegionView::ScopedStateResetter vertical_tab_state_resetter_;
+  BraveVerticalTabStripRegionView::ScopedStateResetter
+      vertical_tab_state_resetter_;
 
   SplitViewBrowserData::OnTabDragEndedClosure on_tab_drag_ended_closure_;
 

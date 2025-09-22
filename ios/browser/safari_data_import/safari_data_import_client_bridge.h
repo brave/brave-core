@@ -11,7 +11,8 @@
 
 @protocol SafariDataImportClientDelegate;
 
-class BraveSafariDataImportClientBridge : public SafariDataImportClient {
+class BraveSafariDataImportClientBridge
+    : public user_data_importer::SafariDataImportClient {
  public:
   BraveSafariDataImportClientBridge();
   ~BraveSafariDataImportClientBridge() override;
@@ -23,18 +24,21 @@ class BraveSafariDataImportClientBridge : public SafariDataImportClient {
 
   // SafariDataImportClient implementation
   void OnTotalFailure() override;
-  void OnBookmarksReady(size_t count) override;
-  void OnHistoryReady(size_t estimated_count,
-                      std::vector<std::u16string> profiles) override;
+  void OnBookmarksReady(user_data_importer::CountOrError result) override;
+  void OnHistoryReady(
+      user_data_importer::CountOrError estimated_count) override;
   void OnPasswordsReady(
-      const password_manager::ImportResults& results) override;
-  void OnPaymentCardsReady(size_t count) override;
+      base::expected<password_manager::ImportResults,
+                     user_data_importer::ImportPreparationError> results)
+      override;
+  void OnPaymentCardsReady(user_data_importer::CountOrError result) override;
   void OnBookmarksImported(size_t count) override;
   void OnHistoryImported(size_t count) override;
   void OnPasswordsImported(
       const password_manager::ImportResults& results) override;
   void OnPaymentCardsImported(size_t count) override;
-  base::WeakPtr<SafariDataImportClient> AsWeakPtr() override;
+  base::WeakPtr<user_data_importer::SafariDataImportClient> AsWeakPtr()
+      override;
 
  private:
   __weak id<SafariDataImportClientDelegate> delegate_ = nullptr;

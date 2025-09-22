@@ -121,8 +121,8 @@ class BraveBrowserView : public BrowserView,
   bool IsInTabDragging() const override;
   views::View* GetContentsContainerForLayoutManager() override;
   void ReadyToListenFullscreenChanges() override;
-  bool PreHandleMouseEvent(const blink::WebMouseEvent& event) override;
   void OnMouseMoved(const ui::MouseEvent& event) override;
+  bool PreHandleMouseEvent(const blink::WebMouseEvent& event) override;
 
 #if defined(USE_AURA)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
@@ -190,8 +190,8 @@ class BraveBrowserView : public BrowserView,
       Browser::DownloadCloseType dialog_type,
       base::OnceCallback<void(bool)> callback) override;
   void MaybeShowReadingListInSidePanelIPH() override;
-  void UpdateDevToolsForContents(content::WebContents* web_contents,
-                                 bool update_devtools_web_contents) override;
+  void UpdateDevTools(content::WebContents* inspected_web_contents) override;
+  bool MaybeUpdateDevtools(content::WebContents* web_contents) override;
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
   void GetAccessiblePanes(std::vector<views::View*>* panes) override;
   void ShowSplitView(bool focus_active_view) override;
@@ -219,8 +219,8 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   void UpdateSideBarHorizontalAlignment();
-  views::View* contents_separator_for_testing() const {
-    return contents_separator_;
+  views::View* top_container_separator_for_testing() const {
+    return top_container_separator_;
   }
 
   std::unique_ptr<views::Widget> vertical_tab_strip_widget_;

@@ -38,7 +38,8 @@ class BraveConfirmInfoBar : public InfoBarView {
   // InfoBarView:
   void Layout(PassKey) override;
 
-  BraveConfirmInfoBarDelegate* GetDelegate() const;
+  BraveConfirmInfoBarDelegate* GetDelegate();
+  const BraveConfirmInfoBarDelegate* GetDelegate() const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveConfirmInfoBarTest, CloseButtonOrderTest);

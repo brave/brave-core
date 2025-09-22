@@ -231,9 +231,13 @@ def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
 
     CHANNEL_DIRS = {'beta', 'dev', 'development', 'nightly'}
 
-    def is_channelized_path(path):
+    def is_channelized_path(path, input_api):
         # Example: app/theme/chromium/mac/beta/Assets.car
         parts = path.split('/')
+        # Example: app/theme/chromium/linux/product_logo_24_beta.png
+        parts.extend(
+            input_api.os_path.splitext(
+                input_api.os_path.basename(path))[0].split('_'))
         return any(part in CHANNEL_DIRS for part in parts)
 
     source_file_filter = lambda f: input_api.FilterSourceFile(
@@ -249,7 +253,7 @@ def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
 
     problems = []
     for f in new_sources:
-        if is_channelized_path(f):
+        if is_channelized_path(f, input_api):
             continue  # Skip checking upstream for channelized files
         upstream_file = f.replace('/brave/', '/chromium/')
         path = brave_chromium_utils.wspath(f'//chrome/{upstream_file}')

@@ -22,10 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Invoked when the number of history items in the input file has been
 /// determined. Unlike other data types, this is an estimate and not an exact
-/// count. An input file may contain one history file per Safari profile; the
-/// names of these profiles are passed in `profiles`.
-- (void)onHistoryReady:(NSInteger)estimatedCount
-              profiles:(NSArray<NSString*>*)profiles;
+/// count. An input file may contain one history file per Safari profile.
+- (void)onHistoryReady:(NSInteger)estimatedCount;
 
 /// Invoked when the number of passwords in the input file has been determined.
 /// The conflictedPasswordIDs array provides IDs of passwords with a

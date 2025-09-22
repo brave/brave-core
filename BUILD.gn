@@ -347,6 +347,8 @@ if (!is_ios) {
 }
 
 branding_dir = "//chrome/app/theme/$branding_path_component"
+branding_dir_100 =
+    "//chrome/app/theme/default_100_percent/$branding_path_component"
 copy("theme_files") {
   visibility = [ ":*" ]
   if (is_linux) {
@@ -355,6 +357,24 @@ copy("theme_files") {
       "$branding_dir/linux/product_logo_128_dev.png",
       "$branding_dir/linux/product_logo_128_development.png",
       "$branding_dir/linux/product_logo_128_nightly.png",
+      "$branding_dir/linux/product_logo_24_beta.png",
+      "$branding_dir/linux/product_logo_24_dev.png",
+      "$branding_dir/linux/product_logo_24_nightly.png",
+      "$branding_dir/linux/product_logo_256_beta.png",
+      "$branding_dir/linux/product_logo_256_dev.png",
+      "$branding_dir/linux/product_logo_256_nightly.png",
+      "$branding_dir/linux/product_logo_48_beta.png",
+      "$branding_dir/linux/product_logo_48_dev.png",
+      "$branding_dir/linux/product_logo_48_nightly.png",
+      "$branding_dir/linux/product_logo_64_beta.png",
+      "$branding_dir/linux/product_logo_64_dev.png",
+      "$branding_dir/linux/product_logo_64_nightly.png",
+      "$branding_dir_100/linux/product_logo_16_beta.png",
+      "$branding_dir_100/linux/product_logo_16_dev.png",
+      "$branding_dir_100/linux/product_logo_16_nightly.png",
+      "$branding_dir_100/linux/product_logo_32_beta.png",
+      "$branding_dir_100/linux/product_logo_32_dev.png",
+      "$branding_dir_100/linux/product_logo_32_nightly.png",
     ]
   } else {
     sources = [

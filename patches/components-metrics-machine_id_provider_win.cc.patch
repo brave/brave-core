@@ -1,5 +1,5 @@
 diff --git a/components/metrics/machine_id_provider_win.cc b/components/metrics/machine_id_provider_win.cc
-index 0090f5c60c2aa8a29e9b1bf83138221dcbbabf99..d8ccbdc1dc757b7248a9a0ef07956501479c2b33 100644
+index 9d427bcdf5e142fe277e6208de30c333066f5e32..cb74986345881f5f7fafabf99d81499b909415ff 100644
 --- a/components/metrics/machine_id_provider_win.cc
 +++ b/components/metrics/machine_id_provider_win.cc
 @@ -23,7 +23,7 @@ MachineIdProvider::MachineIdProvider() = default;

@@ -12,9 +12,12 @@
 
 namespace brave {
 
-const base::flat_map<std::string, std::string> private_cdn_headers = {
-    {"User-Agent", ""},
-    {"Accept-Language", ""}};
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const base::flat_map<std::string, std::string>
+    private_cdn_headers = {{"User-Agent", ""}, {"Accept-Language", ""}};
 
 }  // namespace brave
 

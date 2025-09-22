@@ -162,8 +162,9 @@ void TopSitesFacade::OnIconMadeAvailable(const GURL& site_url) {}
 
 void TopSitesFacade::SyncMostVisitedSites() {
   most_visited_sites_->SetShortcutsVisible(GetTopSitesVisible());
-  most_visited_sites_->EnableCustomLinks(GetListKind() ==
-                                         mojom::TopSitesListKind::kCustom);
+  most_visited_sites_->EnableTileTypes(
+      ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_custom_links(
+          GetListKind() == mojom::TopSitesListKind::kCustom));
 }
 
 void TopSitesFacade::OnPrefChanged(const std::string& path) {

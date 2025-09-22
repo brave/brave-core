@@ -55,7 +55,9 @@ source_set("browser_tests") {
   deps = [
     ":vertical_tabs",
     "//chrome/browser",
+    "//chrome/browser/tab_group_sync:factories",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/views/location_bar",
     "//chrome/test:test_support_ui",
     "//content/test:test_support",
     "//testing/gtest",
