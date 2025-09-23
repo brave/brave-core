@@ -431,10 +431,6 @@ std::vector<mojom::KeyringId> GetEnabledKeyrings() {
   }
   if (IsPolkadotEnabled()) {
     ids.push_back(mojom::KeyringId::kPolkadotMainnet);
-  }
-
-  if (IsPolkadotEnabled()) {
-    ids.push_back(mojom::KeyringId::kPolkadotMainnet);
     ids.push_back(mojom::KeyringId::kPolkadotTestnet);
   }
 

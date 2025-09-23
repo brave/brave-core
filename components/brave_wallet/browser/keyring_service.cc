@@ -887,6 +887,8 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
         base::span(keyring_seed.seed).first<kPolkadotSeedSize>();
     polkadot_mainnet_keyring_ = std::make_unique<PolkadotKeyring>(
         polkadot_seed, KeyringId::kPolkadotMainnet);
+    polkadot_testnet_keyring_ = std::make_unique<PolkadotKeyring>(
+        polkadot_seed, KeyringId::kPolkadotTestnet);
   }
 }
 
@@ -912,6 +914,7 @@ void KeyringService::ClearKeyrings() {
   cardano_hd_testnet_keyring_.reset();
 
   polkadot_mainnet_keyring_.reset();
+  polkadot_testnet_keyring_.reset();
 }
 
 void KeyringService::CreateDefaultAccounts() {
@@ -1069,7 +1072,8 @@ ZCashKeyring* KeyringService::GetKeyring(mojom::KeyringId keyring_id) const {
 
 template <>
 PolkadotKeyring* KeyringService::GetKeyring(mojom::KeyringId keyring_id) const {
-  for (auto* keyring : {polkadot_mainnet_keyring_.get()}) {
+  for (auto* keyring :
+       {polkadot_mainnet_keyring_.get(), polkadot_testnet_keyring_.get()}) {
     if (keyring && keyring->keyring_id() == keyring_id) {
       return keyring;
     }
