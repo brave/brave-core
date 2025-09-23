@@ -178,18 +178,14 @@ void BraveAccountService::OnRegisterInitialize(
       std::move(reply)
           // expected<optional<Response>, [optional<Error>      ]> ==>
           // expected<optional<Response>, [RegisterFailureReason]>
-          .transform_error([](auto error) {
-            if (!error) {
-              return mojom::RegisterFailureReason::kInitializeUnexpected;
-            }
-
-            switch (error->status) {
+          .transform_error([&](auto error) {
+            switch (response_code) {
               case net::HTTP_BAD_REQUEST:  // 400
                 return mojom::RegisterFailureReason::kInitializeBadRequest;
               case net::HTTP_UNAUTHORIZED:  // 401
                 return mojom::RegisterFailureReason::kInitializeUnauthorized;
               default:
-                return error->status / 100 == 5  // 5xx
+                return response_code / 100 == 5  // 5xx
                            ? mojom::RegisterFailureReason::
                                  kInitializeServerError
                            : mojom::RegisterFailureReason::kInitializeUnknown;
@@ -236,12 +232,8 @@ void BraveAccountService::OnRegisterFinalize(
       std::move(reply)
           // expected<optional<Response>, [optional<Error>      ]> ==>
           // expected<optional<Response>, [RegisterFailureReason]>
-          .transform_error([](auto error) {
-            if (!error) {
-              return mojom::RegisterFailureReason::kFinalizeUnexpected;
-            }
-
-            switch (error->status) {
+          .transform_error([&](auto error) {
+            switch (response_code) {
               case net::HTTP_BAD_REQUEST:  // 400
                 return mojom::RegisterFailureReason::kFinalizeBadRequest;
               case net::HTTP_UNAUTHORIZED:  // 401
@@ -251,7 +243,7 @@ void BraveAccountService::OnRegisterFinalize(
               case net::HTTP_NOT_FOUND:  // 404
                 return mojom::RegisterFailureReason::kFinalizeNotFound;
               default:
-                return error->status / 100 == 5  // 5xx
+                return response_code / 100 == 5  // 5xx
                            ? mojom::RegisterFailureReason::kFinalizeServerError
                            : mojom::RegisterFailureReason::kFinalizeUnknown;
             }
