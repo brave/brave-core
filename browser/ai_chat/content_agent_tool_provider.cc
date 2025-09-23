@@ -64,7 +64,8 @@ std::vector<base::WeakPtr<Tool>> ContentAgentToolProvider::GetTools() {
 
 void ContentAgentToolProvider::StopAllTasks() {
   if (actor_service_ && !task_id_.is_null()) {
-    actor_service_->StopTask(task_id_);
+    // `success` sets whether the task ends as state kFinished or kCancelled
+    actor_service_->StopTask(task_id_, true /* success */);
   }
 }
 
@@ -133,7 +134,8 @@ void ContentAgentToolProvider::CreateTools() {
 void ContentAgentToolProvider::OnActionsFinished(
     Tool::UseToolCallback callback,
     actor::mojom::ActionResultCode result_code,
-    std::optional<size_t> index_of_failed_action) {
+    std::optional<size_t> index_of_failed_action,
+    std::vector<actor::ActionResultWithLatencyInfo> action_results) {
   if (result_code == actor::mojom::ActionResultCode::kOk) {
     // Send current page content for result
 
