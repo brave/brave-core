@@ -1,0 +1,24 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_origin.mojom;
+
+// Interface for communicating with BraveOriginService from WebUI
+interface BraveOriginSettingsHandler {
+  // Check if the current user is a Brave Origin user
+  IsBraveOriginUser() => (bool is_brave_origin_user);
+
+  // Check if a specific preference is controlled by Brave Origin
+  IsPrefControlledByBraveOrigin(string pref_name) =>
+      (bool is_controlled);
+
+  // Get the current value of a Brave Origin controlled preference
+  GetBrowserPolicyValue(string pref_name) => (bool? value);
+  GetProfilePolicyValue(string pref_name) => (bool? value);
+
+  // Set the value of a Brave Origin controlled preference
+  SetBrowserPolicyValue(string pref_name, bool value) => (bool success);
+  SetProfilePolicyValue(string pref_name, bool value) => (bool success);
+};

@@ -5,6 +5,8 @@
 
 static_library("brave_origin") {
   sources = [
+    "brave_origin_handler.cc",
+    "brave_origin_handler.h",
     "brave_origin_policy_info.cc",
     "brave_origin_policy_info.h",
     "brave_origin_policy_manager.cc",
@@ -24,7 +26,11 @@ static_library("brave_origin") {
 
   friend = [ ":unit_tests" ]
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "common/mojom",
+    "//base",
+    "//mojo/public/cpp/bindings",
+  ]
   deps = [
     "//components/keyed_service/core",
     "//components/policy/core/common",
@@ -36,6 +42,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "brave_origin_handler_unittest.cc",
     "brave_origin_policy_manager_unittest.cc",
     "brave_origin_service_unittest.cc",
     "brave_origin_utils_unittest.cc",

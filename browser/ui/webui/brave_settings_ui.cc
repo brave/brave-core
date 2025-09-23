@@ -12,6 +12,7 @@
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_settings_helper.h"
+#include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
@@ -35,6 +36,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_origin/brave_origin_handler.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -325,4 +327,15 @@ void BraveSettingsUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   email_aliases::EmailAliasesServiceFactory::BindForProfile(
       profile, std::move(receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<brave_origin::mojom::BraveOriginSettingsHandler>
+        receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* brave_origin_service =
+      brave_origin::BraveOriginServiceFactory::GetForProfile(profile);
+  auto handler = std::make_unique<brave_origin::BraveOriginSettingsHandlerImpl>(
+      brave_origin_service);
+  mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(receiver));
 }
