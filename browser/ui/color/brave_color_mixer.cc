@@ -533,13 +533,11 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   auto& postprocessing_mixer = provider->AddPostprocessingMixer();
   postprocessing_mixer[kColorForTest] = {kDarkerColorForTest};
   postprocessing_mixer[ui::kColorFrameActive] =
-      darker_theme::CreateDarkerThemeColorTransform(
-          nala::kColorPrimitiveNeutral0);
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral0);
   postprocessing_mixer[ui::kColorFrameInactive] = {
       postprocessing_mixer.GetResultColor(ui::kColorFrameActive)};
   postprocessing_mixer[kColorToolbar] =
-      darker_theme::CreateDarkerThemeColorTransform(
-          nala::kColorPrimitiveNeutral5);
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral5);
 #endif  // defined(TOOLKIT_VIEWS)
 }
 
@@ -754,25 +752,19 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
   auto& postprocessing_mixer = provider->AddPostprocessingMixer();
   // Location bar
   postprocessing_mixer[kColorLocationBarBackground] =
-      darker_theme::CreateDarkerThemeColorTransform(
-          nala::kColorPrimitiveNeutral10);
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral10);
   postprocessing_mixer[kColorLocationBarBackgroundHovered] =
-      darker_theme::CreateDarkerThemeColorTransform(
-          nala::kColorPrimitiveNeutral10);
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral10);
 
   // Omnibox
   postprocessing_mixer[kColorOmniboxResultsBackground] =
-      darker_theme::CreateDarkerThemeColorTransform(
-          nala::kColorPrimitiveNeutral10);
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral10);
   postprocessing_mixer[kColorOmniboxResultsBackgroundHovered] =
-      darker_theme::CreateDarkerThemeColorTransform(
-          nala::kColorPrimitiveNeutral20);
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
   postprocessing_mixer[kColorOmniboxResultsBackgroundSelected] =
-      darker_theme::CreateDarkerThemeColorTransform(
-          nala::kColorPrimitiveNeutral20);
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
   postprocessing_mixer[kColorBraveOmniboxResultViewSeparator] =
-      darker_theme::CreateDarkerThemeColorTransform(
-          nala::kColorPrimitiveNeutral20);
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
 #endif  // defined(TOOLKIT_VIEWS)
 }
 

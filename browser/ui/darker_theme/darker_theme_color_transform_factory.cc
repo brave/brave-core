@@ -33,7 +33,7 @@ SkColor DarkerColorGenerator(int reference_color_id,
 
 }  // namespace
 
-ui::ColorTransform CreateDarkerThemeColorTransform(int reference_color_id) {
+ui::ColorTransform ApplyDarknessFromColor(int reference_color_id) {
   return base::BindRepeating(DarkerColorGenerator, reference_color_id);
 }
 
