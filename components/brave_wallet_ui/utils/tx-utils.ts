@@ -420,6 +420,7 @@ export const findTransactionToken = <
       === BraveWallet.TransactionType.SolanaDappSignAndSendTransaction
     || tx.txType === BraveWallet.TransactionType.SolanaDappSignTransaction
     || tx.txType === BraveWallet.TransactionType.ETHSend
+    || tx.txType === BraveWallet.TransactionType.Other
     || tx.txDataUnion.filTxData
     || tx.txDataUnion.btcTxData
     || tx.txDataUnion.zecTxData
