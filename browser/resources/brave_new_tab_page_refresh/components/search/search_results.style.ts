@@ -68,10 +68,17 @@ export const style = scoped.css`
     height: 32px;
     border-radius: 8px;
     padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &.brave-leo-icon {
       --leo-icon-color: #fff;
       background: ${gradient.iconsActive};
+    }
+
+    &.search-icon {
+      --leo-icon-size: 16px;
     }
   }
 

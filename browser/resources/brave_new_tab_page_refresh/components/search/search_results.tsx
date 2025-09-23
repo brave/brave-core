@@ -12,7 +12,6 @@ import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js'
 import { AutocompleteMatch, ClickEvent } from '../../state/search_state'
 import { useSearchState, useSearchActions } from '../../context/search_context'
 import { getString } from '../../lib/strings'
-import { placeholderImageSrc } from '../../lib/image_loader'
 import { faviconURL } from '../../lib/favicon_url'
 import { SafeImage } from '../common/safe_image'
 
@@ -30,7 +29,10 @@ function MatchImage(props: { match: AutocompleteMatch }) {
     return <Icon name='product-brave-leo' className='brave-leo-icon' />
   }
   if (!imageUrl) {
-    return <img className='icon' src={iconUrl.url || placeholderImageSrc} />
+    if (!iconUrl.url) {
+      return <Icon name='search' className='search-icon' />
+    }
+    return <img className='icon' src={iconUrl.url} />
   }
   if (imageUrl.startsWith('chrome:')) {
     return <img src={imageUrl} />
