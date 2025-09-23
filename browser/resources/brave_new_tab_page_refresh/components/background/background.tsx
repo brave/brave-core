@@ -221,7 +221,7 @@ function useSearchMatchesReporter(
     const postSearchMatches = debounce(() => {
       frameHandle.postMessage({
         type: 'richMediaSearchMatches',
-        value: JSON.stringify(searchMatches ?? [])
+        value: searchMatches ?? []
       })
     }, 120)
 
