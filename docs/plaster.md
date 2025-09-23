@@ -63,26 +63,26 @@ occurrences of `ChromeAutocompleteSchemeClassifier` with
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-[[substitutions]]
+[[substitution]]
 description = 'Adding header for BraveAutocompleteSchemeClassifier'
-pattern = '#include "extensions/buildflags/buildflags.h"'
-re_pattern = '''#include "extensions/buildflags/buildflags.h"
-#include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"'''
+re_pattern = '(#include "[\s\S]*)'
+replace = '#include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"\n\1'
 
-[[substitutions]]
+[[substitution]]
 description = 'Patching in BraveAutocompleteSchemeClassifier'
-re_pattern = 'ChromeAutocompleteSchemeClassifier'
+pattern = 'ChromeAutocompleteSchemeClassifier'
 replace = 'BraveAutocompleteSchemeClassifier'
-```
 
 The basic format for a `[[substitution]]` entry is as follow:
 
 ```toml
-[[plaster]]
+[[substition]]
 description = ''
-re_pattern = ''
+# One of either pattern or re_pattern must be specified
+pattern = ''  # non-regex pattern (string will be escaped)
+re_pattern = ''  # regex pattern
 replace = ''
-re_flags = ''  # These are traditional python regex flags.
+re_flags = []  # These are traditional python regex flags.
 count = 1  # use 0 to ignore the match count and replace all
 ```
 
