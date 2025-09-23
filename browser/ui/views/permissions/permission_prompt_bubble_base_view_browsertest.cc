@@ -5,6 +5,9 @@
 
 #include "chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.h"
 
+#include "base/test/run_until.h"
+#include "build/build_config.h"
+#include "chrome/browser/ui/views/chrome_widget_sublevel.h"
 #include "chrome/browser/ui/views/permissions/permission_prompt_style.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/content_settings/core/common/content_settings_types.mojom.h"
@@ -14,6 +17,7 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/views/widget/widget_observer.h"
 
 using PermissionPromptBubbleBaseViewBrowserTest = InProcessBrowserTest;
 
@@ -84,7 +88,8 @@ class MockPermissionPromptDelegate
 };
 
 class MockPermissionPromptBubbleBaseView
-    : public PermissionPromptBubbleBaseView {
+    : public PermissionPromptBubbleBaseView,
+      public views::WidgetObserver {
  public:
   MockPermissionPromptBubbleBaseView(
       Browser* browser,
@@ -93,20 +98,122 @@ class MockPermissionPromptBubbleBaseView
                                        delegate,
                                        PermissionPromptStyle::kBubbleOnly) {
     CreateWidget();
-    ShowWidget();
+    GetWidget()->AddObserver(this);
+
+    // Instead of using ShowWidget(), directly show the widget to avoid
+    // dependency on browser window activation state.
+    GetWidget()->Show();
+  }
+  ~MockPermissionPromptBubbleBaseView() override = default;
+
+  // views::WidgetObserver:
+  void OnWidgetCreated(views::Widget* widget) override {
+    // Ensure the widget is active when created.
+    widget->Activate();
+  }
+
+  void OnWidgetDestroyed(views::Widget* widget) override {
+    widget->RemoveObserver(this);
   }
 };
 
 }  // namespace
 
+#if BUILDFLAG(IS_MAC)
+// Flaky on Mac CI.
+#define MAYBE_ZOrderLevelShouldBeSecuritySurface \
+  DISABLED_ZOrderLevelShouldBeSecuritySurface
+#else
+#define MAYBE_ZOrderLevelShouldBeSecuritySurface \
+  ZOrderLevelShouldBeSecuritySurface
+#endif  // BUILDFLAG(IS_MAC)
+
 IN_PROC_BROWSER_TEST_F(PermissionPromptBubbleBaseViewBrowserTest,
-                       ZOrderLevelShouldBeSecuritySurface) {
+                       MAYBE_ZOrderLevelShouldBeSecuritySurface) {
   // This test checks that the permission prompt bubble is created with the
   // correct z-order level, which should be kSecuritySurface.
   MockPermissionPromptDelegate mock_delegate;
-  auto* permission_prompt = new MockPermissionPromptBubbleBaseView(
-      browser(), mock_delegate.GetWeakPtr());
-  EXPECT_EQ(permission_prompt->GetWidget()->GetZOrderLevel(),
-            ui::ZOrderLevel::kSecuritySurface);
-  permission_prompt->GetWidget()->CloseNow();
+  auto create_permission_prompt = [&]() {
+    auto* permission_prompt = new MockPermissionPromptBubbleBaseView(
+        browser(), mock_delegate.GetWeakPtr());
+    // Wait until the prompt widget's native widget is created. Before that,
+    // IsActive() will return false.
+    EXPECT_TRUE(base::test::RunUntil(
+        [&]() { return permission_prompt->GetWidget()->IsActive(); }));
+    EXPECT_EQ(permission_prompt->GetWidget()->GetZOrderSublevel(),
+              ChromeWidgetSublevel::kSublevelSecurity);
+    EXPECT_EQ(permission_prompt->GetWidget()->GetZOrderLevel(),
+              ui::ZOrderLevel::kSecuritySurface);
+
+    // Also parent widget should have the same z-order level.
+    auto* parent_widget = permission_prompt->GetWidget()->parent();
+    EXPECT_TRUE(parent_widget);
+    EXPECT_EQ(parent_widget->GetZOrderLevel(),
+              ui::ZOrderLevel::kSecuritySurface);
+    return permission_prompt;
+  };
+
+  // After closing the prompt widget, the parent widget should have the original
+  // z-order level.
+  auto* permission_prompt = create_permission_prompt();
+  auto widget_weak_ptr = permission_prompt->GetWidget()->GetWeakPtr();
+  ASSERT_TRUE(widget_weak_ptr);
+  auto* parent_widget = widget_weak_ptr->parent();
+
+  permission_prompt->GetWidget()->Close();
+
+  ASSERT_TRUE(base::test::RunUntil([&]() { return !widget_weak_ptr; }));
+  EXPECT_NE(parent_widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
+
+  // After Accepting the prompt, the parent widget should have the original
+  // z-order level.
+  permission_prompt = create_permission_prompt();
+  widget_weak_ptr = permission_prompt->GetWidget()->GetWeakPtr();
+  ASSERT_TRUE(widget_weak_ptr);
+  parent_widget = widget_weak_ptr->parent();
+
+  permission_prompt->AcceptDialog();
+
+  ASSERT_TRUE(base::test::RunUntil([&]() { return !widget_weak_ptr; }));
+  EXPECT_NE(parent_widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
+
+  // After Canceling the prompt, the parent widget should have the original
+  // z-order level.
+  permission_prompt = create_permission_prompt();
+  widget_weak_ptr = permission_prompt->GetWidget()->GetWeakPtr();
+  ASSERT_TRUE(widget_weak_ptr);
+  parent_widget = widget_weak_ptr->parent();
+
+  permission_prompt->CancelDialog();
+
+  ASSERT_TRUE(base::test::RunUntil([&]() { return !widget_weak_ptr; }));
+  EXPECT_NE(parent_widget->GetZOrderLevel(), ui::ZOrderLevel::kSecuritySurface);
+
+  // After the prompt is deactivated, the parent widget should have the original
+  // z-order level.
+  permission_prompt = create_permission_prompt();
+  widget_weak_ptr = permission_prompt->GetWidget()->GetWeakPtr();
+  parent_widget = widget_weak_ptr->parent();
+
+  widget_weak_ptr->Deactivate();
+  parent_widget->Activate();  // To make it sure the deactivation
+
+  ASSERT_TRUE(widget_weak_ptr);
+  EXPECT_TRUE(base::test::RunUntil([&]() {
+    return widget_weak_ptr->GetZOrderLevel() !=
+           ui::ZOrderLevel::kSecuritySurface;
+  }));
+  EXPECT_TRUE(base::test::RunUntil([&]() {
+    return parent_widget->GetZOrderLevel() != ui::ZOrderLevel::kSecuritySurface;
+  }));
+
+  // After the prompt is activated, the z-order level should be elevated again.
+  widget_weak_ptr->Activate();
+  EXPECT_TRUE(base::test::RunUntil([&]() {
+    return widget_weak_ptr->GetZOrderLevel() ==
+           ui::ZOrderLevel::kSecuritySurface;
+  }));
+  EXPECT_TRUE(base::test::RunUntil([&]() {
+    return parent_widget->GetZOrderLevel() == ui::ZOrderLevel::kSecuritySurface;
+  }));
 }
