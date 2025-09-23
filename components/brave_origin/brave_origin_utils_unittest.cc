@@ -38,11 +38,7 @@ TEST_F(BraveOriginUtilsTest, IsBraveOriginEnabled_FeatureDisabled) {
 TEST_F(BraveOriginUtilsTest, IsBraveOriginEnabled_FeatureEnabled) {
   scoped_feature_list_.InitAndEnableFeature(features::kBraveOrigin);
 
-#if DCHECK_IS_ON()  // Debug builds only
   EXPECT_TRUE(IsBraveOriginEnabled());
-#else
-  EXPECT_FALSE(IsBraveOriginEnabled());  // Always disabled in release builds
-#endif
 }
 
 TEST_F(BraveOriginUtilsTest, GetBraveOriginBrowserPrefKey) {
