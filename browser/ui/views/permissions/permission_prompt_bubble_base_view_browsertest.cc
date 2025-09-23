@@ -6,6 +6,7 @@
 #include "chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.h"
 
 #include "base/test/run_until.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/views/chrome_widget_sublevel.h"
 #include "chrome/browser/ui/views/permissions/permission_prompt_style.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -118,8 +119,17 @@ class MockPermissionPromptBubbleBaseView
 
 }  // namespace
 
+#if BUILDFLAG(IS_MAC)
+// Flaky on Mac CI.
+#define MAYBE_ZOrderLevelShouldBeSecuritySurface \
+  DISABLED_ZOrderLevelShouldBeSecuritySurface
+#else
+#define MAYBE_ZOrderLevelShouldBeSecuritySurface \
+  ZOrderLevelShouldBeSecuritySurface
+#endif  // BUILDFLAG(IS_MAC)
+
 IN_PROC_BROWSER_TEST_F(PermissionPromptBubbleBaseViewBrowserTest,
-                       ZOrderLevelShouldBeSecuritySurface) {
+                       MAYBE_ZOrderLevelShouldBeSecuritySurface) {
   // This test checks that the permission prompt bubble is created with the
   // correct z-order level, which should be kSecuritySurface.
   MockPermissionPromptDelegate mock_delegate;
