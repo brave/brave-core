@@ -105,6 +105,6 @@ extension Domain {
     let allExplicitlySet = Domain.allDomainsWithAutoShredLevel(SiteShredLevel.appExit.rawValue)
     guard ShieldPreferences.shredLevel.shredOnAppExit else { return allExplicitlySet }
     // Default value is SiteShredLevel.appExit, include all with default value nil
-    return (allExplicitlySet ?? []) + (Domain.allDomainsWithAutoShredLevel("nil") ?? [])
+    return (allExplicitlySet ?? []) + (Domain.allDomainsWithAutoShredLevel(nil) ?? [])
   }
 }
