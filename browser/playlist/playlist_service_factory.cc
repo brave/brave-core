@@ -13,6 +13,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/span.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
@@ -26,13 +27,12 @@
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/image_fetcher/image_decoder_impl.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/sessions/content/session_tab_helper.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
+#include "ipc/constants.mojom.h"
+#include "services/data_decoder/public/cpp/decode_image.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/image/image.h"
@@ -58,11 +58,6 @@
 namespace playlist {
 
 namespace {
-
-data_decoder::DataDecoder* GetDataDecoder() {
-  static base::NoDestructor<data_decoder::DataDecoder> data_decoder;
-  return data_decoder.get();
-}
 
 class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
  public:
@@ -166,13 +161,12 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
   void DecodeImageInIsolatedProcess(
       std::unique_ptr<std::string> image,
       base::OnceCallback<void(const gfx::Image&)> callback) {
-    if (!image_decoder_) {
-      image_decoder_ = std::make_unique<ImageDecoderImpl>();
-    }
-
-    image_decoder_->DecodeImage(std::move(*image),
-                                gfx::Size() /* No particular size desired. */,
-                                GetDataDecoder(), std::move(callback));
+    data_decoder::DecodeImageIsolated(
+        base::as_byte_span(*image), data_decoder::mojom::ImageCodec::kDefault,
+        /*shrink_to_fit=*/false, IPC::mojom::kChannelMaximumMessageSize,
+        gfx::Size() /* No particular size desired. */,
+        base::BindOnce(&gfx::Image::CreateFrom1xBitmap)
+            .Then(std::move(callback)));
   }
 
   void EncodeAsPNG(
@@ -198,8 +192,6 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
   }
 
   raw_ptr<Profile> profile_;
-
-  std::unique_ptr<image_fetcher::ImageDecoder> image_decoder_;
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
