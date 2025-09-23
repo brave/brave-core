@@ -10,7 +10,8 @@ certain profile types.
 `ProfileKeyedServiceFactory/ProfileKeyedServiceFactoryIOS`
 [profile_keyed_service_factory.md](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/profiles/profile_keyed_service_factory.md;bpv=0)
 with `ProfileSelections::Builder` is the preferred method to use for determining
-which (if any) profile should be used for the service.
+which (if any) profile should be used for the service. Think twice about how your
+feature / service should behave in incognito / tor / etc and ask if not sure.
 
 
 keyed-service-docs
@@ -143,7 +144,7 @@ obj-c
 
 brave/ios/browser/example/example_service_factory.mm
 ```cpp
-mojo::PendingRemote<example::mojom::ExampleService> ExampleServiceFactory::GetForProfile(
+mojo::PendingRemote<example::mojom::ExampleService> ExampleServiceFactory::GetRemoteForProfile(
     ProfileIOS* profile) {
   auto* service = GetInstance()->GetServiceForProfileAs<example::ExampleServiceImpl>(
       profile, true);
