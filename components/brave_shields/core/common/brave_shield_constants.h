@@ -31,7 +31,6 @@ inline constexpr char kCookies[] = "shieldsCookiesV3";
 inline constexpr char kFacebookEmbeds[] = "fb-embeds";
 inline constexpr char kTwitterEmbeds[] = "twitter-embeds";
 inline constexpr char kLinkedInEmbeds[] = "linked-in-embeds";
-inline constexpr char kBravePsst[] = "bravePsst";
 
 inline constexpr auto kShieldsContentSettingsTypes =
     base::MakeFixedFlatSet<ContentSettingsType>({
