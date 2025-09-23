@@ -11,6 +11,7 @@
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_origin {
 
@@ -112,6 +113,49 @@ PoliciesEnabledMap BraveOriginPolicyManager::GetAllProfilePolicies(
   return policies;
 }
 
+void BraveOriginPolicyManager::SetBrowserPolicyValue(std::string_view pref_name,
+                                                     bool value) {
+  SetPolicyValueInternal(pref_name, value, browser_policy_definitions_,
+                         /*profile_id=*/std::nullopt);
+}
+
+void BraveOriginPolicyManager::SetProfilePolicyValue(
+    std::string_view pref_name,
+    bool value,
+    std::string_view profile_id) {
+  CHECK(!profile_id.empty())
+      << "Profile ID cannot be empty for profile policies";
+
+  SetPolicyValueInternal(pref_name, value, profile_policy_definitions_,
+                         profile_id);
+}
+
+void BraveOriginPolicyManager::SetPolicyValueInternal(
+    std::string_view pref_name,
+    bool value,
+    const BraveOriginPolicyMap& policy_definitions,
+    std::optional<std::string_view> profile_id) {
+  CHECK(initialized_) << "BraveOriginPolicyManager not initialized";
+  CHECK(local_state_) << "BraveOriginPolicyManager local state should exist";
+
+  // Check if this is a valid pref
+  const BraveOriginPolicyInfo* policy_info =
+      base::FindOrNull(policy_definitions, pref_name);
+  if (!policy_info) {
+    LOG(ERROR) << "Unknown " << (profile_id.has_value() ? "profile" : "browser")
+               << " pref name: " << pref_name;
+    return;
+  }
+
+  // Update the value in the dictionary
+  ScopedDictPrefUpdate update(local_state_, kBraveOriginPolicies);
+  std::string key =
+      profile_id.has_value()
+          ? GetBraveOriginProfilePrefKey(*policy_info, *profile_id)
+          : GetBraveOriginBrowserPrefKey(*policy_info);
+  update->Set(key, value);
+}
+
 // Helper function to get pref info from pref definitions
 const BraveOriginPolicyInfo* BraveOriginPolicyManager::GetPrefInfo(
     std::string_view pref_name) {
@@ -131,7 +175,7 @@ bool BraveOriginPolicyManager::IsInitialized() const {
   return initialized_;
 }
 
-void BraveOriginPolicyManager::ResetForTesting() {
+void BraveOriginPolicyManager::Shutdown() {
   initialized_ = false;
   browser_policy_definitions_.clear();
   profile_policy_definitions_.clear();

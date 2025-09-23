@@ -20,16 +20,17 @@ namespace brave_policy {
 
 BraveBrowserPolicyProvider::BraveBrowserPolicyProvider() = default;
 
-BraveBrowserPolicyProvider::~BraveBrowserPolicyProvider() {}
+BraveBrowserPolicyProvider::~BraveBrowserPolicyProvider() = default;
 
 void BraveBrowserPolicyProvider::Init(policy::SchemaRegistry* registry) {
   // Call base class Init first
   policy::ConfigurationPolicyProvider::Init(registry);
 
-  // Trigger immediate policy loading to ensure policies are available in
-  // chrome://policy
-  // The actual policies will be conditionally added in LoadPolicies.
-  RefreshPolicies(policy::PolicyFetchReason::kBrowserStart);
+  // Register as BraveOriginPolicyManager observer.
+  // This ensures feature flags and local state are available before policy
+  // loading.
+  policy_manager_observation_.Observe(
+      brave_origin::BraveOriginPolicyManager::GetInstance());
 }
 
 void BraveBrowserPolicyProvider::RefreshPolicies(
@@ -47,10 +48,24 @@ bool BraveBrowserPolicyProvider::IsFirstPolicyLoadComplete(
   return first_policies_loaded_;
 }
 
+void BraveBrowserPolicyProvider::OnBraveOriginPoliciesReady() {
+  // Now that BraveOrigin policies are ready, trigger policy loading for the
+  // first time.
+  RefreshPolicies(policy::PolicyFetchReason::kBrowserStart);
+}
+
 policy::PolicyBundle BraveBrowserPolicyProvider::LoadPolicies() {
   policy::PolicyBundle bundle;
 
-  // Future work will add policies here
+  // TODO(https://github.com/brave/brave-browser/issues/47463)
+  // Get the actual purchase state from SKU service.
+#if DCHECK_IS_ON()  // Debug builds only
+  if (brave_origin::IsBraveOriginEnabled()) {
+    LoadBraveOriginPolicies(bundle);
+  }
+#else
+  // Always disabled in release builds
+#endif
 
   return bundle;
 }
@@ -58,6 +73,32 @@ policy::PolicyBundle BraveBrowserPolicyProvider::LoadPolicies() {
 std::unique_ptr<policy::ConfigurationPolicyProvider>
 CreateBraveBrowserPolicyProvider() {
   return std::make_unique<BraveBrowserPolicyProvider>();
+}
+
+void BraveBrowserPolicyProvider::LoadBraveOriginPolicies(
+    policy::PolicyBundle& bundle) {
+  // Create policy map for Chrome domain
+  policy::PolicyMap& bundle_policy_map = bundle.Get(
+      policy::PolicyNamespace(policy::POLICY_DOMAIN_CHROME, std::string()));
+
+  // Get all browser policies
+  const auto policy_values =
+      brave_origin::BraveOriginPolicyManager::GetInstance()
+          ->GetAllBrowserPolicies();
+  for (const auto& [policy_key, enabled] : policy_values) {
+    LoadBraveOriginPolicy(bundle_policy_map, policy_key, enabled);
+  }
+}
+
+void BraveBrowserPolicyProvider::LoadBraveOriginPolicy(
+    policy::PolicyMap& bundle_policy_map,
+    std::string_view policy_key,
+    bool enabled) {
+  // Set the policy - the ConfigurationPolicyPrefStore will handle
+  // converting this to the appropriate local state preference
+  bundle_policy_map.Set(std::string(policy_key), policy::POLICY_LEVEL_MANDATORY,
+                        policy::POLICY_SCOPE_USER, policy::POLICY_SOURCE_BRAVE,
+                        base::Value(enabled), nullptr);
 }
 
 }  // namespace brave_policy

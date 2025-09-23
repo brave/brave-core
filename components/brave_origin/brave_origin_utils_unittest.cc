@@ -12,6 +12,14 @@
 
 namespace brave_origin {
 
+// Test constants
+constexpr char kTestGlobalPref[] = "test.global.pref";
+constexpr char kTestProfilePref[] = "test.profile.pref";
+constexpr char kTestGlobalPolicy[] = "TestGlobalPolicy";
+constexpr char kTestProfilePolicy[] = "TestProfilePolicy";
+constexpr char kTestGlobalPrefKey[] = "test_global_pref_key";
+constexpr char kTestProfilePrefKey[] = "test_profile_pref_key";
+
 class BraveOriginUtilsTest : public testing::Test {
  public:
   BraveOriginUtilsTest() = default;
@@ -30,34 +38,30 @@ TEST_F(BraveOriginUtilsTest, IsBraveOriginEnabled_FeatureDisabled) {
 TEST_F(BraveOriginUtilsTest, IsBraveOriginEnabled_FeatureEnabled) {
   scoped_feature_list_.InitAndEnableFeature(features::kBraveOrigin);
 
-#if DCHECK_IS_ON()  // Debug builds only
   EXPECT_TRUE(IsBraveOriginEnabled());
-#else
-  EXPECT_FALSE(IsBraveOriginEnabled());  // Always disabled in release builds
-#endif
 }
 
 TEST_F(BraveOriginUtilsTest, GetBraveOriginBrowserPrefKey) {
   BraveOriginPolicyInfo browser_pref_info(
-      "test.global.pref",     // pref_name
-      true,                   // default_value
-      true,                   // user_settable
-      "TestGlobalPolicy",     // policy_key
-      "test_global_pref_key"  // brave_origin_pref_key
+      kTestGlobalPref,    // pref_name
+      true,               // default_value
+      true,               // user_settable
+      kTestGlobalPolicy,  // policy_key
+      kTestGlobalPrefKey  // brave_origin_pref_key
   );
 
   std::string result = GetBraveOriginBrowserPrefKey(browser_pref_info);
 
-  EXPECT_EQ("TestGlobalPolicy", result);
+  EXPECT_EQ(kTestGlobalPolicy, result);
 }
 
 TEST_F(BraveOriginUtilsTest, GetBraveOriginProfilePrefKey) {
   BraveOriginPolicyInfo profile_pref_info(
-      "test.profile.pref",               // pref_name
-      false,                             // default_value
-      true,                              // user_settable
-      "TestProfilePolicy",               // policy_key
-      "test_profile_pref_key"            // brave_origin_pref_key
+      kTestProfilePref,    // pref_name
+      false,               // default_value
+      true,                // user_settable
+      kTestProfilePolicy,  // policy_key
+      kTestProfilePrefKey  // brave_origin_pref_key
   );
 
   std::string result =
@@ -68,11 +72,11 @@ TEST_F(BraveOriginUtilsTest, GetBraveOriginProfilePrefKey) {
 
 TEST_F(BraveOriginUtilsTest, GetBraveOriginProfilePrefKey_EmptyProfileId) {
   BraveOriginPolicyInfo profile_pref_info(
-      "test.profile.pref",               // pref_name
-      false,                             // default_value
-      false,                             // user_settable
-      "TestProfilePolicy",               // policy_key
-      "test_profile_pref_key"            // brave_origin_pref_key
+      kTestProfilePref,    // pref_name
+      false,               // default_value
+      false,               // user_settable
+      kTestProfilePolicy,  // policy_key
+      kTestProfilePrefKey  // brave_origin_pref_key
   );
 
   EXPECT_DEATH_IF_SUPPORTED(GetBraveOriginProfilePrefKey(profile_pref_info, ""),
@@ -81,11 +85,11 @@ TEST_F(BraveOriginUtilsTest, GetBraveOriginProfilePrefKey_EmptyProfileId) {
 
 TEST_F(BraveOriginUtilsTest, GetBraveOriginProfilePrefKey_SpecialCharacters) {
   BraveOriginPolicyInfo profile_pref_info(
-      "test.profile.pref",               // pref_name
-      true,                              // default_value
-      true,                              // user_settable
-      "Test-Policy_Key",                 // policy_key with special chars
-      "test_profile_pref_key"            // brave_origin_pref_key
+      kTestProfilePref,    // pref_name
+      true,                // default_value
+      true,                // user_settable
+      "Test-Policy_Key",   // policy_key with special chars
+      kTestProfilePrefKey  // brave_origin_pref_key
   );
 
   std::string result =

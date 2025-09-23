@@ -16,11 +16,7 @@ namespace brave_origin {
 bool IsBraveOriginEnabled() {
   // TODO(https://github.com/brave/brave-browser/issues/47463)
   // Get the actual purchase state from SKU service.
-#if DCHECK_IS_ON()  // Debug builds only
   return base::FeatureList::IsEnabled(features::kBraveOrigin);
-#else
-  return false;  // Always disabled in release builds
-#endif
 }
 
 std::string GetBraveOriginBrowserPrefKey(

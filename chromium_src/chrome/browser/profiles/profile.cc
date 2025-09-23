@@ -10,6 +10,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/tor/tor_constants.h"
+#include "chrome/browser/policy/profile_policy_connector.h"
 #include "components/search_engines/search_engine_choice/search_engine_choice_utils.h"
 
 #define BRAVE_ALLOWS_BROWSER_WINDOWS *this == TorID() ||
@@ -68,3 +69,14 @@ bool Profile::OTRProfileID::IsSearchBackupResults() const {
   return base::StartsWith(profile_id_, kSearchBackupResultsOTRProfileIDPrefix,
                           base::CompareCase::SENSITIVE);
 }
+
+// This is to avoid a circular dep on chrome/browser in the Factory for
+// the brave_origin keyed service.
+namespace brave_origin {
+policy::PolicyService* GetPolicyServiceFromProfile(Profile* profile) {
+  if (auto* connector = profile->GetProfilePolicyConnector()) {
+    return connector->policy_service();
+  }
+  return nullptr;
+}
+}  // namespace brave_origin

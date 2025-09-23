@@ -8,6 +8,9 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
+#include "brave/components/brave_origin/brave_origin_policy_info.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "components/policy/core/common/configuration_policy_provider.h"
 
 namespace brave_policy {
@@ -16,7 +19,9 @@ namespace brave_policy {
 // This provider handles policies that affect global preferences
 // and is registered with the BrowserPolicyConnector for machine-wide policy
 // management.
-class BraveBrowserPolicyProvider : public policy::ConfigurationPolicyProvider {
+class BraveBrowserPolicyProvider
+    : public policy::ConfigurationPolicyProvider,
+      public brave_origin::BraveOriginPolicyManager::Observer {
  public:
   BraveBrowserPolicyProvider();
   ~BraveBrowserPolicyProvider() override;
@@ -30,11 +35,24 @@ class BraveBrowserPolicyProvider : public policy::ConfigurationPolicyProvider {
   void RefreshPolicies(policy::PolicyFetchReason reason) override;
   bool IsFirstPolicyLoadComplete(policy::PolicyDomain domain) const override;
 
+  // brave_origin::BraveOriginPolicyManager::Observer implementation.
+  void OnBraveOriginPoliciesReady() override;
+
  private:
   // Loads policies for browser scope preferences only.
   policy::PolicyBundle LoadPolicies();
 
+  // Helper to set BraveOrigin policy for a specific preference
+  void LoadBraveOriginPolicies(policy::PolicyBundle& bundle);
+  void LoadBraveOriginPolicy(policy::PolicyMap& policy_map,
+                             std::string_view policy_key,
+                             bool enabled);
+
   bool first_policies_loaded_ = false;
+
+  base::ScopedObservation<brave_origin::BraveOriginPolicyManager,
+                          brave_origin::BraveOriginPolicyManager::Observer>
+      policy_manager_observation_{this};
 
   base::WeakPtrFactory<BraveBrowserPolicyProvider> weak_factory_{this};
 };
