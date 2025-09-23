@@ -31,7 +31,8 @@ class BraveOriginService : public KeyedService {
   explicit BraveOriginService(PrefService* local_state,
                               PrefService* profile_prefs,
                               std::string_view profile_id,
-                              policy::PolicyService* policy_service);
+                              policy::PolicyService* profile_policy_service,
+                              policy::PolicyService* browser_policy_service);
   ~BraveOriginService() override;
 
   // Check if a preference is controlled by BraveOrigin
@@ -43,11 +44,11 @@ class BraveOriginService : public KeyedService {
   // Update the BraveOrigin profile-level policy value
   bool SetProfilePolicyValue(std::string_view pref_name, bool value);
 
-  // Get the current value of a BraveOrigin browser preference
-  std::optional<bool> GetBrowserPrefValue(std::string_view pref_name) const;
+  // Get the current value of a BraveOrigin browser policy
+  std::optional<bool> GetBrowserPolicyValue(std::string_view pref_name) const;
 
-  // Get the current value of a BraveOrigin profile preference
-  std::optional<bool> GetProfilePrefValue(std::string_view pref_name) const;
+  // Get the current value of a BraveOrigin profile policy
+  std::optional<bool> GetProfilePolicyValue(std::string_view pref_name) const;
 
  protected:
   // Local state and profile preferences this state is associated with
@@ -57,7 +58,8 @@ class BraveOriginService : public KeyedService {
   // The profile_id is a calculated hash which will be used to look up
   // the policy values for a particular profile.
   std::string profile_id_;
-  raw_ptr<policy::PolicyService> policy_service_;
+  raw_ptr<policy::PolicyService> profile_policy_service_;
+  raw_ptr<policy::PolicyService> browser_policy_service_;
 };
 
 }  // namespace brave_origin

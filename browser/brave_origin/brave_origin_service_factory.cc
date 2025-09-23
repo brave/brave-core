@@ -21,6 +21,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
+#include "components/policy/core/browser/browser_policy_connector_base.h"
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -43,11 +44,27 @@ namespace policy {
 class PolicyService;
 }
 
+namespace policy {
+class ChromeBrowserPolicyConnector;
+}
+
 namespace brave_origin {
 
 // Defined in chromium_src/chrome/browser/profiles/profile.cc to avoid a
 // circular dep on chrome/browser for the policy connector include.
 policy::PolicyService* GetPolicyServiceFromProfile(Profile* profile);
+
+policy::PolicyService* GetBrowserPolicyService() {
+  if (g_browser_process && g_browser_process->browser_policy_connector()) {
+    auto* connector = reinterpret_cast<policy::BrowserPolicyConnectorBase*>(
+        g_browser_process->browser_policy_connector());
+    // Only get policy service if we have one already or not in testing mode
+    if (connector->HasPolicyService()) {
+      return connector->GetPolicyService();
+    }
+  }
+  return nullptr;
+}
 
 namespace {
 
@@ -173,7 +190,7 @@ BraveOriginServiceFactory::BuildServiceInstanceForBrowserContext(
   std::string profile_id = GetProfileId(profile->GetPath());
   return std::make_unique<BraveOriginService>(
       g_browser_process->local_state(), profile->GetPrefs(), profile_id,
-      GetPolicyServiceFromProfile(profile));
+      GetPolicyServiceFromProfile(profile), GetBrowserPolicyService());
 }
 
 bool BraveOriginServiceFactory::ServiceIsCreatedWithBrowserContext() const {
