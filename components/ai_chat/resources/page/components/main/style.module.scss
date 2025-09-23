@@ -75,17 +75,20 @@
 .conversationContent {
   margin: 0 auto;
   width: 100%;
-  max-width: var(--conversation-content-max-width);
-  // Adjust padding to account for scrollbar width so content lines up with
-  // input area which is outside of the scroller.
-  padding: 0
-    calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2) 0
-    var(--conversation-content-margin);
 
   // Hide until content is ready
   opacity: 0;
   // Hide immediately when changing content
   transition: none;
+
+  &.hasAcceptedAgreement {
+    max-width: var(--conversation-content-max-width);
+    // Adjust padding to account for scrollbar width so content lines up with
+    // input area which is outside of the scroller.
+    padding: 0
+      calc(var(--conversation-content-margin) - var(--scrollbar-width) / 2) 0
+      var(--conversation-content-margin);
+  }
 
   &.showContent {
     opacity: 1;
@@ -93,11 +96,10 @@
   }
 }
 
-.flushBottom {
+.centeredContent {
   display: grid;
   flex-direction: column;
-  align-items: flex-end;
-  padding-bottom: 0;
+  align-items: center;
 }
 
 .header {

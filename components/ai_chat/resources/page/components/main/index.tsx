@@ -257,7 +257,7 @@ function Main() {
       <div
         className={classnames({
           [styles.scroller]: true,
-          [styles.flushBottom]: !aiChatContext.hasAcceptedAgreement,
+          [styles.centeredContent]: !aiChatContext.hasAcceptedAgreement,
         })}
         ref={scrollElement}
         onScroll={handleScroll}
@@ -269,6 +269,7 @@ function Main() {
         <div
           className={classnames({
             [styles.conversationContent]: true,
+            [styles.hasAcceptedAgreement]: aiChatContext.hasAcceptedAgreement,
             [styles.showContent]: showContent,
           })}
           ref={conversationContentElement}
