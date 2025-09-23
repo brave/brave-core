@@ -428,9 +428,11 @@ using RegisterFinalizeTest = BraveAccountServiceTest<RegisterFinalizeTestCase>;
 TEST_P(RegisterFinalizeTest, MapsEndpointExpectedToMojoExpected) {
   RunTestCase();
 
-  const auto& test_case = CHECK_DEREF(this->GetParam());
-  EXPECT_EQ(!pref_service_.GetString(prefs::kVerificationToken).empty(),
-            test_case.mojo_expected.has_value());
+  if (const auto& test_case = CHECK_DEREF(this->GetParam());
+      test_case.mojo_expected.has_value()) {
+    EXPECT_EQ(pref_service_.GetString(prefs::kVerificationToken),
+              test_case.encrypted_verification_token);
+  }
 }
 
 INSTANTIATE_TEST_SUITE_P(

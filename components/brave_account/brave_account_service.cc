@@ -121,9 +121,6 @@ void BraveAccountService::RegisterInitialize(
     const std::string& email,
     const std::string& blinded_message,
     RegisterInitializeCallback callback) {
-  DCHECK(!email.empty());
-  DCHECK(!blinded_message.empty());
-
   if (email.empty() || blinded_message.empty()) {
     return std::move(callback).Run(
         base::unexpected(mojom::RegisterFailureReason::kInitializeUnexpected));
@@ -143,9 +140,6 @@ void BraveAccountService::RegisterFinalize(
     const std::string& encrypted_verification_token,
     const std::string& serialized_record,
     RegisterFinalizeCallback callback) {
-  DCHECK(!encrypted_verification_token.empty());
-  DCHECK(!serialized_record.empty());
-
   if (encrypted_verification_token.empty() || serialized_record.empty()) {
     return std::move(callback).Run(
         base::unexpected(mojom::RegisterFailureReason::kFinalizeUnexpected));
