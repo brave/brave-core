@@ -51,9 +51,11 @@ class ContentAgentToolProvider : public ToolProvider,
   void TabAdded(tabs::TabHandle tab_handle,
                 base::OnceCallback<void(tabs::TabHandle)> callback,
                 actor::mojom::ActionResultPtr result);
-  void OnActionsFinished(Tool::UseToolCallback callback,
-                         actor::mojom::ActionResultCode result_code,
-                         std::optional<size_t> index_of_failed_action);
+  void OnActionsFinished(
+      Tool::UseToolCallback callback,
+      actor::mojom::ActionResultCode result_code,
+      std::optional<size_t> index_of_failed_action,
+      std::vector<actor::ActionResultWithLatencyInfo> action_results);
   void ReceivedAnnotatedPageContent(
       Tool::UseToolCallback callback,
       std::optional<optimization_guide::AIPageContentResult> content);
