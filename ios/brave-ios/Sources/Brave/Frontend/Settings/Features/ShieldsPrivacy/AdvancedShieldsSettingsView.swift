@@ -37,6 +37,8 @@ struct AdvancedShieldsSettingsView: View {
                 title: Strings.manageWebsiteDataTitle,
                 subtitle: nil
               )
+              .frame(maxWidth: .infinity, alignment: .leading)
+              .contentShape(.rect)
             }
           )
         }
