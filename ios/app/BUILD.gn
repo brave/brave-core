@@ -131,10 +131,6 @@ source_set("app") {
     deps += [ "//ios/chrome/browser/credential_provider/model" ]
   }
 
-  deps += [
-    "//ios/third_party/material_components_ios:material_components_ios+link",
-  ]
-
   frameworks = [
     "Foundation.framework",
     "UIKit.framework",
