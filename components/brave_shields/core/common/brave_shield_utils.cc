@@ -8,11 +8,15 @@
 #include <map>
 
 #include "base/containers/map_util.h"
+#include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
 namespace brave_shields {
@@ -97,6 +101,21 @@ ShieldsSettingCounts GetSettingCountFromCosmeticFilteringRules(
   }
 
   return result;
+}
+
+bool IsAdblockOnlyModeFeatureEnabled() {
+  return base::FeatureList::IsEnabled(features::kAdblockOnlyMode);
+}
+
+bool IsBraveShieldsAdBlockOnlyModeEnabled(PrefService* local_state) {
+  CHECK(local_state);
+  return local_state->GetBoolean(prefs::kAdBlockOnlyModeEnabled);
+}
+
+void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* local_state,
+                                           bool enabled) {
+  CHECK(local_state);
+  local_state->SetBoolean(prefs::kAdBlockOnlyModeEnabled, enabled);
 }
 
 }  // namespace brave_shields
