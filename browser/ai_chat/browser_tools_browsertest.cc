@@ -54,6 +54,13 @@ class BrowserToolsTest : public InProcessBrowserTest {
     ASSERT_NE(tool_provider_, nullptr);
   }
 
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    // Ensure physical and css pixels are the same, as per tools_test_util.cc
+    // - simplifies scroll distance calculations.
+    command_line->AppendSwitchASCII(switches::kForceDeviceScaleFactor, "1");
+  }
+
  protected:
   // Helper to find a tool by name
   base::WeakPtr<Tool> FindToolByName(const std::string& name) {
@@ -77,7 +84,7 @@ class BrowserToolsTest : public InProcessBrowserTest {
   Tool::ToolResult ExecuteToolAndWait(base::WeakPtr<Tool> tool,
                                       const std::string& input_json) {
     base::test::TestFuture<Tool::ToolResult> result;
-    tool->UseTool(input_json, result.GetCallback(), std::nullopt);
+    tool->UseTool(input_json, result.GetCallback());
     return result.Take();
   }
 
@@ -268,8 +275,7 @@ IN_PROC_BROWSER_TEST_F(BrowserToolsTest, ScrollTool_DocumentTarget) {
   EXPECT_GT(result.size(), 0u);
 
   // Verify the element was scrolled down
-  ASSERT_EQ(50, EvalJs(web_contents(), "window.scrollY"));
-  EXPECT_GT(scroll_distance, EvalJs(web_contents(), "window.scrollY"));
+  EXPECT_EQ(scroll_distance, EvalJs(web_contents(), "window.scrollY"));
 }
 
 // Test select tool with Node ID targeting
@@ -353,9 +359,9 @@ IN_PROC_BROWSER_TEST_F(BrowserToolsTest, DragAndReleaseTool_CoordinateTargets) {
 
   // Use coordinate targeting for drag operation (from start to middle of range)
   auto from_target =
-      target_test_util::GetCoordinateTargetDict(50, 31);  // Start of range
+      target_test_util::GetCoordinateTargetDict(25, 15);  // Start of range
   auto to_target =
-      target_test_util::GetCoordinateTargetDict(200, 31);  // Middle of range
+      target_test_util::GetCoordinateTargetDict(100, 15);  // Middle of range
 
   base::Value::Dict input;
   input.Set("from", std::move(from_target));
