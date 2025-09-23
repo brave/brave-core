@@ -54,6 +54,11 @@ class BrowserToolsTest : public InProcessBrowserTest {
     ASSERT_NE(tool_provider_, nullptr);
   }
 
+  void TearDownOnMainThread() override {
+    tool_provider_.reset();
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     // Ensure physical and css pixels are the same, as per tools_test_util.cc
