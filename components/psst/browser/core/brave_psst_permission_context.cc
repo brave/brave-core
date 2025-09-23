@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/psst/common/brave_psst_permission_context.h"
+#include "brave/components/psst/browser/core/brave_psst_permission_context.h"
 
 #include <optional>
 

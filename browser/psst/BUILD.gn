@@ -19,6 +19,7 @@ static_library("psst") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/components/constants",
     "//brave/components/psst/browser/content",
+    "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles",

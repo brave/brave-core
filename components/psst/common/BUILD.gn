@@ -15,13 +15,11 @@ mojom("mojom") {
 static_library("common") {
   public = [
     "brave_psst_constants.h",
-    "brave_psst_permission_context.h",
     "features.h",
     "pref_names.h",
   ]
 
   sources = [
-    "brave_psst_permission_context.cc",
     "features.cc",
     "pref_names.cc",
   ]
@@ -34,7 +32,6 @@ static_library("common") {
 
   deps = [
     "//base",
-    "//components/permissions",
     "//components/pref_registry",
     "//components/prefs",
     "//url",

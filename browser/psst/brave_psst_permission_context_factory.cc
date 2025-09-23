@@ -5,7 +5,7 @@
 
 #include "brave/browser/psst/brave_psst_permission_context_factory.h"
 
-#include "brave/components/psst/common/brave_psst_permission_context.h"
+#include "brave/components/psst/browser/core/brave_psst_permission_context.h"
 #include "brave/components/psst/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
