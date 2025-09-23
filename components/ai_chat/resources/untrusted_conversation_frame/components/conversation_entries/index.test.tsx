@@ -13,6 +13,20 @@ import { UntrustedConversationContext } from '../../untrusted_conversation_conte
 import type { AssistantResponseProps } from '../assistant_response'
 import ConversationEntries from '.'
 
+// Mock locale functions (needed for both smart mode and existing tests)
+jest.mock('$web-common/locale', () => ({
+  getLocale: (key: string) => {
+    const mockStrings: { [key: string]: string } = {
+      CHAT_UI_EDITED_LABEL: 'Edited',
+    }
+    return mockStrings[key] || key
+  },
+  formatLocale: (key: string, ...args: any[]) => {
+    // Simple mock for formatLocale - just return the key with args
+    return args.length > 0 ? `${key}(${args.join(',')})` : key
+  },
+}))
+
 const assistantResponseMock = jest.fn((props: AssistantResponseProps) => (
   <div />
 ))
@@ -489,5 +503,158 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
     // Should not show warnings for human-only conversation
     const infoElement = container.querySelector('leo-icon[name="info-outline"]')
     expect(infoElement).not.toBeInTheDocument()
+  })
+})
+
+describe('ConversationEntries smart mode functionality', () => {
+  const createHumanTurnWithSmartMode = (
+    text: string,
+    smartMode?: Partial<Mojom.SmartModeEntry>,
+  ): Partial<Mojom.ConversationTurn> => ({
+    characterType: Mojom.CharacterType.HUMAN,
+    text,
+    smartMode: smartMode as Mojom.SmartModeEntry,
+    uuid: 'test-uuid',
+  })
+
+  beforeEach(() => {
+    assistantResponseMock.mockClear()
+  })
+
+  describe('highlightSmartModeText functionality', () => {
+    it('should highlight smart mode shortcut in human message', () => {
+      const smartMode = {
+        shortcut: 'translate',
+        prompt: 'Translate the following text',
+      }
+
+      render(
+        <MockContext
+          conversationHistory={[
+            createHumanTurnWithSmartMode('/translate hello world', smartMode),
+          ]}
+        >
+          <ConversationEntries />
+        </MockContext>,
+      )
+
+      // Should find the highlighted smart mode shortcut
+      const highlightedElement = screen.getByText('/translate')
+      expect(highlightedElement).toHaveClass('smartModeHighlight')
+
+      // Should also show the remaining text
+      expect(screen.getByText('hello world')).toBeInTheDocument()
+    })
+
+    it('should not highlight when smart mode is not provided', () => {
+      render(
+        <MockContext
+          conversationHistory={[
+            createHumanTurnWithSmartMode('/translate hello world'),
+          ]}
+        >
+          <ConversationEntries />
+        </MockContext>,
+      )
+
+      // Should show text as-is without highlighting
+      expect(screen.getByText('/translate hello world')).toBeInTheDocument()
+      expect(screen.queryByText('/translate')).not.toBeInTheDocument()
+    })
+
+    it('should not highlight when shortcut is not found in text', () => {
+      const smartMode = {
+        shortcut: 'translate',
+        prompt: 'Translate the following text',
+      }
+
+      render(
+        <MockContext
+          conversationHistory={[
+            createHumanTurnWithSmartMode('hello world', smartMode),
+          ]}
+        >
+          <ConversationEntries />
+        </MockContext>,
+      )
+
+      // Should show text as-is without highlighting
+      expect(screen.getByText('hello world')).toBeInTheDocument()
+      expect(screen.queryByText('/translate')).not.toBeInTheDocument()
+    })
+
+    it('should handle shortcut at different positions in text', () => {
+      const smartMode = {
+        shortcut: 'translate',
+        prompt: 'Translate the following text',
+      }
+
+      render(
+        <MockContext
+          conversationHistory={[
+            createHumanTurnWithSmartMode(
+              'Please /translate this text',
+              smartMode,
+            ),
+          ]}
+        >
+          <ConversationEntries />
+        </MockContext>,
+      )
+
+      // Should find and highlight the shortcut
+      const highlightedElement = screen.getByText('/translate')
+      expect(highlightedElement).toHaveClass('smartModeHighlight')
+
+      // Should show the complete text by checking the parent container
+      const parentContainer = highlightedElement.parentElement
+      expect(parentContainer).toHaveTextContent('Please /translate this text')
+    })
+
+    it('should highlight only the first occurrence of shortcut', () => {
+      const smartMode = {
+        shortcut: 'test',
+        prompt: 'Test prompt',
+      }
+
+      const { container } = render(
+        <MockContext
+          conversationHistory={[
+            createHumanTurnWithSmartMode('/test this /test again', smartMode),
+          ]}
+        >
+          <ConversationEntries />
+        </MockContext>,
+      )
+
+      // Should only highlight the first occurrence
+      const highlightedElements = container.querySelectorAll(
+        '.smartModeHighlight',
+      )
+      expect(highlightedElements).toHaveLength(1)
+      expect(highlightedElements[0]).toHaveTextContent('/test')
+    })
+
+    it('should handle empty shortcut gracefully', () => {
+      const smartMode = {
+        shortcut: '',
+        prompt: 'Test prompt',
+      }
+
+      expect(() => {
+        render(
+          <MockContext
+            conversationHistory={[
+              createHumanTurnWithSmartMode('/translate hello', smartMode),
+            ]}
+          >
+            <ConversationEntries />
+          </MockContext>,
+        )
+      }).not.toThrow()
+
+      // When shortcut is empty, should not find highlighted text
+      expect(screen.queryByText('/translate')).not.toBeInTheDocument()
+    })
   })
 })

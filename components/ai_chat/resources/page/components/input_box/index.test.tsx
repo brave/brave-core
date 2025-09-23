@@ -8,6 +8,7 @@ import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import InputBox, { InputBoxProps } from '.'
 import { ContentType, UploadedFileType } from '../../../common/mojom'
 import { defaultContext } from '../../state/conversation_context'
+import { AIChatReactContext } from '../../state/ai_chat_context'
 
 // Mock the convertFileToUploadedFile function
 jest.mock('../../utils/file_utils', () => ({
@@ -417,6 +418,401 @@ describe('input box', () => {
             type: UploadedFileType.kImage,
           }),
         ])
+      })
+    })
+  })
+
+  describe('smart mode integration', () => {
+    const mockSmartModes = [
+      {
+        id: 'translate-mode',
+        shortcut: 'translate',
+        prompt: 'Translate the following text',
+        model: 'claude-3-haiku',
+      },
+      {
+        id: 'explain-mode',
+        shortcut: 'explain',
+        prompt: 'Explain this concept',
+        model: null,
+      },
+    ]
+
+    const renderInputBoxWithSmartModes = (
+      contextOverrides = {},
+      smartModes = mockSmartModes,
+    ) => {
+      const aiChatContextValue = {
+        smartModes,
+      }
+
+      const contextWithSmartModes = {
+        ...testContext,
+        handleSmartModeClick: jest.fn(),
+        resetSelectedSmartMode: jest.fn(),
+        selectedSmartMode: undefined,
+        ...contextOverrides,
+      }
+
+      return render(
+        <AIChatReactContext.Provider value={aiChatContextValue as any}>
+          <InputBox
+            context={contextWithSmartModes}
+            conversationStarted={false}
+          />
+        </AIChatReactContext.Provider>,
+      )
+    }
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it('should reset selected smart mode when shortcut is modified', () => {
+      const resetSelectedSmartMode = jest.fn()
+      const handleSmartModeClick = jest.fn()
+      const selectedSmartMode = mockSmartModes[0]
+
+      const { container } = renderInputBoxWithSmartModes({
+        resetSelectedSmartMode,
+        handleSmartModeClick,
+        selectedSmartMode,
+        inputText: '/translate hello',
+      })
+
+      const textarea = container.querySelector('textarea')
+
+      act(() => {
+        fireEvent.change(textarea!, { target: { value: '/different hello' } })
+      })
+
+      expect(resetSelectedSmartMode).toHaveBeenCalled()
+      expect(handleSmartModeClick).not.toHaveBeenCalled()
+    })
+
+    it('should not reset smart mode when shortcut is still intact', () => {
+      const resetSelectedSmartMode = jest.fn()
+      const handleSmartModeClick = jest.fn()
+      const selectedSmartMode = mockSmartModes[0]
+
+      const { container } = renderInputBoxWithSmartModes({
+        resetSelectedSmartMode,
+        handleSmartModeClick,
+        selectedSmartMode,
+        inputText: '/translate hello',
+      })
+
+      const textarea = container.querySelector('textarea')
+
+      act(() => {
+        fireEvent.change(textarea!, { target: { value: '/translate world' } })
+      })
+
+      expect(resetSelectedSmartMode).not.toHaveBeenCalled()
+      expect(handleSmartModeClick).not.toHaveBeenCalled()
+    })
+
+    it('should reset smart mode when changing to different shortcut', () => {
+      const resetSelectedSmartMode = jest.fn()
+      const handleSmartModeClick = jest.fn()
+      const selectedSmartMode = mockSmartModes[0] // translate mode
+
+      const { container } = renderInputBoxWithSmartModes({
+        resetSelectedSmartMode,
+        handleSmartModeClick,
+        selectedSmartMode,
+        inputText: '/translate hello',
+      })
+
+      const textarea = container.querySelector('textarea')
+
+      act(() => {
+        fireEvent.change(textarea!, { target: { value: '/explain hello' } })
+      })
+
+      expect(resetSelectedSmartMode).toHaveBeenCalled()
+      // This would only been called if we use the real resetSelectedSmartMode
+      // and handleSmartModeClick implementation in ConversationContext which
+      // would actually update the context.selectedSmartMode.
+      expect(handleSmartModeClick).not.toHaveBeenCalled()
+    })
+
+    describe('smart mode detection', () => {
+      it('should detect smart mode when typing valid shortcut', () => {
+        const handleSmartModeClick = jest.fn()
+        let currentInputText = ''
+
+        const contextWithSmartModes = {
+          ...testContext,
+          get inputText() {
+            return currentInputText
+          },
+          setInputText: (text: string) => {
+            currentInputText = text
+          },
+          handleSmartModeClick,
+          resetSelectedSmartMode: jest.fn(),
+          selectedSmartMode: undefined,
+        }
+
+        const { container } = render(
+          <AIChatReactContext.Provider
+            value={{ smartModes: mockSmartModes } as any}
+          >
+            <InputBox
+              context={contextWithSmartModes}
+              conversationStarted={false}
+            />
+          </AIChatReactContext.Provider>,
+        )
+
+        const textarea = container.querySelector('textarea')
+
+        // First type a partial shortcut that won't fully match the shortcut
+        fireEvent.change(textarea!, { target: { value: '/tra' } })
+        // Then type the complete shortcut
+        fireEvent.change(textarea!, { target: { value: '/translate hello' } })
+
+        expect(handleSmartModeClick).toHaveBeenCalledTimes(1)
+        expect(handleSmartModeClick).toHaveBeenCalledWith(mockSmartModes[0])
+        expect(
+          contextWithSmartModes.resetSelectedSmartMode,
+        ).not.toHaveBeenCalled()
+      })
+
+      it('should not detect smart mode for invalid shortcut', () => {
+        const handleSmartModeClick = jest.fn()
+        const resetSelectedSmartMode = jest.fn()
+        const { container } = renderInputBoxWithSmartModes({
+          handleSmartModeClick,
+          resetSelectedSmartMode,
+        })
+
+        const textarea = container.querySelector('textarea')
+        fireEvent.change(textarea!, { target: { value: '/invalid hello' } })
+
+        expect(handleSmartModeClick).not.toHaveBeenCalled()
+        expect(resetSelectedSmartMode).not.toHaveBeenCalled()
+      })
+
+      it('should not detect smart mode when shortcut is not at start', () => {
+        const handleSmartModeClick = jest.fn()
+        const { container } = renderInputBoxWithSmartModes({
+          handleSmartModeClick,
+        })
+
+        const textarea = container.querySelector('textarea')
+        fireEvent.change(textarea!, { target: { value: 'hello /translate' } })
+
+        expect(handleSmartModeClick).not.toHaveBeenCalled()
+      })
+
+      it('should be case insensitive for smart mode detection', () => {
+        const handleSmartModeClick = jest.fn()
+        let currentInputText = ''
+
+        const contextWithSmartModes = {
+          ...testContext,
+          get inputText() {
+            return currentInputText
+          },
+          setInputText: (text: string) => {
+            currentInputText = text
+          },
+          handleSmartModeClick,
+          resetSelectedSmartMode: jest.fn(),
+          selectedSmartMode: undefined,
+        }
+
+        const { container } = render(
+          <AIChatReactContext.Provider
+            value={{ smartModes: mockSmartModes } as any}
+          >
+            <InputBox
+              context={contextWithSmartModes}
+              conversationStarted={false}
+            />
+          </AIChatReactContext.Provider>,
+        )
+
+        const textarea = container.querySelector('textarea')
+
+        // First type partial, then complete uppercase shortcut
+        fireEvent.change(textarea!, { target: { value: '/TRAN' } })
+        fireEvent.change(textarea!, { target: { value: '/TRANSLATE hello' } })
+
+        expect(handleSmartModeClick).toHaveBeenCalledWith(mockSmartModes[0])
+      })
+
+      it('should not detect when smart modes array is empty', () => {
+        const handleSmartModeClick = jest.fn()
+        const { container } = renderInputBoxWithSmartModes(
+          { handleSmartModeClick },
+          [], // Empty smart modes array
+        )
+
+        const textarea = container.querySelector('textarea')
+        fireEvent.change(textarea!, { target: { value: '/translate hello' } })
+
+        expect(handleSmartModeClick).not.toHaveBeenCalled()
+      })
+
+      it('should not detect when handleSmartModeClick is not provided', () => {
+        const { container } = renderInputBoxWithSmartModes({
+          handleSmartModeClick: undefined,
+        })
+
+        const textarea = container.querySelector('textarea')
+
+        expect(() => {
+          fireEvent.change(textarea!, { target: { value: '/translate hello' } })
+        }).not.toThrow()
+      })
+    })
+
+    describe('smart mode highlighting', () => {
+      it('should show highlighting when typing smart mode shortcut', () => {
+        const contextWithSmartModes = {
+          ...testContext,
+          inputText: '/trans', // Set text that matches highlighting pattern
+          setInputText: jest.fn(),
+          handleSmartModeClick: jest.fn(),
+          resetSelectedSmartMode: jest.fn(),
+          selectedSmartMode: undefined,
+        }
+
+        const { container } = render(
+          <AIChatReactContext.Provider
+            value={{ smartModes: mockSmartModes } as any}
+          >
+            <InputBox
+              context={contextWithSmartModes}
+              conversationStarted={false}
+            />
+          </AIChatReactContext.Provider>,
+        )
+
+        const textarea = container.querySelector('textarea')
+        // Check if textarea has transparent class for highlighting
+        expect(textarea).toHaveClass('textTransparent')
+      })
+
+      it('should not show highlighting for non-shortcut text', () => {
+        const { container } = renderInputBoxWithSmartModes()
+
+        const textarea = container.querySelector('textarea')
+        fireEvent.change(textarea!, { target: { value: 'regular text' } })
+
+        expect(textarea).not.toHaveClass('textTransparent')
+      })
+
+      it('should not show highlighting when no smart modes exist', () => {
+        const { container } = renderInputBoxWithSmartModes(
+          {},
+          [], // Empty smart modes array
+        )
+
+        const textarea = container.querySelector('textarea')
+        fireEvent.change(textarea!, { target: { value: '/trans' } })
+
+        expect(textarea).not.toHaveClass('textTransparent')
+      })
+
+      it('should show highlighting for partial valid shortcuts', () => {
+        // Test partial matches that should trigger highlighting
+        const testCases = ['/t', '/tr', '/tra']
+
+        testCases.forEach((partialShortcut) => {
+          const contextWithSmartModes = {
+            ...testContext,
+            inputText: partialShortcut,
+            setInputText: jest.fn(),
+            handleSmartModeClick: jest.fn(),
+            resetSelectedSmartMode: jest.fn(),
+            selectedSmartMode: undefined,
+          }
+
+          const { container } = render(
+            <AIChatReactContext.Provider
+              value={{ smartModes: mockSmartModes } as any}
+            >
+              <InputBox
+                context={contextWithSmartModes}
+                conversationStarted={false}
+              />
+            </AIChatReactContext.Provider>,
+          )
+
+          const textarea = container.querySelector('textarea')
+          expect(textarea).toHaveClass('textTransparent')
+        })
+      })
+
+      it('should not highlight invalid partial shortcuts', () => {
+        const { container } = renderInputBoxWithSmartModes()
+
+        const textarea = container.querySelector('textarea')
+        fireEvent.change(textarea!, { target: { value: '/xyz' } })
+
+        expect(textarea).not.toHaveClass('textTransparent')
+      })
+
+      it('should render highlighted text in highlight layer', () => {
+        const contextWithSmartModes = {
+          ...testContext,
+          inputText: '/translate hello world',
+          setInputText: jest.fn(),
+          handleSmartModeClick: jest.fn(),
+          resetSelectedSmartMode: jest.fn(),
+          selectedSmartMode: undefined,
+        }
+
+        const { container } = render(
+          <AIChatReactContext.Provider
+            value={{ smartModes: mockSmartModes } as any}
+          >
+            <InputBox
+              context={contextWithSmartModes}
+              conversationStarted={false}
+            />
+          </AIChatReactContext.Provider>,
+        )
+
+        const highlightLayer = container.querySelector('.highlightLayer')
+        expect(highlightLayer).toBeInTheDocument()
+
+        // Should contain the highlighted shortcut
+        const highlightedText = highlightLayer?.querySelector('.smartModeText')
+        expect(highlightedText).toBeInTheDocument()
+        expect(highlightedText).toHaveTextContent('/translate')
+      })
+
+      it('should not render highlight layer for non-shortcut text', () => {
+        const contextWithSmartModes = {
+          ...testContext,
+          inputText: 'regular text', // Non-shortcut text
+          setInputText: jest.fn(),
+          handleSmartModeClick: jest.fn(),
+          resetSelectedSmartMode: jest.fn(),
+          selectedSmartMode: undefined,
+        }
+
+        const { container } = render(
+          <AIChatReactContext.Provider
+            value={{ smartModes: mockSmartModes } as any}
+          >
+            <InputBox
+              context={contextWithSmartModes}
+              conversationStarted={false}
+            />
+          </AIChatReactContext.Provider>,
+        )
+
+        const highlightLayer = container.querySelector('.highlightLayer')
+        expect(highlightLayer).toBeInTheDocument() // Layer exists but empty
+
+        const highlightedText = highlightLayer?.querySelector('.smartModeText')
+        expect(highlightedText).not.toBeInTheDocument()
       })
     })
   })
