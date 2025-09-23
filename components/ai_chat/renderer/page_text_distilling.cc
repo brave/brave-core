@@ -201,8 +201,8 @@ void DistillPageText(
     auto on_script_executed =
         [](base::OnceCallback<void(const std::optional<std::string>&)> callback,
            std::optional<base::Value> value, base::TimeTicks start_time) {
-          if (value->is_string()) {
-            std::move(callback).Run(value->GetString());
+          if (value && value->is_string()) {
+            std::move(callback).Run(std::move(*value).TakeString());
             return;
           }
 
