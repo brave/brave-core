@@ -32,10 +32,12 @@ class PolkadotSubstrateRpc {
   void GetChainName(const std::string& chain_id, GetChainNameCallback callback);
 
  private:
-  GURL GetNetworkURL(const std::string& chain_id);
-
   using APIRequestResult = api_request_helper::APIRequestResult;
 
+  static base::DictValue MakeRpcRequestJson(std::string_view method,
+                                            base::ListValue params);
+
+  GURL GetNetworkURL(const std::string& chain_id);
   void OnGetChainName(GetChainNameCallback callback, APIRequestResult res);
 
   const raw_ref<NetworkManager> network_manager_;

@@ -6,6 +6,9 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
 #include "base/functional/bind.h"
+#include "base/json/json_writer.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/json_rpc_responses.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 
 namespace brave_wallet {
@@ -48,45 +51,58 @@ PolkadotSubstrateRpc::PolkadotSubstrateRpc(
 
 PolkadotSubstrateRpc::~PolkadotSubstrateRpc() = default;
 
+base::DictValue PolkadotSubstrateRpc::MakeRpcRequestJson(
+    std::string_view method,
+    base::ListValue params) {
+  base::DictValue req;
+  req.Set("id", 1);
+  req.Set("jsonrpc", "2.0");
+  req.Set("method", method);
+  req.Set("params", std::move(params));
+  return req;
+}
+
 void PolkadotSubstrateRpc::GetChainName(const std::string& chain_id,
                                         GetChainNameCallback callback) {
-  std::string method = "POST";
   auto url = GetNetworkURL(chain_id);
-  std::string payload =
-      R"({"id":1, "jsonrpc":"2.0", "method": "system_chain", "params":[]})";
 
+  std::string method = net::HttpRequestHeaders::kPostMethod;
   std::string payload_content_type = "application/json";
+  auto payload =
+      base::WriteJson(MakeRpcRequestJson("system_chain", base::ListValue()));
 
   api_request_helper_.Request(
-      method, url, payload, payload_content_type,
+      method, url, *payload, payload_content_type,
       base::BindOnce(&PolkadotSubstrateRpc::OnGetChainName,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void PolkadotSubstrateRpc::OnGetChainName(GetChainNameCallback callback,
-                                          APIRequestResult res) {
-  if (!res.Is2XXResponseCode()) {
-    auto err_str = res.SerializeBodyToString();
-    if (err_str.empty()) {
-      err_str = "PolkadotSubstrateRpc error";
+                                          APIRequestResult api_result) {
+  if (!api_result.Is2XXResponseCode()) {
+    return std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+  }
+
+  auto res = json_rpc_responses::PolkadotSystemChainResponse::FromValue(
+      api_result.value_body());
+
+  if (!res) {
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  if (res->error) {
+    if (res->error->message) {
+      return std::move(callback).Run(std::nullopt, res->error->message.value());
     }
-    return std::move(callback).Run(std::nullopt, err_str);
-  }
-
-  const auto& body = res.value_body();
-  const auto* result = body.GetDict().Find("result");
-  if (!result) {
     return std::move(callback).Run(std::nullopt,
-                                   "Missing result field in RPC response");
+                                   WalletUserRejectedRequestErrorMessage());
   }
 
-  const auto* chain_name = result->GetIfString();
-  if (!chain_name) {
-    return std::move(callback).Run(std::nullopt,
-                                   "result field was not a string");
+  if (res->result) {
+    return std::move(callback).Run(*res->result, std::nullopt);
   }
 
-  std::move(callback).Run(*chain_name, std::nullopt);
+  return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(const std::string& chain_id) {
