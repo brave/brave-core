@@ -13,6 +13,7 @@
 #include "base/containers/span_writer.h"
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
@@ -1450,7 +1451,7 @@ TEST_F(CardanoApiImplTest, SignTx) {
                    ->address_string;
 
   EXPECT_EQ(request->origin_info->origin_spec, "https://brave.com");
-  EXPECT_EQ(request->raw_tx_data, ToHex(unsigned_tx_bytes));
+  EXPECT_EQ(request->raw_tx_data, base::HexEncode(unsigned_tx_bytes));
 
   EXPECT_EQ(request->inputs.size(), 2u);
   EXPECT_EQ(request->inputs[0]->address, addr1);
@@ -1459,7 +1460,7 @@ TEST_F(CardanoApiImplTest, SignTx) {
   EXPECT_EQ(request->inputs[1]->address, addr2);
   EXPECT_EQ(request->inputs[1]->value, 34451133u);
 
-  EXPECT_EQ(request->outputs.size(), 2u);
+  EXPECT_EQ(request->outputs.size(), 3u);
   EXPECT_EQ(request->outputs[0]->address,
             "addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zz"
             "mj4z53l7lh5u7z08l0rvp49ht88s5uskl6tsl");
@@ -1470,14 +1471,13 @@ TEST_F(CardanoApiImplTest, SignTx) {
             "jmpww7f7w9gwem3x6gcm3ulw3kpcgws9sgrhg");
   EXPECT_EQ(request->outputs[1]->value, 24282816u);
 
-  EXPECT_EQ(request->outputs.size(), 1u);
-  EXPECT_EQ(request->outputs[0]->address, addr1);
-  EXPECT_EQ(request->outputs[0]->value, 24282816u);
+  EXPECT_EQ(request->outputs[2]->address, addr1);
+  EXPECT_EQ(request->outputs[2]->value, 24282816u);
 
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();
 
-  EXPECT_EQ(api_signed_tx.value(), ToHex(signed_tx_bytes));
+  EXPECT_EQ(api_signed_tx.value(), base::HexEncode(signed_tx_bytes));
   EXPECT_FALSE(error);
 }
 
@@ -1546,7 +1546,7 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();
 
-  EXPECT_EQ(api_signed_tx.value(), ToHex(signed_tx_bytes));
+  EXPECT_EQ(api_signed_tx.value(), base::HexEncode(signed_tx_bytes));
   EXPECT_FALSE(error);
 }
 
@@ -1564,17 +1564,17 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
                 {added_account->account_id->unique_key});
           });
 
-  CardanoTransaction unsiged_tx;
-  SetupUnsignedReferenceTransaction(added_account, unsiged_tx);
+  CardanoTransaction unsigned_tx;
+  SetupUnsignedReferenceTransaction(added_account, unsigned_tx);
   // Add an external input.
   CardanoTransaction::TxInput input;
   input.utxo_outpoint.txid.fill(55u);
   input.utxo_outpoint.index = 0;
   input.utxo_value = 34451133;
-  unsiged_tx.AddInput(std::move(input));
+  unsigned_tx.AddInput(std::move(input));
 
-  auto unsinged_tx_bytes =
-      CardanoTransactionSerializer().SerializeTransaction(unsiged_tx);
+  auto unsigned_tx_bytes =
+      CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
 
   std::vector<CardanoSignMessageResult> sign_results;
   sign_results.emplace_back(
@@ -1583,7 +1583,7 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
-              unsinged_tx_bytes)
+              unsigned_tx_bytes)
           .value());
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1591,10 +1591,10 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 1),
-              unsinged_tx_bytes)
+              unsigned_tx_bytes)
           .value());
 
-  CardanoTransaction signed_tx = unsiged_tx;
+  CardanoTransaction signed_tx = unsigned_tx;
   for (const auto& sign_result : sign_results) {
     CardanoTransaction::TxWitness witness;
     auto span_writer = base::SpanWriter(base::span(witness.witness_bytes));
@@ -1611,7 +1611,7 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
       future;
 
   SignCardanoTransactionRequestWaiter waiter(brave_wallet_service());
-  provider()->SignTx(base::HexEncode(unsinged_tx_bytes), true,
+  provider()->SignTx(base::HexEncode(unsigned_tx_bytes), true,
                      future.GetCallback());
   auto request = waiter.WaitAndProcess(true);
 
@@ -1627,16 +1627,28 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
                    ->address_string;
 
   EXPECT_EQ(request->origin_info->origin_spec, "https://brave.com");
-  EXPECT_EQ(request->raw_tx_data, ToHex(unsinged_tx_bytes));
+  EXPECT_EQ(request->raw_tx_data, base::HexEncode(unsigned_tx_bytes));
 
-  EXPECT_EQ(request->inputs.size(), 2u);
+  EXPECT_EQ(request->inputs.size(), 3u);
   EXPECT_EQ(request->inputs[0]->address, addr1);
   EXPECT_EQ(request->inputs[0]->value, 34451133u);
+  EXPECT_EQ(request->inputs[0]->outpoint_txid,
+            "A7B4C1021FA375A4FCCB1AC1B3BB01743B3989B5EB732CC6240ADD8C71EDB925");
+  EXPECT_EQ(request->inputs[0]->outpoint_index, 0u);
 
   EXPECT_EQ(request->inputs[1]->address, addr2);
   EXPECT_EQ(request->inputs[1]->value, 34451133u);
+  EXPECT_EQ(request->inputs[1]->outpoint_txid,
+            "A7B4C1021FA375A4FCCB1AC1B3BB01743B3989B5EB732CC6240ADD8C71EDB925");
+  EXPECT_EQ(request->inputs[1]->outpoint_index, 1u);
 
-  EXPECT_EQ(request->outputs.size(), 2u);
+  EXPECT_EQ(request->inputs[2]->address, "");
+  EXPECT_EQ(request->inputs[2]->value, 0u);
+  EXPECT_EQ(request->inputs[2]->outpoint_txid,
+            "3737373737373737373737373737373737373737373737373737373737373737");
+  EXPECT_EQ(request->inputs[2]->outpoint_index, 0u);
+
+  EXPECT_EQ(request->outputs.size(), 3u);
   EXPECT_EQ(request->outputs[0]->address,
             "addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zz"
             "mj4z53l7lh5u7z08l0rvp49ht88s5uskl6tsl");
@@ -1647,14 +1659,13 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
             "jmpww7f7w9gwem3x6gcm3ulw3kpcgws9sgrhg");
   EXPECT_EQ(request->outputs[1]->value, 24282816u);
 
-  EXPECT_EQ(request->outputs.size(), 1u);
-  EXPECT_EQ(request->outputs[0]->address, addr1);
-  EXPECT_EQ(request->outputs[0]->value, 24282816u);
+  EXPECT_EQ(request->outputs[2]->address, addr1);
+  EXPECT_EQ(request->outputs[2]->value, 24282816u);
 
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();
 
-  EXPECT_EQ(api_signed_tx.value(), ToHex(signed_tx_bytes));
+  EXPECT_EQ(api_signed_tx.value(), base::HexEncode(signed_tx_bytes));
   EXPECT_FALSE(error);
 }
 

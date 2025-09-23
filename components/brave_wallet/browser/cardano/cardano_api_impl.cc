@@ -482,8 +482,8 @@ mojom::SignCardanoTransactionRequestPtr CardanoApiImpl::FromRestoredTransaction(
 
   for (const auto& input : tx.tx_body.inputs) {
     inputs.emplace_back(mojom::CardanoTxInput::New(
-        input.address ? input.address->ToString() : "", ToHex(input.tx_hash),
-        input.index, input.amount.value_or(0)));
+        input.address ? input.address->ToString() : "",
+        base::HexEncode(input.tx_hash), input.index, input.amount.value_or(0)));
   }
 
   for (const auto& output : tx.tx_body.outputs) {
@@ -575,7 +575,7 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
     return;
   }
 
-  std::move(callback).Run(ToHex(signed_tx.value()), nullptr);
+  std::move(callback).Run(base::HexEncode(signed_tx.value()), nullptr);
 }
 
 void CardanoApiImpl::SignData(const std::string& address,
