@@ -11,7 +11,7 @@ namespace features {
 
 BASE_FEATURE(kBraveNewTabPageRefreshEnabled,
              "BraveNewTabPageRefreshEnabled",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Cleanup Session Cookies on browser restart if Session Restore is enabled.
 BASE_FEATURE(kBraveCleanupSessionCookiesOnSessionRestore,
