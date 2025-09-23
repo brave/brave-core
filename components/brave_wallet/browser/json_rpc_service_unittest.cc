@@ -3964,6 +3964,7 @@ TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidCoin) {
            mojom::CoinType::BTC,
            mojom::CoinType::ZEC,
            mojom::CoinType::ADA,
+           mojom::CoinType::DOT,
        }) {
     auto token = mojom::BlockchainToken::New();
     token->coin = coin;
@@ -3973,7 +3974,7 @@ TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidCoin) {
     task_environment_.RunUntilIdle();
   }
 
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 }
 
 TEST_F(JsonRpcServiceUnitTest, IsValidEnsDomain) {

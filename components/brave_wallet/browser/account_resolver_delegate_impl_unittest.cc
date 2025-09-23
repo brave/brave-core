@@ -110,7 +110,7 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
                 resolver()->ResolveAccountId(nullptr, &acc->address));
     }
   }
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 
   static_assert(AllKeyringsTested<14>());
 
@@ -146,7 +146,7 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
     EXPECT_EQ("", btc_like_account->address);
     EXPECT_EQ("", btc_like_account->account_id->address);
   }
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 
   static_assert(AllKeyringsTested<14>());
 
@@ -179,7 +179,7 @@ TEST_F(AccountResolverDelegateImplUnitTest, ValidateAccountId) {
     ASSERT_TRUE(acc);
     EXPECT_TRUE(resolver()->ValidateAccountId(acc->account_id));
   }
-  static_assert(AllCoinsTested<6>());
+  static_assert(AllCoinsTested<7>());
 
   static_assert(AllKeyringsTested<14>());
 
