@@ -23,7 +23,6 @@ namespace autofill {
 class BraveWebViewAutofillClientIOS : public WebViewAutofillClientIOS {
  public:
   static std::unique_ptr<WebViewAutofillClientIOS> Create(
-      AutofillClientIOS::FromWebStateImpl from_web_state_impl,
       web::WebState* web_state,
       id<CWVAutofillClientIOSBridge, AutofillDriverIOSBridge> bridge);
 

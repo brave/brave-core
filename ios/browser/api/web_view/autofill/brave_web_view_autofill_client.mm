@@ -21,7 +21,6 @@ namespace autofill {
 
 // static
 std::unique_ptr<WebViewAutofillClientIOS> BraveWebViewAutofillClientIOS::Create(
-    FromWebStateImpl from_web_state_impl,
     web::WebState* web_state,
     id<CWVAutofillClientIOSBridge, AutofillDriverIOSBridge> bridge) {
   // Implemented similarily to WebViewAutofillClientIOS::Create but uses
@@ -31,7 +30,7 @@ std::unique_ptr<WebViewAutofillClientIOS> BraveWebViewAutofillClientIOS::Create(
   ProfileIOS* original_profile = profile->GetOriginalProfile();
   return static_cast<std::unique_ptr<WebViewAutofillClientIOS>>(
       std::make_unique<autofill::BraveWebViewAutofillClientIOS>(
-          from_web_state_impl, profile->GetPrefs(),
+          profile->GetPrefs(),
           autofill::PersonalDataManagerFactory::GetForProfile(original_profile),
           autofill::AutocompleteHistoryManagerFactory::GetForProfile(profile),
           web_state, bridge,

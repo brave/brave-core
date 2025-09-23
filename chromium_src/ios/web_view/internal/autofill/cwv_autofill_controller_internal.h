@@ -10,7 +10,6 @@
 
 using CreateAutofillClientCallback =
     base::RepeatingCallback<std::unique_ptr<autofill::WebViewAutofillClientIOS>(
-        autofill::AutofillClientIOS::FromWebStateImpl,
         web::WebState*,
         id<CWVAutofillClientIOSBridge, AutofillDriverIOSBridge>)>;
 

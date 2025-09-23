@@ -28,24 +28,14 @@
         (std::unique_ptr<ios_web_view::WebViewPasswordManagerClient>)
             passwordManagerClient
        passwordController:(SharedPasswordController*)passwordController {
-  auto from_web_state_impl =
-      [](web::WebState* web_state) -> autofill::AutofillClientIOS* {
-    if (CWVWebView* web_view = [CWVWebView webViewForWebState:web_state]) {
-      CWVAutofillController* controller = web_view.autofillController;
-      return [controller autofillClient];
-    }
-    return nullptr;
-  };
   self = [self initWithWebState:webState
-          autofillClientForTest:createAutofillClient.Run(from_web_state_impl,
-                                                         webState, nil)
+          autofillClientForTest:createAutofillClient.Run(webState, nil)
                   autofillAgent:autofillAgent
                 passwordManager:std::move(passwordManager)
           passwordManagerClient:std::move(passwordManagerClient)
              passwordController:passwordController];
   // Overwrite the autofill client with one that has a valid bridge arg
-  _autofillClient =
-      createAutofillClient.Run(from_web_state_impl, webState, self);
+  _autofillClient = createAutofillClient.Run(webState, self);
   return self;
 }
 

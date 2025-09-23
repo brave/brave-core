@@ -15,9 +15,9 @@ source_set("web_view") {
   sources = [
     "brave_web_view.h",
     "brave_web_view.mm",
-    "brave_web_view_internal.h",
     "brave_web_view_configuration.h",
     "brave_web_view_configuration.mm",
+    "brave_web_view_internal.h",
   ]
   deps = [
     "//base",
