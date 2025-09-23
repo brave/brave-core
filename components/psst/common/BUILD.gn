@@ -15,6 +15,7 @@ mojom("mojom") {
 static_library("common") {
   public = [
     "brave_psst_constants.h",
+    "brave_psst_permission_context.h",
     "features.h",
     "pref_names.h",
     "psst_consent_data.h",
@@ -22,7 +23,6 @@ static_library("common") {
 
   sources = [
     "brave_psst_permission_context.cc",
-    "brave_psst_permission_context.h",
     "features.cc",
     "pref_names.cc",
     "psst_consent_data.cc",
