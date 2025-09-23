@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_cip30_serializer.h"
+#include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
@@ -68,7 +69,7 @@ class CardanoApiImpl final : public mojom::CardanoApi {
   void OnSubmitTx(SubmitTxCallback callback,
                   base::expected<std::string, std::string> txid);
   void OnGetUtxosForSignTx(
-      CardanoCip30Serializer::RestoredTransaction tx,
+      CardanoTxDecoder::RestoredTransaction tx,
       bool partial_sign,
       SignTxCallback callback,
       base::expected<GetCardanoUtxosTask::UtxoMap, std::string>);
@@ -82,17 +83,17 @@ class CardanoApiImpl final : public mojom::CardanoApi {
 
   bool InsertKnowInputAddresses(
       const GetCardanoUtxosTask::UtxoMap& utxo_map,
-      CardanoCip30Serializer::RestoredTransaction& transaction,
+      CardanoTxDecoder::RestoredTransaction& transaction,
       bool partial_sign);
 
   void OnSignTransactionRequestProcessed(
-      CardanoCip30Serializer::RestoredTransaction tx,
+      CardanoTxDecoder::RestoredTransaction tx,
       SignTxCallback callback,
       bool approved,
       const std::optional<std::string>& error);
 
   mojom::SignCardanoTransactionRequestPtr FromRestoredTransaction(
-      const CardanoCip30Serializer::RestoredTransaction& tx);
+      const CardanoTxDecoder::RestoredTransaction& tx);
 
   BraveWalletProviderDelegate* delegate();
 
