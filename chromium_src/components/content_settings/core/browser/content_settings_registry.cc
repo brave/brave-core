@@ -15,6 +15,11 @@
 #include "components/content_settings/core/common/content_settings.mojom.h"
 #include "net/base/features.h"
 
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/common/brave_psst_constants.h"
+#include "brave/components/psst/common/features.h"
+#endif  // BUILDFLAG(ENABLE_PSST)
+
 namespace content_settings {
 
 namespace {
@@ -399,13 +404,15 @@ void ContentSettingsRegistry::BraveInit() {
       WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
 
 #if BUILDFLAG(ENABLE_PSST)
-  website_settings_registry_->Register(
-      ContentSettingsType::BRAVE_PSST, brave_shields::kBravePsst, base::Value(),
-      WebsiteSettingsInfo::UNSYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
-      WebsiteSettingsInfo::REQUESTING_ORIGIN_ONLY_SCOPE,
-      WebsiteSettingsRegistry::DESKTOP |
-          WebsiteSettingsRegistry::PLATFORM_ANDROID,
-      WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
+  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
+    website_settings_registry_->Register(
+        ContentSettingsType::BRAVE_PSST, psst::kBravePsst, base::Value(),
+        WebsiteSettingsInfo::UNSYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
+        WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+        WebsiteSettingsRegistry::DESKTOP |
+            WebsiteSettingsRegistry::PLATFORM_ANDROID,
+        WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
+  }
 #endif  // BUILDFLAG(ENABLE_PSST)
 }
 
