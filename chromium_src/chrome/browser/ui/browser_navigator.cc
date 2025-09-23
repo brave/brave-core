@@ -7,8 +7,6 @@
 
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "content/public/common/url_constants.h"
-// Needed to prevent overriding url_typed_with_http_scheme
-#include "chrome/browser/ui/location_bar/location_bar.h"
 #include "url/gurl.h"
 
 namespace {
@@ -23,15 +21,6 @@ void UpdateBraveScheme(NavigateParams* params) {
 
 }  // namespace
 
-// We want URLs that were manually typed with HTTP scheme to be HTTPS
-// upgradable, but preserve the upstream's behavior in regards to captive
-// portals (like hotel login pages which typically aren't cofnigured to work
-// with HTTPS)
-#define url_typed_with_http_scheme \
-  url_typed_with_http_scheme;      \
-  force_no_https_upgrade = false
-
 #define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateBraveScheme(params);
 #include <chrome/browser/ui/browser_navigator.cc>
 #undef BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
-#undef url_typed_with_http_scheme
