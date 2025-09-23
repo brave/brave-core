@@ -645,6 +645,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 modelList,
                 R.id.quick_delete_menu_id,
                 R.id.quick_delete_divider_line_id,
+                R.id.ntp_customization_id,
                 R.id.help_id);
         if (!mIsTablet) {
             maybeRemoveMenuItems(modelList, R.id.share_menu_id);
