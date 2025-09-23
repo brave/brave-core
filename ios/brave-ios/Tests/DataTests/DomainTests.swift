@@ -237,6 +237,77 @@ class DomainTests: CoreDataTestCase {
     }
     XCTAssertFalse(raydiumDomain.walletPermissions(for: .sol, account: walletSolAccount))
   }
+
+  @MainActor func testAllDomainsWithAutoShredLevel() {
+    let domain = Domain.getOrCreate(forUrl: url, persistent: true)
+    let domain2 = Domain.getOrCreate(forUrl: url2, persistent: true)
+    let domain3 = Domain.getOrCreate(forUrl: compound, persistent: true)
+
+    // verify default is SiteShredLevel.never
+    ShieldPreferences.shredLevelRaw.value = nil
+    XCTAssertEqual(ShieldPreferences.shredLevel, .never)
+
+    // test defaults
+    XCTAssertEqual((Domain.allDomainsWithAutoShredLevel(nil) ?? []).count, 3)
+    XCTAssertTrue(
+      (Domain.allDomainsWithAutoShredLevel(SiteShredLevel.never.rawValue) ?? []).isEmpty
+    )
+    XCTAssertTrue(
+      (Domain.allDomainsWithAutoShredLevel(SiteShredLevel.whenSiteClosed.rawValue) ?? []).isEmpty
+    )
+    XCTAssertTrue(
+      (Domain.allDomainsWithAutoShredLevel(SiteShredLevel.appExit.rawValue) ?? []).isEmpty
+    )
+
+    // test explict assigned
+    domain.shredLevel = .never
+    domain2.shredLevel = .whenSiteClosed
+    domain3.shredLevel = .appExit
+    XCTAssertEqual((Domain.allDomainsWithAutoShredLevel(nil) ?? []).count, 0)
+    let neverDomains = Domain.allDomainsWithAutoShredLevel(SiteShredLevel.never.rawValue) ?? []
+    XCTAssertEqual(neverDomains.count, 1)
+    XCTAssertNotNil(neverDomains.first?.url?.asURL?.baseDomain)
+    XCTAssertEqual(neverDomains.first?.url?.asURL?.baseDomain, url.baseDomain)
+    let whenSiteClosedDomains =
+      Domain.allDomainsWithAutoShredLevel(SiteShredLevel.whenSiteClosed.rawValue) ?? []
+    XCTAssertEqual(whenSiteClosedDomains.count, 1)
+    XCTAssertNotNil(whenSiteClosedDomains.first?.url?.asURL?.baseDomain)
+    XCTAssertEqual(whenSiteClosedDomains.first?.url?.asURL?.baseDomain, url2.baseDomain)
+    let appExitDomains = Domain.allDomainsWithAutoShredLevel(SiteShredLevel.appExit.rawValue) ?? []
+    XCTAssertEqual(appExitDomains.count, 1)
+    XCTAssertNotNil(appExitDomains.first?.url?.asURL?.baseDomain)
+    XCTAssertEqual(appExitDomains.first?.url?.asURL?.baseDomain, compound.baseDomain)
+  }
+
+  @MainActor func testAllDomainsWithShredLevelAppExit() {
+    let domain = Domain.getOrCreate(forUrl: url, persistent: true)
+    // domain should use `ShieldPreferences.shredLevel` value (default)
+    let domain2 = Domain.getOrCreate(forUrl: url2, persistent: true)
+    domain.shredLevel = .never
+    let domain3 = Domain.getOrCreate(forUrl: compound, persistent: true)
+    domain2.shredLevel = .appExit
+
+    // verify default is SiteShredLevel.never
+    ShieldPreferences.shredLevelRaw.value = nil
+    XCTAssertEqual(ShieldPreferences.shredLevel, .never)
+
+    var allDomainsWithShredLevelAppExit = Domain.allDomainsWithShredLevelAppExit() ?? []
+    XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 1)
+    XCTAssertFalse(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain.url }))
+    XCTAssertTrue(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain2.url }))
+    XCTAssertFalse(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain3.url }))
+
+    // update default to SiteShredLevel.appExit
+    ShieldPreferences.shredLevel = .appExit
+    XCTAssertEqual(ShieldPreferences.shredLevel, .appExit)
+
+    // should contain domain2 & domain3
+    allDomainsWithShredLevelAppExit = Domain.allDomainsWithShredLevelAppExit() ?? []
+    XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 2)
+    XCTAssertFalse(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain.url }))
+    XCTAssertTrue(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain2.url }))
+    XCTAssertTrue(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain3.url }))
+  }
 }
 
 extension Domain {

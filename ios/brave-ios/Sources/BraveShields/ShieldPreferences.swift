@@ -33,9 +33,9 @@ public class ShieldPreferences {
     default: nil
   )
 
-  /// Get the level of the https upgrade setting as a stored preference
-  /// - Warning: You should not access this directly but  through ``httpsUpgradeLevel``
-  private static var shredLevelRaw = Preferences.Option<String?>(
+  /// Get the auto shred level setting as a stored preference
+  /// - Warning: You should not access this directly but  through ``shredLevel``
+  static var shredLevelRaw = Preferences.Option<String?>(
     key: "shields.shred-level",
     default: nil
   )
