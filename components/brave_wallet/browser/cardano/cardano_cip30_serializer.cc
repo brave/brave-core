@@ -11,6 +11,8 @@
 
 #include "base/check.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
+#include "components/cbor/reader.h"
 #include "components/cbor/values.h"
 #include "components/cbor/writer.h"
 
@@ -108,6 +110,66 @@ std::vector<uint8_t> CardanoCip30Serializer::SerializeSignedDataSignature(
       cbor::Writer::Write(cbor::Value(std::move(cose_sign)));
   CHECK(cose_sign_serialized);
   return *cose_sign_serialized;
+}
+
+// static
+std::string CardanoCip30Serializer::SerializeAmount(uint64_t amount) {
+  auto amount_serialized =
+      cbor::Writer::Write(cbor::Value(static_cast<int64_t>(amount)));
+  CHECK(amount_serialized);
+  return HexEncodeLower(*amount_serialized);
+}
+
+// static
+std::optional<uint64_t> CardanoCip30Serializer::DeserializeAmount(
+    const std::string& amount_cbor) {
+  std::vector<uint8_t> amount_bytes;
+  if (!base::HexStringToBytes(amount_cbor, &amount_bytes)) {
+    return std::nullopt;
+  }
+
+  auto as_cbor = cbor::Reader::Read(amount_bytes);
+
+  if (!as_cbor) {
+    return std::nullopt;
+  }
+
+  if (!as_cbor->is_integer()) {
+    return std::nullopt;
+  }
+
+  return static_cast<uint64_t>(as_cbor->GetInteger());
+}
+
+// static
+std::vector<std::string> CardanoCip30Serializer::SerializeUtxos(
+    const std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>>&
+        utxos) {
+  std::vector<std::string> serialized_utxos;
+  for (const auto& item : utxos) {
+    cbor::Value::ArrayValue cbor_utxo;
+
+    {
+      cbor::Value::ArrayValue tx_input;
+      tx_input.emplace_back(item.second.tx_hash);
+      tx_input.emplace_back(static_cast<int64_t>(item.second.output_index));
+      cbor_utxo.emplace_back(tx_input);
+    }
+
+    {
+      cbor::Value::ArrayValue tx_output;
+      tx_output.emplace_back(item.first.ToCborBytes());
+      tx_output.emplace_back(static_cast<int64_t>(item.second.lovelace_amount));
+      cbor_utxo.emplace_back(tx_output);
+    }
+
+    auto cbor_utxo_serialized =
+        cbor::Writer::Write(cbor::Value(std::move(cbor_utxo)));
+    CHECK(cbor_utxo_serialized);
+
+    serialized_utxos.push_back(HexEncodeLower(*cbor_utxo_serialized));
+  }
+  return serialized_utxos;
 }
 
 }  // namespace brave_wallet

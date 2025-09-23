@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 
 namespace brave_wallet {
@@ -37,6 +38,15 @@ class CardanoCip30Serializer {
       const CardanoAddress& payment_address,
       base::span<const uint8_t> message,
       base::span<const uint8_t> signature);
+
+  static std::string SerializeAmount(uint64_t amount);
+
+  static std::optional<uint64_t> DeserializeAmount(
+      const std::string& amount_cbor);
+
+  static std::vector<std::string> SerializeUtxos(
+      const std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>>&
+          utxos);
 };
 
 }  // namespace brave_wallet

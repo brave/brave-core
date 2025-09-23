@@ -40,7 +40,7 @@ class CardanoTestRpcServer {
   void SetUpCardanoRpc(const std::optional<std::string>& mnemonic,
                        std::optional<uint32_t> account_index);
 
-  void AddUtxo(const std::string& address, uint32_t amount);
+  void AddUtxo(const std::string& address, uint64_t amount);
 
   void FailNextTransactionSubmission();
   void ConfirmAllTransactions();
@@ -59,6 +59,10 @@ class CardanoTestRpcServer {
   }
 
   scoped_refptr<network::SharedURLLoaderFactory> GetURLLoaderFactory();
+
+  const std::map<std::string,
+                 std::vector<cardano_rpc::blockfrost_api::UnspentOutput>>&
+  GetUtxos();
 
  private:
   void RequestInterceptor(const network::ResourceRequest& request);
