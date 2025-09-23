@@ -87,8 +87,13 @@ export const CreateAccountModal = () => {
       isCardanoEnabled,
       isPolkadotEnabled,
     })
-  }, [visibleNetworks, isBitcoinEnabled, isZCashEnabled,
-      isCardanoEnabled, isPolkadotEnabled])
+  }, [
+    visibleNetworks,
+    isBitcoinEnabled,
+    isZCashEnabled,
+    isCardanoEnabled,
+    isPolkadotEnabled,
+  ])
 
   const selectedAccountType = React.useMemo(() => {
     return createAccountOptions.find((option) => {

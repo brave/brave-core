@@ -141,7 +141,7 @@ export const CreateAccountOptions = (options: {
         description: getLocale('braveWalletCreateAccountPolkadotDescription'),
         name: 'Polkadot',
         coin: BraveWallet.CoinType.DOT,
-        icon: getNetworkLogo(BraveWallet.POLKADOT_CHAIN_ID, 'DOT'),
+        icon: getNetworkLogo(BraveWallet.POLKADOT_MAINNET, 'DOT'),
         chainIcons: ['dot-color'],
       })
     }
