@@ -22,11 +22,10 @@ const windowAsAny = window as any
 windowAsAny.chrome = getMockChrome()
 windowAsAny.loadTimeData = getMockLoadTimeData()
 
-windowAsAny.ResizeObserver = class {
-  observe() {
-  }
-  unobserve() {
-  }
-  disconnect() {
-  }
+windowAsAny.ResizeObserver = class ResizeObserverPolyfill {
+  observe() {}
+
+  unobserve() {}
+
+  disconnect() {}
 }
