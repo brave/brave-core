@@ -51,7 +51,6 @@ public class AppearancePreferences extends BravePreferenceFragment
     public static final String PREF_BRAVE_NIGHT_MODE_ENABLED = "brave_night_mode_enabled_key";
     public static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
     public static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
-    public static final String PREF_BRAVE_ENABLE_SPEEDREADER = "brave_enable_speedreader";
     public static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
     public static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
     public static final String PREF_ADDRESS_BAR = "address_bar";
