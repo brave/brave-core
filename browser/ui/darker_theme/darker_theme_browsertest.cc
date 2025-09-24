@@ -49,7 +49,7 @@ IN_PROC_BROWSER_TEST_F(DarkerThemeBrowserTest, EnableDarkerMode) {
 
   auto* browser_view = static_cast<BrowserView*>(browser()->window());
   auto* browser_widget =
-      static_cast<BraveBrowserWidget*>(browser_view->frame());
+      static_cast<BraveBrowserWidget*>(browser_view->browser_widget());
   auto* theme_service =
       ThemeServiceFactory::GetForProfile(browser()->profile());
   ASSERT_TRUE(theme_service);
@@ -126,7 +126,7 @@ IN_PROC_BROWSER_TEST_F(DarkerThemeFeatureToggleOffBrowserTest,
   // should not be applied when the feature flag is off.
   auto* browser_view = static_cast<BrowserView*>(browser()->window());
   auto* browser_widget =
-      static_cast<BraveBrowserWidget*>(browser_view->frame());
+      static_cast<BraveBrowserWidget*>(browser_view->browser_widget());
   auto* theme_service =
       ThemeServiceFactory::GetForProfile(browser()->profile());
   ASSERT_TRUE(theme_service);

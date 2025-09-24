@@ -111,7 +111,7 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
   }
 
   BrowserNonClientFrameView* browser_non_client_frame_view() {
-    return brave_browser_view()->frame()->GetFrameView();
+    return brave_browser_view()->browser_widget()->GetFrameView();
   }
 
   void ToggleVerticalTabStrip() {
@@ -1006,7 +1006,7 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
   }
 
   BrowserNonClientFrameView& browser_non_client_frame_view() {
-    return *browser_view().frame()->GetFrameView();
+    return *browser_view().browser_widget()->GetFrameView();
   }
 
   void ToggleVerticalTabStrip() {
