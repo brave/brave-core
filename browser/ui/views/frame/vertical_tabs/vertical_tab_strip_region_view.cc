@@ -1428,7 +1428,7 @@ void BraveVerticalTabStripRegionView::ShowContextMenuForViewImpl(
   }
 
   menu_runner_ = std::make_unique<views::MenuRunner>(
-      browser_view_->frame()->GetSystemMenuModel(),
+      browser_view_->browser_widget()->GetSystemMenuModel(),
       views::MenuRunner::HAS_MNEMONICS | views::MenuRunner::CONTEXT_MENU,
       base::BindRepeating(&BraveVerticalTabStripRegionView::OnMenuClosed,
                           base::Unretained(this)));
