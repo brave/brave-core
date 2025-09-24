@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "chrome/browser/ui/webui/sanitized_image_source.h"
-
 #include <memory>
 #include <string>
 #include <utility>
@@ -14,6 +12,7 @@
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/browser/ui/webui/brave_sanitized_image_source.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -42,22 +41,21 @@ std::string LoadTestFile(const std::string& name) {
 }
 }  // namespace
 
-class SanitizedImageSourceTest : public testing::Test {
+class BraveSanitizedImageSourceTest : public testing::Test {
  public:
-  SanitizedImageSourceTest()
+  BraveSanitizedImageSourceTest()
       : source_(
             &profile_,
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &test_url_loader_factory_),
-            std::make_unique<SanitizedImageSource::DataDecoderDelegate>()) {
+                &test_url_loader_factory_)) {
     source_.set_pcdn_domain_for_testing("pcdn.brave.com");
   }
-  ~SanitizedImageSourceTest() override = default;
+  ~BraveSanitizedImageSourceTest() override = default;
 
   scoped_refptr<base::RefCountedMemory> Decode(const GURL& url,
                                                const std::string& filename) {
     std::string data = LoadTestFile(filename);
-    GURL image_url = GURL("chrome://image/?" + url.spec());
+    GURL image_url = GURL("chrome://brave-image/?" + url.spec());
     test_url_loader_factory_.AddResponse(url.spec(), std::move(data));
     base::RunLoop run_loop;
     scoped_refptr<base::RefCountedMemory> result;
@@ -79,35 +77,35 @@ class SanitizedImageSourceTest : public testing::Test {
   network::TestURLLoaderFactory test_url_loader_factory_;
 
   TestingProfile profile_;
-  SanitizedImageSource source_;
+  BraveSanitizedImageSource source_;
 };
 
-TEST_F(SanitizedImageSourceTest, ImageIsDecoded) {
+TEST_F(BraveSanitizedImageSourceTest, ImageIsDecoded) {
   auto url = GURL("https://example.com/image.png");
   EXPECT_TRUE(Decode(url, kValidImage));
 }
 
-TEST_F(SanitizedImageSourceTest, PaddedImageIsDecoded) {
+TEST_F(BraveSanitizedImageSourceTest, PaddedImageIsDecoded) {
   auto url = GURL("https://pcdn.brave.com/image.png.pad");
   EXPECT_TRUE(Decode(url, kPaddedImage));
 }
 
-TEST_F(SanitizedImageSourceTest, InvalidPaddedImageIsNotDecoded) {
+TEST_F(BraveSanitizedImageSourceTest, InvalidPaddedImageIsNotDecoded) {
   auto url = GURL("https://example.com/image.png.pad");
   EXPECT_FALSE(Decode(url, kInvalidImage));
 }
 
-TEST_F(SanitizedImageSourceTest, PaddedImageWithoutDotPadIsNotDecoded) {
+TEST_F(BraveSanitizedImageSourceTest, PaddedImageWithoutDotPadIsNotDecoded) {
   auto url = GURL("https://pcdn.brave.com/image.png");
   EXPECT_FALSE(Decode(url, kPaddedImage));
 }
 
-TEST_F(SanitizedImageSourceTest, PaddedImageOnNonBraveCDNIsNotDecoded) {
+TEST_F(BraveSanitizedImageSourceTest, PaddedImageOnNonBraveCDNIsNotDecoded) {
   auto url = GURL("https://example.com/image.png.pad");
   EXPECT_FALSE(Decode(url, kPaddedImage));
 }
 
-TEST_F(SanitizedImageSourceTest, DotPadOnNonBraveCDNButValidIsDecoded) {
+TEST_F(BraveSanitizedImageSourceTest, DotPadOnNonBraveCDNButValidIsDecoded) {
   auto url = GURL("https://example.com/image.png.pad");
   EXPECT_TRUE(Decode(url, kValidImage));
 }

@@ -36,6 +36,9 @@ class SimpleURLLoader;
 class BraveSanitizedImageSource : public content::URLDataSource {
  public:
   explicit BraveSanitizedImageSource(Profile* profile);
+  explicit BraveSanitizedImageSource(
+      Profile* profile,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BraveSanitizedImageSource() override;
 
   void set_pcdn_domain_for_testing(std::string pcdn_domain) {

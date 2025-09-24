@@ -79,9 +79,10 @@ scoped_refptr<base::RefCountedMemory> EncodeImage(
   }
 
   std::optional<std::vector<uint8_t>> result =
-      gfx::PNGCodec::FastEncodeBGRASkBitmap(bitmap, false);
+      gfx::PNGCodec::FastEncodeBGRASkBitmap(bitmap,
+                                            /*discard_transparency=*/false);
   if (!result) {
-    return base::MakeRefCounted<base::RefCountedBytes>();
+    return nullptr;
   }
   return base::MakeRefCounted<base::RefCountedBytes>(std::move(result.value()));
 }
@@ -182,8 +183,14 @@ void BraveSanitizedImageSource::StartDataRequest(
 }
 
 BraveSanitizedImageSource::BraveSanitizedImageSource(Profile* profile)
-    : url_loader_factory_(profile->GetDefaultStoragePartition()
-                              ->GetURLLoaderFactoryForBrowserProcess()) {
+    : BraveSanitizedImageSource(profile,
+                                profile->GetDefaultStoragePartition()
+                                    ->GetURLLoaderFactoryForBrowserProcess()) {}
+
+BraveSanitizedImageSource::BraveSanitizedImageSource(
+    Profile* profile,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : url_loader_factory_(url_loader_factory) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 }
 
