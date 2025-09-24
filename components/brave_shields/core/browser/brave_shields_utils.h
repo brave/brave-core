@@ -39,12 +39,6 @@ enum class DomainBlockingType {
   kAggressive,
 };
 
-enum AutoShredType {
-  NEVER = 0,
-  LAST_TAB_CLOSED,
-  APP_EXIT,
-};
-
 ContentSettingsPattern GetPatternFromURL(const GURL& url);
 std::string ControlTypeToString(ControlType type);
 ControlType ControlTypeFromString(const std::string& string);

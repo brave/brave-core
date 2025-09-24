@@ -22,6 +22,12 @@ enum ControlType {
   DEFAULT,
 };
 
+enum AutoShredType {
+  NEVER = 0,
+  LAST_TAB_CLOSED,
+  APP_EXIT,
+};
+
 namespace traits {
 
 template <typename Setting>
@@ -42,6 +48,19 @@ struct SettingTraits<ControlType> {
         << "Invalid setting.";
     return base::to_underlying(setting);
   }
+};
+
+template <>
+struct SettingTraits<AutoShredType> {
+  static std::optional<AutoShredType> From(
+      std::underlying_type_t<AutoShredType> v) {
+    if (v >= AutoShredType::NEVER && v <= AutoShredType::APP_EXIT) {
+      return static_cast<AutoShredType>(v);
+    }
+    return std::nullopt;
+  }
+
+  static int To(AutoShredType setting) { return base::to_underlying(setting); }
 };
 
 namespace internal {
@@ -106,6 +125,11 @@ using CosmeticFilteringSetting = traits::BraveShieldsSetting<
     /*content_settings_type=*/ContentSettingsType::BRAVE_COSMETIC_FILTERING,
     /*SettingType=*/ControlType,
     /*default_value=*/ControlType::BLOCK_THIRD_PARTY>;
+
+using AutoShredSetting = traits::BraveShieldsSetting<
+    /*content_settings_type=*/ContentSettingsType::BRAVE_AUTO_SHRED,
+    /*SettingType=*/AutoShredType,
+    /*default_value=*/AutoShredType::NEVER>;
 
 }  // namespace brave_shields
 

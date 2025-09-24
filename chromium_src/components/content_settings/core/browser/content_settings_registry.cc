@@ -405,8 +405,8 @@ void ContentSettingsRegistry::BraveInit() {
 
   website_settings_registry_->Register(
       ContentSettingsType::BRAVE_AUTO_SHRED, brave_shields::kBraveAutoShred,
-      base::Value(base::Value::Type::DICT), WebsiteSettingsInfo::UNSYNCABLE,
-      WebsiteSettingsInfo::NOT_LOSSY,
+      brave_shields::AutoShredSetting::DefaultValue(),
+      WebsiteSettingsInfo::SYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
       WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
       WebsiteSettingsRegistry::PLATFORM_IOS,
       WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
