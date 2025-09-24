@@ -1023,7 +1023,7 @@ bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
 }
 
 bool BraveBrowserView::IsInTabDragging() const {
-  return frame()->tab_drag_kind() == TabDragKind::kAllTabs;
+  return browser_widget()->tab_drag_kind() == TabDragKind::kAllTabs;
 }
 
 views::View* BraveBrowserView::GetContentsContainerForLayoutManager() {

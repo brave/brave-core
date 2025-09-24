@@ -25,7 +25,7 @@ IN_PROC_BROWSER_TEST_F(BraveNonClientHitTestHelperBrowserTest, Toolbar) {
   ASSERT_EQ(3u, toolbar->children().size());
   const int container_view_index = 2;
   auto* toolbar_container = toolbar->children()[container_view_index].get();
-  auto* frame_view = browser_view->frame()->GetFrameView();
+  auto* frame_view = browser_view->browser_widget()->GetFrameView();
 
   for (views::View* view : toolbar_container->GetChildrenInZOrder()) {
     // When a point is on a child view, hit test result will be HTCLIENT (see
