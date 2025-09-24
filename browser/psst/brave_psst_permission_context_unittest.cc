@@ -56,9 +56,6 @@ base::Value::Dict CreatePsstPermissionDict(
 namespace psst {
 class BravePsstPermissionContextUnitTest : public testing::Test {
  public:
-  BravePsstPermissionContextUnitTest() {
-    feature_list_.InitAndEnableFeature(psst::features::kEnablePsst);
-  }
   void SetUp() override {
     psst_permission_context_ =
         BravePsstPermissionContextFactory::GetForBrowserContext(&profile_);
@@ -78,10 +75,10 @@ class BravePsstPermissionContextUnitTest : public testing::Test {
   }
 
  private:
+  base::test::ScopedFeatureList feature_list_{psst::features::kEnablePsst};
   content::BrowserTaskEnvironment task_environment_;
   TestingProfile profile_;
   raw_ptr<BravePsstPermissionContext> psst_permission_context_;
-  base::test::ScopedFeatureList feature_list_;
 };
 
 TEST_F(BravePsstPermissionContextUnitTest,
