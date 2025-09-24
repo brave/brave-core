@@ -1136,14 +1136,6 @@ public class BytecodeTest {
                         int.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tab/TabHelpers",
-                        "initTabHelpers",
-                        MethodModifier.STATIC,
-                        void.class,
-                        Tab.class,
-                        Tab.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/tabmodel/TabGroupModelFilterImpl",
                         "shouldGroupWithParent",
                         MethodModifier.REGULAR,
