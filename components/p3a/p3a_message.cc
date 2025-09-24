@@ -269,7 +269,7 @@ base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
 
   // Fill meta.
   result.Set(kCountryCodeAttributeName,
-             meta.GetCountryCodeForNormalMetrics(false));
+             meta.GetCountryCodeForNormalMetrics(false, false));
   result.Set(kVersionAttributeName, meta.version());
   result.Set(kWoiAttributeName, meta.woi());
 
@@ -357,7 +357,7 @@ void MessageMetainfo::Init(PrefService* local_state,
   country_code_from_locale_ = country_code_from_locale_raw_;
 
   region_identifiers_ =
-      GetRegionIdentifiers(GetCountryCodeForNormalMetrics(true));
+      GetRegionIdentifiers(GetCountryCodeForNormalMetrics(true, false));
 
   MaybeStripCountry();
 
