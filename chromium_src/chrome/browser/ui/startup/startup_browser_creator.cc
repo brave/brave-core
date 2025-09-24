@@ -35,6 +35,10 @@ class BraveStartupBrowserCreatorImpl final : public StartupBrowserCreatorImpl {
   void Launch(Profile* profile,
               chrome::startup::IsProcessStartup process_startup,
               bool restore_tabbed_browser);
+
+  void MaybeShowNonMilestoneUpdateToast(
+      Browser* browser,
+      const std::string& current_version_string) override {}
 };
 
 BraveStartupBrowserCreatorImpl::BraveStartupBrowserCreatorImpl(
