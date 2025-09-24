@@ -26,12 +26,14 @@ echo "If you haven't accepted licenses yet this is interactive."
 sdkmanager --licenses
 
 WIREGUARD_TAG="1.0.20250531"
+WIREGUARD_COMMIT="af29c672e78678aadf089b787188710bb9e6346d"
 REPO_URL="https://git.zx2c4.com/wireguard-android"
-echo "Cloning wireguard-android tag: $WIREGUARD_TAG"
+echo "Cloning wireguard-android tag: $WIREGUARD_TAG with hash $WIREGUARD_COMMIT"
 git clone --recurse-submodules --branch "$WIREGUARD_TAG" "$REPO_URL"
 cd wireguard-android/
 
-echo "Building wireguard-around tag: $WIREGUARD_TAG"
+echo "Checking out hash: $WIREGUARD_COMMIT"
+git reset --hard "$WIREGUARD_COMMIT"
 ./gradlew assembleRelease
 popd
 
