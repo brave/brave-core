@@ -249,6 +249,10 @@ package = "rustversion"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/ryu-v1"
 package = "ryu"
 
+[patch.crates-io.serde_core_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_core-v1"
+package = "serde_core"
+
 [patch.crates-io.serde_derive_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_derive-v1"
 package = "serde_derive"
