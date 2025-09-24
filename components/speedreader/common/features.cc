@@ -9,11 +9,7 @@ namespace speedreader {
 
 BASE_FEATURE(kSpeedreaderFeature,
              "Speedreader",
-#if BUILDFLAG(IS_ANDROID)
-             base::FEATURE_DISABLED_BY_DEFAULT);
-#else
              base::FEATURE_ENABLED_BY_DEFAULT);
-#endif
 
 const base::FeatureParam<int> kSpeedreaderMinOutLengthParam{
     &kSpeedreaderFeature, "min_out_length", 1000};
