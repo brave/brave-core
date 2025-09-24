@@ -19,6 +19,24 @@ std::unique_ptr<ui::SimpleMenuModel> CreateBraveSplitTabMenuModel(
   return std::make_unique<BraveSplitTabMenuModel>(tab_strip_model, source);
 }
 
+BraveSplitTabMenuModel::BraveSplitTabMenuModel(
+    TabStripModel* tab_strip_model,
+    MenuSource menu_source,
+    std::optional<int> split_tab_index)
+    : SplitTabMenuModel(tab_strip_model, menu_source, split_tab_index) {
+  // Remove "Send feedback" and the separator above it.
+  auto feedback_command_index =
+      GetIndexOfCommandId(GetCommandIdInt(CommandId::kSendFeedback));
+  if (feedback_command_index.has_value()) {
+    CHECK(feedback_command_index.value() > 1);
+    auto separator_index = feedback_command_index.value() - 1;
+    CHECK(GetSeparatorTypeAt(separator_index) ==
+          ui::MenuSeparatorType::NORMAL_SEPARATOR);
+    RemoveItemAt(feedback_command_index.value());
+    RemoveItemAt(separator_index);
+  }
+}
+
 BraveSplitTabMenuModel::~BraveSplitTabMenuModel() = default;
 
 bool BraveSplitTabMenuModel::IsItemForCommandIdDynamic(int command_id) const {
