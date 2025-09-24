@@ -29,6 +29,7 @@ source_set("features") {
     "//brave/components/p3a",
     "//brave/components/skus/common",
     "//brave/ios/browser/api/translate:features",
+    "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/ui/commerce:features",
     "//brave/ios/browser/ui/tab_tray:features",
     "//brave/ios/browser/ui/web_view:features",
