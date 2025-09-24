@@ -15,12 +15,14 @@ import { RouteObserverMixin } from '../router.js';
 import type { Route } from '../router.js';
 import type { SettingsPlugin } from '../settings_main/settings_plugin.js';
 import { SearchableViewContainerMixin } from '../settings_page/searchable_view_container_mixin.js';
+import { loadTimeData } from '../i18n_setup.js'
 
 import { getTemplate } from './shields_page_index.html.js';
 
 // Subpages
 import './default_brave_shields_page.js';
 import './brave_adblock_subpage.js';
+import '../ad_block_only_mode_page/ad_block_only_mode_page.js'
 
 
 export interface SettingsShieldsPageIndexElement {
@@ -51,8 +53,13 @@ export class SettingsShieldsPageIndexElement extends
   declare prefs: { [key: string]: any };
 
   private showDefaultViews_() {
-    this.$.viewManager.switchViews(
-      ['parent', 'socialBlocking'], 'no-animation', 'no-animation');
+    const views = ['parent']
+    if (loadTimeData.getBoolean('isAdBlockOnlyModeFeatureEnabled')) {
+      views.push('adBlockOnlyMode')
+    }
+    views.push('socialBlocking')
+
+    this.$.viewManager.switchViews(views, 'no-animation', 'no-animation');
   }
 
   override currentRouteChanged(newRoute: Route, oldRoute?: Route) {

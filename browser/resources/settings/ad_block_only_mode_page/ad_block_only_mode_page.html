@@ -1,0 +1,25 @@
+<style include="settings-shared md-select">
+  .description {
+    padding: 1em 0;
+  }
+
+  .flex-center {
+    align-items: center;
+    display: flex;
+  }
+</style>
+
+<settings-section page-title="$i18n{adBlockOnlyMode}">
+  <div class="settings-box first">
+    <div class="flex-center">
+      <div class="label secondary shields-lite-description">
+        <p>$i18nRaw{adBlockOnlyModeDesc}</p>
+      </div>
+    </div>
+  </div>
+  <settings-toggle-button
+      class="cr-row"
+      pref="{{prefs.brave.shields.adblock_only_mode_enabled}}"
+      label="$i18n{adBlockOnlyModeLabel}">
+  </settings-toggle-button>
+</settings-section>

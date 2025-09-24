@@ -15,6 +15,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -105,6 +106,9 @@ constexpr char16_t kLeoMemoryLearnMoreURL[] =
 
 constexpr char16_t kLeoPrivacyPolicyURL[] =
     u"https://brave.com/privacy/browser/#brave-leo";
+
+constexpr char16_t kAdBlockOnlyModeLearnMoreURL[] =
+    u"https://support.brave.app/hc/en-us/articles/38076796692109";
 
 constexpr char16_t kSurveyPanelistLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/36550092449165";
@@ -301,6 +305,14 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_1},
       {"braveShieldsDefaultsSectionDescription2",
        IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2},
+      {"adBlockOnlyModeAlertDesc", IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_DESC},
+      {"adBlockOnlyModeAlertTitle",
+       IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_TITLE},
+      {"adBlockOnlyMode", IDS_SETTINGS_AD_BLOCK_ONLY_MODE},
+      {"adBlockOnlyModeLabel", IDS_SETTINGS_AD_BLOCK_ONLY_MODE_LABEL},
+      {"adBlockOnlyModeDesc", IDS_SETTINGS_AD_BLOCK_ONLY_MODE_DESC},
+      {"adBlockOnlyModeAlertTurnOffButton",
+       IDS_SETTINGS_AD_BLOCK_ONLY_MODE_ALERT_TURN_OFF_BUTTON},
       {"socialBlocking", IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE},
       {"defaultView", IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DEFAULT_VIEW_LABEL},
       {"simpleView", IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_SIMPLE_VIEW_LABEL},
@@ -1051,6 +1063,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
           kBlockAllCookiesLearnMoreUrl));
 
   html_source->AddString(
+      "adBlockOnlyModeDesc",
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_AD_BLOCK_ONLY_MODE_DESC,
+                                 kAdBlockOnlyModeLearnMoreURL));
+
+  html_source->AddString(
       "braveLeoAssistantYourModelsDesc2",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_2,
                                  kLeoCustomModelsLearnMoreURL));
@@ -1265,6 +1282,9 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "cosmeticFilteringCustomScriptletsEnabled",
       base::FeatureList::IsEnabled(
           brave_shields::features::kCosmeticFilteringCustomScriptlets));
+
+  html_source->AddBoolean("isAdBlockOnlyModeFeatureEnabled",
+                          brave_shields::IsAdblockOnlyModeFeatureEnabled());
 
   // Always disable upstream's side panel align option.
   // We add our customized option at preferred position.
