@@ -205,8 +205,8 @@ void* next_token_function(void* args) {
       auto llm = std::get<TfLiteLlm*>(cpu_session->engine->llm);
       auto* decode_runner = llm->interpreter->GetSignatureRunner("decode");
       ABSL_CHECK_EQ(decode_runner->AllocateTensors(), kTfLiteOk);
-      TfLiteTensor* decode_input = decode_runner->input_tensor("args_0");
-      TfLiteTensor* decode_input_pos = decode_runner->input_tensor("args_1");
+      TfLiteTensor* decode_input = decode_runner->input_tensor("tokens");
+      TfLiteTensor* decode_input_pos = decode_runner->input_tensor("input_pos");
       decode_input->data.i64[0] =
           static_cast<int64_t>(cpu_session->next_token_id);
       decode_input_pos->data.i64[0] =
@@ -215,7 +215,7 @@ void* next_token_function(void* args) {
       // logits->dims->data[0] = batch size
       // logits->dims->data[1] = sequence length
       // logits->dims->data[2] = vocab size
-      const TfLiteTensor* logits = decode_runner->output_tensor("output_0");
+      const TfLiteTensor* logits = decode_runner->output_tensor("logits");
 
       ABSL_CHECK_EQ(decode_runner->Invoke(), kTfLiteOk);
 
@@ -305,12 +305,12 @@ void* start_llm_function(void* args) {
     ABSL_CHECK_OK(llm->AddInputTokens({prompt_ids}));
   } else {
     auto llm = std::get<TfLiteLlm*>(cpu_session->engine->llm);
-    auto* prefill_runner = llm->interpreter->GetSignatureRunner("prefill");
+    auto* prefill_runner = llm->interpreter->GetSignatureRunner("prefill_1024");
 
     ABSL_CHECK_EQ(prefill_runner->AllocateTensors(), kTfLiteOk);
 
-    TfLiteTensor* prefill_input = prefill_runner->input_tensor("args_0");
-    TfLiteTensor* prefill_input_pos = prefill_runner->input_tensor("args_1");
+    TfLiteTensor* prefill_input = prefill_runner->input_tensor("tokens");
+    TfLiteTensor* prefill_input_pos = prefill_runner->input_tensor("input_pos");
     memset(prefill_input->data.data, 0, prefill_input->bytes);
     memset(prefill_input_pos->data.data, 0, prefill_input_pos->bytes);
     cpu_session->next_token_id = prompt_ids.back();
