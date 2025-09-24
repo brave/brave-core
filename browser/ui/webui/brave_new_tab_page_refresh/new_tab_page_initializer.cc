@@ -99,6 +99,7 @@ void NewTabPageInitializer::Initialize() {
   AddFaviconDataSource();
   AddCustomImageDataSource();
   AddSanitizedImageDataSource();
+  MaybeMigrateHideAllWidgetsPref();
 
   web_ui_->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   web_ui_->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
@@ -325,6 +326,25 @@ void NewTabPageInitializer::AddSanitizedImageDataSource() {
   auto* profile = GetProfile();
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
+}
+
+void NewTabPageInitializer::MaybeMigrateHideAllWidgetsPref() {
+  // The "hide all widgets" toggle does not exist on this version of the NTP.
+  // If the user has enabled this pref, hide the individual widgets affected by
+  // that pref.
+  // TODO(https://github.com/brave/brave-browser/issues/49544): Deprecate the
+  // `kNewTabPageHideAllWidgets` pref and perform the migration in
+  // `MigrateObsoleteProfilePrefs`.
+  auto* prefs = GetProfile()->GetPrefs();
+  if (prefs->GetBoolean(kNewTabPageHideAllWidgets)) {
+    prefs->SetBoolean(kNewTabPageHideAllWidgets, false);
+
+    prefs->SetBoolean(kNewTabPageShowRewards, false);
+    prefs->SetBoolean(kNewTabPageShowBraveTalk, false);
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    prefs->SetBoolean(kNewTabPageShowBraveVPN, false);
+#endif
+  }
 }
 
 }  // namespace brave_new_tab_page_refresh
