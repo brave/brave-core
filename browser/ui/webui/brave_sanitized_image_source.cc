@@ -18,7 +18,6 @@
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/signin/identity_manager_factory.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/url_util.h"

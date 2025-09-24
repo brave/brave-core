@@ -51,6 +51,7 @@ source_set("ui") {
   ]
 
   deps = [
+    "//brave/brave_domains",
     "//brave/browser/ai_chat",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_ads",
@@ -59,6 +60,7 @@ source_set("ui") {
     "//brave/browser/ui/webui/brave_account",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_origin",
+    "//brave/components/brave_private_cdn",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
     "//chrome/browser/ui:browser_navigator_params_headers",
