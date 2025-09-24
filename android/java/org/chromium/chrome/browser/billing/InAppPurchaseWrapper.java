@@ -30,10 +30,13 @@ import com.android.billingclient.api.QueryPurchasesParams;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
+import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -74,6 +77,9 @@ public class InAppPurchaseWrapper {
     public static final String VPN_RELEASE_MONTHLY_SUBSCRIPTION = "brave.vpn.monthly";
     public static final String VPN_RELEASE_YEARLY_SUBSCRIPTION = "brave.vpn.yearly";
     private BillingClient mBillingClient;
+
+    // Profile context for current purchase flow
+    private Profile mPurchaseProfile;
 
     private static final long MICRO_UNITS =
             1000000; // 1,000,000 micro-units equal one unit of the currency
@@ -439,6 +445,22 @@ public class InAppPurchaseWrapper {
                 });
     }
 
+    /**
+     * Initiates a subscription purchase flow with profile context.
+     *
+     * @param activity The activity to launch the billing flow from
+     * @param productDetails The subscription product details to purchase
+     * @param profile The current user profile for context (can be null)
+     */
+    public void initiatePurchase(
+            Activity activity, ProductDetails productDetails, @NonNull Profile profile) {
+        // Store the profile for use in the asynchronous purchase callback flow
+        mPurchaseProfile = profile;
+
+        // Delegate to the original method
+        initiatePurchase(activity, productDetails);
+    }
+
     public void processPurchases(Context context, Purchase activePurchase) {
         acknowledgePurchase(context, activePurchase);
     }
@@ -524,16 +546,22 @@ public class InAppPurchaseWrapper {
                             BraveLeoUtils.bringMainActivityOnTop();
                         }
                     });
-        } else if (isOriginProduct && activity != null) {
-            activity.runOnUiThread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            // TODO(sergz): Add Origin subscription handling
-                        }
+        } else if (isOriginProduct) {
+            ThreadUtils.runOnUiThread(
+                    () -> {
+                        BraveOriginSubscriptionPrefs.setIsSubscriptionActive(
+                                mPurchaseProfile, true);
+                        BraveOriginSubscriptionPrefs.setOriginPackageName(mPurchaseProfile);
+                        BraveOriginSubscriptionPrefs.setOriginProductId(
+                                mPurchaseProfile, purchase.getProducts().get(0));
+                        BraveOriginSubscriptionPrefs.setOriginPurchaseToken(
+                                mPurchaseProfile, purchase.getPurchaseToken());
                     });
         }
         showToast(context.getResources().getString(R.string.subscription_consumed));
+
+        // Clear the stored profile after processing
+        mPurchaseProfile = null;
     }
 
     private boolean isVPNProduct(List<String> productIds) {
