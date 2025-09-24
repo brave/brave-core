@@ -33,6 +33,7 @@ source_set("unit_tests") {
   deps = [
     ":psst",
     "//base",
+    "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
     "//chrome/test:test_support",
     "//components/content_settings/core/browser",
