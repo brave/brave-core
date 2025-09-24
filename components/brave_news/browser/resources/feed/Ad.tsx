@@ -75,7 +75,7 @@ const adTargetUrlAllowedSchemes = ['https:', 'chrome:', 'brave:']
 
 export default function Advert(props: Props) {
   const [advert, setAdvert] = React.useState<DisplayAd | null | undefined>(undefined)
-  const imageUrl = `chrome://image?url=${encodeURIComponent(advert?.image.paddedImageUrl?.url ?? advert?.image.imageUrl?.url ?? '')}`
+  const imageUrl = advert?.image.paddedImageUrl?.url ?? advert?.image.imageUrl?.url ?? ''
   const { openArticlesInNewTab } = useBraveNews()
 
   const onDisplayAdViewed = React.useCallback(() => {
@@ -115,7 +115,7 @@ export default function Advert(props: Props) {
   }
 
   return <Container ref={setAdEl} onClick={onDisplayAdVisited}>
-    <AdImage loading='eager' src={imageUrl} />
+    <AdImage loading='eager' imgUrl={imageUrl} />
     <MetaInfoContainer>
       <BatAdLabel onClick={e => e.stopPropagation()} target={openArticlesInNewTab ? '_blank' : undefined} href="chrome://rewards">{getLocale(S.BRAVE_NEWS_ADVERT_BADGE)}</BatAdLabel>
       •

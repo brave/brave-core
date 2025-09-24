@@ -94,6 +94,8 @@ source_set("ui") {
     "webui/brave_rewards/rewards_web_ui_utils.h",
     "webui/brave_rewards_internals_ui.cc",
     "webui/brave_rewards_internals_ui.h",
+    "webui/brave_sanitized_image_source.cc",
+    "webui/brave_sanitized_image_source.h",
     "webui/brave_wallet/line_chart/line_chart_ui.cc",
     "webui/brave_wallet/line_chart/line_chart_ui.h",
     "webui/brave_wallet/market/market_ui.cc",

@@ -98,7 +98,7 @@ export default function Peek() {
   const { feedV2, isShowOnNTPPrefEnabled, isOptInPrefEnabled } = useBraveNews()
   const top = feedV2?.items?.find(a => a.article || a.hero)
   const data = (top?.hero ?? top?.article)?.data
-  const imageUrl = `chrome://image?url=${encodeURIComponent(data?.image.paddedImageUrl?.url ?? data?.image.imageUrl?.url ?? '')}`
+  const imageUrl = data?.image.paddedImageUrl?.url ?? data?.image.imageUrl?.url ?? ''
 
   // Show the news button if:
   // 1. We haven't opted in
@@ -127,9 +127,8 @@ export default function Peek() {
           <MetaInfo article={data} />
           <Title>{data.title}</Title>
         </div>
-        <SmallImage loading='eager' src={imageUrl} />
+        <SmallImage loading='eager' imgUrl={imageUrl} />
       </PeekingCard>}
     </Container>
     : null
 }
-
