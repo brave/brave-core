@@ -515,6 +515,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		272B79CE2E71D9D10034698E /* AppIcons */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = AppIcons; sourceTree = "<group>"; };
 		2749F5B82D088E0100A5DAAB /* WebShell */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (2749F5CC2D08904200A5DAAB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = WebShell; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -638,6 +639,7 @@
 		270ECFC9283824F00089B8B7 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				272B79CE2E71D9D10034698E /* AppIcons */,
 				27D67619282DA10700BCE16E /* Icons.xcassets */,
 				F84B22431A09165600AAB793 /* Info.plist */,
 				27FA21902838018E00FA2C45 /* InfoPlist.strings */,
@@ -1058,6 +1060,9 @@
 				2FD860C929C3D686005AADD1 /* PBXTargetDependency */,
 				2FE7D5282B509DA50039FBA4 /* PBXTargetDependency */,
 				2714EE752AF2D4CD002090A9 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				272B79CE2E71D9D10034698E /* AppIcons */,
 			);
 			name = Client;
 			packageProductDependencies = (
