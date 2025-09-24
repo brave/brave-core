@@ -441,6 +441,12 @@
 		7D26976A2E7B9AE20058A3DF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = "sr-Cyrl.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7D26976B2E7B9AE20058A3DF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = "Supporting Files/sr-Cyrl.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		7D26976C2E7B9AE30058A3DF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = "Shortcuts/sr-Cyrl.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
+		7D5F771C2E84462F00B010AF /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7D5F771D2E84464400B010AF /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7D5F771E2E84466A00B010AF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = sr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7D5F771F2E84467F00B010AF /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7D5F77202E84468F00B010AF /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7D5F77212E84473600B010AF /* sr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sr; path = sr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7D7193F42CFE43830015D31D /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
 		7D7193F52CFE43830015D31D /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7D7193F62CFE43830015D31D /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = "Supporting Files/th.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -1612,6 +1618,9 @@
 				271D3F9F2E007EC70093539A /* th */,
 				271D3FA02E007EC90093539A /* vi */,
 				271D3FA12E007ECB0093539A /* ar */,
+				7D5F771C2E84462F00B010AF /* hi */,
+				7D5F771D2E84464400B010AF /* bg */,
+				7D5F771E2E84466A00B010AF /* sr */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1656,6 +1665,9 @@
 				271D3FA52E007ED20093539A /* th */,
 				271D3FA62E007ED30093539A /* vi */,
 				271D3FA72E007ED50093539A /* ar */,
+				7D5F771F2E84467F00B010AF /* bg */,
+				7D5F77202E84468F00B010AF /* hi */,
+				7D5F77212E84473600B010AF /* sr */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
