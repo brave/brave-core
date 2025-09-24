@@ -333,7 +333,7 @@ void SpeedreaderTabHelper::ProcessNavigation(
     // site.
     const bool explicit_enabled_for_size =
         !homepage && kSpeedreaderExplicitPref.Get() &&
-        GetSpeedreaderService()->GetEnabledForSiteSetting(
+        GetSpeedreaderService()->IsExplicitlyEnabledForSite(
             navigation_handle->GetURL());
     if (url_looks_readable || explicit_enabled_for_size) {
       // Speedreader enabled for this page.
