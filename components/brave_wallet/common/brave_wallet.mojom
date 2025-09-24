@@ -2319,6 +2319,12 @@ interface ZCashWalletService {
 interface PolkadotWalletService {
   GetNetworkName(AccountId account)
       => (string? network, string? error_message);
+
+  AddObserver(pending_remote<PolkadotWalletServiceObserver> observer);
+};
+
+interface PolkadotWalletServiceObserver {
+  GetPublicKey() => (string pubkey);
 };
 
 enum TransactionStatus {
