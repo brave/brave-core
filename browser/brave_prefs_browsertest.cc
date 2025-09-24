@@ -26,6 +26,7 @@
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/ntp_tiles/tile_type.h"
 #include "components/omnibox/browser/aim_eligibility_service.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/policy/core/common/policy_pref_names.h"
@@ -150,8 +151,9 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kCloudPrintProxyEnabled));
 #if !BUILDFLAG(IS_ANDROID)
-  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      ntp_prefs::kNtpUseMostVisitedTiles));
+  EXPECT_EQ(chrome_test_utils::GetProfile(this)->GetPrefs()->GetInteger(
+                ntp_prefs::kNtpShortcutsType),
+            static_cast<int>(ntp_tiles::TileType::kTopSites));
 #endif
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       policy::policy_prefs::kHideWebStoreIcon));
