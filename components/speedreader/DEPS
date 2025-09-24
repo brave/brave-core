@@ -10,6 +10,7 @@ include_rules = [
   "+components/user_prefs",
   "+content/public/browser",
   "+content/public/common",
+  "+content/public/test",
   "+crypto",
   "+services/network/public",
   "+services/network/public/cpp",

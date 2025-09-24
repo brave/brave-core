@@ -5,14 +5,103 @@
 
 #include "brave/components/speedreader/speedreader_service.h"
 
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_pref_migration.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/prefs/testing_pref_service.h"
+#include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/test/browser_task_environment.h"
+#include "content/public/test/test_browser_context.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace speedreader {
+
+class SpeedreaderServiceTest : public testing::Test {
+ public:
+  SpeedreaderServiceTest() : feature_list_(kSpeedreaderFeature) {}
+
+  void SetUp() override {
+    HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
+    SpeedreaderService::RegisterProfilePrefs(prefs_.registry());
+    SpeedreaderMetrics::RegisterPrefs(prefs_.registry());
+    settings_map_ = base::MakeRefCounted<HostContentSettingsMap>(
+        &prefs_, /*is_off_the_record=*/false, /*store_last_modified=*/false,
+        /*restore_session=*/false, /*should_record_metrics=*/false);
+
+    user_prefs::UserPrefs::Set(&browser_context_, &prefs_);
+    service_ = std::make_unique<SpeedreaderService>(&browser_context_, &prefs_,
+                                                    settings_map_.get());
+  }
+
+  void TearDown() override { settings_map_->ShutdownOnUIThread(); }
+
+  SpeedreaderService* speedreader_service() { return service_.get(); }
+
+  PrefService* prefs() { return &prefs_; }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+  content::BrowserTaskEnvironment task_environment_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
+  content::TestBrowserContext browser_context_;
+  scoped_refptr<HostContentSettingsMap> settings_map_;
+  std::unique_ptr<SpeedreaderService> service_;
+};
+
+TEST_F(SpeedreaderServiceTest, DefaultSettings) {
+  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+
+  for (const bool enabled : {true, false}) {
+    speedreader_service()->EnableForAllSites(enabled);
+    EXPECT_EQ(enabled, speedreader_service()->IsEnabledForAllSites());
+    EXPECT_EQ(enabled, prefs()->GetBoolean(kSpeedreaderPrefEnabledForAllSites));
+  }
+}
+
+TEST_F(SpeedreaderServiceTest, DefaultSiteSettings) {
+  const GURL site("https://example.com");
+
+  EXPECT_FALSE(speedreader_service()->IsEnabledForSite(site));
+  EXPECT_FALSE(speedreader_service()->IsExplicitlyEnabledForSite(site));
+  EXPECT_FALSE(speedreader_service()->IsExplicitlyDisabledForSite(site));
+}
+
+TEST_F(SpeedreaderServiceTest, DefaultSiteSettingsAllSitesEnabled) {
+  const GURL site("https://example.com");
+
+  speedreader_service()->EnableForAllSites(true);
+  EXPECT_TRUE(speedreader_service()->IsEnabledForSite(site));
+  EXPECT_FALSE(speedreader_service()->IsExplicitlyEnabledForSite(site));
+  EXPECT_FALSE(speedreader_service()->IsExplicitlyDisabledForSite(site));
+}
+
+TEST_F(SpeedreaderServiceTest, OverrideSiteSettingsAllSitesDefault) {
+  const GURL site("https://example.com");
+
+  for (const bool enabled : {true, false}) {
+    speedreader_service()->EnableForSite(site, enabled);
+    EXPECT_EQ(enabled, speedreader_service()->IsEnabledForSite(site));
+    EXPECT_EQ(enabled, speedreader_service()->IsExplicitlyEnabledForSite(site));
+    EXPECT_EQ(!enabled,
+              speedreader_service()->IsExplicitlyDisabledForSite(site));
+  }
+}
+
+TEST_F(SpeedreaderServiceTest, OverrideSiteSettingsAllSitesEnabled) {
+  const GURL site("https://example.com");
+
+  speedreader_service()->EnableForAllSites(true);
+  for (const bool enabled : {true, false}) {
+    speedreader_service()->EnableForSite(site, enabled);
+    EXPECT_EQ(enabled, speedreader_service()->IsEnabledForSite(site));
+    EXPECT_EQ(enabled, speedreader_service()->IsExplicitlyEnabledForSite(site));
+    EXPECT_EQ(!enabled,
+              speedreader_service()->IsExplicitlyDisabledForSite(site));
+  }
+}
 
 class SpeedreaderPolicyTest : public testing::Test {
  public:
