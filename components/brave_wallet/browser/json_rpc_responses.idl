@@ -69,11 +69,4 @@ namespace json_rpc_responses {
     DOMString totalBalanceUsd;
     AnkrAssetBalance[] assets;
   };
-
-  dictionary PolkadotSystemChainResponse {
-    DOMString jsonrpc;
-    long id;
-    DOMString? result;
-    Error? error;
-  };
 };

@@ -1,0 +1,17 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
+generated_types("generated_polkadot_substrate_rpc_responses") {
+  sources = [ "polkadot_substrate_rpc_responses.idl" ]
+  root_namespace = "brave_wallet::polkadot_substrate_rpc_responses"
+  deps = [ "//base" ]
+  visibility = [
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:test_support",
+    "//brave/components/brave_wallet/browser:unit_tests",
+  ]
+}

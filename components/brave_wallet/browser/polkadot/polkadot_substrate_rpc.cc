@@ -8,8 +8,8 @@
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/json_rpc_responses.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc_responses.h"
 
 namespace brave_wallet {
 
@@ -83,8 +83,9 @@ void PolkadotSubstrateRpc::OnGetChainName(GetChainNameCallback callback,
     return std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
   }
 
-  auto res = json_rpc_responses::PolkadotSystemChainResponse::FromValue(
-      api_result.value_body());
+  auto res =
+      polkadot_substrate_rpc_responses::PolkadotSystemChainResponse::FromValue(
+          api_result.value_body());
 
   if (!res) {
     return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
