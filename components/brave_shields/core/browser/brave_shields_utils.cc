@@ -11,6 +11,7 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/hash/hash.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -883,7 +884,7 @@ bool IsDeveloperModeEnabled(PrefService* profile_state) {
 // This should be used in conjuction with `GetAutoShredTypeFromDict`.
 base::Value GetDictFromAutoShredType(AutoShredType type) {
   base::Value dict(base::Value::Type::DICT);
-  dict.GetDict().Set("value", static_cast<int>(type));
+  dict.GetDict().Set(brave_shields::kBraveAutoShred, static_cast<int>(type));
   return dict;
 }
 
@@ -894,7 +895,8 @@ AutoShredType GetAutoShredTypeFromDict(base::Value dict) {
     return AutoShredType::NEVER;
   }
 
-  const base::Value* value = dict.GetDict().Find("value");
+  const base::Value* value =
+      dict.GetDict().Find(brave_shields::kBraveAutoShred);
   if (value && value->is_int()) {
     int auto_shred_type_int = value->GetInt();
     AutoShredType auto_shred_type =
