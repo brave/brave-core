@@ -145,6 +145,18 @@ void AddBraveVpnColorMixer(ui::ColorProvider* provider,
   }
 
   mixer[kColorBraveVpnButtonBackgroundNormal] = {kColorToolbar};
+
+#if defined(TOOLKIT_VIEWS)
+  if (!base::FeatureList::IsEnabled(
+          darker_theme::features::kBraveDarkerTheme) ||
+      key.scheme_variant != ui::ColorProviderKey::SchemeVariant::kDarker) {
+    return;
+  }
+
+  auto& postprocessing_mixer = provider->AddPostprocessingMixer();
+  postprocessing_mixer[kColorBraveVpnButtonBackgroundNormal] =
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral5);
+#endif  // defined(TOOLKIT_VIEWS)
 }
 #endif
 
@@ -765,6 +777,27 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
       darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
   postprocessing_mixer[kColorBraveOmniboxResultViewSeparator] =
       darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
+
+  // Toolbar
+  postprocessing_mixer[kColorToolbarButtonIcon] =
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral40);
+  postprocessing_mixer[kColorToolbarButtonIconHovered] =
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral50);
+  postprocessing_mixer[kColorToolbarButtonActivated] = {
+      nala::kColorPrimitivePrimary50};
+  postprocessing_mixer[kColorToolbarInkDrop] = {nala::kColorPrimitiveNeutral10};
+  postprocessing_mixer[kColorToolbarInkDropHover] = {
+      nala::kColorPrimitiveNeutral10};
+  postprocessing_mixer[kColorToolbarInkDropRipple] = {
+      nala::kColorPrimitiveNeutral20};
+
+  // Sidebar button
+  postprocessing_mixer[kColorSidebarButtonBase] = {
+      postprocessing_mixer.GetResultColor(kColorToolbarButtonIcon)};
+  if (!HasCustomToolbarColor(key)) {
+    mixer[kColorSidebarButtonPressed] = {
+        postprocessing_mixer.GetResultColor(kColorToolbarButtonActivated)};
+  }
 #endif  // defined(TOOLKIT_VIEWS)
 }
 
