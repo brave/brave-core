@@ -8,8 +8,14 @@ import("//tools/grit/repack.gni")
 
 repack("packed_resources") {
   testonly = true
-  sources = [ "$root_gen_dir/brave/ios/web/test/test_resources.pak" ]
-  deps = [ ":resources" ]
+  sources = [
+    "$root_gen_dir/brave/ios/web/test/test_resources.pak",
+    "$root_gen_dir/ui/strings/app_locale_settings_en-US.pak",
+  ]
+  deps = [
+    ":resources",
+    "//ui/strings:app_locale_settings",
+  ]
   output = "$target_gen_dir/resources.pak"
   copy_data_to_bundle = true
 }
