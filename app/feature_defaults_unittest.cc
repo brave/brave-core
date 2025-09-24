@@ -219,7 +219,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &permissions::features::kPermissionsPromptSurvey,
 #endif
-      &permissions::features::kPermissionOnDeviceNotificationPredictions,
       &permissions::features::kPermissionPredictionsV2,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &plus_addresses::features::kPlusAddressesEnabled,
