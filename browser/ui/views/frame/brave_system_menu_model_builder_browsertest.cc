@@ -33,7 +33,8 @@ IN_PROC_BROWSER_TEST_F(BraveNonClientHitTestHelperBrowserTest,
   // Retrieve system menu.
   const BrowserView* const browser_view =
       BrowserView::GetBrowserViewForBrowser(browser());
-  const ui::MenuModel* const menu = browser_view->frame()->GetSystemMenuModel();
+  const ui::MenuModel* const menu =
+      browser_view->browser_widget()->GetSystemMenuModel();
 
   // Verify our system menu command availability.
   EXPECT_TRUE(ContainsCommandIdInMenu(IDC_TOGGLE_VERTICAL_TABS, menu));
