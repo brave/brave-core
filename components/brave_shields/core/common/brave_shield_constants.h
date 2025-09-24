@@ -43,6 +43,7 @@ inline constexpr auto kShieldsContentSettingsTypes =
         ContentSettingsType::BRAVE_SHIELDS,
         ContentSettingsType::BRAVE_REFERRERS,
         ContentSettingsType::BRAVE_COOKIES,
+        ContentSettingsType::BRAVE_AUTO_SHRED,
     });
 
 using ShieldsContentSettingsTypes = decltype(kShieldsContentSettingsTypes);
@@ -61,6 +62,7 @@ inline constexpr auto kShieldsContentTypeNames =
         {ContentSettingsType::BRAVE_SHIELDS_METADATA, kBraveShieldsMetadata},
         {ContentSettingsType::BRAVE_REFERRERS, kReferrers},
         {ContentSettingsType::BRAVE_COOKIES, kCookies},
+        {ContentSettingsType::BRAVE_AUTO_SHRED, kBraveAutoShred},
     });
 
 using ShieldsContentTypeNames = decltype(kShieldsContentTypeNames);
