@@ -19,6 +19,7 @@ static_library("common") {
 }
 
 mojom("mojom") {
+  generate_java = true
   sources = [
     "skus_internals.mojom",
     "skus_sdk.mojom",
