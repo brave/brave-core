@@ -56,7 +56,7 @@ class BraveBrowserViewTest : public InProcessBrowserTest {
   }
 
   BrowserNonClientFrameView* browser_non_client_frame_view() {
-    return browser_view()->frame()->GetFrameView();
+    return browser_view()->browser_widget()->GetFrameView();
   }
 
   BraveBrowserView* brave_browser_view() {

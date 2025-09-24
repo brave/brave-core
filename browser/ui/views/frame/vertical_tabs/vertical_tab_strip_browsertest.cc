@@ -138,10 +138,10 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
     return static_cast<BraveBrowserView*>(browser()->window());
   }
   BrowserNonClientFrameView* browser_non_client_frame_view() {
-    return browser_view()->frame()->GetFrameView();
+    return browser_view()->browser_widget()->GetFrameView();
   }
   const BrowserNonClientFrameView* browser_non_client_frame_view() const {
-    return browser_view()->frame()->GetFrameView();
+    return browser_view()->browser_widget()->GetFrameView();
   }
 
   void ToggleVerticalTabStrip() {
@@ -333,7 +333,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
 
   const auto browser_view_min_size = browser_view()->GetMinimumSize();
   const auto browser_non_client_frame_view_min_size =
-      browser_view()->frame()->GetFrameView()->GetMinimumSize();
+      browser_view()->browser_widget()->GetFrameView()->GetMinimumSize();
 
   // Add tabs as much as it can grow mih height of tab strip.
   auto tab_strip_min_height =
@@ -348,7 +348,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
   EXPECT_EQ(browser_view_min_size.height(),
             browser_view()->GetMinimumSize().height());
   EXPECT_EQ(browser_non_client_frame_view_min_size.height(),
-            browser_view()->frame()->GetFrameView()->GetMinimumSize().height());
+            browser_view()
+                ->browser_widget()
+                ->GetFrameView()
+                ->GetMinimumSize()
+                .height());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
