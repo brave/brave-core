@@ -9,6 +9,7 @@ const readline = require('readline')
 const os = require('os')
 const config = require('./config')
 const fs = require('fs-extra')
+const {glob, writeFile} = require('fs/promises')
 const crypto = require('crypto')
 const Log = require('./logging')
 const assert = require('assert')
@@ -17,6 +18,14 @@ const ActionGuard = require('./actionGuard')
 
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0)
+
+async function generateInstrumentationFile(instrumentationFile) {
+  const files = await Array.fromAsync(glob(`**/*.{cc,c,h,cpp,hpp,m,mm}`))
+
+  const paths = files.map(x => `../../brave/${x}`)
+  await fs.mkdirp(path.dirname(instrumentationFile));
+  await writeFile(instrumentationFile, paths.join('\n'), 'utf-8')
+}
 
 async function applyPatches(printPatchFailuresInJson) {
   const GitPatcher = require('./gitPatcher')
@@ -167,6 +176,7 @@ const normalizeCommand = (cmd, args) => {
 }
 
 const util = {
+  generateInstrumentationFile,
   runProcess: (cmd, args = [], options = {}, skipLogging = false) => {
     if (!skipLogging) {
       Log.command(options.cwd, cmd, args)
@@ -623,6 +633,15 @@ const util = {
     options = config.defaultOptions,
   ) => {
     assert(Array.isArray(targets))
+
+    if (config.use_clang_coverage) {
+      const instrumentationFile = path.join(
+        config.outputDir,
+        'files-to-instrument.txt',
+      )
+      await generateInstrumentationFile(instrumentationFile)
+    }
+
     const buildId = crypto.randomUUID()
     const outputDir = options.outputDir || config.outputDir
     const progressMessage = `build ${targets} (${path.basename(

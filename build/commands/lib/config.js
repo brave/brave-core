@@ -326,6 +326,8 @@ const Config = function () {
     'zebpay_sandbox_client_id',
     'zebpay_sandbox_client_secret',
     'zebpay_sandbox_oauth_url',
+    'use_clang_coverage',
+    'coverage_instrumentation_input_file',
   ]
 }
 
@@ -563,6 +565,12 @@ Config.prototype.buildArgs = function () {
         && !this.isReleaseBuild()))
   ) {
     args.symbol_level = 1
+  }
+
+  if (this.use_clang_coverage) {
+    const buildDir = path.relative(this.srcDir, this.outputDir)
+    args.use_clang_coverage = true
+    args.coverage_instrumentation_input_file = `//${buildDir}/files-to-instrument.txt`
   }
 
   // For Linux Release builds, upstream doesn't want to use symbol_level = 2
@@ -926,6 +934,10 @@ Config.prototype.updateInternal = function (options) {
     this.is_asan = true
   } else {
     this.is_asan = false
+  }
+
+  if (options.use_clang_coverage) {
+    this.use_clang_coverage = true
   }
 
   if (options.is_ubsan) {
