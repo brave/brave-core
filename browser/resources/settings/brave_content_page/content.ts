@@ -73,6 +73,13 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
        */
       pageZoomLevels_: Array,
 
+      showSplitViewDragAndDropSetting_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean('showSplitViewDragAndDropSetting');
+        },
+      },
+
     }
   }
 
@@ -85,6 +92,7 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
   private declare fontSizeOptions_: DropdownMenuOptionList
   private declare pageZoomLevels_: number[]
   private declare defaultZoom_: number;
+  private declare showSplitViewDragAndDropSetting_: boolean;
   private appearanceBrowserProxy_: AppearanceBrowserProxy =
       AppearanceBrowserProxyImpl.getInstance();
 
