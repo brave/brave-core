@@ -28,11 +28,11 @@ source_set("unit_tests") {
   sources = [ "privacy_preserving_protocol_handler_unittest.cc" ]
   deps = [
     ":test_util",
+    "//components/update_client",
+    "//testing/gtest",
 
     # The build fails without this dep, even though our source doesn't use it.
     "//base",
-    "//components/update_client",
-    "//testing/gtest",
   ]
 }
 
