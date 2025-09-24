@@ -51,6 +51,7 @@ class NewTabPageInitializer {
   void AddFaviconDataSource();
   void AddCustomImageDataSource();
   void AddSanitizedImageDataSource();
+  void MaybeMigrateHideAllWidgetsPref();
 
   raw_ref<content::WebUI> web_ui_;
   raw_ptr<content::WebUIDataSource> source_ = nullptr;
