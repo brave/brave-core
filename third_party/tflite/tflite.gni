@@ -4,4 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_tflite_builtin_op_resolver_visibility =
-    [ "//brave/third_party/tflite_support/*" ]
+    [
+      "//brave/third_party/tflite_support/*",
+      "//brave/third_party/mediapipe/*",
+    ]

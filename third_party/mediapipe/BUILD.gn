@@ -7,6 +7,7 @@ import("//brave/third_party/mediapipe/features.gni")
 import("//build/buildflag_header.gni")
 import("//third_party/flatbuffers/flatbuffer.gni")
 import("//third_party/protobuf/proto_library.gni")
+import("//third_party/tflite/tflite_target.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
@@ -41,8 +42,9 @@ if (brave_build_with_mediapipe_lib) {
     deps = [ "//third_party/mediapipe:mediapipe_proto" ]
   }
 
+
   # MediaPipe LLM inference engine C API implementation - using upstream sources
-  static_library("llm_inference_engine_cpu") {
+  tflite_static_library("llm_inference_engine_cpu") {
     sources = [
       # Main LLM inference engine C API implementation - using patched version
       "//brave/chromium_src/third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/c/llm_inference_engine_cpu.cc",
@@ -52,6 +54,11 @@ if (brave_build_with_mediapipe_lib) {
       "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/llm_utils/model_data.cc",
       "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/llm_utils/prompt_utils.cc",
       "//third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/llm_utils/well_known_models.cc",
+
+      # TensorFlow Lite utilities - required for signature support
+      "//third_party/mediapipe/src/mediapipe/util/tflite/error_reporter.cc",
+      "//third_party/mediapipe/src/mediapipe/util/tflite/tflite_model_loader.cc",
+      "//third_party/mediapipe/src/mediapipe/util/tflite/tflite_signature_reader.cc",
 
       # XNN utilities
       "//brave/chromium_src/third_party/mediapipe/src/mediapipe/tasks/cc/genai/inference/utils/xnn_utils/pack_weights_cache.cc",
@@ -91,8 +98,12 @@ if (brave_build_with_mediapipe_lib) {
       "//third_party/mediapipe:mediapipe_tasks",
       "//third_party/protobuf:protobuf_lite",
       "//third_party/sentencepiece",
-      "//third_party/tflite",
       "//third_party/xnnpack",
+    ]
+
+    conditional_deps = [
+      "//third_party/tflite:tflite",
+      "//third_party/tflite:tflite_builtin_op_resolver",
     ]
 
     # Add include paths for MediaPipe and genai dependencies
@@ -110,12 +121,12 @@ if (brave_build_with_mediapipe_lib) {
       "//third_party/sentencepiece:sentencepiece_config",
     ]
 
-    configs -= [
+    configs_to_remove = [
       "//build/config/compiler:chromium_code",
       "//build/config/compiler:no_rtti",
     ]
 
-    configs += [
+    configs_to_add = [
       "//build/config/compiler:no_chromium_code",
       "//build/config/compiler:rtti",
       "//third_party/mediapipe:mediapipe_flags",
