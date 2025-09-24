@@ -140,10 +140,10 @@ void ContentSettingsRegistry::BraveInit() {
 
   Register(
       ContentSettingsType::BRAVE_SPEEDREADER, "braveSpeedreader",
-      CONTENT_SETTING_DEFAULT, WebsiteSettingsInfo::SYNCABLE,
+      CONTENT_SETTING_ASK, WebsiteSettingsInfo::SYNCABLE,
       /*allowlisted_schemes=*/{},
       /*valid_settings=*/
-      {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_DEFAULT},
+      {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
       WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
       WebsiteSettingsRegistry::DESKTOP |
           WebsiteSettingsRegistry::PLATFORM_ANDROID,
