@@ -73,11 +73,11 @@ source_set("unit_tests") {
 
   deps = [
     ":speedreader",
-    "//brave/components/speedreader/common",
     "//base",
     "//base/test:test_support",
     "//brave/components/constants",
     "//brave/components/p3a_utils",
+    "//brave/components/speedreader/common",
     "//brave/components/time_period_storage",
     "//components/content_settings/core/browser",
     "//components/prefs",

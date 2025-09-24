@@ -138,17 +138,20 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
-  Register(
-      ContentSettingsType::BRAVE_SPEEDREADER, "braveSpeedreader",
-      CONTENT_SETTING_ASK, WebsiteSettingsInfo::SYNCABLE,
-      /*allowlisted_schemes=*/{},
-      /*valid_settings=*/
-      {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
-      WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
-      WebsiteSettingsRegistry::DESKTOP |
-          WebsiteSettingsRegistry::PLATFORM_ANDROID,
-      ContentSettingsInfo::INHERIT_IN_INCOGNITO,
-      PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+  Register(ContentSettingsType::BRAVE_SPEEDREADER, "braveSpeedreader",
+           // CONTENT_SETTING_ASK is used because the default is to defer to
+           // the "use when possible" pref which looks at heuristics to
+           // determine if the site looks like "readable". This will not
+           // actually trigger a permission request
+           CONTENT_SETTING_ASK, WebsiteSettingsInfo::SYNCABLE,
+           /*allowlisted_schemes=*/{},
+           /*valid_settings=*/
+           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
+           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+           WebsiteSettingsRegistry::DESKTOP |
+               WebsiteSettingsRegistry::PLATFORM_ANDROID,
+           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+           PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
   // Add CONTENT_SETTING_ASK for autoplay
   // Note ASK has been deprecated, only keeping it for
