@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import Preferences
 import TestHelpers
 import Web
 import XCTest
@@ -15,6 +16,14 @@ import XCTest
 class BraveShieldsTabHelperTests: CoreDataTestCase {
 
   let url = URL(string: "https://brave.com")!
+
+  override func setUp() {
+    super.setUp()
+    Preferences.Shields.blockScripts.reset()
+    Preferences.Shields.fingerprintingProtection.reset()
+    ShieldPreferences.blockAdsAndTrackingLevelRaw.reset()
+    ShieldPreferences.shredLevelRaw.reset()
+  }
 
   /// Test `isBraveShieldsEnabled(for:)` with
   /// `isBraveShieldsContentSettingsEnabled` flag disabled.

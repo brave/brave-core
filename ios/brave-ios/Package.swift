@@ -318,7 +318,7 @@ var package = Package(
     ),
     .testTarget(
       name: "BraveShieldsTests",
-      dependencies: ["BraveShields", "Data", "TestHelpers", "Web"]
+      dependencies: ["BraveShields", "Data", "Preferences", "TestHelpers", "Web"]
     ),
     .target(
       name: "DesignSystem",
