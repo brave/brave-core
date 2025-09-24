@@ -7,7 +7,5 @@
 namespace endpoints {
   dictionary Error {
     long code;
-    DOMString error;
-    long status;
   };
 };
