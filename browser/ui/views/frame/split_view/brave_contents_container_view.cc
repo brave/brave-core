@@ -29,6 +29,28 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/views/border.h"
 
+namespace {
+
+// We dont' let this outline visible always but it sets mini toolbar's clip path
+// even it's hidden. We set mini toolbar's clip path from
+// BraveMultiContentsViewMiniToolbar.
+class BraveContentsContainerOutline : public ContentsContainerOutline {
+  METADATA_HEADER(BraveContentsContainerOutline, ContentsContainerOutline)
+ public:
+  using ContentsContainerOutline::ContentsContainerOutline;
+  ~BraveContentsContainerOutline() override = default;
+
+  // ContentsContainerOutline:
+  void OnViewBoundsChanged(views::View* observed_view) override {
+    // Ignore chromium's mini toolbar path clipping.
+  }
+};
+
+BEGIN_METADATA(BraveContentsContainerOutline)
+END_METADATA
+
+}  // namespace
+
 // static
 BraveContentsContainerView* BraveContentsContainerView::From(
     ContentsContainerView* view) {
@@ -59,8 +81,8 @@ BraveContentsContainerView::BraveContentsContainerView(
     mini_toolbar_ =
         AddChildView(std::make_unique<BraveMultiContentsViewMiniToolbar>(
             browser_view, contents_view_));
-    container_outline_ =
-        AddChildView(std::make_unique<ContentsContainerOutline>(mini_toolbar_));
+    container_outline_ = AddChildView(
+        std::make_unique<BraveContentsContainerOutline>(mini_toolbar_));
   }
 }
 
@@ -68,15 +90,15 @@ BraveContentsContainerView::~BraveContentsContainerView() = default;
 
 void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
                                                         bool is_active,
-                                                        bool show_scrim) {
+                                                        bool is_highlighted) {
+  // We don't use highlighted state as we're always using thicker border
+  // for highlighting active split tab.
   ContentsContainerView::UpdateBorderAndOverlay(is_in_split, is_active,
-                                                show_scrim);
-  gfx::RoundedCornersF contents_corner_radius(GetCornerRadius(false));
-  auto* contents_web_view = contents_view();
-  contents_web_view->layer()->SetRoundedCornerRadius(contents_corner_radius);
-  if (contents_web_view->holder()->native_view()) {
-    contents_web_view->holder()->SetCornerRadii(contents_corner_radius);
-  }
+                                                /*is_highlighted*/ false);
+
+  // Don't draw any borders from outline.
+  container_outline_->SetVisible(false);
+  UpdateBorderRoundedCorners();
 
   if (!is_in_split) {
     return;
@@ -100,6 +122,17 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
             /*should_border_scale*/ true),
         gfx::Insets(kBorderThickness)));
   }
+}
+
+void BraveContentsContainerView::UpdateBorderRoundedCorners() {
+  const gfx::RoundedCornersF contents_corner_radius(GetCornerRadius(false));
+
+  contents_view_->layer()->SetRoundedCornerRadius(contents_corner_radius);
+  contents_view_->holder()->SetCornerRadii(contents_corner_radius);
+  contents_scrim_view_->SetRoundedCorners(contents_corner_radius);
+
+  devtools_web_view_->holder()->SetCornerRadii(contents_corner_radius);
+  devtools_scrim_view_->SetRoundedCorners(contents_corner_radius);
 }
 
 views::ProposedLayout BraveContentsContainerView::CalculateProposedLayout(
