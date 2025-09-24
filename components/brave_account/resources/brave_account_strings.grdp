@@ -95,6 +95,23 @@
     Reset your password
   </message>
 
+  <!-- 'Error' dialog: -->
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_TITLE" translateable="false" desc="Title for the error dialog">
+    Something went wrong
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_DESCRIPTION" translateable="false" desc="Description for the error dialog">
+    We encountered an error while processing your request. Please try again.
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_ACCOUNT_EXISTS" translateable="false" desc="">
+    An account already exists for this email address.
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_EMAIL_DOMAIN_NOT_SUPPORTED" translateable="false" desc="">
+    The domain of this email address is not supported. Please use a different email address.
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_ERROR_DIALOG_TOO_MANY_VERIFICATIONS" translateable="false" desc="">
+    Email verification limit exceeded. Please wait for 30 minutes before trying again.
+  </message>
+
   <!-- Common: -->
   <message name="IDS_BRAVE_ACCOUNT_BACK_BUTTON_LABEL" translateable="false" desc="Label for the back button">
     Go back

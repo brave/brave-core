@@ -150,6 +150,16 @@ class BraveAccountUIBase {
         {"braveAccountAlertMessage", IDS_BRAVE_ACCOUNT_ALERT_MESSAGE},
         {"braveAccountResetPasswordButtonLabel",
          IDS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL},
+        // 'Error' dialog:
+        {"braveAccountErrorDialogTitle", IDS_BRAVE_ACCOUNT_ERROR_DIALOG_TITLE},
+        {"braveAccountErrorDialogDescription",
+         IDS_BRAVE_ACCOUNT_ERROR_DIALOG_DESCRIPTION},
+        {"braveAccountErrorDialogAccountExists",
+         IDS_BRAVE_ACCOUNT_ERROR_DIALOG_ACCOUNT_EXISTS},
+        {"braveAccountErrorDialogEmailDomainNotSupported",
+         IDS_BRAVE_ACCOUNT_ERROR_DIALOG_EMAIL_DOMAIN_NOT_SUPPORTED},
+        {"braveAccountErrorDialogTooManyVerifications",
+         IDS_BRAVE_ACCOUNT_ERROR_DIALOG_TOO_MANY_VERIFICATIONS},
         // Common:
         {"braveAccountBackButtonLabel", IDS_BRAVE_ACCOUNT_BACK_BUTTON_LABEL},
         {"braveAccountEmailInputLabel", IDS_BRAVE_ACCOUNT_EMAIL_INPUT_LABEL},

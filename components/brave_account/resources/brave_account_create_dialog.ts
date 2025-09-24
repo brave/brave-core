@@ -12,7 +12,8 @@ import {
 } from './brave_account_browser_proxy.js'
 import { getCss } from './brave_account_create_dialog.css.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
-import { isEmailValid } from './brave_account_common.js'
+import { Error, isEmailValid } from './brave_account_common.js'
+import { RegisterError } from './brave_account.mojom-webui.js'
 
 // @ts-expect-error
 import { Registration } from 'chrome://resources/brave/opaque_ke.bundle.js'
@@ -188,7 +189,12 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
       )
       this.fire('close-dialog')
     } catch (error) {
-      console.error('Error occurred:', error)
+      if (error && typeof error === 'object') {
+        this.fire('error-occurred', {
+          flow: 'register',
+          details: error as RegisterError,
+        } satisfies Error<'register'>)
+      }
     }
   }
 
