@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
@@ -15,7 +15,6 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -32,6 +31,8 @@ class PolkadotSubstrateRpcUnitTest : public testing::Test {
 
   void SetUp() override {
     RegisterProfilePrefs(prefs_.registry());
+    RegisterLocalStatePrefs(local_state_.registry());
+
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     polkadot_substrate_rpc_ = std::make_unique<PolkadotSubstrateRpc>(
         *network_manager_, shared_url_loader_factory_);
@@ -40,18 +41,18 @@ class PolkadotSubstrateRpcUnitTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  sync_preferences::TestingPrefServiceSyncable local_state_;
+
   network::TestURLLoaderFactory url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<PolkadotSubstrateRpc> polkadot_substrate_rpc_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };
 
 TEST_F(PolkadotSubstrateRpcUnitTest, GetChainName) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitWithFeaturesAndParameters(
       {{features::kBraveWalletPolkadotFeature, {}}}, {});
-
-  base::MockCallback<PolkadotSubstrateRpc::GetChainNameCallback> callback;
 
   url_loader_factory_.ClearResponses();
 
@@ -62,53 +63,61 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetChainName) {
           ->rpc_endpoints.front()
           .spec();
 
-  EXPECT_CALL(callback, Run(std::optional<std::string>("westend"),
-                            std::optional<std::string>(std::nullopt)));
+  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
+
+  base::test::TestFuture<const std::optional<std::string>&,
+                         const std::optional<std::string>&>
+      future;
+
   url_loader_factory_.AddResponse(testnet_url, R"(
     { "jsonrpc": "2.0",
-      "result": "westend",
+      "result": "Westend",
       "id": 1 })");
-  polkadot_substrate_rpc_->GetChainName(chain_id, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());
 
-  EXPECT_CALL(callback,
-              Run(std::optional<std::string>(std::nullopt),
-                  std::optional<std::string>(WalletParsingErrorMessage())));
+  EXPECT_TRUE(future.Wait());
+  EXPECT_EQ(future.Get<0>(), "Westend");
+  EXPECT_EQ(future.Get<1>(), std::nullopt);
+  future.Clear();
+
   url_loader_factory_.AddResponse(testnet_url, R"(
     { "jsonrpc": "2.0",
       "not_result": "westend",
       "id": 1 })");
-  polkadot_substrate_rpc_->GetChainName(chain_id, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());
 
-  EXPECT_CALL(callback,
-              Run(std::optional<std::string>(std::nullopt),
-                  std::optional<std::string>(WalletParsingErrorMessage())));
+  EXPECT_TRUE(future.Wait());
+  EXPECT_EQ(future.Get<0>(), std::nullopt);
+  EXPECT_EQ(future.Get<1>(), WalletParsingErrorMessage());
+  future.Clear();
+
   url_loader_factory_.AddResponse(testnet_url, R"(
     { "id": 1 })");
-  polkadot_substrate_rpc_->GetChainName(chain_id, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());
 
-  EXPECT_CALL(callback, Run(std::optional<std::string>(std::nullopt),
-                            std::optional<std::string>("Method not found")));
+  EXPECT_TRUE(future.Wait());
+  EXPECT_EQ(future.Get<0>(), std::nullopt);
+  EXPECT_EQ(future.Get<1>(), WalletParsingErrorMessage());
+  future.Clear();
+
   url_loader_factory_.AddResponse(testnet_url, R"(
     {"jsonrpc":"2.0","id":1,"error":{"code":-32601,"message":"Method not found"}}
   )");
-  polkadot_substrate_rpc_->GetChainName(chain_id, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());
 
-  EXPECT_CALL(callback,
-              Run(std::optional<std::string>(std::nullopt),
-                  std::optional<std::string>(WalletInternalErrorMessage())));
+  EXPECT_TRUE(future.Wait());
+  EXPECT_EQ(future.Get<0>(), std::nullopt);
+  EXPECT_EQ(future.Get<1>(), "Method not found");
+  future.Clear();
+
   url_loader_factory_.AddResponse(testnet_url, "",
                                   net::HTTP_INTERNAL_SERVER_ERROR);
-  polkadot_substrate_rpc_->GetChainName(chain_id, callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());
+
+  EXPECT_TRUE(future.Wait());
+  EXPECT_EQ(future.Get<0>(), std::nullopt);
+  EXPECT_EQ(future.Get<1>(), WalletInternalErrorMessage());
+  future.Clear();
 }
 
 }  // namespace brave_wallet
