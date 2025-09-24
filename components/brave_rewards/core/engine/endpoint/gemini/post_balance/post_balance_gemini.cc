@@ -34,7 +34,8 @@ mojom::Result PostBalance::ParseBody(const std::string& body,
                                      double* available) {
   DCHECK(available);
 
-  std::optional<base::Value::List> value = base::JSONReader::ReadList(body);
+  std::optional<base::Value::List> value =
+      base::JSONReader::ReadList(body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
