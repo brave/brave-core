@@ -258,10 +258,10 @@
   <message name="IDS_SETTINGS_SPEEDREADER_FEATURE_SUB_LABEL" desc="The sub-label describing the Speedreader feature">
     Enable the Speedreader feature
   </message>
-  <message name="IDS_SETTINGS_SPEEDREADER_ENABLED_FOR_ALL_SITES_LABEL" desc="The label for enabling Speedreader on all sites">
+  <message name="IDS_SETTINGS_SPEEDREADER_ALLOWED_FOR_ALL_READABLE_SITES_LABEL" desc="The label for enabling Speedreader on all sites">
     Automatically use Speedreader when possible
   </message>
-  <message name="IDS_SETTINGS_SPEEDREADER_ENABLED_FOR_ALL_SITES_SUB_LABEL" desc="The sub-label for enabling Speedreader on all sites">
+  <message name="IDS_SETTINGS_SPEEDREADER_ALLOWED_FOR_ALL_READABLE_SITES_SUB_LABEL" desc="The sub-label for enabling Speedreader on all sites">
     Articles automatically load in reader mode, saving you time
   </message>
   <message name="IDS_SETTINGS_DISABLE_CLICKABLE_MUTE_INDICATORS" desc="The text for the settings option for disabling clickable tab mute indicators">

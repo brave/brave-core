@@ -3282,7 +3282,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NoCosmeticFiltersOnSpeedreaderPage) {
   auto* speedreader_service =
       speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
           browser()->profile());
-  speedreader_service->EnableForAllSites(true);
+  speedreader_service->SetAllowedForAllReadableSites(true);
   const GURL url = embedded_test_server()->GetURL(
       "a.com", "/speedreader/article/simple.html");
   NavigateToURL(url);

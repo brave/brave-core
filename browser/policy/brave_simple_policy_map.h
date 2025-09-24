@@ -92,8 +92,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {policy::key::kBraveTalkDisabled, kBraveTalkDisabledByPolicy,
      base::Value::Type::BOOLEAN},
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-    {policy::key::kBraveSpeedreaderEnabled,
-     speedreader::kSpeedreaderPrefFeatureEnabled, base::Value::Type::BOOLEAN},
+    {policy::key::kBraveSpeedreaderEnabled, speedreader::kSpeedreaderEnabled,
+     base::Value::Type::BOOLEAN},
 #endif
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)

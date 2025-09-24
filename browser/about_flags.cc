@@ -145,7 +145,7 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           "Enable SpeedReader",                                            \
           "Enables faster loading of simplified article-style web pages.", \
           kOsDesktop | kOsAndroid,                                         \
-          FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature),            \
+          FEATURE_VALUE_TYPE(speedreader::features::kSpeedreaderFeature),  \
       }))
 
 #define REQUEST_OTR_FEATURE_ENTRIES                                           \

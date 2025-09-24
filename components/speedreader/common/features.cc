@@ -5,7 +5,7 @@
 
 #include "brave/components/speedreader/common/features.h"
 
-namespace speedreader {
+namespace speedreader::features {
 
 BASE_FEATURE(kSpeedreaderFeature,
              "Speedreader",
@@ -23,4 +23,4 @@ const base::FeatureParam<bool> kSpeedreaderDebugView{&kSpeedreaderFeature,
 const base::FeatureParam<bool> kSpeedreaderExplicitPref{&kSpeedreaderFeature,
                                                         "explicit_pref", true};
 
-}  // namespace speedreader
+}  // namespace speedreader::features

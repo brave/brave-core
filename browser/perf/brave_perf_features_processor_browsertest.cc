@@ -62,7 +62,7 @@ class BraveSpeedFeatureProcessorBrowserTest : public InProcessBrowserTest {
     auto* speedreader_service =
         speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
             browser()->profile());
-    return speedreader_service->IsEnabledForAllSites();
+    return speedreader_service->IsAllowedForAllReadableSites();
   }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 

@@ -35,12 +35,12 @@ enum class EnabledSitesMetricValue {
 SpeedreaderMetrics::SpeedreaderMetrics(
     PrefService* local_state,
     HostContentSettingsMap* host_content_settings_map,
-    bool is_enabled_for_all_sites)
+    bool is_allowed_for_all_readable_sites)
     : page_views_storage_(local_state, kSpeedreaderPageViewsStoragePref),
       host_content_settings_map_(host_content_settings_map),
       local_state_(local_state) {
   ReportPageViews();
-  UpdateEnabledSitesMetric(is_enabled_for_all_sites);
+  UpdateEnabledSitesMetric(is_allowed_for_all_readable_sites);
 }
 
 SpeedreaderMetrics::~SpeedreaderMetrics() = default;
@@ -56,10 +56,10 @@ void SpeedreaderMetrics::RecordPageView() {
 }
 
 void SpeedreaderMetrics::UpdateEnabledSitesMetric(
-    bool is_enabled_for_all_sites) {
+    bool is_allowed_for_all_readable_sites) {
   EnabledSitesMetricValue value = EnabledSitesMetricValue::kNone;
 
-  if (is_enabled_for_all_sites) {
+  if (is_allowed_for_all_readable_sites) {
     value = EnabledSitesMetricValue::kAll;
   } else if (host_content_settings_map_) {
     auto settings = host_content_settings_map_->GetSettingsForOneType(

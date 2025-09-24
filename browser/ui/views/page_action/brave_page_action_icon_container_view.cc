@@ -43,7 +43,8 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
   }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+  if (base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature)) {
     if (params.browser) {
       params.types_enabled.insert(
           std::ranges::find(

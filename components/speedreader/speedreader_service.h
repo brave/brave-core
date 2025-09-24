@@ -27,10 +27,6 @@ class WebContents;
 
 namespace speedreader {
 
-namespace features {
-bool IsSpeedreaderEnabled();
-}
-
 // Returns true if Speedreader feature is enabled.
 bool IsSpeedreaderFeatureEnabled(PrefService* prefs);
 
@@ -60,34 +56,33 @@ class SpeedreaderService : public KeyedService {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  // Returns |true| if the Speedreader feature is enabled globally.
-  bool IsFeatureEnabled();
+  // Returns |true| if Speedreader should be allowed for all sites that look
+  // readable. This is just the setting value and additional checks are needed
+  // to determine if the site should be enabled for Speedreader or not
+  bool IsAllowedForAllReadableSites();
+  void SetAllowedForAllReadableSites(bool enabled);
 
-  // Returns |true| if Speedreader is turned on for all sites.
-  bool IsEnabledForAllSites();
+  // Returns |true| if Speedreader should be allowed for the site. This does
+  // not necessarily mean Speedreader is enabled for the site. See
+  // IsAllowedForAllReadableSites() above.
+  bool IsAllowedForSite(const GURL& url);
+  bool IsAllowedForSite(content::WebContents* contents);
 
-  // Returns content setting if the user has explicitally enabled/disabled
-  // Speedreader on the domain.
-  ContentSetting GetEnabledForSiteSetting(const GURL& url);
-  ContentSetting GetEnabledForSiteSetting(content::WebContents* contents);
+  // Speedreader should be explicitly enabled/disabled. A site that is enabled
+  // will always open automatically in Speedreader. A site that is disabled will
+  // never open in Speedreader even if
+  // IsAllowedForAllReadableSites/IsAllowedForSite is true and/or it looks
+  // readable.
+  void SetEnabledForSite(const GURL& url, bool enabled);
+  void SetEnabledForSite(content::WebContents* contents, bool enabled);
 
-  // Returns |true| if IsEnabledForAllSites is true or/and
-  // GetEnabledForSiteSetting is ALLOW.
+  // Returns |true| if Speedreader should be enabled for the site
   bool IsEnabledForSite(const GURL& url);
   bool IsEnabledForSite(content::WebContents* contents);
 
-  // Returns |true| if GetEnabledForSiteSetting is ALLOW.
-  bool IsExplicitlyEnabledForSite(const GURL& url);
-  bool IsExplicitlyEnabledForSite(content::WebContents* contents);
-
-  // Returns |true| if GetEnabledForSiteSetting is BLOCK.
-  bool IsExplicitlyDisabledForSite(const GURL& url);
-  bool IsExplicitlyDisabledForSite(content::WebContents* contents);
-
-  // Allow or deny a site(all sites) from being run through speedreader.
-  void EnableForAllSites(bool enabled);
-  void EnableForSite(const GURL& url, bool enabled);
-  void EnableForSite(content::WebContents* contents, bool enabled);
+  // Returns |true| if Speedreader should be disabled for the site
+  bool IsDisabledForSite(const GURL& url);
+  bool IsDisabledForSite(content::WebContents* contents);
 
   void SetAppearanceSettings(
       const mojom::AppearanceSettings& appearance_settings);
@@ -107,6 +102,11 @@ class SpeedreaderService : public KeyedService {
   SpeedreaderService& operator=(const SpeedreaderService&) = delete;
 
  private:
+  // Returns content setting if the user has explicitally enabled/disabled
+  // Speedreader on the domain.
+  ContentSetting GetSiteSetting(const GURL& url);
+  ContentSetting GetSiteSetting(content::WebContents* contents);
+
   raw_ptr<content::BrowserContext> browser_context_ = nullptr;
   raw_ptr<HostContentSettingsMap> content_rules_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
