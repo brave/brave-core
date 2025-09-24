@@ -59,8 +59,9 @@ bool IsQuerySafeToSearchSuggestions(const std::u16string& query) {
 BraveSearchProvider::~BraveSearchProvider() = default;
 
 void BraveSearchProvider::DoHistoryQuery(bool minimal_changes) {
-  if (!client()->GetPrefs()->GetBoolean(omnibox::kHistorySuggestionsEnabled))
+  if (!client()->GetPrefs()->GetBoolean(omnibox::kHistorySuggestionsEnabled)) {
     return;
+  }
 
   SearchProvider::DoHistoryQuery(minimal_changes);
 }
@@ -70,14 +71,7 @@ bool BraveSearchProvider::IsQueryPotentiallyPrivate() const {
     return true;
   }
 
-  // GetClipboardText() returns after sanitize.
-  const auto clipboard_text = client()->GetClipboardText();
-  const auto input_text = omnibox::SanitizeTextForPaste(input_.text());
-  if (input_text.empty()) {
-    return false;
-  }
-
-  if (input_text == clipboard_text) {
+  if (IsInputPastedFromClipboard()) {
     // We don't want to send username/pwd in clipboard to suggest server
     // accidently.
     VLOG(2) << __func__
@@ -86,10 +80,24 @@ bool BraveSearchProvider::IsQueryPotentiallyPrivate() const {
   }
 
 #if BUILDFLAG(ENABLE_STRICT_QUERY_CHECK_FOR_SEARCH_SUGGESTIONS)
-  if (!IsQuerySafeToSearchSuggestions(input_text)) {
+  if (!IsQuerySafeToSearchSuggestions(
+          omnibox::SanitizeTextForPaste(input_.text()))) {
     return true;
   }
 #endif
 
   return false;
+}
+
+BraveSearchProvider* BraveSearchProvider::AsBraveSearchProvider() {
+  return this;
+}
+
+base::AutoReset<bool> BraveSearchProvider::SetInputIsPastedFromClipboard(
+    bool is_pasted) {
+  return base::AutoReset<bool>(&input_is_pasted_from_clipboard_, is_pasted);
+}
+
+bool BraveSearchProvider::IsInputPastedFromClipboard() const {
+  return input_is_pasted_from_clipboard_;
 }
