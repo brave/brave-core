@@ -33,6 +33,10 @@
 #include "third_party/blink/public/common/navigation/navigation_policy.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
+#if BUILDFLAG(IS_ANDROID)
+#include "ui/android/view_android.h"
+#endif
+
 namespace brave_search {
 
 namespace {
@@ -145,7 +149,12 @@ void BackupResultsServiceImpl::FetchBackupResults(
 
     int random_width = base::RandInt(800, 1920);
     int random_height = base::RandInt(600, 1080);
+#if BUILDFLAG(IS_ANDROID)
+    auto* native_view = web_contents->GetNativeView();
+    native_view->OnSizeChanged(random_width, random_height);
+#else
     web_contents->Resize({random_width, random_height});
+#endif
 
     auto web_preferences = web_contents->GetOrCreateWebPreferences();
     web_preferences.supports_multiple_windows = false;
