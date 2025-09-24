@@ -51,11 +51,11 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
             TRAFFIC_ANNOTATION_FOR_TESTS,
             test_url_loader_factory_.GetSafeWeakWrapper());
     mock_api_request_helper_ = mock_api_request_helper.get();
-    auto crypt_callback = base::BindRepeating(&BraveAccountServiceTest::Crypt,
-                                              base::Unretained(this));
+    auto os_crypt_callback = base::BindRepeating(
+        &BraveAccountServiceTest::OSCrypt, base::Unretained(this));
     brave_account_service_ = base::WrapUnique(new BraveAccountService(
-        &pref_service_, std::move(mock_api_request_helper), crypt_callback,
-        crypt_callback));
+        &pref_service_, std::move(mock_api_request_helper), os_crypt_callback,
+        os_crypt_callback));
   }
 
   void RunTestCase() {
@@ -91,8 +91,9 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
     EXPECT_EQ(future.Take(), test_case.mojo_expected);
   }
 
-  std::string Crypt(const std::string& string) {
-    return CHECK_DEREF(this->GetParam()).fail_cryptography ? "" : string;
+  bool OSCrypt(const std::string& in, std::string* out) {
+    *out = in;
+    return !CHECK_DEREF(this->GetParam()).fail_cryptography;
   }
 
   base::test::TaskEnvironment task_environment_;

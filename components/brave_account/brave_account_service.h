@@ -33,8 +33,8 @@ namespace brave_account {
 
 class BraveAccountService : public KeyedService, public mojom::Authentication {
  public:
-  using CryptoCallback =
-      base::RepeatingCallback<std::string(const std::string&)>;
+  using OSCryptCallback =
+      base::RepeatingCallback<bool(const std::string&, std::string*)>;
 
   BraveAccountService(
       PrefService* pref_service,
@@ -56,8 +56,8 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   BraveAccountService(
       PrefService* pref_service,
       std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper,
-      CryptoCallback encrypt_callback,
-      CryptoCallback decrypt_callback);
+      OSCryptCallback encrypt_callback,
+      OSCryptCallback decrypt_callback);
 
   void RegisterInitialize(const std::string& email,
                           const std::string& blinded_message,
@@ -82,8 +82,8 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   const raw_ptr<PrefService> pref_service_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
-  CryptoCallback encrypt_callback_;
-  CryptoCallback decrypt_callback_;
+  OSCryptCallback encrypt_callback_;
+  OSCryptCallback decrypt_callback_;
   mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
   base::WeakPtrFactory<BraveAccountService> weak_factory_{this};
 };

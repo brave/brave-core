@@ -21,7 +21,10 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
+namespace brave_account {
+
 namespace {
+
 inline constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
     net::DefineNetworkTrafficAnnotation("brave_account_endpoints",
                                         R"(
@@ -50,20 +53,22 @@ inline constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
   }
 )");
 
-std::string Encrypt(const std::string& plain_text) {
+std::string Encrypt(const std::string& plain_text,
+                    BraveAccountService::OSCryptCallback encrypt_callback) {
   if (plain_text.empty()) {
     return std::string();
   }
 
   std::string encrypted;
-  if (!OSCrypt::EncryptString(plain_text, &encrypted)) {
+  if (!encrypt_callback.Run(plain_text, &encrypted)) {
     return std::string();
   }
 
   return base::Base64Encode(encrypted);
 }
 
-std::string Decrypt(const std::string& base64) {
+std::string Decrypt(const std::string& base64,
+                    BraveAccountService::OSCryptCallback decrypt_callback) {
   if (base64.empty()) {
     return std::string();
   }
@@ -74,15 +79,14 @@ std::string Decrypt(const std::string& base64) {
   }
 
   std::string plain_text;
-  if (!OSCrypt::DecryptString(encrypted, &plain_text)) {
+  if (!decrypt_callback.Run(encrypted, &plain_text)) {
     return std::string();
   }
 
   return plain_text;
 }
-}  // namespace
 
-namespace brave_account {
+}  // namespace
 
 using endpoint_client::Client;
 using endpoint_client::WithHeaders;
@@ -97,8 +101,8 @@ BraveAccountService::BraveAccountService(
           std::make_unique<api_request_helper::APIRequestHelper>(
               kTrafficAnnotation,
               std::move(url_loader_factory)),
-          base::BindRepeating(&Encrypt),
-          base::BindRepeating(&Decrypt)) {}
+          base::BindRepeating(&OSCrypt::EncryptString),
+          base::BindRepeating(&OSCrypt::DecryptString)) {}
 
 BraveAccountService::~BraveAccountService() = default;
 
@@ -110,8 +114,8 @@ void BraveAccountService::BindInterface(
 BraveAccountService::BraveAccountService(
     PrefService* pref_service,
     std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper,
-    CryptoCallback encrypt_callback,
-    CryptoCallback decrypt_callback)
+    OSCryptCallback encrypt_callback,
+    OSCryptCallback decrypt_callback)
     : pref_service_(pref_service),
       api_request_helper_(std::move(api_request_helper)),
       encrypt_callback_(std::move(encrypt_callback)),
@@ -146,7 +150,7 @@ void BraveAccountService::RegisterFinalize(
   }
 
   const std::string verification_token =
-      decrypt_callback_.Run(encrypted_verification_token);
+      Decrypt(encrypted_verification_token, decrypt_callback_);
   if (verification_token.empty()) {
     return std::move(callback).Run(
         base::unexpected(mojom::RegisterFailureReason::kFinalizeUnexpected));
@@ -202,7 +206,7 @@ void BraveAccountService::OnRegisterInitialize(
             }
 
             std::string encrypted_verification_token =
-                encrypt_callback_.Run(response->verification_token);
+                Encrypt(response->verification_token, encrypt_callback_);
             if (encrypted_verification_token.empty()) {
               return base::unexpected(
                   mojom::RegisterFailureReason::kInitializeUnexpected);

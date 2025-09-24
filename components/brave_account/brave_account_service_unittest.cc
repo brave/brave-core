@@ -8,6 +8,7 @@
 #include <optional>
 #include <string>
 
+#include "base/base64.h"
 #include "base/functional/callback.h"
 #include "base/no_destructor.h"
 #include "base/types/expected.h"
@@ -222,7 +223,7 @@ const RegisterInitializeTestCase* InitializeSuccess() {
                 return response;
               }(),
           .mojo_expected = mojom::RegisterInitializeResult::New(
-              "verification_token", "serialized_response"),
+              base::Base64Encode("verification_token"), "serialized_response"),
       });
   return kInitializeSuccess.get();
 }
@@ -276,7 +277,8 @@ const RegisterFinalizeTestCase* FinalizeVerificationTokenFailedToDecrypt() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kFinalizeVerificationTokenFailedToDecrypt({
           .test_name = "finalize_verification_token_failed_to_decrypt",
-          .encrypted_verification_token = "encrypted_verification_token",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
           .serialized_record = "serialized_record",
           .fail_cryptography = true,
           .http_status_code = {},   // not used
@@ -291,7 +293,8 @@ const RegisterFinalizeTestCase* FinalizeBadRequest() {
   static const base::NoDestructor<RegisterFinalizeTestCase> kFinalizeBadRequest(
       {
           .test_name = "finalize_bad_request",
-          .encrypted_verification_token = "encrypted_verification_token",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
           .serialized_record = "serialized_record",
           .fail_cryptography = false,
           .http_status_code = net::HTTP_BAD_REQUEST,
@@ -312,7 +315,8 @@ const RegisterFinalizeTestCase* FinalizeUnauthorized() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kFinalizeUnauthorized({
           .test_name = "finalize_unauthorized",
-          .encrypted_verification_token = "encrypted_verification_token",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
           .serialized_record = "serialized_record",
           .fail_cryptography = false,
           .http_status_code = net::HTTP_UNAUTHORIZED,
@@ -332,7 +336,8 @@ const RegisterFinalizeTestCase* FinalizeUnauthorized() {
 const RegisterFinalizeTestCase* FinalizeForbidden() {
   static const base::NoDestructor<RegisterFinalizeTestCase> kFinalizeForbidden({
       .test_name = "finalize_forbidden",
-      .encrypted_verification_token = "encrypted_verification_token",
+      .encrypted_verification_token =
+          base::Base64Encode("encrypted_verification_token"),
       .serialized_record = "serialized_record",
       .fail_cryptography = false,
       .http_status_code = net::HTTP_FORBIDDEN,
@@ -352,7 +357,8 @@ const RegisterFinalizeTestCase* FinalizeForbidden() {
 const RegisterFinalizeTestCase* FinalizeNotFound() {
   static const base::NoDestructor<RegisterFinalizeTestCase> kFinalizeNotFound({
       .test_name = "finalize_not_found",
-      .encrypted_verification_token = "encrypted_verification_token",
+      .encrypted_verification_token =
+          base::Base64Encode("encrypted_verification_token"),
       .serialized_record = "serialized_record",
       .fail_cryptography = false,
       .http_status_code = net::HTTP_NOT_FOUND,
@@ -373,7 +379,8 @@ const RegisterFinalizeTestCase* FinalizeServerError() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kFinalizeServerError({
           .test_name = "finalize_server_error",
-          .encrypted_verification_token = "encrypted_verification_token",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
           .serialized_record = "serialized_record",
           .fail_cryptography = false,
           .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
@@ -393,7 +400,8 @@ const RegisterFinalizeTestCase* FinalizeServerError() {
 const RegisterFinalizeTestCase* FinalizeUnknown() {
   static const base::NoDestructor<RegisterFinalizeTestCase> kFinalizeUnknown({
       .test_name = "finalize_unknown",
-      .encrypted_verification_token = "encrypted_verification_token",
+      .encrypted_verification_token =
+          base::Base64Encode("encrypted_verification_token"),
       .serialized_record = "serialized_record",
       .fail_cryptography = false,
       .http_status_code = net::HTTP_TOO_EARLY,
@@ -413,7 +421,8 @@ const RegisterFinalizeTestCase* FinalizeUnknown() {
 const RegisterFinalizeTestCase* FinalizeSuccess() {
   static const base::NoDestructor<RegisterFinalizeTestCase> kFinalizeSuccess({
       .test_name = "finalize_success",
-      .encrypted_verification_token = "encrypted_verification_token",
+      .encrypted_verification_token =
+          base::Base64Encode("encrypted_verification_token"),
       .serialized_record = "serialized_record",
       .fail_cryptography = false,
       .http_status_code = net::HTTP_OK,
