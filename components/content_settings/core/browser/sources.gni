@@ -39,7 +39,6 @@ if (!is_ios) {
 }
 
 if (enable_psst) {
-  brave_components_content_settings_core_browser_deps += [
-    "//brave/components/psst/common",
-  ]
+  brave_components_content_settings_core_browser_deps +=
+      [ "//brave/components/psst/common" ]
 }
