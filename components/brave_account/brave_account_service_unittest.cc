@@ -27,7 +27,7 @@ struct RegisterInitializeTestCase {
       base::expected<std::optional<endpoints::PasswordInit::Response>,
                      std::optional<endpoints::PasswordInit::Error>>;
   using MojoExpected = base::expected<mojom::RegisterInitializeResultPtr,
-                                      mojom::RegisterFailureReason>;
+                                      mojom::RegisterErrorPtr>;
 
   static void Run(mojom::Authentication& authentication,
                   const RegisterInitializeTestCase& test_case,
@@ -45,10 +45,113 @@ struct RegisterInitializeTestCase {
   MojoExpected mojo_expected;
 };
 
-const RegisterInitializeTestCase* InitializeBadRequest() {
+const RegisterInitializeTestCase* InitializeEmailEmpty() {
   static const base::NoDestructor<RegisterInitializeTestCase>
-      kInitializeBadRequest({
-          .test_name = "initialize_bad_request",
+      kInitializeEmailEmpty({
+          .test_name = "initialize_email_empty",
+          .email = "",
+          .blinded_message = {},    // not used
+          .http_status_code = {},   // not used
+          .fail_cryptography = {},  // not used
+          .endpoint_expected = {},  // not used
+          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
+      });
+  return kInitializeEmailEmpty.get();
+}
+
+const RegisterInitializeTestCase* InitializeBlindedMessageEmpty() {
+  static const base::NoDestructor<RegisterInitializeTestCase>
+      kInitializeBlindedMessageEmpty({
+          .test_name = "initialize_blinded_message_empty",
+          .email = "email",
+          .blinded_message = "",
+          .http_status_code = {},   // not used
+          .fail_cryptography = {},  // not used
+          .endpoint_expected = {},  // not used
+          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
+      });
+  return kInitializeBlindedMessageEmpty.get();
+}
+
+const RegisterInitializeTestCase* InitializeErrorMissingOrFailedToParse() {
+  static const base::NoDestructor<RegisterInitializeTestCase>
+      kInitializeErrorMissingOrFailedToParse({
+          .test_name = "initialize_error_missing_or_failed_to_parse",
+          .email = "email",
+          .blinded_message = "blinded_message",
+          .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+          .fail_cryptography = {},  // not used
+          .endpoint_expected = base::unexpected(std::nullopt),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+      });
+  return kInitializeErrorMissingOrFailedToParse.get();
+}
+
+const RegisterInitializeTestCase* InitializeNewAccountEmailRequired() {
+  static const base::NoDestructor<RegisterInitializeTestCase>
+      kInitializeNewAccountEmailRequired({
+          .test_name = "initialize_new_account_email_required",
+          .email = "email",
+          .blinded_message = "blinded_message",
+          .http_status_code = net::HTTP_BAD_REQUEST,
+          .fail_cryptography = {},  // not used
+          .endpoint_expected = base::unexpected([] {
+            endpoints::PasswordInit::Error error;
+            error.code = 11005;
+            return error;
+          }()),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_BAD_REQUEST,
+              mojom::RegisterErrorCode::kNewAccountEmailRequired)),
+      });
+  return kInitializeNewAccountEmailRequired.get();
+}
+
+const RegisterInitializeTestCase* InitializeIntentNotAllowed() {
+  static const base::NoDestructor<RegisterInitializeTestCase>
+      kInitializeIntentNotAllowed({
+          .test_name = "initialize_intent_not_allowed",
+          .email = "email",
+          .blinded_message = "blinded_message",
+          .http_status_code = net::HTTP_BAD_REQUEST,
+          .fail_cryptography = {},  // not used
+          .endpoint_expected = base::unexpected([] {
+            endpoints::PasswordInit::Error error;
+            error.code = 13003;
+            return error;
+          }()),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_BAD_REQUEST,
+              mojom::RegisterErrorCode::kIntentNotAllowed)),
+      });
+  return kInitializeIntentNotAllowed.get();
+}
+
+const RegisterInitializeTestCase* InitializeTooManyVerifications() {
+  static const base::NoDestructor<RegisterInitializeTestCase>
+      kInitializeTooManyVerifications({
+          .test_name = "initialize_too_many_verifications",
+          .email = "email",
+          .blinded_message = "blinded_message",
+          .http_status_code = net::HTTP_BAD_REQUEST,
+          .fail_cryptography = {},  // not used
+          .endpoint_expected = base::unexpected([] {
+            endpoints::PasswordInit::Error error;
+            error.code = 13001;
+            return error;
+          }()),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_BAD_REQUEST,
+              mojom::RegisterErrorCode::kTooManyVerifications)),
+      });
+  return kInitializeTooManyVerifications.get();
+}
+
+const RegisterInitializeTestCase* InitializeAccountExists() {
+  static const base::NoDestructor<RegisterInitializeTestCase>
+      kInitializeAccountExists({
+          .test_name = "initialize_account_exists",
           .email = "email",
           .blinded_message = "blinded_message",
           .http_status_code = net::HTTP_BAD_REQUEST,
@@ -56,14 +159,32 @@ const RegisterInitializeTestCase* InitializeBadRequest() {
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordInit::Error error;
             error.code = 13004;
-            error.error = "account already exists";
-            error.status = net::HTTP_BAD_REQUEST;
             return error;
           }()),
-          .mojo_expected = base::unexpected(
-              mojom::RegisterFailureReason::kInitializeBadRequest),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_BAD_REQUEST, mojom::RegisterErrorCode::kAccountExists)),
       });
-  return kInitializeBadRequest.get();
+  return kInitializeAccountExists.get();
+}
+
+const RegisterInitializeTestCase* InitializeEmailDomainNotSupported() {
+  static const base::NoDestructor<RegisterInitializeTestCase>
+      kInitializeEmailDomainNotSupported({
+          .test_name = "initialize_email_domain_not_supported",
+          .email = "email",
+          .blinded_message = "blinded_message",
+          .http_status_code = net::HTTP_BAD_REQUEST,
+          .fail_cryptography = {},  // not used
+          .endpoint_expected = base::unexpected([] {
+            endpoints::PasswordInit::Error error;
+            error.code = 13006;
+            return error;
+          }()),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_BAD_REQUEST,
+              mojom::RegisterErrorCode::kEmailDomainNotSupported)),
+      });
+  return kInitializeEmailDomainNotSupported.get();
 }
 
 const RegisterInitializeTestCase* InitializeUnauthorized() {
@@ -77,12 +198,10 @@ const RegisterInitializeTestCase* InitializeUnauthorized() {
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordInit::Error error;
             error.code = 0;
-            error.error = "Unauthorized";
-            error.status = net::HTTP_UNAUTHORIZED;
             return error;
           }()),
-          .mojo_expected = base::unexpected(
-              mojom::RegisterFailureReason::kInitializeUnauthorized),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_UNAUTHORIZED, mojom::RegisterErrorCode::kZero)),
       });
   return kInitializeUnauthorized.get();
 }
@@ -98,12 +217,11 @@ const RegisterInitializeTestCase* InitializeServerError() {
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordInit::Error error;
             error.code = 0;
-            error.error = "Internal Server Error";
-            error.status = net::HTTP_INTERNAL_SERVER_ERROR;
             return error;
           }()),
           .mojo_expected = base::unexpected(
-              mojom::RegisterFailureReason::kInitializeServerError),
+              mojom::RegisterError::New(net::HTTP_INTERNAL_SERVER_ERROR,
+                                        mojom::RegisterErrorCode::kZero)),
       });
   return kInitializeServerError.get();
 }
@@ -118,30 +236,28 @@ const RegisterInitializeTestCase* InitializeUnknown() {
           .fail_cryptography = {},  // not used
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordInit::Error error;
-            error.code = 0;
-            error.error = "Too Early";
-            error.status = net::HTTP_TOO_EARLY;
+            error.code = 42;
             return error;
           }()),
           .mojo_expected = base::unexpected(
-              mojom::RegisterFailureReason::kInitializeUnknown),
+              mojom::RegisterError::New(net::HTTP_TOO_EARLY, std::nullopt)),
       });
   return kInitializeUnknown.get();
 }
 
-const RegisterInitializeTestCase* InitializeResponseFailedToParse() {
+const RegisterInitializeTestCase* InitializeResponseMissingOrFailedToParse() {
   static const base::NoDestructor<RegisterInitializeTestCase>
-      kInitializeResponseFailedToParse({
-          .test_name = "initialize_response_failed_to_parse",
+      kInitializeResponseMissingOrFailedToParse({
+          .test_name = "initialize_response_missing_or_failed_to_parse",
           .email = "email",
           .blinded_message = "blinded_message",
           .http_status_code = net::HTTP_OK,
           .fail_cryptography = {},  // not used
           .endpoint_expected = base::ok(std::nullopt),
           .mojo_expected = base::unexpected(
-              mojom::RegisterFailureReason::kInitializeUnexpected),
+              mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
       });
-  return kInitializeResponseFailedToParse.get();
+  return kInitializeResponseMissingOrFailedToParse.get();
 }
 
 const RegisterInitializeTestCase* InitializeVerificationTokenEmpty() {
@@ -160,7 +276,7 @@ const RegisterInitializeTestCase* InitializeVerificationTokenEmpty() {
                 return response;
               }(),
           .mojo_expected = base::unexpected(
-              mojom::RegisterFailureReason::kInitializeUnexpected),
+              mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
       });
   return kInitializeVerificationTokenEmpty.get();
 }
@@ -181,7 +297,7 @@ const RegisterInitializeTestCase* InitializeSerializedResponseEmpty() {
                 return response;
               }(),
           .mojo_expected = base::unexpected(
-              mojom::RegisterFailureReason::kInitializeUnexpected),
+              mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
       });
   return kInitializeSerializedResponseEmpty.get();
 }
@@ -201,8 +317,9 @@ const RegisterInitializeTestCase* InitializeVerificationTokenFailedToEncrypt() {
                 response.serialized_response = "serialized_response";
                 return response;
               }(),
-          .mojo_expected = base::unexpected(
-              mojom::RegisterFailureReason::kInitializeUnexpected),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              std::nullopt,
+              mojom::RegisterErrorCode::kVerificationTokenEncryptionFailed)),
       });
   return kInitializeVerificationTokenFailedToEncrypt.get();
 }
@@ -238,11 +355,18 @@ TEST_P(RegisterInitializeTest, MapsEndpointExpectedToMojoExpected) {
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     RegisterInitializeTest,
-    testing::Values(InitializeBadRequest(),
+    testing::Values(InitializeEmailEmpty(),
+                    InitializeBlindedMessageEmpty(),
+                    InitializeErrorMissingOrFailedToParse(),
+                    InitializeNewAccountEmailRequired(),
+                    InitializeIntentNotAllowed(),
+                    InitializeTooManyVerifications(),
+                    InitializeAccountExists(),
+                    InitializeEmailDomainNotSupported(),
                     InitializeUnauthorized(),
                     InitializeServerError(),
                     InitializeUnknown(),
-                    InitializeResponseFailedToParse(),
+                    InitializeResponseMissingOrFailedToParse(),
                     InitializeVerificationTokenEmpty(),
                     InitializeSerializedResponseEmpty(),
                     InitializeVerificationTokenFailedToEncrypt(),
@@ -253,8 +377,8 @@ struct RegisterFinalizeTestCase {
   using EndpointExpected =
       base::expected<std::optional<endpoints::PasswordFinalize::Response>,
                      std::optional<endpoints::PasswordFinalize::Error>>;
-  using MojoExpected = base::expected<mojom::RegisterFinalizeResultPtr,
-                                      mojom::RegisterFailureReason>;
+  using MojoExpected =
+      base::expected<mojom::RegisterFinalizeResultPtr, mojom::RegisterErrorPtr>;
 
   static void Run(mojom::Authentication& authentication,
                   const RegisterFinalizeTestCase& test_case,
@@ -273,6 +397,35 @@ struct RegisterFinalizeTestCase {
   MojoExpected mojo_expected;
 };
 
+const RegisterFinalizeTestCase* FinalizeEncryptedVerificationTokenEmpty() {
+  static const base::NoDestructor<RegisterFinalizeTestCase>
+      kFinalizeEncryptedVerificationTokenEmpty({
+          .test_name = "finalize_encrypted_verification_token_empty",
+          .encrypted_verification_token = "",
+          .serialized_record = {},  // not used
+          .fail_cryptography = {},  // not used
+          .http_status_code = {},   // not used
+          .endpoint_expected = {},  // not used
+          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
+      });
+  return kFinalizeEncryptedVerificationTokenEmpty.get();
+}
+
+const RegisterFinalizeTestCase* FinalizeSerializedRecordEmpty() {
+  static const base::NoDestructor<RegisterFinalizeTestCase>
+      kFinalizeSerializedRecordEmpty({
+          .test_name = "finalize_serialized_record_empty",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .serialized_record = "",
+          .fail_cryptography = {},  // not used
+          .http_status_code = {},   // not used
+          .endpoint_expected = {},  // not used
+          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
+      });
+  return kFinalizeSerializedRecordEmpty.get();
+}
+
 const RegisterFinalizeTestCase* FinalizeVerificationTokenFailedToDecrypt() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kFinalizeVerificationTokenFailedToDecrypt({
@@ -283,16 +436,54 @@ const RegisterFinalizeTestCase* FinalizeVerificationTokenFailedToDecrypt() {
           .fail_cryptography = true,
           .http_status_code = {},   // not used
           .endpoint_expected = {},  // not used
-          .mojo_expected = base::unexpected(
-              mojom::RegisterFailureReason::kFinalizeUnexpected),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              std::nullopt,
+              mojom::RegisterErrorCode::kVerificationTokenDecryptionFailed)),
       });
   return kFinalizeVerificationTokenFailedToDecrypt.get();
 }
 
-const RegisterFinalizeTestCase* FinalizeBadRequest() {
-  static const base::NoDestructor<RegisterFinalizeTestCase> kFinalizeBadRequest(
-      {
-          .test_name = "finalize_bad_request",
+const RegisterFinalizeTestCase* FinalizeErrorMissingOrFailedToParse() {
+  static const base::NoDestructor<RegisterFinalizeTestCase>
+      kFinalizeErrorMissingOrFailedToParse({
+          .test_name = "finalize_error_missing_or_failed_to_parse",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .serialized_record = "serialized_record",
+          .fail_cryptography = false,
+          .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+          .endpoint_expected = base::unexpected(std::nullopt),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+      });
+  return kFinalizeErrorMissingOrFailedToParse.get();
+}
+
+const RegisterFinalizeTestCase* FinalizeInterimPasswordStateNotFound() {
+  static const base::NoDestructor<RegisterFinalizeTestCase>
+      kFinalizeInterimPasswordStateNotFound({
+          .test_name = "finalize_interim_password_state_not_found",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .serialized_record = "serialized_record",
+          .fail_cryptography = false,
+          .http_status_code = net::HTTP_NOT_FOUND,
+          .endpoint_expected = base::unexpected([] {
+            endpoints::PasswordFinalize::Error error;
+            error.code = 14001;
+            return error;
+          }()),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_NOT_FOUND,
+              mojom::RegisterErrorCode::kInterimPasswordStateNotFound)),
+      });
+  return kFinalizeInterimPasswordStateNotFound.get();
+}
+
+const RegisterFinalizeTestCase* FinalizeInterimPasswordStateExpired() {
+  static const base::NoDestructor<RegisterFinalizeTestCase>
+      kFinalizeInterimPasswordStateExpired({
+          .test_name = "finalize_interim_password_state_expired",
           .encrypted_verification_token =
               base::Base64Encode("encrypted_verification_token"),
           .serialized_record = "serialized_record",
@@ -301,14 +492,13 @@ const RegisterFinalizeTestCase* FinalizeBadRequest() {
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordFinalize::Error error;
             error.code = 14002;
-            error.error = "interim password state has expired";
-            error.status = net::HTTP_BAD_REQUEST;
             return error;
           }()),
-          .mojo_expected = base::unexpected(
-              mojom::RegisterFailureReason::kFinalizeBadRequest),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_BAD_REQUEST,
+              mojom::RegisterErrorCode::kInterimPasswordStateExpired)),
       });
-  return kFinalizeBadRequest.get();
+  return kFinalizeInterimPasswordStateExpired.get();
 }
 
 const RegisterFinalizeTestCase* FinalizeUnauthorized() {
@@ -323,12 +513,10 @@ const RegisterFinalizeTestCase* FinalizeUnauthorized() {
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordFinalize::Error error;
             error.code = 0;
-            error.error = "Unauthorized";
-            error.status = net::HTTP_UNAUTHORIZED;
             return error;
           }()),
-          .mojo_expected = base::unexpected(
-              mojom::RegisterFailureReason::kFinalizeUnauthorized),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_UNAUTHORIZED, mojom::RegisterErrorCode::kZero)),
       });
   return kFinalizeUnauthorized.get();
 }
@@ -344,35 +532,12 @@ const RegisterFinalizeTestCase* FinalizeForbidden() {
       .endpoint_expected = base::unexpected([] {
         endpoints::PasswordFinalize::Error error;
         error.code = 0;
-        error.error = "Forbidden";
-        error.status = net::HTTP_FORBIDDEN;
         return error;
       }()),
-      .mojo_expected =
-          base::unexpected(mojom::RegisterFailureReason::kFinalizeForbidden),
+      .mojo_expected = base::unexpected(mojom::RegisterError::New(
+          net::HTTP_FORBIDDEN, mojom::RegisterErrorCode::kZero)),
   });
   return kFinalizeForbidden.get();
-}
-
-const RegisterFinalizeTestCase* FinalizeNotFound() {
-  static const base::NoDestructor<RegisterFinalizeTestCase> kFinalizeNotFound({
-      .test_name = "finalize_not_found",
-      .encrypted_verification_token =
-          base::Base64Encode("encrypted_verification_token"),
-      .serialized_record = "serialized_record",
-      .fail_cryptography = false,
-      .http_status_code = net::HTTP_NOT_FOUND,
-      .endpoint_expected = base::unexpected([] {
-        endpoints::PasswordFinalize::Error error;
-        error.code = 14001;
-        error.error = "interim password state not found";
-        error.status = net::HTTP_NOT_FOUND;
-        return error;
-      }()),
-      .mojo_expected =
-          base::unexpected(mojom::RegisterFailureReason::kFinalizeNotFound),
-  });
-  return kFinalizeNotFound.get();
 }
 
 const RegisterFinalizeTestCase* FinalizeServerError() {
@@ -387,12 +552,11 @@ const RegisterFinalizeTestCase* FinalizeServerError() {
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordFinalize::Error error;
             error.code = 0;
-            error.error = "Internal Server Error";
-            error.status = net::HTTP_INTERNAL_SERVER_ERROR;
             return error;
           }()),
           .mojo_expected = base::unexpected(
-              mojom::RegisterFailureReason::kFinalizeServerError),
+              mojom::RegisterError::New(net::HTTP_INTERNAL_SERVER_ERROR,
+                                        mojom::RegisterErrorCode::kZero)),
       });
   return kFinalizeServerError.get();
 }
@@ -407,13 +571,11 @@ const RegisterFinalizeTestCase* FinalizeUnknown() {
       .http_status_code = net::HTTP_TOO_EARLY,
       .endpoint_expected = base::unexpected([] {
         endpoints::PasswordFinalize::Error error;
-        error.code = 0;
-        error.error = "Too Early";
-        error.status = net::HTTP_TOO_EARLY;
+        error.code = 42;
         return error;
       }()),
-      .mojo_expected =
-          base::unexpected(mojom::RegisterFailureReason::kFinalizeUnknown),
+      .mojo_expected = base::unexpected(
+          mojom::RegisterError::New(net::HTTP_TOO_EARLY, std::nullopt)),
   });
   return kFinalizeUnknown.get();
 }
@@ -447,11 +609,14 @@ TEST_P(RegisterFinalizeTest, MapsEndpointExpectedToMojoExpected) {
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     RegisterFinalizeTest,
-    testing::Values(FinalizeVerificationTokenFailedToDecrypt(),
-                    FinalizeBadRequest(),
+    testing::Values(FinalizeEncryptedVerificationTokenEmpty(),
+                    FinalizeSerializedRecordEmpty(),
+                    FinalizeVerificationTokenFailedToDecrypt(),
+                    FinalizeErrorMissingOrFailedToParse(),
+                    FinalizeInterimPasswordStateNotFound(),
+                    FinalizeInterimPasswordStateExpired(),
                     FinalizeUnauthorized(),
                     FinalizeForbidden(),
-                    FinalizeNotFound(),
                     FinalizeServerError(),
                     FinalizeUnknown(),
                     FinalizeSuccess()),

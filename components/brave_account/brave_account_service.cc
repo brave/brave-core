@@ -17,7 +17,6 @@
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "net/http/http_request_headers.h"
-#include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -90,6 +89,7 @@ std::string Decrypt(const std::string& base64,
 
 using endpoint_client::Client;
 using endpoint_client::WithHeaders;
+using endpoints::Error;
 using endpoints::PasswordFinalize;
 using endpoints::PasswordInit;
 
@@ -127,7 +127,7 @@ void BraveAccountService::RegisterInitialize(
     RegisterInitializeCallback callback) {
   if (email.empty() || blinded_message.empty()) {
     return std::move(callback).Run(
-        base::unexpected(mojom::RegisterFailureReason::kInitializeUnexpected));
+        base::unexpected(mojom::RegisterError::New()));
   }
 
   PasswordInit::Request request;
@@ -146,14 +146,15 @@ void BraveAccountService::RegisterFinalize(
     RegisterFinalizeCallback callback) {
   if (encrypted_verification_token.empty() || serialized_record.empty()) {
     return std::move(callback).Run(
-        base::unexpected(mojom::RegisterFailureReason::kFinalizeUnexpected));
+        base::unexpected(mojom::RegisterError::New()));
   }
 
   const std::string verification_token =
       Decrypt(encrypted_verification_token, decrypt_callback_);
   if (verification_token.empty()) {
-    return std::move(callback).Run(
-        base::unexpected(mojom::RegisterFailureReason::kFinalizeUnexpected));
+    return std::move(callback).Run(base::unexpected(mojom::RegisterError::New(
+        std::nullopt,
+        mojom::RegisterErrorCode::kVerificationTokenDecryptionFailed)));
   }
 
   WithHeaders<PasswordFinalize::Request> request;
@@ -174,42 +175,34 @@ void BraveAccountService::OnRegisterInitialize(
                    std::optional<PasswordInit::Error>> reply) {
   auto result =
       std::move(reply)
-          // expected<optional<Response>, [optional<Error>      ]> ==>
-          // expected<optional<Response>, [RegisterFailureReason]>
+          // expected<optional<Response>, [optional<Error>]> ==>
+          // expected<optional<Response>, [RegisterError  ]>
           .transform_error([&](auto error) {
-            switch (response_code) {
-              case net::HTTP_BAD_REQUEST:  // 400
-                return mojom::RegisterFailureReason::kInitializeBadRequest;
-              case net::HTTP_UNAUTHORIZED:  // 401
-                return mojom::RegisterFailureReason::kInitializeUnauthorized;
-              default:
-                return response_code / 100 == 5  // 5xx
-                           ? mojom::RegisterFailureReason::
-                                 kInitializeServerError
-                           : mojom::RegisterFailureReason::kInitializeUnknown;
-            }
+            return mojom::RegisterError::New(response_code,
+                                             TransformError(std::move(error)));
           })
-          // expected<[optional<Response>         ], RegisterFailureReason> ==>
-          // expected<[RegisterInitializeResultPtr], RegisterFailureReason>
+          // expected<[optional<Response>         ], RegisterError> ==>
+          // expected<[RegisterInitializeResultPtr], RegisterError>
           .and_then([&](auto response)
                         -> base::expected<mojom::RegisterInitializeResultPtr,
-                                          mojom::RegisterFailureReason> {
+                                          mojom::RegisterErrorPtr> {
             if (!response) {
               return base::unexpected(
-                  mojom::RegisterFailureReason::kInitializeUnexpected);
+                  mojom::RegisterError::New(response_code, std::nullopt));
             }
 
             if (response->verification_token.empty() ||
                 response->serialized_response.empty()) {
               return base::unexpected(
-                  mojom::RegisterFailureReason::kInitializeUnexpected);
+                  mojom::RegisterError::New(response_code, std::nullopt));
             }
 
             std::string encrypted_verification_token =
                 Encrypt(response->verification_token, encrypt_callback_);
             if (encrypted_verification_token.empty()) {
-              return base::unexpected(
-                  mojom::RegisterFailureReason::kInitializeUnexpected);
+              return base::unexpected(mojom::RegisterError::New(
+                  std::nullopt, mojom::RegisterErrorCode::
+                                    kVerificationTokenEncryptionFailed));
             }
 
             return mojom::RegisterInitializeResult::New(
@@ -228,29 +221,17 @@ void BraveAccountService::OnRegisterFinalize(
                    std::optional<PasswordFinalize::Error>> reply) {
   auto result =
       std::move(reply)
-          // expected<optional<Response>, [optional<Error>      ]> ==>
-          // expected<optional<Response>, [RegisterFailureReason]>
+          // expected<optional<Response>, [optional<Error>]> ==>
+          // expected<optional<Response>, [RegisterError  ]>
           .transform_error([&](auto error) {
-            switch (response_code) {
-              case net::HTTP_BAD_REQUEST:  // 400
-                return mojom::RegisterFailureReason::kFinalizeBadRequest;
-              case net::HTTP_UNAUTHORIZED:  // 401
-                return mojom::RegisterFailureReason::kFinalizeUnauthorized;
-              case net::HTTP_FORBIDDEN:  // 403
-                return mojom::RegisterFailureReason::kFinalizeForbidden;
-              case net::HTTP_NOT_FOUND:  // 404
-                return mojom::RegisterFailureReason::kFinalizeNotFound;
-              default:
-                return response_code / 100 == 5  // 5xx
-                           ? mojom::RegisterFailureReason::kFinalizeServerError
-                           : mojom::RegisterFailureReason::kFinalizeUnknown;
-            }
+            return mojom::RegisterError::New(response_code,
+                                             TransformError(std::move(error)));
           })
-          // expected<[optional<Response>       ], RegisterFailureReason> ==>
-          // expected<[RegisterFinalizeResultPtr], RegisterFailureReason>
+          // expected<[optional<Response>       ], RegisterError> ==>
+          // expected<[RegisterFinalizeResultPtr], RegisterError>
           .and_then([&](auto response)
                         -> base::expected<mojom::RegisterFinalizeResultPtr,
-                                          mojom::RegisterFailureReason> {
+                                          mojom::RegisterErrorPtr> {
             pref_service_->SetString(prefs::kVerificationToken,
                                      encrypted_verification_token);
 
@@ -258,6 +239,17 @@ void BraveAccountService::OnRegisterFinalize(
           });
 
   std::move(callback).Run(std::move(result));
+}
+
+std::optional<mojom::RegisterErrorCode> BraveAccountService::TransformError(
+    std::optional<Error> error) {
+  if (!error) {
+    return std::nullopt;
+  }
+
+  const auto error_code = static_cast<mojom::RegisterErrorCode>(error->code);
+  return mojom::IsKnownEnumValue(error_code) ? std::optional(error_code)
+                                             : std::nullopt;
 }
 
 }  // namespace brave_account

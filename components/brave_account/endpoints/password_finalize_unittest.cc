@@ -63,12 +63,8 @@ const PasswordFinalizeTestCase* ApplicationJsonError() {
                              .reply = base::unexpected([] {
                                PasswordFinalize::Error error;
                                error.code = 14002;
-                               error.error =
-                                   "interim password state has expired";
-                               error.status = 400;
                                return error;
                              }())});
-
   return kApplicationJsonError.get();
 }
 
@@ -82,7 +78,6 @@ const PasswordFinalizeTestCase* NonApplicationJsonError() {
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
            .raw_reply = "non-application/json error",
            .reply = base::unexpected(std::nullopt)});
-
   return kNonApplicationJsonError.get();
 }
 
@@ -99,6 +94,6 @@ INSTANTIATE_TEST_SUITE_P(PasswordFinalizeTestCases,
                          testing::Values(Success(),
                                          ApplicationJsonError(),
                                          NonApplicationJsonError()),
-                         PasswordFinalizeTest::NameGenerator);
+                         PasswordFinalizeTest::kNameGenerator);
 
 }  // namespace brave_account::endpoints
