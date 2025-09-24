@@ -101,7 +101,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetChainName) {
   future.Clear();
 
   url_loader_factory_.AddResponse(testnet_url, R"(
-    {"jsonrpc":"2.0","id":1,"error":{"code":-32601,"message":"Method not found"}}
+    {"jsonrpc":"2.0",
+     "id":1,
+     "error":{"code":-32601,"message":"Method not found"}}
   )");
   polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());
 
