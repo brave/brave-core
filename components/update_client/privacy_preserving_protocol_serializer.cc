@@ -6,6 +6,7 @@
 #include "brave/components/update_client/privacy_preserving_protocol_serializer.h"
 
 #include <string>
+#include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -58,7 +59,7 @@ std::string PrivacyPreservingProtocolSerializer::Serialize(
     }
   }
 
-  return base::WriteJson(*root).value_or(upstream_result);
+  return base::WriteJson(*root).value_or(std::move(upstream_result));
 }
 
 }  // namespace update_client
