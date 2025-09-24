@@ -24,6 +24,8 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/gfx/codec/png_codec.h"
+#include "url/url_util.h"
 
 namespace {
 constexpr char kValidImage[] = "ad_banner.png";
@@ -39,6 +41,13 @@ std::string LoadTestFile(const std::string& name) {
   base::ReadFileToString(path, &contents);
   return contents;
 }
+
+std::string EncodeQuery(const std::string& query) {
+  url::RawCanonOutputT<char> buffer;
+  url::EncodeURIComponent(query, &buffer);
+  return std::string(buffer.data(), buffer.length());
+}
+
 }  // namespace
 
 class BraveSanitizedImageSourceTest : public testing::Test {
@@ -52,10 +61,15 @@ class BraveSanitizedImageSourceTest : public testing::Test {
   }
   ~BraveSanitizedImageSourceTest() override = default;
 
-  scoped_refptr<base::RefCountedMemory> Decode(const GURL& url,
-                                               const std::string& filename) {
+  scoped_refptr<base::RefCountedMemory> Decode(
+      const GURL& url,
+      const std::string& filename,
+      const std::string& target_size = "") {
     std::string data = LoadTestFile(filename);
-    GURL image_url = GURL("chrome://brave-image/?" + url.spec());
+    GURL image_url = GURL(
+        "chrome://brave-image/?url=" + EncodeQuery(url.spec()) +
+        (target_size.empty() ? ""
+                             : "&target_size=" + EncodeQuery(target_size)));
     test_url_loader_factory_.AddResponse(url.spec(), std::move(data));
     base::RunLoop run_loop;
     scoped_refptr<base::RefCountedMemory> result;
@@ -83,6 +97,19 @@ class BraveSanitizedImageSourceTest : public testing::Test {
 TEST_F(BraveSanitizedImageSourceTest, ImageIsDecoded) {
   auto url = GURL("https://example.com/image.png");
   EXPECT_TRUE(Decode(url, kValidImage));
+}
+
+TEST_F(BraveSanitizedImageSourceTest, ImageIsDecodedAndResized) {
+  // original size is 204x212
+  auto url = GURL("https://example.com/image.png");
+  auto result = Decode(url, kValidImage, "10x20");
+  EXPECT_TRUE(result);
+  // Check the result is PNG resized to 19x20 (to be able cut into 10x20)
+  auto bitmap = gfx::PNGCodec::Decode(base::as_byte_span(*result),
+                                      gfx::PNGCodec::FORMAT_BGRA);
+  ASSERT_TRUE(bitmap);
+  EXPECT_EQ(bitmap->width, 19);
+  EXPECT_EQ(bitmap->height, 20);
 }
 
 TEST_F(BraveSanitizedImageSourceTest, PaddedImageIsDecoded) {

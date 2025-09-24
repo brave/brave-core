@@ -11,6 +11,7 @@
 
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/task_traits.h"
@@ -25,9 +26,7 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/skia/include/core/SkBitmap.h"
-#include "ui/base/metadata/base_type_conversion.h"
 #include "ui/gfx/codec/png_codec.h"
-#include "ui/gfx/codec/webp_codec.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia_operations.h"
@@ -163,10 +162,16 @@ void BraveSanitizedImageSource::StartDataRequest(
     auto target_size_it = params.find(kTargetSizeKey);
 
     if (target_size_it != params.end()) {
-      auto target_size = ui::metadata::TypeConverter<gfx::Size>::FromString(
-          base::UTF8ToUTF16(target_size_it->second));
-      if (target_size) {
-        request_attributes.target_size = *target_size;
+      // Parse target_size as "WxH", i.e. "100x200".
+      const auto& target_str = std::string_view(target_size_it->second);
+      const auto values = base::SplitStringPiece(
+          target_str, "x", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      if (values.size() == 2) {
+        unsigned int width, height;
+        if (base::StringToUint(values[0], &width) &&
+            base::StringToUint(values[1], &height)) {
+          request_attributes.target_size = gfx::Size(width, height);
+        }
       }
     }
   }
