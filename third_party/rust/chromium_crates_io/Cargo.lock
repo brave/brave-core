@@ -1896,8 +1896,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "serde"
-version = "1.0.219"
+version = "1.0.225"
 dependencies = [
+ "serde_core",
  "serde_derive",
 ]
 
@@ -1910,8 +1911,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "serde_core"
+version = "1.0.225"
+dependencies = [
+ "serde_derive",
+]
+
+[[package]]
 name = "serde_derive"
-version = "1.0.219"
+version = "1.0.225"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1920,12 +1928,13 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.143"
+version = "1.0.145"
 dependencies = [
  "itoa",
  "memchr",
  "ryu",
  "serde",
+ "serde_core",
 ]
 
 [[package]]
