@@ -1,6 +1,9 @@
 import 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import {
+  BraveWallet,
+} from '../constants/types'
 import { getAPIProxy } from '../common/async/bridge'
-// import getWalletPageApiProxy from '../page/wallet_page_api_proxy'
+import { AccountId } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
 
 // @ts-expect-error
 import { get_signature } from 'chrome-untrusted://resources/brave/polkadot_bridge_wasm.bundle.js'
@@ -23,8 +26,17 @@ window.addEventListener('message', (msgEvent) => {
     msgEvent.source.postMessage(get_signature(), { targetOrigin: msgEvent.origin });
 
     (async () => {
+      let account: AccountId = {
+        coin: BraveWallet.CoinType.DOT,
+        keyringId: BraveWallet.KeyringId.kPolkadotTestnet,
+        kind: 0,
+        address: '',
+        accountIndex: 0,
+        uniqueKey: `${BraveWallet.CoinType.DOT}_${BraveWallet.KeyringId.kPolkadotTestnet}_0_0`
+      };
+
       const polkadotWalletService = apiProxy.polkadotWalletService;
-      const network = await polkadotWalletService.getNetworkName();
+      const network = await polkadotWalletService.getNetworkName(account);
       console.log('retrieved the network!');
       console.log(network);
     })();
