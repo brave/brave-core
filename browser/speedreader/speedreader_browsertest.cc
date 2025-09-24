@@ -33,6 +33,7 @@
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
+#include "brave/components/speedreader/speedreader_pref_names.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "chrome/browser/profiles/profile.h"
@@ -250,12 +251,16 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
         mouse_event);
   }
 
-  void ToggleSpeedreader() {
-    speedreader_service()->SetAllowedForAllReadableSites(
-        !speedreader_service()->IsAllowedForAllReadableSites());
+  void DisableSpeedreader() {
+    browser()->profile()->GetPrefs()->SetBoolean(
+        speedreader::kSpeedreaderEnabled, false);
   }
 
-  void DisableSpeedreader() {
+  void EnableSpeedreaderAllowedForAllSites() {
+    speedreader_service()->SetAllowedForAllReadableSites(true);
+  }
+
+  void DisableSpeedreaderForAllSites() {
     speedreader_service()->SetAllowedForAllReadableSites(false);
   }
 
@@ -282,7 +287,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, PRE_RestoreSpeedreaderPage) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
@@ -297,7 +302,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RestoreSpeedreaderPage) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, NavigationNostickTest) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageSimple);
   EXPECT_FALSE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
@@ -314,7 +319,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, NavigationNostickTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable);
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
@@ -347,7 +352,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
           .ExtractInt();
   EXPECT_LT(83000, first_load_page_length);
 
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   EXPECT_TRUE(speedreader_service()->IsAllowedForAllReadableSites());
 
   content::WebContentsConsoleObserver console_observer(ActiveWebContents());
@@ -400,7 +405,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
 
   EXPECT_TRUE(console_observer.messages().empty());
 
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
 
   NavigateToPageSynchronously(kTestPageReadable);
@@ -428,7 +433,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Redirect) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
 
   const auto redirect_url = https_server_.GetURL(
       kTestHost, "/speedreader/rewriter/jsonld_shortest_desc.html");
@@ -519,6 +524,20 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEncoding) {
                     .ExtractInt());
 }
 
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SpeedreaderPrefDisabled) {
+  DisableSpeedreader();
+  NavigateToPageSynchronously(kTestPageReadable);
+
+  EXPECT_FALSE(GetReaderButton()->GetVisible());
+  EXPECT_FALSE(speedreader::DistillStates::IsDistillable(
+      tab_helper()->PageDistillState()));
+  EnableSpeedreaderAllowedForAllSites();
+  WaitDistilled();
+  EXPECT_FALSE(GetReaderButton()->GetVisible());
+  EXPECT_FALSE(speedreader::DistillStates::IsDistilled(
+      tab_helper()->PageDistillState()));
+}
+
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreaderA) {
   EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
   NavigateToPageSynchronously(kTestPageReadable);
@@ -526,12 +545,12 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreaderA) {
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
       tab_helper()->PageDistillState()));
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   WaitDistilled();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
-  DisableSpeedreader();
+  DisableSpeedreaderForAllSites();
   WaitOriginal();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
@@ -547,12 +566,12 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreaderB) {
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   WaitDistilled();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
-  DisableSpeedreader();
+  DisableSpeedreaderForAllSites();
   WaitOriginal();
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
@@ -562,7 +581,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreaderB) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TogglingSiteSpeedreader) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable);
 
   for (int i = 0; i < 2; ++i) {
@@ -583,7 +602,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TogglingSiteSpeedreader) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable);
   auto* contents_1 = ActiveWebContents();
   NavigateToPageSynchronously(kTestPageReadable);
@@ -616,7 +635,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable);
   auto* web_contents = ActiveWebContents();
 
@@ -659,7 +678,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageSimple);
   auto* web_contents = ActiveWebContents();
 
@@ -685,7 +704,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SetDataAttributes) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable);
   auto* contents = ActiveWebContents();
 
@@ -807,7 +826,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
         contents, base::ReplaceStringPlaceholders(kClick, {id}, nullptr)));
   };
 
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable);
 
   auto* page = ActiveWebContents();
@@ -880,7 +899,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarLangs) {
   language_prefs.SetUserSelectedLanguagesList(
       {"en-US", "ja", "en-CA", "fr-CA"});
 
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable);
 
   auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
@@ -893,7 +912,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarLangs) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RSS) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestXml);
 
   EXPECT_FALSE(GetReaderButton()->GetVisible());
@@ -908,7 +927,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, RSS) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TTS) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
 
   const std::string kCheckTtsParagraphs = R"js(
     document.querySelectorAll('[tts-paragraph-index]').length
@@ -926,7 +945,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TTS) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ErrorPage) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestErrorPage,
                               WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(ActiveWebContents()->GetPrimaryMainFrame()->IsErrorDocument());
@@ -950,7 +969,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ErrorPage) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
 
   for (const auto* page : {kTestCSPHackEquivPage, kTestCSPHackCharsetPage,
                            kTestCSPHtmlPage, kTestCSPHttpPage}) {
@@ -978,7 +997,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspOrder) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
 
   // base first.
   {
@@ -1002,7 +1021,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspOrder) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspInBody) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
 
   NavigateToPageSynchronously(kTestCSPInBodyPage,
                               WindowOpenDisposition::CURRENT_TAB);
@@ -1067,7 +1086,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest,
 
 // Test toolbar's rounded corners is updated when split view is toggled.
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarWithRoundedCorners) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
 
   auto* tab_strip_model = browser()->tab_strip_model();
 
@@ -1171,7 +1190,7 @@ class SpeedReaderWithSplitViewBrowserTest
 };
 
 IN_PROC_BROWSER_TEST_P(SpeedReaderWithSplitViewBrowserTest, SplitView) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
 
   NewSplitTab();
   ASSERT_TRUE(GetPrimaryToolbar() && GetSecondaryToolbar());
@@ -1264,7 +1283,7 @@ IN_PROC_BROWSER_TEST_P(SpeedReaderWithSplitViewBrowserTest, SplitView) {
 }
 
 IN_PROC_BROWSER_TEST_P(SpeedReaderWithSplitViewBrowserTest, SplitViewClicking) {
-  ToggleSpeedreader();
+  EnableSpeedreaderAllowedForAllSites();
 
   NewSplitTab();
 

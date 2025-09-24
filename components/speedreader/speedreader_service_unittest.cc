@@ -79,6 +79,23 @@ TEST_F(SpeedreaderServiceTest, DefaultSiteSettingsAllSitesEnabled) {
   EXPECT_FALSE(speedreader_service()->IsDisabledForSite(site));
 }
 
+TEST_F(SpeedreaderServiceTest, SpeedreaderDisabled) {
+  const GURL site("https://example.com");
+  const GURL site2("https://example2.com");
+
+  prefs()->SetBoolean(kSpeedreaderEnabled, false);
+
+  for (const bool enabled : {true, false}) {
+    speedreader_service()->SetAllowedForAllReadableSites(true);
+    speedreader_service()->SetEnabledForSite(site2);
+
+    EXPECT_EQ(enabled, speedreader_service()->IsAllowedForSite(site1));
+    EXPECT_EQ(enabled, speedreader_service()->IsAllowedForSite(site2));
+    EXPECT_FALSE(speedreader_service()->IsEnabledForSite(site1));
+    EXPECT_TRUE(speedreader_service()->IsEnabledForSite(site2));
+  }
+}
+
 TEST_F(SpeedreaderServiceTest, OverrideSiteSettingsAllSitesDefault) {
   const GURL site("https://example.com");
 
