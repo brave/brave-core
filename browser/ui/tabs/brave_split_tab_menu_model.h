@@ -12,7 +12,9 @@
 
 class BraveSplitTabMenuModel : public SplitTabMenuModel {
  public:
-  using SplitTabMenuModel::SplitTabMenuModel;
+  BraveSplitTabMenuModel(TabStripModel* tab_strip_model,
+                         MenuSource menu_source,
+                         std::optional<int> split_tab_index = std::nullopt);
   ~BraveSplitTabMenuModel() override;
 
   // SplitTabMenuModel:
