@@ -190,5 +190,9 @@ RegisterPolymerTemplateModifications({
     }
     removeElementWithId('showSavedTabGroups')
     removeElementWithId('autoPinNewTabGroups')
+
+    // Remove "Allow split view drag-and-drop on left or right edge of window"
+    // toggle as we show it on the Content page.
+    removeElementWithId('splitViewDragAndDrop')
   }
 })
