@@ -10,6 +10,7 @@ import android.content.res.ColorStateList;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.ImageViewCompat;
 
 import org.chromium.chrome.browser.omnibox.status.StatusView;
@@ -33,6 +34,16 @@ public class BraveLocationBarLayout extends LocationBarLayout {
 
         StatusView statusView = findViewById(R.id.location_bar_status);
         statusView.setBackgroundDrawable(null);
+
+        // Ensure location bar status and url action container adjust bottom to parent
+        ConstraintLayout.LayoutParams statusViewParams =
+                (ConstraintLayout.LayoutParams) statusView.getLayoutParams();
+        ConstraintLayout.LayoutParams urlActionContainerParams =
+                (ConstraintLayout.LayoutParams) mUrlActionContainer.getLayoutParams();
+        statusViewParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+        urlActionContainerParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+        statusView.setLayoutParams(statusViewParams);
+        mUrlActionContainer.setLayoutParams(urlActionContainerParams);
     }
 
     void setQRButtonTint(ColorStateList colorStateList) {
