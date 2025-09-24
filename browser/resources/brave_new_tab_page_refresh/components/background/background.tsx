@@ -101,7 +101,8 @@ function SponsoredRichMediaBackground(
   // Refactor rich media background components.
   const searchActions = useSearchActions()
   const searchMatches = useSearchState((s) => s.searchMatches)
-  useSearchMatchesReporter(frameHandle, searchMatches)
+  const shouldMatchSearches =
+    useSearchMatchesReporter(frameHandle, searchMatches)
 
   return (
     <IframeBackground
@@ -133,6 +134,7 @@ function SponsoredRichMediaBackground(
           case 'richMediaQueryBraveSearchAutocomplete': {
             const value = String(data.value ?? '')
             if (value) {
+              shouldMatchSearches()
               searchActions.queryAutocomplete(value, 'search.brave.com')
             }
             break
@@ -213,8 +215,10 @@ function useSearchMatchesReporter(
   frameHandle?: IframeBackgroundHandle,
   searchMatches?: AutocompleteMatch[]
 ) {
+  const [shouldReport, setShouldReport] = React.useState(false)
+
   React.useEffect(() => {
-    if (!frameHandle) {
+    if (!frameHandle || !shouldReport) {
       return
     }
 
@@ -226,7 +230,9 @@ function useSearchMatchesReporter(
     }, 120)
 
     postSearchMatches()
-  }, [frameHandle, searchMatches])
+  }, [frameHandle, searchMatches, shouldReport])
+
+  return () => setShouldReport(true)
 }
 
 interface IframeBackgroundHandle {
