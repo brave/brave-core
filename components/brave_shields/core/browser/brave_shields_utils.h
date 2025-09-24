@@ -39,12 +39,6 @@ enum class DomainBlockingType {
   kAggressive,
 };
 
-enum AutoShredType {
-  NEVER = 0,
-  LAST_TAB_CLOSED,
-  APP_EXIT,
-};
-
 struct ShieldsSettingCounts;
 
 ContentSettingsPattern GetPatternFromURL(const GURL& url);
