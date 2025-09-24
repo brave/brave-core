@@ -15,9 +15,6 @@ import {
 
 // Components
 import {
-  ConnectWithSite, //
-} from '../components/extension/connect-with-site-panel/connect-with-site-panel'
-import {
   ConfirmTransactionPanel, //
 } from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
 import { WelcomePanel } from '../components/extension/welcome-panel/index'
@@ -29,7 +26,6 @@ import { StyledExtensionWrapperLonger, StyledWelcomPanel } from './style'
 
 // mocks
 import { mockTransactionInfo } from './mock-data/mock-transaction-info'
-import { mockAccounts } from './mock-data/mock-wallet-accounts'
 import { mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
 import { createMockStore } from '../utils/test-utils'
@@ -342,23 +338,6 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
   ],
 ]
 
-const originInfo = mockOriginInfo
-
-const store = createMockStore(
-  {
-    walletStateOverride: {},
-    uiStateOverride: {
-      selectedPendingTransactionId: mockTransactionInfo.id,
-    },
-  },
-  {
-    transactionInfos: [
-      ...transactionDummyData[0].map((tx) => deserializeTransaction(tx)),
-      ...transactionDummyData[1].map((tx) => deserializeTransaction(tx)),
-    ],
-  },
-)
-
 const transactionList = [
   mockTransactionInfo,
   ...transactionDummyData[0],
@@ -399,21 +378,6 @@ export const _ReadEncryptedMessage = {
       <StyledExtensionWrapperLonger>
         <DecryptRequestPanel payload={mockDecryptRequest} />
       </StyledExtensionWrapperLonger>
-    )
-  },
-}
-
-export const _ConnectWithSite = {
-  render: () => {
-    return (
-      <Provider store={store}>
-        <StyledExtensionWrapperLonger>
-          <ConnectWithSite
-            originInfo={originInfo}
-            accountsToConnect={mockAccounts}
-          />
-        </StyledExtensionWrapperLonger>
-      </Provider>
     )
   },
 }
