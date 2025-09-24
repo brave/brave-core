@@ -807,6 +807,10 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   void WaitForResultReady() {
     content::DOMMessageQueue message_queue;
+    WaitForResultReady(message_queue);
+  }
+
+  void WaitForResultReady(content::DOMMessageQueue& message_queue) {
     std::string message;
     EXPECT_TRUE(message_queue.WaitForMessage(&message));
     EXPECT_EQ("\"result ready\"", message);
@@ -1299,10 +1303,11 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, AccountChangedEventAndReload) {
   ASSERT_TRUE(browser_content_client_->WaitForSolanaProviderBinding(
       web_contents()->GetPrimaryMainFrame()));
 
+  content::DOMMessageQueue message_queue;
   RegisterSolAccountChanged();
   // switch to disconnected account 2
   SetSelectedAccount(account_1->account_id);
-  WaitForResultReady();
+  WaitForResultReady(message_queue);
   EXPECT_EQ(GetAccountChangedResult(), "");
   // switch to disconnected account 1
   SetSelectedAccount(account_0->account_id);
