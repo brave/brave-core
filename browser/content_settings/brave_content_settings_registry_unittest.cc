@@ -213,11 +213,11 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
   //   EXPECT_EQ(CONTENT_SETTING_DEFAULT, info->GetInitialDefaultSetting());
   // }
 
-  // {
-  //   SCOPED_TRACE("Content setting: BRAVE_SPEEDREADER");
-  //   info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
-  //   EXPECT_EQ(CONTENT_SETTING_DEFAULT, info->GetInitialDefaultSetting());
-  // }
+  {
+    SCOPED_TRACE("Content setting: BRAVE_SPEEDREADER");
+    info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
+    EXPECT_EQ(CONTENT_SETTING_ASK, info->GetInitialDefaultSetting());
+  }
 }
 
 }  // namespace content_settings
