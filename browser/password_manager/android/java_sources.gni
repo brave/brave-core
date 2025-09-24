@@ -11,6 +11,7 @@ brave_browser_password_manager_java_sources = [
   "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/ExportErrorDialogFragment.java",
   "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/ExportFlow.java",
   "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/ExportFlowInterface.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/ImportFlow.java",
   "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/NonCancelableProgressBar.java",
   "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper.java",
   "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/PasswordListObserver.java",
