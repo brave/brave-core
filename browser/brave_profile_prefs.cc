@@ -26,6 +26,7 @@
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/common/p3a_pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -490,6 +491,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   ai_chat::ModelService::RegisterProfilePrefs(registry);
 
   brave_account::prefs::RegisterPrefs(registry);
+  brave_origin::prefs::RegisterProfilePrefs(registry);
 
   brave_search_conversion::RegisterPrefs(registry);
 
