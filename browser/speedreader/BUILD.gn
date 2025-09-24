@@ -24,7 +24,6 @@ source_set("speedreader") {
     "//chrome/browser/profiles",
     "//chrome/common",
     "//components/keyed_service/content",
-    "//components/user_prefs",
     "//content/public/browser",
   ]
 

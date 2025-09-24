@@ -20,19 +20,16 @@ source_set("speedreader") {
   ]
 
   deps = [
+    "//base",
     "//brave/app:command_ids",
     "//brave/browser/speedreader",
     "//brave/browser/ui/speedreader",
-    "//brave/components/constants",
-    "//brave/components/resources:strings",
     "//brave/components/vector_icons",
-    "//chrome/app:command_ids",
     "//chrome/app:generated_resources",
-    "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/views/location_bar",
     "//ui/base",
-    "//ui/views",
-    "//ui/views/controls/webview",
+    "//ui/color",
+    "//ui/events",
   ]
 }

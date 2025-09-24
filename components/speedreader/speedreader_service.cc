@@ -37,18 +37,6 @@ using mojom::Theme;
 
 }  // namespace
 
-namespace features {
-
-bool IsSpeedreaderEnabled() {
-  return base::FeatureList::IsEnabled(kSpeedreaderFeature);
-}
-
-}  // namespace features
-
-bool IsSpeedreaderFeatureEnabled(PrefService* prefs) {
-  return prefs->GetBoolean(kSpeedreaderPrefFeatureEnabled);
-}
-
 SpeedreaderService::SpeedreaderService(content::BrowserContext* browser_context,
                                        PrefService* local_state,
                                        HostContentSettingsMap* content_rules)
@@ -56,7 +44,7 @@ SpeedreaderService::SpeedreaderService(content::BrowserContext* browser_context,
       content_rules_(content_rules),
       prefs_(user_prefs::UserPrefs::Get(browser_context_)),
       metrics_(local_state, content_rules_, IsEnabledForAllSites()) {
-  DCHECK(features::IsSpeedreaderEnabled());
+  DCHECK(IsSpeedreaderEnabled());
 }
 
 SpeedreaderService::~SpeedreaderService() = default;
@@ -73,7 +61,7 @@ void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
       base::CommandLine::ForCurrentProcess()->HasSwitch(kCollectSwitch);
 #endif
 
-  registry->RegisterBooleanPref(kSpeedreaderPrefFeatureEnabled, true);
+  registry->RegisterBooleanPref(kSpeedreaderEnabled, true);
   registry->RegisterBooleanPref(kSpeedreaderPrefEnabledForAllSites,
                                 enabled_by_default);
 
@@ -106,12 +94,8 @@ void SpeedreaderService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-bool SpeedreaderService::IsFeatureEnabled() {
-  return speedreader::IsSpeedreaderFeatureEnabled(prefs_);
-}
-
 bool SpeedreaderService::IsEnabledForAllSites() {
-  if (!IsFeatureEnabled()) {
+  if (!prefs_->GetBoolean(kSpeedreaderEnabled)) {
     return false;
   }
   return prefs_->GetBoolean(kSpeedreaderPrefEnabledForAllSites);

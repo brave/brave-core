@@ -285,7 +285,11 @@ void SpeedreaderTabHelper::ProcessNavigation(
     return;
   }
 
+<<<<<<< HEAD
   if (!speedreader_service_->IsFeatureEnabled()) {
+=======
+  if (!speedreader_service_->IsEnabled())
+>>>>>>> a7062a79297 ([Speedreader] cleanup pref/feature flag)
     return;
   }
 

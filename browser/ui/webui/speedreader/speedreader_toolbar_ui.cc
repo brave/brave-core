@@ -49,7 +49,7 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui)
                          profile_->IsRegularProfile());
 
   source->AddBoolean("ttsEnabled",
-                     speedreader::features::IsSpeedreaderEnabled() &&
+                      IsSpeedreaderEnabled() &&
                          speedreader::kSpeedreaderTTS.Get());
   PrefsTabHelper::CreateForWebContents(web_ui->GetWebContents());
 
