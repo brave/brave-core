@@ -364,6 +364,24 @@ extension BrowserViewController: TabDelegate {
     return false
   }
 
+  private class LookupMenuReplacement: UIMenu {
+    convenience init(lookupMenu: UIMenu, searchWebAction: UIAction) {
+      self.init(
+        title: lookupMenu.title,
+        image: lookupMenu.image,
+        identifier: lookupMenu.identifier,
+        options: lookupMenu.options,
+        children: lookupMenu.children + [searchWebAction]
+      )
+    }
+
+    override func replacingChildren(_ newChildren: [UIMenuElement]) -> UIMenu {
+      // The lookup menu calls this to add the "Search Web" action, which we want to remove. So this
+      // method is overridden to do nothing
+      return self
+    }
+  }
+
   public func tab(_ tab: some TabState, buildEditMenuWithBuilder builder: any UIMenuBuilder) {
     let forcePaste = UIAction(title: Strings.forcePaste) { [weak tab] _ in
       if let string = UIPasteboard.general.string {
@@ -387,9 +405,18 @@ extension BrowserViewController: TabDelegate {
     }
     let braveMenuItems: UIMenu = .init(
       options: [.displayInline],
-      children: [forcePaste, searchWithBrave]
+      children: [forcePaste]
     )
     builder.insertChild(braveMenuItems, atEndOfMenu: .root)
+    if let lookupMenu = builder.menu(for: .lookup) {
+      builder.replace(
+        menu: .lookup,
+        with: LookupMenuReplacement(
+          lookupMenu: lookupMenu,
+          searchWebAction: searchWithBrave
+        )
+      )
+    }
   }
 }
 
