@@ -37,17 +37,21 @@ BraveTabStripModel::BraveTabStripModel(
     Profile* profile,
     TabGroupModelFactory* group_model_factory)
     : TabStripModel(delegate, profile, group_model_factory) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab) &&
-      delegate->IsNormalWindow()) {
-    tree_tabs_enabled_.Init(
-        brave_tabs::kTreeTabsEnabled, profile->GetPrefs(),
-        base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
-                            base::Unretained(this)));
-    vertical_tabs_enabled_.Init(
-        brave_tabs::kVerticalTabsEnabled, profile->GetPrefs(),
-        base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
-                            base::Unretained(this)));
-    OnTreeTabRelatedPrefChanged();
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab)) {
+    // Replace the default TabStripCollection with Brave's version
+    contents_data_ = std::make_unique<tabs::BraveTabStripCollection>();
+
+    if (delegate->IsNormalWindow()) {
+      tree_tabs_enabled_.Init(
+          brave_tabs::kTreeTabsEnabled, profile->GetPrefs(),
+          base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
+                              base::Unretained(this)));
+      vertical_tabs_enabled_.Init(
+          brave_tabs::kVerticalTabsEnabled, profile->GetPrefs(),
+          base::BindRepeating(&BraveTabStripModel::OnTreeTabRelatedPrefChanged,
+                              base::Unretained(this)));
+      OnTreeTabRelatedPrefChanged();
+    }
   }
 }
 
@@ -183,30 +187,30 @@ void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
 
 void BraveTabStripModel::BuildTreeTabs() {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
-  CHECK(!contents_data_->in_tree_tab_mode());
+  CHECK(!contents_data()->in_tree_tab_mode());
 
-  auto* unpinned_collection = contents_data_->unpinned_collection();
+  auto* unpinned_collection = contents_data()->unpinned_collection();
   CHECK(unpinned_collection);
 
   TreeTabNode::BuildTreeTabs(*unpinned_collection);
-  contents_data_->set_in_tree_tab_mode(true);
+  contents_data()->set_in_tree_tab_mode(true);
 }
 
 void BraveTabStripModel::FlattenTreeTabs() {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
 
-  if (!contents_data_->in_tree_tab_mode()) {
+  if (!contents_data()->in_tree_tab_mode()) {
     return;
   }
 
-  auto* unpinned_collection = contents_data_->unpinned_collection();
+  auto* unpinned_collection = contents_data()->unpinned_collection();
   CHECK(unpinned_collection);
 
   TreeTabNode::FlattenTreeTabs(*unpinned_collection);
-  contents_data_->set_in_tree_tab_mode(false);
+  contents_data()->set_in_tree_tab_mode(false);
 }
 
 tabs::TabStripCollection&
 BraveTabStripModel::GetTabStripCollectionForTesting() {
-  return *contents_data_;
+  return *contents_data();
 }
