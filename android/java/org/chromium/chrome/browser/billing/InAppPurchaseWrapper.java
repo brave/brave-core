@@ -453,7 +453,7 @@ public class InAppPurchaseWrapper {
      * @param profile The current user profile for context (can be null)
      */
     public void initiatePurchase(
-            Activity activity, ProductDetails productDetails, @NonNull Profile profile) {
+            Activity activity, ProductDetails productDetails, Profile profile) {
         // Store the profile for use in the asynchronous purchase callback flow
         mPurchaseProfile = profile;
 
