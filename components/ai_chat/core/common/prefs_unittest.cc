@@ -663,6 +663,24 @@ TEST_F(AIChatPrefsTest, UpdateSmartModeInPrefs_DuplicateShortcut) {
   EXPECT_EQ(updated_mode->prompt, "Second prompt");
 }
 
+TEST_F(AIChatPrefsTest, UpdateSmartModeInPrefs_InvalidShortcut) {
+  // Add a smart mode first
+  AddSmartModeToPrefs("valid", "Test prompt", "test_model", pref_service_);
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  ASSERT_EQ(smart_modes.size(), 1u);
+  std::string id = smart_modes[0]->id;
+
+  // Try to update with invalid shortcut
+  UpdateSmartModeInPrefs(id, "invalid@shortcut!", "Updated prompt",
+                         "updated_model", pref_service_);
+
+  // Verify update failed - original mode should remain unchanged
+  auto mode = GetSmartModeFromPrefs(pref_service_, id);
+  ASSERT_TRUE(mode);
+  EXPECT_EQ(mode->shortcut, "valid");
+  EXPECT_EQ(mode->prompt, "Test prompt");
+}
+
 TEST_F(AIChatPrefsTest, UpdateSmartModeInPrefs_SameShortcut) {
   // Add a smart mode
   AddSmartModeToPrefs("test", "Test prompt", "test_model", pref_service_);
