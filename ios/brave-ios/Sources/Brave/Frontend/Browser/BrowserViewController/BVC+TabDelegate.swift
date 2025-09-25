@@ -656,6 +656,9 @@ extension BrowserViewController {
     userAgentForType type: UserAgentType,
     request: URLRequest
   ) -> String? {
+    if !Preferences.Debug.userAgentOverride.value.isEmpty {
+      return Preferences.Debug.userAgentOverride.value
+    }
     let isBraveAllowedInUA =
       request.mainDocumentURL.flatMap {
         tab.braveUserAgentExceptions?.canShowBrave($0)
