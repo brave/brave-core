@@ -32,18 +32,22 @@ namespace ai_chat {
 
 ContentAgentToolProvider::ContentAgentToolProvider(
     Profile* profile,
-    raw_ptr<actor::ActorKeyedService> actor_service)
+    actor::ActorKeyedService* actor_service)
     : actor_service_(actor_service), profile_(profile) {
-  // Only create page actor tools if this profile is allowed to.
-  if (actor_service_) {
-    // Each conversation can have a different actor service task,
-    // and operate on a different set of tabs.
-    // If we want to delay creation of the task, we'll need to perhaps
-    // intercept all tool use calls and create or choose which task to use
-    // at that time. Tool::UseTool will have to change to
-    // ToolProvider::UseTool, or similar.
-    task_id_ = actor_service_->CreateTask();
-  }
+  // This class should only exist with a valid actor service.
+  CHECK(actor_service_);
+
+  // Each conversation can have a different actor service task,
+  // and operate on a different set of tabs.
+  // If we want to delay creation of the task, we'll need to perhaps
+  // intercept all tool use calls and create or choose which task to use
+  // at that time. Tool::UseTool will have to change to
+  // ToolProvider::UseTool, or similar.
+  // If we want each conversation message to act on a different set of tabs and
+  // not have access to any tabs previously acted on in the same conversation,
+  // we should create a new task inside `ToolProvider::OnNewGenerationLoop`.
+  task_id_ = actor_service_->CreateTask();
+
   CreateTools();
 }
 
@@ -52,18 +56,17 @@ ContentAgentToolProvider::~ContentAgentToolProvider() = default;
 std::vector<base::WeakPtr<Tool>> ContentAgentToolProvider::GetTools() {
   // Note: We don't have the ability to filter tools based on conversation
   // capability here. But for now we don't need to as we only create the content
-  // agent tools if we don't have the actor_service_ (which is only provided for
-  // agent profiles).
+  // this class if we're allowed to have content agent tools (which is only
+  // within agent profiles).
   std::vector<base::WeakPtr<Tool>> tool_ptrs;
   tool_ptrs.reserve(tools_.size());
-  for (const auto& tool : tools_) {
-    tool_ptrs.push_back(tool->GetWeakPtr());
-  }
+  std::ranges::transform(tools_, std::back_inserter(tool_ptrs),
+                         &Tool::GetWeakPtr);
   return tool_ptrs;
 }
 
 void ContentAgentToolProvider::StopAllTasks() {
-  if (actor_service_ && !task_id_.is_null()) {
+  if (!task_id_.is_null()) {
     // `success` sets whether the task ends as state kFinished or kCancelled
     actor_service_->StopTask(task_id_, true /* success */);
   }
@@ -123,12 +126,7 @@ void ContentAgentToolProvider::ExecuteActions(
 void ContentAgentToolProvider::CreateTools() {
   tools_.clear();
 
-  if (actor_service_) {
-    // Note: TaskId is consistent for this conversation. But we might
-    // want to make this more dynamic and have the the tool use request
-    // specify which task (set of tabs) to act on.
-    tools_.push_back(std::make_unique<NavigationTool>(this, actor_service_));
-  }
+  tools_.push_back(std::make_unique<NavigationTool>(this, actor_service_));
 }
 
 void ContentAgentToolProvider::OnActionsFinished(
@@ -145,6 +143,14 @@ void ContentAgentToolProvider::OnActionsFinished(
 
     auto options = blink::mojom::AIPageContentOptions::New();
     options->mode = blink::mojom::AIPageContentMode::kActionableElements;
+
+    // Verify the tab handle is still valid as the tab might have been
+    // closed.
+    if (!task_tab_handle_.Get() || !task_tab_handle_.Get()->GetContents()) {
+      std::move(callback).Run(
+          CreateContentBlocksForText("Tab is no longer open"));
+      return;
+    }
 
     optimization_guide::GetAIPageContent(
         task_tab_handle_.Get()->GetContents(), std::move(options),
