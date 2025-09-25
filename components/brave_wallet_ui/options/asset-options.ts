@@ -30,6 +30,7 @@ import {
   SOLIcon,
   ZECIcon,
   CardanoIcon,
+  PolkadotIcon,
 } from '../assets/network_token_icons/network_token_icons'
 
 export const getNetworkLogo = (chainId: string, symbol: string): string => {
@@ -59,6 +60,8 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
       return ZECIcon
     case 'ADA':
       return CardanoIcon
+    case 'DOT':
+      return PolkadotIcon
   }
 
   return ''

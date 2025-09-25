@@ -1116,6 +1116,7 @@ struct WalletInfo {
   bool is_cardano_enabled;
   array<CoinType> enabled_coins;
   bool is_cardano_dapp_support_enabled;
+  bool is_polkadot_enabled;
 };
 
 // Browser-side handler for common panel / page things

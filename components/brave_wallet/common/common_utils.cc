@@ -429,7 +429,6 @@ std::vector<mojom::KeyringId> GetEnabledKeyrings() {
     ids.push_back(mojom::KeyringId::kCardanoMainnet);
     ids.push_back(mojom::KeyringId::kCardanoTestnet);
   }
-
   if (IsPolkadotEnabled()) {
     ids.push_back(mojom::KeyringId::kPolkadotMainnet);
     ids.push_back(mojom::KeyringId::kPolkadotTestnet);

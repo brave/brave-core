@@ -38,15 +38,16 @@ class AssetDiscoveryManagerUnitTest;
 class BitcoinHDKeyring;
 class BitcoinHardwareKeyring;
 class BitcoinImportKeyring;
+class CardanoHDKeyring;
+class EthTransaction;
 class EthereumKeyring;
 class EthereumProviderImplUnitTest;
-class EthTransaction;
-class CardanoHDKeyring;
-class FilecoinKeyring;
 class FilTransaction;
+class FilecoinKeyring;
 class JsonRpcService;
 class KeyringServiceUnitTest;
 class PasswordEncryptor;
+class PolkadotKeyring;
 class SolanaKeyring;
 class SolanaProviderImplUnitTest;
 class ZCashKeyring;
@@ -433,6 +434,9 @@ class KeyringService : public mojom::KeyringService {
 
   std::unique_ptr<CardanoHDKeyring> cardano_hd_mainnet_keyring_;
   std::unique_ptr<CardanoHDKeyring> cardano_hd_testnet_keyring_;
+
+  std::unique_ptr<PolkadotKeyring> polkadot_mainnet_keyring_;
+  std::unique_ptr<PolkadotKeyring> polkadot_testnet_keyring_;
 
   std::unique_ptr<PasswordEncryptor> encryptor_;
 

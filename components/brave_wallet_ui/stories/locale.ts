@@ -427,6 +427,9 @@ provideStrings({
     'Store Cardano Testnet assets',
   braveWalletCreateAccountFilecoinDescription: 'Store FIL asset',
   braveWalletCreateAccountFilecoinTestnetDescription: 'Store FIL Testnet asset',
+  braveWalletCreateAccountPolkadotDescription:
+    'Supports Substrate assets on Polkadot relay chain '
+    + 'and Substrate parachains',
   braveWalletFilecoinPrivateKeyProtocol: 'Private key $1',
   braveWalletEnterPasswordIfApplicable: 'Enter password (if applicable)',
   braveWalletPrivateKeyImportType: 'Import type',
@@ -1249,6 +1252,7 @@ provideStrings({
   braveWalletZECTestnetAccountDescription: 'Zcash Testnet',
   braveWalletCardanoAccountDescription: 'Cardano Mainnet',
   braveWalletCardanoTestnetAccountDescription: 'Cardano Testnet',
+  braveWalletPolkadotMainnetAccountDescription: 'Polkadot Mainnet',
   braveWalletShowNetworkLogoOnNftsTitle: 'Network Logo',
   braveWalletShowNetworkLogoOnNftsDescription: 'Show network logo on NFTs',
   braveWalletShowSpamNftsTitle: 'Spam NFTs',

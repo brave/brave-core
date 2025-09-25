@@ -29,6 +29,7 @@ export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
   wallet.isRefreshingNetworksAndTokens
 export const isZCashShieldedTransactionsEnabled = ({ wallet }: State) =>
   wallet.isZCashShieldedTransactionsEnabled
+export const isPolkadotEnabled = ({ wallet }: State) => wallet.isPolkadotEnabled
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)
