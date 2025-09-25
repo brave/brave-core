@@ -6,6 +6,9 @@ on:
       PR_NUMBER:
         required: true
         description: "Number of the PR from the fork"
+      COMMIT_HASH:
+        required: true
+        description: "Commit hash of the PR"
 
 jobs:
   sync-and-rebase-pr-from-fork:
@@ -26,12 +29,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           PR_NUMBER: ${{ inputs.PR_NUMBER }}
+          COMMIT_HASH: ${{ inputs.COMMIT_HASH }}
         run: |
           set -x
-          JQ="jq -e -r"
+
+          if ! grep -qix '[0-9a-f]\{40,40\}' <<<"$COMMIT_HASH"; then 
+            echo "Provide a full commit hash; got: $COMMIT_HASH"
+            exit 1
+          fi
 
           gh_pr_view=$(gh pr view "$PR_NUMBER" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
 
+          JQ="jq -e -r"
           baseRefName=$($JQ ".baseRefName" <<<"$gh_pr_view")
           headRefName=$($JQ ".headRefName" <<<"$gh_pr_view")
           headRepositoryName=$($JQ ".headRepository.name" <<<"$gh_pr_view")
@@ -44,9 +53,11 @@ jobs:
           git remote add contributor "https://github.com/$headRepositoryOwnerLogin/$headRepositoryName.git" || :
           contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
           git fetch --no-tags contributor +"$headRefName":"$contribHeadRefName"
-
+          # Note we are checking out the provided commit hash instead of the pr-branch to avoid race condition
+          # The author could have commited malicious code between the last review and the execution of this workflow
+          git checkout "$COMMIT_HASH"
+          
           # Rebase the branch with the latest targeting branch HEAD
-          git checkout "$contribHeadRefName"
           git fetch origin "$baseRefName"
           if ! git rebase FETCH_HEAD; then
             echo "Rebase conflict detected. Please resolve the conflicts and push the changes to your fork. Exiting!"
