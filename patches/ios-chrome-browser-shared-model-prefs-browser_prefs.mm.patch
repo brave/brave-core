@@ -1,16 +1,16 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index a3006034e31b610e0d7f81938c81e4259a2ef3bf..3bb4692edaddb488dcaa1b9c3cb70e41e07a0f5b 100644
+index 2dd54cdde658b5f65f50620eaa78c1a841f6f736..22c0b7891e05c8572a38757ed7cf492a9f6432e5 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -646,6 +646,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-       prefs::kNTPHomeCustomizationNewBadgeImpressionCount, 0);
+@@ -671,6 +671,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
-   registry->RegisterBooleanPref(prefs::kWidgetsForMultiProfile, false);
+   // Deprecated 09/2025.
+   registry->RegisterBooleanPref(prefs::kBottomOmnibox, false);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1072,6 +1073,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1101,6 +1102,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Deprecated 09/2025.
    registry->RegisterInt64Pref(kNtpShownBookmarksFolder, 0);
    registry->RegisterStringPref(kGaiaCookieLastListAccountsData, std::string());
