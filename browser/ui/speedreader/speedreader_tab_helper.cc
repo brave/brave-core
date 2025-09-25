@@ -112,7 +112,8 @@ void SpeedreaderTabHelper::MaybeCreateForWebContents(
     return;
   }
 
-  SpeedreaderTabHelper::CreateForWebContents(contents, *speedreader_service, rewriter_service);
+  SpeedreaderTabHelper::CreateForWebContents(contents, *speedreader_service,
+                                             rewriter_service);
 }
 
 // static
@@ -179,8 +180,8 @@ bool SpeedreaderTabHelper::MaybeUpdateCachedState(
     return false;
   }
 
-  const DistillState state =
-      SpeedreaderExtendedInfoHandler::GetCachedMode(entry, &speedreader_service_.get());
+  const DistillState state = SpeedreaderExtendedInfoHandler::GetCachedMode(
+      entry, &speedreader_service_.get());
   if (DistillStates::IsDistilled(state)) {
     if (handle->IsServedFromBackForwardCache() ||
         DistillStates::IsDistilledAutomatically(state)) {
@@ -549,8 +550,7 @@ void SpeedreaderTabHelper::OnAllSitesEnableSettingChanged(
     return;
   }
   OnSiteEnableSettingChanged(
-      web_contents(),
-      speedreader_service_->IsEnabledForSite(web_contents()));
+      web_contents(), speedreader_service_->IsEnabledForSite(web_contents()));
 }
 
 void SpeedreaderTabHelper::OnAppearanceSettingsChanged(
