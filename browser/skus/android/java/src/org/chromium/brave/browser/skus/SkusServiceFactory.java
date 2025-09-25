@@ -36,10 +36,7 @@ public class SkusServiceFactory {
     private SkusServiceFactory() {}
 
     public @Nullable SkusService getSkusService(
-            @Nullable Profile profile, @Nullable ConnectionErrorHandler connectionErrorHandler) {
-        if (profile == null) {
-            return null;
-        }
+            Profile profile, @Nullable ConnectionErrorHandler connectionErrorHandler) {
         long nativeHandle = SkusServiceFactoryJni.get().getInterfaceToSkusService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         if (!handle.isValid()) {

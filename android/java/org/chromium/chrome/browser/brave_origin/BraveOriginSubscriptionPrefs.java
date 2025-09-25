@@ -56,7 +56,7 @@ public class BraveOriginSubscriptionPrefs {
      */
     public static void setIsSubscriptionActive(@Nullable Profile profile, boolean value) {
         if (profile == null) {
-            Log.e(TAG, "BraveOriginSubscriptionPrefs.setIsSubscriptionActive profile is null");
+            Log.e(TAG, "setIsSubscriptionActive profile is null");
             return;
         }
         UserPrefs.get(profile)
@@ -71,7 +71,7 @@ public class BraveOriginSubscriptionPrefs {
      */
     public static void setOriginPurchaseToken(@Nullable Profile profile, String token) {
         if (profile == null) {
-            Log.e(TAG, "BraveOriginSubscriptionPrefs.setOriginPurchaseToken profile is null");
+            Log.e(TAG, "setOriginPurchaseToken profile is null");
             return;
         }
         PrefService prefService = UserPrefs.get(profile);
@@ -96,7 +96,7 @@ public class BraveOriginSubscriptionPrefs {
      */
     public static void setOriginPackageName(@Nullable Profile profile) {
         if (profile == null) {
-            Log.e(TAG, "BraveOriginSubscriptionPrefs.setOriginPackageName profile is null");
+            Log.e(TAG, "setOriginPackageName profile is null");
             return;
         }
         UserPrefs.get(profile)
@@ -113,7 +113,7 @@ public class BraveOriginSubscriptionPrefs {
      */
     public static void setOriginProductId(@Nullable Profile profile, String productId) {
         if (profile == null) {
-            Log.e(TAG, "BraveOriginSubscriptionPrefs.setOriginProductId profile is null");
+            Log.e(TAG, "setOriginProductId profile is null");
             return;
         }
         UserPrefs.get(profile).setString(BravePref.BRAVE_ORIGIN_PRODUCT_ID_ANDROID, productId);
@@ -127,7 +127,7 @@ public class BraveOriginSubscriptionPrefs {
      */
     public static boolean isSubscriptionLinked(@Nullable Profile profile) {
         if (profile == null) {
-            Log.e(TAG, "BraveOriginSubscriptionPrefs.isSubscriptionLinked profile is null");
+            Log.e(TAG, "isSubscriptionLinked profile is null");
             return false;
         }
 
@@ -143,9 +143,7 @@ public class BraveOriginSubscriptionPrefs {
      */
     private static void resetSubscriptionLinkedStatus(@Nullable Profile profile) {
         if (profile == null) {
-            Log.e(
-                    TAG,
-                    "BraveOriginSubscriptionPrefs.resetSubscriptionLinkedStatus profile is null");
+            Log.e(TAG, "resetSubscriptionLinkedStatus profile is null");
             return;
         }
         UserPrefs.get(profile)
@@ -272,7 +270,7 @@ public class BraveOriginSubscriptionPrefs {
     public static void requestCredentialSummary(
             @Nullable Profile profile, @Nullable Callback<Boolean> callback) {
         if (profile == null) {
-            Log.e(TAG, "BraveOriginSubscriptionPrefs.requestCredentialSummary profile is null");
+            Log.e(TAG, "requestCredentialSummary profile is null");
             if (callback != null) {
                 callback.onResult(false);
             }
@@ -358,7 +356,7 @@ public class BraveOriginSubscriptionPrefs {
      */
     public static void clearOriginSubscriptionPrefs(@Nullable Profile profile) {
         if (profile == null) {
-            Log.e(TAG, "BraveOriginSubscriptionPrefs.clearOriginSubscriptionPrefs profile is null");
+            Log.e(TAG, "clearOriginSubscriptionPrefs profile is null");
             return;
         }
 

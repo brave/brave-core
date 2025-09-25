@@ -17,7 +17,10 @@ static jlong JNI_SkusServiceFactory_GetInterfaceToSkusService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
-  auto pending = skus::SkusServiceFactory::GetForContext(profile);
+  auto pending = mojo::PendingRemote<skus::mojom::SkusService>();
+  if (profile) {
+    pending = skus::SkusServiceFactory::GetForContext(profile);
+  }
 
   return static_cast<jlong>(pending.PassPipe().release().value());
 }
