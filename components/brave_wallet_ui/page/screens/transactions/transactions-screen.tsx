@@ -44,9 +44,6 @@ import { UISelectors } from '../../../common/selectors'
 
 // components
 import {
-  PortfolioTransactionItem, //
-} from '../../../components/desktop/portfolio_transaction_item/portfolio_transaction_item'
-import {
   WalletPageWrapper, //
 } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import {
@@ -56,6 +53,9 @@ import { SearchBar } from '../../../components/shared/search-bar'
 import {
   TransactionDetailsModal, //
 } from '../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
+import {
+  VirtualizedTransactionList, //
+} from '../../../components/desktop/virtualized_transaction_list/virtualized_transaction_list'
 
 // styles
 import { Column, Text, VerticalSpacer } from '../../../components/shared/style'
@@ -272,20 +272,10 @@ export const TransactionsScreen = (props: Props) => {
             )}
 
             {filteredTransactions.length !== 0 && (
-              <Column
-                fullWidth={true}
-                fullHeight={true}
-                justifyContent='flex-start'
-                gap='16px'
-              >
-                {filteredTransactions.map((tx) => (
-                  <PortfolioTransactionItem
-                    key={tx.id}
-                    transaction={tx}
-                    onClick={onClickTransaction}
-                  />
-                ))}
-              </Column>
+              <VirtualizedTransactionList
+                transactionList={filteredTransactions}
+                onSelectTransaction={onClickTransaction}
+              />
             )}
 
             {txsForSelectedChain

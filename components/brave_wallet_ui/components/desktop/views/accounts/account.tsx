@@ -6,7 +6,7 @@
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import { Redirect, useParams, useLocation, useHistory } from 'react-router'
+import { Redirect, useParams, useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
@@ -28,6 +28,7 @@ import {
   BitcoinTestnetKeyringIds,
   ZCashTestnetKeyringIds,
   CardanoTestnetKeyringIds,
+  SerializableTransactionInfo,
 } from '../../../../constants/types'
 
 // utils
@@ -40,7 +41,6 @@ import {
 import { filterNetworksForAccount } from '../../../../utils/network-utils'
 import {
   makeAccountRoute,
-  makeAccountTransactionRoute,
   makePortfolioAssetRoute,
   openTab,
 } from '../../../../utils/routes-utils'
@@ -72,9 +72,6 @@ import { NftGrid } from '../nfts/components/nfts.styles'
 
 // Components
 import {
-  PortfolioTransactionItem, //
-} from '../../portfolio_transaction_item/portfolio_transaction_item'
-import {
   PortfolioAssetItemLoadingSkeleton, //
 } from '../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
 import { PortfolioAssetItem } from '../../portfolio-asset-item/index'
@@ -104,13 +101,15 @@ import {
 } from '../../popup-modals/view_on_block_explorer_modal/view_on_block_explorer_modal'
 import { ZCashSyncModal } from '../../popup-modals/zcash_sync_modal/zcash_sync_modal'
 import { ShieldAccountAlert } from './shield_account_alert/shield_account_alert'
+import {
+  VirtualizedTransactionList, //
+} from '../../virtualized_transaction_list/virtualized_transaction_list'
 
 // options
 import { AccountDetailsOptions } from '../../../../options/nav-options'
 
 // Hooks
 import useInterval from '../../../../common/hooks/interval'
-import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetVisibleNetworksQuery,
@@ -139,6 +138,7 @@ import {
 // Actions
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
+import { TransactionDetailsModal } from '../../popup-modals/transaction_details_modal/transaction_details_modal'
 
 const INDIVIDUAL_TESTNET_ACCOUNT_KEYRING_IDS = [
   ...BitcoinTestnetKeyringIds,
@@ -178,7 +178,6 @@ export const Account = () => {
     accountId: string
     selectedTab?: string
   }>()
-  const { hash: transactionID } = useLocation()
   const history = useHistory()
 
   // redux
@@ -264,6 +263,8 @@ export const Account = () => {
     React.useState<boolean>(false)
   const [syncWarningDismissed, setSyncWarningDismissed] =
     React.useState<boolean>(false)
+  const [selectedTransaction, setSelectedTransaction] =
+    React.useState<SerializableTransactionInfo>()
 
   // Computed
   const blocksBehind = chainTipStatus
@@ -285,8 +286,6 @@ export const Account = () => {
     && !zcashAccountInfo.accountShieldBirthday
 
   // custom hooks & memos
-  const scrollIntoView = useScrollIntoView()
-
   const networksFilteredByAccountsCoinType = React.useMemo(() => {
     return !selectedAccount
       ? []
@@ -547,25 +546,6 @@ export const Account = () => {
     ],
   )
 
-  const checkIsTransactionFocused = React.useCallback(
-    (id: string): boolean => {
-      if (transactionID !== '') {
-        return transactionID.replace('#', '') === id
-      }
-      return false
-    },
-    [transactionID],
-  )
-
-  const handleScrollIntoView = React.useCallback(
-    (id: string, ref: HTMLDivElement | null) => {
-      if (checkIsTransactionFocused(id)) {
-        scrollIntoView(ref)
-      }
-    },
-    [checkIsTransactionFocused, scrollIntoView],
-  )
-
   const onSelectAsset = React.useCallback(
     (asset: BraveWallet.BlockchainToken) => {
       history.push(
@@ -604,17 +584,16 @@ export const Account = () => {
     && coinSupportsAssets(selectedAccount.accountId.coin)
     && !assetAutoDiscoveryCompleted
 
+  const onSelectTransaction = React.useCallback(
+    (transaction: SerializableTransactionInfo) => {
+      setSelectedTransaction(transaction)
+    },
+    [],
+  )
+
   // redirect (asset not found)
   if (!selectedAccount) {
     return <Redirect to={WalletRoutes.Accounts} />
-  }
-
-  if (transactionID && !selectedTab) {
-    return (
-      <Redirect
-        to={makeAccountTransactionRoute(selectedAccount, transactionID)}
-      />
-    )
   }
 
   // render
@@ -777,18 +756,11 @@ export const Account = () => {
       {selectedTab === AccountPageTabs.AccountTransactionsSub && (
         <>
           {transactionList.length !== 0 ? (
-            <TransactionsWrapper
-              fullWidth={true}
-              gap='16px'
-            >
-              {transactionList.map((transaction) => (
-                <PortfolioTransactionItem
-                  key={transaction?.id}
-                  transaction={transaction}
-                  ref={(ref) => handleScrollIntoView(transaction.id, ref)}
-                  isFocused={checkIsTransactionFocused(transaction.id)}
-                />
-              ))}
+            <TransactionsWrapper fullWidth={true}>
+              <VirtualizedTransactionList
+                transactionList={transactionList}
+                onSelectTransaction={onSelectTransaction}
+              />
             </TransactionsWrapper>
           ) : (
             <Column
@@ -835,6 +807,13 @@ export const Account = () => {
         <ZCashSyncModal
           account={selectedAccount}
           onClose={onStopAndCloseShieldSync}
+        />
+      )}
+
+      {selectedTransaction && (
+        <TransactionDetailsModal
+          onClose={() => setSelectedTransaction(undefined)}
+          transaction={selectedTransaction}
         />
       )}
     </WalletPageWrapper>
