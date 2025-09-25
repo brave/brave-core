@@ -18,6 +18,7 @@ brave_utility_sources += brave_utility_importer_sources
 brave_utility_deps = [
   "//brave/components/brave_rewards/core/buildflags",
   "//brave/components/brave_wallet/common/buildflags",
+  "//brave/components/services/brave_shields:filter_parsing_service",
   "//brave/components/tor/buildflags",
   "//mojo/public/cpp/bindings",
 ]

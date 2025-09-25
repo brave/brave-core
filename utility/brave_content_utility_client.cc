@@ -10,6 +10,7 @@
 
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/services/brave_shields/filter_parsing_service.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/service_factory.h"
 
@@ -65,6 +66,13 @@ auto RunBraveWalletUtilsService(
 }
 #endif
 
+auto RunAdblockFilterListParserService(
+    mojo::PendingReceiver<
+        adblock_filter_list_parser::mojom::AdblockFilterListParser> receiver) {
+  return std::make_unique<brave_shields::FilterParsingService>(
+      std::move(receiver));
+}
+
 }  // namespace
 
 BraveContentUtilityClient::BraveContentUtilityClient() = default;
@@ -87,6 +95,8 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   services.Add(RunBraveWalletUtilsService);
 #endif
+
+  services.Add(RunAdblockFilterListParserService);
 
   return ChromeContentUtilityClient::RegisterMainThreadServices(services);
 }
