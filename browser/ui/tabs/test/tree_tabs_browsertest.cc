@@ -457,14 +457,13 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
       std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
 
   // Add tab when not in tree mode.
-  int index = 1;
-  tab_strip_model().AddTab(std::move(tab_interface), index,
+  tab_strip_model().AddTab(std::move(tab_interface), -1 /*to the last*/,
                            ui::PAGE_TRANSITION_AUTO_BOOKMARK,
                            ADD_INHERIT_OPENER | ADD_ACTIVE);
 
   // Verify tab was added normally (not wrapped in TreeTabNode).
-  EXPECT_EQ(index + 1, tab_strip_model().count());
-  auto* added_tab = tab_strip_model().GetTabAtIndex(index);
+  auto* added_tab =
+      tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
   EXPECT_TRUE(added_tab->GetOpener()) << "ADD_INHERIT_OPENER forces opener";
   EXPECT_EQ(added_tab->GetParentCollection()->type(),
             tabs::TabCollection::Type::UNPINNED);
@@ -484,13 +483,12 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
   // Add tab in tree mode without opener.
   // note that PAGE_TRANSITION_AUTO_BOOKMARK is used as LINK or TYPED transition
   // type would be treated as having an opener (the current active tab).
-  index = tab_strip_model().count();
-  tab_strip_model().AddTab(std::move(tab_interface), index,
+  tab_strip_model().AddTab(std::move(tab_interface), -1 /*to the last*/,
                            ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_ACTIVE);
 
   // Verify tab was added and wrapped in TreeTabNode but not child of other
   // TreeTabNode.
-  added_tab = tab_strip_model().GetTabAtIndex(index);
+  added_tab = tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
   EXPECT_EQ(added_tab->GetParentCollection()->type(),
             tabs::TabCollection::Type::TREE_NODE);
   EXPECT_EQ(added_tab->GetParentCollection()->GetParentCollection(),
@@ -501,15 +499,16 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
   //  Create a tab with the previous tab as opener.
   tab_interface =
       std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
-  tab_interface->set_opener(tab_strip_model().GetTabAtIndex(index));
+  auto* opener_tab =
+      tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
+  tab_interface->set_opener(opener_tab);  // previous tab is the opener.
 
   // Add tab in tree mode with opener as previous tab.
-  index = tab_strip_model().count();
-  tab_strip_model().AddTab(std::move(tab_interface), index,
+  tab_strip_model().AddTab(std::move(tab_interface), -1 /*to the last*/,
                            ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
 
   // Verify tab was added as child of opener's TreeTabNode.
-  added_tab = tab_strip_model().GetTabAtIndex(index);
+  added_tab = tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
   EXPECT_EQ(added_tab->GetParentCollection()->type(),
             tabs::TabCollection::Type::TREE_NODE);
 
@@ -517,20 +516,16 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
             tabs::TabCollection::Type::TREE_NODE);
 
   EXPECT_EQ(added_tab->GetParentCollection()->GetParentCollection(),
-            tab_strip_model().GetTabAtIndex(index - 1)->GetParentCollection());
+            opener_tab->GetParentCollection());
 
   // The opener's TreeTabNode should now have 2 children (1 original + 1 added).
-  EXPECT_EQ(2u, tab_strip_model()
-                    .GetTabAtIndex(index - 1)
-                    ->GetParentCollection()
-                    ->ChildCount());
+  EXPECT_EQ(2u, opener_tab->GetParentCollection()->ChildCount());
 
   // 4. In tree mode with opener. The previous tab is not the opener  but the
   // previous tab is a child of opener. In this case, the new tab should be
-  // added as a child of the opener's TreeTabNode.
-  // ----------------------------------- add tab in tree modee with opener as
-  // the tab before the previous tab.
-  auto* opener_tab = tab_strip_model().GetTabAtIndex(index - 1);
+  // added as a child of the opener's TreeTabNode. -----------------------------
+  // add tab in tree modee with opener as the tab before the previous tab.
+  opener_tab = tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 2);
   ASSERT_EQ(opener_tab->GetParentCollection()->type(),
             tabs::TabCollection::Type::TREE_NODE);
   ASSERT_EQ(opener_tab->GetParentCollection()->ChildCount(), 2u);
@@ -539,11 +534,10 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
       std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
   tab_interface->set_opener(opener_tab);
 
-  index = tab_strip_model().count();
-  tab_strip_model().AddTab(std::move(tab_interface), index,
+  tab_strip_model().AddTab(std::move(tab_interface), -1 /*to the last*/,
                            ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
 
-  added_tab = tab_strip_model().GetTabAtIndex(index);
+  added_tab = tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
   EXPECT_EQ(opener_tab, added_tab->GetOpener());
   EXPECT_EQ(added_tab->GetParentCollection()->type(),
             tabs::TabCollection::Type::TREE_NODE);
@@ -555,19 +549,20 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
   // 5. In tree mode with opener not as previous tab: should wrap in new
   // TreeTabNode but should not be a child of the opener's TreeTabNode. -------
 
+  // Sets the opener as the first tab so that we have another tree tab node
+  // between opener and newly added tab.
   opener_tab = tab_strip_model().GetTabAtIndex(0);
   ASSERT_EQ(opener_tab->GetParentCollection()->type(),
             tabs::TabCollection::Type::TREE_NODE);
   tab_interface =
       std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
   tab_interface->set_opener(opener_tab);
-  index = tab_strip_model().count();
-  tab_strip_model().AddTab(std::move(tab_interface), index,
+  tab_strip_model().AddTab(std::move(tab_interface), -1 /*to the last*/,
                            ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
 
   // Verify tab was added and wrapped in its own TreeTabNode, but not as child
   // of the opener's TreeTabNode.
-  added_tab = tab_strip_model().GetTabAtIndex(index);
+  added_tab = tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
   EXPECT_EQ(opener_tab, added_tab->GetOpener());
   EXPECT_EQ(added_tab->GetParentCollection()->type(),
             tabs::TabCollection::Type::TREE_NODE);
