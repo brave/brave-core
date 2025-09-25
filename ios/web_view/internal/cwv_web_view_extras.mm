@@ -120,7 +120,7 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
       }));
 }
 
-- (WKWebView*)internalWebView {
+- (CRWWebView*)internalWebView {
   CRWWebController* web_controller =
       web::WebStateImpl::FromWebState(self.webState)->GetWebController();
   return web_controller.webView;
