@@ -3348,7 +3348,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       mojom::SmartModeEntry::New("summarize", "Please summarize the content");
   conversation_history.push_back(mojom::ConversationTurn::New(
       "uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "What is artificial intelligence?", std::nullopt /* prompt */,
+      "/summarize What is artificial intelligence?", std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_files */, std::move(smart_mode_entry), false,
@@ -3374,14 +3374,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
         EXPECT_EQ(conversation[0].type, ConversationEventType::kChatMessage);
         EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
-                  "Interpret '/summarize' as 'Please summarize the content' "
-                  "when handling the request.");
+                  "When handling the request, interpret '/summarize' as "
+                  "'Please summarize the content'");
 
         // Second event should be the actual user message
         EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
         EXPECT_EQ(conversation[1].type, ConversationEventType::kChatMessage);
         EXPECT_EQ(GetContentStrings(conversation[1].content)[0],
-                  "What is artificial intelligence?");
+                  "/summarize What is artificial intelligence?");
 
         // Mock successful response
         auto completion_event =

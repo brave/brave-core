@@ -2498,10 +2498,9 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithSmartMode) {
             // First content block should be the smart mode definition
             const auto& smart_mode_block = (*content)[0].GetDict();
             EXPECT_EQ(*smart_mode_block.FindString("type"), "text");
-            EXPECT_EQ(
-                *smart_mode_block.FindString("text"),
-                "Interpret '/summarize' as 'Please summarize the content' "
-                "when handling the request.");
+            EXPECT_EQ(*smart_mode_block.FindString("text"),
+                      "When handling the request, interpret '/summarize' as "
+                      "'Please summarize the content'");
 
             // Second content block should be the user message
             const auto& user_text_block = (*content)[1].GetDict();

@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/base64.h"
+#include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -39,7 +40,7 @@ std::string EngineConsumer::GetPromptForEntry(
 // static
 std::string EngineConsumer::BuildSmartModeDefinitionMessage(
     const mojom::SmartModeEntryPtr& smart_mode) {
-  return absl::StrFormat("Interpret '/%s' as '%s' when handling the request.",
+  return absl::StrFormat("When handling the request, interpret '/%s' as '%s'",
                          smart_mode->shortcut, smart_mode->prompt);
 }
 
