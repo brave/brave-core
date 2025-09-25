@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/types/to_address.h"
 #include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
@@ -37,7 +38,7 @@ NewTabPageHandler::NewTabPageHandler(
     std::unique_ptr<BackgroundFacade> background_facade,
     std::unique_ptr<TopSitesFacade> top_sites_facade,
     std::unique_ptr<VPNFacade> vpn_facade,
-    tabs::TabInterface& tab,
+    content::WebContents& web_contents,
     PrefService& pref_service,
     TemplateURLService& template_url_service,
     misc_metrics::NewTabMetrics& new_tab_metrics)
@@ -47,7 +48,7 @@ NewTabPageHandler::NewTabPageHandler(
       background_facade_(std::move(background_facade)),
       top_sites_facade_(std::move(top_sites_facade)),
       vpn_facade_(std::move(vpn_facade)),
-      tab_(tab),
+      web_contents_(web_contents),
       pref_service_(pref_service),
       template_url_service_(template_url_service),
       new_tab_metrics_(new_tab_metrics) {
@@ -119,10 +120,9 @@ void NewTabPageHandler::GetSponsoredImageBackground(
     GetSponsoredImageBackgroundCallback callback) {
   auto sponsored_background = background_facade_->GetSponsoredImageBackground();
   if (sponsored_background) {
-    if (auto* web_contents = tab_->GetContents()) {
-      ntp_background_images::NewTabTakeoverInfoBarDelegate::
-          MaybeDisplayAndIncrementCounter(web_contents, &pref_service_.get());
-    }
+    ntp_background_images::NewTabTakeoverInfoBarDelegate::
+        MaybeDisplayAndIncrementCounter(base::to_address(web_contents_),
+                                        &pref_service_.get());
   }
   std::move(callback).Run(std::move(sponsored_background));
 }
@@ -250,10 +250,9 @@ void NewTabPageHandler::OpenSearch(const std::string& query,
   GURL search_url = template_url->GenerateSearchURL(
       template_url_service_->search_terms_data(), base::UTF8ToUTF16(query));
 
-  tab_->GetBrowserWindowInterface()->OpenGURL(
-      search_url,
-      ui::DispositionFromClick(false, details->alt_key, details->ctrl_key,
-                               details->meta_key, details->shift_key));
+  OpenGURL(search_url,
+           ui::DispositionFromClick(false, details->alt_key, details->ctrl_key,
+                                    details->meta_key, details->shift_key));
 
   std::move(callback).Run();
 }
@@ -261,10 +260,9 @@ void NewTabPageHandler::OpenSearch(const std::string& query,
 void NewTabPageHandler::OpenURLFromSearch(const std::string& url,
                                           mojom::EventDetailsPtr details,
                                           OpenURLFromSearchCallback callback) {
-  tab_->GetBrowserWindowInterface()->OpenGURL(
-      GURL(url),
-      ui::DispositionFromClick(false, details->alt_key, details->ctrl_key,
-                               details->meta_key, details->shift_key));
+  OpenGURL(GURL(url),
+           ui::DispositionFromClick(false, details->alt_key, details->ctrl_key,
+                                    details->meta_key, details->shift_key));
   std::move(callback).Run();
 }
 
@@ -533,6 +531,14 @@ void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
     case UpdateObserver::Source::kVPN:
       page_->OnVPNStateUpdated();
       break;
+  }
+}
+
+void NewTabPageHandler::OpenGURL(const GURL& gurl,
+                                 WindowOpenDisposition disposition) {
+  if (auto* tab = tabs::TabInterface::MaybeGetFromContents(
+          base::to_address(web_contents_))) {
+    tab->GetBrowserWindowInterface()->OpenGURL(gurl, disposition);
   }
 }
 
