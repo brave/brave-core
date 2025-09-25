@@ -1104,10 +1104,9 @@ class SpeedReaderWithSplitViewBrowserTest
   }
 
   views::Widget* GetSecondaryLocationBarWidget() {
+    // We use chromium's mini toolbar.
     if (IsSideBySideEnabled()) {
-      return brave_browser_view()
-          ->GetBraveMultiContentsView()
-          ->secondary_location_bar_widget_.get();
+      return nullptr;
     }
 
     return brave_browser_view()
@@ -1165,8 +1164,11 @@ IN_PROC_BROWSER_TEST_P(SpeedReaderWithSplitViewBrowserTest, SplitView) {
   browser()->tab_strip_model()->ActivateTabAt(1);
   WaitToolbarVisibility(GetPrimaryToolbar(), false);
   WaitToolbarVisibility(GetSecondaryToolbar(), true);
-  EXPECT_EQ(get_target_secondary_location_bar_origin(),
-            secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
+  if (secondary_location_bar_widget) {
+    EXPECT_EQ(
+        get_target_secondary_location_bar_origin(),
+        secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
+  }
 
   // Load a distillabe page in second tab.
   NavigateToPageSynchronously(kTestPageReadable,
@@ -1185,8 +1187,12 @@ IN_PROC_BROWSER_TEST_P(SpeedReaderWithSplitViewBrowserTest, SplitView) {
   browser()->tab_strip_model()->ActivateTabAt(0);
   WaitToolbarVisibility(GetPrimaryToolbar(), true);
   WaitToolbarVisibility(GetSecondaryToolbar(), true);
-  EXPECT_EQ(get_target_secondary_location_bar_origin(),
-            secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
+
+  if (secondary_location_bar_widget) {
+    EXPECT_EQ(
+        get_target_secondary_location_bar_origin(),
+        secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
+  }
 
   browser()->tab_strip_model()->ActivateTabAt(2);
   WaitToolbarVisibility(GetPrimaryToolbar(), false);
@@ -1195,8 +1201,12 @@ IN_PROC_BROWSER_TEST_P(SpeedReaderWithSplitViewBrowserTest, SplitView) {
   browser()->tab_strip_model()->ActivateTabAt(0);
   WaitToolbarVisibility(GetPrimaryToolbar(), true);
   WaitToolbarVisibility(GetSecondaryToolbar(), true);
-  EXPECT_EQ(get_target_secondary_location_bar_origin(),
-            secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
+
+  if (secondary_location_bar_widget) {
+    EXPECT_EQ(
+        get_target_secondary_location_bar_origin(),
+        secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
+  }
 
   // Second tab is active. Show original content.
   browser()->tab_strip_model()->ActivateTabAt(1);

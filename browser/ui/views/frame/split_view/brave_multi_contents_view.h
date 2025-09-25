@@ -10,19 +10,13 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
-#include "brave/browser/ui/views/split_view/split_view_separator_delegate.h"
+#include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
-namespace views {
-class Widget;
-}  // namespace views
-
-class SplitViewLocationBar;
 class BraveContentsContainerView;
 
-class BraveMultiContentsView : public MultiContentsView,
-                               public SplitViewSeparatorDelegate {
+class BraveMultiContentsView : public MultiContentsView {
   METADATA_HEADER(BraveMultiContentsView, MultiContentsView)
 
  public:
@@ -32,7 +26,6 @@ class BraveMultiContentsView : public MultiContentsView,
                          std::unique_ptr<MultiContentsViewDelegate> delegate);
   ~BraveMultiContentsView() override;
 
-  void UpdateSecondaryLocationBar();
   void UpdateCornerRadius();
 
   BraveContentsContainerView* GetActiveContentsContainerView();
@@ -47,17 +40,12 @@ class BraveMultiContentsView : public MultiContentsView,
 
   // MultiContentsView:
   void Layout(PassKey) override;
-
-  // SplitViewSeparatorDelegate:
-  void OnDoubleClicked() override;
+  void ResetResizeArea() override;
 
   std::vector<ContentsContainerView*> contents_container_views_for_testing()
       const {
     return contents_container_views_;
   }
-
-  std::unique_ptr<SplitViewLocationBar> secondary_location_bar_;
-  std::unique_ptr<views::Widget> secondary_location_bar_widget_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_

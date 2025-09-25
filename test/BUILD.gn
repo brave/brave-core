@@ -1122,6 +1122,7 @@ test("brave_browser_tests") {
     ]
     deps += [
       "//brave/browser/ui/sidebar:browser_tests",
+      "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/views/brave_ads:browser_tests",
       "//brave/browser/ui/views/frame:browser_tests",
       "//brave/browser/ui/views/frame/vertical_tabs:browser_tests",

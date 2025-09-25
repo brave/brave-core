@@ -9,6 +9,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/toolbar/ai_chat_button.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -35,8 +36,8 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/tabs/split_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
@@ -44,10 +45,12 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_key.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
+#include "chrome/browser/ui/views/toolbar/split_tabs_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/policy/core/browser/browser_policy_connector.h"
 #include "components/policy/core/common/mock_configuration_policy_provider.h"
 #include "components/policy/core/common/policy_map.h"
@@ -149,10 +152,6 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
       return false;
     }
     return button->GetVisible();
-  }
-
-  views::View* split_tabs() const {
-    return toolbar_view_->split_tabs_for_testing();
   }
 
   AvatarToolbarButton* GetAvatarToolbarButton(Browser* browser) {
@@ -343,6 +342,25 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_EQ(false, is_avatar_button_shown());
 }
 
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, SplitTabsToolbarButtonTest) {
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  SplitTabsToolbarButton* split_tabs_toolbar_button =
+      browser_view->toolbar()->split_tabs_.get();
+  ASSERT_TRUE(split_tabs_toolbar_button);
+
+  // Check our menu model is used for split button.
+  auto* menu_model = static_cast<BraveSplitTabMenuModel*>(
+      split_tabs_toolbar_button->split_tab_menu_.get());
+
+  // This id calc is copied from GetCommandIdInt() at split_tab_menu_model.cc
+  // Check that method if test failed.
+  int command_id =
+      ExistingBaseSubMenuModel::kMinSplitTabMenuModelCommandId +
+      static_cast<int>(SplitTabMenuModel::CommandId::kReversePosition);
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_IDC_SWAP_SPLIT_VIEW),
+            menu_model->GetLabelForCommandId(command_id));
+}
+
 // Test private/tor window's profile avatar text when multiple windows
 // are opened.
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonTextWithOTRTest) {
@@ -499,25 +517,4 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 
   // Normal winwow still has visible button.
   EXPECT_TRUE(is_wallet_button_shown(browser()));
-}
-
-// Check split tabs toolbar button is disabled always.
-class BraveToolbarViewTest_SideBySideEnabled : public BraveToolbarViewTest {
- public:
-  BraveToolbarViewTest_SideBySideEnabled() {
-    scoped_feature_list_.InitWithFeatures({features::kSideBySide}, {});
-  }
-
- protected:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
-
-IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_SideBySideEnabled,
-                       SplitTabsToolbarButtonDisabledTest) {
-  EXPECT_FALSE(split_tabs());
-}
-
-IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
-                       SplitTabsToolbarButtonDisabledTest) {
-  EXPECT_FALSE(split_tabs());
 }

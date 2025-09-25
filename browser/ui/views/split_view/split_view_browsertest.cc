@@ -32,9 +32,11 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/split_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -43,6 +45,7 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/tabs/public/split_tab_visual_data.h"
@@ -98,9 +101,8 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
         BrowserView::GetBrowserViewForBrowser(browser()));
   }
 
-  SplitViewSeparator* split_view_separator() const {
-    return views::AsViewClass<SplitViewSeparator>(
-        brave_multi_contents_view()->resize_area_for_testing());
+  views::View* split_view_separator() const {
+    return brave_multi_contents_view()->resize_area_for_testing();
   }
 
   BraveMultiContentsView* brave_multi_contents_view() const {
@@ -117,10 +119,6 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
     browser_non_client_frame_view()->DeprecatedLayoutImmediately();
   }
 
-  views::Widget* secondary_location_bar_widget() const {
-    return brave_multi_contents_view()->secondary_location_bar_widget_.get();
-  }
-
  protected:
   base::test::ScopedFeatureList scoped_features_;
 };
@@ -134,7 +132,6 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
 
   // Check MultiContentsView uses our separator and initially hidden.
   EXPECT_FALSE(split_view_separator()->GetVisible());
-  EXPECT_FALSE(split_view_separator()->menu_button_widget_->IsVisible());
 
   // separator should not be empty when split view is closed.
   auto* browser_view = brave_browser_view();
@@ -148,7 +145,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   EXPECT_EQ(gfx::Size(),
             browser_view->contents_separator_for_testing()->GetPreferredSize());
   EXPECT_TRUE(split_view_separator()->GetVisible());
-  EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsVisible());
+  EXPECT_EQ(4, split_view_separator()->GetPreferredSize().width());
 
   // Check corner radius.
   auto* multi_contents_view = brave_multi_contents_view();
@@ -192,8 +189,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
     return start_contents_web_view->width() == end_contents_web_view->width();
   }));
 
-  split_view_separator()->OnResize(30, false);
-  split_view_separator()->OnResize(30, true);
+  multi_contents_view->OnResize(30, false);
+  multi_contents_view->OnResize(30, true);
 
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return start_contents_web_view->width() != end_contents_web_view->width();
@@ -205,7 +202,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
                        ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON,
                        ui::EF_LEFT_MOUSE_BUTTON);
   event.SetClickCount(2);
-  split_view_separator()->OnMousePressed(event);
+  split_view_separator()->OnMouseReleased(event);
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return start_contents_web_view->width() == end_contents_web_view->width();
   }));
@@ -217,7 +214,6 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_EQ(2, tab_strip()->GetActiveIndex());
 
   EXPECT_FALSE(split_view_separator()->GetVisible());
-  EXPECT_FALSE(split_view_separator()->menu_button_widget_->IsVisible());
 
   // Created new tab(at 3) for new split view with existing tab(at 2).
   chrome::NewSplitTab(browser(),
@@ -227,22 +223,32 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_TRUE(tab_strip()->tab_at(3)->split().has_value());
   EXPECT_TRUE(tab_strip()->tab_at(3)->IsActive());
   EXPECT_TRUE(split_view_separator()->GetVisible());
-  EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsVisible());
-  EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsStackedAbove(
-      secondary_location_bar_widget()->GetNativeView()));
 
-  // Chromium's mini toolbar should be hidden always as we're using own own mini
-  // urlbar.
-  EXPECT_FALSE(
+  // Chromium's mini toolbar should be visible.
+  EXPECT_TRUE(
       brave_multi_contents_view()->mini_toolbar_for_testing(0)->GetVisible());
-  EXPECT_FALSE(
+  EXPECT_TRUE(
       brave_multi_contents_view()->mini_toolbar_for_testing(1)->GetVisible());
+
+  // Check mini toolbar uses our menu model.
+  brave_multi_contents_view()->mini_toolbar_for_testing(0)->OpenSplitViewMenu();
+  auto* menu_model =
+      static_cast<SplitTabMenuModel*>(brave_multi_contents_view()
+                                          ->mini_toolbar_for_testing(0)
+                                          ->menu_model_.get());
+
+  // This id calc is copied from GetCommandIdInt() at split_tab_menu_model.cc
+  // Check that method if test failed.
+  int command_id =
+      ExistingBaseSubMenuModel::kMinSplitTabMenuModelCommandId +
+      static_cast<int>(SplitTabMenuModel::CommandId::kReversePosition);
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_IDC_SWAP_SPLIT_VIEW),
+            menu_model->GetLabelForCommandId(command_id));
 
   // Activate non split view tab.
   tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
   EXPECT_EQ(0, tab_strip()->GetActiveIndex());
   EXPECT_FALSE(split_view_separator()->GetVisible());
-  EXPECT_FALSE(split_view_separator()->menu_button_widget_->IsVisible());
 
   // Check only hovered split tab has hover animation.
   auto* hovered_split_tab = tab_strip()->tab_at(2);
@@ -263,7 +269,6 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_TRUE(tab_strip()->tab_at(2)->IsActive());
   EXPECT_FALSE(tab_strip()->tab_at(3)->IsActive());
   EXPECT_TRUE(split_view_separator()->GetVisible());
-  EXPECT_TRUE(split_view_separator()->menu_button_widget_->IsVisible());
 
   tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
   EXPECT_EQ(0, tab_strip()->GetActiveIndex());
@@ -284,6 +289,21 @@ class SideBySideWithRoundedCornersTest : public SideBySideEnabledBrowserTest {
   }
   ~SideBySideWithRoundedCornersTest() override = default;
 };
+
+IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest, ContentsShadowTest) {
+  // Shadow if split tab is not active.
+  EXPECT_TRUE(brave_browser_view()->contents_shadow_);
+
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kToolbarButton);
+
+  // No shadow if split tab is active.
+  EXPECT_FALSE(brave_browser_view()->contents_shadow_);
+
+  // Shadow if split tab is not active.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_TRUE(brave_browser_view()->contents_shadow_);
+}
 
 // Test multi contents view's rounded corners with fullscreen state w/o split
 // view.
