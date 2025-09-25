@@ -96,7 +96,7 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   bool is_actor_allowed = features::IsAIChatAgentProfileEnabled() &&
                           Profile::FromBrowserContext(context)->IsAIChatAgent();
 
-  auto* actor_service =
+  actor::ActorKeyedService* actor_service =
       is_actor_allowed
           ? actor::ActorKeyedServiceFactory::GetActorKeyedService(context)
           : nullptr;

@@ -25,7 +25,7 @@ class ContentAgentToolProvider : public ToolProvider,
                                  public ContentAgentTaskProvider {
  public:
   ContentAgentToolProvider(Profile* profile,
-                           raw_ptr<actor::ActorKeyedService> actor_service);
+                           actor::ActorKeyedService* actor_service);
 
   ~ContentAgentToolProvider() override;
 
