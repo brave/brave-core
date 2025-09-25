@@ -976,6 +976,8 @@
     *** getChromeNtpRadioButton(...);
 }
 
+-keep class org.chromium.components.browser_ui.settings.ContainedRadioButtonGroupPreference
+
 -keep class org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference
 
 -keep class org.chromium.chrome.browser.tab_group_sync.StartupHelper {
