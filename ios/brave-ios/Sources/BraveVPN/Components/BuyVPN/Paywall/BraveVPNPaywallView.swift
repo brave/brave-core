@@ -36,7 +36,7 @@ public struct BraveVPNPaywallView: View {
   public init(
     openVPNAuthenticationInNewTab: @escaping (() -> Void),
     openDirectCheckoutInNewTab: @escaping () -> Void,
-    openLearnMoreInNewTab: @escaping() -> Void,
+    openLearnMoreInNewTab: @escaping () -> Void,
     installVPNProfile: @escaping () -> Void
   ) {
     self.iapObserverManager = BraveVPNIAPObserverManager(iapObserver: BraveVPN.iapObserver)
