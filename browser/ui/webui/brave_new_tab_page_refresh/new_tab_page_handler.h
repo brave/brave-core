@@ -20,15 +20,17 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
+class GURL;
 class PrefService;
 class TemplateURLService;
+enum class WindowOpenDisposition;
 
 namespace misc_metrics {
 class NewTabMetrics;
 }
 
-namespace tabs {
-class TabInterface;
+namespace content {
+class WebContents;
 }
 
 namespace brave_new_tab_page_refresh {
@@ -48,7 +50,7 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
                     std::unique_ptr<BackgroundFacade> background_facade,
                     std::unique_ptr<TopSitesFacade> top_sites_facade,
                     std::unique_ptr<VPNFacade> vpn_facade,
-                    tabs::TabInterface& tab,
+                    content::WebContents& web_contents,
                     PrefService& pref_service,
                     TemplateURLService& template_url_service,
                     misc_metrics::NewTabMetrics& new_tab_metrics);
@@ -175,6 +177,7 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
                                    std::vector<base::FilePath> paths);
 
   void OnUpdate(UpdateObserver::Source update_source);
+  void OpenGURL(const GURL& gurl, WindowOpenDisposition disposition);
 
   mojo::Receiver<mojom::NewTabPageHandler> receiver_;
   mojo::Remote<mojom::NewTabPage> page_;
@@ -183,7 +186,7 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   std::unique_ptr<BackgroundFacade> background_facade_;
   std::unique_ptr<TopSitesFacade> top_sites_facade_;
   std::unique_ptr<VPNFacade> vpn_facade_;
-  raw_ref<tabs::TabInterface> tab_;
+  raw_ref<content::WebContents> web_contents_;
   raw_ref<PrefService> pref_service_;
   raw_ref<TemplateURLService> template_url_service_;
   raw_ref<misc_metrics::NewTabMetrics> new_tab_metrics_;
