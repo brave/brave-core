@@ -195,6 +195,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &net::features::kWaitForFirstPartySetsInit,
       &network::features::kBrowsingTopics,
       &network::features::kInterestGroupStorage,
+      &network::features::kLocalNetworkAccessChecks,
       &network::features::kSharedStorageAPI,
       &network_time::kNetworkTimeServiceQuerying,
       &ntp_features::kCustomizeChromeSidePanelExtensionsCard,
