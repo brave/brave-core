@@ -14,7 +14,10 @@ var package = Package(
   products: [
     .library(name: "Brave", targets: ["Brave"]),
     .library(name: "Shared", targets: ["Shared"]),
-    .library(name: "BraveCore", targets: ["BraveCore", "MaterialComponents"]),
+    .library(
+      name: "BraveCore",
+      targets: ["BraveCore", "MaterialComponents", "PartitionAllocSupport"]
+    ),
     .library(name: "BraveShared", targets: ["BraveShared"]),
     .library(name: "BraveShields", targets: ["BraveShields"]),
     .library(name: "BraveUI", targets: ["BraveUI"]),
@@ -87,6 +90,7 @@ var package = Package(
         "BraveWallet",
         "BraveCore",
         "MaterialComponents",
+        "PartitionAllocSupport",
         "BraveUI",
         "DesignSystem",
         "Data",
@@ -273,7 +277,10 @@ var package = Package(
     ),
     .testTarget(
       name: "CertificateUtilitiesTests",
-      dependencies: ["CertificateUtilities", "BraveShared", "BraveCore", "MaterialComponents"],
+      dependencies: [
+        "CertificateUtilities", "BraveShared", "BraveCore", "MaterialComponents",
+        "PartitionAllocSupport",
+      ],
       exclude: ["Certificates/self-signed.conf"],
       resources: [
         .copy("Certificates/certviewer/brave.com.cer"),
@@ -326,6 +333,10 @@ var package = Package(
       plugins: ["LeoAssetsPlugin"]
     ),
     .binaryTarget(name: "NalaAssets", path: "../../../out/ios_current_link/NalaAssets.xcframework"),
+    .binaryTarget(
+      name: "PartitionAllocSupport",
+      path: "../../../out/ios_current_link/PartitionAllocSupport.xcframework"
+    ),
     .binaryTarget(name: "BraveCore", path: "../../../out/ios_current_link/BraveCore.xcframework"),
     .binaryTarget(
       name: "MaterialComponents",
@@ -366,6 +377,7 @@ var package = Package(
         "Data",
         "BraveCore",
         "MaterialComponents",
+        "PartitionAllocSupport",
         "BraveShared",
         "BraveUI",
         "DesignSystem",

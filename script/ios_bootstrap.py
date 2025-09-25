@@ -63,7 +63,10 @@ def create_required_spm_resources(force=False):
     # These are essentially the bare-essential requirements for SPM to validate
     # the Package.swift manifest: The existence of the xcframework directory
     # itself, plus a valid Info.plist inside it.
-    frameworks = ['BraveCore', 'MaterialComponents', 'NalaAssets']
+    frameworks = [
+        'BraveCore', 'MaterialComponents', 'NalaAssets',
+        'PartitionAllocSupport'
+    ]
     for frmk in frameworks:
         framework_dir = os.path.join(ios_current_link, f'{frmk}.xcframework')
         if force and os.path.exists(framework_dir):
