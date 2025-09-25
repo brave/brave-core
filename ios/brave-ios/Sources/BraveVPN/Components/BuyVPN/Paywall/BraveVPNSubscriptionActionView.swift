@@ -36,9 +36,7 @@ struct BraveVPNSubscriptionActionView: View {
 
   var body: some View {
     VStack(spacing: 16) {
-      Button {
-        learnMore()
-      } label: {
+      Button(action: learnMore) {
         Text(Strings.Paywall.braveVPNLearnMoreButtonTitle)
           .frame(maxWidth: .infinity)
       }
