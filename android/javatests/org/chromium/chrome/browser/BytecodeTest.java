@@ -2628,7 +2628,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
-                        "androidx/preference/Preference")); // presubmit: ignore-long-line
+                        "org/chromium/components/browser_ui/settings/ContainedRadioButtonGroupPreference")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/homepage/settings/BraveRadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
