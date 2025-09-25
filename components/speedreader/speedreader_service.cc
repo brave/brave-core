@@ -94,8 +94,12 @@ void SpeedreaderService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
+bool SpeedreaderService::IsEnabled() {
+  return prefs_->GetBoolean(kSpeedreaderEnabled);
+}
+
 bool SpeedreaderService::IsEnabledForAllSites() {
-  if (!prefs_->GetBoolean(kSpeedreaderEnabled)) {
+  if (!IsEnabled()) {
     return false;
   }
   return prefs_->GetBoolean(kSpeedreaderPrefEnabledForAllSites);

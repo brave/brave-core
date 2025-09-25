@@ -64,6 +64,9 @@ class SpeedreaderService : public KeyedService {
   ContentSetting GetEnabledForSiteSetting(const GURL& url);
   ContentSetting GetEnabledForSiteSetting(content::WebContents* contents);
 
+  // Is the main pref flag enabled
+  bool IsEnabled();
+
   // Returns |true| if IsEnabledForAllSites is true or/and
   // GetEnabledForSiteSetting is ALLOW.
   bool IsEnabledForSite(const GURL& url);
