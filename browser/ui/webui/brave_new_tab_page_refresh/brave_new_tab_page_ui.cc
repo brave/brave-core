@@ -31,7 +31,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
-#include "components/tabs/public/tab_interface.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -62,7 +61,6 @@ void BraveNewTabPageUI::BindInterface(
   auto* web_contents = web_ui()->GetWebContents();
   auto* profile = Profile::FromWebUI(web_ui());
   auto* prefs = profile->GetPrefs();
-  auto* tab = tabs::TabInterface::GetFromContents(web_contents);
   auto image_chooser =
       std::make_unique<CustomImageChooser>(*web_contents, *profile);
   auto background_facade = std::make_unique<BackgroundFacade>(
@@ -74,7 +72,7 @@ void BraveNewTabPageUI::BindInterface(
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   auto vpn_facade = std::make_unique<VPNFacade>(
-      *tab, brave_vpn::BraveVpnServiceFactory::GetForProfile(profile));
+      *web_contents, brave_vpn::BraveVpnServiceFactory::GetForProfile(profile));
 #else
   auto vpn_facade = std::make_unique<VPNFacade>();
 #endif
@@ -82,7 +80,7 @@ void BraveNewTabPageUI::BindInterface(
   page_handler_ = std::make_unique<NewTabPageHandler>(
       std::move(receiver), std::move(image_chooser),
       std::move(background_facade), std::move(top_sites_facade),
-      std::move(vpn_facade), *tab, *prefs,
+      std::move(vpn_facade), *web_contents, *prefs,
       *TemplateURLServiceFactory::GetForProfile(profile),
       *g_brave_browser_process->process_misc_metrics()->new_tab_metrics());
 }

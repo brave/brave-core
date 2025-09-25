@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
 
+#include "base/types/to_address.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -19,9 +20,9 @@ namespace brave_new_tab_page_refresh {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 
-VPNFacade::VPNFacade(tabs::TabInterface& tab,
+VPNFacade::VPNFacade(content::WebContents& web_contents,
                      brave_vpn::BraveVpnService* vpn_service)
-    : tab_(tab), vpn_service_(vpn_service) {}
+    : web_contents_(web_contents), vpn_service_(vpn_service) {}
 
 VPNFacade::~VPNFacade() = default;
 
@@ -32,17 +33,15 @@ void VPNFacade::ReloadPurchasedState() {
 }
 
 void VPNFacade::OpenPanel() {
-  tab_->GetBrowserWindowInterface()
-      ->GetFeatures()
-      .brave_vpn_controller()
-      ->ShowBraveVPNBubble(/* show_select */ true);
+  if (auto* controller = GetBraveVPNController()) {
+    controller->ShowBraveVPNBubble(/* show_select */ true);
+  }
 }
 
 void VPNFacade::OpenAccountPage(brave_vpn::mojom::ManageURLType url_type) {
-  tab_->GetBrowserWindowInterface()
-      ->GetFeatures()
-      .brave_vpn_controller()
-      ->OpenVPNAccountPage(url_type);
+  if (auto* controller = GetBraveVPNController()) {
+    controller->OpenVPNAccountPage(url_type);
+  }
 }
 
 void VPNFacade::RecordWidgetUsage() {
@@ -53,6 +52,17 @@ void VPNFacade::RecordWidgetUsage() {
 
 std::optional<std::string> VPNFacade::GetWidgetPrefName() {
   return kNewTabPageShowBraveVPN;
+}
+
+BraveVPNController* VPNFacade::GetBraveVPNController() {
+  if (auto* tab = tabs::TabInterface::MaybeGetFromContents(
+          base::to_address(web_contents_))) {
+    return tab->GetBrowserWindowInterface()
+        ->GetFeatures()
+        .brave_vpn_controller();
+  }
+
+  return nullptr;
 }
 
 #endif

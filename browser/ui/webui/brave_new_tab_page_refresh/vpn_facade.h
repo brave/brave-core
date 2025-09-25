@@ -14,14 +14,16 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 
-namespace tabs {
-class TabInterface;
+namespace content {
+class WebContents;
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 namespace brave_vpn {
 class BraveVpnService;
 }
+
+class BraveVPNController;
 #endif
 
 namespace brave_new_tab_page_refresh {
@@ -33,7 +35,8 @@ namespace brave_new_tab_page_refresh {
 // branching in `NewTabPageHandler`.
 class VPNFacade {
  public:
-  VPNFacade(tabs::TabInterface& tab, brave_vpn::BraveVpnService* vpn_service);
+  VPNFacade(content::WebContents& web_contents,
+            brave_vpn::BraveVpnService* vpn_service);
   ~VPNFacade();
 
   VPNFacade(const VPNFacade&) = delete;
@@ -46,7 +49,9 @@ class VPNFacade {
   std::optional<std::string> GetWidgetPrefName();
 
  private:
-  raw_ref<tabs::TabInterface> tab_;
+  BraveVPNController* GetBraveVPNController();
+
+  raw_ref<content::WebContents> web_contents_;
   raw_ptr<brave_vpn::BraveVpnService> vpn_service_;
 };
 
