@@ -12,7 +12,9 @@ extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
   /// Returns a `DecentralizedDNSHelper` for the given mode if supported and not in private mode.
   func decentralizedDNSHelperFor(url: URL?) -> DecentralizedDNSHelper? {
     let isPrivateMode = privateBrowsingManager.isPrivateBrowsing
-    guard !isPrivateMode,
+    let isWalletAllowed = profileController.braveWalletAPI.isAllowed
+    guard isWalletAllowed,
+      !isPrivateMode,
       let url,
       DecentralizedDNSHelper.isSupported(domain: url.domainURL.schemelessAbsoluteDisplayString),
       let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode)

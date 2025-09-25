@@ -42,7 +42,6 @@ extension BrowserViewController: TabObserver {
       CosmeticFiltersScriptHandler(),
       URLPartinessScriptHandler(),
       FaviconScriptHandler(),
-      Web3NameServiceScriptHandler(),
       YoutubeQualityScriptHandler(),
       BraveLeoScriptHandler(),
       BraveSkusScriptHandler(),
@@ -62,6 +61,10 @@ extension BrowserViewController: TabObserver {
           }
         )
       )
+    }
+
+    if profileController.braveWalletAPI.isAllowed {
+      injectedScripts.append(Web3NameServiceScriptHandler())
     }
 
     // Only add the logins handler and wallet provider if the tab is NOT a private browsing tab

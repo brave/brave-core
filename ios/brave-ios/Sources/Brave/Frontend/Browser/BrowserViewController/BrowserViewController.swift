@@ -1748,6 +1748,9 @@ public class BrowserViewController: UIViewController {
   }
 
   func showWeb3ServiceInterstitialPage(service: Web3Service, originalURL: URL) {
+    if !profileController.braveWalletAPI.isAllowed {
+      return
+    }
     topToolbar.leaveOverlayMode()
 
     guard let tab = tabManager.selectedTab,
