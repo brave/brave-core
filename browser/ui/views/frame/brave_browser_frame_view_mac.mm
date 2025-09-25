@@ -91,7 +91,8 @@ void BraveBrowserFrameViewMac::UpdateWindowTitleVisibility() {
     return;
   }
 
-  frame()->SetWindowTitleVisibility(ShouldShowWindowTitleForVerticalTabs());
+  browser_widget()->SetWindowTitleVisibility(
+      ShouldShowWindowTitleForVerticalTabs());
 }
 
 void BraveBrowserFrameViewMac::UpdateWindowTitleColor() {
@@ -99,7 +100,7 @@ void BraveBrowserFrameViewMac::UpdateWindowTitleColor() {
     return;
   }
 
-  frame()->UpdateWindowTitleColor(
+  browser_widget()->UpdateWindowTitleColor(
       GetCaptionColor(BrowserFrameActiveState::kUseCurrent));
 }
 
@@ -124,14 +125,14 @@ void BraveBrowserFrameViewMac::UpdateWindowTitleAndControls() {
   // state changed, we should reset controls positions manually.
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&views::Widget::ResetWindowControlsPosition,
-                                frame()->GetWeakPtr()));
+                                browser_widget()->GetWeakPtr()));
 }
 
 gfx::Size BraveBrowserFrameViewMac::GetMinimumSize() const {
   if (tabs::utils::ShouldShowVerticalTabs(browser_view()->browser())) {
     // In order to ignore tab strip height, skip BrowserFrameViewMac's
     // implementation.
-    auto size = frame()->client_view()->GetMinimumSize();
+    auto size = browser_widget()->client_view()->GetMinimumSize();
     size.SetToMax(gfx::Size(0, (size.width() * 3) / 4));
     // Note that we can't set empty bounds on Mac.
     size.SetToMax({1, 1});
