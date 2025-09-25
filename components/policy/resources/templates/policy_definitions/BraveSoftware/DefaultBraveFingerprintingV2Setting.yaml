@@ -1,0 +1,37 @@
+caption: Default Brave fingerprinting protection setting
+default: null
+desc: |-
+  Enables or disables Brave fingerprinting protection.
+
+  Setting the policy to:
+  - 1 disables fingerprinting protection
+  - 3 enables fingerprinting protection standard mode
+
+  When leaving it unset, fingerprinting protection is controlled by the user setting (fingerprinting protection standard mode by default).
+
+example_value: 3
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Disable fingerprinting protection
+  name: DisableFingerprintingProtection
+  value: 1
+- caption: Enable fingerprinting protection standard mode
+  name: EnableFingerprintingProtectionStandardMode
+  value: 3
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  enum:
+  - 1
+  - 3
+  type: integer
+supported_on:
+- chrome.*:140-
+- android:140-
+tags: []
+type: int-enum
