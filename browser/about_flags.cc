@@ -700,14 +700,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                      \
   EXPAND_FEATURE_ENTRIES(                                                      \
       {                                                                        \
-          "brave-v8-optimizer-jit",                                            \
-          "V8 JIT mode",                                                       \
-          "Tie V8 JIT compilation to optimization settings. When "             \
-          "optimizations are disabled, "                                       \
+          "brave-v8-jitless-mode",                                             \
+          "V8 Jitless mode",                                                   \
+          "Enable V8 jitless mode when optimizations are disabled. "          \
           "V8 runs in jitless mode which reduces performance but improves "    \
           "security. This does not affect all pages.",                         \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(features::kBraveV8OptimizerJit),                  \
+          FEATURE_VALUE_TYPE(features::kBraveV8JitlessMode),                   \
       },                                                                       \
       {                                                                        \
           "use-dev-updater-url",                                               \
