@@ -285,7 +285,7 @@ void SpeedreaderTabHelper::ProcessNavigation(
     return;
   }
 
-  if (!GetSpeedreaderService()->IsFeatureEnabled()) {
+  if (!speedreader_service_->IsFeatureEnabled()) {
     return;
   }
 
