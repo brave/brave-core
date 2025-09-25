@@ -137,4 +137,50 @@ TEST_F(BraveProfilePolicyProviderTest, PolicyDomainHandling) {
   // first_policies_loaded_ flag uniformly
 }
 
+TEST_F(BraveProfilePolicyProviderTest, OnProfilePolicyChanged_MatchingProfile) {
+  // Initialize the provider
+  provider_.Init(&schema_registry_);
+
+  // Fire the observer event and set profile ID to trigger policy loading
+  provider_.OnBraveOriginPoliciesReady();
+  provider_.SetProfileID("test-profile-id");
+
+  // Call OnProfilePolicyChanged with matching profile ID
+  provider_.OnProfilePolicyChanged("test.pref", "test-profile-id");
+
+  // Provider should still report policies as loaded
+  EXPECT_TRUE(
+      provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
+}
+
+TEST_F(BraveProfilePolicyProviderTest,
+       OnProfilePolicyChanged_DifferentProfile) {
+  // Initialize the provider
+  provider_.Init(&schema_registry_);
+
+  // Fire the observer event and set profile ID to trigger policy loading
+  provider_.OnBraveOriginPoliciesReady();
+  provider_.SetProfileID("test-profile-id");
+
+  // Call OnProfilePolicyChanged with different profile ID
+  provider_.OnProfilePolicyChanged("test.pref", "different-profile-id");
+
+  // Provider should still report policies as loaded (no action taken)
+  EXPECT_TRUE(
+      provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
+}
+
+TEST_F(BraveProfilePolicyProviderTest, OnProfilePolicyChanged_EmptyProfileId) {
+  // Initialize the provider without setting profile ID
+  provider_.Init(&schema_registry_);
+  provider_.OnBraveOriginPoliciesReady();
+
+  // Call OnProfilePolicyChanged (should not crash or affect anything)
+  provider_.OnProfilePolicyChanged("test.pref", "some-profile-id");
+
+  // Provider should still report no policies loaded since no profile ID set
+  EXPECT_FALSE(
+      provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
+}
+
 }  // namespace brave_policy

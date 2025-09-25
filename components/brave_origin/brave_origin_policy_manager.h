@@ -35,6 +35,13 @@ class BraveOriginPolicyManager {
    public:
     // Called when BraveOrigin policies become available or are updated.
     virtual void OnBraveOriginPoliciesReady() = 0;
+
+    // Called when a browser-level policy preference is changed.
+    virtual void OnBrowserPolicyChanged(std::string_view pref_name) {}
+
+    // Called when a profile-level policy preference is changed.
+    virtual void OnProfilePolicyChanged(std::string_view pref_name,
+                                        std::string_view profile_id) {}
   };
 
   static BraveOriginPolicyManager* GetInstance();

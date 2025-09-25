@@ -81,10 +81,36 @@ class TestObserver : public BraveOriginPolicyManager::Observer {
  public:
   void OnBraveOriginPoliciesReady() override { ready_called_ = true; }
 
+  void OnBrowserPolicyChanged(std::string_view pref_name) override {
+    browser_policy_changed_called_ = true;
+    last_browser_pref_ = pref_name;
+  }
+
+  void OnProfilePolicyChanged(std::string_view pref_name,
+                              std::string_view profile_id) override {
+    profile_policy_changed_called_ = true;
+    last_profile_pref_ = pref_name;
+    last_profile_id_ = profile_id;
+  }
+
   bool ready_called() const { return ready_called_; }
+  bool browser_policy_changed_called() const {
+    return browser_policy_changed_called_;
+  }
+  bool profile_policy_changed_called() const {
+    return profile_policy_changed_called_;
+  }
+  const std::string& last_browser_pref() const { return last_browser_pref_; }
+  const std::string& last_profile_pref() const { return last_profile_pref_; }
+  const std::string& last_profile_id() const { return last_profile_id_; }
 
  private:
   bool ready_called_ = false;
+  bool browser_policy_changed_called_ = false;
+  bool profile_policy_changed_called_ = false;
+  std::string last_browser_pref_;
+  std::string last_profile_pref_;
+  std::string last_profile_id_;
 };
 
 TEST_F(BraveOriginPolicyManagerTest, GetInstance_ReturnsSingleton) {
@@ -385,6 +411,78 @@ TEST_F(BraveOriginPolicyManagerTest, SetValues_UpdatesGetAllPoliciesMethods) {
   EXPECT_EQ(profile_policies.size(), 1u);
   EXPECT_TRUE(profile_policies.contains(kProfilePolicyKey));
   EXPECT_FALSE(profile_policies.at(kProfilePolicyKey));
+}
+
+TEST_F(BraveOriginPolicyManagerTest,
+       SetPolicyValue_BrowserPolicy_NotifiesObservers) {
+  InitializeManager();
+
+  TestObserver observer;
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  manager->AddObserver(&observer);
+
+  // Set a browser policy value
+  manager->SetPolicyValue(kTestGlobalPref, true);
+
+  // Verify browser policy observer was called
+  EXPECT_TRUE(observer.browser_policy_changed_called());
+  EXPECT_EQ(observer.last_browser_pref(), kTestGlobalPref);
+
+  // Verify profile policy observer was not called
+  EXPECT_FALSE(observer.profile_policy_changed_called());
+
+  manager->RemoveObserver(&observer);
+}
+
+TEST_F(BraveOriginPolicyManagerTest,
+       SetPolicyValue_ProfilePolicy_NotifiesObservers) {
+  InitializeManager();
+
+  TestObserver observer;
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  manager->AddObserver(&observer);
+
+  const std::string profile_id = "test-profile";
+
+  // Set a profile policy value
+  manager->SetPolicyValue(kTestProfilePref, false, profile_id);
+
+  // Verify profile policy observer was called
+  EXPECT_TRUE(observer.profile_policy_changed_called());
+  EXPECT_EQ(observer.last_profile_pref(), kTestProfilePref);
+  EXPECT_EQ(observer.last_profile_id(), profile_id);
+
+  // Verify browser policy observer was not called
+  EXPECT_FALSE(observer.browser_policy_changed_called());
+
+  manager->RemoveObserver(&observer);
+}
+
+TEST_F(BraveOriginPolicyManagerTest,
+       SetPolicyValue_MultipleObservers_AllNotified) {
+  InitializeManager();
+
+  TestObserver observer1, observer2, observer3;
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  manager->AddObserver(&observer1);
+  manager->AddObserver(&observer2);
+  manager->AddObserver(&observer3);
+
+  // Set a browser policy value
+  manager->SetPolicyValue(kTestGlobalPref, true);
+
+  // Verify all observers were called
+  EXPECT_TRUE(observer1.browser_policy_changed_called());
+  EXPECT_TRUE(observer2.browser_policy_changed_called());
+  EXPECT_TRUE(observer3.browser_policy_changed_called());
+
+  EXPECT_EQ(observer1.last_browser_pref(), kTestGlobalPref);
+  EXPECT_EQ(observer2.last_browser_pref(), kTestGlobalPref);
+  EXPECT_EQ(observer3.last_browser_pref(), kTestGlobalPref);
+
+  manager->RemoveObserver(&observer1);
+  manager->RemoveObserver(&observer2);
+  manager->RemoveObserver(&observer3);
 }
 
 }  // namespace brave_origin

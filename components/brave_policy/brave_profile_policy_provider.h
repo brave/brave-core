@@ -37,6 +37,8 @@ class BraveProfilePolicyProvider
 
   // brave_origin::BraveOriginPolicyManager::Observer implementation.
   void OnBraveOriginPoliciesReady() override;
+  void OnProfilePolicyChanged(std::string_view pref_name,
+                              std::string_view profile_id) override;
   void SetProfileID(const std::string& profile_id);
 
  private:

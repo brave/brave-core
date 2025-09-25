@@ -464,38 +464,6 @@ TEST_F(BraveOriginServiceTest,
   EXPECT_FALSE(result);
 }
 
-TEST_F(BraveOriginServiceTest,
-       SetBrowserPolicyValue_CallsRefreshOnBrowserPolicyService) {
-  // Verify that SetBrowserPolicyValue calls RefreshPolicies on browser policy
-  // service
-  EXPECT_CALL(
-      mock_browser_policy_service_,
-      RefreshPolicies(testing::_, policy::PolicyFetchReason::kUserRequest))
-      .Times(1);
-  EXPECT_CALL(mock_profile_policy_service_,
-              RefreshPolicies(testing::_, testing::_))
-      .Times(0);  // Should not be called for browser policies
-
-  bool result = service_->SetPolicyValue(kTestBrowserPref, true);
-  EXPECT_TRUE(result);
-}
-
-TEST_F(BraveOriginServiceTest,
-       SetProfilePolicyValue_CallsRefreshOnProfilePolicyService) {
-  // Verify that SetProfilePolicyValue calls RefreshPolicies on profile policy
-  // service
-  EXPECT_CALL(
-      mock_profile_policy_service_,
-      RefreshPolicies(testing::_, policy::PolicyFetchReason::kUserRequest))
-      .Times(1);
-  EXPECT_CALL(mock_browser_policy_service_,
-              RefreshPolicies(testing::_, testing::_))
-      .Times(0);  // Should not be called for profile policies
-
-  bool result = service_->SetPolicyValue(kTestProfilePref, false);
-  EXPECT_TRUE(result);
-}
-
 // Test class for when BraveOrigin feature is disabled
 class BraveOriginServiceDisabledTest : public testing::Test {
  public:

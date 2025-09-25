@@ -26,6 +26,7 @@ std::string GetBraveOriginPrefKey(const BraveOriginPolicyInfo& pref_info,
   }
 
   // For profile prefs, use profile_id.policy_key format
+  CHECK(!profile_id.value().empty());
   return base::StrCat({profile_id.value(), ".", pref_info.policy_key});
 }
 

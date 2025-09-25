@@ -94,28 +94,13 @@ bool BraveOriginService::SetPolicyValue(std::string_view pref_name,
     manager->SetPolicyValue(pref_name, value, profile_id_);
     target_prefs = profile_prefs_;
   }
+  CHECK(target_prefs);
 
   // Also set the corresponding pref value
-  if (target_prefs) {
-    if (!pref_info->user_settable && value == pref_info->default_value) {
-      target_prefs->ClearPref(pref_info->pref_name);
-    } else {
-      target_prefs->SetBoolean(pref_info->pref_name, value);
-    }
-  }
-
-  // Reload browser policies to ensure the new policy value takes effect
-  if (manager->IsBrowserPolicy(pref_info->pref_name) &&
-      browser_policy_service_) {
-    browser_policy_service_->RefreshPolicies(
-        base::BindOnce([]() {}), policy::PolicyFetchReason::kUserRequest);
-  }
-
-  // Reload profile policies to ensure the new policy value takes effect
-  if (manager->IsProfilePolicy(pref_info->pref_name) &&
-      profile_policy_service_) {
-    profile_policy_service_->RefreshPolicies(
-        base::BindOnce([]() {}), policy::PolicyFetchReason::kUserRequest);
+  if (!pref_info->user_settable && value == pref_info->default_value) {
+    target_prefs->ClearPref(pref_info->pref_name);
+  } else {
+    target_prefs->SetBoolean(pref_info->pref_name, value);
   }
 
   return true;

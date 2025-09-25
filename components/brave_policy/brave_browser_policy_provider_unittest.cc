@@ -140,4 +140,19 @@ TEST_F(BraveBrowserPolicyProviderTest, PolicyDomainHandling) {
   // first_policies_loaded_ flag uniformly
 }
 
+TEST_F(BraveBrowserPolicyProviderTest, OnBrowserPolicyChanged) {
+  // Initialize the provider
+  provider_.Init(&schema_registry_);
+
+  // Fire the observer event to trigger policy loading
+  provider_.OnBraveOriginPoliciesReady();
+
+  // Call OnBrowserPolicyChanged
+  provider_.OnBrowserPolicyChanged("test.browser.pref");
+
+  // Provider should still report policies as loaded after refresh
+  EXPECT_TRUE(
+      provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
+}
+
 }  // namespace brave_policy

@@ -34,9 +34,7 @@ void BraveOriginPolicyManager::Init(
   initialized_ = true;
 
   // Notify observers that policies are now ready
-  for (auto& observer : observers_) {
-    observer.OnBraveOriginPoliciesReady();
-  }
+  observers_.Notify(&Observer::OnBraveOriginPoliciesReady);
 }
 
 void BraveOriginPolicyManager::AddObserver(Observer* observer) {
@@ -72,12 +70,12 @@ std::optional<bool> BraveOriginPolicyManager::GetPolicyValue(
 
 bool BraveOriginPolicyManager::IsBrowserPolicy(
     std::string_view pref_name) const {
-  return base::FindOrNull(browser_policy_definitions_, pref_name) != nullptr;
+  return browser_policy_definitions_.contains(pref_name);
 }
 
 bool BraveOriginPolicyManager::IsProfilePolicy(
     std::string_view pref_name) const {
-  return base::FindOrNull(profile_policy_definitions_, pref_name) != nullptr;
+  return profile_policy_definitions_.contains(pref_name);
 }
 
 PoliciesEnabledMap BraveOriginPolicyManager::GetAllBrowserPolicies() const {
@@ -133,6 +131,14 @@ void BraveOriginPolicyManager::SetPolicyValue(
   ScopedDictPrefUpdate update(local_state_, kBraveOriginPolicies);
   std::string key = GetBraveOriginPrefKey(*policy_info, profile_id);
   update->Set(key, value);
+
+  // Notify observers of the policy change
+  if (profile_id.has_value()) {
+    observers_.Notify(&Observer::OnProfilePolicyChanged, pref_name,
+                      profile_id.value());
+  } else {
+    observers_.Notify(&Observer::OnBrowserPolicyChanged, pref_name);
+  }
 }
 
 // Helper function to get pref info from pref definitions
