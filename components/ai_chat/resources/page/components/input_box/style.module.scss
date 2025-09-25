@@ -38,8 +38,6 @@
     background-color: transparent;
     border: 0;
     overflow: hidden;
-    position: relative;
-    z-index: 0;
 
     &:focus {
       outline: none;
@@ -53,12 +51,6 @@
     color: var(--leo-color-text-primary);
     caret-color: var(--leo-color-text-primary);
     z-index: 0;
-
-    &.textTransparent {
-      color: transparent;
-      caret-color: var(--leo-color-text-primary);
-      z-index: 0;
-    }
   }
 
   &::after {
@@ -200,25 +192,4 @@
   box-sizing: border-box;
   overflow: hidden;
   margin: 0 0 0 var(--leo-spacing-m);
-}
-
-.highlightLayer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 1;
-  padding: 12px var(--leo-spacing-xl) 8px var(--leo-spacing-xl);
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  font: var(--leo-font-large-regular);
-  color: var(--leo-color-text-primary);
-}
-
-.smartModeText {
-  background: var(--leo-color-primary-10);
-  border-radius: var(--leo-radius-m);
-  color: var(--leo-color-text-primary);
 }

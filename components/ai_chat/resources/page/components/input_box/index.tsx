@@ -100,7 +100,6 @@ function InputBox(props: InputBoxProps) {
   // We plan to support it at anywhere after
   // https://github.com/brave/brave-browser/issues/48610 is resolved.
   const SMART_MODE_DETECTION_REGEX = /^\/([a-zA-Z0-9_-]+)/
-  const SMART_MODE_HIGHLIGHT_REGEX = /^(\/[a-zA-Z0-9_-]*)/
 
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value
@@ -175,44 +174,6 @@ function InputBox(props: InputBoxProps) {
     ) {
       props.context.resetSelectedActionType()
     }
-  }
-
-  const shouldShowHighlighting = () => {
-    if (!smartModes || smartModes.length === 0) return false
-
-    const match = props.context.inputText.match(SMART_MODE_HIGHLIGHT_REGEX)
-
-    if (match) {
-      const partialShortcut = match[1].substring(1) // Remove the '/' prefix
-
-      // Check if there are any smart modes that could potentially match
-      return smartModes.some((mode: Mojom.SmartMode) =>
-        mode.shortcut.toLowerCase().startsWith(partialShortcut.toLowerCase()),
-      )
-    }
-
-    return false
-  }
-
-  const renderHighlightedText = (text: string) => {
-    if (!shouldShowHighlighting()) return null
-
-    // Only highlight shortcuts at the very beginning of input
-    const match = text.match(SMART_MODE_HIGHLIGHT_REGEX)
-
-    if (match) {
-      const shortcut = match[1]
-      const remainingText = text.substring(shortcut.length)
-
-      return (
-        <>
-          <span className={styles.smartModeText}>{shortcut}</span>
-          {remainingText}
-        </>
-      )
-    }
-
-    return text
   }
 
   const handleOnPaste = async (
@@ -331,9 +292,6 @@ function InputBox(props: InputBoxProps) {
         className={styles.growWrap}
         data-replicated-value={props.context.inputText || placeholderText}
       >
-        <div className={styles.highlightLayer}>
-          {renderHighlightedText(props.context.inputText)}
-        </div>
         <textarea
           ref={maybeAutofocus}
           placeholder={placeholderText}
@@ -343,10 +301,7 @@ function InputBox(props: InputBoxProps) {
           value={props.context.inputText}
           autoFocus
           rows={1}
-          className={classnames({
-            [styles.textarea]: true,
-            [styles.textTransparent]: shouldShowHighlighting(),
-          })}
+          className={styles.textarea}
         />
       </div>
       {props.context.isCharLimitApproaching && (
