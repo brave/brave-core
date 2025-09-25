@@ -164,6 +164,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -194,6 +195,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -208,6 +210,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -238,6 +241,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -252,6 +256,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -284,6 +289,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
 ]
@@ -301,6 +307,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -319,6 +326,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -333,6 +341,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -351,6 +360,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -365,6 +375,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -383,6 +394,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -397,6 +409,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -430,6 +443,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -445,6 +459,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -482,6 +497,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -504,6 +520,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
         events: [],
         uploadedFiles: [],
         fromBraveSearchSERP: false,
+        smartMode: undefined,
         modelKey: '1',
       },
     ],
@@ -511,6 +528,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -531,6 +549,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -552,6 +571,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       },
     ],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -566,6 +586,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [getCompletionEvent('It is a lion!')],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -593,6 +614,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       },
     ],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -611,6 +633,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -644,6 +667,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       },
     ],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -662,6 +686,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -695,6 +720,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -716,6 +742,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
   {
@@ -734,6 +761,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    smartMode: undefined,
     modelKey: '1',
   },
 ]
