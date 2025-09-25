@@ -71,7 +71,7 @@ void MaybeEnableBraveFeaturesPrefsForPerfTesting(Profile* profile) {
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Speedreader - enable both the feature toggle and all-sites setting
-  profile->GetPrefs()->SetBoolean(speedreader::kSpeedreaderPrefFeatureEnabled,
+  profile->GetPrefs()->SetBoolean(speedreader::kSpeedreaderEnabled,
                                   true);
   profile->GetPrefs()->SetBoolean(
       speedreader::kSpeedreaderPrefEnabledForAllSites, true);

@@ -15,6 +15,10 @@ BASE_FEATURE(kSpeedreaderFeature,
              base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
 
+bool IsSpeedreaderEnabled() {
+  return base::FeatureList::IsEnabled(kSpeedreaderFeature);
+}
+
 const base::FeatureParam<int> kSpeedreaderMinOutLengthParam{
     &kSpeedreaderFeature, "min_out_length", 1000};
 

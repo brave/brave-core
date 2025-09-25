@@ -51,7 +51,7 @@ inline constexpr char kSpeedreaderPageViewsStoragePref[] =
 // Top-level feature toggle for Speedreader (named feature_enabled to
 // distinguish from the legacy "enabled" pref which actually controls all-sites
 // behavior)
-inline constexpr char kSpeedreaderPrefFeatureEnabled[] =
+inline constexpr char kSpeedreaderEnabled[] =
     "brave.speedreader.feature_enabled";
 
 // Whether Speedreader should be enabled for all sites

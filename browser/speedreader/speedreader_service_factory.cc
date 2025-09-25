@@ -9,11 +9,11 @@
 
 #include "base/no_destructor.h"
 #include "brave/components/speedreader/speedreader_service.h"
+#include "brave/components/speedreader/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
-#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 
 namespace speedreader {
@@ -48,7 +48,7 @@ content::BrowserContext* SpeedreaderServiceFactory::GetBrowserContextToUse(
 std::unique_ptr<KeyedService>
 SpeedreaderServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  if (!features::IsSpeedreaderEnabled()) {
+  if (!speedreader::IsSpeedreaderEnabled()) {
     return {};
   }
 

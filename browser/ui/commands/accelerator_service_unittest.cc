@@ -364,10 +364,10 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Test Speedreader
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SPEEDREADER_ICON_ONCLICK));
-  profile().GetPrefs()->SetBoolean(speedreader::kSpeedreaderPrefFeatureEnabled,
+  profile().GetPrefs()->SetBoolean(speedreader::kSpeedreaderEnabled,
                                    false);
   EXPECT_TRUE(service.IsCommandDisabledByPolicy(IDC_SPEEDREADER_ICON_ONCLICK));
-  profile().GetPrefs()->SetBoolean(speedreader::kSpeedreaderPrefFeatureEnabled,
+  profile().GetPrefs()->SetBoolean(speedreader::kSpeedreaderEnabled,
                                    true);
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SPEEDREADER_ICON_ONCLICK));
 #endif

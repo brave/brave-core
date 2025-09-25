@@ -109,7 +109,7 @@ constexpr auto kBraveOriginProfileMetadata =
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
         // Speedreader preferences
-        {speedreader::kSpeedreaderPrefFeatureEnabled,
+        {speedreader::kSpeedreaderEnabled,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
              /*user_settable=*/true)},
