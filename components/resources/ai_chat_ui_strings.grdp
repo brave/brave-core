@@ -690,6 +690,9 @@
   <message name="IDS_CHAT_UI_SHORTCUT_FORMAT_ERROR" desc="Error message when shortcut format is invalid in smart mode dialog" formatter_data="webui=AiChat">
     Shortcut can only contain letters, numbers, underscore, and hyphen
   </message>
+  <message name="IDS_CHAT_UI_SHORTCUT_TOO_LONG_ERROR" desc="Error message when shortcut exceeds maximum length in smart mode dialog" formatter_data="webui=AiChat">
+    Shortcut must be 64 characters or less
+  </message>
   <message name="IDS_CHAT_UI_SHORTCUT_DUPLICATE_ERROR" desc="Error message when shortcut already exists" formatter_data="webui=AiChat">
     Shortcut already exists
   </message>

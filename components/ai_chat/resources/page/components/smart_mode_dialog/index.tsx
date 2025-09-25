@@ -31,6 +31,9 @@ export default function SmartModeDialog() {
     if (!value.trim()) {
       return getLocale(S.CHAT_UI_SHORTCUT_REQUIRED_ERROR)
     }
+    if (value.trim().length > 64) {
+      return getLocale(S.CHAT_UI_SHORTCUT_TOO_LONG_ERROR)
+    }
     if (!/^[a-zA-Z0-9_-]+$/.test(value.trim())) {
       return getLocale(S.CHAT_UI_SHORTCUT_FORMAT_ERROR)
     }
