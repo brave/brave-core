@@ -1,8 +1,16 @@
 diff --git a/content/browser/web_contents/web_contents_impl.cc b/content/browser/web_contents/web_contents_impl.cc
-index 7e6cc3516325ff91c62e6f28c48c72d3199d80e8..e0a5b11c4a4d93593211e886c9edbeb1486b5db2 100644
+index 7e6cc3516325ff91c62e6f28c48c72d3199d80e8..15c6b9fce904d7228e5f685b338137055b309696 100644
 --- a/content/browser/web_contents/web_contents_impl.cc
 +++ b/content/browser/web_contents/web_contents_impl.cc
-@@ -5364,7 +5364,7 @@ FrameTree* WebContentsImpl::CreateNewWindow(
+@@ -5273,6 +5273,7 @@ FrameTree* WebContentsImpl::CreateNewWindow(
+           SiteInstance::CreateForGuest(GetBrowserContext(), partition_config);
+     } else {
+       site_instance = SiteInstance::Create(GetBrowserContext());
++      BRAVE_WEB_CONTENTS_IMPL_CREATE_NEW_WINDOW_INHERIT_STORAGE_PARTITION
+     }
+   } else {
+     site_instance = source_site_instance;
+@@ -5364,7 +5365,7 @@ FrameTree* WebContentsImpl::CreateNewWindow(
  
    // Save the window for later if we're not suppressing the opener (since it
    // will be shown immediately).
