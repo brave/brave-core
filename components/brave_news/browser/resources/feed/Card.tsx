@@ -34,11 +34,10 @@ export const Title = styled.h3`
   &> a { all: unset; }
 `
 type HidabeImageProps = React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> & {
-  imgUrl: string,
   targetHeight?: number,
   targetWidth?: number,
 };
-const HidableImage = ({ onError, onLoad, targetHeight, targetWidth, imgUrl, ...rest }: HidabeImageProps) => {
+const HidableImage = ({ onError, onLoad, targetHeight, targetWidth, src, ...rest }: HidabeImageProps) => {
   const ref = React.useRef<HTMLImageElement>()
 
   const handleError = React.useCallback((e: React.UIEvent<HTMLImageElement>) => {
@@ -51,7 +50,9 @@ const HidableImage = ({ onError, onLoad, targetHeight, targetWidth, imgUrl, ...r
     onLoad?.(e)
   }, [onLoad])
 
-  let src = 'chrome://brave-image?url=' + encodeURIComponent(imgUrl);
+  if (src) {
+    src = 'chrome://brave-image?url=' + encodeURIComponent(src);
+  }
   if (targetHeight && targetWidth) {
     const width = Math.round(targetWidth * window.devicePixelRatio)
     const height = Math.round(targetHeight * window.devicePixelRatio)

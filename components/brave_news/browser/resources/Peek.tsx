@@ -127,7 +127,7 @@ export default function Peek() {
           <MetaInfo article={data} />
           <Title>{data.title}</Title>
         </div>
-        <SmallImage loading='eager' imgUrl={imageUrl} />
+        <SmallImage loading='eager' src={imageUrl} />
       </PeekingCard>}
     </Container>
     : null

@@ -34,7 +34,7 @@ export default function HeroArticle({ info, feedDepth }: Props) {
         reportVisit(feedDepth)
       }
     }}>
-    <LargeImage loading='lazy' imgUrl={info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url ?? ''} />
+    <LargeImage loading='lazy' src={info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url ?? ''} />
     <ArticleMetaRow article={info.data} />
     <Title>
       <BraveNewsLink
