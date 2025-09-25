@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/omnibox/browser/omnibox_controller.h"
+#include "chrome/browser/ui/omnibox/omnibox_controller.h"
 
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "components/prefs/pref_service.h"
@@ -25,7 +25,7 @@ bool IsAutocompleteEnabled(const PrefService* prefs) {
   kGemini || (turl && turl->starter_pack_id() == \
                           template_url_starter_pack_data::kAiMode)
 
-#include <components/omnibox/browser/omnibox_controller.cc>
+#include <chrome/browser/ui/omnibox/omnibox_controller.cc>
 #undef kGemini
 #undef StartAutocomplete
 

@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_OMNIBOX_EDIT_MODEL_H_
-#define BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_OMNIBOX_EDIT_MODEL_H_
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_OMNIBOX_OMNIBOX_EDIT_MODEL_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_OMNIBOX_OMNIBOX_EDIT_MODEL_H_
 
-#include "components/omnibox/browser/omnibox_view.h"
+#include "chrome/browser/ui/omnibox/omnibox_view.h"
 
 #define CanPasteAndGo                                       \
   CanPasteAndGo_Chromium(const std::u16string& text) const; \
@@ -21,9 +21,9 @@
   GetSuperGIcon_Unused(__VA_ARGS__) const; \
   ui::ImageModel GetSuperGIcon(__VA_ARGS__)
 
-#include <components/omnibox/browser/omnibox_edit_model.h>  // IWYU pragma: export
+#include <chrome/browser/ui/omnibox/omnibox_edit_model.h>  // IWYU pragma: export
 #undef GetSuperGIcon
 #undef CanPasteAndGo
 #undef PasteAndGo
 
-#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_OMNIBOX_EDIT_MODEL_H_
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_OMNIBOX_OMNIBOX_EDIT_MODEL_H_
