@@ -1,17 +1,17 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/omnibox/browser/omnibox_edit_model.h"
+#include "chrome/browser/ui/omnibox/omnibox_edit_model.h"
 
 #include <optional>
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_search_provider.h"
+#include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
-#include "components/omnibox/browser/omnibox_controller.h"
 #include "components/vector_icons/vector_icons.h"
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -43,7 +43,7 @@ SetInputIsPastedFromClipboard(OmniboxController* omnibox_controller,
   auto pasted =                                     \
       SetInputIsPastedFromClipboard(controller_, paste_state_ != NONE);
 
-#include <components/omnibox/browser/omnibox_edit_model.cc>
+#include <chrome/browser/ui/omnibox/omnibox_edit_model.cc>
 
 #undef GetSuperGIcon
 #undef CanPasteAndGo
