@@ -112,6 +112,18 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetChainName) {
   EXPECT_EQ(future.Get<1>(), "Method not found");
   future.Clear();
 
+  url_loader_factory_.AddResponse(testnet_url, R"(
+    {"jsonrpc":"2.0",
+     "id":1,
+     "error":{"code":-32601}}
+  )");
+  polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());
+
+  EXPECT_TRUE(future.Wait());
+  EXPECT_EQ(future.Get<0>(), std::nullopt);
+  EXPECT_EQ(future.Get<1>(), "An internal error has occurred");
+  future.Clear();
+
   url_loader_factory_.AddResponse(testnet_url, "",
                                   net::HTTP_INTERNAL_SERVER_ERROR);
   polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());

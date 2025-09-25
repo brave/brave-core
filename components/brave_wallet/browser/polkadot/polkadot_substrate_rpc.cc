@@ -95,8 +95,7 @@ void PolkadotSubstrateRpc::OnGetChainName(GetChainNameCallback callback,
     if (res->error->message) {
       return std::move(callback).Run(std::nullopt, res->error->message.value());
     }
-    return std::move(callback).Run(std::nullopt,
-                                   WalletUserRejectedRequestErrorMessage());
+    return std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
   }
 
   if (res->result) {
