@@ -49,9 +49,7 @@ class BraveOriginPolicyManager {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  // Get policy value for a specific pref, using local state value or default
-  // For profile-scoped prefs, profile_id is required to construct the correct
-  // key. Returns std::nullopt if the pref is unknown.
+  // Get policy value for a specific pref
   std::optional<bool> GetPolicyValue(
       std::string_view pref_name,
       std::optional<std::string_view> profile_id = std::nullopt) const;
@@ -64,19 +62,23 @@ class BraveOriginPolicyManager {
   // values from local state or defaults)
   PoliciesEnabledMap GetAllProfilePolicies(std::string_view profile_id) const;
 
-  // Set browser-level policy value in local state
-  void SetBrowserPolicyValue(std::string_view pref_name, bool value);
+  // Set a policy value in local state
+  void SetPolicyValue(
+      std::string_view pref_name,
+      bool value,
+      std::optional<std::string_view> profile_id = std::nullopt);
 
-  // Set profile-level policy value in local state
-  void SetProfilePolicyValue(std::string_view pref_name,
-                             bool value,
-                             std::string_view profile_id);
+  // Determines if the policy is a browser-level policy
+  bool IsBrowserPolicy(std::string_view pref_name) const;
+
+  // Determines if the policy is a profile-level policy
+  bool IsProfilePolicy(std::string_view pref_name) const;
 
   // Check if the singleton has been initialized
   bool IsInitialized() const;
 
   // Helper function to get pref info from pref definitions
-  const BraveOriginPolicyInfo* GetPrefInfo(std::string_view pref_name);
+  const BraveOriginPolicyInfo* GetPrefInfo(std::string_view pref_name) const;
 
   // Shutdown the policy manager, clearing state and observers
   void Shutdown();
@@ -97,12 +99,6 @@ class BraveOriginPolicyManager {
       const BraveOriginPolicyInfo& policy_info,
       const base::Value::Dict& policies_dict,
       std::optional<std::string_view> profile_id = std::nullopt) const;
-
-  // Internal helper to set policy value in local state
-  void SetPolicyValueInternal(std::string_view pref_name,
-                              bool value,
-                              const BraveOriginPolicyMap& policy_definitions,
-                              std::optional<std::string_view> profile_id);
 
   bool initialized_ = false;
   BraveOriginPolicyMap browser_policy_definitions_;

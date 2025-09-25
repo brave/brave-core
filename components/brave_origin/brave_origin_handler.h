@@ -33,16 +33,11 @@ class BraveOriginSettingsHandlerImpl
   void IsPrefControlledByBraveOrigin(
       const std::string& pref_name,
       IsPrefControlledByBraveOriginCallback callback) override;
-  void GetBrowserPolicyValue(const std::string& pref_name,
-                             GetBrowserPolicyValueCallback callback) override;
-  void GetProfilePolicyValue(const std::string& pref_name,
-                             GetProfilePolicyValueCallback callback) override;
-  void SetBrowserPolicyValue(const std::string& pref_name,
-                             bool value,
-                             SetBrowserPolicyValueCallback callback) override;
-  void SetProfilePolicyValue(const std::string& pref_name,
-                             bool value,
-                             SetProfilePolicyValueCallback callback) override;
+  void GetPolicyValue(const std::string& pref_name,
+                      GetPolicyValueCallback callback) override;
+  void SetPolicyValue(const std::string& pref_name,
+                      bool value,
+                      SetPolicyValueCallback callback) override;
 
  private:
   raw_ptr<BraveOriginService> brave_origin_service_;

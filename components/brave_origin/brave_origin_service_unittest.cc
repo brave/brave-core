@@ -110,9 +110,9 @@ class BraveOriginServiceTest : public testing::Test {
   std::unique_ptr<BraveOriginService> service_;
 };
 
-TEST_F(BraveOriginServiceTest, SetBrowserPolicyValue_UserSettable_SetsPrefs) {
+TEST_F(BraveOriginServiceTest, SetPolicyValue_UserSettable_SetsPrefs) {
   // Set a user-settable browser policy value to true
-  bool result = service_->SetBrowserPolicyValue(kTestBrowserPref, true);
+  bool result = service_->SetPolicyValue(kTestBrowserPref, true);
   EXPECT_TRUE(result);
 
   // Should be set in both the policy manager and local_state
@@ -126,10 +126,9 @@ TEST_F(BraveOriginServiceTest, SetBrowserPolicyValue_UserSettable_SetsPrefs) {
 }
 
 TEST_F(BraveOriginServiceTest,
-       SetBrowserPolicyValue_NotUserSettable_ClearsDefaultValue) {
+       SetPolicyValue_NotUserSettable_ClearsDefaultValue) {
   // Set a non-user-settable browser policy to its default value (false)
-  bool result =
-      service_->SetBrowserPolicyValue(kTestBrowserNotUserSettable, false);
+  bool result = service_->SetPolicyValue(kTestBrowserNotUserSettable, false);
   EXPECT_TRUE(result);
 
   // Should be set in policy manager
@@ -144,11 +143,10 @@ TEST_F(BraveOriginServiceTest,
 }
 
 TEST_F(BraveOriginServiceTest,
-       SetBrowserPolicyValue_NotUserSettable_SetsNonDefaultValue) {
+       SetPolicyValue_NotUserSettable_SetsNonDefaultValue) {
   // Set a non-user-settable browser policy to a non-default value (true,
   // default is false)
-  bool result =
-      service_->SetBrowserPolicyValue(kTestBrowserNotUserSettable, true);
+  bool result = service_->SetPolicyValue(kTestBrowserNotUserSettable, true);
   EXPECT_TRUE(result);
 
   // Should be set in both the policy manager and local_state
@@ -161,9 +159,9 @@ TEST_F(BraveOriginServiceTest,
   EXPECT_TRUE(local_state_value);
 }
 
-TEST_F(BraveOriginServiceTest, SetProfilePolicyValue_UserSettable_SetsPrefs) {
+TEST_F(BraveOriginServiceTest, SetPolicyValue_ProfilePref_SetsPrefs) {
   // Set a user-settable profile policy value to false
-  bool result = service_->SetProfilePolicyValue(kTestProfilePref, false);
+  bool result = service_->SetPolicyValue(kTestProfilePref, false);
   EXPECT_TRUE(result);
 
   // Should be set in both the policy manager and profile_prefs
@@ -177,10 +175,9 @@ TEST_F(BraveOriginServiceTest, SetProfilePolicyValue_UserSettable_SetsPrefs) {
 }
 
 TEST_F(BraveOriginServiceTest,
-       SetProfilePolicyValue_NotUserSettable_ClearsDefaultValue) {
+       SetPolicyValue_ProfileNotUserSettable_ClearsDefaultValue) {
   // Set a non-user-settable profile policy to its default value (true)
-  bool result =
-      service_->SetProfilePolicyValue(kTestProfileNotUserSettable, true);
+  bool result = service_->SetPolicyValue(kTestProfileNotUserSettable, true);
   EXPECT_TRUE(result);
 
   // Should be set in policy manager
@@ -195,11 +192,10 @@ TEST_F(BraveOriginServiceTest,
 }
 
 TEST_F(BraveOriginServiceTest,
-       SetProfilePolicyValue_NotUserSettable_SetsNonDefaultValue) {
+       SetPolicyValue_ProfileNotUserSettable_SetsNonDefaultValue) {
   // Set a non-user-settable profile policy to a non-default value (false,
   // default is true)
-  bool result =
-      service_->SetProfilePolicyValue(kTestProfileNotUserSettable, false);
+  bool result = service_->SetPolicyValue(kTestProfileNotUserSettable, false);
   EXPECT_TRUE(result);
 
   // Should be set in both the policy manager and profile_prefs
@@ -213,8 +209,8 @@ TEST_F(BraveOriginServiceTest,
   EXPECT_FALSE(profile_prefs_value);
 }
 
-TEST_F(BraveOriginServiceTest, SetBrowserPolicyValue_UnknownPref_ReturnsFalse) {
-  bool result = service_->SetBrowserPolicyValue(kUnknownPref, true);
+TEST_F(BraveOriginServiceTest, SetPolicyValue_UnknownPref_ReturnsFalse) {
+  bool result = service_->SetPolicyValue(kUnknownPref, true);
   EXPECT_FALSE(result);
 
   // Should not affect any prefs
@@ -223,95 +219,77 @@ TEST_F(BraveOriginServiceTest, SetBrowserPolicyValue_UnknownPref_ReturnsFalse) {
   EXPECT_FALSE(policy_value.has_value());
 }
 
-TEST_F(BraveOriginServiceTest, SetProfilePolicyValue_UnknownPref_ReturnsFalse) {
-  bool result = service_->SetProfilePolicyValue(kUnknownPref, true);
-  EXPECT_FALSE(result);
-
-  // Should not affect any prefs
-  auto policy_value = BraveOriginPolicyManager::GetInstance()->GetPolicyValue(
-      kUnknownPref, kTestProfileId);
-  EXPECT_FALSE(policy_value.has_value());
-}
-
-TEST_F(BraveOriginServiceTest,
-       GetBrowserPolicyValue_ReturnsValueFromPolicyManager) {
+TEST_F(BraveOriginServiceTest, GetPolicyValue_ReturnsValueFromPolicyManager) {
   // Set a value through the policy manager directly
-  BraveOriginPolicyManager::GetInstance()->SetBrowserPolicyValue(
-      kTestBrowserPref, true);
+  BraveOriginPolicyManager::GetInstance()->SetPolicyValue(kTestBrowserPref,
+                                                          true);
 
   // Service should return the same value
-  auto result = service_->GetBrowserPolicyValue(kTestBrowserPref);
+  auto result = service_->GetPolicyValue(kTestBrowserPref);
   ASSERT_TRUE(result.has_value());
   EXPECT_TRUE(result.value());
 }
 
 TEST_F(BraveOriginServiceTest,
-       GetProfilePolicyValue_ReturnsValueFromPolicyManager) {
+       GetPolicyValue_ProfilePref_ReturnsValueFromPolicyManager) {
   // Set a value through the policy manager directly
-  BraveOriginPolicyManager::GetInstance()->SetProfilePolicyValue(
+  BraveOriginPolicyManager::GetInstance()->SetPolicyValue(
       kTestProfilePref, false, kTestProfileId);
 
   // Service should return the same value
-  auto result = service_->GetProfilePolicyValue(kTestProfilePref);
+  auto result = service_->GetPolicyValue(kTestProfilePref);
   ASSERT_TRUE(result.has_value());
   EXPECT_FALSE(result.value());
 }
 
-TEST_F(BraveOriginServiceTest,
-       GetBrowserPolicyValue_UnknownPref_ReturnsNullopt) {
-  auto result = service_->GetBrowserPolicyValue(kUnknownPref);
-  EXPECT_FALSE(result.has_value());
-}
-
-TEST_F(BraveOriginServiceTest,
-       GetProfilePolicyValue_UnknownPref_ReturnsNullopt) {
-  auto result = service_->GetProfilePolicyValue(kUnknownPref);
+TEST_F(BraveOriginServiceTest, GetPolicyValue_UnknownPref_ReturnsNullopt) {
+  auto result = service_->GetPolicyValue(kUnknownPref);
   EXPECT_FALSE(result.has_value());
 }
 
 TEST_F(BraveOriginServiceTest, SetThenGet_BrowserPolicy_Consistency) {
   // Set via service
-  bool set_result = service_->SetBrowserPolicyValue(kTestBrowserPref, true);
+  bool set_result = service_->SetPolicyValue(kTestBrowserPref, true);
   EXPECT_TRUE(set_result);
 
   // Get via service
-  auto get_result = service_->GetBrowserPolicyValue(kTestBrowserPref);
+  auto get_result = service_->GetPolicyValue(kTestBrowserPref);
   ASSERT_TRUE(get_result.has_value());
   EXPECT_TRUE(get_result.value());
 
   // Change value
-  set_result = service_->SetBrowserPolicyValue(kTestBrowserPref, false);
+  set_result = service_->SetPolicyValue(kTestBrowserPref, false);
   EXPECT_TRUE(set_result);
 
   // Verify change
-  get_result = service_->GetBrowserPolicyValue(kTestBrowserPref);
+  get_result = service_->GetPolicyValue(kTestBrowserPref);
   ASSERT_TRUE(get_result.has_value());
   EXPECT_FALSE(get_result.value());
 }
 
 TEST_F(BraveOriginServiceTest, SetThenGet_ProfilePolicy_Consistency) {
   // Set via service
-  bool set_result = service_->SetProfilePolicyValue(kTestProfilePref, false);
+  bool set_result = service_->SetPolicyValue(kTestProfilePref, false);
   EXPECT_TRUE(set_result);
 
   // Get via service
-  auto get_result = service_->GetProfilePolicyValue(kTestProfilePref);
+  auto get_result = service_->GetPolicyValue(kTestProfilePref);
   ASSERT_TRUE(get_result.has_value());
   EXPECT_FALSE(get_result.value());
 
   // Change value
-  set_result = service_->SetProfilePolicyValue(kTestProfilePref, true);
+  set_result = service_->SetPolicyValue(kTestProfilePref, true);
   EXPECT_TRUE(set_result);
 
   // Verify change
-  get_result = service_->GetProfilePolicyValue(kTestProfilePref);
+  get_result = service_->GetPolicyValue(kTestProfilePref);
   ASSERT_TRUE(get_result.has_value());
   EXPECT_TRUE(get_result.value());
 }
 
 TEST_F(BraveOriginServiceTest, PolicyValueStoredInCorrectBraveOriginLocation) {
   // Set browser policy
-  service_->SetBrowserPolicyValue(kTestBrowserPref, true);
+  service_->SetPolicyValue(kTestBrowserPref, true);
 
   // Verify it's stored in the correct location in kBraveOriginPolicies
   const base::Value::Dict& policies_dict =
@@ -321,21 +299,22 @@ TEST_F(BraveOriginServiceTest, PolicyValueStoredInCorrectBraveOriginLocation) {
   const auto* policy_info =
       BraveOriginPolicyManager::GetInstance()->GetPrefInfo(kTestBrowserPref);
   ASSERT_NE(policy_info, nullptr);
-  std::string expected_browser_key = GetBraveOriginBrowserPrefKey(*policy_info);
+  std::string expected_browser_key =
+      GetBraveOriginPrefKey(*policy_info, std::nullopt);
 
   const base::Value* stored_value = policies_dict.Find(expected_browser_key);
   ASSERT_NE(stored_value, nullptr);
   EXPECT_TRUE(stored_value->GetBool());
 
   // Set profile policy
-  service_->SetProfilePolicyValue(kTestProfilePref, false);
+  service_->SetPolicyValue(kTestProfilePref, false);
 
   // Get the expected profile key
   const auto* profile_policy_info =
       BraveOriginPolicyManager::GetInstance()->GetPrefInfo(kTestProfilePref);
   ASSERT_NE(profile_policy_info, nullptr);
   std::string expected_profile_key =
-      GetBraveOriginProfilePrefKey(*profile_policy_info, kTestProfileId);
+      GetBraveOriginPrefKey(*profile_policy_info, kTestProfileId);
 
   // Verify it's stored with profile-scoped key
   stored_value = policies_dict.Find(expected_profile_key);
@@ -348,7 +327,7 @@ TEST_F(BraveOriginServiceTest, ClearPrefBehavior_NotUserSettableWithDefault) {
   EXPECT_FALSE(local_state_.HasPrefPath(kTestBrowserNotUserSettable));
 
   // Set it to default value (false) - should clear the pref
-  service_->SetBrowserPolicyValue(kTestBrowserNotUserSettable, false);
+  service_->SetPolicyValue(kTestBrowserNotUserSettable, false);
 
   // Pref should still not exist in local_state
   EXPECT_FALSE(local_state_.HasPrefPath(kTestBrowserNotUserSettable));
@@ -362,7 +341,7 @@ TEST_F(BraveOriginServiceTest, ClearPrefBehavior_NotUserSettableWithDefault) {
 
 TEST_F(BraveOriginServiceTest, SetPrefBehavior_NotUserSettableWithNonDefault) {
   // Set it to non-default value (true, default is false) - should set the pref
-  service_->SetBrowserPolicyValue(kTestBrowserNotUserSettable, true);
+  service_->SetPolicyValue(kTestBrowserNotUserSettable, true);
 
   // Pref should exist in local_state
   EXPECT_TRUE(local_state_.HasPrefPath(kTestBrowserNotUserSettable));
@@ -497,7 +476,7 @@ TEST_F(BraveOriginServiceTest,
               RefreshPolicies(testing::_, testing::_))
       .Times(0);  // Should not be called for browser policies
 
-  bool result = service_->SetBrowserPolicyValue(kTestBrowserPref, true);
+  bool result = service_->SetPolicyValue(kTestBrowserPref, true);
   EXPECT_TRUE(result);
 }
 
@@ -513,7 +492,7 @@ TEST_F(BraveOriginServiceTest,
               RefreshPolicies(testing::_, testing::_))
       .Times(0);  // Should not be called for profile policies
 
-  bool result = service_->SetProfilePolicyValue(kTestProfilePref, false);
+  bool result = service_->SetPolicyValue(kTestProfilePref, false);
   EXPECT_TRUE(result);
 }
 
@@ -589,7 +568,7 @@ class BraveOriginServiceDisabledTest : public testing::Test {
 TEST_F(BraveOriginServiceDisabledTest,
        SetBrowserPolicyValue_FeatureDisabled_ReturnsFalse) {
   // When feature is disabled, setting values should return false
-  bool result = service_->SetBrowserPolicyValue(kTestBrowserPref, true);
+  bool result = service_->SetPolicyValue(kTestBrowserPref, true);
   EXPECT_FALSE(result);
 
   // Should not affect policy manager values
@@ -606,7 +585,7 @@ TEST_F(BraveOriginServiceDisabledTest,
 TEST_F(BraveOriginServiceDisabledTest,
        SetProfilePolicyValue_FeatureDisabled_ReturnsFalse) {
   // When feature is disabled, setting values should return false
-  bool result = service_->SetProfilePolicyValue(kTestProfilePref, false);
+  bool result = service_->SetPolicyValue(kTestProfilePref, false);
   EXPECT_FALSE(result);
 
   // Should not affect policy manager values
@@ -624,7 +603,7 @@ TEST_F(BraveOriginServiceDisabledTest,
        GetBrowserPolicyValue_FeatureDisabled_ReturnsDefault) {
   // Even when feature is disabled, get operations should still work and return
   // defaults
-  auto result = service_->GetBrowserPolicyValue(kTestBrowserPref);
+  auto result = service_->GetPolicyValue(kTestBrowserPref);
   ASSERT_TRUE(result.has_value());
   EXPECT_FALSE(result.value());  // Should return default value
 }
@@ -633,7 +612,7 @@ TEST_F(BraveOriginServiceDisabledTest,
        GetProfilePolicyValue_FeatureDisabled_ReturnsDefault) {
   // Even when feature is disabled, get operations should still work and return
   // defaults
-  auto result = service_->GetProfilePolicyValue(kTestProfilePref);
+  auto result = service_->GetPolicyValue(kTestProfilePref);
   ASSERT_TRUE(result.has_value());
   EXPECT_TRUE(result.value());  // Should return default value
 }
@@ -647,9 +626,8 @@ TEST_F(BraveOriginServiceDisabledTest, FeatureDisabled_NoSideEffects) {
   EXPECT_TRUE(policies_dict.empty());
 
   // Attempt to set values (should fail)
-  bool browser_result = service_->SetBrowserPolicyValue(kTestBrowserPref, true);
-  bool profile_result =
-      service_->SetProfilePolicyValue(kTestProfilePref, false);
+  bool browser_result = service_->SetPolicyValue(kTestBrowserPref, true);
+  bool profile_result = service_->SetPolicyValue(kTestProfilePref, false);
   EXPECT_FALSE(browser_result);
   EXPECT_FALSE(profile_result);
 

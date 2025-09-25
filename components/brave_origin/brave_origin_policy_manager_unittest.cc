@@ -167,7 +167,7 @@ TEST_F(BraveOriginPolicyManagerTest, GetPolicyValue_ReturnsLocalStateValue) {
   // Set policy value in local state
   const auto* policy_info = manager->GetPrefInfo(kTestGlobalPref);
   ASSERT_NE(policy_info, nullptr);
-  std::string policy_key = GetBraveOriginBrowserPrefKey(*policy_info);
+  std::string policy_key = GetBraveOriginPrefKey(*policy_info, std::nullopt);
   SetPolicyInLocalState(policy_key, true);
 
   auto result = manager->GetPolicyValue(kTestGlobalPref);
@@ -182,8 +182,7 @@ TEST_F(BraveOriginPolicyManagerTest, GetPolicyValue_ProfileScopedPolicy) {
   const std::string profile_id = "profile123";
   const auto* policy_info = manager->GetPrefInfo(kTestProfilePref);
   ASSERT_NE(policy_info, nullptr);
-  std::string policy_key =
-      GetBraveOriginProfilePrefKey(*policy_info, profile_id);
+  std::string policy_key = GetBraveOriginPrefKey(*policy_info, profile_id);
   SetPolicyInLocalState(policy_key, false);
 
   auto result = manager->GetPolicyValue(kTestProfilePref, profile_id);
@@ -289,7 +288,7 @@ TEST_F(BraveOriginPolicyManagerTest, RemoveObserver_StopsNotifications) {
   EXPECT_FALSE(observer.ready_called());
 }
 
-TEST_F(BraveOriginPolicyManagerTest, SetBrowserPolicyValue_UpdatesValue) {
+TEST_F(BraveOriginPolicyManagerTest, SetPolicyValue_UpdatesValue) {
   InitializeManager();
 
   auto* manager = BraveOriginPolicyManager::GetInstance();
@@ -300,7 +299,7 @@ TEST_F(BraveOriginPolicyManagerTest, SetBrowserPolicyValue_UpdatesValue) {
   EXPECT_FALSE(result.value());
 
   // Set the value to true
-  manager->SetBrowserPolicyValue(kTestGlobalPref, true);
+  manager->SetPolicyValue(kTestGlobalPref, true);
 
   // Should now return the updated value
   result = manager->GetPolicyValue(kTestGlobalPref);
@@ -308,7 +307,7 @@ TEST_F(BraveOriginPolicyManagerTest, SetBrowserPolicyValue_UpdatesValue) {
   EXPECT_TRUE(result.value());
 
   // Set the value back to false
-  manager->SetBrowserPolicyValue(kTestGlobalPref, false);
+  manager->SetPolicyValue(kTestGlobalPref, false);
 
   // Should return the updated value
   result = manager->GetPolicyValue(kTestGlobalPref);
@@ -316,7 +315,7 @@ TEST_F(BraveOriginPolicyManagerTest, SetBrowserPolicyValue_UpdatesValue) {
   EXPECT_FALSE(result.value());
 }
 
-TEST_F(BraveOriginPolicyManagerTest, SetProfilePolicyValue_UpdatesValue) {
+TEST_F(BraveOriginPolicyManagerTest, SetPolicyValue_ProfilePref_UpdatesValue) {
   InitializeManager();
 
   auto* manager = BraveOriginPolicyManager::GetInstance();
@@ -328,7 +327,7 @@ TEST_F(BraveOriginPolicyManagerTest, SetProfilePolicyValue_UpdatesValue) {
   EXPECT_TRUE(result.value());
 
   // Set the value to false
-  manager->SetProfilePolicyValue(kTestProfilePref, false, profile_id);
+  manager->SetPolicyValue(kTestProfilePref, false, profile_id);
 
   // Should now return the updated value
   result = manager->GetPolicyValue(kTestProfilePref, profile_id);
@@ -336,7 +335,7 @@ TEST_F(BraveOriginPolicyManagerTest, SetProfilePolicyValue_UpdatesValue) {
   EXPECT_FALSE(result.value());
 
   // Set the value back to true
-  manager->SetProfilePolicyValue(kTestProfilePref, true, profile_id);
+  manager->SetPolicyValue(kTestProfilePref, true, profile_id);
 
   // Should return the updated value
   result = manager->GetPolicyValue(kTestProfilePref, profile_id);
@@ -344,57 +343,23 @@ TEST_F(BraveOriginPolicyManagerTest, SetProfilePolicyValue_UpdatesValue) {
   EXPECT_TRUE(result.value());
 }
 
-TEST_F(BraveOriginPolicyManagerTest,
-       SetBrowserPolicyValue_RequiresInitialization) {
+TEST_F(BraveOriginPolicyManagerTest, SetPolicyValue_RequiresInitialization) {
   auto* manager = BraveOriginPolicyManager::GetInstance();
   // Should crash/check fail when not initialized
-  EXPECT_DEATH_IF_SUPPORTED(
-      manager->SetBrowserPolicyValue(kTestGlobalPref, true), "");
+  EXPECT_DEATH_IF_SUPPORTED(manager->SetPolicyValue(kTestGlobalPref, true), "");
 }
 
-TEST_F(BraveOriginPolicyManagerTest,
-       SetProfilePolicyValue_RequiresInitialization) {
-  auto* manager = BraveOriginPolicyManager::GetInstance();
-  // Should crash/check fail when not initialized
-  EXPECT_DEATH_IF_SUPPORTED(
-      manager->SetProfilePolicyValue(kTestProfilePref, true, "profile"), "");
-}
-
-TEST_F(BraveOriginPolicyManagerTest, SetBrowserPolicyValue_RejectsUnknownPref) {
+TEST_F(BraveOriginPolicyManagerTest, SetPolicyValue_RejectsUnknownPref) {
   InitializeManager();
 
   auto* manager = BraveOriginPolicyManager::GetInstance();
 
   // Setting unknown pref should not crash but should be ignored
-  manager->SetBrowserPolicyValue(kUnknownPref, true);
+  manager->SetPolicyValue(kUnknownPref, true);
 
   // Verify it's still unknown
   auto result = manager->GetPolicyValue(kUnknownPref);
   EXPECT_FALSE(result.has_value());
-}
-
-TEST_F(BraveOriginPolicyManagerTest, SetProfilePolicyValue_RejectsUnknownPref) {
-  InitializeManager();
-
-  auto* manager = BraveOriginPolicyManager::GetInstance();
-
-  // Setting unknown pref should not crash but should be ignored
-  manager->SetProfilePolicyValue(kUnknownPref, true, "profile");
-
-  // Verify it's still unknown
-  auto result = manager->GetPolicyValue(kUnknownPref, "profile");
-  EXPECT_FALSE(result.has_value());
-}
-
-TEST_F(BraveOriginPolicyManagerTest,
-       SetProfilePolicyValue_RequiresNonEmptyProfileId) {
-  InitializeManager();
-
-  auto* manager = BraveOriginPolicyManager::GetInstance();
-
-  // Should crash/check fail with empty profile ID
-  EXPECT_DEATH_IF_SUPPORTED(
-      manager->SetProfilePolicyValue(kTestProfilePref, true, ""), "");
 }
 
 TEST_F(BraveOriginPolicyManagerTest, SetValues_UpdatesGetAllPoliciesMethods) {
@@ -404,10 +369,10 @@ TEST_F(BraveOriginPolicyManagerTest, SetValues_UpdatesGetAllPoliciesMethods) {
   const std::string profile_id = "test-profile";
 
   // Set browser policy value
-  manager->SetBrowserPolicyValue(kTestGlobalPref, true);
+  manager->SetPolicyValue(kTestGlobalPref, true);
 
   // Set profile policy value
-  manager->SetProfilePolicyValue(kTestProfilePref, false, profile_id);
+  manager->SetPolicyValue(kTestProfilePref, false, profile_id);
 
   // Verify GetAllBrowserPolicies reflects the change
   const auto browser_policies = manager->GetAllBrowserPolicies();

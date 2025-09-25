@@ -165,34 +165,32 @@ TEST_F(BraveOriginHandlerTest,
   EXPECT_FALSE(result);
 }
 
-TEST_F(BraveOriginHandlerTest, GetBrowserPolicyValue_KnownPref_ReturnsValue) {
+TEST_F(BraveOriginHandlerTest, GetPolicyValue_KnownPref_ReturnsValue) {
   // First set a value
-  service_->SetBrowserPolicyValue(kTestBrowserPref, true);
+  service_->SetPolicyValue(kTestBrowserPref, true);
 
   base::RunLoop run_loop;
   std::optional<bool> result;
 
-  handler_->GetBrowserPolicyValue(
-      kTestBrowserPref,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, std::optional<bool>* result,
-             std::optional<bool> value) {
-            *result = value;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
+  handler_->GetPolicyValue(kTestBrowserPref, base::BindOnce(
+                                                 [](base::RunLoop* run_loop,
+                                                    std::optional<bool>* result,
+                                                    std::optional<bool> value) {
+                                                   *result = value;
+                                                   run_loop->Quit();
+                                                 },
+                                                 &run_loop, &result));
 
   run_loop.Run();
   ASSERT_TRUE(result.has_value());
   EXPECT_TRUE(result.value());
 }
 
-TEST_F(BraveOriginHandlerTest,
-       GetBrowserPolicyValue_UnknownPref_ReturnsNullopt) {
+TEST_F(BraveOriginHandlerTest, GetPolicyValue_UnknownPref_ReturnsNullopt) {
   base::RunLoop run_loop;
   std::optional<bool> result = true;  // Initialize with a value
 
-  handler_->GetBrowserPolicyValue(
+  handler_->GetPolicyValue(
       kUnknownPref, base::BindOnce(
                         [](base::RunLoop* run_loop, std::optional<bool>* result,
                            std::optional<bool> value) {
@@ -205,51 +203,32 @@ TEST_F(BraveOriginHandlerTest,
   EXPECT_FALSE(result.has_value());
 }
 
-TEST_F(BraveOriginHandlerTest, GetProfilePolicyValue_KnownPref_ReturnsValue) {
+TEST_F(BraveOriginHandlerTest, GetPolicyValue_ProfilePref_ReturnsValue) {
   // First set a value
-  service_->SetProfilePolicyValue(kTestProfilePref, false);
+  service_->SetPolicyValue(kTestProfilePref, false);
 
   base::RunLoop run_loop;
   std::optional<bool> result;
 
-  handler_->GetProfilePolicyValue(
-      kTestProfilePref,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, std::optional<bool>* result,
-             std::optional<bool> value) {
-            *result = value;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
+  handler_->GetPolicyValue(kTestProfilePref, base::BindOnce(
+                                                 [](base::RunLoop* run_loop,
+                                                    std::optional<bool>* result,
+                                                    std::optional<bool> value) {
+                                                   *result = value;
+                                                   run_loop->Quit();
+                                                 },
+                                                 &run_loop, &result));
 
   run_loop.Run();
   ASSERT_TRUE(result.has_value());
   EXPECT_FALSE(result.value());
 }
 
-TEST_F(BraveOriginHandlerTest,
-       GetProfilePolicyValue_UnknownPref_ReturnsNullopt) {
-  base::RunLoop run_loop;
-  std::optional<bool> result = true;  // Initialize with a value
-
-  handler_->GetProfilePolicyValue(
-      kUnknownPref, base::BindOnce(
-                        [](base::RunLoop* run_loop, std::optional<bool>* result,
-                           std::optional<bool> value) {
-                          *result = value;
-                          run_loop->Quit();
-                        },
-                        &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_FALSE(result.has_value());
-}
-
-TEST_F(BraveOriginHandlerTest, SetBrowserPolicyValue_KnownPref_ReturnsTrue) {
+TEST_F(BraveOriginHandlerTest, SetPolicyValue_KnownPref_ReturnsTrue) {
   base::RunLoop run_loop;
   bool result = false;
 
-  handler_->SetBrowserPolicyValue(
+  handler_->SetPolicyValue(
       kTestBrowserPref, true,
       base::BindOnce(
           [](base::RunLoop* run_loop, bool* result, bool success) {
@@ -262,16 +241,16 @@ TEST_F(BraveOriginHandlerTest, SetBrowserPolicyValue_KnownPref_ReturnsTrue) {
   EXPECT_TRUE(result);
 
   // Verify the value was actually set
-  auto policy_value = service_->GetBrowserPolicyValue(kTestBrowserPref);
+  auto policy_value = service_->GetPolicyValue(kTestBrowserPref);
   ASSERT_TRUE(policy_value.has_value());
   EXPECT_TRUE(policy_value.value());
 }
 
-TEST_F(BraveOriginHandlerTest, SetBrowserPolicyValue_UnknownPref_ReturnsFalse) {
+TEST_F(BraveOriginHandlerTest, SetPolicyValue_UnknownPref_ReturnsFalse) {
   base::RunLoop run_loop;
   bool result = true;
 
-  handler_->SetBrowserPolicyValue(
+  handler_->SetPolicyValue(
       kUnknownPref, true,
       base::BindOnce(
           [](base::RunLoop* run_loop, bool* result, bool success) {
@@ -284,11 +263,11 @@ TEST_F(BraveOriginHandlerTest, SetBrowserPolicyValue_UnknownPref_ReturnsFalse) {
   EXPECT_FALSE(result);
 }
 
-TEST_F(BraveOriginHandlerTest, SetProfilePolicyValue_KnownPref_ReturnsTrue) {
+TEST_F(BraveOriginHandlerTest, SetPolicyValue_ProfilePref_ReturnsTrue) {
   base::RunLoop run_loop;
   bool result = false;
 
-  handler_->SetProfilePolicyValue(
+  handler_->SetPolicyValue(
       kTestProfilePref, false,
       base::BindOnce(
           [](base::RunLoop* run_loop, bool* result, bool success) {
@@ -301,26 +280,9 @@ TEST_F(BraveOriginHandlerTest, SetProfilePolicyValue_KnownPref_ReturnsTrue) {
   EXPECT_TRUE(result);
 
   // Verify the value was actually set
-  auto policy_value = service_->GetProfilePolicyValue(kTestProfilePref);
+  auto policy_value = service_->GetPolicyValue(kTestProfilePref);
   ASSERT_TRUE(policy_value.has_value());
   EXPECT_FALSE(policy_value.value());
-}
-
-TEST_F(BraveOriginHandlerTest, SetProfilePolicyValue_UnknownPref_ReturnsFalse) {
-  base::RunLoop run_loop;
-  bool result = true;
-
-  handler_->SetProfilePolicyValue(
-      kUnknownPref, false,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, bool* result, bool success) {
-            *result = success;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_FALSE(result);
 }
 
 // Test class for when BraveOrigin feature is disabled
@@ -413,68 +375,30 @@ TEST_F(BraveOriginHandlerDisabledTest,
 }
 
 TEST_F(BraveOriginHandlerDisabledTest,
-       GetBrowserPolicyValue_FeatureDisabled_ReturnsNullopt) {
+       GetPolicyValue_FeatureDisabled_ReturnsNullopt) {
   base::RunLoop run_loop;
   std::optional<bool> result = true;  // Initialize with a value
 
-  handler_->GetBrowserPolicyValue(
-      kTestBrowserPref,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, std::optional<bool>* result,
-             std::optional<bool> value) {
-            *result = value;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
+  handler_->GetPolicyValue(kTestBrowserPref, base::BindOnce(
+                                                 [](base::RunLoop* run_loop,
+                                                    std::optional<bool>* result,
+                                                    std::optional<bool> value) {
+                                                   *result = value;
+                                                   run_loop->Quit();
+                                                 },
+                                                 &run_loop, &result));
 
   run_loop.Run();
   EXPECT_FALSE(result.has_value());
 }
 
 TEST_F(BraveOriginHandlerDisabledTest,
-       GetProfilePolicyValue_FeatureDisabled_ReturnsNullopt) {
-  base::RunLoop run_loop;
-  std::optional<bool> result = true;  // Initialize with a value
-
-  handler_->GetProfilePolicyValue(
-      kTestProfilePref,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, std::optional<bool>* result,
-             std::optional<bool> value) {
-            *result = value;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_FALSE(result.has_value());
-}
-
-TEST_F(BraveOriginHandlerDisabledTest,
-       SetBrowserPolicyValue_FeatureDisabled_ReturnsFalse) {
+       SetPolicyValue_FeatureDisabled_ReturnsFalse) {
   base::RunLoop run_loop;
   bool result = true;
 
-  handler_->SetBrowserPolicyValue(
+  handler_->SetPolicyValue(
       kTestBrowserPref, true,
-      base::BindOnce(
-          [](base::RunLoop* run_loop, bool* result, bool success) {
-            *result = success;
-            run_loop->Quit();
-          },
-          &run_loop, &result));
-
-  run_loop.Run();
-  EXPECT_FALSE(result);
-}
-
-TEST_F(BraveOriginHandlerDisabledTest,
-       SetProfilePolicyValue_FeatureDisabled_ReturnsFalse) {
-  base::RunLoop run_loop;
-  bool result = true;
-
-  handler_->SetProfilePolicyValue(
-      kTestProfilePref, false,
       base::BindOnce(
           [](base::RunLoop* run_loop, bool* result, bool success) {
             *result = success;

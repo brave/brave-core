@@ -15,10 +15,8 @@ interface BraveOriginSettingsHandler {
       (bool is_controlled);
 
   // Get the current value of a Brave Origin controlled preference
-  GetBrowserPolicyValue(string pref_name) => (bool? value);
-  GetProfilePolicyValue(string pref_name) => (bool? value);
+  GetPolicyValue(string pref_name) => (bool? value);
 
   // Set the value of a Brave Origin controlled preference
-  SetBrowserPolicyValue(string pref_name, bool value) => (bool success);
-  SetProfilePolicyValue(string pref_name, bool value) => (bool success);
+  SetPolicyValue(string pref_name, bool value) => (bool success);
 };

@@ -19,18 +19,14 @@ bool IsBraveOriginEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveOrigin);
 }
 
-std::string GetBraveOriginBrowserPrefKey(
-    const BraveOriginPolicyInfo& pref_info) {
-  // For browser prefs, use policy_key directly
-  return pref_info.policy_key;
-}
+std::string GetBraveOriginPrefKey(const BraveOriginPolicyInfo& pref_info,
+                                  std::optional<std::string_view> profile_id) {
+  if (!profile_id.has_value()) {
+    return pref_info.policy_key;
+  }
 
-std::string GetBraveOriginProfilePrefKey(const BraveOriginPolicyInfo& pref_info,
-                                         std::string_view profile_id) {
   // For profile prefs, use profile_id.policy_key format
-  CHECK(!profile_id.empty())
-      << "Profile ID cannot be empty for profile-scoped preferences";
-  return base::StrCat({profile_id, ".", pref_info.policy_key});
+  return base::StrCat({profile_id.value(), ".", pref_info.policy_key});
 }
 
 }  // namespace brave_origin

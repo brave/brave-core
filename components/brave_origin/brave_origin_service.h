@@ -38,17 +38,11 @@ class BraveOriginService : public KeyedService {
   // Check if a preference is controlled by BraveOrigin
   bool IsPrefControlledByBraveOrigin(std::string_view pref_name) const;
 
-  // Update the BraveOrigin browser-level policy value
-  bool SetBrowserPolicyValue(std::string_view pref_name, bool value);
+  // Update the BraveOrigin policy value
+  bool SetPolicyValue(std::string_view pref_name, bool value);
 
-  // Update the BraveOrigin profile-level policy value
-  bool SetProfilePolicyValue(std::string_view pref_name, bool value);
-
-  // Get the current value of a BraveOrigin browser policy
-  std::optional<bool> GetBrowserPolicyValue(std::string_view pref_name) const;
-
-  // Get the current value of a BraveOrigin profile policy
-  std::optional<bool> GetProfilePolicyValue(std::string_view pref_name) const;
+  // Get the current value of a BraveOrigin policy
+  std::optional<bool> GetPolicyValue(std::string_view pref_name) const;
 
  protected:
   // Local state and profile preferences this state is associated with

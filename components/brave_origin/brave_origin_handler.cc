@@ -38,55 +38,28 @@ void BraveOriginSettingsHandlerImpl::IsPrefControlledByBraveOrigin(
   std::move(callback).Run(is_controlled);
 }
 
-void BraveOriginSettingsHandlerImpl::GetBrowserPolicyValue(
+void BraveOriginSettingsHandlerImpl::GetPolicyValue(
     const std::string& pref_name,
-    GetBrowserPolicyValueCallback callback) {
+    GetPolicyValueCallback callback) {
   if (!brave_origin::IsBraveOriginEnabled()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
-  std::optional<bool> value =
-      brave_origin_service_->GetBrowserPolicyValue(pref_name);
+  std::optional<bool> value = brave_origin_service_->GetPolicyValue(pref_name);
   std::move(callback).Run(value);
 }
 
-void BraveOriginSettingsHandlerImpl::GetProfilePolicyValue(
-    const std::string& pref_name,
-    GetProfilePolicyValueCallback callback) {
-  if (!brave_origin::IsBraveOriginEnabled()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  std::optional<bool> value =
-      brave_origin_service_->GetProfilePolicyValue(pref_name);
-  std::move(callback).Run(value);
-}
-
-void BraveOriginSettingsHandlerImpl::SetBrowserPolicyValue(
+void BraveOriginSettingsHandlerImpl::SetPolicyValue(
     const std::string& pref_name,
     bool value,
-    SetBrowserPolicyValueCallback callback) {
+    SetPolicyValueCallback callback) {
   if (!brave_origin::IsBraveOriginEnabled()) {
     std::move(callback).Run(false);
     return;
   }
 
-  bool success = brave_origin_service_->SetBrowserPolicyValue(pref_name, value);
-  std::move(callback).Run(success);
-}
-
-void BraveOriginSettingsHandlerImpl::SetProfilePolicyValue(
-    const std::string& pref_name,
-    bool value,
-    SetProfilePolicyValueCallback callback) {
-  if (!brave_origin::IsBraveOriginEnabled()) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  bool success = brave_origin_service_->SetProfilePolicyValue(pref_name, value);
+  bool success = brave_origin_service_->SetPolicyValue(pref_name, value);
   std::move(callback).Run(success);
 }
 
