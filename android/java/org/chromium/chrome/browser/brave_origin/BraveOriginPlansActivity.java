@@ -129,8 +129,7 @@ public class BraveOriginPlansActivity extends AsyncInitializationActivity {
                         return;
                     }
                     // Get the current profile and initiate purchase flow for the selected plan. The
-                    // purchase
-                    // initiated on original profile only.
+                    // purchase is initiated on original profile only.
                     Profile currentProfile =
                             getProfileProviderSupplier().get().getOriginalProfile();
                     InAppPurchaseWrapper.getInstance()

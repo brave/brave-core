@@ -36,7 +36,7 @@ public class SkusServiceFactory {
     private SkusServiceFactory() {}
 
     public @Nullable SkusService getSkusService(
-            Profile profile, @Nullable ConnectionErrorHandler connectionErrorHandler) {
+            @Nullable Profile profile, @Nullable ConnectionErrorHandler connectionErrorHandler) {
         if (profile == null) {
             return null;
         }
