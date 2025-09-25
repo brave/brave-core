@@ -75,11 +75,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetChainName) {
       "id": 1 })");
   polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());
 
-  {
-    auto const [network_name, error] = future.Take();
-    EXPECT_EQ(network_name, "Westend");
-    EXPECT_EQ(error, std::nullopt);
-  }
+  auto [network_name, error] = future.Take();
+  EXPECT_EQ(network_name, "Westend");
+  EXPECT_EQ(error, std::nullopt);
 
   url_loader_factory_.AddResponse(testnet_url, R"(
     { "jsonrpc": "2.0",
@@ -87,21 +85,17 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetChainName) {
       "id": 1 })");
   polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());
 
-  {
-    auto const [network_name, error] = future.Take();
-    EXPECT_EQ(network_name, std::nullopt);
-    EXPECT_EQ(error, WalletParsingErrorMessage());
-  }
+  std::tie(network_name, error) = future.Take();
+  EXPECT_EQ(network_name, std::nullopt);
+  EXPECT_EQ(error, WalletParsingErrorMessage());
 
   url_loader_factory_.AddResponse(testnet_url, R"(
     { "id": 1 })");
   polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());
 
-  {
-    auto const [network_name, error] = future.Take();
-    EXPECT_EQ(network_name, std::nullopt);
-    EXPECT_EQ(error, WalletParsingErrorMessage());
-  }
+  std::tie(network_name, error) = future.Take();
+  EXPECT_EQ(network_name, std::nullopt);
+  EXPECT_EQ(error, WalletParsingErrorMessage());
 
   url_loader_factory_.AddResponse(testnet_url, R"(
     {"jsonrpc":"2.0",
@@ -110,11 +104,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetChainName) {
   )");
   polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());
 
-  {
-    auto const [network_name, error] = future.Take();
-    EXPECT_EQ(network_name, std::nullopt);
-    EXPECT_EQ(error, "Method not found");
-  }
+  std::tie(network_name, error) = future.Take();
+  EXPECT_EQ(network_name, std::nullopt);
+  EXPECT_EQ(error, "Method not found");
 
   url_loader_factory_.AddResponse(testnet_url, R"(
     {"jsonrpc":"2.0",
@@ -123,21 +115,17 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetChainName) {
   )");
   polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());
 
-  {
-    auto const [network_name, error] = future.Take();
-    EXPECT_EQ(network_name, std::nullopt);
-    EXPECT_EQ(error, "An internal error has occurred");
-  }
+  std::tie(network_name, error) = future.Take();
+  EXPECT_EQ(network_name, std::nullopt);
+  EXPECT_EQ(error, "An internal error has occurred");
 
   url_loader_factory_.AddResponse(testnet_url, "",
                                   net::HTTP_INTERNAL_SERVER_ERROR);
   polkadot_substrate_rpc_->GetChainName(chain_id, future.GetCallback());
 
-  {
-    auto const [network_name, error] = future.Take();
-    EXPECT_EQ(network_name, std::nullopt);
-    EXPECT_EQ(error, WalletInternalErrorMessage());
-  }
+  std::tie(network_name, error) = future.Take();
+  EXPECT_EQ(network_name, std::nullopt);
+  EXPECT_EQ(error, WalletInternalErrorMessage());
 }
 
 }  // namespace brave_wallet
