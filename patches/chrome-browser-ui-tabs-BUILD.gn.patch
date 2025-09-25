@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/tabs/BUILD.gn b/chrome/browser/ui/tabs/BUILD.gn
+index 64f0efbd013887e1f55a3d59977746c2b5acda63..5ebe0186d261f731d7d18c56d3ff74dd2cefa88c 100644
+--- a/chrome/browser/ui/tabs/BUILD.gn
++++ b/chrome/browser/ui/tabs/BUILD.gn
+@@ -568,6 +568,7 @@ if (!is_android) {
+     if (!is_android) {
+       deps += [ "//chrome/browser/ui/views/zoom" ]
+     }
++    deps += [ "//brave/components/tabs" ]
+   }
+ 
+   # This is a separate component to avoid possible circular deps.
