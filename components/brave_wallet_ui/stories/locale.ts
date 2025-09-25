@@ -713,7 +713,7 @@ provideStrings({
   braveWalletFundWalletTitle:
     'To finish your $1 purchase, select one of our partners',
   braveWalletFundWalletDescription:
-    'On completion, your funds will be transfered to your Brave Wallet',
+    'On completion, your funds will be transferred to your Brave Wallet',
 
   // Deposit Funds Screen
   braveWalletDepositFundsTitle: 'Deposit crypto',
@@ -767,6 +767,8 @@ provideStrings({
   // Transaction Details Labels
   braveWalletInput: 'Input',
   braveWalletOutput: 'Output',
+  braveWalletInputs: 'Inputs',
+  braveWalletOutputs: 'Outputs',
   braveWalletValue: 'Value',
 
   // Encryption Key Panel

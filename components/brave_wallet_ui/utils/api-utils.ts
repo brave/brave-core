@@ -79,6 +79,12 @@ export const getHasPendingRequests = async () => {
     return true
   }
 
+  const { requests: signCardanoTxRequests } =
+    await braveWalletService.getPendingSignCardanoTransactionRequests()
+  if (signCardanoTxRequests.length) {
+    return true
+  }
+
   const { requests: signMessageRequests } =
     await braveWalletService.getPendingSignMessageRequests()
   if (signMessageRequests.length) {

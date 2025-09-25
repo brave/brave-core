@@ -31,14 +31,15 @@ import {
   NativeAssetBalanceRegistry,
   mockAccount,
   mockCardanoAccount,
-  mockEthAccountInfo,
-  mockFilecoinAccountInfo,
+  mockEthAccount,
+  mockFilecoinAccount,
   mockFilecoinMainnetNetwork,
   mockOnRampCurrencies,
-  mockSolanaAccountInfo,
+  mockSolanaAccount,
   mockSolanaMainnetNetwork,
 } from '../../constants/mocks'
 import {
+  mockCardanoMainnetNetwork,
   mockEthMainnet,
   mockNetworks,
 } from '../../../stories/mock-data/mock-networks'
@@ -92,9 +93,10 @@ export class MockedWalletApiProxy {
   selectedAccountId: BraveWallet.AccountId = mockAccount.accountId
   accountInfos: BraveWallet.AccountInfo[] = [
     mockAccount,
-    mockEthAccountInfo,
-    mockSolanaAccountInfo,
-    mockFilecoinAccountInfo,
+    mockEthAccount,
+    mockSolanaAccount,
+    mockFilecoinAccount,
+    mockCardanoAccount,
   ]
 
   selectedNetwork: BraveWallet.NetworkInfo = mockEthMainnet
@@ -103,12 +105,14 @@ export class MockedWalletApiProxy {
     [BraveWallet.CoinType.ETH]: BraveWallet.MAINNET_CHAIN_ID,
     [BraveWallet.CoinType.SOL]: BraveWallet.SOLANA_MAINNET,
     [BraveWallet.CoinType.FIL]: BraveWallet.FILECOIN_MAINNET,
+    [BraveWallet.CoinType.ADA]: BraveWallet.CARDANO_MAINNET,
   }
 
   chainsForCoins: Record<BraveWallet.CoinType, BraveWallet.NetworkInfo> = {
     [BraveWallet.CoinType.ETH]: mockEthMainnet,
     [BraveWallet.CoinType.SOL]: mockSolanaMainnetNetwork,
     [BraveWallet.CoinType.FIL]: mockFilecoinMainnetNetwork,
+    [BraveWallet.CoinType.ADA]: mockCardanoMainnetNetwork,
   }
 
   networks: BraveWallet.NetworkInfo[] = mockNetworks
@@ -220,6 +224,9 @@ export class MockedWalletApiProxy {
   private signSolTransactionsRequests =
     [] as BraveWallet.SignSolTransactionsRequest[]
 
+  private signCardanoTransactionRequests =
+    [] as BraveWallet.SignCardanoTransactionRequest[]
+
   constructor(overrides?: WalletApiDataOverrides | undefined) {
     this.applyOverrides(overrides)
   }
@@ -251,6 +258,9 @@ export class MockedWalletApiProxy {
       overrides.simulationOptInStatus ?? this.txSimulationOptInStatus
     this.signSolTransactionsRequests =
       overrides.signSolTransactionsRequests ?? this.signSolTransactionsRequests
+    this.signCardanoTransactionRequests =
+      overrides.signCardanoTransactionRequests
+      ?? this.signCardanoTransactionRequests
   }
 
   assetsRatioService: Partial<
@@ -474,6 +484,11 @@ export class MockedWalletApiProxy {
       this.signSolTransactionsRequests =
         this.signSolTransactionsRequests.filter((req) => req.id !== id)
     },
+    getPendingSignCardanoTransactionRequests: async () => {
+      return {
+        requests: this.signCardanoTransactionRequests,
+      }
+    },
     getPendingSignMessageRequests: async () => {
       return {
         requests: [mockSignMessageRequest],
@@ -622,7 +637,7 @@ export class MockedWalletApiProxy {
         accounts: this.accountInfos,
         selectedAccount: selectedAccount,
         ethDappSelectedAccount: selectedAccount,
-        solDappSelectedAccount: mockSolanaAccountInfo,
+        solDappSelectedAccount: mockSolanaAccount,
         adaDappSelectedAccount: mockCardanoAccount,
       }
       return { allAccounts }
@@ -1424,10 +1439,10 @@ export class MockedWalletApiProxy {
     },
   }
 
-  simulationService: Partial<
-    InstanceType<typeof BraveWallet.SimulationServiceInterface>
+  simulationService: InstanceType<
+    typeof BraveWallet.SimulationServiceInterface
   > = {
-    hasMessageScanSupport: async (chainId, coin) => ({ result: false }),
+    hasMessageScanSupport: async (chainId) => ({ result: false }),
     hasTransactionScanSupport: async () => ({ result: true }),
     scanEVMTransaction: async (txInfo, language) => {
       return {
@@ -1437,6 +1452,13 @@ export class MockedWalletApiProxy {
       }
     },
     scanSolanaTransaction: async (request, language) => {
+      return {
+        errorResponse: '',
+        errorString: '',
+        response: this.svmSimulationResponse,
+      }
+    },
+    scanSignSolTransactionsRequest: async (request, language) => {
       return {
         errorResponse: '',
         errorString: '',

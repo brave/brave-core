@@ -100,6 +100,11 @@ export const MessageHeader = styled.span`
   white-space: pre-wrap;
 `
 
+export const MessageHeaderSection = styled(MessageHeader)`
+  margin: auto;
+  text-align: center;
+`
+
 export const MessageText = styled.span`
   font-family: Poppins;
   font-size: 12px;

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_api_impl.h"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
@@ -13,11 +14,13 @@
 #include "base/containers/to_vector.h"
 #include "base/functional/callback.h"
 #include "base/notimplemented.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_cip30_serializer.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_dapp_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -161,7 +164,7 @@ bool InsertKnownInputAddresses(
     const GetCardanoUtxosTask::UtxoMap& utxo_map,
     CardanoCip30Serializer::RestoredTransaction& transaction,
     bool partial_sign) {
-  for (auto& restored_input : transaction.tx_body_.inputs_) {
+  for (auto& restored_input : transaction.tx_body.inputs) {
     auto find_result = FindAddressByInput(utxo_map, restored_input);
 
     if (find_result) {
@@ -474,46 +477,25 @@ mojom::SignCardanoTransactionRequestPtr CardanoApiImpl::FromRestoredTransaction(
     return nullptr;
   }
 
-  std::vector<mojom::CardanoTxInputPtr> signed_inputs;
-  std::vector<mojom::CardanoTxOutputPtr> external_outputs;
-  std::vector<mojom::CardanoTxOutputPtr> account_outputs;
+  std::vector<mojom::CardanoTxInputPtr> inputs;
+  std::vector<mojom::CardanoTxOutputPtr> outputs;
 
-  base::CheckedNumeric<uint64_t> total_signed_inputs_amount;
-  base::CheckedNumeric<uint64_t> total_outputs_amount;
-
-  for (const auto& input : tx.tx_body_.inputs_) {
-    if (input.address) {
-      signed_inputs.emplace_back(mojom::CardanoTxInput::New(
-          input.address->ToString(), ToHex(input.tx_hash), input.index,
-          *(input.amount)));
-      total_signed_inputs_amount += *(input.amount);
-    }
+  for (const auto& input : tx.tx_body.inputs) {
+    inputs.emplace_back(mojom::CardanoTxInput::New(
+        input.address ? input.address->ToString() : "",
+        base::HexEncode(input.tx_hash), input.index, input.amount.value_or(0)));
   }
 
-  for (const auto& output : tx.tx_body_.outputs_) {
-    bool is_external = !address_map->contains(output.address);
-    if (!is_external) {
-      account_outputs.emplace_back(mojom::CardanoTxOutput::New(
-          output.address.ToString(), output.amount));
-    } else {
-      external_outputs.emplace_back(mojom::CardanoTxOutput::New(
-          output.address.ToString(), output.amount));
-    }
-
-    total_outputs_amount += output.amount;
-  }
-
-  if (!total_signed_inputs_amount.IsValid() ||
-      !total_outputs_amount.IsValid()) {
-    return nullptr;
+  for (const auto& output : tx.tx_body.outputs) {
+    outputs.emplace_back(
+        mojom::CardanoTxOutput::New(output.address.ToString(), output.amount));
   }
 
   return mojom::SignCardanoTransactionRequest::New(
       -1, selected_account_.Clone(), MakeOriginInfo(delegate_->GetOrigin()),
-      ToHex(tx.raw_bytes_), std::move(signed_inputs),
-      std::move(external_outputs), std::move(account_outputs),
-      total_signed_inputs_amount.ValueOrDie(),
-      total_outputs_amount.ValueOrDie());
+      mojom::ChainId::New(mojom::CoinType::ADA,
+                          GetNetworkForCardanoAccount(selected_account_)),
+      base::HexEncode(tx.raw_bytes), std::move(inputs), std::move(outputs));
 }
 
 void CardanoApiImpl::OnSignTransactionRequestProcessed(
@@ -555,7 +537,7 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
   }
 
   std::vector<CardanoSignMessageResult> sign_results;
-  for (const auto& input : tx.tx_body_.inputs_) {
+  for (const auto& input : tx.tx_body.inputs) {
     if (!input.address) {
       continue;
     }
@@ -570,7 +552,7 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
 
     auto sign_result =
         brave_wallet_service_->keyring_service()->SignMessageByCardanoKeyring(
-            selected_account_, address_map_item->second, tx.raw_bytes_);
+            selected_account_, address_map_item->second, tx.raw_bytes);
 
     if (!sign_result) {
       std::move(callback).Run(
@@ -583,7 +565,7 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
   }
 
   auto signed_tx = CardanoCip30Serializer().ApplySignResults(
-      tx.raw_bytes_, std::move(sign_results));
+      tx.raw_bytes, std::move(sign_results));
 
   if (!signed_tx) {
     std::move(callback).Run(
@@ -593,7 +575,7 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
     return;
   }
 
-  std::move(callback).Run(ToHex(signed_tx.value()), nullptr);
+  std::move(callback).Run(base::HexEncode(signed_tx.value()), nullptr);
 }
 
 void CardanoApiImpl::SignData(const std::string& address,

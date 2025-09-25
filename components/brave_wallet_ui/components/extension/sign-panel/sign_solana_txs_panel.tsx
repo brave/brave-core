@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -31,6 +31,7 @@ import {
 import {
   TransactionSimulationNotSupportedSheet, //
 } from '../transaction_simulation_not_supported_sheet/transaction_simulation_not_supported_sheet'
+import { TransactionQueueSteps } from '../../../components/extension/confirm-transaction-panel/common/queue'
 
 // Styled Components
 import {
@@ -44,12 +45,6 @@ import {
   SignPanelButtonRow,
   WarningTitleRow,
 } from './style'
-
-import {
-  QueueStepRow,
-  QueueStepButton,
-  QueueStepText,
-} from '../confirm-transaction-panel/common/style'
 
 import {
   TabRow,
@@ -87,7 +82,7 @@ const onClickLearnMore = () => {
   )
 }
 
-export const SignTransactionPanel = ({
+export const SignSolanaTxsPanel = ({
   selectedRequest,
   isSigningDisabled,
   network,
@@ -115,26 +110,19 @@ export const SignTransactionPanel = ({
 
   const { cancelSign: onCancelSign, sign: onSign } =
     useProcessSignSolanaTransaction({
-      signSolTransactionsRequest: selectedRequest,
+      request: selectedRequest,
     })
 
   // render
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText>{network?.chainName ?? ''}</NetworkText>
-        {queueLength > 1 && (
-          <QueueStepRow>
-            <QueueStepText>
-              {queueNumber} {getLocale('braveWalletQueueOf')} {queueLength}
-            </QueueStepText>
-            <QueueStepButton onClick={queueNextSignTransaction}>
-              {queueNumber === queueLength
-                ? getLocale('braveWalletQueueFirst')
-                : getLocale('braveWalletQueueNext')}
-            </QueueStepButton>
-          </QueueStepRow>
-        )}
+        <NetworkText> {network.chainName} </NetworkText>
+        <TransactionQueueSteps
+          queueNextTransaction={queueNextSignTransaction}
+          transactionQueueNumber={queueNumber}
+          transactionsQueueLength={queueLength}
+        />
       </TopRow>
       <AccountCircle orb={orb} />
       <URLText>
@@ -232,4 +220,4 @@ export const SignTransactionPanel = ({
   )
 }
 
-export default SignTransactionPanel
+export default SignSolanaTxsPanel

@@ -21,16 +21,14 @@ import {
 // Mocks
 import {
   mockAccount,
-  mockEthAccountInfo,
+  mockEthAccount,
   mockBtcAccount,
   mockFilecoinAccount,
   mockSolanaAccount,
-  mockSolanaAccountInfo,
   mockSpotPriceRegistry,
   mockZecAccount,
 } from '../../common/constants/mocks'
 import { mockOriginInfo, mockUniswapOriginInfo } from './mock-origin-info'
-import { mockEthAccount } from './mock-wallet-accounts'
 import {
   mockBasicAttentionToken,
   mockErc20TokensList,
@@ -114,7 +112,7 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
       feeEstimation: undefined,
       tokenAddress: '',
       staticAccountKeys: [],
-      toWalletAddress: mockSolanaAccountInfo.address,
+      toWalletAddress: mockSolanaAccount.address,
       txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
       version: 1,
     },
@@ -170,13 +168,13 @@ export const mockSOLTXInstructions: SerializableTransactionInfo = {
           programId: '11111111111111111111111111111111',
           accountMetas: [
             {
-              pubkey: mockSolanaAccountInfo.address,
+              pubkey: mockSolanaAccount.address,
               addrTableLookupIndex: undefined,
               isSigner: true,
               isWritable: true,
             },
             {
-              pubkey: mockSolanaAccountInfo.address,
+              pubkey: mockSolanaAccount.address,
               addrTableLookupIndex: undefined,
               isSigner: false,
               isWritable: true,
@@ -225,7 +223,7 @@ export const mockSOLTXInstructions: SerializableTransactionInfo = {
       },
       tokenAddress: '',
       staticAccountKeys: [],
-      toWalletAddress: mockSolanaAccountInfo.address,
+      toWalletAddress: mockSolanaAccount.address,
       txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
       version: 1,
     },
@@ -888,7 +886,7 @@ export const mockETHNativeTokenSendTransaction = {
   submittedTime: {
     microseconds: 0,
   },
-  effectiveRecipient: mockEthAccountInfo.accountId.address,
+  effectiveRecipient: mockEthAccount.accountId.address,
   fromAccountId: mockAccount.accountId,
   id: 'eth-native-token-send-tx',
   isRetriable: false,
@@ -908,7 +906,7 @@ export const mockETHNativeTokenSendTransaction = {
         nonce: '',
         gasPrice: '0x5f5e100',
         gasLimit: '0x5208',
-        to: mockEthAccountInfo.accountId.address,
+        to: mockEthAccount.accountId.address,
         value: '0xad78ebc5ac620000',
         data: [],
         signOnly: false,

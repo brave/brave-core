@@ -785,10 +785,12 @@
   <message name="IDS_BRAVE_WALLET_SECURITY_RISK_DETECTED" desc="Sign in with Brave Wallet Error Security risk">Security risk detected</message>
   <message name="IDS_BRAVE_WALLET_INPUT" desc="Transaction Details Input Label">Input</message>
   <message name="IDS_BRAVE_WALLET_OUTPUT" desc="Transaction Details Output Label">Output</message>
+  <message name="IDS_BRAVE_WALLET_INPUTS" desc="Transaction Details Inputs Label">Inputs</message>
+  <message name="IDS_BRAVE_WALLET_OUTPUTS" desc="Transaction Details Outputs Label">Outputs</message>
   <message name="IDS_BRAVE_WALLET_VALUE" desc="Transaction Details Value Label">Value</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY" desc="Network Filter Selector Secondary Networks">Secondary networks</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_TEST_NETWORKS" desc="Network Filter Selector Test Networks">Test networks</message>
-  <message name="IDS_BRAVE_WALLET_EDIT_GAS_LIMIT_ERROR" desc="An eroor regarding an incorrect gas limit value">
+  <message name="IDS_BRAVE_WALLET_EDIT_GAS_LIMIT_ERROR" desc="An error regarding an incorrect gas limit value">
     Gas limit must be an integer greater than 0
   </message>
   <message name="IDS_WALLET_FIL_SEND_TRANSACTION_TO" desc="Error message if transaction 'to' is empty">Transaction data 'to' must be specified</message>

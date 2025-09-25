@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -31,7 +31,7 @@ import {
 import {
   WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
-import { SignTransactionPanel } from './sign-transaction-panel'
+import { SignSolanaTxsPanel } from './sign_solana_txs_panel'
 import { SignInWithEthereum } from './sign_in_with_ethereum'
 
 export const _SignAllSolanaTxPanel = {
@@ -52,7 +52,7 @@ export const _SignAllSolanaTxPanel = {
           ],
         }}
       >
-        <SignTransactionPanel
+        <SignSolanaTxsPanel
           isSigningDisabled={false}
           network={mockSolanaMainnetNetwork}
           queueNextSignTransaction={function (): void {

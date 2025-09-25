@@ -191,7 +191,9 @@ public class SignSolTransactionsFragment extends BaseDAppsBottomSheetDialogFragm
                         mSignSolTransactionRequests.size()));
         updateActionState(mTxRequestNumber == 0);
         updateAccount(mSignSolTransactionsRequest.fromAccountId);
-        updateNetwork(CoinType.SOL, mSignSolTransactionsRequest.chainId);
+        updateNetwork(
+                mSignSolTransactionsRequest.chainId.coin,
+                mSignSolTransactionsRequest.chainId.chainId);
         OriginInfo originInfo = mSignSolTransactionsRequest.originInfo;
         if (originInfo != null && URLUtil.isValidUrl(originInfo.originSpec)) {
             mWebSite.setVisibility(View.VISIBLE);

@@ -9,7 +9,7 @@ import {
   mockAccount,
   mockBitcoinAccount,
   mockBitcoinTestnetAccount,
-  mockEthAccountInfo,
+  mockEthAccount,
   mockFilecoinAccount,
   mockSolanaAccount,
   mockFilecoinEVMMMainnetNetwork,
@@ -33,7 +33,7 @@ import {
 const mockHardware = {
   deviceId: 'testDeviceId',
   path: '',
-  vendor: 'Ledger',
+  vendor: BraveWallet.HardwareVendor.kLedger,
 }
 
 const mockHardwareAccounts: BraveWallet.AccountInfo[] = [
@@ -62,7 +62,7 @@ const mockHardwareAccounts: BraveWallet.AccountInfo[] = [
 
 const mockAccounts: AccountInfoEntity[] = [
   mockAccount,
-  mockEthAccountInfo,
+  mockEthAccount,
   mockSolanaAccount,
   mockFilecoinAccount,
   mockBitcoinAccount,
@@ -117,7 +117,7 @@ describe('Account Utils', () => {
 
 describe('Test getAccountTypeDescription', () => {
   test('ETH Account Description', () => {
-    expect(getAccountTypeDescription(mockEthAccountInfo.accountId)).toEqual(
+    expect(getAccountTypeDescription(mockEthAccount.accountId)).toEqual(
       'braveWalletETHAccountDescription',
     )
   })

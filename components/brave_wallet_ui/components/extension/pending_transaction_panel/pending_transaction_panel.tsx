@@ -94,7 +94,7 @@ export const PendingTransactionPanel: React.FC<Props> = ({
       ? skipToken
       : {
           chainId: selectedPendingTransaction.chainId,
-          coinType: selectedPendingTxCoinType,
+          coin: selectedPendingTxCoinType,
         },
   )
 

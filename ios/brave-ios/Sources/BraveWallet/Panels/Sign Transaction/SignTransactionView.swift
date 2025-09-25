@@ -47,7 +47,7 @@ struct SignTransactionView: View {
   }
 
   private var network: BraveWallet.NetworkInfo? {
-    networkStore.allChains.first(where: { $0.chainId == currentRequest.chainId })
+    networkStore.allChains.first(where: { $0.chainId == currentRequest.chainId.chainId })
   }
 
   private func instructionsDisplayString() -> String {
@@ -269,7 +269,7 @@ struct SignTransaction_Previews: PreviewProvider {
           from: BraveWallet.AccountInfo.previewAccount.accountId,
           txDatas: [.init()],
           rawMessages: [.init()],
-          chainId: BraveWallet.SolanaMainnet
+          chainId: BraveWallet.ChainId(coin: .sol, chainId: BraveWallet.SolanaMainnet)
         )
       ],
       cryptoStore: .previewStore,
