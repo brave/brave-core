@@ -152,7 +152,7 @@
   EXPAND_FEATURE_ENTRIES({                                              \
       "brave-wallet-webui-ios",                                         \
       "Enable WebUI for Brave Wallet iOS",                              \
-      "Enables WebUI in Brave Wallet",                                  \
+      "Enables WebUI for Brave Wallet",                                 \
       flags_ui::kOsIos,                                                 \
       FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletWebUIIOS), \
   })
