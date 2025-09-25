@@ -21,16 +21,12 @@ import org.chromium.skus.mojom.SkusService;
 @NullMarked
 @JNINamespace("brave::android")
 public class SkusServiceFactory {
-    private static final Object sLock = new Object();
-    private static @Nullable SkusServiceFactory sInstance;
+    private static class LazyHolder {
+        static final SkusServiceFactory INSTANCE = new SkusServiceFactory();
+    }
 
     public static SkusServiceFactory getInstance() {
-        synchronized (sLock) {
-            if (sInstance == null) {
-                sInstance = new SkusServiceFactory();
-            }
-        }
-        return sInstance;
+        return LazyHolder.INSTANCE;
     }
 
     private SkusServiceFactory() {}

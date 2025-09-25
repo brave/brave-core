@@ -33,7 +33,6 @@ inline constexpr char kBraveOriginSubscriptionLinkStatusAndroid[] =
     "brave.origin.subscription_link_status_android";
 #endif
 
-COMPONENT_EXPORT(BRAVE_ORIGIN)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace prefs

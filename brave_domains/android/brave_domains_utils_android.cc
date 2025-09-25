@@ -11,13 +11,25 @@
 namespace brave_domains {
 namespace android {
 
+// Validate enum values using a switch statement without default case.
+// This ensures all enum values are handled and will cause a compile error
+// if new enum values are added without updating this function.
+constexpr bool IsValidServicesEnvironment(jint environment) {
+  switch (static_cast<brave_domains::ServicesEnvironment>(environment)) {
+    case brave_domains::DEV:
+    case brave_domains::STAGING:
+    case brave_domains::PROD:
+      return true;
+      // No default case - compiler will warn if new enum values are added
+  }
+  return false;
+}
+
 static std::string JNI_BraveDomainsUtils_GetServicesDomain(JNIEnv* env,
                                                            std::string& prefix,
                                                            jint environment) {
-  // Validate that environment is within the valid range of enum values,
-  // if not, default to DEV.
-  if (environment < static_cast<jint>(brave_domains::DEV) ||
-      environment > static_cast<jint>(brave_domains::PROD)) {
+  // Validate that environment is a valid enum value, if not, default to DEV.
+  if (!IsValidServicesEnvironment(environment)) {
     environment = static_cast<jint>(brave_domains::DEV);
   }
 
