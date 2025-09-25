@@ -7,13 +7,16 @@
 
 #include "base/command_line.h"
 #include "brave/components/constants/brave_switches.h"
+#include "content/public/common/content_switches.h"
 
 namespace brave {
 
 bool UpdateEnabled() {
 #if defined(OFFICIAL_BUILD)
-  return !base::CommandLine::ForCurrentProcess()->HasSwitch(
-      switches::kDisableBraveUpdate);
+  const base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
+  return !cmdline->HasSwitch(switches::kDisableBraveUpdate) &&
+         // Don't check for updates in browser tests.
+         !cmdline->HasSwitch(switches::kTestType);
 #else
   return false;
 #endif
