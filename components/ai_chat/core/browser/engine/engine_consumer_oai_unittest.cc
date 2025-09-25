@@ -2460,7 +2460,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithSmartMode) {
       mojom::SmartModeEntry::New("summarize", "Please summarize the content");
   conversation_history.push_back(mojom::ConversationTurn::New(
       "uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "What is artificial intelligence?", std::nullopt /* prompt */,
+      "/summarize What is artificial intelligence?", std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_files */, std::move(smart_mode_entry), false,
@@ -2476,9 +2476,9 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithSmartMode) {
              EngineConsumer::GenerationDataCallback,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
-            // Verify messages include system prompt, smart mode definition, and
-            // main message
-            ASSERT_EQ(messages.size(), 3u);
+            // Verify messages include system prompt and user message with
+            // content blocks
+            ASSERT_EQ(messages.size(), 2u);
 
             // First message should be the system prompt
             const auto& system_msg = messages[0].GetDict();
@@ -2486,19 +2486,28 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithSmartMode) {
             EXPECT_EQ(*system_msg.FindString("content"),
                       "This is a custom system prompt.");
 
-            // Second message should be the smart mode definition
-            const auto& smart_mode_msg = messages[1].GetDict();
-            EXPECT_EQ(*smart_mode_msg.FindString("role"), "user");
+            // Second message should be the user message with content blocks
+            const auto& user_msg = messages[1].GetDict();
+            EXPECT_EQ(*user_msg.FindString("role"), "user");
+
+            // Verify content is now an array of content blocks
+            const auto* content = user_msg.FindList("content");
+            ASSERT_NE(content, nullptr);
+            ASSERT_EQ(content->size(), 2u);
+
+            // First content block should be the smart mode definition
+            const auto& smart_mode_block = (*content)[0].GetDict();
+            EXPECT_EQ(*smart_mode_block.FindString("type"), "text");
             EXPECT_EQ(
-                *smart_mode_msg.FindString("content"),
+                *smart_mode_block.FindString("text"),
                 "Interpret '/summarize' as 'Please summarize the content' "
                 "when handling the request.");
 
-            // Third message should be the actual user message
-            const auto& user_msg = messages[2].GetDict();
-            EXPECT_EQ(*user_msg.FindString("role"), "user");
-            EXPECT_EQ(*user_msg.FindString("content"),
-                      "What is artificial intelligence?");
+            // Second content block should be the user message
+            const auto& user_text_block = (*content)[1].GetDict();
+            EXPECT_EQ(*user_text_block.FindString("type"), "text");
+            EXPECT_EQ(*user_text_block.FindString("text"),
+                      "/summarize What is artificial intelligence?");
 
             // Mock successful response
             std::move(completed_callback)
