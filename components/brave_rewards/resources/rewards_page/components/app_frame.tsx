@@ -33,7 +33,10 @@ function getCurrentNavRoute(route: string) {
   return routes.home
 }
 
-function scrollRouteContentIntoView(route: string) {
+function scrollRouteContentIntoView(
+  route: string,
+  behavior: 'smooth' | 'instant'
+) {
   const elem = document.querySelector(`[data-app-route="${route}"]`)
   if (!(elem instanceof HTMLElement) || !elem.offsetParent) {
     return
@@ -41,7 +44,7 @@ function scrollRouteContentIntoView(route: string) {
   elem.offsetParent.scrollTo({
     top: elem.offsetTop - 16,
     left: 0,
-    behavior: 'smooth'
+    behavior
   })
 }
 
@@ -55,7 +58,7 @@ function NavList() {
     const route = event.currentTarget.getAttribute('href')
     if (route) {
       router.setRoute(route)
-      scrollRouteContentIntoView(route)
+      scrollRouteContentIntoView(route, 'smooth')
     }
   }
 
@@ -215,7 +218,7 @@ export function AppFrame(props: Props) {
   const route = useRoute()
 
   React.useEffect(() => {
-    scrollRouteContentIntoView(route)
+    scrollRouteContentIntoView(route, 'instant')
   }, [])
 
   if (viewType === 'narrow') {
