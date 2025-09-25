@@ -7,17 +7,6 @@
 </receiver>
 
 <activity
-    android:name="org.chromium.chrome.browser.rewards.tipping.RewardsTippingBannerActivity"
-    android:theme="@style/TippingBraveTranslucent"
-    android:screenOrientation="sensorPortrait"
-    tools:ignore="LockedOrientationActivity,DiscouragedApi"
-    android:exported="false" />
-
-<activity
-    android:name="org.chromium.chrome.browser.BraveRewardsUserWalletActivity"
-    android:theme="@style/BraveTranslucent"/>
-
-<activity
     android:name="org.chromium.chrome.browser.customtabs.BraveAccountCustomTabActivity"
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize|uiMode|navigation"
     android:theme="@style/BraveAccountTheme"
@@ -147,7 +136,7 @@
     android:exported="false">
 </activity>
 
-<activity 
+<activity
     android:name="org.chromium.chrome.browser.app.bookmarks.BraveBookmarkActivity"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen"
     android:exported="false"

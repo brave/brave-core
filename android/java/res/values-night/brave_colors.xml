@@ -37,7 +37,7 @@
 
     <color name="scan_qr_code_text_color">#F0F2FF</color>
     <color name="scan_qr_code_bg_color">#1E2029</color>
-    
+
     <!-- Day/Night brave wallet colors -->
     <color name="brave_wallet_onboarding_item_background_color">#A1ABBA</color>
     <color name="brave_wallet_day_night_toolbar_icon_color">@android:color/white</color>
@@ -111,7 +111,7 @@
 
     <color name="shield_toggle_button_tint">#F0F2FF</color>
     <color name="shield_toggle_bg_color">#1E2029</color>
-    
+
     <color name="shield_thank_you_icon_color">#F0F2FF</color>
 
     <color name="filter_title_color">#EDEEF1</color>
@@ -150,23 +150,7 @@
     <color name="wallet_error_text_color">#FF4B6A</color>
     <color name="wallet_sign_msg_err_bg_color">#FF460A10</color>
 
-    <color name="rewards_panel_bg_color">#17171F</color>
-    <color name="rewards_panel_text_color">#FFFFFF</color>
-    <color name="rewards_panel_secondary_text_color">#84889C</color>
-    <color name="rewards_panel_card_bg_color">#000000</color>
-    <color name="rewards_panel_action_color">#737ADE</color>
-    <color name="rewards_panel_verified_button_border">#84889C</color>
-    <color name="rewards_panel_notification_date_border">#5E6175</color>
-    <color name="rewards_panel_summary_title_bg">#AD17171F</color>
-    <color name="rewards_panel_summary_bg">#9E17171F</color>
-    <color name="rewards_panel_summary_divider_color">#66FFFFFF</color>
-    <color name="rewards_panel_foreground_color">#80FFFFFF</color>
-    <color name="rewards_unverified_section_bg_color">#1AFFFFFF</color>
-    <color name="rewards_panel_notification_text_color">#ECEFF2</color>
-    <color name="rewards_panel_notification_secondary_text_color">#C2C4CF</color>
-    <color name="rewards_panel_notification_bg_color">#121316</color>
 
-    <color name="rewards_divider_color">#3B3E4F</color>
 
     <!--  Brave Wallet DApp  -->
     <color name="brave_wallet_dapp_text_color">@android:color/white</color>
@@ -203,48 +187,6 @@
     <color name="notification_download_icon_color">#F0F2FF</color>
     <color name="notification_rationale_dialog_card_bg_color">#17171F</color>
 
-    <color name="tipping_details_description_text_color">#8C90A1</color>
-    <color name="link_icon_color">#8C90A1</color>
-    <color name="rewards_background_gradient_start_color">#240F1E</color>
-    <color name="rewards_background_gradient_end_color">#0F0F24</color>
-    <color name="tipping_rewards_background_color">#1E2025</color>
-    <color name="tipping_inside_box_background_color">#1A1C20</color>
-    <color name="tipping_points_stroke_color">#2E3038</color>
-    <color name="tipping_points_selected_color">#0E0E34</color>
-    <color name="tipping_rewards_points_text_color">#AAA8F7</color>
-    <color name="currency_edit_text_background_color">#0E0F11</color>
-    <color name="use_web3_wallet_button_text_color">#AAA8F7</color>
-    <color name="transparent_shadow_background_start_color">#1E2025</color>
-    <color name="transparent_shadow_background_end_color">#001E2025</color>
-    <color name="custodian_name_color">#ACAFBB</color>
-    <color name="tipping_error_alert_message_background_color">#630D1B</color>
-    <color name="tipping_use_web3_button_border_color">#668784F4</color>
-    <color name="bottomsheet_top_bar_color">#FFFFFF</color>
-    <color name="custodian_text_background_color">#121316</color>
-    <color name="tootltip_verified_creator_text">#EDEEF1</color>
-    <color name="tootltip_verified_creator_text_secondary">#878DA6</color>
-    <color name="contribution_sent_text_color">#3FA450</color>
-    <color name="thanks_for_supporting_text_color">#AAA8F7</color>
-    <color name="go_back_text_color">#878DA6</color>
-    <color name="terms_of_service_text_color">#EDEEF1</color>
-    <color name="terms_of_service_text_color_default">#878DA6</color>
-    <color name="tipping_warning_default_background">#052743</color>
-    <color name="tipping_logout_warning_background_color">#332500</color>
-    <color name="rewards_private_ads_icon_color1">#111217</color>
-    <color name="rewards_private_ads_icon_color2">#8389DF</color>
-    <color name="rewards_private_ads_icon_color3">#545A71</color>
-    <color name="rewards_private_ads_icon_color4">#4C53AD</color>
-    <color name="rewards_private_ads_icon_color5">#262A33</color>
-    <color name="rewards_private_ads_icon_color6">#D292FD</color>
-    <color name="rewards_private_ads_icon_color7">#784A91</color>
-    <color name="rewards_private_ads_icon_color8">#85CCFF</color>
-    <color name="rewards_private_ads_icon_color9">#0C5FA3</color>
-    <color name="rewards_private_ads_icon_color10">#FFBEDF</color>
-    <color name="rewards_private_ads_icon_color11">#AF1769</color>
-    <color name="rewards_private_ads_icon_color12">#AF1769</color>
-    <color name="rewards_private_ads_icon_color13">#0C5FA3</color>
-    <color name="rewards_estimated_earning_close_color">#EDEEF1</color>
-    <color name="rewards_tipping_progress_bar">@android:color/white</color>
 
     <color name="leo_reset_text_color">#FF4B6A</color>
 
