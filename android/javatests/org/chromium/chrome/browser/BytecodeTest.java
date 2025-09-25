@@ -1758,7 +1758,8 @@ public class BytecodeTest {
                         BookmarkOpener.class,
                         BookmarkManagerOpener.class,
                         PriceDropNotificationManager.class,
-                        Function.class));
+                        Function.class,
+                        BackPressManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
@@ -1805,7 +1806,8 @@ public class BytecodeTest {
                         SnackbarManager.class,
                         Profile.class,
                         NativePageHost.class,
-                        ComponentName.class));
+                        ComponentName.class,
+                        BackPressManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl",
