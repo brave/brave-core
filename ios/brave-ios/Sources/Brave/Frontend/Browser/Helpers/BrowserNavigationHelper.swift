@@ -134,6 +134,15 @@ class BrowserNavigationHelper {
           isPrivileged: false
         )
       },
+      openLearnMoreInNewTab: { [weak bvc] in
+        guard let bvc else { return }
+        bvc.popToBVC()
+        bvc.openURLInNewTab(
+          .brave.braveVPNLearnMoreURL,
+          isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
+          isPrivileged: false
+        )
+      },
       installVPNProfile: { [weak bvc] in
         guard let bvc = bvc else { return }
         bvc.popToBVC()

@@ -10,11 +10,9 @@ struct BraveVPNPremiumUpsellView: View {
 
   var body: some View {
     VStack(spacing: 8) {
-      BraveVPNUpsellTopicView(topicType: .privacy)
-      BraveVPNUpsellTopicView(topicType: .location)
-      BraveVPNUpsellTopicView(topicType: .server)
-      BraveVPNUpsellTopicView(topicType: .speed)
-      BraveVPNUpsellTopicView(topicType: .device)
+      ForEach(BraveVPNUpsellTopicView.UpsellTopicType.allCases) { type in
+        BraveVPNUpsellTopicView(topicType: type)
+      }
     }
     .frame(maxWidth: .infinity, alignment: .leading)
   }
@@ -22,11 +20,15 @@ struct BraveVPNPremiumUpsellView: View {
 
 private struct BraveVPNUpsellTopicView: View {
 
-  enum UpsellTopicType {
-    case privacy, location, server, speed, device
+  enum UpsellTopicType: CaseIterable, Identifiable {
+    case privacy, location, server, speed, device, logs, audition
 
     var icon: String {
       return "leo.shield.done"
+    }
+
+    var id: String {
+      title
     }
 
     var title: String {
@@ -41,6 +43,10 @@ private struct BraveVPNUpsellTopicView: View {
         return Strings.VPN.infoCheckConnectionSpeed
       case .device:
         return Strings.VPN.infoCheckLimitDevice
+      case .logs:
+        return Strings.VPN.infoCheckNoLogs
+      case .audition:
+        return Strings.VPN.infoCheckAudition
       }
     }
   }

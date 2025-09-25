@@ -32,9 +32,27 @@ struct BraveVPNSubscriptionActionView: View {
 
   let refreshCredentials: () -> Void
   let redeedPromoCode: () -> Void
+  let learnMore: () -> Void
 
   var body: some View {
     VStack(spacing: 16) {
+      Button {
+        learnMore()
+      } label: {
+        Text(Strings.Paywall.braveVPNLearnMoreButtonTitle)
+          .frame(maxWidth: .infinity)
+      }
+      .buttonStyle(
+        BraveFilledButtonStyle(
+          size: .init(
+            font: .subheadline.weight(.semibold),
+            padding: .init(top: 12, leading: 12, bottom: 12, trailing: 12),
+            radius: 12,
+            minHeight: 20
+          )
+        )
+      )
+
       BraveVPNTitleActionsView(
         actionType: .refreshCredentials,
         action: refreshCredentials
@@ -82,7 +100,8 @@ struct BraveVPNRefreshCredentialsView_Previews: PreviewProvider {
 
     BraveVPNSubscriptionActionView(
       refreshCredentials: {},
-      redeedPromoCode: {}
+      redeedPromoCode: {},
+      learnMore: {}
     )
     .background(
       Color(braveSystemName: .primitivePrimary10)

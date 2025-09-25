@@ -9176,6 +9176,12 @@ extension Strings {
       value: "Refresh your credentials",
       comment: "Button action text for refreshing credentials from brave site."
     )
+    public static let braveVPNLearnMoreButtonTitle = NSLocalizedString(
+      "paywall.braveVPNLearnMoreButtonTitle",
+      bundle: .module,
+      value: "Lean More About Brave VPN",
+      comment: "Button action text which will bring user to Brave VPN web page for more information."
+    )
     public static let havePromoCodeTitle = NSLocalizedString(
       "paywall.havePromoCodeTitle",
       bundle: .module,

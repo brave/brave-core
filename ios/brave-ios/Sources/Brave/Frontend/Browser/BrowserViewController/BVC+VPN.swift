@@ -45,6 +45,15 @@ extension BrowserViewController {
           isPrivileged: false
         )
       },
+      openLearnMoreInNewTab: { [weak self] in
+        guard let self else { return }
+        popToBVC()
+        openURLInNewTab(
+          .brave.braveVPNLearnMoreURL,
+          isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
+          isPrivileged: false
+        )
+      },
       installVPNProfile: { [weak self] in
         guard let self = self else { return }
         self.dismiss(animated: true) {

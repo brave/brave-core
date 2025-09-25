@@ -1539,6 +1539,10 @@ class SettingsViewController: TableViewController {
         guard let self else { return }
         self.settingsDelegate?.settingsOpenURLInNewTab(.brave.braveVPNCheckoutURL)
       },
+      openLearnMoreInNewTab: { [weak self] in
+        guard let self else { return }
+        self.settingsDelegate?.settingsOpenURLInNewTab(.brave.braveVPNLearnMoreURL)
+      },
       installVPNProfile: { [weak self] in
         guard let self = self else { return }
         self.dismiss(animated: true) {
