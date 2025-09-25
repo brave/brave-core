@@ -76,7 +76,7 @@ interface Props {
   account?: BraveWallet.AccountInfo
   receiveAddress?: string
   isAssociatedTokenAccountCreation?: boolean
-  label: 'send' | 'spend' | 'receive' | 'bridge' | 'to'
+  label: 'send' | 'spend' | 'receive' | 'bridge' | 'to' | 'shield'
 }
 
 export function ConfirmationTokenInfo(props: Props) {
@@ -119,7 +119,9 @@ export function ConfirmationTokenInfo(props: Props) {
       ? getLocale('braveWalletSend')
       : label === 'spend'
         ? getLocale('braveWalletSpend')
-        : getLocale('braveWalletReceive')
+        : label === 'shield'
+          ? getLocale('braveWalletShielding')
+          : getLocale('braveWalletReceive')
 
   const ataCreationLocale = getLocale(
     'braveWalletConfirmTransactionAccountCreationFee',
@@ -254,6 +256,7 @@ export function ConfirmationTokenInfo(props: Props) {
       </Row>
     )
   }
+
   return (
     <Row
       justifyContent='space-between'

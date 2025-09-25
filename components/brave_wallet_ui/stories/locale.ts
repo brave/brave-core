@@ -651,6 +651,7 @@ provideStrings({
   braveWalletConfirmSwap: 'Confirm swap',
   braveWalletConfirmBridge: 'Confirm bridge',
   braveWalletConfirmSend: 'Confirm send',
+  braveWalletConfirmShield: 'Confirm shield',
   braveWalletSpend: 'Spend',
 
   // Buy
