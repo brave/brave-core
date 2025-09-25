@@ -15,6 +15,7 @@ source_set("web_view") {
   sources = [
     "brave_web_view.h",
     "brave_web_view.mm",
+    "brave_web_view_internal.h",
     "crw_wk_navigation_handler_impl.mm",
   ]
   deps = [

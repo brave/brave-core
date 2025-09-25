@@ -9,6 +9,7 @@
 #include "ios/chrome/browser/tabs/model/tab_helper_util.h"
 #include "ios/web/public/navigation/web_state_policy_decider.h"
 #include "ios/web/public/web_state.h"
+#include "ios/web/public/web_state_user_data.h"
 #include "ios/web_view/internal/cwv_navigation_action_internal.h"
 #include "ios/web_view/internal/cwv_navigation_type_internal.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
@@ -70,6 +71,19 @@ class BraveWebViewWebStatePolicyDecider : public web::WebStatePolicyDecider {
   __weak BraveWebView* web_view_ = nil;
 };
 
+// A WebStateUserData to hold a reference to a corresponding BraveWebView.
+class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
+ public:
+  explicit BraveWebViewHolder(web::WebState* web_state, BraveWebView* web_view)
+      : web_view_(web_view) {}
+  BraveWebView* web_view() const { return web_view_; }
+
+ private:
+  friend class web::WebStateUserData<BraveWebViewHolder>;
+
+  __weak BraveWebView* web_view_ = nil;
+};
+
 }  // namespace
 
 @implementation BraveNavigationAction
@@ -104,12 +118,39 @@ class BraveWebViewWebStatePolicyDecider : public web::WebStatePolicyDecider {
 // These are shadowed CWVWebView properties
 @dynamic navigationDelegate, UIDelegate;
 
+- (void)dealloc {
+  if (self.webState) {
+    BraveWebViewHolder::RemoveFromWebState(self.webState);
+  }
+}
+
++ (nullable BraveWebView*)braveWebViewForWebState:(web::WebState*)webState {
+  if (!webState || webState->IsBeingDestroyed()) {
+    // Check web state for safety
+    return nil;
+  }
+  BraveWebViewHolder* holder = BraveWebViewHolder::FromWebState(webState);
+  if (!holder) {
+    // The holder may have already been destroyed if the web view is deallocated
+    // or the web state was reset on the web view itself, even if the underlying
+    // WebState is alive
+    return nil;
+  }
+  return holder->web_view();
+}
+
 - (void)resetWebStateWithCoder:(NSCoder*)coder
                WKConfiguration:(WKWebViewConfiguration*)wkConfiguration
                 createdWebView:(WKWebView**)createdWebView {
+  if (self.webState) {
+    BraveWebViewHolder::RemoveFromWebState(self.webState);
+  }
+
   [super resetWebStateWithCoder:coder
                 WKConfiguration:wkConfiguration
                  createdWebView:createdWebView];
+
+  BraveWebViewHolder::CreateForWebState(self.webState, /*web_view=*/self);
 
   _webStatePolicyDecider =
       std::make_unique<BraveWebViewWebStatePolicyDecider>(self.webState, self);
