@@ -9,7 +9,7 @@
 #include "base/ios/ns_error_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
-#include "brave/ios/browser/api/web_view/brave_web_view.h"
+#include "brave/ios/browser/api/web_view/brave_web_view_internal.h"
 #include "brave/ios/browser/web/brave_web_main_parts.h"
 #import "components/translate/ios/browser/translate_java_script_feature.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
@@ -108,8 +108,7 @@ bool BraveWebClient::IsInsecureFormWarningEnabled(
 
 void BraveWebClient::BuildEditMenu(web::WebState* web_state,
                                    id<UIMenuBuilder> builder) const {
-  BraveWebView* webView =
-      static_cast<BraveWebView*>([BraveWebView webViewForWebState:web_state]);
+  BraveWebView* webView = [BraveWebView braveWebViewForWebState:web_state];
   if (!webView) {
     return;
   }
@@ -126,8 +125,7 @@ bool BraveWebClient::ShouldBlockJavaScript(web::WebState* webState,
   if (!web::UrlHasWebScheme(request.URL)) {
     return false;
   }
-  BraveWebView* webView =
-      static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
+  BraveWebView* webView = [BraveWebView braveWebViewForWebState:webState];
   if (!webView) {
     return false;
   }
@@ -144,8 +142,7 @@ bool BraveWebClient::ShouldBlockJavaScript(web::WebState* webState,
 
 bool BraveWebClient::ShouldBlockUniversalLinks(web::WebState* webState,
                                                NSURLRequest* request) {
-  BraveWebView* webView =
-      static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
+  BraveWebView* webView = [BraveWebView braveWebViewForWebState:webState];
   if (!webView) {
     return false;
   }
@@ -164,8 +161,7 @@ NSString* BraveWebClient::GetUserAgentForRequest(
     web::WebState* webState,
     web::UserAgentType userAgentType,
     NSURLRequest* request) {
-  BraveWebView* webView =
-      static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
+  BraveWebView* webView = [BraveWebView braveWebViewForWebState:webState];
   if (!webView) {
     return nil;
   }
