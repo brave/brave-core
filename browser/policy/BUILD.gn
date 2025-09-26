@@ -26,6 +26,7 @@ source_set("brave_simple_policy_map") {
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
     "//brave/components/de_amp/common",
+    "//brave/components/debounce/core/common",
     "//brave/components/ipfs/buildflags",
     "//brave/components/p3a",
     "//brave/components/playlist/common/buildflags",
