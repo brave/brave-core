@@ -5,14 +5,44 @@
 
 #include "brave/ios/browser/api/web_view/brave_web_view.h"
 
+#include <memory>
+
 #include "base/notreached.h"
+#include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
+#include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
+#include "brave/ios/browser/ui/web_view/features.h"
+#include "components/autofill/core/browser/logging/log_manager.h"
+#include "components/autofill/core/browser/logging/log_router.h"
+#include "components/autofill/ios/browser/autofill_agent.h"
+#include "components/autofill/ios/browser/autofill_client_ios.h"
+#include "components/keyed_service/core/service_access_type.h"
+#include "components/password_manager/core/browser/leak_detection/leak_detection_request_utils.h"
+#include "components/password_manager/core/browser/password_form.h"
+#include "components/password_manager/core/browser/password_manager_client.h"
+#include "components/password_manager/core/common/password_manager_pref_names.h"
+#include "components/password_manager/ios/password_controller_driver_helper.h"
+#include "components/password_manager/ios/password_manager_ios_util.h"
+#include "components/password_manager/ios/password_suggestion_helper.h"
+#include "components/password_manager/ios/shared_password_controller.h"
+#include "ios/chrome/browser/autofill/model/autofill_log_router_factory.h"
+#include "ios/chrome/browser/autofill/model/personal_data_manager_factory.h"
+#include "ios/chrome/browser/passwords/model/ios_chrome_account_password_store_factory.h"
+#include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
+#include "ios/chrome/browser/passwords/model/password_controller.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/chrome/browser/signin/model/identity_manager_factory.h"
+#include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/chrome/browser/tabs/model/tab_helper_util.h"
+#include "ios/web/common/crw_input_view_provider.h"
 #include "ios/web/public/navigation/web_state_policy_decider.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_user_data.h"
+#include "ios/web_view/internal/autofill/cwv_autofill_controller_internal.h"
 #include "ios/web_view/internal/cwv_navigation_action_internal.h"
 #include "ios/web_view/internal/cwv_navigation_type_internal.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
+#include "ios/web_view/internal/passwords/web_view_password_manager_client.h"
+#include "ios/web_view/public/cwv_autofill_controller.h"
 
 @interface BraveNavigationAction ()
 - (instancetype)initWithRequest:(NSURLRequest*)request
@@ -109,6 +139,8 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
                 createdWebView:(WKWebView**)createdWebView;
 - (void)attachSecurityInterstitialHelpersToWebStateIfNecessary;
 - (void)updateCurrentURLs;
+- (CWVAutofillController*)newAutofillController;
+- (id<CRWResponderInputView>)webStateInputViewProvider:(web::WebState*)webState;
 @end
 
 @implementation BraveWebView {
@@ -161,9 +193,60 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   AttachTabHelpers(self.webState);
 }
 
-- (CWVAutofillController*)autofillController {
-  NOTREACHED();
-  return nil;
+- (CWVAutofillController*)newAutofillController {
+  // Reimplements CWVWebView's `newAutofillController` method to  create a
+  // CWVAutofillController using Chrome factories instead of `//ios/web_view`
+  // specific factories.
+  if (!base::FeatureList::IsEnabled(
+          brave::features::kUseChromiumWebViewsAutofill)) {
+    return nil;
+  }
+  if (!self.webState) {
+    return nil;
+  }
+  ProfileIOS* profile =
+      ProfileIOS::FromBrowserState(self.webState->GetBrowserState());
+  AutofillAgent* autofillAgent =
+      [[AutofillAgent alloc] initWithPrefService:profile->GetPrefs()
+                                        webState:self.webState];
+
+  auto profile_store = IOSChromeProfilePasswordStoreFactory::GetForProfile(
+      profile, ServiceAccessType::EXPLICIT_ACCESS);
+  auto account_store = IOSChromeAccountPasswordStoreFactory::GetForProfile(
+      profile, ServiceAccessType::EXPLICIT_ACCESS);
+  auto passwordManagerClient =
+      std::make_unique<BraveWebViewPasswordManagerClient>(
+          self.webState, SyncServiceFactory::GetForProfile(profile),
+          profile->GetPrefs(), IdentityManagerFactory::GetForProfile(profile),
+          autofill::AutofillLogRouterFactory::GetForProfile(profile),
+          profile_store.get(), account_store.get(),
+          /* reuse_manager */ nullptr,
+          /* requirements_service */ nullptr);
+
+  auto passwordManager = std::make_unique<password_manager::PasswordManager>(
+      passwordManagerClient.get());
+
+  PasswordFormHelper* formHelper =
+      [[PasswordFormHelper alloc] initWithWebState:self.webState];
+  PasswordSuggestionHelper* suggestionHelper =
+      [[PasswordSuggestionHelper alloc] initWithWebState:self.webState
+                                         passwordManager:passwordManager.get()];
+  PasswordControllerDriverHelper* driverHelper =
+      [[PasswordControllerDriverHelper alloc] initWithWebState:self.webState];
+  SharedPasswordController* passwordController =
+      [[SharedPasswordController alloc] initWithWebState:self.webState
+                                                 manager:passwordManager.get()
+                                              formHelper:formHelper
+                                        suggestionHelper:suggestionHelper
+                                            driverHelper:driverHelper];
+  return [[CWVAutofillController alloc]
+           initWithWebState:self.webState
+       createAutofillClient:
+           base::BindRepeating(&autofill::BraveWebViewAutofillClientIOS::Create)
+              autofillAgent:autofillAgent
+            passwordManager:std::move(passwordManager)
+      passwordManagerClient:std::move(passwordManagerClient)
+         passwordController:passwordController];
 }
 
 - (CWVTranslationController*)translationController {
@@ -172,6 +255,16 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 }
 
 #pragma mark - CRWWebStateDelegate
+
+- (id<CRWResponderInputView>)webStateInputViewProvider:
+    (web::WebState*)webState {
+  if (self.inputAccessoryViewController != nil ||
+      self.inputViewController != nil || self.inputView != nil ||
+      self.inputAccessoryView != nil) {
+    return self;
+  }
+  return nil;
+}
 
 - (void)webState:(web::WebState*)webState
     didRequestHTTPAuthForProtectionSpace:(NSURLProtectionSpace*)protectionSpace
