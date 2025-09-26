@@ -11,6 +11,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "components/ntp_tiles/constants.h"
+#include "components/ntp_tiles/tile_type.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_new_tab_page_refresh {
@@ -47,7 +48,7 @@ TopSitesFacade::TopSitesFacade(
   pref_change_registrar_.Add(ntp_prefs::kNtpShortcutsVisible,
                              base::BindRepeating(&TopSitesFacade::OnPrefChanged,
                                                  weak_factory_.GetWeakPtr()));
-  pref_change_registrar_.Add(ntp_prefs::kNtpUseMostVisitedTiles,
+  pref_change_registrar_.Add(ntp_prefs::kNtpShortcutsType,
                              base::BindRepeating(&TopSitesFacade::OnPrefChanged,
                                                  weak_factory_.GetWeakPtr()));
 
@@ -67,16 +68,20 @@ void TopSitesFacade::SetTopSitesVisible(bool visible) {
 }
 
 mojom::TopSitesListKind TopSitesFacade::GetListKind() {
-  bool use_most_visited =
-      pref_service_->GetBoolean(ntp_prefs::kNtpUseMostVisitedTiles);
-  return use_most_visited ? mojom::TopSitesListKind::kMostVisited
-                          : mojom::TopSitesListKind::kCustom;
+  auto tile_type = static_cast<ntp_tiles::TileType>(
+      pref_service_->GetInteger(ntp_prefs::kNtpShortcutsType));
+  if (tile_type == ntp_tiles::TileType::kCustomLinks) {
+    return mojom::TopSitesListKind::kCustom;
+  }
+  return mojom::TopSitesListKind::kMostVisited;
 }
 
 void TopSitesFacade::SetListKind(mojom::TopSitesListKind list_kind) {
-  bool use_most_visited = list_kind == mojom::TopSitesListKind::kMostVisited;
-  pref_service_->SetBoolean(ntp_prefs::kNtpUseMostVisitedTiles,
-                            use_most_visited);
+  pref_service_->SetInteger(
+      ntp_prefs::kNtpShortcutsType,
+      static_cast<int>(list_kind == mojom::TopSitesListKind::kMostVisited
+                           ? ntp_tiles::TileType::kTopSites
+                           : ntp_tiles::TileType::kCustomLinks));
 }
 
 void TopSitesFacade::GetSites(GetSitesCallback callback) {
