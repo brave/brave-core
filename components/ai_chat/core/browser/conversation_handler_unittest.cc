@@ -4428,7 +4428,7 @@ TEST_F(ConversationHandlerUnitTest,
   conversation_handler_->associated_content_manager()->ClearContent();
 
   // Add a smart mode with different model
-  std::string different_model = "chat-basic";
+  std::string different_model = "chat-gemma";
   prefs::AddSmartModeToPrefs("translate", "Please translate the content",
                              different_model, prefs_);
   auto smart_modes = prefs::GetSmartModesFromPrefs(prefs_);
