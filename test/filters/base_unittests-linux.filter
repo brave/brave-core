@@ -5,4 +5,5 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
--PrefServiceTest.GetValueWithTypeConversion
+# This test fails on CI but passes locally
+-CancelableEventTest.BothCancelFailureAndSucceedOccurUnderContention

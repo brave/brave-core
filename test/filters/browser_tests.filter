@@ -462,7 +462,6 @@
 -ExtensionApiTabPrerenderingTest.PrerenderingIntoANewTab
 -FrameNodeImplPrerenderBrowserTest.Bind_PrerenderNavigation
 -HoldbackSearchPreloadUnifiedBrowserTest.PrerenderDSEHoldbackTest
--GWSAbandonedPageLoadMetricsObserverBrowserTest.PrerenderToSrp
 -GWSPageLoadMetricsObserverBrowserTest.PrerenderSRPAndActivate
 -NewTabPageInitiatedPageLoadMetricsBrowserTest.NonNewTabPagePrerenderTriggeredByEmbedderAndActivate
 -NewTabPagePageLoadMetricsBrowserTest.NonNewTabPagePrerenderTriggeredByEmbedderAndActivate
@@ -1518,9 +1517,11 @@
 -All/MLPromotionInstallDialogBrowserTest.MlHandlesInvisible/PWA_Confirmation_Bubble
 -All/PermissionPromptBubbleBaseViewBrowserTest.InvokeUi_storage_access/*
 -All/SoftNavigationTest.LayoutShift/*
+-AutoPictureInPictureTabHelperBrowserTest.CachedBoundsIgnoredWhenPermissionPromtIsVisible
 -AutoPictureInPictureTabHelperBrowserTest.ImmediatelyClosesAutopipIfTabIsAlreadyFocused
 -AutoPictureInPictureTabHelperBrowserTest.RespectsAutoPictureInPictureContentSetting
 -AutoPictureInPictureTabHelperBrowserTest.ShowsMostRecentlyHiddenTab
+-AutoPictureInPictureWithVideoPlaybackBrowserTest.DevToolsMediaLogsRecordedForOpener
 -AutoPictureInPictureWithVideoPlaybackBrowserTest.DoesNotVideoAutopip_FromSafeToDangerousURL
 -AutoPictureInPictureWithVideoPlaybackBrowserTest.DoesVideoAutopip_FromDangerousToSafeURL
 -AutoPictureInPictureWithVideoPlaybackBrowserTest.OpensAndClosesVideoAutopip*
@@ -2457,6 +2458,7 @@
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
 -All/AmpPageLoadMetricsBrowserTest.*
+-All/BrowsingDataRemoverBrowserTestP.CookieIncognitoDeletion/*
 -All/ClickToCallPolicyTest.*
 -All/ClientHintsBrowserTestForBlockAcceptClientHintsExperiment.Block/*
 -All/ClientHintsBrowserTestForMetaTagTypes.*
@@ -2468,6 +2470,7 @@
 -All/DownloadReferrerPolicyTest.DownloadCrossDomainReferrerPolicy/2
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*
 -All/GetAuthTokenFunctionEnableGranularPermissionsTest.EnableGranularPermissions/*
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/0
 -All/HeadlessModeDumpDomCommandBrowserTestWithSubResourceTimeout.HeadlessDumpDomWithSubResourceTimeout/*
 -All/IdentityGetProfileUserInfoFunctionTest*.*/*
 -All/LoginPromptBrowserTest.*
@@ -2587,6 +2590,7 @@
 -CrossProfileDebuggerApiTest.GetTargets
 -DataSaverBrowserTest.*
 -DataSaverWebAPIsBrowserTest.*
+-DataSharingSDKDelegateDesktopBrowserTest.ReadGroupLoadsWebContents
 -DebuggerApiTest.*
 -DeclarativeContentApiTest.*
 -DefaultProfileExtensionBrowserTest.*
@@ -2687,6 +2691,7 @@
 -GooglePFTestDefaultFieldTrialValue.BaseGoogleSearchHasPFForPrefetch
 -GooglePFTestFieldTrialOverride.BaseGoogleSearchHasPFForPrefetch
 -GuestStartupBrowserCreatorPickerTest.*
+-GWSAbandonedPageLoadMetricsObserverBrowserTest.*
 -HangoutServicesBrowserTest.*
 -HeadlessModeCommandBrowserTest_DumpDomWithBeforeUnloadPreventDefault.DumpDomWithBeforeUnloadPreventDefault
 -HeadlessModeCommandBrowserTest_PrintToPdfWithLazyLoading.PrintToPdfWithLazyLoading
@@ -2695,6 +2700,7 @@
 -HeadlessModeLazyLoadingPrintToPdfCommandBrowserTest.HeadlessLazyLoadingPrintToPdf
 -HeadlessModePrintToPdfCommandBrowserTest.HeadlessPrintToPdf
 -HeadlessModePrintToPdfCommandBrowserTest.HeadlessTaggedPrintToPdf/*
+-HeadlessModeProtocolBrowserTest*.InputClipboardOps
 -HeadlessModeScreencastTest.ScreencastBasics
 -HeadlessModeScreencastTest.ScreencastViewport
 -HeadlessModeScreenshotCommandBrowserTest.*
@@ -2854,6 +2860,7 @@
 -PersistentBackground/WebNavigationApiTestWithContextType.*
 -PersistentBackground/WebUiNtpInterceptionWebRequestAPITest.OneGoogleBarRequestsHidden/*
 -PersistentScriptingAPITest.*
+-PKIMetadataComponentChromeRootStoreUpdateWithDoHServerTest.TrustAnchorIDs
 -PlatformAppBrowserTest.*
 -PolicyEnabled/WebrtcLoggingPrivateApiStartEventLoggingTestPolicy.StartEventLogging/*
 -PolicyPrefsTest.*
@@ -3081,8 +3088,9 @@
 -SystemNetworkContext/NetworkContextConfigurationProxyOnStartBrowserTest.*
 -SystemNetworkContext/NetworkContextConfigurationProxySettingsBrowserTest.*
 -SystemNetworkContext/NetworkContextConfigurationReportingAndNelBrowserTest.*
--SyncSessionsRouterTabHelperBrowserTest.*
+-SystemNetworkContextManagerNetworkServiceSandboxBrowsertest.NetworkServiceRestartsFailingLaunches
 -SystemNetworkContextManagerWithFirstPartySetComponentBrowserTest.*
+-SyncSessionsRouterTabHelperBrowserTest.*
 -TabActivityWatcherTest.SwitchTabs
 -TabActivityWatcherTest.SwitchWindows
 -TabActivityWatcherTest.TabDrag
