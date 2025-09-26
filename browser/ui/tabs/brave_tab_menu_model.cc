@@ -167,7 +167,8 @@ void BraveTabMenuModel::Build(Browser* browser,
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs) ||
+      base::FeatureList::IsEnabled(tabs::features::kBraveEmojiTabFavicon)) {
     BuildItemForCustomization(tab_strip_model, selected_index);
   }
 
@@ -254,6 +255,13 @@ void BraveTabMenuModel::BuildItemForCustomization(
     return;
   }
 
-  const auto index = *GetIndexOfCommandId(TabStripModel::CommandReload) + 1;
-  InsertItemWithStringIdAt(index, CommandRenameTab, IDS_TAB_CXMENU_RENAME_TAB);
+  auto index = *GetIndexOfCommandId(TabStripModel::CommandReload) + 1;
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+    InsertItemWithStringIdAt(index++, CommandRenameTab,
+                             IDS_TAB_CXMENU_RENAME_TAB);
+  }
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveEmojiTabFavicon)) {
+    InsertItemWithStringIdAt(index++, CommandChangeTabFavicon,
+                             IDS_TAB_CXMENU_CHANGE_FAVICON);
+  }
 }

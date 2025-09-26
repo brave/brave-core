@@ -31,6 +31,9 @@ BASE_DECLARE_FEATURE(kBraveTreeTab);
 
 BASE_DECLARE_FEATURE(kBraveRenamingTabs);
 
+// Enables changing a tab's favicon to a custom emoji via context menu.
+BASE_DECLARE_FEATURE(kBraveEmojiTabFavicon);
+
 bool HorizontalTabsUpdateEnabled();
 bool IsBraveSplitViewEnabled();
 

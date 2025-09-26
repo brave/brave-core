@@ -25,8 +25,25 @@
  public:                                                           \
   std::u16string GetTitle(__VA_ARGS__)
 
+// Add methods to manage custom emoji favicon override.
+#define GetFavicon(...)                                                 \
+  GetFavicon_ChromiumImpl(__VA_ARGS__) const;                           \
+  void SetCustomEmojiFavicon(const std::optional<std::u16string>&);     \
+  bool has_custom_emoji_favicon() const {                                \
+    return custom_emoji_favicon_.has_value();                            \
+  }                                                                      \
+  std::optional<std::u16string> GetCustomEmojiFaviconString() const;     \
+  ui::ImageModel GetEmojiFaviconImage() const;                           \
+                                                                         \
+ private:                                                                \
+  std::optional<std::u16string> custom_emoji_favicon_;                   \
+                                                                         \
+ public:                                                                 \
+  ui::ImageModel GetFavicon(__VA_ARGS__)
+
 #include <chrome/browser/ui/tab_ui_helper.h>  // IWYU pragma: export
 
 #undef GetTitle
+#undef GetFavicon
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TAB_UI_HELPER_H_

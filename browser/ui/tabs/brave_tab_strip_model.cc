@@ -151,6 +151,25 @@ void BraveTabStripModel::SetCustomTitleForTab(
   NotifyTabChanged(tab_interface, TabChangeType::kAll);
 }
 
+void BraveTabStripModel::SetCustomEmojiFaviconForTab(
+    int index,
+    const std::optional<std::u16string>& emoji) {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveEmojiTabFavicon));
+
+  auto* tab_interface = GetTabAtIndex(index);
+  CHECK(tab_interface);
+  auto* tab_ui_helper = tab_interface->GetTabFeatures()->tab_ui_helper();
+  CHECK(tab_ui_helper);
+  tab_ui_helper->SetCustomEmojiFavicon(emoji);
+
+  // Notify observers for persistence.
+  for (auto& observer : observers_) {
+    observer.TabCustomTitleChanged(GetWebContentsAt(index), std::nullopt);
+  }
+
+  NotifyTabChanged(tab_interface, TabChangeType::kAll);
+}
+
 void BraveTabStripModel::CloseSelectedTabsWithSplitView() {
   auto selected_indices = selection_model().selected_indices();
   if (selected_indices.size() != 2) {

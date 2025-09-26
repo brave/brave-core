@@ -9,6 +9,8 @@
 namespace tabs {
 
 inline constexpr char kBraveTabCustomTitleExtraDataKey[] = "tab_custom_title";
+inline constexpr char kBraveTabCustomFaviconEmojiExtraDataKey[] =
+    "tab_custom_favicon_emoji";
 
 }  // namespace tabs
 

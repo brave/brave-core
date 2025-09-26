@@ -42,6 +42,23 @@ void MaybeRestoreCustomTitleForTab(
       base::UTF8ToUTF16(extra_data.at(tabs::kBraveTabCustomTitleExtraDataKey)));
 }
 
+void MaybeRestoreCustomEmojiFaviconForTab(
+    BraveTabStripModel* model,
+    int tab_index,
+    const std::map<std::string, std::string>& extra_data) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveEmojiTabFavicon)) {
+    return;
+  }
+
+  auto it = extra_data.find(tabs::kBraveTabCustomFaviconEmojiExtraDataKey);
+  if (it == extra_data.end()) {
+    return;
+  }
+
+  const std::string& emoji_utf8 = it->second;
+  model->SetCustomEmojiFaviconForTab(tab_index, base::UTF8ToUTF16(emoji_utf8));
+}
+
 }  // namespace
 
 content::WebContents* AddRestoredTab(
@@ -68,6 +85,9 @@ content::WebContents* AddRestoredTab(
   MaybeRestoreCustomTitleForTab(
       static_cast<BraveTabStripModel*>(browser->tab_strip_model()), tab_index,
       extra_data);
+  MaybeRestoreCustomEmojiFaviconForTab(
+      static_cast<BraveTabStripModel*>(browser->tab_strip_model()), tab_index,
+      extra_data);
   return web_contents;
 }
 
@@ -85,6 +105,9 @@ content::WebContents* ReplaceRestoredTab(
       session_storage_namespace, user_agent_override, extra_data,
       from_session_restore);
   MaybeRestoreCustomTitleForTab(
+      static_cast<BraveTabStripModel*>(browser->tab_strip_model()),
+      selected_navigation, extra_data);
+  MaybeRestoreCustomEmojiFaviconForTab(
       static_cast<BraveTabStripModel*>(browser->tab_strip_model()),
       selected_navigation, extra_data);
   return web_contents;

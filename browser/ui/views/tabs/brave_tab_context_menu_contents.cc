@@ -235,6 +235,8 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     case BraveTabMenuModel::CommandSwapTabsInTile:
       [[fallthrough]];
     case BraveTabMenuModel::CommandRenameTab:
+      [[fallthrough]];
+    case BraveTabMenuModel::CommandChangeTabFavicon:
       return true;
   }
   NOTREACHED() << "All commands are handled above";
@@ -292,6 +294,10 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandRenameTab:
       CHECK(controller_);
       controller_->EnterTabRenameModeAt(tab_index_);
+      return;
+    case BraveTabMenuModel::CommandChangeTabFavicon:
+      CHECK(controller_);
+      controller_->OpenEmojiPickerForTab(tab_index_);
       return;
   }
   NOTREACHED() << "All commands are handled above";

@@ -71,5 +71,24 @@ TabRendererData TabRendererData::FromTabInModel(const TabStripModel* model,
     data.is_custom_title = tab_ui_helper->has_custom_title();
   }
 
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveEmojiTabFavicon)) {
+    // If a custom emoji favicon is set, override the favicon image.
+    tabs::TabInterface* const tab_for_favicon = model->GetTabAtIndex(index);
+    if (tab_for_favicon) {
+      tabs::TabFeatures* const features_for_favicon =
+          tab_for_favicon->GetTabFeatures();
+      if (features_for_favicon) {
+        TabUIHelper* const tab_ui_helper_for_favicon =
+            features_for_favicon->tab_ui_helper();
+        if (tab_ui_helper_for_favicon &&
+            tab_ui_helper_for_favicon->has_custom_emoji_favicon()) {
+          data.favicon = tab_ui_helper_for_favicon->GetEmojiFaviconImage();
+          data.is_monochrome_favicon = false;
+          data.should_themify_favicon = false;
+        }
+      }
+    }
+  }
+
   return data;
 }

@@ -9,12 +9,20 @@
 
 #include "brave/browser/ui/tabs/features.h"
 #include "content/public/browser/navigation_controller.h"
+#include "ui/gfx/canvas.h"
+#include "ui/gfx/font_list.h"
+#include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/image/image_skia.h"
+#include "ui/gfx/canvas.h"
+#include "third_party/skia/include/core/SkColor.h"
 
 #define GetTitle GetTitle_ChromiumImpl
+#define GetFavicon GetFavicon_ChromiumImpl
 
 #include <chrome/browser/ui/tab_ui_helper.cc>
 
 #undef GetTitle
+#undef GetFavicon
 
 void TabUIHelper::SetCustomTitle(const std::optional<std::u16string>& title) {
   if (title == custom_title_) {
@@ -58,4 +66,50 @@ void TabUIHelper::UpdateLastOrigin() {
     custom_title_.reset();
   }
   last_origin_ = origin;
+}
+
+void TabUIHelper::SetCustomEmojiFavicon(
+    const std::optional<std::u16string>& emoji) {
+  if (emoji == custom_emoji_favicon_) {
+    return;
+  }
+  // Allow empty to clear; if provided, must be non-empty.
+  CHECK(!emoji.has_value() || !emoji->empty());
+  custom_emoji_favicon_ = emoji;
+}
+
+std::optional<std::u16string> TabUIHelper::GetCustomEmojiFaviconString() const {
+  return custom_emoji_favicon_;
+}
+
+ui::ImageModel TabUIHelper::GetEmojiFaviconImage() const {
+  // Render the emoji string to an ImageSkia at favicon size.
+  if (!custom_emoji_favicon_ || custom_emoji_favicon_->empty()) {
+    return GetFavicon_ChromiumImpl();
+  }
+
+  constexpr int kFaviconSize = 16;  // in DIP
+  gfx::Canvas canvas(gfx::Size(kFaviconSize, kFaviconSize), /*image_scale=*/1.0f,
+                     /*is_opaque=*/false);
+  gfx::Rect bounds(0, 0, kFaviconSize, kFaviconSize);
+
+  // Center baseline roughly; emoji often sit slightly below baseline.
+  gfx::FontList font_list;
+  canvas.DrawStringRectWithFlags(*custom_emoji_favicon_, font_list,
+                                 SK_ColorBLACK, bounds,
+                                 gfx::Canvas::TEXT_ALIGN_CENTER);
+
+  SkBitmap bitmap = canvas.GetBitmap();
+  gfx::ImageSkia image_skia = gfx::ImageSkia::CreateFrom1xBitmap(bitmap);
+  return ui::ImageModel::FromImageSkia(image_skia);
+}
+
+ui::ImageModel TabUIHelper::GetFavicon() const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveEmojiTabFavicon)) {
+    return GetFavicon_ChromiumImpl();
+  }
+  if (custom_emoji_favicon_) {
+    return GetEmojiFaviconImage();
+  }
+  return GetFavicon_ChromiumImpl();
 }

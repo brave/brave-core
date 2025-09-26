@@ -46,6 +46,7 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandSwapTabsInTile,
     CommandOpenInContainer,
     CommandRenameTab,
+    CommandChangeTabFavicon,
     CommandLast,
   };
 
