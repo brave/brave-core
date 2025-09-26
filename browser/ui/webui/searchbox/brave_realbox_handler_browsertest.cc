@@ -41,7 +41,8 @@ class BraveRealboxHandlerTest : public InProcessBrowserTest {
   void OnAutocompleteAccept(const GURL& url, const std::u16string& keyword) {
     mojo::Remote<searchbox::mojom::PageHandler> remote_page_handler;
     RealboxHandler handler(remote_page_handler.BindNewPipeAndPassReceiver(),
-                           browser()->profile(), contents(), nullptr, nullptr);
+                           browser()->profile(), contents(),
+                           /*metrics_reporter=*/nullptr);
     AutocompleteMatch match;
     match.keyword = keyword;
     handler.omnibox_controller()->client()->OnAutocompleteAccept(
