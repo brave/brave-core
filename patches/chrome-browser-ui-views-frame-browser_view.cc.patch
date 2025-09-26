@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index 5359c9189fb47266b6ff7c9561b794d8db9b3a79..35d942dbec22a146ec6049d8424f42b1bf55fea8 100644
+index 5359c9189fb47266b6ff7c9561b794d8db9b3a79..ba752300fcae80fe0df7d9fc648b84d661855ce5 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
 @@ -718,6 +718,7 @@ bool ConvertedHitTest(views::View* src, views::View* dst, gfx::Point* point) {
@@ -9,4 +9,12 @@ index 5359c9189fb47266b6ff7c9561b794d8db9b3a79..35d942dbec22a146ec6049d8424f42b1
 +  BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
    views::View::ConvertPointToTarget(src, dst, point);
    return dst->HitTestPoint(*point);
+ }
+@@ -2886,6 +2887,7 @@ void BrowserView::OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
+ #if !BUILDFLAG(IS_MAC)
+   // MacOS does not need views window scrim. We use sheets to show window modals
+   // (-[NSWindow beginSheet:]), which natively draw a scrim.
++  if (false)
+   window_scrim_view_->SetVisible(visible);
+ #endif
  }
