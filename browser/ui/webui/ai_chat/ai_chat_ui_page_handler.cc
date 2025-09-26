@@ -16,16 +16,21 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/notimplemented.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/components/ai_chat/content/browser/associated_link_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
@@ -75,6 +80,17 @@ constexpr char kURLManagePremium[] = "https://account.brave.com/";
 namespace ai_chat {
 
 namespace {
+
+class AssociatedLinkContentDelegate
+    : public ai_chat::AssociatedLinkContent::Delegate {
+ public:
+  AssociatedLinkContentDelegate() = default;
+  ~AssociatedLinkContentDelegate() override = default;
+  void AttachTabHelpers(content::WebContents* web_contents) override {
+    ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(web_contents);
+    brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+  }
+};
 
 // Invokes a callback when the WebContents has finished loading. Note: If the
 // WebContents is destroyed before loading is completed, the callback will not
@@ -454,6 +470,17 @@ void AIChatUIPageHandler::DisassociateContent(
     const std::string& conversation_uuid) {
   auto* service = AIChatServiceFactory::GetForBrowserContext(profile_);
   service->DisassociateContent(content, conversation_uuid);
+}
+
+void AIChatUIPageHandler::AttachBookmark(ai_chat::mojom::BookmarkPtr bookmark,
+                                         const std::string& conversation_uuid) {
+  auto bookmark_content = std::make_unique<ai_chat::AssociatedLinkContent>(
+      bookmark->url, base::UTF8ToUTF16(bookmark->title), profile_,
+      std::make_unique<AssociatedLinkContentDelegate>());
+
+  auto* service = AIChatServiceFactory::GetForBrowserContext(profile_);
+  service->MaybeAssociateContent(std::move(bookmark_content),
+                                 conversation_uuid);
 }
 
 void AIChatUIPageHandler::NewConversation(
