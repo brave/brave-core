@@ -46,8 +46,6 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
       console.error('[Settings] Routes: could not find SYSTEM page')
     }
   }
-  r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
-  r.SOCIAL_BLOCKING.hasMigratedToPlugin = true
 
   r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
   r.EXTENSIONS.hasMigratedToPlugin = true
