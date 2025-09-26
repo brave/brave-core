@@ -121,9 +121,9 @@ export function createBackgroundHandler(
       const { sponsoredImageBackground } = store.getState()
       if (sponsoredImageBackground && sponsoredImageBackground.logo) {
         handler.notifySponsoredImageLogoClicked(
+          sponsoredImageBackground.wallpaperId,
           sponsoredImageBackground.creativeInstanceId,
           sponsoredImageBackground.logo.destinationUrl,
-          sponsoredImageBackground.wallpaperId,
           sponsoredImageBackground.shouldMetricsFallbackToP3a);
       }
     },
