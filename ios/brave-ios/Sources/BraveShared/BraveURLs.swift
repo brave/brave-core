@@ -46,6 +46,9 @@ extension URL {
     public static let braveVPNCheckoutURL = URL(
       string: "https://account.brave.com/?intent=checkout&product=vpn"
     )!
+    public static let braveVPNLearnMoreURL = URL(
+      string: "https://brave.com/firewall-vpn/"
+    )!
     public static let safeBrowsingHelp = URL(
       string: "https://support.brave.app/hc/en-us/articles/15222663599629-Safe-Browsing-in-Brave"
     )!

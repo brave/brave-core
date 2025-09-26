@@ -19,6 +19,7 @@ public struct BraveVPNPaywallView: View {
   private let openVPNAuthenticationInNewTab: () -> Void
   private let installVPNProfile: () -> Void
   private var openDirectCheckoutInNewTab: () -> Void
+  private var openLearnMoreInNewTab: () -> Void
 
   @State private var selectedTierType: BraveVPNSubscriptionTier = .yearly
   @State private var availableTierTypes: [BraveVPNSubscriptionTier] = [.yearly, .monthly]
@@ -35,11 +36,13 @@ public struct BraveVPNPaywallView: View {
   public init(
     openVPNAuthenticationInNewTab: @escaping (() -> Void),
     openDirectCheckoutInNewTab: @escaping () -> Void,
+    openLearnMoreInNewTab: @escaping () -> Void,
     installVPNProfile: @escaping () -> Void
   ) {
     self.iapObserverManager = BraveVPNIAPObserverManager(iapObserver: BraveVPN.iapObserver)
     self.openVPNAuthenticationInNewTab = openVPNAuthenticationInNewTab
     self.openDirectCheckoutInNewTab = openDirectCheckoutInNewTab
+    self.openLearnMoreInNewTab = openLearnMoreInNewTab
     self.installVPNProfile = installVPNProfile
   }
 
@@ -121,6 +124,9 @@ public struct BraveVPNPaywallView: View {
           },
           redeedPromoCode: {
             redeemPromoCode()
+          },
+          learnMore: {
+            openLearnMoreInNewTab()
           }
         )
       }
@@ -143,6 +149,9 @@ public struct BraveVPNPaywallView: View {
         },
         redeedPromoCode: {
           redeemPromoCode()
+        },
+        learnMore: {
+          openLearnMoreInNewTab()
         }
       )
       .padding(.bottom, 8.0)
@@ -399,6 +408,7 @@ public struct BraveVPNPaywallView: View {
   BraveVPNPaywallView(
     openVPNAuthenticationInNewTab: {},
     openDirectCheckoutInNewTab: {},
+    openLearnMoreInNewTab: {},
     installVPNProfile: {}
   )
   .environment(\.allowExternalPurchaseLinks, true)
@@ -407,6 +417,7 @@ public struct BraveVPNPaywallView: View {
   BraveVPNPaywallView(
     openVPNAuthenticationInNewTab: {},
     openDirectCheckoutInNewTab: {},
+    openLearnMoreInNewTab: {},
     installVPNProfile: {}
   )
   .environment(\.allowExternalPurchaseLinks, false)

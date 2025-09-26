@@ -152,6 +152,22 @@ extension Strings {
       comment: "Information shown to users for using Brave VPN"
     )
 
+    public static let infoCheckNoLogs = NSLocalizedString(
+      "vpn.infoCheckNoLogs",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "No-logs policy",
+      comment: "Information shown to users for using Brave VPN"
+    )
+
+    public static let infoCheckAudition = NSLocalizedString(
+      "vpn.infoCheckAudition",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Independently audited",
+      comment: "Information shown to users for using Brave VPN"
+    )
+
     public static let autoRenewSoonExpirePopOverTitle = NSLocalizedString(
       "vpn.autoRenewSoonExpireTitle",
       tableName: "BraveShared",

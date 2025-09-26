@@ -359,9 +359,7 @@ extension BrowserViewController {
         let vpnPaywallView = BraveVPNPaywallView(
           openVPNAuthenticationInNewTab: { [weak self] in
             guard let self else { return }
-
             self.popToBVC()
-
             self.openURLInNewTab(
               .brave.braveVPNRefreshCredentials,
               isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
@@ -370,10 +368,18 @@ extension BrowserViewController {
           },
           openDirectCheckoutInNewTab: { [weak self] in
             guard let self else { return }
-
             popToBVC()
             openURLInNewTab(
               .brave.braveVPNCheckoutURL,
+              isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
+              isPrivileged: false
+            )
+          },
+          openLearnMoreInNewTab: { [weak self] in
+            guard let self else { return }
+            popToBVC()
+            openURLInNewTab(
+              .brave.braveVPNLearnMoreURL,
               isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
               isPrivileged: false
             )
