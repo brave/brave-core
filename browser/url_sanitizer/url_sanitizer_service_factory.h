@@ -11,7 +11,7 @@
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/components/url_sanitizer/common/mojom/url_sanitizer.mojom.h"
+#include "brave/components/url_sanitizer/core/common/mojom/url_sanitizer.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #endif  // # BUILDFLAG(IS_ANDROID)
 
