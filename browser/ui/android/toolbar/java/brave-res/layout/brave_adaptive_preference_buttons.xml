@@ -52,13 +52,4 @@
           app:iconSrc="@drawable/ic_crypto_wallets"
           app:primaryText="@string/menu_brave_wallet"/>
 
-     <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
-          android:id="@+id/adaptive_option_brave_news"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:minHeight="@dimen/min_touch_target_size"
-          android:paddingTop="10dp"
-          app:iconSrc="@drawable/ic_news"
-          app:primaryText="@string/brave_news_title"/>
-
 </merge>

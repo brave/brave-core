@@ -38,7 +38,6 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
     private @Nullable RadioButtonWithDescription mDownloadsButton;
     private @Nullable RadioButtonWithDescription mBraveLeoButton;
     private @Nullable RadioButtonWithDescription mBraveWalletButton;
-    private @Nullable RadioButtonWithDescription mBraveNewsButton;
 
     public BraveRadioButtonGroupAdaptiveToolbarPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -60,8 +59,6 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
                 (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_brave_leo);
         mBraveWalletButton =
                 (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_brave_wallet);
-        mBraveNewsButton =
-                (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_brave_news);
 
         super.onBindViewHolder(holder);
 
@@ -102,9 +99,6 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
         } else if (mBraveWalletButton != null && mBraveWalletButton.isChecked()) {
             mSelected = AdaptiveToolbarButtonVariant.WALLET;
             isOnCheckedChangedHandled = true;
-        } else if (mBraveNewsButton != null && mBraveNewsButton.isChecked()) {
-            mSelected = AdaptiveToolbarButtonVariant.NEWS;
-            isOnCheckedChangedHandled = true;
         }
         if (isOnCheckedChangedHandled) {
             callChangeListener(mSelected);
@@ -127,8 +121,6 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
                 return mBraveLeoButton;
             case AdaptiveToolbarButtonVariant.WALLET:
                 return mBraveWalletButton;
-            case AdaptiveToolbarButtonVariant.NEWS:
-                return mBraveNewsButton;
         }
 
         return super.getButton(variant);
