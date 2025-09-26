@@ -89,10 +89,10 @@ class BraveOriginServiceTest : public testing::Test {
                         bool default_value,
                         bool user_settable) {
     std::string policy_key = base::StrCat({pref_name, ".policy"});
-    policies.emplace(policy_key,
-                     BraveOriginPolicyInfo(
-                         pref_name, default_value, user_settable, policy_key,
-                         base::StrCat({pref_name, ".brave_origin_key"})));
+    policies.emplace(
+        policy_key,
+        BraveOriginPolicyInfo(pref_name, default_value, user_settable,
+                              base::StrCat({pref_name, ".brave_origin_key"})));
   }
 
   BraveOriginPolicyMap CreateBrowserTestPolicies() {
@@ -313,7 +313,7 @@ TEST_F(BraveOriginServiceTest, PolicyValueStoredInCorrectBraveOriginLocation) {
           kTestBrowserPolicyKey);
   ASSERT_NE(policy_info, nullptr);
   std::string expected_browser_key =
-      GetBraveOriginPrefKey(policy_info->policy_key, std::nullopt);
+      GetBraveOriginPrefKey(kTestBrowserPolicyKey, std::nullopt);
 
   const base::Value* stored_value = policies_dict.Find(expected_browser_key);
   ASSERT_NE(stored_value, nullptr);
@@ -328,7 +328,7 @@ TEST_F(BraveOriginServiceTest, PolicyValueStoredInCorrectBraveOriginLocation) {
           kTestProfilePolicyKey);
   ASSERT_NE(profile_policy_info, nullptr);
   std::string expected_profile_key =
-      GetBraveOriginPrefKey(profile_policy_info->policy_key, kTestProfileId);
+      GetBraveOriginPrefKey(kTestProfilePolicyKey, kTestProfileId);
 
   // Verify it's stored with profile-scoped key
   stored_value = policies_dict.Find(expected_profile_key);
@@ -521,10 +521,10 @@ class BraveOriginServiceDisabledTest : public testing::Test {
                         bool default_value,
                         bool user_settable) {
     std::string policy_key = base::StrCat({pref_name, ".policy"});
-    policies.emplace(policy_key,
-                     BraveOriginPolicyInfo(
-                         pref_name, default_value, user_settable, policy_key,
-                         base::StrCat({pref_name, ".brave_origin_key"})));
+    policies.emplace(
+        policy_key,
+        BraveOriginPolicyInfo(pref_name, default_value, user_settable,
+                              base::StrCat({pref_name, ".brave_origin_key"})));
   }
 
   BraveOriginPolicyMap CreateBrowserTestPolicies() {

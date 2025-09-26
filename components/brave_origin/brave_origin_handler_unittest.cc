@@ -82,10 +82,10 @@ class BraveOriginHandlerTest : public testing::Test {
                         bool default_value,
                         bool user_settable) {
     std::string policy_key = base::StrCat({pref_name, ".policy"});
-    policies.emplace(policy_key,
-                     BraveOriginPolicyInfo(
-                         pref_name, default_value, user_settable, policy_key,
-                         base::StrCat({pref_name, ".brave_origin_key"})));
+    policies.emplace(
+        policy_key,
+        BraveOriginPolicyInfo(pref_name, default_value, user_settable,
+                              base::StrCat({pref_name, ".brave_origin_key"})));
   }
 
   BraveOriginPolicyMap CreateBrowserTestPolicies() {
@@ -339,10 +339,10 @@ class BraveOriginHandlerDisabledTest : public testing::Test {
                         bool default_value,
                         bool user_settable) {
     std::string policy_key = base::StrCat({pref_name, ".policy"});
-    policies.emplace(policy_key,
-                     BraveOriginPolicyInfo(
-                         pref_name, default_value, user_settable, policy_key,
-                         base::StrCat({pref_name, ".brave_origin_key"})));
+    policies.emplace(
+        policy_key,
+        BraveOriginPolicyInfo(pref_name, default_value, user_settable,
+                              base::StrCat({pref_name, ".brave_origin_key"})));
   }
 
   BraveOriginPolicyMap CreateBrowserTestPolicies() {

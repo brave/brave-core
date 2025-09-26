@@ -47,9 +47,10 @@ class BraveOriginPolicyManagerTest : public testing::Test {
                         const std::string& pref_name,
                         bool default_value) {
     std::string policy_key = base::StrCat({"Test", pref_name, "Policy"});
-    policies.emplace(policy_key,
-                     BraveOriginPolicyInfo(pref_name, default_value, true,
-                                           policy_key, pref_name));
+    policies.emplace(
+        policy_key,
+        BraveOriginPolicyInfo(pref_name, default_value, true,
+                              GetBraveOriginPrefKey(policy_key, std::nullopt)));
   }
 
   BraveOriginPolicyMap CreateBrowserTestPolicies() {
@@ -198,7 +199,7 @@ TEST_F(BraveOriginPolicyManagerTest, GetPolicyValue_ReturnsLocalStateValue) {
   const auto* policy_info = manager->GetPolicyInfo(kTestGlobalPolicyKey);
   ASSERT_NE(policy_info, nullptr);
   std::string policy_key =
-      GetBraveOriginPrefKey(policy_info->policy_key, std::nullopt);
+      GetBraveOriginPrefKey(kTestGlobalPolicyKey, std::nullopt);
   SetPolicyInLocalState(policy_key, true);
 
   auto result = manager->GetPolicyValue(kTestGlobalPolicyKey);
@@ -214,7 +215,7 @@ TEST_F(BraveOriginPolicyManagerTest, GetPolicyValue_ProfileScopedPolicy) {
   const auto* policy_info = manager->GetPolicyInfo(kTestProfilePolicyKey);
   ASSERT_NE(policy_info, nullptr);
   std::string policy_key =
-      GetBraveOriginPrefKey(policy_info->policy_key, profile_id);
+      GetBraveOriginPrefKey(kTestProfilePolicyKey, profile_id);
   SetPolicyInLocalState(policy_key, false);
 
   auto result = manager->GetPolicyValue(kTestProfilePolicyKey, profile_id);

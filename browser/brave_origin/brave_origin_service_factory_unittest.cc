@@ -36,7 +36,6 @@ TEST(BraveOriginServiceFactoryTest,
   EXPECT_EQ(p3a_info->pref_name, p3a::kP3AEnabled);
   EXPECT_EQ(p3a_info->default_value, false);
   EXPECT_EQ(p3a_info->user_settable, true);
-  EXPECT_EQ(p3a_info->policy_key, policy::key::kBraveP3AEnabled);
   EXPECT_EQ(p3a_info->brave_origin_pref_key, p3a::kP3AEnabled);
 
   // Test that Stats reporting policy is correctly built (browser-level)
@@ -46,7 +45,6 @@ TEST(BraveOriginServiceFactoryTest,
   EXPECT_EQ(stats_info->pref_name, kStatsReportingEnabled);
   EXPECT_EQ(stats_info->default_value, false);
   EXPECT_EQ(stats_info->user_settable, true);
-  EXPECT_EQ(stats_info->policy_key, policy::key::kBraveStatsPingEnabled);
   EXPECT_EQ(stats_info->brave_origin_pref_key, kStatsReportingEnabled);
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -58,7 +56,6 @@ TEST(BraveOriginServiceFactoryTest,
   EXPECT_EQ(tor_info->default_value,
             true);  // This is a "disabled" pref, so default is true
   EXPECT_EQ(tor_info->user_settable, false);
-  EXPECT_EQ(tor_info->policy_key, policy::key::kTorDisabled);
   EXPECT_EQ(tor_info->brave_origin_pref_key, tor::prefs::kTorDisabled);
 #endif
 
@@ -84,7 +81,6 @@ TEST(BraveOriginServiceFactoryTest,
   EXPECT_EQ(rewards_info->default_value,
             true);  // This is a "disabled" pref, so default is true
   EXPECT_EQ(rewards_info->user_settable, false);
-  EXPECT_EQ(rewards_info->policy_key, policy::key::kBraveRewardsDisabled);
   EXPECT_EQ(rewards_info->brave_origin_pref_key,
             brave_rewards::prefs::kDisabledByPolicy);
 #endif
@@ -134,14 +130,8 @@ TEST(BraveOriginServiceFactoryTest,
         << "Browser policy key should not be empty";
     EXPECT_FALSE(policy_info.pref_name.empty())
         << "Browser policy info pref name should not be empty";
-    EXPECT_FALSE(policy_info.policy_key.empty())
-        << "Browser policy key should not be empty";
     EXPECT_FALSE(policy_info.brave_origin_pref_key.empty())
         << "Browser BraveOrigin pref key should not be empty";
-
-    // The policy_key in the map key should match the policy_key in the
-    // policy_info
-    EXPECT_EQ(policy_key, policy_info.policy_key);
     EXPECT_EQ(policy_info.brave_origin_pref_key, policy_info.pref_name);
   }
 
@@ -151,14 +141,8 @@ TEST(BraveOriginServiceFactoryTest,
         << "Profile policy key should not be empty";
     EXPECT_FALSE(policy_info.pref_name.empty())
         << "Profile policy info pref name should not be empty";
-    EXPECT_FALSE(policy_info.policy_key.empty())
-        << "Profile policy key should not be empty";
     EXPECT_FALSE(policy_info.brave_origin_pref_key.empty())
         << "Profile BraveOrigin pref key should not be empty";
-
-    // The policy_key in the map key should match the policy_key in the
-    // policy_info
-    EXPECT_EQ(policy_key, policy_info.policy_key);
     EXPECT_EQ(policy_info.brave_origin_pref_key, policy_info.pref_name);
   }
 

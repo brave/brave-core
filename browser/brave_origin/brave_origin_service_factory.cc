@@ -209,10 +209,9 @@ BraveOriginPolicyMap BraveOriginServiceFactory::GetBrowserPolicyDefinitions() {
       std::string brave_origin_pref_key = pref_name;
 
       browser_policy_definitions.emplace(
-          policy_key,
-          BraveOriginPolicyInfo(pref_name, metadata->origin_default_value,
-                                metadata->user_settable, policy_key,
-                                brave_origin_pref_key));
+          policy_key, BraveOriginPolicyInfo(
+                          pref_name, metadata->origin_default_value,
+                          metadata->user_settable, brave_origin_pref_key));
     }
   }
 
@@ -231,10 +230,9 @@ BraveOriginPolicyMap BraveOriginServiceFactory::GetProfilePolicyDefinitions() {
       std::string brave_origin_pref_key = pref_name;
 
       profile_policy_definitions.emplace(
-          policy_key,
-          BraveOriginPolicyInfo(pref_name, metadata->origin_default_value,
-                                metadata->user_settable, policy_key,
-                                brave_origin_pref_key));
+          policy_key, BraveOriginPolicyInfo(
+                          pref_name, metadata->origin_default_value,
+                          metadata->user_settable, brave_origin_pref_key));
     }
   }
 
