@@ -140,11 +140,12 @@ void BraveTabStrip::HideHover(Tab* tab, TabStyle::HideHoverStyle style) {
   tab->HideHover(style);
 }
 
-void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
+void BraveTabStrip::UpdateHoverCard(views::View* view,
+                                    HoverCardUpdateType update_type) {
   if (brave_tabs::AreTooltipsEnabled(controller_->GetProfile()->GetPrefs())) {
     return;
   }
-  TabStrip::UpdateHoverCard(tab, update_type);
+  TabStrip::UpdateHoverCard(view, update_type);
 }
 
 void BraveTabStrip::MaybeStartDrag(

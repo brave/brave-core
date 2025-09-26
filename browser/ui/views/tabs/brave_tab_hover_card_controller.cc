@@ -35,13 +35,18 @@ void BraveTabHoverCardController::UpdateHoverCardArrow() {
   }
 }
 
-void BraveTabHoverCardController::CreateHoverCard(Tab* tab) {
+void BraveTabHoverCardController::CreateHoverCard() {
+  // TODO(crbug.com/439589464): stop using `delegate_->GetAsTab()` when the
+  // value signature is fixed to pass it in.
   hover_card_image_previews_enabled_ =
       AreHoverCardImagesEnabled() ||
-      brave_tabs::AreCardPreviewsEnabled(
-          tab->controller()->GetBrowser()->profile()->GetPrefs());
+      brave_tabs::AreCardPreviewsEnabled(delegate_->GetAsTab()
+                                             ->controller()
+                                             ->GetBrowser()
+                                             ->profile()
+                                             ->GetPrefs());
 
-  TabHoverCardController::CreateHoverCard(tab);
+  TabHoverCardController::CreateHoverCard();
 
   UpdateHoverCardArrow();
 }
