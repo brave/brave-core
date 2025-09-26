@@ -194,6 +194,8 @@ void BraveBrowserTabStripController::ContentsChanged(
     SetCustomEmojiFaviconForTab(emoji_capture_model_index_,
                                 new_contents);
     emoji_capture_model_index_ = -1;
+    // Close OS emoji panel if possible.
+    ui::HideEmojiPanel();
     // Destroy the transient capture widget.
     if (emoji_capture_widget_) {
       emoji_capture_widget_->CloseNow();

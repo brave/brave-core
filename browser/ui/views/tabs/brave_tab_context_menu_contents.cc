@@ -39,6 +39,9 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/compositor/compositor.h"
 #include "ui/views/controls/menu/menu_runner.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/public/tab_features.h"
+#include "chrome/browser/ui/tab_ui_helper.h"
 
 BraveTabContextMenuContents::BraveTabContextMenuContents(
     Tab* tab,
@@ -297,6 +300,17 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
       return;
     case BraveTabMenuModel::CommandChangeTabFavicon:
       CHECK(controller_);
+      // Toggle: if currently has custom emoji favicon, reset it; otherwise open picker.
+      if (base::FeatureList::IsEnabled(tabs::features::kBraveEmojiTabFavicon)) {
+        auto* model = static_cast<BraveTabStripModel*>(controller_->model());
+        if (auto* tab = model->GetTabAtIndex(tab_index_)) {
+          auto* helper = tab->GetTabFeatures()->tab_ui_helper();
+          if (helper && helper->has_custom_emoji_favicon()) {
+            controller_->SetCustomEmojiFaviconForTab(tab_index_, std::nullopt);
+            return;
+          }
+        }
+      }
       controller_->OpenEmojiPickerForTab(tab_index_);
       return;
   }

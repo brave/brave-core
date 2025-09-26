@@ -351,10 +351,10 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <!-- Sync Infobars -->
       <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE" desc="Message text shown to users who's Sync account was deleted. Is used along with IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_LINK_TEXT">
-        This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync,<ph name="LINK_TEXT">$1<ex>re-create the account</ex></ph>
+        This Brave Sync account was deleted from another device. If you didn't mean to disable Sync,<ph name="LINK_TEXT">$1<ex>re-create the account</ex></ph>
       </message>
       <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_LINK_TEXT" desc="Link text shown to users who's Sync account was deleted. When user clicks the link, Sync Setup page is opened. Is used along with IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_MESSAGE">
-        <ph name="INFOBAR_TEXT">$1<ex>This Brave Sync account was deleted from another device. If you didn’t mean to disable Sync,</ex></ph>re-create the account
+        <ph name="INFOBAR_TEXT">$1<ex>This Brave Sync account was deleted from another device. If you didn't mean to disable Sync,</ex></ph>re-create the account
       </message>
       <message name="IDS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_BUTTON" desc="Button text shown to users who's Sync account was disabled. This button prevents further show of the infobar.">
         OK
@@ -630,7 +630,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Improve search results
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_DDG_DESC" desc="The text for the banner type description">
-          Brave Search has better results than DuckDuckGo for most queries. And it’s truly private.
+          Brave Search has better results than DuckDuckGo for most queries. And it's truly private.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_TRY_BUTTON_LABEL" desc="The text for the try button in the promotion match">
           Try Brave Search
@@ -976,6 +976,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_CHANGE_FAVICON" desc="The label of the tab context menu item for changing a tab's favicon to a custom emoji.">
           Change favicon
         </message>
+        <message name="IDS_TAB_CXMENU_RESET_FAVICON" desc="The label of the tab context menu item for resetting a tab's favicon back to the site default.">
+          Reset favicon
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
@@ -1013,6 +1016,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_TAB_CXMENU_CHANGE_FAVICON" desc="The label of the tab context menu item for changing a tab's favicon to a custom emoji.">
           Change Favicon
+        </message>
+        <message name="IDS_TAB_CXMENU_RESET_FAVICON" desc="The label of the tab context menu item for resetting a tab's favicon back to the site default.">
+          Reset favicon
         </message>
       </if>
 

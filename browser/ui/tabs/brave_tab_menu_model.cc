@@ -28,6 +28,8 @@
 #include "components/sessions/core/tab_restore_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/menus/simple_menu_model.h"
+#include "chrome/browser/ui/tabs/public/tab_features.h"
+#include "chrome/browser/ui/tab_ui_helper.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/browser/prefs.h"
@@ -261,7 +263,15 @@ void BraveTabMenuModel::BuildItemForCustomization(
                              IDS_TAB_CXMENU_RENAME_TAB);
   }
   if (base::FeatureList::IsEnabled(tabs::features::kBraveEmojiTabFavicon)) {
-    InsertItemWithStringIdAt(index++, CommandChangeTabFavicon,
-                             IDS_TAB_CXMENU_CHANGE_FAVICON);
+    int label_id = IDS_TAB_CXMENU_CHANGE_FAVICON;
+    if (auto* tab = tab_strip_model->GetTabAtIndex(tab_index)) {
+      if (auto* features = tab->GetTabFeatures()) {
+        auto* helper = features->tab_ui_helper();
+        if (helper && helper->has_custom_emoji_favicon()) {
+          label_id = IDS_TAB_CXMENU_RESET_FAVICON;
+        }
+      }
+    }
+    InsertItemWithStringIdAt(index++, CommandChangeTabFavicon, label_id);
   }
 }
