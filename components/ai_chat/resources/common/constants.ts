@@ -18,6 +18,10 @@ const modelIcons = {
 
 const fallbackModelIcon = 'product-brave-leo'
 
-export function getModelIcon(modelKey: string): string {
+export function getModelIcon(modelKey: string, model?: any): string {
+  // Check if it's an Ollama model by endpoint
+  if (model?.options?.customModelOptions?.endpoint?.url === 'http://localhost:11434/v1/chat/completions') {
+    return 'ollama-color'
+  }
   return modelIcons[modelKey as keyof typeof modelIcons] ?? fallbackModelIcon
 }

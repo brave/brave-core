@@ -27,6 +27,17 @@
     padding: var(--leo-spacing-xl);
   }
 
+  .button-container {
+    display: flex;
+    gap: var(--leo-spacing-m);
+    flex-wrap: wrap;
+  }
+
+  /* Style sync icon in settings-toggle-button */
+  settings-toggle-button[icon='cr:sync'] cr-icon {
+    color: var(--leo-color-icon-default);
+  }
+
   .label-secondary {
     font: var(--leo-font-default-regular);
     color: var(--leo-color-text-secondary);
@@ -43,6 +54,12 @@
   cr-icon-button.size-20 {
     --iron-icon-width: 20px;
   }
+
+  .model-name-container {
+    display: flex;
+    align-items: center;
+    gap: var(--leo-spacing-m);
+  }
 </style>
 
 <settings-section
@@ -58,6 +75,33 @@
     </div>
   </div>
 </div>
+
+<!-- Provider Sync Section -->
+  <!--div 
+  id="outerRow"><span id="icon" aria-hidden="true"><cr-icon slot="icon"></cr-icon></span><dom-if style="display:
+   none;"><template is="dom-if"></template></dom-if><div class="flex" id="labelWrapper"><div class="label" 
+  aria-hidden="true">Send a "Do Not Track" request with your browsing traffic</div><div class="cr-secondary-text
+   label" id="sub-label"><dom-if style="display: none;"><template is="dom-if"></template></dom-if><span 
+  id="sub-label-text" aria-hidden="true">
+          Sites use their discretion when responding to this request
+        </span><dom-if style="display: none;"><template is="dom-if"></template></dom-if><dom-if style="display: 
+  none;"><template is="dom-if"></template></dom-if></div></div><slot name="more-actions"></slot><dom-if 
+  style="display: none;"><template is="dom-if"></template></dom-if><cr-toggle id="control" 
+  aria-describedby="sub-label-text" aria-label="Send a &quot;Do Not Track&quot; request with your browsing 
+  traffic"></cr-toggle></div-->
+
+<template
+  is="dom-if"
+  if="[[isOllamaConnected_]]"
+>
+  <settings-toggle-button
+    class="cr-row"
+    label="Sync your Ollama local models"
+    icon="cr:sync"
+    pref="[[ollamaSyncPref_]]"
+    on-settings-boolean-control-change="handleOllamaToggleChange_">
+  </settings-toggle-button>
+</template>
 
 <div class="list-container">
   <template
@@ -85,22 +129,31 @@
       >
         <div class="model">
           <div class="model-info">
-            <div class="label">[[item.displayName]]</div>
+            <div class="model-name-container">
+              <div class="label">[[item.displayName]]</div>
+            </div>
             <div class="label-secondary">
               [[item.options.customModelOptions.modelRequestName]]
             </div>
           </div>
           <div class="model-actions">
-            <cr-icon-button
-              on-click="handleEdit_"
-              class="size-20"
-              iron-icon="edit-pencil"
-            ></cr-icon-button>
-            <cr-icon-button
-              on-click="handleDelete_"
-              class="size-20"
-              iron-icon="trash"
-            ></cr-icon-button>
+            <template is="dom-if" if="[[!isOllamaModel_(item)]]">
+              <cr-icon-button
+                on-click="handleEdit_"
+                class="size-20"
+                iron-icon="edit-pencil"
+              ></cr-icon-button>
+              <cr-icon-button
+                on-click="handleDelete_"
+                class="size-20"
+                iron-icon="trash"
+              ></cr-icon-button>
+            </template>
+            <template is="dom-if" if="[[isOllamaModel_(item)]]">
+              <div class="label-secondary" style="font-size: 12px; padding: 8px;">
+                Managed by Ollama
+              </div>
+            </template>
           </div>
         </div>
       </template>
@@ -113,11 +166,13 @@
     is="dom-if"
     if="[[!showModelConfig_]]"
   >
-    <leo-button
-      on-click="handleAddNewModel_"
-      class="action-button"
-      >$i18n{braveLeoAssistantAddNewModelButtonLabel}</leo-button
-    >
+    <div class="button-container">
+      <leo-button
+        on-click="handleAddNewModel_"
+        class="action-button"
+        >$i18n{braveLeoAssistantAddNewModelButtonLabel}</leo-button
+      >
+    </div>
   </template>
 </div>
 
