@@ -322,6 +322,15 @@ void BraveVideoOverlayWindowViews::OnUpdateControlsBounds() {
   UpdateTimestampPosition();
 }
 
+bool BraveVideoOverlayWindowViews::IsTrustedForMediaPlayback() const {
+  // This is a temporary workaround for
+  // TODO(https://github.com/brave/brave-browser/issues/49558).
+  // Base class method crashes on media_session->GetRoutedFrame() call, so we
+  // will just return false which means the overlay window won't be trusted and
+  // title and scrim won't be hidden until user interacts with the window.
+  return false;
+}
+
 void BraveVideoOverlayWindowViews::UpdateControlIcons() {
   close_controls_view_->SetImageModel(
       views::Button::STATE_NORMAL,
