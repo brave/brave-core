@@ -13,15 +13,12 @@ mojom("mojom") {
 }
 
 static_library("common") {
-  public = [
-    "brave_psst_constants.h",
-    "features.h",
-    "pref_names.h",
-  ]
-
   sources = [
+    "constants.h",
     "features.cc",
+    "features.h",
     "pref_names.cc",
+    "pref_names.h",
   ]
 
   public_deps = [

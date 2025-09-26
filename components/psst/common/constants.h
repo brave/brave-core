@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_PSST_COMMON_BRAVE_PSST_CONSTANTS_H_
-#define BRAVE_COMPONENTS_PSST_COMMON_BRAVE_PSST_CONSTANTS_H_
+#ifndef BRAVE_COMPONENTS_PSST_COMMON_CONSTANTS_H_
+#define BRAVE_COMPONENTS_PSST_COMMON_CONSTANTS_H_
 
 namespace psst {
 
@@ -12,4 +12,4 @@ inline constexpr char kBravePsst[] = "bravePsst";
 
 }  // namespace psst
 
-#endif  // BRAVE_COMPONENTS_PSST_COMMON_BRAVE_PSST_CONSTANTS_H_
+#endif  // BRAVE_COMPONENTS_PSST_COMMON_CONSTANTS_H_

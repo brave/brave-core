@@ -3,6 +3,6 @@ include_rules = [
   "+brave/components/brave_shields/core/common",
   "+brave/components/constants",
   "+brave/components/psst/buildflags/buildflags.h",
-  "+brave/components/psst/common/brave_psst_constants.h",
+  "+brave/components/psst/common/constants.h",
   "+brave/components/psst/common/features.h"
 ]

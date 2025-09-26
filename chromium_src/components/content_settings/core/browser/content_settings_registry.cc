@@ -16,7 +16,7 @@
 #include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/components/psst/common/brave_psst_constants.h"
+#include "brave/components/psst/common/constants.h"
 #include "brave/components/psst/common/features.h"
 #endif  // BUILDFLAG(ENABLE_PSST)
 
