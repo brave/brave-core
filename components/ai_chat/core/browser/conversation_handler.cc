@@ -1317,11 +1317,18 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
         mojom::SuggestionGenerationStatus::CanGenerate;
   } else if (!suggestions_.empty() &&
              suggestions_[0].action_type == mojom::ActionType::SUMMARIZE_PAGE) {
-    // The title for the summarize page suggestion needs to be updated when
-    // the number of associated content items changes.
-    suggestions_[0].title = l10n_util::GetPluralStringFUTF8(
-        IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
-        associated_content_manager_->GetContentDelegateCount());
+    // Update the title for the summarize page/video suggestion. Note: We always
+    // treat multiple associated content items as a page for now.
+    suggestions_[0].title =
+        associated_content_manager_->IsVideo()
+            ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
+            : l10n_util::GetPluralStringFUTF8(
+                  IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
+                  associated_content_manager_->GetContentDelegateCount());
+    suggestions_[0].prompt =
+        associated_content_manager_->IsVideo()
+            ? l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO)
+            : l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
   }
   OnSuggestedQuestionsChanged();
 }
