@@ -25,7 +25,6 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 @NullMarked
 public class BraveNewsButtonController extends BaseButtonDataProvider {
     private final Context mContext;
-    private final ObservableSupplier<Profile> mProfileSupplier;
 
     public BraveNewsButtonController(
             Context context,
@@ -45,14 +44,10 @@ public class BraveNewsButtonController extends BaseButtonDataProvider {
                 /* tooltipTextResId= */ R.string.brave_news_title);
 
         mContext = context;
-        mProfileSupplier = profileSupplier;
     }
 
     @Override
     public void onClick(View view) {
-        Profile profile = mProfileSupplier.get();
-        if (profile == null) return;
-
         assert mContext instanceof BraveActivity : "Context is not an BraveActivity";
 
         // Open Brave News Settings
