@@ -15,7 +15,7 @@ namespace android {
 // This ensures all enum values are handled and will cause a compile error
 // if new enum values are added without updating this function.
 constexpr bool IsValidServicesEnvironment(jint environment) {
-  switch (static_cast<brave_domains::ServicesEnvironment>(environment)) {
+  switch (environment) {
     case brave_domains::DEV:
     case brave_domains::STAGING:
     case brave_domains::PROD:
