@@ -26,6 +26,7 @@
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
+#include "brave/ios/browser/brave_wallet/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
 #include "brave/ios/browser/ui/tab_tray/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
@@ -348,6 +349,11 @@
 + (Feature*)kModernTabTrayEnabled {
   return
       [[Feature alloc] initWithFeature:&brave::features::kModernTabTrayEnabled];
+}
+
++ (Feature*)kBraveWalletWebUIIOS {
+  return [[Feature alloc]
+      initWithFeature:&brave_wallet::features::kBraveWalletWebUIIOS];
 }
 
 @end

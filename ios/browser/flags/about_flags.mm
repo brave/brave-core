@@ -16,6 +16,7 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
+#include "brave/ios/browser/brave_wallet/features.h"
 #include "brave/ios/browser/ui/tab_tray/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "build/build_config.h"
@@ -147,6 +148,15 @@
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),           \
       })
 
+#define BRAVE_WALLET_FEATURE_ENTRIES                                    \
+  EXPAND_FEATURE_ENTRIES({                                              \
+      "brave-wallet-webui-ios",                                         \
+      "Enable WebUI for Brave Wallet iOS",                              \
+      "Enables WebUI for Brave Wallet",                                 \
+      flags_ui::kOsIos,                                                 \
+      FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletWebUIIOS), \
+  })
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -242,4 +252,5 @@
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
+  BRAVE_WALLET_FEATURE_ENTRIES                                                 \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
