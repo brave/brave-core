@@ -212,9 +212,9 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(
   if (vertical_tab_strip_host_) {
     // Both vertical tab impls should not be enabled together.
     // https://github.com/brave/brave-browser/issues/48373
-    CHECK(!tabs::AreVerticalTabsEnabled());
+    CHECK(!tabs::IsVerticalTabsFeatureEnabled());
     new_rect.Inset(GetInsetsConsideringVerticalTabHost());
-  } else if (tabs::AreVerticalTabsEnabled()) {
+  } else if (tabs::IsVerticalTabsFeatureEnabled()) {
     new_rect.set_height(new_rect.height() - new_rect.y());
     new_rect.set_width(new_rect.width() - BrowserView::kVerticalTabStripWidth);
   }
