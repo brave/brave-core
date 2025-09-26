@@ -22,6 +22,7 @@
 #include "components/prefs/pref_service.h"
 
 class AdBlockServiceTest;
+class PrefChangeRegistrar;
 
 namespace brave_shields {
 
@@ -67,7 +68,10 @@ class AdBlockComponentServiceManager
 
  private:
   friend class ::AdBlockServiceTest;
+  void OnAdBlockOnlyModePrefChanged();
+
   void StartRegionalServices();
+  void LoadComponentFiltersProviders();
   void UpdateFilterListPrefs(const std::string& uuid, bool enabled);
 
   void RecordP3ACookieListEnabled();
@@ -91,6 +95,8 @@ class AdBlockComponentServiceManager
       GUARDED_BY_CONTEXT(sequence_checker_);
   raw_ptr<AdBlockFilterListCatalogProvider> catalog_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
+
+  std::unique_ptr<PrefChangeRegistrar> local_state_change_registrar_;
 
   raw_ptr<AdBlockListP3A> list_p3a_;
 
