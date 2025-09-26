@@ -17,6 +17,9 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_settings.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -24,6 +27,7 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/favicon/content/content_favicon_driver.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
@@ -59,6 +63,13 @@ BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
       std::make_unique<brave_shields::BraveShieldsSettings>(
           *host_content_settings_map_, g_browser_process->local_state(),
           profile_prefs);
+
+  local_state_change_registrar_.Init(g_browser_process->local_state());
+  local_state_change_registrar_.Add(
+      brave_shields::prefs::kAdBlockOnlyModeEnabled,
+      base::BindRepeating(
+          &BraveShieldsTabHelper::OnShieldsAdBlockOnlyModeEnabledChanged,
+          base::Unretained(this)));
 }
 
 void BraveShieldsTabHelper::DidFinishNavigation(
@@ -71,6 +82,72 @@ void BraveShieldsTabHelper::DidFinishNavigation(
       webcompat_features_invoked_.clear();
     }
     ClearAllResourcesList();
+
+    if (!navigation_triggered_by_shields_changes_) {
+      MaybeNotifyRepeatedReloads(navigation_handle);
+    }
+
+    navigation_triggered_by_shields_changes_ = false;
+  }
+}
+
+void BraveShieldsTabHelper::MaybeNotifyRepeatedReloads(
+    content::NavigationHandle* navigation_handle) {
+  if (!brave_shields::IsAdblockOnlyModeFeatureEnabled() ||
+      brave_shields::IsBraveShieldsAdBlockOnlyModeEnabled(
+          g_browser_process->local_state())) {
+    // Do not notify if ad block only mode feature is disabled or shields ad
+    // block only mode is already enabled.
+    return;
+  }
+
+  const PrefService* prefs =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
+  if (prefs->GetBoolean(
+          brave_shields::prefs::kAdBlockOnlyModePromptDismissed)) {
+    // Do not notify if the prompt has been dismissed.
+    return;
+  }
+
+  if (navigation_handle->GetRestoreType() == content::RestoreType::kRestored) {
+    // Do not notify if the navigation is a restore.
+    return;
+  }
+
+  if (!PageTransitionCoreTypeIs(navigation_handle->GetPageTransition(),
+                                ui::PAGE_TRANSITION_RELOAD)) {
+    // Do not notify if the navigation is not a reload.
+    return;
+  }
+
+  const base::Time current_time = base::Time::Now();
+  if (!repeated_reloads_counter_ ||
+      current_time - repeated_reloads_counter_->initial_reload_at >
+          features::kAdblockOnlyModePromptAfterPageReloadsInterval.Get()) {
+    repeated_reloads_counter_ = RepeatedReloadsCounter{
+        .initial_reload_at = current_time,
+        .reloads_count = 0,
+    };
+  }
+
+  // If the page is reloaded between `kAdblockOnlyModePromptAfterPageReloadsMin`
+  // and `kAdblockOnlyModePromptAfterPageReloadsMax` times in
+  // `kAdblockOnlyModePromptAfterPageReloadsInterval`, notify observers.
+  repeated_reloads_counter_->reloads_count++;
+  if (repeated_reloads_counter_->reloads_count >=
+          features::kAdblockOnlyModePromptAfterPageReloadsMin.Get() &&
+      repeated_reloads_counter_->reloads_count <=
+          features::kAdblockOnlyModePromptAfterPageReloadsMax.Get()) {
+    for (Observer& observer : observer_list_) {
+      observer.OnRepeatedReloadsDetected();
+    }
+  }
+}
+
+void BraveShieldsTabHelper::OnShieldsAdBlockOnlyModeEnabledChanged() {
+  for (Observer& observer : observer_list_) {
+    observer.OnShieldsAdBlockOnlyModeEnabledChanged();
   }
 }
 
@@ -105,6 +182,8 @@ void BraveShieldsTabHelper::OnFaviconUpdated(
 }
 
 void BraveShieldsTabHelper::ReloadWebContents() {
+  navigation_triggered_by_shields_changes_ = true;
+
   web_contents()->GetController().Reload(content::ReloadType::NORMAL, true);
 }
 
@@ -185,10 +264,52 @@ bool BraveShieldsTabHelper::GetBraveShieldsEnabled() {
 void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
   brave_shields_settings_->SetBraveShieldsEnabled(is_enabled,
                                                   GetCurrentSiteURL());
+
+  if (brave_shields::IsAdblockOnlyModeFeatureEnabled() && !is_enabled) {
+    PrefService* prefs =
+        Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+            ->GetPrefs();
+    prefs->SetInteger(
+        brave_shields::prefs::kShieldsDisabledCount,
+        prefs->GetInteger(brave_shields::prefs::kShieldsDisabledCount) + 1);
+  }
+
   ReloadWebContents();
 }
 
-GURL BraveShieldsTabHelper::GetCurrentSiteURL() {
+bool BraveShieldsTabHelper::IsBraveShieldsAdBlockOnlyModeEnabled() {
+  return brave_shields::IsAdblockOnlyModeFeatureEnabled() &&
+         brave_shields::IsBraveShieldsAdBlockOnlyModeEnabled(
+             g_browser_process->local_state());
+}
+
+void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModeEnabled(
+    bool is_enabled) {
+  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(
+      g_browser_process->local_state(), is_enabled);
+  ReloadWebContents();
+}
+
+bool BraveShieldsTabHelper::ShouldShowShieldsDisabledAdBlockOnlyModePrompt() {
+  PrefService* prefs =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
+  return brave_shields::IsAdblockOnlyModeFeatureEnabled() &&
+         !prefs->GetBoolean(
+             brave_shields::prefs::kAdBlockOnlyModePromptDismissed) &&
+         prefs->GetInteger(brave_shields::prefs::kShieldsDisabledCount) >=
+             features::kAdblockOnlyModePromptAfterShieldsDisabledCount.Get();
+}
+
+void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModePromptDismissed() {
+  PrefService* prefs =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
+  prefs->SetBoolean(brave_shields::prefs::kAdBlockOnlyModePromptDismissed,
+                    true);
+}
+
+GURL BraveShieldsTabHelper::GetCurrentSiteURL() const {
   return web_contents()->GetLastCommittedURL();
 }
 
