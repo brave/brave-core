@@ -204,6 +204,7 @@ void PageMetrics::ReportDomainsLoaded() {
   history_service_->GetDomainDiversity(
       base::Time::Now(), /*number_of_days_to_report*/ 1,
       history::DomainMetricType::kEnableLast7DayMetric,
+      history::VisitQuery404sPolicy::kExclude404s,
       base::BindOnce(&PageMetrics::OnDomainDiversityResult,
                      base::Unretained(this)),
       &history_service_task_tracker_);
