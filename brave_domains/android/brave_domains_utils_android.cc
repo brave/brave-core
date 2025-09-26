@@ -11,9 +11,8 @@
 namespace brave_domains {
 namespace android {
 
-// Validate enum values using a switch statement without default case.
-// This ensures all enum values are handled and will cause a compile error
-// if new enum values are added without updating this function.
+// Validate that a runtime integer value corresponds to a valid enum value.
+// This function performs runtime validation of values passed from JNI.
 constexpr bool IsValidServicesEnvironment(jint environment) {
   switch (environment) {
     case brave_domains::DEV:
