@@ -14,7 +14,7 @@ from lib.util import execute_stdout, scoped_cwd
 from pathlib import Path
 
 
-def getNonContained(srcRoots, paths):
+def get_non_contained(srcRoots, paths):
     """
     Check whether all given paths are contained within the source roots.
     Returns list of paths that were not contained
@@ -22,44 +22,51 @@ def getNonContained(srcRoots, paths):
     roots = [Path(r).resolve() for r in srcRoots]
     test_paths = [Path(p).resolve() for p in paths]
 
-    not_contained = []
-
-    for p in test_paths:
-        if not any(p.is_relative_to(root) for root in roots):
-            not_contained.append(p)
+    not_contained = [
+        str(path) for path in test_paths
+        if not any(path.is_relative_to(root) for root in roots)
+    ]
 
     return not_contained
 
 
+def make_source_absolute(root, path):
+    return path.replace(root, '/')
+
+
 def verify_webpack_srcs(root_gen_dir, data_deps_path, depfile_path,
                         extra_modules):
-    srcFolder = os.path.abspath(os.path.join(root_gen_dir, '..', '..', '..'))
-    outDir = os.path.abspath(os.path.join(root_gen_dir, '..'))
-    srcRoots = []
+    src_folder = os.path.abspath(os.path.join(root_gen_dir, '..', '..', '..'))
+    out_dir = os.path.abspath(os.path.join(root_gen_dir, '..'))
+    src_roots = []
 
     with open(data_deps_path) as f:
-        srcRoots = json.loads(f.read())
-        srcRoots = [root.replace('//', srcFolder + '/') for root in srcRoots]
+        src_roots = json.loads(f.read())
+        src_roots = [
+            root.replace('//', src_folder + '/') for root in src_roots
+        ]
 
     with open(depfile_path) as f:
         files = f.read().split(' ')[1:]
 
-    allRoots = srcRoots + [
-        srcFolder + '/brave/node_modules',  # handled via package.json
-        outDir  # generated assets are deps and handled by gn already
+    all_roots = src_roots + [
+        src_folder + '/brave/node_modules',  # handled via package.json
+        out_dir  # generated assets are deps and handled by gn already
     ] + extra_modules
 
-    notContained = getNonContained(allRoots, files)
+    not_contained = get_non_contained(all_roots, files)
 
-    if len(notContained) > 0:
+    if len(not_contained) > 0:
         print(
-            "error occured cross-referencing data folders. Expected following srcRoots:"
+            "error occured cross-referencing data folders. Expected following src_roots:"
         )
-        print("  " + ", ".join(srcRoots))
+        print("  " + "\n  ".join(src_roots))
         print("to contain:")
-        print("  " + ", ".join([str(file) for file in notContained]))
+        print("  " + "\n  ".join(
+            [make_source_absolute(src_folder, file)
+             for file in not_contained]))
         print(
-            "fix this issue by adding the containing source folders into the transpile_web_ui target"
+            "fix this issue by adding the containing source folders into the transpile_web_ui target data section"
         )
         sys.exit(1)
 
