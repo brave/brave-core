@@ -81,6 +81,12 @@ class BraveAccountUIBase {
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::ScriptSrc,
         "script-src chrome://resources 'self' 'wasm-unsafe-eval';");
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::RequireTrustedTypesFor,
+        "require-trusted-types-for 'script';");
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::TrustedTypes,
+        "trusted-types lit-html-desktop;");
 
     source->UseStringsJs();
     source->EnableReplaceI18nInJS();
