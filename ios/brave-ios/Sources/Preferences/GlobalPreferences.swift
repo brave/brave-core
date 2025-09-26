@@ -239,7 +239,7 @@ extension Preferences {
     /// The sync type passwords enabled the device in sync chain
     public static let syncPasswordsEnabled = Option<Bool>(
       key: "chromium.sync.syncPasswordsEnabled",
-      default: false
+      default: true  // default is unused; kBraveSyncDefaultPasswords respected
     )
     /// The sync type open tabs enabled the device in sync chain
     public static let syncOpenTabsEnabled = Option<Bool>(
