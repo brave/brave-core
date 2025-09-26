@@ -24,6 +24,7 @@ import {
 
 import {getTemplate} from './default_brave_shields_page.html.js'
 
+import '../ad_block_only_mode_page/ad_block_only_mode_alert.js'
 import '../social_blocking_page/social_blocking_page.js';
 
 interface BraveShieldsPage {
