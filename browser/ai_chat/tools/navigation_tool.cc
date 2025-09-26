@@ -6,6 +6,7 @@
 #include "brave/browser/ai_chat/tools/navigation_tool.h"
 
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "chrome/browser/actor/actor_task.h"
@@ -45,22 +46,15 @@ std::optional<std::vector<std::string>> NavigationTool::RequiredProperties()
 
 void NavigationTool::UseTool(const std::string& input_json,
                              UseToolCallback callback) {
-  data_decoder::DataDecoder::ParseJsonIsolated(
-      input_json,
-      base::BindOnce(&NavigationTool::OnParseJson,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-}
+  auto input = base::JSONReader::ReadDict(input_json);
 
-void NavigationTool::OnParseJson(
-    UseToolCallback callback,
-    data_decoder::DataDecoder::ValueOrError result) {
-  if (!result.has_value() || !result->is_dict()) {
+  if (!input.has_value()) {
     std::move(callback).Run(CreateContentBlocksForText(
         "Failed to parse input JSON. Please try again."));
     return;
   }
 
-  const auto* website_url = result->GetDict().FindString("website_url");
+  const auto* website_url = input->FindString("website_url");
   if (!website_url) {
     std::move(callback).Run(CreateContentBlocksForText(
         "Missing website_url parameter from input JSON."));

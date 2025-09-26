@@ -93,16 +93,15 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
         tabs::TabInterface::GetFromContents(new_contents)->GetHandle();
   }
   actor_service_->GetTask(task_id_)->AddTab(
-      task_tab_handle_, base::BindOnce(&ContentAgentToolProvider::TabAdded,
-                                       weak_ptr_factory_.GetWeakPtr(),
-                                       task_tab_handle_, std::move(callback)));
+      task_tab_handle_,
+      base::BindOnce(&ContentAgentToolProvider::TabAddedToTask,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ContentAgentToolProvider::TabAdded(
-    tabs::TabHandle tab_handle,
+void ContentAgentToolProvider::TabAddedToTask(
     base::OnceCallback<void(tabs::TabHandle)> callback,
     actor::mojom::ActionResultPtr result) {
-  std::move(callback).Run(tab_handle);
+  std::move(callback).Run(task_tab_handle_);
 }
 
 void ContentAgentToolProvider::ExecuteActions(

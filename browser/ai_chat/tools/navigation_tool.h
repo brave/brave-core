@@ -30,8 +30,6 @@ class NavigationTool : public Tool {
                UseToolCallback callback) override;
 
  private:
-  void OnParseJson(UseToolCallback callback,
-                   data_decoder::DataDecoder::ValueOrError result);
   void OnActionsFinished(UseToolCallback callback,
                          optimization_guide::proto::ActionsResult result);
   void OnTabHandleCreated(UseToolCallback callback,

@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
+#include "brave/browser/ai_chat/browser_tool_provider_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -93,8 +94,8 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   std::vector<std::unique_ptr<ToolProviderFactory>> tool_provider_factories;
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
-  bool is_actor_allowed = features::IsAIChatAgentProfileEnabled() &&
-                          Profile::FromBrowserContext(context)->IsAIChatAgent();
+  bool is_actor_allowed =
+      features::IsAIChatAgentProfileEnabled() && context->IsAIChatAgent();
 
   actor::ActorKeyedService* actor_service =
       is_actor_allowed
@@ -107,6 +108,9 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
             Profile::FromBrowserContext(context), actor_service));
   }
 #endif
+
+  tool_provider_factories.push_back(
+      std::make_unique<BrowserToolProviderFactory>());
 
   auto service = std::make_unique<AIChatService>(
       ModelServiceFactory::GetForBrowserContext(context),
