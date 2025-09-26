@@ -27,7 +27,6 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 @NullMarked
 public class BraveWalletButtonController extends BaseButtonDataProvider {
     private final Context mContext;
-    private final ObservableSupplier<Profile> mProfileSupplier;
 
     public BraveWalletButtonController(
             Context context,
@@ -47,14 +46,10 @@ public class BraveWalletButtonController extends BaseButtonDataProvider {
                 /* tooltipTextResId= */ R.string.menu_brave_wallet);
 
         mContext = context;
-        mProfileSupplier = profileSupplier;
     }
 
     @Override
     public void onClick(View view) {
-        Profile profile = mProfileSupplier.get();
-        if (profile == null) return;
-
         assert mContext instanceof BraveActivity : "Context is not an BraveActivity";
 
         // Open Brave Wallet

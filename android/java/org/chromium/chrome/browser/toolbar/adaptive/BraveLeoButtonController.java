@@ -26,7 +26,6 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 @NullMarked
 public class BraveLeoButtonController extends BaseButtonDataProvider {
     private final Context mContext;
-    private final ObservableSupplier<Profile> mProfileSupplier;
 
     public BraveLeoButtonController(
             Context context,
@@ -46,14 +45,10 @@ public class BraveLeoButtonController extends BaseButtonDataProvider {
                 /* tooltipTextResId= */ R.string.menu_brave_leo);
 
         mContext = context;
-        mProfileSupplier = profileSupplier;
     }
 
     @Override
     public void onClick(View view) {
-        Profile profile = mProfileSupplier.get();
-        if (profile == null) return;
-
         assert mContext instanceof BraveActivity : "Context is not an BraveActivity";
 
         // Open Leo AI
