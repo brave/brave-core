@@ -10,13 +10,13 @@ interface BraveOriginSettingsHandler {
   // Check if the current user is a Brave Origin user
   IsBraveOriginUser() => (bool is_brave_origin_user);
 
-  // Check if a specific preference is controlled by Brave Origin
-  IsPrefControlledByBraveOrigin(string pref_name) =>
+  // Check if a specific policy is controlled by Brave Origin
+  IsPolicyControlledByBraveOrigin(string policy_key) =>
       (bool is_controlled);
 
-  // Get the current value of a Brave Origin controlled preference
-  GetPolicyValue(string pref_name) => (bool? value);
+  // Get the current value of a Brave Origin controlled policy
+  GetPolicyValue(string policy_key) => (bool? value);
 
-  // Set the value of a Brave Origin controlled preference
-  SetPolicyValue(string pref_name, bool value) => (bool success);
+  // Set the value of a Brave Origin controlled policy
+  SetPolicyValue(string policy_key, bool value) => (bool success);
 };

@@ -112,7 +112,7 @@ void BraveProfilePolicyProvider::LoadBraveOriginPolicy(
 }
 
 void BraveProfilePolicyProvider::OnProfilePolicyChanged(
-    std::string_view pref_name,
+    std::string_view policy_key,
     std::string_view profile_id) {
   // Only update if this change is for our profile
   if (!profile_id_.empty() && profile_id == profile_id_) {

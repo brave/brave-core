@@ -35,14 +35,14 @@ class BraveOriginService : public KeyedService {
                               policy::PolicyService* browser_policy_service);
   ~BraveOriginService() override;
 
-  // Check if a preference is controlled by BraveOrigin
-  bool IsPrefControlledByBraveOrigin(std::string_view pref_name) const;
+  // Check if a policy is controlled by BraveOrigin
+  bool IsPolicyControlledByBraveOrigin(std::string_view policy_key) const;
 
   // Update the BraveOrigin policy value
-  bool SetPolicyValue(std::string_view pref_name, bool value);
+  bool SetPolicyValue(std::string_view policy_key, bool value);
 
   // Get the current value of a BraveOrigin policy
-  std::optional<bool> GetPolicyValue(std::string_view pref_name) const;
+  std::optional<bool> GetPolicyValue(std::string_view policy_key) const;
 
  protected:
   // Local state and profile preferences this state is associated with

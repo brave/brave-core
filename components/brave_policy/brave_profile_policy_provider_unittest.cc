@@ -146,7 +146,7 @@ TEST_F(BraveProfilePolicyProviderTest, OnProfilePolicyChanged_MatchingProfile) {
   provider_.SetProfileID("test-profile-id");
 
   // Call OnProfilePolicyChanged with matching profile ID
-  provider_.OnProfilePolicyChanged("test.pref", "test-profile-id");
+  provider_.OnProfilePolicyChanged("test.pref.policy", "test-profile-id");
 
   // Provider should still report policies as loaded
   EXPECT_TRUE(
@@ -163,7 +163,7 @@ TEST_F(BraveProfilePolicyProviderTest,
   provider_.SetProfileID("test-profile-id");
 
   // Call OnProfilePolicyChanged with different profile ID
-  provider_.OnProfilePolicyChanged("test.pref", "different-profile-id");
+  provider_.OnProfilePolicyChanged("test.pref.policy", "different-profile-id");
 
   // Provider should still report policies as loaded (no action taken)
   EXPECT_TRUE(
@@ -176,7 +176,7 @@ TEST_F(BraveProfilePolicyProviderTest, OnProfilePolicyChanged_EmptyProfileId) {
   provider_.OnBraveOriginPoliciesReady();
 
   // Call OnProfilePolicyChanged (should not crash or affect anything)
-  provider_.OnProfilePolicyChanged("test.pref", "some-profile-id");
+  provider_.OnProfilePolicyChanged("test.pref.policy", "some-profile-id");
 
   // Provider should still report no policies loaded since no profile ID set
   EXPECT_FALSE(

@@ -13,7 +13,7 @@ namespace brave_origin {
 BraveOriginSettingsHandlerImpl::BraveOriginSettingsHandlerImpl(
     BraveOriginService* brave_origin_service)
     : brave_origin_service_(brave_origin_service) {
-  DCHECK(brave_origin_service_);
+  CHECK(brave_origin_service_);
 }
 
 BraveOriginSettingsHandlerImpl::~BraveOriginSettingsHandlerImpl() = default;
@@ -30,28 +30,28 @@ void BraveOriginSettingsHandlerImpl::IsBraveOriginUser(
   std::move(callback).Run(is_brave_origin_user);
 }
 
-void BraveOriginSettingsHandlerImpl::IsPrefControlledByBraveOrigin(
-    const std::string& pref_name,
-    IsPrefControlledByBraveOriginCallback callback) {
+void BraveOriginSettingsHandlerImpl::IsPolicyControlledByBraveOrigin(
+    const std::string& policy_key,
+    IsPolicyControlledByBraveOriginCallback callback) {
   bool is_controlled =
-      brave_origin_service_->IsPrefControlledByBraveOrigin(pref_name);
+      brave_origin_service_->IsPolicyControlledByBraveOrigin(policy_key);
   std::move(callback).Run(is_controlled);
 }
 
 void BraveOriginSettingsHandlerImpl::GetPolicyValue(
-    const std::string& pref_name,
+    const std::string& policy_key,
     GetPolicyValueCallback callback) {
   if (!brave_origin::IsBraveOriginEnabled()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
-  std::optional<bool> value = brave_origin_service_->GetPolicyValue(pref_name);
+  std::optional<bool> value = brave_origin_service_->GetPolicyValue(policy_key);
   std::move(callback).Run(value);
 }
 
 void BraveOriginSettingsHandlerImpl::SetPolicyValue(
-    const std::string& pref_name,
+    const std::string& policy_key,
     bool value,
     SetPolicyValueCallback callback) {
   if (!brave_origin::IsBraveOriginEnabled()) {
@@ -59,7 +59,7 @@ void BraveOriginSettingsHandlerImpl::SetPolicyValue(
     return;
   }
 
-  bool success = brave_origin_service_->SetPolicyValue(pref_name, value);
+  bool success = brave_origin_service_->SetPolicyValue(policy_key, value);
   std::move(callback).Run(success);
 }
 

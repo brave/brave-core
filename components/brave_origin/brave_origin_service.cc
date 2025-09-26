@@ -53,66 +53,68 @@ BraveOriginService::BraveOriginService(
 
 BraveOriginService::~BraveOriginService() = default;
 
-bool BraveOriginService::IsPrefControlledByBraveOrigin(
-    std::string_view pref_name) const {
+bool BraveOriginService::IsPolicyControlledByBraveOrigin(
+    std::string_view policy_key) const {
   if (!IsBraveOriginEnabled()) {
     return false;
   }
 
-  // Check if this is a valid BraveOrigin preference
-  const BraveOriginPolicyInfo* pref_info =
-      BraveOriginPolicyManager::GetInstance()->GetPrefInfo(pref_name);
-  if (!pref_info) {
+  // Check if this is a valid BraveOrigin policy
+  const BraveOriginPolicyInfo* policy_info =
+      BraveOriginPolicyManager::GetInstance()->GetPolicyInfo(policy_key);
+  if (!policy_info) {
     return false;
   }
 
   // Check if the policy is controlled by BraveOrigin in either browser or
   // profile policy service
-  return IsPolicyControlledByBraveOrigin(browser_policy_service_, pref_info) ||
-         IsPolicyControlledByBraveOrigin(profile_policy_service_, pref_info);
+  return ::brave_origin::IsPolicyControlledByBraveOrigin(
+             browser_policy_service_, policy_info) ||
+         ::brave_origin::IsPolicyControlledByBraveOrigin(
+             profile_policy_service_, policy_info);
 }
 
-bool BraveOriginService::SetPolicyValue(std::string_view pref_name,
+bool BraveOriginService::SetPolicyValue(std::string_view policy_key,
                                         bool value) {
   if (!IsBraveOriginEnabled()) {
     return false;
   }
 
-  // Get policy info to access pref_key and user_settable
+  // Get policy info to access pref_name and user_settable
   auto* manager = BraveOriginPolicyManager::GetInstance();
-  const BraveOriginPolicyInfo* pref_info = manager->GetPrefInfo(pref_name);
-  if (!pref_info) {
+  const BraveOriginPolicyInfo* policy_info = manager->GetPolicyInfo(policy_key);
+  if (!policy_info) {
     return false;
   }
 
   // Set the policy value in BraveOriginPolicyManager
   PrefService* target_prefs = nullptr;
-  if (manager->IsBrowserPolicy(pref_info->pref_name)) {
-    manager->SetPolicyValue(pref_name, value);
+  if (manager->IsBrowserPolicy(policy_key)) {
+    manager->SetPolicyValue(policy_key, value);
     target_prefs = local_state_;
-  } else if (manager->IsProfilePolicy(pref_info->pref_name)) {
-    manager->SetPolicyValue(pref_name, value, profile_id_);
+  } else if (manager->IsProfilePolicy(policy_key)) {
+    manager->SetPolicyValue(policy_key, value, profile_id_);
     target_prefs = profile_prefs_;
   }
   CHECK(target_prefs);
 
   // Also set the corresponding pref value
-  if (!pref_info->user_settable && value == pref_info->default_value) {
-    target_prefs->ClearPref(pref_info->pref_name);
+  if (!policy_info->user_settable && value == policy_info->default_value) {
+    target_prefs->ClearPref(policy_info->pref_name);
   } else {
-    target_prefs->SetBoolean(pref_info->pref_name, value);
+    target_prefs->SetBoolean(policy_info->pref_name, value);
   }
 
   return true;
 }
 
 std::optional<bool> BraveOriginService::GetPolicyValue(
-    std::string_view pref_name) const {
+    std::string_view policy_key) const {
   auto* manager = BraveOriginPolicyManager::GetInstance();
-  if (manager->IsBrowserPolicy(pref_name)) {
-    return manager->GetPolicyValue(pref_name);
-  } else if (manager->IsProfilePolicy(pref_name)) {
-    return manager->GetPolicyValue(pref_name, profile_id_);
+  if (manager->IsBrowserPolicy(policy_key)) {
+    return manager->GetPolicyValue(policy_key);
+  } else if (manager->IsProfilePolicy(policy_key)) {
+    return manager->GetPolicyValue(policy_key, profile_id_);
   }
   return std::nullopt;
 }

@@ -51,14 +51,14 @@ void BraveOriginPolicyManager::RemoveObserver(Observer* observer) {
 }
 
 std::optional<bool> BraveOriginPolicyManager::GetPolicyValue(
-    std::string_view pref_name,
+    std::string_view policy_key,
     std::optional<std::string_view> profile_id) const {
   CHECK(initialized_) << "BraveOriginPolicyManager not initialized";
   CHECK(local_state_) << "BraveOriginPolicyManager local state should exist";
 
-  const BraveOriginPolicyInfo* policy_info = GetPrefInfo(pref_name);
+  const BraveOriginPolicyInfo* policy_info = GetPolicyInfo(policy_key);
   if (!policy_info) {
-    LOG(ERROR) << "Unknown pref name: " << pref_name;
+    LOG(ERROR) << "Unknown policy key: " << policy_key;
     return std::nullopt;
   }
 
@@ -69,13 +69,13 @@ std::optional<bool> BraveOriginPolicyManager::GetPolicyValue(
 }
 
 bool BraveOriginPolicyManager::IsBrowserPolicy(
-    std::string_view pref_name) const {
-  return browser_policy_definitions_.contains(pref_name);
+    std::string_view policy_key) const {
+  return browser_policy_definitions_.contains(policy_key);
 }
 
 bool BraveOriginPolicyManager::IsProfilePolicy(
-    std::string_view pref_name) const {
-  return profile_policy_definitions_.contains(pref_name);
+    std::string_view policy_key) const {
+  return profile_policy_definitions_.contains(policy_key);
 }
 
 PoliciesEnabledMap BraveOriginPolicyManager::GetAllBrowserPolicies() const {
@@ -88,9 +88,9 @@ PoliciesEnabledMap BraveOriginPolicyManager::GetAllBrowserPolicies() const {
   const base::Value::Dict& policies_dict =
       local_state_->GetDict(kBraveOriginPolicies);
 
-  for (const auto& [pref_name, policy_info] : browser_policy_definitions_) {
+  for (const auto& [policy_key, policy_info] : browser_policy_definitions_) {
     bool value = GetPolicyValueInternal(policy_info, policies_dict);
-    policies[policy_info.policy_key] = value;
+    policies[policy_key] = value;
   }
   return policies;
 }
@@ -106,24 +106,24 @@ PoliciesEnabledMap BraveOriginPolicyManager::GetAllProfilePolicies(
   const base::Value::Dict& policies_dict =
       local_state_->GetDict(kBraveOriginPolicies);
 
-  for (const auto& [pref_name, policy_info] : profile_policy_definitions_) {
+  for (const auto& [policy_key, policy_info] : profile_policy_definitions_) {
     bool value = GetPolicyValueInternal(policy_info, policies_dict, profile_id);
-    policies[policy_info.policy_key] = value;
+    policies[policy_key] = value;
   }
   return policies;
 }
 
 void BraveOriginPolicyManager::SetPolicyValue(
-    std::string_view pref_name,
+    std::string_view policy_key,
     bool value,
     std::optional<std::string_view> profile_id) {
   CHECK(initialized_) << "BraveOriginPolicyManager not initialized";
   CHECK(local_state_) << "BraveOriginPolicyManager local state should exist";
 
-  const BraveOriginPolicyInfo* policy_info = GetPrefInfo(pref_name);
+  const BraveOriginPolicyInfo* policy_info = GetPolicyInfo(policy_key);
   if (!policy_info) {
     LOG(ERROR) << "Unknown " << (profile_id.has_value() ? "profile" : "browser")
-               << " pref name: " << pref_name;
+               << " policy key: " << policy_key;
     return;
   }
 
@@ -134,23 +134,23 @@ void BraveOriginPolicyManager::SetPolicyValue(
 
   // Notify observers of the policy change
   if (profile_id.has_value()) {
-    observers_.Notify(&Observer::OnProfilePolicyChanged, pref_name,
+    observers_.Notify(&Observer::OnProfilePolicyChanged, policy_key,
                       profile_id.value());
   } else {
-    observers_.Notify(&Observer::OnBrowserPolicyChanged, pref_name);
+    observers_.Notify(&Observer::OnBrowserPolicyChanged, policy_key);
   }
 }
 
-// Helper function to get pref info from pref definitions
-const BraveOriginPolicyInfo* BraveOriginPolicyManager::GetPrefInfo(
-    std::string_view pref_name) const {
+// Helper function to get policy info from policy definitions
+const BraveOriginPolicyInfo* BraveOriginPolicyManager::GetPolicyInfo(
+    std::string_view policy_key) const {
   // First check browser-level policies
   const BraveOriginPolicyInfo* policy_info =
-      base::FindOrNull(browser_policy_definitions_, pref_name);
+      base::FindOrNull(browser_policy_definitions_, policy_key);
 
   // If not found in browser policies, check profile policies
   if (!policy_info) {
-    policy_info = base::FindOrNull(profile_policy_definitions_, pref_name);
+    policy_info = base::FindOrNull(profile_policy_definitions_, policy_key);
   }
 
   return policy_info;

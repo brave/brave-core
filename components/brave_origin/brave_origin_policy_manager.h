@@ -37,10 +37,10 @@ class BraveOriginPolicyManager {
     virtual void OnBraveOriginPoliciesReady() = 0;
 
     // Called when a browser-level policy preference is changed.
-    virtual void OnBrowserPolicyChanged(std::string_view pref_name) {}
+    virtual void OnBrowserPolicyChanged(std::string_view policy_key) {}
 
     // Called when a profile-level policy preference is changed.
-    virtual void OnProfilePolicyChanged(std::string_view pref_name,
+    virtual void OnProfilePolicyChanged(std::string_view policy_key,
                                         std::string_view profile_id) {}
   };
 
@@ -56,9 +56,9 @@ class BraveOriginPolicyManager {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  // Get policy value for a specific pref
+  // Get policy value for a specific policy
   std::optional<bool> GetPolicyValue(
-      std::string_view pref_name,
+      std::string_view policy_key,
       std::optional<std::string_view> profile_id = std::nullopt) const;
 
   // Get browser-level policy key-value pairs (policy values from local state or
@@ -71,21 +71,21 @@ class BraveOriginPolicyManager {
 
   // Set a policy value in local state
   void SetPolicyValue(
-      std::string_view pref_name,
+      std::string_view policy_key,
       bool value,
       std::optional<std::string_view> profile_id = std::nullopt);
 
   // Determines if the policy is a browser-level policy
-  bool IsBrowserPolicy(std::string_view pref_name) const;
+  bool IsBrowserPolicy(std::string_view policy_key) const;
 
   // Determines if the policy is a profile-level policy
-  bool IsProfilePolicy(std::string_view pref_name) const;
+  bool IsProfilePolicy(std::string_view policy_key) const;
 
   // Check if the singleton has been initialized
   bool IsInitialized() const;
 
-  // Helper function to get pref info from pref definitions
-  const BraveOriginPolicyInfo* GetPrefInfo(std::string_view pref_name) const;
+  // Helper function to get policy info from policy definitions
+  const BraveOriginPolicyInfo* GetPolicyInfo(std::string_view policy_key) const;
 
   // Shutdown the policy manager, clearing state and observers
   void Shutdown();

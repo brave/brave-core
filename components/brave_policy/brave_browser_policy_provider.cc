@@ -55,7 +55,7 @@ void BraveBrowserPolicyProvider::OnBraveOriginPoliciesReady() {
 }
 
 void BraveBrowserPolicyProvider::OnBrowserPolicyChanged(
-    std::string_view pref_name) {
+    std::string_view policy_key) {
   RefreshPolicies(policy::PolicyFetchReason::kUserRequest);
 }
 

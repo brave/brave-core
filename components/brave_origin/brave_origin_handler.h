@@ -30,12 +30,12 @@ class BraveOriginSettingsHandlerImpl
 
   // mojom::BraveOriginSettingsHandler:
   void IsBraveOriginUser(IsBraveOriginUserCallback callback) override;
-  void IsPrefControlledByBraveOrigin(
-      const std::string& pref_name,
-      IsPrefControlledByBraveOriginCallback callback) override;
-  void GetPolicyValue(const std::string& pref_name,
+  void IsPolicyControlledByBraveOrigin(
+      const std::string& policy_key,
+      IsPolicyControlledByBraveOriginCallback callback) override;
+  void GetPolicyValue(const std::string& policy_key,
                       GetPolicyValueCallback callback) override;
-  void SetPolicyValue(const std::string& pref_name,
+  void SetPolicyValue(const std::string& policy_key,
                       bool value,
                       SetPolicyValueCallback callback) override;
 
