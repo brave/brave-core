@@ -45,7 +45,6 @@ public class BraveAdaptiveToolbarStatePredictor
             case AdaptiveToolbarButtonVariant.BOOKMARKS:
             case AdaptiveToolbarButtonVariant.HISTORY:
             case AdaptiveToolbarButtonVariant.DOWNLOADS:
-            case AdaptiveToolbarButtonVariant.NEWS:
                 return true;
             case AdaptiveToolbarButtonVariant.LEO:
                 return ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT);

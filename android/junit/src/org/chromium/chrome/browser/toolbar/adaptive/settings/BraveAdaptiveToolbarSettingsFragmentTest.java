@@ -286,19 +286,6 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
                             AdaptiveToolbarButtonVariant.WALLET,
                             ChromeSharedPreferences.getInstance()
                                     .readInt(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS));
-
-                    // Test Brave News button
-                    Assert.assertEquals(
-                            R.id.adaptive_option_brave_news,
-                            getButton(AdaptiveToolbarButtonVariant.NEWS).getId());
-                    selectButton(AdaptiveToolbarButtonVariant.NEWS);
-                    assertButtonCheckedCorrectly("Brave News", AdaptiveToolbarButtonVariant.NEWS);
-                    Assert.assertEquals(
-                            AdaptiveToolbarButtonVariant.NEWS, mRadioPreference.getSelection());
-                    Assert.assertEquals(
-                            AdaptiveToolbarButtonVariant.NEWS,
-                            ChromeSharedPreferences.getInstance()
-                                    .readInt(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS));
                 });
     }
 
