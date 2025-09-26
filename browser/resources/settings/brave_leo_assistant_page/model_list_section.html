@@ -38,6 +38,23 @@
     color: var(--leo-color-icon-default);
   }
 
+  /* Style Ollama icon - invert in dark theme */
+  leo-icon[name='ollama-color'] {
+    filter: var(--leo-theme-dark, invert(100%));
+  }
+
+  @media (prefers-color-scheme: light) {
+    leo-icon[name='ollama-color'] {
+      filter: none;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    leo-icon[name='ollama-color'] {
+      filter: invert(100%);
+    }
+  }
+
   .label-secondary {
     font: var(--leo-font-default-regular);
     color: var(--leo-color-text-secondary);
@@ -97,7 +114,7 @@
   <settings-toggle-button
     class="cr-row"
     label="Sync your Ollama local models"
-    icon="cr:sync"
+    icon="ollama-color"
     pref="[[ollamaSyncPref_]]"
     on-settings-boolean-control-change="handleOllamaToggleChange_">
   </settings-toggle-button>
