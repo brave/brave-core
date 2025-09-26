@@ -16,7 +16,8 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
-import org.chromium.chrome.browser.app.download.home.DownloadActivityLauncher;
+import org.chromium.chrome.browser.download.DownloadOpenSource;
+import org.chromium.chrome.browser.download.DownloadUtils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.optional_button.BaseButtonDataProvider;
@@ -58,8 +59,11 @@ public class BraveDownloadsButtonController extends BaseButtonDataProvider {
         if (!(mContext instanceof Activity)) return;
 
         // Launch the downloads activity
-        DownloadActivityLauncher.getInstance()
-                .showDownloadManager((Activity) mContext, profile.getOtrProfileId(), false);
+        DownloadUtils.showDownloadManager(
+                (Activity) mContext,
+                mActiveTabSupplier.get(),
+                profile.getOtrProfileId(),
+                DownloadOpenSource.MENU);
     }
 
     @Override
