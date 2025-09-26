@@ -48,9 +48,8 @@ class ContentAgentToolProvider : public ToolProvider,
 
   void CreateTools();
 
-  void TabAdded(tabs::TabHandle tab_handle,
-                base::OnceCallback<void(tabs::TabHandle)> callback,
-                actor::mojom::ActionResultPtr result);
+  void TabAddedToTask(base::OnceCallback<void(tabs::TabHandle)> callback,
+                      actor::mojom::ActionResultPtr result);
   void OnActionsFinished(
       Tool::UseToolCallback callback,
       actor::mojom::ActionResultCode result_code,
