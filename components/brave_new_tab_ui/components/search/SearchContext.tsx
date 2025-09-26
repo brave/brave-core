@@ -9,6 +9,8 @@ import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js';
 import * as React from 'react';
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background';
 import { useEngineContext } from './EngineContext';
+import { UnguessableToken } from 'gen/mojo/public/mojom/base/unguessable_token.mojom.m';
+import { FileUploadErrorType, FileUploadStatus } from 'gen/components/omnibox/composebox/composebox_query.mojom.m';
 
 interface Context {
   open: boolean,
@@ -75,6 +77,7 @@ class SearchPage implements PageInterface {
 
   setInputText(inputText: string) { }
   setThumbnail(thumbnailUrl: string) { }
+  onContextualInputStatusChanged(token: UnguessableToken, status: FileUploadStatus, errorType: FileUploadErrorType | null) { }
 }
 
 export const search = new SearchPage()
