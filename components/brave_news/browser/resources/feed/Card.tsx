@@ -33,11 +33,21 @@ export const Title = styled.h3`
 
   &> a { all: unset; }
 `
-type HidabeImageProps = React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> & {
-  targetHeight?: number,
-  targetWidth?: number,
-};
-const HidableImage = ({ onError, onLoad, targetHeight, targetWidth, src, ...rest }: HidabeImageProps) => {
+type HidabeImageProps = React.DetailedHTMLProps<
+  React.ImgHTMLAttributes<HTMLImageElement>,
+  HTMLImageElement
+> & {
+  targetHeight?: number
+  targetWidth?: number
+}
+const HidableImage = ({
+  onError,
+  onLoad,
+  targetHeight,
+  targetWidth,
+  src,
+  ...rest
+}: HidabeImageProps) => {
   const ref = React.useRef<HTMLImageElement>()
 
   const handleError = React.useCallback((e: React.UIEvent<HTMLImageElement>) => {

@@ -26,6 +26,9 @@ class SimpleURLLoader;
 
 // Brave versions of SanitizedImageSource available via
 // chrome://brave-image/?url=<image_url>&target_size=<width>x<height>
+// `target_size` is optional. If provided, the image will be downscaled using
+// the same logic as for CSS "object-fit: cover". The aspect ratio is preserved,
+// the resulted size is the smallest possible that fits the target size.
 // The key differences are:
 // * supporting .pad images (for Brave News);
 // * supporting target_size. Resized images take less CPU to encode and

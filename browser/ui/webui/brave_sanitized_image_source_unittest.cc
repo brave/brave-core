@@ -103,14 +103,32 @@ TEST_F(BraveSanitizedImageSourceTest, ImageIsDecoded) {
 TEST_F(BraveSanitizedImageSourceTest, ImageIsDecodedAndResized) {
   // original size is 204x212
   auto url = GURL("https://example.com/image.png");
-  auto result = Decode(url, kValidImage, "10x20");
-  EXPECT_TRUE(result);
-  // Check the result is PNG resized to 19x20 (to be able cut into 10x20)
-  auto bitmap = gfx::PNGCodec::Decode(base::as_byte_span(*result),
-                                      gfx::PNGCodec::FORMAT_BGRA);
-  ASSERT_TRUE(bitmap);
-  EXPECT_EQ(bitmap->width, 19);
-  EXPECT_EQ(bitmap->height, 20);
+
+  struct TestCase {
+    std::string size;
+    int width;
+    int height;
+  } kTestCases[] = {
+      // height = the target height, width has some room to be cropped
+      {"10x20", 19, 20},
+      // width = the target width, height has some room to be cropped
+      {"40x10", 40, 41},
+      // the target size is larger than the original size, so the image is not
+      // resized
+      {"400x3000", 204, 212},
+  };
+
+  for (const auto& test_case : kTestCases) {
+    SCOPED_TRACE(test_case.size);
+    auto result = Decode(url, kValidImage, test_case.size);
+    ASSERT_TRUE(result);
+    // Check the result is PNG resized to 19x20 (to be cutted to 10x20)
+    auto bitmap = gfx::PNGCodec::Decode(base::as_byte_span(*result),
+                                        gfx::PNGCodec::FORMAT_BGRA);
+    ASSERT_TRUE(bitmap);
+    EXPECT_EQ(bitmap->width, test_case.width);
+    EXPECT_EQ(bitmap->height, test_case.height);
+  }
 }
 
 TEST_F(BraveSanitizedImageSourceTest, PaddedImageIsDecoded) {
