@@ -34,9 +34,11 @@
   }                                                                      \
   std::optional<std::u16string> GetCustomEmojiFaviconString() const;     \
   ui::ImageModel GetEmojiFaviconImage() const;                           \
+  std::optional<std::string> GetCustomEmojiBaseDomainForReset() const;   \
                                                                          \
  private:                                                                \
   std::optional<std::u16string> custom_emoji_favicon_;                   \
+  std::optional<std::string> custom_emoji_favicon_base_domain_;          \
                                                                          \
  public:                                                                 \
   ui::ImageModel GetFavicon(__VA_ARGS__)

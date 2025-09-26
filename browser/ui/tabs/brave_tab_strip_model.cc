@@ -69,9 +69,10 @@ void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
 
 void BraveTabStripModel::UpdateWebContentsStateAt(int index,
                                                   TabChangeType change_type) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs) ||
+      base::FeatureList::IsEnabled(tabs::features::kBraveEmojiTabFavicon)) {
     // Make sure that the tab's last origin is updated when the url changes.
-    // When last origin changes, the custom title is reset.
+    // When base domain changes, we reset custom title and emoji favicon.
     GetTabAtIndex(index)->GetTabFeatures()->tab_ui_helper()->UpdateLastOrigin();
   }
 
