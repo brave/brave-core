@@ -142,6 +142,12 @@ class TabWKNavigationHandler: NSObject, WKNavigationDelegate {
         webView.configuration.preferences.javaScriptEnabled = preferences.allowsContentJavaScript
       }
 
+      if FeatureList.kWebKitAdvancedPrivacyProtections.enabled {
+        if !preferences._networkConnectionIntegrityEnabled {
+          preferences._setNetworkConnectionIntegrityEnabled(true)
+        }
+      }
+
       // Downloads
       self.shouldDownloadNavigationResponse = navigationAction.shouldPerformDownload
     }
