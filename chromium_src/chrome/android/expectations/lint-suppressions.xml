@@ -27,7 +27,6 @@
         <ignore regexp="The resource `R.layout.logo_view_layout` appears to be unused" />
         <ignore regexp="The resource `R.style.*_BrowserUI_Switch_Incognito` appears to be unused" />
         <ignore regexp="The resource `R.style.CardTransparentForDark` appears to be unused" />
-        <ignore regexp="The resource `R.dimen.toolbar_hairline_height` appears to be unused" />
         <ignore
             regexp="The resource `R.style.TextAppearance_IncognitoNewTabLearnMoreLinkModern` appears to be unused" />
         <ignore regexp="The resource `R.dimen.quick_action_search_widget_.*` appears to be unused"/>

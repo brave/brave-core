@@ -98,4 +98,6 @@
 
     <!-- Quick Action Search Widget -->
     <dimen name="quick_action_search_widget_small_margin_vertical">12dp</dimen>
+
+    <dimen name="toolbar_hairline_height">0dp</dimen>
 </resources>
