@@ -23,14 +23,14 @@ namespace {
 // Helper function to check if a policy is controlled by BraveOrigin in a given
 // policy service
 bool IsPolicyControlledByBraveOrigin(policy::PolicyService* policy_service,
-                                     const BraveOriginPolicyInfo* pref_info) {
-  if (!policy_service || !pref_info) {
+                                     std::string_view policy_key) {
+  if (!policy_service) {
     return false;
   }
 
   const policy::PolicyMap& policies = policy_service->GetPolicies(
       policy::PolicyNamespace(policy::POLICY_DOMAIN_CHROME, std::string()));
-  const policy::PolicyMap::Entry* entry = policies.Get(pref_info->policy_key);
+  const policy::PolicyMap::Entry* entry = policies.Get(std::string(policy_key));
   return entry && entry->source == policy::POLICY_SOURCE_BRAVE;
 }
 }  // namespace
@@ -69,9 +69,9 @@ bool BraveOriginService::IsPolicyControlledByBraveOrigin(
   // Check if the policy is controlled by BraveOrigin in either browser or
   // profile policy service
   return ::brave_origin::IsPolicyControlledByBraveOrigin(
-             browser_policy_service_, policy_info) ||
+             browser_policy_service_, policy_key) ||
          ::brave_origin::IsPolicyControlledByBraveOrigin(
-             profile_policy_service_, policy_info);
+             profile_policy_service_, policy_key);
 }
 
 bool BraveOriginService::SetPolicyValue(std::string_view policy_key,

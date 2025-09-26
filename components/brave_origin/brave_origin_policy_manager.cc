@@ -65,7 +65,8 @@ std::optional<bool> BraveOriginPolicyManager::GetPolicyValue(
   // Get policies dict once and pass to internal helper
   const base::Value::Dict& policies_dict =
       local_state_->GetDict(kBraveOriginPolicies);
-  return GetPolicyValueInternal(*policy_info, policies_dict, profile_id);
+  return GetPolicyValueInternal(policy_key, policy_info->default_value,
+                                policies_dict, profile_id);
 }
 
 bool BraveOriginPolicyManager::IsBrowserPolicy(
@@ -89,7 +90,8 @@ PoliciesEnabledMap BraveOriginPolicyManager::GetAllBrowserPolicies() const {
       local_state_->GetDict(kBraveOriginPolicies);
 
   for (const auto& [policy_key, policy_info] : browser_policy_definitions_) {
-    bool value = GetPolicyValueInternal(policy_info, policies_dict);
+    bool value = GetPolicyValueInternal(policy_key, policy_info.default_value,
+                                        policies_dict, std::nullopt);
     policies[policy_key] = value;
   }
   return policies;
@@ -107,7 +109,8 @@ PoliciesEnabledMap BraveOriginPolicyManager::GetAllProfilePolicies(
       local_state_->GetDict(kBraveOriginPolicies);
 
   for (const auto& [policy_key, policy_info] : profile_policy_definitions_) {
-    bool value = GetPolicyValueInternal(policy_info, policies_dict, profile_id);
+    bool value = GetPolicyValueInternal(policy_key, policy_info.default_value,
+                                        policies_dict, profile_id);
     policies[policy_key] = value;
   }
   return policies;
@@ -120,8 +123,8 @@ void BraveOriginPolicyManager::SetPolicyValue(
   CHECK(initialized_) << "BraveOriginPolicyManager not initialized";
   CHECK(local_state_) << "BraveOriginPolicyManager local state should exist";
 
-  const BraveOriginPolicyInfo* policy_info = GetPolicyInfo(policy_key);
-  if (!policy_info) {
+  // Validate that this is a known policy key
+  if (!GetPolicyInfo(policy_key)) {
     LOG(ERROR) << "Unknown " << (profile_id.has_value() ? "profile" : "browser")
                << " policy key: " << policy_key;
     return;
@@ -129,7 +132,7 @@ void BraveOriginPolicyManager::SetPolicyValue(
 
   // Update the value in the dictionary
   ScopedDictPrefUpdate update(local_state_, kBraveOriginPolicies);
-  std::string key = GetBraveOriginPrefKey(*policy_info, profile_id);
+  std::string key = GetBraveOriginPrefKey(policy_key, profile_id);
   update->Set(key, value);
 
   // Notify observers of the policy change
@@ -169,17 +172,18 @@ void BraveOriginPolicyManager::Shutdown() {
 }
 
 bool BraveOriginPolicyManager::GetPolicyValueInternal(
-    const BraveOriginPolicyInfo& policy_info,
+    std::string_view policy_key,
+    bool default_value,
     const base::Value::Dict& policies_dict,
     std::optional<std::string_view> profile_id) const {
-  std::string policy_key = GetBraveOriginPrefKey(policy_info, profile_id);
-  const base::Value* policy_value = policies_dict.Find(policy_key);
+  std::string pref_key = GetBraveOriginPrefKey(policy_key, profile_id);
+  const base::Value* policy_value = policies_dict.Find(pref_key);
   if (policy_value && policy_value->is_bool()) {
     return policy_value->GetBool();
   }
 
   // Return default value if no policy value found
-  return policy_info.default_value;
+  return default_value;
 }
 
 BraveOriginPolicyManager::BraveOriginPolicyManager() = default;

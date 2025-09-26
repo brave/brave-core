@@ -16,11 +16,8 @@ namespace brave_origin {
 // purchase state from SKU service in the future.
 bool IsBraveOriginEnabled();
 
-// Forward declaration
-struct BraveOriginPolicyInfo;
-
 // Gets the correct brave_origin_pref_key
-std::string GetBraveOriginPrefKey(const BraveOriginPolicyInfo& pref_info,
+std::string GetBraveOriginPrefKey(std::string_view policy_key,
                                   std::optional<std::string_view> profile_id);
 
 }  // namespace brave_origin

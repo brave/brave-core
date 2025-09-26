@@ -19,15 +19,15 @@ bool IsBraveOriginEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveOrigin);
 }
 
-std::string GetBraveOriginPrefKey(const BraveOriginPolicyInfo& pref_info,
+std::string GetBraveOriginPrefKey(std::string_view policy_key,
                                   std::optional<std::string_view> profile_id) {
   if (!profile_id.has_value()) {
-    return pref_info.policy_key;
+    return std::string(policy_key);
   }
 
   // For profile prefs, use profile_id.policy_key format
   CHECK(!profile_id.value().empty());
-  return base::StrCat({profile_id.value(), ".", pref_info.policy_key});
+  return base::StrCat({profile_id.value(), ".", policy_key});
 }
 
 }  // namespace brave_origin

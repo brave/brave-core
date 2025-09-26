@@ -13,12 +13,8 @@
 namespace brave_origin {
 
 // Test constants
-constexpr char kTestGlobalPref[] = "test.global.pref";
-constexpr char kTestProfilePref[] = "test.profile.pref";
 constexpr char kTestGlobalPolicy[] = "TestGlobalPolicy";
 constexpr char kTestProfilePolicy[] = "TestProfilePolicy";
-constexpr char kTestGlobalPrefKey[] = "test_global_pref_key";
-constexpr char kTestProfilePrefKey[] = "test_profile_pref_key";
 
 class BraveOriginUtilsTest : public testing::Test {
  public:
@@ -42,44 +38,20 @@ TEST_F(BraveOriginUtilsTest, IsBraveOriginEnabled_FeatureEnabled) {
 }
 
 TEST_F(BraveOriginUtilsTest, GetBraveOriginPrefKey_BrowserPolicy) {
-  BraveOriginPolicyInfo browser_pref_info(
-      kTestGlobalPref,    // pref_name
-      true,               // default_value
-      true,               // user_settable
-      kTestGlobalPolicy,  // policy_key
-      kTestGlobalPrefKey  // brave_origin_pref_key
-  );
-
-  std::string result = GetBraveOriginPrefKey(browser_pref_info, std::nullopt);
+  std::string result = GetBraveOriginPrefKey(kTestGlobalPolicy, std::nullopt);
 
   EXPECT_EQ(kTestGlobalPolicy, result);
 }
 
 TEST_F(BraveOriginUtilsTest, GetBraveOriginPrefKey_ProfilePolicy) {
-  BraveOriginPolicyInfo profile_pref_info(
-      kTestProfilePref,    // pref_name
-      false,               // default_value
-      true,                // user_settable
-      kTestProfilePolicy,  // policy_key
-      kTestProfilePrefKey  // brave_origin_pref_key
-  );
-
-  std::string result = GetBraveOriginPrefKey(profile_pref_info, "profile123");
+  std::string result = GetBraveOriginPrefKey(kTestProfilePolicy, "profile123");
 
   EXPECT_EQ("profile123.TestProfilePolicy", result);
 }
 
 TEST_F(BraveOriginUtilsTest, GetBraveOriginPrefKey_SpecialCharacters) {
-  BraveOriginPolicyInfo profile_pref_info(
-      kTestProfilePref,    // pref_name
-      true,                // default_value
-      true,                // user_settable
-      "Test-Policy_Key",   // policy_key with special chars
-      kTestProfilePrefKey  // brave_origin_pref_key
-  );
-
   std::string result =
-      GetBraveOriginPrefKey(profile_pref_info, "Profile-1_test");
+      GetBraveOriginPrefKey("Test-Policy_Key", "Profile-1_test");
 
   EXPECT_EQ("Profile-1_test.Test-Policy_Key", result);
 }

@@ -197,7 +197,8 @@ TEST_F(BraveOriginPolicyManagerTest, GetPolicyValue_ReturnsLocalStateValue) {
   // Set policy value in local state
   const auto* policy_info = manager->GetPolicyInfo(kTestGlobalPolicyKey);
   ASSERT_NE(policy_info, nullptr);
-  std::string policy_key = GetBraveOriginPrefKey(*policy_info, std::nullopt);
+  std::string policy_key =
+      GetBraveOriginPrefKey(policy_info->policy_key, std::nullopt);
   SetPolicyInLocalState(policy_key, true);
 
   auto result = manager->GetPolicyValue(kTestGlobalPolicyKey);
@@ -212,7 +213,8 @@ TEST_F(BraveOriginPolicyManagerTest, GetPolicyValue_ProfileScopedPolicy) {
   const std::string profile_id = "profile123";
   const auto* policy_info = manager->GetPolicyInfo(kTestProfilePolicyKey);
   ASSERT_NE(policy_info, nullptr);
-  std::string policy_key = GetBraveOriginPrefKey(*policy_info, profile_id);
+  std::string policy_key =
+      GetBraveOriginPrefKey(policy_info->policy_key, profile_id);
   SetPolicyInLocalState(policy_key, false);
 
   auto result = manager->GetPolicyValue(kTestProfilePolicyKey, profile_id);

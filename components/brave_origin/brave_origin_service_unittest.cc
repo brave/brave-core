@@ -313,7 +313,7 @@ TEST_F(BraveOriginServiceTest, PolicyValueStoredInCorrectBraveOriginLocation) {
           kTestBrowserPolicyKey);
   ASSERT_NE(policy_info, nullptr);
   std::string expected_browser_key =
-      GetBraveOriginPrefKey(*policy_info, std::nullopt);
+      GetBraveOriginPrefKey(policy_info->policy_key, std::nullopt);
 
   const base::Value* stored_value = policies_dict.Find(expected_browser_key);
   ASSERT_NE(stored_value, nullptr);
@@ -328,7 +328,7 @@ TEST_F(BraveOriginServiceTest, PolicyValueStoredInCorrectBraveOriginLocation) {
           kTestProfilePolicyKey);
   ASSERT_NE(profile_policy_info, nullptr);
   std::string expected_profile_key =
-      GetBraveOriginPrefKey(*profile_policy_info, kTestProfileId);
+      GetBraveOriginPrefKey(profile_policy_info->policy_key, kTestProfileId);
 
   // Verify it's stored with profile-scoped key
   stored_value = policies_dict.Find(expected_profile_key);

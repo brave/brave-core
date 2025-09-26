@@ -100,12 +100,11 @@ class BraveOriginPolicyManager {
   BraveOriginPolicyManager();
   ~BraveOriginPolicyManager();
 
-  // Internal helper to get policy value with pre-found policy info and policies
-  // dict
-  bool GetPolicyValueInternal(
-      const BraveOriginPolicyInfo& policy_info,
-      const base::Value::Dict& policies_dict,
-      std::optional<std::string_view> profile_id = std::nullopt) const;
+  // Internal helper to get policy value with policy key and default value
+  bool GetPolicyValueInternal(std::string_view policy_key,
+                              bool default_value,
+                              const base::Value::Dict& policies_dict,
+                              std::optional<std::string_view> profile_id) const;
 
   bool initialized_ = false;
   BraveOriginPolicyMap browser_policy_definitions_;
