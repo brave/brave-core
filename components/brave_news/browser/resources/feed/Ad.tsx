@@ -75,7 +75,7 @@ const adTargetUrlAllowedSchemes = ['https:', 'chrome:', 'brave:']
 
 export default function Advert(props: Props) {
   const [advert, setAdvert] = React.useState<DisplayAd | null | undefined>(undefined)
-  const imageUrl = `chrome://image?url=${encodeURIComponent(advert?.image.paddedImageUrl?.url ?? advert?.image.imageUrl?.url ?? '')}`
+  const imageUrl = advert?.image.paddedImageUrl?.url ?? advert?.image.imageUrl?.url ?? ''
   const { openArticlesInNewTab } = useBraveNews()
 
   const onDisplayAdViewed = React.useCallback(() => {

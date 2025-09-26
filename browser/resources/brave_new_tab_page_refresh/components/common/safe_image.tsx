@@ -17,7 +17,7 @@ export function SafeImage(props: Props) {
     <img
       src={
         props.src
-          ? 'chrome://image?url=' + encodeURIComponent(props.src)
+          ? 'chrome://brave-image?url=' + encodeURIComponent(props.src)
           : placeholderImageSrc
       }
       loading='lazy'

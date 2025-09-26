@@ -51,6 +51,7 @@ source_set("ui") {
   ]
 
   deps = [
+    "//brave/brave_domains",
     "//brave/browser/ai_chat",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_ads",
@@ -59,6 +60,7 @@ source_set("ui") {
     "//brave/browser/ui/webui/brave_account",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_origin",
+    "//brave/components/brave_private_cdn",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
     "//chrome/browser/ui:browser_navigator_params_headers",
@@ -94,6 +96,8 @@ source_set("ui") {
     "webui/brave_rewards/rewards_web_ui_utils.h",
     "webui/brave_rewards_internals_ui.cc",
     "webui/brave_rewards_internals_ui.h",
+    "webui/brave_sanitized_image_source.cc",
+    "webui/brave_sanitized_image_source.h",
     "webui/brave_wallet/line_chart/line_chart_ui.cc",
     "webui/brave_wallet/line_chart/line_chart_ui.h",
     "webui/brave_wallet/market/market_ui.cc",

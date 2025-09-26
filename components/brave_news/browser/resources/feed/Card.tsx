@@ -33,23 +33,46 @@ export const Title = styled.h3`
 
   &> a { all: unset; }
 `
-
-const HidableImage = ({ onError, ...rest }: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => {
+type HidabeImageProps = React.DetailedHTMLProps<
+  React.ImgHTMLAttributes<HTMLImageElement>,
+  HTMLImageElement
+> & {
+  targetHeight?: number
+  targetWidth?: number
+}
+const HidableImage = ({
+  onError,
+  onLoad,
+  targetHeight,
+  targetWidth,
+  src,
+  ...rest
+}: HidabeImageProps) => {
   const ref = React.useRef<HTMLImageElement>()
-
-  React.useEffect(() => {
-    ref.current!.style.opacity = ''
-  }, [rest.src])
 
   const handleError = React.useCallback((e: React.UIEvent<HTMLImageElement>) => {
     ref.current!.style.opacity = '0'
     onError?.(e)
   }, [onError])
 
-  return <img {...rest} ref={ref as any} onError={handleError} />
+  const handleLoad = React.useCallback((e: React.UIEvent<HTMLImageElement>) => {
+    ref.current!.style.opacity = ''
+    onLoad?.(e)
+  }, [onLoad])
+
+  if (src) {
+    src = 'chrome://brave-image?url=' + encodeURIComponent(src);
+  }
+  if (targetHeight && targetWidth) {
+    const width = Math.round(targetWidth * window.devicePixelRatio)
+    const height = Math.round(targetHeight * window.devicePixelRatio)
+    src += `&target_size=${width}x${height}`
+  }
+
+  return <img {...rest} src={src} ref={ref as any} onError={handleError} onLoad={handleLoad} />
 }
 
-export const SmallImage = styled(HidableImage)`
+export const SmallImage = styled(HidableImage).attrs({ targetHeight: 64, targetWidth: 96 })`
   &:not([src]) { opacity: 0; }
 
   min-width: 96px;
@@ -63,7 +86,7 @@ export const SmallImage = styled(HidableImage)`
   border-radius: 6px;
 `
 
-export const LargeImage = styled(HidableImage)`
+export const LargeImage = styled(HidableImage).attrs({ targetHeight: 269, targetWidth: 508 })`
   &:not([src]) { opacity: 0; }
 
   width: 100%;

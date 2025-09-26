@@ -2,6 +2,7 @@ from brave_chromium_utils import inline_file
 inline_file('//chrome/browser/ui/webui/DEPS', globals(), locals())
 
 include_rules += [
+  "+brave/brave_domains",
   "+brave/components/brave_adblock/resources",
   "+brave/components/brave_shields/core/browser",
   "+brave/components/brave_ads/core/browser/service",

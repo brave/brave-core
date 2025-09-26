@@ -35,7 +35,7 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "sanitized_image_source_unittest.cc" ]
+  sources = [ "brave_sanitized_image_source_unittest.cc" ]
   deps = [
     "//base",
     "//base/test:test_support",

@@ -18,6 +18,7 @@
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
+#include "brave/browser/ui/webui/brave_sanitized_image_source.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
@@ -35,7 +36,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
-#include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/common/pref_names.h"
 #include "components/country_codes/country_codes.h"
@@ -171,8 +171,8 @@ BraveNewTabUI::BraveNewTabUI(
   source->AddLocalizedStrings(webui::kBraveNewsStrings);
 
   // Add a SanitizedImageSource to allow fetching images for Brave News.
-  content::URLDataSource::Add(profile,
-                              std::make_unique<SanitizedImageSource>(profile));
+  content::URLDataSource::Add(
+      profile, std::make_unique<BraveSanitizedImageSource>(profile));
 
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
 }

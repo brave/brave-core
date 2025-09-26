@@ -16,6 +16,7 @@
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/resources/brave_new_tab_page_refresh/grit/brave_new_tab_page_refresh_generated_map.h"
 #include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/webui/brave_sanitized_image_source.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -27,7 +28,6 @@
 #include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
-#include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
@@ -116,7 +116,7 @@ Profile* NewTabPageInitializer::GetProfile() {
 void NewTabPageInitializer::AddCSPOverrides() {
   source_->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      "img-src chrome://image chrome://resources chrome://theme "
+      "img-src chrome://brave-image chrome://resources chrome://theme "
       "chrome://background-wallpaper chrome://custom-wallpaper "
       "chrome://branded-wallpaper chrome://favicon2 blob: data: 'self';");
 
@@ -328,8 +328,8 @@ void NewTabPageInitializer::AddCustomImageDataSource() {
 
 void NewTabPageInitializer::AddSanitizedImageDataSource() {
   auto* profile = GetProfile();
-  content::URLDataSource::Add(profile,
-                              std::make_unique<SanitizedImageSource>(profile));
+  content::URLDataSource::Add(
+      profile, std::make_unique<BraveSanitizedImageSource>(profile));
 }
 
 void NewTabPageInitializer::MaybeMigrateHideAllWidgetsPref() {
