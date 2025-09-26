@@ -412,6 +412,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
         historyAPI->history_service_->GetDomainDiversity(
             base::Time::Now(), /*number_of_days_to_report*/ 1,
             static_cast<history::DomainMetricType>(type),
+            history::VisitQuery404sPolicy::kExclude404s,
             base::BindOnce(
                 ^(std::pair<history::DomainDiversityResults,
                             history::DomainDiversityResults> metrics) {
