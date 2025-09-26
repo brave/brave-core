@@ -156,7 +156,11 @@ export function ConfirmSendTransaction() {
       >
         {/* Header */}
         <ConfirmationHeader
-          title={getLocale('braveWalletConfirmSend')}
+          title={
+            isShieldingFunds
+              ? getLocale('braveWalletConfirmShield')
+              : getLocale('braveWalletConfirmSend')
+          }
           transactionsQueueLength={transactionsQueueLength}
           queueNextTransaction={queueNextTransaction}
           queuePreviousTransaction={queuePreviousTransaction}
@@ -188,7 +192,7 @@ export function ConfirmSendTransaction() {
                 {/* Send token and amount */}
                 <ConfirmationTokenInfo
                   token={transactionDetails.token}
-                  label='send'
+                  label={isShieldingFunds ? 'shield' : 'send'}
                   valueExact={transactionDetails.valueExact}
                   fiatValue={transactionDetails.fiatValue}
                   network={transactionsNetwork}
