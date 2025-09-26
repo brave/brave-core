@@ -9,7 +9,10 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/values_util.h"
+#include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
@@ -389,6 +392,311 @@ TEST_F(AIChatPrefsTest, HasMemoryFromPrefs) {
 
   // Test non-existing memory
   EXPECT_FALSE(HasMemoryFromPrefs("I work in New York", pref_service_));
+}
+
+// Smart Modes Tests
+TEST_F(AIChatPrefsTest, GetSmartModesFromPrefs_EmptyPref) {
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  EXPECT_TRUE(smart_modes.empty());
+}
+
+TEST_F(AIChatPrefsTest, GetSmartModesFromPrefs_WithData) {
+  // Set up test data with timestamps
+  auto dict = base::Value::Dict();
+  auto mode_dict =
+      base::Value::Dict()
+          .Set("shortcut", "test")
+          .Set("prompt", "Test prompt")
+          .Set("model", "test_model")
+          .Set("created_time", base::TimeToValue(base::Time::Now()))
+          .Set("last_used", base::TimeToValue(base::Time::Now()));
+  dict.Set("test-id", std::move(mode_dict));
+
+  pref_service_.SetDict(kBraveAIChatSmartModes, std::move(dict));
+
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  ASSERT_EQ(smart_modes.size(), 1u);
+  EXPECT_EQ(smart_modes[0]->id, "test-id");
+  EXPECT_EQ(smart_modes[0]->shortcut, "test");
+  EXPECT_EQ(smart_modes[0]->prompt, "Test prompt");
+  EXPECT_EQ(smart_modes[0]->model, "test_model");
+}
+
+TEST_F(AIChatPrefsTest, GetSmartModesFromPrefs_WithoutModel) {
+  auto dict = base::Value::Dict();
+  auto mode_dict =
+      base::Value::Dict()
+          .Set("shortcut", "test")
+          .Set("prompt", "Test prompt")
+          .Set("created_time", base::TimeToValue(base::Time::Now()))
+          .Set("last_used", base::TimeToValue(base::Time::Now()));
+  dict.Set("test-id", std::move(mode_dict));
+
+  pref_service_.SetDict(kBraveAIChatSmartModes, std::move(dict));
+
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  ASSERT_EQ(smart_modes.size(), 1u);
+  EXPECT_EQ(smart_modes[0]->shortcut, "test");
+  EXPECT_EQ(smart_modes[0]->prompt, "Test prompt");
+  EXPECT_FALSE(smart_modes[0]->model.has_value());
+}
+
+TEST_F(AIChatPrefsTest, GetSmartModesFromPrefs_MalformedData) {
+  auto dict = base::Value::Dict();
+
+  // Add malformed entry (missing required fields)
+  auto bad_mode_dict = base::Value::Dict().Set("shortcut", "test");
+  dict.Set("bad-id", std::move(bad_mode_dict));
+
+  // Add valid entry
+  auto good_mode_dict =
+      base::Value::Dict()
+          .Set("shortcut", "good")
+          .Set("prompt", "Good prompt")
+          .Set("created_time", base::TimeToValue(base::Time::Now()))
+          .Set("last_used", base::TimeToValue(base::Time::Now()));
+  dict.Set("good-id", std::move(good_mode_dict));
+
+  pref_service_.SetDict(kBraveAIChatSmartModes, std::move(dict));
+
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+
+  // Should only return the valid entry
+  ASSERT_EQ(smart_modes.size(), 1u);
+  EXPECT_EQ(smart_modes[0]->id, "good-id");
+  EXPECT_EQ(smart_modes[0]->shortcut, "good");
+}
+
+TEST_F(AIChatPrefsTest, GetSmartModeFromPrefs_ExistingId) {
+  auto dict = base::Value::Dict();
+  auto mode_dict =
+      base::Value::Dict()
+          .Set("shortcut", "single")
+          .Set("prompt", "Single prompt")
+          .Set("model", "single_model")
+          .Set("created_time", base::TimeToValue(base::Time::Now()))
+          .Set("last_used", base::TimeToValue(base::Time::Now()));
+  dict.Set("single-id", std::move(mode_dict));
+
+  pref_service_.SetDict(kBraveAIChatSmartModes, std::move(dict));
+
+  auto smart_mode = GetSmartModeFromPrefs(pref_service_, "single-id");
+  ASSERT_TRUE(smart_mode);
+  EXPECT_EQ(smart_mode->id, "single-id");
+  EXPECT_EQ(smart_mode->shortcut, "single");
+  EXPECT_EQ(smart_mode->prompt, "Single prompt");
+  EXPECT_EQ(smart_mode->model, "single_model");
+}
+
+TEST_F(AIChatPrefsTest, GetSmartModeFromPrefs_NonexistentId) {
+  auto smart_mode = GetSmartModeFromPrefs(pref_service_, "nonexistent-id");
+  EXPECT_FALSE(smart_mode);
+}
+
+TEST_F(AIChatPrefsTest, GetSmartModeFromPrefs_MalformedData) {
+  auto dict = base::Value::Dict();
+  auto bad_mode_dict = base::Value::Dict().Set("shortcut", "test");
+  dict.Set("malformed-id", std::move(bad_mode_dict));
+
+  pref_service_.SetDict(kBraveAIChatSmartModes, std::move(dict));
+
+  auto smart_mode = GetSmartModeFromPrefs(pref_service_, "malformed-id");
+  EXPECT_FALSE(smart_mode);
+}
+
+TEST_F(AIChatPrefsTest, AddSmartModeToPrefs_WithModel) {
+  AddSmartModeToPrefs("add_test", "Add test prompt", "add_model",
+                      pref_service_);
+
+  // Verify it was added to preferences
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  ASSERT_EQ(smart_modes.size(), 1u);
+  EXPECT_EQ(smart_modes[0]->shortcut, "add_test");
+  EXPECT_EQ(smart_modes[0]->prompt, "Add test prompt");
+  EXPECT_EQ(smart_modes[0]->model, "add_model");
+  EXPECT_FALSE(smart_modes[0]->created_time.is_null());
+  EXPECT_FALSE(smart_modes[0]->last_used.is_null());
+}
+
+TEST_F(AIChatPrefsTest, AddSmartModeToPrefs_WithoutModel) {
+  AddSmartModeToPrefs("add_test", "Add test prompt", std::nullopt,
+                      pref_service_);
+
+  // Verify it was added to preferences
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  ASSERT_EQ(smart_modes.size(), 1u);
+  EXPECT_EQ(smart_modes[0]->shortcut, "add_test");
+  EXPECT_EQ(smart_modes[0]->prompt, "Add test prompt");
+  EXPECT_FALSE(smart_modes[0]->model.has_value());
+}
+
+TEST_F(AIChatPrefsTest, UpdateSmartModeInPrefs_Success) {
+  // First add a smart mode
+  AddSmartModeToPrefs("original", "Original prompt", "original_model",
+                      pref_service_);
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  ASSERT_EQ(smart_modes.size(), 1u);
+  std::string id = smart_modes[0]->id;
+
+  // Update it
+  UpdateSmartModeInPrefs(id, "updated", "Updated prompt", "updated_model",
+                         pref_service_);
+
+  // Verify the update
+  auto updated_mode = GetSmartModeFromPrefs(pref_service_, id);
+  ASSERT_TRUE(updated_mode);
+  EXPECT_EQ(updated_mode->shortcut, "updated");
+  EXPECT_EQ(updated_mode->prompt, "Updated prompt");
+  EXPECT_EQ(updated_mode->model, "updated_model");
+}
+
+TEST_F(AIChatPrefsTest, UpdateSmartModeInPrefs_RemoveModel) {
+  // First add a smart mode with model
+  AddSmartModeToPrefs("test", "Test prompt", "test_model", pref_service_);
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  ASSERT_EQ(smart_modes.size(), 1u);
+  std::string id = smart_modes[0]->id;
+
+  // Update without model
+  UpdateSmartModeInPrefs(id, "updated", "Updated prompt", std::nullopt,
+                         pref_service_);
+
+  // Verify model was removed
+  auto updated_mode = GetSmartModeFromPrefs(pref_service_, id);
+  ASSERT_TRUE(updated_mode);
+  EXPECT_FALSE(updated_mode->model.has_value());
+}
+
+TEST_F(AIChatPrefsTest, UpdateSmartModeInPrefs_NonexistentId) {
+  // This should not crash even with invalid ID
+  UpdateSmartModeInPrefs("nonexistent-id", "test", "Test prompt", "model",
+                         pref_service_);
+}
+
+TEST_F(AIChatPrefsTest, DeleteSmartModeFromPrefs_Success) {
+  // First add a smart mode
+  AddSmartModeToPrefs("delete_test", "Delete test prompt", "delete_model",
+                      pref_service_);
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  ASSERT_EQ(smart_modes.size(), 1u);
+  std::string id = smart_modes[0]->id;
+
+  // Verify it exists
+  EXPECT_TRUE(GetSmartModeFromPrefs(pref_service_, id));
+
+  // Delete it
+  DeleteSmartModeFromPrefs(id, pref_service_);
+
+  // Verify it's gone
+  EXPECT_FALSE(GetSmartModeFromPrefs(pref_service_, id));
+}
+
+TEST_F(AIChatPrefsTest, DeleteSmartModeFromPrefs_NonexistentId) {
+  // This should not crash even with invalid ID
+  DeleteSmartModeFromPrefs("nonexistent-id", pref_service_);
+}
+
+TEST_F(AIChatPrefsTest, AddSmartModeToPrefs_InvalidShortcut) {
+  // Test invalid characters in shortcut
+  AddSmartModeToPrefs("invalid@shortcut!", "Test prompt", "test_model",
+                      pref_service_);
+
+  // Verify nothing was added
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  EXPECT_TRUE(smart_modes.empty());
+}
+
+TEST_F(AIChatPrefsTest, AddSmartModeToPrefs_EmptyPrompt) {
+  AddSmartModeToPrefs("test", "", "test_model", pref_service_);
+
+  // Verify nothing was added
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  EXPECT_TRUE(smart_modes.empty());
+}
+
+TEST_F(AIChatPrefsTest, AddSmartModeToPrefs_DuplicateShortcut) {
+  // First add a smart mode
+  AddSmartModeToPrefs("duplicate", "First prompt", "first_model",
+                      pref_service_);
+
+  // Verify first was added
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  ASSERT_EQ(smart_modes.size(), 1u);
+
+  // Try to add another with the same shortcut
+  AddSmartModeToPrefs("duplicate", "Second prompt", "second_model",
+                      pref_service_);
+
+  // Verify still only one mode (duplicate rejected)
+  smart_modes = GetSmartModesFromPrefs(pref_service_);
+  EXPECT_EQ(smart_modes.size(), 1u);
+  EXPECT_EQ(smart_modes[0]->prompt, "First prompt");
+}
+
+TEST_F(AIChatPrefsTest, UpdateSmartModeInPrefs_DuplicateShortcut) {
+  // Add two smart modes
+  AddSmartModeToPrefs("first", "First prompt", "first_model", pref_service_);
+  AddSmartModeToPrefs("second", "Second prompt", "second_model", pref_service_);
+
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  ASSERT_EQ(smart_modes.size(), 2u);
+
+  // Find the second mode's ID
+  std::string second_id;
+  for (const auto& mode : smart_modes) {
+    if (mode->shortcut == "second") {
+      second_id = mode->id;
+      break;
+    }
+  }
+  ASSERT_FALSE(second_id.empty());
+
+  // Try to update second mode to use first mode's shortcut (should fail
+  // silently)
+  UpdateSmartModeInPrefs(second_id, "first", "Updated prompt", "updated_model",
+                         pref_service_);
+
+  // Verify no change occurred
+  auto updated_mode = GetSmartModeFromPrefs(pref_service_, second_id);
+  ASSERT_TRUE(updated_mode);
+  EXPECT_EQ(updated_mode->shortcut, "second");
+  EXPECT_EQ(updated_mode->prompt, "Second prompt");
+}
+
+TEST_F(AIChatPrefsTest, UpdateSmartModeInPrefs_InvalidShortcut) {
+  // Add a smart mode first
+  AddSmartModeToPrefs("valid", "Test prompt", "test_model", pref_service_);
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  ASSERT_EQ(smart_modes.size(), 1u);
+  std::string id = smart_modes[0]->id;
+
+  // Try to update with invalid shortcut
+  UpdateSmartModeInPrefs(id, "invalid@shortcut!", "Updated prompt",
+                         "updated_model", pref_service_);
+
+  // Verify update failed - original mode should remain unchanged
+  auto mode = GetSmartModeFromPrefs(pref_service_, id);
+  ASSERT_TRUE(mode);
+  EXPECT_EQ(mode->shortcut, "valid");
+  EXPECT_EQ(mode->prompt, "Test prompt");
+}
+
+TEST_F(AIChatPrefsTest, UpdateSmartModeInPrefs_SameShortcut) {
+  // Add a smart mode
+  AddSmartModeToPrefs("test", "Test prompt", "test_model", pref_service_);
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  ASSERT_EQ(smart_modes.size(), 1u);
+  std::string id = smart_modes[0]->id;
+
+  // Update it with the same shortcut (should work)
+  UpdateSmartModeInPrefs(id, "test", "Updated prompt", "updated_model",
+                         pref_service_);
+
+  // Verify update occurred
+  auto updated_mode = GetSmartModeFromPrefs(pref_service_, id);
+  ASSERT_TRUE(updated_mode);
+  EXPECT_EQ(updated_mode->shortcut, "test");
+  EXPECT_EQ(updated_mode->prompt, "Updated prompt");
 }
 
 }  // namespace ai_chat::prefs

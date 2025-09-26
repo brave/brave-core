@@ -41,6 +41,9 @@ interface ParentUIFrame {
   // Otherwise the menu can sometimes be overlapped by the Suggested question
   // buttons.
   RegenerateAnswerMenuIsOpen(bool is_open);
+
+  // Show the smart mode creation dialog with the provided prompt text
+  ShowSmartModeDialog(string prompt);
 };
 
 // UI-side handler for callbacks from UntrustedUIHandler

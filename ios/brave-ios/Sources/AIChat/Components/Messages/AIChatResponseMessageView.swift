@@ -362,6 +362,7 @@ struct AIChatResponseMessageView_Previews: PreviewProvider {
           createdTime: Date.now,
           edits: nil,
           uploadedFiles: nil,
+          smartMode: nil,
           fromBraveSearchSerp: false,
           modelKey: nil
         ),

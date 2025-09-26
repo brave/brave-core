@@ -508,12 +508,36 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
                             .Set("content", std::move(content_uploaded_pdfs)));
       }
     }
+
     base::Value::Dict message;
     message.Set("role", turn->character_type == CharacterType::HUMAN
                             ? "user"
                             : "assistant");
 
-    message.Set("content", GetPromptContentForEntry(turn));
+    // For human turns with smart mode, use content blocks
+    if (turn->character_type == CharacterType::HUMAN && turn->smart_mode) {
+      std::string mode_definition =
+          BuildSmartModeDefinitionMessage(turn->smart_mode);
+
+      base::Value::List content_blocks;
+
+      // Add smart mode definition as first content block
+      base::Value::Dict smart_mode_block;
+      smart_mode_block.Set("type", "text");
+      smart_mode_block.Set("text", mode_definition);
+      content_blocks.Append(std::move(smart_mode_block));
+
+      // Add user message as second content block
+      base::Value::Dict user_message_block;
+      user_message_block.Set("type", "text");
+      user_message_block.Set("text", GetPromptContentForEntry(turn));
+      content_blocks.Append(std::move(user_message_block));
+
+      message.Set("content", std::move(content_blocks));
+    } else {
+      message.Set("content", GetPromptContentForEntry(turn));
+    }
+
     messages.Append(std::move(message));
   }
 

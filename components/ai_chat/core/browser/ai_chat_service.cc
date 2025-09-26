@@ -25,6 +25,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/numerics/clamped_math.h"
+#include "base/strings/string_util.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
@@ -145,6 +146,10 @@ AIChatService::AIChatService(
       prefs::kBraveAIChatUserMemoryEnabled,
       base::BindRepeating(&AIChatService::OnMemoryEnabledChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kBraveAIChatSmartModes,
+      base::BindRepeating(&AIChatService::OnSmartModesChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
 
   MaybeInitStorage();
 
@@ -189,7 +194,7 @@ ConversationHandler* AIChatService::CreateConversation() {
   std::unique_ptr<ConversationHandler> conversation_handler =
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
-          feedback_api_.get(), url_loader_factory_,
+          feedback_api_.get(), profile_prefs_, url_loader_factory_,
           CreateToolProvidersForNewConversation());
   conversation_observations_.AddObservation(conversation_handler.get());
 
@@ -295,7 +300,7 @@ void AIChatService::OnConversationDataReceived(
   std::unique_ptr<ConversationHandler> conversation_handler =
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
-          feedback_api_.get(), url_loader_factory_,
+          feedback_api_.get(), profile_prefs_, url_loader_factory_,
           CreateToolProvidersForNewConversation(), std::move(data));
   conversation_observations_.AddObservation(conversation_handler.get());
   conversation_handlers_.insert_or_assign(conversation_uuid,
@@ -618,6 +623,28 @@ void AIChatService::DismissPremiumPrompt() {
   profile_prefs_->SetBoolean(prefs::kUserDismissedPremiumPrompt, true);
 }
 
+void AIChatService::GetSmartModes(GetSmartModesCallback callback) {
+  auto smart_modes = prefs::GetSmartModesFromPrefs(*profile_prefs_);
+  std::move(callback).Run(std::move(smart_modes));
+}
+
+void AIChatService::CreateSmartMode(const std::string& shortcut,
+                                    const std::string& prompt,
+                                    const std::optional<std::string>& model) {
+  prefs::AddSmartModeToPrefs(shortcut, prompt, model, *profile_prefs_);
+}
+
+void AIChatService::UpdateSmartMode(const std::string& id,
+                                    const std::string& shortcut,
+                                    const std::string& prompt,
+                                    const std::optional<std::string>& model) {
+  prefs::UpdateSmartModeInPrefs(id, shortcut, prompt, model, *profile_prefs_);
+}
+
+void AIChatService::DeleteSmartMode(const std::string& id) {
+  prefs::DeleteSmartModeFromPrefs(id, *profile_prefs_);
+}
+
 void AIChatService::GetActionMenuList(GetActionMenuListCallback callback) {
   std::move(callback).Run(ai_chat::GetActionMenuList());
 }
@@ -814,6 +841,12 @@ void AIChatService::OnStateChanged() {
   mojom::ServiceStatePtr state = BuildState();
   for (auto& remote : observer_remotes_) {
     remote->OnStateChanged(state.Clone());
+  }
+}
+
+void AIChatService::OnSmartModesChanged() {
+  for (auto& remote : observer_remotes_) {
+    remote->OnSmartModesChanged(prefs::GetSmartModesFromPrefs(*profile_prefs_));
   }
 }
 

@@ -52,6 +52,8 @@ class ConversationClient : public mojom::ConversationUI,
   void OnStateChanged(mojom::ServiceStatePtr state) override;
   void OnConversationListChanged(
       std::vector<mojom::ConversationPtr> conversations) override {}
+  void OnSmartModesChanged(
+      std::vector<mojom::SmartModePtr> smart_modes) override {}
 
  private:
   // The actual UI
