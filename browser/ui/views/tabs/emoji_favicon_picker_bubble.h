@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
 namespace views {
@@ -41,6 +42,7 @@ class EmojiFaviconPickerBubble : public views::BubbleDialogDelegateView {
   raw_ptr<BraveBrowserTabStripController> controller_ = nullptr;
   int tab_index_ = -1;
   raw_ptr<views::Textfield> input_ = nullptr;
+  base::WeakPtrFactory<EmojiFaviconPickerBubble> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_EMOJI_FAVICON_PICKER_BUBBLE_H_

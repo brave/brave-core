@@ -35,7 +35,7 @@ EmojiFaviconPickerBubble::EmojiFaviconPickerBubble(
       tab_index_(tab_index) {
   SetButtons(ui::DIALOG_BUTTON_OK | ui::DIALOG_BUTTON_CANCEL);
   SetAcceptCallback(base::BindOnce(&EmojiFaviconPickerBubble::Accept,
-                                   base::Unretained(this)));
+                                   weak_factory_.GetWeakPtr()));
 
   auto* layout = SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
