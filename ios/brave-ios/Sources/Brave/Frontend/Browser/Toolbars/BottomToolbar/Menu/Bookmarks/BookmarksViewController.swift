@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import CoreData
 import CoreServices
@@ -78,14 +79,19 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
 
   // MARK: Lifecycle
 
-  init(folder: Bookmarkv2?, bookmarkManager: BookmarkManager, isPrivateBrowsing: Bool) {
+  init(folder: BookmarkNode?, bookmarkManager: BookmarkManager, isPrivateBrowsing: Bool) {
     self.isPrivateBrowsing = isPrivateBrowsing
     self.bookmarkManager = bookmarkManager
     super.init(nibName: nil, bundle: nil)
 
-    self.currentFolder = folder
-    self.title = folder?.title ?? Strings.bookmarks
-    self.bookmarksFRC = bookmarkManager.frc(parent: folder)
+    var parentFolder: Bookmarkv2?
+    if let folder = folder {
+      parentFolder = .init(folder)
+    }
+
+    self.currentFolder = parentFolder
+    self.title = parentFolder?.title ?? Strings.bookmarks
+    self.bookmarksFRC = bookmarkManager.frc(parent: parentFolder)
     self.bookmarksFRC?.delegate = self
   }
 
@@ -208,7 +214,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
       if index <= 0 && self.currentFolder != nil {
 
         let nextController = BookmarksViewController(
-          folder: self.currentFolder?.parent,
+          folder: self.currentFolder?.parent?.bookmarkNode,
           bookmarkManager: self.bookmarkManager,
           isPrivateBrowsing: self.isPrivateBrowsing
         )
@@ -532,7 +538,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         self.updateLastVisitedFolder(bookmark)
 
         let nextController = BookmarksViewController(
-          folder: bookmark,
+          folder: bookmark.bookmarkNode,
           bookmarkManager: bookmarkManager,
           isPrivateBrowsing: isPrivateBrowsing
         )

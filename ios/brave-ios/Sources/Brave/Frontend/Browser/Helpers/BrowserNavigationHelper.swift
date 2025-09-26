@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import BraveVPN
 import Foundation
@@ -51,14 +52,31 @@ class BrowserNavigationHelper {
 
   func openBookmarks() {
     guard let bvc = bvc else { return }
-    let vc = BookmarksViewController(
-      folder: bvc.bookmarkManager.lastVisitedFolder(),
-      bookmarkManager: bvc.bookmarkManager,
-      isPrivateBrowsing: bvc.privateBrowsingManager.isPrivateBrowsing
-    )
-    vc.toolbarUrlActionsDelegate = bvc
 
-    open(vc, doneButton: DoneButton(style: .done, position: .right))
+    if FeatureList.kNewBookmarksUI.enabled {
+      let vc = UIHostingController(
+        rootView: BookmarksView(
+          model: BookmarkModel(
+            api: bvc.profileController.bookmarksAPI,
+            tabManager: bvc.tabManager,
+            bookmarksManager: bvc.bookmarkManager,
+            toolbarUrlActionsDelegate: bvc,
+            dismiss: { [weak bvc] in bvc?.dismiss(animated: true) }
+          )
+        )
+      )
+
+      bvc.present(vc, animated: true)
+    } else {
+      let vc = BookmarksViewController(
+        folder: bvc.bookmarkManager.lastVisitedFolder(),
+        bookmarkManager: bvc.bookmarkManager,
+        isPrivateBrowsing: bvc.privateBrowsingManager.isPrivateBrowsing
+      )
+      vc.toolbarUrlActionsDelegate = bvc
+
+      open(vc, doneButton: DoneButton(style: .done, position: .right))
+    }
   }
 
   func openSyncedTabsList() {

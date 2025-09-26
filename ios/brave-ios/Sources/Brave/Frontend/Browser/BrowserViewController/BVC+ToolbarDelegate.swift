@@ -937,17 +937,32 @@ extension BrowserViewController: TopToolbarDelegate {
 
     let bookmarkUrl = selectedUrl.decodeEmbeddedInternalURL(for: .readermode) ?? selectedUrl
 
-    let mode = BookmarkEditMode.addBookmark(
-      title: selectedTab.displayTitle,
-      url: bookmarkUrl.absoluteString
-    )
+    if FeatureList.kNewBookmarksUI.enabled {
+      let navigationController = UINavigationController()
+      let addBookmarksController = UIHostingController(
+        rootView: BookmarksAddEditBookmarkView(
+          model: BookmarkModel(api: profileController.bookmarksAPI),
+          action: .new(selectedTab.displayTitle, bookmarkUrl),
+          dismiss: { [weak navigationController] in
+            navigationController?.dismiss(animated: true)
+          }
+        )
+      )
 
-    let addBookMarkController = AddEditBookmarkTableViewController(
-      bookmarkManager: bookmarkManager,
-      mode: mode,
-      isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
-    )
-    presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
+      navigationController.viewControllers = [addBookmarksController]
+      present(navigationController, animated: true)
+    } else {
+      let mode = BookmarkEditMode.addBookmark(
+        title: selectedTab.displayTitle,
+        url: bookmarkUrl.absoluteString
+      )
+      let addBookMarkController = AddEditBookmarkTableViewController(
+        bookmarkManager: bookmarkManager,
+        mode: mode,
+        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+      )
+      presentSettingsNavigation(with: addBookMarkController, cancelEnabled: true)
+    }
   }
 
   func presentSettingsNavigation(with controller: UIViewController, cancelEnabled: Bool = false) {
