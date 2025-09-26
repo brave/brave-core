@@ -7,15 +7,10 @@
 #define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_SERVICE_H_
 
 #include <memory>
-#include <optional>
 #include <string>
-#include <string_view>
 
-#include "base/functional/callback.h"
-#include "base/memory/weak_ptr.h"
 #include "base/timer/elapsed_timer.h"
 #include "base/timer/timer.h"
-#include "base/values.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -62,15 +57,15 @@ class EmailAliasesService : public KeyedService,
   void CancelAuthenticationOrLogout(
       CancelAuthenticationOrLogoutCallback callback) override;
 
-  // Requests generation of a new alias and returns the result via |callback|.
+  // Not implemented yet.
   void GenerateAlias(GenerateAliasCallback callback) override;
 
-  // Creates or updates an alias identified by |alias_email| with optional note.
+  // Not implemented yet.
   void UpdateAlias(const std::string& alias_email,
                    const std::optional<std::string>& note,
                    UpdateAliasCallback callback) override;
 
-  // Deletes the alias identified by |alias_email|.
+  // Not implemented yet.
   void DeleteAlias(const std::string& alias_email,
                    DeleteAliasCallback callback) override;
 
@@ -91,17 +86,7 @@ class EmailAliasesService : public KeyedService,
   static GURL GetAccountsServiceVerifyInitURL();
   static GURL GetAccountsServiceVerifyResultURL();
 
-  // Returns the base URL for the Email Aliases service.
-  static GURL GetEmailAliasesServiceURLForTesting();
-
-  // Returns the API key for the Email Aliases service.
-  static std::string GetEmailAliasesServiceAPIKeyForTesting();
-
  private:
-  // Callback that receives the response body as an optional string.
-  using BodyAsStringCallback =
-      base::OnceCallback<void(std::optional<std::string> response_body)>;
-
   // Handles the response to the verify/init request. Parses a verification
   // token and, if present, proceeds to poll the session endpoint. Invokes
   // |callback| with an optional error message.
@@ -132,41 +117,6 @@ class EmailAliasesService : public KeyedService,
   // tokens to reset the authentication flow to a clean state.
   void ResetVerificationFlow();
 
-  // Fetch helper for Email Aliases backend. Specifically for GET/HEAD.
-  void ApiFetch(const GURL& url,
-                const std::string_view method,
-                BodyAsStringCallback download_to_string_callback);
-
-  // Fetch helper which uploads |body_value|. Specifically for POST/PUT/DELETE.
-  void ApiFetch(const GURL& url,
-                const std::string_view method,
-                const base::Value::Dict& body_value,
-                BodyAsStringCallback download_to_string_callback);
-
-  // Shared implementation used by the two ApiFetch overloads to make a network
-  // request.
-  void ApiFetchInternal(const GURL& url,
-                        const std::string_view method,
-                        std::optional<std::string> serialized_body,
-                        BodyAsStringCallback download_to_string_callback);
-
-  // Refreshes the aliases list from the server and notifies observers.
-  void RefreshAliases();
-
-  // Parses and applies the aliases list received from the backend.
-  void OnRefreshAliasesResponse(std::optional<std::string> response_body);
-
-  // Processes the server response for a generate-alias request.
-  void OnGenerateAliasResponse(GenerateAliasCallback user_callback,
-                               std::optional<std::string> response_body);
-
-  // Common handler for alias edit responses (update/delete).
-  void OnEditAliasResponse(
-      base::OnceCallback<void(base::expected<std::monostate, std::string>)>
-          user_callback,
-      bool update_expected,
-      std::optional<std::string> response_body);
-
   // Bound Mojo receivers for the EmailAliasesService interface.
   mojo::ReceiverSet<mojom::EmailAliasesService> receivers_;
 
@@ -196,12 +146,6 @@ class EmailAliasesService : public KeyedService,
   // Cached fully-qualified verify/result URL.
   const GURL verify_result_url_;
 
-  // Cached fully-qualified email aliases service base URL.
-  const GURL email_aliases_service_base_url_;
-
-  // Cached email aliases API key.
-  const std::string email_aliases_api_key_;
-
   // One-shot timer used to delay subsequent verify/result polls so that they
   // are not issued more frequently than the minimum interval.
   base::OneShotTimer session_request_timer_;
@@ -209,9 +153,6 @@ class EmailAliasesService : public KeyedService,
   // Elapsed timer for the current verification polling window. Used to
   // enforce a maximum total polling duration.
   std::optional<base::ElapsedTimer> session_poll_elapsed_timer_;
-
-  // WeakPtrFactory to safely bind callbacks across async network operations.
-  base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
 };
 
 }  // namespace email_aliases

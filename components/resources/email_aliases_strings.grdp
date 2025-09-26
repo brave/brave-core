@@ -156,16 +156,4 @@
   <message name="IDS_EMAIL_ALIASES_ERROR_VERIFICATION_FAILED">
     Email verification failed
   </message>
-  <message name="IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY">
-    No response from Email Aliases service
-  </message>
-  <message name="IDS_EMAIL_ALIASES_SERVICE_ERROR_INVALID_RESPONSE_BODY">
-    Invalid response from Email Aliases service
-  </message>
-  <message name="IDS_EMAIL_ALIASES_SERVICE_REPORTED_ERROR">
-    Email Aliases service error: <ph name="ERROR">$1<ex>error message</ex></ph>
-  </message>
-  <message name="IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE">
-    Error: Alias not available
-  </message>
 </grit-part>
