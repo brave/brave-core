@@ -251,14 +251,11 @@ void BraveTabMenuModel::BuildItemForContainers(
 void BraveTabMenuModel::BuildItemForCustomization(
     TabStripModel* tab_strip_model,
     int tab_index) {
-  if (tab_strip_model->IsTabPinned(tab_index)) {
-    // In case of pinned tabs, we don't show titles at all, so we don't need to
-    // show the rename option.
-    return;
-  }
+  const bool is_pinned = tab_strip_model->IsTabPinned(tab_index);
 
   auto index = *GetIndexOfCommandId(TabStripModel::CommandReload) + 1;
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs) &&
+      !is_pinned) {
     InsertItemWithStringIdAt(index++, CommandRenameTab,
                              IDS_TAB_CXMENU_RENAME_TAB);
   }
