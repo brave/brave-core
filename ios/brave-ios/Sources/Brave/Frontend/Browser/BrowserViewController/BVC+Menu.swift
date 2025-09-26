@@ -184,9 +184,15 @@ extension BrowserViewController {
         )
       )
     }
-    // Sets up empty actions for any page actions that weren't setup as UIActivity's
+    // Sets up empty actions for any page actions that weren't setup as UIActivity's excluding any
+    // that should be hidden due to admin policies
+    var pageActivitiesRemovedByAdminPolicies: Set<Action.Identifier> = []
+    if !profileController.profile.prefs.isBraveNewsAvailable {
+      pageActivitiesRemovedByAdminPolicies.insert(.addSourceNews)
+    }
     let remainingPageActivities: [Action] = Action.ID.allPageActivites
       .subtracting(pageActivities.map(\.id))
+      .subtracting(pageActivitiesRemovedByAdminPolicies)
       .map { .init(id: $0, attributes: .disabled) }
     actions.append(contentsOf: pageActivities)
     actions.append(contentsOf: remainingPageActivities)
