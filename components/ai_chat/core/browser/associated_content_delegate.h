@@ -19,13 +19,14 @@
 namespace ai_chat {
 
 struct PageContent {
-  // Note: |content| is not sanitized for use in the backend. Run it through
-  // |EngineConsumer::SanitizeInput| before sending it.
+  // Note: |content| and |title| are not sanitized for use in the backend. Run
+  // them through |EngineConsumer::SanitizeInput| before sending to the backend.
+  std::u16string title = u"";
   std::string content = "";
   bool is_video = false;
 
   PageContent();
-  PageContent(std::string content, bool is_video);
+  PageContent(std::u16string title, std::string content, bool is_video);
 
   PageContent(const PageContent&);
   PageContent(PageContent&&);
@@ -33,7 +34,8 @@ struct PageContent {
   PageContent& operator=(PageContent&&);
 
   bool operator==(const PageContent& other) const {
-    return content == other.content && is_video == other.is_video;
+    return title == other.title && content == other.content &&
+           is_video == other.is_video;
   }
 };
 
@@ -96,7 +98,7 @@ class AssociatedContentDelegate {
   int content_id() const { return content_id_; }
   const std::string& uuid() const { return uuid_; }
 
-  const std::u16string& title() const { return title_; }
+  const std::u16string& title() const { return cached_page_content_.title; }
   const GURL& url() const { return url_; }
 
   // Get current cache of content, if available. Do not perform any fresh
@@ -112,9 +114,7 @@ class AssociatedContentDelegate {
   void set_uuid(std::string uuid) { uuid_ = std::move(uuid); }
   void set_url(GURL url) { url_ = std::move(url); }
   void SetTitle(std::u16string title);
-  void set_cached_page_content(PageContent page_content) {
-    cached_page_content_ = std::move(page_content);
-  }
+  void SetCachedPageContent(std::string content, bool is_video);
 
  private:
   friend class MockAssociatedContent;
@@ -125,7 +125,6 @@ class AssociatedContentDelegate {
   std::string uuid_;
   base::ObserverList<Observer> observers_;
 
-  std::u16string title_;
   GURL url_;
   PageContent cached_page_content_;
 

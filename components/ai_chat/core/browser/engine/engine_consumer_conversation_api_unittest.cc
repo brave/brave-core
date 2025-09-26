@@ -197,8 +197,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   // exhaustive tests of  ConversationAPIClient are performed in its own
   // unit test suite.
   PageContent page_content(
-      std::string(kTestingMaxAssociatedContentLength + 1, 'a'), false);
-  std::string expected_page_content(kTestingMaxAssociatedContentLength, 'a');
+      u"", std::string(kTestingMaxAssociatedContentLength + 1, 'a'), false);
+  std::string expected_page_content =
+      "Title: \n" + std::string(kTestingMaxAssociatedContentLength - 8, 'a');
   std::string expected_user_message_content =
       "Tell the user which show is this about?";
   std::string expected_events = R"([
@@ -256,13 +257,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_BasicMessage_MultiAssociatedTruncates) {
   size_t content_length = kTestingMaxAssociatedContentLength / 2 + 10;
-  PageContent page_content_1(std::string(content_length, 'a'), false);
-  PageContent page_content_2(std::string(content_length, 'b'), false);
+  PageContent page_content_1(u"", std::string(content_length, 'a'), false);
+  PageContent page_content_2(u"", std::string(content_length, 'b'), false);
   // First content should be truncated to the remaining available space (as we
   // truncate the oldest page content first).
-  std::string expected_page_content_1(
-      kTestingMaxAssociatedContentLength - content_length, 'a');
-  std::string expected_page_content_2(content_length, 'b');
+  std::string expected_page_content_1 = "Title: \n" + std::string(32, 'a');
+  std::string expected_page_content_2 =
+      "Title: \n" + std::string(content_length, 'b');
 
   std::string expected_user_message_content =
       "Tell the user which show is this about?";
@@ -324,9 +325,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
-  PageContent page_content("This is a page about The Mandalorian.", false);
+  PageContent page_content(u"", "This is a page about The Mandalorian.", false);
   std::string expected_events = R"([
-    {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
+    {"role": "user", "type": "pageText", "content": "Title: \nThis is a page about The Mandalorian."},
     {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
     {"role": "user", "type": "chatMessage", "content": "Is this related to a broader series?"}
   ])";
@@ -377,7 +378,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_HistoryWithSelectedText) {
-  PageContent page_content("This is my page. I have spoken.", false);
+  PageContent page_content(u"", "This is my page. I have spoken.", false);
   // Tests events building from history with selected text and new query without
   // selected text but with page association.
   EngineConsumer::ConversationHistory history;
@@ -397,7 +398,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       false, std::nullopt /* model_key */));
   std::string expected_events = R"([
-    {"role": "user", "type": "pageText", "content": "This is my page. I have spoken."},
+    {"role": "user", "type": "pageText", "content": "Title: \nThis is my page. I have spoken."},
     {"role": "user", "type": "pageExcerpt", "content": "I have spoken."},
     {"role": "user", "type": "chatMessage", "content": "Which show is this catchphrase from?"},
     {"role": "assistant", "type": "chatMessage", "content": "The Mandalorian."},
@@ -927,7 +928,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   // Tests events building from history with modified agent reply.
   EngineConsumer::ConversationHistory history;
-  PageContent page_content("I have spoken.", false);
+  PageContent page_content(u"", "I have spoken.", false);
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Which show is 'This is the way' from?", std::nullopt /* prompt */,
@@ -967,7 +968,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       false, std::nullopt /* model_key */));
   std::string expected_events = R"([
-    {"role": "user", "type": "pageText", "content": "I have spoken."},
+    {"role": "user", "type": "pageText", "content": "Title: \nI have spoken."},
     {"role": "user", "type": "chatMessage",
      "content": "Which show is 'This is the way' from?"},
     {"role": "assistant", "type": "chatMessage", "content": "The Mandalorian."},
@@ -1012,7 +1013,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
   std::string expected_events = R"([
-    {"role": "user", "type": "pageText", "content": "This is a sample page content."},
+    {"role": "user", "type": "pageText", "content": "Title: \nThis is a sample page content."},
     {"role": "user", "type": "requestSummary", "content": ""}
   ])";
   auto* mock_api_client = GetMockConversationAPIClient();
@@ -1043,7 +1044,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
   turn->text =
       "Summarize the content of this page.";  // This text should be ignored
   history.push_back(std::move(turn));
-  PageContent page_content("This is a sample page content.", false);
+  PageContent page_content(u"", "This is a sample page content.", false);
   engine_->GenerateAssistantResponse(
       {{{"turn-1", {page_content}}}}, history, "", false, {}, std::nullopt,
       mojom::ConversationCapability::CHAT, base::DoNothing(),
@@ -1831,15 +1832,15 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetStrArrFromResponse) {
 }
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
-  PageContent page_content("Sample page content.", false);
-  PageContent video_content("Sample video content.", true);
+  PageContent page_content(u"", "Sample page content.", false);
+  PageContent video_content(u"", "Sample video content.", true);
   PageContents page_contents{page_content, video_content};
 
   std::string selected_language = "en-US";
 
   std::string expected_events = R"([
-    {"role": "user", "type": "videoTranscript", "content": "Sample video content."},
-    {"role": "user", "type": "pageText", "content": "Sample page content."},
+    {"role": "user", "type": "videoTranscript", "content": "Title: \nSample video content."},
+    {"role": "user", "type": "pageText", "content": "Title: \nSample page content."},
     {"role": "user", "type": "requestSuggestedActions", "content": ""}
   ])";
 
@@ -2013,7 +2014,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
        "tone": "Professional", "other": "Loves coding"}, "role": "user",
        "type": "userMemory"},
       {"role": "user", "type": "pageText",
-       "content": "This is a test page content."},
+       "content": "Title: \nThis is a test page content."},
       {"role": "user", "type": "chatMessage", "content": "What is this about?"}
     ])";
 
@@ -2050,7 +2051,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
-    PageContent page_content("This is a test page content.", false);
+    PageContent page_content(u"", "This is a test page content.", false);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, std::move(history), "", false, {},
         std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
@@ -2082,7 +2083,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
        },
        "role": "user", "type": "userMemory"},
       {"role": "user", "type": "pageText",
-       "content": "This is a test page content."},
+       "content": "Title: \nThis is a test page content."},
       {"role": "user", "type": "chatMessage", "content": "What is this about?"}
     ])";
 
@@ -2115,7 +2116,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
-    PageContent page_content("This is a test page content.", false);
+    PageContent page_content(u"", "This is a test page content.", false);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, std::move(history), "", false, {},
         std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
@@ -2149,7 +2150,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
          "memories": ["I like creative solutions"]},
          "role": "user", "type": "userMemory"},
       {"role": "user", "type": "pageText",
-       "content": "This is a test page content."},
+       "content": "Title: \nThis is a test page content."},
       {"role": "user", "type": "chatMessage", "content": "What is this about?"}
     ])";
 
@@ -2182,7 +2183,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
-    PageContent page_content("This is a test page content.", false);
+    PageContent page_content(u"", "This is a test page content.", false);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, std::move(history), "", false, {},
         std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
@@ -2201,7 +2202,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     std::string expected_events = R"([
       {"role": "user", "type": "pageText",
-       "content": "This is a test page content."},
+       "content": "Title: \nThis is a test page content."},
       {"role": "user", "type": "chatMessage", "content": "What is this about?"}
     ])";
 
@@ -2236,7 +2237,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
-    PageContent page_content("This is a test page content.", false);
+    PageContent page_content(u"", "This is a test page content.", false);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, std::move(history), "", false, {},
         std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
@@ -2260,7 +2261,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     std::string expected_events = R"([
       {"role": "user", "type": "pageText",
-       "content": "This is a test page content."},
+       "content": "Title: \nThis is a test page content."},
       {"role": "user", "type": "chatMessage", "content": "What is this about?"}
     ])";
 
@@ -2295,7 +2296,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
-    PageContent page_content("This is a test page content.", false);
+    PageContent page_content(u"", "This is a test page content.", false);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, std::move(history), "", false, {},
         std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
@@ -2318,7 +2319,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
     std::string expected_events = R"([
       {"role": "user", "type": "pageText",
-       "content": "This is a test page content."},
+       "content": "Title: \nThis is a test page content."},
       {"role": "user", "type": "chatMessage", "content": "What is this about?"}
     ])";
 
@@ -2353,7 +2354,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     history.push_back(std::move(turn));
 
     base::RunLoop run_loop;
-    PageContent page_content("This is a test page content.", false);
+    PageContent page_content(u"", "This is a test page content.", false);
     engine_->GenerateAssistantResponse(
         {{"turn-1", {page_content}}}, std::move(history), "", false, {},
         std::nullopt, mojom::ConversationCapability::CHAT, base::DoNothing(),
@@ -2387,7 +2388,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // Expect NO memory event when is_temporary_chat=true
   std::string expected_events = R"([
     {"role": "user", "type": "pageText",
-     "content": "This is a test page content."},
+     "content": "Title: \nThis is a test page content."},
     {"role": "user", "type": "chatMessage", "content": "What is this about?"}
   ])";
 
@@ -2424,7 +2425,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn));
 
   base::RunLoop run_loop;
-  PageContent page_content("This is a test page content.", false);
+  PageContent page_content(u"", "This is a test page content.", false);
   engine_->GenerateAssistantResponse(
       {{"turn-1", {page_content}}}, std::move(history), "",
       true,  // is_temporary_chat = true
@@ -2470,7 +2471,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   history.push_back(std::move(turn));
 
   base::RunLoop run_loop;
-  PageContent page_content("This is a test page content.", false);
+  PageContent page_content(u"", "This is a test page content.", false);
   PageContentsMap page_contents{{"turn-1", {page_content}}};
 
   engine_->GenerateAssistantResponse(
@@ -2571,8 +2572,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     MOCK_METHOD(void, SanitizeInput, (std::string & input), (override));
   };
 
-  PageContent page_content_1("This is a page about The Mandalorian.", false);
-  PageContent page_content_2("This is a video about The Mandalorian.", true);
+  PageContent page_content_1(u"", "This is a page about The Mandalorian.",
+                             false);
+  PageContent page_content_2(u"", "This is a video about The Mandalorian.",
+                             true);
 
   auto mock_engine_consumer =
       std::make_unique<MockConversationAPIEngineConsumer>(
@@ -2582,10 +2585,15 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       std::make_unique<MockConversationAPIClient>(
           model_->options->get_leo_model_options()->name));
 
-  // Calling GenerateAssistantResponse should call SanitizeInput
+  // Calling GenerateAssistantResponse should call SanitizeInput on formatted
+  // content
   {
-    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
-    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
+    EXPECT_CALL(*mock_engine_consumer,
+                SanitizeInput(::testing::StrEq(
+                    "Title: \nThis is a page about The Mandalorian.")));
+    EXPECT_CALL(*mock_engine_consumer,
+                SanitizeInput(::testing::StrEq(
+                    "Title: \nThis is a video about The Mandalorian.")));
 
     std::vector<mojom::ConversationTurnPtr> history;
     auto turn = mojom::ConversationTurn::New();
@@ -2598,10 +2606,15 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     testing::Mock::VerifyAndClearExpectations(mock_engine_consumer.get());
   }
 
-  // Calling GenerateQuestionSuggestions should call SanitizeInput
+  // Calling GenerateQuestionSuggestions should call SanitizeInput on formatted
+  // content
   {
-    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_1.content));
-    EXPECT_CALL(*mock_engine_consumer, SanitizeInput(page_content_2.content));
+    EXPECT_CALL(*mock_engine_consumer,
+                SanitizeInput(::testing::StrEq(
+                    "Title: \nThis is a page about The Mandalorian.")));
+    EXPECT_CALL(*mock_engine_consumer,
+                SanitizeInput(::testing::StrEq(
+                    "Title: \nThis is a video about The Mandalorian.")));
 
     mock_engine_consumer->GenerateQuestionSuggestions(
         {page_content_1, page_content_2}, "", base::DoNothing());
@@ -2611,7 +2624,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_WithUploadedPdfFiles) {
-  PageContent page_content("This is a page about The Mandalorian.", false);
+  PageContent page_content(u"", "This is a page about The Mandalorian.", false);
 
   // Create test uploaded PDF files
   auto uploaded_files =
@@ -2624,7 +2637,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       CreateDataURLFromUploadedFile(uploaded_files[1], "application/pdf");
 
   std::string expected_events = absl::StrFormat(R"([
-    {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
+    {"role": "user", "type": "pageText", "content": "Title: \nThis is a page about The Mandalorian."},
     {"role": "user", "type": "uploadPdf", "content": ["%s", "%s"]},
     {"role": "user", "type": "chatMessage", "content": "Can you analyze these PDFs?"}
   ])",
@@ -2686,7 +2699,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_WithMixedUploadedFiles) {
-  PageContent page_content("This is a page about The Mandalorian.", false);
+  PageContent page_content(u"", "This is a page about The Mandalorian.", false);
 
   // Create test uploaded files of different types
   auto uploaded_files = std::vector<mojom::UploadedFilePtr>();
@@ -2725,7 +2738,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   std::string expected_events =
       absl::StrFormat(R"([
-    {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
+    {"role": "user", "type": "pageText", "content": "Title: \nThis is a page about The Mandalorian."},
     {"role": "user", "type": "uploadImage", "content": "%s"},
     {"role": "user", "type": "pageScreenshot", "content": "%s"},
     {"role": "user", "type": "uploadPdf", "content": "%s"},
@@ -2862,7 +2875,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithOnlyPdfFiles) {
 
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_WithMultiplePdfFiles) {
-  PageContent page_content("This is a page about The Mandalorian.", false);
+  PageContent page_content(u"", "This is a page about The Mandalorian.", false);
 
   // Create multiple PDF files
   auto uploaded_files =
@@ -2878,7 +2891,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   std::string expected_events =
       absl::StrFormat(R"([
-    {"role": "user", "type": "pageText", "content": "This is a page about The Mandalorian."},
+    {"role": "user", "type": "pageText", "content": "Title: \nThis is a page about The Mandalorian."},
     {"role": "user", "type": "uploadPdf", "content": ["%s", "%s", "%s"]},
     {"role": "user", "type": "chatMessage", "content": "Can you compare these three PDFs?"}
   ])",
@@ -2960,7 +2973,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         EXPECT_EQ(conversation[0].role, ConversationEventRole::kUser);
         EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
         EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
-                  "Test page content");
+                  "Title: \nTest page content");
 
         // Second event should be the human turn
         EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
@@ -2975,7 +2988,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         run_loop.Quit();
       });
 
-  PageContent page_content("Test page content", false);
+  PageContent page_content(u"", "Test page content", false);
 
   std::vector<mojom::ConversationTurnPtr> history;
   auto turn = mojom::ConversationTurn::New(
@@ -3031,7 +3044,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   // Create page content for a turn UUID that doesn't exist in conversation
   // history
-  PageContent page_content("Content for missing turn", false);
+  PageContent page_content(u"", "Content for missing turn", false);
 
   std::vector<mojom::ConversationTurnPtr> history;
   auto turn = mojom::ConversationTurn::New(
@@ -3073,13 +3086,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         EXPECT_EQ(conversation[0].type,
                   ConversationEventType::kVideoTranscript);
         EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
-                  "Video content");
+                  "Title: \nVideo content");
 
         // Second event should be page content
         EXPECT_EQ(conversation[1].role, ConversationEventRole::kUser);
         EXPECT_EQ(conversation[1].type, ConversationEventType::kPageText);
         EXPECT_EQ(GetContentStrings(conversation[1].content)[0],
-                  "First page content");
+                  "Title: \nFirst page content");
 
         // Third event should be the human turn
         EXPECT_EQ(conversation[2].role, ConversationEventRole::kUser);
@@ -3094,8 +3107,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         run_loop.Quit();
       });
 
-  PageContent page_content1("First page content", false);
-  PageContent video_content("Video content", true);
+  PageContent page_content1(u"", "First page content", false);
+  PageContent video_content(u"", "Video content", true);
 
   std::vector<mojom::ConversationTurnPtr> history;
   auto turn = mojom::ConversationTurn::New(
@@ -3141,13 +3154,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Check ordering
         EXPECT_EQ(conversation[0].type, ConversationEventType::kPageText);
         EXPECT_EQ(GetContentStrings(conversation[0].content)[0],
-                  "Content for first turn");
+                  "Title: First Turn Page\nContent for first turn");
         EXPECT_EQ(GetContentStrings(conversation[1].content)[0],
                   "First human message");
         EXPECT_EQ(GetContentStrings(conversation[2].content)[0],
                   "First assistant response");
         EXPECT_EQ(GetContentStrings(conversation[3].content)[0],
-                  "Content for second turn");
+                  "Title: Second Turn Page\nContent for second turn");
         EXPECT_EQ(GetContentStrings(conversation[4].content)[0],
                   "Second human message");
 
@@ -3159,8 +3172,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         run_loop.Quit();
       });
 
-  PageContent page_content1("Content for first turn", false);
-  PageContent page_content2("Content for second turn", false);
+  PageContent page_content1(u"First Turn Page", "Content for first turn",
+                            false);
+  PageContent page_content2(u"Second Turn Page", "Content for second turn",
+                            false);
 
   std::vector<mojom::ConversationTurnPtr> history;
 
@@ -3201,9 +3216,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateEvents_MultiplePageContents_MultipleTurns_TooLong) {
   // Create page contents with specific lengths for truncation testing
   // Using lengths that will trigger truncation behavior similar to the OAI test
-  PageContent page_content_1(std::string(35, '1'), false);
-  PageContent page_content_2(std::string(35, '2'), false);
-  PageContent page_content_3(std::string(35, '3'), false);
+  PageContent page_content_1(u"One", std::string(35, '1'), false);
+  PageContent page_content_2(u"Two", std::string(35, '2'), false);
+  PageContent page_content_3(u"", std::string(35, '3'), false);
 
   // Create conversation history with multiple turns
   std::vector<mojom::ConversationTurnPtr> history;
@@ -3265,10 +3280,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // Test case: Max Length = 105 (should include all page contents)
   // Total content: 35 + 35 + 35 = 105 chars
   test_content_truncation(105, {
-                                   std::string(35, '2'),
-                                   std::string(35, '1'),
+                                   "Title: Two\n" + std::string(35, '2'),
+                                   "Title: One\n" + std::string(24, '1'),
                                    "Human message 1",
-                                   std::string(35, '3'),
+                                   "Title: \n" + std::string(35, '3'),
                                    "Human message 2",
                                });
 
@@ -3276,10 +3291,10 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // content 2, partial content 1) Content 3: 35 + Content 2: 35 + Content 1: 30
   // chars = 100 chars exactly
   test_content_truncation(100, {
-                                   std::string(35, '2'),
-                                   std::string(30, '1'),
+                                   "Title: Two\n" + std::string(35, '2'),
+                                   "Title: One\n" + std::string(19, '1'),
                                    "Human message 1",
-                                   std::string(35, '3'),
+                                   "Title: \n" + std::string(35, '3'),
                                    "Human message 2",
                                });
 
@@ -3287,9 +3302,9 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // page content 1 gets omitted) Content 3: 35 chars + Content 2: 35 chars = 70
   // chars exactly
   test_content_truncation(70, {
-                                  std::string(35, '2'),
+                                  "Title: Two\n" + std::string(24, '2'),
                                   "Human message 1",
-                                  std::string(35, '3'),
+                                  "Title: \n" + std::string(35, '3'),
                                   "Human message 2",
                               });
 
@@ -3297,16 +3312,16 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // content 2, omit content 1) Content 3: 35 + Content 2: 30 chars = 65 chars
   // exactly
   test_content_truncation(65, {
-                                  std::string(30, '2'),
+                                  "Title: Two\n" + std::string(19, '2'),
                                   "Human message 1",
-                                  std::string(35, '3'),
+                                  "Title: \n" + std::string(35, '3'),
                                   "Human message 2",
                               });
 
   // Test case: Max Length = 35 (should include only page content 3)
   test_content_truncation(35, {
                                   "Human message 1",
-                                  std::string(35, '3'),
+                                  "Title: \n" + std::string(27, '3'),
                                   "Human message 2",
                               });
 
@@ -3314,7 +3329,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   // others)
   test_content_truncation(10, {
                                   "Human message 1",
-                                  std::string(10, '3'),
+                                  "Title: \n" + std::string(2, '3'),
                                   "Human message 2",
                               });
 

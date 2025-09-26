@@ -22,7 +22,7 @@ AssociatedArchiveContent::AssociatedArchiveContent(GURL url,
            << "title: " << title << "text: " << text_content;
   set_uuid(std::move(uuid));
   set_url(std::move(url));
-  set_cached_page_content(PageContent(std::move(text_content), is_video));
+  SetCachedPageContent(std::move(text_content), is_video);
   SetTitle(std::move(title));
 }
 

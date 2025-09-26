@@ -10,8 +10,15 @@
 
 #include "base/base64.h"
 #include "base/strings/strcat.h"
+#include "base/strings/utf_string_conversions.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ai_chat {
+
+std::string FormatPageContentWithTitle(const PageContent& content) {
+  return absl::StrFormat("Title: %v\n%v", base::UTF16ToUTF8(content.title),
+                         content.content);
+}
 
 EngineConsumer::GenerationResultData::GenerationResultData(
     mojom::ConversationEntryEventPtr event,

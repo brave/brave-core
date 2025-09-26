@@ -30,6 +30,8 @@ class ModelOptions;
 
 class ModelService;
 
+std::string FormatPageContentWithTitle(const PageContent& content);
+
 // Abstract class for using AI completion engines to generate various specific
 // styles of completion. The engines could be local (invoked directly via a
 // subclass) or remote (invoked via network requests).
