@@ -728,7 +728,7 @@ bool AIChatService::CanUnloadConversation(ConversationHandler* conversation) {
   // GetOrCreateConversationHandlerForContent allows a callback so that it
   // can provide an answer after loading the conversation content from storage.
   if (!conversation->GetIsTemporary() &&
-      conversation->IsAssociatedContentAlive() &&
+      conversation->associated_content_manager()->HasNonArchiveContent() &&
       conversation->HasAnyHistory()) {
     return false;
   }
