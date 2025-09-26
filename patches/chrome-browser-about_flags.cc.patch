@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 0e35753a36cae5bc209b214be85cbf0daf6bcc4e..111cc72140353c7688e2b5ccb5a2382bf16586ba 100644
+index b058d5b45f88ad77b91e62b478afb9afdb678e20..11c9211cf26d881243367a08980e8beedbdd6a10 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4919,6 +4919,7 @@ const FeatureEntry::FeatureVariation kNtpEnterpriseShortcutsVariations[] = {
+@@ -4893,6 +4893,7 @@ const FeatureEntry::FeatureVariation kSeamlessSigninPromoTypes[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

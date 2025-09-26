@@ -1,5 +1,5 @@
 diff --git a/components/metrics/BUILD.gn b/components/metrics/BUILD.gn
-index 87cb6c3c92fb5316316ca2367096fd5f7ba0b13a..90b5d641d0123cce462d7fcbddb62b7ffafa8b57 100644
+index 3f0e056cbb1646d0475337437c98e9564e9dca8c..be76d7beea7f3f45fa6d0b3205fa1dafa0f20008 100644
 --- a/components/metrics/BUILD.gn
 +++ b/components/metrics/BUILD.gn
 @@ -346,6 +346,7 @@ if (!is_cronet_build || is_ios) {

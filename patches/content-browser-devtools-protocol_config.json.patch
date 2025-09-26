@@ -1,8 +1,8 @@
 diff --git a/content/browser/devtools/protocol_config.json b/content/browser/devtools/protocol_config.json
-index 1f74c6b75fab0bdaa67e89f4cc7d4f6046774526..9a856d189bc0e670766fd60290322178c65079a5 100644
+index 03af5c33c6365229735b7360e87153380aff5140..20e7d72f562fc1d4123e5ef9f70aeb71db73a450 100644
 --- a/content/browser/devtools/protocol_config.json
 +++ b/content/browser/devtools/protocol_config.json
-@@ -131,7 +131,7 @@
+@@ -132,7 +132,7 @@
                    "getIPProtectionProxyStatus",
                    "setIPProtectionProxyBypassEnabled"
                  ],

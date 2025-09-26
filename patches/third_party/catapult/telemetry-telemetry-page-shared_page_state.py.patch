@@ -1,5 +1,5 @@
 diff --git a/telemetry/telemetry/page/shared_page_state.py b/telemetry/telemetry/page/shared_page_state.py
-index 70fbf130a9680248683706786f4ac50602fd5186..59f56ab39eaeb8e540fe2efa264561b64424f443 100644
+index df3f42352963923e7f64961afbb2cb9169be7625..9e6c8050e9ce4dce87590f8e5dda6a6959b75bd4 100644
 --- a/telemetry/telemetry/page/shared_page_state.py
 +++ b/telemetry/telemetry/page/shared_page_state.py
 @@ -219,6 +219,7 @@ class SharedPageState(story_module.SharedState):

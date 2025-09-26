@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index dc9f1bfb44c09419b0a48912f76df887ce8927d9..abc3efed8dc6b0d553e10a2ecd347ad5a0e53257 100644
+index 64e27cdeae5e0bc09e0ffe4d531bb253ccaa5985..dfac9295672e5fdb039251f719c7ac2f644d15e5 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1574,6 +1574,7 @@ source_set("extensions") {
+@@ -1577,6 +1577,7 @@ source_set("extensions") {
        "api/tabs/app_window_helper.h",
      ]
    }
