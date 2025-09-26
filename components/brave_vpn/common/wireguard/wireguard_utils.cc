@@ -30,14 +30,12 @@ namespace wireguard {
 
 namespace {
 std::string EncodeBase64(const std::vector<uint8_t>& in) {
-  std::string res;
   size_t size = 0;
   CHECK(EVP_EncodedLength(&size, in.size()));
   std::vector<uint8_t> out(size);
   size_t numEncBytes = EVP_EncodeBlock(&out.front(), &in.front(), in.size());
   DCHECK_NE(numEncBytes, 0u);
-  res = reinterpret_cast<char*>(&out.front());
-  return res;
+  return std::string(out.begin(), out.end());
 }
 
 constexpr char kCloudflareIPv4[] = "1.1.1.1";
