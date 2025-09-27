@@ -1,5 +1,5 @@
 use super::Tag;
-use crate::base::{Bytes, HasReplacementsError, Range};
+use crate::base::{Bytes, BytesCow, HasReplacementsError, Range};
 use encoding_rs::Encoding;
 use std::fmt;
 
@@ -137,7 +137,7 @@ impl PartialEq<Tag> for LocalNameHash {
 #[derive(Clone, Debug, Eq, Hash)]
 pub enum LocalName<'i> {
     Hash(LocalNameHash),
-    Bytes(Bytes<'i>),
+    Bytes(BytesCow<'i>),
 }
 
 impl<'i> LocalName<'i> {
@@ -145,7 +145,7 @@ impl<'i> LocalName<'i> {
     #[must_use]
     pub(crate) fn new(input: &'i Bytes<'i>, range: Range, hash: LocalNameHash) -> Self {
         if hash.is_empty() {
-            LocalName::Bytes(input.slice(range))
+            LocalName::Bytes(input.slice(range).into())
         } else {
             LocalName::Hash(hash)
         }
@@ -168,7 +168,7 @@ impl<'i> LocalName<'i> {
         let hash = LocalNameHash::from(string);
 
         if hash.is_empty() {
-            Bytes::from_str_without_replacements(string, encoding).map(LocalName::Bytes)
+            BytesCow::from_str_without_replacements(string, encoding).map(LocalName::Bytes)
         } else {
             Ok(LocalName::Hash(hash))
         }
