@@ -64,6 +64,7 @@ source_set("ui") {
     "//chrome/browser/ui:browser_navigator_params_headers",
     "//chrome/browser/ui/startup",
     "//chrome/browser/ui/tabs:tabs_public",
+    "//media",
   ]
 
   allow_circular_includes_from = brave_ui_allow_circular_includes_from
