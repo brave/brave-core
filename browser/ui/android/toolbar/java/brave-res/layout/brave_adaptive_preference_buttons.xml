@@ -7,7 +7,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
      xmlns:app="http://schemas.android.com/apk/res-auto">
 
-     <org.chromium.components.browser_ui.widget.RadioButtonWithDescription     
+     <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
           android:id="@+id/adaptive_option_bookmarks"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -15,5 +15,41 @@
           android:paddingTop="10dp"
           app:iconSrc="@drawable/brave_menu_bookmarks"
           app:primaryText="@string/menu_bookmarks"/>
+
+     <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+          android:id="@+id/adaptive_option_history"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minHeight="@dimen/min_touch_target_size"
+          android:paddingTop="10dp"
+          app:iconSrc="@drawable/brave_menu_history"
+          app:primaryText="@string/menu_history"/>
+
+     <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+          android:id="@+id/adaptive_option_downloads"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minHeight="@dimen/min_touch_target_size"
+          android:paddingTop="10dp"
+          app:iconSrc="@drawable/brave_menu_downloads"
+          app:primaryText="@string/menu_downloads"/>
+
+     <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+          android:id="@+id/adaptive_option_brave_leo"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minHeight="@dimen/min_touch_target_size"
+          android:paddingTop="10dp"
+          app:iconSrc="@drawable/ic_brave_ai"
+          app:primaryText="@string/menu_brave_leo"/>
+
+     <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+          android:id="@+id/adaptive_option_brave_wallet"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minHeight="@dimen/min_touch_target_size"
+          android:paddingTop="10dp"
+          app:iconSrc="@drawable/ic_crypto_wallets"
+          app:primaryText="@string/menu_brave_wallet"/>
 
 </merge>
