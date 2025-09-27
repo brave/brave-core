@@ -79,9 +79,9 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void RemoveCustomBackground(const std::string& background_url,
                               RemoveCustomBackgroundCallback callback) override;
   void NotifySponsoredImageLogoClicked(
+      const std::string& wallpaper_id,
       const std::string& creative_instance_id,
       const std::string& destination_url,
-      const std::string& wallpaper_id,
       bool should_metrics_fallback_to_p3a,
       NotifySponsoredImageLogoClickedCallback callback) override;
 
