@@ -48,7 +48,6 @@ import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
-import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tinker_tank.TinkerTankDelegate;
@@ -838,15 +837,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         R.id.brave_news_id,
                         R.string.brave_news_title,
                         shouldShowIconBeforeItem() ? R.drawable.ic_news : 0));
-    }
-
-    private MVCListAdapter.ListItem buildBraveSpeedreaderItem() {
-        return new MVCListAdapter.ListItem(
-                AppMenuHandler.AppMenuItemType.STANDARD,
-                buildModelForStandardMenuItem(
-                        R.id.brave_speedreader_id,
-                        R.string.brave_speedreader_title,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_readermode : 0));
     }
 
     private MVCListAdapter.ListItem buildBraveLeoItem() {
