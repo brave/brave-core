@@ -86,6 +86,10 @@
 -SyncUserSettingsImplTest.PreferredTypesSyncEverything
 -SyncUserSettingsImplTest.SetSelectedTypeInFullSyncMode
 
+# These tests fail because we disable
+# switches::kSyncEnableBookmarksInTransportMode
+-InitialAccountBookmarkDeduplicatorTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
@@ -159,8 +163,6 @@
 -MostVisitedSitesWithCustomLinksTest.DisableCustomLinksWhenInitialized
 -OhttpKeyServiceTest.AsyncFetch_PrefChanges_BackgroundHprtDisabled
 -OhttpKeyServiceTest.GetOhttpKey_BackgroundLookupsForbidden
--OmniboxControllerTest.CheckDefaultAutocompleteProviders
--OmniboxEditModelTest.*
 -OnDeviceModelAdaptationLoaderTest.*
 -OnDeviceModelComponentTest.*
 -OnDeviceModelComponentTest.PerformanceClassChangesAfterInstall
