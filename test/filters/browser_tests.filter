@@ -129,10 +129,7 @@
 -PageInfoBubbleViewMerchantTrustDialogBrowserTest.*
 -PageInfoBubbleViewMerchantTrustHatsDialogBrowserTest.InvokeUi_MerchantTrustSubpage
 -PasswordChangeBrowserTest.*
--PasswordChangeBrowserTestWithLoginCheck.OpenTabWhenLoggedOut
--PasswordChangeBrowserTestWithLoginCheck.PasswordChangeDoesNotStartUserIsLoggedOut
--PasswordChangeBrowserTestWithLoginCheck.PasswordChangeStartsUserIsLoggedIn
--PasswordChangeBrowserTestWithLoginCheck.UserSkipsLoginCheck
+-PasswordChangeBrowserTestWithLoginCheck.*
 -PasswordChangeUiBrowserTest.InvokeUi_LeakBubble
 -ProactivePersonalizationHintsFetcherBrowserTest.*
 -ProactivePersonalizationNoAllowedTypesHintsFetcherBrowserTest.*
@@ -2202,6 +2199,7 @@
 -FederatedIdentityApiPermissionContextTest.*
 
 # These tests fail because we disable kWebIdentityDigitalCredentials.
+-DigitalIdentityIntegrationTest.*
 -DigitalIdentitySafetyInterstitialIntegrationTest.*
 
 # These tests fail because we disable blink::features::kFileSystemAccessAPI and
@@ -2985,6 +2983,7 @@
 -ProfileNetworkContextTrustTokensBrowsertest.*
 -ProfilePickerCreationFlowBrowserTest.*
 -ProfilePickerEnterpriseCreationFlowBrowserTest.*
+-ProfilePickerEnterpriseCreationFlowBrowserTestWithFeatureFlagDisabled.*
 -ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithCurrentProfile
 -ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithProfileNotLoaded
 -ProfilePickerLocalProfileCreationDialogBrowserTest.CancelLocalProfileCreation
@@ -3214,6 +3213,8 @@
 -WebAppTabStripLinkCapturingBrowserTest.*
 -WebBluetoothPolicyTest.*
 -WebBluetoothTest.*
+-WebBluetoothTestWithNewPermissionsBackendEnabled.RevokingPermissionDisconnectsTheDevice
+-WebBluetoothTestWithNewPermissionsBackendEnabled.RevokingPermissionStopsAdvertisements
 -WebBluetoothTestWithNewPermissionsBackendEnabled.WebBluetoothIdsUsedInWebBluetoothScanning
 -WebBluetoothTestWithNewPermissionsBackendEnabled.WebBluetoothPersistentIds
 -WebBluetoothTestWithNewPermissionsBackendEnabled.WebBluetoothPersistentServices

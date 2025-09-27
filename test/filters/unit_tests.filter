@@ -640,6 +640,10 @@
 -TabSearchContainerTest.ButtonsHaveFlatEdges
 -TabSearchContainerTest.OrdersButtonsCorrectly
 
+# These tests fail because we disable
+# switches::kSyncEnableBookmarksInTransportMode
+-InitialAccountBookmarkDeduplicatorTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
