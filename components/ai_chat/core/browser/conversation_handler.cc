@@ -270,7 +270,7 @@ bool ConversationHandler::IsRequestInProgress() {
 }
 
 bool ConversationHandler::IsAssociatedContentAlive() {
-  return associated_content_manager_->HasNonArchiveContent();
+  return associated_content_manager_->HasLiveContent();
 }
 
 void ConversationHandler::OnConversationDeleted() {
