@@ -103,8 +103,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

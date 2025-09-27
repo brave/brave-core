@@ -15,6 +15,7 @@ static_library("common") {
     "features.h",
     "playlist_render_frame_observer_helper.cc",
     "playlist_render_frame_observer_helper.h",
+    "pref_names.h",
   ]
 
   public_deps = [
