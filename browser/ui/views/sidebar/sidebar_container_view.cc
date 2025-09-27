@@ -193,8 +193,9 @@ bool SidebarContainerView::PreHandleMouseEvent(
 
   // Detect bounds should include rounded corners margin to make sidebar
   // visible from that padding also.
-  mouse_event_detect_bounds.Outset(
-      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_));
+  const auto web_view_margin =
+      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_);
+  mouse_event_detect_bounds.Outset(web_view_margin);
   constexpr int kHotCornerWidth = 7;
   const int inset = mouse_event_detect_bounds.width() - kHotCornerWidth;
   if (sidebar_on_left_) {
@@ -256,6 +257,10 @@ bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
   }
 
   return false;
+}
+
+void SidebarContainerView::UpdateBorder() {
+  sidebar_control_view_->UpdateBackgroundAndBorder();
 }
 
 void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {

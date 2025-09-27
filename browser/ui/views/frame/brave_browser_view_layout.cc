@@ -282,7 +282,7 @@ void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
   }
 
   gfx::Insets panel_margins = GetContentsMargins();
-  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+  if (BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
           browser_view_->browser())) {
     // In rounded mode, there is already a gap between the sidebar and the main
     // contents view, so we only remove from the margin from that side (we need
@@ -372,7 +372,7 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
 }
 
 gfx::Insets BraveBrowserViewLayout::GetContentsMargins() const {
-  if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+  if (!BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
           browser_view_->browser())) {
     return {};
   }
