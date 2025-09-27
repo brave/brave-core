@@ -24,6 +24,10 @@ source_set("brave_search") {
     "//content/public/browser",
     "//services/network/public/cpp",
   ]
+
+  if (is_android) {
+    deps += [ "//ui/android" ]
+  }
 }
 
 if (!is_android) {
