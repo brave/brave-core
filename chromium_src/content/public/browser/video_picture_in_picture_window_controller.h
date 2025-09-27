@@ -6,7 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_VIDEO_PICTURE_IN_PICTURE_WINDOW_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_VIDEO_PICTURE_IN_PICTURE_WINDOW_CONTROLLER_H_
 
-#include "base/time/time.h"
+// Prevent from inserting RequestFullscreen into MediaSession and
+// MediaSessionImpl classes.
+#include "content/browser/media/session/media_session_impl.h"
+#include "content/public/browser/media_session.h"
 
 #define NextSlide        \
   RequestFullscreen() {} \
