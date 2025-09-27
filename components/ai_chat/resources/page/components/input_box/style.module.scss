@@ -47,6 +47,12 @@
     }
   }
 
+  .textarea {
+    color: var(--leo-color-text-primary);
+    caret-color: var(--leo-color-text-primary);
+    z-index: 0;
+  }
+
   &::after {
     content: attr(data-replicated-value) ' ';
     white-space: pre-wrap;
