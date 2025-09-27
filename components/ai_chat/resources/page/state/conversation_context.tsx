@@ -23,6 +23,7 @@ import {
 } from '../../common/conversation_history_utils'
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useIsDragging } from '../hooks/useIsDragging'
+import { Content, stringifyContent } from '../components/input_box/editable'
 
 const MAX_INPUT_CHAR = 20000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -52,7 +53,7 @@ export type ConversationContext = SendFeedbackState
     shouldDisableUserInput: boolean
     shouldShowLongPageWarning: boolean
     shouldShowLongConversationInfo: boolean
-    inputText: string
+    inputText: Content
     selectedActionType: Mojom.ActionType | undefined
     isToolsMenuOpen: boolean
     isCurrentModelLeo: boolean
@@ -68,7 +69,7 @@ export type ConversationContext = SendFeedbackState
     retryAPIRequest: () => void
     handleResetError: () => void
     handleStopGenerating: () => Promise<void>
-    setInputText: (text: string) => void
+    setInputText: (text: Content) => void
     submitInputTextToAPI: () => void
     resetSelectedActionType: () => void
     handleActionTypeClick: (actionType: Mojom.ActionType) => void
@@ -111,7 +112,7 @@ export const defaultContext: ConversationContext = {
   currentError: Mojom.APIError.None,
   shouldShowLongPageWarning: false,
   shouldShowLongConversationInfo: false,
-  inputText: '',
+  inputText: [],
   selectedActionType: undefined,
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
@@ -461,8 +462,11 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       isToolsMenuOpen: false,
     }
 
-    if (context.inputText.startsWith('/')) {
-      update.inputText = ''
+    const firstContent = context.inputText[0]
+    if (typeof firstContent === 'string' && firstContent.startsWith('/')) {
+      setPartialContext({
+        inputText: [],
+      })
     }
 
     setPartialContext(update)
@@ -488,18 +492,18 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
     if (context.selectedActionType) {
       conversationHandler.submitHumanConversationEntryWithAction(
-        context.inputText,
+        stringifyContent(context.inputText),
         context.selectedActionType,
       )
     } else {
       conversationHandler.submitHumanConversationEntry(
-        context.inputText,
+        stringifyContent(context.inputText),
         context.pendingMessageFiles,
       )
     }
 
     setPartialContext({
-      inputText: '',
+      inputText: [],
       pendingMessageFiles: [],
     })
     resetSelectedActionType()
@@ -550,7 +554,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const handleResetError = async () => {
     const { turn } = await conversationHandler.clearErrorAndGetFailedMessage()
     setPartialContext({
-      inputText: turn.text,
+      inputText: [turn.text],
     })
   }
 
@@ -559,7 +563,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       await conversationHandler.stopGenerationAndMaybeGetHumanEntry()
     if (humanEntry) {
       setPartialContext({
-        inputText: humanEntry.text,
+        inputText: [humanEntry.text],
       })
     }
   }
