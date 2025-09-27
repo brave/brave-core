@@ -26,6 +26,7 @@ import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
 import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -127,9 +128,13 @@ public class BraveOriginPlansActivity extends AsyncInitializationActivity {
                     if (productDetails == null) {
                         return;
                     }
-                    // Initiate purchase flow for the selected plan
+                    // Get the current profile and initiate purchase flow for the selected plan. The
+                    // purchase is initiated on original profile only.
+                    Profile currentProfile =
+                            getProfileProviderSupplier().get().getOriginalProfile();
                     InAppPurchaseWrapper.getInstance()
-                            .initiatePurchase(BraveOriginPlansActivity.this, productDetails);
+                            .initiatePurchase(
+                                    BraveOriginPlansActivity.this, productDetails, currentProfile);
                 });
 
         TextView refreshCredentialsButton = findViewById(R.id.refresh_credentials_button);
