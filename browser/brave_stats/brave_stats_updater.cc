@@ -13,6 +13,7 @@
 #include "base/command_line.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_browser_features.h"
@@ -313,9 +314,21 @@ void BraveStatsUpdater::OnDetectUncertainFuture(
 void BraveStatsUpdater::StartServerPingStartupTimer() {
   stats_preconditions_barrier_.Reset();
   stats_startup_complete_ = true;
-  server_ping_startup_timer_->Start(
-      FROM_HERE, base::Seconds(kUpdateServerStartupPingDelaySeconds), this,
-      &BraveStatsUpdater::OnServerPingTimerFired);
+
+  int delay_seconds = kUpdateServerStartupPingDelaySeconds;
+  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(switches::kBraveStatsStartupDelay)) {
+    std::string delay_str =
+        command_line->GetSwitchValueASCII(switches::kBraveStatsStartupDelay);
+    int custom_delay;
+    if (base::StringToInt(delay_str, &custom_delay) && custom_delay >= 0) {
+      delay_seconds = custom_delay;
+    }
+  }
+
+  server_ping_startup_timer_->Start(FROM_HERE, base::Seconds(delay_seconds),
+                                    this,
+                                    &BraveStatsUpdater::OnServerPingTimerFired);
 }
 
 void BraveStatsUpdater::SendServerPing() {
