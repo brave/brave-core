@@ -30,7 +30,6 @@ class BraveBrowser : public Browser {
   // Browser overrides:
   void ScheduleUIUpdate(content::WebContents* source,
                         unsigned changed_flags) override;
-  bool ShouldDisplayFavicon(content::WebContents* web_contents) const override;
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
