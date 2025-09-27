@@ -40,4 +40,61 @@ dictionary ErrorResponse {
   long status;
 };
 
+// Email Aliases – aliases management JSON types
+// Base URL: https://aliases.bravesoftware.com/manage
+
+// Response of POST /manage (generate alias)
+// Expected when alias is successfully created.
+dictionary GenerateAliasResponse {
+  // e.g., "created"
+  DOMString message;
+  // Newly created alias email address
+  DOMString alias;
+};
+
+// Request body for PUT /manage request (create or update alias metadata)
+dictionary UpdateAliasRequest {
+  // Alias email address to create/update
+  DOMString alias;
+  // e.g., "active"
+  DOMString status;
+};
+
+// Request body for DELETE /manage (delete alias)
+dictionary DeleteAliasRequest {
+  // Alias email address to delete
+  DOMString alias;
+};
+
+// Response of PUT or DELETE /manage (created, updated, or deleted)
+dictionary AliasEditedResponse {
+  // e.g., "updated", "deleted"
+  DOMString message;
+};
+
+// Alias items found in response  GET /manage?status=active
+dictionary AliasListEntry {
+  // Primary account email (destination for forwarded mail)
+  DOMString email;
+  // Alias email address
+  DOMString alias;
+  // Date when alias was created
+  DOMString created_at;
+  // Date when alias was last used
+  DOMString last_used;
+  // Status of alias
+  DOMString status;
+};
+
+// Response to GET /manage?status=active (alias list result)
+dictionary AliasListResponse {
+  // Array of AliasListEntry objects.
+  AliasListEntry[] result;
+};
+
+//Error messages returned by Email Aliases backend
+dictionary ErrorMessage {
+  DOMString message;
+};
+
 };
