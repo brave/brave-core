@@ -3,10 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "base/containers/contains.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_constants.h"
@@ -146,6 +151,48 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
 
   // Verify the AI Chat browser has the side panel opened to Chat UI
   VerifyAIChatSidePanelShowing(ai_chat_browser);
+
+  // Verify content agent tools are available in the agent profile
+  auto* agent_ai_chat_service =
+      AIChatServiceFactory::GetForBrowserContext(ai_chat_browser->profile());
+  ASSERT_NE(agent_ai_chat_service, nullptr);
+  auto* agent_conversation = agent_ai_chat_service->CreateConversation();
+
+  // This is a little clunky - if the content agent tool provider is not
+  // the first provider then this will need to become more advanced than
+  // GetFirstToolProviderForTesting.
+  auto* tool_provider = agent_conversation->GetFirstToolProviderForTesting();
+  ASSERT_NE(tool_provider, nullptr);
+
+  // Expected tool names in the content agent profile
+  constexpr auto kContentAgentToolNames =
+      base::MakeFixedFlatSet<std::string_view>(
+          {"click_element", "drag_and_release", "navigate_history",
+           "move_mouse", mojom::kNavigateToolName, "scroll_element",
+           "select_dropdown", "type_text", "wait"});
+
+  // Verify all tools match expected names
+  for (const auto& tool : tool_provider->GetTools()) {
+    EXPECT_TRUE(base::Contains(kContentAgentToolNames, tool->Name()))
+        << "Tool " << tool->Name() << " should be in the agent profile";
+  }
+
+  // Verify the tools aren't available in the regular profile
+  auto* regular_ai_chat_service =
+      AIChatServiceFactory::GetForBrowserContext(GetProfile());
+  ASSERT_NE(regular_ai_chat_service, nullptr);
+  auto* regular_conversation = regular_ai_chat_service->CreateConversation();
+  ASSERT_NE(regular_conversation, nullptr);
+  auto* regular_tool_provider =
+      regular_conversation->GetFirstToolProviderForTesting();
+  // Regular profile might have no other tool provider, but if it does then
+  // check it isn't the ContentAgentToolProvider.
+  if (regular_tool_provider) {
+    for (const auto& tool : regular_tool_provider->GetTools()) {
+      EXPECT_FALSE(base::Contains(kContentAgentToolNames, tool->Name()))
+          << "Tool " << tool->Name() << " should not be in the regular profile";
+    }
+  }
 }
 
 // Test that multiple calls to OpenBrowserWindowForAIChatAgentProfile work
