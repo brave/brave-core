@@ -55,6 +55,7 @@ source_set("ui") {
     "//brave/browser/ai_chat",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_ads",
+    "//brave/browser/brave_origin",
     "//brave/browser/brave_rewards",
     "//brave/browser/skus",
     "//brave/browser/ui/webui/brave_account",

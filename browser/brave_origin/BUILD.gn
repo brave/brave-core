@@ -35,6 +35,7 @@ source_set("brave_origin") {
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles",
     "//components/keyed_service/content",
+    "//components/policy/core/browser",
     "//components/policy/core/common",
   ]
 

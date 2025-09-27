@@ -64,6 +64,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_education/buildflags.h"
+#include "brave/components/brave_origin/common/mojom/brave_origin_settings.mojom.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
@@ -899,6 +900,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RegisterWebUIControllerInterfaceBinder<
         containers::mojom::ContainersSettingsHandler, BraveSettingsUI>(map);
   }
+#endif
+#if !BUILDFLAG(IS_ANDROID)
+  // Register BraveOrigin handler for settings WebUI
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_origin::mojom::BraveOriginSettingsHandler, BraveSettingsUI>(map);
 #endif
 }
 

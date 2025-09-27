@@ -37,6 +37,7 @@ class BraveBrowserPolicyProvider
 
   // brave_origin::BraveOriginPolicyManager::Observer implementation.
   void OnBraveOriginPoliciesReady() override;
+  void OnBrowserPolicyChanged(std::string_view policy_key) override;
 
  private:
   // Loads policies for browser scope preferences only.

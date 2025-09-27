@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_ORIGIN_BRAVE_ORIGIN_UTILS_H_
 
+#include <optional>
 #include <string_view>
 
 namespace brave_origin {
@@ -15,16 +16,9 @@ namespace brave_origin {
 // purchase state from SKU service in the future.
 bool IsBraveOriginEnabled();
 
-// Forward declaration
-struct BraveOriginPolicyInfo;
-
-// Gets the correct brave_origin_pref_key for browser-scoped preferences
-std::string GetBraveOriginBrowserPrefKey(
-    const BraveOriginPolicyInfo& pref_info);
-
-// Gets the correct brave_origin_pref_key for profile-scoped preferences
-std::string GetBraveOriginProfilePrefKey(const BraveOriginPolicyInfo& pref_info,
-                                         std::string_view profile_id);
+// Gets the correct brave_origin_pref_key
+std::string GetBraveOriginPrefKey(std::string_view policy_key,
+                                  std::optional<std::string_view> profile_id);
 
 }  // namespace brave_origin
 

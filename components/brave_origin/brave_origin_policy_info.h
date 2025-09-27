@@ -23,7 +23,6 @@ struct BraveOriginPolicyInfo {
   BraveOriginPolicyInfo(const std::string& pref_name,
                         bool default_value,
                         bool user_settable,
-                        const std::string& policy_key,
                         const std::string& brave_origin_pref_key);
   ~BraveOriginPolicyInfo();
 
@@ -37,7 +36,6 @@ struct BraveOriginPolicyInfo {
   std::string pref_name;
   bool default_value;
   bool user_settable;      // Whether this pref has UI for user control
-  std::string policy_key;  // Policy key that controls this pref
   std::string brave_origin_pref_key;  // Key used in brave_policies dictionary
 };
 
