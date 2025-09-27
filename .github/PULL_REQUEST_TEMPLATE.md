@@ -11,6 +11,9 @@ Resolves
 * CI/skip-upstream-tests - do not run Chromium unit, or browser tests (otherwise only on Linux)
 * CI/skip-all-linters - do not run presubmit and lint checks
 * CI/storybook-url (1) - deploy storybook and provide a unique URL for each build
+* CI/enable-coverage - enable coverage reporting for your code changes
+* CI/enable-test-only-affected - instruct CI to only run tests affected by your change
+* CI/disable-step-cache - instruct CI to not cache build steps between runs for the same commit hash
 
 (1) applied automatically when some files are changed (see: https://github.com/brave/brave-core/blob/master/.github/labeler.yml)
 -->
