@@ -17,6 +17,7 @@ source_set("brave_search") {
     "//brave/components/brave_search/browser",
     "//brave/components/brave_search/common",
     "//brave/components/brave_shields/core/browser",
+    "//chrome/browser:browser_process",
     "//chrome/browser/content_extraction",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles",
