@@ -28,6 +28,8 @@
 #include "components/sessions/core/tab_restore_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/menus/simple_menu_model.h"
+#include "chrome/browser/ui/tabs/public/tab_features.h"
+#include "chrome/browser/ui/tab_ui_helper.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/browser/prefs.h"
@@ -167,7 +169,8 @@ void BraveTabMenuModel::Build(Browser* browser,
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs) ||
+      base::FeatureList::IsEnabled(tabs::features::kBraveEmojiTabFavicon)) {
     BuildItemForCustomization(tab_strip_model, selected_index);
   }
 
@@ -248,12 +251,24 @@ void BraveTabMenuModel::BuildItemForContainers(
 void BraveTabMenuModel::BuildItemForCustomization(
     TabStripModel* tab_strip_model,
     int tab_index) {
-  if (tab_strip_model->IsTabPinned(tab_index)) {
-    // In case of pinned tabs, we don't show titles at all, so we don't need to
-    // show the rename option.
-    return;
-  }
+  const bool is_pinned = tab_strip_model->IsTabPinned(tab_index);
 
-  const auto index = *GetIndexOfCommandId(TabStripModel::CommandReload) + 1;
-  InsertItemWithStringIdAt(index, CommandRenameTab, IDS_TAB_CXMENU_RENAME_TAB);
+  auto index = *GetIndexOfCommandId(TabStripModel::CommandReload) + 1;
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs) &&
+      !is_pinned) {
+    InsertItemWithStringIdAt(index++, CommandRenameTab,
+                             IDS_TAB_CXMENU_RENAME_TAB);
+  }
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveEmojiTabFavicon)) {
+    int label_id = IDS_TAB_CXMENU_CHANGE_FAVICON;
+    if (auto* tab = tab_strip_model->GetTabAtIndex(tab_index)) {
+      if (auto* features = tab->GetTabFeatures()) {
+        auto* helper = features->tab_ui_helper();
+        if (helper && helper->has_custom_emoji_favicon()) {
+          label_id = IDS_TAB_CXMENU_RESET_FAVICON;
+        }
+      }
+    }
+    InsertItemWithStringIdAt(index++, CommandChangeTabFavicon, label_id);
+  }
 }

@@ -45,6 +45,10 @@ BASE_FEATURE(kBraveRenamingTabs,
              "BraveRenamingTabs",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveEmojiTabFavicon,
+             "BraveEmojiTabFavicon",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 bool HorizontalTabsUpdateEnabled() {
   return base::FeatureList::IsEnabled(kBraveHorizontalTabsUpdate);
 }
