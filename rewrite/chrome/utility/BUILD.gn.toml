@@ -1,0 +1,10 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Add brave/utility sources'
+re_pattern = '''(static_library\("utility"\) {[\s\S]*?)(^})'''
+re_flags = ['MULTILINE']
+replace = '''\1  import("//brave/utility/sources.gni") sources += brave_utility_sources deps += brave_utility_deps public_deps += brave_utility_public_deps\n\2'''
