@@ -6,17 +6,20 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_APP_MENU_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_APP_MENU_H_
 
-#define RunMenu                                    \
+#define SetTimerForTesting                         \
   UnusedMethod1() {}                               \
   friend class BraveAppMenu;                       \
                                                    \
   std::unique_ptr<views::Background>               \
   CreateInMenuButtonBackgroundWithLeadingBorder(); \
                                                    \
-  virtual void RunMenu
+  void SetTimerForTesting
+
+#define RunMenu virtual RunMenu
 
 #include <chrome/browser/ui/views/toolbar/app_menu.h>  // IWYU pragma: export
 
+#undef SetTimerForTesting
 #undef RunMenu
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_APP_MENU_H_

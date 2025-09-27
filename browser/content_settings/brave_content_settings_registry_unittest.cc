@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/containers/contains.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "build/build_config.h"
 #include "components/content_settings/core/browser/content_settings_info.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
@@ -59,7 +59,9 @@ TEST_F(BraveContentSettingsRegistryTest, Properties) {
             website_settings_info->pref_name());
   EXPECT_EQ("profile.default_content_setting_values.shieldsCookiesV3",
             website_settings_info->default_value_pref_name());
-  ASSERT_TRUE(website_settings_info->initial_default_value().is_none());
+  ASSERT_TRUE(website_settings_info->initial_default_value().is_int());
+  EXPECT_EQ(CONTENT_SETTING_ALLOW,
+            website_settings_info->initial_default_value().GetInt());
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
   EXPECT_EQ(PrefRegistry::NO_REGISTRATION_FLAGS,
             website_settings_info->GetPrefRegistrationFlags());
@@ -118,8 +120,9 @@ TEST_F(BraveContentSettingsRegistryTest, Inheritance) {
     SCOPED_TRACE("Content setting: " + info->website_settings_info()->name());
 
     if (info->website_settings_info()->type() <
-        ContentSettingsType::BRAVE_START)
+        ContentSettingsType::BRAVE_START) {
       continue;
+    }
 
     if (info->incognito_behavior() ==
         ContentSettingsInfo::INHERIT_IN_INCOGNITO) {
@@ -190,11 +193,19 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
   //   EXPECT_EQ(CONTENT_SETTING_DEFAULT, info->GetInitialDefaultSetting());
   // }
 
-  // {
-  //   SCOPED_TRACE("Content setting: BRAVE_COSMETIC_FILTERING");
-  //   info = registry()->Get(ContentSettingsType::BRAVE_COSMETIC_FILTERING);
-  //   EXPECT_EQ(CONTENT_SETTING_DEFAULT, info->GetInitialDefaultSetting());
-  // }
+  {
+    SCOPED_TRACE("Content setting: BRAVE_COSMETIC_FILTERING");
+    const WebsiteSettingsInfo* ws_info = website_settings_registry()->Get(
+        ContentSettingsType::BRAVE_COSMETIC_FILTERING);
+    const auto initial_value =
+        brave_shields::CosmeticFilteringSetting::FromValue(
+            ws_info->initial_default_value());
+    EXPECT_EQ(brave_shields::ControlType::BLOCK_THIRD_PARTY, initial_value);
+    EXPECT_EQ(brave_shields::ControlType::BLOCK_THIRD_PARTY,
+              brave_shields::CosmeticFilteringSetting::kDefaultValue);
+    EXPECT_EQ(ws_info->initial_default_value(),
+              brave_shields::CosmeticFilteringSetting::DefaultValue());
+  }
 
   // {
   //   SCOPED_TRACE("Content setting: BRAVE_COOKIES");
@@ -202,11 +213,11 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
   //   EXPECT_EQ(CONTENT_SETTING_DEFAULT, info->GetInitialDefaultSetting());
   // }
 
-  // {
-  //   SCOPED_TRACE("Content setting: BRAVE_SPEEDREADER");
-  //   info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
-  //   EXPECT_EQ(CONTENT_SETTING_DEFAULT, info->GetInitialDefaultSetting());
-  // }
+  {
+    SCOPED_TRACE("Content setting: BRAVE_SPEEDREADER");
+    info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
+    EXPECT_EQ(CONTENT_SETTING_ASK, info->GetInitialDefaultSetting());
+  }
 }
 
 }  // namespace content_settings

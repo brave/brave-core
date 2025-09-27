@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index 972382ea6c9043e06779330a11de90f87e2a11cd..60472a4a024dcd3ca4fc576b4282b34faa72554f 100644
+index bba1bed7b351171434d9b6d8170f6b015f5acb6c..6d30fbd200a8b3fc18d0c8f2b617d6d26cd34bd0 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,9 @@
@@ -12,7 +12,7 @@ index 972382ea6c9043e06779330a11de90f87e2a11cd..60472a4a024dcd3ca4fc576b4282b34f
    "chrome/app/google_chrome_strings.grd": {
      "messages": [800],
    },
-@@ -413,7 +416,7 @@
+@@ -409,7 +412,7 @@
      "includes": [3900],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions/resources.grd": {
@@ -21,7 +21,7 @@ index 972382ea6c9043e06779330a11de90f87e2a11cd..60472a4a024dcd3ca4fc576b4282b34f
      "includes": [3920],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions_zero_state_promo/resources.grd": {
-@@ -449,7 +452,7 @@
+@@ -445,7 +448,7 @@
      "includes": [4020],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/history/resources.grd": {
@@ -30,16 +30,16 @@ index 972382ea6c9043e06779330a11de90f87e2a11cd..60472a4a024dcd3ca4fc576b4282b34f
      "includes": [4040],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/infobar_internals/resources.grd": {
-@@ -601,7 +604,7 @@
+@@ -597,7 +600,7 @@
      "includes": [4720],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
--    "META": {"sizes": {"includes": [500],}},
-+    "META": {"sizes": {"includes": [690],}},
+-    "META": {"sizes": {"includes": [600],}},
++    "META": {"sizes": {"includes": [702],}},
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -1026,6 +1029,9 @@
+@@ -1049,6 +1052,9 @@
      # Big alignment at start of section.
      "messages": [7020],
    },
@@ -49,7 +49,7 @@ index 972382ea6c9043e06779330a11de90f87e2a11cd..60472a4a024dcd3ca4fc576b4282b34f
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1519,11 +1525,11 @@
+@@ -1539,11 +1545,11 @@
      "includes": [9980],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_code_cache_resources.grd": {
@@ -59,7 +59,7 @@ index 972382ea6c9043e06779330a11de90f87e2a11cd..60472a4a024dcd3ca4fc576b4282b34f
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_resources.grd": {
 -    "META": {"sizes": {"includes": [1100]}},
-+    "META": {"sizes": {"includes": [1170]}},
++    "META": {"sizes": {"includes": [1177]}},
      "includes": [10000],
    },
-   "weblayer/weblayer_resources.grd": {
+ 

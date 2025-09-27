@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.password_entry_edit.CredentialEditUiFactory;
 import org.chromium.chrome.browser.password_entry_edit.CredentialEntryFragmentViewBase;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -29,7 +30,7 @@ public class BraveFragmentDependencyProvider extends FragmentDependencyProvider 
             Profile profile,
             OneshotSupplier<SnackbarManager> snackbarManagerSupplier,
             OneshotSupplier<BottomSheetController> bottomSheetControllerSupplier,
-            ObservableSupplier<ModalDialogManager> modalDialogManagerSupplier) {
+            ObservableSupplier<@Nullable ModalDialogManager> modalDialogManagerSupplier) {
         super(
                 context,
                 profile,

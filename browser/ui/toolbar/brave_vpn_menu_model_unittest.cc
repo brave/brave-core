@@ -14,9 +14,9 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -30,16 +30,15 @@ class BraveVPNMenuModelUnitTest : public testing::Test {
   PrefService* prefs() { return &prefs_; }
 
   void SetUp() override {
-    local_state_ = std::make_unique<ScopedTestingLocalState>(
-        TestingBrowserProcess::GetGlobal());
     brave_vpn::RegisterProfilePrefs(prefs_.registry());
   }
 
-  TestingPrefServiceSimple* local_state() { return local_state_->Get(); }
+  TestingPrefServiceSimple* local_state() {
+    return TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
+  }
 
  private:
   sync_preferences::TestingPrefServiceSyncable prefs_;
-  std::unique_ptr<ScopedTestingLocalState> local_state_;
 };
 
 #if BUILDFLAG(IS_WIN)

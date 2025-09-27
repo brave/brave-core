@@ -38,6 +38,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
@@ -335,7 +336,7 @@ void SpeedreaderTabHelper::ProcessNavigation(
     // site.
     const bool explicit_enabled_for_size =
         !homepage && kSpeedreaderExplicitPref.Get() &&
-        GetSpeedreaderService()->GetEnabledForSiteSetting(
+        GetSpeedreaderService()->IsExplicitlyEnabledForSite(
             navigation_handle->GetURL());
     if (url_looks_readable || explicit_enabled_for_size) {
       // Speedreader enabled for this page.

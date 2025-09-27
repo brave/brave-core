@@ -85,7 +85,7 @@ static void JNI_ConnectAccountFragment_ConnectAccount(
       base::BindOnce(
           [](JNIEnv* env,
              base::android::ScopedJavaGlobalRef<jobject> java_callback,
-             const std::vector<blink::mojom::PermissionStatus>& responses) {
+             const std::vector<content::PermissionResult>& responses) {
             if (responses.empty() || responses.size() != 1u) {
               PlainCallConnectAccountCallback(env, java_callback, false);
             } else {

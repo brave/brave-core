@@ -12,6 +12,7 @@
 
 namespace history {
 
+COMPONENT_EXPORT(HISTORY_FEATURES)
 BASE_DECLARE_FEATURE(kHistoryMoreSearchResults);
 
 }  // namespace history

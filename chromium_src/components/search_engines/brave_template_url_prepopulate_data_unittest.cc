@@ -6,10 +6,10 @@
 
 #include <memory>
 #include <string>
-#include <unordered_set>
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/stl_util.h"
 #include "base/values.h"
@@ -39,10 +39,11 @@ std::string GetHostFromTemplateURLData(const TemplateURLData& data) {
 
 using namespace TemplateURLPrepopulateData;  // NOLINT
 
-const PrepopulatedEngine* const kBraveAddedEngines[] = {};
+constexpr PrepopulatedEngine* const kBraveAddedEngines[] = {};
 
-const std::unordered_set<std::u16string_view> kOverriddenEnginesNames = {
-    u"DuckDuckGo", u"Qwant", u"Startpage"};
+constexpr auto kOverriddenEnginesNames =
+    base::MakeFixedFlatSet<std::u16string_view>(
+        {u"DuckDuckGo", u"Qwant", u"Startpage"});
 
 }  // namespace
 
@@ -112,9 +113,10 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, OverriddenEngines) {
   const base::span<const PrepopulatedEngine* const> all_engines =
       GetAllPrepopulatedEngines();
   for (const PrepopulatedEngine* engine : all_engines) {
-    if (kOverriddenEnginesNames.count(engine->name) > 0)
+    if (kOverriddenEnginesNames.contains(engine->name)) {
       ASSERT_GE(static_cast<unsigned int>(engine->id),
                 TemplateURLPrepopulateData::BRAVE_PREPOPULATED_ENGINES_START);
+    }
   }
 }
 

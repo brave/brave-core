@@ -30,7 +30,12 @@ BraveWebAuthFlow::BraveWebAuthFlow() {}
 BraveWebAuthFlow::~BraveWebAuthFlow() {}
 
 // static
-std::optional<std::string> BraveWebAuthFlow::token_for_testing_;
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] std::optional<std::string>
+    BraveWebAuthFlow::token_for_testing_;
 // static
 void BraveWebAuthFlow::SetTokenForTesting(const std::string& token) {
   token_for_testing_ = token;

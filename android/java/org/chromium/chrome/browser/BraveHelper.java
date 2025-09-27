@@ -11,7 +11,7 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.site_settings.WebsitePreferenceBridge;
-import org.chromium.components.content_settings.ContentSettingValues;
+import org.chromium.components.content_settings.ContentSetting;
 import org.chromium.components.content_settings.ContentSettingsType;
 
 @NullMarked
@@ -34,7 +34,7 @@ public class BraveHelper {
         if (BravePrefServiceBridge.getInstance().getDesktopModeEnabled()) {
             Profile profile = ProfileManager.getLastUsedRegularProfile();
             WebsitePreferenceBridge.setDefaultContentSetting(
-                    profile, ContentSettingsType.REQUEST_DESKTOP_SITE, ContentSettingValues.ALLOW);
+                    profile, ContentSettingsType.REQUEST_DESKTOP_SITE, ContentSetting.ALLOW);
             // Reset old flag to default value, so we don't migrate it anymore.
             BravePrefServiceBridge.getInstance().setDesktopModeEnabled(false);
         }

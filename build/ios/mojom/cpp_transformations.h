@@ -14,7 +14,11 @@
 #include <vector>
 #include "base/containers/flat_map.h"
 
-static std::map<const char*, SEL> numberInitMap = {
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] static std::map<const char*, SEL> numberInitMap = {
     {@encode(bool), @selector(numberWithBool:)},
     {@encode(char), @selector(numberWithChar:)},
     {@encode(double), @selector(numberWithDouble:)},
@@ -32,7 +36,11 @@ static std::map<const char*, SEL> numberInitMap = {
     {@encode(unsigned short), @selector(numberWithUnsignedShort:)},
 };
 
-static std::map<const char*, SEL> numberGetterMap = {
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] static std::map<const char*, SEL> numberGetterMap = {
     {@encode(bool), @selector(boolValue)},
     {@encode(char), @selector(charValue)},
     {@encode(double), @selector(doubleValue)},

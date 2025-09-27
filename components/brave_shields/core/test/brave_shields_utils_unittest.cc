@@ -19,7 +19,6 @@
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
@@ -44,7 +43,7 @@ using brave_shields::features::kBraveDomainBlock;
 
 class BraveShieldsUtilTest : public testing::Test {
  public:
-  BraveShieldsUtilTest() : local_state_(TestingBrowserProcess::GetGlobal()) {}
+  BraveShieldsUtilTest() = default;
   BraveShieldsUtilTest(const BraveShieldsUtilTest&) = delete;
   BraveShieldsUtilTest& operator=(const BraveShieldsUtilTest&) = delete;
   ~BraveShieldsUtilTest() override = default;
@@ -83,7 +82,6 @@ class BraveShieldsUtilTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
-  ScopedTestingLocalState local_state_;
 };
 
 class BraveShieldsUtilDomainBlockFeatureTest : public BraveShieldsUtilTest {
@@ -539,6 +537,9 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_Default) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   auto cookies = CookieSettingsFactory::GetForProfile(profile());
 
+  EXPECT_EQ(CONTENT_SETTING_ALLOW,
+            map->GetContentSetting(GURL::EmptyGURL(), GURL::EmptyGURL(),
+                                   ContentSettingsType::BRAVE_COOKIES));
   auto setting =
       brave_shields::GetCookieControlType(map, cookies.get(), GURL());
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
@@ -572,6 +573,10 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_Default) {
   setting = brave_shields::GetCookieControlType(map, cookies.get(),
                                                 GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
+
+  // Setting CONTENT_SETTING_DEFAULT doesn't produce any CHECKS or crashes.
+  map->SetDefaultContentSetting(ContentSettingsType::BRAVE_COOKIES,
+                                CONTENT_SETTING_DEFAULT);
 }
 
 TEST_F(BraveShieldsUtilTest, GetCookieControlType_WithUserSettings) {

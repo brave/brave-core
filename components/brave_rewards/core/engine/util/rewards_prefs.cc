@@ -71,7 +71,11 @@ void RewardsPrefs::SetDict(std::string_view path, base::Value::Dict dict) {
 }
 
 const base::Value::Dict& RewardsPrefs::GetDict(std::string_view path) {
-  static const base::Value::Dict default_value;
+  // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case
+  // of `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+  // added in the meantime to fix the build error. Remove this attribute and
+  // provide a proper fix.
+  [[clang::no_destroy]] static const base::Value::Dict default_value;
   auto* dict = GetValue(path).GetIfDict();
   return dict ? *dict : default_value;
 }

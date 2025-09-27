@@ -100,6 +100,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_BRAVE_STATS = "brave_stats";
     private static final String PREF_DOWNLOADS = "brave_downloads";
     private static final String PREF_HOME_SCREEN_WIDGET = "home_screen_widget";
+    private static final String PREF_SAFETY_CHECK = "safety_check";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
     private @Nullable Preference mVpnCalloutPreference;
@@ -189,7 +190,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         removePreferenceIfPresent(MainSettings.PREF_SEARCH_ENGINE);
         removePreferenceIfPresent(MainSettings.PREF_UI_THEME);
         removePreferenceIfPresent(MainSettings.PREF_DOWNLOADS);
-        removePreferenceIfPresent(MainSettings.PREF_SAFETY_CHECK);
+        removePreferenceIfPresent(PREF_SAFETY_CHECK);
         removePreferenceIfPresent(MainSettings.PREF_SAFETY_HUB);
         removePreferenceIfPresent(MainSettings.PREF_ACCOUNT_AND_GOOGLE_SERVICES_SECTION);
         removePreferenceIfPresent(MainSettings.PREF_GOOGLE_SERVICES);

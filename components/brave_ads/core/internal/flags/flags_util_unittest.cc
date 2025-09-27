@@ -29,7 +29,13 @@ struct ParamInfo final {
   bool should_debug;
   bool did_override_command_line_switches;
   mojom::EnvironmentType environment_type;
-} const kTests[] = {
+};
+
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] const ParamInfo kTests[] = {
     // Should debug.
     {.command_line_switches = {{"rewards", "debug=true"}},
      .should_debug = true,

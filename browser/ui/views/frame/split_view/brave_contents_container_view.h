@@ -34,7 +34,8 @@ class BraveContentsContainerView :
   // ContentsContainerView:
   void UpdateBorderAndOverlay(bool is_in_split,
                               bool is_active,
-                              bool show_scrim) override;
+                              bool is_highlighted) override;
+  void UpdateBorderRoundedCorners() override;
   views::ProposedLayout CalculateProposedLayout(
       const views::SizeBounds& size_bounds) const override;
   void ChildVisibilityChanged(views::View* child) override;

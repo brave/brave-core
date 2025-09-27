@@ -258,8 +258,12 @@ void BraveConfirmInfoBar::ExtraButtonPressed() {
   }
 }
 
-BraveConfirmInfoBarDelegate* BraveConfirmInfoBar::GetDelegate() const {
+BraveConfirmInfoBarDelegate* BraveConfirmInfoBar::GetDelegate() {
   return reinterpret_cast<BraveConfirmInfoBarDelegate*>(delegate());
+}
+
+const BraveConfirmInfoBarDelegate* BraveConfirmInfoBar::GetDelegate() const {
+  return reinterpret_cast<const BraveConfirmInfoBarDelegate*>(delegate());
 }
 
 int BraveConfirmInfoBar::GetContentMinimumWidth() const {

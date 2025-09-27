@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 1ede201706cec368902699a273d1c195cd882692..bbb7c921d68b8bcfb613a5b944094cfef0f5b717 100644
+index 50519bab2db0d0e0e6c554f8458b611e487a21ba..e46ae385036c9f770ad0eef2f32bee1fc94bbb55 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -93,7 +93,7 @@ index 1ede201706cec368902699a273d1c195cd882692..bbb7c921d68b8bcfb613a5b944094cfe
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
-@@ -917,6 +934,7 @@ by a child template that "extends" this file.
+@@ -923,6 +940,7 @@ by a child template that "extends" this file.
                  android:name="android.appwidget.provider"
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>
@@ -101,7 +101,7 @@ index 1ede201706cec368902699a273d1c195cd882692..bbb7c921d68b8bcfb613a5b944094cfe
  
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1153,7 +1171,7 @@ by a child template that "extends" this file.
+@@ -1162,7 +1180,7 @@ by a child template that "extends" this file.
              {% elif is_desktop_android == "true" %}
              android:foregroundServiceType="camera|microphone"
              {% elif enable_screen_capture == "true" %}
@@ -110,7 +110,7 @@ index 1ede201706cec368902699a273d1c195cd882692..bbb7c921d68b8bcfb613a5b944094cfe
              {% endif %}
              android:exported="false"/>
          <service android:name="org.chromium.chrome.browser.media.ui.ChromeMediaNotificationControllerServices$PlaybackListenerService"
-@@ -1237,6 +1255,7 @@ by a child template that "extends" this file.
+@@ -1246,6 +1264,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

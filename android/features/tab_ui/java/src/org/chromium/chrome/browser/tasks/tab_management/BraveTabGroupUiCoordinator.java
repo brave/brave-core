@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
@@ -32,6 +31,8 @@ import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.widget.ChromeImageView;
+
+import java.util.function.Supplier;
 
 public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
     // To delete in bytecode, members from parent class will be used instead.

@@ -11,6 +11,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-forward.h"
 #include "content/public/browser/webui_config.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 
 // Determines in which context the untrusted conversation UI should be enabled

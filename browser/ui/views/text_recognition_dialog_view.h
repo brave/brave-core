@@ -21,6 +21,7 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/timer/timer.h"
 #include "build/build_config.h"
+#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/window/dialog_delegate.h"
 
@@ -35,7 +36,6 @@ class ScrollView;
 class TextRecognitionDialogView : public views::DialogDelegateView {
   METADATA_HEADER(TextRecognitionDialogView, views::DialogDelegateView)
  public:
-
   explicit TextRecognitionDialogView(const SkBitmap& image);
   TextRecognitionDialogView(const TextRecognitionDialogView&) = delete;
   TextRecognitionDialogView& operator=(const TextRecognitionDialogView&) =

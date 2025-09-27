@@ -18,27 +18,33 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
   using SidePanelCoordinator::SidePanelCoordinator;
   ~BraveSidePanelCoordinator() override;
 
-  // SidePanelCoodinator overrides:
-  void Show(SidePanelEntry::Key entry_key,
-            std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger =
-                std::nullopt) override;
+  // SidePanelUI overrides:
+  void Toggle() override;
+  void Toggle(SidePanelEntryKey key,
+              SidePanelUtil::SidePanelOpenTrigger open_trigger) override;
+
+  // SidePanelUIBase overrides:
+  void Show(const UniqueKey& entry,
+            std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger,
+            bool suppress_animations) override;
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
-  std::unique_ptr<views::View> CreateHeader() override;
-  void Toggle() override;
-  void Toggle(SidePanelEntryKey key,
-              SidePanelUtil::SidePanelOpenTrigger open_trigger) override;
-  void OnViewVisibilityChanged(views::View* observed_view,
-                               views::View* starting_view,
-                               bool visible) override;
   void PopulateSidePanel(
       bool supress_animations,
       const UniqueKey& unique_key,
       std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger,
       SidePanelEntry* entry,
       std::optional<std::unique_ptr<views::View>> content_view) override;
+
+  // views::ViewObserver:
+  void OnViewVisibilityChanged(views::View* observed_view,
+                               views::View* starting_view,
+                               bool visible) override;
+
+  // SidePanelCoordinator overrides:
+  std::unique_ptr<views::View> CreateHeader() override;
   void NotifyPinnedContainerOfActiveStateChange(SidePanelEntryKey key,
                                                 bool is_active) override;
 

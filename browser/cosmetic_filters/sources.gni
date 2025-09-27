@@ -12,7 +12,6 @@ brave_browser_cosmetic_filters_deps = [
   "//base",
   "//brave/components/cosmetic_filters/common:mojom",
   "//chrome/browser/ui",
-  "//chrome/browser/ui/browser_window",
   "//third_party/blink/public/common",
 ]
 
@@ -23,4 +22,7 @@ if (is_android) {
   ]
 
   brave_browser_cosmetic_filters_deps += [ "//brave/build/android:jni_headers" ]
+} else {
+  brave_browser_cosmetic_filters_deps +=
+      [ "//chrome/browser/ui/browser_window" ]
 }

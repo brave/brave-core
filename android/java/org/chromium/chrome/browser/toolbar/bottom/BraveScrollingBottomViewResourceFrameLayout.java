@@ -12,10 +12,11 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import org.chromium.base.CallbackController;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.widget.gesture.SwipeGestureListener;
 import org.chromium.components.browser_ui.widget.gesture.SwipeGestureListener.SwipeHandler;
+
+import java.util.function.Supplier;
 
 public class BraveScrollingBottomViewResourceFrameLayout
         extends ScrollingBottomViewResourceFrameLayout implements View.OnLayoutChangeListener {

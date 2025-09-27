@@ -11,7 +11,16 @@
 #define browser_creator_ \
   browser_creator_;      \
   friend class BraveStartupBrowserCreatorImpl
+
+// Make MaybeShowNonMilestoneUpdateToast virtual member instead of static,
+// because we want to override it in BraveStartupBrowserCreatorImpl to never
+// show the toast.
+#define MaybeShowNonMilestoneUpdateToast \
+  Unused();                              \
+  virtual void MaybeShowNonMilestoneUpdateToast
+
 #include <chrome/browser/ui/startup/startup_browser_creator_impl.h>  // IWYU pragma: export
+#undef MaybeShowNonMilestoneUpdateToast
 #undef browser_creator_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_STARTUP_STARTUP_BROWSER_CREATOR_IMPL_H_

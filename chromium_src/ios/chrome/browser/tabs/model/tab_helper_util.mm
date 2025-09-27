@@ -10,7 +10,6 @@
 #import "ios/chrome/browser/https_upgrades/model/https_only_mode_upgrade_tab_helper.h"
 #import "ios/chrome/browser/https_upgrades/model/https_upgrade_service_factory.h"
 #import "ios/chrome/browser/https_upgrades/model/typed_navigation_upgrade_tab_helper.h"
-#import "ios/chrome/browser/prerender/model/prerender_service_factory.h"
 #include "ios/chrome/browser/sessions/model/web_session_state_tab_helper.h"
 #import "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/tabs/model/ios_chrome_synced_tab_delegate.h"

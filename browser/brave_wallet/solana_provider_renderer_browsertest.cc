@@ -3,14 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <array>
 #include <optional>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/to_vector.h"
 #include "base/feature_list.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -65,52 +68,52 @@ constexpr char kTestSignature[] =
     "As4N6cok5f7nhXp56Hdw8dWZpUnY8zjYKzBqK45CexE1qNPCqt6Y2gnZduGgqASDD1c6QULBRy"
     "pVa9BikoxWpGA";
 
-const std::vector<uint8_t> kSerializedMessage = {
-    1,   0,   1,   2,   161, 51,  89,  91,  115, 210, 217, 212, 76,  159, 171,
-    200, 40,  150, 157, 70,  197, 71,  24,  44,  209, 108, 143, 4,   58,  251,
-    215, 62,  201, 172, 159, 197, 0,   0,   0,   0,   0,   0,   0,   0,   0,
-    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
-    0,   0,   0,   0,   0,   0,   0,   0,   65,  223, 160, 84,  229, 200, 41,
-    124, 255, 227, 200, 207, 94,  13,  128, 218, 71,  139, 178, 169, 91,  44,
-    201, 177, 125, 166, 36,  96,  136, 125, 3,   136, 1,   1,   2,   0,   0,
-    12,  2,   0,   0,   0,   100, 0,   0,   0,   0,   0,   0,   0};
+constexpr auto kSerializedMessage = std::to_array<uint8_t>(
+    {1,   0,   1,   2,   161, 51,  89,  91,  115, 210, 217, 212, 76,  159, 171,
+     200, 40,  150, 157, 70,  197, 71,  24,  44,  209, 108, 143, 4,   58,  251,
+     215, 62,  201, 172, 159, 197, 0,   0,   0,   0,   0,   0,   0,   0,   0,
+     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+     0,   0,   0,   0,   0,   0,   0,   0,   65,  223, 160, 84,  229, 200, 41,
+     124, 255, 227, 200, 207, 94,  13,  128, 218, 71,  139, 178, 169, 91,  44,
+     201, 177, 125, 166, 36,  96,  136, 125, 3,   136, 1,   1,   2,   0,   0,
+     12,  2,   0,   0,   0,   100, 0,   0,   0,   0,   0,   0,   0});
 
-const std::vector<uint8_t> kSerializedTx = {
-    1,   224, 52,  14,  175, 211, 221, 245, 217, 123, 232, 68,  232, 120, 145,
-    131, 154, 133, 31,  130, 73,  190, 13,  227, 109, 83,  152, 160, 202, 226,
-    134, 138, 141, 135, 187, 72,  153, 173, 159, 205, 222, 253, 26,  44,  34,
-    18,  250, 176, 21,  84,  7,   142, 247, 65,  218, 40,  117, 145, 118, 52,
-    75,  183, 98,  232, 10,  1,   0,   1,   2,   161, 51,  89,  91,  115, 210,
-    217, 212, 76,  159, 171, 200, 40,  150, 157, 70,  197, 71,  24,  44,  209,
-    108, 143, 4,   58,  251, 215, 62,  201, 172, 159, 197, 0,   0,   0,   0,
-    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
-    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   65,  223,
-    160, 84,  229, 200, 41,  124, 255, 227, 200, 207, 94,  13,  128, 218, 71,
-    139, 178, 169, 91,  44,  201, 177, 125, 166, 36,  96,  136, 125, 3,   136,
-    1,   1,   2,   0,   0,   12,  2,   0,   0,   0,   100, 0,   0,   0,   0,
-    0,   0,   0};
+constexpr auto kSerializedTx = std::to_array<uint8_t>(
+    {1,   224, 52,  14,  175, 211, 221, 245, 217, 123, 232, 68,  232, 120, 145,
+     131, 154, 133, 31,  130, 73,  190, 13,  227, 109, 83,  152, 160, 202, 226,
+     134, 138, 141, 135, 187, 72,  153, 173, 159, 205, 222, 253, 26,  44,  34,
+     18,  250, 176, 21,  84,  7,   142, 247, 65,  218, 40,  117, 145, 118, 52,
+     75,  183, 98,  232, 10,  1,   0,   1,   2,   161, 51,  89,  91,  115, 210,
+     217, 212, 76,  159, 171, 200, 40,  150, 157, 70,  197, 71,  24,  44,  209,
+     108, 143, 4,   58,  251, 215, 62,  201, 172, 159, 197, 0,   0,   0,   0,
+     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   65,  223,
+     160, 84,  229, 200, 41,  124, 255, 227, 200, 207, 94,  13,  128, 218, 71,
+     139, 178, 169, 91,  44,  201, 177, 125, 166, 36,  96,  136, 125, 3,   136,
+     1,   1,   2,   0,   0,   12,  2,   0,   0,   0,   100, 0,   0,   0,   0,
+     0,   0,   0});
 
-const std::vector<uint8_t> kSignedTx = {
-    1,   231, 78,  150, 120, 219, 234, 88,  44,  144, 225, 53,  221, 88,  82,
-    59,  51,  62,  211, 225, 231, 182, 123, 231, 229, 201, 48,  30,  137, 119,
-    233, 102, 88,  31,  65,  88,  147, 197, 72,  166, 241, 126, 26,  59,  239,
-    64,  196, 116, 28,  17,  124, 0,   123, 13,  28,  65,  242, 241, 226, 46,
-    227, 55,  234, 251, 10,  1,   0,   1,   2,   161, 51,  89,  91,  115, 210,
-    217, 212, 76,  159, 171, 200, 40,  150, 157, 70,  197, 71,  24,  44,  209,
-    108, 143, 4,   58,  251, 215, 62,  201, 172, 159, 197, 0,   0,   0,   0,
-    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
-    0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   62,  84,
-    174, 253, 228, 77,  50,  164, 215, 178, 46,  88,  242, 49,  114, 246, 244,
-    48,  9,   18,  36,  41,  160, 254, 174, 6,   207, 115, 11,  58,  220, 167,
-    1,   1,   2,   0,   0,   12,  2,   0,   0,   0,   100, 0,   0,   0,   0,
-    0,   0,   0};
+constexpr auto kSignedTx = std::to_array<uint8_t>(
+    {1,   231, 78,  150, 120, 219, 234, 88,  44,  144, 225, 53,  221, 88,  82,
+     59,  51,  62,  211, 225, 231, 182, 123, 231, 229, 201, 48,  30,  137, 119,
+     233, 102, 88,  31,  65,  88,  147, 197, 72,  166, 241, 126, 26,  59,  239,
+     64,  196, 116, 28,  17,  124, 0,   123, 13,  28,  65,  242, 241, 226, 46,
+     227, 55,  234, 251, 10,  1,   0,   1,   2,   161, 51,  89,  91,  115, 210,
+     217, 212, 76,  159, 171, 200, 40,  150, 157, 70,  197, 71,  24,  44,  209,
+     108, 143, 4,   58,  251, 215, 62,  201, 172, 159, 197, 0,   0,   0,   0,
+     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   62,  84,
+     174, 253, 228, 77,  50,  164, 215, 178, 46,  88,  242, 49,  114, 246, 244,
+     48,  9,   18,  36,  41,  160, 254, 174, 6,   207, 115, 11,  58,  220, 167,
+     1,   1,   2,   0,   0,   12,  2,   0,   0,   0,   100, 0,   0,   0,   0,
+     0,   0,   0});
 
-const std::vector<uint8_t> kMessageToSign = {
-    84,  111, 32,  97,  118, 111, 105, 100, 32,  100, 105, 103, 105, 116, 97,
-    108, 32,  100, 111, 103, 110, 97,  112, 112, 101, 114, 115, 44,  32,  115,
-    105, 103, 110, 32,  98,  101, 108, 111, 119, 32,  116, 111, 32,  97,  117,
-    116, 104, 101, 110, 116, 105, 99,  97,  116, 101, 32,  119, 105, 116, 104,
-    32,  67,  114, 121, 112, 116, 111, 67,  111, 114, 103, 105, 115, 46};
+constexpr auto kMessageToSign = std::to_array<uint8_t>(
+    {84,  111, 32,  97,  118, 111, 105, 100, 32,  100, 105, 103, 105, 116, 97,
+     108, 32,  100, 111, 103, 110, 97,  112, 112, 101, 114, 115, 44,  32,  115,
+     105, 103, 110, 32,  98,  101, 108, 111, 119, 32,  116, 111, 32,  97,  117,
+     116, 104, 101, 110, 116, 105, 99,  97,  116, 101, 32,  119, 105, 116, 104,
+     32,  67,  114, 121, 112, 116, 111, 67,  111, 114, 103, 105, 115, 46});
 
 constexpr char OnAccountChangedScript[] =
     R"(async function disconnect() {await window.braveSolana.disconnect()}
@@ -128,15 +131,11 @@ constexpr char OnAccountChangedScript[] =
 constexpr char CheckSolanaProviderScript[] = "!!window.braveSolana";
 constexpr char OverwriteScript[] = "window.solana = ['test'];window.solana[0]";
 
-std::string VectorToArrayString(const std::vector<uint8_t>& vec) {
-  std::string result;
-  for (size_t i = 0; i < vec.size(); ++i) {
-    base::StrAppend(&result, {base::NumberToString(vec[i])});
-    if (i != vec.size() - 1) {
-      base::StrAppend(&result, {", "});
-    }
-  }
-  return result;
+std::string VectorToArrayString(base::span<const uint8_t> data) {
+  return base::JoinString(
+      base::ToVector(data,
+                     [](int value) { return base::NumberToString(value); }),
+      ", ");
 }
 
 std::string GetRequestObject(std::string_view method) {
@@ -198,7 +197,7 @@ std::string ConnectScript(std::string_view args) {
       args);
 }
 
-std::string CreateTransactionScript(const std::vector<uint8_t>& serialized_tx) {
+std::string CreateTransactionScript(base::span<const uint8_t> serialized_tx) {
   const std::string serialized_tx_str = VectorToArrayString(serialized_tx);
   return absl::StrFormat(
       R"((function() {
@@ -358,7 +357,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
               brave_wallet::Base58Encode(kSerializedMessage));
     if (error_ == SolanaProviderError::kSuccess) {
       std::move(callback).Run(
-          SolanaProviderError::kSuccess, "", kSignedTx,
+          SolanaProviderError::kSuccess, "", base::ToVector(kSignedTx),
           brave_wallet::mojom::SolanaMessageVersion::kLegacy);
     } else {
       std::move(callback).Run(
@@ -376,7 +375,8 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     }
     if (error_ == SolanaProviderError::kSuccess) {
       std::move(callback).Run(
-          SolanaProviderError::kSuccess, "", {kSignedTx, kSignedTx},
+          SolanaProviderError::kSuccess, "",
+          {base::ToVector(kSignedTx), base::ToVector(kSignedTx)},
           {brave_wallet::mojom::SolanaMessageVersion::kLegacy,
            brave_wallet::mojom::SolanaMessageVersion::kLegacy});
     } else {
@@ -409,7 +409,7 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
   void SignMessage(const std::vector<uint8_t>& blob_msg,
                    const std::optional<std::string>& display_encoding,
                    SignMessageCallback callback) override {
-    EXPECT_EQ(blob_msg, kMessageToSign);
+    EXPECT_EQ(blob_msg, base::ToVector(kMessageToSign));
     base::Value::Dict result;
     if (error_ == SolanaProviderError::kSuccess) {
       result.Set("publicKey", kTestPublicKey);

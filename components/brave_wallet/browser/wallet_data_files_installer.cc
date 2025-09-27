@@ -47,7 +47,12 @@ constexpr char kComponentId[] = "bbckkcdiepaecefgfnibemejliemjnio";
 static_assert(std::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
               "Wrong hash length");
 
-std::optional<base::Version> last_installed_wallet_version;
+// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
+// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+// added in the meantime to fix the build error. Remove this attribute and
+// provide a proper fix.
+[[clang::no_destroy]] std::optional<base::Version>
+    last_installed_wallet_version;
 
 }  // namespace
 

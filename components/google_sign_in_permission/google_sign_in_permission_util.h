@@ -17,6 +17,10 @@
 #include "third_party/blink/public/mojom/permissions/permission_status.mojom-shared.h"
 #include "url/gurl.h"
 
+namespace content {
+struct PermissionResult;
+}  // namespace content
+
 namespace google_sign_in_permission {
 
 const ContentSettingsPattern& GetFirebaseAuthPattern();
@@ -35,7 +39,7 @@ bool GetPermissionAndMaybeCreatePrompt(
     content::WebContents* contents,
     const GURL& request_initiator_url,
     bool* defer,
-    base::OnceCallback<void(const std::vector<blink::mojom::PermissionStatus>&)>
+    base::OnceCallback<void(const std::vector<content::PermissionResult>&)>
         permission_result_callback);
 
 }  // namespace google_sign_in_permission

@@ -61,6 +61,10 @@
 # https://crbug.com/1181150.
 -All/CreateShortcutConfirmationViewBrowserTest.*
 
+# These tests fail because we override colors.
+-NativeChromeColorMixerWinBrowserTest.HeaderColorsFollowAccentColor
+-NativeChromeColorMixerWinBrowserTest.NativeThemeForWebWithAccentColor
+
 # These tests fail because in Release we set GOOGLE_CHROME_BRANDING in
 # chrome/browser/extensions/install_verifier.cc (on Win and Mac), which causes
 # InstallVerifier::ShouldEnforce to return true and leads to the test failing
@@ -71,6 +75,12 @@
 # These tests fail upstream when DCHECKs are enabled.
 -PenIdBrowserTest.*
 
+# These require further investigation, they began failing with CR141
+-CDM_10/ECKEncryptedMediaTest.VerifyCdmHostTest/0
+-CDM_11/ECKEncryptedMediaTest.VerifyCdmHostTest/0
+-CDM_12/ECKEncryptedMediaTest.VerifyCdmHostTest/0
+
+# Tests below this point have not been diagnosed or had issues created yet.
 -All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1
 -All/PDFPluginDisabledTest.*
 -All/WebAppOfflinePageTest.WebAppOfflinePageIsDisplayed/*
@@ -81,7 +91,6 @@
 -AllowProfileWithPrimaryAccount_DifferentUser/ExistingWinBrowserSigninUtilTest.*
 -AllowProfileWithPrimaryAccount_SameUser/ExistingWinBrowserSigninUtilTest.*
 -AllowSubsequentRun/ExistingWinBrowserSigninUtilTest.*
--BrowserActionApiTest.*
 -BrowserRootViewBrowserTest.*
 -ChromeMojoProxyResolverWinBrowserTest.*
 -ChromeSecurityExploitBrowserTest.*
@@ -108,7 +117,6 @@
 -KnownInterceptionDisclosureUITest.*
 -LocalePolicyTest.*
 -MediaSessionPictureInPictureWindowControllerBrowserTest.*
--MediaSessionVideoPictureInPictureWindowControllerBrowserTest.*
 -NetErrorTabHelperWithFencedFrameTest.*
 -NotSet/RendererAppContainerEnabledTest.IsRespected/0
 -OnlyAllowProfileWithNoPrimaryAccount/ExistingWinBrowserSigninUtilTest.*

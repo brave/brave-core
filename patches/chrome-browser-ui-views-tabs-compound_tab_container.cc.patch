@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/compound_tab_container.cc b/chrome/browser/ui/views/tabs/compound_tab_container.cc
-index 500db6d92deece5cddbb9e78db2aeb8ac32b565f..51dce405f8039bee7cb21ebc510663a59a9e7d55 100644
+index 577c21823f22841d3aec30670dd69e4cadbd271e..ba3fa21af5f743acab928494a6cc92a9088888b1 100644
 --- a/chrome/browser/ui/views/tabs/compound_tab_container.cc
 +++ b/chrome/browser/ui/views/tabs/compound_tab_container.cc
-@@ -52,7 +52,7 @@ class PinnedTabContainerController final : public TabContainerController {
+@@ -53,7 +53,7 @@ class PinnedTabContainerController final : public TabContainerController {
    }
  
    int NumPinnedTabsInModel() const override {

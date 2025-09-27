@@ -13,6 +13,7 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+#include "content/public/browser/navigation_controller.h"
 
 using brave_shields::BraveShieldsTabHelper;
 using brave_shields::mojom::SiteSettings;

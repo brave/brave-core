@@ -96,7 +96,7 @@ NotificationAdPopup::NotificationAdPopup(
       animation_(std::make_unique<gfx::LinearAnimation>(this)) {
   CreatePopup(browser_native_window, browser_native_view);
 
-  display::Screen* screen = display::Screen::GetScreen();
+  display::Screen* screen = display::Screen::Get();
   if (screen) {
     screen_observation_.Observe(screen);
   }
