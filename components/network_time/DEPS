@@ -2,6 +2,7 @@ include_rules = [
   "+components/client_update_protocol",
   "+components/network_time",
   "+components/prefs",
+  "+net",
   "+services/network/public/cpp",
   "+services/network/test",
 ]
