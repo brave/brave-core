@@ -834,8 +834,8 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
                                 mojom::CardanoProviderPaginationPtr paginate,
                                 TestCardanoApi::GetUtxosCallback callback) {
             EXPECT_EQ("1", amount.value());
-            EXPECT_EQ(2u, paginate->page);
-            EXPECT_EQ(3u, paginate->limit);
+            EXPECT_EQ(2, paginate->page);
+            EXPECT_EQ(3, paginate->limit);
             std::move(callback).Run(std::vector<std::string>({"1", "2"}),
                                     nullptr);
           }));
