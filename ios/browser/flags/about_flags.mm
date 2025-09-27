@@ -19,6 +19,7 @@
 #include "brave/ios/browser/brave_wallet/features.h"
 #include "brave/ios/browser/ui/tab_tray/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
+#include "brave/ios/browser/ui/webui/ai_chat/features.h"
 #include "build/build_config.h"
 #include "components/webui/flags/feature_entry_macros.h"
 #include "components/webui/flags/flags_state.h"
@@ -131,21 +132,28 @@
               brave_shields::features::kBraveIOSEnableFarblingPlugins),        \
       })
 
-#define BRAVE_AI_CHAT_FEATURE_ENTRIES                                      \
-  EXPAND_FEATURE_ENTRIES(                                                  \
-      {                                                                    \
-          "brave-ai-chat",                                                 \
-          "Brave AI Chat",                                                 \
-          "Summarize articles and engage in conversation with AI",         \
-          flags_ui::kOsIos,                                                \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),                  \
-      },                                                                   \
-      {                                                                    \
-          "brave-ai-chat-history",                                         \
-          "Brave AI Chat History",                                         \
-          "Enables AI Chat History persistence and management",            \
-          flags_ui::kOsIos,                                                \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),           \
+#define BRAVE_AI_CHAT_FEATURE_ENTRIES                                 \
+  EXPAND_FEATURE_ENTRIES(                                             \
+      {                                                               \
+          "brave-ai-chat",                                            \
+          "Brave AI Chat",                                            \
+          "Summarize articles and engage in conversation with AI",    \
+          flags_ui::kOsIos,                                           \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),             \
+      },                                                              \
+      {                                                               \
+          "brave-ai-chat-history",                                    \
+          "Brave AI Chat History",                                    \
+          "Enables AI Chat History persistence and management",       \
+          flags_ui::kOsIos,                                           \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),      \
+      },                                                              \
+      {                                                               \
+          "brave-ai-chat-webui",                                      \
+          "Brave AI Chat WebUI",                                      \
+          "Enables the use of Leo via WebUI",                         \
+          flags_ui::kOsIos,                                           \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatWebUIEnabled), \
       })
 
 #define BRAVE_WALLET_FEATURE_ENTRIES                                    \
