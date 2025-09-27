@@ -26,7 +26,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/field_trial_params.h"
-#include "base/no_destructor.h"
 #include "base/numerics/clamped_math.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -93,13 +92,14 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 base::Value::List ConversationEventsToList(
     std::vector<ConversationEvent> conversation) {
-  static const base::NoDestructor<std::map<ConversationEventRole, std::string>>
-      kRoleMap({{ConversationEventRole::kUser, "user"},
-                {ConversationEventRole::kAssistant, "assistant"},
-                {ConversationEventRole::kTool, "tool"}});
+  static constexpr auto kRoleMap =
+      base::MakeFixedFlatMap<ConversationEventRole, std::string_view>(
+          {{ConversationEventRole::kUser, "user"},
+           {ConversationEventRole::kAssistant, "assistant"},
+           {ConversationEventRole::kTool, "tool"}});
 
-  static const base::NoDestructor<std::map<ConversationEventType, std::string>>
-      kTypeMap(
+  static constexpr auto kTypeMap =
+      base::MakeFixedFlatMap<ConversationEventType, std::string_view>(
           {{ConversationEventType::kContextURL, "contextURL"},
            {ConversationEventType::kUserText, "userText"},
            {ConversationEventType::kPageText, "pageText"},
@@ -130,13 +130,13 @@ base::Value::List ConversationEventsToList(
     base::Value::Dict event_dict;
 
     // Set role
-    auto role_it = kRoleMap->find(event.role);
-    CHECK(role_it != kRoleMap->end());
+    auto role_it = kRoleMap.find(event.role);
+    CHECK(role_it != kRoleMap.end());
     event_dict.Set("role", role_it->second);
 
     // Set type
-    auto type_it = kTypeMap->find(event.type);
-    CHECK(type_it != kTypeMap->end());
+    auto type_it = kTypeMap.find(event.type);
+    CHECK(type_it != kTypeMap.end());
     event_dict.Set("type", type_it->second);
 
     // Content string or content blocks
