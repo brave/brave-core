@@ -61,12 +61,6 @@
 #endif
 
 namespace {
-constexpr char kURLRefreshPremiumSession[] =
-    "https://account.brave.com/?intent=recover&product=leo";
-constexpr char kURLLearnMoreAboutStorage[] =
-    "https://support.brave.app/hc/en-us/articles/"
-    "32663367857549-How-do-I-use-Chat-History-in-Brave-Leo";
-
 #if !BUILDFLAG(IS_ANDROID)
 constexpr char kURLManagePremium[] = "https://account.brave.com/";
 #endif
@@ -324,7 +318,7 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
 }
 
 void AIChatUIPageHandler::OpenStorageSupportUrl() {
-  OpenURL(GURL(kURLLearnMoreAboutStorage));
+  OpenURL(GURL(kLeoStorageSupportUrl));
 }
 
 void AIChatUIPageHandler::GoPremium() {
@@ -339,7 +333,7 @@ void AIChatUIPageHandler::GoPremium() {
 }
 
 void AIChatUIPageHandler::RefreshPremiumSession() {
-  OpenURL(GURL(kURLRefreshPremiumSession));
+  OpenURL(GURL(kLeoRefreshPremiumSessionUrl));
 }
 
 void AIChatUIPageHandler::ManagePremium() {

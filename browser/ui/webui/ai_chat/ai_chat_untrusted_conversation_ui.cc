@@ -56,9 +56,6 @@
 #endif
 
 namespace {
-constexpr char kURLLearnMoreBraveSearchLeo[] =
-    "https://support.brave.app/hc/en-us/articles/"
-    "27586048343309-How-does-Leo-get-current-information";
 
 // Implments the interface to calls from the UI to the browser
 class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
@@ -86,7 +83,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
       return;
     }
-    OpenURL(GURL(kURLLearnMoreBraveSearchLeo));
+    OpenURL(GURL(ai_chat::kLeoBraveSearchSupportUrl));
   }
 
   void OpenSearchURL(const std::string& search_query) override {
