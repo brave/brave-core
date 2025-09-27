@@ -289,6 +289,10 @@ void SpeedreaderTabHelper::ProcessNavigation(
     return;
   }
 
+  if (!GetSpeedreaderService()->IsFeatureEnabled()) {
+    return;
+  }
+
   if (finish_navigation) {
     if (navigation_handle->IsErrorPage() ||
         web_contents()->GetPrimaryMainFrame()->IsErrorDocument()) {
