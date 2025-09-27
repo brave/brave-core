@@ -442,8 +442,6 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_TASK_MANAGER_FENCED_FRAME_INCOGNITO_PREFIX" desc="The prefix for a Private fenced frame row in the Task Manager">
         Private Fenced Frame: <ph name="FENCEDFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
       </message>
-      <if expr="is_chromeos">
-        </if>
       <if expr="not is_android">
         </if>
       <if expr="is_win">
@@ -463,6 +461,7 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
+
       <if expr="enable_extensions_core">
         <if expr="is_win">
           </if>
@@ -690,6 +689,23 @@ are declared in tools/grit/grit_args.gni.
           </if>
         </if>
 
+      <if expr="not is_android">
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+        </if>
+
+      <if expr="not is_android">
+        </if>
+
+      <if expr="not is_android">
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+        </if>
+
       <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a Private window">
         <ph name="WINDOW_TITLE">$1</ph> (Private)
       </message>
@@ -772,15 +788,7 @@ are declared in tools/grit/grit_args.gni.
           </if>
         <if expr="not use_titlecase">
           </if>
-        <if expr="not use_titlecase">
-          </if>
-        <if expr="use_titlecase">
-          </if>
-        <if expr="not use_titlecase">
-          </if>
-        <if expr="use_titlecase">
-          </if>
-      </if>
+        </if>
       <if expr="is_android">
         </if>
 

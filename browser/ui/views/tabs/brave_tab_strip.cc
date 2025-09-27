@@ -140,11 +140,12 @@ void BraveTabStrip::HideHover(Tab* tab, TabStyle::HideHoverStyle style) {
   tab->HideHover(style);
 }
 
-void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
+void BraveTabStrip::UpdateHoverCard(views::View* view,
+                                    HoverCardUpdateType update_type) {
   if (brave_tabs::AreTooltipsEnabled(controller_->GetProfile()->GetPrefs())) {
     return;
   }
-  TabStrip::UpdateHoverCard(tab, update_type);
+  TabStrip::UpdateHoverCard(view, update_type);
 }
 
 void BraveTabStrip::MaybeStartDrag(
@@ -381,7 +382,9 @@ void BraveTabStrip::UpdateTabContainer() {
             BrowserView::GetBrowserViewForBrowser(browser));
         DCHECK(browser_view);
         auto* scroll_container = static_cast<TabStripScrollContainer*>(
-            browser_view->tab_strip_region_view()->tab_strip_container_);
+            views::AsViewClass<TabStripRegionView>(
+                browser_view->tab_strip_view())
+                ->tab_strip_container_);
         DCHECK(scroll_container);
         SetAvailableWidthCallback(base::BindRepeating(
             &TabStripScrollContainer::GetTabStripAvailableWidth,

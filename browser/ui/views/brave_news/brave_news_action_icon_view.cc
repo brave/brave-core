@@ -152,7 +152,7 @@ void BraveNewsActionIconView::OnExecuting(
 void BraveNewsActionIconView::UpdateIconColor(bool subscribed) {
   SkColor icon_color;
   if (subscribed) {
-    auto is_dark = GetNativeTheme()->GetPreferredColorScheme() ==
+    auto is_dark = GetNativeTheme()->preferred_color_scheme() ==
                    ui::NativeTheme::PreferredColorScheme::kDark;
     icon_color = is_dark ? kSubscribedDarkColor : kSubscribedLightColor;
   } else {

@@ -102,8 +102,10 @@ TEST_F(StatusTrayRunnerTest, UpdateConnectionState) {
   registry_util::RegistryOverrideManager registry_overrides;
   registry_overrides.OverrideRegistry(HKEY_CURRENT_USER);
 
-  ui::NativeTheme::GetInstanceForNativeUi()->set_use_dark_colors(true);
-  EXPECT_TRUE(ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
+  ui::NativeTheme::GetInstanceForNativeUi()->set_preferred_color_scheme(
+      ui::NativeTheme::PreferredColorScheme::kDark);
+  EXPECT_EQ(ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme(),
+            ui::NativeTheme::PreferredColorScheme::kDark);
 
   // Tunnel service stopped, state disconnected, no info in registry.
   StatusTrayRunner::GetInstance()->SetVPNConnectedForTesting(false);
@@ -173,8 +175,10 @@ TEST_F(StatusTrayRunnerTest, SkipAttemptsToConnectInFailedState) {
   registry_util::RegistryOverrideManager registry_overrides;
   registry_overrides.OverrideRegistry(HKEY_CURRENT_USER);
 
-  ui::NativeTheme::GetInstanceForNativeUi()->set_use_dark_colors(true);
-  EXPECT_TRUE(ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
+  ui::NativeTheme::GetInstanceForNativeUi()->set_preferred_color_scheme(
+      ui::NativeTheme::PreferredColorScheme::kDark);
+  EXPECT_EQ(ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme(),
+            ui::NativeTheme::PreferredColorScheme::kDark);
   // Tunnel service stopped, state disconnected, no info in registry.
   StatusTrayRunner::GetInstance()->SetVPNConnectedForTesting(false);
   WaitIconStateChangedTo(

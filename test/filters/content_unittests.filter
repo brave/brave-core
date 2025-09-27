@@ -20,11 +20,12 @@
 -FileSystemAccessFileHandleImplMoveTest.NoDestWriteAccess
 -FileSystemAccessFileHandleImplRenameTest.HasWriteAccess
 
-# These tests fail because we disable client hints the tests check.
+# These tests fail because we disable the client hints that the tests check.
 -ClientHintsTest.AddNavigationRequestClientHintsHeaders_MainFrame
 -ClientHintsTest.AddNavigationRequestClientHintsHeaders_Subframe
 -ClientHintsTest.AddPrefetchNavigationRequestClientHintsHeaders
 -ClientHintsTest.GetCriticalHintsMissingStatus
+-ClientHintsTest.GetEnabledClientHintsSubframeNotAllowed
 -ClientHintsTest.IntegrationTestsOnParseLookUp
 
 # These tests fail because we disable Prefetch/Preload

@@ -89,7 +89,8 @@ std::optional<std::vector<PsstRule>> PsstRule::ParseRules(
   if (contents.empty()) {
     return std::nullopt;
   }
-  std::optional<base::Value::List> root = base::JSONReader::ReadList(contents);
+  std::optional<base::Value::List> root = base::JSONReader::ReadList(
+      contents, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!root) {
     VLOG(1) << "PsstRule::ParseRules: invalid JSON";
     return std::nullopt;

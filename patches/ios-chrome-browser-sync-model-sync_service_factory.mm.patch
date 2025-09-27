@@ -1,13 +1,13 @@
 diff --git a/ios/chrome/browser/sync/model/sync_service_factory.mm b/ios/chrome/browser/sync/model/sync_service_factory.mm
-index 9c95b06d0a4b6f2e7e1a83dd26bb3bb3ab610819..0ad8963b21d94ee6f951208ca0ff2481c35417d5 100644
+index fc65042c0c6b6fb9391772c76dc73844cbab6904..eb8da75841725399a96669ba5c002462ef51293c 100644
 --- a/ios/chrome/browser/sync/model/sync_service_factory.mm
 +++ b/ios/chrome/browser/sync/model/sync_service_factory.mm
-@@ -211,7 +211,7 @@ std::unique_ptr<KeyedService> BuildSyncService(web::BrowserState* context) {
-   init_params.debug_identifier = profile->GetProfileName();
- 
+@@ -197,7 +197,7 @@ std::unique_ptr<KeyedService> BuildSyncService(ProfileIOS* profile) {
+     init_params.os_crypt_async = GetApplicationContext()->GetOSCryptAsync();
+   }
    auto sync_service =
 -      std::make_unique<syncer::SyncServiceImpl>(std::move(init_params));
 +      BRAVE_BUILD_SERVICE_INSTANCE_FOR
    sync_service->Initialize(CreateControllers(profile, sync_service.get()));
  
-   // TODO(crbug.com/40250371): Remove the workaround below once
+   password_manager::PasswordReceiverService* password_receiver_service =

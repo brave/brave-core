@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/resources/history/synced_device_manager.html.ts b/chrome/browser/resources/history/synced_device_manager.html.ts
+index ce34012628338d7ae359df7d56e0759cf6b03f8e..33273792d2af7d3b777b4490f608e5ba9a2ecef0 100644
+--- a/chrome/browser/resources/history/synced_device_manager.html.ts
++++ b/chrome/browser/resources/history/synced_device_manager.html.ts
+@@ -29,6 +29,7 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
+     ?hidden="${!this.showNoSyncedMessage_()}">
+   ${this.noSyncedTabsMessage_()}
+ </div>
++<!--
+ <div id="sign-in-guide"
+     ?hidden="${!this.showSignInGuide_() || this.useHistorySyncOptinScreen_}">
+   <div id="sync-promo-illustration"></div>
+@@ -39,6 +40,7 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
+     $i18n{turnOnSyncButton}
+   </cr-button>
+ </div>
++-->
+ 
+ ${this.useHistorySyncOptinScreen_ ? html `
+   <div class="history-sync-optin">

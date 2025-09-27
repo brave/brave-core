@@ -77,16 +77,16 @@ IN_PROC_BROWSER_TEST_F(NTPSponsoredRichMediaWithCSPViolationBrowserTest,
 IN_PROC_BROWSER_TEST_F(NTPSponsoredRichMediaWithCSPViolationBrowserTest,
                        DoNotLoadLocalResourceWithDifferentOrigin) {
   NavigateToUrlAndVerifyExpectation(
-      R"(Refused to load the stylesheet )"
-      R"('chrome-untrusted://csp-violation/styles.css' because it violates the )"
+      R"(Loading the stylesheet )"
+      R"('chrome-untrusted://csp-violation/styles.css' violates the )"
       R"(following Content Security Policy directive: "style-src 'self'".*)");
 }
 
 IN_PROC_BROWSER_TEST_F(NTPSponsoredRichMediaWithCSPViolationBrowserTest,
                        DoNotLoadRemoteResource) {
   NavigateToUrlAndVerifyExpectation(
-      R"(Refused to load the image 'https://csp-violation.com/background.jpg' )"
-      R"(because it violates the following Content Security Policy directive: )"
+      R"(Loading the image 'https://csp-violation.com/background.jpg' )"
+      R"(violates the following Content Security Policy directive: )"
       R"("img-src 'self'".*)");
 }
 

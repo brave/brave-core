@@ -11,6 +11,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
@@ -33,7 +34,8 @@ public class BraveBookmarkManagerCoordinator extends BookmarkManagerCoordinator 
             BookmarkOpener bookmarkOpener,
             BookmarkManagerOpener bookmarkManagerOpener,
             PriceDropNotificationManager priceDropNotificationManager,
-            @Nullable Function<View, EdgeToEdgePadAdjuster> edgeToEdgePadAdjusterGenerator) {
+            @Nullable Function<View, EdgeToEdgePadAdjuster> edgeToEdgePadAdjusterGenerator,
+            @Nullable BackPressManager backPressManager) {
         super(
                 context,
                 isDialogUi,
@@ -43,7 +45,8 @@ public class BraveBookmarkManagerCoordinator extends BookmarkManagerCoordinator 
                 bookmarkOpener,
                 bookmarkManagerOpener,
                 priceDropNotificationManager,
-                edgeToEdgePadAdjusterGenerator);
+                edgeToEdgePadAdjusterGenerator,
+                backPressManager);
     }
 
     public void setWindow(ActivityWindowAndroid window) {

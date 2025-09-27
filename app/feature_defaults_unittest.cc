@@ -88,12 +88,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &autofill::features::kAutofillEnableCardBenefitsForAmericanExpress,
       &autofill::features::kAutofillEnableCardBenefitsForBmo,
       &autofill::features::test::kAutofillServerCommunication,
-#if BUILDFLAG(IS_ANDROID)
-      &base::features::kCollectAndroidFrameTimelineMetrics,
-#endif
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAllowURNsInIframes,
-      &blink::features::kAttributionReportingInBrowserMigration,
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
@@ -159,7 +155,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kReportPakFileIntegrity,
 #endif
       &features::kSCTAuditing,
-      &features::kScrimForBrowserWindowModal,
       &features::kServiceWorkerAutoPreload,
       &features::kTabHoverCardImages,
 #if !BUILDFLAG(IS_ANDROID)
@@ -167,7 +162,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kTrustSafetySentimentSurveyV2,
 #endif
 #if BUILDFLAG(IS_MAC)
-      &features::kUseChromiumUpdater,
       &features::kImmersiveFullscreen,
 #endif
       &features::kWebIdentityDigitalCredentials,
@@ -212,12 +206,10 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::kOptimizationGuidePersonalizedFetching,
       &optimization_guide::features::kOptimizationHints,
       &page_image_service::kImageService,
-      &page_image_service::kImageServiceSuggestPoweredImages,
       &permissions::features::kCpssUseTfliteSignatureRunner,
 #if !BUILDFLAG(IS_ANDROID)
       &permissions::features::kPermissionsPromptSurvey,
 #endif
-      &permissions::features::kPermissionOnDeviceNotificationPredictions,
       &permissions::features::kPermissionPredictionsV2,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &plus_addresses::features::kPlusAddressesEnabled,
