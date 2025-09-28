@@ -67,8 +67,26 @@ static_library("ai_chat") {
       "content_agent_tool_provider_factory.h",
       "page_content_blocks.cc",
       "page_content_blocks.h",
+      "tools/click_tool.cc",
+      "tools/click_tool.h",
+      "tools/drag_and_release_tool.cc",
+      "tools/drag_and_release_tool.h",
+      "tools/history_tool.cc",
+      "tools/history_tool.h",
+      "tools/move_mouse_tool.cc",
+      "tools/move_mouse_tool.h",
       "tools/navigation_tool.cc",
       "tools/navigation_tool.h",
+      "tools/scroll_tool.cc",
+      "tools/scroll_tool.h",
+      "tools/select_tool.cc",
+      "tools/select_tool.h",
+      "tools/target_util.cc",
+      "tools/target_util.h",
+      "tools/type_tool.cc",
+      "tools/type_tool.h",
+      "tools/wait_tool.cc",
+      "tools/wait_tool.h",
     ]
 
     deps += [
@@ -184,6 +202,8 @@ if (enable_brave_ai_chat_agent_profile) {
       "annotated_page_content_test_util.h",
       "tools/mock_content_agent_task_provider.cc",
       "tools/mock_content_agent_task_provider.h",
+      "tools/target_test_util.cc",
+      "tools/target_test_util.h",
     ]
     deps = [
       "//base",
@@ -192,6 +212,7 @@ if (enable_brave_ai_chat_agent_profile) {
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common/mojom",
       "//chrome/browser/actor:types",
+      "//chrome/common",
       "//components/optimization_guide/proto:optimization_guide_proto",
       "//components/tabs:public",
       "//testing/gtest",
@@ -242,7 +263,16 @@ source_set("unit_tests") {
   if (enable_brave_ai_chat_agent_profile) {
     sources += [
       "page_content_blocks_unittest.cc",
+      "tools/click_tool_unittest.cc",
+      "tools/drag_and_release_tool_unittest.cc",
+      "tools/history_tool_unittest.cc",
+      "tools/move_mouse_tool_unittest.cc",
       "tools/navigation_tool_unittest.cc",
+      "tools/scroll_tool_unittest.cc",
+      "tools/select_tool_unittest.cc",
+      "tools/target_util_unittest.cc",
+      "tools/type_tool_unittest.cc",
+      "tools/wait_tool_unittest.cc",
     ]
 
     deps += [
@@ -269,7 +299,10 @@ source_set("browser_tests") {
       "ai_chat_render_view_context_menu_browsertest.cc",
       "ai_chat_sidepanel_behavior_browsertest.cc",
       "ai_chat_ui_browsertest.cc",
+      "browser_tools_browsertest.cc",
       "page_content_fetcher_browsertest.cc",
+      "tools/target_test_util.cc",
+      "tools/target_test_util.h",
     ]
     deps = [
       "//brave/app:generate_command_metadata",
@@ -287,6 +320,7 @@ source_set("browser_tests") {
       "//brave/components/sidebar/browser",
       "//brave/components/text_recognition/common/buildflags",
       "//chrome/browser",
+      "//chrome/browser/actor",
       "//chrome/browser/pdf:pdf_extension_test_utils",
       "//chrome/browser/screen_ai:screen_ai_install_state",
       "//chrome/browser/ui",

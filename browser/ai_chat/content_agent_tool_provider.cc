@@ -9,7 +9,15 @@
 #include <vector>
 
 #include "brave/browser/ai_chat/page_content_blocks.h"
+#include "brave/browser/ai_chat/tools/click_tool.h"
+#include "brave/browser/ai_chat/tools/drag_and_release_tool.h"
+#include "brave/browser/ai_chat/tools/history_tool.h"
+#include "brave/browser/ai_chat/tools/move_mouse_tool.h"
 #include "brave/browser/ai_chat/tools/navigation_tool.h"
+#include "brave/browser/ai_chat/tools/scroll_tool.h"
+#include "brave/browser/ai_chat/tools/select_tool.h"
+#include "brave/browser/ai_chat/tools/type_tool.h"
+#include "brave/browser/ai_chat/tools/wait_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
@@ -127,7 +135,15 @@ void ContentAgentToolProvider::ExecuteActions(
 void ContentAgentToolProvider::CreateTools() {
   tools_.clear();
 
+  tools_.push_back(std::make_unique<ClickTool>(this, actor_service_));
+  tools_.push_back(std::make_unique<DragAndReleaseTool>(this, actor_service_));
+  tools_.push_back(std::make_unique<HistoryTool>(this, actor_service_));
+  tools_.push_back(std::make_unique<MoveMouseTool>(this, actor_service_));
   tools_.push_back(std::make_unique<NavigationTool>(this, actor_service_));
+  tools_.push_back(std::make_unique<ScrollTool>(this, actor_service_));
+  tools_.push_back(std::make_unique<SelectTool>(this, actor_service_));
+  tools_.push_back(std::make_unique<TypeTool>(this, actor_service_));
+  tools_.push_back(std::make_unique<WaitTool>(this, actor_service_));
 }
 
 void ContentAgentToolProvider::OnActionsFinished(
