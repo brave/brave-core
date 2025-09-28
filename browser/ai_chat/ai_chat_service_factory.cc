@@ -31,6 +31,11 @@
 #include "components/version_info/channel.h"
 #include "content/public/browser/storage_partition.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+#include "brave/browser/ai_chat/content_agent_tool_provider_factory.h"
+#include "chrome/browser/actor/actor_keyed_service_factory.h"
+#endif
+
 namespace ai_chat {
 
 // static
@@ -58,6 +63,9 @@ AIChatServiceFactory::AIChatServiceFactory()
           ProfileSelections::Builder()
               .WithRegular(ProfileSelection::kOriginalOnly)
               .Build()) {
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  DependsOn(actor::ActorKeyedServiceFactory::GetInstance());
+#endif
   DependsOn(skus::SkusServiceFactory::GetInstance());
   DependsOn(ModelServiceFactory::GetInstance());
   DependsOn(TabTrackerServiceFactory::GetInstance());
@@ -82,14 +90,27 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
           context);
 
+  // Tool sets provided from this layer to conversations
   std::vector<std::unique_ptr<ToolProviderFactory>> tool_provider_factories;
-  tool_provider_factories.push_back(
-      std::make_unique<BrowserToolProviderFactory>());
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
-  bool is_actor_allowed = features::IsAIChatAgentProfileEnabled() &&
-                          Profile::FromBrowserContext(context)->IsAIChatAgent();
+  bool is_actor_allowed =
+      features::IsAIChatAgentProfileEnabled() && context->IsAIChatAgent();
+
+  actor::ActorKeyedService* actor_service =
+      is_actor_allowed
+          ? actor::ActorKeyedServiceFactory::GetActorKeyedService(context)
+          : nullptr;
+
+  if (actor_service) {
+    tool_provider_factories.push_back(
+        std::make_unique<ContentAgentToolProviderFactory>(
+            Profile::FromBrowserContext(context), actor_service));
+  }
 #endif
+
+  tool_provider_factories.push_back(
+      std::make_unique<BrowserToolProviderFactory>());
 
   auto service = std::make_unique<AIChatService>(
       ModelServiceFactory::GetForBrowserContext(context),
