@@ -23,7 +23,6 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
-import org.chromium.chrome.browser.accessibility.settings.BraveAccessibilitySettings;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.customtabs.BraveAccountCustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -493,9 +492,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (homePagePreference != null) {
             homePagePreference.setFragment(BraveHomepageSettings.class.getName());
         }
-        Preference accessabilityPreference = findPreference(PREF_ACCESSIBILITY);
-        assumeNonNull(accessabilityPreference);
-        accessabilityPreference.setFragment(BraveAccessibilitySettings.class.getName());
     }
 
     private void setPreferenceListeners() {

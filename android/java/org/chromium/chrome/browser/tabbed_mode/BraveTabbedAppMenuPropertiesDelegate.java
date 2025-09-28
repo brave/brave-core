@@ -414,9 +414,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         if (BraveLeoPrefUtils.isLeoEnabled()) {
             modelList.add(buildBraveLeoItem());
         }
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER)) {
-            modelList.add(buildBraveSpeedreaderItem());
-        }
 
         modelList.add(buildSetDefaultBrowserItem());
 
@@ -688,15 +685,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 R.id.brave_playlist_id,
                                 R.id.brave_wallet_id,
                                 R.id.all_bookmarks_menu_id));
-            }
-        }
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER)
-                && UserPrefs.get(assumeNonNull(mTabModelSelector.getCurrentModel().getProfile()))
-                        .getBoolean(BravePref.SPEEDREADER_PREF_FEATURE_ENABLED)) {
-            final Tab currentTab = mActivityTabProvider.get();
-            if (currentTab != null && BraveSpeedReaderUtils.tabSupportsDistillation(currentTab)) {
-                addMenuItemAfter(
-                        modelList, buildBraveSpeedreaderItem(), Arrays.asList(R.id.page_zoom_id));
             }
         }
         if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mBraveContext)) {

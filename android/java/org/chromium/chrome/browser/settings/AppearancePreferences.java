@@ -87,9 +87,6 @@ public class AppearancePreferences extends BravePreferenceFragment
             removePreferenceIfPresent(PREF_SHOW_BRAVE_REWARDS_ICON);
         }
 
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER)) {
-            removePreferenceIfPresent(PREF_BRAVE_ENABLE_SPEEDREADER);
-        }
         if (!new BraveMultiWindowUtils().shouldShowEnableWindow(getActivity())) {
             removePreferenceIfPresent(PREF_ENABLE_MULTI_WINDOWS);
         }
@@ -162,18 +159,6 @@ public class AppearancePreferences extends BravePreferenceFragment
             if (enableTabGroups instanceof ChromeSwitchPreference) {
                 ((ChromeSwitchPreference) enableTabGroups)
                         .setChecked(BraveTabUiFeatureUtilities.isBraveTabGroupsEnabled());
-            }
-        }
-
-        Preference enableSpeedreader = findPreference(PREF_BRAVE_ENABLE_SPEEDREADER);
-        if (enableSpeedreader != null) {
-            enableSpeedreader.setOnPreferenceChangeListener(this);
-            if (enableSpeedreader instanceof ChromeSwitchPreference) {
-                ((ChromeSwitchPreference) enableSpeedreader)
-                        .setChecked(
-                                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                                        .getBoolean(
-                                                BravePref.SPEEDREADER_PREF_ENABLED_FOR_ALL_SITES));
             }
         }
 
@@ -292,11 +277,6 @@ public class AppearancePreferences extends BravePreferenceFragment
         } else if (PREF_BRAVE_ENABLE_TAB_GROUPS.equals(key)) {
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
-        } else if (PREF_BRAVE_ENABLE_SPEEDREADER.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                    .setBoolean(
-                            BravePref.SPEEDREADER_PREF_ENABLED_FOR_ALL_SITES, (boolean) newValue);
-            shouldRelaunch = true;
         } else if (PREF_ENABLE_MULTI_WINDOWS.equals(key)) {
             if (!(boolean) newValue) {
                 if (MultiWindowUtils.getInstanceCount() > 1) {
