@@ -204,6 +204,7 @@ class PatchInfo:
                                               '--dst-prefix=b/',
                                               '--default-prefix',
                                               '--full-index',
+                                              '--ignore-space-at-eol',
                                               self.source,
                                               no_trim=True)
         return self.patch.save_if_changed(new_content=content, dry_run=dry_run)
@@ -256,11 +257,15 @@ class PlasterFile:
         contents = repository.chromium.read_file(info.source)
 
         for substitution in plaster_file.get('substitution'):
+            description = substitution.get('description')
             re_pattern = substitution.get('re_pattern')
             pattern = substitution.get('pattern')
             replace = substitution.get('replace')
             expected_count = substitution.get('count', 1)
             flags = substitution.get('re_flags', [])
+
+            if description is None:
+                raise ValueError(f'No description specified in {info.source}')
 
             if re_pattern is not None and pattern is not None:
                 raise ValueError(
