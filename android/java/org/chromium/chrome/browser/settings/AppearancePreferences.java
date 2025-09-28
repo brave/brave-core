@@ -28,9 +28,7 @@ import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.night_mode.NightModeUtils;
 import org.chromium.chrome.browser.ntp.NtpUtil;
-import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.ToolbarPositionController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarFeatures;
@@ -38,7 +36,6 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class AppearancePreferences extends BravePreferenceFragment

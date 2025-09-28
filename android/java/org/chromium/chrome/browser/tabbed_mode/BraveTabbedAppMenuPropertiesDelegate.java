@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.tabbed_mode;
 
-import static org.chromium.build.NullUtil.assumeNonNull;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -44,7 +43,6 @@ import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
-import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
@@ -65,7 +63,6 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.components.dom_distiller.core.DomDistillerFeatures;
 import org.chromium.components.embedder_support.util.UrlUtilities;
-import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.components.webapps.WebappsUtils;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter;
