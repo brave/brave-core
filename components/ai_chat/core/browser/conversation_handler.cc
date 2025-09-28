@@ -269,10 +269,6 @@ bool ConversationHandler::IsRequestInProgress() {
   return is_request_in_progress_;
 }
 
-bool ConversationHandler::IsAssociatedContentAlive() {
-  return associated_content_manager_->HasNonArchiveContent();
-}
-
 void ConversationHandler::OnConversationDeleted() {
   for (auto& client : conversation_ui_handlers_) {
     client->OnConversationDeleted();
