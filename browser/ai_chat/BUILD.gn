@@ -299,7 +299,7 @@ source_set("browser_tests") {
       "ai_chat_render_view_context_menu_browsertest.cc",
       "ai_chat_sidepanel_behavior_browsertest.cc",
       "ai_chat_ui_browsertest.cc",
-      "browser_tools_browsertest.cc",
+      "content_agent_tools_browsertest.cc",
       "page_content_fetcher_browsertest.cc",
       "tools/target_test_util.cc",
       "tools/target_test_util.h",

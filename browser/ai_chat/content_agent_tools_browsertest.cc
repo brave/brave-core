@@ -31,11 +31,12 @@ namespace ai_chat {
 // the Chromium actor framework successfully. They do not need to test all
 // edge cases with either the actor framework or the tool param parsing, since
 // that is covered by the chromium actor browser tests and the brave tool unit
-// tests.
-class BrowserToolsTest : public InProcessBrowserTest {
+// tests. They are largely duplicates of the most simple test case in each
+// tool's Chromium actor browser test.
+class ContentAgentToolsTest : public InProcessBrowserTest {
  public:
-  BrowserToolsTest() = default;
-  ~BrowserToolsTest() override = default;
+  ContentAgentToolsTest() = default;
+  ~ContentAgentToolsTest() override = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -132,7 +133,7 @@ class BrowserToolsTest : public InProcessBrowserTest {
 };
 
 // Test that BrowserToolProvider can be created and provides expected tools
-IN_PROC_BROWSER_TEST_F(BrowserToolsTest, ProviderCreation) {
+IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ProviderCreation) {
   EXPECT_NE(tool_provider_, nullptr);
 
   auto tools = tool_provider_->GetTools();
@@ -149,7 +150,7 @@ IN_PROC_BROWSER_TEST_F(BrowserToolsTest, ProviderCreation) {
 }
 
 // Test click tool with Node ID targeting
-IN_PROC_BROWSER_TEST_F(BrowserToolsTest, ClickTool_NodeIdTarget) {
+IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ClickTool_NodeIdTarget) {
   NavigateToChromiumTestFile("/actor/page_with_clickable_element.html");
 
   auto click_tool = FindToolByName("click_element");
@@ -187,7 +188,7 @@ IN_PROC_BROWSER_TEST_F(BrowserToolsTest, ClickTool_NodeIdTarget) {
 }
 
 // Test type tool with Node ID targeting
-IN_PROC_BROWSER_TEST_F(BrowserToolsTest, TypeTool_NodeIdTarget) {
+IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, TypeTool_NodeIdTarget) {
   NavigateToChromiumTestFile("/actor/input.html");
 
   auto type_tool = FindToolByName("type_text");
@@ -222,7 +223,7 @@ IN_PROC_BROWSER_TEST_F(BrowserToolsTest, TypeTool_NodeIdTarget) {
 }
 
 // Test scroll tool with Node ID targeting
-IN_PROC_BROWSER_TEST_F(BrowserToolsTest, ScrollTool_NodeIdTarget) {
+IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ScrollTool_NodeIdTarget) {
   NavigateToChromiumTestFile("/actor/scrollable_page.html");
 
   auto scroll_tool = FindToolByName("scroll_element");
@@ -258,7 +259,7 @@ IN_PROC_BROWSER_TEST_F(BrowserToolsTest, ScrollTool_NodeIdTarget) {
 }
 
 // Test scroll tool with Node ID targeting
-IN_PROC_BROWSER_TEST_F(BrowserToolsTest, ScrollTool_DocumentTarget) {
+IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ScrollTool_DocumentTarget) {
   NavigateToChromiumTestFile("/actor/scrollable_page.html");
 
   auto scroll_tool = FindToolByName("scroll_element");
@@ -285,13 +286,11 @@ IN_PROC_BROWSER_TEST_F(BrowserToolsTest, ScrollTool_DocumentTarget) {
 }
 
 // Test select tool with Node ID targeting
-IN_PROC_BROWSER_TEST_F(BrowserToolsTest, SelectTool_NodeIdTarget) {
+IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, SelectTool_NodeIdTarget) {
   NavigateToChromiumTestFile("/actor/select_tool.html");
 
   auto select_tool = FindToolByName("select_dropdown");
-  if (!select_tool) {
-    GTEST_SKIP() << "select_dropdown tool not available";
-  }
+  ASSERT_TRUE(select_tool);
 
   // Get initial selected value
   std::string initial_value =
@@ -323,7 +322,7 @@ IN_PROC_BROWSER_TEST_F(BrowserToolsTest, SelectTool_NodeIdTarget) {
 }
 
 // Test navigation tool
-IN_PROC_BROWSER_TEST_F(BrowserToolsTest, NavigationTool_BasicNavigation) {
+IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, NavigationTool_BasicNavigation) {
   // Start with a basic page
   NavigateToChromiumTestFile("/actor/page_with_clickable_element.html");
 
@@ -348,13 +347,12 @@ IN_PROC_BROWSER_TEST_F(BrowserToolsTest, NavigationTool_BasicNavigation) {
 }
 
 // Test drag and release tool with coordinates (since drag needs from/to)
-IN_PROC_BROWSER_TEST_F(BrowserToolsTest, DragAndReleaseTool_CoordinateTargets) {
+IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest,
+                       DragAndReleaseTool_CoordinateTargets) {
   NavigateToChromiumTestFile("/actor/drag.html");
 
   auto drag_tool = FindToolByName("drag_and_release");
-  if (!drag_tool) {
-    GTEST_SKIP() << "drag_and_release tool not available";
-  }
+  ASSERT_TRUE(drag_tool);
 
   // Get initial range value
   int initial_value =
@@ -382,6 +380,26 @@ IN_PROC_BROWSER_TEST_F(BrowserToolsTest, DragAndReleaseTool_CoordinateTargets) {
                       "parseInt(document.getElementById('range').value)")
           .ExtractInt();
   EXPECT_NE(initial_value, final_value);
+}
+
+IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, HistoryTool_Back) {
+  const GURL url_first =
+      embedded_test_server()->GetURL("/actor/blank.html?start");
+  const GURL url_second =
+      embedded_test_server()->GetURL("/actor/blank.html?target");
+
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url_first));
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url_second));
+  ASSERT_EQ(web_contents()->GetURL(), url_second);
+
+  auto history_tool = FindToolByName("navigate_history");
+  ASSERT_TRUE(history_tool);
+
+  base::Value::Dict input;
+  input.Set("direction", "back");
+  auto result = ExecuteToolAndWait(history_tool, CreateToolInput(input));
+  EXPECT_GT(result.size(), 0u);
+  EXPECT_EQ(web_contents()->GetURL(), url_first);
 }
 
 }  // namespace ai_chat
