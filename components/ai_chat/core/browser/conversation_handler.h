@@ -104,6 +104,23 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void OnAssociatedContentUpdated(ConversationHandler* handler) {}
   };
 
+  struct Suggestion {
+    std::string title;
+    std::optional<std::string> prompt;
+    mojom::ActionType action_type = mojom::ActionType::SUGGESTION;
+
+    explicit Suggestion(std::string title);
+    Suggestion(std::string title, std::string prompt);
+    Suggestion(std::string title,
+               std::string prompt,
+               mojom::ActionType action_type);
+    Suggestion(const Suggestion&) = delete;
+    Suggestion& operator=(const Suggestion&) = delete;
+    Suggestion(Suggestion&&);
+    Suggestion& operator=(Suggestion&&);
+    ~Suggestion();
+  };
+
   ConversationHandler(
       mojom::Conversation* conversation,
       AIChatService* ai_chat_service,
@@ -190,7 +207,7 @@ class ConversationHandler : public mojom::ConversationHandler,
                         const std::string& model_key) override;
   void SubmitSummarizationRequest() override;
   void SubmitSuggestion(const std::string& suggestion_title) override;
-  std::vector<std::string> GetSuggestedQuestionsForTest();
+  const std::vector<Suggestion>& GetSuggestedQuestionsForTest() const;
   void SetSuggestedQuestionForTest(std::string title, std::string prompt);
   void GenerateQuestions() override;
   void GetAssociatedContentInfo(
@@ -308,23 +325,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(
       ConversationHandlerUnitTest,
       GetTools_MemoryToolFilteredForTemporaryConversations);
-
-  struct Suggestion {
-    std::string title;
-    std::optional<std::string> prompt;
-    mojom::ActionType action_type = mojom::ActionType::SUGGESTION;
-
-    explicit Suggestion(std::string title);
-    Suggestion(std::string title, std::string prompt);
-    Suggestion(std::string title,
-               std::string prompt,
-               mojom::ActionType action_type);
-    Suggestion(const Suggestion&) = delete;
-    Suggestion& operator=(const Suggestion&) = delete;
-    Suggestion(Suggestion&&);
-    Suggestion& operator=(Suggestion&&);
-    ~Suggestion();
-  };
 
   void InitEngine();
 
