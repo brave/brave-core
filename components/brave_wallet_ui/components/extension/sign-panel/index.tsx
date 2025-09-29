@@ -189,10 +189,10 @@ export const SignPanel = (props: Props) => {
   }, [signMessageData])
 
   React.useEffect(() => {
-    if (showWarning) {
+    if (showWarning || ethSignTypedData?.primaryType === 'Permit') {
       setSignStep(SignDataSteps.SignRisk)
     }
-  }, [showWarning])
+  }, [showWarning, ethSignTypedData])
 
   if (ethSIWETypedData) {
     return (
