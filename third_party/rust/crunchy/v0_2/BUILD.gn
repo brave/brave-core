@@ -38,6 +38,12 @@ cargo_crate("lib") {
   rustenv = []
   rustflags = []
 
+  # Remove features incorrectly added by half crate for spirv arch
+  features -= [
+    "limit_128",
+    "default",
+  ]
+
   #####################################################################
   # Tweaking which GN `config`s apply to this target.
 
