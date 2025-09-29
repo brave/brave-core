@@ -29,6 +29,10 @@ class PageContentFetcher;
 // Represents a link that has been attached to a conversation.
 // The link will be loaded asynchronously in a background WebContents when
 // |GetContent| is called.
+// **Note:** This class won't work for PDFs or use print preview extraction.
+// TODO(https://github.com/brave/brave-browser/issues/49742): Once the logic
+// is available in a shared class instead of AIChatTabHelper we should use that
+// instead of the just a PageContentFetcher.
 class AssociatedURLContent : public AssociatedContentDelegate,
                              public content::WebContentsObserver {
  public:
