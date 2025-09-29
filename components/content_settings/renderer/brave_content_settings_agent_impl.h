@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_CONTENT_SETTINGS_RENDERER_BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -82,6 +83,9 @@ class BraveContentSettingsAgentImpl
   bool IsBraveShieldsDown(const GURL& primary_url, const GURL& secondary_url);
 
   bool IsScriptTemporarilyAllowed(const GURL& script_url);
+
+  std::optional<bool> IsScriptBlockedByExtension(const GURL& primary_url,
+                                                 const GURL& secondary_url);
 
   // brave_shields::mojom::BraveShields.
   void SetShieldsSettings(
