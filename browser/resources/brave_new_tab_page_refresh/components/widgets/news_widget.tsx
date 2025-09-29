@@ -69,7 +69,10 @@ function PeekItem() {
 
   return (
     <Link url={peekItem.url.url} className='peek'>
-      <SafeImage src={getNewsItemImage(peekItem)} />
+      <SafeImage
+        src={getNewsItemImage(peekItem)}
+        targetSize={{ width: 71, height: 48 }}
+      />
       <div>
         <div className='meta'>
           <span>{getNewsPublisherName(peekItem)}</span>
