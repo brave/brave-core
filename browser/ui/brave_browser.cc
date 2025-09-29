@@ -27,7 +27,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/search/search.h"
 #include "chrome/browser/sessions/session_service.h"
 #include "chrome/browser/sessions/session_service_factory.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -40,7 +39,6 @@
 #include "chrome/browser/ui/webui/new_tab_page_third_party/new_tab_page_third_party_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
 #include "chrome/browser/ui/webui_browser/webui_browser.h"
-#include "chrome/common/webui_url_constants.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/sessions/content/session_tab_helper.h"
@@ -204,29 +202,6 @@ void BraveBrowser::TabCustomTitleChanged(
                                      tabs::kBraveTabCustomTitleExtraDataKey,
                                      custom_title.value_or(std::string()));
   }
-}
-
-bool BraveBrowser::ShouldDisplayFavicon(
-    content::WebContents* web_contents) const {
-  // Override to not show favicon for NTP in tab.
-
-  // Suppress the icon for the new-tab page, even if a navigation to it is
-  // not committed yet. Note that we're looking at the visible URL, so
-  // navigations from NTP generally don't hit this case and still show an icon.
-  GURL url = web_contents->GetVisibleURL();
-  if (url.SchemeIs(content::kChromeUIScheme) &&
-      url.host_piece() == chrome::kChromeUINewTabHost) {
-    return false;
-  }
-
-  // Also suppress instant-NTP. This does not use search::IsInstantNTP since
-  // it looks at the last-committed entry and we need to show icons for pending
-  // navigations away from it.
-  if (search::IsInstantNTPURL(url, profile())) {
-    return false;
-  }
-
-  return Browser::ShouldDisplayFavicon(web_contents);
 }
 
 void BraveBrowser::OnTabStripModelChanged(
