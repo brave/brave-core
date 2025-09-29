@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_manager.h"
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
@@ -60,6 +61,14 @@ std::string GetToAddressFromTxDataUnion(
 
   if (tx_data_union.is_zec_tx_data()) {
     return tx_data_union.get_zec_tx_data()->to;
+  }
+
+  if (tx_data_union.is_cardano_tx_data()) {
+    return tx_data_union.get_cardano_tx_data()->to;
+  }
+
+  if (tx_data_union.is_polkadot_tx_data()) {
+    return tx_data_union.get_polkadot_tx_data()->to;
   }
   NOTREACHED();
 }
@@ -132,6 +141,11 @@ TxService::TxService(JsonRpcService* json_rpc_service,
                                              keyring_service, *delegate_,
                                              *account_resolver_delegate_);
     }
+  }
+
+  if (IsPolkadotEnabled()) {
+    tx_manager_map_[mojom::CoinType::DOT] = std::make_unique<PolkadotTxManager>(
+        *this, keyring_service, *delegate_, *account_resolver_delegate_);
   }
 }
 

@@ -343,6 +343,7 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
     btcTxData: undefined,
     zecTxData: undefined,
     cardanoTxData: undefined,
+    polkadotTxData: undefined,
   },
   txHash: 'fil-send-tx',
   txParams: [],
