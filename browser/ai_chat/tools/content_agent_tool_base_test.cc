@@ -16,7 +16,7 @@
 #include "brave/browser/ai_chat/tools/mock_content_agent_task_provider.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/browser_action_util.h"
-#include "chrome/browser/actor/task_id.h"
+#include "chrome/common/actor/task_id.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 #include "components/tabs/public/tab_interface.h"
 #include "testing/gmock/include/gmock/gmock.h"
