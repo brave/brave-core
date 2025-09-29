@@ -19,7 +19,7 @@ namespace brave_policy {
 
 class BraveProfilePolicyProviderTest : public ::testing::Test {
  public:
-  BraveProfilePolicyProviderTest() = default;
+  BraveProfilePolicyProviderTest() : provider_(&local_state_) {}
   ~BraveProfilePolicyProviderTest() override = default;
 
   void TearDown() override {
@@ -31,6 +31,7 @@ class BraveProfilePolicyProviderTest : public ::testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
   policy::SchemaRegistry schema_registry_;
+  TestingPrefServiceSimple local_state_;
   BraveProfilePolicyProvider provider_;
 };
 

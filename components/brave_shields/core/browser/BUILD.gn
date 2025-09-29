@@ -71,6 +71,7 @@ source_set("unit_tests") {
   deps = [
     ":browser",
     "//base/test:test_support",
+    "//brave/components/brave_shields/core/browser/ad_block_only_mode:unit_tests",
     "//brave/components/brave_shields/core/common",
     "//components/content_settings/core/browser",
     "//components/prefs",

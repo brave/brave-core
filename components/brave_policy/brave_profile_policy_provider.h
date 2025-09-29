@@ -15,6 +15,12 @@
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "components/policy/core/common/configuration_policy_provider.h"
 
+class PrefService;
+
+namespace brave_shields {
+class AdBlockOnlyModePoliciesLoader;
+}
+
 namespace brave_policy {
 
 // Policy provider for profile level policies.
@@ -23,7 +29,7 @@ class BraveProfilePolicyProvider
     : public policy::ConfigurationPolicyProvider,
       public brave_origin::BraveOriginPolicyManager::Observer {
  public:
-  BraveProfilePolicyProvider();
+  explicit BraveProfilePolicyProvider(PrefService* local_state);
   ~BraveProfilePolicyProvider() override;
 
   BraveProfilePolicyProvider(const BraveProfilePolicyProvider&) = delete;
@@ -44,6 +50,8 @@ class BraveProfilePolicyProvider
  private:
   policy::PolicyBundle LoadPolicies();
 
+  void LoadAdBlockOnlyModePolicies(policy::PolicyBundle& bundle);
+
   // Helper to load BraveOrigin profile policies
   void LoadBraveOriginPolicies(policy::PolicyBundle& bundle);
   void LoadBraveOriginPolicy(policy::PolicyMap& bundle_policy_map,
@@ -57,6 +65,9 @@ class BraveProfilePolicyProvider
   base::ScopedObservation<brave_origin::BraveOriginPolicyManager,
                           brave_origin::BraveOriginPolicyManager::Observer>
       brave_origin_observation_{this};
+
+  std::unique_ptr<brave_shields::AdBlockOnlyModePoliciesLoader>
+      ad_block_only_mode_policies_loader_;
 
   base::WeakPtrFactory<BraveProfilePolicyProvider> weak_factory_{this};
 };
