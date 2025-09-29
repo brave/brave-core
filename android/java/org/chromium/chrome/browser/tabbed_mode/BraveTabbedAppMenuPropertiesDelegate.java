@@ -60,6 +60,7 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
+import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.dom_distiller.core.DomDistillerFeatures;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.webapps.WebappsUtils;
@@ -95,7 +96,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             @NonNull
                     OneshotSupplier<IncognitoReauthController>
                             incognitoReauthControllerOneshotSupplier,
-            Supplier<ReadAloudController> readAloudControllerSupplier) {
+            Supplier<ReadAloudController> readAloudControllerSupplier,
+            PageZoomManager pageZoomManager) {
         super(
                 context,
                 activityTabProvider,
@@ -110,7 +112,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 modalDialogManager,
                 snackbarManager,
                 incognitoReauthControllerOneshotSupplier,
-                readAloudControllerSupplier);
+                readAloudControllerSupplier,
+                pageZoomManager);
 
         mBraveAppMenuDelegate = appMenuDelegate;
         mBookmarkModelSupplier = bookmarkModelSupplier;
