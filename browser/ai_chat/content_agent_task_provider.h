@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_AI_CHAT_CONTENT_AGENT_TASK_PROVIDER_H_
 
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "chrome/browser/actor/task_id.h"
+#include "chrome/common/actor/task_id.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 #include "components/tabs/public/tab_interface.h"
 
