@@ -17,6 +17,6 @@ source_set("autofill") {
     "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/signin/model",
     "//ios/chrome/browser/sync/model",
-    "//ios/web_view:web_view_sources",
+    "//ios/web_view/framework:web_view_sources",
   ]
 }
