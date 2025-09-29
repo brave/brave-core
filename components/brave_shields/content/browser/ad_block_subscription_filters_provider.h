@@ -14,8 +14,6 @@
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
-#include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
-#include "third_party/rust/cxx/v1/cxx.h"
 
 using brave_component_updater::DATFileDataBuffer;
 
@@ -41,16 +39,16 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
       const AdBlockSubscriptionFiltersProvider&) = delete;
   ~AdBlockSubscriptionFiltersProvider() override;
 
-  void LoadFilterSet(
-      base::OnceCallback<void(
-          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
+  void LoadFilters(
+      base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
+                              uint8_t permission_mask)>) override;
 
   void OnListAvailable();
 
  private:
   void OnDATFileDataReady(
-      base::OnceCallback<
-          void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
+      base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
+                              uint8_t permission_mask)> cb,
       const perfetto::Flow& flow,
       const DATFileDataBuffer& dat_buf);
 

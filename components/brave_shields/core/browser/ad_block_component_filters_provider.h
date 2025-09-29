@@ -60,9 +60,9 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   // Otherwise an empty path is returned
   base::FilePath GetFilterSetPath();
 
-  void LoadFilterSet(
-      base::OnceCallback<void(
-          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
+  void LoadFilters(
+      base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
+                              uint8_t permission_mask)>) override;
 
   // Remove the component. This will force it to be redownloaded next time it
   // is registered.
