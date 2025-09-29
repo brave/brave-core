@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 
@@ -26,29 +25,13 @@ namespace brave_shields {
 
 namespace {
 
-void AddNothingToFilterSet(rust::Box<adblock::FilterSet>*) {}
-
-// static
-void AddDATBufferToFilterSet(uint8_t permission_mask,
-                             DATFileDataBuffer buffer,
-                             const perfetto::Flow& flow,
-                             rust::Box<adblock::FilterSet>* filter_set) {
-  TRACE_EVENT("brave.adblock",
-              "AddDATBufferToFilterSet_AdBlockComponentFiltersProvider", flow);
-  (*filter_set)->add_filter_list_with_permissions(buffer, permission_mask);
-}
-
 // static
 void OnReadDATFileData(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
+    base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
+                            uint8_t permission_mask)> cb,
     uint8_t permission_mask,
-    const perfetto::Flow& flow,
     DATFileDataBuffer buffer) {
-  TRACE_EVENT("brave.adblock",
-              "OnReadDATFileData_AdBlockComponentFiltersProvider", flow);
-  std::move(cb).Run(
-      base::BindOnce(&AddDATBufferToFilterSet, permission_mask, buffer, flow));
+  std::move(cb).Run(buffer, permission_mask);
 }
 
 }  // namespace
@@ -133,9 +116,9 @@ base::FilePath AdBlockComponentFiltersProvider::GetFilterSetPath() {
   return component_path_.AppendASCII(kListFile);
 }
 
-void AdBlockComponentFiltersProvider::LoadFilterSet(
-    base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
+void AdBlockComponentFiltersProvider::LoadFilters(
+    base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
+                            uint8_t permission_mask)> cb) {
   base::FilePath list_file_path = GetFilterSetPath();
 
   const auto flow = perfetto::Flow::ProcessScoped(base::RandUint64());
@@ -143,17 +126,16 @@ void AdBlockComponentFiltersProvider::LoadFilterSet(
               flow);
 
   if (list_file_path.empty()) {
-    // If the path is not ready yet, provide a no-op callback immediately. An
+    // If the path is not ready yet, provide an empty list immediately. An
     // update will be pushed later to notify about the newly available list.
-    std::move(cb).Run(base::BindOnce(AddNothingToFilterSet));
+    std::move(cb).Run(std::vector<unsigned char>(), permission_mask_);
     return;
   }
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_path),
-      base::BindOnce(&OnReadDATFileData, std::move(cb), permission_mask_,
-                     flow));
+      base::BindOnce(&OnReadDATFileData, std::move(cb), permission_mask_));
 }
 
 }  // namespace brave_shields

@@ -12,8 +12,6 @@
 #include "base/sequence_checker.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
-#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
-#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_shields {
 
@@ -31,9 +29,9 @@ class AdBlockLocalhostFiltersProvider : public AdBlockFiltersProvider {
   bool UpdateLocalhostFilters(const std::string& localhost_filters);
 
   // AdBlockFiltersProvider
-  void LoadFilterSet(
-      base::OnceCallback<void(
-          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
+  void LoadFilters(
+      base::OnceCallback<void(std::vector<unsigned char> filter_buffer,
+                              uint8_t permission_mask)>) override;
 
   std::string GetNameForDebugging() override;
 
