@@ -35,7 +35,6 @@
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
-#include "components/page_image_service/features.h"
 #include "components/page_info/core/features.h"
 #include "components/performance_manager/public/features.h"
 #include "components/permissions/features.h"
@@ -214,7 +213,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
       &optimization_guide::features::kOptimizationGuidePersonalizedFetching,
       &optimization_guide::features::kOptimizationHints,
-      &page_image_service::kImageService,
       &permissions::features::kCpssUseTfliteSignatureRunner,
 #if !BUILDFLAG(IS_ANDROID)
       &permissions::features::kPermissionsPromptSurvey,
