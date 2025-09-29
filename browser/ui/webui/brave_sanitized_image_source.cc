@@ -25,6 +25,7 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "third_party/blink/public/common/loader/network_utils.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/geometry/size.h"
@@ -247,6 +248,8 @@ void BraveSanitizedImageSource::StartImageDownload(
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = request_attributes.image_url;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  request->headers.SetHeader("Accept",
+                             blink::network_utils::ImageAcceptHeader());
 
   auto loader =
       network::SimpleURLLoader::Create(std::move(request), traffic_annotation);
