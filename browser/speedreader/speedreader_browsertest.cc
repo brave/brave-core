@@ -94,7 +94,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     feature_list_.InitWithFeaturesAndParameters(
         {{speedreader::features::kSpeedreaderFeature,
-          {{speedreader::kSpeedreaderTTS.name, "true"}}},
+          {{speedreader::features::kSpeedreaderTTS.name, "true"}}},
          {ai_chat::features::kAIChat, {{}}}},
         {});
   }
