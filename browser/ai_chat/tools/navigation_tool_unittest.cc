@@ -87,7 +87,7 @@ class NavigationToolTest : public testing::Test {
     EXPECT_EQ(navigate_action.url(), GURL(expected_url).spec());
 
     // Verify CreateToolRequest works and produces correct NavigateToolRequest
-    auto tool_request = actor::CreateToolRequest(action, nullptr);
+    auto tool_request = actor::CreateToolRequestForTesting(action);
     ASSERT_NE(tool_request, nullptr);
 
     auto* navigate_request =
