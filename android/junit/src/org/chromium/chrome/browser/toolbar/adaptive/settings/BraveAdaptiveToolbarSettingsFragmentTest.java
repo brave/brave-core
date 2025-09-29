@@ -191,11 +191,28 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
                             ChromeSharedPreferences.getInstance()
                                     .readInt(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS));
 
-                    // Check indexes of Bookmarks button (as a first Brave-specific button) and
-                    // MAX_VALUE
+                    // Check indexes of Brave buttons and MAX_VALUE
                     Assert.assertEquals(
                             AdaptiveToolbarButtonVariant.BOOKMARKS,
                             AdaptiveToolbarButtonVariant.TAB_GROUPING + 1);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.HISTORY,
+                            AdaptiveToolbarButtonVariant.BOOKMARKS + 1);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.DOWNLOADS,
+                            AdaptiveToolbarButtonVariant.HISTORY + 1);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.PLAYLIST,
+                            AdaptiveToolbarButtonVariant.DOWNLOADS + 1);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.LEO,
+                            AdaptiveToolbarButtonVariant.PLAYLIST + 1);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.WALLET,
+                            AdaptiveToolbarButtonVariant.LEO + 1);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.NEWS,
+                            AdaptiveToolbarButtonVariant.WALLET + 1);
                     Assert.assertEquals(
                             AdaptiveToolbarButtonVariant.NEWS,
                             AdaptiveToolbarButtonVariant.MAX_VALUE);
@@ -212,6 +229,61 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
                             mRadioPreference.getSelection());
                     Assert.assertEquals(
                             AdaptiveToolbarButtonVariant.BOOKMARKS,
+                            ChromeSharedPreferences.getInstance()
+                                    .readInt(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS));
+
+                    // Test History button
+                    Assert.assertEquals(
+                            R.id.adaptive_option_history,
+                            getButton(AdaptiveToolbarButtonVariant.HISTORY).getId());
+                    selectButton(AdaptiveToolbarButtonVariant.HISTORY);
+                    assertButtonCheckedCorrectly("History", AdaptiveToolbarButtonVariant.HISTORY);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.HISTORY, mRadioPreference.getSelection());
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.HISTORY,
+                            ChromeSharedPreferences.getInstance()
+                                    .readInt(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS));
+
+                    // Test Downloads button
+                    Assert.assertEquals(
+                            R.id.adaptive_option_downloads,
+                            getButton(AdaptiveToolbarButtonVariant.DOWNLOADS).getId());
+                    selectButton(AdaptiveToolbarButtonVariant.DOWNLOADS);
+                    assertButtonCheckedCorrectly(
+                            "Downloads", AdaptiveToolbarButtonVariant.DOWNLOADS);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.DOWNLOADS,
+                            mRadioPreference.getSelection());
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.DOWNLOADS,
+                            ChromeSharedPreferences.getInstance()
+                                    .readInt(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS));
+
+                    // Test Leo AI button
+                    Assert.assertEquals(
+                            R.id.adaptive_option_brave_leo,
+                            getButton(AdaptiveToolbarButtonVariant.LEO).getId());
+                    selectButton(AdaptiveToolbarButtonVariant.LEO);
+                    assertButtonCheckedCorrectly("Leo AI", AdaptiveToolbarButtonVariant.LEO);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.LEO, mRadioPreference.getSelection());
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.LEO,
+                            ChromeSharedPreferences.getInstance()
+                                    .readInt(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS));
+
+                    // Test Wallet button
+                    Assert.assertEquals(
+                            R.id.adaptive_option_brave_wallet,
+                            getButton(AdaptiveToolbarButtonVariant.WALLET).getId());
+                    selectButton(AdaptiveToolbarButtonVariant.WALLET);
+                    assertButtonCheckedCorrectly(
+                            "Brave Wallet", AdaptiveToolbarButtonVariant.WALLET);
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.WALLET, mRadioPreference.getSelection());
+                    Assert.assertEquals(
+                            AdaptiveToolbarButtonVariant.WALLET,
                             ChromeSharedPreferences.getInstance()
                                     .readInt(ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS));
                 });

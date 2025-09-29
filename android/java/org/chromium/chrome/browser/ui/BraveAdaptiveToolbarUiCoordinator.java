@@ -10,15 +10,23 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import org.chromium.base.BraveFeatureList;
+import org.chromium.base.FeatureList;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
+import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
 import org.chromium.chrome.browser.toolbar.adaptive.BraveBookmarksButtonController;
+import org.chromium.chrome.browser.toolbar.adaptive.BraveDownloadsButtonController;
+import org.chromium.chrome.browser.toolbar.adaptive.BraveHistoryButtonController;
+import org.chromium.chrome.browser.toolbar.adaptive.BraveLeoButtonController;
+import org.chromium.chrome.browser.toolbar.adaptive.BraveWalletButtonController;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.Supplier;
@@ -76,5 +84,54 @@ public class BraveAdaptiveToolbarUiCoordinator extends AdaptiveToolbarUiCoordina
                         bookmarkManagerOpener);
         mAdaptiveToolbarButtonController.addButtonVariant(
                 AdaptiveToolbarButtonVariant.BOOKMARKS, bookmarksButtonController);
+
+        var historyButtonController =
+                new BraveHistoryButtonController(
+                        mContext,
+                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_history),
+                        mActivityTabProvider,
+                        mProfileSupplier,
+                        mModalDialogManagerSupplier.get());
+        mAdaptiveToolbarButtonController.addButtonVariant(
+                AdaptiveToolbarButtonVariant.HISTORY, historyButtonController);
+
+        var downloadsButtonController =
+                new BraveDownloadsButtonController(
+                        mContext,
+                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_downloads),
+                        mActivityTabProvider,
+                        mProfileSupplier,
+                        mModalDialogManagerSupplier.get());
+        mAdaptiveToolbarButtonController.addButtonVariant(
+                AdaptiveToolbarButtonVariant.DOWNLOADS, downloadsButtonController);
+
+        // Browser tests are failing because we get here before native is initialized.
+        // We dont check this behavior in browser tests, so we can safely just add a check here.
+        if (FeatureList.isNativeInitialized() && BraveLeoPrefUtils.isLeoEnabled()) {
+            var leoButtonController =
+                    new BraveLeoButtonController(
+                            mContext,
+                            AppCompatResources.getDrawable(mContext, R.drawable.ic_brave_ai),
+                            mActivityTabProvider,
+                            mProfileSupplier,
+                            mModalDialogManagerSupplier.get());
+            mAdaptiveToolbarButtonController.addButtonVariant(
+                    AdaptiveToolbarButtonVariant.LEO, leoButtonController);
+        }
+
+        // Browser tests are failing because we get here before native is initialized.
+        // We dont check this behavior in browser tests, so we can safely just add a check here.
+        if (FeatureList.isNativeInitialized()
+                && ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
+            var walletButtonController =
+                    new BraveWalletButtonController(
+                            mContext,
+                            AppCompatResources.getDrawable(mContext, R.drawable.ic_crypto_wallets),
+                            mActivityTabProvider,
+                            mProfileSupplier,
+                            mModalDialogManagerSupplier.get());
+            mAdaptiveToolbarButtonController.addButtonVariant(
+                    AdaptiveToolbarButtonVariant.WALLET, walletButtonController);
+        }
     }
 }
