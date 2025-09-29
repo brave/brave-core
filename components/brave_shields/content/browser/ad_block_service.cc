@@ -580,7 +580,8 @@ void AdBlockService::StripProceduralFilters(base::Value::Dict& resources) {
       if (pfilter_str == nullptr) {
         continue;
       }
-      auto val = base::JSONReader::ReadDict(*pfilter_str);
+      auto val = base::JSONReader::ReadDict(
+          *pfilter_str, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
       if (val) {
         auto* list = val->FindList("selector");
         if (list && list->size() != 1) {

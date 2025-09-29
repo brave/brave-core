@@ -89,7 +89,8 @@ bool MemoryStorageTool::SupportsConversation(
 void MemoryStorageTool::UseTool(const std::string& input_json,
                                 UseToolCallback callback) {
   // Parse the input JSON
-  auto input_dict = base::JSONReader::ReadDict(input_json);
+  auto input_dict = base::JSONReader::ReadDict(
+      input_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!input_dict.has_value()) {
     std::move(callback).Run(CreateContentBlocksForText(
         "Error: Invalid JSON input, input must be a JSON object"));
