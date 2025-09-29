@@ -67,7 +67,7 @@ ContentAgentToolBaseTest::RunWithExpectedSuccess(
   const auto& action = captured_actions.actions(0);
 
   // Verify CreateToolRequest works and produces correct ClickToolRequest
-  auto tool_request = actor::CreateToolRequest(action, nullptr);
+  auto tool_request = actor::CreateToolRequestForTesting(action);
   EXPECT_NE(tool_request, nullptr);
   EXPECT_EQ(tool_request->JournalEvent(), expected_tool_name);
 
