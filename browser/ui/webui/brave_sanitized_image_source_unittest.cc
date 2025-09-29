@@ -71,7 +71,16 @@ class BraveSanitizedImageSourceTest : public testing::Test {
         "chrome://brave-image/?url=" + EncodeQuery(url.spec()) +
         (target_size.empty() ? ""
                              : "&target_size=" + EncodeQuery(target_size)));
+    base::RepeatingCallback<void(const network::ResourceRequest&)> interceptor =
+        base::BindLambdaForTesting(
+            [&](const network::ResourceRequest& request) {
+              const auto accept_header = request.headers.GetHeader("Accept");
+              ASSERT_TRUE(accept_header.has_value());
+              EXPECT_NE(accept_header->find("image/webp"), std::string::npos);
+            });
+    test_url_loader_factory_.SetInterceptor(std::move(interceptor));
     test_url_loader_factory_.AddResponse(url.spec(), std::move(data));
+
     base::RunLoop run_loop;
     scoped_refptr<base::RefCountedMemory> result;
     source_.StartDataRequest(
