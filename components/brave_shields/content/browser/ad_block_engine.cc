@@ -211,7 +211,8 @@ base::Value::Dict AdBlockEngine::UrlCosmeticResources(const std::string& url) {
   auto result = ad_block_client_->url_cosmetic_resources(url);
 
   std::optional<base::Value::Dict> parsed_result =
-      base::JSONReader::ReadDict(result.c_str());
+      base::JSONReader::ReadDict(std::string_view(result.data(), result.size()),
+                                 base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed_result) {
     return base::Value::Dict();
   }

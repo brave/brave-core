@@ -36,7 +36,8 @@ mojom::Result PostAccount::ParseBody(const std::string& body,
   DCHECK(user_name);
   DCHECK(country_id);
 
-  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(body);
+  std::optional<base::Value::Dict> value =
+      base::JSONReader::ReadDict(body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;

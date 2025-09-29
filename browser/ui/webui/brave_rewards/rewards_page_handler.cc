@@ -545,7 +545,8 @@ void RewardsPageHandler::SetAdsSubdivision(const std::string& subdivision,
 
 void RewardsPageHandler::ToggleAdLike(const std::string& history_item,
                                       ToggleAdLikeCallback callback) {
-  auto dict = base::JSONReader::ReadDict(history_item);
+  auto dict = base::JSONReader::ReadDict(history_item,
+                                         base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!dict) {
     std::move(callback).Run();
     return;
@@ -562,7 +563,8 @@ void RewardsPageHandler::ToggleAdLike(const std::string& history_item,
 
 void RewardsPageHandler::ToggleAdDislike(const std::string& history_item,
                                          ToggleAdDislikeCallback callback) {
-  auto dict = base::JSONReader::ReadDict(history_item);
+  auto dict = base::JSONReader::ReadDict(history_item,
+                                         base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!dict) {
     std::move(callback).Run();
     return;
@@ -580,7 +582,8 @@ void RewardsPageHandler::ToggleAdDislike(const std::string& history_item,
 void RewardsPageHandler::ToggleAdInappropriate(
     const std::string& history_item,
     ToggleAdInappropriateCallback callback) {
-  auto dict = base::JSONReader::ReadDict(history_item);
+  auto dict = base::JSONReader::ReadDict(history_item,
+                                         base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!dict) {
     std::move(callback).Run();
     return;

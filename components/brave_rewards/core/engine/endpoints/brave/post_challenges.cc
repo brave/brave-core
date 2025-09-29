@@ -77,7 +77,8 @@ PostChallenges::Result PostChallenges::MapResponse(
     return base::unexpected(Error::kUnexpectedStatusCode);
   }
 
-  auto value = base::JSONReader::ReadDict(response.body);
+  auto value = base::JSONReader::ReadDict(response.body,
+                                          base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     LogError(FROM_HERE) << "Failed to parse body: invalid JSON";
     return base::unexpected(Error::kFailedToParseBody);
