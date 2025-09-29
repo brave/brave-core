@@ -117,7 +117,6 @@ public class CustomizeBraveMenu {
         MENU_ICON_MAP.put(R.id.brave_playlist_id, R.drawable.ic_open_playlist);
         MENU_ICON_MAP.put(R.id.add_to_playlist_id, R.drawable.ic_baseline_add_24);
         MENU_ICON_MAP.put(R.id.brave_news_id, R.drawable.ic_news);
-        MENU_ICON_MAP.put(R.id.brave_speedreader_id, R.drawable.ic_readermode);
         MENU_ICON_MAP.put(R.id.brave_leo_id, R.drawable.ic_brave_ai);
         MENU_ICON_MAP.put(R.id.request_brave_vpn_id, R.drawable.ic_vpn);
         MENU_ICON_MAP.put(R.id.brave_rewards_id, R.drawable.brave_menu_rewards);

@@ -28,9 +28,7 @@ import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.night_mode.NightModeUtils;
 import org.chromium.chrome.browser.ntp.NtpUtil;
-import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.ToolbarPositionController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarFeatures;
@@ -38,7 +36,6 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class AppearancePreferences extends BravePreferenceFragment
@@ -51,7 +48,6 @@ public class AppearancePreferences extends BravePreferenceFragment
     public static final String PREF_BRAVE_NIGHT_MODE_ENABLED = "brave_night_mode_enabled_key";
     public static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
     public static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
-    public static final String PREF_BRAVE_ENABLE_SPEEDREADER = "brave_enable_speedreader";
     public static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
     public static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
     public static final String PREF_ADDRESS_BAR = "address_bar";
@@ -88,9 +84,6 @@ public class AppearancePreferences extends BravePreferenceFragment
             removePreferenceIfPresent(PREF_SHOW_BRAVE_REWARDS_ICON);
         }
 
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER)) {
-            removePreferenceIfPresent(PREF_BRAVE_ENABLE_SPEEDREADER);
-        }
         if (!new BraveMultiWindowUtils().shouldShowEnableWindow(getActivity())) {
             removePreferenceIfPresent(PREF_ENABLE_MULTI_WINDOWS);
         }
@@ -163,18 +156,6 @@ public class AppearancePreferences extends BravePreferenceFragment
             if (enableTabGroups instanceof ChromeSwitchPreference) {
                 ((ChromeSwitchPreference) enableTabGroups)
                         .setChecked(BraveTabUiFeatureUtilities.isBraveTabGroupsEnabled());
-            }
-        }
-
-        Preference enableSpeedreader = findPreference(PREF_BRAVE_ENABLE_SPEEDREADER);
-        if (enableSpeedreader != null) {
-            enableSpeedreader.setOnPreferenceChangeListener(this);
-            if (enableSpeedreader instanceof ChromeSwitchPreference) {
-                ((ChromeSwitchPreference) enableSpeedreader)
-                        .setChecked(
-                                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                                        .getBoolean(
-                                                BravePref.SPEEDREADER_PREF_ENABLED_FOR_ALL_SITES));
             }
         }
 
@@ -293,11 +274,6 @@ public class AppearancePreferences extends BravePreferenceFragment
         } else if (PREF_BRAVE_ENABLE_TAB_GROUPS.equals(key)) {
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
-        } else if (PREF_BRAVE_ENABLE_SPEEDREADER.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                    .setBoolean(
-                            BravePref.SPEEDREADER_PREF_ENABLED_FOR_ALL_SITES, (boolean) newValue);
-            shouldRelaunch = true;
         } else if (PREF_ENABLE_MULTI_WINDOWS.equals(key)) {
             if (!(boolean) newValue) {
                 if (MultiWindowUtils.getInstanceCount() > 1) {
