@@ -55,7 +55,8 @@ std::optional<std::vector<std::string>> DragAndReleaseTool::RequiredProperties()
 
 void DragAndReleaseTool::UseTool(const std::string& input_json,
                                  UseToolCallback callback) {
-  auto input = base::JSONReader::ReadDict(input_json);
+  auto input = base::JSONReader::ReadDict(input_json,
+                                          base::JSON_PARSE_CHROMIUM_EXTENSIONS);
 
   if (!input.has_value()) {
     std::move(callback).Run(CreateContentBlocksForText(

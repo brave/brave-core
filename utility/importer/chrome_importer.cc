@@ -85,8 +85,8 @@ bool SetEncryptionKeyForPasswordImporting(
     const base::FilePath& local_state_path) {
   std::string local_state_content;
   base::ReadFileToString(local_state_path, &local_state_content);
-  std::optional<base::Value::Dict> local_state =
-      base::JSONReader::ReadDict(local_state_content);
+  std::optional<base::Value::Dict> local_state = base::JSONReader::ReadDict(
+      local_state_content, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!local_state) {
     return false;
   }
@@ -294,8 +294,8 @@ void ChromeImporter::ImportBookmarks() {
 
   base::ReadFileToString(copy_bookmark_file.copied_file_path(),
                          &bookmarks_content);
-  std::optional<base::Value::Dict> bookmark_dict =
-      base::JSONReader::ReadDict(bookmarks_content);
+  std::optional<base::Value::Dict> bookmark_dict = base::JSONReader::ReadDict(
+      bookmarks_content, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!bookmark_dict)
     return;
 

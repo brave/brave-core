@@ -437,7 +437,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
                             mojom::SolanaProviderError expected_error,
                             const std::string& expected_error_message) {
     base::Value::Dict result_out;
-    auto value = base::JSONReader::ReadDict(json);
+    auto value =
+        base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
     if (!value) {
       return result_out;
     }
