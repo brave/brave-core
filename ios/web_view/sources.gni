@@ -19,4 +19,4 @@ brave_ios_web_view_excluded_sources = [
 
 # Dep exclusions for //ios/web_view
 # - Excludes the bundled resources since these are already bundled
-brave_ios_web_view_excluded_public_deps = [ ":web_view_resources" ]
+brave_ios_web_view_excluded_public_deps = [ "//ios/web_view/resources" ]
