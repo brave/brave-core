@@ -267,7 +267,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
       /*response_code_category*/
       history::VisitResponseCodeCategory::kNot404,
       /*did_replace_entry=*/false, /*consider_for_ntp_most_visited=*/true,
-      /*is_ephemeral*/ false,
+      history::VisitContextEphemerality::kNotEphemeral,
       /*title*/ base::SysNSStringToUTF16(history.title));
 
   history_service_->AddPage(args);
