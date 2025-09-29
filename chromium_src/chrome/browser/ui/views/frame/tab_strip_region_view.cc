@@ -13,10 +13,10 @@
 // borders. Since the size of buttons varies depending upon the tabs update
 // feature flag, replace the `kButtonSize` identifier with a call to the static
 // `BraveNewTabButton::GetButtonSize` function.
-#define kButtonSize GetButtonSize()
+// #define kButtonSize GetButtonSize()
 
 #define BrowserTabStripController BraveBrowserTabStripController
-#define NewTabButton BraveNewTabButton
+// #define NewTabButton BraveNewTabButton
 
 #define BRAVE_TAB_STRIP_REGION_VIEW_CREATE_TAB_STRIP \
   auto tab_strip =                                   \
@@ -24,6 +24,6 @@
 
 #include <chrome/browser/ui/views/frame/tab_strip_region_view.cc>
 #undef BRAVE_TAB_STRIP_REGION_VIEW_CREATE_TAB_STRIP
-#undef NewTabButton
+// #undef NewTabButton
 #undef BrowserTabStripController
-#undef kButtonSize
+// #undef kButtonSize

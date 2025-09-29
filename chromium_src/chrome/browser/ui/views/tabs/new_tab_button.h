@@ -7,12 +7,20 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_NEW_TAB_BUTTON_H_
 
 #include "chrome/browser/ui/tabs/tab_style.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 
-#define PaintFill                 \
-  UnUsed() {}                     \
-  friend class BraveNewTabButton; \
-  virtual void PaintFill
+// #define PaintFill                 \
+//   UnUsed() {}                     \
+//   friend class BraveNewTabButton; \
+//   virtual void PaintFill
+
+#define context_menu_model_                            \
+  context_menu_model_;                                 \
+  METADATA_HEADER(NewTabButton, TabStripControlButton) \
+  void Unused()
 #include <chrome/browser/ui/views/tabs/new_tab_button.h>  // IWYU pragma: export
-#undef PaintFill
+
+#undef context_menu_model_
+// #undef PaintFill
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_NEW_TAB_BUTTON_H_
