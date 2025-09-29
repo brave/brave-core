@@ -834,11 +834,9 @@ void ConversationHandler::SubmitSuggestion(
   OnSuggestedQuestionsChanged();
 }
 
-std::vector<std::string> ConversationHandler::GetSuggestedQuestionsForTest() {
-  std::vector<std::string> suggestions;
-  std::ranges::transform(suggestions_, std::back_inserter(suggestions),
-                         [](const auto& s) { return s.title; });
-  return suggestions;
+const std::vector<ConversationHandler::Suggestion>&
+ConversationHandler::GetSuggestedQuestionsForTest() const {
+  return suggestions_;
 }
 
 void ConversationHandler::SetSuggestedQuestionForTest(std::string title,
@@ -1312,12 +1310,25 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::CanGenerate;
   } else if (!suggestions_.empty() &&
-             suggestions_[0].action_type == mojom::ActionType::SUMMARIZE_PAGE) {
-    // The title for the summarize page suggestion needs to be updated when
-    // the number of associated content items changes.
-    suggestions_[0].title = l10n_util::GetPluralStringFUTF8(
-        IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
-        associated_content_manager_->GetContentDelegateCount());
+             (suggestions_[0].action_type ==
+                  mojom::ActionType::SUMMARIZE_PAGE ||
+              suggestions_[0].action_type ==
+                  mojom::ActionType::SUMMARIZE_VIDEO)) {
+    // Update the title for the summarize page/video suggestion. Note: We always
+    // treat multiple associated content items as a page for now.
+    suggestions_[0].title =
+        associated_content_manager_->IsVideo()
+            ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
+            : l10n_util::GetPluralStringFUTF8(
+                  IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
+                  associated_content_manager_->GetContentDelegateCount());
+    suggestions_[0].prompt =
+        associated_content_manager_->IsVideo()
+            ? l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO)
+            : l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
+    suggestions_[0].action_type = associated_content_manager_->IsVideo()
+                                      ? mojom::ActionType::SUMMARIZE_VIDEO
+                                      : mojom::ActionType::SUMMARIZE_PAGE;
   }
   OnSuggestedQuestionsChanged();
 }

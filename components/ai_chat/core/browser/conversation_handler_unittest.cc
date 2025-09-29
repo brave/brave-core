@@ -146,7 +146,6 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
   mojo::Remote<mojom::ConversationHandler> conversation_handler_;
 };
 
-
 class MockAIChatFeedbackAPI : public AIChatFeedbackAPI {
  public:
   MockAIChatFeedbackAPI() : AIChatFeedbackAPI(nullptr, "") {}
@@ -619,9 +618,9 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
 
   // Should not be any LLM-generated suggested questions yet because they
   // weren't asked for
-  const auto questions = conversation_handler_->GetSuggestedQuestionsForTest();
+  const auto& questions = conversation_handler_->GetSuggestedQuestionsForTest();
   EXPECT_EQ(1u, questions.size());
-  EXPECT_EQ(questions[0], "Summarize this page");
+  EXPECT_EQ(questions[0].title, "Summarize this page");
 
   const auto& history = conversation_handler_->GetConversationHistory();
   ExpectConversationHistoryEquals(FROM_HERE, history, expected_history, false);
@@ -2031,6 +2030,47 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
   testing::Mock::VerifyAndClearExpectations(engine);
 }
 
+TEST_F(ConversationHandlerUnitTest,
+       MaybeSeedOrClearSuggestions_UpdatesWithAssociatedContentType) {
+  associated_content_->SetUrl(GURL("https://www.example.com/"));
+  associated_content_->SetTextContent("Content");
+  associated_content_->SetIsVideo(true);
+
+  base::RunLoop loop1;
+  conversation_handler_->associated_content_manager()->GetContent(
+      loop1.QuitClosure());
+  loop1.Run();
+
+  conversation_handler_->OnAssociatedContentUpdated();
+
+  const auto& suggestions =
+      conversation_handler_->GetSuggestedQuestionsForTest();
+  ASSERT_EQ(suggestions.size(), 1u);
+  EXPECT_EQ(suggestions[0].action_type, mojom::ActionType::SUMMARIZE_VIDEO);
+  EXPECT_EQ(suggestions[0].title,
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO));
+  EXPECT_EQ(suggestions[0].prompt,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO));
+
+  associated_content_->SetIsVideo(false);
+
+  base::RunLoop loop2;
+  conversation_handler_->associated_content_manager()->GetContent(
+      loop2.QuitClosure());
+  loop2.Run();
+  conversation_handler_->OnAssociatedContentUpdated();
+
+  const auto& suggestions2 =
+      conversation_handler_->GetSuggestedQuestionsForTest();
+  ASSERT_EQ(suggestions2.size(), 1u);
+  EXPECT_EQ(suggestions2[0].action_type, mojom::ActionType::SUMMARIZE_PAGE);
+  EXPECT_EQ(suggestions2[0].title,
+            l10n_util::GetPluralStringFUTF8(
+                IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION, 1));
+  EXPECT_EQ(suggestions2[0].prompt,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE));
+}
+
 TEST_F(ConversationHandlerUnitTest, SubmitSuggestion) {
   // Test suggestion removal with associated content because ConversationHandler
   // removes all suggestions after the first query when there is no associated
@@ -2059,16 +2099,21 @@ TEST_F(ConversationHandlerUnitTest, SubmitSuggestion) {
   conversation_handler_->GenerateQuestions();
   run_loop.Run();
 
-  auto suggestions = conversation_handler_->GetSuggestedQuestionsForTest();
-  EXPECT_EQ(5u, suggestions.size());
+  const auto& suggestions1 =
+      conversation_handler_->GetSuggestedQuestionsForTest();
+  EXPECT_EQ(5u, suggestions1.size());
 
   conversation_handler_->SubmitSuggestion("Question 2?");
 
-  suggestions = conversation_handler_->GetSuggestedQuestionsForTest();
+  const auto& suggestions2 =
+      conversation_handler_->GetSuggestedQuestionsForTest();
 
   // Submitted suggestion only should be removed
-  EXPECT_EQ(4u, suggestions.size());
-  EXPECT_THAT(suggestions, testing::Not(testing::Contains("Question 2?")));
+  EXPECT_EQ(4u, suggestions2.size());
+  auto match_it = std::ranges::find_if(
+      suggestions2, [](const auto& s) { return s.title == "Question 2?"; });
+  EXPECT_EQ(match_it, suggestions2.end())
+      << "Question 2? should not be found in suggestions2";
 
   // Generated conversation entry should have suggestion action type
   auto& history = conversation_handler_->GetConversationHistory();
@@ -2119,16 +2164,18 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
        GeneratesQuestionsByDefault) {
   // A conversation not associated with content should have conversation
   // starter suggestions.
-  auto suggestions = conversation_handler_->GetSuggestedQuestionsForTest();
-  EXPECT_EQ(4u, suggestions.size());
+  const auto& suggestions1 =
+      conversation_handler_->GetSuggestedQuestionsForTest();
+  EXPECT_EQ(4u, suggestions1.size());
 
-  auto submitted_suggestion = suggestions[1];
+  auto submitted_suggestion = suggestions1[1].title;
 
   conversation_handler_->SubmitSuggestion(submitted_suggestion);
-  suggestions = conversation_handler_->GetSuggestedQuestionsForTest();
+  const auto& suggestions2 =
+      conversation_handler_->GetSuggestedQuestionsForTest();
 
   // All suggestions should be removed
-  EXPECT_EQ(0u, suggestions.size());
+  EXPECT_EQ(0u, suggestions2.size());
 
   auto& history = conversation_handler_->GetConversationHistory();
   EXPECT_EQ(1u, history.size());
@@ -2148,7 +2195,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   // Suggested question which has a different prompt and title
   conversation_handler_->SetSuggestedQuestionForTest("the thing",
                                                      "do the thing!");
-  auto suggestions = conversation_handler_->GetSuggestedQuestionsForTest();
+  const auto& suggestions =
+      conversation_handler_->GetSuggestedQuestionsForTest();
   EXPECT_EQ(1u, suggestions.size());
 
   // Mock engine response
