@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_LINK_CONTENT_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_LINK_CONTENT_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_URL_CONTENT_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_URL_CONTENT_H_
 
 #include <memory>
 #include <string>
@@ -29,23 +29,23 @@ class PageContentFetcher;
 // Represents a link that has been attached to a conversation.
 // The link will be loaded asynchronously in a background WebContents when
 // |GetContent| is called.
-class AssociatedLinkContent : public AssociatedContentDelegate,
-                              public content::WebContentsObserver {
+class AssociatedURLContent : public AssociatedContentDelegate,
+                             public content::WebContentsObserver {
  public:
-  AssociatedLinkContent(
+  AssociatedURLContent(
       GURL url,
       std::u16string title,
       content::BrowserContext* browser_context,
       base::OnceCallback<void(content::WebContents*)> attach_tab_helpers);
-  ~AssociatedLinkContent() override;
-  AssociatedLinkContent(const AssociatedLinkContent&) = delete;
-  AssociatedLinkContent& operator=(const AssociatedLinkContent&) = delete;
+  ~AssociatedURLContent() override;
+  AssociatedURLContent(const AssociatedURLContent&) = delete;
+  AssociatedURLContent& operator=(const AssociatedURLContent&) = delete;
 
   // AssociatedContentDelegate
   void GetContent(GetPageContentCallback callback) override;
 
  private:
-  friend class TestableAssociatedLinkContent;
+  friend class TestableAssociatedURLContent;
 
   void OnTimeout();
   void OnContentExtractionComplete(std::string content,
@@ -63,9 +63,9 @@ class AssociatedLinkContent : public AssociatedContentDelegate,
   base::OneShotTimer timeout_timer_;
   std::unique_ptr<base::OneShotEvent> content_loaded_event_;
 
-  base::WeakPtrFactory<AssociatedLinkContent> weak_ptr_factory_{this};
+  base::WeakPtrFactory<AssociatedURLContent> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_LINK_CONTENT_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_URL_CONTENT_H_

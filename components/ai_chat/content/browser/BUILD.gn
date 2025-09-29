@@ -14,8 +14,8 @@ static_library("browser") {
     "ai_chat_tab_helper.h",
     "ai_chat_throttle.cc",
     "ai_chat_throttle.h",
-    "associated_link_content.cc",
-    "associated_link_content.h",
+    "associated_url_content.cc",
+    "associated_url_content.h",
     "full_screenshotter.cc",
     "full_screenshotter.h",
     "model_service_factory.cc",
@@ -69,7 +69,7 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
   sources = [
-    "associated_link_content_unittest.cc",
+    "associated_url_content_unittest.cc",
     "page_content_fetcher_unittest.cc",
   ]
 

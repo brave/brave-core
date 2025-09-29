@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/content/browser/associated_link_content.h"
+#include "brave/components/ai_chat/content/browser/associated_url_content.h"
 
 #include <utility>
 
@@ -23,7 +23,7 @@
 
 namespace ai_chat {
 
-AssociatedLinkContent::AssociatedLinkContent(
+AssociatedURLContent::AssociatedURLContent(
     GURL url,
     std::u16string title,
     content::BrowserContext* browser_context,
@@ -48,9 +48,9 @@ AssociatedLinkContent::AssociatedLinkContent(
   content_fetcher_ = std::make_unique<PageContentFetcher>(web_contents_.get());
 }
 
-AssociatedLinkContent::~AssociatedLinkContent() = default;
+AssociatedURLContent::~AssociatedURLContent() = default;
 
-void AssociatedLinkContent::GetContent(GetPageContentCallback callback) {
+void AssociatedURLContent::GetContent(GetPageContentCallback callback) {
   // As we're just loading a link there's no point fetching it again if we have
   // content.
   // Note: If we change this in future we'll need to consider reloading the
@@ -69,7 +69,7 @@ void AssociatedLinkContent::GetContent(GetPageContentCallback callback) {
     // Note: We setup a 30 second timeout to avoid trying to load the page
     // forever.
     timeout_timer_.Start(FROM_HERE, base::Seconds(30),
-                         base::BindOnce(&AssociatedLinkContent::OnTimeout,
+                         base::BindOnce(&AssociatedURLContent::OnTimeout,
                                         weak_ptr_factory_.GetWeakPtr()));
 
     content::NavigationController::LoadURLParams load_params(url());
@@ -81,7 +81,7 @@ void AssociatedLinkContent::GetContent(GetPageContentCallback callback) {
   // loaded
   content_loaded_event_->Post(
       FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<AssociatedLinkContent> self,
+                     [](base::WeakPtr<AssociatedURLContent> self,
                         GetPageContentCallback callback) {
                        if (!self) {
                          return;
@@ -91,13 +91,20 @@ void AssociatedLinkContent::GetContent(GetPageContentCallback callback) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AssociatedLinkContent::OnTimeout() {
+void AssociatedURLContent::OnTimeout() {
   DVLOG(2) << __func__
            << "Background content loading timed out for URL: " << url().spec();
-  CompleteWithError("Load operation timed out");
+
+  // On timeout, try and fetch the page content anyway in case we managed to
+  // partially load the page.
+  SetTitle(web_contents_->GetTitle());
+  content_fetcher_->FetchPageContent(
+      /*invalidation_token=*/"",
+      base::BindOnce(&AssociatedURLContent::OnContentExtractionComplete,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
-void AssociatedLinkContent::DidFinishNavigation(
+void AssociatedURLContent::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInPrimaryMainFrame() ||
       !navigation_handle->HasCommitted()) {
@@ -112,17 +119,17 @@ void AssociatedLinkContent::DidFinishNavigation(
   }
 }
 
-void AssociatedLinkContent::DocumentOnLoadCompletedInPrimaryMainFrame() {
+void AssociatedURLContent::DocumentOnLoadCompletedInPrimaryMainFrame() {
   DVLOG(2) << __func__ << "Page fully loaded for URL: " << url().spec();
   SetTitle(web_contents_->GetTitle());
 
   content_fetcher_->FetchPageContent(
       /*invalidation_token=*/"",
-      base::BindOnce(&AssociatedLinkContent::OnContentExtractionComplete,
+      base::BindOnce(&AssociatedURLContent::OnContentExtractionComplete,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void AssociatedLinkContent::OnContentExtractionComplete(
+void AssociatedURLContent::OnContentExtractionComplete(
     std::string content,
     bool is_video,
     std::string invalidation_token) {
@@ -143,7 +150,7 @@ void AssociatedLinkContent::OnContentExtractionComplete(
   }
 }
 
-void AssociatedLinkContent::CompleteWithError(const std::string& error) {
+void AssociatedURLContent::CompleteWithError(const std::string& error) {
   // Note: We don't actually do anything with the error, just log it in debug
   // mode.
   DVLOG(2) << __func__ << "Background content loading failed: " << error;

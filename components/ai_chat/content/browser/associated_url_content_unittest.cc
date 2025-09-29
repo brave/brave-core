@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/content/browser/associated_link_content.h"
+#include "brave/components/ai_chat/content/browser/associated_url_content.h"
 
 #include <memory>
 #include <string>
@@ -47,29 +47,29 @@ class MockPageContentFetcher : public PageContentFetcher {
 }  // namespace
 
 // Test wrapper that exposes private methods for testing
-class TestableAssociatedLinkContent : public AssociatedLinkContent {
+class TestableAssociatedURLContent : public AssociatedURLContent {
  public:
-  TestableAssociatedLinkContent(GURL url,
-                                std::u16string title,
-                                content::BrowserContext* browser_context)
-      : AssociatedLinkContent(std::move(url),
-                              std::move(title),
-                              browser_context,
-                              base::DoNothing()) {
+  TestableAssociatedURLContent(GURL url,
+                               std::u16string title,
+                               content::BrowserContext* browser_context)
+      : AssociatedURLContent(std::move(url),
+                             std::move(title),
+                             browser_context,
+                             base::DoNothing()) {
     auto fetcher =
         std::make_unique<MockPageContentFetcher>(web_contents_.get());
     mock_fetcher_ = fetcher.get();
     content_fetcher_ = std::move(fetcher);
   }
 
-  ~TestableAssociatedLinkContent() override { mock_fetcher_ = nullptr; }
+  ~TestableAssociatedURLContent() override { mock_fetcher_ = nullptr; }
 
   using AssociatedContentDelegate::set_cached_page_content;
-  using AssociatedLinkContent::DidFinishNavigation;
-  using AssociatedLinkContent::DocumentOnLoadCompletedInPrimaryMainFrame;
-  using AssociatedLinkContent::OnContentExtractionComplete;
-  using AssociatedLinkContent::OnTimeout;
-  using AssociatedLinkContent::web_contents_;
+  using AssociatedURLContent::DidFinishNavigation;
+  using AssociatedURLContent::DocumentOnLoadCompletedInPrimaryMainFrame;
+  using AssociatedURLContent::OnContentExtractionComplete;
+  using AssociatedURLContent::OnTimeout;
+  using AssociatedURLContent::web_contents_;
 
   base::OneShotEvent* content_loaded_event() {
     return content_loaded_event_.get();
@@ -84,18 +84,18 @@ class TestableAssociatedLinkContent : public AssociatedLinkContent {
   raw_ptr<MockPageContentFetcher> mock_fetcher_;
 };
 
-class AssociatedLinkContentTest : public content::RenderViewHostTestHarness {
+class AssociatedURLContentTest : public content::RenderViewHostTestHarness {
  public:
-  AssociatedLinkContentTest()
+  AssociatedURLContentTest()
       : content::RenderViewHostTestHarness(
             base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
-  ~AssociatedLinkContentTest() override = default;
+  ~AssociatedURLContentTest() override = default;
 
-  std::unique_ptr<TestableAssociatedLinkContent> CreateAssociatedLinkContent(
+  std::unique_ptr<TestableAssociatedURLContent> CreateAssociatedURLContent(
       GURL url,
       std::u16string title) {
-    return std::make_unique<TestableAssociatedLinkContent>(url, title,
-                                                           browser_context());
+    return std::make_unique<TestableAssociatedURLContent>(url, title,
+                                                          browser_context());
   }
 
  protected:
@@ -104,9 +104,9 @@ class AssociatedLinkContentTest : public content::RenderViewHostTestHarness {
   std::string test_content() { return "This is test page content"; }
 };
 
-TEST_F(AssociatedLinkContentTest, ConstructorDoesNotTriggerLoad) {
+TEST_F(AssociatedURLContentTest, ConstructorDoesNotTriggerLoad) {
   auto associated_content =
-      CreateAssociatedLinkContent(test_url(), test_title());
+      CreateAssociatedURLContent(test_url(), test_title());
   EXPECT_FALSE(associated_content->content_loaded_event());
   EXPECT_EQ(associated_content->url(), test_url());
   EXPECT_EQ(associated_content->title(), test_title());
@@ -115,10 +115,10 @@ TEST_F(AssociatedLinkContentTest, ConstructorDoesNotTriggerLoad) {
   EXPECT_FALSE(associated_content->cached_page_content().is_video);
 }
 
-TEST_F(AssociatedLinkContentTest,
+TEST_F(AssociatedURLContentTest,
        GetContentResolvesWhenDocumentOnLoadCompletedInPrimaryMainFrame) {
   auto associated_content =
-      CreateAssociatedLinkContent(test_url(), test_title());
+      CreateAssociatedURLContent(test_url(), test_title());
   associated_content->set_page_content_result(test_content(), false);
 
   base::test::TestFuture<PageContent> future;
@@ -132,8 +132,8 @@ TEST_F(AssociatedLinkContentTest,
   EXPECT_FALSE(is_video);
 }
 
-TEST_F(AssociatedLinkContentTest, GetContentWhenCachePopulated) {
-  auto testable_content = CreateAssociatedLinkContent(test_url(), test_title());
+TEST_F(AssociatedURLContentTest, GetContentWhenCachePopulated) {
+  auto testable_content = CreateAssociatedURLContent(test_url(), test_title());
 
   PageContent cached_content(test_content(), false);
   testable_content->set_cached_page_content(cached_content);
@@ -146,9 +146,9 @@ TEST_F(AssociatedLinkContentTest, GetContentWhenCachePopulated) {
   EXPECT_FALSE(result.is_video);
 }
 
-TEST_F(AssociatedLinkContentTest, MultipleGetContentCallsWithEmptyCache) {
+TEST_F(AssociatedURLContentTest, MultipleGetContentCallsWithEmptyCache) {
   auto associated_content =
-      CreateAssociatedLinkContent(test_url(), test_title());
+      CreateAssociatedURLContent(test_url(), test_title());
   associated_content->set_page_content_result(test_content(), false);
 
   base::test::TestFuture<PageContent> future1;
@@ -171,9 +171,9 @@ TEST_F(AssociatedLinkContentTest, MultipleGetContentCallsWithEmptyCache) {
   EXPECT_FALSE(is_video2);
 }
 
-TEST_F(AssociatedLinkContentTest, DidFinishNavigationWithError) {
+TEST_F(AssociatedURLContentTest, DidFinishNavigationWithError) {
   auto associated_content =
-      CreateAssociatedLinkContent(test_url(), test_title());
+      CreateAssociatedURLContent(test_url(), test_title());
 
   base::test::TestFuture<PageContent> future;
   associated_content->GetContent(future.GetCallback());
@@ -190,9 +190,9 @@ TEST_F(AssociatedLinkContentTest, DidFinishNavigationWithError) {
   EXPECT_FALSE(result.is_video);
 }
 
-TEST_F(AssociatedLinkContentTest, DidFinishNavigationNonPrimaryFrame) {
+TEST_F(AssociatedURLContentTest, DidFinishNavigationNonPrimaryFrame) {
   auto associated_content =
-      CreateAssociatedLinkContent(test_url(), test_title());
+      CreateAssociatedURLContent(test_url(), test_title());
 
   base::test::TestFuture<PageContent> future;
   associated_content->GetContent(future.GetCallback());
@@ -208,9 +208,9 @@ TEST_F(AssociatedLinkContentTest, DidFinishNavigationNonPrimaryFrame) {
   EXPECT_FALSE(future.IsReady());
 }
 
-TEST_F(AssociatedLinkContentTest, DidFinishNavigationNotCommitted) {
+TEST_F(AssociatedURLContentTest, DidFinishNavigationNotCommitted) {
   auto associated_content =
-      CreateAssociatedLinkContent(test_url(), test_title());
+      CreateAssociatedURLContent(test_url(), test_title());
 
   base::test::TestFuture<PageContent> future;
   associated_content->GetContent(future.GetCallback());
@@ -226,9 +226,9 @@ TEST_F(AssociatedLinkContentTest, DidFinishNavigationNotCommitted) {
   EXPECT_FALSE(future.IsReady());
 }
 
-TEST_F(AssociatedLinkContentTest, OnContentExtractionCompleteSetsCache) {
+TEST_F(AssociatedURLContentTest, OnContentExtractionCompleteSetsCache) {
   auto associated_content =
-      CreateAssociatedLinkContent(test_url(), test_title());
+      CreateAssociatedURLContent(test_url(), test_title());
 
   base::test::TestFuture<PageContent> future;
   associated_content->GetContent(future.GetCallback());
@@ -247,11 +247,14 @@ TEST_F(AssociatedLinkContentTest, OnContentExtractionCompleteSetsCache) {
   EXPECT_TRUE(cached.is_video);
 }
 
-TEST_F(AssociatedLinkContentTest, TimeoutClearsContentAndCompletesCallback) {
+TEST_F(AssociatedURLContentTest, TimeoutAttemptsToExtractContent) {
   auto associated_content =
-      CreateAssociatedLinkContent(test_url(), test_title());
+      CreateAssociatedURLContent(test_url(), test_title());
 
   base::test::TestFuture<PageContent> future;
+
+  // After timeout we should try and fetch the page content anyway.
+  associated_content->set_page_content_result("", false);
   associated_content->GetContent(future.GetCallback());
 
   // Fast forward past the 30 second timeout
