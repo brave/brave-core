@@ -105,7 +105,8 @@ void BraveNewTabPageUI::BindInterface(
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<searchbox::mojom::PageHandler> receiver) {
   realbox_handler_ = std::make_unique<RealboxHandler>(
-      std::move(receiver), Profile::FromWebUI(web_ui()),
+      std::move(receiver), /*query_controller=*/nullptr,
+      /*composebox_metrics_recorder=*/nullptr, Profile::FromWebUI(web_ui()),
       web_ui()->GetWebContents(), /*metrics_reporter=*/nullptr);
 }
 
