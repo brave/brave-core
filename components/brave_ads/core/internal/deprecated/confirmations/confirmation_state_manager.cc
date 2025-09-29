@@ -106,7 +106,8 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
   TRACE_EVENT(kTraceEventCategory, "ConfirmationStateManager::FromJson", "json",
               json.size());
 
-  std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(json);
+  std::optional<base::Value::Dict> dict =
+      base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   confirmation_tokens_.RemoveAll();
   payment_tokens_.RemoveAllTokens();
 

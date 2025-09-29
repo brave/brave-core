@@ -104,8 +104,8 @@ base::Value::Dict GetSkus(PrefService* local_state) {
 
     // Deserialize the SKUs data from a JSON string stored in local state into a
     // dictionary object for further processing.
-    std::optional<base::Value::Dict> sku_state =
-        base::JSONReader::ReadDict(value.GetString());
+    std::optional<base::Value::Dict> sku_state = base::JSONReader::ReadDict(
+        value.GetString(), base::JSON_PARSE_CHROMIUM_EXTENSIONS);
     if (!sku_state) {
       continue;
     }
