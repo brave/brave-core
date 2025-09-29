@@ -29,6 +29,7 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
 
 // clang-format off
 #define BRAVE_HISTOGRAM_VALUE_LIST                                        \
+  , \
   {ContentSettingsType::BRAVE_ADS, brave_value(0)},                       \
   {ContentSettingsType::BRAVE_COSMETIC_FILTERING, brave_value(1)},        \
   {ContentSettingsType::BRAVE_TRACKERS, brave_value(2)},                  \
