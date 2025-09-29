@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.FeatureList;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
@@ -104,7 +105,9 @@ public class BraveAdaptiveToolbarUiCoordinator extends AdaptiveToolbarUiCoordina
         mAdaptiveToolbarButtonController.addButtonVariant(
                 AdaptiveToolbarButtonVariant.DOWNLOADS, downloadsButtonController);
 
-        if (BraveLeoPrefUtils.isLeoEnabled()) {
+        // Browser tests are failing because we get here before native is initialized.
+        // We dont check this behavior in browser tests, so we can safely just add a check here.
+        if (FeatureList.isNativeInitialized() && BraveLeoPrefUtils.isLeoEnabled()) {
             var leoButtonController =
                     new BraveLeoButtonController(
                             mContext,
@@ -116,7 +119,10 @@ public class BraveAdaptiveToolbarUiCoordinator extends AdaptiveToolbarUiCoordina
                     AdaptiveToolbarButtonVariant.LEO, leoButtonController);
         }
 
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
+        // Browser tests are failing because we get here before native is initialized.
+        // We dont check this behavior in browser tests, so we can safely just add a check here.
+        if (FeatureList.isNativeInitialized()
+                && ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
             var walletButtonController =
                     new BraveWalletButtonController(
                             mContext,
