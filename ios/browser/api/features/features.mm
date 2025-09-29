@@ -30,6 +30,7 @@
 #include "brave/ios/browser/ui/commerce/features.h"
 #include "brave/ios/browser/ui/tab_tray/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
+#include "brave/ios/browser/ui/webui/ai_chat/features.h"
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
 #include "net/base/features.h"
@@ -354,6 +355,11 @@
 + (Feature*)kBraveWalletWebUIIOS {
   return [[Feature alloc]
       initWithFeature:&brave_wallet::features::kBraveWalletWebUIIOS];
+}
+
++ (Feature*)kAIChatWebUIEnabled {
+  return
+      [[Feature alloc] initWithFeature:&ai_chat::features::kAIChatWebUIEnabled];
 }
 
 @end
