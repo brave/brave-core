@@ -31,6 +31,8 @@ brave_settings_web_component_files = [
   "brave_default_extensions_page/brave_default_extensions_page.ts",
   "brave_default_extensions_page/brave_extensions_manifest_v2_subpage.ts",
   "brave_new_tab_page/brave_new_tab_page.ts",
+  "brave_origin_page/brave_origin_page.ts",
+  "brave_origin_page/origin_toggle_button.ts",
   "brave_privacy_page/brave_personalization_options.ts",
   "brave_search_engines_page/brave_search_engines_page.ts",
   "brave_search_engines_page/normal_search_engine_list_dialog.ts",

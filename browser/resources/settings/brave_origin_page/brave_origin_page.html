@@ -1,0 +1,126 @@
+<style include="settings-shared cr-shared-style">
+  .title {
+    font-size: 14px;
+    font-weight: 600;
+    height: 68px;
+  }
+
+  .label.primary-title
+  {
+    font-size: 1.05em;
+    font-weight: 500;
+    padding-top: 1em;
+  }
+
+  .label.secondary-title {
+    padding-bottom: 1em;
+  }
+</style>
+
+<settings-section
+  id="origin"
+  page-title="$i18n{braveOriginTitle}">
+<div>
+  <div class="settings-box first">
+    <div class="flex">
+      <div class="label primary-title">$i18n{braveOriginHeadingTitle}</div>
+      <div class="label secondary secondary-title">
+        <p>$i18n{braveOriginHeadingDescription1}</p>
+        <p>$i18n{braveOriginHeadingDescription2}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cr-row title">$i18n{braveOriginSectionAdsTitle}</div>
+
+  <origin-toggle-button id="toggleRewardsButton"
+      policy-key="BraveRewardsDisabled"
+      inverted
+      label="$i18n{braveOriginRewardsToggleTitle}"
+      icon="product-bat-outline">
+  </origin-toggle-button>
+
+  <div class="cr-row title">$i18n{braveOriginSectionAnalyticsTitle}</div>
+
+  <origin-toggle-button id="toggleP3AButton"
+      policy-key="BraveP3AEnabled"
+      label="$i18n{braveOriginP3AToggleTitle}"
+      icon="bar-chart">
+  </origin-toggle-button>
+
+  <origin-toggle-button id="toggleStatsReportingButton"
+      policy-key="BraveStatsPingEnabled"
+      label="$i18n{braveOriginStatsReportingToggleTitle}"
+      icon="bar-chart">
+  </origin-toggle-button>
+
+  <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
+
+  <origin-toggle-button id="toggleLeoAiButton"
+      policy-key="BraveAIChatEnabled"
+      label="$i18n{braveOriginLeoAiToggleTitle}"
+      icon="product-brave-leo">
+  </origin-toggle-button>
+
+  <origin-toggle-button id="toggleNewsButton"
+      policy-key="BraveNewsDisabled"
+      inverted
+      label="$i18n{braveOriginNewsToggleTitle}"
+      icon="product-brave-news">
+  </origin-toggle-button>
+
+  <origin-toggle-button id="toggleSpeedreaderButton"
+      policy-key="BraveSpeedreaderEnabled"
+      label="$i18n{braveOriginSpeedReaderToggleTitle}"
+      icon="product-speedreader">
+  </origin-toggle-button>
+
+  <origin-toggle-button id="toggleTalkButton"
+      policy-key="BraveTalkDisabled"
+      inverted
+      label="$i18n{braveOriginTalkToggleTitle}"
+      icon="product-brave-talk">
+  </origin-toggle-button>
+
+  <origin-toggle-button id="toggleTorWindowsButton"
+      policy-key="TorDisabled"
+      inverted
+      label="$i18n{braveOriginTorWindowsToggleTitle}"
+      icon="product-tor">
+  </origin-toggle-button>
+
+  <origin-toggle-button id="toggleVpnButton"
+      policy-key="BraveVPNDisabled"
+      inverted
+      label="$i18n{braveOriginVpnToggleTitle}"
+      icon="product-vpn">
+  </origin-toggle-button>
+
+  <origin-toggle-button id="toggleWalletButton"
+      policy-key="BraveWalletDisabled"
+      inverted
+      label="$i18n{braveOriginWalletToggleTitle}"
+      icon="product-brave-wallet">
+  </origin-toggle-button>
+
+  <origin-toggle-button id="toggleWaybackMachineButton"
+      policy-key="BraveWaybackMachineEnabled"
+      label="$i18n{braveOriginWaybackMachineToggleTitle}"
+      icon="window-404">
+  </origin-toggle-button>
+
+  <!-- TODO: Web Discovery policy not yet registered in Brave Origin
+  <origin-toggle-button id="toggleWebDiscoveryProjectButton"
+      policy-key="BraveWebDiscoveryEnabled"
+      label="$i18n{braveOriginWebDiscoveryProjectToggleTitle}"
+      icon="brave-icon-search">
+  </origin-toggle-button>
+  -->
+
+  <cr-link-row class="hr"
+    label="$i18n{braveOriginResetToDefaultsTitle}"
+    on-click="resetToDefaults_"
+    start-icon="refresh">
+  </cr-link-row>
+</div>
+</settings-section>

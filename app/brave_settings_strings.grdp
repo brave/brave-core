@@ -588,6 +588,68 @@
     Shortcuts
   </message>
 
+  <!-- Settings / Brave Origin -->
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_TITLE" desc="The title for the Brave Origin section in settings">
+    Brave Origin
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_HEADING_TITLE" desc="The title for the Brave Origin heading section in settings">
+    Customize your browser while still supporting Brave
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION1" desc="The first paragraph of descriptive text inside the Brave Origin heading section in settings">
+    Brave Origin helps you tune Brave to your liking and removes all in-app promotional offers, branded advertisements and even our anonymous analytics that you may have enabled during installation.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION2" desc="The second paragraph of descriptive text inside the Brave Origin heading section in settings">
+    Any add-ons or features that you have previously enabled or used will remain visible and integrated, while the rest will get disabled. Continue to tune Brave as we deliver new features into the browser. They will appear silently and hidden by default in the Brave Origin control panel.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_ADS_SECTION_TITLE" desc="The title for the 'ads' section of Brave Origin in settings">
+    Ads
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_REWARDS_TOGGLE_TITLE" desc="The title for toggling the 'Rewards' feature on/off for Brave Origin">
+    Rewards
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_ANALYTICS_SECTION_TITLE" desc="The title for the 'analytics' section of Brave Origin in settings">
+    Analytics
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_FEATURES_SECTION_TITLE" desc="The title for the 'features' section of Brave Origin in settings">
+    Features
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_LEO_AI_TOGGLE_TITLE" desc="The title for toggling the 'Leo AI' feature on/off for Brave Origin">
+    Leo AI
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_NEWS_TOGGLE_TITLE" desc="The title for toggling the 'News' feature on/off for Brave Origin">
+    News
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_TALK_TOGGLE_TITLE" desc="The title for toggling the 'News' feature on/off for Brave Origin">
+    Talk
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_WAYBACK_MACHINE_TOGGLE_TITLE" desc="The title for toggling the 'wayback machine' feature on/off for Brave Origin">
+    Wayback Machine
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_SPEED_READER_TOGGLE_TITLE" desc="The title for toggling the 'speedreader' feature on/off for Brave Origin">
+    Speedreader
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_WEB_DISCOVERY_PROJECT_TOGGLE_TITLE" desc="The title for toggling the 'web discovery project' feature on/off for Brave Origin">
+    Web Discovery Project
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_P3A_TOGGLE_TITLE" desc="The title for toggling the 'privacy preserving analytics' feature on/off for Brave Origin">
+    Privacy preserving analytics
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_STATS_REPORTING_TOGGLE_TITLE" desc="The title for toggling the 'statistics reporting' feature on/off for Brave Origin">
+    Statistics reporting
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_TOR_WINDOWS_TOGGLE_TITLE" desc="The title for toggling the 'tor windows' feature on/off for Brave Origin">
+    Tor windows
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_VPN_TOGGLE_TITLE" desc="The title for toggling the 'vpn' feature on/off for Brave Origin">
+    VPN
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_WALLET_TOGGLE_TITLE" desc="The title for toggling the 'wallet' feature on/off for Brave Origin">
+    Wallet
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_RESET_TO_DEFAULTS_TITLE" desc="The title for resetting the toggles for Brave Origin back to their default values">
+    Reset to defaults
+  </message>
+
   <!-- Settings / Brave Rewards -->
   <message name="IDS_SETTINGS_BRAVE_REWARDS_TITLE" desc="The text label for the Rewards settings page">
     Brave Rewards

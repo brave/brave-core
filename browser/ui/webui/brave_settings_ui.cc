@@ -37,6 +37,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_origin/brave_origin_handler.h"
+#include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -259,6 +260,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #endif
   html_source->AddBoolean("isBraveAccountEnabled",
                           brave_account::features::IsBraveAccountEnabled());
+  html_source->AddBoolean("isOriginAllowed",
+                          brave_origin::IsBraveOriginEnabled());
   html_source->AddBoolean(
       "isTreeTabsFlagEnabled",
       base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));

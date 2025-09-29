@@ -242,6 +242,15 @@ RegisterPolymerTemplateModifications({
       peopleEl.insertAdjacentElement('afterend', getStartedEl)
     }
 
+    // Brave Origin
+    const originEl = createMenuElement(
+      loadTimeData.getString('braveOriginTitle'),
+      '/origin',
+      'product-origin',
+      'origin',
+    )
+    getStartedEl.insertAdjacentElement('afterend', originEl)
+
     // Move Appearance item
     const contentEl = createMenuElement(
       loadTimeData.getString('contentSettingsContentSection'),
@@ -251,7 +260,9 @@ RegisterPolymerTemplateModifications({
     )
     const appearanceBrowserEl = getMenuElement(templateContent, '/appearance')
     if (appearanceBrowserEl && contentEl) {
-      getStartedEl.insertAdjacentElement('afterend', appearanceBrowserEl)
+      // Insert after Origin if visible, otherwise after Get Started
+      const insertAfter = originEl.hidden ? getStartedEl : originEl
+      insertAfter.insertAdjacentElement('afterend', appearanceBrowserEl)
       appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
     }
 
