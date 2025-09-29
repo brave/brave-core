@@ -389,10 +389,6 @@
 # see brave/chromium_src/chrome/browser/ui/webui/whats_new/whats_new_util.cc
 -WhatsNewUtilTests.ShouldShowForStateUsesChromeVersionForRefresh
 
-# This test fails because we disable page_image_service::kImageService feature.
--NewTabPageModulesTest.MakeModuleIdDetails_*
--NewTabPageModulesTest.MakeModuleIdNames
-
 # These tests fail because we disable
 # optimization_guide::features::kOptimizationGuideFetchingForSRP
 -ChangePasswordFormFillingSubmissionHelperTest.*
