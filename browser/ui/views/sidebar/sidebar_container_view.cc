@@ -906,7 +906,8 @@ void SidebarContainerView::StartObservingContextualSidePanelEntry(
   // windows also should have same visible side panel.
   if (shared_pinned_tab_service &&
       shared_pinned_tab_service->IsSharedContents(contents)) {
-    if (auto active_entry = registry->active_entry()) {
+    if (auto active_entry =
+            registry->GetActiveEntryFor(SidePanelEntry::PanelType::kContent)) {
       OnEntryShown(*active_entry);
     }
   }
