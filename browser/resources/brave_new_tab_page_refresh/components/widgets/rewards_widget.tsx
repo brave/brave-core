@@ -11,6 +11,7 @@ import Tooltip from '@brave/leo/react/tooltip'
 import { getString } from '../../lib/strings'
 import { useRewardsState, useRewardsActions } from '../../context/rewards_context'
 import { usePluralString } from '../../lib/plural_string'
+import { usePersistedJSON } from '$web-common/usePersistedState'
 import { WidgetMenu } from './widget_menu'
 import { Link, openLink } from '../common/link'
 import { WalletProviderIcon } from '../../../../../components/brave_rewards/resources/shared/components/icons/wallet_provider_icon'
@@ -45,7 +46,7 @@ function getPayoutMonth() {
 export function RewardsWidget() {
   const rewardsEnabled = useRewardsState((s) => s.rewardsEnabled)
   const externalWallet = useRewardsState((s) => s.rewardsExternalWallet)
-  const balance = useRewardsState((s) => s.rewardsBalance)
+  const rewardsBalance = useRewardsState((s) => s.rewardsBalance)
   const exchangeRate = useRewardsState((s) => s.rewardsExchangeRate)
   const payoutStatus = useRewardsState((s) => s.payoutStatus)
   const earnings = useRewardsState((s) => s.minEarningsPreviousMonth)
@@ -53,6 +54,15 @@ export function RewardsWidget() {
   const adsViewed = useRewardsState((s) => s.rewardsAdsViewed)
   const adsViewedString =
     usePluralString('rewardsConnectedAdsViewedText', adsViewed ?? 0)
+  const [cachedBalance, setCachedBalance] = usePersistedJSON<number | null>(
+    'ntp-rewards-balance',
+    (data) => typeof data === 'number' ? data : null)
+
+  React.useEffect(() => {
+    if (rewardsBalance !== null) {
+      setCachedBalance(rewardsBalance)
+    }
+  }, [rewardsBalance])
 
   function renderOnboarding() {
     return (
@@ -244,6 +254,29 @@ export function RewardsWidget() {
     )
   }
 
+  function renderBalance() {
+    const balance = rewardsBalance ?? cachedBalance
+    if (balance === null) {
+      return <div className='balance skeleton' />
+    }
+    return (
+      <div className='balance'>
+        <span className='bat-amount'>
+          {batAmountFormatter.format(balance)}
+        </span>
+        <span className='bat-label'>BAT</span>
+        {
+          exchangeRate &&
+            <span className='exchange'>
+              ≈ {
+              exchangeAmountFormatter.format(balance * exchangeRate)
+              } USD
+            </span>
+        }
+      </div>
+    )
+  }
+
   if (!rewardsEnabled) {
     return renderOnboarding()
   }
@@ -271,24 +304,7 @@ export function RewardsWidget() {
           <div className='header'>
             {getString('rewardsBalanceTitle')}
           </div>
-          <div className='balance'>
-            {
-              balance !== null && <>
-                <span className='bat-amount'>
-                  {batAmountFormatter.format(balance)}
-                </span>
-                <span className='bat-label'>BAT</span>
-                {
-                  exchangeRate &&
-                    <span className='exchange'>
-                      ≈ {
-                      exchangeAmountFormatter.format(balance * exchangeRate)
-                      } USD
-                    </span>
-                }
-              </>
-            }
-          </div>
+          {renderBalance()}
           {renderPayoutStatus() || renderAdsViewed()}
         </div>
       </div>
