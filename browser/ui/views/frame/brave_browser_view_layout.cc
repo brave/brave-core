@@ -47,6 +47,7 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     views::View* vertical_tab_strip_container,
     views::View* toolbar,
     InfoBarContainerView* infobar_container,
+    views::View* main_container,
     views::View* contents_container,
     MultiContentsView* multi_contents_view,
     views::View* left_aligned_side_panel_separator,
@@ -65,6 +66,7 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
           vertical_tab_strip_container,
           toolbar,
           infobar_container,
+          main_container,
           (browser_view ? browser_view->GetContentsContainerForLayoutManager()
                         : browser_view),
           multi_contents_view,
@@ -125,7 +127,7 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
     if (IsInfobarVisible()) {
       return infobar_container_->y();
     }
-    return contents_container_->y() - GetContentsMargins().top();
+    return main_container_->y() - GetContentsMargins().top();
   };
 
   gfx::Rect vertical_tab_strip_bounds = browser_view_->GetLocalBounds();
@@ -208,7 +210,8 @@ void BraveBrowserViewLayout::LayoutInfoBar(gfx::Rect& available_bounds) {
 
 void BraveBrowserViewLayout::LayoutContentsContainerView(
     const gfx::Rect& available_bounds) {
-  gfx::Rect new_rect = available_bounds;
+  main_container_->SetBoundsRect(available_bounds);
+  gfx::Rect new_rect = main_container_->GetLocalBounds();
   if (vertical_tab_strip_host_) {
     // Both vertical tab impls should not be enabled together.
     // https://github.com/brave/brave-browser/issues/48373
@@ -220,7 +223,7 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(
   }
 
   const int top = new_rect.y();
-  const int bottom = browser_view_->height();
+  const int bottom = main_container_->height();
   gfx::Rect contents_container_bounds(new_rect.x(), top, new_rect.width(),
                                       std::max(0, bottom - top));
   if (webui_tab_strip_ && webui_tab_strip_->GetVisible()) {
