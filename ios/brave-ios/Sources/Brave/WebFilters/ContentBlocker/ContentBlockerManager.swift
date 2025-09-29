@@ -430,12 +430,10 @@ import os.log
     )
 
     do {
-      let ruleList = try await Task.detached {
-        return try await self.ruleStore.compileContentRuleList(
-          forIdentifier: identifier,
-          encodedContentRuleList: encodedContentRuleList
-        )
-      }.value
+      let ruleList = try await self.ruleStore.compileContentRuleList(
+        forIdentifier: identifier,
+        encodedContentRuleList: encodedContentRuleList
+      )
       guard let ruleList = ruleList else { throw CompileError.noRuleListReturned }
       Self.signpost.endInterval("compileRuleList", state)
       return ruleList
