@@ -128,7 +128,8 @@ base::Value::Dict SkusInternalsUI::GetOrderInfo(
     }
 
     // Convert to Value as it's stored as string in local state.
-    auto skus = base::JSONReader::ReadDict(kv.second.GetString());
+    auto skus = base::JSONReader::ReadDict(
+        kv.second.GetString(), base::JSON_PARSE_CHROMIUM_EXTENSIONS);
     if (!skus) {
       continue;
     }

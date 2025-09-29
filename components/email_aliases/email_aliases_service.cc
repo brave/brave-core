@@ -205,7 +205,8 @@ void EmailAliasesService::OnRequestAuthenticationResponse(
         l10n_util::GetStringUTF8(IDS_EMAIL_ALIASES_ERROR_NO_RESPONSE_BODY)));
     return;
   }
-  const auto response_body_dict = base::JSONReader::ReadDict(*response_body);
+  const auto response_body_dict = base::JSONReader::ReadDict(
+      *response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!response_body_dict) {
     std::move(callback).Run(base::unexpected(l10n_util::GetStringUTF8(
         IDS_EMAIL_ALIASES_ERROR_INVALID_RESPONSE_BODY)));
@@ -268,7 +269,8 @@ void EmailAliasesService::OnRequestSessionResponse(
     MaybeRequestSessionAgain();
     return;
   }
-  const auto response_body_dict = base::JSONReader::ReadDict(*response_body);
+  const auto response_body_dict = base::JSONReader::ReadDict(
+      *response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!response_body_dict) {
     // Invalid response body, log it and re-request.
     LOG(ERROR) << "Email Aliases service error: Invalid response body";

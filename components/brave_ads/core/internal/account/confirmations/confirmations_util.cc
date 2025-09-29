@@ -42,8 +42,8 @@ bool Verify(const ConfirmationInfo& confirmation) {
     return false;
   }
 
-  std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(credential);
+  std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
+      credential, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!dict) {
     return false;
   }
