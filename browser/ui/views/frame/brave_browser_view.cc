@@ -275,16 +275,17 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_);
   if (can_have_sidebar) {
     // Wrap chromium side panel with our sidebar container
-    auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
+    auto original_side_panel =
+        main_container_->RemoveChildViewT(unified_side_panel_.get());
     sidebar_container_view_ =
-        AddChildView(std::make_unique<SidebarContainerView>(
+        main_container_->AddChildView(std::make_unique<SidebarContainerView>(
             browser_, browser_->GetFeatures().side_panel_coordinator(),
             std::move(original_side_panel)));
     unified_side_panel_ = sidebar_container_view_->side_panel();
 
     if (BraveBrowser::IsBraveWebViewRoundedCornersFeatureEnabled(browser_)) {
       sidebar_separator_view_ =
-          AddChildView(std::make_unique<SidebarSeparator>());
+          main_container_->AddChildView(std::make_unique<SidebarSeparator>());
     }
 
 #if defined(USE_AURA)
