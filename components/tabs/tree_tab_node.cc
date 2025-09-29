@@ -52,7 +52,7 @@ void TreeTabNode::FlattenTreeTabs(TabCollection& root) {
     // * We're going to remove tab tree nodes and insert all children of it to
     // where the tree node is.
     std::vector<std::variant<tabs::TabInterface*, TabCollection*>> children =
-        tree_node->GetChildren();
+        tree_node->GetTreeNodeChildren();
     auto* parent_collection = tree_node->GetParentCollection();
     CHECK(parent_collection)
         << "Tree node should always have a parent collection.";
@@ -74,7 +74,7 @@ void TreeTabNode::FlattenTreeTabs(TabCollection& root) {
     }
 
     // * Remove the tree node itself.
-    CHECK(tree_node->GetChildren().empty())
+    CHECK(tree_node->GetTreeNodeChildren().empty())
         << "Tree node should not have any children at this point.";
     auto tree_node_to_be_removed =
         parent_collection->MaybeRemoveCollection(tree_node);
@@ -122,7 +122,7 @@ void TreeTabNode::CollectTreeNodesRecursively(
 }
 
 std::vector<std::variant<tabs::TabInterface*, tabs::TabCollection*>>
-TreeTabNode::GetChildren() {
+TreeTabNode::GetTreeNodeChildren() {
   const auto& unique_children = GetChildrenStatic(*this);
   std::vector<std::variant<tabs::TabInterface*, TabCollection*>> children;
   children.reserve(unique_children.size());
