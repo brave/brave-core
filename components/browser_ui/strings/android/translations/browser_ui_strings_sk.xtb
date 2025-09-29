@@ -8,7 +8,6 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 • Optimalizátor JavaScriptu je vypnutý. <ph name="BEGIN_LINK2"/>Spravovať výnimky webov<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">Otvoriť online</translation>
 <translation id="1036348656032585052">Vypnúť</translation>
-<translation id="1044891598689252897">Weby budú fungovať normálne</translation>
 <translation id="1070329623210597193">Súbory, ktoré môže tento web čítať alebo upravovať</translation>
 <translation id="1882093842020941518">Pomôžte nám zlepšiť Brave tým, že nám poviete, prečo ste povolili súbory cookie tretích strán. <ph name="BEGIN_LINK"/>Odoslať spätnú väzbu<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Môžete požiadať o zobrazenie verzie webov pre počítače</translation>
@@ -26,6 +25,7 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="129382876167171263">Tu sa zobrazia súbory uložené webmi</translation>
 <translation id="131112695174432497">Dáta, ktoré ovplyvňujú prispôsobenie reklám, sa odstránia</translation>
 <translation id="1317194122196776028">Zabudnúť tento web</translation>
+<translation id="1321110954513621549">Povolená • Približná</translation>
 <translation id="1323433172918577554">Zobraziť viac</translation>
 <translation id="1333965224356556482">Nepovoliť webom zobrazovať polohu</translation>
 <translation id="1343356790768851700">Tento web určuje, čo sa vám páči, a potom navrhuje reklamy iným webom</translation>
@@ -41,6 +41,7 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="1448064542941920355">Znížiť úroveň lupy</translation>
 <translation id="1464044141348608623">Nepovoliť webom zisťovať, kedy aktívne používate zariadenie</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> webe}few{<ph name="SITE_COUNT"/> weboch}many{<ph name="SITE_COUNT"/> sites}other{<ph name="SITE_COUNT"/> weboch}}</translation>
+<translation id="1476700086976862423">Sépiová farba motívu</translation>
 <translation id="1500473259453106018">Skryť kartu Poklesy cien na kartách</translation>
 <translation id="1508931164824684991">Weby môžu používať JavaScript</translation>
 <translation id="1510341833810331442">Weby nemôžu ukladať údaje vo vašom zariadení</translation>
@@ -72,6 +73,7 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="7401204338724669842">Tipy pre Brave</translation>
 <translation id="6704867734300244173">Keď je prepínač zapnutý, Brave je rýchlejší a funkcie používajúce JavaScript by mali fungovať podľa očakávaní. Keď je vypnutý, zníži sa výkonnosť, ale optimalizátor V8 bude odolnejší voči útokom.</translation>
 <translation id="1818308510395330587">Fotoaparát zapnite aj v <ph name="BEGIN_LINK"/>nastaveniach Androidu<ph name="END_LINK"/>, aby mohla aplikácia <ph name="APP_NAME"/> používať RR.</translation>
+<translation id="1848033246551405023">Bezpätkové písmo</translation>
 <translation id="1881806992065048905">Dolný hárok vzhľadu stránky na novej karte</translation>
 <translation id="1887786770086287077">Prístup k polohe je v tomto zariadení vypnutý. Zapnite ho v <ph name="BEGIN_LINK"/>Nastaveniach Androidu<ph name="END_LINK"/>.</translation>
 <translation id="1906181697255754968">Weby zvyčajne získavajú prístup k súborom a priečinkom vo vašom zariadení, aby mohli poskytovať funkcie, ako je automatické ukladanie vašej práce</translation>
@@ -93,6 +95,7 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="2079545284768500474">Späť</translation>
 <translation id="2080070583977670716">Ďalšie nastavenia</translation>
 <translation id="2091887806945687916">Zvuk</translation>
+<translation id="2094208275686143364">Svetlá farba motívu</translation>
 <translation id="2096716221239095980">Odstrániť všetky dáta</translation>
 <translation id="2102396546234652240">Nepovoliť webom používať mikrofón</translation>
 <translation id="2117655453726830283">Nasledujúca snímka</translation>
@@ -120,7 +123,9 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="904887679952026733">Ak je to možné, používajte tmavý režim na weboch, keď ho používa Brave</translation>
 <translation id="2390272837142897736">Zvýšiť úroveň lupy</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
+<translation id="2403474027143565107">Presná</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{Sú udelené povolenia <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> a <ph name="NUM_MORE"/> ďalšie}few{Sú udelené povolenia <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> a <ph name="NUM_MORE"/> ďalšie}many{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, and <ph name="NUM_MORE"/> more allowed}other{Sú udelené povolenia <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> a <ph name="NUM_MORE"/> ďalších}}</translation>
+<translation id="2404857459073803936">Prístup k polohe pre tento web</translation>
 <translation id="2410940059315936967">Na webe, ktorý navštívite, môže byť vložený obsah z iných webov, napríklad obrázky, reklamy a text. Súbory cookie nastavené týmito ďalšími webmi sa nazývajú súbory cookie tretích strán.</translation>
 <translation id="2411116727035790889">Zapnúť skratky</translation>
 <translation id="2433507940547922241">Vzhľad</translation>
@@ -136,6 +141,7 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="2498359688066513246">Pomocník a spätná väzba</translation>
 <translation id="2501278716633472235">Prejsť späť</translation>
 <translation id="2533138527374486328">Keď je táto možnosť zapnutá, weby môžu žiadať o povolenie pripojiť sa k akémukoľvek zariadeniu vo vašej miestnej sieti. Keď je vypnutá, weby sa nemôžu pripájať k zariadeniam v nej.</translation>
+<translation id="2544997614631598250">Tmavá farba motívu</translation>
 <translation id="2546283357679194313">Súbory cookie a dáta webov</translation>
 <translation id="2570922361219980984">Prístup k polohe je vypnutý aj v tomto zariadení. Zapnite ho v <ph name="BEGIN_LINK"/>Nastaveniach Androidu<ph name="END_LINK"/>.</translation>
 <translation id="257931822824936280">Rozbalená (zbalíte ju kliknutím)</translation>
@@ -190,10 +196,10 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="3123473560110926937">Blokované na niektorých weboch</translation>
 <translation id="3132996321662585180">Obnovovať denne</translation>
 <translation id="3143754809889689516">Prehrať od začiatku</translation>
-<translation id="3162899666601560689">Weby môžu pomocou súborov cookie zlepšovať vaše prostredie prehliadania, napríklad zabrániť odhláseniu alebo zapamätať si položky vo vašom nákupnom košíku</translation>
 <translation id="3165022941318558018">Povoľte webu používať súbory cookie tretej strany</translation>
 <translation id="3167868116600277716">Kanál Objaviť</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> uložených dát</translation>
+<translation id="3199078925536734975">Momentálne povolená • Približná</translation>
 <translation id="321187648315454507">Ak chcete povoliť aplikácii <ph name="APP_NAME"/> odosielať vám upozornenia, zapnite ich aj v <ph name="BEGIN_LINK"/>nastaveniach Androidu<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Poloha nie je povolená</translation>
 <translation id="3227137524299004712">Mikrofón</translation>
@@ -248,6 +254,7 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="3803367742635802571">Weby, ktoré navštívite, môžu prestať fungovať podľa plánu</translation>
 <translation id="8338457030135232378">Farby Chromu</translation>
 <translation id="381841723434055211">Telefónne čísla</translation>
+<translation id="3823453485268218808">Písmo Mono</translation>
 <translation id="3826050100957962900">Prihlasovanie tretími stranami</translation>
 <translation id="3835233591525155343">Používanie vášho zariadenia</translation>
 <translation id="1799795508209440035">Brave bude dnes súbory cookie znova blokovať</translation>
@@ -257,9 +264,9 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="3895926599014793903">Vynútiť povolenie priblíženia</translation>
 <translation id="3903738175795615004">Režim celej obrazovky ukončíte presunutím zhora alebo stlačením klávesa Esc.</translation>
 <translation id="3905475044299942653">Zastavenie veľkého množstva upozornení</translation>
-<translation id="3918378745482005425">Niektoré funkcie nemusia fungovať. Súvisiace weby môžu naďalej používať súbory cookie tretej strany.</translation>
 <translation id="3922092564198021702">Otvorte v telefóne Nastavenia</translation>
 <translation id="3933121352599513978">Zbaliť nechcené požiadavky (odporúčané)</translation>
+<translation id="3934905113567851655">Veľkosť zmeníte stiahnutím či roztiahnutím prstov</translation>
 <translation id="3955193568934677022">Povoliť webom prehrávať chránený obsah (odporúčané)</translation>
 <translation id="3955321697524543127">Nepovoliť webom pripájať sa k zariadeniam s rozhraním USB</translation>
 <translation id="3965467402665811906">Weby môžu žiadať o používanie informácií, ktoré o vás uložili</translation>
@@ -272,6 +279,7 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="3992684624889376114">Táto stránka</translation>
 <translation id="4002066346123236978">Názov</translation>
 <translation id="4031179711345676612">Mikrofón je povolený</translation>
+<translation id="4042597221652780603">Približná</translation>
 <translation id="4046123991198612571">Ďalšia skladba</translation>
 <translation id="4077310749977440510">Weby zvyčajne čítajú vašu schránku na poskytovanie funkcií, napríklad aby mohli zachovať formátovanie textu, ktorý ste skopírovali</translation>
 <translation id="4082080074595021446">Výnimky pre konkrétne weby nie sú povolené, pretože zariadenie s Androidom nemá dostatok operačnej pamäte.</translation>
@@ -300,9 +308,11 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="4402755511846832236">Neumožniť webom zistiť, či aktívne používate toto zariadenie</translation>
 <translation id="4412992751769744546">Povoliť súbory cookie tretích strán</translation>
 <translation id="1675197434085185531">Brave blokuje webom možnosť sledovať vás pri prehliadaní pomocou súborov cookie tretích strán. Prejdite do nastavení a <ph name="BEGIN_LINK"/>spravujte prístup k súborom cookie tretej strany<ph name="END_LINK"/>.</translation>
+<translation id="4425416282877905577">Pätkové písmo</translation>
 <translation id="443121186588148776">Sériový port</translation>
 <translation id="4434045419905280838">Vyskakovacie okná a presmerovania</translation>
 <translation id="443552056913301231">Touto akciou odstránite všetky miestne údaje vrátane súborov cookie a resetujete všetky povolenia pre <ph name="ORIGIN"/></translation>
+<translation id="43076815069546662">Dolný hárok farieb Chromu je otvorený na celú výšku</translation>
 <translation id="4468959413250150279">Vypnúť zvuk na konkrétnom webe.</translation>
 <translation id="4475912480633855319">{COOKIES,plural, =1{# súbor cookie}few{# súbory cookie}many{# cookies}other{# súborov cookie}}</translation>
 <translation id="4478158430052450698">Zjednodušenie prispôsobenia lupy pre rôzne weby</translation>
@@ -337,6 +347,7 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="4953688446973710931">Keď je táto možnosť zapnutá, weby môžu žiadať o automatické sťahovanie viacerých súborov. Keď je táto možnosť vypnutá, weby nemôžu automaticky stiahnuť viacero súborov.</translation>
 <translation id="4962975101802056554">Odvolať všetky povolenia pre zariadenie</translation>
 <translation id="4972737347717125191">Weby môžu žiadať o použitie zariadení virtuálnej reality a súvisiacich údajov</translation>
+<translation id="1275242979020712923">Dolný hárok farieb Chromu</translation>
 <translation id="497421865427891073">Ďalej</translation>
 <translation id="4976702386844183910">Naposledy navštívené <ph name="DATE"/></translation>
 <translation id="4978178243417029856">Ďalšie informácie o feede Objaviť</translation>
@@ -386,7 +397,6 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="5515432237048785579">Dolný hárok feedu Objaviť je otvorený na celú výšku</translation>
 <translation id="5516455585884385570">Otvoriť nastavenia upozornení</translation>
 <translation id="5527111080432883924">Pýtať sa, či chcete povoliť webu prístup k textom a obrázkom v schránke (odporúčané)</translation>
-<translation id="5545693483061321551">Weby si nemôžu na základe súborov cookie zobraziť vašu históriu prehliadania v rámci rôznych webov (napríklad na prispôsobenie reklám). Funkcie na niektorých weboch nemusia fungovať.</translation>
 <translation id="5553374991681107062">Najnovšie</translation>
 <translation id="674221630984410403">Nezrýchľovať weby pomocou nástroja V8 Chromu (Brave bude o niečo odolnejší voči útokom)</translation>
 <translation id="5556459405103347317">Znova načítať</translation>
@@ -549,6 +559,7 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="7478658909253570368">Nepovoliť webom pripájať sa k sériovým portom</translation>
 <translation id="7488573225650545859">Skryť Zobrazovať karty v zozname aplikácií</translation>
 <translation id="7521387064766892559">JavaScript</translation>
+<translation id="7538975533793429503">Posúvač veľkosti písma</translation>
 <translation id="7547989957535180761">Keď je táto možnosť zapnutá, weby môžu zobrazovať výzvy na prihlásenie. Keď je táto možnosť vypnutá, weby nemôžu zobrazovať výzvy na prihlásenie.</translation>
 <translation id="7553211568594248088">Ukončiť vyhľadávanie v centre</translation>
 <translation id="7554752735887601236">Váš mikrofón používa nejaký web</translation>
@@ -708,10 +719,5 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:
 <translation id="3110967157686007724">Súkromná karta</translation>
 <translation id="8623552597614912461">Táto stránka sa chystá zdieľať informácie s aplikáciou mimo súkromného režimu.</translation>
 <translation id="8157212814767579028">Opustiť súkromný režim?</translation>
-<translation id="6105125042109106861">Súbory cookie tretích strán sú v anonymnom režime blokované</translation>
-<translation id="6642913673024345959">Blokovanie súborov cookie tretích strán v súkromnom režime</translation>
-<translation id="20460146243579445">Funkcie na niektorých webových stránkach nemusia fungovať v súkromnom režime</translation>
-<translation id="8877838532507724268">V súkromnom režime nemôžu stránky používať vaše súbory cookie na sledovanie vašej aktivity pri prehliadaní rôznych stránok, dokonca ani príbuzných stránok. Vaša aktivita pri prehliadaní sa nepoužíva na účely, ako je prispôsobovanie reklám. Funkcie na niektorých stránkach nemusia fungovať.</translation>
-<translation id="1856888821396498049">Blokovať súbory cookie tretích strán v súkromnom režime:</translation>
 <translation id="1593610935874634135">Spoločnosť môže definovať skupinu webových lokalít, ktoré môžu používať súbory cookie na zdieľanie vašej aktivity v skupine. Táto možnosť je vypnutá v režime Súkromné.</translation>
 </translationbundle>

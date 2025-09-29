@@ -8,7 +8,6 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 • “JavaScript optimizer“ parametri oʻchiq. <ph name="BEGIN_LINK2"/>Istisno saytlarni boshqarish<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">Onlayn versiyasini ochish</translation>
 <translation id="1036348656032585052">O‘chirib qo‘yish</translation>
-<translation id="1044891598689252897">Saytlar xatosiz ishlaydi</translation>
 <translation id="1070329623210597193">Bu sayt ochishi yoki tahrirlashi mumkin fayllar</translation>
 <translation id="1882093842020941518">Tashqi cookie fayllarga nega ruxsat berganingiz sababini yozish orqali Braveni yaxshilashimizga yordam bering. <ph name="BEGIN_LINK"/>Fikr-mulohaza<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Saytlarning kompyuter versiyasini ochishga ruxsat soʻrash mumkin</translation>
@@ -26,6 +25,7 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="129382876167171263">Saytlardan saqlangan fayllar shu yerda chiqadi</translation>
 <translation id="131112695174432497">Reklamani moslashtirishga aloqador axborot oʻchirildi</translation>
 <translation id="1317194122196776028">Bu saytni olib tashlash</translation>
+<translation id="1321110954513621549">Ruxsat etildi • Taxminiy</translation>
 <translation id="1323433172918577554">Yana</translation>
 <translation id="1333965224356556482">Saytlarga joylashuvingiz axborotini koʻrishni taqiqlash</translation>
 <translation id="1343356790768851700">Bu sayt sizga qiziq narsalarni aniqlashi va boshqa saytlarga taklif qilishi mumkin</translation>
@@ -41,6 +41,7 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="1448064542941920355">Kichiklashtirish</translation>
 <translation id="1464044141348608623">Saytlarning qurilmadan foydalanish axborotidan foydalanishini taqiqlash</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> ta sayt}other{<ph name="SITE_COUNT"/> ta sayt}}</translation>
+<translation id="1476700086976862423">Mavzu rangi: sepiya</translation>
 <translation id="1500473259453106018">Varaqlarda narx pasayishi bildirgisini berkitish</translation>
 <translation id="1508931164824684991">Saytlar JavasSript ishlatishi mumkin</translation>
 <translation id="1510341833810331442">Saytlar maʼlumotlarni qurilmangizga saqlay olmaydi</translation>
@@ -72,6 +73,7 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="7401204338724669842">Brave maslahatlari</translation>
 <translation id="6704867734300244173">Yoqilsa, Brave tezroq ishlaydi va JavaScript ishlatadigan funksiyalar bexato ishlaydi. Yoqilmasa, unumdorlik pasayadi, ammo V8 hujumlarga yaxshiroq qarshilik qiladi.</translation>
 <translation id="1818308510395330587"><ph name="APP_NAME"/> AR ishlatishi uchun <ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali kamerani yoqing.</translation>
+<translation id="1848033246551405023">Shrift: Sans Serif</translation>
 <translation id="1881806992065048905">Yangi varaq sahifasi dizayni quyi ekrani</translation>
 <translation id="1887786770086287077">Bu qurilmada Joylashuvni aniqlash xizmati yoqilmagan, uni <ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali yoqing.</translation>
 <translation id="1906181697255754968">Saytlar odatda yopilmagan ishlaringizni saqlash maqsadida qurilmangizdagi fayllar va jildlar bilan ishlaydi</translation>
@@ -93,6 +95,7 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="2079545284768500474">Bekor qilish</translation>
 <translation id="2080070583977670716">Kengaytirilgan sozlamalar</translation>
 <translation id="2091887806945687916">Tovush</translation>
+<translation id="2094208275686143364">Mavzu rangi: kunduzgi</translation>
 <translation id="2096716221239095980">Hammasini oʻchirish</translation>
 <translation id="2102396546234652240">Saytlarga mikrofondan foydalanishni taqiqlash</translation>
 <translation id="2117655453726830283">Keyingi slayd</translation>
@@ -120,7 +123,9 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="904887679952026733">Brave tungi mavzudan foydalansa, saytlarga ham u tatbiq etiladi</translation>
 <translation id="2390272837142897736">Kattalashtirish</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
+<translation id="2403474027143565107">Aniq</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{Ruxsat berildi: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> va yana <ph name="NUM_MORE"/> ta}other{Ruxsat berildi: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> va yana <ph name="NUM_MORE"/> ta}}</translation>
+<translation id="2404857459073803936">Bu sayt uchun joylashuvga ruxsat</translation>
 <translation id="2410940059315936967">Siz kirgan sayt boshqa saytlardagi kontentni, masalan, rasmlar, reklamalar va matnlarni joylashtirishi mumkin. Ushbu boshqa saytlar belgilaydigan cookie fayllar tashqi cookie fayllar hisoblanadi.</translation>
 <translation id="2411116727035790889">Tezkor tugmalarni yoqish</translation>
 <translation id="2433507940547922241">Tashqi ko‘rinish</translation>
@@ -136,6 +141,7 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="2498359688066513246">Yordam/fikr-mulohaza</translation>
 <translation id="2501278716633472235">Ortga qaytish</translation>
 <translation id="2533138527374486328">Yoqilsa, saytlar mahalliy tarmoqdagi istalgan qurilmaga ulanish uchun ruxsat soʻrashi mumkin. Yoqilmasa, saytlar mahalliy tarmoqdagi qurilmalarga ulana olmaydi.</translation>
+<translation id="2544997614631598250">Mavzu rangi: tungi</translation>
 <translation id="2546283357679194313">Cookie fayllari va sayt ma’lumotlari</translation>
 <translation id="2570922361219980984">Bu qurilmada joylashuv xizmati yoqilmagan, uni <ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali yoqing.</translation>
 <translation id="257931822824936280">Kengaytirilgan - yig‘ish uchun bosing</translation>
@@ -190,10 +196,10 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="3123473560110926937">Ayrim saytlarda bloklangan</translation>
 <translation id="3132996321662585180">Kunlik yangilash</translation>
 <translation id="3143754809889689516">Boshidan ijro etish</translation>
-<translation id="3162899666601560689">Saytlar sahifalarni kezishingizni yaxshilash, jumladan, kirish axborotingiz yoki xarid qutingizni eslab qolish uchun cookie fayllardan foydalanishi mumkin</translation>
 <translation id="3165022941318558018">Saytga tashqi cookie fayllardan foydalanishga ruxsat beriladi</translation>
 <translation id="3167868116600277716">Discover tasmasi</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> xotira band</translation>
+<translation id="3199078925536734975">Shu safar ruxsat berildi • Taxminiy</translation>
 <translation id="321187648315454507"><ph name="APP_NAME"/> sizga bildirishnomalar yuborishi uchun <ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali bildirishnomalarni yoqing.</translation>
 <translation id="3223425961342298674">Joylashuv axborotiga kirishga ruxsat berilmagan</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
@@ -248,6 +254,7 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="3803367742635802571">Siz tashrif buyurgan saytlar toʻgʻri ishlamay qolishi mumkin</translation>
 <translation id="8338457030135232378">Brave ranglari</translation>
 <translation id="381841723434055211">Telefon raqamlari</translation>
+<translation id="3823453485268218808">Shrift: Mono</translation>
 <translation id="3826050100957962900">Tashqi xizmatga kirish</translation>
 <translation id="3835233591525155343">Qurilmadan foydalanish</translation>
 <translation id="1799795508209440035">Brave cookie fayllarni bugundan yana bloklaydi</translation>
@@ -257,9 +264,9 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="3895926599014793903">Hajmni majburiy o‘zgartirish funksiyasini yoqish</translation>
 <translation id="3903738175795615004">Butun ekrandan chiqish uchun tepadan pastga torting yoki Esc tugmasini bosing.</translation>
 <translation id="3905475044299942653">Koʻp bildirishnomalar kelishini toʻxtatadi</translation>
-<translation id="3918378745482005425">Ayrim funksiyalar ishlamasligi mumkin. Tegishli saytlar tashqi cookie fayllaridan foydalanishda davom etishi mumkin.</translation>
 <translation id="3922092564198021702">Telefonda sozlamalarni oching</translation>
 <translation id="3933121352599513978">Keraksiz soʻrovlarni yigʻish (tavsiya etiladi)</translation>
+<translation id="3934905113567851655">Hajmini oʻzgartirish uchun chimding</translation>
 <translation id="3955193568934677022">Saytlarga himoyalangan kontentni ijro qilish uchun ruxsat berish (tavsiya etiladi)</translation>
 <translation id="3955321697524543127">Saytlarga USB qurilmalarga ulanishni taqiqlash</translation>
 <translation id="3965467402665811906">Saytlar shaxsiy maʼlumotlaringizdan foydalanishga ruxsat soʻrashi mumkin</translation>
@@ -272,6 +279,7 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="3992684624889376114">Bu sahifa haqida</translation>
 <translation id="4002066346123236978">Nomi</translation>
 <translation id="4031179711345676612">Mikrofondan foydalanish mumkin</translation>
+<translation id="4042597221652780603">Taxminiy</translation>
 <translation id="4046123991198612571">Keyingi musiqa</translation>
 <translation id="4077310749977440510">Saytlar odatda nusxalanayotgan matn formatini saqlab qolish uchun klipbord axborotini oʻqiydi</translation>
 <translation id="4082080074595021446">Android qurilmalarida RAM xotirasi yetarli emasligi uchun taqiqlangan muayyan saytlardan tashqari.</translation>
@@ -300,9 +308,11 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="4402755511846832236">Bu qurilmadan foydalanish axborotlarini saytlar bilishini taqiqlash</translation>
 <translation id="4412992751769744546">Tashqi saytlarga cookie fayllarni saqlashga ruxsat berish</translation>
 <translation id="1675197434085185531">Brave saytlarni kezishda sizni kuzatish uchun tashqi cookie fayllardan foydalanuvchi saytlarni bloklaydi. Sozlamalar orqali <ph name="BEGIN_LINK"/>tashqi cookie fayllariga ruxsatni boshqarish mumkin<ph name="END_LINK"/>.</translation>
+<translation id="4425416282877905577">Shrift: Serif</translation>
 <translation id="443121186588148776">Ketma-ket port</translation>
 <translation id="4434045419905280838">Qalquvchi oyna va yo‘naltirishlar</translation>
 <translation id="443552056913301231">Bunda qurilmadagi cookie fayllar kabi barcha maʼlumotlar oʻchib ketadi va <ph name="ORIGIN"/> saytining barcha ruxsatlari tiklanadi</translation>
+<translation id="43076815069546662">Brave ranglar quyi ekrani toʻliq hajmda ochildi</translation>
 <translation id="4468959413250150279">Muayyan saytdagi ovozni o‘chirish.</translation>
 <translation id="4475912480633855319">{COOKIES,plural, =1{# ta cookie}other{# ta cookie}}</translation>
 <translation id="4478158430052450698">Foydalanuvchilarga turli saytlar masshtabini oʻzgartirishni osonlashtirish</translation>
@@ -337,6 +347,7 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="4953688446973710931">Yoqilsa, saytlar avtomat tarzda bir nechta fayl yuklab olish uchun ruxsat soʻrashi mumkin Oʻchirilsa, yuklay olmaydi.</translation>
 <translation id="4962975101802056554">Qurilma uchun barcha ruxsatnomalarni bekor qilish</translation>
 <translation id="4972737347717125191">Saytlar virtual reallik qurilmalari va axborotlardan foydalanishga ruxsat soʻray oladi</translation>
+<translation id="1275242979020712923">Brave ranglar quyi ekrani</translation>
 <translation id="497421865427891073">Oldinga</translation>
 <translation id="4976702386844183910">Oxirgi tashrif: <ph name="DATE"/></translation>
 <translation id="4978178243417029856">Discover tasmasi haqida batafsil</translation>
@@ -386,7 +397,6 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="5515432237048785579">Tasmani varaqlash quyi ekrani toʻliq hajmda ochildi</translation>
 <translation id="5516455585884385570">Bildirishnoma sozlamalarini ochish</translation>
 <translation id="5527111080432883924">Saytlarga klipborddagi matn va rasmlarni ko‘rishga ruxsat berishdan oldin so‘ralsin (tavsiya etiladi)</translation>
-<translation id="5545693483061321551">Saytlar reklamalarni sizga moslashtirish uchun brauzerdagi faoliyatingizni kuzata olmaydi Ayrim saytlardagi funksiyalar ishlamay qolishi mumkin.</translation>
 <translation id="5553374991681107062">Eng oxirgi</translation>
 <translation id="674221630984410403">Brave V8 tizimidagi saytlar ishlashini sekinlatish, Brave brauzerining hujumlardan himoyasini esa oshirish</translation>
 <translation id="5556459405103347317">Qayta yuklash</translation>
@@ -549,6 +559,7 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="7478658909253570368">Saytlarga seriyali portlarga ulanishni taqiqlash</translation>
 <translation id="7488573225650545859">Ilovalar roʻyxatida varaqlarni ochish panelini berkitish</translation>
 <translation id="7521387064766892559">JavaScript</translation>
+<translation id="7538975533793429503">Shrift oʻlchami slayderi</translation>
 <translation id="7547989957535180761">Yoqilsa, saytlar kirish soʻrovlarini koʻrsatishi mumkin. Oʻchirilsa, koʻrsata olmaydi.</translation>
 <translation id="7553211568594248088">Qidiruv sahifasini tark etish</translation>
 <translation id="7554752735887601236">Sayt mikrofondan foydalanmoqda</translation>
@@ -708,10 +719,5 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="3110967157686007724">Maxfiy varaq</translation>
 <translation id="8623552597614912461">Bu sayt axborotlaringizni Maxfiy rejim tashqarisidagi ilovaga ulashadi.</translation>
 <translation id="8157212814767579028">Maxfiy rejimdan chiqilsinmi?</translation>
-<translation id="6105125042109106861">Tashqi cookie-fayllar Maxfiy rejimda bloklanadi</translation>
-<translation id="6642913673024345959">Maxfiy rejimda tashqi cookie-fayllarni bloklash</translation>
-<translation id="20460146243579445">Ayrim saytlardagi funksiyalar Maxfiy rejimda ishlamasligi mumkin</translation>
-<translation id="8877838532507724268">Maxfiy rejimda saytlardagi, hatto aloqador saytlardagi xatti-harakatlaringizni kuzatish uchun ham saytlar cookie-fayllardan foydalana olmaydi. Brauzerdan foydalanish xatti-harakatlaringiz reklamalarni moslash kabilar uchun ishlatilmaydi. Ayrim saytlardagi funksiyalar ishlamasligi mumkin.</translation>
-<translation id="1856888821396498049">Maxfiy rejimda tashqi cookie-fayllarni bloklash:</translation>
 <translation id="1593610935874634135">Kompaniya muayyan saytlar guruhidagi xatti-harakatlaringizni ulashish uchun cookie-fayllardan foydalana oladigan saytlar guruhini belgilashi mumkin. Bu funksiya Maxfiy rejimda faolsizlantiriladi.</translation>
 </translationbundle>

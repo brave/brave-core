@@ -81,6 +81,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="9220324636239049437">S tem bo iz te naprave izbrisan 1 element. Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="2018879682492276940">Namestitev ni uspela. Poskusite znova.</translation>
 <translation id="831418749472885028">Če želite preveriti, ali so druga gesla varna pred podatkovnimi kršitvami in drugimi varnostnimi težavami, <ph name="BEGIN_LINK"/>se prijavite v Brave<ph name="END_LINK"/>.</translation>
+<translation id="2039417478970545937">Nastavitve.</translation>
 <translation id="5499149312981370855">Izberite, ali želite, da je zaradi osebno bolj prilagojenih izkušenj v Googlovih storitvah vključena zgodovina v Braveu.</translation>
 <translation id="5888420425384578947">Če želite prejemati prihodnje posodobitve Bravea, potrebujete macOS 12 ali novejšo različico. V tem računalniku je nameščen macOS 11.</translation>
 <translation id="2472891440303445472">Brave je blokiral ta prenos, ker je datoteka zavajajoča in v napravi morda izvaja nepričakovane spremembe</translation>
@@ -99,8 +100,10 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="457168681575748148">Če želite dostopati do naslovov in drugega v vseh napravah, se prijavite v Brave. Ta naslov bo po prijavi shranjen v računu Brave.</translation>
 <translation id="5659384504794665581">Če računalnik souporabljate z drugimi, lahko prijatelji in sorodniki ločeno brskajo ter nastavijo Brave tako, kot ga želijo.</translation>
 <translation id="8984404842684436004">{NUM_TABS,plural, =1{Brave priporoča, da začasno zaustavite zavihek, ki upočasnjuje brskalnik}one{Brave priporoča, da začasno zaustavite zavihke, ki upočasnjujejo brskalnik}two{Brave priporoča, da začasno zaustavite zavihke, ki upočasnjujejo brskalnik}few{Brave priporoča, da začasno zaustavite zavihke, ki upočasnjujejo brskalnik}other{Brave priporoča, da začasno zaustavite zavihke, ki upočasnjujejo brskalnik}}</translation>
+<translation id="2307973900865360088">Obdrži v vrstici Dock</translation>
 <translation id="7810992039564280750">Preveri URL-je, tako da jih primerja s seznamom spletnih mest, ki niso varna, shranjenim v Braveu. Če vam spletno mesto poskusi ukrasti geslo ali če prenašate škodljivo datoteko, lahko Brave prav tako pošlje URL-je, vključno z delčki vsebine strani, Varnemu brskanju.</translation>
 <translation id="9095263438435683933">Če želite poslati telefonsko številko od tukaj v telefon Android, se prijavite v Brave v obeh napravah.</translation>
+<translation id="2356070529366658676">Vprašaj</translation>
 <translation id="2359808026110333948">Naprej</translation>
 <translation id="6485997157403727556">Razširitev »<ph name="EXTENSION_NAME"/>« želi, da se prijavite v Brave</translation>
 <translation id="7017760840808989683">Onemogoči Brave, ki se izvaja v ozadju za aplikacije</translation>
@@ -186,10 +189,12 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="518125528057094977">Brave vas bo opozoril pred nalaganjem katerega koli spletnega mesta prek povezave, ki ni varna</translation>
 <translation id="8652321858775514885">Ko zaprete vsa Braveova okna, boste odjavljeni z večine spletnih mest z izjemo računa Brave, če ste prijavljeni v Brave. Če želite, da si vas spletna mesta zapomnijo, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">zgornji desni kot območja za iskanje: desno <ph name="RIGHT"/> %, zgoraj <ph name="TOP"/> %</translation>
+<translation id="7261356974224431851">Podatki v Braveu v vašem računu</translation>
 <translation id="3369405342922656244">Iščite po tej strani s slikovnim iskanjem</translation>
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">Želite preklopiti na obstoječi profil v Braveu?</translation>
 <translation id="3412460710772753638">V Upravitelju gesel v tej napravi</translation>
+<translation id="7304389940068374923">Brave prilagajamo vam …</translation>
 <translation id="9216183508558772570">Brave vas bo obvestil, če se prijavite z ogroženim geslom</translation>
 <translation id="5853262807109651878">S tem bo iz te naprave izbrisanih več elementov (<ph name="ITEMS_COUNT"/>). Če želite pozneje prenesti podatke, se v Brave prijavite kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Bližnjica <ph name="SHORTCUT"/> omogoča preklop med profili v Braveu</translation>
@@ -203,6 +208,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="3066805437003400520">Podatki brskanja te osebe bodo izbrisani iz te naprave. Če želite podatke obnoviti, se prijavite v Brave kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="7029305463989165490">Če želite telefonsko številko iz <ph name="ORIGIN"/> poslati v telefon Android, se prijavite v Brave v obeh napravah.</translation>
 <translation id="3667616615096815454">Namestitev ni mogoča, ker strežnik ne pozna aplikacije.</translation>
+<translation id="1128485277465085828">Za šifriranje vseh podatkov v Braveu v računu Brave uporabite <ph name="BEGIN_LINK"/>svoje geslo<ph name="END_LINK"/>. Plačilna sredstva in naslovi iz Googla Pay ne bodo šifrirani. Zgodovina brskanja v Braveu se ne bo sinhronizirala.</translation>
 <translation id="4304059894777924102">Brave ne more preveriti gesel. Poskusite preveriti internetno povezavo.</translation>
 <translation id="1807774211756215222">Odpiranje povezave na novem &amp;zavihku v Braveu</translation>
 <translation id="387105482057676379">Povežite Brave in druge Googlove storitve za osebno prilagajanje in druge namene</translation>
@@ -299,10 +305,12 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="1895567721497166950">Kliknite, če želite zapreti pogovorno okno za prijavo v Brave</translation>
 <translation id="2692971232706994729">S profili v Braveu lahko ločite vse stvari v Braveu. Ustvarite profile za prijatelje in svojce ali ustvarite ločene za delo in zabavo.</translation>
 <translation id="7406627712452599344">Gostje lahko uporabljajo Brave, ne da bi za seboj pustili kar koli.</translation>
+<translation id="844471735881341044">Vaš račun v Braveu</translation>
 <translation id="5952898964075639679">Dodajte se v Brave</translation>
 <translation id="1204184037023366446">Brave potrebuje dovoljenje za sledenje potezam dlani</translation>
 <translation id="5406591571925937375">Nedavno niste obiskali tega mesta. Brave je odstranil ta dovoljenja: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/>.</translation>
 <translation id="5174969993834422967">Obvestila običajno blokirate. Če želite dovoliti, da vas to spletno mesto obvešča, kliknite ikono obvestila v desnem kotu vrstice z lokacijo.</translation>
+<translation id="5174983315706567306">Premalo prostora na disku.</translation>
 <translation id="8157129267754368853">Račun Brave zahteva vnovično preverjanje pristnosti</translation>
 <translation id="9078804073692109646">Ni shranjenih gesel. Brave lahko preveri gesla, če jih shranite.</translation>
 <translation id="6234515504547364178">Odjava iz Bravea</translation>
@@ -375,6 +383,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="3693188491491843187">Pospešite Brave</translation>
 <translation id="5849446944780602366">Prilagodite in nadzirajte Brave. Posodobitev je na voljo.</translation>
 <translation id="5711722515923392428">Vklopljeno • Brave ne more preveriti, od kod izvira ta razširitev</translation>
+<translation id="6355366566986893068">Vaš račun v Braveu</translation>
 <translation id="7433698744896946664">Omogočanje razširitve za prikaz zahtev za dostop v orodni vrstici Bravea</translation>
 <translation id="4168372721886011198">Datoteka <ph name="FILE_NAME"/> je nevarna, zato jo je Brave blokiral.</translation>
 <translation id="991182453936521413">Brave se bo kmalu zaprl in izbrisal bo podatke</translation>
@@ -429,6 +438,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="3507835409099344374">Odprite nastavitve obvestil v Braveu</translation>
 <translation id="6600016381025017075">Poiščite kar koli na tej strani</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
+<translation id="3119017564683030312">Nadaljujte, kjer ste končali: Brave je obnovil zavihke iz zadnje seje. To lahko izklopite v</translation>
 <translation id="245693535809364497">Brave potrebuje dovoljenje za dostop do fotoaparata zaradi ustvarjanja tridimenzionalnega zemljevida okolice.</translation>
 <translation id="9210457680074341078">Če v računu Brave shranite tudi zaznamke, lahko v Braveu spremljate cene izdelkov in prejmete obvestilo, ko se cena zniža</translation>
 <translation id="6676384891291319759">Dostop do interneta</translation>
@@ -473,6 +483,7 @@ Nekatere funkcije morda ne bodo na voljo. Določite drug imenik profila ali upor
 <translation id="1008530050039597147">Brave potrebuje dovoljenje za fotoaparat za to spletno mesto.</translation>
 <translation id="1197672524850678392">Bravea ni bilo mogoče zagnati. Poskusite znova.</translation>
 <translation id="3405035915691517126">Brave ne more preveriti gesel. Poskusite znova čez 24 ur.</translation>
+<translation id="3625983487600668413">Brave naj ostane v vrstici Dock, da lahko kadar koli hitro dostopate do njega</translation>
 <translation id="5755581833598928580">Uporaba Bravea ob vsakem kliku povezav v sporočilih, dokumentih in drugih aplikacijah</translation>
 <translation id="5516268345616100622">Upravitelj opravil – Brave</translation>
 <translation id="713191641919118540">Vaša zanimanja po Braveovi oceni</translation>
@@ -486,10 +497,12 @@ Nekatere funkcije morda ne bodo na voljo. Določite drug imenik profila ali upor
 Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="7339898014177206373">Novo okno</translation>
 <translation id="3511996232906761537">Tu so shranjeni vaš splet, zaznamki in druge stvari v Braveu.</translation>
+<translation id="1754899895078387289">Vaše šifrirane podatke lahko bere samo oseba, ki ima vaše geslo. Geslo ni poslano Googlu in ga Brave ne hrani. Če pozabite geslo ali želite to nastavitev spremeniti, morate <ph name="BEGIN_LINK"/>izbrisati podatke iz Bravea v računu<ph name="END_LINK"/>.</translation>
 <translation id="5380963249588143069">Skrbnik sistema je Brave nastavil tako, da za dostop do <ph name="TARGET_URL_HOSTNAME"/> odpre brskalnik <ph name="ALTERNATIVE_BROWSER_NAME"/>.</translation>
 <translation id="7352651011704765696">Prišlo je do neznane težave</translation>
 <translation id="2865744782251083875">Nedavno niste obiskali tega mesta. Brave je odstranil ti dovoljenji: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>.</translation>
 <translation id="4631170166710903214">Ta razširitev ni več podprta. Brave priporoča, da jo odstranite.</translation>
+<translation id="7951152294775418909">Nadaljujte, kjer ste končali: Brave ob vsakem vnovičnem zagonu obnovi zavihke. Če želite to izklopiti, odprite</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – različica Bravea za razvijalce</translation>
 <translation id="7450541714075000668">Besedilo je kopirano.</translation>
 <translation id="2034072705932785495">Brave potrebuje dovoljenje za dostop do fotoaparata za to spletno mesto</translation>
@@ -523,6 +536,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="7845233973568007926">Hvala, ker ste se odločili za namestitev. Preden uporabite <ph name="BUNDLE_NAME"/>, morate znova zagnati računalnik.</translation>
 <translation id="7963515534397191222">Bravea ni bilo mogoče posodobiti na najnovejšo različico, zato nimate novih funkcij in varnostnih popravkov.</translation>
 <translation id="7872446069773932638">Prenašanje … Še <ph name="SECONDS"/> s.</translation>
+<translation id="5545136190679883344">Če ste pozabili geslo ali želite to nastavitev spremeniti, <ph name="BEGIN_LINK"/>izbrišite podatke iz Bravea v računu<ph name="END_LINK"/>.</translation>
 <translation id="7877212753140190672">Vprašajte o tej sliki</translation>
 <translation id="5687542525349822727">Nastavite Brave kot privzeto možnost</translation>
 <translation id="6396151137840491551">Povezave, ki niso varne, Brave samodejno nadgradi na HTTPS, ko je to mogoče</translation>
@@ -571,6 +585,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="4378573854226202617">Za Brave potrebujete Windows 10 ali novejšega.</translation>
 <translation id="6431861494713261006">Izbirno: Pomagajte izboljšati funkcije sistema Chrome OS in njegovo delovanje s samodejnim pošiljanjem diagnostičnih podatkov in podatkov o uporabi Googlu.</translation>
 <translation id="8691137711639873980">Če želite v računu Brave uporabljati in shranjevati podatke iz Bravea, potrdite, da ste to vi</translation>
+<translation id="3251012123600267109">Pokaže pozive za prijavo v Brave</translation>
 <translation id="2097604701283463988">Brave je zastarel</translation>
 <translation id="871233388178581868">Brave lahko preveri gesla, če jih shranite</translation>
 <translation id="8555465886620020932">Napaka storitve: <ph name="SERVICE_ERROR"/>.</translation>
@@ -588,10 +603,10 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="8712637175834984815">Razumem</translation>
 <translation id="1419543648228375718">Se želite prijaviti v Brave?</translation>
 <translation id="8747073452963259673">spodnji levi kot območja za iskanje: levo <ph name="LEFT"/> %, spodaj <ph name="BOTTOM"/> %</translation>
-<translation id="3562508460098852626">Gesla je mogoče izbrisati samo zunaj Bravea</translation>
 <translation id="878572486461146056">Napaka pri namestitvi: Skrbnik omrežja je uveljavil pravilnik skupine, ki preprečuje namestitev: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Brave potrebuje dovoljenje za dostop do fotoaparata in mikrofona za to spletno mesto</translation>
 <translation id="64216977793816291">Ali se želite prijaviti v Brave?</translation>
+<translation id="7447364954121496869">Nastavi Brave kot privzeti brskalnik in ga pripni v opravilno vrstico</translation>
 <translation id="8826492472752484139">Kliknite »Upravitelj gesel«</translation>
 <translation id="6933858244219479645">Sistem Chrome OS</translation>
 <translation id="9084132286318231275">Ta jezik se uporablja za prikaz menijev, nastavitev, opozoril in drugega besedila v Braveu</translation>
@@ -616,6 +631,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="911206726377975832">Ali želite izbrisati tudi podatke brskanja?</translation>
 <translation id="9134482777260927479">Pomoč za domačo nalogo</translation>
 <translation id="9148058034647219655">Zapri</translation>
+<translation id="2792073155252170448">Nadaljujte, kjer ste končali: Brave lahko ob vsakem vnovičnem zagonu obnovi zavihke. Če želite to vklopiti, odprite</translation>
 <translation id="2444257125841652328">Skrbnik sistema je Brave nastavil tako, da za dostop do <ph name="TARGET_URL_HOSTNAME"/> odpre drug brskalnik.</translation>
 <translation id="7902365066753170041">Znova zaženite, če želite posodobiti &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>

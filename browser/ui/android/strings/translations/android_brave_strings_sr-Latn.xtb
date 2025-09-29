@@ -99,6 +99,8 @@
 <translation id="8617525558807213034">Automatski unos na privatnim karticama</translation>
 <translation id="8685431198160039193">Sačuvane informacije mogu automatski biti unete u privatne kartice</translation>
 <translation id="6583902294974160967">Podrška</translation>
+<translation id="5713644099811900409">Nalog na Brave-u</translation>
+<translation id="4472575034687746823">Početak</translation>
 <translation id="1799030480311994998">Funkcije</translation>
 <translation id="2005732746077850308">Brave štitovi i privatnost</translation>
 <translation id="4692623383562244444">Pretraživači</translation>
@@ -197,6 +199,8 @@
 <translation id="7977176350719484850">Procenjeni sačuvani podaci</translation>
 <translation id="9008534313521214777">Procenjeno ušteđeno vreme</translation>
 <translation id="8347743943525229984">Aktiviraj Brave ankete</translation>
+<translation id="6022939994702081659">Omogućava Brave-u da prikazuje linkove za privatne ankete na stranici nove kartice. Ankete nam omogućavaju da kreiramo bolje funkcije i merimo efikasnost oglasnih kampanja zasnovanih na pregledaču.</translation>
+<translation id="7746496306508543965">Saznajte više o Brave anketama</translation>
 <translation id="410351446219883937">Automatsko puštanje</translation>
 <translation id="7445411102860286510">Dozvoli sajtovima da automatski puštaju video snimke sa isključenim zvukom (preporučeno)</translation>
 <translation id="7837721118676387834">Dozvoli automatsko puštanje video snimaka sa isključenim zvukom određenom sajtu.</translation>
@@ -225,6 +229,8 @@
 <translation id="2433507940547922241">Izgled</translation>
 <translation id="9040069796107003510">Ikona Brave nagrada</translation>
 <translation id="6333347122924254968">Prikaži ikonu Brave nagrada na traci za adresu</translation>
+<translation id="1215433243238902715">Aktiviraj donju traku sa alatkama za navigaciju</translation>
+<translation id="1422686363939271829">Ovo podešavanje je deaktivirano kada je izabrana donja pozicija trake za adresu</translation>
 <translation id="6587448235155023666">Promene će biti primenjene kada sledeći put ponovo pokrenete Brave</translation>
 <translation id="8701563696941209024">PONOVO POKRENI</translation>
 <translation id="834487290629916192">KASNIJE</translation>
@@ -417,6 +423,8 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="8748471354357836070">Saznajte više / opcije za odustanak</translation>
 <translation id="3171669670217312786">Slike pozadine</translation>
 <translation id="8522669544471808198">Prikaži slike pozadine</translation>
+<translation id="6258554626602400736">Prikaži oglase na stranici nove kartice</translation>
+<translation id="9001530744369687550">Saznajte više o oglasima na stranici nove kartice</translation>
 <translation id="8793108040181436796">Vidžeti</translation>
 <translation id="8643377320501056697">Prikaži omiljene sajtove</translation>
 <translation id="7275773481201277457">Pokaži Brave statistiku</translation>
@@ -494,6 +502,8 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="7616645803364270729">Imejl, Twitter itd.</translation>
 <translation id="5299848999918506028">Hvala!</translation>
 <translation id="76550953340008122">Hvala što ste obavestili razvojne programere Brave-a da nešto nije u redu sa ovim sajtom. Daćemo sve od sebe da to ispravimo!</translation>
+<translation id="3037432377946455872">Koji je glavni problem koji vidite?</translation>
+<translation id="8731661215617360873">Izaberite jednu opciju</translation>
 <translation id="650318023204990401">Napredne kontrole</translation>
 <translation id="7205939464631857223">Izbriši sve blokirane elemente</translation>
 <translation id="5370478469168390143">Sačuvaj podatke onlajn</translation>
@@ -1217,6 +1227,14 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="6859935199732075666">Prikaži greške prilikom bezbednog pregledanja</translation>
 <translation id="2735247450315842119">Dozvoli snimke ekrana u privatnim karticama</translation>
 <translation id="8420414929552321089">Ako je opcija aktivirana, privatne kartice će takođe biti vidljive kada je otvoreno više aplikacija.</translation>
+<translation id="7956713633345437162">Mobilni obeleživači</translation>
+<translation id="3176467469116060712">Podržite vodeći rad Brave-a na privatnosti na Webu i otvorenim listama za blokiranje oglasa</translation>
+<translation id="5896375129784311037">Optimizovan za minimalistički interfejs pregledača</translation>
+<translation id="746156554966264308">Jezgro Brave Shields za blokiranje oglasa, privatnost i brzinu</translation>
+<translation id="1432661650699782509">Podrška za politike upravljanja IT-om na poslu</translation>
+<translation id="1361157028850796410">najbolja vrednost</translation>
+<translation id="7280825497485894053">Mesečna pretplata</translation>
+<translation id="4570901726096223030">Saznajte više o Origin</translation>
 <translation id="1943432128510653496">Sačuvaj lozinke</translation>
 <translation id="2100273922101894616">Automatsko prijavljivanje</translation>
 <translation id="363596933471559332">Automatski se prijavljujte na veb-sajtove pomoću sačuvanih akreditiva. Kada je ova funkcija isključena, tražićemo vam da se verifikujete pre svakog prijavljivanja na veb-sajt.</translation>

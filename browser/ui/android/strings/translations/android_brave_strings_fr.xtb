@@ -99,6 +99,8 @@
 <translation id="8617525558807213034">Remplir automatiquement dans les onglets de navigation privée</translation>
 <translation id="8685431198160039193">Les informations enregistrées peuvent être remplies automatiquement dans les onglets de navigation privée</translation>
 <translation id="6583902294974160967">Assistance</translation>
+<translation id="5713644099811900409">Compte Brave</translation>
+<translation id="4472575034687746823">Premiers pas</translation>
 <translation id="1799030480311994998">Fonctionnalités</translation>
 <translation id="2005732746077850308">Boucliers Brave et confidentialité</translation>
 <translation id="4692623383562244444">Moteurs de recherche</translation>
@@ -1092,7 +1094,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="3443052382074796867">Si vous désactivez l'enregistrement des conversations, toutes les conversations enregistrées seront définitivement supprimées. Cette action ne peut être annulée.</translation>
 <translation id="3692772534525889713">Associez votre achat sur le Play Store à votre compte Brave pour utiliser Brave Leo sur d'autres appareils.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
-<translation id="1028627582482425924">Un an</translation>
+<translation id="1028627582482425924">Annuel</translation>
 <translation id="2985392169397572983">MEILLEURE OFFRE</translation>
 <translation id="1166682575529520472">Mensuel</translation>
 <translation id="451189393813405346">Demander à Leo</translation>
@@ -1226,6 +1228,13 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="2735247450315842119">Autoriser les captures d'écran dans les onglets de navigation privée</translation>
 <translation id="8420414929552321089">Si cette option est activée, les onglets de navigation privée seront visibles lorsque plusieurs applications sont ouvertes.</translation>
 <translation id="7956713633345437162">Favoris sur mobile</translation>
+<translation id="3176467469116060712">Soutenez la mission de Brave pour la confidentialité sur le Web et les listes de blocage des publicités open-source</translation>
+<translation id="5896375129784311037">Interface de navigateur minimaliste</translation>
+<translation id="746156554966264308">Boucliers Brave : blocage des publicités, confidentialité et vitesse</translation>
+<translation id="1432661650699782509">Compatibilité avec les politiques informatiques administrées</translation>
+<translation id="1361157028850796410">meilleure offre</translation>
+<translation id="7280825497485894053">Abonnement mensuel</translation>
+<translation id="4570901726096223030">En savoir plus sur Origin</translation>
 <translation id="1943432128510653496">Enregistrer les mots de passe</translation>
 <translation id="2100273922101894616">Connexion automatique</translation>
 <translation id="363596933471559332">Connexion automatique aux sites Web à l'aide des identifiants enregistrés. Lorsque cette fonctionnalité est désactivée, vous devez valider vos identifiants avant chaque connexion à un site Web.</translation>
