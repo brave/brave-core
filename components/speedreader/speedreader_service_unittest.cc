@@ -259,8 +259,7 @@ TEST_F(SpeedreaderPrefMigrationTest, HandlesNewInstallationWithDefaults) {
   // Verify migration does nothing for new installations
   EXPECT_FALSE(
       pref_service_.HasPrefPath(kSpeedreaderAllowedForAllReadableSites));
-  EXPECT_TRUE(pref_service_.GetBoolean(
-      kSpeedreaderEnabled));  // Still default
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));  // Still default
   EXPECT_FALSE(pref_service_.GetBoolean(
       kSpeedreaderAllowedForAllReadableSites));  // Still default
 }
