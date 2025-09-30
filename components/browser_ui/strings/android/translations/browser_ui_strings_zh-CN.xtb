@@ -8,7 +8,6 @@
 •“JavaScript 优化工具”已关闭。<ph name="BEGIN_LINK2"/>管理网站例外情况<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">在线打开</translation>
 <translation id="1036348656032585052">关闭</translation>
-<translation id="1044891598689252897">网站将能够正常运行</translation>
 <translation id="1070329623210597193">此网站可以查看或修改的文件</translation>
 <translation id="1882093842020941518">请告诉我们您允许使用第三方 Cookie 的原因，以帮助我们改进 Brave<ph name="BEGIN_LINK"/>发送反馈<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">您可以查看桌面版网站</translation>
@@ -26,8 +25,9 @@
 <translation id="129382876167171263">网站保存的文件会显示在这里</translation>
 <translation id="131112695174432497">对广告个性化有影响的数据会被删除</translation>
 <translation id="1317194122196776028">移除此网站</translation>
+<translation id="1321110954513621549">已允许 • 大致位置</translation>
 <translation id="1323433172918577554">展开</translation>
-<translation id="1333965224356556482">不允许网站查看您所在的位置</translation>
+<translation id="1333965224356556482">不允许网站查看您的位置信息</translation>
 <translation id="1343356790768851700">该网站会先判断您的喜好，然后向其他网站建议相关广告</translation>
 <translation id="1369915414381695676">网站 <ph name="SITE_NAME"/> 已添加</translation>
 <translation id="1371239764779356792">允许某个网站将数据保存在您的设备上</translation>
@@ -41,6 +41,7 @@
 <translation id="1448064542941920355">缩小</translation>
 <translation id="1464044141348608623">不允许网站了解您何时在主动使用自己的设备</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> 个网站}other{<ph name="SITE_COUNT"/> 个网站}}</translation>
+<translation id="1476700086976862423">主题颜色：深褐色</translation>
 <translation id="1500473259453106018">隐藏“在标签页上显示降价通知”卡片</translation>
 <translation id="1508931164824684991">网站可以使用 JavaScript</translation>
 <translation id="1510341833810331442">网站不得将数据保存在您的设备上</translation>
@@ -72,6 +73,7 @@
 <translation id="7401204338724669842">Brave 提示</translation>
 <translation id="6704867734300244173">启用此设置后，Brave 的运行速度会更快，并且使用 JavaScript 的功能能按预期运行。关闭此设置会降低性能，但提高 V8 防范攻击的能力。</translation>
 <translation id="1818308510395330587">若要允许 <ph name="APP_NAME"/> 使用 AR 功能，您还需在 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>中开启摄像头。</translation>
+<translation id="1848033246551405023">字体：Sans Serif</translation>
 <translation id="1881806992065048905">“新标签页”页面外观底部动作条</translation>
 <translation id="1887786770086287077">此设备的位置信息使用权已关闭；若想开启这项权限，请转到 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>。</translation>
 <translation id="1906181697255754968">网站通常会访问您设备上的文件和文件夹以实现某些功能（例如自动保存您的工作成果）</translation>
@@ -93,6 +95,7 @@
 <translation id="2079545284768500474">撤消</translation>
 <translation id="2080070583977670716">更多设置</translation>
 <translation id="2091887806945687916">声音</translation>
+<translation id="2094208275686143364">主题颜色：浅色</translation>
 <translation id="2096716221239095980">删除所有数据</translation>
 <translation id="2102396546234652240">不允许网站使用您的麦克风</translation>
 <translation id="2117655453726830283">下一张幻灯片</translation>
@@ -120,7 +123,9 @@
 <translation id="904887679952026733">当 Brave 使用深色主题时，尽可能对网站应用深色主题</translation>
 <translation id="2390272837142897736">放大</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
+<translation id="2403474027143565107">精确位置</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{已授予“<ph name="PERMISSION_1"/>”权限、“<ph name="PERMISSION_2"/>”权限和另外 <ph name="NUM_MORE"/> 项权限}other{已授予“<ph name="PERMISSION_1"/>”权限、“<ph name="PERMISSION_2"/>”权限和另外 <ph name="NUM_MORE"/> 项权限}}</translation>
+<translation id="2404857459073803936">此网站的位置信息使用权</translation>
 <translation id="2410940059315936967">您访问的网站可以嵌入其他网站的内容，例如图片、广告和文字。由这类其他网站设置的 Cookie 称为第三方 Cookie。</translation>
 <translation id="2411116727035790889">开启快捷方式</translation>
 <translation id="2433507940547922241">外观</translation>
@@ -136,6 +141,7 @@
 <translation id="2498359688066513246">帮助和反馈</translation>
 <translation id="2501278716633472235">返回</translation>
 <translation id="2533138527374486328">开启后，网站可以请求连接到本地网络上的任何设备。关闭后，网站无法连接到本地网络上的设备。</translation>
+<translation id="2544997614631598250">主题颜色：深色</translation>
 <translation id="2546283357679194313">Cookie 和网站数据</translation>
 <translation id="2570922361219980984">此设备的位置信息使用权也已关闭；若想开启这项权限，请转到 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>。</translation>
 <translation id="257931822824936280">已展开 - 点击此处即可收起。</translation>
@@ -190,10 +196,10 @@
 <translation id="3123473560110926937">已禁止部分网站显示广告</translation>
 <translation id="3132996321662585180">每日刷新</translation>
 <translation id="3143754809889689516">从头播放</translation>
-<translation id="3162899666601560689">网站可以使用 Cookie 来提升您的浏览体验，例如让您保持登录状态或记住您购物车中的商品</translation>
 <translation id="3165022941318558018">允许网站使用第三方 Cookie</translation>
 <translation id="3167868116600277716">探索信息流</translation>
 <translation id="3198916472715691905">已存储 <ph name="STORAGE_AMOUNT"/> 数据</translation>
+<translation id="3199078925536734975">这次允许使用 • 大致位置</translation>
 <translation id="321187648315454507">若要允许 <ph name="APP_NAME"/> 向您发送通知，您还需在 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>中开启通知。</translation>
 <translation id="3223425961342298674">已拒绝授予位置信息使用权限</translation>
 <translation id="3227137524299004712">麦克风</translation>
@@ -228,7 +234,7 @@
 <translation id="3611658447322220736">最近关闭的网站可以完成数据收发操作</translation>
 <translation id="3619294456800709762">网站可以自动进入画中画模式</translation>
 <translation id="3628308229821498208">建议的搜索</translation>
-<translation id="3641456520301071208">网站可以请求取得您的位置信息</translation>
+<translation id="3641456520301071208">网站可以请求获取您的位置信息</translation>
 <translation id="3658847490588580244">默认浏览器底部动作条</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_OWNER"/> 的网站群组中有 <ph name="RWS_MEMBERS_COUNT"/> 个网站能查看您在该群组中的活动记录}other{<ph name="RWS_OWNER"/> 的网站群组中有 <ph name="RWS_MEMBERS_COUNT"/> 个网站能查看您在该群组中的活动记录}}</translation>
 <translation id="3676777756440746804">禁止网站向您请求使用其保存的与您相关的信息</translation>
@@ -248,6 +254,7 @@
 <translation id="3803367742635802571">您访问的网站可能会停止按预期运行</translation>
 <translation id="8338457030135232378">Brave 颜色</translation>
 <translation id="381841723434055211">电话号码</translation>
+<translation id="3823453485268218808">字体：Mono</translation>
 <translation id="3826050100957962900">第三方登录</translation>
 <translation id="3835233591525155343">您的设备使用情况</translation>
 <translation id="1799795508209440035">Brave 将于今天再次屏蔽 Cookie</translation>
@@ -257,9 +264,9 @@
 <translation id="3895926599014793903">强制启用缩放功能</translation>
 <translation id="3903738175795615004">从顶部拖动或按 Esc 键可退出全屏模式。</translation>
 <translation id="3905475044299942653">停止发送大量通知</translation>
-<translation id="3918378745482005425">某些功能可能无法正常运行。相关网站仍然可以使用第三方 Cookie。</translation>
 <translation id="3922092564198021702">打开手机上的“设置”</translation>
 <translation id="3933121352599513978">收起不需要的请求（推荐）</translation>
+<translation id="3934905113567851655">双指张合即可调整大小</translation>
 <translation id="3955193568934677022">允许网站播放受保护的内容（推荐）</translation>
 <translation id="3955321697524543127">不允许网站连接到 USB 设备</translation>
 <translation id="3965467402665811906">网站可以请求使用其保存的与您相关的信息</translation>
@@ -272,6 +279,7 @@
 <translation id="3992684624889376114">关于此页面</translation>
 <translation id="4002066346123236978">标题</translation>
 <translation id="4031179711345676612">已允许使用麦克风</translation>
+<translation id="4042597221652780603">大致位置</translation>
 <translation id="4046123991198612571">下一曲</translation>
 <translation id="4077310749977440510">网站通常会读取您的剪贴板内容以实现某些功能，例如保留您所复制文字的格式</translation>
 <translation id="4082080074595021446">由于该 Android 设备的 RAM 不足，因此不允许将特定网站添加为例外网站。</translation>
@@ -300,9 +308,11 @@
 <translation id="4402755511846832236">禁止网站了解您何时在主动使用此设备</translation>
 <translation id="4412992751769744546">允许第三方 Cookie</translation>
 <translation id="1675197434085185531">Brave 会阻止网站使用第三方 Cookie 跟踪您在浏览时的活动。访问“设置”可<ph name="BEGIN_LINK"/>管理对第三方 Cookie 的使用权限<ph name="END_LINK"/>。</translation>
+<translation id="4425416282877905577">字体：Serif</translation>
 <translation id="443121186588148776">串行端口</translation>
 <translation id="4434045419905280838">弹出式窗口和重定向</translation>
 <translation id="443552056913301231">此操作会删除所有本地数据（包括 Cookie）并重置 <ph name="ORIGIN"/> 的所有权限</translation>
+<translation id="43076815069546662">已打开 Brave 颜色底部动作条，并以最大高度显示</translation>
 <translation id="4468959413250150279">将某个特定网站静音。</translation>
 <translation id="4475912480633855319">{COOKIES,plural, =1{# 个 Cookie}other{# 个 Cookie}}</translation>
 <translation id="4478158430052450698">更轻松地自定义不同网站的缩放级别</translation>
@@ -337,6 +347,7 @@
 <translation id="4953688446973710931">开启此设置后，网站可以请求自动下载多个文件。关闭此设置后，网站无法自动下载多个文件。</translation>
 <translation id="4962975101802056554">撤消设备的所有权限</translation>
 <translation id="4972737347717125191">网站可以请求使用虚拟现实设备和数据</translation>
+<translation id="1275242979020712923">Brave 颜色底部动作条</translation>
 <translation id="497421865427891073">前进</translation>
 <translation id="4976702386844183910">上次访问日期：<ph name="DATE"/></translation>
 <translation id="4978178243417029856">详细了解探索信息流</translation>
@@ -386,7 +397,6 @@
 <translation id="5515432237048785579">探索信息流底部动作条已按最大高度显示</translation>
 <translation id="5516455585884385570">打开通知设置</translation>
 <translation id="5527111080432883924">需先询问，得到许可后才允许网站读取剪贴板中的文字和图片（推荐）</translation>
-<translation id="5545693483061321551">网站无法使用 Cookie 查看您在各个不同网站上的浏览活动，因而无法实现某些功能或目的（例如为您展示个性化广告）。某些网站上的功能可能无法正常运行。</translation>
 <translation id="5553374991681107062">最新</translation>
 <translation id="674221630984410403">不使用 Brave 的 V8 引擎加速网站，但 Brave 的防攻击能力会略微增强</translation>
 <translation id="5556459405103347317">重新加载</translation>
@@ -517,7 +527,7 @@
 <translation id="7000754031042624318">已在 Android 设置中关闭</translation>
 <translation id="8683151724374457021">此网站会先判断您的喜好，然后向其他网站建议相关广告。此网站还会从 Brave 中了解您的广告主题，从而向您展示与您更相关的广告。</translation>
 <translation id="7044081119134178347">这次可以使用摄像头</translation>
-<translation id="7053983685419859001">禁止</translation>
+<translation id="7053983685419859001">屏蔽</translation>
 <translation id="7055552182600664515">网站可能需要使用一项内容保护服务，才能播放受版权保护的内容。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{已选择 1 项}other{已选择 # 项}}</translation>
 <translation id="708014373017851679">“<ph name="APP_NAME"/>”版本过旧。请更新该应用。</translation>
@@ -549,6 +559,7 @@
 <translation id="7478658909253570368">不允许网站连接到串行端口</translation>
 <translation id="7488573225650545859">隐藏“查看应用列表中的标签页”</translation>
 <translation id="7521387064766892559">JavaScript</translation>
+<translation id="7538975533793429503">字体大小滑块</translation>
 <translation id="7547989957535180761">开启此设置后，网站可以显示登录提示。关闭此设置后，网站无法显示登录提示。</translation>
 <translation id="7553211568594248088">退出集中搜索</translation>
 <translation id="7554752735887601236">有一个网站正在使用您的麦克风</translation>
@@ -708,10 +719,5 @@
 <translation id="3110967157686007724">私有标签页</translation>
 <translation id="8623552597614912461">此站点将与无痕模式以外的应用共享信息。</translation>
 <translation id="8157212814767579028">要离开无痕模式？</translation>
-<translation id="6105125042109106861">已阻止无痕模式下的第三方 Cookie</translation>
-<translation id="6642913673024345959">在无痕模式下阻止第三方 cookie</translation>
-<translation id="20460146243579445">某些站点上的功能在无痕模式下可能无法正常使用</translation>
-<translation id="8877838532507724268">无痕模式下，网站不能使用您的 cookie 来查看您在各个网站的浏览活动，即使是相关网站。您的浏览活动也不会用于个性化广告等功能。某些网站上的功能可能无法使用。</translation>
-<translation id="1856888821396498049">在无痕模式下阻止第三方 Cookie：</translation>
 <translation id="1593610935874634135">公司可以定义一组站点，这些站点可以使用 cookie 在组中分享您的活动。在无痕模式中，该功能预设为关闭。</translation>
 </translationbundle>

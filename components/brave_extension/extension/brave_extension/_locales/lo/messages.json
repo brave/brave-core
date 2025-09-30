@@ -156,7 +156,7 @@
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
-    "message": "Cancel",
+    "message": "ຍົກເລີກ",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
   },
   "goBack": {

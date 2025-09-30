@@ -19,6 +19,9 @@
 <translation id="5379685283876547860">സംഭാവന അയച്ചു!</translation>
 <translation id="1041398280582063935">നിങ്ങളുടെ പിന്തുണ പങ്കിടുക</translation>
 <translation id="8855543392451028706">സ്വാഗതം! ഉപയോക്താക്കൾ ഈ ഉള്ളടക്ക നിർമ്മാതാവിനെ സംഭാവനകൾ അയച്ച് പിന്തുണയ്ക്കാം. മികച്ച ഉള്ളടക്കം ഉണ്ടാക്കുന്നതിന് അവരെ നന്ദി പറയാനുള്ള ഒരു മാർഗമാണ്.</translation>
+<translation id="1235176624390585199"><ph name="TITLE"/> <ph name="PROVIDER"/> ൽ</translation>
+<translation id="3699420827646925694">ലോഗ് ഔട്ട് <ph name="CUSTODIAN"/></translation>
+<translation id="9038728316393235637">ലോഗ് ഇൻ <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">നിങ്ങളുടെ പ്രിയപ്പെട്ട നിർമ്മാതാക്കളെ പിന്തുണയ്ക്കുന്നത് നന്ദിയോടെയാണ്.</translation>
 <translation id="3733094367889291358">സംഭാവന അയക്കുക</translation>
 <translation id="1899434873745933492">നിങ്ങളുടെ സംഭാവന അയയ്ക്കാൻ കഴിയില്ല</translation>
@@ -26,6 +29,7 @@
 <translation id="1177863135347784049">ഇഷ്ടാനുസൃതം</translation>
 <translation id="4827581232860040208">നിങ്ങളുടെ സംഭാവന അയയ്ക്കുന്നതിൽ ഒരു പ്രശ്നം ഉണ്ടായിരുന്നു</translation>
 <translation id="3259723213051400722">ദയവായി വീണ്ടും ശ്രമിക്കുക.</translation>
+<translation id="2524310205387880526">Brave നെ റേറ്റുചെയ്യുക</translation>
 <translation id="1420756770787071946">ഈ നിർമ്മാതാവിനെ പിന്തുണയ്ക്കുക</translation>
 <translation id="4265429476391459783">Rewards അല്ലെങ്കിൽ പ്രൈവസി റിപ്പോർട്ടുകൾ നിങ്ങൾക്ക് ലഭിക്കുന്നില്ല</translation>
 <translation id="1483391942610220726">പ്രൈവസി റിപ്പോർട്ടുകൾ നിങ്ങൾക്ക് ലഭിക്കുന്നില്ല</translation>
@@ -35,6 +39,8 @@
 <translation id="863171915776379000">ഫേസ്ബുക്ക് ലോഗിൻകളും എംബെഡഡ് പോസ്റ്റുകളും അനുവദിക്കുക</translation>
 <translation id="958971637207126733">ലിങ്ക്ഡ്‌ഇൻ എംബെഡഡ് പോസ്റ്റുകൾ അനുവദിക്കുക</translation>
 <translation id="6583902294974160967">പിന്തുണ</translation>
+<translation id="5713644099811900409">Brave അക്കൗണ്ട്</translation>
+<translation id="4472575034687746823">ആരംഭിക്കാം</translation>
 <translation id="4692623383562244444">സെര്‍ച് എഞ്ചിനുകള്‍</translation>
 <translation id="3377025655491224618">അദൃശ്യ ടാബ്</translation>
 <translation id="6285118765755298263">മറ്റ് തിരയൽ എഞ്ചിനുകൾ എൻഡക്സ് ചെയ്യുക</translation>
@@ -63,13 +69,13 @@
 <translation id="4108314971463891922">ഫോളോ ചെയ്യുക</translation>
 <translation id="3861486700625780712">ഫോളോചെയ്യുന്നത് നിർത്തുക</translation>
 <translation id="4541978218358617681">Ad</translation>
+<translation id="7823038307453615214">Brave News കാണിക്കുക</translation>
 <translation id="6527303717912515753">പങ്കിടുക</translation>
 <translation id="1276592121036104130">പുതിയ ഉള്ളടക്കം ലോഡുചെയ്യുക</translation>
 <translation id="3189348785087463371">പ്രമോഷൻ ചെയ്തത്</translation>
-<translation id="7823038307453615214">Brave News കാണിക്കുക</translation>
 <translation id="4448697385961650078">ട്രാക്കറും പരസ്യങ്ങളും തടയുക</translation>
-<translation id="3570081523466826008">HTTPS-ലേക്ക് കണക്ഷനുകൾ മെച്ചപ്പെടുത്തുക</translation>
 <translation id="1025207378813960343">വെബ്‌സൈറ്റുകളിലേക്കുള്ള ബന്ധങ്ങൾ സുരക്ഷിതമാണെന്ന് ഉറപ്പാക്കുക.</translation>
+<translation id="3570081523466826008">HTTPS-ലേക്ക് കണക്ഷനുകൾ മെച്ചപ്പെടുത്തുക</translation>
 <translation id="693506469193748756">ഈ സൈറ്റ് ഞാൻ ഈ സൈറ്റ് വിജയിക്കുന്നപ്പോൾ ഞാൻ ഒറ്റയായെന്നു മറക്കുക</translation>
 <translation id="7142548388914389999">സ്വകാര്യത സംരക്ഷിക്കുന്ന ഉല്‍പ്പന്ന വിശകലനം അനുവദിക്കുക (P3A)</translation>
 <translation id="4174337572777167894">വെബ് ഡിസ്കവറി പ്രൊജക്ട്</translation>
@@ -90,6 +96,7 @@
 <translation id="4150201353443180367">ഡിസ്‌പ്ലേ</translation>
 <translation id="4275663329226226506">മീഡിയ</translation>
 <translation id="2433507940547922241">കാഴ്ച്ച</translation>
+<translation id="6587448235155023666">നിങ്ങളുടെ മാറ്റങ്ങൾ അടുത്ത തവണ Brave വീണ്ടും സമാരംഭിക്കുമ്പോൾ പ്രാബല്യത്തിൽ വരും.</translation>
 <translation id="5148943178722443958">Brave കൂടുതൽ മെച്ചപ്പെടുത്താന്‍ കൈയേകുക.</translation>
 <translation id="7818938154803162778">ശരി, ഞാന്‍ സഹായിക്കും</translation>
 <translation id="8281886186245836920">ഉപേക്ഷിക്കുക</translation>
@@ -122,6 +129,7 @@
 <translation id="8730621377337864115">പൂർത്തിയാക്കി</translation>
 <translation id="1061533051865606843">പുതിയ ഉപകരമാണ് ചേർക്കുക</translation>
 <translation id="8131740175452115882">സ്ഥിരീകരിക്കുക</translation>
+<translation id="6417420737057016607">കാന്റിനോഗ്രേറ്റ് ബാറ്ററി ചാര്‍ജ്ജ് പോലെ ഇല്ലാത്ത ആയിരുന്നു</translation>
 <translation id="8457451314607652708">ബുക്ക്‌മാർക്കുകൾ ഇമ്പോർട്ടുചെയ്യുക</translation>
 <translation id="1008186147501209563">ബുക്ക്‌മാർക്കുകൾ എക്‌സ്‌പോർട്ട് ചെയ്യുക</translation>
 <translation id="7173114856073700355">ക്രമീകരണം തുറക്കുക</translation>
@@ -135,6 +143,7 @@
 <translation id="3110967157686007724">അദൃശ്യ ടാബ്</translation>
 <translation id="4973347371961481083">സംഭാവനകൾ</translation>
 <translation id="7047578174221019462">താങ്കളുടെ മാസിക സംഭാവനകൾ പ്രോസസ്സ് ചെയ്തു.</translation>
+<translation id="1486343603936278248">ടോക്കൺ</translation>
 <translation id="7781069478569868053">പുതിയ ടാബ് പേജ്</translation>
 <translation id="5927196110206824867">സ്പോൺസർ ചെയ്ത പശ്ചാത്തല ചിത്രങ്ങൾ Brave ന്റെ സ്വതന്ത്ര, ഉപയോക്തൃ-കേന്ദ്രത്തിലുള്ള വെബിന്റെ ദൗത്യത്തെ പിന്തുണക്കുന്നുണ്ട്. ബിഗ് ടെക്കിന് ആകറ്റ, അതിന്റെ പരസ്യ പ്രവര്‍ത്തനത്തെ സ്വയം സമര്‍പ്പിച്ച് Brave നിങ്ങളുടെ ചിന്തയില്‍ അഭിമുഖമായി അതിന്റെ സ്വകാര്യത രണ്ടാം ചെയ്യുന്നു.</translation>
 <translation id="8748471354357836070">കൂടുതലറിയുക / തിരഞ്ഞെടുക്കുന്നതിന് നിന്ന് ഒഴിവാക്കാനുള്ള തീരുമാനങ്ങൾ</translation>
@@ -148,7 +157,6 @@
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="8874184842967597500">കണക്റ്റുചെയ്‌തിട്ടില്ല</translation>
-<translation id="2524310205387880526">Brave നെ റേറ്റുചെയ്യുക</translation>
 <translation id="987264212798334818">പൊതുവായ</translation>
 <translation id="1116694919640316211">വിവരം</translation>
 <translation id="7961015016161918242">ഒരിക്കലും</translation>
@@ -252,10 +260,12 @@
 <translation id="2044418816479192294">ജീവന്തയായി സംജ്ഞക്കാരമായ ആയിരം സന്തരല്ക്കളും.</translation>
 <translation id="7410504850864021600">മിന്നിത്തിളക്കമുള്ള ബന്ധം വേഗത</translation>
 <translation id="2422309687188612485">ഓരോ പദ്ധതിയിലും 10 ഉപകരണങ്ങളുടെ വരെ സംരക്ഷണം</translation>
+<translation id="9073255657908892407">സാങ്കേതിക പിന്തുണയെ ബന്ധപ്പെടുക</translation>
+<translation id="8681480718817027245">സബ്‌സ്‌ക്രിപ്ഷന്</translation>
 <translation id="7805768142964895445">നില</translation>
 <translation id="5747552184818312860">കാലഹരണപ്പെടുന്നു</translation>
+<translation id="1656814355341174523">സബ്‌സ്ക്രിപ്ഷൻ മാനേജുചെയ്യുക</translation>
 <translation id="5646376287012673985">ലൊക്കേഷൻ</translation>
-<translation id="9073255657908892407">സാങ്കേതിക പിന്തുണയെ ബന്ധപ്പെടുക</translation>
 <translation id="3199127022143353223">സെര്‍‌വറുകള്‍‌</translation>
 <translation id="5431902940483264007">രായിരം</translation>
 <translation id="6527596624419285047">ലഭ്യമായ ഏറ്റവും മികച്ച സെർവർ ഉപയോഗിക്കുക</translation>
@@ -330,6 +340,7 @@
 <translation id="4804818685124855865">വിച്ഛേദിക്കുക</translation>
 <translation id="8009571545960303544">നിങ്ങളുടെ ഒപ്പു ആവശ്യപ്പെട്ടിരിക്കുന്നു</translation>
 <translation id="3484981968509595506">ഒരു DApp നിങ്ങളുടെ പൊതു എൻക്രിപ്ഷൻ കീ ആവശ്യപ്പെടുന്നു</translation>
+<translation id="2300240008330189182"><ph name="URL"/> നിങ്ങളുടെ_wallet സ്ഥാപിക്കുക, ജനപ്രിയ_MAIL തിരിച്ചടവ്_key keybase ഹെഡ് കമ്മ്യൂണിറ്റി &amp; CONTEXT സ്ഥലത്തെ വിവരിക്കുന്ന URL മാറ്റിപിരിച്ചുവിടുമെന്ന് ആവശ്യപ്പെടുന്നു. നിങ്ങൾ അത് നൽകിയാൽ, സൈറ്റി ൽ അവർക്ക് നിങ്ങളെ_തന്നെ സന്ദേശങ്ങൾ എൻക്രിപ്റ്റ് ചെയ്തു നൽകാനാകും.</translation>
 <translation id="3340247553212049934">നല്‍കുക</translation>
 <translation id="1982257600591932657">നെറ്റ്‌വർക്കിന്റെ പേര്</translation>
 <translation id="5052727830821470769">നെറ്റ്‌വർക്ക് URL</translation>
@@ -380,6 +391,7 @@
 <translation id="1313065465616456728">നിർവചനം പ്രസിദ്ധീകരിച്ച തീയ്യതി</translation>
 <translation id="7902225556763260253">കാലഹരണപ്പെടൽ സമയം</translation>
 <translation id="1908159733454294871">സുരക്ഷാ പിഴവ് കണ്ടെത്തി</translation>
+<translation id="5658257029899993935">നിങ്ങളുടെ Brave അക്കൗണ്ടുമായി വാങ്ങൽ ബന്ധിപ്പിക്കുക</translation>
 <translation id="5899814466108868020">Brave-നെയും BAT സമൂഹത്തെയും പിന്തുണയ്ക്കാൻ നിങ്ങൾ സഹായിക്കുന്നു</translation>
 <translation id="6067959437127691361">Brave Rewards ഉപയോഗിക്കുന്നതിലൂടെ ഉള്ളടക്കി സ്രഷ്ടാക്കളെ പിന്തുണയ്ക്കുകയും, നിങ്ങള്‍ക്ക്‌ BAT നേടാന്‍ സഹായിക്കുകയും ചെയ്യും.</translation>
 <translation id="3264975266761862670">ആരോഗ്യത്തിന് സജ്ജമാണ്吗?</translation>
@@ -392,7 +404,6 @@
 <translation id="5382684862562314222">உங்கள் பகுதியிலும் மற ještě BAT-ൽ Uphold-ல் புதியവാเติมเงินไทยฟรี.</translation>
 <translation id="6996157559236886133">പിശക്: Uphold അക്കൗണ്ട് പ്രവർത്തനം മാനച്ചന്ത്രങ്ങളിൽ പരിമിതമാണ്</translation>
 <translation id="1677961202754619328">Uphold പാനലിനെ അനുസരിച്ച്, നിങ്ങളുടെ Uphold അക്കൗണ്ടിൽ നിലവിൽ ചില പരിമിതപ്പെട്ട പ്രവർത്തനം ഉണ്ട്. Uphold അക്കൗണ്ടിൽ ലോഗിൻ ചെയ്തു, ഏതെങ്കിലും അറിയിപ്പ് അല്ലെങ്കിൽ ഇടപാടുകളുടെ ആവശ്യങ്ങൾ തീർത്തിട്ടുണ്ടോ എന്ന് പരിശോധിക്കുക, പിന്നെ വീണ്ടും ശ്രമിക്കുക.</translation>
-<translation id="6417420737057016607">കാന്റിനോഗ്രേറ്റ് ബാറ്ററി ചാര്‍ജ്ജ് പോലെ ഇല്ലാത്ത ആയിരുന്നു</translation>
 <translation id="5425006356459378415">Brave Rewards ലഭ്യമല്ല</translation>
 <translation id="3435896845095436175">തയ്യാറാക്കുക</translation>
 <translation id="7568430944629653319">NFT കണ്ടെത്തൽ സജീവമാക്കുക</translation>
@@ -408,8 +419,7 @@
 <translation id="5781842473834867765">ലീയോ AI</translation>
 <translation id="4109670531935487117">വിലാസ ബാറിൽ ഓട്ടോംപ്ലീറ്റിൽ നിർദ്ദേശങ്ങൾ കാണിക്കുക</translation>
 <translation id="6106701981952170121">മെസ്സേജ് ഡാറ്റ / രക്ഷ.എെഓ പാർട്ട് ഞങ്ങൾ ഓരോ ലീയോ ശ്രന്ദ്രചറ്ചെക്ക് മുക്കുക.</translation>
-<translation id="5658257029899993935">നിങ്ങളുടെ Brave അക്കൗണ്ടുമായി വാങ്ങൽ ബന്ധിപ്പിക്കുക</translation>
-<translation id="1656814355341174523">സബ്‌സ്ക്രിപ്ഷൻ മാനേജുചെയ്യുക</translation>
+<translation id="1028627582482425924">ഒരു മാസം</translation>
 <translation id="1166682575529520472">പ്രതിമാസം</translation>
 <translation id="451189393813405346">Leo-നെ ചോദിക്കുക</translation>
 <translation id="4850886885716139402">കാണുക</translation>
@@ -439,12 +449,12 @@
 <translation id="2389665228467129817">നീര്‍‌സ്ഥായിയാക്കുക</translation>
 <translation id="4314705522985583059">നീണ്ട ചർച്ചകള്‍ക്കായി ഉയർന്ന നിരക്ക് പരിധികള്‍ നേടുക.</translation>
 <translation id="5543505256451301851">7 ദിവസം സൗജന്യമായി പരീക്ഷിക്കുക</translation>
-<translation id="8681480718817027245">സബ്‌സ്‌ക്രിപ്ഷന്</translation>
 <translation id="614530507403667291">പുതിയ സംഭാഷണങ്ങള്‍ക്കുള്ള നെറിയല്‍ മോഡല്‍</translation>
 <translation id="4185473179105062442">ഘട്ടം ബിരുദം നേരിട്ട് സ്വീകരിക്കുക സ്വയം-ഭരണ ക്രിപ്റ്റോ വിലാസം</translation>
 <translation id="5802986777701714573">നിങ്ങൾക്കായി മാവറിന് നിങ്ങളുടെ മാസത്തിൽ നിന്നും ഘട്ടം ബിരുദം സ്വീകരിക്കാനുള്ള ഒരു പുതിയ മാർഗ്ഗം ചേർത്തിരിക്കുന്നു. ഞങ്ങളുടെ പങ്കാളികളിൽനിന്ന് ഒരു അക്കൗണ്ട് ബന്ധിപ്പിക്കുക അല്ലെങ്കിൽ പുതിയ സ്വയം-ഭരണ ഓപ്ഷന് തുടരുക.</translation>
 <translation id="7557539689487606886">പ്രീമിയം പോകുക</translation>
 <translation id="5982110855572850497">ലേബല്‍‌</translation>
+<translation id="1496514951988037011">ഉപയോക്തൃനാമം</translation>
 <translation id="901834265349196618">ഇമെയില്‍</translation>
 <translation id="3488199663160411179">പേര്</translation>
 <translation id="793994607260936590">ആദ്യം</translation>
