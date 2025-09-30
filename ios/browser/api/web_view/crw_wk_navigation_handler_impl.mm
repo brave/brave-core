@@ -5,7 +5,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "brave/ios/browser/api/web_view/brave_web_view.h"
+#import "brave/ios/browser/api/web_view/brave_web_view_internal.h"
 #include "brave/ios/web_view/public/cwv_web_view_extras.h"
 #include "ios/web/common/url_scheme_util.h"
 #include "ios/web/common/user_agent.h"
@@ -18,8 +18,7 @@ bool ShouldBlockJavaScript(web::WebState* webState, NSURLRequest* request) {
   if (!web::UrlHasWebScheme(request.URL)) {
     return false;
   }
-  BraveWebView* webView =
-      static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
+  BraveWebView* webView = [BraveWebView braveWebViewForWebState:webState];
   if (!webView) {
     return false;
   }
@@ -35,8 +34,7 @@ bool ShouldBlockJavaScript(web::WebState* webState, NSURLRequest* request) {
 }
 
 bool ShouldBlockUniversalLinks(web::WebState* webState, NSURLRequest* request) {
-  BraveWebView* webView =
-      static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
+  BraveWebView* webView = [BraveWebView braveWebViewForWebState:webState];
   if (!webView) {
     return false;
   }
@@ -54,8 +52,7 @@ bool ShouldBlockUniversalLinks(web::WebState* webState, NSURLRequest* request) {
 NSString* GetUserAgentForRequest(web::WebState* webState,
                                  web::UserAgentType userAgentType,
                                  NSURLRequest* request) {
-  BraveWebView* webView =
-      static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
+  BraveWebView* webView = [BraveWebView braveWebViewForWebState:webState];
   if (!webView) {
     return nil;
   }
