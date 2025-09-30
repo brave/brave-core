@@ -32,7 +32,7 @@ class ScrollTool : public Tool {
  private:
   void OnTabHandleCreated(UseToolCallback callback,
                           optimization_guide::proto::ActionTarget target,
-                          std::string direction,
+                          const std::string& direction,
                           float distance,
                           tabs::TabHandle tab_handle);
 

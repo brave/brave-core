@@ -98,8 +98,8 @@ void ClickTool::UseTool(const std::string& input_json,
 void ClickTool::OnTabHandleCreated(
     UseToolCallback callback,
     optimization_guide::proto::ActionTarget target,
-    std::string click_type,
-    std::string click_count,
+    const std::string& click_type,
+    const std::string& click_count,
     tabs::TabHandle tab_handle) {
   optimization_guide::proto::Actions actions;
   actions.set_task_id(task_provider_->GetTaskId().value());

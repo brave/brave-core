@@ -124,9 +124,9 @@ void TypeTool::UseTool(const std::string& input_json,
 void TypeTool::OnTabHandleCreated(
     UseToolCallback callback,
     optimization_guide::proto::ActionTarget target,
-    std::string text,
+    const std::string& text,
     bool follow_by_enter,
-    std::string mode,
+    const std::string& mode,
     tabs::TabHandle tab_handle) {
   optimization_guide::proto::Actions actions;
   actions.set_task_id(task_provider_->GetTaskId().value());

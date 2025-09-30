@@ -30,7 +30,7 @@ class HistoryTool : public Tool {
 
  private:
   void OnTabHandleCreated(UseToolCallback callback,
-                          std::string direction,
+                          const std::string& direction,
                           tabs::TabHandle tab_handle);
 
   raw_ptr<actor::ActorKeyedService> actor_service_ = nullptr;

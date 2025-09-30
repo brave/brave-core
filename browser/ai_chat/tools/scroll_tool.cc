@@ -103,7 +103,7 @@ void ScrollTool::UseTool(const std::string& input_json,
 void ScrollTool::OnTabHandleCreated(
     UseToolCallback callback,
     optimization_guide::proto::ActionTarget target,
-    std::string direction,
+    const std::string& direction,
     float distance,
     tabs::TabHandle tab_handle) {
   optimization_guide::proto::Actions actions;
