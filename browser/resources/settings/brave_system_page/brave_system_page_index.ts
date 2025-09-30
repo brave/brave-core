@@ -11,11 +11,14 @@ import type { CrViewManagerElement } from 'chrome://resources/cr_elements/cr_vie
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import { loadTimeData } from '../i18n_setup.js'
 
+import {PerformanceBrowserProxy, PerformanceBrowserProxyImpl} from '../performance_page/performance_browser_proxy.js'
+
 import { routes } from '../route.js';
-import { RouteObserverMixin } from '../router.js';
+import { RouteObserverMixin, Router } from '../router.js';
 import type { Route } from '../router.js';
 import type { SettingsPlugin } from '../settings_main/settings_plugin.js';
 import { SearchableViewContainerMixin } from '../settings_page/searchable_view_container_mixin.js';
+import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 
 import { getTemplate } from './brave_system_page_index.html.js';
 
@@ -31,7 +34,7 @@ export interface SettingsBraveSystemPageIndexElement {
 }
 
 const SettingsBraveExtensionsPageIndexElementBase =
-  SearchableViewContainerMixin(RouteObserverMixin(PolymerElement));
+  SearchableViewContainerMixin(RouteObserverMixin(WebUiListenerMixin(PolymerElement)));
 
 export class SettingsBraveSystemPageIndexElement extends
   SettingsBraveExtensionsPageIndexElementBase implements SettingsPlugin {
@@ -46,6 +49,13 @@ export class SettingsBraveSystemPageIndexElement extends
   static get properties() {
     return {
       prefs: Object,
+      /**
+      * Used to hide battery settings section if the device has no battery
+      */
+      showBatterySettings_: {
+        type: Boolean,
+        value: false,
+      },
       showShortcutsPage_: {
         type: Boolean,
         value: () => loadTimeData.getBoolean('areShortcutsSupported'),
@@ -63,11 +73,32 @@ export class SettingsBraveSystemPageIndexElement extends
   }
 
   declare prefs: { [key: string]: any };
+  declare private showBatterySettings_: boolean;
   declare private showShortcutsPage_: boolean;
 
   // <if expr="enable_brave_vpn_wireguard">
   declare private showVPNPage_: boolean;
   // </if>
+
+  private performanceBrowserProxy_: PerformanceBrowserProxy =
+      PerformanceBrowserProxyImpl.getInstance();
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this.addWebUiListener(
+      'device-has-battery-changed', this.hasBatteryChanged_)
+    this.performanceBrowserProxy_.getDeviceHasBattery().then(this.hasBatteryChanged_)
+  }
+
+  private hasBatteryChanged_ = (hasBattery: boolean) => {
+    this.showBatterySettings_ = hasBattery;
+
+    // If we get informed whether we have a battery while on the system page,
+    // show the default views again to show/hide the battery section.
+    if (Router.getInstance().currentRoute === routes.SYSTEM) {
+      this.showDefaultViews_();
+    }
+  }
 
   private showDefaultViews_() {
     const views = ['system']
@@ -77,7 +108,12 @@ export class SettingsBraveSystemPageIndexElement extends
     }
     // </if>
 
-    views.push('memory', 'battery')
+    views.push('memory')
+
+    if (this.showBatterySettings_) {
+      views.push('battery')
+    }
+
     this.$.viewManager.switchViews(views, 'no-animation', 'no-animation');
   }
 
