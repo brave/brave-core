@@ -100,15 +100,15 @@
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Fingerprinting blocked (standard)",
+    "message": "फिंगरप्रिंटिंग ब्लॉक केले (सामान्य)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Fingerprinting blocked (strict, may break sites)",
+    "message": "फिंगरप्रिंटिंग ब्लॉक केले (कडक, साइट्स बिघडू शकतात)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Allow all fingerprinting",
+    "message": "सर्व फिंगरप्रिंटिंगला अनुमती द्या",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
@@ -176,7 +176,7 @@
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Block element",
+    "message": "घटक अवरोधित करा",
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {

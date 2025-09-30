@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "shields": {
-    "message": "Shields",
+    "message": "Қорғаныштар",
     "description": "The Shields feature name"
   },
   "up": {
@@ -100,15 +100,15 @@
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Fingerprinting blocked (standard)",
+    "message": "Саусақ іздерін бұғаттау (стандартты)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Fingerprinting blocked (strict, may break sites)",
+    "message": "Саусақ іздерін бұғаттау (қатаң, сайттарды бұғаттауы мүмкін)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Allow all fingerprinting",
+    "message": "Барлық саусақ іздерін рұқсат ету",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
@@ -136,7 +136,7 @@
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
-    "message": "Block",
+    "message": "Блоктау",
     "description": "Message for the resources blocked *block* option"
   },
   "allow": {
@@ -156,11 +156,11 @@
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
-    "message": "Cancel",
+    "message": "Бас тарту",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
   },
   "goBack": {
-    "message": "Go back",
+    "message": "Артқа қайту",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {
@@ -176,7 +176,7 @@
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Block element",
+    "message": "Элементті бұғаттау",
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {

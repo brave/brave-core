@@ -19,6 +19,9 @@
 <translation id="5379685283876547860">Салым жіберілді!</translation>
 <translation id="1041398280582063935">Қолдауыңызды бөлісіңіз</translation>
 <translation id="8855543392451028706">Қош келдіңіз! Пайдаланушылар бұл контент жасаушыны қолдап салымдар жібере алады. Бұл керемет контент жасаған үшін оларға алғыс білдіру.</translation>
+<translation id="1235176624390585199"><ph name="TITLE"/> <ph name="PROVIDER"/> желісінде</translation>
+<translation id="3699420827646925694"><ph name="CUSTODIAN"/> жүйесінен шыққансың</translation>
+<translation id="9038728316393235637"><ph name="CUSTODIAN"/> жүйесіне кіру</translation>
 <translation id="7063168612616047608">Сүйікті контент жасаушыларыңызды қолдағаныңыз үшін рахмет</translation>
 <translation id="3733094367889291358">Салым жіберу</translation>
 <translation id="1899434873745933492">Салым жіберілмейді</translation>
@@ -49,6 +52,8 @@
 <translation id="8617525558807213034">Жеке беттерде автоматты толтыру</translation>
 <translation id="8685431198160039193">Сақталған ақпарат жеке беттерде автоматты түрде толтырыла алады</translation>
 <translation id="6583902294974160967">Қолдау</translation>
+<translation id="5713644099811900409">Brave есептік жазбасы</translation>
+<translation id="4472575034687746823">Бастау</translation>
 <translation id="1799030480311994998">Мүмкіндіктер</translation>
 <translation id="2005732746077850308">Brave Shields &amp; қауіпсіздік</translation>
 <translation id="4692623383562244444">Іздеу жүйелері</translation>
@@ -87,8 +92,8 @@
 <translation id="3189348785087463371">Жарнамаланған</translation>
 <translation id="4448697385961650078">Бақылағыштарды және жарнамаларды бұғаттау</translation>
 <translation id="2448893613530489637">Трекерлер&amp; мен жарнамалардың жүктелуіне және веб-беттерде көрсетілуінің алдын алады</translation>
-<translation id="3570081523466826008">Қосылымдарды HTTPS-ке жаңарту</translation>
 <translation id="1025207378813960343">Веб-сайттарға қосылымдардың қауіпсіздігін қамтамасыз ету.</translation>
+<translation id="3570081523466826008">Қосылымдарды HTTPS-ке жаңарту</translation>
 <translation id="693506469193748756">Бұл сайтты жапқанда мені ұмыт</translation>
 <translation id="7142548388914389999">Құпиялықты сақтайтын өнім аналитикасына (P3A) рұқсат беру</translation>
 <translation id="4174337572777167894">Веб-зерттеу жобасы</translation>
@@ -156,6 +161,7 @@
 <translation id="8730621377337864115">Дайын</translation>
 <translation id="1061533051865606843">Жаңа құрылғы қосу</translation>
 <translation id="8131740175452115882">Растау</translation>
+<translation id="6417420737057016607">Brave Жарнамалар</translation>
 <translation id="2149973817440762519">Бетбелгіні өңдеу</translation>
 <translation id="496896260395129787">Бұл Brave Sync аккаунты басқа құрылғыдан жойылды. Егер сіз Sync-ті өшіруді ойламаған болсаңыз,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>аккаунтты қайта жасау</translation>
@@ -172,6 +178,7 @@
 <translation id="3974348661685061050">7 күн бойы тегін пайдаланып көр</translation>
 <translation id="4973347371961481083">Жарналар</translation>
 <translation id="7047578174221019462">Ай сайынғы жарналарыңыз өңделді.</translation>
+<translation id="1486343603936278248">токен</translation>
 <translation id="7781069478569868053">Жаңа бет</translation>
 <translation id="5927196110206824867">Жарнамалық фонда көрсетілетін суреттер Brave's тәуелсіз, қолданушыға басымдық беретін Интернетті құру миссиясын қолдайды. Үлкен Технология сияқты емес, біз жарнама өнімділігін құпияңыздың сақталуын қамтамасыз ету үшін анонимді түрде өлшейміз.</translation>
 <translation id="8748471354357836070">Толығырақ білу / бас тарту таңдаулары</translation>
@@ -318,10 +325,11 @@
 <translation id="713136183174551885">Өз деректеріңізді жаңартыңыз</translation>
 <translation id="6053992191006521518">Тегін байқап көріңіз</translation>
 <translation id="5903391101107992067">7 күн тегін пайдаланып көріңіз</translation>
+<translation id="9073255657908892407">Техникалық қолдаумен байланысу</translation>
 <translation id="8681480718817027245">Жазылым</translation>
 <translation id="7805768142964895445">Мәртебесі</translation>
 <translation id="5747552184818312860">Жарамдығы бітеді</translation>
-<translation id="9073255657908892407">Техникалық қолдаумен байланысу</translation>
+<translation id="1656814355341174523">Жазылымды басқару</translation>
 <translation id="5431902940483264007">Оңтайлы</translation>
 <translation id="6527596624419285047">Ең жақсы қол жетімді серверді пайдалану</translation>
 <translation id="6687228121145903051">VPN-ге қосылу мүмкін емес (Басқа қате)</translation>
@@ -393,6 +401,7 @@
 <translation id="4804818685124855865">Ажырату</translation>
 <translation id="8009571545960303544">Сіздің қолтаңбаңызды сұрау жүргізілуде</translation>
 <translation id="3484981968509595506">DApp сіздің жалпы шифрлау кілтіңізді сұрауда</translation>
+<translation id="2300240008330189182"><ph name="URL"/> сіздің әмияныңыздың жалпы шифрлау кілтін сұрауда. Бұл кілтті беруге келіссеңіз, сайт сізге шифрланған хабарламалар құра алады.</translation>
 <translation id="3340247553212049934">Ұсыну</translation>
 <translation id="1982257600591932657">Желі атауы</translation>
 <translation id="5052727830821470769">Желі URL</translation>
@@ -445,6 +454,7 @@
 <translation id="1313065465616456728">Шығарылған уақыты</translation>
 <translation id="7902225556763260253">Мерзімі біткен уақыты</translation>
 <translation id="1908159733454294871">Қауіпсіздік қаупі анықталды</translation>
+<translation id="5658257029899993935">Сатып алуды Brave тіркелгіңізге байланыстырыңыз</translation>
 <translation id="5899814466108868020">Сіз Brave және BAT қауымдастығын қолдауға көмектесіп жатырсыз</translation>
 <translation id="6067959437127691361">Brave Rewards қолдану мазмұн жасаушыларды қолдауға көмектеседі және сізге BAT табуға мүмкіндік береді.</translation>
 <translation id="3264975266761862670">Табыс табуды бастауға дайынсыз ба?</translation>
@@ -459,7 +469,6 @@
 <translation id="5382684862562314222">BAT сіздің аймағыңызда Uphold-та әлі қолдау көрсетілмейді.</translation>
 <translation id="6996157559236886133">Қате: Uphold тіркелгісінің функциялары шектеулі</translation>
 <translation id="1677961202754619328">Uphold мәліметі бойынша, қазіргі уақытта Uphold тіркелгіңізде кейбір шектеулер бар. Өтінеміз, Uphold тіркелгіңізге кіріп, хабарландырулар немесе орындауға қалатын тіркелгі талаптарын тексеріңіз, содан кейін қайта көріңіз.</translation>
-<translation id="6417420737057016607">Brave Жарнамалар</translation>
 <translation id="5425006356459378415">Brave Сыйақылар қол жетімді емес</translation>
 <translation id="3435896845095436175">Қосу</translation>
 <translation id="7568430944629653319">NFT іздеуді қосу</translation>
@@ -476,8 +485,6 @@
 <translation id="5781842473834867765">Әңгімелесу нәтижелерімді сақтау</translation>
 <translation id="4109670531935487117">Сілтеме жолында автоматты түрде ұсыныстарды көрсету</translation>
 <translation id="6106701981952170121">Leo AI әңгімелесу деректерінің барлығын жою</translation>
-<translation id="5658257029899993935">Сатып алуды Brave тіркелгіңізге байланыстырыңыз</translation>
-<translation id="1656814355341174523">Жазылымды басқару</translation>
 <translation id="73236265316873967">Leo Премиум</translation>
 <translation id="1028627582482425924">Жылдық жазылым</translation>
 <translation id="2985392169397572983">ЕҢ ЖАҚСЫ ҰСЫНЫС</translation>
@@ -513,12 +520,16 @@
 <translation id="4185473179105062442">BAT-ты өзіңізге тиесілі крипто адреске тікелей алыңыз</translation>
 <translation id="5802986777701714573">Сізге айлық BAT сыйақыларыңызды алу үшін жаңа әдісті қостық. Серіктестеріміздің бірінен шот байланыстырыңыз немесе жаңа өзін-өзі сақтандыру опциясын қолданып, табысыңызды қазір бастаңыз.</translation>
 <translation id="7557539689487606886">Премиумге өту</translation>
+<translation id="1496514951988037011">пайдаланушы аты</translation>
+<translation id="3488199663160411179">атауы</translation>
 <translation id="793994607260936590">бірінші</translation>
+<translation id="598301471034819706">мекенжай</translation>
 <translation id="4130750466177569591">Келісемін</translation>
 <translation id="3251885322612056119">Қызмет көрсету шарттары жаңартылды</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Сөйлесу тарихы</translation>
 <translation id="7956713633345437162">Мобильді бетбелгілер</translation>
+<translation id="1361157028850796410">ең жақсы ұсыныс</translation>
 <translation id="1943432128510653496">Құпия сөздерді сақтау</translation>
 <translation id="2100273922101894616">Автоматты кіру</translation>
 <translation id="363596933471559332">Сақталған тіркелгі деректері арқылы веб-сайттарға автоматты түрде кіріңіз. Функция өшірулі кезде, әрқашан веб-сайтқа кіруден бұрын сізден растау сұралады.</translation>

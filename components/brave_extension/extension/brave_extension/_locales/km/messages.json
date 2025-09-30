@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "shields": {
-    "message": "Shields",
+    "message": "ខែលការពារ ",
     "description": "The Shields feature name"
   },
   "up": {
@@ -100,15 +100,15 @@
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Fingerprinting blocked (standard)",
+    "message": "បិទការចាប់ប្រភេទឆ្វែល (standart)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Fingerprinting blocked (strict, may break sites)",
+    "message": "បិទការចាប់ប្រភេទឆ្វែល (strict, អាចធ្វើឱ្យគេហទំព័រវិលចង់នឹងមិនដំណើរការ)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Allow all fingerprinting",
+    "message": "អនុញ្ញាតគ្រប់ផ្នែកចាប់ប្រភេទ",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
@@ -176,7 +176,7 @@
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Block element",
+    "message": "បិទធាតុ",
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {

@@ -99,6 +99,8 @@
 <translation id="8617525558807213034">Automaattäitmine privaatsetel vahelehtedel</translation>
 <translation id="8685431198160039193">Privaatsetel vahelehtedel saab salvestatud teabe automaatselt täita</translation>
 <translation id="6583902294974160967">Kasutajatugi</translation>
+<translation id="5713644099811900409">Brave'i konto</translation>
+<translation id="4472575034687746823">Alustamine</translation>
 <translation id="1799030480311994998">Funktsioonid</translation>
 <translation id="2005732746077850308">Brave'i kaitsed ja privaatsus</translation>
 <translation id="4692623383562244444">Otsingumootorid</translation>
@@ -422,6 +424,8 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="8748471354357836070">Lisateave / loobumisvõimalused</translation>
 <translation id="3171669670217312786">Taustapildid</translation>
 <translation id="8522669544471808198">Kuva taustapildid</translation>
+<translation id="6258554626602400736">Näita uue vahelehe reklaame</translation>
+<translation id="9001530744369687550">Lisateave uue vahelehe reklaamide kohta</translation>
 <translation id="8793108040181436796">Vidinad</translation>
 <translation id="8643377320501056697">Kuva popid saidid</translation>
 <translation id="7275773481201277457">Kuva Brave’i statistika</translation>
@@ -499,6 +503,8 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="7616645803364270729">E-posti aadress, Twitter vms</translation>
 <translation id="5299848999918506028">Täname!</translation>
 <translation id="76550953340008122">Täname, et andsite Brave’i arendajatele teada, et selle veebisaidiga on midagi valesti. Anname endast parima, et see korda teha!</translation>
+<translation id="3037432377946455872">Mis on teie hinnangul peamine probleem?</translation>
+<translation id="8731661215617360873">Valige üks võimalus</translation>
 <translation id="650318023204990401">Täiustatud kontroll</translation>
 <translation id="7205939464631857223">Tühjendage kõik blokeeritud elemendid</translation>
 <translation id="5370478469168390143">Salvesta andmed veebis</translation>
@@ -1226,6 +1232,13 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="2735247450315842119">Luba ekraanipildid privaatsetel vahelehtedel</translation>
 <translation id="8420414929552321089">Kui see on lubatud, on privaatsed vahelehed nähtavad ka siis, kui mitu rakendust on avatud.</translation>
 <translation id="7956713633345437162">Mobiilne järjehoidja</translation>
+<translation id="3176467469116060712">Toetage Brave'i valdkonda juhtivat tööd veebiprivaatsuse ja avatud lähtekoodiga reklaamiblokeerimise loendite alal</translation>
+<translation id="5896375129784311037">Optimeeritud minimalistlikuma brauseri kasutajaliidese jaoks</translation>
+<translation id="746156554966264308">Brave'i kaitse kese reklaamide blokeerimiseks ning privaatsuse ja kiiruse tagamiseks</translation>
+<translation id="1432661650699782509">IT juhitud p'himõtete toetamine töökohal</translation>
+<translation id="1361157028850796410">parima hinnaga</translation>
+<translation id="7280825497485894053">Kuupõhine tellimus</translation>
+<translation id="4570901726096223030">Lisateave Origini kohta</translation>
 <translation id="1943432128510653496">Paroolide salvestamine</translation>
 <translation id="2100273922101894616">Automaatne sisselogimine</translation>
 <translation id="363596933471559332">Teid logitakse salvestatud mandaadiga veebisaitidele automaatselt sisse. Kui funktsioon on välja lülitatud, palutakse teilt kinnitust iga kord enne veebisaidile sisselogimist.</translation>

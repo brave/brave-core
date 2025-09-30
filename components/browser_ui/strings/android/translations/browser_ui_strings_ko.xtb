@@ -8,7 +8,6 @@
 • 'JavaScript 옵티마이저'를 사용 중지합니다. <ph name="BEGIN_LINK2"/>사이트 예외 관리<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">온라인 열기</translation>
 <translation id="1036348656032585052">사용 중지</translation>
-<translation id="1044891598689252897">사이트가 정상적으로 작동합니다.</translation>
 <translation id="1070329623210597193">이 사이트에서 볼 수 있거나 수정할 수 있는 파일</translation>
 <translation id="1882093842020941518">서드 파티 쿠키를 허용한 이유를 알려주시면 Brave을 개선하는 데 도움이 됩니다. <ph name="BEGIN_LINK"/>의견 보내기<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">사이트의 데스크톱 버전을 표시하도록 요청할 수 있습니다.</translation>
@@ -26,6 +25,7 @@
 <translation id="129382876167171263">웹사이트에서 저장한 파일이 여기에 표시됩니다.</translation>
 <translation id="131112695174432497">광고 개인 최적화에 영향을 미치는 데이터가 삭제됨</translation>
 <translation id="1317194122196776028">사이트 삭제</translation>
+<translation id="1321110954513621549">허용됨 • 대략적인 위치</translation>
 <translation id="1323433172918577554">더보기</translation>
 <translation id="1333965224356556482">사이트에서 내 위치를 확인하도록 허용하지 않음</translation>
 <translation id="1343356790768851700">이 사이트는 내 관심분야를 파악한 후 다른 사이트에 광고를 추천합니다.</translation>
@@ -41,6 +41,7 @@
 <translation id="1448064542941920355">축소</translation>
 <translation id="1464044141348608623">사용자가 현재 기기를 사용 중인지 사이트에서 알 수 없도록 함</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> 사이트}other{<ph name="SITE_COUNT"/> 사이트}}</translation>
+<translation id="1476700086976862423">세피아 테마 색상</translation>
 <translation id="1500473259453106018">탭에 가격 인하 정보 숨기기 카드</translation>
 <translation id="1508931164824684991">사이트에서 JavaScript를 사용할 수 있음</translation>
 <translation id="1510341833810331442">사이트에서 기기에 데이터를 저장할 수 없습니다.</translation>
@@ -72,6 +73,7 @@
 <translation id="7401204338724669842">Brave 사용 팁</translation>
 <translation id="6704867734300244173">사용 설정하면 Brave이 더 빠르게 실행되며 JavaScript를 사용하는 기능이 의도한 대로 작동합니다. 사용 중지하면 성능은 저하되지만 V8의 공격에 대한 저항력이 강화됩니다.</translation>
 <translation id="1818308510395330587"><ph name="APP_NAME"/>에서 AR을 사용하려면 <ph name="BEGIN_LINK"/>Android 설정<ph name="END_LINK"/>에서도 카메라를 사용 설정하세요.</translation>
+<translation id="1848033246551405023">Sans Serif 글꼴</translation>
 <translation id="1881806992065048905">새 탭 페이지 모양 하단 시트</translation>
 <translation id="1887786770086287077">이 기기의 위치 액세스가 사용 중지되었습니다. <ph name="BEGIN_LINK"/>Android 설정<ph name="END_LINK"/>에서 사용 설정하세요.</translation>
 <translation id="1906181697255754968">사이트에서는 일반적으로 작업 자동 저장 등의 기능을 위해 기기의 파일과 폴더에 액세스합니다.</translation>
@@ -93,6 +95,7 @@
 <translation id="2079545284768500474">실행취소</translation>
 <translation id="2080070583977670716">설정 더보기</translation>
 <translation id="2091887806945687916">소리</translation>
+<translation id="2094208275686143364">밝은 테마 색상</translation>
 <translation id="2096716221239095980">모든 데이터 삭제</translation>
 <translation id="2102396546234652240">사이트에서 마이크를 사용하도록 허용하지 않음</translation>
 <translation id="2117655453726830283">다음 슬라이드</translation>
@@ -120,7 +123,9 @@
 <translation id="904887679952026733">가능하면 Brave에서 어두운 테마를 사용할 때 사이트에도 어두운 테마를 적용합니다.</translation>
 <translation id="2390272837142897736">확대</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/>MB</translation>
+<translation id="2403474027143565107">정확한 위치</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> 외 <ph name="NUM_MORE"/>개 허용됨}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> 외 <ph name="NUM_MORE"/>개 허용됨}}</translation>
+<translation id="2404857459073803936">이 사이트의 위치 액세스</translation>
 <translation id="2410940059315936967">내가 방문한 사이트에서 다른 사이트의 콘텐츠(예: 이미지, 광고, 텍스트)를 삽입할 수 있습니다. 다른 사이트에서 설정한 쿠키를 서드 파티 쿠키라고 합니다.</translation>
 <translation id="2411116727035790889">바로가기 사용 설정</translation>
 <translation id="2433507940547922241">모양</translation>
@@ -136,6 +141,7 @@
 <translation id="2498359688066513246">고객센터</translation>
 <translation id="2501278716633472235">뒤로 이동</translation>
 <translation id="2533138527374486328">사용 설정하면 사이트에서 로컬 네트워크의 모든 기기에 연결하도록 요청할 수 있습니다. 사용 중지하면 사이트에서 로컬 네트워크의 기기에 연결할 수 없습니다.</translation>
+<translation id="2544997614631598250">어두운 테마 색상</translation>
 <translation id="2546283357679194313">쿠키 및 사이트 데이터</translation>
 <translation id="2570922361219980984">이 기기의 위치 정보 액세스도 사용 중지되었습니다. <ph name="BEGIN_LINK"/>Android 설정<ph name="END_LINK"/>에서 사용 설정하세요.</translation>
 <translation id="257931822824936280">펼쳐짐 - 접으려면 클릭</translation>
@@ -190,10 +196,10 @@
 <translation id="3123473560110926937">일부 사이트에서 차단됨</translation>
 <translation id="3132996321662585180">매일 새로고침</translation>
 <translation id="3143754809889689516">처음부터 재생</translation>
-<translation id="3162899666601560689">사이트에서 사용자의 로그인 상태를 유지하거나 장바구니에 담긴 상품을 기억하는 등 탐색 환경을 개선하기 위해 쿠키를 사용할 수 있습니다.</translation>
 <translation id="3165022941318558018">사이트에서 서드 파티 쿠키를 사용하도록 허용합니다</translation>
 <translation id="3167868116600277716">디스커버 피드</translation>
 <translation id="3198916472715691905">저장 데이터 <ph name="STORAGE_AMOUNT"/></translation>
+<translation id="3199078925536734975">이번에는 허용됨 • 대략적인 위치</translation>
 <translation id="321187648315454507"><ph name="APP_NAME"/>에서 알림을 전송하도록 허용하려면 <ph name="BEGIN_LINK"/>Android 설정<ph name="END_LINK"/>에서도 알림을 사용 설정하세요.</translation>
 <translation id="3223425961342298674">위치가 허용되지 않음</translation>
 <translation id="3227137524299004712">마이크</translation>
@@ -248,6 +254,7 @@
 <translation id="3803367742635802571">방문한 사이트가 정상적으로 작동하지 않을 수 있음</translation>
 <translation id="8338457030135232378">Brave 색상</translation>
 <translation id="381841723434055211">전화번호</translation>
+<translation id="3823453485268218808">Mono 글꼴</translation>
 <translation id="3826050100957962900">서드 파티 로그인</translation>
 <translation id="3835233591525155343">기기 사용 여부</translation>
 <translation id="1799795508209440035">오늘 Brave에서 쿠키를 다시 차단합니다</translation>
@@ -257,9 +264,9 @@
 <translation id="3895926599014793903">확대/축소 강제 사용</translation>
 <translation id="3903738175795615004">전체 화면을 종료하려면 위에서 드래그하거나 Esc 키를 누르세요.</translation>
 <translation id="3905475044299942653">많은 알림 중지</translation>
-<translation id="3918378745482005425">일부 기능이 작동하지 않을 수 있습니다. 관련 사이트에서는 계속 서드 파티 쿠키를 사용할 수 있습니다.</translation>
 <translation id="3922092564198021702">휴대전화에서 설정을 엽니다.</translation>
 <translation id="3933121352599513978">원치 않는 요청 접기(권장)</translation>
+<translation id="3934905113567851655">손가락을 모으거나 벌려 크기를 조절하세요.</translation>
 <translation id="3955193568934677022">사이트에서 보호된 콘텐츠를 재생하도록 허용(권장)</translation>
 <translation id="3955321697524543127">사이트에서 USB 기기에 연결하도록 허용하지 않음</translation>
 <translation id="3965467402665811906">사이트에서 나에 관해 저장된 정보 사용을 요청할 수 있음</translation>
@@ -272,6 +279,7 @@
 <translation id="3992684624889376114">이 페이지에 관한 정보</translation>
 <translation id="4002066346123236978">제목</translation>
 <translation id="4031179711345676612">마이크 허용됨</translation>
+<translation id="4042597221652780603">대략적인 위치</translation>
 <translation id="4046123991198612571">다음 트랙</translation>
 <translation id="4077310749977440510">사이트에서는 일반적으로 복사한 텍스트 서식 유지와 같은 기능을 사용하기 위해 클립보드를 읽습니다.</translation>
 <translation id="4082080074595021446">Android 기기에 RAM이 부족하여 특정 웹사이트에 대한 예외가 허용되지 않습니다.</translation>
@@ -300,9 +308,11 @@
 <translation id="4402755511846832236">사용자가 현재 기기를 사용 중인지 사이트에서 알 수 없도록 차단합니다.</translation>
 <translation id="4412992751769744546">서드 파티 쿠키 허용</translation>
 <translation id="1675197434085185531">Brave에서는 사이트가 서드 파티 쿠키를 사용하여 사용자의 탐색 활동을 추적하지 못하도록 사이트를 차단합니다. 설정으로 이동하여 <ph name="BEGIN_LINK"/>서드 파티 쿠키의 액세스를 관리<ph name="END_LINK"/>하세요.</translation>
+<translation id="4425416282877905577">Serif 글꼴</translation>
 <translation id="443121186588148776">직렬 포트</translation>
 <translation id="4434045419905280838">팝업 및 리디렉션</translation>
 <translation id="443552056913301231">이 작업을 실행하면 쿠키를 포함한 모든 로컬 데이터가 삭제되고, <ph name="ORIGIN"/>에 대한 권한이 모두 재설정됩니다.</translation>
+<translation id="43076815069546662">Brave 색상 하단 시트가 전체 높이로 열림</translation>
 <translation id="4468959413250150279">특정 사이트를 음소거합니다.</translation>
 <translation id="4475912480633855319">{COOKIES,plural, =1{쿠키 #개}other{쿠키 #개}}</translation>
 <translation id="4478158430052450698">여러 사이트의 확대/축소 맞춤설정이 더 쉬워집니다.</translation>
@@ -337,6 +347,7 @@
 <translation id="4953688446973710931">사용 설정하면 사이트에서 여러 파일의 자동 다운로드를 요청할 수 있습니다. 사용 중지하면 사이트에서 여러 파일을 자동으로 다운로드할 수 없습니다.</translation>
 <translation id="4962975101802056554">기기에서 모든 권한을 취소합니다.</translation>
 <translation id="4972737347717125191">사이트에서 가상 현실 기기 및 데이터의 사용을 요청할 수 있음</translation>
+<translation id="1275242979020712923">Brave 색상 하단 시트</translation>
 <translation id="497421865427891073">앞으로 이동</translation>
 <translation id="4976702386844183910">최근 방문: <ph name="DATE"/></translation>
 <translation id="4978178243417029856">디스커버 피드에 대해 자세히 알아보기</translation>
@@ -386,7 +397,6 @@
 <translation id="5515432237048785579">디스커버 피드 하단 시트가 전체 높이로 열림</translation>
 <translation id="5516455585884385570">알림 설정 열기</translation>
 <translation id="5527111080432883924">사이트에서 클립보드의 텍스트 및 이미지에 액세스하도록 허용하기 전에 확인(권장)</translation>
-<translation id="5545693483061321551">사이트에서 사용자의 다양한 사이트 탐색 활동 정보를 이용해 광고 맞춤설정 등의 작업을 하는 데 쿠키를 사용할 수 없습니다. 일부 사이트에서는 기능이 작동하지 않을 수 있습니다.</translation>
 <translation id="5553374991681107062">최신</translation>
 <translation id="674221630984410403">Brave의 V8 엔진으로 사이트 속도를 높이지 않지만 Brave이 공격에 약간 더 강해집니다.</translation>
 <translation id="5556459405103347317">새로고침</translation>
@@ -549,6 +559,7 @@
 <translation id="7478658909253570368">사이트에서 직렬 포트에 연결하도록 허용하지 않음</translation>
 <translation id="7488573225650545859">앱 목록의 탭 보기 숨기기</translation>
 <translation id="7521387064766892559">자바스크립트</translation>
+<translation id="7538975533793429503">글꼴 크기 슬라이더</translation>
 <translation id="7547989957535180761">사용 설정하면 사이트에서 로그인 메시지를 표시할 수 있습니다. 사용 중지하면 사이트에서 로그인 메시지를 표시할 수 없습니다.</translation>
 <translation id="7553211568594248088">허브 검색 종료</translation>
 <translation id="7554752735887601236">사이트에서 마이크를 사용 중입니다.</translation>
@@ -708,10 +719,5 @@
 <translation id="3110967157686007724">비공개 탭</translation>
 <translation id="8623552597614912461">이 사이트가 비공개 모드 밖에서 앱과 정보를 공유하려고 합니다.</translation>
 <translation id="8157212814767579028">비공개 모드를 종료하시겠습니까?</translation>
-<translation id="6105125042109106861">시크릿 모드에서는 타사 쿠키가 차단됨</translation>
-<translation id="6642913673024345959">비공개 모드에서 타사 쿠키 차단</translation>
-<translation id="20460146243579445">비공개 모드에서는 일부 사이트의 기능이 작동하지 않을 수 있습니다.</translation>
-<translation id="8877838532507724268">비공개 모드에 있는 동안에는 관련성 높은 사이트라도 사이트가 쿠키를 활용하여 귀하의 사이트 브라우징 활동을 볼 수 없습니다. 브라우징 활동이 맞춤 광고 등에 사용되지 않습니다. 일부 사이트에서는 기능이 작동하지 않을 수 있습니다.</translation>
-<translation id="1856888821396498049">비공개 모드에서 타사 쿠키 차단:</translation>
 <translation id="1593610935874634135">회사가 사이트 그룹을 설정하여 이 그룹 내에서는 귀하의 활동을 공유할 수 있습니다. 비공개 창에서는 이 설정이 꺼집니다.</translation>
 </translationbundle>

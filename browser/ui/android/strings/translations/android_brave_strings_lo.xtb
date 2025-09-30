@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="lo">
+<translation id="7931127789630755251">ຮັບໂທເຄັນຈາກໂຄສະນາສ່ວນຕົວທີ່ທ່ານເຫັນໃນ Brave</translation>
 <translation id="7859066142771796818">ໃຊ້ໂທເຄັນເພື່ອຊື້ບັດຂອງຂວັນ, ແລກປ່ຽນສະກຸນເງິນອື່ນ, ສະໜັບສະໜູນຄຣີເອີເຕີ້ ແລະ ອື່ນໆອີກຫຼາກຫຼາຍ.</translation>
 <translation id="3863981251715594911">ວິທີໃຊ້ງານເປັນແນວໃດ?</translation>
 <translation id="2965798296974325760">ເລີ່ມໃຊ້ງານລະບົບ Rewards</translation>
@@ -19,6 +20,7 @@
 <translation id="8617525558807213034">ຕື່ມຂໍ້ມູນອັດຕະໂນມັດໃນແທັບສ່ວນຕົວ</translation>
 <translation id="8685431198160039193">ຂໍ້ມູນທີ່ບັນທຶກໄວ້ສາມາດຕື່ມອັດຕະໂນມັດໃນແທັບສ່ວນຕົວໄດ້</translation>
 <translation id="6583902294974160967">ຝ່າຍສະໜັບສະໜູນ</translation>
+<translation id="4472575034687746823">ເລີ່ມຕົ້ນໃຊ້ງານ</translation>
 <translation id="1799030480311994998">ຄຸນສົມບັດ</translation>
 <translation id="2005732746077850308">Brave Shields &amp; ຄວາມເປັນສ່ວນຕົວ</translation>
 <translation id="4692623383562244444">ເຄື່ອງມືຄົ້ນຫາ</translation>
@@ -50,9 +52,11 @@
 <translation id="7818938154803162778">ໄດ້ເລີຍ, ຂ້ອຍຍິນດີຊ່ວຍ.</translation>
 <translation id="3545804467215833536">ກົດເພື່ອເບິ່ງ Brave Shields</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ບລັອກໂຄສະນາ &amp; ຕົວຕິດຕາມແລ້ວ</translation>
+<translation id="6165508094623778733">ຮຽນຮູ້ເພີ່ມເຕີມ</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3570367516044491911">ຕັ້ງເປັນບຣາວເຊີ້ເລີ່ມຕົ້ນ</translation>
+<translation id="7658239707568436148">ຍົກເລີກ</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
 <translation id="348794064910142198">Brave Sync ໃຫ້ທ່ານຊິ້ງຄ໌ຂໍ້ມູນບຸກມາກລະຫວ່າງບຣາວເຊີ້ Brave ຂອງທ່ານໃນອຸປະກອນຕ່າງໆໄດ້ຢ່າງເປັນສ່ວນຕົວ.\n\nພຽງແຕ່ສະແກນບາໂຄ້ດຈາກກຸ່ມອຸປະກອນທີ່ເຊື່ອມຂໍ້ມູນກັນທີ່ທ່ານສ້າງໄວ້ໃນອຸປະກອນອື່ນ. ຫຼື ເລີ່ມກຸ່ມອຸປະກອນທີ່ເຊື່ອມຂໍ້ມູນກັນໃໝ່.</translation>
@@ -96,6 +100,7 @@
 <translation id="2977461003134694205">ສະຖິຕິຄວາມເປັນສ່ວນຕົວ</translation>
 <translation id="8363792084628930008">ເມື່ອເປີດໃຊ້ງານ Rewards, ຖືວ່າທ່ານຍອມຮັບ <ph name="TERMS_OF_SERVICE"/> ແລະ <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="3479552764303398839">ຍັງບໍ່ແມ່ນຕອນນີ້</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="2359808026110333948">ດຳເນີນການຕໍ່</translation>
 <translation id="1544192797660353713">Wallet</translation>
 <translation id="719977489961414786">ອັບເກຣດເປັນ VPN ເພື່ອປົກປ້ອງການເຊື່ອມຕໍ່ຂອງທ່ານ ແລະ ບລັອກຕົວຕິດຕາມທີ່ລະເມີດຄວາມເປັນສ່ວນຕົວໄດ້ທຸກບ່ອນ.</translation>
@@ -120,9 +125,11 @@
 <translation id="5903391101107992067">ທົດລອງຟຣີ 7 ມື້</translation>
 <translation id="8681480718817027245">ການສະໝັກໃຊ້ງານ</translation>
 <translation id="2304783958703511257">ການຕັ້ງຄ່າຂັ້ນສູງ</translation>
+<translation id="9065203028668620118">ແກ້ໄຂ</translation>
 <translation id="473775607612524610">ອັບເດດ</translation>
 <translation id="1450735350187803276">ໂຄສະນາທີ່ທ່ານເຫັນໃນເດືອນນີ້</translation>
 <translation id="5233638681132016545">ເປີດໃນແທັບໃໝ່</translation>
+<translation id="5039804452771397117">ອະນຸຍາດ</translation>
 <translation id="4250680216510889253">ບໍ່</translation>
 <translation id="5456039738087398178">ວິດເຈັດໃນໜ້າຈໍຫຼັກ</translation>
 <translation id="2326703104633309781">ໃຊ້ Brave Translate</translation>
@@ -130,6 +137,7 @@
 <translation id="3264975266761862670">ພ້ອມເລີ່ມຮັບລາຍໄດ້ແລ້ວຫຼືບໍ່?</translation>
 <translation id="265337947574975838">ເຊື່ອມຕໍ່ ຫຼື ສ້າງບັນຊີຜ່ານພາດເນີ້ຂອງພວກເຮົາ.</translation>
 <translation id="654447476965480878">ເບິ່ງວິທີສະສົມ BAT ເພີ່ມເຕີມ</translation>
+<translation id="6278643716658443228">ການຕັ້ງຄ່າລະບົບ Rewards</translation>
 <translation id="4272136334824111854">ເດືອນນີ້, ທ່ານເຂົ້າເບິ່ງຄຣີເອເຕີ້ <ph name="CREATOR_COUNT"/> ຄົນທີ່ໄດ້ຮັບການສະໜັບສະໜູນຜ່ານ Brave Rewards</translation>
 <translation id="1179407411385015942">Leo ແມ່ນຜູ້ຊ່ວຍອັດສະລິຍະທີ່ຂັບເຄື່ອນດ້ວຍ AI ແລະ ຝັງຢູ່ໃນບຣາວເຊີ້ໂດຍກົງ.</translation>
 <translation id="5781842473834867765">ບັນທຶກປະຫວັດການສົນທະນາຂອງຂ້ອຍ</translation>
@@ -152,6 +160,10 @@
 <translation id="614530507403667291">ໂມເດວເລີ່ມຕົ້ນສຳລັບການສົນທະນາໃໝ່</translation>
 <translation id="4071849832011229600">ໂມເດວເລີ່ມຕົ້ນ</translation>
 <translation id="7557539689487606886">ອັບເກຣດເປັນ Premium</translation>
+<translation id="1496514951988037011">ຊື່​ຜູ້​ໃຊ້</translation>
+<translation id="3488199663160411179">ຊື່</translation>
+<translation id="1361157028850796410">ຄຸ້ມຄ່າທີ່ສຸດ</translation>
+<translation id="7280825497485894053">ແພັກເກັດປະຈຳເດືອນ</translation>
 <translation id="1943432128510653496">ບັນທຶກລະ​ຫັດ​ຜ່ານ</translation>
 <translation id="2100273922101894616">ເຂົ້າສູ່​ລະບົບ​ອັດຕະໂນມັດ</translation>
 <translation id="363596933471559332">ເຂົ້າສູ່ລະບົບເວັບ​ໄຊ​ໂດຍ​ອັດຕະ​ໂນ​ມັດໂດຍ​ໃຊ້​ຂໍ້​ມູນ​ປະ​ຈໍາ​ຕົວ​ທີ່​ຮັກສາ​ໄວ້. ​ເມື່ອຄຸນສົມບັດນີ້ຖືກປິດການນຳໃຊ້, ທ່ານ​ຈະ​ຖືກ​ຮ້ອງ​ຂໍ​ໃຫ້​ກວດ​ສອບ​ໃນ​ທຸກໆເທື່ອ ກ່ອນ​ທີ່​ຈະ​ລົງ​ຊື່​ເຂົ້າ​ເວັບ​ໄຊໃດ​ໜຶ່ງ.</translation>
