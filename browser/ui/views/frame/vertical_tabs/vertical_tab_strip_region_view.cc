@@ -1106,7 +1106,8 @@ void BraveVerticalTabStripRegionView::UpdateBorder() {
       1 -
       (sidebar_on_same_side
            ? 0
-           : BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_));
+           : (BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_) /
+              2));
   gfx::Insets border_insets = (is_on_right) ? gfx::Insets::TLBR(0, inset, 0, 0)
                                             : gfx::Insets::TLBR(0, 0, 0, inset);
 

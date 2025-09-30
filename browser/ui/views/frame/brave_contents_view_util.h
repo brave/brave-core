@@ -19,7 +19,7 @@ class View;
 class BraveContentsViewUtil {
  public:
   // The distance between main content areas and other UI elements.
-  static constexpr int kMarginThickness = 4;
+  static constexpr int kMarginThickness = 8;
 
   // The border radius applied to main content areas.
 #if BUILDFLAG(IS_MAC)

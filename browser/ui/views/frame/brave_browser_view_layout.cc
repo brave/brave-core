@@ -345,9 +345,9 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
   if (tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()) &&
       !IsFullscreenForBrowser()) {
     if (tabs::utils::IsVerticalTabOnRight(browser_view_->browser())) {
-      contents_margins.set_right(contents_margin_for_rounded_corners);
+      contents_margins.set_right(contents_margin_for_rounded_corners / 2);
     } else {
-      contents_margins.set_left(contents_margin_for_rounded_corners);
+      contents_margins.set_left(contents_margin_for_rounded_corners / 2);
     }
   }
 
