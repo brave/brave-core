@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_collection.h"
 #include "components/tabs/public/tab_strip_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
 #include "content/public/browser/web_contents.h"
@@ -521,7 +522,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
   // The opener's TreeTabNode should now have 2 children (1 original + 1 added).
   EXPECT_EQ(2u, opener_tab->GetParentCollection()->ChildCount());
 
-  // 4. In tree mode with opener. The previous tab is not the opener  but the
+  // 4. In tree mode with opener. The previous tab is not the opener but the
   // previous tab is a child of opener. In this case, the new tab should be
   // added as a child of the opener's TreeTabNode. -----------------------------
   // add tab in tree mode with opener as the tab before the previous tab.
@@ -545,6 +546,12 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
                 ->GetTopLevelAncestor(),
             static_cast<const TreeTabNode*>(added_tab->GetParentCollection())
                 ->GetTopLevelAncestor());
+
+  EXPECT_EQ(opener_tab->GetParentCollection(),
+            added_tab->GetParentCollection()->GetParentCollection());
+  EXPECT_EQ(opener_tab->GetParentCollection()
+                ->GetDirectChildIndexOfCollectionContainingTab(added_tab),
+            opener_tab->GetParentCollection()->ChildCount() - 1);
 
   // 5. In tree mode with opener not as previous tab: should wrap in new
   // TreeTabNode but should not be a child of the opener's TreeTabNode. -------
