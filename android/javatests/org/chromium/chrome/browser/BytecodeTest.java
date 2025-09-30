@@ -1021,6 +1021,12 @@ public class BytecodeTest {
                         Context.class,
                         SuggestionHost.class,
                         UrlBarEditingTextStateProvider.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/toolbar/adaptive/settings/RadioButtonGroupAdaptiveToolbarPreference", // presubmit: ignore-long-line
+                        "buildUiStateForStats",
+                        MethodModifier.REGULAR,
+                        UiState.class));
     }
 
     @Test
