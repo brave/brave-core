@@ -10,6 +10,7 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
@@ -82,6 +83,12 @@ void BraveActionsContainer::AddActionViewForShields() {
       std::make_unique<BraveShieldsActionView>(browser_window_interface_), 1);
   shields_action_btn_->SetPreferredSize(GetActionSize());
   shields_action_btn_->Init();
+
+  // Hide the shields button if the shields UI is displayed in the Page Info
+  // bubble.
+  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+    shields_action_btn_->SetVisible(false);
+  }
 }
 
 void BraveActionsContainer::AddActionViewForRewards() {
@@ -140,6 +147,7 @@ void BraveActionsContainer::ChildPreferredSizeChanged(views::View* child) {
 void BraveActionsContainer::OnBraveRewardsPreferencesChanged() {
   if (rewards_action_btn_) {
     rewards_action_btn_->SetVisible(ShouldShowBraveRewardsAction());
+    UpdateVisibility();
   }
 }
 

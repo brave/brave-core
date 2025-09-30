@@ -4,7 +4,7 @@ index 7d3bec70e0cce4f67e5677f6c71e2acb8ab3b8fb..4948446a0128cdfd717167b796f46eab
 +++ b/chrome/browser/ui/views/page_info/page_info_bubble_view.cc
 @@ -209,7 +209,7 @@ views::BubbleDialogDelegateView* PageInfoBubbleView::CreatePageInfoBubble(
    }
- 
+
    PageInfoBubbleView* const bubble =
 -      new PageInfoBubbleView(anchor, anchor_rect, parent_view, web_contents,
 +      new BravePageInfoBubbleView(anchor, anchor_rect, parent_view, web_contents,

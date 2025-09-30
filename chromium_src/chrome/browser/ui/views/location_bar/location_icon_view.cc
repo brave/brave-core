@@ -15,8 +15,16 @@ constexpr int kDangerousVerboseState = IDS_DANGEROUS_VERBOSE_STATE;
 #undef IDS_DANGEROUS_VERBOSE_STATE
 #define IDS_DANGEROUS_VERBOSE_STATE kDangerousVerboseState) && (false
 
+// Early return from `UpdateBackground` in order to avoid resetting the ink drop
+// and clearing the current ink drop state. When the user toggles the Shields
+// status while the page info bubble is open, we intentionally keep the bubble
+// open. The Shields status update will trigger a call to this method. Since the
+// bubble is still open, we do not want to reset the ink drop state.
+#define BRAVE_LOCATION_ICON_VIEW_UPDATE_BACKGROUND return;
+
 #include <chrome/browser/ui/views/location_bar/location_icon_view.cc>
 
+#undef BRAVE_LOCATION_ICON_VIEW_UPDATE_BACKGROUND
 #undef IDS_DANGEROUS_VERBOSE_STATE
 
 #define IDS_DANGEROUS_VERBOSE_STATE kDangerousVerboseState

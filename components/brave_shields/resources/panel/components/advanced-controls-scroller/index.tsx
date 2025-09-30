@@ -63,9 +63,13 @@ function Scroller (props: Props) {
   }
 
   const updatePanelRect = async () => {
-    const { vec } = await getPanelBrowserAPI().panelHandler.getPosition()
+    let { vec } = await getPanelBrowserAPI().panelHandler.getPosition()
     if (!vec) {
-      return
+      // If the browser cannot determine the location of the Shields bubble
+      // (e.g. the WebUI is being displayed in the page info bubble), then use
+      // an arbitrary point that leaves enough room for the other controls in
+      // the bubble.
+      vec = { x: 0, y: 64 }
     }
 
     const windowInnerHeight = await getWindowInnerHeight()
