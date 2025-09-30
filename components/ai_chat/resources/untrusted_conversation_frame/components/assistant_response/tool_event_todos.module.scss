@@ -1,0 +1,100 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.todoContainer {
+  max-width: 400px;
+  border: 1px solid var(--leo-color-neutral-10);
+  border-radius: var(--leo-radius-m);
+  // Overflow: hidden ensures the border radius clips the header background
+  overflow: hidden;
+  background: var(--leo-color-container-background);
+}
+
+.todoHeader {
+  background: var(--leo-color-page-background);
+  padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  padding-bottom: var(--leo-spacing-s);
+  color: var(--leo-color-text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+}
+
+.todoHeaderIcon {
+  --leo-icon-size: 16px;
+}
+
+.todoHeaderText {
+  font: var(--leo-font-default-semibold);
+}
+
+.todoList {
+  padding: var(--leo-spacing-m);
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-s);
+}
+
+.todoItem {
+  --todo-icon-color: var(--leo-color-icon-secondary);
+  --todo-icon-background: var(--leo-color-container-highlight);
+  --todo-icon-border-color: var(--todo-icon-background);
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  // Account for the border
+  padding: var(--leo-spacing-s) var(--leo-spacing-xs);
+}
+
+.todoItemCompleted {
+  --todo-icon-color: var(--leo-color-systemfeedback-success-icon);
+  --todo-icon-background: var(--leo-color-systemfeedback-success-background);
+}
+
+.todoItemCancelled {
+  --todo-icon-color: var(--leo-color-systemfeedback-error-icon);
+  --todo-icon-background: var(--leo-color-systemfeedback-error-background);
+
+  .todoItemText {
+    color: var(--leo-color-text-tertiary);
+    text-decoration: line-through;
+  }
+}
+
+.todoItemInProgress {
+  --leo-icon-color: var(--leo-color-primary-40);
+  --todo-icon-background: none;
+  --todo-icon-border-color: var(--leo-color-container-highlight);
+}
+
+.todoItemPending {
+  --leo-icon-color: var(--leo-color-text-tertiary);
+}
+
+.todoItemIcon {
+  padding: 1px;
+  --leo-icon-size: 16px;
+  --leo-progressring-size: 16px;
+  --leo-progressring-color: var(--todo-icon-color);
+  --leo-icon-color: var(--todo-icon-color);
+  background: var(--todo-icon-background);
+  border-radius: 50%;
+  border: 1px solid var(--todo-icon-border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.todoItemContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.todoItemText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+  word-wrap: break-word;
+}
