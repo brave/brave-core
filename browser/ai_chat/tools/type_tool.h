@@ -32,9 +32,9 @@ class TypeTool : public Tool {
  private:
   void OnTabHandleCreated(UseToolCallback callback,
                           optimization_guide::proto::ActionTarget target,
-                          std::string text,
+                          const std::string& text,
                           bool follow_by_enter,
-                          std::string mode,
+                          const std::string& mode,
                           tabs::TabHandle tab_handle);
 
   raw_ptr<actor::ActorKeyedService> actor_service_ = nullptr;

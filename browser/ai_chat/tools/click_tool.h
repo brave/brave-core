@@ -32,8 +32,8 @@ class ClickTool : public Tool {
  private:
   void OnTabHandleCreated(UseToolCallback callback,
                           optimization_guide::proto::ActionTarget target,
-                          std::string click_type,
-                          std::string click_count,
+                          const std::string& click_type,
+                          const std::string& click_count,
                           tabs::TabHandle tab_handle);
 
   raw_ptr<actor::ActorKeyedService> actor_service_ = nullptr;

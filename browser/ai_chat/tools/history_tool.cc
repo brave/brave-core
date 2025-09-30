@@ -67,7 +67,7 @@ void HistoryTool::UseTool(const std::string& input_json,
 }
 
 void HistoryTool::OnTabHandleCreated(UseToolCallback callback,
-                                     std::string direction,
+                                     const std::string& direction,
                                      tabs::TabHandle tab_handle) {
   optimization_guide::proto::Actions actions;
   actions.set_task_id(task_provider_->GetTaskId().value());

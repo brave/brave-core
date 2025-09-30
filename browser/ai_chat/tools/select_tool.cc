@@ -86,7 +86,7 @@ void SelectTool::UseTool(const std::string& input_json,
 void SelectTool::OnTabHandleCreated(
     UseToolCallback callback,
     optimization_guide::proto::ActionTarget target,
-    std::string value,
+    const std::string& value,
     tabs::TabHandle tab_handle) {
   optimization_guide::proto::Actions actions;
   actions.set_task_id(task_provider_->GetTaskId().value());

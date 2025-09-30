@@ -32,7 +32,7 @@ class SelectTool : public Tool {
  private:
   void OnTabHandleCreated(UseToolCallback callback,
                           optimization_guide::proto::ActionTarget target,
-                          std::string value,
+                          const std::string& value,
                           tabs::TabHandle tab_handle);
 
   raw_ptr<actor::ActorKeyedService> actor_service_ = nullptr;
