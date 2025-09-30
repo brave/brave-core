@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
      This Source Code Form is subject to the terms of the Mozilla Public
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
-
 <resources>
     <!-- Theme colors -->
     <!-- Overriding chromium theme colors to brave theme colors -->
@@ -50,10 +49,10 @@
 
     <!-- Brave wallet 2.0 colors -->
     <color name="brave_wallet_dn_panel_bg">@color/wallet_bg</color>
-    <color name="text_disabled">#80EBEEF0</color>
+    <color name="text_disabled">#ebeef0</color>
     <color name="text_on_primary">#251491</color>
-    <color name="icon_interactive">#7C91FF</color>
-    <color name="divider_subtle">#66687B85</color>
+    <color name="icon_interactive">#bcc6f3</color>
+    <color name="divider_subtle">#303032</color>
     <color name="system_feedback_error">#FFB1B0</color>
 
 
@@ -91,13 +90,13 @@
     <color name="brave_sync_border_color">@color/baseline_neutral_20</color>
     <color name="brave_sync_bg_secondary_color">#212529</color>
 
-    <color name="container_background">#0d1214</color>
-    <color name="divider_interactive">#545ff8</color>
-    <color name="systemfeedback_error_icon">#ffb1b0</color>
-    <color name="systemfeedback_error_background">#460a10</color>
-    <color name="systemfeedback_info_text">#a0cdff</color>
-    <color name="systemfeedback_info_icon">#a0cdff</color>
-    <color name="systemfeedback_info_background">#072542</color>
+    <color name="container_background">#1c1c1d</color>
+    <color name="divider_interactive">#7686ec</color>
+    <color name="systemfeedback_error_icon">#ff7f72</color>
+    <color name="systemfeedback_error_background">#4d0103</color>
+    <color name="systemfeedback_info_text">#78abff</color>
+    <color name="systemfeedback_info_icon">#78abff</color>
+    <color name="systemfeedback_info_background">#002058</color>
 
     <color name="brave_set_default_dialog_text_color">@android:color/white</color>
 
@@ -194,24 +193,24 @@
     <color name="vpn_timer_text_color">#F6F7F8</color>
     <color name="vpn_timer_icon_color">#A1ABBA</color>
 
-    <color name="text_primary">#F3F5F7</color>
-    <color name="text_secondary">#c7c7cc</color>
-    <color name="text_tertiary">#a1b2ba</color>
-    <color name="primary_20">#2A118E</color>
-    <color name="button_background">#3f39e8</color>
-    <color name="systemfeedback_error_text">#ffb1b0</color>
+    <color name="text_primary">#e4e4e5</color>
+    <color name="text_secondary">#c9c9ca</color>
+    <color name="text_tertiary">#909093</color>
+    <color name="primary_20">#271e93</color>
+    <color name="button_background">#bcc6f3</color>
+    <color name="systemfeedback_error_text">#ff7f72</color>
 
     <color name="location_bar_background_color_for_ntp">#383839</color>
     <color name="toolbar_background_color_for_ntp">#1f1f1f</color>
 
-    <color name="schemes_on_surface">#e3e3e8</color>
-    <color name="schemes_on_surface_variant">#c7c7cc</color>
-    <color name="schemes_outline_variant">#3b3b3f</color>
-    <color name="schemes_primary">#c1c4ff</color>
-    <color name="schemes_on_primary">#251491</color>
-    <color name="schemes_surface_container_highest">#303034</color>
-    <color name="schemes_surface_container_lowest">#0D0E11</color>
-    <color name="text_interactive">#7c91ff</color>
+    <color name="schemes_on_surface">#e4e4e5</color>
+    <color name="schemes_on_surface_variant">#c9c9ca</color>
+    <color name="schemes_outline_variant">#464649</color>
+    <color name="schemes_primary">#bcc6f3</color>
+    <color name="schemes_on_primary">#20197f</color>
+    <color name="schemes_surface_container_highest">#343438</color>
+    <color name="schemes_surface_container_lowest">#0f0f0f</color>
+    <color name="text_interactive">#bcc6f3</color>
 
     <color name="button_background_widget_promo">#C1C6FF</color>
 
