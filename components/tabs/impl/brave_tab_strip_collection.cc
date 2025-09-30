@@ -5,6 +5,7 @@
 
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
 
+#include "base/logging.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "components/tabs/public/tab_collection.h"
@@ -40,7 +41,9 @@ void BraveTabStripCollection::AddTabRecursive(
             ->GetTopLevelAncestor()) {
       auto tree_tab_node = std::make_unique<TreeTabNode>(
           tree_tab::TreeTabNodeId::GenerateNew(), std::move(tab));
-      opener_collection->AddCollection(std::move(tree_tab_node), 1);
+
+      opener_collection->AddCollection(std::move(tree_tab_node),
+                                       opener_collection->ChildCount());
       return;
     }
   }
