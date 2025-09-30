@@ -25,11 +25,10 @@ void BraveTabStripCollection::AddTabRecursive(
 
   // If the previous tab is in the same hierarchy of tree of the opener, we can
   // add the new tab to the same tree node.
-  if (const auto* opener = tab->GetOpener()) {
+  if (const auto* opener = tab->GetOpener(); opener && index > 0) {
     auto* opener_collection = opener->GetParentCollection(GetPassKey());
     CHECK_EQ(opener_collection->type(), TabCollection::Type::TREE_NODE);
 
-    CHECK_GE(index, 1u);
     TabInterface* previous_tab = GetTabAtIndexRecursive(index - 1);
 
     auto* previous_tab_collection =
