@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index e74e5240eb2b5bcca9ba47b15fabeaf928e90540..974112b18301fe058e0f523587d27dd3435160b5 100644
+index e74e5240eb2b5bcca9ba47b15fabeaf928e90540..322b54651a15b6e276a1f456d64a6527bc9b7f08 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -17,6 +17,7 @@ import("//third_party/angle/gni/angle.gni")
@@ -71,10 +71,19 @@ index e74e5240eb2b5bcca9ba47b15fabeaf928e90540..974112b18301fe058e0f523587d27dd3
  
      inputs = packaging_files
 -    outputs = [ "$root_out_dir/${package}-${channel}_${chrome_version_full}-1_${deb_arch}.deb" ]
-+    outputs = [ "$root_out_dir/${package}-${channel}_${chrome_version_full}_${deb_arch}.deb" ]
++    if (channel == "stable") { outputs = [ "$root_out_dir/${package}_${chrome_version_full}_${deb_arch}.deb" ] } else { outputs = [ "$root_out_dir/${package}-${channel}_${chrome_version_full}_${deb_arch}.deb" ] }
  
      args = [
        rebase_path("$root_out_dir/installer/debian/build.sh", root_build_dir),
+@@ -519,7 +528,7 @@ template("linux_package") {
+       }
+ 
+       inputs = packaging_files
+-      outputs = [ "$root_out_dir/${package}-${channel}-${chrome_version_full}-1.${rpm_arch}.rpm" ]
++      if (channel == "stable") { outputs = [ "$root_out_dir/${package}-${chrome_version_full}-1.${rpm_arch}.rpm" ] } else { outputs = [ "$root_out_dir/${package}-${channel}-${chrome_version_full}-1.${rpm_arch}.rpm" ] }
+ 
+       args = [
+         rebase_path("$root_out_dir/installer/rpm/build.sh", root_build_dir),
 @@ -567,3 +576,6 @@ linux_package("unstable") {
  linux_package("canary") {
    channel = "canary"
