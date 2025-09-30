@@ -14,6 +14,7 @@
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -50,6 +51,9 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
     rewards_panel_coordinator_ =
         std::make_unique<brave_rewards::RewardsPanelCoordinator>(browser);
   }
+
+  brave_shields_ui_contents_cache_ =
+      std::make_unique<BraveShieldsUIContentsCache>();
 }
 
 void BrowserWindowFeatures::InitPostBrowserViewConstruction(

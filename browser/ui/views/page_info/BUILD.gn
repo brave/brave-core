@@ -14,6 +14,8 @@ source_set("page_info") {
     "brave_page_info_view_ids.h",
     "brave_shields_page_info_view.cc",
     "brave_shields_page_info_view.h",
+    "brave_shields_ui_contents_cache.cc",
+    "brave_shields_ui_contents_cache.h",
   ]
 
   deps = [
@@ -31,6 +33,18 @@ source_set("page_info") {
     "//extensions/common",
     "//ui/base",
     "//ui/views/controls/webview",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_shields_ui_contents_cache_unittest.cc" ]
+
+  deps = [
+    ":page_info",
+    "//chrome/browser/ui/webui/top_chrome",
+    "//chrome/test:test_support",
   ]
 }
 

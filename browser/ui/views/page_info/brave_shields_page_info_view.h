@@ -13,6 +13,7 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/view.h"
 
+class BraveShieldsUIContentsCache;
 class BrowserWindowInterface;
 class WebUIContentsWrapper;
 
@@ -49,6 +50,7 @@ class BraveShieldsPageInfoView : public views::View {
 
  private:
   std::unique_ptr<WebUIContentsWrapper> CreateContentsWrapper();
+  BraveShieldsUIContentsCache& GetContentsCache();
 
   raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<views::WebView> web_view_ = nullptr;

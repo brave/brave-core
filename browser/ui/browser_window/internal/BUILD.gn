@@ -14,6 +14,7 @@ source_set("internal") {
     "//brave/browser/email_aliases",
     "//brave/browser/ui/email_aliases",
     "//brave/browser/ui/sidebar",
+    "//brave/browser/ui/views/page_info",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/playlist/core/common",
     "//chrome/browser/ui/browser_window",
