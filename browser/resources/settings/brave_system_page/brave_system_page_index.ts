@@ -50,20 +50,29 @@ export class SettingsBraveSystemPageIndexElement extends
         type: Boolean,
         value: () => loadTimeData.getBoolean('areShortcutsSupported'),
       },
+      // <if expr="enable_brave_vpn_wireguard">
+      showVPNPage_: {
+        type: Boolean,
+        value: () => loadTimeData.getBoolean('isBraveVPNEnabled')
+          // <if expr="is_macosx">
+          && loadTimeData.getBoolean('isBraveVPNWireguardEnabledOnMac')
+          // </if>
+      },
+      // </if>
     };
   }
 
   declare prefs: { [key: string]: any };
   declare private showShortcutsPage_: boolean;
 
+  // <if expr="enable_brave_vpn_wireguard">
+  declare private showVPNPage_: boolean;
+  // </if>
+
   private showDefaultViews_() {
     const views = ['system']
     // <if expr="enable_brave_vpn_wireguard">
-    if (loadTimeData.getBoolean('isBraveVPNEnabled')
-      // <if expr="is_macosx">
-      && loadTimeData.getBoolean('isBraveVPNWireguardEnabledOnMac')
-      // </if>
-    ) {
+    if (this.showVPNPage_) {
       views.push('vpn')
     }
     // </if>
