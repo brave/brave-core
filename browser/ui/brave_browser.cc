@@ -23,6 +23,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/public/constants.h"
+#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
@@ -35,6 +36,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/new_tab_page_third_party/new_tab_page_third_party_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
@@ -61,9 +63,41 @@ void BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(bool suppress) {
 }
 
 // static
-bool BraveBrowser::ShouldUseBraveWebViewRoundedCorners(Browser* browser) {
+bool BraveBrowser::IsBraveWebViewRoundedCornersFeatureEnabled(
+    Browser* browser) {
+  // If we have prefs for toggling rounded corners in runtime, check that prefs
+  // here.
   return base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners) &&
          browser->is_type_normal();
+}
+
+// static
+bool BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
+    Browser* browser) {
+  if (!browser->is_type_normal()) {
+    return false;
+  }
+
+  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+    return true;
+  }
+
+  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
+    return false;
+  }
+
+  auto* model = browser->tab_strip_model();
+  if (model->empty()) {
+    return false;
+  }
+
+  const int active_tab_index = model->active_index();
+
+  if (active_tab_index == TabStripModel::kNoTab) {
+    return false;
+  }
+
+  return model->IsActiveTabSplit();
 }
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {

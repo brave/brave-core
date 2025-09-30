@@ -14,10 +14,12 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_user_gesture_details.h"
@@ -28,10 +30,14 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/scrim_view.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "ui/gfx/animation/animation.h"
+#include "ui/gfx/animation/animation_test_api.h"
+#include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 
@@ -160,19 +166,20 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
 
 class BraveBrowserViewWithRoundedCornersTest
     : public BraveBrowserViewTest,
-      public testing::WithParamInterface<std::tuple<bool, bool, bool>> {
+      public testing::WithParamInterface<std::tuple<bool, bool>> {
  public:
   BraveBrowserViewWithRoundedCornersTest() {
     scoped_features_.InitWithFeatureStates(
         {{features::kBraveWebViewRoundedCorners, IsRoundedCornersEnabled()},
-         {tabs::features::kBraveSplitView, IsBraveSplitViewEnabled()},
          {features::kSideBySide, IsSideBySideEnabled()}});
   }
 
+  void NewSplitTab() {
+    chrome::NewSplitTab(browser(),
+                        split_tabs::SplitTabCreatedSource::kToolbarButton);
+  }
+
   bool IsRoundedCornersEnabled() const { return std::get<0>(GetParam()); }
-
-  bool IsBraveSplitViewEnabled() const { return std::get<1>(GetParam()); }
-
   bool IsSideBySideEnabled() const { return std::get<1>(GetParam()); }
 
  protected:
@@ -181,11 +188,7 @@ class BraveBrowserViewWithRoundedCornersTest
 
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        ContentsBackgroundEventHandleTest) {
-  if (!IsRoundedCornersEnabled()) {
-    EXPECT_FALSE(brave_browser_view()->contents_background_view_);
-    return;
-  }
-
+  EXPECT_TRUE(brave_browser_view()->contents_background_view_);
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   gfx::Point screen_point = web_contents->GetContainerBounds().CenterPoint();
@@ -197,14 +200,106 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
             browser_view()->GetEventHandlerForPoint(screen_point));
 }
 
+IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
+                       RoundedCornersForContentsTest) {
+  if (!IsSideBySideEnabled()) {
+    return;
+  }
+
+  const gfx::AnimationTestApi::RenderModeResetter disable_rich_animations_ =
+      gfx::AnimationTestApi::SetRichAnimationRenderMode(
+          gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  panel_ui->Toggle();
+  views::View* contents_container =
+      browser_view()->GetContentsContainerForLayoutManager();
+  views::View* side_panel = browser_view()->unified_side_panel();
+
+  const auto contents_container_bounds = contents_container->bounds();
+  const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
+
+  if (IsRoundedCornersEnabled()) {
+    EXPECT_EQ(rounded_corners_margin,
+              BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser()));
+    EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
+    EXPECT_EQ(rounded_corners_margin,
+              side_panel->GetProperty(views::kMarginsKey)->bottom());
+    EXPECT_EQ(rounded_corners_margin,
+              side_panel->GetProperty(views::kMarginsKey)->right());
+  } else {
+    EXPECT_EQ(0,
+              BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser()));
+    EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
+    EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->bottom());
+    EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->right());
+  }
+
+  // Create split tab and check contents container has margin.
+  NewSplitTab();
+  EXPECT_EQ(rounded_corners_margin,
+            BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser()));
+
+  const auto contents_container_bounds_with_active_split_tab =
+      contents_container->bounds();
+  if (IsRoundedCornersEnabled()) {
+    EXPECT_EQ(contents_container_bounds.bottom_left(),
+              contents_container_bounds_with_active_split_tab.bottom_left());
+    EXPECT_EQ(contents_container_bounds.width(),
+              contents_container_bounds_with_active_split_tab.width());
+    EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
+    EXPECT_EQ(rounded_corners_margin,
+              side_panel->GetProperty(views::kMarginsKey)->bottom());
+    EXPECT_EQ(rounded_corners_margin,
+              side_panel->GetProperty(views::kMarginsKey)->right());
+
+  } else {
+    EXPECT_EQ(
+        contents_container_bounds.bottom_left() +
+            gfx::Vector2d(rounded_corners_margin, -rounded_corners_margin),
+        contents_container_bounds_with_active_split_tab.bottom_left());
+    EXPECT_EQ(contents_container_bounds.width(),
+              contents_container_bounds_with_active_split_tab.width() +
+                  rounded_corners_margin * 2);
+    EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
+    EXPECT_EQ(rounded_corners_margin,
+              side_panel->GetProperty(views::kMarginsKey)->bottom());
+    EXPECT_EQ(rounded_corners_margin,
+              side_panel->GetProperty(views::kMarginsKey)->right());
+  }
+
+  // Create new active tab to not have split tab as a active tab.
+  // Check contents container doesn't have margin when rounded corners is
+  // disabled.
+  chrome::AddTabAt(browser(), GURL(), -1, true);
+  if (IsRoundedCornersEnabled()) {
+    EXPECT_EQ(contents_container_bounds.bottom_left(),
+              contents_container->bounds().bottom_left());
+    EXPECT_EQ(contents_container_bounds.width(),
+              contents_container->bounds().width());
+    EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
+    EXPECT_EQ(rounded_corners_margin,
+              side_panel->GetProperty(views::kMarginsKey)->bottom());
+    EXPECT_EQ(rounded_corners_margin,
+              side_panel->GetProperty(views::kMarginsKey)->right());
+  } else {
+    EXPECT_EQ(contents_container_bounds.bottom_left(),
+              contents_container->bounds().bottom_left());
+    // Find the reason why final width is not set directly.
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return contents_container_bounds.width() ==
+             contents_container->bounds().width();
+    }));
+    EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
+    EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->bottom());
+    EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->right());
+  }
+}
+
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     BraveBrowserViewWithRoundedCornersTest,
-    testing::Values(std::make_tuple(false, false, false),
-                    std::make_tuple(true, true, true),
-                    std::make_tuple(true, true, false),
-                    std::make_tuple(true, false, true),
-                    std::make_tuple(true, false, false)));
+    ::testing::Combine(::testing::Bool(), ::testing::Bool()));
 
 // MacOS does not need views window scrim. We use sheet to show window modals
 // (-[NSWindow beginSheet:]), which natively draws a scrim since macOS 11.

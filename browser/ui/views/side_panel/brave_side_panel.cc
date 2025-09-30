@@ -73,13 +73,6 @@ BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
     CHECK_IS_TEST();
   }
 
-  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
-          browser_view_->browser())) {
-    shadow_ = BraveContentsViewUtil::CreateShadow(this);
-    SetBackground(
-        views::CreateSolidBackground(kColorSidebarPanelHeaderBackground));
-  }
-
   content_parent_view_ = AddChildView(std::make_unique<ContentParentView>());
   content_parent_view_->SetVisible(false);
 }
@@ -110,13 +103,23 @@ bool BraveSidePanel::IsRightAligned() {
 }
 
 void BraveSidePanel::UpdateBorder() {
-  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+  // Border and shadow should be updated together when rounded corner enabled
+  // condition is changed.
+  if (BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
           browser_view_->browser())) {
     // Use a negative top border to hide the separator inserted by the upstream
     // side panel implementation.
     SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(-1, 0, 0, 0)));
+
+    shadow_ = BraveContentsViewUtil::CreateShadow(this);
+    SetBackground(
+        views::CreateSolidBackground(kColorSidebarPanelHeaderBackground));
+
     return;
   }
+
+  shadow_.reset();
+  SetBackground(nullptr);
 
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     constexpr int kBorderThickness = 1;
