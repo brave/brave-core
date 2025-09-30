@@ -10,20 +10,18 @@
 #include "ui/compositor/layer.h"
 #include "ui/views/view.h"
 
-namespace {
-
-constexpr ViewShadow::ShadowParameters kShadow{
-    .offset_x = 0,
-    .offset_y = 0,
-    .blur_radius = BraveContentsViewUtil::kMarginThickness,
-    .shadow_color = SkColorSetA(SK_ColorBLACK, 0.1 * 255)};
-}  // namespace
-
 std::unique_ptr<ViewShadow> BraveContentsViewUtil::CreateShadow(
     views::View* view) {
+  static const ViewShadow::ShadowParameters kShadow{
+      .offset_x = 0,
+      .offset_y = 0,
+      .blur_radius = BraveContentsViewUtil::GetMargin(),
+      .shadow_color = SkColorSetA(SK_ColorBLACK, 0.1 * 255)};
+
   DCHECK(view);
-  auto shadow = std::make_unique<ViewShadow>(view, kBorderRadius, kShadow);
-  view->layer()->SetRoundedCornerRadius(gfx::RoundedCornersF(kBorderRadius));
+  auto shadow = std::make_unique<ViewShadow>(view, GetBorderRadius(), kShadow);
+  view->layer()->SetRoundedCornerRadius(
+      gfx::RoundedCornersF(GetBorderRadius()));
   view->layer()->SetIsFastRoundedCorner(true);
   return shadow;
 }
@@ -31,6 +29,20 @@ std::unique_ptr<ViewShadow> BraveContentsViewUtil::CreateShadow(
 int BraveContentsViewUtil::GetRoundedCornersWebViewMargin(Browser* browser) {
   return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
              browser)
-             ? BraveContentsViewUtil::kMarginThickness
+             ? BraveContentsViewUtil::GetMargin()
              : 0;
 }
+
+#if !BUILDFLAG(IS_MAC)
+
+// static
+int BraveContentsViewUtil::GetMargin() {
+  return 4;
+}
+
+// static
+int BraveContentsViewUtil::GetBorderRadius() {
+  return 4;
+}
+
+#endif

@@ -154,7 +154,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
       gfx::Size(),
       browser_view->top_container_separator_for_testing()->GetPreferredSize());
   EXPECT_TRUE(split_view_separator()->GetVisible());
-  EXPECT_EQ(4, split_view_separator()->GetPreferredSize().width());
+  EXPECT_EQ(BraveContentsViewUtil::GetMargin(),
+            split_view_separator()->GetPreferredSize().width());
 
   // Check corner radius.
   auto* multi_contents_view = brave_multi_contents_view();
@@ -375,11 +376,12 @@ IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest,
   auto* contents_container = brave_browser_view()->contents_container();
   auto* contents_view = brave_browser_view()->GetContentsView();
 
+  const gfx::RoundedCornersF border_radius(
+      BraveContentsViewUtil::GetBorderRadius());
+
   // Check it has rounded corners.
-  EXPECT_EQ(contents_container->layer()->rounded_corner_radii(),
-            gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
-  EXPECT_EQ(contents_view->layer()->rounded_corner_radii(),
-            gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
+  EXPECT_EQ(contents_container->layer()->rounded_corner_radii(), border_radius);
+  EXPECT_EQ(contents_view->layer()->rounded_corner_radii(), border_radius);
 
   FullscreenController* fullscreen_controller = browser()
                                                     ->GetFeatures()
@@ -397,10 +399,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest,
   // Check it has rounded corners again.
   fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
   brave_browser_view()->UpdateWebViewRoundedCorners();
-  EXPECT_EQ(contents_container->layer()->rounded_corner_radii(),
-            gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
-  EXPECT_EQ(contents_view->layer()->rounded_corner_radii(),
-            gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
+  EXPECT_EQ(contents_container->layer()->rounded_corner_radii(), border_radius);
+  EXPECT_EQ(contents_view->layer()->rounded_corner_radii(), border_radius);
 }
 
 // Use for testing brave split view and SideBySide together.
