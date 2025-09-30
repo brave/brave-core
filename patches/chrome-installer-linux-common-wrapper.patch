@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/wrapper b/chrome/installer/linux/common/wrapper
-index aaa46bf71f6a3..9201f50a8feee 100755
+index aaa46bf71f6a3..42a98a91438fd 100755
 --- a/chrome/installer/linux/common/wrapper
 +++ b/chrome/installer/linux/common/wrapper
 @@ -27,6 +27,22 @@ fi
@@ -7,19 +7,19 @@ index aaa46bf71f6a3..9201f50a8feee 100755
  export CHROME_VERSION_EXTRA="@@CHANNEL@@"
  
 +# Add command-line options from a config file. Empty lines and #-comments are ignored.
-+config_channel="$([[ "$CHROME_VERSION_EXTRA" == stable ]] && echo || echo "$CHROME_VERSION_EXTRA-")"
-+config_file="${XDG_CONFIG_HOME:-"$HOME/.config"}/brave-${config_channel}flags.conf"
-+options=()
-+if [[ -f "$config_file" ]]; then
++cfg_channel="$([[ "$CHROME_VERSION_EXTRA" == stable ]] && echo || echo "$CHROME_VERSION_EXTRA-")"
++cfg_file="${XDG_CONFIG_HOME:-"$HOME/.config"}/brave-${cfg_channel}flags.conf"
++cfg_options=()
++if [[ -f "$cfg_file" ]]; then
 +  while read -r line; do
 +    read -ra line_items <<<"${line%%[[:space:]]#*}"
 +    case "${line_items[*]}" in
 +      "#"*) ;;
 +      --*=\"*\"|--*=\'*\') IFS="=" read -r key val <<<"${line_items[*]}"
-+         options+=("$key=${val:1:${#val}-2}");;
-+      *) options+=("${line_items[@]}");;
++         cfg_options+=("$key=${val:1:${#val}-2}");;
++      *) cfg_options+=("${line_items[@]}");;
 +    esac
-+  done <"$config_file"
++  done <"$cfg_file"
 +fi
 +
  # We don't want bug-buddy intercepting our crashes. http://crbug.com/24120
@@ -30,4 +30,4 @@ index aaa46bf71f6a3..9201f50a8feee 100755
  
  # Note: exec -a below is a bashism.
 -exec -a "$0" "$HERE/@@PROGNAME@@" "$@"
-+exec -a "$0" "$HERE/@@PROGNAME@@" "${options[@]}" "$@"
++exec -a "$0" "$HERE/@@PROGNAME@@" "${cfg_options[@]}" "$@"
