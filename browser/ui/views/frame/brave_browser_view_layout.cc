@@ -387,7 +387,7 @@ gfx::Insets BraveBrowserViewLayout::GetContentsMargins() const {
     return {};
   }
 
-  gfx::Insets margins(BraveContentsViewUtil::kMarginThickness);
+  gfx::Insets margins(BraveContentsViewUtil::GetMargin());
 
   // If there is a visible view above the contents container, then there is no
   // no need for a top margin.
