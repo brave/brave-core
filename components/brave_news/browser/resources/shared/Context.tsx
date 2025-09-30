@@ -132,9 +132,6 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
   }, [])
 
   React.useEffect(() => {
-    if (shouldRenderImages) {
-      return
-    }
     const handleScroll = () => setShouldRenderImages(true)
     document.addEventListener('scroll', handleScroll, { once: true })
     return () => document.removeEventListener('scroll', handleScroll)

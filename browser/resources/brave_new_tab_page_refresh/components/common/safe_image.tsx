@@ -10,7 +10,6 @@ import { placeholderImageSrc } from '../../lib/image_loader'
 interface Props {
   src: string
   className?: string
-  loading?: 'lazy' | 'eager'
   targetSize?: { width: number, height: number }
 }
 
