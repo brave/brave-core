@@ -29,17 +29,16 @@ export function SafeImage(props: Props) {
     src = placeholderImageSrc
   }
 
-  const { scrolledToNews } = useBraveNews()
-  const delayLoad = !scrolledToNews && loading === 'lazy'
+  const { shouldRenderImages } = useBraveNews()
+  const delayLoad = !shouldRenderImages && loading === 'lazy'
 
   return (
     <img
-      src={!delayLoad ? src: undefined}
+      src={delayLoad ? undefined : src}
       loading={loading ?? 'lazy'}
       className={props.className}
       onError={(event) => { event.currentTarget.src = placeholderImageSrc }}
-      onLoad={(event) => { event.currentTarget.style.opacity = '1' }}
-      style={{ opacity: 0, transition: 'opacity 400ms ease-in-out' }}
+      onLoad={(event) => { event.currentTarget?.classList.add('loaded') }}
     />
   )
 }

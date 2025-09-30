@@ -88,6 +88,16 @@ export const style = scoped.css`
     }
   }
 
+  .peek {
+    img {
+      opacity: 0;
+      transition: opacity 400ms ease-in-out;
+      &.loaded {
+        opacity: 1;
+      }
+    }
+  }
+
   .loading {
     .img {
       width: 71px;

@@ -48,8 +48,8 @@ interface BraveNewsContext {
   reportSidebarFilterUsage: () => void
   reportSessionStart: () => void
 
-  scrolledToNews: boolean
-  setScrolledToNews: (scrolled: boolean) => void
+  shouldRenderImages: boolean
+  setShouldRenderImages: (scrolled: boolean) => void
 }
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
@@ -77,8 +77,8 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   reportVisit: (depth: number) => { },
   reportSidebarFilterUsage: () => { },
   reportSessionStart: () => { },
-  scrolledToNews: false,
-  setScrolledToNews: (scrolled: boolean) => { },
+  shouldRenderImages: false,
+  setShouldRenderImages: (scrolled: boolean) => { },
 })
 
 export const publishersCache = new PublishersCachingWrapper()
@@ -102,7 +102,7 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
   const [channels, setChannels] = useState<Channels>({})
   const [publishers, setPublishers] = useState<Publishers>({})
   const [suggestedPublisherIds, setSuggestedPublisherIds] = useState<string[]>([])
-  const [scrolledToNews, setScrolledToNews] = useState(false)
+  const [shouldRenderImages, setShouldRenderImages] = useState(false)
 
   // Get the default locale on load.
   useEffect(() => {
@@ -120,16 +120,6 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     configurationCache.addListener(setConfiguration)
     return () => configurationCache.removeListener(setConfiguration)
   }, [])
-
-  React.useEffect(() => {
-    if (scrolledToNews) {
-      return
-    }
-
-    const handleScroll = () => setScrolledToNews(true)
-    document.addEventListener('scroll', handleScroll, { once: true })
-    return () => document.removeEventListener('scroll', handleScroll)
-  }, [scrolledToNews])
 
   const updateSuggestedPublisherIds = useCallback(async () => {
     setSuggestedPublisherIds([])
@@ -218,9 +208,9 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     reportVisit,
     reportSidebarFilterUsage,
     reportSessionStart,
-    scrolledToNews,
-    setScrolledToNews
-  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart, scrolledToNews, setScrolledToNews])
+    shouldRenderImages,
+    setShouldRenderImages,
+  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart, shouldRenderImages, setShouldRenderImages])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}

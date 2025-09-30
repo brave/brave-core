@@ -51,8 +51,8 @@ const HidableImage = ({
 }: HidabeImageProps) => {
   const ref = React.useRef<HTMLImageElement>()
 
-  const { scrolledToNews } = useBraveNews()
-  const delayLoad = !scrolledToNews && loading === 'lazy'
+  const { shouldRenderImages } = useBraveNews()
+  const delayLoad = !shouldRenderImages && loading === 'lazy'
 
   const handleError = React.useCallback((e: React.UIEvent<HTMLImageElement>) => {
     ref.current!.style.opacity = '0'
