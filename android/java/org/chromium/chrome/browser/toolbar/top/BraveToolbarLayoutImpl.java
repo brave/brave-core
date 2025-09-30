@@ -1224,6 +1224,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             description = resources.getString(R.string.accessibility_toolbar_btn_home);
         } else if (v == mBraveWalletButton) {
             description = resources.getString(R.string.accessibility_toolbar_btn_brave_wallet);
+        } else if (v == mYouTubePipButton) {
+            description = resources.getString(R.string.accessibility_toolbar_btn_brave_pip);
         }
 
         return Toast.showAnchoredToast(context, v, description);
