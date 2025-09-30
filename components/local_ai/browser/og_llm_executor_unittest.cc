@@ -22,18 +22,25 @@ class OgLlmExecutorTest : public testing::Test {
  protected:
   void SetUp() override {
     executor_ = std::make_unique<OgLlmExecutor>();
-    // Note: You'll need to set this to a valid model path for testing
-    // For example: /path/to/model/directory
-    model_path_ = base::FilePath(
-        "/Users/darkdh/Downloads/onnx-models/phi2-int4-cpu");  // Set actual
-                                                               // path when
-                                                               // testing
+    // Note: You'll need to set these to valid paths for testing
+#if defined(OS_MAC)
+    library_path_ = base::FilePath(
+        "/Users/darkdh/Projects/onnxruntime-genai/build/macOS/Release/"
+        "libonnxruntime-genai.dylib");
+#elif defined(OS_WIN)
+    library_path_ = base::FilePath("path/to/onnxruntime-genai.dll");
+#else
+    library_path_ = base::FilePath("path/to/libonnxruntime-genai.so");
+#endif
+    model_path_ =
+        base::FilePath("/Users/darkdh/Downloads/onnx-models/phi2-int4-cpu");
   }
 
   void TearDown() override { executor_.reset(); }
 
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<OgLlmExecutor> executor_;
+  base::FilePath library_path_;
   base::FilePath model_path_;
 };
 
@@ -78,7 +85,7 @@ TEST_F(OgLlmExecutorTest, SequencesRAIIWrapper) {
 // Test model initialization with invalid path
 TEST_F(OgLlmExecutorTest, InitializeWithInvalidPath) {
   base::FilePath invalid_path("/invalid/path/to/model");
-  EXPECT_FALSE(executor_->Initialize(invalid_path));
+  EXPECT_FALSE(executor_->Initialize(library_path_, invalid_path));
   EXPECT_FALSE(executor_->IsInitialized());
 }
 
@@ -90,8 +97,11 @@ TEST_F(OgLlmExecutorTest, InitializeWithValidPath) {
   if (model_path_.empty() || !base::PathExists(model_path_)) {
     GTEST_SKIP() << "Model path not configured or doesn't exist";
   }
+  if (library_path_.empty() || !base::PathExists(library_path_)) {
+    GTEST_SKIP() << "Library path not configured or doesn't exist";
+  }
 
-  EXPECT_TRUE(executor_->Initialize(model_path_));
+  EXPECT_TRUE(executor_->Initialize(library_path_, model_path_));
   EXPECT_TRUE(executor_->IsInitialized());
 }
 
@@ -101,8 +111,11 @@ TEST_F(OgLlmExecutorTest, GenerateWithValidModel) {
   if (model_path_.empty() || !base::PathExists(model_path_)) {
     GTEST_SKIP() << "Model path not configured or doesn't exist";
   }
+  if (library_path_.empty() || !base::PathExists(library_path_)) {
+    GTEST_SKIP() << "Library path not configured or doesn't exist";
+  }
 
-  ASSERT_TRUE(executor_->Initialize(model_path_));
+  ASSERT_TRUE(executor_->Initialize(library_path_, model_path_));
   ASSERT_TRUE(executor_->IsInitialized());
 
   std::vector<std::string> generated_tokens;
@@ -178,8 +191,11 @@ TEST_F(OgLlmExecutorTest, GenerateWithImage) {
   if (!base::PathExists(vision_model_path) || !base::PathExists(image_path)) {
     GTEST_SKIP() << "Vision model or image not found";
   }
+  if (library_path_.empty() || !base::PathExists(library_path_)) {
+    GTEST_SKIP() << "Library path not configured or doesn't exist";
+  }
 
-  ASSERT_TRUE(executor_->Initialize(vision_model_path));
+  ASSERT_TRUE(executor_->Initialize(library_path_, vision_model_path));
   ASSERT_TRUE(executor_->IsInitialized());
 
   std::vector<std::string> generated_tokens;
