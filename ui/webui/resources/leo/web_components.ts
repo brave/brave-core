@@ -49,3 +49,8 @@ declare global {
 }
 
 window.leoIcons = new Set(Object.keys(iconsMeta.icons))
+
+import('//resources/cr_components/color_change_listener/colors_css_updater.js' as any).then(({ ColorChangeUpdater }) => {
+  ColorChangeUpdater.forDocument().start();
+});
+

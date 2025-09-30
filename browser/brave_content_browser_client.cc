@@ -113,6 +113,7 @@
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_browser_interface_binders.h"
@@ -159,6 +160,7 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/browser/request_otr/request_otr_service_factory.h"
@@ -459,6 +461,25 @@ void MaybeBindSkusSdkImpl(
   }
   auto* context = frame_host->GetBrowserContext();
   skus::SkusServiceFactory::BindForContext(context, std::move(receiver));
+}
+
+void MaybeBindColorChangeHandler(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<color_change_listener::mojom::PageHandler> receiver) {
+  const GURL& frame_host_url = frame_host->GetLastCommittedURL();
+
+  // Only supported on chrome://, chrome-untrusted:// and chrome-extension://
+  // urls
+  if (!frame_host_url.SchemeIs(content::kChromeUIScheme) &&
+      !frame_host_url.SchemeIs(content::kChromeUIUntrustedScheme) &&
+      !frame_host_url.SchemeIs(extensions::kExtensionScheme)) {
+    return;
+  }
+
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<ui::BraveColorChangeHandler>(
+          content::WebContents::FromRenderFrameHost(frame_host)),
+      std::move(receiver));
 }
 
 }  // namespace
@@ -824,6 +845,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       }
     }
   }
+
+  map->Add<color_change_listener::mojom::PageHandler>(
+      base::BindRepeating(&MaybeBindColorChangeHandler));
 
   map->Add<skus::mojom::SkusService>(
       base::BindRepeating(&MaybeBindSkusSdkImpl));
