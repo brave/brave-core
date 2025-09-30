@@ -13,6 +13,7 @@ source_set("internal") {
     "//brave/browser/brave_rewards",
     "//brave/browser/ui:brave_tab_features",
     "//brave/browser/ui/sidebar",
+    "//brave/browser/ui/views/page_info",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/playlist/core/common",
     "//chrome/browser/ui/browser_window",

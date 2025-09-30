@@ -68,6 +68,7 @@ void ShieldsPanelDataHandler::GetSiteBlockInfo(
 void ShieldsPanelDataHandler::GetSiteSettings(
     GetSiteSettingsCallback callback) {
   if (!active_shields_data_controller_) {
+    std::move(callback).Run(nullptr);
     return;
   }
 
@@ -212,6 +213,7 @@ void ShieldsPanelDataHandler::OpenWebCompatWindow() {
 void ShieldsPanelDataHandler::AreAnyBlockedElementsPresent(
     AreAnyBlockedElementsPresentCallback callback) {
   if (!active_shields_data_controller_) {
+    std::move(callback).Run(false);
     return;
   }
 
