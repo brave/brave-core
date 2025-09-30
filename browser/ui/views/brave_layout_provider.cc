@@ -5,7 +5,21 @@
 
 #include "brave/browser/ui/views/brave_layout_provider.h"
 
-#include "ui/views/layout/layout_provider.h"
+#include "build/build_config.h"
+
+#if BUILDFLAG(IS_MAC)
+#include "brave/browser/ui/views/brave_layout_provider_mac.h"
+#endif
+
+// static
+std::unique_ptr<views::LayoutProvider>
+ChromeLayoutProvider::CreateLayoutProvider() {
+#if BUILDFLAG(IS_MAC)
+  return std::make_unique<BraveLayoutProviderMac>();
+#else
+  return std::make_unique<BraveLayoutProvider>();
+#endif
+}
 
 int BraveLayoutProvider::GetCornerRadiusMetric(views::Emphasis emphasis,
                                                const gfx::Size& size) const {
@@ -20,6 +34,11 @@ int BraveLayoutProvider::GetCornerRadiusMetric(views::Emphasis emphasis,
     case views::Emphasis::kHigh:
       return 4;
   }
+}
+
+int BraveLayoutProvider::GetCornerRadiusMetric(
+    views::ShapeContextTokensOverride token) const {
+  return LayoutProvider::GetCornerRadiusMetric(token);
 }
 
 int BraveLayoutProvider::GetDistanceMetric(int metric) const {
