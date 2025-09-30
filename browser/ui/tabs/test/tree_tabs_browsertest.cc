@@ -524,7 +524,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
   // 4. In tree mode with opener. The previous tab is not the opener  but the
   // previous tab is a child of opener. In this case, the new tab should be
   // added as a child of the opener's TreeTabNode. -----------------------------
-  // add tab in tree modee with opener as the tab before the previous tab.
+  // add tab in tree mode with opener as the tab before the previous tab.
   opener_tab = tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 2);
   ASSERT_EQ(opener_tab->GetParentCollection()->type(),
             tabs::TabCollection::Type::TREE_NODE);
