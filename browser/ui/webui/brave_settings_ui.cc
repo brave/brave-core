@@ -45,6 +45,8 @@
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
+#include "brave/components/de_amp/common/features.h"
+#include "brave/components/debounce/core/common/features.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -211,6 +213,12 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean("isForgetFirstPartyStorageFeatureEnabled",
                           base::FeatureList::IsEnabled(
                               net::features::kBraveForgetFirstPartyStorage));
+  html_source->AddBoolean(
+      "isDeAmpFeatureEnabled",
+      base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP));
+  html_source->AddBoolean(
+      "isDebounceFeatureEnabled",
+      base::FeatureList::IsEnabled(debounce::features::kBraveDebounce));
   html_source->AddBoolean("isBraveRewardsSupported",
                           brave_rewards::IsSupportedForProfile(profile));
   html_source->AddBoolean(

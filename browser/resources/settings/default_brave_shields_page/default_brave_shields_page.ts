@@ -164,7 +164,15 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           type: chrome.settingsPrivate.PrefType.BOOLEAN,
           value: true,
         }
-      }
+      },
+      isDeAmpFeatureEnabled_: {
+        type: Boolean,
+        value: loadTimeData.getBoolean('isDeAmpFeatureEnabled')
+      },
+      isDebounceFeatureEnabled_: {
+        type: Boolean,
+        value: loadTimeData.getBoolean('isDebounceFeatureEnabled')
+      },
     }
   }
 
@@ -185,6 +193,8 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare isHttpsByDefaultEnabled_: boolean
   private declare showStrictFingerprintingMode_: boolean
   private declare isForgetFirstPartyStorageFeatureEnabled_: boolean
+  private declare isDeAmpFeatureEnabled_: boolean
+  private declare isDebounceFeatureEnabled_: boolean
 
   private browserProxy_: DefaultBraveShieldsBrowserProxy =
     DefaultBraveShieldsBrowserProxyImpl.getInstance()
