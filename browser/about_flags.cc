@@ -112,6 +112,7 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/darker_theme/features.h"
+#include "brave/browser/ui/page_info/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -510,6 +511,19 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   })
 #else
 #define BRAVE_DARKER_THEME_FEATURE_ENTRIES
+#endif  // defined(TOOLKIT_VIEWS)
+
+#if defined(TOOLKIT_VIEWS)
+#define BRAVE_PAGE_INFO_FEATURE_ENTRIES                                     \
+  EXPAND_FEATURE_ENTRIES({                                                  \
+      "brave-shields-page-info",                                            \
+      "Show Brave Shields in Page Info",                                    \
+      "Shows Brave Shields settings in the Page Info bubble",               \
+      kOsWin | kOsMac | kOsLinux,                                           \
+      FEATURE_VALUE_TYPE(page_info::features::kShowBraveShieldsInPageInfo), \
+  })
+#else
+#define BRAVE_PAGE_INFO_FEATURE_ENTRIES
 #endif  // defined(TOOLKIT_VIEWS)
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
@@ -1247,6 +1261,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_DARKER_THEME_FEATURE_ENTRIES                                           \
+  BRAVE_PAGE_INFO_FEATURE_ENTRIES                                              \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_REWRITER                                                            \
   BRAVE_OMNIBOX_FEATURES                                                       \

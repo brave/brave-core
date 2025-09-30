@@ -1,0 +1,38 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/features.gni")
+
+source_set("page_info") {
+  sources = [
+    "brave_page_info_bubble_view.cc",
+    "brave_page_info_bubble_view.h",
+  ]
+
+  deps = [
+    "//brave/browser/ui/page_info",
+    "//chrome/browser/ui/views/page_info",
+    "//ui/base",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "brave_page_info_bubble_view_browsertest.cc" ]
+
+  deps = [
+    ":page_info",
+    "//brave/browser/ui/page_info",
+    "//chrome/browser/ui/views/frame",
+    "//chrome/browser/ui/views/location_bar",
+    "//chrome/browser/ui/views/page_info",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//ui/events:test_support",
+    "//ui/views:test_support",
+  ]
+}
