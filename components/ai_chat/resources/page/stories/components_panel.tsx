@@ -296,6 +296,44 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
 
 const HISTORY: Mojom.ConversationTurn[] = [
   {
+    uuid: 'smart-mode-turn',
+    text: '/translate Hello world, how are you today?',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618000900000') },
+    events: [],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    smartMode: {
+      shortcut: 'translate',
+      prompt: 'Translate the following text to English',
+    },
+    modelKey: '1',
+  },
+  {
+    uuid: 'smart-mode-response',
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618000950000') },
+    events: [
+      getCompletionEvent(
+        'Here is the translation:\n\n"Hello world, how are you today?"'
+          + '\n\nThis text is already in English, so no translation is needed.',
+      ),
+    ],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    smartMode: undefined,
+    modelKey: '1',
+  },
+  {
     uuid: 'turn-uuid',
     text: 'Summarize this page',
     characterType: Mojom.CharacterType.HUMAN,
@@ -907,6 +945,9 @@ type CustomArgs = {
   isDragActive: boolean
   isDragOver: boolean
   useMemoryHistory: boolean
+  smartModeDialog: Mojom.SmartMode | null
+  selectedActionType: Mojom.ActionType | undefined
+  selectedSmartMode: Mojom.SmartMode | undefined
 }
 
 const args: CustomArgs = {
@@ -950,6 +991,9 @@ const args: CustomArgs = {
   isDragActive: false,
   isDragOver: false,
   useMemoryHistory: false,
+  smartModeDialog: null,
+  selectedActionType: undefined,
+  selectedSmartMode: undefined,
 }
 
 const meta: Meta<CustomArgs> = {
@@ -1073,6 +1117,32 @@ function StoryContext(
       options.args.isAIChatAgentProfileFeatureEnabled,
     isAIChatAgentProfile: options.args.isAIChatAgentProfile,
     isStandalone: options.args.isStandalone,
+    smartModes: [
+      {
+        id: 'translate-mode',
+        shortcut: 'translate',
+        prompt: 'Translate the following text to English',
+        model: 'claude-3-haiku',
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt(Date.now() * 1000) },
+      },
+      {
+        id: 'simplify-mode',
+        shortcut: 'simplify',
+        prompt: 'Simplify the following concept in simple terms',
+        model: undefined,
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt((Date.now() - 86400000) * 1000) },
+      },
+      {
+        id: 'summarize-mode',
+        shortcut: 'summarize',
+        prompt: 'Summarize the following content in bullet points',
+        model: undefined,
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt((Date.now() - 3600000) * 1000) },
+      },
+    ],
     actionList: ACTIONS_LIST,
     tabs: [
       {
@@ -1113,6 +1183,8 @@ function StoryContext(
       setArgs({ editingConversationId: id }),
     setDeletingConversationId: (id: string | null) =>
       setArgs({ deletingConversationId: id }),
+    smartModeDialog: options.args.smartModeDialog,
+    setSmartModeDialog: () => {},
     showSidebar: showSidebar,
     toggleSidebar: () => setShowSidebar((s) => !s),
   }
@@ -1152,7 +1224,8 @@ function StoryContext(
     shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
     shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
     inputText,
-    selectedActionType: undefined,
+    selectedActionType: options.args.selectedActionType,
+    selectedSmartMode: options.args.selectedSmartMode,
     isToolsMenuOpen,
     isCurrentModelLeo: true,
     isCharLimitApproaching: inputText.length > 64,
@@ -1172,8 +1245,30 @@ function StoryContext(
     handleResetError: () => {},
     handleStopGenerating: async () => {},
     submitInputTextToAPI: () => {},
-    resetSelectedActionType: () => {},
-    handleActionTypeClick: () => {},
+    resetSelectedActionType: () => setArgs({ selectedActionType: undefined }),
+    resetSelectedSmartMode: () => setArgs({ selectedSmartMode: undefined }),
+    handleActionTypeClick: (actionType: Mojom.ActionType) => {
+      const update: Partial<CustomArgs> = {
+        selectedActionType: actionType,
+        selectedSmartMode: undefined,
+      }
+
+      if (options.args.inputText.startsWith('/')) {
+        update.inputText = ''
+      }
+
+      setArgs(update)
+      setIsToolsMenuOpen(false)
+    },
+    handleSmartModeClick: (smartMode: any) => {
+      setArgs({
+        selectedSmartMode: smartMode,
+        selectedActionType: undefined,
+        inputText: `/${smartMode.shortcut} `,
+      })
+      setIsToolsMenuOpen(false)
+    },
+    handleSmartModeEdit: () => {},
     setIsToolsMenuOpen,
     handleFeedbackFormCancel: () => {},
     handleFeedbackFormSubmit: () => Promise.resolve(),
