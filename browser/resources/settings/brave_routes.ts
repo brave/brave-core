@@ -88,7 +88,7 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   if (pageVisibility.surveyPanelist && r.PRIVACY) {
     r.BRAVE_SURVEY_PANELIST =
-      r.PRIVACY.createChild('/surveyPanelist', 'surveyPanelist')
+      r.PRIVACY.createChild('surveyPanelist')
     r.BRAVE_SURVEY_PANELIST.hasMigratedToPlugin = true
   }
   if (r.SEARCH) {

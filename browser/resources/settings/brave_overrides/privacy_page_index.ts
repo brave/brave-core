@@ -12,6 +12,7 @@ import type { Route } from '../router.js';
 import { routes } from '../route.js';
 import {loadTimeData} from "../i18n_setup.js"
 import {pageVisibility} from './page_visibility.js'
+import '../brave_survey_panelist_page/brave_survey_panelist_page.js'
 
 RegisterPolymerPrototypeModification({
   'settings-privacy-page-index': (prototype) => {
@@ -32,17 +33,12 @@ RegisterPolymerPrototypeModification({
       return views;
     }
 
-    // Add the subroute for the survey panelist page.
-    const oldCurrentRouteChanged = prototype.currentRouteChanged;
-    prototype.currentRouteChanged = function (newRoute: Route, oldRoute: Route) {
-      if (newRoute === routes.BRAVE_SURVEY_PANELIST) {
-        queueMicrotask(() => {
-          this.$.viewManager.switchView('surveyPanelist', 'no-animation', 'no-animation');
-        })
-        return;
+    const oldGetViewIdsForRoute = prototype.getViewIdsForRoute_;
+    prototype.getViewIdsForRoute_ = function (route: Route) {
+      if (route === routes.BRAVE_SURVEY_PANELIST) {
+        return ['surveyPanelist'];
       }
-
-      oldCurrentRouteChanged.call(this, newRoute, oldRoute);
+      return oldGetViewIdsForRoute.call(this, route);
     }
   }
 })

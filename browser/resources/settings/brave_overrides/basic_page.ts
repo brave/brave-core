@@ -23,7 +23,6 @@ import '../social_blocking_page/social_blocking_page.js'
 import '../brave_leo_assistant_page/brave_leo_assistant_page.js'
 import '../brave_leo_assistant_page/model_list_section.js'
 import '../brave_leo_assistant_page/personalization.js'
-import '../brave_survey_panelist_page/brave_survey_panelist_page.js'
 
 // <if expr="enable_containers">
 import '../brave_content_page/containers.js'
