@@ -6,7 +6,6 @@
 import * as React from 'react'
 
 import { placeholderImageSrc } from '../../lib/image_loader'
-import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
 
 interface Props {
   src: string
@@ -29,12 +28,9 @@ export function SafeImage(props: Props) {
     src = placeholderImageSrc
   }
 
-  const { shouldRenderImages } = useBraveNews()
-  const delayLoad = !shouldRenderImages && loading === 'lazy'
-
   return (
     <img
-      src={delayLoad ? undefined : src}
+      src={src}
       loading={loading ?? 'lazy'}
       className={props.className}
       onError={(event) => { event.currentTarget.src = placeholderImageSrc }}
