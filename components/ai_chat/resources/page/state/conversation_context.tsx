@@ -54,6 +54,7 @@ export type ConversationContext = SendFeedbackState
     shouldShowLongConversationInfo: boolean
     inputText: string
     selectedActionType: Mojom.ActionType | undefined
+    selectedSmartMode: Mojom.SmartMode | undefined
     isToolsMenuOpen: boolean
     isCurrentModelLeo: boolean
     generatedUrlToBeOpened: Url | undefined
@@ -71,7 +72,10 @@ export type ConversationContext = SendFeedbackState
     setInputText: (text: string) => void
     submitInputTextToAPI: () => void
     resetSelectedActionType: () => void
+    resetSelectedSmartMode: () => void
     handleActionTypeClick: (actionType: Mojom.ActionType) => void
+    handleSmartModeClick: (smartMode: Mojom.SmartMode) => void
+    handleSmartModeEdit: (smartMode: Mojom.SmartMode) => void
     setIsToolsMenuOpen: (isOpen: boolean) => void
     handleVoiceRecognition?: () => void
     disassociateContent: (content: Mojom.AssociatedContent) => void
@@ -102,6 +106,7 @@ export const defaultContext: ConversationContext = {
   historyInitialized: false,
   conversationHistory: [],
   allModels: [],
+  currentModel: undefined,
   suggestedQuestions: [],
   associatedContentInfo: [],
   isGenerating: false,
@@ -113,6 +118,7 @@ export const defaultContext: ConversationContext = {
   shouldShowLongConversationInfo: false,
   inputText: '',
   selectedActionType: undefined,
+  selectedSmartMode: undefined,
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
   generatedUrlToBeOpened: undefined,
@@ -130,7 +136,10 @@ export const defaultContext: ConversationContext = {
   setInputText: () => {},
   submitInputTextToAPI: () => {},
   resetSelectedActionType: () => {},
+  resetSelectedSmartMode: () => {},
   handleActionTypeClick: () => {},
+  handleSmartModeClick: () => {},
+  handleSmartModeEdit: () => {},
   setIsToolsMenuOpen: () => {},
   isTemporaryChat: false,
   disassociateContent: () => {},
@@ -182,6 +191,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     selectedConversationId,
     updateSelectedConversationId,
   } = useActiveChat()
+
   const sendFeedbackState = useSendFeedback(
     conversationHandler,
     getAPI().conversationEntriesFrameObserver,
@@ -449,6 +459,12 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     })
   }
 
+  const resetSelectedSmartMode = () => {
+    setPartialContext({
+      selectedSmartMode: undefined,
+    })
+  }
+
   React.useEffect(() => {
     try {
       getAPI().metrics.onQuickActionStatusChange(!!context.selectedActionType)
@@ -458,6 +474,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const handleActionTypeClick = (actionType: Mojom.ActionType) => {
     const update: Partial<ConversationContext> = {
       selectedActionType: actionType,
+      selectedSmartMode: undefined,
       isToolsMenuOpen: false,
     }
 
@@ -466,6 +483,27 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
 
     setPartialContext(update)
+  }
+
+  const handleSmartModeClick = (smartMode: Mojom.SmartMode) => {
+    const update: Partial<ConversationContext> = {
+      selectedActionType: undefined,
+      selectedSmartMode: smartMode,
+      isToolsMenuOpen: false,
+      inputText: `/${smartMode.shortcut} `,
+    }
+
+    setPartialContext(update)
+  }
+
+  const handleSmartModeEdit = (smartMode: Mojom.SmartMode) => {
+    // Close tools menu and open smart mode dialog in edit mode
+    setPartialContext({
+      isToolsMenuOpen: false,
+    })
+
+    // Open dialog with existing smart mode data for editing
+    aiChatContext.setSmartModeDialog(smartMode)
   }
 
   const submitInputTextToAPI = () => {
@@ -486,7 +524,12 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       getAPI().metrics.onSendingPromptWithFullPage()
     }
 
-    if (context.selectedActionType) {
+    if (context.selectedSmartMode) {
+      conversationHandler.submitHumanConversationEntryWithMode(
+        context.inputText,
+        context.selectedSmartMode.id,
+      )
+    } else if (context.selectedActionType) {
       conversationHandler.submitHumanConversationEntryWithAction(
         context.inputText,
         context.selectedActionType,
@@ -503,6 +546,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       pendingMessageFiles: [],
     })
     resetSelectedActionType()
+    resetSelectedSmartMode()
   }
 
   const disassociateContent = (content: Mojom.AssociatedContent) => {
@@ -725,8 +769,11 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setCurrentModel: (model) => conversationHandler.changeModel(model.key),
     generateSuggestedQuestions: () => conversationHandler.generateQuestions(),
     resetSelectedActionType,
+    resetSelectedSmartMode,
     setInputText: (inputText) => setPartialContext({ inputText }),
     handleActionTypeClick,
+    handleSmartModeClick,
+    handleSmartModeEdit,
     submitInputTextToAPI,
     isGenerating: context.isGenerating,
     switchToBasicModel,

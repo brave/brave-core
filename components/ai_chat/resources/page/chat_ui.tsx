@@ -61,6 +61,7 @@ function Content() {
 }
 
 function ConversationEntries(props: ConversationEntriesProps) {
+  const aiChatContext = useAIChat()
   const conversationContext = useConversation()
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null)
   const hasNotifiedContentReady = React.useRef(false)
@@ -152,6 +153,27 @@ function ConversationEntries(props: ConversationEntriesProps) {
       api.conversationEntriesFrameObserver.removeListener(id)
     }
   }, [])
+
+  React.useEffect(() => {
+    const listener = (prompt: string) => {
+      aiChatContext.setSmartModeDialog({
+        id: '',
+        shortcut: '',
+        prompt: prompt,
+        model: '',
+        createdTime: { internalValue: BigInt(0) },
+        lastUsed: { internalValue: BigInt(0) },
+      })
+    }
+    const id =
+      api.conversationEntriesFrameObserver.showSmartModeDialog.addListener(
+        listener,
+      )
+
+    return () => {
+      api.conversationEntriesFrameObserver.removeListener(id)
+    }
+  }, [aiChatContext.setSmartModeDialog])
 
   return (
     <iframe
