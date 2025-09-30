@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 
+#include "brave/browser/ai_chat/page_content_blocks.h"
 #include "brave/browser/ai_chat/tools/navigation_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
@@ -180,9 +181,11 @@ void ContentAgentToolProvider::ReceivedAnnotatedPageContent(
     return;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/49301): implement
-  // structured representation of page content
-  NOTREACHED();
+  auto content_blocks = ConvertAnnotatedPageContentToBlocks(apc);
+  content_blocks.insert(
+      content_blocks.begin(),
+      std::move(CreateContentBlocksForText("Action successful")[0]));
+  std::move(callback).Run(std::move(content_blocks));
 }
 
 }  // namespace ai_chat
