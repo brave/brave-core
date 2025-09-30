@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/common/wrapper b/chrome/installer/linux/common/wrapper
-index aaa46bf71f6a3..f1483b9ea8e68 100755
+index aaa46bf71f6a3..eedcf38b9a3b5 100755
 --- a/chrome/installer/linux/common/wrapper
 +++ b/chrome/installer/linux/common/wrapper
-@@ -27,6 +27,37 @@ fi
+@@ -27,6 +27,36 @@ fi
  
  export CHROME_VERSION_EXTRA="@@CHANNEL@@"
  
@@ -13,34 +13,33 @@ index aaa46bf71f6a3..f1483b9ea8e68 100755
 +
 +if [[ -f "$cfg_file" ]]; then
 +  parse_cfg_options() {
-+    local line="$*"
++    local line="$*" key val val_and_rest rest
++
 +    case "$line" in
-+    "") ;;
-+    [[:space:]]*) parse_cfg_options "${line:1}";;
-+    --*=\"*\"*|--*=\'*\'*)
-+      IFS="=" read -r key val_and_rest <<<"$line"
-+      IFS="${val_and_rest:0:1}" read -r _ val rest <<<"$val_and_rest"
-+      cfg_options+=("$key=$val")
-+      parse_cfg_options "$rest";;
-+    *) read -r opt rest <<<"$line"
-+      cfg_options+=("$opt")
-+      parse_cfg_options "$rest";;
++      "") ;;
++      [[:space:]]*)
++        parse_cfg_options "${line:1}";;
++      --*=\"*\"*|--*=\'*\'*)
++        IFS="=" read -r key val_and_rest <<<"$line"
++        IFS="${val_and_rest:0:1}" read -r _ val rest <<<"$val_and_rest"
++        cfg_options+=("$key=$val")
++        parse_cfg_options "$rest";;
++      *) read -r opt rest <<<"$line"
++        cfg_options+=("$opt")
++        parse_cfg_options "$rest";;
 +    esac
 +  }
 +
-+  while read -r line; do
-+    read -ra line_items <<<"${line%%[[:space:]]#*}"
-+    case "${line_items[*]}" in
-+        "#"*) ;;
-+        *) parse_cfg_options "${line_items[*]}";;
-+    esac
++  while read -r cfg_line; do
++    read -ra cfg_line_items <<<"${cfg_line%%[[:space:]]#*}"
++    case "${cfg_line_items[*]}" in "#"*) ;; *) parse_cfg_options "${cfg_line_items[*]}";; esac
 +  done <"$cfg_file"
 +fi
 +
  # We don't want bug-buddy intercepting our crashes. http://crbug.com/24120
  export GNOME_DISABLE_CRASH_DIALOG=SET_BY_GOOGLE_CHROME
  
-@@ -37,4 +68,4 @@ exec > >(exec cat)
+@@ -37,4 +67,4 @@ exec > >(exec cat)
  exec 2> >(exec cat >&2)
  
  # Note: exec -a below is a bashism.
