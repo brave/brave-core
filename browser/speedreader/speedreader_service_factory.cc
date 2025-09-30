@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/no_destructor.h"
+#include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -48,10 +49,9 @@ content::BrowserContext* SpeedreaderServiceFactory::GetBrowserContextToUse(
 std::unique_ptr<KeyedService>
 SpeedreaderServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  if (!features::IsSpeedreaderEnabled()) {
+  if (!base::FeatureList::IsEnabled(features::kSpeedreaderFeature)) {
     return {};
   }
-
 
   return std::make_unique<SpeedreaderService>(
       context, g_browser_process->local_state(),

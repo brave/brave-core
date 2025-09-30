@@ -24,7 +24,7 @@ class SpeedreaderMetrics {
  public:
   SpeedreaderMetrics(PrefService* local_state,
                      HostContentSettingsMap* host_content_settings_map,
-                     bool is_enabled_for_all_sites);
+                     bool is_allowed_for_all_readable_sites);
   ~SpeedreaderMetrics();
 
   SpeedreaderMetrics(const SpeedreaderMetrics&) = delete;
@@ -34,7 +34,7 @@ class SpeedreaderMetrics {
 
   void RecordPageView();
 
-  void UpdateEnabledSitesMetric(bool is_enabled_for_all_sites);
+  void UpdateEnabledSitesMetric(bool is_allowed_for_all_readable_sites);
 
  private:
   void ReportPageViews();

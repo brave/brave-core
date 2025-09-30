@@ -191,7 +191,8 @@ void BraveContentRendererClient::RenderFrameCreated(
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+  if (base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature)) {
     new speedreader::SpeedreaderRenderFrameObserver(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }

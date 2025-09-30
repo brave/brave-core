@@ -93,8 +93,8 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   SpeedReaderBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     feature_list_.InitWithFeaturesAndParameters(
-        {{speedreader::kSpeedreaderFeature,
-          {{speedreader::kSpeedreaderTTS.name, "true"}}},
+        {{speedreader::features::kSpeedreaderFeature,
+          {{speedreader::features::kSpeedreaderTTS.name, "true"}}},
          {ai_chat::features::kAIChat, {{}}}},
         {});
   }
@@ -251,11 +251,13 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   }
 
   void ToggleSpeedreader() {
-    speedreader_service()->EnableForAllSites(
-        !speedreader_service()->IsEnabledForAllSites());
+    speedreader_service()->SetAllowedForAllReadableSites(
+        !speedreader_service()->IsAllowedForAllReadableSites());
   }
 
-  void DisableSpeedreader() { speedreader_service()->EnableForAllSites(false); }
+  void DisableSpeedreader() {
+    speedreader_service()->SetAllowedForAllReadableSites(false);
+  }
 
   void GoBack(Browser* browser) {
     content::TestNavigationObserver observer(ActiveWebContents());
@@ -316,7 +318,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DisableSiteWorks) {
   NavigateToPageSynchronously(kTestPageReadable);
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
-  speedreader_service()->EnableForSite(ActiveWebContents(), false);
+  speedreader_service()->SetEnabledForSite(ActiveWebContents(), false);
   EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
   EXPECT_FALSE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
@@ -335,7 +337,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
   const std::string kGetContentLength = "document.body.innerHTML.length";
 
   // Check that disabled speedreader doesn't affect the page.
-  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+  EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
   const auto first_load_page_length =
@@ -346,7 +348,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
   EXPECT_LT(83000, first_load_page_length);
 
   ToggleSpeedreader();
-  EXPECT_TRUE(speedreader_service()->IsEnabledForAllSites());
+  EXPECT_TRUE(speedreader_service()->IsAllowedForAllReadableSites());
 
   content::WebContentsConsoleObserver console_observer(ActiveWebContents());
   console_observer.SetFilter(base::BindLambdaForTesting(
@@ -399,7 +401,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
   EXPECT_TRUE(console_observer.messages().empty());
 
   ToggleSpeedreader();
-  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+  EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
 
   NavigateToPageSynchronously(kTestPageReadable);
   auto second_load_page_length =
@@ -442,7 +444,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Redirect) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ClickingOnReaderButton) {
-  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+  EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
 
   NavigateToPageSynchronously(kTestPageReadable);
   EXPECT_TRUE(GetReaderButton()->GetVisible());
@@ -467,11 +469,11 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ClickingOnReaderButton) {
   EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
       tab_helper()->PageDistillState()));
 
-  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+  EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReader) {
-  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+  EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
 
   NavigateToPageSynchronously(kTestPageReadable);
   EXPECT_TRUE(GetReaderButton()->GetVisible());
@@ -504,7 +506,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReader) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEncoding) {
-  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+  EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
   NavigateToPageSynchronously(kTestEsPageReadable);
   EXPECT_TRUE(GetReaderButton()->GetVisible());
   ClickReaderButton();
@@ -518,7 +520,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEncoding) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreaderA) {
-  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+  EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
   NavigateToPageSynchronously(kTestPageReadable);
 
   EXPECT_TRUE(GetReaderButton()->GetVisible());
@@ -569,13 +571,13 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, TogglingSiteSpeedreader) {
         tab_helper()->PageDistillState()));
     EXPECT_TRUE(GetReaderButton()->GetVisible());
 
-    speedreader_service()->EnableForSite(ActiveWebContents(), false);
+    speedreader_service()->SetEnabledForSite(ActiveWebContents(), false);
     EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
     EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
         tab_helper()->PageDistillState()));
     EXPECT_TRUE(GetReaderButton()->GetVisible());
 
-    speedreader_service()->EnableForSite(ActiveWebContents(), true);
+    speedreader_service()->SetEnabledForSite(ActiveWebContents(), true);
     EXPECT_TRUE(WaitForLoadStop(ActiveWebContents()));
   }
 }
@@ -597,7 +599,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper_2->PageDistillState()));
 
-  speedreader_service()->EnableForSite(tab_helper_1->web_contents(), false);
+  speedreader_service()->SetEnabledForSite(tab_helper_1->web_contents(), false);
   content::WaitForLoadStop(contents_1);
   EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
       tab_helper_1->PageDistillState()));
@@ -647,7 +649,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
       speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
   EXPECT_TRUE(speedreader::DistillStates::IsDistillable(
       tab_helper->PageDistillState()));
-  EXPECT_TRUE(speedreader_service()->IsEnabledForSite(web_contents));
+  EXPECT_TRUE(speedreader_service()->IsAllowedForSite(web_contents));
 
   // Click on speedreader button
   ClickReaderButton();
@@ -1013,8 +1015,9 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspInBody) {
                                   ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 }
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEnableForSite) {
-  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest,
+                       OnDemandReaderSetEnabledForSite) {
+  EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
 
   struct MockObserver : speedreader::PageDistiller::Observer {
     MOCK_METHOD(void,
@@ -1048,7 +1051,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEnableForSite) {
       tab_helper()->PageDistillState()));
 
   // Enable speedreader for site explicitly.
-  speedreader_service()->EnableForSite(ActiveWebContents(), true);
+  speedreader_service()->SetEnabledForSite(ActiveWebContents(), true);
   ActiveWebContents()->GetController().Reload(content::ReloadType::NORMAL,
                                               false);
   WaitDistilled();

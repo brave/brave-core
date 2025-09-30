@@ -284,7 +284,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_TOGGLE_TAB_MUTE, true);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+  if (base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature)) {
     UpdateCommandEnabled(IDC_SPEEDREADER_ICON_ONCLICK, true);
   }
 #endif

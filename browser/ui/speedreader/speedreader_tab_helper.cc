@@ -60,7 +60,7 @@ namespace speedreader {
 std::u16string GetSpeedreaderData(
     std::initializer_list<std::pair<std::string_view, int>> resources) {
   base::Value::Dict sr_data;
-  sr_data.Set("ttsEnabled", kSpeedreaderTTS.Get());
+  sr_data.Set("ttsEnabled", features::kSpeedreaderTTS.Get());
   for (const auto& r : resources) {
     sr_data.Set(r.first, l10n_util::GetStringUTF16(r.second));
   }
@@ -93,7 +93,7 @@ SpeedreaderTabHelper::~SpeedreaderTabHelper() {
 // static
 void SpeedreaderTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents) {
-  if (!base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+  if (!base::FeatureList::IsEnabled(features::kSpeedreaderFeature)) {
     return;
   }
 
@@ -155,7 +155,7 @@ void SpeedreaderTabHelper::ProcessIconClick() {
   if (DistillStates::IsViewOriginal(distill_state_)) {
     const auto& vo = std::get<DistillStates::ViewOriginal>(distill_state_);
     if (!vo.was_auto_distilled ||
-        !speedreader_service_->IsEnabledForSite(web_contents())) {
+        !speedreader_service_->IsAllowedForSite(web_contents())) {
       GetDistilledHTML(
           base::BindOnce(&SpeedreaderTabHelper::OnGetDocumentSource,
                          weak_factory_.GetWeakPtr()));
@@ -312,7 +312,7 @@ void SpeedreaderTabHelper::ProcessNavigation(
       rewriter_service_->URLLooksReadable(navigation_handle->GetURL());
 
   const bool enabled_for_site =
-      speedreader_service_->IsEnabledForSite(navigation_handle->GetURL());
+      speedreader_service_->IsAllowedForSite(navigation_handle->GetURL());
 
   const auto reason =
       url_looks_readable ? DistillStates::ViewOriginal::Reason::kNone
@@ -329,9 +329,8 @@ void SpeedreaderTabHelper::ProcessNavigation(
     // Enable speedreader if the user explicitly enabled speedreader on the
     // site.
     const bool explicit_enabled_for_size =
-        !homepage && kSpeedreaderExplicitPref.Get() &&
-        speedreader_service_->IsExplicitlyEnabledForSite(
-            navigation_handle->GetURL());
+        !homepage && features::kSpeedreaderExplicitPref.Get() &&
+        speedreader_service_->IsEnabledForSite(navigation_handle->GetURL());
     if (url_looks_readable || explicit_enabled_for_size) {
       // Speedreader enabled for this page.
       TransitStateTo(DistillStates::Distilling(
@@ -546,7 +545,7 @@ void SpeedreaderTabHelper::OnAllSitesEnableSettingChanged(
     return;
   }
   OnSiteEnableSettingChanged(
-      web_contents(), speedreader_service_->IsEnabledForSite(web_contents()));
+      web_contents(), speedreader_service_->IsAllowedForSite(web_contents()));
 }
 
 void SpeedreaderTabHelper::OnAppearanceSettingsChanged(
