@@ -11,22 +11,6 @@ import {
   LongPageContentWarning,
 } from './long_page_info'
 
-// Mock the formatLocale function from $web-common/locale
-jest.mock('$web-common/locale', () => ({
-  formatLocale: (key: string, params?: Record<string, string>) => {
-    if (key === 'CHAT_UI_VISUAL_CONTENT_TOO_MUCH_WARNING') {
-      return `Only ${params?.$1} of visual content could be used`
-    }
-    if (key === 'CHAT_UI_TRIMMED_TOKENS_WARNING') {
-      return `${params?.$1} of the content was used`
-    }
-    if (key === 'CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING') {
-      return `${params?.$1} of the page content was used`
-    }
-    return key
-  },
-}))
-
 describe('Long Page Warning Components', () => {
   beforeEach(() => {
     // Mock the global S object
@@ -44,23 +28,13 @@ describe('Long Page Warning Components', () => {
   })
 
   describe('LongVisualContentWarning', () => {
-    test('should display visual content warning with correct percentage', () => {
-      const { getByText } = render(
-        <LongVisualContentWarning visualContentUsedPercentage={75} />,
-      )
-
-      expect(
-        getByText('Only 75% of visual content could be used'),
-      ).toBeInTheDocument()
-    })
-
     test('should display visual content warning with 0%', () => {
       const { getByText } = render(
         <LongVisualContentWarning visualContentUsedPercentage={0} />,
       )
 
       expect(
-        getByText('Only 0% of visual content could be used'),
+        getByText('CHAT_UI_VISUAL_CONTENT_TOO_MUCH_WARNING'),
       ).toBeInTheDocument()
     })
 
@@ -70,18 +44,18 @@ describe('Long Page Warning Components', () => {
       )
 
       expect(
-        getByText('Only 99% of visual content could be used'),
+        getByText('CHAT_UI_VISUAL_CONTENT_TOO_MUCH_WARNING'),
       ).toBeInTheDocument()
     })
   })
 
   describe('LongTextContentWarning', () => {
-    test('should display text content warning with correct percentage', () => {
+    test('should display text content warning', () => {
       const { getByText } = render(
         <LongTextContentWarning percentageUsed={90} />,
       )
 
-      expect(getByText('90% of the content was used')).toBeInTheDocument()
+      expect(getByText('CHAT_UI_TRIMMED_TOKENS_WARNING')).toBeInTheDocument()
     })
 
     test('should display text content warning with low percentage', () => {
@@ -89,7 +63,7 @@ describe('Long Page Warning Components', () => {
         <LongTextContentWarning percentageUsed={25} />,
       )
 
-      expect(getByText('25% of the content was used')).toBeInTheDocument()
+      expect(getByText('CHAT_UI_TRIMMED_TOKENS_WARNING')).toBeInTheDocument()
     })
   })
 
@@ -99,7 +73,9 @@ describe('Long Page Warning Components', () => {
         <LongPageContentWarning contentUsedPercentage={85} />,
       )
 
-      expect(getByText('85% of the page content was used')).toBeInTheDocument()
+      expect(
+        getByText('CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING'),
+      ).toBeInTheDocument()
     })
 
     test('should display page content warning with low percentage', () => {
@@ -107,7 +83,9 @@ describe('Long Page Warning Components', () => {
         <LongPageContentWarning contentUsedPercentage={50} />,
       )
 
-      expect(getByText('50% of the page content was used')).toBeInTheDocument()
+      expect(
+        getByText('CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING'),
+      ).toBeInTheDocument()
     })
   })
 

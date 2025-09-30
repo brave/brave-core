@@ -13,18 +13,6 @@ import {
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import { clickLeoButton } from './test_utils'
 
-jest.mock('$web-common/locale', () => ({
-  getLocale: (key: string) => {
-    return key
-  },
-  formatMessage: (key: string) => {
-    return key
-  },
-  formatLocale: (key: string) => {
-    return key
-  }
-}))
-
 const mockEmailAliasesService: EmailAliasesServiceInterface = {
   requestAuthentication: jest.fn(),
   cancelAuthenticationOrLogout: jest.fn(),
