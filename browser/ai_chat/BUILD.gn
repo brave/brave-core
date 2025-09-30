@@ -299,10 +299,7 @@ source_set("browser_tests") {
       "ai_chat_render_view_context_menu_browsertest.cc",
       "ai_chat_sidepanel_behavior_browsertest.cc",
       "ai_chat_ui_browsertest.cc",
-      "content_agent_tools_browsertest.cc",
       "page_content_fetcher_browsertest.cc",
-      "tools/target_test_util.cc",
-      "tools/target_test_util.h",
     ]
     deps = [
       "//brave/app:generate_command_metadata",
@@ -348,5 +345,16 @@ source_set("browser_tests") {
       "//brave/test/data/ai_chat/youtubei/v1/player_dir/video_id_001.json",
       "//brave/test/data/ai_chat/youtubei/v1/player_dir/video_id_002.json",
     ]
+
+    if (enable_brave_ai_chat_agent_profile) {
+      sources += [ "content_agent_tools_browsertest.cc" ]
+
+      deps += [
+        ":content_agent_test_support",
+        "//chrome/browser/actor",
+      ]
+
+      data += [ "//chrome/test/data/actor/" ]
+    }
   }
 }
