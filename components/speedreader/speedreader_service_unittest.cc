@@ -198,11 +198,9 @@ TEST_F(SpeedreaderPrefMigrationTest, MigratesEnabledPrefToNewStructure) {
   pref_service_.SetBoolean(kSpeedreaderPrefEnabledDeprecated, true);
 
   // Verify initial state
-  EXPECT_TRUE(
-      pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
+  EXPECT_TRUE(pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
   EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderPrefEnabledDeprecated));
-  EXPECT_TRUE(
-      pref_service_.GetBoolean(kSpeedreaderEnabled));  // Default is true
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));  // Default is true
   EXPECT_FALSE(pref_service_.GetBoolean(
       kSpeedreaderAllowedForAllReadableSites));  // Default is false
 
@@ -210,12 +208,9 @@ TEST_F(SpeedreaderPrefMigrationTest, MigratesEnabledPrefToNewStructure) {
   MigrateObsoleteProfilePrefs(&pref_service_);
 
   // Verify migration results
-  EXPECT_FALSE(pref_service_.HasPrefPath(
-      kSpeedreaderPrefEnabledDeprecated));  // Cleared
-  EXPECT_TRUE(
-      pref_service_.GetBoolean(kSpeedreaderEnabled));  // Still default (true)
-  EXPECT_TRUE(pref_service_.GetBoolean(
-      kSpeedreaderAllowedForAllReadableSites));  // Migrated to true
+  EXPECT_FALSE(pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));  // Cleared
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));  // Still default (true)
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderAllowedForAllReadableSites));  // Migrated to true
 }
 
 TEST_F(SpeedreaderPrefMigrationTest, MigratesDisabledPrefToNewStructure) {
@@ -223,12 +218,9 @@ TEST_F(SpeedreaderPrefMigrationTest, MigratesDisabledPrefToNewStructure) {
   pref_service_.SetBoolean(kSpeedreaderPrefEnabledDeprecated, false);
 
   // Verify initial state
-  EXPECT_TRUE(
-      pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
-  EXPECT_FALSE(
-      pref_service_.GetBoolean(kSpeedreaderPrefEnabledDeprecated));
-  EXPECT_TRUE(
-      pref_service_.GetBoolean(kSpeedreaderEnabled));  // Default is true
+  EXPECT_TRUE(pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
+  EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderPrefEnabledDeprecated));
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));  // Default is true
   EXPECT_FALSE(pref_service_.GetBoolean(
       kSpeedreaderAllowedForAllReadableSites));  // Default is false
 
@@ -238,8 +230,7 @@ TEST_F(SpeedreaderPrefMigrationTest, MigratesDisabledPrefToNewStructure) {
   // Verify migration results
   EXPECT_FALSE(pref_service_.HasPrefPath(
       kSpeedreaderAllowedForAllReadableSites));  // Cleared
-  EXPECT_TRUE(
-      pref_service_.GetBoolean(kSpeedreaderEnabled));  // Still default (true)
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));  // Still default (true)
   EXPECT_FALSE(pref_service_.GetBoolean(
       kSpeedreaderAllowedForAllReadableSites));  // Migrated to false
 }
@@ -250,8 +241,7 @@ TEST_F(SpeedreaderPrefMigrationTest, HandlesNewInstallationWithDefaults) {
       pref_service_.HasPrefPath(kSpeedreaderAllowedForAllReadableSites));
 
   // Verify initial defaults
-  EXPECT_TRUE(
-      pref_service_.GetBoolean(kSpeedreaderEnabled));  // Default is true
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));  // Default is true
   EXPECT_FALSE(pref_service_.GetBoolean(
       kSpeedreaderAllowedForAllReadableSites));  // Default is false
 
@@ -271,15 +261,13 @@ TEST_F(SpeedreaderPrefMigrationTest, MigrationIdempotent) {
   pref_service_.SetBoolean(kSpeedreaderPrefEnabledDeprecated, true);
 
   // Verify the deprecated pref path exists
-  EXPECT_TRUE(
-      pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
+  EXPECT_TRUE(pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
 
   // Run migration first time
   MigrateObsoleteProfilePrefs(&pref_service_);
 
   // Verify migration worked and deprecated pref is cleared
-  EXPECT_FALSE(
-      pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
+  EXPECT_FALSE(pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
   EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));
   EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderAllowedForAllReadableSites));
 
