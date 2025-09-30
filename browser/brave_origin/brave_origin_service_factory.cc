@@ -84,7 +84,7 @@ constexpr auto kBraveOriginBrowserMetadata =
         // Stats reporting
         {kStatsReportingEnabled,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
-             false,
+             true,
              /*user_settable=*/true)},
 
         // P3A preferences

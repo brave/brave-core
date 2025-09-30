@@ -51,11 +51,13 @@ bool BraveBrowserPolicyProvider::IsFirstPolicyLoadComplete(
 void BraveBrowserPolicyProvider::OnBraveOriginPoliciesReady() {
   // Now that BraveOrigin policies are ready, trigger policy loading for the
   // first time.
+  LOG(ERROR) << "OnBraveOriginPoliciesReady";
   RefreshPolicies(policy::PolicyFetchReason::kBrowserStart);
 }
 
 void BraveBrowserPolicyProvider::OnBrowserPolicyChanged(
     std::string_view policy_key) {
+  LOG(ERROR) << "OnBrowserPolicyChanged " << policy_key;
   RefreshPolicies(policy::PolicyFetchReason::kUserRequest);
 }
 
@@ -99,6 +101,7 @@ void BraveBrowserPolicyProvider::LoadBraveOriginPolicy(
     policy::PolicyMap& bundle_policy_map,
     std::string_view policy_key,
     bool enabled) {
+  LOG(ERROR) << "LoadBraveOriginPolicy " << policy_key << " " << enabled;
   // Set the policy - the ConfigurationPolicyPrefStore will handle
   // converting this to the appropriate local state preference
   bundle_policy_map.Set(std::string(policy_key), policy::POLICY_LEVEL_MANDATORY,

@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "base/memory/raw_ptr.h"
+#include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -54,6 +55,8 @@ class BraveOriginService : public KeyedService {
   std::string profile_id_;
   raw_ptr<policy::PolicyService> profile_policy_service_;
   raw_ptr<policy::PolicyService> browser_policy_service_;
+
+  base::OneShotTimer log_policies_timer_;
 };
 
 }  // namespace brave_origin

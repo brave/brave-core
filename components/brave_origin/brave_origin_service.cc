@@ -11,6 +11,7 @@
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_origin/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
 #include "components/policy/core/common/policy_service.h"
@@ -33,6 +34,36 @@ bool IsPolicyControlledByBraveOrigin(policy::PolicyService* policy_service,
   const policy::PolicyMap::Entry* entry = policies.Get(std::string(policy_key));
   return entry && entry->source == policy::POLICY_SOURCE_BRAVE;
 }
+
+void LogAllPolicies(policy::PolicyService* browser_policy_service,
+                    policy::PolicyService* profile_policy_service,
+                    PrefService* local_state) {
+  // Log all policies in chrome domain from browser policy service
+  if (browser_policy_service) {
+    const auto& policies = browser_policy_service->GetPolicies(
+        policy::PolicyNamespace(policy::POLICY_DOMAIN_CHROME, std::string()));
+    for (const auto& entry : policies) {
+      LOG(ERROR) << "Browser Policy - Key: " << entry.first
+                 << ", Source: " << entry.second.source;
+    }
+  }
+
+  // Log all policies in chrome domain from profile policy service
+  if (profile_policy_service) {
+    const auto& policies = profile_policy_service->GetPolicies(
+        policy::PolicyNamespace(policy::POLICY_DOMAIN_CHROME, std::string()));
+    for (const auto& entry : policies) {
+      LOG(ERROR) << "Profile Policy - Key: " << entry.first
+                 << ", Source: " << entry.second.source;
+    }
+  }
+
+  // Log StatsReportingEnabled pref value from local state
+  if (local_state) {
+    bool stats_enabled = local_state->GetBoolean(kStatsReportingEnabled);
+    LOG(ERROR) << "StatsReportingEnabled pref value: " << stats_enabled;
+  }
+}
 }  // namespace
 
 BraveOriginService::BraveOriginService(
@@ -49,6 +80,16 @@ BraveOriginService::BraveOriginService(
   CHECK(local_state_);
   CHECK(profile_prefs_);
   CHECK(!profile_id_.empty());
+
+  LOG(ERROR) << "BraveOriginService constructor";
+
+  LOG(ERROR) << " reulst " << SetPolicyValue("BraveStatsPingEnabled", false);
+  LogAllPolicies(browser_policy_service_, profile_policy_service_, local_state_);
+
+  log_policies_timer_.Start(
+      FROM_HERE, base::Seconds(5),
+      base::BindOnce(&LogAllPolicies, browser_policy_service_,
+                     profile_policy_service_, local_state_));
 }
 
 BraveOriginService::~BraveOriginService() = default;
