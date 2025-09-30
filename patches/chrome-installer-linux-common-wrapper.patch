@@ -1,40 +1,23 @@
 diff --git a/chrome/installer/linux/common/wrapper b/chrome/installer/linux/common/wrapper
-index aaa46bf71f6a3..833ef7b97085d 100755
+index aaa46bf71f6a3..56e132315dcfb 100755
 --- a/chrome/installer/linux/common/wrapper
 +++ b/chrome/installer/linux/common/wrapper
-@@ -27,6 +27,39 @@ fi
+@@ -27,6 +27,22 @@ fi
  
  export CHROME_VERSION_EXTRA="@@CHANNEL@@"
  
-+# Add command line flags from a config file.
-+# One option per line, surrounding whitespace is stripped.
-+# Empty lines and comments beginning with "#" are ignored.
++# Add command-line flags from a config file. Empty lines and #-comments are ignored.
 +config_channel_infix="$([[ "$CHROME_VERSION_EXTRA" == stable ]] && echo || echo "$CHROME_VERSION_EXTRA-")"
 +config_file="${XDG_CONFIG_HOME:-"$HOME/.config"}/brave-${config_channel_infix}flags.conf"
-+config_options=()
++options=()
 +if [[ -f "$config_file" ]]; then
 +  while read -r line; do
-+    # Remove inline comments and surrounding whitespace.
-+    stripped_c="${line%[[:space:]]#*}"
-+    stripped_l="${stripped_c#"${stripped_c%%[![:space:]]*}"}"
-+    stripped="${stripped_l%"${stripped_l##*[![:space:]]}"}"
-+
-+    case "$stripped" in
-+      --*--*) # Warn if a line looks invalid (most likely to cause an error later).
-+        warning="$config_file should contain at most one option per line. Are you sure the following line is valid?"
-+        printf "WARNING: %s\n" "$warning" "$stripped" >&2
-+        ;;& # continue
-+      --*=*) # Parse options of the form --key=val (assumes `--key val' is invalid).
-+        IFS="=" read -r key val <<<"$stripped"
-+        case "$val" in
-+          \'*\'|\"*\")
-+             # Remove quotes surrounding the value, which may be necessary
-+             # in a shell, but would be treated literally here.
-+             config_options+=("$key=${val:1:((${#val}-2))}");;
-+          *) config_options+=("$key=$val");;
-+        esac;;
-+      ""|\#*) ;; # Ignore lines containing only whitespace and/or comments.
-+      *) config_options+=("$stripped");;
++    read -d '' -ra line_items <<<"${line%% #*}"
++    case "${line_items[*]}" in
++      "#"*) ;;
++      --*=\"*\"|--*=\'*\') IFS="=" read -r key val <<<"${line_items[*]}"
++         options+=("$key=${val:1:((${#val}-2))}");;
++      *) options+=("${line_items[@]}");;
 +    esac
 +  done <"$config_file"
 +fi
@@ -42,9 +25,9 @@ index aaa46bf71f6a3..833ef7b97085d 100755
  # We don't want bug-buddy intercepting our crashes. http://crbug.com/24120
  export GNOME_DISABLE_CRASH_DIALOG=SET_BY_GOOGLE_CHROME
  
-@@ -37,4 +70,4 @@ exec > >(exec cat)
+@@ -37,4 +53,4 @@ exec > >(exec cat)
  exec 2> >(exec cat >&2)
  
  # Note: exec -a below is a bashism.
 -exec -a "$0" "$HERE/@@PROGNAME@@" "$@"
-+exec -a "$0" "$HERE/@@PROGNAME@@" "${config_options[@]}" "$@"
++exec -a "$0" "$HERE/@@PROGNAME@@" "${options[@]}" "$@"
