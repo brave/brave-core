@@ -257,6 +257,12 @@ void SidebarItemsContentsView::OnItemAdded(const sidebar::SidebarItem& item,
 }
 
 void SidebarItemsContentsView::OnItemRemoved(int index) {
+  if (view_for_context_menu_ && children()[index] == view_for_context_menu_) {
+    // Clear before it's destroyed via below child remove.
+    // Otherwise, it's dangled when OnContextMenuClosed() runs.
+    view_for_context_menu_ = nullptr;
+  }
+
   RemoveChildViewT(children()[index]);
   InvalidateLayout();
 }
