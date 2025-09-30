@@ -155,6 +155,9 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
 #endif
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       policy::policy_prefs::kHideWebStoreIcon));
+
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      prefs::kSplitViewDragAndDropEnabled));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MediaRouterPrefTest) {
