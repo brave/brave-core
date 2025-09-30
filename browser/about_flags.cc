@@ -1197,6 +1197,17 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kBraveSyncImplLink,                                                  \
       },                                                                       \
       {                                                                        \
+          "brave-ad-block-only-mode",                                          \
+          "Enable Ad Block Only Mode",                                         \
+          "Ad Block Only mode retains core ad blocking rules of Brave "        \
+          "Shields. Warning: removes all privacy protections. Please note "    \
+          "that for individual websites broken by Brave's privacy "            \
+          "protections, you can set Shields to DOWN. This is an experimental " \
+          "mode.",                                                             \
+          kOsWin | kOsLinux | kOsMac,                                          \
+          FEATURE_VALUE_TYPE(brave_shields::features::kAdblockOnlyMode),       \
+      },                                                                       \
+      {                                                                        \
           "brave-sync-default-passwords",                                      \
           "Enable password syncing by default",                                \
           "Turn on password syncing when Sync is enabled.",                    \
