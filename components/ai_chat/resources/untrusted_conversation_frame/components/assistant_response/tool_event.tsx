@@ -8,6 +8,7 @@ import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
 import { getToolLabel } from './get_tool_label'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
+import ToolEventTodos from './tool_event_todos'
 import styles from './tool_event.module.scss'
 
 interface Props {
@@ -105,6 +106,10 @@ function ToolEventContent(
 
   if (toolUseEvent.toolName === Mojom.USER_CHOICE_TOOL_NAME) {
     component = ToolEventContentUserChoice
+  }
+
+  if (toolUseEvent.toolName === Mojom.TODO_TOOL_NAME) {
+    component = ToolEventTodos
   }
 
   if (component) {
