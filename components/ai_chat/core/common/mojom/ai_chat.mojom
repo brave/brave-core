@@ -17,6 +17,7 @@ import "url/mojom/url.mojom";
 // untrusted_frame.mojom since these are only used in the conversation content
 // frame.
 const string kUserChoiceToolName = "user_choice_tool";
+const string kTodoToolName = "todo_write";
 const string kNavigateToolName = "web_page_navigator";
 const string kMemoryStorageToolName = "memory_storage_tool";
 
