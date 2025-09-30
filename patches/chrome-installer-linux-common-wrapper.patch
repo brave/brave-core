@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/wrapper b/chrome/installer/linux/common/wrapper
-index aaa46bf71f6a3..0458e5a1facf9 100755
+index aaa46bf71f6a3..9201f50a8feee 100755
 --- a/chrome/installer/linux/common/wrapper
 +++ b/chrome/installer/linux/common/wrapper
 @@ -27,6 +27,22 @@ fi
@@ -12,7 +12,7 @@ index aaa46bf71f6a3..0458e5a1facf9 100755
 +options=()
 +if [[ -f "$config_file" ]]; then
 +  while read -r line; do
-+    read -d '' -ra line_items <<<"${line%%[[:space:]]#*}"
++    read -ra line_items <<<"${line%%[[:space:]]#*}"
 +    case "${line_items[*]}" in
 +      "#"*) ;;
 +      --*=\"*\"|--*=\'*\') IFS="=" read -r key val <<<"${line_items[*]}"
