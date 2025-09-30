@@ -80,10 +80,11 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
 IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
                        TilingTabsMakesGroupSynchronized_OnlyFirstTabIsGrouped) {
   // Given that a tab is in a group,
-  const auto group_id = tab_groups::TabGroupId::GenerateNew();
   tab_strip_model()->AddWebContents(CreateWebContents(), -1,
                                     ui::PageTransition::PAGE_TRANSITION_TYPED,
-                                    /*add_types=*/0, group_id);
+                                    /*add_types=*/0);
+  const auto group_id = tab_strip_model()->AddToNewGroup({1});
+  ASSERT_TRUE(tab_strip_model()->group_model());
 
   // When tiling with a non grouped tab
   tab_strip_model()->AppendWebContents(CreateWebContents(),
@@ -105,15 +106,16 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
 IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
                        TilingTabsMakesGroupSynchronized_InDifferentGroups) {
   // Given that tabs are in different groups
-  const auto group_id = tab_groups::TabGroupId::GenerateNew();
   tab_strip_model()->AddWebContents(CreateWebContents(), -1,
                                     ui::PageTransition::PAGE_TRANSITION_TYPED,
-                                    /*add_types=*/0, group_id);
+                                    /*add_types=*/0);
+  const auto group_id = tab_strip_model()->AddToNewGroup({1});
+  ASSERT_TRUE(tab_strip_model()->group_model());
 
-  const auto second_group_id = tab_groups::TabGroupId::GenerateNew();
   tab_strip_model()->AddWebContents(CreateWebContents(), -1,
                                     ui::PageTransition::PAGE_TRANSITION_TYPED,
-                                    /*add_types=*/0, second_group_id);
+                                    /*add_types=*/0);
+  const auto second_group_id = tab_strip_model()->AddToNewGroup({2});
   ASSERT_EQ(second_group_id, *tab_strip_model()->GetTabGroupForTab(2));
 
   // When tiling with a tab in another group,
@@ -370,15 +372,14 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
 IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
                        TabGroupedStateChanged) {
   // Given that tabs are tiled in a group,
-  const auto group_id = tab_groups::TabGroupId::GenerateNew();
+  tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
+                                         /*add_types=*/0);
+  tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
+                                         /*add_types=*/0);
+  tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
+                                         /*add_types=*/0);
+  const auto group_id = tab_strip_model()->AddToNewGroup({0, 1, 2});
   ASSERT_TRUE(tab_strip_model()->group_model());
-
-  tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
-                                         /*add_types*/ 0, group_id);
-  tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
-                                         /*add_types*/ 0, group_id);
-  tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
-                                         /*add_types*/ 0, group_id);
   data().TileTabs({tab_strip_model()->GetTabAtIndex(1)->GetHandle(),
                    tab_strip_model()->GetTabAtIndex(2)->GetHandle()});
 
