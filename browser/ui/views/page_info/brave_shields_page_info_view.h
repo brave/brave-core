@@ -13,8 +13,13 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/view.h"
 
+class BraveShieldsUIContentsCache;
 class BrowserWindowInterface;
 class WebUIContentsWrapper;
+
+namespace content {
+class WebContents;
+}
 
 namespace views {
 class WebView;
@@ -31,6 +36,11 @@ class BraveShieldsPageInfoView : public views::View {
   BraveShieldsPageInfoView& operator=(const BraveShieldsPageInfoView&) = delete;
   ~BraveShieldsPageInfoView() override;
 
+  // Returns a value indicating whether this view should be displayed for the
+  // specified web contents.
+  static bool ShouldShowForWebContents(content::WebContents* web_contents);
+
+  // Displays a Shields UI after repeated page reloads have been detected.
   void ShowRepeatedReloadsView();
 
   // views::View:
@@ -40,6 +50,7 @@ class BraveShieldsPageInfoView : public views::View {
 
  private:
   std::unique_ptr<WebUIContentsWrapper> CreateContentsWrapper();
+  BraveShieldsUIContentsCache& GetContentsCache();
 
   raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<views::WebView> web_view_ = nullptr;

@@ -9,15 +9,24 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check_deref.h"
 #include "base/functional/callback.h"
+#include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/views/page_info/brave_page_info_view_ids.h"
+#include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
+#include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
+#include "extensions/common/constants.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/controls/webview/unhandled_keyboard_event_handler.h"
@@ -110,7 +119,34 @@ BraveShieldsPageInfoView::BraveShieldsPageInfoView(
   web_view_->SetID(static_cast<int>(BravePageInfoViewID::kShieldsWebView));
 }
 
-BraveShieldsPageInfoView::~BraveShieldsPageInfoView() = default;
+BraveShieldsPageInfoView::~BraveShieldsPageInfoView() {
+  // On destruction, store the WebUI contents wrapper in the cache so that it
+  // can be re-used when the bubble is next opened.
+  GetContentsCache().CacheShieldsUIContents(std::move(contents_wrapper_));
+}
+
+bool BraveShieldsPageInfoView::ShouldShowForWebContents(
+    content::WebContents* web_contents) {
+  if (!page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+    return false;
+  }
+
+  if (!web_contents) {
+    return false;
+  }
+
+  const GURL& url = web_contents->GetLastCommittedURL();
+
+  if (url.SchemeIs(url::kAboutScheme) || url.SchemeIs(url::kBlobScheme) ||
+      url.SchemeIs(url::kDataScheme) || url.SchemeIs(url::kFileSystemScheme) ||
+      url.SchemeIs(kMagnetScheme) || url.SchemeIs(kBraveUIScheme) ||
+      url.SchemeIs(content::kChromeUIScheme) ||
+      url.SchemeIs(extensions::kExtensionScheme)) {
+    return false;
+  }
+
+  return true;
+}
 
 void BraveShieldsPageInfoView::ShowRepeatedReloadsView() {
   LoadShieldsURL(contents_wrapper_->web_contents()->GetController(),
@@ -131,7 +167,19 @@ gfx::Size BraveShieldsPageInfoView::CalculatePreferredSize(
 
 std::unique_ptr<WebUIContentsWrapper>
 BraveShieldsPageInfoView::CreateContentsWrapper() {
-  // Create a new contents wrapper for the Shields WebUI.
+  // If a cached web contents is available, use it in order to avoid visible
+  // delay when initializing the web contents.
+  if (auto wrapper = GetContentsCache().GetCachedShieldsUIContents()) {
+    // If the cached contents is displaying a shields UI URL with a querystring,
+    // reload without the querystring.
+    auto& nav_controller = wrapper->web_contents()->GetController();
+    if (nav_controller.GetVisibleEntry()->GetURL().has_query()) {
+      LoadShieldsURL(nav_controller, "");
+    }
+    return wrapper;
+  }
+
+  // Otherwise, create a new contents wrapper for the Shields WebUI.
   auto wrapper = std::make_unique<WebUIContentsWrapperT<ShieldsPanelUI>>(
       GURL(kShieldsPanelURL), browser_->GetProfile(), IDS_BRAVE_SHIELDS);
 
@@ -140,6 +188,10 @@ BraveShieldsPageInfoView::CreateContentsWrapper() {
   webui::SetBrowserWindowInterface(wrapper->web_contents(), browser_);
 
   return wrapper;
+}
+
+BraveShieldsUIContentsCache& BraveShieldsPageInfoView::GetContentsCache() {
+  return CHECK_DEREF(browser_->GetFeatures().brave_shields_ui_contents_cache());
 }
 
 BEGIN_METADATA(BraveShieldsPageInfoView)

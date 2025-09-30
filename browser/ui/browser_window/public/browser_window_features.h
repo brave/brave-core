@@ -8,6 +8,7 @@
 
 #include <memory>
 
+class BraveShieldsUIContentsCache;
 class BraveVPNController;
 class PlaylistSidePanelCoordinator;
 
@@ -45,6 +46,10 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return playlist_side_panel_coordinator_.get();
   }
 
+  BraveShieldsUIContentsCache* brave_shields_ui_contents_cache() {
+    return brave_shields_ui_contents_cache_.get();
+  }
+
  private:
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
   std::unique_ptr<BraveVPNController> brave_vpn_controller_;
@@ -52,6 +57,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
       rewards_panel_coordinator_;
   std::unique_ptr<PlaylistSidePanelCoordinator>
       playlist_side_panel_coordinator_;
+  std::unique_ptr<BraveShieldsUIContentsCache> brave_shields_ui_contents_cache_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_

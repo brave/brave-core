@@ -14,6 +14,8 @@ source_set("page_info") {
     "brave_page_info_view_ids.h",
     "brave_shields_page_info_view.cc",
     "brave_shields_page_info_view.h",
+    "brave_shields_ui_contents_cache.cc",
+    "brave_shields_ui_contents_cache.h",
   ]
 
   deps = [
@@ -28,6 +30,7 @@ source_set("page_info") {
     "//chrome/browser/ui/webui/top_chrome",
     "//components/strings:components_strings",
     "//components/tabs:public",
+    "//extensions/common",
     "//ui/base",
     "//ui/views/controls/webview",
   ]
