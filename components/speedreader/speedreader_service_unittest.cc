@@ -195,12 +195,12 @@ class SpeedreaderPrefMigrationTest : public testing::Test {
 
 TEST_F(SpeedreaderPrefMigrationTest, MigratesEnabledPrefToNewStructure) {
   // Set up the old preference structure - user had speedreader enabled
-  pref_service_.SetBoolean(kSpeedreaderAllowedForAllReadableSites, true);
+  pref_service_.SetBoolean(kSpeedreaderPrefEnabledDeprecated, true);
 
   // Verify initial state
   EXPECT_TRUE(
-      pref_service_.HasPrefPath(kSpeedreaderAllowedForAllReadableSites));
-  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderAllowedForAllReadableSites));
+      pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderPrefEnabledDeprecated));
   EXPECT_TRUE(
       pref_service_.GetBoolean(kSpeedreaderEnabled));  // Default is true
   EXPECT_FALSE(pref_service_.GetBoolean(
@@ -211,7 +211,7 @@ TEST_F(SpeedreaderPrefMigrationTest, MigratesEnabledPrefToNewStructure) {
 
   // Verify migration results
   EXPECT_FALSE(pref_service_.HasPrefPath(
-      kSpeedreaderAllowedForAllReadableSites));  // Cleared
+      kSpeedreaderPrefEnabledDeprecated));  // Cleared
   EXPECT_TRUE(
       pref_service_.GetBoolean(kSpeedreaderEnabled));  // Still default (true)
   EXPECT_TRUE(pref_service_.GetBoolean(
