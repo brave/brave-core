@@ -77,7 +77,7 @@ export class SettingsBraveSystemPageIndexElement extends
     }
     // </if>
 
-    views.push('memory')
+    views.push('memory', 'battery')
     this.$.viewManager.switchViews(views, 'no-animation', 'no-animation');
   }
 
