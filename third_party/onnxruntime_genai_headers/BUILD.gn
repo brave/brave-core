@@ -1,0 +1,8 @@
+config("includes") {
+  include_dirs = [ "." ]
+}
+
+source_set("onnxruntime_genai_headers") {
+  public = [ "ort_genai_c.h" ]
+  public_configs = [ ":includes" ]
+}

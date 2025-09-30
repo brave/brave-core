@@ -42,17 +42,41 @@ source_set("text_embedder") {
   ]
 }
 
+config("onnxruntime_genai_config") {
+  if (is_mac) {
+    libs = [ "/Users/darkdh/Projects/onnxruntime-genai/build/macOS/Release/libonnxruntime-genai.dylib" ]
+    ldflags = [
+      "-Wl,-rpath,/Users/darkdh/Projects/onnxruntime-genai/build/macOS/Release",
+    ]
+  }
+}
+
+source_set("og_llm_executor") {
+  sources = [
+    "og_llm_executor.cc",
+    "og_llm_executor.h",
+  ]
+
+  deps = [ "//base" ]
+
+  public_deps = [ "//brave/third_party/onnxruntime_genai_headers" ]
+
+  all_dependent_configs = [ ":onnxruntime_genai_config" ]
+}
+
 if (!is_ios) {
   source_set("unit_tests") {
     testonly = true
     sources = [
       "local_models_updater_unittest.cc",
+      "og_llm_executor_unittest.cc",
       "text_embedder_unittest.cc",
       "yake_keyword_extractor_unittest.cc",
     ]
 
     deps = [
       ":browser",
+      ":og_llm_executor",
       ":text_embedder",
       "//base",
       "//base/test:test_support",
