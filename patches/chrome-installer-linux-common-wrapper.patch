@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/wrapper b/chrome/installer/linux/common/wrapper
-index aaa46bf71f6a3..ae5f60e832583 100755
+index aaa46bf71f6a3..0458e5a1facf9 100755
 --- a/chrome/installer/linux/common/wrapper
 +++ b/chrome/installer/linux/common/wrapper
 @@ -27,6 +27,22 @@ fi
@@ -16,7 +16,7 @@ index aaa46bf71f6a3..ae5f60e832583 100755
 +    case "${line_items[*]}" in
 +      "#"*) ;;
 +      --*=\"*\"|--*=\'*\') IFS="=" read -r key val <<<"${line_items[*]}"
-+         options+=("$key=${val:1:((${#val}-2))}");;
++         options+=("$key=${val:1:${#val}-2}");;
 +      *) options+=("${line_items[@]}");;
 +    esac
 +  done <"$config_file"
