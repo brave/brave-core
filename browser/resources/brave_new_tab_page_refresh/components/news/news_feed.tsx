@@ -22,12 +22,6 @@ export function NewsFeed() {
     setTimeout(() => setShouldRenderNews(true), 1000)
   }, [])
 
-  React.useEffect(() => {
-    const handleScroll = () => braveNews.setShouldRenderImages(true)
-    document.addEventListener('scroll', handleScroll, { once: true })
-    return () => document.removeEventListener('scroll', handleScroll)
-  }, [braveNews.shouldRenderImages])
-
   if (!newsFeatureEnabled) {
     return null
   }

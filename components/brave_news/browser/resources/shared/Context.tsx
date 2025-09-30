@@ -49,7 +49,6 @@ interface BraveNewsContext {
   reportSessionStart: () => void
 
   shouldRenderImages: boolean
-  setShouldRenderImages: (scrolled: boolean) => void
 }
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
@@ -78,7 +77,6 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   reportSidebarFilterUsage: () => { },
   reportSessionStart: () => { },
   shouldRenderImages: false,
-  setShouldRenderImages: (scrolled: boolean) => { },
 })
 
 export const publishersCache = new PublishersCachingWrapper()
@@ -131,6 +129,15 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     const handler = (publishers: Publishers) => setPublishers(publishers)
     publishersCache.addListener(handler)
     return () => { publishersCache.removeListener(handler) }
+  }, [])
+
+  React.useEffect(() => {
+    if (shouldRenderImages) {
+      return
+    }
+    const handleScroll = () => setShouldRenderImages(true)
+    document.addEventListener('scroll', handleScroll, { once: true })
+    return () => document.removeEventListener('scroll', handleScroll)
   }, [])
 
   const sortedPublishers = useMemo(() =>
@@ -209,8 +216,7 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     reportSidebarFilterUsage,
     reportSessionStart,
     shouldRenderImages,
-    setShouldRenderImages,
-  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart, shouldRenderImages, setShouldRenderImages])
+  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart, shouldRenderImages])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}

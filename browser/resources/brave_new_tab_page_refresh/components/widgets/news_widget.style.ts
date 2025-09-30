@@ -64,6 +64,11 @@ export const style = scoped.css`
       object-fit: cover;
       object-position: center top;
       border-radius: 4px;
+      opacity: 0;
+      transition: opacity 400ms ease-in-out;
+      &.loaded {
+        opacity: 1;
+      }
     }
 
     .meta {
@@ -85,16 +90,6 @@ export const style = scoped.css`
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
-    }
-  }
-
-  .peek {
-    img {
-      opacity: 0;
-      transition: opacity 400ms ease-in-out;
-      &.loaded {
-        opacity: 1;
-      }
     }
   }
 

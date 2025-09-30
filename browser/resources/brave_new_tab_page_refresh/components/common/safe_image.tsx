@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function SafeImage(props: Props) {
-  let { src, loading } = props
+  let { src } = props
   if (src) {
     src = 'chrome://brave-image?url=' + encodeURIComponent(src);
     if (props.targetSize) {
@@ -24,14 +24,12 @@ export function SafeImage(props: Props) {
       height = Math.round(height * window.devicePixelRatio)
       src += `&target_size=${width}x${height}`
     }
-  } else {
-    src = placeholderImageSrc
   }
 
   return (
     <img
-      src={src}
-      loading={loading ?? 'lazy'}
+      src={src || placeholderImageSrc}
+      loading='lazy'
       className={props.className}
       onError={(event) => { event.currentTarget.src = placeholderImageSrc }}
       onLoad={(event) => { event.currentTarget?.classList.add('loaded') }}
