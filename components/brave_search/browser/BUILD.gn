@@ -9,6 +9,8 @@ static_library("browser") {
   sources = [
     "backup_results_allowed_urls.cc",
     "backup_results_allowed_urls.h",
+    "backup_results_metrics.cc",
+    "backup_results_metrics.h",
     "backup_results_service.cc",
     "backup_results_service.h",
     "brave_search_default_host.cc",
@@ -25,6 +27,7 @@ static_library("browser") {
     "//brave/components/brave_search/common",
     "//brave/components/brave_search/common:mojom",
     "//brave/components/brave_search_conversion",
+    "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
     "//components/prefs",
     "//components/search_engines",
@@ -36,11 +39,15 @@ static_library("browser") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "backup_results_allowed_urls_unittest.cc" ]
+  sources = [
+    "backup_results_allowed_urls_unittest.cc",
+    "backup_results_metrics_unittest.cc",
+  ]
 
   deps = [
     ":browser",
     "//base/test:test_support",
+    "//components/prefs:test_support",
     "//testing/gtest",
     "//url",
   ]

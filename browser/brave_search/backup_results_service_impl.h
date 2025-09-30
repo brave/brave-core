@@ -13,6 +13,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
+#include "brave/components/brave_search/browser/backup_results_metrics.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "net/http/http_request_headers.h"
@@ -101,6 +102,8 @@ class BackupResultsServiceImpl : public BackupResultsService,
   raw_ptr<Profile> profile_;
 
   PendingRequestList pending_requests_;
+
+  BackupResultsMetrics backup_results_metrics_;
 
   base::WeakPtrFactory<BackupResultsServiceImpl> weak_ptr_factory_{this};
 };
