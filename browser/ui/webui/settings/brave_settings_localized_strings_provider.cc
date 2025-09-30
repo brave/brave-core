@@ -1078,6 +1078,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "extensionsV2Warn",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_MANAGE_EXTENSIONS_V2_WARN,
                                  kExtensionsV2LearnMoreURL));
+
+  // Disabled due to crash with tab group dragging.
+  // TODO(https://github.com/brave/brave-browser/issues/49752): Re-enable.
+  html_source->AddBoolean("showSplitViewDragAndDropSetting", false);
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,
