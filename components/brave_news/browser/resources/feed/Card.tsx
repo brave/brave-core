@@ -46,9 +46,13 @@ const HidableImage = ({
   targetHeight,
   targetWidth,
   src,
+  loading,
   ...rest
 }: HidabeImageProps) => {
   const ref = React.useRef<HTMLImageElement>()
+
+  const { scrolledToNews } = useBraveNews()
+  const delayLoad = !scrolledToNews && loading === 'lazy'
 
   const handleError = React.useCallback((e: React.UIEvent<HTMLImageElement>) => {
     ref.current!.style.opacity = '0'
@@ -56,7 +60,7 @@ const HidableImage = ({
   }, [onError])
 
   const handleLoad = React.useCallback((e: React.UIEvent<HTMLImageElement>) => {
-    ref.current!.style.opacity = ''
+    ref.current!.style.opacity = '1'
     onLoad?.(e)
   }, [onLoad])
 
@@ -69,7 +73,14 @@ const HidableImage = ({
     src += `&target_size=${width}x${height}`
   }
 
-  return <img {...rest} src={src} ref={ref as any} onError={handleError} onLoad={handleLoad} />
+  return <img
+    {...rest}
+    src={delayLoad ? undefined : src}
+    ref={ref as any}
+    onError={handleError}
+    onLoad={handleLoad}
+    style={{ opacity: 0, transition: 'opacity 400ms ease-in-out', ...rest.style }}
+  />
 }
 
 export const SmallImage = styled(HidableImage).attrs({ targetHeight: 64, targetWidth: 96 })`

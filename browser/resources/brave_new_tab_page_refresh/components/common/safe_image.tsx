@@ -6,15 +6,17 @@
 import * as React from 'react'
 
 import { placeholderImageSrc } from '../../lib/image_loader'
+import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
 
 interface Props {
   src: string
   className?: string
+  loading?: 'lazy' | 'eager'
   targetSize?: { width: number, height: number }
 }
 
 export function SafeImage(props: Props) {
-  let { src } = props
+  let { src, loading } = props
   if (src) {
     src = 'chrome://brave-image?url=' + encodeURIComponent(src);
     if (props.targetSize) {
@@ -23,13 +25,21 @@ export function SafeImage(props: Props) {
       height = Math.round(height * window.devicePixelRatio)
       src += `&target_size=${width}x${height}`
     }
+  } else {
+    src = placeholderImageSrc
   }
+
+  const { scrolledToNews } = useBraveNews()
+  const delayLoad = !scrolledToNews && loading === 'lazy'
+
   return (
     <img
-      src={src || placeholderImageSrc}
-      loading='lazy'
+      src={!delayLoad ? src: undefined}
+      loading={loading ?? 'lazy'}
       className={props.className}
       onError={(event) => { event.currentTarget.src = placeholderImageSrc }}
+      onLoad={(event) => { event.currentTarget.style.opacity = '1' }}
+      style={{ opacity: 0, transition: 'opacity 400ms ease-in-out' }}
     />
   )
 }
