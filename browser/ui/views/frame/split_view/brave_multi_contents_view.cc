@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -17,10 +18,6 @@
 #include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/widget/widget.h"
-
-namespace {
-constexpr auto kSpacingBetweenContentsContainerViews = 4;
-}  // namespace
 
 // static
 BraveMultiContentsView* BraveMultiContentsView::From(MultiContentsView* view) {
@@ -32,8 +29,9 @@ BraveMultiContentsView::BraveMultiContentsView(
     BrowserView* browser_view,
     std::unique_ptr<MultiContentsViewDelegate> delegate)
     : MultiContentsView(browser_view, std::move(delegate)) {
+  // Use rounded corners margin as resize area's width.
   resize_area_->SetPreferredSize(
-      gfx::Size(kSpacingBetweenContentsContainerViews, 0));
+      gfx::Size(BraveContentsViewUtil::kMarginThickness, 0));
   start_contents_view_inset_ = gfx::Insets();
   end_contents_view_inset_ = gfx::Insets();
 }

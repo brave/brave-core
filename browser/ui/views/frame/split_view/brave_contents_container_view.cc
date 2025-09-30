@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/views/frame/contents_container_outline.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/frame/scrim_view.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -27,6 +28,7 @@
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/border.h"
 
 namespace {
@@ -104,18 +106,21 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
 
   // Draw active/inactive outlines around the contents areas and updates mini
   // toolbar visibility.
-  const float border_corner_radius(GetCornerRadius(true));
+  const auto border_corner_radius(GetCornerRadius(true));
   if (is_active) {
-    SetBorder(views::CreateRoundedRectBorder(
-        kBorderThickness, border_corner_radius,
-        kColorBraveSplitViewActiveWebViewBorder));
+    SetBorder(views::CreateBorderPainter(
+        views::Painter::CreateSolidRoundRectPainterWithVariableRadius(
+            GetColorProvider()->GetColor(
+                kColorBraveSplitViewActiveWebViewBorder),
+            border_corner_radius, gfx::Insets(), SkBlendMode::kSrc),
+        gfx::Insets(kBorderThickness)));
   } else {
     SetBorder(views::CreateBorderPainter(
         views::Painter::CreateRoundRectWith1PxBorderPainter(
             GetColorProvider()->GetColor(
                 kColorBraveSplitViewInactiveWebViewBorder),
-            GetColorProvider()->GetColor(kColorToolbar), border_corner_radius,
-            SkBlendMode::kSrc,
+            GetColorProvider()->GetColor(kColorToolbar),
+            gfx::RoundedCornersF(border_corner_radius), SkBlendMode::kSrc,
             /*anti_alias*/ true,
             /*should_border_scale*/ true),
         gfx::Insets(kBorderThickness)));
@@ -123,7 +128,7 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
 }
 
 void BraveContentsContainerView::UpdateBorderRoundedCorners() {
-  const gfx::RoundedCornersF contents_corner_radius(GetCornerRadius(false));
+  const auto contents_corner_radius(GetCornerRadius(false));
 
   contents_view_->layer()->SetRoundedCornerRadius(contents_corner_radius);
   contents_view_->holder()->SetCornerRadii(contents_corner_radius);
@@ -134,7 +139,8 @@ void BraveContentsContainerView::UpdateBorderRoundedCorners() {
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (reader_mode_toolbar_) {
-    reader_mode_toolbar_->SetCornerRadius(GetCornerRadius(false));
+    reader_mode_toolbar_->SetCornerRadius(
+        BraveContentsViewUtil::GetBorderRadius());
   }
 #endif
 }
@@ -185,19 +191,36 @@ void BraveContentsContainerView::OnReaderModeToolbarActivate(
 }
 #endif
 
-float BraveContentsContainerView::GetCornerRadius(bool for_border) const {
+gfx::RoundedCornersF BraveContentsContainerView::GetCornerRadius(
+    bool for_border) const {
   auto* exclusive_access_manager =
       browser_view_->browser()->GetFeatures().exclusive_access_manager();
   if (exclusive_access_manager &&
       exclusive_access_manager->fullscreen_controller()->IsTabFullscreen()) {
-    return 0;
+    return {};
   }
 
-  return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
-             browser_view_->browser())
-             ? BraveContentsViewUtil::kBorderRadius +
-                   (for_border ? kBorderThickness : 0)
-             : 0;
+  if (!BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+          browser_view_->browser())) {
+    return {};
+  }
+
+  tabs::TabInterface* tab = nullptr;
+  if (is_in_split_ && contents_view_->web_contents()) {
+    tab = tabs::TabInterface::GetFromContents(contents_view_->web_contents());
+  }
+
+  auto rounded_corners =
+      BraveContentsViewUtil::GetRoundedCornersForContentsView(
+          browser_view_->browser(), tab);
+  if (for_border) {
+    return {rounded_corners.upper_left() + kBorderThickness,
+            rounded_corners.upper_right() + kBorderThickness,
+            rounded_corners.lower_right() + kBorderThickness,
+            rounded_corners.lower_left() + kBorderThickness};
+  }
+
+  return rounded_corners;
 }
 
 BEGIN_METADATA(BraveContentsContainerView)
