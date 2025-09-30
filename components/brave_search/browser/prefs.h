@@ -18,6 +18,11 @@ inline constexpr char kFetchFromNative[] =
     "brave.brave_search.fetch_se_from_native";
 #endif
 
+inline constexpr char kBackupResultsLastQueryTime[] =
+    "brave.search.backup_results.last_query_time";
+inline constexpr char kBackupResultsFailuresStorage[] =
+    "brave.search.backup_results.failures_storage";
+
 }  // namespace prefs
 }  // namespace brave_search
 
