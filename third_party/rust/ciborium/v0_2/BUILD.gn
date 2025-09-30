@@ -9,40 +9,45 @@
 import("//build/rust/cargo_crate.gni")
 
 cargo_crate("lib") {
-  crate_name = "crunchy"
+  crate_name = "ciborium"
   epoch = "0.2"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/src/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/src/lib.rs" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/src/de/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/src/de/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/src/ser/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/src/ser/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/src/tag.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/src/value/canonical.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/src/value/de.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/src/value/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/src/value/integer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/src/value/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/src/value/ser.rs",
+  ]
   inputs = []
 
   build_native_rust_unit_tests = false
-  edition = "2015"
-  cargo_pkg_authors = "Vurich <jackefransham@hotmail.co.uk>"
-  cargo_pkg_name = "crunchy"
-  cargo_pkg_description =
-      "Crunchy unroller: deterministically unroll constant loops"
+  edition = "2021"
+  cargo_pkg_authors = "Nathaniel McCallum <npmccallum@profian.com>"
+  cargo_pkg_name = "ciborium"
+  cargo_pkg_description = "serde implementation of CBOR using ciborium-basic"
+  cargo_pkg_repository = "https://github.com/enarx/ciborium"
   cargo_pkg_version = "0.2.2"
 
+  deps = [
+    "//brave/third_party/rust/ciborium_io/v0_2:lib",
+    "//brave/third_party/rust/ciborium_ll/v0_2:lib",
+    "//brave/third_party/rust/serde/v1:lib",
+  ]
   features = [
     "default",
-    "limit_128",
     "std",
   ]
-  build_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/build.rs"
-  build_sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/build.rs",
-  ]
-  build_script_outputs = [ "lib.rs" ]
   rustenv = []
   rustflags = []
-
-  # Remove features incorrectly added by half crate for spirv arch
-  features -= [
-    "limit_128",
-    "default",
-  ]
 
   #####################################################################
   # Tweaking which GN `config`s apply to this target.

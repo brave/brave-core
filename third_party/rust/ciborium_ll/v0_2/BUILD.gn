@@ -9,40 +9,33 @@
 import("//build/rust/cargo_crate.gni")
 
 cargo_crate("lib") {
-  crate_name = "crunchy"
+  crate_name = "ciborium_ll"
   epoch = "0.2"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/src/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/src/lib.rs" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-ll-v0_2/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-ll-v0_2/src/dec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-ll-v0_2/src/enc.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-ll-v0_2/src/hdr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-ll-v0_2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/ciborium-ll-v0_2/src/seg.rs",
+  ]
   inputs = []
 
   build_native_rust_unit_tests = false
-  edition = "2015"
-  cargo_pkg_authors = "Vurich <jackefransham@hotmail.co.uk>"
-  cargo_pkg_name = "crunchy"
-  cargo_pkg_description =
-      "Crunchy unroller: deterministically unroll constant loops"
+  edition = "2021"
+  cargo_pkg_authors = "Nathaniel McCallum <npmccallum@profian.com>"
+  cargo_pkg_name = "ciborium-ll"
+  cargo_pkg_description = "Low-level CBOR codec primitives"
+  cargo_pkg_repository = "https://github.com/enarx/ciborium"
   cargo_pkg_version = "0.2.2"
 
-  features = [
-    "default",
-    "limit_128",
-    "std",
+  deps = [
+    "//brave/third_party/rust/ciborium_io/v0_2:lib",
+    "//brave/third_party/rust/half/v2:lib",
   ]
-  build_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/build.rs"
-  build_sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/build.rs",
-  ]
-  build_script_outputs = [ "lib.rs" ]
   rustenv = []
   rustflags = []
-
-  # Remove features incorrectly added by half crate for spirv arch
-  features -= [
-    "limit_128",
-    "default",
-  ]
 
   #####################################################################
   # Tweaking which GN `config`s apply to this target.
