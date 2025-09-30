@@ -32,6 +32,12 @@
   <settings-memory-page slot="view" id="memory" prefs="{{prefs}}">
   </settings-memory-page>
 
+  <template is="dom-if" if="[[showBatterySettings_]]">
+    <settings-battery-page slot="view" id="battery" prefs="{{prefs}}"
+      hidden="[[!showBatterySettings_]]">
+    </settings-battery-page>
+  </template>
+
   <settings-brave-shortcuts-page
     id="shortcuts"
     slot="view"
