@@ -220,13 +220,13 @@ TEST_F(SpeedreaderPrefMigrationTest, MigratesEnabledPrefToNewStructure) {
 
 TEST_F(SpeedreaderPrefMigrationTest, MigratesDisabledPrefToNewStructure) {
   // Set up the old preference structure - user had speedreader disabled
-  pref_service_.SetBoolean(kSpeedreaderAllowedForAllReadableSites, false);
+  pref_service_.SetBoolean(kSpeedreaderPrefEnabledDeprecated, false);
 
   // Verify initial state
   EXPECT_TRUE(
-      pref_service_.HasPrefPath(kSpeedreaderAllowedForAllReadableSites));
+      pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
   EXPECT_FALSE(
-      pref_service_.GetBoolean(kSpeedreaderAllowedForAllReadableSites));
+      pref_service_.GetBoolean(kSpeedreaderPrefEnabledDeprecated));
   EXPECT_TRUE(
       pref_service_.GetBoolean(kSpeedreaderEnabled));  // Default is true
   EXPECT_FALSE(pref_service_.GetBoolean(
@@ -268,18 +268,18 @@ TEST_F(SpeedreaderPrefMigrationTest, HandlesNewInstallationWithDefaults) {
 
 TEST_F(SpeedreaderPrefMigrationTest, MigrationIdempotent) {
   // Set up the old preference structure
-  pref_service_.SetBoolean(kSpeedreaderAllowedForAllReadableSites, true);
+  pref_service_.SetBoolean(kSpeedreaderPrefEnabledDeprecated, true);
 
   // Verify the deprecated pref path exists
   EXPECT_TRUE(
-      pref_service_.HasPrefPath(kSpeedreaderAllowedForAllReadableSites));
+      pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
 
   // Run migration first time
   MigrateObsoleteProfilePrefs(&pref_service_);
 
   // Verify migration worked and deprecated pref is cleared
   EXPECT_FALSE(
-      pref_service_.HasPrefPath(kSpeedreaderAllowedForAllReadableSites));
+      pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
   EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));
   EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderAllowedForAllReadableSites));
 
