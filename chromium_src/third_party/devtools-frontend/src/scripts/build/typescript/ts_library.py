@@ -21,7 +21,14 @@ def ensure_hardlink(src, dst):
         if not os.path.samefile(src, dst):
             # recreating link if dst is not pointing to the src
             os.unlink(dst)
-            os.link(src, dst)
+            try:
+                os.link(src, dst)
+            except FileExistsError:
+                # Ignore this error, it happens because of a race condition
+                # on android when the relevant target is running for more than
+                # one architecture. This is a temporary workaround
+                # TODO(https://github.com/brave/brave-browser/issues/49768)
+                pass
 
 
 # Here we put our files in the devtools source directory due to the limitations
