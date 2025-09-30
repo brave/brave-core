@@ -244,8 +244,7 @@ TEST_F(SpeedreaderPrefMigrationTest, MigratesDisabledPrefToNewStructure) {
 
 TEST_F(SpeedreaderPrefMigrationTest, HandlesNewInstallationWithDefaults) {
   // Simulate new installation - deprecated pref path doesn't exist
-  EXPECT_FALSE(
-      pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
+  EXPECT_FALSE(pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
 
   // Verify initial defaults
   EXPECT_TRUE(
