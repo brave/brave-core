@@ -84,6 +84,7 @@ TEST_F(SpeedreaderServiceTest, OverrideSiteSettingsAllSitesDefault) {
 
   for (const bool enabled : {true, false}) {
     speedreader_service()->SetEnabledForSite(site, enabled);
+
     EXPECT_EQ(enabled, speedreader_service()->IsAllowedForSite(site));
     EXPECT_EQ(enabled, speedreader_service()->IsEnabledForSite(site));
     EXPECT_EQ(!enabled, speedreader_service()->IsDisabledForSite(site));
@@ -258,7 +259,8 @@ TEST_F(SpeedreaderPrefMigrationTest, HandlesNewInstallationWithDefaults) {
   // Verify migration does nothing for new installations
   EXPECT_FALSE(
       pref_service_.HasPrefPath(kSpeedreaderAllowedForAllReadableSites));
-  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));  // Still default
+  EXPECT_TRUE(pref_service_.GetBoolean(
+      kSpeedreaderEnabled));  // Still default
   EXPECT_FALSE(pref_service_.GetBoolean(
       kSpeedreaderAllowedForAllReadableSites));  // Still default
 }
