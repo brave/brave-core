@@ -20,11 +20,13 @@
   </settings-system-page>
 
   <!-- <if expr="enable_brave_vpn_wireguard"> -->
-  <settings-brave-vpn-page
-    id="vpn"
-    slot="view"
-    prefs="{{prefs}}">
-  </settings-brave-vpn-page>
+  <template is="dom-if" if="[[showVPNPage_]]">
+    <settings-brave-vpn-page
+      id="vpn"
+      slot="view"
+      prefs="{{prefs}}">
+    </settings-brave-vpn-page>
+  </template>
   <!-- </if> -->
 
   <settings-memory-page slot="view" id="memory" prefs="{{prefs}}">
