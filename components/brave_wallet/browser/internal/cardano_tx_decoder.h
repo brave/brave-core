@@ -25,6 +25,8 @@ class CardanoTxDecoder {
  public:
   struct CardanoSignMessageResult {
     CardanoSignMessageResult();
+    CardanoSignMessageResult(std::vector<uint8_t> signature_bytes,
+                             std::vector<uint8_t> public_key);
     CardanoSignMessageResult(const CardanoSignMessageResult&);
     CardanoSignMessageResult(CardanoSignMessageResult&&);
     ~CardanoSignMessageResult();
@@ -82,7 +84,7 @@ class CardanoTxDecoder {
   static std::optional<RestoredTransaction> DecodeTransaction(
       base::span<const uint8_t> cbor_bytes);
 
-  static std::optional<std::vector<uint8_t>> ApplySignResults(
+  static std::optional<std::vector<uint8_t>> AddWitnessesToTransaction(
       const std::vector<uint8_t>& unsigned_tx_bytes,
       const std::vector<CardanoSignMessageResult>& witness);
 };

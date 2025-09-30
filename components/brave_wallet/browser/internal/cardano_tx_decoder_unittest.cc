@@ -156,7 +156,7 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_MalformedTransaction) {
   EXPECT_FALSE(decode_result.has_value());
 }
 
-TEST(CardanoTxDecoderTest, ApplySignResults_ValidSignatures) {
+TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_ValidSignatures) {
   auto tx = GetUnsignedReferenceTransaction();
   auto tx_bytes = CardanoTransactionSerializer().SerializeTransaction(tx);
 
@@ -190,26 +190,27 @@ TEST(CardanoTxDecoderTest, ApplySignResults_ValidSignatures) {
   auto expected_signed_bytes =
       CardanoTransactionSerializer().SerializeTransaction(tx_with_signatures);
 
-  auto result = CardanoTxDecoder::ApplySignResults(tx_bytes, sign_results);
+  auto result =
+      CardanoTxDecoder::AddWitnessesToTransaction(tx_bytes, sign_results);
   EXPECT_TRUE(result.has_value());
   EXPECT_EQ(expected_signed_bytes, result.value());
 }
 
-TEST(CardanoTxDecoderTest, ApplySignResults_EmptySignatures) {
+TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_EmptySignatures) {
   auto tx = GetUnsignedReferenceTransaction();
   auto tx_bytes = CardanoTransactionSerializer().SerializeTransaction(tx);
 
   std::vector<CardanoTxDecoder::CardanoSignMessageResult> empty_sign_results;
 
   auto result =
-      CardanoTxDecoder::ApplySignResults(tx_bytes, empty_sign_results);
+      CardanoTxDecoder::AddWitnessesToTransaction(tx_bytes, empty_sign_results);
 
   // Should still return a result (transaction with empty witness set)
   EXPECT_TRUE(result.has_value());
   EXPECT_EQ(tx_bytes, result.value());
 }
 
-TEST(CardanoTxDecoderTest, ApplySignResults_InvalidTransactionData) {
+TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_InvalidTransactionData) {
   auto invalid_tx_bytes = CreateInvalidCborData();
 
   std::vector<CardanoTxDecoder::CardanoSignMessageResult> sign_results;
@@ -218,8 +219,8 @@ TEST(CardanoTxDecoderTest, ApplySignResults_InvalidTransactionData) {
   sign_result.signature_bytes = std::vector<uint8_t>(64, 2);
   sign_results.push_back(std::move(sign_result));
 
-  auto result =
-      CardanoTxDecoder::ApplySignResults(invalid_tx_bytes, sign_results);
+  auto result = CardanoTxDecoder::AddWitnessesToTransaction(invalid_tx_bytes,
+                                                            sign_results);
   EXPECT_FALSE(result.has_value());
 }
 

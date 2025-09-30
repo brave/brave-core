@@ -561,14 +561,12 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
     }
     // Convert CardanoSignMessageResult to
     // CardanoTxDecoder::CardanoSignMessageResult
-    CardanoTxDecoder::CardanoSignMessageResult converted_result;
-    converted_result.public_key = base::ToVector(sign_result->pubkey);
-    converted_result.signature_bytes = base::ToVector(sign_result->signature);
-    sign_results.push_back(std::move(converted_result));
+    sign_results.emplace_back(base::ToVector(sign_result->signature),
+                              base::ToVector(sign_result->pubkey));
   }
 
-  auto signed_tx =
-      CardanoTxDecoder::ApplySignResults(tx.raw_bytes, std::move(sign_results));
+  auto signed_tx = CardanoTxDecoder::AddWitnessesToTransaction(
+      tx.raw_bytes, std::move(sign_results));
 
   if (!signed_tx) {
     std::move(callback).Run(
