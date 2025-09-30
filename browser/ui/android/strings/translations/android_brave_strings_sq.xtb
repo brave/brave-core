@@ -936,7 +936,6 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
  <ph name="VALUE"/></translation>
 <translation id="2282835936933247509">Zona Kohore</translation>
 <translation id="8107843365677337047">Lloji i Rrjetit</translation>
-<translation id="5334952096674914470">Është bërë <ph name="CELLULAR_CARRIER"/></translation>
 <translation id="5393042357629679588">Çështje të tjera</translation>
 <translation id="8095666712177294104">Platforma</translation>
 <translation id="7080614857771109950">Mbështet asetet kompatibile me EVM në bllokun e Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
