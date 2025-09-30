@@ -69,11 +69,9 @@ TEST_F(TargetUtilTest, ParseTargetInput_ValidCoordinates) {
     "y": 250.7
   })JSON");
 
-  std::string error;
-  auto result = ParseTargetInput(target_dict, &error);
+  auto result = ParseTargetInput(target_dict);
 
   ASSERT_TRUE(result.has_value());
-  EXPECT_TRUE(error.empty());
 
   const auto& target = result.value();
   EXPECT_TRUE(target.has_coordinate());
@@ -90,11 +88,9 @@ TEST_F(TargetUtilTest, ParseTargetInput_ValidDocumentIdentifier) {
     "document_identifier": "test_doc"
   })JSON");
 
-  std::string error;
-  auto result = ParseTargetInput(target_dict, &error);
+  auto result = ParseTargetInput(target_dict);
 
   ASSERT_TRUE(result.has_value());
-  EXPECT_TRUE(error.empty());
 
   const auto& target = result.value();
   EXPECT_FALSE(target.has_coordinate());
@@ -113,11 +109,9 @@ TEST_F(TargetUtilTest, ParseTargetInput_ValidContentNodeId) {
     "document_identifier": "test_doc_123"
   })JSON");
 
-  std::string error;
-  auto result = ParseTargetInput(target_dict, &error);
+  auto result = ParseTargetInput(target_dict);
 
   ASSERT_TRUE(result.has_value());
-  EXPECT_TRUE(error.empty());
 
   const auto& target = result.value();
   EXPECT_FALSE(target.has_coordinate());
@@ -133,11 +127,11 @@ TEST_F(TargetUtilTest, ParseTargetInput_MissingX) {
     "y": 200
   })JSON");
 
-  std::string error;
-  auto result = ParseTargetInput(target_dict, &error);
+  auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(error, "Invalid coordinates: both 'x' and 'y' are required");
+  EXPECT_EQ(result.error(),
+            "Invalid coordinates: both 'x' and 'y' are required");
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_MissingY) {
@@ -145,11 +139,11 @@ TEST_F(TargetUtilTest, ParseTargetInput_MissingY) {
     "x": 100
   })JSON");
 
-  std::string error;
-  auto result = ParseTargetInput(target_dict, &error);
+  auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(error, "Invalid coordinates: both 'x' and 'y' are required");
+  EXPECT_EQ(result.error(),
+            "Invalid coordinates: both 'x' and 'y' are required");
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_MissingDocumentIdentifier) {
@@ -157,11 +151,10 @@ TEST_F(TargetUtilTest, ParseTargetInput_MissingDocumentIdentifier) {
     "content_node_id": 42
   })JSON");
 
-  std::string error;
-  auto result = ParseTargetInput(target_dict, &error);
+  auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(error,
+  EXPECT_EQ(result.error(),
             "Invalid identifiers: 'document_identifier' is required when "
             "specifying 'content_node_id'");
 }
@@ -174,11 +167,10 @@ TEST_F(TargetUtilTest, ParseTargetInput_BothApproaches) {
     "document_identifier": "test_doc"
   })JSON");
 
-  std::string error;
-  auto result = ParseTargetInput(target_dict, &error);
+  auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(error,
+  EXPECT_EQ(result.error(),
             "Target must contain either 'x' and 'y' or "
             "'document_identifier' with optional 'content_node_id', not both");
 }
@@ -186,12 +178,11 @@ TEST_F(TargetUtilTest, ParseTargetInput_BothApproaches) {
 TEST_F(TargetUtilTest, ParseTargetInput_NeitherApproach) {
   auto target_dict = base::test::ParseJsonDict(R"JSON({})JSON");
 
-  std::string error;
-  auto result = ParseTargetInput(target_dict, &error);
+  auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
   EXPECT_EQ(
-      error,
+      result.error(),
       "Target must contain one of either 'x' and 'y' or 'document_identifier' "
       "and optional 'content_node_id'");
 }
@@ -202,11 +193,11 @@ TEST_F(TargetUtilTest, ParseTargetInput_PartialCoordinatesBothPresent) {
     "content_node_id": 42
   })JSON");
 
-  std::string error;
-  auto result = ParseTargetInput(target_dict, &error);
+  auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(error, "Invalid coordinates: both 'x' and 'y' are required");
+  EXPECT_EQ(result.error(),
+            "Invalid coordinates: both 'x' and 'y' are required");
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_PartialIdentifiersBothPresent) {
@@ -215,11 +206,11 @@ TEST_F(TargetUtilTest, ParseTargetInput_PartialIdentifiersBothPresent) {
     "document_identifier": "test_doc"
   })JSON");
 
-  std::string error;
-  auto result = ParseTargetInput(target_dict, &error);
+  auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(error, "Invalid coordinates: both 'x' and 'y' are required");
+  EXPECT_EQ(result.error(),
+            "Invalid coordinates: both 'x' and 'y' are required");
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_WithoutErrorString) {
@@ -227,10 +218,11 @@ TEST_F(TargetUtilTest, ParseTargetInput_WithoutErrorString) {
     "x": 100
   })JSON");
 
-  // Test without providing error string
   auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(),
+            "Invalid coordinates: both 'x' and 'y' are required");
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_NegativeCoordinates) {
@@ -239,11 +231,9 @@ TEST_F(TargetUtilTest, ParseTargetInput_NegativeCoordinates) {
     "y": -100
   })JSON");
 
-  std::string error;
-  auto result = ParseTargetInput(target_dict, &error);
+  auto result = ParseTargetInput(target_dict);
 
   ASSERT_TRUE(result.has_value());
-  EXPECT_TRUE(error.empty());
 
   const auto& target = result.value();
   EXPECT_TRUE(target.has_coordinate());
@@ -259,11 +249,9 @@ TEST_F(TargetUtilTest, ParseTargetInput_ZeroContentNodeId) {
     "document_identifier": "root_doc"
   })JSON");
 
-  std::string error;
-  auto result = ParseTargetInput(target_dict, &error);
+  auto result = ParseTargetInput(target_dict);
 
   ASSERT_TRUE(result.has_value());
-  EXPECT_TRUE(error.empty());
 
   const auto& target = result.value();
   EXPECT_TRUE(target.has_content_node_id());

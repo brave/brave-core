@@ -31,9 +31,8 @@ base::Value::Dict TargetProperty(const std::string& description) {
   return target_property;
 }
 
-std::optional<optimization_guide::proto::ActionTarget> ParseTargetInput(
-    const base::Value::Dict& target_dict,
-    std::string* out_error) {
+base::expected<optimization_guide::proto::ActionTarget, std::string>
+ParseTargetInput(const base::Value::Dict& target_dict) {
   // Check what targeting approaches are present
   auto x_value = target_dict.FindDouble("x");
   auto y_value = target_dict.FindDouble("y");
@@ -42,31 +41,23 @@ std::optional<optimization_guide::proto::ActionTarget> ParseTargetInput(
 
   // Ensure exactly one approach is used
   if (x_value && y_value && document_identifier) {
-    if (out_error) {
-      *out_error =
-          "Target must contain either 'x' and 'y' or "
-          "'document_identifier' with optional 'content_node_id', not both";
-    }
-    return std::nullopt;
+    return base::unexpected(
+        "Target must contain either 'x' and 'y' or "
+        "'document_identifier' with optional 'content_node_id', not both");
   }
 
   if (!x_value && !y_value && !content_node_id && !document_identifier) {
-    if (out_error) {
-      *out_error =
-          "Target must contain one of either 'x' and 'y' or "
-          "'document_identifier' "
-          "and optional 'content_node_id'";
-    }
-    return std::nullopt;
+    return base::unexpected(
+        "Target must contain one of either 'x' and 'y' or "
+        "'document_identifier' "
+        "and optional 'content_node_id'");
   }
 
   // Parse coordinates approach
   if (x_value || y_value) {
     if (!x_value || !y_value) {
-      if (out_error) {
-        *out_error = "Invalid coordinates: both 'x' and 'y' are required";
-      }
-      return std::nullopt;
+      return base::unexpected(
+          "Invalid coordinates: both 'x' and 'y' are required");
     }
 
     optimization_guide::proto::ActionTarget target;
@@ -79,12 +70,9 @@ std::optional<optimization_guide::proto::ActionTarget> ParseTargetInput(
   // Parse identifiers approach
   if (content_node_id || document_identifier) {
     if (!document_identifier) {
-      if (out_error) {
-        *out_error =
-            "Invalid identifiers: 'document_identifier' is required when "
-            "specifying 'content_node_id'";
-      }
-      return std::nullopt;
+      return base::unexpected(
+          "Invalid identifiers: 'document_identifier' is required when "
+          "specifying 'content_node_id'");
     }
 
     if (!content_node_id) {
