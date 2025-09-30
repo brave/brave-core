@@ -60,11 +60,11 @@
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (aggressive)",
+    "message": "Gjurmues &amp; reklama të bllokuara (agresive)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (standard)",
+    "message": "Gjurmues &amp; reklama të bllokuara (standarde)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
@@ -96,23 +96,23 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "Fingerprinting blocked",
+    "message": "Gjurmuesit u bllokuan",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Fingerprinting blocked (standard)",
+    "message": "Bllokim i shenjave të gishtave (standarde)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Fingerprinting blocked (strict, may break sites)",
+    "message": "Bllokim i shenjave të gishtave (i rreptë, mund të prishë sajtet)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Allow all fingerprinting",
+    "message": "Lejo të gjitha shenjat e gishtave",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Fingerprinting attempts",
+    "message": "Përpjekje për shenja gishtash",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
@@ -172,11 +172,11 @@
     "description": "Message for the button action linking to the settings page"
   },
   "manageCustomFilters": {
-    "message": "Manage custom filters",
+    "message": "Menaxho filtrat e personalizuar",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Block element",
+    "message": "Blloko elementin",
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
@@ -208,11 +208,11 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Add to Brave",
+    "message": "Shto te Brave",
     "description": "Message for adding an extension to Brave"
   },
   "removeFromBrave": {
-    "message": "Remove from Brave",
+    "message": "Hiq nga Brave",
     "description": "Message for removing an extension from Brave"
   },
   "addToChrome": {

@@ -19,6 +19,9 @@
 <translation id="5379685283876547860">Hissa yuborildi!</translation>
 <translation id="1041398280582063935">Qo‘llab-quvvatlovingizni ulashing</translation>
 <translation id="8855543392451028706">Xush kelibsiz! Foydalanuvchilar bu kontent ijodkoriga hissa yuborish orqali uni qoʻllab-quvvatlashi mumkin. Bu ajoyib kontent yaratgani uchun ularga minnatdorchilik bildirish usuli.</translation>
+<translation id="1235176624390585199"><ph name="TITLE"/> <ph name="PROVIDER"/> da amalga oshirilmoqda</translation>
+<translation id="3699420827646925694"><ph name="CUSTODIAN"/> hisobidan chiqildi</translation>
+<translation id="9038728316393235637"><ph name="CUSTODIAN"/> hisobiga kirish</translation>
 <translation id="7063168612616047608">Sevimli ijodkorlaringizni qoʻllab-quvvatlaganingiz uchun rahmat</translation>
 <translation id="3733094367889291358">Hissa yuborish</translation>
 <translation id="1899434873745933492">Hissangizni yuborib boʻlmadi</translation>
@@ -49,9 +52,12 @@
 <translation id="8617525558807213034">Maxfiy varaqlarda avtomatik kiritish</translation>
 <translation id="8685431198160039193">Saqlangan axborotni maxfiy varaqlarda avtomatik kiritish</translation>
 <translation id="6583902294974160967">Yordam xizmati</translation>
+<translation id="5713644099811900409">Brave hisob</translation>
+<translation id="4472575034687746823">Foydalanishni boshlash</translation>
 <translation id="1799030480311994998">Funksiyalar</translation>
 <translation id="2005732746077850308">Brave Qalqon va maxfiylik</translation>
 <translation id="4692623383562244444">Qidiruv tizimlari</translation>
+<translation id="3377025655491224618">Maxfiy varaq</translation>
 <translation id="6285118765755298263">Boshqa qidiruv tizimlarini indekslash</translation>
 <translation id="919715748352669592">OpenSearch spetsifikatsiyasiga rioya qiluvchi veb-saytlarni avtomatik ravishda indekslaydi.</translation>
 <translation id="9148058034647219655">Chiqish</translation>
@@ -87,8 +93,8 @@
 <translation id="3189348785087463371">Tanitilgan</translation>
 <translation id="4448697385961650078">Kuzatuvchilar va reklamalarni bloklash</translation>
 <translation id="2448893613530489637">Trekerlar va reklamalarning yuklanishi hamda veb-sahifalarda chiqarilishining oldini oladi</translation>
-<translation id="3570081523466826008">Ulanishlarni HTTPS xizmatiga yangilash</translation>
 <translation id="1025207378813960343">Veb-saytlarga ulanish xavfsizligini tekshiring.</translation>
+<translation id="3570081523466826008">Ulanishlarni HTTPS xizmatiga yangilash</translation>
 <translation id="693506469193748756">Ushbu saytni yopganimda meni esdan chiqar</translation>
 <translation id="7142548388914389999">Maxfiylikni himoyalovchi mahsulot tahliliga (P3A) ruxsat berish</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
@@ -158,6 +164,7 @@
 <translation id="8730621377337864115">Bajarildi</translation>
 <translation id="1061533051865606843">Yangi qurilma qoʻshish</translation>
 <translation id="8131740175452115882">Tasdiqlash</translation>
+<translation id="6417420737057016607">Brave reklamalari</translation>
 <translation id="2149973817440762519">Bukmarkni tahrirlash</translation>
 <translation id="496896260395129787">Bu Brave Sinxronlash hisobi boshqa qurilmadan oʻchirib tashlandi. Agar Sinxronizatsiyani faolsizlantirmoqchi boʻlmasangiz,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>hisobni qayta yaratish</translation>
@@ -174,6 +181,7 @@
 <translation id="3974348661685061050">7 kun bepul sinang</translation>
 <translation id="4973347371961481083">Hissalar</translation>
 <translation id="7047578174221019462">Oylik hissalaringiz qayta ishlandi.</translation>
+<translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Yangi varaq sahifasi</translation>
 <translation id="5927196110206824867">Homiylik qilingan fon tasvirlari Brave'ning mustaqil va foydalanuvchi ustuvor boʻlgan vebni yaratish yo‘lidagi maqsadini dastaklaydi. Yirik texnologik kompaniyalardan farqli oʻlaroq, biz reklama samaradorligini maxfiyligingizni saqlagan holda anonim tarzda oʻlchaymiz.</translation>
 <translation id="8748471354357836070">Batafsil / tanlovlarni bekor qilish</translation>
@@ -320,10 +328,11 @@
 <translation id="713136183174551885">Hisobingiz maʼlumotlarini yangilash</translation>
 <translation id="6053992191006521518">BEPUL sinash</translation>
 <translation id="5903391101107992067">7 kun bepul sinash</translation>
+<translation id="9073255657908892407">Texnik yordam bilan bogʻlanish</translation>
 <translation id="8681480718817027245">Obuna</translation>
 <translation id="7805768142964895445">Holat</translation>
 <translation id="5747552184818312860">Muddati tugaydi</translation>
-<translation id="9073255657908892407">Texnik yordam bilan bogʻlanish</translation>
+<translation id="1656814355341174523">Obunani boshqarish</translation>
 <translation id="5431902940483264007">Maqbul</translation>
 <translation id="6527596624419285047">Eng yaxshi mavjud serverdan foydalaning</translation>
 <translation id="6687228121145903051">VPNga ulanib boʻlmadi (Boshqa xato)</translation>
@@ -395,6 +404,7 @@
 <translation id="4804818685124855865">Uzish</translation>
 <translation id="8009571545960303544">Sizning imzongiz talab qilinmoqda</translation>
 <translation id="3484981968509595506">DApp sizning ochiq shifrlash kalitingizni talab qilmoqda</translation>
+<translation id="2300240008330189182"><ph name="URL"/> sizning hamyoningizning umumiy shifrlash kalitini so'ramoqda. Agar siz bu kalitni taqdim etishga rozi bo'lsangiz, sayt siz uchun shifrlangan xabarlar tuza oladi.</translation>
 <translation id="3340247553212049934">Taqdim etish</translation>
 <translation id="1982257600591932657">Tarmoq nomi</translation>
 <translation id="5052727830821470769">Tarmoq URL manzili</translation>
@@ -447,6 +457,7 @@
 <translation id="1313065465616456728">Berilgan vaqti</translation>
 <translation id="7902225556763260253">Muddati tugash vaqti</translation>
 <translation id="1908159733454294871">Xavfsizlik xavfi aniqlandi</translation>
+<translation id="5658257029899993935">Xaridni Brave hisobingizga ulang</translation>
 <translation id="5899814466108868020">Siz Brave va BAT hamjamiyatini dastaklashga yordam beryapsiz</translation>
 <translation id="6067959437127691361">Brave mukofotlardan foydalanish kontent ijodkorlarini qoʻllab-quvvatlashga yordam beradi va sizga BAT ishlab olish imkonini beradi.</translation>
 <translation id="3264975266761862670">Mukofotlar ishlab olishga tayyormisiz?</translation>
@@ -461,7 +472,6 @@
 <translation id="5382684862562314222">BAt hali Uphold xizmatidagi mintaqangizda dastaklanmaydi.</translation>
 <translation id="6996157559236886133">Xato: Uphold hisobi funksiyasi cheklangan</translation>
 <translation id="1677961202754619328">Uphold'ga koʻra, hozirda Uphold hisobingizda ayrim cheklovlar mavjud. Uphold hisobingizga kiring va bajarish uchun eslatmalar yoki qolgan hisob talablari bor-yoʻqligini tekshiring, keyin qayta urining.</translation>
-<translation id="6417420737057016607">Brave reklamalari</translation>
 <translation id="5425006356459378415">Brave Mukofotlari mavjud emas</translation>
 <translation id="3435896845095436175">Yoqish</translation>
 <translation id="7568430944629653319">NFT topishni yoqish</translation>
@@ -478,8 +488,6 @@
 <translation id="5781842473834867765">Suhbatlar tarixini saqlash</translation>
 <translation id="4109670531935487117">Manzil qatorida avtomatik kiritish tavsiyalarini chiqarish</translation>
 <translation id="6106701981952170121">Barcha Leo AI suhbat maʼlumotlarini oʻchirish</translation>
-<translation id="5658257029899993935">Xaridni Brave hisobingizga ulang</translation>
-<translation id="1656814355341174523">Obunani boshqarish</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Bir yil</translation>
 <translation id="2985392169397572983">ENG YAXSHI NARX</translation>
@@ -515,13 +523,22 @@
 <translation id="4185473179105062442">Oʻz-oʻzini himoyalash kripto manziliga bevosita BAT olish</translation>
 <translation id="5802986777701714573">Oylik BAT mukofotlarini olishingiz uchun yangi usul qoʻshildi. Hamkorlarimizdan birining hisobini ulang yoki hoziroq pul ishlashni boshlash uchun yangi oʻz-oʻzini himoyalash imkoniyatidan foydalaning.</translation>
 <translation id="7557539689487606886">Premium obuna qilish</translation>
+<translation id="1496514951988037011">foydalanuvchi nomi</translation>
 <translation id="3488199663160411179">nomi</translation>
 <translation id="793994607260936590">birinchi</translation>
+<translation id="598301471034819706">manzil</translation>
 <translation id="4130750466177569591">Qabul qilish</translation>
 <translation id="3251885322612056119">Yangilangan Xizmat shartlari</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Chat tarixi</translation>
 <translation id="7956713633345437162">Mobil bukmarklar</translation>
+<translation id="3176467469116060712">Brave kompaniyasining veb-maxfiylik va ochiq manbali reklama bloklash roʻyxatlari boʻyicha sohada yetakchi oʻrin tutuvchi faoliyatini qoʻllab-quvvatlang</translation>
+<translation id="5896375129784311037">Yanada soddalashtirilgan brauzer intefeysi uchun moslashtirilgan</translation>
+<translation id="746156554966264308">Reklama bloki, maxfiylik va tezlik uchun Brave Qalqonlar yadrosi</translation>
+<translation id="1432661650699782509">Ishda IT-boshqaruv siyosatini qoʻllab-quvvatlash</translation>
+<translation id="1361157028850796410">eng yaxshi narx</translation>
+<translation id="7280825497485894053">Oylik obuna</translation>
+<translation id="4570901726096223030">Origin haqida batafsil</translation>
 <translation id="1943432128510653496">Parollarni saqlash</translation>
 <translation id="2100273922101894616">Avtomatik kirish</translation>
 <translation id="363596933471559332">Saytlarga kirish vaqtida saqlangan hisob ma’lumotlaridan foydalanish. Agar funksiya o‘chiq bo‘lsa, har safar kirish vaqtida hisob ma’lumotlarini to‘ldirish kerak bo‘ladi.</translation>

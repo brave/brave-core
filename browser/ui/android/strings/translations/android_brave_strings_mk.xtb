@@ -19,6 +19,9 @@
 <translation id="5379685283876547860">Придонесот е испратен!</translation>
 <translation id="1041398280582063935">Споделете ја вашата поддршка</translation>
 <translation id="8855543392451028706">Добредојдовте! Корисниците може да го поддржат овој креатор со испраќање на придонеси. Тоа е начин да им се заблагодарите за создавање одлична содржина.</translation>
+<translation id="1235176624390585199"><ph name="TITLE"/> на <ph name="PROVIDER"/></translation>
+<translation id="3699420827646925694">Одјавени од <ph name="CUSTODIAN"/></translation>
+<translation id="9038728316393235637">Најави се на <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">Благодариме за поддршката на вашите омилени креатори</translation>
 <translation id="3733094367889291358">Испрати придонес</translation>
 <translation id="1899434873745933492">Не може да се испрати вашиот придонес</translation>
@@ -49,6 +52,8 @@
 <translation id="8617525558807213034">Автоматско пополнување во приватни картички</translation>
 <translation id="8685431198160039193">Зачуваните информации може да се пополнуваат автоматски во приватни картички</translation>
 <translation id="6583902294974160967">Поддршка</translation>
+<translation id="5713644099811900409">Brave сметка</translation>
+<translation id="4472575034687746823">Започни</translation>
 <translation id="1799030480311994998">Функции</translation>
 <translation id="2005732746077850308">Штитови на Brave и приватноста</translation>
 <translation id="4692623383562244444">Пребарувачи</translation>
@@ -87,8 +92,8 @@
 <translation id="3189348785087463371">Промовирано</translation>
 <translation id="4448697385961650078">Блокирај следачи и реклами</translation>
 <translation id="2448893613530489637">Спречува следачите и рекламите да се вчитаат и да се прикажуваат на веб-страници</translation>
-<translation id="3570081523466826008">Надградете ги врските на HTTPS</translation>
 <translation id="1025207378813960343">Уверете се дека врските до веб-страниците се безбедни.</translation>
+<translation id="3570081523466826008">Надградете ги врските на HTTPS</translation>
 <translation id="693506469193748756">Заборави ме кога ќе ја затворам оваа страница</translation>
 <translation id="7142548388914389999">Дозволи анализи на производи што ја зачувуваат приватноста (P3A)</translation>
 <translation id="4174337572777167894">Проект за веб-обелоденување</translation>
@@ -158,6 +163,7 @@
 <translation id="8730621377337864115">Готово</translation>
 <translation id="1061533051865606843">Додај нов уред</translation>
 <translation id="8131740175452115882">Потврди</translation>
+<translation id="6417420737057016607">Brave реклами</translation>
 <translation id="2149973817440762519">Уреди обележувач</translation>
 <translation id="496896260395129787">Оваа сметка на Brave Sync беше избришана од друг уред. Ако не сакавте да го оневозможите Sync,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>повторно креирајте ја сметката</translation>
@@ -174,6 +180,7 @@
 <translation id="3974348661685061050">Пробајте бесплатно 7 дена</translation>
 <translation id="4973347371961481083">Придонеси</translation>
 <translation id="7047578174221019462">Вашите месечни придонеси се обработени.</translation>
+<translation id="1486343603936278248">токен</translation>
 <translation id="7781069478569868053">Страница на нова картичка</translation>
 <translation id="5927196110206824867">Спонзорираните слики за заднина ја поддржуваат мисијата на Brave да изгради независен интернет каде корисниците се на прво место. За разлика од големите технолошки компании, ние го мериме учинокот на рекламите анонимно за да ја зачуваме вашата приватност.</translation>
 <translation id="8748471354357836070">Дознајте повеќе/опции за исклучување</translation>
@@ -320,10 +327,11 @@
 <translation id="713136183174551885">Освежете ги вашите акредитиви</translation>
 <translation id="6053992191006521518">Пробај БЕСПЛАТНО</translation>
 <translation id="5903391101107992067">Пробај 7 дена бесплатно</translation>
+<translation id="9073255657908892407">Контактирајте со техничка поддршка</translation>
 <translation id="8681480718817027245">Претплата</translation>
 <translation id="7805768142964895445">Статус</translation>
 <translation id="5747552184818312860">Истекува</translation>
-<translation id="9073255657908892407">Контактирајте со техничка поддршка</translation>
+<translation id="1656814355341174523">Управувај со претплатата</translation>
 <translation id="5431902940483264007">Оптимално</translation>
 <translation id="6527596624419285047">Користете го најдобриот достапен сервер</translation>
 <translation id="6687228121145903051">Не може да се поврзе со VPN (друга грешка)</translation>
@@ -395,6 +403,7 @@
 <translation id="4804818685124855865">Исклучи</translation>
 <translation id="8009571545960303544">Се бара ваш потпис</translation>
 <translation id="3484981968509595506">DApp го бара вашиот јавен клуч за шифрирање</translation>
+<translation id="2300240008330189182"><ph name="URL"/> го бара јавниот клуч за шифрирање од вашиот паричник. Доколку се согласите да го обезбедите овој клуч, страницата ќе може да составува шифрирани пораки до вас.</translation>
 <translation id="3340247553212049934">Обезбеди</translation>
 <translation id="1982257600591932657">Име на мрежата</translation>
 <translation id="5052727830821470769">Веб-адреса на мрежата</translation>
@@ -447,6 +456,7 @@
 <translation id="1313065465616456728">Издадено на</translation>
 <translation id="7902225556763260253">Време на истекување</translation>
 <translation id="1908159733454294871">Откриен е безбедносен ризик</translation>
+<translation id="5658257029899993935">Поврзи го купувањето со вашата сметка на Brave</translation>
 <translation id="5899814466108868020">Го поддржувате Brave и заедницата на BAT</translation>
 <translation id="6067959437127691361">Користењето на Brave награди помага за поддршка на креаторите на содржини и ви овозможува да заработите BAT.</translation>
 <translation id="3264975266761862670">Подготвени сте за заработка?</translation>
@@ -461,7 +471,6 @@
 <translation id="5382684862562314222">BAT сè уште не е поддржан во вашиот регион на Uphold.</translation>
 <translation id="6996157559236886133">Грешка: Ограничена функционалност на сметката на Uphold</translation>
 <translation id="1677961202754619328">Според Uphold, вашата сметка на Uphold во моментов има ограничувања. Најавете се на вашата сметка на Uphold и проверете дали има известувања или останати барања за комплетирање на сметката, па обидете се повторно.</translation>
-<translation id="6417420737057016607">Brave реклами</translation>
 <translation id="5425006356459378415">Brave награди не се достапни</translation>
 <translation id="3435896845095436175">Овозможи</translation>
 <translation id="7568430944629653319">Овозможи откривање на NFT</translation>
@@ -478,8 +487,6 @@
 <translation id="5781842473834867765">Складирај ја мојата историја на разговори</translation>
 <translation id="4109670531935487117">Прикажувај предлози за автоматско пополнување во лентата за адреси</translation>
 <translation id="6106701981952170121">Избриши ги сите податоци за разговори на Лео ВИ</translation>
-<translation id="5658257029899993935">Поврзи го купувањето со вашата сметка на Brave</translation>
-<translation id="1656814355341174523">Управувај со претплатата</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Една година</translation>
 <translation id="2985392169397572983">НАЈДОБРА ЦЕНА</translation>
@@ -515,13 +522,17 @@
 <translation id="4185473179105062442">Добивајте BAT директно на крипто адреса со самостарателство</translation>
 <translation id="5802986777701714573">Додадовме нов начин да ги добивате вашите месечни BAT награди. Поврзете сметка од еден од нашите партнери или користете ја новата опција за самостарателство за да започнете да заработувате сега.</translation>
 <translation id="7557539689487606886">Вклучи Premium</translation>
+<translation id="1496514951988037011">корисничко име</translation>
 <translation id="3488199663160411179">име</translation>
 <translation id="793994607260936590">прво</translation>
+<translation id="598301471034819706">адреса</translation>
 <translation id="4130750466177569591">Се согласувам</translation>
 <translation id="3251885322612056119">Ажурирани услови за користење</translation>
 <translation id="2361906291514218784">Лео ВИ</translation>
 <translation id="7942415993090181327">Историја на разговори</translation>
 <translation id="7956713633345437162">Обележувачи за мобилни уреди</translation>
+<translation id="1361157028850796410">најдобра цена</translation>
+<translation id="7280825497485894053">Месечна претплата</translation>
 <translation id="1943432128510653496">Зачувај лозинки</translation>
 <translation id="2100273922101894616">Автоматско најавување</translation>
 <translation id="363596933471559332">Автоматски најавувајте се на веб-сајтови со складирани акредитиви. Кога функцијата е исклучена, ќе се бара проверка од вас секогаш пред најавување на веб-сајт.</translation>

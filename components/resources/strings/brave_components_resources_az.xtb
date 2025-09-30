@@ -5,6 +5,7 @@
 <translation id="788493840831967104">Vaxt yaddaşda saxlandı</translation>
 <translation id="2318592590318590295">Zolaq genişliyi saxlanıldı</translation>
 <translation id="2079545284768500474">Ləğv et</translation>
+<translation id="7180865173735832675">Fərdiləşdir</translation>
 <translation id="7400418766976504921">URL</translation>
 <translation id="5327248766486351172">Ad</translation>
 <translation id="7658239707568436148">Ləğv et</translation>
@@ -21,7 +22,9 @@
 <translation id="3630697955794050612">bağlı</translation>
 <translation id="7866482334467279021">açıq</translation>
 <translation id="8428213095426709021">Parametrlər</translation>
+<translation id="1792148354504719133">sayt</translation>
 <translation id="1544192797660353713">Balans</translation>
+<translation id="2501278716633472235">Geri qayıt</translation>
 <translation id="6583902294974160967">Dəstək</translation>
 <translation id="3264975266761862670">Qazanmağa hazırsınız?</translation>
 <translation id="2359808026110333948">Davam et</translation>
@@ -30,6 +33,7 @@
 <translation id="2278423362884506724">Məzmun müəlliflərini dəstəkləyin və hədiyyə kartları almaq, valyuta mübadiləsi və s. üçün tokenlərinizdən istifadə edin.</translation>
 <translation id="6278643716658443228">Mükafat parametrləri</translation>
 <translation id="2965798296974325760">Mükafatlardan istifadə etməyə başla</translation>
+<translation id="6965382102122355670">OK</translation>
 <translation id="5899814466108868020">Brave və BAT icmasını dəstəkləməyə kömək edirsiniz</translation>
 <translation id="654447476965480878">BAT qazanmaq haqqında ətraflı məlumat</translation>
 <translation id="1565888393553870503">Brave reklamlar davam edəcək. Brave mükafatlarını qorumağımıza kömək etdiyiniz üçün təşəkkürlər.</translation>
@@ -42,6 +46,7 @@
 <translation id="5309155375926073606">Bəli, Brave Axtarışa dəstək vermək və <ph name="LINK_BEGIN"/>Veb Kəşfetmə Layihəsində<ph name="LINK_END"/> iştirak etmək istərdim.</translation>
 <translation id="4622826307953794521">Veb Kəşfetmə Layihəsinin köməyi ilə Brave Axtarışı təkmilləşdirmək üçün bəzi anonim axtarışların verilənlərini paylaşaraq dəstək verin.</translation>
 <translation id="4174337572777167894">Veb Kəşfetmə Layihəsi</translation>
+<translation id="473775607612524610">Güncəlləşdirin</translation>
 <translation id="1426410128494586442">Bəli</translation>
 <translation id="4250680216510889253">Xeyr</translation>
 <translation id="5039804452771397117">İcazə ver</translation>
@@ -55,7 +60,6 @@
 <translation id="8631765320256788981">Şəffaf hesabınızdan təhlükəsizlik qalxanı ilə təchiz edilmiş hesabınıza pul köçürürsünüz.</translation>
 <translation id="1772301834467143364">Brave Xəbərlər</translation>
 <translation id="5385187102307010596">Hazırda bu lentdə heç bir məqalə yoxdur. Daha sonra yenidən daxil olmağa və ya lenti yeniləməyə çalışın.</translation>
-<translation id="7180865173735832675">Fərdiləşdir</translation>
 <translation id="5233638681132016545">Yeni tabulyasiya</translation>
 <translation id="4348006373172097089">{PAGE_COUNT, plural,
       one {}=1 {Bu səhifənin məzmunu haqqında sual verin}
@@ -65,6 +69,13 @@
       one {}=1 {Bu səhifənin xülasəsini çıxarın}
       other {Bu səhifələrin xülasəsini çıxarın}
     }</translation>
+<translation id="1238020084128916796">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Meta tərəfindən performant olmaq və bir çox istifadə hallarına tətbiq olunmaq üçün yaradılmış Llama 3.1 8B modeli ilə işləyirəm. Llama modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
+<translation id="7127671672828944579">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Alibaba Cloud tərəfindən performant olmaq və bir çox istifadə hallarına tətbiq olunmaq üçün yaradılmış Qwen 14B modeli ilə işləyirəm. Qwen modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
+<translation id="2328524194917949829">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Google DeepMind tərəfindən performant olmaq və bir çox istifadə hallarına tətbiq olunmaq üçün yaradılmış Gemma 3 12B modeli ilə işləyirəm. Gemma modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
+<translation id="634682910381645550">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən DeepSeek tərəfindən dərin məntiqi vəzifələri yerinə yetirmək üçün yaradılmış DeepSeek R1 modeli ilə işləyirəm. DeepSeek R1 modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">Salam, mən Leo.Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Anthropic tərəfindən söhbət və mətn emalı vəzifələrini yerinə yetirmək üçün yaradılmış Claude Instant modeli ilə işləyirəm. Claude Instant modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Anthropic tərəfindən söhbət və mətn emalı vəzifələrini yerinə yetirmək üçün yaradılmış Claude Haiku modeli ilə işləyirəm. Claude Haiku modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
+<translation id="1778885220602472158">Salam, mən Leo. Mən Brave tərəfindən yaradılmış AI köməkçisiyəm. Mən Anthropic tərəfindən söhbət və mətn emalı vəzifələrini yerinə yetirmək üçün yaradılmış Claude Sonnet modeli ilə işləyirəm. Claude Sonnet modeli Brave-in öz təhlükəsiz infrastrukturu vasitəsilə host edilir.<ph name="LINK_BEFORE"/>Ətraflı öyrən<ph name="LINK_AFTER"/></translation>
 <translation id="7557539689487606886">Premiuma keç</translation>
 <translation id="3840096463915153852">Söhbət tarixçəsi</translation>
 <translation id="2304783958703511257">Təkmil parametrlər</translation>
@@ -91,25 +102,11 @@
 <translation id="2836330653441111204">Tarazlanmış sürət və intellekt</translation>
 <translation id="2414904697165579184">Cavabları tab-vərəqələrin məzmununa əsasən formalaşdırın</translation>
 <translation id="8258324391302611485">Bu səhifənin məzmunu mesajlarınızla birgə Leo-ya göndəriləcək.</translation>
+<translation id="318819763888864209">Bütün abunəliklər avtomatik yenilənir, ammayenilənmədən əvvəl istənilən vaxt ləğv edilə bilər.</translation>
+<translation id="2370739752330685659">Bəlkə daha sonra</translation>
 <translation id="7742969455167760092">Tab-vərəqələri aç...</translation>
 <translation id="7097822247923237815">Müvəqqəti söhbət</translation>
 <translation id="7481750859362986254">Bu söhbət tarixçənin yaddaşında saxlanılmayacaq və ya Leo-nun hər hansı xüsusi mesaj və ya yaddaşından istifadə edilməyəcək.</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="755045397420611731">Əlavə məxfilik &amp; onlayn təhlükəsizlik</translation>
-<translation id="4520128772974831415">IP-nizi gizlədin &amp; məkanınızı dəyişin</translation>
-<translation id="8703188411226330709">Pulsuz sınaq versiyasını aç</translation>
-<translation id="8814357473522731680">Bununla dəstəklənir:</translation>
-<translation id="8458987127502506209">Brave Qalxanını aktivləşdir</translation>
-<translation id="650318023204990401">Qabaqcıl idarəetmələr</translation>
-<translation id="2273851479262317744">Brave-i standart brauzer kimi təyin et</translation>
-<translation id="5148943178722443958">Brave-i təkmilləşdirməyə kömək edin.</translation>
-<translation id="6302485303316397682">Daha yaxşı axtarış nəticələri istəyirsiniz?</translation>
-<translation id="7014699001826714920">Brave Axtarışa dəstək vermək üçün hərəkata qoşulun.</translation>
-<translation id="6821108091726602352">Brave-in Veb Kəşfetmə Layihəsində iştirak edərək internetdəki nasazlıqları düzəltməyimizə kömək edin. Tamamilə anonim axtarış siqnallarını paylaşmaqla, Brave-in axtarış indeksini artırmağımıza kömək edə bilərsiniz.</translation>
-<translation id="6764845498618413165">Ətraflı məlumat.</translation>
-<translation id="7818938154803162778">Əlbəttə, kömək edərəm</translation>
-<translation id="2370739752330685659">Bəlkə daha sonra</translation>
-<translation id="7207456302801184289">Brave-ə xoş gəldiniz</translation>
 <translation id="8013913032858654337">Ləqəb yaradılarkən xəta baş verdi. İnternet bağlantınızı yoxlayıb, yenidən cəhd edin.</translation>
 <translation id="7137645995703540578">Ləqəb yaddaşda saxlanarkən xəta baş verdi. İnternet bağlantınızı yoxlayıb, yenidən cəhd edin.</translation>
 <translation id="1765544689721905747">E-poçt ləqəbini sil</translation>
@@ -119,6 +116,28 @@
 <translation id="2650906829817220223">Kimlik yoxlaması tələbində xəta baş verdi. İnternet bağlantınızı yoxlayıb, yenidən cəhd edin.</translation>
 <translation id="3397336197747843396">Brave hesabının kimlik yoxlamasında xəta baş verdi. Yenidən cəhd edin.</translation>
 <translation id="1340795582009113055">Başdan başla</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="755045397420611731">Əlavə məxfilik &amp; onlayn təhlükəsizlik</translation>
+<translation id="4520128772974831415">IP-nizi gizlədin &amp; məkanınızı dəyişin</translation>
+<translation id="8703188411226330709">Pulsuz sınaq versiyasını aç</translation>
+<translation id="8814357473522731680">Bununla dəstəklənir:</translation>
+<translation id="6303294677342628402">Təhlükəsizlik Qalxanları</translation>
+<translation id="8458987127502506209">Brave Qalxanını aktivləşdir</translation>
+<translation id="650318023204990401">Qabaqcıl idarəetmələr</translation>
+<translation id="7053983685419859001">Blokla</translation>
+<translation id="5716230673298034837">Hamısına icazə ver</translation>
+<translation id="5279600392753459966">Hamısını blokla</translation>
+<translation id="8366221601425141146">Barmaq izi şifrəsi bloklandı</translation>
+<translation id="4292121526390005808">Bloklanmış skriptlər</translation>
+<translation id="5046271170844958713">İcazə verilmiş skriptlər</translation>
+<translation id="2273851479262317744">Brave-i standart brauzer kimi təyin et</translation>
+<translation id="5148943178722443958">Brave-i təkmilləşdirməyə kömək edin.</translation>
+<translation id="6302485303316397682">Daha yaxşı axtarış nəticələri istəyirsiniz?</translation>
+<translation id="7014699001826714920">Brave Axtarışa dəstək vermək üçün hərəkata qoşulun.</translation>
+<translation id="6821108091726602352">Brave-in Veb Kəşfetmə Layihəsində iştirak edərək internetdəki nasazlıqları düzəltməyimizə kömək edin. Tamamilə anonim axtarış siqnallarını paylaşmaqla, Brave-in axtarış indeksini artırmağımıza kömək edə bilərsiniz.</translation>
+<translation id="6764845498618413165">Ətraflı məlumat.</translation>
+<translation id="7818938154803162778">Əlbəttə, kömək edərəm</translation>
+<translation id="7207456302801184289">Brave-ə xoş gəldiniz</translation>
 <translation id="5753795690521538679">7 günlük pulsuz sınaq versiyasını aktivləşdir</translation>
 <translation id="3357036723290257445">Aartıq Brave VPN satın almısınız?</translation>
 <translation id="1116694919640316211">Haqqımızda</translation>

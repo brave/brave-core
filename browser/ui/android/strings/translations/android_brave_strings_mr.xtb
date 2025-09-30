@@ -19,6 +19,9 @@
 <translation id="5379685283876547860">योगदान पाठवले गेले आहे!</translation>
 <translation id="1041398280582063935">तुमचे समर्थन शेअर करा</translation>
 <translation id="8855543392451028706">सुस्वागतम्‌! वापरकर्ते या निर्मात्याला योगदान देऊन समर्थन करू शकतात. उत्तम सामग्री तयार केल्याबद्दल त्यांचे आभार मानण्याचा हा एक मार्ग आहे.</translation>
+<translation id="1235176624390585199"><ph name="PROVIDER"/> वर <ph name="TITLE"/> चालू आहे</translation>
+<translation id="3699420827646925694"><ph name="CUSTODIAN"/> मधून लॉग आउट झालात</translation>
+<translation id="9038728316393235637"><ph name="CUSTODIAN"/> मध्ये लॉग इन करा</translation>
 <translation id="7063168612616047608">तुमच्या आवडत्या निर्मात्यांना समर्थन दिल्याबद्दल धन्यवाद</translation>
 <translation id="3733094367889291358">योगदान पाठवा</translation>
 <translation id="1899434873745933492">तुमचे योगदान पाठवू शकत नाही</translation>
@@ -55,6 +58,8 @@
 <translation id="8617525558807213034">खासगी टॅब्समध्ये मजकूर आपोआप भरा</translation>
 <translation id="8685431198160039193">जतन केलेली माहिती खासगी टॅब्समध्ये आपोआप भरता येते</translation>
 <translation id="6583902294974160967">सपोर्ट</translation>
+<translation id="5713644099811900409">Brave खाते</translation>
+<translation id="4472575034687746823">प्रारंभ करा</translation>
 <translation id="1799030480311994998">वैशिष्ट्ये</translation>
 <translation id="2005732746077850308">ब्रेव्ह शील्ड्स &amp; गोपनीयता</translation>
 <translation id="4692623383562244444">शोध इंजिने</translation>
@@ -96,8 +101,8 @@
 <translation id="7459000603787995422">बाहेर पडताना टॅब बंद करा</translation>
 <translation id="4448697385961650078">ट्रॅकर्स आणि &amp; जाहिरातींना ब्लॉक करा</translation>
 <translation id="2448893613530489637">ट्रॅकर्स &amp; जाहिराती लोड होण्यापासून आणि वेबपेजेसवर दिसण्यापासून थांबवा</translation>
-<translation id="3570081523466826008">HTTPS वर कनेक्शन श्रेणीसुधारित करा</translation>
 <translation id="1025207378813960343">वेबसाइट्सचे कनेक्शन सुरक्षित असल्याची खात्री करा.</translation>
+<translation id="3570081523466826008">HTTPS वर कनेक्शन श्रेणीसुधारित करा</translation>
 <translation id="693506469193748756">मी ही साइट बंद केल्यावर मला विसरा</translation>
 <translation id="1680858055899097121">ब्राउझिंग सत्र दरम्यान टॅब टिकवून ठेवू नका</translation>
 <translation id="7142548388914389999">गोपनीयता-जपणाऱ्या-प्रॉडक्ट ॲनालिटिक्सला (P3A) अनुमती द्या</translation>
@@ -175,6 +180,7 @@
 <translation id="8730621377337864115">पूर्ण झाले</translation>
 <translation id="1061533051865606843">नवीन डिव्हाइस जोडा</translation>
 <translation id="8131740175452115882">पुष्टी करा</translation>
+<translation id="6417420737057016607">Brave Ads</translation>
 <translation id="2149973817440762519">बुकमार्क संपादित करा</translation>
 <translation id="8457451314607652708">बुकमार्क आयात करा</translation>
 <translation id="1008186147501209563">बुकमार्क निर्यात करा</translation>
@@ -195,6 +201,7 @@
 <translation id="3974348661685061050">7 दिवस विनामूल्य वापरून पाहा</translation>
 <translation id="4973347371961481083">योगदाने</translation>
 <translation id="7047578174221019462">तुमची मासिक योगदान प्रक्रिया पूर्ण झाली आहे.</translation>
+<translation id="1486343603936278248">टोकन</translation>
 <translation id="7781069478569868053">नवीन टॅबचे पान</translation>
 <translation id="5927196110206824867">प्रायोजित पार्श्वभूमी प्रतिमा स्वतंत्र, वापरकर्ताभिमुख वेब तयार करण्याच्या Braveच्या उद्दिष्टास बळ देतात. आम्ही बिग टेकसारखे नाही, आम्ही तुमची गोपनीयता जपण्यासाठी तुमच्या जाहिरात कामगिरीची गणना निनावीपणे करतो.</translation>
 <translation id="8748471354357836070">अधिक जाणून घ्या / ऑप्ट आउट पर्याय</translation>
@@ -344,11 +351,12 @@
 <translation id="713136183174551885">तुमची अधिकारपत्रे रीफ्रेश करा</translation>
 <translation id="6053992191006521518">विनामूल्य वापरून पाहा</translation>
 <translation id="5903391101107992067">7 दिवस विनामूल्य वापरून पाहा</translation>
+<translation id="9073255657908892407">तांत्रिक समर्थनासाठी संपर्क करा</translation>
 <translation id="8681480718817027245">सदस्यत्व</translation>
 <translation id="7805768142964895445">स्थिती</translation>
 <translation id="5747552184818312860">कालबाह्य होईल</translation>
+<translation id="1656814355341174523">सदस्यत्व व्यवस्थापित करा</translation>
 <translation id="5646376287012673985">स्थान</translation>
-<translation id="9073255657908892407">तांत्रिक समर्थनासाठी संपर्क करा</translation>
 <translation id="5431902940483264007">सर्वोत्कृष्ट</translation>
 <translation id="6527596624419285047">सर्वात उत्तम उपलब्ध सर्व्हर वापरा</translation>
 <translation id="6687228121145903051">VPN शी संपर्क साधू शकत नाही (इतर त्रुटी)</translation>
@@ -422,6 +430,7 @@
 <translation id="4804818685124855865">‍डिस्कनेक्ट</translation>
 <translation id="8009571545960303544">तुमच्या स्वाक्षरीची विनंती केली जात आहे</translation>
 <translation id="3484981968509595506">एक DApp तुमची सार्वजनिक एन्क्रिप्शन की विचारत आहे</translation>
+<translation id="2300240008330189182"><ph name="URL"/> तुमच्या वॉलेटची सार्वजनिक एन्क्रिप्शन की मागत आहे. जर तुम्ही ही की पुरविण्यास मान्यता दिली तर, साईटला आपल्याला पाठवायचे एन्क्रिप्टेड संदेश तयार करता येतील.</translation>
 <translation id="3340247553212049934">प्रदान करा</translation>
 <translation id="1982257600591932657">नेटवर्क नाव</translation>
 <translation id="5052727830821470769">नेटवर्क URL</translation>
@@ -474,6 +483,7 @@
 <translation id="1313065465616456728">जाहीर केले</translation>
 <translation id="7902225556763260253">समाप्तीची वेळ</translation>
 <translation id="1908159733454294871">सुरक्षा धोका आढळला</translation>
+<translation id="5658257029899993935">आपल्या Brave खात्याशी खरेदी लिंक करा</translation>
 <translation id="5899814466108868020">तुम्ही ब्रेव्हला आणि BAT समुदायाला समर्थन देण्यास मदत करत आहात</translation>
 <translation id="6067959437127691361">Brave रिवॉर्ड्स वापरल्याने सामग्री निर्मात्यांना समर्थन मिळते आणि तुम्हाला BAT कमावता येतात.</translation>
 <translation id="3264975266761862670">कमाई सुरु करायला तयार?</translation>
@@ -488,7 +498,6 @@
 <translation id="5382684862562314222">तुमच्या प्रदेशात Uphold वर BAT अद्याप समर्थित नाही.</translation>
 <translation id="6996157559236886133">त्रुटी: सीमित Uphold खाते कार्यक्षमता</translation>
 <translation id="1677961202754619328">Uphold च्या मते, तुमच्या Uphold खात्यावर सध्या काही मर्यादा आहेत. कृपया तुमच्या Uphold खात्यात लॉग इन करा आणि कोणत्याही सूचना आल्या आहेत का, किंवा कोणत्याही खाते आवश्यकता शिल्लक आहेत का याची तपासणी करा आणि नंतर पुन्हा प्रयत्न करा.</translation>
-<translation id="6417420737057016607">Brave Ads</translation>
 <translation id="5425006356459378415">Brave रिवॉर्ड्स उपलब्ध नाही</translation>
 <translation id="3435896845095436175">सक्षम करा</translation>
 <translation id="7568430944629653319">NFT शोध चालू करा</translation>
@@ -505,8 +514,6 @@
 <translation id="5781842473834867765">माझा संभाषण इतिहास जतन करा</translation>
 <translation id="4109670531935487117">ॲड्रेस बारमध्ये ऑटोकम्प्लीट शिफारसी दाखवा</translation>
 <translation id="6106701981952170121">सर्व Leo AI संभाषण डेटा काढून टाका</translation>
-<translation id="5658257029899993935">आपल्या Brave खात्याशी खरेदी लिंक करा</translation>
-<translation id="1656814355341174523">सदस्यत्व व्यवस्थापित करा</translation>
 <translation id="73236265316873967">लिओ प्रीमियम</translation>
 <translation id="1028627582482425924">एक वर्ष</translation>
 <translation id="2985392169397572983">सर्वोत्तम मूल्य</translation>
@@ -558,6 +565,7 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">गप्पांचा इतिहास</translation>
 <translation id="7956713633345437162">मोबाईल बुकमार्क्स</translation>
+<translation id="1361157028850796410">सर्वोत्तम मूल्य</translation>
 <translation id="1943432128510653496">पासवर्ड सेव्ह करा</translation>
 <translation id="2100273922101894616">ऑटो साइन इन करा</translation>
 <translation id="363596933471559332">स्टोअर क्रेडेंशियल वापरून वेबसाइटवर आपोआप साइन इन करा. वैशिष्ट्य बंद असते तेव्हा, वेबसाइटवर साइन इन करण्यापूर्वी दरवेळी तुम्हाला पडताळणीसाठी विचारले जाईल.</translation>

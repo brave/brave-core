@@ -99,6 +99,8 @@
 <translation id="8617525558807213034">Täytä automaattisesti yksityisillä välilehdillä</translation>
 <translation id="8685431198160039193">Tallennetut tiedot voidaan täyttää automaattisesti yksityisillä välilehdillä</translation>
 <translation id="6583902294974160967">Tuki</translation>
+<translation id="5713644099811900409">Brave-tili</translation>
+<translation id="4472575034687746823">Aloita</translation>
 <translation id="1799030480311994998">Ominaisuudet</translation>
 <translation id="2005732746077850308">Brave-suojaukset ja yksityisyys</translation>
 <translation id="4692623383562244444">Hakukoneet</translation>
@@ -421,6 +423,8 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="8748471354357836070">Lisätietoja / opt out -valinnat</translation>
 <translation id="3171669670217312786">Taustakuvat</translation>
 <translation id="8522669544471808198">Näytä taustakuvat</translation>
+<translation id="6258554626602400736">Näytä uuden välilehden sivumainokset</translation>
+<translation id="9001530744369687550">Lisätietoja uuden välilehden mainoksista</translation>
 <translation id="8793108040181436796">Widgetit</translation>
 <translation id="8643377320501056697">Näytä kärkisivustot</translation>
 <translation id="7275773481201277457">Näytä Brave-tilastot</translation>
@@ -498,6 +502,8 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="7616645803364270729">Sähköposti, Twitter jne.</translation>
 <translation id="5299848999918506028">Kiitos!</translation>
 <translation id="76550953340008122">Toit Braven kehittäjien tietoon, että tällä sivustolla on jotakin vialla. Kiitos siitä! Teemme parhaamme korjataksemme asian.</translation>
+<translation id="3037432377946455872">Mikä on pääasiallinen näkemäsi ongelma?</translation>
+<translation id="8731661215617360873">Valitse yksi vaihtoehto</translation>
 <translation id="650318023204990401">Edistyneet kontrollit</translation>
 <translation id="7205939464631857223">Tyhjennä kaikki estetyt elementit</translation>
 <translation id="5370478469168390143">Tallenna tiedot verkossa</translation>
@@ -1222,6 +1228,13 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="2735247450315842119">Salli kuvakaappaukset yksityisissä välilehdissä</translation>
 <translation id="8420414929552321089">Jos se sallitaan, yksityiset välilehdet ovat näkyvissä myös silloin, kun useita sovelluksia on avoinna.</translation>
 <translation id="7956713633345437162">Mobiilikirjanmerkit</translation>
+<translation id="3176467469116060712">Tue Braven uraauurtavaa työtä verkkotietojen yksityisyyden ja avoimen lähdekoodin mainosestolistojen eteen</translation>
+<translation id="5896375129784311037">Optimoitu minimalistisemmalle selainkäyttöliittymälle</translation>
+<translation id="746156554966264308">Brave-suojauksen ydin mainosten estoa, yksityisyyttä ja nopeutta varten</translation>
+<translation id="1432661650699782509">Tukee IT-osaston laatimia käytäntöjä työpaikalla</translation>
+<translation id="1361157028850796410">paras tarjous</translation>
+<translation id="7280825497485894053">Kuukausitilaus</translation>
+<translation id="4570901726096223030">Lue lisää Originista</translation>
 <translation id="1943432128510653496">Salasanojen tallentaminen</translation>
 <translation id="2100273922101894616">Automaattinen kirjautuminen</translation>
 <translation id="363596933471559332">Kirjaudu automaattisesti verkkosivustoille käyttämällä tallennettuja kirjautumistietoja. Jos tämä toiminto ei ole käytössä, sinua pyydetään vahvistamaan kirjautuminen aina, kun kirjaudut sivustolle.</translation>

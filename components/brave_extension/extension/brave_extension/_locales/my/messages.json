@@ -100,15 +100,15 @@
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Fingerprinting blocked (standard)",
+    "message": "ဖေမိစာတိုက်ပုံစံကိုပိတ်ဆို့ခြင်း(စံ)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Fingerprinting blocked (strict, may break sites)",
+    "message": "ဖေမိစာတိုက်ပုံစံကို ပိတ်(စက်တင်, ဆိုက်ပိတ်မည်။)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Allow all fingerprinting",
+    "message": "ဖေမိစာတိုက်ပုံစံအားလုံးကို ခွင့်ပြုပါ",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
@@ -136,7 +136,7 @@
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
-    "message": "Block",
+    "message": "ပိတ်ရန်",
     "description": "Message for the resources blocked *block* option"
   },
   "allow": {
@@ -160,7 +160,7 @@
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
   },
   "goBack": {
-    "message": "Go back",
+    "message": "နောက်သို့သွားပါ",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {
@@ -176,7 +176,7 @@
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Block element",
+    "message": "Element ကိုပိတ်ရန်",
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
