@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.tabbed_mode;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +44,7 @@ import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tab_ui.TabSwitcher;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.toolbar.ToolbarHairlineView;
 import org.chromium.chrome.browser.toolbar.ToolbarIntentMetadata;
 import org.chromium.chrome.browser.ui.BraveAdaptiveToolbarUiCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
@@ -54,6 +56,7 @@ import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarC
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
+import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.edge_to_edge.EdgeToEdgeManager;
 import org.chromium.ui.edge_to_edge.SystemBarColorHelper;
 import org.chromium.ui.insets.InsetObserver;
@@ -211,6 +214,10 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
 
     @Override
     protected void initializeToolbar() {
+        // Needs to be called before super.initializeToolbar() to ensure the toolbar hairline is
+        // initialized with the correct height.
+        initializeToolbarHairline();
+
         super.initializeToolbar();
 
         assert mAdaptiveToolbarUiCoordinator instanceof BraveAdaptiveToolbarUiCoordinator
@@ -218,6 +225,29 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
         if (mAdaptiveToolbarUiCoordinator
                 instanceof BraveAdaptiveToolbarUiCoordinator braveCoordinator) {
             braveCoordinator.initializeBrave(new BookmarkManagerOpenerImpl());
+        }
+    }
+
+    private void initializeToolbarHairline() {
+        if (mBraveActivity != null) {
+            final View controlContainer = mBraveActivity.findViewById(R.id.control_container);
+            assert controlContainer != null : "Something has changed in the upstream code!";
+            if (controlContainer != null) {
+                final ToolbarHairlineView toolbarHairline =
+                        controlContainer.findViewById(R.id.toolbar_hairline);
+                assert toolbarHairline != null : "Something has changed in the upstream code!";
+                if (toolbarHairline != null) {
+                    // Make sure the height is set to the correct value to be used by
+                    // getMeasuredHeight()
+                    toolbarHairline.getLayoutParams().height =
+                            mBraveActivity
+                                    .getResources()
+                                    .getDimensionPixelSize(R.dimen.toolbar_hairline_height);
+                    ViewUtils.requestLayout(
+                            toolbarHairline,
+                            "BraveTabbedRootUiCoordinator.initializeToolbarHairline");
+                }
+            }
         }
     }
 }
