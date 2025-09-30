@@ -2449,6 +2449,14 @@
 # see https://github.com/brave/brave-browser/issues/49422
 -LocalNetworkAccessBrowserTest.HtmlScriptSrcAllowPermission
 
+# Disabled due to crash with tab group dragging.
+# https://github.com/brave/brave-browser/issues/49752
+-MultiContentsViewBrowserTest.DragAndDropEnabledPref
+-MultiContentsViewBrowserTest.DropTargetLayout
+-MultiContentsViewBrowserTest.HandleDropTargetViewLinkDrop_IsSupported
+-MultiContentsViewBrowserTest.HandleTabDrop_EndDropTarget
+-MultiContentsViewBrowserTest.HandleTabDrop_StartDropTarget
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*

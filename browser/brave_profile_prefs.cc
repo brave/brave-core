@@ -243,6 +243,11 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   // Currently, upstream only defines an int kAIModeAllowed = 0 value and check
   // against it (see components/omnibox/browser/omnibox_prefs.cc).
   registry->SetDefaultPrefValue(omnibox::kAIModeSettings, base::Value(-1));
+
+  // Disabled due to crash with tab group dragging.
+  // TODO(https://github.com/brave/brave-browser/issues/49752): Re-enable.
+  registry->SetDefaultPrefValue(prefs::kSplitViewDragAndDropEnabled,
+                                base::Value(false));
 }
 
 }  // namespace
