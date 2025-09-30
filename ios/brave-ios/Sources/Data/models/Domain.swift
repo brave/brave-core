@@ -119,11 +119,18 @@ public final class Domain: NSManagedObject, CRUD {
     )
   }
 
-  public class func allDomainsWithAutoShredLevel(_ autoShredLevel: String) -> [Domain]? {
-    let shredLevelPredicate = NSPredicate(
-      format: "shield_shredLevel == %@",
-      autoShredLevel
-    )
+  /// Returns all domains with a given `SiteShredLevel`s rawValue, or `nil`
+  /// for Domains with no shred level assigned.
+  public class func allDomainsWithAutoShredLevel(_ siteShredLevel: String?) -> [Domain]? {
+    let shredLevelPredicate: NSPredicate
+    if let siteShredLevel {
+      shredLevelPredicate = NSPredicate(
+        format: "shield_shredLevel == %@",
+        siteShredLevel
+      )
+    } else {
+      shredLevelPredicate = NSPredicate(format: "shield_shredLevel == nil")
+    }
     return Domain.all(where: shredLevelPredicate)
   }
 
