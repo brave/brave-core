@@ -6,9 +6,9 @@
 #ifndef BRAVE_BROWSER_AI_CHAT_TOOLS_TARGET_UTIL_H_
 #define BRAVE_BROWSER_AI_CHAT_TOOLS_TARGET_UTIL_H_
 
-#include <optional>
 #include <string>
 
+#include "base/types/expected.h"
 #include "base/values.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 
@@ -39,11 +39,9 @@ base::Value::Dict TargetProperty(const std::string& description);
 // Parse target
 // Expects target_dict to be in the format defined in `TargetProperty`.
 //
-// Returns ActionTarget proto on success, nullopt on parse error
-// with the detailed error message in out_error.
-std::optional<optimization_guide::proto::ActionTarget> ParseTargetInput(
-    const base::Value::Dict& target_dict,
-    std::string* out_error = nullptr);
+// Returns ActionTarget proto on success, or error string on parse error.
+base::expected<optimization_guide::proto::ActionTarget, std::string>
+ParseTargetInput(const base::Value::Dict& target_dict);
 
 }  // namespace ai_chat::target_util
 

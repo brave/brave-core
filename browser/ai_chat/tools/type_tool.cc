@@ -109,10 +109,9 @@ void TypeTool::UseTool(const std::string& input_json,
     return;
   }
 
-  std::string target_error;
-  auto target = target_util::ParseTargetInput(*target_dict, &target_error);
+  auto target = target_util::ParseTargetInput(*target_dict);
   if (!target.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(target_error));
+    std::move(callback).Run(CreateContentBlocksForText(target.error()));
     return;
   }
 

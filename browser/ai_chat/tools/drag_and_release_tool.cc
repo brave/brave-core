@@ -62,11 +62,10 @@ void DragAndReleaseTool::UseTool(const std::string& input_json,
     return;
   }
 
-  std::string from_error;
-  auto from_target = target_util::ParseTargetInput(*from_dict, &from_error);
+  auto from_target = target_util::ParseTargetInput(*from_dict);
   if (!from_target.has_value()) {
-    std::move(callback).Run(
-        CreateContentBlocksForText("Invalid 'from' target: " + from_error));
+    std::move(callback).Run(CreateContentBlocksForText(
+        "Invalid 'from' target: " + from_target.error()));
     return;
   }
 
@@ -78,11 +77,10 @@ void DragAndReleaseTool::UseTool(const std::string& input_json,
     return;
   }
 
-  std::string to_error;
-  auto to_target = target_util::ParseTargetInput(*to_dict, &to_error);
+  auto to_target = target_util::ParseTargetInput(*to_dict);
   if (!to_target.has_value()) {
-    std::move(callback).Run(
-        CreateContentBlocksForText("Invalid 'to' target: " + to_error));
+    std::move(callback).Run(CreateContentBlocksForText("Invalid 'to' target: " +
+                                                       to_target.error()));
     return;
   }
 
