@@ -20,7 +20,6 @@ source_set("speedreader") {
   ]
 
   deps = [
-    "//base",
     "//brave/app:command_ids",
     "//brave/browser/speedreader",
     "//brave/browser/ui/speedreader",
