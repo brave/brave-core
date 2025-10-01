@@ -117,6 +117,9 @@
   <message name="IDS_CHAT_UI_MODEL_LOCAL_LABEL" desc="Label identifying that an AI Chat model is a local model" formatter_data="webui=AiChat">
     Local
   </message>
+  <message name="IDS_CHAT_UI_MODEL_OLLAMA_LABEL" desc="Label identifying that an AI Chat model is an Ollama model" formatter_data="webui=AiChat">
+    Ollama
+  </message>
   <message name="IDS_CHAT_UI_RECOMMENDED_MODELS_BUTTON" desc="Button label to show recommended models" formatter_data="webui=AiChat">
     Recommended models
   </message>
