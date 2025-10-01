@@ -54,6 +54,13 @@ void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
   }
 }
 
+void BraveMultiContentsView::SetWebPanelContents(
+    content::WebContents* web_contents) {
+  CHECK(contents_container_view_for_web_panel_);
+  contents_container_view_for_web_panel_->contents_view()->SetWebContents(
+      web_contents);
+}
+
 void BraveMultiContentsView::SetWebPanelVisible(bool visible) {
   CHECK(contents_container_view_for_web_panel_);
   contents_container_view_for_web_panel_->SetVisible(visible);
