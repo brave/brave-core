@@ -15,7 +15,6 @@
 /common
 /content
 /coverage
-/docs
 /extensions
 /fuzzers
 /installer
@@ -42,9 +41,7 @@
 .github/**/*.yml
 
 # Ignored markdown files:
-.github/PULL_REQUEST_TEMPLATE.md
-CONTRIBUTING.md
-README.md
+*.md
 
 # Ignored top-level files:
 .clang-tidy
