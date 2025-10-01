@@ -13,7 +13,6 @@
 
 namespace brave_origin {
 
-
 // Complete runtime information for a BraveOrigin-controlled preference.
 // This combines data from kBraveSimplePolicyMap (pref_name, policy_key) with
 // BraveOrigin-specific metadata (default_value, scope, user_settable) to create
@@ -35,7 +34,7 @@ struct BraveOriginPolicyInfo {
 
   std::string pref_name;
   bool default_value;
-  bool user_settable;      // Whether this pref has UI for user control
+  bool user_settable;  // Whether this pref has UI for user control
   std::string brave_origin_pref_key;  // Key used in brave_policies dictionary
 };
 
