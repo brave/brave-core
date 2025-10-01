@@ -24,12 +24,14 @@ export function SafeImage(props: Props) {
       src += `&target_size=${width}x${height}`
     }
   }
+
   return (
     <img
       src={src || placeholderImageSrc}
       loading='lazy'
       className={props.className}
       onError={(event) => { event.currentTarget.src = placeholderImageSrc }}
+      onLoad={(event) => { event.currentTarget?.classList.add('loaded') }}
     />
   )
 }

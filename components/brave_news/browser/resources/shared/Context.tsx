@@ -47,6 +47,8 @@ interface BraveNewsContext {
   reportVisit: (depth: number) => void
   reportSidebarFilterUsage: () => void
   reportSessionStart: () => void
+
+  shouldRenderImages: boolean
 }
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
@@ -74,6 +76,7 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   reportVisit: (depth: number) => { },
   reportSidebarFilterUsage: () => { },
   reportSessionStart: () => { },
+  shouldRenderImages: false,
 })
 
 export const publishersCache = new PublishersCachingWrapper()
@@ -97,6 +100,7 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
   const [channels, setChannels] = useState<Channels>({})
   const [publishers, setPublishers] = useState<Publishers>({})
   const [suggestedPublisherIds, setSuggestedPublisherIds] = useState<string[]>([])
+  const [shouldRenderImages, setShouldRenderImages] = useState(false)
 
   // Get the default locale on load.
   useEffect(() => {
@@ -125,6 +129,12 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     const handler = (publishers: Publishers) => setPublishers(publishers)
     publishersCache.addListener(handler)
     return () => { publishersCache.removeListener(handler) }
+  }, [])
+
+  React.useEffect(() => {
+    const handleScroll = () => setShouldRenderImages(true)
+    document.addEventListener('scroll', handleScroll, { once: true })
+    return () => document.removeEventListener('scroll', handleScroll)
   }, [])
 
   const sortedPublishers = useMemo(() =>
@@ -201,8 +211,9 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     reportViewCount,
     reportVisit,
     reportSidebarFilterUsage,
-    reportSessionStart
-  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart])
+    reportSessionStart,
+    shouldRenderImages,
+  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart, shouldRenderImages])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}

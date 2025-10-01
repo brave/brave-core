@@ -33,6 +33,12 @@ export const Title = styled.h3`
 
   &> a { all: unset; }
 `
+
+const BaseImg = styled.img`
+  opacity: 0;
+  transition: opacity 400ms ease-in-out;
+`
+
 type HidabeImageProps = React.DetailedHTMLProps<
   React.ImgHTMLAttributes<HTMLImageElement>,
   HTMLImageElement
@@ -46,17 +52,16 @@ const HidableImage = ({
   targetHeight,
   targetWidth,
   src,
+  loading,
   ...rest
 }: HidabeImageProps) => {
   const ref = React.useRef<HTMLImageElement>()
 
-  const handleError = React.useCallback((e: React.UIEvent<HTMLImageElement>) => {
-    ref.current!.style.opacity = '0'
-    onError?.(e)
-  }, [onError])
+  const { shouldRenderImages } = useBraveNews()
+  const delayLoad = !shouldRenderImages && loading === 'lazy'
 
   const handleLoad = React.useCallback((e: React.UIEvent<HTMLImageElement>) => {
-    ref.current!.style.opacity = ''
+    ref.current!.style.opacity = '1'
     onLoad?.(e)
   }, [onLoad])
 
@@ -69,7 +74,13 @@ const HidableImage = ({
     src += `&target_size=${width}x${height}`
   }
 
-  return <img {...rest} src={src} ref={ref as any} onError={handleError} onLoad={handleLoad} />
+  return <BaseImg
+    {...rest}
+    src={delayLoad ? undefined : src}
+    loading={loading}
+    ref={ref as any}
+    onLoad={handleLoad}
+  />
 }
 
 export const SmallImage = styled(HidableImage).attrs({ targetHeight: 64, targetWidth: 96 })`
