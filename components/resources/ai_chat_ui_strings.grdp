@@ -783,4 +783,7 @@
   <message name="IDS_CHAT_UI_TOOLS_MENU_NEW_SMART_MODE_BUTTON_LABEL" desc="Label for the new smart mode button" formatter_data="webui=AiChat">
     New
   </message>
+  <message name='IDS_CHAT_UI_TOOL_LABEL_ASSISTANT_DETAIL_STORAGE' desc="Label for when the assistant is storing information for later" formatter_data="webui=AiChat">
+    Noting down some information for later about the page
+  </message>
 </grit-part>
