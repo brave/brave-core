@@ -118,6 +118,7 @@ static_library("browser") {
     "//components/os_crypt/async/common",
     "//components/os_crypt/sync",
     "//components/prefs",
+    "//components/tabs:public",
     "//components/update_client",
     "//components/user_prefs",
     "//net/traffic_annotation",

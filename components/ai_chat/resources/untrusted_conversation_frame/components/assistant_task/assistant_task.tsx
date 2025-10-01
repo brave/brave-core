@@ -11,6 +11,8 @@ import TabItem from '@brave/leo/react/tabItem'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
+import API from '../../untrusted_conversation_frame_api'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import AssistantResponse from '../assistant_response'
 import ToolEvent from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
@@ -42,6 +44,29 @@ interface Props {
  */
 export default function AssistantTask(props: Props) {
   const [showSteps, setShowSteps] = React.useState(false)
+  const [taskThumbnail, setTaskThumbnail] = React.useState<string>()
+  const conversationContext = useUntrustedConversationContext()
+
+  React.useEffect(() => {
+    if (!conversationContext.contentTaskTabId) {
+      return
+    }
+    const id = API.getInstance().uiObserver.thumbnailUpdated.addListener(
+      (tabId: number, dataURI: string) => {
+        console.error(dataURI)
+        if (
+          tabId === conversationContext.contentTaskTabId
+          && props.isActiveTask
+        ) {
+          setTaskThumbnail(dataURI)
+        }
+      },
+    )
+
+    return () => {
+      API.getInstance().uiObserver.removeListener(id)
+    }
+  }, [props.isActiveTask, conversationContext.contentTaskTabId])
 
   const taskData = useExtractTaskData(props.assistantEntries)
 
@@ -73,6 +98,11 @@ export default function AssistantTask(props: Props) {
             />
           )}
         </div>
+        {taskThumbnail && (
+          <div className={styles.taskImage}>
+            <img src={taskThumbnail} />
+          </div>
+        )}
       </div>
     </div>
   )

@@ -104,6 +104,10 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
 
     task_tab_handle_ =
         tabs::TabInterface::GetFromContents(new_contents)->GetHandle();
+
+    for (auto& observer : observers_) {
+      observer.OnContentTaskStarted(task_tab_handle_);
+    }
   }
   actor_service_->GetTask(task_id_)->AddTab(
       task_tab_handle_,

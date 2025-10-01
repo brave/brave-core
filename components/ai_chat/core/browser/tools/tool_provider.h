@@ -9,6 +9,9 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "components/tabs/public/tab_interface.h"
 
 namespace ai_chat {
 
@@ -42,6 +45,17 @@ class ToolProvider {
   // but not a whole conversation.
   virtual void OnNewGenerationLoop() {}
 
+  class Observer : public base::CheckedObserver {
+   public:
+    ~Observer() override {}
+
+    // This ToolProvider has some Tool acting on a Tab
+    virtual void OnContentTaskStarted(tabs::TabHandle tab_handle) {}
+  };
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
+
   // Returns the list of tools available for the conversation.
   // The returned pointers *should* be valid as long as the ToolProvider exists
   // until either the ToolProvider is destroyed, or `OnNewGenerationLoop` is
@@ -56,6 +70,9 @@ class ToolProvider {
   // Attempts to stops all current tasks started by Tools from this
   // ToolProvider.
   virtual void StopAllTasks() {}
+
+ protected:
+  base::ObserverList<Observer> observers_;
 };
 
 }  // namespace ai_chat
