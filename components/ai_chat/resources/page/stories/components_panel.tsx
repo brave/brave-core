@@ -133,7 +133,19 @@ const CONVERSATIONS: Mojom.Conversation[] = [
 const toolEvents: Mojom.ToolUseEvent[] = [
   {
     id: 'abc123d',
+    toolName: 'tool_one',
+    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: [createTextContentBlock('7:00pm')],
+  },
+  {
+    id: 'abc123d',
     toolName: 'user_choice_tool',
+    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: [createTextContentBlock('7:00pm')],
+  },
+  {
+    id: 'abc123d',
+    toolName: 'tool_two',
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: [createTextContentBlock('7:00pm')],
   },
@@ -755,6 +767,9 @@ const HISTORY: Mojom.ConversationTurn[] = [
           + '1962              |\n'
           + "\n\n Let me know if you'd like more details!",
       ),
+      ...toolEvents
+        .slice(0, 3)
+        .map((toolUseEvent) => ({ ...eventTemplate, toolUseEvent })),
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
@@ -775,8 +790,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
         'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
       ),
       ...toolEvents
-        .slice(0, 3)
-        .map((toolUseEvent) => ({ ...eventTemplate, toolUseEvent })),
+        .slice(3, 5)
+        .map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent })),
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
@@ -793,9 +808,11 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [
-      ...toolEvents
-        .slice(3)
-        .map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent })),
+      getCompletionEvent('Ah, now I have the answer!'),
+      {
+        ...eventTemplate,
+        toolUseEvent: toolEvents[4],
+      },
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
