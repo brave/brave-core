@@ -21,6 +21,7 @@
     mojomCustomizationSettings.CustomizationSettingsHandlerRemote
   getCustomizationSettingsCallbackRouter():
     mojomCustomizationSettings.CustomizationSettingsUICallbackRouter
+  checkOllamaConnection(): Promise<{connected: boolean, error: string}>
  }
 
  export class BraveLeoAssistantBrowserProxyImpl
@@ -76,6 +77,14 @@
 
    getCustomizationSettingsCallbackRouter() {
      return this.customizationSettingsCallbackRouter
+   }
+
+   async checkOllamaConnection() {
+     const result = await this.settingsHelper.checkOllamaConnection()
+     return {
+       connected: result.result.connected,
+       error: result.result.error
+     }
    }
  }
 

@@ -81,7 +81,7 @@ export function RegenerateAnswerMenu(props: Props) {
             aria-selected={selected || null}
           >
             <div className={styles.modelIconAndName}>
-              <Icon name={getModelIcon(model.key)} />
+              <Icon name={getModelIcon(model)} />
               {model.displayName}
             </div>
             {selected && (
