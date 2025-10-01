@@ -47,7 +47,7 @@ TEST(UserAgentUtilsTest, UserAgentFromCommandLine) {
                                                           kCmdUserAgentValue);
   ASSERT_TRUE(
       base::FeatureList::IsEnabled(blink::features::kUACHOverrideBlank));
-  const auto brave_metadata = GetUserAgentMetadata(nullptr);
+  const auto brave_metadata = GetUserAgentMetadata();
   const blink::UserAgentMetadata empty_metadata;
 
   EXPECT_EQ(GetUserAgent(), kCmdUserAgentValue);
