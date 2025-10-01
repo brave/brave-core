@@ -7,14 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_CARDANO_TX_DECODER_H_
 
 #include <array>
-#include <memory>
 #include <optional>
-#include <string>
 #include <vector>
 
 #include "base/containers/span.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
-#include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
 

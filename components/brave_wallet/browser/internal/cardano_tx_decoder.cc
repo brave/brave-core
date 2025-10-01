@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
 
-#include <memory>
 #include <optional>
-#include <string>
 #include <vector>
 
 #include "base/containers/span.h"
@@ -15,7 +13,6 @@
 #include "base/containers/to_vector.h"
 #include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.rs.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
-#include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
 
@@ -49,7 +46,7 @@ std::optional<CardanoTxDecoder::RestoredTransactionOutput> ConvertOutput(
 }
 
 std::optional<CardanoTxDecoder::RestoredTransactionBody> ConvertBody(
-    const ::brave_wallet::CxxRestoredCardanoBody& cxx_body) {
+    const CxxRestoredCardanoBody& cxx_body) {
   CardanoTxDecoder::RestoredTransactionBody restored_body;
 
   restored_body.inputs.reserve(cxx_body.inputs.size());

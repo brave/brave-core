@@ -244,7 +244,7 @@ fn extract_inputs(
         };
 
         let index = match &input_array[1] {
-            CborValue::Integer(i) => (*i).try_into().unwrap_or(0),
+            CborValue::Integer(i) => (*i).try_into().map_err(|_| Error::InvalidInputFormat)?,
             _ => return Err(Error::InvalidInputFormat),
         };
 
@@ -280,7 +280,7 @@ fn extract_outputs(
         };
 
         let amount = match &output_array[1] {
-            CborValue::Integer(i) => (*i).try_into().unwrap_or(0),
+            CborValue::Integer(i) => (*i).try_into().map_err(|_| Error::InvalidOutputFormat)?,
             _ => return Err(Error::InvalidOutputFormat),
         };
 
