@@ -77,6 +77,10 @@ interface UntrustedConversationUI {
   // Called when the associated content is changed - called when the untrusted
   // conversation frame is attached and when the content is changed.
   AssociatedContentChanged(array<AssociatedContent> associated_content);
+
+  // Called when an observable content-based task is started for any in-progress
+  // conversation entry.
+  ContentTaskStarted(int32 tab_id);
 };
 
 // UI-side handler for callbacks from UntrustedUIHandler

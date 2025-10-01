@@ -67,6 +67,7 @@ class AssociatedContentManager;
 class ConversationHandler : public mojom::ConversationHandler,
                             public mojom::UntrustedConversationHandler,
                             public ModelService::Observer,
+                            public ToolProvider::Observer,
                             public ConversationHandlerForMetrics {
  public:
   using GeneratedTextCallback =
@@ -295,6 +296,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnDefaultModelChanged(const std::string& old_key,
                              const std::string& new_key) override;
   void OnModelRemoved(const std::string& removed_key) override;
+
+  // ToolProvider::Observer
+  void OnContentTaskStarted(int32_t tab_id) override;
 
  private:
   friend class ::AIChatUIBrowserTest;

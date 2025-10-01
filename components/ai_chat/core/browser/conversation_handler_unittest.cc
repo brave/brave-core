@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <memory>
 #include <optional>
 #include <string>
@@ -97,6 +98,12 @@ class MockToolProvider : public ToolProvider {
   MOCK_METHOD(void, OnNewGenerationLoop, (), (override));
   MOCK_METHOD(std::vector<base::WeakPtr<Tool>>, GetTools, (), (override));
   MOCK_METHOD(void, StopAllTasks, (), (override));
+
+  void StartContentTask(int32_t tab_id) {
+    for (auto& observer : observers_) {
+      observer.OnContentTaskStarted(tab_id);
+    }
+  }
 };
 
 class MockConversationHandlerClient : public mojom::ConversationUI {
@@ -3461,6 +3468,37 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
   // Trigger generation which will cause tool lookup
   conversation_handler_->SubmitHumanConversationEntry("Help me with something",
                                                       std::nullopt);
+  run_loop.Run();
+}
+
+TEST_F(ConversationHandlerUnitTest, ToolUseEvents_OnContentTaskStarted) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  int32_t test_tab_id = 1;
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  // This test verifies that the conversation client is informed of the start
+  // of a content task from a ToolProvider.
+  NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
+      conversation_handler_.get());
+  EXPECT_CALL(untrusted_client, ContentTaskStarted(test_tab_id));
+
+  base::RunLoop run_loop;
+  // Call to engine mocks the use tool request when the tool is first used.
+  // We do not need to complete the request as this test is verifying that
+  // the observation is made by the conversation client whilst the request
+  // is still in progress so that the UI may follow the progress of the action.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArg<7>(
+          [&](EngineConsumer::GenerationDataCallback callback) {
+            mock_tool_provider_->StartContentTask(test_tab_id);
+            run_loop.QuitWhenIdle();  // QuitWhenIdle due to mojo connection
+          }));
+
+  // Submit a human entry to trigger the tool use
+  conversation_handler_->SubmitHumanConversationEntry(".", std::nullopt);
   run_loop.Run();
 }
 
