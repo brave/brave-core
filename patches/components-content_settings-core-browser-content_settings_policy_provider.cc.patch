@@ -18,3 +18,19 @@ index 174e7f0c9e714bc7a792d9dc69fbc8c01d064146..44f63ba6a842eed74bc395e9b39274bc
      prefs::kManagedAutomaticFullscreenAllowedForUrls,
      prefs::kManagedAutomaticFullscreenBlockedForUrls,
      prefs::kManagedAutoSelectCertificateForUrls,
+@@ -234,6 +236,7 @@ constexpr const char* kManagedPrefs[] = {
+ // the preference default content settings. If a default content settings type
+ // is managed any user defined exceptions (patterns) for this type are ignored.
+ constexpr const char* kManagedDefaultPrefs[] = {
++    BRAVE_MANAGED_DEFAULT_PREFS
+     prefs::kManagedDefaultAdsSetting,
+     prefs::kManagedDefaultClipboardSetting,
+     prefs::kManagedDefaultCookiesSetting,
+@@ -329,6 +332,7 @@ struct PolicyProvider::PrefsForManagedDefaultMapEntry {
+ // static
+ const PolicyProvider::PrefsForManagedDefaultMapEntry
+     PolicyProvider::kPrefsForManagedDefault[] = {
++        BRAVE_MANAGED_DEFAULT
+         {ContentSettingsType::ADS, prefs::kManagedDefaultAdsSetting},
+         {ContentSettingsType::CLIPBOARD_READ_WRITE,
+          prefs::kManagedDefaultClipboardSetting},
