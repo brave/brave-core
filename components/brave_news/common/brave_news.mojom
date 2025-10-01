@@ -6,6 +6,7 @@
 module brave_news.mojom;
 
 import "mojo/public/mojom/base/time.mojom";
+import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/url.mojom";
 
 // Items either have a padded or an unpadded image url
@@ -241,15 +242,6 @@ struct FeedSearchResultItem {
   string feed_title;
 };
 
-struct PublishersEvent {
-  map<string, Publisher> addedOrUpdated;
-  array<string> removed;
-};
-
-interface PublishersListener {
-  Changed(PublishersEvent event);
-};
-
 struct ChannelsEvent {
   map<string, Channel> addedOrUpdated;
   array<string> removed;
@@ -261,16 +253,20 @@ struct Configuration {
   bool openArticlesInNewTab;
 };
 
-interface ChannelsListener {
-  Changed(ChannelsEvent event);
+struct State {
+  Configuration configuration;
+  map<string, Channel> channels;
+  map<string, Publisher> publishers;
+
+  array<string> suggested_publisher_ids;
 };
 
 interface FeedListener {
   OnUpdateAvailable(string feed_hash);
 };
 
-interface ConfigurationListener {
-  Changed(Configuration new_configuration);
+interface Listener {
+  Changed(mojo_base.mojom.Value diff);
 };
 
 interface BraveNewsInternals {
@@ -290,16 +286,13 @@ interface BraveNewsController {
   EnsureFeedV2IsUpdating();
   GetSignals() => (map<string, Signal> signals);
 
-  // Deprecated by https://github.com/brave/brave-core/pull/16038. Use
-  // |AddPublishersListener| instead.
   GetPublishers() => (map<string, Publisher> publishers);
-  AddPublishersListener(pending_remote<PublishersListener> listener);
   GetSuggestedPublisherIds() => (array<string> suggested_publisher_ids);
+  RefreshSuggestedPublisherIds();
 
-  // Deprecated by https://github.com/brave/brave-core/pull/16038. Use
-  // |AddChannelsListener| instead.
+  AddListener(pending_remote<Listener> listener);
+
   GetChannels() => (map<string, Channel> channels);
-  AddChannelsListener(pending_remote<ChannelsListener> listener);
   SetChannelSubscribed(string locale, string channel_id, bool subscribed) => (Channel updated);
   // Look at the incoming url and return results
   //  - if it's a feed url then return the feed item
@@ -325,7 +318,6 @@ interface BraveNewsController {
   AddFeedListener(pending_remote<FeedListener> listener);
 
   SetConfiguration(Configuration configuration) => ();
-  AddConfigurationListener(pending_remote<ConfigurationListener> listener);
 
   GetDisplayAd() => (DisplayAd? ad);
   // Lets the browser know when a user begins viewing or scrolling
