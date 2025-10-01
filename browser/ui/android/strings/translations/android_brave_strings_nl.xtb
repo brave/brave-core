@@ -99,6 +99,8 @@
 <translation id="8617525558807213034">Automatisch invullen in privétabbladen</translation>
 <translation id="8685431198160039193">Opgeslagen informatie kan automatisch worden ingevuld in privétabbladen</translation>
 <translation id="6583902294974160967">Ondersteuning</translation>
+<translation id="5713644099811900409">Brave-account</translation>
+<translation id="4472575034687746823">Aan de slag</translation>
 <translation id="1799030480311994998">Functies</translation>
 <translation id="2005732746077850308">Brave Shields en privacy</translation>
 <translation id="4692623383562244444">Zoekmachines</translation>
@@ -421,6 +423,8 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8748471354357836070">Meer informatie / afmeldingsopties</translation>
 <translation id="3171669670217312786">Achtergrondafbeeldingen</translation>
 <translation id="8522669544471808198">Achtergrondafbeeldingen weergeven</translation>
+<translation id="6258554626602400736">Advertenties op nieuwe tabbladen</translation>
+<translation id="9001530744369687550">Meer informatie over advertenties op nieuwe tabbladen</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Topsites Weergeven</translation>
 <translation id="7275773481201277457">Brave Statistieken Weergeven</translation>
@@ -498,6 +502,8 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
 <translation id="5299848999918506028">Bedankt!</translation>
 <translation id="76550953340008122">Bedankt dat u de ontwikkelaars van Brave heeft laten weten dat er iets mis is met deze site. We zullen ons best doen om het te repareren!</translation>
+<translation id="3037432377946455872">Wat is het voornaamste probleem?</translation>
+<translation id="8731661215617360873">Selecteer een optie</translation>
 <translation id="650318023204990401">Geavanceerde instellingen</translation>
 <translation id="7205939464631857223">Alle geblokkeerde elementen wissen</translation>
 <translation id="5370478469168390143">Sla gegevens online op</translation>
@@ -1222,6 +1228,13 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2735247450315842119">Screenshots op privétabbladen toestaan</translation>
 <translation id="8420414929552321089">Als deze optie is ingeschakeld, zijn privétabbladen ook zichtbaar wanneer meerdere apps zijn geopend.</translation>
 <translation id="7956713633345437162">Mobiele bladwijzers</translation>
+<translation id="3176467469116060712">Ondersteun Brave's toonaangevende werk voor webprivacy en open-source adblocking lijsten</translation>
+<translation id="5896375129784311037">Geoptimaliseerd voor een minimalistischer browserinterface</translation>
+<translation id="746156554966264308">Een kern van Brave Shields voor adblock, privacy en snelheid</translation>
+<translation id="1432661650699782509">Ondersteuning voor door IT-beheerde beleidsregels op het werk</translation>
+<translation id="1361157028850796410">beste optie</translation>
+<translation id="7280825497485894053">Maandabonnement</translation>
+<translation id="4570901726096223030">Meer informatie over Origin</translation>
 <translation id="1943432128510653496">Wachtwoorden opslaan</translation>
 <translation id="2100273922101894616">Automatisch inloggen</translation>
 <translation id="363596933471559332">Log automatisch in bij websites met de opgeslagen inloggegevens. Als de functie uitstaat, moet je je identiteit verifiëren voordat je kunt inloggen bij een website.</translation>

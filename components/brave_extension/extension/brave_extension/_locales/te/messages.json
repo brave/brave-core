@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "The Brave Extension",
+    "message": "బ్రేవ్ పొడిగింపు",
     "description": "The name of the extension."
   },
   "shields": {
@@ -8,83 +8,83 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "up",
+    "message": "పైకి",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "down",
+    "message": "కిందికి",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "for this site",
+    "message": "ఈ సైట్ కోసం",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "If a site appears broken, try shields down",
+    "message": "సైట్ కనబడటం లేదు అంటే, షీల్డ్స్ కిందికి ప్రయత్నించండి",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "You’re browsing this site without Brave’s privacy and security protections. Does it not work right with Shields up?",
+    "message": "మీరు ఈ సైట్ ను బ్రేవ్ యొక్క వ్యక్తిగత మరియు భద్రతా పరిరక్షణలతో బ్రౌజ్ చేయడం లేదు. షీల్డ్స్ పైకి పెట్టినప్పుడు పని చేయడం లేదా?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Report a broken site",
+    "message": "బ్రోకెన్ సైట్ నివేదిక",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
-    "message": "Items blocked",
+    "message": "అంశాలు బ్లాక్ చేయబడ్డాయి",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Item blocked",
+    "message": "అంశం బ్లాక్ చేయబడింది",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {
-    "message": "and",
+    "message": "మరియు",
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "connections upgraded",
+    "message": "కనెక్షన్లు అప్గ్రేడ్ చేయబడ్డాయి",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
-    "message": "connection upgraded",
+    "message": "కనెక్షన్ అప్గ్రేడ్ చేయబడింది",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Cross-site trackers blocked",
+    "message": "క్రాస్-సైట్ ట్రాకర్స్ బ్లాక్ చేయబడ్డాయి",
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked",
+    "message": "ట్రాకర్స్ & యాడ్స్ బ్లాక్ చేయబడ్డాయి",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (aggressive)",
+    "message": "ట్రాకర్స్ & యాడ్స్ బ్లాక్ చేయబడ్డాయి (తీవ్రమైనవి)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (standard)",
+    "message": "ట్రాకర్స్ & యాడ్స్ బ్లాక్ చేయబడ్డాయి (ప్రామాణిక)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Allow all trackers & ads",
+    "message": "అన్ని ట్రాకర్స్ & యాడ్స్ అనుమతించు",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Connections upgraded to HTTPS",
+    "message": "HTTPS కి కనెక్షన్లు అప్గ్రేడ్ చేయబడ్డాయి",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "Connection upgraded to HTTPS",
+    "message": "HTTPS కి కనెక్షన్ అప్గ్రేడ్ చేయబడింది",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Scripts blocked",
+    "message": "స్క్రిప్ట్స్ బ్లాక్ చేయబడ్డాయి",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cross-site cookies blocked",
+    "message": "క్రాస్-సైట్ కుకీలు బ్లాక్ చేయబడ్డాయి",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -92,47 +92,47 @@
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "All cookies allowed",
+    "message": "అన్ని కుకీలు అనుమతించబడ్డాయి",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "Fingerprinting blocked",
+    "message": "ఫింగర్‌ప్రింటింగ్ బ్లాక్ చేయబడింది",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Fingerprinting blocked (standard)",
+    "message": "ఫింగర్ ప్రింటింగ్ సాధారణ ఆనవాలు",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Fingerprinting blocked (strict, may break sites)",
+    "message": "ఫింగర్ ప్రింటింగ్ అవరోధం (కఠిన, సంఘటనలు విరామం)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Allow all fingerprinting",
+    "message": "అన్ని ఫింగర్ ప్రింటింగ్స్కు అనుమతి ఇవ్వండి",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Fingerprinting attempts",
+    "message": "ఫింగర్ ప్రింటింగ్ ప్రయత్నాలు",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
-    "message": "Scripts on this site",
+    "message": "ఈ సైట్ పై స్క్రిప్ట్స్",
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "Blocked scripts",
+    "message": "బ్లాక్ చేయబడిన స్క్రిప్ట్‌లు",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
-    "message": "Allowed scripts",
+    "message": "అనుమతించబడిన స్క్రిప్ట్‌లు",
     "description": "Message for the script resources allowed"
   },
   "blockAll": {
-    "message": "Block all",
+    "message": "అన్ని బ్లాక్ చేయి",
     "description": "Message for the resources blocked *block all* option"
   },
   "allowAll": {
-    "message": "Allow all",
+    "message": "అన్ని అనుమతించు",
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
@@ -144,15 +144,15 @@
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Blocked once",
+    "message": "ఒక్కసారి బ్లాక్ చేయబడింది",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Allowed once",
+    "message": "ఒక్కసారి అనుమతించబడింది",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Allow scripts once",
+    "message": "ఒక్కసారి స్క్రిప్ట్స్ అనుమతించండి",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
@@ -164,39 +164,39 @@
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {
-    "message": "Apply once",
+    "message": "ఒక్కసారిగా వర్తింప చెయ్యి",
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Change global shield defaults",
+    "message": "గ్లోబల్ షీల్డ్ డిఫాల్ట్ లను మార్చండి",
     "description": "Message for the button action linking to the settings page"
   },
   "manageCustomFilters": {
-    "message": "Manage custom filters",
+    "message": "కస్టమ్ ఫిల్టర్స్ పరిెంహణం చెయ్యండి",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Block element",
+    "message": "మూల్యతను నిరోధించండి",
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
-    "message": "Advanced View",
+    "message": "అధునాతన వీక్షణ",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Simple View",
+    "message": "సరళ వీక్షణ",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Sites often include cookies and scripts which try to identify you and your device (often embedded into ads). They want to work out who you are and follow you across the web — tracking what you do on every site. Brave blocks these things so that you can browse without being followed around.",
+    "message": "సైట్‌లు మరియు ఇతర స్క్రిప్ట్‌లు ఏమీ వాడడము ద్వారా మీ అంశాలను గుర్తించే ప్రయత్నాలు చేస్తాయి (బహుముఖంగా యాడ్స్‌లో). వారు మీరే ఎవరనే విషయం తెలుసుకోవాలనుకుంటున్నారు మరియు వెబ్ అంతగాని ఫాలో అవుతుంటారు - మీరు ఏ కార్యాన్ని చేస్తున్నారో ట్రాకింగ్ చేస్తారు. బ్రేవ్ ఈ అంశాలను బ్లాక్ చేస్తుంది కాబట్టి మీరు అనుసరించకుండా వెబ్‌ను బ్రౌజ్ చేయవచ్చు.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Cross-site trackers and other creepy things blocked",
+    "message": "క్రాస్-సైట్ ట్రాకర్స్ మరియు ఇతర భయంకరమైన అంశాలు బ్లాక్ చేయబడ్డాయి",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Changing Shield settings in this view may affect web compatibility on this site.",
+    "message": "ఈ వీక్షణలో షీల్డ్ సెట్టింగ్ మరింత వెబ్ అనుకూలత ప్రభావితం చేయవచ్చు.",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {

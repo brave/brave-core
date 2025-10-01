@@ -3,12 +3,14 @@
 <translationbundle lang="az">
 <translation id="3333887201479867589">Brave Mükafatları</translation>
 <translation id="7961015016161918242">Heç vaxt</translation>
+<translation id="7973394300052703468">Yeni &amp;Gizli pəncərə</translation>
 <translation id="1209739344687072997">Nasaz sayt haqqında bildirin</translation>
 <translation id="6406506848690869874">Sinxronlaşdırma</translation>
 <translation id="1544192797660353713">Balans</translation>
 <translation id="1990886731975529483">Google Widevine quraşdırın və işə salın</translation>
 <translation id="4900351245762303149">Google Widevine-ı quraşdır</translation>
 <translation id="8342816622062204340"><ph name="URL"/> qorunan Google Widevine məzmununu açmaq istəyir. Bunun üçün Android sisteminin Widevine dəstəyinə icazəniz tələb olunur. İcazə verməklə Google-un istifadə şərtləri ilə razılaşırsınız.</translation>
+<translation id="6965382102122355670">OK</translation>
 <translation id="7658239707568436148">Ləğv et</translation>
 <translation id="8832245978592881387">Leo Sİ-i yeni tab-vərəqədə aç</translation>
 <translation id="4577675328803804820">Leo Sİ-i kənar panelində aç</translation>
@@ -18,12 +20,13 @@
 <translation id="7400808612454224939">Leo Sİ parametrlərini idarə et</translation>
 <translation id="438106944087726695">Brave tərəfindən təchiz edilən</translation>
 <translation id="5039804452771397117">İcazə ver</translation>
+<translation id="7053983685419859001">Blokla</translation>
 <translation id="8915916167043355778">Hamısını bağla</translation>
 <translation id="4870911314065352661">Bütün tabulyasiyalar bağlansın?</translation>
+<translation id="2370739752330685659">Bəlkə daha sonra</translation>
 <translation id="9194637241566114638">Anonim istifadə verilənləri göndərərək <ph name="SEARCH_NAME"/> funksiyasını təkmilləşdirməyə kömək edin. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave Axtarış</translation>
 <translation id="8184318863960255706">Ətraflı məlumat</translation>
-<translation id="6965382102122355670">OK</translation>
 <translation id="780301667611848630">Xeyr, təşəkkürlər</translation>
 <translation id="4174337572777167894">Veb Kəşfetmə Layihəsi</translation>
 <translation id="8659271182272561965">Brave Axtarışdan daha təkmil formada istifadə etmək üçün internetdə anonim axtarış &amp; verilənlərinizlə buna dəstək olun.</translation>
@@ -42,12 +45,15 @@
 <translation id="4250680216510889253">Xeyr</translation>
 <translation id="4472575034687746823">Başla</translation>
 <translation id="984275831282074731">Ödəniş metodları</translation>
+<translation id="5840822070878669614">İnternet-mağazanı aç</translation>
 <translation id="8076492880354921740">Tabulyasiyalar</translation>
 <translation id="5327248766486351172">Ad</translation>
 <translation id="4109670531935487117">Ünvan panelində avtomatik tamamlama təkliflərini göstər</translation>
 <translation id="8820817407110198400">Əlfəcinlər</translation>
+<translation id="383007806262310953">Əlfəcinləri göstər</translation>
 <translation id="7781069478569868053">Yeni tab-səhifə</translation>
 <translation id="3719826155360621982">Ana səhifə</translation>
+<translation id="6303294677342628402">Təhlükəsizlik Qalxanları</translation>
 <translation id="2133317862976486547">İzləyicilər &amp; reklamların bloklanması</translation>
 <translation id="4618274268052410139">Aşağıdakı sahəyə bir sətirə bir olmaqla, yaratdığınız xüsusi filterləri əlavə edin. Adblock filter sintaksisindən <ph name="BEGIN_LINK"/>istifadə etməyinizə əmin olun<ph name="END_LINK"/>.</translation>
 <translation id="933652931229970927">Diaqnostika hesabatlarının avtomatik göndərilməsi</translation>
@@ -55,7 +61,7 @@
 <translation id="4763421121695677716">Microsoft Windows kompüterlərindəki Recall xüsusiyyətinin hər hansı açıq Brave tab-vərəqələrinin ekran şəklini avtomatik çəkməməsi üçün onu bloklayın.</translation>
 <translation id="3858860766373142691">Ad</translation>
 <translation id="298546024891487702">Başlamaq üçün sinxronlaşdırmağı planlaşdırdığınız bütün cihazlarda Brave-i quraşdırmalısınız. Onları birləşdirmək üçün, cihazlarınızın hamısını təhlükəsiz şəkildə əlaqələndirərkən istifadə edəcəyiniz sinxron zəncirləməni aktivləşdirin.</translation>
-<translation id="5249433283143453448">Brauzerdə qorunan video yayım axını və digər məzmunlara baxmaq üçün Widevine Rəqəmsal Hüquqların İdarəedilməsi (DRM) komponentindən istifadə et.</translation>
+<translation id="6305528566126073902">Brauzerdə qorunan video yayım axını və digər məzmunlara baxmaq üçün Widevine Rəqəmsal Hüquqların İdarəedilməsi (DRM) komponentindən istifadə et</translation>
 <translation id="6918225713618473646">Brave, bu Manifest V2 genişləmələrini Brave serverlərində saxlayır, lakin onların məzmununu, təhlükəsizliyini, yaxud da davranışını nəzərdən keçirmir, və ya yoxlamır. Kömək üçün hər bir genişləmənin rəsmi səhifəsinə baxa bilərsiniz. Brave-in Manifest V2 planlarını <ph name="BEGIN_LINK"/>buradan<ph name="END_LINK"/> oxuyun.</translation>
 <translation id="8488282162676695335">Brave Balansı</translation>
 <translation id="5781842473834867765">Söhbət tarixçəmi yaddaşda saxla</translation>
