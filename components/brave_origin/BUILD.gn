@@ -33,6 +33,7 @@ static_library("brave_origin") {
     "//mojo/public/cpp/bindings",
   ]
   deps = [
+    "//brave/components/constants",
     "//components/keyed_service/core",
     "//components/policy/core/common",
     "//components/prefs",

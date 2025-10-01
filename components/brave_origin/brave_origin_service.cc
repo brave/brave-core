@@ -84,7 +84,8 @@ BraveOriginService::BraveOriginService(
   LOG(ERROR) << "BraveOriginService constructor";
 
   LOG(ERROR) << " reulst " << SetPolicyValue("BraveStatsPingEnabled", false);
-  LogAllPolicies(browser_policy_service_, profile_policy_service_, local_state_);
+  LogAllPolicies(browser_policy_service_, profile_policy_service_,
+                 local_state_);
 
   log_policies_timer_.Start(
       FROM_HERE, base::Seconds(5),

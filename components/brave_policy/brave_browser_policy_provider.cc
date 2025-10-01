@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/command_line.h"
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
@@ -101,7 +102,11 @@ void BraveBrowserPolicyProvider::LoadBraveOriginPolicy(
     policy::PolicyMap& bundle_policy_map,
     std::string_view policy_key,
     bool enabled) {
-  LOG(ERROR) << "LoadBraveOriginPolicy " << policy_key << " " << enabled;
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          "no-browser-origin-policy")) {
+    return;
+  }
+
   // Set the policy - the ConfigurationPolicyPrefStore will handle
   // converting this to the appropriate local state preference
   bundle_policy_map.Set(std::string(policy_key), policy::POLICY_LEVEL_MANDATORY,
