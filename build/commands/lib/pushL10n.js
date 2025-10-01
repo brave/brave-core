@@ -28,18 +28,17 @@ const pushL10n = (options) => {
       !options.grd_path
       || sourceStringPath.endsWith(path.sep + options.grd_path)
     ) {
-      util.run(
-        'python3',
-        [
-          'script/push-l10n.py',
-          '--channel',
-          options.channel,
-          '--source_string_path',
-          sourceStringPath,
-          extraScriptOptions,
-        ],
-        cmdOptions,
-      )
+      args = [
+        'script/push-l10n.py',
+        '--channel',
+        options.channel,
+        '--source_string_path',
+        sourceStringPath,
+      ]
+      if (extraScriptOptions) {
+        args.push(extraScriptOptions)
+      }
+      util.run('python3', args, cmdOptions)
     }
   })
 }

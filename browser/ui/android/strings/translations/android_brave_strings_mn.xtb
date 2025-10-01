@@ -19,6 +19,9 @@
 <translation id="5379685283876547860">Хандив илгээсэн!</translation>
 <translation id="1041398280582063935">Дэмжлэгээ хуваалцах</translation>
 <translation id="8855543392451028706">Тавтай морил! Хэрэглэгчид энэ контент бүтээгчид хандив илгээх замаар дэмжиж болно. Энэ нь контент бүтээгчдээ гайхалтай агуулга хийснийх нь төлөө талархах арга юм.</translation>
+<translation id="1235176624390585199"><ph name="TITLE"/> <ph name="PROVIDER"/> дээр</translation>
+<translation id="3699420827646925694">Системээс гарсан <ph name="CUSTODIAN"/></translation>
+<translation id="9038728316393235637"><ph name="CUSTODIAN"/>-рүү нэвтэрнэ үү;</translation>
 <translation id="7063168612616047608">Дуртай бүтээгчдээ дэмжсэнд баярлалаа</translation>
 <translation id="3733094367889291358">Хандив илгээх</translation>
 <translation id="1899434873745933492">Таны хандивыг илгээх боломжгүй байна</translation>
@@ -49,6 +52,8 @@
 <translation id="8617525558807213034">Нууцлалтай табыг автоматаар бөглөх</translation>
 <translation id="8685431198160039193">Хадгалсан мэдээлэл нууцлалтай таб дээр автоматаар бөглөгдөж болно.</translation>
 <translation id="6583902294974160967">Дэмжлэг</translation>
+<translation id="5713644099811900409">Brave Account</translation>
+<translation id="4472575034687746823">Эхлүүлэх</translation>
 <translation id="1799030480311994998">Онцлог функц</translation>
 <translation id="2005732746077850308">Brave Shields хамгаалалт &amp; нууцлал</translation>
 <translation id="4692623383562244444">Хайлтын систем</translation>
@@ -87,8 +92,8 @@
 <translation id="3189348785087463371">Сурталчилсан</translation>
 <translation id="4448697385961650078">Трекер болон заруудын блок</translation>
 <translation id="2448893613530489637">Тракер, &amp; зар сурталчилгааг вэб хуудаснууд дээр ачааллах, харуулахаас сэргийлнэ</translation>
-<translation id="3570081523466826008">HTTPS холболтуудыг шинэчлэх</translation>
 <translation id="1025207378813960343">Вебсайтын холболтуудыг аюулгүй байлгах.</translation>
+<translation id="3570081523466826008">HTTPS холболтуудыг шинэчлэх</translation>
 <translation id="693506469193748756">Намайг энэ сайтыг хаасны дараа орхих</translation>
 <translation id="7142548388914389999">Нууцлал хамгаалсан бүтээгдэхүүний дүн шинжилгээг (P3A) зөвшөөрөх</translation>
 <translation id="4174337572777167894">Вэб дэмжих төсөл</translation>
@@ -155,6 +160,7 @@
 <translation id="8730621377337864115">Болсон</translation>
 <translation id="1061533051865606843">Шинэ төхөөрөмж нэмэх</translation>
 <translation id="8131740175452115882">Баталгаажуулах</translation>
+<translation id="6417420737057016607">Brave зар суртчилгаа</translation>
 <translation id="2149973817440762519">Хадгалсан хуудсыг засварлах</translation>
 <translation id="496896260395129787">Энэ Brave Sync бүртгэл өөр төхөөрөмжөөс устгагдсан байна. Та Sync-г идэвхгүй болгох төлөвлөгөөгүй байсан бол,<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>акаунт дахин үүсгэх</translation>
@@ -172,6 +178,7 @@
 <translation id="3974348661685061050">7 хоног төлбөргүй турших</translation>
 <translation id="4973347371961481083">Хандив</translation>
 <translation id="7047578174221019462">Таны сарын хандив амжилттай хийгдсэн байна.</translation>
+<translation id="1486343603936278248">токен</translation>
 <translation id="7781069478569868053">Шинэ таб хуудас</translation>
 <translation id="5927196110206824867">Спонсорлосон арын зургууд Brave-ийн бие даасан, хэрэглэгчийг эрхэмлэсэн вэбийг бүтээх зорилгыг дэмждэг. Том технологийн компаниудаас ялгаатай нь бид зар сурталчилгааны гүйцэтгэлийг нууцлалтай хэмжиж, таны нууцлалыг хамгаална.</translation>
 <translation id="8748471354357836070">Илүүг мэдэх / сонголтуудаас татгалзах</translation>
@@ -318,10 +325,11 @@
 <translation id="713136183174551885">Нэвтрэх мэдээллээ сэргээх</translation>
 <translation id="6053992191006521518">ҮНЭГҮЙ хувилбарыг турших</translation>
 <translation id="5903391101107992067">7 хоногийн үнэгүй хувилбарыг турших</translation>
+<translation id="9073255657908892407">Техникийн дэмжлэгийн багтай холбогдох</translation>
 <translation id="8681480718817027245">Захиалга</translation>
 <translation id="7805768142964895445">Статус</translation>
 <translation id="5747552184818312860">Дуусах</translation>
-<translation id="9073255657908892407">Техникийн дэмжлэгийн багтай холбогдох</translation>
+<translation id="1656814355341174523">Захиалга удирдах</translation>
 <translation id="5431902940483264007">Оновчтой</translation>
 <translation id="6527596624419285047">Ашиглах боломжтой хамгийн сайн серверийг ашиглах</translation>
 <translation id="6687228121145903051">VPN-д холбогдож чадахгүй байна (Бусад алдаа)</translation>
@@ -393,6 +401,7 @@
 <translation id="4804818685124855865">Салгах</translation>
 <translation id="8009571545960303544">Таны гарын үсгийг асууж байна</translation>
 <translation id="3484981968509595506">DApp таны нийтийн шифрлэгдсэн түлхүүрийг асууж байна</translation>
+<translation id="2300240008330189182"><ph name="URL"/> нь таны хэтэвчийн нийтийн шифрлэлтийн түлхүүрийг асууж байна. Та энэ түлхүүрийг өгөхөөр зөвшөөрсөн тохиолдолд сайт танд шифрлэгдсэн мессеж илгээх боломжтой болно.</translation>
 <translation id="3340247553212049934">Өгөх</translation>
 <translation id="1982257600591932657">Сүлжээний нэр</translation>
 <translation id="5052727830821470769">Сүлжээний URL</translation>
@@ -445,6 +454,7 @@
 <translation id="1313065465616456728">Гаргасан огноо</translation>
 <translation id="7902225556763260253">Дуусах хугацаа</translation>
 <translation id="1908159733454294871">Аюулгүй байдлын эрсдэл илэрсэн</translation>
+<translation id="5658257029899993935">Худалдан авалтаа Brave бүртгэлтэйгээ холбох</translation>
 <translation id="5899814466108868020">Та Brave болон BAT бүлгийнхнийг дэмжихэд хувь нэмрээ оруулж байна</translation>
 <translation id="6067959437127691361">Brave урамшуулал ашиглах нь контент бүтээгчдэд дэмжлэг үзүүлж, танд BAT олох боломж олгоно.</translation>
 <translation id="3264975266761862670">Цуглуулж эхлэхэд бэлэн үү?</translation>
@@ -459,7 +469,6 @@
 <translation id="5382684862562314222">BAT танай бүс нутагт Uphold дээр дэмжигдээгүй байна.</translation>
 <translation id="6996157559236886133">Алдаа: Хязгаарлагдмал Uphold аккаунтын функц</translation>
 <translation id="1677961202754619328">Uphold-ийн хэлснээр, таны Uphold аккаунтанд зарим хязгаарлалт үүссэн байна. Uphold аккаунтанд нэвтэрч мэдэгдэл эсвэл үлдэгдэл шаардлагыг шалгаад дахин оролдоно уу.</translation>
-<translation id="6417420737057016607">Brave зар суртчилгаа</translation>
 <translation id="5425006356459378415">Brave урамшуулал ашиглах боломжгүй</translation>
 <translation id="3435896845095436175">Идэвхжүүлэх</translation>
 <translation id="7568430944629653319">NFT нээлтийг идэвхжүүлэх</translation>
@@ -476,8 +485,6 @@
 <translation id="5781842473834867765">Миний харилцан ярианы түүхийг хадгал</translation>
 <translation id="4109670531935487117">Хаяг оруулах хэсэгт автоматаар утга санал болгох</translation>
 <translation id="6106701981952170121">Бүх Leo хиймэл оюуны ярианы өгөгдлийг устгах</translation>
-<translation id="5658257029899993935">Худалдан авалтаа Brave бүртгэлтэйгээ холбох</translation>
-<translation id="1656814355341174523">Захиалга удирдах</translation>
 <translation id="73236265316873967">Leo Премиум</translation>
 <translation id="1028627582482425924">Нэг жилийн</translation>
 <translation id="2985392169397572983">ХАМГИЙН АШИГТАЙ ҮНЭ</translation>
@@ -513,13 +520,17 @@
 <translation id="4185473179105062442">BAT-г өөрийн крипто хаягт шууд хүлээн авах</translation>
 <translation id="5802986777701714573">Сарын BAT урамшуулал хүлээн авах шинэ арга нэмэгдлээ. Бидний аль нэг түнш байгууллагын бүртгэлийг холбох, эсвэл өөрөө удирдах шинэ крипто сонголтыг ашиглаж одооноос орлого олох боломжтой.</translation>
 <translation id="7557539689487606886">Премиум багцаар явах</translation>
+<translation id="1496514951988037011">хэрэглэгчийн нэр</translation>
 <translation id="3488199663160411179">нэр</translation>
 <translation id="793994607260936590">нэр</translation>
+<translation id="598301471034819706">хаяг</translation>
 <translation id="4130750466177569591">Зөвшөөрч байна</translation>
 <translation id="3251885322612056119">Үйлчилгээний нөхцөл шинэчлэгдсэн</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Чатны түүх</translation>
 <translation id="7956713633345437162">Гар утасны хавчуурга</translation>
+<translation id="1361157028850796410">шилдэг үнэ</translation>
+<translation id="7280825497485894053">Сараар захиалах</translation>
 <translation id="1943432128510653496">Нууц үг хадгалах</translation>
 <translation id="2100273922101894616">Автоматаар нэвтэх</translation>
 <translation id="363596933471559332">Хадгалсан итгэмжлэлийг ашиглан вебсайтад автоматаар нэвтрэх. Энэ үйлдлийг идэвхжүүлээгүй тохиолдолд аливаа вебсайтад хандах бүрд таниас баталгаажуулалт шаардана.</translation>

@@ -8,7 +8,6 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 • «JavaScript-optimalisering» er av. <ph name="BEGIN_LINK2"/>Administrer nettstedsunntak<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">Åpne på nettet</translation>
 <translation id="1036348656032585052">Slå av</translation>
-<translation id="1044891598689252897">Nettsteder kommer til å fungere som normalt</translation>
 <translation id="1070329623210597193">Filer dette nettstedet kan se eller redigere</translation>
 <translation id="1882093842020941518">Hjelp oss med å forbedre Brave ved å fortelle oss hvorfor du tillot informasjonskapsler fra tredjeparter. <ph name="BEGIN_LINK"/>Send tilbakemelding<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Du kan be om å få datamaskinversjonen av nettsteder</translation>
@@ -26,6 +25,7 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="129382876167171263">Filer som nettsteder har lagret, vises her</translation>
 <translation id="131112695174432497">Data som påvirker personlig tilpasning av annonser, blir slettet</translation>
 <translation id="1317194122196776028">Glem dette nettstedet</translation>
+<translation id="1321110954513621549">Tillatt • Omtrentlig</translation>
 <translation id="1323433172918577554">Vis mer</translation>
 <translation id="1333965224356556482">Ikke la nettsteder se posisjonen din</translation>
 <translation id="1343356790768851700">Dette nettstedet avgjør hva du liker, og foreslår deretter annonser til andre nettsteder</translation>
@@ -41,6 +41,7 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="1448064542941920355">Zoom ut</translation>
 <translation id="1464044141348608623">Ikke la nettsteder få vite når du bruker enheten aktivt</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> nettsted}other{<ph name="SITE_COUNT"/> nettsteder}}</translation>
+<translation id="1476700086976862423">Temafarge: sepia</translation>
 <translation id="1500473259453106018">Skjul kortet Avslag på faner</translation>
 <translation id="1508931164824684991">Nettsteder kan bruke JavaScript</translation>
 <translation id="1510341833810331442">Nettsteder har ikke lov til å lagre data på enheten din</translation>
@@ -72,6 +73,7 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="7401204338724669842">Brave-tips</translation>
 <translation id="6704867734300244173">Når bryteren er på, kjører Brave raskere, og funksjoner som bruker JavaScript, skal fungere som tilsiktet. Når bryteren er av, reduseres ytelsen, men V8 blir mer motstandsdyktig mot angrep.</translation>
 <translation id="1818308510395330587">For å la <ph name="APP_NAME"/> bruke AR, slå på kameraet i <ph name="BEGIN_LINK"/>Android-innstillingene<ph name="END_LINK"/> også.</translation>
+<translation id="1848033246551405023">Skrifttype: Sans Serif</translation>
 <translation id="1881806992065048905">Feltet nederst for utseende på Ny fane-side</translation>
 <translation id="1887786770086287077">Posisjonstilgang er slått av for denne enheten. Slå den på i <ph name="BEGIN_LINK"/>Android-innstillingene<ph name="END_LINK"/>.</translation>
 <translation id="1906181697255754968">Nettsteder bruker vanligvis filer og mapper på enheten din for å kunne tilby funksjoner som å lagre arbeidet ditt automatisk</translation>
@@ -93,6 +95,7 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="2079545284768500474">Angre</translation>
 <translation id="2080070583977670716">Flere innstillinger</translation>
 <translation id="2091887806945687916">Lyd</translation>
+<translation id="2094208275686143364">Lys temafarge</translation>
 <translation id="2096716221239095980">Slett alle data</translation>
 <translation id="2102396546234652240">Ikke la nettsteder bruke mikrofonen</translation>
 <translation id="2117655453726830283">Neste lysbilde</translation>
@@ -120,7 +123,9 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="904887679952026733">Bruk mørkt tema på nettsteder når Brave bruker mørkt tema, når det er mulig</translation>
 <translation id="2390272837142897736">Zoom inn</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
+<translation id="2403474027143565107">Nøyaktig</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> og <ph name="NUM_MORE"/> til er tillatt}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> og <ph name="NUM_MORE"/> til er tillatt}}</translation>
+<translation id="2404857459073803936">Posisjonstilgang for dette nettstedet</translation>
 <translation id="2410940059315936967">Et nettsted du besøker, kan bygge inn innhold fra andre nettsteder, for eksempel bilder, annonser og tekst. Informasjonskapsler som angis av disse andre nettstedene, kalles informasjonskapsler fra tredjeparter.</translation>
 <translation id="2411116727035790889">Slå på hurtigtaster</translation>
 <translation id="2433507940547922241">Utseende</translation>
@@ -136,6 +141,7 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="2498359688066513246">Hjelp og tilbakemelding</translation>
 <translation id="2501278716633472235">Gå tilbake</translation>
 <translation id="2533138527374486328">Når dette er på, kan nettsteder be om å få koble til enheter på det lokale nettverket ditt. Når dette er av, kan ikke nettsteder koble til enheter på det lokale nettverket ditt.</translation>
+<translation id="2544997614631598250">Temafarge – mørk</translation>
 <translation id="2546283357679194313">Informasjonskapsler og data fra nettsteder</translation>
 <translation id="2570922361219980984">Posisjonstilgang er også slått av for denne enheten. Slå den på i <ph name="BEGIN_LINK"/>Android-innstillingene<ph name="END_LINK"/>.</translation>
 <translation id="257931822824936280">Utvidet – klikk for å minimere.</translation>
@@ -190,10 +196,10 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="3123473560110926937">Blokkert på enkelte nettsteder</translation>
 <translation id="3132996321662585180">Oppdater daglig</translation>
 <translation id="3143754809889689516">Spill av fra begynnelsen</translation>
-<translation id="3162899666601560689">Nettsteder kan bruke informasjonskapsler for å gi deg en bedre surfeopplevelse, for eksempel for å holde deg pålogget eller huske varene i handlekurven din</translation>
 <translation id="3165022941318558018">La et nettsted bruke informasjonskapsler fra tredjeparter.</translation>
 <translation id="3167868116600277716">Discover-feeden</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> lagrede data</translation>
+<translation id="3199078925536734975">Tillatt denne gangen • Omtrentlig</translation>
 <translation id="321187648315454507">For at <ph name="APP_NAME"/> skal kunne sende deg varsler, må du også slå på varsler i <ph name="BEGIN_LINK"/>Android-innstillingene<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Posisjon er ikke tillatt</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
@@ -248,6 +254,7 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="3803367742635802571">Nettsteder du besøker, kan slutte å fungere som de skal</translation>
 <translation id="8338457030135232378">Brave i farger</translation>
 <translation id="381841723434055211">Telefonnumre</translation>
+<translation id="3823453485268218808">Skrifttype: Mono</translation>
 <translation id="3826050100957962900">Tredjepartspålogging</translation>
 <translation id="3835233591525155343">Enhetsbruken din</translation>
 <translation id="1799795508209440035">Brave begynner å blokkere informasjonskapsler igjen i dag</translation>
@@ -257,9 +264,9 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="3895926599014793903">Tving zoom på</translation>
 <translation id="3903738175795615004">Dra fra toppen eller trykk på Esc-tasten for å avslutte fullskjermmodus.</translation>
 <translation id="3905475044299942653">Stopp mange varsler</translation>
-<translation id="3918378745482005425">Enkelte funksjoner vil kanskje ikke fungere. Relaterte nettsteder kan fortsatt bruke informasjonskapsler fra tredjepart.</translation>
 <translation id="3922092564198021702">Åpne Innstillinger på telefonen</translation>
 <translation id="3933121352599513978">Skjul uønskede forespørsler (anbefales)</translation>
+<translation id="3934905113567851655">Klyp for å endre størrelse</translation>
 <translation id="3955193568934677022">Gi nettsteder tillatelse til å spille av beskyttet innhold (anbefales)</translation>
 <translation id="3955321697524543127">Ikke la nettsteder koble til USB-enheter</translation>
 <translation id="3965467402665811906">Nettsteder kan be om å få bruke informasjon de har lagret om deg</translation>
@@ -272,6 +279,7 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="3992684624889376114">Om denne siden</translation>
 <translation id="4002066346123236978">Tittel</translation>
 <translation id="4031179711345676612">Mikrofonen er tillatt</translation>
+<translation id="4042597221652780603">Omtrentlig</translation>
 <translation id="4046123991198612571">Neste spor</translation>
 <translation id="4077310749977440510">Nettsteder leser vanligvis utklippstavlen din for å kunne tilby funksjoner som å beholde formateringen på tekst du har kopiert</translation>
 <translation id="4082080074595021446">Unntak for bestemte nettsteder er ikke tillatt fordi Android-enheten ikke har nok RAM.</translation>
@@ -300,9 +308,11 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="4402755511846832236">Blokkér nettsteder fra å vite når du bruker denne enheten aktivt</translation>
 <translation id="4412992751769744546">Tillat informasjonskapsler fra tredjeparter</translation>
 <translation id="1675197434085185531">Brave blokkerer nettsteder fra å bruke informasjonskapsler fra tredjeparter til å spore deg når du surfer. Gå til innstillingene for å <ph name="BEGIN_LINK"/>administrere tilgang til informasjonskapsler fra tredjeparter<ph name="END_LINK"/>.</translation>
+<translation id="4425416282877905577">Skrifttype: Serif</translation>
 <translation id="443121186588148776">Seriell port</translation>
 <translation id="4434045419905280838">Forgrunnsvinduer/viderekoblinger</translation>
 <translation id="443552056913301231">Denne handlingen sletter alle lokale data, inkludert informasjonskapsler, og tilbakestiller alle tillatelsene for <ph name="ORIGIN"/></translation>
+<translation id="43076815069546662">Feltet nederst for Brave-farger er åpnet i full høyde</translation>
 <translation id="4468959413250150279">Kutt lyden for et bestemt nettsted.</translation>
 <translation id="4475912480633855319">{COOKIES,plural, =1{# informasjonskapsel}other{# informasjonskapsler}}</translation>
 <translation id="4478158430052450698">Gjør det enklere å tilpasse zoomen for ulike nettsteder</translation>
@@ -337,6 +347,7 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="4953688446973710931">Når dette er på, kan nettsteder be om å få laste ned flere filer automatisk. Når dette er av, kan ikke nettsteder laste ned flere filer automatisk.</translation>
 <translation id="4962975101802056554">Opphev alle tillatelser for enheten</translation>
 <translation id="4972737347717125191">Nettsteder kan be om å få bruke virtuell virkelighet-enheter og -data</translation>
+<translation id="1275242979020712923">Felt nederst for Brave-farger</translation>
 <translation id="497421865427891073">Gå til neste</translation>
 <translation id="4976702386844183910">Sist besøkt <ph name="DATE"/></translation>
 <translation id="4978178243417029856">Finn ut mer om Discover-feeden</translation>
@@ -386,7 +397,6 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="5515432237048785579">Feltet nederst for Discover-feeden er åpnet i full høyde</translation>
 <translation id="5516455585884385570">Åpne innstillingene for varsler</translation>
 <translation id="5527111080432883924">Spør før nettsteder får tilgang til tekst og bilder fra utklipptavlen (anbefalt)</translation>
-<translation id="5545693483061321551">Nettsteder kan ikke bruke informasjonskapsler til å se nettleseraktiviteten din på andre nettsteder, for eksempel for å vise deg personlig tilpassede annonser. Det kan hende at funksjoner på noen nettsteder ikke fungerer.</translation>
 <translation id="5553374991681107062">Nyeste</translation>
 <translation id="674221630984410403">Ikke gjør nettsteder raskere med V8-motoren i Brave, men gjør Brave litt mer motstandsdyktig mot angrep</translation>
 <translation id="5556459405103347317">Last inn på nytt</translation>
@@ -549,6 +559,7 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="7478658909253570368">Ikke la nettsteder koble til serielle porter</translation>
 <translation id="7488573225650545859">Skjul Vis faner på applisten</translation>
 <translation id="7521387064766892559">JavaScript</translation>
+<translation id="7538975533793429503">Glidebryter for skriftstørrelse</translation>
 <translation id="7547989957535180761">Når dette er på, kan nettsteder vise påloggingsforespørsler. Når dette er av, kan ikke nettsteder vise påloggingsforespørsler.</translation>
 <translation id="7553211568594248088">avslutte sentralsøk</translation>
 <translation id="7554752735887601236">Et nettsted bruker mikrofonen din</translation>
@@ -708,10 +719,5 @@ Avansert beskyttelse styrer disse Brave-innstillingene:
 <translation id="3110967157686007724">Privat fane</translation>
 <translation id="8623552597614912461">Dette nettstedet er i ferd med å dele opplysninger med en app utenfor privat modus.</translation>
 <translation id="8157212814767579028">Gå ut av privat modus?</translation>
-<translation id="6105125042109106861">Informasjonskapsler fra tredjeparter er blokkert i inkognitomodus</translation>
-<translation id="6642913673024345959">Blokkér informasjonskapsler fra tredjepart i Privat-modus</translation>
-<translation id="20460146243579445">Det kan hende at visse funksjoner på enkelte nettsteder ikke virker i privat modus</translation>
-<translation id="8877838532507724268">Når du bruker Privat modus, kan ikke nettsidene bruke informasjonskapsler til å se nettleserhistorikken for forskjellige sider, inkludert relaterte sider. Nettleserbruken din brukes ikke til å finne personlige annonser. Det kan hende at noen funksjoner på enkelte sider ikke vil fungere.</translation>
-<translation id="1856888821396498049">Blokkér informasjonskapsler fra tredjeparter i privat modus:</translation>
 <translation id="1593610935874634135">Et selskap kan definere en gruppe sider som kan bruke cookies for å dele aktiviteten din i gruppen. Denne innstillingen er av i privat modus.</translation>
 </translationbundle>
