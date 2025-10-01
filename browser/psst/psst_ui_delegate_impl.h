@@ -9,7 +9,7 @@
 #include <optional>
 
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
-#include "brave/components/psst/common/brave_psst_permission_context.h"
+#include "brave/components/psst/browser/core/brave_psst_permission_context.h"
 #include "brave/components/psst/common/psst_consent_data.h"
 #include "brave/components/psst/common/psst_permission_schema.h"
 #include "brave/components/psst/common/psst_script_responses.h"
