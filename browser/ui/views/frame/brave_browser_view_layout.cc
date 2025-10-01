@@ -51,7 +51,7 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     views::View* contents_container,
     MultiContentsView* multi_contents_view,
     views::View* left_aligned_side_panel_separator,
-    views::View* unified_side_panel,
+    views::View* contents_height_side_panel,
     views::View* right_aligned_side_panel_separator,
     views::View* side_panel_rounded_corner,
     views::View* contents_separator)
@@ -71,7 +71,7 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
                         : browser_view),
           multi_contents_view,
           left_aligned_side_panel_separator,
-          unified_side_panel,
+          contents_height_side_panel,
           right_aligned_side_panel_separator,
           side_panel_rounded_corner,
           contents_separator) {}
