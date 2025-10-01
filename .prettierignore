@@ -29,13 +29,15 @@
 /services
 /test
 /third_party
-/tools
 /ui
 /utility
 /v8
 /vector_icons
 /win_build_output
 /.storybook/
+
+# Ignore external dependencies:
+tools/crates/vendor/
 
 # Ignore github .yml files:
 .github/**/*.yml

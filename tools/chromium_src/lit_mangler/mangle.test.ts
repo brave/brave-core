@@ -6,7 +6,7 @@
 import fs from 'fs'
 import path from 'path'
 import * as diff from 'diff'
-import {genPath, outputPath} from '../../../build/commands/lib/guessConfig'
+import { genPath, outputPath } from '../../../build/commands/lib/guessConfig'
 
 // Note: Headers are stripped during preprocess, we're not interested in them
 // showing up in the snapshot.
@@ -18,17 +18,17 @@ const header = `// Copyright XXXX The Chromium Authors
 
 const root = path.resolve(__dirname, '..', '..', '..')
 const chromiumSrc = path.join(root, 'chromium_src')
-function* walkManglers(root=chromiumSrc) {
-    for (const child of fs.readdirSync(root)) {
-        const childPath = path.join(root, child)
-        if (fs.statSync(childPath).isDirectory()) {
-            for (const match of walkManglers(childPath)) {
-                yield match
-            }
-        } else if (childPath.endsWith('.lit_mangler.ts')) {
-            yield childPath
-        }
+function* walkManglers(root = chromiumSrc) {
+  for (const child of fs.readdirSync(root)) {
+    const childPath = path.join(root, child)
+    if (fs.statSync(childPath).isDirectory()) {
+      for (const match of walkManglers(childPath)) {
+        yield match
+      }
+    } else if (childPath.endsWith('.lit_mangler.ts')) {
+      yield childPath
     }
+  }
 }
 
 // Sometimes mangled files are not in a directory corresponding to the source
@@ -39,7 +39,7 @@ function findMangledFileAndOriginalFile(
   manglerPath: string,
   genPath: string,
   root: string,
-): {mangledPath: string, originalPath: string} {
+): { mangledPath: string; originalPath: string } {
   const baseName = path.basename(manglerPath)
   const mangledPathWithoutProcessed = path.relative(
     root,
@@ -80,29 +80,37 @@ function findMangledFileAndOriginalFile(
     throw new Error(`Mangled file not found: ${assumedMangledPath}`)
   }
 
-  return {mangledPath, originalPath}
+  return { mangledPath, originalPath }
 }
 
 describe('mangled files should have up to date snapshots', () => {
-    for (const mangler of walkManglers()) {
-        const name = path.relative(root, mangler).replaceAll(path.sep, '/')
-        it(`./${name} should match snapshot`, () => {
-            const manglerPath = name.replace('.lit_mangler.ts', '')
-                .replace(`chromium_src/`, '')
+  for (const mangler of walkManglers()) {
+    const name = path.relative(root, mangler).replaceAll(path.sep, '/')
+    it(`./${name} should match snapshot`, () => {
+      const manglerPath = name
+        .replace('.lit_mangler.ts', '')
+        .replace(`chromium_src/`, '')
 
-            const {mangledPath, originalPath}= findMangledFileAndOriginalFile(manglerPath, genPath, root)
+      const { mangledPath, originalPath } = findMangledFileAndOriginalFile(
+        manglerPath,
+        genPath,
+        root,
+      )
 
-
-            const mangledText = fs.readFileSync(mangledPath, 'utf8')
-                .replaceAll('\r\n', '\n')
-            const originalText = fs.readFileSync(originalPath, 'utf8')
-                .replaceAll('\r\n', '\n')
-                .substring(header.length)
-            const linesDiff = diff.createTwoFilesPatch(originalPath.replaceAll(path.sep, '/'),
-                path.relative(outputPath, mangledPath).replaceAll(path.sep, '/'),
-                originalText,
-                mangledText)
-            expect(linesDiff).toMatchSnapshot()
-        });
-    }
-});
+      const mangledText = fs
+        .readFileSync(mangledPath, 'utf8')
+        .replaceAll('\r\n', '\n')
+      const originalText = fs
+        .readFileSync(originalPath, 'utf8')
+        .replaceAll('\r\n', '\n')
+        .substring(header.length)
+      const linesDiff = diff.createTwoFilesPatch(
+        originalPath.replaceAll(path.sep, '/'),
+        path.relative(outputPath, mangledPath).replaceAll(path.sep, '/'),
+        originalText,
+        mangledText,
+      )
+      expect(linesDiff).toMatchSnapshot()
+    })
+  }
+})

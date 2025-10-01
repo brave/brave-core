@@ -20,52 +20,73 @@ const tsConfigPath = path.join(baseDir, 'tsconfig-mangle.json')
  * @returns The path to the generated tsconfig
  */
 const getTsConfigForFiles = (genDir: string, files: string[]) => {
-    const tsConfig = JSON.parse(fs.readFileSync(tsConfigPath, 'utf8'))
+  const tsConfig = JSON.parse(fs.readFileSync(tsConfigPath, 'utf8'))
 
-    // Override the include path to only include the lit_mangler and the file
-    // we want to check
-    tsConfig.include = [
-        path.join(__dirname, 'lit_mangler.ts'),
-        ...files
-    ]
+  // Override the include path to only include the lit_mangler and the file
+  // we want to check
+  tsConfig.include = [path.join(__dirname, 'lit_mangler.ts'), ...files]
 
-    // As the file is generated in the temp directory we need to set the baseUrl
-    // so everything resolvese correctly.
-    tsConfig.compilerOptions.baseUrl = baseDir
+  // As the file is generated in the temp directory we need to set the baseUrl
+  // so everything resolvese correctly.
+  tsConfig.compilerOptions.baseUrl = baseDir
 
-    // Write the tsconfig to the gen directory.
-    const tsConfigName = `lit-mangler-check-tsconfig_${files.map(file => path.basename(file)).join('_')}.json`
-    const tempTsConfigPath = path.join(genDir, tsConfigName)
-    fs.writeFileSync(tempTsConfigPath, JSON.stringify(tsConfig, null, 2))
-    return path.normalize(tempTsConfigPath)
+  // Write the tsconfig to the gen directory.
+  const tsConfigName = `lit-mangler-check-tsconfig_${files.map((file) => path.basename(file)).join('_')}.json`
+  const tempTsConfigPath = path.join(genDir, tsConfigName)
+  fs.writeFileSync(tempTsConfigPath, JSON.stringify(tsConfig, null, 2))
+  return path.normalize(tempTsConfigPath)
 }
 
 const runTypecheck = (genDir: string, files: string[]) => {
-    const result = childProcess.spawnSync('tsc', ['-p', getTsConfigForFiles(genDir, files)])
-    // Note: tsc in Windows doesn't return a status code on success (i.e. status === null).
-    if (result.status ?? 0 !== 0) {
-        console.error('Typechecking failed:\n', result.stdout?.toString(), result.stderr?.toString())
-        process.exit(1)
-    }
+  const result = childProcess.spawnSync('tsc', [
+    '-p',
+    getTsConfigForFiles(genDir, files),
+  ])
+  // Note: tsc in Windows doesn't return a status code on success (i.e. status === null).
+  if (result.status ?? 0 !== 0) {
+    console.error(
+      'Typechecking failed:\n',
+      result.stdout?.toString(),
+      result.stderr?.toString(),
+    )
+    process.exit(1)
+  }
 }
 
 commander
-    .command('mangle')
-    .option('-m, --mangler <file>', 'The file with containing the mangler instructions')
-    .option('-i, --input <file>', 'The file to mangle')
-    .option('-o, --output <file>', 'Where to output the mangled file')
-    .option('-g, --gen-dir <folder>', 'The folder for generated files')
-    .option('-t, --typecheck', 'Run typechecking before mangling')
-    .action(async ({ mangler, input, output, typecheck, genDir }: { mangler: string, input: string, output: string, typecheck: boolean, genDir: string }) => {
-        load(input)
+  .command('mangle')
+  .option(
+    '-m, --mangler <file>',
+    'The file with containing the mangler instructions',
+  )
+  .option('-i, --input <file>', 'The file to mangle')
+  .option('-o, --output <file>', 'Where to output the mangled file')
+  .option('-g, --gen-dir <folder>', 'The folder for generated files')
+  .option('-t, --typecheck', 'Run typechecking before mangling')
+  .action(
+    async ({
+      mangler,
+      input,
+      output,
+      typecheck,
+      genDir,
+    }: {
+      mangler: string
+      input: string
+      output: string
+      typecheck: boolean
+      genDir: string
+    }) => {
+      load(input)
 
-        if (typecheck) {
-            runTypecheck(genDir, [mangler])
-        }
+      if (typecheck) {
+        runTypecheck(genDir, [mangler])
+      }
 
-        // Note: Windows requires the file:// scheme for absolute import paths
-        await import(`file://${mangler}`)
-        write(output)
-    })
+      // Note: Windows requires the file:// scheme for absolute import paths
+      await import(`file://${mangler}`)
+      write(output)
+    },
+  )
 
 commander.parse(process.argv)
