@@ -78,14 +78,6 @@ describe('ToolEvent', () => {
     // shouldn't be able to click when completed
     fireEvent.click(screen.getByTestId('tool-choice-text-0'))
     expect(mockRespondToToolUseRequest).not.toHaveBeenCalled()
-
-    // icon should represent completed state
-    expect(
-      screen.getByTestId('tool-default-completed-icon'),
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByTestId('tool-default-progress-icon'),
-    ).not.toBeInTheDocument()
   })
 
   test('should handle bad json input for inactive entries', () => {
@@ -120,7 +112,5 @@ describe('ToolEvent', () => {
         />
       </MockContext>,
     )
-
-    expect(screen.getByTestId('tool-choice-progress-icon')).toBeInTheDocument()
   })
 })

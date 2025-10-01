@@ -80,7 +80,7 @@ function ToolEventContent(
     component = ToolEventContentUserChoice
   }
 
-  if (toolUseEvent.toolName === Mojom.TODO_TOOL_NAME) {
+  if (toolUseEvent.toolName === 'todo_write') {
     component = ToolEventTodos
   }
 

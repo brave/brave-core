@@ -8,7 +8,7 @@ import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
 import classnames from '$web-common/classnames'
 import { formatString, getLocale } from '$web-common/locale'
-import type { ToolComponent } from './tool_event'
+import type { ToolComponent, ToolUseContent } from './tool_event'
 import styles from './tool_event_todos.module.scss'
 
 interface TodoItem {
@@ -67,7 +67,10 @@ function StatusIcon(props: { status: TodoItem['status'] }) {
 }
 
 const ToolEventTodos: ToolComponent = (props) => {
-  const content = props.content
+  const content: ToolUseContent = {
+    toolLabel: null,
+    expandedContent: null,
+  }
 
   // Parse the tool output to get current todos
   // type can be:
@@ -102,7 +105,7 @@ const ToolEventTodos: ToolComponent = (props) => {
       (todo) => todo.status === 'completed',
     ).length
 
-    content.toolText = (
+    content.expandedContent = (
       <div className={styles.todoContainer}>
         <div className={styles.todoHeader}>
           <Icon
@@ -146,27 +149,9 @@ const ToolEventTodos: ToolComponent = (props) => {
         </div>
       </div>
     )
-
-    content.statusIcon = content.progressIcon = (
-      <span data-testid='tool-todos-completed-icon'>
-        <Icon name='list-checks' />
-      </span>
-    )
   } else {
     // Tool in progress
-    content.progressIcon = (
-      <span data-testid='tool-todos-progress-icon'>
-        <Icon name='list-checks' />
-      </span>
-    )
-
-    content.statusIcon = (
-      <span data-testid='tool-todos-error-icon'>
-        <Icon name='close' />
-      </span>
-    )
-
-    content.toolText = (
+    content.expandedContent = (
       <div className={styles.todoContainer}>
         <div className={styles.todoHeader}>
           <Icon

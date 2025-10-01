@@ -63,12 +63,6 @@ describe('ToolEventTodos', () => {
     expect(screen.getByText('Create user interface')).toBeInTheDocument()
     expect(screen.getByText('Add unit tests')).toBeInTheDocument()
     expect(screen.getByText('Deploy to staging')).toBeInTheDocument()
-
-    // Check completed icon is shown for overall tool
-    expect(screen.getByTestId('tool-todos-completed-icon')).toBeInTheDocument()
-    expect(
-      screen.queryByTestId('tool-todos-progress-icon'),
-    ).not.toBeInTheDocument()
   })
 
   test('should render in-progress todo tool event', () => {
@@ -90,10 +84,6 @@ describe('ToolEventTodos', () => {
     expect(screen.getByTestId('tool-todos-header-text')).toHaveTextContent(
       'Updating todos…',
     )
-    expect(screen.getByTestId('tool-todos-progress-icon')).toBeInTheDocument()
-    expect(
-      screen.queryByTestId('tool-todos-completed-icon'),
-    ).not.toBeInTheDocument()
   })
 
   test('should handle empty todo list', () => {
@@ -120,7 +110,6 @@ describe('ToolEventTodos', () => {
     expect(
       screen.queryByTestId('tool-todos-header-text'),
     ).not.toBeInTheDocument()
-    expect(screen.getByTestId('tool-todos-completed-icon')).toBeInTheDocument()
   })
 
   test('should handle all completed todos', () => {
@@ -169,7 +158,6 @@ describe('ToolEventTodos', () => {
 
     // Should fall back to progress state when JSON is invalid
     expect(screen.getByText('Invalid output')).toBeInTheDocument()
-    expect(screen.getByTestId('tool-todos-error-icon')).toBeInTheDocument()
   })
 
   test('should handle missing current_todos property', () => {
@@ -195,7 +183,6 @@ describe('ToolEventTodos', () => {
 
     // Should fall back to progress state when current_todos is missing
     expect(screen.getByText('Invalid output')).toBeInTheDocument()
-    expect(screen.getByTestId('tool-todos-error-icon')).toBeInTheDocument()
   })
 
   test('should handle todos with missing or invalid properties', () => {
@@ -231,7 +218,6 @@ describe('ToolEventTodos', () => {
     )
 
     expect(screen.getByText('Invalid output')).toBeInTheDocument()
-    expect(screen.getByTestId('tool-todos-error-icon')).toBeInTheDocument()
   })
 
   test('should apply correct CSS classes for different statuses', () => {
@@ -292,7 +278,6 @@ describe('ToolEventTodos', () => {
 
     // Should fall back to progress state when current_todos is not an array
     expect(screen.getByText('Invalid output')).toBeInTheDocument()
-    expect(screen.getByTestId('tool-todos-error-icon')).toBeInTheDocument()
   })
 
   test('should handle bad json input for inactive entries', () => {
@@ -328,7 +313,6 @@ describe('ToolEventTodos', () => {
       </MockContext>,
     )
 
-    expect(screen.getByTestId('tool-todos-progress-icon')).toBeInTheDocument()
     expect(screen.getByText('Updating todos…')).toBeInTheDocument()
   })
 
