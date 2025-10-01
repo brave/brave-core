@@ -813,6 +813,17 @@ const HISTORY: Mojom.ConversationTurn[] = [
         ...eventTemplate,
         toolUseEvent: toolEvents[4],
       },
+      {
+        ...eventTemplate,
+        toolUseEvent: {
+          id: 'abc123d',
+          toolName: Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME,
+          argumentsJson: JSON.stringify({
+            information:
+              'This is some data that the LLM wants to store for later before other tool use responses get removed from context because they are too large',
+          }),
+          output: [createTextContentBlock('Stored, refer to input for data')],
+        },
       },
     ],
     uploadedFiles: [],

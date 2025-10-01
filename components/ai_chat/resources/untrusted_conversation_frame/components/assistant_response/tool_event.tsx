@@ -7,6 +7,7 @@ import * as React from 'react'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
+import ToolEventContentAssistantDetailStorage from './tool_event_assistant_detail_storage'
 import styles from './tool_event.module.scss'
 
 interface Props {
@@ -76,6 +77,10 @@ function ToolEventContent(
 
   if (toolUseEvent.toolName === Mojom.USER_CHOICE_TOOL_NAME) {
     component = ToolEventContentUserChoice
+  }
+
+  if (toolUseEvent.toolName === Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME) {
+    component = ToolEventContentAssistantDetailStorage
   }
 
   if (component) {
