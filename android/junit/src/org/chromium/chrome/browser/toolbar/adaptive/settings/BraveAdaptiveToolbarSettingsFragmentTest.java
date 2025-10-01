@@ -91,6 +91,7 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
         UnifiedConsentServiceBridge.setUrlKeyedAnonymizedDataCollectionEnabled(true);
 
         TemplateUrlServiceFactory.setInstanceForTesting(mTemplateUrlService);
+        BraveRadioButtonGroupAdaptiveToolbarPreference.setIsJunitTesting(true);
     }
 
     @After

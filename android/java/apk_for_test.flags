@@ -1036,6 +1036,7 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.adaptive.settings.RadioButtonGroupAdaptiveToolbarPreference {
+    *** buildUiStateForStats(...);
     *** mIsBound;
     *** mAutoButton;
     *** mNewTabButton;
