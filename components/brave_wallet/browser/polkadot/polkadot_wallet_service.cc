@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 
@@ -36,6 +37,16 @@ void PolkadotWalletService::GetNetworkName(mojom::AccountIdPtr account_id,
   std::string chain_id = GetNetworkForPolkadotAccount(account_id);
   polkadot_substrate_rpc_.GetChainName(std::move(chain_id),
                                        std::move(callback));
+}
+
+void PolkadotWalletService::GetAccountBalance(
+    mojom::AccountIdPtr account_id,
+    GetAccountBalanceCallback callback) {
+  auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
+
+  std::string chain_id = GetNetworkForPolkadotAccount(account_id);
+  polkadot_substrate_rpc_.GetAccountBalance(std::move(chain_id), pubkey,
+                                            std::move(callback));
 }
 
 }  // namespace brave_wallet
