@@ -27,6 +27,12 @@
     padding: var(--leo-spacing-xl);
   }
 
+  .button-container {
+    display: flex;
+    gap: var(--leo-spacing-m);
+    flex-wrap: wrap;
+  }
+
   .label-secondary {
     font: var(--leo-font-default-regular);
     color: var(--leo-color-text-secondary);
@@ -43,6 +49,12 @@
   cr-icon-button.size-20 {
     --iron-icon-width: 20px;
   }
+
+  .model-name-container {
+    display: flex;
+    align-items: center;
+    gap: var(--leo-spacing-m);
+  }
 </style>
 
 <settings-section
@@ -58,6 +70,19 @@
     </div>
   </div>
 </div>
+
+<!-- Provider Sync Section -->
+<template
+  is="dom-if"
+  if="[[isOllamaConnected_]]"
+>
+  <settings-toggle-button
+    class="cr-row"
+    label="$i18n{braveLeoAssistantOllamaSyncLabel}"
+    icon="ollama"
+    pref="{{prefs.brave.ai_chat.ollama_fetch_enabled}}">
+  </settings-toggle-button>
+</template>
 
 <div class="list-container">
   <template
@@ -85,22 +110,31 @@
       >
         <div class="model">
           <div class="model-info">
-            <div class="label">[[item.displayName]]</div>
+            <div class="model-name-container">
+              <div class="label">[[item.displayName]]</div>
+            </div>
             <div class="label-secondary">
               [[item.options.customModelOptions.modelRequestName]]
             </div>
           </div>
           <div class="model-actions">
+            <template is="dom-if" if="[[isOllamaManagedModel_(item, prefs.brave.ai_chat.ollama_fetch_enabled.value)]]">
+              <span class="label-secondary" style="font-size: 12px; padding: 8px;">
+                $i18n{braveLeoAssistantOllamaManagedLabel}
+              </span>
+            </template>
             <cr-icon-button
-              on-click="handleEdit_"
-              class="size-20"
-              iron-icon="edit-pencil"
-            ></cr-icon-button>
-            <cr-icon-button
-              on-click="handleDelete_"
-              class="size-20"
-              iron-icon="trash"
-            ></cr-icon-button>
+                on-click="handleEdit_"
+                class="size-20"
+                iron-icon="edit-pencil"
+              ></cr-icon-button>
+            <template is="dom-if" if="[[!isOllamaManagedModel_(item, prefs.brave.ai_chat.ollama_fetch_enabled.value)]]">
+              <cr-icon-button
+                on-click="handleDelete_"
+                class="size-20"
+                iron-icon="trash"
+              ></cr-icon-button>
+            </template>
           </div>
         </div>
       </template>
@@ -113,11 +147,13 @@
     is="dom-if"
     if="[[!showModelConfig_]]"
   >
-    <leo-button
-      on-click="handleAddNewModel_"
-      class="action-button"
-      >$i18n{braveLeoAssistantAddNewModelButtonLabel}</leo-button
-    >
+    <div class="button-container">
+      <leo-button
+        on-click="handleAddNewModel_"
+        class="action-button"
+        >$i18n{braveLeoAssistantAddNewModelButtonLabel}</leo-button
+      >
+    </div>
   </template>
 </div>
 

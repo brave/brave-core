@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as Mojom from './mojom'
+
 export const IGNORE_EXTERNAL_LINK_WARNING_KEY = 'IGNORE_EXTERNAL_LINK_WARNING'
 
 const modelIcons = {
@@ -29,8 +31,14 @@ const modelIcons = {
 
 const fallbackModelIcon = 'product-brave-leo'
 
-export function getModelIcon(modelKey: string): string {
-  return modelIcons[modelKey as keyof typeof modelIcons] ?? fallbackModelIcon
+export function getModelIcon(model: Mojom.Model): string {
+  // Check if it's an Ollama model by endpoint
+  if (
+    model.options?.customModelOptions?.endpoint?.url === Mojom.OLLAMA_ENDPOINT
+  ) {
+    return 'ollama'
+  }
+  return modelIcons[model.key as keyof typeof modelIcons] ?? fallbackModelIcon
 }
 
 export const AUTOMATIC_MODEL_KEY = 'chat-automatic'

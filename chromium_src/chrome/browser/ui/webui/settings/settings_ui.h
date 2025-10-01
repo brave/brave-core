@@ -12,6 +12,7 @@
 namespace ai_chat::mojom {
 class AIChatSettingsHelper;
 class CustomizationSettingsHandler;
+class OllamaService;
 }  // namespace ai_chat::mojom
 
 namespace brave_account::mojom {
@@ -44,34 +45,37 @@ class ContainersSettingsHandler;
 #define BIND_CONTAINERS_INTERFACES
 #endif
 
-#define AddSettingsPageUIHandler(...)                                        \
-  AddSettingsPageUIHandler(__VA_ARGS__);                                     \
-                                                                             \
- public:                                                                     \
-  virtual void BindInterface(                                                \
-      mojo::PendingReceiver<commands::mojom::CommandsService>                \
-          pending_receiver) {}                                               \
-  virtual void BindInterface(                                                \
-      mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>            \
-          pending_receiver) {}                                               \
-  virtual void BindInterface(                                                \
-      mojo::PendingReceiver<ai_chat::mojom::CustomizationSettingsHandler>    \
-          pending_receiver) {}                                               \
-  virtual void BindInterface(                                                \
-      mojo::PendingReceiver<brave_account::mojom::Authentication>            \
-          pending_receiver) {}                                               \
-  virtual void BindInterface(                                                \
-      mojo::PendingReceiver<brave_account::mojom::RowHandlerFactory>         \
-          pending_receiver) {}                                               \
-  virtual void BindInterface(                                                \
-      mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService>       \
-          pending_receiver) {}                                               \
-  virtual void BindInterface(                                                \
-      mojo::PendingReceiver<brave_origin::mojom::BraveOriginSettingsHandler> \
-          pending_receiver) {}                                               \
-  BIND_CONTAINERS_INTERFACES                                                 \
-                                                                             \
- private:                                                                    \
+#define AddSettingsPageUIHandler(...)                                          \
+  AddSettingsPageUIHandler(__VA_ARGS__);                                       \
+                                                                               \
+ public:                                                                       \
+  virtual void BindInterface(                                                  \
+      mojo::PendingReceiver<commands::mojom::CommandsService>                  \
+          pending_receiver) {}                                                 \
+  virtual void BindInterface(                                                  \
+      mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>              \
+          pending_receiver) {}                                                 \
+  virtual void BindInterface(                                                  \
+      mojo::PendingReceiver<ai_chat::mojom::CustomizationSettingsHandler>      \
+          pending_receiver) {}                                                 \
+  virtual void BindInterface(                                                  \
+      mojo::PendingReceiver<ai_chat::mojom::OllamaService> pending_receiver) { \
+  }                                                                            \
+  virtual void BindInterface(                                                  \
+      mojo::PendingReceiver<brave_account::mojom::Authentication>              \
+          pending_receiver) {}                                                 \
+  virtual void BindInterface(                                                  \
+      mojo::PendingReceiver<brave_account::mojom::RowHandlerFactory>           \
+          pending_receiver) {}                                                 \
+  virtual void BindInterface(                                                  \
+      mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService>         \
+          pending_receiver) {}                                                 \
+  virtual void BindInterface(                                                  \
+      mojo::PendingReceiver<brave_origin::mojom::BraveOriginSettingsHandler>   \
+          pending_receiver) {}                                                 \
+  BIND_CONTAINERS_INTERFACES                                                   \
+                                                                               \
+ private:                                                                      \
   void UnUsed()
 
 #include <chrome/browser/ui/webui/settings/settings_ui.h>  // IWYU pragma: export
