@@ -51,7 +51,7 @@ std::optional<PsstPermissionInfo> PsstUiDelegateImpl::GetPsstPermissionInfo(
     const url::Origin& origin,
     const std::string& user_id) {
   auto* psst_permission_context =
-      BravePsstPermissionContextFactory::GetForBrowserContext(profile_);
+      BravePsstPermissionContextFactory::GetForProfile(profile_);
   if (!psst_permission_context) {
     return std::nullopt;
   }
@@ -61,7 +61,7 @@ std::optional<PsstPermissionInfo> PsstUiDelegateImpl::GetPsstPermissionInfo(
 void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
     base::Value::List urls_to_skip) {
   auto* psst_permission_context =
-      BravePsstPermissionContextFactory::GetForBrowserContext(profile_);
+      BravePsstPermissionContextFactory::GetForProfile(profile_);
   CHECK(psst_permission_context);
 
   // Create the PSST permission when user accepts the dialog
