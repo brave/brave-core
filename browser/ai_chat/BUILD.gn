@@ -263,7 +263,6 @@ source_set("unit_tests") {
   if (enable_brave_ai_chat_agent_profile) {
     sources += [
       "page_content_blocks_unittest.cc",
-      "tools/navigation_tool_unittest.cc",
       "tools/click_tool_unittest.cc",
       "tools/drag_and_release_tool_unittest.cc",
       "tools/history_tool_unittest.cc",

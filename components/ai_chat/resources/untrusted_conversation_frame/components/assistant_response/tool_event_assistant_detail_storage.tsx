@@ -27,11 +27,8 @@ const ToolEventContentAssistantDetailStorage: ToolComponent = (props) => {
     return ''
   }, [props.toolInput?.information, props.toolUseEvent.argumentsJson])
 
-
   content.expandedContent = (
-    <div className={styles.assistantStorageDetail}>
-      {detailText}
-    </div>
+    <div className={styles.assistantStorageDetail}>{detailText}</div>
   )
 
   return props.children(content)
