@@ -52,7 +52,6 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"
-#include "components/vector_icons/vector_icons.h"
 #include "ui/base/cursor/cursor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -182,144 +181,140 @@ class ShortcutBox : public views::View {
 BEGIN_METADATA(ShortcutBox)
 END_METADATA
 
-// class VerticalTabNewTabButton : public BraveNewTabButton {
-//   METADATA_HEADER(VerticalTabNewTabButton, BraveNewTabButton)
-//  public:
-//   VerticalTabNewTabButton(TabStrip* tab_strip,
-//                           PressedCallback callback,
-//                           const std::u16string& shortcut_text)
-//       : BraveNewTabButton(tab_strip, std::move(callback)) {
-//     // Turn off inkdrop to have same bg color with tab's.
-//     views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
+class VerticalTabNewTabButton : public BraveNewTabButton {
+  METADATA_HEADER(VerticalTabNewTabButton, BraveNewTabButton)
+ public:
+  VerticalTabNewTabButton(TabStrip* tab_strip,
+                          PressedCallback callback,
+                          const std::u16string& shortcut_text)
+      : BraveNewTabButton(tab_strip, std::move(callback)) {
+    // Turn off inkdrop to have same bg color with tab's.
+    views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
 
-//     // We're going to use flex layout for children of this class. Other
-//     children
-//     // from base classes should be handled out of flex layout.
-//     for (views::View* child : children()) {
-//       child->SetProperty(views::kViewIgnoredByLayoutKey, true);
-//     }
+    // We're going to use flex layout for children of this class. Other children
+    // from base classes should be handled out of flex layout.
+    for (views::View* child : children()) {
+      child->SetProperty(views::kViewIgnoredByLayoutKey, true);
+    }
 
-//     SetNotifyEnterExitOnChild(true);
+    SetNotifyEnterExitOnChild(true);
 
-//     constexpr int kNewTabVerticalPadding = 8;
-//     constexpr int kNewTabHorizontalPadding = 7;
-//     SetLayoutManager(std::make_unique<views::FlexLayout>())
-//         ->SetOrientation(views::LayoutOrientation::kHorizontal)
-//         .SetCrossAxisAlignment(views::LayoutAlignment::kStretch)
-//         .SetInteriorMargin(
-//             gfx::Insets::VH(kNewTabHorizontalPadding,
-//             kNewTabVerticalPadding));
+    constexpr int kNewTabVerticalPadding = 8;
+    constexpr int kNewTabHorizontalPadding = 7;
+    SetLayoutManager(std::make_unique<views::FlexLayout>())
+        ->SetOrientation(views::LayoutOrientation::kHorizontal)
+        .SetCrossAxisAlignment(views::LayoutAlignment::kStretch)
+        .SetInteriorMargin(
+            gfx::Insets::VH(kNewTabHorizontalPadding, kNewTabVerticalPadding));
 
-//     plus_icon_ = AddChildView(std::make_unique<views::ImageView>());
-//     plus_icon_->SetHorizontalAlignment(views::ImageView::Alignment::kCenter);
-//     plus_icon_->SetVerticalAlignment(views::ImageView::Alignment::kCenter);
-//     plus_icon_->SetImage(ui::ImageModel::FromVectorIcon(
-//         kLeoPlusAddIcon, kColorBraveVerticalTabNTBIconColor,
-//         /* icon_size= */ 16));
-//     plus_icon_->SetProperty(
-//         views::kFlexBehaviorKey,
-//         views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
-//                                  views::MaximumFlexSizeRule::kPreferred)
-//             .WithOrder(1));
+    plus_icon_ = AddChildView(std::make_unique<views::ImageView>());
+    plus_icon_->SetHorizontalAlignment(views::ImageView::Alignment::kCenter);
+    plus_icon_->SetVerticalAlignment(views::ImageView::Alignment::kCenter);
+    plus_icon_->SetImage(ui::ImageModel::FromVectorIcon(
+        kLeoPlusAddIcon, kColorBraveVerticalTabNTBIconColor,
+        /* icon_size= */ 16));
+    plus_icon_->SetProperty(
+        views::kFlexBehaviorKey,
+        views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
+                                 views::MaximumFlexSizeRule::kPreferred)
+            .WithOrder(1));
 
-//     text_ = AddChildView(std::make_unique<views::Label>(
-//         l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB)));
-//     text_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
-//     text_->SetVerticalAlignment(gfx::VerticalAlignment::ALIGN_MIDDLE);
-//     constexpr int kGapBetweenIconAndText = 16;
-//     text_->SetProperty(views::kMarginsKey,
-//                        gfx::Insets::TLBR(0, kGapBetweenIconAndText, 0, 0));
-//     text_->SetProperty(views::kFlexBehaviorKey,
-//                        views::FlexSpecification(
-//                            views::MinimumFlexSizeRule::kPreferredSnapToZero,
-//                            views::MaximumFlexSizeRule::kPreferred)
-//                            .WithOrder(3));
+    text_ = AddChildView(std::make_unique<views::Label>(
+        l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB)));
+    text_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
+    text_->SetVerticalAlignment(gfx::VerticalAlignment::ALIGN_MIDDLE);
+    constexpr int kGapBetweenIconAndText = 16;
+    text_->SetProperty(views::kMarginsKey,
+                       gfx::Insets::TLBR(0, kGapBetweenIconAndText, 0, 0));
+    text_->SetProperty(views::kFlexBehaviorKey,
+                       views::FlexSpecification(
+                           views::MinimumFlexSizeRule::kPreferredSnapToZero,
+                           views::MaximumFlexSizeRule::kPreferred)
+                           .WithOrder(3));
 
-//     constexpr int kFontSize = 12;
-//     const auto text_font = text_->font_list();
-//     text_->SetFontList(
-//         text_font.DeriveWithSizeDelta(kFontSize - text_font.GetFontSize()));
-//     text_->SetEnabledColor(kColorBraveVerticalTabNTBTextColor);
+    constexpr int kFontSize = 12;
+    const auto text_font = text_->font_list();
+    text_->SetFontList(
+        text_font.DeriveWithSizeDelta(kFontSize - text_font.GetFontSize()));
+    text_->SetEnabledColor(kColorBraveVerticalTabNTBTextColor);
 
-//     auto* spacer = AddChildView(std::make_unique<views::View>());
-//     spacer->SetProperty(
-//         views::kFlexBehaviorKey,
-//         views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
-//                                  views::MaximumFlexSizeRule::kUnbounded)
-//             .WithOrder(4));
+    auto* spacer = AddChildView(std::make_unique<views::View>());
+    spacer->SetProperty(
+        views::kFlexBehaviorKey,
+        views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                                 views::MaximumFlexSizeRule::kUnbounded)
+            .WithOrder(4));
 
-//     auto* shortcut_box =
-//         AddChildView(std::make_unique<ShortcutBox>(shortcut_text));
-//     shortcut_box->SetProperty(
-//         views::kMarginsKey, gfx::Insets::TLBR(0, kGapBetweenIconAndText, 0,
-//         0));
-//     shortcut_box->SetProperty(
-//         views::kFlexBehaviorKey,
-//         views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
-//                                  views::MaximumFlexSizeRule::kPreferred)
-//             .WithOrder(2));
+    auto* shortcut_box =
+        AddChildView(std::make_unique<ShortcutBox>(shortcut_text));
+    shortcut_box->SetProperty(
+        views::kMarginsKey, gfx::Insets::TLBR(0, kGapBetweenIconAndText, 0, 0));
+    shortcut_box->SetProperty(
+        views::kFlexBehaviorKey,
+        views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                                 views::MaximumFlexSizeRule::kPreferred)
+            .WithOrder(2));
 
-//     SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_NEW_TAB));
-//     SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB));
-//   }
+    SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_NEW_TAB));
+    SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB));
+  }
 
-//   ~VerticalTabNewTabButton() override = default;
+  ~VerticalTabNewTabButton() override = default;
 
-//   // BraveNewTabButton:
-//   SkPath GetBorderPath(const gfx::Point& origin,
-//                        bool extend_to_top) const override {
-//     auto contents_bounds = GetContentsBounds();
-//     SkPath path;
-//     const auto* widget = GetWidget();
-//     if (widget) {
-//       const float radius = GetCornerRadius();
-//       const gfx::Rect path_rect(origin.x(), origin.y(),
-//       contents_bounds.width(),
-//                                 contents_bounds.height());
-//       path.addRoundRect(RectToSkRect(path_rect), radius, radius);
-//       path.close();
-//     }
-//     return path;
-//   }
+  // BraveNewTabButton:
+  SkPath GetBorderPath(const gfx::Point& origin,
+                       bool extend_to_top) const override {
+    auto contents_bounds = GetContentsBounds();
+    SkPath path;
+    const auto* widget = GetWidget();
+    if (widget) {
+      const float radius = GetCornerRadius();
+      const gfx::Rect path_rect(origin.x(), origin.y(), contents_bounds.width(),
+                                contents_bounds.height());
+      path.addRoundRect(RectToSkRect(path_rect), radius, radius);
+      path.close();
+    }
+    return path;
+  }
 
-//   void PaintIcon(gfx::Canvas* canvas) override {
-//     // Bypass '+' painting as we have a |plus_icon_| for that.
-//     return;
-//   }
+  void PaintIcon(gfx::Canvas* canvas) override {
+    // Bypass '+' painting as we have a |plus_icon_| for that.
+    return;
+  }
 
-//   gfx::Insets GetInsets() const override {
-//     // This button doesn't need any insets. Invalidate parent's one.
-//     return gfx::Insets();
-//   }
+  gfx::Insets GetInsets() const override {
+    // This button doesn't need any insets. Invalidate parent's one.
+    return gfx::Insets();
+  }
 
-//   void OnPaintFill(gfx::Canvas* canvas) const override {
-//     // Invalidate upstream's paint operation.
-//     // We fill background whenever state changed to have same bg color with
-//     // tab's. See StateChanged().
-//     // It's difficult to have same bg color with ink drop.
-//   }
+  void OnPaintFill(gfx::Canvas* canvas) const override {
+    // Invalidate upstream's paint operation.
+    // We fill background whenever state changed to have same bg color with
+    // tab's. See StateChanged().
+    // It's difficult to have same bg color with ink drop.
+  }
 
-//   void StateChanged(ButtonState old_state) override {
-//     BraveNewTabButton::StateChanged(old_state);
+  void StateChanged(ButtonState old_state) override {
+    BraveNewTabButton::StateChanged(old_state);
 
-//     int bg_color_id = kColorToolbar;
-//     if (GetState() == views::Button::STATE_PRESSED) {
-//       bg_color_id = kColorBraveVerticalTabActiveBackground;
-//     } else if (GetState() == views::Button::STATE_HOVERED) {
-//       bg_color_id = kColorBraveVerticalTabHoveredBackground;
-//     }
+    int bg_color_id = kColorToolbar;
+    if (GetState() == views::Button::STATE_PRESSED) {
+      bg_color_id = kColorBraveVerticalTabActiveBackground;
+    } else if (GetState() == views::Button::STATE_HOVERED) {
+      bg_color_id = kColorBraveVerticalTabHoveredBackground;
+    }
 
-//     SetBackground(
-//         views::CreateRoundedRectBackground(bg_color_id, GetCornerRadius()));
-//   }
+    SetBackground(
+        views::CreateRoundedRectBackground(bg_color_id, GetCornerRadius()));
+  }
 
-//  private:
-//   raw_ptr<views::ImageView> plus_icon_ = nullptr;
-//   raw_ptr<views::Label> text_ = nullptr;
-// };
+ private:
+  raw_ptr<views::ImageView> plus_icon_ = nullptr;
+  raw_ptr<views::Label> text_ = nullptr;
+};
 
-// BEGIN_METADATA(VerticalTabNewTabButton)
-// END_METADATA
+BEGIN_METADATA(VerticalTabNewTabButton)
+END_METADATA
 
 class ResettableResizeArea : public views::ResizeArea {
   METADATA_HEADER(ResettableResizeArea, views::ResizeArea)
@@ -506,11 +501,11 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   separator_ = AddChildView(std::make_unique<views::View>());
   separator_->SetBackground(
       views::CreateSolidBackground(kColorBraveVerticalTabSeparator));
-  new_tab_button_ = AddChildView(std::make_unique<NewTabButton>(
-      original_region_view_->tab_strip_->controller(),
+  new_tab_button_ = AddChildView(std::make_unique<VerticalTabNewTabButton>(
+      original_region_view_->tab_strip_,
       base::BindRepeating(&TabStrip::NewTabButtonPressed,
                           base::Unretained(original_region_view_->tab_strip_)),
-      vector_icons::kAddIcon, Edge::kNone, Edge::kNone, browser_));
+      GetShortcutTextForNewTabButton(browser_view)));
 
   resize_area_ = AddChildView(std::make_unique<ResettableResizeArea>(this));
   SetBackground(views::CreateSolidBackground(kColorToolbar));
@@ -935,7 +930,7 @@ void BraveVerticalTabStripRegionView::OnThemeChanged() {
 
   UpdateBorder();
 
-  // new_tab_button_->FrameColorsChanged();
+  new_tab_button_->FrameColorsChanged();
 }
 
 void BraveVerticalTabStripRegionView::OnMouseExited(

@@ -26,7 +26,7 @@ class LabelButton;
 class MenuRunner;
 }  // namespace views
 
-class NewTabButton;
+class BraveNewTabButton;
 class BrowserView;
 class FullscreenController;
 class TabStripScrollContainer;
@@ -201,7 +201,7 @@ class BraveVerticalTabStripRegionView : public views::View,
   raw_ptr<views::View> separator_ = nullptr;
 
   // New tab button created for vertical tabs
-  raw_ptr<NewTabButton> new_tab_button_ = nullptr;
+  raw_ptr<BraveNewTabButton> new_tab_button_ = nullptr;
 
   raw_ptr<views::View> resize_area_ = nullptr;
   std::optional<int> resize_offset_;
