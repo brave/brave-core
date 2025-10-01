@@ -1,11 +1,3 @@
-# GitHub configuration
-/.github/CODEOWNERS @bridiver @bsclifton
-/.github/PULL_REQUEST_TEMPLATE.md @bsclifton
-/.github/ @brave/devops-team
-
-# Semgrep configuration
-/.semgrepignore @thypon
-
 build/commands/ @brave/build-commands-reviewers
 patches/ @brave/patch-reviewers
 chromium_src/ @brave/chromium-src-reviewers
@@ -215,6 +207,14 @@ android/java/org/chromium/chrome/browser/util/BraveDynamicColors.java @brave/And
 # Rust deps
 **/Cargo.* @brave/rust-deps-reviewers
 third_party/rust @bridiver @cdesouza-chromium
+
+# GitHub configuration
+/.github/CODEOWNERS @bridiver @bsclifton
+/.github/PULL_REQUEST_TEMPLATE.md @bsclifton
+/.github/ @brave/devops-team
+
+# Semgrep configuration
+/.semgrepignore @thypon
 
 # include_rules
 DEPS @brave/deps-reviewers
