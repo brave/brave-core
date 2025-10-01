@@ -17,6 +17,14 @@ import { useConversation } from '../../state/conversation_context'
 import { ModelMenuItem } from '../model_menu_item/model_menu_item'
 import styles from './style.module.scss'
 
+const AUTO_MODEL_KEY = 'chat-automatic'
+
+function isOllamaModel(model: Mojom.Model): boolean {
+  return !!(
+    model.options.customModelOptions?.endpoint.url === Mojom.OLLAMA_ENDPOINT
+  )
+}
+
 export function ModelSelector() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
