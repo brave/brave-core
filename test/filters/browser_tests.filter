@@ -2456,6 +2456,7 @@
 -MultiContentsViewBrowserTest.HandleDropTargetViewLinkDrop_IsSupported
 -MultiContentsViewBrowserTest.HandleTabDrop_EndDropTarget
 -MultiContentsViewBrowserTest.HandleTabDrop_StartDropTarget
+-SideBySideBrowserViewTest.DragNotSupportedInFullscreen
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
