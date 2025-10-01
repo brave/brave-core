@@ -201,8 +201,8 @@ const util = {
     return prog
   },
 
-  runGit: (repoPath, gitArgs, continueOnFail = false) => {
-    let prog = util.run('git', gitArgs, { cwd: repoPath, continueOnFail })
+  runGit: (repoPath, gitArgs, continueOnFail = false, options = {}) => {
+    let prog = util.run('git', gitArgs, { cwd: repoPath, continueOnFail, ...options})
 
     if (prog.status !== 0) {
       return null

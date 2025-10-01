@@ -34,7 +34,15 @@ program
     '--dry-run',
     "dry run, don't format files, just check if they are formatted",
   )
-  .parse(process.argv)
+  .option(
+    '--only-prettier',
+    'only run prettier, ignore the rest of the formatters.',
+  )
+  .option(
+    '--all-files',
+    'format all files, not just the changed files.'
+      + 'Only for prettier and mojom formatters.',
+  )
 
 // Replace the first 4 lines of the diff output with the before/after
 // format header.
@@ -47,6 +55,17 @@ const convertDiff = (diffOutput, file) => {
     `--- ${file} (original)\n+++ ${file} (reformatted)\n`
     + diffOutput.slice(pos + 1)
   return diffOutputWithHeader
+}
+
+const getAllFiles = () => {
+  return util
+    .runGit(
+      config.braveCoreDir,
+      ['ls-tree', 'HEAD', '--name-only', '-r'],
+      false,
+      { encoding: 'utf-8', maxBuffer: 10 * 1024 * 1024 },
+    )
+    .split('\n')
 }
 
 const formatOutput = (result) => {
@@ -87,33 +106,38 @@ const runFormat = async (options = {}) => {
 
   let formatIssues = []
 
-  const clFormatResult = util.run('git', [...args], {
-    ...cmdOptions,
-    continueOnFail: true,
-    skipLogging,
-    stdio: 'pipe',
-  })
+  const shouldRunGitClFormat = !options.onlyPrettier
+  const shouldRunPrettier = true
+  const shouldRunMojomFormat = !options.onlyPrettier
 
-  const clFormatOutput = formatOutput(clFormatResult)
+  if (shouldRunGitClFormat) {
+    const clFormatResult = util.run('git', [...args], {
+      ...cmdOptions,
+      continueOnFail: true,
+      skipLogging,
+      stdio: 'pipe',
+    })
 
-  if (clFormatResult.status === 2 && options.dryRun) {
-    formatIssues.push(clFormatOutput)
-  } else if (clFormatResult.status !== 0) {
-    Log.error('Fatal: git cl format failed:\n' + clFormatOutput)
-    process.exit(clFormatResult.status)
+    const clFormatOutput = formatOutput(clFormatResult)
+
+    if (clFormatResult.status === 2 && options.dryRun) {
+      formatIssues.push(clFormatOutput)
+    } else if (clFormatResult.status !== 0) {
+      Log.error('Fatal: git cl format failed:\n' + clFormatOutput)
+      process.exit(clFormatResult.status)
+    }
   }
 
-  const changedFiles = util.getChangedFiles(
-    config.braveCoreDir,
-    options.base,
-    skipLogging,
-  )
+  const filesToFormat = options.allFiles
+    ? getAllFiles()
+    : util.getChangedFiles(config.braveCoreDir, options.base, skipLogging)
 
-  formatIssues = [
-    ...formatIssues,
-    ...(await runPrettier(changedFiles, options.dryRun)),
-    ...(await runMojomFormat(changedFiles, options.dryRun)),
-  ]
+  if (shouldRunPrettier) {
+    formatIssues.push(...(await runPrettier(filesToFormat, options.dryRun)))
+  }
+  if (shouldRunMojomFormat) {
+    formatIssues.push(...(await runMojomFormat(filesToFormat, options.dryRun)))
+  }
 
   if (options.dryRun && formatIssues.length > 0) {
     console.error(formatIssues.join('\n'))
@@ -162,6 +186,7 @@ const runPrettierForFile = async (file, dryRun, options, ignorePath) => {
 }
 
 const runPrettier = async (files, dryRun) => {
+  console.log('run prettier for', files.length, 'files')
   const options = require(path.join(config.braveCoreDir, '.prettierrc'))
   const ignorePath = path.join(config.braveCoreDir, '.prettierignore')
   if (!fs.existsSync(ignorePath)) {
@@ -238,4 +263,5 @@ const runMojomFormat = async (files, dryRun) => {
   return mojomFormatIssues
 }
 
+program.parse(process.argv)
 runFormat(program.opts())

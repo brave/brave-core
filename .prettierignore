@@ -1,9 +1,9 @@
 # Don't add paths that are already ignored in .gitignore:
 # npm run format/presubmit does it automatically.
-# For manual run use :
-# npx prettier --ignore-path .prettierignore --ignore-path .gitignore .
+# For manual run:
+# npm run format -- --all-files --only-prettier [--dry-run]
 
-# Ignore HTML Files - incompatable with presubmit rules
+# Ignore HTML Files - incompatible with presubmit rules
 *.html
 
 # Ignore non-component top level folders (remove to opt-in):
