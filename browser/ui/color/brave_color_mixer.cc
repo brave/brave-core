@@ -374,6 +374,7 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorDownloadToolbarButtonActive] = {nala::kColorIconInteractive};
   mixer[kColorDownloadToolbarButtonRingBackground] = {SkColorSetA(
       mixer.GetResultColor(kColorDownloadToolbarButtonActive), 0.3 * 255)};
+  mixer[kColorToolbarActionItemEngaged] = {nala::kColorIconInteractive};
 
   key.color_mode == ui::ColorProviderKey::ColorMode::kDark
       ? AddChromeDarkThemeColorMixer(provider, key)
