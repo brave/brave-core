@@ -219,16 +219,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       Preferences.Search.shouldOverrideDSEForJapanRegion.value = false
     }
 
-    if FeatureList.kBraveSyncDefaultPasswords.enabled, isFirstLaunch {
-      // For new users, we want to enable by sync passwords by default.
-      // However, if we update the `defaultValue` then existing users
-      // who setup a sync chain but never enabled password sync would
-      // see password sync change to enabled. We only want this for new
-      // users, so we assign on first launch.
-      // This preference will be removed with brave-browser#47487.
-      Preferences.Chromium.syncPasswordsEnabled.value = true
-    }
-
     Preferences.General.isFirstLaunch.value = false
 
     Task {

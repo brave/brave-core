@@ -559,6 +559,9 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
   private func enableDefaultTypeAndPushSettings() {
     // Enable default sync type Bookmarks and push settings
     Preferences.Chromium.syncBookmarksEnabled.value = true
+    // when setting up a new chain, use the feature flag to determine if
+    // password sync is enabled or not
+    Preferences.Chromium.syncPasswordsEnabled.value = FeatureList.kBraveSyncDefaultPasswords.enabled
     syncAPI.enableSyncTypes(syncProfileService: syncProfileServices)
     pushSettings()
   }
