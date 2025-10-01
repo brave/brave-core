@@ -350,6 +350,7 @@ leo_icons = [
   "notification-off.svg",
   "notification.svg",
   "outside.svg",
+  "ollama.svg",
   "pause-filled.svg",
   "percent.svg",
   "picture-in-picture.svg",
