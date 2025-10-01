@@ -149,6 +149,12 @@ const toolEvents: Mojom.ToolUseEvent[] = [
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: undefined,
   },
+  {
+    id: 'abc123g',
+    toolName: Mojom.NAVIGATE_TOOL_NAME,
+    argumentsJson: JSON.stringify({ website_url: 'https://www.example.com' }),
+    output: undefined,
+  },
 ]
 
 const MEMORY_HISTORY: Mojom.ConversationTurn[] = [

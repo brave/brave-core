@@ -726,4 +726,10 @@
   <message name="IDS_CHAT_UI_MEMORY_ERROR_LABEL" desc="Message shown when memory storage fails" formatter_data="webui=AiChat">
     Failed to save memory. Please try again.
   </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE" desc="Label for the navigate web page tool" formatter_data="webui=AiChat">
+    Navigating the web page to a new address
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE_WITH_INPUT" desc="Label for the navigate web page tool with a known URL destination" formatter_data="webui=AiChat">
+    Navigated the web page to <ph name="URL">$1<ex>https://www.example.com</ex></ph>
+  </message>
 </grit-part>
