@@ -25,13 +25,14 @@ items:
 owners:
 - bbondy@brave.com
 - clifton@brave.com
+- aseren@brave.com
 schema:
   enum:
   - 1
   - 3
   type: integer
 supported_on:
-- chrome.*:140-
-- android:140-
+- chrome.*:141-
+- android:141-
 tags: []
 type: int-enum
