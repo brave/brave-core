@@ -1,3 +1,11 @@
+# GitHub configuration
+/.github/CODEOWNERS @bridiver @bsclifton
+/.github/PULL_REQUEST_TEMPLATE.md @bsclifton
+/.github/ @brave/devops-team
+
+# Semgrep configuration
+/.semgrepignore @thypon
+
 build/commands/ @brave/build-commands-reviewers
 patches/ @brave/patch-reviewers
 chromium_src/ @brave/chromium-src-reviewers
@@ -192,15 +200,6 @@ android/java/res @brave/Android
 # have that owners record temporary to avoid people adding
 # new things there
 android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java @AlexeyBarabash @samartnik @SergeyZhukovsky
-
-# GitHub configuration
-/.github/ @bridiver @cdesouza-chromium
-/.github/CODEOWNERS @bridiver @bsclifton
-/.github/PULL_REQUEST_TEMPLATE.md @bsclifton
-
-
-# Semgrep configuration
-/.semgrepignore @thypon
 
 # Deprecated android util directory
 android/java/org/chromium/chrome/browser/util @bridiver
