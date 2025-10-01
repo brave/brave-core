@@ -2425,6 +2425,10 @@ struct CardanoTxData {
   array<CardanoTxOutput> outputs;
 };
 
+struct PolkadotTxdata {
+  string to;
+};
+
 union TxDataUnion {
   TxData eth_tx_data;
   TxData1559 eth_tx_data_1559;
@@ -2433,6 +2437,7 @@ union TxDataUnion {
   BtcTxData btc_tx_data;
   ZecTxData zec_tx_data;
   CardanoTxData cardano_tx_data;
+  PolkadotTxdata polkadot_tx_data;
 };
 
 struct SwapInfo {
