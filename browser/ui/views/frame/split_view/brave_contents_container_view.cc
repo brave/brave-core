@@ -89,6 +89,15 @@ BraveContentsContainerView::BraveContentsContainerView(
 
 BraveContentsContainerView::~BraveContentsContainerView() = default;
 
+bool BraveContentsContainerView::IsActive() const {
+  auto* web_contents = contents_view_->web_contents();
+  if (!web_contents) {
+    return false;
+  }
+
+  return tabs::TabInterface::GetFromContents(web_contents)->IsActivated();
+}
+
 void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
                                                         bool is_active,
                                                         bool is_highlighted) {
@@ -100,6 +109,11 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
   // Don't draw any borders from outline.
   container_outline_->SetVisible(false);
   UpdateBorderRoundedCorners();
+
+  // Don't need mini toolbar for web panel.
+  if (for_web_panel_) {
+    mini_toolbar_->SetVisible(false);
+  }
 
   if (!is_in_split) {
     return;
