@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/wrapper b/chrome/installer/linux/common/wrapper
-index aaa46bf71f6a3..1f12c819d5345 100755
+index aaa46bf71f6a3..22e4412a127e1 100755
 --- a/chrome/installer/linux/common/wrapper
 +++ b/chrome/installer/linux/common/wrapper
 @@ -27,6 +27,40 @@ fi
@@ -21,9 +21,9 @@ index aaa46bf71f6a3..1f12c819d5345 100755
 +      "") return;;
 +      [[:space:]]*) parse_cfg_options "${line:1}"; return;;
 +      --+([![:space:]])=\"*\"*|--+([![:space:]])=\'*\'*)
-+        IFS="=" read -r key val_and_rest <<<"$line"
-+        IFS="${val_and_rest:0:1}" read -r _ val rest <<<"$val_and_rest"
-+        opt="$key=$val";;
++          IFS="=" read -r key val_and_rest <<<"$line"
++          IFS="${val_and_rest:0:1}" read -r _ val rest <<<"$val_and_rest"
++          opt="$key=$val";;
 +      *) read -r opt rest <<<"$line";;
 +    esac
 +
