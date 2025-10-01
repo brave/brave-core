@@ -46,11 +46,12 @@ public class BraveVpnProfileUtils {
         boolean isVpnConnected = false;
         if (connectivityManager != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(
-                        connectivityManager.getActiveNetwork());
-                isVpnConnected = capabilities != null
-                        ? capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
-                        : false;
+                NetworkCapabilities capabilities =
+                        connectivityManager.getNetworkCapabilities(
+                                connectivityManager.getActiveNetwork());
+                isVpnConnected =
+                        capabilities != null
+                                && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN);
             } else {
                 NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
                 isVpnConnected = activeNetwork.getType() == ConnectivityManager.TYPE_VPN;

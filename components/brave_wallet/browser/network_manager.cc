@@ -1229,7 +1229,7 @@ bool NetworkManager::IsEip1559Chain(std::string_view chain_id) {
   }
   const auto* known_chain =
       base::FindOrNull(kEip1559ForKnownChains, chain_id_lwr);
-  return known_chain ? *known_chain : false;
+  return known_chain && *known_chain;
 }
 
 void NetworkManager::SetEip1559ForCustomChain(std::string_view chain_id,

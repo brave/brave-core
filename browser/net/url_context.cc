@@ -107,25 +107,22 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->allow_brave_shields =
       map ? brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin) : true;
   ctx->allow_ads =
-      map ? brave_shields::GetAdControlType(map, ctx->tab_origin) ==
-                brave_shields::ControlType::ALLOW
-          : false;
+      map && brave_shields::GetAdControlType(map, ctx->tab_origin) ==
+                 brave_shields::ControlType::ALLOW;
   // Currently, "aggressive" mode is registered as a cosmetic filtering control
   // type, even though it can also affect network blocking.
   ctx->aggressive_blocking =
-      map ? brave_shields::GetCosmeticFilteringControlType(
-                map, ctx->tab_origin) == brave_shields::ControlType::BLOCK
-          : false;
+      map && brave_shields::GetCosmeticFilteringControlType(
+                 map, ctx->tab_origin) == brave_shields::ControlType::BLOCK;
 
   // HACK: after we fix multiple creations of BraveRequestInfo we should
   // use only tab_origin. Since we recreate BraveRequestInfo during consequent
   // stages of navigation, |tab_origin| changes and so does |allow_referrers|
   // flag, which is not what we want for determining referrers.
   ctx->allow_referrers =
-      map ? brave_shields::AreReferrersAllowed(
-                map, ctx->redirect_source.is_empty() ? ctx->tab_origin
-                                                     : ctx->redirect_source)
-          : false;
+      map && brave_shields::AreReferrersAllowed(
+                 map, ctx->redirect_source.is_empty() ? ctx->tab_origin
+                                                      : ctx->redirect_source);
   ctx->upload_data = GetUploadData(request);
 
   ctx->browser_context = browser_context;
