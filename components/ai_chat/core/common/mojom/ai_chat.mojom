@@ -710,6 +710,8 @@ interface UntrustedConversationUI {
   OnToolUseEventOutput(string entry_uuid, ToolUseEvent tool_use);
   OnEntriesUIStateChanged(ConversationEntriesState state);
 
+  ContentTaskStarted(int32 tab_id);
+
   // Called when the associated content is changed - called when the untrusted
   // conversation frame is attached and when the content is changed.
   AssociatedContentChanged(array<AssociatedContent> associated_content);
