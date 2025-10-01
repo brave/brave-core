@@ -43,7 +43,6 @@ import org.chromium.chrome.browser.settings.ProfileDependentSetting;
 import org.chromium.chrome.browser.signin.services.UnifiedConsentServiceBridge;
 import org.chromium.chrome.browser.toolbar.R;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
-import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarPrefs;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarStatePredictor;
 import org.chromium.chrome.browser.toolbar.adaptive.BraveAdaptiveToolbarPrefs;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -121,19 +120,14 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
                     Assert.assertFalse(
                             ChromeSharedPreferences.getInstance()
                                     .contains(ADAPTIVE_TOOLBAR_CUSTOMIZATION_ENABLED));
-                    Assert.assertTrue(AdaptiveToolbarPrefs.isCustomizationPreferenceEnabled());
+                    Assert.assertFalse(
+                            BraveAdaptiveToolbarPrefs.isCustomizationPreferenceEnabled());
 
                     mSwitchPreference.performClick();
-                    Assert.assertFalse(AdaptiveToolbarPrefs.isCustomizationPreferenceEnabled());
+                    Assert.assertTrue(BraveAdaptiveToolbarPrefs.isCustomizationPreferenceEnabled());
                     Assert.assertTrue(
                             ChromeSharedPreferences.getInstance()
                                     .contains(ADAPTIVE_TOOLBAR_CUSTOMIZATION_ENABLED));
-                    Assert.assertFalse(
-                            ChromeSharedPreferences.getInstance()
-                                    .readBoolean(ADAPTIVE_TOOLBAR_CUSTOMIZATION_ENABLED, false));
-
-                    mSwitchPreference.performClick();
-                    Assert.assertTrue(AdaptiveToolbarPrefs.isCustomizationPreferenceEnabled());
                     Assert.assertTrue(
                             ChromeSharedPreferences.getInstance()
                                     .readBoolean(ADAPTIVE_TOOLBAR_CUSTOMIZATION_ENABLED, false));
