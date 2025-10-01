@@ -1,0 +1,76 @@
+diff --git a/base/test/launcher/test_launcher.cc b/base/test/launcher/test_launcher.cc
+index cdf5a6e7afaa10692f5a3341747b8dbd65815703..8ca1e02082b47dbd3c8a815cd72fc4113baab27f 100644
+--- a/base/test/launcher/test_launcher.cc
++++ b/base/test/launcher/test_launcher.cc
+@@ -1472,6 +1472,7 @@ void TestLauncher::OnTestFinished(const TestResult& original_result) {
+ bool LoadFilterFile(const FilePath& file_path,
+                     std::vector<std::string>* positive_filter,
+                     std::vector<std::string>* negative_filter) {
++  LOG(INFO) << "[!!] Loading filter: " << file_path;
+   std::string file_content;
+   if (!ReadFileToString(file_path, &file_content)) {
+     LOG(ERROR) << "Failed to read the filter file.";
+@@ -1511,8 +1512,10 @@ bool LoadFilterFile(const FilePath& file_path,
+     }
+ 
+     if (trimmed_line[0] == '-') {
++      LOG(INFO) << "[!!] [FILTER]: " << trimmed_line;
+       negative_filter->push_back(trimmed_line.substr(1));
+     } else {
++      LOG(INFO) << "[!!] UNEXPECTED POSITIVE FILTER: " << trimmed_line;
+       positive_filter->push_back(trimmed_line);
+     }
+   }
+@@ -2070,6 +2073,11 @@ std::vector<std::string> TestLauncher::CollectTests() {
+       negative_exact_filter.insert(filter);
+     }
+   }
++  LOG(INFO) << "[!!] [+*FILTER #]: " << positive_wildcards_filter.size();
++  LOG(INFO) << "[!!] [+FILTER #]: " << positive_exact_filter.size();
++  LOG(INFO) << "[!!] [-*FILTER #]: " << negative_wildcards_filter.size();
++  LOG(INFO) << "[!!] [-FILTER #]: " << negative_exact_filter.size();
++  LOG(INFO) << "[!!] Processing " << tests_.size() << " unfiltered tests:";
+ 
+   for (const TestInfo& test_info : tests_) {
+     std::string test_name = test_info.GetFullName();
+@@ -2083,6 +2091,8 @@ std::vector<std::string> TestLauncher::CollectTests() {
+                    positive_exact_filter.find(prefix_stripped_name) !=
+                        positive_exact_filter.end();
+       if (found && enforce_exact_postive_filter_) {
++        LOG(INFO) << "[!!] Test " << test_name
++                   << " is enforced exact positive test";
+         enforced_positive_tests.insert(prefix_stripped_name);
+       }
+       if (!found) {
+@@ -2103,6 +2113,7 @@ std::vector<std::string> TestLauncher::CollectTests() {
+     if (negative_exact_filter.find(test_name) != negative_exact_filter.end() ||
+         negative_exact_filter.find(prefix_stripped_name) !=
+             negative_exact_filter.end()) {
++      LOG(INFO) << "[!!] [-SKIPPING:] " << test_name;
+       continue;
+     }
+ 
+@@ -2110,6 +2121,8 @@ std::vector<std::string> TestLauncher::CollectTests() {
+     for (std::string_view filter : negative_wildcards_filter) {
+       if (MatchPattern(test_name, filter) ||
+           MatchPattern(prefix_stripped_name, filter)) {
++        LOG(INFO) << "[!!] [-SKIPPING*:] " << test_name << " (" << filter
++                   << ")";
+         excluded = true;
+         break;
+       }
+@@ -2121,9 +2134,14 @@ std::vector<std::string> TestLauncher::CollectTests() {
+     // Tests with the name XYZ will cause tests with the name PRE_XYZ to run. We
+     // should bucket all of these tests together.
+     if (!ShouldRunInCurrentShard(prefix_stripped_name)) {
++      LOG(INFO) << "[!!] [-SKIPPING-SHARD:] " << prefix_stripped_name;
+       continue;
+     }
+ 
++    if (test_name == "PrefServiceTest.GetValueWithTypeConversion") {
++      LOG(ERROR) << "TestLauncher::CollectTests: [!!ERROR!!] " << test_name;
++    }
++
+     // Report test locations after applying all filters, so that we report test
+     // locations only for those tests that were run as part of this shard.
+     results_tracker_.AddTestLocation(test_name, test_info.file(),
