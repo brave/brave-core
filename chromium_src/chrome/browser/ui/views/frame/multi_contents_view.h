@@ -11,8 +11,13 @@
   virtual void ResetResizeArea() {} \
   friend class BraveMultiContentsView
 
+#define UpdateContentsBorderAndOverlay virtual UpdateContentsBorderAndOverlay
+#define OnWebContentsFocused virtual OnWebContentsFocused
+
 #include <chrome/browser/ui/views/frame/multi_contents_view.h>  // IWYU pragma: export
 
+#undef OnWebContentsFocused
+#undef UpdateContentsBorderAndOverlay
 #undef UpdateSplitRatio
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_MULTI_CONTENTS_VIEW_H_

@@ -22,6 +22,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
@@ -773,7 +774,7 @@ class SidebarBrowserWithWebPanelTest
       public testing::WithParamInterface<bool> {
  public:
   SidebarBrowserWithWebPanelTest() {
-    if (IsWebPanelEnabled()) {
+    if (GetParam()) {
       scoped_features_.InitAndEnableFeature(
           sidebar::features::kSidebarWebPanel);
     }
@@ -791,6 +792,10 @@ class SidebarBrowserWithWebPanelTest
 
   bool IsWebPanelEnabled() const {
     return base::FeatureList::IsEnabled(features::kSidebarWebPanel);
+  }
+
+  SidebarWebPanelController* web_panel_controller() {
+    return controller()->GetWebPanelController();
   }
 
  private:
@@ -850,19 +855,17 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
   }));
   EXPECT_EQ(contents_container_view_for_web_panel->bounds().origin(),
             GetBraveMultiContentsView()
-                    ->GetActiveContentsContainerView()
-                    ->bounds()
-                    .top_right() -
-                gfx::Vector2d(0, /*contents separator=*/1));
+                ->GetActiveContentsContainerView()
+                ->bounds()
+                .top_right());
 
   GetBraveMultiContentsView()->SetWebPanelOnLeft(true);
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return contents_container_view_for_web_panel->bounds().top_right() ==
            GetBraveMultiContentsView()
-                   ->GetActiveContentsContainerView()
-                   ->bounds()
-                   .origin() -
-               gfx::Vector2d(0, /*contents separator*/ 1);
+               ->GetActiveContentsContainerView()
+               ->bounds()
+               .origin();
   }));
 
   contents_container_view_for_web_panel->SetVisible(false);
@@ -875,15 +878,93 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
   EXPECT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
 
   // Activate web panel item and check panel gets visible.
+  // We have 1 tabs now and will check another pinned tab is created for web
+  // panel.
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(1, tab_strip_model->count());
+
   const int web_panel_item_index = model()->GetAllSidebarItems().size() - 1;
   EXPECT_TRUE(
       model()->GetAllSidebarItems()[web_panel_item_index].is_web_panel_type());
   controller()->ActivateItemAt(web_panel_item_index);
   EXPECT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
 
+  // Now we have another pinned tab for web panel at 0.
+  EXPECT_EQ(2, tab_strip_model->count());
+  auto* tab_for_web_panel = tab_strip_model->GetTabAtIndex(0);
+  EXPECT_TRUE(tab_for_web_panel->IsPinned());
+  EXPECT_FALSE(tab_for_web_panel->IsActivated());
+  EXPECT_EQ(tab_for_web_panel->GetContents(),
+            web_panel_controller()->panel_contents());
+
   // Toggle web panel item and check panel gets hidden.
   controller()->ActivateItemAt(web_panel_item_index);
+  EXPECT_FALSE(web_panel_controller()->panel_contents());
   EXPECT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
+  EXPECT_EQ(1, tab_strip_model->count());
+
+  // Cache current tab contents to check its not changed when web panel is
+  // activated.
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* web_contents_for_tab_contents =
+      browser_view->contents_web_view()->GetWebContents();
+
+  // Open web panel.
+  controller()->ActivateItemAt(web_panel_item_index);
+  EXPECT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
+  EXPECT_EQ(2, tab_strip_model->count());
+  tab_for_web_panel = tab_strip_model->GetTabAtIndex(0);
+  EXPECT_EQ(tab_for_web_panel->GetContents(),
+            web_panel_controller()->panel_contents());
+
+  // Activate web panel contents.
+  // Check panel contents is activated in tab model and it doesn't affect
+  // tab contents;
+  GetBraveMultiContentsView()->OnWebContentsFocused(
+      contents_container_view_for_web_panel->contents_view());
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  EXPECT_EQ(web_contents_for_tab_contents,
+            browser_view->contents_web_view()->GetWebContents());
+
+  // Check tab contents test with split view.
+  GetBraveMultiContentsView()->OnWebContentsFocused(
+      GetBraveMultiContentsView()->GetActiveContentsView());
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+  EXPECT_EQ(2, tab_strip_model->active_index());
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsSplit());
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(2)->IsSplit());
+
+  // Cache current active/inactive split tab contents and check both are not
+  // changed when web panel is activated.
+  auto* active_split_tab_contents =
+      GetBraveMultiContentsView()->GetActiveContentsView()->GetWebContents();
+  auto* inactive_split_tab_contents =
+      GetBraveMultiContentsView()->GetInactiveContentsView()->GetWebContents();
+  web_panel_controller()->panel_contents()->GetDelegate()->ActivateContents(
+      web_panel_controller()->panel_contents());
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  EXPECT_EQ(
+      active_split_tab_contents,
+      GetBraveMultiContentsView()->GetActiveContentsView()->GetWebContents());
+  EXPECT_EQ(
+      inactive_split_tab_contents,
+      GetBraveMultiContentsView()->GetInactiveContentsView()->GetWebContents());
+
+  // Check web panel is closed by closing its pinned tab.
+  tab_for_web_panel->Close();
+  EXPECT_FALSE(web_panel_controller()->panel_contents());
+  EXPECT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  // Check tab contents are not affected by closing web panel.
+  tab_strip_model->ActivateTabAt(1);
+  EXPECT_EQ(
+      active_split_tab_contents,
+      GetBraveMultiContentsView()->GetActiveContentsView()->GetWebContents());
+  EXPECT_EQ(
+      inactive_split_tab_contents,
+      GetBraveMultiContentsView()->GetInactiveContentsView()->GetWebContents());
 }
 
 INSTANTIATE_TEST_SUITE_P(
