@@ -17,6 +17,7 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/values.h"
@@ -32,7 +33,6 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "net/url_request/url_request.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -165,19 +165,15 @@ class BridgeRequest {
     simple_url_loader_.reset();
 
     if (!response_body) {
-      OnCaptchaParsed(base::unexpected("Request has failed."));
-    } else {
-      data_decoder::DataDecoder::ParseJsonIsolated(
-          *response_body, base::BindOnce(&BridgeRequest::OnCaptchaParsed,
-                                         weak_factory_.GetWeakPtr()));
-    }
-  }
-
-  void OnCaptchaParsed(data_decoder::DataDecoder::ValueOrError value) {
-    if (!value.has_value() || !value->is_dict()) {
       return std::move(captcha_callback_).Run(base::Value());
     }
-    const auto* data = value->GetDict().FindList("data");
+    std::optional<base::Value::Dict> value =
+        base::JSONReader::ReadDict(*response_body, base::JSON_PARSE_RFC);
+
+    if (!value.has_value()) {
+      return std::move(captcha_callback_).Run(base::Value());
+    }
+    const auto* data = value->FindList("data");
     if (!data || data->empty()) {
       return std::move(captcha_callback_).Run(base::Value());
     }
@@ -224,19 +220,16 @@ class BridgeRequest {
     simple_url_loader_.reset();
 
     if (!response_body) {
-      OnBridgesParsed(base::unexpected("Request has failed."));
-    } else {
-      data_decoder::DataDecoder::ParseJsonIsolated(
-          *response_body, base::BindOnce(&BridgeRequest::OnBridgesParsed,
-                                         weak_factory_.GetWeakPtr()));
-    }
-  }
-
-  void OnBridgesParsed(data_decoder::DataDecoder::ValueOrError value) {
-    if (!value.has_value() || !value->is_dict()) {
       return std::move(result_callback_).Run(base::Value());
     }
-    const auto* data = value->GetDict().FindList("data");
+
+    std::optional<base::Value::Dict> value =
+        base::JSONReader::ReadDict(*response_body, base::JSON_PARSE_RFC);
+
+    if (!value.has_value()) {
+      return std::move(result_callback_).Run(base::Value());
+    }
+    const auto* data = value->FindList("data");
     if (!data || data->empty() || !data->front().is_dict() ||
         !data->front().GetDict().FindList("bridges")) {
       return std::move(result_callback_).Run(base::Value());
