@@ -15,6 +15,7 @@
 /common
 /content
 /coverage
+/docs
 /extensions
 /fuzzers
 /installer
@@ -42,8 +43,13 @@ tools/crates/vendor/
 # Ignore github .yml files:
 .github/**/*.yml
 
-# Ignored markdown files:
-*.md
+# Ignored some markdown files:
+.github/PULL_REQUEST_TEMPLATE.md
+CONTRIBUTING.md
+README.md
+browser/ui/commander/fuzzy_finder.md
+browser/ui/views/brave_ads/overview.md
+components/ai_chat/core/browser/tools/tools.md
 
 # Ignored top-level files:
 .clang-tidy
