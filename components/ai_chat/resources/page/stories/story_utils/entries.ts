@@ -3,11 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as Mojom from './mojom'
+import * as Mojom from '../../../common/mojom'
 
-const eventTemplate: Mojom.ConversationEntryEvent = {
-  // Mojom doesn't want us to have these undefined properties (it wants the properties
-  // not to be present) but typescript, based on the generated mojom JS, needs them.
+export const eventTemplate: Mojom.ConversationEntryEvent = {
   completionEvent: undefined,
   searchQueriesEvent: undefined,
   searchStatusEvent: undefined,
@@ -18,10 +16,6 @@ const eventTemplate: Mojom.ConversationEntryEvent = {
   toolUseEvent: undefined,
 }
 
-export function getEventTemplate() {
-  return { ...eventTemplate }
-}
-
 export function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
@@ -29,12 +23,19 @@ export function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
   }
 }
 
-export function getToolUseEvent(
-  toolUseEvent: Mojom.ToolUseEvent,
+export function getSearchEvent(
+  queries: string[],
 ): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
-    toolUseEvent,
+    searchQueriesEvent: { searchQueries: queries },
+  }
+}
+
+export function getSearchStatusEvent(): Mojom.ConversationEntryEvent {
+  return {
+    ...eventTemplate,
+    searchStatusEvent: { isSearching: true },
   }
 }
 
