@@ -13,6 +13,7 @@ export type ConversationEntriesUIState = Mojom.ConversationEntriesState & {
   conversationHistory: Mojom.ConversationTurn[]
   isMobile: boolean
   associatedContent: Mojom.AssociatedContent[]
+  contentTaskTabId?: number
 }
 
 // Default state before initial API call
@@ -131,6 +132,14 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
         if (updatedHistory) {
           this.setPartialState({ conversationHistory: updatedHistory })
         }
+      },
+    )
+
+    this.conversationObserver.contentTaskStarted.addListener(
+      (tabId: number) => {
+        // Get event from Conversation and ask UI Handler for thumbnails
+        this.setPartialState({ contentTaskTabId: tabId })
+        this.uiHandler.addTabToThumbnailTracker(tabId)
       },
     )
 

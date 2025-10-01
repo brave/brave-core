@@ -7,6 +7,7 @@ import * as React from 'react'
 import { Meta } from '@storybook/react'
 import { InferControlsFromArgs } from '../../../../../../.storybook/utils'
 import { taskConversationEntries } from '../../../page/stories/story_utils/history'
+import MockContext from '../../mock_untrusted_conversation_context'
 import AssistantTask from './assistant_task'
 
 type CustomArgs = {
@@ -22,12 +23,14 @@ const args: CustomArgs = {
 export const _AssistantTask = {
   render: () => {
     return (
-      <AssistantTask
-        assistantEntries={taskConversationEntries}
-        isActiveTask={args.isActiveTask}
-        isGenerating={args.isGenerating}
-        isLeoModel={true}
-      />
+      <MockContext>
+        <AssistantTask
+          assistantEntries={taskConversationEntries}
+          isActiveTask={args.isActiveTask}
+          isGenerating={args.isGenerating}
+          isLeoModel={true}
+        />
+      </MockContext>
     )
   },
 }
