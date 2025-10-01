@@ -184,10 +184,12 @@ END_METADATA
 class VerticalTabNewTabButton : public BraveNewTabButton {
   METADATA_HEADER(VerticalTabNewTabButton, BraveNewTabButton)
  public:
-  VerticalTabNewTabButton(TabStrip* tab_strip,
+  VerticalTabNewTabButton(TabStripController* tab_strip_controller,
                           PressedCallback callback,
                           const std::u16string& shortcut_text)
-      : BraveNewTabButton(tab_strip, std::move(callback)) {
+      : BraveNewTabButton(tab_strip_controller,
+                          std::move(callback),
+                          kLeoPlusAddIcon) {
     // Turn off inkdrop to have same bg color with tab's.
     views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
 
@@ -261,41 +263,19 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
   ~VerticalTabNewTabButton() override = default;
 
-  // BraveNewTabButton:
-  SkPath GetBorderPath(const gfx::Point& origin,
-                       bool extend_to_top) const override {
-    auto contents_bounds = GetContentsBounds();
-    SkPath path;
-    const auto* widget = GetWidget();
-    if (widget) {
-      const float radius = GetCornerRadius();
-      const gfx::Rect path_rect(origin.x(), origin.y(), contents_bounds.width(),
-                                contents_bounds.height());
-      path.addRoundRect(RectToSkRect(path_rect), radius, radius);
-      path.close();
-    }
-    return path;
-  }
-
-  void PaintIcon(gfx::Canvas* canvas) override {
-    // Bypass '+' painting as we have a |plus_icon_| for that.
-    return;
-  }
-
   gfx::Insets GetInsets() const override {
     // This button doesn't need any insets. Invalidate parent's one.
     return gfx::Insets();
   }
 
-  void OnPaintFill(gfx::Canvas* canvas) const override {
-    // Invalidate upstream's paint operation.
-    // We fill background whenever state changed to have same bg color with
-    // tab's. See StateChanged().
-    // It's difficult to have same bg color with ink drop.
-  }
-
   void StateChanged(ButtonState old_state) override {
     BraveNewTabButton::StateChanged(old_state);
+    UpdateColors();
+  }
+
+ private:
+  void UpdateColors() override {
+    BraveNewTabButton::UpdateColors();
 
     int bg_color_id = kColorToolbar;
     if (GetState() == views::Button::STATE_PRESSED) {
@@ -308,7 +288,6 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
         views::CreateRoundedRectBackground(bg_color_id, GetCornerRadius()));
   }
 
- private:
   raw_ptr<views::ImageView> plus_icon_ = nullptr;
   raw_ptr<views::Label> text_ = nullptr;
 };
@@ -502,7 +481,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   separator_->SetBackground(
       views::CreateSolidBackground(kColorBraveVerticalTabSeparator));
   new_tab_button_ = AddChildView(std::make_unique<VerticalTabNewTabButton>(
-      original_region_view_->tab_strip_,
+      original_region_view_->tab_strip_->controller(),
       base::BindRepeating(&TabStrip::NewTabButtonPressed,
                           base::Unretained(original_region_view_->tab_strip_)),
       GetShortcutTextForNewTabButton(browser_view)));
@@ -929,8 +908,6 @@ void BraveVerticalTabStripRegionView::OnThemeChanged() {
   View::OnThemeChanged();
 
   UpdateBorder();
-
-  new_tab_button_->FrameColorsChanged();
 }
 
 void BraveVerticalTabStripRegionView::OnMouseExited(
