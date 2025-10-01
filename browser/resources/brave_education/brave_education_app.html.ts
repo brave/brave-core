@@ -3,14 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {html} from '//resources/lit/v3_0/lit.rollup.js';
+import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
-import type {BraveEducationAppElement} from './brave_education_app.js';
+import type { BraveEducationAppElement } from './brave_education_app.js'
 
 export function getHtml(this: BraveEducationAppElement) {
-  return this.url_ ?
-      html`<iframe id="content" src="${
-          this.url_}" sandbox="allow-scripts allow-same-origin allow-popups
-          allow-popups-to-escape-sandbox"></iframe>` :
-      '';
+  return this.url_
+    ? html`<iframe
+        id="content"
+        src="${this.url_}"
+        sandbox="allow-scripts allow-same-origin allow-popups
+          allow-popups-to-escape-sandbox"
+      ></iframe>`
+    : ''
 }
