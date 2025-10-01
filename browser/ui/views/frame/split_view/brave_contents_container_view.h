@@ -35,6 +35,11 @@ class BraveContentsContainerView :
   explicit BraveContentsContainerView(BrowserView* browser_view);
   ~BraveContentsContainerView() override;
 
+  void set_for_web_panel(bool for_web_panel) { for_web_panel_ = for_web_panel; }
+
+  // true when a tab that wraps this container's web contents is active.
+  bool IsActive() const;
+
   // ContentsContainerView:
   void UpdateBorderAndOverlay(bool is_in_split,
                               bool is_active,
@@ -58,6 +63,9 @@ class BraveContentsContainerView :
   gfx::RoundedCornersF GetCornerRadius(bool for_border) const;
 
   raw_ref<BrowserView> browser_view_;
+
+  // true when this view is used for web panel.
+  bool for_web_panel_ = false;
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   raw_ptr<ReaderModeToolbarView> reader_mode_toolbar_ = nullptr;
