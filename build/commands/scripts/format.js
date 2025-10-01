@@ -43,6 +43,7 @@ program
     'format all files, not just the changed files.'
       + 'Only for prettier and mojom formatters.',
   )
+  .action(runFormat)
 
 // Replace the first 4 lines of the diff output with the before/after
 // format header.
@@ -76,7 +77,7 @@ const formatOutput = (result) => {
 
 // A function that formats the code in the current diff with base branch.
 // It uses git cl format and prettier, then aggregates the results.
-const runFormat = async (options = {}) => {
+async function runFormat(options = {}) {
   if (!options.base) {
     options.base = 'origin/master'
   }
@@ -264,4 +265,3 @@ const runMojomFormat = async (files, dryRun) => {
 }
 
 program.parse(process.argv)
-runFormat(program.opts())
