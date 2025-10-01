@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_GROUP_HIGHLIGHT_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_GROUP_HIGHLIGHT_H_
 
+#include "ui/base/metadata/metadata_header_macros.h"
+
 #define GetPath                        \
   GetPath_Unused() { return {}; }      \
   friend class BraveTabGroupHighlight; \
