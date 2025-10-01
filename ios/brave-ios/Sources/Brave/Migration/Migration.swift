@@ -563,9 +563,6 @@ extension Preferences.Option {
   }
 
   fileprivate var isValueStored: Bool {
-    guard let value = container.object(forKey: key) else {
-      return false
-    }
-    return (value as? ValueType) != nil
+    (container.object(forKey: key) as? ValueType) != nil
   }
 }
