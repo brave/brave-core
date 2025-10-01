@@ -565,7 +565,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
 
   WaitUntil(base::BindLambdaForTesting([&] {
     auto* add_bubble = views::AsViewClass<PlaylistAddBubbleView>(GetBubble());
-    return add_bubble ? !add_bubble->loading_spinner_->GetVisible() : false;
+    return add_bubble && !add_bubble->loading_spinner_->GetVisible();
   }));
 
   EXPECT_TRUE(playlist_tab_helper->saved_items().empty());

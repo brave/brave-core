@@ -206,7 +206,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
   }
 
   bool HasPendingGetContentRequest() {
-    return chat_tab_helper_->pending_get_page_content_callback_ ? true : false;
+    return !!chat_tab_helper_->pending_get_page_content_callback_;
   }
 
   std::optional<std::vector<ai_chat::mojom::UploadedFilePtr>>

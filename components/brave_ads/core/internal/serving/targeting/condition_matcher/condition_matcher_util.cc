@@ -77,7 +77,7 @@ bool MatchConditions(const base::Value::Dict& virtual_prefs,
           return MatchCondition(value.value_or("0"), condition);
         }
 
-        return value ? MatchCondition(*value, condition) : false;
+        return value && MatchCondition(*value, condition);
       });
 }
 

@@ -78,8 +78,7 @@ BraveNewTabUI::BraveNewTabUI(
 
   content::NavigationEntry* navigation_entry =
       web_contents->GetController().GetLastCommittedEntry();
-  const bool was_restored =
-      navigation_entry ? navigation_entry->IsRestored() : false;
+  const bool was_restored = navigation_entry && navigation_entry->IsRestored();
 
   Profile* profile = Profile::FromWebUI(web_ui);
   web_ui->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
