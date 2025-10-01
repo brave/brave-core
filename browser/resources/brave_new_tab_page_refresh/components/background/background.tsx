@@ -174,11 +174,20 @@ function useSafeAreaReporter(frameHandle?: IframeBackgroundHandle) {
       return
     }
 
+    const widgetContainer =
+      document.querySelector<HTMLDivElement>('.widget-container')
+
     const postSafeArea = debounce(() => {
       if (!safeArea) {
         return
       }
       const rect = safeArea.getBoundingClientRect()
+      const insets = { top: 0, left: 0, bottom: 0, right: 0 }
+      if (widgetContainer) {
+        const widgetRect = widgetContainer.getBoundingClientRect()
+        insets.left = widgetRect.x - rect.x
+        insets.right = rect.right - widgetRect.right
+      }
       frameHandle.postMessage({
         type: 'richMediaSafeRect',
         value: {
@@ -186,7 +195,8 @@ function useSafeAreaReporter(frameHandle?: IframeBackgroundHandle) {
           y: rect.y + window.scrollY,
           width: rect.width,
           height: rect.height
-        }
+        },
+        insets
       })
     }, 120)
 
