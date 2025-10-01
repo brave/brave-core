@@ -127,7 +127,7 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
     if (IsInfobarVisible()) {
       return infobar_container_->y();
     }
-    return contents_container_->y() - GetContentsMargins().top();
+    return main_container_->y() - GetContentsMargins().top();
   };
 
   gfx::Rect vertical_tab_strip_bounds = browser_view_->GetLocalBounds();
