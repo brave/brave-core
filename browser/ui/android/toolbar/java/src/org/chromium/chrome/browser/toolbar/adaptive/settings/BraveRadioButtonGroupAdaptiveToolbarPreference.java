@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RadioGroup;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.base.BraveFeatureList;
@@ -26,6 +27,8 @@ import org.chromium.ui.base.DeviceFormFactor;
 @NullMarked
 public class BraveRadioButtonGroupAdaptiveToolbarPreference
         extends RadioButtonGroupAdaptiveToolbarPreference {
+    private static boolean sIsJunitTesting;
+
     // Variables below are to be removed in the bytecode, variables from the parent class will be
     // used instead.
     private @AdaptiveToolbarButtonVariant int mSelected;
@@ -60,12 +63,15 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
                 (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_downloads);
         mBraveLeoButton =
                 (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_brave_leo);
-        if (mBraveLeoButton != null && !ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
+        if (!sIsJunitTesting
+                && mBraveLeoButton != null
+                && !ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
             mBraveLeoButton.setVisibility(View.GONE);
         }
         mBraveWalletButton =
                 (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_brave_wallet);
-        if (mBraveWalletButton != null
+        if (!sIsJunitTesting
+                && mBraveWalletButton != null
                 && !ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
             mBraveWalletButton.setVisibility(View.GONE);
         }
@@ -143,5 +149,10 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
                 AdaptiveToolbarButtonVariant.UNKNOWN,
                 AdaptiveToolbarButtonVariant.NEW_TAB,
                 AdaptiveToolbarButtonVariant.NEW_TAB);
+    }
+
+    @VisibleForTesting
+    public static void setIsJunitTesting(boolean isJunitTesting) {
+        sIsJunitTesting = isJunitTesting;
     }
 }
