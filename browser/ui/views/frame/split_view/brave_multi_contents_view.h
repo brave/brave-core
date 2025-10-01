@@ -32,6 +32,7 @@ class BraveMultiContentsView : public MultiContentsView {
 
   void UpdateCornerRadius();
   void UseContentsContainerViewForWebPanel();
+  void SetWebPanelContents(content::WebContents* web_contents);
   void SetWebPanelVisible(bool visible);
   bool IsWebPanelVisible() const;
 
