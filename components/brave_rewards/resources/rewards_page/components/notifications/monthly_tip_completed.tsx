@@ -8,7 +8,7 @@ import * as React from 'react'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { NotificationViewProps } from './notification_view'
 
-export function MonthlyTipCompleted (props: NotificationViewProps) {
+export function MonthlyTipCompleted(props: NotificationViewProps) {
   const { getString } = useLocaleContext()
   const { Title, Body, Action } = props
 
@@ -17,9 +17,7 @@ export function MonthlyTipCompleted (props: NotificationViewProps) {
       <Title style='funding'>
         {getString('notificationMonthlyTipCompletedTitle')}
       </Title>
-      <Body>
-        {getString('notificationMonthlyTipCompletedText')}
-      </Body>
+      <Body>{getString('notificationMonthlyTipCompletedText')}</Body>
       <Action notification={props.notification} />
     </div>
   )

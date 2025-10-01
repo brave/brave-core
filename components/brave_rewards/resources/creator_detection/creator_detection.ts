@@ -50,5 +50,3 @@ export function initializeDetector(initializer: () => DetectionHandler) {
     return creator
   })
 }
-
-

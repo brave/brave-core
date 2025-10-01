@@ -17,12 +17,18 @@ interface Props {
 export function Success(props: Props) {
   const { getString } = useLocaleContext()
   return (
-    <div className='contribution-success' data-css-scope={style.scope}>
+    <div
+      className='contribution-success'
+      data-css-scope={style.scope}
+    >
       <div className='message'>
         <div className='title'>{getString('contributeSuccessTitle')}</div>
         <h4>{getString('contributeSuccessText')}</h4>
       </div>
-      <Button kind='outline' onClick={props.onClose}>
+      <Button
+        kind='outline'
+        onClick={props.onClose}
+      >
         {getString('closeButtonLabel')}
       </Button>
     </div>

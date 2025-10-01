@@ -26,8 +26,9 @@ export interface NotificationActionViewProps {
   action?: NotificationAction
 }
 
-export type NotificationActionView =
-  (props: NotificationActionViewProps) => JSX.Element
+export type NotificationActionView = (
+  props: NotificationActionViewProps,
+) => JSX.Element
 
 export interface NotificationViewProps {
   notification: Notification

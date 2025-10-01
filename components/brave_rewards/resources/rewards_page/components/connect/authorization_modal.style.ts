@@ -45,4 +45,3 @@ export const style = scoped.css`
     gap: 16px;
   }
 `
-

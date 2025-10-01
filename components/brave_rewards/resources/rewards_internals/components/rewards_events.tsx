@@ -13,7 +13,9 @@ export function RewardsEvents() {
   const actions = useAppActions()
   const events = useAppState((state) => state.rewardsEvents)
 
-  React.useEffect(() => { actions.loadRewardsEvents() }, [])
+  React.useEffect(() => {
+    actions.loadRewardsEvents()
+  }, [])
 
   function renderTable() {
     if (events.length === 0) {
@@ -30,26 +32,25 @@ export function RewardsEvents() {
           </tr>
         </thead>
         <tbody>
-          {
-            events.map((event) => (
-              <tr key={event.id}>
-                <td>{new Date(event.createdAt).toISOString()}</td>
-                <td>{event.key}</td>
-                <td>{event.value}</td>
-              </tr>
-            ))
-          }
+          {events.map((event) => (
+            <tr key={event.id}>
+              <td>{new Date(event.createdAt).toISOString()}</td>
+              <td>{event.key}</td>
+              <td>{event.value}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     )
   }
 
   return (
-    <div className='content-card' data-css-scope={style.scope}>
+    <div
+      className='content-card'
+      data-css-scope={style.scope}
+    >
       <h4>Events</h4>
-      <section>
-        {renderTable()}
-      </section>
+      <section>{renderTable()}</section>
     </div>
   )
 }

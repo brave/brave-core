@@ -88,137 +88,140 @@ export const style = scoped.css`
   }
 `
 
-addStyles('app-global-styles', css`
-  @scope (${style.selector}) {
-    & {
-      font: ${font.default.regular};
-      color: ${color.text.primary};
-    }
+addStyles(
+  'app-global-styles',
+  css`
+    @scope (${style.selector}) {
+      & {
+        font: ${font.default.regular};
+        color: ${color.text.primary};
+      }
 
-    a {
-      color: ${color.text.interactive};
-    }
+      a {
+        color: ${color.text.interactive};
+      }
 
-    button {
-      margin: 0;
-      padding: 0;
-      background: 0;
-      border: none;
-      text-align: unset;
-      width: unset;
-      font: inherit;
-      cursor: pointer;
+      button {
+        margin: 0;
+        padding: 0;
+        background: 0;
+        border: none;
+        text-align: unset;
+        width: unset;
+        font: inherit;
+        cursor: pointer;
 
-      &:disabled {
+        &:disabled {
+          cursor: default;
+        }
+      }
+
+      select {
+        --select-caret-background-image: url(${selectCaret});
+        --select-caret-background-offset: 12px;
+        --select-background-color: ${color.container.highlight};
+
+        @media (prefers-color-scheme: dark) {
+          --select-caret-background-image: url(${selectCaretDark});
+        }
+
+        appearance: none;
+        background:
+          var(--select-caret-background-image)
+            calc(100% - var(--select-caret-background-offset)) center no-repeat,
+          var(--select-background-color);
+        background-size: 12px;
+        border-radius: 8px;
+        border: 1px solid color-mix(in srgb, #fff, #1b1b1f 25%);
+        color: inherit;
+        font: inherit;
+        padding: 8px 36px 8px 11px;
+
+        &.subtle {
+          --select-background-color: transparent;
+          --select-caret-background-offset: 4px;
+          border: none;
+          border-radius: 4px;
+          padding: 0 28px 0 4px;
+        }
+      }
+
+      leo-toggle:disabled {
         cursor: default;
       }
-    }
 
-    select {
-      --select-caret-background-image: url(${selectCaret});
-      --select-caret-background-offset: 12px;
-      --select-background-color: ${color.container.highlight};
-
-      @media (prefers-color-scheme: dark) {
-        --select-caret-background-image: url(${selectCaretDark});
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
       }
 
-      appearance: none;
-      background:
-        var(--select-caret-background-image)
-          calc(100% - var(--select-caret-background-offset)) center no-repeat,
-        var(--select-background-color);
-      background-size: 12px;
-      border-radius: 8px;
-      border: 1px solid color-mix(in srgb, #fff, #1b1b1f 25%);
-      color: inherit;
-      font: inherit;
-      padding: 8px 36px 8px 11px;
-
-      &.subtle {
-        --select-background-color: transparent;
-        --select-caret-background-offset: 4px;
-        border: none;
-        border-radius: 4px;
-        padding: 0 28px 0 4px;
+      p {
+        margin: 0;
       }
-    }
 
-    leo-toggle:disabled {
-      cursor: default;
-    }
+      h1 {
+        font: ${font.heading.h1};
+        margin: 0;
+      }
 
-    ul {
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
-    }
+      h2 {
+        font: ${font.heading.h2};
+        margin: 0;
+      }
 
-    p {
-      margin: 0;
-    }
-
-    h1 {
-      font: ${font.heading.h1};
-      margin: 0;
-    }
-
-    h2 {
-      font: ${font.heading.h2};
-      margin: 0;
-    }
-
-    h3 {
-      font: ${font.heading.h3};
-      margin: 0;
-    }
-
-    h4 {
-      font: ${font.heading.h4};
-      margin: 0;
-    }
-
-    .content-card {
-      border-radius: 16px;
-      padding: 4px;
-      background-color: rgba(255, 255, 255, 0.55);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-
-      section {
-        border-radius: 12px;
-        background: ${color.container.background};
-        width: 100%;
+      h3 {
+        font: ${font.heading.h3};
+        margin: 0;
       }
 
       h4 {
-        padding: 10px 16px;
+        font: ${font.heading.h4};
+        margin: 0;
       }
 
-      @media (prefers-color-scheme: dark) {
-        background-color: rgba(37, 37, 37, 0.58);
+      .content-card {
+        border-radius: 16px;
+        padding: 4px;
+        background-color: rgba(255, 255, 255, 0.55);
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        section {
+          border-radius: 12px;
+          background: ${color.container.background};
+          width: 100%;
+        }
+
+        h4 {
+          padding: 10px 16px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          background-color: rgba(37, 37, 37, 0.58);
+        }
+      }
+
+      .content-card-footer {
+        background: ${color.page.background};
+        margin: 0 -4px -4px;
+        border-radius: 0 0 16px 16px;
+        padding: 8px 16px;
+      }
+
+      .brave-rewards-logo {
+        display: inline-block;
+        block-size: 28px;
+        inline-size: 107px;
+        background-image: url(${rewardsLogoImage});
+        background-repeat: no-repeat;
+        background-size: contain;
+
+        @media (prefers-color-scheme: dark) {
+          background-image: url(${rewardsLogoImageDark});
+        }
       }
     }
-
-    .content-card-footer {
-      background: ${color.page.background};
-      margin: 0 -4px -4px;
-      border-radius: 0 0 16px 16px;
-      padding: 8px 16px;
-    }
-
-    .brave-rewards-logo {
-      display: inline-block;
-      block-size: 28px;
-      inline-size: 107px;
-      background-image: url(${rewardsLogoImage});
-      background-repeat: no-repeat;
-      background-size: contain;
-
-      @media (prefers-color-scheme: dark) {
-        background-image: url(${rewardsLogoImageDark});
-      }
-    }
-  }
-`)
+  `,
+)

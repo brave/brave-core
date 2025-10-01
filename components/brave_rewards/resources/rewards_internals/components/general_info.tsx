@@ -37,11 +37,11 @@ export function GeneralInfo() {
           <div>
             <span>Key info seed:</span>
             <span>
-              {
-                creationEnvironment
-                  ? isKeyInfoSeedValid ? 'Valid' : 'Invalid'
-                  : 'Not created'
-              }
+              {creationEnvironment
+                ? isKeyInfoSeedValid
+                  ? 'Valid'
+                  : 'Invalid'
+                : 'Not created'}
             </span>
           </div>
           <div>
@@ -51,11 +51,9 @@ export function GeneralInfo() {
           <div>
             <span>Rewards profile created at:</span>
             <span>
-              {
-                createdAt.hasValue()
-                    ? new Date(createdAt.value()).toISOString()
-                    : null
-              }
+              {createdAt.hasValue()
+                ? new Date(createdAt.value()).toISOString()
+                : null}
             </span>
           </div>
           <div>
@@ -78,11 +76,7 @@ export function GeneralInfo() {
           <div>
             <span>Total balance:</span>
             <span>
-              {
-                balance.hasValue()
-                  ? `${balance.value()} BAT`
-                  : 'Loading...'
-              }
+              {balance.hasValue() ? `${balance.value()} BAT` : 'Loading...'}
             </span>
           </div>
         </section>

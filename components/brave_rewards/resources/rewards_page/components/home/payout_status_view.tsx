@@ -13,7 +13,7 @@ import { formatMessage } from '../../../shared/lib/locale_context'
 import {
   getProviderPayoutStatus,
   getDaysUntilPayout,
-  truncatePayoutDate
+  truncatePayoutDate,
 } from '../../../shared/lib/provider_payout_status'
 
 import { NewTabLink } from '../../../shared/components/new_tab_link'
@@ -23,11 +23,11 @@ import { style } from './payout_status_view.style'
 
 const dateFormatter = Intl.DateTimeFormat(undefined, {
   month: 'long',
-  day: 'numeric'
+  day: 'numeric',
 })
 
 const monthNameFormatter = new Intl.DateTimeFormat(undefined, {
-  month: 'long'
+  month: 'long',
 })
 
 function formatPayoutDate(nextPayoutDate: number | Date) {
@@ -57,7 +57,8 @@ export function PayoutStatusView() {
 
   const payoutStatus = getProviderPayoutStatus(
     parameters.payoutStatus,
-    externalWallet.provider)
+    externalWallet.provider,
+  )
 
   if (payoutStatus === 'complete') {
     return (
@@ -81,11 +82,8 @@ export function PayoutStatusView() {
       <div data-css-scope={style.scope}>
         <Icon name='info-filled' />
         <div>
-          {
-            formatMessage(getString('payoutProcessingText'), [
-              getPayoutMonth()
-            ])
-          }&nbsp;
+          {formatMessage(getString('payoutProcessingText'), [getPayoutMonth()])}
+          &nbsp;
           <span className='rewards-payment-link'>
             <NewTabLink href={urls.payoutStatusURL}>
               {getString('payoutCheckStatusLink')}
@@ -102,12 +100,10 @@ export function PayoutStatusView() {
       <div data-css-scope={style.scope}>
         <Icon name='info-filled' />
         <div>
-          {
-            formatMessage(getString('payoutPendingText'), [
-              getPayoutMonth(),
-              formatPayoutDate(adsInfo.nextPaymentDate)
-            ])
-          }
+          {formatMessage(getString('payoutPendingText'), [
+            getPayoutMonth(),
+            formatPayoutDate(adsInfo.nextPaymentDate),
+          ])}
         </div>
       </div>
     )

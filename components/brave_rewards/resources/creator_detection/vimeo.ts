@@ -7,7 +7,6 @@ import { initializeDetector } from './creator_detection'
 import { log, pollFor, absoluteURL } from './helpers'
 
 initializeDetector(() => {
-
   function getIdFromPerson(person: any) {
     if (!person) {
       return ''
@@ -42,7 +41,7 @@ initializeDetector(() => {
       id: `vimeo#channel:${id}`,
       name: String(person.name || ''),
       url: absoluteURL(person.url || location.href),
-      imageURL: String(person.image || '')
+      imageURL: String(person.image || ''),
     }
   }
 
@@ -111,10 +110,9 @@ initializeDetector(() => {
     await pollFor(hasMetadataScript, {
       name: 'metadata',
       interval: 500,
-      timeout: 6000
+      timeout: 6000,
     })
 
     return parseMetadataScript()
   }
-
 })

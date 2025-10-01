@@ -48,7 +48,7 @@ function groupItems(items: AdsHistoryItem[]) {
 }
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
-  dateStyle: 'short'
+  dateStyle: 'short',
 })
 
 interface AdsHistoryItemViewProps {
@@ -68,14 +68,19 @@ function AdsHistoryItemView(props: AdsHistoryItemViewProps) {
     if (!showMenu) {
       return
     }
-    const listener = () => { setShowMenu(false) }
+    const listener = () => {
+      setShowMenu(false)
+    }
     document.body.addEventListener('click', listener)
     return () => document.body.removeEventListener('click', listener)
   }, [showMenu])
 
   return (
     <div className='item'>
-      <button className='ad-info' onClick={() => tabOpener.openTab(item.url)}>
+      <button
+        className='ad-info'
+        onClick={() => tabOpener.openTab(item.url)}
+      >
         <div className='name single-line'>{item.name}</div>
         <div className='text single-line'>{item.text}</div>
         <div className='domain'>{item.domain}</div>
@@ -102,19 +107,18 @@ function AdsHistoryItemView(props: AdsHistoryItemViewProps) {
         >
           <Icon name='more-vertical' />
         </button>
-        {
-          showMenu &&
-            <div className='more-menu'>
-              <button onClick={() => props.onToggleInappropriate(item)}>
-                {getString('adsHistoryMarkInappropriateLabel')}
-                <Icon
-                  name={item.inappropriate ?
-                    'checkbox-checked' :
-                    'checkbox-unchecked'}
-                />
-              </button>
-            </div>
-        }
+        {showMenu && (
+          <div className='more-menu'>
+            <button onClick={() => props.onToggleInappropriate(item)}>
+              {getString('adsHistoryMarkInappropriateLabel')}
+              <Icon
+                name={
+                  item.inappropriate ? 'checkbox-checked' : 'checkbox-unchecked'
+                }
+              />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -128,8 +132,9 @@ export function AdsHistoryModal(props: Props) {
   const { getString } = useLocaleContext()
   const model = React.useContext(AppModelContext)
 
-  const [adsHistory, setAdsHistory] =
-    React.useState<AdsHistoryItem[] | null>(null)
+  const [adsHistory, setAdsHistory] = React.useState<AdsHistoryItem[] | null>(
+    null,
+  )
 
   React.useEffect(() => {
     model.getAdsHistory().then(setAdsHistory)
@@ -184,16 +189,16 @@ export function AdsHistoryModal(props: Props) {
   }
 
   function renderHistory() {
-    return <>
-      <p>
-        {
-          groups.length === 0 ?
-            getString('adsHistoryEmptyText') :
-            getString('adsHistoryText')
-        }
-      </p>
-      {groups.map(renderGroup)}
-    </>
+    return (
+      <>
+        <p>
+          {groups.length === 0
+            ? getString('adsHistoryEmptyText')
+            : getString('adsHistoryText')}
+        </p>
+        {groups.map(renderGroup)}
+      </>
+    )
   }
 
   if (!adsHistory) {
@@ -206,9 +211,7 @@ export function AdsHistoryModal(props: Props) {
         title={getString('adsHistoryTitle')}
         onClose={props.onClose}
       />
-      <div data-css-scope={style.scope}>
-        {renderHistory()}
-      </div>
+      <div data-css-scope={style.scope}>{renderHistory()}</div>
     </Modal>
   )
 }

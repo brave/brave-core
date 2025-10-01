@@ -11,8 +11,8 @@ import { ExternalWalletDisconnected } from './external_wallet_disconnected'
 
 export * from './notification_view'
 
-export function getNotificationView (
-  notification: Notification
+export function getNotificationView(
+  notification: Notification,
 ): NotificationView {
   switch (notification.type) {
     case 'monthly-tip-completed':

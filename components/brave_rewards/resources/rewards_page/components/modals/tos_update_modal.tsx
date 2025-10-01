@@ -36,30 +36,32 @@ export function TosUpdateModal(props: Props) {
       <Modal.Header title={getString('tosUpdateRequiredTitle')} />
       <div data-css-scope={style.scope}>
         <div>
-          {
-            formatMessage(getString('tosUpdateRequiredText'), {
-              tags: {
-                $1: (content) => (
-                  <button key='reset' onClick={props.onReset}>
-                    {content}
-                  </button>
-                )
-              }
-            })
-          }
+          {formatMessage(getString('tosUpdateRequiredText'), {
+            tags: {
+              $1: (content) => (
+                <button
+                  key='reset'
+                  onClick={props.onReset}
+                >
+                  {content}
+                </button>
+              ),
+            },
+          })}
         </div>
         <div ref={onMount}>
-          {
-            formatMessage(getString('tosUpdateLink'), {
-              tags: {
-                $1: (content) => (
-                  <NewTabLink key='link' href={urls.termsOfServiceURL}>
-                    {content}
-                  </NewTabLink>
-                )
-              }
-            })
-          }
+          {formatMessage(getString('tosUpdateLink'), {
+            tags: {
+              $1: (content) => (
+                <NewTabLink
+                  key='link'
+                  href={urls.termsOfServiceURL}
+                >
+                  {content}
+                </NewTabLink>
+              ),
+            },
+          })}
         </div>
       </div>
       <Modal.Actions
@@ -67,8 +69,8 @@ export function TosUpdateModal(props: Props) {
           {
             text: getString('tosUpdateAcceptButtonLabel'),
             onClick: props.onAccept,
-            isPrimary: true
-          }
+            isPrimary: true,
+          },
         ]}
       />
     </Modal>

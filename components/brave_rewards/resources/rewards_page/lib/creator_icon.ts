@@ -6,8 +6,10 @@
 import { CreatorSite } from './app_state'
 
 export function getCreatorIconSrc(site: CreatorSite) {
-  return 'chrome://favicon2/?size=64&pageUrl=' +
-    encodeURIComponent(site.icon || site.url)
+  return (
+    'chrome://favicon2/?size=64&pageUrl='
+    + encodeURIComponent(site.icon || site.url)
+  )
 }
 
 export function getCreatorPlatformIcon(site: CreatorSite) {

@@ -41,4 +41,3 @@ export const style = scoped.css`
     flex-direction: column;
   }
 `
-

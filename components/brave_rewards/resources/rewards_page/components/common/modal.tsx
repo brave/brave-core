@@ -19,7 +19,8 @@ function createResizeObserver() {
       if (entry.borderBoxSize.length > 0) {
         document.body.style.setProperty(
           '--modal-content-block-size',
-          `${Math.ceil(entry.borderBoxSize[0].blockSize)}px`)
+          `${Math.ceil(entry.borderBoxSize[0].blockSize)}px`,
+        )
       }
     }
   })
@@ -30,7 +31,7 @@ function createResizeObserver() {
     disconnect: () => {
       document.body.style.removeProperty('--modal-content-block-size')
       observer.disconnect()
-    }
+    },
   }
 }
 
@@ -53,7 +54,7 @@ const skipAnimationsHelper = (() => {
         document.body.classList.remove(className)
         timeout = 0
       }, delay) as any
-    }
+    },
   }
 })()
 
@@ -75,7 +76,9 @@ export function Modal(props: ModalProps) {
         resizeObserver.disconnect()
         skipAnimationsHelper.onDialogRemoved()
       }
-    }, [])
+    },
+    [],
+  )
 
   function onKeyDown(event: React.KeyboardEvent) {
     if (event.key === 'Escape') {
@@ -109,12 +112,14 @@ function ModalHeader(props: ModalHeaderProps) {
     <div data-css-scope={headerStyle.scope}>
       <div className='title'>{props.title || <>&nbsp;</>}</div>
       <div className='close'>
-        {
-          props.onClose &&
-            <button disabled={props.closeDisabled} onClick={props.onClose}>
-              <Icon name='close' />
-            </button>
-        }
+        {props.onClose && (
+          <button
+            disabled={props.closeDisabled}
+            onClick={props.onClose}
+          >
+            <Icon name='close' />
+          </button>
+        )}
       </div>
     </div>
   )
@@ -135,28 +140,26 @@ interface ModalActionsProps {
 function ModalActions(props: ModalActionsProps) {
   return (
     <div data-css-scope={actionsStyle.scope}>
-      {
-        props.actions.map((action) => {
-          let classNames: string[] = []
-          if (action.className) {
-            classNames.push(action.className)
-          }
-          if (action.isPrimary) {
-            classNames.push('primary-action')
-          }
-          return (
-            <Button
-              key={action.text}
-              onClick={action.onClick}
-              isDisabled={action.isDisabled}
-              kind={action.isPrimary ? 'filled' : 'outline'}
-              className={classNames.join(' ')}
-            >
-              {action.text}
-            </Button>
-          )
-        })
-      }
+      {props.actions.map((action) => {
+        let classNames: string[] = []
+        if (action.className) {
+          classNames.push(action.className)
+        }
+        if (action.isPrimary) {
+          classNames.push('primary-action')
+        }
+        return (
+          <Button
+            key={action.text}
+            onClick={action.onClick}
+            isDisabled={action.isDisabled}
+            kind={action.isPrimary ? 'filled' : 'outline'}
+            className={classNames.join(' ')}
+          >
+            {action.text}
+          </Button>
+        )
+      })}
     </div>
   )
 }
