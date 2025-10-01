@@ -9,6 +9,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
@@ -166,6 +167,14 @@
           "Replace the tab tray UI with a modern replacement",                 \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave::features::kModernTabTrayEnabled),          \
+      },                                                                       \
+      {                                                                        \
+          "brave-sync-default-passwords",                                      \
+          "Enable password syncing by default",                                \
+          "Turn on password syncing when Sync is enabled.",                    \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_sync::features::kBraveSyncDefaultPasswords),               \
       },                                                                       \
       {                                                                        \
           "brave-translate-enabled",                                           \
