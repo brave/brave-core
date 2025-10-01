@@ -16,4 +16,17 @@ namespace polkadot_substrate_rpc_responses {
     DOMString? result;
     Error? error;
   };
+
+  // any[] => sequence<sequence<DOMString>>
+  dictionary AccountInfo {
+    DOMString block;
+    any[] changes;
+  };
+
+  dictionary PolkadotAccountBalanceResponse {
+    DOMString jsonrpc;
+    long id;
+    AccountInfo[]? result;
+    Error? error;
+  };
 };

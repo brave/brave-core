@@ -5,11 +5,17 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/numerics/byte_conversions.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc_responses.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
 
 namespace brave_wallet {
 
@@ -38,6 +44,160 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
           "Not implemented."
       }
     )");
+}
+
+mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(std::string_view sv) {
+  auto account = mojom::PolkadotAccountInfo::New();
+
+  DCHECK(sv.size() == 162);
+  sv.remove_prefix(2);  // remove leading 0x
+
+  if (!base::HexStringToUInt(sv.substr(0, 8), &account->nonce)) {
+    return nullptr;
+  }
+  sv.remove_prefix(8);
+
+  if (!base::HexStringToUInt(sv.substr(0, 8), &account->consumers)) {
+    return nullptr;
+  }
+  sv.remove_prefix(8);
+
+  if (!base::HexStringToUInt(sv.substr(0, 8), &account->providers)) {
+    return nullptr;
+  }
+  sv.remove_prefix(8);
+
+  if (!base::HexStringToUInt(sv.substr(0, 8), &account->sufficients)) {
+    return nullptr;
+  }
+  sv.remove_prefix(8);
+
+  account->nonce = base::ByteSwap(account->nonce);
+  account->consumers = base::ByteSwap(account->consumers);
+  account->providers = base::ByteSwap(account->providers);
+  account->sufficients = base::ByteSwap(account->sufficients);
+
+  account->data = mojom::PolkadotAccountBalance::New();
+
+  uint64_t low = 0, high = 0;
+  if (!base::HexStringToUInt64(sv.substr(0, 16), &low)) {
+    return nullptr;
+  }
+  sv.remove_prefix(16);
+  low = base::ByteSwap(low);
+
+  if (!base::HexStringToUInt64(sv.substr(0, 16), &high)) {
+    return nullptr;
+  }
+  sv.remove_prefix(16);
+  high = base::ByteSwap(high);
+
+  account->data->free = mojom::uint128Ptr(std::in_place, high, low);
+
+  if (!base::HexStringToUInt64(sv.substr(0, 16), &low)) {
+    return nullptr;
+  }
+  sv.remove_prefix(16);
+  low = base::ByteSwap(low);
+
+  if (!base::HexStringToUInt64(sv.substr(0, 16), &high)) {
+    return nullptr;
+  }
+  sv.remove_prefix(16);
+  high = base::ByteSwap(high);
+
+  account->data->reserved = mojom::uint128Ptr(std::in_place, high, low);
+
+  if (!base::HexStringToUInt64(sv.substr(0, 16), &low)) {
+    return nullptr;
+  }
+  sv.remove_prefix(16);
+  low = base::ByteSwap(low);
+
+  if (!base::HexStringToUInt64(sv.substr(0, 16), &high)) {
+    return nullptr;
+  }
+  sv.remove_prefix(16);
+  high = base::ByteSwap(high);
+
+  account->data->frozen = mojom::uint128Ptr(std::in_place, high, low);
+
+  if (!base::HexStringToUInt64(sv.substr(0, 16), &low)) {
+    return nullptr;
+  }
+  sv.remove_prefix(16);
+  low = base::ByteSwap(low);
+
+  if (!base::HexStringToUInt64(sv.substr(0, 16), &high)) {
+    return nullptr;
+  }
+  sv.remove_prefix(16);
+  high = base::ByteSwap(high);
+
+  account->data->flags = mojom::uint128Ptr(std::in_place, high, low);
+
+  return account;
+}
+
+mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
+    const std::optional<
+        std::vector<polkadot_substrate_rpc_responses::AccountInfo>>& result) {
+  /*
+
+  The shape of the resturned JSON is:
+
+  {
+    ...,
+    "result": [
+      {
+        "block": "<block hash>",
+        "changes": [["<storage key>", "<account info>" | null], ...]
+      },
+      ...
+    ]
+  }
+
+  */
+
+  if (!result) {
+    return nullptr;
+  }
+
+  auto& accounts = *result;
+  if (accounts.size() != 1) {
+    return nullptr;
+  }
+
+  auto& changes = accounts[0].changes;
+  if (changes.empty()) {
+    return nullptr;
+  }
+
+  auto* list = changes[0].GetIfList();
+  if (!list || list->size() != 2) {
+    return nullptr;
+  }
+
+  constexpr const char kFallback[] =
+      "0x0000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000000000000000000000000000000000000000000"
+      "000000000000000000000000000080";
+
+  std::string_view sv;
+  if (auto* str = (*list)[1].GetIfString()) {
+    sv = *str;
+  } else {
+    sv = kFallback;
+  }
+
+  if (sv.size() == 162) {
+    auto account = ParseAccountInfoAsHex(sv);
+    if (account) {
+      return account;
+    }
+  }
+
+  return nullptr;
 }
 
 }  // namespace
@@ -103,6 +263,73 @@ void PolkadotSubstrateRpc::OnGetChainName(GetChainNameCallback callback,
   }
 
   return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+}
+
+void PolkadotSubstrateRpc::GetAccountBalance(
+    const std::string& chain_id,
+    base::span<const uint8_t, kSr25519PublicKeySize> pubkey,
+    GetAccountBalanceCallback callback) {
+  // xxhash("System") | xxhash("Account")
+  //
+  // https://github.com/polkadot-js/common/blob/047840319ef3f758880cc112b987888b8b2749d0/packages/util-crypto/src/xxhash/asU8a.ts#L24
+  // https://github.com/paritytech/polkadot-sdk/blob/cf439301b2a9571e5fcb04e4550167a878187182/substrate/primitives/crypto/hashing/src/lib.rs#L77-L82
+  //
+  // pub fn twox_128_into(data: &[u8], dest: &mut [u8; 16]) {
+  //     let r0 = twox_hash::XxHash::with_seed(0).chain_update(data).finish();
+  //     let r1 = twox_hash::XxHash::with_seed(1).chain_update(data).finish();
+  //     LittleEndian::write_u64(&mut dest[0..8], r0);
+  //     LittleEndian::write_u64(&mut dest[8..16], r1);
+  // }
+  constexpr char const kStoragePallet[] = "26AA394EEA5630E07C48AE0C9558CEF7";
+  constexpr char const kAccount[] = "B99D880EC681799C0CF30E8886371DA9";
+
+  auto checksum = Blake2bHash<16>({pubkey});
+
+  auto rpc_cmd =
+      base::StrCat({"0x", kStoragePallet, kAccount, base::HexEncode(checksum),
+                    base::HexEncode(pubkey)});
+
+  auto payload = base::WriteJson(MakeRpcRequestJson(
+      "state_queryStorageAt",
+      base::Value::List().Append(
+          base::Value(base::Value::List().Append(std::move(rpc_cmd))))));
+
+  CHECK(payload);
+
+  auto url = GetNetworkURL(chain_id);
+
+  std::string method = net::HttpRequestHeaders::kPostMethod;
+  std::string payload_content_type = "application/json";
+
+  api_request_helper_.Request(
+      method, url, *payload, payload_content_type,
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetAccountBalance,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetAccountBalance(
+    GetAccountBalanceCallback callback,
+    APIRequestResult api_result) {
+  auto res = polkadot_substrate_rpc_responses::PolkadotAccountBalanceResponse::
+      FromValue(api_result.value_body());
+
+  if (!res) {
+    return std::move(callback).Run(nullptr, WalletParsingErrorMessage());
+  }
+
+  if (res->error) {
+    if (res->error->message) {
+      return std::move(callback).Run(nullptr, res->error->message.value());
+    }
+    return std::move(callback).Run(nullptr, WalletInternalErrorMessage());
+  }
+
+  auto account = ParseAccountInfoFromJson(res->result);
+  if (account) {
+    return std::move(callback).Run(std::move(account), std::nullopt);
+  }
+
+  return std::move(callback).Run(nullptr, WalletParsingErrorMessage());
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(const std::string& chain_id) {

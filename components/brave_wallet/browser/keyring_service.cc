@@ -2599,6 +2599,14 @@ KeyringService::SignCip30MessageByCardanoKeyring(
   return result;
 }
 
+std::array<uint8_t, kSr25519PublicKeySize> KeyringService::GetPolkadotPubKey(
+    const mojom::AccountIdPtr& account_id) {
+  CHECK(account_id);
+  auto* keyring = this->GetKeyring<PolkadotKeyring>(account_id->keyring_id);
+  auto key = keyring->GetPublicKey(account_id->account_index);
+  return {key};
+}
+
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
     const mojom::AccountIdPtr& account_id,
     std::optional<uint32_t> next_receive_index,
