@@ -181,8 +181,10 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
 #if defined(TOOLKIT_VIEWS)
   void WaitForSidePanelClose() {
     ASSERT_TRUE(base::test::RunUntil([&]() {
-      return browser()->GetBrowserView().unified_side_panel()->state() ==
-             SidePanel::State::kClosed;
+      return browser()
+                 ->GetBrowserView()
+                 .contents_height_side_panel()
+                 ->state() == SidePanel::State::kClosed;
     }));
   }
 #endif  // #if defined(TOOLKIT_VIEWS)
@@ -450,7 +452,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   auto* side_panel_coordinator =
       browser()->GetFeatures().side_panel_coordinator();
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return browser()->GetBrowserView().unified_side_panel()->state() ==
+    return browser()->GetBrowserView().contents_height_side_panel()->state() ==
            SidePanel::State::kClosed;
   }));
 
