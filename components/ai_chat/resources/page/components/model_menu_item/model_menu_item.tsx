@@ -26,6 +26,9 @@ const ModelContent = (props: ModelContentProps) => {
     props
 
   const isCustomModel = model.options.customModelOptions
+  const isOllamaModel = !!(
+    model.options.customModelOptions?.endpoint.url === Mojom.OLLAMA_ENDPOINT
+  )
 
   const label = React.useMemo(() => {
     if (isCurrent) {
@@ -71,12 +74,16 @@ const ModelContent = (props: ModelContentProps) => {
           color='blue'
           className={styles.modelLabel}
         >
-          {getLocale(S.CHAT_UI_MODEL_LOCAL_LABEL)}
+          {getLocale(
+            isOllamaModel
+              ? S.CHAT_UI_MODEL_OLLAMA_LABEL
+              : S.CHAT_UI_MODEL_LOCAL_LABEL,
+          )}
         </Label>
       )
     }
     return null
-  }, [isCurrent, showPremiumLabel, isCustomModel, model])
+  }, [isCurrent, showPremiumLabel, isCustomModel, isOllamaModel, model])
 
   return (
     <>
@@ -87,7 +94,7 @@ const ModelContent = (props: ModelContentProps) => {
         })}
         data-key={model.key}
       >
-        <Icon name={getModelIcon(model.key)} />
+        <Icon name={getModelIcon(model)} />
       </div>
       <div className={styles.column}>
         <div className={styles.nameAndLabel}>

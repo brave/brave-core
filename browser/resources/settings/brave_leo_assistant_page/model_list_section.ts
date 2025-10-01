@@ -19,7 +19,8 @@ import {
   type BraveLeoAssistantBrowserProxy,
   type Model,
   OperationResult,
-  BraveLeoAssistantBrowserProxyImpl
+  BraveLeoAssistantBrowserProxyImpl,
+  OLLAMA_ENDPOINT
 } from './brave_leo_assistant_browser_proxy.js'
 
 const ModelListSectionBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
@@ -45,6 +46,10 @@ class ModelListSection extends ModelListSectionBase {
       showModelConfig_: {
         type: Boolean,
         value: false
+      },
+      isOllamaConnected_: {
+        type: Boolean,
+        value: false
       }
     }
   }
@@ -54,6 +59,7 @@ class ModelListSection extends ModelListSectionBase {
   declare customModelsList_: Model[]
   declare isEditingModelIndex_: number | null
   declare showModelConfig_: boolean
+  declare isOllamaConnected_: boolean
 
   override ready() {
     super.ready()
@@ -69,6 +75,9 @@ class ModelListSection extends ModelListSectionBase {
       .onModelListChanged.addListener((models: Model[]) => {
         this.customModelsList_ = models
       })
+
+    // Check Ollama connection on page load
+    this.checkOllamaConnection_()
   }
 
   async onModelConfigSave_(e: { detail: { modelConfig: Model } }) {
@@ -142,6 +151,26 @@ class ModelListSection extends ModelListSectionBase {
 
   private hasCustomModels_(customModelsList: Model[]) {
     return customModelsList.length > 0
+  }
+
+  private async checkOllamaConnection_() {
+    try {
+      const result = await this.browserProxy_.checkOllamaConnection()
+      this.isOllamaConnected_ = result.connected
+    } catch (error) {
+      console.error('Failed to check Ollama connection:', error)
+      this.isOllamaConnected_ = false
+    }
+  }
+
+  private isOllamaManagedModel_(
+      model: Model, ollamaSyncEnabled: boolean): boolean {
+    // Only consider it managed if both:
+    // 1. It points to Ollama endpoint
+    // 2. Ollama sync preference is enabled
+    const isOllamaEndpoint =
+        model.options.customModelOptions?.endpoint.url === OLLAMA_ENDPOINT
+    return !!(isOllamaEndpoint && ollamaSyncEnabled)
   }
 }
 

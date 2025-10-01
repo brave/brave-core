@@ -356,6 +356,7 @@ leo_icons = [
   "notification.svg",
   "openai-color.svg",
   "outside.svg",
+  "ollama.svg",
   "pause-circle.svg",
   "pause-filled.svg",
   "percent.svg",

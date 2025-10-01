@@ -7,7 +7,8 @@ static_library("ollama") {
   visibility = [
     ":unit_tests",
     "//brave/browser/ai_chat/ollama",
-    "//brave/components/ai_chat/content/browser",
+    "//brave/browser/ui",
+    "//brave/browser/ui/webui/ai_chat",
   ]
 
   sources = [
