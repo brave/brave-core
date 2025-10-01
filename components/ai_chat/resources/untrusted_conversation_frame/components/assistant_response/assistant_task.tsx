@@ -62,6 +62,27 @@ export default function AssistantTask(props: Props) {
   const [taskThumbnail, setTaskThumbnail] = React.useState<string>()
   const conversationContext = useUntrustedConversationContext()
 
+  React.useEffect(() => {
+    if (!conversationContext.contentTaskTabId) {
+      return
+    }
+    const id = API.getInstance().uiObserver.thumbnailUpdated.addListener(
+      (tabId: number, dataURI: string) => {
+        console.error(dataURI)
+        if (
+          tabId === conversationContext.contentTaskTabId
+          && props.isActiveTask
+        ) {
+          setTaskThumbnail(dataURI)
+        }
+      },
+    )
+
+    return () => {
+      API.getInstance().uiObserver.removeListener(id)
+    }
+  }, [props.isActiveTask, conversationContext.contentTaskTabId])
+
   return (
     <div className={styles.task}>
       <Tabs
