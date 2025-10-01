@@ -1013,6 +1013,7 @@
 
 -keep class org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarPrefs {
     *** getCustomizationSetting(...);
+    *** isCustomizationPreferenceEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.download.home.search.SearchBarCoordinator {

@@ -993,6 +993,12 @@ public class BytecodeTest {
                         int.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarPrefs",
+                        "isCustomizationPreferenceEnabled",
+                        MethodModifier.STATIC,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/chrome/browser/password_manager/PasswordManagerHelper",
                         "getForProfile",
                         MethodModifier.STATIC,
