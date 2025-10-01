@@ -19,6 +19,7 @@ mojom_component("mojom") {
     "common.mojom",
     "customization_settings.mojom",
     "history.mojom",
+    "ollama.mojom",
     "page_content_extractor.mojom",
     "settings_helper.mojom",
     "tab_tracker.mojom",
