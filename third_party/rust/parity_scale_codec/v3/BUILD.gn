@@ -62,6 +62,7 @@ cargo_crate("lib") {
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/build.rs" ]
   rustenv = []
   rustflags = []
+  build_deps -= [ "//brave/third_party/rust/rustversion/v1:buildrs_support" ]
 
   #####################################################################
   # Tweaking which GN `config`s apply to this target.
