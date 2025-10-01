@@ -551,6 +551,9 @@ interface AIChatUIHandler {
   // Associates an open tab with a conversation.
   AssociateTab(TabData tab, string conversation_uuid);
 
+  // Associates content from a URL with a conversation.
+  AssociateUrlContent(url.mojom.Url url, string title, string conversation_uuid);
+
   // Disassociates attached content from a conversation.
   DisassociateContent(AssociatedContent content, string conversation_uuid);
 
