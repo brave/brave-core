@@ -15,7 +15,8 @@
 #include "base/check.h"
 #include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/tab_ui_helper.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
@@ -156,27 +157,36 @@ std::vector<WindowMatch> WindowsMatchingInput(const Browser* browser_to_exclude,
   double mru_score = .95;
   FuzzyFinder finder(input);
   std::vector<gfx::Range> ranges;
-  for (Browser* browser : BrowserList::GetInstance()->OrderedByActivation()) {
-    if (browser == browser_to_exclude || !browser->is_type_normal()) {
-      continue;
-    }
-    if (match_profile && browser->profile() != browser_to_exclude->profile()) {
-      continue;
-    }
-    std::u16string title = browser->GetWindowTitleForMaxWidth(kMaxTitleWidth);
-    if (input.empty()) {
-      WindowMatch match(browser, title, mru_score);
-      results.push_back(std::move(match));
-      mru_score *= .95;
-    } else {
-      double score = finder.Find(title, ranges);
-      if (score > 0) {
-        WindowMatch match(browser, std::move(title), score);
-        match.matched_ranges = ranges;
-        results.push_back(std::move(match));
-      }
-    }
-  }
+  // TODO(https://github.com/brave/brave-browser/issues/49807): This code as a
+  // whole needs to be revisited with regards the use of `Browser*`.
+  ForEachCurrentBrowserWindowInterfaceOrderedByActivation(
+      [&](BrowserWindowInterface* browser_window_interface) {
+        Browser* browser =
+            browser_window_interface->GetBrowserForMigrationOnly();
+        if (browser == browser_to_exclude || !browser->is_type_normal()) {
+          return true;  // continue iterating
+        }
+        if (match_profile &&
+            browser->profile() != browser_to_exclude->profile()) {
+          return true;  // continue iterating
+        }
+        std::u16string title =
+            browser->GetWindowTitleForMaxWidth(kMaxTitleWidth);
+        if (input.empty()) {
+          WindowMatch match(browser, title, mru_score);
+          results.push_back(std::move(match));
+          mru_score *= .95;
+        } else {
+          double score = finder.Find(title, ranges);
+          if (score > 0) {
+            WindowMatch match(browser, std::move(title), score);
+            match.matched_ranges = ranges;
+            results.push_back(std::move(match));
+          }
+        }
+        return true;  // continue iterating
+      });
+
   return results;
 }
 
