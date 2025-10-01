@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/common/wrapper b/chrome/installer/linux/common/wrapper
-index aaa46bf71f6a3..136aa63a4ca42 100755
+index aaa46bf71f6a3..7e601c7477276 100755
 --- a/chrome/installer/linux/common/wrapper
 +++ b/chrome/installer/linux/common/wrapper
-@@ -27,6 +27,39 @@ fi
+@@ -27,6 +27,38 @@ fi
  
  export CHROME_VERSION_EXTRA="@@CHANNEL@@"
  
@@ -18,18 +18,17 @@ index aaa46bf71f6a3..136aa63a4ca42 100755
 +    local line="$*" key val val_and_rest rest
 +
 +    case "$line" in
-+      "") ;;
-+      [[:space:]]*)
-+        parse_cfg_options "${line:1}";;
++      "") return;;
++      [[:space:]]*) parse_cfg_options "${line:1}"; return;;
 +      --+([![:space:]])=\"*\"*|--+([![:space:]])=\'*\'*)
 +        IFS="=" read -r key val_and_rest <<<"$line"
 +        IFS="${val_and_rest:0:1}" read -r _ val rest <<<"$val_and_rest"
-+        cfg_options+=("$key=$val")
-+        parse_cfg_options "$rest";;
-+      *) read -r opt rest <<<"$line"
-+        cfg_options+=("$opt")
-+        parse_cfg_options "$rest";;
++        opt="$key=$val";;
++      *) read -r opt rest <<<"$line";;
 +    esac
++
++    cfg_options+=("$opt")
++    parse_cfg_options "$rest"
 +  }
 +
 +  # Remove comments and parse the remaining options.
@@ -42,7 +41,7 @@ index aaa46bf71f6a3..136aa63a4ca42 100755
  # We don't want bug-buddy intercepting our crashes. http://crbug.com/24120
  export GNOME_DISABLE_CRASH_DIALOG=SET_BY_GOOGLE_CHROME
  
-@@ -37,4 +70,4 @@ exec > >(exec cat)
+@@ -37,4 +69,4 @@ exec > >(exec cat)
  exec 2> >(exec cat >&2)
  
  # Note: exec -a below is a bashism.
