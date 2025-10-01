@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_delegate_impl.h"
 #include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_coordinator.h"
 #include "brave/browser/ui/views/side_panel/side_panel.h"
@@ -32,6 +33,7 @@
 #define TabStripRegionView BraveTabStripRegionView
 #define BookmarkBarView BraveBookmarkBarView
 #define MultiContentsView BraveMultiContentsView
+#define MultiContentsViewDelegateImpl BraveMultiContentsViewDelegateImpl
 
 #define UpdateExclusiveAccessBubble(...)             \
   UpdateExclusiveAccessBubble(__VA_ARGS__) override; \
@@ -42,9 +44,32 @@
     return false;                                    \
   }
 
+// When web panel is activated, its tab contents is loaded in web panel
+// view(third split view) instead of contents view(first or second view in split
+// view). When web panel is deactivated, we should not set false to
+// |change_tab_contents| because it could be deactivated by creating another
+// tab. At the start of this method, |active_contents_view| points to panel's
+// contents view if previous active tab was web panel's one. It should points to
+// contents view in this situation to set other normal tab should be set into
+// contents view. So, called BraveMultiContentsView::set_web_panel_active()
+// before calling GetActiveContentsWebView(). GetActiveContentsView() gives
+// contents view for normal tab. Need to patch because related vars should
+// be updated in the middle of this method.
+#define BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED                  \
+  if (multi_contents_view_) {                                     \
+    change_tab_contents &= !IsWebPanelContents(new_contents);     \
+    BraveMultiContentsView::From(multi_contents_view_)            \
+        ->set_web_panel_active(IsWebPanelContents(new_contents)); \
+    if (IsWebPanelContents(old_contents)) {                       \
+      active_contents_view = GetActiveContentsWebView();          \
+    }                                                             \
+  }
+
 #include <chrome/browser/ui/views/frame/browser_view.cc>
 
+#undef BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED
 #undef UpdateExclusiveAccessBubble
+#undef MultiContentsViewDelegateImpl
 #undef MultiContentsView
 #undef BookmarkBarView
 #undef TabStripRegionView
@@ -52,6 +77,10 @@
 #undef BrowserViewLayout
 #undef InfoBarContainerView
 #undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
+
+bool BrowserView::IsWebPanelContents(content::WebContents* contents) {
+  NOTREACHED();
+}
 
 void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
   // Sets a kBrowserWindowKey to given child |widget| so that we can get

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index f55a24fe7762649f6eaf9b7d88e633f1218da72e..773f96b020f76c52b7d654f8ea013e609629d1a8 100644
+index f55a24fe7762649f6eaf9b7d88e633f1218da72e..1450a9e7bc638c674a3f3d4a44a5a7880ee95a48 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
 @@ -608,6 +608,7 @@ bool ConvertedHitTest(views::View* src, views::View* dst, gfx::Point* point) {
@@ -10,3 +10,11 @@ index f55a24fe7762649f6eaf9b7d88e633f1218da72e..773f96b020f76c52b7d654f8ea013e60
    views::View::ConvertPointToTarget(src, dst, point);
    return dst->HitTestPoint(*point);
  }
+@@ -1804,6 +1805,7 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
+       !browser_->tab_strip_model()->closing_all() && GetWidget()->IsActive() &&
+       GetWidget()->IsVisible() && !tab_change_in_split_view;
+ #endif
++  BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED
+   // Update various elements that are interested in knowing the current
+   // WebContents.
+ 
