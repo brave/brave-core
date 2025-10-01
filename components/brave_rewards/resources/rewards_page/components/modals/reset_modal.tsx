@@ -25,7 +25,10 @@ export function ResetModal(props: Props) {
   const [consented, setConsented] = React.useState(false)
 
   return (
-    <Modal className='reset-modal' onEscape={props.onClose}>
+    <Modal
+      className='reset-modal'
+      onEscape={props.onClose}
+    >
       <Modal.Header
         title={getString('resetRewardsTitle')}
         onClose={props.onClose}
@@ -35,35 +38,37 @@ export function ResetModal(props: Props) {
           <Icon name='warning-triangle-filled' />
         </div>
         <div className='text'>
-          {
-            formatMessage(getString('resetRewardsText'), {
-              tags: {
-                $1: (content) => (
-                  <NewTabLink key='link' href={urls.resetSupportURL}>
-                    {content}
-                  </NewTabLink>
-                )
-              }
-            })
-          }
+          {formatMessage(getString('resetRewardsText'), {
+            tags: {
+              $1: (content) => (
+                <NewTabLink
+                  key='link'
+                  href={urls.resetSupportURL}
+                >
+                  {content}
+                </NewTabLink>
+              ),
+            },
+          })}
         </div>
         <div>
           <Checkbox
             checked={consented}
-            onChange={({checked}) => setConsented(checked)}
+            onChange={({ checked }) => setConsented(checked)}
           >
             <div>
-              {
-                formatMessage(getString('resetConsentText'), {
-                  tags: {
-                    $1: (content) => (
-                      <NewTabLink key='link' href={urls.resetSupportURL}>
-                        {content}
-                      </NewTabLink>
-                    )
-                  }
-                })
-              }
+              {formatMessage(getString('resetConsentText'), {
+                tags: {
+                  $1: (content) => (
+                    <NewTabLink
+                      key='link'
+                      href={urls.resetSupportURL}
+                    >
+                      {content}
+                    </NewTabLink>
+                  ),
+                },
+              })}
             </div>
           </Checkbox>
         </div>
@@ -72,15 +77,15 @@ export function ResetModal(props: Props) {
         actions={[
           {
             text: getString('cancelButtonLabel'),
-            onClick: props.onClose
+            onClick: props.onClose,
           },
           {
             className: 'reset-button',
             text: getString('resetButtonLabel'),
             onClick: props.onReset,
             isDisabled: !consented,
-            isPrimary: true
-          }
+            isPrimary: true,
+          },
         ]}
       />
     </Modal>

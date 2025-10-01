@@ -11,8 +11,10 @@ initializeDetector(() => {
 
   function scrapeIcon() {
     const elem = document.querySelector(
-      isMobile ? '.tw-avatar .tw-image-avatar[src]'
-               : '.channel-info-content .tw-avatar [src]')
+      isMobile
+        ? '.tw-avatar .tw-image-avatar[src]'
+        : '.channel-info-content .tw-avatar [src]',
+    )
     return (elem && elem.getAttribute('src')) || ''
   }
 
@@ -22,7 +24,7 @@ initializeDetector(() => {
 
   function scrapeChannelName() {
     const elem = getChannelTitleElement()
-    return elem && elem.textContent || ''
+    return (elem && elem.textContent) || ''
   }
 
   function firstPathComponent(path: string) {
@@ -39,7 +41,7 @@ initializeDetector(() => {
     'jobs',
     'p',
     'search',
-    'turbo'
+    'turbo',
   ])
 
   function scrapeChannelID() {
@@ -82,7 +84,7 @@ initializeDetector(() => {
       id: `twitch#author:${id}`,
       name: scrapeChannelName(),
       url: `${location.origin}/${id}`,
-      imageURL: scrapeIcon()
+      imageURL: scrapeIcon(),
     }
   }
 
@@ -103,8 +105,7 @@ initializeDetector(() => {
       return true
     }
     return (
-      user.name !== currentUser.name &&
-      user.imageURL !== currentUser.imageURL
+      user.name !== currentUser.name && user.imageURL !== currentUser.imageURL
     )
   }
 
@@ -120,8 +121,7 @@ initializeDetector(() => {
     return await pollFor(getUser, {
       name: 'creator',
       interval: 500,
-      timeout: 6000
+      timeout: 6000,
     })
   }
-
 })

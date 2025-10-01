@@ -33,7 +33,11 @@ function NavList() {
   function renderLink(route: string, text: string) {
     let className = route === currentRoute ? 'current' : ''
     return (
-      <a className={className} href={route} onClick={onLinkClick}>
+      <a
+        className={className}
+        href={route}
+        onClick={onLinkClick}
+      >
         <span>{text}</span>
       </a>
     )
@@ -41,21 +45,11 @@ function NavList() {
 
   return (
     <ul>
-      <li>
-        {renderLink(routes.home, 'General Info')}
-      </li>
-      <li>
-        {renderLink(routes.rewardsLog, 'Rewards Log')}
-      </li>
-      <li>
-        {renderLink(routes.contributions, 'Contributions')}
-      </li>
-      <li>
-        {renderLink(routes.rewardsEvents, 'Events')}
-      </li>
-      <li>
-        {renderLink(routes.adDiagnostics, 'Ad Diagnostics')}
-      </li>
+      <li>{renderLink(routes.home, 'General Info')}</li>
+      <li>{renderLink(routes.rewardsLog, 'Rewards Log')}</li>
+      <li>{renderLink(routes.contributions, 'Contributions')}</li>
+      <li>{renderLink(routes.rewardsEvents, 'Events')}</li>
+      <li>{renderLink(routes.adDiagnostics, 'Ad Diagnostics')}</li>
     </ul>
   )
 }
@@ -65,22 +59,29 @@ export function App() {
   const route = useRoute()
   const [sidebarOpen, setSidebarOpen] = React.useState(false)
 
-  React.useEffect(() => { setSidebarOpen(false) }, [route])
+  React.useEffect(() => {
+    setSidebarOpen(false)
+  }, [route])
 
   function renderContent() {
     switch (route) {
-      case routes.rewardsLog: return <RewardsLog />
-      case routes.contributions: return <Contributions />
-      case routes.rewardsEvents: return <RewardsEvents />
-      case routes.adDiagnostics: return <AdDiagnostics />
-      default: return <GeneralInfo />
+      case routes.rewardsLog:
+        return <RewardsLog />
+      case routes.contributions:
+        return <Contributions />
+      case routes.rewardsEvents:
+        return <RewardsEvents />
+      case routes.adDiagnostics:
+        return <AdDiagnostics />
+      default:
+        return <GeneralInfo />
     }
   }
 
   function maybeCloseSidebar(event: React.UIEvent) {
     const isToggleClick =
-      event.target instanceof HTMLElement &&
-      event.target.closest('.sidebar-toggle')
+      event.target instanceof HTMLElement
+      && event.target.closest('.sidebar-toggle')
     if (!isToggleClick) {
       setSidebarOpen(false)
     }
@@ -112,9 +113,7 @@ export function App() {
         </div>
         <main>
           <h1>{getString('pageTitle')}</h1>
-          <div className='disclaimer'>
-            {getString('pageDisclaimerText')}
-          </div>
+          <div className='disclaimer'>{getString('pageDisclaimerText')}</div>
           {renderContent()}
         </main>
       </div>

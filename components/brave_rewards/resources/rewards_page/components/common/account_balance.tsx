@@ -10,7 +10,7 @@ import { TextSkeleton } from './text_skeleton'
 
 const balanceFormatter = new Intl.NumberFormat(undefined, {
   minimumFractionDigits: 2,
-  maximumFractionDigits: 4
+  maximumFractionDigits: 4,
 })
 
 interface Props {
@@ -21,7 +21,5 @@ export function AccountBalance(props: Props) {
   if (!props.balance.hasValue()) {
     return <TextSkeleton length={12} />
   }
-  return <>
-    {balanceFormatter.format(props.balance.valueOr(0)) + ' BAT'}
-  </>
+  return <>{balanceFormatter.format(props.balance.valueOr(0)) + ' BAT'}</>
 }

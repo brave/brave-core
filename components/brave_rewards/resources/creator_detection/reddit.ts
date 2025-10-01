@@ -7,7 +7,6 @@ import { CreatorInfo, initializeDetector } from './creator_detection'
 import { log } from './helpers'
 
 initializeDetector(() => {
-
   function getCreatorFromResponse(screenName: string, response: any): any {
     if (!response || response.kind !== 't2') {
       log.info('Unexpected "kind" value')
@@ -26,7 +25,7 @@ initializeDetector(() => {
       id: `reddit#channel:${data.id}`,
       name: screenName,
       url: `https://reddit.com/user/${screenName}/`,
-      imageURL: String(data.icon_img || '')
+      imageURL: String(data.icon_img || ''),
     }
   }
 
@@ -77,5 +76,4 @@ initializeDetector(() => {
     }
     return await fetchUserData(screenName)
   }
-
 })

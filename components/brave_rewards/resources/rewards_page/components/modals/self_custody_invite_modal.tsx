@@ -28,13 +28,13 @@ export function SelfCustodyInviteModal(props: Props) {
           actions={[
             {
               text: getString('selfCustodyInviteDismissButtonLabel'),
-              onClick: props.onDismiss
+              onClick: props.onDismiss,
             },
             {
               text: getString('connectButtonLabel'),
               onClick: props.onConnect,
-              isPrimary: true
-            }
+              isPrimary: true,
+            },
           ]}
         />
       </div>

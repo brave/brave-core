@@ -23,7 +23,7 @@ const minimumAmount = 0.002
 const maximumAmount = 100
 
 const optionValueFormatter = new Intl.NumberFormat(undefined, {
-  minimumFractionDigits: 2
+  minimumFractionDigits: 2,
 })
 
 const exchangeFormatter = new Intl.NumberFormat(undefined, {
@@ -32,7 +32,7 @@ const exchangeFormatter = new Intl.NumberFormat(undefined, {
   minimumSignificantDigits: 1,
   maximumSignificantDigits: 1,
   roundingPriority: 'morePrecision',
-  roundingMode: 'ceil'
+  roundingMode: 'ceil',
 })
 
 interface Props {
@@ -75,7 +75,7 @@ export function PaymentForm(props: Props) {
       return
     }
     const value = parseFloat(textValue) || 0
-    if (value && value < minimumAmount || value > maximumAmount) {
+    if ((value && value < minimumAmount) || value > maximumAmount) {
       return
     }
     setCustomAmountText(textValue)
@@ -101,7 +101,7 @@ export function PaymentForm(props: Props) {
       return getString('contributeInsufficientFundsButtonLabel')
     }
     return formatMessage(getString('contributeSendAmountButtonLabel'), [
-      sendValue
+      sendValue,
     ])
   }
 
@@ -129,9 +129,7 @@ export function PaymentForm(props: Props) {
               {getExternalWalletProviderName(externalWallet.provider)}
             </span>
           </div>
-          <div className='balance-value'>
-            {renderBalanceText()}
-          </div>
+          <div className='balance-value'>{renderBalanceText()}</div>
         </div>
       </div>
     )
@@ -151,39 +149,36 @@ export function PaymentForm(props: Props) {
           <Icon name='warning-triangle-filled' />
           <div className='content'>
             <h4>
-              {
-                formatMessage(getString('contributeLoggedOutTitle'), [
-                  providerName
-                ])
-              }
+              {formatMessage(getString('contributeLoggedOutTitle'), [
+                providerName,
+              ])}
             </h4>
             <p>
-              {
-                formatMessage(getString('contributeLoggedOutText'), [
-                  providerName
-                ])
-              }
+              {formatMessage(getString('contributeLoggedOutText'), [
+                providerName,
+              ])}
             </p>
             {web3URL && <p>{getString('contributeLoggedOutWeb3Text')}</p>}
           </div>
         </div>
         <div className='actions'>
-          <Button onClick={() => { model.beginExternalWalletLogin(provider) }}>
-            {
-              formatMessage(getString('contributeLoginButtonLabel'), [
-                providerName
-              ])
-            }
+          <Button
+            onClick={() => {
+              model.beginExternalWalletLogin(provider)
+            }}
+          >
+            {formatMessage(getString('contributeLoginButtonLabel'), [
+              providerName,
+            ])}
           </Button>
-          {
-            web3URL &&
-              <Button
-                kind='outline'
-                onClick={() => tabOpener.openTab(web3URL)}
-              >
-                {getString('contributeLoggedOutWeb3ButtonLabel')}
-              </Button>
-          }
+          {web3URL && (
+            <Button
+              kind='outline'
+              onClick={() => tabOpener.openTab(web3URL)}
+            >
+              {getString('contributeLoggedOutWeb3ButtonLabel')}
+            </Button>
+          )}
         </div>
       </div>
     )
@@ -197,27 +192,24 @@ export function PaymentForm(props: Props) {
     <div data-css-scope={style.scope}>
       {renderBalance()}
       <div>
-        <div className='form-header'>
-          {getString('contributeAmountTitle')}
-        </div>
+        <div className='form-header'>{getString('contributeAmountTitle')}</div>
         <div className='options'>
-          {
-            parameters.tipChoices.map((value) =>
-              <div key={value} className='option'>
-                <RadioButton
-                  name='amount'
-                  value={value}
-                  currentValue={selectedOption}
-                  onChange={() => setSelectedOption(value)}
-                >
-                  {optionValueFormatter.format(value)} BAT
-                </RadioButton>
-                <div className='exchange'>
-                  {renderExchange(value)}
-                </div>
-              </div>
-            )
-          }
+          {parameters.tipChoices.map((value) => (
+            <div
+              key={value}
+              className='option'
+            >
+              <RadioButton
+                name='amount'
+                value={value}
+                currentValue={selectedOption}
+                onChange={() => setSelectedOption(value)}
+              >
+                {optionValueFormatter.format(value)} BAT
+              </RadioButton>
+              <div className='exchange'>{renderExchange(value)}</div>
+            </div>
+          ))}
           <div className='option'>
             <RadioButton
               name='amount'
@@ -227,8 +219,8 @@ export function PaymentForm(props: Props) {
             >
               {getString('contributeOtherLabel')}
             </RadioButton>
-            {
-              selectedOption === otherOptionValue && <>
+            {selectedOption === otherOptionValue && (
+              <>
                 <div className='custom-input'>
                   <input
                     value={customAmountText}
@@ -237,11 +229,9 @@ export function PaymentForm(props: Props) {
                     autoFocus
                   />
                 </div>
-                <div className='exchange'>
-                  {renderExchange(customAmount)}
-                </div>
+                <div className='exchange'>{renderExchange(customAmount)}</div>
               </>
-            }
+            )}
           </div>
         </div>
       </div>

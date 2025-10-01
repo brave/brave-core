@@ -30,7 +30,7 @@ export function Onboarding(props: Props) {
   const [availableCountries, setAvailableCountries] =
     React.useState<AvailableCountryInfo>({
       countryCodes: [],
-      defaultCountryCode: ''
+      defaultCountryCode: '',
     })
 
   const [showCountrySelect, setShowCountrySelect] = React.useState(false)
@@ -93,14 +93,18 @@ export function Onboarding(props: Props) {
   }
 
   return (
-    <div className='onboarding' data-css-scope={style.scope}>
+    <div
+      className='onboarding'
+      data-css-scope={style.scope}
+    >
       <div className='brave-rewards-logo' />
       <div className='bat-image'>
-        <img alt='BAT' src={batCoinImage} />
+        <img
+          alt='BAT'
+          src={batCoinImage}
+        />
       </div>
-      <div className='header'>
-        {getString('onboardingTitle')}
-      </div>
+      <div className='header'>{getString('onboardingTitle')}</div>
       <div className='text'>
         <div>
           <Icon name='check-normal' />
@@ -112,7 +116,10 @@ export function Onboarding(props: Props) {
         </div>
       </div>
       <div className='action'>
-        <Button className='onboarding-button' onClick={onStartClick}>
+        <Button
+          className='onboarding-button'
+          onClick={onStartClick}
+        >
           {getString('onboardingButtonLabel')}
         </Button>
       </div>
@@ -122,22 +129,26 @@ export function Onboarding(props: Props) {
         </NewTabLink>
       </div>
       <div className='terms'>
-        {
-          formatMessage(getString('onboardingTermsText'), {
-            tags: {
-              $1: (content) => (
-                <NewTabLink key='terms' href={urls.termsOfServiceURL}>
-                  {content}
-                </NewTabLink>
-              ),
-              $3: (content) => (
-                <NewTabLink key='privacy' href={urls.privacyPolicyURL}>
-                  {content}
-                </NewTabLink>
-              )
-            }
-          })
-        }
+        {formatMessage(getString('onboardingTermsText'), {
+          tags: {
+            $1: (content) => (
+              <NewTabLink
+                key='terms'
+                href={urls.termsOfServiceURL}
+              >
+                {content}
+              </NewTabLink>
+            ),
+            $3: (content) => (
+              <NewTabLink
+                key='privacy'
+                href={urls.privacyPolicyURL}
+              >
+                {content}
+              </NewTabLink>
+            ),
+          },
+        })}
       </div>
       {renderModal()}
     </div>

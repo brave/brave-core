@@ -38,21 +38,25 @@ export function WdpOptInModal(props: Props) {
           onChange={({ checked }) => setChecked(checked)}
         >
           <div className='checkbox-text'>
-            {
-              formatMessage(getString('wdpCheckboxLabel'), {
-                tags: {
-                  $1: (content) => (
-                    <NewTabLink key='link' href={urls.wdpLearnMoreURL}>
-                      {content}
-                    </NewTabLink>
-                  )
-                }
-              })
-            }
+            {formatMessage(getString('wdpCheckboxLabel'), {
+              tags: {
+                $1: (content) => (
+                  <NewTabLink
+                    key='link'
+                    href={urls.wdpLearnMoreURL}
+                  >
+                    {content}
+                  </NewTabLink>
+                ),
+              },
+            })}
           </div>
         </Checkbox>
         <div className='actions'>
-          <Button className='continue-button' onClick={onContinue}>
+          <Button
+            className='continue-button'
+            onClick={onContinue}
+          >
             {getString('continueButtonLabel')}
           </Button>
         </div>

@@ -38,4 +38,3 @@ export const style = scoped.css`
     padding-bottom: 16px;
   }
 `
-

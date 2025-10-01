@@ -36,17 +36,20 @@ export function EarningCard() {
 
   let adsReceivedThisMonth = 0
   if (adsInfo) {
-    adsReceivedThisMonth = Object.values(adsInfo.adTypesReceivedThisMonth)
-      .reduce((prev, current) => prev + current, 0)
+    adsReceivedThisMonth = Object.values(
+      adsInfo.adTypesReceivedThisMonth,
+    ).reduce((prev, current) => prev + current, 0)
   }
 
   const unconnectedAdsViewedString = usePluralString(
     'unconnectedAdsViewedText',
-    adsReceivedThisMonth)
+    adsReceivedThisMonth,
+  )
 
   const connectedAdsViewedString = usePluralString(
     'connectedAdsViewedText',
-    adsReceivedThisMonth)
+    adsReceivedThisMonth,
+  )
 
   function toggleAdDetails() {
     setShowAdDetails(!showAdDetails)
@@ -64,10 +67,12 @@ export function EarningCard() {
     return (
       <div className='ads-summary-nav'>
         <button onClick={toggleAdsHistoryModal}>
-          <Icon name='history' />{getString('adsHistoryButtonLabel')}
+          <Icon name='history' />
+          {getString('adsHistoryButtonLabel')}
         </button>
         <button onClick={toggleAdsSettingsModal}>
-          <Icon name='settings' />{getString('adsSettingsButtonLabel')}
+          <Icon name='settings' />
+          {getString('adsSettingsButtonLabel')}
         </button>
       </div>
     )
@@ -75,30 +80,35 @@ export function EarningCard() {
 
   function renderLimited() {
     return (
-      <div className='content-card' data-css-scope={style.scope}>
+      <div
+        className='content-card'
+        data-css-scope={style.scope}
+      >
         <div className='counter'>
-          <img alt='BAT' src={batCoinGray} />
+          <img
+            alt='BAT'
+            src={batCoinGray}
+          />
           <div className='counter-text'>
-            {
-              formatMessage(unconnectedAdsViewedString, {
-                tags: {
-                  $1: (content) => (
-                    <div key='value' className='counter-value'>
-                      {content}
-                      {renderAdsViewedTooltip()}
-                    </div>
-                  )
-                }
-              })
-            }
+            {formatMessage(unconnectedAdsViewedString, {
+              tags: {
+                $1: (content) => (
+                  <div
+                    key='value'
+                    className='counter-value'
+                  >
+                    {content}
+                    {renderAdsViewedTooltip()}
+                  </div>
+                ),
+              },
+            })}
           </div>
         </div>
         <section className='unconnected'>
           <div className='connect'>
             <div className='connect-text'>
-              <div>
-                {getString('connectAccountText')}
-              </div>
+              <div>{getString('connectAccountText')}</div>
               <div className='connect-subtext'>
                 {getString('connectAccountSubtext')}
               </div>
@@ -119,7 +129,10 @@ export function EarningCard() {
 
   function renderAdsViewedTooltip() {
     return (
-      <Tooltip mode='default' className='info'>
+      <Tooltip
+        mode='default'
+        className='info'
+      >
         <Icon name='info-outline' />
         <div slot='content'>{getString('adsViewedTooltip')}</div>
       </Tooltip>
@@ -133,12 +146,15 @@ export function EarningCard() {
     return formatMessage(connectedAdsViewedString, {
       tags: {
         $1: (content) => (
-          <div key='value' className='counter-value'>
+          <div
+            key='value'
+            className='counter-value'
+          >
             {content}
             {renderAdsViewedTooltip()}
           </div>
-        )
-      }
+        ),
+      },
     })
   }
 
@@ -167,50 +183,60 @@ export function EarningCard() {
 
     return (
       <section className='ads-summary'>
-        <button className='ads-summary-title' onClick={toggleAdDetails}>
+        <button
+          className='ads-summary-title'
+          onClick={toggleAdDetails}
+        >
           <span>
-            {
-              adsInfo && formatMessage(getString('earningsAdsReceivedText'), [
-                <span key='value' className='value'>
+            {adsInfo
+              && formatMessage(getString('earningsAdsReceivedText'), [
+                <span
+                  key='value'
+                  className='value'
+                >
                   {adsReceivedThisMonth}
-                </span>
-              ])
-            }
+                </span>,
+              ])}
           </span>
           <Icon name={showAdDetails ? 'carat-up' : 'carat-down'} />
         </button>
-        {
-          showAdDetails && <>
+        {showAdDetails && (
+          <>
             <AdsSummary />
             {renderAdsNav()}
           </>
-        }
+        )}
       </section>
     )
   }
 
   function renderConnected() {
     return (
-      <div className='content-card' data-css-scope={style.scope}>
+      <div
+        className='content-card'
+        data-css-scope={style.scope}
+      >
         <PayoutStatusView />
         <div className='counter'>
-          <img alt='BAT' src={batCoinColor} />
-          <div className='counter-text'>
-            {renderEarningsCounter()}
-          </div>
+          <img
+            alt='BAT'
+            src={batCoinColor}
+          />
+          <div className='counter-text'>{renderEarningsCounter()}</div>
         </div>
         {renderAdsSummary()}
       </div>
     )
   }
 
-  return <>
-    {externalWallet ? renderConnected() : renderLimited()}
-    {
-      showAdsHistoryModal ?
-        <AdsHistoryModal onClose={toggleAdsHistoryModal} /> :
-      showAdsSettingsModal ?
-        <AdsSettingsModal onClose={toggleAdsSettingsModal} /> : null
-    }
-  </>
+  return (
+    <>
+      {externalWallet ? renderConnected() : renderLimited()}
+      {showAdsHistoryModal ? (
+        <AdsHistoryModal onClose={toggleAdsHistoryModal} />
+      ) : showAdsSettingsModal ? (
+        <AdsSettingsModal onClose={toggleAdsSettingsModal} />
+      ) : null}
+    </>
+  )
 }

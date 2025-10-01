@@ -24,7 +24,10 @@ export function TransferError(props: Readonly<Props>) {
         <h3>{getString('contributeErrorTitle')}</h3>
         <p>{getString('contributeErrorText')}</p>
       </div>
-      <Button kind='outline' onClick={props.onClose}>
+      <Button
+        kind='outline'
+        onClick={props.onClose}
+      >
         {getString('closeButtonLabel')}
       </Button>
     </div>

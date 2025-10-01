@@ -35,15 +35,14 @@ export function CountrySelectModal(props: Props) {
       className='country-select-modal'
       onEscape={props.loading ? undefined : props.onClose}
     >
-      <Modal.Header onClose={props.onClose} closeDisabled={props.loading} />
+      <Modal.Header
+        onClose={props.onClose}
+        closeDisabled={props.loading}
+      />
       <div data-css-scope={style.scope}>
         <div className='graphic' />
-        <div className='title'>
-          {getString('countrySelectTitle')}
-        </div>
-        <div className='text'>
-          {getString('countrySelectText')}
-        </div>
+        <div className='title'>{getString('countrySelectTitle')}</div>
+        <div className='text'>{getString('countrySelectText')}</div>
         <div className='selector'>
           <CountrySelect
             countries={props.countries}

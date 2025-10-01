@@ -20,7 +20,9 @@ export function RewardsLog() {
   const [logLoaded, setLogLoaded] = React.useState(log.length > 0)
   const [autoRefresh, setAutoRefresh] = React.useState(false)
 
-  React.useEffect(() => { actions.loadRewardsLog() }, [])
+  React.useEffect(() => {
+    actions.loadRewardsLog()
+  }, [])
 
   React.useEffect(() => {
     if (!logLoaded && log.length > 0) {
@@ -32,8 +34,12 @@ export function RewardsLog() {
     if (!autoRefresh) {
       return
     }
-    const interval: any = setInterval(() => { actions.loadRewardsLog() }, 5000)
-    return () => { clearInterval(interval) }
+    const interval: any = setInterval(() => {
+      actions.loadRewardsLog()
+    }, 5000)
+    return () => {
+      clearInterval(interval)
+    }
   }, [autoRefresh])
 
   React.useEffect(() => {
@@ -49,8 +55,9 @@ export function RewardsLog() {
       const filename = 'brave_rewards_sensitive_log.txt'
       const element = document.createElement('a')
       element.setAttribute(
-          'href',
-          'data:text/plain;charset=utf-8,' + encodeURIComponent(content))
+        'href',
+        'data:text/plain;charset=utf-8,' + encodeURIComponent(content),
+      )
       element.setAttribute('download', filename)
       element.style.display = 'none'
       document.body.appendChild(element)
@@ -64,7 +71,10 @@ export function RewardsLog() {
   }
 
   return (
-    <div className='content-card' data-css-scope={style.scope}>
+    <div
+      className='content-card'
+      data-css-scope={style.scope}
+    >
       <h4>
         <span className='title'>Rewards Log</span>
         <span className='auto-refresh'>
@@ -76,11 +86,25 @@ export function RewardsLog() {
             Auto-refresh
           </Toggle>
         </span>
-        <Button size='small' onClick={download}>Download</Button>
-        <Button size='small' onClick={clearLog}>Clear</Button>
+        <Button
+          size='small'
+          onClick={download}
+        >
+          Download
+        </Button>
+        <Button
+          size='small'
+          onClick={clearLog}
+        >
+          Clear
+        </Button>
       </h4>
 
-      <textarea ref={textAreaRef} value={log} readOnly />
+      <textarea
+        ref={textAreaRef}
+        value={log}
+        readOnly
+      />
     </div>
   )
 }
