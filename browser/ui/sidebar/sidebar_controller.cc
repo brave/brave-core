@@ -109,9 +109,7 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
   if (item.is_web_panel_type()) {
     // TODO(https://github.com/brave/brave-browser/issues/33533): web panel item
     // also should be activated.
-    GetWebPanelController()->IsShowingWebPanel()
-        ? GetWebPanelController()->CloseWebPanel()
-        : GetWebPanelController()->OpenWebPanel(item);
+    GetWebPanelController()->ToggleWebPanel(item);
     return;
   }
 
