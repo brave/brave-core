@@ -84,6 +84,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kModernTabTrayEnabled;
 @property(class, nonatomic, readonly) Feature* kBraveWalletWebUIIOS;
 @property(class, nonatomic, readonly) Feature* kAIChatWebUIEnabled;
+@property(class, nonatomic, readonly) Feature* kBraveSyncDefaultPasswords;
 @end
 
 NS_ASSUME_NONNULL_END
