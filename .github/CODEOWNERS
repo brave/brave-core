@@ -193,6 +193,14 @@ android/java/res @brave/Android
 # new things there
 android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java @AlexeyBarabash @samartnik @SergeyZhukovsky
 
+# GitHub configuration
+/.github/CODEOWNERS @bridiver @bsclifton
+/.github/PULL_REQUEST_TEMPLATE.md @bsclifton
+/.github/ @brave/devops-team
+
+# Semgrep configuration
+/.semgrepignore @thypon
+
 # Deprecated android util directory
 android/java/org/chromium/chrome/browser/util @bridiver
 # This file should be removed once our UI is adjusted to Dynamic Colors
@@ -207,14 +215,6 @@ android/java/org/chromium/chrome/browser/util/BraveDynamicColors.java @brave/And
 # Rust deps
 **/Cargo.* @brave/rust-deps-reviewers
 third_party/rust @bridiver @cdesouza-chromium
-
-# GitHub configuration
-/.github/CODEOWNERS @bridiver @bsclifton
-/.github/PULL_REQUEST_TEMPLATE.md @bsclifton
-/.github/ @brave/devops-team
-
-# Semgrep configuration
-/.semgrepignore @thypon
 
 # include_rules
 DEPS @brave/deps-reviewers
