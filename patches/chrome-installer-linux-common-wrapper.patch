@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/common/wrapper b/chrome/installer/linux/common/wrapper
-index aaa46bf71f6a3..22e4412a127e1 100755
+index aaa46bf71f6a3..58fd403372220 100755
 --- a/chrome/installer/linux/common/wrapper
 +++ b/chrome/installer/linux/common/wrapper
-@@ -27,6 +27,40 @@ fi
+@@ -27,6 +27,41 @@ fi
  
  export CHROME_VERSION_EXTRA="@@CHANNEL@@"
  
@@ -12,6 +12,7 @@ index aaa46bf71f6a3..22e4412a127e1 100755
 +cfg_options=()
 +
 +shopt -s extglob
++
 +if [[ -f "$cfg_file" ]]; then
 +  # Parse options after comments have been removed.
 +  parse_cfg_options() {
@@ -31,7 +32,7 @@ index aaa46bf71f6a3..22e4412a127e1 100755
 +    parse_cfg_options "$rest"
 +  }
 +
-+  # Remove comments and parse the remaining options.
++  # Read the config file, remove comments and parse the remaining options.
 +  while read -r cfg_line; do
 +    read -ra cfg_line_items <<<"${cfg_line%%[[:space:]]#*}"
 +    if [[ "${cfg_line_items[0]:0:1}" != "#" ]]; then
@@ -43,7 +44,7 @@ index aaa46bf71f6a3..22e4412a127e1 100755
  # We don't want bug-buddy intercepting our crashes. http://crbug.com/24120
  export GNOME_DISABLE_CRASH_DIALOG=SET_BY_GOOGLE_CHROME
  
-@@ -37,4 +71,4 @@ exec > >(exec cat)
+@@ -37,4 +72,4 @@ exec > >(exec cat)
  exec 2> >(exec cat >&2)
  
  # Note: exec -a below is a bashism.
