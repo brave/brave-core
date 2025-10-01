@@ -35,12 +35,6 @@ export const style = scoped.css`
 
   iframe {
     border: none;
-    opacity: 1;
-    transition: opacity 250ms;
-
-    &.loading {
-      opacity: 0;
-    }
   }
 
   @keyframes background-fade-in {
