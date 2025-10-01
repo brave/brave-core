@@ -214,7 +214,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   panel_ui->Toggle();
   views::View* contents_container =
       browser_view()->GetContentsContainerForLayoutManager();
-  views::View* side_panel = browser_view()->unified_side_panel();
+  views::View* side_panel = browser_view()->contents_height_side_panel();
 
   const auto contents_container_bounds = contents_container->bounds();
   const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
