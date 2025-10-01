@@ -10,6 +10,7 @@
 #include <functional>
 #include <ios>
 #include <iterator>
+#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -34,6 +35,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -45,7 +47,6 @@
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
@@ -94,6 +95,13 @@ std::vector<mojom::AssociatedContentPtr> CloneAssociatedContent(
   }
   return cloned_content;
 }
+
+// Determines whether its safe to associate content with a conversation.
+bool CanAssociateContent(AssociatedContentDelegate* delegate) {
+  return delegate &&
+         kAllowedContentSchemes.contains(delegate->url().scheme_piece());
+}
+
 }  // namespace
 
 AIChatService::AIChatService(
@@ -593,8 +601,7 @@ void AIChatService::MaybeAssociateContent(
     ConversationHandler* conversation,
     int associated_content_id,
     base::WeakPtr<AssociatedContentDelegate> associated_content) {
-  if (associated_content &&
-      kAllowedContentSchemes.contains(associated_content->url().scheme())) {
+  if (CanAssociateContent(associated_content.get())) {
     conversation->associated_content_manager()->AddContent(
         associated_content.get(),
         /*notify_updated=*/true);
@@ -1189,6 +1196,25 @@ void AIChatService::MaybeAssociateContent(
 
   MaybeAssociateContent(conversation, content->content_id(),
                         content->GetWeakPtr());
+}
+
+void AIChatService::AssociateOwnedContent(
+    std::unique_ptr<AssociatedContentDelegate> delegate,
+    const std::string& conversation_uuid) {
+  CHECK(delegate);
+
+  auto* conversation = GetConversation(conversation_uuid);
+  if (!conversation) {
+    return;
+  }
+
+  // Don't associate the content if it isn't allowed.
+  if (!CanAssociateContent(delegate.get())) {
+    return;
+  }
+
+  conversation->associated_content_manager()->AddOwnedContent(
+      std::move(delegate));
 }
 
 void AIChatService::DisassociateContent(

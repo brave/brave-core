@@ -27,6 +27,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
@@ -158,6 +159,8 @@ class AIChatService : public KeyedService,
       base::OnceClosure open_ai_chat);
 
   void MaybeAssociateContent(AssociatedContentDelegate* content,
+                             const std::string& conversation_uuid);
+  void AssociateOwnedContent(std::unique_ptr<AssociatedContentDelegate> content,
                              const std::string& conversation_uuid);
   void DisassociateContent(const mojom::AssociatedContentPtr& content,
                            const std::string& conversation_uuid);

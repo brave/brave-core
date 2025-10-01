@@ -48,6 +48,10 @@ class AssociatedURLContent : public AssociatedContentDelegate,
   // AssociatedContentDelegate
   void GetContent(GetPageContentCallback callback) override;
 
+  content::WebContents* GetWebContentsForTesting() {
+    return web_contents_.get();
+  }
+
  private:
   friend class TestableAssociatedURLContent;
 

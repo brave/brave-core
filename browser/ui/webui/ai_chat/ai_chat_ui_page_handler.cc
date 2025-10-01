@@ -15,11 +15,13 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
-#include "base/notimplemented.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/brave_tab_helpers.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/components/ai_chat/content/browser/associated_url_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
@@ -48,6 +50,7 @@
 #include "ui/base/page_transition_types.h"
 
 #if BUILDFLAG(IS_ANDROID)
+#include "base/notimplemented.h"
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
@@ -441,6 +444,18 @@ void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
                                                   conversation_uuid);
                     },
                     conversation_uuid));
+}
+
+void AIChatUIPageHandler::AssociateUrlContent(
+    const GURL& url,
+    const std::string& title,
+    const std::string& conversation_uuid) {
+  auto* context = owner_web_contents_->GetBrowserContext();
+  auto* service = AIChatServiceFactory::GetForBrowserContext(context);
+  auto content = std::make_unique<ai_chat::AssociatedURLContent>(
+      url, base::UTF8ToUTF16(title), context,
+      base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers));
+  service->AssociateOwnedContent(std::move(content), conversation_uuid);
 }
 
 void AIChatUIPageHandler::DisassociateContent(
