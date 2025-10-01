@@ -233,7 +233,12 @@ fn extract_inputs(
     let mut inputs = Vec::with_capacity(inputs_array.len());
     for input_value in inputs_array {
         let input_array = match input_value {
-            CborValue::Array(arr) if arr.len() >= 2 => arr,
+            CborValue::Array(arr) => {
+                if arr.len() != 2 {
+                    return Err(Error::InvalidInputFormat);
+                }
+                arr
+            },
             _ => return Err(Error::InvalidInputFormat),
         };
 
@@ -270,7 +275,12 @@ fn extract_outputs(
     let mut outputs = Vec::with_capacity(outputs_array.len());
     for output_value in outputs_array {
         let output_array = match output_value {
-            CborValue::Array(arr) if arr.len() >= 2 => arr,
+            CborValue::Array(arr) => {
+                if arr.len() < 2 {
+                    return Err(Error::InvalidOutputFormat);
+                }
+                arr
+            },
             _ => return Err(Error::InvalidOutputFormat),
         };
 

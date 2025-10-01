@@ -21,8 +21,6 @@ namespace brave_wallet {
 namespace {
 
 CardanoTransaction GetUnsignedReferenceTransaction() {
-  // https://adastat.net/transactions/a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba
-
   CardanoTransaction tx;
 
   CardanoTransaction::TxInput input;
@@ -53,8 +51,6 @@ CardanoTransaction GetUnsignedReferenceTransaction() {
 }
 
 CardanoTransaction GetSignedReferenceTransaction() {
-  // https://adastat.net/transactions/a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba
-
   CardanoTransaction tx;
 
   CardanoTransaction::TxInput input;
@@ -92,7 +88,6 @@ CardanoTransaction GetSignedReferenceTransaction() {
   return tx;
 }
 
-// Helper function to create invalid CBOR data for testing
 std::vector<uint8_t> CreateInvalidCborData() {
   return {0x00, 0x01, 0x02, 0x03};  // Invalid CBOR
 }
@@ -108,10 +103,8 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransaction) {
 
   const auto& restored_tx = decode_result.value();
 
-  // Validate raw bytes
   EXPECT_EQ(restored_tx.raw_bytes, tx_bytes);
 
-  // Validate inputs
   EXPECT_EQ(restored_tx.tx_body.inputs.size(), tx.inputs().size());
   for (size_t i = 0; i < tx.inputs().size(); i++) {
     EXPECT_EQ(restored_tx.tx_body.inputs[i].tx_hash,
@@ -120,7 +113,6 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransaction) {
               tx.inputs()[i].utxo_outpoint.index);
   }
 
-  // Validate outputs
   EXPECT_EQ(restored_tx.tx_body.outputs.size(), tx.outputs().size());
   for (size_t i = 0; i < tx.outputs().size(); i++) {
     EXPECT_EQ(restored_tx.tx_body.outputs[i].address, tx.outputs()[i].address);
@@ -143,8 +135,6 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_EmptyData) {
 }
 
 TEST(CardanoTxDecoderTest, DecodeTransaction_MalformedTransaction) {
-  // Create malformed CBOR that looks like a transaction but has invalid
-  // structure
   std::vector<uint8_t> malformed_cbor = {
       0x82,  // Array with 2 elements
       0x01,  // First element (should be transaction body)
@@ -162,13 +152,11 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_ValidSignatures) {
 
   std::vector<CardanoTxDecoder::CardanoSignMessageResult> sign_results;
 
-  // Create first signature result
   CardanoTxDecoder::CardanoSignMessageResult sign_result1;
   sign_result1.public_key = std::vector<uint8_t>(32, 1);
   sign_result1.signature_bytes = std::vector<uint8_t>(64, 2);
   sign_results.push_back(std::move(sign_result1));
 
-  // Create second signature result
   CardanoTxDecoder::CardanoSignMessageResult sign_result2;
   sign_result2.public_key = std::vector<uint8_t>(32, 3);
   sign_result2.signature_bytes = std::vector<uint8_t>(64, 4);
@@ -205,9 +193,344 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_EmptySignatures) {
   auto result =
       CardanoTxDecoder::AddWitnessesToTransaction(tx_bytes, empty_sign_results);
 
-  // Should still return a result (transaction with empty witness set)
   EXPECT_TRUE(result.has_value());
   EXPECT_EQ(tx_bytes, result.value());
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_InputIndexOverflow) {
+  // clang-format off
+  std::vector<uint8_t> cbor_with_large_index = {
+      0x82,        // Array with 2 elements (transaction body and witness set)
+      0xa2,        // Transaction body map with 2 key-value pairs
+      0x00,        // Key 0 (inputs)
+      0x81,        // Array with 1 input
+      0x82,        // First input array with 2 elements
+      0x58, 0x20,  // Byte array with 32-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 32-byte transaction hash (all zeros)
+      0x1b, 0x00, 0x00, 0x00,
+      0x01, 0x00, 0x00, 0x00, 0x00,  // Large integer (2^32 + 1)
+      0x01,        // Key 1 (outputs)
+      0x81,        // Array with 1 output
+      0x82,        // First output array with 2 elements
+      0x58, 0x1c,  // Byte array with 28-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 28-byte address (all zeros)
+      0x1a, 0x00, 0x98, 0x96, 0x80,  // Amount: 10000000
+      0x80,        // Empty witness set
+  };
+  // clang-format on
+
+  auto decode_result =
+      CardanoTxDecoder::DecodeTransaction(cbor_with_large_index);
+  EXPECT_FALSE(decode_result.has_value());
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_NegativeIntegerValues) {
+  // clang-format off
+  std::vector<uint8_t> cbor_with_negative_values = {
+      0x82,        // Array with 2 elements (transaction body and witness set)
+      0xa2,        // Transaction body map with 2 key-value pairs
+      0x00,        // Key 0 (inputs)
+      0x81,        // Array with 1 input
+      0x82,        // First input array with 2 elements
+      0x58, 0x20,  // Byte array with 32-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00,  // 32-byte transaction hash (all zeros)
+      0x20,        // Negative index: -1
+      0x01,        // Key 1 (outputs)
+      0x81,        // Array with 1 output
+      0x82,        // First output array with 2 elements
+      0x58, 0x1c,  // Byte array with 28-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  // 28-byte address (all zeros)
+      0x21,        // Negative amount: -2
+      0x80,        // Empty witness set
+  };
+  // clang-format on
+
+  auto decode_result =
+      CardanoTxDecoder::DecodeTransaction(cbor_with_negative_values);
+  EXPECT_FALSE(decode_result.has_value());
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_InvalidIntegerTypes) {
+  // clang-format off
+  std::vector<uint8_t> cbor_with_invalid_types = {
+      0x82,        // Array with 2 elements (transaction body and witness set)
+      0xa2,        // Transaction body map with 2 key-value pairs
+      0x00,        // Key 0 (inputs)
+      0x81,        // Array with 1 input
+      0x82,        // First input array with 2 elements
+      0x58, 0x20,  // Byte array with 32-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 32-byte transaction hash (all zeros)
+      0x61, 0x30,  // Text string "0" instead of integer 0
+      0x01,        // Key 1 (outputs)
+      0x81,        // Array with 1 output
+      0x82,        // First output array with 2 elements
+      0x58, 0x1c,  // Byte array with 28-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 28-byte address (all zeros)
+      0x61, 0x31,  // Text string "1" instead of integer 1
+      0x80,        // Empty witness set
+  };
+  // clang-format on
+
+  auto decode_result =
+      CardanoTxDecoder::DecodeTransaction(cbor_with_invalid_types);
+  EXPECT_FALSE(decode_result.has_value());
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_InputWithInsufficientElements) {
+  // clang-format off
+  std::vector<uint8_t> cbor_with_insufficient_input_elements = {
+      0x82,        // Array with 2 elements (transaction body and witness set)
+      0xa2,        // Transaction body map with 2 key-value pairs
+      0x00,        // Key 0 (inputs)
+      0x81,        // Array with 1 input
+      0x81,        // First input array with only 1 element (should be 2)
+      0x58, 0x20,  // Byte array with 32-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 32-byte transaction hash (all zeros)
+      // Missing index element
+      0x01,        // Key 1 (outputs)
+      0x81,        // Array with 1 output
+      0x82,        // First output array with 2 elements
+      0x58, 0x1c,  // Byte array with 28-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 28-byte address (all zeros)
+      0x1a, 0x00, 0x98, 0x96, 0x80,  // Amount: 10000000
+      0x80,        // Empty witness set
+  };
+  // clang-format on
+
+  auto decode_result = CardanoTxDecoder::DecodeTransaction(
+      cbor_with_insufficient_input_elements);
+  EXPECT_FALSE(decode_result.has_value());
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_InputWithExcessElements) {
+  // clang-format off
+  std::vector<uint8_t> cbor_with_excess_input_elements = {
+      0x82,        // Array with 2 elements (transaction body and witness set)
+      0xa2,        // Transaction body map with 2 key-value pairs
+      0x00,        // Key 0 (inputs)
+      0x81,        // Array with 1 input
+      0x83,        // First input array with 3 elements (should be 2)
+      0x58, 0x20,  // Byte array with 32-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 32-byte transaction hash (all zeros)
+      0x00,        // Index: 0
+      0x00,        // Extra element (should not be present)
+      0x01,        // Key 1 (outputs)
+      0x81,        // Array with 1 output
+      0x82,        // First output array with 2 elements
+      0x58, 0x1c,  // Byte array with 28-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 28-byte address (all zeros)
+      0x1a, 0x00, 0x98, 0x96, 0x80,  // Amount: 10000000
+      0x80,        // Empty witness set
+  };
+  // clang-format on
+
+  auto decode_result =
+      CardanoTxDecoder::DecodeTransaction(cbor_with_excess_input_elements);
+  EXPECT_FALSE(decode_result.has_value());
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_OutputWithInsufficientElements) {
+  // clang-format off
+  std::vector<uint8_t> cbor_with_insufficient_output_elements = {
+      0x82,        // Array with 2 elements (transaction body and witness set)
+      0xa2,        // Transaction body map with 2 key-value pairs
+      0x00,        // Key 0 (inputs)
+      0x81,        // Array with 1 input
+      0x82,        // First input array with 2 elements
+      0x58, 0x20,  // Byte array with 32-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 32-byte transaction hash (all zeros)
+      0x00,        // Index: 0
+      0x01,        // Key 1 (outputs)
+      0x81,        // Array with 1 output
+      0x81,        // First output array with only 1 element (should be 2)
+      0x58, 0x1c,  // Byte array with 28-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 28-byte address (all zeros)
+      // Missing amount element
+      0x80,        // Empty witness set
+  };
+  // clang-format on
+
+  auto decode_result = CardanoTxDecoder::DecodeTransaction(
+      cbor_with_insufficient_output_elements);
+  EXPECT_FALSE(decode_result.has_value());
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_OutputWithExcessElements) {
+  // clang-format off
+  std::vector<uint8_t> cbor_with_excess_output = {
+      0x82,        // Main array: [transaction_body, witness_set]
+      0xa2,        // Transaction body map with 2 entries
+      0x00,        // Key 0: inputs
+      0x81,        // Array with 1 input
+      0x82,        // Input array with 2 elements [tx_hash, index]
+      0x58, 0x20,  // Byte array with 32-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 32-byte tx_hash (all zeros)
+      0x00,        // Index: 0
+      0x01,        // Key 1: outputs
+      0x81,        // Array with 1 output
+      0x83,        // Output array with 3 elements [address, amount, extra]
+      0x58, 0x1c,  // Byte array with 28-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 28-byte address (all zeros)
+      0x1a, 0x00, 0x98, 0x96, 0x80,  // Amount: 10000000
+      0x61, 0x78,  // Extra element: text string "x"
+      0x80,        // Empty witness set
+  };
+  // clang-format on
+
+  auto decode_result =
+      CardanoTxDecoder::DecodeTransaction(cbor_with_excess_output);
+  EXPECT_TRUE(decode_result.has_value());
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_ValidMinimalTransaction) {
+  // clang-format off
+  std::vector<uint8_t> valid_minimal_cbor = {
+      0x82,        // Main array: [transaction_body, witness_set]
+      0xa2,        // Transaction body map with 2 entries
+      0x00,        // Key 0: inputs
+      0x81,        // Array with 1 input
+      0x82,        // Input array with 2 elements [tx_hash, index]
+      0x58, 0x20,  // Byte array with 32-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 32-byte tx_hash (all zeros)
+      0x00,        // Index: 0
+      0x01,        // Key 1: outputs
+      0x81,        // Array with 1 output
+      0x82,        // Output array with 2 elements [address, amount]
+      0x58, 0x1c,  // Byte array with 28-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 28-byte address (all zeros)
+      0x1a, 0x00, 0x98, 0x96, 0x80,  // Amount: 10000000
+      0x80,        // Empty witness set
+  };
+  // clang-format on
+
+  auto decode_result = CardanoTxDecoder::DecodeTransaction(valid_minimal_cbor);
+  EXPECT_TRUE(decode_result.has_value());
+
+  const auto& restored_tx = decode_result.value();
+
+  EXPECT_EQ(restored_tx.tx_body.inputs.size(), 1u);
+  EXPECT_EQ(restored_tx.tx_body.outputs.size(), 1u);
+
+  EXPECT_EQ(restored_tx.tx_body.inputs[0].index, 0u);
+
+  std::array<uint8_t, 32> expected_tx_hash = {};
+  EXPECT_EQ(restored_tx.tx_body.inputs[0].tx_hash, expected_tx_hash);
+
+  EXPECT_EQ(restored_tx.tx_body.outputs[0].amount, 10000000u);
+
+  std::vector<uint8_t> expected_address(28, 0);
+  EXPECT_EQ(restored_tx.tx_body.outputs[0].address.ToCborBytes(),
+            expected_address);
+}
+
+TEST(CardanoTxDecoderTest,
+     DecodeTransaction_ValidTransactionWithMultipleInputsOutputs) {
+  // clang-format off
+  std::vector<uint8_t> valid_multi_cbor = {
+      0x82,        // Main array: [transaction_body, witness_set]
+      0xa2,        // Transaction body map with 2 entries
+      0x00,        // Key 0: inputs
+      0x82,        // Array with 2 inputs
+      0x82,        // First input array with 2 elements [tx_hash, index]
+      0x58, 0x20,  // Byte string with 32-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 32-byte tx_hash (all zeros)
+      0x00,        // Index: 0
+      0x82,        // Second input array with 2 elements [tx_hash, index]
+      0x58, 0x20,  // Byte array with 32-byte length
+      0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11,
+      0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11,
+      0x11, 0x11, 0x11, 0x11,
+      0x11, 0x11, 0x11, 0x11,  // 32-byte tx_hash (all 0x11)
+      0x01,        // Index: 1
+      0x01,        // Key 1: outputs
+      0x82,        // Array with 2 outputs
+      0x82,        // First output array with 2 elements [address, amount]
+      0x58, 0x1c,  // Byte array with 28-byte length
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00,  // 28-byte address (all zeros)
+      0x1a, 0x00, 0x98, 0x96, 0x80,  // Amount: 10000000
+      0x82,        // Second output array with 2 elements [address, amount]
+      0x58, 0x1c,  // Byte array with 28-byte length
+      0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22,
+      0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22,
+      0x22, 0x22, 0x22, 0x22,  // 28-byte address (all 0x22)
+      0x1a, 0x00, 0x0f, 0x42, 0x40,  // Amount: 1000000
+      0x80,        // Empty witness set
+  };
+  // clang-format on
+
+  auto decode_result = CardanoTxDecoder::DecodeTransaction(valid_multi_cbor);
+  EXPECT_TRUE(decode_result.has_value());
+
+  const auto& restored_tx = decode_result.value();
+
+  EXPECT_EQ(restored_tx.tx_body.inputs.size(), 2u);
+  EXPECT_EQ(restored_tx.tx_body.outputs.size(), 2u);
+
+  EXPECT_EQ(restored_tx.tx_body.inputs[0].index, 0u);
+  EXPECT_EQ(restored_tx.tx_body.inputs[1].index, 1u);
+
+  std::array<uint8_t, 32> expected_tx_hash_1 = {};
+  EXPECT_EQ(restored_tx.tx_body.inputs[0].tx_hash, expected_tx_hash_1);
+
+  std::array<uint8_t, 32> expected_tx_hash_2 = {};
+  std::fill(expected_tx_hash_2.begin(), expected_tx_hash_2.end(), 0x11);
+  EXPECT_EQ(restored_tx.tx_body.inputs[1].tx_hash, expected_tx_hash_2);
+
+  EXPECT_EQ(restored_tx.tx_body.outputs[0].amount, 10000000u);
+  EXPECT_EQ(restored_tx.tx_body.outputs[1].amount, 1000000u);
+
+  std::vector<uint8_t> expected_address_1(28, 0);
+  EXPECT_EQ(restored_tx.tx_body.outputs[0].address.ToCborBytes(),
+            expected_address_1);
+
+  std::vector<uint8_t> expected_address_2(28, 0x22);
+  EXPECT_EQ(restored_tx.tx_body.outputs[1].address.ToCborBytes(),
+            expected_address_2);
 }
 
 TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_InvalidTransactionData) {
