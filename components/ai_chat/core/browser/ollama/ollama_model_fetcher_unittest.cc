@@ -202,6 +202,7 @@ TEST_F(OllamaModelFetcherTest, RemoveModelsRemovesAllOllamaModels) {
 }
 
 TEST_F(OllamaModelFetcherTest, FetchModelsHandlesEmptyResponse) {
+  base::RunLoop run_loop;
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
                                          "");
 
@@ -209,15 +210,17 @@ TEST_F(OllamaModelFetcherTest, FetchModelsHandlesEmptyResponse) {
 
   ollama_model_fetcher()->FetchModels();
 
-  // Wait a bit to ensure the response is processed
-  EXPECT_TRUE(base::test::RunUntil(
-      [&]() { return test_url_loader_factory()->NumPending() == 0; }));
+  // Post a task to quit after network request completes
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, run_loop.QuitClosure());
+  run_loop.Run();
 
   const auto& models_after = model_service()->GetModels();
   EXPECT_EQ(initial_count, models_after.size());
 }
 
 TEST_F(OllamaModelFetcherTest, FetchModelsHandlesInvalidJSON) {
+  base::RunLoop run_loop;
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
                                          "invalid json");
 
@@ -225,9 +228,10 @@ TEST_F(OllamaModelFetcherTest, FetchModelsHandlesInvalidJSON) {
 
   ollama_model_fetcher()->FetchModels();
 
-  // Wait a bit to ensure the response is processed
-  EXPECT_TRUE(base::test::RunUntil(
-      [&]() { return test_url_loader_factory()->NumPending() == 0; }));
+  // Post a task to quit after network request completes
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, run_loop.QuitClosure());
+  run_loop.Run();
 
   const auto& models_after = model_service()->GetModels();
   EXPECT_EQ(initial_count, models_after.size());
