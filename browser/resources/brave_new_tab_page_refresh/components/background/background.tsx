@@ -37,6 +37,7 @@ export function Background() {
         return (
           <ImageBackground
             url={currentBackground.imageUrl}
+            className='sponsored'
             onLoadError={actions.notifySponsoredImageLoadError}
           />
         )
@@ -70,7 +71,13 @@ function setBackgroundVariable(value: string) {
   }
 }
 
-function ImageBackground(props: { url: string, onLoadError?: () => void }) {
+interface ImageBackgroundProps {
+  url: string
+  className?: string
+  onLoadError?: () => void
+}
+
+function ImageBackground(props: ImageBackgroundProps) {
   // In order to avoid a "flash-of-unloaded-image", load the image in the
   // background and only update the background CSS variable when the image has
   // finished loading.
@@ -84,7 +91,12 @@ function ImageBackground(props: { url: string, onLoadError?: () => void }) {
     })
   }, [props.url])
 
-  return <div className='image-background' />
+  const classNames = ['image-background']
+  if (props.className) {
+    classNames.push(props.className)
+  }
+
+  return <div className={classNames.join(' ')} />
 }
 
 function SponsoredRichMediaBackground(
