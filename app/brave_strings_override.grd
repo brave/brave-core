@@ -178,6 +178,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       </if>
       <if expr="is_win">
         </if>
+      <if expr="not is_android">
+        </if>
       <if expr="is_win">
         </if>
       <if expr="is_macosx">
@@ -235,6 +237,15 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="is_macosx">
         </if>
 
+      <if expr="not is_android">
+        <if expr="use_titlecase">
+          <then>
+            </then>
+          <else>
+            </else>
+        </if>
+      </if>
+
       <if expr="not is_chromeos">
         </if>
 
@@ -253,7 +264,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <else>
           </else>
       </if>
-
       <if expr="not is_chromeos">
         </if>
 
@@ -392,7 +402,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </message>
       </if>
 
-      <if expr="enable_extensions">
+      <if expr="enable_extensions_core">
         </if>
 
       <if expr="not is_chromeos and not is_android">
@@ -438,6 +448,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <if expr="not use_titlecase">
           </if>
       </if>
+
+      <if expr="not is_android">
+        </if>
     </messages>
   </release>
 </grit>
