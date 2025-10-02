@@ -12,6 +12,8 @@
 
 namespace psst {
 
+// This class manages the permissions for the PSST feature.
+// The grants is associated with an origin and user_id.
 class BravePsstPermissionContext
     : public permissions::ObjectPermissionContextBase {
  public:
@@ -22,21 +24,27 @@ class BravePsstPermissionContext
       delete;
   ~BravePsstPermissionContext() override;
 
+  // Grants permission for the (origin, user_id) pair with the given details.
   void GrantPermission(const url::Origin& origin,
                        ConsentStatus consent_status,
                        int script_version,
                        std::string_view user_id,
                        base::Value::List urls_to_skip);
-  void GrantPermission(const url::Origin& origin,
-                       PsstPermissionInfo permission_info);
+
+  // Returns whether the given origin and user_id pair has any PSST permission.
   bool HasPermission(const url::Origin& origin, std::string_view user_id);
+
+  // Revokes previously-granted permission for the (origin, user_id) pair.
   void RevokePermission(const url::Origin& origin, std::string_view user_id);
 
+  // Returns the PSST permission info for the (origin, user_id) pair if exists
   std::optional<PsstPermissionInfo> GetPsstPermissionInfo(
       const url::Origin& origin,
       std::string_view user_id);
 
  private:
+  void GrantPermission(const url::Origin& origin,
+                       PsstPermissionInfo permission_info);
   // permissions::ObjectPermissionContextBase implementation:
   std::string GetKeyForObject(const base::Value::Dict& object) override;
   bool IsValidObject(const base::Value::Dict& object) override;

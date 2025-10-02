@@ -5,6 +5,7 @@
 
 // Schema for Brave PSST permissions.
 namespace psst {
+    // Represents the behavior type based on user consent decision
     enum ConsentStatus {
         kAsk,
         kAllow,
@@ -13,9 +14,13 @@ namespace psst {
 
     // Permission information for Psst flow
     dictionary PsstPermissionInfo {
+        // User consent decision
         ConsentStatus consent_status;
+        // Actual script version
         long script_version;
+        // Signed user identifier
         DOMString user_id;
+        // List of URLs where the user decided not to apply privacy settings
         DOMString[] urls_to_skip;
     };
 };
