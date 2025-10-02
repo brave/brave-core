@@ -37,7 +37,7 @@ def execute_with_retry(cmd, max_attempts, sleep_sec=10):
     for attempt in range(max_attempts + 1):
         try:
             execute(cmd)
-        except Exception:
+        except (RuntimeError, CalledProcessError):
             if attempt == max_attempts:
                 print(
                     f"Command `{cmd}' failed. Maximum number of retries reached.",
