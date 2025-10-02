@@ -33,6 +33,7 @@ import InputBox from '../input_box'
 import ModelIntro from '../model_intro'
 import OpenExternalLinkModal from '../open_external_link_modal'
 import RateMessagePrivacyModal from '../rate_message_privacy_modal'
+import SmartModeModal from '../smart_mode_modal/smart_mode_modal'
 import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
 import {
@@ -414,6 +415,7 @@ function Main() {
       <DeleteConversationModal />
       <OpenExternalLinkModal />
       <RateMessagePrivacyModal />
+      <SmartModeModal />
     </main>
   )
 }
