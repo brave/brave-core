@@ -1,33 +1,29 @@
 {
-  "configurations": [{
-    "browser-type": "brave",
-    "profile": "brave-typical-mac",
-    "extra-browser-args": [
-      "--disable-backgrounding-occluded-windows",
+  'configurations': [
+    {
+      'browser-type': 'brave',
+      'profile': 'brave-typical-mac',
+      'extra-browser-args': [
+        '--disable-backgrounding-occluded-windows',
 
-      // Temporary disabled because of https://github.com/brave/brave-browser/issues/48710
-      "--disable-features=BraveCommands",
-    ],
-    "field-trials": "no-trials",
-    "save-artifacts": true,
-  }],
-  "benchmarks": [
+        // Temporary disabled because of https://github.com/brave/brave-browser/issues/48710
+        '--disable-features=BraveCommands',
+      ],
+      'field-trials': 'no-trials',
+      'save-artifacts': true,
+    },
+  ],
+  'benchmarks': [
     {
-      "name": "system_health.common_desktop",
-      "pageset-repeat": 1,
-      "stories": [
-        "load:site:example:2023",
-      ],
-      "extra-benchmark-args": [
-        "--allow-software-compositing",
-      ],
+      'name': 'system_health.common_desktop',
+      'pageset-repeat': 1,
+      'stories': ['load:site:example:2023'],
+      'extra-benchmark-args': ['--allow-software-compositing'],
     },
     {
-      "name": "system_health.memory_desktop",
-      "pageset-repeat": 1,
-      "stories": [
-        "load:site:example:2023",
-      ],
+      'name': 'system_health.memory_desktop',
+      'pageset-repeat': 1,
+      'stories': ['load:site:example:2023'],
     },
-  ]
+  ],
 }
