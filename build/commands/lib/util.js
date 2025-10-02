@@ -256,7 +256,7 @@ const util = {
           })
         }
       }
-      prog.on('close', (statusCode, signal) => {
+      const closeHandler = (statusCode, signal) => {
         signalsToForward.forEach((signal) => {
           process.removeListener(signal, signalHandler)
         })
@@ -289,6 +289,27 @@ const util = {
           process.exit(128 + os.constants.signals[signal])
         }
         resolve(stdout)
+      }
+      prog.on('close', (statusCode, signal) => {
+        if (config.isCI && (statusCode || signal)) {
+          // When running in CI, we delay handling process termination by 1
+          // second to distinguish between two scenarios:
+          // 1. A build failure (where autoninja exits with code 1)
+          // 2. CI killing the process tree with SIGTERM
+          //
+          // Without this delay, both scenarios would appear the same since
+          // SIGTERM-triggered autoninja exit would be caught by Node and
+          // processed as a build failure, because autoninja has enough time to
+          // handle child process termination and exit with code 1.
+          //
+          // The delay gives Node time to terminate directly from the SIGTERM
+          // before we process the child's exit code.
+          setTimeout(() => {
+            closeHandler(statusCode, signal)
+          }, 1000)
+        } else {
+          closeHandler(statusCode, signal)
+        }
       })
     })
   },
@@ -703,8 +724,14 @@ const util = {
       fs.unlinkSync(sisoOutputFile)
     }
 
+    const buildGuard = new ActionGuard(path.join(outputDir, 'build.guard'))
     try {
+      if (config.isCI && buildGuard.wasInterrupted()) {
+        await util.runAsync('gn', ['clean', outputDir], options)
+      }
+      buildGuard.markStarted()
       await util.runAsync('autoninja', ninjaOpts, options)
+      buildGuard.markFinished()
     } catch (e) {
       // Display siso_output on CI after a build failure.
       if (config.isCI && fs.existsSync(sisoOutputFile)) {
@@ -716,7 +743,13 @@ const util = {
         }
       }
       console.error(e.message)
-      process.exit(e.statusCode || 1)
+      const exitCode = e.statusCode || 1
+      // If the build failed due to an expected build error, mark the build as
+      // not interrupted.
+      if (exitCode === 1) {
+        buildGuard.markFinished()
+      }
+      process.exit(exitCode)
     }
 
     Log.progressFinish(progressMessage)

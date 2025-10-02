@@ -86,6 +86,65 @@ describe('ActionGuard', () => {
         )
       })
     })
+
+    it('should return true if the action was interrupted', () => {
+      const actionGuard = new ActionGuard(guardFilePath, cleanupClosure)
+      actionGuard.markStarted()
+      // Simulate the action never finished.
+
+      const actionGuard2 = new ActionGuard(guardFilePath, cleanupClosure)
+      expect(actionGuard2.wasInterrupted()).toBe(true)
+    })
+
+    it('should return false if the action was finished', () => {
+      const actionGuard = new ActionGuard(guardFilePath, cleanupClosure)
+      actionGuard.markStarted()
+      actionGuard.markFinished()
+      expect(actionGuard.wasInterrupted()).toBe(false)
+    })
+  })
+
+  describe('markStarted', () => {
+    it('should mark the action as started', () => {
+      const actionGuard = new ActionGuard(guardFilePath, cleanupClosure)
+      actionGuard.markStarted()
+      expect(fs.ensureDirSync).toHaveBeenCalledWith(path.dirname(guardFilePath))
+      expect(fs.writeFileSync).toHaveBeenCalledWith(
+        guardFilePath,
+        expect.anything(),
+      )
+    })
+
+    it('should throw an error if called while the action is running', () => {
+      const actionGuard = new ActionGuard(guardFilePath, cleanupClosure)
+      actionGuard.markStarted()
+      expect(() => {
+        actionGuard.markStarted()
+      }).toThrow(
+        'Cannot mark the action as started while it is already running.',
+      )
+    })
+  })
+
+  describe('markFinished', () => {
+    it('should mark the action as finished', () => {
+      const actionGuard = new ActionGuard(guardFilePath, cleanupClosure)
+      actionGuard.markStarted()
+      expect(fs.ensureDirSync).toHaveBeenCalledWith(path.dirname(guardFilePath))
+      expect(fs.writeFileSync).toHaveBeenCalledWith(
+        guardFilePath,
+        expect.anything(),
+      )
+      actionGuard.markFinished()
+      expect(fs.unlinkSync).toHaveBeenCalledWith(guardFilePath)
+    })
+
+    it('should throw an error if called while the action is not running', () => {
+      const actionGuard = new ActionGuard(guardFilePath, cleanupClosure)
+      expect(() => {
+        actionGuard.markFinished()
+      }).toThrow('Cannot mark the action as finished while it is not running.')
+    })
   })
 
   describe('run', () => {
