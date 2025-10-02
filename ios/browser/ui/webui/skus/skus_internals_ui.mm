@@ -204,7 +204,9 @@ std::string SkusInternalsUI::GetSkusStateAsString() const {
       continue;
     }
 
-    if (auto value = base::JSONReader::Read(kv.second.GetString()); value) {
+    if (auto value = base::JSONReader::Read(
+            kv.second.GetString(), base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+        value) {
       dict.Set(kv.first, std::move(*value));
     }
   }
