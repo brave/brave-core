@@ -90,8 +90,8 @@ TEST_F(BravePsstPermissionContextUnitTest,
       url::Origin::Create(GURL("http://a.test"));
   ASSERT_TRUE(
       psst_permission_context()->GetGrantedObjects(http_scheme_origin).empty());
-  psst_permission_context()->CreateOrUpdate(http_scheme_origin,
-                                            first_permission_info->Clone());
+  psst_permission_context()->GrantPermission(http_scheme_origin,
+                                             first_permission_info->Clone());
   ASSERT_TRUE(
       psst_permission_context()->GetGrantedObjects(http_scheme_origin).empty());
 
@@ -99,8 +99,8 @@ TEST_F(BravePsstPermissionContextUnitTest,
       url::Origin::Create(GURL("file://a.test"));
   ASSERT_TRUE(
       psst_permission_context()->GetGrantedObjects(file_scheme_origin).empty());
-  psst_permission_context()->CreateOrUpdate(file_scheme_origin,
-                                            first_permission_info->Clone());
+  psst_permission_context()->GrantPermission(file_scheme_origin,
+                                             first_permission_info->Clone());
   ASSERT_TRUE(
       psst_permission_context()->GetGrantedObjects(file_scheme_origin).empty());
 
@@ -109,8 +109,8 @@ TEST_F(BravePsstPermissionContextUnitTest,
   ASSERT_TRUE(psst_permission_context()
                   ->GetGrantedObjects(brave_scheme_origin)
                   .empty());
-  psst_permission_context()->CreateOrUpdate(brave_scheme_origin,
-                                            first_permission_info->Clone());
+  psst_permission_context()->GrantPermission(brave_scheme_origin,
+                                             first_permission_info->Clone());
   ASSERT_TRUE(psst_permission_context()
                   ->GetGrantedObjects(brave_scheme_origin)
                   .empty());
@@ -120,8 +120,8 @@ TEST_F(BravePsstPermissionContextUnitTest,
   ASSERT_TRUE(psst_permission_context()
                   ->GetGrantedObjects(chrome_scheme_origin)
                   .empty());
-  psst_permission_context()->CreateOrUpdate(chrome_scheme_origin,
-                                            first_permission_info->Clone());
+  psst_permission_context()->GrantPermission(chrome_scheme_origin,
+                                             first_permission_info->Clone());
   ASSERT_TRUE(psst_permission_context()
                   ->GetGrantedObjects(chrome_scheme_origin)
                   .empty());
@@ -132,8 +132,7 @@ TEST_F(BravePsstPermissionContextUnitTest, CreateUpdateRevokePermissionInfo) {
   const std::string first_user_id = "first-user123";
   const std::string second_user_id = "second-user123";
 
-  ASSERT_FALSE(
-      psst_permission_context()->GetPsstPermissionInfo(origin, first_user_id));
+  ASSERT_FALSE(psst_permission_context()->HasPermission(origin, first_user_id));
 
   const auto first_permission_info =
       PsstPermissionInfo::FromValue(CreatePsstPermissionDict(
@@ -142,11 +141,11 @@ TEST_F(BravePsstPermissionContextUnitTest, CreateUpdateRevokePermissionInfo) {
       CreatePsstPermissionDict(ConsentStatus::kAllow, 1, second_user_id,
                                std::vector<std::string>()));
   ASSERT_TRUE(psst_permission_context()->GetGrantedObjects(origin).empty());
-  psst_permission_context()->CreateOrUpdate(origin,
-                                            first_permission_info->Clone());
+  psst_permission_context()->GrantPermission(origin,
+                                             first_permission_info->Clone());
   ASSERT_EQ(psst_permission_context()->GetGrantedObjects(origin).size(), 1u);
-  psst_permission_context()->CreateOrUpdate(origin,
-                                            second_permission_info->Clone());
+  psst_permission_context()->GrantPermission(origin,
+                                             second_permission_info->Clone());
   ASSERT_EQ(psst_permission_context()->GetGrantedObjects(origin).size(), 2u);
 
   auto first_permission_info_value =
@@ -179,8 +178,8 @@ TEST_F(BravePsstPermissionContextUnitTest, CreateUpdateRevokePermissionInfo) {
       PsstPermissionInfo::FromValue(CreatePsstPermissionDict(
           ConsentStatus::kBlock, first_permission_info->script_version,
           first_permission_info->user_id, std::vector<std::string>()));
-  psst_permission_context()->CreateOrUpdate(origin,
-                                            modified_permission_info->Clone());
+  psst_permission_context()->GrantPermission(origin,
+                                             modified_permission_info->Clone());
 
   auto modified_permission_info_value =
       psst_permission_context()->GetPsstPermissionInfo(
@@ -195,12 +194,13 @@ TEST_F(BravePsstPermissionContextUnitTest, CreateUpdateRevokePermissionInfo) {
   ASSERT_EQ(modified_permission_info_value.value().urls_to_skip,
             modified_permission_info->urls_to_skip);
 
-  psst_permission_context()->Revoke(origin, first_permission_info->user_id);
+  psst_permission_context()->RevokePermission(origin,
+                                              first_permission_info->user_id);
   ASSERT_EQ(psst_permission_context()->GetGrantedObjects(origin).size(), 1u);
 
-  ASSERT_FALSE(psst_permission_context()->GetPsstPermissionInfo(
+  ASSERT_FALSE(psst_permission_context()->HasPermission(
       origin, first_permission_info->user_id));
-  ASSERT_TRUE(psst_permission_context()->GetPsstPermissionInfo(
+  ASSERT_TRUE(psst_permission_context()->HasPermission(
       origin, second_permission_info->user_id));
 }
 

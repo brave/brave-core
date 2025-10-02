@@ -22,14 +22,15 @@ class BravePsstPermissionContext
       delete;
   ~BravePsstPermissionContext() override;
 
-  void CreateOrUpdate(const url::Origin& origin,
-                      ConsentStatus consent_status,
-                      int script_version,
-                      std::string_view user_id,
-                      const base::Value::List& urls_to_skip);
-  void CreateOrUpdate(const url::Origin& origin,
-                      PsstPermissionInfo permission_info);
-  void Revoke(const url::Origin& origin, std::string_view user_id);
+  void GrantPermission(const url::Origin& origin,
+                       ConsentStatus consent_status,
+                       int script_version,
+                       std::string_view user_id,
+                       base::Value::List urls_to_skip);
+  void GrantPermission(const url::Origin& origin,
+                       PsstPermissionInfo permission_info);
+  bool HasPermission(const url::Origin& origin, std::string_view user_id);
+  void RevokePermission(const url::Origin& origin, std::string_view user_id);
 
   std::optional<PsstPermissionInfo> GetPsstPermissionInfo(
       const url::Origin& origin,

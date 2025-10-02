@@ -25,11 +25,11 @@ constexpr char kConsentStatusPermissionKey[] = "consent_status";
 constexpr char kScriptVersionPermissionKey[] = "script_version";
 constexpr char kUrlsToSkipPermissionKey[] = "urls_to_skip";
 
-base::Value::List VectorToList(const std::vector<std::string>& values) {
+base::Value::List VectorToList(std::vector<std::string> values) {
   base::Value::List list;
   list.reserve(values.size());
-  for (const auto& value : values) {
-    list.Append(value);
+  for (auto& value : values) {
+    list.Append(std::move(value));
   }
   return list;
 }
@@ -42,7 +42,7 @@ base::Value::Dict CreatePsstPermissionObject(
              ToString(psst_permission_info.consent_status));
   object.Set(kScriptVersionPermissionKey, psst_permission_info.script_version);
   object.Set(kUrlsToSkipPermissionKey,
-             VectorToList(psst_permission_info.urls_to_skip));
+             VectorToList(std::move(psst_permission_info.urls_to_skip)));
   return object;
 }
 
@@ -81,26 +81,26 @@ std::u16string BravePsstPermissionContext::GetObjectDisplayName(
   return base::UTF8ToUTF16(GetKeyForObject(object));
 }
 
-void BravePsstPermissionContext::CreateOrUpdate(
+void BravePsstPermissionContext::GrantPermission(
     const url::Origin& origin,
     ConsentStatus consent_status,
     int script_version,
     std::string_view user_id,
-    const base::Value::List& urls_to_skip) {
+    base::Value::List urls_to_skip) {
   auto permission_info = PsstPermissionInfo::FromValue(
       base::Value::Dict()
           .Set(kUserIdPermissionKey, user_id)
           .Set(kConsentStatusPermissionKey, static_cast<int>(consent_status))
           .Set(kScriptVersionPermissionKey, script_version)
-          .Set(kUrlsToSkipPermissionKey, urls_to_skip.Clone()));
+          .Set(kUrlsToSkipPermissionKey, std::move(urls_to_skip)));
   if (!permission_info) {
     return;
   }
 
-  CreateOrUpdate(origin, permission_info->Clone());
+  GrantPermission(origin, std::move(permission_info.value()));
 }
 
-void BravePsstPermissionContext::CreateOrUpdate(
+void BravePsstPermissionContext::GrantPermission(
     const url::Origin& origin,
     PsstPermissionInfo permission_info) {
   if (!IsAllowedToProcess(origin, permission_info.user_id)) {
@@ -116,12 +116,15 @@ void BravePsstPermissionContext::CreateOrUpdate(
 
   GrantObjectPermission(origin,
                         CreatePsstPermissionObject(std::move(permission_info)));
-
-  FlushScheduledSaveSettingsCalls();
 }
 
-void BravePsstPermissionContext::Revoke(const url::Origin& origin,
-                                        std::string_view user_id) {
+bool BravePsstPermissionContext::HasPermission(const url::Origin& origin,
+                                               std::string_view user_id) {
+  return !!GetPsstPermissionInfo(origin, user_id);
+}
+
+void BravePsstPermissionContext::RevokePermission(const url::Origin& origin,
+                                                  std::string_view user_id) {
   if (!IsAllowedToProcess(origin, user_id)) {
     return;
   }
