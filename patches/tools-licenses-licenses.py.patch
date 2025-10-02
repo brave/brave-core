@@ -1,8 +1,8 @@
 diff --git a/tools/licenses/licenses.py b/tools/licenses/licenses.py
-index a8afd4c9a95ad62fa0c8adb6fd53c2783d6eee96..fe2601a8a6f09c92e54d666f8b7a9cf856a9cbc2 100755
+index 833a80f1387c64eec418b57d74373dd93130a9dc..222ed8923142126884814035b63b98484c87600a 100755
 --- a/tools/licenses/licenses.py
 +++ b/tools/licenses/licenses.py
-@@ -42,6 +42,7 @@ _REPOSITORY_ROOT = os.path.abspath(
+@@ -26,6 +26,7 @@ _REPOSITORY_ROOT = os.path.abspath(
      os.path.join(os.path.dirname(__file__), '..', '..'))
  sys.path.insert(0, os.path.join(_REPOSITORY_ROOT, 'build'))
  import action_helpers
@@ -10,15 +10,15 @@ index a8afd4c9a95ad62fa0c8adb6fd53c2783d6eee96..fe2601a8a6f09c92e54d666f8b7a9cf8
  
  METADATA_FILE_NAMES = frozenset({
      "README.chromium", "README.crashpad", "README.v8", "README.pdfium",
-@@ -343,6 +344,7 @@ SPECIAL_CASES = {
-         "License File": ["//third_party/dawn/third_party/khronos/LICENSE"],
+@@ -357,6 +358,7 @@ SPECIAL_CASES = {
+         "License File": ["//third_party/sample3/the_license"],
      },
  }
 +(PRUNE_DIRS, ADDITIONAL_PATHS) = AddBraveCredits(_REPOSITORY_ROOT, PRUNE_PATHS, SPECIAL_CASES, PRUNE_DIRS, ADDITIONAL_PATHS)
  
  # These buildtools/third_party directories only contain
  # chromium build files. The actual third_party source files and their
-@@ -798,7 +800,8 @@ def FindThirdPartyDirs(root,
+@@ -816,7 +818,8 @@ def FindThirdPartyDirs(root,
          if skip in dirs:
            dirs.remove(skip)
  
@@ -28,15 +28,11 @@ index a8afd4c9a95ad62fa0c8adb6fd53c2783d6eee96..fe2601a8a6f09c92e54d666f8b7a9cf8
        # Add all subdirectories that are not marked for skipping.
        for d in dirs:
          dirpath = os.path.join(path, d)
-@@ -1034,8 +1037,10 @@ def GenerateCredits(file_template_file,
-                                        _REPOSITORY_ROOT,
-                                        enable_warnings=enable_warnings)
-       if not directory_metadata:
-+        ReportBraveIncompleteMetadataFile(path)
-         continue
--    except LicenseError:
-+    except LicenseError as e:
-+      CheckBraveMissingLicense(path, e)
+@@ -990,6 +993,7 @@ def _DiscoverMetadatas(args):
+         m['dir'] = d
+         metadatas.append(m)
+     except LicenseError as lic_exp:
++      CheckBraveMissingLicense(d, lic_exp)
+       had_errors = True
        # TODO(phajdan.jr): Convert to fatal error (https://crbug.com/39240).
-       continue
- 
+       if args.enable_warnings:

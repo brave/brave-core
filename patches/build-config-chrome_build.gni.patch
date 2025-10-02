@@ -1,5 +1,5 @@
 diff --git a/build/config/chrome_build.gni b/build/config/chrome_build.gni
-index c793fb9472ff1c4e2c692e509bd79e72110af7a5..d8d3ecb86b8ca6ac7998515a2182edeaa508c3ac 100644
+index 75a22b279877124c683a8935624b2795093724ed..156bf539f28c3b98c54c3037973fd2d55b202bb7 100644
 --- a/build/config/chrome_build.gni
 +++ b/build/config/chrome_build.gni
 @@ -1,6 +1,7 @@
@@ -8,5 +8,5 @@ index c793fb9472ff1c4e2c692e509bd79e72110af7a5..d8d3ecb86b8ca6ac7998515a2182edea
  # found in the LICENSE file.
 +import("//brave/build/config/brave_build.gni")
  
- declare_args() {
-   # Select the desired branding flavor. False means normal Chromium branding,
+ import("//build/config/gclient_args.gni")
+ 
