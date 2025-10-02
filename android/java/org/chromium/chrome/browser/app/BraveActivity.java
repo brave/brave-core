@@ -75,7 +75,6 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
-import org.chromium.base.ui.KeyboardUtils;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesCallback;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesFragment;
@@ -231,6 +230,7 @@ import org.chromium.content_public.browser.WebContents;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.KeyboardUtils;
 import org.chromium.ui.widget.Toast;
 
 import java.util.Arrays;
