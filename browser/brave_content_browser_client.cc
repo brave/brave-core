@@ -58,7 +58,6 @@
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/brave_account/features.h"
@@ -592,8 +591,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<ai_chat::mojom::Service>()
         .Add<ai_chat::mojom::TabTrackerService>();
     registry.ForWebUI<AIChatUntrustedConversationUI>()
-        .Add<ai_chat::mojom::UntrustedUIHandler>()
-        .Add<ai_chat::mojom::UntrustedConversationHandler>();
+        .Add<ai_chat::mojom::UntrustedUIHandler>();
   }
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)

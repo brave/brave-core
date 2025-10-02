@@ -9,7 +9,6 @@
 #include <memory>
 
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-forward.h"
 #include "content/public/browser/webui_config.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
@@ -41,9 +40,6 @@ class AIChatUntrustedConversationUI : public ui::MojoWebUIController {
 
   void BindInterface(
       mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver);
-  void BindInterface(
-      mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationHandler>
-          receiver);
 
  private:
   std::unique_ptr<ai_chat::mojom::UntrustedUIHandler> ui_handler_;
