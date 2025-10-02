@@ -403,18 +403,13 @@ public class BraveVPN {
     if !shouldProcessVPNAlerts() { return }
 
     Task {
-      let (data, success, error) = await GRDGatewayAPI().events()
+      let (alertsData, success, error) = await GRDGatewayAPI().events()
       if !success {
         Logger.module.error("VPN getEvents call failed")
         if let error = error {
           Logger.module.warning("\(error)")
         }
 
-        return
-      }
-
-      guard let alertsData = data["alerts"] else {
-        Logger.module.error("Failed to unwrap json for vpn alerts")
         return
       }
 
