@@ -37,7 +37,8 @@ ReadAndParseJsonRules(const base::FilePath& manifest_file_path) {
     return nullptr;
   }
 
-  const auto json_root = base::JSONReader::Read(raw_contents);
+  const auto json_root = base::JSONReader::Read(
+      raw_contents, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!json_root) {
     VLOG(1) << "Failed to parse p3a manifest";
     return nullptr;
