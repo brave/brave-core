@@ -50,7 +50,8 @@ class AIChatBrowserTest : public InProcessBrowserTest {
             if (request.method == net::test_server::METHOD_POST &&
                 !request.content.empty()) {
               // Parse the JSON body to extract videoId
-              auto json_result = base::JSONReader::Read(request.content);
+              auto json_result = base::JSONReader::Read(
+                  request.content, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
               if (json_result.has_value() && json_result->is_dict()) {
                 const auto& body_dict = json_result->GetDict();
                 if (const std::string* video_id_ptr =
