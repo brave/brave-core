@@ -6,33 +6,34 @@
 export const placeholderImageSrc =
   'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg"%3E%3C/svg%3E'
 
-// Loads an image in the background and resolves when the image has either
-// loaded or was unable to load.
-export function loadImage(url: string): Promise<boolean> {
-  return new Promise((resolve) => {
+// Loads an image in the background and resolves when it has loaded.
+// Returns a blob URL if successful, rejects if failed.
+export function loadImageAsBlob(url: string): Promise<string> {
+  return new Promise((resolve, reject) => {
     if (!url) {
-      resolve(false)
+      reject(new Error('No URL provided'))
       return
     }
 
-    const unlisten = () => {
-      image.removeEventListener('load', onLoad)
-      image.removeEventListener('error', onError)
-    }
-
-    const onLoad = () => {
-      unlisten()
-      resolve(true)
-    }
-
-    const onError = () => {
-      unlisten()
-      resolve(false)
-    }
-
-    const image = new Image()
-    image.addEventListener('load', onLoad)
-    image.addEventListener('error', onError)
-    image.src = url
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          reject(new Error(`image fetch failed: ${response.statusText}`))
+          return
+        }
+        return response.blob()
+      })
+      .then(blob => {
+        if (!blob) {
+          reject(new Error('Failed to get blob from response'))
+          return
+        }
+        // Create a blob URL that can be used directly
+        const blobUrl = URL.createObjectURL(blob)
+        resolve(blobUrl)
+      })
+      .catch(error => {
+        reject(error)
+      })
   })
 }

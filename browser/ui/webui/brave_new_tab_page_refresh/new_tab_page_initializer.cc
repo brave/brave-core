@@ -121,6 +121,10 @@ void NewTabPageInitializer::AddCSPOverrides() {
       "chrome://branded-wallpaper chrome://favicon2 blob: data: 'self';");
 
   source_->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ConnectSrc,
+      "connect-src 'self' chrome://background-wallpaper");
+
+  source_->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       base::StrCat({"frame-src ", kNTPNewTabTakeoverRichMediaUrl, ";"}));
 }

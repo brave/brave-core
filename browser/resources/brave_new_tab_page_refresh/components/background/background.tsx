@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { NewTabPageAdEventType, SponsoredImageBackground } from '../../state/background_state'
 import { openLink } from '../common/link'
-import { loadImage } from '../../lib/image_loader'
+import { loadImageAsBlob } from '../../lib/image_loader'
 import { useWidgetLayoutReady } from '../app_layout_ready'
 import { debounce } from '$web-common/debounce'
 import { useSearchState, useSearchActions } from '../../context/search_context'
@@ -71,17 +71,27 @@ function setBackgroundVariable(value: string) {
 }
 
 function ImageBackground(props: { url: string, onLoadError?: () => void }) {
+  const [blobUrl, setBlobUrl] = React.useState<string | null>(null)
+
   // In order to avoid a "flash-of-unloaded-image", load the image in the
   // background and only update the background CSS variable when the image has
   // finished loading.
   React.useEffect(() => {
-    loadImage(props.url).then((loaded) => {
-      if (loaded) {
-        setBackgroundVariable(`url(${CSS.escape(props.url)})`)
-      } else if (props.onLoadError) {
-        props.onLoadError()
+    loadImageAsBlob(props.url)
+      .then((loadedBlobUrl) => {
+        setBlobUrl(loadedBlobUrl)
+        setBackgroundVariable(`url(${CSS.escape(loadedBlobUrl)})`)
+      })
+      .catch((error) => {
+        console.error('Failed to load background image:', error)
+        props.onLoadError?.()
+      })
+
+    return () => {
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl)
       }
-    })
+    }
   }, [props.url])
 
   return <div className='image-background' />
