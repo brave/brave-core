@@ -137,7 +137,8 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
   if (json.empty()) {
     return;
   }
-  std::optional<base::Value> parsed = base::JSONReader::Read(json);
+  std::optional<base::Value> parsed =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
 
   // legacy read
   if (!parsed || (!parsed->is_dict() && !parsed->is_list())) {
