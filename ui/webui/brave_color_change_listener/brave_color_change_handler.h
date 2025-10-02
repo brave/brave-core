@@ -11,6 +11,10 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 
+namespace content {
+class WebContents;
+}  // namespace content
+
 namespace ui {
 
 // Handles ColorProvider related communication between C++ and WebUI in the
