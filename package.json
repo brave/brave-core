@@ -15,6 +15,7 @@
     "build": "node ./build/commands/scripts/commands.js build",
     "build_chromium_release": "node ./build/commands/scripts/commands.js build_chromium_release",
     "gn_check": "node ./build/commands/scripts/commands.js gn_check",
+    "gn": "node ./build/commands/scripts/gn.js",
     "versions": "node ./build/commands/scripts/commands.js versions",
     "upload": "node ./build/commands/scripts/commands.js upload",
     "update_patches": "node ./build/commands/scripts/commands.js update_patches",
