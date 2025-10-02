@@ -21,8 +21,8 @@ index dd44a6f6850fe36d9a159e98cd1ffb23df10876d..e71e55c74ea5b3f89a29ef03f60aa6f1
      "includes": [3920],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions_zero_state_promo/resources.grd": {
-@@ -451,7 +454,7 @@
-     "includes": [4020],
+@@ -455,7 +458,7 @@
+     "includes": [4030],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/history/resources.grd": {
 -    "META": {"sizes": {"includes": [50]}},
@@ -30,7 +30,7 @@ index dd44a6f6850fe36d9a159e98cd1ffb23df10876d..e71e55c74ea5b3f89a29ef03f60aa6f1
      "includes": [4040],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/infobar_internals/resources.grd": {
-@@ -603,7 +606,7 @@
+@@ -611,7 +614,7 @@
      "includes": [4720],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
@@ -39,7 +39,7 @@ index dd44a6f6850fe36d9a159e98cd1ffb23df10876d..e71e55c74ea5b3f89a29ef03f60aa6f1
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -1059,6 +1062,9 @@
+@@ -1067,6 +1070,9 @@
      # Big alignment at start of section.
      "messages": [7020],
    },
@@ -49,7 +49,7 @@ index dd44a6f6850fe36d9a159e98cd1ffb23df10876d..e71e55c74ea5b3f89a29ef03f60aa6f1
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1549,11 +1555,11 @@
+@@ -1557,11 +1563,11 @@
      "includes": [9980],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_code_cache_resources.grd": {
@@ -62,4 +62,3 @@ index dd44a6f6850fe36d9a159e98cd1ffb23df10876d..e71e55c74ea5b3f89a29ef03f60aa6f1
 +    "META": {"sizes": {"includes": [1210]}},
      "includes": [10000],
    },
- 
