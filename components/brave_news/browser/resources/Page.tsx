@@ -100,9 +100,13 @@ export default function FeedV2() {
       {!isSmall && <React.Suspense fallback={null}><FeedNavigation /></React.Suspense>}
     </SidebarContainer>
     <Flex align='center' direction='column' gap={spacing.l}>
-      {feedV2UpdatesAvailable && <LoadNewContentButton onClick={refreshFeedV2}>
-        {getLocale(S.BRAVE_NEWS_NEW_CONTENT_AVAILABLE)}
-      </LoadNewContentButton>}
+      {feedV2UpdatesAvailable &&
+        <LoadNewContentButton
+          className='brave-news-load-new-content-button'
+          onClick={refreshFeedV2}
+        >
+          {getLocale(S.BRAVE_NEWS_NEW_CONTENT_AVAILABLE)}
+        </LoadNewContentButton>}
       <Feed feed={feedV2} onViewCountChange={reportViewCount} onSessionStart={reportSessionStart} />
     </Flex>
 
