@@ -12,5 +12,8 @@ BASE_FEATURE(kBraveWalletWebUIIOS,
              "BraveWalletWebUIIOS",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+bool IsBraveWalletWebUIIOSEnabled() {
+  return base::FeatureList::IsEnabled(kBraveWalletWebUIIOS);
+}
 }
 }  // namespace brave_wallet
