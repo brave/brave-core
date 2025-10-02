@@ -33,17 +33,21 @@ assert cert or cert_hash or signtool_args, \
     'CERT is a part of the name in the //CurrentUser/My Windows Certificate ' \
     'Store. It is ambiguous and will likely be deprecated in the future.'
 
-def execute_with_retry(cmd, max_attempts, sleep_sec = 10):
+def execute_with_retry(cmd, max_attempts, sleep_sec=10):
     for attempt in range(max_attempts + 1):
         while True:
             try:
                 execute(cmd)
             except Exception:
                 if attempt == max_attempts:
-                    print(f'Command `{cmd}\' failed. Maximum number of retries reached.', file=sys.stderr)
+                    print(
+                        f'Command `{cmd}\' failed. Maximum number of retries reached.',
+                        file=sys.stderr)
                     raise
                 else:
-                    print(f'Command `{cmd}\' failed. Retrying in {sleep_sec}s.', file=sys.stderr)
+                    print(
+                        f'Command `{cmd}\' failed. Retrying in {sleep_sec}s.',
+                        file=sys.stderr)
                     sleep(sleep_sec)
                     continue
             break
