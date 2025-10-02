@@ -404,7 +404,8 @@ TEST(TestBraveWalletHandler, GetWeb3ProviderList) {
   std::string json_result = data.arg3()->GetString();
   EXPECT_FALSE(json_result.empty());
 
-  std::optional<base::Value> parsed_json = base::JSONReader::Read(json_result);
+  std::optional<base::Value> parsed_json =
+      base::JSONReader::Read(json_result, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   ASSERT_TRUE(parsed_json.has_value());
   ASSERT_TRUE(parsed_json->is_list());
 
