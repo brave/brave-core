@@ -8,7 +8,7 @@ import { scoped } from '../../lib/scoped_css'
 
 export const style = scoped.css`
   & {
-    flex: 0 1 720px;
+    flex: 1 1 auto;
     display: flex;
     align-items: stretch;
     pointer-events: auto;
