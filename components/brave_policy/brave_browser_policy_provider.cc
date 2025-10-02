@@ -19,47 +19,6 @@
 
 namespace brave_policy {
 
-namespace {
-
-constexpr char kBrowserPolicyScopeSwitch[] = "browser-policy-scope";
-constexpr char kBrowserPolicySourceSwitch[] = "browser-policy-source";
-
-policy::PolicyScope GetPolicyScopeFromSwitch() {
-  auto* command_line = base::CommandLine::ForCurrentProcess();
-  if (!command_line->HasSwitch(kBrowserPolicyScopeSwitch)) {
-    LOG(ERROR) << "Browser policy scope: USER (default)";
-    return policy::POLICY_SCOPE_USER;
-  }
-
-  auto scope_value =
-      command_line->GetSwitchValueASCII(kBrowserPolicyScopeSwitch);
-  if (scope_value == "machine") {
-    LOG(ERROR) << "Browser policy scope: MACHINE";
-    return policy::POLICY_SCOPE_MACHINE;
-  }
-  LOG(ERROR) << "Browser policy scope: USER";
-  return policy::POLICY_SCOPE_USER;
-}
-
-policy::PolicySource GetPolicySourceFromSwitch() {
-  auto* command_line = base::CommandLine::ForCurrentProcess();
-  if (!command_line->HasSwitch(kBrowserPolicySourceSwitch)) {
-    LOG(ERROR) << "Browser policy source: PLATFORM (default)";
-    return policy::POLICY_SOURCE_PLATFORM;
-  }
-
-  auto source_value =
-      command_line->GetSwitchValueASCII(kBrowserPolicySourceSwitch);
-  if (source_value == "brave") {
-    LOG(ERROR) << "Browser policy source: BRAVE (brave)";
-    return policy::POLICY_SOURCE_BRAVE;
-  }
-  LOG(ERROR) << "Browser policy source: PLATFORM";
-  return policy::POLICY_SOURCE_PLATFORM;
-}
-
-}  // namespace
-
 BraveBrowserPolicyProvider::BraveBrowserPolicyProvider() = default;
 
 BraveBrowserPolicyProvider::~BraveBrowserPolicyProvider() = default;
@@ -148,11 +107,10 @@ void BraveBrowserPolicyProvider::LoadBraveOriginPolicy(
     return;
   }
 
-  LOG(ERROR) << "LoadBraveOriginPolicy " << policy_key << " " << enabled;
   // Set the policy - the ConfigurationPolicyPrefStore will handle
   // converting this to the appropriate local state preference
   bundle_policy_map.Set(std::string(policy_key), policy::POLICY_LEVEL_MANDATORY,
-                        GetPolicyScopeFromSwitch(), GetPolicySourceFromSwitch(),
+                        policy::POLICY_SCOPE_USER, policy::POLICY_SOURCE_BRAVE,
                         base::Value(enabled), nullptr);
 }
 
