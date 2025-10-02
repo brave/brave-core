@@ -10,8 +10,9 @@ import os
 import shutil
 import sys
 
-from os.path import abspath, dirname
 from lib.util import execute
+from os.path import abspath, dirname
+from time import sleep
 
 cert = os.environ.get('CERT')
 cert_hash = os.environ.get('AUTHENTICODE_HASH')
@@ -32,6 +33,20 @@ assert cert or cert_hash or signtool_args, \
     'CERT is a part of the name in the //CurrentUser/My Windows Certificate ' \
     'Store. It is ambiguous and will likely be deprecated in the future.'
 
+def execute_with_retry(cmd, max_attempts, sleep_sec = 10):
+    for attempt in range(max_attempts + 1):
+        while True:
+            try:
+                execute(cmd)
+            except Exception:
+                if attempt == max_attempts:
+                    print(f'Command `{cmd}\' failed. Maximum number of retries reached.', file=sys.stderr)
+                    raise
+                else:
+                    print(f'Command `{cmd}\' failed. Retrying in {sleep_sec}s.', file=sys.stderr)
+                    sleep(sleep_sec)
+                    continue
+            break
 
 def get_sign_cmd(file):
     # https://docs.microsoft.com/en-us/dotnet/framework/tools/signtool-exe
@@ -55,15 +70,13 @@ def sign_binaries(base_dir, endswidth=('.exe', '.dll')):
     for binary in matches:
         sign_binary(binary)
 
-
 def sign_binary(binary, out_file=None):
     if out_file:
         os.makedirs(dirname(abspath(out_file)), exist_ok=True)
         shutil.copy(binary, out_file)
         binary = out_file
     cmd = get_sign_cmd(binary)
-    execute(cmd)
-
+    execute_with_retry(cmd, 5)
 
 def main():
     parser = argparse.ArgumentParser()
