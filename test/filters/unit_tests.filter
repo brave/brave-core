@@ -725,6 +725,8 @@
 -PermissionDashboardUnitTest.DisplayLHSIndicatorForCamera*
 -PermissionsUpdaterTest.GrantAndRevokeOptionalPermissions
 -ProfileAttributesStorageTest.*
+-ProfileCustomizationBubbleSyncControllerTest.ShouldAbortIfCalledAgain
+-ProfileCustomizationBubbleSyncControllerTest.ShouldShowWhenSyncGetsDefaultTheme
 -ProfileResetterTest.CheckSnapshots
 -ProfileResetterTest.ResetContentSettings
 -ProfileResetterTest.ResetStartPagePartially

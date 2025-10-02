@@ -2504,6 +2504,14 @@
 -SidePanelCoordinatorTest.HeaderlessSidePanel
 -SidePanelCoordinatorTest.HeaderlessSidePanelOnTabChange
 
+# These tests fail because we replace `kShareWinIcon` with a Brave-branded icon
+-All/RealboxHandlerTest.PedalVectorIcons/*
+
+# This test fails because it expects the identity manager to be null for guest
+# windows, but we need a valid identity manager so that the
+# SearchEngineChoiceService can continue to function properly there
+-ProfileWindowBrowserTest.GuestCannotSignin
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
@@ -2956,8 +2964,6 @@
 -ProfileCustomizationBrowserTest.IPH/ForRegularUser
 -ProfileCustomizationBrowserTest.IPH/ForSupervisedUser
 -ProfileCustomizationBubbleBrowserTest.*
--ProfileCustomizationBubbleSyncControllerTest.ShouldAbortIfCalledAgain
--ProfileCustomizationBubbleSyncControllerTest.ShouldShowWhenSyncGetsDefaultTheme
 -ProfileCustomizationDialogBrowserTest.*
 -ProfileKeyedServiceBrowserTest.SystemProfileOTR_NeededServices
 -ProfileKeyedServiceBrowserTest.SystemProfileOTR_ServicesThatCanBeCreated
