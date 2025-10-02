@@ -1,13 +1,13 @@
 diff --git a/content/browser/devtools/protocol_config.json b/content/browser/devtools/protocol_config.json
-index 05a528edacc9781e63fa5cce4cb33d63ef3be24c..c5e21e887b0d6e01d9250a74998d144890306295 100644
+index 388a0b48e05321352179b92b374eea74a60bfb54..8a2074968d1c61e5dae78f745c35cf4a7dd15b16 100644
 --- a/content/browser/devtools/protocol_config.json
 +++ b/content/browser/devtools/protocol_config.json
 @@ -132,7 +132,7 @@
                    "getIPProtectionProxyStatus",
                    "setIPProtectionProxyBypassEnabled"
                  ],
--                "include_events": ["requestWillBeSent", "responseReceived", "loadingFinished", "loadingFailed", "requestIntercepted", "signedExchangeReceived", "requestWillBeSentExtraInfo", "responseReceivedExtraInfo", "responseReceivedEarlyHints", "trustTokenOperationDone", "subresourceWebBundleMetadataReceived", "subresourceWebBundleMetadataError", "subresourceWebBundleInnerResponseParsed", "subresourceWebBundleInnerResponseError", "policyUpdated", "reportingApiReportAdded", "reportingApiReportUpdated", "reportingApiEndpointsChangedForOrigin"],
-+                "include_events": ["requestAdblockInfoReceived", "requestWillBeSent", "responseReceived", "loadingFinished", "loadingFailed", "requestIntercepted", "signedExchangeReceived", "requestWillBeSentExtraInfo", "responseReceivedExtraInfo", "responseReceivedEarlyHints", "trustTokenOperationDone", "subresourceWebBundleMetadataReceived", "subresourceWebBundleMetadataError", "subresourceWebBundleInnerResponseParsed", "subresourceWebBundleInnerResponseError", "policyUpdated", "reportingApiReportAdded", "reportingApiReportUpdated", "reportingApiEndpointsChangedForOrigin"],
+-                "include_events": ["requestWillBeSent", "responseReceived", "loadingFinished", "loadingFailed", "requestIntercepted", "signedExchangeReceived", "requestWillBeSentExtraInfo", "responseReceivedExtraInfo", "responseReceivedEarlyHints", "trustTokenOperationDone", "policyUpdated", "reportingApiReportAdded", "reportingApiReportUpdated", "reportingApiEndpointsChangedForOrigin"],
++                "include_events": ["requestAdblockInfoReceived", "requestWillBeSent", "responseReceived", "loadingFinished", "loadingFailed", "requestIntercepted", "signedExchangeReceived", "requestWillBeSentExtraInfo", "responseReceivedExtraInfo", "responseReceivedEarlyHints", "trustTokenOperationDone", "policyUpdated", "reportingApiReportAdded", "reportingApiReportUpdated", "reportingApiEndpointsChangedForOrigin"],
                  "async": [
                    "clearBrowserCookies",
                    "clearBrowserCache",

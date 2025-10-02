@@ -1,10 +1,10 @@
 diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
-index 143bd74a6920fea431c1fd99910ecff24d51271e..ea5d964c0e66a1e3b7d29e69af7696415441ec2a 100644
+index 988a1d679c87b55f00b21a8ce42401206ebcf9c3..fe458969b34d69c497747859a0575d99e6bf3c3e 100644
 --- a/content/public/browser/BUILD.gn
 +++ b/content/public/browser/BUILD.gn
-@@ -755,6 +755,7 @@ source_set("browser_sources") {
-   if (enable_video_effects) {
-     public_deps += [ "//services/video_effects/public/mojom" ]
+@@ -754,6 +754,7 @@ source_set("browser_sources") {
+   if (use_clang_profiling_inside_sandbox) {
+     sources += [ "profiling_utils.h" ]
    }
 +  import("//brave/content/public/browser/sources.gni") sources += brave_content_public_browser_sources
  }
