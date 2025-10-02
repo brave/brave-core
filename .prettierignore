@@ -43,7 +43,7 @@ tools/crates/vendor/
 # Ignore github .yml files:
 .github/**/*.yml
 
-# Ignored some markdown files:
+# Ignore some markdown files:
 .github/PULL_REQUEST_TEMPLATE.md
 CONTRIBUTING.md
 README.md
