@@ -134,6 +134,36 @@ void AIChatSettingsHelper::GetModelsWithSubtitles(
       } else if (model->key == "chat-gemma") {
         modelWithSubtitle.subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GEMMA_SUBTITLE);
+      } else if (model->key == "chat-llama-4-scout") {
+        modelWithSubtitle.subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_LLAMA_4_SCOUT_SUBTITLE);
+      } else if (model->key == "chat-llama-4-maverick") {
+        modelWithSubtitle.subtitle = l10n_util::GetStringUTF8(
+            IDS_CHAT_UI_CHAT_LLAMA_4_MAVERICK_SUBTITLE);
+      } else if (model->key == "chat-gpt-oss-20b") {
+        modelWithSubtitle.subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GPT_OSS_20B_SUBTITLE);
+      } else if (model->key == "chat-gpt-oss-120b") {
+        modelWithSubtitle.subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GPT_OSS_120B_SUBTITLE);
+      } else if (model->key == "chat-mistral-large") {
+        modelWithSubtitle.subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_MISTRAL_LARGE_SUBTITLE);
+      } else if (model->key == "chat-pixtral-large") {
+        modelWithSubtitle.subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_PIXTRAL_LARGE_SUBTITLE);
+      } else if (model->key == "chat-qwen-3-235b") {
+        modelWithSubtitle.subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_QWEN_3_235B_SUBTITLE);
+      } else if (model->key == "chat-deepseek-v3-1") {
+        modelWithSubtitle.subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_DEEPSEEK_V3_1_SUBTITLE);
+      } else if (model->key == "chat-qwen-3-coder-480b") {
+        modelWithSubtitle.subtitle = l10n_util::GetStringUTF8(
+            IDS_CHAT_UI_CHAT_QWEN_3_CODER_480B_SUBTITLE);
+      } else if (model->key == "chat-claude-opus") {
+        modelWithSubtitle.subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_OPUS_SUBTITLE);
       }
     }
 
