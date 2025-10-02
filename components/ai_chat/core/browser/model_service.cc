@@ -230,7 +230,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-qwen";
       model->display_name = "Qwen 14B";
       model->vision_support = false;
-      model->supports_tools = false;
+      model->supports_tools = true;
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -257,6 +257,232 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->supports_tools = false;
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    // Llama 4 Scout
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Meta";
+      options->name = "llama-4-scout";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = features::kFreemiumAvailable.Get()
+                            ? mojom::ModelAccess::BASIC_AND_PREMIUM
+                            : mojom::ModelAccess::BASIC;
+      options->max_associated_content_length = 64000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-llama-4-scout";
+      model->display_name = "Llama 4 Scout";
+      model->vision_support = true;
+      model->supports_tools = true;
+      model->is_suggested_model = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    // Llama 4 Maverick
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Meta";
+      options->name = "llama-4-maverick";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = features::kFreemiumAvailable.Get()
+                            ? mojom::ModelAccess::BASIC_AND_PREMIUM
+                            : mojom::ModelAccess::BASIC;
+      options->max_associated_content_length = 64000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-llama-4-maverick";
+      model->display_name = "Llama 4 Maverick";
+      model->vision_support = true;
+      model->supports_tools = true;
+      model->is_suggested_model = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    // GPT OSS 20B
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "OpenAI";
+      options->name = "gpt-oss-20b";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = features::kFreemiumAvailable.Get()
+                            ? mojom::ModelAccess::BASIC_AND_PREMIUM
+                            : mojom::ModelAccess::BASIC;
+      options->max_associated_content_length = 64000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-gpt-oss-20b";
+      model->display_name = "GPT OSS 20B";
+      model->vision_support = false;
+      model->supports_tools = true;
+      model->is_suggested_model = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    // GPT OSS 120B
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "OpenAI";
+      options->name = "gpt-oss-120b";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = mojom::ModelAccess::PREMIUM;
+      options->max_associated_content_length = 64000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-gpt-oss-120b";
+      model->display_name = "GPT OSS 120B";
+      model->vision_support = false;
+      model->supports_tools = true;
+      model->is_suggested_model = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    // Mistral Large
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Mistral";
+      options->name = "mistral-large";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = mojom::ModelAccess::PREMIUM;
+      options->max_associated_content_length = 64000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-mistral-large";
+      model->display_name = "Mistral Large";
+      model->vision_support = true;
+      model->supports_tools = true;
+      model->is_suggested_model = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    // Pixtral Large
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Mistral";
+      options->name = "pixtral-large";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = mojom::ModelAccess::PREMIUM;
+      options->max_associated_content_length = 64000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-pixtral-large";
+      model->display_name = "Pixtral Large";
+      model->vision_support = true;
+      model->supports_tools = true;
+      model->is_suggested_model = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    // Qwen 3 235B
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Alibaba Cloud";
+      options->name = "qwen-3-235b";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = mojom::ModelAccess::PREMIUM;
+      options->max_associated_content_length = 64000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-qwen-3-235b";
+      model->display_name = "Qwen 3 235B";
+      model->vision_support = false;
+      model->supports_tools = true;
+      model->is_suggested_model = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    // Deepseek V3.1
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Deepseek";
+      options->name = "deepseek-v3-1";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = mojom::ModelAccess::PREMIUM;
+      options->max_associated_content_length = 64000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-deepseek-v3-1";
+      model->display_name = "Deepseek V3.1";
+      model->vision_support = false;
+      model->supports_tools = false;
+      model->is_suggested_model = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    // Qwen 3 Coder 480B
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Alibaba Cloud";
+      options->name = "qwen-3-coder-480b";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = mojom::ModelAccess::PREMIUM;
+      options->max_associated_content_length = 64000;
+      options->long_conversation_warning_character_limit = 9700;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-qwen-3-coder-480b";
+      model->display_name = "Qwen 3 Coder 480B";
+      model->vision_support = false;
+      model->supports_tools = true;
+      model->is_suggested_model = false;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
+    // Claude Opus
+    {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Anthropic";
+      options->name = "claude-opus";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = mojom::ModelAccess::PREMIUM;
+      options->max_associated_content_length = 180000;
+      options->long_conversation_warning_character_limit = 320000;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-claude-opus";
+      model->display_name = "Claude Opus";
+      model->vision_support = true;
+      model->supports_tools = true;
+      model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -548,6 +774,36 @@ ModelService::GetModelsWithSubtitles() {
       } else if (model->key == "chat-gemma") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GEMMA_SUBTITLE);
+      } else if (model->key == "chat-llama-4-scout") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_LLAMA_4_SCOUT_SUBTITLE);
+      } else if (model->key == "chat-llama-4-maverick") {
+        model_with_subtitle->subtitle = l10n_util::GetStringUTF8(
+            IDS_CHAT_UI_CHAT_LLAMA_4_MAVERICK_SUBTITLE);
+      } else if (model->key == "chat-gpt-oss-20b") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GPT_OSS_20B_SUBTITLE);
+      } else if (model->key == "chat-gpt-oss-120b") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GPT_OSS_120B_SUBTITLE);
+      } else if (model->key == "chat-mistral-large") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_MISTRAL_LARGE_SUBTITLE);
+      } else if (model->key == "chat-pixtral-large") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_PIXTRAL_LARGE_SUBTITLE);
+      } else if (model->key == "chat-qwen-3-235b") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_QWEN_3_235B_SUBTITLE);
+      } else if (model->key == "chat-deepseek-v3-1") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_DEEPSEEK_V3_1_SUBTITLE);
+      } else if (model->key == "chat-qwen-3-coder-480b") {
+        model_with_subtitle->subtitle = l10n_util::GetStringUTF8(
+            IDS_CHAT_UI_CHAT_QWEN_3_CODER_480B_SUBTITLE);
+      } else if (model->key == "chat-claude-opus") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_OPUS_SUBTITLE);
       }
     }
 
