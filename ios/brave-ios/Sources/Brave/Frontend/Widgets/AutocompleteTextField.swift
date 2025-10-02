@@ -434,21 +434,16 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
       return
     }
 
-    var handled = false
     for press in presses {
       guard let key = press.key else { continue }
-      let chars = key.charactersIgnoringModifiers
-      let isRightArrowChar = chars == UIKeyCommand.inputRightArrow
-      let isRightArrowKeyCode = key.keyCode == .keyboardRightArrow
-      if isRightArrowChar || isRightArrowKeyCode {
+      let charactersIsRightArrow = key.charactersIgnoringModifiers == UIKeyCommand.inputRightArrow
+      let keycodeIsRightArrow = key.keyCode == .keyboardRightArrow
+      if charactersIsRightArrow || keycodeIsRightArrow {
         applyCompletion()
-        handled = true
         break
       }
     }
 
-    if !handled {
-      super.pressesEnded(presses, with: event)
-    }
+    super.pressesEnded(presses, with: event)
   }
 }
