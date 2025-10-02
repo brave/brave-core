@@ -81,6 +81,7 @@ group("brave_ios") {
 brave_core_public_headers = [
   "//brave/base/apple/base_value_bridge.h",
   "//brave/ios/app/brave_core_main.h",
+  "//brave/ios/web/advanced_privacy_protections/wkwebpagepreferences_private.h",
   "//brave/ios/app/brave_profile_controller.h",
   "//brave/ios/app/brave_core_switches.h",
   "//brave/ios/browser/ai_chat/ai_chat_utils.h",
@@ -201,6 +202,7 @@ ios_framework_bundle("brave_core_ios_framework") {
     ":brave_core_umbrella_header",
     "//brave/ios/app",
     "//brave/ios/components/constants",
+    "//brave/ios/web/advanced_privacy_protections",
     "//brave/ios/web_view",
   ]
 

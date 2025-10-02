@@ -367,4 +367,10 @@
       initWithFeature:&brave_sync::features::kBraveSyncDefaultPasswords];
 }
 
++ (Feature*)kWebKitAdvancedPrivacyProtections {
+  return
+      [[Feature alloc] initWithFeature:&brave_shields::features::
+                                           kWebKitAdvancedPrivacyProtections];
+}
+
 @end

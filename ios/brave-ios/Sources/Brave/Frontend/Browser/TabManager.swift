@@ -283,6 +283,12 @@ class TabManager: NSObject {
     configuration.ignoresViewportScaleLimits = true
     configuration.upgradeKnownHostsToHTTPS = ShieldPreferences.httpsUpgradeLevel.isEnabled
 
+    #if BRAVE_CHANNEL_NIGHTLY || DEBUG
+    if FeatureList.kWebKitAdvancedPrivacyProtections.enabled {
+      configuration.defaultWebpagePreferences._setNetworkConnectionIntegrityEnabled(true)
+    }
+    #endif
+
     if configuration.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
       configuration.setURLSchemeHandler(
         InternalSchemeHandler(),
