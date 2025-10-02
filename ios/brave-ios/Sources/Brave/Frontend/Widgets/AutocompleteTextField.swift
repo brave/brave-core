@@ -434,6 +434,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
       return
     }
 
+    var handled = false
     for press in presses {
       guard let key = press.key else { continue }
       let chars = key.charactersIgnoringModifiers
@@ -441,11 +442,13 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
       let isRightArrowKeyCode = key.keyCode == .keyboardRightArrow
       if isRightArrowChar || isRightArrowKeyCode {
         applyCompletion()
-        selectedTextRange = textRange(from: endOfDocument, to: endOfDocument)
-        return
+        handled = true
+        break
       }
     }
 
-    super.pressesEnded(presses, with: event)
+    if !handled {
+      super.pressesEnded(presses, with: event)
+    }
   }
 }
