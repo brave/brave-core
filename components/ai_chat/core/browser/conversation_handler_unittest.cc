@@ -1843,7 +1843,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
 
   constexpr char kTestPrompt[] = "What is this?";
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillRepeatedly(testing::Invoke(
+      .WillRepeatedly(
           [](PageContentsMap page_contents,
              const std::vector<mojom::ConversationTurnPtr>& history,
              const std::string& selected_language, bool is_temporary_chat,
@@ -1857,7 +1857,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New("This is a lion.")),
                     std::nullopt /* model_key */)));
-          }));
+          });
   ASSERT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
 
   // No uploaded files
@@ -3744,7 +3744,7 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
 
   // Mock engine response
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillRepeatedly(testing::Invoke(
+      .WillRepeatedly(
           [](PageContentsMap page_contents,
              const std::vector<mojom::ConversationTurnPtr>& history,
              const std::string& selected_language, bool is_temporary_chat,
@@ -3759,7 +3759,7 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
                         mojom::CompletionEvent::New(
                             "Response with vision model")),
                     std::nullopt /* model_key */)));
-          }));
+          });
 
   base::RunLoop loop;
   // Note: OnModelDataChanged expectation is set at the end for auto model

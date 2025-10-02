@@ -206,12 +206,11 @@ class ZCashWalletServiceUnitTest : public testing::Test {
     ASSERT_TRUE(zcash_account_);
 
     ON_CALL(zcash_rpc(), GetLightdInfo(_, _))
-        .WillByDefault(
-            ::testing::Invoke([&](const std::string& chain_id,
-                                  ZCashRpc::GetLightdInfoCallback callback) {
-              auto response = zcash::mojom::LightdInfo::New("c2d6d0b4");
-              std::move(callback).Run(std::move(response));
-            }));
+        .WillByDefault([&](const std::string& chain_id,
+                           ZCashRpc::GetLightdInfoCallback callback) {
+          auto response = zcash::mojom::LightdInfo::New("c2d6d0b4");
+          std::move(callback).Run(std::move(response));
+        });
   }
 
   AccountUtils GetAccountUtils() {
@@ -283,42 +282,41 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetLatestBlockCallback callback) {
+          [&](const std::string& chain_id,
+              ZCashRpc::GetLatestBlockCallback callback) {
             auto response = zcash::mojom::BlockID::New(
                 2625446u,
                 *PrefixedHexStringToBytes("0x0000000001a01b5fd794e4b071443974c8"
                                           "35b3e0ff8f96bf3600e07afdbf89c5"));
             std::move(callback).Run(std::move(response));
-          }));
+          });
 
   ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& chain_id, const std::string& addr,
-             uint64_t block_start, uint64_t block_end,
-             ZCashRpc::IsKnownAddressCallback callback) {
-            // Receiver addresses
-            if (addr == "t1ShtibD2UJkYTeGPxeLrMf3jvE11S4Lpwj") {
-              std::move(callback).Run(true);
-              return;
-            }
-            if (addr == "t1aW1cW7wf6KMuKrjDinyv9tK6F6hrBkRAY") {
-              std::move(callback).Run(true);
-              return;
-            }
-            if (addr == "t1aW1cW7wf6KMuKrjDinyv9tK6F6hrBkRAY") {
-              std::move(callback).Run(true);
-              return;
-            }
-            if (addr == "t1MF6q7rTYJMMKLgzQ58mCuo76EVhLfSAkW") {
-              std::move(callback).Run(true);
-              return;
-            }
-            std::move(callback).Run(false);
-          }));
+      .WillByDefault([](const std::string& chain_id, const std::string& addr,
+                        uint64_t block_start, uint64_t block_end,
+                        ZCashRpc::IsKnownAddressCallback callback) {
+        // Receiver addresses
+        if (addr == "t1ShtibD2UJkYTeGPxeLrMf3jvE11S4Lpwj") {
+          std::move(callback).Run(true);
+          return;
+        }
+        if (addr == "t1aW1cW7wf6KMuKrjDinyv9tK6F6hrBkRAY") {
+          std::move(callback).Run(true);
+          return;
+        }
+        if (addr == "t1aW1cW7wf6KMuKrjDinyv9tK6F6hrBkRAY") {
+          std::move(callback).Run(true);
+          return;
+        }
+        if (addr == "t1MF6q7rTYJMMKLgzQ58mCuo76EVhLfSAkW") {
+          std::move(callback).Run(true);
+          return;
+        }
+        std::move(callback).Run(false);
+      });
 
   ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const std::string& chain_id, const std::string& address,
               ZCashRpc::GetUtxoListCallback callback) {
             std::vector<zcash::mojom::ZCashUtxoPtr> utxos;
@@ -359,16 +357,16 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
             auto response =
                 zcash::mojom::GetAddressUtxosResponse::New(std::move(utxos));
             std::move(callback).Run(std::move(response));
-          }));
+          });
 
   base::MockCallback<ZCashWalletService::GetBalanceCallback> balance_callback;
   EXPECT_CALL(balance_callback, Run(_, _))
-      .WillOnce(::testing::Invoke([&](mojom::ZCashBalancePtr balance,
-                                      std::optional<std::string> error) {
+      .WillOnce([&](mojom::ZCashBalancePtr balance,
+                    std::optional<std::string> error) {
         EXPECT_EQ(balance->total_balance, 50u);
         EXPECT_EQ(balance->transparent_balance, 50u);
         EXPECT_EQ(balance->shielded_balance, 0u);
-      }));
+      });
 
   zcash_wallet_service_->GetBalance(mojom::kZCashMainnet, account_id.Clone(),
                                     balance_callback.Get());
@@ -393,30 +391,29 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetLatestBlockCallback callback) {
+          [&](const std::string& chain_id,
+              ZCashRpc::GetLatestBlockCallback callback) {
             auto response = zcash::mojom::BlockID::New(
                 2625446u,
                 *PrefixedHexStringToBytes("0x0000000001a01b5fd794e4b071443974c8"
                                           "35b3e0ff8f96bf3600e07afdbf89c5"));
             std::move(callback).Run(std::move(response));
-          }));
+          });
 
   ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& chain_id, const std::string& addr,
-             uint64_t block_start, uint64_t block_end,
-             ZCashRpc::IsKnownAddressCallback callback) {
-            // Receiver addresses
-            if (addr == "t1ShtibD2UJkYTeGPxeLrMf3jvE11S4Lpwj") {
-              std::move(callback).Run(true);
-              return;
-            }
-            std::move(callback).Run(false);
-          }));
+      .WillByDefault([](const std::string& chain_id, const std::string& addr,
+                        uint64_t block_start, uint64_t block_end,
+                        ZCashRpc::IsKnownAddressCallback callback) {
+        // Receiver addresses
+        if (addr == "t1ShtibD2UJkYTeGPxeLrMf3jvE11S4Lpwj") {
+          std::move(callback).Run(true);
+          return;
+        }
+        std::move(callback).Run(false);
+      });
 
   ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const std::string& chain_id, const std::string& address,
               ZCashRpc::GetUtxoListCallback callback) {
             std::vector<zcash::mojom::ZCashUtxoPtr> utxos;
@@ -435,26 +432,25 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
             auto response =
                 zcash::mojom::GetAddressUtxosResponse::New(std::move(utxos));
             std::move(callback).Run(std::move(response));
-          }));
+          });
 
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const mojom::AccountIdPtr& account_id,
-                               const OrchardAddrRawPart& internal_addr) {
-            OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
-            {
-              OrchardNote note;
-              note.amount = 10u;
-              spendable_notes_bundle.all_notes.push_back(note);
-              spendable_notes_bundle.spendable_notes.push_back(note);
-            }
-            {
-              OrchardNote note;
-              note.amount = 20u;
-              spendable_notes_bundle.all_notes.push_back(note);
-            }
-            return spendable_notes_bundle;
-          }));
+      .WillByDefault([](const mojom::AccountIdPtr& account_id,
+                        const OrchardAddrRawPart& internal_addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        {
+          OrchardNote note;
+          note.amount = 10u;
+          spendable_notes_bundle.all_notes.push_back(note);
+          spendable_notes_bundle.spendable_notes.push_back(note);
+        }
+        {
+          OrchardNote note;
+          note.amount = 20u;
+          spendable_notes_bundle.all_notes.push_back(note);
+        }
+        return spendable_notes_bundle;
+      });
 
   base::SequenceBound<MockOrchardSyncStateProxy> overrided_sync_state(
       base::SequencedTaskRunner::GetCurrentDefault(), db_path(),
@@ -463,13 +459,13 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
 
   base::MockCallback<ZCashWalletService::GetBalanceCallback> balance_callback;
   EXPECT_CALL(balance_callback, Run(_, _))
-      .WillOnce(::testing::Invoke([&](mojom::ZCashBalancePtr balance,
-                                      std::optional<std::string> error) {
+      .WillOnce([&](mojom::ZCashBalancePtr balance,
+                    std::optional<std::string> error) {
         EXPECT_EQ(balance->total_balance, 20u);
         EXPECT_EQ(balance->transparent_balance, 10u);
         EXPECT_EQ(balance->shielded_balance, 10u);
         EXPECT_EQ(balance->shielded_pending_balance, 20u);
-      }));
+      });
   zcash_wallet_service_->GetBalance(mojom::kZCashMainnet, account_id.Clone(),
                                     balance_callback.Get());
   task_environment_.RunUntilIdle();
@@ -499,30 +495,29 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetLatestBlockCallback callback) {
+          [&](const std::string& chain_id,
+              ZCashRpc::GetLatestBlockCallback callback) {
             auto response = zcash::mojom::BlockID::New(
                 2625446u,
                 *PrefixedHexStringToBytes("0x0000000001a01b5fd794e4b071443974c8"
                                           "35b3e0ff8f96bf3600e07afdbf89c5"));
             std::move(callback).Run(std::move(response));
-          }));
+          });
 
   ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& chain_id, const std::string& addr,
-             uint64_t block_start, uint64_t block_end,
-             ZCashRpc::IsKnownAddressCallback callback) {
-            // Receiver addresses
-            if (addr == "t1ShtibD2UJkYTeGPxeLrMf3jvE11S4Lpwj") {
-              std::move(callback).Run(true);
-              return;
-            }
-            std::move(callback).Run(false);
-          }));
+      .WillByDefault([](const std::string& chain_id, const std::string& addr,
+                        uint64_t block_start, uint64_t block_end,
+                        ZCashRpc::IsKnownAddressCallback callback) {
+        // Receiver addresses
+        if (addr == "t1ShtibD2UJkYTeGPxeLrMf3jvE11S4Lpwj") {
+          std::move(callback).Run(true);
+          return;
+        }
+        std::move(callback).Run(false);
+      });
 
   ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const std::string& chain_id, const std::string& address,
               ZCashRpc::GetUtxoListCallback callback) {
             std::vector<zcash::mojom::ZCashUtxoPtr> utxos;
@@ -541,7 +536,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
             auto response =
                 zcash::mojom::GetAddressUtxosResponse::New(std::move(utxos));
             std::move(callback).Run(std::move(response));
-          }));
+          });
 
   OrchardNote note;
   note.amount = 10u;
@@ -563,12 +558,12 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
 
   base::MockCallback<ZCashWalletService::GetBalanceCallback> balance_callback;
   EXPECT_CALL(balance_callback, Run(_, _))
-      .WillOnce(::testing::Invoke([&](mojom::ZCashBalancePtr balance,
-                                      std::optional<std::string> error) {
+      .WillOnce([&](mojom::ZCashBalancePtr balance,
+                    std::optional<std::string> error) {
         EXPECT_EQ(balance->total_balance, 10u);
         EXPECT_EQ(balance->transparent_balance, 10u);
         EXPECT_EQ(balance->shielded_balance, 0u);
-      }));
+      });
   zcash_wallet_service_->GetBalance(mojom::kZCashMainnet, account_id.Clone(),
                                     balance_callback.Get());
   task_environment_.RunUntilIdle();
@@ -619,13 +614,12 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
   }
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            zcash::mojom::BlockIDPtr response = zcash::mojom::BlockID::New();
-            response->height = 2286687;
-            std::move(callback).Run(std::move(response));
-          }));
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        zcash::mojom::BlockIDPtr response = zcash::mojom::BlockID::New();
+        response->height = 2286687;
+        std::move(callback).Run(std::move(response));
+      });
 
   base::MockCallback<ZCashWalletService::SignAndPostTransactionCallback>
       sign_callback;
@@ -674,47 +668,45 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
 
 TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            zcash::mojom::BlockIDPtr response = zcash::mojom::BlockID::New();
-            response->height = 2286687;
-            std::move(callback).Run(std::move(response));
-          }));
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        zcash::mojom::BlockIDPtr response = zcash::mojom::BlockID::New();
+        response->height = 2286687;
+        std::move(callback).Run(std::move(response));
+      });
 
   ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& chain_id, const std::string& addr,
-             uint64_t block_start, uint64_t block_end,
-             ZCashRpc::IsKnownAddressCallback callback) {
-            EXPECT_EQ(2286687u, block_end);
-            // Receiver addresses
-            if (addr == "t1c61yifRMgyhMsBYsFDBa5aEQkgU65CGau") {
-              std::move(callback).Run(true);
-              return;
-            }
-            if (addr == "t1V7JBWXRYPA19nBLBFTm8669DhQgErMAnK") {
-              std::move(callback).Run(true);
-              return;
-            }
-            if (addr == "t1UCYMSUdkGXEyeKPqgwiDn8NwGv5JKmJoL") {
-              std::move(callback).Run(false);
-              return;
-            }
-            // Change addresses
-            if (addr == "t1RDtGXzcfchmtrE8pGLorefgtspgcNZbrE") {
-              std::move(callback).Run(true);
-              return;
-            }
-            if (addr == "t1VUdyCuqWgeBPJvfhWvHLD5iDUfkdLrwWz") {
-              std::move(callback).Run(true);
-              return;
-            }
-            if (addr == "t1QJuws2nGqDNJEKsKniUPDNLbMw5R9ixGj") {
-              std::move(callback).Run(false);
-              return;
-            }
-          }));
+      .WillByDefault([](const std::string& chain_id, const std::string& addr,
+                        uint64_t block_start, uint64_t block_end,
+                        ZCashRpc::IsKnownAddressCallback callback) {
+        EXPECT_EQ(2286687u, block_end);
+        // Receiver addresses
+        if (addr == "t1c61yifRMgyhMsBYsFDBa5aEQkgU65CGau") {
+          std::move(callback).Run(true);
+          return;
+        }
+        if (addr == "t1V7JBWXRYPA19nBLBFTm8669DhQgErMAnK") {
+          std::move(callback).Run(true);
+          return;
+        }
+        if (addr == "t1UCYMSUdkGXEyeKPqgwiDn8NwGv5JKmJoL") {
+          std::move(callback).Run(false);
+          return;
+        }
+        // Change addresses
+        if (addr == "t1RDtGXzcfchmtrE8pGLorefgtspgcNZbrE") {
+          std::move(callback).Run(true);
+          return;
+        }
+        if (addr == "t1VUdyCuqWgeBPJvfhWvHLD5iDUfkdLrwWz") {
+          std::move(callback).Run(true);
+          return;
+        }
+        if (addr == "t1QJuws2nGqDNJEKsKniUPDNLbMw5R9ixGj") {
+          std::move(callback).Run(false);
+          return;
+        }
+      });
 
   {
     bool callback_called = false;
@@ -739,30 +731,29 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
   }
 
   ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& chain_id, const std::string& addr,
-             uint64_t block_start, uint64_t block_end,
-             ZCashRpc::IsKnownAddressCallback callback) {
-            EXPECT_EQ(2286687u, block_end);
-            // Receiver addresses
-            if (addr == "t1UCYMSUdkGXEyeKPqgwiDn8NwGv5JKmJoL") {
-              std::move(callback).Run(true);
-              return;
-            }
-            if (addr == "t1JEfEPQDGruzd7Q42pdwHmR4sRHGLRF48m") {
-              std::move(callback).Run(false);
-              return;
-            }
-            // Change addresses
-            if (addr == "t1QJuws2nGqDNJEKsKniUPDNLbMw5R9ixGj") {
-              std::move(callback).Run(true);
-              return;
-            }
-            if (addr == "t1gKxueg76TtvVmMQ6swDmvHxtmLTSQv6KP") {
-              std::move(callback).Run(false);
-              return;
-            }
-          }));
+      .WillByDefault([](const std::string& chain_id, const std::string& addr,
+                        uint64_t block_start, uint64_t block_end,
+                        ZCashRpc::IsKnownAddressCallback callback) {
+        EXPECT_EQ(2286687u, block_end);
+        // Receiver addresses
+        if (addr == "t1UCYMSUdkGXEyeKPqgwiDn8NwGv5JKmJoL") {
+          std::move(callback).Run(true);
+          return;
+        }
+        if (addr == "t1JEfEPQDGruzd7Q42pdwHmR4sRHGLRF48m") {
+          std::move(callback).Run(false);
+          return;
+        }
+        // Change addresses
+        if (addr == "t1QJuws2nGqDNJEKsKniUPDNLbMw5R9ixGj") {
+          std::move(callback).Run(true);
+          return;
+        }
+        if (addr == "t1gKxueg76TtvVmMQ6swDmvHxtmLTSQv6KP") {
+          std::move(callback).Run(false);
+          return;
+        }
+      });
 
   {
     bool callback_called = false;
@@ -789,35 +780,33 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
 
 TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            zcash::mojom::BlockIDPtr response = zcash::mojom::BlockID::New();
-            response->height = 2286687;
-            std::move(callback).Run(std::move(response));
-          }));
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        zcash::mojom::BlockIDPtr response = zcash::mojom::BlockID::New();
+        response->height = 2286687;
+        std::move(callback).Run(std::move(response));
+      });
 
   ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& chain_id, const std::string& addr,
-             uint64_t block_start, uint64_t block_end,
-             ZCashRpc::IsKnownAddressCallback callback) {
-            EXPECT_EQ(2286687u, block_end);
-            // Receiver addresses
-            if (addr == "t1UCYMSUdkGXEyeKPqgwiDn8NwGv5JKmJoL") {
-              std::move(callback).Run(true);
-              return;
-            }
-            if (addr == "t1JEfEPQDGruzd7Q42pdwHmR4sRHGLRF48m") {
-              std::move(callback).Run(false);
-              return;
-            }
-            // Change addresses
-            if (addr == "t1RDtGXzcfchmtrE8pGLorefgtspgcNZbrE") {
-              std::move(callback).Run(false);
-              return;
-            }
-          }));
+      .WillByDefault([](const std::string& chain_id, const std::string& addr,
+                        uint64_t block_start, uint64_t block_end,
+                        ZCashRpc::IsKnownAddressCallback callback) {
+        EXPECT_EQ(2286687u, block_end);
+        // Receiver addresses
+        if (addr == "t1UCYMSUdkGXEyeKPqgwiDn8NwGv5JKmJoL") {
+          std::move(callback).Run(true);
+          return;
+        }
+        if (addr == "t1JEfEPQDGruzd7Q42pdwHmR4sRHGLRF48m") {
+          std::move(callback).Run(false);
+          return;
+        }
+        // Change addresses
+        if (addr == "t1RDtGXzcfchmtrE8pGLorefgtspgcNZbrE") {
+          std::move(callback).Run(false);
+          return;
+        }
+      });
 
   {
     auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
@@ -994,16 +983,15 @@ TEST_F(ZCashWalletServiceUnitTest, AutoSync) {
                                               mojom::AccountKind::kDerived, 0);
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetLatestBlockCallback callback) {
-            auto response =
-                zcash::mojom::BlockID::New(100000u, std::vector<uint8_t>());
-            std::move(callback).Run(std::move(response));
-          }));
+      .WillByDefault([&](const std::string& chain_id,
+                         ZCashRpc::GetLatestBlockCallback callback) {
+        auto response =
+            zcash::mojom::BlockID::New(100000u, std::vector<uint8_t>());
+        std::move(callback).Run(std::move(response));
+      });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
               ZCashRpc::GetTreeStateCallback callback) {
             EXPECT_EQ(block_id->height, 100000u - kChainReorgBlockDelta);
@@ -1013,7 +1001,7 @@ TEST_F(ZCashWalletServiceUnitTest, AutoSync) {
                 "hexhexhex2" /* hash */, 123 /* time */, "" /* sapling tree */,
                 "" /* orchard tree */);
             std::move(callback).Run(std::move(tree_state));
-          }));
+          });
 
   EXPECT_FALSE(auto_sync_managers().contains(account_id_1));
   {
@@ -1053,7 +1041,7 @@ TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
         get_zcash_account_info_callback;
     EXPECT_CALL(get_zcash_account_info_callback, Run(_))
         .WillOnce(
-            ::testing::Invoke([&](mojom::ZCashAccountInfoPtr account_info) {
+            [&](mojom::ZCashAccountInfoPtr account_info) {
               EXPECT_EQ(account_info->unified_address.value(),
                         "u1gjrzpk0v0v2ae359cp296zapth9mw8xseyzhu44a4ftux3gn8gh9"
                         "hmzazrz6f3yvjyglrchz68g0s2hwpjknw3eywxgp0tn3p5p3g94w4j"
@@ -1065,7 +1053,7 @@ TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
                   account_info->orchard_internal_address.value(),
                   "u1dl9dtss80tsutx3xfje4vlndwhc2f2pernhhpxfsz9vw6nr0zz"
                   "lkw9p2m22xjcn5588fp3tnta9uqhpk4nh06xumwvt8ff7w653g5pvk");
-            }));
+            });
     zcash_wallet_service_->GetZCashAccountInfo(
         account_id_1.Clone(), get_zcash_account_info_callback.Get());
     task_environment_.RunUntilIdle();
@@ -1198,16 +1186,15 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
                                               mojom::AccountKind::kDerived, 1);
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetLatestBlockCallback callback) {
-            auto response =
-                zcash::mojom::BlockID::New(100000u, std::vector<uint8_t>());
-            std::move(callback).Run(std::move(response));
-          }));
+      .WillByDefault([&](const std::string& chain_id,
+                         ZCashRpc::GetLatestBlockCallback callback) {
+        auto response =
+            zcash::mojom::BlockID::New(100000u, std::vector<uint8_t>());
+        std::move(callback).Run(std::move(response));
+      });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
               ZCashRpc::GetTreeStateCallback callback) {
             EXPECT_EQ(block_id->height, 100000u - kChainReorgBlockDelta);
@@ -1217,7 +1204,7 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
                 "hexhexhex2" /* hash */, 123 /* time */, "" /* sapling tree */,
                 "" /* orchard tree */);
             std::move(callback).Run(std::move(tree_state));
-          }));
+          });
 
   {
     base::MockCallback<ZCashWalletService::MakeAccountShieldedCallback>
@@ -1234,11 +1221,11 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
         get_zcash_account_info_callback;
     EXPECT_CALL(get_zcash_account_info_callback, Run(_))
         .WillOnce(
-            ::testing::Invoke([&](mojom::ZCashAccountInfoPtr account_info) {
+            [&](mojom::ZCashAccountInfoPtr account_info) {
               EXPECT_EQ(mojom::ZCashAccountShieldBirthday::New(
                             100000u - kChainReorgBlockDelta, "hexhexhex2"),
                         account_info->account_shield_birthday);
-            }));
+            });
     zcash_wallet_service_->GetZCashAccountInfo(
         account_id_1.Clone(), get_zcash_account_info_callback.Get());
     task_environment_.RunUntilIdle();
@@ -1250,10 +1237,9 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
     base::MockCallback<ZCashWalletService::GetZCashAccountInfoCallback>
         get_zcash_account_info_callback;
     EXPECT_CALL(get_zcash_account_info_callback, Run(_))
-        .WillOnce(
-            ::testing::Invoke([&](mojom::ZCashAccountInfoPtr account_info) {
-              EXPECT_TRUE(account_info->account_shield_birthday.is_null());
-            }));
+        .WillOnce([&](mojom::ZCashAccountInfoPtr account_info) {
+          EXPECT_TRUE(account_info->account_shield_birthday.is_null());
+        });
     zcash_wallet_service_->GetZCashAccountInfo(
         account_id_2.Clone(), get_zcash_account_info_callback.Get());
     task_environment_.RunUntilIdle();
@@ -1283,7 +1269,7 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
                                             mojom::AccountKind::kDerived, 0);
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account_id, 1, 0);
   ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const std::string& chain_id, const std::string& address,
               ZCashRpc::GetUtxoListCallback callback) {
             std::vector<zcash::mojom::ZCashUtxoPtr> utxos;
@@ -1302,21 +1288,20 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
             auto response =
                 zcash::mojom::GetAddressUtxosResponse::New(std::move(utxos));
             std::move(callback).Run(std::move(response));
-          }));
+          });
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetLatestBlockCallback callback) {
-            auto response =
-                zcash::mojom::BlockID::New(100000u, std::vector<uint8_t>());
-            std::move(callback).Run(std::move(response));
-          }));
+      .WillByDefault([&](const std::string& chain_id,
+                         ZCashRpc::GetLatestBlockCallback callback) {
+        auto response =
+            zcash::mojom::BlockID::New(100000u, std::vector<uint8_t>());
+        std::move(callback).Run(std::move(response));
+      });
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(::testing::Invoke(
-          [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
-              ZCashRpc::GetTreeStateCallback callback) {
-            std::move(callback).Run(base::unexpected("error"));
-          }));
+      .WillByDefault([&](const std::string& chain_id,
+                         zcash::mojom::BlockIDPtr block_id,
+                         ZCashRpc::GetTreeStateCallback callback) {
+        std::move(callback).Run(base::unexpected("error"));
+      });
 
   base::MockCallback<ZCashWalletService::ShieldAllFundsCallback>
       shield_funds_callback;
@@ -1365,29 +1350,27 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account_id, 1, 0);
 
   ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& chain_id, const std::string& addr,
-             uint64_t block_start, uint64_t block_end,
-             ZCashRpc::IsKnownAddressCallback callback) {
-            std::move(callback).Run(false);
-          }));
+      .WillByDefault([](const std::string& chain_id, const std::string& addr,
+                        uint64_t block_start, uint64_t block_end,
+                        ZCashRpc::IsKnownAddressCallback callback) {
+        std::move(callback).Run(false);
+      });
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetLatestBlockCallback callback) {
+          [&](const std::string& chain_id,
+              ZCashRpc::GetLatestBlockCallback callback) {
             auto response = zcash::mojom::BlockID::New(
                 2625446u,
                 *PrefixedHexStringToBytes("0x0000000001a01b5fd794e4b071443974c8"
                                           "35b3e0ff8f96bf3600e07afdbf89c5"));
             std::move(callback).Run(std::move(response));
-          }));
+          });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(::testing::Invoke([&](const std::string& chain_id,
-                                           zcash::mojom::BlockIDPtr block_id,
-                                           ZCashRpc::GetTreeStateCallback
-                                               callback) {
+      .WillByDefault([&](const std::string& chain_id,
+                         zcash::mojom::BlockIDPtr block_id,
+                         ZCashRpc::GetTreeStateCallback callback) {
         auto tree_state = zcash::mojom::TreeState::New(
             "main" /* network */, 2625446 /* height */,
             "0000000001a01b5fd794e4b071443974c835b3e0ff8f96bf3600e07afdbf89c5"
@@ -1422,20 +1405,19 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
             "190cddecef1b10653248a234150001e2bca6a8d987d668defba89dc082196a9226"
             "34ed88e065c669e526bb8815ee1b000000000000" /* orchard tree */);
         std::move(callback).Run(std::move(tree_state));
-      }));
+      });
 
   std::unique_ptr<MockOrchardSyncState> mocked_sync_state =
       std::make_unique<MockOrchardSyncState>(db_path());
   ON_CALL(*mocked_sync_state, GetSpendableNotes(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
-                                const OrchardAddrRawPart& internal_addr) {
-            OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
-            return spendable_notes_bundle;
-          }));
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         const OrchardAddrRawPart& internal_addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        return spendable_notes_bundle;
+      });
 
   ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const std::string& chain_id, const std::string& address,
               ZCashRpc::GetUtxoListCallback callback) {
             std::vector<zcash::mojom::ZCashUtxoPtr> utxos;
@@ -1454,7 +1436,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
             auto response =
                 zcash::mojom::GetAddressUtxosResponse::New(std::move(utxos));
             std::move(callback).Run(std::move(response));
-          }));
+          });
 
   OrchardMemo memo;
   memo.fill('a');
@@ -1782,17 +1764,17 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetLatestBlockCallback callback) {
+          [&](const std::string& chain_id,
+              ZCashRpc::GetLatestBlockCallback callback) {
             auto response = zcash::mojom::BlockID::New(
                 2468414u,
                 *PrefixedHexStringToBytes("0x0000000000b9f12d757cf10d5164c8eb2d"
                                           "ceb79efbebd15939ac0c2ef69857c5"));
             std::move(callback).Run(std::move(response));
-          }));
+          });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
               ZCashRpc::GetTreeStateCallback callback) {
             auto tree_state = zcash::mojom::TreeState::New(
@@ -1835,10 +1817,10 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
                 "ecef1b10653248a234150001e2bca6a8d987d668defba89dc082196a922634"
                 "ed88e065c669e526bb8815ee1b000000000000" /* orchard tree */);
             std::move(callback).Run(std::move(tree_state));
-          }));
+          });
 
   ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const std::string& chain_id, const std::string& address,
               ZCashRpc::GetUtxoListCallback callback) {
             std::vector<zcash::mojom::ZCashUtxoPtr> utxos;
@@ -1857,7 +1839,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
             auto response =
                 zcash::mojom::GetAddressUtxosResponse::New(std::move(utxos));
             std::move(callback).Run(std::move(response));
-          }));
+          });
 
   std::vector<uint8_t> captured_data;
   EXPECT_CALL(zcash_rpc(), SendTransaction(_, _, _))
@@ -2153,17 +2135,16 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   ON_CALL(zcash_rpc(), GetLightdInfo(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetLightdInfoCallback callback) {
-            auto response = zcash::mojom::LightdInfo::New("C8E71055");
-            std::move(callback).Run(std::move(response));
-          }));
+      .WillByDefault([&](const std::string& chain_id,
+                         ZCashRpc::GetLightdInfoCallback callback) {
+        auto response = zcash::mojom::LightdInfo::New("C8E71055");
+        std::move(callback).Run(std::move(response));
+      });
 
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
       .WillByDefault(
-          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
-                                const OrchardAddrRawPart& internal_addr) {
+          [&](const mojom::AccountIdPtr& account_id,
+              const OrchardAddrRawPart& internal_addr) {
             OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
             OrchardNote note;
             base::span(note.addr).copy_from(*PrefixedHexStringToBytes(
@@ -2185,12 +2166,12 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
             spendable_notes_bundle.spendable_notes.push_back(std::move(note));
             spendable_notes_bundle.anchor_block_id = 2765375u;
             return spendable_notes_bundle;
-          }));
+          });
   ON_CALL(mock_orchard_sync_state(), CalculateWitnessForCheckpoint(_, _, _))
       .WillByDefault(
-          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
-                                const std::vector<OrchardInput>& notes,
-                                uint32_t checkpoint_position) {
+          [&](const mojom::AccountIdPtr& account_id,
+              const std::vector<OrchardInput>& notes,
+              uint32_t checkpoint_position) {
             std::vector<OrchardInput> notes_with_witness = notes;
             OrchardNoteWitness witness;
             AppendMerklePath(witness,
@@ -2292,7 +2273,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
             witness.position = 48973018u;
             notes_with_witness[0].witness = std::move(witness);
             return base::ok(notes_with_witness);
-          }));
+          });
 
   base::SequenceBound<MockOrchardSyncStateProxy> overrided_sync_state(
       base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
@@ -2310,17 +2291,17 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
                                             mojom::AccountKind::kDerived, 6);
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetLatestBlockCallback callback) {
+          [&](const std::string& chain_id,
+              ZCashRpc::GetLatestBlockCallback callback) {
             auto response = zcash::mojom::BlockID::New(
                 2769076u,
                 *PrefixedHexStringToBytes("0x000000000003b74b5acfd73e70b1a8e8de"
                                           "5f5557e560d524037cf40d3190a804"));
             std::move(callback).Run(std::move(response));
-          }));
+          });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
               ZCashRpc::GetTreeStateCallback callback) {
             auto tree_state = zcash::mojom::TreeState::New(
@@ -2367,7 +2348,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
                 "ef1b10653248a234150001e2bca6a8d987d668defba89dc082196a922634ed"
                 "88e065c669e526bb8815ee1b000000000000");
             std::move(callback).Run(std::move(tree_state));
-          }));
+          });
 
   std::optional<ZCashTransaction> created_transaction;
   base::MockCallback<ZCashWalletService::CreateTransactionCallback>

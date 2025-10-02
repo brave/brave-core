@@ -69,9 +69,8 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
   ON_CALL(ads_client_mock_, LoadResourceComponent(kTextClassificationResourceId,
                                                   /*version=*/::testing::_,
                                                   /*callback=*/::testing::_))
-      .WillByDefault(::testing::Invoke([](const std::string& /*id*/,
-                                          int /*version*/,
-                                          LoadFileCallback callback) {
+      .WillByDefault([](const std::string& /*id*/, int /*version*/,
+                        LoadFileCallback callback) {
         const base::FilePath path =
             test::ResourceComponentsDataPath().AppendASCII(
                 test::kMissingResourceId);
@@ -79,7 +78,7 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {
         base::File file(
             path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
         std::move(callback).Run(std::move(file));
-      }));
+      });
 
   NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
                                    test::kLanguageComponentId);

@@ -109,12 +109,12 @@ TEST_F(NavigationToolTest, ValidInputHttpsUrl) {
 
   optimization_guide::proto::Actions captured_actions;
   EXPECT_CALL(*mock_task_provider_, ExecuteActions(testing::_, testing::_))
-      .WillOnce(testing::Invoke([&captured_actions, &run_loop](
-                                    optimization_guide::proto::Actions actions,
-                                    Tool::UseToolCallback callback) {
+      .WillOnce([&captured_actions, &run_loop](
+                    optimization_guide::proto::Actions actions,
+                    Tool::UseToolCallback callback) {
         captured_actions = std::move(actions);
         run_loop.Quit();
-      }));
+      });
 
   navigation_tool_->UseTool(input_json, base::DoNothing());
   run_loop.Run();
@@ -130,13 +130,13 @@ TEST_F(NavigationToolTest, ValidInputComplexUrl) {
 
   optimization_guide::proto::Actions captured_actions;
   EXPECT_CALL(*mock_task_provider_, ExecuteActions(testing::_, testing::_))
-      .WillOnce(testing::Invoke([&captured_actions, &run_loop](
-                                    optimization_guide::proto::Actions actions,
-                                    Tool::UseToolCallback callback) {
+      .WillOnce([&captured_actions, &run_loop](
+                    optimization_guide::proto::Actions actions,
+                    Tool::UseToolCallback callback) {
         captured_actions = std::move(actions);
         std::move(callback).Run(CreateContentBlocksForText("Success"));
         run_loop.Quit();
-      }));
+      });
 
   navigation_tool_->UseTool(input_json, base::DoNothing());
   run_loop.Run();

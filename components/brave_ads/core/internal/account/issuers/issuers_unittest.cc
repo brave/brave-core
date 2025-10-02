@@ -78,10 +78,10 @@ TEST_F(BraveAdsIssuersTest,
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
   ON_CALL(delegate_mock_, OnDidFetchIssuers)
-      .WillByDefault(::testing::Invoke([](const IssuersInfo& issuers) {
+      .WillByDefault([](const IssuersInfo& issuers) {
         // Set issuers to prevent further retries.
         SetIssuers(issuers);
-      }));
+      });
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnFailedToFetchIssuers);
