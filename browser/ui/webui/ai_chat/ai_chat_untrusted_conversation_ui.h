@@ -42,9 +42,6 @@ class AIChatUntrustedConversationUI : public ui::MojoWebUIController {
 
   void BindInterface(
       mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver);
-  void BindInterface(
-      mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationHandler>
-          receiver);
 
  private:
   std::unique_ptr<ai_chat::mojom::UntrustedUIHandler> ui_handler_;

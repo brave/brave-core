@@ -593,8 +593,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<ai_chat::mojom::Service>()
         .Add<ai_chat::mojom::TabTrackerService>();
     registry.ForWebUI<AIChatUntrustedConversationUI>()
-        .Add<ai_chat::mojom::UntrustedUIHandler>()
-        .Add<ai_chat::mojom::UntrustedConversationHandler>();
+        .Add<ai_chat::mojom::UntrustedUIHandler>();
   }
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
