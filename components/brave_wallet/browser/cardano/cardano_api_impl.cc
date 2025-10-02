@@ -146,9 +146,8 @@ ApplyPaginate(base::span<const std::string> serialized_utxos,
 }
 
 std::optional<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>>
-FindAddressByInput(
-    const GetCardanoUtxosTask::UtxoMap& utxo_map,
-    const CardanoCip30Serializer::RestoredTransactionInput& input) {
+FindAddressByInput(const GetCardanoUtxosTask::UtxoMap& utxo_map,
+                   const CardanoTxDecoder::RestoredTransactionInput& input) {
   for (const auto& by_addr : utxo_map) {
     for (const auto& utxo : by_addr.second) {
       if (utxo.tx_hash == input.tx_hash && utxo.output_index == input.index) {
@@ -162,7 +161,7 @@ FindAddressByInput(
 
 bool InsertKnownInputAddresses(
     const GetCardanoUtxosTask::UtxoMap& utxo_map,
-    CardanoCip30Serializer::RestoredTransaction& transaction,
+    CardanoTxDecoder::RestoredTransaction& transaction,
     bool partial_sign) {
   for (auto& restored_input : transaction.tx_body.inputs) {
     auto find_result = FindAddressByInput(utxo_map, restored_input);
@@ -398,8 +397,7 @@ void CardanoApiImpl::SignTx(const std::string& tx_cbor,
     return;
   }
 
-  auto restored_tx =
-      CardanoCip30Serializer::DeserializeTransaction(tx_cbor_bytes);
+  auto restored_tx = CardanoTxDecoder::DecodeTransaction(tx_cbor_bytes);
   if (!restored_tx) {
     std::move(callback).Run(
         std::nullopt,
@@ -421,7 +419,7 @@ void CardanoApiImpl::SignTx(const std::string& tx_cbor,
 }
 
 void CardanoApiImpl::OnGetUtxosForSignTx(
-    CardanoCip30Serializer::RestoredTransaction tx,
+    CardanoTxDecoder::RestoredTransaction tx,
     bool partial_sign,
     SignTxCallback callback,
     base::expected<GetCardanoUtxosTask::UtxoMap, std::string> utxos) {
@@ -465,7 +463,7 @@ void CardanoApiImpl::OnGetUtxosForSignTx(
 }
 
 mojom::SignCardanoTransactionRequestPtr CardanoApiImpl::FromRestoredTransaction(
-    const CardanoCip30Serializer::RestoredTransaction& tx) {
+    const CardanoTxDecoder::RestoredTransaction& tx) {
   auto addresses =
       brave_wallet_service_->keyring_service()->GetCardanoAddresses(
           selected_account_);
@@ -499,7 +497,7 @@ mojom::SignCardanoTransactionRequestPtr CardanoApiImpl::FromRestoredTransaction(
 }
 
 void CardanoApiImpl::OnSignTransactionRequestProcessed(
-    CardanoCip30Serializer::RestoredTransaction tx,
+    CardanoTxDecoder::RestoredTransaction tx,
     SignTxCallback callback,
     bool approved,
     const std::optional<std::string>& error) {
@@ -536,7 +534,7 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
     return;
   }
 
-  std::vector<CardanoSignMessageResult> sign_results;
+  std::vector<CardanoTxDecoder::CardanoSignMessageResult> sign_results;
   for (const auto& input : tx.tx_body.inputs) {
     if (!input.address) {
       continue;
@@ -561,10 +559,13 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
               kAPIErrorInternalError, WalletInternalErrorMessage(), nullptr));
       return;
     }
-    sign_results.push_back(sign_result.value());
+    // Convert CardanoSignMessageResult to
+    // CardanoTxDecoder::CardanoSignMessageResult
+    sign_results.emplace_back(base::ToVector(sign_result->signature),
+                              base::ToVector(sign_result->pubkey));
   }
 
-  auto signed_tx = CardanoCip30Serializer().ApplySignResults(
+  auto signed_tx = CardanoTxDecoder::AddWitnessesToTransaction(
       tx.raw_bytes, std::move(sign_results));
 
   if (!signed_tx) {
