@@ -43,6 +43,12 @@ class BravePsstPermissionContext
       std::string_view user_id);
 
  private:
+  friend class BravePsstPermissionContextUnitTest;
+  FRIEND_TEST_ALL_PREFIXES(BravePsstPermissionContextUnitTest,
+                           DontAllowToCreatePermissionForWrongSchema);
+  FRIEND_TEST_ALL_PREFIXES(BravePsstPermissionContextUnitTest,
+                           CreateUpdateRevokePermissionInfo);
+
   void GrantPermission(const url::Origin& origin,
                        PsstPermissionInfo permission_info);
   // permissions::ObjectPermissionContextBase implementation:
