@@ -21,7 +21,8 @@ namespace update_client {
 std::string PrivacyPreservingProtocolSerializer::Serialize(
     const protocol_request::Request& request) const {
   std::string upstream_result = ProtocolSerializerJSON().Serialize(request);
-  std::optional<base::Value> root = base::JSONReader::Read(upstream_result);
+  std::optional<base::Value> root = base::JSONReader::Read(
+      upstream_result, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!root.has_value() || !root->is_dict()) {
     return upstream_result;
   }
