@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 06d2f8f3f3375e21bb40197173d8907b368de793..949f9705a019a24fa492ab19b0e339758a08b563 100644
+index 2edfb1e707edb4a4ff47f1b647ee8f056f175175..749e46d74a24f7a017221b2507e814baf84b131e 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -2004,6 +2004,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -2019,6 +2019,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #endif  // !BUILDFLAG(IS_ANDROID)
  
    // This is intentionally last.
@@ -10,7 +10,7 @@ index 06d2f8f3f3375e21bb40197173d8907b368de793..949f9705a019a24fa492ab19b0e33975
    RegisterLocalStatePrefsForMigration(registry);
  }
  
-@@ -2457,6 +2458,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2472,6 +2473,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
    // the policies logic is implemented.
    registry->RegisterListPref(policy::policy_prefs::kIncognitoModeBlocklist);
    registry->RegisterListPref(policy::policy_prefs::kIncognitoModeAllowlist);

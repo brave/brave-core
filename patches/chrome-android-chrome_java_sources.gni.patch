@@ -1,8 +1,8 @@
 diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index 87f3d816a5a68a265b6ce1ed7db30bb631336114..9cf97765265d53b5e99cd5473a0036b9ff5e707a 100644
+index de3c7ad16d9d94c5ffc629962173f84cdf0c17f1..a84491ab5652e161d3012e8fae391a5a512cc865 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
-@@ -1244,3 +1244,4 @@ if (enable_screen_capture) {
+@@ -1248,3 +1248,4 @@ if (enable_screen_capture) {
      "java/src/org/chromium/chrome/browser/media/MediaCapturePickerItemViewBinder.java",
    ]
  }
