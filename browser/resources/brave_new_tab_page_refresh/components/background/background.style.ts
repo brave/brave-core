@@ -27,6 +27,14 @@ export const style = scoped.css`
     background-repeat: no-repeat;
     background-position: center center;
     background-image: var(--ntp-background);
+
+    &.sponsored {
+      background-image:
+        linear-gradient(
+          rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0) 80%,
+          rgba(0, 0, 0, 0.6) 100%),
+        var(--ntp-background);
+    }
   }
 
   .color-background {
