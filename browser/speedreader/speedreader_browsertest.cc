@@ -17,6 +17,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
@@ -1097,8 +1098,12 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarWithRoundedCorners) {
   EXPECT_TRUE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
 
+  const bool rounded_contents =
+      BraveBrowser::IsBraveWebViewRoundedCornersEnabled(browser());
+
   auto* browser_view = static_cast<BraveBrowserView*>(browser()->window());
-  EXPECT_TRUE(browser_view->reader_mode_toolbar()->rounded_corners_.IsEmpty());
+  EXPECT_EQ(browser_view->reader_mode_toolbar()->rounded_corners_.IsEmpty(),
+            !rounded_contents);
   chrome::NewSplitTab(browser(),
                       split_tabs::SplitTabCreatedSource::kTabContextMenu);
 
@@ -1116,7 +1121,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarWithRoundedCorners) {
   ASSERT_TRUE(split_id);
   tab_strip_model->RemoveSplit(*split_id);
   EXPECT_EQ(0, tab_strip_model->active_index());
-  EXPECT_TRUE(browser_view->reader_mode_toolbar()->rounded_corners_.IsEmpty());
+  EXPECT_EQ(browser_view->reader_mode_toolbar()->rounded_corners_.IsEmpty(),
+            !rounded_contents);
 }
 
 class SpeedReaderWithSplitViewBrowserTest

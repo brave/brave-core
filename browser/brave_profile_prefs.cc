@@ -493,6 +493,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kEnableWindowClosingConfirm, true);
   registry->RegisterBooleanPref(kEnableClosingLastTab, true);
   registry->RegisterBooleanPref(kShowFullscreenReminder, true);
+  registry->RegisterBooleanPref(kWebViewRoundedCorners, true);
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
 

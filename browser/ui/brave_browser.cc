@@ -63,12 +63,11 @@ void BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(bool suppress) {
 }
 
 // static
-bool BraveBrowser::IsBraveWebViewRoundedCornersFeatureEnabled(
-    Browser* browser) {
-  // If we have prefs for toggling rounded corners in runtime, check that prefs
-  // here.
-  return base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners) &&
-         browser->is_type_normal();
+bool BraveBrowser::IsBraveWebViewRoundedCornersEnabled(Browser* browser) {
+  if (!browser->is_type_normal()) {
+    return false;
+  }
+  return browser->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners);
 }
 
 // static
@@ -78,7 +77,7 @@ bool BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
     return false;
   }
 
-  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+  if (browser->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners)) {
     return true;
   }
 
