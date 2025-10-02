@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index f82166865b112e384c7a33f84587cf050611fdc6..24708c1e9044e1c6038a609eedebdb8594743a9d 100644
+index 2c8808e48dda89113ff0afda0a98120a36e557c3..be5276e2febcab02f8dea5547b6945aa26fb07cd 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1509,6 +1509,7 @@ const FeatureEntry::FeatureVariation kMobilePromoOnDesktopVariations[] = {
+@@ -1531,6 +1531,7 @@ const FeatureEntry::FeatureVariation kTaiyakiChoiceScreenSurfaceVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const flags_ui::FeatureEntry kFeatureEntries[] = {

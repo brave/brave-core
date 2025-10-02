@@ -1,8 +1,8 @@
 diff --git a/ios/web_view/framework/BUILD.gn b/ios/web_view/framework/BUILD.gn
-index 98d2241e22b1c77866b42ca27c7562ae585f0a23..99edcdc7be26a063d1a12ba2084744736539db1e 100644
+index 513a47eb3586ed9af96b3cbd718551fa10138028..3742f6e7300821619ec4b5ae6ae5f38275dc7bec 100644
 --- a/ios/web_view/framework/BUILD.gn
 +++ b/ios/web_view/framework/BUILD.gn
-@@ -53,6 +53,7 @@ source_set("web_view_sources") {
+@@ -48,6 +48,7 @@ source_set("web_view_sources") {
    # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
    # enable the diagnostic by removing this line.
    configs += [ "//build/config/compiler:no_exit_time_destructors" ]

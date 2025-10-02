@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index 5359c9189fb47266b6ff7c9561b794d8db9b3a79..ba752300fcae80fe0df7d9fc648b84d661855ce5 100644
+index 4fbd1e03819a62da6d99bd6e074b537257c45747..24475c3f5acfe86ae5eb478498430a422256d83c 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
-@@ -716,6 +716,7 @@ bool ConvertedHitTest(views::View* src, views::View* dst, gfx::Point* point) {
+@@ -720,6 +720,7 @@ bool ConvertedHitTest(views::View* src, views::View* dst, gfx::Point* point) {
    DCHECK(src);
    DCHECK(dst);
    DCHECK(point);
@@ -10,7 +10,7 @@ index 5359c9189fb47266b6ff7c9561b794d8db9b3a79..ba752300fcae80fe0df7d9fc648b84d6
    views::View::ConvertPointToTarget(src, dst, point);
    return dst->HitTestPoint(*point);
  }
-@@ -2886,6 +2887,7 @@ void BrowserView::OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
+@@ -2896,6 +2897,7 @@ void BrowserView::OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
  #if !BUILDFLAG(IS_MAC)
    // MacOS does not need views window scrim. We use sheets to show window modals
    // (-[NSWindow beginSheet:]), which natively draw a scrim.
