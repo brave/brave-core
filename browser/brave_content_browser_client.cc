@@ -113,7 +113,6 @@
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
-#include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_browser_interface_binders.h"
@@ -160,7 +159,6 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/browser/request_otr/request_otr_service_factory.h"
@@ -188,6 +186,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/ai_chat/utils.h"
+#include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
+#include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 #endif
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
@@ -463,6 +463,7 @@ void MaybeBindSkusSdkImpl(
   skus::SkusServiceFactory::BindForContext(context, std::move(receiver));
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 void MaybeBindColorChangeHandler(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<color_change_listener::mojom::PageHandler> receiver) {
@@ -481,6 +482,7 @@ void MaybeBindColorChangeHandler(
           content::WebContents::FromRenderFrameHost(frame_host)),
       std::move(receiver));
 }
+#endif
 
 }  // namespace
 
@@ -846,9 +848,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     }
   }
 
-  map->Add<color_change_listener::mojom::PageHandler>(
-      base::BindRepeating(&MaybeBindColorChangeHandler));
-
   map->Add<skus::mojom::SkusService>(
       base::BindRepeating(&MaybeBindSkusSdkImpl));
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -883,6 +882,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RegisterWebUIControllerInterfaceBinder<
         email_aliases::mojom::EmailAliasesService, BraveSettingsUI>(map);
   }
+
+  map->Add<color_change_listener::mojom::PageHandler>(
+      base::BindRepeating(&MaybeBindColorChangeHandler));
 #endif
 
   auto* prefs =
