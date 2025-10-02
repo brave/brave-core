@@ -132,6 +132,8 @@ inline constexpr char kEnableWindowClosingConfirm[] =
 inline constexpr char kEnableClosingLastTab[] = "brave.enable_closing_last_tab";
 inline constexpr char kShowFullscreenReminder[] =
     "brave.show_fullscreen_reminder";
+inline constexpr char kWebViewRoundedCorners[] =
+    "brave.web_view_rounded_corners";
 #endif
 
 inline constexpr char kDefaultBrowserLaunchingCount[] =
