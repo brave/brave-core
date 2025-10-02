@@ -35,22 +35,21 @@ assert cert or cert_hash or signtool_args, \
 
 def execute_with_retry(cmd, max_attempts, sleep_sec=10):
     for attempt in range(max_attempts + 1):
-        while True:
-            try:
-                execute(cmd)
-            except Exception:
-                if attempt == max_attempts:
-                    print(
-                        f'Command `{cmd}\' failed. Maximum number of retries reached.',
-                        file=sys.stderr)
-                    raise
-                else:
-                    print(
-                        f'Command `{cmd}\' failed. Retrying in {sleep_sec}s.',
-                        file=sys.stderr)
-                    sleep(sleep_sec)
-                    continue
-            break
+        try:
+            execute(cmd)
+        except Exception:
+            if attempt == max_attempts:
+                print(
+                    f"Command `{cmd}' failed. Maximum number of retries reached.",
+                    file=sys.stderr)
+                raise
+            else:
+                print(
+                    f"Command `{cmd}' failed. Retrying in {sleep_sec}s.",
+                    file=sys.stderr)
+                sleep(sleep_sec)
+                continue
+        break
 
 def get_sign_cmd(file):
     # https://docs.microsoft.com/en-us/dotnet/framework/tools/signtool-exe
