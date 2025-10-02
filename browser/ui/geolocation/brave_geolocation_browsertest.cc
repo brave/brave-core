@@ -15,6 +15,7 @@
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/permissions/permission_request_manager.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -54,6 +55,11 @@ IN_PROC_BROWSER_TEST_F(GeolocationPermissionRequestBrowserTest,
   auto* tab_helper =
       BraveGeolocationPermissionTabHelper::FromWebContents(active_contents());
   EXPECT_FALSE(tab_helper->enable_high_accuracy());
+
+  // Auto-accept any permissions prompts
+  permissions::PermissionRequestManager::FromWebContents(active_contents())
+      ->set_auto_response_for_test(
+          permissions::PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
   const std::string get_current_position_js_with_high =
       "navigator.geolocation.getCurrentPosition(() => {}, () => {}, { "
