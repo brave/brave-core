@@ -38,12 +38,6 @@ BASE_FEATURE(kBraveOverrideDownloadDangerLevel,
              "brave-override-download-danger-level",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-// Adds rounded corners and a drop shadow to the main web content area and side
-// bar panels.
-BASE_FEATURE(kBraveWebViewRoundedCorners,
-             "brave-web-view-rounded-corners",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
 // Enable "day zero" experiment modifications, for potential user
 // retention improvements.
 BASE_FEATURE(kBraveDayZeroExperiment,
