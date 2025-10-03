@@ -135,15 +135,15 @@ void ContentAgentToolProvider::ExecuteActions(
 void ContentAgentToolProvider::CreateTools() {
   tools_.clear();
 
-  tools_.push_back(std::make_unique<ClickTool>(this, actor_service_));
-  tools_.push_back(std::make_unique<DragAndReleaseTool>(this, actor_service_));
-  tools_.push_back(std::make_unique<HistoryTool>(this, actor_service_));
-  tools_.push_back(std::make_unique<MoveMouseTool>(this, actor_service_));
-  tools_.push_back(std::make_unique<NavigationTool>(this, actor_service_));
-  tools_.push_back(std::make_unique<ScrollTool>(this, actor_service_));
-  tools_.push_back(std::make_unique<SelectTool>(this, actor_service_));
-  tools_.push_back(std::make_unique<TypeTool>(this, actor_service_));
-  tools_.push_back(std::make_unique<WaitTool>(this, actor_service_));
+  tools_.push_back(std::make_unique<ClickTool>(this));
+  tools_.push_back(std::make_unique<DragAndReleaseTool>(this));
+  tools_.push_back(std::make_unique<HistoryTool>(this));
+  tools_.push_back(std::make_unique<MoveMouseTool>(this));
+  tools_.push_back(std::make_unique<NavigationTool>(this));
+  tools_.push_back(std::make_unique<ScrollTool>(this));
+  tools_.push_back(std::make_unique<SelectTool>(this));
+  tools_.push_back(std::make_unique<TypeTool>(this));
+  tools_.push_back(std::make_unique<WaitTool>(this));
 }
 
 void ContentAgentToolProvider::OnActionsFinished(

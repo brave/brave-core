@@ -16,9 +16,8 @@
 
 namespace ai_chat {
 
-ScrollTool::ScrollTool(ContentAgentTaskProvider* task_provider,
-                       actor::ActorKeyedService* actor_service)
-    : actor_service_(actor_service), task_provider_(task_provider) {}
+ScrollTool::ScrollTool(ContentAgentTaskProvider* task_provider)
+    : task_provider_(task_provider) {}
 
 ScrollTool::~ScrollTool() = default;
 

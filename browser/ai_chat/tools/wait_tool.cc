@@ -15,9 +15,8 @@
 
 namespace ai_chat {
 
-WaitTool::WaitTool(ContentAgentTaskProvider* task_provider,
-                   actor::ActorKeyedService* actor_service)
-    : actor_service_(actor_service), task_provider_(task_provider) {}
+WaitTool::WaitTool(ContentAgentTaskProvider* task_provider)
+    : task_provider_(task_provider) {}
 
 WaitTool::~WaitTool() = default;
 

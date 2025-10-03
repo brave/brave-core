@@ -32,8 +32,7 @@ class TypeToolTest : public testing::Test {
  public:
   void SetUp() override {
     mock_task_provider_ = std::make_unique<MockContentAgentTaskProvider>();
-    type_tool_ = std::make_unique<TypeTool>(mock_task_provider_.get(),
-                                            nullptr);  // Actor service not used
+    type_tool_ = std::make_unique<TypeTool>(mock_task_provider_.get());
 
     test_tab_handle_ = tabs::TabHandle(123);
     test_task_id_ = actor::TaskId(456);
