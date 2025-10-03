@@ -9,5 +9,6 @@
       "enabled": false
     }
   ],
-  "ignorePaths": ["components/**"]
+  "ignorePaths": ["components/**"],
+  "dependencyDashboard": true
 }
