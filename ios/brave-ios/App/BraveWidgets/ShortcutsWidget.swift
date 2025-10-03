@@ -150,6 +150,8 @@ extension WidgetShortcut {
       return Strings.Widgets.braveNews
     case .braveLeo:
       return Strings.Widgets.braveLeo
+    case .askBrave:
+      return Strings.Widgets.askBrave
     @unknown default:
       assertionFailure()
       return ""
@@ -181,7 +183,7 @@ extension WidgetShortcut {
       return Image(braveSystemName: "leo.qr.code")
     case .braveNews:
       return Image(braveSystemName: "leo.product.brave-news")
-    case .braveLeo:
+    case .braveLeo, .askBrave:
       return Image(braveSystemName: "leo.product.brave-leo")
     @unknown default:
       assertionFailure()
