@@ -2885,7 +2885,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Open Website",
-    comment: "Button title to that opens a website."
+    comment: "Button title to open a website."
   )
   public static let viewOn = NSLocalizedString(
     "ViewOn",
