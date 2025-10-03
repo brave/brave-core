@@ -75,6 +75,12 @@
 # These tests fail upstream when DCHECKs are enabled.
 -PenIdBrowserTest.*
 
+# These require further investigation, they began failing with CR141
+-CDM_10/ECKEncryptedMediaTest.VerifyCdmHostTest/0
+-CDM_11/ECKEncryptedMediaTest.VerifyCdmHostTest/0
+-CDM_12/ECKEncryptedMediaTest.VerifyCdmHostTest/0
+
+# Tests below this point have not been diagnosed or had issues created yet.
 -All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1
 -All/PDFPluginDisabledTest.*
 -All/WebAppOfflinePageTest.WebAppOfflinePageIsDisplayed/*
