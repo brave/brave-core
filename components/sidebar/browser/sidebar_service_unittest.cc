@@ -18,7 +18,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -30,7 +30,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 using ::testing::Eq;
