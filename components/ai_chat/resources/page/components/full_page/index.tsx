@@ -136,7 +136,7 @@ export default function FullScreen() {
               kind='plain-faint'
               onClick={() => aiChatContext.toggleSidebar()}
             >
-              <Icon name= 'window-tabs-vertical-expanded' />
+              <Icon name='window-tabs-vertical-expanded' />
             </Button>
             {!isNavigationRendered && canStartNewConversation && (
               <>
