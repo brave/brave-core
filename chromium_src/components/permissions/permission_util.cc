@@ -11,14 +11,13 @@
 #define PermissionUtil PermissionUtil_ChromiumImpl
 
 // Since we don't do UMA just reuse an existing UMA type instead of adding one.
-#define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE         \
-  case RequestType::kWidevine:                       \
-  case RequestType::kBraveEthereum:                  \
-  case RequestType::kBraveSolana:                    \
-  case RequestType::kBraveCardano:                   \
-  case RequestType::kBraveGoogleSignInPermission:    \
-  case RequestType::kBraveLocalhostAccessPermission: \
-  case RequestType::kBraveOpenAIChat:                \
+#define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE      \
+  case RequestType::kWidevine:                    \
+  case RequestType::kBraveEthereum:               \
+  case RequestType::kBraveSolana:                 \
+  case RequestType::kBraveCardano:                \
+  case RequestType::kBraveGoogleSignInPermission: \
+  case RequestType::kBraveOpenAIChat:             \
     return RequestTypeForUma::PERMISSION_VR;
 
 // These requests may be batched together, so we must handle them explicitly as
@@ -53,8 +52,6 @@
     return ContentSettingsType::BRAVE_SOLANA;                    \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:                     \
     return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;            \
-  case PermissionType::BRAVE_LOCALHOST_ACCESS:                   \
-    return ContentSettingsType::BRAVE_LOCALHOST_ACCESS;          \
   case PermissionType::BRAVE_OPEN_AI_CHAT:                       \
     return ContentSettingsType::BRAVE_OPEN_AI_CHAT;              \
   case PermissionType::BRAVE_CARDANO:                            \
@@ -78,8 +75,6 @@ std::string PermissionUtil::GetPermissionString(
       return "BraveSolana";
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return "BraveGoogleSignInPermission";
-    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
-      return "BraveLocalhostAccessPermission";
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return "BraveOpenAIChatPermission";
     case ContentSettingsType::BRAVE_CARDANO:
@@ -102,10 +97,6 @@ bool PermissionUtil::GetPermissionType(ContentSettingsType type,
     *out = PermissionType::BRAVE_GOOGLE_SIGN_IN;
     return true;
   }
-  if (type == ContentSettingsType::BRAVE_LOCALHOST_ACCESS) {
-    *out = PermissionType::BRAVE_LOCALHOST_ACCESS;
-    return true;
-  }
   if (type == ContentSettingsType::BRAVE_OPEN_AI_CHAT) {
     *out = PermissionType::BRAVE_OPEN_AI_CHAT;
     return true;
@@ -121,7 +112,6 @@ bool PermissionUtil::IsPermission(ContentSettingsType type) {
     case ContentSettingsType::BRAVE_SOLANA:
     case ContentSettingsType::BRAVE_CARDANO:
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
-    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return true;
     default:
@@ -154,8 +144,6 @@ PermissionType PermissionUtil::ContentSettingsTypeToPermissionType(
       return PermissionType::BRAVE_SOLANA;
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return PermissionType::BRAVE_GOOGLE_SIGN_IN;
-    case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
-      return PermissionType::BRAVE_LOCALHOST_ACCESS;
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
       return PermissionType::BRAVE_OPEN_AI_CHAT;
     case ContentSettingsType::BRAVE_CARDANO:

@@ -26,8 +26,6 @@
     return "BraveSpeedreaders";                         \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
     return "BraveGoogleSignInPermission";               \
-  case PermissionType::BRAVE_LOCALHOST_ACCESS:          \
-    return "BraveLocalhostAccessPermission";            \
   case PermissionType::BRAVE_OPEN_AI_CHAT:              \
     return "BraveOpenAIChatPermission";                 \
   case PermissionType::BRAVE_ETHEREUM:                  \
@@ -52,7 +50,6 @@
   case PermissionType::BRAVE_COOKIES:                           \
   case PermissionType::BRAVE_SPEEDREADER:                       \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:                    \
-  case PermissionType::BRAVE_LOCALHOST_ACCESS:                  \
   case PermissionType::BRAVE_OPEN_AI_CHAT:                      \
     return std::nullopt;                                        \
   case PermissionType::BRAVE_CARDANO:                           \
@@ -81,8 +78,6 @@
     return PermissionType::BRAVE_SPEEDREADER;                               \
   case PermissionName::BRAVE_GOOGLE_SIGN_IN:                                \
     return PermissionType::BRAVE_GOOGLE_SIGN_IN;                            \
-  case PermissionName::BRAVE_LOCALHOST_ACCESS:                              \
-    return PermissionType::BRAVE_LOCALHOST_ACCESS;                          \
   case PermissionName::BRAVE_OPEN_AI_CHAT:                                  \
     return PermissionType::BRAVE_OPEN_AI_CHAT;                              \
   case PermissionName::BRAVE_CARDANO:                                       \

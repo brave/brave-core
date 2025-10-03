@@ -44,8 +44,6 @@ PermissionManagerFactory::BuildServiceInstanceForBrowserContext(
   permission_contexts[ContentSettingsType::BRAVE_GOOGLE_SIGN_IN] =
       std::make_unique<permissions::BraveGoogleSignInPermissionContext>(
           profile);
-  permission_contexts[ContentSettingsType::BRAVE_LOCALHOST_ACCESS] =
-      std::make_unique<permissions::BraveLocalhostPermissionContext>(profile);
   permission_contexts[ContentSettingsType::BRAVE_OPEN_AI_CHAT] =
       std::make_unique<permissions::BraveOpenAIChatPermissionContext>(profile);
 
