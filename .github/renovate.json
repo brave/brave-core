@@ -9,5 +9,5 @@
       "enabled": false
     }
   ],
-  "ignorePaths": ["components/**"]
+  "ignorePaths": ["components/**", "tools/crates/vendor/**"]
 }
