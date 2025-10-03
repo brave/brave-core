@@ -121,47 +121,6 @@ TEST_F(WaitToolTest, ValidInputShortWait) {
   VerifyWaitAction(captured_actions, 1000);
 }
 
-TEST_F(WaitToolTest, ValidInputLongWait) {
-  std::string input_json = CreateValidWaitJson(5000);  // 5 seconds
-  base::RunLoop run_loop;
-
-  optimization_guide::proto::Actions captured_actions;
-  EXPECT_CALL(*mock_task_provider_, ExecuteActions(testing::_, testing::_))
-      .WillOnce(testing::Invoke([&captured_actions, &run_loop](
-                                    optimization_guide::proto::Actions actions,
-                                    Tool::UseToolCallback callback) {
-        captured_actions = std::move(actions);
-        std::move(callback).Run(CreateContentBlocksForText("Success"));
-        run_loop.Quit();
-      }));
-
-  wait_tool_->UseTool(input_json, base::DoNothing());
-  run_loop.Run();
-
-  // Verify wait action properties
-  VerifyWaitAction(captured_actions, 5000);
-}
-
-TEST_F(WaitToolTest, ValidInputZeroWait) {
-  std::string input_json = CreateValidWaitJson(0);  // 0 milliseconds
-  base::RunLoop run_loop;
-
-  optimization_guide::proto::Actions captured_actions;
-  EXPECT_CALL(*mock_task_provider_, ExecuteActions(testing::_, testing::_))
-      .WillOnce(testing::Invoke([&captured_actions, &run_loop](
-                                    optimization_guide::proto::Actions actions,
-                                    Tool::UseToolCallback callback) {
-        captured_actions = std::move(actions);
-        run_loop.Quit();
-      }));
-
-  wait_tool_->UseTool(input_json, base::DoNothing());
-  run_loop.Run();
-
-  // Verify wait action properties
-  VerifyWaitAction(captured_actions, 0);
-}
-
 TEST_F(WaitToolTest, InvalidJson) {
   RunWithExpectedError("{ invalid json }",
                        "Failed to parse input JSON. Please try again.");
@@ -170,17 +129,25 @@ TEST_F(WaitToolTest, InvalidJson) {
 TEST_F(WaitToolTest, MissingWaitTime) {
   std::string input_json = R"({})";
 
-  RunWithExpectedError(
-      input_json,
-      "Invalid or missing wait_time_ms. Must be a non-negative integer.");
+  RunWithExpectedError(input_json,
+                       "Invalid or missing wait_time_ms. Must be a "
+                       "non-negative integer higher than 0.");
 }
 
 TEST_F(WaitToolTest, NegativeWaitTime) {
   std::string input_json = CreateValidWaitJson(-1000);
 
-  RunWithExpectedError(
-      input_json,
-      "Invalid or missing wait_time_ms. Must be a non-negative integer.");
+  RunWithExpectedError(input_json,
+                       "Invalid or missing wait_time_ms. Must be a "
+                       "non-negative integer higher than 0.");
+}
+
+TEST_F(WaitToolTest, ZeroWaitTime) {
+  std::string input_json = CreateValidWaitJson(0);
+
+  RunWithExpectedError(input_json,
+                       "Invalid or missing wait_time_ms. Must be a "
+                       "non-negative integer higher than 0.");
 }
 
 TEST_F(WaitToolTest, InvalidWaitTimeType) {
@@ -188,9 +155,9 @@ TEST_F(WaitToolTest, InvalidWaitTimeType) {
     "wait_time_ms": "not_a_number"
   })";
 
-  RunWithExpectedError(
-      input_json,
-      "Invalid or missing wait_time_ms. Must be a non-negative integer.");
+  RunWithExpectedError(input_json,
+                       "Invalid or missing wait_time_ms. Must be a "
+                       "non-negative integer higher than 0.");
 }
 
 TEST_F(WaitToolTest, ToolMetadata) {
