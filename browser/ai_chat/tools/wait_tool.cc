@@ -52,9 +52,10 @@ void WaitTool::UseTool(const std::string& input_json,
 
   // Validate wait_time_ms parameter
   std::optional<int> wait_time_ms = input->FindInt("wait_time_ms");
-  if (!wait_time_ms.has_value() || wait_time_ms.value() < 0) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Invalid or missing wait_time_ms. Must be a non-negative integer."));
+  if (!wait_time_ms.has_value() || wait_time_ms.value() <= 0) {
+    std::move(callback).Run(
+        CreateContentBlocksForText("Invalid or missing wait_time_ms. Must be a "
+                                   "non-negative integer higher than 0."));
     return;
   }
 
