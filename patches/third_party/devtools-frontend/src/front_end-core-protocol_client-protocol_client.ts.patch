@@ -1,5 +1,5 @@
 diff --git a/front_end/core/protocol_client/protocol_client.ts b/front_end/core/protocol_client/protocol_client.ts
-index ccc94969a90d865058fe336131c27c357d86be70..9f653969a379df9761b279c3a249cdc9a82430ee 100644
+index df6d90848c5a888ce9208908221b4ee31b4c790b..84770e2bb3c7fc39084caaf5f0c4657f3025c8db 100644
 --- a/front_end/core/protocol_client/protocol_client.ts
 +++ b/front_end/core/protocol_client/protocol_client.ts
 @@ -19,3 +19,4 @@ self.Protocol = self.Protocol || {};
