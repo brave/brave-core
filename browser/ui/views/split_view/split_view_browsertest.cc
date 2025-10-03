@@ -163,7 +163,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
       gfx::Size(),
       browser_view->top_container_separator_for_testing()->GetPreferredSize());
   EXPECT_TRUE(split_view_separator()->GetVisible());
-  EXPECT_EQ(4, split_view_separator()->GetPreferredSize().width());
+  EXPECT_EQ(BraveContentsViewUtil::kMarginThickness,
+            split_view_separator()->GetPreferredSize().width());
 
   // Check corner radius.
   auto* multi_contents_view = brave_multi_contents_view();
