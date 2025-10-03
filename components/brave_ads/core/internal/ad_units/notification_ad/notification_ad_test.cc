@@ -88,7 +88,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
+      .WillOnce([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -107,7 +107,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
         EXPECT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
         run_loop.Quit();
-      }));
+      });
 
   ServeAd();
   run_loop.Run();
@@ -122,7 +122,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
+      .WillOnce([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -144,7 +144,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
         EXPECT_FALSE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
         run_loop.Quit();
-      }));
+      });
 
   ServeAd();
   run_loop.Run();
@@ -159,7 +159,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
+      .WillOnce([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -178,7 +178,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
         EXPECT_FALSE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
         run_loop.Quit();
-      }));
+      });
 
   ServeAd();
   run_loop.Run();
@@ -193,7 +193,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
-      .WillOnce(::testing::Invoke([&](const NotificationAdInfo& ad) {
+      .WillOnce([&](const NotificationAdInfo& ad) {
         ASSERT_TRUE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
@@ -212,7 +212,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
         EXPECT_FALSE(
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
         run_loop.Quit();
-      }));
+      });
 
   ServeAd();
   run_loop.Run();

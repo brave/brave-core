@@ -220,12 +220,11 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPISuccess) {
   auto youtube_content = CreateYoutubePageContent(api_key, video_id);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content.Clone());
-          }));
+      .WillOnce([&youtube_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content.Clone());
+      });
 
   // Set up network responses
   GURL inner_tube_url("https://www.youtube.com/youtubei/v1/player?key=" +
@@ -315,12 +314,11 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPINetworkError) {
   auto youtube_content = CreateYoutubePageContent(api_key, video_id);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content.Clone());
-          }));
+      .WillOnce([&youtube_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content.Clone());
+      });
 
   // Track the requests that are made
   std::vector<network::ResourceRequest> requests_made;
@@ -362,12 +360,11 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPIInvalidJsonResponse) {
   auto youtube_content = CreateYoutubePageContent(api_key, video_id);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content.Clone());
-          }));
+      .WillOnce([&youtube_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content.Clone());
+      });
 
   // Track the requests that are made
   std::vector<network::ResourceRequest> requests_made;
@@ -409,12 +406,11 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPINoCaptionTracks) {
   auto youtube_content = CreateYoutubePageContent(api_key, video_id);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content.Clone());
-          }));
+      .WillOnce([&youtube_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content.Clone());
+      });
 
   // Track the requests that are made
   std::vector<network::ResourceRequest> requests_made;
@@ -457,12 +453,11 @@ TEST_F(PageContentFetcherTest, InvalidationTokenCaching) {
   auto youtube_content = CreateYoutubePageContent(api_key, video_id);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content.Clone());
-          }));
+      .WillOnce([&youtube_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content.Clone());
+      });
 
   // Track the requests that are made
   std::vector<network::ResourceRequest> requests_made;
@@ -499,12 +494,11 @@ TEST_F(PageContentFetcherTest, InvalidationTokenCaching) {
   auto youtube_content2 = CreateYoutubePageContent(api_key, video_id);
 
   EXPECT_CALL(*mock_extractor2, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content2](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content2.Clone());
-          }));
+      .WillOnce([&youtube_content2](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content2.Clone());
+      });
 
   base::test::TestFuture<std::string, bool, std::string> future2;
   fetcher_->FetchPageContent(invalidation_token1, future2.GetCallback());
@@ -530,12 +524,11 @@ TEST_F(PageContentFetcherTest, ContentUrlExtraction) {
   auto content_url_page_content = CreateContentUrlPageContent(content_url);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&content_url_page_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(content_url_page_content.Clone());
-          }));
+      .WillOnce([&content_url_page_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(content_url_page_content.Clone());
+      });
 
   // Track the requests that are made
   std::vector<network::ResourceRequest> requests_made;
@@ -571,10 +564,10 @@ TEST_F(PageContentFetcherTest, NullPageContentResponse) {
   MockPageContentExtractor* mock_extractor = SetUpMockExtractor();
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(Invoke(
+      .WillOnce(
           [](mojom::PageContentExtractor::ExtractPageContentCallback callback) {
             std::move(callback).Run(nullptr);
-          }));
+          });
 
   base::test::TestFuture<std::string, bool, std::string> future;
   fetcher_->FetchPageContent("", future.GetCallback());
@@ -599,12 +592,11 @@ TEST_F(PageContentFetcherTest, TextContentExtraction) {
   auto text_page_content = CreateTextPageContent(text_content);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&text_page_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(text_page_content.Clone());
-          }));
+      .WillOnce([&text_page_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(text_page_content.Clone());
+      });
 
   base::test::TestFuture<std::string, bool, std::string> future;
   fetcher_->FetchPageContent("", future.GetCallback());
@@ -634,12 +626,11 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPIKeyUrlEncoding) {
       CreateYoutubePageContent(api_key_with_special_chars, video_id);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content.Clone());
-          }));
+      .WillOnce([&youtube_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content.Clone());
+      });
 
   // Track the requests that are made
   std::vector<network::ResourceRequest> requests_made;

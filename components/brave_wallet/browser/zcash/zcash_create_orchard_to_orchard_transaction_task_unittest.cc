@@ -155,27 +155,26 @@ class ZCashCreateOrchardToOrchardTransactionTaskTest : public testing::Test {
 
 TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, TransactionCreated) {
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
-                                const OrchardAddrRawPart& addr) {
-            OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
-            {
-              OrchardNote note;
-              note.block_id = 1u;
-              note.amount = 70000u;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         const OrchardAddrRawPart& addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        {
+          OrchardNote note;
+          note.block_id = 1u;
+          note.amount = 70000u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
 
-            {
-              OrchardNote note;
-              note.block_id = 2u;
-              note.amount = 80000u;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
-            spendable_notes_bundle.anchor_block_id = 10u;
+        {
+          OrchardNote note;
+          note.block_id = 2u;
+          note.amount = 80000u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
+        spendable_notes_bundle.anchor_block_id = 10u;
 
-            return spendable_notes_bundle;
-          }));
+        return spendable_notes_bundle;
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -224,27 +223,26 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, TransactionCreated) {
 TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
        TransactionCreated_u64Check) {
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
-                                const OrchardAddrRawPart& addr) {
-            OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
-            {
-              OrchardNote note;
-              note.block_id = 1u;
-              note.amount = 70000000000u;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         const OrchardAddrRawPart& addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        {
+          OrchardNote note;
+          note.block_id = 1u;
+          note.amount = 70000000000u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
 
-            {
-              OrchardNote note;
-              note.block_id = 2u;
-              note.amount = 80000000000u;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
-            spendable_notes_bundle.anchor_block_id = 10u;
+        {
+          OrchardNote note;
+          note.block_id = 2u;
+          note.amount = 80000000000u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
+        spendable_notes_bundle.anchor_block_id = 10u;
 
-            return spendable_notes_bundle;
-          }));
+        return spendable_notes_bundle;
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -296,27 +294,26 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
 TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
        TransactionCreated_OverflowCheck_FullAmount) {
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
-                                const OrchardAddrRawPart& addr) {
-            OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
-            {
-              OrchardNote note;
-              note.block_id = 1u;
-              note.amount = 0xFFFFFFFFFFFFFFFFu;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         const OrchardAddrRawPart& addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        {
+          OrchardNote note;
+          note.block_id = 1u;
+          note.amount = 0xFFFFFFFFFFFFFFFFu;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
 
-            {
-              OrchardNote note;
-              note.block_id = 2u;
-              note.amount = 0x2222222222222222u;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
-            spendable_notes_bundle.anchor_block_id = 10u;
+        {
+          OrchardNote note;
+          note.block_id = 2u;
+          note.amount = 0x2222222222222222u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
+        spendable_notes_bundle.anchor_block_id = 10u;
 
-            return spendable_notes_bundle;
-          }));
+        return spendable_notes_bundle;
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -348,27 +345,26 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
 TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
        TransactionCreated_OverflowCheck_CustomAmount) {
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
-                                const OrchardAddrRawPart& addr) {
-            OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
-            {
-              OrchardNote note;
-              note.block_id = 1u;
-              note.amount = 0xFFFFFFFFFFFFFFFFu;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         const OrchardAddrRawPart& addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        {
+          OrchardNote note;
+          note.block_id = 1u;
+          note.amount = 0xFFFFFFFFFFFFFFFFu;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
 
-            {
-              OrchardNote note;
-              note.block_id = 2u;
-              note.amount = 0x2222222222222222u;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
-            spendable_notes_bundle.anchor_block_id = 10u;
+        {
+          OrchardNote note;
+          note.block_id = 2u;
+          note.amount = 0x2222222222222222u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
+        spendable_notes_bundle.anchor_block_id = 10u;
 
-            return spendable_notes_bundle;
-          }));
+        return spendable_notes_bundle;
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -400,27 +396,26 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
 TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
        TransactionCreated_MaxAmount) {
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
-                                const OrchardAddrRawPart& addr) {
-            OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
-            {
-              OrchardNote note;
-              note.block_id = 1u;
-              note.amount = 70000u;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         const OrchardAddrRawPart& addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        {
+          OrchardNote note;
+          note.block_id = 1u;
+          note.amount = 70000u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
 
-            {
-              OrchardNote note;
-              note.block_id = 2u;
-              note.amount = 80000u;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
-            spendable_notes_bundle.anchor_block_id = 10u;
+        {
+          OrchardNote note;
+          note.block_id = 2u;
+          note.amount = 80000u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
+        spendable_notes_bundle.anchor_block_id = 10u;
 
-            return spendable_notes_bundle;
-          }));
+        return spendable_notes_bundle;
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -465,27 +460,26 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
 TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
        TransactionCreated_MaxAmount_OverflowCheck) {
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
-                                const OrchardAddrRawPart& addr) {
-            OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
-            {
-              OrchardNote note;
-              note.block_id = 1u;
-              note.amount = 70000000000u;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         const OrchardAddrRawPart& addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        {
+          OrchardNote note;
+          note.block_id = 1u;
+          note.amount = 70000000000u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
 
-            {
-              OrchardNote note;
-              note.block_id = 2u;
-              note.amount = 80000000000u;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
-            spendable_notes_bundle.anchor_block_id = 10u;
+        {
+          OrchardNote note;
+          note.block_id = 2u;
+          note.amount = 80000000000u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
+        spendable_notes_bundle.anchor_block_id = 10u;
 
-            return spendable_notes_bundle;
-          }));
+        return spendable_notes_bundle;
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -532,26 +526,25 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
 
 TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, NotEnoughFunds) {
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
-                                const OrchardAddrRawPart& internal_address) {
-            OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
-            {
-              OrchardNote note;
-              note.block_id = 1u;
-              note.amount = 70000u;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         const OrchardAddrRawPart& internal_address) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        {
+          OrchardNote note;
+          note.block_id = 1u;
+          note.amount = 70000u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
 
-            {
-              OrchardNote note;
-              note.block_id = 2u;
-              note.amount = 80000u;
-              spendable_notes_bundle.spendable_notes.push_back(std::move(note));
-            }
+        {
+          OrchardNote note;
+          note.block_id = 2u;
+          note.amount = 80000u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
 
-            return spendable_notes_bundle;
-          }));
+        return spendable_notes_bundle;
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -583,11 +576,11 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, NotEnoughFunds) {
 TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, Error) {
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
       .WillByDefault(
-          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
-                                const OrchardAddrRawPart& internal_addr) {
+          [&](const mojom::AccountIdPtr& account_id,
+              const OrchardAddrRawPart& internal_addr) {
             return base::unexpected(OrchardStorage::Error{
                 OrchardStorage::ErrorCode::kConsistencyError, ""});
-          }));
+          });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 

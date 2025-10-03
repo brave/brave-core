@@ -101,12 +101,12 @@ class ZCashAutoSyncManagerTest : public testing::Test {
 TEST_F(ZCashAutoSyncManagerTest, InitialSync) {
   EXPECT_CALL(mock_zcash_wallet_service(), StartShieldSync(_, _, _));
   ON_CALL(mock_zcash_wallet_service(), GetChainTipStatus(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [](mojom::AccountIdPtr account_id, const std::string& chain_id,
              MockZCashWalletService::GetChainTipStatusCallback callback) {
             std::move(callback).Run(mojom::ZCashChainTipStatus::New(0, 1000),
                                     std::nullopt);
-          }));
+          });
 
   EXPECT_FALSE(zcash_auto_sync_manager().IsStarted());
   zcash_auto_sync_manager().Start();
@@ -117,12 +117,12 @@ TEST_F(ZCashAutoSyncManagerTest, InitialSync) {
 TEST_F(ZCashAutoSyncManagerTest, TimerHit) {
   EXPECT_CALL(mock_zcash_wallet_service(), StartShieldSync(_, _, _)).Times(2);
   ON_CALL(mock_zcash_wallet_service(), GetChainTipStatus(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [](mojom::AccountIdPtr account_id, const std::string& chain_id,
              MockZCashWalletService::GetChainTipStatusCallback callback) {
             std::move(callback).Run(mojom::ZCashChainTipStatus::New(0, 1000),
                                     std::nullopt);
-          }));
+          });
 
   EXPECT_FALSE(zcash_auto_sync_manager().IsStarted());
   zcash_auto_sync_manager().Start();

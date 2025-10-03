@@ -247,24 +247,24 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
+          [](const std::string& chain_id,
+             ZCashRpc::GetLatestBlockCallback callback) {
             std::move(callback).Run(zcash::mojom::BlockID::New(
                 kNu5BlockUpdate + 500u, std::vector<uint8_t>({})));
-          }));
+          });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
              ZCashRpc::GetTreeStateCallback callback) {
             // Valid tree state
             auto tree_state = zcash::mojom::TreeState::New(
                 chain_id, block->height, "aabb", 0, "", "");
             std::move(callback).Run(std::move(tree_state));
-          }));
+          });
 
   ON_CALL(zcash_rpc(), GetCompactBlocks(_, _, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [](const std::string& chain_id, uint32_t from, uint32_t to,
              ZCashRpc::GetCompactBlocksCallback callback) {
             std::vector<zcash::mojom::CompactBlockPtr> blocks;
@@ -279,7 +279,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
                   std::move(chain_metadata)));
             }
             std::move(callback).Run(std::move(blocks));
-          }));
+          });
 
   {
     EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())));
@@ -298,11 +298,11 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
+          [](const std::string& chain_id,
+             ZCashRpc::GetLatestBlockCallback callback) {
             std::move(callback).Run(zcash::mojom::BlockID::New(
                 kNu5BlockUpdate + 1000u, std::vector<uint8_t>({})));
-          }));
+          });
 
   sync_service()->SetOrchardBlockScannerProxyForTesting(
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
@@ -368,15 +368,15 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
   // Reorg case, chain tip after the latest scanned block.
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
+          [](const std::string& chain_id,
+             ZCashRpc::GetLatestBlockCallback callback) {
             // New chain tip is after the previous one.
             std::move(callback).Run(zcash::mojom::BlockID::New(
                 kNu5BlockUpdate + 1100u, std::vector<uint8_t>({})));
-          }));
+          });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
              ZCashRpc::GetTreeStateCallback callback) {
             // Hash of the latest scanned block
@@ -384,7 +384,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             auto tree_state = zcash::mojom::TreeState::New(
                 chain_id, block->height, "aabbccdd", 0, "", "");
             std::move(callback).Run(std::move(tree_state));
-          }));
+          });
 
   sync_service()->SetOrchardBlockScannerProxyForTesting(
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
@@ -434,22 +434,22 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
+          [](const std::string& chain_id,
+             ZCashRpc::GetLatestBlockCallback callback) {
             // New chain tip below previous one.
             std::move(callback).Run(zcash::mojom::BlockID::New(
                 kNu5BlockUpdate + 1030u, std::vector<uint8_t>({})));
-          }));
+          });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
              ZCashRpc::GetTreeStateCallback callback) {
             // Hash of the latest scanned block differs
             auto tree_state = zcash::mojom::TreeState::New(
                 chain_id, block->height, "aabbccddee", 0, "", "");
             std::move(callback).Run(std::move(tree_state));
-          }));
+          });
 
   sync_service()->SetOrchardBlockScannerProxyForTesting(
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
