@@ -13,9 +13,6 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -24,7 +21,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,27 +43,16 @@ import org.chromium.chrome.browser.init.BrowserParts;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.init.EmptyBrowserParts;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.searchwidget.SearchActivity;
 import org.chromium.chrome.browser.searchwidget.SearchActivityClientImpl;
 import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
-import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.suggestions.tile.Tile;
-import org.chromium.chrome.browser.ui.favicon.FaviconUtils;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityClient;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityExtras.IntentOrigin;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityExtras.SearchType;
-import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager;
-import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager.SearchActivityPreferences;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
-import org.chromium.components.browser_ui.widget.RoundedIconGenerator;
-import org.chromium.components.favicon.IconType;
-import org.chromium.components.favicon.LargeIconBridge;
-import org.chromium.components.favicon.LargeIconBridge.LargeIconCallback;
-import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.webapps.ShortcutSource;
-import org.chromium.ui.base.ViewUtils;
 import org.chromium.url.GURL;
 
 import java.util.ArrayList;
@@ -75,59 +60,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Consumer;
 
 public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvider {
     private static final String TAG = "WidgetProvider";
 
-    static class QuickActionSearchAndBookmarkWidgetProviderDelegate
-            implements Consumer<SearchActivityPreferences> {
-        public QuickActionSearchAndBookmarkWidgetProviderDelegate() {}
-
-        @Override
-        public void accept(SearchActivityPreferences prefs) {
-            if (prefs == null) prefs = SearchActivityPreferencesManager.getCurrent();
-            updateSearchEngine(prefs.searchEngineName);
-        }
-    }
-
     public static String FROM_SETTINGS = "FROM_SETTINGS";
 
-    private static final int TOTAL_TILES = 12;
-    private static final int TILES_PER_ROW = 4;
     // Tiles row is ~72dp + search bar height(48dp)(depends on the text size
     // settings on the device)
-    private static final int MIN_VISIBLE_HEIGHT_ROW_1 = 110;
-    // Two tiles rows height is ~144dp + search bar height
-    private static final int MIN_VISIBLE_HEIGHT_ROW_2 = 177;
-    // The rest could be visible after that point
-    private static final int MIN_VISIBLE_HEIGHT_ROW_3 = 210;
-    private static final int DESIRED_ICON_SIZE = 44;
-    private static final int DESIRED_ICON_RADIUS = 16;
+    private static final int MIN_VISIBLE_HEIGHT_ROW_1 = 130;
 
-    private static final int[][][] tileViewsIdArray =
-            new int[][][] {
-                {
-                    {R.id.ivRow1Bookmark1Icon, R.id.tvRow1Bookmark1Name, R.id.layoutRow1Bookmark1},
-                    {R.id.ivRow1Bookmark2Icon, R.id.tvRow1Bookmark2Name, R.id.layoutRow1Bookmark2},
-                    {R.id.ivRow1Bookmark3Icon, R.id.tvRow1Bookmark3Name, R.id.layoutRow1Bookmark3},
-                    {R.id.ivRow1Bookmark4Icon, R.id.tvRow1Bookmark4Name, R.id.layoutRow1Bookmark4},
-                },
-                {
-                    {R.id.ivRow2Bookmark1Icon, R.id.tvRow2Bookmark1Name, R.id.layoutRow2Bookmark1},
-                    {R.id.ivRow2Bookmark2Icon, R.id.tvRow2Bookmark2Name, R.id.layoutRow2Bookmark2},
-                    {R.id.ivRow2Bookmark3Icon, R.id.tvRow2Bookmark3Name, R.id.layoutRow2Bookmark3},
-                    {R.id.ivRow2Bookmark4Icon, R.id.tvRow2Bookmark4Name, R.id.layoutRow2Bookmark4},
-                },
-                {
-                    {R.id.ivRow3Bookmark1Icon, R.id.tvRow3Bookmark1Name, R.id.layoutRow3Bookmark1},
-                    {R.id.ivRow3Bookmark2Icon, R.id.tvRow3Bookmark2Name, R.id.layoutRow3Bookmark2},
-                    {R.id.ivRow3Bookmark3Icon, R.id.tvRow3Bookmark3Name, R.id.layoutRow3Bookmark3},
-                    {R.id.ivRow3Bookmark4Icon, R.id.tvRow3Bookmark4Name, R.id.layoutRow3Bookmark4},
-                },
-            };
-
-    private static QuickActionSearchAndBookmarkWidgetProviderDelegate sDelegate;
     private static final Object LOCK = new Object();
     private static Set<Runnable> sUpdateAppWidgetsRunnables;
 
@@ -162,17 +104,6 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         } catch (ProcessInitException e) {
             Log.e(TAG, "Background Launch Error", e);
         }
-    }
-
-    public static void initializeDelegate() {
-        SearchActivityPreferencesManager.addObserver(getDelegate());
-    }
-
-    private static QuickActionSearchAndBookmarkWidgetProviderDelegate getDelegate() {
-        if (sDelegate == null) {
-            sDelegate = new QuickActionSearchAndBookmarkWidgetProviderDelegate();
-        }
-        return sDelegate;
     }
 
     @Override
@@ -223,26 +154,12 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         };
     }
 
-    public static void updateTileIcon(Tile tile) {
-        int index = indexOf(tile);
-        if (index != -1) {
-            updateTileIcon(
-                    tileViewsIdArray[index / TILES_PER_ROW][index % TILES_PER_ROW][0],
-                    getBitmap(tile.getIcon()));
-        }
-    }
-
-    public static void updateSearchEngine(String searchEngine) {
-        if (searchEngine == null) return;
+    public static void notifyWidgetDataChanged() {
         Context context = ContextUtils.getApplicationContext();
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = getAppWidgetIds(context, appWidgetManager);
         for (int appWidgetId : appWidgetIds) {
-            RemoteViews views = getBaseRemoteViews();
-            String searchWithDefaultSearchEngine =
-                    context.getString(R.string.search_with_search_engine, searchEngine);
-            views.setTextViewText(R.id.tvSearchWithBrave, searchWithDefaultSearchEngine);
-            appWidgetManager.partiallyUpdateAppWidget(appWidgetId, views);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.bookmarksGridView);
         }
     }
 
@@ -250,25 +167,6 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         Context context = ContextUtils.getApplicationContext();
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         updateAppWidgets(getAppWidgetIds(context, appWidgetManager));
-    }
-
-    private static int indexOf(Tile tile) {
-        List<WidgetTile> widgetTileList = DataManager.readWidgetTiles();
-        for (int i = 0; i < widgetTileList.size(); i++) {
-            if (widgetTileList.get(i).getUrl().equals(tile.getUrl().getSpec())) return i;
-        }
-        return -1;
-    }
-
-    private static void updateTileIcon(int imageView, Bitmap icon) {
-        Context context = ContextUtils.getApplicationContext();
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int[] appWidgetIds = getAppWidgetIds(context, appWidgetManager);
-        for (int appWidgetId : appWidgetIds) {
-            RemoteViews views = getBaseRemoteViews();
-            views.setImageViewBitmap(imageView, icon);
-            appWidgetManager.partiallyUpdateAppWidget(appWidgetId, views);
-        }
     }
 
     private static RemoteViews getBaseRemoteViews() {
@@ -285,118 +183,77 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         Context context = ContextUtils.getApplicationContext();
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         List<WidgetTile> widgetTileList = DataManager.readWidgetTiles();
+
         for (int appWidgetId : appWidgetIds) {
             RemoteViews views = getBaseRemoteViews();
             Bundle options = appWidgetManager.getAppWidgetOptions(appWidgetId);
             int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-            setDefaultSearchEngineString(views);
-            // Request code should be unique. By using distinct request codes,
-            // we allow the system to differentiate between the intents,
-            // ensuring that each button triggers its respective action.
-            int requestCode = -1;
-            requestCode = setSearchBarPendingIntent(context, views, requestCode);
-            setTopTiles(context, views, widgetTileList, requestCode);
-            setRowsVisibility(views, widgetTileList.size(), minHeight);
-            setDynamicLayout(views, widgetTileList.size(), minHeight);
+            int maxHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+            setSearchBarPendingIntent(context, views);
+
+            // Determine if we should show tiles
+            // Use maxHeight in portrait, minHeight in landscape
+            boolean isPortrait = !ConfigurationUtils.isLandscape(context);
+            int currentHeight = isPortrait ? maxHeight : minHeight;
+            boolean shouldShowTiles =
+                    widgetTileList.size() > 0 && currentHeight >= MIN_VISIBLE_HEIGHT_ROW_1;
+            if (shouldShowTiles) {
+                // Setup GridView and show it
+                setupGridView(context, views, appWidgetId);
+                views.setViewVisibility(R.id.bookmarksGridView, View.VISIBLE);
+            } else {
+                // Hide GridView when not needed
+                views.setViewVisibility(R.id.bookmarksGridView, View.GONE);
+            }
+
+            setDynamicLayout(views, widgetTileList.size(), currentHeight);
+            // Update widget first to register RemoteViews with AppWidgetManager
             appWidgetManager.updateAppWidget(appWidgetId, views);
+
+            // Notify GridView about data changes AFTER the widget has been updated
+            if (shouldShowTiles) {
+                appWidgetManager.notifyAppWidgetViewDataChanged(
+                        appWidgetId, R.id.bookmarksGridView);
+            }
         }
     }
 
-    private static void setDefaultSearchEngineString(RemoteViews views) {
-        final Profile profile = ProfileManager.getLastUsedRegularProfile();
-        TemplateUrl templateUrl =
-                BraveSearchEngineUtils.getTemplateUrlByShortName(
-                        profile, BraveSearchEngineUtils.getDSEShortName(profile, false));
-        if (templateUrl != null) {
-            String searchWithDefaultSearchEngine =
-                    ContextUtils.getApplicationContext()
-                            .getString(
-                                    R.string.search_with_search_engine, templateUrl.getShortName());
-            views.setTextViewText(R.id.tvSearchWithBrave, searchWithDefaultSearchEngine);
-        }
+    private static void setupGridView(Context context, RemoteViews views, int appWidgetId) {
+        // Set up the intent for the GridView
+        Intent intent = new Intent(context, BookmarkWidgetService.class);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+
+        views.setRemoteAdapter(R.id.bookmarksGridView, intent);
+        views.setEmptyView(R.id.bookmarksGridView, android.R.id.empty);
+
+        // Set up the click intent template for grid items
+        // Use explicit intent to ChromeLauncherActivity instead of implicit ACTION_VIEW
+        Intent clickIntent = new Intent(context, ChromeLauncherActivity.class);
+        clickIntent.setAction(Intent.ACTION_VIEW);
+        clickIntent.addCategory(Intent.CATEGORY_BROWSABLE);
+        clickIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        clickIntent.putExtra(
+                WebappConstants.EXTRA_SOURCE, ShortcutSource.BOOKMARK_NAVIGATOR_WIDGET);
+        clickIntent.putExtra(WebappConstants.REUSE_URL_MATCHING_TAB_ELSE_NEW_TAB, true);
+
+        // For GridView with fillInIntent, we need FLAG_MUTABLE to allow the URL data to be filled
+        // in
+        PendingIntent clickPendingIntent =
+                PendingIntent.getActivity(
+                        context,
+                        0,
+                        clickIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+
+        views.setPendingIntentTemplate(R.id.bookmarksGridView, clickPendingIntent);
     }
 
-    private static void setTopTiles(
-            Context context, RemoteViews views, List<WidgetTile> widgetTileList, int requestCode) {
-        int tilesSize = widgetTileList.size();
-        int i = 0;
-        int j = 0;
-
-        while (i < tilesSize && i < TOTAL_TILES) {
-            j = j % TILES_PER_ROW;
-            int row = i / TILES_PER_ROW;
-
-            WidgetTile tile = widgetTileList.get(i);
-            int tileLayoutId = tileViewsIdArray[row][j][2];
-            int tileImageViewId = tileViewsIdArray[row][j][0];
-            int tileTextViewId = tileViewsIdArray[row][j][1];
-
-            views.setViewVisibility(tileLayoutId, View.VISIBLE);
-            views.setOnClickPendingIntent(
-                    tileLayoutId, createIntent(context, tile.getUrl(), ++requestCode));
-            views.setTextViewText(tileTextViewId, tile.getTitle());
-            views.setInt(tileImageViewId, "setColorFilter", 0);
-            fetchGurlIcon(tileImageViewId, tile.getGURL());
-
-            i++;
-            j++;
-        }
-
-        // hide and uninitialize the remaining placeholder tiles
-        while (i < TOTAL_TILES) {
-            j = j % TILES_PER_ROW;
-            int row = i / TILES_PER_ROW;
-            int tileLayoutId = tileViewsIdArray[row][j][2];
-            int tileImageViewId = tileViewsIdArray[row][j][0];
-            int tileTextViewId = tileViewsIdArray[row][j][1];
-            views.setViewVisibility(tileLayoutId, View.INVISIBLE);
-            views.setOnClickPendingIntent(tileLayoutId, null);
-            views.setTextViewText(tileTextViewId, "");
-            views.setImageViewResource(tileImageViewId, 0);
-            i++;
-            j++;
-        }
-    }
-
-    private static void fetchGurlIcon(final int imageViewId, GURL gurl) {
-        LargeIconBridge largeIconBridge =
-                new LargeIconBridge(ProfileManager.getLastUsedRegularProfile());
-        LargeIconCallback callback =
-                new LargeIconCallback() {
-                    @Override
-                    public void onLargeIconAvailable(
-                            Bitmap icon,
-                            int fallbackColor,
-                            boolean isFallbackColorDefault,
-                            @IconType int iconType) {
-                        if (icon == null) {
-                            updateTileIcon(imageViewId, getTileIconFromColor(gurl, fallbackColor));
-                        } else {
-                            updateTileIcon(imageViewId, getRoundedTileIconFromBitmap(icon));
-                        }
-                    }
-                };
-        largeIconBridge.getLargeIconForUrl(gurl, DESIRED_ICON_SIZE, callback);
-    }
-
-    private static Bitmap getRoundedTileIconFromBitmap(Bitmap icon) {
-        RoundedBitmapDrawable roundedIcon = ViewUtils.createRoundedBitmapDrawable(
-                ContextUtils.getApplicationContext().getResources(), icon, DESIRED_ICON_RADIUS);
-        roundedIcon.setAntiAlias(true);
-        roundedIcon.setFilterBitmap(true);
-        return getBitmap(roundedIcon);
-    }
-
-    private static Bitmap getTileIconFromColor(GURL gurl, int fallbackColor) {
-        RoundedIconGenerator mIconGenerator =
-                FaviconUtils.createRoundedRectangleIconGenerator(
-                        ContextUtils.getApplicationContext());
-        mIconGenerator.setBackgroundColor(fallbackColor);
-        return mIconGenerator.generateIconForUrl(gurl);
-    }
-
-    private static int setSearchBarPendingIntent(
-            Context context, RemoteViews views, int requestCode) {
+    private static void setSearchBarPendingIntent(Context context, RemoteViews views) {
+        // Request code should be unique. By using distinct request codes,
+        // we allow the system to differentiate between the intents,
+        // ensuring that each button triggers its respective action.
+        int requestCode = 0;
         views.setOnClickPendingIntent(
                 R.id.ivIncognito, createIncognitoIntent(context, ++requestCode));
         views.setOnClickPendingIntent(
@@ -405,45 +262,12 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                 R.id.ivVoiceSearch, createIntent(context, true, ++requestCode));
         views.setOnClickPendingIntent(
                 R.id.ibLeo, createPendingIntent(context, createLeoIntent(context), ++requestCode));
-
-        return requestCode;
     }
 
-    private static Bitmap getBitmap(@Nullable Drawable drawable) {
-        if (drawable != null) {
-            Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
-                    drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawable.draw(canvas);
-            return bitmap;
-        } else {
-            return null;
-        }
-    }
-
-    private static void setRowsVisibility(RemoteViews views, int tilesSize, int minHeight) {
-        views.setViewVisibility(
-                R.id.BookmarkLayoutRow1,
-                tilesSize > 0 * TILES_PER_ROW && minHeight >= MIN_VISIBLE_HEIGHT_ROW_1
-                        ? View.VISIBLE
-                        : View.GONE);
-        views.setViewVisibility(
-                R.id.BookmarkLayoutRow2,
-                tilesSize > 1 * TILES_PER_ROW && minHeight >= MIN_VISIBLE_HEIGHT_ROW_2
-                        ? View.VISIBLE
-                        : View.GONE);
-        views.setViewVisibility(
-                R.id.BookmarkLayoutRow3,
-                tilesSize > 2 * TILES_PER_ROW && minHeight >= MIN_VISIBLE_HEIGHT_ROW_3
-                        ? View.VISIBLE
-                        : View.GONE);
-    }
-
-    private static void setDynamicLayout(RemoteViews views, int tilesSize, int minHeight) {
-        // Check if BookmarkLayoutRow1 is visible (same condition as in setRowsVisibility)
-        boolean isRow1Visible = tilesSize > 0 && minHeight >= MIN_VISIBLE_HEIGHT_ROW_1;
-        if (isRow1Visible) {
+    private static void setDynamicLayout(RemoteViews views, int tilesSize, int currentHeight) {
+        // Check if tiles should be visible
+        boolean shouldShowTiles = tilesSize > 0 && currentHeight >= MIN_VISIBLE_HEIGHT_ROW_1;
+        if (shouldShowTiles) {
             // When top tiles are visible:
             // 1. Set gravity to "top" to align content to top
             views.setInt(R.id.background, "setGravity", android.view.Gravity.TOP);
@@ -474,18 +298,6 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                 }
             }
         }
-    }
-
-    private static PendingIntent createIntent(
-            @NonNull Context context, @NonNull String url, int requestCode) {
-        Intent intent =
-                new Intent(
-                        Intent.ACTION_VIEW, Uri.parse(url), context, ChromeLauncherActivity.class);
-        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(WebappConstants.EXTRA_SOURCE, ShortcutSource.BOOKMARK_NAVIGATOR_WIDGET);
-        intent.putExtra(WebappConstants.REUSE_URL_MATCHING_TAB_ELSE_NEW_TAB, true);
-        return createPendingIntent(context, intent, requestCode);
     }
 
     private static PendingIntent createIntent(
@@ -537,9 +349,8 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
 
     /**
      * This class acts as a single source of truth for this widet. This widget would use this class
-     *to fetch the data. Also, any modification to the data should be done through this class.
-     **/
-
+     * to fetch the data. Also, any modification to the data should be done through this class.
+     */
     public static class DataManager {
         public static void parseTilesAndWriteWidgetTiles(List<Tile> tiles) {
             List<WidgetTile> widgetTileList = new ArrayList<>();
@@ -572,6 +383,11 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                                             .BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES,
                                     null);
             List<WidgetTile> widgetTileList = new ArrayList();
+
+            // Check if there's any saved data
+            if (widgetTilesJson == null || widgetTilesJson.isEmpty()) {
+                return widgetTileList; // Return empty list
+            }
             widgetTilesJson = "{\"widgetTiles\":" + widgetTilesJson + "}";
             try {
                 JSONObject result = new JSONObject(widgetTilesJson);
@@ -583,7 +399,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                     widgetTileList.add(widgetTile);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, "Error parsing widget tiles", e);
             }
             return widgetTileList;
         }
