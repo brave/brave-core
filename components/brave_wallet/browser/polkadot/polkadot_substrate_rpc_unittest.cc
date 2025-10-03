@@ -182,7 +182,15 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
 
     url_loader_factory_.AddResponse(
         testnet_url,
-        R"({"id":1,"jsonrpc":"2.0","result":[{"block":"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c","changes":[["0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9de1e86a9a8c739864cf3cc5ec2bea59fd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d","0x76030000020000000100000000000000b18ac01b0300000000000000000000008030a55c79b5000000000000000000000000000000000000000000000000000000000000000000000000000000000080"]]}]})");
+        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
+        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
+        ",\"changes\":[["
+        "\"0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9de"
+        "1e86a9a8c739864cf3cc5ec2bea59fd43593c715fdd31c61141abd04a99fd6822c8558"
+        "854ccde39a5684e7a56da27d\","
+        "\"0x76030000020000000100000000000000b18ac01b03000000000000000000000080"
+        "30a55c79b5000000000000000000000000000000000000000000000000000000000000"
+        "000000000000000000000080\"]]}]}");
 
     auto [account_info, error] = future.Take();
 
@@ -214,7 +222,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
 
     url_loader_factory_.AddResponse(
         testnet_url,
-        R"({"id":1,"jsonrpc":"2.0","result":[{"block":"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c","changes":[["0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9de1e86a9a8c739864cf3cc5ec2bea59fd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",null]]}]})");
+        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
+        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
+        ",\"changes\":[["
+        "\"0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9de"
+        "1e86a9a8c739864cf3cc5ec2bea59fd43593c715fdd31c61141abd04a99fd6822c8558"
+        "854ccde39a5684e7a56da27d\",null]]}]}");
 
     polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
                                                future.GetCallback());
@@ -247,7 +260,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   {
     url_loader_factory_.AddResponse(
         testnet_url,
-        R"({"id":1,"jsonrpc":"2.0","result":[{"block":"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c","changes":[["", "0x1234"]]}]})");
+        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
+        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
+        ",\"changes\":[[\"\", \"0x1234\"]]}]}");
 
     polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
                                                future.GetCallback());
@@ -260,7 +275,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   {
     url_loader_factory_.AddResponse(
         testnet_url,
-        R"({"id":1,"jsonrpc":"2.0","result":[{"block":"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c","changes":[]}]})");
+        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
+        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
+        ",\"changes\":[]}]}");
 
     polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
                                                future.GetCallback());
@@ -273,7 +290,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   {
     url_loader_factory_.AddResponse(
         testnet_url,
-        R"({"id":1,"jsonrpc":"2.0","result":[{"block":"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c","changes":[[]]}]})");
+        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
+        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
+        ",\"changes\":[[]]}]}");
 
     polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
                                                future.GetCallback());
@@ -287,7 +306,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     // contains invalid hex in account info
     url_loader_factory_.AddResponse(
         testnet_url,
-        R"({"id":1,"jsonrpc":"2.0","result":[{"block":"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c","changes":[["", "0xcat30000020000000100000000000000b18ac01b0300000000000000000000008030a55c79b5000000000000000000000000000000000000000000000000000000000000000000000000000000000080"]]}]})");
+        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
+        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
+        ",\"changes\":[[\"\", "
+        "\"0xcat30000020000000100000000000000b18ac01b03000000000000000000000080"
+        "30a55c79b5000000000000000000000000000000000000000000000000000000000000"
+        "000000000000000000000080\"]]}]}");
 
     polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
                                                future.GetCallback());
