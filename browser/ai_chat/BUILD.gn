@@ -290,7 +290,6 @@ source_set("browser_tests") {
     sources = [
       "//chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.cc",
       "//chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.h",
-      "ai_chat_agent_profile_browsertest.cc",
       "ai_chat_brave_search_throttle_browsertest.cc",
       "ai_chat_browsertests.cc",
       "ai_chat_metrics_browsertest.cc",
@@ -304,7 +303,6 @@ source_set("browser_tests") {
     deps = [
       "//brave/app:generate_command_metadata",
       "//brave/browser/ai_chat",
-      "//brave/browser/ai_chat:ai_chat_agent_profile",
       "//brave/browser/misc_metrics",
       "//brave/browser/ui/sidebar",
       "//brave/components/ai_chat/content/browser",
@@ -317,10 +315,8 @@ source_set("browser_tests") {
       "//brave/components/sidebar/browser",
       "//brave/components/text_recognition/common/buildflags",
       "//chrome/browser",
-      "//chrome/browser/actor",
       "//chrome/browser/pdf:pdf_extension_test_utils",
       "//chrome/browser/screen_ai:screen_ai_install_state",
-      "//chrome/browser/ui",
       "//chrome/browser/ui/browser_window",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
@@ -347,11 +343,16 @@ source_set("browser_tests") {
     ]
 
     if (enable_brave_ai_chat_agent_profile) {
-      sources += [ "content_agent_tools_browsertest.cc" ]
+      sources += [
+        "ai_chat_agent_profile_browsertest.cc",
+        "content_agent_tools_browsertest.cc",
+      ]
 
       deps += [
         ":content_agent_test_support",
+        "//brave/browser/ai_chat:ai_chat_agent_profile",
         "//chrome/browser/actor",
+        "//chrome/browser/ui",
       ]
 
       data += [ "//chrome/test/data/actor/" ]
