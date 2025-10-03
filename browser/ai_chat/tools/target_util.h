@@ -14,25 +14,50 @@
 
 namespace ai_chat::target_util {
 
-// Creates a standardized "target" property for tool input schemas
-// The target property allows either coordinates OR identifiers, never both
+// Creates a standardized "target" property for tool input schemas.
+// The target property allows either coordinates OR identifiers, never both.
+// The identifiers are both the document identifier, which identifies which
+// frame in a WebContents to target, and an optional node id within that frame.
+// The coordinates are x,y values in css pixels from the top-left of the
+// viewport.
+//
 // Example usage: {"target": TargetProperty("Element to click on")}
 //
-// Generates schema like:
+// Generates the following:
 // {
-//   "type": "object",
-//   "description": "Element to click on",
-//   "anyOf": [
-//     {
-//       "type": "object",
-//       "properties": {"x": {...}, "y": {...}}
+//   "target": {
+//     "description": "Element to click on",
+//     "anyOf": [
+//       {
+//         "description": "DOM element identifiers of target (preferred)",
+//         "properties": {
+//           "content_node_id": {
+//             "description": "DOM node ID of the target element within the
+//             frame (optional)", "type": "integer"
+//           },
+//           "document_identifier": {
+//             "description": "Document identifier for the target frame",
+//             "type": "string"
+//           }
+//         },
+//         "type": "object"
+//       },
+//       {
+//         "description": "Screen coordinates of target (less stable)",
+//         "properties": {
+//           "x": {
+//             "description": "X coordinate in pixels",
+//             "type": "number"
+//           },
+//           "y": {
+//             "description": "Y coordinate in pixels",
+//             "type": "number"
+//           }
+//         },
+//         "type": "object"
 //       }
-//     },
-//     {
-//       "type": "object",
-//       "properties": {"content_node_id": {...}, "document_identifier": {...}}
-//     }
-//   ]
+//     ]
+//   }
 // }
 base::Value::Dict TargetProperty(const std::string& description);
 
