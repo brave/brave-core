@@ -6,6 +6,7 @@
 #include <memory>
 #include <optional>
 
+#include "base/metrics/statistics_recorder.h"
 #include "base/path_service.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -150,10 +151,14 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
+  constexpr auto* kHistogramName = "Brave.Wallet.EthProvider.4";
+
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::None);
   const GURL url = https_server_.GetURL("/simple.html");
+  auto waiter = std::make_unique<base::StatisticsRecorder::HistogramWaiter>(
+      kHistogramName);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   std::string command = "window.ethereum.isMetaMask";
@@ -162,14 +167,18 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachOnReload) {
                   testing::HasSubstr("Cannot read properties of undefined")));
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
 
-  histogram_tester_->ExpectUniqueSample("Brave.Wallet.EthProvider.4", 0, 1);
+  waiter->Wait();
+  histogram_tester_->ExpectUniqueSample(kHistogramName, 0, 1);
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
       brave_wallet::mojom::DefaultWallet::BraveWallet);
+  waiter = std::make_unique<base::StatisticsRecorder::HistogramWaiter>(
+      kHistogramName);
   ReloadAndWaitForLoadStop();
 
-  histogram_tester_->ExpectBucketCount("Brave.Wallet.EthProvider.4", 0, 2);
+  waiter->Wait();
+  histogram_tester_->ExpectBucketCount(kHistogramName, 0, 2);
 
   auto result = content::EvalJs(primary_main_frame(), command);
   EXPECT_TRUE(result.is_ok());
