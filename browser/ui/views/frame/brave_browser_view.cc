@@ -1107,7 +1107,7 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
 
   if (BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
           browser_.get())) {
-    corners = gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius);
+    corners = gfx::RoundedCornersF(BraveContentsViewUtil::GetBorderRadius());
   }
 
   // In fullscreen-for-tab mode (e.g. full-screen video), no corners should be

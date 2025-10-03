@@ -375,11 +375,14 @@ IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest,
   auto* contents_container = brave_browser_view()->contents_container();
   auto* contents_view = brave_browser_view()->GetContentsView();
 
+  const gfx::RoundedCornersF border_radius(
+      BraveContentsViewUtil::GetBorderRadius());
+
   // Check it has rounded corners.
   EXPECT_EQ(contents_container->layer()->rounded_corner_radii(),
-            gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
+            gfx::RoundedCornersF(border_radius));
   EXPECT_EQ(contents_view->layer()->rounded_corner_radii(),
-            gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
+            gfx::RoundedCornersF(border_radius));
 
   FullscreenController* fullscreen_controller = browser()
                                                     ->GetFeatures()
@@ -398,9 +401,9 @@ IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest,
   fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
   brave_browser_view()->UpdateWebViewRoundedCorners();
   EXPECT_EQ(contents_container->layer()->rounded_corner_radii(),
-            gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
+            gfx::RoundedCornersF(border_radius));
   EXPECT_EQ(contents_view->layer()->rounded_corner_radii(),
-            gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius));
+            gfx::RoundedCornersF(border_radius));
 }
 
 // Use for testing brave split view and SideBySide together.
