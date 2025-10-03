@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_FRAME_VIEW_WIN_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_FRAME_VIEW_WIN_H_
 
+#include "chrome/browser/ui/views/frame/opaque_browser_frame_view.h"
+
 #define client_view_bounds_ \
   client_view_bounds_;      \
   friend class BraveBrowserFrameViewWin
