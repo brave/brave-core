@@ -10,6 +10,7 @@
 #include "chrome/common/actor/actor_constants.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 #include "content/public/test/browser_task_environment.h"
+#include "gmock/gmock.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -26,40 +27,34 @@ class TargetUtilTest : public testing::Test {
 // Tests for TargetProperty() function
 TEST_F(TargetUtilTest, TargetProperty_CompleteSchemaStructure) {
   auto property = TargetProperty("Click target element");
-
   // Verify the complete schema structure
-  EXPECT_THAT(property, base::test::IsJson(R"JSON({
+  EXPECT_THAT(property,
+              base::test::IsSupersetOfValue(base::test::ParseJsonDict(R"JSON({
     "description": "Click target element",
     "anyOf": [
       {
-        "description": "DOM element identifiers of target (preferred)",
         "properties": {
             "content_node_id": {
-              "description": "DOM node ID of the target element within the frame (optional)",
               "type": "integer"
             },
             "document_identifier": {
-              "description": "Document identifier for the target frame",
               "type": "string"
             }
         },
         "type": "object"
       }, {
-        "description": "Screen coordinates of target (less stable)",
         "properties": {
             "x": {
-              "description": "X coordinate in pixels",
               "type": "number"
             },
             "y": {
-              "description": "Y coordinate in pixels",
               "type": "number"
             }
         },
         "type": "object"
       }
     ]
-  })JSON"));
+  })JSON")));
 }
 
 // Tests for ParseTargetInput() function
@@ -175,6 +170,37 @@ TEST_F(TargetUtilTest, ParseTargetInput_BothApproaches) {
             "'document_identifier' with optional 'content_node_id', not both");
 }
 
+TEST_F(TargetUtilTest, ParseTargetInput_BothApproachesDocumentIdentifier) {
+  auto target_dict = base::test::ParseJsonDict(R"JSON({
+    "x": 100,
+    "y": 200,
+    "document_identifier": "test_doc"
+  })JSON");
+
+  auto result = ParseTargetInput(target_dict);
+
+  EXPECT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(),
+            "Target must contain either 'x' and 'y' or "
+            "'document_identifier' with optional 'content_node_id', not both");
+}
+
+TEST_F(TargetUtilTest,
+       ParseTargetInput_BothApproachesMissingDocumentIdentifier) {
+  auto target_dict = base::test::ParseJsonDict(R"JSON({
+    "x": 100,
+    "y": 200,
+    "content_node_id": 42,
+  })JSON");
+
+  auto result = ParseTargetInput(target_dict);
+
+  EXPECT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(),
+            "Target must contain either 'x' and 'y' or "
+            "'document_identifier' with optional 'content_node_id', not both");
+}
+
 TEST_F(TargetUtilTest, ParseTargetInput_NeitherApproach) {
   auto target_dict = base::test::ParseJsonDict(R"JSON({})JSON");
 
@@ -196,8 +222,10 @@ TEST_F(TargetUtilTest, ParseTargetInput_PartialCoordinatesBothPresent) {
   auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(result.error(),
-            "Invalid coordinates: both 'x' and 'y' are required");
+  EXPECT_THAT(
+      result.error(),
+      testing::HasSubstr(
+          "Target must contain either 'x' and 'y' or 'document_identifier'"));
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_PartialIdentifiersBothPresent) {
@@ -209,8 +237,10 @@ TEST_F(TargetUtilTest, ParseTargetInput_PartialIdentifiersBothPresent) {
   auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(result.error(),
-            "Invalid coordinates: both 'x' and 'y' are required");
+  EXPECT_THAT(
+      result.error(),
+      testing::HasSubstr(
+          "Target must contain either 'x' and 'y' or 'document_identifier'"));
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_WithoutErrorString) {

@@ -18,8 +18,14 @@ base::Value::Dict TargetProperty(const std::string& description) {
 
   any_of->Append(ObjectProperty(
       "DOM element identifiers of target (preferred)",
+      // Which frame to target, matches actor::DomNode::document_identifier
+      // and is usually a value received within a previous tool output that
+      // describes the DOM tree.
       {{"document_identifier",
         StringProperty("Document identifier for the target frame")},
+       // Which element to target, matches actor::DomNode::node_id
+       // If not specified, the root element is specified to target the
+       // viewport.
        {"content_node_id", IntegerProperty("DOM node ID of the target element "
                                            "within the frame (optional)")}}));
 
@@ -40,12 +46,16 @@ ParseTargetInput(const base::Value::Dict& target_dict) {
   auto* document_identifier = target_dict.FindString("document_identifier");
 
   // Ensure exactly one approach is used
-  if (x_value && y_value && document_identifier) {
+  // - x and y; or
+  // - document_identifier (content_node_id is optional)
+  if ((x_value || y_value) && (document_identifier || content_node_id)) {
     return base::unexpected(
         "Target must contain either 'x' and 'y' or "
         "'document_identifier' with optional 'content_node_id', not both");
   }
 
+  // We check content_node_id here even though it's optional so that
+  // we can return a more specific error message when checking that case.
   if (!x_value && !y_value && !content_node_id && !document_identifier) {
     return base::unexpected(
         "Target must contain one of either 'x' and 'y' or "
