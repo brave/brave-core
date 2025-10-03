@@ -195,6 +195,38 @@ if (enable_brave_ai_chat_agent_profile) {
   }
 }
 
+source_set("enabled_state_transition") {
+  sources = [
+    "enabled_state_transition_service.cc",
+    "enabled_state_transition_service.h",
+    "enabled_state_transition_service_factory.cc",
+    "enabled_state_transition_service_factory.h",
+  ]
+
+  deps = [
+    "//brave/browser/ai_chat",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/constants",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+  ]
+
+  if (!is_android) {
+    deps += [
+      "//brave/browser/ui/sidebar",
+      "//brave/components/sidebar/browser",
+      "//chrome/browser/ui",
+      "//chrome/browser/ui:browser_list",
+      "//chrome/browser/ui/tabs:tabs_public",
+      "//chrome/browser/ui/views/side_panel",
+    ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [
@@ -262,12 +294,14 @@ source_set("browser_tests") {
       "ai_chat_render_view_context_menu_browsertest.cc",
       "ai_chat_sidepanel_behavior_browsertest.cc",
       "ai_chat_ui_browsertest.cc",
+      "enabled_state_transition_service_browsertest.cc",
       "page_content_fetcher_browsertest.cc",
     ]
     deps = [
       "//brave/app:generate_command_metadata",
       "//brave/browser/ai_chat",
       "//brave/browser/ai_chat:ai_chat_agent_profile",
+      "//brave/browser/ai_chat:enabled_state_transition",
       "//brave/browser/misc_metrics",
       "//brave/browser/ui/sidebar",
       "//brave/components/ai_chat/content/browser",
