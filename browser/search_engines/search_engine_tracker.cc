@@ -12,8 +12,8 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -25,9 +25,16 @@
 
 namespace {
 
-// Preference name switch events are stored under.
+// Preference name for last switch report timestamp (new location in local
+// state).
+constexpr char kLastSwitchReportPref[] = "brave.search.last_switch_report";
+// Old preference name for switch events (for migration from profile prefs).
 constexpr char kSwitchSearchEngineP3AStorage[] =
     "brave.search.p3a_default_switch";
+// Report interval for P3A switch metrics (1 hour)
+constexpr base::TimeDelta kReportInterval = base::Hours(1);
+// Minimum time between reports (1 day)
+constexpr base::TimeDelta kMinReportInterval = base::Days(1);
 constexpr char kBraveDomain[] = "brave.com";
 constexpr char kGoogleDomain[] = "google.com";
 constexpr char kDDGDomain[] = "duckduckgo.com";
@@ -144,8 +151,14 @@ bool SearchEngineTrackerFactory::ServiceIsCreatedWithBrowserContext() const {
   return true;
 }
 
-void SearchEngineTrackerFactory::RegisterProfilePrefs(
+void SearchEngineTrackerFactory::RegisterLocalStatePrefs(
+    PrefRegistrySimple* registry) {
+  registry->RegisterTimePref(kLastSwitchReportPref, {});
+}
+
+void SearchEngineTrackerFactory::RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
+  // Register old pref for migration
   registry->RegisterListPref(kSwitchSearchEngineP3AStorage);
 }
 
@@ -153,8 +166,7 @@ SearchEngineTracker::SearchEngineTracker(
     TemplateURLService* template_url_service,
     PrefService* profile_prefs,
     PrefService* local_state)
-    : switch_record_(profile_prefs, kSwitchSearchEngineP3AStorage),
-      local_state_(local_state),
+    : local_state_(local_state),
       profile_prefs_(profile_prefs),
       template_url_service_(template_url_service) {
   DCHECK(template_url_service);
@@ -162,6 +174,10 @@ SearchEngineTracker::SearchEngineTracker(
   DCHECK(local_state);
 
   observer_.Observe(template_url_service_);
+
+  // Migrate any old prefs
+  MigrateObsoletePrefs();
+
   const TemplateURL* template_url =
       template_url_service_->GetDefaultSearchProvider();
 
@@ -255,33 +271,45 @@ void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
 #endif
 
 void SearchEngineTracker::RecordSwitchP3A(const GURL& url) {
-  // Default to the last recorded switch so when we're called
-  // at start-up we initialize the histogram with whatever we
-  // remember from the previous run.
-  auto answer = SearchEngineSwitchP3A::kNoSwitch;
-  auto last = switch_record_.GetLatest();
-  if (last) {
-    answer = static_cast<SearchEngineSwitchP3A>(last.value());
-    DCHECK(answer <= SearchEngineSwitchP3A::kMaxValue);
-  }
+  const base::Time now = base::Time::Now();
+  const base::Time last_report = local_state_->GetTime(kLastSwitchReportPref);
 
-  if (url.is_valid() && url != previous_search_url_) {
-    // The default url has been switched, record that instead.
+  // Determine the appropriate "no switch" value based on current search engine
+  auto answer = url.is_valid() && url.DomainIs(kBraveDomain)
+                    ? SearchEngineSwitchP3A::kNoSwitchBrave
+                    : SearchEngineSwitchP3A::kNoSwitchNonBrave;
+  bool should_report = false;
+
+  if (previous_search_url_.is_valid() && url.is_valid() &&
+      url != previous_search_url_) {
+    // The default url has been switched, record that.
     answer = SearchEngineSwitchP3AMapAnswer(url, previous_search_url_);
     previous_search_url_ = url;
-    switch_record_.Add(static_cast<int>(answer));
+    should_report = true;
 
     if (url.DomainIs(kBraveDomain)) {
       brave_search_conversion::p3a::RecordDefaultEngineConversion(local_state_);
     }
+  } else if (last_report.is_null() ||
+             (now - last_report) >= kMinReportInterval) {
+    // Report if we haven't reported before or it's been >= 1 day
+    should_report = true;
   }
 
-  if (brave_search_conversion::IsBraveSearchConversionFeatureEnabled() ||
-      base::FeatureList::IsEnabled(brave_search_conversion::features::kNTP)) {
-    // Do not report if search conversion promo is enabled, to prevent metric
-    // overlap with conversion metrics.
-    UMA_HISTOGRAM_EXACT_LINEAR(kSwitchSearchEngineMetric, INT_MAX - 1, 8);
-    return;
+  // Set up timer for next report regardless of whether we report now
+  switch_report_timer_.Start(
+      FROM_HERE, now + kReportInterval,
+      base::BindOnce(&SearchEngineTracker::RecordSwitchP3A,
+                     base::Unretained(this), url));
+
+  if (should_report) {
+    // Update the last report timestamp
+    local_state_->SetTime(kLastSwitchReportPref, now);
+
+    UMA_HISTOGRAM_ENUMERATION(kSwitchSearchEngineMetric, answer);
   }
-  UMA_HISTOGRAM_ENUMERATION(kSwitchSearchEngineMetric, answer);
+}
+
+void SearchEngineTracker::MigrateObsoletePrefs() {
+  profile_prefs_->ClearPref(kSwitchSearchEngineP3AStorage);
 }
