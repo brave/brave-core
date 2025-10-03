@@ -5,6 +5,7 @@
   "draftPR": true,
   "ignorePaths": [
     "components/**",
+    "ios/**",
     "test/**",
     "third_party/**",
     "tools/crates/vendor/**",
