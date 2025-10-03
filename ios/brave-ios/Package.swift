@@ -657,7 +657,10 @@ var package = Package(
     .executableTarget(name: "LeoAssetCatalogGenerator"),
     .target(
       name: "BraveTalk",
-      dependencies: ["Shared", "Preferences", "JitsiMeet", "BraveCore"],
+      dependencies: [
+        "Shared", "Preferences", "JitsiMeet", "BraveCore",
+        .product(name: "Collections", package: "swift-collections"),
+      ],
       plugins: ["LoggerPlugin"]
     ),
     .testTarget(
