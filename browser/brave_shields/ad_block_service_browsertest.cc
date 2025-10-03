@@ -44,7 +44,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -72,9 +72,9 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/browser/playlist_background_web_contentses.h"
-#include "brave/components/playlist/browser/playlist_service.h"
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/content/browser/playlist_background_web_contentses.h"
+#include "brave/components/playlist/content/browser/playlist_service.h"
+#include "brave/components/playlist/core/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
@@ -798,7 +798,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                                 resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
-
 
 // A test observer that allows blocking waits for the
 // AdBlockSubscriptionServiceManager to update the status of any registered

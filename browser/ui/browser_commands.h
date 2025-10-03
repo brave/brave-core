@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "content/public/browser/page_navigator.h"

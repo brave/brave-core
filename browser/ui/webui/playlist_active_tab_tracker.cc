@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/playlist/playlist_browser_finder.h"
-#include "brave/components/playlist/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "chrome/browser/ui/browser.h"
 
 namespace playlist {

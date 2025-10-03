@@ -6,7 +6,7 @@
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/views/location_bar/brave_star_view.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/page_action/page_action_icon_type.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"

@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
 assert(toolkit_views)
@@ -37,7 +37,7 @@ static_library("browser") {
   ]
 
   if (enable_playlist) {
-    deps += [ "//brave/components/playlist/common" ]
+    deps += [ "//brave/components/playlist/core/common" ]
   }
 }
 
@@ -63,6 +63,6 @@ source_set("unit_tests") {
   ]
 
   if (enable_playlist) {
-    deps += [ "//brave/components/playlist/common" ]
+    deps += [ "//brave/components/playlist/core/common" ]
   }
 }

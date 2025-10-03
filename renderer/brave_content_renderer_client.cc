@@ -18,7 +18,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/safe_builtins/renderer/safe_builtins.h"
 #include "brave/components/script_injector/renderer/script_injector_render_frame_observer.h"
 #include "brave/components/skus/common/features.h"
@@ -60,8 +60,8 @@
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/common/features.h"
-#include "brave/components/playlist/renderer/playlist_render_frame_observer.h"
+#include "brave/components/playlist/content/renderer/playlist_render_frame_observer.h"
+#include "brave/components/playlist/core/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)

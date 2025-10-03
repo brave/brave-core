@@ -19,7 +19,7 @@
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -56,7 +56,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/browser/pref_names.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(IS_WIN)

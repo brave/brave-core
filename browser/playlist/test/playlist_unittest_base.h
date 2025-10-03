@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/test_renderer_host.h"
 

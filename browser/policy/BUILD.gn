@@ -6,7 +6,7 @@
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -29,7 +29,7 @@ source_set("brave_simple_policy_map") {
     "//brave/components/debounce/core/common",
     "//brave/components/ipfs/buildflags",
     "//brave/components/p3a",
-    "//brave/components/playlist/common/buildflags",
+    "//brave/components/playlist/core/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
     "//components/policy/core/browser",
@@ -57,6 +57,6 @@ source_set("brave_simple_policy_map") {
   }
 
   if (enable_playlist) {
-    deps += [ "//brave/components/playlist/browser" ]
+    deps += [ "//brave/components/playlist/content/browser" ]
   }
 }

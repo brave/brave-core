@@ -41,7 +41,7 @@
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_switches.h"
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"

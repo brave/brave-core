@@ -19,9 +19,9 @@
 #include "base/task/thread_pool.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/browser/playlist_constants.h"
-#include "brave/components/playlist/browser/playlist_service.h"
-#include "brave/components/playlist/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/content/browser/playlist_constants.h"
+#include "brave/components/playlist/content/browser/playlist_service.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "net/base/filename_util.h"
 
 namespace {
