@@ -32,9 +32,7 @@ class ClickToolTest : public testing::Test {
  public:
   void SetUp() override {
     mock_task_provider_ = std::make_unique<MockContentAgentTaskProvider>();
-    click_tool_ =
-        std::make_unique<ClickTool>(mock_task_provider_.get(),
-                                    nullptr);  // Actor service not used
+    click_tool_ = std::make_unique<ClickTool>(mock_task_provider_.get());
 
     test_tab_handle_ = tabs::TabHandle(123);
     test_task_id_ = actor::TaskId(456);

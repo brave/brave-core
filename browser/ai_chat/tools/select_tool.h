@@ -14,10 +14,11 @@
 
 namespace ai_chat {
 
+// Exposes an AI Chat Tool that creates a SelectToolRequest action for use with
+// the ActorKeyedService.
 class SelectTool : public Tool {
  public:
-  SelectTool(ContentAgentTaskProvider* task_provider,
-             actor::ActorKeyedService* actor_service);
+  explicit SelectTool(ContentAgentTaskProvider* task_provider);
   ~SelectTool() override;
 
   std::string_view Name() const override;
@@ -35,7 +36,6 @@ class SelectTool : public Tool {
                           const std::string& value,
                           tabs::TabHandle tab_handle);
 
-  raw_ptr<actor::ActorKeyedService> actor_service_ = nullptr;
   raw_ptr<ContentAgentTaskProvider> task_provider_ = nullptr;
 
   base::WeakPtrFactory<SelectTool> weak_ptr_factory_{this};

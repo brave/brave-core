@@ -13,10 +13,11 @@
 
 namespace ai_chat {
 
+// Exposes an AI Chat Tool that creates back/forward navigation actions for use
+// with the ActorKeyedService.
 class HistoryTool : public Tool {
  public:
-  HistoryTool(ContentAgentTaskProvider* task_provider,
-              actor::ActorKeyedService* actor_service);
+  explicit HistoryTool(ContentAgentTaskProvider* task_provider);
   ~HistoryTool() override;
 
   std::string_view Name() const override;
@@ -33,7 +34,6 @@ class HistoryTool : public Tool {
                           const std::string& direction,
                           tabs::TabHandle tab_handle);
 
-  raw_ptr<actor::ActorKeyedService> actor_service_ = nullptr;
   raw_ptr<ContentAgentTaskProvider> task_provider_ = nullptr;
 
   base::WeakPtrFactory<HistoryTool> weak_ptr_factory_{this};

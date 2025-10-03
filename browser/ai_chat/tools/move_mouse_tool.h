@@ -13,10 +13,11 @@
 
 namespace ai_chat {
 
+// Exposes an AI Chat Tool that creates a MoveMouseToolRequest action for use
+// with the ActorKeyedService.
 class MoveMouseTool : public Tool {
  public:
-  MoveMouseTool(ContentAgentTaskProvider* task_provider,
-                actor::ActorKeyedService* actor_service);
+  explicit MoveMouseTool(ContentAgentTaskProvider* task_provider);
   ~MoveMouseTool() override;
 
   std::string_view Name() const override;
@@ -33,7 +34,6 @@ class MoveMouseTool : public Tool {
                           optimization_guide::proto::ActionTarget target,
                           tabs::TabHandle tab_handle);
 
-  raw_ptr<actor::ActorKeyedService> actor_service_ = nullptr;
   raw_ptr<ContentAgentTaskProvider> task_provider_ = nullptr;
 
   base::WeakPtrFactory<MoveMouseTool> weak_ptr_factory_{this};

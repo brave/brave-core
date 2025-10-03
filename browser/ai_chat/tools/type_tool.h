@@ -14,10 +14,11 @@
 
 namespace ai_chat {
 
+// Exposes an AI Chat Tool that creates a TypeToolRequest action for use with
+// the ActorKeyedService.
 class TypeTool : public Tool {
  public:
-  TypeTool(ContentAgentTaskProvider* task_provider,
-           actor::ActorKeyedService* actor_service);
+  explicit TypeTool(ContentAgentTaskProvider* task_provider);
   ~TypeTool() override;
 
   std::string_view Name() const override;
@@ -37,7 +38,6 @@ class TypeTool : public Tool {
                           const std::string& mode,
                           tabs::TabHandle tab_handle);
 
-  raw_ptr<actor::ActorKeyedService> actor_service_ = nullptr;
   raw_ptr<ContentAgentTaskProvider> task_provider_ = nullptr;
 
   base::WeakPtrFactory<TypeTool> weak_ptr_factory_{this};

@@ -14,10 +14,11 @@
 
 namespace ai_chat {
 
+// Exposes an AI Chat Tool that creates a ScrollToolRequest action for use with
+// the ActorKeyedService.
 class ScrollTool : public Tool {
  public:
-  ScrollTool(ContentAgentTaskProvider* task_provider,
-             actor::ActorKeyedService* actor_service);
+  explicit ScrollTool(ContentAgentTaskProvider* task_provider);
   ~ScrollTool() override;
 
   std::string_view Name() const override;
@@ -36,7 +37,6 @@ class ScrollTool : public Tool {
                           float distance,
                           tabs::TabHandle tab_handle);
 
-  raw_ptr<actor::ActorKeyedService> actor_service_ = nullptr;
   raw_ptr<ContentAgentTaskProvider> task_provider_ = nullptr;
 
   base::WeakPtrFactory<ScrollTool> weak_ptr_factory_{this};
