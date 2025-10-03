@@ -284,7 +284,8 @@ export const EmailAliasModal = (
                 placeholder={getLocale('emailAliasesEditNotePlaceholder')}
                 maxlength={255}
                 value={proposedNote}
-                onInput={(detail) => setProposedNote(detail.value)}
+                onInput={(detail) => detail.value !== undefined &&
+                                     setProposedNote(detail.value)}
                 onKeyDown={onEnterKeyForInput(createOrSave)}>
               </NoteInput>
               {editing && editAlias?.domains &&
