@@ -12,7 +12,7 @@ jobs:
     name: Assign labels
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
     - name: set ci managed labels (automatically set and unset)
       uses: actions/labeler@634933edcd8ababfe52f92936142cc22ac488b1b # v6.0.1
