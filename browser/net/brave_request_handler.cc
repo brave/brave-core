@@ -67,13 +67,6 @@ void BraveRequestHandler::SetupCallbacks() {
       decentralized_dns::OnBeforeURLRequest_DecentralizedDnsPreRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveLocalhostAccessPermission)) {
-    callback =
-        base::BindRepeating(brave::OnBeforeURLRequest_LocalhostPermissionWork);
-    before_url_request_callbacks_.push_back(callback);
-  }
-
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
       base::BindRepeating(brave::OnBeforeStartTransaction_SiteHacksWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
