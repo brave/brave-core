@@ -83,7 +83,7 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, IsValid) {
   EXPECT_TRUE(IsValid(test::BuildConfirmationToken()));
 }
 
-TEST_F(BraveAdsConfirmationTokenUtilTest, IsNotValid) {
+TEST_F(BraveAdsConfirmationTokenUtilTest, IsInvalid) {
   // Arrange
   const ConfirmationTokenInfo confirmation_token;
 
