@@ -21,6 +21,8 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "chrome/browser/actor/actor_keyed_service.h"
@@ -38,13 +40,17 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/page_transition_types.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
+
 namespace ai_chat {
 
 ContentAgentToolProvider::ContentAgentToolProvider(
     Profile* profile,
     actor::ActorKeyedService* actor_service)
     : actor_service_(actor_service), profile_(profile) {
-  // This class should only exist with a valid actor service.
+  // This class should only exist if the feature is enabled
+  CHECK(ai_chat::features::IsAIChatAgentProfileEnabled());
+  // This class should only exist with a valid actor service
   CHECK(actor_service_);
 
   // Each conversation can have a different actor service task,
