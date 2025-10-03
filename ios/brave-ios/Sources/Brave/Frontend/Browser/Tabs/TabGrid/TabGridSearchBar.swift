@@ -10,23 +10,13 @@ import SwiftUI
 import UIKit
 
 struct TabGridSearchBar: View {
-  static let defaultHeight: CGFloat = 36.0
-  static let padding: CGFloat = 8.0
-
   @Binding var text: String
   @Binding var isFocused: Bool
   var scrollView: UIScrollView
 
-  @State private var height: CGFloat = Self.defaultHeight
-
   var body: some View {
     HStack {
-      Representable(text: $text, isFocused: $isFocused, height: height)
-        .onReceive(scrollView.publisher(for: \.contentOffset)) { offset in
-          let defaultHeight = Self.defaultHeight
-          let newHeight = -(offset.y + scrollView.contentInset.top - defaultHeight)
-          height = isFocused ? defaultHeight : min(defaultHeight, max(0, newHeight))
-        }
+      Representable(text: $text, isFocused: $isFocused)
       if isFocused {
         Button {
           isFocused = false
@@ -35,11 +25,10 @@ struct TabGridSearchBar: View {
           Text(Strings.CancelString)
             .foregroundStyle(Color(braveSystemName: .textInteractive))
         }
-        .frame(height: height)
         .transition(.move(edge: .trailing).combined(with: .opacity))
       }
     }
-    .animation(.snappy, value: isFocused)
+    .animation(.toolbarsSizeAnimation, value: isFocused)
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility1)
   }
 }
@@ -48,21 +37,18 @@ extension TabGridSearchBar {
   private struct Representable: UIViewRepresentable {
     @Binding var text: String
     @Binding var isFocused: Bool
-    var height: CGFloat
 
     public init(
       text: Binding<String>,
       isFocused: Binding<Bool>,
-      onSubmit: (() -> Void)? = nil,
-      height: CGFloat,
+      onSubmit: (() -> Void)? = nil
     ) {
       self._text = text
       self._isFocused = isFocused
-      self.height = height
     }
 
-    public func makeUIView(context: Context) -> TabCollectionViewSearchTextField {
-      let searchTextField = TabCollectionViewSearchTextField()
+    public func makeUIView(context: Context) -> UISearchTextField {
+      let searchTextField = UISearchTextField()
       searchTextField.text = text
       searchTextField.placeholder = Strings.tabTraySearchBarTitle
       searchTextField.delegate = context.coordinator
@@ -75,21 +61,28 @@ extension TabGridSearchBar {
       return searchTextField
     }
 
-    public func updateUIView(_ uiView: TabCollectionViewSearchTextField, context: Context) {
+    public func updateUIView(_ uiView: UISearchTextField, context: Context) {
       uiView.text = text
       if isFocused {
-        uiView.becomeFirstResponder()
+        if !uiView.isFirstResponder {
+          uiView.becomeFirstResponder()
+        }
       } else {
-        uiView.resignFirstResponder()
+        if uiView.isFirstResponder {
+          // Thread-hop to avoid a AttributeGraph cycle
+          DispatchQueue.main.async {
+            uiView.resignFirstResponder()
+          }
+        }
       }
     }
 
     func sizeThatFits(
       _ proposal: ProposedViewSize,
-      uiView: TabCollectionViewSearchTextField,
+      uiView: UISearchTextField,
       context: Context
     ) -> CGSize? {
-      return .init(width: proposal.replacingUnspecifiedDimensions().width, height: height)
+      return .init(width: proposal.replacingUnspecifiedDimensions().width, height: 36.0)
     }
 
     public func makeCoordinator() -> Coordinator {
@@ -120,22 +113,6 @@ extension TabGridSearchBar {
       public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-      }
-    }
-  }
-
-  class TabCollectionViewSearchTextField: UISearchTextField {
-    override var frame: CGRect {
-      didSet {
-        if oldValue == frame { return }
-        let translationToZeroAlpha = 12.0
-        let alpha =
-          ((frame.height - (TabGridSearchBar.defaultHeight - translationToZeroAlpha))
-            / translationToZeroAlpha)
-        let clampedAlpha = max(0.0, min(1.0, alpha))
-        subviews.filter { $0 is UILabel || $0 is UIImageView }.forEach {
-          $0.alpha = clampedAlpha
-        }
       }
     }
   }

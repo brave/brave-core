@@ -36,7 +36,7 @@ class TabGridCollectionViewLayout: UICollectionViewCompositionalLayout {
       let section = NSCollectionLayoutSection(group: group)
       section.interGroupSpacing = spacing
       section.contentInsets = .init(
-        top: padding,
+        top: 0,  // This is included in the content insets for the header toolbar
         leading: padding,
         bottom: padding,
         trailing: padding
@@ -48,19 +48,6 @@ class TabGridCollectionViewLayout: UICollectionViewCompositionalLayout {
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
-  }
-
-  override var collectionViewContentSize: CGSize {
-    var size = super.collectionViewContentSize
-    if let collectionView {
-      // Ensure there's enough room for the search bar
-      let visibleHeight =
-        collectionView.frame.height - collectionView.contentInset.top
-        - collectionView.contentInset.bottom
-      let searchBarContainerHeight = TabGridSearchBar.defaultHeight + TabGridSearchBar.padding
-      size.height = max(visibleHeight + searchBarContainerHeight, size.height)
-    }
-    return size
   }
 
   override func finalLayoutAttributesForDisappearingItem(
