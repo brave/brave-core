@@ -1,5 +1,5 @@
 diff --git a/build/config/android/config.gni b/build/config/android/config.gni
-index 45fdef9241ddaea98e0086b8b24fc15bf2e04f2e..d1c9ad7c5aef4f75eb51e6be39cb4d579f6163b2 100644
+index c9941f0de9bc26b6cc4528515ad8d03281311382..5d7a8bb787374c77561a5567e02395d4819e4376 100644
 --- a/build/config/android/config.gni
 +++ b/build/config/android/config.gni
 @@ -33,6 +33,7 @@ assert(!(enable_javaless_renderers && is_component_build),

@@ -1,9 +1,9 @@
 diff --git a/net/dns/host_cache.cc b/net/dns/host_cache.cc
-index e9043595abf9a90c7303a4ddbb4d203fb5d84342..7b726c70b68b27b79fd5ac6ceeb3a78f10c85020 100644
+index 625c0362830145f03cdde376678f5fdfcc2b1e6f..a4018b0386ba735d5d2c06a40d93989d45464c10 100644
 --- a/net/dns/host_cache.cc
 +++ b/net/dns/host_cache.cc
-@@ -500,6 +500,7 @@ HostCache::Entry HostCache::Entry::CopyWithDefaultPort(uint16_t port) const {
-       hostname = HostPortPair(hostname.host(), port);
+@@ -502,6 +502,7 @@ HostCache::Entry HostCache::Entry::CopyWithDefaultPort(uint16_t port) const {
+       hostname.set_port(port);
      }
    }
 +  BRAVE_COPY_WITH_DEFAULT_PORT
