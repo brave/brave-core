@@ -284,7 +284,7 @@ public class PasswordSettingsSearchTest {
         onView(withText(R.string.section_saved_passwords_exceptions)).check(doesNotExist());
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync(); // Close search view.
+        onViewWaiting(withText(R.string.section_saved_passwords_exceptions)); // Close search view.
 
         onView(withText(R.string.section_saved_passwords_exceptions)).check(matches(isDisplayed()));
     }
@@ -318,8 +318,8 @@ public class PasswordSettingsSearchTest {
                 VIEW_INVISIBLE | VIEW_GONE | VIEW_NULL);
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
         if (menuInitiallyVisible.get()) { // If the overflow menu was there, it should be restored.
+            onViewWaiting(withContentDescription(R.string.abc_action_menu_overflow_description));
             onView(withContentDescription(R.string.abc_action_menu_overflow_description))
                     .check(matches(isDisplayed()));
         }
@@ -339,7 +339,7 @@ public class PasswordSettingsSearchTest {
         onView(withText(R.string.password_settings_save_passwords)).check(doesNotExist());
 
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+        onViewWaiting(withText(R.string.password_settings_save_passwords));
 
         onView(withText(R.string.password_settings_save_passwords)).check(matches(isDisplayed()));
 
