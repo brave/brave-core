@@ -13,6 +13,7 @@ TEST(BraveLayoutConstantsTest, BraveValueTest) {
   EXPECT_FALSE(controller.touch_ui());
 
   EXPECT_EQ(gfx::Insets(4), GetLayoutInsets(TOOLBAR_BUTTON));
+  EXPECT_EQ(8, GetLayoutConstant(TOOLBAR_CORNER_RADIUS));
   EXPECT_EQ(28, GetLayoutConstant(TOOLBAR_BUTTON_HEIGHT));
   EXPECT_EQ(4, GetLayoutConstant(LOCATION_BAR_CHILD_CORNER_RADIUS));
   EXPECT_EQ(GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING),

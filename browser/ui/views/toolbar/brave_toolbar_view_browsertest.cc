@@ -35,6 +35,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/split_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -335,6 +336,16 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatDisabled,
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarDividerNotShownTest) {
   // As we don't use divider in toolbar, it should be null always.
   EXPECT_TRUE(!toolbar_view_->toolbar_divider_for_testing());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarCornerRadiusTest) {
+  // Check toolbar corner radius is always 8 regardless of active tab index.
+  EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
+  EXPECT_EQ(8, toolbar_view_->receding_corner_radius_);
+
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
+  EXPECT_EQ(8, toolbar_view_->receding_corner_radius_);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
