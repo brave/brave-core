@@ -3,16 +3,11 @@
   "extends": ["local>brave/renovate-config"],
   "addLabels": ["CI/skip", "dependencies", "renovate"],
   "draftPR": true,
-  "packageRules": [
-    {
-      "matchFileNames": ["components/**"],
-      "enabled": false
-    }
-  ],
   "ignorePaths": [
     "components/**",
     "test/**",
     "third_party/**",
-    "tools/crates/vendor/**"
+    "tools/crates/vendor/**",
+    "ui/webui/resources/wasm/**"
   ]
 }
