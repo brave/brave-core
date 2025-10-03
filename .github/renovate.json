@@ -5,9 +5,14 @@
   "draftPR": true,
   "packageRules": [
     {
-      "matchPaths": ["components/**"],
+      "matchFileNames": ["components/**"],
       "enabled": false
     }
   ],
-  "ignorePaths": ["components/**", "test/**", "third_party/**", "tools/crates/vendor/**"]
+  "ignorePaths": [
+    "components/**",
+    "test/**",
+    "third_party/**",
+    "tools/crates/vendor/**"
+  ]
 }
