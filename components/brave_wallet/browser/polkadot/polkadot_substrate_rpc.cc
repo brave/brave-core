@@ -267,7 +267,7 @@ void PolkadotSubstrateRpc::OnGetChainName(GetChainNameCallback callback,
 
 void PolkadotSubstrateRpc::GetAccountBalance(
     const std::string& chain_id,
-    base::span<const uint8_t, kSr25519PublicKeySize> pubkey,
+    base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
     GetAccountBalanceCallback callback) {
   // xxhash("System") | xxhash("Account")
   //

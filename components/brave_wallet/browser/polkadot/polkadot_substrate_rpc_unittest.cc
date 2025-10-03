@@ -157,7 +157,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   std::vector<uint8_t> out;
   base::HexStringToBytes(kPubKey, &out);
 
-  base::span<const uint8_t, kSr25519PublicKeySize> pubkey(out);
+  base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> pubkey(out);
 
   {
     // Account exists.
