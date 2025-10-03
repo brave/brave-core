@@ -90,6 +90,11 @@
 # switches::kSyncEnableBookmarksInTransportMode
 -InitialAccountBookmarkDeduplicatorTest.*
 
+# These tests fail because we patch ImageServiceConsentHelper::GetConsentStatus
+# to return false always
+-ImageServiceConsentHelperTest.*
+-ImageServiceImplTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
