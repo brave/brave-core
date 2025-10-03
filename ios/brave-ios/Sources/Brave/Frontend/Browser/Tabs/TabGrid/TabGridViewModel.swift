@@ -41,6 +41,8 @@ class TabGridViewModel {
 
   var searchQuery: String = "" {
     didSet {
+      // Avoid updating tabs if the search query hasn't changed
+      if oldValue == searchQuery { return }
       withAnimation {
         updateTabs()
       }

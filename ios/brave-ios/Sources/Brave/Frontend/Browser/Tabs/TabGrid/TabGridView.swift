@@ -108,17 +108,8 @@ struct TabGridView: View {
     return UINavigationController(rootViewController: controller)
   }
 
-  private var gridMaskInsets: EdgeInsets {
-    var insets = self.insets
-    if !isSearchBarHidden {
-      insets.top += TabGridSearchBar.defaultHeight + TabGridSearchBar.padding
-    }
-    return insets
-  }
-
   private var isSearchBarHidden: Bool {
-    (viewModel.isPrivateBrowsing && viewModel.tabs.isEmpty && !viewModel.isSearching)
-      || editMode == .active
+    (viewModel.isPrivateBrowsing && viewModel.tabs.isEmpty) || editMode == .active
   }
 
   var body: some View {
@@ -142,7 +133,7 @@ struct TabGridView: View {
           containerView: containerView,
           tabs: viewModel.tabs,
           isPrivateBrowsing: viewModel.isPrivateBrowsing,
-          insets: gridMaskInsets,
+          insets: insets,
           contextMenuForTabs: { tabs in
             contextMenu(for: tabs)
           },
@@ -154,12 +145,12 @@ struct TabGridView: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .mask {
       // TODO: Test Performance of this mask w/ and w/o drawingGroup
-      let radius = viewModel.isSearching ? 5 : 10.0
+      let radius = 5.0
       Color.black
         .blur(radius: radius)
         .padding(.horizontal, -(radius * 2))
         .padding(insets)
-        .padding(.top, viewModel.isSearching ? 44 + 8 : 0)
+        .animation(.toolbarsSizeAnimation, value: insets)
     }
     .background(alignment: .top) {
       if viewModel.isPrivateBrowsing, horizontalSizeClass == .compact {
@@ -172,10 +163,11 @@ struct TabGridView: View {
     }
     .background(Color(uiColor: browserColors.tabSwitcherBackground))
     .overlay(alignment: .top) {
-      VStack {
-        VStack {
-          let isHeaderDisabled = viewModel.isSearching || editMode == .active
+      VStack(spacing: 12) {
+        if !viewModel.isSearching {
+          let isHeaderDisabled = editMode == .active
           headerBar
+            .transition(.blurReplace().animation(.default))
             .animation(
               .default,
               body: { content in
@@ -184,36 +176,38 @@ struct TabGridView: View {
                   .disabled(isHeaderDisabled)
               }
             )
-          if editMode == .active {
-            editModeHeaderBar
-              .transition(.blurReplace())
-          }
         }
-        .onGeometryChange(for: CGFloat.self, of: \.size.height) {
-          insets.top = $0
-        }
-        .contentShape(.rect)  // Dont trigger background tap from tapping empty area
-        if !isSearchBarHidden {
+        if editMode == .active {
+          editModeHeaderBar
+            .transition(.blurReplace())
+        } else if !isSearchBarHidden {
           TabGridSearchBar(
             text: $viewModel.searchQuery,
             isFocused: $viewModel.isSearching,
             scrollView: containerView.collectionView
           )
-          .padding(.horizontal, 16)
         }
       }
+      .padding(.horizontal, 16)
+      // Asymmetrical padding because the bottom needs to account for some distance to the grid
+      .padding(.top, 8)
+      .padding(.bottom, 12)
+      .onGeometryChange(for: CGFloat.self, of: \.size.height) {
+        insets.top = $0
+      }
+      .contentShape(.rect)  // Dont trigger background tap from tapping empty area
     }
     .overlay(alignment: .bottom) {
-      Group {
-        if editMode == .active {
-          editModeFooterBar
-        } else {
-          if !viewModel.isSearching {
+      VStack {
+        Group {
+          if editMode == .active {
+            editModeFooterBar
+          } else if !viewModel.isSearching {
             footerBar
           }
         }
+        .transition(.blurReplace())
       }
-      .transition(.blurReplace())
       .onGeometryChange(for: CGFloat.self, of: \.size.height) {
         insets.bottom = $0
       }
@@ -416,8 +410,6 @@ struct TabGridView: View {
       .labelStyle(.iconOnly)
     }
     .foregroundStyle(Color(braveSystemName: .textSecondary))
-    .padding(.horizontal, 16)
-    .padding(.vertical, 8)
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
   }
 
@@ -521,7 +513,6 @@ struct TabGridView: View {
           .foregroundStyle(Color(braveSystemName: .textSecondary))
       }
     }
-    .padding(.horizontal, 16)
     .padding(.vertical, 4)
   }
 
@@ -747,6 +738,14 @@ private struct PrivateModeInfoView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
       }
     }
+  }
+}
+
+extension Animation {
+  /// A shared animation that will be used when animating the toolbar size like when searching or
+  /// entering multi-select mode
+  static var toolbarsSizeAnimation: Animation {
+    .spring(response: 0.3)
   }
 }
 
