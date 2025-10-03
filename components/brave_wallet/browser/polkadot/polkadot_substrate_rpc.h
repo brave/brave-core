@@ -8,8 +8,8 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/polkadot_utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_wallet {
@@ -39,7 +39,7 @@ class PolkadotSubstrateRpc {
 
   void GetAccountBalance(
       const std::string& chain_id,
-      base::span<const uint8_t, kSr25519PublicKeySize> pubkey,
+      base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
       GetAccountBalanceCallback callback);
 
  private:

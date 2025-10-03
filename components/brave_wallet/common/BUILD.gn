@@ -60,6 +60,7 @@ static_library("common") {
     "hash_utils.h",
     "hex_utils.cc",
     "hex_utils.h",
+    "polkadot_utils.h",
     "solana_address.cc",
     "solana_address.h",
     "solana_utils.cc",
