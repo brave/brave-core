@@ -204,6 +204,9 @@ export default class ReportView extends React.PureComponent<Props, State> {
                 {getLocale('issueCategoryPlaceholder')}
               </option>
               <option value='ads'>{getLocale('issueCategoryAds')}</option>
+              <option value='browser not supported'>
+                {getLocale('issueCategoryBrowserNotSupported')}
+              </option>
               <option value='blank'>{getLocale('issueCategoryBlank')}</option>
               <option value='scroll'>{getLocale('issueCategoryScroll')}</option>
               <option value='form'>{getLocale('issueCategoryForm')}</option>
@@ -236,9 +239,6 @@ export default class ReportView extends React.PureComponent<Props, State> {
                 className={hideUnlessHas('cjoooeeofnfjohnalnghhmdlalopplja')}
               >
                 {getLocale('issueCategoryChat')}
-              </option>
-              <option value='browser not supported'>
-                {getLocale('issueCategoryBrowserNotSupported')}
               </option>
               <option value='other'>{getLocale('issueCategoryOther')}</option>
             </Dropdown>
