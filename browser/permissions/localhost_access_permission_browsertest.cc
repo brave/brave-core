@@ -51,10 +51,7 @@ constexpr char kSimplePage[] = "/simple.html";
 
 class LocalhostAccessBrowserTest : public InProcessBrowserTest {
  public:
-  LocalhostAccessBrowserTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_shields::features::kBraveLocalhostAccessPermission);
-  }
+  LocalhostAccessBrowserTest() = default;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -472,22 +469,4 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, AdblockRuleException) {
   auto rules = original_rule + exception_rule;
   AddAdblockRule(rules);
   CheckAskAndAcceptFlow(target_url);
-}
-
-class LocalhostAccessBrowserTestFeatureDisabled
-    : public LocalhostAccessBrowserTest {
- public:
-  LocalhostAccessBrowserTestFeatureDisabled() {
-    feature_list_.Reset();
-    feature_list_.InitAndDisableFeature(
-        brave_shields::features::kBraveLocalhostAccessPermission);
-  }
-};
-
-IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTestFeatureDisabled,
-                       NoPermissionPrompt) {
-  std::string test_domain = "localhost";
-  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url = https_server_->GetURL(test_domain, kTestTargetPath);
-  CheckNoPromptFlow(true, target_url);
 }
