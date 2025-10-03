@@ -2340,7 +2340,8 @@ interface PolkadotWalletService {
   GetNetworkName(AccountId account)
       => (string? network, string? error_message);
 
-  GetAccountBalance(AccountId account) => (PolkadotAccountInfo? account_info, string? error_message);
+  GetAccountBalance(AccountId account)
+      => (PolkadotAccountInfo? account, string? error_message);
 };
 
 enum TransactionStatus {
