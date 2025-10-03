@@ -348,6 +348,12 @@ void WebcompatReporterService::GetWebcompatCategories(
   }
 
   categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kBrowserNotSupported,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_BROWSER_NOT_SUPPORTED)),
+      "browser not supported"));
+
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
       WebcompatCategory::kOther,
       base::UTF16ToUTF8(l10n_util::GetStringUTF16(
           IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_OTHER)),

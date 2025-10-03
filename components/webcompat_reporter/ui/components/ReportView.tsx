@@ -237,6 +237,7 @@ export default class ReportView extends React.PureComponent<Props, State> {
               >
                 {getLocale('issueCategoryChat')}
               </option>
+              <option value='browser not supported'> {getLocale('issueCategoryBrowserNotSupported')} </option>
               <option value='other'>{getLocale('issueCategoryOther')}</option>
             </Dropdown>
             <FieldCtr>

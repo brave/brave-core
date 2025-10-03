@@ -43,6 +43,7 @@ enum WebcompatCategory {
     kNewsletter,
     kSocial,
     kChat,
+    kBrowserNotSupported,
     kOther,
 };
 
