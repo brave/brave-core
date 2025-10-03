@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/config/android/rules.gni")
+
 source_set("unit_tests") {
   testonly = true
   sources = [
@@ -26,5 +28,19 @@ source_set("unit_tests") {
     "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
+  ]
+}
+
+android_library("test_support_java") {
+  testonly = true
+  sources = [ "test_support/java/src/org/chromium/chrome/browser/password_manager/FakePasswordManagerHandler.java" ]
+  deps = [
+    "//base:base_java",
+    "//build/android:build_java",
+    "//chrome/browser/password_manager/android:java",
+    "//content/public/test/android:content_java_test_support",
+    "//third_party/android_deps:protobuf_lite_runtime_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/jni_zero:jni_zero_java",
   ]
 }
