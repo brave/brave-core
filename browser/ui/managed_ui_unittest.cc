@@ -10,15 +10,15 @@
 
 namespace brave_policy {
 // Forward declare the function from chromium_src
-bool ShouldHideManagedUI(const policy::PolicyMap& policies);
+bool HasOnlyBravePolicies(const policy::PolicyMap& policies);
 }  // namespace brave_policy
 
-TEST(ManagedUiTest, ShouldHideManagedUI_EmptyPolicies) {
+TEST(ManagedUiTest, HasOnlyBravePolicies_EmptyPolicies) {
   policy::PolicyMap empty_policies;
-  EXPECT_FALSE(brave_policy::ShouldHideManagedUI(empty_policies));
+  EXPECT_TRUE(brave_policy::HasOnlyBravePolicies(empty_policies));
 }
 
-TEST(ManagedUiTest, ShouldHideManagedUI_OnlyBravePolicies) {
+TEST(ManagedUiTest, HasOnlyBravePolicies_OnlyBravePolicies) {
   policy::PolicyMap policies;
   policies.Set("BravePolicy1", policy::POLICY_LEVEL_MANDATORY,
                policy::POLICY_SCOPE_USER, policy::POLICY_SOURCE_BRAVE,
@@ -27,10 +27,10 @@ TEST(ManagedUiTest, ShouldHideManagedUI_OnlyBravePolicies) {
                policy::POLICY_SCOPE_MACHINE, policy::POLICY_SOURCE_BRAVE,
                base::Value("value2"), nullptr);
 
-  EXPECT_TRUE(brave_policy::ShouldHideManagedUI(policies));
+  EXPECT_TRUE(brave_policy::HasOnlyBravePolicies(policies));
 }
 
-TEST(ManagedUiTest, ShouldHideManagedUI_MixedPolicies) {
+TEST(ManagedUiTest, HasOnlyBravePolicies_MixedPolicies) {
   policy::PolicyMap policies;
   policies.Set("BravePolicy", policy::POLICY_LEVEL_MANDATORY,
                policy::POLICY_SCOPE_USER, policy::POLICY_SOURCE_BRAVE,
@@ -40,10 +40,10 @@ TEST(ManagedUiTest, ShouldHideManagedUI_MixedPolicies) {
                policy::POLICY_SOURCE_ENTERPRISE_DEFAULT,
                base::Value("enterprise_value"), nullptr);
 
-  EXPECT_FALSE(brave_policy::ShouldHideManagedUI(policies));
+  EXPECT_FALSE(brave_policy::HasOnlyBravePolicies(policies));
 }
 
-TEST(ManagedUiTest, ShouldHideManagedUI_OnlyNonBravePolicies) {
+TEST(ManagedUiTest, HasOnlyBravePolicies_OnlyNonBravePolicies) {
   policy::PolicyMap policies;
   policies.Set("CloudPolicy", policy::POLICY_LEVEL_MANDATORY,
                policy::POLICY_SCOPE_USER, policy::POLICY_SOURCE_CLOUD,
@@ -52,5 +52,5 @@ TEST(ManagedUiTest, ShouldHideManagedUI_OnlyNonBravePolicies) {
                policy::POLICY_SCOPE_MACHINE, policy::POLICY_SOURCE_PLATFORM,
                base::Value("platform_value"), nullptr);
 
-  EXPECT_FALSE(brave_policy::ShouldHideManagedUI(policies));
+  EXPECT_FALSE(brave_policy::HasOnlyBravePolicies(policies));
 }
