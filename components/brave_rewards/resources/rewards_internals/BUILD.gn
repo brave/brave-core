@@ -12,6 +12,10 @@ transpile_web_ui("rewards_internals") {
       ] ]
   resource_name = "rewards_internals"
   output_module = true
+  data = [
+    "//brave/components/brave_rewards/resources/",
+    "//brave/components/common/",
+  ]
   deps = [
     "//brave/components/brave_rewards/core/mojom:webui_js",
     "//mojo/public/js:resources",
