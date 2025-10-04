@@ -4,4 +4,5 @@ include_rules = [
   "+crypto",
   "+components/prefs",
   "+extensions/common",
+  "+net",
 ]
