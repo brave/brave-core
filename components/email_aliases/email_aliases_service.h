@@ -94,9 +94,6 @@ class EmailAliasesService : public KeyedService,
   // Returns the base URL for the Email Aliases service.
   static GURL GetEmailAliasesServiceURLForTesting();
 
-  // Returns the API key for the Email Aliases service.
-  static std::string GetEmailAliasesServiceAPIKeyForTesting();
-
  private:
   // Callback that receives the response body as an optional string.
   using BodyAsStringCallback =
