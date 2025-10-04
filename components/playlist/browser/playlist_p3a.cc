@@ -12,7 +12,7 @@
 #include "base/location.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
-#include "brave/components/playlist/browser/pref_names.h"
+#include "brave/components/playlist/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
 namespace playlist {
