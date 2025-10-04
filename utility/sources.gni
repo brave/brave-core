@@ -14,6 +14,7 @@ brave_utility_sources = [
 brave_utility_sources += brave_utility_importer_sources
 
 brave_utility_deps = [
+  "//brave/components/brave_shields/core/services/filter_set",
   "//brave/components/services/bat_ads:lib",
   "//brave/components/services/bat_ads/public/interfaces",
   "//brave/components/services/bat_rewards:lib",
