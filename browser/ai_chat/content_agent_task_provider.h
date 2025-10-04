@@ -36,6 +36,8 @@ class ContentAgentTaskProvider {
   virtual void GetOrCreateTabHandleForTask(
       base::OnceCallback<void(tabs::TabHandle)> callback) = 0;
 
+  // Execute the specified actions on their specified tab(s). The tabs must
+  // be added to the task prior to calling this method.
   // TODO(https://github.com/brave/brave-browser/issues/49289): Now that we can
   // send ToolRequest directly to the ActorKeyedService, this method can accept
   // those instead of the Actions proto. It will be nicer for the Tools to build

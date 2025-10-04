@@ -3,23 +3,23 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_AI_CHAT_TOOLS_NAVIGATION_TOOL_H_
-#define BRAVE_BROWSER_AI_CHAT_TOOLS_NAVIGATION_TOOL_H_
+#ifndef BRAVE_BROWSER_AI_CHAT_TOOLS_TYPE_TOOL_H_
+#define BRAVE_BROWSER_AI_CHAT_TOOLS_TYPE_TOOL_H_
 
+#include "base/values.h"
 #include "brave/browser/ai_chat/content_agent_task_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/actor/actor_keyed_service.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
+#include "components/optimization_guide/proto/features/actions_data.pb.h"
 
 namespace ai_chat {
 
-// Exposes an AI Chat Tool that creates a NavigateToolRequest action for use
-// with the ActorKeyedService.
-class NavigationTool : public Tool {
+// Exposes an AI Chat Tool that creates a TypeToolRequest action for use with
+// the ActorKeyedService.
+class TypeTool : public Tool {
  public:
-  explicit NavigationTool(ContentAgentTaskProvider* task_provider);
-  ~NavigationTool() override;
+  explicit TypeTool(ContentAgentTaskProvider* task_provider);
+  ~TypeTool() override;
 
   std::string_view Name() const override;
   std::string_view Description() const override;
@@ -31,21 +31,18 @@ class NavigationTool : public Tool {
                UseToolCallback callback) override;
 
  private:
-  void OnActionsFinished(UseToolCallback callback,
-                         optimization_guide::proto::ActionsResult result);
   void OnTabHandleCreated(UseToolCallback callback,
-                          GURL url,
+                          optimization_guide::proto::ActionTarget target,
+                          const std::string& text,
+                          bool follow_by_enter,
+                          const std::string& mode,
                           tabs::TabHandle tab_handle);
-  void OnTaskStateReceived(
-      UseToolCallback callback,
-      std::vector<mojom::ContentBlockPtr> tool_result,
-      std::optional<std::vector<mojom::ContentBlockPtr>> task_state);
 
   raw_ptr<ContentAgentTaskProvider> task_provider_ = nullptr;
 
-  base::WeakPtrFactory<NavigationTool> weak_ptr_factory_{this};
+  base::WeakPtrFactory<TypeTool> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_BROWSER_AI_CHAT_TOOLS_NAVIGATION_TOOL_H_
+#endif  // BRAVE_BROWSER_AI_CHAT_TOOLS_TYPE_TOOL_H_

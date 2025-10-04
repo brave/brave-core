@@ -8,10 +8,20 @@
 #include <memory>
 #include <vector>
 
+#include "brave/browser/ai_chat/tools/click_tool.h"
+#include "brave/browser/ai_chat/tools/drag_and_release_tool.h"
+#include "brave/browser/ai_chat/tools/history_tool.h"
+#include "brave/browser/ai_chat/tools/move_mouse_tool.h"
 #include "brave/browser/ai_chat/tools/navigation_tool.h"
+#include "brave/browser/ai_chat/tools/scroll_tool.h"
+#include "brave/browser/ai_chat/tools/select_tool.h"
+#include "brave/browser/ai_chat/tools/type_tool.h"
+#include "brave/browser/ai_chat/tools/wait_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/actor/actor_keyed_service.h"
 #include "chrome/browser/actor/actor_task.h"
@@ -28,13 +38,17 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/page_transition_types.h"
 
+static_assert(BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
+
 namespace ai_chat {
 
 ContentAgentToolProvider::ContentAgentToolProvider(
     Profile* profile,
     actor::ActorKeyedService* actor_service)
     : actor_service_(actor_service), profile_(profile) {
-  // This class should only exist with a valid actor service.
+  // This class should only exist if the feature is enabled
+  CHECK(ai_chat::features::IsAIChatAgentProfileEnabled());
+  // This class should only exist with a valid actor service
   CHECK(actor_service_);
 
   // Each conversation can have a different actor service task,
@@ -125,7 +139,15 @@ void ContentAgentToolProvider::ExecuteActions(
 void ContentAgentToolProvider::CreateTools() {
   tools_.clear();
 
-  tools_.push_back(std::make_unique<NavigationTool>(this, actor_service_));
+  tools_.push_back(std::make_unique<ClickTool>(this));
+  tools_.push_back(std::make_unique<DragAndReleaseTool>(this));
+  tools_.push_back(std::make_unique<HistoryTool>(this));
+  tools_.push_back(std::make_unique<MoveMouseTool>(this));
+  tools_.push_back(std::make_unique<NavigationTool>(this));
+  tools_.push_back(std::make_unique<ScrollTool>(this));
+  tools_.push_back(std::make_unique<SelectTool>(this));
+  tools_.push_back(std::make_unique<TypeTool>(this));
+  tools_.push_back(std::make_unique<WaitTool>(this));
 }
 
 void ContentAgentToolProvider::OnActionsFinished(
@@ -182,7 +204,7 @@ void ContentAgentToolProvider::ReceivedAnnotatedPageContent(
 
   // TODO(https://github.com/brave/brave-browser/issues/49301): implement
   // structured representation of page content
-  NOTREACHED();
+  std::move(callback).Run(CreateContentBlocksForText("Success"));
 }
 
 }  // namespace ai_chat
