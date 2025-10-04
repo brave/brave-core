@@ -20,13 +20,17 @@
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"
 #include "brave/browser/net/brave_network_audit_test_helper.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/password_manager/profile_password_store_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search/search.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/template_url_service.h"
 #include "content/public/test/browser_test.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -62,7 +66,8 @@ void WaitForTimeout(int timeout) {
   run_loop.Run();
 }
 
-class BraveNetworkAuditTest : public InProcessBrowserTest {
+class BraveNetworkAuditTest : public InProcessBrowserTest,
+                              public ::testing::WithParamInterface<bool> {
  public:
   BraveNetworkAuditTest() {
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -80,28 +85,51 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
+    if (IsPreTest()) {
+      return;
+    }
+
     base::FilePath source_root_path =
         base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT);
 
     // Full log containing all the network requests.
-    net_log_path_ = source_root_path.AppendASCII("network_log.json");
+    net_log_path_ = source_root_path.AppendASCII(
+        ShouldUseGoogleAsDefaultSearchEngine() ? "network_log_with_google.json"
+                                               : "network_log.json");
 
     // Log containing the results of the audit only.
-    audit_results_path_ =
-        source_root_path.AppendASCII("network_audit_results.json");
+    audit_results_path_ = source_root_path.AppendASCII(
+        ShouldUseGoogleAsDefaultSearchEngine()
+            ? "network_audit_results_with_google.json"
+            : "network_audit_results.json");
 
     command_line->AppendSwitchPath(network::switches::kLogNetLog,
                                    net_log_path_);
     command_line->AppendSwitchASCII(network::switches::kNetLogCaptureMode,
-                                    "Everything");
+                                    "Default");
   }
 
   void TearDownInProcessBrowserTestFixture() override {
+    if (IsPreTest()) {
+      return;
+    }
     VerifyNetworkAuditLog(net_log_path_, audit_results_path_,
                           std::vector<std::string>());
   }
 
   Profile* profile() { return browser()->profile(); }
+
+  TemplateURLService* template_url_service() {
+    return TemplateURLServiceFactory::GetForProfile(profile());
+  }
+
+  bool ShouldUseGoogleAsDefaultSearchEngine() { return GetParam(); }
+
+  bool IsPreTest() {
+    const std::string& test_name =
+        ::testing::UnitTest::GetInstance()->current_test_info()->name();
+    return test_name.substr(0, 4) == "PRE_";
+  }
 
  private:
   base::FilePath net_log_path_;
@@ -112,9 +140,28 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
 #endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 };
 
+// Changes default search engine before running the test. Some upstream code
+// may behave differently when Google is the default search engine.
+IN_PROC_BROWSER_TEST_P(BraveNetworkAuditTest, PRE_BasicTests) {
+  if (ShouldUseGoogleAsDefaultSearchEngine()) {
+    TemplateURL* google_turl = template_url_service()->GetTemplateURLForKeyword(
+        TemplateURLPrepopulateData::brave_google.keyword);
+    ASSERT_TRUE(google_turl);
+    template_url_service()->SetUserSelectedDefaultSearchProvider(google_turl);
+  }
+}
+
 // Loads brave://welcome first to simulate a first run and then loads another
 // URL, waiting some time after each load to allow gathering network requests.
-IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
+IN_PROC_BROWSER_TEST_P(BraveNetworkAuditTest, BasicTests) {
+  // Verify search engine
+  if (ShouldUseGoogleAsDefaultSearchEngine()) {
+    EXPECT_TRUE(search::DefaultSearchProviderIsGoogle(profile()));
+  } else {
+    EXPECT_EQ(
+        template_url_service()->GetDefaultSearchProvider()->prepopulate_id(),
+        TemplateURLPrepopulateData::brave_search.id);
+  }
   // Load the Welcome page.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://welcome")));
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
@@ -166,6 +213,15 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   EXPECT_EQ(builtin_panel_item_total, builtin_panel_item_count);
 #endif
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    NetworkAudit,
+    BraveNetworkAuditTest,
+    ::testing::Bool(),
+    [](const testing::TestParamInfo<BraveNetworkAuditTest::ParamType>& info) {
+      return absl::StrFormat("With%sAsDefaultSearchEngine",
+                             info.param ? "Google" : "Brave");
+    });
 
 }  // namespace
 }  // namespace brave
