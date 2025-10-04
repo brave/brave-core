@@ -228,6 +228,7 @@ public class BraveVPNSettingsViewController: TableViewController {
           ),
           accessory: .view(vpnSmartProxyToggleView),
           cellClass: BraveVPNLinkSwitchCell.self,
+          context: [BraveVPNLinkSwitchCell.textAccessoryKey: "leo.smart.proxy-routing"],
           uuid: vpnSmartProxySectionCellId
         ),
         Row(
@@ -296,6 +297,15 @@ public class BraveVPNSettingsViewController: TableViewController {
       for: userPreferredTunnelProtocol
     )
 
+    var smartProxyAvailable = false
+    if let activatedRegion = BraveVPN.activatedRegion {
+      smartProxyAvailable =
+        !activatedRegion.smartRoutingProxyState.isEmpty
+        && (BraveVPN.activatedRegion?.smartRoutingProxyState != kGRDRegionSmartRoutingProxyNone)
+    }
+    let rowContext =
+      smartProxyAvailable
+      ? [BraveVPNServerLocationCell.textAccessoryKey: "leo.smart.proxy-routing"] : nil
     let serverSection = Section(
       header: .title(Strings.VPN.settingsServerSection),
       rows: [
@@ -308,7 +318,8 @@ public class BraveVPNSettingsViewController: TableViewController {
           image: BraveVPN.serverLocation.isoCode?.regionFlagImage
             ?? UIImage(braveSystemNamed: "leo.globe"),
           accessory: .disclosureIndicator,
-          cellClass: MultilineSubtitleCell.self,
+          cellClass: BraveVPNServerLocationCell.self,
+          context: rowContext,
           uuid: locationCellId
         ),
         Row(
