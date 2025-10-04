@@ -472,11 +472,11 @@
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
     *** mDropdownViewInfoListManager;
     *** mDropdownViewInfoListBuilder;
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediator {
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediatorBase {
@@ -975,6 +975,8 @@
     *** getCustomUriRadioButton(...);
     *** getChromeNtpRadioButton(...);
 }
+
+-keep class org.chromium.components.browser_ui.settings.ContainedRadioButtonGroupPreference
 
 -keep class org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference
 

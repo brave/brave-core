@@ -16,8 +16,8 @@
 #include "brave/browser/ai_chat/tools/mock_content_agent_task_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "chrome/browser/actor/browser_action_util.h"
-#include "chrome/browser/actor/task_id.h"
 #include "chrome/browser/actor/tools/navigate_tool_request.h"
+#include "chrome/common/actor/task_id.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/test/browser_task_environment.h"
@@ -87,7 +87,7 @@ class NavigationToolTest : public testing::Test {
     EXPECT_EQ(navigate_action.url(), GURL(expected_url).spec());
 
     // Verify CreateToolRequest works and produces correct NavigateToolRequest
-    auto tool_request = actor::CreateToolRequest(action, nullptr);
+    auto tool_request = actor::CreateToolRequestForTesting(action);
     ASSERT_NE(tool_request, nullptr);
 
     auto* navigate_request =

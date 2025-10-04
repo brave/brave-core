@@ -97,8 +97,8 @@ PredictionManager::GetOnDeviceSupplementaryModelsInfoForWebUI() const {
 }
 
 void PredictionManager::MaybeInitializeModelDownloads(
-    PrefService* local_state,
-    download::BackgroundDownloadService* background_download_service) {}
+    ProfileDownloadServiceTracker& profile_download_service_tracker,
+    PrefService* local_state) {}
 
 base::FilePath PredictionManager::GetBaseModelDirForDownload(
     proto::OptimizationTarget optimization_target) {

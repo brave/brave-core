@@ -1,8 +1,8 @@
 diff --git a/net/proxy_resolution/configured_proxy_resolution_service.cc b/net/proxy_resolution/configured_proxy_resolution_service.cc
-index 10da415986312533bf574ea32cf8151b4732e535..0d81208ab4ffd54e7a8a68193349602c09fd3e91 100644
+index ab075a96d87e9e3f0a42999302915a8da062a046..80005537fe0fa066629b79dd49c35c81ef8e40f7 100644
 --- a/net/proxy_resolution/configured_proxy_resolution_service.cc
 +++ b/net/proxy_resolution/configured_proxy_resolution_service.cc
-@@ -984,6 +984,7 @@ int ConfiguredProxyResolutionService::ResolveProxy(
+@@ -977,6 +977,7 @@ int ConfiguredProxyResolutionService::ResolveProxy(
    // Check if the request can be completed right away. (This is the case when
    // using a direct connection for example).
    int rv = TryToCompleteSynchronously(url, result);

@@ -1,19 +1,19 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 307d4ddd0e384fc0fc1e609eb7f23799c83ccd9f..fef38e7ad5f1f4f450786409be25a0e0340201fe 100644
+index 84d6fad79064a3e8892037a62688a918c78582e7..0f4d307e14234fd36d82485e90ba0b4c2b12b54f 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -696,6 +696,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-       prefs::kNTPHomeCustomizationNewBadgeImpressionCount, 0);
+@@ -673,6 +673,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
-   registry->RegisterBooleanPref(prefs::kWidgetsForMultiProfile, false);
+   // Deprecated 09/2025.
+   registry->RegisterBooleanPref(prefs::kBottomOmnibox, false);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1148,6 +1149,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   registry->RegisterBooleanPref(kParcelTrackingDisabled, false);
-   registry->RegisterBooleanPref(
-       kHomeCustomizationMagicStackParcelTrackingEnabled, false);
+@@ -1106,6 +1107,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   registry->RegisterInt64Pref(kNtpShownBookmarksFolder, 0);
+   registry->RegisterStringPref(kGaiaCookieLastListAccountsData, std::string());
+   registry->RegisterStringPref(kFRESourceTrial, std::string());
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  

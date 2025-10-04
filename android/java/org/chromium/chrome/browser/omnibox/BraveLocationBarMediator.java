@@ -20,6 +20,7 @@ import org.chromium.build.annotations.NullUnmarked;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
+import org.chromium.chrome.browser.omnibox.navattach.NavigationFulfillmentType;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeUtils;
@@ -64,7 +65,9 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             OmniboxSuggestionsDropdownEmbedderImpl dropdownEmbedder,
             @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
-            Supplier<ModalDialogManager> modalDialogManagerSupplier) {
+            Supplier<ModalDialogManager> modalDialogManagerSupplier,
+            ObservableSupplier<@NavigationFulfillmentType Integer>
+                    navigationFulfillmentTypeSupplier) {
         super(
                 context,
                 locationBarLayout,
@@ -83,7 +86,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 dropdownEmbedder,
                 tabModelSelectorSupplier,
                 browserControlsStateProvider,
-                modalDialogManagerSupplier);
+                modalDialogManagerSupplier,
+                navigationFulfillmentTypeSupplier);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {

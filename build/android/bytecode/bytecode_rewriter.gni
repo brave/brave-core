@@ -87,8 +87,6 @@ template("brave_bytecode_rewriter") {
       rebase_path(_java_bytecode_rewriter_input_jar, root_build_dir),
       "--output-jar",
       rebase_path(invoker._bytecode_rewriter_output_jar, root_build_dir),
-      "--direct-classpath-jars",
-      "@FileArg($_rebased_build_config:classpath)",
       "--sdk-classpath-jars",
       "@FileArg($_rebased_build_config:sdk_jars)",
       "--extra-classpath-jars",

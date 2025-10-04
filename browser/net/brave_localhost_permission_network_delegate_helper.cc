@@ -120,11 +120,13 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
   auto* permission_controller =
       contents->GetBrowserContext()->GetPermissionController();
   auto current_status =
-      permission_controller->GetPermissionStatusForCurrentDocument(
-          content::PermissionDescriptorUtil::
-              CreatePermissionDescriptorForPermissionType(
-                  blink::PermissionType::BRAVE_LOCALHOST_ACCESS),
-          /* rfh */ contents->GetPrimaryMainFrame());
+      permission_controller
+          ->GetPermissionResultForCurrentDocument(
+              content::PermissionDescriptorUtil::
+                  CreatePermissionDescriptorForPermissionType(
+                      blink::PermissionType::BRAVE_LOCALHOST_ACCESS),
+              /* rfh */ contents->GetPrimaryMainFrame())
+          .status;
 
   switch (current_status) {
     case blink::mojom::PermissionStatus::GRANTED: {

@@ -5,6 +5,8 @@
 
 #include "components/sync/service/sync_session_durations_metrics_recorder.h"
 
+#include "base/notreached.h"
+
 namespace syncer {
 
 SyncSessionDurationsMetricsRecorder::SyncSessionDurationsMetricsRecorder(
@@ -51,5 +53,9 @@ bool SyncSessionDurationsMetricsRecorder::IsSyncing() const {
 
 void SyncSessionDurationsMetricsRecorder::OnIdentityManagerShutdown(
     signin::IdentityManager* identity_manager) {}
+
+void SyncSessionDurationsMetricsRecorder::OnSyncShutdown(SyncService* sync) {
+  NOTREACHED();
+}
 
 }  // namespace syncer

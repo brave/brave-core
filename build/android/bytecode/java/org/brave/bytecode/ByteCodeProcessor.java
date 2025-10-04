@@ -49,13 +49,7 @@ class ByteCodeProcessor {
     private static final String CLASS_FILE_SUFFIX = ".class";
     private static final String TEMPORARY_FILE_SUFFIX = ".temp";
     private static final int BUFFER_SIZE = 16384;
-    private static boolean sVerbose;
-    private static boolean sIsPrebuilt;
     private static boolean sShouldUseThreadAnnotations;
-    private static boolean sShouldCheckClassPath;
-    private static ClassLoader sDirectClassPathClassLoader;
-    private static ClassLoader sFullClassPathClassLoader;
-    private static Set<String> sFullClassPathJarPaths;
     private static Set<String> sMissingClassesAllowlist;
     private static ClassPathValidator sValidator;
 
@@ -88,11 +82,6 @@ class ByteCodeProcessor {
         }
 
         ClassReader reader = new ClassReader(data);
-        if (sShouldCheckClassPath) {
-            sValidator.validateClassPathsAndOutput(reader, sDirectClassPathClassLoader,
-                    sFullClassPathClassLoader, sFullClassPathJarPaths, sIsPrebuilt, sVerbose,
-                    sMissingClassesAllowlist);
-        }
 
         ClassWriter writer = new ClassWriter(reader, 0);
         ClassVisitor chain = writer;
@@ -165,7 +154,7 @@ class ByteCodeProcessor {
                     sValidator.getErrors().entrySet()) {
                 printValidationError(System.err, entry.getKey(), entry.getValue());
             }
-            System.exit(1);
+            throw new RuntimeException("Program failed, see details above");
         }
     }
 
@@ -239,34 +228,13 @@ class ByteCodeProcessor {
         int currIndex = 0;
         String inputJarPath = args[currIndex++];
         String outputJarPath = args[currIndex++];
-        sVerbose = args[currIndex++].equals("--verbose");
-        sIsPrebuilt = args[currIndex++].equals("--is-prebuilt");
         sShouldUseThreadAnnotations = args[currIndex++].equals("--enable-thread-annotations");
-        sShouldCheckClassPath = args[currIndex++].equals("--enable-check-class-path");
 
         sMissingClassesAllowlist = new HashSet<>();
         currIndex = parseListArgument(args, currIndex, sMissingClassesAllowlist);
 
         ArrayList<String> sdkJarPaths = new ArrayList<>();
-        currIndex = parseListArgument(args, currIndex, sdkJarPaths);
-
-        ArrayList<String> directClassPathJarPaths = new ArrayList<>();
-        directClassPathJarPaths.add(inputJarPath);
-        directClassPathJarPaths.addAll(sdkJarPaths);
-        currIndex = parseListArgument(args, currIndex, directClassPathJarPaths);
-        sDirectClassPathClassLoader = loadJars(directClassPathJarPaths);
-
-        // Load all jars that are on the classpath for the input jar for analyzing class
-        // hierarchy.
-        sFullClassPathJarPaths = new HashSet<>();
-        sFullClassPathJarPaths.clear();
-        sFullClassPathJarPaths.add(inputJarPath);
-        sFullClassPathJarPaths.addAll(sdkJarPaths);
-        sFullClassPathJarPaths.addAll(
-                Arrays.asList(Arrays.copyOfRange(args, currIndex, args.length)));
-
-        sFullClassPathClassLoader = loadJars(sFullClassPathJarPaths);
-        sFullClassPathJarPaths.removeAll(directClassPathJarPaths);
+        parseListArgument(args, currIndex, sdkJarPaths);
 
         sValidator = new ClassPathValidator();
         process(inputJarPath, outputJarPath);

@@ -30,7 +30,7 @@
 #include "ui/color/color_provider_key.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/color/color_provider_source.h"
-#include "ui/native_theme/test_native_theme.h"
+#include "ui/native_theme/mock_os_settings_provider.h"
 
 using brave_shields::ControlType;
 using brave_shields::features::kBraveDarkModeBlock;
@@ -45,19 +45,6 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
     feature_list_.InitAndEnableFeature(
         brave_shields::features::kBraveShowStrictFingerprintingMode);
   }
-
-  class BraveContentBrowserClientWithWebTheme
-      : public BraveContentBrowserClient {
-   public:
-    explicit BraveContentBrowserClientWithWebTheme(const ui::NativeTheme* theme)
-        : theme_(theme) {}
-
-   protected:
-    const ui::NativeTheme* GetWebTheme() const override { return theme_; }
-
-   private:
-    const raw_ptr<const ui::NativeTheme, DanglingUntriaged> theme_;
-  };
 
   class MockColorProviderSource : public ui::ColorProviderSource {
    public:
@@ -94,9 +81,6 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-
-    content::SetBrowserClientForTesting(
-        new BraveContentBrowserClientWithWebTheme(&test_theme_));
 
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
@@ -135,7 +119,9 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
   }
 
   void SetDarkMode(bool dark_mode) {
-    test_theme_.SetDarkMode(dark_mode);
+    os_settings_provider_.SetPreferredColorScheme(
+        dark_mode ? ui::NativeTheme::PreferredColorScheme::kDark
+                  : ui::NativeTheme::PreferredColorScheme::kLight);
     browser()
         ->tab_strip_model()
         ->GetActiveWebContents()
@@ -173,7 +159,7 @@ class BraveDarkModeFingerprintProtectionTest : public InProcessBrowserTest {
   }
 
  protected:
-  ui::TestNativeTheme test_theme_;
+  ui::MockOsSettingsProvider os_settings_provider_;
   MockColorProviderSource dark_color_provider_source_{true};
   MockColorProviderSource light_color_provider_source_{false};
 

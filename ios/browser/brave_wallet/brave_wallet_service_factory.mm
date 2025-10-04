@@ -56,9 +56,7 @@ BraveWalletServiceFactory::BraveWalletServiceFactory()
 BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
 std::unique_ptr<KeyedService>
-BraveWalletServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
-  auto* profile = ProfileIOS::FromBrowserState(context);
+BraveWalletServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
   std::unique_ptr<BraveWalletService> service(new BraveWalletService(
       profile->GetSharedURLLoaderFactory(),
       std::make_unique<BraveWalletServiceDelegateIos>(profile),

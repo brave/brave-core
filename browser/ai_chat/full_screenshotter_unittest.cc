@@ -333,7 +333,7 @@ TEST_F(FullScreenshotterTest, CaptureFailedAllErrorStates) {
 
   for (auto status : kErrorStatuses) {
     LaxMockPaintPreviewRecorder recorder;
-    recorder.SetResponse(status);
+    recorder.SetResponse(base::unexpected(status));
     OverrideInterface(&recorder);
 
     auto result = CaptureScreenshots(web_contents());
@@ -367,8 +367,7 @@ TEST_F(FullScreenshotterTest, BeginMainFrameCompositeFailed) {
     response->geometry_metadata =
         paint_preview::mojom::GeometryMetadataResponse::New();
     response->skp.emplace(mojo_base::BigBuffer(true));
-    recorder.SetResponse(paint_preview::mojom::PaintPreviewStatus::kOk,
-                         std::move(response));
+    recorder.SetResponse(std::move(response));
     OverrideInterface(&recorder);
 
     auto result = CaptureScreenshots(web_contents());
@@ -429,8 +428,7 @@ TEST_F(FullScreenshotterTest, CompositionSucceeded) {
     response->geometry_metadata =
         paint_preview::mojom::GeometryMetadataResponse::New();
     response->skp.emplace(mojo_base::BigBuffer(true));
-    recorder.SetResponse(paint_preview::mojom::PaintPreviewStatus::kOk,
-                         std::move(response));
+    recorder.SetResponse(std::move(response));
     OverrideInterface(&recorder);
 
     auto result = CaptureScreenshots(web_contents());
@@ -478,8 +476,7 @@ TEST_F(FullScreenshotterTest, BitmapForMainFrameFailed) {
     response->geometry_metadata =
         paint_preview::mojom::GeometryMetadataResponse::New();
     response->skp.emplace(mojo_base::BigBuffer(true));
-    recorder.SetResponse(paint_preview::mojom::PaintPreviewStatus::kOk,
-                         std::move(response));
+    recorder.SetResponse(std::move(response));
     OverrideInterface(&recorder);
 
     auto result = CaptureScreenshots(web_contents());
