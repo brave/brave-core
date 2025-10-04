@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -59,6 +60,10 @@ class BraveTabStripModel : public TabStripModel {
   void OnTreeTabRelatedPrefChanged();
   void BuildTreeTabs();
   void FlattenTreeTabs();
+
+  tabs::BraveTabStripCollection* contents_data() {
+    return static_cast<tabs::BraveTabStripCollection*>(contents_data_.get());
+  }
 
   tabs::TabStripCollection& GetTabStripCollectionForTesting();
 
