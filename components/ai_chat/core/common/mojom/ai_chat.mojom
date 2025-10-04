@@ -5,7 +5,6 @@
 
 module ai_chat.mojom;
 
-import "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom";
 import "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
@@ -745,4 +744,82 @@ interface Metrics {
 interface IAPSubscription {
   GetPurchaseTokenOrderId() => (string token, string order_id);
   SetLinkStatus(int32 status);
+};
+
+// Interfaces for communication between the untrusted content frame and both
+// the Browser and the parent trusted UI frame.
+
+// Trusted WebUI-side handler for messages from the untrusted child frame
+interface ParentUIFrame {
+  // <iframe> cannot be sized to the natural height of its content, so the child
+  // must let the parent know whenever the body height changes so that the
+  // parent can manually set the same height on the <iframe> to avoid scrolling.
+  ChildHeightChanged(uint32 height);
+
+  // This is sent to the parent trusted webui rather than straight to the
+  // browser to allow for further rating feedback to be attached. The parent
+  // frame deals with it instead of the child frame, due to UI space as well as
+  // sensitive user information being captured.
+  RateMessage(string turn_uuid, bool is_liked);
+
+  // This is sent to the parent trusted webui to allow displaying the
+  // open external link modal outside of the untrusted iframe. This is
+  // to prevent the modal backdrop from being clipped within the iframe
+  // and fixes centering the modal in the page view. The parent frame
+  // then deals with whether to display the modal or to continue opening
+  // the link.
+  UserRequestedOpenGeneratedUrl(url.mojom.Url url);
+
+  // Notify the parent that the child has received a drag enter. We don't have
+  // a corresponding DragEnd because the parent should intercept the drag event
+  // with an overlay.
+  DragStart();
+
+  // This is sent to the parent trusted webui to allow settings the iframes
+  // wrapper position to relative while the Regenerate Answer Menu is open.
+  // Otherwise the menu can sometimes be overlapped by the Suggested question
+  // buttons.
+  RegenerateAnswerMenuIsOpen(bool is_open);
+
+  // Show the smart mode creation dialog with the provided prompt text
+  ShowSmartModeDialog(string prompt);
+};
+
+// UI-side handler for callbacks from UntrustedUIHandler
+interface UntrustedUI {
+  // Called when memories have changed (added, updated, or deleted)
+  OnMemoriesChanged(array<string> memories);
+};
+
+// Browser-side handler for untrusted frame that handles rendering of
+// conversation entries.
+interface UntrustedUIHandler {
+  // Bind the conversation handler
+  BindConversationHandler(
+    string conversation_id,
+    pending_receiver<UntrustedConversationHandler> conversation_handler
+  );
+
+  // Bind UntrustedUI for callbacks
+  BindUntrustedUI(pending_remote<UntrustedUI> untrusted_ui);
+
+  // Open a URL for the web search query the assistant used for a response
+  OpenSearchURL(string query);
+
+  OpenLearnMoreAboutBraveSearchWithLeo();
+
+  // Opens a URL linked from an assistant response or web search event in the
+  // response. Could be any http/https destination.
+  OpenURLFromResponse(url.mojom.Url url);
+
+  // Open AI Chat customization settings page
+  OpenAIChatCustomizationSettings();
+
+  BindParentPage(pending_receiver<ParentUIFrame> parent_frame);
+
+  // Delete a specific memory from user memory storage
+  DeleteMemory(string memory);
+
+  // Check if a specific memory exists in storage
+  HasMemory(string memory) => (bool exists);
 };
