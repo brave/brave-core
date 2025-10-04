@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/net/stub_resolver_config_reader.cc b/chrome/browser/net/stub_resolver_config_reader.cc
+index a0cee69a4cc2cf6feff770e03c3f924b0b1108b8..92f1eab5b3fc2d6c5d09f02c4d411fc53982fbf0 100644
+--- a/chrome/browser/net/stub_resolver_config_reader.cc
++++ b/chrome/browser/net/stub_resolver_config_reader.cc
+@@ -268,6 +268,7 @@ bool StubResolverConfigReader::ShouldDisableDohForParentalControls() {
+   if (parental_controls_testing_override_.has_value())
+     return parental_controls_testing_override_.value();
+ 
++BRAVE_SHOULD_DISABLE_DOH_FOR_MACOS_PARENTAL_CONTROLS
+ #if BUILDFLAG(IS_WIN)
+   return ShouldDisableDohForWindowsParentalControls();
+ #else
