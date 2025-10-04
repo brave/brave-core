@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 
+// static
 int BraveContentsViewUtil::GetBorderRadius() {
   if (@available(macOS 26, *)) {
     return 18;

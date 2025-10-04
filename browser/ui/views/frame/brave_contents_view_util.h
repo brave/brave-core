@@ -22,6 +22,7 @@ class BraveContentsViewUtil {
   static constexpr int kMarginThickness = 8;
 
   // The border radius applied to main content areas.
+  // Different value per platforms.
   static int GetBorderRadius();
 
   // Creates a drop shadow for the specified content area view.
