@@ -47,6 +47,10 @@ class BraveTabStripModel : public TabStripModel {
   void SetCustomTitleForTab(int index,
                             const std::optional<std::u16string>& title);
 
+  // Sets the custom emoji favicon for the tab at the specified index.
+  void SetCustomEmojiFaviconForTab(
+      int index, const std::optional<std::u16string>& emoji);
+
   // TabStripModel:
   void SelectRelativeTab(TabRelativeDirection direction,
                          TabStripUserGestureDetails detail) override;
