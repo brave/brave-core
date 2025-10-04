@@ -11,6 +11,7 @@ import InputBox from '../../../../ai_chat/resources/page/components/input_box'
 import { useRewriterContext } from '../Context'
 import InitialText from './InitialText'
 import NoContent from './NoContent'
+import { stringifyContent } from '../../../../ai_chat/resources/page/components/input_box/editable'
 
 const FiltersContainer = styled.div`
   display: flex;
@@ -45,8 +46,9 @@ export default function BeginGeneration() {
         <InputBox
           conversationStarted
           context={{
-            inputText: context.instructionsText,
-            setInputText: context.setInstructionsText,
+            inputText: [context.instructionsText],
+            setInputText: (c) =>
+              context.setInstructionsText(stringifyContent(c)),
             isToolsMenuOpen: context.isToolsMenuOpen,
             setIsToolsMenuOpen: context.setIsToolsMenuOpen,
             resetSelectedActionType: context.resetSelectedActionType,
