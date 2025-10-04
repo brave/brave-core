@@ -6,39 +6,18 @@
 # Ignore HTML Files - incompatible with presubmit rules
 *.html
 
-# Ignore non-component top level folders (remove to opt-in):
-/android
-/app
-/base
-/brave_domains
+# Ignore some non-component top level folders (remove to opt-in):
 /chromium_src
-/common
-/content
-/coverage
 /docs
-/extensions
-/fuzzers
-/installer
 /ios
-/mojo
-/net
-/patches
-/renderer
 /resources
-/sandbox
-/script
-/services
 /test
-/third_party
-/ui
-/utility
-/v8
-/vector_icons
-/win_build_output
 /.storybook/
 
 # Ignore external dependencies:
-tools/crates/vendor/
+/tools/crates/vendor/
+/third_party/
+/ui/webui/resources/wasm/vendor/
 
 # Ignore github .yml files:
 .github/**/*.yml
@@ -103,3 +82,8 @@ components/brave_wallet/resources/solana_web3_script.js
 /components/test/
 /components/translate/
 /components/variations/
+
+# Ignore some folders that still need to be formatted
+/ui/webui/resources/
+/android/java/org/chromium/chrome/browser/
+/common/extensions/api/
