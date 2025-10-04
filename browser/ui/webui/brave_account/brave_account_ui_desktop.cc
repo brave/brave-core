@@ -23,7 +23,7 @@ namespace {
 
 constexpr float kDialogBorderRadius = 16;
 constexpr int kDialogWidth = 500;
-constexpr gfx::Size kDialogMinSize(kDialogWidth, 470);
+constexpr gfx::Size kDialogMinSize(kDialogWidth, 336);
 constexpr gfx::Size kDialogMaxSize(kDialogWidth, 794);
 
 class BraveAccountDialogDelegate : public ui::WebDialogDelegate {

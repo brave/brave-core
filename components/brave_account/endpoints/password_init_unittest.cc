@@ -38,7 +38,6 @@ const PasswordInitTestCase* Success() {
          response.verification_token = "eyJhbGciOiJFUz";
          return response;
        }()});
-
   return kSuccess.get();
 }
 
@@ -66,11 +65,8 @@ const PasswordInitTestCase* ApplicationJsonError() {
        .reply = base::unexpected([] {
          PasswordInit::Error error;
          error.code = 13004;
-         error.error = "account already exists";
-         error.status = 400;
          return error;
        }())});
-
   return kApplicationJsonError.get();
 }
 
@@ -84,7 +80,6 @@ const PasswordInitTestCase* NonApplicationJsonError() {
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
            .raw_reply = "non-application/json error",
            .reply = base::unexpected(std::nullopt)});
-
   return kNonApplicationJsonError.get();
 }
 
@@ -101,6 +96,6 @@ INSTANTIATE_TEST_SUITE_P(PasswordInitTestCases,
                          testing::Values(Success(),
                                          ApplicationJsonError(),
                                          NonApplicationJsonError()),
-                         PasswordInitTest::NameGenerator);
+                         PasswordInitTest::kNameGenerator);
 
 }  // namespace brave_account::endpoints
