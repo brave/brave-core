@@ -427,4 +427,23 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
     applyCompletion()
     super.touchesBegan(touches, with: event)
   }
+
+  public override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+    guard isSelectionActive else {
+      super.pressesEnded(presses, with: event)
+      return
+    }
+
+    for press in presses {
+      guard let key = press.key else { continue }
+      let charactersIsRightArrow = key.charactersIgnoringModifiers == UIKeyCommand.inputRightArrow
+      let keycodeIsRightArrow = key.keyCode == .keyboardRightArrow
+      if charactersIsRightArrow || keycodeIsRightArrow {
+        applyCompletion()
+        break
+      }
+    }
+
+    super.pressesEnded(presses, with: event)
+  }
 }
