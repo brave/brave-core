@@ -188,13 +188,11 @@ class TabGridContainerView: UIView {
         collectionView.contentOffset.y = -maskInsets.top
       }
     }
-    if #available(iOS 18, *) {
-      UIView.animate(.toolbarsSizeAnimation, changes: animations)
-    } else {
-      let animator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.825)
-      animator.addAnimations(animations)
-      animator.startAnimation()
-    }
+    // iOS 18+'s SwiftUI animation sharing feature is broken and causes weird jumps so we can't use
+    // Animation.toolbarsSizeAnimation directly
+    let animator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.825)
+    animator.addAnimations(animations)
+    animator.startAnimation()
   }
 
   private func applyTabsSnapshot(animated: Bool) {
