@@ -18,6 +18,12 @@ import styles from './style.module.scss'
 
 const AUTO_MODEL_KEY = 'chat-automatic'
 
+function isOllamaModel(model: Mojom.Model): boolean {
+  return !!(
+    model.options.customModelOptions?.endpoint.url === Mojom.OLLAMA_ENDPOINT
+  )
+}
+
 export function ModelSelector() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
@@ -150,7 +156,7 @@ export function ModelSelector() {
               className={styles.modelIcon}
               data-key={model.key}
             >
-              <Icon name={getModelIcon(model.key)} />
+              <Icon name={getModelIcon(model)} />
             </div>
             <div className={styles.menuText}>
               <div>{model.displayName}</div>
@@ -180,7 +186,11 @@ export function ModelSelector() {
                 mode='default'
                 color='blue'
               >
-                {getLocale(S.CHAT_UI_MODEL_LOCAL_LABEL)}
+                {getLocale(
+                  isOllamaModel(model)
+                    ? S.CHAT_UI_MODEL_OLLAMA_LABEL
+                    : S.CHAT_UI_MODEL_LOCAL_LABEL,
+                )}
               </Label>
             )}
           </leo-menu-item>
@@ -201,7 +211,7 @@ export function ModelSelector() {
                 className={styles.modelIcon}
                 data-key={model.key}
               >
-                <Icon name={getModelIcon(model.key)} />
+                <Icon name={getModelIcon(model)} />
               </div>
               <div className={styles.menuText}>
                 <div>{model.displayName}</div>
@@ -240,7 +250,7 @@ export function ModelSelector() {
                 className={styles.modelIcon}
                 data-key={model.key}
               >
-                <Icon name={getModelIcon(model.key)} />
+                <Icon name={getModelIcon(model)} />
               </div>
               <div className={styles.menuText}>
                 <div>{model.displayName}</div>
@@ -253,7 +263,11 @@ export function ModelSelector() {
                 mode='default'
                 color='blue'
               >
-                {getLocale(S.CHAT_UI_MODEL_LOCAL_LABEL)}
+                {getLocale(
+                  isOllamaModel(model)
+                    ? S.CHAT_UI_MODEL_OLLAMA_LABEL
+                    : S.CHAT_UI_MODEL_LOCAL_LABEL,
+                )}
               </Label>
             </leo-menu-item>
           )
