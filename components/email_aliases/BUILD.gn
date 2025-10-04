@@ -63,7 +63,6 @@ source_set("unit_tests") {
     "//brave/components/email_aliases:features",
     "//brave/components/email_aliases:service",
     "//brave/components/resources:strings_grit",
-    "//brave/components/constants",
     "//components/prefs:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp",
