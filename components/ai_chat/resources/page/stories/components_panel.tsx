@@ -133,7 +133,19 @@ const CONVERSATIONS: Mojom.Conversation[] = [
 const toolEvents: Mojom.ToolUseEvent[] = [
   {
     id: 'abc123d',
+    toolName: 'tool_one',
+    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: [createTextContentBlock('7:00pm')],
+  },
+  {
+    id: 'abc123d',
     toolName: 'user_choice_tool',
+    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: [createTextContentBlock('7:00pm')],
+  },
+  {
+    id: 'abc123d',
+    toolName: 'tool_two',
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: [createTextContentBlock('7:00pm')],
   },
@@ -147,6 +159,105 @@ const toolEvents: Mojom.ToolUseEvent[] = [
     id: 'abc123f',
     toolName: 'user_choice_tool',
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: undefined,
+  },
+  {
+    id: 'todo123a',
+    toolName: 'todo_write',
+    argumentsJson: JSON.stringify({
+      merge: false,
+      todos: [
+        {
+          id: 'auth-setup',
+          content: 'Implement OAuth authentication system',
+          status: 'completed',
+        },
+        {
+          id: 'db-design',
+          content: 'Design user database schema',
+          status: 'completed',
+        },
+        {
+          id: 'api-endpoints',
+          content: 'Create REST API endpoints',
+          status: 'in_progress',
+        },
+        {
+          id: 'frontend-ui',
+          content: 'Build responsive user interface',
+          status: 'pending',
+        },
+        {
+          id: 'testing',
+          content: 'Add comprehensive unit tests',
+          status: 'pending',
+        },
+        {
+          id: 'deployment',
+          content: 'Set up production deployment pipeline',
+          status: 'cancelled',
+        },
+      ],
+    }),
+    output: [
+      createTextContentBlock(
+        JSON.stringify({
+          status: 'success',
+          total_todos: 6,
+          current_todos: [
+            {
+              id: 'auth-setup',
+              content: 'Implement OAuth authentication system',
+              status: 'completed',
+            },
+            {
+              id: 'db-design',
+              content: 'Design user database schema',
+              status: 'completed',
+            },
+            {
+              id: 'api-endpoints',
+              content: 'Create REST API endpoints',
+              status: 'in_progress',
+            },
+            {
+              id: 'frontend-ui',
+              content: 'Build responsive user interface',
+              status: 'pending',
+            },
+            {
+              id: 'testing',
+              content: 'Add comprehensive unit tests',
+              status: 'pending',
+            },
+            {
+              id: 'deployment',
+              content: 'Set up production deployment pipeline',
+              status: 'cancelled',
+            },
+          ],
+        }),
+      ),
+    ],
+  },
+  {
+    id: 'todo123b',
+    toolName: 'todo_write',
+    argumentsJson: JSON.stringify({
+      merge: true,
+      todos: [
+        {
+          id: 'bug-fix',
+          content: 'Fix login validation bug',
+          status: 'in_progress',
+        },
+        {
+          id: 'performance',
+          content: 'Optimize database queries',
+          status: 'pending',
+        },
+      ],
+    }),
     output: undefined,
   },
 ]
@@ -755,6 +866,9 @@ const HISTORY: Mojom.ConversationTurn[] = [
           + '1962              |\n'
           + "\n\n Let me know if you'd like more details!",
       ),
+      ...toolEvents
+        .slice(0, 3)
+        .map((toolUseEvent) => ({ ...eventTemplate, toolUseEvent })),
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
@@ -775,8 +889,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
         'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
       ),
       ...toolEvents
-        .slice(0, 3)
-        .map((toolUseEvent) => ({ ...eventTemplate, toolUseEvent })),
+        .slice(3, 5)
+        .map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent })),
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
@@ -793,9 +907,23 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [
-      ...toolEvents
-        .slice(3)
-        .map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent })),
+      getCompletionEvent('Ah, now I have the answer!'),
+      {
+        ...eventTemplate,
+        toolUseEvent: toolEvents[4],
+      },
+      {
+        ...eventTemplate,
+        toolUseEvent: {
+          id: 'abc123d',
+          toolName: Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME,
+          argumentsJson: JSON.stringify({
+            information:
+              'This is some data that the LLM wants to store for later before other tool use responses get removed from context because they are too large',
+          }),
+          output: [createTextContentBlock('Stored, refer to input for data')],
+        },
+      },
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
