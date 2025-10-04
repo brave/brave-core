@@ -3,10 +3,11 @@ use super::{
     Attribute, AttributeNameError, ContentType, EndTag, Mutations, StartTag, StreamingHandler,
     StringChunk,
 };
-use crate::base::Bytes;
+use crate::base::{BytesCow, SourceLocation};
 use crate::rewriter::{HandlerTypes, LocalHandlerTypes};
 use encoding_rs::Encoding;
 use std::any::Any;
+use std::borrow::Cow;
 use std::fmt::{self, Debug};
 use thiserror::Error;
 
@@ -37,10 +38,10 @@ pub enum TagNameError {
 /// An HTML element rewritable unit.
 ///
 /// Exposes API for examination and modification of a parsed HTML element.
-pub struct Element<'r, 't, H: HandlerTypes = LocalHandlerTypes> {
-    start_tag: &'r mut StartTag<'t>,
+pub struct Element<'rewriter, 'input_token, H: HandlerTypes = LocalHandlerTypes> {
+    start_tag: &'rewriter mut StartTag<'input_token>,
     end_tag_mutations: Option<Mutations>,
-    modified_end_tag_name: Option<Bytes<'static>>,
+    modified_end_tag_name: Option<Box<[u8]>>,
     end_tag_handlers: Vec<H::EndTagHandler<'static>>,
     can_have_content: bool,
     should_remove_content: bool,
@@ -48,10 +49,13 @@ pub struct Element<'r, 't, H: HandlerTypes = LocalHandlerTypes> {
     user_data: Box<dyn Any>,
 }
 
-impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
+impl<'rewriter, 'input_token, H: HandlerTypes> Element<'rewriter, 'input_token, H> {
     #[inline]
     #[must_use]
-    pub(crate) fn new(start_tag: &'r mut StartTag<'t>, can_have_content: bool) -> Self {
+    pub(crate) fn new(
+        start_tag: &'rewriter mut StartTag<'input_token>,
+        can_have_content: bool,
+    ) -> Self {
         let encoding = start_tag.encoding();
 
         Element {
@@ -66,7 +70,7 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
         }
     }
 
-    fn tag_name_bytes_from_str(&self, name: &str) -> Result<Bytes<'static>, TagNameError> {
+    fn tag_name_bytes_from_str(&self, name: &str) -> Result<BytesCow<'static>, TagNameError> {
         match name.as_bytes().first() {
             Some(ch) if !ch.is_ascii_alphabetic() => Err(TagNameError::InvalidFirstCharacter),
             Some(_) => {
@@ -81,9 +85,9 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
                     // encoding then encoding_rs replaces it with a numeric
                     // character reference. Character references are not
                     // supported in tag names, so we need to bail.
-                    Bytes::from_str_without_replacements(name, self.encoding)
+                    BytesCow::from_str_without_replacements(name, self.encoding)
                         .map_err(|_| TagNameError::UnencodableCharacter)
-                        .map(Bytes::into_owned)
+                        .map(BytesCow::into_owned)
                 }
             }
             None => Err(TagNameError::Empty),
@@ -130,10 +134,10 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
         let name = self.tag_name_bytes_from_str(name)?;
 
         if self.can_have_content {
-            self.modified_end_tag_name = Some(name.clone());
+            self.modified_end_tag_name = Some((*name).into());
         }
 
-        self.start_tag.set_name(name);
+        self.start_tag.set_name_raw(name);
 
         Ok(())
     }
@@ -181,11 +185,11 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
     /// Returns an immutable collection of element's attributes.
     #[inline]
     #[must_use]
-    pub fn attributes(&self) -> &[Attribute<'t>] {
+    pub fn attributes(&self) -> &[Attribute<'input_token>] {
         self.start_tag.attributes()
     }
 
-    /// Returns the value of an attribute with the `name`.
+    /// Returns the value of an attribute with the `name`. The value may have HTML/XML entities.
     ///
     /// Returns `None` if the element doesn't have an attribute with the `name`.
     #[inline]
@@ -211,7 +215,9 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
         self.attributes().iter().any(|attr| attr.name() == name)
     }
 
-    /// Sets `value` of element's attribute with `name`.
+    /// Sets `value` of element's attribute with `name`. The value may have HTML/XML entities.
+    ///
+    /// `"` will be entity-escaped if needed. `&` won't be escaped.
     ///
     /// If element doesn't have an attribute with the `name`, method adds a new attribute
     /// to the element with `name` and `value`.
@@ -268,7 +274,7 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
     /// Consequent calls to the method append to the previously inserted content.
     ///
     /// Use the [`streaming!`] macro to make a `StreamingHandler` from a closure.
-    pub fn streaming_before(&mut self, string_writer: Box<dyn StreamingHandler + Send>) {
+    pub fn streaming_before(&mut self, string_writer: Box<dyn StreamingHandler + Send + 'static>) {
         self.start_tag
             .mutations
             .mutate()
@@ -324,7 +330,7 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
     ///
     ///
     /// Use the [`streaming!`] macro to make a `StreamingHandler` from a closure.
-    pub fn streaming_after(&mut self, string_writer: Box<dyn StreamingHandler + Send>) {
+    pub fn streaming_after(&mut self, string_writer: Box<dyn StreamingHandler + Send + 'static>) {
         self.after_chunk(StringChunk::stream(string_writer));
     }
 
@@ -389,7 +395,7 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
     ///
     ///
     /// Use the [`streaming!`] macro to make a `StreamingHandler` from a closure.
-    pub fn streaming_prepend(&mut self, string_writer: Box<dyn StreamingHandler + Send>) {
+    pub fn streaming_prepend(&mut self, string_writer: Box<dyn StreamingHandler + Send + 'static>) {
         self.prepend_chunk(StringChunk::stream(string_writer));
     }
 
@@ -449,7 +455,7 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
     /// [empty element]: https://developer.mozilla.org/en-US/docs/Glossary/Empty_element
     ///
     /// Use the [`streaming!`] macro to make a `StreamingHandler` from a closure.
-    pub fn streaming_append(&mut self, string_writer: Box<dyn StreamingHandler + Send>) {
+    pub fn streaming_append(&mut self, string_writer: Box<dyn StreamingHandler + Send + 'static>) {
         self.append_chunk(StringChunk::stream(string_writer));
     }
 
@@ -513,7 +519,10 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
     ///
     ///
     /// Use the [`streaming!`] macro to make a `StreamingHandler` from a closure.
-    pub fn streaming_set_inner_content(&mut self, string_writer: Box<dyn StreamingHandler + Send>) {
+    pub fn streaming_set_inner_content(
+        &mut self,
+        string_writer: Box<dyn StreamingHandler + Send + 'static>,
+    ) {
         self.set_inner_content_chunk(StringChunk::stream(string_writer));
     }
 
@@ -564,7 +573,7 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
     ///
     ///
     /// Use the [`streaming!`] macro to make a `StreamingHandler` from a closure.
-    pub fn streaming_replace(&mut self, string_writer: Box<dyn StreamingHandler + Send>) {
+    pub fn streaming_replace(&mut self, string_writer: Box<dyn StreamingHandler + Send + 'static>) {
         self.replace_chunk(StringChunk::stream(string_writer));
     }
 
@@ -625,12 +634,15 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
 
     /// Returns the start tag.
     #[inline]
-    pub fn start_tag(&mut self) -> &mut StartTag<'t> {
+    pub fn start_tag(&mut self) -> &mut StartTag<'input_token> {
         self.start_tag
     }
 
-    /// Returns the handlers that will run when the end tag is reached.  You can use this
-    /// to add your "on end tag" handlers.
+    /// Returns the handlers that will run when the end tag is reached.
+    ///
+    /// The handlers may not run if there is no explicit end tag.
+    ///
+    /// You can use this to add your "on end tag" handlers.
     ///
     /// This will return `None` if the element does not have an end tag.
     ///
@@ -699,7 +711,7 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
                 0,
                 H::new_end_tag_handler(|end_tag: &mut EndTag<'_>| {
                     if let Some(name) = modified_end_tag_name {
-                        end_tag.set_name_raw(name);
+                        end_tag.set_name_raw(Cow::from(name.into_vec()).into());
                     }
 
                     if let Some(mutations) = end_tag_mutations {
@@ -714,6 +726,14 @@ impl<'r, 't, H: HandlerTypes> Element<'r, 't, H> {
         } else {
             None
         }
+    }
+
+    /// Position of this element's start tag in the source document, before any rewriting
+    ///
+    /// The end of this element hasn't been parsed yet. To find it, use [`Element::end_tag_handlers`].
+    #[must_use]
+    pub fn source_location(&self) -> SourceLocation {
+        self.start_tag.source_location()
     }
 }
 
@@ -1663,6 +1683,112 @@ mod tests {
                     assert!(el.removed());
                 },
                 "<before><foo & bar><after>"
+            );
+        }
+    }
+
+    mod location_spans {
+        use super::*;
+        use encoding_rs::WINDOWS_1252;
+
+        #[test]
+        fn tags() {
+            let raw_input = r"<html>
+                <div line=2>
+                    <a line=3><span line=3 />line 3</span></a>
+                </div>
+                ";
+            let output = rewrite_html(
+                raw_input.as_bytes(),
+                UTF_8,
+                vec![element!("*", |el: &mut Element<'_, '_>| {
+                    let loc = el.source_location();
+                    el.set_attribute("at", &loc.to_string()).unwrap();
+                    el.set_attribute("look", &raw_input[loc.bytes()]).unwrap();
+                    if let Some(end) = el.end_tag_handlers() {
+                        end.push(Box::new(|end| {
+                            let tag = &raw_input[end.source_location().bytes()];
+                            assert_eq!("</", &tag[0..2]);
+                            assert_eq!(b'>', *tag.as_bytes().last().unwrap());
+                            Ok(())
+                        }));
+                    }
+                    Ok(())
+                })],
+                vec![],
+            );
+
+            assert_eq!(
+                output,
+                r#"<html at="0B...6B" look="<html>">
+                <div line=2 at="23B...35B" look="<div line=2>">
+                    <a line=3 at="56B...66B" look="<a line=3>"><span line=3 at="66B...81B" look="<span line=3 />" />line 3</span></a>
+                </div>
+                "#
+            );
+        }
+
+        #[test]
+        fn text_and_comments() {
+            let mut raw_input = Vec::from(
+                br#"
+                <!doctype>
+                <html>l1
+                <meta charset="iso-8859-1">
+                l2 </>x
+                <p>l3</p><!-- l4 -->
+                <svg><![CDATA[
+                "#,
+            );
+            raw_input.extend(127..=255);
+            raw_input.extend_from_slice(
+                br"
+                l5
+                ]]></svg>
+                ",
+            );
+            let mut range_start = None;
+            let mut prev_range_end = 0;
+            let output = rewrite_html(
+                &raw_input,
+                WINDOWS_1252,
+                vec![],
+                vec![
+                    doc_comments!(|c| {
+                        let loc = c.source_location();
+                        let raw = &raw_input[loc.bytes()];
+                        assert_eq!(&raw[..4], b"<!--");
+                        assert_eq!(&raw[raw.len() - 3..], b"-->");
+                        c.set_text(&loc.to_string()).unwrap();
+                        Ok(())
+                    }),
+                    doc_text!(|t| {
+                        let loc = t.source_location().bytes();
+                        let start = *range_start.get_or_insert(loc.start);
+                        assert!(loc.start >= start);
+                        assert!(loc.end >= start);
+                        assert!(loc.start >= prev_range_end);
+                        assert!(loc.end >= prev_range_end);
+                        prev_range_end = loc.end;
+
+                        assert!(raw_input[start..loc.end]
+                            .iter()
+                            .all(|&b| b != b'<' && b != b'>'));
+
+                        if t.last_in_text_node() {
+                            t.set_str(format!("{start}..{}\n", loc.end));
+                            range_start = None;
+                        } else {
+                            t.remove();
+                        }
+                        Ok(())
+                    }),
+                ],
+            );
+
+            assert_eq!(
+                output,
+                "0..17\n<!doctype>27..44\n<html>50..69\n<meta charset=\"iso-8859-1\">96..116\n</>119..137\n<p>140..142\n</p><!--146B...157B-->157..174\n<svg><![CDATA[188..370\n]]></svg>379..396\n",
             );
         }
     }

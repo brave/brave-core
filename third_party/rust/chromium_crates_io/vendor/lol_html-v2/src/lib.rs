@@ -20,6 +20,7 @@
 #![allow(clippy::default_trait_access)]
 #![allow(clippy::module_name_repetitions)]
 #![allow(clippy::redundant_pub_crate)]
+#![deny(rustdoc::broken_intra_doc_links)]
 #![cfg_attr(not(any(feature = "integration_test", test)), warn(missing_docs))]
 #![cfg_attr(any(feature = "integration_test", test), allow(unnameable_types))]
 
@@ -47,41 +48,36 @@ pub use self::rewriter::{
 pub use self::selectors_vm::Selector;
 pub use self::transform_stream::OutputSink;
 
-/// These module contains types to work with [`Send`]able [`HtmlRewriter`]s.
+/// This module contains type aliases that make the [`HtmlRewriter`] safe to move between threads (have the [`Send`] bound).
+///
+/// The bound requires content handlers to be thread-safe, which prevents them from mutating external state without synchronization.
+///
+/// Rewriting is sequential, so there's no benefit from using the `Send`-compatible rewriter.
 pub mod send {
-    use crate::rewriter::{
-        CommentHandlerSend, DoctypeHandlerSend, ElementHandlerSend, EndHandlerSend,
-        EndTagHandlerSend, TextHandlerSend,
+    pub use crate::rewriter::{
+        CommentHandlerSend as CommentHandler, DoctypeHandlerSend as DoctypeHandler,
+        ElementHandlerSend as ElementHandler, EndHandlerSend as EndHandler,
+        EndTagHandlerSend as EndTagHandler, TextHandlerSend as TextHandler,
     };
     pub use crate::rewriter::{IntoHandler, SendHandlerTypes};
 
     /// An [`HtmlRewriter`](crate::HtmlRewriter) that implements [`Send`].
-    pub type HtmlRewriter<'h, O> = crate::HtmlRewriter<'h, O, SendHandlerTypes>;
+    pub type HtmlRewriter<'handlers, O> = crate::HtmlRewriter<'handlers, O, SendHandlerTypes>;
     /// [`Settings`](crate::Settings) for [`Send`]able [`HtmlRewriter`](crate::HtmlRewriter)s.
-    pub type Settings<'h, 's> = crate::Settings<'h, 's, SendHandlerTypes>;
+    pub type Settings<'handlers, 'selectors> =
+        crate::Settings<'handlers, 'selectors, SendHandlerTypes>;
     /// [`RewriteStrSettings`](crate::RewriteStrSettings) for [`Send`]able [`HtmlRewriter`](crate::HtmlRewriter)s.
-    pub type RewriteStrSettings<'h, 's> = crate::RewriteStrSettings<'h, 's, SendHandlerTypes>;
+    pub type RewriteStrSettings<'handlers, 'selectors> =
+        crate::RewriteStrSettings<'handlers, 'selectors, SendHandlerTypes>;
 
     /// [`ElementContentHandlers`](crate::ElementContentHandlers) for [`Send`]able [`HtmlRewriter`](crate::HtmlRewriter)s.
     pub type ElementContentHandlers<'h> = crate::ElementContentHandlers<'h, SendHandlerTypes>;
     /// [`DocumentContentHandlers`](crate::DocumentContentHandlers) for [`Send`]able [`HtmlRewriter`](crate::HtmlRewriter)s.
     pub type DocumentContentHandlers<'h> = crate::DocumentContentHandlers<'h, SendHandlerTypes>;
 
-    /// [`CommentHandler`](crate::CommentHandler) for [`Send`]able [`HtmlRewriter`](crate::HtmlRewriter)s.
-    pub type CommentHandler<'h> = CommentHandlerSend<'h>;
-    /// [`DoctypeHandler`](crate::DoctypeHandler) for [`Send`]able [`HtmlRewriter`](crate::HtmlRewriter)s.
-    pub type DoctypeHandler<'h> = DoctypeHandlerSend<'h>;
-    /// [`ElementHandler`](crate::ElementHandler) for [`Send`]able [`HtmlRewriter`](crate::HtmlRewriter)s.
-    pub type ElementHandler<'h> = ElementHandlerSend<'h>;
-    /// [`EndHandler`](crate::EndHandler) for [`Send`]able [`HtmlRewriter`](crate::HtmlRewriter)s.
-    pub type EndHandler<'h> = EndHandlerSend<'h>;
-    /// [`EndTagHandler`](crate::EndTagHandler) for [`Send`]able [`HtmlRewriter`](crate::HtmlRewriter)s.
-    pub type EndTagHandler<'h> = EndTagHandlerSend<'h>;
-    /// [`TextHandler`](crate::TextHandler) for [`Send`]able [`HtmlRewriter`](crate::HtmlRewriter)s.
-    pub type TextHandler<'h> = TextHandlerSend<'h>;
-
     /// [`Element`](crate::rewritable_units::Element) for [`Send`]able [`HtmlRewriter`](crate::HtmlRewriter)s.
-    pub type Element<'r, 't> = crate::rewritable_units::Element<'r, 't, SendHandlerTypes>;
+    pub type Element<'rewriter, 'input_token> =
+        crate::rewritable_units::Element<'rewriter, 'input_token, SendHandlerTypes>;
 }
 
 /// The errors that can be produced by the crate's API.
@@ -102,6 +98,7 @@ pub mod html_content {
         StreamingHandler, StreamingHandlerSink, TextChunk, UserData,
     };
 
+    pub use super::base::SourceLocation;
     pub use super::html::TextType;
 }
 
