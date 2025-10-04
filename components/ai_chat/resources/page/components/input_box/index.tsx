@@ -67,6 +67,7 @@ export interface InputBoxProps {
   context: Props
   conversationStarted: boolean
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
+  renderInputControls?: () => React.ReactNode
 }
 
 function usePlaceholderText(
@@ -336,6 +337,7 @@ function InputBox(props: InputBoxProps) {
         </div>
         <div className={styles.modelSelectorAndSendButton}>
           <ModelSelector />
+          {props.renderInputControls && props.renderInputControls()}
           {props.context.isGenerating ? (
             <Button
               fab
