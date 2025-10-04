@@ -65,7 +65,7 @@ void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
   CHECK(psst_permission_context);
 
   // Create the PSST permission when user accepts the dialog
-  psst_permission_context->CreateOrUpdate(
+  psst_permission_context->GrantPermission(
       url::Origin::Create(web_contents_->GetLastCommittedURL()),
       ConsentStatus::kAllow, dialog_data_->script_version,
       dialog_data_->user_id, urls_to_skip.Clone());
