@@ -7,7 +7,7 @@
 
 #include "base/types/to_address.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -20,7 +20,7 @@
 #include "ui/gfx/vector_icon_types.h"
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 namespace {

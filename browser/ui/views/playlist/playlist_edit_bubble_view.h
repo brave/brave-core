@@ -12,8 +12,8 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/views/playlist/playlist_bubble_view.h"
-#include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper_observer.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class Browser;
@@ -26,11 +26,11 @@ namespace playlist {
 // Shows when items were added to the current page.
 // Contains actions to manipulate items.
 class PlaylistEditBubbleView : public PlaylistBubbleView,
-                              public PlaylistTabHelperObserver {
+                               public PlaylistTabHelperObserver {
   METADATA_HEADER(PlaylistEditBubbleView, PlaylistBubbleView)
  public:
   PlaylistEditBubbleView(views::View* anchor_view,
-                        base::WeakPtr<PlaylistTabHelper> tab_helper);
+                         base::WeakPtr<PlaylistTabHelper> tab_helper);
   ~PlaylistEditBubbleView() override;
 
   // PlaylistTabHelperObserver:

@@ -11,7 +11,7 @@ include_rules = [
   "+brave/components/debounce/core/common/features.h",
   "+brave/components/google_sign_in_permission/features.h",
   "+brave/components/ntp_background_images/browser/features.h",
-  "+brave/components/playlist/common/features.h",
+  "+brave/components/playlist/core/common/features.h",
   "+brave/components/request_otr/common/features.h",
   "+brave/components/web_discovery/buildflags",
   "+brave/components/web_discovery/common",

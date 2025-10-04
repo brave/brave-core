@@ -15,8 +15,8 @@
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/views/playlist/playlist_bubble_view.h"
 #include "brave/browser/ui/views/playlist/selectable_list_view.h"
-#include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper_observer.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class ThumbnailProvider;
@@ -32,13 +32,13 @@ class PlaylistTabHelper;
 // Shows when users try adding items found from the current contents.
 // Shows a list of found items and users can select which one to add.
 class PlaylistAddBubbleView : public PlaylistBubbleView,
-                          public PlaylistTabHelperObserver {
+                              public PlaylistTabHelperObserver {
   METADATA_HEADER(PlaylistAddBubbleView, PlaylistBubbleView)
  public:
   static constexpr int kWidth = 288;
 
   PlaylistAddBubbleView(views::View* anchor_view,
-                    base::WeakPtr<PlaylistTabHelper> tab_helper);
+                        base::WeakPtr<PlaylistTabHelper> tab_helper);
   ~PlaylistAddBubbleView() override;
 
  private:

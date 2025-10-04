@@ -98,8 +98,8 @@
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/skus/common/features.h"
@@ -255,9 +255,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/browser/playlist_background_web_contents_helper.h"
-#include "brave/components/playlist/browser/playlist_media_handler.h"
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/content/browser/playlist_background_web_contents_helper.h"
+#include "brave/components/playlist/content/browser/playlist_media_handler.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
