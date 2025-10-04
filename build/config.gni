@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/brave_channel.gni")
+import("//brave/build/mac/config.gni")
 import("//build/config/apple/symbols.gni")
 import("//build/util/branding.gni")
 import("//chrome/version.gni")
@@ -23,9 +24,9 @@ declare_args() {
   brave_version_minor = ""
   brave_version_build = ""
   chrome_version_string = ""
-  target_android_base = ""
+  target_android_base = "mono"
   target_android_output_format = ""
-  brave_android_keystore_path = "."
+  brave_android_keystore_path = ""
   brave_android_keystore_name = ""
   brave_android_keystore_password = ""
   brave_android_key_password = ""
@@ -41,6 +42,25 @@ declare_args() {
   # Enables brave/tools/redirect_cc target, replaces brave/chromium_src
   # overrides with empty ones to make //base buildable for redirect_cc.
   android_aab_to_apk = false
+}
+
+if (target_android_output_format == "") {
+  if (is_official_build) {
+    target_android_output_format = "aab"
+  } else {
+    target_android_output_format = "apk"
+  }
+}
+
+if (is_component_build || is_ios ||
+    (is_android && brave_android_keystore_path == "") ||
+    (is_mac && mac_signing_identifier == "")) {
+  skip_signing = true
+}
+
+if (brave_android_keystore_path == "") {
+  # set a default path so rebase_path doesn't fail
+  brave_android_keystore_path = "."
 }
 
 if (target_os == "win") {
