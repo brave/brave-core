@@ -184,5 +184,12 @@ extension Strings {
       value: "Leo AI",
       comment: "The name of the feature"
     )
+    public static let askBrave = NSLocalizedString(
+      "widgets.askBrave",
+      bundle: widgetBundle,
+      value: "Ask Brave",
+      comment:
+        "Title for Ask Brave shortcut. Brave is the company name and should not be translated"
+    )
   }
 }
