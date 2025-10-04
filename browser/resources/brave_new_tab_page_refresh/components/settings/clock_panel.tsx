@@ -10,7 +10,7 @@ import Toggle from '@brave/leo/react/toggle'
 import { useNewTabState, useNewTabActions } from '../../context/new_tab_context'
 import { ClockFormat } from '../../state/new_tab_state'
 import { getString } from '../../lib/strings'
-import formatMessage from '$web-common/formatMessage'
+import { formatString } from '$web-common/locale'
 
 import { style } from './clock_panel.style'
 
@@ -23,13 +23,15 @@ export function ClockPanel() {
   function formatOptionText(format: ClockFormat) {
     switch (format) {
       case ClockFormat.k12:
-        return getString('clockFormatOption12HourText')
+        return getString(S.NEW_TAB_CLOCK_FORMAT_OPTION12HOUR_TEXT)
       case ClockFormat.k24:
-        return getString('clockFormatOption24HourText')
+        return getString(S.NEW_TAB_CLOCK_FORMAT_OPTION24HOUR_TEXT)
       default:
-        return formatMessage(getString('clockFormatOptionAutomaticText'), [
-          new Intl.DateTimeFormat(undefined).resolvedOptions().locale
-        ]).join('')
+        return formatString(
+          getString(S.NEW_TAB_CLOCK_FORMAT_OPTION_AUTOMATIC_TEXT), [
+            new Intl.DateTimeFormat(undefined).resolvedOptions().locale
+          ]
+        )
     }
   }
 
@@ -42,7 +44,7 @@ export function ClockPanel() {
   return (
     <div data-css-scope={style.scope}>
       <div className='control-row'>
-        <label>{getString('showClockLabel')}</label>
+        <label>{getString(S.NEW_TAB_SHOW_CLOCK_LABEL)}</label>
         <Toggle
           size='small'
           checked={showClock}
@@ -50,7 +52,7 @@ export function ClockPanel() {
         />
       </div>
       <div className='control-row'>
-        <label>{getString('clockFormatLabel')}</label>
+        <label>{getString(S.NEW_TAB_CLOCK_FORMAT_LABEL)}</label>
         <DropDown
           value={String(clockFormat)}
           positionStrategy='fixed'
