@@ -10,6 +10,7 @@
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_shields/core/browser/ad_block_only_mode/ad_block_only_mode_policies_loader.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
@@ -21,7 +22,13 @@
 
 namespace brave_policy {
 
-BraveProfilePolicyProvider::BraveProfilePolicyProvider() = default;
+BraveProfilePolicyProvider::BraveProfilePolicyProvider(
+    PrefService* local_state) {
+  ad_block_only_mode_policies_loader_ =
+      std::make_unique<brave_shields::AdBlockOnlyModePoliciesLoader>(
+          local_state, *this);
+}
+
 BraveProfilePolicyProvider::~BraveProfilePolicyProvider() = default;
 
 void BraveProfilePolicyProvider::Init(policy::SchemaRegistry* registry) {
@@ -33,6 +40,8 @@ void BraveProfilePolicyProvider::Init(policy::SchemaRegistry* registry) {
   // loading.
   brave_origin_observation_.Observe(
       brave_origin::BraveOriginPolicyManager::GetInstance());
+
+  ad_block_only_mode_policies_loader_->Init();
 }
 
 void BraveProfilePolicyProvider::RefreshPolicies(
@@ -72,12 +81,14 @@ policy::PolicyBundle BraveProfilePolicyProvider::LoadPolicies() {
   // Always disabled in release builds
 #endif
 
+  ad_block_only_mode_policies_loader_->MaybeLoadPolicies(bundle);
+
   return bundle;
 }
 
 std::unique_ptr<policy::ConfigurationPolicyProvider>
-CreateBraveProfilePolicyProvider() {
-  return std::make_unique<BraveProfilePolicyProvider>();
+CreateBraveProfilePolicyProvider(PrefService* local_state) {
+  return std::make_unique<BraveProfilePolicyProvider>(local_state);
 }
 
 void BraveProfilePolicyProvider::LoadBraveOriginPolicies(
