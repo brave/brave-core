@@ -64,6 +64,7 @@ class TabGridViewModel {
   let openTabsModel: OpenTabsModel?
   let profileController: BraveProfileController?
   let windowProtection: WindowProtection?
+  let isUsingBottomBar: Bool
 
   init(
     tabManager: TabManager,
@@ -71,7 +72,8 @@ class TabGridViewModel {
     openTabsModel: OpenTabsModel?,
     toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?,
     profileController: BraveProfileController?,
-    windowProtection: WindowProtection?
+    windowProtection: WindowProtection?,
+    isUsingBottomBar: Bool
   ) {
     self.tabManager = tabManager
     self.historyModel = historyModel
@@ -81,6 +83,7 @@ class TabGridViewModel {
     self.windowProtection = windowProtection
     self.tabs = tabManager.tabsForCurrentMode
     self._isPrivateBrowsing = tabManager.privateBrowsingManager.isPrivateBrowsing
+    self.isUsingBottomBar = isUsingBottomBar
 
     setUpObservations()
   }
