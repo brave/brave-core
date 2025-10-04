@@ -121,6 +121,10 @@ ContentSetting SpeedreaderService::GetSiteSetting(
 }
 
 bool SpeedreaderService::IsAllowedForSite(const GURL& url) {
+  if (!prefs_->GetBoolean(speedreader::kSpeedreaderEnabled)) {
+    return false;
+  }
+
   const auto setting = GetSiteSetting(url);
   if (setting == CONTENT_SETTING_BLOCK) {
     return false;
