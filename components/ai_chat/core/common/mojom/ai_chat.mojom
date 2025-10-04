@@ -17,6 +17,11 @@ const string kUserChoiceToolName = "user_choice_tool";
 const string kNavigateToolName = "web_page_navigator";
 const string kMemoryStorageToolName = "memory_storage_tool";
 
+// Ollama local endpoints
+const string kOllamaBaseUrl = "http://localhost:11434";
+const string kOllamaApiTagsEndpoint = "http://localhost:11434/api/tags";
+const string kOllamaEndpoint = "http://localhost:11434/v1/chat/completions";
+
 // Maximum length for memory and customization records.
 const int32 kMaxMemoryRecordLength = 512;
 
