@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 84d6fad79064a3e8892037a62688a918c78582e7..0f4d307e14234fd36d82485e90ba0b4c2b12b54f 100644
+index f8b0da039ab4a846963ddf74aaf2b5ce860e8116..990b389993da13f328f15ca5e9c281678bbcc362 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -673,6 +673,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -667,6 +667,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
    // Deprecated 09/2025.
    registry->RegisterBooleanPref(prefs::kBottomOmnibox, false);
@@ -10,10 +10,10 @@ index 84d6fad79064a3e8892037a62688a918c78582e7..0f4d307e14234fd36d82485e90ba0b4c
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1106,6 +1107,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   registry->RegisterInt64Pref(kNtpShownBookmarksFolder, 0);
-   registry->RegisterStringPref(kGaiaCookieLastListAccountsData, std::string());
-   registry->RegisterStringPref(kFRESourceTrial, std::string());
+@@ -1104,6 +1105,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+ 
+   // Deprecated 10/2025
+   registry->RegisterBooleanPref(kTipsInMagicStackDisabledPref, false);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
