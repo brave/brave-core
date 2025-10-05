@@ -37,7 +37,6 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
@@ -138,10 +137,10 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   BraveBrowserView* browser_view() {
     return static_cast<BraveBrowserView*>(browser()->window());
   }
-  BrowserNonClientFrameView* browser_non_client_frame_view() {
+  BrowserFrameView* browser_non_client_frame_view() {
     return browser_view()->browser_widget()->GetFrameView();
   }
-  const BrowserNonClientFrameView* browser_non_client_frame_view() const {
+  const BrowserFrameView* browser_non_client_frame_view() const {
     return browser_view()->browser_widget()->GetFrameView();
   }
 
