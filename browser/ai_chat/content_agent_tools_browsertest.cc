@@ -8,11 +8,13 @@
 #include <vector>
 
 #include "base/json/json_writer.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/browser/ai_chat/content_agent_tool_provider.h"
 #include "brave/browser/ai_chat/tools/target_test_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -35,7 +37,11 @@ namespace ai_chat {
 // tool's Chromium actor browser test.
 class ContentAgentToolsTest : public InProcessBrowserTest {
  public:
-  ContentAgentToolsTest() = default;
+  ContentAgentToolsTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        ai_chat::features::kAIChatAgentProfile);
+  }
+
   ~ContentAgentToolsTest() override = default;
 
   void SetUpOnMainThread() override {
@@ -130,6 +136,7 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
   }
 
   std::unique_ptr<ContentAgentToolProvider> tool_provider_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 // Test that BrowserToolProvider can be created and provides expected tools
