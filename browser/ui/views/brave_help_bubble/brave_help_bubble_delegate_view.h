@@ -25,7 +25,7 @@ class BraveHelpBubbleDelegateView : public views::BubbleDialogDelegateView {
 
  private:
   // views::BubbleDialogDelegate
-  std::unique_ptr<views::NonClientFrameView> CreateFrameView(
+  std::unique_ptr<views::FrameView> CreateFrameView(
       views::Widget* widget) override;
 
   void SetUpLabel(views::Label* label,
