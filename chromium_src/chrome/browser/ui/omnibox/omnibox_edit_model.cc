@@ -40,8 +40,8 @@ SetInputIsPastedFromClipboard(OmniboxController* omnibox_controller,
 #define PasteAndGo PasteAndGo_Chromium
 #define GetSuperGIcon GetSuperGIcon_Unused
 #define BRAVE_OMNIBOX_EDIT_MODEL_START_AUTOCOMPLETE \
-  auto pasted =                                     \
-      SetInputIsPastedFromClipboard(controller_, paste_state_ != NONE);
+  auto pasted = SetInputIsPastedFromClipboard(      \
+      controller_, paste_state_ != PasteState::kNone);
 
 #include <chrome/browser/ui/omnibox/omnibox_edit_model.cc>
 
