@@ -26,7 +26,7 @@
 using views::BubbleBorder;
 using views::BubbleDialogDelegateView;
 using views::BubbleFrameView;
-using views::NonClientFrameView;
+using views::FrameView;
 
 namespace {
 constexpr SkColor kBgColor = SkColorSetARGB(0xFF, 0x20, 0x4A, 0xE3);
@@ -173,9 +173,9 @@ BraveHelpBubbleDelegateView::BraveHelpBubbleDelegateView(
 
 BraveHelpBubbleDelegateView::~BraveHelpBubbleDelegateView() = default;
 
-std::unique_ptr<NonClientFrameView>
-BraveHelpBubbleDelegateView::CreateFrameView(views::Widget* widget) {
-  std::unique_ptr<NonClientFrameView> frame =
+std::unique_ptr<FrameView> BraveHelpBubbleDelegateView::CreateFrameView(
+    views::Widget* widget) {
+  std::unique_ptr<FrameView> frame =
       BubbleDialogDelegateView::CreateFrameView(widget);
   CHECK(frame);
 
