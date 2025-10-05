@@ -226,7 +226,7 @@ void ExternalWalletsImporter::GetLocalStorage(
     const extensions::Extension& extension,
     InitCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::string error;
+  std::u16string error;
   extension_ = Extension::Create(
       extension.path(), ManifestLocation::kExternalPref,
       *extension.manifest()->value(), extension.creation_flags(), &error);
