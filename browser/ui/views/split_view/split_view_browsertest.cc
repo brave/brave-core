@@ -27,7 +27,7 @@
 #include "chrome/browser/ui/tabs/split_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/ui_features.h"
-#include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
+#include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_background_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
@@ -95,7 +95,7 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
         brave_browser_view()->multi_contents_view());
   }
 
-  BrowserNonClientFrameView* browser_non_client_frame_view() {
+  BrowserFrameView* browser_non_client_frame_view() {
     return brave_browser_view()->browser_widget()->GetFrameView();
   }
 
