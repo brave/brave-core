@@ -24,7 +24,7 @@ namespace tabs {
 
 // This class holds state that is scoped to a tab in Android. It is constructed
 // after the WebContents/tab_helpers, and destroyed before.
-class BraveTabFeatures : TabFeatures_Chromium {
+class BraveTabFeatures : public TabFeatures_Chromium {
  public:
   BraveTabFeatures(content::WebContents* web_contents, Profile* profile);
   ~BraveTabFeatures();
