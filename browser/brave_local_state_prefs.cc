@@ -16,12 +16,12 @@
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_search/browser/backup_results_metrics.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
@@ -197,6 +197,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   ai_chat::AIChatMetrics::RegisterPrefs(registry);
   brave_ads::BraveStatsHelper::RegisterLocalStatePrefs(registry);
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
+  brave_search::BackupResultsMetrics::RegisterPrefs(registry);
 
   playlist::PlaylistServiceFactory::RegisterLocalStatePrefs(registry);
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
