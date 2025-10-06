@@ -118,6 +118,7 @@ class NewTabPageViewController: UIViewController {
   private let layout = NewTabPageFlowLayout()
   private let collectionView: NewTabCollectionView
   private weak var browserTab: (any TabState)?
+  private let braveCore: BraveCoreMain
   private let rewards: BraveRewards
 
   private var background: NewTabPageBackground
@@ -171,6 +172,7 @@ class NewTabPageViewController: UIViewController {
   init(
     tab: some TabState,
     profilePrefs: any PrefService,
+    braveCore: BraveCoreMain,
     dataSource: NTPDataSource,
     feedDataSource: FeedDataSource,
     rewards: BraveRewards,
@@ -178,6 +180,7 @@ class NewTabPageViewController: UIViewController {
     p3aHelper: NewTabPageP3AHelper
   ) {
     self.browserTab = tab
+    self.braveCore = braveCore
     self.profilePrefs = profilePrefs
     self.rewards = rewards
     self.feedDataSource = feedDataSource
@@ -366,6 +369,8 @@ class NewTabPageViewController: UIViewController {
 
     setupBackgroundImage()
     setupBackgroundVideoIfNeeded(shouldCreatePlayer: true)
+    setupRichNewTabTakeoverIfNeeded()
+
     backgroundView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -519,6 +524,18 @@ class NewTabPageViewController: UIViewController {
         self?.collectionView.alpha = 1
         self?.videoAdPlayer?.seekToStopFrame()
       }
+    )
+  }
+
+  func setupRichNewTabTakeoverIfNeeded() {
+    guard let braveProfileController = braveCore.profileController,
+      let richNewTabTakeoverURL = background.richNewTabTakeoverURL
+    else {
+      return
+    }
+    backgroundView.setupRichNewTabTakeoverLayer(
+      braveProileController: braveProfileController,
+      richNewTabTakeoverURL: richNewTabTakeoverURL
     )
   }
 

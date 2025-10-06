@@ -37,6 +37,10 @@ class NewTabPageBackground: PreferencesObserver {
   var backgroundVideoPath: URL? {
     currentBackground?.backgroundVideoPath
   }
+  /// The background rich new tab takeover URL if available
+  var richNewTabTakeoverURL: URL? {
+    currentBackground?.richNewTabTakeoverURL
+  }
   /// The sponsors logo if available
   var sponsorLogoImage: UIImage? {
     currentBackground?.logoImage
