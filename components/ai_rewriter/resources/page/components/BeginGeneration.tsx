@@ -40,7 +40,8 @@ export default function BeginGeneration() {
             onlyAtStart: true,
             triggerCharacter: '/',
           })}
-          handleClick={context.handleActionTypeClick}
+          handleClick={() => {}}
+          handleEditClick={() => {}}
         />
         <InputBox
           conversationStarted
@@ -75,6 +76,10 @@ export default function BeginGeneration() {
             setAttachmentsDialog: () => {},
             unassociatedTabs: [],
             attachImages: () => {},
+            handleSmartModeClick: () => {},
+            selectedSmartMode: undefined,
+            resetSelectedSmartMode: () => {},
+            smartModes: [],
           }}
         />
       </FiltersContainer>

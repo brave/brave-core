@@ -40,7 +40,10 @@ import {
   GenerateSuggestionsButton,
   SuggestedQuestion,
 } from '../suggested_question'
-import ToolsMenu from '../filter_menu/tools_menu'
+import ToolsMenu, {
+  ExtendedActionEntry,
+  getIsSmartMode,
+} from '../filter_menu/tools_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
 import Attachments from '../attachments'
@@ -216,6 +219,38 @@ function Main() {
     onlyAtStart: true,
     triggerCharacter: '/',
   })
+
+  // Transform smartModes into ActionGroup format and append to actionList
+  const categoriesWithSmartModes = React.useMemo(() => {
+    if (!aiChatContext.smartModes || aiChatContext.smartModes.length === 0) {
+      return aiChatContext.actionList
+    }
+
+    const smartModeGroup = {
+      category: getLocale(S.CHAT_UI_SMART_MODES_GROUP),
+      entries: aiChatContext.smartModes,
+    }
+
+    return [smartModeGroup, ...aiChatContext.actionList]
+  }, [aiChatContext.actionList, aiChatContext.smartModes])
+
+  const handleToolsMenuClick = React.useCallback(
+    (value: ExtendedActionEntry) => {
+      if (getIsSmartMode(value)) {
+        conversationContext.handleSmartModeClick(value)
+        return
+      }
+      conversationContext.handleActionTypeClick(value.details!.type)
+    },
+    [
+      conversationContext.handleSmartModeClick,
+      conversationContext.handleActionTypeClick,
+    ],
+  )
+
+  const handleToolsMenuEditClick = (smartMode: Mojom.SmartMode) => {
+    conversationContext.handleSmartModeEdit(smartMode)
+  }
 
   return (
     <main
@@ -399,11 +434,15 @@ function Main() {
       )}
       <div className={styles.input}>
         <ToolsMenu
-          isOpen={conversationContext.isToolsMenuOpen}
+          isOpen={
+            !conversationContext.selectedSmartMode
+            && conversationContext.isToolsMenuOpen
+          }
           setIsOpen={conversationContext.setIsToolsMenuOpen}
           query={extractedQuery}
-          categories={aiChatContext.actionList}
-          handleClick={conversationContext.handleActionTypeClick}
+          categories={categoriesWithSmartModes}
+          handleClick={handleToolsMenuClick}
+          handleEditClick={handleToolsMenuEditClick}
         />
         {!hasConversationStarted && <TabsMenu />}
         <InputBox
@@ -415,7 +454,7 @@ function Main() {
       <DeleteConversationModal />
       <OpenExternalLinkModal />
       <RateMessagePrivacyModal />
-      <SmartModeModal />
+      {aiChatContext.smartModeDialog && <SmartModeModal />}
     </main>
   )
 }
