@@ -9,7 +9,6 @@
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/contexts/brave_google_sign_in_permission_context.h"
-#include "brave/components/permissions/contexts/brave_localhost_permission_context.h"
 #include "brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"

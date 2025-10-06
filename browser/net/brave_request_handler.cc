@@ -5,7 +5,6 @@
 
 #include "brave/browser/net/brave_request_handler.h"
 
-#include <algorithm>
 #include <utility>
 
 #include "base/check.h"
@@ -13,7 +12,6 @@
 #include "brave/browser/net/brave_ad_block_csp_network_delegate_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
-#include "brave/browser/net/brave_localhost_permission_network_delegate_helper.h"
 #include "brave/browser/net/brave_reduce_language_network_delegate_helper.h"
 #include "brave/browser/net/brave_service_key_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
@@ -24,22 +22,20 @@
 #include "brave/browser/net/search_ads_header_network_delegate_helper.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_user_agent/common/features.h"
-#include "brave/components/constants/pref_names.h"
-#include "chrome/browser/browser_process.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
 #include "extensions/common/constants.h"
-#include "net/base/features.h"
 #include "net/base/net_errors.h"
 #include "third_party/blink/public/common/features.h"
 
 static bool IsInternalScheme(std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK(ctx);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  if (ctx->request_url.SchemeIs(extensions::kExtensionScheme))
+  if (ctx->request_url.SchemeIs(extensions::kExtensionScheme)) {
     return true;
+  }
 #endif
   return ctx->request_url.SchemeIs(content::kChromeUIScheme);
 }
