@@ -67,6 +67,8 @@ std::optional<CardanoTxDecoder::RestoredTransactionBody> ConvertBody(
     restored_body.outputs.push_back(std::move(*converted_output));
   }
 
+  restored_body.raw_body_bytes = base::ToVector(cxx_body.raw_body);
+
   return restored_body;
 }
 
@@ -123,7 +125,7 @@ CardanoTxDecoder::DecodeTransaction(base::span<const uint8_t> cbor_bytes) {
 
   RestoredTransaction restored_tx;
   restored_tx.tx_body = std::move(*converted_body);
-  restored_tx.raw_bytes = base::ToVector(cbor_bytes);
+  restored_tx.raw_tx_bytes = base::ToVector(cbor_bytes);
 
   return restored_tx;
 }
@@ -172,12 +174,10 @@ std::optional<std::vector<uint8_t>> CardanoTxDecoder::AddWitnessesToTransaction(
     cxx_witnesses.push_back(std::move(cxx_witness));
   }
 
-  // Convert std::vector to Rust Vec for the function call using ranges::copy
   ::rust::Vec<CxxWitness> rust_witnesses;
   rust_witnesses.reserve(cxx_witnesses.size());
   std::ranges::copy(cxx_witnesses, std::back_inserter(rust_witnesses));
 
-  // Call apply_signatures(unsigned_tx_bytes, witnesses) from Rust
   auto result = apply_signatures(base::SpanToRustSlice(unsigned_tx_bytes),
                                  std::move(rust_witnesses));
 

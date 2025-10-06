@@ -493,7 +493,7 @@ mojom::SignCardanoTransactionRequestPtr CardanoApiImpl::FromRestoredTransaction(
       -1, selected_account_.Clone(), MakeOriginInfo(delegate_->GetOrigin()),
       mojom::ChainId::New(mojom::CoinType::ADA,
                           GetNetworkForCardanoAccount(selected_account_)),
-      base::HexEncode(tx.raw_bytes), std::move(inputs), std::move(outputs));
+      base::HexEncode(tx.raw_tx_bytes), std::move(inputs), std::move(outputs));
 }
 
 void CardanoApiImpl::OnSignTransactionRequestProcessed(
@@ -534,6 +534,8 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
     return;
   }
 
+  auto hash = Blake2bHash<kCardanoTxHashSize>({tx.tx_body.raw_body_bytes});
+
   std::vector<CardanoTxDecoder::CardanoSignMessageResult> sign_results;
   for (const auto& input : tx.tx_body.inputs) {
     if (!input.address) {
@@ -550,7 +552,7 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
 
     auto sign_result =
         brave_wallet_service_->keyring_service()->SignMessageByCardanoKeyring(
-            selected_account_, address_map_item->second, tx.raw_bytes);
+            selected_account_, address_map_item->second, hash);
 
     if (!sign_result) {
       std::move(callback).Run(
@@ -559,14 +561,13 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
               kAPIErrorInternalError, WalletInternalErrorMessage(), nullptr));
       return;
     }
-    // Convert CardanoSignMessageResult to
-    // CardanoTxDecoder::CardanoSignMessageResult
+
     sign_results.emplace_back(base::ToVector(sign_result->signature),
                               base::ToVector(sign_result->pubkey));
   }
 
   auto signed_tx = CardanoTxDecoder::AddWitnessesToTransaction(
-      tx.raw_bytes, std::move(sign_results));
+      tx.raw_tx_bytes, std::move(sign_results));
 
   if (!signed_tx) {
     std::move(callback).Run(
