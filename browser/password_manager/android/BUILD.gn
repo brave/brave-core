@@ -32,3 +32,16 @@ android_library("test_support_java") {
     "//third_party/jni_zero:jni_zero_java",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  sources = [ "login_database_migration_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//chrome/test:test_support",
+  ]
+}
