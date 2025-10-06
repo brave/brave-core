@@ -22,16 +22,19 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
+#include "brave/components/ai_chat/ios/browser/ai_chat_ui_handler_bridge.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler_bridge_holder.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/navigation/navigation_context.h"
 #include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_id.h"
+#include "net/base/apple/url_conversions.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 
@@ -68,8 +71,31 @@ AIChatUIPageHandler::~AIChatUIPageHandler() = default;
 
 void AIChatUIPageHandler::HandleVoiceRecognition(
     const std::string& conversation_uuid) {
-  // TODO: https://github.com/brave/brave-browser/issues/49452 Implement
-  // delegate to handle method
+  if (conversation_uuid.empty()) {
+    return;
+  }
+  id<AIChatUIHandlerBridge> bridge =
+      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+  [bridge handleVoiceRecognitionRequest:^(NSString* query) {
+    if (!query || [query length] == 0) {
+      return;
+    }
+    ConversationHandler* conversation =
+        AIChatServiceFactory::GetForProfile(profile_)->GetConversation(
+            conversation_uuid);
+    if (!conversation) {
+      return;
+    }
+    // Send the query
+    conversation->MaybeUnlinkAssociatedContent();
+    mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
+        std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+        base::SysNSStringToUTF8(query), std::nullopt /* prompt */,
+        std::nullopt /* selected_text */, std::nullopt /* events */,
+        base::Time::Now(), std::nullopt, std::nullopt /* uploaded images */,
+        nullptr /* smart_mode */, false, std::nullopt /* model_key */);
+    conversation->SubmitHumanConversationEntry(std::move(turn));
+  }];
 }
 
 void AIChatUIPageHandler::ShowSoftKeyboard() {}
@@ -99,8 +125,9 @@ void AIChatUIPageHandler::GetPluralString(const std::string& key,
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {
-  // TODO: https://github.com/brave/brave-browser/issues/49452 Implement
-  // delegate to handle method
+  id<AIChatUIHandlerBridge> bridge =
+      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+  [bridge openAIChatSettings];
 }
 
 void AIChatUIPageHandler::OpenMemorySettings() {
@@ -124,9 +151,9 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
 
   // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
   // non-standalone Leo AI
-  owner_web_state_->OpenURL({url, url, web::Referrer(),
-                             WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                             ui::PAGE_TRANSITION_LINK, false});
+  id<AIChatUIHandlerBridge> bridge =
+      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+  [bridge openURL:net::NSURLWithGURL(url)];
 }
 
 void AIChatUIPageHandler::OpenStorageSupportUrl() {
@@ -134,8 +161,9 @@ void AIChatUIPageHandler::OpenStorageSupportUrl() {
 }
 
 void AIChatUIPageHandler::GoPremium() {
-  // TODO: https://github.com/brave/brave-browser/issues/49452 Implement
-  // delegate to handle method
+  id<AIChatUIHandlerBridge> bridge =
+      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+  [bridge goPremium];
 }
 
 void AIChatUIPageHandler::RefreshPremiumSession() {
@@ -143,8 +171,9 @@ void AIChatUIPageHandler::RefreshPremiumSession() {
 }
 
 void AIChatUIPageHandler::ManagePremium() {
-  // TODO: https://github.com/brave/brave-browser/issues/49452 Implement
-  // delegate to handle method
+  id<AIChatUIHandlerBridge> bridge =
+      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+  [bridge managePremium];
 }
 
 void AIChatUIPageHandler::OpenModelSupportUrl() {
@@ -164,8 +193,9 @@ void AIChatUIPageHandler::OnRequestArchive(
 }
 
 void AIChatUIPageHandler::CloseUI() {
-  // TODO: https://github.com/brave/brave-browser/issues/49452 Implement
-  // delegate to handle method
+  id<AIChatUIHandlerBridge> bridge =
+      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+  [bridge closeUI];
 }
 
 void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,

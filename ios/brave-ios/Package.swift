@@ -469,6 +469,7 @@ var package = Package(
         "Preferences",
         "Strings",
         "SpeechRecognition",
+        "Web",
         .product(name: "Collections", package: "swift-collections"),
         .product(name: "Introspect", package: "SwiftUI-Introspect"),
         .product(name: "Lottie", package: "lottie-spm"),

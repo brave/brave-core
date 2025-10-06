@@ -19,6 +19,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol AIChatUIHandlerBridge;
+
 CWV_EXPORT
 @interface BraveNavigationAction : CWVNavigationAction
 /// YES if the navigation target frame is the main frame.
@@ -109,6 +111,12 @@ CWV_EXPORT
 @property(nonatomic, nullable)
     UIInputViewController* inputAccessoryViewController;
 
+@end
+
+CWV_EXPORT
+@interface BraveWebView (AIChatWebUI)
+/// A bridge for handling Leo AI WebUI page actions
+@property(nonatomic, weak, nullable) id<AIChatUIHandlerBridge> aiChatUIHandler;
 @end
 
 NS_ASSUME_NONNULL_END
