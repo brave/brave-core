@@ -51,7 +51,7 @@ def execute_with_retry(cmd, max_attempts=5, base_sleep_sec=1, backoff_mult=2):
             else:
                 sleep_sec = base_sleep_sec * pow(backoff_mult, attempt)
                 print(
-                    f"Command `{cmd}' failed. Retrying in {sleep_sec}s ({attempt} out of {max_attempts}).",
+                    f"Command `{cmd}' failed. Retrying in {sleep_sec}s ({attempt} of {max_attempts}).",
                     file=sys.stderr)
                 sleep(sleep_sec)
                 continue
