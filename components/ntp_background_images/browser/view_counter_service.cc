@@ -19,7 +19,6 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
@@ -141,11 +140,6 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
     const std::string& campaign_id,
     const std::string& creative_instance_id,
     bool should_metrics_fallback_to_p3a) {
-  if (!brave_ads::kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get()) {
-    // If we don't support confirmations, we should always fallback to P3A.
-    should_metrics_fallback_to_p3a = true;
-  }
-
   if (should_metrics_fallback_to_p3a && ntp_p3a_helper_) {
     ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
   }
@@ -383,11 +377,6 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
     const std::string& creative_instance_id,
     const std::string& /*target_url*/,
     bool should_metrics_fallback_to_p3a) {
-  if (!brave_ads::kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get()) {
-    // If we don't support confirmations, we should always fallback to P3A.
-    should_metrics_fallback_to_p3a = true;
-  }
-
   if (should_metrics_fallback_to_p3a && ntp_p3a_helper_) {
     ntp_p3a_helper_->RecordNewTabPageAdEvent(
         brave_ads::mojom::NewTabPageAdEventType::kClicked,

@@ -9,12 +9,10 @@
 
 #include <cstddef>
 
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 
 namespace brave_ads {
 
@@ -97,11 +95,6 @@ TEST_F(BraveAdsAccountUtilTest, AllowNewTabPageAdDepositsForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kNewTabPageAdFeature,
-      {{"should_support_confirmations_for_non_rewards", "true"}});
-
   // Act & Assert
   for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
        ++i) {
@@ -113,36 +106,11 @@ TEST_F(BraveAdsAccountUtilTest, AllowNewTabPageAdDepositsForNonRewardsUser) {
 
 TEST_F(
     BraveAdsAccountUtilTest,
-    DoNotAllowNewTabPageAdDepositsForNonRewardsUserIfShouldNotSupportConfirmations) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kNewTabPageAdFeature,
-      {{"should_support_confirmations_for_non_rewards", "false"}});
-
-  // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-       ++i) {
-    EXPECT_FALSE(IsAllowedToDeposit(test::kCreativeInstanceId,
-                                    mojom::AdType::kNewTabPageAd,
-                                    static_cast<mojom::ConfirmationType>(i)));
-  }
-}
-
-TEST_F(
-    BraveAdsAccountUtilTest,
     DoNotAllowNewTabPageAdDepositsForNonRewardsUserIfOptedOutOfNewTabPageAds) {
   // Arrange
   test::DisableBraveRewards();
 
   test::OptOutOfNewTabPageAds();
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kNewTabPageAdFeature,
-      {{"should_support_confirmations_for_non_rewards", "true"}});
 
   // Act & Assert
   for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
@@ -161,11 +129,6 @@ TEST_F(
 
   UpdateP3aMetricsFallbackState(test::kCreativeInstanceId,
                                 /*should_metrics_fallback_to_p3a=*/true);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      kNewTabPageAdFeature,
-      {{"should_support_confirmations_for_non_rewards", "true"}});
 
   // Act & Assert
   for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);

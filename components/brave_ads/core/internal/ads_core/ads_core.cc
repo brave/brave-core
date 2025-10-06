@@ -9,7 +9,6 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 
 namespace brave_ads {
 
@@ -48,9 +47,7 @@ void AdsCore::UpdateP3aMetricsFallbackState(
 
 bool AdsCore::ShouldFallbackToP3aMetrics(
     const std::string& creative_instance_id) const {
-  // If we don't support confirmations, we should always fallback to P3A.
-  return !kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get() ||
-         metrics_fallback_to_p3a_.contains(creative_instance_id);
+  return metrics_fallback_to_p3a_.contains(creative_instance_id);
 }
 
 }  // namespace brave_ads

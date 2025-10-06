@@ -17,13 +17,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kNewTabPageAdFeature);
 
-// Set to `true` to support sending metrics using confirmations; otherwise,
-// metrics are always reported using P3A.
-inline constexpr base::FeatureParam<bool>
-    kShouldSupportNewTabPageAdConfirmationsForNonRewards{
-        &kNewTabPageAdFeature, "should_support_confirmations_for_non_rewards",
-        true};
-
 // Set to `true` to support frequency capping; otherwise, no capping.
 inline constexpr base::FeatureParam<bool>
     kShouldFrequencyCapNewTabPageAdsForNonRewards{
