@@ -22,6 +22,8 @@ static_library("core") {
     "brave_psst_permission_context.cc",
     "matched_rule.cc",
     "psst_component_installer.cc",
+    "psst_consent_data.cc",
+    "psst_consent_data.h",
     "psst_rule.cc",
     "psst_rule_registry_impl.cc",
     "psst_rule_registry_impl.h",
