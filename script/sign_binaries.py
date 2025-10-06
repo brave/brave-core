@@ -12,6 +12,7 @@ import sys
 
 from lib.util import execute
 from os.path import abspath, dirname
+from subprocess import CalledProcessError
 from time import sleep
 
 cert = os.environ.get('CERT')
@@ -34,7 +35,7 @@ assert cert or cert_hash or signtool_args, \
     'Store. It is ambiguous and will likely be deprecated in the future.'
 
 
-def execute_with_retry(cmd, max_attempts, sleep_sec=10):
+def execute_with_retry(cmd, max_attempts=5, sleep_sec=10):
     for attempt in range(max_attempts + 1):
         try:
             execute(cmd)
@@ -79,7 +80,7 @@ def sign_binary(binary, out_file=None):
         shutil.copy(binary, out_file)
         binary = out_file
     cmd = get_sign_cmd(binary)
-    execute_with_retry(cmd, 5)
+    execute_with_retry(cmd)
 
 def main():
     parser = argparse.ArgumentParser()
