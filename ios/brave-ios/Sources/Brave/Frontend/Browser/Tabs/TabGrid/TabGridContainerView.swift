@@ -177,18 +177,22 @@ class TabGridContainerView: UIView {
   }
 
   private func updateContentInsets() {
+    let oldValue = collectionView.contentInset
     let isScrolledToTop =
       collectionView.contentOffset.y == -collectionView.contentInset.top
-      || collectionView.contentOffset.y
-        == (-collectionView.contentInset.top + TabGridSearchBar.defaultHeight
-          + TabGridSearchBar.padding)
-    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.1, delay: 0) { [self] in
+    let animations = { [self] in
       collectionView.contentInset = maskInsets
       collectionView.scrollIndicatorInsets = maskInsets
-      if isScrolledToTop {
+      // Only interested in animating between explicit mask insets
+      if isScrolledToTop, oldValue != .zero {
         collectionView.contentOffset.y = -maskInsets.top
       }
     }
+    // iOS 18+'s SwiftUI animation sharing feature is broken and causes weird jumps so we can't use
+    // Animation.toolbarsSizeAnimation directly
+    let animator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 0.825)
+    animator.addAnimations(animations)
+    animator.startAnimation()
   }
 
   private func applyTabsSnapshot(animated: Bool) {
@@ -232,24 +236,6 @@ class TabGridContainerView: UIView {
 }
 
 extension TabGridContainerView: UICollectionViewDelegate {
-  func scrollViewWillEndDragging(
-    _ scrollView: UIScrollView,
-    withVelocity velocity: CGPoint,
-    targetContentOffset: UnsafeMutablePointer<CGPoint>
-  ) {
-    let searchBarContainerHeight = TabGridSearchBar.defaultHeight + TabGridSearchBar.padding
-    var proposedContentOffset = targetContentOffset.pointee
-    let searchStart = -scrollView.contentInset.top
-    let contentStart = -(scrollView.contentInset.top - searchBarContainerHeight)
-    let yOffset = proposedContentOffset.y + scrollView.contentInset.top - searchBarContainerHeight
-    if proposedContentOffset.y < -(scrollView.contentInset.top - searchBarContainerHeight) {
-      proposedContentOffset.y =
-        ((-yOffset - TabGridSearchBar.padding) / TabGridSearchBar.defaultHeight) > 0.3
-        ? searchStart : contentStart
-    }
-    targetContentOffset.pointee = proposedContentOffset
-  }
-
   func collectionView(
     _ collectionView: UICollectionView,
     canPerformPrimaryActionForItemAt indexPath: IndexPath
