@@ -62,7 +62,7 @@ void HistoryTool::UseTool(const std::string& input_json,
 
   task_provider_->GetOrCreateTabHandleForTask(base::BindOnce(
       &HistoryTool::OnTabHandleCreated, weak_ptr_factory_.GetWeakPtr(),
-      std::move(callback), *direction));
+      std::move(callback), std::move(*direction)));
 }
 
 void HistoryTool::OnTabHandleCreated(UseToolCallback callback,

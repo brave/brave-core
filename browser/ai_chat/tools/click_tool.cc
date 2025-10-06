@@ -88,10 +88,10 @@ void ClickTool::UseTool(const std::string& input_json,
     return;
   }
 
-  task_provider_->GetOrCreateTabHandleForTask(
-      base::BindOnce(&ClickTool::OnTabHandleCreated,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(target.value()), *click_type, *click_count));
+  task_provider_->GetOrCreateTabHandleForTask(base::BindOnce(
+      &ClickTool::OnTabHandleCreated, weak_ptr_factory_.GetWeakPtr(),
+      std::move(callback), std::move(target.value()), std::move(*click_type),
+      *click_count));
 }
 
 void ClickTool::OnTabHandleCreated(

@@ -79,7 +79,7 @@ void SelectTool::UseTool(const std::string& input_json,
 
   task_provider_->GetOrCreateTabHandleForTask(base::BindOnce(
       &SelectTool::OnTabHandleCreated, weak_ptr_factory_.GetWeakPtr(),
-      std::move(callback), std::move(target.value()), *value));
+      std::move(callback), std::move(target.value()), std::move(*value)));
 }
 
 void SelectTool::OnTabHandleCreated(

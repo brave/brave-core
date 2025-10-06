@@ -95,7 +95,7 @@ void ScrollTool::UseTool(const std::string& input_json,
 
   task_provider_->GetOrCreateTabHandleForTask(base::BindOnce(
       &ScrollTool::OnTabHandleCreated, weak_ptr_factory_.GetWeakPtr(),
-      std::move(callback), std::move(target.value()), *direction,
+      std::move(callback), std::move(target.value()), std::move(*direction),
       static_cast<float>(distance.value())));
 }
 
