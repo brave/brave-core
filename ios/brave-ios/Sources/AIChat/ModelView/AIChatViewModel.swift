@@ -16,6 +16,7 @@ public enum AIChatModelKey: String {
   case chatClaudeHaiku = "chat-claude-haiku"
   case chatClaudeSonnet = "chat-claude-sonnet"
   case chatDeepseekR1 = "chat-deepseek-r1"
+  case chatGemma = "chat-gemma"
 }
 
 public protocol AIChatWebDelegate: AnyObject {
@@ -372,6 +373,9 @@ extension AiChat.Model {
 
     case .chatDeepseekR1:
       return Strings.AIChat.introMessageDeepSeekR1MessageDescription
+
+    case .chatGemma:
+      return Strings.AIChat.introMessageGemmaMessageDescription
     }
   }
 
@@ -395,6 +399,9 @@ extension AiChat.Model {
 
     case .chatDeepseekR1:
       return Strings.AIChat.introMessageDeepSeekR1ModelPurposeDescription
+
+    case .chatGemma:
+      return Strings.AIChat.introMessageGemmaPurposeDescription
     }
   }
 }
