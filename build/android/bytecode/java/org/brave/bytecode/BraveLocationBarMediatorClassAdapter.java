@@ -17,9 +17,6 @@ public class BraveLocationBarMediatorClassAdapter extends BraveClassVisitor {
 
         redirectConstructor(sLocationBarMediator, sBraveLocationBarMediator);
 
-        deleteMethod(sBraveLocationBarMediator, "shouldShowDeleteButton");
-        makePublicMethod(sLocationBarMediator, "shouldShowDeleteButton");
-
         deleteField(sBraveLocationBarMediator, "mNativeInitialized");
         makeProtectedField(sLocationBarMediator, "mNativeInitialized");
         deleteField(sBraveLocationBarMediator, "mWindowAndroid");
