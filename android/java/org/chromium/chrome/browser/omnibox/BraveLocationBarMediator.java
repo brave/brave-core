@@ -162,15 +162,11 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         if (mIsTablet) {
             return mUrlHasFocus || mIsUrlFocusChangeInProgress;
         } else {
-            return !mIsTablet && !shouldShowDeleteButton()
-                    && (mUrlHasFocus || mIsUrlFocusChangeInProgress
+            return !shouldShowDeleteButton()
+                    && (mUrlHasFocus
+                            || mIsUrlFocusChangeInProgress
                             || mIsLocationBarFocusedFromNtpScroll);
         }
-    }
-
-    protected boolean shouldShowDeleteButton() {
-        assert false;
-        return false;
     }
 
     void qrButtonClicked(View view) {
