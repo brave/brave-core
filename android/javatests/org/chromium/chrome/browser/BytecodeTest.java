@@ -461,6 +461,19 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         int.class,
                         boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "calculateTabletMvtWidth",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "updateMvtOnTablet",
+                        MethodModifier.REGULAR,
+                        void.class));
 
         Assert.assertTrue(
                 methodExists(
@@ -2266,10 +2279,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/ntp/NewTabPageLayout",
                         "mMvTilesContainerLayout"));
         Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mLogoCoordinator"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mInitialTileNum"));
+                fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mMvtContentFits"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mProfile"));
         Assert.assertTrue(
