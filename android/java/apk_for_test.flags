@@ -560,7 +560,6 @@
     <init>(...);
     *** updateButtonVisibility(...);
     *** onPrimaryColorChanged(...);
-    *** shouldShowDeleteButton(...);
     *** onAssistantVoiceSearchServiceChanged(...);
 }
 
