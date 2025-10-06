@@ -1500,6 +1500,7 @@ public class BrowserViewController: UIViewController {
       let ntpController = NewTabPageViewController(
         tab: selectedTab,
         profilePrefs: profileController.profile.prefs,
+        braveCore: braveCore,
         dataSource: backgroundDataSource,
         feedDataSource: feedDataSource,
         rewards: rewards,
