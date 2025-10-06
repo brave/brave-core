@@ -47,6 +47,7 @@ public class BookmarkRemoteViewsFactory implements RemoteViewsService.RemoteView
     private final Context mContext;
     private final Map<String, Bitmap> mIconCache; // Cache loaded icons
     private List<WidgetTile> mWidgetTiles;
+    private @Nullable LargeIconBridge mLargeIconBridge;
 
     public BookmarkRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
@@ -83,6 +84,13 @@ public class BookmarkRemoteViewsFactory implements RemoteViewsService.RemoteView
     public void onDestroy() {
         mWidgetTiles.clear();
         mIconCache.clear();
+        ThreadUtils.runOnUiThreadBlocking(
+                () -> {
+                    if (mLargeIconBridge != null) {
+                        mLargeIconBridge.destroy();
+                        mLargeIconBridge = null;
+                    }
+                });
     }
 
     @Override
@@ -135,26 +143,34 @@ public class BookmarkRemoteViewsFactory implements RemoteViewsService.RemoteView
         // Use AtomicReference for thread-safe access across UI and background threads
         final AtomicReference<@Nullable Bitmap> iconResult = new AtomicReference<>();
         final AtomicReference<Integer> fallbackColorResult = new AtomicReference<>();
+        // CountDownLatch provides both signaling (countDown) and blocking (await) mechanisms,
+        // which is cleaner than pairing an AtomicBoolean with Object.wait/notify
         final CountDownLatch latch = new CountDownLatch(1);
 
+        // Post icon loading to UI thread (non-blocking) and wait via latch
         // Background Thread          UI Thread
         //     |                         |
-        //     |--runOnUiThreadBlocking--|
+        //     |----runOnUiThread------->|
+        //     |                    Load Icon (async)
         //     |    (wait at latch)      |
-        //     |                    Load Icon
+        //     |                    Callback fires
         //     |                    countDown()
         //     |<--latch released--------|
         // Continue...
-        ThreadUtils.runOnUiThreadBlocking(
+        ThreadUtils.runOnUiThread(
                 () -> {
                     try {
-                        // Widgets are top-level entry points similar to Activities, so accessing
-                        // the last used profile here is acceptable since there's no existing
-                        // Profile context to pass through the RemoteViewsFactory chain. The same
-                        // approach is used in upstream Chromium's bookmark widget.
-                        LargeIconBridge largeIconBridge =
-                                new LargeIconBridge(
-                                        ProfileManager.getLastUsedRegularProfile()); // nocheck
+                        // Lazily initialize LargeIconBridge on first use
+                        if (mLargeIconBridge == null) {
+                            // Widgets are top-level entry points similar to Activities, so
+                            // accessing the last used profile here is acceptable since
+                            // there's no existing Profile context to pass through the
+                            // RemoteViewsFactory chain. The same approach is used in
+                            // upstream Chromium's bookmark widget.
+                            mLargeIconBridge =
+                                    new LargeIconBridge(
+                                            ProfileManager.getLastUsedRegularProfile()); // nocheck
+                        }
 
                         LargeIconCallback callback =
                                 new LargeIconCallback() {
@@ -170,7 +186,7 @@ public class BookmarkRemoteViewsFactory implements RemoteViewsService.RemoteView
                                     }
                                 };
 
-                        largeIconBridge.getLargeIconForUrl(gurl, DESIRED_ICON_SIZE, callback);
+                        mLargeIconBridge.getLargeIconForUrl(gurl, DESIRED_ICON_SIZE, callback);
 
                     } catch (Exception e) {
                         latch.countDown();
