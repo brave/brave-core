@@ -84,7 +84,7 @@ public class BookmarkRemoteViewsFactory implements RemoteViewsService.RemoteView
     public void onDestroy() {
         mWidgetTiles.clear();
         mIconCache.clear();
-        ThreadUtils.runOnUiThreadBlocking(
+        ThreadUtils.runOnUiThread(
                 () -> {
                     if (mLargeIconBridge != null) {
                         mLargeIconBridge.destroy();
@@ -143,8 +143,7 @@ public class BookmarkRemoteViewsFactory implements RemoteViewsService.RemoteView
         // Use AtomicReference for thread-safe access across UI and background threads
         final AtomicReference<@Nullable Bitmap> iconResult = new AtomicReference<>();
         final AtomicReference<Integer> fallbackColorResult = new AtomicReference<>();
-        // CountDownLatch provides both signaling (countDown) and blocking (await) mechanisms,
-        // which is cleaner than pairing an AtomicBoolean with Object.wait/notify
+        // CountDownLatch provides both signaling (countDown) and blocking (await) mechanisms
         final CountDownLatch latch = new CountDownLatch(1);
 
         // Post icon loading to UI thread (non-blocking) and wait via latch
