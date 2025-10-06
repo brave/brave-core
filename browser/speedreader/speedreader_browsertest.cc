@@ -529,7 +529,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SpeedreaderPrefDisabled) {
   NavigateToPageSynchronously(kTestPageReadable);
 
   EXPECT_FALSE(GetReaderButton()->GetVisible());
-  EXPECT_FALSE(speedreader::DistillStates::IsDistillable(
+  EXPECT_FALSE(speedreader::DistillStates::IsDistilled(
       tab_helper()->PageDistillState()));
   EnableSpeedreaderAllowedForAllSites();
   WaitDistilled();
