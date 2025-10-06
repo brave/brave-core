@@ -10,6 +10,7 @@ import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.m
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {AdBlockOnlyModeMixin} from '../ad_block_only_mode_page/ad_block_only_mode_mixin.js'
 
 import {loadTimeData} from '../i18n_setup.js'
 import { Router} from '../router.js'
@@ -46,7 +47,7 @@ type ControlType = {
 }
 
 const BraveShieldsPageBase =
-  WebUiListenerMixin(I18nMixin(PrefsMixin(SettingsViewMixin(PolymerElement))))
+  AdBlockOnlyModeMixin(WebUiListenerMixin(I18nMixin(PrefsMixin(SettingsViewMixin(PolymerElement)))))
 
 /**
  * 'settings-default-brave-shields-page' is the settings page containing brave's
