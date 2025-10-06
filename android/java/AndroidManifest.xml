@@ -187,6 +187,11 @@
 </receiver>
 
 <service
+    android:name="org.chromium.chrome.browser.widget.quickactionsearchandbookmark.BookmarkWidgetService"
+    android:permission="android.permission.BIND_REMOTEVIEWS"
+    android:exported="false" />
+
+<service
     android:name="org.chromium.chrome.browser.vpn.wireguard.WireguardService"
     android:foregroundServiceType="dataSync"
     android:exported="false">

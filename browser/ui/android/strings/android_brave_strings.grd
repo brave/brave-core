@@ -3404,10 +3404,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Top Visited Site
     </message>
     <message name="IDS_SEARCH_WITH_BRAVE" desc="String used in QuickActionSearchAndBookmarkWidget's search bar">
-      Search with Brave
-    </message>
-    <message name="IDS_SEARCH_WITH_SEARCH_ENGINE" desc="Dynamic string used in QuickActionSearchAndBookmarkWidget's search bar. Placeholder is replaced by default search engine.">
-      Search with <ph name="DEFAULT_SEARCH_ENGINE">%1$s</ph>
+      Search
     </message>
     <message name="IDS_HOME_SCREEN_WIDGET" desc="Home scren widget option in settings">
       Home screen widget
