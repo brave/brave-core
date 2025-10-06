@@ -50,9 +50,10 @@ declare global {
 
 window.leoIcons = new Set(Object.keys(iconsMeta.icons))
 
-// <if expr="not is_android and not is_ios">
-import('//resources/cr_components/color_change_listener/colors_css_updater.js' as any)
-  .then(({ ColorChangeUpdater }) => {
-    ColorChangeUpdater.forDocument().start();
-  });
-// </if>
+// Note: We can't use the `if expr` here because this isn't run through the preprocessor.
+if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+  import(/* webpackIgnore: true */`${scheme}resources/cr_components/color_change_listener/colors_css_updater.js`)
+    .then(({ ColorChangeUpdater }) => {
+      ColorChangeUpdater.forDocument().start();
+    });
+}
