@@ -48,7 +48,7 @@ bool GetFilePathFromValue(const base::Value* value, base::FilePath* result) {
   if (!value->is_string()) {
     return false;
   }
-  auto val = value->GetString();
+  const auto& val = value->GetString();
   *result = base::FilePath::FromASCII(val);
   return true;
 }

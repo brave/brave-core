@@ -127,7 +127,7 @@ std::string Prefs::GetSeed(bool* failed_to_decrypt) const {
   CHECK(failed_to_decrypt);
   *failed_to_decrypt = true;
 
-  const std::string encoded_seed = pref_service_->GetString(kSyncV2Seed);
+  const auto& encoded_seed = pref_service_->GetString(kSyncV2Seed);
   if (encoded_seed.empty()) {
     *failed_to_decrypt = false;
     return std::string();
@@ -184,7 +184,7 @@ void Prefs::AddLeaveChainDetail(const char* file, int line, const char* func) {
     return;
   }
 
-  std::string details = pref_service_->GetString(kSyncLeaveChainDetails);
+  const auto& details = pref_service_->GetString(kSyncLeaveChainDetails);
 
   std::ostringstream stream;
   stream << base::Time::Now() << " "
