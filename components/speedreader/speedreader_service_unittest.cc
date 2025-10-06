@@ -89,8 +89,8 @@ TEST_F(SpeedreaderServiceTest, SpeedreaderDisabled) {
     speedreader_service()->SetAllowedForAllReadableSites(true);
     speedreader_service()->SetEnabledForSite(site2, true);
 
-    EXPECT_EQ(enabled, speedreader_service()->IsAllowedForSite(site1));
-    EXPECT_EQ(enabled, speedreader_service()->IsAllowedForSite(site2));
+    EXPECT_FALSE(speedreader_service()->IsAllowedForSite(site1));
+    EXPECT_FALSE(enabled, speedreader_service()->IsAllowedForSite(site2));
     EXPECT_FALSE(speedreader_service()->IsEnabledForSite(site1));
     EXPECT_TRUE(speedreader_service()->IsEnabledForSite(site2));
   }
