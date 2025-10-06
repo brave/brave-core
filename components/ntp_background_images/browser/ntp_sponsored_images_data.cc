@@ -11,7 +11,6 @@
 #include "base/strings/string_util.h"
 #include "base/time/time_delta_from_string.h"
 #include "base/uuid.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -215,11 +214,7 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
   campaign.campaign_id = *campaign_id;
 
   bool should_metrics_fallback_to_p3a = false;
-  if (!brave_ads::kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get()) {
-    // If we don't support confirmations, we should always fallback to P3A.
-    should_metrics_fallback_to_p3a = true;
-  } else if (const std::string* metrics =
-                 dict.FindString(kCampaignMetricsKey)) {
+  if (const std::string* metrics = dict.FindString(kCampaignMetricsKey)) {
     // Metrics (optional). If not provided, the default behavior is to send
     // confirmations.
     should_metrics_fallback_to_p3a = *metrics == "p3a";
