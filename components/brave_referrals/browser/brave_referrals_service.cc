@@ -182,7 +182,7 @@ void BraveReferralsService::Start() {
   // users without download_ids from initializing.
   bool checked_for_promo_code_file =
       pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile);
-  std::string download_id = pref_service_->GetString(kReferralDownloadID);
+  const auto& download_id = pref_service_->GetString(kReferralDownloadID);
   if (!checked_for_promo_code_file && !has_initialized && download_id.empty()) {
 #if !BUILDFLAG(IS_ANDROID)
     task_runner_->PostTaskAndReplyWithResult(
@@ -397,7 +397,7 @@ base::FilePath BraveReferralsService::GetPromoCodeFileName() const {
 void BraveReferralsService::MaybeCheckForReferralFinalization() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  std::string download_id = pref_service_->GetString(kReferralDownloadID);
+  const auto& download_id = pref_service_->GetString(kReferralDownloadID);
   if (download_id.empty()) {
     return;
   }
