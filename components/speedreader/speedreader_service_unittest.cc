@@ -80,14 +80,14 @@ TEST_F(SpeedreaderServiceTest, DefaultSiteSettingsAllSitesEnabled) {
 }
 
 TEST_F(SpeedreaderServiceTest, SpeedreaderDisabled) {
-  const GURL site("https://example.com");
+  const GURL site1("https://example.com");
   const GURL site2("https://example2.com");
 
   prefs()->SetBoolean(kSpeedreaderEnabled, false);
 
   for (const bool enabled : {true, false}) {
     speedreader_service()->SetAllowedForAllReadableSites(true);
-    speedreader_service()->SetEnabledForSite(site2);
+    speedreader_service()->SetEnabledForSite(site2, true);
 
     EXPECT_EQ(enabled, speedreader_service()->IsAllowedForSite(site1));
     EXPECT_EQ(enabled, speedreader_service()->IsAllowedForSite(site2));
