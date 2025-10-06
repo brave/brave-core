@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/test/run_until.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -390,6 +391,8 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, History) {
     web_contents->GetController().GoForward();
     content::WaitForLoadStop(web_contents);
     auto* helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
+    ASSERT_TRUE(
+        base::test::RunUntil([&]() { return helper->should_show_icon(); }));
     EXPECT_TRUE(helper->should_show_icon());
     EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
 
