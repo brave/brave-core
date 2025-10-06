@@ -16,7 +16,7 @@
 #include "brave/components/debounce/core/common/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/pref_names.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -39,14 +39,14 @@
 
 #if BUILDFLAG(DEPRECATE_IPFS)
 #include "brave/components/ipfs/ipfs_prefs.h"  // nogncheck
-#endif  // BUILDFLAG(DEPRECATE_IPFS)
+#endif                                         // BUILDFLAG(DEPRECATE_IPFS)
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/browser/pref_names.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)

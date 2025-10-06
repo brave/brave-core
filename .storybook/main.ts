@@ -42,7 +42,7 @@ const config: StorybookConfig = {
   staticDirs: [
     { from: '../node_modules/@brave/leo/icons', to: 'icons/' },
     {
-      from: '../components/playlist/browser/resources/stories/assets',
+      from: '../components/playlist/content/browser/resources/stories/assets',
       to: 'playlist/'
     }
   ],

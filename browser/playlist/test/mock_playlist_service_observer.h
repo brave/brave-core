@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "testing/gmock/include/gmock/gmock.h"
 

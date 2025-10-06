@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_PLAYLIST_ACTIVE_TAB_TRACKER_H_
 
 #include "base/scoped_observation.h"
-#include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper_observer.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 
 namespace content {

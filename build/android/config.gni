@@ -47,7 +47,7 @@ brave_chrome_java_deps = [
   "//brave/components/browser_ui/notifications/android:java",
   "//brave/components/browser_ui/site_settings/android:java",
   "//brave/components/misc_metrics/common:mojom_java",
-  "//brave/components/playlist/common/mojom:mojom_java",
+  "//brave/components/playlist/core/common/mojom:mojom_java",
   "//brave/components/safe_browsing/android:brave_safe_browsing_java",
   "//brave/components/skus/common:mojom_java",
   "//brave/components/url_sanitizer/common/mojom:mojom_java",

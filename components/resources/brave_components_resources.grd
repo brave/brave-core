@@ -83,7 +83,7 @@
 
       <part file="../brave_ads/browser/resources/ads_internals_resources.grdp" />
       <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
-      <part file="../playlist/browser/resources/playlist_resources.grdp" />
+      <part file="../playlist/content/browser/resources/playlist_resources.grdp" />
       <part file="../brave_news/browser/resources/news_resources.grdp" />
       <part file="../skus/browser/resources/skus_internals_resources.grdp" />
       <if expr="not is_android">
