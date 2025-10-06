@@ -19,6 +19,8 @@ class TabFeatures {
   TabFeatures(content::WebContents* web_contents, Profile* profile);
   ~TabFeatures();
 
+  NewTabPagePreloadPipelineManager* new_tab_page_preload_pipeline_manager();
+
  private:
   friend BraveTabFeatures;
   std::unique_ptr<BraveTabFeatures> brave_tab_features_;
