@@ -10,6 +10,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
+#include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
@@ -335,6 +336,9 @@ void RegisterProfilePrefsForMigration(
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::RegisterProfilePrefsForMigration(registry);
 #endif
+
+  // Added 2025-09
+  SearchEngineTrackerFactory::RegisterProfilePrefsForMigration(registry);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

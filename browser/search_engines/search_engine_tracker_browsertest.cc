@@ -22,7 +22,6 @@
 #include "chrome/test/base/search_test_utils.h"
 #include "components/country_codes/country_codes.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
-#include "components/regional_capabilities/regional_capabilities_country_id.h"
 #include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "components/regional_capabilities/regional_capabilities_service.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
@@ -102,11 +101,11 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, DefaultSearchEngineP3A) {
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
   // Check that the metric is reported on startup.
-  // For some reason we can record kNoSwitch twice, even though
-  // kDefaultSearchEngineMetric is only updated once at this point.
-  auto start_count = histogram_tester_->GetBucketCount(
-      kSwitchSearchEngineMetric, SearchEngineSwitchP3A::kNoSwitch);
-  EXPECT_GT(start_count, 0);
+  // Since we override the region to US, Brave Search should be the default
+  auto start_count_brave = histogram_tester_->GetBucketCount(
+      kSwitchSearchEngineMetric, SearchEngineSwitchP3A::kNoSwitchBrave);
+  // We should see kNoSwitchBrave since Brave is default in US region
+  EXPECT_GT(start_count_brave, 0);
 
   // Load service for switching the default search engine.
   auto* service =
@@ -154,13 +153,13 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderP3ATest, SwitchSearchEngineP3A) {
                                        SearchEngineSwitchP3A::kOtherToBrave, 1);
 
   // Check that incognito or TOR profiles do not emit the metric.
-  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 8);
+  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 5);
   CreateIncognitoBrowser();
 #if BUILDFLAG(ENABLE_TOR)
   brave::NewOffTheRecordWindowTor(browser());
 #endif
 
-  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 8);
+  histogram_tester_->ExpectTotalCount(kSwitchSearchEngineMetric, 5);
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
