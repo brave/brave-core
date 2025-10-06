@@ -207,6 +207,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &ntp_features::kNtpChromeCartModule,
       &omnibox::kDocumentProviderNoSyncRequirement,
       &omnibox::kMlUrlScoring,
+#if BUILDFLAG(IS_ANDROID)
+      &omnibox::kOmniboxMobileParityUpdateV2,
+#endif
       &omnibox::kRichAutocompletion,
       &omnibox::kStarterPackExpansion,
       &omnibox::kZeroSuggestPrefetching,
