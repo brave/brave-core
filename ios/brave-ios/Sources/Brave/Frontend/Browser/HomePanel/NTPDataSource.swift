@@ -20,6 +20,13 @@ enum NTPWallpaper {
     return nil
   }
 
+  var richNewTabTakeoverURL: URL? {
+    if case .sponsoredMedia(let background) = self {
+      return background.richNewTabTakeoverURL
+    }
+    return nil
+  }
+
   var backgroundImage: UIImage? {
     let imagePath: URL
     switch self {
@@ -299,5 +306,13 @@ extension NTPBackgroundImage {
 extension NTPSponsoredImageBackground {
   var isVideoFile: Bool {
     imagePath.pathExtension == "mp4"
+  }
+
+  var richNewTabTakeoverURL: URL? {
+    // TODO(aseren): Construct this URL from parsed creative parameters.
+    return URL(
+      string:
+        "chrome://new-tab-takeover-page?creativeInstanceId=00000000-0000-4000-8000-000000000004&placementId=1234567890"
+    )
   }
 }

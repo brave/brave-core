@@ -1,0 +1,5 @@
+include_rules = [
+  "+brave/components/new_tab_takeover/grit",
+  "+brave/components/new_tab_takeover/mojom",
+  "+brave/components/ntp_background_images",
+]
