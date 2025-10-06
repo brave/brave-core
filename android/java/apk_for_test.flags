@@ -46,13 +46,14 @@
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
     *** mMvTilesContainerLayout;
-    *** mLogoCoordinator;
-    *** mInitialTileNum;
+    *** mMvtContentFits;
     *** mProfile;
     *** initializeSiteSectionView(...);
     *** setSearchProviderTopMargin(...);
     *** setSearchProviderBottomMargin(...);
     *** getLogoMargin(...);
+    *** calculateTabletMvtWidth(...);
+    *** updateMvtOnTablet(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
