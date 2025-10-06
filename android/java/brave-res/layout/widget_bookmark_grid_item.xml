@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- Note: UseCompoundDrawables warning is suppressed because:
+     1. The ImageView bitmap is set dynamically via RemoteViews.setImageViewBitmap()
+     2. The ImageView requires a specific background drawable
+     3. RemoteViews doesn't fully support compound drawables for dynamic content
+     4. Separate views are necessary for proper widget functionality -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="4dp"
+    tools:ignore="UseCompoundDrawables">
+
+    <ImageView
+        android:id="@+id/bookmark_icon"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="@drawable/quick_action_search_and_bookmark_widget_bookmark_bg"
+        android:contentDescription="@string/top_visited_site" />
+
+    <TextView
+        android:id="@+id/bookmark_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/quick_action_search_and_bookmark_widget_tint"
+        android:textSize="12sp" />
+</LinearLayout>
