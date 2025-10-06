@@ -11,11 +11,14 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/values.h"
+#include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
 #include "brave/browser/ai_chat/content_agent_tool_provider.h"
 #include "brave/browser/ai_chat/tools/target_test_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -50,6 +53,16 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     ASSERT_TRUE(embedded_test_server()->Start());
     ASSERT_TRUE(embedded_https_test_server().Start());
+
+    // Create the agent profile
+    auto* profile = browser()->profile();
+    SetUserOptedIn(profile->GetPrefs(), true);
+    base::test::TestFuture<Browser*> browser_future;
+    OpenBrowserWindowForAIChatAgentProfileForTesting(
+        *profile, browser_future.GetCallback());
+    Browser* browser = browser_future.Take();
+    ASSERT_NE(browser, nullptr);
+    agent_profile_ = browser->profile();
 
     // Get the actor service
     auto* actor_service =
@@ -95,10 +108,15 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
 
   // Helper to execute a tool and wait for completion
   Tool::ToolResult ExecuteToolAndWait(base::WeakPtr<Tool> tool,
-                                      const std::string& input_json) {
-    base::test::TestFuture<Tool::ToolResult> result;
-    tool->UseTool(input_json, result.GetCallback());
-    return result.Take();
+                                      const std::string& input_json,
+                                      bool verify_success = true) {
+    base::test::TestFuture<Tool::ToolResult> result_future;
+    tool->UseTool(input_json, result_future.GetCallback());
+    auto result = result_future.Take();
+    if (verify_success) {
+      EXPECT_THAT(result, ContentBlockText(testing::HasSubstr("Success")));
+    }
+    return result;
   }
 
   // Helper to get real DOM node ID from a page element
@@ -121,7 +139,7 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
   }
 
   // Helper to get the profile
-  Profile* GetProfile() { return browser()->profile(); }
+  Profile* GetProfile() { return agent_profile_; }
 
   // Helper to navigate to Chromium test files
   void NavigateToChromiumTestFile(const std::string& file_path) {
@@ -135,13 +153,14 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
         content::NavigateToURL(tab_handle.Get()->GetContents(), test_url));
   }
 
+  raw_ptr<Profile> agent_profile_;
   std::unique_ptr<ContentAgentToolProvider> tool_provider_;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 // Test that BrowserToolProvider can be created and provides expected tools
 IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ProviderCreation) {
-  EXPECT_NE(tool_provider_, nullptr);
+  ASSERT_NE(tool_provider_, nullptr);
 
   auto tools = tool_provider_->GetTools();
   EXPECT_GT(tools.size(), 0u);

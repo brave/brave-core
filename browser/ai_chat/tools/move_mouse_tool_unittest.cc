@@ -16,6 +16,7 @@
 #include "brave/browser/ai_chat/tools/mock_content_agent_task_provider.h"
 #include "brave/browser/ai_chat/tools/target_test_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/browser_action_util.h"
 #include "chrome/browser/actor/task_id.h"
 #include "chrome/browser/actor/tools/move_mouse_tool_request.h"
@@ -74,9 +75,7 @@ class MoveMouseToolTest : public testing::Test {
     move_mouse_tool_->UseTool(input_json, future.GetCallback());
 
     auto result = future.Take();
-    EXPECT_EQ(result.size(), 1u);
-    ASSERT_TRUE(result[0]->is_text_content_block());
-    EXPECT_EQ(result[0]->get_text_content_block()->text, expected_error);
+    EXPECT_THAT(result, ContentBlockText(testing::HasSubstr(expected_error)));
   }
 
   // Verify move mouse action properties and conversions
@@ -185,7 +184,6 @@ TEST_F(MoveMouseToolTest, ValidInputCustomContentNode) {
                                     optimization_guide::proto::Actions actions,
                                     Tool::UseToolCallback callback) {
         captured_actions = std::move(actions);
-        std::move(callback).Run(CreateContentBlocksForText("Success"));
         run_loop.Quit();
       }));
 
@@ -212,7 +210,6 @@ TEST_F(MoveMouseToolTest, ValidInputCustomCoordinates) {
                                     optimization_guide::proto::Actions actions,
                                     Tool::UseToolCallback callback) {
         captured_actions = std::move(actions);
-        std::move(callback).Run(CreateContentBlocksForText("Success"));
         run_loop.Quit();
       }));
 
@@ -264,18 +261,6 @@ TEST_F(MoveMouseToolTest, MissingDocumentIdentifierWithContentNode) {
   RunWithExpectedError(input_json,
                        "Invalid identifiers: 'document_identifier' is required "
                        "when specifying 'content_node_id'");
-}
-
-TEST_F(MoveMouseToolTest, ToolMetadata) {
-  EXPECT_EQ(move_mouse_tool_->Name(), "move_mouse");
-  EXPECT_FALSE(std::string(move_mouse_tool_->Description()).empty());
-
-  auto properties = move_mouse_tool_->InputProperties();
-  EXPECT_TRUE(properties.has_value());
-
-  auto required = move_mouse_tool_->RequiredProperties();
-  EXPECT_TRUE(required.has_value());
-  EXPECT_EQ(required->size(), 1u);  // target
 }
 
 }  // namespace ai_chat

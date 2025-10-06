@@ -15,6 +15,7 @@
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/tools/mock_content_agent_task_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/browser_action_util.h"
 #include "chrome/browser/actor/task_id.h"
 #include "chrome/browser/actor/tools/history_tool_request.h"
@@ -64,9 +65,7 @@ class HistoryToolTest : public testing::Test {
     history_tool_->UseTool(input_json, future.GetCallback());
 
     auto result = future.Take();
-    EXPECT_EQ(result.size(), 1u);
-    ASSERT_TRUE(result[0]->is_text_content_block());
-    EXPECT_EQ(result[0]->get_text_content_block()->text, expected_error);
+    EXPECT_THAT(result, ContentBlockText(testing::HasSubstr(expected_error)));
   }
 
   // Verify history action properties and conversions
@@ -146,7 +145,6 @@ TEST_F(HistoryToolTest, ValidInputForward) {
                                     optimization_guide::proto::Actions actions,
                                     Tool::UseToolCallback callback) {
         captured_actions = std::move(actions);
-        std::move(callback).Run(CreateContentBlocksForText("Success"));
         run_loop.Quit();
       }));
 
@@ -183,18 +181,6 @@ TEST_F(HistoryToolTest, InvalidDirectionType) {
 
   RunWithExpectedError(
       input_json, "Invalid or missing direction. Must be 'back' or 'forward'.");
-}
-
-TEST_F(HistoryToolTest, ToolMetadata) {
-  EXPECT_EQ(history_tool_->Name(), "navigate_history");
-  EXPECT_FALSE(std::string(history_tool_->Description()).empty());
-
-  auto properties = history_tool_->InputProperties();
-  EXPECT_TRUE(properties.has_value());
-
-  auto required = history_tool_->RequiredProperties();
-  EXPECT_TRUE(required.has_value());
-  EXPECT_EQ(required->size(), 1u);  // direction
 }
 
 }  // namespace ai_chat

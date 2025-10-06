@@ -262,6 +262,7 @@ source_set("unit_tests") {
 
   if (enable_brave_ai_chat_agent_profile) {
     sources += [
+      "content_agent_tool_provider_unittest.cc",
       "page_content_blocks_unittest.cc",
       "tools/click_tool_unittest.cc",
       "tools/drag_and_release_tool_unittest.cc",
@@ -277,7 +278,10 @@ source_set("unit_tests") {
 
     deps += [
       ":content_agent_test_support",
+      "//brave/components/ai_chat/core/common:test_support",
       "//chrome/browser/actor",
+      "//chrome/browser/actor/ui:test_support",
+      "//components/optimization_guide/content/browser",
       "//components/optimization_guide/proto:optimization_guide_proto",
     ]
   }
@@ -345,14 +349,17 @@ source_set("browser_tests") {
     if (enable_brave_ai_chat_agent_profile) {
       sources += [
         "ai_chat_agent_profile_browsertest.cc",
+        "content_agent_tool_provider_browsertest.cc",
         "content_agent_tools_browsertest.cc",
       ]
 
       deps += [
         ":content_agent_test_support",
         "//brave/browser/ai_chat:ai_chat_agent_profile",
+        "//brave/components/ai_chat/core/common:test_support",
         "//chrome/browser/actor",
         "//chrome/browser/ui",
+        "//components/optimization_guide/content/browser",
       ]
 
       data += [ "//chrome/test/data/actor/" ]

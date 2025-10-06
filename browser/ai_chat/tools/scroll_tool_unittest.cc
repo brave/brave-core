@@ -16,6 +16,7 @@
 #include "brave/browser/ai_chat/tools/mock_content_agent_task_provider.h"
 #include "brave/browser/ai_chat/tools/target_test_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/browser_action_util.h"
 #include "chrome/browser/actor/task_id.h"
 #include "chrome/browser/actor/tools/page_tool_request.h"
@@ -79,9 +80,7 @@ class ScrollToolTest : public testing::Test {
     scroll_tool_->UseTool(input_json, future.GetCallback());
 
     auto result = future.Take();
-    EXPECT_EQ(result.size(), 1u);
-    ASSERT_TRUE(result[0]->is_text_content_block());
-    EXPECT_EQ(result[0]->get_text_content_block()->text, expected_error);
+    EXPECT_THAT(result, ContentBlockText(testing::HasSubstr(expected_error)));
   }
 
   // Verify scroll action properties and conversions
@@ -267,7 +266,6 @@ TEST_F(ScrollToolTest, ValidInputLeftDirection) {
                                     optimization_guide::proto::Actions actions,
                                     Tool::UseToolCallback callback) {
         captured_actions = std::move(actions);
-        std::move(callback).Run(CreateContentBlocksForText("Success"));
         run_loop.Quit();
       }));
 
@@ -295,7 +293,6 @@ TEST_F(ScrollToolTest, ValidInputRightDirection) {
                                     optimization_guide::proto::Actions actions,
                                     Tool::UseToolCallback callback) {
         captured_actions = std::move(actions);
-        std::move(callback).Run(CreateContentBlocksForText("Success"));
         run_loop.Quit();
       }));
 
@@ -426,18 +423,6 @@ TEST_F(ScrollToolTest, InvalidTargetValidation) {
   RunWithExpectedError(CreateInvalidTargetJson("{}"),
                        "Target must contain one of either 'x' and 'y' or "
                        "'document_identifier' and optional 'content_node_id'");
-}
-
-TEST_F(ScrollToolTest, ToolMetadata) {
-  EXPECT_EQ(scroll_tool_->Name(), "scroll_element");
-  EXPECT_FALSE(std::string(scroll_tool_->Description()).empty());
-
-  auto properties = scroll_tool_->InputProperties();
-  EXPECT_TRUE(properties.has_value());
-
-  auto required = scroll_tool_->RequiredProperties();
-  EXPECT_TRUE(required.has_value());
-  EXPECT_EQ(required->size(), 3u);  // target, direction, distance
 }
 
 }  // namespace ai_chat

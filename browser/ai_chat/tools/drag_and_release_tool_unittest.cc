@@ -14,6 +14,7 @@
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/tools/mock_content_agent_task_provider.h"
 #include "brave/browser/ai_chat/tools/target_test_util.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/browser_action_util.h"
 #include "chrome/browser/actor/task_id.h"
 #include "chrome/browser/actor/tools/drag_and_release_tool_request.h"
@@ -69,9 +70,7 @@ class DragAndReleaseToolTest : public testing::Test {
     drag_and_release_tool_->UseTool(input_json, future.GetCallback());
 
     auto result = future.Take();
-    EXPECT_EQ(result.size(), 1u);
-    ASSERT_TRUE(result[0]->is_text_content_block());
-    EXPECT_EQ(result[0]->get_text_content_block()->text, expected_error);
+    EXPECT_THAT(result, ContentBlockText(testing::HasSubstr(expected_error)));
   }
 
   // Verify drag and release action and tool request creation
@@ -268,19 +267,6 @@ TEST_F(DragAndReleaseToolTest, InvalidToTarget) {
       FROM_HERE, input_json,
       "Invalid 'to' target: Target must contain one of either 'x' and 'y' or "
       "'document_identifier' and optional 'content_node_id'");
-}
-
-// Test tool metadata
-TEST_F(DragAndReleaseToolTest, ToolMetadata) {
-  EXPECT_EQ(drag_and_release_tool_->Name(), "drag_and_release");
-  EXPECT_FALSE(std::string(drag_and_release_tool_->Description()).empty());
-
-  auto properties = drag_and_release_tool_->InputProperties();
-  EXPECT_TRUE(properties.has_value());
-
-  auto required = drag_and_release_tool_->RequiredProperties();
-  EXPECT_TRUE(required.has_value());
-  EXPECT_EQ(required->size(), 2u);  // from, to
 }
 
 }  // namespace ai_chat

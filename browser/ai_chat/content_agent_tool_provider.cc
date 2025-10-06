@@ -179,6 +179,11 @@ void ContentAgentToolProvider::OnActionsFinished(
         task_tab_handle_.Get()->GetContents(), std::move(options),
         base::BindOnce(&ContentAgentToolProvider::ReceivedAnnotatedPageContent,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  } else if (result_code ==
+             actor::mojom::ActionResultCode::kEmptyActionSequence) {
+    DLOG(ERROR) << "Actions were empty";
+    std::move(callback).Run(
+        CreateContentBlocksForText("Action failed - no actions specified"));
   } else {
     DLOG(ERROR) << "Action failed, see actor.mojom for result code meaning: "
                 << result_code;
