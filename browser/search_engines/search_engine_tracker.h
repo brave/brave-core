@@ -10,10 +10,11 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
-#include "brave/components/time_period_storage/weekly_event_storage.h"
+#include "base/timer/wall_clock_timer.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_member.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -30,7 +31,8 @@ class NoDestructor;
 // Exposed for tests.
 inline constexpr char kDefaultSearchEngineMetric[] =
     "Brave.Search.DefaultEngine.4";
-inline constexpr char kSwitchSearchEngineMetric[] = "Brave.Search.SwitchEngine";
+inline constexpr char kSwitchSearchEngineMetric[] =
+    "Brave.Search.SwitchEngine.2";
 inline constexpr char kWebDiscoveryEnabledMetric[] =
     "Brave.Search.WebDiscoveryEnabled";
 inline constexpr char kWebDiscoveryAndAdsMetric[] =
@@ -59,7 +61,8 @@ enum class SearchEngineP3A {
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
 enum class SearchEngineSwitchP3A {
-  kNoSwitch,
+  kNoSwitchBrave,     // No switch, currently using Brave Search
+  kNoSwitchNonBrave,  // No switch, currently using non-Brave search engine
   kBraveToGoogle,
   kBraveToDDG,
   kBraveToOther,
@@ -79,6 +82,10 @@ class SearchEngineTrackerFactory : public BrowserContextKeyedServiceFactory {
   static SearchEngineTracker* GetForBrowserContext(
       content::BrowserContext* context);
 
+  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+  static void RegisterProfilePrefsForMigration(
+      user_prefs::PrefRegistrySyncable* registry);
+
  private:
   friend base::NoDestructor<SearchEngineTrackerFactory>;
   SearchEngineTrackerFactory();
@@ -92,9 +99,6 @@ class SearchEngineTrackerFactory : public BrowserContextKeyedServiceFactory {
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;
-
-  void RegisterProfilePrefs(
-      user_prefs::PrefRegistrySyncable* registry) override;
 };
 
 // Records P3A metrics when default search engine changes,
@@ -120,6 +124,8 @@ class SearchEngineTracker : public KeyedService,
   void RecordWebDiscoveryEnabledP3A();
 #endif
 
+  void MigrateObsoletePrefs();
+
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
       observer_{this};
 
@@ -129,7 +135,8 @@ class SearchEngineTracker : public KeyedService,
   GURL default_search_url_;
   GURL previous_search_url_;
   SearchEngineP3A current_default_engine_ = SearchEngineP3A::kOther;
-  WeeklyEventStorage switch_record_;
+
+  base::WallClockTimer switch_report_timer_;
 
   raw_ptr<PrefService> local_state_;
   raw_ptr<PrefService> profile_prefs_;

@@ -26,6 +26,7 @@ enum class MetricAttribute {
   kCountryCode,
   kWoi,
   // Alternative attributes
+  kLocaleCountryCode,
   kGeneralPlatform,
   kRegion,
   kSubregion,

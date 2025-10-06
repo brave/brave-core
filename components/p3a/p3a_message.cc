@@ -166,8 +166,13 @@ std::vector<std::array<std::string, 2>> PopulateConstellationAttributes(
           attribute_value = meta.country_code_from_locale_raw();
         } else {
           attribute_value = meta.GetCountryCodeForNormalMetrics(
-              metric_config && metric_config->disable_country_strip);
+              metric_config && metric_config->disable_country_strip, false);
         }
+        attributes.push_back({kCountryCodeAttributeName, attribute_value});
+        break;
+      case MetricAttribute::kLocaleCountryCode:
+        attribute_value = meta.GetCountryCodeForNormalMetrics(
+            metric_config && metric_config->disable_country_strip, true);
         attributes.push_back({kCountryCodeAttributeName, attribute_value});
         break;
       case MetricAttribute::kWoi:
@@ -264,7 +269,7 @@ base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
 
   // Fill meta.
   result.Set(kCountryCodeAttributeName,
-             meta.GetCountryCodeForNormalMetrics(false));
+             meta.GetCountryCodeForNormalMetrics(false, false));
   result.Set(kVersionAttributeName, meta.version());
   result.Set(kWoiAttributeName, meta.woi());
 
@@ -352,7 +357,7 @@ void MessageMetainfo::Init(PrefService* local_state,
   country_code_from_locale_ = country_code_from_locale_raw_;
 
   region_identifiers_ =
-      GetRegionIdentifiers(GetCountryCodeForNormalMetrics(true));
+      GetRegionIdentifiers(GetCountryCodeForNormalMetrics(true, false));
 
   MaybeStripCountry();
 
@@ -419,7 +424,15 @@ void MessageMetainfo::MaybeStripCountry() {
 }
 
 const std::string& MessageMetainfo::GetCountryCodeForNormalMetrics(
-    bool raw) const {
+    bool raw,
+    bool is_locale) const {
+  if (is_locale) {
+    if (raw) {
+      return country_code_from_locale_raw_;
+    }
+    return country_code_from_locale_;
+  }
+
 #if BUILDFLAG(IS_IOS)
   if (raw) {
     return country_code_from_locale_raw_;
