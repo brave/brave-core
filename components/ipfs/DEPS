@@ -2,6 +2,7 @@ include_rules = [
   "+components/base32",
   "+components/prefs",
   "+content/public/test",
+  "+net",
 ]
 
 specific_include_rules = {

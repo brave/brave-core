@@ -3,4 +3,5 @@ include_rules = [
   "+components/embedder_support",
   "+components/prefs",
   "+content/public/test",
+  "+net",
 ]

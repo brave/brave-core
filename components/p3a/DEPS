@@ -8,6 +8,7 @@ include_rules = [
   "+content/public/test",
   "+crypto",
   "+ios/web/public/thread",
+  "+net",
   "+services/network/public",
   "+services/network/test",
   "+third_party/boringssl",

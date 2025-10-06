@@ -3,6 +3,7 @@ include_rules = [
   "+components/body_sniffer",
   "+components/prefs",
   "+components/user_prefs",
+  "+net",
   "+services/network/public/cpp",
   "+services/network/public/mojom",
   "+third_party/re2",
