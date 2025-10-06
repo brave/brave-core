@@ -35,7 +35,9 @@ assert cert or cert_hash or signtool_args, \
     'Store. It is ambiguous and will likely be deprecated in the future.'
 
 
-def execute_with_retry(cmd, max_attempts=5, sleep_sec=10):
+def execute_with_retry(cmd, max_attempts=5, base_sleep_sec=1, backoff_mult=2):
+    """Execute a command, retry on failure with exponential backoff"""
+
     for attempt in range(max_attempts + 1):
         try:
             execute(cmd)
@@ -46,7 +48,8 @@ def execute_with_retry(cmd, max_attempts=5, sleep_sec=10):
                     file=sys.stderr)
                 raise
             else:
-                print(f"Command `{cmd}' failed. Retrying in {sleep_sec}s.",
+                sleep_sec = base_sleep_sec * pow(backoff_mult, attempt)
+                print(f"Command `{cmd}' failed. Retrying in {sleep_sec}s ({attempt} ouf of {max_attempts}).",
                       file=sys.stderr)
                 sleep(sleep_sec)
                 continue
