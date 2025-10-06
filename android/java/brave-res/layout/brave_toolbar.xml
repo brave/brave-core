@@ -25,7 +25,7 @@
             android:layout_marginBottom="8dp"
             android:src="@drawable/ic_picture_in_picture"
             android:layout_gravity="center"
-            android:contentDescription="@string/accessibility_toolbar_btn_brave_shields" />
+            android:contentDescription="@string/accessibility_toolbar_btn_brave_pip" />
     </FrameLayout>
 
   <FrameLayout android:id="@+id/brave_wallet_button_layout"
