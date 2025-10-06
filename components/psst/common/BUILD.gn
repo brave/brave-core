@@ -17,14 +17,11 @@ static_library("common") {
     "constants.h",
     "features.h",
     "pref_names.h",
-    "psst_consent_data.h",
   ]
 
   sources = [
     "features.cc",
     "pref_names.cc",
-    "pref_names.h",
-    "psst_consent_data.cc",
   ]
 
   public_deps = [
