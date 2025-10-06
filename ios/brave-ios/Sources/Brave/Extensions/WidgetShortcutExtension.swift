@@ -19,6 +19,7 @@ extension WidgetShortcut {
     .wallet,
     .braveNews,
     .braveLeo,
+    .askBrave,
   ]
 
   var displayString: String {
@@ -39,6 +40,8 @@ extension WidgetShortcut {
       return Strings.braveNewsItemTitle
     case .braveLeo:
       return Strings.leoMenuItem
+    case .askBrave:
+      return Strings.askBraveMenuItem
     default:
       return ""
     }
@@ -68,7 +71,7 @@ extension WidgetShortcut {
       return "leo.qr.code"
     case .braveNews:
       return "leo.product.brave-news"
-    case .braveLeo:
+    case .braveLeo, .askBrave:
       return "leo.product.brave-leo"
     @unknown default:
       return nil

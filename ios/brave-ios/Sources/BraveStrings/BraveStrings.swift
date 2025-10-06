@@ -3575,6 +3575,13 @@ extension Strings {
     comment:
       "Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated"
   )
+  public static let askBraveMenuItem = NSLocalizedString(
+    "AskBraveMenuItem",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Ask Brave",
+    comment: "Title for Ask Brave menu item. Brave is the company name and should not be translated"
+  )
   public static let passwordsMenuItem = NSLocalizedString(
     "PasswordsMenuItem",
     tableName: "BraveShared",
