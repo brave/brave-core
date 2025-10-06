@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 /** RemoteViewsFactory that provides views for the bookmark GridView. */
 @NullMarked
@@ -91,7 +92,7 @@ public class BookmarkRemoteViewsFactory implements RemoteViewsService.RemoteView
 
     @Override
     public @Nullable RemoteViews getViewAt(int position) {
-        if (position >= mWidgetTiles.size()) {
+        if (position < 0 || position >= mWidgetTiles.size()) {
             return null;
         }
 
@@ -124,15 +125,16 @@ public class BookmarkRemoteViewsFactory implements RemoteViewsService.RemoteView
         String url = gurl.getSpec();
 
         // Check cache first
-        if (mIconCache.containsKey(url)) {
-            rv.setImageViewBitmap(R.id.bookmark_icon, mIconCache.get(url));
+        final Bitmap cachedIcon = mIconCache.get(url);
+        if (cachedIcon != null) {
+            rv.setImageViewBitmap(R.id.bookmark_icon, cachedIcon);
             return;
         }
 
         // Load icon on UI thread with timeout
-        // Use arrays to allow modification inside lambda (Java closure requirement)
-        final @Nullable Bitmap[] iconResult = new Bitmap[1];
-        final int[] fallbackColorResult = new int[1];
+        // Use AtomicReference for thread-safe access across UI and background threads
+        final AtomicReference<@Nullable Bitmap> iconResult = new AtomicReference<>();
+        final AtomicReference<Integer> fallbackColorResult = new AtomicReference<>();
         final CountDownLatch latch = new CountDownLatch(1);
 
         // Background Thread          UI Thread
@@ -162,8 +164,8 @@ public class BookmarkRemoteViewsFactory implements RemoteViewsService.RemoteView
                                             int fallbackColor,
                                             boolean isFallbackColorDefault,
                                             @IconType int iconType) {
-                                        iconResult[0] = icon;
-                                        fallbackColorResult[0] = fallbackColor;
+                                        iconResult.set(icon);
+                                        fallbackColorResult.set(fallbackColor);
                                         latch.countDown();
                                     }
                                 };
@@ -179,16 +181,19 @@ public class BookmarkRemoteViewsFactory implements RemoteViewsService.RemoteView
             // Wait for icon with timeout
             boolean loaded = latch.await(ICON_LOAD_TIMEOUT_MS, TimeUnit.MILLISECONDS);
 
+            Bitmap icon = iconResult.get();
+            Integer fallbackColor = fallbackColorResult.get();
+
             Bitmap finalIcon;
-            if (loaded && iconResult[0] != null) {
+            if (loaded && icon != null) {
                 // Use the favicon as-is - already properly formatted from LargeIconBridge
-                finalIcon = iconResult[0];
-            } else if (loaded) {
-                finalIcon = getTileIconFromColor(gurl, fallbackColorResult[0]);
-            } else {
-                // Timeout - use Brave brand color as fallback
-                int fallbackColor = mContext.getColor(R.color.primitive_blurple_40);
+                finalIcon = icon;
+            } else if (loaded && fallbackColor != null) {
                 finalIcon = getTileIconFromColor(gurl, fallbackColor);
+            } else {
+                // Timeout or missing fallback color - use Brave brand color as fallback
+                int defaultFallbackColor = mContext.getColor(R.color.primitive_blurple_40);
+                finalIcon = getTileIconFromColor(gurl, defaultFallbackColor);
             }
 
             // Cache the icon
@@ -220,7 +225,7 @@ public class BookmarkRemoteViewsFactory implements RemoteViewsService.RemoteView
     @Override
     public long getItemId(int position) {
         // Use URL hash as stable identifier for better update handling
-        if (position < mWidgetTiles.size()) {
+        if (position >= 0 && position < mWidgetTiles.size()) {
             return mWidgetTiles.get(position).getUrl().hashCode();
         }
         return position;
