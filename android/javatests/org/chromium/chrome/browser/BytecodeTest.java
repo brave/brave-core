@@ -696,12 +696,6 @@ public class BytecodeTest {
                         void.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                        "shouldShowDeleteButton",
-                        MethodModifier.REGULAR,
-                        boolean.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
                         "shouldShowNtpAsHomeSurfaceAtStartup",
                         MethodModifier.STATIC,
