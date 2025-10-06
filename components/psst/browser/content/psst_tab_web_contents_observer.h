@@ -13,7 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
-#include "brave/components/psst/common/psst_consent_data.h"
+#include "brave/components/psst/browser/core/psst_consent_data.h"
 #include "brave/components/psst/common/psst_permission_schema.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
