@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 63a08869e2e88d6edc69c69fa1f7e27eb20b5075..a7a54645f0b240d73f44b5f312b860fe01c64fe4 100644
+index 06d2f8f3f3375e21bb40197173d8907b368de793..84e61302405201a4789a49cef9055990f2f2dc39 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -1996,6 +1996,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
@@ -18,3 +18,17 @@ index 63a08869e2e88d6edc69c69fa1f7e27eb20b5075..a7a54645f0b240d73f44b5f312b860fe
  }
  
  void RegisterUserProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -3036,13 +3038,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+   profile_prefs->ClearPref(kObsoletePasswordsUseUPMLocalAndSeparateStores);
+   profile_prefs->ClearPref(kObsoleteEmptyProfileStoreLoginDatabase);
+   profile_prefs->ClearPref(kObsoleteUpmAutoExportCsvNeedsDeletion);
+-  base::DeleteFile(profile_path.Append(FILE_PATH_LITERAL("Login Data")));
+-  base::DeleteFile(
+-      profile_path.Append(FILE_PATH_LITERAL("Login Data For Account")));
+-  base::DeleteFile(
+-      profile_path.Append(FILE_PATH_LITERAL("Login Data-journal")));
+-  base::DeleteFile(
+-      profile_path.Append(FILE_PATH_LITERAL("Login Data For Account-journal")));
+ #endif  // BUILDFLAG(IS_ANDROID)
+ 
+   // Added 09/2025.
