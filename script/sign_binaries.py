@@ -43,15 +43,16 @@ def execute_with_retry(cmd, max_attempts=5, base_sleep_sec=1, backoff_mult=2):
         try:
             execute(cmd)
         except (RuntimeError, CalledProcessError):
+            err = f"Command `{cmd}' failed."
             if attempt == max_attempts:
                 print(
-                    f"Command `{cmd}' failed. Maximum number of retries reached.",
+                    f"{err} Max number of retries reached.",
                     file=sys.stderr)
                 raise
             else:
                 sleep_sec = base_sleep_sec * pow(backoff_mult, attempt)
                 print(
-                    f"Command `{cmd}' failed. Retrying in {sleep_sec}s ({attempt} of {max_attempts}).",
+                    f"{err} Retry in {sleep_sec}s ({attempt}/{max_attempts}).",
                     file=sys.stderr)
                 sleep(sleep_sec)
                 continue
