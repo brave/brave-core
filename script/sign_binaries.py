@@ -35,6 +35,7 @@ assert cert or cert_hash or signtool_args, \
     'Store. It is ambiguous and will likely be deprecated in the future.'
 
 
+# pylint: disable=no-else-raise
 def execute_with_retry(cmd, max_attempts=5, base_sleep_sec=1, backoff_mult=2):
     """Execute a command, retry on failure with exponential backoff"""
 
