@@ -7,16 +7,17 @@ package org.chromium.chrome.browser.suggestions.tile;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.chromium.base.Log;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.widget.tile.TileView;
 import org.chromium.components.user_prefs.UserPrefs;
 
+@NullMarked
 public class BraveTileView extends TileView {
     private static final String TAG = "BraveTileView";
 
@@ -28,20 +29,21 @@ public class BraveTileView extends TileView {
     public void setTitle(String title, int titleLines) {
         super.setTitle(title, titleLines);
         if (ProfileManager.isInitialized()) {
-            TextView mTitleView = findViewById(R.id.tile_view_title);
             if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
-                mTitleView.setTextColor(
-                        getContext().getColor(R.color.brave_state_time_count_color));
-                mTitleView.setShadowLayer(
-                        18, 0, 0, getContext().getColor(R.color.onboarding_black));
-                if (mTitleView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-                    ViewGroup.MarginLayoutParams params =
-                            (ViewGroup.MarginLayoutParams) mTitleView.getLayoutParams();
-                    params.bottomMargin = getResources().getDimensionPixelSize(
-                            R.dimen.tile_view_icon_background_margin_top_modern);
-                    mTitleView.setLayoutParams(params);
-                }
+                TextView titleView = findViewById(R.id.tile_view_title);
+                titleView.setTextAppearance(R.style.BraveSuggestionsTilesText);
+                titleView.setShadowLayer(18, 0, 0, getContext().getColor(R.color.onboarding_black));
+                // Add bottom padding to the text view
+                int bottomPadding =
+                        getResources()
+                                .getDimensionPixelSize(
+                                        R.dimen.tile_view_icon_background_margin_top_modern);
+                titleView.setPadding(
+                        titleView.getPaddingLeft(),
+                        titleView.getPaddingTop(),
+                        titleView.getPaddingRight(),
+                        bottomPadding);
             }
         } else {
             Log.w(TAG, "Attempt to access profile before native initialization");
