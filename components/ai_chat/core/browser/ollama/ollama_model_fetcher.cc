@@ -19,7 +19,6 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/ollama/ollama_client.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/strings/ascii.h"
@@ -66,23 +65,24 @@ void OllamaModelFetcher::FetchModels() {
       &OllamaModelFetcher::OnModelsResponse, weak_ptr_factory_.GetWeakPtr()));
 }
 
-void OllamaModelFetcher::OnModelsResponse(std::string response_body) {
-  if (response_body.empty()) {
+void OllamaModelFetcher::OnModelsResponse(
+    std::optional<std::string> response_body) {
+  if (!response_body || response_body->empty()) {
     return;
   }
 
-  ProcessModelsResponse(response_body);
+  ProcessModelsResponse(*response_body);
 }
 
 void OllamaModelFetcher::ProcessModelsResponse(
     const std::string& response_body) {
-  auto json_value = base::JSONReader::Read(response_body);
-  if (!json_value || !json_value->is_dict()) {
+  std::optional<base::Value::Dict> json_dict =
+      base::JSONReader::ReadDict(response_body);
+  if (!json_dict) {
     return;
   }
 
-  const base::Value::Dict& json_dict = json_value->GetDict();
-  const base::Value::List* models_list = json_dict.FindList("models");
+  const base::Value::List* models_list = json_dict->FindList("models");
   if (!models_list) {
     return;
   }
@@ -199,7 +199,7 @@ void OllamaModelFetcher::ProcessModelsResponse(
     auto custom_options = mojom::CustomModelOptions::New();
     custom_options->model_request_name = *model_name;
     custom_options->endpoint = GURL(mojom::kOllamaEndpoint);
-    custom_options->api_key = "ollama";
+    custom_options->api_key = "";  // Ollama doesn't require authentication
     custom_options->context_size = context_size;
 
     // Scale associated content and warning limits based on context size
