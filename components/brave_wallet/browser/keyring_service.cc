@@ -2603,7 +2603,7 @@ std::array<uint8_t, kPolkadotSubstrateAccountIdSize>
 KeyringService::GetPolkadotPubKey(const mojom::AccountIdPtr& account_id) {
   CHECK(account_id);
 
-  auto* keyring = this->GetKeyring<PolkadotKeyring>(account_id->keyring_id);
+  auto* keyring = GetKeyring<PolkadotKeyring>(account_id->keyring_id);
   CHECK(keyring);
 
   auto key = keyring->GetPublicKey(account_id->account_index);
