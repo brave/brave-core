@@ -11,8 +11,8 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/constants.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -126,18 +126,18 @@ std::string BuildAttributes(const ContentAttributes& attrs,
   // Add DOM node ID if available
   if ((is_interactive || !id_only_for_interactive) &&
       attrs.has_common_ancestor_dom_node_id()) {
-    attr_result +=
-        absl::StrFormat(" dom_id=\"%d\"", attrs.common_ancestor_dom_node_id());
+    absl::StrAppendFormat(&attr_result, " dom_id=\"%d\"",
+                          attrs.common_ancestor_dom_node_id());
   }
 
   // Add interaction capabilities
   if (attrs.has_interaction_info()) {
     const auto& interaction = attrs.interaction_info();
     if (interaction.is_clickable()) {
-      attr_result += " clickable";
+      attr_result.append(" clickable");
     }
     if (interaction.is_editable()) {
-      attr_result += " editable";
+      attr_result.append(" editable");
     }
     if (interaction.has_scroller_info()) {
       const auto& scroller_info = interaction.scroller_info();
@@ -145,14 +145,14 @@ std::string BuildAttributes(const ContentAttributes& attrs,
           scroller_info.user_scrollable_vertical()) {
         auto size = scroller_info.scrolling_bounds();
         auto visible_area = scroller_info.visible_area();
-        attr_result += " scrollable";
+        attr_result.append(" scrollable");
         // Size in XxY
-        attr_result +=
-            absl::StrFormat(" size=\"%dx%d\"", size.width(), size.height());
+        absl::StrAppendFormat(&attr_result, " size=\"%dx%d\"", size.width(),
+                              size.height());
         // Visible area size and position
-        attr_result += absl::StrFormat(
-            " visible_area=\"%dx%d,%d,%d\"", visible_area.width(),
-            visible_area.height(), visible_area.x(), visible_area.y());
+        absl::StrAppendFormat(&attr_result, " visible_area=\"%dx%d,%d,%d\"",
+                              visible_area.width(), visible_area.height(),
+                              visible_area.x(), visible_area.y());
       }
     }
     // if (interaction.is_focusable()) {
@@ -169,9 +169,9 @@ std::string BuildAttributes(const ContentAttributes& attrs,
     if (kShouldIncludeGeometry && is_interactive && attrs.has_geometry() &&
         attrs.geometry().has_outer_bounding_box()) {
       const auto& bbox = attrs.geometry().outer_bounding_box();
-      attr_result +=
-          absl::StrFormat(" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\"",
-                          bbox.x(), bbox.y(), bbox.width(), bbox.height());
+      absl::StrAppendFormat(&attr_result,
+                            " x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\"",
+                            bbox.x(), bbox.y(), bbox.width(), bbox.height());
     }
   }
 
@@ -216,7 +216,8 @@ std::string BuildAttributes(const ContentAttributes& attrs,
       }
     }
     if (!important_roles.empty()) {
-      attr_result += base::StrCat(
+      base::StrAppend(
+          &attr_result,
           {" role=\"",
            XmlEscapeAndSanitizeText(base::JoinString(important_roles, " ")),
            "\""});
@@ -225,18 +226,19 @@ std::string BuildAttributes(const ContentAttributes& attrs,
 
   if (attrs.has_iframe_data() && attrs.iframe_data().has_frame_data() &&
       attrs.iframe_data().frame_data().has_document_identifier()) {
-    attr_result +=
-        base::StrCat({" document_identifier=\"",
-                      XmlEscapeAndSanitizeText(attrs.iframe_data()
-                                                   .frame_data()
-                                                   .document_identifier()
-                                                   .serialized_token()),
-                      "\""});
+    base::StrAppend(&attr_result,
+                    {" document_identifier=\"",
+                     XmlEscapeAndSanitizeText(attrs.iframe_data()
+                                                  .frame_data()
+                                                  .document_identifier()
+                                                  .serialized_token()),
+                     "\""});
   }
 
   // Add accessibility label if available
   if (attrs.has_label() && !attrs.label().empty()) {
-    attr_result += base::StrCat(
+    base::StrAppend(
+        &attr_result,
         {" label=\"", XmlEscapeAndSanitizeText(attrs.label()), "\""});
   }
 
@@ -300,20 +302,23 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
     case ContentAttributeType::CONTENT_ATTRIBUTE_ANCHOR:
       if (attrs.has_anchor_data()) {
         tag_name = "link";
-        attributes = base::StrCat(
+        base::StrAppend(
+            &attributes,
             {"href=\"", XmlEscapeAndSanitizeText(attrs.anchor_data().url()),
-             "\"", BuildAttributes(attrs)});
+             "\""});
+        base::StrAppend(&attributes, {BuildAttributes(attrs)});
       }
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_FORM:
       tag_name = "form";
       if (attrs.has_form_data() && attrs.form_data().has_form_name()) {
-        attributes = base::StrCat(
+        base::StrAppend(
+            &attributes,
             {"name=\"", XmlEscapeAndSanitizeText(attrs.form_data().form_name()),
              "\""});
       }
-      attributes += BuildAttributes(attrs);
+      base::StrAppend(&attributes, {BuildAttributes(attrs)});
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_FORM_CONTROL:
@@ -321,43 +326,48 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
         tag_name = "input";
         const auto& form_data = attrs.form_control_data();
         if (form_data.has_field_name()) {
-          attributes += base::StrCat(
+          base::StrAppend(
+              &attributes,
               {" name=\"", XmlEscapeAndSanitizeText(form_data.field_name()),
                "\""});
         }
         if (form_data.has_field_value() && !form_data.field_value().empty()) {
-          attributes += base::StrCat(
+          base::StrAppend(
+              &attributes,
               {" value=\"", XmlEscapeAndSanitizeText(form_data.field_value()),
                "\""});
         }
         if (form_data.has_placeholder() && !form_data.placeholder().empty()) {
-          attributes += base::StrCat(
+          base::StrAppend(
+              &attributes,
               {" placeholder=\"",
                XmlEscapeAndSanitizeText(form_data.placeholder()), "\""});
         }
-        attributes += BuildAttributes(attrs);
+        base::StrAppend(&attributes, {BuildAttributes(attrs)});
       }
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_IMAGE:
       if (attrs.has_image_data() && attrs.image_data().has_image_caption()) {
         tag_name = "image";
-        attributes += base::StrCat(
+        base::StrAppend(
+            &attributes,
             {" alt=\"",
              XmlEscapeAndSanitizeText(attrs.image_data().image_caption()),
              "\""});
-        attributes += BuildAttributes(attrs);
+        base::StrAppend(&attributes, {BuildAttributes(attrs)});
       }
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_TABLE:
       tag_name = "table";
       if (attrs.has_table_data() && attrs.table_data().has_table_name()) {
-        attributes += base::StrCat(
+        base::StrAppend(
+            &attributes,
             {" name=\"",
              XmlEscapeAndSanitizeText(attrs.table_data().table_name()), "\""});
       }
-      attributes += BuildAttributes(attrs);
+      base::StrAppend(&attributes, {BuildAttributes(attrs)});
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_TABLE_ROW:
@@ -416,11 +426,12 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
     case ContentAttributeType::CONTENT_ATTRIBUTE_VIDEO:
       tag_name = "video";
       if (attrs.has_video_data() && attrs.video_data().has_url()) {
-        attributes += base::StrCat(
+        base::StrAppend(
+            &attributes,
             {" src=\"", XmlEscapeAndSanitizeText(attrs.video_data().url()),
              "\""});
       }
-      attributes += BuildAttributes(attrs);
+      base::StrAppend(&attributes, {BuildAttributes(attrs)});
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_UNKNOWN:
@@ -433,30 +444,30 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
   }
 
   if (!tag_name.empty()) {
-    content += base::StrCat({"\n", indent, "<", tag_name});
+    base::StrAppend(&content, {"\n", indent, "<", tag_name});
     if (!attributes.empty()) {
-      content += base::StrCat({" ", attributes});
+      base::StrAppend(&content, {" ", attributes});
     }
     if (inner_content.empty() && node.children_nodes_size() == 0) {
-      content += " />";
+      content.append(" />");
       return content;
     }
-    content += ">";
+    content.append(">");
     if (!inner_content.empty()) {
       // Add 1x extra depth to indent for inner content
-      content += base::StrCat({"\n", indent, "  ", inner_content});
+      base::StrAppend(&content, {"\n", indent, "  ", inner_content});
     }
   }
 
   // Process children for elements that don't handle them explicitly above,
   // adding 1x extra depth.
   for (const auto& child : node.children_nodes()) {
-    content += GenerateContentStructure(child, depth + 1);
+    base::StrAppend(&content, {GenerateContentStructure(child, depth + 1)});
   }
 
   // Closing tag if we're not flattening or ignoring this element
   if (!tag_name.empty()) {
-    content += base::StrCat({"\n", indent, "</", tag_name, ">"});
+    base::StrAppend(&content, {"\n", indent, "</", tag_name, ">"});
   }
 
   return content;
@@ -471,28 +482,28 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
   }
 
   // Indicate that the content is external and is untrusted
-  std::string result = base::StrCat({kBraveUntrustedContentOpenTag, "\n"});
-
-  result += "=== PAGE METADATA ===\n\n";
+  std::string result = base::StrCat(
+      {kBraveUntrustedContentOpenTag, "\n=== PAGE METADATA ===\n\n"});
 
   // Add page metadata
   if (page_content.has_main_frame_data()) {
     const auto& frame_data = page_content.main_frame_data();
     if (frame_data.has_title()) {
-      result += base::StrCat(
+      base::StrAppend(
+          &result,
           {"PAGE TITLE: ", SanitizeContentText(frame_data.title()), "\n"});
     }
     if (frame_data.has_url()) {
-      result += base::StrCat(
-          {"PAGE URL: ", SanitizeContentText(frame_data.url()), "\n"});
+      base::StrAppend(
+          &result, {"PAGE URL: ", SanitizeContentText(frame_data.url()), "\n"});
     }
 
     if (frame_data.has_document_identifier()) {
-      result += base::StrCat(
-          {"PAGE ROOT DOCUMENT IDENTIFIER: ",
-           frame_data.document_identifier().serialized_token(), "\n"});
+      base::StrAppend(
+          &result, {"PAGE ROOT DOCUMENT IDENTIFIER: ",
+                    frame_data.document_identifier().serialized_token(), "\n"});
     }
-    result += "\n";
+    result.append("\n");
   }
 
   const auto& root_node = page_content.root_node();
@@ -501,20 +512,20 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
   if (page_content.has_viewport_geometry()) {
     const auto& viewport = page_content.viewport_geometry();
 
-    result += absl::StrFormat(
-        "VIEWPORT: %dx%d pixels, currently scrolled at %d,%d", viewport.width(),
-        viewport.height(), viewport.x(), viewport.y());
+    absl::StrAppendFormat(
+        &result, "VIEWPORT: %dx%d pixels, currently scrolled at %d,%d",
+        viewport.width(), viewport.height(), viewport.x(), viewport.y());
 
     if (root_node.content_attributes().has_interaction_info() &&
         root_node.content_attributes().interaction_info().has_scroller_info()) {
       const auto& scroller_info =
           root_node.content_attributes().interaction_info().scroller_info();
-      result += absl::StrFormat(" within a document of size %dx%d",
-                                scroller_info.scrolling_bounds().width(),
-                                scroller_info.scrolling_bounds().height());
+      absl::StrAppendFormat(&result, " within a document of size %dx%d",
+                            scroller_info.scrolling_bounds().width(),
+                            scroller_info.scrolling_bounds().height());
     }
 
-    result += "\n";
+    result.append("\n");
   }
 
   std::string tree_string = GenerateContentStructure(root_node);
@@ -522,34 +533,34 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
     // TODO(https://github.com/brave/brave-browser/issues/49262): prioritize
     // viewport elements - the consumer can then scroll to "paginate."
     tree_string = tree_string.substr(0, kMaxTreeStringLength) + "...</root>\n";
-    tree_string +=
-        "PAGE STRUCTURE (XML) was too long to display. Truncated.\n\n";
+    tree_string.append(
+        "PAGE STRUCTURE (XML) was too long to display. Truncated.\n\n");
   }
 
-  result += "\n=== PAGE STRUCTURE (XML representation) ===";
+  result.append("\n=== PAGE STRUCTURE (XML representation) ===");
 
   // Replace all occurances of the untrusted tag with an empty string
   base::ReplaceSubstringsAfterOffset(&tree_string, 0,
                                      kBraveUntrustedContentTagName, "");
 
-  result += tree_string;
-  result += base::StrCat({"\n", kBraveUntrustedContentCloseTag, "\n"});
+  base::StrAppend(&result, {tree_string});
+  base::StrAppend(&result, {"\n", kBraveUntrustedContentCloseTag, "\n"});
 
   // Add usage instructions
-  result += "\n=== INTERACTION INSTRUCTIONS ===\n";
-  result +=
+  result.append("\n=== INTERACTION INSTRUCTIONS ===\n");
+  result.append(
       "The page structure represents the entire page and not just the "
       "viewport. Use scroll if neccessary to interact with an element not "
       "within the viewport, or to show the user something. "
-      "Use the XML attributes to guide interaction:\n";
-  result +=
+      "Use the XML attributes to guide interaction:\n");
+  result.append(
       "- dom_id: Use for precise element targeting but you must provide the "
-      "document_identifier either from the root or from an iframe.\n";
-  result +=
+      "document_identifier either from the root or from an iframe.\n");
+  result.append(
       "- x,y,width,height: Use the position/size only when neccessary or to "
-      "infer hierarchy.\n";
-  result += "- clickable: Element can be clicked\n";
-  result += "- editable: Element can receive text input\n";
+      "infer hierarchy.\n");
+  result.append("- clickable: Element can be clicked\n");
+  result.append("- editable: Element can receive text input\n");
   // result += "- focusable=\"true\": Element can receive focus\n";
   // result +=
   //     "- role: Semantic role (header, nav, main, search, article, section, "
