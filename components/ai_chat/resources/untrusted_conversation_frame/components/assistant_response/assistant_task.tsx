@@ -113,10 +113,9 @@ export default function AssistantTask(props: Props) {
 
 function Progress(props: Props) {
   // The Progress tab should show:
-  // - Any last active complete "important" tool (TODO, navigate)
+  // - Any completed "important" tools (TODO, navigate) that don't need security approval
   // - the most recent completion event
-  // - any tool use events from the most recent entry in the group (the active
-  // events)
+  // - any tool use events from the most recent entry in chronological order
   const conversationContext = useUntrustedConversationContext()
 
   const lastCompletionEvent = props.assistantEntries
@@ -131,19 +130,34 @@ function Progress(props: Props) {
       .at(-1)
       ?.events?.filter((event) => !!event && !!event.toolUseEvent) ?? []
 
-  const importantToolUseEvents = getImportantToolUseEvents(
+  // Get important tools, but exclude ones that need security approval
+  // Security-flagged tools should stay in chronological order
+  const allImportantToolUseEvents = getImportantToolUseEvents(
     props.assistantEntries,
+  )
+  const importantToolUseEvents = allImportantToolUseEvents.filter(
+    (event) => event.securityMetadataAllowed !== false || !!event.output
+  )
+
+  // Get the tool IDs that were already rendered to avoid duplicates
+  const renderedToolIds = new Set(importantToolUseEvents.map(event => event.id))
+
+  // Filter out tool events that were already rendered
+  const remainingToolUseEvents = lastEntryToolUseEvents.filter(
+    (event) => !renderedToolIds.has(event.toolUseEvent!.id)
   )
 
   return (
     <div>
+      {/* Show completed important tools (excluding those needing security approval) */}
       {importantToolUseEvents.map((event, index) => (
         <ToolEvent
-          key={index}
+          key={`important-${index}`}
           toolUseEvent={event}
           isEntryActive={props.isActiveTask}
         />
       ))}
+      {/* Show the most recent completion event */}
       {lastCompletionEvent && (
         <AssistantResponse
           events={[lastCompletionEvent]}
@@ -153,9 +167,10 @@ function Progress(props: Props) {
           isLeoModel={conversationContext.isLeoModel}
         />
       )}
-      {lastEntryToolUseEvents.map((event, index) => (
+      {/* Show remaining tool events (including security-flagged ones) in chronological order */}
+      {remainingToolUseEvents.map((event, index) => (
         <ToolEvent
-          key={index}
+          key={`tool-${index}`}
           toolUseEvent={event.toolUseEvent!}
           isEntryActive={props.isActiveTask}
         />

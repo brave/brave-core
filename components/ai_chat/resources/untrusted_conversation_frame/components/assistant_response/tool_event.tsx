@@ -9,6 +9,7 @@ import * as Mojom from '../../../common/mojom'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
 import ToolEventContentAssistantDetailStorage from './tool_event_assistant_detail_storage'
 import ToolEventTodos from './tool_event_todos'
+import ToolEventContentSecurityApproval from './tool_event_content_security_approval'
 import styles from './tool_event.module.scss'
 
 interface Props {
@@ -76,15 +77,15 @@ function ToolEventContent(
   // If we have a tool-specific component, use it, otherwise use the default
   let component: ToolComponent | null = null
 
-  if (toolUseEvent.toolName === Mojom.USER_CHOICE_TOOL_NAME) {
+  // Check for security approval requirement first
+  // Show security approval when tool is not allowed and hasn't been executed yet
+  if (toolUseEvent.securityMetadataAllowed === false && !toolUseEvent.output) {
+    component = ToolEventContentSecurityApproval
+  } else if (toolUseEvent.toolName === Mojom.USER_CHOICE_TOOL_NAME) {
     component = ToolEventContentUserChoice
-  }
-
-  if (toolUseEvent.toolName === 'todo_write') {
+  } else if (toolUseEvent.toolName === 'todo_write') {
     component = ToolEventTodos
-  }
-
-  if (toolUseEvent.toolName === Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME) {
+  } else if (toolUseEvent.toolName === Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME) {
     component = ToolEventContentAssistantDetailStorage
   }
 

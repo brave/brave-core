@@ -41,16 +41,37 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
     const std::string* name = function->FindString("name");
 
     mojom::ToolUseEventPtr tool_use_event = mojom::ToolUseEvent::New(
-        name ? *name : "", id ? *id : "", "", std::nullopt);
+        name ? *name : "", id ? *id : "", "", std::nullopt,
+        std::nullopt, std::nullopt);
 
     const std::string* arguments_raw = function->FindString("arguments");
     if (arguments_raw) {
       tool_use_event->arguments_json = *arguments_raw;
     }
 
+
     tool_use_events.push_back(std::move(tool_use_event));
   }
 
+  return tool_use_events;
+}
+
+std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
+    const base::Value::List* tool_calls_api_response,
+    std::optional<bool> security_allowed,
+    std::optional<std::string> security_reasoning) {
+  auto tool_use_events = ToolUseEventFromToolCallsResponse(tool_calls_api_response);
+  
+  // Apply security metadata to all tool use events
+  for (auto& tool_use_event : tool_use_events) {
+    if (security_allowed.has_value()) {
+      tool_use_event->security_metadata_allowed = security_allowed.value();
+    }
+    if (security_reasoning.has_value()) {
+      tool_use_event->security_metadata_reasoning = security_reasoning.value();
+    }
+  }
+  
   return tool_use_events;
 }
 
