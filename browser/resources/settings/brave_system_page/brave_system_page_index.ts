@@ -11,14 +11,14 @@ import type { CrViewManagerElement } from 'chrome://resources/cr_elements/cr_vie
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import { loadTimeData } from '../i18n_setup.js'
 
-import {PerformanceBrowserProxy, PerformanceBrowserProxyImpl} from '../performance_page/performance_browser_proxy.js'
+import { PerformanceBrowserProxy, PerformanceBrowserProxyImpl } from '../performance_page/performance_browser_proxy.js'
 
 import { routes } from '../route.js';
 import { RouteObserverMixin, Router } from '../router.js';
 import type { Route } from '../router.js';
 import type { SettingsPlugin } from '../settings_main/settings_plugin.js';
 import { SearchableViewContainerMixin } from '../settings_page/searchable_view_container_mixin.js';
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import { WebUiListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 
 import { getTemplate } from './brave_system_page_index.html.js';
 
@@ -32,6 +32,14 @@ export interface SettingsBraveSystemPageIndexElement {
     viewManager: CrViewManagerElement,
   };
 }
+
+let initialHasBattery = false;
+const performanceBrowserProxy = PerformanceBrowserProxyImpl.getInstance()
+
+// Try and determine battery status when the file is loaded - if we don't then the first search won't find the battery section.
+performanceBrowserProxy.getDeviceHasBattery().then((hasBattery) => {
+  initialHasBattery = hasBattery;
+})
 
 const SettingsBraveExtensionsPageIndexElementBase =
   SearchableViewContainerMixin(RouteObserverMixin(WebUiListenerMixin(PolymerElement)));
@@ -66,7 +74,7 @@ export class SettingsBraveSystemPageIndexElement extends
         value: () => loadTimeData.getBoolean('isBraveVPNEnabled')
           // <if expr="is_macosx">
           && loadTimeData.getBoolean('isBraveVPNWireguardEnabledOnMac')
-          // </if>
+        // </if>
       },
       // </if>
     };
@@ -80,14 +88,18 @@ export class SettingsBraveSystemPageIndexElement extends
   declare private showVPNPage_: boolean;
   // </if>
 
-  private performanceBrowserProxy_: PerformanceBrowserProxy =
-      PerformanceBrowserProxyImpl.getInstance();
+  constructor() {
+    super();
 
-  override connectedCallback() {
-    super.connectedCallback();
     this.addWebUiListener(
       'device-has-battery-changed', this.hasBatteryChanged_)
-    this.performanceBrowserProxy_.getDeviceHasBattery().then(this.hasBatteryChanged_)
+    this.hasBatteryChanged_(initialHasBattery)
+
+    // Note: In case the battery status is not known yet, try and fetch it again. This can happen if you load the page on a search for
+    // 'battery'.
+    if (!initialHasBattery) {
+      performanceBrowserProxy.getDeviceHasBattery().then(this.hasBatteryChanged_)
+    }
   }
 
   private hasBatteryChanged_ = (hasBattery: boolean) => {
@@ -95,8 +107,11 @@ export class SettingsBraveSystemPageIndexElement extends
 
     // If we get informed whether we have a battery while on the system page,
     // show the default views again to show/hide the battery section.
-    if (Router.getInstance().currentRoute === routes.SYSTEM) {
-      this.showDefaultViews_();
+    const currentRoute = Router.getInstance().currentRoute;
+    if (currentRoute === routes.SYSTEM || currentRoute === routes.BASIC) {
+      queueMicrotask(() => {
+        this.showDefaultViews_();
+      })
     }
   }
 
