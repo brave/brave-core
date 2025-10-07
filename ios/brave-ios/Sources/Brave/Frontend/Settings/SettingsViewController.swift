@@ -16,6 +16,7 @@ import DataImporter
 import Growth
 import LocalAuthentication
 import NetworkExtension
+import Playlist
 import Preferences
 import Shared
 import Static
@@ -477,17 +478,19 @@ class SettingsViewController: TableViewController {
       section.rows.append(vpnSettingsRow)
     }
 
-    section.rows.append(
-      Row(
-        text: Strings.PlayList.playListTitle,
-        selection: { [unowned self] in
-          let playlistSettings = PlaylistSettingsViewController()
-          self.navigationController?.pushViewController(playlistSettings, animated: true)
-        },
-        image: UIImage(braveSystemNamed: "leo.product.playlist"),
-        accessory: .disclosureIndicator
+    if braveCore.profile.prefs.isPlaylistAvailable {
+      section.rows.append(
+        Row(
+          text: Strings.PlayList.playListTitle,
+          selection: { [unowned self] in
+            let playlistSettings = PlaylistSettingsViewController()
+            self.navigationController?.pushViewController(playlistSettings, animated: true)
+          },
+          image: UIImage(braveSystemNamed: "leo.product.playlist"),
+          accessory: .disclosureIndicator
+        )
       )
-    )
+    }
 
     if FeatureList.kBraveTranslateEnabled.enabled {
       section.rows.append(

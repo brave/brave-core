@@ -111,6 +111,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/safari_data_import/safari_data_import_client_delegate.h",
   "//brave/ios/browser/safari_data_import/safari_data_importer_bridge.h",
   "//brave/ios/browser/safari_data_import/safari_data_importer_coordinator.h",
+  "//brave/ios/browser/playlist/playlist_pref_names_bridge.h",
 ]
 
 brave_core_public_headers += ads_public_headers

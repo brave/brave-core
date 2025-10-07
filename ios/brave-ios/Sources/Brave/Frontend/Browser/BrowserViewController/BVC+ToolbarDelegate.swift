@@ -756,6 +756,7 @@ extension BrowserViewController: TopToolbarDelegate {
       isPrivate: isPrivate,
       isAIChatAvailable: !isPrivate && Preferences.AIChat.leoInQuickSearchBarEnabled.value
         && AIChatUtils.isAIChatEnabled(for: profileController.profile.prefs),
+      isPlaylistAvailable: profileController.profile.prefs.isPlaylistAvailable,
       searchEngines: profile.searchEngines
     )
 
