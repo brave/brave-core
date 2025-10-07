@@ -223,9 +223,10 @@ fn extract_inputs(
     body_map: &[(CborValue, CborValue)],
 ) -> Result<Vec<CxxRestoredCardanoInput>, Error> {
     let inputs_value = find_map_value(body_map, INPUTS_KEY)?;
-    let inputs_array = match inputs_value {
+    // Inputs are stored directly in an array value or in a tag value wrapping an array.
+    let inputs_array: &Vec<_> = match inputs_value {
         Some(CborValue::Array(arr)) => arr,
-        Some(CborValue::Tag(SET_TAG, boxed)) => match &**boxed {
+        Some(CborValue::Tag(SET_TAG, ref tagged_array)) => match &**tagged_array {
             CborValue::Array(arr) => arr,
             _ => return Err(Error::InvalidInputFormat),
         },
@@ -241,7 +242,7 @@ fn extract_inputs(
                     return Err(Error::InvalidInputFormat);
                 }
                 arr
-            },
+            }
             _ => return Err(Error::InvalidInputFormat),
         };
 
@@ -280,7 +281,7 @@ fn extract_outputs(
                     return Err(Error::InvalidOutputFormat);
                 }
                 arr
-            },
+            }
             _ => return Err(Error::InvalidOutputFormat),
         };
 
@@ -387,7 +388,7 @@ pub fn apply_signatures(
         if let Some((_, vk_witness_value)) = vk_witness_entry {
             let vk_witness_array = match vk_witness_value {
                 CborValue::Array(arr) => arr,
-                CborValue::Tag(SET_TAG, boxed) => match &mut **boxed {
+                CborValue::Tag(SET_TAG, tagged_array) => match &mut **tagged_array {
                     CborValue::Array(arr) => arr,
                     _ => {
                         return box_error(Error::InvalidInputFormat);
