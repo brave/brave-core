@@ -8,7 +8,16 @@ import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_backg
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { Store } from '../lib/store'
 import { debounce } from '$web-common/debounce'
-import { BackgroundState, BackgroundActions } from './background_state'
+import { BackgroundState, BackgroundActions, BraveBackground } from './background_state'
+
+// A pre-loaded background image resource that can be used if a new profile
+// opens the NTP before the NTPBackgroundImagesService has finished loading
+// the current collection of Brave backgrounds.
+const defaultBraveBackground: BraveBackground = {
+  imageUrl: 'dylan-malval_sea-min.webp',
+  author: 'Dylan Malval',
+  link: 'https://www.instagram.com/vass_captures/'
+}
 
 export function createBackgroundHandler(
   store: Store<BackgroundState>
@@ -19,6 +28,7 @@ export function createBackgroundHandler(
       SponsoredRichMediaAdEventHandler.getRemote()
 
   store.update({
+    braveBackgrounds: [defaultBraveBackground],
     backgroundRandomValue: Math.random(),
     backgroundRotateIndex: nextRotateIndex(),
     backgroundsCustomizable:
@@ -39,7 +49,10 @@ export function createBackgroundHandler(
 
   async function updateBraveBackgrounds() {
     const { backgrounds } = await handler.getBraveBackgrounds()
-    store.update({ braveBackgrounds: backgrounds })
+    store.update({
+      braveBackgrounds:
+        backgrounds.length ? backgrounds : [defaultBraveBackground]
+    })
   }
 
   async function updateSelectedBackground() {
