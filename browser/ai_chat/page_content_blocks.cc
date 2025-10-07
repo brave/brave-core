@@ -11,6 +11,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -25,7 +26,6 @@ using optimization_guide::proto::ContentAttributeType;
 using optimization_guide::proto::ContentNode;
 
 constexpr bool kShouldIncludeGeometry = true;
-constexpr bool kShouldIndent = false;
 constexpr size_t kMaxTreeStringLength = 100000;
 
 bool ShouldFlattenContainer(const ContentNode& node) {
@@ -247,7 +247,8 @@ std::string BuildAttributes(const ContentAttributes& attrs,
 // attributes
 std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
   std::string content;
-  std::string indent(kShouldIndent ? depth * 2 : 0, ' ');
+  std::string indent(
+      features::kShouldIndentPageContentBlocks.Get() ? depth * 2 : 0, ' ');
 
   const auto& attrs = node.content_attributes();
 
