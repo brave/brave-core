@@ -15,6 +15,12 @@
 
 namespace ai_chat {
 
+namespace {
+
+constexpr char kPropertyNameTarget[] = "target";
+
+}  // namespace
+
 MoveMouseTool::MoveMouseTool(ContentAgentTaskProvider* task_provider)
     : task_provider_(task_provider) {}
 
@@ -32,12 +38,13 @@ std::string_view MoveMouseTool::Description() const {
 
 std::optional<base::Value::Dict> MoveMouseTool::InputProperties() const {
   return CreateInputProperties(
-      {{"target", target_util::TargetProperty("Element to move mouse to")}});
+      {{kPropertyNameTarget,
+        target_util::TargetProperty("Element to move mouse to")}});
 }
 
 std::optional<std::vector<std::string>> MoveMouseTool::RequiredProperties()
     const {
-  return std::optional<std::vector<std::string>>({"target"});
+  return std::optional<std::vector<std::string>>({kPropertyNameTarget});
 }
 
 void MoveMouseTool::UseTool(const std::string& input_json,
@@ -51,7 +58,7 @@ void MoveMouseTool::UseTool(const std::string& input_json,
   }
 
   // Extract and parse target object
-  const base::Value::Dict* target_dict = input->FindDict("target");
+  const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(CreateContentBlocksForText(
         "Either content_node_id with document_identifier OR x,y coordinates "

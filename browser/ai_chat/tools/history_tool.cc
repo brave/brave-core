@@ -14,6 +14,14 @@
 
 namespace ai_chat {
 
+namespace {
+
+constexpr char kPropertyNameDirection[] = "direction";
+constexpr char kDirectionBack[] = "back";
+constexpr char kDirectionForward[] = "forward";
+
+}  // namespace
+
 HistoryTool::HistoryTool(ContentAgentTaskProvider* task_provider)
     : task_provider_(task_provider) {}
 
@@ -31,14 +39,15 @@ std::string_view HistoryTool::Description() const {
 
 std::optional<base::Value::Dict> HistoryTool::InputProperties() const {
   return CreateInputProperties(
-      {{"direction",
-        StringProperty("Direction to navigate in history",
-                       std::vector<std::string>{"back", "forward"})}});
+      {{kPropertyNameDirection,
+        StringProperty(
+            "Direction to navigate in history",
+            std::vector<std::string>{kDirectionBack, kDirectionForward})}});
 }
 
 std::optional<std::vector<std::string>> HistoryTool::RequiredProperties()
     const {
-  return std::optional<std::vector<std::string>>({"direction"});
+  return std::optional<std::vector<std::string>>({kPropertyNameDirection});
 }
 
 void HistoryTool::UseTool(const std::string& input_json,
@@ -52,8 +61,9 @@ void HistoryTool::UseTool(const std::string& input_json,
   }
 
   // Validate direction parameter
-  const auto* direction = input->FindString("direction");
-  if (!direction || (*direction != "back" && *direction != "forward")) {
+  const auto* direction = input->FindString(kPropertyNameDirection);
+  if (!direction ||
+      (*direction != kDirectionBack && *direction != kDirectionForward)) {
     std::move(callback).Run(CreateContentBlocksForText(
         "Invalid or missing direction. Must be 'back' or 'forward'."));
     return;
@@ -71,7 +81,7 @@ void HistoryTool::OnTabHandleCreated(UseToolCallback callback,
   actions.set_task_id(task_provider_->GetTaskId().value());
   auto* action = actions.add_actions();
 
-  if (direction == "back") {
+  if (direction == kDirectionBack) {
     auto* back_action = action->mutable_back();
     back_action->set_tab_id(tab_handle.raw_value());
   } else {  // forward

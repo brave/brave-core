@@ -15,6 +15,13 @@
 
 namespace ai_chat {
 
+namespace {
+
+constexpr char kPropertyNameTarget[] = "target";
+constexpr char kPropertyNameValue[] = "value";
+
+}  // namespace
+
 SelectTool::SelectTool(ContentAgentTaskProvider* task_provider)
     : task_provider_(task_provider) {}
 
@@ -40,7 +47,8 @@ std::optional<base::Value::Dict> SelectTool::InputProperties() const {
 }
 
 std::optional<std::vector<std::string>> SelectTool::RequiredProperties() const {
-  return std::optional<std::vector<std::string>>({"target", "value"});
+  return std::optional<std::vector<std::string>>(
+      {kPropertyNameTarget, kPropertyNameValue});
 }
 
 void SelectTool::UseTool(const std::string& input_json,
@@ -54,7 +62,7 @@ void SelectTool::UseTool(const std::string& input_json,
   }
 
   // Validate value parameter
-  const auto* value = input->FindString("value");
+  const auto* value = input->FindString(kPropertyNameValue);
   if (!value) {
     std::move(callback).Run(
         CreateContentBlocksForText("Missing required parameter 'value' - the "
@@ -63,7 +71,7 @@ void SelectTool::UseTool(const std::string& input_json,
   }
 
   // Extract and parse target object
-  const base::Value::Dict* target_dict = input->FindDict("target");
+  const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
         CreateContentBlocksForText("Missing 'target' object"));

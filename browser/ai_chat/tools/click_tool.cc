@@ -16,6 +16,18 @@
 
 namespace ai_chat {
 
+namespace {
+
+constexpr char kPropertyNameTarget[] = "target";
+constexpr char kPropertyNameClickType[] = "click_type";
+constexpr char kPropertyNameClickCount[] = "click_count";
+constexpr char kClickTypeLeft[] = "left";
+constexpr char kClickTypeRight[] = "right";
+constexpr char kClickCountSingle[] = "single";
+constexpr char kClickCountDouble[] = "double";
+
+}  // namespace
+
 ClickTool::ClickTool(ContentAgentTaskProvider* task_provider)
     : task_provider_(task_provider) {}
 
@@ -33,18 +45,21 @@ std::string_view ClickTool::Description() const {
 
 std::optional<base::Value::Dict> ClickTool::InputProperties() const {
   return CreateInputProperties(
-      {{"target", target_util::TargetProperty("Element to click on")},
-       {"click_type",
-        StringProperty("Type of click to perform",
-                       std::vector<std::string>{"left", "right"})},
-       {"click_count",
-        StringProperty("Number of clicks to perform",
-                       std::vector<std::string>{"single", "double"})}});
+      {{kPropertyNameTarget,
+        target_util::TargetProperty("Element to click on")},
+       {kPropertyNameClickType,
+        StringProperty(
+            "Type of click to perform",
+            std::vector<std::string>{kClickTypeLeft, kClickTypeRight})},
+       {kPropertyNameClickCount,
+        StringProperty(
+            "Number of clicks to perform",
+            std::vector<std::string>{kClickCountSingle, kClickCountDouble})}});
 }
 
 std::optional<std::vector<std::string>> ClickTool::RequiredProperties() const {
   return std::optional<std::vector<std::string>>(
-      {"target", "click_type", "click_count"});
+      {kPropertyNameTarget, kPropertyNameClickType, kPropertyNameClickCount});
 }
 
 void ClickTool::UseTool(const std::string& input_json,
@@ -58,8 +73,8 @@ void ClickTool::UseTool(const std::string& input_json,
   }
 
   // Validate click_type and click_count
-  const auto* click_type = input->FindString("click_type");
-  const auto* click_count = input->FindString("click_count");
+  const auto* click_type = input->FindString(kPropertyNameClickType);
+  const auto* click_count = input->FindString(kPropertyNameClickCount);
 
   if (!click_type || (*click_type != "left" && *click_type != "right")) {
     std::move(callback).Run(CreateContentBlocksForText(
@@ -74,7 +89,7 @@ void ClickTool::UseTool(const std::string& input_json,
   }
 
   // Extract and parse target object
-  const base::Value::Dict* target_dict = input->FindDict("target");
+  const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
         CreateContentBlocksForText("Missing 'target' object"));
@@ -110,14 +125,14 @@ void ClickTool::OnTabHandleCreated(
   *click_action->mutable_target() = std::move(target);
 
   // Set click type
-  if (click_type == "left") {
+  if (click_type == kClickTypeLeft) {
     click_action->set_click_type(optimization_guide::proto::ClickAction::LEFT);
   } else {
     click_action->set_click_type(optimization_guide::proto::ClickAction::RIGHT);
   }
 
   // Set click count
-  if (click_count == "single") {
+  if (click_count == kClickCountSingle) {
     click_action->set_click_count(
         optimization_guide::proto::ClickAction::SINGLE);
   } else {

@@ -15,6 +15,19 @@
 
 namespace ai_chat {
 
+namespace {
+
+constexpr char kPropertyNameTarget[] = "target";
+constexpr char kPropertyNameDirection[] = "direction";
+constexpr char kPropertyNameDistance[] = "distance";
+
+constexpr char kDirectionLeft[] = "left";
+constexpr char kDirectionRight[] = "right";
+constexpr char kDirectionUp[] = "up";
+constexpr char kDirectionDown[] = "down";
+
+}  // namespace
+
 ScrollTool::ScrollTool(ContentAgentTaskProvider* task_provider)
     : task_provider_(task_provider) {}
 
@@ -34,11 +47,13 @@ std::string_view ScrollTool::Description() const {
 
 std::optional<base::Value::Dict> ScrollTool::InputProperties() const {
   return CreateInputProperties(
-      {{"target", target_util::TargetProperty("Document or Element to scroll")},
-       {"direction", StringProperty("Direction to scroll",
-                                    std::vector<std::string>{"left", "right",
-                                                             "up", "down"})},
-       {"distance",
+      {{kPropertyNameTarget,
+        target_util::TargetProperty("Document or Element to scroll")},
+       {kPropertyNameDirection,
+        StringProperty("Direction to scroll",
+                       std::vector<std::string>{kDirectionLeft, kDirectionRight,
+                                                kDirectionUp, kDirectionDown})},
+       {kPropertyNameDistance,
         NumberProperty("Distance to scroll in pixels. It is suggested to use a "
                        "value that will enable an interactive element to be "
                        "used given the element's specified position and the "
@@ -47,7 +62,7 @@ std::optional<base::Value::Dict> ScrollTool::InputProperties() const {
 
 std::optional<std::vector<std::string>> ScrollTool::RequiredProperties() const {
   return std::optional<std::vector<std::string>>(
-      {"target", "direction", "distance"});
+      {kPropertyNameTarget, kPropertyNameDirection, kPropertyNameDistance});
 }
 
 void ScrollTool::UseTool(const std::string& input_json,
@@ -61,11 +76,12 @@ void ScrollTool::UseTool(const std::string& input_json,
   }
 
   // Validate direction and distance
-  const auto* direction = input->FindString("direction");
+  const auto* direction = input->FindString(kPropertyNameDirection);
   std::optional<double> distance = input->FindDouble("distance");
 
-  if (!direction || (*direction != "left" && *direction != "right" &&
-                     *direction != "up" && *direction != "down")) {
+  if (!direction ||
+      (*direction != kDirectionLeft && *direction != kDirectionRight &&
+       *direction != kDirectionUp && *direction != kDirectionDown)) {
     std::move(callback).Run(
         CreateContentBlocksForText("Invalid or missing direction. Must be "
                                    "'left', 'right', 'up', or 'down'."));
@@ -79,7 +95,7 @@ void ScrollTool::UseTool(const std::string& input_json,
   }
 
   // Extract and parse target object
-  const base::Value::Dict* target_dict = input->FindDict("target");
+  const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
         CreateContentBlocksForText("Missing 'target' object"));
@@ -116,12 +132,12 @@ void ScrollTool::OnTabHandleCreated(
   *scroll_action->mutable_target() = std::move(target);
 
   // Set scroll direction
-  if (direction == "left") {
+  if (direction == kDirectionLeft) {
     scroll_action->set_direction(optimization_guide::proto::ScrollAction::LEFT);
-  } else if (direction == "right") {
+  } else if (direction == kDirectionRight) {
     scroll_action->set_direction(
         optimization_guide::proto::ScrollAction::RIGHT);
-  } else if (direction == "up") {
+  } else if (direction == kDirectionUp) {
     scroll_action->set_direction(optimization_guide::proto::ScrollAction::UP);
   } else {  // down
     scroll_action->set_direction(optimization_guide::proto::ScrollAction::DOWN);

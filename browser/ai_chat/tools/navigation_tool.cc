@@ -15,6 +15,12 @@
 
 namespace ai_chat {
 
+namespace {
+
+constexpr char kPropertyNameWebsiteUrl[] = "website_url";
+
+}  // namespace
+
 NavigationTool::NavigationTool(ContentAgentTaskProvider* task_provider)
     : task_provider_(task_provider) {}
 
@@ -31,14 +37,14 @@ std::string_view NavigationTool::Description() const {
 
 std::optional<base::Value::Dict> NavigationTool::InputProperties() const {
   return CreateInputProperties(
-      {{"website_url",
+      {{kPropertyNameWebsiteUrl,
         StringProperty(
             "The full website URL to navigate to, starting with https://")}});
 }
 
 std::optional<std::vector<std::string>> NavigationTool::RequiredProperties()
     const {
-  return std::optional<std::vector<std::string>>({"website_url"});
+  return std::optional<std::vector<std::string>>({kPropertyNameWebsiteUrl});
 }
 
 void NavigationTool::UseTool(const std::string& input_json,
@@ -51,7 +57,7 @@ void NavigationTool::UseTool(const std::string& input_json,
     return;
   }
 
-  const auto* website_url = input->FindString("website_url");
+  const auto* website_url = input->FindString(kPropertyNameWebsiteUrl);
   if (!website_url) {
     std::move(callback).Run(CreateContentBlocksForText(
         "Missing website_url parameter from input JSON."));

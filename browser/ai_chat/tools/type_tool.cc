@@ -15,6 +15,19 @@
 
 namespace ai_chat {
 
+namespace {
+
+constexpr char kPropertyNameTarget[] = "target";
+constexpr char kPropertyNameText[] = "text";
+constexpr char kPropertyNameFollowByEnter[] = "follow_by_enter";
+constexpr char kPropertyNameMode[] = "mode";
+
+constexpr char kModeReplace[] = "replace";
+constexpr char kModePrepend[] = "prepend";
+constexpr char kModeAppend[] = "append";
+
+}  // namespace
+
 TypeTool::TypeTool(ContentAgentTaskProvider* task_provider)
     : task_provider_(task_provider) {}
 
@@ -45,24 +58,27 @@ std::string_view TypeTool::Description() const {
 
 std::optional<base::Value::Dict> TypeTool::InputProperties() const {
   return CreateInputProperties(
-      {{"target", target_util::TargetProperty("Element to type into")},
-       {"text",
+      {{kPropertyNameTarget,
+        target_util::TargetProperty("Element to type into")},
+       {kPropertyNameText,
         StringProperty("A single line of text: a string of keyboard ascii "
                        "characters to press "
                        "in sequence after the field is clicked. CANNOT INCLUDE "
                        "MULTIPLE LINES OR NEW LINE CHARACTERS!")},
-       {"follow_by_enter",
+       {kPropertyNameFollowByEnter,
         BooleanProperty("Whether to press Enter after typing the text")},
-       {"mode",
+       {kPropertyNameMode,
         StringProperty(
             "How to handle existing text in the element. Prefer \"append\" for "
             "fields with no existing text.",
-            std::vector<std::string>{"replace", "prepend", "append"})}});
+            std::vector<std::string>{kModeReplace, kModePrepend,
+                                     kModeAppend})}});
 }
 
 std::optional<std::vector<std::string>> TypeTool::RequiredProperties() const {
   return std::optional<std::vector<std::string>>(
-      {"target", "text", "follow_by_enter", "mode"});
+      {kPropertyNameTarget, kPropertyNameText, kPropertyNameFollowByEnter,
+       kPropertyNameMode});
 }
 
 void TypeTool::UseTool(const std::string& input_json,
@@ -76,9 +92,10 @@ void TypeTool::UseTool(const std::string& input_json,
   }
 
   // Validate required fields
-  const auto* text = input->FindString("text");
-  std::optional<bool> follow_by_enter = input->FindBool("follow_by_enter");
-  const auto* mode = input->FindString("mode");
+  const auto* text = input->FindString(kPropertyNameText);
+  std::optional<bool> follow_by_enter =
+      input->FindBool(kPropertyNameFollowByEnter);
+  const auto* mode = input->FindString(kPropertyNameMode);
 
   if (!text) {
     std::move(callback).Run(
@@ -92,15 +109,15 @@ void TypeTool::UseTool(const std::string& input_json,
     return;
   }
 
-  if (!mode ||
-      (*mode != "replace" && *mode != "prepend" && *mode != "append")) {
+  if (!mode || (*mode != kModeReplace && *mode != kModePrepend &&
+                *mode != kModeAppend)) {
     std::move(callback).Run(CreateContentBlocksForText(
         "Invalid or missing mode. Must be 'replace', 'prepend', or 'append'."));
     return;
   }
 
   // Extract and parse target object
-  const base::Value::Dict* target_dict = input->FindDict("target");
+  const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
         CreateContentBlocksForText("Missing 'target' object"));
@@ -141,12 +158,12 @@ void TypeTool::OnTabHandleCreated(
   type_action->set_follow_by_enter(follow_by_enter);
 
   // Set type mode
-  if (mode == "replace") {
+  if (mode == kModeReplace) {
     type_action->set_mode(
         optimization_guide::proto::TypeAction::DELETE_EXISTING);
-  } else if (mode == "prepend") {
+  } else if (mode == kModePrepend) {
     type_action->set_mode(optimization_guide::proto::TypeAction::PREPEND);
-  } else if (mode == "append") {
+  } else if (mode == kModeAppend) {
     type_action->set_mode(optimization_guide::proto::TypeAction::APPEND);
   }
 

@@ -14,6 +14,12 @@
 
 namespace ai_chat {
 
+namespace {
+
+constexpr char kPropertyNameWaitTimeMs[] = "wait_time_ms";
+
+}  // namespace
+
 WaitTool::WaitTool(ContentAgentTaskProvider* task_provider)
     : task_provider_(task_provider) {}
 
@@ -31,12 +37,12 @@ std::string_view WaitTool::Description() const {
 
 std::optional<base::Value::Dict> WaitTool::InputProperties() const {
   return CreateInputProperties(
-      {{"wait_time_ms",
+      {{kPropertyNameWaitTimeMs,
         IntegerProperty("The amount of time to wait in milliseconds")}});
 }
 
 std::optional<std::vector<std::string>> WaitTool::RequiredProperties() const {
-  return std::optional<std::vector<std::string>>({"wait_time_ms"});
+  return std::optional<std::vector<std::string>>({kPropertyNameWaitTimeMs});
 }
 
 void WaitTool::UseTool(const std::string& input_json,
@@ -50,7 +56,7 @@ void WaitTool::UseTool(const std::string& input_json,
   }
 
   // Validate wait_time_ms parameter
-  std::optional<int> wait_time_ms = input->FindInt("wait_time_ms");
+  std::optional<int> wait_time_ms = input->FindInt(kPropertyNameWaitTimeMs);
   if (!wait_time_ms.has_value() || wait_time_ms.value() <= 0) {
     std::move(callback).Run(
         CreateContentBlocksForText("Invalid or missing wait_time_ms. Must be a "

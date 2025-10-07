@@ -15,6 +15,13 @@
 
 namespace ai_chat {
 
+namespace {
+
+constexpr char kPropertyNameFrom[] = "from";
+constexpr char kPropertyNameTo[] = "to";
+
+}  // namespace
+
 DragAndReleaseTool::DragAndReleaseTool(ContentAgentTaskProvider* task_provider)
     : task_provider_(task_provider) {}
 
@@ -33,13 +40,16 @@ std::string_view DragAndReleaseTool::Description() const {
 
 std::optional<base::Value::Dict> DragAndReleaseTool::InputProperties() const {
   return CreateInputProperties(
-      {{"from", target_util::TargetProperty("Source element to drag from")},
-       {"to", target_util::TargetProperty("Target element to drag to")}});
+      {{kPropertyNameFrom,
+        target_util::TargetProperty("Source element to drag from")},
+       {kPropertyNameTo,
+        target_util::TargetProperty("Target element to drag to")}});
 }
 
 std::optional<std::vector<std::string>> DragAndReleaseTool::RequiredProperties()
     const {
-  return std::optional<std::vector<std::string>>({"from", "to"});
+  return std::optional<std::vector<std::string>>(
+      {kPropertyNameFrom, kPropertyNameTo});
 }
 
 void DragAndReleaseTool::UseTool(const std::string& input_json,
@@ -53,7 +63,7 @@ void DragAndReleaseTool::UseTool(const std::string& input_json,
   }
 
   // Extract and parse source (from) target
-  const base::Value::Dict* from_dict = input->FindDict("from");
+  const base::Value::Dict* from_dict = input->FindDict(kPropertyNameFrom);
   if (!from_dict) {
     std::move(callback).Run(
         CreateContentBlocksForText("Missing 'from' target object"));
@@ -68,7 +78,7 @@ void DragAndReleaseTool::UseTool(const std::string& input_json,
   }
 
   // Extract and parse destination (to) target
-  const base::Value::Dict* to_dict = input->FindDict("to");
+  const base::Value::Dict* to_dict = input->FindDict(kPropertyNameTo);
   if (!to_dict) {
     std::move(callback).Run(
         CreateContentBlocksForText("Missing 'to' target object"));
