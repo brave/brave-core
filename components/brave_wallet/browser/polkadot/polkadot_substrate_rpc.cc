@@ -297,6 +297,10 @@ void PolkadotSubstrateRpc::GetAccountBalance(
 void PolkadotSubstrateRpc::OnGetAccountBalance(
     GetAccountBalanceCallback callback,
     APIRequestResult api_result) {
+  if (!api_result.Is2XXResponseCode()) {
+    return std::move(callback).Run(nullptr, WalletInternalErrorMessage());
+  }
+
   auto res = polkadot_substrate_rpc_responses::PolkadotAccountBalanceResponse::
       FromValue(api_result.value_body());
 
