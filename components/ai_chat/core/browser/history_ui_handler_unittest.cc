@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/core/browser/history_page_handler.h"
+#include "brave/components/ai_chat/core/browser/history_ui_handler.h"
 
 #include <memory>
 #include <string>
@@ -25,10 +25,10 @@
 
 namespace ai_chat {
 
-class HistoryPageHandlerTest : public testing::Test {
+class HistoryUIHandlerTest : public testing::Test {
  public:
-  HistoryPageHandlerTest() = default;
-  ~HistoryPageHandlerTest() override = default;
+  HistoryUIHandlerTest() = default;
+  ~HistoryUIHandlerTest() override = default;
 
   void SetUp() override {
     // Create temp directory for history database
@@ -44,9 +44,9 @@ class HistoryPageHandlerTest : public testing::Test {
       ADD_FAILURE();
     }
 
-    // Create HistoryPageHandler
-    mojo::PendingReceiver<mojom::HistoryPageHandler> receiver;
-    history_page_handler_ = std::make_unique<HistoryPageHandler>(
+    // Create HistoryUIHandler
+    mojo::PendingReceiver<mojom::HistoryUIHandler> receiver;
+    history_ui_handler_ = std::make_unique<HistoryUIHandler>(
         std::move(receiver), history_service_.get());
   }
 
@@ -61,7 +61,7 @@ class HistoryPageHandlerTest : public testing::Test {
       const std::optional<std::string>& query = std::nullopt,
       std::optional<uint32_t> max_results = std::nullopt) {
     base::test::TestFuture<std::vector<mojom::HistoryEntryPtr>> future;
-    history_page_handler_->GetHistory(query, max_results, future.GetCallback());
+    history_ui_handler_->GetHistory(query, max_results, future.GetCallback());
     return future.Take();
   }
 
@@ -70,16 +70,16 @@ class HistoryPageHandlerTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
   base::FilePath history_dir_;
   std::unique_ptr<history::HistoryService> history_service_;
-  std::unique_ptr<HistoryPageHandler> history_page_handler_;
+  std::unique_ptr<HistoryUIHandler> history_ui_handler_;
 };
 
-TEST_F(HistoryPageHandlerTest, EmptyHistory) {
+TEST_F(HistoryUIHandlerTest, EmptyHistory) {
   // Should return empty list when no history exists
   auto history = GetHistory();
   EXPECT_TRUE(history.empty());
 }
 
-TEST_F(HistoryPageHandlerTest, GetMultipleHistoryEntries) {
+TEST_F(HistoryUIHandlerTest, GetMultipleHistoryEntries) {
   // Add multiple history entries
   AddTestHistoryEntry("Example 1", GURL("https://example1.com"));
   AddTestHistoryEntry("Example 2", GURL("https://example2.com"));
@@ -104,7 +104,7 @@ TEST_F(HistoryPageHandlerTest, GetMultipleHistoryEntries) {
   EXPECT_TRUE(base::Contains(urls, GURL("https://example3.com")));
 }
 
-TEST_F(HistoryPageHandlerTest, SearchWithQuery) {
+TEST_F(HistoryUIHandlerTest, SearchWithQuery) {
   // Add history entries with different titles
   AddTestHistoryEntry("Brave Browser", GURL("https://brave.com"));
   AddTestHistoryEntry("Google Search", GURL("https://google.com"));
@@ -125,7 +125,7 @@ TEST_F(HistoryPageHandlerTest, SearchWithQuery) {
   EXPECT_TRUE(base::Contains(titles, "Brave Search"));
 }
 
-TEST_F(HistoryPageHandlerTest, MaxResultsLimit) {
+TEST_F(HistoryUIHandlerTest, MaxResultsLimit) {
   // Add 10 history entries
   for (int i = 0; i < 10; i++) {
     AddTestHistoryEntry(
@@ -139,7 +139,7 @@ TEST_F(HistoryPageHandlerTest, MaxResultsLimit) {
   EXPECT_EQ(5u, history.size());
 }
 
-TEST_F(HistoryPageHandlerTest, DefaultMaxResults) {
+TEST_F(HistoryUIHandlerTest, DefaultMaxResults) {
   // Add more than default (100) entries
   for (int i = 0; i < 150; i++) {
     AddTestHistoryEntry(
@@ -153,7 +153,7 @@ TEST_F(HistoryPageHandlerTest, DefaultMaxResults) {
   EXPECT_EQ(100u, history.size());
 }
 
-TEST_F(HistoryPageHandlerTest, EmptyQuery) {
+TEST_F(HistoryUIHandlerTest, EmptyQuery) {
   // Add history entries
   AddTestHistoryEntry("Entry 1", GURL("https://example1.com"));
   AddTestHistoryEntry("Entry 2", GURL("https://example2.com"));
@@ -164,7 +164,7 @@ TEST_F(HistoryPageHandlerTest, EmptyQuery) {
   EXPECT_EQ(2u, history.size());
 }
 
-TEST_F(HistoryPageHandlerTest, URLMatch) {
+TEST_F(HistoryUIHandlerTest, URLMatch) {
   // Add history entries
   AddTestHistoryEntry("Entry 1", GURL("https://example1.com"));
   AddTestHistoryEntry("Entry 2", GURL("https://example2.com"));

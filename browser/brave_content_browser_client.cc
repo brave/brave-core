@@ -619,7 +619,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<ai_chat::mojom::Service>()
         .Add<ai_chat::mojom::TabTrackerService>()
         .Add<ai_chat::mojom::BookmarksPageHandler>()
-        .Add<ai_chat::mojom::HistoryPageHandler>();
+        .Add<ai_chat::mojom::HistoryUIHandler>();
     registry.ForWebUI<AIChatUntrustedConversationUI>()
         .Add<ai_chat::mojom::UntrustedUIHandler>();
   }

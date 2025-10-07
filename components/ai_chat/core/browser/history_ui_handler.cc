@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/core/browser/history_page_handler.h"
+#include "brave/components/ai_chat/core/browser/history_ui_handler.h"
 
 #include "base/strings/utf_string_conversions.h"
 #include "components/history/core/browser/history_service.h"
@@ -16,38 +16,33 @@ namespace {
 constexpr size_t kDefaultMaxResults = 100;
 }
 
-HistoryPageHandler::HistoryPageHandler(
-    mojo::PendingReceiver<mojom::HistoryPageHandler> receiver,
+HistoryUIHandler::HistoryUIHandler(
+    mojo::PendingReceiver<mojom::HistoryUIHandler> receiver,
     history::HistoryService* history_service)
-    : receiver_(this, std::move(receiver)), history_service_(history_service) {
-  LOG(ERROR) << "HistoryPageHandler constructor";
-}
+    : receiver_(this, std::move(receiver)), history_service_(history_service) {}
 
-HistoryPageHandler::~HistoryPageHandler() {
-  LOG(ERROR) << "HistoryPageHandler::~HistoryPageHandler";
-}
+HistoryUIHandler::~HistoryUIHandler() = default;
 
-void HistoryPageHandler::GetHistory(const std::optional<std::string>& query,
-                                    std::optional<uint32_t> max_results,
-                                    GetHistoryCallback callback) {
-  LOG(ERROR) << "HistoryPageHandler::GetHistory";
+void HistoryUIHandler::GetHistory(const std::optional<std::string>& query,
+                                  std::optional<uint32_t> max_results,
+                                  GetHistoryCallback callback) {
   history::QueryOptions options;
   options.visit_order = history::QueryOptions::RECENT_FIRST;
   options.max_count = max_results.value_or(kDefaultMaxResults);
 
   history_service_->QueryHistory(
       base::UTF8ToUTF16(query.value_or("")), std::move(options),
-      base::BindOnce(&HistoryPageHandler::OnGetHistory,
+      base::BindOnce(&HistoryUIHandler::OnGetHistory,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
       &task_tracker_);
 }
 
-void HistoryPageHandler::OnGetHistory(GetHistoryCallback callback,
-                                      history::QueryResults results) {
+void HistoryUIHandler::OnGetHistory(GetHistoryCallback callback,
+                                    history::QueryResults results) {
   std::vector<mojom::HistoryEntryPtr> history_entries;
   for (const auto& result : results) {
     history_entries.push_back(mojom::HistoryEntry::New(
-        result.id(), base::UTF16ToUTF8(result.title()), result.url(), 0));
+        result.id(), base::UTF16ToUTF8(result.title()), result.url()));
   }
   std::move(callback).Run(std::move(history_entries));
 }

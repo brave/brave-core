@@ -199,13 +199,12 @@ void AIChatUI::BindInterface(
 }
 
 void AIChatUI::BindInterface(
-    mojo::PendingReceiver<ai_chat::mojom::HistoryPageHandler>
-        pending_receiver) {
-  history_page_handler_ = std::make_unique<ai_chat::HistoryPageHandler>(
+    mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> pending_receiver) {
+  history_ui_handler_ = std::make_unique<ai_chat::HistoryUIHandler>(
       std::move(pending_receiver), HistoryServiceFactory::GetForProfile(
                                        Profile::FromBrowserContext(profile_),
                                        ServiceAccessType::EXPLICIT_ACCESS));
-  CHECK(history_page_handler_);
+  CHECK(history_ui_handler_);
 }
 
 bool AIChatUIConfig::IsWebUIEnabled(content::BrowserContext* browser_context) {

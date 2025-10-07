@@ -12,11 +12,9 @@ struct HistoryEntry {
   int64 id;
   string title;
   url.mojom.Url url;
-
-  int64 last_visit_time;
 };
 
-interface HistoryPageHandler {
+interface HistoryUIHandler {
   // Note: We don't push all the results here as there might be many.
   GetHistory(string? query, uint32? max_results) => (array<HistoryEntry> history);
 };
