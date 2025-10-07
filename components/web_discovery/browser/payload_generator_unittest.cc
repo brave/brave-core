@@ -159,7 +159,7 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, ExcludePrivateResult) {
     base::Value::Dict result_dict;
     std::string url = "https://example.com/result";
     if (i == 1) {
-      url = "https://423947892374892879.com/example";
+      url = "https://88.88.88.88/example";
     } else {
       url += base::NumberToString(i == 0 ? 0 : i - 1);
     }
