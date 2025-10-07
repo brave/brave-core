@@ -9,12 +9,12 @@
 #include "base/values.h"
 #include "brave/browser/ai_chat/content_agent_task_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "chrome/browser/actor/actor_keyed_service.h"
 
 namespace ai_chat {
 
 // Exposes an AI Chat Tool that creates back/forward navigation actions for use
-// with the ActorKeyedService.
+// with the ActorKeyedService. The action causes a browser history navigation
+// to the previous or next page in the tab's session.
 class HistoryTool : public Tool {
  public:
   explicit HistoryTool(ContentAgentTaskProvider* task_provider);

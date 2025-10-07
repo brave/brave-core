@@ -9,12 +9,12 @@
 #include "base/values.h"
 #include "brave/browser/ai_chat/content_agent_task_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "chrome/browser/actor/actor_keyed_service.h"
 
 namespace ai_chat {
 
 // Exposes an AI Chat Tool that creates a WaitToolRequest action for use with
-// the ActorKeyedService.
+// the ActorKeyedService. The action causes a wait for the specified amount of
+// time in milliseconds.
 class WaitTool : public Tool {
  public:
   explicit WaitTool(ContentAgentTaskProvider* task_provider);

@@ -10,7 +10,6 @@
 
 #include "base/values.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat::target_test_util {
 

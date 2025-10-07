@@ -8,7 +8,6 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "chrome/common/actor/actor_constants.h"
-#include "components/optimization_guide/proto/features/actions_data.pb.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"

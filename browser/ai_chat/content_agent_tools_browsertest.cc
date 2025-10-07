@@ -159,23 +159,6 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-// Test that BrowserToolProvider can be created and provides expected tools
-IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ProviderCreation) {
-  ASSERT_NE(tool_provider_, nullptr);
-
-  auto tools = tool_provider_->GetTools();
-  EXPECT_GT(tools.size(), 0u);
-
-  // Verify some expected tools are present
-  std::vector<std::string> expected_tools = {
-      "click_element", "type_text", "scroll_element", "web_page_navigator"};
-
-  for (const std::string& expected_name : expected_tools) {
-    auto tool = FindToolByName(expected_name);
-    EXPECT_TRUE(tool) << "Expected tool '" << expected_name << "' not found";
-  }
-}
-
 // Test click tool with Node ID targeting
 IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ClickTool_NodeIdTarget) {
   NavigateToChromiumTestFile("/actor/page_with_clickable_element.html");

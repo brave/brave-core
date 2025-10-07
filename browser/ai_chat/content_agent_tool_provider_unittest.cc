@@ -94,6 +94,16 @@ class ContentAgentToolProviderTest : public testing::Test {
     return actions;
   }
 
+  base::WeakPtr<Tool> FindToolByName(const std::string& name) {
+    auto tools = tool_provider_->GetTools();
+    for (auto& tool : tools) {
+      if (tool && tool->Name() == name) {
+        return tool;
+      }
+    }
+    return nullptr;
+  }
+
  protected:
   content::BrowserTaskEnvironment task_environment_;
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -109,6 +119,15 @@ TEST_F(ContentAgentToolProviderTest, CreateTools) {
   auto tools = tool_provider_->GetTools();
   EXPECT_GT(tools.size(), 0u);
   EXPECT_FALSE(tool_provider_->GetTaskId().is_null());
+
+  // Verify some expected tools are present
+  std::vector<std::string> expected_tools = {
+    "click_element", "type_text", "scroll_element", "web_page_navigator"};
+
+  for (const std::string& expected_name : expected_tools) {
+    auto tool = FindToolByName(expected_name);
+    EXPECT_TRUE(tool) << "Expected tool '" << expected_name << "' not found";
+  }
 }
 
 // Test that StopAllTasks stops the task

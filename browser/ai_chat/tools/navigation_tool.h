@@ -10,13 +10,12 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
-#include "chrome/browser/actor/actor_keyed_service.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
 
 namespace ai_chat {
 
 // Exposes an AI Chat Tool that creates a NavigateToolRequest action for use
-// with the ActorKeyedService.
+// with the ActorKeyedService. The action causes the tab to navigate to a new
+// URL.
 class NavigationTool : public Tool {
  public:
   explicit NavigationTool(ContentAgentTaskProvider* task_provider);

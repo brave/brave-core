@@ -6,6 +6,7 @@
 #include "brave/browser/ai_chat/tools/target_test_util.h"
 
 #include "chrome/common/actor/actor_constants.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat::target_test_util {
 

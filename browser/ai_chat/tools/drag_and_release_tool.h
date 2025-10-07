@@ -9,13 +9,14 @@
 #include "base/values.h"
 #include "brave/browser/ai_chat/content_agent_task_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "chrome/browser/actor/actor_keyed_service.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 
 namespace ai_chat {
 
 // Exposes an AI Chat Tool that creates a DragAndReleaseToolRequest action for
-// use with the ActorKeyedService.
+// use with the ActorKeyedService. The action causes a drag and drop from a
+// source target to a destination target. Only elements within the viewport can
+// be dragged.
 class DragAndReleaseTool : public Tool {
  public:
   explicit DragAndReleaseTool(ContentAgentTaskProvider* task_provider);

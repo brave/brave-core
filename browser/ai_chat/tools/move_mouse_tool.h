@@ -9,12 +9,13 @@
 #include "base/values.h"
 #include "brave/browser/ai_chat/content_agent_task_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "chrome/browser/actor/actor_keyed_service.h"
 
 namespace ai_chat {
 
 // Exposes an AI Chat Tool that creates a MoveMouseToolRequest action for use
-// with the ActorKeyedService.
+// with the ActorKeyedService. The action causes the mouse to move to a
+// specific location in the web content's viewport, firing associated mouse
+// events.
 class MoveMouseTool : public Tool {
  public:
   explicit MoveMouseTool(ContentAgentTaskProvider* task_provider);

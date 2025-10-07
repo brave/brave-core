@@ -10,7 +10,6 @@
 #include "brave/browser/ai_chat/tools/target_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
-#include "chrome/browser/actor/actor_task.h"
 #include "chrome/browser/actor/task_id.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 
