@@ -30,12 +30,11 @@ import EditIndicator from '../edit_indicator'
 import {
   getReasoningText,
   groupConversationEntries,
+  isGroupTask,
 } from './conversation_entries_utils'
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
 import styles from './style.module.scss'
 import AssistantTask from '../assistant_task/assistant_task'
-
-const NON_TASK_TOOL_NAMES = [Mojom.USER_CHOICE_TOOL_NAME]
 
 function ConversationEntries() {
   const conversationContext = useUntrustedConversationContext()
@@ -142,22 +141,7 @@ function ConversationEntries() {
           const hasAttachments =
             !!firstEntryEdit.uploadedFiles?.length || tabAttachments.length > 0
 
-          // A task is when there are multiple entries within a group and there
-          // is at least 1 tool use event and 1 completion event. However, it may not be possible
-          // for there to be multiple entries without a tool use event.
-          const groupIsTask =
-            group.length > 1
-            && group.some((entry) =>
-              entry.events?.some(
-                (event) =>
-                  !!event
-                  && event.toolUseEvent
-                  && !NON_TASK_TOOL_NAMES.includes(event.toolUseEvent.toolName),
-              ),
-            )
-            && group.some((entry) =>
-              entry.events?.some((event) => !!event && event.completionEvent),
-            )
+          const groupIsTask = isGroupTask(group)
 
           return (
             <div
@@ -187,6 +171,7 @@ function ConversationEntries() {
                       assistantEntries={group}
                       isActiveTask={isLastGroup}
                       isGenerating={conversationContext.isGenerating}
+                      isLeoModel={conversationContext.isLeoModel}
                     />
                   )}
                   {!groupIsTask

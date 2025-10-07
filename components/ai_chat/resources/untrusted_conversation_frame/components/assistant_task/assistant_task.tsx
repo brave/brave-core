@@ -11,53 +11,31 @@ import TabItem from '@brave/leo/react/tabItem'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
-import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import AssistantResponse from '../assistant_response'
 import ToolEvent from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
+import useExtractTaskData, { TaskData } from './use_extract_task_data'
 
 interface Props {
   // Entries that make up the task loop
   assistantEntries: Mojom.ConversationTurn[]
   isActiveTask: boolean
   isGenerating: boolean
+  isLeoModel: boolean
 }
 
-// Should be Navigate and TODO
-const importantToolNames = [Mojom.NAVIGATE_TOOL_NAME]
-
-function getImportantToolUseEvents(
-  assistantEntries: Mojom.ConversationTurn[],
-): Mojom.ToolUseEvent[] {
-  const importantToolUseEvents: Partial<
-    Record<(typeof importantToolNames)[number], Mojom.ToolUseEvent>
-  > = {}
-
-  for (const event of assistantEntries
-    .toReversed()
-    .flatMap((entry) => entry.events?.toReversed() ?? [])) {
-    if (
-      !!event
-      && !!event.toolUseEvent
-      && importantToolNames.includes(event.toolUseEvent.toolName ?? '')
-    ) {
-      if (importantToolUseEvents[event.toolUseEvent.toolName]) {
-        continue
-      }
-      importantToolUseEvents[event.toolUseEvent.toolName] = event.toolUseEvent!
-      // Don't keep iterating if we've found all the important tool use events
-      if (
-        Object.keys(importantToolUseEvents).length === importantToolNames.length
-      ) {
-        break
-      }
-    }
-  }
-  return Object.values(importantToolUseEvents).filter((event) => !!event)
-}
-
+/**
+ * The Task is split *not* by ConversationTurn but by CompletionEvent, which is
+ * better for descriptive UI.
+ * The Progress tab displays the most recent item in that split (the
+ * completion text and the subsequent tool uses) as well as any previous
+ * "important" tool use (e.g. TODO list or tab navigation).
+ * The Steps tab displays everything in timeline order.
+ */
 export default function AssistantTask(props: Props) {
   const [showSteps, setShowSteps] = React.useState(false)
+
+  const taskData = useExtractTaskData(props.assistantEntries)
 
   return (
     <div className={styles.task}>
@@ -73,58 +51,54 @@ export default function AssistantTask(props: Props) {
       </Tabs>
       <div className={styles.taskContent}>
         <div className={styles.taskData}>
-          {showSteps && <Steps {...props} />}
+          {showSteps && <Steps {...props} taskData={taskData} />}
 
-          {!showSteps && <Progress {...props} />}
+          {!showSteps && <Progress {...props} taskData={taskData} />}
         </div>
       </div>
     </div>
   )
 }
 
-function Progress(props: Props) {
+function Progress(props: Props & { taskData: TaskData }) {
   // The Progress tab should show:
   // - Any last active complete "important" tool (TODO, navigate)
   // - the most recent completion event
   // - any tool use events from the most recent entry in the group (the active
   // events)
-  const conversationContext = useUntrustedConversationContext()
+  const lastTaskItem = props.taskData.taskItems.at(-1)
 
-  const lastCompletionEvent = props.assistantEntries
-    .flatMap(
-      (entry) =>
-        entry.events?.filter((event) => !!event && event.completionEvent) ?? [],
-    )
-    .at(-1)
+  if (!lastTaskItem || lastTaskItem.length === 0) {
+    return null
+  }
 
-  const lastEntryToolUseEvents =
-    props.assistantEntries
-      .at(-1)
-      ?.events?.filter((event) => !!event && !!event.toolUseEvent) ?? []
+  const currentCompletionEvent = lastTaskItem.find(event => !!event.completionEvent)
 
-  const importantToolUseEvents = getImportantToolUseEvents(
-    props.assistantEntries,
+  // Include any current tool use events that are not already included in the
+  // "important" section.
+  const currentToolUseEvents = lastTaskItem.filter(
+    (event) => !!event.toolUseEvent && !props.taskData.importantToolUseEvents.includes(event.toolUseEvent),
   )
 
   return (
     <div>
-      {importantToolUseEvents.map((event, index) => (
+      {props.taskData.importantToolUseEvents.map((event, index) => (
         <ToolEvent
           key={index}
           toolUseEvent={event}
           isEntryActive={props.isActiveTask}
         />
       ))}
-      {lastCompletionEvent && (
+      {currentCompletionEvent && (
         <AssistantResponse
-          events={[lastCompletionEvent]}
+          events={[currentCompletionEvent]}
           isEntryInteractivityAllowed={false}
           isEntryInProgress={props.isGenerating}
           allowedLinks={[]}
-          isLeoModel={conversationContext.isLeoModel}
+          isLeoModel={props.isLeoModel}
         />
       )}
-      {lastEntryToolUseEvents.map((event, index) => (
+      {currentToolUseEvents.map((event, index) => (
         <ToolEvent
           key={index}
           toolUseEvent={event.toolUseEvent!}
@@ -135,32 +109,12 @@ function Progress(props: Props) {
   )
 }
 
-function Steps(props: Props) {
+function Steps(props: Props & { taskData: TaskData }) {
   // Render every event in the task, split by completion event
   // so that the LLM tells a story of the task by it's own progress
   // description.
-  const conversationContext = useUntrustedConversationContext()
-  let taskItems: Mojom.ConversationEntryEvent[][] = [[]]
-  const allowedLinks: string[] = []
-  for (const event of props.assistantEntries.flatMap(
-    (entry) => entry.events ?? [],
-  )) {
-    if (!!event && !!event.completionEvent) {
-      taskItems.push([event])
-    } else if (event) {
-      taskItems[taskItems.length - 1].push(event)
-      if (event.sourcesEvent) {
-        allowedLinks.push(
-          ...event.sourcesEvent.sources.map((source) => source.url.url),
-        )
-      }
-    }
-  }
-
-  taskItems = taskItems.filter((taskItem) => taskItem.length > 0)
-
-  return taskItems.map((taskItem, index) => {
-    const isActive = index === taskItems.length - 1
+  return props.taskData.taskItems.map((taskItem, index) => {
+    const isActive = index === props.taskData.taskItems.length - 1
     return (
       <div
         key={index}
@@ -173,8 +127,8 @@ function Steps(props: Props) {
           events={taskItem}
           isEntryInteractivityAllowed={isActive}
           isEntryInProgress={props.isGenerating && isActive}
-          allowedLinks={allowedLinks}
-          isLeoModel={conversationContext.isLeoModel}
+          allowedLinks={props.taskData.allowedLinks}
+          isLeoModel={props.isLeoModel}
         />
       </div>
     )
