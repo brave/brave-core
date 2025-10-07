@@ -21,7 +21,7 @@ import Attachments from './index'
 import {
   AssociatedContent,
   ContentType,
-} from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
+} from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m.js'
 
 const MockContext = (
   props: React.PropsWithChildren<Partial<AIChatContext & ConversationContext>>,

@@ -14,6 +14,7 @@
 #include "base/observer_list_types.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
