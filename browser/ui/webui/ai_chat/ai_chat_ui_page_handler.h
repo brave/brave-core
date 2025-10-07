@@ -23,6 +23,7 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
+#include "url/gurl.h"
 
 namespace content {
 class WebContents;
@@ -77,6 +78,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       override;
   void AssociateTab(mojom::TabDataPtr tab,
                     const std::string& conversation_uuid) override;
+  void AssociateUrlContent(const GURL& url,
+                           const std::string& title,
+                           const std::string& conversation_uuid) override;
   void DisassociateContent(mojom::AssociatedContentPtr content,
                            const std::string& conversation_uuid) override;
   void NewConversation(
