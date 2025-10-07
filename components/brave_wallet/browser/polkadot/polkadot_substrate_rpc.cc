@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
 #include "base/containers/span.h"
+#include "base/containers/span_reader.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/numerics/byte_conversions.h"
@@ -47,92 +48,80 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 }
 
 mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(std::string_view sv) {
+  // leading 0x, 160 hex chars worth of data
+  if (sv.size() != 162) {
+    return nullptr;
+  }
+
+  if (!sv.starts_with("0x")) {
+    return nullptr;
+  }
+
+  std::vector<uint8_t> bytes;
+  sv.remove_prefix(2);  // remove leading 0x
+  if (!base::HexStringToBytes(sv, &bytes)) {
+    return nullptr;
+  }
+
+  base::SpanReader<const uint8_t> reader(bytes);
   auto account = mojom::PolkadotAccountInfo::New();
 
-  DCHECK(sv.size() == 162);
-  sv.remove_prefix(2);  // remove leading 0x
-
-  if (!base::HexStringToUInt(sv.substr(0, 8), &account->nonce)) {
+  if (!reader.ReadU32LittleEndian(account->nonce)) {
     return nullptr;
   }
-  sv.remove_prefix(8);
 
-  if (!base::HexStringToUInt(sv.substr(0, 8), &account->consumers)) {
+  if (!reader.ReadU32LittleEndian(account->consumers)) {
     return nullptr;
   }
-  sv.remove_prefix(8);
 
-  if (!base::HexStringToUInt(sv.substr(0, 8), &account->providers)) {
+  if (!reader.ReadU32LittleEndian(account->providers)) {
     return nullptr;
   }
-  sv.remove_prefix(8);
 
-  if (!base::HexStringToUInt(sv.substr(0, 8), &account->sufficients)) {
+  if (!reader.ReadU32LittleEndian(account->sufficients)) {
     return nullptr;
   }
-  sv.remove_prefix(8);
-
-  account->nonce = base::ByteSwap(account->nonce);
-  account->consumers = base::ByteSwap(account->consumers);
-  account->providers = base::ByteSwap(account->providers);
-  account->sufficients = base::ByteSwap(account->sufficients);
 
   account->data = mojom::PolkadotAccountBalance::New();
 
   uint64_t low = 0, high = 0;
-  if (!base::HexStringToUInt64(sv.substr(0, 16), &low)) {
+  if (!reader.ReadU64LittleEndian(low)) {
     return nullptr;
   }
-  sv.remove_prefix(16);
-  low = base::ByteSwap(low);
 
-  if (!base::HexStringToUInt64(sv.substr(0, 16), &high)) {
+  if (!reader.ReadU64LittleEndian(high)) {
     return nullptr;
   }
-  sv.remove_prefix(16);
-  high = base::ByteSwap(high);
 
   account->data->free = mojom::uint128Ptr(std::in_place, high, low);
 
-  if (!base::HexStringToUInt64(sv.substr(0, 16), &low)) {
+  if (!reader.ReadU64LittleEndian(low)) {
     return nullptr;
   }
-  sv.remove_prefix(16);
-  low = base::ByteSwap(low);
 
-  if (!base::HexStringToUInt64(sv.substr(0, 16), &high)) {
+  if (!reader.ReadU64LittleEndian(high)) {
     return nullptr;
   }
-  sv.remove_prefix(16);
-  high = base::ByteSwap(high);
 
   account->data->reserved = mojom::uint128Ptr(std::in_place, high, low);
 
-  if (!base::HexStringToUInt64(sv.substr(0, 16), &low)) {
+  if (!reader.ReadU64LittleEndian(low)) {
     return nullptr;
   }
-  sv.remove_prefix(16);
-  low = base::ByteSwap(low);
 
-  if (!base::HexStringToUInt64(sv.substr(0, 16), &high)) {
+  if (!reader.ReadU64LittleEndian(high)) {
     return nullptr;
   }
-  sv.remove_prefix(16);
-  high = base::ByteSwap(high);
 
   account->data->frozen = mojom::uint128Ptr(std::in_place, high, low);
 
-  if (!base::HexStringToUInt64(sv.substr(0, 16), &low)) {
+  if (!reader.ReadU64LittleEndian(low)) {
     return nullptr;
   }
-  sv.remove_prefix(16);
-  low = base::ByteSwap(low);
 
-  if (!base::HexStringToUInt64(sv.substr(0, 16), &high)) {
+  if (!reader.ReadU64LittleEndian(high)) {
     return nullptr;
   }
-  sv.remove_prefix(16);
-  high = base::ByteSwap(high);
 
   account->data->flags = mojom::uint128Ptr(std::in_place, high, low);
 
@@ -190,11 +179,9 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
     sv = kFallback;
   }
 
-  if (sv.size() == 162) {
-    auto account = ParseAccountInfoAsHex(sv);
-    if (account) {
-      return account;
-    }
+  auto account = ParseAccountInfoAsHex(sv);
+  if (account) {
+    return account;
   }
 
   return nullptr;
