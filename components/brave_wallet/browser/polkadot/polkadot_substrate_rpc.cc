@@ -93,7 +93,7 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(std::string_view sv) {
     return nullptr;
   }
 
-  account->data->free = mojom::uint128Ptr(std::in_place, high, low);
+  account->data->free = mojom::uint128::New(high, low);
 
   if (!reader.ReadU64LittleEndian(low)) {
     return nullptr;
@@ -103,7 +103,7 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(std::string_view sv) {
     return nullptr;
   }
 
-  account->data->reserved = mojom::uint128Ptr(std::in_place, high, low);
+  account->data->reserved = mojom::uint128::New(high, low);
 
   if (!reader.ReadU64LittleEndian(low)) {
     return nullptr;
@@ -113,7 +113,7 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(std::string_view sv) {
     return nullptr;
   }
 
-  account->data->frozen = mojom::uint128Ptr(std::in_place, high, low);
+  account->data->frozen = mojom::uint128::New(high, low);
 
   if (!reader.ReadU64LittleEndian(low)) {
     return nullptr;
@@ -123,7 +123,7 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(std::string_view sv) {
     return nullptr;
   }
 
-  account->data->flags = mojom::uint128Ptr(std::in_place, high, low);
+  account->data->flags = mojom::uint128::New(high, low);
 
   return account;
 }
