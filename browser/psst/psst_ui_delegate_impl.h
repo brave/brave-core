@@ -23,7 +23,8 @@ namespace psst {
 
 class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
  public:
-  PsstUiDelegateImpl(Profile* profile, content::WebContents* contents);
+  PsstUiDelegateImpl(BravePsstPermissionContext* permission_context,
+                     content::WebContents* contents);
   ~PsstUiDelegateImpl() override;
 
   PsstUiDelegateImpl(const PsstUiDelegateImpl&) = delete;
@@ -44,7 +45,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   void OnUserAcceptedPsstSettings(base::Value::List urls_to_skip);
 
   raw_ptr<content::WebContents> web_contents_;
-  raw_ptr<Profile> profile_;
+  raw_ptr<BravePsstPermissionContext> permission_context_;
   std::optional<PsstConsentData> dialog_data_;
 };
 
