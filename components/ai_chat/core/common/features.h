@@ -38,14 +38,21 @@ extern const base::FeatureParam<double> kAITemperature;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<size_t> kMaxCountLargeToolUseEvents;
 
-// Whether should add indentation to page content structure for tool results.
-COMPONENT_EXPORT(AI_CHAT_COMMON)
-extern const base::FeatureParam<bool> kShouldIndentPageContentBlocks;
-
 // The size of a tool use event's output that triggers that events to
 // be marked as "large".
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<size_t> kContentSizeLargeToolUseEvent;
+
+// Whether automatic model should support tools. This affects model routing
+// when tools are sent. Since tools are always sent if any are available to the
+// conversation and if the model supports them, the server might need to be
+// updated to more intelligently ignore tools in certain scenarios.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<bool> kAutomaticModelSupportsTools;
+
+// Whether should add indentation to page content structure for tool results.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<bool> kShouldIndentPageContentBlocks;
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatEnabled();
 

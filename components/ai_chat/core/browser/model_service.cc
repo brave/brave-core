@@ -114,7 +114,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-automatic";
       model->display_name = "Automatic";
       model->vision_support = true;
-      model->supports_tools = false;
+      model->supports_tools = features::kAutomaticModelSupportsTools.Get();
       model->is_suggested_model = true;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
