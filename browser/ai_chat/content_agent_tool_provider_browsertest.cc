@@ -22,6 +22,7 @@
 #include "chrome/browser/actor/browser_action_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
@@ -32,6 +33,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+#include "url/url_constants.h"
 
 namespace ai_chat {
 
@@ -59,6 +61,7 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
     Browser* browser = browser_future.Take();
     ASSERT_NE(browser, nullptr);
     agent_profile_ = browser->profile();
+    agent_browser_window_ = browser;
 
     // Get the actor service
     auto* actor_service =
@@ -136,6 +139,7 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
   }
 
   raw_ptr<Profile> agent_profile_;
+  raw_ptr<BrowserWindowInterface> agent_browser_window_;
   std::unique_ptr<ContentAgentToolProvider> tool_provider_;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
@@ -147,12 +151,20 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
 // subsequent calls.
 IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
                        GetOrCreateTabHandleForTask) {
+  auto initial_tab_count =
+      agent_browser_window_->GetTabStripModel()->GetTabCount();
   base::test::TestFuture<tabs::TabHandle> first_future;
   tool_provider_->GetOrCreateTabHandleForTask(first_future.GetCallback());
   tabs::TabHandle first_handle = first_future.Take();
-
   EXPECT_TRUE(first_handle.Get());
   EXPECT_TRUE(first_handle.Get()->GetContents());
+  // First call should result in a new tab
+  EXPECT_EQ(agent_browser_window_->GetTabStripModel()->GetTabCount(),
+            initial_tab_count + 1);
+  // Should be on the blank page
+  content::WaitForLoadStop(first_handle.Get()->GetContents());
+  EXPECT_EQ(first_handle.Get()->GetContents()->GetLastCommittedURL(),
+            url::kAboutBlankURL);
 
   base::test::TestFuture<tabs::TabHandle> second_future;
   tool_provider_->GetOrCreateTabHandleForTask(second_future.GetCallback());
@@ -161,6 +173,10 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   EXPECT_EQ(first_handle, second_handle);
   EXPECT_EQ(first_handle.Get()->GetContents(),
             second_handle.Get()->GetContents());
+
+  // Should not have opened any new tabs
+  EXPECT_EQ(agent_browser_window_->GetTabStripModel()->GetTabCount(),
+            initial_tab_count + 1);
 }
 
 // Test calling ExecuteActions on a closed tab is handled

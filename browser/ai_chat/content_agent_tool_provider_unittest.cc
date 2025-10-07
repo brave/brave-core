@@ -122,7 +122,7 @@ TEST_F(ContentAgentToolProviderTest, CreateTools) {
 
   // Verify some expected tools are present
   std::vector<std::string> expected_tools = {
-    "click_element", "type_text", "scroll_element", "web_page_navigator"};
+      "click_element", "type_text", "scroll_element", "web_page_navigator"};
 
   for (const std::string& expected_name : expected_tools) {
     auto tool = FindToolByName(expected_name);
