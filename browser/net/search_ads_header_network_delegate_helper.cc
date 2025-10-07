@@ -10,20 +10,31 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_context.h"
 #include "net/base/net_errors.h"
 
 namespace {
 
-bool SearchAdsEnabledForProfile(Profile* profile) {
+// Returns true if the `Brave-Search-Ads` header should be set (to disable
+// search ads), and false if it should not be set (to allow search ads).
+bool ShouldSetHeaderForProfile(Profile* profile) {
   if (!profile || profile->IsOffTheRecord()) {
-    return true;
+    return false;
   }
   const auto* prefs = profile->GetPrefs();
+
   if (!prefs->GetBoolean(brave_rewards::prefs::kEnabled)) {
-    return true;
+    // If Rewards is disabled, show search ads.
+    return false;
   }
-  return prefs->GetBoolean(brave_ads::prefs::kOptedInToSearchResultAds);
+
+  if (prefs->GetString(brave_rewards::prefs::kExternalWalletType).empty()) {
+    // If Rewards is enabled but not connected, show search ads only if the user
+    // has opted in.
+    return !prefs->GetBoolean(brave_ads::prefs::kOptedInToSearchResultAds);
+  }
+
+  // If Rewards is enabled and connected, hide search ads.
+  return true;
 }
 
 }  // namespace
@@ -33,25 +44,32 @@ namespace brave {
 int OnBeforeStartTransaction_SearchAdsHeader(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
-  Profile* profile = Profile::FromBrowserContext(ctx->browser_context);
-
-  // The Brave-Search-Ads header should be added with a negative value when all
-  // of the following conditions are met:
+    std::shared_ptr<BraveRequestInfo> request) {
+  // The header should be set if (to disable search ads):
+  // - any of the following are true:
+  //   - Rewards is enabled and not connected, and opted out of search ads.
+  //   - Rewards is enabled and connected.
+  // - and all of the following are true:
   //   - The current tab is not in a Private browser window.
-  //   - Brave Rewards is enabled for the profile.
-  //   - The "Search Ads" option is not enabled for the profile.
-  //   - The requested URL host is one of the Brave Search domains.
-  //   - The request originates from one of the Brave Search domains.
-  if (SearchAdsEnabledForProfile(profile) ||
-      !brave_search::IsAllowedHost(ctx->request_url) ||
-      (!brave_search::IsAllowedHost(ctx->tab_origin) &&
-       !brave_search::IsAllowedHost(ctx->initiator_url))) {
-    return net::OK;
-  }
+  //   - `request_url` host is allowed.
+  //   - `tab_origin` or `initiator_url` host is allowed.
 
-  headers->SetHeader(kSearchAdsHeader, kSearchAdsDisabledValue);
-  ctx->set_headers.insert(kSearchAdsHeader);
+  // The header should not be set if any one of the following are true. (to
+  // allow search ads):
+  // - The current tab is in a Private browser window.
+  // - Rewards is disabled.
+  // - Rewards is enabled and not connected, and opted-in to search ads.
+  // - `request_url` host is disallowed.
+  // - `tab_origin` and `initiator_url` hosts are disallowed.
+
+  Profile* profile = Profile::FromBrowserContext(request->browser_context);
+  if (ShouldSetHeaderForProfile(profile) &&
+      brave_search::IsAllowedHost(request->request_url) &&
+      (brave_search::IsAllowedHost(request->tab_origin) ||
+       brave_search::IsAllowedHost(request->initiator_url))) {
+    headers->SetHeader(kSearchAdsHeader, kSearchAdsDisabledValue);
+    request->set_headers.insert(kSearchAdsHeader);
+  }
 
   return net::OK;
 }
