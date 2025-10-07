@@ -23,8 +23,7 @@ namespace psst {
 
 class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
  public:
-  PsstUiDelegateImpl(BravePsstPermissionContext* permission_context,
-                     content::WebContents* contents);
+  explicit PsstUiDelegateImpl(BravePsstPermissionContext* permission_context);
   ~PsstUiDelegateImpl() override;
 
   PsstUiDelegateImpl(const PsstUiDelegateImpl&) = delete;
