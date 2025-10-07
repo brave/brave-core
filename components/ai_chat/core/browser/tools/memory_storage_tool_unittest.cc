@@ -52,7 +52,7 @@ TEST_F(MemoryStorageToolTest, UseTool_ValidInput) {
   const std::string input_json = R"({"memory": "User prefers TypeScript"})";
 
   base::test::TestFuture<Tool::ToolResult> future;
-  memory_tool_->UseTool(input_json, future.GetCallback());
+  memory_tool_->UseTool(input_json, std::nullopt, future.GetCallback());
 
   Tool::ToolResult result = future.Take();
   ASSERT_EQ(result.size(), 1u);
@@ -72,7 +72,7 @@ TEST_F(MemoryStorageToolTest, UseTool_InvalidJson) {
   const std::string input_json = R"({"memory": invalid json})";
 
   base::test::TestFuture<Tool::ToolResult> future;
-  memory_tool_->UseTool(input_json, future.GetCallback());
+  memory_tool_->UseTool(input_json, std::nullopt, future.GetCallback());
 
   Tool::ToolResult result = future.Take();
   ASSERT_EQ(result.size(), 1u);
@@ -91,7 +91,7 @@ TEST_F(MemoryStorageToolTest, UseTool_MissingMemoryField) {
   const std::string input_json = R"({"other_field": "value"})";
 
   base::test::TestFuture<Tool::ToolResult> future;
-  memory_tool_->UseTool(input_json, future.GetCallback());
+  memory_tool_->UseTool(input_json, std::nullopt, future.GetCallback());
 
   Tool::ToolResult result = future.Take();
   ASSERT_EQ(result.size(), 1u);
@@ -110,7 +110,7 @@ TEST_F(MemoryStorageToolTest, UseTool_EmptyMemoryField) {
   const std::string input_json = R"({"memory": ""})";
 
   base::test::TestFuture<Tool::ToolResult> future;
-  memory_tool_->UseTool(input_json, future.GetCallback());
+  memory_tool_->UseTool(input_json, std::nullopt, future.GetCallback());
 
   Tool::ToolResult result = future.Take();
   ASSERT_EQ(result.size(), 1u);
@@ -132,7 +132,7 @@ TEST_F(MemoryStorageToolTest, UseTool_TooLongMemory) {
       absl::StrFormat(R"({"memory": "%s"})", long_memory);
 
   base::test::TestFuture<Tool::ToolResult> future;
-  memory_tool_->UseTool(input_json, future.GetCallback());
+  memory_tool_->UseTool(input_json, std::nullopt, future.GetCallback());
 
   Tool::ToolResult result = future.Take();
   ASSERT_EQ(result.size(), 1u);

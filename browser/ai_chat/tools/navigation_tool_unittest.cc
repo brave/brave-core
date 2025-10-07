@@ -64,7 +64,7 @@ class NavigationToolTest : public testing::Test {
     EXPECT_CALL(*mock_task_provider_, ExecuteActions).Times(0);
 
     base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> future;
-    navigation_tool_->UseTool(input_json, future.GetCallback());
+    navigation_tool_->UseTool(input_json, std::nullopt, future.GetCallback());
 
     auto result = future.Take();
     EXPECT_EQ(result.size(), 1u);
@@ -116,7 +116,7 @@ TEST_F(NavigationToolTest, ValidInputHttpsUrl) {
         run_loop.Quit();
       });
 
-  navigation_tool_->UseTool(input_json, base::DoNothing());
+  navigation_tool_->UseTool(input_json, std::nullopt, base::DoNothing());
   run_loop.Run();
 
   // Verify navigation action properties
@@ -138,7 +138,7 @@ TEST_F(NavigationToolTest, ValidInputComplexUrl) {
         run_loop.Quit();
       });
 
-  navigation_tool_->UseTool(input_json, base::DoNothing());
+  navigation_tool_->UseTool(input_json, std::nullopt, base::DoNothing());
   run_loop.Run();
 
   // Verify navigation action properties

@@ -22,5 +22,6 @@ buildflag_header("buildflags") {
   flags = [
     "SERVICE_KEY_AICHAT=\"$service_key_aichat\"",
     "ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE=$enable_brave_ai_chat_agent_profile",
+    "ENABLE_TAB_MANAGEMENT_TOOL=$enable_tab_management_tool",
   ]
 }

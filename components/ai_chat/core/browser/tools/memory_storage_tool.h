@@ -46,6 +46,7 @@ class MemoryStorageTool : public Tool {
       bool has_untrusted_content,
       mojom::ConversationCapability conversation_capability) const override;
   void UseTool(const std::string& input_json,
+               std::optional<base::Value> client_data,
                UseToolCallback callback) override;
 
  private:
