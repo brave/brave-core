@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "components/optimization_guide/proto/features/common_quality_data.pb.h"
 
 namespace ai_chat {
