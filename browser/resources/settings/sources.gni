@@ -176,6 +176,7 @@ brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/bookmarks.mojom-webui.ts",
 
   # ai_chat.mojom depends on these mojom files, even though they aren't used directly on settings
+  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/common.mojom-webui.ts",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/customization_settings.mojom-webui.ts",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/tab_tracker.mojom-webui.ts",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-webui.ts",

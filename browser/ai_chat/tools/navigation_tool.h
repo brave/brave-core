@@ -9,6 +9,7 @@
 #include "brave/browser/ai_chat/content_agent_task_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "chrome/browser/actor/actor_keyed_service.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
 

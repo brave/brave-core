@@ -14,6 +14,7 @@
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "sql/database.h"
 #include "sql/init_status.h"

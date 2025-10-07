@@ -39,6 +39,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/l10n/common/locale_util.h"
