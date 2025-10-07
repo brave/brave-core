@@ -8,12 +8,12 @@
 namespace psst {
 
 PsstConsentData::PsstConsentData(const std::string& user_id,
-                                 const std::string& site_name,
+                                 const url::Origin& origin,
                                  base::Value::List request_infos,
                                  const int script_version,
                                  ConsentCallback apply_changes_callback)
     : user_id(user_id),
-      site_name(site_name),
+      origin(origin),
       request_infos(std::move(request_infos)),
       script_version(script_version),
       apply_changes_callback(std::move(apply_changes_callback)) {}

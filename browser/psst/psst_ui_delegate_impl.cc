@@ -5,14 +5,11 @@
 
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 
-#include "content/public/browser/web_contents.h"
-
 namespace psst {
 
 PsstUiDelegateImpl::PsstUiDelegateImpl(
-    BravePsstPermissionContext* permission_context,
-    content::WebContents* contents)
-    : web_contents_(contents), permission_context_(permission_context) {
+    BravePsstPermissionContext* permission_context)
+    : permission_context_(permission_context) {
   CHECK(permission_context);
 }
 
@@ -44,8 +41,7 @@ void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
     base::Value::List urls_to_skip) {
   // Create the PSST permission when user accepts the dialog
   permission_context_->GrantPermission(
-      url::Origin::Create(web_contents_->GetLastCommittedURL()),
-      ConsentStatus::kAllow, dialog_data_->script_version,
+      dialog_data_->origin, ConsentStatus::kAllow, dialog_data_->script_version,
       dialog_data_->user_id, urls_to_skip.Clone());
 
   if (dialog_data_->apply_changes_callback) {
