@@ -16,6 +16,8 @@ namespace ai_chat {
 
 // Exposes an AI Chat Tool that creates a SelectToolRequest action for use with
 // the ActorKeyedService.
+// The tool this uses chooses an option in a <select> box on the page based on
+// the value attribute of the <option> children.
 class SelectTool : public Tool {
  public:
   explicit SelectTool(ContentAgentTaskProvider* task_provider);
