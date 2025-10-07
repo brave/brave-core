@@ -65,6 +65,8 @@ static_library("ai_chat") {
       "content_agent_tool_provider.h",
       "content_agent_tool_provider_factory.cc",
       "content_agent_tool_provider_factory.h",
+      "page_content_blocks.cc",
+      "page_content_blocks.h",
       "tools/navigation_tool.cc",
       "tools/navigation_tool.h",
     ]
@@ -178,6 +180,8 @@ if (enable_brave_ai_chat_agent_profile) {
   source_set("content_agent_test_support") {
     testonly = true
     sources = [
+      "annotated_page_content_test_util.cc",
+      "annotated_page_content_test_util.h",
       "tools/mock_content_agent_task_provider.cc",
       "tools/mock_content_agent_task_provider.h",
     ]
@@ -236,7 +240,10 @@ source_set("unit_tests") {
   }
 
   if (enable_brave_ai_chat_agent_profile) {
-    sources += [ "tools/navigation_tool_unittest.cc" ]
+    sources += [
+      "page_content_blocks_unittest.cc",
+      "tools/navigation_tool_unittest.cc",
+    ]
 
     deps += [
       ":content_agent_test_support",
