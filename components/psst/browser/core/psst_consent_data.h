@@ -15,8 +15,11 @@
 namespace psst {
 
 using ConsentCallback =
-    base::OnceCallback<void(const std::vector<std::string>& disabled_checks)>;
+    base::OnceCallback<void(const base::Value::List disabled_checks)>;
 
+// Represents all the data required to display the consent dialog to the user.
+// This includes the information to be shown, as well as configuration for user
+// interaction and capturing their consent response.
 struct PsstConsentData {
   PsstConsentData(const std::string& user_id,
                   const std::string& site_name,
@@ -31,10 +34,15 @@ struct PsstConsentData {
   PsstConsentData(const PsstConsentData&) = delete;
   PsstConsentData& operator=(const PsstConsentData&) = delete;
 
+  // Unique identifier of the signed user
   std::string user_id;
+  // Name of the site
   std::string site_name;
+  // List of the settings URLs, proposed to change
   base::Value::List request_infos;
+  // Version of the script
   int script_version;
+  // Callback to apply the changes, when user accepts the dialog
   ConsentCallback apply_changes_callback;
 };
 

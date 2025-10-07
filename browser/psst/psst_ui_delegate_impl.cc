@@ -5,28 +5,15 @@
 
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 
-#include "brave/browser/psst/brave_psst_permission_context_factory.h"
-#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
-
-namespace {
-std::vector<std::string> ListToVector(const base::Value::List list) {
-  std::vector<std::string> result;
-  result.reserve(list.size());
-  for (const auto& v : list) {
-    CHECK(v.is_string());
-    result.push_back(v.GetString());
-  }
-  return result;
-}
-}  // namespace
 
 namespace psst {
 
-PsstUiDelegateImpl::PsstUiDelegateImpl(Profile* profile,
-                                       content::WebContents* contents)
-    : web_contents_(contents), profile_(profile) {
-  CHECK(profile);
+PsstUiDelegateImpl::PsstUiDelegateImpl(
+    BravePsstPermissionContext* permission_context,
+    content::WebContents* contents)
+    : web_contents_(contents), permission_context_(permission_context) {
+  CHECK(permission_context);
 }
 
 PsstUiDelegateImpl::~PsstUiDelegateImpl() = default;
@@ -50,29 +37,20 @@ void PsstUiDelegateImpl::UpdateTasks(
 std::optional<PsstPermissionInfo> PsstUiDelegateImpl::GetPsstPermissionInfo(
     const url::Origin& origin,
     const std::string& user_id) {
-  auto* psst_permission_context =
-      BravePsstPermissionContextFactory::GetForProfile(profile_);
-  if (!psst_permission_context) {
-    return std::nullopt;
-  }
-  return psst_permission_context->GetPsstPermissionInfo(origin, user_id);
+  return permission_context_->GetPsstPermissionInfo(origin, user_id);
 }
 
 void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
     base::Value::List urls_to_skip) {
-  auto* psst_permission_context =
-      BravePsstPermissionContextFactory::GetForProfile(profile_);
-  CHECK(psst_permission_context);
-
   // Create the PSST permission when user accepts the dialog
-  psst_permission_context->GrantPermission(
+  permission_context_->GrantPermission(
       url::Origin::Create(web_contents_->GetLastCommittedURL()),
       ConsentStatus::kAllow, dialog_data_->script_version,
       dialog_data_->user_id, urls_to_skip.Clone());
 
   if (dialog_data_->apply_changes_callback) {
     std::move(dialog_data_->apply_changes_callback)
-        .Run(ListToVector(std::move(urls_to_skip)));
+        .Run(std::move(urls_to_skip));
   }
 }
 
