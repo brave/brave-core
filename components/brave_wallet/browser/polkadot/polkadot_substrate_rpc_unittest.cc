@@ -320,6 +320,20 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     EXPECT_EQ(error, WalletParsingErrorMessage());
     EXPECT_FALSE(account_info);
   }
+
+  {
+    // server contained invalid response
+    url_loader_factory_.AddResponse(
+        testnet_url, "some invalid data goes here",
+        net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR);
+
+    polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
+                                               future.GetCallback());
+
+    auto [account_info, error] = future.Take();
+    EXPECT_EQ(error, WalletInternalErrorMessage());
+    EXPECT_FALSE(account_info);
+  }
 }
 
 }  // namespace brave_wallet
