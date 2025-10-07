@@ -13,7 +13,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/callback_list.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
@@ -29,10 +28,8 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
-#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
@@ -44,7 +41,9 @@
 #include "components/tabs/public/tab_group.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
+#include "ui/base/base_window.h"
 
 static_assert(BUILDFLAG(ENABLE_TAB_MANAGEMENT_TOOL));
 static_assert(!BUILDFLAG(IS_ANDROID));
@@ -251,11 +250,6 @@ TabManagementTool::TabManagementTool(Profile* profile) : profile_(profile) {}
 
 TabManagementTool::~TabManagementTool() = default;
 
-tabs::TabInterface* TabManagementTool::GetTabFromHandle(
-    tabs::TabHandle handle) {
-  return handle.Get();
-}
-
 std::vector<tabs::TabInterface*> TabManagementTool::GetTabsFromHandles(
     const std::vector<int>& handles) {
   std::vector<tabs::TabInterface*> tabs;
@@ -427,16 +421,16 @@ base::Value::Dict TabManagementTool::GenerateTabList() const {
   base::Value::List windows;
 
   // Iterate through all browser windows for this profile
-  for (Browser* browser : *BrowserList::GetInstance()) {
-    if (browser->profile() != profile_) {
+  for (BrowserWindowInterface* browser : GetAllBrowserWindowInterfaces()) {
+    if (browser->GetProfile() != profile_) {
       continue;
     }
 
     base::Value::Dict window_info;
-    window_info.Set("window_id", browser->session_id().id());
-    window_info.Set("is_active", browser->window()->IsActive());
+    window_info.Set("window_id", browser->GetSessionID().id());
+    window_info.Set("is_active", browser->IsActive());
 
-    TabStripModel* tab_strip = browser->tab_strip_model();
+    TabStripModel* tab_strip = browser->GetTabStripModel();
     if (!tab_strip) {
       continue;
     }
@@ -518,7 +512,7 @@ void TabManagementTool::PostTaskSendResultWithTabList(
   // then we can do it immediately as tab strip creation and movements
   // are immediately ready.
   if (active_moved_tab.has_value()) {
-    if (tabs::TabInterface* tab = GetTabFromHandle(*active_moved_tab);
+    if (tabs::TabInterface* tab = active_moved_tab->Get();
         BrowserWindowInterface* window = tab->GetBrowserWindowInterface()) {
       window->GetWindow()->Activate();
       window->GetTabStripModel()->ActivateTabAt(
@@ -609,17 +603,18 @@ BrowserWindowInterface* TabManagementTool::FindOrCreateTargetWindow(
   if (*window_id == -1) {
     // Create a new window
     Browser::CreateParams create_params(profile_, true);
-    Browser* target_browser = Browser::Create(create_params);
+    BrowserWindowInterface* target_browser = Browser::Create(create_params);
     if (!target_browser) {
       *error_out = "Failed to create new browser window";
       return nullptr;
     }
     // Don't activate the window otherwise the user will lose
     // their active conversation tab.
-    target_browser->window()->ShowInactive();
+    target_browser->GetWindow()->ShowInactive();
     *did_create_window_out = true;
     // Get BrowserWindowInterface from session ID of the new browser
-    return BrowserWindowInterface::FromSessionID(target_browser->session_id());
+    return BrowserWindowInterface::FromSessionID(
+        target_browser->GetSessionID());
   }
 
   // Find existing window using BrowserWindowInterface
@@ -650,18 +645,19 @@ BrowserWindowInterface* TabManagementTool::FindOrCreateTargetWindow(
 BrowserWindowInterface* TabManagementTool::FindWindowWithGroup(
     const std::string& group_id,
     TabGroup** group_out) {
-  for (Browser* browser : *BrowserList::GetInstance()) {
-    if (browser->profile() != profile_ || !browser->is_type_normal()) {
+  for (BrowserWindowInterface* browser : GetAllBrowserWindowInterfaces()) {
+    if (browser->GetProfile() != profile_ ||
+        browser->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
       continue;
     }
-    TabStripModel* tab_strip = browser->tab_strip_model();
+    TabStripModel* tab_strip = browser->GetTabStripModel();
     if (!tab_strip->SupportsTabGroups() || !tab_strip->group_model()) {
       continue;
     }
     for (const auto& g : tab_strip->group_model()->ListTabGroups()) {
       if (g.ToString() == group_id) {
         *group_out = tab_strip->group_model()->GetTabGroup(g);
-        return BrowserWindowInterface::FromSessionID(browser->session_id());
+        return BrowserWindowInterface::FromSessionID(browser->GetSessionID());
       }
     }
   }
