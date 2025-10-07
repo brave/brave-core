@@ -322,7 +322,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   }
 
   {
-    // server contained invalid response
+    // Server contained invalid response.
     url_loader_factory_.AddResponse(
         testnet_url, "some invalid data goes here",
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR);
@@ -333,6 +333,50 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     auto [account_info, error] = future.Take();
     EXPECT_EQ(error, WalletInternalErrorMessage());
     EXPECT_FALSE(account_info);
+  }
+
+  {
+    // Numeric limits.
+
+    url_loader_factory_.AddResponse(
+        testnet_url,
+        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
+        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
+        ",\"changes\":[["
+        "\"0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9de"
+        "1e86a9a8c739864cf3cc5ec2bea59fd43593c715fdd31c61141abd04a99fd6822c8558"
+        "854ccde39a5684e7a56da27d\","
+        "\"0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        "ffffffffffffffffffffffff\"]]}]}");
+
+    polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
+                                               future.GetCallback());
+
+    auto [account_info, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+    EXPECT_EQ(account_info->nonce, std::numeric_limits<uint32_t>::max());
+    EXPECT_EQ(account_info->consumers, std::numeric_limits<uint32_t>::max());
+    EXPECT_EQ(account_info->providers, std::numeric_limits<uint32_t>::max());
+    EXPECT_EQ(account_info->sufficients, std::numeric_limits<uint32_t>::max());
+
+    uint128_t free = std::numeric_limits<uint128_t>::max();
+    EXPECT_TRUE((uint128_t{account_info->data->free->high} << 64 |
+                 account_info->data->free->low) == free);
+
+    uint128_t reserved = std::numeric_limits<uint128_t>::max();
+
+    EXPECT_TRUE((uint128_t{account_info->data->reserved->high} << 64 |
+                 account_info->data->reserved->low) == reserved);
+
+    uint128_t frozen = std::numeric_limits<uint128_t>::max();
+    EXPECT_TRUE((uint128_t{account_info->data->frozen->high} << 64 |
+                 account_info->data->frozen->low) == frozen);
+
+    uint128_t flags = std::numeric_limits<uint128_t>::max();
+    EXPECT_TRUE((uint128_t{account_info->data->flags->high} << 64 |
+                 account_info->data->flags->low) == flags);
   }
 }
 
