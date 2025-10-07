@@ -4575,7 +4575,7 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<6>(
+          testing::WithArg<7>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 // Return first tool use event (requires interaction)
                 callback.Run(EngineConsumer::GenerationResultData(
@@ -4592,7 +4592,7 @@ TEST_F(ConversationHandlerUnitTest,
                                                  std::nullopt, false)),
                     std::nullopt));
               }),
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
@@ -4668,7 +4668,7 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
       .WillOnce(testing::DoAll(
-          testing::WithArg<6>(
+          testing::WithArg<7>(
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -4676,7 +4676,7 @@ TEST_F(ConversationHandlerUnitTest,
                             "Final response with both tool results")),
                     std::nullopt));
               }),
-          testing::WithArg<7>(
+          testing::WithArg<8>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
