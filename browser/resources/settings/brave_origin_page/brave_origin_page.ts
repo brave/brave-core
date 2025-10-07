@@ -15,6 +15,7 @@ import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resource
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {getTemplate} from './brave_origin_page.html.js'
+import * as BraveOriginMojom from '../brave_origin_settings.mojom-webui.js'
 import './origin_toggle_button.js'
 import type {OriginToggleButtonElement} from './origin_toggle_button.js'
 
@@ -42,11 +43,35 @@ export class SettingsBraveOriginPageElement
     return getTemplate()
   }
 
+  private braveOriginHandler_: BraveOriginMojom.BraveOriginSettingsHandlerRemote
+
   override ready() {
     super.ready()
+
+    // Initialize the mojo handler
+    this.braveOriginHandler_ =
+        BraveOriginMojom.BraveOriginSettingsHandler.getRemote()
   }
 
   private async resetToDefaults_() {
+    // Query all origin-toggle-button elements
+    const toggles = this.shadowRoot!.querySelectorAll('origin-toggle-button');
+
+    // Turn off all toggles that are currently on
+    for (const toggle of toggles) {
+      const toggleElement = toggle as OriginToggleButtonElement;
+      if (toggleElement.checked) {
+        // Set to off (accounting for inverted toggles)
+        const valueToSet = toggleElement.inverted ? true : false;
+        await this.braveOriginHandler_.setPolicyValue(
+            toggleElement.policyKey, valueToSet);
+      }
+    }
+
+    // Reload all toggle states
+    for (const toggle of toggles) {
+      await (toggle as OriginToggleButtonElement).loadPolicyValue_();
+    }
   }
 }
 
