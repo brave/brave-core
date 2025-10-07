@@ -489,7 +489,7 @@ TEST_F(PageContentBlocksTest, EscapeXmlSpecialCharactersInText) {
 
   EXPECT_CONTAINS(content,
                   "Text with &lt;tags&gt; &amp; &quot;quotes&quot; and "
-                  "&apos;apostrophes&apos;");
+                  "&#39;apostrophes&#39;");
 }
 
 TEST_F(PageContentBlocksTest, EscapeXmlSpecialCharactersInAttributes) {

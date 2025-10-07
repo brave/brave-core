@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/logging.h"
+#include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
@@ -25,7 +26,6 @@ using optimization_guide::proto::ContentAttributes;
 using optimization_guide::proto::ContentAttributeType;
 using optimization_guide::proto::ContentNode;
 
-constexpr bool kShouldIncludeGeometry = true;
 constexpr size_t kMaxTreeStringLength = 100000;
 
 bool ShouldFlattenContainer(const ContentNode& node) {
@@ -77,7 +77,8 @@ bool ShouldFlattenContainer(const ContentNode& node) {
   return true;
 }
 
-std::string SanitizeContentText(const std::string& input) {
+// Remove the untrusted content tag from the input
+[[nodiscard]] std::string SanitizeContentText(const std::string& input) {
   std::string output = input;
   // Avoid content breaking out of untrusted tags
   base::ReplaceSubstringsAfterOffset(&output, 0, kBraveUntrustedContentTagName,
@@ -85,19 +86,12 @@ std::string SanitizeContentText(const std::string& input) {
   return output;
 }
 
-// XML escape functions
-std::string XmlEscapeAndSanitizeText(const std::string& input) {
-  std::string output = input;
-
-  SanitizeContentText(output);
+// XML escape and remove the untrusted content tag from the input
+[[nodiscard]] std::string XmlEscapeAndSanitizeText(const std::string& input) {
+  std::string output = SanitizeContentText(input);
 
   // Escape XML to avoid breaking out of pseudo-XML serialization
-  base::ReplaceChars(output, "&", "&amp;", &output);
-  base::ReplaceChars(output, "<", "&lt;", &output);
-  base::ReplaceChars(output, ">", "&gt;", &output);
-  base::ReplaceChars(output, "\"", "&quot;", &output);
-  base::ReplaceChars(output, "'", "&apos;", &output);
-  return output;
+  return base::EscapeForHTML(output);
 }
 
 std::string BuildAttributes(const ContentAttributes& attrs,
@@ -155,18 +149,9 @@ std::string BuildAttributes(const ContentAttributes& attrs,
                               visible_area.x(), visible_area.y());
       }
     }
-    // if (interaction.is_focusable()) {
-    //   attr_result += " focusable=\"true\"";
-    // }
-    // if (interaction.is_selectable()) {
-    //   attr_result += " selectable=\"true\"";
-    // }
-    // if (interaction.is_draggable()) {
-    //   attr_result += " draggable=\"true\"";
-    // }
 
     // Add geometry only if interactive
-    if (kShouldIncludeGeometry && is_interactive && attrs.has_geometry() &&
+    if (is_interactive && attrs.has_geometry() &&
         attrs.geometry().has_outer_bounding_box()) {
       const auto& bbox = attrs.geometry().outer_bounding_box();
       absl::StrAppendFormat(&attr_result,
@@ -540,8 +525,7 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
   result.append("\n=== PAGE STRUCTURE (XML representation) ===");
 
   // Replace all occurances of the untrusted tag with an empty string
-  base::ReplaceSubstringsAfterOffset(&tree_string, 0,
-                                     kBraveUntrustedContentTagName, "");
+  tree_string = SanitizeContentText(tree_string);
 
   base::StrAppend(&result, {tree_string});
   base::StrAppend(&result, {"\n", kBraveUntrustedContentCloseTag, "\n"});
@@ -561,11 +545,6 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
       "infer hierarchy.\n");
   result.append("- clickable: Element can be clicked\n");
   result.append("- editable: Element can receive text input\n");
-  // result += "- focusable=\"true\": Element can receive focus\n";
-  // result +=
-  //     "- role: Semantic role (header, nav, main, search, article, section, "
-  //     "aside, footer, hidden, paid)\n";
-  // result += "- label: Accessibility label for the element\n";
 
   // Convert to ContentBlocks using the existing utility
   return CreateContentBlocksForText(result);
