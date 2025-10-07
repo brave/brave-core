@@ -3,22 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-use std::collections::HashMap;
-
 use cxx::{CxxString, CxxVector};
 use scraper::{html::Select, Html, Selector};
 
 #[cxx::bridge(namespace = "web_discovery")]
 mod ffi {
-    pub struct SelectAttributeRequest {
+    pub struct SelectAttributeOption {
         /// An optional selector for an element within the current selected element.
         /// The attribute will be retrieved from the embedded element.
         /// If not needed, an empty string should be provided.
         pub sub_selector: String,
-        /// Arbitrary ID used for storing the scraped result.
-        pub key: String,
         /// Name of the attribute to scrape.
         pub attribute: String,
+    }
+
+    pub struct SelectAttributeRequest {
+        /// Arbitrary ID used for storing the scraped result.
+        pub key: String,
+        /// Multiple extraction options to try ("first match" behavior).
+        pub options: Vec<SelectAttributeOption>,
     }
 
     pub struct SelectRequest {
@@ -26,6 +29,8 @@ mod ffi {
         pub root_selector: String,
         /// Scrape requests for the selected element.
         pub attribute_requests: Vec<SelectAttributeRequest>,
+        /// If true, select all matching elements; if false, select only the first match.
+        pub select_all: bool,
     }
 
     pub struct AttributePair {
@@ -33,6 +38,8 @@ mod ffi {
         pub key: String,
         /// The scraped value. Will be empty if attribute is not available.
         pub value: String,
+        /// Index of the option that produced this value.
+        pub option_index: u8,
     }
 
     pub struct AttributeResult {
@@ -59,42 +66,51 @@ fn extract_attributes_from_nodes(
     root_selector: &str,
     attribute_requests: &[SelectAttributeRequest],
     selection: Select<'_, '_>,
+    select_all: bool,
     results: &mut Vec<AttributeResult>,
 ) {
-    for node in selection {
-        let mut attribute_map = HashMap::new();
-        for attribute_request in attribute_requests {
-            let sub_node = match attribute_request.sub_selector.is_empty() {
-                false => match Selector::parse(&attribute_request.sub_selector) {
-                    Ok(selector) => match node.select(&selector).next() {
-                        Some(e) => Some(e),
-                        None => {
-                            attribute_map.insert(attribute_request.key.clone(), String::new());
-                            continue;
-                        }
-                    },
-                    Err(_) => continue,
-                },
-                true => None,
-            };
-            let node_to_query = sub_node.as_ref().unwrap_or(&node);
+    let nodes_to_process: Vec<_> = match select_all {
+        true => selection.collect(),
+        false => selection.take(1).collect(),
+    };
 
-            let attribute_value = match attribute_request.attribute == TEXT_CONTENT_ATTRIBUTE_NAME {
-                true => node_to_query.text().collect::<Vec<_>>().join(""),
-                false => node_to_query
-                    .attr(attribute_request.attribute.as_str())
-                    .map(|v| v.to_string())
-                    .unwrap_or_default(),
+    for node in nodes_to_process {
+        let mut attribute_pairs = Vec::with_capacity(attribute_requests.len());
+        for attribute_request in attribute_requests {
+            let mut pair = AttributePair {
+                key: attribute_request.key.clone(),
+                value: String::new(),
+                option_index: 0,
             };
-            attribute_map.insert(attribute_request.key.clone(), attribute_value);
+
+            // Try each option until one succeeds (firstMatch behavior)
+            for (option_index, option) in attribute_request.options.iter().enumerate() {
+                let sub_node = match option.sub_selector.is_empty() {
+                    false => match Selector::parse(&option.sub_selector) {
+                        Ok(selector) => match node.select(&selector).next() {
+                            Some(e) => Some(e),
+                            None => continue,
+                        },
+                        Err(_) => continue,
+                    },
+                    true => None,
+                };
+                let node_to_query = sub_node.as_ref().unwrap_or(&node);
+
+                let attribute_value = match option.attribute == TEXT_CONTENT_ATTRIBUTE_NAME {
+                    true => Some(node_to_query.text().collect::<Vec<_>>().join("")),
+                    false => node_to_query.attr(option.attribute.as_str()).map(|v| v.to_string()),
+                };
+
+                if let Some(attribute_value) = attribute_value {
+                    pair.value = attribute_value;
+                    pair.option_index = option_index as u8;
+                    break;
+                }
+            }
+            attribute_pairs.push(pair);
         }
-        results.push(AttributeResult {
-            root_selector: root_selector.to_string(),
-            attribute_pairs: attribute_map
-                .into_iter()
-                .map(|(key, value)| AttributePair { key, value })
-                .collect(),
-        });
+        results.push(AttributeResult { root_selector: root_selector.to_string(), attribute_pairs });
     }
 }
 
@@ -110,6 +126,7 @@ pub fn query_element_attributes(
                 &request.root_selector,
                 &request.attribute_requests,
                 document.select(&selector),
+                request.select_all,
                 &mut results,
             );
         }
