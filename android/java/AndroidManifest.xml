@@ -187,7 +187,7 @@
 </receiver>
 
 <service
-    android:name="org.chromium.chrome.browser.widget.quickactionsearchandbookmark.BookmarkWidgetService"
+    android:name="org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetService"
     android:permission="android.permission.BIND_REMOTEVIEWS"
     android:exported="false" />
 
