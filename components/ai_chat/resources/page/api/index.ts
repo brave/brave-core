@@ -27,8 +27,8 @@ export type State = Mojom.ServiceState & {
   // This is the content of the tab that this conversation is shown next to (if
   // any). If the user creates a new conversation this will be used as the
   // default tab content.
-  defaultTabContentId?: number,
-  getBookmarks: () => Promise<Mojom.Bookmark[]>,
+  defaultTabContentId?: number
+  getBookmarks: () => Promise<Mojom.Bookmark[]>
 }
 
 export const defaultUIState: State = {
@@ -194,7 +194,9 @@ class PageAPI extends API<State> {
   }
 
   getBookmarks() {
-    return this.bookmarksService.getBookmarks().then(({ bookmarks }) => bookmarks);
+    return this.bookmarksService
+      .getBookmarks()
+      .then(({ bookmarks }) => bookmarks)
   }
 }
 

@@ -937,7 +937,7 @@ type CustomArgs = {
   totalTokens: number
   trimmedTokens: number
   isGenerating: boolean
-  attachmentsDialog: 'tabs' | null
+  attachmentsDialog: 'tabs' | 'bookmarks' | null
   isNewConversation: boolean
   generatedUrlToBeOpened: Url | undefined
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
@@ -1187,6 +1187,22 @@ function StoryContext(
     setSmartModeDialog: () => {},
     showSidebar: showSidebar,
     toggleSidebar: () => setShowSidebar((s) => !s),
+    getBookmarks: async () => [
+      {
+        id: BigInt(1),
+        url: { url: 'https://www.example.com' },
+        title: 'Example',
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt(Date.now() * 1000) },
+      },
+      {
+        id: BigInt(2),
+        url: { url: 'https://topos.nz' },
+        title: 'NZ Topo',
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt(Date.now() * 1000) },
+      },
+    ],
   }
 
   const activeChatContext: SelectedChatDetails = {

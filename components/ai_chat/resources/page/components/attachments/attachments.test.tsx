@@ -151,9 +151,9 @@ describe('Attachments Component', () => {
     )
 
     await waitFor(() => {
-    expect(screen.getByText('Google Search')).toBeInTheDocument()
-    expect(screen.getByText('GitHub - Brave Browser')).toBeInTheDocument()
-    expect(screen.getByText('Stack Overflow')).toBeInTheDocument()
+      expect(screen.getByText('Google Search')).toBeInTheDocument()
+      expect(screen.getByText('GitHub - Brave Browser')).toBeInTheDocument()
+      expect(screen.getByText('Stack Overflow')).toBeInTheDocument()
     })
   })
 
@@ -169,12 +169,12 @@ describe('Attachments Component', () => {
     )
 
     await waitFor(() => {
-    expect(screen.getByText('https://google.com')).toBeInTheDocument()
-    expect(
-      screen.getByText('https://github.com/brave/brave-browser'),
-    ).toBeInTheDocument()
-    expect(screen.getByText('https://stackoverflow.com')).toBeInTheDocument()
-  });
+      expect(screen.getByText('https://google.com')).toBeInTheDocument()
+      expect(
+        screen.getByText('https://github.com/brave/brave-browser'),
+      ).toBeInTheDocument()
+      expect(screen.getByText('https://stackoverflow.com')).toBeInTheDocument()
+    })
   })
 
   it('displays favicons for each tab', async () => {
@@ -481,9 +481,9 @@ describe('Attachments Component', () => {
         </MockContext>,
       )
 
-      expect(
-        container.querySelector('.description')?.textContent,
-      ).toContain('CHAT_UI_ATTACHMENTS_BOOKMARKS_DESCRIPTION')
+      expect(container.querySelector('.description')?.textContent).toContain(
+        'CHAT_UI_ATTACHMENTS_BOOKMARKS_DESCRIPTION',
+      )
     })
 
     it('displays favicons for bookmarks', async () => {
