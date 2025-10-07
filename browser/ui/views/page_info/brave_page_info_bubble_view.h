@@ -11,6 +11,8 @@
 #include "chrome/browser/ui/views/page_info/page_info_bubble_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
+class BraveShieldsPageInfoView;
+
 // Brave-customized version of Chromium's page info bubble, which displays
 // permission and security information for the current site.
 class BravePageInfoBubbleView : public PageInfoBubbleView {
@@ -25,9 +27,17 @@ class BravePageInfoBubbleView : public PageInfoBubbleView {
   // PageInfoBubbleView:
   void OpenMainPage(base::OnceClosure initialized_callback) override;
   void AnnouncePageOpened(std::u16string announcement) override;
+
+  // views::View:
   void Layout(PassKey) override;
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
+  void ChildPreferredSizeChanged(View* child) override;
+
+  // WebContentsObserver:
+  void PrimaryPageChanged(content::Page& page) override;
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
 
   enum class Tab {
     kSiteSettings,
@@ -75,12 +85,16 @@ class BravePageInfoBubbleView : public PageInfoBubbleView {
   // the parent class and belongs in the "Site settings" tab.
   bool IsSiteSettingsChildView(views::View* view) const;
 
+  // Returns a value indicating whether a subpage is currently active in the
+  // site settings tab.
+  bool IsSiteSettingsSubpageActive() const;
+
   // UI components.
   raw_ptr<views::View> tab_switcher_ = nullptr;
   raw_ptr<views::LabelButton> shields_button_ = nullptr;
   raw_ptr<views::LabelButton> site_settings_button_ = nullptr;
   raw_ptr<views::View> tab_indicator_ = nullptr;
-  raw_ptr<views::View> shields_content_view_ = nullptr;
+  raw_ptr<BraveShieldsPageInfoView> shields_page_view_ = nullptr;
 
   // The currently active tab.
   Tab current_tab_ = Tab::kSiteSettings;

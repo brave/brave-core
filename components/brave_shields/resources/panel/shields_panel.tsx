@@ -20,6 +20,8 @@ import { ViewType } from './state/component_types'
 
 setIconBasePath('//resources/brave-icons')
 
+console.error('Hello from Shields WebUI')
+
 function App () {
   const { siteBlockInfo } = useSiteBlockInfoData()
   const { siteSettings, getSiteSettings } = useSiteSettingsData()

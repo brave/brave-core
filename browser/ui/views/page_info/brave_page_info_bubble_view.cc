@@ -6,10 +6,13 @@
 #include "brave/browser/ui/views/page_info/brave_page_info_bubble_view.h"
 
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/views/page_info/brave_shields_page_info_view.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/views/page_info/page_info_view_factory.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/strings/grit/components_strings.h"
+#include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/navigation_handle.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
@@ -54,8 +57,17 @@ void BravePageInfoBubbleView::InitializeView() {
   // Add the tab switcher at the top of the bubble.
   tab_switcher_ = AddChildViewAt(CreateTabSwitcher(), 0);
 
-  // Create a placeholder view for Shields content.
-  shields_content_view_ = AddChildView(std::make_unique<views::View>());
+  // Add the Brave Shields view.
+  auto* tab_interface = tabs::TabInterface::GetFromContents(web_contents());
+  auto* browser_window_interface = tab_interface->GetBrowserWindowInterface();
+  shields_page_view_ = AddChildView(std::make_unique<BraveShieldsPageInfoView>(
+      browser_window_interface, web_contents()));
+
+  // If the PageInfo bubble was not opened directly to a subpage, then show the
+  // Shields tab first.
+  if (!IsSiteSettingsSubpageActive()) {
+    current_tab_ = Tab::kShields;
+  }
 
   UpdateContentVisibilityForCurrentTab();
   SizeToContents();
@@ -69,6 +81,8 @@ void BravePageInfoBubbleView::OpenMainPage(
 }
 
 void BravePageInfoBubbleView::AnnouncePageOpened(std::u16string announcement) {
+  // This method is called after any PageInfo subpage is opened and allows us to
+  // customize child views added by the superclass.
   PageInfoBubbleView::AnnouncePageOpened(std::move(announcement));
   CustomizeChromiumViews();
   SizeToContents();
@@ -89,11 +103,65 @@ gfx::Size BravePageInfoBubbleView::CalculatePreferredSize(
   if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
     // This bubble needs to be larger than the parent class in order to show the
     // full tab switcher and Shields content.
-    constexpr int kMinBubbleWidth = 380;
+    constexpr int kMinBubbleWidth = 388;
     size.set_width(std::max(size.width(), kMinBubbleWidth));
   }
 
   return size;
+}
+
+void BravePageInfoBubbleView::ChildPreferredSizeChanged(View* child) {
+  // When child preferred sizes change (e.g. when the Shields WebView is auto
+  // resized), we need to make sure that layout caches are dropped before
+  // calculating the size of the bubble.
+  InvalidateLayout();
+  SizeToContents();
+}
+
+void BravePageInfoBubbleView::PrimaryPageChanged(content::Page& page) {
+  // The superclass closes the bubble when this event occurs. Since we are
+  // displaying the Shields UI and we want users to be able to toggle Shields
+  // settings without closing the bubble.
+}
+
+void BravePageInfoBubbleView::DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) {
+  // Returns true if the page info bubble should be closed for this navigation.
+  // Although we want to leave the bubble open when the user toggles Shields
+  // settings, we must be careful to not allow the superclass to display stale
+  // site information.
+  auto should_close_bubble = [&]() {
+    // We can ignore any navigation that is not a primary page change.
+    const bool is_page_change = navigation_handle->IsInPrimaryMainFrame() &&
+                                !navigation_handle->IsSameDocument() &&
+                                navigation_handle->HasCommitted();
+    if (!is_page_change) {
+      return false;
+    }
+
+    // Close the bubble if the Shields integration flag is not enabled.
+    if (!page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+      return true;
+    }
+
+    // Always close the bubble if this is a cross-origin navigation, regardless
+    // of any other considerations.
+    if (!navigation_handle->IsSameOrigin()) {
+      return true;
+    }
+
+    // We can leave the bubble open if this is a reload (e.g. the user has
+    // made a change to Shields settings for the current tab).
+    if (navigation_handle->GetReloadType() != content::ReloadType::NONE) {
+      return false;
+    }
+
+    return true;
+  };
+
+  if (should_close_bubble()) {
+    GetWidget()->Close();
+  }
 }
 
 void BravePageInfoBubbleView::CustomizeChromiumViews() {
@@ -111,10 +179,7 @@ void BravePageInfoBubbleView::CustomizeChromiumViews() {
   // Find the first site settings content child and set its top margin.
   for (views::View* child : children()) {
     if (IsSiteSettingsChildView(child)) {
-      auto* back_button =
-          GetViewByID(PageInfoViewFactory::VIEW_ID_PAGE_INFO_BACK_BUTTON);
-      const bool is_subpage = static_cast<bool>(back_button);
-      const int top_margin = is_subpage ? 16 : 8;
+      const int top_margin = IsSiteSettingsSubpageActive() ? 16 : 8;
       child->SetProperty(views::kMarginsKey, gfx::Insets().set_top(top_margin));
       break;
     }
@@ -195,12 +260,13 @@ void BravePageInfoBubbleView::SwitchToTab(Tab tab) {
   UpdateContentVisibilityForCurrentTab();
   UpdateAllTabButtonStyles();
   UpdateTabIndicator();
+  SizeToContents();
 }
 
 void BravePageInfoBubbleView::UpdateContentVisibilityForCurrentTab() {
-  // Show/hide the Shields panel.
-  CHECK(shields_content_view_);
-  shields_content_view_->SetVisible(current_tab_ == Tab::kShields);
+  // Show/hide the Brave Shields page.
+  CHECK(shields_page_view_);
+  shields_page_view_->SetVisible(current_tab_ == Tab::kShields);
 
   // Show/hide Chromium page info content.
   for (views::View* child : children()) {
@@ -263,7 +329,15 @@ void BravePageInfoBubbleView::UpdateTabIndicator() {
 
 bool BravePageInfoBubbleView::IsSiteSettingsChildView(views::View* view) const {
   return view->parent() == this && view != tab_switcher_ &&
-         view != shields_content_view_;
+         view != shields_page_view_;
+}
+
+bool BravePageInfoBubbleView::IsSiteSettingsSubpageActive() const {
+  // If a back button exists in the view tree, then we known that the view is
+  // displaying a subpage.
+  auto* back_button =
+      GetViewByID(PageInfoViewFactory::VIEW_ID_PAGE_INFO_BACK_BUTTON);
+  return static_cast<bool>(back_button);
 }
 
 BEGIN_METADATA(BravePageInfoBubbleView)
