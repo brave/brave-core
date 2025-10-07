@@ -4,12 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
-import ProgressRing from '@brave/leo/react/progressRing'
-import Tooltip from '@brave/leo/react/tooltip'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
+import ToolEventContentAssistantDetailStorage from './tool_event_assistant_detail_storage'
+import ToolEventTodos from './tool_event_todos'
 import styles from './tool_event.module.scss'
 
 interface Props {
@@ -19,10 +18,13 @@ interface Props {
 
 // Content customizable for each known tool type
 export interface ToolUseContent {
-  toolText: JSX.Element
-  tooltipContent: JSX.Element | null
-  statusIcon: JSX.Element
-  progressIcon: JSX.Element
+  // Label to display for the action being taken. If not present,
+  // then expandedContent is shown instead.
+  toolLabel: string | null
+
+  // UI for the tool action. If toolLabel is present, then this
+  // will show on click. Otherwise, expandedContent will show by default.
+  expandedContent: JSX.Element | null
 }
 
 export type ToolComponent = React.FC<
@@ -31,8 +33,7 @@ export type ToolComponent = React.FC<
     // by parsing LLM input so properties should be defensively
     // checked.
     toolInput: any
-    // default content for the component to modify any property
-    content: ToolUseContent
+
     // The component should pass data about the rendering of the tool use event
     // to the tool use event template component.
     children: (content: Partial<ToolUseContent>) => JSX.Element
@@ -48,18 +49,8 @@ function ToolEventContent(
 
   // defaults
   let content: ToolUseContent = {
-    toolText: <>{toolUseEvent.toolName}</>,
-    tooltipContent: null,
-    statusIcon: (
-      <span data-testid='tool-default-completed-icon'>
-        <Icon name='check-circle-outline' />
-      </span>
-    ),
-    progressIcon: (
-      <span data-testid='tool-default-progress-icon'>
-        <ProgressRing />
-      </span>
-    ),
+    toolLabel: toolUseEvent.toolName,
+    expandedContent: null,
   }
 
   // parse input
@@ -89,8 +80,16 @@ function ToolEventContent(
     component = ToolEventContentUserChoice
   }
 
+  if (toolUseEvent.toolName === 'todo_write') {
+    component = ToolEventTodos
+  }
+
+  if (toolUseEvent.toolName === Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME) {
+    component = ToolEventContentAssistantDetailStorage
+  }
+
   if (component) {
-    return component({ ...props, toolInput: input, content })
+    return component({ ...props, toolInput: input })
   }
 
   // default
@@ -98,30 +97,26 @@ function ToolEventContent(
 }
 
 export default function ToolEvent(props: Props) {
-  const isComplete = !!props.toolUseEvent.output
+  const [isExpanded, setIsExpanded] = React.useState<boolean>(false)
   return (
     <ToolEventContent {...props}>
-      {({ progressIcon, statusIcon, toolText, tooltipContent }) => (
+      {({ toolLabel, expandedContent }) => (
         <div
           className={classnames(
             styles.toolUse,
-            isComplete && styles.toolUseComplete,
+            props.isEntryActive && styles.isActive,
+            toolLabel && expandedContent && styles.isExpandable,
             `tool-${props.toolUseEvent.toolName}`,
           )}
+          onClick={() => {
+            setIsExpanded(!isExpanded)
+            return !expandedContent
+          }}
         >
-          <div
-            className={styles.toolUseIcon}
-            title={props.toolUseEvent.argumentsJson}
-          >
-            {isComplete ? statusIcon : progressIcon}
-          </div>
-          {tooltipContent ? (
-            <Tooltip>
-              {toolText}
-              <div slot='content'>{tooltipContent}</div>
-            </Tooltip>
-          ) : (
-            toolText
+          {toolLabel && <div className={styles.toolText}>{toolLabel}</div>}
+
+          {(!toolLabel || (isExpanded && expandedContent)) && (
+            <div className={styles.expandedContent}>{expandedContent}</div>
           )}
         </div>
       )}

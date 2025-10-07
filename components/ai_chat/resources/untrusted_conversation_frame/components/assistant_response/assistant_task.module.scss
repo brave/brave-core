@@ -1,0 +1,58 @@
+.task {
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-xl);
+  min-height: 350px;
+  box-shadow: var(--leo-effect-elevation-01);
+}
+
+.taskContent {
+  padding: var(--leo-spacing-l);
+  display: flex;
+  flex-direction: row;
+  gap: var(--leo-spacing-xs);
+  flex-wrap: wrap;
+}
+
+.taskData {
+  flex: 1 1 0;
+  min-width: min(300px, 100%);
+}
+
+.taskImage {
+  // display: none;
+  flex: 1 1 0;
+  min-width: min(300px, 100%);
+}
+
+.taskStep {
+  min-height: 30px;
+  margin-left: 11px;
+  border-left: var(--leo-color-neutral-20) 2px solid;
+  padding: 8px 12px 8px 22px;
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+  position: relative;
+
+  .taskIcon {
+    --leo-icon-size: 16px;
+    --leo-progressring-size: 16px;
+    position: absolute;
+    top: calc(8px + 0.5lh - 11px);
+    left: -12px;
+    padding: 1px;
+    width: 20px;
+    height: 20px;
+    // circle
+    border-radius: 50%;
+    border: var(--leo-color-divider-subtle) 1px solid;
+    background: var(--leo-color-container-background);
+  }
+
+  &.isComplete {
+    .taskIcon {
+      --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+      background: var(--leo-color-systemfeedback-success-background);
+      border-color: var(--leo-color-systemfeedback-success-background);
+    }
+  }
+}

@@ -3,51 +3,42 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-.toolUse {
-  margin-left: 11px;
-  border-left: var(--leo-color-neutral-20) 2px solid;
-  padding: 8px 12px 8px 22px;
-  font: var(--leo-font-default-regular);
-  color: var(--leo-color-text-secondary);
-  position: relative;
-
-  .toolUseIcon {
-    --leo-icon-size: 16px;
-    --leo-progressring-size: 16px;
-    position: absolute;
-    top: calc(8px + 0.5lh - 11px);
-    left: -12px;
-    padding: 2px;
-    width: 22px;
-    height: 22px;
-    // circle
-    border-radius: 50%;
-    border: var(--leo-color-divider-subtle) 1px solid;
-    background: var(--leo-color-container-background);
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
   }
-
-  &:not(&.toolUseComplete):global(.tool-user_choice_tool) {
-    .toolUseIcon {
-      --leo-icon-color: var(--leo-color-primary-5);
-      background-color: var(--leo-color-primary-40);
-      border-color: var(--leo-color-primary-50);
-    }
-  }
-
-  &.toolUseComplete {
-    color: var(--leo-color-text-tertiary);
-
-    .toolUseIcon {
-      --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
-      background: var(--leo-color-systemfeedback-success-background);
-      border-color: var(--leo-color-green-20);
-    }
+  100% {
+    background-position: -200% center;
   }
 }
 
-.toolUseContentPreview {
-  margin: 4px;
-  max-width: 80vw;
+.toolUse {
+  margin-top: var(--leo-spacing-m);
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+  position: relative;
+
+  &.isExpandable {
+    cursor: pointer;
+  }
+
+  &.isActive .toolText {
+    background: linear-gradient(
+      90deg,
+      #434fcf 0%,
+      #7686ec 45%,
+      #7686ec 55%,
+      #434fcf 100%
+    );
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 2s infinite linear;
+  }
+}
+
+.expandedContent {
 }
 
 .choice {
@@ -76,4 +67,15 @@
   justify-content: center;
   color: var(--leo-color-schemes-on-tertiary);
   background: var(--leo-color-text-interactive);
+}
+
+.assistantStorageDetail {
+  margin-top: var(--leo-spacing-xs);
+  font: var(--leo-font-x-small-regular);
+  font-style: italic;
+  color: var(--leo-color-text-tertiary);
+}
+
+.assistantStorageDetailTrigger {
+  cursor: pointer;
 }
