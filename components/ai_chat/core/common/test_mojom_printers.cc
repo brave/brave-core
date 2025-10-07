@@ -13,6 +13,7 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 namespace ai_chat {
 namespace mojom {

@@ -16,6 +16,7 @@ mojom_component("mojom") {
   sources = [
     "ai_chat.mojom",
     "bookmarks.mojom",
+    "common.mojom",
     "customization_settings.mojom",
     "page_content_extractor.mojom",
     "settings_helper.mojom",

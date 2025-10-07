@@ -9,6 +9,7 @@
 #include <string>
 
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 namespace ai_chat {
 

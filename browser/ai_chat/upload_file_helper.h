@@ -17,6 +17,7 @@
 #include "base/observer_list_types.h"
 #include "base/sequence_checker.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
 #include "ui/shell_dialogs/select_file_policy.h"

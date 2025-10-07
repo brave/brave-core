@@ -8,7 +8,7 @@ import '$test-utils/disable_custom_elements'
 import * as React from 'react'
 
 import { render } from '@testing-library/react'
-import { ActionType } from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js'
+import { ActionType } from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m.js'
 import ToolsMenu from './tools_menu'
 
 describe('tools_menu', () => {

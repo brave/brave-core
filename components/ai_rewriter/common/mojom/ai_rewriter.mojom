@@ -6,6 +6,7 @@ module ai_rewriter.mojom;
 
 import "ui/gfx/geometry/mojom/geometry.mojom";
 import "brave/components/ai_chat/core/common/mojom/ai_chat.mojom";
+import "brave/components/ai_chat/core/common/mojom/common.mojom";
 
 interface AIRewriterAgent {
   GetFocusBounds() => (gfx.mojom.RectF rect);

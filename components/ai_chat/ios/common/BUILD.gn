@@ -9,6 +9,7 @@ ios_objc_mojom_wrappers("mojom") {
   mojom_target = "//brave/components/ai_chat/core/common/mojom"
   sources = [
     "//brave/components/ai_chat/core/common/mojom/ai_chat.mojom",
+    "//brave/components/ai_chat/core/common/mojom/common.mojom",
     "//brave/components/ai_chat/core/common/mojom/tab_tracker.mojom",
     "//brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom",
   ]
