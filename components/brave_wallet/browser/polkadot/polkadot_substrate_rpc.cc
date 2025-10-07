@@ -9,13 +9,11 @@
 #include "base/containers/span_reader.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
-#include "base/numerics/byte_conversions.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc_responses.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 
 namespace brave_wallet {

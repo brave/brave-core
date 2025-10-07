@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
-#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 
