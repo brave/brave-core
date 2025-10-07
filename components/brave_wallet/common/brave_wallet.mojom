@@ -2340,7 +2340,7 @@ interface PolkadotWalletService {
   GetNetworkName(AccountId account)
       => (string? network, string? error_message);
 
-  GetAccountBalance(AccountId account)
+  GetAccountBalance(AccountId account, string chain_id)
       => (PolkadotAccountInfo? account, string? error_message);
 };
 
