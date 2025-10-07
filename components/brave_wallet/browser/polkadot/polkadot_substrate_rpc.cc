@@ -218,13 +218,12 @@ void PolkadotSubstrateRpc::GetChainName(const std::string& chain_id,
                                         GetChainNameCallback callback) {
   auto url = GetNetworkURL(chain_id);
 
-  std::string method = net::HttpRequestHeaders::kPostMethod;
-  std::string payload_content_type = "application/json";
   auto payload =
       base::WriteJson(MakeRpcRequestJson("system_chain", base::ListValue()));
+  CHECK(payload);
 
   api_request_helper_.Request(
-      method, url, *payload, payload_content_type,
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
       base::BindOnce(&PolkadotSubstrateRpc::OnGetChainName,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -290,11 +289,8 @@ void PolkadotSubstrateRpc::GetAccountBalance(
 
   auto url = GetNetworkURL(chain_id);
 
-  std::string method = net::HttpRequestHeaders::kPostMethod;
-  std::string payload_content_type = "application/json";
-
   api_request_helper_.Request(
-      method, url, *payload, payload_content_type,
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
       base::BindOnce(&PolkadotSubstrateRpc::OnGetAccountBalance,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
