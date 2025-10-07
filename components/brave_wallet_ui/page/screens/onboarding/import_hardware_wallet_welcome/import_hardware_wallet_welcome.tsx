@@ -5,6 +5,11 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
+import useMediaQuery from '$web-common/useMediaQuery'
+
+// assets
+import HardwareGraphicLightSvg from './images/hardware_graphic_light.svg'
+import HardwareGraphicDarkSvg from './images/hardware_graphic_dark.svg'
 
 // utils
 import { getLocale, formatLocale } from '$web-common/locale'
@@ -33,8 +38,11 @@ const walletHardwareDescription = formatLocale(
 )
 
 export const OnboardingImportHardwareWalletWelcome = () => {
+  // hooks
   const history = useHistory()
+  const isDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
+  // methods
   const onClickContinue = () => {
     history.push(WalletRoutes.OnboardingHardwareWalletCreatePassword)
   }
@@ -43,7 +51,9 @@ export const OnboardingImportHardwareWalletWelcome = () => {
     <OnboardingContentLayout
       title={getLocale('braveWalletConnectHardwareWallet')}
     >
-      <HardwareGraphic />
+      <HardwareGraphic
+        src={isDarkMode ? HardwareGraphicDarkSvg : HardwareGraphicLightSvg}
+      />
       <Description>
         {getLocale('braveWalletImportHardwareWalletDescription')}
       </Description>
