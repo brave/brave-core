@@ -11,6 +11,7 @@
 
 #include "base/functional/callback.h"
 #include "base/values.h"
+#include "url/origin.h"
 
 namespace psst {
 
@@ -22,7 +23,7 @@ using ConsentCallback =
 // interaction and capturing their consent response.
 struct PsstConsentData {
   PsstConsentData(const std::string& user_id,
-                  const std::string& site_name,
+                  const url::Origin& origin,
                   base::Value::List request_infos,
                   const int script_version,
                   ConsentCallback apply_changes_callback);
@@ -36,8 +37,8 @@ struct PsstConsentData {
 
   // Unique identifier of the signed user
   std::string user_id;
-  // Name of the site
-  std::string site_name;
+  // Origin of the site
+  url::Origin origin;
   // List of the settings URLs, proposed to change
   base::Value::List request_infos;
   // Version of the script
