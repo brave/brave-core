@@ -18,6 +18,7 @@ source_set("policy") {
     "//brave/components/brave_wallet/common:pref_names",
     "//brave/components/constants",
     "//brave/components/p3a",
+    "//brave/components/playlist/core/common",
     "//components/policy/core/browser",
     "//ios/chrome/browser/policy/model",
   ]

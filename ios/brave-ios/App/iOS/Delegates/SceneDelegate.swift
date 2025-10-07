@@ -133,6 +133,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     Task { @MainActor in
       let (profileController, profileState) = await loadDefaultProfile()
       Self.profileState = profileState
+      PlaylistCoordinator.shared.isPlaylistAvailable =
+        profileController.profile.prefs.isPlaylistAvailable
       let browserViewController = prepareBrowserViewController(
         profileController: profileController,
         profileState: profileState,
