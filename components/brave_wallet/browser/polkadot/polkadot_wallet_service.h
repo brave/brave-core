@@ -40,6 +40,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
                       GetNetworkNameCallback callback) override;
 
   void GetAccountBalance(mojom::AccountIdPtr account,
+                         const std::string& chain_id,
                          GetAccountBalanceCallback callback) override;
 
  private:

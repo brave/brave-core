@@ -214,7 +214,7 @@ base::DictValue PolkadotSubstrateRpc::MakeRpcRequestJson(
   return req;
 }
 
-void PolkadotSubstrateRpc::GetChainName(const std::string& chain_id,
+void PolkadotSubstrateRpc::GetChainName(std::string_view chain_id,
                                         GetChainNameCallback callback) {
   auto url = GetNetworkURL(chain_id);
 
@@ -257,7 +257,7 @@ void PolkadotSubstrateRpc::OnGetChainName(GetChainNameCallback callback,
 }
 
 void PolkadotSubstrateRpc::GetAccountBalance(
-    const std::string& chain_id,
+    std::string_view chain_id,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
     GetAccountBalanceCallback callback) {
   // xxhash("System") | xxhash("Account")
@@ -324,7 +324,7 @@ void PolkadotSubstrateRpc::OnGetAccountBalance(
   return std::move(callback).Run(nullptr, WalletParsingErrorMessage());
 }
 
-GURL PolkadotSubstrateRpc::GetNetworkURL(const std::string& chain_id) {
+GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
   return network_manager_->GetNetworkURL(chain_id, mojom::CoinType::DOT);
 }
 

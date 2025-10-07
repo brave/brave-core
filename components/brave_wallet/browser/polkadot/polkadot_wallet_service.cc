@@ -41,11 +41,11 @@ void PolkadotWalletService::GetNetworkName(mojom::AccountIdPtr account_id,
 
 void PolkadotWalletService::GetAccountBalance(
     mojom::AccountIdPtr account_id,
+    const std::string& chain_id,
     GetAccountBalanceCallback callback) {
   auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
 
-  std::string chain_id = GetNetworkForPolkadotAccount(account_id);
-  polkadot_substrate_rpc_.GetAccountBalance(std::move(chain_id), pubkey,
+  polkadot_substrate_rpc_.GetAccountBalance(chain_id, pubkey,
                                             std::move(callback));
 }
 
