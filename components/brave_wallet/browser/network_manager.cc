@@ -1022,51 +1022,42 @@ std::vector<mojom::NetworkInfoPtr> NetworkManager::GetAllCustomChains(
 
 bool NetworkManager::KnownChainExists(std::string_view chain_id,
                                       mojom::CoinType coin) {
-  if (coin == mojom::CoinType::ETH) {
-    for (const auto* network : GetKnownEthNetworks()) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
-        return true;
-      }
-    }
-  } else if (coin == mojom::CoinType::SOL) {
-    for (const auto* network : GetKnownSolNetworks()) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
-        return true;
-      }
-    }
-  } else if (coin == mojom::CoinType::FIL) {
-    for (const auto* network : GetKnownFilNetworks()) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
-        return true;
-      }
-    }
-  } else if (coin == mojom::CoinType::BTC) {
-    for (const auto* network : GetKnownBitcoinNetworks()) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
-        return true;
-      }
-    }
-  } else if (coin == mojom::CoinType::ZEC) {
-    for (const auto* network : GetKnownZCashNetworks()) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
-        return true;
-      }
-    }
-  } else if (coin == mojom::CoinType::ADA) {
-    for (const auto* network : GetKnownCardanoNetworks()) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
-        return true;
-      }
-    }
-  } else if (coin == mojom::CoinType::DOT) {
-    for (const auto* network : GetKnownPolkadotNetworks()) {
-      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
-        return true;
-      }
-    }
-  } else {
-    NOTREACHED() << coin;
+  using GetNetworksFnPtr = const std::vector<const mojom::NetworkInfo*>& (*)();
+
+  GetNetworksFnPtr get_networks = nullptr;
+
+  switch (coin) {
+    case mojom::CoinType::ETH:
+      get_networks = &GetKnownEthNetworks;
+      break;
+    case mojom::CoinType::SOL:
+      get_networks = &GetKnownSolNetworks;
+      break;
+    case mojom::CoinType::FIL:
+      get_networks = &GetKnownFilNetworks;
+      break;
+    case mojom::CoinType::BTC:
+      get_networks = &GetKnownBitcoinNetworks;
+      break;
+    case mojom::CoinType::ZEC:
+      get_networks = &GetKnownZCashNetworks;
+      break;
+    case mojom::CoinType::ADA:
+      get_networks = &GetKnownCardanoNetworks;
+      break;
+    case mojom::CoinType::DOT:
+      get_networks = &GetKnownPolkadotNetworks;
+      break;
   }
+
+  CHECK(get_networks);
+
+  for (const auto* network : get_networks()) {
+    if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
+      return true;
+    }
+  }
+
   return false;
 }
 
@@ -1136,58 +1127,41 @@ GURL NetworkManager::GetSnsRpcUrl() {
 
 std::vector<mojom::NetworkInfoPtr> NetworkManager::GetAllKnownChains(
     mojom::CoinType coin) {
+  using GetNetworksFnPtr = const std::vector<const mojom::NetworkInfo*>& (*)();
+
   std::vector<mojom::NetworkInfoPtr> result;
+  GetNetworksFnPtr get_networks = nullptr;
 
-  if (coin == mojom::CoinType::ETH) {
-    for (const auto* network : GetKnownEthNetworks()) {
-      result.push_back(network->Clone());
-    }
-    return result;
+  switch (coin) {
+    case mojom::CoinType::ETH:
+      get_networks = &GetKnownEthNetworks;
+      break;
+    case mojom::CoinType::SOL:
+      get_networks = &GetKnownSolNetworks;
+      break;
+    case mojom::CoinType::FIL:
+      get_networks = &GetKnownFilNetworks;
+      break;
+    case mojom::CoinType::BTC:
+      get_networks = &GetKnownBitcoinNetworks;
+      break;
+    case mojom::CoinType::ZEC:
+      get_networks = &GetKnownZCashNetworks;
+      break;
+    case mojom::CoinType::ADA:
+      get_networks = &GetKnownCardanoNetworks;
+      break;
+    case mojom::CoinType::DOT:
+      get_networks = &GetKnownPolkadotNetworks;
+      break;
   }
 
-  if (coin == mojom::CoinType::SOL) {
-    for (const auto* network : GetKnownSolNetworks()) {
-      result.push_back(network->Clone());
-    }
-    return result;
-  }
+  CHECK(get_networks) << coin;
 
-  if (coin == mojom::CoinType::FIL) {
-    for (const auto* network : GetKnownFilNetworks()) {
-      result.push_back(network->Clone());
-    }
-    return result;
+  for (const auto* network : get_networks()) {
+    result.push_back(network->Clone());
   }
-
-  if (coin == mojom::CoinType::BTC) {
-    for (const auto* network : GetKnownBitcoinNetworks()) {
-      result.push_back(network->Clone());
-    }
-    return result;
-  }
-
-  if (coin == mojom::CoinType::ZEC) {
-    for (const auto* network : GetKnownZCashNetworks()) {
-      result.push_back(network->Clone());
-    }
-    return result;
-  }
-
-  if (coin == mojom::CoinType::ADA) {
-    for (const auto* network : GetKnownCardanoNetworks()) {
-      result.push_back(network->Clone());
-    }
-    return result;
-  }
-
-  if (coin == mojom::CoinType::DOT) {
-    for (const auto* network : GetKnownPolkadotNetworks()) {
-      result.push_back(network->Clone());
-    }
-    return result;
-  }
-
-  NOTREACHED() << coin;
+  return result;
 }
 
 GURL NetworkManager::GetNetworkURL(std::string_view chain_id,
