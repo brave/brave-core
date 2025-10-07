@@ -74,7 +74,7 @@ class OllamaModelFetcher {
   static std::string FormatOllamaModelName(const std::string& raw_name);
 
   void OnOllamaFetchEnabledChanged();
-  void OnModelsResponse(std::string response_body);
+  void OnModelsResponse(std::optional<std::string> response_body);
   void ProcessModelsResponse(const std::string& response_body);
 
   const raw_ref<ModelService> model_service_;

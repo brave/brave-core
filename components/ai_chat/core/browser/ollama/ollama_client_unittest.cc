@@ -11,7 +11,6 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/ollama.mojom.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
@@ -66,37 +65,33 @@ class OllamaClientTest : public testing::Test {
   std::unique_ptr<OllamaClient> ollama_client_;
 };
 
-TEST_F(OllamaClientTest, CheckConnectionSuccess) {
+TEST_F(OllamaClientTest, ConnectedSuccess) {
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaBaseUrl,
                                          kOllamaSuccessResponse);
 
   base::RunLoop run_loop;
-  ollama_client()->CheckConnection(base::BindLambdaForTesting(
-      [&](mojom::OllamaConnectionResultPtr result) {
-        EXPECT_TRUE(result->connected);
-        EXPECT_EQ("", result->error);
-        run_loop.Quit();
-      }));
+  ollama_client()->Connected(base::BindLambdaForTesting([&](bool connected) {
+    EXPECT_TRUE(connected);
+    run_loop.Quit();
+  }));
 
   run_loop.Run();
 }
 
-TEST_F(OllamaClientTest, CheckConnectionFailure) {
+TEST_F(OllamaClientTest, ConnectedFailure) {
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaBaseUrl, "",
                                          net::HTTP_INTERNAL_SERVER_ERROR);
 
   base::RunLoop run_loop;
-  ollama_client()->CheckConnection(base::BindLambdaForTesting(
-      [&](mojom::OllamaConnectionResultPtr result) {
-        EXPECT_FALSE(result->connected);
-        EXPECT_EQ("Ollama is not running at localhost:11434", result->error);
-        run_loop.Quit();
-      }));
+  ollama_client()->Connected(base::BindLambdaForTesting([&](bool connected) {
+    EXPECT_FALSE(connected);
+    run_loop.Quit();
+  }));
 
   run_loop.Run();
 }
 
-TEST_F(OllamaClientTest, CheckConnectionNoResponse) {
+TEST_F(OllamaClientTest, ConnectedNoResponse) {
   // Simulate network error with failed response
   test_url_loader_factory()->AddResponse(
       GURL(ai_chat::mojom::kOllamaBaseUrl),
@@ -104,27 +99,23 @@ TEST_F(OllamaClientTest, CheckConnectionNoResponse) {
       network::URLLoaderCompletionStatus(net::ERR_CONNECTION_REFUSED));
 
   base::RunLoop run_loop;
-  ollama_client()->CheckConnection(base::BindLambdaForTesting(
-      [&](mojom::OllamaConnectionResultPtr result) {
-        EXPECT_FALSE(result->connected);
-        EXPECT_EQ("Ollama is not running at localhost:11434", result->error);
-        run_loop.Quit();
-      }));
+  ollama_client()->Connected(base::BindLambdaForTesting([&](bool connected) {
+    EXPECT_FALSE(connected);
+    run_loop.Quit();
+  }));
 
   run_loop.Run();
 }
 
-TEST_F(OllamaClientTest, CheckConnectionWrongResponse) {
+TEST_F(OllamaClientTest, ConnectedWrongResponse) {
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaBaseUrl,
                                          "Some other response");
 
   base::RunLoop run_loop;
-  ollama_client()->CheckConnection(base::BindLambdaForTesting(
-      [&](mojom::OllamaConnectionResultPtr result) {
-        EXPECT_FALSE(result->connected);
-        EXPECT_EQ("Ollama is not running at localhost:11434", result->error);
-        run_loop.Quit();
-      }));
+  ollama_client()->Connected(base::BindLambdaForTesting([&](bool connected) {
+    EXPECT_FALSE(connected);
+    run_loop.Quit();
+  }));
 
   run_loop.Run();
 }
@@ -135,8 +126,9 @@ TEST_F(OllamaClientTest, FetchModelsSuccess) {
 
   base::RunLoop run_loop;
   ollama_client()->FetchModels(
-      base::BindLambdaForTesting([&](std::string response_body) {
-        EXPECT_EQ(kOllamaModelsResponse, response_body);
+      base::BindLambdaForTesting([&](std::optional<std::string> response_body) {
+        ASSERT_TRUE(response_body.has_value());
+        EXPECT_EQ(kOllamaModelsResponse, *response_body);
         run_loop.Quit();
       }));
 
@@ -152,8 +144,8 @@ TEST_F(OllamaClientTest, FetchModelsNoResponse) {
 
   base::RunLoop run_loop;
   ollama_client()->FetchModels(
-      base::BindLambdaForTesting([&](std::string response_body) {
-        EXPECT_EQ("", response_body);
+      base::BindLambdaForTesting([&](std::optional<std::string> response_body) {
+        EXPECT_FALSE(response_body.has_value());
         run_loop.Quit();
       }));
 
@@ -166,8 +158,9 @@ TEST_F(OllamaClientTest, FetchModelsEmptyResponse) {
 
   base::RunLoop run_loop;
   ollama_client()->FetchModels(
-      base::BindLambdaForTesting([&](std::string response_body) {
-        EXPECT_EQ("", response_body);
+      base::BindLambdaForTesting([&](std::optional<std::string> response_body) {
+        ASSERT_TRUE(response_body.has_value());
+        EXPECT_EQ("", *response_body);
         run_loop.Quit();
       }));
 

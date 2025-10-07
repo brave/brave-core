@@ -43,9 +43,8 @@ OllamaClientFactory::~OllamaClientFactory() = default;
 std::unique_ptr<KeyedService>
 OllamaClientFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  auto url_loader_factory =
-      context->GetDefaultStoragePartition()
-          ->GetURLLoaderFactoryForBrowserProcess();
+  auto url_loader_factory = context->GetDefaultStoragePartition()
+                                ->GetURLLoaderFactoryForBrowserProcess();
   return std::make_unique<OllamaClient>(url_loader_factory);
 }
 

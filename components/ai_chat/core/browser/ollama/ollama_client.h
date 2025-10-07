@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_OLLAMA_OLLAMA_CLIENT_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
@@ -27,13 +28,8 @@ namespace ai_chat {
 // Implements the mojom::OllamaService interface for UI communication.
 class OllamaClient : public KeyedService, public mojom::OllamaService {
  public:
-  struct ConnectionResult {
-    bool connected = false;
-    std::string error;
-  };
-
-  using ConnectionCallback = base::OnceCallback<void(ConnectionResult)>;
-  using ModelsCallback = base::OnceCallback<void(std::string response_body)>;
+  using ModelsCallback =
+      base::OnceCallback<void(std::optional<std::string> response_body)>;
 
   explicit OllamaClient(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -46,20 +42,20 @@ class OllamaClient : public KeyedService, public mojom::OllamaService {
   void BindReceiver(mojo::PendingReceiver<mojom::OllamaService> receiver);
 
   // mojom::OllamaService implementation:
-  void CheckConnection(CheckConnectionCallback callback) override;
+  void Connected(ConnectedCallback callback) override;
 
   // Fetch available models from Ollama (non-mojo method for internal use)
   void FetchModels(ModelsCallback callback);
 
  private:
   void OnConnectionCheckComplete(
-      CheckConnectionCallback callback,
+      ConnectedCallback callback,
       std::unique_ptr<network::SimpleURLLoader> loader,
-      std::unique_ptr<std::string> response);
+      std::optional<std::string> response);
 
   void OnModelsListComplete(ModelsCallback callback,
                             std::unique_ptr<network::SimpleURLLoader> loader,
-                            std::unique_ptr<std::string> response);
+                            std::optional<std::string> response);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   mojo::ReceiverSet<mojom::OllamaService> receivers_;
