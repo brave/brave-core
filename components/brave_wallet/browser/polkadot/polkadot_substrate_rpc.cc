@@ -131,6 +131,9 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(std::string_view sv) {
 mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
     const std::optional<
         std::vector<polkadot_substrate_rpc_responses::AccountInfo>>& result) {
+  // see: `"id": 3` for more information
+  // https://raw.githubusercontent.com/polkadot-js/api/refs/heads/master/packages/types-support/src/metadata/v16/substrate-types.json
+
   /*
 
   The shape of the resturned JSON is:
@@ -167,6 +170,8 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
     return nullptr;
   }
 
+  // Default value defined here:
+  // https://github.com/polkadot-js/api/blob/1c4c7c72e281da328084ae821218efb9fe7120ac/packages/types-support/src/metadata/v16/substrate-json.json#L23
   constexpr const char kFallback[] =
       "0x0000000000000000000000000000000000000000000000000000000000000000"
       "000000000000000000000000000000000000000000000000000000000000000000"
