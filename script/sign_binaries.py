@@ -48,7 +48,7 @@ def execute_with_retry(cmd, max_attempts=5, base_sleep_sec=1, backoff_mult=2):
                 print(f"{err} Max number of retries reached.", file=sys.stderr)
                 raise
             else:
-                sleep_sec = base_sleep_sec * backoff_mult ** attempt
+                sleep_sec = base_sleep_sec * backoff_mult**attempt
                 print(
                     f"{err} Retry in {sleep_sec}s ({attempt}/{max_attempts}).",
                     file=sys.stderr)
