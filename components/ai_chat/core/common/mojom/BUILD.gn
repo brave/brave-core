@@ -18,6 +18,7 @@ mojom_component("mojom") {
     "bookmarks.mojom",
     "common.mojom",
     "customization_settings.mojom",
+    "history.mojom",
     "page_content_extractor.mojom",
     "settings_helper.mojom",
     "tab_tracker.mojom",

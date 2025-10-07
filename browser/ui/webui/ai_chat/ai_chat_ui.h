@@ -10,9 +10,11 @@
 #include <string>
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
+#include "brave/components/ai_chat/core/browser/history_page_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/history.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "content/public/browser/web_ui_controller.h"
@@ -28,7 +30,7 @@
 namespace ai_chat {
 class AIChatUIPageHandlerBrowserTest;
 class BookmarksPageHandler;
-}
+}  // namespace ai_chat
 
 namespace content {
 class BrowserContext;
@@ -50,7 +52,11 @@ class AIChatUI : public ui::MojoWebUIController {
                          parent_ui_frame_receiver);
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::TabTrackerService>
                          pending_receiver);
+<<<<<<< HEAD
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::BookmarksPageHandler>
+=======
+  void BindInterface(mojo::PendingReceiver<ai_chat::mojom::HistoryPageHandler>
+>>>>>>> 01f884009b6 ([AI Chat]: Add interface for getting history entries)
                          pending_receiver);
 
   // Set by WebUIContentsWrapperT. TopChromeWebUIController provides default
@@ -65,7 +71,11 @@ class AIChatUI : public ui::MojoWebUIController {
  private:
   friend class ai_chat::AIChatUIPageHandlerBrowserTest;
   std::unique_ptr<ai_chat::AIChatUIPageHandler> page_handler_;
+<<<<<<< HEAD
   std::unique_ptr<ai_chat::BookmarksPageHandler> bookmarks_page_handler_;
+=======
+  std::unique_ptr<ai_chat::HistoryPageHandler> history_page_handler_;
+>>>>>>> 01f884009b6 ([AI Chat]: Add interface for getting history entries)
 
   base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;
   raw_ptr<Profile> profile_ = nullptr;

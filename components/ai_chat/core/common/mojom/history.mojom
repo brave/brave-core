@@ -1,0 +1,22 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "url/mojom/url.mojom";
+
+// Represents a single history entry.
+struct HistoryEntry {
+  int64 id;
+  string title;
+  url.mojom.Url url;
+
+  int64 last_visit_time;
+};
+
+interface HistoryPageHandler {
+  // Note: We don't push all the results here as there might be many.
+  GetHistory(string? query, uint32? max_results) => (array<HistoryEntry> history);
+};
