@@ -33,7 +33,7 @@ import {
 } from './conversation_entries_utils'
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
 import styles from './style.module.scss'
-import AssistantTask from '../assistant_response/assistant_task'
+import AssistantTask from '../assistant_task/assistant_task'
 
 const NON_TASK_TOOL_NAMES = [Mojom.USER_CHOICE_TOOL_NAME]
 

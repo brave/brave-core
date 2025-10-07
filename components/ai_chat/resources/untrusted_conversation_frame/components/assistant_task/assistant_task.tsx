@@ -4,17 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
+import ProgressRing from '@brave/leo/react/progressRing'
 import Tabs from '@brave/leo/react/tabs'
 import TabItem from '@brave/leo/react/tabItem'
+import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
-import AssistantResponse from '.'
-import ToolEvent from './tool_event'
+import AssistantResponse from '../assistant_response'
+import ToolEvent from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
-import classnames from '$web-common/classnames'
-import ProgressRing from '@brave/leo/react/progressRing'
-import Icon from '@brave/leo/react/icon'
 
 interface Props {
   // Entries that make up the task loop
