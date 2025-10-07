@@ -27,6 +27,7 @@
 #include "brave/browser/psst/brave_psst_permission_context_factory.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
+#include "brave/components/psst/common/features.h"
 #endif
 
 namespace tabs {
@@ -54,12 +55,15 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-  psst_web_contents_observer_ =
-      psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
-          tab.GetContents(), profile,
-          std::make_unique<psst::PsstUiDelegateImpl>(
-              psst::BravePsstPermissionContextFactory::GetForProfile(profile)),
-          profile->GetPrefs(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
+    psst_web_contents_observer_ =
+        psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
+            tab.GetContents(), profile,
+            std::make_unique<psst::PsstUiDelegateImpl>(
+                psst::BravePsstPermissionContextFactory::GetForProfile(
+                    profile)),
+            profile->GetPrefs(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
 #endif
 }
 
