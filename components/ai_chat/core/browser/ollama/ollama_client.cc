@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -69,7 +68,7 @@ void OllamaClient::BindReceiver(
   receivers_.Add(this, std::move(receiver));
 }
 
-void OllamaClient::CheckConnection(CheckConnectionCallback callback) {
+void OllamaClient::Connected(ConnectedCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(mojom::kOllamaBaseUrl);
   request->method = "GET";
@@ -87,21 +86,15 @@ void OllamaClient::CheckConnection(CheckConnectionCallback callback) {
 }
 
 void OllamaClient::OnConnectionCheckComplete(
-    CheckConnectionCallback callback,
+    ConnectedCallback callback,
     std::unique_ptr<network::SimpleURLLoader> loader,
-    std::unique_ptr<std::string> response) {
-  auto result = mojom::OllamaConnectionResult::New();
+    std::optional<std::string> response) {
+  bool connected = response &&
+                   response->find("Ollama is running") != std::string::npos &&
+                   loader->ResponseInfo() && loader->ResponseInfo()->headers &&
+                   loader->ResponseInfo()->headers->response_code() == 200;
 
-  if (response && response->find("Ollama is running") != std::string::npos &&
-      loader->ResponseInfo() && loader->ResponseInfo()->headers &&
-      loader->ResponseInfo()->headers->response_code() == 200) {
-    result->connected = true;
-  } else {
-    result->connected = false;
-    result->error = "Ollama is not running at localhost:11434";
-  }
-
-  std::move(callback).Run(std::move(result));
+  std::move(callback).Run(connected);
 }
 
 void OllamaClient::FetchModels(ModelsCallback callback) {
@@ -124,13 +117,8 @@ void OllamaClient::FetchModels(ModelsCallback callback) {
 void OllamaClient::OnModelsListComplete(
     ModelsCallback callback,
     std::unique_ptr<network::SimpleURLLoader> loader,
-    std::unique_ptr<std::string> response) {
-  if (!response) {
-    std::move(callback).Run("");
-    return;
-  }
-
-  std::move(callback).Run(*response);
+    std::optional<std::string> response) {
+  std::move(callback).Run(response);
 }
 
 }  // namespace ai_chat

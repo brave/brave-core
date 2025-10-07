@@ -10,15 +10,10 @@ const string kOllamaBaseUrl = "http://localhost:11434";
 const string kOllamaApiTagsEndpoint = "http://localhost:11434/api/tags";
 const string kOllamaEndpoint = "http://localhost:11434/v1/chat/completions";
 
-struct OllamaConnectionResult {
-  bool connected;
-  string error;
-};
-
 // Interface for communicating with a local Ollama instance.
 // This interface is implemented directly by OllamaClient and allows
 // the UI to check connection status.
 interface OllamaService {
   // Check if Ollama is running at localhost:11434
-  CheckConnection() => (OllamaConnectionResult result);
+  Connected() => (bool connected);
 };
