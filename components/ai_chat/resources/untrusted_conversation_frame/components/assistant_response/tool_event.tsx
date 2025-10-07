@@ -9,6 +9,7 @@ import * as Mojom from '../../../common/mojom'
 import { getToolLabel } from './get_tool_label'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
 import ToolEventContentAssistantDetailStorage from './tool_event_content_assistant_detail_storage'
+import ToolEventContentSecurityApproval from './tool_event_content_security_approval'
 import styles from './tool_event.module.scss'
 
 interface Props {
@@ -104,11 +105,13 @@ function ToolEventContent(
   // or make the expanded content show by default by removing the toolLabel.
   let component: ToolComponent | null = null
 
-  if (toolUseEvent.toolName === Mojom.USER_CHOICE_TOOL_NAME) {
+  // Check for security approval requirement first
+  // Show security approval when tool is not allowed and hasn't been executed yet
+  if (toolUseEvent.securityMetadataAllowed === false && !toolUseEvent.output) {
+    component = ToolEventContentSecurityApproval
+  } else if (toolUseEvent.toolName === Mojom.USER_CHOICE_TOOL_NAME) {
     component = ToolEventContentUserChoice
-  }
-
-  if (toolUseEvent.toolName === Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME) {
+  } else if (toolUseEvent.toolName === Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME) {
     component = ToolEventContentAssistantDetailStorage
   }
 

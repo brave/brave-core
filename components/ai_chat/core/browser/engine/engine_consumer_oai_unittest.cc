@@ -2423,7 +2423,8 @@ TEST_F(EngineConsumerOAIUnitTest,
              EngineConsumer::GenerationCompletedCallback completed_callback,
              const std::optional<std::vector<std::string>>&) {
             // Return a non-completion event (e.g., tool use event)
-            auto tool_use_event = mojom::ToolUseEvent::New();
+            auto tool_use_event = mojom::ToolUseEvent::New(
+                "", "", "", std::nullopt, std::nullopt, std::nullopt);
             tool_use_event->id = "test_id";
             tool_use_event->tool_name = "test_tool";
             tool_use_event->arguments_json = "{}";

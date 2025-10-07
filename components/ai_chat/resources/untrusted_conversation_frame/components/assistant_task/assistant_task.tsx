@@ -124,7 +124,7 @@ export default function AssistantTask(props: Props) {
 
 function Progress(props: Props & { taskData: TaskData }) {
   // The Progress tab should show:
-  // - Any last active complete "important" tool (TODO, navigate)
+  // - Any last active complete "important" tool (TODO, navigate) that doesn't need security approval
   // - the most recent completion event
   // - any tool use events from the most recent entry in the group (the active
   // events)

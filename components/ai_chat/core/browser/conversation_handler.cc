@@ -1039,7 +1039,7 @@ void ConversationHandler::OnUserOptedIn() {
 }
 
 void ConversationHandler::RespondToToolUseRequest(
-    const std::string& tool_use_id,
+const std::string& tool_use_id,
     std::vector<mojom::ContentBlockPtr> output) {
   auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
   if (!tool_use) {
@@ -1058,6 +1058,36 @@ void ConversationHandler::RespondToToolUseRequest(
                          << " (" << tool_use_id << ")";
 
   DVLOG(0) << "got output for tool: " << tool_use->tool_name;
+
+  // Check if this is a security approval response
+  bool is_security_approval = tool_use->security_metadata_allowed.has_value() && 
+                              !tool_use->security_metadata_allowed.value();
+  bool user_approved = false;
+  
+  if (is_security_approval && !output.empty() && output[0]->is_text_content_block()) {
+    std::string response_text = output[0]->get_text_content_block()->text;
+    user_approved = response_text.find("User approved") != std::string::npos;
+    
+    if (user_approved) {
+      // User approved the security-restricted tool, execute it
+      DVLOG(0) << "User approved security-restricted tool, executing: " << tool_use->tool_name;
+      
+      // Find and execute the tool
+      for (auto& tool : GetTools()) {
+        if (tool && tool->Name() == tool_use->tool_name) {
+          is_tool_use_in_progress_ = true;
+          OnAPIRequestInProgressChanged();
+          tool->UseTool(
+              tool_use->arguments_json,
+              base::BindOnce(&ConversationHandler::RespondToToolUseRequest,
+                             weak_ptr_factory_.GetWeakPtr(),
+                             tool_use_id));
+          return; // Exit early, the actual tool execution will call this method again
+        }
+      }
+      DLOG(ERROR) << "Tool not found for approved security request: " << tool_use->tool_name;
+    }
+  }
 
   tool_use->output = std::move(output);
 
@@ -1900,7 +1930,14 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
         if (!tool_use_event->tool_name.empty() &&
             tool->Name() == tool_use_event->tool_name) {
           tool_found = true;
-          if (!tool->RequiresUserInteractionBeforeHandling()) {
+          
+          // Check if tool requires user interaction either due to the tool's own requirements
+          // or due to security metadata indicating the tool call is not allowed
+          bool requires_user_interaction = tool->RequiresUserInteractionBeforeHandling();
+          bool has_security_restriction = tool_use_event->security_metadata_allowed.has_value() && 
+                                           !tool_use_event->security_metadata_allowed.value();
+          
+          if (!requires_user_interaction && !has_security_restriction) {
             is_tool_use_in_progress_ = true;
             OnAPIRequestInProgressChanged();
             // Tool use will be handled by the Tool itself
@@ -1911,6 +1948,11 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
                 base::BindOnce(&ConversationHandler::RespondToToolUseRequest,
                                weak_ptr_factory_.GetWeakPtr(),
                                tool_use_event->id));
+          } else if (has_security_restriction) {
+            DVLOG(0) << __func__ << " tool has security restriction, requiring user approval: " 
+                     << tool->Name() << " - " << tool_use_event->security_metadata_reasoning.value_or("No reason provided");
+            // For security-restricted tools, the UI will handle showing the approval dialog
+            // We don't execute the tool here, but we don't block the conversation flow either
           }
           break;
         }

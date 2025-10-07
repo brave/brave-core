@@ -42,7 +42,7 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_ValidSingleToolCall) {
   auto result = ToolUseEventFromToolCallsResponse(&tool_calls_list);
 
   auto expected = mojom::ToolUseEvent::New(
-      "get_weather", "call_123", "{\"location\":\"New York\"}", std::nullopt);
+      "get_weather", "call_123", "{\"location\":\"New York\"}", std::nullopt, std::nullopt, std::nullopt);
 
   EXPECT_MOJOM_EQ(result[0], expected);
 }
@@ -83,7 +83,8 @@ TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_ValidMultipleToolCalls) {
   EXPECT_MOJOM_EQ(
       result[1],
       mojom::ToolUseEvent::New("search_web", "call_456",
-                               "{\"query\":\"Hello, world!\"}", std::nullopt));
+                               "{\"query\":\"Hello, world!\"}", std::nullopt,
+                               std::nullopt, std::nullopt));
 }
 
 TEST(OaiParsingTest, ToolUseEventFromToolCallsResponse_MissingId) {

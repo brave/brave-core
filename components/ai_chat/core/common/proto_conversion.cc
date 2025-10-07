@@ -68,7 +68,16 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
     const store::ToolUseEventProto& proto_event) {
   auto mojom_event =
       mojom::ToolUseEvent::New(proto_event.tool_name(), proto_event.id(),
-                               proto_event.arguments_json(), std::nullopt);
+                               proto_event.arguments_json(), std::nullopt,
+                               std::nullopt, std::nullopt);
+
+  // Convert security metadata
+  if (proto_event.has_security_metadata_allowed()) {
+    mojom_event->security_metadata_allowed = proto_event.security_metadata_allowed();
+  }
+  if (proto_event.has_security_metadata_reasoning()) {
+    mojom_event->security_metadata_reasoning = proto_event.security_metadata_reasoning();
+  }
 
   // Convert output ContentBlocks
   if (proto_event.output_size() > 0) {
@@ -125,6 +134,14 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
   proto_event->set_tool_name(mojom_event->tool_name);
   proto_event->set_id(mojom_event->id);
   proto_event->set_arguments_json(mojom_event->arguments_json);
+
+  // Convert security metadata
+  if (mojom_event->security_metadata_allowed.has_value()) {
+    proto_event->set_security_metadata_allowed(mojom_event->security_metadata_allowed.value());
+  }
+  if (mojom_event->security_metadata_reasoning.has_value()) {
+    proto_event->set_security_metadata_reasoning(mojom_event->security_metadata_reasoning.value());
+  }
 
   // Convert output ContentBlocks
   proto_event->clear_output();

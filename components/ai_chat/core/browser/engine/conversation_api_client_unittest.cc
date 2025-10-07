@@ -128,9 +128,10 @@ GetMockEventsAndExpectedEventsBody() {
       MakeToolUseEvents(
           {mojom::ToolUseEvent::New("get_weather", "123",
                                     "{\"location\":\"New York\"}",
-                                    std::nullopt),
+                                    std::nullopt, std::nullopt, std::nullopt),
            mojom::ToolUseEvent::New("get_screenshot", "456",
-                                    "{\"type\":\"tab\"}", std::nullopt)}));
+                                    "{\"type\":\"tab\"}", std::nullopt,
+                                    std::nullopt, std::nullopt)}));
 
   // First answer from a tool
   events.emplace_back(
@@ -804,7 +805,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_WithToolUseResponse) {
         EXPECT_MOJOM_EQ(result.event->get_tool_use_event(),
                         mojom::ToolUseEvent::New("get_weather", "call_123",
                                                  "{\"location\":\"New York\"}",
-                                                 std::nullopt));
+                                                 std::nullopt, std::nullopt, std::nullopt));
       });
 
   EXPECT_CALL(mock_callbacks, OnDataReceived)
@@ -815,7 +816,8 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_WithToolUseResponse) {
         EXPECT_MOJOM_EQ(result.event->get_tool_use_event(),
                         mojom::ToolUseEvent::New(
                             "search_web", "call_456",
-                            "{\"query\":\"Hello, world!\"}", std::nullopt));
+                            "{\"query\":\"Hello, world!\"}", std::nullopt,
+                            std::nullopt, std::nullopt));
       });
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_))

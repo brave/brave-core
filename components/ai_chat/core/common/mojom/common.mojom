@@ -147,6 +147,14 @@ struct ToolUseEvent {
   // Output from the Tool. When null, the Tool
   // has not yet run or completed.
   array<ContentBlock>? output;
+
+  // Security metadata from server indicating if tool call is allowed.
+  // When null, no security check was performed by the server.
+  bool? security_metadata_allowed;
+
+  // Reasoning provided by server when tool call is not allowed.
+  // Only meaningful when security_metadata_allowed is false.
+  string? security_metadata_reasoning;
 };
 
 struct SearchQueriesEvent {

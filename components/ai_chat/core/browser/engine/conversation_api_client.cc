@@ -474,8 +474,24 @@ void ConversationAPIClient::OnQueryDataReceived(
   // Tool calls - they may happen individually or combined with a response event
   if (const base::Value::List* tool_calls =
           result_params.FindList("tool_calls")) {
-    // Provide any valid tool use events to the callback
-    for (auto& tool_use_event : ToolUseEventFromToolCallsResponse(tool_calls)) {
+    // Check for alignment_check that applies to all tool calls in this response
+    std::optional<bool> security_allowed;
+    std::optional<std::string> security_reasoning;
+    
+    if (const base::Value* alignment_check = result_params.Find("alignment_check")) {
+      if (alignment_check->is_dict()) {
+        const auto& alignment_dict = alignment_check->GetDict();
+        if (const auto allowed = alignment_dict.FindBool("allowed")) {
+          security_allowed = allowed.value();
+        }
+        if (const auto* reasoning = alignment_dict.FindString("reasoning")) {
+          security_reasoning = *reasoning;
+        }
+      }
+    }
+    
+    // Provide any valid tool use events to the callback with security metadata applied
+    for (auto& tool_use_event : ToolUseEventFromToolCallsResponse(tool_calls, security_allowed, security_reasoning)) {
       auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
           std::move(tool_use_event));
       callback.Run(GenerationResultData(std::move(tool_event), std::nullopt));

@@ -54,6 +54,7 @@ export default function useExtractTaskData(
         if (
           event.toolUseEvent
           && importantToolNames.includes(event.toolUseEvent.toolName)
+          && event.toolUseEvent.securityMetadataAllowed !== false
         ) {
           importantToolUseEvents[event.toolUseEvent.toolName] =
             event.toolUseEvent

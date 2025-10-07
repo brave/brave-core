@@ -37,6 +37,14 @@ message ToolUseEventProto {
   // to DictionaryValue.
   string arguments_json = 3;
   repeated ContentBlockProto output = 4;
+
+  // Security metadata from server indicating if tool call is allowed.
+  // When not present, no security check was performed by the server.
+  optional bool security_metadata_allowed = 5;
+
+  // Reasoning provided by server when tool call is not allowed.
+  // Only meaningful when security_metadata_allowed is false.
+  optional string security_metadata_reasoning = 6;
 }
 
 message WebSourceProto {

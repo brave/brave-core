@@ -20,6 +20,13 @@ namespace ai_chat {
 std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
     const base::Value::List* tool_calls_api_response);
 
+// Construct a tool use event from a tool calls part of a Chat API-style
+// response with optional security metadata applied to all tool calls
+std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
+    const base::Value::List* tool_calls_api_response,
+    std::optional<bool> security_allowed,
+    std::optional<std::string> security_reasoning);
+
 // Convert some Tools to Chat API-style JSON list of tool definitions
 std::optional<base::Value::List> ToolApiDefinitionsFromTools(
     const std::vector<base::WeakPtr<Tool>>& tools);
