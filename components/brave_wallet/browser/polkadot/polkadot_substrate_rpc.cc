@@ -267,13 +267,13 @@ void PolkadotSubstrateRpc::GetAccountBalance(
   //     LittleEndian::write_u64(&mut dest[0..8], r0);
   //     LittleEndian::write_u64(&mut dest[8..16], r1);
   // }
-  constexpr char const kStoragePallet[] = "26AA394EEA5630E07C48AE0C9558CEF7";
+  constexpr char const kSystemPallet[] = "26AA394EEA5630E07C48AE0C9558CEF7";
   constexpr char const kAccount[] = "B99D880EC681799C0CF30E8886371DA9";
 
   auto checksum = Blake2bHash<16>({pubkey});
 
   auto rpc_cmd =
-      base::StrCat({"0x", kStoragePallet, kAccount, base::HexEncode(checksum),
+      base::StrCat({"0x", kSystemPallet, kAccount, base::HexEncode(checksum),
                     base::HexEncode(pubkey)});
 
   auto payload = base::WriteJson(MakeRpcRequestJson(
