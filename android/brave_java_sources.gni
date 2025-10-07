@@ -491,8 +491,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/webcompat_reporter/WebcompatReporterServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/BookmarkRemoteViewsFactory.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/BookmarkWidgetService.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/QuickActionSearchAndBookmarkWidgetProvider.java",
+  "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/QuickActionSearchAndBookmarkWidgetServiceImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/promo/SearchWidgetPromoPanel.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/utils/BraveSearchWidgetUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/youtube_script_injector/BraveYouTubeScriptInjectorNativeHelper.java",
@@ -540,6 +540,7 @@ brave_java_base_module_sources = [
   "//brave/android/java/org/chromium/chrome/browser/media/ui/BraveMediaNotificationControllerServices.java",
   "//brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsService.java",
   "//brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardService.java",
+  "//brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/QuickActionSearchAndBookmarkWidgetService.java",
 ]
 
 brave_java_base_module_deps = [
