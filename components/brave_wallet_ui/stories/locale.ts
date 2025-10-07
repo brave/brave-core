@@ -856,6 +856,7 @@ provideStrings({
   braveSwapSlow: 'Slow',
   braveSwapAverage: 'Average',
   braveSwapFast: 'Fast',
+  braveWalletEstimatedFee: 'Estimated fee',
 
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',
@@ -1077,6 +1078,12 @@ provideStrings({
   braveWalletGasPrice: 'Gas price',
   braveWalletEditGasEstimatedNetworkFee: 'Estimated network fee',
   braveWalletUseDefault: 'Use default',
+  braveWalletGasFeeTooltip: 'This gas fee will replace the original.',
+  braveWalletGasFeeTooltipDescription:
+    'This will create a new transaction with a new gas fee to '
+    + 'override and cancel the pending one. A cancellation can only be '
+    + 'attempted if the transaction is still pending on the network.',
+  braveWalletSpeedPriority: 'Speed priority',
 
   // Advanced transaction settings
   braveWalletAdvancedTransactionSettings: 'Advanced settings',

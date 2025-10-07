@@ -47,6 +47,7 @@ import {
   getTransactionGas,
   getTransactionStatusString,
   getTransactionTypeName,
+  isCancelTransaction,
   toTxDataUnion,
 } from './tx-utils'
 
@@ -963,5 +964,255 @@ describe('Test getIsSolanaAssociatedTokenAccountCreation', () => {
         },
       }),
     ).toBe(false)
+  })
+})
+
+describe('isCancelTransaction', () => {
+  const mockFromAddress = '0x1234567890123456789012345678901234567890'
+  const mockToAddress = '0x0987654321098765432109876543210987654321'
+
+  const mockEthSendTestTransaction = {
+    ...mockEthSendTransaction,
+    txType: BraveWallet.TransactionType.ETHSend,
+    fromAccountId: { address: mockFromAddress } as BraveWallet.AccountId,
+  }
+
+  const mockEthTXData = {
+    to: mockFromAddress,
+    value: '',
+    data: [],
+    nonce: '',
+    gasPrice: '',
+    gasLimit: '',
+    signOnly: false,
+    signedTransaction: '',
+  }
+
+  test('should return false for non-ETH transactions', () => {
+    const solanaTx = {
+      ...mockSolanaTransactionInfo,
+      txType: BraveWallet.TransactionType.SolanaSystemTransfer,
+    }
+    expect(isCancelTransaction(solanaTx)).toBe(false)
+  })
+
+  test('should return false for non-ETHSend transactions', () => {
+    const erc20Tx = {
+      ...mockEthSendTransaction,
+      txType: BraveWallet.TransactionType.ERC20Transfer,
+    }
+    expect(isCancelTransaction(erc20Tx)).toBe(false)
+  })
+
+  test('should return false for ETH send with non-zero value', () => {
+    const ethSendTx = {
+      ...mockEthSendTestTransaction,
+      txDataUnion: {
+        ethTxData: { ...mockEthTXData, value: '1000000000000000000' },
+      },
+    }
+    expect(isCancelTransaction(ethSendTx)).toBe(false)
+  })
+
+  test('should return false for ETH send with data', () => {
+    const ethSendTx = {
+      ...mockEthSendTestTransaction,
+      txDataUnion: {
+        ethTxData: {
+          ...mockEthTXData,
+          value: '0',
+          data: [1, 2, 3, 4], // non-empty data
+        },
+      },
+    }
+    expect(isCancelTransaction(ethSendTx)).toBe(false)
+  })
+
+  test('should return false for ETH send to different address', () => {
+    const ethSendTx = {
+      ...mockEthSendTestTransaction,
+      txDataUnion: {
+        ethTxData: {
+          ...mockEthTXData,
+          to: mockToAddress, // different address
+          value: '0',
+        },
+      },
+    }
+    expect(isCancelTransaction(ethSendTx)).toBe(false)
+  })
+
+  test(
+    'should return false for cancel transaction (legacy)'
+      + 'with different nonce',
+    () => {
+      const cancelTx = {
+        ...mockEthSendTestTransaction,
+        txDataUnion: {
+          ethTxData1559: undefined,
+          ethTxData: {
+            ...mockEthTXData,
+            value: '0',
+            nonce: '2',
+          },
+        },
+      }
+      const submittedTx = {
+        ...mockEthSendTestTransaction,
+        txDataUnion: {
+          ethTxData1559: undefined,
+          ethTxData: {
+            ...mockEthTXData,
+            value: '0',
+            nonce: '1',
+          },
+        },
+        txStatus: BraveWallet.TransactionStatus.Submitted,
+        id: 'submitted-tx',
+      }
+      expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(false)
+    },
+  )
+
+  test(
+    'should return false for cancel transaction (EIP1559)'
+      + 'with different nonce',
+    () => {
+      const cancelTx = {
+        ...mockEthSendTestTransaction,
+        txDataUnion: {
+          ethTxData1559: {
+            baseData: {
+              to: mockFromAddress, // same as from
+              value: '0',
+              data: [],
+              nonce: '4',
+              gasPrice: '',
+              gasLimit: '',
+              signOnly: false,
+              signedTransaction: '',
+            },
+            chainId: '0x1',
+            maxPriorityFeePerGas: '0x0',
+            maxFeePerGas: '0x0',
+            gasEstimation: undefined,
+          },
+        },
+      }
+      const submittedTx = {
+        ...mockEthSendTestTransaction,
+        txDataUnion: {
+          ethTxData1559: {
+            baseData: {
+              to: mockFromAddress, // same as from
+              value: '0',
+              data: [],
+              nonce: '3',
+              gasPrice: '',
+              gasLimit: '',
+              signOnly: false,
+              signedTransaction: '',
+            },
+            chainId: '0x1',
+            maxPriorityFeePerGas: '0x0',
+            maxFeePerGas: '0x0',
+            gasEstimation: undefined,
+          },
+        },
+        txStatus: BraveWallet.TransactionStatus.Submitted,
+        id: 'submitted-tx',
+      }
+      expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(false)
+    },
+  )
+
+  test('should return true for cancel transaction (legacy)', () => {
+    const cancelTx = {
+      ...mockEthSendTestTransaction,
+      txDataUnion: {
+        ethTxData1559: undefined,
+        ethTxData: {
+          ...mockEthTXData,
+          value: '0',
+          nonce: '2',
+        },
+      },
+    }
+    const submittedTx = {
+      ...cancelTx,
+      txStatus: BraveWallet.TransactionStatus.Submitted,
+      id: 'submitted-tx',
+    }
+    expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(true)
+  })
+
+  test('should return true for cancel transaction (EIP1559)', () => {
+    const cancelTx = {
+      ...mockEthSendTestTransaction,
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            to: mockFromAddress, // same as from
+            value: '0',
+            data: [],
+            nonce: '4',
+            gasPrice: '',
+            gasLimit: '',
+            signOnly: false,
+            signedTransaction: '',
+          },
+          chainId: '0x1',
+          maxPriorityFeePerGas: '0x0',
+          maxFeePerGas: '0x0',
+          gasEstimation: undefined,
+        },
+      },
+    }
+    const submittedTx = {
+      ...cancelTx,
+      txStatus: BraveWallet.TransactionStatus.Submitted,
+      id: 'submitted-tx',
+    }
+    expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(true)
+  })
+
+  test('should return true for cancel transaction with 0x0 value', () => {
+    const cancelTx = {
+      ...mockEthSendTestTransaction,
+      txDataUnion: {
+        ethTxData: {
+          ...mockEthTXData,
+          value: '0x0', // hex zero
+        },
+      },
+    }
+    const submittedTx = {
+      ...cancelTx,
+      txStatus: BraveWallet.TransactionStatus.Submitted,
+      id: 'submitted-tx',
+    }
+    expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(true)
+  })
+
+  test('should handle case insensitive address comparison', () => {
+    const cancelTx = {
+      ...mockEthSendTestTransaction,
+      fromAccountId: {
+        address: mockFromAddress.toLowerCase(),
+      } as BraveWallet.AccountId,
+      txDataUnion: {
+        ethTxData: {
+          ...mockEthTXData,
+          to: mockFromAddress.toUpperCase(), // different case
+          value: '0',
+        },
+      },
+    }
+    const submittedTx = {
+      ...cancelTx,
+      txStatus: BraveWallet.TransactionStatus.Submitted,
+      id: 'submitted-tx',
+    }
+    expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(true)
   })
 })
