@@ -41,9 +41,6 @@ declare_args() {
   # Enables brave/tools/redirect_cc target, replaces brave/chromium_src
   # overrides with empty ones to make //base buildable for redirect_cc.
   android_aab_to_apk = false
-
-  # Enable DrumBrake (WebAssembly interpreter) in Brave
-  brave_v8_enable_drumbrake = false
 }
 
 if (target_os == "win") {

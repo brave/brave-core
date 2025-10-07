@@ -702,7 +702,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       {                                                                        \
           "brave-v8-jitless-mode",                                             \
           "V8 Jitless mode",                                                   \
-          "Enable V8 jitless mode when optimizations are disabled. "          \
+          "Enable V8 jitless mode when optimizations are disabled. "           \
           "V8 runs in jitless mode which reduces performance but improves "    \
           "security. This does not affect all pages.",                         \
           kOsAll,                                                              \

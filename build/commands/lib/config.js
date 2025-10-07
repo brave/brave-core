@@ -372,15 +372,6 @@ Config.prototype.enableCDMHostVerification = function () {
   return enable
 }
 
-Config.prototype.isDrumBrakeEnabled = function () {
-  return (
-    (this.targetArch === 'x64' || this.targetArch === 'arm64')
-    && (this.targetOS === 'win'
-      || this.targetOS === 'linux'
-      || this.targetOS === 'mac')
-  )
-}
-
 Config.prototype.isAsan = function () {
   if (this.is_asan) {
     return true
@@ -450,11 +441,12 @@ Config.prototype.buildArgs = function () {
     use_libfuzzer: this.use_libfuzzer,
     enable_update_notifications: this.isOfficialBuild(),
     generate_about_credits: true,
+    v8_enable_drumbrake:
+      (this.targetArch === 'x64' || this.targetArch === 'arm64')
+      && (this.targetOS === 'win'
+        || this.targetOS === 'linux'
+        || this.targetOS === 'mac'),
   }
-
-  // Enable DrumBrake (WebAssembly interpreter) conditionally
-  args.brave_v8_enable_drumbrake = this.isDrumBrakeEnabled()
-  args.v8_enable_drumbrake = this.isDrumBrakeEnabled()
 
   if (this.targetOS !== 'ios') {
     args['import("//brave/build/args/blink_platform_defaults.gni")'] = null
