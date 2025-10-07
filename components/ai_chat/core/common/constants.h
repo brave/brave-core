@@ -14,6 +14,13 @@ namespace ai_chat {
 
 inline constexpr char kBraveSearchURLPrefix[] = "search";
 
+inline constexpr char kBraveUntrustedContentOpenTag[] =
+    "<brave_untrusted_content>";
+inline constexpr char kBraveUntrustedContentCloseTag[] =
+    "</brave_untrusted_content>";
+inline constexpr char kBraveUntrustedContentTagName[] =
+    "brave_untrusted_content";
+
 inline constexpr auto kAllowedContentSchemes =
     base::MakeFixedFlatSet<std::string_view>(
         {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme,

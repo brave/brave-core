@@ -38,6 +38,10 @@ extern const base::FeatureParam<double> kAITemperature;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<size_t> kMaxCountLargeToolUseEvents;
 
+// Whether should add indentation to page content structure for tool results.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<bool> kShouldIndentPageContentBlocks;
+
 // The size of a tool use event's output that triggers that events to
 // be marked as "large".
 COMPONENT_EXPORT(AI_CHAT_COMMON)

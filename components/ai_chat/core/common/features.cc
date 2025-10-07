@@ -48,6 +48,9 @@ const base::FeatureParam<size_t> kMaxCountLargeToolUseEvents{
 const base::FeatureParam<size_t> kContentSizeLargeToolUseEvent{
     &kAIChat, "content_size_large_tool_use_events", 1000};
 
+const base::FeatureParam<bool> kShouldIndentPageContentBlocks{
+    &kAIChat, "should_indent_page_content_blocks", true};
+
 bool IsAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChat);
 }
