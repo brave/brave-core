@@ -220,7 +220,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
 
     private static void setupGridView(Context context, RemoteViews views, int appWidgetId) {
         // Set up the intent for the GridView
-        Intent intent = new Intent(context, BookmarkWidgetService.class);
+        Intent intent = new Intent(context, QuickActionSearchAndBookmarkWidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
