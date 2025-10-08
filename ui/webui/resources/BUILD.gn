@@ -26,6 +26,7 @@ include_polymer = !is_android && !is_ios
 
 group("grdp") {
   public_deps = [
+    ":candle_bert",
     ":fonts_grdp",
     ":icons_grdp",
     ":leo_bundle",
@@ -120,6 +121,28 @@ transpile_web_ui("opaque_ke") {
   rust_packages = [ rebase_path("wasm/opaque_ke/Cargo.toml") ]
 
   public_asset_path = "chrome://resources/brave/"
+}
+
+transpile_web_ui("candle_bert") {
+  resource_name = "candle_bert"
+  generate_grdp = true
+  resource_path_prefix = "brave"
+
+  entry_points = [ [
+        "candle_bert",
+        rebase_path("wasm/candle_bert/index.js"),
+      ] ]
+
+  inputs = [
+    rebase_path("wasm/Cargo.lock"),
+    rebase_path("wasm/candle_bert/src/lib.rs"),
+  ]
+
+  rust_packages = [ rebase_path("wasm/candle_bert/Cargo.toml") ]
+
+  no_iife = true
+  output_module = true
+  public_asset_path = "chrome-untrusted://resources/brave/"
 }
 
 # Create a grdp that //ui/webui/resources can include in its main resources GRD
