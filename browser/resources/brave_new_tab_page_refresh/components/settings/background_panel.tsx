@@ -36,6 +36,7 @@ export function BackgroundPanel() {
   const selectedBackground = useBackgroundState((s) => s.selectedBackground)
   const braveBackgrounds = useBackgroundState((s) => s.braveBackgrounds)
   const customBackgrounds = useBackgroundState((s) => s.customBackgrounds)
+  const rewardsFeatureEnabled = useRewardsState((s) => s.rewardsFeatureEnabled)
   const rewardsEnabled = useRewardsState((s) => s.rewardsEnabled)
 
   const [panelType, setPanelType] =
@@ -151,7 +152,7 @@ export function BackgroundPanel() {
         />
       </div>
       {
-        backgroundsEnabled &&
+        backgroundsEnabled && rewardsFeatureEnabled &&
           <div className='control-row'>
             <label>
               {getString('showSponsoredImagesLabel')}
