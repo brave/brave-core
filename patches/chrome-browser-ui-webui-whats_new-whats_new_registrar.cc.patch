@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/webui/whats_new/whats_new_registrar.cc b/chrome/browser/ui/webui/whats_new/whats_new_registrar.cc
+index cf295daa4d39be3c9e4ddf598a0cf8987e8c5a5e..18c6d7653c976dff14e29d01dfca041180f1de9a 100644
+--- a/chrome/browser/ui/webui/whats_new/whats_new_registrar.cc
++++ b/chrome/browser/ui/webui/whats_new/whats_new_registrar.cc
+@@ -40,6 +40,7 @@ void RegisterWhatsNewModules(whats_new::WhatsNewRegistry* registry) {
+   registry->RegisterModule(WhatsNewModule(::features::kSideBySide,
+                                           "agale@google.com",
+                                           BrowserCommand::kOpenSplitView));
++#if BUILDFLAG(ENABLE_GLIC)
+   // M142
+   registry->RegisterModule(WhatsNewModule(::features::kGlicIntro,
+                                           "birnie@google.com",
+@@ -48,6 +49,7 @@ void RegisterWhatsNewModules(whats_new::WhatsNewRegistry* registry) {
+   registry->RegisterModule(WhatsNewModule(::features::kGlicLearnMore,
+                                           "birnie@google.com",
+                                           BrowserCommand::kOpenGlicSettings));
++#endif  // BUILDFLAG(ENABLE_GLIC)
+ }
+ 
+ void RegisterWhatsNewEditions(whats_new::WhatsNewRegistry* registry) {
