@@ -17,7 +17,6 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -128,6 +127,15 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
     return result;
   }
 
+  // Helper to get the document identifier for the main frame
+  std::string GetMainFrameDocumentIdentifier() {
+    auto document_identifier =
+        optimization_guide::DocumentIdentifierUserData::GetDocumentIdentifier(
+            web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken());
+    CHECK(document_identifier.has_value());
+    return document_identifier.value();
+  }
+
   // Helper to get real DOM node ID from a page element
   int GetDOMNodeId(const std::string& selector) {
     return content::GetDOMNodeId(*main_frame(), selector).value();
@@ -174,20 +182,14 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ClickTool_NodeIdTarget) {
   auto click_tool = FindToolByName("click_element");
   ASSERT_TRUE(click_tool);
 
-  // Reset click tracking
-  ASSERT_TRUE(content::ExecJs(web_contents(), "button_clicked = false"));
-  ASSERT_TRUE(content::ExecJs(web_contents(), "mouse_event_log = []"));
-
   // Get real DOM node ID for the clickable button
   int button_node_id = GetDOMNodeId("button#clickable");
 
   auto target_dict = target_test_util::GetContentNodeTargetDict(
-      button_node_id,
-      *optimization_guide::DocumentIdentifierUserData::GetDocumentIdentifier(
-          web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()));
+      button_node_id, GetMainFrameDocumentIdentifier());
 
   base::Value::Dict input;
-  input.Set("target", std::move(target_dict));
+  input.Set("target", target_dict.Clone());
   input.Set("click_type", "left");
   input.Set("click_count", "single");
 
@@ -212,20 +214,13 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, TypeTool_NodeIdTarget) {
   auto type_tool = FindToolByName("type_text");
   ASSERT_TRUE(type_tool);
 
-  // Reset input tracking and clear the input field
-  ASSERT_TRUE(content::ExecJs(web_contents(), "input_event_log = []"));
-  ASSERT_TRUE(content::ExecJs(web_contents(),
-                              "document.getElementById('input').value = ''"));
-
   // Get real DOM node ID for the input element
   int input_node_id = GetDOMNodeId("#input");
   auto target_dict = target_test_util::GetContentNodeTargetDict(
-      input_node_id,
-      *optimization_guide::DocumentIdentifierUserData::GetDocumentIdentifier(
-          web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()));
+      input_node_id, GetMainFrameDocumentIdentifier());
 
   base::Value::Dict input;
-  input.Set("target", std::move(target_dict));
+  input.Set("target", target_dict.Clone());
   input.Set("text", "Hello World");
   input.Set("follow_by_enter", false);
   input.Set("mode", "replace");
@@ -256,12 +251,10 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ScrollTool_NodeIdTarget) {
   // Get real DOM node ID for the scroller element
   int scroller_node_id = GetDOMNodeId("#scroller");
   auto target_dict = target_test_util::GetContentNodeTargetDict(
-      scroller_node_id,
-      *optimization_guide::DocumentIdentifierUserData::GetDocumentIdentifier(
-          web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()));
+      scroller_node_id, GetMainFrameDocumentIdentifier());
 
   base::Value::Dict input;
-  input.Set("target", std::move(target_dict));
+  input.Set("target", target_dict.Clone());
   input.Set("direction", "down");
   input.Set("distance", 50);
 
@@ -274,6 +267,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ScrollTool_NodeIdTarget) {
                       "document.getElementById('scroller').scrollTop")
           .ExtractInt();
   EXPECT_GT(final_scroll, initial_scroll);
+  EXPECT_EQ(final_scroll, 50);
 }
 
 // Test scroll tool with Node ID targeting
@@ -287,12 +281,11 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ScrollTool_DocumentTarget) {
 
   ASSERT_EQ(0, EvalJs(web_contents(), "window.scrollY"));
 
-  auto target_dict = target_test_util::GetDocumentTargetDict(
-      *optimization_guide::DocumentIdentifierUserData::GetDocumentIdentifier(
-          web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()));
+  auto target_dict =
+      target_test_util::GetDocumentTargetDict(GetMainFrameDocumentIdentifier());
 
   base::Value::Dict input;
-  input.Set("target", std::move(target_dict));
+  input.Set("target", target_dict.Clone());
   input.Set("direction", "down");
   input.Set("distance", scroll_distance);
 
@@ -320,12 +313,10 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, SelectTool_NodeIdTarget) {
   // Get real DOM node ID for the select element
   int select_node_id = GetDOMNodeId("#plainSelect");
   auto target_dict = target_test_util::GetContentNodeTargetDict(
-      select_node_id,
-      *optimization_guide::DocumentIdentifierUserData::GetDocumentIdentifier(
-          web_contents()->GetPrimaryMainFrame()->GetGlobalFrameToken()));
+      select_node_id, GetMainFrameDocumentIdentifier());
 
   base::Value::Dict input;
-  input.Set("target", std::move(target_dict));
+  input.Set("target", target_dict.Clone());
   input.Set("value", "beta");
 
   auto result = ExecuteToolAndWait(select_tool, CreateToolInput(input));
@@ -386,8 +377,8 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest,
       target_test_util::GetCoordinateTargetDict(100, 15);  // Middle of range
 
   base::Value::Dict input;
-  input.Set("from", std::move(from_target));
-  input.Set("to", std::move(to_target));
+  input.Set("from", from_target.Clone());
+  input.Set("to", to_target.Clone());
 
   auto result = ExecuteToolAndWait(drag_tool, CreateToolInput(input));
   EXPECT_GT(result.size(), 0u);

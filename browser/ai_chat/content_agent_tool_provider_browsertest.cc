@@ -88,17 +88,18 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
   Profile* GetProfile() { return agent_profile_; }
 
   // Helper to get web contents from tool provider
-  content::WebContents* GetToolProviderWebContents() {
+  tabs::TabHandle GetToolProviderTabHandle() {
     base::test::TestFuture<tabs::TabHandle> tab_handle_future;
     tool_provider_->GetOrCreateTabHandleForTask(
         tab_handle_future.GetCallback());
-    tabs::TabHandle tab_handle = tab_handle_future.Take();
-    return tab_handle.Get()->GetContents();
+    return tab_handle_future.Take();
   }
 
   // Helper to navigate tool provider's tab
   void NavigateToolProviderTab(const GURL& url) {
-    content::WebContents* web_contents = GetToolProviderWebContents();
+    tabs::TabHandle tab_handle = GetToolProviderTabHandle();
+    ASSERT_TRUE(tab_handle.Get());
+    content::WebContents* web_contents = tab_handle.Get()->GetContents();
     ASSERT_TRUE(content::NavigateToURL(web_contents, url));
   }
 
@@ -151,28 +152,25 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
                        GetOrCreateTabHandleForTask) {
   auto initial_tab_count =
       agent_browser_window_->GetTabStripModel()->GetTabCount();
-  base::test::TestFuture<tabs::TabHandle> first_future;
-  tool_provider_->GetOrCreateTabHandleForTask(first_future.GetCallback());
-  tabs::TabHandle first_handle = first_future.Take();
-  EXPECT_TRUE(first_handle.Get());
-  EXPECT_TRUE(first_handle.Get()->GetContents());
+
+  tabs::TabHandle first_handle = GetToolProviderTabHandle();
+  ASSERT_TRUE(first_handle.Get());
+
   // First call should result in a new tab
   EXPECT_EQ(agent_browser_window_->GetTabStripModel()->GetTabCount(),
             initial_tab_count + 1);
+
   // Should be on the blank page
   content::WaitForLoadStop(first_handle.Get()->GetContents());
   EXPECT_EQ(first_handle.Get()->GetContents()->GetLastCommittedURL(),
             url::kAboutBlankURL);
 
-  base::test::TestFuture<tabs::TabHandle> second_future;
-  tool_provider_->GetOrCreateTabHandleForTask(second_future.GetCallback());
-  tabs::TabHandle second_handle = second_future.Take();
+  tabs::TabHandle second_handle = GetToolProviderTabHandle();
+  ASSERT_TRUE(second_handle.Get());
 
   EXPECT_EQ(first_handle, second_handle);
-  EXPECT_EQ(first_handle.Get()->GetContents(),
-            second_handle.Get()->GetContents());
 
-  // Should not have opened any new tabs
+  // Should not have opened a second new tab
   EXPECT_EQ(agent_browser_window_->GetTabStripModel()->GetTabCount(),
             initial_tab_count + 1);
 }
@@ -183,12 +181,9 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   GURL test_url = embedded_test_server()->GetURL("/actor/blank.html");
   NavigateToolProviderTab(test_url);
 
-  // Create and execute the action
-  base::test::TestFuture<tabs::TabHandle> tab_handle_future;
-  tool_provider_->GetOrCreateTabHandleForTask(tab_handle_future.GetCallback());
-  tabs::TabHandle tab_handle = tab_handle_future.Take();
+  tabs::TabHandle tab_handle = GetToolProviderTabHandle();
+  ASSERT_TRUE(tab_handle.Get());
 
-  // Create and try to execute an action on the closed tab
   optimization_guide::proto::Actions actions =
       CreateClickAction(tab_handle, 0, 0);
 
@@ -200,7 +195,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
 
   auto result = result_future.Take();
   EXPECT_THAT(result, ContentBlockText(testing::HasSubstr(
-                          "Action failed - incorrect parameters")));
+                          "Error: action failed - incorrect parameters")));
 
   // We also want to verify that OnActionsFinished handles a closed tab. Perhaps
   // an Action closes a tab unexpectedly. We can't yet simulate an action which
@@ -208,7 +203,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   OnActionsFinished(result_future.GetCallback(),
                     actor::mojom::ActionResultCode::kOk, std::nullopt, {});
   EXPECT_THAT(result_future.Take(),
-              ContentBlockText(testing::HasSubstr("Tab is no longer open")));
+              ContentBlockText(testing::HasSubstr("tab is no longer open")));
 }
 
 // Test when receiving no annotated page content
@@ -224,7 +219,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   ReceivedAnnotatedPageContent(result_future.GetCallback(), std::nullopt);
   auto result = result_future.Take();
   EXPECT_THAT(result, ContentBlockText(
-                          testing::HasSubstr("Error getting page content")));
+                          testing::HasSubstr("could not get page content")));
 }
 
 // Test when receiving no root node

@@ -124,8 +124,8 @@ void ContentAgentToolProvider::ExecuteActions(
 
   if (!requests.has_value()) {
     DLOG(ERROR) << "Action Failed to convert BrowserAction to ToolRequests.";
-    std::move(callback).Run(
-        CreateContentBlocksForText("Action failed - incorrect parameters"));
+    std::move(callback).Run(CreateContentBlocksForText(
+        "Error: action failed - incorrect parameters"));
     return;
   }
 
@@ -168,7 +168,7 @@ void ContentAgentToolProvider::OnActionsFinished(
     // closed.
     if (!task_tab_handle_.Get() || !task_tab_handle_.Get()->GetContents()) {
       std::move(callback).Run(
-          CreateContentBlocksForText("Tab is no longer open"));
+          CreateContentBlocksForText("Error: tab is no longer open"));
       return;
     }
 
@@ -179,12 +179,12 @@ void ContentAgentToolProvider::OnActionsFinished(
   } else if (result_code ==
              actor::mojom::ActionResultCode::kEmptyActionSequence) {
     DLOG(ERROR) << "Actions were empty";
-    std::move(callback).Run(
-        CreateContentBlocksForText("Action failed - no actions specified"));
+    std::move(callback).Run(CreateContentBlocksForText(
+        "Error: action failed - no actions specified"));
   } else {
     DLOG(ERROR) << "Action failed, see actor.mojom for result code meaning: "
                 << result_code;
-    std::move(callback).Run(CreateContentBlocksForText("Action failed"));
+    std::move(callback).Run(CreateContentBlocksForText("Error: action failed"));
   }
 }
 
@@ -194,7 +194,7 @@ void ContentAgentToolProvider::ReceivedAnnotatedPageContent(
   if (!content.has_value()) {
     DLOG(ERROR) << "Error getting page content";
     std::move(callback).Run(
-        CreateContentBlocksForText("Error getting page content"));
+        CreateContentBlocksForText("Error: could not get page content"));
     return;
   }
 

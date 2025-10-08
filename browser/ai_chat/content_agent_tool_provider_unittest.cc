@@ -128,6 +128,9 @@ TEST_F(ContentAgentToolProviderTest, StopAllTasks) {
   actor::TaskId task_id = tool_provider_->GetTaskId();
   EXPECT_FALSE(task_id.is_null());
 
+  EXPECT_EQ(actor_service_->GetActiveTasks().count(task_id), 1u);
+  EXPECT_EQ(actor_service_->GetInactiveTasks().count(task_id), 0u);
+
   tool_provider_->StopAllTasks();
 
   // Verify task is now in inactive tasks
