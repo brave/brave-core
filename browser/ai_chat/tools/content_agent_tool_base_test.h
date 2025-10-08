@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/location.h"
 #include "brave/browser/ai_chat/tools/mock_content_agent_task_provider.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "chrome/browser/actor/tools/tool_request.h"
@@ -37,13 +38,14 @@ class ContentAgentToolBaseTest : public testing::Test {
   // returning the action and tool request for further verification.
   std::tuple<optimization_guide::proto::Action,
              std::unique_ptr<actor::ToolRequest>>
-  RunWithExpectedSuccess(base::Location location,
-                         std::string input_json,
+  RunWithExpectedSuccess(const base::Location& location,
+                         const std::string& input_json,
+                         const std::string& expected_tool_name,
                          bool uses_tab = true);
 
   // Run the UseTool method and verify ExecuteActions is not called, and the
   // result is an error with the expected substring.
-  void RunWithExpectedError(base::Location location,
+  void RunWithExpectedError(const base::Location& location,
                             const std::string& input_json,
                             const std::string& expected_error = "Error: ");
 

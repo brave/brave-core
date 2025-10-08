@@ -42,7 +42,8 @@ class SelectToolTest : public ContentAgentToolBaseTest {
       const std::string& input_json,
       const std::string& expected_value) {
     // Verify proto action
-    auto [action, tool_request] = RunWithExpectedSuccess(FROM_HERE, input_json);
+    auto [action, tool_request] =
+        RunWithExpectedSuccess(FROM_HERE, input_json, "Select");
 
     EXPECT_TRUE(action.has_select());
 
@@ -50,20 +51,15 @@ class SelectToolTest : public ContentAgentToolBaseTest {
     EXPECT_EQ(select_action.tab_id(), test_tab_handle_.raw_value());
     EXPECT_EQ(select_action.value(), expected_value);
 
-    // Target verification should be handled by the target_test_util methods
+    // Target verification should be handled by the target_test_util methods in
+    // each test.
     EXPECT_TRUE(select_action.has_target());
 
     auto* select_request =
         static_cast<actor::SelectToolRequest*>(tool_request.get());
-    EXPECT_NE(select_request, nullptr);
-
-    // Verify ToMojoToolAction conversion and check mojom properties
-    auto* page_request =
-        static_cast<actor::PageToolRequest*>(tool_request.get());
-    auto mojo_action = page_request->ToMojoToolAction();
-    CHECK(mojo_action);
 
     // Verify mojom action properties
+    auto mojo_action = select_request->ToMojoToolAction();
     EXPECT_TRUE(mojo_action->is_select());
     const auto& mojom_select = mojo_action->get_select();
     EXPECT_EQ(mojom_select->value, expected_value);

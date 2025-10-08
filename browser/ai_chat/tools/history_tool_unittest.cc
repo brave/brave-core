@@ -38,10 +38,10 @@ class HistoryToolTest : public ContentAgentToolBaseTest {
 
   void VerifySuccess(const std::string& input_json,
                      const std::string& expected_direction) {
-    auto [action, tool_request] = RunWithExpectedSuccess(FROM_HERE, input_json);
+    auto [action, tool_request] =
+        RunWithExpectedSuccess(FROM_HERE, input_json, "History");
     auto* history_request =
         static_cast<actor::HistoryToolRequest*>(tool_request.get());
-    EXPECT_NE(history_request, nullptr);
 
     if (expected_direction == "back") {
       EXPECT_TRUE(action.has_back());

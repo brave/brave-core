@@ -42,9 +42,11 @@ void ContentAgentToolBaseTest::SetUp() {
 
 std::tuple<optimization_guide::proto::Action,
            std::unique_ptr<actor::ToolRequest>>
-ContentAgentToolBaseTest::RunWithExpectedSuccess(base::Location location,
-                                                 std::string input_json,
-                                                 bool uses_tab) {
+ContentAgentToolBaseTest::RunWithExpectedSuccess(
+    const base::Location& location,
+    const std::string& input_json,
+    const std::string& expected_tool_name,
+    bool uses_tab) {
   SCOPED_TRACE(testing::Message() << location.ToString());
   base::RunLoop run_loop;
   optimization_guide::proto::Actions captured_actions;
@@ -67,6 +69,8 @@ ContentAgentToolBaseTest::RunWithExpectedSuccess(base::Location location,
   // Verify CreateToolRequest works and produces correct ClickToolRequest
   auto tool_request = actor::CreateToolRequest(action, nullptr);
   EXPECT_NE(tool_request, nullptr);
+  EXPECT_EQ(tool_request->JournalEvent(), expected_tool_name);
+
   if (uses_tab) {
     EXPECT_EQ(tool_request->GetTabHandle(), test_tab_handle_);
   } else {
@@ -76,7 +80,7 @@ ContentAgentToolBaseTest::RunWithExpectedSuccess(base::Location location,
 }
 
 void ContentAgentToolBaseTest::RunWithExpectedError(
-    base::Location location,
+    const base::Location& location,
     const std::string& input_json,
     const std::string& expected_error) {
   SCOPED_TRACE(testing::Message() << location.ToString());

@@ -57,7 +57,8 @@ class TypeToolTest : public ContentAgentToolBaseTest {
       const std::string& expected_text,
       bool expected_follow_by_enter,
       optimization_guide::proto::TypeAction::TypeMode expected_mode) {
-    auto [action, tool_request] = RunWithExpectedSuccess(FROM_HERE, input_json);
+    auto [action, tool_request] =
+        RunWithExpectedSuccess(FROM_HERE, input_json, "Type");
 
     EXPECT_TRUE(action.has_type());
 
@@ -72,11 +73,10 @@ class TypeToolTest : public ContentAgentToolBaseTest {
 
     auto* type_request =
         static_cast<actor::TypeToolRequest*>(tool_request.get());
-    EXPECT_NE(type_request, nullptr);
     EXPECT_EQ(type_request->text, expected_text);
     EXPECT_EQ(type_request->follow_by_enter, expected_follow_by_enter);
 
-    // Convert mode enum values
+    // Verify mode
     actor::TypeToolRequest::Mode expected_actor_mode;
     switch (expected_mode) {
       case optimization_guide::proto::TypeAction::DELETE_EXISTING:
@@ -89,24 +89,18 @@ class TypeToolTest : public ContentAgentToolBaseTest {
         expected_actor_mode = actor::TypeToolRequest::Mode::kAppend;
         break;
       default:
-        expected_actor_mode = actor::TypeToolRequest::Mode::kReplace;
-        break;
+        NOTREACHED() << "Unknown mode: " << expected_mode;
     }
     EXPECT_EQ(type_request->mode, expected_actor_mode);
 
-    // Verify ToMojoToolAction conversion and check mojom properties
-    auto* page_request =
-        static_cast<actor::PageToolRequest*>(tool_request.get());
-    auto mojo_action = page_request->ToMojoToolAction();
-    CHECK(mojo_action);
-
     // Verify mojom action properties
+    auto mojo_action = type_request->ToMojoToolAction();
     EXPECT_TRUE(mojo_action->is_type());
     const auto& mojom_type = mojo_action->get_type();
     EXPECT_EQ(mojom_type->text, expected_text);
     EXPECT_EQ(mojom_type->follow_by_enter, expected_follow_by_enter);
 
-    // Verify mode conversion
+    // Verify mode
     actor::mojom::TypeAction::Mode expected_mojom_mode;
     switch (expected_actor_mode) {
       case actor::TypeToolRequest::Mode::kReplace:

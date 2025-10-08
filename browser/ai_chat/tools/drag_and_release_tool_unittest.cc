@@ -40,7 +40,8 @@ class DragAndReleaseToolTest : public ContentAgentToolBaseTest {
   // Verify drag and release action and tool request creation
   optimization_guide::proto::Action VerifySuccess(
       const std::string& input_json) {
-    auto [action, tool_request] = RunWithExpectedSuccess(FROM_HERE, input_json);
+    auto [action, tool_request] =
+        RunWithExpectedSuccess(FROM_HERE, input_json, "DragAndRelease");
 
     // Verify proto action
     EXPECT_TRUE(action.has_drag_and_release());
@@ -54,15 +55,9 @@ class DragAndReleaseToolTest : public ContentAgentToolBaseTest {
 
     auto* drag_request =
         static_cast<actor::DragAndReleaseToolRequest*>(tool_request.get());
-    EXPECT_NE(drag_request, nullptr);
-
-    // Verify ToMojoToolAction conversion
-    auto* page_request =
-        static_cast<actor::PageToolRequest*>(tool_request.get());
-    auto mojo_action = page_request->ToMojoToolAction();
-    CHECK(mojo_action);
 
     // Verify mojom action properties
+    auto mojo_action = drag_request->ToMojoToolAction();
     EXPECT_TRUE(mojo_action->is_drag_and_release());
     const auto& mojom_drag = mojo_action->get_drag_and_release();
     EXPECT_TRUE(mojom_drag->to_target);

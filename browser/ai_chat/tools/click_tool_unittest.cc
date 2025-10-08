@@ -39,12 +39,13 @@ class ClickToolTest : public ContentAgentToolBaseTest {
   }
 
   optimization_guide::proto::Action VerifySuccess(
-      std::string input_json,
+      const std::string& input_json,
       optimization_guide::proto::ClickAction::ClickType expected_click_type =
           optimization_guide::proto::ClickAction::LEFT,
       optimization_guide::proto::ClickAction::ClickCount expected_click_count =
           optimization_guide::proto::ClickAction::SINGLE) {
-    auto [action, tool_request] = RunWithExpectedSuccess(FROM_HERE, input_json);
+    auto [action, tool_request] =
+        RunWithExpectedSuccess(FROM_HERE, input_json, "Click");
 
     EXPECT_TRUE(action.has_click());
 
@@ -54,30 +55,21 @@ class ClickToolTest : public ContentAgentToolBaseTest {
     EXPECT_EQ(click_action.click_count(), expected_click_count);
 
     // Target verification should be handled by the target_test_util methods
+    // in each test.
     EXPECT_TRUE(click_action.has_target());
 
     auto* click_request =
         static_cast<actor::ClickToolRequest*>(tool_request.get());
-    EXPECT_NE(click_request, nullptr);
-
-    // Verify ToMojoToolAction conversion and check mojom properties
-    auto* page_request =
-        static_cast<actor::PageToolRequest*>(tool_request.get());
-    auto mojo_action = page_request->ToMojoToolAction();
-    CHECK(mojo_action);
 
     // Verify mojom action properties
+    auto mojo_action = click_request->ToMojoToolAction();
     EXPECT_TRUE(mojo_action->is_click());
     const auto& mojom_click = mojo_action->get_click();
-
-    // Verify click type conversion
     if (expected_click_type == optimization_guide::proto::ClickAction::LEFT) {
       EXPECT_EQ(mojom_click->type, actor::mojom::ClickAction::Type::kLeft);
     } else {
       EXPECT_EQ(mojom_click->type, actor::mojom::ClickAction::Type::kRight);
     }
-
-    // Verify click count conversion
     if (expected_click_count ==
         optimization_guide::proto::ClickAction::SINGLE) {
       EXPECT_EQ(mojom_click->count, actor::mojom::ClickAction::Count::kSingle);

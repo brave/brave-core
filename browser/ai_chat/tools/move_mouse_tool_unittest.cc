@@ -36,7 +36,8 @@ class MoveMouseToolTest : public ContentAgentToolBaseTest {
 
   optimization_guide::proto::Action VerifySuccess(
       const std::string& input_json) {
-    auto [action, tool_request] = RunWithExpectedSuccess(FROM_HERE, input_json);
+    auto [action, tool_request] =
+        RunWithExpectedSuccess(FROM_HERE, input_json, "MoveMouse");
 
     EXPECT_TRUE(action.has_move_mouse());
     const auto& move_mouse_action = action.move_mouse();
@@ -47,12 +48,8 @@ class MoveMouseToolTest : public ContentAgentToolBaseTest {
 
     auto* move_mouse_request =
         static_cast<actor::MoveMouseToolRequest*>(tool_request.get());
-    EXPECT_NE(move_mouse_request, nullptr);
 
-    auto* page_request =
-        static_cast<actor::PageToolRequest*>(tool_request.get());
-    auto mojo_action = page_request->ToMojoToolAction();
-    CHECK(mojo_action);
+    auto mojo_action = move_mouse_request->ToMojoToolAction();
     EXPECT_TRUE(mojo_action->is_mouse_move());
 
     return action;

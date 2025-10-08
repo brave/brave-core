@@ -36,17 +36,19 @@ class NavigationToolTest : public ContentAgentToolBaseTest {
 
   void VerifySuccess(const std::string& input_json,
                      const std::string& expected_url) {
-    auto [action, tool_request] = RunWithExpectedSuccess(FROM_HERE, input_json);
-
+    GURL expected_gurl(expected_url);
+    auto [action, tool_request] =
+        RunWithExpectedSuccess(FROM_HERE, input_json, "Navigate");
     EXPECT_TRUE(action.has_navigate());
 
     const auto& navigate_action = action.navigate();
     EXPECT_EQ(navigate_action.tab_id(), test_tab_handle_.raw_value());
-    EXPECT_EQ(navigate_action.url(), GURL(expected_url).spec());
+    EXPECT_EQ(navigate_action.url(), expected_gurl.spec());
 
     auto* navigate_request =
         static_cast<actor::NavigateToolRequest*>(tool_request.get());
-    EXPECT_NE(navigate_request, nullptr);
+    EXPECT_EQ(navigate_request->AssociatedOriginGrant(),
+              url::Origin::Create(expected_gurl));
   }
 };
 

@@ -35,19 +35,18 @@ class WaitToolTest : public ContentAgentToolBaseTest {
   // Verify wait action properties and conversions
   void VerifySuccess(const std::string& input_json, int expected_wait_time_ms) {
     auto [action, tool_request] =
-        RunWithExpectedSuccess(FROM_HERE, input_json, false);
+        RunWithExpectedSuccess(FROM_HERE, input_json, "Wait", false);
 
     EXPECT_TRUE(action.has_wait());
 
     const auto& wait_action = action.wait();
     EXPECT_EQ(wait_action.wait_time_ms(), expected_wait_time_ms);
 
-    auto* wait_request =
-        static_cast<actor::WaitToolRequest*>(tool_request.get());
-    EXPECT_NE(wait_request, nullptr);
     // Note: WaitToolRequest doesn't store wait_time_ms as a member, it's
     // converted to a TimeDelta in the constructor, so we can't easily verify
-    // the exact value
+    // the exact value. This will be less of an issue when we refactor to
+    // directly creating the ToolRequest instead of first creating the proto
+    // (https://github.com/brave/brave-browser/issues/49289).
   }
 };
 

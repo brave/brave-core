@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/json/json_writer.h"
+#include "base/notreached.h"
 #include "brave/browser/ai_chat/tools/content_agent_tool_base_test.h"
 #include "brave/browser/ai_chat/tools/target_test_util.h"
 #include "chrome/browser/actor/browser_action_util.h"
@@ -43,8 +44,9 @@ class ScrollToolTest : public ContentAgentToolBaseTest {
       optimization_guide::proto::ScrollAction::ScrollDirection
           expected_direction,
       float expected_distance) {
-    auto [action, tool_request] = RunWithExpectedSuccess(FROM_HERE, input_json);
-
+    auto [action, tool_request] =
+        RunWithExpectedSuccess(FROM_HERE, input_json, "Scroll");
+    // Verify proto action properties
     EXPECT_TRUE(action.has_scroll());
     const auto& scroll_action = action.scroll();
     EXPECT_EQ(scroll_action.tab_id(), test_tab_handle_.raw_value());
@@ -54,61 +56,37 @@ class ScrollToolTest : public ContentAgentToolBaseTest {
     // Target verification should be handled by the target_test_util methods
     EXPECT_TRUE(scroll_action.has_target());
 
-    auto* scroll_request =
-        static_cast<actor::ScrollToolRequest*>(tool_request.get());
-    EXPECT_NE(scroll_request, nullptr);
-
     // Convert direction enum values
-    actor::ScrollToolRequest::Direction expected_actor_direction;
+    actor::mojom::ScrollAction::ScrollDirection expected_mojom_direction;
     switch (expected_direction) {
       case optimization_guide::proto::ScrollAction::LEFT:
-        expected_actor_direction = actor::ScrollToolRequest::Direction::kLeft;
-        break;
-      case optimization_guide::proto::ScrollAction::RIGHT:
-        expected_actor_direction = actor::ScrollToolRequest::Direction::kRight;
-        break;
-      case optimization_guide::proto::ScrollAction::UP:
-        expected_actor_direction = actor::ScrollToolRequest::Direction::kUp;
-        break;
-      case optimization_guide::proto::ScrollAction::DOWN:
-        expected_actor_direction = actor::ScrollToolRequest::Direction::kDown;
-        break;
-      default:
-        expected_actor_direction = actor::ScrollToolRequest::Direction::kDown;
-        break;
-    }
-
-    // Verify ToMojoToolAction conversion and check mojom properties
-    auto* page_request =
-        static_cast<actor::PageToolRequest*>(tool_request.get());
-    auto mojo_action = page_request->ToMojoToolAction();
-    CHECK(mojo_action);
-
-    // Verify mojom action properties
-    EXPECT_TRUE(mojo_action->is_scroll());
-    const auto& mojom_scroll = mojo_action->get_scroll();
-    EXPECT_FLOAT_EQ(mojom_scroll->distance, expected_distance);
-
-    // Verify direction conversion
-    actor::mojom::ScrollAction::ScrollDirection expected_mojom_direction;
-    switch (expected_actor_direction) {
-      case actor::ScrollToolRequest::Direction::kLeft:
         expected_mojom_direction =
             actor::mojom::ScrollAction::ScrollDirection::kLeft;
         break;
-      case actor::ScrollToolRequest::Direction::kRight:
+      case optimization_guide::proto::ScrollAction::RIGHT:
         expected_mojom_direction =
             actor::mojom::ScrollAction::ScrollDirection::kRight;
         break;
-      case actor::ScrollToolRequest::Direction::kUp:
+      case optimization_guide::proto::ScrollAction::UP:
         expected_mojom_direction =
             actor::mojom::ScrollAction::ScrollDirection::kUp;
         break;
-      case actor::ScrollToolRequest::Direction::kDown:
+      case optimization_guide::proto::ScrollAction::DOWN:
         expected_mojom_direction =
             actor::mojom::ScrollAction::ScrollDirection::kDown;
         break;
+      default:
+        NOTREACHED() << "Unknown direction: " << expected_direction;
     }
+
+    auto* scroll_request =
+        static_cast<actor::ScrollToolRequest*>(tool_request.get());
+
+    // Verify mojom action properties
+    auto mojo_action = scroll_request->ToMojoToolAction();
+    EXPECT_TRUE(mojo_action->is_scroll());
+    const auto& mojom_scroll = mojo_action->get_scroll();
+    EXPECT_FLOAT_EQ(mojom_scroll->distance, expected_distance);
     EXPECT_EQ(mojom_scroll->direction, expected_mojom_direction);
 
     return action;
