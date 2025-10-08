@@ -8,8 +8,8 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/polkadot_utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_wallet {

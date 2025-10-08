@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_POLKADOT_UTILS_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_POLKADOT_UTILS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_UTILS_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_UTILS_H_
 
 namespace brave_wallet {
 
@@ -14,4 +14,4 @@ inline constexpr const size_t kPolkadotSubstrateAccountIdSize = 32;
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_POLKADOT_UTILS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_UTILS_H_
