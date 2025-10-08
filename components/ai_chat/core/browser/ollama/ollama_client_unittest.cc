@@ -167,4 +167,45 @@ TEST_F(OllamaClientTest, FetchModelsEmptyResponse) {
   run_loop.Run();
 }
 
+TEST_F(OllamaClientTest, ShowModelSuccess) {
+  constexpr char kModelDetailsResponse[] = R"({
+    "model_info": {
+      "general.architecture": "llama",
+      "llama.context_length": 4096
+    },
+    "capabilities": ["vision", "chat"]
+  })";
+
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+                                         kModelDetailsResponse);
+
+  base::RunLoop run_loop;
+  ollama_client()->ShowModel(
+      "llama2:7b",
+      base::BindLambdaForTesting([&](std::optional<std::string> response_body) {
+        ASSERT_TRUE(response_body.has_value());
+        EXPECT_EQ(kModelDetailsResponse, *response_body);
+        run_loop.Quit();
+      }));
+
+  run_loop.Run();
+}
+
+TEST_F(OllamaClientTest, ShowModelNoResponse) {
+  test_url_loader_factory()->AddResponse(
+      GURL(ai_chat::mojom::kOllamaApiShowEndpoint),
+      network::mojom::URLResponseHead::New(), "",
+      network::URLLoaderCompletionStatus(net::ERR_CONNECTION_REFUSED));
+
+  base::RunLoop run_loop;
+  ollama_client()->ShowModel(
+      "llama2:7b",
+      base::BindLambdaForTesting([&](std::optional<std::string> response_body) {
+        EXPECT_FALSE(response_body.has_value());
+        run_loop.Quit();
+      }));
+
+  run_loop.Run();
+}
+
 }  // namespace ai_chat

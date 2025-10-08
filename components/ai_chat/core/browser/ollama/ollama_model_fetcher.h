@@ -76,11 +76,20 @@ class OllamaModelFetcher {
   void OnOllamaFetchEnabledChanged();
   void OnModelsResponse(std::optional<std::string> response_body);
   void ProcessModelsResponse(const std::string& response_body);
+  struct PendingModelInfo {
+    std::string model_name;
+    std::string display_name;
+  };
+
+  void FetchModelDetails(const std::string& model_name);
+  void OnModelDetailsResponse(const std::string& model_name,
+                              std::optional<std::string> response_body);
 
   const raw_ref<ModelService> model_service_;
   raw_ptr<PrefService> prefs_;
   std::unique_ptr<OllamaClient> ollama_client_;
   PrefChangeRegistrar pref_change_registrar_;
+  std::map<std::string, PendingModelInfo> pending_models_;
   base::WeakPtrFactory<OllamaModelFetcher> weak_ptr_factory_{this};
 };
 

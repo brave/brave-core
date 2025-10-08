@@ -55,6 +55,25 @@ constexpr net::NetworkTrafficAnnotationTag kOllamaModelsAnnotation =
           setting: "This feature can be disabled in Leo Assistant settings."
         })");
 
+constexpr net::NetworkTrafficAnnotationTag kOllamaModelDetailsAnnotation =
+    net::DefineNetworkTrafficAnnotation(
+        "brave_leo_assistant_ollama_model_details",
+        R"(
+        semantics {
+          sender: "Brave Leo Assistant"
+          description:
+            "Fetch detailed information for a specific Ollama model."
+          trigger:
+            "User enables Ollama fetching in Leo Assistant settings."
+          data:
+            "HTTP POST request to localhost:11434/api/show with model name."
+          destination: LOCAL
+        }
+        policy {
+          cookies_allowed: NO
+          setting: "This feature can be disabled in Leo Assistant settings."
+        })");
+
 }  // namespace
 
 OllamaClient::OllamaClient(
@@ -116,6 +135,35 @@ void OllamaClient::FetchModels(ModelsCallback callback) {
 
 void OllamaClient::OnModelsListComplete(
     ModelsCallback callback,
+    std::unique_ptr<network::SimpleURLLoader> loader,
+    std::optional<std::string> response) {
+  std::move(callback).Run(response);
+}
+
+void OllamaClient::ShowModel(const std::string& model_name,
+                             ModelDetailsCallback callback) {
+  auto request = std::make_unique<network::ResourceRequest>();
+  request->url = GURL(mojom::kOllamaApiShowEndpoint);
+  request->method = "POST";
+  request->headers.SetHeader("Content-Type", "application/json");
+
+  auto loader = network::SimpleURLLoader::Create(std::move(request),
+                                                 kOllamaModelDetailsAnnotation);
+
+  std::string body = "{\"model\":\"" + model_name + "\"}";
+  loader->AttachStringForUpload(body, "application/json");
+
+  auto* loader_ptr = loader.get();
+  loader_ptr->DownloadToString(
+      url_loader_factory_.get(),
+      base::BindOnce(&OllamaClient::OnModelDetailsComplete,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     std::move(loader)),
+      1024 * 1024);  // 1MB should be enough for model details
+}
+
+void OllamaClient::OnModelDetailsComplete(
+    ModelDetailsCallback callback,
     std::unique_ptr<network::SimpleURLLoader> loader,
     std::optional<std::string> response) {
   std::move(callback).Run(response);
