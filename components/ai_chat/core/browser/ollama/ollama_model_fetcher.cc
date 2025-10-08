@@ -61,23 +61,12 @@ void OllamaModelFetcher::OnOllamaFetchEnabledChanged() {
 
 void OllamaModelFetcher::FetchModels() {
   ollama_client_->FetchModels(base::BindOnce(
-      &OllamaModelFetcher::OnModelsResponse, weak_ptr_factory_.GetWeakPtr()));
+      &OllamaModelFetcher::OnModelsFetched, weak_ptr_factory_.GetWeakPtr()));
 }
 
-void OllamaModelFetcher::OnModelsResponse(
-    std::optional<std::string> response_body) {
-  if (!response_body || response_body->empty()) {
-    return;
-  }
-
-  std::optional<base::Value::Dict> json_dict =
-      base::JSONReader::ReadDict(*response_body);
-  if (!json_dict) {
-    return;
-  }
-
-  const base::Value::List* models_list = json_dict->FindList("models");
-  if (!models_list) {
+void OllamaModelFetcher::OnModelsFetched(
+    std::optional<std::vector<OllamaClient::ModelInfo>> models) {
+  if (!models) {
     return;
   }
 
@@ -102,16 +91,8 @@ void OllamaModelFetcher::OnModelsResponse(
 
   // Build set of current Ollama models from the response
   std::set<std::string> current_ollama_models;
-  for (const auto& model : *models_list) {
-    const base::Value::Dict* model_dict = model.GetIfDict();
-    if (!model_dict) {
-      continue;
-    }
-
-    const std::string* model_name = model_dict->FindString("name");
-    if (model_name) {
-      current_ollama_models.insert(*model_name);
-    }
+  for (const auto& model : *models) {
+    current_ollama_models.insert(model.name);
   }
 
   // Remove Ollama models that are no longer available
@@ -146,36 +127,30 @@ void OllamaModelFetcher::OnModelsResponse(
   pending_models_.clear();
 
   // Fetch detailed information for each new model
-  for (const auto& model : *models_list) {
-    const base::Value::Dict* model_dict = model.GetIfDict();
-    if (!model_dict) {
-      continue;
-    }
-
-    const std::string* model_name = model_dict->FindString("name");
-    if (!model_name || existing_ollama_models.contains(*model_name)) {
+  for (const auto& model : *models) {
+    if (existing_ollama_models.contains(model.name)) {
       continue;
     }
 
     // Store basic info and fetch detailed information
     PendingModelInfo pending_info;
-    pending_info.model_name = *model_name;
-    pending_info.display_name = FormatOllamaModelName(*model_name);
-    pending_models_[*model_name] = std::move(pending_info);
+    pending_info.model_name = model.name;
+    pending_info.display_name = FormatOllamaModelName(model.name);
+    pending_models_[model.name] = std::move(pending_info);
 
-    FetchModelDetails(*model_name);
+    FetchModelDetails(model.name);
   }
 }
 
 void OllamaModelFetcher::FetchModelDetails(const std::string& model_name) {
   ollama_client_->ShowModel(
-      model_name, base::BindOnce(&OllamaModelFetcher::OnModelDetailsResponse,
+      model_name, base::BindOnce(&OllamaModelFetcher::OnModelDetailsFetched,
                                  weak_ptr_factory_.GetWeakPtr(), model_name));
 }
 
-void OllamaModelFetcher::OnModelDetailsResponse(
+void OllamaModelFetcher::OnModelDetailsFetched(
     const std::string& model_name,
-    std::optional<std::string> response_body) {
+    std::optional<OllamaClient::ModelDetails> details) {
   auto it = pending_models_.find(model_name);
   if (it == pending_models_.end()) {
     return;
@@ -184,34 +159,11 @@ void OllamaModelFetcher::OnModelDetailsResponse(
   uint32_t context_size = kDefaultContextSize;
   bool vision_support = false;
 
-  // Parse the model details response
-  if (response_body) {
-    std::optional<base::Value::Dict> json_dict =
-        base::JSONReader::ReadDict(*response_body);
-    if (json_dict) {
-      // Extract context_length from model_info
-      const base::Value::Dict* model_info = json_dict->FindDict("model_info");
-      if (model_info) {
-        for (const auto [key, value] : *model_info) {
-          if (base::EndsWith(key, ".context_length") && value.is_int()) {
-            context_size = static_cast<uint32_t>(value.GetInt());
-            break;
-          }
-        }
-      }
-
-      // Check capabilities for vision support
-      const base::Value::List* capabilities =
-          json_dict->FindList("capabilities");
-      if (capabilities) {
-        for (const auto& capability : *capabilities) {
-          if (capability.is_string() && capability.GetString() == "vision") {
-            vision_support = true;
-            break;
-          }
-        }
-      }
+  if (details) {
+    if (details->context_length > 0) {
+      context_size = details->context_length;
     }
+    vision_support = details->has_vision;
   }
 
   // Create custom model for Ollama with detailed information
