@@ -62,7 +62,7 @@ export function updateToolUseEventInHistory(
 // Define how to get the initial data and update the state from events
 export default class UntrustedConversationFrameAPI extends API<ConversationEntriesUIState> {
   public conversationHandler: Mojom.UntrustedConversationHandlerRemote =
-    Mojom.UntrustedConversationHandler.getRemote()
+    new Mojom.UntrustedConversationHandlerRemote()
 
   public uiHandler: Mojom.UntrustedUIHandlerRemote =
     Mojom.UntrustedUIHandler.getRemote()
@@ -84,6 +84,11 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
   async initialize() {
     // Bind UntrustedUI for memory notifications
     this.uiHandler.bindUntrustedUI(this.uiObserver.$.bindNewPipeAndPassRemote())
+    const conversationId = window.location.pathname.split('/').pop() || ''
+    this.uiHandler.bindConversationHandler(
+      conversationId,
+      this.conversationHandler.$.bindNewPipeAndPassReceiver(),
+    )
 
     const [{ conversationEntriesState }, { conversationHistory }] =
       await Promise.all([

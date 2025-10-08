@@ -88,6 +88,12 @@ interface UntrustedUI {
 // Browser-side handler for untrusted frame that handles rendering of
 // conversation entries.
 interface UntrustedUIHandler {
+  // Bind the conversation handler
+  BindConversationHandler(
+    string conversation_id,
+    pending_receiver<UntrustedConversationHandler> conversation_handler
+  );
+
   // Bind UntrustedUI for callbacks
   BindUntrustedUI(pending_remote<UntrustedUI> untrusted_ui);
 
