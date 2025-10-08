@@ -300,7 +300,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   }
 
   {
-    // contains invalid hex in account info
+    // Contains invalid hex in account info.
+
     url_loader_factory_.AddResponse(
         testnet_url,
         "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
