@@ -158,7 +158,7 @@ TEST_F(ContentAgentToolProviderTest, ExecuteActions_EmptyActionSequence) {
   ASSERT_GT(result.size(), 0u);
   EXPECT_TRUE(result[0]->is_text_content_block());
   EXPECT_THAT(result[0]->get_text_content_block()->text,
-              testing::HasSubstr("Action failed - no actions specified"));
+              testing::HasSubstr("action failed - no actions specified"));
 }
 
 // Text ExecuteActions with an invalid action is handled before sending to
@@ -181,7 +181,7 @@ TEST_F(ContentAgentToolProviderTest, ExecuteActions_InvalidAction) {
   ASSERT_GT(result.size(), 0u);
   EXPECT_TRUE(result[0]->is_text_content_block());
   EXPECT_THAT(result[0]->get_text_content_block()->text,
-              testing::HasSubstr("Action failed - incorrect parameters"));
+              testing::HasSubstr("action failed - incorrect parameters"));
 }
 
 }  // namespace ai_chat

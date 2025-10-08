@@ -75,6 +75,7 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
   void TearDownOnMainThread() override {
     tool_provider_.reset();
     agent_profile_ = nullptr;
+    agent_browser_window_ = nullptr;
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
