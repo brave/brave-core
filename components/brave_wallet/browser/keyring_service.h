@@ -272,8 +272,8 @@ class KeyringService : public mojom::KeyringService {
       base::span<const uint8_t> message);
 
   // Polkadot
-  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> GetPolkadotPubKey(
-      const mojom::AccountIdPtr& account_id);
+  std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
+  GetPolkadotPubKey(const mojom::AccountIdPtr& account_id);
 
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();
   mojom::AccountInfoPtr FindAccount(const mojom::AccountIdPtr& account_id);

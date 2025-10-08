@@ -43,8 +43,9 @@ void PolkadotWalletService::GetAccountBalance(
     const std::string& chain_id,
     GetAccountBalanceCallback callback) {
   auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
+  CHECK(pubkey);
 
-  polkadot_substrate_rpc_.GetAccountBalance(chain_id, pubkey,
+  polkadot_substrate_rpc_.GetAccountBalance(chain_id, *pubkey,
                                             std::move(callback));
 }
 
