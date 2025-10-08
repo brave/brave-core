@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_model.cc b/chrome/browser/ui/tabs/tab_model.cc
-index 6dc52edf7a2d1323dc8aa08c88c433cbe56e6c59..3ddd9db23fa7d4f3437204dc3a503b94e2704e32 100644
+index 1393ceaaa8ad6039be37e0e86aa7f527dbf60702..967a4121a39a606967ab99dcf09881a44b56503a 100644
 --- a/chrome/browser/ui/tabs/tab_model.cc
 +++ b/chrome/browser/ui/tabs/tab_model.cc
 @@ -79,7 +79,7 @@ TabModel::TabModel(std::unique_ptr<content::WebContents> contents,
