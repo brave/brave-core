@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 06d2f8f3f3375e21bb40197173d8907b368de793..84e61302405201a4789a49cef9055990f2f2dc39 100644
+index c706ee17966ce9c1d6c3e68d04af18cb20751242..5e9a17dfed30065326fa443e511a621f92e40fd6 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1996,6 +1996,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -2024,6 +2024,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #endif  // !BUILDFLAG(IS_ANDROID)
  
    // This is intentionally last.
@@ -10,7 +10,7 @@ index 06d2f8f3f3375e21bb40197173d8907b368de793..84e61302405201a4789a49cef9055990
    RegisterLocalStatePrefsForMigration(registry);
  }
  
-@@ -2448,6 +2449,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2480,6 +2481,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
    // the policies logic is implemented.
    registry->RegisterListPref(policy::policy_prefs::kIncognitoModeBlocklist);
    registry->RegisterListPref(policy::policy_prefs::kIncognitoModeAllowlist);
@@ -18,7 +18,7 @@ index 06d2f8f3f3375e21bb40197173d8907b368de793..84e61302405201a4789a49cef9055990
  }
  
  void RegisterUserProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -3036,13 +3038,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+@@ -3064,13 +3066,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
    profile_prefs->ClearPref(kObsoletePasswordsUseUPMLocalAndSeparateStores);
    profile_prefs->ClearPref(kObsoleteEmptyProfileStoreLoginDatabase);
    profile_prefs->ClearPref(kObsoleteUpmAutoExportCsvNeedsDeletion);

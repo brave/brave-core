@@ -15,7 +15,7 @@ index bbaf1143e725a1b6c49eef705b1e62c4133bfa27..ced096c779bf9dd1eb4676286cd8c0e4
 +    "//components/os_crypt/sync",
 +    "//chrome/utility",
    ]
-
+ 
 +  if (is_ios) {
 +    visibility += [
 +      "//brave/ios/browser/api/brave_rewards",
@@ -31,5 +31,5 @@ index bbaf1143e725a1b6c49eef705b1e62c4133bfa27..ced096c779bf9dd1eb4676286cd8c0e4
    }
 +  import("//brave/components/os_crypt/sources.gni") deps += brave_components_os_crypt_deps
  }
-
+ 
  static_library("test_support") {
