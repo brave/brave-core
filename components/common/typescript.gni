@@ -82,7 +82,7 @@ brave_common_web_compile_inputs = [
 #     Support for web pack aliases that directly passed to webpack config.
 #   output_module
 #     If true, the resulting bundle will be a JS module that can import other
-#     modules using `import` syntax.
+#     modules using `import` syntax. This implies |no_iife=true|.
 #   rust_packages
 #     An optional list of Cargo.toml files that identify the Rust packages
 #     to be compiled to WASM.

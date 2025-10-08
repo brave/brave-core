@@ -119,7 +119,6 @@ transpile_web_ui("opaque_ke") {
 
   rust_packages = [ rebase_path("wasm/opaque_ke/Cargo.toml") ]
 
-  no_iife = true
   output_module = true
   public_asset_path = "chrome://resources/brave/"
 }
