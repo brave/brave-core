@@ -16,7 +16,6 @@ brave_components_os_crypt_visibility = [
 ]
 
 if (is_ios) {
-  brave_components_os_crypt_visibility += [
-    "//brave/ios/browser/api/brave_rewards",
-  ]
+  brave_components_os_crypt_visibility +=
+      [ "//brave/ios/browser/api/brave_rewards" ]
 }
