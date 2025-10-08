@@ -76,13 +76,15 @@ void ClickTool::UseTool(const std::string& input_json,
   const auto* click_type = input->FindString(kPropertyNameClickType);
   const auto* click_count = input->FindString(kPropertyNameClickCount);
 
-  if (!click_type || (*click_type != "left" && *click_type != "right")) {
+  if (!click_type ||
+      (*click_type != kClickTypeLeft && *click_type != kClickTypeRight)) {
     std::move(callback).Run(CreateContentBlocksForText(
         "Invalid or missing click_type. Must be 'left' or 'right'."));
     return;
   }
 
-  if (!click_count || (*click_count != "single" && *click_count != "double")) {
+  if (!click_count || (*click_count != kClickCountSingle &&
+                       *click_count != kClickCountDouble)) {
     std::move(callback).Run(CreateContentBlocksForText(
         "Invalid or missing click_count. Must be 'single' or 'double'."));
     return;
