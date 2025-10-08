@@ -11,6 +11,7 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 
 namespace brave_shields {
@@ -20,12 +21,6 @@ enum ControlType {
   BLOCK,
   BLOCK_THIRD_PARTY,
   DEFAULT,
-};
-
-enum AutoShredType {
-  NEVER = 0,
-  LAST_TAB_CLOSED,
-  APP_EXIT,
 };
 
 namespace traits {
@@ -51,16 +46,19 @@ struct SettingTraits<ControlType> {
 };
 
 template <>
-struct SettingTraits<AutoShredType> {
-  static std::optional<AutoShredType> From(
-      std::underlying_type_t<AutoShredType> v) {
-    if (v >= AutoShredType::NEVER && v <= AutoShredType::APP_EXIT) {
-      return static_cast<AutoShredType>(v);
+struct SettingTraits<mojom::AutoShredMode> {
+  static std::optional<mojom::AutoShredMode> From(
+      std::underlying_type_t<mojom::AutoShredMode> v) {
+    if (v >= static_cast<int>(mojom::AutoShredMode::NEVER) &&
+        v <= static_cast<int>(mojom::AutoShredMode::APP_EXIT)) {
+      return static_cast<mojom::AutoShredMode>(v);
     }
     return std::nullopt;
   }
 
-  static int To(AutoShredType setting) { return base::to_underlying(setting); }
+  static int To(mojom::AutoShredMode setting) {
+    return base::to_underlying(setting);
+  }
 };
 
 namespace internal {
@@ -128,8 +126,8 @@ using CosmeticFilteringSetting = traits::BraveShieldsSetting<
 
 using AutoShredSetting = traits::BraveShieldsSetting<
     /*content_settings_type=*/ContentSettingsType::BRAVE_AUTO_SHRED,
-    /*SettingType=*/AutoShredType,
-    /*default_value=*/AutoShredType::NEVER>;
+    /*SettingType=*/mojom::AutoShredMode,
+    /*default_value=*/mojom::AutoShredMode::NEVER>;
 
 }  // namespace brave_shields
 
