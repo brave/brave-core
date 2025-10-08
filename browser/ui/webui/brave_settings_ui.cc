@@ -49,7 +49,8 @@
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
-#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -99,11 +100,6 @@
 #include "brave/browser/extensions/manifest_v2/features.h"
 #include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
 #include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
-#endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/core/common/features.h"
-#include "brave/components/playlist/core/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -235,14 +231,11 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           base::FeatureList::IsEnabled(
                               ntp_background_images::features::
                                   kBraveNTPBrandedWallpaperSurveyPanelist));
-#if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(
       "isPlaylistAllowed",
       base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
           profile->GetPrefs()->GetBoolean(playlist::kPlaylistEnabledPref));
-#else
-  html_source->AddBoolean("isPlaylistAllowed", false);
-#endif
+
   html_source->AddBoolean(
       "showCommandsInOmnibox",
       base::FeatureList::IsEnabled(features::kBraveCommandsInOmnibox));
