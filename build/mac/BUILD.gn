@@ -401,17 +401,17 @@ group("create_dist_mac") {
       }
     }
   }
-  if (crx_private_key != "") {
+  if (dmg_crx_private_key != "") {
     deps += [ ":crx" ]
   }
 }
 
-if (crx_private_key != "") {
+if (dmg_crx_private_key != "") {
   crx3("crx") {
     inputs = [ dmg_path ]
     output = "$packaged_basename.crx3"
     base_dir = get_path_info(dmg_path, "dir")
-    key = crx_private_key
+    key = dmg_crx_private_key
     deps = [ ":package" ]
   }
 }

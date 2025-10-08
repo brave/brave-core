@@ -24,8 +24,8 @@ declare_args() {
   # value of true.
   install_omaha4_with_pkg = false
 
-  # Path to the private key that is used to sign CRX files.
-  crx_private_key = ""
+  # Path to the private key that is used to sign browser updates.
+  dmg_crx_private_key = ""
 }
 
 if (host_os == "mac") {
