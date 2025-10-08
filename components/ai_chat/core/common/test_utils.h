@@ -25,7 +25,9 @@ namespace ai_chat {
 #define EXPECT_MOJOM_NE(a, b) EXPECT_FALSE(mojo::Equals(a, b))
 
 // custom matcher for std::vector<mojom::ContentBlockPtr>
-MATCHER_P(ContentBlockText, matcher, "") {
+MATCHER_P(ContentBlockText,
+          matcher,
+          "Fails to match " + DescribeMatcher<std::string>(matcher)) {
   if (arg.size() != 1u && !arg[0]->is_text_content_block()) {
     return false;
   }

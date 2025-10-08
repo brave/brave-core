@@ -123,8 +123,7 @@ TEST_F(TargetUtilTest, ParseTargetInput_MissingX) {
   auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(result.error(),
-            "Invalid coordinates: both 'x' and 'y' are required");
+  EXPECT_EQ(result.error(), kErrorTargetCoordinatesHasMissingProperty);
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_MissingY) {
@@ -135,8 +134,7 @@ TEST_F(TargetUtilTest, ParseTargetInput_MissingY) {
   auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(result.error(),
-            "Invalid coordinates: both 'x' and 'y' are required");
+  EXPECT_EQ(result.error(), kErrorTargetCoordinatesHasMissingProperty);
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_MissingDocumentIdentifier) {
@@ -148,8 +146,7 @@ TEST_F(TargetUtilTest, ParseTargetInput_MissingDocumentIdentifier) {
 
   EXPECT_FALSE(result.has_value());
   EXPECT_EQ(result.error(),
-            "Invalid identifiers: 'document_identifier' is required when "
-            "specifying 'content_node_id'");
+            kErrorTargetIdentifiersHasMissingDocumentIdentifier);
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_BothApproaches) {
@@ -163,9 +160,7 @@ TEST_F(TargetUtilTest, ParseTargetInput_BothApproaches) {
   auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(result.error(),
-            "Target must contain either 'x' and 'y' or "
-            "'document_identifier' with optional 'content_node_id', not both");
+  EXPECT_EQ(result.error(), kErrorTargetHasBothSchemas);
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_BothApproachesDocumentIdentifier) {
@@ -178,9 +173,7 @@ TEST_F(TargetUtilTest, ParseTargetInput_BothApproachesDocumentIdentifier) {
   auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(result.error(),
-            "Target must contain either 'x' and 'y' or "
-            "'document_identifier' with optional 'content_node_id', not both");
+  EXPECT_EQ(result.error(), kErrorTargetHasBothSchemas);
 }
 
 TEST_F(TargetUtilTest,
@@ -194,9 +187,7 @@ TEST_F(TargetUtilTest,
   auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(result.error(),
-            "Target must contain either 'x' and 'y' or "
-            "'document_identifier' with optional 'content_node_id', not both");
+  EXPECT_EQ(result.error(), kErrorTargetHasBothSchemas);
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_NeitherApproach) {
@@ -205,10 +196,7 @@ TEST_F(TargetUtilTest, ParseTargetInput_NeitherApproach) {
   auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(
-      result.error(),
-      "Target must contain one of either 'x' and 'y' or 'document_identifier' "
-      "and optional 'content_node_id'");
+  EXPECT_EQ(result.error(), kErrorTargetHasNoSchemas);
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_PartialCoordinatesBothPresent) {
@@ -220,10 +208,7 @@ TEST_F(TargetUtilTest, ParseTargetInput_PartialCoordinatesBothPresent) {
   auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_THAT(
-      result.error(),
-      testing::HasSubstr(
-          "Target must contain either 'x' and 'y' or 'document_identifier'"));
+  EXPECT_THAT(result.error(), testing::HasSubstr(kErrorTargetHasBothSchemas));
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_PartialIdentifiersBothPresent) {
@@ -235,10 +220,7 @@ TEST_F(TargetUtilTest, ParseTargetInput_PartialIdentifiersBothPresent) {
   auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_THAT(
-      result.error(),
-      testing::HasSubstr(
-          "Target must contain either 'x' and 'y' or 'document_identifier'"));
+  EXPECT_THAT(result.error(), testing::HasSubstr(kErrorTargetHasBothSchemas));
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_WithoutErrorString) {
@@ -249,8 +231,7 @@ TEST_F(TargetUtilTest, ParseTargetInput_WithoutErrorString) {
   auto result = ParseTargetInput(target_dict);
 
   EXPECT_FALSE(result.has_value());
-  EXPECT_EQ(result.error(),
-            "Invalid coordinates: both 'x' and 'y' are required");
+  EXPECT_EQ(result.error(), kErrorTargetCoordinatesHasMissingProperty);
 }
 
 TEST_F(TargetUtilTest, ParseTargetInput_NegativeCoordinates) {

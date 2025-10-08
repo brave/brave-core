@@ -50,17 +50,17 @@ void WaitTool::UseTool(const std::string& input_json,
   auto input = base::JSONReader::ReadDict(input_json);
 
   if (!input.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Failed to parse input JSON. Please try again."));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: failed to parse input JSON"));
     return;
   }
 
   // Validate wait_time_ms parameter
   std::optional<int> wait_time_ms = input->FindInt(kPropertyNameWaitTimeMs);
   if (!wait_time_ms.has_value() || wait_time_ms.value() <= 0) {
-    std::move(callback).Run(
-        CreateContentBlocksForText("Invalid or missing wait_time_ms. Must be a "
-                                   "non-negative integer higher than 0."));
+    std::move(callback).Run(CreateContentBlocksForText(
+        "Error: invalid or missing 'wait_time_ms' property. Must be a "
+        "non-negative integer higher than 0."));
     return;
   }
 

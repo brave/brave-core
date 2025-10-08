@@ -55,8 +55,8 @@ void HistoryTool::UseTool(const std::string& input_json,
   auto input = base::JSONReader::ReadDict(input_json);
 
   if (!input.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Failed to parse input JSON. Please try again."));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: failed to parse input JSON"));
     return;
   }
 
@@ -65,7 +65,7 @@ void HistoryTool::UseTool(const std::string& input_json,
   if (!direction ||
       (*direction != kDirectionBack && *direction != kDirectionForward)) {
     std::move(callback).Run(CreateContentBlocksForText(
-        "Invalid or missing direction. Must be 'back' or 'forward'."));
+        "Error: invalid or missing direction. Must be 'back' or 'forward'."));
     return;
   }
 

@@ -14,6 +14,20 @@
 
 namespace ai_chat::target_util {
 
+// Strings that represent errors returned to the LLM by ParseTargetInput
+inline constexpr char kErrorTargetHasBothSchemas[] =
+    "Error: Target must contain either 'x' and 'y' or "
+    "'document_identifier' with optional 'content_node_id', not both";
+inline constexpr char kErrorTargetHasNoSchemas[] =
+    "Error: Target must contain one of either 'x' and 'y' or "
+    "'document_identifier' "
+    "and optional 'content_node_id'";
+inline constexpr char kErrorTargetCoordinatesHasMissingProperty[] =
+    "Error: Invalid coordinates: both 'x' and 'y' are required";
+inline constexpr char kErrorTargetIdentifiersHasMissingDocumentIdentifier[] =
+    "Error: Invalid identifiers: 'document_identifier' is required when "
+    "specifying 'content_node_id'";
+
 // Creates a standardized "target" property for tool input schemas.
 // The target property allows either coordinates OR identifiers, never both.
 // The identifiers are both the document identifier, which identifies which

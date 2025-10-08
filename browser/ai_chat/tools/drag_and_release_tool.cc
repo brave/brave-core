@@ -7,6 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "base/strings/strcat.h"
 #include "brave/browser/ai_chat/tools/target_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
@@ -58,7 +59,7 @@ void DragAndReleaseTool::UseTool(const std::string& input_json,
 
   if (!input.has_value()) {
     std::move(callback).Run(CreateContentBlocksForText(
-        "Failed to parse input JSON. Please try again."));
+        "Error: failed to parse input JSON. Please try again."));
     return;
   }
 
@@ -66,14 +67,14 @@ void DragAndReleaseTool::UseTool(const std::string& input_json,
   const base::Value::Dict* from_dict = input->FindDict(kPropertyNameFrom);
   if (!from_dict) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Missing 'from' target object"));
+        CreateContentBlocksForText("Error: missing 'from' target object"));
     return;
   }
 
   auto from_target = target_util::ParseTargetInput(*from_dict);
   if (!from_target.has_value()) {
     std::move(callback).Run(CreateContentBlocksForText(
-        "Invalid 'from' target: " + from_target.error()));
+        base::StrCat({"Invalid 'from' target: ", from_target.error()})));
     return;
   }
 
@@ -81,14 +82,14 @@ void DragAndReleaseTool::UseTool(const std::string& input_json,
   const base::Value::Dict* to_dict = input->FindDict(kPropertyNameTo);
   if (!to_dict) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Missing 'to' target object"));
+        CreateContentBlocksForText("Error: missing 'to' target object"));
     return;
   }
 
   auto to_target = target_util::ParseTargetInput(*to_dict);
   if (!to_target.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText("Invalid 'to' target: " +
-                                                       to_target.error()));
+    std::move(callback).Run(CreateContentBlocksForText(
+        base::StrCat({"Invalid 'to' target: ", to_target.error()})));
     return;
   }
 

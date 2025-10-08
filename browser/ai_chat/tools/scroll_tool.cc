@@ -70,27 +70,27 @@ void ScrollTool::UseTool(const std::string& input_json,
   auto input = base::JSONReader::ReadDict(input_json);
 
   if (!input.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Failed to parse input JSON. Please try again."));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: failed to parse input JSON"));
     return;
   }
 
   // Validate direction and distance
   const auto* direction = input->FindString(kPropertyNameDirection);
-  std::optional<double> distance = input->FindDouble("distance");
+  std::optional<double> distance = input->FindDouble(kPropertyNameDistance);
 
   if (!direction ||
       (*direction != kDirectionLeft && *direction != kDirectionRight &&
        *direction != kDirectionUp && *direction != kDirectionDown)) {
-    std::move(callback).Run(
-        CreateContentBlocksForText("Invalid or missing direction. Must be "
-                                   "'left', 'right', 'up', or 'down'."));
+    std::move(callback).Run(CreateContentBlocksForText(
+        "Error: invalid or missing direction. Must be one of: "
+        "'left', 'right', 'up', or 'down'."));
     return;
   }
 
   if (!distance.has_value() || distance.value() <= 0) {
     std::move(callback).Run(CreateContentBlocksForText(
-        "Invalid or missing distance. Must be a positive number."));
+        "Error: invalid or missing distance. Must be a positive number."));
     return;
   }
 
@@ -98,13 +98,14 @@ void ScrollTool::UseTool(const std::string& input_json,
   const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Missing 'target' object"));
+        CreateContentBlocksForText("Error: missing 'target' property"));
     return;
   }
 
   auto target = target_util::ParseTargetInput(*target_dict);
   if (!target.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(target.error()));
+    std::move(callback).Run(CreateContentBlocksForText(
+        base::StrCat({"Invalid 'target': ", target.error()})));
     return;
   }
 

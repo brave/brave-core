@@ -9,46 +9,25 @@
 #include <string>
 
 #include "base/json/json_writer.h"
-#include "base/run_loop.h"
-#include "base/test/bind.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/test_future.h"
-#include "brave/browser/ai_chat/tools/mock_content_agent_task_provider.h"
+#include "brave/browser/ai_chat/tools/content_agent_tool_base_test.h"
 #include "brave/browser/ai_chat/tools/target_test_util.h"
-#include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
-#include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/browser_action_util.h"
-#include "chrome/browser/actor/task_id.h"
 #include "chrome/browser/actor/tools/page_tool_request.h"
 #include "chrome/browser/actor/tools/scroll_tool_request.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
-#include "components/tabs/public/tab_interface.h"
-#include "content/public/test/browser_task_environment.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
 
-class ScrollToolTest : public testing::Test {
- public:
-  void SetUp() override {
-    mock_task_provider_ = std::make_unique<MockContentAgentTaskProvider>();
-    scroll_tool_ = std::make_unique<ScrollTool>(mock_task_provider_.get());
-
-    test_tab_handle_ = tabs::TabHandle(123);
-    test_task_id_ = actor::TaskId(456);
-
-    mock_task_provider_->SetTaskId(test_task_id_);
-
-    ON_CALL(*mock_task_provider_, GetOrCreateTabHandleForTask)
-        .WillByDefault(base::test::RunOnceCallback<0>(test_tab_handle_));
+class ScrollToolTest : public ContentAgentToolBaseTest {
+ protected:
+  std::unique_ptr<Tool> CreateTool() override {
+    return std::make_unique<ScrollTool>(mock_task_provider_.get());
   }
 
- protected:
-  // Creates a valid scroll JSON with the given target and scroll properties
-  std::string CreateValidScrollJson(const base::Value::Dict& target_dict,
-                                    const std::string& direction = "down",
-                                    double distance = 100.0) {
+  std::string CreateToolInputJson(const base::Value::Dict& target_dict,
+                                  const std::string& direction = "down",
+                                  double distance = 100.0) {
     base::Value::Dict dict;
     dict.Set("direction", direction);
     dict.Set("distance", distance);
@@ -59,43 +38,14 @@ class ScrollToolTest : public testing::Test {
     return json;
   }
 
-  std::string CreateInvalidTargetJson(const std::string& target_content) {
-    return R"({
-      "direction": "down",
-      "distance": 100.0,
-      "target": )" +
-           target_content + R"(
-    })";
-  }
-
-  void RunWithExpectedError(const std::string& input_json,
-                            const std::string& expected_error) {
-    // For error cases, the tool should not call the interesting task provider
-    // methods Note: GetTaskId() may still be called as it's infrastructure, but
-    // we don't care
-    EXPECT_CALL(*mock_task_provider_, GetOrCreateTabHandleForTask).Times(0);
-    EXPECT_CALL(*mock_task_provider_, ExecuteActions).Times(0);
-
-    base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> future;
-    scroll_tool_->UseTool(input_json, future.GetCallback());
-
-    auto result = future.Take();
-    EXPECT_THAT(result, ContentBlockText(testing::HasSubstr(expected_error)));
-  }
-
-  // Verify scroll action properties and conversions
-  void VerifyScrollAction(
-      const optimization_guide::proto::Actions& actions,
+  optimization_guide::proto::Action VerifySuccess(
+      const std::string& input_json,
       optimization_guide::proto::ScrollAction::ScrollDirection
           expected_direction,
       float expected_distance) {
-    // Verify proto action
-    EXPECT_EQ(actions.task_id(), test_task_id_.value());
-    EXPECT_EQ(actions.actions_size(), 1);
+    auto [action, tool_request] = RunWithExpectedSuccess(FROM_HERE, input_json);
 
-    const auto& action = actions.actions(0);
     EXPECT_TRUE(action.has_scroll());
-
     const auto& scroll_action = action.scroll();
     EXPECT_EQ(scroll_action.tab_id(), test_tab_handle_.raw_value());
     EXPECT_EQ(scroll_action.direction(), expected_direction);
@@ -104,13 +54,9 @@ class ScrollToolTest : public testing::Test {
     // Target verification should be handled by the target_test_util methods
     EXPECT_TRUE(scroll_action.has_target());
 
-    // Verify CreateToolRequest works and produces correct ScrollToolRequest
-    auto tool_request = actor::CreateToolRequest(action, nullptr);
-    ASSERT_NE(tool_request, nullptr);
-
     auto* scroll_request =
         static_cast<actor::ScrollToolRequest*>(tool_request.get());
-    EXPECT_EQ(scroll_request->GetTabHandle(), test_tab_handle_);
+    EXPECT_NE(scroll_request, nullptr);
 
     // Convert direction enum values
     actor::ScrollToolRequest::Direction expected_actor_direction;
@@ -136,7 +82,7 @@ class ScrollToolTest : public testing::Test {
     auto* page_request =
         static_cast<actor::PageToolRequest*>(tool_request.get());
     auto mojo_action = page_request->ToMojoToolAction();
-    ASSERT_TRUE(mojo_action);
+    CHECK(mojo_action);
 
     // Verify mojom action properties
     EXPECT_TRUE(mojo_action->is_scroll());
@@ -164,153 +110,68 @@ class ScrollToolTest : public testing::Test {
         break;
     }
     EXPECT_EQ(mojom_scroll->direction, expected_mojom_direction);
-  }
 
-  content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<MockContentAgentTaskProvider> mock_task_provider_;
-  std::unique_ptr<ScrollTool> scroll_tool_;
-  tabs::TabHandle test_tab_handle_;
-  actor::TaskId test_task_id_;
+    return action;
+  }
 };
 
 TEST_F(ScrollToolTest, ValidInputWithDocumentTargetDown) {
-  // Use standard content node target from target_test_util
-  auto target_dict = target_test_util::GetDocumentTargetDict();
-  std::string input_json = CreateValidScrollJson(target_dict, "down", 150.0);
-  base::RunLoop run_loop;
+  auto target_dict = target_test_util::GetDocumentTargetDict("doc123");
+  std::string input_json = CreateToolInputJson(target_dict, "down", 150.0);
 
-  optimization_guide::proto::Actions captured_actions;
-  EXPECT_CALL(*mock_task_provider_, ExecuteActions(testing::_, testing::_))
-      .WillOnce(testing::Invoke([&captured_actions, &run_loop](
-                                    optimization_guide::proto::Actions actions,
-                                    Tool::UseToolCallback callback) {
-        captured_actions = std::move(actions);
-        run_loop.Quit();
-      }));
+  auto action = VerifySuccess(
+      input_json, optimization_guide::proto::ScrollAction::DOWN, 150.0f);
 
-  scroll_tool_->UseTool(input_json, base::DoNothing());
-  run_loop.Run();
-
-  // Verify scroll action properties
-  VerifyScrollAction(captured_actions,
-                     optimization_guide::proto::ScrollAction::DOWN, 150.0f);
-
-  // Verify target separately using target_test_util
-  const auto& target = captured_actions.actions(0).scroll().target();
+  const auto& target = action.scroll().target();
   target_test_util::VerifyDocumentTarget(target, "doc123");
 }
 
 TEST_F(ScrollToolTest, ValidInputWithContentNodeDown) {
-  // Use standard content node target from target_test_util
-  auto target_dict = target_test_util::GetContentNodeTargetDict();
-  std::string input_json = CreateValidScrollJson(target_dict, "down", 150.0);
-  base::RunLoop run_loop;
+  auto target_dict = target_test_util::GetContentNodeTargetDict(42, "doc123");
+  std::string input_json = CreateToolInputJson(target_dict, "down", 150.0);
 
-  optimization_guide::proto::Actions captured_actions;
-  EXPECT_CALL(*mock_task_provider_, ExecuteActions(testing::_, testing::_))
-      .WillOnce(testing::Invoke([&captured_actions, &run_loop](
-                                    optimization_guide::proto::Actions actions,
-                                    Tool::UseToolCallback callback) {
-        captured_actions = std::move(actions);
-        run_loop.Quit();
-      }));
+  auto action = VerifySuccess(
+      input_json, optimization_guide::proto::ScrollAction::DOWN, 150.0f);
 
-  scroll_tool_->UseTool(input_json, base::DoNothing());
-  run_loop.Run();
-
-  // Verify scroll action properties
-  VerifyScrollAction(captured_actions,
-                     optimization_guide::proto::ScrollAction::DOWN, 150.0f);
-
-  // Verify target separately using target_test_util
-  const auto& target = captured_actions.actions(0).scroll().target();
+  const auto& target = action.scroll().target();
   target_test_util::VerifyContentNodeTarget(target, 42, "doc123");
 }
 
 TEST_F(ScrollToolTest, ValidInputWithCoordinatesUp) {
-  // Use standard coordinate target from target_test_util
-  auto target_dict = target_test_util::GetCoordinateTargetDict();
-  std::string input_json = CreateValidScrollJson(target_dict, "up", 250.5);
-  base::RunLoop run_loop;
+  auto target_dict = target_test_util::GetCoordinateTargetDict(100, 200);
+  std::string input_json = CreateToolInputJson(target_dict, "up", 250.5);
 
-  optimization_guide::proto::Actions captured_actions;
-  EXPECT_CALL(*mock_task_provider_, ExecuteActions(testing::_, testing::_))
-      .WillOnce(testing::Invoke([&captured_actions, &run_loop](
-                                    optimization_guide::proto::Actions actions,
-                                    Tool::UseToolCallback callback) {
-        captured_actions = std::move(actions);
-        run_loop.Quit();
-      }));
+  auto action = VerifySuccess(
+      input_json, optimization_guide::proto::ScrollAction::UP, 250.5f);
 
-  scroll_tool_->UseTool(input_json, base::DoNothing());
-  run_loop.Run();
-
-  // Verify scroll action properties
-  VerifyScrollAction(captured_actions,
-                     optimization_guide::proto::ScrollAction::UP, 250.5f);
-
-  // Verify target separately using target_test_util
-  const auto& target = captured_actions.actions(0).scroll().target();
+  const auto& target = action.scroll().target();
   target_test_util::VerifyCoordinateTarget(target, 100, 200);
 }
 
 TEST_F(ScrollToolTest, ValidInputLeftDirection) {
-  // Use custom content node target with specific values
   auto target_dict = target_test_util::GetContentNodeTargetDict(99, "mydoc");
-  std::string input_json = CreateValidScrollJson(target_dict, "left", 50.0);
-  base::RunLoop run_loop;
+  std::string input_json = CreateToolInputJson(target_dict, "left", 50.0);
 
-  optimization_guide::proto::Actions captured_actions;
-  EXPECT_CALL(*mock_task_provider_, ExecuteActions(testing::_, testing::_))
-      .WillOnce(testing::Invoke([&captured_actions, &run_loop](
-                                    optimization_guide::proto::Actions actions,
-                                    Tool::UseToolCallback callback) {
-        captured_actions = std::move(actions);
-        run_loop.Quit();
-      }));
+  auto action = VerifySuccess(
+      input_json, optimization_guide::proto::ScrollAction::LEFT, 50.0f);
 
-  scroll_tool_->UseTool(input_json, base::DoNothing());
-  run_loop.Run();
-
-  // Verify scroll properties
-  VerifyScrollAction(captured_actions,
-                     optimization_guide::proto::ScrollAction::LEFT, 50.0f);
-
-  // Verify target separately
-  const auto& target = captured_actions.actions(0).scroll().target();
+  const auto& target = action.scroll().target();
   target_test_util::VerifyContentNodeTarget(target, 99, "mydoc");
 }
 
 TEST_F(ScrollToolTest, ValidInputRightDirection) {
-  // Use custom coordinates for the target
   auto target_dict = target_test_util::GetCoordinateTargetDict(250.7, 350.3);
-  std::string input_json = CreateValidScrollJson(target_dict, "right", 75.25);
-  base::RunLoop run_loop;
+  std::string input_json = CreateToolInputJson(target_dict, "right", 75.25);
 
-  optimization_guide::proto::Actions captured_actions;
-  EXPECT_CALL(*mock_task_provider_, ExecuteActions(testing::_, testing::_))
-      .WillOnce(testing::Invoke([&captured_actions, &run_loop](
-                                    optimization_guide::proto::Actions actions,
-                                    Tool::UseToolCallback callback) {
-        captured_actions = std::move(actions);
-        run_loop.Quit();
-      }));
+  auto action = VerifySuccess(
+      input_json, optimization_guide::proto::ScrollAction::RIGHT, 75.25f);
 
-  scroll_tool_->UseTool(input_json, base::DoNothing());
-  run_loop.Run();
-
-  // Verify scroll properties
-  VerifyScrollAction(captured_actions,
-                     optimization_guide::proto::ScrollAction::RIGHT, 75.25f);
-
-  // Verify target separately
-  const auto& target = captured_actions.actions(0).scroll().target();
+  const auto& target = action.scroll().target();
   target_test_util::VerifyCoordinateTarget(target, 250, 350);
 }
 
 TEST_F(ScrollToolTest, InvalidJson) {
-  RunWithExpectedError("{ invalid json }",
-                       "Failed to parse input JSON. Please try again.");
+  RunWithExpectedError(FROM_HERE, "{ invalid json }");
 }
 
 TEST_F(ScrollToolTest, MissingDirection) {
@@ -323,9 +184,7 @@ TEST_F(ScrollToolTest, MissingDirection) {
   std::string input_json;
   base::JSONWriter::Write(dict, &input_json);
 
-  RunWithExpectedError(input_json,
-                       "Invalid or missing direction. Must be 'left', 'right', "
-                       "'up', or 'down'.");
+  RunWithExpectedError(FROM_HERE, input_json);
 }
 
 TEST_F(ScrollToolTest, InvalidDirection) {
@@ -338,9 +197,7 @@ TEST_F(ScrollToolTest, InvalidDirection) {
   std::string input_json;
   base::JSONWriter::Write(dict, &input_json);
 
-  RunWithExpectedError(input_json,
-                       "Invalid or missing direction. Must be 'left', 'right', "
-                       "'up', or 'down'.");
+  RunWithExpectedError(FROM_HERE, input_json);
 }
 
 TEST_F(ScrollToolTest, MissingDistance) {
@@ -353,8 +210,7 @@ TEST_F(ScrollToolTest, MissingDistance) {
   std::string input_json;
   base::JSONWriter::Write(dict, &input_json);
 
-  RunWithExpectedError(
-      input_json, "Invalid or missing distance. Must be a positive number.");
+  RunWithExpectedError(FROM_HERE, input_json);
 }
 
 TEST_F(ScrollToolTest, NegativeDistance) {
@@ -367,8 +223,7 @@ TEST_F(ScrollToolTest, NegativeDistance) {
   std::string input_json;
   base::JSONWriter::Write(dict, &input_json);
 
-  RunWithExpectedError(
-      input_json, "Invalid or missing distance. Must be a positive number.");
+  RunWithExpectedError(FROM_HERE, input_json);
 }
 
 TEST_F(ScrollToolTest, ZeroDistance) {
@@ -381,26 +236,7 @@ TEST_F(ScrollToolTest, ZeroDistance) {
   std::string input_json;
   base::JSONWriter::Write(dict, &input_json);
 
-  RunWithExpectedError(
-      input_json, "Invalid or missing distance. Must be a positive number.");
-}
-
-TEST_F(ScrollToolTest, MissingDocumentIdentifier) {
-  base::Value::Dict dict;
-  dict.Set("direction", "down");
-  dict.Set("distance", 100.0);
-
-  base::Value::Dict target_dict;
-  target_dict.Set("content_node_id", 42);
-  // Note: Missing document_identifier intentionally
-  dict.Set("target", target_dict.Clone());
-
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(input_json,
-                       "Invalid identifiers: 'document_identifier' is required "
-                       "when specifying 'content_node_id'");
+  RunWithExpectedError(FROM_HERE, input_json);
 }
 
 TEST_F(ScrollToolTest, MissingTargetObject) {
@@ -412,7 +248,7 @@ TEST_F(ScrollToolTest, MissingTargetObject) {
   std::string input_json;
   base::JSONWriter::Write(dict, &input_json);
 
-  RunWithExpectedError(input_json, "Missing 'target' object");
+  RunWithExpectedError(FROM_HERE, input_json);
 }
 
 // We only need minimal target validation tests since target_util_unittest.cc
@@ -420,9 +256,11 @@ TEST_F(ScrollToolTest, MissingTargetObject) {
 TEST_F(ScrollToolTest, InvalidTargetValidation) {
   // Verify the tool properly handles invalid targets
   // and returns appropriate error messages from target_util
-  RunWithExpectedError(CreateInvalidTargetJson("{}"),
-                       "Target must contain one of either 'x' and 'y' or "
-                       "'document_identifier' and optional 'content_node_id'");
+  RunWithExpectedError(FROM_HERE, R"({
+    "direction": "down",
+    "distance": 100.0,
+    "target": {}
+  })");
 }
 
 }  // namespace ai_chat

@@ -67,8 +67,8 @@ void ClickTool::UseTool(const std::string& input_json,
   auto input = base::JSONReader::ReadDict(input_json);
 
   if (!input.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Failed to parse input JSON. Please try again."));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: Failed to parse input JSON"));
     return;
   }
 
@@ -79,14 +79,15 @@ void ClickTool::UseTool(const std::string& input_json,
   if (!click_type ||
       (*click_type != kClickTypeLeft && *click_type != kClickTypeRight)) {
     std::move(callback).Run(CreateContentBlocksForText(
-        "Invalid or missing click_type. Must be 'left' or 'right'."));
+        "Error: Invalid or missing click_type. Must be 'left' or 'right'."));
     return;
   }
 
   if (!click_count || (*click_count != kClickCountSingle &&
                        *click_count != kClickCountDouble)) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Invalid or missing click_count. Must be 'single' or 'double'."));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: Invalid or missing click_count. "
+                                   "Must be 'single' or 'double'."));
     return;
   }
 
@@ -94,13 +95,14 @@ void ClickTool::UseTool(const std::string& input_json,
   const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Missing 'target' object"));
+        CreateContentBlocksForText("Error: Missing 'target' property"));
     return;
   }
 
   auto target = target_util::ParseTargetInput(*target_dict);
   if (!target.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(target.error()));
+    std::move(callback).Run(CreateContentBlocksForText(
+        base::StrCat({"Invalid 'target': ", target.error()})));
     return;
   }
 

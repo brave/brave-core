@@ -86,8 +86,8 @@ void TypeTool::UseTool(const std::string& input_json,
   auto input = base::JSONReader::ReadDict(input_json);
 
   if (!input.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Failed to parse input JSON. Please try again."));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: failed to parse input JSON"));
     return;
   }
 
@@ -99,20 +99,21 @@ void TypeTool::UseTool(const std::string& input_json,
 
   if (!text) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Missing required field: text"));
+        CreateContentBlocksForText("Error: missing required 'text' property"));
     return;
   }
 
   if (!follow_by_enter.has_value()) {
-    std::move(callback).Run(
-        CreateContentBlocksForText("Missing required field: follow_by_enter"));
+    std::move(callback).Run(CreateContentBlocksForText(
+        "Error: missing required 'follow_by_enter' property"));
     return;
   }
 
   if (!mode || (*mode != kModeReplace && *mode != kModePrepend &&
                 *mode != kModeAppend)) {
     std::move(callback).Run(CreateContentBlocksForText(
-        "Invalid or missing mode. Must be 'replace', 'prepend', or 'append'."));
+        "Error: invalid or missing 'mode' property. Must be 'replace', "
+        "'prepend', or 'append'."));
     return;
   }
 
@@ -120,13 +121,14 @@ void TypeTool::UseTool(const std::string& input_json,
   const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Missing 'target' object"));
+        CreateContentBlocksForText("Error: missing 'target' property"));
     return;
   }
 
   auto target = target_util::ParseTargetInput(*target_dict);
   if (!target.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(target.error()));
+    std::move(callback).Run(CreateContentBlocksForText(
+        base::StrCat({"Invalid 'target': ", target.error()})));
     return;
   }
 

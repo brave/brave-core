@@ -265,6 +265,8 @@ source_set("unit_tests") {
       "content_agent_tool_provider_unittest.cc",
       "page_content_blocks_unittest.cc",
       "tools/click_tool_unittest.cc",
+      "tools/content_agent_tool_base_test.cc",
+      "tools/content_agent_tool_base_test.h",
       "tools/drag_and_release_tool_unittest.cc",
       "tools/history_tool_unittest.cc",
       "tools/move_mouse_tool_unittest.cc",
@@ -278,6 +280,7 @@ source_set("unit_tests") {
 
     deps += [
       ":content_agent_test_support",
+      "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common:test_support",
       "//chrome/browser/actor",
       "//chrome/browser/actor/ui:test_support",

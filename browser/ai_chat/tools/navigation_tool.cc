@@ -52,28 +52,28 @@ void NavigationTool::UseTool(const std::string& input_json,
   auto input = base::JSONReader::ReadDict(input_json);
 
   if (!input.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Failed to parse input JSON. Please try again."));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: failed to parse input JSON"));
     return;
   }
 
   const auto* website_url = input->FindString(kPropertyNameWebsiteUrl);
   if (!website_url) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Missing website_url parameter from input JSON."));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: missing 'website_url' property"));
     return;
   }
 
   GURL url(*website_url);
   if (!url.is_valid()) {
     std::move(callback).Run(CreateContentBlocksForText(
-        "website_url parameter did not contain a valid URL"));
+        "Error: 'website_url' property did not contain a valid URL"));
     return;
   }
 
   if (!url.SchemeIs(url::kHttpsScheme)) {
     std::move(callback).Run(CreateContentBlocksForText(
-        "website_url parameter must start with https://"));
+        "Error: 'website_url' property must start with https://"));
     return;
   }
 

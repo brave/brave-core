@@ -52,23 +52,23 @@ void MoveMouseTool::UseTool(const std::string& input_json,
   auto input = base::JSONReader::ReadDict(input_json);
 
   if (!input.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Failed to parse input JSON. Please try again."));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: failed to parse input JSON"));
     return;
   }
 
   // Extract and parse target object
   const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Either content_node_id with document_identifier OR x,y coordinates "
-        "must be provided."));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: missing 'target' property"));
     return;
   }
 
   auto target = target_util::ParseTargetInput(*target_dict);
   if (!target.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(target.error()));
+    std::move(callback).Run(CreateContentBlocksForText(
+        base::StrCat({"Invalid 'target': ", target.error()})));
     return;
   }
 

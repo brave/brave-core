@@ -175,5 +175,21 @@ void PrintTo(const ConversationTurn& turn, std::ostream* os) {
   }
 }
 
+void PrintTo(const ContentBlock& block, std::ostream* os) {
+  *os << "ContentBlock with";
+  switch (block.which()) {
+    case ContentBlock::Tag::kImageContentBlock:
+      *os << " image_url: "
+          << block.get_image_content_block()->image_url.possibly_invalid_spec()
+          << "\n";
+      break;
+    case ContentBlock::Tag::kTextContentBlock:
+      *os << " text: \"" << block.get_text_content_block()->text << "\"\n";
+      break;
+    default:
+      *os << " type: unknown\n";
+  }
+}
+
 }  // namespace mojom
 }  // namespace ai_chat

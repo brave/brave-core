@@ -11,6 +11,15 @@
 
 namespace ai_chat::target_util {
 
+namespace {
+
+const char kPropertyNameX[] = "x";
+const char kPropertyNameY[] = "y";
+const char kPropertyNameContentNodeId[] = "content_node_id";
+const char kPropertyNameDocumentIdentifier[] = "document_identifier";
+
+}  // namespace
+
 base::Value::Dict TargetProperty(const std::string& description) {
   base::Value::Dict target_property;
   target_property.Set("description", description);
@@ -21,18 +30,19 @@ base::Value::Dict TargetProperty(const std::string& description) {
       // Which frame to target, matches actor::DomNode::document_identifier
       // and is usually a value received within a previous tool output that
       // describes the DOM tree.
-      {{"document_identifier",
+      {{kPropertyNameDocumentIdentifier,
         StringProperty("Document identifier for the target frame")},
        // Which element to target, matches actor::DomNode::node_id
        // If not specified, the root element is specified to target the
        // viewport.
-       {"content_node_id", IntegerProperty("DOM node ID of the target element "
-                                           "within the frame (optional)")}}));
+       {kPropertyNameContentNodeId,
+        IntegerProperty("DOM node ID of the target element "
+                        "within the frame (optional)")}}));
 
-  any_of->Append(
-      ObjectProperty("Screen coordinates of target (less stable)",
-                     {{"x", NumberProperty("X coordinate in pixels")},
-                      {"y", NumberProperty("Y coordinate in pixels")}}));
+  any_of->Append(ObjectProperty(
+      "Screen coordinates of target (less stable)",
+      {{kPropertyNameX, NumberProperty("X coordinate in pixels")},
+       {kPropertyNameY, NumberProperty("Y coordinate in pixels")}}));
 
   return target_property;
 }
@@ -40,34 +50,29 @@ base::Value::Dict TargetProperty(const std::string& description) {
 base::expected<optimization_guide::proto::ActionTarget, std::string>
 ParseTargetInput(const base::Value::Dict& target_dict) {
   // Check what targeting approaches are present
-  auto x_value = target_dict.FindDouble("x");
-  auto y_value = target_dict.FindDouble("y");
-  auto content_node_id = target_dict.FindInt("content_node_id");
-  auto* document_identifier = target_dict.FindString("document_identifier");
+  auto x_value = target_dict.FindDouble(kPropertyNameX);
+  auto y_value = target_dict.FindDouble(kPropertyNameY);
+  auto content_node_id = target_dict.FindInt(kPropertyNameContentNodeId);
+  auto* document_identifier =
+      target_dict.FindString(kPropertyNameDocumentIdentifier);
 
   // Ensure exactly one approach is used
   // - x and y; or
   // - document_identifier (content_node_id is optional)
   if ((x_value || y_value) && (document_identifier || content_node_id)) {
-    return base::unexpected(
-        "Target must contain either 'x' and 'y' or "
-        "'document_identifier' with optional 'content_node_id', not both");
+    return base::unexpected(kErrorTargetHasBothSchemas);
   }
 
   // We check content_node_id here even though it's optional so that
   // we can return a more specific error message when checking that case.
   if (!x_value && !y_value && !content_node_id && !document_identifier) {
-    return base::unexpected(
-        "Target must contain one of either 'x' and 'y' or "
-        "'document_identifier' "
-        "and optional 'content_node_id'");
+    return base::unexpected(kErrorTargetHasNoSchemas);
   }
 
   // Parse coordinates approach
   if (x_value || y_value) {
     if (!x_value || !y_value) {
-      return base::unexpected(
-          "Invalid coordinates: both 'x' and 'y' are required");
+      return base::unexpected(kErrorTargetCoordinatesHasMissingProperty);
     }
 
     optimization_guide::proto::ActionTarget target;
@@ -81,8 +86,7 @@ ParseTargetInput(const base::Value::Dict& target_dict) {
   if (content_node_id || document_identifier) {
     if (!document_identifier) {
       return base::unexpected(
-          "Invalid identifiers: 'document_identifier' is required when "
-          "specifying 'content_node_id'");
+          kErrorTargetIdentifiersHasMissingDocumentIdentifier);
     }
 
     if (!content_node_id) {

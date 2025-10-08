@@ -56,8 +56,8 @@ void SelectTool::UseTool(const std::string& input_json,
   auto input = base::JSONReader::ReadDict(input_json);
 
   if (!input.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Failed to parse input JSON. Please try again."));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: failed to parse input JSON"));
     return;
   }
 
@@ -65,8 +65,7 @@ void SelectTool::UseTool(const std::string& input_json,
   const auto* value = input->FindString(kPropertyNameValue);
   if (!value) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Missing required parameter 'value' - the "
-                                   "value attribute of the option to select."));
+        CreateContentBlocksForText("Error: missing required 'value' property"));
     return;
   }
 
@@ -74,13 +73,14 @@ void SelectTool::UseTool(const std::string& input_json,
   const base::Value::Dict* target_dict = input->FindDict(kPropertyNameTarget);
   if (!target_dict) {
     std::move(callback).Run(
-        CreateContentBlocksForText("Missing 'target' object"));
+        CreateContentBlocksForText("Error: missing 'target' property"));
     return;
   }
 
   auto target = target_util::ParseTargetInput(*target_dict);
   if (!target.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(target.error()));
+    std::move(callback).Run(CreateContentBlocksForText(
+        base::StrCat({"Invalid 'target': ", target.error()})));
     return;
   }
 

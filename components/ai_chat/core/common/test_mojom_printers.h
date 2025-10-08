@@ -28,6 +28,7 @@ GENERATE_MOJO_PTR_PRINTER(Conversation)
 GENERATE_MOJO_PTR_PRINTER(ToolUseEvent)
 GENERATE_MOJO_PTR_PRINTER(ConversationEntryEvent)
 GENERATE_MOJO_PTR_PRINTER(ConversationTurn)
+GENERATE_MOJO_PTR_PRINTER(ContentBlock)
 
 }  // namespace mojom
 
