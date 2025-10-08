@@ -262,7 +262,6 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
               side_panel->GetProperty(views::kMarginsKey)->bottom());
     EXPECT_EQ(rounded_corners_margin,
               side_panel->GetProperty(views::kMarginsKey)->right());
-
   } else {
     EXPECT_EQ(
         contents_container_bounds.bottom_left() +
