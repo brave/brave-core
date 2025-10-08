@@ -2591,7 +2591,8 @@
 -BrowserTabRestoreTest.RecentTabsMenuTabDisposition
 -BrowserTest.*
 -BrowserViewLayoutDelegateImplBrowsertest.*/Maximized
--BrowserViewTest.*
+-BrowserViewTest.AvoidUnnecessaryVisibilityChanges
+-BrowserViewTest.DragNotSupportedInFullscreen
 -BrowserViewTestRefreshOnly.*
 -BrowsingDataCounterUtilsBrowserTest.*
 -BrowsingDataRemoverBrowserTest.*
