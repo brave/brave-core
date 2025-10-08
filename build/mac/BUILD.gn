@@ -401,16 +401,17 @@ group("create_dist_mac") {
       }
     }
   }
+  if (dmg_crx_private_key != "") {
+    deps += [ ":crx" ]
+  }
 }
 
-crx3("crx") {
-  inputs = [ dmg_path ]
-  output = "$packaged_basename.crx3"
-  base_dir = get_path_info(dmg_path, "dir")
-
-  # The private key file is not in Git for obvious reasons. It needs to be
-  # copied into this directory manually. Changing the private key requires
-  # also changing kBravePublisherKeyHash in crx_verifier.cc.
-  key = "//brave/updater/crx-private-key.der"
-  deps = [ ":package" ]
+if (dmg_crx_private_key != "") {
+  crx3("crx") {
+    inputs = [ dmg_path ]
+    output = "$packaged_basename.crx3"
+    base_dir = get_path_info(dmg_path, "dir")
+    key = dmg_crx_private_key
+    deps = [ ":package" ]
+  }
 }
