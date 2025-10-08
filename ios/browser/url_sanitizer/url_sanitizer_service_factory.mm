@@ -6,8 +6,8 @@
 #include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory.h"
 
 #include "base/no_destructor.h"
-#include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
-#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
+#include "brave/components/url_sanitizer/core/browser/url_sanitizer_component_installer.h"
+#include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "brave/ios/browser/api/url_sanitizer/url_sanitizer_service+private.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"

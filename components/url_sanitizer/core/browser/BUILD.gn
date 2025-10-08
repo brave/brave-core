@@ -1,7 +1,7 @@
 # Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("browser") {
   sources = [
@@ -10,7 +10,7 @@ source_set("browser") {
     "url_sanitizer_service.cc",
     "url_sanitizer_service.h",
   ]
-  public_deps = [ "//brave/components/url_sanitizer/common/mojom" ]
+  public_deps = [ "//brave/components/url_sanitizer/core/common/mojom" ]
   deps = [
     "//base",
     "//brave/components/brave_component_updater/browser",
@@ -21,7 +21,7 @@ source_set("browser") {
   ]
 }
 
-source_set("unittests") {
+source_set("unit_tests") {
   testonly = true
 
   sources = [ "url_sanitizer_service_unittest.cc" ]

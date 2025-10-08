@@ -36,6 +36,7 @@ test("brave_components_unittests") {
     "//brave/components/json:unit_tests",
     "//brave/components/static_redirect_helper:unit_tests",
     "//brave/components/update_client:unit_tests",
+    "//brave/components/url_sanitizer/core/browser:unit_tests",
     "//components/test:run_all_unittests",
   ]
 

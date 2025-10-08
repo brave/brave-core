@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
+#include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "brave/ios/browser/api/url_sanitizer/url_sanitizer_service.h"
 
 NS_ASSUME_NONNULL_BEGIN

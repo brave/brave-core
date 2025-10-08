@@ -9,7 +9,7 @@ source_set("browser_tests") {
 
   sources = [ "url_sanitizer_browsertest.cc" ]
   deps = [
-    "//brave/components/url_sanitizer/browser",
+    "//brave/components/url_sanitizer/core/browser",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",

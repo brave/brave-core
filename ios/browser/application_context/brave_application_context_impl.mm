@@ -17,7 +17,7 @@
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
-#include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
+#include "brave/components/url_sanitizer/core/browser/url_sanitizer_component_installer.h"
 #include "brave/ios/browser/brave_wallet/wallet_data_files_installer_delegate_impl.h"
 #include "components/application_locale_storage/application_locale_storage.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
