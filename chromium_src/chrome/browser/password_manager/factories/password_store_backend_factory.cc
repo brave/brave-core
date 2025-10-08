@@ -25,7 +25,9 @@ CreatePasswordStoreBackend(password_manager::IsAccountStore is_account_store,
   std::unique_ptr<password_manager::LoginDatabase> login_db(
       password_manager::CreateLoginDatabase(is_account_store,
                                             login_db_directory, prefs));
-  auto behavior = syncer::WipeModelUponSyncDisabledBehavior::kNever;
+  auto behavior = is_account_store
+                      ? syncer::WipeModelUponSyncDisabledBehavior::kAlways
+                      : syncer::WipeModelUponSyncDisabledBehavior::kNever;
   return std::make_unique<password_manager::PasswordStoreBuiltInBackend>(
       std::move(login_db), behavior, prefs, os_crypt_async);
 #else
