@@ -93,6 +93,7 @@ if (include_polymer) {
 transpile_web_ui("leo_web_components") {
   generate_grdp = true
   resource_path_prefix = "brave"
+  output_module = true
 
   entry_points = [ [
         "leo",
