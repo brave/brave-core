@@ -211,6 +211,11 @@ void BraveBrowserViewLayout::LayoutInfoBar(gfx::Rect& available_bounds) {
 void BraveBrowserViewLayout::LayoutContentsContainerView(
     const gfx::Rect& available_bounds) {
   main_container_->SetBoundsRect(available_bounds);
+
+  if (contents_background_) {
+    contents_background_->SetBoundsRect(available_bounds);
+  }
+
   gfx::Rect new_rect = main_container_->GetLocalBounds();
   if (vertical_tab_strip_host_) {
     // Both vertical tab impls should not be enabled together.
@@ -231,10 +236,6 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(
     // resizing it.
     contents_container_bounds.Inset(
         gfx::Insets().set_bottom(-webui_tab_strip_->size().height()));
-  }
-
-  if (contents_background_) {
-    contents_background_->SetBoundsRect(contents_container_bounds);
   }
 
   LayoutSideBar(contents_container_bounds);
