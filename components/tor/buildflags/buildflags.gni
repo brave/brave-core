@@ -1,3 +1,5 @@
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
+
 declare_args() {
-  enable_tor = !is_android
+  enable_tor = !is_android && !brave_origin_only_mode
 }
