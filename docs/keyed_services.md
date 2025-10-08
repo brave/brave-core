@@ -26,7 +26,13 @@ MyServiceFactory::MyServiceFactory()
 
 If you have more complicated logic then use
 `BrowserContextKeyedServiceFactory::GetBrowserContextToUse` and return nullptr
-if the service is not available for the given `BrowserContext`.
+if the service is not available for the given `BrowserContext`. The factory
+should only return nullptr for attributes that are fixed for at least the life
+of the browser session (profile, feature flag, etc...) and not for things like
+prefs that change during the session. For a given profile/browser session it
+should either always return nullptr or never return nullptr. This also applies
+to `GetForProfile`, etc... (If there is logic in `GetForProfile` it should move
+to `GetBrowserContextToUse`)
 
 ```cpp
 content::BrowserContext* MyServiceFactory::GetBrowserContextToUse(
