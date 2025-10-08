@@ -30,6 +30,8 @@ class OllamaClient : public KeyedService, public mojom::OllamaService {
  public:
   using ModelsCallback =
       base::OnceCallback<void(std::optional<std::string> response_body)>;
+  using ModelDetailsCallback =
+      base::OnceCallback<void(std::optional<std::string> response_body)>;
 
   explicit OllamaClient(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -47,6 +49,9 @@ class OllamaClient : public KeyedService, public mojom::OllamaService {
   // Fetch available models from Ollama (non-mojo method for internal use)
   void FetchModels(ModelsCallback callback);
 
+  // Fetch detailed information for a specific model
+  void ShowModel(const std::string& model_name, ModelDetailsCallback callback);
+
  private:
   void OnConnectionCheckComplete(
       ConnectedCallback callback,
@@ -56,6 +61,10 @@ class OllamaClient : public KeyedService, public mojom::OllamaService {
   void OnModelsListComplete(ModelsCallback callback,
                             std::unique_ptr<network::SimpleURLLoader> loader,
                             std::optional<std::string> response);
+
+  void OnModelDetailsComplete(ModelDetailsCallback callback,
+                              std::unique_ptr<network::SimpleURLLoader> loader,
+                              std::optional<std::string> response);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   mojo::ReceiverSet<mojom::OllamaService> receivers_;

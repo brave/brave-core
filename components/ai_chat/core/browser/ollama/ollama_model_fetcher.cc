@@ -29,7 +29,6 @@ namespace ai_chat {
 namespace {
 
 constexpr uint32_t kDefaultContextSize = 8192;
-constexpr uint32_t kMaxContentLength = 100000;
 
 }  // namespace
 
@@ -148,7 +147,10 @@ void OllamaModelFetcher::ProcessModelsResponse(
     }
   }
 
-  // Add new models
+  // Clear pending models map before processing new models
+  pending_models_.clear();
+
+  // Fetch detailed information for each new model
   for (const auto& model : *models_list) {
     const base::Value::Dict* model_dict = model.GetIfDict();
     if (!model_dict) {
@@ -156,63 +158,88 @@ void OllamaModelFetcher::ProcessModelsResponse(
     }
 
     const std::string* model_name = model_dict->FindString("name");
-    if (!model_name) {
+    if (!model_name || existing_ollama_models.contains(*model_name)) {
       continue;
     }
 
-    if (existing_ollama_models.contains(*model_name)) {
-      continue;
-    }
+    // Store basic info and fetch detailed information
+    PendingModelInfo pending_info;
+    pending_info.model_name = *model_name;
+    pending_info.display_name = FormatOllamaModelName(*model_name);
+    pending_models_[*model_name] = std::move(pending_info);
 
-    // Parse model details from the response
-    const base::Value::Dict* details = model_dict->FindDict("details");
-    uint32_t context_size = kDefaultContextSize;
+    FetchModelDetails(*model_name);
+  }
+}
 
-    // Try to get context size from details if available
-    if (details) {
-      std::optional<int> param_size = details->FindInt("parameter_size");
-      if (param_size) {
-        // Estimate context size based on parameter size
-        // This is a rough estimate - adjust as needed
-        if (*param_size < 10) {
-          context_size = 8192;
-        } else if (*param_size < 20) {
-          context_size = 4096;
-        } else {
-          context_size = 2048;
+void OllamaModelFetcher::FetchModelDetails(const std::string& model_name) {
+  ollama_client_->ShowModel(
+      model_name, base::BindOnce(&OllamaModelFetcher::OnModelDetailsResponse,
+                                 weak_ptr_factory_.GetWeakPtr(), model_name));
+}
+
+void OllamaModelFetcher::OnModelDetailsResponse(
+    const std::string& model_name,
+    std::optional<std::string> response_body) {
+  auto it = pending_models_.find(model_name);
+  if (it == pending_models_.end()) {
+    return;
+  }
+
+  uint32_t context_size = kDefaultContextSize;
+  bool vision_support = false;
+
+  // Parse the model details response
+  if (response_body) {
+    std::optional<base::Value::Dict> json_dict =
+        base::JSONReader::ReadDict(*response_body);
+    if (json_dict) {
+      // Extract context_length from model_info
+      const base::Value::Dict* model_info = json_dict->FindDict("model_info");
+      if (model_info) {
+        for (const auto [key, value] : *model_info) {
+          if (base::EndsWith(key, ".context_length") && value.is_int()) {
+            context_size = static_cast<uint32_t>(value.GetInt());
+            break;
+          }
+        }
+      }
+
+      // Check capabilities for vision support
+      const base::Value::List* capabilities =
+          json_dict->FindList("capabilities");
+      if (capabilities) {
+        for (const auto& capability : *capabilities) {
+          if (capability.is_string() && capability.GetString() == "vision") {
+            vision_support = true;
+            break;
+          }
         }
       }
     }
-
-    // Check if model supports vision (basic heuristic)
-    bool vision_support = model_name->find("vision") != std::string::npos ||
-                          model_name->find("llava") != std::string::npos;
-
-    // Create custom model for Ollama
-    auto custom_model = mojom::Model::New();
-    custom_model->key = "";  // Empty for new models
-    custom_model->display_name = FormatOllamaModelName(*model_name);
-    custom_model->vision_support = vision_support;
-    custom_model->supports_tools = false;
-    custom_model->is_suggested_model = false;
-
-    auto custom_options = mojom::CustomModelOptions::New();
-    custom_options->model_request_name = *model_name;
-    custom_options->endpoint = GURL(mojom::kOllamaEndpoint);
-    custom_options->api_key = "";  // Ollama doesn't require authentication
-    custom_options->context_size = context_size;
-
-    // Scale associated content and warning limits based on context size
-    uint32_t max_content =
-        std::min(static_cast<uint32_t>(context_size * 4), kMaxContentLength);
-    custom_options->max_associated_content_length = max_content;
-    custom_options->long_conversation_warning_character_limit = max_content;
-
-    custom_model->options =
-        mojom::ModelOptions::NewCustomModelOptions(std::move(custom_options));
-
-    model_service_->AddCustomModel(std::move(custom_model));
   }
+
+  // Create custom model for Ollama with detailed information
+  auto custom_model = mojom::Model::New();
+  custom_model->key = "";  // Empty for new models
+  custom_model->display_name = it->second.display_name;
+  custom_model->vision_support = vision_support;
+  custom_model->supports_tools = false;
+  custom_model->is_suggested_model = false;
+
+  auto custom_options = mojom::CustomModelOptions::New();
+  custom_options->model_request_name = model_name;
+  custom_options->endpoint = GURL(mojom::kOllamaEndpoint);
+  custom_options->api_key = "";  // Ollama doesn't require authentication
+  custom_options->context_size = context_size;
+
+  custom_model->options =
+      mojom::ModelOptions::NewCustomModelOptions(std::move(custom_options));
+
+  model_service_->AddCustomModel(std::move(custom_model));
+
+  // Remove from pending models
+  pending_models_.erase(it);
 }
 
 void OllamaModelFetcher::RemoveModels() {
