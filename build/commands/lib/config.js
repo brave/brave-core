@@ -162,7 +162,6 @@ const Config = function () {
   this.buildConfig = this.defaultBuildConfig
   this.buildTargets = ['brave']
   this.rootDir = rootDir
-  this.isUniversalBinary = false
   this.isChromium = false
   this.scriptDir = path.join(this.rootDir, 'scripts')
   this.srcDir = path.join(this.rootDir, 'src')
@@ -186,7 +185,6 @@ const Config = function () {
   this.targetOS = getEnvConfig(['target_os'])
   this.targetEnvironment = getEnvConfig(['target_environment'])
   this.gypTargetArch = 'x64'
-  this.targetAndroidBase = 'mono'
   this.ignorePatchVersionNumber =
     !this.isBraveReleaseBuild()
     && getEnvConfig(['ignore_patch_version_number'], !this.isCI)
@@ -201,17 +199,13 @@ const Config = function () {
   this.mac_signing_keychain = getEnvConfig(['mac_signing_keychain']) || 'login'
   this.notary_user = getEnvConfig(['notary_user'])
   this.notary_password = getEnvConfig(['notary_password'])
-  this.channel = 'development'
   this.git_cache_path = getEnvConfig(['git_cache_path'])
-  this.sccache = getEnvConfig(['sccache'])
   this.rbeService = getEnvConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getEnvConfig(['rbe_tls_client_auth_cert']) || ''
   this.rbeTlsClientAuthKey = getEnvConfig(['rbe_tls_client_auth_key']) || ''
   this.realRewrapperDir =
     process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
   this.ignore_compile_failure = false
-  this.enable_hangout_services_extension = false
-  this.enable_pseudolocales = false
   this.sign_widevine_cert = process.env.SIGN_WIDEVINE_CERT || ''
   this.sign_widevine_key = process.env.SIGN_WIDEVINE_KEY || ''
   this.sign_widevine_passwd = process.env.SIGN_WIDEVINE_PASSPHRASE || ''
@@ -244,8 +238,6 @@ const Config = function () {
   this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
   this.useRemoteExec = getEnvConfig(['use_remoteexec']) || false
   this.offline = getEnvConfig(['offline']) || false
-  this.use_libfuzzer = false
-  this.androidAabToApk = false
   this.useBraveHermeticToolchain = this.rbeService.includes('.brave.com:')
   this.braveIOSDeveloperOptionsCode = getEnvConfig([
     'brave_ios_developer_options_code',
@@ -356,7 +348,7 @@ Config.prototype.isDebug = function () {
   return this.buildConfig === 'Debug'
 }
 
-Config.prototype.enableCDMHostVerification = function () {
+Config.prototype.enableCDMHostVerificationOrUndefined = function () {
   const enable =
     this.buildConfig === 'Release'
     && process.platform !== 'linux'
@@ -366,22 +358,13 @@ Config.prototype.enableCDMHostVerification = function () {
     && fs.existsSync(this.signature_generator)
   if (enable) {
     console.log('Widevine cdm host verification is enabled')
-  } else {
-    console.log('Widevine cdm host verification is disabled')
   }
-  return enable
-}
-
-Config.prototype.isAsan = function () {
-  if (this.is_asan) {
-    return true
-  }
-  return false
+  return enable ? true : undefined
 }
 
 Config.prototype.isOfficialBuild = function () {
   return (
-    this.isReleaseBuild() && !this.isAsan() && !this.is_msan && !this.is_ubsan
+    this.isReleaseBuild() && !this.is_asan && !this.is_msan && !this.is_ubsan
   )
 }
 
@@ -404,43 +387,45 @@ Config.prototype.buildArgs = function () {
   let versionParts = version.split('+')[0]
   versionParts = versionParts.split('.')
 
+  const isComponentBuildOrUndefined = this.isComponentBuild() ? true : undefined
+  const isOfficialBuildOrUndefined = this.isOfficialBuild() ? true : undefined
+
   let args = {
     'import("//brave/build/args/brave_defaults.gni")': null,
-    is_asan: this.isAsan(),
-    enable_full_stack_frames_for_profiling: this.isAsan(),
-    v8_enable_verify_heap: this.isAsan(),
+    is_asan: this.is_asan,
+    enable_full_stack_frames_for_profiling: this.is_asan,
+    v8_enable_verify_heap: this.is_asan,
     is_ubsan: this.is_ubsan,
     is_ubsan_vptr: this.is_ubsan,
     is_ubsan_no_recover: this.is_ubsan,
     is_msan: this.is_msan,
-    safe_browsing_mode: 1,
-    // TODO: Re-enable when chromium_src overrides work for files in relative
-    // paths like widevine_cmdm_compoennt_installer.cc
-    // use_jumbo_build: !this.officialBuild,
-    is_component_build: this.isComponentBuild(),
+    is_component_build: isComponentBuildOrUndefined,
     is_universal_binary: this.isUniversalBinary,
-    // Our copy of signature_generator.py doesn't support --ignore_missing_cert:
-    ignore_missing_widevine_signing_cert: false,
     target_cpu: this.targetArch,
-    is_official_build: this.isOfficialBuild(),
-    is_debug: this.isDebug(),
+    is_official_build: isOfficialBuildOrUndefined,
+    is_debug: this.isDebug() ? true : undefined,
     dcheck_always_on:
-      getEnvConfig(['dcheck_always_on']) || this.isComponentBuild(),
+      getEnvConfig(['dcheck_always_on']) || isComponentBuildOrUndefined,
     brave_channel: this.channel,
     brave_version_major: versionParts[0],
     brave_version_minor: versionParts[1],
     brave_version_build: versionParts[2],
     chrome_version_string: this.chromeVersion,
-    enable_hangout_services_extension: this.enable_hangout_services_extension,
-    enable_cdm_host_verification: this.enableCDMHostVerification(),
-    enable_pseudolocales: this.enable_pseudolocales,
-    skip_signing: !this.shouldSign(),
+    enable_cdm_host_verification: this.enableCDMHostVerificationOrUndefined(),
+    skip_signing: this.skipSigningOrUndefined(),
     use_remoteexec: this.useRemoteExec,
     use_reclient: this.useRemoteExec,
     use_siso: this.useSiso,
     use_libfuzzer: this.use_libfuzzer,
-    enable_update_notifications: this.isOfficialBuild(),
-    generate_about_credits: true,
+    enable_update_notifications: isOfficialBuildOrUndefined,
+    enable_updater: isOfficialBuildOrUndefined,
+  }
+
+  if (this.is_asan != null) {
+    if (['android', 'linux', 'mac'].includes(this.targetOS)) {
+      // LSAN only works with ASAN and has very low overhead.
+      args.is_lsan = args.is_asan
+    }
   }
 
   if (this.targetOS !== 'ios') {
@@ -451,11 +436,7 @@ Config.prototype.buildArgs = function () {
     args[key] = getEnvConfig([key])
   }
 
-  if (this.isOfficialBuild()) {
-    args.enable_updater = true
-  }
-
-  if (!this.isBraveReleaseBuild()) {
+  if (this.isOfficialBuild() && !this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
 
     // Don't randomize mojom message ids. When randomization is enabled, all
@@ -479,26 +460,24 @@ Config.prototype.buildArgs = function () {
     args.use_dummy_lastchange = getEnvConfig(['use_dummy_lastchange'], true)
   }
 
-  if (this.shouldSign()) {
-    if (this.targetOS === 'mac') {
-      args.mac_signing_identifier = this.mac_signing_identifier
-      args.mac_installer_signing_identifier =
-        this.mac_installer_signing_identifier
-      args.mac_signing_keychain = this.mac_signing_keychain
-      if (this.notarize) {
-        args.notarize = true
-        args.notary_user = this.notary_user
-        args.notary_password = this.notary_password
-      }
-    } else if (this.targetOS === 'android') {
-      args.brave_android_keystore_path = this.braveAndroidKeystorePath
-      args.brave_android_keystore_name = this.braveAndroidKeystoreName
-      args.brave_android_keystore_password = this.braveAndroidKeystorePassword
-      args.brave_android_key_password = this.braveAndroidKeyPassword
-      if (this.braveAndroidPkcs11Provider && this.braveAndroidPkcs11Alias) {
-        args.brave_android_pkcs11_provider = this.braveAndroidPkcs11Provider
-        args.brave_android_pkcs11_alias = this.braveAndroidPkcs11Alias
-      }
+  if (this.targetOS === 'mac') {
+    args.mac_signing_identifier = this.mac_signing_identifier
+    args.mac_installer_signing_identifier =
+      this.mac_installer_signing_identifier
+    args.mac_signing_keychain = this.mac_signing_keychain
+    if (this.notarize) {
+      args.notarize = true
+      args.notary_user = this.notary_user
+      args.notary_password = this.notary_password
+    }
+  } else if (this.targetOS === 'android') {
+    args.brave_android_keystore_path = this.braveAndroidKeystorePath
+    args.brave_android_keystore_name = this.braveAndroidKeystoreName
+    args.brave_android_keystore_password = this.braveAndroidKeystorePassword
+    args.brave_android_key_password = this.braveAndroidKeyPassword
+    if (this.braveAndroidPkcs11Provider && this.braveAndroidPkcs11Alias) {
+      args.brave_android_pkcs11_provider = this.braveAndroidPkcs11Provider
+      args.brave_android_pkcs11_alias = this.braveAndroidPkcs11Alias
     }
   }
 
@@ -533,14 +512,6 @@ Config.prototype.buildArgs = function () {
     && this.targetOS !== 'android'
   ) {
     args.enable_profiling = true
-  }
-
-  if (this.sccache) {
-    if (process.platform === 'win32') {
-      args.clang_use_chrome_plugins = false
-      args.use_thin_lto = true
-    }
-    args.enable_precompiled_headers = false
   }
 
   if (!this.useSiso) {
@@ -606,11 +577,6 @@ Config.prototype.buildArgs = function () {
     }
   }
 
-  if (['android', 'linux', 'mac'].includes(this.targetOS)) {
-    // LSAN only works with ASAN and has very low overhead.
-    args.is_lsan = args.is_asan
-  }
-
   // Devtools: Now we patch devtools frontend, so it is useful to see
   // if something goes wrong on CI builds.
   if (this.targetOS !== 'android' && this.targetOS !== 'ios' && this.isCI) {
@@ -624,7 +590,6 @@ Config.prototype.buildArgs = function () {
   if (this.targetOS === 'android') {
     args.android_channel = this.channel
     if (!this.isReleaseBuild()) {
-      args.android_channel = 'default'
       args.chrome_public_manifest_package = 'com.brave.browser_default'
     } else if (this.channel === '') {
       args.android_channel = 'stable'
@@ -641,21 +606,15 @@ Config.prototype.buildArgs = function () {
     // Android build
 
     args.target_android_base = this.targetAndroidBase
-    args.target_android_output_format =
-      this.targetAndroidOutputFormat
-      || (this.buildConfig === 'Release' ? 'aab' : 'apk')
+    args.target_android_output_format = this.targetAndroidOutputFormat
     args.android_override_version_name = this.androidOverrideVersionName
 
     args.brave_android_developer_options_code =
       this.braveAndroidDeveloperOptionsCode
     args.brave_safebrowsing_api_key = this.braveAndroidSafeBrowsingApiKey
-    args.safe_browsing_mode = 2
 
     // Required since cr126 to use Chrome password store
     args.use_login_database_as_backend = true
-
-    // TODO(fixme)
-    args.enable_tor = false
 
     // Fixes WebRTC IP leak with default option
     args.enable_mdns = true
@@ -688,15 +647,6 @@ Config.prototype.buildArgs = function () {
     if (args.dcheck_always_on === false) {
       args.enable_java_asserts = false
     }
-
-    // Default value currently causes multiple errors of
-    // Input to targets not generated by a dependency
-    // Chromium change: 3c46aa800cbd4e21aeb08ac7c1222ce33d5c902e
-    args.translate_genders = false
-
-    // These do not exist on android
-    // TODO - recheck
-    delete args.enable_hangout_services_extension
   }
 
   if (this.targetOS === 'ios') {
@@ -746,8 +696,6 @@ Config.prototype.buildArgs = function () {
     args.ios_locales_pack_extra_deps = ['//brave/components/resources:strings']
 
     delete args.safebrowsing_api_endpoint
-    delete args.safe_browsing_mode
-    delete args.enable_hangout_services_extension
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
     delete args.brave_stats_updater_url
@@ -787,37 +735,28 @@ Config.prototype.buildArgs = function () {
     delete args.zebpay_sandbox_client_id
     delete args.zebpay_sandbox_client_secret
     delete args.zebpay_sandbox_oauth_url
-    delete args.use_blink_v8_binding_new_idl_interface
-    delete args.v8_enable_verify_heap
     delete args.service_key_stt
+    delete args.v8_enable_verify_heap
   }
 
   args = Object.assign(args, this.extraGnArgs)
   return args
 }
 
-Config.prototype.shouldSign = function () {
-  if (this.skip_signing || this.isComponentBuild() || this.targetOS === 'ios') {
-    return false
-  }
-
-  if (this.targetOS === 'android') {
-    return this.braveAndroidKeystorePath !== undefined
-  }
-
-  if (this.targetOS === 'mac') {
-    return this.mac_signing_identifier !== undefined
+Config.prototype.skipSigningOrUndefined = function () {
+  if (this.skip_signing != null) {
+    return this.skip_signing
   }
 
   if (process.platform === 'win32') {
     return (
-      process.env.CERT !== undefined
-      || process.env.AUTHENTICODE_HASH !== undefined
-      || process.env.SIGNTOOL_ARGS !== undefined
+      process.env.CERT == null
+      && process.env.AUTHENTICODE_HASH == null
+      && process.env.SIGNTOOL_ARGS == null
     )
   }
 
-  return false
+  return undefined
 }
 
 Config.prototype.addToPath = function (oldPath, addPath, prepend = false) {
@@ -932,8 +871,6 @@ Config.prototype.updateInternal = function (options) {
 
   if (options.is_asan) {
     this.is_asan = true
-  } else {
-    this.is_asan = false
   }
 
   if (options.use_clang_coverage) {
@@ -1210,26 +1147,6 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
     if (this.getCachePath()) {
       env.GIT_CACHE_PATH = path.join(this.getCachePath())
-    }
-
-    if (!this.useRemoteExec && this.sccache) {
-      env.CC_WRAPPER = this.sccache
-      console.log('using cc wrapper ' + path.basename(this.sccache))
-      if (path.basename(this.sccache) === 'ccache') {
-        env.CCACHE_CPP2 = 'yes'
-        env.CCACHE_SLOPPINESS = 'pch_defines,time_macros,include_file_mtime'
-        env.CCACHE_BASEDIR = this.srcDir
-        env = this.addPathToEnv(
-          env,
-          path.join(
-            this.srcDir,
-            'third_party',
-            'llvm-build',
-            'Release+Asserts',
-            'bin',
-          ),
-        )
-      }
     }
 
     if (this.rbeService) {

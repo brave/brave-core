@@ -270,6 +270,9 @@ docs/keyed_services.md @bridiver
 
 build/commands/lib/branding.js @bridiver
 
+# Temporarily restricted to these reviewers
+build/commands/lib/config.js @bridiver @goodov @cdesouza-chromium
+
 # deprecated
 /components/constants @bridiver
 
