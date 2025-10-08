@@ -664,64 +664,6 @@ TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
   run_loop5.Run();
 }
 
-TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
-  base::test::TaskEnvironment task_environment;
-  auto* registry = BlockchainRegistry::GetInstance();
-  TokenListMap token_list_map;
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
-  registry->UpdateTokenList(std::move(token_list_map));
-  base::RunLoop run_loop;
-  registry->GetTokenBySymbol(
-      mojom::kMainnetChainId, mojom::CoinType::ETH, "BAT",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_EQ(token->contract_address,
-                  "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
-        run_loop.Quit();
-      }));
-  run_loop.Run();
-
-  // Can get other chain tokens
-  base::RunLoop run_loop2;
-  registry->GetTokenBySymbol(
-      mojom::kSepoliaChainId, mojom::CoinType::ETH, "UNI",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_EQ(token->contract_address,
-                  "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984");
-        run_loop2.Quit();
-      }));
-  run_loop2.Run();
-
-  // chainId has tokens but token doesn't exist
-  base::RunLoop run_loop3;
-  registry->GetTokenBySymbol(
-      mojom::kMainnetChainId, mojom::CoinType::ETH, "BRB",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_FALSE(token);
-        run_loop3.Quit();
-      }));
-  run_loop3.Run();
-
-  // chainId which has no tokens
-  base::RunLoop run_loop4;
-  registry->GetTokenBySymbol(
-      "0x5", mojom::CoinType::ETH, "BRB",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_FALSE(token);
-        run_loop4.Quit();
-      }));
-  run_loop4.Run();
-
-  // Get Solana token
-  base::RunLoop run_loop5;
-  registry->GetTokenBySymbol(
-      mojom::kSolanaMainnet, mojom::CoinType::SOL, "USDC",
-      base::BindLambdaForTesting([&](mojom::BlockchainTokenPtr token) {
-        EXPECT_EQ(token, usdc);
-        run_loop5.Quit();
-      }));
-  run_loop5.Run();
-}
-
 TEST(BlockchainRegistryUnitTest, GetBuyTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();

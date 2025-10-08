@@ -62,10 +62,6 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
                          mojom::CoinType coin,
                          const std::string& address,
                          GetTokenByAddressCallback callback) override;
-  void GetTokenBySymbol(const std::string& chain_id,
-                        mojom::CoinType coin,
-                        const std::string& symbol,
-                        GetTokenBySymbolCallback callback) override;
   void GetAllTokens(const std::string& chain_id,
                     mojom::CoinType coin,
                     GetAllTokensCallback callback) override;

@@ -324,29 +324,6 @@ mojom::BlockchainTokenPtr BlockchainRegistry::GetTokenByAddress(
   return token_it == tokens.end() ? nullptr : token_it->Clone();
 }
 
-void BlockchainRegistry::GetTokenBySymbol(const std::string& chain_id,
-                                          mojom::CoinType coin,
-                                          const std::string& symbol,
-                                          GetTokenBySymbolCallback callback) {
-  const auto key = GetTokenListKey(coin, chain_id);
-  if (!token_list_map_.contains(key)) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-  const auto& tokens = token_list_map_[key];
-  auto token_it = std::ranges::find_if(
-      tokens, [&](const mojom::BlockchainTokenPtr& current_token) {
-        return current_token->symbol == symbol;
-      });
-
-  if (token_it == tokens.end()) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-
-  std::move(callback).Run(token_it->Clone());
-}
-
 void BlockchainRegistry::GetAllTokens(const std::string& chain_id,
                                       mojom::CoinType coin,
                                       GetAllTokensCallback callback) {

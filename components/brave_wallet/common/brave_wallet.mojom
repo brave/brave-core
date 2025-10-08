@@ -1221,10 +1221,6 @@ interface BlockchainRegistry {
   GetTokenByAddress(string chain_id, CoinType coin, string address)
       => (BlockchainToken? token);
 
-  // Obtains token information by a symbol lookup.
-  GetTokenBySymbol(string chain_id, CoinType coin, string symbol)
-      => (BlockchainToken? token);
-
   // Obtains all tokens Send/Swap UI
   GetAllTokens(string chain_id, CoinType coin)
       => (array<BlockchainToken> tokens);
