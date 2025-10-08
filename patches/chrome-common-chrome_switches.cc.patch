@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_switches.cc b/chrome/common/chrome_switches.cc
-index d698c2f50c014f267293713afc34a0c4dbe5f07b..49fc3dcb91db766075c94efc1354d761a816af8b 100644
+index ad982f0a1a4b414e9769c24e695ea277ee9cc8b8..375ab3d91db3b44575f99d3f7b250d467f7c18dd 100644
 --- a/chrome/common/chrome_switches.cc
 +++ b/chrome/common/chrome_switches.cc
 @@ -388,6 +388,13 @@ const char kInitIsolateAsForeground[] = "init-isolate-as-foreground";
