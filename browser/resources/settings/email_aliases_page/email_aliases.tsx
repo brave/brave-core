@@ -75,5 +75,3 @@ export const mount = (at: HTMLElement) => {
     </StyleSheetManager>
   )
 }
-
-  ; (window as any).mountEmailAliases = mount
