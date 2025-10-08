@@ -3,12 +3,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
+
 declare_args() {
   # On macOS, vpn is not available w/o signing.
-  enable_brave_vpn = is_win || is_android || is_mac || is_ios
+  enable_brave_vpn =
+      (is_win || is_android || is_mac || is_ios) && !brave_origin_only_mode
 
   # vpn panel is desktop specific UI.
-  enable_brave_vpn_panel = is_win || is_mac
+  enable_brave_vpn_panel = (is_win || is_mac) && !brave_origin_only_mode
 }
 
 declare_args() {
