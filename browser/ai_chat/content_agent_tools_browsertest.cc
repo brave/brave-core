@@ -37,7 +37,7 @@ namespace {
 // Substring that indicates a successful tool result
 const char kToolResultSuccessSubstring[] = "successful";
 
-}
+}  // namespace
 
 // These tests verify, end to end, that the various content tools utilize
 // the Chromium actor framework successfully. They do not need to test all
