@@ -96,6 +96,7 @@ void NewTabPageInitializer::Initialize() {
   AddLoadTimeValues();
   AddStrings();
   AddPluralStrings();
+  AddResourcePaths();
 
   AddFaviconDataSource();
   AddCustomImageDataSource();
@@ -305,6 +306,11 @@ void NewTabPageInitializer::AddPluralStrings() {
   handler->AddLocalizedString("rewardsConnectedAdsViewedText",
                               IDS_REWARDS_CONNECTED_ADS_VIEWED_TEXT);
   web_ui_->AddMessageHandler(std::move(handler));
+}
+
+void NewTabPageInitializer::AddResourcePaths() {
+  source_->AddResourcePaths(
+      {{"dylan-malval_sea-min.webp", IDR_BRAVE_NEW_TAB_BACKGROUND1}});
 }
 
 void NewTabPageInitializer::AddFaviconDataSource() {
