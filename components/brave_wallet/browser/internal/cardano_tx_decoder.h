@@ -63,6 +63,7 @@ class CardanoTxDecoder {
 
     std::vector<RestoredTransactionInput> inputs;
     std::vector<RestoredTransactionOutput> outputs;
+    std::vector<uint8_t> raw_body_bytes;
   };
 
   struct RestoredTransaction {
@@ -72,7 +73,7 @@ class CardanoTxDecoder {
     RestoredTransaction(RestoredTransaction&&);
 
     RestoredTransactionBody tx_body;
-    std::vector<uint8_t> raw_bytes;
+    std::vector<uint8_t> raw_tx_bytes;
   };
 
   CardanoTxDecoder();

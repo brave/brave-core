@@ -20,6 +20,18 @@ namespace brave_wallet {
 
 namespace {
 
+// https://adastat.net/transactions/1e89c2a5449d281cbdaed23af716bea50e31fe6b314814e48f1c57c919b2c072
+constexpr auto* kTaggedTx =
+    "84A400D901028182582073263792876C2BACFBDF46EC13ADEAFD59830954AA84B36A4286"
+    "36F075FFE0B101018282583901DA72B7C0C0324CD841D29F68D67D1C10A67AAFF0B59D61"
+    "3F2A4BD2336C162A7B0DE7540E0EFEC893D6C92DE70A2E7C9477C098F21A84BFE21B0000"
+    "0001A13B8600825839012CE75A18452B9A4C4481A9ECAFE4166CD769ABB3313B03097FC3"
+    "98D00E3EF28F8254481D403EB5D26F118D7BA0C09EAF36F0FD1A0AC624A81B000000214A"
+    "25425C021A00029309031A0A06305FA100D90102818258206F3253B5847F0DCD7ACF72D0"
+    "318429D1365F441F1038002FA44180D45ED5FFDD5840FA67EA8E4968F2552084958442D1"
+    "F868D27771DBA4A5858B9AF25D597AF5F5351611991F2F4F3DFF2964E831A184B8AC7206"
+    "649C6212C520F827179B2D355D0AF5F6";
+
 CardanoTransaction GetUnsignedReferenceTransaction() {
   CardanoTransaction tx;
 
@@ -103,7 +115,8 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransaction) {
 
   const auto& restored_tx = decode_result.value();
 
-  EXPECT_EQ(restored_tx.raw_bytes, tx_bytes);
+  // Validate raw bytes
+  EXPECT_EQ(restored_tx.raw_tx_bytes, tx_bytes);
 
   EXPECT_EQ(restored_tx.tx_body.inputs.size(), tx.inputs().size());
   for (size_t i = 0; i < tx.inputs().size(); i++) {
@@ -118,6 +131,45 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransaction) {
     EXPECT_EQ(restored_tx.tx_body.outputs[i].address, tx.outputs()[i].address);
     EXPECT_EQ(restored_tx.tx_body.outputs[i].amount, tx.outputs()[i].amount);
   }
+}
+
+TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransactionWithTag) {
+  std::vector<uint8_t> tx_bytes;
+  ASSERT_TRUE(base::HexStringToBytes(kTaggedTx, &tx_bytes));
+
+  auto decode_result = CardanoTxDecoder::DecodeTransaction(tx_bytes);
+  EXPECT_TRUE(decode_result.has_value());
+
+  const auto& restored_tx = decode_result.value();
+
+  // Validate raw bytes
+  EXPECT_EQ(restored_tx.raw_tx_bytes, tx_bytes);
+  EXPECT_EQ(base::HexEncode(restored_tx.tx_body.raw_body_bytes),
+            "A400D901028182582073263792876C2BACFBDF46EC13ADEAFD59830954AA84B36A"
+            "428636F075FFE0B101018282583901DA72B7C0C0324CD841D29F68D67D1C10A67A"
+            "AFF0B59D613F2A4BD2336C162A7B0DE7540E0EFEC893D6C92DE70A2E7C9477C098"
+            "F21A84BFE21B00000001A13B8600825839012CE75A18452B9A4C4481A9ECAFE416"
+            "6CD769ABB3313B03097FC398D00E3EF28F8254481D403EB5D26F118D7BA0C09EAF"
+            "36F0FD1A0AC624A81B000000214A25425C021A00029309031A0A06305F");
+
+  // Validate inputs
+  EXPECT_EQ(restored_tx.tx_body.inputs.size(), 1u);
+  EXPECT_EQ(base::HexEncode(restored_tx.tx_body.inputs[0].tx_hash),
+            "73263792876C2BACFBDF46EC13ADEAFD59830954AA84B36A428636F075FFE0B1");
+  EXPECT_EQ(restored_tx.tx_body.inputs[0].index, 1u);
+  EXPECT_FALSE(restored_tx.tx_body.inputs[0].address);
+  EXPECT_FALSE(restored_tx.tx_body.inputs[0].amount);
+
+  // Validate outputs
+  EXPECT_EQ(restored_tx.tx_body.outputs.size(), 2u);
+  EXPECT_EQ(restored_tx.tx_body.outputs[0].address.ToString(),
+            "addr1q8d89d7qcqeyekzp620k34narsg2v7407z6e6cfl9f9ayvmvzc48kr082s8qa"
+            "lkgj0tvjt08pgh8e9rhczv0yx5yhl3qj04knp");
+  EXPECT_EQ(restored_tx.tx_body.outputs[0].amount, 7000000000u);
+  EXPECT_EQ(restored_tx.tx_body.outputs[1].address.ToString(),
+            "addr1qykwwkscg54e5nzysx57etlyzekdw6dtkvcnkqcf0lpe35qw8meglqj5fqw5q"
+            "0446fh3rrtm5rqfatek7r735zkxyj5qt7ypw2");
+  EXPECT_EQ(restored_tx.tx_body.outputs[1].amount, 142977876572u);
 }
 
 TEST(CardanoTxDecoderTest, DecodeTransaction_InvalidCborData) {
@@ -182,6 +234,46 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_ValidSignatures) {
       CardanoTxDecoder::AddWitnessesToTransaction(tx_bytes, sign_results);
   EXPECT_TRUE(result.has_value());
   EXPECT_EQ(expected_signed_bytes, result.value());
+}
+
+TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_ValidSignaturesWithTag) {
+  std::vector<CardanoTxDecoder::CardanoSignMessageResult> sign_results;
+
+  // Create first signature result
+  CardanoTxDecoder::CardanoSignMessageResult sign_result1;
+  sign_result1.public_key = std::vector<uint8_t>(32, 1);
+  sign_result1.signature_bytes = std::vector<uint8_t>(64, 2);
+  sign_results.push_back(std::move(sign_result1));
+
+  // Create second signature result
+  CardanoTxDecoder::CardanoSignMessageResult sign_result2;
+  sign_result2.public_key = std::vector<uint8_t>(32, 3);
+  sign_result2.signature_bytes = std::vector<uint8_t>(64, 4);
+  sign_results.push_back(std::move(sign_result2));
+
+  std::vector<uint8_t> tx_bytes;
+  ASSERT_TRUE(base::HexStringToBytes(kTaggedTx, &tx_bytes));
+
+  auto result =
+      CardanoTxDecoder::AddWitnessesToTransaction(tx_bytes, sign_results);
+  EXPECT_TRUE(result.has_value());
+  EXPECT_EQ(
+      base::HexEncode(result.value()),
+      "84A400D901028182582073263792876C2BACFBDF46EC13ADEAFD59830954AA84B36A4286"
+      "36F075FFE0B101018282583901DA72B7C0C0324CD841D29F68D67D1C10A67AAFF0B59D61"
+      "3F2A4BD2336C162A7B0DE7540E0EFEC893D6C92DE70A2E7C9477C098F21A84BFE21B0000"
+      "0001A13B8600825839012CE75A18452B9A4C4481A9ECAFE4166CD769ABB3313B03097FC3"
+      "98D00E3EF28F8254481D403EB5D26F118D7BA0C09EAF36F0FD1A0AC624A81B000000214A"
+      "25425C021A00029309031A0A06305FA100D90102838258206F3253B5847F0DCD7ACF72D0"
+      "318429D1365F441F1038002FA44180D45ED5FFDD5840FA67EA8E4968F2552084958442D1"
+      "F868D27771DBA4A5858B9AF25D597AF5F5351611991F2F4F3DFF2964E831A184B8AC7206"
+      "649C6212C520F827179B2D355D0A82582001010101010101010101010101010101010101"
+      "010101010101010101010101015840020202020202020202020202020202020202020202"
+      "020202020202020202020202020202020202020202020202020202020202020202020202"
+      "020202020202028258200303030303030303030303030303030303030303030303030303"
+      "030303030303584004040404040404040404040404040404040404040404040404040404"
+      "040404040404040404040404040404040404040404040404040404040404040404040404"
+      "F5F6");
 }
 
 TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_EmptySignatures) {
