@@ -75,7 +75,6 @@ class OllamaModelFetcher {
 
   void OnOllamaFetchEnabledChanged();
   void OnModelsResponse(std::optional<std::string> response_body);
-  void ProcessModelsResponse(const std::string& response_body);
   struct PendingModelInfo {
     std::string model_name;
     std::string display_name;

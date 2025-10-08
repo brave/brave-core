@@ -70,13 +70,8 @@ void OllamaModelFetcher::OnModelsResponse(
     return;
   }
 
-  ProcessModelsResponse(*response_body);
-}
-
-void OllamaModelFetcher::ProcessModelsResponse(
-    const std::string& response_body) {
   std::optional<base::Value::Dict> json_dict =
-      base::JSONReader::ReadDict(response_body);
+      base::JSONReader::ReadDict(*response_body);
   if (!json_dict) {
     return;
   }
