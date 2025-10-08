@@ -129,7 +129,6 @@ CHAR_LIMIT guidelines:
       <message name="IDS_BOOKMARK_BAR_SETTING" desc="Title for the bookmark bar setting.">
         Show bookmarks
       </message>
-
       <message name="IDS_SAFETY_HUB_SAFETY_TIPS_INCOGNITO_TITLE" desc="Title for a entry in the Safety Hub user education section. The entry leads the user to a help center article about Private.">
         Brave Private
       </message>
@@ -214,6 +213,10 @@ CHAR_LIMIT guidelines:
       <message name="IDS_MENU_SWITCH_OUT_OF_INCOGNITO" desc="Menu item for switching out of private.">
         Switch out of Private
       </message>
+      <message name="IDS_BOOKMARK_BAR_CONTENT_DESCRIPTION" desc="Accessibility label for the encompassing view of the entire bookmark bar.">
+        Bookmarks
+      </message>
+
       <message name="IDS_MENU_OPEN_IN_INCOGNITO_CHROME" desc="Context sensitive menu item for opening a link in Brave in a Private tab. [CHAR_LIMIT=30]" translateable="false">
         Open in Private Brave
       </message>
@@ -242,8 +245,14 @@ CHAR_LIMIT guidelines:
       <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_INCOGNITO" desc="Content description for tabs that are not selected in Private mode">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Private Tab
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_INCOGNITO_SELECTED" desc="Content description for the tab that is selected in Private mode">
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_INCOGNITO" desc="Content description for the tabs that are selected in Private mode">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_INCOGNITO" desc="Content description for pinned tabs that are not selected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_SELECTED_INCOGNITO" desc="Content description for the pinned tabs that are selected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Selected Private Tab
       </message>
 
       <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in Private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
