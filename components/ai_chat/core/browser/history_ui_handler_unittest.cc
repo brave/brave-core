@@ -11,6 +11,7 @@
 
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/location.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/task_environment.h"
@@ -19,6 +20,7 @@
 #include "brave/components/ai_chat/core/common/mojom/history.mojom.h"
 #include "components/history/core/browser/history_database_params.h"
 #include "components/history/core/browser/history_service.h"
+#include "components/history/core/browser/history_types.h"
 #include "components/history/core/test/test_history_database.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -41,7 +43,7 @@ class HistoryUIHandlerTest : public testing::Test {
     if (!history_service_->Init(
             history::TestHistoryDatabaseParamsForPath(history_dir_))) {
       history_service_.reset();
-      ADD_FAILURE();
+      ADD_FAILURE() << "Failed to initialize HistoryService";
     }
 
     // Create HistoryUIHandler
@@ -53,7 +55,8 @@ class HistoryUIHandlerTest : public testing::Test {
   void TearDown() override { history_service_->Shutdown(); }
 
   void AddTestHistoryEntry(const std::string& title, const GURL& url) {
-    history_service_->AddPage(url, base::Time::Now(), history::SOURCE_BROWSED);
+    history_service_->AddPage(url, base::Time::Now() - base::Days(add_count_++),
+                              history::SOURCE_BROWSED);
     history_service_->SetPageTitle(url, base::UTF8ToUTF16(title));
   }
 
@@ -65,7 +68,22 @@ class HistoryUIHandlerTest : public testing::Test {
     return future.Take();
   }
 
+  void ExpectResults(base::Location location,
+                     std::vector<std::string> titles,
+                     std::vector<GURL> urls,
+                     const std::vector<mojom::HistoryEntryPtr>& results) {
+    SCOPED_TRACE(location.ToString());
+
+    ASSERT_EQ(results.size(), titles.size());
+    for (size_t i = 0; i < results.size(); i++) {
+      EXPECT_EQ(results[i]->title, titles[i]);
+      EXPECT_EQ(results[i]->url, urls[i]);
+    }
+  }
+
  protected:
+  int add_count_ = 0;
+
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
   base::FilePath history_dir_;
@@ -88,20 +106,10 @@ TEST_F(HistoryUIHandlerTest, GetMultipleHistoryEntries) {
   auto history = GetHistory();
   ASSERT_EQ(3u, history.size());
 
-  // Verify entries are present (order may vary)
-  std::vector<std::string> titles;
-  std::vector<GURL> urls;
-  for (const auto& entry : history) {
-    titles.push_back(entry->title);
-    urls.push_back(entry->url);
-  }
-
-  EXPECT_TRUE(base::Contains(titles, "Example 1"));
-  EXPECT_TRUE(base::Contains(titles, "Example 2"));
-  EXPECT_TRUE(base::Contains(titles, "Example 3"));
-  EXPECT_TRUE(base::Contains(urls, GURL("https://example1.com")));
-  EXPECT_TRUE(base::Contains(urls, GURL("https://example2.com")));
-  EXPECT_TRUE(base::Contains(urls, GURL("https://example3.com")));
+  ExpectResults(FROM_HERE, {"Example 1", "Example 2", "Example 3"},
+                {GURL("https://example1.com"), GURL("https://example2.com"),
+                 GURL("https://example3.com")},
+                history);
 }
 
 TEST_F(HistoryUIHandlerTest, SearchWithQuery) {
@@ -121,8 +129,9 @@ TEST_F(HistoryUIHandlerTest, SearchWithQuery) {
     titles.push_back(entry->title);
   }
 
-  EXPECT_TRUE(base::Contains(titles, "Brave Browser"));
-  EXPECT_TRUE(base::Contains(titles, "Brave Search"));
+  ExpectResults(FROM_HERE, {"Brave Browser", "Brave Search"},
+                {GURL("https://brave.com"), GURL("https://search.brave.com")},
+                history);
 }
 
 TEST_F(HistoryUIHandlerTest, MaxResultsLimit) {
@@ -172,9 +181,8 @@ TEST_F(HistoryUIHandlerTest, URLMatch) {
   // URL match should return just entry 2
   auto history = GetHistory("example2");
 
-  ASSERT_EQ(1u, history.size());
-  EXPECT_EQ("Entry 2", history[0]->title);
-  EXPECT_EQ(GURL("https://example2.com"), history[0]->url);
+  ExpectResults(FROM_HERE, {"Entry 2"}, {GURL("https://example2.com")},
+                history);
 }
 
 }  // namespace ai_chat
