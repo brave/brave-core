@@ -209,7 +209,7 @@ template("transpile_web_ui") {
     if (!defined(invoker.output_module) || invoker.output_module) {
       args += [ "--output_module=true" ]
     } else {
-      args += ["--output_module=false"]
+      args += [ "--output_module=false" ]
     }
 
     if (is_official_build) {

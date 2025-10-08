@@ -6,6 +6,7 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("skus_internals_ui") {
+  output_module = false
   entry_points = [ [
         "skus_internals",
         rebase_path("skus_internals.tsx"),

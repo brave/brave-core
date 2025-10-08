@@ -9,6 +9,7 @@ import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/grit/repack.gni")
 
 transpile_web_ui("brave_vpn_panel_ui") {
+  output_module = false
   entry_points = [ [
         "brave_vpn_panel",
         rebase_path("vpn_panel.tsx"),

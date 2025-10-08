@@ -9,6 +9,7 @@ import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/grit/repack.gni")
 
 transpile_web_ui("nft_display_ui") {
+  output_module = false
   entry_points = [ [
         "nft",
         rebase_path("nft_script.ts"),

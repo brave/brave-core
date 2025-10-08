@@ -6,6 +6,7 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("brave_welcome_ui") {
+  output_module = false
   entry_points = [ [
         "brave_welcome",
         rebase_path("brave_welcome.tsx"),
