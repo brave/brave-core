@@ -24,8 +24,6 @@ packaged_basename =
 
 dmg_path = "$packaged_basename.dmg"
 
-crx_private_key = "//brave/updater/crx-private-key.der"
-
 if (is_universal_binary) {
   assert(target_cpu == "arm64")
   x64_arch_app_path = "$root_out_dir/x64/$brave_exe"
@@ -403,12 +401,12 @@ group("create_dist_mac") {
       }
     }
   }
-  if (path_exists(crx_private_key)) {
+  if (crx_private_key != "") {
     deps += [ ":crx" ]
   }
 }
 
-if (path_exists(crx_private_key)) {
+if (crx_private_key != "") {
   crx3("crx") {
     inputs = [ dmg_path ]
     output = "$packaged_basename.crx3"
