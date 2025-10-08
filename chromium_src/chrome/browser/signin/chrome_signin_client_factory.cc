@@ -5,6 +5,10 @@
 
 #include "chrome/browser/signin/chrome_signin_client_factory.h"
 
+// We must have a valid `IdentityManager` in OTR/guest profiles as it is passed
+// by reference now, so we pass `kOwnInstance` to ensure that we do. This is
+// needed for `IdentityManagerService` and all related classes (such as this
+// one)
 #define WithAshInternals(...)                      \
   WithAshInternals(__VA_ARGS__)                    \
       .WithRegular(ProfileSelection::kOwnInstance) \
