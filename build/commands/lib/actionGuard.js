@@ -44,6 +44,25 @@ class ActionGuard {
     return fs.existsSync(this.#guardFilePath)
   }
 
+  markStarted() {
+    assert(
+      !this.#isRunning,
+      'Cannot mark the action as started while it is already running.',
+    )
+    this.#isRunning = true
+    fs.ensureDirSync(path.dirname(this.#guardFilePath))
+    fs.writeFileSync(this.#guardFilePath, getGuardCallStack())
+  }
+
+  markFinished() {
+    assert(
+      this.#isRunning,
+      'Cannot mark the action as finished while it is not running.',
+    )
+    fs.unlinkSync(this.#guardFilePath)
+    this.#isRunning = false
+  }
+
   // Perform the requested action with a guard.
   run(actionClosure) {
     assert(
@@ -59,11 +78,9 @@ class ActionGuard {
       )
     }
     try {
-      this.#isRunning = true
-      fs.ensureDirSync(path.dirname(this.#guardFilePath))
-      fs.writeFileSync(this.#guardFilePath, getGuardCallStack())
+      this.markStarted()
       actionClosure(wasInterrupted)
-      fs.unlinkSync(this.#guardFilePath)
+      this.markFinished()
     } finally {
       this.#isRunning = false
     }
