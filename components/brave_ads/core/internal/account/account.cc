@@ -165,7 +165,7 @@ void Account::SuccessfullyProcessedDeposit(const TransactionInfo& transaction,
               << transaction.confirmation_type << " valued at "
               << transaction.value);
 
-  confirmations_->MaybeConfirm(transaction, std::move(user_data));
+  confirmations_->Confirm(transaction, std::move(user_data));
 
   NotifyDidProcessDeposit(transaction);
 

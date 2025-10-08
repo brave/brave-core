@@ -34,8 +34,7 @@ class Confirmations final : public ConfirmationQueueDelegate,
     delegate_ = delegate;
   }
 
-  void MaybeConfirm(const TransactionInfo& transaction,
-                    base::Value::Dict user_data);
+  void Confirm(const TransactionInfo& transaction, base::Value::Dict user_data);
 
  private:
   void NotifyDidConfirm(const ConfirmationInfo& confirmation) const;
