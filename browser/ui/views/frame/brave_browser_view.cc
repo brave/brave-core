@@ -828,6 +828,14 @@ void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
   }
 }
 
+void BraveBrowserView::OnWidgetWindowModalVisibilityChanged(
+    views::Widget* widget,
+    bool visible) {
+  // We explicitly override this and don't call the parent class, because we
+  // currently don't support scrim views for tab modals and thus don't want the
+  // parent class to make the scrim view visible
+}
+
 void BraveBrowserView::GetAccessiblePanes(std::vector<views::View*>* panes) {
   BrowserView::GetAccessiblePanes(panes);
 

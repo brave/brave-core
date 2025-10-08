@@ -2512,6 +2512,10 @@
 # SearchEngineChoiceService can continue to function properly there
 -ProfileWindowBrowserTest.GuestCannotSignin
 
+# We don't currently support the scrim view for browser window modals
+-BrowserViewTest.AvoidUnnecessaryVisibilityChanges
+-BrowserViewTest.ScrimForBrowserWindowModal
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
