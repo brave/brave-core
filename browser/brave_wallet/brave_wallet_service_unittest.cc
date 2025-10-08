@@ -448,6 +448,10 @@ class BraveWalletServiceUnitTest : public testing::Test {
         "", "Filecoin", "fil.png", false, false, false, false,
         mojom::SPLTokenProgram::kUnsupported, false, false, "FIL", 18, true, "",
         "", mojom::kFilecoinMainnet, mojom::CoinType::FIL, false);
+    dot_token_ = mojom::BlockchainToken::New(
+        "", "Polkadot", "dot.png", false, false, false, false,
+        mojom::SPLTokenProgram::kUnsupported, false, false, "DOT", 10, true, "",
+        "", mojom::kPolkadotMainnet, mojom::CoinType::DOT, false);
   }
 
   void TearDown() override {
@@ -460,6 +464,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   mojom::BlockchainTokenPtr GetEthToken() { return eth_token_.Clone(); }
   mojom::BlockchainTokenPtr GetBatToken() { return bat_token_.Clone(); }
   mojom::BlockchainTokenPtr GetSolToken() { return sol_token_.Clone(); }
+  mojom::BlockchainTokenPtr GetDotToken() { return dot_token_.Clone(); }
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
@@ -910,6 +915,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
   mojom::BlockchainTokenPtr sol_usdc_;
   mojom::BlockchainTokenPtr sol_tsla_;
   mojom::BlockchainTokenPtr fil_token_;
+  mojom::BlockchainTokenPtr dot_token_;
+
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
@@ -993,6 +1000,10 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
   EXPECT_EQ(tokens.size(), 2u);
   EXPECT_EQ(eth_0xaa36a7_token, tokens[0]);
   EXPECT_EQ(token1_0xaa36a7, tokens[1]);
+
+  GetUserAssets("polkadot_mainnet", mojom::CoinType::DOT, &tokens);
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_EQ(GetDotToken(), tokens[0]);
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForBtc) {
