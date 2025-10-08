@@ -74,11 +74,12 @@ class ModelService : public KeyedService {
   void AddCustomModel(mojom::ModelPtr model);
   void SaveCustomModel(uint32_t index, mojom::ModelPtr model);
   void DeleteCustomModel(uint32_t index);
-  // Delete all custom models with the specified endpoint URL
-  void DeleteCustomModelsByEndpoint(const GURL& endpoint);
-  // Delete a specific custom model by its model request name and endpoint
-  void DeleteCustomModelByNameAndEndpoint(const std::string& model_request_name,
-                                          const GURL& endpoint);
+
+  // Delete custom models matching a predicate
+  using CustomModelPredicate =
+      base::RepeatingCallback<bool(const base::Value::Dict&)>;
+  void DeleteCustomModelsIf(CustomModelPredicate predicate);
+
   // Get all custom models
   const std::vector<ai_chat::mojom::ModelPtr> GetCustomModels();
   void SetDefaultModelKey(const std::string& model_key);
@@ -102,7 +103,6 @@ class ModelService : public KeyedService {
 
  private:
   void InitModels();
-  std::vector<ai_chat::mojom::ModelPtr> GetCustomModelsFromPrefs();
 
   base::ObserverList<Observer> observers_;
   std::vector<ai_chat::mojom::ModelPtr> models_;

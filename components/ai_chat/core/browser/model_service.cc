@@ -481,7 +481,7 @@ void ModelService::OnPremiumStatus(mojom::PremiumStatus status) {
 void ModelService::InitModels() {
   // Get leo and custom models
   const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
-  std::vector<mojom::ModelPtr> custom_models = GetCustomModelsFromPrefs();
+  std::vector<mojom::ModelPtr> custom_models = GetCustomModels();
 
   // Reserve space in the combined models vector
   models_.clear();
@@ -651,25 +651,18 @@ void ModelService::DeleteCustomModel(uint32_t index) {
   }
 }
 
-void ModelService::DeleteCustomModelsByEndpoint(const GURL& endpoint) {
-  if (!endpoint.is_valid()) {
-    return;
-  }
-
+void ModelService::DeleteCustomModelsIf(CustomModelPredicate predicate) {
   base::Value::List custom_models_pref =
       pref_service_->GetList(kCustomModelsList).Clone();
 
   auto current_default_key = GetDefaultModelKey();
   std::vector<std::string> removed_keys;
 
-  // Remove models with matching endpoint (iterate in reverse to avoid index
-  // issues)
+  // Remove models matching predicate (iterate in reverse to avoid index issues)
   for (size_t i = custom_models_pref.size(); i > 0; --i) {
     const base::Value::Dict& model_dict = custom_models_pref[i - 1].GetDict();
-    const std::string* endpoint_str =
-        model_dict.FindString(kCustomModelItemEndpointUrlKey);
 
-    if (endpoint_str && GURL(*endpoint_str) == endpoint) {
+    if (predicate.Run(model_dict)) {
       std::string removed_key = *model_dict.FindString(kCustomModelItemKey);
       removed_keys.push_back(removed_key);
 
@@ -699,56 +692,6 @@ void ModelService::DeleteCustomModelsByEndpoint(const GURL& endpoint) {
       }
     }
   }
-}
-
-void ModelService::DeleteCustomModelByNameAndEndpoint(
-    const std::string& model_request_name,
-    const GURL& endpoint) {
-  if (!endpoint.is_valid() || model_request_name.empty()) {
-    return;
-  }
-
-  base::Value::List custom_models_pref =
-      pref_service_->GetList(kCustomModelsList).Clone();
-
-  auto current_default_key = GetDefaultModelKey();
-
-  // Find and remove the matching model
-  for (size_t i = 0; i < custom_models_pref.size(); ++i) {
-    const base::Value::Dict& model_dict = custom_models_pref[i].GetDict();
-    const std::string* endpoint_str =
-        model_dict.FindString(kCustomModelItemEndpointUrlKey);
-    const std::string* model_name =
-        model_dict.FindString(kCustomModelItemModelKey);
-
-    if (endpoint_str && model_name && GURL(*endpoint_str) == endpoint &&
-        *model_name == model_request_name) {
-      std::string removed_key = *model_dict.FindString(kCustomModelItemKey);
-
-      // Check if this is the default model
-      if (current_default_key == removed_key) {
-        pref_service_->ClearPref(kDefaultModelKey);
-        DVLOG(1) << "Default model key " << removed_key
-                 << " was removed. Cleared default model key.";
-        for (auto& obs : observers_) {
-          obs.OnDefaultModelChanged(removed_key, GetDefaultModelKey());
-        }
-      }
-
-      custom_models_pref.erase(custom_models_pref.begin() + i);
-      pref_service_->SetList(kCustomModelsList, std::move(custom_models_pref));
-      InitModels();
-
-      for (auto& obs : observers_) {
-        obs.OnModelRemoved(removed_key);
-      }
-      return;
-    }
-  }
-}
-
-const std::vector<ai_chat::mojom::ModelPtr> ModelService::GetCustomModels() {
-  return GetCustomModelsFromPrefs();
 }
 
 void ModelService::SetDefaultModelKey(const std::string& new_key) {
@@ -789,7 +732,7 @@ const std::string& ModelService::GetDefaultModelKey() {
   return pref_service_->GetString(kDefaultModelKey);
 }
 
-std::vector<mojom::ModelPtr> ModelService::GetCustomModelsFromPrefs() {
+const std::vector<mojom::ModelPtr> ModelService::GetCustomModels() {
   std::vector<mojom::ModelPtr> models;
 
   const base::Value::List& custom_models_pref =

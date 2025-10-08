@@ -60,6 +60,14 @@ constexpr char kOllamaModelsResponseUpdated[] = R"({
   ]
 })";
 
+constexpr char kModelDetailsResponse[] = R"({
+  "model_info": {
+    "general.architecture": "llama",
+    "llama.context_length": 4096
+  },
+  "capabilities": ["chat"]
+})";
+
 }  // namespace
 
 class OllamaModelFetcherTest : public testing::Test {
@@ -107,6 +115,11 @@ class OllamaModelFetcherTest : public testing::Test {
 TEST_F(OllamaModelFetcherTest, FetchModelsAddsNewModels) {
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
                                          kOllamaModelsResponse);
+  // Mock the detail responses for each model
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+                                         kModelDetailsResponse);
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+                                         kModelDetailsResponse);
 
   size_t initial_count = model_service()->GetModels().size();
 
@@ -133,6 +146,10 @@ TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
   // First fetch - add 2 models
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
                                          kOllamaModelsResponse);
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+                                         kModelDetailsResponse);
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+                                         kModelDetailsResponse);
   ollama_model_fetcher()->FetchModels();
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
@@ -148,7 +165,8 @@ TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
     return count == 2;
   }));
 
-  // Second fetch - only 1 model remains
+  // Second fetch - only 1 model remains (llama2 is not new, so no detail fetch
+  // needed)
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
                                          kOllamaModelsResponseUpdated);
   ollama_model_fetcher()->FetchModels();
@@ -171,6 +189,10 @@ TEST_F(OllamaModelFetcherTest, RemoveModelsRemovesAllOllamaModels) {
   // First add some models
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
                                          kOllamaModelsResponse);
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+                                         kModelDetailsResponse);
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+                                         kModelDetailsResponse);
   ollama_model_fetcher()->FetchModels();
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
@@ -240,6 +262,10 @@ TEST_F(OllamaModelFetcherTest, FetchModelsHandlesInvalidJSON) {
 TEST_F(OllamaModelFetcherTest, PrefChangeTriggersModelFetch) {
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
                                          kOllamaModelsResponse);
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+                                         kModelDetailsResponse);
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+                                         kModelDetailsResponse);
 
   size_t initial_count = model_service()->GetModels().size();
 
@@ -255,6 +281,10 @@ TEST_F(OllamaModelFetcherTest, PrefChangeTriggersRemove) {
   // First add some models
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
                                          kOllamaModelsResponse);
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+                                         kModelDetailsResponse);
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+                                         kModelDetailsResponse);
   pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, true);
 
   EXPECT_TRUE(base::test::RunUntil([&]() {

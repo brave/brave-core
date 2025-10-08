@@ -30,6 +30,10 @@ namespace {
 
 constexpr uint32_t kDefaultContextSize = 8192;
 
+// Keys for custom model prefs
+constexpr char kCustomModelItemModelKey[] = "model_request_name";
+constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
+
 }  // namespace
 
 OllamaModelFetcher::OllamaModelFetcher(
@@ -96,12 +100,20 @@ void OllamaModelFetcher::OnModelsFetched(
   }
 
   // Remove Ollama models that are no longer available
-  for (const std::string& existing_model_name : existing_ollama_model_names) {
-    if (!current_ollama_models.contains(existing_model_name)) {
-      model_service_->DeleteCustomModelByNameAndEndpoint(
-          existing_model_name, GURL(mojom::kOllamaEndpoint));
-    }
-  }
+  model_service_->DeleteCustomModelsIf(base::BindRepeating(
+      [](const std::set<std::string>& current_models,
+         const base::Value::Dict& model_dict) {
+        const std::string* endpoint_str =
+            model_dict.FindString(kCustomModelItemEndpointUrlKey);
+        const std::string* model_name =
+            model_dict.FindString(kCustomModelItemModelKey);
+
+        // Only remove Ollama models that are not in the current list
+        return endpoint_str && model_name &&
+               GURL(*endpoint_str) == GURL(mojom::kOllamaEndpoint) &&
+               !current_models.contains(*model_name);
+      },
+      current_ollama_models));
 
   // Clear pending models map before processing new models
   pending_models_.clear();
@@ -170,7 +182,13 @@ void OllamaModelFetcher::OnModelDetailsFetched(
 }
 
 void OllamaModelFetcher::RemoveModels() {
-  model_service_->DeleteCustomModelsByEndpoint(GURL(mojom::kOllamaEndpoint));
+  model_service_->DeleteCustomModelsIf(
+      base::BindRepeating([](const base::Value::Dict& model_dict) {
+        const std::string* endpoint_str =
+            model_dict.FindString(kCustomModelItemEndpointUrlKey);
+        return endpoint_str &&
+               GURL(*endpoint_str) == GURL(mojom::kOllamaEndpoint);
+      }));
 }
 
 // static
