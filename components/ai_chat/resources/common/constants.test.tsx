@@ -4,11 +4,31 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { getModelIcon } from './constants'
+import * as Mojom from './mojom'
 
 describe('getModelIcon', () => {
   it('Should return fallback icon for unknown model keys', () => {
-    expect(getModelIcon('unknown-model')).toBe('product-brave-leo')
-    expect(getModelIcon('')).toBe('product-brave-leo')
-    expect(getModelIcon('chat-invalid')).toBe('product-brave-leo')
+    const unknownModel = { key: 'unknown-model' } as Mojom.Model
+    const emptyModel = { key: '' } as Mojom.Model
+    const invalidModel = { key: 'chat-invalid' } as Mojom.Model
+
+    expect(getModelIcon(unknownModel)).toBe('product-brave-leo')
+    expect(getModelIcon(emptyModel)).toBe('product-brave-leo')
+    expect(getModelIcon(invalidModel)).toBe('product-brave-leo')
+  })
+
+  it('Should return ollama icon for Ollama models', () => {
+    const ollamaModel = {
+      key: 'custom-model',
+      options: {
+        customModelOptions: {
+          endpoint: {
+            url: Mojom.OLLAMA_ENDPOINT,
+          },
+        },
+      },
+    } as Mojom.Model
+
+    expect(getModelIcon(ollamaModel)).toBe('ollama')
   })
 })
