@@ -70,11 +70,11 @@ void OllamaModelFetcher::OnModelsFetched(
     return;
   }
 
-  const auto& existing_models = model_service_->GetModels();
-  std::set<std::string> existing_ollama_models;
+  const auto& existing_ollama_models = model_service_->GetCustomModels();
+  std::set<std::string> existing_ollama_model_names;
 
-  // Find existing Ollama models to avoid duplicates
-  for (const auto& existing_model : existing_models) {
+  // Find existing Ollama models
+  for (const auto& existing_model : existing_ollama_models) {
     if (existing_model->options &&
         existing_model->options->is_custom_model_options() &&
         existing_model->options->get_custom_model_options() &&
@@ -85,7 +85,7 @@ void OllamaModelFetcher::OnModelsFetched(
       const std::string& model_name =
           existing_model->options->get_custom_model_options()
               ->model_request_name;
-      existing_ollama_models.insert(model_name);
+      existing_ollama_model_names.insert(model_name);
     }
   }
 
@@ -96,30 +96,10 @@ void OllamaModelFetcher::OnModelsFetched(
   }
 
   // Remove Ollama models that are no longer available
-  for (const std::string& existing_model_name : existing_ollama_models) {
+  for (const std::string& existing_model_name : existing_ollama_model_names) {
     if (!current_ollama_models.contains(existing_model_name)) {
-      // Find and remove the model by finding its index
-      for (size_t i = 0; i < existing_models.size(); ++i) {
-        const auto& model = existing_models[i];
-        if (model->options && model->options->is_custom_model_options() &&
-            model->options->get_custom_model_options() &&
-            model->options->get_custom_model_options()->endpoint.spec() ==
-                mojom::kOllamaEndpoint &&
-            model->options->get_custom_model_options()->model_request_name ==
-                existing_model_name) {
-          // Convert full model list index to custom model list index
-          size_t custom_model_index = 0;
-          for (size_t j = 0; j < i; ++j) {
-            if (existing_models[j]->options &&
-                existing_models[j]->options->is_custom_model_options()) {
-              custom_model_index++;
-            }
-          }
-
-          model_service_->DeleteCustomModel(custom_model_index);
-          break;
-        }
-      }
+      model_service_->DeleteCustomModelByNameAndEndpoint(
+          existing_model_name, GURL(mojom::kOllamaEndpoint));
     }
   }
 
@@ -128,7 +108,7 @@ void OllamaModelFetcher::OnModelsFetched(
 
   // Fetch detailed information for each new model
   for (const auto& model : *models) {
-    if (existing_ollama_models.contains(model.name)) {
+    if (existing_ollama_model_names.contains(model.name)) {
       continue;
     }
 
@@ -190,30 +170,7 @@ void OllamaModelFetcher::OnModelDetailsFetched(
 }
 
 void OllamaModelFetcher::RemoveModels() {
-  const auto& all_models = model_service_->GetModels();
-  std::vector<uint32_t> ollama_custom_indices;
-
-  // Find custom models and identify which ones are Ollama models
-  uint32_t custom_model_index = 0;
-  for (size_t i = 0; i < all_models.size(); ++i) {
-    const auto& model = all_models[i];
-
-    if (model->options && model->options->is_custom_model_options()) {
-      if (model->options->get_custom_model_options() &&
-          model->options->get_custom_model_options()->endpoint.is_valid() &&
-          model->options->get_custom_model_options()->endpoint.spec() ==
-              mojom::kOllamaEndpoint) {
-        ollama_custom_indices.push_back(custom_model_index);
-      }
-      custom_model_index++;
-    }
-  }
-
-  // Remove Ollama models (in reverse order to maintain indices)
-  for (auto it = ollama_custom_indices.rbegin();
-       it != ollama_custom_indices.rend(); ++it) {
-    model_service_->DeleteCustomModel(*it);
-  }
+  model_service_->DeleteCustomModelsByEndpoint(GURL(mojom::kOllamaEndpoint));
 }
 
 // static
