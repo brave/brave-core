@@ -3186,6 +3186,8 @@
 -WebstoreReinstallerItemSnippetsBrowserTest.TestWebstoreReinstall
 -WebUIBrowserAsyncTest.*
 -WebUIBrowserExpectFailTest.*
+# Fails it requires a mojom interface which is bound in Brave but not the upstream tests
+-WebUIBrowserTest.NavigatePage
 -WebUICoverageTest.*
 -WebUIJSErrorReportingTest.*
 -WebUiNtpBrowserTest.*
