@@ -178,29 +178,11 @@ mojom::AutoShredMode BraveShieldsSettings::GetDefaultAutoShredMode() {
 
 void BraveShieldsSettings::SetAutoShredMode(mojom::AutoShredMode mode,
                                             const GURL& url) {
-  brave_shields::AutoShredType auto_shred_type;
-  if (mode == mojom::AutoShredMode::APP_EXIT) {
-    auto_shred_type = AutoShredType::APP_EXIT;
-  } else if (mode == mojom::AutoShredMode::LAST_TAB_CLOSED) {
-    auto_shred_type = AutoShredType::LAST_TAB_CLOSED;
-  } else {
-    auto_shred_type = AutoShredType::NEVER;
-  }
-
-  brave_shields::SetAutoShredType(&*host_content_settings_map_, auto_shred_type,
-                                  url);
+  brave_shields::SetAutoShredMode(&*host_content_settings_map_, mode, url);
 }
 
 mojom::AutoShredMode BraveShieldsSettings::GetAutoShredMode(const GURL& url) {
-  brave_shields::AutoShredType type =
-      brave_shields::GetAutoShredType(&*host_content_settings_map_, url);
-  if (type == AutoShredType::APP_EXIT) {
-    return mojom::AutoShredMode::APP_EXIT;
-  } else if (type == AutoShredType::LAST_TAB_CLOSED) {
-    return mojom::AutoShredMode::LAST_TAB_CLOSED;
-  } else {
-    return mojom::AutoShredMode::NEVER;
-  }
+  return brave_shields::GetAutoShredMode(&*host_content_settings_map_, url);
 }
 
 }  // namespace brave_shields

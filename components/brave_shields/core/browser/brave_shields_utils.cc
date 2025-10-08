@@ -880,8 +880,8 @@ bool IsDeveloperModeEnabled(PrefService* profile_state) {
   return profile_state->GetBoolean(prefs::kAdBlockDeveloperMode);
 }
 
-void SetAutoShredType(HostContentSettingsMap* map,
-                      AutoShredType type,
+void SetAutoShredMode(HostContentSettingsMap* map,
+                      mojom::AutoShredMode mode,
                       const GURL& url) {
   auto primary_pattern = content_settings::CreateDomainPattern(url);
 
@@ -891,10 +891,11 @@ void SetAutoShredType(HostContentSettingsMap* map,
 
   map->SetWebsiteSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
-      AutoShredSetting::kContentSettingsType, AutoShredSetting::ToValue(type));
+      AutoShredSetting::kContentSettingsType, AutoShredSetting::ToValue(mode));
 }
 
-AutoShredType GetAutoShredType(HostContentSettingsMap* map, const GURL& url) {
+mojom::AutoShredMode GetAutoShredMode(HostContentSettingsMap* map,
+                                      const GURL& url) {
   return AutoShredSetting::FromValue(map->GetWebsiteSetting(
       url, GURL(), AutoShredSetting::kContentSettingsType));
 }

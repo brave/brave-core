@@ -142,10 +142,11 @@ base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url);
 
 bool IsDeveloperModeEnabled(PrefService* profile_state);
 
-void SetAutoShredType(HostContentSettingsMap* map,
-                      AutoShredType type,
+void SetAutoShredMode(HostContentSettingsMap* map,
+                      mojom::AutoShredMode mode,
                       const GURL& url);
-AutoShredType GetAutoShredType(HostContentSettingsMap* map, const GURL& url);
+mojom::AutoShredMode GetAutoShredMode(HostContentSettingsMap* map,
+                                      const GURL& url);
 
 }  // namespace brave_shields
 

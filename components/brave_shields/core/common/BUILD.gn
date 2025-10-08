@@ -24,6 +24,7 @@ static_library("common") {
 
   deps = [
     "//base",
+    "//brave/components/brave_shields/core/common:mojom",
     "//brave/components/webcompat/core/common",
     "//components/content_settings/core/common",
     "//components/prefs",
