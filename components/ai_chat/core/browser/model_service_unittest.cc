@@ -31,6 +31,10 @@ namespace {
 using ::testing::_;
 using ::testing::NiceMock;
 
+// Keys for custom model prefs
+constexpr char kCustomModelItemModelKey[] = "model_request_name";
+constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
+
 class MockModelServiceObserver : public ModelService::Observer {
  public:
   MockModelServiceObserver() = default;
@@ -416,7 +420,13 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint) {
   }
 
   // Delete all models with endpoint1
-  GetService()->DeleteCustomModelsByEndpoint(endpoint1);
+  GetService()->DeleteCustomModelsIf(base::BindRepeating(
+      [](const GURL& target_endpoint, const base::Value::Dict& model_dict) {
+        const std::string* endpoint_str =
+            model_dict.FindString(kCustomModelItemEndpointUrlKey);
+        return endpoint_str && GURL(*endpoint_str) == target_endpoint;
+      },
+      endpoint1));
 
   auto custom_models = GetService()->GetCustomModels();
   EXPECT_EQ(custom_models.size(), 1u);
@@ -449,7 +459,18 @@ TEST_F(ModelServiceTest, DeleteCustomModelByNameAndEndpoint) {
   }
 
   // Delete only model1
-  GetService()->DeleteCustomModelByNameAndEndpoint("model1", endpoint);
+  GetService()->DeleteCustomModelsIf(base::BindRepeating(
+      [](const std::string& target_name, const GURL& target_endpoint,
+         const base::Value::Dict& model_dict) {
+        const std::string* endpoint_str =
+            model_dict.FindString(kCustomModelItemEndpointUrlKey);
+        const std::string* model_name =
+            model_dict.FindString(kCustomModelItemModelKey);
+        return endpoint_str && model_name &&
+               GURL(*endpoint_str) == target_endpoint &&
+               *model_name == target_name;
+      },
+      "model1", endpoint));
 
   auto custom_models = GetService()->GetCustomModels();
   EXPECT_EQ(custom_models.size(), 1u);
@@ -484,7 +505,13 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
   EXPECT_CALL(*observer_, OnDefaultModelChanged(custom_model_key, _)).Times(1);
 
   // Delete the model
-  GetService()->DeleteCustomModelsByEndpoint(endpoint);
+  GetService()->DeleteCustomModelsIf(base::BindRepeating(
+      [](const GURL& target_endpoint, const base::Value::Dict& model_dict) {
+        const std::string* endpoint_str =
+            model_dict.FindString(kCustomModelItemEndpointUrlKey);
+        return endpoint_str && GURL(*endpoint_str) == target_endpoint;
+      },
+      endpoint));
 
   // Default model should be cleared
   EXPECT_NE(GetService()->GetDefaultModelKey(), custom_model_key);
