@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
@@ -31,13 +30,9 @@ Confirmations::~Confirmations() {
   delegate_ = nullptr;
 }
 
-void Confirmations::MaybeConfirm(const TransactionInfo& transaction,
-                                 base::Value::Dict user_data) {
+void Confirmations::Confirm(const TransactionInfo& transaction,
+                            base::Value::Dict user_data) {
   CHECK(transaction.IsValid());
-
-  if (!IsAllowedToConfirm(transaction)) {
-    return;
-  }
 
   BLOG(1, "Confirming " << transaction.confirmation_type << " for "
                         << transaction.ad_type << " with transaction id "

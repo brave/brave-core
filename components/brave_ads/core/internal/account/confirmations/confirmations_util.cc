@@ -11,7 +11,6 @@
 #include "base/base64url.h"
 #include "base/check.h"
 #include "base/json/json_reader.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_info.h"
@@ -83,31 +82,6 @@ bool IsValid(const ConfirmationInfo& confirmation) {
   }
 
   return Verify(confirmation);
-}
-
-bool IsAllowedToConfirm(const TransactionInfo& transaction) {
-  switch (transaction.ad_type) {
-    case mojom::AdType::kInlineContentAd:
-    case mojom::AdType::kPromotedContentAd:
-    case mojom::AdType::kNewTabPageAd:
-    case mojom::AdType::kNotificationAd: {
-      // Always allow confirmations.
-      return true;
-    }
-
-    case mojom::AdType::kSearchResultAd: {
-      // Only allow conversion confirmations.
-      return transaction.confirmation_type ==
-             mojom::ConfirmationType::kConversion;
-    }
-
-    case mojom::AdType::kUndefined: {
-      break;
-    }
-  }
-
-  NOTREACHED() << "Unexpected value for mojom::AdType: "
-               << base::to_underlying(transaction.ad_type);
 }
 
 }  // namespace brave_ads

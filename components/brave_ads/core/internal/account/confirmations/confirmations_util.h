@@ -6,16 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATIONS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATIONS_UTIL_H_
 
-#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
-
 namespace brave_ads {
 
 struct ConfirmationInfo;
-struct TransactionInfo;
 
 [[nodiscard]] bool IsValid(const ConfirmationInfo& confirmation);
-
-bool IsAllowedToConfirm(const TransactionInfo& transaction);
 
 }  // namespace brave_ads
 
