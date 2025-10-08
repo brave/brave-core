@@ -552,6 +552,12 @@
   <message name="IDS_CHAT_UI_WELCOME_CARD_AUTOMATE_WORK_SUBTITLE" desc="A subtitle for welcome guide component presented for first time users" formatter_data="webui=AiChat">
     Let Brave browse with you and interact with everything you do in the browser. Offload the tedious tasks, and save your time for the important stuff.
   </message>
+  <message name="IDS_CHAT_UI_WELCOME_BRING_YOUR_OWN_MODEL_TITLE" desc="A title for welcome guide component presented for first time users" formatter_data="webui=AiChat">
+    Bring your own model
+  </message>
+  <message name="IDS_CHAT_UI_WELCOME_BRING_YOUR_OWN_MODEL_SUBTITLE" desc="A subtitle for welcome guide component presented for first time users" formatter_data="webui=AiChat">
+    Connect your own AI models, whether running locally or remotely. Tailor Leo's behavior, outputs, and capabilities to your preferences.
+  </message>
   <message name="IDS_CHAT_UI_LEARN_MORE_ABOUT_LEO_AI" desc="A link text to learn more about Leo AI" formatter_data="webui=AiChat">
     Learn more about Leo AI
   </message>
