@@ -195,6 +195,10 @@ class BraveBrowserViewWithRoundedCornersTest
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        ContentsBackgroundEventHandleTest) {
   EXPECT_TRUE(brave_browser_view()->contents_background_view_);
+
+  EXPECT_EQ(brave_browser_view()->contents_background_view_->bounds(),
+            brave_browser_view()->main_container()->bounds());
+
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   gfx::Point screen_point = web_contents->GetContainerBounds().CenterPoint();
