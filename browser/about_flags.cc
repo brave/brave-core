@@ -35,6 +35,7 @@
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/v8/buildflags/buildflags.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/buildflags.h"
@@ -680,11 +681,33 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #define BRAVE_UPDATER_FEATURE_ENTRIES
 #endif
 
+#define BRAVE_WEBASSEMBLY_JITLESS_FEATURE_ENTRY                              \
+  IF_BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE,                                    \
+               EXPAND_FEATURE_ENTRIES({                                      \
+                   "brave-webassembly-jitless",                              \
+                   "Allow WebAssembly to run without JIT",                   \
+                   "Allow WebAssembly to run in interpreter mode even when " \
+                   "JIT compilation is disabled. "                           \
+                   "This enables WebAssembly content to work on sites with " \
+                   "strict security settings.",                              \
+                   kOsAll,                                                   \
+                   FEATURE_VALUE_TYPE(features::kBraveWebAssemblyJitless),   \
+               }))
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
 #define BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES                                      \
   EXPAND_FEATURE_ENTRIES(                                                      \
+      {                                                                        \
+          "brave-v8-jitless-mode",                                             \
+          "V8 Jitless mode",                                                   \
+          "Enable V8 jitless mode when optimizations are disabled. "           \
+          "V8 runs in jitless mode which reduces performance but improves "    \
+          "security. This does not affect all pages.",                         \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(features::kBraveV8JitlessMode),                   \
+      },                                                                       \
       {                                                                        \
           "use-dev-updater-url",                                               \
           "Use dev updater url",                                               \
@@ -1239,6 +1262,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_UPGRADE_WHEN_IDLE_FEATURE_ENTRY                                        \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
   BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \
+  BRAVE_WEBASSEMBLY_JITLESS_FEATURE_ENTRY                                      \
   BRAVE_ADBLOCK_CUSTOM_SCRIPTLETS                                              \
   BRAVE_EDUCATION_FEATURE_ENTRIES                                              \
   BRAVE_UPDATER_FEATURE_ENTRIES                                                \
