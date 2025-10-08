@@ -12,13 +12,13 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/ai_chat/core/browser/ollama/ollama_client.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace ai_chat {
 
 class ModelService;
-class OllamaClient;
 
 // Manages fetching of models from Ollama to the AI Chat
 // ModelService.
@@ -74,15 +74,16 @@ class OllamaModelFetcher {
   static std::string FormatOllamaModelName(const std::string& raw_name);
 
   void OnOllamaFetchEnabledChanged();
-  void OnModelsResponse(std::optional<std::string> response_body);
+  void OnModelsFetched(
+      std::optional<std::vector<OllamaClient::ModelInfo>> models);
   struct PendingModelInfo {
     std::string model_name;
     std::string display_name;
   };
 
   void FetchModelDetails(const std::string& model_name);
-  void OnModelDetailsResponse(const std::string& model_name,
-                              std::optional<std::string> response_body);
+  void OnModelDetailsFetched(const std::string& model_name,
+                             std::optional<OllamaClient::ModelDetails> details);
 
   const raw_ref<ModelService> model_service_;
   raw_ptr<PrefService> prefs_;

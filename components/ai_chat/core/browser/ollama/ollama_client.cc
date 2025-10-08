@@ -10,6 +10,8 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
+#include "base/strings/string_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -17,6 +19,26 @@
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace ai_chat {
+
+// OllamaClient::ModelInfo implementation
+OllamaClient::ModelInfo::ModelInfo() = default;
+OllamaClient::ModelInfo::ModelInfo(const ModelInfo&) = default;
+OllamaClient::ModelInfo& OllamaClient::ModelInfo::operator=(const ModelInfo&) =
+    default;
+OllamaClient::ModelInfo::ModelInfo(ModelInfo&&) = default;
+OllamaClient::ModelInfo& OllamaClient::ModelInfo::operator=(ModelInfo&&) =
+    default;
+OllamaClient::ModelInfo::~ModelInfo() = default;
+
+// OllamaClient::ModelDetails implementation
+OllamaClient::ModelDetails::ModelDetails() = default;
+OllamaClient::ModelDetails::ModelDetails(const ModelDetails&) = default;
+OllamaClient::ModelDetails& OllamaClient::ModelDetails::operator=(
+    const ModelDetails&) = default;
+OllamaClient::ModelDetails::ModelDetails(ModelDetails&&) = default;
+OllamaClient::ModelDetails& OllamaClient::ModelDetails::operator=(
+    ModelDetails&&) = default;
+OllamaClient::ModelDetails::~ModelDetails() = default;
 
 namespace {
 
@@ -137,7 +159,11 @@ void OllamaClient::OnModelsListComplete(
     ModelsCallback callback,
     std::unique_ptr<network::SimpleURLLoader> loader,
     std::optional<std::string> response) {
-  std::move(callback).Run(response);
+  if (!response) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  std::move(callback).Run(ParseModelsResponse(*response));
 }
 
 void OllamaClient::ShowModel(const std::string& model_name,
@@ -166,7 +192,79 @@ void OllamaClient::OnModelDetailsComplete(
     ModelDetailsCallback callback,
     std::unique_ptr<network::SimpleURLLoader> loader,
     std::optional<std::string> response) {
-  std::move(callback).Run(response);
+  if (!response) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  std::move(callback).Run(ParseModelDetailsResponse(*response));
+}
+
+std::optional<std::vector<OllamaClient::ModelInfo>>
+OllamaClient::ParseModelsResponse(const std::string& response_body) {
+  std::optional<base::Value::Dict> json_dict =
+      base::JSONReader::ReadDict(response_body);
+  if (!json_dict) {
+    return std::nullopt;
+  }
+
+  const base::Value::List* models_list = json_dict->FindList("models");
+  if (!models_list) {
+    return std::nullopt;
+  }
+
+  std::vector<ModelInfo> models;
+  for (const auto& model : *models_list) {
+    const base::Value::Dict* model_dict = model.GetIfDict();
+    if (!model_dict) {
+      continue;
+    }
+
+    const std::string* model_name = model_dict->FindString("name");
+    if (!model_name) {
+      continue;
+    }
+
+    ModelInfo info;
+    info.name = *model_name;
+    models.push_back(std::move(info));
+  }
+
+  return models;
+}
+
+std::optional<OllamaClient::ModelDetails>
+OllamaClient::ParseModelDetailsResponse(const std::string& response_body) {
+  std::optional<base::Value::Dict> json_dict =
+      base::JSONReader::ReadDict(response_body);
+  if (!json_dict) {
+    return std::nullopt;
+  }
+
+  ModelDetails details;
+
+  // Extract context_length from model_info
+  const base::Value::Dict* model_info = json_dict->FindDict("model_info");
+  if (model_info) {
+    for (const auto [key, value] : *model_info) {
+      if (base::EndsWith(key, ".context_length") && value.is_int()) {
+        details.context_length = static_cast<uint32_t>(value.GetInt());
+        break;
+      }
+    }
+  }
+
+  // Check capabilities for vision support
+  const base::Value::List* capabilities = json_dict->FindList("capabilities");
+  if (capabilities) {
+    for (const auto& capability : *capabilities) {
+      if (capability.is_string() && capability.GetString() == "vision") {
+        details.has_vision = true;
+        break;
+      }
+    }
+  }
+
+  return details;
 }
 
 }  // namespace ai_chat

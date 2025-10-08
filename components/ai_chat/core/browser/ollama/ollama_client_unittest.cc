@@ -125,10 +125,12 @@ TEST_F(OllamaClientTest, FetchModelsSuccess) {
                                          kOllamaModelsResponse);
 
   base::RunLoop run_loop;
-  ollama_client()->FetchModels(
-      base::BindLambdaForTesting([&](std::optional<std::string> response_body) {
-        ASSERT_TRUE(response_body.has_value());
-        EXPECT_EQ(kOllamaModelsResponse, *response_body);
+  ollama_client()->FetchModels(base::BindLambdaForTesting(
+      [&](std::optional<std::vector<OllamaClient::ModelInfo>> models) {
+        ASSERT_TRUE(models.has_value());
+        ASSERT_EQ(2u, models->size());
+        EXPECT_EQ("llama2:7b", (*models)[0].name);
+        EXPECT_EQ("mistral:latest", (*models)[1].name);
         run_loop.Quit();
       }));
 
@@ -143,9 +145,9 @@ TEST_F(OllamaClientTest, FetchModelsNoResponse) {
       network::URLLoaderCompletionStatus(net::ERR_CONNECTION_REFUSED));
 
   base::RunLoop run_loop;
-  ollama_client()->FetchModels(
-      base::BindLambdaForTesting([&](std::optional<std::string> response_body) {
-        EXPECT_FALSE(response_body.has_value());
+  ollama_client()->FetchModels(base::BindLambdaForTesting(
+      [&](std::optional<std::vector<OllamaClient::ModelInfo>> models) {
+        EXPECT_FALSE(models.has_value());
         run_loop.Quit();
       }));
 
@@ -157,10 +159,9 @@ TEST_F(OllamaClientTest, FetchModelsEmptyResponse) {
                                          "");
 
   base::RunLoop run_loop;
-  ollama_client()->FetchModels(
-      base::BindLambdaForTesting([&](std::optional<std::string> response_body) {
-        ASSERT_TRUE(response_body.has_value());
-        EXPECT_EQ("", *response_body);
+  ollama_client()->FetchModels(base::BindLambdaForTesting(
+      [&](std::optional<std::vector<OllamaClient::ModelInfo>> models) {
+        EXPECT_FALSE(models.has_value());
         run_loop.Quit();
       }));
 
@@ -181,12 +182,13 @@ TEST_F(OllamaClientTest, ShowModelSuccess) {
 
   base::RunLoop run_loop;
   ollama_client()->ShowModel(
-      "llama2:7b",
-      base::BindLambdaForTesting([&](std::optional<std::string> response_body) {
-        ASSERT_TRUE(response_body.has_value());
-        EXPECT_EQ(kModelDetailsResponse, *response_body);
-        run_loop.Quit();
-      }));
+      "llama2:7b", base::BindLambdaForTesting(
+                       [&](std::optional<OllamaClient::ModelDetails> details) {
+                         ASSERT_TRUE(details.has_value());
+                         EXPECT_EQ(4096u, details->context_length);
+                         EXPECT_TRUE(details->has_vision);
+                         run_loop.Quit();
+                       }));
 
   run_loop.Run();
 }
@@ -199,11 +201,11 @@ TEST_F(OllamaClientTest, ShowModelNoResponse) {
 
   base::RunLoop run_loop;
   ollama_client()->ShowModel(
-      "llama2:7b",
-      base::BindLambdaForTesting([&](std::optional<std::string> response_body) {
-        EXPECT_FALSE(response_body.has_value());
-        run_loop.Quit();
-      }));
+      "llama2:7b", base::BindLambdaForTesting(
+                       [&](std::optional<OllamaClient::ModelDetails> details) {
+                         EXPECT_FALSE(details.has_value());
+                         run_loop.Quit();
+                       }));
 
   run_loop.Run();
 }
