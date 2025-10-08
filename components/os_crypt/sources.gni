@@ -4,3 +4,19 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 brave_components_os_crypt_deps = [ "//brave/components/constants" ]
+
+brave_components_os_crypt_visibility = [
+  "//brave/components/ai_chat/core/browser",
+  "//brave/components/brave_account",
+  "//brave/components/brave_rewards/content",
+  "//brave/components/brave_sync:prefs",
+  "//brave/components/sync/service:unit_tests",
+  "//chrome/utility",
+  "//components/os_crypt/sync",
+]
+
+if (is_ios) {
+  brave_components_os_crypt_visibility += [
+    "//brave/ios/browser/api/brave_rewards",
+  ]
+}
