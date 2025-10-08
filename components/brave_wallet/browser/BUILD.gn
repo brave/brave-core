@@ -200,6 +200,7 @@ static_library("browser") {
     "polkadot/polkadot_tx_meta.h",
     "polkadot/polkadot_tx_state_manager.cc",
     "polkadot/polkadot_tx_state_manager.h",
+    "polkadot/polkadot_utils.h",
     "polkadot/polkadot_wallet_service.cc",
     "polkadot/polkadot_wallet_service.h",
     "scoped_txs_update.cc",
