@@ -134,8 +134,8 @@ void BraveAppMenuModel::InsertEmailAliasesItem() {
     return;
   }
 
-  auto* autofill_menu_model = static_cast<ui::SimpleMenuModel*>(
-      GetSubmenuModelAt(
+  auto* autofill_menu_model =
+      static_cast<ui::SimpleMenuModel*>(GetSubmenuModelAt(
           GetIndexOfCommandId(IDC_PASSWORDS_AND_AUTOFILL_MENU).value()));
   if (!autofill_menu_model) {
     return;
