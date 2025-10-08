@@ -40,9 +40,9 @@ std::string_view SelectTool::Description() const {
 
 std::optional<base::Value::Dict> SelectTool::InputProperties() const {
   return CreateInputProperties(
-      {{"target",
+      {{kPropertyNameTarget,
         target_util::TargetProperty("Dropdown element to select from")},
-       {"value",
+       {kPropertyNameValue,
         StringProperty("The value attribute of the <option> to select")}});
 }
 
