@@ -30,7 +30,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
-#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
@@ -61,10 +61,6 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
-#endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/core/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
@@ -267,24 +263,22 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsFeedUpdate),      \
       })
 
-#define PLAYLIST_FEATURE_ENTRIES                                       \
-  IF_BUILDFLAG(                                                        \
-      ENABLE_PLAYLIST,                                                 \
-      EXPAND_FEATURE_ENTRIES(                                          \
-          {                                                            \
-              "playlist",                                              \
-              "Playlist",                                              \
-              "Enables Playlist",                                      \
-              kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
-              FEATURE_VALUE_TYPE(playlist::features::kPlaylist),       \
-          },                                                           \
-          {                                                            \
-              "playlist-fake-ua",                                      \
-              "PlaylistFakeUA",                                        \
-              "Use fake UA for playlist",                              \
-              kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
-              FEATURE_VALUE_TYPE(playlist::features::kPlaylistFakeUA), \
-          }))
+#define PLAYLIST_FEATURE_ENTRIES                                   \
+  EXPAND_FEATURE_ENTRIES(                                          \
+      {                                                            \
+          "playlist",                                              \
+          "Playlist",                                              \
+          "Enables Playlist",                                      \
+          kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
+          FEATURE_VALUE_TYPE(playlist::features::kPlaylist),       \
+      },                                                           \
+      {                                                            \
+          "playlist-fake-ua",                                      \
+          "PlaylistFakeUA",                                        \
+          "Use fake UA for playlist",                              \
+          kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
+          FEATURE_VALUE_TYPE(playlist::features::kPlaylistFakeUA), \
+      })
 
 #define PSST_FEATURE_ENTRIES                                           \
   IF_BUILDFLAG(ENABLE_PSST,                                            \

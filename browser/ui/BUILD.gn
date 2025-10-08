@@ -839,6 +839,7 @@ source_set("ui") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
     "//brave/components/p3a_utils",
+    "//brave/components/playlist/core/common",
     "//brave/components/query_filter",
     "//brave/components/resources:static_resources",
     "//brave/components/services/bat_ads/public/interfaces",
@@ -1322,10 +1323,6 @@ source_set("ui") {
       "//brave/components/brave_wallet_ui/page/screens/send/android:brave_wallet_send_page_generated",
       "//brave/components/brave_wallet_ui/page/screens/swap/android:brave_wallet_swap_page_generated",
     ]
-  }
-
-  if (enable_playlist) {
-    deps += [ "//brave/components/playlist/core/common" ]
   }
 
   if (enable_playlist_webui) {
