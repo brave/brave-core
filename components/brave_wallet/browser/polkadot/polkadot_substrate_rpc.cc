@@ -46,7 +46,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 }
 
 mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(std::string_view sv) {
-  // leading 0x, 160 hex chars worth of data
+  // Leading 0x, 160 hex chars worth of data.
   if (sv.size() != 162) {
     return nullptr;
   }
@@ -56,7 +56,7 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(std::string_view sv) {
   }
 
   std::vector<uint8_t> bytes;
-  sv.remove_prefix(2);  // remove leading 0x
+  sv.remove_prefix(2);  // Remove leading 0x.
   if (!base::HexStringToBytes(sv, &bytes)) {
     return nullptr;
   }
@@ -129,7 +129,7 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(std::string_view sv) {
 mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
     const std::optional<
         std::vector<polkadot_substrate_rpc_responses::AccountInfo>>& result) {
-  // see: `"id": 3` for more information
+  // See `"id": 3` for more information:
   // https://raw.githubusercontent.com/polkadot-js/api/refs/heads/master/packages/types-support/src/metadata/v16/substrate-types.json
 
   /*
