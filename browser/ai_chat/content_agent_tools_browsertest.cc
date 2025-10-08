@@ -32,6 +32,13 @@
 
 namespace ai_chat {
 
+namespace {
+
+// Substring that indicates a successful tool result
+const char kToolResultSuccessSubstring[] = "successful";
+
+}
+
 // These tests verify, end to end, that the various content tools utilize
 // the Chromium actor framework successfully. They do not need to test all
 // edge cases with either the actor framework or the tool param parsing, since
@@ -115,7 +122,8 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
     tool->UseTool(input_json, result_future.GetCallback());
     auto result = result_future.Take();
     if (verify_success) {
-      EXPECT_THAT(result, ContentBlockText(testing::HasSubstr("Success")));
+      EXPECT_THAT(result, ContentBlockText(
+                              testing::HasSubstr(kToolResultSuccessSubstring)));
     }
     return result;
   }
