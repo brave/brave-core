@@ -255,6 +255,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   }
 
   {
+    // Account data is too short.
+
     url_loader_factory_.AddResponse(
         testnet_url,
         "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
@@ -270,6 +272,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   }
 
   {
+    // Changes array is empty.
+
     url_loader_factory_.AddResponse(
         testnet_url,
         "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
@@ -285,6 +289,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   }
 
   {
+    // Changes array contains empty pair (no storage key, no account
+    // information).
+
     url_loader_factory_.AddResponse(
         testnet_url,
         "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
@@ -321,6 +328,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
 
   {
     // Server contained invalid response.
+
     url_loader_factory_.AddResponse(
         testnet_url, "some invalid data goes here",
         net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR);
