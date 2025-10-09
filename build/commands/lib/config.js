@@ -1255,6 +1255,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       const kRbeTimeout = '10m'
       env.RBE_exec_timeout = env.RBE_exec_timeout || kRbeTimeout
       env.RBE_reclient_timeout = env.RBE_reclient_timeout || kRbeTimeout
+      env.RBE_exec_strategy = 'remote'
 
       // Autoninja generates -j value when RBE is enabled, adjust limits for
       // Brave-specific setup.
