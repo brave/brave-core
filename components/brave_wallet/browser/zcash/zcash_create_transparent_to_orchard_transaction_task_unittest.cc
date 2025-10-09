@@ -150,6 +150,10 @@ class ZCashCreateTransparentToOrchardTransactionTaskTest
     return ZCashActionContext(*zcash_rpc_, {}, sync_state_, account_id_);
   }
 
+  ZCashActionContext action_context(const mojom::AccountIdPtr& account_id) {
+    return ZCashActionContext(*zcash_rpc_, {}, sync_state_, account_id);
+  }
+
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
 
  private:
@@ -192,6 +196,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, TransactionCreated) {
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
@@ -238,6 +243,87 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, TransactionCreated) {
 }
 
 TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
+       TransactionCreated_Testnet) {
+  auto testnet_account_id =
+      AccountUtils(&keyring_service())
+          .EnsureAccount(mojom::KeyringId::kZCashTestnet, 0)
+          ->account_id.Clone();
+
+  ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         ZCashWalletService::GetUtxosCallback callback) {
+        ZCashWalletService::UtxoMap utxo_map;
+        utxo_map["60000"] = GetZCashUtxo(60000);
+        utxo_map["70000"] = GetZCashUtxo(70000);
+        utxo_map["80000"] = GetZCashUtxo(80000);
+        std::move(callback).Run(std::move(utxo_map));
+      });
+
+  ON_CALL(zcash_wallet_service(), DiscoverNextUnusedAddress(_, _, _))
+      .WillByDefault(
+          [&](const mojom::AccountIdPtr& account_id, bool change,
+              ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
+            auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
+            auto addr = keyring_service().GetZCashAddress(account_id, *id);
+            std::move(callback).Run(std::move(addr));
+          });
+
+  ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashTestnet);
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
+      });
+
+  base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
+
+  auto orchard_part = GetOrchardRawBytes(
+      "utest17wq2drpnaz8gzruzhjcmgq6hvlpj0lx7hmvrrq5wmaezwkf0hykr4delx3v5g4cqsx"
+      "h4wazxa7l0tpm7zn24hjnaarxrxzupn38l2efz2ghdnyjjhtvha0vtzranm333qykxyy92dq"
+      "n",
+      true);
+
+  auto testnet_context = action_context(testnet_account_id);
+
+  std::unique_ptr<ZCashCreateTransparentToOrchardTransactionTask> task =
+      std::make_unique<ZCashCreateTransparentToOrchardTransactionTask>(
+          pass_key(), zcash_wallet_service(), std::move(testnet_context),
+          *orchard_part, std::nullopt, 100000u);
+
+  base::expected<ZCashTransaction, std::string> tx_result;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce(::testing::DoAll(
+          SaveArg<0>(&tx_result),
+          base::test::RunOnceClosure(task_environment().QuitClosure())));
+
+  task->Start(callback.Get());
+
+  task_environment().RunUntilQuit();
+
+  EXPECT_TRUE(tx_result.has_value());
+
+  EXPECT_EQ(tx_result.value().transparent_part().inputs.size(), 2u);
+  EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 1u);
+
+  EXPECT_EQ(tx_result.value().orchard_part().inputs.size(), 0u);
+  EXPECT_EQ(tx_result.value().orchard_part().outputs.size(), 1u);
+  EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(),
+            1000u);
+
+  EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount, 10000u);
+  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value, 100000u);
+
+  auto id = mojom::ZCashKeyId::New(testnet_account_id->account_index, 1, 0);
+  auto addr = keyring_service().GetZCashAddress(testnet_account_id, *id);
+
+  EXPECT_EQ(tx_result.value().transparent_part().outputs[0].address,
+            addr->address_string);
+  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].addr,
+            orchard_part.value());
+}
+
+TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
        TransactionCreated_u64Check) {
   ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
       .WillByDefault([&](const mojom::AccountIdPtr& account_id,
@@ -260,6 +346,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
@@ -329,6 +416,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
@@ -378,6 +466,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
@@ -428,6 +517,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
@@ -489,6 +579,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
@@ -552,6 +643,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, NotEnoughFunds) {
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
@@ -597,6 +689,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, UtxosError) {
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
@@ -641,6 +734,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, ChangeAddressError) {
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
@@ -687,6 +781,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, LatestBlockError) {
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(base::unexpected("network error"));
       });
 

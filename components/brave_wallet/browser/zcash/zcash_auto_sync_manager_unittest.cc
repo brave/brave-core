@@ -103,6 +103,8 @@ TEST_F(ZCashAutoSyncManagerTest, InitialSync) {
       .WillByDefault(
           [](mojom::AccountIdPtr account_id,
              MockZCashWalletService::GetChainTipStatusCallback callback) {
+            EXPECT_EQ(GetNetworkForZCashAccount(account_id),
+                      mojom::kZCashMainnet);
             std::move(callback).Run(mojom::ZCashChainTipStatus::New(0, 1000),
                                     std::nullopt);
           });
@@ -119,6 +121,8 @@ TEST_F(ZCashAutoSyncManagerTest, TimerHit) {
       .WillByDefault(
           [](mojom::AccountIdPtr account_id,
              MockZCashWalletService::GetChainTipStatusCallback callback) {
+            EXPECT_EQ(GetNetworkForZCashAccount(account_id),
+                      mojom::kZCashMainnet);
             std::move(callback).Run(mojom::ZCashChainTipStatus::New(0, 1000),
                                     std::nullopt);
           });

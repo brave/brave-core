@@ -375,6 +375,7 @@ TEST_F(ZCashBlocksBatchScanTest, NetworkError_Blocks) {
   ON_CALL(zcash_rpc(), GetCompactBlocks(_, _, _, _))
       .WillByDefault([](const std::string& chain_id, uint32_t from, uint32_t to,
                         ZCashRpc::GetCompactBlocksCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(base::unexpected("error"));
       });
 
@@ -402,6 +403,7 @@ TEST_F(ZCashBlocksBatchScanTest, NetworkError_TreeState) {
       .WillByDefault([](const std::string& chain_id,
                         zcash::mojom::BlockIDPtr block,
                         ZCashRpc::GetTreeStateCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(base::unexpected("error"));
       });
 

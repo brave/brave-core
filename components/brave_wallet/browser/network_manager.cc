@@ -564,7 +564,7 @@ GURL ZCashTestnetRpcUrl() {
   if (switch_url.is_valid()) {
     return switch_url;
   }
-  return GURL("https://testnet.lightwalletd.com:9067/");
+  return GURL("https://testnet.zec.rocks:443/");
 }
 
 GURL CardanoMainnetRpcUrl() {

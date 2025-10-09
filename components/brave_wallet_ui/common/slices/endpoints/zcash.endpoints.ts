@@ -17,7 +17,6 @@ type MakeAccountShieldedPayloadType = {
 }
 
 type GetZCashBalancePayloadType = {
-  chainId: string
   accountId: BraveWallet.AccountId
 }
 

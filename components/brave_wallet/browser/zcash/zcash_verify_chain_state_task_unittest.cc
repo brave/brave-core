@@ -504,6 +504,7 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_LatestBlockFailed) {
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(base::unexpected("error"));
       });
 
@@ -567,6 +568,7 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_TreeStateFailed) {
       .WillByDefault([](const std::string& chain_id,
                         zcash::mojom::BlockIDPtr block,
                         ZCashRpc::GetTreeStateCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(base::unexpected("error"));
       });
 
