@@ -1,3 +1,4 @@
 include_rules = [
   "+brave/components/url_sanitizer/core/browser",
+  "+brave/components/url_sanitizer/ios/browser",
 ]
