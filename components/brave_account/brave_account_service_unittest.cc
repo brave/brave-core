@@ -201,7 +201,8 @@ const RegisterInitializeTestCase* InitializeUnauthorized() {
             return error;
           }()),
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_UNAUTHORIZED, mojom::RegisterErrorCode::kZero)),
+              net::HTTP_UNAUTHORIZED,
+              mojom::RegisterErrorCode::kMiscServerError)),
       });
   return kInitializeUnauthorized.get();
 }
@@ -219,9 +220,9 @@ const RegisterInitializeTestCase* InitializeServerError() {
             error.code = 0;
             return error;
           }()),
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_INTERNAL_SERVER_ERROR,
-                                        mojom::RegisterErrorCode::kZero)),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_INTERNAL_SERVER_ERROR,
+              mojom::RegisterErrorCode::kMiscServerError)),
       });
   return kInitializeServerError.get();
 }
@@ -516,7 +517,8 @@ const RegisterFinalizeTestCase* FinalizeUnauthorized() {
             return error;
           }()),
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_UNAUTHORIZED, mojom::RegisterErrorCode::kZero)),
+              net::HTTP_UNAUTHORIZED,
+              mojom::RegisterErrorCode::kMiscServerError)),
       });
   return kFinalizeUnauthorized.get();
 }
@@ -535,7 +537,7 @@ const RegisterFinalizeTestCase* FinalizeForbidden() {
         return error;
       }()),
       .mojo_expected = base::unexpected(mojom::RegisterError::New(
-          net::HTTP_FORBIDDEN, mojom::RegisterErrorCode::kZero)),
+          net::HTTP_FORBIDDEN, mojom::RegisterErrorCode::kMiscServerError)),
   });
   return kFinalizeForbidden.get();
 }
@@ -554,9 +556,9 @@ const RegisterFinalizeTestCase* FinalizeServerError() {
             error.code = 0;
             return error;
           }()),
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_INTERNAL_SERVER_ERROR,
-                                        mojom::RegisterErrorCode::kZero)),
+          .mojo_expected = base::unexpected(mojom::RegisterError::New(
+              net::HTTP_INTERNAL_SERVER_ERROR,
+              mojom::RegisterErrorCode::kMiscServerError)),
       });
   return kFinalizeServerError.get();
 }

@@ -12,16 +12,8 @@ import {
 import { getHtml } from './brave_account_dialogs.html.js'
 import { Error } from './brave_account_common.js'
 
-type DialogType =
-  | 'NONE'
-  | 'CREATE'
-  | 'ENTRY'
-  | 'FORGOT_PASSWORD'
-  | 'SIGN_IN'
-  | 'ERROR'
-
-type Dialog =
-  | { type: Exclude<DialogType, 'ERROR'> }
+export type Dialog =
+  | { type: 'NONE' | 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'SIGN_IN' }
   | { type: 'ERROR'; error: Error }
 
 export class BraveAccountDialogs extends CrLitElement {

@@ -22,7 +22,7 @@ enum RegisterErrorCode {
   kVerificationTokenEncryptionFailed = -2,
   kVerificationTokenDecryptionFailed = -1,
   // Server-side errors:
-  kZero                              = 0,
+  kMiscServerError                   = 0,
   // /v2/accounts/password/init:
   // - internal:
   kNewAccountEmailRequired           = 11005,
