@@ -599,7 +599,7 @@ dependencies = [
 
 [[package]]
 name = "cxx"
-version = "1.0.185"
+version = "1.0.186"
 dependencies = [
  "cc",
  "cxx-build",
@@ -612,7 +612,7 @@ dependencies = [
 
 [[package]]
 name = "cxx-build"
-version = "1.0.185"
+version = "1.0.186"
 dependencies = [
  "cc",
  "codespan-reporting",
@@ -625,7 +625,7 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-cmd"
-version = "1.0.185"
+version = "1.0.186"
 dependencies = [
  "clap",
  "codespan-reporting",
@@ -637,11 +637,11 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-flags"
-version = "1.0.185"
+version = "1.0.186"
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.185"
+version = "1.0.186"
 dependencies = [
  "indexmap",
  "proc-macro2",
@@ -1861,7 +1861,7 @@ dependencies = [
 
 [[package]]
 name = "regex-automata"
-version = "0.4.10"
+version = "0.4.11"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -1996,7 +1996,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "serde"
-version = "1.0.225"
+version = "1.0.228"
 dependencies = [
  "serde_core",
  "serde_derive",
@@ -2012,14 +2012,14 @@ dependencies = [
 
 [[package]]
 name = "serde_core"
-version = "1.0.225"
+version = "1.0.228"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.225"
+version = "1.0.228"
 dependencies = [
  "proc-macro2",
  "quote",
