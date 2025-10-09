@@ -146,6 +146,10 @@ inline constexpr char kCookieListPromptHistogram[] =
 inline constexpr auto kAdblockOnlyModeFilerListUUIDs =
     base::MakeFixedFlatSet<std::string_view>({"default"});
 
+// The list of language codes that are supported by Ad Block Only mode.
+inline constexpr auto kAdblockOnlyModeSupportedLanguageCodes =
+    base::MakeFixedFlatSet<std::string_view>({"en"});
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_CONSTANTS_H_

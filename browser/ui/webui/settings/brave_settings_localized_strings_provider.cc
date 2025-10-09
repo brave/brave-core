@@ -1287,8 +1287,11 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       base::FeatureList::IsEnabled(
           brave_shields::features::kCosmeticFilteringCustomScriptlets));
 
-  html_source->AddBoolean("isAdBlockOnlyModeFeatureEnabled",
-                          brave_shields::IsAdblockOnlyModeFeatureEnabled());
+  html_source->AddBoolean(
+      "isAdBlockOnlyModeSupportedAndFeatureEnabled",
+      brave_shields::IsAdblockOnlyModeFeatureEnabled() &&
+          brave_shields::IsAdblockOnlyModeSupportedForLocale(
+              g_browser_process->GetApplicationLocale()));
 
   // Always disable upstream's side panel align option.
   // We add our customized option at preferred position.
