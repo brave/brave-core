@@ -7,7 +7,7 @@
 
 #include "build/build_config.h"
 
-// Pretend we are not Android to get
+// Pretend we are not Android to get access to the constants
 #if BUILDFLAG(IS_ANDROID)
 #undef BUILDFLAG_INTERNAL_IS_ANDROID
 #define BUILDFLAG_INTERNAL_IS_ANDROID() (0)
