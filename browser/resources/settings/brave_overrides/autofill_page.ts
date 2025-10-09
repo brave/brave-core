@@ -91,12 +91,25 @@ RegisterPolymerTemplateModifications({
   }
 })
 
-// Add the click handler to the Autofill page prototype to navigate to the
-// Email Aliases route when the button is pressed.
-RegisterPolymerPrototypeModification({
-  'settings-autofill-page': (prototype) => {
-    prototype.onEmailAliasesClick = function () {
-      Router.getInstance().navigateTo(routes.EMAIL_ALIASES)
+if (loadTimeData.getBoolean('isEmailAliasesEnabled')) {
+  RegisterPolymerPrototypeModification({
+    'settings-autofill-page': (prototype) => {
+      // Add the click handler to the Autofill page prototype to navigate to the
+      // Email Aliases route when the button is pressed.
+      prototype.onEmailAliasesClick = function () {
+        Router.getInstance().navigateTo(routes.EMAIL_ALIASES,
+          /* dynamicParams =*/ undefined, /* removeSearch =*/ true)
+      }
+      // Add the associated control for the Email Aliases route to the Autofill
+      // page prototype.
+      const originalGetAssociatedControlFor :
+        (childViewId: string) => HTMLElement = prototype.getAssociatedControlFor
+      prototype.getAssociatedControlFor =
+        function (childViewId: string) : HTMLElement  {
+          return childViewId === 'email-aliases' ?
+            this.shadowRoot.querySelector('#emailAliasesLinkRow') :
+            originalGetAssociatedControlFor.call(this, childViewId)
+        }
     }
-  }
-})
+  })
+}

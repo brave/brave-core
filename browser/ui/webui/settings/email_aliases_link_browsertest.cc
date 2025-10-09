@@ -6,14 +6,14 @@
 #include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/email_aliases/features.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/chrome_pages.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 
 class BraveSettingsEmailAliasesRowBrowserTest
     : public InProcessBrowserTest,
@@ -39,11 +39,11 @@ class BraveSettingsEmailAliasesRowBrowserTest
 // enabled and that clicking on it navigates to the Email Aliases page.
 IN_PROC_BROWSER_TEST_P(BraveSettingsEmailAliasesRowBrowserTest,
                        EmailAliasesRow_VisibilityAndNavigation) {
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), chrome::GetSettingsUrl("autofill")));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
+                                           chrome::GetSettingsUrl("autofill")));
 
   // Inject a local helper to pierce shadow DOMs and store the row globally.
-  ASSERT_TRUE(content::EvalJs(contents(), R"JS(
+  content::EvalJs(contents(), R"JS(
     (function() {
       function deepQuerySelector(root, selector) {
         const direct = root.querySelector(selector);
@@ -57,17 +57,19 @@ IN_PROC_BROWSER_TEST_P(BraveSettingsEmailAliasesRowBrowserTest,
         }
         return null;
       }
-      window.emailAliasesRow = deepQuerySelector(document, '#emailAliasesLinkRow');
+      window.emailAliasesRow =
+        deepQuerySelector(document, '#emailAliasesLinkRow');
       return true;
     })();
-  )JS").ExtractBool());
+  )JS")
 
-  const bool enabled = FeatureEnabled();
+      const bool enabled = FeatureEnabled();
 
   // Email Aliases link row should exist only if the feature is enabled.
   EXPECT_EQ(enabled, content::EvalJs(contents(), R"JS(
     !!window.emailAliasesRow
-  )JS").ExtractBool());
+  )JS")
+                         .ExtractBool());
 
   if (!enabled) {
     return;
@@ -78,9 +80,11 @@ IN_PROC_BROWSER_TEST_P(BraveSettingsEmailAliasesRowBrowserTest,
   ASSERT_TRUE(content::EvalJs(contents(), R"JS(
     window.emailAliasesRow.click();
     true;
-  )JS").ExtractBool());
+  )JS")
+                  .ExtractBool());
 
-  EXPECT_EQ(chrome::GetSettingsUrl("email-aliases"), contents()->GetVisibleURL());
+  EXPECT_EQ(chrome::GetSettingsUrl("email-aliases"),
+            contents()->GetVisibleURL());
 }
 
 INSTANTIATE_TEST_SUITE_P(All,
