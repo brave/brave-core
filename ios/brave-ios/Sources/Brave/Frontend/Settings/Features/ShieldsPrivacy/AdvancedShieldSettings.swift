@@ -120,6 +120,11 @@ import os
       ShieldPreferences.shredLevel = shredLevel
     }
   }
+  @Published var shredHistoryItems: Bool {
+    didSet {
+      Preferences.Shields.shredHistoryItems.value = shredHistoryItems
+    }
+  }
 
   @Published var isSaveContactInfoEnabled: Bool = false {
     didSet {
@@ -190,6 +195,7 @@ import os
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
     // TODO: Support AutoShred via content settings brave-browser#47753
     self.shredLevel = ShieldPreferences.shredLevel
+    self.shredHistoryItems = Preferences.Shields.shredHistoryItems.value
     self.webcompatReporterHandler = webcompatReporterHandler
     self.isSurveyPanelistEnabled = rewards?.ads.isSurveyPanelistEnabled ?? false
 

@@ -84,6 +84,39 @@ struct DefaultShieldsSectionView: View {
         toggle: $settings.isBlockFingerprintingEnabled
       )
 
+      if FeatureList.kBraveShredFeature.enabled {
+        NavigationLink(
+          destination: {
+            Form {
+              FormPicker(selection: $settings.shredLevel) {
+                ForEach(SiteShredLevel.allCases) { level in
+                  Text(level.localizedTitle)
+                    .foregroundColor(Color(.secondaryBraveLabel))
+                    .tag(level)
+                }
+              } label: {
+                LabelView(
+                  title: Strings.Shields.autoShred,
+                  subtitle: nil
+                )
+              }
+              ToggleView(
+                title: Strings.Shields.shredHistoryRowTitle,
+                subtitle: Strings.Shields.shredHistoryRowDescription,
+                toggle: $settings.shredHistoryItems
+              )
+            }
+            .navigationTitle(Strings.Shields.shredSettingsViewTitle)
+          },
+          label: {
+            LabelView(
+              title: Strings.Shields.shredRowTitle,
+              subtitle: Strings.Shields.shredRowDescription
+            )
+          }
+        )
+      }
+
       ToggleView(
         title: Strings.blockCookieConsentNotices,
         subtitle: nil,
@@ -95,21 +128,6 @@ struct DefaultShieldsSectionView: View {
         subtitle: Strings.braveShieldsSaveContactInfoDescription,
         toggle: $settings.isSaveContactInfoEnabled
       )
-
-      if FeatureList.kBraveShredFeature.enabled {
-        FormPicker(selection: $settings.shredLevel) {
-          ForEach(SiteShredLevel.allCases) { level in
-            Text(level.localizedTitle)
-              .foregroundColor(Color(.secondaryBraveLabel))
-              .tag(level)
-          }
-        } label: {
-          LabelView(
-            title: Strings.Shields.autoShred,
-            subtitle: nil
-          )
-        }
-      }
 
       NavigationLink {
         FilterListsView()

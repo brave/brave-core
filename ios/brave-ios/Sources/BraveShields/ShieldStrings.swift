@@ -796,4 +796,42 @@ extension Strings.Shields {
     value: "You are seeing this warning because this site does not support HTTPS.",
     comment: "A description shown an a page where the http page was blocked"
   )
+
+  public static let shredRowTitle = NSLocalizedString(
+    "shields.shredRowTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shred",
+    comment: "A row title that appears in the Shields & Privacy settings."
+  )
+  public static let shredRowDescription = NSLocalizedString(
+    "shields.shredRowDescription",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Update Auto Shred or adjust what data is shred.",
+    comment: "A row description that appears in the Shields & Privacy settings."
+  )
+  public static let shredSettingsViewTitle = NSLocalizedString(
+    "shields.shredSettingsViewTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shred",
+    comment: "A title for the Shred settings screen, within Shields & Privacy settings."
+  )
+  public static let shredHistoryRowTitle = NSLocalizedString(
+    "shields.shredHistoryRowTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shred Removes History",
+    comment:
+      "A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings."
+  )
+  public static let shredHistoryRowDescription = NSLocalizedString(
+    "shields.shredHistoryRowDescription",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "If Shred should remove history items.",
+    comment:
+      "A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings."
+  )
 }
