@@ -12,7 +12,7 @@
 
 class BraveWelcomeUI : public content::WebUIController {
  public:
-  BraveWelcomeUI(content::WebUI* web_ui, const std::string& host);
+  BraveWelcomeUI(content::WebUI* web_ui, std::string_view host);
   ~BraveWelcomeUI() override;
   BraveWelcomeUI(const BraveWelcomeUI&) = delete;
   BraveWelcomeUI& operator=(const BraveWelcomeUI&) = delete;

@@ -22,11 +22,8 @@ namespace ai_chat {
 namespace {
 bool IsValidPrivateIPAddress(const GURL& endpoint) {
   net::IPAddress ip_address;
-  // Extract the host
-  std::string host = endpoint.host();
-
   // Parse the hostname to an IPAddress
-  if (!net::ParseURLHostnameToAddress(host, &ip_address) ||
+  if (!net::ParseURLHostnameToAddress(endpoint.host(), &ip_address) ||
       !ip_address.IsValid()) {
     return false;
   }

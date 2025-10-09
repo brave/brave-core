@@ -110,8 +110,7 @@ std::string AnonymizationKeyToString(const NetworkAnonymizationKey& key) {
   const std::optional<net::SchemefulSite>& schemeful_site =
       key.GetTopFrameSite();
   CHECK(schemeful_site.has_value());
-  std::string host = GURL(schemeful_site->Serialize()).host();
-  return host;
+  return std::string(GURL(schemeful_site->Serialize()).host());
 }
 
 }  // namespace

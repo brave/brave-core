@@ -75,7 +75,6 @@ void RewardsBrowserTestContribution::TipPublisher(
     int32_t selection,
     double custom_amount) {
   bool should_contribute = number_of_contributions > 0;
-  const std::string publisher = url.host();
   // we shouldn't be adding publisher to AC list,
   // so that we can focus only on tipping part
   rewards_service_->SetPublisherMinVisitTime(8);

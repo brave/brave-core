@@ -166,7 +166,7 @@ void NftMetadataFetcher::FetchMetadata(
   // IPFS, HTTPS, and data URIs are supported.
   // IPFS and HTTPS URIs require an additional request to fetch the metadata.
   std::string metadata_json;
-  std::string scheme = url.scheme();
+  std::string_view scheme = url.scheme();
   if (scheme != url::kDataScheme && scheme != url::kHttpsScheme &&
       scheme != ipfs::kIPFSScheme) {
     std::move(callback).Run(

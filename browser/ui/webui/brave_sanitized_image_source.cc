@@ -139,7 +139,7 @@ void BraveSanitizedImageSource::StartDataRequest(
     content::URLDataSource::GotDataCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  std::string image_url_or_params = url.query();
+  std::string_view image_url_or_params = url.query();
 
   if (url !=
       GURL(base::StrCat({kChromeUIBraveImageURL, "?", image_url_or_params}))) {

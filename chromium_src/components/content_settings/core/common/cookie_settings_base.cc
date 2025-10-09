@@ -247,18 +247,22 @@ bool CookieSettingsBase::ShouldBlockThirdPartyIfSettingIsExplicit(
 // were explicit. We use explicit setting to enable 1PES mode, but in this mode
 // we still want to block 3p frames as usual and not fallback to "allow
 // everything" path.
+// TODO: Remove the string copy in for IsThirdPartyCookiesAllowedScheme when
+// crrev.com/c/7013333 lands.
 #define BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS                              \
   const bool block_third =                                                    \
       IsAllowed(setting) && !is_explicit_setting && is_third_party_request && \
       ShouldBlockThirdPartyCookies(url::Origin::Create(first_party_url),      \
                                    overrides) &&                              \
-      !IsThirdPartyCookiesAllowedScheme(first_party_url.scheme());            \
+      !IsThirdPartyCookiesAllowedScheme(                                      \
+          std::string(first_party_url.scheme()));                             \
   if (!block_third && is_third_party_request &&                               \
       ShouldBlockThirdPartyIfSettingIsExplicit(                               \
           ShouldBlockThirdPartyCookies(url::Origin::Create(first_party_url),  \
                                        overrides),                            \
           setting, is_explicit_setting,                                       \
-          IsThirdPartyCookiesAllowedScheme(first_party_url.scheme()))) {      \
+          IsThirdPartyCookiesAllowedScheme(                                   \
+              std::string(first_party_url.scheme())))) {                      \
     return AllowPartitionedCookies{};                                         \
   }
 

@@ -79,7 +79,6 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
         new net::test_server::BasicHttpResponse());
     http_response->set_code(net::HTTP_OK);
     http_response->set_content_type("application/json");
-    std::string request_path = request.GetURL().path();
 
     auto body = base::test::ParseJsonDict(request.content);
     auto* method = body.FindString("method");

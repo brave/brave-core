@@ -10,6 +10,7 @@
 
 #include "base/debug/dump_without_crashing.h"
 #include "base/hash/hash.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -667,7 +668,7 @@ void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
   if (url.is_empty()) {
     map->ClearSettingsForOneType(ContentSettingsType::HTTP_ALLOWED);
   } else {
-    const GURL& secure_url = GURL("https://" + url.host());
+    const GURL& secure_url = GURL(base::StrCat({"https://", url.host()}));
     map->SetWebsiteSettingDefaultScope(
         secure_url, GURL(), ContentSettingsType::HTTP_ALLOWED, base::Value());
   }
