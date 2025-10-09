@@ -4,6 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .form {
+  --editable-padding: 12px var(--leo-spacing-xl) 8px var(--leo-spacing-xl);
+  --editable-max-height: 300px;
+
   border-radius: var(--leo-radius-xl);
   border: 1px solid var(--leo-color-divider-subtle);
   width: 100%;
@@ -11,62 +14,11 @@
   color: var(--leo-color-text-primary);
   position: relative;
   transition: all 0.2s ease-in-out;
-
-  &:has(textarea:disabled) {
-    border-color: var(--leo-color-divider-subtle);
-    background: var(--leo-color-container-highlight);
-
-    &::placeholder {
-      color: var(--leo-color-text-tertiary);
-    }
-  }
 }
+
 .form:hover,
 .form:focus-visible {
   box-shadow: var(--leo-effect-elevation-01);
-}
-
-.growWrap {
-  display: grid;
-  grid-template-columns: 1fr;
-  max-height: 300px;
-  overflow-y: auto;
-
-  textarea {
-    width: 100%;
-    resize: none;
-    background-color: transparent;
-    border: 0;
-    overflow: hidden;
-
-    &:focus {
-      outline: none;
-    }
-    &::placeholder {
-      color: var(--leo-color-text-tertiary);
-    }
-  }
-
-  &::after {
-    content: attr(data-replicated-value) ' ';
-    white-space: pre-wrap;
-    visibility: hidden;
-  }
-
-  textarea,
-  &::after {
-    padding: 12px var(--leo-spacing-xl) 8px var(--leo-spacing-xl);
-    grid-area: 1 / 1 / 2 / 2;
-  }
-
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--leo-color-neutral-20);
-    border-radius: var(--leo-spacing-m);
-  }
 }
 
 .buttonAgree {
