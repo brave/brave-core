@@ -5,10 +5,17 @@
 
 import * as Mojom from '../../../common/mojom'
 
+const NON_TASK_TOOL_NAMES = [
+  Mojom.USER_CHOICE_TOOL_NAME,
+  Mojom.MEMORY_STORAGE_TOOL_NAME,
+]
+
 /**
- * Groups consecutive assistant entries. Other entries will form a group each
- * with only a single entry.
- * @param allEntries Flat list of conversation entries
+ * Groups consecutive assistant entries for the purposes of combining tool use
+ * loops. Each tool use and response results in a separate ConversationTurn, but
+ * we want to combine them in the UI as the same turn. Other entries will form a
+ * group each with only a single entry.
+ * @param allEntries All ungrouped conversation entries for a conversation
  */
 export function groupConversationEntries(
   allEntries: Mojom.ConversationTurn[],
@@ -33,6 +40,30 @@ export function groupConversationEntries(
     }
   }
   return groupedEntries
+}
+
+/**
+ * A task is when there are multiple entries within a group and there
+ * is at least 1 tool use event and 1 completion event. However, it may not be possible
+ * for there to be multiple entries without a tool use event.
+ * @param group Group of conversation entries from groupConversationEntries
+ * @returns true if the group is a task
+ */
+export function isGroupTask(group: Mojom.ConversationTurn[]) {
+  return (
+    group.length > 1
+    && group.some((entry) =>
+      entry.events?.some(
+        (event) =>
+          !!event
+          && event.toolUseEvent
+          && !NON_TASK_TOOL_NAMES.includes(event.toolUseEvent.toolName),
+      ),
+    )
+    && group.some((entry) =>
+      entry.events?.some((event) => !!event && event.completionEvent),
+    )
+  )
 }
 
 export function getReasoningText(text: string) {

@@ -38,6 +38,7 @@ import {
   UntrustedConversationContext,
   UntrustedConversationReactContext,
 } from '../../untrusted_conversation_frame/untrusted_conversation_context'
+import { taskConversationEntries } from '../../untrusted_conversation_frame/components/assistant_task/assistant_task.stories'
 import ErrorConnection from '../components/alerts/error_connection'
 import ErrorConversationEnd from '../components/alerts/error_conversation_end'
 import ErrorInvalidAPIKey from '../components/alerts/error_invalid_api_key'
@@ -367,6 +368,24 @@ const HISTORY: Mojom.ConversationTurn[] = [
     smartMode: undefined,
     modelKey: '1',
   },
+  {
+    uuid: undefined,
+    text: 'Question that results in a task',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    smartMode: undefined,
+    modelKey: '1',
+  },
+  // Show how a Task is displayed within history. Use the AssistantTask story for
+  // viewing an active Task.
+  ...taskConversationEntries,
   {
     uuid: undefined,
     text: 'What is pointer compression?\n...and how does it work?\n    - tell me something interesting',
@@ -761,6 +780,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     smartMode: undefined,
     modelKey: '1',
   },
+  // Show that tool use events are NOT interactive if they are not the last entry in the
+  // group of assistant conversation entries.
   {
     uuid: undefined,
     text: '',
@@ -771,18 +792,17 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [
-      getCompletionEvent(
-        'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
-      ),
       ...toolEvents
-        .slice(0, 3)
-        .map((toolUseEvent) => ({ ...eventTemplate, toolUseEvent })),
+        .slice(2)
+        .map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent })),
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
     smartMode: undefined,
     modelKey: '1',
   },
+  // Show that single or multipletool use events are interactive if they are the
+  // last entry in thegroup of assistant conversation entries.
   {
     uuid: undefined,
     text: '',
@@ -793,9 +813,10 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [
+      getCompletionEvent('Answer one of these questions:'),
       ...toolEvents
-        .slice(3)
-        .map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent })),
+        .slice(0, 3)
+        .map((toolUseEvent) => ({ ...eventTemplate, toolUseEvent })),
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
