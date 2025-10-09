@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 
@@ -44,8 +45,7 @@ void PolkadotWalletService::GetAccountBalance(
     GetAccountBalanceCallback callback) {
   auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
   if (!pubkey) {
-    return std::move(callback).Run(
-        nullptr, "Cannot get Polkadot public key for this account.");
+    return std::move(callback).Run(nullptr, WalletInternalErrorMessage());
   }
 
   polkadot_substrate_rpc_.GetAccountBalance(chain_id, *pubkey,
