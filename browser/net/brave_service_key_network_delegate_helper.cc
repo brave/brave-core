@@ -23,8 +23,9 @@ int OnBeforeStartTransaction_BraveServiceKey(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   static const base::NoDestructor<std::vector<std::string>> allowed_domains{
-      {kExtensionUpdaterDomain, GURL(BUILDFLAG(UPDATER_DEV_ENDPOINT)).host(),
-       GURL(BUILDFLAG(UPDATER_PROD_ENDPOINT)).host()}};
+      {kExtensionUpdaterDomain,
+       std::string(GURL(BUILDFLAG(UPDATER_DEV_ENDPOINT)).host()),
+       std::string(GURL(BUILDFLAG(UPDATER_PROD_ENDPOINT)).host())}};
 
   const GURL& url = ctx->request_url;
 

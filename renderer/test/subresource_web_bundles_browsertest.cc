@@ -55,7 +55,7 @@ constexpr char kLoadPassJs[] = R"(
   })
 )";
 
-std::string GetHeadersForURL(const std::string& url) {
+std::string_view GetHeadersForURL(std::string_view url) {
   if (url.ends_with(kPage)) {
     return kPageHeaders;
   } else if (url.ends_with(kPassJs)) {
@@ -65,11 +65,11 @@ std::string GetHeadersForURL(const std::string& url) {
         << "Received request for web bundle headers, which should not have "
            "happened. URL:"
         << url;
-    return std::string();
+    return std::string_view();
   }
 }
 
-std::string GetContentForURL(const std::string& url) {
+std::string_view GetContentForURL(std::string_view url) {
   if (url.ends_with(kPage)) {
     return kPageHtml;
   } else {
@@ -77,7 +77,7 @@ std::string GetContentForURL(const std::string& url) {
         << "Received request for web bundle content, which should not have "
            "happened. URL:"
         << url;
-    return std::string();
+    return std::string_view();
   }
 }
 

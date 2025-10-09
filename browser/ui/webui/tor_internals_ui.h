@@ -48,7 +48,7 @@ class TorInternalsDOMHandler : public content::WebUIMessageHandler,
 
 class TorInternalsUI : public content::WebUIController {
  public:
-  TorInternalsUI(content::WebUI* web_ui, const std::string& host);
+  TorInternalsUI(content::WebUI* web_ui, std::string_view host);
   TorInternalsUI(const TorInternalsUI&) = delete;
   TorInternalsUI& operator=(const TorInternalsUI&) = delete;
   ~TorInternalsUI() override;

@@ -27,5 +27,7 @@ bool ProfileIOData::IsHandledURL(const GURL& url) {
     // We handle error cases.
     return true;
   }
-  return IsHandledProtocol(url.scheme());
+  // TODO: remove the string copy once upstream is fixed.
+  // https://crrev.com/c/7030028
+  return IsHandledProtocol(std::string(url.scheme()));
 }

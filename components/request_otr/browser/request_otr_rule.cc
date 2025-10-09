@@ -75,8 +75,7 @@ void RequestOTRRule::RegisterJSONConverter(
 // static
 // All eTLD+1 calculations for Request-OTR-Tab should flow through here so they
 // are consistent in their private registries configuration.
-const std::string RequestOTRRule::GetETLDForRequestOTR(
-    const std::string& host) {
+const std::string RequestOTRRule::GetETLDForRequestOTR(std::string_view host) {
   std::string_view host_piece = CanonicalizeHostForMatching(host);
   return net::registry_controlled_domains::GetDomainAndRegistry(
       host_piece, net::registry_controlled_domains::PrivateRegistryFilter::
@@ -87,7 +86,7 @@ const std::string RequestOTRRule::GetETLDForRequestOTR(
 base::expected<std::pair<std::vector<std::unique_ptr<RequestOTRRule>>,
                          base::flat_set<std::string>>,
                std::string>
-RequestOTRRule::ParseRules(const std::string& contents) {
+RequestOTRRule::ParseRules(std::string_view contents) {
   if (contents.empty()) {
     return base::unexpected("Could not obtain request_otr configuration");
   }

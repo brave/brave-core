@@ -16,12 +16,11 @@
 namespace {
 
 bool IsURLAllowedInIncognitoBraveImpl(const GURL& url) {
-  std::string scheme = url.scheme();
-  std::string_view host = url.host_piece();
-  if (scheme != content::kChromeUIScheme) {
+  if (url.scheme() != content::kChromeUIScheme) {
     return true;
   }
 
+  std::string_view host = url.host_piece();
   if (host == kRewardsPageHost || host == chrome::kChromeUISyncInternalsHost ||
       host == chrome::kBraveUISyncHost || host == kAdblockHost ||
       host == kWelcomeHost || host == kBraveGettingStartedHost) {

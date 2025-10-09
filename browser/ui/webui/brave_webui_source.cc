@@ -41,7 +41,7 @@
 namespace {
 
 void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
-                              const std::string& name,
+                              std::string_view name,
                               content::WebUIDataSource* source) {
 #if !BUILDFLAG(IS_ANDROID)
   if (name == "rewards" || name == "wallet") {
@@ -55,12 +55,12 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
 
 content::WebUIDataSource* CreateWebUIDataSource(
     content::WebUI* web_ui,
-    const std::string& name,
+    std::string_view name,
     base::span<const webui::ResourcePath> resource_paths,
     int html_resource_id,
     bool disable_trusted_types_csp) {
-  content::WebUIDataSource* source =
-      content::WebUIDataSource::CreateAndAdd(Profile::FromWebUI(web_ui), name);
+  content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
+      Profile::FromWebUI(web_ui), std::string(name));
   // Some parts of Brave's UI pages are not yet migrated to work without doing
   // assignments of strings directly into |innerHTML| elements (i.e. see usage
   // of |dangerouslySetInnerHTML| in .tsx files). This will break Brave due to
@@ -89,7 +89,7 @@ content::WebUIDataSource* CreateWebUIDataSource(
 
 content::WebUIDataSource* CreateAndAddWebUIDataSource(
     content::WebUI* web_ui,
-    const std::string& name,
+    std::string_view name,
     base::span<const webui::ResourcePath> resource_paths,
     int html_resource_id,
     bool disable_trusted_types_csp) {

@@ -60,19 +60,19 @@ SkBitmap GenerateMonogramFavicon(const GURL& url, float width, float height) {
   const CGFloat padding = 28.0;
 
   auto createBackgroundColor = [](const GURL& url) -> UIColor* {
-    std::int32_t hash = base::Hash(url.host());
+    std::int32_t hash = base::PersistentHash(url.host());
     if (!hash) {
       return [UIColor grayColor];
     }
 
-    static const std::array<std::uint32_t, 42> defaultColors = {
+    static constexpr auto defaultColors = std::to_array<std::uint32_t>({
         0x2e761a, 0x399320, 0x40a624, 0x57bd35, 0x70cf5b, 0x90e07f, 0xb1eea5,
         0x881606, 0xaa1b08, 0xc21f09, 0xd92215, 0xee4b36, 0xf67964, 0xffa792,
         0x025295, 0x0568ba, 0x0675d3, 0x0996f8, 0x2ea3ff, 0x61b4ff, 0x95cdff,
         0x00736f, 0x01908b, 0x01a39d, 0x01bdad, 0x27d9d2, 0x58e7e6, 0x89f4f5,
         0xc84510, 0xe35b0f, 0xf77100, 0xff9216, 0xffad2e, 0xffc446, 0xffdf81,
         0x911a2e, 0xb7223b, 0xcf2743, 0xea385e, 0xfa526e, 0xff7a8d, 0xffa7b3,
-    };
+    });
 
     NSInteger index = labs(hash) % (defaultColors.size() - 1);
     NSUInteger colorHex = defaultColors[index];

@@ -40,6 +40,8 @@ void UntrustedSanitizedImageSource::StartDataRequest(
   GURL::Replacements replacements;
   replacements.SetSchemeStr(kChromeUIScheme);
 
+  // TODO: Remove string copy once https://crrev.com/c/7059214 is merged.
   SanitizedImageSource::StartDataRequest(
-      url.ReplaceComponents(replacements).path(), std::move(callback));
+      std::string(url.ReplaceComponents(replacements).path()),
+      std::move(callback));
 }
