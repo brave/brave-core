@@ -424,10 +424,10 @@ void BindBraveSearchDefaultHost(
   if (profile->IsRegularProfile()) {
     auto* template_url_service =
         TemplateURLServiceFactory::GetForProfile(profile);
-    const std::string host = frame_host->GetLastCommittedURL().host();
     mojo::MakeSelfOwnedReceiver(
         std::make_unique<brave_search::BraveSearchDefaultHost>(
-            host, template_url_service, profile->GetPrefs()),
+            frame_host->GetLastCommittedURL().host(), template_url_service,
+            profile->GetPrefs()),
         std::move(receiver));
   } else {
     // Dummy API which always returns false for private contexts.

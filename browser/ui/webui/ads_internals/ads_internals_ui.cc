@@ -17,7 +17,7 @@
 #include "content/public/browser/web_ui.h"
 
 AdsInternalsUI::AdsInternalsUI(content::WebUI* const web_ui,
-                               const std::string& name,
+                               std::string_view name,
                                brave_ads::AdsService* ads_service,
                                PrefService& prefs)
     : content::WebUIController(web_ui), handler_(ads_service, prefs) {

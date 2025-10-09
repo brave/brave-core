@@ -19,10 +19,10 @@
 class URLDataSourceIOS;
 class BraveWebUIIOSDataSource;
 
-#define WebUIIOSDataSourceTest                                    \
-  WebUIIOSDataSourceTest;                                         \
-  friend class ::BraveWebUIIOSDataSource;                         \
-  explicit WebUIIOSDataSourceImpl(const std::string& source_name, \
+#define WebUIIOSDataSourceTest                                  \
+  WebUIIOSDataSourceTest;                                       \
+  friend class ::BraveWebUIIOSDataSource;                       \
+  explicit WebUIIOSDataSourceImpl(std::string_view source_name, \
                                   URLDataSourceIOS* source)
 
 #include <ios/web/webui/web_ui_ios_data_source_impl.h>  // IWYU pragma: export

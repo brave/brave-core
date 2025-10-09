@@ -72,7 +72,7 @@ constexpr gfx::Size kIconSize(SidebarButtonView::kExternalIconSize,
 std::string GetFirstCharFromURL(const GURL& url) {
   DCHECK(url.is_valid());
 
-  std::string target = url.host();
+  std::string_view target = url.host();
   if (target.empty()) {
     target = url.spec();
   }
@@ -81,7 +81,7 @@ std::string GetFirstCharFromURL(const GURL& url) {
   } else {
     target = target.substr(0, 1);
   }
-  return target;
+  return std::string(target);
 }
 
 sidebar::SidebarService* GetSidebarService(Browser* browser) {

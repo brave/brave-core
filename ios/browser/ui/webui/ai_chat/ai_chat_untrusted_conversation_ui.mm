@@ -199,7 +199,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
     web::WebUIIOS* web_ui,
     const GURL& url)
-    : web::WebUIIOSController(web_ui, url.host()) {
+    : web::WebUIIOSController(web_ui, std::string(url.host())) {
   // Create a URLDataSource and add resources.
   BraveWebUIIOSDataSource* source = brave::CreateAndAddWebUIDataSource(
       web_ui, url.host(), kAiChatUiGenerated,

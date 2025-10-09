@@ -15,6 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "content/public/browser/storage_partition_config.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace content {
 
@@ -55,7 +56,7 @@ class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
       const TLDEphemeralLifetimeKey& key);
 
   const TLDEphemeralLifetimeKey& key() const { return key_; }
-  void SetShieldsStateOnHost(const std::string& host, bool enabled);
+  void SetShieldsStateOnHost(std::string_view host, bool enabled);
 
  private:
   friend class RefCounted<TLDEphemeralLifetime>;
@@ -63,7 +64,7 @@ class TLDEphemeralLifetime : public base::RefCounted<TLDEphemeralLifetime> {
 
   TLDEphemeralLifetimeKey key_;
   base::WeakPtr<EphemeralStorageService> ephemeral_storage_service_;
-  base::flat_map<std::string, bool> shields_state_on_hosts_;
+  absl::flat_hash_map<std::string, bool> shields_state_on_hosts_;
 
   base::WeakPtrFactory<TLDEphemeralLifetime> weak_factory_{this};
 };

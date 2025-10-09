@@ -203,7 +203,7 @@ void URLSanitizerService::OnConfigReady(
 // Remove tracking query parameters from a GURL, leaving all
 // other parts untouched.
 std::string URLSanitizerService::StripQueryParameter(
-    const std::string& query,
+    std::string_view query,
     const base::flat_set<std::string>& trackers) {
   // We are using custom query string parsing code here. See
   // https://github.com/brave/brave-core/pull/13726#discussion_r897712350
@@ -212,25 +212,24 @@ std::string URLSanitizerService::StripQueryParameter(
   // Split query string by ampersands, remove tracking parameters,
   // then join the remaining query parameters, untouched, back into
   // a single query string.
-  const std::vector<std::string> input_kv_strings =
-      SplitString(query, "&", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  const std::vector<std::string_view> input_kv_strings = base::SplitStringPiece(
+      query, "&", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
   std::vector<std::string> output_kv_strings;
   int disallowed_count = 0;
-  for (const std::string& kv_string : input_kv_strings) {
-    const std::vector<std::string> pieces = SplitString(
+  for (const std::string_view kv_string : input_kv_strings) {
+    const std::vector<std::string_view> pieces = base::SplitStringPiece(
         kv_string, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-    const std::string& key = pieces.empty() ? std::string() : pieces[0];
+    std::string_view key = pieces.empty() ? std::string_view() : pieces[0];
     if (pieces.size() >= 2 && trackers.count(key) == 1) {
       ++disallowed_count;
     } else {
-      output_kv_strings.push_back(kv_string);
+      output_kv_strings.emplace_back(std::string(kv_string));
     }
   }
   if (disallowed_count > 0) {
     return base::JoinString(output_kv_strings, "&");
-  } else {
-    return query;
   }
+  return std::string(query);
 }
 
 }  // namespace brave

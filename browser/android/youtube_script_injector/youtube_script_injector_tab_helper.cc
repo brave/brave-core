@@ -281,8 +281,7 @@ bool YouTubeScriptInjectorTabHelper::IsYouTubeDomain(bool mobileOnly) const {
   // If mobileOnly is true, require host to be exactly "m.youtube.com"
   // (case-insensitive).
   if (mobileOnly) {
-    const std::string& host = url.host();
-    if (!base::EqualsCaseInsensitiveASCII(host, "m.youtube.com")) {
+    if (!base::EqualsCaseInsensitiveASCII(url.host(), "m.youtube.com")) {
       return false;
     }
   }

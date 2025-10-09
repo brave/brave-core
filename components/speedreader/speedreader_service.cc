@@ -11,6 +11,7 @@
 #include "base/command_line.h"
 #include "base/dcheck_is_on.h"
 #include "base/feature_list.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
@@ -191,8 +192,8 @@ void SpeedreaderService::SetEnabledForSite(const GURL& url, bool enabled) {
     return;
   }
   // Rule covers all protocols and pages.
-  const auto pattern =
-      ContentSettingsPattern::FromString("*://" + url.host() + "/*");
+  const auto pattern = ContentSettingsPattern::FromString(
+      base::StrCat({"*://", url.host(), "/*"}));
   if (!pattern.IsValid()) {
     return;
   }

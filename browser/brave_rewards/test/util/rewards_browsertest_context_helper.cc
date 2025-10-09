@@ -93,7 +93,6 @@ RewardsBrowserTestContextHelper::OpenSiteBanner() {
 
 void RewardsBrowserTestContextHelper::VisitPublisher(const GURL& url,
                                                      bool verified) {
-  const std::string publisher = url.host();
   ui_test_utils::NavigateToURLWithDisposition(
       browser_, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);

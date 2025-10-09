@@ -7,7 +7,7 @@
 
 namespace web {
 
-WebUIIOSDataSourceImpl::WebUIIOSDataSourceImpl(const std::string& source_name,
+WebUIIOSDataSourceImpl::WebUIIOSDataSourceImpl(std::string_view source_name,
                                                URLDataSourceIOS* source)
     : URLDataSourceIOSImpl(source_name, source),
       source_name_(source_name),

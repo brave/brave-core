@@ -296,7 +296,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupFirstPartyStorage) {
   };
 
   const GURL url("https://a.com");
-  const std::string ephemeral_domain = url.host();
+  const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
       content::StoragePartitionConfig::CreateDefault(&profile_);
 
@@ -341,7 +341,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupFirstPartyStorage) {
 
 TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
   const GURL url("https://a.com");
-  const std::string ephemeral_domain = url.host();
+  const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
       content::StoragePartitionConfig::CreateDefault(&profile_);
 
@@ -396,7 +396,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
 TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
        PreventCleanupOnSessionRestore) {
   const GURL url("https://a.com");
-  const std::string ephemeral_domain = url.host();
+  const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
       content::StoragePartitionConfig::CreateDefault(&profile_);
 
@@ -443,7 +443,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
 TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
        PreventCleanupOnSessionRestoreWithMultipleStoragePartitions) {
   const GURL url("https://a.com");
-  const std::string ephemeral_domain = url.host();
+  const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
       content::StoragePartitionConfig::CreateDefault(&profile_);
   const auto second_storage_partition_config =
@@ -504,7 +504,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
 TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
        PreventCleanupIfNoWindowsOpened) {
   const GURL url("https://a.com");
-  const std::string ephemeral_domain = url.host();
+  const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
       content::StoragePartitionConfig::CreateDefault(&profile_);
 
@@ -568,7 +568,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
 
 TEST_F(EphemeralStorageServiceForgetFirstPartyTest, OffTheRecordSkipsPrefs) {
   const GURL url("https://a.com");
-  const std::string ephemeral_domain = url.host();
+  const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
       content::StoragePartitionConfig::CreateDefault(&profile_);
 

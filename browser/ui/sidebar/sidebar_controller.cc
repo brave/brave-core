@@ -43,7 +43,7 @@ SidebarService* GetSidebarService(Profile* profile) {
 }
 
 std::vector<int> GetAllExistingTabIndexForHost(TabStripModel* tab_strip_model,
-                                               const std::string& host) {
+                                               std::string_view host) {
   const int tab_count = tab_strip_model->count();
   std::vector<int> all_index;
   for (int i = 0; i < tab_count; ++i) {

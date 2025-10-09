@@ -83,8 +83,7 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
     return GetUntrustedWebUIIOSFactoryFunction(url);
   }
 
-  const std::string url_host = url.host();
-
+  std::string_view url_host = url.host();
   if (url_host == kAdsInternalsHost) {
     return &NewWebUIIOS<AdsInternalsUI>;
   } else if (url_host == kBraveAccountHost &&
