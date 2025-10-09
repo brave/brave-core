@@ -76,11 +76,9 @@ IN_PROC_BROWSER_TEST_P(BraveSettingsEmailAliasesRowBrowserTest,
 
   // Clicking on the Email Aliases link row should navigate to the Email Aliases
   // page.
-  ASSERT_TRUE(content::EvalJs(contents(), R"JS(
+  ASSERT_TRUE(content::ExecJs(contents(), R"JS(
     window.emailAliasesRow.click();
-    true;
-  )JS")
-                  .ExtractBool());
+  )JS"));
 
   EXPECT_EQ(chrome::GetSettingsUrl("email-aliases"),
             contents()->GetVisibleURL());
