@@ -417,8 +417,6 @@ Config.prototype.buildArgs = function () {
     // use_jumbo_build: !this.officialBuild,
     is_component_build: this.isComponentBuild(),
     is_universal_binary: this.isUniversalBinary,
-    // Our copy of signature_generator.py doesn't support --ignore_missing_cert:
-    ignore_missing_widevine_signing_cert: false,
     target_cpu: this.targetArch,
     is_official_build: this.isOfficialBuild(),
     is_debug: this.isDebug(),
