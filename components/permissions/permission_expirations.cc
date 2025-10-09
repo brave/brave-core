@@ -134,7 +134,7 @@ PermissionExpirations::RemoveExpiredPermissions(base::Time current_time) {
 }
 
 PermissionExpirations::ExpiredPermissions
-PermissionExpirations::RemoveExpiredPermissions(const std::string& domain) {
+PermissionExpirations::RemoveExpiredPermissions(std::string_view domain) {
   return RemoveExpiredPermissionsImpl(base::BindRepeating(
       [](const PermissionExpirationKey& expiration_key,
          const PermissionExpirations::KeyExpirationsMap& key_expirations) {

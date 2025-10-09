@@ -62,7 +62,7 @@ UIViewController* GetParentControllerFromView(UIView* view) {
 ///////////////////////////////////////////////////////////////////////////////
 
 SkusInternalsUI::SkusInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
-    : web::WebUIIOSController(web_ui, url.host()),
+    : web::WebUIIOSController(web_ui, std::string(url.host())),
       local_state_(GetApplicationContext()->GetLocalState()) {
   // Set up the brave://skus-internals/ source.
   brave::CreateAndAddWebUIDataSource(

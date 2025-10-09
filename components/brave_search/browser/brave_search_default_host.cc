@@ -33,7 +33,7 @@ bool IsSearchPromotionEnabled(PrefService* prefs, TemplateURLService* service) {
 }
 
 TemplateURL* GetSearchTemplateForSite(TemplateURLService* service,
-                                      const std::string& host) {
+                                      std::string_view host) {
   // Prefer built-in entries, then offer site-provided entries,
   // but ignore extension-provided entries.
   TemplateURL::TemplateURLVector urls = service->GetTemplateURLs();
@@ -67,10 +67,12 @@ void BraveSearchDefaultHost::RegisterProfilePrefs(
 }
 
 BraveSearchDefaultHost::BraveSearchDefaultHost(
-    const std::string& host,
+    std::string_view host,
     TemplateURLService* template_url_service,
     PrefService* prefs)
-    : host_(host), template_url_service_(template_url_service), prefs_(prefs) {}
+    : host_(std::string(host)),
+      template_url_service_(template_url_service),
+      prefs_(prefs) {}
 
 BraveSearchDefaultHost::~BraveSearchDefaultHost() = default;
 

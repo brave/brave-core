@@ -385,12 +385,12 @@ void AdBlockService::AddUserCosmeticFilter(const std::string& filter) {
   custom_filters_provider_->AddUserCosmeticFilter(filter);
 }
 
-bool AdBlockService::AreAnyBlockedElementsPresent(const std::string& host) {
+bool AdBlockService::AreAnyBlockedElementsPresent(std::string_view host) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return custom_filters_provider_->AreAnyBlockedElementsPresent(host);
 }
 
-void AdBlockService::ResetCosmeticFilter(const std::string& host) {
+void AdBlockService::ResetCosmeticFilter(std::string_view host) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   custom_filters_provider_->ResetCosmeticFilter(host);
 }

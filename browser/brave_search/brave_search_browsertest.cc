@@ -169,7 +169,7 @@ class BraveSearchTest : public InProcessBrowserTest {
 
     auto http_response =
         std::make_unique<net::test_server::BasicHttpResponse>();
-    if (url.path() + "?" + url.query() ==
+    if (base::StrCat({url.path(), "?", url.query()}) ==
         "/search?q=test&start=10&hl=en&gl=us&safe=active") {
       auto cookie_header_it =
           request.headers.find(net::HttpRequestHeaders::kCookie);

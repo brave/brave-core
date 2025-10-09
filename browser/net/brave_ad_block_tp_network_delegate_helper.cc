@@ -181,7 +181,7 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
   if (!ctx->initiator_url.is_valid()) {
     return previous_result;
   }
-  const std::string source_host = ctx->initiator_url.host();
+  const std::string source_host = std::string(ctx->initiator_url.host());
 
   GURL url_to_check;
   if (canonical_url.has_value()) {
@@ -374,8 +374,8 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
       should_check_uncloaked && !ctx->aggressive_blocking &&
       SameDomainOrHost(
           ctx->request_url,
-          url::Origin::CreateFromNormalizedTuple("https",
-                                                 ctx->initiator_url.host(), 80),
+          url::Origin::CreateFromNormalizedTuple(
+              "https", std::string(ctx->initiator_url.host()), 80),
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     should_check_uncloaked = false;
   }
