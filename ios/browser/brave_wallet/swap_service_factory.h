@@ -30,7 +30,7 @@ class SwapServiceFactory : public ProfileKeyedServiceFactoryIOS {
   static mojo::PendingRemote<mojom::SwapService> GetForProfile(
       ProfileIOS* profile);
 
-  static SwapService* GetServiceForState(ProfileIOS* profile);
+  static SwapService* GetServiceForProfile(ProfileIOS* profile);
 
   static SwapServiceFactory* GetInstance();
 
