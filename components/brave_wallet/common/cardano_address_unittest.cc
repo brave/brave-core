@@ -8,7 +8,6 @@
 #include <array>
 
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -20,6 +19,9 @@ inline constexpr char kPaymentPartHash[] =
     "9493315CD92EB5D8C4304E67B7E16AE36D61D34502694657811A2C8E";
 inline constexpr char kStakePartHash[] =
     "337B62CFFF6403A06A3ACBC34F8C46003C69FE79A3628CEFA9C47251";
+inline constexpr char kScriptPartHash[] =
+    "C37B1B5DC0669F1D3C61A6FDDB2E8FDE96BE87B881C60BCE8E8D542F";
+inline constexpr char kPointer[] = "8198BD431B03";
 
 // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/util-dev/src/Cip19TestVectors.ts#L31
 inline constexpr char kBasePaymentKeyStakeKey[] =
@@ -85,27 +87,195 @@ inline constexpr char kByronTestnetDaedalus[] =
 TEST(CardanoAddress, TestVectors) {
   EXPECT_FALSE(CardanoAddress::FromString(""));
 
+  struct TestCase {
+    std::string address;
+    CardanoAddress::AddressType address_type;
+    bool testnet;
+    std::string hex_cbor_header;
+    std::string hex_part1;
+    std::string hex_part2;
+  };
+
+  TestCase test_cases[] = {
+      {
+          kBasePaymentKeyStakeKey,
+          CardanoAddress::AddressType::kPaymentKeyHashStakeKeyHash,
+          false,
+          std::string("01"),
+          kPaymentPartHash,
+          kStakePartHash,
+      },
+      {
+          kBasePaymentScriptStakeKey,
+          CardanoAddress::AddressType::kScriptHashStakeKeyHash,
+          false,
+          std::string("11"),
+          kScriptPartHash,
+          kStakePartHash,
+      },
+      {
+          kBasePaymentKeyStakeScript,
+          CardanoAddress::AddressType::kPaymentKeyHashScriptHash,
+          false,
+          std::string("21"),
+          kPaymentPartHash,
+          kScriptPartHash,
+      },
+      {
+          kBasePaymentScriptStakeScript,
+          CardanoAddress::AddressType::kScriptHashScriptHash,
+          false,
+          std::string("31"),
+          kScriptPartHash,
+          kScriptPartHash,
+      },
+      {
+          kPointerKey,
+          CardanoAddress::AddressType::kPaymentKeyHashPointer,
+          false,
+          std::string("41"),
+          kPaymentPartHash,
+          kPointer,
+      },
+      {
+          kPointerScript,
+          CardanoAddress::AddressType::kScriptHashPointer,
+          false,
+          std::string("51"),
+          kScriptPartHash,
+          kPointer,
+      },
+      {
+          kEnterpriseKey,
+          CardanoAddress::AddressType::kPaymentKeyHashNoDelegation,
+          false,
+          std::string("61"),
+          kPaymentPartHash,
+      },
+      {
+          kEnterpriseScript,
+          CardanoAddress::AddressType::kScriptHashNoDelegation,
+          false,
+          std::string("71"),
+          kScriptPartHash,
+      },
+      {
+          kRewardKey,
+          CardanoAddress::AddressType::kNoPaymentStakeHash,
+          false,
+          std::string("E1"),
+          kStakePartHash,
+      },
+      {
+          kRewardScript,
+          CardanoAddress::AddressType::kNoPaymentScriptHash,
+          false,
+          std::string("F1"),
+          kScriptPartHash,
+      },
+      {
+          kTestnetBasePaymentKeyStakeKey,
+          CardanoAddress::AddressType::kPaymentKeyHashStakeKeyHash,
+          true,
+          std::string("00"),
+          kPaymentPartHash,
+          kStakePartHash,
+      },
+      {
+          kTestnetBasePaymentScriptStakeKey,
+          CardanoAddress::AddressType::kScriptHashStakeKeyHash,
+          true,
+          std::string("10"),
+          kScriptPartHash,
+          kStakePartHash,
+      },
+      {
+          kTestnetBasePaymentKeyStakeScript,
+          CardanoAddress::AddressType::kPaymentKeyHashScriptHash,
+          true,
+          std::string("20"),
+          kPaymentPartHash,
+          kScriptPartHash,
+      },
+      {
+          kTestnetBasePaymentScriptStakeScript,
+          CardanoAddress::AddressType::kScriptHashScriptHash,
+          true,
+          std::string("30"),
+          kScriptPartHash,
+          kScriptPartHash,
+      },
+      {
+          kTestnetPointerKey,
+          CardanoAddress::AddressType::kPaymentKeyHashPointer,
+          true,
+          std::string("40"),
+          kPaymentPartHash,
+          kPointer,
+      },
+      {
+          kTestnetPointerScript,
+          CardanoAddress::AddressType::kScriptHashPointer,
+          true,
+          std::string("50"),
+          kScriptPartHash,
+          kPointer,
+      },
+      {
+          kTestnetEnterpriseKey,
+          CardanoAddress::AddressType::kPaymentKeyHashNoDelegation,
+          true,
+          std::string("60"),
+          kPaymentPartHash,
+      },
+      {
+          kTestnetEnterpriseScript,
+          CardanoAddress::AddressType::kScriptHashNoDelegation,
+          true,
+          std::string("70"),
+          kScriptPartHash,
+      },
+      {
+          kTestnetRewardKey,
+          CardanoAddress::AddressType::kNoPaymentStakeHash,
+          true,
+          std::string("E0"),
+          kStakePartHash,
+      },
+      {
+          kTestnetRewardScript,
+          CardanoAddress::AddressType::kNoPaymentScriptHash,
+          true,
+          std::string("F0"),
+          kScriptPartHash,
+      },
+
+  };
+
+  for (auto& test_case : test_cases) {
+    SCOPED_TRACE(test_case.address);
+
+    auto addr = CardanoAddress::FromString(test_case.address);
+    ASSERT_TRUE(addr);
+    EXPECT_EQ(addr->IsTestnet(), test_case.testnet);
+    EXPECT_EQ(addr->ToString(), test_case.address);
+    EXPECT_EQ(
+        base::HexEncode(addr->ToCborBytes()),
+        test_case.hex_cbor_header + test_case.hex_part1 + test_case.hex_part2);
+
+    std::vector<uint8_t> payload;
+    base::HexStringToBytes(test_case.hex_part1 + test_case.hex_part2, &payload);
+    EXPECT_EQ(addr->ToString(),
+              CardanoAddress::FromPayload(
+                  test_case.address_type,
+                  test_case.testnet ? CardanoAddress::NetworkTag::kTestnets
+                                    : CardanoAddress::NetworkTag::kMainnet,
+                  payload)
+                  ->ToString());
+  }
+
   auto unsupported = std::to_array({
-      /*kBasePaymentKeyStakeKey,*/
-      kBasePaymentScriptStakeKey,
-      kBasePaymentKeyStakeScript,
-      kBasePaymentScriptStakeScript,
-      kPointerKey,
-      kPointerScript,
-      kEnterpriseKey,
-      kEnterpriseScript,
-      kRewardKey,
-      kRewardScript,
-      /*kTestnetBasePaymentKeyStakeKey,*/
-      kTestnetBasePaymentScriptStakeKey,
-      kTestnetBasePaymentKeyStakeScript,
-      kTestnetBasePaymentScriptStakeScript,
-      kTestnetPointerKey,
-      kTestnetPointerScript,
-      kTestnetEnterpriseKey,
-      kTestnetEnterpriseScript,
-      kTestnetRewardKey,
-      kTestnetRewardScript,
+
       kByronMainnetYoroi,
       kByronTestnetDaedalus,
   });
@@ -114,31 +284,6 @@ TEST(CardanoAddress, TestVectors) {
     EXPECT_FALSE(CardanoAddress::FromString(address))
         << testing::Message(address);
   }
-
-  auto base_payment_key_stake_key =
-      CardanoAddress::FromString(kBasePaymentKeyStakeKey);
-  ASSERT_TRUE(base_payment_key_stake_key);
-  EXPECT_FALSE(base_payment_key_stake_key->IsTestnet());
-  EXPECT_EQ(base_payment_key_stake_key->ToString(), kBasePaymentKeyStakeKey);
-  EXPECT_EQ(base::HexEncode(base_payment_key_stake_key->ToCborBytes()),
-            std::string("01") + kPaymentPartHash + kStakePartHash);
-  EXPECT_EQ(
-      base_payment_key_stake_key,
-      CardanoAddress::FromParts(false, test::HexToArray<28>(kPaymentPartHash),
-                                test::HexToArray<28>(kStakePartHash)));
-
-  auto testnet_base_payment_key_stake_key =
-      CardanoAddress::FromString(kTestnetBasePaymentKeyStakeKey);
-  ASSERT_TRUE(testnet_base_payment_key_stake_key);
-  EXPECT_TRUE(testnet_base_payment_key_stake_key->IsTestnet());
-  EXPECT_EQ(testnet_base_payment_key_stake_key->ToString(),
-            kTestnetBasePaymentKeyStakeKey);
-  EXPECT_EQ(base::HexEncode(testnet_base_payment_key_stake_key->ToCborBytes()),
-            std::string("00") + kPaymentPartHash + kStakePartHash);
-  EXPECT_EQ(
-      testnet_base_payment_key_stake_key,
-      CardanoAddress::FromParts(true, test::HexToArray<28>(kPaymentPartHash),
-                                test::HexToArray<28>(kStakePartHash)));
 }
 
 TEST(CardanoAddress, InvalidInput) {
