@@ -44,6 +44,10 @@ TEST_F(MdTextButtonTest, ButtonColorsTest) {
             button->GetButtonColors().background_color);
 
   native_theme->set_preferred_color_scheme(ColorScheme::kDark);
+
+  // Fetch color provider after changing color scheme.
+  color_provider = widget->GetColorProvider();
+
   EXPECT_EQ(color_provider->GetColor(nala::kColorPrimary50),
             button->GetButtonColors().background_color);
 
