@@ -136,6 +136,7 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, Confirmed) {
       .WillByDefault(
           [](const std::string& chain_id,
              MockZCashRPC::GetLatestBlockCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             std::move(callback).Run(zcash::mojom::BlockID::New(
                 kTransactionHeight + 5u, std::vector<uint8_t>()));
           });
@@ -144,6 +145,7 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, Confirmed) {
       .WillByDefault(
           [](const std::string& chain_id, const std::string& tx_hash,
              MockZCashRPC::GetTransactionCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             EXPECT_EQ(tx_hash, "tx_hash");
             std::move(callback).Run(zcash::mojom::RawTransaction::New(
                 std::vector<uint8_t>(), kTransactionHeight));
