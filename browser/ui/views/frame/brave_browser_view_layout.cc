@@ -216,21 +216,14 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(
     contents_background_->SetBoundsRect(available_bounds);
   }
 
-  gfx::Rect new_rect = main_container_->GetLocalBounds();
+  gfx::Rect contents_container_bounds = main_container_->GetLocalBounds();
   if (vertical_tab_strip_host_) {
     // Both vertical tab impls should not be enabled together.
     // https://github.com/brave/brave-browser/issues/48373
     CHECK(!tabs::IsVerticalTabsFeatureEnabled());
-    new_rect.Inset(GetInsetsConsideringVerticalTabHost());
-  } else if (tabs::IsVerticalTabsFeatureEnabled()) {
-    new_rect.set_height(new_rect.height() - new_rect.y());
-    new_rect.set_width(new_rect.width() - BrowserView::kVerticalTabStripWidth);
+    contents_container_bounds.Inset(GetInsetsConsideringVerticalTabHost());
   }
 
-  const int top = new_rect.y();
-  const int bottom = main_container_->height();
-  gfx::Rect contents_container_bounds(new_rect.x(), top, new_rect.width(),
-                                      std::max(0, bottom - top));
   if (webui_tab_strip_ && webui_tab_strip_->GetVisible()) {
     // The WebUI tab strip container should "push" the tab contents down without
     // resizing it.
