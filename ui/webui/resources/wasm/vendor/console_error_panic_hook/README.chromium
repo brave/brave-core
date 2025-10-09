@@ -1,0 +1,6 @@
+Name: console_error_panic_hook
+URL: https://crates.io/crates/console_error_panic_hook
+Version: 0.1.7
+License: Apache-2.0/MIT
+License File: //brave/ui/webui/resources/wasm/vendor/console_error_panic_hook/LICENSE-APACHE
+Description: A panic hook for `wasm32-unknown-unknown` that logs panics to `console.error`.

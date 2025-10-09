@@ -1,0 +1,6 @@
+Name: safetensors
+URL: https://crates.io/crates/safetensors
+Version: 0.4
+License: Apache-2.0
+License File: //brave/ui/webui/resources/wasm/vendor/safetensors/LICENSE
+Description: Provides functions to read and write safetensors which aim to be safer than their PyTorch counterpart.

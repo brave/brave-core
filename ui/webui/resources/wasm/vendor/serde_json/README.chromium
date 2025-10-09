@@ -1,0 +1,6 @@
+Name: serde_json
+URL: https://crates.io/crates/serde_json
+Version: 1.0.145
+License: MIT OR Apache-2.0
+License File: //brave/ui/webui/resources/wasm/vendor/serde_json/LICENSE-APACHE
+Description: A JSON serialization file format
