@@ -44,4 +44,5 @@ public abstract class BraveFeatureList {
             "BraveNTPBrandedWallpaperSurveyPanelist";
     public static final String BRAVE_ACCOUNT = "BraveAccount";
     public static final String BRAVE_ANDROID_DYNAMIC_COLORS = "BraveAndroidDynamicColors";
+    public static final String BRAVE_ORIGIN = "BraveOrigin";
 }
