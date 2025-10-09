@@ -169,25 +169,41 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     auto const& req = reqs->at(0);
     EXPECT_TRUE(req.request.request_body->elements());
     auto const& element = req.request.request_body->elements()->at(0);
-    EXPECT_EQ(
-        element.As<network::DataElementBytes>().AsStringPiece(),
-        "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"state_queryStorageAt\","
-        "\"params\":[["
-        "\"0x26AA394EEA5630E07C48AE0C9558CEF7B99D880EC681799C0CF30E8886371D"
-        "A9DE1E86A9A8C739864CF3CC5EC2BEA59FD43593C715FDD31C61141ABD04A99FD6"
-        "822C8558854CCDE39A5684E7A56DA27D\"]]}");
 
-    url_loader_factory_.AddResponse(
-        testnet_url,
-        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
-        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
-        ",\"changes\":[["
-        "\"0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9de"
-        "1e86a9a8c739864cf3cc5ec2bea59fd43593c715fdd31c61141abd04a99fd6822c8558"
-        "854ccde39a5684e7a56da27d\","
-        "\"0x76030000020000000100000000000000b18ac01b03000000000000000000000080"
-        "30a55c79b5000000000000000000000000000000000000000000000000000000000000"
-        "000000000000000000000080\"]]}]}");
+    std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "state_queryStorageAt",
+        "params": [
+          ["0x26AA394EEA5630E07C48AE0C9558CEF7B99D880EC681799C0CF30E8886371DA9DE1E86A9A8C739864CF3CC5EC2BEA59FD43593C715FDD31C61141ABD04A99FD6822C8558854CCDE39A5684E7A56DA27D"]
+        ]
+      })";
+
+    auto ret = std::ranges::remove_if(
+        expected_body, [](auto c) { return c == ' ' || c == '\n'; });
+    expected_body.erase(ret.begin(), ret.end());
+
+    EXPECT_EQ(element.As<network::DataElementBytes>().AsStringPiece(),
+              expected_body);
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": [
+          {
+            "block": "0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",
+            "changes":[
+              [
+                "0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9de1e86a9a8c739864cf3cc5ec2bea59fd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
+                "0x76030000020000000100000000000000b18ac01b0300000000000000000000008030a55c79b5000000000000000000000000000000000000000000000000000000000000000000000000000000000080"
+              ]
+            ]
+          }
+        ]
+      })");
 
     auto [account_info, error] = future.Take();
 
@@ -217,14 +233,20 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   {
     // Account does not exist.
 
-    url_loader_factory_.AddResponse(
-        testnet_url,
-        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
-        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
-        ",\"changes\":[["
-        "\"0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9de"
-        "1e86a9a8c739864cf3cc5ec2bea59fd43593c715fdd31c61141abd04a99fd6822c8558"
-        "854ccde39a5684e7a56da27d\",null]]}]}");
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id":1,
+        "jsonrpc":"2.0",
+        "result":[
+          {
+            "block": "0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",
+            "changes":[
+              ["0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9de1e86a9a8c739864cf3cc5ec2bea59fd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d", null]
+            ]
+          }
+        ]
+      })");
 
     polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
                                                future.GetCallback());
@@ -257,11 +279,18 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   {
     // Account data is too short.
 
-    url_loader_factory_.AddResponse(
-        testnet_url,
-        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
-        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
-        ",\"changes\":[[\"\", \"0x1234\"]]}]}");
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id":1,
+        "jsonrpc":"2.0",
+        "result":[
+          {
+            "block":""0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",
+            "changes":[["", "0x1234"]]
+          }
+        ]
+      })");
 
     polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
                                                future.GetCallback());
@@ -274,11 +303,18 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   {
     // Changes array is empty.
 
-    url_loader_factory_.AddResponse(
-        testnet_url,
-        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
-        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
-        ",\"changes\":[]}]}");
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id":1,
+        "jsonrpc":"2.0",
+        "result":[
+          {
+            "block":"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",
+            "changes":[]
+          }
+        ]
+      })");
 
     polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
                                                future.GetCallback());
@@ -292,11 +328,18 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     // Changes array contains empty pair (no storage key, no account
     // information).
 
-    url_loader_factory_.AddResponse(
-        testnet_url,
-        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
-        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
-        ",\"changes\":[[]]}]}");
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id":1,
+        "jsonrpc":"2.0",
+        "result":[
+          {
+            "block": "0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",
+            "changes":[[]]
+          }
+        ]
+      })");
 
     polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
                                                future.GetCallback());
@@ -309,14 +352,20 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   {
     // Contains invalid hex in account info.
 
-    url_loader_factory_.AddResponse(
-        testnet_url,
-        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
-        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
-        ",\"changes\":[[\"\", "
-        "\"0xcat30000020000000100000000000000b18ac01b03000000000000000000000080"
-        "30a55c79b5000000000000000000000000000000000000000000000000000000000000"
-        "000000000000000000000080\"]]}]}");
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id":1,
+        "jsonrpc":"2.0",
+        "result":[
+          {
+            "block":"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",
+            "changes":[
+              ["", "0xcat30000020000000100000000000000b18ac01b0300000000000000000000008030a55c79b5000000000000000000000000000000000000000000000000000000000000000000000000000000000080"]
+            ]
+          }
+        ]
+      })");
 
     polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
                                                future.GetCallback());
@@ -344,17 +393,23 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   {
     // Numeric limits.
 
-    url_loader_factory_.AddResponse(
-        testnet_url,
-        "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":[{\"block\":"
-        "\"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c\""
-        ",\"changes\":[["
-        "\"0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9de"
-        "1e86a9a8c739864cf3cc5ec2bea59fd43593c715fdd31c61141abd04a99fd6822c8558"
-        "854ccde39a5684e7a56da27d\","
-        "\"0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-        "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-        "ffffffffffffffffffffffff\"]]}]}");
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id":1,
+        "jsonrpc":"2.0",
+        "result":[
+          {
+            "block":"0x1bcd3e074b91ef25740714dc63671f4a36d2781ff93877ef9ef31b849d1ad69c",
+            "changes":[
+              [
+                "0x26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9de1e86a9a8c739864cf3cc5ec2bea59fd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d",
+                "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+              ]
+            ]
+          }
+        ]
+      })");
 
     polkadot_substrate_rpc_->GetAccountBalance(chain_id, pubkey,
                                                future.GetCallback());
