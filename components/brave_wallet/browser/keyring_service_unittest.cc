@@ -4417,4 +4417,25 @@ TEST_F(KeyringServiceUnitTest, GetCardanoAddress) {
                                 CardanoKeyId::New(kInternal, 9)));
 }
 
+TEST_F(KeyringServiceUnitTest, GetCardanoStakeAddress) {
+  using mojom::CardanoAddress;
+  using mojom::CardanoKeyId;
+  using mojom::CardanoKeyRole::kExternal;
+  using mojom::CardanoKeyRole::kInternal;
+
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletCardanoFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+  auto ada_acc0 = GetAccountUtils(&service).EnsureAdaAccount(0);
+  auto ada_acc1 = GetAccountUtils(&service).EnsureAdaAccount(1);
+
+  EXPECT_EQ("stake1u8j40zgr2gy4788kl54h6x3gu0pukq5lfr8nflufpg5dzaskqlx2l",
+            service.GetCardanoStakeAddress(ada_acc0->account_id)->ToString());
+  EXPECT_EQ("stake1uytze07evrznjvz5r3ny883pkcq3lmtf06l4gzlcdtkr0cqwlxrdw",
+            service.GetCardanoStakeAddress(ada_acc1->account_id)->ToString());
+}
+
 }  // namespace brave_wallet
