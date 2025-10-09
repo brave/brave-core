@@ -1,0 +1,6 @@
+Name: candle-transformers
+URL: https://crates.io/crates/candle-transformers
+Version: 0.9.1
+License: MIT OR Apache-2.0
+License File: //brave/ui/webui/resources/wasm/vendor/candle-core/LICENSE
+Description: Minimalist ML framework.
