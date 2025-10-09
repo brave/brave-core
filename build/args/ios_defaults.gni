@@ -15,3 +15,7 @@ ios_locales_pack_extra_source_patterns = [
   "%root_gen_dir%/components/brave_components_strings_",
 ]
 ios_locales_pack_extra_deps = ["//brave/components/resources:strings"]
+
+# Configure unit tests to run outside of chromium infra
+# https://source.chromium.org/chromium/chromium/src/+/main:ios/build/bots/scripts/README.md
+enable_run_ios_unittests_with_xctest = true

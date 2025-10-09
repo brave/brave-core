@@ -211,7 +211,6 @@ const Config = function () {
     process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
   this.ignore_compile_failure = false
   this.enable_hangout_services_extension = false
-  this.enable_pseudolocales = false
   this.sign_widevine_cert = process.env.SIGN_WIDEVINE_CERT || ''
   this.sign_widevine_key = process.env.SIGN_WIDEVINE_KEY || ''
   this.sign_widevine_passwd = process.env.SIGN_WIDEVINE_PASSPHRASE || ''
@@ -432,7 +431,6 @@ Config.prototype.buildArgs = function () {
     chrome_version_string: this.chromeVersion,
     enable_hangout_services_extension: this.enable_hangout_services_extension,
     enable_cdm_host_verification: this.enableCDMHostVerification(),
-    enable_pseudolocales: this.enable_pseudolocales,
     skip_signing: !this.shouldSign(),
     use_remoteexec: this.useRemoteExec,
     use_reclient: this.useRemoteExec,
@@ -692,10 +690,6 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.targetOS === 'ios') {
-    // Configure unit tests to run outside of chromium infra
-    // https://source.chromium.org/chromium/chromium/src/+/main:ios/build/bots/scripts/README.md
-    args.enable_run_ios_unittests_with_xctest = true
-
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
     }
