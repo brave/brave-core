@@ -8,42 +8,44 @@ import { ContentSettingsTypes } from '../site_settings/constants.js'
 
 import {
   RegisterPolymerComponentReplacement,
+  RegisterPolymerTemplateModifications,
 } from 'chrome://resources/brave/polymer_overriding.js'
+
+RegisterPolymerTemplateModifications({
+  'site-list': (templateContent) => {
+    const allowButton = templateContent.querySelector('#allow')
+    if (!allowButton) {
+      console.error('[Settings] Could not find #allow button in site-list')
+      return
+    }
+    allowButton.textContent = '[[getAllowButtonLabel_(category)]]'
+
+    const blockButton = templateContent.querySelector('#block')
+    if (!blockButton) {
+      console.error('[Settings] Could not find #block button in site-list')
+      return
+    }
+    blockButton.textContent = '[[getBlockButtonLabel_(category)]]'
+  }
+})
 
 RegisterPolymerComponentReplacement(
   'site-list',
   class BraveSiteListElement extends SiteListElement {
-    override ready() {
-      super.ready()
-
-      // onShowActionMenu_ is private in the superclass, so we have to
-      // replace it to change its functionality.
-      // This is similar to search_page.ts.
-      const anyThis = this as any
-      const originalOnShowActionMenu = anyThis.onShowActionMenu_.bind(this)
-      anyThis.onShowActionMenu_ = (e: any) => {
-        originalOnShowActionMenu(e)
-
-        if (this.category === ContentSettingsTypes.BRAVE_SHIELDS) {
-          // Update labels after menu is shown
-          requestAnimationFrame(() => {
-            const actionMenu = this.shadowRoot?.querySelector('cr-action-menu')
-            if (!actionMenu) {
-              return
-            }
-
-            const allowButton = actionMenu.querySelector('#allow')
-            if (allowButton) {
-              allowButton.textContent = this.i18n('siteSettingsShieldsUp')
-            }
-
-            const blockButton = actionMenu.querySelector('#block')
-            if (blockButton) {
-              blockButton.textContent = this.i18n('siteSettingsShieldsDown')
-            }
-          })
-        }
+    private getAllowButtonLabel_() {
+      if (this.category === ContentSettingsTypes.BRAVE_SHIELDS) {
+        return this.i18n('siteSettingsShieldsUp')
       }
+      // Default
+      return this.i18n('siteSettingsActionAllow')
+    }
+
+    private getBlockButtonLabel_() {
+      if (this.category === ContentSettingsTypes.BRAVE_SHIELDS) {
+        return this.i18n('siteSettingsShieldsDown')
+      }
+      // Default
+      return this.i18n('siteSettingsActionBlock')
     }
   }
 )
