@@ -641,8 +641,8 @@ function DepositAccount() {
   )
 
   const copyAddressToClipboard = React.useCallback(() => {
-    copyToClipboard(receiveAddress || '')
-  }, [copyToClipboard, receiveAddress])
+    copyToClipboard(address || '')
+  }, [copyToClipboard, address])
 
   const onCopyKeyPress = React.useCallback(
     ({ key }: React.KeyboardEvent) => {
