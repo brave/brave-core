@@ -131,7 +131,7 @@ void WalletPageUI::CreatePageHandler(
     wallet_service->Bind(std::move(brave_wallet_p3a));
   }
 
-  brave_wallet::SwapServiceFactory::GetServiceForState(profile)->Bind(
+  brave_wallet::SwapServiceFactory::GetServiceForProfile(profile)->Bind(
       std::move(swap_service));
   brave_wallet::AssetRatioServiceFactory::GetServiceForState(profile)->Bind(
       std::move(asset_ratio_service));
