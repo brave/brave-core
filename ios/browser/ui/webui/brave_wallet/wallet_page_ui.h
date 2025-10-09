@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/ios/browser/ui/webui/brave_wallet/wallet_handler.h"
+#include "brave/components/brave_wallet/common/wallet_handler.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler.h"
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "ios/web/public/webui/web_ui_ios_controller.h"

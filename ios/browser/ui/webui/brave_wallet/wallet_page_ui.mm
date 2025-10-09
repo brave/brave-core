@@ -110,9 +110,6 @@ void WalletPageUI::CreatePageHandler(
   page_handler_ = std::make_unique<WalletPageHandler>(web_ui()->GetWebState(),
                                                       std::move(page_receiver));
 
-  wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(
-      std::move(wallet_receiver), profile);
-
   if (auto* wallet_service =
           brave_wallet::BraveWalletServiceFactory::GetServiceForState(
               profile)) {
@@ -129,6 +126,8 @@ void WalletPageUI::CreatePageHandler(
     wallet_service->Bind(std::move(filecoin_tx_manager_proxy));
     wallet_service->Bind(std::move(bitcoin_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(brave_wallet_p3a));
+    wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(
+        std::move(wallet_receiver), wallet_service);
   }
 
   brave_wallet::SwapServiceFactory::GetServiceForProfile(profile)->Bind(
