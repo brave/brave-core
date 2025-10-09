@@ -9,17 +9,20 @@
 #include "base/json/json_reader.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
-#include "chrome/browser/actor/actor_task.h"
 #include "chrome/browser/actor/task_id.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
 #include "url/url_constants.h"
 
 namespace ai_chat {
 
-NavigationTool::NavigationTool(ContentAgentTaskProvider* task_provider,
-                               actor::ActorKeyedService* actor_service)
-    : actor_service_(actor_service), task_provider_(task_provider) {}
+namespace {
+
+constexpr char kPropertyNameWebsiteUrl[] = "website_url";
+
+}  // namespace
+
+NavigationTool::NavigationTool(ContentAgentTaskProvider* task_provider)
+    : task_provider_(task_provider) {}
 
 NavigationTool::~NavigationTool() = default;
 
@@ -34,14 +37,14 @@ std::string_view NavigationTool::Description() const {
 
 std::optional<base::Value::Dict> NavigationTool::InputProperties() const {
   return CreateInputProperties(
-      {{"website_url",
+      {{kPropertyNameWebsiteUrl,
         StringProperty(
             "The full website URL to navigate to, starting with https://")}});
 }
 
 std::optional<std::vector<std::string>> NavigationTool::RequiredProperties()
     const {
-  return std::optional<std::vector<std::string>>({"website_url"});
+  return std::optional<std::vector<std::string>>({kPropertyNameWebsiteUrl});
 }
 
 void NavigationTool::UseTool(const std::string& input_json,
@@ -49,28 +52,28 @@ void NavigationTool::UseTool(const std::string& input_json,
   auto input = base::JSONReader::ReadDict(input_json);
 
   if (!input.has_value()) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Failed to parse input JSON. Please try again."));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: failed to parse input JSON"));
     return;
   }
 
-  const auto* website_url = input->FindString("website_url");
+  const auto* website_url = input->FindString(kPropertyNameWebsiteUrl);
   if (!website_url) {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Missing website_url parameter from input JSON."));
+    std::move(callback).Run(
+        CreateContentBlocksForText("Error: missing 'website_url' property"));
     return;
   }
 
   GURL url(*website_url);
   if (!url.is_valid()) {
     std::move(callback).Run(CreateContentBlocksForText(
-        "website_url parameter did not contain a valid URL"));
+        "Error: 'website_url' property did not contain a valid URL"));
     return;
   }
 
   if (!url.SchemeIs(url::kHttpsScheme)) {
     std::move(callback).Run(CreateContentBlocksForText(
-        "website_url parameter must start with https://"));
+        "Error: 'website_url' property must start with https://"));
     return;
   }
 

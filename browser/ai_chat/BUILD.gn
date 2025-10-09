@@ -67,8 +67,26 @@ static_library("ai_chat") {
       "content_agent_tool_provider_factory.h",
       "page_content_blocks.cc",
       "page_content_blocks.h",
+      "tools/click_tool.cc",
+      "tools/click_tool.h",
+      "tools/drag_and_release_tool.cc",
+      "tools/drag_and_release_tool.h",
+      "tools/history_tool.cc",
+      "tools/history_tool.h",
+      "tools/move_mouse_tool.cc",
+      "tools/move_mouse_tool.h",
       "tools/navigation_tool.cc",
       "tools/navigation_tool.h",
+      "tools/scroll_tool.cc",
+      "tools/scroll_tool.h",
+      "tools/select_tool.cc",
+      "tools/select_tool.h",
+      "tools/target_util.cc",
+      "tools/target_util.h",
+      "tools/type_tool.cc",
+      "tools/type_tool.h",
+      "tools/wait_tool.cc",
+      "tools/wait_tool.h",
     ]
 
     deps += [
@@ -184,6 +202,8 @@ if (enable_brave_ai_chat_agent_profile) {
       "annotated_page_content_test_util.h",
       "tools/mock_content_agent_task_provider.cc",
       "tools/mock_content_agent_task_provider.h",
+      "tools/target_test_util.cc",
+      "tools/target_test_util.h",
     ]
     deps = [
       "//base",
@@ -192,6 +212,7 @@ if (enable_brave_ai_chat_agent_profile) {
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common/mojom",
       "//chrome/browser/actor:types",
+      "//chrome/common",
       "//components/optimization_guide/proto:optimization_guide_proto",
       "//components/tabs:public",
       "//testing/gtest",
@@ -241,13 +262,29 @@ source_set("unit_tests") {
 
   if (enable_brave_ai_chat_agent_profile) {
     sources += [
+      "content_agent_tool_provider_unittest.cc",
       "page_content_blocks_unittest.cc",
+      "tools/click_tool_unittest.cc",
+      "tools/content_agent_tool_base_test.cc",
+      "tools/content_agent_tool_base_test.h",
+      "tools/drag_and_release_tool_unittest.cc",
+      "tools/history_tool_unittest.cc",
+      "tools/move_mouse_tool_unittest.cc",
       "tools/navigation_tool_unittest.cc",
+      "tools/scroll_tool_unittest.cc",
+      "tools/select_tool_unittest.cc",
+      "tools/target_util_unittest.cc",
+      "tools/type_tool_unittest.cc",
+      "tools/wait_tool_unittest.cc",
     ]
 
     deps += [
       ":content_agent_test_support",
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common:test_support",
       "//chrome/browser/actor",
+      "//chrome/browser/actor/ui:test_support",
+      "//components/optimization_guide/content/browser",
       "//components/optimization_guide/proto:optimization_guide_proto",
     ]
   }
@@ -260,7 +297,6 @@ source_set("browser_tests") {
     sources = [
       "//chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.cc",
       "//chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.h",
-      "ai_chat_agent_profile_browsertest.cc",
       "ai_chat_brave_search_throttle_browsertest.cc",
       "ai_chat_browsertests.cc",
       "ai_chat_metrics_browsertest.cc",
@@ -274,7 +310,6 @@ source_set("browser_tests") {
     deps = [
       "//brave/app:generate_command_metadata",
       "//brave/browser/ai_chat",
-      "//brave/browser/ai_chat:ai_chat_agent_profile",
       "//brave/browser/misc_metrics",
       "//brave/browser/ui/sidebar",
       "//brave/components/ai_chat/content/browser",
@@ -289,7 +324,6 @@ source_set("browser_tests") {
       "//chrome/browser",
       "//chrome/browser/pdf:pdf_extension_test_utils",
       "//chrome/browser/screen_ai:screen_ai_install_state",
-      "//chrome/browser/ui",
       "//chrome/browser/ui/browser_window",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
@@ -314,5 +348,24 @@ source_set("browser_tests") {
       "//brave/test/data/ai_chat/youtubei/v1/player_dir/video_id_001.json",
       "//brave/test/data/ai_chat/youtubei/v1/player_dir/video_id_002.json",
     ]
+
+    if (enable_brave_ai_chat_agent_profile) {
+      sources += [
+        "ai_chat_agent_profile_browsertest.cc",
+        "content_agent_tool_provider_browsertest.cc",
+        "content_agent_tools_browsertest.cc",
+      ]
+
+      deps += [
+        ":content_agent_test_support",
+        "//brave/browser/ai_chat:ai_chat_agent_profile",
+        "//brave/components/ai_chat/core/common:test_support",
+        "//chrome/browser/actor",
+        "//chrome/browser/ui",
+        "//components/optimization_guide/content/browser",
+      ]
+
+      data += [ "//chrome/test/data/actor/" ]
+    }
   }
 }
