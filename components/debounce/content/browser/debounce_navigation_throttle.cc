@@ -51,7 +51,9 @@ class DebounceTabHelper
   DebounceTabHelper(const DebounceTabHelper&) = delete;
   DebounceTabHelper& operator=(const DebounceTabHelper&) = delete;
 
-  void AddToRedirectChain(const GURL& url) { redirects_.push_back(url.host()); }
+  void AddToRedirectChain(const GURL& url) {
+    redirects_.push_back(std::string(url.host()));
+  }
   void ClearRedirectChain() { redirects_.clear(); }
   bool IsInRedirectChain(const GURL& url) {
     return base::Contains(redirects_, url.host());

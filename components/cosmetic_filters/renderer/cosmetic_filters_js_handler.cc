@@ -298,7 +298,6 @@ bool CosmeticFiltersJSHandler::OnIsFirstParty(const std::string& url_string) {
 
 void CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter(
     const std::string& selector) {
-  const auto host = url_.host();
   GetElementPickerRemoteHandler()->AddSiteCosmeticFilter(selector);
 }
 

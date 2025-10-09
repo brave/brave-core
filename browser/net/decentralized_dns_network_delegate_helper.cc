@@ -56,7 +56,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
       IsUnstoppableDomainsResolveMethodEnabled(
           g_browser_process->local_state())) {
     json_rpc_service->UnstoppableDomainsResolveDns(
-        ctx->request_url.host(),
+        std::string(ctx->request_url.host()),
         base::BindOnce(&OnBeforeURLRequest_UnstoppableDomainsRedirectWork,
                        next_callback, ctx));
 
@@ -66,7 +66,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
   if (IsENSTLD(ctx->request_url.host_piece()) &&
       IsENSResolveMethodEnabled(g_browser_process->local_state())) {
     json_rpc_service->EnsGetContentHash(
-        ctx->request_url.host(),
+        std::string(ctx->request_url.host()),
         base::BindOnce(&OnBeforeURLRequest_EnsRedirectWork, next_callback,
                        ctx));
 
@@ -76,7 +76,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
   if (IsSnsTLD(ctx->request_url.host_piece()) &&
       IsSnsResolveMethodEnabled(g_browser_process->local_state())) {
     json_rpc_service->SnsResolveHost(
-        ctx->request_url.host(),
+        std::string(ctx->request_url.host()),
         base::BindOnce(&OnBeforeURLRequest_SnsRedirectWork, next_callback,
                        ctx));
 

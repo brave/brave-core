@@ -23,7 +23,7 @@ class AdsService;
 class AdsInternalsUI : public content::WebUIController {
  public:
   AdsInternalsUI(content::WebUI* const web_ui,
-                 const std::string& name,
+                 std::string_view name,
                  brave_ads::AdsService* ads_service,
                  PrefService& prefs);
 

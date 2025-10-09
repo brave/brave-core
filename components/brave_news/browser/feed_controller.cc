@@ -123,10 +123,9 @@ void FeedController::EnsureFeedIsUpdating(
                               return;
                             }
 
-                            std::unordered_set<std::string> history_hosts;
+                            absl::flat_hash_set<std::string> history_hosts;
                             for (const auto& item : results) {
-                              auto host = item.url().host();
-                              history_hosts.insert(host);
+                              history_hosts.emplace(item.url().host());
                             }
                             VLOG(1)
                                 << "history hosts # " << history_hosts.size();

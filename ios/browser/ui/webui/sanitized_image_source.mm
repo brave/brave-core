@@ -164,7 +164,7 @@ void SanitizedImageSource::StartDataRequest(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   GURL url = GURL(chrome::kChromeUIImageURL).GetWithEmptyPath().Resolve(path);
-  std::string image_url_or_params = url.query();
+  std::string_view image_url_or_params = url.query();
   if (url != GURL(base::StrCat(
                  {chrome::kChromeUIImageURL, "?", image_url_or_params}))) {
     std::move(callback).Run(nullptr);
