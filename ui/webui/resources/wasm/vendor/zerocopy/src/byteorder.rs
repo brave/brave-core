@@ -489,19 +489,19 @@ example of how it can be used for parsing UDP packets.
         #[cfg(not(any(feature = "derive", test)))]
         impl_known_layout!(O => $name<O>);
 
-        safety_comment! {
-            /// SAFETY:
-            /// `$name<O>` is `repr(transparent)`, and so it has the same layout
-            /// as its only non-zero field, which is a `u8` array. `u8` arrays
-            /// are `Immutable`, `TryFromBytes`, `FromZeros`, `FromBytes`,
-            /// `IntoBytes`, and `Unaligned`.
+        #[allow(unused_unsafe)] // Unused when `feature = "derive"`.
+        // SAFETY: `$name<O>` is `repr(transparent)`, and so it has the same
+        // layout as its only non-zero field, which is a `u8` array. `u8` arrays
+        // are `Immutable`, `TryFromBytes`, `FromZeros`, `FromBytes`,
+        // `IntoBytes`, and `Unaligned`.
+        const _: () = unsafe {
             impl_or_verify!(O => Immutable for $name<O>);
             impl_or_verify!(O => TryFromBytes for $name<O>);
             impl_or_verify!(O => FromZeros for $name<O>);
             impl_or_verify!(O => FromBytes for $name<O>);
             impl_or_verify!(O => IntoBytes for $name<O>);
             impl_or_verify!(O => Unaligned for $name<O>);
-        }
+        };
 
         impl<O> Default for $name<O> {
             #[inline(always)]
@@ -868,7 +868,7 @@ define_type!(
     []
 );
 
-// TODO(https://github.com/rust-lang/rust/issues/72447): Use the endianness
+// FIXME(https://github.com/rust-lang/rust/issues/72447): Use the endianness
 // conversion methods directly once those are const-stable.
 macro_rules! define_float_conversion {
     ($ty:ty, $bits:ident, $bytes:expr, $mod:ident) => {
@@ -882,7 +882,7 @@ macro_rules! define_float_conversion {
     ($ty:ty, $bits:ident, $bytes:expr, $from:ident, $to:ident) => {
         // Clippy: The suggestion of using `from_bits()` instead doesn't work
         // because `from_bits` is not const-stable on our MSRV.
-        #[allow(clippy::transmute_int_to_float)]
+        #[allow(clippy::unnecessary_transmutes)]
         pub(crate) const fn $from(bytes: [u8; $bytes]) -> $ty {
             transmute!($bits::$from(bytes))
         }
@@ -890,7 +890,7 @@ macro_rules! define_float_conversion {
         pub(crate) const fn $to(f: $ty) -> [u8; $bytes] {
             // Clippy: The suggestion of using `f.to_bits()` instead doesn't
             // work because `to_bits` is not const-stable on our MSRV.
-            #[allow(clippy::transmute_float_to_int)]
+            #[allow(clippy::unnecessary_transmutes)]
             let bits: $bits = transmute!(f);
             bits.$to()
         }

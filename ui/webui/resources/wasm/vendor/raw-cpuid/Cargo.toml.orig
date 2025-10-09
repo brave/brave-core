@@ -1,0 +1,46 @@
+[package]
+authors = ["Gerd Zellweger <mail@gerdzellweger.com>"]
+edition = "2018"
+name = "raw-cpuid"
+version = "11.6.0"
+
+description = "A library to parse the x86 CPUID instruction, written in rust with no external dependencies. The implementation closely resembles the Intel CPUID manual description. The library does only depend on libcore."
+documentation = "https://docs.rs/raw-cpuid/"
+homepage = "https://github.com/gz/rust-cpuid"
+repository = "https://github.com/gz/rust-cpuid"
+
+keywords = ["cpuid", "x86", "amd64", "os", "libcore"]
+categories = ["no-std", "no-std::no-alloc"]
+license = "MIT"
+readme = "README.md"
+
+[[bin]]
+name = "cpuid"
+path = "src/bin/cpuid.rs"
+required-features = ["cli"]
+
+[[example]]
+name = "serialize_deserialize"
+path = "examples/serialize_deserialize.rs"
+required-features = ["serde_json", "serialize"]
+
+[features]
+std = []
+display = ["std", "termimad", "serde_json", "serialize"]
+serialize = ["serde", "serde_derive"]
+# This is not a library feature and should only be used to install the cpuid binary:
+cli = ["display", "clap"]
+
+[dependencies]
+bitflags = { version = "2.0" }
+serde = { version = "1.0", default-features = false, optional = true }
+serde_derive = { version = "1.0", optional = true }
+serde_json = { version = "1.0", optional = true }
+termimad = { version = "0.25", optional = true }
+clap = { version = "4.2", features = ["derive"], optional = true }
+
+[dev-dependencies]
+core_affinity = "0.8.0"
+libc = { version = "0.2", default-features = false }
+phf = { version = "0.11", features = ["macros"] }
+rustversion = "1.0"

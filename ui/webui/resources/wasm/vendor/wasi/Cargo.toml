@@ -10,33 +10,70 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
+edition = "2021"
+rust-version = "1.82.0"
 name = "wasi"
-version = "0.11.0+wasi-snapshot-preview1"
-authors = ["The Cranelift Project Developers"]
-description = "Experimental WASI API bindings for Rust"
+version = "0.14.7+wasi-0.2.4"
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
+description = "WASI API bindings for Rust"
 documentation = "https://docs.rs/wasi"
 readme = "README.md"
-keywords = ["webassembly", "wasm"]
-categories = ["no-std", "wasm"]
+keywords = [
+    "webassembly",
+    "wasm",
+]
+categories = [
+    "no-std",
+    "wasm",
+]
 license = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
-repository = "https://github.com/bytecodealliance/wasi"
-[dependencies.compiler_builtins]
-version = "0.1"
-optional = true
-
-[dependencies.core]
-version = "1.0"
-optional = true
-package = "rustc-std-workspace-core"
-
-[dependencies.rustc-std-workspace-alloc]
-version = "1.0"
-optional = true
+repository = "https://github.com/bytecodealliance/wasi-rs"
 
 [features]
-default = ["std"]
-rustc-dep-of-std = ["compiler_builtins", "core", "rustc-std-workspace-alloc"]
-std = []
-[badges.maintenance]
-status = "experimental"
+bitflags = ["wasip2/bitflags"]
+default = ["wasip2/default"]
+std = ["wasip2/std"]
+
+[lib]
+name = "wasi"
+path = "src/lib.rs"
+
+[[example]]
+name = "cli-command"
+crate-type = ["cdylib"]
+path = "examples/cli-command.rs"
+required-features = ["std"]
+
+[[example]]
+name = "cli-command-no_std"
+crate-type = ["cdylib"]
+path = "examples/cli-command-no_std.rs"
+
+[[example]]
+name = "hello-world"
+path = "examples/hello-world.rs"
+required-features = ["std"]
+
+[[example]]
+name = "hello-world-no_std"
+path = "examples/hello-world-no_std.rs"
+
+[[example]]
+name = "http-proxy"
+crate-type = ["cdylib"]
+path = "examples/http-proxy.rs"
+required-features = ["std"]
+
+[[example]]
+name = "http-proxy-no_std"
+crate-type = ["cdylib"]
+path = "examples/http-proxy-no_std.rs"
+
+[dependencies.wasip2]
+version = "1.0.1"
+default-features = false

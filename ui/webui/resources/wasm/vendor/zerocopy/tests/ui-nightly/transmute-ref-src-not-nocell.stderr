@@ -4,9 +4,14 @@ error[E0277]: the trait bound `Src: zerocopy::Immutable` is not satisfied
 23 | const SRC_NOT_IMMUTABLE: &AU16 = transmute_ref!(&Src(AU16(0)));
    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    |                                  |
-   |                                  the trait `zerocopy::Immutable` is not implemented for `Src`
+   |                                  unsatisfied trait bound
    |                                  required by a bound introduced by this call
    |
+help: the trait `zerocopy::Immutable` is not implemented for `Src`
+  --> tests/ui-nightly/transmute-ref-src-not-nocell.rs:20:1
+   |
+20 | struct Src(AU16);
+   | ^^^^^^^^^^
    = note: Consider adding `#[derive(Immutable)]` to `Src`
    = help: the following other types implement trait `zerocopy::Immutable`:
              &T
@@ -29,8 +34,13 @@ error[E0277]: the trait bound `Src: zerocopy::Immutable` is not satisfied
   --> tests/ui-nightly/transmute-ref-src-not-nocell.rs:23:34
    |
 23 | const SRC_NOT_IMMUTABLE: &AU16 = transmute_ref!(&Src(AU16(0)));
-   |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `zerocopy::Immutable` is not implemented for `Src`
+   |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
    |
+help: the trait `zerocopy::Immutable` is not implemented for `Src`
+  --> tests/ui-nightly/transmute-ref-src-not-nocell.rs:20:1
+   |
+20 | struct Src(AU16);
+   | ^^^^^^^^^^
    = note: Consider adding `#[derive(Immutable)]` to `Src`
    = help: the following other types implement trait `zerocopy::Immutable`:
              &T

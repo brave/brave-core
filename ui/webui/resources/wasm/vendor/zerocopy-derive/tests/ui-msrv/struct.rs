@@ -120,29 +120,63 @@ struct IntoBytes3 {
     bar: u64,
 }
 
+type SliceU8 = [u8];
+
+// Padding between `u8` and `SliceU8`. `SliceU8` doesn't syntactically look like
+// a slice, so this case is handled by our `Sized` support.
+//
 // NOTE(#1708): This exists to ensure that our error messages are good when a
 // field is unsized.
 #[derive(IntoBytes)]
 #[repr(C)]
 struct IntoBytes4 {
     a: u8,
+    b: SliceU8,
+}
+
+// Padding between `u8` and `[u16]`. `[u16]` is syntactically identifiable as a
+// slice, so this case is handled by our `repr(C)` slice DST support.
+#[derive(IntoBytes)]
+#[repr(C)]
+struct IntoBytes5 {
+    a: u8,
+    b: [u16],
+}
+
+// Trailing padding after `[u8]`. `[u8]` is syntactically identifiable as a
+// slice, so this case is handled by our `repr(C)` slice DST support.
+#[derive(IntoBytes)]
+#[repr(C)]
+struct IntoBytes6 {
+    a: u16,
     b: [u8],
+}
+
+// Padding between `u8` and `u16` and also trailing padding after `[u8]`. `[u8]`
+// is syntactically identifiable as a slice, so this case is handled by our
+// `repr(C)` slice DST support.
+#[derive(IntoBytes)]
+#[repr(C)]
+struct IntoBytes7 {
+    a: u8,
+    b: u16,
+    c: [u8],
 }
 
 #[derive(IntoBytes)]
 #[repr(C, C)] // zerocopy-derive conservatively treats these as conflicting reprs
-struct IntoBytes5 {
+struct IntoBytes8 {
     a: u8,
 }
 
 #[derive(IntoBytes)]
-struct IntoBytes8<T> {
+struct IntoBytes9<T> {
     t: T,
 }
 
 #[derive(IntoBytes)]
 #[repr(packed(2))]
-struct IntoBytes9<T> {
+struct IntoBytes10<T> {
     t: T,
 }
 
@@ -210,3 +244,11 @@ struct Unaligned7;
 #[derive(Unaligned)]
 #[repr(C, packed(2))]
 struct WeirdReprSpan;
+
+#[derive(SplitAt)]
+#[repr(C)]
+struct SplitAtNotKnownLayout([u8]);
+
+#[derive(SplitAt, KnownLayout)]
+#[repr(C)]
+struct SplitAtSized(u8);

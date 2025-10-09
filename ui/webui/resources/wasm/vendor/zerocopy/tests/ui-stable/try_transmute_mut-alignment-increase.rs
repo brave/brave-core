@@ -17,5 +17,5 @@ use zerocopy::try_transmute_mut;
 // alignment to one of larger alignment.
 fn main() {
     let src = &mut [0u8; 2];
-    let increase_size: Result<&mut AU16, _> = try_transmute_mut!(src);
+    let _increase_size: Result<&mut AU16, _> = try_transmute_mut!(src);
 }

@@ -1,0 +1,57 @@
+name: Standard checks
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust:
+          - stable
+          - nightly
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - uses: actions-rs/toolchain@v1.0.7
+        with:
+          profile: minimal
+          toolchain: ${{ matrix.rust }}
+          override: true
+          components: rustfmt, clippy
+          target: aarch64-unknown-linux-gnu
+
+      - uses: actions-rs/cargo@v1.0.3
+        with:
+          command: build
+
+      - uses: actions-rs/cargo@v1.0.3
+        with:
+          command: build
+          args: --all-features
+
+      - name: Build on target without native cpuid
+        uses: actions-rs/cargo@v1.0.3
+        with:
+          command: build
+          args: --target aarch64-unknown-linux-gnu
+
+      - uses: actions-rs/cargo@v1.0.3
+        with:
+          command: test
+          args: --all-features --all-targets
+
+      - uses: actions-rs/cargo@v1.0.3
+        with:
+          command: fmt
+          args: --all -- --check
+
+      - name: Run clippy
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
