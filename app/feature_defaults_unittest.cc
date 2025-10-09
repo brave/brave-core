@@ -216,7 +216,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &omnibox::kStarterPackExpansion,
       &omnibox::kZeroSuggestPrefetching,
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
-      &optimization_guide::features::kOptimizationGuidePersonalizedFetching,
       &optimization_guide::features::kOptimizationHints,
       &permissions::features::kCpssUseTfliteSignatureRunner,
 #if !BUILDFLAG(IS_ANDROID)
