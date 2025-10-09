@@ -56,13 +56,13 @@ bool ContainsForbiddenKeywords(const GURL& url) {
     return true;
   }
   if (!url.ref_piece().empty() &&
-      RegexUtil::GetInstance()->CheckQueryStringOrRefKeywords("#" +
-                                                              url.ref())) {
+      RegexUtil::GetInstance()->CheckQueryStringOrRefKeywords(
+          base::StrCat({"#", url.ref()}))) {
     return true;
   }
   if (!url.query_piece().empty() &&
-      RegexUtil::GetInstance()->CheckQueryStringOrRefKeywords("?" +
-                                                              url.query())) {
+      RegexUtil::GetInstance()->CheckQueryStringOrRefKeywords(
+          base::StrCat({"?", url.query()}))) {
     return true;
   }
   return false;

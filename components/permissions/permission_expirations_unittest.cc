@@ -146,7 +146,9 @@ class PermissionExpirationsTest : public testing::Test {
         time.ToDeltaSinceWindowsEpoch().InMicroseconds());
   }
 
-  static std::string DomainKey(const GURL& url) { return url.host(); }
+  static std::string DomainKey(const GURL& url) {
+    return std::string(url.host());
+  }
 
  protected:
   const GURL kOrigin{"https://example.com"};

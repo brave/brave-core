@@ -393,7 +393,7 @@ void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
       continue;
     }
     delegate_->CleanupFirstPartyStorageArea(
-        {url.host(), storage_partition_config});
+        {std::string(url.host()), storage_partition_config});
   }
   first_party_storage_areas_to_cleanup_on_startup_.clear();
 }

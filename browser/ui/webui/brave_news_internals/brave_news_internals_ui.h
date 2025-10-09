@@ -20,7 +20,7 @@ class BraveNewsController;
 class BraveNewsInternalsUI : public content::WebUIController {
  public:
   explicit BraveNewsInternalsUI(content::WebUI* web_ui,
-                                const std::string& host,
+                                std::string_view host,
                                 brave_news::BraveNewsController* controller);
   BraveNewsInternalsUI(const BraveNewsInternalsUI&) = delete;
   BraveNewsInternalsUI& operator=(const BraveNewsInternalsUI&) = delete;

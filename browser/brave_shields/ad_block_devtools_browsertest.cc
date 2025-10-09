@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/strings/strcat.h"
 #include "base/values.h"
 #include "brave/browser/brave_shields/ad_block_service_browsertest.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
@@ -39,7 +40,7 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTest, DomainBlock) {
   SendCommandSync("Network.enable");
 
   const GURL& url = embedded_test_server()->GetURL("a.com", "/simple.html");
-  UpdateAdBlockInstanceWithRules("||" + url.host() + "^");
+  UpdateAdBlockInstanceWithRules(base::StrCat({"||", url.host(), "^"}));
   NavigateToURL(url);
 
   EXPECT_TRUE(IsShowingInterstitial());
@@ -111,7 +112,7 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTest, TwoClientsNoCrash) {
   second_devtools_client_.SendCommandSync("Network.enable");
 
   const GURL& url = embedded_test_server()->GetURL("a.com", "/simple.html");
-  UpdateAdBlockInstanceWithRules("||" + url.host() + "^");
+  UpdateAdBlockInstanceWithRules(base::StrCat({"||", url.host(), "^"}));
   NavigateToURL(url);
 
   WaitForNotification("Network.requestAdblockInfoReceived", true);

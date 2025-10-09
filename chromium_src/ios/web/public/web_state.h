@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "ios/components/webui/web_ui_url_constants.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "url/gurl.h"
 
 #define callbacks_                                                           \
@@ -38,7 +39,7 @@
                           std::string_view interface_name);                  \
                                                                              \
  private:                                                                    \
-  std::map<std::string, std::set<std::string, std::less<>>, std::less<>>     \
+  absl::flat_hash_map<std::string, std::set<std::string, std::less<>>>       \
       untrusted_callbacks_
 
 #include <ios/web/public/web_state.h>  // IWYU pragma: export
