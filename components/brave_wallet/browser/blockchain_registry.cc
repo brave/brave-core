@@ -15,6 +15,7 @@
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
@@ -28,9 +29,23 @@ namespace brave_wallet {
 
 namespace {
 
+// Helper function to build gate3 API URL for token list
+std::optional<GURL> GetGate3TokenListURL(mojom::CoinType coin,
+                                         const std::string& chain_id) {
+  auto coin_str = GetStringFromCoinType(coin);
+  if (!coin_str) {
+    return std::nullopt;
+  }
+
+  GURL url = GURL(kGate3URL);
+  url = url.Resolve("/api/tokens/v1/list");
+  url = net::AppendQueryParameter(url, "coin", *coin_str);
+  url = net::AppendQueryParameter(url, "chain_id", chain_id);
+  return url;
+}
+
 struct ParseListsResult {
   CoingeckoIdsMap coingecko_ids_map;
-  TokenListMap token_list_map;
   ChainList chain_list;
   DappListMap dapp_lists;
   OnRampTokensListMap on_ramp_token_lists;
@@ -124,22 +139,7 @@ void DoParseCoingeckoIdsMap(const base::FilePath& dir, ParseListsResult& out) {
   out.coingecko_ids_map = std::move(*coingecko_ids_map);
 }
 
-void DoParseTokenList(const base::FilePath& dir, ParseListsResult& out) {
-  auto result = ParseJsonFile(dir, "coingecko.json");
-  if (!result) {
-    return;
-  }
 
-  TokenListMap lists;
-  if (!ParseTokenList(*result, &lists)) {
-    VLOG(1) << "Can't parse token list.";
-    return;
-  }
-
-  for (auto& list_pair : lists) {
-    out.token_list_map[list_pair.first] = std::move(list_pair.second);
-  }
-}
 
 void DoParseChainList(const base::FilePath& dir, ParseListsResult& out) {
   auto result = ParseJsonFile(dir, "chainlist.json");
@@ -205,7 +205,6 @@ void DoParseOfacAddressesLists(const base::FilePath& dir,
 void UpdateRegistry(base::OnceClosure callback, ParseListsResult result) {
   auto* registry = BlockchainRegistry::GetInstance();
   registry->UpdateCoingeckoIdsMap(std::move(result.coingecko_ids_map));
-  registry->UpdateTokenList(std::move(result.token_list_map));
   registry->UpdateChainList(std::move(result.chain_list));
   registry->UpdateDappList(std::move(result.dapp_lists));
   registry->UpdateOnRampTokenLists(std::move(result.on_ramp_token_lists));
@@ -224,7 +223,6 @@ ParseListsResult DoParseLists(const base::FilePath& install_dir) {
 
   ParseListsResult result;
   DoParseCoingeckoIdsMap(absolute_install_dir, result);
-  DoParseTokenList(absolute_install_dir, result);
   DoParseChainList(absolute_install_dir, result);
   DoParseDappLists(absolute_install_dir, result);
   DoParseOnRampLists(absolute_install_dir, result);
@@ -237,6 +235,31 @@ ParseListsResult DoParseLists(const base::FilePath& install_dir) {
 BlockchainRegistry::BlockchainRegistry() = default;
 
 BlockchainRegistry::~BlockchainRegistry() = default;
+
+void BlockchainRegistry::Initialize(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!api_request_helper_) {
+    api_request_helper_ =
+        std::make_unique<api_request_helper::APIRequestHelper>(
+            net::DefineNetworkTrafficAnnotation(
+                "blockchain_registry_gate3_request",
+                R"(
+        semantics {
+          sender: "Brave Wallet"
+          description: "Request to Gate3 API for token list data"
+          trigger: "When user requests token list for a specific chain"
+          data: "Coin type and chain ID"
+          destination: OTHER
+        }
+        policy {
+          cookies_allowed: NO
+          setting: "This feature cannot be disabled in settings"
+          policy_exception_justification: "Not implemented"
+        })"),
+            url_loader_factory);
+  }
+}
 
 BlockchainRegistry* BlockchainRegistry::GetInstance() {
   static base::NoDestructor<BlockchainRegistry> instance;
@@ -263,12 +286,6 @@ void BlockchainRegistry::UpdateCoingeckoIdsMap(
 
 void BlockchainRegistry::UpdateTokenList(TokenListMap token_list_map) {
   token_list_map_ = std::move(token_list_map);
-}
-
-void BlockchainRegistry::UpdateTokenList(
-    const std::string& key,
-    std::vector<mojom::BlockchainTokenPtr> list) {
-  token_list_map_[key] = std::move(list);
 }
 
 void BlockchainRegistry::UpdateChainList(ChainList chains) {
@@ -300,11 +317,60 @@ void BlockchainRegistry::UpdateOfacAddressesList(
                                                 ofac_addresses_list.end());
 }
 
+// Helper function to clone a token list
+std::vector<mojom::BlockchainTokenPtr> CloneTokenList(
+    const std::vector<mojom::BlockchainTokenPtr>& tokens) {
+  std::vector<mojom::BlockchainTokenPtr> result(tokens.size());
+  std::transform(
+      tokens.begin(), tokens.end(), result.begin(),
+      [](const mojom::BlockchainTokenPtr& token) { return token.Clone(); });
+  return result;
+}
+
+// Helper function to find a token by contract address
+mojom::BlockchainTokenPtr FindTokenByContractAddress(
+    const std::vector<mojom::BlockchainTokenPtr>& tokens,
+    const std::string& contract_address) {
+  const std::string lower_address = base::ToLowerASCII(contract_address);
+  auto it = std::ranges::find_if(tokens, [&](const auto& token) {
+    return base::ToLowerASCII(token->contract_address) == lower_address;
+  });
+  return it == tokens.end() ? nullptr : it->Clone();
+}
+
+void BlockchainRegistry::GetTokensWithCache(
+    const std::string& chain_id,
+    mojom::CoinType coin,
+    base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr>)> callback) {
+  const auto key = GetTokenListKey(coin, chain_id);
+
+  if (token_list_map_.contains(key)) {
+    std::move(callback).Run(CloneTokenList(token_list_map_[key]));
+    return;
+  }
+
+  if (api_request_helper_) {
+    FetchTokens(coin, chain_id, std::move(callback));
+    return;
+  }
+
+  std::move(callback).Run(std::vector<mojom::BlockchainTokenPtr>());
+}
+
 void BlockchainRegistry::GetTokenByAddress(const std::string& chain_id,
                                            mojom::CoinType coin,
                                            const std::string& address,
                                            GetTokenByAddressCallback callback) {
-  std::move(callback).Run(GetTokenByAddress(chain_id, coin, address));
+  GetTokensWithCache(
+      chain_id, coin,
+      base::BindOnce(
+          [](const std::string& target_address,
+             GetTokenByAddressCallback original_callback,
+             std::vector<mojom::BlockchainTokenPtr> tokens) {
+            std::move(original_callback)
+                .Run(FindTokenByContractAddress(tokens, target_address));
+          },
+          address, std::move(callback)));
 }
 
 mojom::BlockchainTokenPtr BlockchainRegistry::GetTokenByAddress(
@@ -316,29 +382,13 @@ mojom::BlockchainTokenPtr BlockchainRegistry::GetTokenByAddress(
     return nullptr;
   }
 
-  const auto& tokens = token_list_map_[key];
-  auto token_it = std::ranges::find_if(
-      tokens, [&](const mojom::BlockchainTokenPtr& current_token) {
-        return current_token->contract_address == address;
-      });
-  return token_it == tokens.end() ? nullptr : token_it->Clone();
+  return FindTokenByContractAddress(token_list_map_[key], address);
 }
 
 void BlockchainRegistry::GetAllTokens(const std::string& chain_id,
                                       mojom::CoinType coin,
                                       GetAllTokensCallback callback) {
-  const auto key = GetTokenListKey(coin, chain_id);
-  if (!token_list_map_.contains(key)) {
-    std::move(callback).Run(std::vector<mojom::BlockchainTokenPtr>());
-    return;
-  }
-  const auto& tokens = token_list_map_[key];
-  std::vector<mojom::BlockchainTokenPtr> tokens_copy(tokens.size());
-  std::transform(
-      tokens.begin(), tokens.end(), tokens_copy.begin(),
-      [](const mojom::BlockchainTokenPtr& current_token)
-          -> mojom::BlockchainTokenPtr { return current_token.Clone(); });
-  std::move(callback).Run(std::move(tokens_copy));
+  GetTokensWithCache(chain_id, coin, std::move(callback));
 }
 
 std::vector<mojom::BlockchainTokenPtr> BlockchainRegistry::GetBuyTokens(
@@ -530,6 +580,74 @@ void BlockchainRegistry::ResetForTesting() {
   on_ramp_currencies_list_.clear();
   ofac_addresses_.clear();
   receivers_.Clear();
+  api_request_helper_.reset();
+}
+
+void BlockchainRegistry::FetchTokens(
+    mojom::CoinType coin,
+    const std::string& chain_id,
+    base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr>)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(api_request_helper_);
+
+  auto url_opt = GetGate3TokenListURL(coin, chain_id);
+  if (!url_opt) {
+    VLOG(1) << "Unsupported coin type for Gate3 API request: "
+            << static_cast<int>(coin);
+    std::move(callback).Run(std::vector<mojom::BlockchainTokenPtr>());
+    return;
+  }
+
+  const GURL& url = *url_opt;
+  if (!url.is_valid()) {
+    VLOG(1) << "Invalid URL constructed for Gate3 API request" << url.spec();
+    std::move(callback).Run(std::vector<mojom::BlockchainTokenPtr>());
+    return;
+  }
+
+  const std::string key = GetTokenListKey(coin, chain_id);
+  auto internal_callback =
+      base::BindOnce(&BlockchainRegistry::OnFetchTokensResponse,
+                     weak_ptr_factory_.GetWeakPtr(), key, std::move(callback));
+
+  api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
+                               {}, {.auto_retry_on_network_change = true});
+}
+
+void BlockchainRegistry::OnFetchTokensResponse(
+    const std::string& key,
+    base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr>)> callback,
+    api_request_helper::APIRequestResult api_request_result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  std::vector<mojom::BlockchainTokenPtr> tokens;
+
+  if (!api_request_result.Is2XXResponseCode()) {
+    VLOG(1) << "Gate3 API request failed with status: "
+            << api_request_result.response_code();
+    std::move(callback).Run(std::move(tokens));
+    return;
+  }
+
+  if (!api_request_result.value_body().is_list()) {
+    VLOG(1) << "Gate3 API returned invalid response format";
+    std::move(callback).Run(std::move(tokens));
+    return;
+  }
+
+  // Parse the response using ParseTokenList
+  auto token_list_map = ParseTokenList(api_request_result.value_body());
+  if (!token_list_map || !token_list_map->contains(key)) {
+    VLOG(1) << "Failed to parse Gate3 API response";
+    std::move(callback).Run(std::move(tokens));
+    return;
+  }
+
+  // Cache the result
+  token_list_map_[key] = std::move((*token_list_map)[key]);
+
+  // Return the tokens
+  std::move(callback).Run(CloneTokenList(token_list_map_[key]));
 }
 
 }  // namespace brave_wallet

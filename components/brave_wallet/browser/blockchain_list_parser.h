@@ -12,7 +12,9 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "url/gurl.h"
 
 namespace brave_wallet {
 
@@ -32,7 +34,7 @@ using OffRampTokensListMap =
                    std::vector<mojom::BlockchainTokenPtr>>;
 using RampTokenListMaps = std::pair<OnRampTokensListMap, OffRampTokensListMap>;
 
-bool ParseTokenList(const std::string& json, TokenListMap* token_list_map);
+std::optional<TokenListMap> ParseTokenList(const base::Value& json_value);
 std::optional<RampTokenListMaps> ParseRampTokenListMaps(
     const std::string& json);
 std::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(

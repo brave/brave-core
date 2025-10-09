@@ -17,32 +17,19 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_schemas.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "net/base/url_util.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "url/gurl.h"
 
 namespace brave_wallet {
 
 namespace {
-
-bool ParseResultFromDict(const base::Value::Dict* response_dict,
-                         const std::string& key,
-                         std::string* output_val) {
-  auto* val = response_dict->FindString(key);
-  if (!val) {
-    return false;
-  }
-  *output_val = *val;
-  return true;
-}
-
-bool ParseOptionalBoolFromDict(const base::Value::Dict* response_dict,
-                               const std::string& key) {
-  return response_dict->FindBool(key).value_or(false);
-}
 
 std::optional<double> ParseNullableStringAsDouble(const base::Value& value) {
   if (value.is_none()) {
@@ -215,112 +202,64 @@ void AddTokenToMaps(const blockchain_lists::Token& token,
 
 }  // namespace
 
-bool ParseTokenList(const std::string& json, TokenListMap* token_list_map) {
-  DCHECK(token_list_map);
-
-  // {
-  //   "0x1": {
-  //     "0xdac17f958d2ee523a2206206994597c13d831ec7": {
-  //       "name": "Tether",
-  //       "symbol": "usdt",
-  //       "coingeckoId": "tether",
-  //       "decimals": 6,
-  //       "logo":
-  //       "https://coin-images.coingecko.com/coins/images/325/large/Tether.png"
-  //     },
-  //     "0xb8c77482e45f1f44de1745f52c74426c631bdd52": {
-  //       "name": "BNB",
-  //       "symbol": "bnb",
-  //       "coingeckoId": "binancecoin",
-  //       "decimals": 18,
-  //       "logo":
-  //       "https://coin-images.coingecko.com/coins/images/825/large/bnb-icon2_2x.png"
-  //     },
-  //     "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
-  //       "name": "Crypto Kitties",
-  //       "logo": "CryptoKitties-Kitty-13733.svg",
-  //       "erc20": false,
-  //       "erc721": true,
-  //       "symbol": "CK",
-  //       "decimals": 0
-  //     }
-  //   }
-  // }
-
-  std::optional<base::Value::Dict> records_v = base::JSONReader::ReadDict(
-      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v) {
-    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return false;
+std::optional<TokenListMap> ParseTokenList(const base::Value& json_value) {
+  // Parse using IDL schema
+  const auto* tokens_list = json_value.GetIfList();
+  if (!tokens_list) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: "
+            << json_value.DebugString();
+    return std::nullopt;
   }
 
-  const auto& chain_dict = *records_v;
-  // Iterate through chain IDs
-  for (const auto chain_pair : chain_dict) {
-    const std::string& chain_id = chain_pair.first;
-    const auto* tokens_dict = chain_pair.second.GetIfDict();
-    if (!tokens_dict) {
+  TokenListMap token_list_map;
+
+  for (const auto& token : *tokens_list) {
+    const auto token_info = blockchain_lists::Gate3Token::FromValue(token);
+    if (!token_info) {
+      VLOG(1) << "Failed to parse token from JSON: " << token.DebugString();
       continue;
     }
 
-    // Determine coin type based on chain_id
-    mojom::CoinType coin = chain_id == mojom::kSolanaMainnet
-                               ? mojom::CoinType::SOL
-                               : mojom::CoinType::ETH;
-
-    // Iterate through tokens in this chain
-    for (const auto token_pair : *tokens_dict) {
-      auto blockchain_token = mojom::BlockchainToken::New();
-      blockchain_token->contract_address = token_pair.first;
-      const auto* token_info = token_pair.second.GetIfDict();
-      if (!token_info) {
-        continue;
-      }
-
-      // Parse required fields
-      if (!ParseResultFromDict(token_info, "symbol",
-                               &blockchain_token->symbol) ||
-          !ParseResultFromDict(token_info, "name", &blockchain_token->name)) {
-        continue;
-      }
-
-      // Parse optional fields
-      ParseResultFromDict(token_info, "logo", &blockchain_token->logo);
-      ParseResultFromDict(token_info, "coingeckoId",
-                          &blockchain_token->coingecko_id);
-      blockchain_token->is_erc721 =
-          ParseOptionalBoolFromDict(token_info, "erc721");
-
-      // Determining is_nft from blockchain list is not supported for Solana
-      blockchain_token->is_nft = blockchain_token->is_erc721;
-      bool is_token2022 = ParseOptionalBoolFromDict(token_info, "token2022");
-
-      std::optional<int> decimals_opt = token_info->FindInt("decimals");
-      if (!decimals_opt) {
-        continue;
-      }
-      blockchain_token->decimals = *decimals_opt;
-
-      // Set default values
-      blockchain_token->chain_id = chain_id;
-      blockchain_token->coin = coin;
-      blockchain_token->visible = true;
-      blockchain_token->is_erc20 =
-          coin == mojom::CoinType::ETH && !blockchain_token->is_nft;
-      blockchain_token->is_erc1155 = false;
-      blockchain_token->spl_token_program =
-          IsSPLToken(blockchain_token)
-              ? (is_token2022 ? mojom::SPLTokenProgram::kToken2022
-                              : mojom::SPLTokenProgram::kToken)
-              : mojom::SPLTokenProgram::kUnsupported;
-
-      (*token_list_map)[GetTokenListKey(coin, chain_id)].push_back(
-          std::move(blockchain_token));
+    // Skip tokens with unknown coin types
+    const auto coin_type = GetCoinTypeFromString(token_info->coin);
+    if (!coin_type) {
+      VLOG(1) << "Unknown coin type: " << token_info->coin;
+      continue;
     }
+
+    auto blockchain_token = mojom::BlockchainToken::New();
+    blockchain_token->contract_address = token_info->address;
+    blockchain_token->chain_id = token_info->chain_id;
+    blockchain_token->coin = *coin_type;
+    blockchain_token->name = token_info->name;
+    blockchain_token->symbol = token_info->symbol;
+    blockchain_token->decimals = token_info->decimals;
+    blockchain_token->logo = token_info->logo;
+    blockchain_token->coingecko_id = token_info->coingecko_id.value_or("");
+    blockchain_token->visible = true;
+    blockchain_token->is_erc20 =
+        token_info->token_type == blockchain_lists::Gate3TokenType::kErc20;
+    blockchain_token->is_erc721 =
+        token_info->token_type == blockchain_lists::Gate3TokenType::kErc721;
+    blockchain_token->is_erc1155 =
+        token_info->token_type == blockchain_lists::Gate3TokenType::kErc1155;
+    blockchain_token->is_nft =
+        token_info->token_type == blockchain_lists::Gate3TokenType::kErc721 ||
+        token_info->token_type == blockchain_lists::Gate3TokenType::kErc1155;
+    blockchain_token->spl_token_program =
+        IsSPLToken(blockchain_token)
+            ? (token_info->token_type ==
+                       blockchain_lists::Gate3TokenType::kSplToken2022
+                   ? mojom::SPLTokenProgram::kToken2022
+                   : mojom::SPLTokenProgram::kToken)
+            : mojom::SPLTokenProgram::kUnsupported;
+
+    const std::string key =
+        GetTokenListKey(blockchain_token->coin, blockchain_token->chain_id);
+    token_list_map[key].push_back(std::move(blockchain_token));
   }
 
-  return true;
+  return token_list_map;
 }
 
 std::optional<RampTokenListMaps> ParseRampTokenListMaps(

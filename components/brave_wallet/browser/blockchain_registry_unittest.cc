@@ -13,6 +13,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
@@ -29,82 +30,112 @@ namespace brave_wallet {
 
 namespace {
 
-const char token_list_json[] = R"(
+const char token_list_json[] = R"([
   {
-    "0x1": {
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
-        "name": "Crypto Kitties",
-        "logo": "CryptoKitties-Kitty-13733.svg",
-        "erc20": false,
-        "erc721": true,
-        "symbol": "CK",
-        "decimals": 0
-      },
-     "0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {
-        "name": "Basic Attention Token",
-        "logo": "bat.svg",
-        "erc20": true,
-        "symbol": "BAT",
-        "decimals": 18
-      },
-      "0x6090A6e47849629b7245Dfa1Ca21D94cd15878Ef": {
-        "name": "ENS Registrar",
-        "logo": "ens.svg"
-      }
-    },
-    "0xaa36a7": {
-      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
-        "name": "Uniswap",
-        "logo": "uni.svg",
-        "erc20": true,
-        "symbol": "UNI",
-        "decimals": 18
-      }
-    },
-    "0x89": {
-      "0xc2132D05D31c914a87C6611C10748AEb04B58e8F": {
-          "name": "Tether USD - PoS",
-          "logo": "usdt.png",
-          "erc20": true,
-          "symbol": "USDT",
-          "decimals": 6,
-          "coingeckoId": "tether"
-      }
-    },
-    "0x65": {
-      "So11111111111111111111111111111111111111112": {
-        "name": "Wrapped SOL",
-        "logo": "So11111111111111111111111111111111111111112.png",
-        "erc20": false,
-        "symbol": "SOL",
-        "decimals": 9,
-        "coingeckoId": "solana"
-      },
-      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": {
-        "name": "USD Coin",
-        "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
-        "erc20": false,
-        "symbol": "USDC",
-        "decimals": 6,
-        "coingeckoId": "usd-coin"
-      },
-      "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ": {
-        "name": "Tesla Inc.",
-        "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
-        "erc20": false,
-        "symbol": "TSLA",
-        "decimals": 8
-      },
-      "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi": {
-        "name": "SolarMoon",
-        "logo": "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi.png",
-        "erc20": false,
-        "symbol": "MOON",
-        "decimals": 5,
-        "token2022": true
-      }
-    }
-  })";
+    "coin": "eth",
+    "chain_id": "0x1",
+    "address": "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+    "name": "Crypto Kitties",
+    "symbol": "CK",
+    "decimals": 0,
+    "logo": "CryptoKitties-Kitty-13733.svg",
+    "sources": ["coingecko"],
+    "token_type": "ERC721"
+  },
+  {
+    "coin": "eth",
+    "chain_id": "0x1",
+    "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+    "name": "Basic Attention Token",
+    "symbol": "BAT",
+    "decimals": 18,
+    "logo": "bat.svg",
+    "sources": ["coingecko"],
+    "token_type": "ERC20",
+    "coingecko_id": "basic-attention-token"
+  },
+  {
+    "coin": "eth",
+    "chain_id": "0x1",
+    "address": "0x6090A6e47849629b7245Dfa1Ca21D94cd15878Ef",
+    "name": "ENS Registrar",
+    "symbol": "ENS",
+    "decimals": 0,
+    "logo": "ens.svg",
+    "sources": ["coingecko"],
+    "token_type": "ERC721"
+  },
+  {
+    "coin": "eth",
+    "chain_id": "0xaa36a7",
+    "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+    "name": "Uniswap",
+    "symbol": "UNI",
+    "decimals": 18,
+    "logo": "uni.svg",
+    "sources": ["coingecko"],
+    "token_type": "ERC20",
+    "coingecko_id": "uniswap"
+  },
+  {
+    "coin": "eth",
+    "chain_id": "0x89",
+    "address": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+    "name": "Tether USD - PoS",
+    "symbol": "USDT",
+    "decimals": 6,
+    "logo": "usdt.png",
+    "sources": ["coingecko"],
+    "token_type": "ERC20",
+    "coingecko_id": "tether"
+  },
+  {
+    "coin": "sol",
+    "chain_id": "0x65",
+    "address": "So11111111111111111111111111111111111111112",
+    "name": "Wrapped SOL",
+    "symbol": "SOL",
+    "decimals": 9,
+    "logo": "So11111111111111111111111111111111111111112.png",
+    "sources": ["coingecko"],
+    "token_type": "SPL_TOKEN",
+    "coingecko_id": "solana"
+  },
+  {
+    "coin": "sol",
+    "chain_id": "0x65",
+    "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "name": "USD Coin",
+    "symbol": "USDC",
+    "decimals": 6,
+    "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
+    "sources": ["coingecko"],
+    "token_type": "SPL_TOKEN",
+    "coingecko_id": "usd-coin"
+  },
+  {
+    "coin": "sol",
+    "chain_id": "0x65",
+    "address": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ",
+    "name": "Tesla Inc.",
+    "symbol": "TSLA",
+    "decimals": 8,
+    "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+    "sources": ["coingecko"],
+    "token_type": "SPL_TOKEN_2022"
+  },
+  {
+    "coin": "sol",
+    "chain_id": "0x65",
+    "address": "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi",
+    "name": "SolarMoon",
+    "symbol": "MOON",
+    "decimals": 5,
+    "logo": "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi.png",
+    "sources": ["coingecko"],
+    "token_type": "SPL_TOKEN_2022"
+  }
+])";
 
 const char ramp_token_lists_json[] = R"({
   "tokens": [
@@ -282,7 +313,7 @@ const char on_ramp_currency_lists_json[] = R"({
         false,
         false,
         false,
-        mojom::SPLTokenProgram::kToken,
+        mojom::SPLTokenProgram::kToken2022,
         false,
         false,
         "TSLA",
@@ -514,9 +545,11 @@ std::vector<std::string> GetChainIds(
 TEST(BlockchainRegistryUnitTest, GetAllTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
-  TokenListMap token_list_map;
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
-  registry->UpdateTokenList(std::move(token_list_map));
+  auto json_value = base::JSONReader::Read(token_list_json);
+  ASSERT_TRUE(json_value);
+  auto token_list_map = ParseTokenList(*json_value);
+  ASSERT_TRUE(token_list_map);
+  registry->UpdateTokenList(std::move(*token_list_map));
 
   // Loop twice to make sure getting the same list twice works
   // For example, make sure nothing is std::move'd
@@ -526,9 +559,8 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
         mojom::kMainnetChainId, mojom::CoinType::ETH,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-              // ENS Registrar should not be parsed because it doesn't
-              // have decimals nor a symbol defined
-              ASSERT_EQ(token_list.size(), 2UL);
+              // All valid tokens should be parsed, including ENS Registrar
+              ASSERT_EQ(token_list.size(), 3UL);
 
               EXPECT_EQ(token_list[0]->name, "Crypto Kitties");
               EXPECT_EQ(token_list[0]->contract_address,
@@ -548,6 +580,16 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
               EXPECT_EQ(token_list[1]->symbol, "BAT");
               EXPECT_EQ(token_list[1]->decimals, 18);
               EXPECT_EQ(token_list[1]->spl_token_program,
+                        mojom::SPLTokenProgram::kUnsupported);
+
+              EXPECT_EQ(token_list[2]->name, "ENS Registrar");
+              EXPECT_EQ(token_list[2]->contract_address,
+                        "0x6090A6e47849629b7245Dfa1Ca21D94cd15878Ef");
+              EXPECT_FALSE(token_list[2]->is_erc20);
+              EXPECT_TRUE(token_list[2]->is_erc721);
+              EXPECT_EQ(token_list[2]->symbol, "ENS");
+              EXPECT_EQ(token_list[2]->decimals, 0);
+              EXPECT_EQ(token_list[2]->spl_token_program,
                         mojom::SPLTokenProgram::kUnsupported);
               run_loop.Quit();
             }));
@@ -594,10 +636,10 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
             ASSERT_EQ(token_list.size(), 4UL);
-            EXPECT_EQ(token_list[0], tsla);
-            EXPECT_EQ(token_list[1], moon);
-            EXPECT_EQ(token_list[2], usdc);
-            EXPECT_EQ(token_list[3], wrapped_sol);
+            EXPECT_EQ(token_list[0], wrapped_sol);
+            EXPECT_EQ(token_list[1], usdc);
+            EXPECT_EQ(token_list[2], tsla);
+            EXPECT_EQ(token_list[3], moon);
             run_loop4.Quit();
           }));
   run_loop4.Run();
@@ -606,9 +648,11 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
 TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
-  TokenListMap token_list_map;
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
-  registry->UpdateTokenList(std::move(token_list_map));
+  auto json_value = base::JSONReader::Read(token_list_json);
+  ASSERT_TRUE(json_value);
+  auto token_list_map = ParseTokenList(*json_value);
+  ASSERT_TRUE(token_list_map);
+  registry->UpdateTokenList(std::move(*token_list_map));
   base::RunLoop run_loop;
   registry->GetTokenByAddress(
       mojom::kMainnetChainId, mojom::CoinType::ETH,
@@ -967,16 +1011,19 @@ TEST(BlockchainRegistryUnitTest, GetTopDapps) {
 TEST(BlockchainRegistryUnitTest, GetEthTokenListMap) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
-  TokenListMap token_list_map;
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
-  registry->UpdateTokenList(std::move(token_list_map));
+  auto json_value = base::JSONReader::Read(token_list_json);
+  ASSERT_TRUE(json_value);
+  auto token_list_map = ParseTokenList(*json_value);
+  ASSERT_TRUE(token_list_map);
+  registry->UpdateTokenList(std::move(*token_list_map));
 
   // Loop twice to make sure getting the same list twice works
   // For example, make sure nothing is std::move'd
   for (size_t i = 0; i < 2; i++) {
     token_list_map = registry->GetEthTokenListMap({mojom::kMainnetChainId});
-    EXPECT_EQ(token_list_map.size(), 1UL);
-    EXPECT_EQ(token_list_map[mojom::kMainnetChainId].size(), 2UL);
+    ASSERT_TRUE(token_list_map);
+    EXPECT_EQ(token_list_map->size(), 1UL);
+    EXPECT_EQ((*token_list_map)[mojom::kMainnetChainId].size(), 3UL);
   }
 }
 

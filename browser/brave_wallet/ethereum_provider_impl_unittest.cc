@@ -29,6 +29,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -206,6 +207,19 @@ class EthereumProviderImplUnitTest : public testing::Test {
     SetCallbackForNewSetupNeededForTesting(base::OnceCallback<void()>());
 
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
+
+    // Pre-populate BlockchainRegistry with empty token lists to avoid network
+    // requests
+    auto* blockchain_registry = BlockchainRegistry::GetInstance();
+    TokenListMap token_list_map;
+    token_list_map["ethereum.0x1"] = std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["ethereum.0xaa36a7"] =
+        std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["ethereum.0x89"] = std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["solana.0x65"] = std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["filecoin.0x1"] = std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["filecoin.0x13a"] = std::vector<mojom::BlockchainTokenPtr>();
+    blockchain_registry->UpdateTokenList(std::move(token_list_map));
 
     web_contents_ =
         content::TestWebContents::Create(browser_context(), nullptr);

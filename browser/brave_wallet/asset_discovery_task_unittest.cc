@@ -261,6 +261,10 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, intended_url, requests](const network::ResourceRequest& request) {
           if (request.url.spec() == intended_url) {
+            if (!request.request_body || !request.request_body->elements() ||
+                request.request_body->elements()->empty()) {
+              return;
+            }
             std::string_view request_string(request.request_body->elements()
                                                 ->at(0)
                                                 .As<network::DataElementBytes>()
@@ -555,20 +559,24 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverERC20sFromRegistry) {
 
   // Add token to the registry for upcoming tests
   auto* blockchain_registry = BlockchainRegistry::GetInstance();
-  TokenListMap token_list_map;
-  std::string token_list_json = R"({
-    "0x1": {
-      "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
-        "name": "Dai Stablecoin",
-        "logo": "dai.svg",
-        "erc20": true,
-        "symbol": "DAI",
-        "decimals": 18
-      }
+  std::string token_list_json = R"([
+    {
+      "coin": "ETH",
+      "chain_id": "0x1",
+      "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+      "name": "Dai Stablecoin",
+      "symbol": "DAI",
+      "decimals": 18,
+      "logo": "dai.svg",
+      "sources": ["coingecko"],
+      "token_type": "ERC20"
     }
-  })";
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
-  blockchain_registry->UpdateTokenList(std::move(token_list_map));
+  ])";
+  auto json_value = base::JSONReader::Read(token_list_json);
+  ASSERT_TRUE(json_value);
+  auto token_list_map = ParseTokenList(*json_value);
+  ASSERT_TRUE(token_list_map);
+  blockchain_registry->UpdateTokenList(std::move(*token_list_map));
 
   // One account, no balances, yields empty token_contract_addresses
   std::map<GURL, std::map<std::string, std::string>> requests = {
@@ -649,19 +657,24 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverERC20sFromRegistry) {
                         {"0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961"}, {});
 
   // Reset token list with a fresh token not in user assets
-  token_list_json = R"({
-    "0x1": {
-      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
-        "name": "Wrapped Eth",
-        "logo": "weth.svg",
-        "erc20": true,
-        "symbol": "WETH",
-        "decimals": 18
-      }
+  token_list_json = R"([
+    {
+      "coin": "ETH",
+      "chain_id": "0x1",
+      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      "name": "Wrapped Eth",
+      "symbol": "WETH",
+      "decimals": 18,
+      "logo": "weth.svg",
+      "sources": ["coingecko"],
+      "token_type": "ERC20"
     }
-  })";
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
-  blockchain_registry->UpdateTokenList(std::move(token_list_map));
+  ])";
+  json_value = base::JSONReader::Read(token_list_json);
+  ASSERT_TRUE(json_value);
+  token_list_map = ParseTokenList(*json_value);
+  ASSERT_TRUE(token_list_map);
+  blockchain_registry->UpdateTokenList(std::move(*token_list_map));
 
   // Two accounts, each with the same balance, yields just one discovered
   // contract address
@@ -684,28 +697,35 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverERC20sFromRegistry) {
   chain_ids.clear();
   chain_ids.push_back(mojom::kMainnetChainId);
   chain_ids.push_back(mojom::kPolygonMainnetChainId);
-  token_list_json = R"({
-    "0x1": {
-      "0x1111111111111111111111111111111111111111": {
-        "name": "1111",
-        "logo": "111.svg",
-        "erc20": true,
-        "symbol": "111",
-        "decimals": 18
-      }
+  token_list_json = R"([
+    {
+      "coin": "ETH",
+      "chain_id": "0x1",
+      "address": "0x1111111111111111111111111111111111111111",
+      "name": "1111",
+      "symbol": "111",
+      "decimals": 18,
+      "logo": "111.svg",
+      "sources": ["coingecko"],
+      "token_type": "ERC20"
     },
-    "0x89": {
-      "0x2222222222222222222222222222222222222222": {
-        "name": "22222222222",
-        "logo": "2222.svg",
-        "erc20": true,
-        "symbol": "2222",
-        "decimals": 18
-      }
+    {
+      "coin": "ETH",
+      "chain_id": "0x89",
+      "address": "0x2222222222222222222222222222222222222222",
+      "name": "22222222222",
+      "symbol": "2222",
+      "decimals": 18,
+      "logo": "2222.svg",
+      "sources": ["coingecko"],
+      "token_type": "ERC20"
     }
-  })";
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
-  blockchain_registry->UpdateTokenList(std::move(token_list_map));
+  ])";
+  json_value = base::JSONReader::Read(token_list_json);
+  ASSERT_TRUE(json_value);
+  token_list_map = ParseTokenList(*json_value);
+  ASSERT_TRUE(token_list_map);
+  blockchain_registry->UpdateTokenList(std::move(*token_list_map));
   requests = {
       {GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
        {
@@ -726,28 +746,35 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverERC20sFromRegistry) {
 
   // Multiple accounts with different balances, yields multiple discovered
   // contract addresses Reset token list with a fresh token not in user assets
-  token_list_json = R"({
-    "0x1": {
-      "0x3333333333333333333333333333333333333333": {
-        "name": "3333",
-        "logo": "333.svg",
-        "erc20": true,
-        "symbol": "333",
-        "decimals": 18
-      }
+  token_list_json = R"([
+    {
+      "coin": "ETH",
+      "chain_id": "0x1",
+      "address": "0x3333333333333333333333333333333333333333",
+      "name": "3333",
+      "symbol": "333",
+      "decimals": 18,
+      "logo": "333.svg",
+      "sources": ["coingecko"],
+      "token_type": "ERC20"
     },
-    "0x89": {
-      "0x4444444444444444444444444444444444444444": {
-        "name": "44444444444",
-        "logo": "4444.svg",
-        "erc20": true,
-        "symbol": "4444",
-        "decimals": 18
-      }
+    {
+      "coin": "ETH",
+      "chain_id": "0x89",
+      "address": "0x4444444444444444444444444444444444444444",
+      "name": "44444444444",
+      "symbol": "4444",
+      "decimals": 18,
+      "logo": "4444.svg",
+      "sources": ["coingecko"],
+      "token_type": "ERC20"
     }
-  })";
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
-  blockchain_registry->UpdateTokenList(std::move(token_list_map));
+  ])";
+  json_value = base::JSONReader::Read(token_list_json);
+  ASSERT_TRUE(json_value);
+  token_list_map = ParseTokenList(*json_value);
+  ASSERT_TRUE(token_list_map);
+  blockchain_registry->UpdateTokenList(std::move(*token_list_map));
   requests = {
       {GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH),
        {
@@ -796,29 +823,35 @@ TEST_F(AssetDiscoveryTaskUnitTest, DecodeMintAddress) {
 
 TEST_F(AssetDiscoveryTaskUnitTest, DiscoverSPLTokensFromRegistry) {
   auto* blockchain_registry = BlockchainRegistry::GetInstance();
-  TokenListMap token_list_map;
-  std::string token_list_json = R"({
-    "0x65": {
-      "88j24JNwWLmJCjn2tZQ5jJzyaFtnusS2qsKup9NeDnd8": {
-        "name": "Wrapped SOL",
-        "logo": "So11111111111111111111111111111111111111112.png",
-        "erc20": false,
-        "symbol": "SOL",
-        "decimals": 9,
-        "coingeckoId": "solana"
-      },
-      "EybFzCH4nBYEr7FD4wLWBvNZbEGgjy4kh584bGQntr1b": {
-        "name": "USD Coin",
-        "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
-        "erc20": false,
-        "symbol": "USDC",
-        "decimals": 6,
-        "coingeckoId": "usd-coin"
-      }
+  std::string token_list_json = R"([
+    {
+      "coin": "SOL",
+      "chain_id": "0x65",
+      "address": "88j24JNwWLmJCjn2tZQ5jJzyaFtnusS2qsKup9NeDnd8",
+      "name": "Wrapped SOL",
+      "symbol": "SOL",
+      "decimals": 9,
+      "logo": "So11111111111111111111111111111111111111112.png",
+      "sources": ["coingecko"],
+      "token_type": "SPL_TOKEN"
+    },
+    {
+      "coin": "SOL",
+      "chain_id": "0x65",
+      "address": "EybFzCH4nBYEr7FD4wLWBvNZbEGgjy4kh584bGQntr1b",
+      "name": "USD Coin",
+      "symbol": "USDC",
+      "decimals": 6,
+      "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
+      "sources": ["coingecko"],
+      "token_type": "SPL_TOKEN"
     }
-  })";
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
-  blockchain_registry->UpdateTokenList(std::move(token_list_map));
+  ])";
+  auto json_value = base::JSONReader::Read(token_list_json);
+  ASSERT_TRUE(json_value);
+  auto token_list_map = ParseTokenList(*json_value);
+  ASSERT_TRUE(token_list_map);
+  blockchain_registry->UpdateTokenList(std::move(*token_list_map));
 
   // Empy account address
   TestDiscoverSolAssets({}, {});
@@ -1031,40 +1064,57 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverSPLTokensFromRegistry) {
   // ADJqxHJRfFBpyxVQ2YS8nBhfW6dumdDYGU21B4AmYLZJ,
   // 7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs, and
   // 4zLh7YPr8NfrNP4bzTXaYaE72QQc3A8mptbtqUspRz5g to token list
-  token_list_json = R"({
-    "0x65": {
-      "BEARs6toGY6fRGsmz2Se8NDuR2NVPRmJuLPpeF8YxCq2": {
-        "name": "Tesla Inc.",
-        "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
-        "erc20": false,
-        "symbol": "TSLA",
-        "decimals": 8
-      },
-      "ADJqxHJRfFBpyxVQ2YS8nBhfW6dumdDYGU21B4AmYLZJ": {
-        "name": "Apple Inc.",
-        "logo": "8bpRdBGPt354VfABL5xugP3pmYZ2tQjzRcqjg2kmwfbF.png",
-        "erc20": false,
-        "symbol": "AAPL",
-        "decimals": 8
-      },
-      "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs": {
-        "name": "Microsoft Corporation",
-        "logo": "3vhcrQfEn8ashuBfE82F3MtEDFcBCEFfFw1ZgM3xj1s8.png",
-        "erc20": false,
-        "symbol": "MSFT",
-        "decimals": 8
-      },
-      "4zLh7YPr8NfrNP4bzTXaYaE72QQc3A8mptbtqUspRz5g": {
-        "name": "MicroStrategy Incorporated.",
-        "logo": "ASwYCbLedk85mRdPnkzrUXbbYbwe26m71af9rzrhC2Qz.png",
-        "erc20": false,
-        "symbol": "MSTR",
-        "decimals": 8
-      }
+  token_list_json = R"([
+    {
+      "coin": "SOL",
+      "chain_id": "0x65",
+      "address": "BEARs6toGY6fRGsmz2Se8NDuR2NVPRmJuLPpeF8YxCq2",
+      "name": "Tesla Inc.",
+      "symbol": "TSLA",
+      "decimals": 8,
+      "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+      "sources": ["coingecko"],
+      "token_type": "SPL_TOKEN_2022"
+    },
+    {
+      "coin": "SOL",
+      "chain_id": "0x65",
+      "address": "ADJqxHJRfFBpyxVQ2YS8nBhfW6dumdDYGU21B4AmYLZJ",
+      "name": "Apple Inc.",
+      "symbol": "AAPL",
+      "decimals": 8,
+      "logo": "8bpRdBGPt354VfABL5xugP3pmYZ2tQjzRcqjg2kmwfbF.png",
+      "sources": ["coingecko"],
+      "token_type": "SPL_TOKEN_2022"
+    },
+    {
+      "coin": "SOL",
+      "chain_id": "0x65",
+      "address": "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs",
+      "name": "Microsoft Corporation",
+      "symbol": "MSFT",
+      "decimals": 8,
+      "logo": "3vhcrQfEn8ashuBfE82F3MtEDFcBCEFfFw1ZgM3xj1s8.png",
+      "sources": ["coingecko"],
+      "token_type": "SPL_TOKEN_2022"
+    },
+    {
+      "coin": "SOL",
+      "chain_id": "0x65",
+      "address": "4zLh7YPr8NfrNP4bzTXaYaE72QQc3A8mptbtqUspRz5g",
+      "name": "MicroStrategy Incorporated.",
+      "symbol": "MSTR",
+      "decimals": 8,
+      "logo": "ASwYCbLedk85mRdPnkzrUXbbYbwe26m71af9rzrhC2Qz.png",
+      "sources": ["coingecko"],
+      "token_type": "SPL_TOKEN_2022"
     }
-  })";
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
-  blockchain_registry->UpdateTokenList(std::move(token_list_map));
+  ])";
+  json_value = base::JSONReader::Read(token_list_json);
+  ASSERT_TRUE(json_value);
+  token_list_map = ParseTokenList(*json_value);
+  ASSERT_TRUE(token_list_map);
+  blockchain_registry->UpdateTokenList(std::move(*token_list_map));
   TestDiscoverSolAssets({"4fzcQKyGFuk55uJaBZtvTHh42RBxbrZMuXzsGQvBJbwF",
                          "8RFACUfst117ARQLezvK4cKVR8ZHvW2xUfdUoqWnTuEB"},
                         {"4zLh7YPr8NfrNP4bzTXaYaE72QQc3A8mptbtqUspRz5g",

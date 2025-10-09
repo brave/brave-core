@@ -12,14 +12,17 @@
 
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "build/build_config.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace base {
 template <typename T>
@@ -38,10 +41,12 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   mojo::PendingRemote<mojom::BlockchainRegistry> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BlockchainRegistry> receiver);
 
+  // Initialize the registry with URL loader factory for API requests
+  void Initialize(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+
   void UpdateCoingeckoIdsMap(CoingeckoIdsMap coingecko_ids_map);
   void UpdateTokenList(TokenListMap tokens);
-  void UpdateTokenList(const std::string& key,
-                       std::vector<mojom::BlockchainTokenPtr> list);
   void UpdateChainList(ChainList chains);
   void UpdateDappList(DappListMap dapp_lists);
   void UpdateOnRampTokenLists(OnRampTokensListMap onramp_lists);
@@ -96,8 +101,23 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   BlockchainRegistry();
   ~BlockchainRegistry() override;
 
-  std::vector<mojom::BlockchainTokenPtr>* GetTokenListFromChainId(
-      const std::string& chain_id);
+  void GetTokensWithCache(
+      const std::string& chain_id,
+      mojom::CoinType coin,
+      base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr>)>
+          callback);
+
+  void FetchTokens(
+      mojom::CoinType coin,
+      const std::string& chain_id,
+      base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr>)>
+          callback);
+
+  void OnFetchTokensResponse(
+      const std::string& key,
+      base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr>)> callback,
+      api_request_helper::APIRequestResult api_request_result);
+
   std::vector<brave_wallet::mojom::BlockchainTokenPtr> GetBuyTokens(
       const std::vector<mojom::OnRampProvider>& providers,
       const std::string& chain_id);
@@ -111,8 +131,12 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
   std::vector<mojom::OnRampCurrency> on_ramp_currencies_list_;
   base::flat_set<std::string> ofac_addresses_;
 
+  // API request helper for making HTTP requests
+  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
+
   SEQUENCE_CHECKER(sequence_checker_);
   mojo::ReceiverSet<mojom::BlockchainRegistry> receivers_;
+  base::WeakPtrFactory<BlockchainRegistry> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

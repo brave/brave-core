@@ -20,6 +20,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -60,6 +61,19 @@ class BraveWalletP3AUnitTest : public testing::Test {
     brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterLocalStatePrefsForMigration(local_state_.registry());
+
+    // Pre-populate BlockchainRegistry with empty token lists to avoid network
+    // requests
+    auto* blockchain_registry = BlockchainRegistry::GetInstance();
+    TokenListMap token_list_map;
+    token_list_map["ethereum.0x1"] = std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["ethereum.0xaa36a7"] =
+        std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["ethereum.0x89"] = std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["solana.0x65"] = std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["filecoin.0x1"] = std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["filecoin.0x13a"] = std::vector<mojom::BlockchainTokenPtr>();
+    blockchain_registry->UpdateTokenList(std::move(token_list_map));
 
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
 
@@ -143,6 +157,10 @@ class BraveWalletP3AUnitTest : public testing::Test {
         [&, latest_blockhash, tx_hash, last_valid_block_height,
          block_height](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
+          if (!request.request_body || !request.request_body->elements() ||
+              request.request_body->elements()->empty()) {
+            return;
+          }
           std::string_view request_string(request.request_body->elements()
                                               ->at(0)
                                               .As<network::DataElementBytes>()

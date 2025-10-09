@@ -82,17 +82,19 @@ constexpr std::string_view kEthAllowanceErrorResponse = R"({
                   "jsonrpc": "2.0"
                 })";
 
-constexpr char kTokenListJson[] = R"({
-      "0x1": {
-        "0x3333333333333333333333333333333333333333": {
-          "name": "3333",
-          "logo": "333.svg",
-          "erc20": true,
-          "symbol": "333",
-          "decimals": 18
-        }
+constexpr char kTokenListJson[] = R"([
+      {
+        "coin": "ETH",
+        "chain_id": "0x1",
+        "address": "0x3333333333333333333333333333333333333333",
+        "name": "3333",
+        "symbol": "333",
+        "decimals": 18,
+        "logo": "333.svg",
+        "sources": ["coingecko"],
+        "token_type": "ERC20"
       }
-    })";
+    ])";
 
 constexpr char kAllowanceCacheJson[] = R"({
   "0x1": {
@@ -268,11 +270,13 @@ class EthAllowanceManagerUnitTest : public testing::Test {
           std::numeric_limits<std::size_t>::max()) {
     auto* blockchain_registry = BlockchainRegistry::GetInstance();
 
-    TokenListMap token_list_map;
-    ASSERT_TRUE(ParseTokenList(current_token_list_json, &token_list_map));
+    auto json_value = base::JSONReader::Read(current_token_list_json);
+    ASSERT_TRUE(json_value);
+    auto token_list_map = ParseTokenList(*json_value);
+    ASSERT_TRUE(token_list_map);
 
     std::vector<std::string> contract_addresses;
-    for (auto const& [contract_addr, token_info] : token_list_map) {
+    for (auto const& [contract_addr, token_info] : *token_list_map) {
       for (auto const& tkn : token_info) {
         contract_addresses.push_back(tkn->contract_address);
       }
@@ -294,8 +298,8 @@ class EthAllowanceManagerUnitTest : public testing::Test {
     }
 
     auto responses =
-        std::move(get_responses).Run(account_addresses, token_list_map);
-    blockchain_registry->UpdateTokenList(std::move(token_list_map));
+        std::move(get_responses).Run(account_addresses, *token_list_map);
+    blockchain_registry->UpdateTokenList(std::move(*token_list_map));
 
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, responses](const network::ResourceRequest& request) {

@@ -18,6 +18,7 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
+#include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
@@ -28,6 +29,8 @@
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
+#include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -147,6 +150,21 @@ class KeyringServiceUnitTest : public testing::Test {
     json_rpc_service_ = std::make_unique<JsonRpcService>(
         shared_url_loader_factory_, network_manager_.get(), &prefs_, nullptr);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+  }
+
+  // Pre-populate BlockchainRegistry with empty token lists to avoid network
+  // requests during account discovery
+  void PrepopulateBlockchainRegistry() {
+    auto* blockchain_registry = BlockchainRegistry::GetInstance();
+    TokenListMap token_list_map;
+    token_list_map["ethereum.0x1"] = std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["ethereum.0xaa36a7"] =
+        std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["ethereum.0x89"] = std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["solana.0x65"] = std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["filecoin.0x1"] = std::vector<mojom::BlockchainTokenPtr>();
+    token_list_map["filecoin.0x13a"] = std::vector<mojom::BlockchainTokenPtr>();
+    blockchain_registry->UpdateTokenList(std::move(token_list_map));
   }
 
   void SetInterceptor(const std::string& content) {
@@ -3167,6 +3185,10 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
 
   void Interceptor(const network::ResourceRequest& request) {
     url_loader_factory().ClearResponses();
+    if (!request.request_body || !request.request_body->elements() ||
+        request.request_body->elements()->empty()) {
+      return;
+    }
     std::string_view request_string(request.request_body->elements()
                                         ->at(0)
                                         .As<network::DataElementBytes>()
@@ -3222,6 +3244,8 @@ class KeyringServiceAccountDiscoveryUnitTest : public KeyringServiceUnitTest {
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
   PrepareAccounts(mojom::CoinType::ETH, mojom::kDefaultKeyringId);
+  PrepopulateBlockchainRegistry();
+
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
@@ -3263,6 +3287,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, SolAccountDiscovery) {
   PrepareAccounts(mojom::CoinType::SOL, mojom::kSolanaKeyringId);
+  PrepopulateBlockchainRegistry();
 
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
@@ -3306,6 +3331,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, SolAccountDiscovery) {
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, FilAccountDiscovery) {
   PrepareAccounts(mojom::CoinType::FIL, mojom::kFilecoinKeyringId);
+  PrepopulateBlockchainRegistry();
 
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
@@ -3351,6 +3377,8 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
   feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletBitcoinFeature,
       {{features::kBitcoinTestnetDiscovery.name, "true"}});
+
+  PrepopulateBlockchainRegistry();
 
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
@@ -3432,6 +3460,7 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
   PrepareAccounts(mojom::CoinType::ETH, mojom::kDefaultKeyringId);
+  PrepopulateBlockchainRegistry();
 
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
@@ -3475,6 +3504,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
   PrepareAccounts(mojom::CoinType::ETH, mojom::kDefaultKeyringId);
+  PrepopulateBlockchainRegistry();
 
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
@@ -3540,6 +3570,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
 
 TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
   PrepareAccounts(mojom::CoinType::ETH, mojom::kDefaultKeyringId);
+  PrepopulateBlockchainRegistry();
 
   BraveWalletService brave_wallet_service(
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
