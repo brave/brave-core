@@ -1,0 +1,27 @@
+[package]
+name = "spm_precompiled"
+version = "0.1.4"
+authors = ["Nicolas Patry <patry.nicolas@protonmail.com>"]
+edition = "2018"
+homepage = "https://github.com/huggingface/spm_precompiled"
+repository = "https://github.com/huggingface/spm_precompiled"
+documentation = "https://docs.rs/spm_precompiled/"
+license = "Apache-2.0"
+keywords = ["SentencePiece", "precompiled_charsmap", "Darts", "DoubleArray"]
+readme = "./README.md"
+description = """
+This crate aims to emulate https://github.com/google/sentencepiece Dart::DoubleArray
+struct and it's Normalizer. 
+
+This crate is highly specialized and not intended for general use.
+"""
+
+
+[dependencies]
+serde = { version = "1.0", features = [ "derive" ] }
+nom = "7.1.1"
+unicode-segmentation = "1.9"
+base64 = "0.13"
+
+[dev-dependencies]
+serde_json = "1.0"

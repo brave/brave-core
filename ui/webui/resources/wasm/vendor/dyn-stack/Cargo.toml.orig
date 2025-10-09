@@ -1,0 +1,31 @@
+[package]
+name = "dyn-stack"
+version = "0.13.2"
+edition = "2021"
+authors = ["sarah <>"]
+description = "Dynamic stack wrapper for unsized allocations"
+readme = "README.md"
+repository = "https://codeberg.org/sarah-quinones/dyn-stack"
+license = "MIT"
+keywords = ["stack", "allocation", "unsized", "array", "slice"]
+
+[dependencies]
+bytemuck = "1"
+dyn-stack-macros = { version = "0.1.0" }
+
+[features]
+default = ["alloc", "std"]
+core-error = []
+std = []
+alloc   = []
+
+[dev-dependencies]
+criterion = "0.4"
+
+[[bench]]
+name = "dynstack"
+harness = false
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

@@ -8,77 +8,99 @@
 
 //! A small fast RNG
 
-use rand_core::{Error, RngCore, SeedableRng};
+use rand_core::{RngCore, SeedableRng};
 
+#[cfg(any(target_pointer_width = "32", target_pointer_width = "16"))]
+type Rng = super::xoshiro128plusplus::Xoshiro128PlusPlus;
 #[cfg(target_pointer_width = "64")]
 type Rng = super::xoshiro256plusplus::Xoshiro256PlusPlus;
-#[cfg(not(target_pointer_width = "64"))]
-type Rng = super::xoshiro128plusplus::Xoshiro128PlusPlus;
 
-/// A small-state, fast non-crypto PRNG
+/// A small-state, fast, non-crypto, non-portable PRNG
 ///
-/// `SmallRng` may be a good choice when a PRNG with small state, cheap
-/// initialization, good statistical quality and good performance are required.
-/// Note that depending on the application, [`StdRng`] may be faster on many
-/// modern platforms while providing higher-quality randomness. Furthermore,
-/// `SmallRng` is **not** a good choice when:
-/// - Security against prediction is important. Use [`StdRng`] instead.
-/// - Seeds with many zeros are provided. In such cases, it takes `SmallRng`
-///   about 10 samples to produce 0 and 1 bits with equal probability. Either
-///   provide seeds with an approximately equal number of 0 and 1 (for example
-///   by using [`SeedableRng::from_entropy`] or [`SeedableRng::seed_from_u64`]),
-///   or use [`StdRng`] instead.
+/// This is the "standard small" RNG, a generator with the following properties:
 ///
-/// The algorithm is deterministic but should not be considered reproducible
-/// due to dependence on platform and possible replacement in future
-/// library versions. For a reproducible generator, use a named PRNG from an
-/// external crate, e.g. [rand_xoshiro] or [rand_chacha].
-/// Refer also to [The Book](https://rust-random.github.io/book/guide-rngs.html).
+/// - Non-[portable]: any future library version may replace the algorithm
+///   and results may be platform-dependent.
+///   (For a small portable generator, use the [rand_pcg] or [rand_xoshiro] crate.)
+/// - Non-cryptographic: output is easy to predict (insecure)
+/// - [Quality]: statistically good quality
+/// - Fast: the RNG is fast for both bulk generation and single values, with
+///   consistent cost of method calls
+/// - Fast initialization
+/// - Small state: little memory usage (current state size is 16-32 bytes
+///   depending on platform)
 ///
-/// The PRNG algorithm in `SmallRng` is chosen to be efficient on the current
-/// platform, without consideration for cryptography or security. The size of
-/// its state is much smaller than [`StdRng`]. The current algorithm is
+/// The current algorithm is
 /// `Xoshiro256PlusPlus` on 64-bit platforms and `Xoshiro128PlusPlus` on 32-bit
 /// platforms. Both are also implemented by the [rand_xoshiro] crate.
 ///
-/// # Examples
+/// ## Seeding (construction)
 ///
-/// Initializing `SmallRng` with a random seed can be done using [`SeedableRng::from_entropy`]:
+/// This generator implements the [`SeedableRng`] trait. All methods are
+/// suitable for seeding, but note that, even with a fixed seed, output is not
+/// [portable]. Some suggestions:
 ///
-/// ```
-/// use rand::{Rng, SeedableRng};
-/// use rand::rngs::SmallRng;
+/// 1.  To automatically seed with a unique seed, use [`SeedableRng::from_rng`]:
+///     ```
+///     use rand::SeedableRng;
+///     use rand::rngs::SmallRng;
+///     let rng = SmallRng::from_rng(&mut rand::rng());
+///     # let _: SmallRng = rng;
+///     ```
+///     or [`SeedableRng::from_os_rng`]:
+///     ```
+///     # use rand::SeedableRng;
+///     # use rand::rngs::SmallRng;
+///     let rng = SmallRng::from_os_rng();
+///     # let _: SmallRng = rng;
+///     ```
+/// 2.  To use a deterministic integral seed, use `seed_from_u64`. This uses a
+///     hash function internally to yield a (typically) good seed from any
+///     input.
+///     ```
+///     # use rand::{SeedableRng, rngs::SmallRng};
+///     let rng = SmallRng::seed_from_u64(1);
+///     # let _: SmallRng = rng;
+///     ```
+/// 3.  To seed deterministically from text or other input, use [`rand_seeder`].
 ///
-/// // Create small, cheap to initialize and fast RNG with a random seed.
-/// // The randomness is supplied by the operating system.
-/// let mut small_rng = SmallRng::from_entropy();
-/// # let v: u32 = small_rng.gen();
-/// ```
+/// See also [Seeding RNGs] in the book.
 ///
-/// When initializing a lot of `SmallRng`'s, using [`thread_rng`] can be more
-/// efficient:
+/// ## Generation
 ///
-/// ```
-/// use rand::{SeedableRng, thread_rng};
-/// use rand::rngs::SmallRng;
+/// The generators implements [`RngCore`] and thus also [`Rng`][crate::Rng].
+/// See also the [Random Values] chapter in the book.
 ///
-/// // Create a big, expensive to initialize and slower, but unpredictable RNG.
-/// // This is cached and done only once per thread.
-/// let mut thread_rng = thread_rng();
-/// // Create small, cheap to initialize and fast RNGs with random seeds.
-/// // One can generally assume this won't fail.
-/// let rngs: Vec<SmallRng> = (0..10)
-///     .map(|_| SmallRng::from_rng(&mut thread_rng).unwrap())
-///     .collect();
-/// ```
-///
+/// [portable]: https://rust-random.github.io/book/crate-reprod.html
+/// [Seeding RNGs]: https://rust-random.github.io/book/guide-seeding.html
+/// [Random Values]: https://rust-random.github.io/book/guide-values.html
+/// [Quality]: https://rust-random.github.io/book/guide-rngs.html#quality
 /// [`StdRng`]: crate::rngs::StdRng
-/// [`thread_rng`]: crate::thread_rng
-/// [rand_chacha]: https://crates.io/crates/rand_chacha
+/// [rand_pcg]: https://crates.io/crates/rand_pcg
 /// [rand_xoshiro]: https://crates.io/crates/rand_xoshiro
-#[cfg_attr(doc_cfg, doc(cfg(feature = "small_rng")))]
+/// [`rand_chacha::ChaCha8Rng`]: https://docs.rs/rand_chacha/latest/rand_chacha/struct.ChaCha8Rng.html
+/// [`rand_seeder`]: https://docs.rs/rand_seeder/latest/rand_seeder/
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct SmallRng(Rng);
+
+impl SeedableRng for SmallRng {
+    // Fix to 256 bits. Changing this is a breaking change!
+    type Seed = [u8; 32];
+
+    #[inline(always)]
+    fn from_seed(seed: Self::Seed) -> Self {
+        // This is for compatibility with 32-bit platforms where Rng::Seed has a different seed size
+        // With MSRV >= 1.77: let seed = *seed.first_chunk().unwrap()
+        const LEN: usize = core::mem::size_of::<<Rng as SeedableRng>::Seed>();
+        let seed = (&seed[..LEN]).try_into().unwrap();
+        SmallRng(Rng::from_seed(seed))
+    }
+
+    #[inline(always)]
+    fn seed_from_u64(state: u64) -> Self {
+        SmallRng(Rng::seed_from_u64(state))
+    }
+}
 
 impl RngCore for SmallRng {
     #[inline(always)]
@@ -93,25 +115,6 @@ impl RngCore for SmallRng {
 
     #[inline(always)]
     fn fill_bytes(&mut self, dest: &mut [u8]) {
-        self.0.fill_bytes(dest);
-    }
-
-    #[inline(always)]
-    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), Error> {
-        self.0.try_fill_bytes(dest)
-    }
-}
-
-impl SeedableRng for SmallRng {
-    type Seed = <Rng as SeedableRng>::Seed;
-
-    #[inline(always)]
-    fn from_seed(seed: Self::Seed) -> Self {
-        SmallRng(Rng::from_seed(seed))
-    }
-
-    #[inline(always)]
-    fn from_rng<R: RngCore>(rng: R) -> Result<Self, Error> {
-        Rng::from_rng(rng).map(SmallRng)
+        self.0.fill_bytes(dest)
     }
 }

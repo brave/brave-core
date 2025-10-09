@@ -35,6 +35,16 @@ struct C {
 util_assert_impl_all!(C: imp::IntoBytes);
 
 #[derive(imp::IntoBytes)]
+#[repr(C)]
+struct SyntacticUnsized {
+    a: u8,
+    b: u8,
+    c: [util::AU16],
+}
+
+util_assert_impl_all!(C: imp::IntoBytes);
+
+#[derive(imp::IntoBytes)]
 #[repr(transparent)]
 struct Transparent {
     a: u8,

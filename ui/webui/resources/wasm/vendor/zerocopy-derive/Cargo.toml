@@ -12,7 +12,7 @@
 [package]
 edition = "2021"
 name = "zerocopy-derive"
-version = "0.8.24"
+version = "0.8.27"
 authors = [
     "Joshua Liebow-Feeser <joshlf@google.com>",
     "Jack Wrenn <jswrenn@amazon.com>",
@@ -157,6 +157,10 @@ path = "tests/union_try_from_bytes.rs"
 [[test]]
 name = "union_unaligned"
 path = "tests/union_unaligned.rs"
+
+[[test]]
+name = "unsafe_cell"
+path = "tests/unsafe_cell.rs"
 
 [dependencies.proc-macro2]
 version = "1.0.1"

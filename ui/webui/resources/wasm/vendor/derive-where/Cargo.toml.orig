@@ -1,0 +1,49 @@
+[workspace]
+default-members = [""]
+members = ["", "test-crates/crate_", "test-crates/ensure-no-std"]
+resolver = "2"
+
+[package]
+categories = ["rust-patterns", "no-std"]
+description = "Deriving with custom trait bounds"
+documentation = "https://docs.rs/derive-where"
+edition = "2021"
+include = ["src/**/*", "Cargo.toml", "LICENSE-*", "README.md"]
+keywords = ["derive", "macro"]
+license = "MIT OR Apache-2.0"
+name = "derive-where"
+readme = "README.md"
+repository = "https://github.com/ModProg/derive-where"
+rust-version = "1.57"
+version = "1.2.7"
+
+[lib]
+proc-macro = true
+
+[features]
+nightly = []
+safe = []
+zeroize = []
+zeroize-on-drop = ["zeroize"]
+
+[dependencies]
+proc-macro2 = { version = "1", default-features = false, features = ["proc-macro"] }
+quote = { version = "1", default-features = false }
+syn = { version = "2", default-features = false, features = [
+	"clone-impls",
+	"derive",
+	"extra-traits",
+	"full",
+	"parsing",
+	"printing",
+] }
+
+[dev-dependencies]
+pretty_assertions = "1"
+rustversion = "1"
+trybuild = { version = "1.0.18", default-features = false }
+zeroize_ = { version = "1.5", package = "zeroize", default-features = false }
+
+[package.metadata.docs.rs]
+all-features = true
+targets = []
