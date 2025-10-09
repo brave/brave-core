@@ -37,3 +37,31 @@ source_set("unit_tests") {
     ]
   }
 }
+
+source_set("browser_tests") {
+  if (!is_android) {
+    testonly = true
+
+    sources = [
+      "email_aliases_link_browsertest.cc",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/browser",
+      "//brave/common",
+      "//brave/components/email_aliases:features",
+      "//chrome/browser",
+      "//chrome/browser/content_settings:content_settings_factory",
+      "//chrome/browser/ui",
+      "//chrome/common",
+      "//chrome/test:test_support",
+      "//chrome/test:test_support_ui",
+      "//content/public/browser",
+      "//content/test:test_support",
+      "//ui/webui:test_support",
+    ]
+
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  }
+}
