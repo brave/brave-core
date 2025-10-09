@@ -7,3 +7,4 @@ export * from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m.js
 export * from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m.js'
 export * from 'gen/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.m.js'
 export * from 'gen/brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.m.js'
+export * from 'gen/brave/components/ai_chat/core/common/mojom/bookmarks.mojom.m.js'

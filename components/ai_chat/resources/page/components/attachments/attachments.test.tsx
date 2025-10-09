@@ -6,7 +6,7 @@
 import '$test-utils/disable_custom_elements'
 
 import * as React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import {
   AIChatContext,
   AIChatReactContext,
@@ -22,6 +22,7 @@ import {
   AssociatedContent,
   ContentType,
 } from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m.js'
+import { Bookmark } from 'components/ai_chat/resources/common/mojom'
 
 const MockContext = (
   props: React.PropsWithChildren<Partial<AIChatContext & ConversationContext>>,
@@ -94,6 +95,7 @@ describe('Attachments Component', () => {
     render(
       <MockContext
         unassociatedTabs={mockTabs}
+        attachmentsDialog='tabs'
         setAttachmentsDialog={mockSetAttachmentsDialog}
       >
         <Attachments />
@@ -110,6 +112,7 @@ describe('Attachments Component', () => {
     const { container } = render(
       <MockContext
         unassociatedTabs={mockTabs}
+        attachmentsDialog='tabs'
         setAttachmentsDialog={mockSetAttachmentsDialog}
       >
         <Attachments />
@@ -136,109 +139,125 @@ describe('Attachments Component', () => {
     expect(mockSetAttachmentsDialog).toHaveBeenCalledWith(null)
   })
 
-  it('displays all unassociated tabs', () => {
+  it('displays all unassociated tabs', async () => {
     render(
       <MockContext
         unassociatedTabs={mockTabs}
+        setAttachmentsDialog={mockSetAttachmentsDialog}
+        attachmentsDialog='tabs'
+      >
+        <Attachments />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText('Google Search')).toBeInTheDocument()
+      expect(screen.getByText('GitHub - Brave Browser')).toBeInTheDocument()
+      expect(screen.getByText('Stack Overflow')).toBeInTheDocument()
+    })
+  })
+
+  it('displays tab URLs', async () => {
+    render(
+      <MockContext
+        unassociatedTabs={mockTabs}
+        attachmentsDialog='tabs'
         setAttachmentsDialog={mockSetAttachmentsDialog}
       >
         <Attachments />
       </MockContext>,
     )
 
-    expect(screen.getByText('Google Search')).toBeInTheDocument()
-    expect(screen.getByText('GitHub - Brave Browser')).toBeInTheDocument()
-    expect(screen.getByText('Stack Overflow')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('https://google.com')).toBeInTheDocument()
+      expect(
+        screen.getByText('https://github.com/brave/brave-browser'),
+      ).toBeInTheDocument()
+      expect(screen.getByText('https://stackoverflow.com')).toBeInTheDocument()
+    })
   })
 
-  it('displays tab URLs', () => {
-    render(
-      <MockContext
-        unassociatedTabs={mockTabs}
-        setAttachmentsDialog={mockSetAttachmentsDialog}
-      >
-        <Attachments />
-      </MockContext>,
-    )
-
-    expect(screen.getByText('https://google.com')).toBeInTheDocument()
-    expect(
-      screen.getByText('https://github.com/brave/brave-browser'),
-    ).toBeInTheDocument()
-    expect(screen.getByText('https://stackoverflow.com')).toBeInTheDocument()
-  })
-
-  it('displays favicons for each tab', () => {
+  it('displays favicons for each tab', async () => {
     const { container } = render(
       <MockContext
         unassociatedTabs={mockTabs}
         setAttachmentsDialog={mockSetAttachmentsDialog}
+        attachmentsDialog='tabs'
       >
         <Attachments />
       </MockContext>,
     )
 
-    const favicons = container.querySelectorAll('img.icon')
-    expect(favicons).toHaveLength(3)
+    await waitFor(() => {
+      const favicons = container.querySelectorAll('img.icon')
+      expect(favicons).toHaveLength(3)
 
-    expect(favicons[0]).toHaveAttribute(
-      'src',
-      expect.stringContaining('google.com'),
-    )
-    expect(favicons[1]).toHaveAttribute(
-      'src',
-      expect.stringContaining('github.com'),
-    )
-    expect(favicons[2]).toHaveAttribute(
-      'src',
-      expect.stringContaining('stackoverflow.com'),
-    )
+      expect(favicons[0]).toHaveAttribute(
+        'src',
+        expect.stringContaining('google.com'),
+      )
+      expect(favicons[1]).toHaveAttribute(
+        'src',
+        expect.stringContaining('github.com'),
+      )
+      expect(favicons[2]).toHaveAttribute(
+        'src',
+        expect.stringContaining('stackoverflow.com'),
+      )
+    })
   })
 
-  it('shows checkboxes in unchecked state for unassociated tabs', () => {
+  it('shows checkboxes in unchecked state for unassociated tabs', async () => {
     const { container } = render(
       <MockContext
         unassociatedTabs={mockTabs}
         associatedContentInfo={[]}
+        attachmentsDialog='tabs'
         setAttachmentsDialog={mockSetAttachmentsDialog}
       >
         <Attachments />
       </MockContext>,
     )
 
-    const checkboxes = container.querySelectorAll('leo-checkbox')
-    expect(checkboxes).toHaveLength(3)
+    await waitFor(() => {
+      const checkboxes = container.querySelectorAll('leo-checkbox')
+      expect(checkboxes).toHaveLength(3)
 
-    checkboxes.forEach((checkbox) => {
-      expect(checkbox).toHaveProperty('checked', false)
+      checkboxes.forEach((checkbox) => {
+        expect(checkbox).toHaveProperty('checked', false)
+      })
     })
   })
 
-  it('shows checkboxes in checked state for associated tabs', () => {
+  it('shows checkboxes in checked state for associated tabs', async () => {
     const { container } = render(
       <MockContext
         unassociatedTabs={mockTabs}
         associatedContentInfo={mockAssociatedContent}
+        attachmentsDialog='tabs'
         setAttachmentsDialog={mockSetAttachmentsDialog}
       >
         <Attachments />
       </MockContext>,
     )
 
-    const checkboxes = container.querySelectorAll('leo-checkbox')
-    expect(checkboxes).toHaveLength(3)
+    await waitFor(() => {
+      const checkboxes = container.querySelectorAll('leo-checkbox')
+      expect(checkboxes).toHaveLength(3)
 
-    // First tab should be checked (associated), others unchecked
-    expect(checkboxes[0]).toHaveProperty('checked', true)
-    expect(checkboxes[1]).toHaveProperty('checked', false)
-    expect(checkboxes[2]).toHaveProperty('checked', false)
+      // First tab should be checked (associated), others unchecked
+      expect(checkboxes[0]).toHaveProperty('checked', true)
+      expect(checkboxes[1]).toHaveProperty('checked', false)
+      expect(checkboxes[2]).toHaveProperty('checked', false)
+    })
   })
 
-  it('has proper checkbox structure for association', () => {
+  it('has proper checkbox structure for association', async () => {
     const { container } = render(
       <MockContext
         unassociatedTabs={mockTabs}
         associatedContentInfo={[]}
+        attachmentsDialog='tabs'
         conversationUuid='test-conversation'
         uiHandler={
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -253,20 +272,23 @@ describe('Attachments Component', () => {
       </MockContext>,
     )
 
-    const checkboxes = container.querySelectorAll('leo-checkbox')
-    expect(checkboxes).toHaveLength(3)
+    await waitFor(() => {
+      const checkboxes = container.querySelectorAll('leo-checkbox')
+      expect(checkboxes).toHaveLength(3)
 
-    // Verify that each checkbox has the expected content structure
-    const firstCheckbox = checkboxes[0]
-    expect(firstCheckbox).toContainHTML('Google Search')
-    expect(firstCheckbox).toContainHTML('https://google.com')
+      // Verify that each checkbox has the expected content structure
+      const firstCheckbox = checkboxes[0]
+      expect(firstCheckbox).toContainHTML('Google Search')
+      expect(firstCheckbox).toContainHTML('https://google.com')
+    })
   })
 
-  it('properly renders associated content info', () => {
+  it('properly renders associated content info', async () => {
     const { container } = render(
       <MockContext
         unassociatedTabs={mockTabs}
         associatedContentInfo={mockAssociatedContent}
+        attachmentsDialog='tabs'
         conversationUuid='test-conversation'
         uiHandler={
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -281,10 +303,12 @@ describe('Attachments Component', () => {
       </MockContext>,
     )
 
-    // First tab should be in the associated content
-    const firstCheckbox = container.querySelectorAll('leo-checkbox')[0]
-    expect(firstCheckbox).toContainHTML('Google Search')
-    expect(firstCheckbox).toHaveProperty('checked', true)
+    await waitFor(() => {
+      // First tab should be in the associated content
+      const firstCheckbox = container.querySelectorAll('leo-checkbox')[0]
+      expect(firstCheckbox).toContainHTML('Google Search')
+      expect(firstCheckbox).toHaveProperty('checked', true)
+    })
   })
 
   describe('Search functionality', () => {
@@ -302,20 +326,23 @@ describe('Attachments Component', () => {
       expect(searchInput).toBeInTheDocument()
     })
 
-    it('renders all tabs when no search filter is applied', () => {
+    it('renders all tabs when no search filter is applied', async () => {
       render(
         <MockContext
           unassociatedTabs={mockTabs}
+          attachmentsDialog='tabs'
           setAttachmentsDialog={mockSetAttachmentsDialog}
         >
           <Attachments />
         </MockContext>,
       )
 
-      // All tabs should be visible when no search is active
-      expect(screen.getByText('Google Search')).toBeInTheDocument()
-      expect(screen.getByText('GitHub - Brave Browser')).toBeInTheDocument()
-      expect(screen.getByText('Stack Overflow')).toBeInTheDocument()
+      await waitFor(() => {
+        // All tabs should be visible when no search is active
+        expect(screen.getByText('Google Search')).toBeInTheDocument()
+        expect(screen.getByText('GitHub - Brave Browser')).toBeInTheDocument()
+        expect(screen.getByText('Stack Overflow')).toBeInTheDocument()
+      })
     })
 
     it('shows search input with correct styling', () => {
@@ -373,6 +400,7 @@ describe('Attachments Component', () => {
       const { container } = render(
         <MockContext
           unassociatedTabs={[]}
+          attachmentsDialog='tabs'
           setAttachmentsDialog={mockSetAttachmentsDialog}
         >
           <Attachments />
@@ -381,12 +409,142 @@ describe('Attachments Component', () => {
 
       // Should still render the basic structure
       expect(
-        screen.getByText('CHAT_UI_ATTACHMENTS_TABS_TITLE'),
+        screen.getByText('CHAT_UI_ATTACHMENTS_TABS_TITLE', { exact: false }),
       ).toBeInTheDocument()
       expect(container.querySelector('leo-input')).toBeInTheDocument()
 
       // But no tab items should be present
       expect(container.querySelectorAll('leo-checkbox')).toHaveLength(0)
+    })
+  })
+
+  describe('Bookmarks display', () => {
+    const mockBookmarks: Bookmark[] = [
+      {
+        id: BigInt(1),
+        title: 'Brave Browser',
+        url: { url: 'https://brave.com' },
+      },
+      {
+        id: BigInt(2),
+        title: 'MDN Web Docs',
+        url: { url: 'https://developer.mozilla.org' },
+      },
+    ]
+
+    it('displays bookmarks when attachmentsDialog is set to bookmarks', async () => {
+      render(
+        <MockContext
+          attachmentsDialog='bookmarks'
+          getBookmarks={() => Promise.resolve(mockBookmarks)}
+          setAttachmentsDialog={mockSetAttachmentsDialog}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      // Check bookmarks are rendered using UrlContentItem
+      await waitFor(() => {
+        expect(screen.getByText('Brave Browser')).toBeInTheDocument()
+        expect(screen.getByText('MDN Web Docs')).toBeInTheDocument()
+        expect(screen.getByText('https://brave.com')).toBeInTheDocument()
+        expect(
+          screen.getByText('https://developer.mozilla.org'),
+        ).toBeInTheDocument()
+      })
+    })
+
+    it('displays correct title for bookmarks dialog', () => {
+      render(
+        <MockContext
+          attachmentsDialog='bookmarks'
+          getBookmarks={() => Promise.resolve(mockBookmarks)}
+          setAttachmentsDialog={mockSetAttachmentsDialog}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      expect(
+        screen.getByText('CHAT_UI_ATTACHMENTS_BOOKMARKS_TITLE'),
+      ).toBeInTheDocument()
+    })
+
+    it('displays correct description for bookmarks dialog', async () => {
+      const { container } = render(
+        <MockContext
+          attachmentsDialog='bookmarks'
+          getBookmarks={() => Promise.resolve(mockBookmarks)}
+          setAttachmentsDialog={mockSetAttachmentsDialog}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      expect(container.querySelector('.description')?.textContent).toContain(
+        'CHAT_UI_ATTACHMENTS_BOOKMARKS_DESCRIPTION',
+      )
+    })
+
+    it('displays favicons for bookmarks', async () => {
+      const { container } = render(
+        <MockContext
+          attachmentsDialog='bookmarks'
+          getBookmarks={() => Promise.resolve(mockBookmarks)}
+          setAttachmentsDialog={mockSetAttachmentsDialog}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      await waitFor(() => {
+        const favicons = container.querySelectorAll('img')
+        expect(favicons).toHaveLength(2)
+
+        expect(favicons[0]).toHaveAttribute(
+          'src',
+          expect.stringContaining('brave.com'),
+        )
+        expect(favicons[1]).toHaveAttribute(
+          'src',
+          expect.stringContaining('developer.mozilla.org'),
+        )
+      })
+    })
+  })
+
+  describe('Tabs display', () => {
+    it('displays tabs when attachmentsDialog is set to tabs', () => {
+      render(
+        <MockContext
+          attachmentsDialog='tabs'
+          unassociatedTabs={mockTabs}
+          setAttachmentsDialog={mockSetAttachmentsDialog}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      // Check tabs are rendered using TabItem
+      expect(screen.getByText('Google Search')).toBeInTheDocument()
+      expect(screen.getByText('GitHub - Brave Browser')).toBeInTheDocument()
+      expect(screen.getByText('https://google.com')).toBeInTheDocument()
+    })
+
+    it('displays correct title for tabs dialog', () => {
+      render(
+        <MockContext
+          attachmentsDialog='tabs'
+          unassociatedTabs={mockTabs}
+          setAttachmentsDialog={mockSetAttachmentsDialog}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      expect(
+        screen.getByText('CHAT_UI_ATTACHMENTS_TABS_TITLE'),
+      ).toBeInTheDocument()
     })
   })
 })

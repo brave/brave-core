@@ -93,9 +93,7 @@ function Main() {
     && conversationContext.associatedContentInfo === null // AssociatedContent request has finished and this is a standalone conversation
     && !aiChatContext.isPremiumUser
 
-  const showAttachments =
-    conversationContext.attachmentsDialog === 'tabs'
-    && aiChatContext.tabs.length > 0
+  const showAttachments = !!conversationContext.attachmentsDialog
 
   const showTemporaryChatInfo = conversationContext.isTemporaryChat
 
