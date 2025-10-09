@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Endereço";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "Conta Brave";
+
 /* Button to show the brave panel */
 "BravePanel" = "Painel do Brave";
 
@@ -828,6 +831,9 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Erro";
+
+/* Button text to get started with Brave Account */
+"GetStarted" = "Começar";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "Bloquear sites perigosos";
@@ -2005,6 +2011,9 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "Detalhes adicionais";
 
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Qual é o principal problema que você está vendo?";
+
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Entre em contato comigo: (opcional)";
 
@@ -2013,6 +2022,9 @@
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "E-mail, Twitter etc.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Selecione uma opção";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Informe aos desenvolvedores do Brave que este site não está funcionando como esperado:";
@@ -3085,8 +3097,14 @@
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "Fechar todas as abas";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "Fechar aba";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "Fechar abas";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "Desmarcar todas as abas";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "Mais";
@@ -3121,11 +3139,20 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "Navegação normal";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "Abas selecionadas";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "Selecionar abas";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "Apagar todas as guias";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "Apagar a guia selecionada";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "Destruir";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Apagar guias";

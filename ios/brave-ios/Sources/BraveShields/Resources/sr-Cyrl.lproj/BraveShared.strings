@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "Домен је блокиран";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "Тражите веб-сајтовима да не продају или уступају ваше податке. [Сазнајте више](https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+"EnableGPCDescription" = "Тражите веб-сајтовима да не продају или уступају ваше податке. [Сазнајте више](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Активирајте глобалну контролу приватности";
@@ -196,11 +196,13 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "По затварању картица сајта";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Уништавање ће затворити све картице, и избрисати све податке са сајта. Ова радња се не може опозвати.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Уништи податке са сајта";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "Уништавање ће затворити све отворене картице на овом сајту и избрисати све податке са сајта. Ова радња се не може опозвати.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -208,6 +210,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred Da
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Уништи податке са сајта сада";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Уништавање ће затворити изабране картице, и избрисати све податке са сајта. Ова радња се не може опозвати.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Сајт није безбедан";

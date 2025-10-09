@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "แอดเดรส";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "บัญชี Brave";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave Panel";
 
@@ -828,6 +831,9 @@
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "ข้อผิดพลาด";
+
+/* Button text to get started with Brave Account */
+"GetStarted" = "Get Started";
 
 /* No comment provided by engineer. */
 "GoogleSafeBrowsing" = "บล็อกเว็บไซต์อันตราย";
@@ -2005,9 +2011,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "รายละเอียดเพิ่มเติม";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "เลือกหนึ่งตัวเลือก";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "ปัญหาหลักที่คุณกำลังเห็นคืออะไร";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "ติดต่อฉันที่: (ไม่บังคับ)";
@@ -2017,6 +2022,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "อีเมล, Twitter, ฯลฯ";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "เลือกหนึ่งตัวเลือก";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "แจ้งให้ผู้พัฒนา Brave ทราบว่าเว็บไซต์นี้ทำงานไม่ถูกต้องตามที่คิดไว้:";
@@ -3089,8 +3097,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "ปิดแท็บทั้งหมด";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "ปิดแท็บ";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "ปิดแท็บ";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "ยกเลิกการเลือกแท็บ";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "เพิ่มเติม";
@@ -3125,11 +3139,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "การท่องเว็บปกติ";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "แท็บที่เลือก";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "เลือกแท็บ";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "ทำลายแท็บทั้งหมด";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "ทำลายแท็บที่เลือก";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "ย่อยข้อมูล";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "ทำลายแท็บ";

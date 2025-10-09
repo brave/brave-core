@@ -196,11 +196,13 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "網站分頁關閉";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "銷毀將關閉所有打開的分頁，並刪除所有網站資料。此操作無法復原。";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "銷毀網站資料";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "銷毀將關閉此網站所有打開的分頁，並刪除所有網站資料。此操作無法復原。";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -208,6 +210,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred Da
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "立即銷毀網站資料";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "銷毀將關閉選取的分頁，並刪除所有網站資料。此操作無法復原。";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "網站不安全";

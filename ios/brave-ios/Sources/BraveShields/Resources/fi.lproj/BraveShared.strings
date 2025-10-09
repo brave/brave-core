@@ -196,11 +196,13 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Sivuston välilehdet suljettu";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Silppuaminen sulkee kaikki välilehdet ja poistaa kaikki sivuston tiedot. Tätä ei voi kumota.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Silppua sivuston tiedot";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "Silppuaminen sulkee kaikki tämän sivuston avoimet välilehdet ja poistaa kaikki sivuston tiedot. Tätä ei voi kumota.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -208,6 +210,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred Da
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Silppua sivuston tiedot nyt";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Silppuaminen sulkee valitut välilehdet ja poistaa kaikki sivuston tiedot. Tätä ei voi kumota.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Sivustoa ei ole suojattu";

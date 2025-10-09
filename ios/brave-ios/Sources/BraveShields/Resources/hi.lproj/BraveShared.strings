@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "डोमेन ब्लॉक है";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "वेबसाइटों को अपना डेटा बेचने या शेयर करने से मना करें। [ज़्यादा जानें](https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+"EnableGPCDescription" = "वेबसाइटों को अपना डेटा बेचने या शेयर करने से मना करें। [ज़्यादा जानें](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "ग्लोबल प्राइवेसी कंट्रोल चालू करें";
@@ -196,11 +196,13 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "साइट के टैब बंद होने पर";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "डेटा श्रेड करने से सभी टैब बंद हो जाएंगे, और साइट का पूरा डेटा मिट जाएगा। इसे पहले जैसा नहीं किया जा सकता।";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "साइट डेटा श्रेड करें";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "डेटा श्रेड करने से इस साइट के लिए खुले सभी टैब बंद हो जाएँगे और साइट का पूरा डेटा मिट जाएगा। इसे पहले जैसा नहीं किया जा सकता।";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -208,6 +210,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred Da
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "अभी साइट डेटा श्रेड करें";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "डेटा श्रेड करने से चुने हुए सभी टैब बंद हो जाएंगे, और साइट का पूरा डेटा मिट जाएगा। इसे पहले जैसा नहीं किया जा सकता।";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "साइट सुरक्षित नहीं है";

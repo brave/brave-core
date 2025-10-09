@@ -1,104 +1,104 @@
 /* Error message shown when importing bookmarks failed */
-"failedToImportBookmarks" = "Ocorreu um erro ao importar favoritos.";
+"failedToImportBookmarks" = "Ocorreu um erro ao importar os Favoritos.";
 
 /* Error message shown when importing history failed */
-"failedToImportHistory" = "Ocorreu um erro ao importar histórico.";
+"failedToImportHistory" = "Ocorreu um erro ao importar o Histórico.";
 
 /* Error message shown when importing passwords failed due to a password already existing (a conflict) */
-"failedToImportPasswordsDueToConflictError" = "Ocorreu um erro ao importar senhas. Algumas senhas não puderam ser importadas devido a conflitos.";
+"failedToImportPasswordsDueToConflictError" = "Ocorreu um erro ao importar as Palavras-passe. Algumas não puderam ser importadas devido a conflitos.";
 
 /* Error message shown when importing passwords failed */
-"failedToImportPasswordsError" = "Ocorreu um erro ao importar senhas.";
+"failedToImportPasswordsError" = "Ocorreu um erro ao importar as Palavras-passe.";
 
 /* Error message shown when unzipping a zip file failed */
-"failedToUnzipError" = "Ocorreu um erro ao descompactar o arquivo.";
+"failedToUnzipError" = "Ocorreu um erro ao descomprimir o ficheiro.";
 
 /* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
-"importDataFileSelectorButtonTitle" = "Escolher um arquivo...";
+"importDataFileSelectorButtonTitle" = "Selecione um ficheiro...";
 
 /* The message of a Text on screen that explains to the user what type of data can be imported. */
-"importDataFileSelectorMessage" = "Traga seus favoritos, histórico e outros dados do navegador para o Brave.";
+"importDataFileSelectorMessage" = "Importe os seus favoritos, histórico e outros dados do navegador para o Brave.";
 
 /* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
-"importDataFileSelectorNavigationTitle" = "Importar dados de navegação";
+"importDataFileSelectorNavigationTitle" = "Importar Dados de Navegação";
 
 /* The title of a Text on screen that explains to the user what type of data can be imported. */
-"importDataFileSelectorTitle" = "Importar favoritos e muito mais";
+"importDataFileSelectorTitle" = "Importar Marcadores e muito mais";
 
 /* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
-"importDataViewTutorialButtonTitle" = "Como exportar do Safari";
+"importDataViewTutorialButtonTitle" = "Como exportar a partir do Safari";
 
 /* The message shown on the import data screen when importing the data from the browser profile failed. */
-"importStateFailureMessage" = "Algo deu errado durante a importação de seus dados. Tente novamente.\nSe o problema persistir, entre em contato com o suporte.";
+"importStateFailureMessage" = "Ocorreu um erro ao importar os seus dados.\nTente novamente.\nSe o problema persistir, contacte a assistência.";
 
 /* The title shown on the import data screen when importing the data from the browser profile failed. */
-"importStateFailureTitle" = "Falha na importação";
+"importStateFailureTitle" = "A Importação Falhou";
 
 /* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
-"importStatePasswordConflictKeepExistingPasswordsTitle" = "Mantenha as senhas do Brave";
+"importStatePasswordConflictKeepExistingPasswordsTitle" = "Manter as palavras-passe do Brave";
 
 /* The title of the button on the import error screen when there is a conflict, that lets the user use the passwords that were imported, overwriting your existing passwords. */
-"importStatePasswordConflictKeepImportedPasswordsTitle" = "Use as senhas do Safari";
+"importStatePasswordConflictKeepImportedPasswordsTitle" = "Usar as palavras-passe do Safari";
 
 /* The message shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). %d is a placeholder for the number of conflicting passwords. */
-"importStatePasswordConflictMessage" = "%d conflitos de senha foram encontrados.\nEscolha o que importar.";
+"importStatePasswordConflictMessage" = "%d Foram detetados conflitos de palavras-passe.\nEscolha as que pretende importar.";
 
 /* The title shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). */
-"importStatePasswordConflictTitle" = "Conflitos de senha";
+"importStatePasswordConflictTitle" = "Palavras-passe em conflito";
 
 /* The title of the button on the import success screen to let the user continue using the app as before. */
 "importStateSuccessContinueTitle" = "Continuar";
 
 /* The message shown on the import data screen when importing the data from the browser profile succeeded. */
-"importStateSuccessMessage" = "A importação dos seus dados foi concluída. Você já pode começar a navegar com o Brave.";
+"importStateSuccessMessage" = "Os seus dados foram importados. Está tudo pronto para começar a navegar com o Brave.";
 
 /* The title shown on the import data screen when importing the data from the browser profile succeeded. */
-"importStateSuccessTitle" = "Pronto!";
+"importStateSuccessTitle" = "Feito!";
 
 /* The title of the button on the import error screen that lets the user try to import the data again */
-"importStateTryAgainTitle" = "Tentar novamente";
+"importStateTryAgainTitle" = "Repetir";
 
 /* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
 "importTutorialDetailedProcessMessage" = "Abrir a página de ajuda do Safari";
 
 /* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
-"importTutorialDetailedProcessTitle" = "Quer um processo de exportação detalhado?";
+"importTutorialDetailedProcessTitle" = "Quer obter um processo de exportação pormenorizado?";
 
 /* The title of the tutorial page that shows in the Navigation Bar. */
 "importTutorialScreenTitle" = "Como exportar do Safari";
 
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
-"importTutorialStepFiveTitle" = "Salve o arquivo em **Arquivos**, escolhendo um local que você possa facilmente encontrar mais tarde.";
+"importTutorialStepFiveTitle" = "Guarde o ficheiro em **Files**, escolhendo uma localização que possa encontrar facilmente mais tarde.";
 
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
-"importTutorialStepFourTitle" = "**Selecione** os dados que você deseja exportar (favoritos, histórico, cartões de crédito, senhas).";
+"importTutorialStepFourTitle" = "**Select** os dados que pretende exportar (Marcadores, Histórico, Cartões de Crédito, Palavras-passe).";
 
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
-"importTutorialStepOneTitle" = "Abra **Configurações**, role a tela para baixo e toque em **Aplicativos**.";
+"importTutorialStepOneTitle" = "Abra as **Definições**, deslize para baixo e toque em **Apps**.";
 
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
-"importTutorialStepThreeTitle" = "Role a tela para baixo e toque em **Exportar**.";
+"importTutorialStepThreeTitle" = "Deslize para baixo e toque em **Exportar**.";
 
 /* The title on each card indicating the tutorial step that has been completed. Step 1, Step 2, Step 3, etc... %d is a placeholder for the step number. */
-"importTutorialStepTitle" = "Etapa %d";
+"importTutorialStepTitle" = "Passo %d";
 
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
-"importTutorialStepTwoTitle" = "Na lista de aplicativos (em ordem alfabética), localize e toque em **Safari**.";
+"importTutorialStepTwoTitle" = "Na lista de aplicações (ordenadas alfabeticamente), localize e toque em **Safari**.";
 
 /* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
-"invalidZipFileDataError" = "O arquivo zip não contém dados de importação.";
+"invalidZipFileDataError" = "O ficheiro zip não contém dados de importação.";
 
 /* The message shown on the import data screen when the data is being loaded or imported. */
-"loadingMessage" = "Aguarde enquanto transferimos seus dados com segurança. Isso pode levar alguns minutos.";
+"loadingMessage" = "Por favor, aguarde enquanto transferirmos os seus dados de forma segura. Isto pode levar algum tempo.";
 
 /* The title shown on the import data screen when the data is being loaded or imported. */
-"loadingTitle" = "Importando seus dados...";
+"loadingTitle" = "A Importar os Seus Dados...";
 
 /* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
-"multipleProfilesMessage" = "Escolha o perfil de onde você deseja importar dados";
+"multipleProfilesMessage" = "Selecione o perfil do qual pretende importar dados";
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
-"multipleProfilesTitle" = "Vários perfis detectados";
+"multipleProfilesTitle" = "Detetados vários perfis";
 
 /* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
 "personalImportTitle" = "Pessoal";
@@ -107,5 +107,5 @@
 "SyncImportFolderName" = "Favoritos importados";
 
 /* An unknown error occurred during data importing. */
-"unknownError" = "O arquivo zip não contém dados de importação.";
+"unknownError" = "O ficheiro zip não contém dados de importação.";
 

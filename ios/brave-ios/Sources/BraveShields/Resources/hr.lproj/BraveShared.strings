@@ -196,11 +196,13 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Kartice mrežne stranice zatvorene";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Uništavanje će zatvoriti sve kartice, i izbrisati sve podatke s mrežne stranice. Ovo se ne može poništiti.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Uništavanje podataka s mrežne stranice";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "Uništavanje će zatvoriti sve kartice otvorene na ovoj mrežnoj stranici i izbrisati sve podatke s mrežne stranice. Ovo se ne može poništiti.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -208,6 +210,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred Da
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Odmah uništiti podatke s mrežne stranice";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Uništavanje će zatvoriti odabrane kartice, i izbrisati sve podatke s mrežne stranice. Ovo se ne može poništiti.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Mrežno mjesto nije sigurno";
