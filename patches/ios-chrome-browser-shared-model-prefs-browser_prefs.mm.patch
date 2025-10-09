@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index f8b0da039ab4a846963ddf74aaf2b5ce860e8116..990b389993da13f328f15ca5e9c281678bbcc362 100644
+index 63abd7356410d1c7a5361e9d38c1e48165b8362b..4faef44ad3984196ed2febfade104e8783a9f607 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -667,6 +667,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -669,6 +669,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
    // Deprecated 09/2025.
    registry->RegisterBooleanPref(prefs::kBottomOmnibox, false);
@@ -10,10 +10,10 @@ index f8b0da039ab4a846963ddf74aaf2b5ce860e8116..990b389993da13f328f15ca5e9c28167
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1104,6 +1105,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
- 
-   // Deprecated 10/2025
+@@ -1106,6 +1107,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterBooleanPref(kTipsInMagicStackDisabledPref, false);
+   registry->RegisterBooleanPref(kHomeCustomizationMagicStackSetUpListEnabled,
+                                 true);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
