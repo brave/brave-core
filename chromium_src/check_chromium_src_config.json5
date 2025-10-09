@@ -102,9 +102,6 @@
         "components/password_manager/core/browser/password_manager_constants.cc": [
             "IS_ANDROID_FORCED_TO_FALSE",
         ],
-        "components/password_manager/core/browser/password_manager_constants.h": [
-            "IS_ANDROID_FORCED_TO_FALSE",
-        ],
         "components/permissions/permission_request_data.h": [
             "BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_PERMISSION_CONTEXT_BASE",
         ],
