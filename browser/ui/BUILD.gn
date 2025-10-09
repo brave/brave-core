@@ -1264,7 +1264,6 @@ source_set("ui") {
     deps += [
       "//brave/browser/brave_wallet:tab_helper",
       "//brave/browser/ui/brave_wallet",
-      "//brave/browser/ui/webui/brave_wallet/common_handler",
       "//brave/components/ai_chat/core/common",
       "//brave/components/brave_news/common",
       "//brave/components/brave_rewards/core",
@@ -1273,6 +1272,7 @@ source_set("ui") {
       "//brave/components/brave_wallet/common:buildflags",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet/common:pref_names",
+      "//brave/components/brave_wallet/common:wallet_handler",
       "//brave/components/brave_wallet_ui:resources",
       "//brave/components/brave_wallet_ui/ledger:ledger_bridge_generated",
       "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",

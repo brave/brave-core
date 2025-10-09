@@ -8,8 +8,6 @@ import("//build/config/features.gni")
 
 source_set("brave_wallet") {
   sources = [
-    "wallet_handler.h",
-    "wallet_handler.mm",
     "wallet_page_handler.h",
     "wallet_page_handler.mm",
     "wallet_page_ui.h",
@@ -18,9 +16,18 @@ source_set("brave_wallet") {
 
   deps = [
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:wallet_handler",
     "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
-    "//ios/web/webui",
+    "//brave/components/constants",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/ios/browser/brave_wallet",
+    "//brave/ios/web/webui",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public",
+    "//ios/web/public/webui",
+    "//ios/web/web_state",
     "//mojo/public/cpp/bindings",
     "//ui/base",
   ]
