@@ -218,6 +218,11 @@ function ConversationEntries() {
                                     setEditInputId(index)
                                   }
                                   onCopyQuestionClicked={handleCopyText}
+                                  onSaveAsSmartModeClicked={() =>
+                                    conversationContext.parentUiFrame?.showSmartModeDialog(
+                                      firstEntryEdit.text,
+                                    )
+                                  }
                                 />
                               ) : (
                                 <div className={styles.divToKeepGap} />

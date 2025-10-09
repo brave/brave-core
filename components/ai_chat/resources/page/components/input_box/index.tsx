@@ -23,6 +23,7 @@ import { ModelSelector } from '../model_selector'
 import usePromise from '$web-common/usePromise'
 import { isImageFile } from '../../constants/file_types'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
+import * as Mojom from '../../../common/mojom'
 
 type Props = Pick<
   ConversationContext,
@@ -52,6 +53,9 @@ type Props = Pick<
   | 'setAttachmentsDialog'
   | 'attachImages'
   | 'unassociatedTabs'
+  | 'handleSmartModeClick'
+  | 'selectedSmartMode'
+  | 'resetSelectedSmartMode'
 >
   & Pick<
     AIChatContext,
@@ -61,6 +65,7 @@ type Props = Pick<
     | 'hasAcceptedAgreement'
     | 'getPluralString'
     | 'openAIChatAgentProfile'
+    | 'smartModes'
   >
 
 export interface InputBoxProps {
@@ -89,10 +94,58 @@ function usePlaceholderText(
   return getLocale(S.CHAT_UI_INITIAL_PLACEHOLDER_LABEL)
 }
 
+// Smart mode regex patterns - currently limited to start of input only.
+// We plan to support it at anywhere after
+// https://github.com/brave/brave-browser/issues/48610 is resolved.
+const SMART_MODE_DETECTION_REGEX = /^\/([a-zA-Z0-9_-]+)/
+
 function InputBox(props: InputBoxProps) {
-  const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    props.context.setInputText(e.target.value)
-  }
+  const detectAndSetSmartMode = React.useCallback(
+    (value: string) => {
+      const match = value.match(SMART_MODE_DETECTION_REGEX)
+
+      if (!match) {
+        return
+      }
+
+      const shortcut = match[1]
+      const foundMode = props.context.smartModes.find(
+        (mode: Mojom.SmartMode) =>
+          mode.shortcut.toLowerCase() === shortcut.toLowerCase(),
+      )
+
+      // Only set if different from current selection
+      if (foundMode) {
+        props.context.handleSmartModeClick(foundMode)
+      }
+    },
+    [props.context.smartModes, props.context.handleSmartModeClick],
+  )
+
+  const onInputChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const newValue = e.target.value
+      props.context.setInputText(newValue)
+
+      if (props.context.selectedSmartMode) {
+        // Check if current smart mode shortcut is still valid
+        const currentModeShortcut = `/${props.context.selectedSmartMode.shortcut}`
+        if (!newValue.startsWith(currentModeShortcut)) {
+          props.context.resetSelectedSmartMode()
+        }
+        return
+      }
+      if (newValue.startsWith('/') && props.context.smartModes.length > 0) {
+        // No smart mode selected, but input starts with /, try to detect
+        detectAndSetSmartMode(newValue)
+      }
+    },
+    [
+      props.context.selectedSmartMode,
+      props.context.smartModes,
+      detectAndSetSmartMode,
+    ],
+  )
 
   const querySubmitted = React.useRef(false)
   const attachmentWrapperRef = React.useRef<HTMLDivElement>(null)

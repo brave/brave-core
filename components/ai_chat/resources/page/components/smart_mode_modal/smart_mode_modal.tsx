@@ -110,13 +110,7 @@ export default function SmartModeModal() {
   }, [aiChatContext.setSmartModeDialog])
 
   const onSave = React.useCallback(() => {
-    if (
-      shortcutError
-      || promptError
-      || !shortcut
-      || !prompt
-      || !selectedModel
-    ) {
+    if (shortcutError || promptError || !shortcut || !prompt) {
       return
     }
 
