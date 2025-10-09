@@ -5,7 +5,6 @@
 
 import usePromise from '$web-common/usePromise';
 import { AutocompleteResult, OmniboxPopupSelection, PageHandler, PageHandlerRemote, PageInterface, PageReceiver } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js';
-import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js';
 import * as React from 'react';
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background';
 import { useEngineContext } from './EngineContext';
@@ -116,7 +115,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   React.useEffect(() => {
     if (query) {
       const keywordQuery = `${searchEngine?.keyword} ${query}`
-      omniboxController.queryAutocomplete(stringToMojoString16(keywordQuery), false);
+      omniboxController.queryAutocomplete(keywordQuery, false);
     } else {
       omniboxController.stopAutocomplete(true)
     }
