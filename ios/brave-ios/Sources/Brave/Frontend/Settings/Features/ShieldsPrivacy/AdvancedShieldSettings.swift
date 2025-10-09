@@ -27,14 +27,6 @@ import os
     var isEnabled: Bool
   }
 
-  @Published var cookieConsentBlocking: Bool {
-    didSet {
-      FilterListStorage.shared.ensureFilterList(
-        for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID,
-        isEnabled: cookieConsentBlocking
-      )
-    }
-  }
   @Published var blockMobileAnnoyances: Bool {
     didSet {
       FilterListStorage.shared.ensureFilterList(
@@ -192,10 +184,6 @@ import os
     self.shredLevel = ShieldPreferences.shredLevel
     self.webcompatReporterHandler = webcompatReporterHandler
     self.isSurveyPanelistEnabled = rewards?.ads.isSurveyPanelistEnabled ?? false
-
-    cookieConsentBlocking = FilterListStorage.shared.isEnabled(
-      for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID
-    )
 
     blockMobileAnnoyances = FilterListStorage.shared.isEnabled(
       for: AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID
@@ -361,10 +349,6 @@ import os
       .sink { filterLists in
         for filterList in filterLists {
           switch filterList.entry.componentId {
-          case AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID:
-            if filterList.isEnabled != self.cookieConsentBlocking {
-              self.cookieConsentBlocking = filterList.isEnabled
-            }
           case AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID:
             if filterList.isEnabled != self.blockMobileAnnoyances {
               self.blockMobileAnnoyances = filterList.isEnabled
