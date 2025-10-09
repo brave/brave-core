@@ -45,22 +45,8 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(std::string_view sv) {
-  // Leading 0x, 160 hex chars worth of data.
-  if (sv.size() != 162) {
-    return nullptr;
-  }
-
-  if (!sv.starts_with("0x")) {
-    return nullptr;
-  }
-
-  std::vector<uint8_t> bytes;
-  sv.remove_prefix(2);  // Remove leading 0x.
-  if (!base::HexStringToBytes(sv, &bytes)) {
-    return nullptr;
-  }
-
+mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(
+    base::span<const uint8_t, 80> bytes) {
   base::SpanReader<const uint8_t> reader(bytes);
   auto account = mojom::PolkadotAccountInfo::New();
 
@@ -182,7 +168,23 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
     sv = kFallback;
   }
 
-  auto account = ParseAccountInfoAsHex(sv);
+  // Leading 0x, 160 hex chars worth of data.
+  if (sv.size() != 162) {
+    return nullptr;
+  }
+
+  if (!sv.starts_with("0x")) {
+    return nullptr;
+  }
+
+  sv.remove_prefix(2);  // Remove leading 0x.
+
+  std::array<uint8_t, 80> hex_bytes = {};
+  if (!base::HexStringToSpan(sv, hex_bytes)) {
+    return nullptr;
+  }
+
+  auto account = ParseAccountInfoAsHex(hex_bytes);
   if (account) {
     return account;
   }
