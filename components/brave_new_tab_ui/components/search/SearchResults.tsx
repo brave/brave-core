@@ -10,7 +10,6 @@ import SearchResult from './SearchResult'
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background'
 import { omniboxController, search, useSearchContext } from './SearchContext'
 import { defaultSearchHost } from './config'
-import { stringToMojoString16 } from 'gen/ui/webui/resources/tsc/js/mojo_type_util';
 import { handleOpenURLClick, validateScheme } from '$web-common/SecureLink';
 import MaybePromptEnableSuggestions from './MaybePromptEnableSuggestions';
 
@@ -68,8 +67,8 @@ const useUrlWhatYouTyped = (query: string) => React.useMemo(() => {
       destinationUrl: {
         url: url.toString()
       },
-      contents: stringToMojoString16(url.toString()),
-      description: stringToMojoString16(''),
+      contents: url.toString(),
+      description: '',
       imageUrl: `chrome://favicon/size/64@1x/${q.toString()}`,
       allowedToBeDefaultMatch: true
     } as AutocompleteMatch
