@@ -1,0 +1,17 @@
+ios_enable_code_signing = false
+ios_enable_share_extension = false
+ios_enable_credential_provider_extension = true
+ios_enable_widget_kit_extension = false
+
+# The app currently crashes on launch without disabling these 2 args:
+# https://github.com/brave/brave-browser/issues/49595
+# When this is fixed in Chromium we can remove these 2 arguments
+use_partition_alloc_as_malloc = false
+enable_backup_ref_ptr_support = false
+
+ios_provider_target = "//brave/ios/browser/providers:brave_providers"
+
+ios_locales_pack_extra_source_patterns = [
+  "%root_gen_dir%/components/brave_components_strings_",
+]
+ios_locales_pack_extra_deps = ["//brave/components/resources:strings"]
