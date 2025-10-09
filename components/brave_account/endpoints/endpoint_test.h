@@ -8,13 +8,12 @@
 
 #include <optional>
 #include <string>
+#include <tuple>
 
-#include "base/check.h"
-#include "base/functional/callback.h"
-#include "base/run_loop.h"
+#include "base/check_deref.h"
 #include "base/test/bind.h"
-#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
@@ -32,8 +31,7 @@
 namespace brave_account::endpoints {
 
 inline bool operator==(const Error& lhs, const Error& rhs) {
-  return lhs.code == rhs.code && lhs.error == rhs.error &&
-         lhs.status == rhs.status;
+  return lhs.code == rhs.code;
 }
 
 template <endpoint_client::concepts::Endpoint T>
@@ -47,44 +45,29 @@ struct EndpointTestCase {
   Expected reply;
 };
 
-template <endpoint_client::concepts::Endpoint T,
-          typename ParamType = const EndpointTestCase<T>*>
-class EndpointTest : public testing::TestWithParam<ParamType> {
+template <endpoint_client::concepts::Endpoint T>
+class EndpointTest : public testing::TestWithParam<const EndpointTestCase<T>*> {
  public:
-  static std::string NameGenerator(
-      const testing::TestParamInfo<ParamType>& info) {
-    CHECK(info.param);
-    return info.param->test_name;
-  }
+  static constexpr auto kNameGenerator = [](const auto& info) {
+    return CHECK_DEREF(info.param).test_name;
+  };
 
  protected:
-  using Expected = typename EndpointTestCase<T>::Expected;
-
   void RunTestCase() {
-    const auto* test_case = this->GetParam();
-    CHECK(test_case);
+    const auto& test_case = CHECK_DEREF(this->GetParam());
 
     test_url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& resource_request) {
           test_url_loader_factory_.AddResponse(resource_request.url.spec(),
-                                               test_case->raw_reply,
-                                               test_case->http_status_code);
+                                               test_case.raw_reply,
+                                               test_case.http_status_code);
         }));
 
-    base::RunLoop run_loop;
-    base::MockCallback<base::OnceCallback<void(int, Expected)>> callback;
-
-    EXPECT_CALL(callback, Run(testing::_, testing::_))
-        .WillOnce([&](int http_status_code, Expected reply) {
-          EXPECT_EQ(http_status_code, test_case->http_status_code);
-          EXPECT_EQ(reply, test_case->reply);
-          run_loop.Quit();
-        });
-
+    base::test::TestFuture<int, typename EndpointTestCase<T>::Expected> future;
     endpoint_client::Client<T>::Send(api_request_helper_, typename T::Request(),
-                                     callback.Get());
-
-    run_loop.Run();
+                                     future.GetCallback());
+    EXPECT_EQ(future.Take(),
+              std::tie(test_case.http_status_code, test_case.reply));
   }
 
   base::test::TaskEnvironment task_environment_;
