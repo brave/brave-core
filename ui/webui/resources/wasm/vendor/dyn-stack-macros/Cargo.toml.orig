@@ -1,0 +1,13 @@
+[package]
+name = "dyn-stack-macros"
+version = "0.1.0"
+edition = "2021"
+authors = ["sarah quiñones<sarah@veganb.tw>"]
+description = "Dynamic stack wrapper for unsized allocations"
+readme = "README.md"
+repository = "https://github.com/kitegi/dynstack/"
+license = "MIT"
+keywords = ["stack", "allocation", "unsized", "array", "slice"]
+
+[lib]
+proc-macro = true

@@ -1,4 +1,5 @@
-use core::sync::atomic::{AtomicUsize, Ordering::Relaxed};
+//! Helpers built around pointer-sized atomics.
+use core::sync::atomic::{AtomicUsize, Ordering};
 
 // This structure represents a lazily initialized static usize value. Useful
 // when it is preferable to just rerun initialization instead of locking.
@@ -18,27 +19,34 @@ use core::sync::atomic::{AtomicUsize, Ordering::Relaxed};
 //      }
 // the effects of c() or writes to shared memory will not necessarily be
 // observed and additional synchronization methods may be needed.
-pub(crate) struct LazyUsize(AtomicUsize);
+struct LazyUsize(AtomicUsize);
 
 impl LazyUsize {
-    pub const fn new() -> Self {
+    // The initialization is not completed.
+    const UNINIT: usize = usize::MAX;
+
+    const fn new() -> Self {
         Self(AtomicUsize::new(Self::UNINIT))
     }
-
-    // The initialization is not completed.
-    pub const UNINIT: usize = usize::max_value();
 
     // Runs the init() function at most once, returning the value of some run of
     // init(). Multiple callers can run their init() functions in parallel.
     // init() should always return the same value, if it succeeds.
-    pub fn unsync_init(&self, init: impl FnOnce() -> usize) -> usize {
-        // Relaxed ordering is fine, as we only have a single atomic variable.
-        let mut val = self.0.load(Relaxed);
-        if val == Self::UNINIT {
-            val = init();
-            self.0.store(val, Relaxed);
+    fn unsync_init(&self, init: impl FnOnce() -> usize) -> usize {
+        #[cold]
+        fn do_init(this: &LazyUsize, init: impl FnOnce() -> usize) -> usize {
+            let val = init();
+            this.0.store(val, Ordering::Relaxed);
+            val
         }
-        val
+
+        // Relaxed ordering is fine, as we only have a single atomic variable.
+        let val = self.0.load(Ordering::Relaxed);
+        if val != Self::UNINIT {
+            val
+        } else {
+            do_init(self, init)
+        }
     }
 }
 
@@ -51,6 +59,6 @@ impl LazyBool {
     }
 
     pub fn unsync_init(&self, init: impl FnOnce() -> bool) -> bool {
-        self.0.unsync_init(|| init() as usize) != 0
+        self.0.unsync_init(|| usize::from(init())) != 0
     }
 }

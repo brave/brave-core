@@ -1,0 +1,49 @@
+[package]
+name = "serde-wasm-bindgen"
+version = "0.6.5"
+authors = ["Ingvar Stepanyan <me@rreverser.com>"]
+edition = "2018"
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/RReverser/serde-wasm-bindgen"
+description = "Native Serde adapter for wasm-bindgen"
+categories = ["development-tools::ffi", "wasm", "encoding"]
+keywords = ["serde", "serialization", "javascript", "wasm", "webassembly"]
+
+[dependencies]
+serde = { version = "1.0.193", features = ["derive"] }
+js-sys = "^0.3"
+wasm-bindgen = "0.2.83"
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.24"
+serde_bytes = "0.11.1"
+serde_json = "1.0.39"
+maplit = "1.0.2"
+bincode = "1.3.3"
+
+[dev-dependencies.proptest]
+version = "1.0"
+# The default feature set includes things like process forking which are not
+# supported in Web Assembly.
+default-features = false
+# Enable using the `std` crate.
+features = ["std"]
+
+[dev-dependencies.getrandom]
+version = "0.2"
+features = ["js"]
+
+[workspace]
+members = ["benchmarks"]
+
+[profile.release]
+lto = true
+codegen-units = 1
+debug = true
+
+[patch.crates-io]
+proptest = { git = "https://github.com/RReverser/proptest", branch = "fix-wasm" }
+
+[package.metadata.docs.rs]
+targets = ["wasm32-unknown-unknown"]

@@ -1,0 +1,36 @@
+[package]
+name = "gemm-common"
+version = "0.18.2"
+edition = "2021"
+authors = ["sarah <>"]
+description = "Playground for matrix multiplication algorithms"
+readme = "../README.md"
+repository = "https://github.com/sarah-ek/gemm/"
+license = "MIT"
+keywords = ["linear-algebra"]
+
+[dependencies]
+raw-cpuid = { workspace = true }
+seq-macro = { workspace = true }
+once_cell = { workspace = true, default-features = false, features = ["race", "alloc"] }
+dyn-stack = { workspace = true, default-features = false }
+num-traits = { workspace = true, default-features = false }
+num-complex = { workspace = true, default-features = false }
+half = { workspace = true, default-features = false, optional=true }
+rayon = { workspace = true, optional = true }
+paste = { workspace = true }
+pulp = { version = "0.21.3", default-features = false }
+bytemuck = "1.14"
+libm = "0.2.11"
+
+[target.'cfg(target_vendor = "apple")'.dependencies]
+sysctl = { workspace = true, optional = true }
+
+[features]
+default = ["std", "rayon", "f16"]
+std = ["pulp/std", "dyn-stack/std", "once_cell/std", "sysctl"]
+nightly = ["pulp/nightly"]
+wasm-simd128-enable = []
+experimental-apple-amx = ["std"]
+rayon = ["dep:rayon", "std"]
+f16 = ["half"]

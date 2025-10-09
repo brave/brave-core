@@ -1,0 +1,61 @@
+[package]
+name = "wasi"
+version = "0.14.7+wasi-0.2.4"
+description = "WASI API bindings for Rust"
+categories = ["no-std", "wasm"]
+keywords = ["webassembly", "wasm"]
+readme = "README.md"
+documentation = "https://docs.rs/wasi"
+license.workspace = true
+edition.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[workspace.package]
+edition = "2021"
+license = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
+repository = "https://github.com/bytecodealliance/wasi-rs"
+rust-version = "1.82.0"
+
+[workspace.dependencies]
+rand = { version = "0.8.5", default-features = false }
+wasi = { version = "0.14.6", path = ".", default-features = false }
+wit-bindgen = { version = "0.46.0", default-features = false }
+wasip1 = { version = "1.0.0", path = "crates/wasip1", default-features = false }
+wasip2 = { version = "1.0.1", path = "crates/wasip2", default-features = false }
+wasip3 = { version = "0.1.1", path = "crates/wasip3", default-features = false }
+core = { version = "1.0", package = "rustc-std-workspace-core" }
+alloc = { version = "1.0", package = "rustc-std-workspace-alloc" }
+
+[workspace]
+members = ["./crates/*"]
+
+[dependencies]
+wasip2 = { workspace = true }
+
+[features]
+default = ["wasip2/default"]
+std = ["wasip2/std"]
+bitflags = ["wasip2/bitflags"]
+
+[[example]]
+name = "cli-command-no_std"
+crate-type = ["cdylib"]
+
+[[example]]
+name = "cli-command"
+crate-type = ["cdylib"]
+required-features = ["std"]
+
+[[example]]
+name = "hello-world"
+required-features = ["std"]
+
+[[example]]
+name = "http-proxy-no_std"
+crate-type = ["cdylib"]
+
+[[example]]
+name = "http-proxy"
+crate-type = ["cdylib"]
+required-features = ["std"]

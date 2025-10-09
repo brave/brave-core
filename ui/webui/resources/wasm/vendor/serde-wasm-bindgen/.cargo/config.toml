@@ -1,0 +1,4 @@
+[build]
+# Compare sizes using non-trapping float-to-int conversions.
+# This feature has landed long ago in all engines, but Rust doesn't enable it by default yet.
+rustflags = ["-C", "target-feature=+nontrapping-fptoint,+bulk-memory"]

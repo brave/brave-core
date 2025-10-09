@@ -17,7 +17,7 @@ include!("include.rs");
 
 #[test]
 fn zst() {
-    // TODO(#5): Use `try_transmute` in this test once it's available.
+    // FIXME(#5): Use `try_transmute` in this test once it's available.
     let candidate = ::zerocopy::Ptr::from_ref(&());
     let candidate = candidate.forget_aligned();
     // SAFETY: `&()` trivially consists entirely of initialized bytes.
@@ -36,7 +36,7 @@ util_assert_impl_all!(One: imp::TryFromBytes);
 
 #[test]
 fn one() {
-    // TODO(#5): Use `try_transmute` in this test once it's available.
+    // FIXME(#5): Use `try_transmute` in this test once it's available.
     let candidate = ::zerocopy::Ptr::from_ref(&One { a: 42 });
     let candidate = candidate.forget_aligned();
     // SAFETY: `&One` consists entirely of initialized bytes.
@@ -56,7 +56,7 @@ util_assert_impl_all!(Two: imp::TryFromBytes);
 
 #[test]
 fn two() {
-    // TODO(#5): Use `try_transmute` in this test once it's available.
+    // FIXME(#5): Use `try_transmute` in this test once it's available.
     let candidate = ::zerocopy::Ptr::from_ref(&Two { a: false, b: () });
     let candidate = candidate.forget_aligned();
     // SAFETY: `&Two` consists entirely of initialized bytes.
@@ -67,7 +67,7 @@ fn two() {
 
 #[test]
 fn two_bad() {
-    // TODO(#5): Use `try_transmute` in this test once it's available.
+    // FIXME(#5): Use `try_transmute` in this test once it's available.
     let candidate = ::zerocopy::Ptr::from_ref(&[2u8][..]);
     let candidate = candidate.forget_aligned();
     // SAFETY: `&Two` consists entirely of initialized bytes.
@@ -97,7 +97,7 @@ util_assert_impl_all!(Unsized: imp::TryFromBytes);
 
 #[test]
 fn un_sized() {
-    // TODO(#5): Use `try_transmute` in this test once it's available.
+    // FIXME(#5): Use `try_transmute` in this test once it's available.
     let candidate = ::zerocopy::Ptr::from_ref(&[16, 12, 42][..]);
     let candidate = candidate.forget_aligned();
     // SAFETY: `&Unsized` consists entirely of initialized bytes.
@@ -110,7 +110,9 @@ fn un_sized() {
     // - Neither the input nor output types contain any `UnsafeCell`s.
     let candidate = unsafe {
         candidate.cast_unsized_unchecked(|p| {
-            imp::core::ptr::NonNull::new_unchecked(p.as_ptr() as *mut Unsized)
+            let ptr =
+                imp::core::ptr::NonNull::new_unchecked(p.as_non_null().as_ptr() as *mut Unsized);
+            ::zerocopy::pointer::PtrInner::new(ptr)
         })
     };
 

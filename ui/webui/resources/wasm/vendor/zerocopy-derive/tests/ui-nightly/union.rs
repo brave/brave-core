@@ -12,8 +12,9 @@ extern crate zerocopy;
 #[path = "../include.rs"]
 mod util;
 
-use self::util::util::AU16;
 use std::mem::ManuallyDrop;
+
+use self::util::util::AU16;
 
 fn main() {}
 

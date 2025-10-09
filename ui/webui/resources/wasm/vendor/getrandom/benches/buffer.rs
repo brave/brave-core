@@ -1,22 +1,72 @@
 #![feature(test, maybe_uninit_uninit_array_transpose)]
 extern crate test;
 
-use std::mem::MaybeUninit;
+use std::{
+    mem::{size_of, MaybeUninit},
+    slice,
+};
 
 // Call getrandom on a zero-initialized stack buffer
 #[inline(always)]
-fn bench_getrandom<const N: usize>() {
+fn bench_fill<const N: usize>() {
     let mut buf = [0u8; N];
-    getrandom::getrandom(&mut buf).unwrap();
-    test::black_box(&buf as &[u8]);
+    getrandom::fill(&mut buf).unwrap();
+    test::black_box(&buf[..]);
 }
 
-// Call getrandom_uninit on an uninitialized stack buffer
+// Call fill_uninit on an uninitialized stack buffer
 #[inline(always)]
-fn bench_getrandom_uninit<const N: usize>() {
+fn bench_fill_uninit<const N: usize>() {
     let mut uninit = [MaybeUninit::uninit(); N];
-    let buf: &[u8] = getrandom::getrandom_uninit(&mut uninit).unwrap();
+    let buf: &[u8] = getrandom::fill_uninit(&mut uninit).unwrap();
     test::black_box(buf);
+}
+
+#[bench]
+pub fn bench_u32(b: &mut test::Bencher) {
+    #[inline(never)]
+    fn inner() -> u32 {
+        getrandom::u32().unwrap()
+    }
+    b.bytes = 4;
+    b.iter(inner);
+}
+#[bench]
+pub fn bench_u32_via_fill(b: &mut test::Bencher) {
+    #[inline(never)]
+    fn inner() -> u32 {
+        let mut res = MaybeUninit::<u32>::uninit();
+        let dst: &mut [MaybeUninit<u8>] =
+            unsafe { slice::from_raw_parts_mut(res.as_mut_ptr().cast(), size_of::<u32>()) };
+        getrandom::fill_uninit(dst).unwrap();
+        unsafe { res.assume_init() }
+    }
+    b.bytes = 4;
+    b.iter(inner);
+}
+
+#[bench]
+pub fn bench_u64(b: &mut test::Bencher) {
+    #[inline(never)]
+    fn inner() -> u64 {
+        getrandom::u64().unwrap()
+    }
+    b.bytes = 8;
+    b.iter(inner);
+}
+
+#[bench]
+pub fn bench_u64_via_fill(b: &mut test::Bencher) {
+    #[inline(never)]
+    fn inner() -> u64 {
+        let mut res = MaybeUninit::<u64>::uninit();
+        let dst: &mut [MaybeUninit<u8>] =
+            unsafe { slice::from_raw_parts_mut(res.as_mut_ptr().cast(), size_of::<u64>()) };
+        getrandom::fill_uninit(dst).unwrap();
+        unsafe { res.assume_init() }
+    }
+    b.bytes = 8;
+    b.iter(inner);
 }
 
 // We benchmark using #[inline(never)] "inner" functions for two reasons:
@@ -30,20 +80,20 @@ macro_rules! bench {
     ( $name:ident, $size:expr ) => {
         pub mod $name {
             #[bench]
-            pub fn bench_getrandom(b: &mut test::Bencher) {
+            pub fn bench_fill(b: &mut test::Bencher) {
                 #[inline(never)]
                 fn inner() {
-                    super::bench_getrandom::<{ $size }>()
+                    super::bench_fill::<{ $size }>()
                 }
 
                 b.bytes = $size as u64;
                 b.iter(inner);
             }
             #[bench]
-            pub fn bench_getrandom_uninit(b: &mut test::Bencher) {
+            pub fn bench_fill_uninit(b: &mut test::Bencher) {
                 #[inline(never)]
                 fn inner() {
-                    super::bench_getrandom_uninit::<{ $size }>()
+                    super::bench_fill_uninit::<{ $size }>()
                 }
 
                 b.bytes = $size as u64;

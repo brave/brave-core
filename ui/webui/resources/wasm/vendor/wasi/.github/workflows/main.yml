@@ -1,0 +1,140 @@
+name: CI
+on: [push, pull_request]
+
+# Cancel any in-flight jobs for the same PR/branch so there's only one active
+# at a time
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test_wasip2:
+    name: Test WASIp2 on ${{ matrix.rust }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust: [stable, beta, nightly]
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/install-rust
+      with:
+        toolchain: ${{ matrix.rust }}
+    - run: rustup target add wasm32-wasip2 wasm32-unknown-unknown
+    - name: Install Wasmtime
+      uses: bytecodealliance/actions/wasmtime/setup@v1
+      with:
+        version: "v30.0.2"
+    - name: Install wasm-tools
+      uses: bytecodealliance/actions/wasm-tools/setup@v1
+      with:
+        version: "1.224.0"
+
+    - run: cargo build -p wasip2 --examples --target wasm32-wasip2 --no-default-features
+    - run: wasmtime run ./target/wasm32-wasip2/debug/examples/hello-world-no_std.wasm
+    - run: wasmtime run ./target/wasm32-wasip2/debug/examples/cli_command_no_std.wasm
+
+    - run: cargo build -p wasip2 --examples --target wasm32-wasip2
+    - run: wasmtime run ./target/wasm32-wasip2/debug/examples/hello-world.wasm
+    - run: wasmtime run ./target/wasm32-wasip2/debug/examples/cli_command.wasm
+
+
+    - run: cargo build -p wasip2 --examples --target wasm32-unknown-unknown --no-default-features
+    - run: wasm-tools component new ./target/wasm32-unknown-unknown/debug/examples/http_proxy_no_std.wasm -o component.wasm
+    - run: wasm-tools component targets ./crates/wasip2/wit component.wasm -w wasi:http/proxy
+
+    - run: cargo build -p wasip2 --examples --target wasm32-unknown-unknown
+    - run: wasm-tools component new ./target/wasm32-unknown-unknown/debug/examples/http_proxy.wasm -o component.wasm
+    - run: wasm-tools component targets ./crates/wasip2/wit component.wasm -w wasi:http/proxy
+
+    - run: cargo build -p wasi-ext --examples --target wasm32-wasip2 --features rand
+    - run: wasmtime run ./target/wasm32-wasip2/debug/examples/rand.wasm
+
+  build:
+    name: Build ${{ matrix.crate }} on ${{ matrix.rust }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust: [msrv, stable, beta, nightly]
+        crate: [wasi, wasip1, wasip2, wasip3]
+        exclude:
+          # wasip3 bindings require a newer rust feature than msrv currently
+          # allows.
+          - rust: msrv
+            crate: wasip3
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/install-rust
+      with:
+        toolchain: ${{ matrix.rust }}
+    - run: rustup target add wasm32-wasip1 wasm32-wasip2
+
+    - run: cargo build -p ${{ matrix.crate }}
+    - run: cargo build -p ${{ matrix.crate }} --target wasm32-wasip1
+    - run: cargo build -p ${{ matrix.crate }} --target wasm32-wasip2
+
+    - run: cargo build --no-default-features -p ${{ matrix.crate }}
+    - run: cargo build --no-default-features -p ${{ matrix.crate }} --target wasm32-wasip1
+    - run: cargo build --no-default-features -p ${{ matrix.crate }} --target wasm32-wasip2
+
+    - run: cargo test -p ${{ matrix.crate }} --doc
+
+  generate:
+    name: Ensure generated code up-to-date
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/install-rust
+    # Re-vendor all WIT files and ensure that they're all up-to-date by ensuring
+    # that there's no git changes.
+    - name: Re-vendor WIT
+      run: |
+        ./ci/vendor-wit.sh
+        git diff --exit-code
+    - run: |
+        version=0.46.0
+
+        mkdir wit-bindgen
+        cd wit-bindgen
+        curl -o wit-bindgen.tar.gz -L https://github.com/bytecodealliance/wit-bindgen/releases/download/v$version/wit-bindgen-$version-x86_64-linux.tar.gz
+        tar xf wit-bindgen.tar.gz
+        echo "PATH=$PATH:`pwd`/wit-bindgen-$version-x86_64-linux" >> $GITHUB_ENV
+      working-directory: ${{ runner.tool_cache }}
+    - run: ./ci/regenerate.sh
+    - run: git diff --exit-code
+
+  test_wasip3:
+    name: Test WASIp3 on ${{ matrix.rust }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust: [stable, beta, nightly]
+        exclude:
+          # rust stable is not yet new enough to support the
+          # component-model-async features needed for testing, so temporarily
+          # exclude it.
+          - rust: stable
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/install-rust
+      with:
+        toolchain: ${{ matrix.rust }}
+    - run: rustup target add wasm32-wasip2 wasm32-unknown-unknown
+    - run: |
+        version=dev
+
+        mkdir wasmtime
+        cd wasmtime
+        curl -o wasmtime.tar.xz -L https://github.com/bytecodealliance/wasmtime/releases/download/$version/wasmtime-$version-x86_64-linux.tar.xz
+        tar xf wasmtime.tar.xz
+        echo "PATH=$PATH:`pwd`/wasmtime-$version-x86_64-linux" >> $GITHUB_ENV
+    - name: Install wasm-tools
+      uses: bytecodealliance/actions/wasm-tools/setup@v1
+      with:
+        version: "1.238.1"
+
+    - run: cargo build -p wasip3 --examples --target wasm32-wasip2
+    - run: wasmtime run -Sp3 -Wcomponent-model-async ./target/wasm32-wasip2/debug/examples/cli_command.wasm
+
+    - run: cargo build -p wasip3 --examples --target wasm32-unknown-unknown
+    - run: wasm-tools component new ./target/wasm32-unknown-unknown/debug/examples/http_proxy.wasm -o component.wasm
+    - run: wasm-tools component targets ./crates/wasip3/wit component.wasm -w wasi:http/proxy

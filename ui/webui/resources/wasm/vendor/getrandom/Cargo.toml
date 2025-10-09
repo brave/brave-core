@@ -10,12 +10,14 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
+edition = "2021"
+rust-version = "1.63"
 name = "getrandom"
-version = "0.2.15"
+version = "0.3.3"
 authors = ["The Rand Project Developers"]
-build = false
+build = "build.rs"
 exclude = [".*"]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -33,7 +35,7 @@ repository = "https://github.com/rust-random/getrandom"
 [package.metadata.cross.target.x86_64-unknown-netbsd]
 pre-build = [
     "mkdir -p /tmp/netbsd",
-    "curl https://cdn.netbsd.org/pub/NetBSD/NetBSD-9.2/amd64/binary/sets/base.tar.xz -O",
+    "curl -fO https://cdn.netbsd.org/pub/NetBSD/NetBSD-9.3/amd64/binary/sets/base.tar.xz",
     "tar -C /tmp/netbsd -xJf base.tar.xz",
     "cp /tmp/netbsd/usr/lib/libexecinfo.so /usr/local/x86_64-unknown-netbsd/lib",
     "rm base.tar.xz",
@@ -41,13 +43,17 @@ pre-build = [
 ]
 
 [package.metadata.docs.rs]
-features = [
-    "std",
-    "custom",
+features = ["std"]
+
+[features]
+rustc-dep-of-std = [
+    "dep:compiler_builtins",
+    "dep:core",
 ]
-rustdoc-args = [
-    "--cfg",
-    "docsrs",
+std = []
+wasm_js = [
+    "dep:wasm-bindgen",
+    "dep:js-sys",
 ]
 
 [lib]
@@ -55,16 +61,8 @@ name = "getrandom"
 path = "src/lib.rs"
 
 [[test]]
-name = "custom"
-path = "tests/custom.rs"
-
-[[test]]
-name = "normal"
-path = "tests/normal.rs"
-
-[[test]]
-name = "rdrand"
-path = "tests/rdrand.rs"
+name = "mod"
+path = "tests/mod.rs"
 
 [[bench]]
 name = "buffer"
@@ -82,39 +80,68 @@ version = "1.0"
 optional = true
 package = "rustc-std-workspace-core"
 
-[features]
-custom = []
-js = [
-    "wasm-bindgen",
-    "js-sys",
-]
-linux_disable_fallback = []
-rdrand = []
-rustc-dep-of-std = [
-    "compiler_builtins",
-    "core",
-    "libc/rustc-dep-of-std",
-    "wasi/rustc-dep-of-std",
-]
-std = []
-test-in-browser = []
-
-[target."cfg(all(any(target_arch = \"wasm32\", target_arch = \"wasm64\"), target_os = \"unknown\"))".dependencies.js-sys]
-version = "0.3"
-optional = true
-
-[target."cfg(all(any(target_arch = \"wasm32\", target_arch = \"wasm64\"), target_os = \"unknown\"))".dependencies.wasm-bindgen]
-version = "0.2.62"
-optional = true
-default-features = false
-
-[target."cfg(all(any(target_arch = \"wasm32\", target_arch = \"wasm64\"), target_os = \"unknown\"))".dev-dependencies.wasm-bindgen-test]
-version = "0.3.18"
-
-[target."cfg(target_os = \"wasi\")".dependencies.wasi]
-version = "0.11"
-default-features = false
-
-[target."cfg(unix)".dependencies.libc]
+[target.'cfg(all(any(target_os = "linux", target_os = "android"), not(any(all(target_os = "linux", target_env = ""), getrandom_backend = "custom", getrandom_backend = "linux_raw", getrandom_backend = "rdrand", getrandom_backend = "rndr"))))'.dependencies.libc]
 version = "0.2.154"
 default-features = false
+
+[target.'cfg(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")))'.dependencies.wasm-bindgen]
+version = "0.2.98"
+optional = true
+default-features = false
+
+[target.'cfg(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")))'.dev-dependencies.wasm-bindgen-test]
+version = "0.3"
+
+[target.'cfg(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none"), target_feature = "atomics"))'.dependencies.js-sys]
+version = "0.3.77"
+optional = true
+default-features = false
+
+[target.'cfg(all(target_arch = "wasm32", target_os = "wasi", target_env = "p2"))'.dependencies.wasi]
+version = "0.14"
+default-features = false
+
+[target.'cfg(all(target_os = "uefi", getrandom_backend = "efi_rng"))'.dependencies.r-efi]
+version = "5.1"
+default-features = false
+
+[target.'cfg(any(target_os = "dragonfly", target_os = "freebsd", target_os = "hurd", target_os = "illumos", target_os = "cygwin", all(target_os = "horizon", target_arch = "arm")))'.dependencies.libc]
+version = "0.2.154"
+default-features = false
+
+[target.'cfg(any(target_os = "haiku", target_os = "redox", target_os = "nto", target_os = "aix"))'.dependencies.libc]
+version = "0.2.154"
+default-features = false
+
+[target.'cfg(any(target_os = "ios", target_os = "visionos", target_os = "watchos", target_os = "tvos"))'.dependencies.libc]
+version = "0.2.154"
+default-features = false
+
+[target.'cfg(any(target_os = "macos", target_os = "openbsd", target_os = "vita", target_os = "emscripten"))'.dependencies.libc]
+version = "0.2.154"
+default-features = false
+
+[target.'cfg(target_os = "netbsd")'.dependencies.libc]
+version = "0.2.154"
+default-features = false
+
+[target.'cfg(target_os = "solaris")'.dependencies.libc]
+version = "0.2.154"
+default-features = false
+
+[target.'cfg(target_os = "vxworks")'.dependencies.libc]
+version = "0.2.154"
+default-features = false
+
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = [
+    'cfg(getrandom_backend, values("custom", "efi_rng", "rdrand", "rndr", "linux_getrandom", "linux_raw", "wasm_js"))',
+    "cfg(getrandom_msan)",
+    "cfg(getrandom_windows_legacy)",
+    "cfg(getrandom_test_linux_fallback)",
+    "cfg(getrandom_test_linux_without_fallback)",
+    "cfg(getrandom_test_netbsd_fallback)",
+    'cfg(target_os, values("cygwin"))',
+]

@@ -4,6 +4,139 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.3] - 2025-05-09
+
+### Changed
+- Doc improvements [#632] [#634] [#635]
+- Add crate version to docs.rs links used in `compile_error!`s [#639]
+
+## Fixed
+- Error handling in WASI p1 [#661]
+
+[#632]: https://github.com/rust-random/getrandom/pull/632
+[#634]: https://github.com/rust-random/getrandom/pull/634
+[#635]: https://github.com/rust-random/getrandom/pull/635
+[#639]: https://github.com/rust-random/getrandom/pull/639
+[#661]: https://github.com/rust-random/getrandom/pull/661
+
+## [0.3.2] - 2025-03-17
+
+### Added
+- `efi_rng` opt-in backend [#570]
+- `linux_raw` opt-in backend [#572]
+- `.cargo/config.toml` example in the crate-level docs [#591]
+- `getrandom_test_linux_without_fallback` configuration flag to test that file fallback
+  is not triggered in the `linux_android_with_fallback` backend [#605]
+- Built-in support for `*-linux-none` targets [#618]
+- Cygwin support [#626]
+
+### Changed
+- Update `wasi` dependency to v0.14 [#594]
+- Add `#[inline]` attribute to the inner functions [#596]
+- Update WASI and Emscripten links in the crate-level docs [#597]
+- Do not use `dlsym` on MUSL targets in the `linux_android_with_fallback` backend [#602]
+- Remove `linux_android.rs` and use `getrandom.rs` instead [#603]
+- Always use `RtlGenRandom` on Windows targets when compiling with pre-1.78 Rust [#610]
+- Internal representation of the `Error` type [#614]
+- Remove `windows-targets` dependency and use [`raw-dylib`] directly [#627]
+
+### Removed
+- `Error::INTERNAL_START` and `Error::CUSTOM_START` associated constants [#614]
+
+[#570]: https://github.com/rust-random/getrandom/pull/570
+[#572]: https://github.com/rust-random/getrandom/pull/572
+[#591]: https://github.com/rust-random/getrandom/pull/591
+[#594]: https://github.com/rust-random/getrandom/pull/594
+[#596]: https://github.com/rust-random/getrandom/pull/596
+[#597]: https://github.com/rust-random/getrandom/pull/597
+[#602]: https://github.com/rust-random/getrandom/pull/602
+[#603]: https://github.com/rust-random/getrandom/pull/603
+[#605]: https://github.com/rust-random/getrandom/pull/605
+[#610]: https://github.com/rust-random/getrandom/pull/610
+[#614]: https://github.com/rust-random/getrandom/pull/614
+[#618]: https://github.com/rust-random/getrandom/pull/618
+[#626]: https://github.com/rust-random/getrandom/pull/626
+[#627]: https://github.com/rust-random/getrandom/pull/627
+[`raw-dylib`]: https://doc.rust-lang.org/reference/items/external-blocks.html?highlight=link#dylib-versus-raw-dylib
+
+## [0.3.1] - 2025-01-28
+
+### Fixed
+- Build error on Android [#588]
+
+[#588]: https://github.com/rust-random/getrandom/pull/588
+
+## [0.3.0] - 2025-01-25
+
+### Breaking Changes
+
+#### Changed
+- Bump MSRV to 1.63 [#542]
+- Rename `getrandom` and `getrandom_uninit` functions to `fill` and `fill_uninit` respectively [#532]
+
+#### Removed
+- `wasm32-wasi` target support (use `wasm32-wasip1` or `wasm32-wasip2` instead) [#499]
+- `linux_disable_fallback`, `rdrand`, `js`, `test-in-browser`, and `custom` crate features
+  in favor of configuration flags [#504]
+- `register_custom_getrandom!` macro [#504]
+- Implementation of `From<NonZeroU32>` for `Error` and `Error::code` method [#507]
+- Internet Explorer 11 support [#554]
+- Target-specific assocciated `Error` constants [#562]
+
+### Changed
+- Use `ProcessPrng` on Windows 10 and up, and use `RtlGenRandom` on older Windows versions [#415]
+- Do not use locale-specific `strerror_r` for retrieving error code descriptions [#440]
+- Avoid assuming `usize` is the native word size in the `rdrand` backend [#442]
+- Do not read from `errno` when `libc` did not indicate error on Solaris [#448]
+- Switch from `libpthread`'s mutex to `futex` on Linux and to `nanosleep`-based wait loop
+  on other targets in the `use_file` backend [#490]
+- Do not retry on `EAGAIN` while polling `/dev/random` on Linux [#522]
+- Remove separate codepath for Node.js in the `wasm_js` backend
+  (bumps minimum supported Node.js version to v19) [#557]
+- Use `js_namespace` in the `wasm_js` backend [#559]
+ 
+### Added
+- `wasm32-wasip1` and `wasm32-wasip2` support [#499]
+- `getrandom_backend` configuration flag for selection of opt-in backends [#504]
+- `Error::new_custom` method [#507]
+- `rndr` opt-in backend [#512]
+- Automatic MemorySanitizer support [#521] [#571]
+- `u32` and `u64` functions for generating random values of the respective type [#544]
+- `wasm32v1-none` support in the `wasm_js` backend [#560]
+- `wasm_js` crate feature which allows users to enable the `wasm_js` opt-in backend [#574]
+
+### Fixed
+- NetBSD fallback code based on `KERN_ARND` [#555]
+
+[#415]: https://github.com/rust-random/getrandom/pull/415
+[#440]: https://github.com/rust-random/getrandom/pull/440
+[#442]: https://github.com/rust-random/getrandom/pull/442
+[#448]: https://github.com/rust-random/getrandom/pull/448
+[#490]: https://github.com/rust-random/getrandom/pull/490
+[#499]: https://github.com/rust-random/getrandom/pull/499
+[#504]: https://github.com/rust-random/getrandom/pull/504
+[#507]: https://github.com/rust-random/getrandom/pull/507
+[#512]: https://github.com/rust-random/getrandom/pull/512
+[#521]: https://github.com/rust-random/getrandom/pull/521
+[#522]: https://github.com/rust-random/getrandom/pull/522
+[#532]: https://github.com/rust-random/getrandom/pull/532
+[#542]: https://github.com/rust-random/getrandom/pull/542
+[#544]: https://github.com/rust-random/getrandom/pull/544
+[#554]: https://github.com/rust-random/getrandom/pull/554
+[#555]: https://github.com/rust-random/getrandom/pull/555
+[#557]: https://github.com/rust-random/getrandom/pull/557
+[#559]: https://github.com/rust-random/getrandom/pull/559
+[#560]: https://github.com/rust-random/getrandom/pull/560
+[#562]: https://github.com/rust-random/getrandom/pull/562
+[#571]: https://github.com/rust-random/getrandom/pull/571
+[#574]: https://github.com/rust-random/getrandom/pull/574
+
+## [0.2.16] - 2025-04-22
+### Added
+- Cygwin support (backport of [#626]) [#654]
+
+[#654]: https://github.com/rust-random/getrandom/pull/654
+
 ## [0.2.15] - 2024-05-06
 ### Added
 - Apple visionOS support [#410]
@@ -454,6 +587,11 @@ Publish initial implementation.
 ## [0.0.0] - 2019-01-19
 Publish an empty template library.
 
+[0.3.3]: https://github.com/rust-random/getrandom/compare/v0.3.2...v0.3.3
+[0.3.2]: https://github.com/rust-random/getrandom/compare/v0.3.1...v0.3.2
+[0.3.1]: https://github.com/rust-random/getrandom/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/rust-random/getrandom/compare/v0.2.15...v0.3.0
+[0.2.16]: https://github.com/rust-random/getrandom/compare/v0.2.15...v0.2.16
 [0.2.15]: https://github.com/rust-random/getrandom/compare/v0.2.14...v0.2.15
 [0.2.14]: https://github.com/rust-random/getrandom/compare/v0.2.13...v0.2.14
 [0.2.13]: https://github.com/rust-random/getrandom/compare/v0.2.12...v0.2.13
@@ -469,7 +607,7 @@ Publish an empty template library.
 [0.2.3]: https://github.com/rust-random/getrandom/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/rust-random/getrandom/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/rust-random/getrandom/compare/v0.2.0...v0.2.1
-[0.2.0]: https://github.com/rust-random/getrandom/compare/v0.1.15...v0.2.0
+[0.2.0]: https://github.com/rust-random/getrandom/compare/v0.1.16...v0.2.0
 [0.1.16]: https://github.com/rust-random/getrandom/compare/v0.1.15...v0.1.16
 [0.1.15]: https://github.com/rust-random/getrandom/compare/v0.1.14...v0.1.15
 [0.1.14]: https://github.com/rust-random/getrandom/compare/v0.1.13...v0.1.14
