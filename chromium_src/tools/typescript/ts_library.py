@@ -7,6 +7,8 @@ import argparse
 import json
 import os
 import re
+import shlex
+import sys
 
 import override_utils
 
@@ -37,7 +39,30 @@ def main(original_function, argv):
     parser.add_argument('--output_suffix', required=True)
     parser.add_argument('--gen_dir', required=True)
     parser.add_argument('--in_files', nargs='*')
+    parser.add_argument('--in_files_file_list')
     args, _ = parser.parse_known_args(argv)
+
+    # If --in_files_file_list is supplied then process the file and append the
+    # list to args.in_files for our own further processing.
+    if args.in_files_file_list is not None:
+        if not os.path.exists(args.in_files_file_list):
+            raise AssertionError(
+                f'--in_files_file_list not found: {args.in_files_file_list}')
+        if args.in_files is not None:
+            raise AssertionError(
+                'Both --in_files and --in_files_file_list were supplied. '
+                'Only expected --in_files_file_list')
+        with open(args.in_files_file_list, 'r', encoding='utf-8') as f:
+            args.in_files = shlex.split(f.read())
+        #  Delete the --in_files_file_list argument from argv as the upstream
+        #  code won't recognize it.
+        idx = argv.index('--in_files_file_list')
+        del argv[idx:idx + 2]
+        # Add --in_files argument to argv to pass it to the original upstream
+        # main function.
+        argv.append('--in_files')
+        for file in args.in_files:
+            argv.append(file)
 
     if args.in_files is not None:
         for f in args.in_files:
