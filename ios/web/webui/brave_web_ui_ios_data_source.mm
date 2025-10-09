@@ -25,14 +25,14 @@
 
 // static
 BraveWebUIIOSDataSource* BraveWebUIIOSDataSource::Create(
-    const std::string& source_name) {
+    std::string_view source_name) {
   return new BraveWebUIIOSDataSource(source_name);
 }
 
 // static
 BraveWebUIIOSDataSource* BraveWebUIIOSDataSource::CreateAndAdd(
     web::BrowserState* browser_state,
-    const std::string& source_name) {
+    std::string_view source_name) {
   auto* data_source = Create(source_name);
   web::WebUIIOSDataSource::Add(browser_state, data_source);
   return data_source;
@@ -106,7 +106,7 @@ class BraveWebUIIOSDataSource::BraveInternalDataSource
 
 // WebUIIOSDataSource implementation:
 
-BraveWebUIIOSDataSource::BraveWebUIIOSDataSource(const std::string& source_name)
+BraveWebUIIOSDataSource::BraveWebUIIOSDataSource(std::string_view source_name)
     : web::WebUIIOSDataSourceImpl(source_name,
                                   new BraveInternalDataSource(this)) {
   CHECK(!source_name.ends_with("://"));
@@ -180,7 +180,7 @@ void BraveWebUIIOSDataSource::SetSupportedScheme(std::string_view scheme) {
 
 void BraveWebUIIOSDataSource::OverrideContentSecurityPolicy(
     network::mojom::CSPDirectiveName directive,
-    const std::string& value) {
+    std::string_view value) {
   csp_overrides_.insert_or_assign(directive, value);
 }
 

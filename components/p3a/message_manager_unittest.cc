@@ -137,7 +137,7 @@ class P3AMessageManagerTest : public testing::Test,
             return;
           } else if (request.url.spec().starts_with(
                          std::string(kTestStarUploadHost))) {
-            std::string log_type_str = request.url.path();
+            std::string log_type_str = std::string(request.url.path());
             EXPECT_TRUE(base::TrimString(log_type_str, "/", &log_type_str));
             std::optional<MetricLogType> log_type =
                 StringToMetricLogType(log_type_str);

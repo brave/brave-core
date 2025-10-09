@@ -10,7 +10,6 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -27,6 +26,7 @@
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "url/mojom/url.mojom.h"
 
 namespace brave_news {
@@ -191,7 +191,7 @@ TEST_F(BraveNewsFeedBuildingTest, BuildFeed) {
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
 
-  std::unordered_set<std::string> history_hosts = {"www.espn.com"};
+  absl::flat_hash_set<std::string> history_hosts = {"www.espn.com"};
 
   std::vector<mojom::FeedItemPtr> feed_items = ParseFeedItems(GetFeedJson());
 
@@ -257,7 +257,7 @@ TEST_F(BraveNewsFeedBuildingTest, DirectFeedsShouldAlwaysBeDisplayed) {
 TEST_F(BraveNewsFeedBuildingTest, RemovesUserDisabledItems) {
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
-  std::unordered_set<std::string> history_hosts = {};
+  absl::flat_hash_set<std::string> history_hosts = {};
 
   // Set a publisher to default-on, but user-off
   std::string publisher_id_to_hide = "333";
@@ -293,7 +293,7 @@ TEST_F(BraveNewsFeedBuildingTest, IncludesUserEnabledItems) {
   Publishers publisher_list;
 
   PopulatePublishers(&publisher_list);
-  std::unordered_set<std::string> history_hosts = {};
+  absl::flat_hash_set<std::string> history_hosts = {};
 
   // Set a publisher to default-off, but user-on
   std::string publisher_id_to_hide = "333";
@@ -373,7 +373,7 @@ TEST_F(BraveNewsFeedBuildingTest, DuplicateItemsAreNotIncluded) {
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
 
-  std::unordered_set<std::string> history_hosts = {"www.espn.com"};
+  absl::flat_hash_set<std::string> history_hosts = {"www.espn.com"};
 
   // Parse the feed items twice so we get two copies of everything.
   std::vector<mojom::FeedItemPtr> feed_items = ParseFeedItems(GetFeedJson());

@@ -143,7 +143,7 @@ void PageContentExtractor::ExtractPageContent(
   // 3) Text - find the "main" text of the page
 
   if (origin.is_valid()) {
-    std::string host = origin.host();
+    std::string_view host = origin.host();
     if (kYouTubeHosts.contains(host)) {
       VLOG(1) << "YouTube transcript type";
       // Do Youtube extraction
