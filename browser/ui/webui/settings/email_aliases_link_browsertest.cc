@@ -43,7 +43,7 @@ IN_PROC_BROWSER_TEST_P(BraveSettingsEmailAliasesRowBrowserTest,
                                            chrome::GetSettingsUrl("autofill")));
 
   // Inject a local helper to pierce shadow DOMs and store the row globally.
-  content::EvalJs(contents(), R"JS(
+  ASSERT_TRUE(content::ExecJs(contents(), R"JS(
     (function() {
       function deepQuerySelector(root, selector) {
         const direct = root.querySelector(selector);
@@ -59,11 +59,10 @@ IN_PROC_BROWSER_TEST_P(BraveSettingsEmailAliasesRowBrowserTest,
       }
       window.emailAliasesRow =
         deepQuerySelector(document, '#emailAliasesLinkRow');
-      return true;
     })();
-  )JS")
+  )JS"));
 
-      const bool enabled = FeatureEnabled();
+  const bool enabled = FeatureEnabled();
 
   // Email Aliases link row should exist only if the feature is enabled.
   EXPECT_EQ(enabled, content::EvalJs(contents(), R"JS(
