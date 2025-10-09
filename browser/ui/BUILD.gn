@@ -848,7 +848,7 @@ source_set("ui") {
     "//brave/components/text_recognition/common/buildflags",
     "//brave/components/time_period_storage",
     "//brave/components/tor/buildflags",
-    "//brave/components/url_sanitizer/browser",
+    "//brave/components/url_sanitizer/core/browser",
     "//brave/components/vector_icons",
     "//brave/components/web_discovery/buildflags",
     "//brave/components/webui",
