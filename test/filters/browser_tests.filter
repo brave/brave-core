@@ -2591,7 +2591,9 @@
 -BrowserTabRestoreTest.RecentTabsMenuTabDisposition
 -BrowserTest.*
 -BrowserViewLayoutDelegateImplBrowsertest.*/Maximized
+-BrowserViewTest.AccessibleTabLabel
 -BrowserViewTest.AvoidUnnecessaryVisibilityChanges
+-BrowserViewTest.DevToolsDockedUpdatesBrowserWindow
 -BrowserViewTest.DragNotSupportedInFullscreen
 -BrowserViewTestRefreshOnly.*
 -BrowsingDataCounterUtilsBrowserTest.*
@@ -3004,6 +3006,7 @@
 -ProfileNetworkContextServiceBrowsertest.*
 -ProfileNetworkContextTrustTokensBrowsertest.*
 -ProfilePickerCreationFlowBrowserTest.*
+-ProfilePickerCreationFlowRoamingProfileBrowserTest.*
 -ProfilePickerEnterpriseCreationFlowBrowserTest.*
 -ProfilePickerEnterpriseCreationFlowBrowserTestWithFeatureFlagDisabled.*
 -ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithCurrentProfile
