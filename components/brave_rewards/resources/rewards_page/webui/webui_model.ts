@@ -197,12 +197,10 @@ export function createModel(): AppModel {
           adsEnabled: {
             'new-tab-page': settings.newTabPageAdsEnabled,
             'notification': settings.notificationAdsEnabled,
-            'search-result': settings.searchAdsEnabled,
           },
           adTypesReceivedThisMonth: {
             'new-tab-page': adTypeSummaryThisMonth.newTabPageAds,
             'notification': adTypeSummaryThisMonth.notificationAds,
-            'search-result': adTypeSummaryThisMonth.searchResultAds,
           },
           minEarningsPreviousMonth: statement.minEarningsPreviousMonth,
           nextPaymentDate: convertMojoTime(statement.nextPaymentDate),
