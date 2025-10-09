@@ -35,7 +35,7 @@ class HttpsUpgradeExceptionsService
 
  private:
   void LoadHTTPSUpgradeExceptions(const base::FilePath& install_dir);
-  std::set<std::string> exceptional_domains_;
+  std::set<std::string, std::less<>> exceptional_domains_;
   bool is_ready_ = false;
   base::WeakPtrFactory<HttpsUpgradeExceptionsService> weak_factory_{this};
 };

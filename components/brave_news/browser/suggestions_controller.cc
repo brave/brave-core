@@ -19,6 +19,7 @@
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
+#include "base/strings/strcat.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
@@ -47,10 +48,10 @@ double ProjectToRange(double value, double min, double max) {
   return value * range + min;
 }
 
-base::flat_map<std::string, double> GetVisitWeightings(
+base::flat_map<std::string_view, double> GetVisitWeightings(
     const history::QueryResults& history) {
   // Score hostnames from browsing history by how many times they appear
-  base::flat_map<std::string, double> weightings;
+  base::flat_map<std::string_view, double> weightings;
   for (const auto& entry : history) {
     weightings[entry.url().host()] += 1;
   }
@@ -75,7 +76,7 @@ base::flat_map<std::string, double> GetVisitWeightings(
 // Get score for having visited a source.
 double GetVisitWeighting(
     const mojom::PublisherPtr& publisher,
-    const base::flat_map<std::string, double>& visit_weightings) {
+    const base::flat_map<std::string_view, double>& visit_weightings) {
   const auto host_name = publisher->site_url.host();
   auto* weight = base::FindOrNull(visit_weightings, host_name);
   if (!weight) {
@@ -85,7 +86,8 @@ double GetVisitWeighting(
     // Relevant issues: https://github.com/brave/news-aggregator/issues/58 and
     // https://github.com/brave/brave-browser/issues/26092
     if (!host_name.starts_with("www.")) {
-      weight = base::FindOrNull(visit_weightings, "www." + host_name);
+      weight =
+          base::FindOrNull(visit_weightings, base::StrCat({"www.", host_name}));
     }
 
     if (!weight) {
@@ -183,7 +185,7 @@ SuggestionsController::GetSuggestedPublisherIdsWithHistory(
     const Publishers& publishers,
     const history::QueryResults& history) {
   const auto visit_weightings = GetVisitWeightings(history);
-  base::flat_map<std::string, double> scores;
+  base::flat_map<std::string_view, double> scores;
 
   for (const auto& [publisher_id, publisher] : publishers) {
     std::vector<std::string> locales;
@@ -256,7 +258,7 @@ SuggestionsController::GetSuggestedPublisherIdsWithHistory(
     if (score == 0) {
       continue;
     }
-    suggestions.push_back(publisher_id);
+    suggestions.push_back(std::string(publisher_id));
   }
 
   std::sort(suggestions.begin(), suggestions.end(),
