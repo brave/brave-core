@@ -1,0 +1,6 @@
+Name: serde-wasm-bindgen
+URL: https://crates.io/crates/serde-wasm-bindgen
+Version: 0.6.5
+License: MIT
+License File: //brave/ui/webui/resources/wasm/vendor/serde-wasm-bindgen/LICENSE
+Description: Native Serde adapter for wasm-bindgen.
