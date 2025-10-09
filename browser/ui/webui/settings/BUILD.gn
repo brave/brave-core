@@ -42,9 +42,7 @@ source_set("browser_tests") {
   if (!is_android) {
     testonly = true
 
-    sources = [
-      "email_aliases_link_browsertest.cc",
-    ]
+    sources = [ "email_aliases_link_browsertest.cc" ]
 
     deps = [
       "//brave/components/email_aliases:features",
