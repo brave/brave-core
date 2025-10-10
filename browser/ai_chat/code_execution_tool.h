@@ -29,6 +29,7 @@ class BrowserContext;
 
 namespace ai_chat {
 
+class CodeSandboxScriptStorage;
 class CodeSandboxWebContentsObserver;
 
 // Tool for executing JavaScript code and returning console.log output.
@@ -47,7 +48,9 @@ class CodeExecutionTool : public Tool {
   std::string_view Description() const override;
   std::optional<base::Value::Dict> InputProperties() const override;
   std::optional<std::vector<std::string>> RequiredProperties() const override;
-  bool RequiresUserInteractionBeforeHandling() const override;
+  std::variant<bool, mojom::PermissionChallengePtr>
+  RequiresUserInteractionBeforeHandling(
+      const mojom::ToolUseEvent& tool_use) const override;
   bool SupportsConversation(
       bool is_temporary,
       bool has_untrusted_content,
@@ -77,6 +80,7 @@ class CodeExecutionTool : public Tool {
                     std::string output);
 
   raw_ptr<Profile> profile_;
+  raw_ptr<CodeSandboxScriptStorage> script_storage_;
   std::list<CodeExecutionRequest> requests_;
   std::optional<base::TimeDelta> execution_time_limit_for_testing_;
   base::WeakPtrFactory<CodeExecutionTool> weak_ptr_factory_{this};

@@ -5,28 +5,20 @@
 
 #include "brave/components/ai_chat/core/browser/code_sandbox_script_storage.h"
 
-#include "base/memory/ref_counted_memory.h"
-#include "base/no_destructor.h"
 #include "base/unguessable_token.h"
 
 namespace ai_chat {
-
-CodeSandboxScriptStorage* CodeSandboxScriptStorage::GetInstance() {
-  static base::NoDestructor<CodeSandboxScriptStorage> instance;
-  return instance.get();
-}
 
 CodeSandboxScriptStorage::CodeSandboxScriptStorage() = default;
 CodeSandboxScriptStorage::~CodeSandboxScriptStorage() = default;
 
 std::string CodeSandboxScriptStorage::StoreScript(std::string script) {
   auto request_id = base::UnguessableToken::Create().ToString();
-  scripts_[request_id] =
-      base::MakeRefCounted<base::RefCountedString>(std::move(script));
+  scripts_[request_id] = std::move(script);
   return request_id;
 }
 
-scoped_refptr<base::RefCountedString> CodeSandboxScriptStorage::ConsumeScript(
+std::optional<std::string> CodeSandboxScriptStorage::ConsumeScript(
     std::string_view request_id) {
   auto it = scripts_.find(request_id);
   if (it != scripts_.end()) {
@@ -34,7 +26,7 @@ scoped_refptr<base::RefCountedString> CodeSandboxScriptStorage::ConsumeScript(
     scripts_.erase(it);
     return script;
   }
-  return nullptr;
+  return std::nullopt;
 }
 
 }  // namespace ai_chat
