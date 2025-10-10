@@ -69,14 +69,14 @@ void BraveSidePanelCoordinator::OnTabStripModelChanged(
   }
 }
 
-std::unique_ptr<views::View> BraveSidePanelCoordinator::CreateHeader() {
-  auto header = SidePanelCoordinator::CreateHeader();
+// std::unique_ptr<views::View> BraveSidePanelCoordinator::CreateHeader() {
+//   auto header = SidePanelCoordinator::CreateHeader();
 
-  // Brave has its own side panel navigation in the form of the SideBar, so
-  // hide the Chromium combobox-style header.
-  header->SetVisible(false);
-  return header;
-}
+//   // Brave has its own side panel navigation in the form of the SideBar, so
+//   // hide the Chromium combobox-style header.
+//   header->SetVisible(false);
+//   return header;
+// }
 
 void BraveSidePanelCoordinator::Toggle() {
   if (IsSidePanelShowing() &&
