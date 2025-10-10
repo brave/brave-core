@@ -202,9 +202,9 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   // Tab background
   // : active/inactive tab X active/inactive frame
   postprocessing_mixer[kColorTabBackgroundActiveFrameActive] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral20);
   postprocessing_mixer[kColorTabBackgroundActiveFrameInactive] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral20);
   postprocessing_mixer[kColorTabBackgroundInactiveFrameActive] = {
       ui::kColorFrameActive};
   postprocessing_mixer[kColorTabBackgroundInactiveFrameInactive] = {
@@ -213,23 +213,27 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   // Tab foreground - such as title text
   // : active/inactive tab X active/inactive frame
   postprocessing_mixer[kColorTabForegroundActiveFrameActive] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral80);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral80);
   postprocessing_mixer[kColorTabForegroundActiveFrameInactive] = {
       kColorTabForegroundActiveFrameActive};
+//   postprocessing_mixer[kColorTabForegroundInactiveFrameActive] =
+//       darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral40);
+//   postprocessing_mixer[kColorTabForegroundInactiveFrameInactive] =
+//       darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral40);
   postprocessing_mixer[kColorTabForegroundInactiveFrameActive] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral40);
-  postprocessing_mixer[kColorTabForegroundInactiveFrameInactive] = {
-      kColorTabForegroundInactiveFrameActive};
+      {nala::kColorPrimitiveNeutral40};
+  postprocessing_mixer[kColorTabForegroundInactiveFrameInactive] =
+      { nala::kColorPrimitiveNeutral40};
 
   // Tab hovered background
   postprocessing_mixer[kColorTabBackgroundInactiveHoverFrameActive] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral10);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral10);
 
   // Split view tile background - horizontal/vertical
   postprocessing_mixer[kColorBraveSplitViewTileBackgroundHorizontal] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral5);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral5);
   postprocessing_mixer[kColorBraveSplitViewTileBackgroundVertical] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral0);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral0);
 
   // NewTabButton
   postprocessing_mixer[kColorNewTabButtonForegroundFrameActive] = {
@@ -243,9 +247,9 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
 
   // Vertical tabs
   postprocessing_mixer[kColorBraveVerticalTabActiveBackground] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral20);
   postprocessing_mixer[kColorBraveVerticalTabHoveredBackground] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral10);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral10);
   postprocessing_mixer[kColorBraveVerticalTabInactiveBackground] = {
       kColorToolbar};
 

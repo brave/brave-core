@@ -6,19 +6,25 @@
 #include "brave/browser/ui/darker_theme/darker_theme_color_transform_factory.h"
 
 #include "base/functional/bind.h"
-#include "brave/ui/color/nala/nala_color_id.h"
-#include "ui/color/color_id.h"
 #include "ui/color/color_mixer.h"
+#include "ui/color/color_provider_key.h"
 #include "ui/color/color_transform.h"
 #include "ui/gfx/color_utils.h"
+
+#include "base/logging.h"
 
 namespace darker_theme {
 
 namespace {
 
-SkColor DarkerColorGenerator(int reference_color_id,
+SkColor DarkerColorGenerator(const ui::ColorProviderKey& key,
+                             int reference_color_id,
                              SkColor input,
                              const ui::ColorMixer& mixer) {
+  if (!key.user_color.has_value()) {
+    return mixer.GetResultColor(reference_color_id);
+  }
+
   // Takes lightneess from reference color and applies it to input color.
   SkColor reference_color = mixer.GetResultColor(reference_color_id);
   color_utils::HSL reference_hsl;
@@ -33,8 +39,9 @@ SkColor DarkerColorGenerator(int reference_color_id,
 
 }  // namespace
 
-ui::ColorTransform ApplyDarknessFromColor(int reference_color_id) {
-  return base::BindRepeating(DarkerColorGenerator, reference_color_id);
+ui::ColorTransform ApplyDarknessFromColor(const ui::ColorProviderKey& key,
+                                          int reference_color_id) {
+  return base::BindRepeating(DarkerColorGenerator, key, reference_color_id);
 }
 
 }  // namespace darker_theme

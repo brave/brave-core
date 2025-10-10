@@ -155,7 +155,7 @@ void AddBraveVpnColorMixer(ui::ColorProvider* provider,
 
   auto& postprocessing_mixer = provider->AddPostprocessingMixer();
   postprocessing_mixer[kColorBraveVpnButtonBackgroundNormal] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral5);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral5);
 #endif  // defined(TOOLKIT_VIEWS)
 }
 #endif
@@ -545,11 +545,11 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   auto& postprocessing_mixer = provider->AddPostprocessingMixer();
   postprocessing_mixer[kColorForTest] = {kDarkerColorForTest};
   postprocessing_mixer[ui::kColorFrameActive] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral0);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral0);
   postprocessing_mixer[ui::kColorFrameInactive] = {
       postprocessing_mixer.GetResultColor(ui::kColorFrameActive)};
   postprocessing_mixer[kColorToolbar] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral5);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral5);
 #endif  // defined(TOOLKIT_VIEWS)
 }
 
@@ -764,25 +764,25 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
   auto& postprocessing_mixer = provider->AddPostprocessingMixer();
   // Location bar
   postprocessing_mixer[kColorLocationBarBackground] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral10);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral10);
   postprocessing_mixer[kColorLocationBarBackgroundHovered] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral10);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral10);
 
   // Omnibox
   postprocessing_mixer[kColorOmniboxResultsBackground] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral10);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral10);
   postprocessing_mixer[kColorOmniboxResultsBackgroundHovered] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral20);
   postprocessing_mixer[kColorOmniboxResultsBackgroundSelected] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral20);
   postprocessing_mixer[kColorBraveOmniboxResultViewSeparator] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral20);
 
   // Toolbar
   postprocessing_mixer[kColorToolbarButtonIcon] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral40);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral40);
   postprocessing_mixer[kColorToolbarButtonIconHovered] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral50);
+      darker_theme::ApplyDarknessFromColor(key, nala::kColorPrimitiveNeutral50);
   postprocessing_mixer[kColorToolbarButtonActivated] = {
       nala::kColorPrimitivePrimary50};
   postprocessing_mixer[kColorToolbarInkDrop] = {nala::kColorPrimitiveNeutral10};

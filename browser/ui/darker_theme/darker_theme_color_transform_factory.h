@@ -8,14 +8,22 @@
 
 #include "ui/color/color_transform.h"
 
+namespace ui {
+struct ColorProviderKey;
+}  // namespace ui
+
 namespace darker_theme {
 
 // Creates ui::ColorTransform that transform colors using given
 // |reference_color_id|. This color transform should be applied only when the
-// user has enabled the darker theme. Note that we're using `int` for
+// user has enabled the darker theme.
+// When the user has chosen a custom theme color, the input color will be
+// adjusted to have the sasme lightness as the reference color. Otherwise, the
+// reference color will be used as is. Note that we're using `int` for
 // |reference_color_id|'s type so that we can pass various color id types like
 // ui::ColorId or nala::ColorId.
-ui::ColorTransform ApplyDarknessFromColor(int reference_color_id);
+ui::ColorTransform ApplyDarknessFromColor(const ui::ColorProviderKey& key,
+                                          int reference_color_id);
 
 }  // namespace darker_theme
 
