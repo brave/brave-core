@@ -33,6 +33,10 @@ namespace {
 
 constexpr uint8_t kAuthorityTypeMax = 3;
 
+// https://github.com/solana-labs/solana/blob/7700cb3128c1f19820de67b81aa45d18f73d2ac0/sdk/program/src/system_instruction.rs#L152
+// https://github.com/solana-labs/solana/blob/7700cb3128c1f19820de67b81aa45d18f73d2ac0/sdk/program/src/pubkey.rs#L23
+constexpr size_t kMaxSeedLength = 32;
+
 // Tuple of param name, localized name, and type.
 using ParamNameTypeTuple =
     std::tuple<std::string, std::string, mojom::SolanaInstructionParamType>;
@@ -681,21 +685,25 @@ std::optional<std::string> DecodeOptionalPublicKey(
   }
 }
 
-std::optional<std::string> DecodeString(base::span<const uint8_t> input,
-                                        size_t& offset) {
+std::optional<std::string> DecodeSeed(base::span<const uint8_t> input,
+                                      size_t& offset) {
   auto span_reader = base::SpanReader(input.subspan(offset));
 
-  uint64_t len = 0;
-  if (!span_reader.ReadU64LittleEndian(len)) {
+  uint64_t len_raw = 0;
+  if (!span_reader.ReadU64LittleEndian(len_raw)) {
     return std::nullopt;
   }
 
-  base::CheckedNumeric<size_t> len_to_read(len);
-  if (!len_to_read.IsValid()) {
+  size_t len = 0;
+  if (!base::CheckedNumeric<size_t>(len_raw).AssignIfValid(&len)) {
     return std::nullopt;
   }
 
-  auto bytes = span_reader.Read(len_to_read.ValueOrDie());
+  if (len > kMaxSeedLength) {
+    return std::nullopt;
+  }
+
+  auto bytes = span_reader.Read(len);
   if (!bytes) {
     return std::nullopt;
   }
@@ -728,7 +736,8 @@ bool DecodeParamType(const ParamNameTypeTuple& name_type_tuple,
       value = DecodeOptionalPublicKey(data, offset);
       break;
     case mojom::SolanaInstructionParamType::kString:
-      value = DecodeString(data, offset);
+      // All strings we support are seeds capped by 32 bytes length.
+      value = DecodeSeed(data, offset);
       break;
     case mojom::SolanaInstructionParamType::kAuthorityType:
       value = DecodeAuthorityTypeString(data, offset);
