@@ -1,1 +1,10 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This file contains defaults for gn values in Chromium which are always
+# overridden in Brave builds. This file in particular is only included in
+# builds for non-mobile builds (mac, linux, win)
+
 safe_browsing_mode = 1

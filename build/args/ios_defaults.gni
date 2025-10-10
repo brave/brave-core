@@ -1,3 +1,12 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This file contains defaults for gn values in Chromium which are always
+# overridden in Brave builds. This file in particular is only included in
+# builds for ios
+
 ios_enable_code_signing = false
 ios_enable_share_extension = false
 ios_enable_credential_provider_extension = true
@@ -11,10 +20,9 @@ enable_backup_ref_ptr_support = false
 
 ios_provider_target = "//brave/ios/browser/providers:brave_providers"
 
-ios_locales_pack_extra_source_patterns = [
-  "%root_gen_dir%/components/brave_components_strings_",
-]
-ios_locales_pack_extra_deps = ["//brave/components/resources:strings"]
+ios_locales_pack_extra_source_patterns =
+    [ "%root_gen_dir%/components/brave_components_strings_" ]
+ios_locales_pack_extra_deps = [ "//brave/components/resources:strings" ]
 
 # Configure unit tests to run outside of chromium infra
 # https://source.chromium.org/chromium/chromium/src/+/main:ios/build/bots/scripts/README.md
