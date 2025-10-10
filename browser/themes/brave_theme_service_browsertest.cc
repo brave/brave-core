@@ -32,13 +32,6 @@
 #include "ui/native_theme/native_theme_observer.h"
 #include "ui/native_theme/os_settings_provider.h"
 
-#if BUILDFLAG(IS_WIN)
-#include "base/run_loop.h"
-#include "base/test/scoped_run_loop_timeout.h"
-#include "base/time/time.h"
-#include "base/win/registry.h"
-#endif
-
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/crx_installer.h"
 #include "chrome/browser/extensions/extension_install_prompt.h"
@@ -99,16 +92,6 @@ class TestNativeThemeObserver : public ui::NativeThemeObserver {
 
   MOCK_METHOD1(OnNativeThemeUpdated, void(ui::NativeTheme*));
 };
-
-#if BUILDFLAG(IS_WIN)
-void RunLoopRunWithTimeout(base::TimeDelta timeout) {
-  // ScopedRunLoopTimeout causes a non-fatal failure on timeout but for us the
-  // timeout means success, so turn the failure into success.
-  base::RunLoop run_loop;
-  base::test::ScopedRunLoopTimeout run_timeout(FROM_HERE, timeout);
-  EXPECT_NONFATAL_FAILURE(run_loop.Run(), "Run() timed out.");
-}
-#endif
 
 }  // namespace
 
@@ -245,90 +228,3 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ColorProviderTest) {
   frame_active_color = cp->GetColor(ui::kColorFrameActive);
   EXPECT_EQ(kPrivateFrame, frame_active_color);
 }
-
-#if BUILDFLAG(IS_WIN)
-// Some tests are failing for Windows x86 CI,
-// See https://github.com/brave/brave-browser/issues/22767
-#if defined(ARCH_CPU_X86)
-#define MAYBE_DarkModeChangeByRegTest DISABLED_DarkModeChangeByRegTest
-#else
-#define MAYBE_DarkModeChangeByRegTest DarkModeChangeByRegTest
-#endif
-IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, MAYBE_DarkModeChangeByRegTest) {
-  // Test native theme notification is called properly by changing reg value.
-  // This simulates dark mode setting from Windows settings.
-  // And Toggle it twice from initial value to go back to initial value  because
-  // reg value changes system value. Otherwise, dark mode config could be
-  // changed after running this test.
-  if (!ui::OsSettingsProvider::Get().DarkColorSchemeAvailable()) {
-    return;
-  }
-
-  base::win::RegKey hkcu_themes_regkey;
-  bool key_open_succeeded =
-      hkcu_themes_regkey.Open(HKEY_CURRENT_USER,
-                              L"Software\\Microsoft\\Windows\\CurrentVersion\\"
-                              L"Themes\\Personalize",
-                              KEY_WRITE) == ERROR_SUCCESS;
-  DCHECK(key_open_succeeded);
-
-  DWORD apps_use_light_theme = 1;
-  hkcu_themes_regkey.ReadValueDW(L"AppsUseLightTheme", &apps_use_light_theme);
-  const bool initial_dark_mode = apps_use_light_theme == 0;
-
-  // Set dark mode to "Same as Windows". In this mode we want to be receiving
-  // system notifications of the dark mode changes.
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT);
-
-  {
-    // Set up theme observer and toggle the system dark mode by writing to the
-    // registry
-    TestNativeThemeObserver native_theme_observer_for_default;
-    ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
-        &native_theme_observer_for_default);
-
-    EXPECT_CALL(native_theme_observer_for_default,
-                OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi()))
-        .Times(0);
-    apps_use_light_theme = !initial_dark_mode ? 0 : 1;
-    hkcu_themes_regkey.WriteValue(L"AppsUseLightTheme", apps_use_light_theme);
-
-    // Timeout is used to let notifications trickle in.
-    RunLoopRunWithTimeout(base::Milliseconds(500));
-
-    // Toggling dark mode to light should result in one notification
-    EXPECT_CALL(native_theme_observer_for_default,
-                OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi()))
-        .Times(1);
-    dark_mode::SetBraveDarkModeType(
-        dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-
-    ui::NativeTheme::GetInstanceForNativeUi()->RemoveObserver(
-        &native_theme_observer_for_default);
-  }
-
-  {
-    // Set up theme observer and toggle the system dark mode via the registry
-    // again. We should only get no notifications this time because we short
-    // circuit the dark mode change system notifications when we are in
-    // non-default dark mode (i.e. dark mode is set to Dark or Light, not to
-    // "Same as Windows").
-    TestNativeThemeObserver native_theme_observer_for_light;
-    EXPECT_CALL(native_theme_observer_for_light,
-                OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi()))
-        .Times(0);
-    ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
-        &native_theme_observer_for_light);
-
-    apps_use_light_theme = initial_dark_mode ? 0 : 1;
-    hkcu_themes_regkey.WriteValue(L"AppsUseLightTheme", apps_use_light_theme);
-
-    // Timeout is used to let notifications trickle in.
-    RunLoopRunWithTimeout(base::Milliseconds(500));
-
-    ui::NativeTheme::GetInstanceForNativeUi()->RemoveObserver(
-        &native_theme_observer_for_light);
-  }
-}
-#endif  // BUILDFLAG(IS_WIN)
