@@ -34,13 +34,13 @@ def make_source_absolute(root, path):
     return path.replace(root, '/')
 
 
-def verify_webpack_srcs(root_gen_dir, data_deps_path, depfile_path,
+def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
                         extra_modules):
     src_folder = os.path.abspath(os.path.join(root_gen_dir, '..', '..', '..'))
     out_dir = os.path.abspath(os.path.join(root_gen_dir, '..'))
     src_roots = []
 
-    with open(data_deps_path) as f:
+    with open(data_paths_file) as f:
         src_roots = json.loads(f.read())
         src_roots = [
             root.replace('//', src_folder + '/') for root in src_roots
@@ -96,7 +96,7 @@ def main():
     webpack_gen_dir = output_path_absolute
 
     depfile_path = os.path.abspath(args.depfile_path[0])
-    data_deps_path = os.path.abspath(args.data_deps_path[0])
+    data_paths_file = os.path.abspath(args.data_paths_file[0])
     transpile_options = dict(production=args.production,
                              target_gen_dir=webpack_gen_dir,
                              root_gen_dir=root_gen_dir,
@@ -113,7 +113,7 @@ def main():
     generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0],
                  resource_path_prefix)
 
-    verify_webpack_srcs(root_gen_dir, data_deps_path, depfile_path,
+    verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
                         args.extra_modules)
 
 
@@ -130,7 +130,7 @@ def parse_args():
     parser.add_argument('--output_path', nargs=1)
     parser.add_argument('--root_gen_dir', nargs=1)
     parser.add_argument('--depfile_path', nargs=1)
-    parser.add_argument('--data_deps_path', nargs=1)
+    parser.add_argument('--data_paths_file', nargs=1)
     parser.add_argument('--grd_name', nargs=1)
     parser.add_argument('--resource_name', nargs=1)
     parser.add_argument('--public_asset_path', nargs='?')
