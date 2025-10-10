@@ -139,7 +139,7 @@ bool PromotionButtonController::ShouldShowSearchPromotionButton() {
     return false;
   }
 
-  const AutocompleteMatch match = omnibox_view_->model()->CurrentMatch(nullptr);
+  const AutocompleteMatch match = omnibox_view_->model()->CurrentMatch();
   return !IsBraveSearchPromotionMatch(match) &&
          !LeoProvider::IsMatchFromLeoProvider(match) &&
          AutocompleteMatch::IsSearchType(match.type);
