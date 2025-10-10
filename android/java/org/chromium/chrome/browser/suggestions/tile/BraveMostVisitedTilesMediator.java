@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.suggestions.tile;
 
-import android.content.res.Resources;
+import android.content.Context;
 
 import androidx.annotation.Nullable;
 
@@ -17,7 +17,7 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
     private TileGroup mTileGroup;
 
     public BraveMostVisitedTilesMediator(
-            Resources resources,
+            Context context,
             UiConfig uiConfig,
             MostVisitedTilesLayout mvTilesLayout,
             TileRenderer renderer,
@@ -26,7 +26,7 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
             @Nullable Runnable snapshotTileGridChangedRunnable,
             @Nullable Runnable tileCountChangedRunnable) {
         super(
-                resources,
+                context,
                 uiConfig,
                 mvTilesLayout,
                 renderer,
