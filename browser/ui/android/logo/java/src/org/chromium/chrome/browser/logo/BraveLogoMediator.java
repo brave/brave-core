@@ -6,8 +6,12 @@
 package org.chromium.chrome.browser.logo;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 
 import org.chromium.base.Callback;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.logo.LogoBridge.Logo;
+import org.chromium.chrome.browser.logo.LogoCoordinator.VisibilityObserver;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.modelutil.PropertyModel;
 
@@ -20,16 +24,18 @@ public class BraveLogoMediator extends LogoMediator {
             Context context,
             Callback<LoadUrlParams> logoClickedCallback,
             PropertyModel logoModel,
-            Callback<LogoBridge.Logo> onLogoAvailableCallback,
-            LogoCoordinator.VisibilityObserver visibilityObserver,
-            CachedTintedBitmap defaultGoogleLogo) {
+            Callback<Logo> onLogoAvailableCallback,
+            @Nullable VisibilityObserver visibilityObserver,
+            CachedTintedBitmap defaultGoogleLogo,
+            @Nullable Drawable defaultGoogleLogoDrawable) {
         super(
                 context,
                 logoClickedCallback,
                 logoModel,
                 onLogoAvailableCallback,
                 visibilityObserver,
-                defaultGoogleLogo);
+                defaultGoogleLogo,
+                defaultGoogleLogoDrawable);
     }
 
     public void updateVisibility() {

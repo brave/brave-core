@@ -15,6 +15,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -1664,7 +1665,8 @@ public class BytecodeTest {
                         PropertyModel.class,
                         Callback.class,
                         LogoCoordinator.VisibilityObserver.class,
-                        CachedTintedBitmap.class));
+                        CachedTintedBitmap.class,
+                        Drawable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
