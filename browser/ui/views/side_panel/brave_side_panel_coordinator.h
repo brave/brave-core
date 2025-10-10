@@ -44,7 +44,7 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
                                bool visible) override;
 
   // SidePanelCoordinator overrides:
-  std::unique_ptr<views::View> CreateHeader() override;
+  // std::unique_ptr<views::View> CreateHeader() override;
   void NotifyPinnedContainerOfActiveStateChange(SidePanelEntryKey key,
                                                 bool is_active) override;
 
