@@ -16,6 +16,7 @@ static_library("brave_policy") {
     ":brave_policy_observer",
     "//base",
     "//brave/components/brave_origin",
+    "//brave/components/brave_policy/ad_block_only_mode",
     "//components/policy/core/browser",
     "//components/policy/core/common",
     "//components/prefs",
