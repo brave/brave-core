@@ -937,7 +937,7 @@ type CustomArgs = {
   totalTokens: number
   trimmedTokens: number
   isGenerating: boolean
-  attachmentsDialog: 'tabs' | 'bookmarks' | null
+  attachmentsDialog: 'tabs' | 'bookmarks' | 'history' | null
   isNewConversation: boolean
   generatedUrlToBeOpened: Url | undefined
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
@@ -1202,6 +1202,23 @@ function StoryContext(
         createdTime: { internalValue: BigInt(Date.now() * 1000) },
         lastUsed: { internalValue: BigInt(Date.now() * 1000) },
       },
+    ],
+    getHistory: async () => [
+      {
+        id: BigInt(1),
+        url: { url: 'https://w3.org' },
+        title: 'W3',
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt(Date.now() * 1000) },
+      },
+      {
+        id: BigInt(2),
+        url: { url: 'https://readr.nz' },
+        title: 'RSS Reader',
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt(Date.now() * 1000) },
+      },
+
     ],
   }
 

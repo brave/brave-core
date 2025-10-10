@@ -29,6 +29,7 @@ export type State = Mojom.ServiceState & {
   // default tab content.
   defaultTabContentId?: number
   getBookmarks: () => Promise<Mojom.Bookmark[]>
+  getHistory: (search: string) => Promise<Mojom.HistoryEntry[]>
 }
 
 export const defaultUIState: State = {
@@ -51,6 +52,9 @@ export const defaultUIState: State = {
   smartModes: [],
   tabs: [],
   async getBookmarks() {
+    return []
+  },
+  async getHistory() {
     return []
   },
 }
@@ -77,6 +81,8 @@ class PageAPI extends API<State> {
     new Mojom.TabDataObserverCallbackRouter()
 
   public bookmarksService = Mojom.BookmarksPageHandler.getRemote()
+
+  public historyService = Mojom.HistoryUIHandler.getRemote()
 
   constructor() {
     super(defaultUIState)
@@ -122,6 +128,7 @@ class PageAPI extends API<State> {
       actionList,
       smartModes,
       getBookmarks: this.getBookmarks.bind(this),
+      getHistory: this.getHistory.bind(this),
     })
 
     this.service.bindMetrics(this.metrics.$.bindNewPipeAndPassReceiver())
@@ -197,6 +204,12 @@ class PageAPI extends API<State> {
     return this.bookmarksService
       .getBookmarks()
       .then(({ bookmarks }) => bookmarks)
+  }
+
+  getHistory(search: string) {
+    return this.historyService
+      .getHistory(search, null)
+      .then(({ history }) => history)
   }
 }
 
