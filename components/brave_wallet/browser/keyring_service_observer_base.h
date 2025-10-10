@@ -26,6 +26,7 @@ class KeyringServiceObserverBase : public mojom::KeyringServiceObserver {
   void SelectedWalletAccountChanged(mojom::AccountInfoPtr account) override {}
   void SelectedDappAccountChanged(mojom::CoinType coin,
                                   mojom::AccountInfoPtr account) override {}
+  void GenerateWasmKeyrings(const std::vector<uint8_t>& seed) override {}
 };
 
 }  // namespace brave_wallet

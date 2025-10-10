@@ -1197,6 +1197,8 @@ interface KeyringServiceObserver {
 
   // Fired when the selected dapp account setting changes
   SelectedDappAccountChanged(CoinType coin, AccountInfo? account);
+
+  GenerateWasmKeyrings(array<uint8> seed);
 };
 
 enum OnRampProvider {
@@ -2345,7 +2347,7 @@ interface PolkadotWalletService {
 };
 
 interface PolkadotWalletServiceObserver {
-  GetPublicKey() => (string pubkey);
+  GetPublicKey(AccountId account) => (string pubkey);
 };
 
 enum TransactionStatus {

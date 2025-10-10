@@ -49,7 +49,9 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   std::string GetPubKey();
 
  private:
-  void OnGetPubKey(const std::string&);
+  void OnGetPubKey(std::string chain_id,
+                   GetAccountBalanceCallback callback,
+                   const std::string& pubkey);
 
   const raw_ref<KeyringService> keyring_service_;
   mojo::ReceiverSet<mojom::PolkadotWalletService> receivers_;

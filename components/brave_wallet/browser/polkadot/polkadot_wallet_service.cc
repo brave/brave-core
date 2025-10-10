@@ -34,9 +34,6 @@ void PolkadotWalletService::Reset() {
 
 void PolkadotWalletService::GetNetworkName(mojom::AccountIdPtr account_id,
                                            GetNetworkNameCallback callback) {
-  polkadot_remote_->GetPublicKey(base::BindOnce(
-      &PolkadotWalletService::OnGetPubKey, weak_ptr_factory_.GetWeakPtr()));
-
   std::string chain_id = GetNetworkForPolkadotAccount(account_id);
   polkadot_substrate_rpc_.GetChainName(std::move(chain_id),
                                        std::move(callback));
@@ -46,13 +43,19 @@ void PolkadotWalletService::GetAccountBalance(
     mojom::AccountIdPtr account_id,
     const std::string& chain_id,
     GetAccountBalanceCallback callback) {
-  auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
-  if (!pubkey) {
-    return std::move(callback).Run(nullptr, WalletInternalErrorMessage());
-  }
+  // auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
+  // if (!pubkey) {
+  //   return std::move(callback).Run(
+  //       nullptr, "Cannot get Polkadot public key for this account.");
+  // }
 
-  polkadot_substrate_rpc_.GetAccountBalance(chain_id, *pubkey,
-                                            std::move(callback));
+  auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
+  LOG(INFO) << "cxx generated pubkey: 0x" << base::HexEncode(*pubkey);
+
+  polkadot_remote_->GetPublicKey(
+      std::move(account_id), base::BindOnce(&PolkadotWalletService::OnGetPubKey,
+                                            weak_ptr_factory_.GetWeakPtr(),
+                                            chain_id, std::move(callback)));
 }
 
 void PolkadotWalletService::AddObserver(
@@ -64,8 +67,18 @@ std::string PolkadotWalletService::GetPubKey() {
   return "";
 }
 
-void PolkadotWalletService::OnGetPubKey(const std::string& pubkey) {
+void PolkadotWalletService::OnGetPubKey(std::string chain_id,
+                                        GetAccountBalanceCallback callback,
+                                        const std::string& pubkey) {
   LOG(INFO) << "received the pubkey from the polkadot-bridge webui: " << pubkey;
+
+  std::vector<uint8_t> bytes;
+  base::HexStringToBytes(pubkey, &bytes);
+
+  polkadot_substrate_rpc_.GetAccountBalance(
+      chain_id,
+      base::span<const uint8_t, kPolkadotSubstrateAccountIdSize>(bytes),
+      std::move(callback));
 }
 
 }  // namespace brave_wallet
