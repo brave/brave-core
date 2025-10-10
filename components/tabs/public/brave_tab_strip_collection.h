@@ -17,7 +17,7 @@ namespace tabs {
 //   Otherwise, the target collection can be anything but pinned collection.
 class BraveTabStripCollection : public TabStripCollection {
  public:
-  using TabStripCollection::TabStripCollection;
+  BraveTabStripCollection();
   ~BraveTabStripCollection() override = default;
 
   void set_in_tree_tab_mode(bool in_tree_tab_mode) {
@@ -30,6 +30,21 @@ class BraveTabStripCollection : public TabStripCollection {
                        size_t index,
                        std::optional<tab_groups::TabGroupId> new_group_id,
                        bool new_pinned_state) override;
+  void MoveTabRecursive(size_t initial_index,
+                        size_t final_index,
+                        std::optional<tab_groups::TabGroupId> new_group_id,
+                        bool new_pinned_state) override;
+  void MoveTabsRecursive(
+      const std::vector<int>& tab_indices,
+      size_t destination_index,
+      std::optional<tab_groups::TabGroupId> new_group_id,
+      bool new_pinned_state,
+      const std::set<TabCollection::Type>& retain_collection_types) override;
+  std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(
+      size_t index) override;
+  std::unique_ptr<TabInterface> RemoveTabRecursive(
+      TabInterface* tab,
+      bool close_empty_group_collection) override;
 
  private:
   bool in_tree_tab_mode_ = false;

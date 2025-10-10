@@ -5,14 +5,20 @@
 
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
 
+#include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/notimplemented.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "components/tabs/public/tab_collection.h"
 
 namespace tabs {
 
-#if !BUILDFLAG(IS_ANDROID)
+BraveTabStripCollection::BraveTabStripCollection() {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
+}
+
 void BraveTabStripCollection::AddTabRecursive(
     std::unique_ptr<TabInterface> tab,
     size_t index,
@@ -64,6 +70,71 @@ void BraveTabStripCollection::AddTabRecursive(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(detached_tab));
   parent_collection->AddCollection(std::move(tree_tab_node), *target_index);
 }
-#endif  // !BUILDFLAG(IS_ANDROID)
+
+void BraveTabStripCollection::MoveTabRecursive(
+    size_t initial_index,
+    size_t final_index,
+    std::optional<tab_groups::TabGroupId> new_group_id,
+    bool new_pinned_state) {
+  if (!in_tree_tab_mode_) {
+    TabStripCollection::MoveTabRecursive(initial_index, final_index,
+                                         new_group_id, new_pinned_state);
+    return;
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/49790) Handle tree tab
+  // move properly.
+  NOTIMPLEMENTED();
+  TabStripCollection::MoveTabRecursive(initial_index, final_index, new_group_id,
+                                       new_pinned_state);
+}
+
+void BraveTabStripCollection::MoveTabsRecursive(
+    const std::vector<int>& tab_indices,
+    size_t destination_index,
+    std::optional<tab_groups::TabGroupId> new_group_id,
+    bool new_pinned_state,
+    const std::set<TabCollection::Type>& retain_collection_types) {
+  if (!in_tree_tab_mode_) {
+    TabStripCollection::MoveTabsRecursive(tab_indices, destination_index,
+                                          new_group_id, new_pinned_state,
+                                          retain_collection_types);
+    return;
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/49790) Handle tree tab
+  // move properly.
+  NOTIMPLEMENTED();
+  TabStripCollection::MoveTabsRecursive(tab_indices, destination_index,
+                                        new_group_id, new_pinned_state,
+                                        retain_collection_types);
+}
+
+std::unique_ptr<TabInterface>
+BraveTabStripCollection::RemoveTabAtIndexRecursive(size_t index) {
+  if (!in_tree_tab_mode_) {
+    return TabStripCollection::RemoveTabAtIndexRecursive(index);
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/49789) Handle tree tab
+  // removal properly.
+  NOTIMPLEMENTED();
+  return TabStripCollection::RemoveTabAtIndexRecursive(index);
+}
+
+std::unique_ptr<TabInterface> BraveTabStripCollection::RemoveTabRecursive(
+    TabInterface* tab,
+    bool close_empty_group_collection) {
+  if (!in_tree_tab_mode_) {
+    return TabStripCollection::RemoveTabRecursive(tab,
+                                                  close_empty_group_collection);
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/49789) Handle tree tab
+  // removal properly.
+  NOTIMPLEMENTED();
+  return TabStripCollection::RemoveTabRecursive(tab,
+                                                close_empty_group_collection);
+}
 
 }  // namespace tabs
