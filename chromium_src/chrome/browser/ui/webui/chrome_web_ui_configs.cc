@@ -22,6 +22,7 @@
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
+#include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
@@ -79,6 +80,7 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<BravePrivateNewTabUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveSettingsUIConfig>());
   map.AddWebUIConfig(std::make_unique<ShieldsPanelUIConfig>());
+  map.AddWebUIConfig(std::make_unique<EmailAliasesPanelUIConfig>());
   map.AddWebUIConfig(std::make_unique<SpeedreaderToolbarUIConfig>());
   map.AddWebUIConfig(std::make_unique<WalletPageUIConfig>());
   map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
