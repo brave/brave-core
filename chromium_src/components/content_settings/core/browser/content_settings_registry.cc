@@ -228,9 +228,6 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
-  // REVIEW Should we deprecate ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE
-  // somehow? As we will have ContentSettingsType::BRAVE_SHRED_SITE_DATA to
-  // cover the same use case.
   Register(ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
            "brave_remember_1p_storage",
            net::features::kBraveForgetFirstPartyStorageByDefault.Get()
