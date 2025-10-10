@@ -16,6 +16,7 @@
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/numerics/byte_conversions.h"
+#include "base/numerics/checked_math.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_view_util.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
@@ -689,12 +690,17 @@ std::optional<std::string> DecodeString(base::span<const uint8_t> input,
     return std::nullopt;
   }
 
-  auto bytes = span_reader.Read(len);
+  base::CheckedNumeric<size_t> len_to_read(len);
+  if (!len_to_read.IsValid()) {
+    return std::nullopt;
+  }
+
+  auto bytes = span_reader.Read(len_to_read.ValueOrDie());
   if (!bytes) {
     return std::nullopt;
   }
 
-  offset += span_reader.num_read();
+  offset = base::CheckAdd(offset, span_reader.num_read()).ValueOrDie();
 
   return std::string(base::as_string_view(*bytes));
 }
