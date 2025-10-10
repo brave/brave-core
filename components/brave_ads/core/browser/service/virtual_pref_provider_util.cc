@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider_util.h"
 
 #include <cstddef>
-#include <string_view>
 #include <vector>
 
 #include "base/version.h"
@@ -40,11 +39,6 @@ int GetBuildVersion() {
 
 int GetPatchVersion() {
   return GetVersionComponent(3);
-}
-
-bool IsMobilePlatform() {
-  std::string_view operating_system_name = version_info::GetOSType();
-  return operating_system_name == "Android" || operating_system_name == "iOS";
 }
 
 }  // namespace brave_ads
