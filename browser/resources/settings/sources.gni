@@ -125,6 +125,7 @@ brave_settings_ts_files = [
   "brave_overrides/settings_subpage.ts",
   "brave_overrides/settings_ui.ts",
   "brave_overrides/site_details.ts",
+  "brave_overrides/site_list.ts",
   "brave_overrides/site_list_entry.ts",
   "brave_overrides/system_page.ts",
   "brave_overrides/add_site_dialog.ts",
