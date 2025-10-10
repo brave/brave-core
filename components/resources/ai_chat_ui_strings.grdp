@@ -489,11 +489,17 @@
   <message name="IDS_CHAT_UI_ATTACHMENTS_DESCRIPTION_AFTER" desc="Sentence after the description, shared across different content types" formatter_data="webui=AiChat">
     Page contents will be sent to Leo along with your messages.
   </message>
-  <message name="IDS_CHAT_UI_TABS_MENU_TITLE" desc="Title for the tabs menu" formatter_data="webui=AiChat">
-    Add tab contents for context. The contents will be sent to Leo along with your messages.
+  <message name="IDS_CHAT_UI_ATTACHMENTS_MENU_TITLE" desc="Title for the attachments menu" formatter_data="webui=AiChat">
+    Add tab and bookmark contents for context. The contents will be sent to Leo along with your messages.
   </message>
-  <message name="IDS_CHAT_UI_TABS_MENU_NO_MATCHING_TABS" desc="A message shown when no tabs match the filter" formatter_data="webui=AiChat">
-    No matching tabs
+  <message name="IDS_CHAT_UI_ATTACHMENTS_MENU_NO_MATCHING_ATTACHMENTS" desc="A message shown when no attachments match the filter" formatter_data="webui=AiChat">
+    No matching attachments
+  </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_MENU_TABS_SECTION_TITLE" desc="Title for the tabs section" formatter_data="webui=AiChat">
+    Tabs
+  </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_MENU_BOOKMARKS_SECTION_TITLE" desc="Title for the bookmarks section" formatter_data="webui=AiChat">
+    Bookmarks
   </message>
   <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY" desc="Main text for the notice about conversation history" formatter_data="webui=AiChat">
     Leo will now remember your conversations so you can go back to them. They are stored encrypted on your device, and you can delete them any time.
