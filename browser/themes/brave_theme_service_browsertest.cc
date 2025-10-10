@@ -194,8 +194,8 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
   // Change to light.
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  EXPECT_NE(ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme(),
-            ui::NativeTheme::PreferredColorScheme::kDark);
+  EXPECT_EQ(ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme(),
+            ui::NativeTheme::PreferredColorScheme::kLight);
 
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
@@ -204,8 +204,8 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
 
   dark_mode::SetBraveDarkModeType(
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  EXPECT_NE(ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme(),
-            ui::NativeTheme::PreferredColorScheme::kDark);
+  EXPECT_EQ(ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme(),
+            ui::NativeTheme::PreferredColorScheme::kLight);
 
   ASSERT_TRUE(dark_mode::SystemDarkModeEnabled());
   dark_mode::SetBraveDarkModeType(
