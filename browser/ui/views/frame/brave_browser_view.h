@@ -128,6 +128,7 @@ class BraveBrowserView : public BrowserView,
   views::View* sidebar_host_view() { return sidebar_host_view_; }
 #endif
 
+  void StopListeningFullscreenChanges();
   bool IsSidebarVisible() const;
   void SetSidePanelOperationByActiveTabChange(bool tab_change);
 
