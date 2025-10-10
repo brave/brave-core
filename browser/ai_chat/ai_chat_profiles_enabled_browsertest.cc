@@ -11,6 +11,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -32,7 +33,14 @@ namespace {
 
 using ui_test_utils::BrowserChangeObserver;
 
-enum class ProfileType { kRegular, kGuest, kPrivate, kTor };
+enum class ProfileType {
+  kRegular,
+  kGuest,
+  kPrivate,
+#if BUILDFLAG(ENABLE_TOR)
+  kTor
+#endif
+};
 
 const char* GetProfileTypeString(ProfileType type) {
   switch (type) {
@@ -42,8 +50,10 @@ const char* GetProfileTypeString(ProfileType type) {
       return "Guest";
     case ProfileType::kPrivate:
       return "Private";
+#if BUILDFLAG(ENABLE_TOR)
     case ProfileType::kTor:
       return "Tor";
+#endif
   }
   NOTREACHED();
 }
@@ -74,12 +84,14 @@ class AIChatProfilesEnabledTest
         ;
       case ProfileType::kPrivate:
         return CreateIncognitoBrowser();
+#if BUILDFLAG(ENABLE_TOR)
       case ProfileType::kTor: {
         BrowserChangeObserver observer(
             nullptr, BrowserChangeObserver::ChangeType::kAdded);
         brave::NewOffTheRecordWindowTor(browser());
         return observer.Wait();
       }
+#endif
     }
     NOTREACHED();
   }
@@ -175,6 +187,11 @@ INSTANTIATE_TEST_SUITE_P(
     All,
     AIChatProfilesEnabledTest,
     testing::ValuesIn({ProfileType::kRegular, ProfileType::kGuest,
-                       ProfileType::kPrivate, ProfileType::kTor}),
+                       ProfileType::kPrivate
+#if BUILDFLAG(ENABLE_TOR)
+                       ,
+                       ProfileType::kTor
+#endif
+    }),
     [](const testing::TestParamInfo<AIChatProfilesEnabledTest::ParamType>&
            info) { return GetProfileTypeString(info.param); });

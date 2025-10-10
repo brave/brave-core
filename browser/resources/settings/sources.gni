@@ -6,6 +6,7 @@
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 
 # Provide our file list to chromium's settings page build
 # Since our components start in a different path, we'll do the first step (move them to
@@ -45,9 +46,6 @@ brave_settings_web_component_files = [
   "brave_sync_page/brave_sync_setup.ts",
   "brave_sync_page/brave_sync_subpage.ts",
   "brave_system_page/brave_system_page_index.ts",
-  "brave_tor_page/brave_tor_bridges_dialog.ts",
-  "brave_tor_page/brave_tor_snowflake_install_failed_dialog.ts",
-  "brave_tor_page/brave_tor_subpage.ts",
   "brave_leo_assistant_page/brave_leo_assistant_page.ts",
   "brave_leo_assistant_page/brave_leo_assistant_page_index.ts",
   "brave_leo_assistant_page/customization_subpage.ts",
@@ -139,7 +137,6 @@ brave_settings_ts_files = [
   "brave_routes.ts",
   "brave_search_engines_page/brave_search_engines_page_browser_proxy.ts",
   "brave_sync_page/brave_sync_browser_proxy.ts",
-  "brave_tor_page/brave_tor_browser_proxy.ts",
   "brave_wallet_page/brave_wallet_browser_proxy.ts",
   "brave_web3_domains_page/brave_web3_domains_browser_proxy.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
@@ -165,6 +162,15 @@ if (enable_pin_shortcut) {
       [ "pin_shortcut_page/pin_shortcut_page.ts" ]
   brave_settings_ts_files +=
       [ "pin_shortcut_page/pin_shortcut_page_browser_proxy.ts" ]
+}
+
+if (enable_tor) {
+  brave_settings_web_component_files += [
+    "brave_tor_page/brave_tor_bridges_dialog.ts",
+    "brave_tor_page/brave_tor_snowflake_install_failed_dialog.ts",
+    "brave_tor_page/brave_tor_subpage.ts",
+  ]
+  brave_settings_ts_files += [ "brave_tor_page/brave_tor_browser_proxy.ts" ]
 }
 
 brave_settings_ts_definitions =

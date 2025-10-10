@@ -31,14 +31,12 @@
 
 namespace {
 
+#if BUILDFLAG(ENABLE_TOR)
 bool ShouldShowTorProfileButton(Profile* profile) {
   DCHECK(profile);
-#if BUILDFLAG(ENABLE_TOR)
   return !TorProfileServiceFactory::IsTorDisabled(profile) && !profile->IsTor();
-#else
-  return false;
-#endif
 }
+#endif
 
 int GetProfileMenuTitleId(Profile& profile) {
   return profile.IsTor() ? IDS_TOR_PROFILE_NAME : IDS_PRIVATE_PROFILE_NAME;
@@ -51,7 +49,9 @@ int GetProfileMenuCloseButtonTextId(Profile& profile) {
 }  // namespace
 
 void BraveIncognitoMenuView::BuildMenu() {
+#if BUILDFLAG(ENABLE_TOR)
   AddTorButton();
+#endif
 
   AddFeatureButton(
       l10n_util::GetStringUTF16(GetProfileMenuCloseButtonTextId(profile())),
@@ -78,6 +78,7 @@ void BraveIncognitoMenuView::AddedToWidget() {
   AddBottomMargin();
 }
 
+#if BUILDFLAG(ENABLE_TOR)
 void BraveIncognitoMenuView::AddTorButton() {
   if (ShouldShowTorProfileButton(&profile())) {
     AddFeatureButton(
@@ -91,6 +92,7 @@ void BraveIncognitoMenuView::AddTorButton() {
 void BraveIncognitoMenuView::OnTorProfileButtonClicked() {
   TorProfileManager::SwitchToTorProfile(&profile());
 }
+#endif
 
 std::u16string BraveIncognitoMenuView::GetAccessibleWindowTitle() const {
   return profile().IsTor() ? l10n_util::GetStringUTF16(IDS_TOR_PROFILE_NAME)
@@ -100,7 +102,9 @@ std::u16string BraveIncognitoMenuView::GetAccessibleWindowTitle() const {
 void BraveIncognitoMenuView::OnExitButtonClicked() {
   if (profile().IsTor()) {
     OnActionableItemClicked(ActionableItem::kExitProfileButton);
+#if BUILDFLAG(ENABLE_TOR)
     TorProfileManager::CloseTorProfileWindows(&profile());
+#endif
   } else {
     IncognitoMenuView::OnExitButtonClicked();
   }
