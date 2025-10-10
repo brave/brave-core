@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
+#include "brave/components/brave_policy/ad_block_only_mode/ad_block_only_mode_policy_manager.h"
 #include "brave/components/brave_policy/brave_policy_observer.h"
 #include "components/policy/core/common/configuration_policy_provider.h"
 
@@ -50,6 +51,8 @@ class BraveProfilePolicyProvider : public policy::ConfigurationPolicyProvider,
                              std::string_view policy_key,
                              bool enabled);
 
+  void MaybeLoadAdBlockOnlyModePolicies(policy::PolicyBundle& bundle);
+
   bool first_policies_loaded_ = false;
   bool policies_ready_ = false;
   std::string profile_id_;
@@ -57,6 +60,9 @@ class BraveProfilePolicyProvider : public policy::ConfigurationPolicyProvider,
   base::ScopedObservation<brave_origin::BraveOriginPolicyManager,
                           BravePolicyObserver>
       brave_origin_observation_{this};
+
+  base::ScopedObservation<AdBlockOnlyModePolicyManager, BravePolicyObserver>
+      ad_block_only_mode_policy_observation_{this};
 
   base::WeakPtrFactory<BraveProfilePolicyProvider> weak_factory_{this};
 };

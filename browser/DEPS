@@ -35,6 +35,7 @@ include_rules += [
   "+brave/components/brave_news/browser",
   "+brave/components/brave_news/common",
   "+brave/components/brave_origin",
+  "+brave/components/brave_policy/ad_block_only_mode",
   "+brave/components/brave_rewards/content",
   "+brave/components/brave_rewards/core",
   "+brave/components/brave_shields/content/browser",
