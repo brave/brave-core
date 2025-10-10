@@ -40,6 +40,27 @@ namespace ai_chat {
 
 namespace {
 
+constexpr char kGithubPatch[] = R"(diff --git a/file.cc b/file.cc
+index 9e2e7d6ef96..4cdf7cc8ac8 100644
+--- a/file.cc
++++ b/file.cc
+@@ -7,6 +7,7 @@
+ #include "file3.h"
+ #include "file4.h"
++
++int main() {
++    std::cout << "This is the way" << std::endl;
++    return 0;
++})";
+
+constexpr char kGithubRawFile[] = R"(// Sample file content
+#include <iostream>
+
+int main() {
+  std::cout << "Hello World" << std::endl;
+  return 0;
+})";
+
 // Mock PageContentExtractor for testing
 class MockPageContentExtractor : public mojom::PageContentExtractor {
  public:
@@ -686,6 +707,150 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPIKeyUrlEncoding) {
   // Check transcript request
   EXPECT_EQ(requests_made[1].url, transcript_url);
   EXPECT_EQ(requests_made[1].method, "GET");
+}
+
+// Test GitHub pull request URL fetching
+TEST_F(PageContentFetcherTest, GithubPullRequestUrl) {
+  GURL pr_url("https://github.com/brave/din_djarin/pull/65535");
+  GURL expected_patch_url(
+      "https://github.com/brave/din_djarin/pull/65535.patch");
+
+  NavigateAndCommit(pr_url);
+
+  // Track the requests that are made
+  std::vector<network::ResourceRequest> requests_made;
+  test_url_loader_factory_->SetInterceptor(base::BindLambdaForTesting(
+      [&requests_made](const network::ResourceRequest& request) {
+        requests_made.push_back(request);
+      }));
+
+  // Set up network response for patch URL
+  SimulateNetworkResponse(expected_patch_url, net::HTTP_OK, kGithubPatch);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+
+  // Wait for the result
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_EQ(content, kGithubPatch);
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  // Verify the request was made to the patch URL
+  EXPECT_EQ(requests_made.size(), 1u);
+  EXPECT_EQ(requests_made[0].url, expected_patch_url);
+  EXPECT_EQ(requests_made[0].method, "GET");
+}
+
+// Test GitHub commit URL fetching
+TEST_F(PageContentFetcherTest, GithubCommitUrl) {
+  GURL commit_url(
+      "https://github.com/brave/din_djarin/commit/"
+      "64bdda5969698bf570002b9f99852f5f595c2e3c");
+  GURL expected_patch_url(
+      "https://github.com/brave/din_djarin/commit/"
+      "64bdda5969698bf570002b9f99852f5f595c2e3c.patch");
+
+  NavigateAndCommit(commit_url);
+
+  // Track the requests that are made
+  std::vector<network::ResourceRequest> requests_made;
+  test_url_loader_factory_->SetInterceptor(base::BindLambdaForTesting(
+      [&requests_made](const network::ResourceRequest& request) {
+        requests_made.push_back(request);
+      }));
+
+  // Set up network response for patch URL
+  SimulateNetworkResponse(expected_patch_url, net::HTTP_OK, kGithubPatch);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+
+  // Wait for the result
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_EQ(content, kGithubPatch);
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  // Verify the request was made to the patch URL
+  EXPECT_EQ(requests_made.size(), 1u);
+  EXPECT_EQ(requests_made[0].url, expected_patch_url);
+  EXPECT_EQ(requests_made[0].method, "GET");
+}
+
+// Test GitHub compare URL fetching
+TEST_F(PageContentFetcherTest, GithubCompareUrl) {
+  GURL compare_url(
+      "https://github.com/brave/din_djarin/compare/master...this-is-the-way");
+  GURL expected_patch_url(
+      "https://github.com/brave/din_djarin/compare/"
+      "master...this-is-the-way.patch");
+
+  NavigateAndCommit(compare_url);
+
+  // Track the requests that are made
+  std::vector<network::ResourceRequest> requests_made;
+  test_url_loader_factory_->SetInterceptor(base::BindLambdaForTesting(
+      [&requests_made](const network::ResourceRequest& request) {
+        requests_made.push_back(request);
+      }));
+
+  // Set up network response for patch URL
+  SimulateNetworkResponse(expected_patch_url, net::HTTP_OK, kGithubPatch);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+
+  // Wait for the result
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_EQ(content, kGithubPatch);
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  // Verify the request was made to the patch URL
+  EXPECT_EQ(requests_made.size(), 1u);
+  EXPECT_EQ(requests_made[0].url, expected_patch_url);
+  EXPECT_EQ(requests_made[0].method, "GET");
+}
+
+// Test GitHub blob URL fetching
+TEST_F(PageContentFetcherTest, GithubBlobUrl) {
+  GURL blob_url(
+      "https://github.com/brave/din_djarin/blob/master/components/stardust/"
+      "may/the/force/be/with/you.cc");
+  GURL expected_raw_url(
+      "https://github.com/brave/din_djarin/blob/master/components/stardust/"
+      "may/the/force/be/with/you.cc?raw=true");
+
+  NavigateAndCommit(blob_url);
+
+  // Track the requests that are made
+  std::vector<network::ResourceRequest> requests_made;
+  test_url_loader_factory_->SetInterceptor(base::BindLambdaForTesting(
+      [&requests_made](const network::ResourceRequest& request) {
+        requests_made.push_back(request);
+      }));
+
+  // Set up network response for raw URL
+  SimulateNetworkResponse(expected_raw_url, net::HTTP_OK, kGithubRawFile);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+
+  // Wait for the result
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_EQ(content, kGithubRawFile);
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  // Verify the request was made to the raw URL
+  EXPECT_EQ(requests_made.size(), 1u);
+  EXPECT_EQ(requests_made[0].url, expected_raw_url);
+  EXPECT_EQ(requests_made[0].method, "GET");
 }
 
 }  // namespace ai_chat
