@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandler {
     public BraveToolbarLongPressMenuHandler(
             Context context,
-            ObservableSupplier<Profile> profileSupplier,
+            ObservableSupplier<@Nullable Profile> profileSupplier,
             boolean isCustomTab,
             BooleanSupplier suppressLongPressSupplier,
             ActivityLifecycleDispatcher lifecycleDispatcher,
