@@ -109,7 +109,8 @@ struct TabGridView: View {
   }
 
   private var isSearchBarHidden: Bool {
-    (viewModel.isPrivateBrowsing && viewModel.tabs.isEmpty) || editMode == .active
+    (viewModel.isPrivateBrowsing && viewModel.tabs.isEmpty && !viewModel.isSearching)
+      || editMode == .active
   }
 
   var body: some View {
