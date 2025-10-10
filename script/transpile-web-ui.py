@@ -57,21 +57,18 @@ def verify_webpack_srcs(root_gen_dir, data_deps_path, depfile_path,
     not_contained = get_non_contained(all_roots, files)
 
     if len(not_contained) > 0:
-        print(
-            "error occured cross-referencing data folders."
-        )
+        print("error occured cross-referencing data folders.")
         print("transpile_web_ui accessed the following files:")
         print("  " + "\n  ".join(
             [make_source_absolute(src_folder, file)
              for file in not_contained]))
 
-
         if len(src_roots) > 0:
-            print("However they are not listed as data in target. data = ")
+            print("However they are not listed as data in target. data conatains:")
             print("  " + "\n  ".join(src_roots))
         else:
             print("However data is empty")
-        
+
         print(
             "fix this issue by adding the containing source folders into the transpile_web_ui target data section"
         )
