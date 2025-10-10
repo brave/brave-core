@@ -37,6 +37,7 @@ include_rules += [
   "+components/history_clusters/core/features.h",
   "+components/history_clusters/core/on_device_clustering_features.h",
   "+components/history_embeddings/history_embeddings_features.h",
+  "+components/legion/features.h",
   "+components/lens/lens_features.h",
   "+components/manta/features.h",
   "+components/metrics/metrics_features.h",

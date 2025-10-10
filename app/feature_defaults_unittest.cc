@@ -28,6 +28,7 @@
 #include "components/history_clusters/core/features.h"
 #include "components/history_clusters/core/on_device_clustering_features.h"
 #include "components/history_embeddings/history_embeddings_features.h"
+#include "components/legion/features.h"
 #include "components/lens/lens_features.h"
 #include "components/manta/features.h"
 #include "components/metrics/metrics_features.h"
@@ -187,6 +188,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_embeddings::kHistoryEmbeddings,
       &history_embeddings::kHistoryEmbeddingsAnswers,
       &history_embeddings::kLaunchedHistoryEmbeddings,
+      &legion::kLegion,
       &lens::features::kLensOverlay,
       &lens::features::kLensStandalone,
       &media::kLiveCaption,
