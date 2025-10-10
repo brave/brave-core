@@ -24,8 +24,6 @@ export type StringKey =
   'adsSettingsTotalAdsLabel' |
   'adsSettingsNewsOffTooltip' |
   'adsSettingsNewsOnTooltip' |
-  'adsSettingsSearchConnectedTooltip' |
-  'adsSettingsSearchTooltip' |
   'adsSettingsSubdivisionLabel' |
   'adsSettingsSubdivisionText' |
   'adsSettingsSubdivisionDisabledLabel' |
@@ -38,7 +36,6 @@ export type StringKey =
   'adTypeNotificationLabel' |
   'adTypeOffLabel' |
   'adTypeOnLabel' |
-  'adTypeSearchResultLabel' |
   'appErrorTitle' |
   'authorizeDeviceLimitReachedText' |
   'authorizeDeviceLimitReachedTitle' |
