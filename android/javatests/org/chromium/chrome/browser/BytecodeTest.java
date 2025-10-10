@@ -12,7 +12,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -1593,7 +1592,7 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                         "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
-                        Resources.class,
+                        Context.class,
                         UiConfig.class,
                         MostVisitedTilesLayout.class,
                         TileRenderer.class,
