@@ -14,7 +14,7 @@ from lib.util import execute_stdout, scoped_cwd
 from pathlib import Path
 
 
-def get_non_contained(srcRoots, paths):
+def get_not_contained(srcRoots, paths):
     """
     Check whether all given paths are contained within the source roots.
     Returns list of paths that were not contained
@@ -54,7 +54,7 @@ def verify_webpack_srcs(root_gen_dir, data_deps_path, depfile_path,
         out_dir  # generated assets are deps and handled by gn already
     ] + extra_modules
 
-    not_contained = get_non_contained(all_roots, files)
+    not_contained = get_not_contained(all_roots, files)
 
     if len(not_contained) > 0:
         print("error occured cross-referencing data folders.")
