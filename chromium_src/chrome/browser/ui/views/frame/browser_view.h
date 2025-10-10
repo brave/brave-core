@@ -14,8 +14,8 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
-#define BrowserViewLayoutDelegateImplNew \
-  BrowserViewLayoutDelegateImplNew;      \
+#define BrowserViewLayoutDelegateImplOld \
+  BrowserViewLayoutDelegateImplOld;      \
   friend class BraveBrowserView;         \
   void SetNativeWindowPropertyForWidget(views::Widget* widget)
 #define BrowserWindow BraveBrowserWindow
@@ -69,6 +69,6 @@
 #undef SidePanel
 #undef BrowserViewLayout
 #undef BrowserWindow
-#undef BrowserViewLayoutDelegateImplNew
+#undef BrowserViewLayoutDelegateImplOld
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_
