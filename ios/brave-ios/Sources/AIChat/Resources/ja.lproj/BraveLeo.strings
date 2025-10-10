@@ -146,25 +146,31 @@
 "aichat.internalErrorViewTitle" = "リクエストの処理中にエラーが発生しました。もう一度お試しください。";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicの会話・テキスト処理タスクモデルであるClaude Haikuを搭載しています。Claude HaikuはBrave独自の安全なインフラを通じてホストされています。";
+"aichat.introMessageClaudeHaikuMessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Haikuを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude HaikuはBrave独自の安全なインフラを通じてホストされています。";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "超高速チャット";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicによって作成された会話・テキスト処理タスクモデルであるClaude Instantを搭載しています。ClaudeはBrave独自の安全なインフラを通じてホストされています。";
+"aichat.introMessageClaudeInstantMessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Instantを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude InstantはBrave独自の安全なインフラを通じてホストされています。";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "こんにちは、Leoです。私はBraveによってプロキシされ、Anthropicの会話・テキスト処理タスクモデルであるClaude Sonnetを搭載しています。Claude SonnetはBrave独自の安全なインフラを通じてホストされています。";
+"aichat.introMessageClaudeSonnetMessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Sonnetを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude SonnetはBrave独自の安全なインフラを通じてホストされています。";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "均整の取れたスピード＆インテリジェンス";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントです。高度なタスクを処理するためにDeepSeekによって作られたモデル、DeepSeek R1を搭載しています。";
+"aichat.introMessageDeepSeekR1MessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、DeepSeek R1を搭載しています。このモデルはDeepSeekによって作成されたもので、深い推論タスクを実行するために設計されています。DeepSeek R1はBrave独自の安全なインフラを通じて、ホストされています。";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "推論モデル";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Gemma 3 12Bを搭載しています。このモデルはGoogle DeepMindによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。GemmaはBrave独自の安全なインフラを通じて、ホストされています。";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "汎用目的のテキストと画像の理解";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "こんにちは、私はLeo。BraveのAIアシスタントで、%@ により提供されています。できる限り適した回答を提供しますので、何でも質問してください。";

@@ -1,20 +1,20 @@
 /* A label shown above a list of icons designed by Brave */
-"altAppIcon.braveIconsHeader" = "Ícones do Brave";
+"altAppIcon.braveIconsHeader" = "´Icones do Brave";
 
 /* The title for the screen that lets the user select a custom app icon */
-"altAppIcon.changeAppIcon" = "Alterar ícone do aplicativo";
+"altAppIcon.changeAppIcon" = "Alterar Ícone da App";
 
 /* A label shown next to the default Brave app icon */
-"altAppIcon.defaultAppIcon" = "Padrão";
+"altAppIcon.defaultAppIcon" = "Predefinição";
 
 /* A title shown if some sort of error occurs while changing the app icon */
-"altAppIcon.errorTitle" = "Falha ao alterar ícone do aplicativo";
+"altAppIcon.errorTitle" = "Falha ao Alterar o Ícone da App";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"BackTitle" = "Voltar";
+"BackTitle" = "Anterior";
 
 /* Accessibility message e.g. spoken by VoiceOver when page translation becomes available. */
-"BraveTranslate.availableVoiceOverAnnouncement" = "Tradução de página disponível";
+"BraveTranslate.availableVoiceOverAnnouncement" = "Tradução da Página disponível";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Fechar todas as abas";
@@ -29,16 +29,16 @@
 "ForwardTitle" = "Avançar";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewPrivateTabTitle" = "Nova guia privada";
+"NewPrivateTabTitle" = "Novo separador privado";
 
 /* The text of new tab takeover learn more / opt out choices link. */
-"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Saiba mais/opções de desativação";
+"newTabTakeoverInfoBarLearnMoreOptOutChoices" = "Saiba mais / opções para desativar";
 
 /* The text of new tab takeover infobar message. */
-"NewTabTakeoverInfoBarMessage" = "As imagens de fundo patrocinadas apoiam a missão do Brave de criar uma web independente que prioriza o usuário. Ao contrário das grandes empresas de tecnologia, medimos o desempenho dos anúncios de forma anônima para preservar sua privacidade.";
+"NewTabTakeoverInfoBarMessage" = "As imagens de fundo patrocinadas apoiam a missão do Brave de construir uma Web independente e centrada no utilizador. Ao contrário das grandes empresas de tecnologia, medimos o desempenho dos anúncios de forma anónima, para preservar a sua privacidade.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewTabTitle" = "Nova aba";
+"NewTabTitle" = "Nova guia";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenNewTabFromTabTrayKeyCodeTitle" = "Abrir nova aba";
@@ -47,34 +47,34 @@
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Abrir aba selecionada";
 
 /* Title label text for refreshing credentials from brave site. */
-"paywall.alreadyPurchasedTitle" = "Já comprou em brave.com?";
+"paywall.alreadyPurchasedTitle" = "Já fez uma compra em brave.com?";
 
 /* A subtitle shown on the checkout button that denotes that this checkout option is full price */
-"paywall.appStoreCheckoutOptionSubtitle" = "Preço total";
+"paywall.appStoreCheckoutOptionSubtitle" = "Preço Total";
 
 /* The checkout option that lets the user use Apple's standard App Store puchase flow */
 "paywall.appStoreCheckoutOptionTitle" = "App Store";
 
 /* A subtitle shown on the checkout button that denotes that this checkout option is discounted. The first `%@` is replaced with a promo code, the second `%@` is replaced by the discount percentage */
-"paywall.braveAccountCheckoutOptionSubtitle" = "Código **%1$@** para %2$@ de desconto";
+"paywall.braveAccountCheckoutOptionSubtitle" = "Código **%1$@** de %2$@ de desconto";
 
 /* The checkout option that lets the user use Brave's own purchase flow */
 "paywall.braveAccountCheckoutOptionTitle" = "Conta Brave";
 
 /* Title label text for entering a promo code. */
-"paywall.havePromoCodeTitle" = "Você tem um código promocional?";
+"paywall.havePromoCodeTitle" = "Tem um código promocional?";
 
 /* Button action text for redeem promo code */
-"paywall.redeemPromoCodeButtonTitle" = "Resgatar código promocional";
+"paywall.redeemPromoCodeButtonTitle" = "Resgatar Código Promocional";
 
 /* Button action text for refreshing credentials from brave site. */
-"paywall.refreshCredentialsButtonTitle" = "Atualize suas credenciais";
+"paywall.refreshCredentialsButtonTitle" = "Atualize as suas credenciais";
 
 /* Text shown above buttons that give the user the option to choose a checkout option */
-"paywall.startTrialSubtitle" = "Escolha o método de check-out que funciona para você!";
+"paywall.startTrialSubtitle" = "Escolha o método de pagamento que prefere:";
 
 /* Text shown above buttons that give the user the option to start a trial */
-"paywall.startTrialTitle" = "Comece seu teste gratuito de 7 dias";
+"paywall.startTrialTitle" = "Inicie o seu teste grátis de 7 dias";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts used for opening recently closed tab. */
 "RecentlyClosedTabTitle" = "Reabrir separador fechado";
@@ -83,10 +83,10 @@
 "ReloadPageTitle" = "Recarregar página";
 
 /* The text label of creative search result ad learn more / opt out choices link. */
-"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Saiba mais/opções de desativação";
+"searchResultAdClickedInfoBarLearnMoreOptOutChoices" = "Saiba mais / opções para desativar";
 
 /* The text label of creative search result ad infobar message. */
-"searchResultAdClickedInfoBarMessage" = "Obrigado por apoiar a Pesquisa Brave clicando em um anúncio privado. Ao contrário da Big Tech, medimos o desempenho de anúncios anonimamente para preservar sua privacidade.";
+"searchResultAdClickedInfoBarMessage" = "Obrigado por apoiar o Brave Search, clicando num anúncio privado. Ao contrário das grandes empresas de tecnologia, medimos o desempenho dos anúncios de forma anónima, para preservar a sua privacidade.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Selecionar barra de local";
@@ -113,7 +113,7 @@
 "ShowTabTrayFromTabKeyCodeTitle" = "Mostrar todas as abas";
 
 /* The title of the label that shows the Application Version */
-"storekitReceiptViewer.applicationVersionTitle" = "Versão do aplicativo";
+"storekitReceiptViewer.applicationVersionTitle" = "Versão de aplicação";
 
 /* The title of the product subscription the user purchased (Monthly subscription) */
 "storekitReceiptViewer.leoMonthlySubscriptionName" = "Brave Leo Mensal";
@@ -122,25 +122,25 @@
 "storekitReceiptViewer.leoYearlySubscriptionName" = "Brave Leo Anual";
 
 /* The error message when the App Store Receipt was not found in the Application Bundle */
-"storekitReceiptViewer.noReceiptFoundTitle" = "Desculpe, não foram encontrados recibos da App Store";
+"storekitReceiptViewer.noReceiptFoundTitle" = "Lamentamos, mas não foram encontrados recibos da App Store";
 
 /* The title of the label that shows the date when the product subscription was cancelled */
 "storekitReceiptViewer.receiptCancellationDate" = "Data de cancelamento";
 
 /* The title of the label that shows the date the receipt was created */
-"storekitReceiptViewer.receiptDateTitle" = "Data do recibo";
+"storekitReceiptViewer.receiptDateTitle" = "Data de receção";
 
 /* The title of the label that shows the date when the product subscription expired */
-"storekitReceiptViewer.receiptExpirationDate" = "Data de validade";
+"storekitReceiptViewer.receiptExpirationDate" = "Data de expiração";
 
 /* The title of the label that shows any invalid date - Not Available or N/A for short is displayed */
 "storekitReceiptViewer.receiptInvalidDate" = "N/D";
 
 /* The error message when the App Store Receipt was found in the Application Bundle, but could not be loaded */
-"storekitReceiptViewer.receiptLoadingErrorTitle" = "Desculpe, o recibo da App Store não pôde ser carregado";
+"storekitReceiptViewer.receiptLoadingErrorTitle" = "Lamentamos, mas não foi possível carregar o recibo da App Store";
 
 /* The title of the label that shows the Order ID of the user's purchase */
-"storekitReceiptViewer.receiptOrderIDTitle" = "ID do pedido";
+"storekitReceiptViewer.receiptOrderIDTitle" = "ID da encomenda";
 
 /* The title of the label that shows the date when the product subscription was first purchased */
 "storekitReceiptViewer.receiptOriginalPurchaseDateTitle" = "Data de compra original";
@@ -152,19 +152,19 @@
 "storekitReceiptViewer.receiptTransactionIDTitle" = "ID da transação";
 
 /* The title of the label that shows when the Receipt Viewer is still loading resources and subscription information */
-"storekitReceiptViewer.receiptViewerLoadingTitle" = "Carregando, por favor aguarde...";
+"storekitReceiptViewer.receiptViewerLoadingTitle" = "Carregando Aguarde por favor...";
 
 /* The title of the screen that shows the App Store Receipt */
 "storekitReceiptViewer.receiptViewerTitle" = "Recibo da App Store";
 
 /* The title of the button that shows a system action sheet, to share the receipt */
-"storekitReceiptViewer.shareReceiptTitle" = "Compartilhar recibo";
+"storekitReceiptViewer.shareReceiptTitle" = "Recibo de acções";
 
 /* The title of the product subscription the user purchased (Monthly subscription) */
-"storekitReceiptViewer.vpnMonthlySubscriptionName" = "VPN Brave Mensal";
+"storekitReceiptViewer.vpnMonthlySubscriptionName" = "Brave VPN Mensal";
 
 /* The title of the product subscription the user purchased (Yearly subscription) */
-"storekitReceiptViewer.vpnYearlySubscriptionName" = "VPN Brave Anual";
+"storekitReceiptViewer.vpnYearlySubscriptionName" = "Brave VPN Anual";
 
 /* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToNonPBMKeyCodeTitle" = "Modo de navegação normal";
@@ -173,10 +173,10 @@
 "SwitchToPBMKeyCodeTitle" = "Modo de navegação privada";
 
 /* A message shown when a file fails to download for some reason */
-"UnableToDownloadFileErrorMessage" = "Ocorreu um erro ao baixar o arquivo. Tente novamente mais tarde.";
+"UnableToDownloadFileErrorMessage" = "Ocorreu um erro ao descarregar o ficheiro. Por favor, tente novamente mais tarde.";
 
 /* A title shown when a file fails to download for some reason */
-"UnableToDownloadFileErrorTitle" = "Não foi possível baixar o arquivo";
+"UnableToDownloadFileErrorTitle" = "Não foi Possível Descarregar o Ficheiro";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "Ampliar";

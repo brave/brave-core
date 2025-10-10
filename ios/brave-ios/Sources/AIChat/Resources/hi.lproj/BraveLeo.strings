@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "आपका अनुरोध संसाधित करते समय कोई गड़बड़ी हुई। कृपया फिर से कोशिश करें।";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा प्रॉक्सीड हूँ और Claude Haiku द्वारा पावर्ड हूँ, जो Anthropic का बनाया गया एक मॉडल है। यह संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को संचालित करता है। Claude Haiku हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।";
+"aichat.introMessageClaudeHaikuMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Haiku द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Haiku हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "फ़टाफ़ट चैट करने की सुविधा";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा प्रॉक्सीड हूँ और Claude Instant द्वारा पावर्ड हूँ, जो Anthropic का बनाया गया एक मॉडल है। यह संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को संचालित करता है। Claude Instamt हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।";
+"aichat.introMessageClaudeInstantMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Instant द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Instant हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा प्रॉक्सीड हूँ और Claude Sonnet द्वारा पावर्ड हूँ, जो Anthropic का बनाया गया एक मॉडल है। यह संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को संचालित करता है। Claude Sonnet हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।";
+"aichat.introMessageClaudeSonnetMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Sonnet द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Sonnet हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "संतुलित गति और बुद्धिमत्ता";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI असिस्टेंट हूँ। मैं DeepSeek R1 द्वारा पावर्ड हूँ, जो डीप रीज़निंग टास्क करने के लिए DeepSeek द्वारा बनाया गया एक मॉडल है।";
+"aichat.introMessageDeepSeekR1MessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं DeepSeek R1 द्वारा संचालित हूँ, जो DeepSeek द्वारा बनाया गया एक मॉडल है जो डीप रीज़निंग कार्य करता है। DeepSeek R1 हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "रीज़निंग मॉडल";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Gemma 3 12B द्वारा संचालित हूँ, जो Google DeepMind द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Gemma हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "सामान्य उद्देश्य टेक्स्ट और इमेज की समझ";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave का AI असिस्टेंट हूँ। मैं %@ द्वारा पावर्ड हूँ। मुझसे कुछ भी पूछें और मैं जवाब देने की पूरी कोशिश करूँगा।";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI असिस्टेंट हूँ। मैं Llama 3.1 8B द्वारा संचालित हूँ, जो Meta द्वारा बनाया गया एक मॉडल है। यह परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Llama हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।";
+"aichat.introMessageLlamaMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Llama 3.1 8B द्वारा संचालित हूँ, जो Meta द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Llama हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "सामान्य विषय की चैट";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Qwen 14B द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है। यह परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।";
+"aichat.introMessageQwenMessageDescription" = "नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Qwen 14B द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "सामान्य उद्देश्य वाली चैट, कोडिंग और भी बहुत कुछ";

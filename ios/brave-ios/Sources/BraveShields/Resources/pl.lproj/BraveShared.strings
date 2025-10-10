@@ -196,11 +196,13 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Zamknięte zakładki strony";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Usunięcie spowoduje zamknięcie wszystkich zakładek i usunięcie wszystkich danych strony. Nie można tego cofnąć.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Usuwaj dane strony";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "Usunięcie spowoduje zamknięcie wszystkich zakładek otwartych dla tej strony oraz usunięcie wszystkich danych strony. Nie można tego cofnąć.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -208,6 +210,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred Da
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Usuń dane strony teraz";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Usunięcie spowoduje zamknięcie wybranych zakładek oraz usunięcie wszystkich danych strony. Nie można tego cofnąć.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Strona nie jest bezpieczna";

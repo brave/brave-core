@@ -196,11 +196,13 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Pestanyes del lloc tancades";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "El shred tancarà totes les pestanyes, i suprimirà totes les dades del lloc. Això no es pot desfer.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Dades del lloc shred";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "El shred tancarà totes les pestanyes obertes en aquest lloc i suprimirà totes les dades del lloc. Això no es pot desfer.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -208,6 +210,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred Da
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Dades actuals del lloc shred";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "El shred tancarà les pestanyes seleccionades, i suprimirà totes les dades del lloc. Això no es pot desfer.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "El lloc no és segur";

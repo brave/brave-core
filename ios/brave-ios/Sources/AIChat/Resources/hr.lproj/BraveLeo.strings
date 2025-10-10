@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "Nešto je pošlo po krivu tijekom obrade vašeg zahtjeva. Pokušajte ponovno kasnije.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Pozdrav, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude Haiku, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta. Claude Haiku je smješten u smješten u Braveu putem naše vlastite sigurne infrastrukture.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Pozdrav, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude Haiku, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta. Claude Haiku je smješten u Braveu putem naše vlastite sigurne infrastrukture.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Iznimno brzo čavrljanje";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Pozdrav, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude Instant, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta. Claude Instant je smješten u smješten u Braveu putem naše vlastite sigurne infrastrukture.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Pozdrav, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude Instant, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta. Claude Instant je smješten u Braveu putem naše vlastite sigurne infrastrukture.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Pozdrav, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude Sonnet, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta. Claude Sonnet je smješten u smješten u Braveu putem naše vlastite sigurne infrastrukture.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Pozdrav, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude Sonnet, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta. Claude Sonnet je smješten u Braveu putem naše vlastite sigurne infrastrukture.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Ravnoteža brzine i inteligencije";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Pozdrav, ja sam Leo. Ja sam Braveov asistent potpuno zasnovan na umjetnoj inteligenciji. Pokreće me DeepSeek R1, model koji je kreirao DeepSeek kako bih obavljao zadatke dubinskog rasuđivanja.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model DeepSeek R1, koji je kreirao DeepSeek za obavljanje zadataka dubokog rezoniranja. DeepSeek R1 je smješten u Braveu putem naše vlastite sigurne infrastrukture.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Model za rasuđivanje";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Gemma 3 12B, koji je kreirao Google DeepMind za izvedbu i primjenu u raznim vrstama uporabe. Gemma je smještena u Braveu putem naše vlastite sigurne infrastrukture.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Općenito razumijevanje teksta i slike";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Bok, ja sam Leo. Ja sam pomoćnik potpomognut umjetnom inteligencijom (AI) kojeg je osmislilo društvo Brave. Pokreće me model %@. Pitajte me bilo što, a ja ću se potruditi odgovoriti.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave potpuno potpomognut umjetnom inteligencijom. Pokreće me model Llama 3.1 8B koji je kreirala Meta za izvedbu i primjenu u raznim vrstama uporabe. Llama je smještena u Braveu putem naše vlastite sigurne infrastrukture.";
+"aichat.introMessageLlamaMessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Llama 3.1 8B, koji je kreirala Meta za izvedbu i primjenu u raznim vrstama uporabe. Llama je smještena u Braveu putem naše vlastite sigurne infrastrukture.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Opće čavrljanje";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave potpuno potpomognut umjetnom inteligencijom. Pokreće me model Qwen 14B koji je kreirao Alibaba Cloud, a izrađen je za izvedbu i primjenu u raznim vrstama uporabe. Qwen je smješten u Braveu putem naše vlastite sigurne infrastrukture.";
+"aichat.introMessageQwenMessageDescription" = "Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Qwen 14B, koji je kreirao Alibaba Cloud za izvedbu i primjenu u raznim vrstama uporabe. Qwen je smješten u Braveu putem naše vlastite sigurne infrastrukture.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Čavrljanje opće namjene, programiranje i još mnogo više";

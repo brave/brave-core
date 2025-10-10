@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "Qualcosa è andato storto durante l'elaborazione della tua richiesta. Riprova più tardi.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Ciao, sono Leo. Sono un assistente IA scelto da Brave. Sfrutto Claude Haiku, un modello creato da Anthropic per gestire conversazioni ed elaborare testi. Claude Haiku è hostato da Brave utilizzando la propria infrastruttura di sicurezza.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Ciao, sono Leo. Sono un assistente IA di Brave. Sfrutto Claude Haiku, un modello creato da Anthropic per gestire conversazioni e compiti di elaborazione testuale. Claude Haiku è hostato da Brave attraverso la nostra infrastruttura sicura.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Chat velocissima";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Ciao, sono Leo. Sono un assistente IA scelto da Brave. Sfrutto Claude Instant, un modello creato da Anthropic per gestire conversazioni ed elaborare testi. Claude Instant è hostato da Brave utilizzando la propria infrastruttura di sicurezza.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Ciao, sono Leo. Sono un assistente IA di Brave. Sfrutto Claude Instant, un modello creato da Anthropic per gestire conversazioni e compiti di elaborazione testuale. Claude Instant è hostato da Brave attraverso la nostra infrastruttura sicura.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Ciao, sono Leo. Sono un assistente IA scelto da Brave. Sfrutto Claude Sonnet, un modello creato da Anthropic per gestire conversazioni ed elaborare testi. Claude Sonnet è hostato da Brave utilizzando la propria infrastruttura di sicurezza.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Ciao, sono Leo. Sono un assistente IA di Brave. Sfrutto Claude Sonnet, un modello creato da Anthropic per gestire conversazioni e compiti di elaborazione testuale. Claude Sonnet è hostato da Brave attraverso la nostra infrastruttura sicura.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Velocità e intelligenza equilibrate";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Ciao, sono Leo, sono un assistente IA completamente ospitato da Brave. Sfrutto DeepSeek R1, un modello creato da DeepSeek per l'esecuzione di analisi complesse.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Ciao, sono Leo. Sono un assistente IA di Brave. Sfrutto DeepSeek R1, un modello creato da DeepSeek per eseguire compiti di ragionamento profondo. DeepSeek R1 è hostato da Brave attraverso la nostra infrastruttura sicura.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Modello di ragionamento";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Ciao, sono Leo. Sono un assistente IA di Brave. Sfrutto Gemma 3 12B, un modello creato da Google DeepMind per essere performante e applicabile in molti scenari. Gemma è hostato da Brave attraverso la nostra infrastruttura sicura.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Comprensione generale di testi e immagini";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Ciao, sono Leo. Sono l’assistente di IA di Brave, alimentato da %@. Chiedimi qualsiasi cosa e farò del mio meglio per rispondere.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Ciao, sono Leo. Sono un assistente IA situato interamente sui server di Brave. Sfrutto Llama 3.1 8B, un modello creato da Meta per essere performante e utile in vari scenari. Llama è hostato personalmente da Brave utilizzando la propria infrastruttura di sicurezza.";
+"aichat.introMessageLlamaMessageDescription" = "Ciao, sono Leo. Sono un assistente IA di Brave. Sfrutto Llama 3.1 8B, un modello creato da Meta per essere performante e applicabile in molti scenari. Llama è hostato da Brave attraverso la nostra infrastruttura sicura.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Chat per scopi generali";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Ciao, sono Leo. Sono un assistente IA situato interamente sui server di Brave. Sfrutto Qwen 14B, un modello creato da Alibaba Cloud per essere performante e utile in vari scenari. Llama è hostato personalmente da Brave utilizzando la propria infrastruttura di sicurezza.";
+"aichat.introMessageQwenMessageDescription" = "Ciao, sono Leo. Sono un assistente IA di Brave. Sfrutto Qwen 14B, un modello creato da Alibaba Cloud per essere performante e applicabile in molti scenari. Qwen è hostato da Brave attraverso la nostra infrastruttura sicura.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Conversazioni, programmazione e molto altro";

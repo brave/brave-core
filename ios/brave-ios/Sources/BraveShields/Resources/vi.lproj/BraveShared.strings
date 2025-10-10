@@ -196,11 +196,13 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Khi các thẻ đã đóng";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Thao tác hủy sẽ đóng tất cả thẻ đang mở của trang này, và xóa tất cả dữ liệu của trang. Quá trình này không thể được hoàn tác.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Hủy dữ liệu trang";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "Thao tác hủy sẽ đóng tất cả thẻ đang mở của trang này, và xóa tất cả dữ liệu của trang. Quá trình này không thể được hoàn tác.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -208,6 +210,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred Da
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Hủy dữ liệu trang ngay";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Thao tác hủy sẽ đóng các thẻ được chọn, và xóa tất cả dữ liệu của trang. Quá trình này không thể được hoàn tác.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Trang web không bảo mật";

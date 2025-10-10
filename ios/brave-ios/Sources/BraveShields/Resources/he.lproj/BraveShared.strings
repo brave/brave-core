@@ -196,11 +196,13 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "כשכרטיסיות האתר סגורות";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "גריסה תסגור את כל הכרטיסיות, ותמחק את כל נתוני האתר. פעולה זו לא ניתנת לביטול.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "נתוני גריסת אתר";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "גריסה תסגור את כל הכרטיסיות הפתוחות של אתר זה ותמחק את כל נתוני האתר. פעולה זו לא ניתנת לביטול.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -208,6 +210,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred Da
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "גריסת נתוני אתר כעת";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "גריסה תסגור את הכרטיסיות שנבחרו, ותמחק את כל נתוני האתר. פעולה זו לא ניתנת לביטול.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "האתר אינו מאובטח";

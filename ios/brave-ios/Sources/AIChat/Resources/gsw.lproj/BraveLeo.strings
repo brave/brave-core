@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "Etwas ist schiefgelaufen beim Bearbeiten deiner Anfrage. Bitte versuche es später noch einmal.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hallo, ich bin Leo. Ich werde von Brave bereitgestellt und basiere auf Claude Haiku – einem Modell von Anthropic, das für Konversationen und Textverarbeitung entwickelt wurde. Claude Haiku wird von Brave über unsere eigene sichere Infrastruktur gehostet.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Haiku angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu ermöglichen. Claude Haiku wird von Brave über unsere eigene sichere Infrastruktur gehostet.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Blitzschneller Chat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Hallo, ich bin Leo. Ich werde von Brave bereitgestellt und basiere auf Claude Instant – einem Modell von Anthropic, das für Konversationen und Textverarbeitungsaufgaben entwickelt wurde. Claude Instant wird von Brave über unsere eigene sichere Infrastruktur gehostet.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Instant angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu ermöglichen. Claude Instant wird von Brave über unsere eigene sichere Infrastruktur gehostet.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Hallo, ich bin Leo. Ich werde von Brave bereitgestellt und basiere auf Claude Sonnet – einem Modell von Anthropic, das für Konversationen und Textverarbeitungsaufgaben entwickelt wurde. Claude Sonnet wird von Brave über unsere eigene sichere Infrastruktur gehostet.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Sonnet angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu unterstützen. Claude Sonnet wird von Brave über unsere eigene sichere Infrastruktur gehostet.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Ausgeglichene Geschwindigkeit und Intelligenz";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Hallo, ich bin Leo. Ich bin ein vollständig von Brave gehosteter KI-Assistent. Ich basiere auf DeepSeek R1 – einem Modell von DeepSeek, das für tiefgehende Analyse- und Denkaufgaben entwickelt wurde.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von DeepSeek R1 angetrieben, einem Modell, das von DeepSeek entwickelt wurde, um Aufgaben des tiefen Denkens zu bewältigen. DeepSeek R1 wird von Brave über unsere eigene sichere Infrastruktur gehostet.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Schlussfolgerungsmodell";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Gemma 3 12B angetrieben, einem Modell, das von Google DeepMind entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Gemma wird von Brave über unsere eigene sichere Infrastruktur gehostet.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Allgemeines Text- und Bildverständnis";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von %@ betrieben. Frage mich irgendetwas, und ich werde mein Bestes tun, um zu antworten.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hallo, ich bin Leo. Ich bin ein vollständig von Brave gehosteter KI-Assistent. Ich basiere auf Llama 3.1 8B – einem Modell von Meta, das für hohe Leistungsfähigkeit und vielfältige Anwendungsbereiche entwickelt wurde. Llama wird von Brave über unsere eigene sichere Infrastruktur gehostet.";
+"aichat.introMessageLlamaMessageDescription" = "Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde angetrieben von Llama 3.1 8B, einem Modell, das von Meta entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Llama wird von Brave über unsere eigene sichere Infrastruktur gehostet.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Allgemeiner Chat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Hallo, ich bin Leo. Ich bin ein vollständig von Brave gehosteter KI-Assistent. Ich basiere auf Qwen 14B – einem Modell von Alibaba Cloud, das für hohe Leistungsfähigkeit und vielfältige Anwendungsbereiche entwickelt wurde. Qwen wird von Brave über unsere eigene sichere Infrastruktur gehostet.";
+"aichat.introMessageQwenMessageDescription" = "Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Qwen 14B angetrieben, einem Modell, das von Alibaba Cloud entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Qwen wird von Brave über unsere eigene sichere Infrastruktur gehostet.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Allzweck-Chat, Codierung und mehr";

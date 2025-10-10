@@ -196,11 +196,13 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "تم إغلاق علامات تبويب الموقع";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "سيؤدي الحذف بشكل نهائي إلى إغلاق جميع علامات التبويب المفتوحة، وحذف جميع بيانات الموقع. ولا يمكن التراجع عن هذا الإجراء.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "حذف بيانات الموقع بشكل نهائي";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "سيؤدي الحذف بشكل نهائي إلى إغلاق جميع علامات التبويب المفتوحة على هذا الموقع، وحذف جميع بيانات الموقع. ولا يمكن التراجع عن هذا الإجراء.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -208,6 +210,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred Da
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "حذف بيانات الموقع بشكل نهائي الآن";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "سيؤدي الحذف بشكل نهائي إلى إغلاق علامات التبويب المحددة وحذف جميع بيانات الموقع. ولا يمكن التراجع عن هذا الإجراء.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "الموقع غير آمن";

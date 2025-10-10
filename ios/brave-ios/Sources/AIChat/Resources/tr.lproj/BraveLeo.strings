@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "İsteğiniz işlenirken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Merhaba, ben Leo. Brave tarafından yönlendiriliyor ve Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Haiku modeliyle çalışıyorum. Claude Haiku, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Haiku modeliyle çalışıyorum. Claude Haiku, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Şimşek hızlı sohbet";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Merhaba, ben Leo. Brave tarafından yönlendiriliyor ve Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Instant modeliyle çalışıyorum. Claude Instant, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Instant modeliyle çalışıyorum. Claude Instant, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Merhaba, ben Leo. Brave tarafından yönlendiriliyor ve Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Sonnet modeliyle çalışıyorum. Claude Sonnet, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Sonnet modeliyle çalışıyorum. Claude Sonnet, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Dengeli hız ve zeka";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. DeepSeek tarafından derin muhakeme gerektiren görevler için tasarlanan DeepSeek R1 modeliyle çalışıyorum.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. DeepSeek tarafından derin akıl yürütme görevlerini yerine getirmek üzere geliştirilen DeepSeek R1 modeliyle çalışıyorum. DeepSeek R1, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Muhakeme modeli";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Google DeepMind tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Gemma 3 12B modeliyle çalışıyorum. Gemma, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Genel amaçlı metin ve görüntü anlama";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Merhaba, ben Leo. Brave tarafından geliştirilmiş bir Yapay Zeka asistanıyım. %@ tarafından destekleniyorum. Bana istediğinizi sorun, yanıtlamak için elimden geleni yapacağım.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Merhaba, ben Leo. Brave'in sunduğu bir YZ asistanıyım. Meta tarafından birçok alanda yüksek performansla uygulanabilir olması için geliştirilen Llama 3.1 8B modeliyle çalışıyorum. Llama, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.";
+"aichat.introMessageLlamaMessageDescription" = "Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Meta tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Llama 3.1 8B modeliyle çalışıyorum. Llama, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Genel kullanım amaçlı sohbet";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Merhaba, ben Leo. Brave'in sunduğu bir YZ asistanıyım. Alibaba Cloud tarafından birçok alanda yüksek performansla çalışabilmesi için geliştirilen Qwen 14B modeliyle çalışıyorum. Qwen, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.";
+"aichat.introMessageQwenMessageDescription" = "Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Alibaba Cloud tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Qwen 14B modeliyle çalışıyorum. Qwen, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Genel amaçlı sohbet, kodlama ve daha fazlası";

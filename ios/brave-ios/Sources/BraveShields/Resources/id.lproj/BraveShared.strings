@@ -196,11 +196,13 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Tab Situs Tertutup";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Pemusnahan data akan menutup semua tab yang terbuka, dan menghapus semua data situs. Tindakan ini tidak dapat dibatalkan.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Musnahkan Data Situs";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "Pemusnahan data akan menutup semua tab yang terbuka untuk situs ini, dan menghapus semua data situs. Tindakan ini tidak dapat dibatalkan.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -208,6 +210,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred Da
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Musnahkan Data Situs Sekarang";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Pemusnahan data akan menutup tab yang dipilih, dan menghapus semua data situs. Tindakan ini tidak dapat dibatalkan.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Situs tidak aman";

@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "Домейнът е блокиран";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "Искане от уебсайтовете да не продават или споделят данните ти. [Научи повече](https://support.brave.com/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+"EnableGPCDescription" = "Искане от уебсайтовете да не продават или споделят данните ти. [Научи повече](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Активиране на глобалния контрол на поверителността";
@@ -196,11 +196,13 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Затваряне на разделите на сайта";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "При шредирането ще бъдат затворени всички раздели, и всички данни от сайта ще бъдат изтрити. Това действие не може да бъде отменено.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Шредиране на данните от сайта";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
 "ShredSiteDataConfirmationMessage" = "При шредирането ще бъдат затворени всички раздели, отворени към този сайт, и всички данни от сайта ще бъдат изтрити. Това действие не може да бъде отменено.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
@@ -208,6 +210,9 @@ A message for a confirmation window that appears when a user clicks on 'Shred Da
 
 /* A button title that shreds site data immediately */
 "ShredSiteDataNow" = "Шредиране на данните от сайта сега";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "При шредирането ще бъдат затворени избраните раздели, и всички данни от сайта ще бъдат изтрити. Това действие не може да бъде отменено.";
 
 /* A page title for the warning page that appears when http was blocked */
 "SiteIsNotSecure" = "Сайтът не е защитен";
