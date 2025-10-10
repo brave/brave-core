@@ -3,6 +3,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+static_library("policy_pref_interceptor") {
+  sources = [
+    "policy_pref_interceptor.cc",
+    "policy_pref_interceptor.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/common",
+    "//components/prefs",
+  ]
+}
+
 static_library("brave_policy") {
   sources = [
     "brave_browser_policy_provider.cc",
