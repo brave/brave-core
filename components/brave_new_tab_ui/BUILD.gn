@@ -8,6 +8,7 @@ import("//brave/components/common/typescript.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 transpile_web_ui("brave_new_tab_ui") {
+  output_module = false
   entry_points = [ [
         "brave_new_tab",
         rebase_path("brave_new_tab.tsx"),

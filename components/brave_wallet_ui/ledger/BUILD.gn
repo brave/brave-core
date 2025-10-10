@@ -9,6 +9,7 @@ import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/grit/repack.gni")
 
 transpile_web_ui("ledger_bridge_ui") {
+  output_module = false
   entry_points = [ [
         "ledger",
         rebase_path("ledger.ts"),

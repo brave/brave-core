@@ -8,6 +8,7 @@ import("//brave/components/common/typescript.gni")
 assert(!is_android)
 
 transpile_web_ui("ui") {
+  output_module = false
   entry_points = [ [
         "webcompat_reporter",
         rebase_path("webcompat_reporter.tsx"),

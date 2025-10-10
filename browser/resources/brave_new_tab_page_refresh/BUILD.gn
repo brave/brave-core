@@ -13,7 +13,6 @@ transpile_web_ui("resources") {
         rebase_path("brave_new_tab_page.tsx"),
       ] ]
   resource_name = "brave_new_tab_page_refresh"
-  output_module = true
   deps = [
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom_js",
     "//brave/components/brave_ads/core/mojom:mojom_js",

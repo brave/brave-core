@@ -8,6 +8,7 @@ import("//chrome/common/features.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 transpile_web_ui("brave_wallet_fund_wallet_page_ui") {
+  output_module = false
   entry_points = [ [
         "brave_wallet_fund_wallet_page",
         rebase_path("fund-wallet.tsx"),

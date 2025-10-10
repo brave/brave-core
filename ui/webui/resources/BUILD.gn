@@ -93,7 +93,6 @@ if (include_polymer) {
 transpile_web_ui("leo_web_components") {
   generate_grdp = true
   resource_path_prefix = "brave"
-  output_module = true
 
   entry_points = [ [
         "leo",
@@ -120,7 +119,6 @@ transpile_web_ui("opaque_ke") {
 
   rust_packages = [ rebase_path("wasm/opaque_ke/Cargo.toml") ]
 
-  output_module = true
   public_asset_path = "chrome://resources/brave/"
 }
 
