@@ -29,6 +29,7 @@ class BrowserContext;
 
 namespace ai_chat {
 
+class CodeSandboxScriptStorage;
 class CodeSandboxWebContentsObserver;
 
 // Tool for executing JavaScript code and returning console.log output.
@@ -77,6 +78,7 @@ class CodeExecutionTool : public Tool {
                     std::string output);
 
   raw_ptr<Profile> profile_;
+  raw_ptr<CodeSandboxScriptStorage> script_storage_;
   std::list<CodeExecutionRequest> requests_;
   std::optional<base::TimeDelta> execution_time_limit_for_testing_;
   base::WeakPtrFactory<CodeExecutionTool> weak_ptr_factory_{this};
