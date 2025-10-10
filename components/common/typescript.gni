@@ -138,8 +138,9 @@ template("transpile_web_ui") {
     # https://gn.googlesource.com/gn/+/master/docs/reference.md#var_depfile
     # https://chromium.googlesource.com/chromium/src/build/+/HEAD/docs/writing_gn_templates.md#inputs-and-depfiles
     depfile = "${target_gen_dir}/${target_name}.d"
+
     # This file contains the data entries and describe the folders and files (indirectly) imported by the entry point
-    # This is important to ensure gn knows about these implicit dependencies. 
+    # This is important to ensure gn knows about these implicit dependencies.
     # We write those to json and cross reference them in a later stage to ensure the list is complete
     data_paths_file = "${target_gen_dir}/${target_name}.data_deps.json"
 
