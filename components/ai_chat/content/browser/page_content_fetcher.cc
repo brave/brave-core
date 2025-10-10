@@ -475,8 +475,8 @@ void OnScreenshot(FetchPageContentCallback callback, const SkBitmap& image) {
 }
 #endif  // #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 
-// Obtains a content URL from a GitHub URL (pull request, commit, compare, or
-// file blob)
+// Obtains a content URL from a GitHub URL (pull request, commit, compare,
+// commits, or file blob)
 std::optional<GURL> GetGithubContentURL(const GURL& url) {
   if (!url.is_valid() || url.scheme() != "https" ||
       url.host() != "github.com") {
@@ -509,6 +509,12 @@ std::optional<GURL> GetGithubContentURL(const GURL& url) {
   if (type == "compare") {
     return GURL(base::StrCat({url.GetWithEmptyPath().spec(), user, "/", repo,
                               "/compare/", path_parts[3], ".patch"}));
+  }
+
+  // Handle commits: /<user>/<repo>/commits/<branch>
+  if (type == "commits") {
+    return GURL(base::StrCat({url.GetWithEmptyPath().spec(), user, "/", repo,
+                              "/commits/", path_parts[3], ".atom"}));
   }
 
   // Handle blob (file view): /<user>/<repo>/blob/<branch>/<path>

@@ -61,6 +61,16 @@ int main() {
   return 0;
 })";
 
+constexpr char kGithubAtomFeed[] = R"(<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Recent Commits to din_djarin:master</title>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/abc123</id>
+    <title>Add new feature</title>
+    <updated>2025-01-15T10:00:00Z</updated>
+  </entry>
+</feed>)";
+
 // Mock PageContentExtractor for testing
 class MockPageContentExtractor : public mojom::PageContentExtractor {
  public:
@@ -850,6 +860,40 @@ TEST_F(PageContentFetcherTest, GithubBlobUrl) {
   // Verify the request was made to the raw URL
   EXPECT_EQ(requests_made.size(), 1u);
   EXPECT_EQ(requests_made[0].url, expected_raw_url);
+  EXPECT_EQ(requests_made[0].method, "GET");
+}
+
+// Test GitHub commits URL fetching
+TEST_F(PageContentFetcherTest, GithubCommitsUrl) {
+  GURL commits_url("https://github.com/brave/din_djarin/commits/master");
+  GURL expected_atom_url(
+      "https://github.com/brave/din_djarin/commits/master.atom");
+
+  NavigateAndCommit(commits_url);
+
+  // Track the requests that are made
+  std::vector<network::ResourceRequest> requests_made;
+  test_url_loader_factory_->SetInterceptor(base::BindLambdaForTesting(
+      [&requests_made](const network::ResourceRequest& request) {
+        requests_made.push_back(request);
+      }));
+
+  // Set up network response for atom URL
+  SimulateNetworkResponse(expected_atom_url, net::HTTP_OK, kGithubAtomFeed);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+
+  // Wait for the result
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_EQ(content, kGithubAtomFeed);
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  // Verify the request was made to the atom URL
+  EXPECT_EQ(requests_made.size(), 1u);
+  EXPECT_EQ(requests_made[0].url, expected_atom_url);
   EXPECT_EQ(requests_made[0].method, "GET");
 }
 
