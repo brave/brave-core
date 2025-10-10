@@ -1,8 +1,8 @@
 diff --git a/build/rust/cargo_crate.gni b/build/rust/cargo_crate.gni
-index 609472fa913c2488bfc966fa5cdb36cd7821b4fd..1fd11a9c427486ad7653bb73e77f2504b4ab7f0b 100644
+index f3527b3f1e8b9e97aed7c9896ae9f3f1d794407f..856c9858176fc4492cde1c62921cf68de75bbd95 100644
 --- a/build/rust/cargo_crate.gni
 +++ b/build/rust/cargo_crate.gni
-@@ -170,6 +170,7 @@ template("cargo_crate") {
+@@ -180,6 +180,7 @@ template("cargo_crate") {
      manifest_dir = rebase_path(build_gn_dir + "/crate", root_build_dir)
    }
    _rustenv += [ "CARGO_MANIFEST_DIR=${manifest_dir}" ]
@@ -10,7 +10,7 @@ index 609472fa913c2488bfc966fa5cdb36cd7821b4fd..1fd11a9c427486ad7653bb73e77f2504
  
    # cargo_crate() should set library_configs, executable_configs,
    # proc_macro_configs. Not configs.
-@@ -262,6 +263,7 @@ template("cargo_crate") {
+@@ -272,6 +273,7 @@ template("cargo_crate") {
        testonly = _testonly
        if (defined(invoker.visibility)) {
          visibility = invoker.visibility

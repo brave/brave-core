@@ -16,5 +16,5 @@ index bbaf1143e725a1b6c49eef705b1e62c4133bfa27..739b2b4adbf9d9c1bdedd14afa6b23b5
    }
 +  deps += brave_components_os_crypt_deps
  }
-
+ 
  static_library("test_support") {
