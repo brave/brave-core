@@ -59,6 +59,10 @@ extension BraveSyncAPI {
     if setSyncCode(codeWords) {
       // Enable default sync type Bookmarks when joining a chain
       Preferences.Chromium.syncBookmarksEnabled.value = true
+      // when setting up a new chain, use the feature flag to determine if
+      // password sync is enabled or not
+      Preferences.Chromium.syncPasswordsEnabled.value =
+        FeatureList.kBraveSyncDefaultPasswords.enabled
       enableSyncTypes(syncProfileService: syncProfileService)
       requestSync()
       setSetupComplete()
@@ -88,7 +92,7 @@ extension BraveSyncAPI {
 
   func resetSyncChain() {
     Preferences.Chromium.syncHistoryEnabled.value = false
-    Preferences.Chromium.syncPasswordsEnabled.value = false
+    Preferences.Chromium.syncPasswordsEnabled.value = FeatureList.kBraveSyncDefaultPasswords.enabled
     Preferences.Chromium.syncOpenTabsEnabled.value = false
 
     resetSync()
