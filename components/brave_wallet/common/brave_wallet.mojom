@@ -2316,9 +2316,32 @@ interface ZCashWalletService {
       => (ZCashChainTipStatus? status, string? error_message);
 };
 
+struct uint128 {
+  uint64 high;
+  uint64 low;
+};
+
+struct PolkadotAccountBalance {
+  uint128 free;
+  uint128 reserved;
+  uint128 frozen;
+  uint128 flags;
+};
+
+struct PolkadotAccountInfo {
+  uint32 nonce;
+  uint32 consumers;
+  uint32 providers;
+  uint32 sufficients;
+  PolkadotAccountBalance data;
+};
+
 interface PolkadotWalletService {
   GetNetworkName(AccountId account)
       => (string? network, string? error_message);
+
+  GetAccountBalance(AccountId account, string chain_id)
+      => (PolkadotAccountInfo? account, string? error_message);
 };
 
 enum TransactionStatus {
