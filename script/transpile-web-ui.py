@@ -69,7 +69,7 @@ def parse_args():
                         help='Webpack alias',
                         required=False,
                         default=[])
-    parser.add_argument('--output_module', required=True, type=bool)
+    parser.add_argument('--output_module', action='store_true')
     parser.add_argument(
         "--resource_path_prefix",
         nargs='?',

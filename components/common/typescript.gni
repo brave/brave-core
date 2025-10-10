@@ -207,9 +207,7 @@ template("transpile_web_ui") {
 
     # Default to output_module=true if not specified
     if (!defined(invoker.output_module) || invoker.output_module) {
-      args += [ "--output_module=true" ]
-    } else {
-      args += [ "--output_module=false" ]
+      args += [ "--output_module" ]
     }
 
     if (is_official_build) {
