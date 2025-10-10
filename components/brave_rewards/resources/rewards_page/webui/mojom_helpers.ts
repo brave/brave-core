@@ -64,9 +64,10 @@ export function mapNotification (
 // Converts an AdType value into a mojo enum value.
 export function convertAdType(adType: AdType) {
   switch (adType) {
-    case 'new-tab-page': return mojom.AdType.kNewTabPageAd
-    case 'notification': return mojom.AdType.kNotificationAd
-    case 'search-result': return mojom.AdType.kSearchResultAd
+    case 'new-tab-page':
+      return mojom.AdType.kNewTabPageAd
+    case 'notification':
+      return mojom.AdType.kNotificationAd
   }
 }
 
