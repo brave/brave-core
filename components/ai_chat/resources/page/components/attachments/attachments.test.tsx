@@ -22,7 +22,7 @@ import {
   AssociatedContent,
   ContentType,
 } from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m.js'
-import { Bookmark } from 'components/ai_chat/resources/common/mojom'
+import { Bookmark, HistoryEntry } from 'components/ai_chat/resources/common/mojom'
 
 const MockContext = (
   props: React.PropsWithChildren<Partial<AIChatContext & ConversationContext>>,
@@ -545,6 +545,101 @@ describe('Attachments Component', () => {
       expect(
         screen.getByText('CHAT_UI_ATTACHMENTS_TABS_TITLE'),
       ).toBeInTheDocument()
+    })
+  })
+
+  describe('History display', () => {
+    const mockHistory: HistoryEntry[] = [
+      {
+        id: BigInt(1),
+        title: 'Brave Privacy Browser',
+        url: { url: 'https://brave.com/privacy' },
+      },
+      {
+        id: BigInt(2),
+        title: 'Web3 Standards',
+        url: { url: 'https://w3c.org/standards' },
+      },
+    ]
+
+    it('displays history when attachmentsDialog is set to history', async () => {
+      render(
+        <MockContext
+          attachmentsDialog='history'
+          getHistory={() => Promise.resolve(mockHistory)}
+          setAttachmentsDialog={mockSetAttachmentsDialog}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      // Check history items are rendered using UrlContentItem
+      await waitFor(() => {
+        expect(screen.getByText('Brave Privacy Browser')).toBeInTheDocument()
+        expect(screen.getByText('Web3 Standards')).toBeInTheDocument()
+        expect(screen.getByText('https://brave.com/privacy')).toBeInTheDocument()
+        expect(
+          screen.getByText('https://w3c.org/standards'),
+        ).toBeInTheDocument()
+      })
+    })
+
+    it('displays correct title for history dialog', () => {
+      render(
+        <MockContext
+          attachmentsDialog='history'
+          getHistory={() => Promise.resolve(mockHistory)}
+          setAttachmentsDialog={mockSetAttachmentsDialog}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      expect(
+        screen.getByText('CHAT_UI_ATTACHMENTS_HISTORY_TITLE'),
+      ).toBeInTheDocument()
+    })
+
+    it('displays correct description for history dialog', async () => {
+      const { container } = render(
+        <MockContext
+          attachmentsDialog='history'
+          getHistory={() => Promise.resolve(mockHistory)}
+          setAttachmentsDialog={mockSetAttachmentsDialog}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      expect(container.querySelector('.description')?.textContent).toContain(
+        'CHAT_UI_ATTACHMENTS_HISTORY_DESCRIPTION',
+      )
+    })
+
+    it('displays favicons for history items', async () => {
+      const { container } = render(
+        <MockContext
+          attachmentsDialog='history'
+          getHistory={() => Promise.resolve(mockHistory)}
+          setAttachmentsDialog={mockSetAttachmentsDialog}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      await waitFor(() => {
+        const favicons = container.querySelectorAll('img')
+        expect(favicons).toHaveLength(2)
+
+        expect(favicons[0]).toHaveAttribute(
+          'src',
+          expect.stringContaining('brave.com'),
+        )
+        expect(favicons[1]).toHaveAttribute(
+          'src',
+          expect.stringContaining('w3c.org'),
+        )
+      })
     })
   })
 })
