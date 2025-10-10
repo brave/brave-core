@@ -494,6 +494,14 @@ export const SendScreen = React.memo(() => {
             .toHex(),
         })
         resetSendFields()
+        return
+      }
+
+      case BraveWallet.CoinType.DOT: {
+        // TODO: Implement Polkadot transaction sending
+        console.warn('Polkadot transaction sending not yet implemented')
+        resetSendFields()
+        return
       }
     }
   }, [

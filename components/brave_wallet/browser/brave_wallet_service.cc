@@ -112,6 +112,11 @@ std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
     tokens.push_back(GetCardanoNativeToken(chain_id));
   }
 
+  if (coin == mojom::CoinType::DOT && IsPolkadotNetwork(chain_id) &&
+      !ContainsToken(tokens, coin, chain_id, false)) {
+    tokens.push_back(GetPolkadotNativeToken(chain_id));
+  }
+
   return tokens;
 }
 

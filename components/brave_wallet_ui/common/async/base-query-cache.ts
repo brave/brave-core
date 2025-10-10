@@ -155,8 +155,8 @@ export class BaseQueryCache {
                 }) as string,
             )
           } catch (error) {
-            console.log(error)
-            console.log(
+            console.error(error)
+            console.error(
               `Unable to fetch Hidden ChainIds for coin: ${
                 coin //
               }`,
@@ -518,7 +518,6 @@ async function fetchAssetsForNetwork({
     // Creates a network's Native Asset if nothing was returned
     const nativeAsset = makeNetworkAsset(network)
     nativeAsset.logo = network.iconUrls[0] ?? ''
-    nativeAsset.visible = false
     return [nativeAsset]
   }
 

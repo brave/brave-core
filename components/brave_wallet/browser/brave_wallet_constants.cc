@@ -73,7 +73,8 @@ std::optional<mojom::CoinType> GetCoinTypeFromString(const std::string& coin) {
            {"sol", mojom::CoinType::SOL},
            {"fil", mojom::CoinType::FIL},
            {"ada", mojom::CoinType::ADA},
-           {"zec", mojom::CoinType::ZEC}});
+           {"zec", mojom::CoinType::ZEC},
+           {"dot", mojom::CoinType::DOT}});
 
   return base::OptionalFromPtr(
       base::FindOrNull(kCoinTypeStringToEnum, base::ToLowerASCII(coin)));
@@ -89,7 +90,8 @@ std::optional<std::string> GetStringFromCoinType(mojom::CoinType coin_type) {
            {mojom::CoinType::SOL, "sol"},
            {mojom::CoinType::FIL, "fil"},
            {mojom::CoinType::ADA, "ada"},
-           {mojom::CoinType::ZEC, "zec"}});
+           {mojom::CoinType::ZEC, "zec"},
+           {mojom::CoinType::DOT, "dot"}});
 
   auto* result = base::FindOrNull(kCoinTypeEnumToString, coin_type);
   if (result) {
