@@ -57,7 +57,7 @@ void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
       // update. We could work around this, for example by introducing a custom
       // preference. However, Sparkle will be replaced by Omaha 4 soon. So it
       // does not seem worth the effort.
-      VLOG(0) << "Feature UpgradeWhenIdle is enabled but cannot take effect "
+      VLOG(1) << "Feature UpgradeWhenIdle is enabled but cannot take effect "
                  "because Omaha 4 is not active.";
     }
   }
