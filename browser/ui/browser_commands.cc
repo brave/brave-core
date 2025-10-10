@@ -237,7 +237,9 @@ void NewOffTheRecordWindowTor(Profile* profile) {
     return;
   }
 
+#if BUILDFLAG(ENABLE_TOR)
   TorProfileManager::SwitchToTorProfile(profile);
+#endif
 }
 
 void NewTorConnectionForSite(Browser* browser) {

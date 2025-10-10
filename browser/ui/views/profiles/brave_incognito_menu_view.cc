@@ -89,7 +89,9 @@ void BraveIncognitoMenuView::AddTorButton() {
 }
 
 void BraveIncognitoMenuView::OnTorProfileButtonClicked() {
+#if BUILDFLAG(ENABLE_TOR)
   TorProfileManager::SwitchToTorProfile(&profile());
+#endif
 }
 
 std::u16string BraveIncognitoMenuView::GetAccessibleWindowTitle() const {
@@ -100,7 +102,9 @@ std::u16string BraveIncognitoMenuView::GetAccessibleWindowTitle() const {
 void BraveIncognitoMenuView::OnExitButtonClicked() {
   if (profile().IsTor()) {
     OnActionableItemClicked(ActionableItem::kExitProfileButton);
+#if BUILDFLAG(ENABLE_TOR)
     TorProfileManager::CloseTorProfileWindows(&profile());
+#endif
   } else {
     IncognitoMenuView::OnExitButtonClicked();
   }

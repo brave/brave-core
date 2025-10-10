@@ -1033,7 +1033,9 @@ test("brave_browser_tests") {
       "//chrome/browser/ui/test/test_browser_dialog_mac.mm",
     ]
 
-    deps += [ "//brave/components/tor:pref_names" ]
+    if (enable_tor) {
+      deps += [ "//brave/components/tor:pref_names" ]
+    }
   }
 
   if (is_win) {

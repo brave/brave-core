@@ -1,19 +1,23 @@
-static_library("tor") {
-  visibility = [
-    "//brave/test:*",
-    "//chrome/utility:*",
-  ]
+import("//brave/components/tor/buildflags/buildflags.gni")
 
-  sources = [
-    "tor_launcher_impl.cc",
-    "tor_launcher_impl.h",
-  ]
+if (enable_tor) {
+  static_library("tor") {
+    visibility = [
+      "//brave/test:*",
+      "//chrome/utility:*",
+    ]
 
-  deps = [
-    "public/interfaces",
-    "//base",
-    "//brave/components/child_process_monitor",
-    "//brave/components/tor:constants",
-    "//mojo/public/cpp/bindings",
-  ]
+    sources = [
+      "tor_launcher_impl.cc",
+      "tor_launcher_impl.h",
+    ]
+
+    deps = [
+      "public/interfaces",
+      "//base",
+      "//brave/components/child_process_monitor",
+      "//brave/components/tor:constants",
+      "//mojo/public/cpp/bindings",
+    ]
+  }
 }
