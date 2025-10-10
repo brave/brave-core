@@ -442,7 +442,7 @@ function Main() {
           handleClick={handleToolsMenuClick}
           handleEditClick={handleToolsMenuEditClick}
         />
-        {!hasConversationStarted && <TabsMenu />}
+        <TabsMenu />
         <InputBox
           conversationStarted={hasConversationStarted}
           context={{ ...conversationContext, ...aiChatContext }}
