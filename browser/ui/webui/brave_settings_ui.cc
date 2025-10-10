@@ -199,6 +199,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
           (profile->GetPrefs()->GetBoolean(speedreader::kSpeedreaderEnabled) ||
            !profile->GetPrefs()->IsManagedPreference(
                speedreader::kSpeedreaderEnabled)));
+#else
+  html_source->AddBoolean("isSpeedreaderAllowed", false);
 #endif
   html_source->AddBoolean(
       "isNativeBraveWalletFeatureEnabled",

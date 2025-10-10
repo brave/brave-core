@@ -20,9 +20,13 @@ constexpr bool kSupportsPlaylistActionIconView = false;
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/views/speedreader/speedreader_icon_view.h"
-constexpr bool kSupportsSpeedreaderActionIconView = true;
+#define BRAVE_PAGE_ACTION_ICON_CONTROLLER_SPEEDREADER_ICON_VIEW            \
+  add_page_action_icon(                                                    \
+      type, std::make_unique<SpeedreaderIconView>(                         \
+                params.command_updater, params.icon_label_bubble_delegate, \
+                params.page_action_icon_delegate));
 #else
-constexpr bool kSupportsSpeedreaderActionIconView = false;
+#define BRAVE_PAGE_ACTION_ICON_CONTROLLER_SPEEDREADER_ICON_VIEW
 #endif
 
 // Circumvent creation of CookieControlsIconView in
@@ -46,14 +50,10 @@ constexpr bool kSupportsSpeedreaderActionIconView = false;
                                    params.icon_label_bubble_delegate,          \
                                    params.page_action_icon_delegate));         \
     break;                                                                     \
-  case brave::kSpeedreaderPageActionIconType:                                  \
-    if constexpr (kSupportsSpeedreaderActionIconView) {                        \
-      add_page_action_icon(                                                    \
-          type, std::make_unique<SpeedreaderIconView>(                         \
-                    params.command_updater, params.icon_label_bubble_delegate, \
-                    params.page_action_icon_delegate));                        \
-    }                                                                          \
+  case brave::kSpeedreaderPageActionIconType: {                                \
+    BRAVE_PAGE_ACTION_ICON_CONTROLLER_SPEEDREADER_ICON_VIEW                   \
     break;                                                                     \
+  }                                                                            \
   case brave::kUndefinedPageActionIconType
 
 // We define additional PageActionIconType values (in

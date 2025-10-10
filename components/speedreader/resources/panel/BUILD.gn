@@ -4,18 +4,21 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
-transpile_web_ui("brave_speedreader_toolbar_ui") {
-  entry_points = [ [
-        "speedreader_toolbar",
-        rebase_path("speedreader_toolbar.tsx"),
-      ] ]
-  resource_name = "brave_speedreader_toolbar"
-  deps = [ "//brave/components/speedreader/common:mojom_js" ]
-}
+if (enable_speedreader) {
+  transpile_web_ui("brave_speedreader_toolbar_ui") {
+    entry_points = [ [
+          "speedreader_toolbar",
+          rebase_path("speedreader_toolbar.tsx"),
+        ] ]
+    resource_name = "brave_speedreader_toolbar"
+    deps = [ "//brave/components/speedreader/common:mojom_js" ]
+  }
 
-pack_web_resources("generated_resources") {
-  resource_name = "brave_speedreader_toolbar"
-  output_dir = "$root_gen_dir/brave/components/speedreader/resources/panel"
-  deps = [ ":brave_speedreader_toolbar_ui" ]
+  pack_web_resources("generated_resources") {
+    resource_name = "brave_speedreader_toolbar"
+    output_dir = "$root_gen_dir/brave/components/speedreader/resources/panel"
+    deps = [ ":brave_speedreader_toolbar_ui" ]
+  }
 }
