@@ -44,6 +44,12 @@ constexpr char kShieldsAllowScriptOnceHistogramName[] =
 
 }  // namespace
 
+bool IsAdBlockOnlyModeSupportedAndFeatureEnabled() {
+  return brave_shields::IsAdblockOnlyModeFeatureEnabled() &&
+         brave_shields::IsAdblockOnlyModeSupportedForLocale(
+             g_browser_process->GetApplicationLocale());
+}
+
 namespace brave_shields {
 
 BraveShieldsTabHelper::~BraveShieldsTabHelper() = default;
@@ -93,7 +99,7 @@ void BraveShieldsTabHelper::DidFinishNavigation(
 
 void BraveShieldsTabHelper::MaybeNotifyRepeatedReloads(
     content::NavigationHandle* navigation_handle) {
-  if (!brave_shields::IsAdblockOnlyModeFeatureEnabled() ||
+  if (!IsAdBlockOnlyModeSupportedAndFeatureEnabled() ||
       brave_shields::IsBraveShieldsAdBlockOnlyModeEnabled(
           g_browser_process->local_state())) {
     // Do not notify if ad block only mode feature is disabled or shields ad
@@ -265,7 +271,7 @@ void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
   brave_shields_settings_->SetBraveShieldsEnabled(is_enabled,
                                                   GetCurrentSiteURL());
 
-  if (brave_shields::IsAdblockOnlyModeFeatureEnabled() && !is_enabled) {
+  if (IsAdBlockOnlyModeSupportedAndFeatureEnabled() && !is_enabled) {
     PrefService* prefs =
         Profile::FromBrowserContext(web_contents()->GetBrowserContext())
             ->GetPrefs();
@@ -278,7 +284,7 @@ void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
 }
 
 bool BraveShieldsTabHelper::IsBraveShieldsAdBlockOnlyModeEnabled() {
-  return brave_shields::IsAdblockOnlyModeFeatureEnabled() &&
+  return IsAdBlockOnlyModeSupportedAndFeatureEnabled() &&
          brave_shields::IsBraveShieldsAdBlockOnlyModeEnabled(
              g_browser_process->local_state());
 }
@@ -294,7 +300,7 @@ bool BraveShieldsTabHelper::ShouldShowShieldsDisabledAdBlockOnlyModePrompt() {
   PrefService* prefs =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext())
           ->GetPrefs();
-  return brave_shields::IsAdblockOnlyModeFeatureEnabled() &&
+  return IsAdBlockOnlyModeSupportedAndFeatureEnabled() &&
          !prefs->GetBoolean(
              brave_shields::prefs::kAdBlockOnlyModePromptDismissed) &&
          prefs->GetInteger(brave_shields::prefs::kShieldsDisabledCount) >=

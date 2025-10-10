@@ -43,6 +43,18 @@ bool IsBraveShieldsAdBlockOnlyModeEnabled(PrefService* local_state);
 void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* local_state,
                                            bool enabled);
 
+std::string GetLanguageCodeFromLocale(const std::string& locale);
+bool IsAdblockOnlyModeSupportedForLocale(const std::string& locale);
+
+// The following function enables or disables Ad Block Only mode based on the
+// locale. If the locale is not supported, it disables Ad Block Only mode and
+// sets `brave.shields.adblock_only_mode_was_enabled_for_supported_locale` pref
+// value to true.
+// If the locale is supported, it enables Ad Block Only mode if it was
+// enabled previously for a supported locale.
+void ManageAdBlockOnlyModeByLocale(PrefService* local_state,
+                                   const std::string& locale);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_UTILS_H_

@@ -51,7 +51,7 @@ export const AdBlockOnlyModeMixin = dedupingMixin(
         onAdBlockOnlyModeEnabledPrefChanged(pref: chrome.settingsPrivate.PrefObject): void {
           this.isAdBlockOnlyModeEnabled_ =
               pref.value &&
-              loadTimeData.getBoolean('isAdBlockOnlyModeFeatureEnabled')
+              loadTimeData.getBoolean('isAdBlockOnlyModeSupportedAndFeatureEnabled')
           }
 
         setAdBlockOnlyModeEnabled(enabled: boolean): void {
