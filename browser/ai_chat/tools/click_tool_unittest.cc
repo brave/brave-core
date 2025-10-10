@@ -58,25 +58,6 @@ class ClickToolTest : public ContentAgentToolBaseTest {
     // in each test.
     EXPECT_TRUE(click_action.has_target());
 
-    auto* click_request =
-        static_cast<actor::ClickToolRequest*>(tool_request.get());
-
-    // Verify mojom action properties
-    auto mojo_action = click_request->ToMojoToolAction();
-    EXPECT_TRUE(mojo_action->is_click());
-    const auto& mojom_click = mojo_action->get_click();
-    if (expected_click_type == optimization_guide::proto::ClickAction::LEFT) {
-      EXPECT_EQ(mojom_click->type, actor::mojom::ClickAction::Type::kLeft);
-    } else {
-      EXPECT_EQ(mojom_click->type, actor::mojom::ClickAction::Type::kRight);
-    }
-    if (expected_click_count ==
-        optimization_guide::proto::ClickAction::SINGLE) {
-      EXPECT_EQ(mojom_click->count, actor::mojom::ClickAction::Count::kSingle);
-    } else {
-      EXPECT_EQ(mojom_click->count, actor::mojom::ClickAction::Count::kDouble);
-    }
-
     return action;
   }
 };

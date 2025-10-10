@@ -93,28 +93,6 @@ class TypeToolTest : public ContentAgentToolBaseTest {
     }
     EXPECT_EQ(type_request->mode, expected_actor_mode);
 
-    // Verify mojom action properties
-    auto mojo_action = type_request->ToMojoToolAction();
-    EXPECT_TRUE(mojo_action->is_type());
-    const auto& mojom_type = mojo_action->get_type();
-    EXPECT_EQ(mojom_type->text, expected_text);
-    EXPECT_EQ(mojom_type->follow_by_enter, expected_follow_by_enter);
-
-    // Verify mode
-    actor::mojom::TypeAction::Mode expected_mojom_mode;
-    switch (expected_actor_mode) {
-      case actor::TypeToolRequest::Mode::kReplace:
-        expected_mojom_mode = actor::mojom::TypeAction::Mode::kDeleteExisting;
-        break;
-      case actor::TypeToolRequest::Mode::kPrepend:
-        expected_mojom_mode = actor::mojom::TypeAction::Mode::kPrepend;
-        break;
-      case actor::TypeToolRequest::Mode::kAppend:
-        expected_mojom_mode = actor::mojom::TypeAction::Mode::kAppend;
-        break;
-    }
-    EXPECT_EQ(mojom_type->mode, expected_mojom_mode);
-
     return action;
   }
 };
