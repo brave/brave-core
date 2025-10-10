@@ -59,6 +59,7 @@ class BraveSidePanel : public views::View,
   gfx::Size GetContentSizeUpperBound() const { return gfx::Size(); }
   bool IsClosing();
   void DisableAnimationsForTesting() {}
+  void AddHeaderView(std::unique_ptr<views::View> view);
 
   void set_fixed_contents_width(std::optional<int> fixed_width) {
     fixed_contents_width_ = fixed_width;
@@ -66,7 +67,6 @@ class BraveSidePanel : public views::View,
 
   // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
-  void AddHeaderView(std::unique_ptr<views::View> view);
   void SetHeaderVisibility(bool visible);
 
   // views::View:
@@ -90,8 +90,6 @@ class BraveSidePanel : public views::View,
   views::View* GetContentParentView();
 
   void SetMinimumSidePanelContentsWidthForTesting(int width) {}
-
-  views::View* get_header_for_testing() { return header_view_.get(); }
 
  private:
   friend class sidebar::SidebarBrowserTest;
@@ -121,7 +119,6 @@ class BraveSidePanel : public views::View,
   IntegerPrefMember side_panel_width_;
   std::unique_ptr<SidePanelResizeWidget> resize_widget_;
   std::unique_ptr<ViewShadow> shadow_;
-  std::unique_ptr<views::View> header_view_;
   // Owned by `this` indirectly through the views tree.
   raw_ptr<views::View> content_parent_view_;
   State state_ = State::kClosed;
