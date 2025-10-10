@@ -8,6 +8,8 @@
 #include <string>
 
 #include "base/memory/ref_counted_memory.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/code_sandbox_script_storage.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
@@ -46,14 +48,16 @@ CodeSandboxUIConfig::~CodeSandboxUIConfig() = default;
 
 CodeSandboxUI::CodeSandboxUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui) {
+  auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
   auto* source = content::WebUIDataSource::CreateAndAdd(
-      web_ui->GetWebContents()->GetBrowserContext(), kAIChatCodeSandboxUIURL);
+      browser_context, kAIChatCodeSandboxUIURL);
 
   source->SetDefaultResource(IDR_AI_CHAT_CODE_SANDBOX_UI_HTML);
 
   source->SetRequestFilter(
       base::BindRepeating(&CodeSandboxUI::ShouldHandleRequest),
-      base::BindRepeating(&CodeSandboxUI::HandleScriptRequest));
+      base::BindRepeating(&CodeSandboxUI::HandleScriptRequest,
+                          browser_context->GetWeakPtr()));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'none';");
@@ -80,6 +84,7 @@ bool CodeSandboxUI::ShouldHandleRequest(const std::string& path) {
 }
 
 void CodeSandboxUI::HandleScriptRequest(
+    base::WeakPtr<content::BrowserContext> browser_context,
     const std::string& path,
     content::WebUIDataSource::GotDataCallback callback) {
   std::string request_id;
@@ -87,12 +92,21 @@ void CodeSandboxUI::HandleScriptRequest(
   if (slash_pos != std::string::npos) {
     request_id = path.substr(0, slash_pos);
   }
+  std::string script_content;
+  auto* original_profile =
+      Profile::FromBrowserContext(browser_context.get())->GetOriginalProfile();
+  auto* ai_chat_service =
+      AIChatServiceFactory::GetForBrowserContext(original_profile);
+  if (ai_chat_service) {
+    auto script = ai_chat_service->code_sandbox_script_storage()->ConsumeScript(
+        request_id);
+    if (script) {
+      script_content = std::move(*script);
+    }
+  }
 
   auto script =
-      CodeSandboxScriptStorage::GetInstance()->ConsumeScript(request_id);
-  if (!script) {
-    script = base::MakeRefCounted<base::RefCountedString>("");
-  }
+      base::MakeRefCounted<base::RefCountedString>(std::move(script_content));
   std::move(callback).Run(script.get());
 }
 
