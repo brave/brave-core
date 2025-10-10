@@ -53,10 +53,10 @@ void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
       // UpgradeWhenIdle restarts the browser with 0 open windows. It achieves
       // this by adding the switch kNoStartupWindow to the command line.
       // Unfortunately, this does not work with Sparkle, which drops all
-      // command-line arguments when it relaunches the browser. We could work
-      // around this limitation by introducing a custom preference. However,
-      // Sparkle will be replaced by Omaha 4 soon. So it does not seem worth
-      // the effort.
+      // command-line arguments when it relaunches the browser to apply an
+      // update. We could work around this, for example by introducing a custom
+      // preference. However, Sparkle will be replaced by Omaha 4 soon. So it
+      // does not seem worth the effort.
       VLOG(0) << "Feature UpgradeWhenIdle is enabled but cannot take effect "
                  "because Omaha 4 is not active.";
     }
