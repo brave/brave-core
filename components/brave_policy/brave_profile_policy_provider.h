@@ -11,6 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/values.h"
+#include "brave/components/brave_origin/ad_block_only_mode_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "components/policy/core/common/configuration_policy_provider.h"
@@ -21,7 +22,8 @@ namespace brave_policy {
 // Note: When this is created, the profile is not yet initialized.
 class BraveProfilePolicyProvider
     : public policy::ConfigurationPolicyProvider,
-      public brave_origin::BraveOriginPolicyManager::Observer {
+      public brave_origin::BraveOriginPolicyManager::Observer,
+      public brave_origin::AdBlockOnlyModePolicyManager::Observer {
  public:
   BraveProfilePolicyProvider();
   ~BraveProfilePolicyProvider() override;
@@ -39,6 +41,10 @@ class BraveProfilePolicyProvider
   void OnBraveOriginPoliciesReady() override;
   void OnProfilePolicyChanged(std::string_view policy_key,
                               std::string_view profile_id) override;
+
+  // brave_origin::AdBlockOnlyModePolicyManager::Observer implementation.
+  void OnAdBlockOnlyModePoliciesChanged() override;
+
   void SetProfileID(const std::string& profile_id);
 
  private:
@@ -50,6 +56,8 @@ class BraveProfilePolicyProvider
                              std::string_view policy_key,
                              bool enabled);
 
+  void MaybeLoadAdBlockOnlyModePolicies(policy::PolicyBundle& bundle);
+
   bool first_policies_loaded_ = false;
   bool policies_ready_ = false;
   std::string profile_id_;
@@ -57,6 +65,10 @@ class BraveProfilePolicyProvider
   base::ScopedObservation<brave_origin::BraveOriginPolicyManager,
                           brave_origin::BraveOriginPolicyManager::Observer>
       brave_origin_observation_{this};
+
+  base::ScopedObservation<brave_origin::AdBlockOnlyModePolicyManager,
+                          brave_origin::AdBlockOnlyModePolicyManager::Observer>
+      ad_block_only_mode_policy_manager_observation_{this};
 
   base::WeakPtrFactory<BraveProfilePolicyProvider> weak_factory_{this};
 };

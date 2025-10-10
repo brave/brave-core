@@ -10,6 +10,7 @@
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_policy/ad_block_only_mode/ad_block_only_mode_policies_utils.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
@@ -33,6 +34,10 @@ void BraveProfilePolicyProvider::Init(policy::SchemaRegistry* registry) {
   // loading.
   brave_origin_observation_.Observe(
       brave_origin::BraveOriginPolicyManager::GetInstance());
+
+  // Register as AdBlockOnlyModePolicyManager observer.
+  ad_block_only_mode_policy_manager_observation_.Observe(
+      brave_origin::AdBlockOnlyModePolicyManager::GetInstance());
 }
 
 void BraveProfilePolicyProvider::RefreshPolicies(
@@ -71,6 +76,8 @@ policy::PolicyBundle BraveProfilePolicyProvider::LoadPolicies() {
 #else
   // Always disabled in release builds
 #endif
+
+  MaybeLoadAdBlockOnlyModePolicies(bundle);
 
   return bundle;
 }
@@ -111,11 +118,28 @@ void BraveProfilePolicyProvider::LoadBraveOriginPolicy(
                         base::Value(enabled), nullptr);
 }
 
+void BraveProfilePolicyProvider::MaybeLoadAdBlockOnlyModePolicies(
+    policy::PolicyBundle& bundle) {
+  if (!brave_origin::AdBlockOnlyModePolicyManager::GetInstance()
+           ->IsAdBlockOnlyModeEnabled()) {
+    return;
+  }
+
+  LoadAdBlockOnlyModePolicies(bundle);
+}
+
 void BraveProfilePolicyProvider::OnProfilePolicyChanged(
     std::string_view policy_key,
     std::string_view profile_id) {
   // Only update if this change is for our profile
   if (!profile_id_.empty() && profile_id == profile_id_) {
+    RefreshPolicies(policy::PolicyFetchReason::kUserRequest);
+  }
+}
+
+void BraveProfilePolicyProvider::OnAdBlockOnlyModePoliciesChanged() {
+  // Only update if we have a profile ID.
+  if (!profile_id_.empty()) {
     RefreshPolicies(policy::PolicyFetchReason::kUserRequest);
   }
 }

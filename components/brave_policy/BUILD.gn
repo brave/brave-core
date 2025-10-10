@@ -5,6 +5,8 @@
 
 static_library("brave_policy") {
   sources = [
+    "ad_block_only_mode/ad_block_only_mode_policies_utils.cc",
+    "ad_block_only_mode/ad_block_only_mode_policies_utils.h",
     "brave_browser_policy_provider.cc",
     "brave_browser_policy_provider.h",
     "brave_policy_profile_id.cc",
@@ -15,6 +17,7 @@ static_library("brave_policy") {
   deps = [
     "//base",
     "//brave/components/brave_origin",
+    "//components/content_settings/core/common",
     "//components/policy/core/browser",
     "//components/policy/core/common",
     "//components/prefs",

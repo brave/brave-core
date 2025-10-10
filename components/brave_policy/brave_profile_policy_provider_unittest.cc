@@ -183,4 +183,29 @@ TEST_F(BraveProfilePolicyProviderTest, OnProfilePolicyChanged_EmptyProfileId) {
       provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
 }
 
+TEST_F(BraveProfilePolicyProviderTest,
+       OnAdBlockOnlyModePoliciesChanged_EmptyProfileId) {
+  // Initialize the provider
+  provider_.Init(&schema_registry_);
+
+  provider_.OnAdBlockOnlyModePoliciesChanged();
+
+  // Provider should report no policies loaded since no profile ID set
+  EXPECT_FALSE(
+      provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
+}
+
+TEST_F(BraveProfilePolicyProviderTest,
+       OnAdBlockOnlyModePoliciesChanged_NotEmptyProfileId) {
+  // Initialize the provider
+  provider_.Init(&schema_registry_);
+  provider_.SetProfileID("test-profile-id");
+
+  provider_.OnAdBlockOnlyModePoliciesChanged();
+
+  // Provider should still report policies as loaded
+  EXPECT_TRUE(
+      provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
+}
+
 }  // namespace brave_policy

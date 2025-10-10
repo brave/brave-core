@@ -11,6 +11,7 @@
 #include "base/containers/map_util.h"
 #include "base/no_destructor.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
+#include "brave/components/brave_origin/ad_block_only_mode_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/brave_origin/profile_id.h"
@@ -191,6 +192,13 @@ BraveOriginServiceFactory::BuildServiceInstanceForBrowserContext(
     policy_manager->Init(GetBrowserPolicyDefinitions(),
                          GetProfilePolicyDefinitions(),
                          g_browser_process->local_state());
+  }
+
+  // Lazy initialization of AdBlockOnlyModePolicyManager
+  auto* ad_block_only_mode_policy_manager =
+      AdBlockOnlyModePolicyManager::GetInstance();
+  if (!ad_block_only_mode_policy_manager->IsInitialized()) {
+    ad_block_only_mode_policy_manager->Init(g_browser_process->local_state());
   }
 
   std::string profile_id = GetProfileId(profile->GetPath());
