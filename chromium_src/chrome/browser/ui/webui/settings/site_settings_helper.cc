@@ -56,7 +56,8 @@
   {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr}, \
   {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr}, \
   {ContentSettingsType::BRAVE_CARDANO, "cardano"}, \
-  {ContentSettingsType::BRAVE_PSST, nullptr},
+  {ContentSettingsType::BRAVE_PSST, nullptr}, \
+  {ContentSettingsType::BRAVE_SHRED_SITE_DATA, nullptr},
 // clang-format on
 
 #define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \

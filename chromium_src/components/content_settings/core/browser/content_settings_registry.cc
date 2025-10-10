@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_shields/core/common/features.h"
 #define BRAVE_INIT BraveInit();
 #include <components/content_settings/core/browser/content_settings_registry.cc>
 #undef BRAVE_INIT
@@ -10,6 +11,7 @@
 #include "base/containers/fixed_flat_map.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings.mojom.h"
@@ -226,6 +228,9 @@ void ContentSettingsRegistry::BraveInit() {
            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
+  // REVIEW Should we deprecate ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE
+  // somehow? As we will have ContentSettingsType::BRAVE_SHRED_SITE_DATA to
+  // cover the same use case.
   Register(ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
            "brave_remember_1p_storage",
            net::features::kBraveForgetFirstPartyStorageByDefault.Get()
@@ -414,6 +419,15 @@ void ContentSettingsRegistry::BraveInit() {
         WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
   }
 #endif  // BUILDFLAG(ENABLE_PSST)
+
+  Register(ContentSettingsType::BRAVE_SHRED_SITE_DATA, "brave_shred_site_data",
+           CONTENT_SETTING_ASK, WebsiteSettingsInfo::UNSYNCABLE, {},
+           {CONTENT_SETTING_ASK, CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
+           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+           WebsiteSettingsRegistry::DESKTOP |
+               WebsiteSettingsRegistry::PLATFORM_ANDROID,
+           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+           PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 }
 
 }  // namespace content_settings

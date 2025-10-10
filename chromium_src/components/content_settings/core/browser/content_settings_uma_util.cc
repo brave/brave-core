@@ -67,7 +67,8 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
   {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, brave_value(68)}, \
   {ContentSettingsType::BRAVE_SHIELDS_METADATA, brave_value(69)},  \
   {ContentSettingsType::BRAVE_CARDANO, brave_value(70)},  \
-  {ContentSettingsType::BRAVE_PSST, brave_value(71)},
+  {ContentSettingsType::BRAVE_PSST, brave_value(71)},  \
+  {ContentSettingsType::BRAVE_SHRED_SITE_DATA, brave_value(72)},
 // clang-format on
 
 #define kDefaultProvider       \

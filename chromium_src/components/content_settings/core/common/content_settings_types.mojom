@@ -52,4 +52,5 @@ enum ContentSettingsType {
 
   BRAVE_CARDANO,
   BRAVE_PSST,
+  BRAVE_SHRED_SITE_DATA,
 };
