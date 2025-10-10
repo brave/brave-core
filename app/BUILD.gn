@@ -144,6 +144,7 @@ source_set("unit_tests") {
     "//components/history_clusters/core",
     "//components/history_embeddings",
     "//components/language/core/common",
+    "//components/legion",
     "//components/lens",
     "//components/manta",
     "//components/metrics/structured:structured_metrics_features",
