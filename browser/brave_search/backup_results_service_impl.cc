@@ -149,7 +149,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
       Profile::OTRProfileID::CreateUniqueForSearchBackupResults();
   auto* otr_profile = profile_->GetOffTheRecordProfile(otr_profile_id, true);
 
-  content::WebContents* web_contents = nullptr;
+  std::unique_ptr<content::WebContents> web_contents_unique;
 
 #if BUILDFLAG(IS_ANDROID)
   auto view_android = std::make_unique<ui::ViewAndroid>();
@@ -168,19 +168,17 @@ void BackupResultsServiceImpl::FetchBackupResults(
                << create_params.context->viewport_size().height();
 #endif
 
-    auto web_contents_unique = content::WebContents::Create(create_params);
+    web_contents_unique = content::WebContents::Create(create_params);
 
     // int random_width = base::RandInt(800, 1920);
     // int random_height = base::RandInt(600, 1080);
     // web_contents->Resize({360, 488});
 
-    // Insert the web contents into the tab strip model
+    // Insert the web contents into the tab strip model, then immediately detach
     auto* browser_list = BrowserList::GetInstance();
     if (!browser_list->empty()) {
       auto* browser = browser_list->get(0);  // Get the first browser instance
       auto* model = browser->tab_strip_model();
-      web_contents =
-          web_contents_unique.get();  // Store raw pointer before moving
 
       // Look for a tab with about:blank and insert right before it
       int insert_index =
@@ -198,6 +196,11 @@ void BackupResultsServiceImpl::FetchBackupResults(
 
       model->InsertWebContentsAt(insert_index, std::move(web_contents_unique),
                                  ADD_ACTIVE);
+      LOG(ERROR) << "FetchBackupResults! Inserted web contents";
+      // Detach right after attaching to take ownership back
+      web_contents_unique =
+          model->DetachWebContentsAtForInsertion(insert_index);
+      LOG(ERROR) << "FetchBackupResults! Detached web contents";
     }
 
     // auto web_preferences = web_contents->GetOrCreateWebPreferences();
@@ -206,21 +209,21 @@ void BackupResultsServiceImpl::FetchBackupResults(
 
     if (features::IsBackupResultsFullRenderEnabled()) {
       BackupResultsWebContentsObserver::CreateForWebContents(
-          web_contents, weak_ptr_factory_.GetWeakPtr());
+          web_contents_unique.get(), weak_ptr_factory_.GetWeakPtr());
     }
 
     LOG(ERROR) << "FetchBackupResults! " << url.spec();
-    auto size = web_contents->GetSize();
+    auto size = web_contents_unique->GetSize();
     LOG(ERROR) << "FetchBackupResults! Size: " << size.width() << "x"
                << size.height();
     LOG(ERROR) << "is render widget host view present: "
-               << (web_contents->GetRenderWidgetHostView() != nullptr);
+               << (web_contents_unique->GetRenderWidgetHostView() != nullptr);
     // web_contents->GetRenderWidgetHostView()->SetSize(gfx::Size(360, 488));
     // auto bounds = web_contents->GetRenderWidgetHostView()->GetViewBounds();
     // LOG(ERROR) << "FetchBackupResults! Bounds: " << bounds.x() << "," <<
     // bounds.y() << ","
     //            << bounds.width() << "," << bounds.height();
-    size = web_contents->GetSize();
+    size = web_contents_unique->GetSize();
     LOG(ERROR) << "FetchBackupResults! Size2: " << size.width() << "x"
                << size.height();
     // auto visible_bounds =
@@ -229,14 +232,14 @@ void BackupResultsServiceImpl::FetchBackupResults(
     // visible_bounds.width() << "x" << visible_bounds.height();
   }
 
-  auto request =
-      pending_requests_.emplace(pending_requests_.end(), web_contents, headers,
-                                otr_profile, std::move(callback), url
+  auto request = pending_requests_.emplace(
+      pending_requests_.end(), std::move(web_contents_unique), headers,
+      otr_profile, std::move(callback), url
 #if BUILDFLAG(IS_ANDROID)
-                                ,
-                                std::move(view_android)
+      ,
+      std::move(view_android)
 #endif
-      );
+  );
 
   if (should_render) {
     // Navigate to brave.com first, then we'll navigate to the original URL
@@ -269,7 +272,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
 }
 
 BackupResultsServiceImpl::PendingRequest::PendingRequest(
-    content::WebContents* web_contents,
+    std::unique_ptr<content::WebContents> web_contents,
     std::optional<net::HttpRequestHeaders> headers,
     Profile* otr_profile,
     BackupResultsCallback callback,
@@ -282,7 +285,7 @@ BackupResultsServiceImpl::PendingRequest::PendingRequest(
     : headers(std::move(headers)),
       callback(std::move(callback)),
       original_url(original_url),
-      web_contents(web_contents),
+      web_contents(std::move(web_contents)),
       otr_profile(otr_profile)
 #if BUILDFLAG(IS_ANDROID)
       ,
@@ -297,7 +300,7 @@ BackupResultsServiceImpl::PendingRequestList::iterator
 BackupResultsServiceImpl::FindPendingRequest(
     const content::WebContents* web_contents) {
   return std::ranges::find_if(pending_requests_, [&](const auto& request) {
-    return request.web_contents == web_contents;
+    return request.web_contents.get() == web_contents;
   });
 }
 
@@ -480,24 +483,8 @@ void BackupResultsServiceImpl::CleanupAndDispatchResult(
     std::optional<BackupResults> result) {
   auto* otr_profile = pending_request->otr_profile.get();
 
-  // Remove the web contents from the tab strip model before destroying the
-  // profile
-  if (pending_request->web_contents) {
-    auto* browser_list = BrowserList::GetInstance();
-    if (!browser_list->empty()) {
-      auto* browser = browser_list->get(0);  // Get the first browser instance
-      auto* model = browser->tab_strip_model();
-
-      // Find and remove the tab containing our web contents
-      for (int i = 0; i < model->count(); ++i) {
-        if (model->GetWebContentsAt(i) == pending_request->web_contents) {
-          pending_request->web_contents = nullptr;
-          model->DetachAndDeleteWebContentsAt(i);
-          break;
-        }
-      }
-    }
-  }
+  // We own the web contents, so it will be automatically destroyed
+  // when the pending request is erased
 
   std::move(pending_request->callback).Run(result);
   pending_requests_.erase(pending_request);
@@ -515,7 +502,6 @@ void BackupResultsServiceImpl::Shutdown() {
   if (profile_) {
     profile_->RemoveObserver(this);
     for (auto& request : pending_requests_) {
-      request.web_contents = nullptr;
       auto* otr_profile = request.otr_profile.get();
       request.otr_profile = nullptr;
       profile_->DestroyOffTheRecordProfile(otr_profile);
