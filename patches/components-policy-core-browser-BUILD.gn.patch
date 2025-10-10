@@ -1,0 +1,13 @@
+diff --git a/components/policy/core/browser/BUILD.gn b/components/policy/core/browser/BUILD.gn
+index 08f79c4eb76e1b83cd7a8d39f8344d7c5b97d35b..1b64d5d75310e166f799b7af79c6b9e014b19aff 100644
+--- a/components/policy/core/browser/BUILD.gn
++++ b/components/policy/core/browser/BUILD.gn
+@@ -111,6 +111,8 @@ source_set("internal") {
+     "//net",
+     "//third_party/icu",
+   ]
++
++  deps += [ "//brave/components/brave_policy:policy_pref_interceptor" ]
+ }
+ 
+ static_library("test_support") {
