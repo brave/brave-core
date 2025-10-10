@@ -194,7 +194,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &media::kLiveCaption,
       &metrics::structured::kPhoneHubStructuredMetrics,
       &net::features::kEnableWebTransportDraft07,
-      &net::features::kTopLevelTpcdOriginTrial,
       &net::features::kTpcdMetadataGrants,
       &net::features::kWaitForFirstPartySetsInit,
       &network::features::kBrowsingTopics,
