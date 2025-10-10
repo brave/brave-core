@@ -28,7 +28,7 @@ export interface AvailableCountryInfo {
   defaultCountryCode: string
 }
 
-export type AdType = 'new-tab-page' | 'notification' | 'search-result'
+export type AdType = 'new-tab-page' | 'notification'
 
 export interface AdsInfo {
   browserUpgradeRequired: boolean

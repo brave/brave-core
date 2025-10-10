@@ -72,8 +72,6 @@ function convertAdType(typeString: string): AdType | null {
       return 'notification'
     case 'new_tab_page_ad':
       return 'new-tab-page'
-    case 'search_result_ad':
-      return 'search-result'
     default:
       return null
   }
