@@ -45,6 +45,21 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
+bool ReadU128(base::SpanReader<const uint8_t>& reader, mojom::uint128Ptr& out) {
+  auto val = mojom::uint128::New(0, 0);
+
+  if (!reader.ReadU64LittleEndian(val->low)) {
+    return false;
+  }
+
+  if (!reader.ReadU64LittleEndian(val->high)) {
+    return false;
+  }
+
+  out = std::move(val);
+  return true;
+}
+
 mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(
     base::span<const uint8_t, 80> bytes) {
   base::SpanReader<const uint8_t> reader(bytes);
@@ -68,47 +83,42 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(
 
   account->data = mojom::PolkadotAccountBalance::New();
 
-  uint64_t low = 0, high = 0;
-  if (!reader.ReadU64LittleEndian(low)) {
+  if (!ReadU128(reader, account->data->free)) {
     return nullptr;
   }
 
-  if (!reader.ReadU64LittleEndian(high)) {
+  if (!ReadU128(reader, account->data->reserved)) {
     return nullptr;
   }
 
-  account->data->free = mojom::uint128::New(high, low);
-
-  if (!reader.ReadU64LittleEndian(low)) {
+  if (!ReadU128(reader, account->data->frozen)) {
     return nullptr;
   }
 
-  if (!reader.ReadU64LittleEndian(high)) {
+  if (!ReadU128(reader, account->data->flags)) {
     return nullptr;
   }
 
-  account->data->reserved = mojom::uint128::New(high, low);
+  DCHECK_EQ(reader.remaining(), 0u);
+  return account;
+}
 
-  if (!reader.ReadU64LittleEndian(low)) {
-    return nullptr;
-  }
+mojom::PolkadotAccountInfoPtr MakeDefaultAccount() {
+  // Default value defined here:
+  // https://github.com/polkadot-js/api/blob/1c4c7c72e281da328084ae821218efb9fe7120ac/packages/types-support/src/metadata/v16/substrate-json.json#L23
 
-  if (!reader.ReadU64LittleEndian(high)) {
-    return nullptr;
-  }
+  auto account = mojom::PolkadotAccountInfo::New();
+  account->data = mojom::PolkadotAccountBalance::New();
 
-  account->data->frozen = mojom::uint128::New(high, low);
+  account->nonce = 0;
+  account->consumers = 0;
+  account->providers = 0;
+  account->sufficients = 0;
 
-  if (!reader.ReadU64LittleEndian(low)) {
-    return nullptr;
-  }
-
-  if (!reader.ReadU64LittleEndian(high)) {
-    return nullptr;
-  }
-
-  account->data->flags = mojom::uint128::New(high, low);
-
+  account->data->free = mojom::uint128::New(0, 0);
+  account->data->reserved = mojom::uint128::New(0, 0);
+  account->data->frozen = mojom::uint128::New(0, 0);
+  account->data->flags = mojom::uint128::New(0x8000000000000000, 0);
   return account;
 }
 
@@ -154,19 +164,12 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
     return nullptr;
   }
 
-  // Default value defined here:
-  // https://github.com/polkadot-js/api/blob/1c4c7c72e281da328084ae821218efb9fe7120ac/packages/types-support/src/metadata/v16/substrate-json.json#L23
-  constexpr const char kFallback[] =
-      "0x0000000000000000000000000000000000000000000000000000000000000000"
-      "000000000000000000000000000000000000000000000000000000000000000000"
-      "000000000000000000000000000080";
-
-  std::string_view sv;
-  if (auto* str = (*list)[1].GetIfString()) {
-    sv = *str;
-  } else {
-    sv = kFallback;
+  auto* str = (*list)[1].GetIfString();
+  if (!str) {
+    return MakeDefaultAccount();
   }
+
+  std::string_view sv = *str;
 
   // Leading 0x, 160 hex chars worth of data.
   if (sv.size() != 162) {
