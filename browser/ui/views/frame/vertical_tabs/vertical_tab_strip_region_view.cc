@@ -34,7 +34,6 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
@@ -554,14 +553,6 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
 
   widget_observation_.Observe(browser_view->GetWidget());
 
-  // At this point, Browser hasn't finished its initialization. In order to
-  // access some of its member, we should observe BrowserList.
-  DCHECK(
-      std::ranges::find(*BrowserList::GetInstance(), browser_view->browser()) ==
-      BrowserList::GetInstance()->end())
-      << "Browser shouldn't be added at this point.";
-  BrowserList::AddObserver(this);
-
   // Note: This should happen after all the PrefMembers have been initialized.
   OnFloatingModePrefChanged();
 
@@ -572,9 +563,6 @@ BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
   // We need to move tab strip region to its original parent to avoid crash
   // during drag and drop session.
   UpdateLayout(true);
-  DCHECK(fullscreen_observation_.IsObserving())
-      << "We didn't start to observe FullscreenController from BrowserList's "
-         "callback";
 }
 
 void BraveVerticalTabStripRegionView::ToggleState() {
@@ -625,16 +613,14 @@ void BraveVerticalTabStripRegionView::OnFullscreenStateChanged() {
   PreferredSizeChanged();
 }
 
-void BraveVerticalTabStripRegionView::OnBrowserAdded(Browser* browser) {
-  if (browser != browser_) {
-    return;
-  }
-
+void BraveVerticalTabStripRegionView::ListenFullscreenChanges() {
   auto* fullscreen_controller = GetFullscreenController();
   DCHECK(fullscreen_controller);
   fullscreen_observation_.Observe(fullscreen_controller);
+}
 
-  BrowserList::RemoveObserver(this);
+void BraveVerticalTabStripRegionView::StopListeningFullscreenChanges() {
+  fullscreen_observation_.Reset();
 }
 
 FullscreenController* BraveVerticalTabStripRegionView::GetFullscreenController()

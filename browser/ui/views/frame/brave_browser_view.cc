@@ -1044,8 +1044,24 @@ views::View* BraveBrowserView::GetContentsContainerForLayoutManager() {
 }
 
 void BraveBrowserView::ReadyToListenFullscreenChanges() {
+  CHECK(browser_->GetFeatures().exclusive_access_manager());
+
   if (split_view_) {
     split_view_->ListenFullscreenChanges();
+  }
+
+  if (vertical_tab_strip_widget_delegate_view_) {
+    vertical_tab_strip_widget_delegate_view_->vertical_tab_strip_region_view()
+        ->ListenFullscreenChanges();
+  }
+}
+
+void BraveBrowserView::StopListeningFullscreenChanges() {
+  CHECK(browser_->GetFeatures().exclusive_access_manager());
+
+  if (vertical_tab_strip_widget_delegate_view_) {
+    vertical_tab_strip_widget_delegate_view_->vertical_tab_strip_region_view()
+        ->StopListeningFullscreenChanges();
   }
 }
 
