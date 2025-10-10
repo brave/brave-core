@@ -468,6 +468,9 @@
   <message name="IDS_CHAT_UI_ATTACHMENTS_BOOKMARKS_SEARCH_PLACEHOLDER" desc="Placeholder for the bookmarks attachments search input" formatter_data="webui=AiChat">
     Search bookmarks
   </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_HISTORY_SEARCH_PLACEHOLDER" desc="Placeholder for the history attachments search input" formatter_data="webui=AiChat">
+    Search history
+  </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_SEARCH_NO_RESULTS" desc="No results message" formatter_data="webui=AiChat">
     No results found
   </message>
@@ -480,11 +483,17 @@
   <message name="IDS_CHAT_UI_ATTACHMENTS_BOOKMARKS_TITLE" desc="Title for the bookmarks attachments section" formatter_data="webui=AiChat">
     Attach content from bookmarks
   </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_HISTORY_TITLE" desc="Title for the history attachments section" formatter_data="webui=AiChat">
+    Attach content from history
+  </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_TABS_DESCRIPTION" desc="Description for the attachments section" formatter_data="webui=AiChat">
     Send page content from your browser tabs to give Leo more context for the conversation.
   </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_BOOKMARKS_DESCRIPTION" desc="Description for the bookmarks attachments section" formatter_data="webui=AiChat">
     Send page content from tabs in your bookmarks to give Leo more context for the conversation.
+  </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_HISTORY_DESCRIPTION" desc="Description for the history attachments section" formatter_data="webui=AiChat">
+    Send page content from your browser history to give Leo more context for the conversation.
   </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_DESCRIPTION_AFTER" desc="Sentence after the description, shared across different content types" formatter_data="webui=AiChat">
     Page contents will be sent to Leo along with your messages.
@@ -689,6 +698,9 @@
   </message>
   <message name="IDS_AI_CHAT_ATTACH_OPEN_BOOKMARKS_BUTTON_LABEL" desc="The button label for attaching open bookmarks" formatter_data="webui=AiChat">
     Bookmarks...
+  </message>
+  <message name="IDS_AI_CHAT_ATTACH_OPEN_HISTORY_BUTTON_LABEL" desc="The button label for attaching history" formatter_data="webui=AiChat">
+    History...
   </message>
   <message name="IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL" desc="The button label for Leo's microphone feature" formatter_data="webui=AiChat">
     Use microphone

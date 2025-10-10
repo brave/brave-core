@@ -11,13 +11,15 @@ import Icon from '@brave/leo/react/icon'
 import Input from '@brave/leo/react/input'
 import Flex from '$web-common/Flex'
 import { useAIChat } from '../../state/ai_chat_context'
-import { TabData } from 'components/ai_chat/resources/common/mojom'
+import { TabData, Bookmark, HistoryEntry } from 'components/ai_chat/resources/common/mojom'
 import {
   ConversationContext,
   useConversation,
 } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 import usePromise from '$web-common/usePromise'
+
+type Attachment = TabData | Bookmark | HistoryEntry
 
 function TabItem({ tab }: { tab: TabData }) {
   const aiChat = useAIChat()
@@ -91,6 +93,7 @@ function UrlContentItem({ url, title }: { url: string; title: string }) {
   )
 }
 
+
 type StringKeys = Record<
   NonNullable<ConversationContext['attachmentsDialog']>,
   keyof typeof S
@@ -98,15 +101,18 @@ type StringKeys = Record<
 const titleKey: StringKeys = {
   tabs: S.CHAT_UI_ATTACHMENTS_TABS_TITLE,
   bookmarks: S.CHAT_UI_ATTACHMENTS_BOOKMARKS_TITLE,
+  history: S.CHAT_UI_ATTACHMENTS_HISTORY_TITLE,
 }
 const descriptionKey: StringKeys = {
   tabs: S.CHAT_UI_ATTACHMENTS_TABS_DESCRIPTION,
-  bookmarks: S.CHAT_UI_ATTACHMENTS_BOOKMARKS_DESCRIPTION,
+  bookmarks: S.CHAT_UI_ATTACHMENTS_BOOKMARKS_DESCRIPTION, 
+  history: S.CHAT_UI_ATTACHMENTS_HISTORY_DESCRIPTION,
 }
 
 const searchPlaceholderKey: StringKeys = {
   tabs: S.CHAT_UI_ATTACHMENTS_TABS_SEARCH_PLACEHOLDER,
   bookmarks: S.CHAT_UI_ATTACHMENTS_BOOKMARKS_SEARCH_PLACEHOLDER,
+  history: S.CHAT_UI_ATTACHMENTS_HISTORY_SEARCH_PLACEHOLDER,
 }
 
 export function useFilteredItems(search: string) {
@@ -114,17 +120,28 @@ export function useFilteredItems(search: string) {
   const conversation = useConversation()
 
   const { result: bookmarks = [] } = usePromise(() => aiChat.getBookmarks(), [])
+  const { result: history = [] } = usePromise(() => conversation.attachmentsDialog === 'history'
+    // Note: History is only searched for more than 2 characters. This is an upstream limitation.
+    ? aiChat.getHistory(search.length <= 2 ? '' : search)
+    : Promise.resolve([]), [search, conversation.attachmentsDialog])
+
   return React.useMemo(() => {
+    if (!conversation.attachmentsDialog) {
+      return []
+    }
+
     const searchLower = search.toLowerCase()
     const filter = (item: { title: string }) =>
       item.title.toLowerCase().includes(searchLower)
 
-    return (
-      conversation.attachmentsDialog === 'tabs'
-        ? conversation.unassociatedTabs
-        : bookmarks
-    ).filter(filter)
-  }, [bookmarks, conversation.unassociatedTabs, search])
+    const sources: Record<NonNullable<ConversationContext['attachmentsDialog']>, Attachment[]> = {
+      tabs: conversation.unassociatedTabs,
+      bookmarks: bookmarks,
+      history: history,
+    }
+
+    return sources[conversation.attachmentsDialog!].filter(filter)
+  }, [bookmarks, history, conversation.unassociatedTabs, conversation.attachmentsDialog, search])
 }
 
 export default function Attachments() {
@@ -186,7 +203,7 @@ export default function Attachments() {
               tab={t as TabData}
             />
           ))}
-        {attachmentsDialog === 'bookmarks'
+        {(attachmentsDialog === 'bookmarks' || attachmentsDialog === 'history')
           && filteredItems.map((b) => (
             <UrlContentItem
               key={b.id}
