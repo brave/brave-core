@@ -20,6 +20,7 @@
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/escape.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/types/expected.h"
 #include "base/values.h"
@@ -185,7 +186,7 @@ class PageContentFetcherInternal {
     loader->SetAllowHttpErrorResults(true);
     auto* loader_ptr = loader.get();
     auto on_response = base::BindOnce(
-        &PageContentFetcherInternal::OnPatchFetchResponse,
+        &PageContentFetcherInternal::OnGithubContentFetchResponse,
         weak_ptr_factory_.GetWeakPtr(), std::move(callback), std::move(loader));
     loader_ptr->DownloadToString(url_loader_factory_.get(),
                                  std::move(on_response), 2 * 1024 * 1024);
@@ -343,9 +344,10 @@ class PageContentFetcherInternal {
                             invalidation_token, true);
   }
 
-  void OnPatchFetchResponse(FetchPageContentCallback callback,
-                            std::unique_ptr<network::SimpleURLLoader> loader,
-                            std::unique_ptr<std::string> response_body) {
+  void OnGithubContentFetchResponse(
+      FetchPageContentCallback callback,
+      std::unique_ptr<network::SimpleURLLoader> loader,
+      std::unique_ptr<std::string> response_body) {
     auto response_code = -1;
     if (loader->ResponseInfo()) {
       auto headers_list = loader->ResponseInfo()->headers;
@@ -356,13 +358,13 @@ class PageContentFetcherInternal {
     bool is_ok =
         loader->NetError() == net::OK && response_body && response_code == 200;
 
-    std::string patch_content = is_ok ? *response_body : "";
-    if (!is_ok || patch_content.empty()) {
-      DVLOG(1) << __func__ << " invalid patch response from url: "
+    std::string content = is_ok ? *response_body : "";
+    if (!is_ok || content.empty()) {
+      DVLOG(1) << __func__ << " invalid content response from url: "
                << loader->GetFinalURL().spec() << " status: " << response_code;
     }
-    DVLOG(2) << "Got patch: " << patch_content;
-    SendResultAndDeleteSelf(std::move(callback), patch_content, "", false);
+    DVLOG(2) << "Got content: " << content;
+    SendResultAndDeleteSelf(std::move(callback), content, "", false);
   }
 
   void OnInnerTubePlayerJsonResponse(
@@ -473,8 +475,9 @@ void OnScreenshot(FetchPageContentCallback callback, const SkBitmap& image) {
 }
 #endif  // #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 
-// Obtains a patch URL from a pull request URL
-std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
+// Obtains a content URL from a GitHub URL (pull request, commit, compare, or
+// file blob)
+std::optional<GURL> GetGithubContentURL(const GURL& url) {
   if (!url.is_valid() || url.scheme() != "https" ||
       url.host() != "github.com") {
     return std::nullopt;
@@ -482,14 +485,40 @@ std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
 
   std::vector<std::string> path_parts = base::SplitString(
       url.path(), "/", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  // Only handle URLs of the form: /<user>/<repo>/pull/<number>
-  if (path_parts.size() < 4 || path_parts[2] != "pull") {
+  if (path_parts.size() < 4) {
     return std::nullopt;
   }
-  std::string patch_url_str = url.GetWithEmptyPath().spec() + path_parts[0] +
-                              "/" + path_parts[1] + "/pull/" + path_parts[3] +
-                              ".patch";
-  return GURL(patch_url_str);
+
+  const std::string& user = path_parts[0];
+  const std::string& repo = path_parts[1];
+  const std::string& type = path_parts[2];
+
+  // Handle pull requests: /<user>/<repo>/pull/<number>
+  if (type == "pull") {
+    return GURL(base::StrCat({url.GetWithEmptyPath().spec(), user, "/", repo,
+                              "/pull/", path_parts[3], ".patch"}));
+  }
+
+  // Handle commits: /<user>/<repo>/commit/<hash>
+  if (type == "commit") {
+    return GURL(base::StrCat({url.GetWithEmptyPath().spec(), user, "/", repo,
+                              "/commit/", path_parts[3], ".patch"}));
+  }
+
+  // Handle compare: /<user>/<repo>/compare/<comparison>
+  if (type == "compare") {
+    return GURL(base::StrCat({url.GetWithEmptyPath().spec(), user, "/", repo,
+                              "/compare/", path_parts[3], ".patch"}));
+  }
+
+  // Handle blob (file view): /<user>/<repo>/blob/<branch>/<path>
+  if (type == "blob") {
+    GURL::Replacements replacements;
+    replacements.SetQueryStr("raw=true");
+    return url.ReplaceComponents(replacements);
+  }
+
+  return std::nullopt;
 }
 
 }  // namespace
@@ -534,9 +563,10 @@ void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
 #endif
   auto* loader = url_loader_factory_.get();
   auto* fetcher = new PageContentFetcherInternal(loader);
-  auto patch_url = GetGithubPatchURLForPRURL(url);
-  if (patch_url) {
-    fetcher->StartGithub(patch_url.value(), std::move(callback));
+  auto github_content_url = GetGithubContentURL(url);
+  if (github_content_url) {
+    DVLOG(2) << "Github url: " << *github_content_url;
+    fetcher->StartGithub(github_content_url.value(), std::move(callback));
     return;
   }
 
