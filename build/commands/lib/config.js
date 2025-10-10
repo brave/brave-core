@@ -203,7 +203,6 @@ const Config = function () {
   this.notary_password = getEnvConfig(['notary_password'])
   this.channel = 'development'
   this.git_cache_path = getEnvConfig(['git_cache_path'])
-  this.sccache = getEnvConfig(['sccache'])
   this.rbeService = getEnvConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getEnvConfig(['rbe_tls_client_auth_cert']) || ''
   this.rbeTlsClientAuthKey = getEnvConfig(['rbe_tls_client_auth_key']) || ''
@@ -534,14 +533,6 @@ Config.prototype.buildArgs = function () {
     && this.targetOS !== 'android'
   ) {
     args.enable_profiling = true
-  }
-
-  if (this.sccache) {
-    if (process.platform === 'win32') {
-      args.clang_use_chrome_plugins = false
-      args.use_thin_lto = true
-    }
-    args.enable_precompiled_headers = false
   }
 
   if (!this.useSiso) {
@@ -1211,26 +1202,6 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
     if (this.getCachePath()) {
       env.GIT_CACHE_PATH = path.join(this.getCachePath())
-    }
-
-    if (!this.useRemoteExec && this.sccache) {
-      env.CC_WRAPPER = this.sccache
-      console.log('using cc wrapper ' + path.basename(this.sccache))
-      if (path.basename(this.sccache) === 'ccache') {
-        env.CCACHE_CPP2 = 'yes'
-        env.CCACHE_SLOPPINESS = 'pch_defines,time_macros,include_file_mtime'
-        env.CCACHE_BASEDIR = this.srcDir
-        env = this.addPathToEnv(
-          env,
-          path.join(
-            this.srcDir,
-            'third_party',
-            'llvm-build',
-            'Release+Asserts',
-            'bin',
-          ),
-        )
-      }
     }
 
     if (this.rbeService) {
