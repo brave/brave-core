@@ -49,3 +49,11 @@ declare global {
 }
 
 window.leoIcons = new Set(Object.keys(iconsMeta.icons))
+
+// Note: We can't use the `if expr` here because this isn't run through the preprocessor.
+if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+  import(/* webpackIgnore: true */`${scheme}resources/cr_components/color_change_listener/colors_css_updater.js`)
+    .then(({ ColorChangeUpdater }) => {
+      ColorChangeUpdater.forDocument().start();
+    });
+}

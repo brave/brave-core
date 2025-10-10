@@ -184,6 +184,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/ai_chat/utils.h"
+#include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
+#include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 #endif
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
@@ -458,6 +460,27 @@ void MaybeBindSkusSdkImpl(
   auto* context = frame_host->GetBrowserContext();
   skus::SkusServiceFactory::BindForContext(context, std::move(receiver));
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+void MaybeBindColorChangeHandler(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<color_change_listener::mojom::PageHandler> receiver) {
+  const GURL& frame_host_url = frame_host->GetLastCommittedURL();
+
+  // Only supported on chrome://, chrome-untrusted:// and chrome-extension://
+  // urls
+  if (!frame_host_url.SchemeIs(content::kChromeUIScheme) &&
+      !frame_host_url.SchemeIs(content::kChromeUIUntrustedScheme) &&
+      !frame_host_url.SchemeIs(extensions::kExtensionScheme)) {
+    return;
+  }
+
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<ui::BraveColorChangeHandler>(
+          content::WebContents::FromRenderFrameHost(frame_host)),
+      std::move(receiver));
+}
+#endif
 
 }  // namespace
 
@@ -857,6 +880,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RegisterWebUIControllerInterfaceBinder<
         email_aliases::mojom::EmailAliasesService, BraveSettingsUI>(map);
   }
+
+  map->Add<color_change_listener::mojom::PageHandler>(
+      base::BindRepeating(&MaybeBindColorChangeHandler));
 #endif
 
   auto* prefs =
