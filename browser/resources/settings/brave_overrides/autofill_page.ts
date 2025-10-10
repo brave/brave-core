@@ -14,6 +14,7 @@ import {
 } from '../brave_autofill_page/brave_autofill_page.js'
 import { loadTimeData } from '../i18n_setup.js'
 import { routes } from '../route.js'
+import { Router } from '../router.js'
 import type { Route } from '../router.js'
 import '../email_aliases_page/email_aliases_page.js'
 
@@ -53,6 +54,25 @@ RegisterPolymerTemplateModifications({
           hidden=[[!isAutofillPage_]]
         </settings-toggle-button>
       `)
+
+    // Add a link-row style item (like Password Manager / Payment methods)
+    // that navigates to the Email Aliases subpage when the feature is enabled.
+    if (loadTimeData.getBoolean('isEmailAliasesEnabled')) {
+      const linkRow = html`
+        <cr-link-row id="emailAliasesLinkRow"
+                     class="hr"
+                     start-icon="email-shield"
+                     label="${loadTimeData.getString('emailAliasesLabel')}"
+                     on-click="onEmailAliasesClick"
+                     role="link">
+        </cr-link-row>
+      `
+      // Insert just before Payment methods if present.
+      const paymentsAnchor = controlsDiv.querySelector('#paymentManagerButton')
+      if (paymentsAnchor && paymentsAnchor.parentElement === controlsDiv) {
+        controlsDiv.insertBefore(linkRow, paymentsAnchor)
+      }
+    }
   },
   'settings-autofill-page-index': (templateContent) => {
     if (!loadTimeData.getBoolean('isEmailAliasesEnabled')) {
@@ -70,3 +90,26 @@ RegisterPolymerTemplateModifications({
     `)
   }
 })
+
+if (loadTimeData.getBoolean('isEmailAliasesEnabled')) {
+  RegisterPolymerPrototypeModification({
+    'settings-autofill-page': (prototype) => {
+      // Add the click handler to the Autofill page prototype to navigate to the
+      // Email Aliases route when the button is pressed.
+      prototype.onEmailAliasesClick = function () {
+        Router.getInstance().navigateTo(routes.EMAIL_ALIASES,
+          /* dynamicParams =*/ undefined, /* removeSearch =*/ true)
+      }
+      // Add the associated control for the Email Aliases route to the Autofill
+      // page prototype.
+      const originalGetAssociatedControlFor :
+        (childViewId: string) => HTMLElement = prototype.getAssociatedControlFor
+      prototype.getAssociatedControlFor =
+        function (childViewId: string) : HTMLElement  {
+          return childViewId === 'email-aliases' ?
+            this.shadowRoot.querySelector('#emailAliasesLinkRow') :
+            originalGetAssociatedControlFor.call(this, childViewId)
+        }
+    }
+  })
+}

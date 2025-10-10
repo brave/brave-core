@@ -881,6 +881,7 @@ test("brave_browser_tests") {
     "//brave/browser/ui/views/tabs:browser_tests",
     "//brave/browser/ui/webui:browser_tests",
     "//brave/browser/ui/webui/ai_chat:browser_tests",
+    "//brave/browser/ui/webui/settings:browser_tests",
     "//brave/browser/web_discovery:browser_tests",
     "//brave/common",
     "//brave/components/ai_chat/core/browser",
