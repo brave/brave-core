@@ -46,7 +46,7 @@ import styles from './style.module.scss'
 import Attachments from '../attachments'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
-import TabsMenu from '../filter_menu/tabs_menu'
+import TabsMenu from '../filter_menu/attachments_menu'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.

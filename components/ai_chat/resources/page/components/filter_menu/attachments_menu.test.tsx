@@ -17,7 +17,7 @@ import {
   defaultContext as defaultConversationContext,
 } from '../../state/conversation_context'
 import { render } from '@testing-library/react'
-import TabsMenu from './tabs_menu'
+import TabsMenu from './attachments_menu'
 import { ContentType } from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m.js'
 
 const MockContext = (
