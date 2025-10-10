@@ -5,30 +5,25 @@
 
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 
-#import <Cocoa/Cocoa.h>
-
 #include "base/check.h"
-#include "brave/browser/themes/brave_dark_mode_utils_internal.h"
 #include "ui/native_theme/os_settings_provider.h"
 
 namespace dark_mode {
 
 void SetSystemDarkMode(BraveDarkModeType type) {
+  ui::NativeTheme::PreferredColorScheme scheme =
+      ui::NativeTheme::PreferredColorScheme::kNoPreference;
+
   if (type == BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT) {
-    DCHECK(ui::OsSettingsProvider::Get().DarkColorSchemeAvailable());
-    [NSApp setAppearance:nil];
-    return;
+    CHECK(ui::OsSettingsProvider::Get().DarkColorSchemeAvailable());
+  } else {
+    scheme = (type == BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK)
+                 ? ui::NativeTheme::PreferredColorScheme::kDark
+                 : ui::NativeTheme::PreferredColorScheme::kLight;
   }
 
-  if (@available(macOS 10.14, *)) {
-    NSAppearanceName new_appearance_name =
-        type == BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK ?
-            NSAppearanceNameDarkAqua : NSAppearanceNameAqua;
-    [NSApp setAppearance:[NSAppearance appearanceNamed:new_appearance_name]];
-  } else {
-    internal::SetSystemDarkModeForNonDefaultMode(
-        type == BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
-  }
+  ui::NativeTheme::GetInstanceForNativeUi()->set_preferred_color_scheme(scheme);
+  ui::NativeTheme::GetInstanceForNativeUi()->NotifyOnNativeThemeUpdated();
 }
 
 }  // namespace dark_mode
