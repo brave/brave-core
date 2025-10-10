@@ -32,14 +32,16 @@
     </settings-brave-content-playlist>
   </template>
 
-  <template is="dom-if" if="[[showPage_(pageVisibility_.speedreader)]]">
-    <settings-brave-content-speedreader
-      id="speedreader"
-      slot="view"
-      prefs="{{prefs}}"
-      in-search-mode="[[inSearchMode_]]">
-    </settings-brave-content-speedreader>
-  </template>
+  <if expr="enable_speedreader">
+    <template is="dom-if" if="[[showPage_(pageVisibility_.speedreader)]]">
+      <settings-brave-content-speedreader
+        id="speedreader"
+        slot="view"
+        prefs="{{prefs}}"
+        in-search-mode="[[inSearchMode_]]">
+      </settings-brave-content-speedreader>
+    </template>
+  </if>
 
   <settings-appearance-fonts-page slot="view" id="fonts"
       data-parent-view-id="parent" prefs="{{prefs}}">

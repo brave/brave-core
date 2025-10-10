@@ -15,6 +15,10 @@
 #include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/ui/views/speedreader/speedreader_icon_view.h"
+#endif
+
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 constexpr bool kSupportsPlaylistActionIconView = true;
@@ -23,48 +27,46 @@ constexpr bool kSupportsPlaylistActionIconView = false;
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/ui/views/speedreader/speedreader_icon_view.h"
-constexpr bool kSupportsSpeedreaderActionIconView = true;
+#define BRAVE_PAGE_ACTION_ICON_CONTROLLER_SPEEDREADER_CASE                   \
+  case brave::kSpeedreaderPageActionIconType:                                \
+    add_page_action_icon(                                                    \
+        type, std::make_unique<SpeedreaderIconView>(                         \
+                  params.command_updater, params.icon_label_bubble_delegate, \
+                  params.page_action_icon_delegate));                        \
+    break;
 #else
-constexpr bool kSupportsSpeedreaderActionIconView = false;
+#define BRAVE_PAGE_ACTION_ICON_CONTROLLER_SPEEDREADER_CASE
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#define BRAVE_WAYBACK_MACHINE_PAGE_ACTION                                    \
-  add_page_action_icon(type, std::make_unique<WaybackMachineActionIconView>( \
-                                 params.command_updater, params.browser,     \
-                                 params.icon_label_bubble_delegate,          \
-                                 params.page_action_icon_delegate));
+#define BRAVE_WAYBACK_MACHINE_PAGE_ACTION_CASE                                 \
+  case brave::kWaybackMachineActionIconType:                                   \
+    add_page_action_icon(type, std::make_unique<WaybackMachineActionIconView>( \
+                                   params.command_updater, params.browser,     \
+                                   params.icon_label_bubble_delegate,          \
+                                   params.page_action_icon_delegate));         \
+    break;
 #else
-#define BRAVE_WAYBACK_MACHINE_PAGE_ACTION
+#define BRAVE_WAYBACK_MACHINE_PAGE_ACTION_CASE
 #endif
 
 // Circumvent creation of CookieControlsIconView in
 // PageActionIconController::Init's switch statement by injecting a case
 // with a non-existent value created above.
-#define kCookieControls                                                        \
-  kCookieControls:                                                             \
-  break;                                                                       \
-  case brave::kPlaylistPageActionIconType:                                     \
-    if constexpr (kSupportsPlaylistActionIconView) {                           \
-      playlist_action_icon_view_ = add_page_action_icon(                       \
-          type, std::make_unique<PlaylistActionIconView>(                      \
-                    params.command_updater, params.browser,                    \
-                    params.icon_label_bubble_delegate,                         \
-                    params.page_action_icon_delegate));                        \
-    }                                                                          \
-    break;                                                                     \
-  case brave::kWaybackMachineActionIconType:                                   \
-    BRAVE_WAYBACK_MACHINE_PAGE_ACTION                                          \
-    break;                                                                     \
-  case brave::kSpeedreaderPageActionIconType:                                  \
-    if constexpr (kSupportsSpeedreaderActionIconView) {                        \
-      add_page_action_icon(                                                    \
-          type, std::make_unique<SpeedreaderIconView>(                         \
-                    params.command_updater, params.icon_label_bubble_delegate, \
-                    params.page_action_icon_delegate));                        \
-    }                                                                          \
-    break;                                                                     \
+#define kCookieControls                                     \
+  kCookieControls:                                          \
+  break;                                                    \
+  case brave::kPlaylistPageActionIconType:                  \
+    if constexpr (kSupportsPlaylistActionIconView) {        \
+      playlist_action_icon_view_ = add_page_action_icon(    \
+          type, std::make_unique<PlaylistActionIconView>(   \
+                    params.command_updater, params.browser, \
+                    params.icon_label_bubble_delegate,      \
+                    params.page_action_icon_delegate));     \
+    }                                                       \
+    break;                                                  \
+    BRAVE_WAYBACK_MACHINE_PAGE_ACTION_CASE                  \
+    BRAVE_PAGE_ACTION_ICON_CONTROLLER_SPEEDREADER_CASE      \
   case brave::kUndefinedPageActionIconType
 
 // We define additional PageActionIconType values (in
@@ -84,7 +86,8 @@ constexpr bool kSupportsSpeedreaderActionIconView = false;
 #undef StarView
 #undef kShown
 #undef kCookieControls
-#undef BRAVE_WAYBACK_MACHINE_PAGE_ACTION
+#undef BRAVE_WAYBACK_MACHINE_PAGE_ACTION_CASE
+#undef BRAVE_PAGE_ACTION_ICON_CONTROLLER_SPEEDREADER_CASE
 
 PageActionIconView* PageActionIconController::GetPlaylistActionIconView() {
   return playlist_action_icon_view_.get();

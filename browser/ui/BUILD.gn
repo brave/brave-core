@@ -290,10 +290,6 @@ source_set("ui") {
       "webui/settings/default_brave_shields_handler.h",
       "webui/side_panel/reading_list/brave_reading_list_page_handler.cc",
       "webui/side_panel/reading_list/brave_reading_list_page_handler.h",
-      "webui/speedreader/speedreader_toolbar_data_handler_impl.cc",
-      "webui/speedreader/speedreader_toolbar_data_handler_impl.h",
-      "webui/speedreader/speedreader_toolbar_ui.cc",
-      "webui/speedreader/speedreader_toolbar_ui.h",
       "webui/webcompat_reporter/webcompat_reporter_dialog.cc",
       "webui/webcompat_reporter/webcompat_reporter_dialog.h",
       "webui/welcome_page/brave_welcome_ui.cc",
@@ -306,6 +302,15 @@ source_set("ui") {
       "whats_new/whats_new_util.cc",
       "whats_new/whats_new_util.h",
     ]
+
+    if (enable_speedreader) {
+      sources += [
+        "webui/speedreader/speedreader_toolbar_data_handler_impl.cc",
+        "webui/speedreader/speedreader_toolbar_data_handler_impl.h",
+        "webui/speedreader/speedreader_toolbar_ui.cc",
+        "webui/speedreader/speedreader_toolbar_ui.h",
+      ]
+    }
 
     deps += [
       "//base",
@@ -1080,9 +1085,6 @@ source_set("ui") {
       "//brave/components/brave_welcome/common",
       "//brave/components/brave_welcome_ui:generated_resources",
       "//brave/components/commands/common",
-      "//brave/components/speedreader/common",
-      "//brave/components/speedreader/common:mojom",
-      "//brave/components/speedreader/resources/panel:generated_resources",
       "//brave/components/version_info",
       "//chrome/app:branded_strings",
       "//chrome/browser/ui/tabs:tab_enums",
@@ -1094,6 +1096,14 @@ source_set("ui") {
       "//ui/color",
       "//ui/web_dialogs",
     ]
+
+    if (enable_speedreader) {
+      deps += [
+        "//brave/components/speedreader/common",
+        "//brave/components/speedreader/common:mojom",
+        "//brave/components/speedreader/resources/panel:generated_resources",
+      ]
+    }
   }
 
   if (enable_extensions && toolkit_views) {

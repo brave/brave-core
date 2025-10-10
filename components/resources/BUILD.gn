@@ -95,7 +95,6 @@ repack("resources") {
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
       "//brave/components/brave_welcome_ui:generated_resources",
-      "//brave/components/speedreader/resources/panel:generated_resources",
       "//brave/components/webcompat_reporter/ui:generated_resources",
     ]
 
@@ -105,9 +104,15 @@ repack("resources") {
       "$root_gen_dir/brave/components/brave_private_new_tab/resources/page/brave_private_new_tab_generated.pak",
       "$root_gen_dir/brave/components/brave_shields/resources/panel/brave_shields_panel_generated.pak",
       "$root_gen_dir/brave/components/brave_welcome/resources/brave_welcome_generated.pak",
-      "$root_gen_dir/brave/components/speedreader/resources/panel/brave_speedreader_toolbar_generated.pak",
       "$root_gen_dir/brave/components/webcompat_reporter/resources/webcompat_reporter_generated.pak",
     ]
+
+    if (enable_speedreader) {
+      deps += [
+        "//brave/components/speedreader/resources/panel:generated_resources",
+      ]
+      sources += [ "$root_gen_dir/brave/components/speedreader/resources/panel/brave_speedreader_toolbar_generated.pak" ]
+    }
   }
 
   if (enable_ai_rewriter) {
