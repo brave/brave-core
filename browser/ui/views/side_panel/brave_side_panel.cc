@@ -220,12 +220,7 @@ void BraveSidePanel::OnResize(int resize_amount, bool done_resizing) {
   side_panel_width_.SetValue(proposed_width);
 }
 
-void BraveSidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
-  // Need to keep here because SidePanelCoordinator referes this |view|'s
-  // child view(header_combobox_). We don't use this |header_view_|.
-  // So just keep it here.
-  header_view_ = std::move(view);
-}
+void BraveSidePanel::AddHeaderView(std::unique_ptr<views::View> view) {}
 
 void BraveSidePanel::SetHeaderVisibility(bool visible) {}
 
