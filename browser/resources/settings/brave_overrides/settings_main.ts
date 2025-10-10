@@ -12,6 +12,7 @@ import { loadTimeData } from '../i18n_setup.js'
 
 import '../brave_content_page/content_page_index.js'
 import '../getting_started_page/getting_started_page_index.js'
+import '../brave_origin_page/brave_origin_page.js'
 import '../default_brave_shields_page/shields_page_index.js'
 import '../brave_wallet_page/wallet_page_index.js'
 import '../brave_leo_assistant_page/brave_leo_assistant_page_index.js'
@@ -66,10 +67,27 @@ RegisterPolymerTemplateModifications({
         </template>
       `)
 
+    // Insert the origin page into the view manager
+    switcher.appendChild(
+      html`
+        <template is="dom-if" if="[[showPage_(pageVisibility_.origin)]]">
+          <div slot="view" id="origin" class="cr-centered-card-container">
+            <template is="dom-if" if="[[renderPlugin_(
+          routes_.ORIGIN, lastRoute_, inSearchMode_)]]">
+              <settings-brave-origin-page
+                prefs="{{prefs}}"
+                in-search-mode="[[inSearchMode_]]">
+              </settings-brave-origin-page>
+            </template>
+          </div>
+        </template>
+      `)
+
     // Insert the content page into the view manager
     switcher.appendChild(
       html`
-        <template is="dom-if" if="[[showPage_(pageVisibility_.content)]]">
+        <template is="dom-if"
+            if="[[showPage_(pageVisibility_.content)]]">
           <div slot="view" id="content">
             <template is="dom-if" if="[[renderPlugin_(
           routes_.BRAVE_CONTENT, lastRoute_, inSearchMode_)]]">
