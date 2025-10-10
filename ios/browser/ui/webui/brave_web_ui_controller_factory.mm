@@ -74,7 +74,8 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
   } else if (url_host == kSkusInternalsHost) {
     return &NewWebUIIOS<SkusInternalsUI>;
   } else if (url_host == kWalletPageHost &&
-             brave_wallet::features::IsBraveWalletWebUIIOSEnabled()) {
+             base::FeatureList::IsEnabled(
+                 brave_wallet::features::kBraveWalletWebUIIOS)) {
     return &NewWebUIIOS<WalletPageUI>;
   }
   return nullptr;
