@@ -23,7 +23,7 @@ constexpr char kPlacementIdQueryKey[] = "placement_id";
 std::optional<std::string> MaybeExtractCreativeAdPlacementIdFromUrl(
     const GURL& url) {
   if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme) ||
-      url.path_piece() != kAllowedUrlPath || !url.has_query() ||
+      url.path() != kAllowedUrlPath || !url.has_query() ||
       !brave_search::IsAllowedHost(url)) {
     return std::nullopt;
   }

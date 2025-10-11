@@ -61,7 +61,7 @@ SearchEngineP3A GetSearchEngineProvider(const GURL& search_engine_url,
   } else if (type == SEARCH_ENGINE_NAVER) {
     result = SearchEngineP3A::kNaver;
   } else if (type == SEARCH_ENGINE_YAHOO &&
-             search_engine_url.host_piece().ends_with(".jp")) {
+             search_engine_url.host().ends_with(".jp")) {
     result = SearchEngineP3A::kYahooJP;
   } else if (type == SEARCH_ENGINE_BRAVE) {
     result = SearchEngineP3A::kBrave;

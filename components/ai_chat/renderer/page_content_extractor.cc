@@ -364,7 +364,7 @@ void PageContentExtractor::GetOpenAIChatButtonNonce(
   GURL url(element.GetAttribute("href").Utf8());
   std::string nonce = element.GetAttribute("data-nonce").Utf8();
   if (!IsOpenAIChatButtonFromBraveSearchURL(url) || nonce.empty() ||
-      url.ref_piece() != nonce) {
+      url.ref() != nonce) {
     std::move(callback).Run(std::nullopt);
     return;
   }

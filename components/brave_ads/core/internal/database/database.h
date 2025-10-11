@@ -67,7 +67,7 @@ class Database final {
   void ErrorCallback(int error, sql::Statement* statement);
 
   void MemoryPressureListenerCallback(
-      base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
+      base::MemoryPressureLevel memory_pressure_level);
 
   base::FilePath db_path_;
   sql::Database db_;
