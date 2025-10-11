@@ -95,6 +95,7 @@ TEST_F(BraveContentSettingsRegistryTest, Inheritance) {
       ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
       ContentSettingsType::BRAVE_HTTPS_UPGRADE,
       ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
+      ContentSettingsType::BRAVE_SHRED_SITE_DATA,
       ContentSettingsType::BRAVE_WEBCOMPAT_NONE,
       ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO,
       ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS,
@@ -216,6 +217,11 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
   {
     SCOPED_TRACE("Content setting: BRAVE_SPEEDREADER");
     info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
+    EXPECT_EQ(CONTENT_SETTING_ASK, info->GetInitialDefaultSetting());
+  }
+  {
+    SCOPED_TRACE("Content setting: BRAVE_SHRED_SITE_DATA");
+    info = registry()->Get(ContentSettingsType::BRAVE_SHRED_SITE_DATA);
     EXPECT_EQ(CONTENT_SETTING_ASK, info->GetInitialDefaultSetting());
   }
 }
