@@ -29,7 +29,8 @@ class BraveTabStripCollection : public TabStripCollection {
   void AddTabRecursive(std::unique_ptr<TabInterface> tab,
                        size_t index,
                        std::optional<tab_groups::TabGroupId> new_group_id,
-                       bool new_pinned_state) override;
+                       bool new_pinned_state,
+                       TabInterface* opener) override;
   void MoveTabRecursive(size_t initial_index,
                         size_t final_index,
                         std::optional<tab_groups::TabGroupId> new_group_id,
