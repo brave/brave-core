@@ -18,18 +18,18 @@ namespace brave_rewards {
 
 bool ShouldBlockRewardsWebUI(content::BrowserContext* browser_context,
                              const GURL& url) {
-  if (url.host_piece() != kRewardsPageHost &&
+  if (url.host() != kRewardsPageHost &&
 #if !BUILDFLAG(IS_ANDROID)
-      url.host_piece() != kRewardsPageTopHost &&
+      url.host() != kRewardsPageTopHost &&
 #endif  // !BUILDFLAG(IS_ANDROID)
-      url.host_piece() != kRewardsInternalsHost) {
+      url.host() != kRewardsInternalsHost) {
     return false;
   }
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
   if (profile) {
     if (!brave_rewards::IsSupportedForProfile(
-            profile, url.host_piece() == kRewardsPageHost
+            profile, url.host() == kRewardsPageHost
                          ? brave_rewards::IsSupportedOptions::kSkipRegionCheck
                          : brave_rewards::IsSupportedOptions::kNone)) {
       return true;

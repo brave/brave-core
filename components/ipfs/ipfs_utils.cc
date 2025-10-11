@@ -103,8 +103,8 @@ bool TranslateIPFSURI(const GURL& url, GURL* new_url, bool use_subdomain) {
     // https://dweb.link/ipfs/[cid]//wiki/Vincent_van_Gogh.html
     if (new_url) {
       GURL::Replacements replacements;
-      replacements.SetSchemeStr(gateway_url.scheme_piece());
-      replacements.SetPortStr(gateway_url.port_piece());
+      replacements.SetSchemeStr(gateway_url.scheme());
+      replacements.SetPortStr(gateway_url.port());
       std::string new_host;
       std::string new_path = path;
       if (use_subdomain) {
