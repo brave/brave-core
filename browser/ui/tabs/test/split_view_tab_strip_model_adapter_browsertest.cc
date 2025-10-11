@@ -83,24 +83,26 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   tab_strip_model()->AddWebContents(CreateWebContents(), -1,
                                     ui::PageTransition::PAGE_TRANSITION_TYPED,
                                     /*add_types=*/0);
+  auto* first_tab = tab_strip_model()->GetTabAtIndex(1);
   const auto group_id = tab_strip_model()->AddToNewGroup({1});
   ASSERT_TRUE(tab_strip_model()->group_model());
 
   // When tiling with a non grouped tab
   tab_strip_model()->AppendWebContents(CreateWebContents(),
-                                       /*foreground*/ true);
-  ASSERT_FALSE(tab_strip_model()->GetTabGroupForTab(2));
-  data().TileTabs({tab_strip_model()->GetTabAtIndex(1)->GetHandle(),
-                   tab_strip_model()->GetTabAtIndex(2)->GetHandle()});
-  ASSERT_TRUE(
-      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(1)->GetHandle()));
-  ASSERT_TRUE(
-      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(2)->GetHandle()));
+                                       /*foreground=*/true);
+  auto* second_tab = tab_strip_model()->GetTabAtIndex(2);
+  ASSERT_FALSE(tab_strip_model()->GetTabGroupForTab(
+      tab_strip_model()->GetIndexOfTab(second_tab)));
+
+  data().TileTabs({first_tab->GetHandle(), second_tab->GetHandle()});
   base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(data().IsTabTiled(first_tab->GetHandle()));
+  ASSERT_TRUE(data().IsTabTiled(second_tab->GetHandle()));
 
   // Then the other tab should be grouped too
-  EXPECT_TRUE(tab_strip_model()->GetTabGroupForTab(1));
-  EXPECT_EQ(group_id, *tab_strip_model()->GetTabGroupForTab(1));
+  int idx = tab_strip_model()->GetIndexOfTab(first_tab);
+  EXPECT_TRUE(tab_strip_model()->GetTabGroupForTab(idx));
+  EXPECT_EQ(group_id, *tab_strip_model()->GetTabGroupForTab(idx));
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
