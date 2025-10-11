@@ -47,4 +47,4 @@ pub static C1_REPLACEMENTS: [Option<char>; 32] = [
     Some('\u{0178}'),
 ];
 
-include!(concat!("../", env!("OUT_DIR"), "/named_entities.rs"));
+include!(concat!(env!("OUT_DIR"), "/named_entities.rs"));
