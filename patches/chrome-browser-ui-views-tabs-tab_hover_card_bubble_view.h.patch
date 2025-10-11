@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h b/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
-index 1b8bef86160159dfd2b491cb4cdb54f06a18b5d3..0e07f69bcc8c7168f7f88a5ef65713b7d9049f3e 100644
+index 1b8bef86160159dfd2b491cb4cdb54f06a18b5d3..614d457c5df63a5abac934f73498489419352c4a 100644
 --- a/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
 +++ b/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
-@@ -98,6 +98,7 @@ class TabHoverCardBubbleView : public views::BubbleDialogDelegateView {
-   // views::View:
-   void AddedToWidget() override;
+@@ -94,6 +94,7 @@ class TabHoverCardBubbleView : public views::BubbleDialogDelegateView {
+   // available, or `std::nullopt` to disable crossfades entirely.
+   static std::optional<double> GetPreviewImageCrossfadeStart();
  
 +  BRAVE_TAB_HOVER_CARD_BUBBLE_VIEW_H_
-  private:
-   FRIEND_TEST_ALL_PREFIXES(TabHoverCardFadeFooterInteractiveUiTest,
-                            BackgroundTabHoverCardContentsHaveCorrectDimensions);
+  protected:
+   // views::View:
+   void AddedToWidget() override;
