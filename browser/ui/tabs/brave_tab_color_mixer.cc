@@ -190,6 +190,20 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorBraveSplitViewInactiveWebViewBorder] = {
       nala::kColorDesktopbrowserToolbarButtonOutline};
 
+  auto& postprocessing_mixer = provider->AddPostprocessingMixer();
+  auto apply_opacity_for_inactive_tab_foreground =
+      base::BindRepeating([](SkColor input, const ui::ColorMixer& mixer) {
+        return SkColorSetA(input,
+                           0xFF * 0.7);  // 70% opacity of the input
+      });
+
+  // Note that this opacity adjustment will be overriden when darker theme
+  // is applied.
+  postprocessing_mixer[kColorTabForegroundInactiveFrameActive] =
+      ui::ColorTransform(apply_opacity_for_inactive_tab_foreground);
+  postprocessing_mixer[kColorTabForegroundInactiveFrameInactive] =
+      ui::ColorTransform(apply_opacity_for_inactive_tab_foreground);
+
 #if defined(TOOLKIT_VIEWS)
   if (!base::FeatureList::IsEnabled(
           darker_theme::features::kBraveDarkerTheme) ||
@@ -198,7 +212,6 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
     return;
   }
 
-  auto& postprocessing_mixer = provider->AddPostprocessingMixer();
   // Tab background
   // : active/inactive tab X active/inactive frame
   postprocessing_mixer[kColorTabBackgroundActiveFrameActive] =
@@ -218,8 +231,8 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
       kColorTabForegroundActiveFrameActive};
   postprocessing_mixer[kColorTabForegroundInactiveFrameActive] =
       darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral40);
-  postprocessing_mixer[kColorTabForegroundInactiveFrameInactive] = {
-      kColorTabForegroundInactiveFrameActive};
+  postprocessing_mixer[kColorTabForegroundInactiveFrameInactive] =
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral40);
 
   // Tab hovered background
   postprocessing_mixer[kColorTabBackgroundInactiveHoverFrameActive] =
