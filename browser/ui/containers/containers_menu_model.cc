@@ -16,6 +16,10 @@
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/models/image_model.h"
 
+#if BUILDFLAG(IS_MAC)
+#include "ui/gfx/image/image_skia.h"
+#endif
+
 namespace containers {
 
 namespace {

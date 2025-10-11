@@ -8,7 +8,7 @@
 
 #include "content/public/browser/permission_controller.h"
 
-#define UnsubscribeFromPermissionStatusChange                                 \
+#define UnsubscribeFromPermissionResultChange                                 \
   PermissionControllerDelegateNotUsed() {}                                    \
   virtual void RequestPermissionsForOrigin(                                   \
       const std::vector<blink::PermissionType>& permissions,                  \
@@ -22,10 +22,10 @@
       content::RenderFrameHost* render_frame_host,                            \
       const GURL& requesting_origin);                                         \
                                                                               \
-  virtual void UnsubscribeFromPermissionStatusChange
+  virtual void UnsubscribeFromPermissionResultChange
 
 #include <content/public/browser/permission_controller_delegate.h>  // IWYU pragma: export
 
-#undef UnsubscribeFromPermissionStatusChange
+#undef UnsubscribeFromPermissionResultChange
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_PERMISSION_CONTROLLER_DELEGATE_H_

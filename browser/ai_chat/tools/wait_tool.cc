@@ -9,7 +9,7 @@
 #include "base/json/json_reader.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
-#include "chrome/browser/actor/task_id.h"
+#include "chrome/common/actor/task_id.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 
 namespace ai_chat {
@@ -47,7 +47,8 @@ std::optional<std::vector<std::string>> WaitTool::RequiredProperties() const {
 
 void WaitTool::UseTool(const std::string& input_json,
                        UseToolCallback callback) {
-  auto input = base::JSONReader::ReadDict(input_json);
+  auto input = base::JSONReader::ReadDict(input_json,
+                                          base::JSON_PARSE_CHROMIUM_EXTENSIONS);
 
   if (!input.has_value()) {
     std::move(callback).Run(

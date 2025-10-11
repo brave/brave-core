@@ -171,6 +171,7 @@ class RequestOTRBrowserTestBase : public BaseLocalDataFilesBrowserTest {
     history_service->GetHistoryCount(
         /*begin_time=*/base::Time::UnixEpoch(),
         /*end_time=*/base::Time::Now(),
+        history::VisitQuery404sPolicy::kInclude404s,
         base::BindLambdaForTesting([&](history::HistoryCountResult result) {
           ASSERT_TRUE(result.success);
           history_count = result.count;

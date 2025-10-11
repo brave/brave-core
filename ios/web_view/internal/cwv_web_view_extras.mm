@@ -123,7 +123,7 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
 - (WKWebView*)internalWebView {
   CRWWebController* web_controller =
       web::WebStateImpl::FromWebState(self.webState)->GetWebController();
-  return web_controller.webView;
+  return base::apple::ObjCCast<WKWebView>(web_controller.webView);
 }
 
 - (NSURL*)originalRequestURLForLastCommitedNavigation {

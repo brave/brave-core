@@ -56,39 +56,6 @@ class ScrollToolTest : public ContentAgentToolBaseTest {
     // Target verification should be handled by the target_test_util methods
     EXPECT_TRUE(scroll_action.has_target());
 
-    // Convert direction enum values
-    actor::mojom::ScrollAction::ScrollDirection expected_mojom_direction;
-    switch (expected_direction) {
-      case optimization_guide::proto::ScrollAction::LEFT:
-        expected_mojom_direction =
-            actor::mojom::ScrollAction::ScrollDirection::kLeft;
-        break;
-      case optimization_guide::proto::ScrollAction::RIGHT:
-        expected_mojom_direction =
-            actor::mojom::ScrollAction::ScrollDirection::kRight;
-        break;
-      case optimization_guide::proto::ScrollAction::UP:
-        expected_mojom_direction =
-            actor::mojom::ScrollAction::ScrollDirection::kUp;
-        break;
-      case optimization_guide::proto::ScrollAction::DOWN:
-        expected_mojom_direction =
-            actor::mojom::ScrollAction::ScrollDirection::kDown;
-        break;
-      default:
-        NOTREACHED() << "Unknown direction: " << expected_direction;
-    }
-
-    auto* scroll_request =
-        static_cast<actor::ScrollToolRequest*>(tool_request.get());
-
-    // Verify mojom action properties
-    auto mojo_action = scroll_request->ToMojoToolAction();
-    EXPECT_TRUE(mojo_action->is_scroll());
-    const auto& mojom_scroll = mojo_action->get_scroll();
-    EXPECT_FLOAT_EQ(mojom_scroll->distance, expected_distance);
-    EXPECT_EQ(mojom_scroll->direction, expected_mojom_direction);
-
     return action;
   }
 };

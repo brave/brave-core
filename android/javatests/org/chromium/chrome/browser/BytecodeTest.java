@@ -42,7 +42,6 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.Callback;
 import org.chromium.base.FeatureMap;
-import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.shared_preferences.PreferenceKeyRegistry;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.base.supplier.ObservableSupplier;
@@ -101,6 +100,7 @@ import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
+import org.chromium.chrome.browser.omnibox.navattach.NavigationAttachmentsCoordinator;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteUIContext;
@@ -154,6 +154,7 @@ import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.bookmarks.BookmarkItem;
+import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.media.MediaNotificationInfo;
@@ -182,7 +183,6 @@ import org.chromium.components.offline_items_collection.OfflineItem;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogDelegate;
-import org.chromium.components.prefs.PrefService;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.signin.base.AccountInfo;
 import org.chromium.components.variations.firstrun.VariationsSeedFetcher;
@@ -461,6 +461,19 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         int.class,
                         boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "calculateTabletMvtWidth",
+                        MethodModifier.REGULAR,
+                        void.class,
+                        int.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp/NewTabPageLayout",
+                        "updateMvtOnTablet",
+                        MethodModifier.REGULAR,
+                        void.class));
 
         Assert.assertTrue(
                 methodExists(
@@ -769,8 +782,7 @@ public class BytecodeTest {
                         "setUpPostDeprecationWarning",
                         MethodModifier.REGULAR,
                         void.class,
-                        PreferenceViewHolder.class,
-                        PrefService.class));
+                        PreferenceViewHolder.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView", // presubmit: ignore-long-line
@@ -1262,7 +1274,8 @@ public class BytecodeTest {
                         ModalDialogManager.class,
                         SnackbarManager.class,
                         OneshotSupplier.class,
-                        Supplier.class));
+                        Supplier.class,
+                        PageZoomManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
@@ -1395,7 +1408,6 @@ public class BytecodeTest {
                         BottomSheetController.class,
                         Supplier.class,
                         WindowAndroid.class,
-                        JankTracker.class,
                         Supplier.class,
                         HomeSurfaceTracker.class,
                         ObservableSupplier.class,
@@ -1440,7 +1452,8 @@ public class BytecodeTest {
                         BackButtonCoordinator.class,
                         ForwardButtonCoordinator.class,
                         HomeButtonDisplay.class,
-                        ExtensionToolbarCoordinator.class));
+                        ExtensionToolbarCoordinator.class,
+                        TopControlsStacker.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line
@@ -1494,6 +1507,7 @@ public class BytecodeTest {
                         OmniboxSuggestionsDropdownEmbedder.class,
                         WindowAndroid.class,
                         DeferredIMEWindowInsetApplicationCallback.class,
+                        NavigationAttachmentsCoordinator.class,
                         boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1625,7 +1639,8 @@ public class BytecodeTest {
                         BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
                         ObservableSupplier.class,
                         BrowserControlsStateProvider.class,
-                        Supplier.class));
+                        Supplier.class,
+                        ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
@@ -1758,7 +1773,8 @@ public class BytecodeTest {
                         BookmarkOpener.class,
                         BookmarkManagerOpener.class,
                         PriceDropNotificationManager.class,
-                        Function.class));
+                        Function.class,
+                        BackPressManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
@@ -1805,7 +1821,8 @@ public class BytecodeTest {
                         SnackbarManager.class,
                         Profile.class,
                         NativePageHost.class,
-                        ComponentName.class));
+                        ComponentName.class,
+                        BackPressManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl",
@@ -1918,7 +1935,7 @@ public class BytecodeTest {
                         ActivityTabProvider.class,
                         TopUiThemeColorProvider.class,
                         EdgeToEdgeSystemBarColorHelper.class,
-                        OneshotSupplier.class,
+                        DesktopWindowStateManager.class,
                         ObservableSupplier.class,
                         boolean.class));
         Assert.assertTrue(
@@ -2262,10 +2279,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/ntp/NewTabPageLayout",
                         "mMvTilesContainerLayout"));
         Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mLogoCoordinator"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mInitialTileNum"));
+                fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mMvtContentFits"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mProfile"));
         Assert.assertTrue(
@@ -2626,7 +2640,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/homepage/settings/RadioButtonGroupHomepagePreference", // presubmit: ignore-long-line
-                        "androidx/preference/Preference")); // presubmit: ignore-long-line
+                        "org/chromium/components/browser_ui/settings/ContainedRadioButtonGroupPreference")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/homepage/settings/BraveRadioButtonGroupHomepagePreference", // presubmit: ignore-long-line

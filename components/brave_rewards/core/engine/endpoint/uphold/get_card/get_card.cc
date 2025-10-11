@@ -51,7 +51,8 @@ mojom::Result GetCard::CheckStatusCode(const int status_code) {
 mojom::Result GetCard::ParseBody(const std::string& body, double* available) {
   DCHECK(available);
 
-  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(body);
+  std::optional<base::Value::Dict> value =
+      base::JSONReader::ReadDict(body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;

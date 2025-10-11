@@ -7,25 +7,13 @@ import("//build/config/android/rules.gni")
 
 source_set("unit_tests") {
   testonly = true
-  sources = [
-    "//chrome/browser/password_manager/android/mock_password_manager_util_bridge.cc",
-    "//chrome/browser/password_manager/android/mock_password_manager_util_bridge.h",
-    "brave_password_manager_android_util_unittest.cc",
-    "password_ui_view_android_unittest.cc",
-  ]
+  sources = [ "password_ui_view_android_unittest.cc" ]
 
   deps = [
     "//base",
     "//base/test:test_support",
-    "//chrome/browser/password_manager/android:utils",
     "//chrome/test:test_support",
-    "//components/password_manager/core/browser",
-    "//components/password_manager/core/browser:password_manager_buildflags",
     "//components/password_manager/core/browser/export",
-    "//components/password_manager/core/browser/features:password_features",
-    "//components/prefs:test_support",
-    "//components/sync/base",
-    "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
   ]
@@ -42,5 +30,18 @@ android_library("test_support_java") {
     "//third_party/android_deps:protobuf_lite_runtime_java",
     "//third_party/androidx:androidx_annotation_annotation_java",
     "//third_party/jni_zero:jni_zero_java",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  sources = [ "login_database_migration_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//chrome/test:test_support",
   ]
 }

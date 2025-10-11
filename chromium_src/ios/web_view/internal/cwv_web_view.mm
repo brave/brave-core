@@ -49,10 +49,7 @@ class UnusedWebViewPasswordManagerClient {
   CWVWebViewProtobufStorage* cachedProtobufStorage =
       base::apple::ObjCCastStrict<CWVWebViewProtobufStorage>(
           [coder decodeObjectForKey:kProtobufStorageKey]);
-  CRWSessionStorage* cachedSessionStorage =
-      base::apple::ObjCCastStrict<CRWSessionStorage>(
-          [coder decodeObjectForKey:kSessionStorageKey]);
-  return (cachedProtobufStorage != nil || cachedSessionStorage != nil);
+  return cachedProtobufStorage != nil;
 }
 
 + (id)objectFromValue:(const base::Value*)value {

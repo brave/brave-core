@@ -13,7 +13,7 @@
 #include "base/run_loop.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/crx_installer.h"
-#include "chrome/browser/extensions/install_tracker.h"
+#include "chrome/browser/extensions/install_tracker_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -25,6 +25,7 @@
 #include "extensions/browser/crx_file_info.h"
 #include "extensions/browser/extension_creator.h"
 #include "extensions/browser/extension_system.h"
+#include "extensions/browser/install_tracker.h"
 #include "extensions/common/extension.h"
 
 namespace extensions {
@@ -57,11 +58,11 @@ std::vector<uint8_t> GetPublicKeyHash(const base::FilePath& pem_path) {
 class InstallCrxFileWaiter : public extensions::InstallObserver {
  public:
   explicit InstallCrxFileWaiter(Profile* profile) : profile_(profile) {
-    InstallTracker::Get(profile_)->AddObserver(this);
+    InstallTrackerFactory::GetForBrowserContext(profile_)->AddObserver(this);
   }
 
   ~InstallCrxFileWaiter() override {
-    InstallTracker::Get(profile_)->RemoveObserver(this);
+    InstallTrackerFactory::GetForBrowserContext(profile_)->RemoveObserver(this);
   }
 
   void OnFinishCrxInstall(content::BrowserContext* context,

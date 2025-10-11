@@ -23,7 +23,7 @@ base::android::ScopedJavaLocalRef<jobject> GetJavaBoolean(JNIEnv* env,
   jmethodID methodID = env->GetMethodID(booleanClass, "<init>", "(Z)V");
   jobject booleanObject = env->NewObject(booleanClass, methodID, native_bool);
 
-  return base::android::ScopedJavaLocalRef<jobject>(env, booleanObject);
+  return base::android::ScopedJavaLocalRef<jobject>::Adopt(env, booleanObject);
 }
 
 void PlainCallConnectAccountCallback(

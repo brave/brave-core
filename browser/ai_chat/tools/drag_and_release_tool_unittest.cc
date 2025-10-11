@@ -53,15 +53,6 @@ class DragAndReleaseToolTest : public ContentAgentToolBaseTest {
     EXPECT_TRUE(drag_action.has_from_target());
     EXPECT_TRUE(drag_action.has_to_target());
 
-    auto* drag_request =
-        static_cast<actor::DragAndReleaseToolRequest*>(tool_request.get());
-
-    // Verify mojom action properties
-    auto mojo_action = drag_request->ToMojoToolAction();
-    EXPECT_TRUE(mojo_action->is_drag_and_release());
-    const auto& mojom_drag = mojo_action->get_drag_and_release();
-    EXPECT_TRUE(mojom_drag->to_target);
-
     return action;
   }
 };

@@ -38,7 +38,7 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/vector2d.h"
-#include "ui/gfx/native_widget_types.h"
+#include "ui/gfx/native_ui_types.h"
 #include "ui/gfx/shadow_util.h"
 #include "ui/gfx/shadow_value.h"
 #include "ui/gfx/skia_paint_util.h"
@@ -167,7 +167,9 @@ void NotificationAdPopup::OnPaintBackground(gfx::Canvas* canvas) {
   gfx::Rect bounds(GetWidget()->GetLayer()->bounds());
   bounds.Inset(GetWidgetMargin());
 
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors =
+      GetNativeTheme()->preferred_color_scheme() ==
+      ui::NativeTheme::PreferredColorScheme::kDark;
 
   // Draw border with drop shadow
   cc::PaintFlags border_flags;

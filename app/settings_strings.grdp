@@ -409,6 +409,9 @@
   <message name="IDS_SETTINGS_AUTOFILL_AND_PASSWORDS" desc="Name of the settings page which allows managing passwords, payment methods and addresses settings.">
     Autofill and passwords
   </message>
+  <message name="IDS_SETTINGS_YOUR_SAVED_INFO" desc="Name of the settings page which allows managing data saved by users in chrome.">
+    Your saved info
+  </message>
   <message name="IDS_PASSWORDS_PAGE_IMPORT_AUTHENTICATION_PROMPT_BIOMETRIC_SUFFIX" desc="Shown after 'Brave is trying to ' (or in some languages, 'Brave wants to ') in a dialog message. Text for the dialog box that prompts the user for the biometric authentication before replacing passwords during Import.">
     replace existing passwords
   </message>
@@ -754,11 +757,17 @@
   <message name="IDS_SETTINGS_WORK_ADDRESS_REMOVE_CONFIRMATION_DIALOG_TITLE" desc="Title for the dialog that asks for confirmation to remove the selected work address from Brave.">
     Remove your work address from Brave autofill?
   </message>
+  <message name="IDS_SETTINGS_NAME_EMAIL_ADDRESS_REMOVE_CONFIRMATION_DIALOG_TITLE" desc="Title for the dialog that asks for confirmation to remove the selected name and email address from Brave.">
+    Remove this info from Brave autofill?
+  </message>
   <message name="IDS_SETTINGS_HOME_ADDRESS_REMOVE_CONFIRMATION_DIALOG_NOTICE" desc="Body for the dialog that asks for confirmation to remove the selected home address from Brave.">
     Your home address can help you get things done across Brave services, like more relevant Search results and directions in Brave Maps. You can edit or delete your address in your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Brave sync chain <ph name="USERNAME">$2<ex>example@gmail.com</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_WORK_ADDRESS_REMOVE_CONFIRMATION_DIALOG_NOTICE" desc="Body for the dialog that asks for confirmation to remove the selected work address from Brave.">
     Your work address can help you get things done across Brave services, like more relevant Search results and directions in Brave Maps. You can edit or delete your address in your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Brave sync chain <ph name="USERNAME">$2<ex>example@gmail.com</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_NAME_EMAIL_ADDRESS_REMOVE_CONFIRMATION_DIALOG_NOTICE" desc="Body for the dialog that asks for confirmation to remove the selected name and email address from Brave.">
+    You can edit your name in your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Brave sync chain <ph name="USERNAME">$2<ex>example@gmail.com</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_HOME_AND_WORK_ADDRESS_REMOVE_CONFIRMATION_DIALOG_ACTION_OK" desc="Okay action for the dialog that asks for confirmation to remove the selected home and work address from Brave.">
     Remove
@@ -886,7 +895,6 @@
 <message name="IDS_SETTINGS_GEMINI_APPS_ACTIVITY" desc="Title for the Gemini Apps Activity section in Other Data.">
     Gemini Apps activity
 </message>
-
   <message name="IDS_SETTINGS_PASSWORDS_AND_PASSKEYS" desc="Label for the 'Passwords and Passkeys' linkout in the 'Other Brave Data' subpage inside the 'Delete browsing data' dialog, where the user can see and manage data that is stored outside of Brave. This linkout is specifically for passwords and passkeys stored in Brave password manager.">
     Passwords and passkeys
   </message>
@@ -1910,6 +1918,29 @@
     Provides Brave’s strongest account security for people at risk of targeted attacks
   </message>
 
+  <!-- Bundled Security Settings (chrome://settings/security) -->
+  <message name="IDS_SETTINGS_SECURITY_TITLE" desc="Name of security page header">
+    Browsing protection
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_STANDARD_BUNDLE_TITLE" desc="Name of standard bundle">
+    Standard
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_ENHANCED_BUNDLE_TITLE" desc="Name of enhanced bundle">
+    Enhanced
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_TITLE" desc="Name of Safe Browsing security setting">
+    Google Safe Browsing
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_DESCRIPTION" desc="Description of the Safe Browsing security setting">
+    Protects you from dangerous sites, downloads, and extensions
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_STANDARD_TITLE" desc="Name of Safe Browsing standard protection">
+    Standard Protection
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_ENHANCED_TITLE" desc="Name of Safe Browsing enhanced protection">
+    Enhanced Protection
+  </message>
+
   <!-- Secure Connections -->
   <message name="IDS_SETTINGS_SECURE_CONNECTIONS_SECTION_TITLE" desc="Title of the Secure Connections section in Security settings">
     Secure connections
@@ -2550,17 +2581,17 @@
   <message name="IDS_SITE_SETTINGS_SMART_CARD_READERS" desc="Main heading for the Smart Card Readers section in settings.">
     Smart card readers
   </message>
-  <message name="IDS_SITE_SETTINGS_SMART_CARD_READERS_DESCRIPTION" desc="Description of how Isolated Web Apps interact with smart card readers.">
-    Isolated Web Apps control smart card readers to gain access to smart cards that are inserted or presented to them. Smart cards usually contain identities that are used to authenticate or authorize operations, log into services, etc.
+  <message name="IDS_SITE_SETTINGS_SMART_CARD_READERS_DESCRIPTION" desc="Description of how isolated web apps interact with smart card readers.">
+    Isolated web apps control authentication devices and smart cards accessible to them. Smart cards usually contain identifiers used to authenticate you.
   </message>
   <message name="IDS_SITE_SETTINGS_SMART_CARDS_DEFAULT_DESCRIPTION" desc="Label indicating the default behavior for smart card access.">
-    Isolated Web Apps automatically follow this setting
+    Isolated web apps automatically follow this setting
   </message>
-  <message name="IDS_SITE_SETTINGS_SMART_CARDS_ALLOWED" desc="Option to allow Isolated Web Apps to control smart card readers.">
-    Isolated Web Apps can ask to control smart card readers. Apps will gain access to smart cards presented to readers under their control.
+  <message name="IDS_SITE_SETTINGS_SMART_CARDS_ALLOWED" desc="Option to allow isolated web apps to control smart card readers.">
+    Isolated web apps can ask to control smart card readers
   </message>
-  <message name="IDS_SITE_SETTINGS_SMART_CARDS_BLOCKED" desc="Option to block Isolated Web Apps from controlling smart card readers.">
-    Isolated Web Apps cannot control smart card readers. Apps won't gain access to any smart card.
+  <message name="IDS_SITE_SETTINGS_SMART_CARDS_BLOCKED" desc="Option to block isolated web apps from controlling smart card readers.">
+    Isolated web apps can’t control smart card readers
   </message>
   <message name="IDS_SITE_SETTINGS_NO_SMART_CARD_READERS_FOUND" desc="No smart card readers were found.">
     No smart card readers found
@@ -2615,6 +2646,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_OPTIMIZER_BLOCKED" desc="Label for the disabled option of the JavaScript optimizer content setting.">
     Don’t allow sites to use JavaScript optimization
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_OPTIMIZER_BLOCKED_UNFAMILIAR_SITES" desc="Label for option where JavaScript optimizer is disabled for sites which are unfamiliar to the user. Familiarity is determined using a heuristic based on the user's Brave history.">
+    Automatically disable JavaScript optimizers on unfamiliar sites
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_OPTIMIZER_BLOCKED_UNFAMILIAR_SITES_SUB_LABEL" desc="Sublabel for option where JavaScript optimizer is disabled for sites which are unfamiliar to the user.">
+    Block access to the JavaScript optimizer on newly visited sites
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_OPTIMIZER_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the JavaScript optimizer content setting.">
     Always allowed to use JavaScript optimization

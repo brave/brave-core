@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/update_recommended_message_box.h b/chrome/browser/ui/views/update_recommended_message_box.h
-index 1a73350d3d7be579bea66638d05d2376968545d0..90baa9a10526f265fbd778467e257ae8806f68fc 100644
+index ccefd920a512d45ea556a653779e1244a81f9789..be507745c69eab93d9cceaa7f114c114a7042cae 100644
 --- a/chrome/browser/ui/views/update_recommended_message_box.h
 +++ b/chrome/browser/ui/views/update_recommended_message_box.h
 @@ -24,6 +24,8 @@ class UpdateRecommendedMessageBox : public views::DialogDelegate {

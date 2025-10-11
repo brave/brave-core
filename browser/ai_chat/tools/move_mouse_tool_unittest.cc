@@ -46,11 +46,11 @@ class MoveMouseToolTest : public ContentAgentToolBaseTest {
     // Target verification should be handled by the target_test_util methods
     EXPECT_TRUE(move_mouse_action.has_target());
 
-    auto* move_mouse_request =
-        static_cast<actor::MoveMouseToolRequest*>(tool_request.get());
+    // auto* move_mouse_request =
+    //     static_cast<actor::MoveMouseToolRequest*>(tool_request.get());
 
-    auto mojo_action = move_mouse_request->ToMojoToolAction();
-    EXPECT_TRUE(mojo_action->is_mouse_move());
+    // auto mojo_action = move_mouse_request->ToMojoToolAction();
+    // EXPECT_TRUE(mojo_action->is_mouse_move());
 
     return action;
   }

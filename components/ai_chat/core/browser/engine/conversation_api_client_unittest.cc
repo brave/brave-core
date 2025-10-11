@@ -864,7 +864,8 @@ TEST_F(ConversationAPIUnitTest,
                     const base::flat_map<std::string, std::string>& headers,
                     const api_request_helper::APIRequestOptions& options) {
         // Verify the model name was overridden in the request
-        auto dict = base::JSONReader::ReadDict(body);
+        auto dict = base::JSONReader::ReadDict(
+            body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
         EXPECT_TRUE(dict.has_value());
         const std::string* model = dict->FindString("model");
         EXPECT_TRUE(model);
@@ -946,7 +947,8 @@ TEST_F(ConversationAPIUnitTest,
                     const api_request_helper::APIRequestOptions& options,
                     ResponseConversionCallback response_conversion_callback) {
         // Verify the model name was overridden in the request
-        auto dict = base::JSONReader::ReadDict(body);
+        auto dict = base::JSONReader::ReadDict(
+            body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
         EXPECT_TRUE(dict.has_value());
         const std::string* model = dict->FindString("model");
         EXPECT_TRUE(model);

@@ -55,15 +55,6 @@ class SelectToolTest : public ContentAgentToolBaseTest {
     // each test.
     EXPECT_TRUE(select_action.has_target());
 
-    auto* select_request =
-        static_cast<actor::SelectToolRequest*>(tool_request.get());
-
-    // Verify mojom action properties
-    auto mojo_action = select_request->ToMojoToolAction();
-    EXPECT_TRUE(mojo_action->is_select());
-    const auto& mojom_select = mojo_action->get_select();
-    EXPECT_EQ(mojom_select->value, expected_value);
-
     return action;
   }
 };

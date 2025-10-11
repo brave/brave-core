@@ -289,7 +289,8 @@ const PatternsURLDetails* PatternsGroup::GetMatchingURLPattern(
 std::unique_ptr<PatternsGroup> ParsePatterns(std::string_view patterns_json) {
   base::AssertLongCPUWorkAllowed();
   const auto patterns_parse_result =
-      base::JSONReader::ReadAndReturnValueWithError(patterns_json);
+      base::JSONReader::ReadAndReturnValueWithError(
+          patterns_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!patterns_parse_result.has_value()) {
     VLOG(1) << "Failed to parse patterns JSON: "
             << patterns_parse_result.error().ToString();

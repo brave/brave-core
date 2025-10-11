@@ -28,6 +28,7 @@
 #include "components/history_clusters/core/features.h"
 #include "components/history_clusters/core/on_device_clustering_features.h"
 #include "components/history_embeddings/history_embeddings_features.h"
+#include "components/legion/features.h"
 #include "components/lens/lens_features.h"
 #include "components/manta/features.h"
 #include "components/metrics/metrics_features.h"
@@ -35,7 +36,6 @@
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
-#include "components/page_image_service/features.h"
 #include "components/page_info/core/features.h"
 #include "components/performance_manager/public/features.h"
 #include "components/permissions/features.h"
@@ -88,9 +88,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &autofill::features::kAutofillEnableCardBenefitsForAmericanExpress,
       &autofill::features::kAutofillEnableCardBenefitsForBmo,
       &autofill::features::test::kAutofillServerCommunication,
-#if BUILDFLAG(IS_ANDROID)
-      &base::features::kCollectAndroidFrameTimelineMetrics,
-#endif
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAIProofreadingAPI,
       &blink::features::kAIPromptAPI,
@@ -99,7 +96,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kAISummarizationAPI,
       &blink::features::kAIWriterAPI,
       &blink::features::kAllowURNsInIframes,
-      &blink::features::kAttributionReportingInBrowserMigration,
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kBuiltInAIAPI,
       &blink::features::kControlledFrame,
@@ -168,7 +164,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kReportPakFileIntegrity,
 #endif
       &features::kSCTAuditing,
-      &features::kScrimForBrowserWindowModal,
       &features::kServiceWorkerAutoPreload,
       &features::kTabHoverCardImages,
 #if !BUILDFLAG(IS_ANDROID)
@@ -176,7 +171,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kTrustSafetySentimentSurveyV2,
 #endif
 #if BUILDFLAG(IS_MAC)
-      &features::kUseChromiumUpdater,
       &features::kImmersiveFullscreen,
 #endif
       &features::kWebIdentityDigitalCredentials,
@@ -194,6 +188,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_embeddings::kHistoryEmbeddings,
       &history_embeddings::kHistoryEmbeddingsAnswers,
       &history_embeddings::kLaunchedHistoryEmbeddings,
+      &legion::kLegion,
       &lens::features::kLensOverlay,
       &lens::features::kLensStandalone,
       &media::kLiveCaption,
@@ -214,19 +209,19 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &ntp_features::kNtpChromeCartModule,
       &omnibox::kDocumentProviderNoSyncRequirement,
       &omnibox::kMlUrlScoring,
+#if BUILDFLAG(IS_ANDROID)
+      &omnibox::kOmniboxMobileParityUpdateV2,
+#endif
       &omnibox::kRichAutocompletion,
       &omnibox::kStarterPackExpansion,
       &omnibox::kZeroSuggestPrefetching,
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
       &optimization_guide::features::kOptimizationGuidePersonalizedFetching,
       &optimization_guide::features::kOptimizationHints,
-      &page_image_service::kImageService,
-      &page_image_service::kImageServiceSuggestPoweredImages,
       &permissions::features::kCpssUseTfliteSignatureRunner,
 #if !BUILDFLAG(IS_ANDROID)
       &permissions::features::kPermissionsPromptSurvey,
 #endif
-      &permissions::features::kPermissionOnDeviceNotificationPredictions,
       &permissions::features::kPermissionPredictionsV2,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &plus_addresses::features::kPlusAddressesEnabled,

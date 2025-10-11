@@ -1,8 +1,24 @@
 diff --git a/tools/typescript/ts_library.gni b/tools/typescript/ts_library.gni
-index 9f8d59cdf04620ea6df5965b03a176043937d9d6..72374b8a4e77f9bc838e9d4c1dc2f5c734268fe8 100644
+index 9f8d59cdf04620ea6df5965b03a176043937d9d6..b640d2f2447764982fbf9747bbdf75d70edf45d7 100644
 --- a/tools/typescript/ts_library.gni
 +++ b/tools/typescript/ts_library.gni
-@@ -169,6 +169,7 @@ template("ts_library") {
+@@ -57,6 +57,7 @@ template("ts_library") {
+           outputs += [ "$out_dir/$_dirname/$_filename.d.ts" ]
+         }
+       }
++      in_files_file_list = "$target_gen_dir/${target_name}_input_files.txt" inputs += [ in_files_file_list ] write_file(in_files_file_list, in_files)
+     }
+ 
+     args = [
+@@ -75,6 +76,7 @@ template("ts_library") {
+       target_name,
+     ]
+ 
++    if (defined(in_files_file_list)) { args += [ "--in_files_file_list", rebase_path(in_files_file_list, root_build_dir) ] } else
+     if (defined(in_files)) {
+       args += [ "--in_files" ] + in_files
+     }
+@@ -169,6 +171,7 @@ template("ts_library") {
        ]
      }
  

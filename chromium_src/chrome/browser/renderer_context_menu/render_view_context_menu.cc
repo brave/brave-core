@@ -47,6 +47,7 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "chrome/browser/ui/incognito_allowed_url.h"
 #endif
 
 #include "base/feature_list.h"

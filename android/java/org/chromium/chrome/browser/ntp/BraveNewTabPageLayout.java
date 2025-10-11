@@ -75,7 +75,6 @@ import org.chromium.chrome.browser.feed.FeedSurfaceScrollDelegate;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.TopSiteTable;
-import org.chromium.chrome.browser.logo.LogoCoordinator;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
 import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
@@ -99,6 +98,7 @@ import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase;
+import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
@@ -128,13 +128,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
     private static final int HOUR_MS = 3_600_000;
 
-    // To be removed in bytecode, parent variable will be used instead.
+    // Variables below will be removed in bytecode, variables from parent class will be used
+    // instead.
     private ViewGroup mMvTilesContainerLayout;
 
     @SuppressWarnings("UnusedVariable")
-    private LogoCoordinator mLogoCoordinator;
-
-    private Integer mInitialTileNum;
+    private boolean mMvtContentFits;
 
     // Own members.
     private WindowAndroid mWindowAndroid;
@@ -146,7 +145,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     // To be removed in bytecode, parent variable will be used instead.
     private Profile mProfile;
     private SponsoredTab mSponsoredTab;
-    private boolean mIsTablet;
 
     private BitmapDrawable mImageDrawable;
 
@@ -1205,7 +1203,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 composeplateUrlSupplier);
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mNTPBackgroundImagesBridge.setNewTabPageListener(mNewTabPageListener);
-        mIsTablet = isTablet;
         mWindowAndroid = windowAndroid;
 
         assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
@@ -1578,23 +1575,16 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                         });
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (mIsTablet) {
-            if (mInitialTileNum == null) {
-                // In the upstream `mMvTilesContainerLayout` is added as a view in
-                // `insertSiteSectionView`/`initializeSiteSectionView`.
-                // We override `insertSiteSectionView`/`initializeSiteSectionView` to add
-                // `mMvTilesContainerLayout` in our own
-                // RecyclerView to have own NTP UI.
-                // Thus upstream's NewTabPageLayout.findViewById does not see `mv_tiles_layout` and
-                // returns null.
-                mInitialTileNum =
-                        ((ViewGroup) mMvTilesContainerLayout.findViewById(R.id.mv_tiles_layout))
-                                .getChildCount();
-            }
-        }
+    public void calculateTabletMvtWidth(int totalWidth) {
+        if (mMvTilesContainerLayout.getVisibility() == GONE) return;
 
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        MostVisitedTilesLayout mvTilesLayout =
+                mMvTilesContainerLayout.findViewById(R.id.mv_tiles_layout);
+        mMvtContentFits = mvTilesLayout.contentFitsOnTablet(totalWidth);
+        updateMvtOnTablet();
+    }
+
+    private void updateMvtOnTablet() {
+        assert false : "This method should be removed in the bytecode!";
     }
 }

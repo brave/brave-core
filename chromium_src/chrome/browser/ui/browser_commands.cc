@@ -57,9 +57,8 @@ void MakeActiveTabReloadOnlyForSplitTab(
 #define CloseSelectedTabs CloseSelectedTabsWithSplitView
 
 // Need to patch to adjust |selected_tabs| in the middle of ReloadInternal().
-#define BRAVE_RELOAD_INTERNAL                                    \
-  MakeActiveTabReloadOnlyForSplitTab(browser->tab_strip_model(), \
-                                     tabs_to_reload);
+#define BRAVE_RELOAD_INTERNAL \
+  MakeActiveTabReloadOnlyForSplitTab(tab_strip_model, tabs_to_reload);
 
 #include <chrome/browser/ui/browser_commands.cc>
 

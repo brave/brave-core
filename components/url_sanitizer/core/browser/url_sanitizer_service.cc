@@ -54,8 +54,8 @@ std::optional<base::flat_set<std::string>> CreateParamsList(
 
 URLSanitizerService::Config ParseConfig(
     const URLSanitizerComponentInstaller::RawConfig& raw_config) {
-  auto parsed_json =
-      base::JSONReader::ReadAndReturnValueWithError(raw_config.matchers);
+  auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(
+      raw_config.matchers, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed_json.has_value()) {
     VLOG(1) << "Error parsing feature JSON [matchers]: "
             << parsed_json.error().message;
@@ -92,8 +92,8 @@ URLSanitizerService::Config ParseConfig(
                                  std::move(*params));
   }
 
-  parsed_json =
-      base::JSONReader::ReadAndReturnValueWithError(raw_config.permissions);
+  parsed_json = base::JSONReader::ReadAndReturnValueWithError(
+      raw_config.permissions, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed_json.has_value()) {
     VLOG(1) << "Error parsing feature JSON [permission]: "
             << parsed_json.error().message;

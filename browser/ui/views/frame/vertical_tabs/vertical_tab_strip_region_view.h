@@ -14,7 +14,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/types/pass_key.h"
-#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
@@ -37,7 +36,6 @@ class BraveVerticalTabStripRegionView : public views::View,
                                         public views::AnimationDelegateViews,
                                         public views::WidgetObserver,
                                         public FullscreenObserver,
-                                        public BrowserListObserver,
                                         public views::ContextMenuController {
   METADATA_HEADER(BraveVerticalTabStripRegionView, views::View)
  public:
@@ -91,6 +89,9 @@ class BraveVerticalTabStripRegionView : public views::View,
   void ResetExpandedWidth();
   bool IsMenuShowing() const;
 
+  void ListenFullscreenChanges();
+  void StopListeningFullscreenChanges();
+
   // views::View:
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
@@ -112,9 +113,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   // views::WidgetObserver:
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
   void OnWidgetDestroying(views::Widget* widget) override;
-
-  // BrowserListObserver:
-  void OnBrowserAdded(Browser* browser) override;
 
   // FullscreenObserver:
   void OnFullscreenStateChanged() override;

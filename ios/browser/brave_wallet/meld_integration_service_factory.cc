@@ -48,8 +48,7 @@ MeldIntegrationServiceFactory::~MeldIntegrationServiceFactory() = default;
 
 std::unique_ptr<KeyedService>
 MeldIntegrationServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
-  auto* profile = ProfileIOS::FromBrowserState(context);
+    ProfileIOS* profile) const {
   return std::make_unique<MeldIntegrationService>(
       profile->GetSharedURLLoaderFactory());
 }
