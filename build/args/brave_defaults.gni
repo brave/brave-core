@@ -20,3 +20,10 @@ translate_genders = false
 # Before Siso they were always disabled as we always used redirect_cc as a
 # cc_wrapper, but with Siso we need to disable it explicitly.
 enable_precompiled_headers = false
+
+generate_about_credits = true
+
+enable_pseudolocales = false
+
+# Our copy of signature_generator.py doesn't support --ignore_missing_cert:
+ignore_missing_widevine_signing_cert = false
