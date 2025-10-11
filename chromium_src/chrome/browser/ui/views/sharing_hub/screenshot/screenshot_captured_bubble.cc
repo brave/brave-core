@@ -18,7 +18,7 @@ std::u16string GetBraveFilenameForURL(const GURL& url) {
   }
 
   return base::ASCIIToUTF16(
-      base::StrCat({"brave_screenshot_", url.host_piece(), ".png"}));
+      base::StrCat({"brave_screenshot_", url.host(), ".png"}));
 }
 
 }  // namespace

@@ -52,7 +52,7 @@ static void JNI_WebsitePreferenceBridge_ClearCookieData(
     const bool is_http = url.SchemeIs(url::kHttpScheme);
     const GURL additional_url(
         base::StrCat({is_http ? url::kHttpsScheme : url::kHttpScheme,
-                      url::kStandardSchemeSeparator, url.host_piece()}));
+                      url::kStandardSchemeSeparator, url.host()}));
     settings_map->SetWebsiteSettingDefaultScope(
         additional_url, additional_url,
         ContentSettingsType::BRAVE_SHIELDS_METADATA, base::Value());

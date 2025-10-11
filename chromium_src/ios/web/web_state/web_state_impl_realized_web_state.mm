@@ -37,7 +37,7 @@ void WebStateImpl::RealizedWebState::TearDown() {
 }
 
 void WebStateImpl::RealizedWebState::CreateWebUI(const GURL& url) {
-  const std::string_view host = url.host_piece();
+  const std::string_view host = url.host();
   if (web_uis_.contains(host)) {
     // Don't recreate WebUI for the same host. At the moment this is a required
     // limitation as we don't have the neccessary info to associate a WebUI
@@ -58,7 +58,7 @@ void WebStateImpl::RealizedWebState::HandleWebUIMessage(
     const GURL& source_url,
     std::string_view message,
     const base::Value::List& args) {
-  const std::string_view host = source_url.host_piece();
+  const std::string_view host = source_url.host();
   auto web_ui = web_uis_.find(host);
   if (web_ui != web_uis_.end() && web_ui->second) {
     web_ui->second->ProcessWebUIIOSMessage(source_url, message, args);
