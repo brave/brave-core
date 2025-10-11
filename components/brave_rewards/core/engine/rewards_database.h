@@ -57,8 +57,7 @@ class RewardsDatabase : public mojom::RewardsDatabase {
 
   int GetTablesCount();
 
-  void OnMemoryPressure(
-      base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
+  void OnMemoryPressure(base::MemoryPressureLevel memory_pressure_level);
 
   const base::FilePath db_path_;
   sql::Database db_;

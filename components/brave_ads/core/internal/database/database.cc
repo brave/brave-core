@@ -415,8 +415,7 @@ void Database::ErrorCallback(int extended_error,
 }
 
 void Database::MemoryPressureListenerCallback(
-    base::MemoryPressureListener::
-        MemoryPressureLevel /*memory_pressure_level*/) {
+    base::MemoryPressureLevel /*memory_pressure_level*/) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   db_.TrimMemory();
