@@ -45,7 +45,7 @@ bool IsURLLooksReadable(const GURL& url) {
   if (!url.has_path() || url.path() == "/")
     return false;
 
-  if (url.host_piece().starts_with(kReadableBlogSubdomain)) {
+  if (url.host().starts_with(kReadableBlogSubdomain)) {
     return true;
   }
 

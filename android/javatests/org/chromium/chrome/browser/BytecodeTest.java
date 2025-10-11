@@ -12,9 +12,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -694,12 +694,6 @@ public class BytecodeTest {
                         "updateButtonVisibility",
                         MethodModifier.REGULAR,
                         void.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                        "shouldShowDeleteButton",
-                        MethodModifier.REGULAR,
-                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
@@ -1551,7 +1545,7 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                         "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
-                        Resources.class,
+                        Context.class,
                         UiConfig.class,
                         MostVisitedTilesLayout.class,
                         TileRenderer.class,
@@ -1670,7 +1664,8 @@ public class BytecodeTest {
                         PropertyModel.class,
                         Callback.class,
                         LogoCoordinator.VisibilityObserver.class,
-                        CachedTintedBitmap.class));
+                        CachedTintedBitmap.class,
+                        Drawable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",

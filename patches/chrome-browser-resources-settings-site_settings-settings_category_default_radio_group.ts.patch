@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts b/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts
-index 88081976ed46fd4b685870488a7ae6b19b5074c1..78b0d7301294d7242fa0d4c44503cf72fdfe65b0 100644
+index 4dff4a9d7ad27a9b40c80bd24a954b49335ffa88..2b1a2e01c32f6e79be446e1077141c2e82a17af1 100644
 --- a/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts
 +++ b/chrome/browser/resources/settings/site_settings/settings_category_default_radio_group.ts
 @@ -175,6 +175,7 @@ export class SettingsCategoryDefaultRadioGroupElement extends

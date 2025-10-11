@@ -429,6 +429,7 @@
   <message name="IDS_AUTOFILL_ADDRESSES_SETTINGS_SUBLABEL" desc="Description shown below the link to the Autofill settings page for managing addresses and more." translateable="false">
     Phone numbers, email addresses, shipping addresses, and plus addresses
   </message>
+  <!-- TODO(crbug.com/447113309): will no longer be used for title, update desc -->
   <message name="IDS_AUTOFILL_PAYMENT_METHODS" desc="Title for the list of saved payment methods that can be used to fill in forms. Also used as the title for the Autofill settings page that allows user to manage their list of saved payment methods and Autofill preferences for payment methods. Sentence-Cased." formatter_data="android_java">
     Payment methods
   </message>
@@ -751,6 +752,12 @@
     <message name="IDS_PASSWORD_MANAGER_UI_PASSWORD_RECOVERY_SHOWN_A11Y_ANNOUNCEMENT" is_accessibility_with_no_ui="true" desc="Text announced after a proactive password recovery popup is shown">
       Recovery password shown
     </message>
+    <message name="IDS_AUTOFILL_CONTACT_INFO_TITLE" desc="Title for the Your saved info settings sub page that allows user to manage their list of saved addresses and Autofill preferences for addresses. Sentence-Cased." formatter_data="android_java">
+      Contact info
+    </message>
+    <message name="IDS_AUTOFILL_PAYMENTS_TITLE" desc="Title for the Autofill settings page that allows user to manage their list of saved payment methods and Autofill preferences for payment methods. Sentence-Cased." formatter_data="android_java">
+      Payments
+    </message>
   </if>
 
   <!-- Autofill Address Edit Dialog -->
@@ -981,6 +988,15 @@
   <message name="IDS_AUTOFILL_AI_OPT_IN_IPH_MAYBE_LATER" desc="The left of two buttons that’s essentially the user’s path to not learning more or turning on enhanced autofill. “Maybe later” conveys that the user won’t do it now but that they’ll have the choice to do it later. Localizer has existing translations of this button label.">
     Maybe later
   </message>
+  <message name="IDS_AUTOFILL_AI_VALUABLES_IPH_TITLE" desc="IPH toast for a suggestion item with an item from Brave Wallet.">
+    Now you can autofill more info from Brave Wallet
+  </message>
+  <message name="IDS_AUTOFILL_AI_VALUABLES_IPH_BODY" desc="IPH toast for a suggestion item with an item from Brave Wallet.">
+    Manage your information or turn these suggestions off in Settings
+  </message>
+  <message name="IDS_AUTOFILL_AI_VALUABLES_IPH_SCREENREADER" is_accessibility_with_no_ui="true" desc="IPH toast for a suggestion item with an item from Brave Wallet.">
+    Now you can autofill more info from Brave Wallet
+  </message>
 
   <!-- Save/ Update dialog-->
   <message name="IDS_AUTOFILL_AI_SAVE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE" desc="The title of a dialog that prompts the user to save information they just filled in on a form. For example, the user is renting a car and just filled in info about their driver’s license. When they click Submit, we offer to save the data in Brave. Depending on the form and what Brave recognizes, there might be just one or several pieces of data saved at this moment. This is a similar moment to saving a password or credit card with Brave.">
@@ -1024,14 +1040,14 @@
   <message name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE" desc="The name of the Brave Wallet feature" translateable="false">
     Brave Wallet
   </message>
-  <message name="IDS_AUTOFILL_AI_UPDATE_ENTITY_TO_WALLET_DIALOG_SUBTITLE" desc="A description that appears beneath the Update title prompt asking users whether they want to update their data stored in Brave Wallet. For example, the user previously saved information related to their passport. Now, the user is filling out a new form either with additional details associated with the passport or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the passport that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave." translateable="false">
+  <message name="IDS_AUTOFILL_AI_UPDATE_ENTITY_TO_WALLET_DIALOG_SUBTITLE" desc="A description that appears beneath the Update title prompt asking users whether they want to update their data stored in Brave Wallet. For example, the user previously saved information related to their passport. Now, the user is filling out a new form either with additional details associated with the passport or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the passport that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
     Your info is saved to <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE">$1<ex>Brave Wallet</ex></ph> for <ph name="ACCOUNT">$2<ex>alexpark@gmail.com</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_DIALOG_SUBTITLE" desc="A description that appears beneath the Save title prompt. This sentence essentially defines Autofill in Brave. We prompt the user to save their information with Brave with the promise that Brave can then help the user fill out forms more quickly using their saved info.">
     Save your info so that autofill can fill in more fields for you next time
   </message>
-  <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE" desc="A description that appears beneath the Save title prompt asking users whether they want to save their data to Brave Wallet. This sentence essentially defines Autofill in Brave. We prompt the user to save their information with Brave Wallet with the promise that Brave can then help the user fill out forms across devices more quickly using their saved info." translateable="false">
-    Save your info to fill out forms faster, across Brave services. Your info is saved to <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE">$1<ex>Brave Wallet</ex></ph> for <ph name="ACCOUNT">$2<ex>alexpark@gmail.com</ex></ph>
+  <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE" desc="A description that appears beneath the Save title prompt asking users whether they want to save their data to Brave Wallet. This sentence essentially defines Autofill in Brave. We prompt the user to save their information with Brave Wallet with the promise that Brave can then help the user fill out forms across devices more quickly using their saved info.">
+    Save your info to get things done faster, across Brave products. Your info is saved to <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE">$1<ex>Brave Wallet</ex></ph> for <ph name="ACCOUNT">$2<ex>alexpark@gmail.com</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_AI_UPDATE_ENTITY_DIALOG_UPDATED_ATTRIBUTE_ACCESSIBLE_NAME" desc="Used in entity update dialogs, as the accessible names for rows with updated attributes">
     <ph name="ATTRIBUTE_NAME">$1<ex>Passport number</ex></ph> updated

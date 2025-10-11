@@ -203,7 +203,8 @@ std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
   std::string label_text = l10n_util::GetPluralStringFUTF8(
       IDS_BRAVE_SHIELDS_ONBOARDING_LABEL_WITHOUT_COMPANIES,
       shields_data_controller->GetTotalBlockedCount());
-  replacements.push_back(shields_data_controller->GetCurrentSiteURL().host());
+  replacements.push_back(
+      std::string(shields_data_controller->GetCurrentSiteURL().host()));
 
   return base::ReplaceStringPlaceholders(label_text, replacements, nullptr);
 }

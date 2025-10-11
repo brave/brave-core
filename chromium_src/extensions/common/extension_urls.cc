@@ -15,8 +15,8 @@ namespace {
 
 bool IsDefaultWebstoreUpdateUrl(const GURL& update_url) {
   GURL store_url = GetDefaultWebstoreUpdateUrl();
-  return (update_url.host_piece() == store_url.host_piece() &&
-          update_url.path_piece() == store_url.path_piece());
+  return (update_url.host() == store_url.host() &&
+          update_url.path() == store_url.path());
 }
 
 }  // namespace

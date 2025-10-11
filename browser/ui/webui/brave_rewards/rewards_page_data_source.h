@@ -17,7 +17,7 @@ namespace brave_rewards {
 // Creates a WebUIDataSource for the Rewards page and adds it to the browser
 // context.
 void CreateAndAddRewardsPageDataSource(content::WebUI& web_ui,
-                                       const std::string& host);
+                                       std::string_view host);
 
 }  // namespace brave_rewards
 

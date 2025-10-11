@@ -117,7 +117,8 @@ class AdBlockCustomResourceProviderTest : public ::testing::Test {
     if (result.Get().empty()) {
       return base::Value(base::ListValue());
     }
-    return *base::JSONReader::Read(result.Take());
+    return *base::JSONReader::Read(result.Take(),
+                                   base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   }
 
  private:

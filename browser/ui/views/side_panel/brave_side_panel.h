@@ -60,6 +60,11 @@ class BraveSidePanel : public views::View,
   bool IsClosing();
   void DisableAnimationsForTesting() {}
 
+  template <typename T>
+  T* GetHeaderView() {
+    return views::AsViewClass<T>(header_view_.get());
+  }
+
   void set_fixed_contents_width(std::optional<int> fixed_width) {
     fixed_contents_width_ = fixed_width;
   }

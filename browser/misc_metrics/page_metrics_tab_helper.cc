@@ -53,8 +53,8 @@ void PageMetricsTabHelper::DidFinishNavigation(
     is_reload = true;
   }
   page_metrics_->IncrementPagesLoadedCount(is_reload);
-  if (navigation_handle->GetURL().host_piece() == kBraveSearchHost &&
-      navigation_handle->GetURL().path_piece() == kBraveSearchPath) {
+  if (navigation_handle->GetURL().host() == kBraveSearchHost &&
+      navigation_handle->GetURL().path() == kBraveSearchPath) {
     page_metrics_->OnBraveQuery();
   }
 }

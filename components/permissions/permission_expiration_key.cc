@@ -14,7 +14,7 @@ namespace permissions {
 
 namespace {
 
-base::Time ParseExpirationTime(const std::string& key_str) {
+base::Time ParseExpirationTime(std::string_view key_str) {
   int64_t expiration_time = 0;
   if (!base::StringToInt64(key_str, &expiration_time)) {
     return base::Time();
@@ -32,8 +32,8 @@ std::string ExpirationTimeToStr(base::Time expiration_time) {
 
 PermissionExpirationKey::PermissionExpirationKey(base::Time time)
     : time_(time) {}
-PermissionExpirationKey::PermissionExpirationKey(std::string domain)
-    : time_(base::Time::Max()), domain_(std::move(domain)) {
+PermissionExpirationKey::PermissionExpirationKey(std::string_view domain)
+    : time_(base::Time::Max()), domain_(std::string(domain)) {
   DCHECK(!domain_.empty());
 }
 PermissionExpirationKey::PermissionExpirationKey(
@@ -48,7 +48,7 @@ PermissionExpirationKey::~PermissionExpirationKey() = default;
 
 // static
 PermissionExpirationKey PermissionExpirationKey::FromString(
-    const std::string& key_str) {
+    std::string_view key_str) {
   auto expiration_time = ParseExpirationTime(key_str);
   return !expiration_time.is_null() ? PermissionExpirationKey(expiration_time)
                                     : PermissionExpirationKey(key_str);

@@ -49,20 +49,19 @@ constexpr char kGoogleURLQueryParam[] = "url";
 constexpr char kMaskedURLSuffix[] = "/ (PROTECTED)";
 
 bool ContainsForbiddenKeywords(const GURL& url) {
-  auto path_and_query =
-      base::StrCat({url.path_piece(), "?", url.query_piece()});
+  auto path_and_query = base::StrCat({url.path(), "?", url.query()});
   if (RegexUtil::GetInstance()->CheckPathAndQueryStringKeywords(
           path_and_query)) {
     return true;
   }
-  if (!url.ref_piece().empty() &&
-      RegexUtil::GetInstance()->CheckQueryStringOrRefKeywords("#" +
-                                                              url.ref())) {
+  if (!url.ref().empty() &&
+      RegexUtil::GetInstance()->CheckQueryStringOrRefKeywords(
+          base::StrCat({"#", url.ref()}))) {
     return true;
   }
-  if (!url.query_piece().empty() &&
-      RegexUtil::GetInstance()->CheckQueryStringOrRefKeywords("?" +
-                                                              url.query())) {
+  if (!url.query().empty() &&
+      RegexUtil::GetInstance()->CheckQueryStringOrRefKeywords(
+          base::StrCat({"?", url.query()}))) {
     return true;
   }
   return false;
@@ -104,23 +103,23 @@ bool IsPrivateURLLikely(const GURL& url,
     VLOG(1) << "Ignoring URL due to inclusion of credentials";
     return true;
   }
-  if (url.has_port() && url.port_piece() != "443") {
+  if (url.has_port() && url.port() != "443") {
     VLOG(1) << "Ignoring URL due to non-standard port";
     return true;
   }
   if (matching_url_details && matching_url_details->is_search_engine) {
-    if (url.has_ref() && url.ref_piece().length() > kMaxSearchEngineRefLength) {
+    if (url.has_ref() && url.ref().length() > kMaxSearchEngineRefLength) {
       VLOG(1) << "Ignoring search engine URL due to long ref";
       return true;
     }
   }
-  auto host_piece = url.host_piece();
+  std::string_view host_piece = url.host();
   if (host_piece.ends_with(kOnionSiteSuffix) ||
       host_piece.ends_with(kLocalDomainSuffix) || host_piece == kLocalhost) {
     VLOG(1) << "Ignoring URL due a local host or onion site";
     return true;
   }
-  if (IsPrivateDomainLikely(url.host_piece())) {
+  if (IsPrivateDomainLikely(url.host())) {
     VLOG(1) << "Ignoring URL due likely private domain";
     return true;
   }
@@ -187,30 +186,30 @@ bool ShouldMaskURL(const GURL& url) {
   if (RegexUtil::GetInstance()->CheckForEmail(url.spec())) {
     return true;
   }
-  if (!url.query_piece().empty()) {
-    if (url.query_piece().size() > kMaxQueryStringLength) {
+  if (!url.query().empty()) {
+    if (url.query().size() > kMaxQueryStringLength) {
       return true;
     }
-    auto query_parts = base::SplitString(
-        url.query_piece(), "&;", base::WhitespaceHandling::KEEP_WHITESPACE,
+    auto query_parts = base::SplitStringPiece(
+        url.query(), "&;", base::WhitespaceHandling::KEEP_WHITESPACE,
         base::SplitResult::SPLIT_WANT_ALL);
     if (query_parts.size() > kMaxQueryStringParts) {
       return true;
     }
     if (RegexUtil::GetInstance()->CheckForLongNumber(
-            url.query_piece(), kMaxQueryStringOrPathNumberLength)) {
+            url.query(), kMaxQueryStringOrPathNumberLength)) {
       return true;
     }
   }
-  if (!url.path_piece().empty()) {
+  if (!url.path().empty()) {
     if (RegexUtil::GetInstance()->CheckForLongNumber(
-            url.path_piece(), kMaxQueryStringOrPathNumberLength)) {
+            url.path(), kMaxQueryStringOrPathNumberLength)) {
       return true;
     }
   }
-  auto path_parts = base::SplitString(url.path_piece(), "/._ -:+;",
-                                      base::WhitespaceHandling::KEEP_WHITESPACE,
-                                      base::SPLIT_WANT_ALL);
+  auto path_parts = base::SplitStringPiece(
+      url.path(), "/._ -:+;", base::WhitespaceHandling::KEEP_WHITESPACE,
+      base::SPLIT_WANT_ALL);
   for (const auto& path_part : path_parts) {
     if (path_part.length() > kMaxPathPartLength) {
       return true;
@@ -220,11 +219,11 @@ bool ShouldMaskURL(const GURL& url) {
       return true;
     }
   }
-  auto path_segments = base::SplitString(
-      url.path_piece(), "/", base::WhitespaceHandling::KEEP_WHITESPACE,
+  auto path_segments = base::SplitStringPiece(
+      url.path(), "/", base::WhitespaceHandling::KEEP_WHITESPACE,
       base::SPLIT_WANT_ALL);
   for (const auto& path_segment : path_segments) {
-    std::string alphanumeric_path_segment = path_segment;
+    std::string alphanumeric_path_segment = std::string(path_segment);
     TransformToAlphanumeric(alphanumeric_path_segment);
     if (alphanumeric_path_segment.length() >= kMinSegmentHashCheckLength &&
         IsHashLikely(alphanumeric_path_segment)) {
@@ -243,10 +242,10 @@ std::optional<std::string> MaskURL(const GURL& url) {
     return url.spec();
   }
 
-  if (url.host_piece().find(kGoogleHostSubstring) != std::string::npos &&
+  if (url.host().find(kGoogleHostSubstring) != std::string::npos &&
       url.has_query()) {
     auto google_url_param =
-        ExtractValueFromQueryString(url.query_piece(), kGoogleURLQueryParam);
+        ExtractValueFromQueryString(url.query(), kGoogleURLQueryParam);
     if (google_url_param) {
       GURL decoded_embedded_url(*google_url_param);
       if (!decoded_embedded_url.is_valid()) {

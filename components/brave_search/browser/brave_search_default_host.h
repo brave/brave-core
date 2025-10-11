@@ -26,7 +26,7 @@ class BraveSearchDefaultHost final
   BraveSearchDefaultHost(const BraveSearchDefaultHost&) = delete;
   BraveSearchDefaultHost& operator=(const BraveSearchDefaultHost&) = delete;
 
-  BraveSearchDefaultHost(const std::string& host,
+  BraveSearchDefaultHost(std::string_view host,
                          TemplateURLService* template_url_service,
                          PrefService* prefs);
   ~BraveSearchDefaultHost() override;

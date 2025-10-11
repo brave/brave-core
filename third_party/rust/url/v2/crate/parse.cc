@@ -22,15 +22,15 @@ ParseResult ParseURL(rust::Str url_string) {
   ParseResult res;
   res.serialization = url.possibly_invalid_spec();
   res.has_host = url.has_host();
-  res.host = url.host();
+  res.host = std::string(url.host());
   res.has_path = url.has_path();
-  res.path = url.path();
+  res.path = std::string(url.path());
   res.has_fragment = url.has_ref();
-  res.fragment = url.ref();
+  res.fragment = std::string(url.ref());
   res.has_scheme = url.has_scheme();
-  res.scheme = url.scheme();
+  res.scheme = std::string(url.scheme());
   res.has_query = url.has_query();
-  res.query = url.query();
+  res.query = std::string(url.query());
   res.has_port = url.has_port();
   // Max port value is 65535 and this has already been parsed and validated
   // by GURL

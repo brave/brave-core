@@ -18,7 +18,7 @@ namespace brave_rewards {
 // The WebUI controller for the Rewards page when viewed in a tab.
 class RewardsPageUI : public content::WebUIController {
  public:
-  explicit RewardsPageUI(content::WebUI* web_ui, const std::string& host);
+  explicit RewardsPageUI(content::WebUI* web_ui, std::string_view host);
   ~RewardsPageUI() override;
 
   void BindInterface(mojo::PendingReceiver<mojom::RewardsPageHandler> receiver);

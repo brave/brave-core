@@ -6,7 +6,7 @@ import Flex from '$web-common/Flex';
 import { getLocale } from '$web-common/locale';
 import Icon from '@brave/leo/react/icon';
 import { color, font, gradient, icon, radius, spacing } from '@brave/leo/tokens/css/variables';
-import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js';
+//import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js';
 import { AutocompleteMatch } from 'gen/components/omnibox/browser/searchbox.mojom.m';
 import * as React from 'react';
 import styled from 'styled-components';
@@ -117,8 +117,8 @@ function Image({ match, isAskLeo }: { match: AutocompleteMatch, isAskLeo: boolea
 }
 
 export default function SearchResult({ match, selected, onClick }: Props) {
-  const contents = mojoString16ToString(match.swapContentsAndDescription ? match.description : match.contents)
-  const description = mojoString16ToString(match.swapContentsAndDescription ? match.contents : match.description)
+  const contents = '' // mojoString16ToString(match.swapContentsAndDescription ? match.description : match.contents)
+  const description ='' //  mojoString16ToString(match.swapContentsAndDescription ? match.contents : match.description)
   const isAskLeo = description === getLocale('searchAskLeo')
 
   const result = <Container href={match.destinationUrl.url} aria-selected={selected} onClick={e => {

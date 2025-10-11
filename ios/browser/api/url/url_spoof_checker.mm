@@ -124,7 +124,7 @@ BraveSpoofCheckerLookalikeURLMatchType const
   const url_formatter::IDNConversionResult conversion_result =
       url_formatter::UnsafeIDNToUnicodeWithDetails(
           GURL(base::SysNSStringToUTF8(url)).host());
-  Skeletons skeletons =
+  url_formatter::Skeletons skeletons =
       url_formatter::IDNSpoofChecker().GetSkeletons(conversion_result.result);
 
   NSMutableArray* array = [[NSMutableArray alloc] init];

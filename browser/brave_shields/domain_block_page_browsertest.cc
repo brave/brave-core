@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_browser_process.h"
@@ -48,7 +49,7 @@ class DomainBlockTestBase : public AdBlockServiceTest {
   }
 
   void BlockDomainByURL(const GURL& url) {
-    UpdateAdBlockInstanceWithRules("||" + url.host() + "^");
+    UpdateAdBlockInstanceWithRules(base::StrCat({"||", url.host(), "^"}));
   }
 
   bool IsShowingInterstitial() {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings/site_settings_prefs_browser_proxy.ts b/chrome/browser/resources/settings/site_settings/site_settings_prefs_browser_proxy.ts
-index fe05610737393671faab0807ca16a4574ce86ff2..e0ea9dfb36fa2865f8b536df1c32a756389d64fa 100644
+index b5d450a6f551b4c7ba678ab353a7adf364a80645..3b5c74badae9e0f561dea752a3577023334d366e 100644
 --- a/chrome/browser/resources/settings/site_settings/site_settings_prefs_browser_proxy.ts
 +++ b/chrome/browser/resources/settings/site_settings/site_settings_prefs_browser_proxy.ts
 @@ -83,6 +83,7 @@ export interface RawSiteException {

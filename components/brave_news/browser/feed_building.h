@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_FEED_BUILDING_H_
 
 #include <string>
-#include <unordered_set>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -17,11 +16,12 @@
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/prefs/pref_service.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_news {
 
 bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
-               const std::unordered_set<std::string>& history_hosts,
+               const absl::flat_hash_set<std::string>& history_hosts,
                Publishers* publishers,
                mojom::Feed* feed,
                const SubscriptionsSnapshot& subscriptions);

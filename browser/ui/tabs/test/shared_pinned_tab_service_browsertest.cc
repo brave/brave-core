@@ -422,10 +422,6 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
   chrome::ExecuteCommand(browser, IDC_CLOSE_TAB);
 
   // Then tab should be closed (if kPinnedTabToastOnClose isn't enabled)
-  if (toast_features::IsEnabled(toast_features::kPinnedTabToastOnClose)) {
-    EXPECT_EQ(browser->tab_strip_model()->count(), 2);
-  } else {
-    EXPECT_EQ(browser->tab_strip_model()->count(), 1);
-  }
+  EXPECT_EQ(browser->tab_strip_model()->count(), 2);
 }
 #endif  // !BUILDFLAG(IS_MAC)

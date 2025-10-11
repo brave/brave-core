@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index 513162c135fe5ae14e1e23ca7b976b9692ff1d19..1c499748b8c2decf12a153c688e5979f2bac8b77 100644
+index cf3e019235370626af1bc5ac18941195a8129c62..4bc5a99f2f1fde62d821a0cb46b08cf45da28e6f 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
-@@ -5277,6 +5277,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
+@@ -5266,6 +5266,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
      candidate_site_for_cookies = net::SiteForCookies(top_frame_site);
    }
  
@@ -10,7 +10,7 @@ index 513162c135fe5ae14e1e23ca7b976b9692ff1d19..1c499748b8c2decf12a153c688e5979f
    std::optional<base::UnguessableToken> nonce =
        ComputeNonce(is_credentialless, fenced_frame_nonce_for_navigation);
    return net::IsolationInfo::Create(
-@@ -5288,6 +5289,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
+@@ -5277,6 +5278,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
  std::optional<base::UnguessableToken> RenderFrameHostImpl::ComputeNonce(
      bool is_credentialless,
      std::optional<base::UnguessableToken> fenced_frame_nonce_for_navigation) {
@@ -18,7 +18,7 @@ index 513162c135fe5ae14e1e23ca7b976b9692ff1d19..1c499748b8c2decf12a153c688e5979f
    // If it's a credentialless frame tree, use its nonce even if it's within a
    // fenced frame tree to maintain the guarantee that a credentialless frame
    // tree has a unique nonce.
-@@ -5345,6 +5347,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
+@@ -5334,6 +5336,7 @@ bool RenderFrameHostImpl::IsThirdPartyStoragePartitioningEnabled(
    if (rfs_document_data_for_storage_key && unpartitioned_key_allowed &&
        rfs_document_data_for_storage_key->runtime_feature_state_read_context()
            .IsThirdPartyStoragePartitioningUserBypassEnabled()) {
@@ -26,7 +26,7 @@ index 513162c135fe5ae14e1e23ca7b976b9692ff1d19..1c499748b8c2decf12a153c688e5979f
      return false;
    }
  
-@@ -9906,6 +9909,7 @@ void RenderFrameHostImpl::CreateNewWindow(
+@@ -9902,6 +9905,7 @@ void RenderFrameHostImpl::CreateNewWindow(
          dom_storage_context, params->session_storage_namespace_id);
    }
  

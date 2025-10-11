@@ -17,7 +17,7 @@
 
 BraveNewsInternalsUI::BraveNewsInternalsUI(
     content::WebUI* web_ui,
-    const std::string& host,
+    std::string_view host,
     brave_news::BraveNewsController* controller)
     : content::WebUIController(web_ui), controller_(controller) {
   auto* source =
