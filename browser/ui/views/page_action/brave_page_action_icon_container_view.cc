@@ -30,7 +30,14 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
     return params;
   }
 
-  params.types_enabled.push_back(brave::kWaybackMachineActionIconType);
+  if (sharing_hub::HasPageAction(params.browser->profile(),
+                                 params.browser->is_type_popup())) {
+    params.types_enabled.push_back(PageActionIconType::kSharingHub);
+  }
+
+  params.types_enabled.insert(
+      std::ranges::find(params.types_enabled, PageActionIconType::kSharingHub),
+      brave::kWaybackMachineActionIconType);
 
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     // Browser could be null if the location bar was created for
@@ -38,7 +45,10 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
     if (params.browser && params.browser->is_type_normal() &&
         !params.browser->profile()->IsOffTheRecord()) {
       // Insert Playlist action before sharing hub or at the end of the vector.
-      params.types_enabled.push_back(brave::kPlaylistPageActionIconType);
+      params.types_enabled.insert(
+          std::ranges::find(params.types_enabled,
+                            PageActionIconType::kSharingHub),
+          brave::kPlaylistPageActionIconType);
     }
   }
 
