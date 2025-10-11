@@ -11,6 +11,7 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/hash/hash.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -893,6 +894,26 @@ base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url) {
 
 bool IsDeveloperModeEnabled(PrefService* profile_state) {
   return profile_state->GetBoolean(prefs::kAdBlockDeveloperMode);
+}
+
+void SetAutoShredMode(HostContentSettingsMap* map,
+                      mojom::AutoShredMode mode,
+                      const GURL& url) {
+  auto primary_pattern = content_settings::CreateDomainPattern(url);
+
+  if (!primary_pattern.IsValid()) {
+    return;
+  }
+
+  map->SetWebsiteSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      AutoShredSetting::kContentSettingsType, AutoShredSetting::ToValue(mode));
+}
+
+mojom::AutoShredMode GetAutoShredMode(HostContentSettingsMap* map,
+                                      const GURL& url) {
+  return AutoShredSetting::FromValue(map->GetWebsiteSetting(
+      url, GURL(), AutoShredSetting::kContentSettingsType));
 }
 
 }  // namespace brave_shields

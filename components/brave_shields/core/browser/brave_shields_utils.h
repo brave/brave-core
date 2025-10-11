@@ -10,6 +10,7 @@
 
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 
@@ -146,6 +147,12 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
 base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url);
 
 bool IsDeveloperModeEnabled(PrefService* profile_state);
+
+void SetAutoShredMode(HostContentSettingsMap* map,
+                      mojom::AutoShredMode mode,
+                      const GURL& url);
+mojom::AutoShredMode GetAutoShredMode(HostContentSettingsMap* map,
+                                      const GURL& url);
 
 }  // namespace brave_shields
 

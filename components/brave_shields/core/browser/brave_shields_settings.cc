@@ -162,4 +162,21 @@ bool BraveShieldsSettings::IsNoScriptEnabled(const GURL& url) {
   return control_type != ControlType::ALLOW;
 }
 
+void BraveShieldsSettings::SetDefaultAutoShredMode(mojom::AutoShredMode mode) {
+  SetAutoShredMode(mode, GURL());
+}
+
+mojom::AutoShredMode BraveShieldsSettings::GetDefaultAutoShredMode() {
+  return GetAutoShredMode(GURL());
+}
+
+void BraveShieldsSettings::SetAutoShredMode(mojom::AutoShredMode mode,
+                                            const GURL& url) {
+  brave_shields::SetAutoShredMode(&*host_content_settings_map_, mode, url);
+}
+
+mojom::AutoShredMode BraveShieldsSettings::GetAutoShredMode(const GURL& url) {
+  return brave_shields::GetAutoShredMode(&*host_content_settings_map_, url);
+}
+
 }  // namespace brave_shields
