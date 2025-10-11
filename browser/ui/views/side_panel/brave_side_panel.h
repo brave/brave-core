@@ -61,6 +61,12 @@ class BraveSidePanel : public views::View,
   void DisableAnimationsForTesting() {}
   void AddHeaderView(std::unique_ptr<views::View> view);
 
+  // Only used by tests.
+  template <typename T>
+  T* GetHeaderView() {
+    return nullptr;
+  }
+
   void set_fixed_contents_width(std::optional<int> fixed_width) {
     fixed_contents_width_ = fixed_width;
   }
