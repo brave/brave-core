@@ -29,6 +29,7 @@
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -379,6 +380,18 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
             browser()->tab_strip_model()->GetWebContentsAt(0)->GetVisibleURL());
   EXPECT_EQ(t2,
             browser()->tab_strip_model()->GetWebContentsAt(1)->GetVisibleURL());
+}
+
+// Check that the email aliases settings page opens when the command is
+// executed.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       EmailAliasesOpensSettings) {
+  auto* command_controller = browser()->command_controller();
+  ASSERT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_EMAIL_ALIASES));
+  command_controller->ExecuteCommand(IDC_SHOW_EMAIL_ALIASES);
+  EXPECT_EQ(
+      chrome::GetSettingsUrl("email-aliases"),
+      browser()->tab_strip_model()->GetActiveWebContents()->GetVisibleURL());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
