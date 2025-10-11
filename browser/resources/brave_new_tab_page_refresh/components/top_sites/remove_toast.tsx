@@ -46,10 +46,10 @@ export function RemoveToast(props: Props) {
         >
           <Icon name='info-filled' />
           <div className='text'>
-            <p>{getString('topSiteRemovedText')}</p>
+            <p>{getString(S.NEW_TAB_TOP_SITE_REMOVED_TEXT)}</p>
           </div>
           <Button onClick={props.onUndo}>
-            {getString('undoButtonLabel')}
+            {getString(S.NEW_TAB_UNDO_BUTTON_LABEL)}
           </Button>
           <button className='close' onClick={props.onClose}>
             <Icon name='close' />

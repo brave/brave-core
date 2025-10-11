@@ -79,12 +79,12 @@ export function SettingsModal(props: Props) {
 
   function getNavItemText(view: SettingsView) {
     switch (view) {
-      case 'background': return getString('backgroundSettingsTitle')
-      case 'search': return getString('searchSettingsTitle')
-      case 'top-sites': return getString('topSitesSettingsTitle')
-      case 'news': return getString('newsSettingsTitle')
-      case 'clock': return getString('clockSettingsTitle')
-      case 'widgets': return getString('widgetSettingsTitle')
+      case 'background': return getString(S.NEW_TAB_BACKGROUND_SETTINGS_TITLE)
+      case 'search': return getString(S.NEW_TAB_SEARCH_SETTINGS_TITLE)
+      case 'top-sites': return getString(S.NEW_TAB_TOP_SITES_SETTINGS_TITLE)
+      case 'news': return getString(S.BRAVE_NEWS_SETTINGS_TITLE)
+      case 'clock': return getString(S.NEW_TAB_CLOCK_SETTINGS_TITLE)
+      case 'widgets': return getString(S.NEW_TAB_WIDGET_SETTINGS_TITLE)
     }
   }
 
@@ -129,7 +129,7 @@ export function SettingsModal(props: Props) {
         backdropClickCloses={!braveNews.customizePage}
       >
         <h3>
-          {getString('settingsTitle')}
+          {getString(S.NEW_TAB_SETTINGS_TITLE)}
         </h3>
         <div className='panel-body'>
           <nav>

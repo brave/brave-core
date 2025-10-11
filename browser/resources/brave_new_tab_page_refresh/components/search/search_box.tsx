@@ -68,8 +68,8 @@ export function SearchBox(props: Props) {
             type='text'
             placeholder={
               engineHost === braveSearchHost
-                ? getString('searchBoxPlaceholderTextBrave')
-                : getString('searchBoxPlaceholderText')
+                ? getString(S.NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT_BRAVE)
+                : getString(S.NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT)
             }
             tabIndex={1}
             value={inputState.query}
