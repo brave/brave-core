@@ -236,17 +236,14 @@ void SubscriptionRenderFrameObserver::OnGetPurchaseTokenOrderId(
 std::string SubscriptionRenderFrameObserver::ExtractParam(
     const GURL& url,
     const std::string& name) const {
-  url::Component query(0, static_cast<int>(url.query_piece().length())), key,
-      value;
-  std::string_view data =
-      url.query_piece().data() ? url.query_piece().data() : "";
-  while (url::ExtractQueryKeyValue(data, &query, &key, &value)) {
-    std::string_view key_str = url.query_piece().substr(key.begin, key.len);
+  url::Component query(0, static_cast<int>(url.query().length())), key, value;
+  while (url::ExtractQueryKeyValue(url.query(), &query, &key, &value)) {
+    std::string_view key_str = url.query().substr(key.begin, key.len);
     if (key_str != name) {
       continue;
     }
 
-    return std::string(url.query_piece().substr(value.begin, value.len));
+    return std::string(url.query().substr(value.begin, value.len));
   }
   return std::string();
 }
@@ -283,8 +280,7 @@ bool SubscriptionRenderFrameObserver::IsAllowed() {
     // gets redirected to https://account.brave.com/order-link/?product=leo for
     // an actual linking where we should receive the result of linking
     if (intent.empty()) {
-      std::string_view path =
-          current_url.has_path() ? current_url.path_piece() : "";
+      std::string_view path = current_url.has_path() ? current_url.path() : "";
       if (path == kResultLandingPagePathLeo) {
         page_ = Page::kResultLandingPage;
       }

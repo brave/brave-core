@@ -95,9 +95,9 @@ bool IsBraveShieldsDown(const GURL& primary_url,
 
 // Skips everything except main frame domain and javascript urls.
 bool ShouldSkipResource(const GURL& resource_url) {
-  return (resource_url.path_piece().empty() ||
-          ((resource_url.path_piece().size() > 1) &&
-           !resource_url.path_piece().ends_with(kJavascriptExtension)));
+  return (resource_url.path().empty() ||
+          ((resource_url.path().size() > 1) &&
+           !resource_url.path().ends_with(kJavascriptExtension)));
 }
 
 }  // namespace

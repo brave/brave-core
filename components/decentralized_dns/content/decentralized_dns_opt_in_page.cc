@@ -80,7 +80,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
   const std::u16string sol_domain = base::ASCIIToUTF16(std::string(kSolDomain));
   const std::u16string eth_domain = base::ASCIIToUTF16(std::string(kEthDomain));
 
-  if (IsUnstoppableDomainsTLD(request_url_.host_piece())) {
+  if (IsUnstoppableDomainsTLD(request_url_.host())) {
     load_time_data.Set("tabTitle", l10n_util::GetStringUTF16(
                                        IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE));
     load_time_data.Set("heading", l10n_util::GetStringUTF16(
@@ -95,7 +95,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
              l10n_util::GetStringUTF16(IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE),
              infura_tou, infura_privacy_policy},
             nullptr));
-  } else if (IsENSTLD(request_url_.host_piece())) {
+  } else if (IsENSTLD(request_url_.host())) {
     load_time_data.Set("tabTitle",
                        l10n_util::GetStringUTF16(IDS_ENS_OPT_IN_TITLE));
     load_time_data.Set("heading",
@@ -109,7 +109,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
              l10n_util::GetStringUTF16(IDS_ENS_DOMAIN_PROVIDER_NAME),
              infura_tou, infura_privacy_policy},
             nullptr));
-  } else if (IsSnsTLD(request_url_.host_piece())) {
+  } else if (IsSnsTLD(request_url_.host())) {
     load_time_data.Set("tabTitle",
                        l10n_util::GetStringUTF16(IDS_SNS_OPT_IN_TITLE));
     load_time_data.Set("heading",
@@ -123,7 +123,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
     NOTREACHED();
   }
 
-  if (IsSnsTLD(request_url_.host_piece())) {
+  if (IsSnsTLD(request_url_.host())) {
     load_time_data.Set("primaryButtonText",
                        l10n_util::GetStringUTF16(
                            IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_SNS_BUTTON));

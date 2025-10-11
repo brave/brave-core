@@ -98,7 +98,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
                                              profile->GetPrefs())) {
     return net::OK;
   }
-  std::string_view origin_host(origin_url.host_piece());
+  std::string_view origin_host = origin_url.host();
   if (kFarbleAcceptLanguageExceptions.contains(origin_host)) {
     return net::OK;
   }

@@ -555,7 +555,7 @@ void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
 
   auto url = web_contents_->GetLastCommittedURL();
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-  if (kScreenshotRetrievalHosts.contains(url.host_piece())) {
+  if (kScreenshotRetrievalHosts.contains(url.host())) {
     content::RenderWidgetHostView* view =
         web_contents_->GetRenderWidgetHostView();
     if (view) {
