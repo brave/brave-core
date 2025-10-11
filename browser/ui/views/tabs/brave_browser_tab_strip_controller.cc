@@ -62,15 +62,6 @@ void BraveBrowserTabStripController::ShowContextMenuForTab(
 void BraveBrowserTabStripController::ExecuteCommandForTab(
     TabStripModel::ContextMenuCommand command_id,
     const Tab* tab) {
-  const std::optional<int> model_index = tabstrip_->GetModelIndexOf(tab);
-  if (!model_index.has_value()) {
-    return;
-  }
-
-  if (command_id == TabStripModel::CommandCloseTab) {
-    model_->CloseSelectedTabsWithSplitView();
-    return;
-  }
-
-  model_->ExecuteContextMenuCommand(model_index.value(), command_id);
+  // TODO: Handle close tab command for closing only |tab| in split tab.
+  BrowserTabStripController::ExecuteCommandForTab(command_id, tab);
 }
