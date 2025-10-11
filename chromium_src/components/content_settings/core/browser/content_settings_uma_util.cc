@@ -43,7 +43,7 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
   {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, brave_value(11)},           \
   {ContentSettingsType::BRAVE_HTTPS_UPGRADE, brave_value(12)},            \
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, brave_value(13)},      \
-  {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, brave_value(14)},         \
+  {ContentSettingsType::REMOVED_BRAVE_LOCALHOST_ACCESS, brave_value(14)},      \
   {ContentSettingsType::BRAVE_OPEN_AI_CHAT, brave_value(15)},             \
   /* Begin webcompat items */                                                \
   {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, brave_value(50)}, \

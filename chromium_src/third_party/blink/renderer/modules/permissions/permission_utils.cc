@@ -30,8 +30,6 @@
     return "brave_solana";                              \
   case PermissionName::BRAVE_GOOGLE_SIGN_IN:            \
     return "brave_google_sign_in";                      \
-  case PermissionName::BRAVE_LOCALHOST_ACCESS:          \
-    return "brave_localhost_access";                    \
   case PermissionName::BRAVE_OPEN_AI_CHAT:              \
     return "brave_open_ai_chat";                        \
   case PermissionName::BRAVE_CARDANO:                   \
