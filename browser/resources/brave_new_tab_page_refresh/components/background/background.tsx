@@ -10,8 +10,7 @@ import { openLink } from '../common/link'
 import { loadImage } from '../../lib/image_loader'
 import { useWidgetLayoutReady } from '../app_layout_ready'
 import { debounce } from '$web-common/debounce'
-import { useSearchState, useSearchActions } from '../../context/search_context'
-import { AutocompleteMatch } from '../../state/search_state'
+import { useSearchMatches, useSearchActions } from '../../context/search_context'
 
 import {
   useBackgroundState,
@@ -99,6 +98,8 @@ function ImageBackground(props: ImageBackgroundProps) {
   return <div className={classNames.join(' ')} />
 }
 
+const richMediaSearchBoxKey = 'rich-media-search-box'
+
 function SponsoredRichMediaBackground(
   props: { background: SponsoredImageBackground }
 ) {
@@ -112,9 +113,7 @@ function SponsoredRichMediaBackground(
   // TODO(https://github.com/brave/brave-browser/issues/49471): [NTP Next]
   // Refactor rich media background components.
   const searchActions = useSearchActions()
-  const searchMatches = useSearchState((s) => s.searchMatches)
-  const shouldMatchSearches =
-    useSearchMatchesReporter(frameHandle, searchMatches)
+  useSearchMatchesReporter(frameHandle)
 
   return (
     <IframeBackground
@@ -146,7 +145,7 @@ function SponsoredRichMediaBackground(
           case 'richMediaQueryBraveSearchAutocomplete': {
             const value = String(data.value ?? '')
             if (value) {
-              shouldMatchSearches()
+              searchActions.setActiveSearchInputKey(richMediaSearchBoxKey)
               searchActions.queryAutocomplete(value, 'search.brave.com')
             }
             break
@@ -223,28 +222,23 @@ function getRichMediaEventType(value: string): NewTabPageAdEventType | null {
 
 // Posts a message to the rich media background iframe containing the current
 // list of search matches.
-function useSearchMatchesReporter(
-  frameHandle?: IframeBackgroundHandle,
-  searchMatches?: AutocompleteMatch[]
-) {
-  const [shouldReport, setShouldReport] = React.useState(false)
+function useSearchMatchesReporter(frameHandle?: IframeBackgroundHandle) {
+  const searchMatches = useSearchMatches(richMediaSearchBoxKey)
 
   React.useEffect(() => {
-    if (!frameHandle || !shouldReport) {
+    if (!frameHandle || !searchMatches) {
       return
     }
 
     const postSearchMatches = debounce(() => {
       frameHandle.postMessage({
         type: 'richMediaSearchMatches',
-        value: searchMatches ?? []
+        value: searchMatches
       })
     }, 120)
 
     postSearchMatches()
-  }, [frameHandle, searchMatches, shouldReport])
-
-  return () => setShouldReport(true)
+  }, [frameHandle, searchMatches])
 }
 
 interface IframeBackgroundHandle {
