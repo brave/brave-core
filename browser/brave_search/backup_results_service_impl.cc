@@ -38,6 +38,7 @@
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "third_party/blink/public/common/navigation/navigation_policy.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
+#include "chrome/browser/ui/tab_helpers.h"
 #include "url/url_constants.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -172,36 +173,38 @@ void BackupResultsServiceImpl::FetchBackupResults(
 
     // int random_width = base::RandInt(800, 1920);
     // int random_height = base::RandInt(600, 1080);
-    // web_contents->Resize({360, 488});
+    web_contents_unique->Resize({360, 488});
 
     // Insert the web contents into the tab strip model, then immediately detach
-    auto* browser_list = BrowserList::GetInstance();
-    if (!browser_list->empty()) {
-      auto* browser = browser_list->get(0);  // Get the first browser instance
-      auto* model = browser->tab_strip_model();
+    // auto* browser_list = BrowserList::GetInstance();
+    // if (!browser_list->empty()) {
+    //   auto* browser = browser_list->get(0);  // Get the first browser instance
+    //   auto* model = browser->tab_strip_model();
 
-      // Look for a tab with about:blank and insert right before it
-      int insert_index =
-          model->count();  // Default to end if no about:blank found
-      for (int i = 0; i < model->count(); ++i) {
-        auto* existing_web_contents = model->GetWebContentsAt(i);
-        if (existing_web_contents &&
-            existing_web_contents->GetLastCommittedURL() ==
-                GURL(url::kAboutBlankURL)) {
-          LOG(ERROR) << "FetchBackupResults! Found a grouped about:blank tab";
-          insert_index = i;  // Insert right before this about:blank tab
-          break;
-        }
-      }
+    //   // Look for a tab with about:blank and insert right before it
+    //   int insert_index =
+    //       model->count();  // Default to end if no about:blank found
+    //   for (int i = 0; i < model->count(); ++i) {
+    //     auto* existing_web_contents = model->GetWebContentsAt(i);
+    //     if (existing_web_contents &&
+    //         existing_web_contents->GetLastCommittedURL() ==
+    //             GURL(url::kAboutBlankURL)) {
+    //       LOG(ERROR) << "FetchBackupResults! Found a grouped about:blank tab";
+    //       insert_index = i;  // Insert right before this about:blank tab
+    //       break;
+    //     }
+    //   }
 
-      model->InsertWebContentsAt(insert_index, std::move(web_contents_unique),
-                                 ADD_ACTIVE);
-      LOG(ERROR) << "FetchBackupResults! Inserted web contents";
-      // Detach right after attaching to take ownership back
-      web_contents_unique =
-          model->DetachWebContentsAtForInsertion(insert_index);
-      LOG(ERROR) << "FetchBackupResults! Detached web contents";
-    }
+    //   model->InsertWebContentsAt(insert_index, std::move(web_contents_unique),
+    //                              ADD_ACTIVE);
+    //   LOG(ERROR) << "FetchBackupResults! Inserted web contents";
+    //   // Detach right after attaching to take ownership back
+    //   web_contents_unique =
+    //       model->DetachWebContentsAtForInsertion(insert_index);
+    //   LOG(ERROR) << "FetchBackupResults! Detached web contents";
+    // }
+
+    TabHelpers::AttachTabHelpers(web_contents_unique.get());
 
     // auto web_preferences = web_contents->GetOrCreateWebPreferences();
     // web_preferences.supports_multiple_windows = false;

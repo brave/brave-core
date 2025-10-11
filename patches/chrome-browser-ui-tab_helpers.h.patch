@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/tab_helpers.h b/chrome/browser/ui/tab_helpers.h
+index ec26ac19c07801af29e8f755fcbc9f71be17dee1..a34054a5b59e12a81997c81113b8da68e5dbd7f9 100644
+--- a/chrome/browser/ui/tab_helpers.h
++++ b/chrome/browser/ui/tab_helpers.h
+@@ -88,6 +88,7 @@ class TabHelpers {
+   // all the associated tab helpers that are needed for the WebContents to
+   // serve in that role. It is safe to call this on a WebContents that was
+   // already adopted.
++  public:
+   static void AttachTabHelpers(content::WebContents* web_contents);
+ };
+ 
