@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/side_panel/side_panel_web_ui_view_utils.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -32,8 +31,10 @@ bool SidePanelWebUIView::HandleContextMenu(
 void SidePanelWebUIView::AddedToWidget() {
   WebView::AddedToWidget();
 
-  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
-    constexpr auto kRadius = BraveContentsViewUtil::kBorderRadius;
-    holder()->SetCornerRadii(gfx::RoundedCornersF(kRadius));
+  if (contents_wrapper_ && contents_wrapper_->web_contents()) {
+    auto* profile = Profile::FromBrowserContext(
+        contents_wrapper_->web_contents()->GetBrowserContext());
+    int border_radius = brave::GetSidePanelCornerRadius(profile);
+    holder()->SetCornerRadii(gfx::RoundedCornersF(border_radius));
   }
 }

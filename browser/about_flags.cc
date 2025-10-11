@@ -1198,14 +1198,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               webcompat::features::kBraveWebcompatExceptionsService),          \
       },                                                                       \
       {                                                                        \
-          "brave-web-view-rounded-corners",                                    \
-          "Use rounded corners on main content areas",                         \
-          "Renders the main content area and sidebar panel with rounded "      \
-          "corners, padding, and a drop shadow",                               \
-          kOsWin | kOsLinux | kOsMac,                                          \
-          FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
-      },                                                                       \
-      {                                                                        \
           "brave-override-sync-server-url",                                    \
           "Override Brave Sync server URL",                                    \
           "Allows you to use a self-hosted server with Brave Sync. You can "   \

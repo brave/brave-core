@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_WEB_UI_VIEW_UTILS_H_
 
 class GURL;
+class Profile;
 
 namespace brave {
 
@@ -14,6 +15,9 @@ namespace brave {
 // URL Returns true for AI Chat URLs to enable features like spell check,
 // copy/paste, etc.
 bool ShouldEnableContextMenu(const GURL& url);
+
+// Returns the corner radius for the side panel.
+int GetSidePanelCornerRadius(Profile* profile);
 
 }  // namespace brave
 
