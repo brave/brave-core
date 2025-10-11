@@ -30,6 +30,7 @@
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
@@ -195,6 +196,15 @@ void AIChatUI::BindInterface(
   bookmarks_page_handler_ = std::make_unique<ai_chat::BookmarksPageHandler>(
       BookmarkModelFactory::GetForBrowserContext(profile_),
       std::move(pending_receiver));
+}
+
+void AIChatUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> pending_receiver) {
+  history_ui_handler_ = std::make_unique<ai_chat::HistoryUIHandler>(
+      std::move(pending_receiver), HistoryServiceFactory::GetForProfile(
+                                       Profile::FromBrowserContext(profile_),
+                                       ServiceAccessType::EXPLICIT_ACCESS));
+  CHECK(history_ui_handler_);
 }
 
 bool AIChatUIConfig::IsWebUIEnabled(content::BrowserContext* browser_context) {
