@@ -238,7 +238,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillLoyaltyCard,
 #if !BUILDFLAG(IS_ANDROID)
-      &toast_features::kPinnedTabToastOnClose,
       &translate::kTFLiteLanguageDetectionEnabled,
 #endif
       &webapps::features::kWebAppsEnableMLModelForPromotion,
