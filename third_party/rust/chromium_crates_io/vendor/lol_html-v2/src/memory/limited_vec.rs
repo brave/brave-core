@@ -21,8 +21,27 @@ impl<T> LimitedVec<T> {
     }
 
     pub fn push(&mut self, element: T) -> Result<(), MemoryLimitExceededError> {
-        self.limiter.increase_usage(size_of::<T>())?;
-        self.vec.push(element);
+        #[allow(clippy::branches_sharing_code)]
+        if self.vec.capacity() - self.vec.len() >= 1 {
+            // the two push calls are optimized into one, but need to be two so each gets its own capacity hint
+            self.vec.push(element);
+        } else {
+            // calculating the new capacity manually to check it before allocation
+            let additional = self.vec.capacity().max(Self::min_capacity());
+            let new_capacity = self.vec.capacity() + additional;
+            let additional_bytes = additional
+                .checked_mul(size_of::<T>())
+                .ok_or(MemoryLimitExceededError)?;
+            self.limiter.increase_usage(additional_bytes)?;
+
+            // exact to reserve what has been accounted for.
+            // not bothering with decrease_usage on real OOM, since the library won't recover anyway
+            self.vec
+                .try_reserve_exact(additional)
+                .map_err(|_| MemoryLimitExceededError)?;
+            debug_assert_eq!(new_capacity, self.vec.capacity());
+            self.vec.push(element);
+        }
         Ok(())
     }
 
@@ -50,23 +69,16 @@ impl<T> LimitedVec<T> {
     where
         R: RangeBounds<usize>,
     {
-        use std::ops::Bound::*;
-
-        let start = match range.start_bound() {
-            Included(&n) => n,
-            Excluded(&n) => n + 1,
-            Unbounded => 0,
-        };
-
-        let end = match range.end_bound() {
-            Included(&n) => n + 1,
-            Excluded(&n) => n,
-            Unbounded => self.len(),
-        };
-
-        self.limiter.decrease_usage(size_of::<T>() * (end - start));
-
         self.vec.drain(range)
+    }
+
+    const fn min_capacity() -> usize {
+        let items = 128 / size_of::<T>();
+        if items >= 8 {
+            items
+        } else {
+            8
+        }
     }
 }
 
@@ -75,21 +87,24 @@ impl<T> Deref for LimitedVec<T> {
 
     #[inline]
     fn deref(&self) -> &Self::Target {
-        self.vec.as_slice()
+        &self.vec
     }
 }
 
 impl<T> Index<usize> for LimitedVec<T> {
     type Output = T;
 
+    #[inline]
+    #[track_caller]
     fn index(&self, index: usize) -> &Self::Output {
-        &self.vec[index]
+        Index::index(&self.vec, index)
     }
 }
 
 impl<T> Drop for LimitedVec<T> {
     fn drop(&mut self) {
-        self.limiter.decrease_usage(size_of::<T>() * self.vec.len());
+        self.limiter
+            .decrease_usage(size_of::<T>() * self.vec.capacity());
     }
 }
 
@@ -98,74 +113,102 @@ mod tests {
     use super::super::SharedMemoryLimiter;
     use super::*;
 
-    #[test]
-    fn current_usage() {
-        {
-            let limiter = SharedMemoryLimiter::new(10);
-            let mut vec_u8: LimitedVec<u8> = LimitedVec::new(limiter.clone());
+    fn test_ty<T: Copy + Default>() -> (LimitedVec<T>, SharedMemoryLimiter) {
+        let initial_capacity = LimitedVec::<T>::min_capacity();
+        // allow 2x capacity to be able to observe growth
+        let limiter = SharedMemoryLimiter::new(2 * initial_capacity * size_of::<T>());
+        let vec1 = LimitedVec::<T>::new(limiter.clone());
+        let mut vec = LimitedVec::<T>::new(limiter.clone());
 
-            vec_u8.push(1).unwrap();
-            vec_u8.push(2).unwrap();
-            assert_eq!(limiter.current_usage(), 2);
+        assert_eq!(0, limiter.current_usage());
+        assert_eq!(0, vec1.vec.capacity());
+        drop(vec1);
+
+        vec.push(Default::default()).unwrap();
+        assert_eq!(initial_capacity, vec.vec.capacity());
+        assert_eq!(
+            limiter.current_usage(),
+            vec.vec.capacity() * size_of::<T>(),
+            "T={}",
+            size_of::<T>()
+        );
+        drop(vec);
+
+        assert_eq!(0, limiter.current_usage());
+        let mut vec = LimitedVec::<T>::new(limiter.clone());
+        for _ in 0..3 {
+            vec.push(Default::default()).unwrap();
+            assert_eq!(initial_capacity, vec.vec.capacity());
+            assert_eq!(
+                limiter.current_usage(),
+                vec.vec.capacity() * size_of::<T>(),
+                "T={}",
+                size_of::<T>()
+            );
         }
 
-        {
-            let limiter = SharedMemoryLimiter::new(10);
-            let mut vec_u32: LimitedVec<u32> = LimitedVec::new(limiter.clone());
+        vec.drain(1..);
+        assert_eq!(limiter.current_usage(), vec.vec.capacity() * size_of::<T>());
+        vec.drain(..);
+        assert_eq!(limiter.current_usage(), vec.vec.capacity() * size_of::<T>());
 
-            vec_u32.push(1).unwrap();
-            vec_u32.push(2).unwrap();
-            assert_eq!(limiter.current_usage(), 8);
+        for _ in 0..initial_capacity {
+            assert_eq!(initial_capacity, vec.vec.capacity());
+            vec.push(Default::default()).unwrap();
+            assert_eq!(limiter.current_usage(), vec.vec.capacity() * size_of::<T>());
         }
+
+        for _ in 0..initial_capacity {
+            vec.push(Default::default()).unwrap();
+            assert_eq!(initial_capacity * 2, vec.vec.capacity());
+            assert_eq!(limiter.current_usage(), vec.vec.capacity() * size_of::<T>());
+        }
+        (vec, limiter)
     }
 
     #[test]
-    fn max_limit() {
-        let limiter = SharedMemoryLimiter::new(2);
-        let mut vector: LimitedVec<u8> = LimitedVec::new(limiter);
+    fn test_too_low_limit() {
+        let mut vec = LimitedVec::<u8>::new(SharedMemoryLimiter::new(0));
+        assert!(vec.push(0).is_err());
 
-        vector.push(1).unwrap();
-        vector.push(2).unwrap();
+        let mut vec = LimitedVec::<u16>::new(SharedMemoryLimiter::new(1));
+        assert!(vec.push(0).is_err());
 
-        let err = vector.push(3).unwrap_err();
-
-        assert_eq!(err, MemoryLimitExceededError);
+        let mut vec = LimitedVec::<[u8; 257]>::new(SharedMemoryLimiter::new(256));
+        assert!(vec.push([0; 257]).is_err());
     }
 
     #[test]
-    fn drop() {
-        let limiter = SharedMemoryLimiter::new(1);
+    fn test_limit() {
+        let (mut vec, limiter) = test_ty::<u8>();
+        assert!(vec.push(0).is_err());
+        assert!(limiter.current_usage() >= vec.vec.capacity() * size_of::<u8>());
 
-        {
-            let mut vector: LimitedVec<u8> = LimitedVec::new(limiter.clone());
+        let (mut vec, limiter) = test_ty::<u64>();
+        assert!(vec.push(0).is_err());
+        assert!(limiter.current_usage() >= vec.vec.capacity() * size_of::<u64>());
 
-            vector.push(1).unwrap();
-            assert_eq!(limiter.current_usage(), 1);
-        }
+        let (mut vec, limiter) = test_ty::<[u8; 7]>();
+        assert!(vec.push(Default::default()).is_err());
+        assert!(limiter.current_usage() >= vec.vec.capacity() * size_of::<[u8; 7]>());
 
+        let (mut vec, limiter) = test_ty::<[u128; 32]>();
+        assert!(vec.push(Default::default()).is_err());
+        assert!(limiter.current_usage() >= vec.vec.capacity() * size_of::<[u128; 32]>());
+    }
+
+    #[test]
+    fn test_drop() {
+        let (_, limiter) = test_ty::<u8>();
         assert_eq!(limiter.current_usage(), 0);
-    }
 
-    #[test]
-    fn drain() {
-        let limiter = SharedMemoryLimiter::new(10);
-        let mut vector: LimitedVec<u8> = LimitedVec::new(limiter.clone());
-
-        vector.push(1).unwrap();
-        vector.push(2).unwrap();
-        vector.push(3).unwrap();
-        assert_eq!(limiter.current_usage(), 3);
-
-        vector.drain(0..3);
+        let (_, limiter) = test_ty::<u64>();
         assert_eq!(limiter.current_usage(), 0);
 
-        vector.push(1).unwrap();
-        vector.push(2).unwrap();
-        vector.push(3).unwrap();
-        vector.push(4).unwrap();
-        assert_eq!(limiter.current_usage(), 4);
+        let (_, limiter) = test_ty::<[u8; 7]>();
+        assert_eq!(limiter.current_usage(), 0);
 
-        vector.drain(1..=2);
-        assert_eq!(limiter.current_usage(), 2);
+        let (_, limiter) = test_ty::<[u128; 32]>();
+        assert_eq!(limiter.current_usage(), 0);
     }
 }

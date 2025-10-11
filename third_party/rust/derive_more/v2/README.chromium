@@ -1,0 +1,10 @@
+Name: derive_more
+URL: https://crates.io/crates/derive_more
+Version: 2.0.1
+Revision: a78d8ee41dc4c5fd73572b65dee4cc1369a4c6f1
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/derive_more-v2/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Adds #[derive(x)] macros for more traits
