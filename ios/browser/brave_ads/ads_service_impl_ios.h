@@ -103,7 +103,7 @@ class AdsServiceImplIOS : public AdsService {
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      bool should_metrics_fallback_to_p3a,
+      mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) override;
 

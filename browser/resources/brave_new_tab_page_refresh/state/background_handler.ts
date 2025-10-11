@@ -137,7 +137,7 @@ export function createBackgroundHandler(
           sponsoredImageBackground.wallpaperId,
           sponsoredImageBackground.creativeInstanceId,
           sponsoredImageBackground.logo.destinationUrl,
-          sponsoredImageBackground.shouldMetricsFallbackToP3a);
+          sponsoredImageBackground.metricType);
       }
     },
 
@@ -149,7 +149,7 @@ export function createBackgroundHandler(
       sponsoredRichMediaAdEventHandler.maybeReportRichMediaAdEvent(
         sponsoredImageBackground.wallpaperId,
         sponsoredImageBackground.creativeInstanceId,
-        sponsoredImageBackground.shouldMetricsFallbackToP3a,
+        sponsoredImageBackground.metricType,
         type);
     }
   }
