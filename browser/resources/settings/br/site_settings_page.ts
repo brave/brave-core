@@ -14,7 +14,7 @@ import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {loadTimeData} from '../i18n_setup.js'
 import {routes} from '../route.js'
 import {ContentSettingsTypes} from '../site_settings/constants.js'
-import {SettingsSiteSettingsPageElement} from '../site_settings_page/site_settings_page.js'
+import {SettingsSiteSettingsPageElement} from '../site_settings/site_settings_page.js'
 
 const PERMISSIONS_BASIC_REMOVE_IDS = [
   ContentSettingsTypes.STORAGE_ACCESS,
