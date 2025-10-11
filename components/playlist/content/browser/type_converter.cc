@@ -87,7 +87,7 @@ void MigratePlaylistOrder(const base::Value::Dict& playlists,
 
   base::flat_set<std::string> removed_ids;
   for (const auto& existing_id_value : order) {
-    auto existing_id = existing_id_value.GetString();
+    const auto& existing_id = existing_id_value.GetString();
     if (base::Contains(missing_ids, existing_id)) {
       missing_ids.erase(existing_id);
     } else {
