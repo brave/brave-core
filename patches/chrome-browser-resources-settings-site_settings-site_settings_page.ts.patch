@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/site_settings/site_settings_page.ts b/chrome/browser/resources/settings/site_settings/site_settings_page.ts
+index be4ba172c249c85528039676f8264a294e56e470..6dc0f941c5e1a1bdf5006d49ac8eb6793029e496 100644
+--- a/chrome/browser/resources/settings/site_settings/site_settings_page.ts
++++ b/chrome/browser/resources/settings/site_settings/site_settings_page.ts
+@@ -9,6 +9,7 @@
+  */
+ 
+ import 'chrome://resources/cr_elements/icons.html.js';
++import '../br/config.js'
+ import 'chrome://resources/cr_elements/cr_collapse/cr_collapse.js';
+ import 'chrome://resources/cr_elements/cr_expand_button/cr_expand_button.js';
+ import 'chrome://resources/cr_elements/cr_link_row/cr_link_row.js';
