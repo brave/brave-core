@@ -18,7 +18,34 @@ using BraveSharingHubTest = InProcessBrowserTest;
 
 namespace sharing_hub {
 
+IN_PROC_BROWSER_TEST_F(BraveSharingHubTest, SharingHubIconVisibility) {
+  views::View* sharing_hub_icon =
+      BrowserView::GetBrowserViewForBrowser(browser())
+          ->toolbar_button_provider()
+          ->GetPageActionIconView(PageActionIconType::kSharingHub);
+  ASSERT_TRUE(sharing_hub_icon);
+
+  // No icon.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab/")));
+  EXPECT_FALSE(sharing_hub_icon->GetVisible());
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://settings/")));
+  EXPECT_FALSE(sharing_hub_icon->GetVisible());
+
+  // Visible icon.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com/")));
+  EXPECT_TRUE(sharing_hub_icon->GetVisible());
+}
+
 IN_PROC_BROWSER_TEST_F(BraveSharingHubTest, CopyCommandsOrder) {
+  views::View* sharing_hub_icon =
+      BrowserView::GetBrowserViewForBrowser(browser())
+          ->toolbar_button_provider()
+          ->GetPageActionIconView(PageActionIconType::kSharingHub);
+  ASSERT_TRUE(sharing_hub_icon);
+
   {
     ASSERT_TRUE(
         ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com/")));
