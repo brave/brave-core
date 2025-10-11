@@ -674,9 +674,15 @@ class SidebarBrowserWithSplitViewTest
         BrowserView::GetBrowserViewForBrowser(browser()));
   }
 
+  bool IsRoundedCornersEnabled() const {
+    return base::FeatureList::IsEnabled(
+        ::features::kBraveWebViewRoundedCorners);
+  }
+
   bool IsBraveSplitViewEnabled() const {
     return base::FeatureList::IsEnabled(tabs::features::kBraveSplitView);
   }
+
   bool IsSideBySideEnabled() const {
     return base::FeatureList::IsEnabled(::features::kSideBySide);
   }
@@ -705,7 +711,15 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // with that mouse position when sidebar is on right side.
   auto contents_container_rect = contents_container->GetBoundsInScreen();
   gfx::Point mouse_position = contents_container_rect.top_right();
-  mouse_position.Offset(-2, 2);
+
+  // If rounded corners is enabled, sidebar hover area is not overlapped
+  // with contents container as contents margin is thicker than that hot corner.
+  // Adjust mouse position to make it inside the sidebar hot corner.
+  if (IsRoundedCornersEnabled()) {
+    mouse_position.Offset(2, 2);
+  } else {
+    mouse_position.Offset(-2, 2);
+  }
   EXPECT_TRUE(
       sidebar_container->PreHandleMouseEvent(gfx::PointF(mouse_position)));
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
@@ -722,7 +736,11 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
 
   // Set mouse position inside the mouse hover area to check sidebar UI is shown
   // with that mouse position when sidebar is on left side.
-  mouse_position.Offset(2, 2);
+  if (IsRoundedCornersEnabled()) {
+    mouse_position.Offset(-2, 2);
+  } else {
+    mouse_position.Offset(2, 2);
+  }
   EXPECT_TRUE(
       sidebar_container->PreHandleMouseEvent(gfx::PointF(mouse_position)));
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
@@ -781,7 +799,15 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
 
   // Check left split view's left hot corner handles.
   mouse_position = left_split_view->GetBoundsInScreen().origin();
-  mouse_position.Offset(2, 2);
+
+  // If split view is active, rounded corner is applied.
+  if (IsSideBySideEnabled() || IsRoundedCornersEnabled()) {
+    mouse_position.Offset(-2, 2);
+  } else {
+    // We don't apply rounded corner for brave split view as
+    // it's deprecated.
+    mouse_position.Offset(2, 2);
+  }
   EXPECT_TRUE(
       sidebar_container->PreHandleMouseEvent(gfx::PointF(mouse_position)));
 
