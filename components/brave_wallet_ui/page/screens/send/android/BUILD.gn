@@ -14,6 +14,10 @@ transpile_web_ui("brave_wallet_send_page_ui") {
         rebase_path("send.tsx"),
       ] ]
   resource_name = "brave_wallet_send_page"
+  data = [
+    "//brave/components/brave_wallet_ui/",
+    "//brave/components/common/",
+  ]
   deps = [
     "//brave/components/brave_wallet/common:mojom_js",
     "//brave/components/brave_wallet/common:preprocess_mojo",

@@ -139,6 +139,11 @@ template("transpile_web_ui") {
     # https://chromium.googlesource.com/chromium/src/build/+/HEAD/docs/writing_gn_templates.md#inputs-and-depfiles
     depfile = "${target_gen_dir}/${target_name}.d"
 
+    # This file contains the data entries and describe the folders and files (indirectly) imported by the entry point
+    # This is important to ensure gn knows about these implicit dependencies.
+    # We write those to json and cross reference them in a later stage to ensure the list is complete
+    data_paths_file = "${target_gen_dir}/${target_name}.data_deps.json"
+
     resource_name = invoker.resource_name
 
     # Allow target to define custom path
@@ -168,6 +173,7 @@ template("transpile_web_ui") {
       # depfile header format is correct (see docs above).
       "--output_path=" + rebase_path(gen_output_dir, root_build_dir),
       "--root_gen_dir=" + rebase_path(root_gen_dir),
+      "--data_paths_file=" + rebase_path(data_paths_file),
       "--grd_name=$grd_name",
       "--resource_name=$resource_name",
       "--depfile_path=" + rebase_path(depfile),
@@ -224,10 +230,14 @@ template("transpile_web_ui") {
 
     forward_variables_from(invoker,
                            [
+                             "data",
+                             "data_deps",
                              "public_deps",
                              "testonly",
                              "visibility",
                            ])
+
+    write_file(data_paths_file, invoker.data, "json")
   }
 }
 
@@ -273,6 +283,8 @@ template("pack_web_resources") {
                            [
                              "deps",
                              "public_deps",
+                             "data",
+                             "data_deps",
                              "testonly",
                              "visibility",
                            ])
