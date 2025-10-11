@@ -6,7 +6,9 @@
 #include <string_view>
 
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/tab_contents/tab_util.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 // Needed to prevent overriding url_typed_with_http_scheme
 #include "chrome/browser/ui/location_bar/location_bar.h"
@@ -52,8 +54,20 @@ bool IsURLAllowedInIncognitoBraveImpl(const GURL& url) {
 #define BRAVE_IS_URL_ALLOWED_IN_INCOGNITO     \
   if (!IsURLAllowedInIncognitoBraveImpl(url)) \
     return false;
+
 #define BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL UpdateBraveScheme(params);
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#define GetSiteInstanceForNewTab(...) \
+  GetSiteInstanceForNewTab(__VA_ARGS__, params.storage_partition_config)
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 #include <chrome/browser/ui/browser_navigator.cc>
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#undef GetSiteInstanceForNewTab
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 #undef BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
 #undef BRAVE_IS_URL_ALLOWED_IN_INCOGNITO
 #undef url_typed_with_http_scheme
