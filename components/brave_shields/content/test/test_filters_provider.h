@@ -12,8 +12,6 @@
 #include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
-#include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
-#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_shields {
 
@@ -26,9 +24,9 @@ class TestFiltersProvider : public AdBlockFiltersProvider {
                       bool is_initialized = true);
   ~TestFiltersProvider() override;
 
-  void LoadFilterSet(
+  void LoadFilters(
       base::OnceCallback<void(
-          base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
+          std::vector<unsigned char> filter_buffer, uint8_t permission_mask)>) override;
 
   void Initialize();
   bool IsInitialized() const override;

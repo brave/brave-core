@@ -65,37 +65,22 @@ void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
     return;
   }
   auto on_loaded_cb = base::BindOnce(
-      &AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded,
+      &AdBlockService::SourceProviderObserver::OnDATCreated,
       weak_factory_.GetWeakPtr());
   if (is_filter_provider_manager_) {
     static_cast<AdBlockFiltersProviderManager*>(filters_provider_.get())
-        ->LoadFilterSetForEngine(is_default_engine, std::move(on_loaded_cb));
+        ->LoadFiltersForEngine(is_default_engine, std::move(on_loaded_cb));
   } else {
-    filters_provider_->LoadFilterSet(std::move(on_loaded_cb));
+    // Hopefully we can remove this case, although it is currently used by other legacy
+    // tests (i.e. other than AdBlockServiceTest)
+    CHECK(false);
   }
 }
 
-void AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded(
-    base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
-  task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(
-          [](base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb) {
-            auto filter_set = std::make_unique<rust::Box<adblock::FilterSet>>(
-                adblock::new_filter_set());
-            std::move(cb).Run(filter_set.get());
-            return filter_set;
-          },
-          std::move(cb)),
-      base::BindOnce(
-          &AdBlockService::SourceProviderObserver::OnFilterSetCreated,
-          weak_factory_.GetWeakPtr()));
-}
-
-void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
-    std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
-  TRACE_EVENT("brave.adblock", "OnFilterSetCreated");
-  filter_set_ = std::move(filter_set);
+void AdBlockService::SourceProviderObserver::OnDATCreated(
+    const std::vector<unsigned char>& verified_engine_dat) {
+  TRACE_EVENT("brave.adblock", "OnDATCreated");
+  pending_dat_ = std::move(verified_engine_dat);
   // multiple AddObserver calls are ignored
   resource_provider_->AddObserver(this);
   resource_provider_->LoadResources(base::BindOnce(
@@ -104,7 +89,7 @@ void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
 
 void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
     const std::string& resources_json) {
-  if (!filter_set_) {
+  if (pending_dat_.empty()) {
     task_runner_->PostTask(
         FROM_HERE,
         base::BindOnce(&AdBlockEngine::UseResources,
@@ -112,13 +97,13 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
   } else {
     auto engine_load_callback = base::BindOnce(
         [](base::WeakPtr<AdBlockEngine> engine,
-           std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
+           std::vector<unsigned char> dat_buffer,
            const std::string& resources_json) {
           if (engine) {
-            engine->Load(std::move(*filter_set.get()), resources_json);
+            engine->Load(true, dat_buffer, resources_json);
           }
         },
-        adblock_engine_->AsWeakPtr(), std::move(filter_set_), resources_json);
+        adblock_engine_->AsWeakPtr(), std::move(pending_dat_), resources_json);
     task_runner_->PostTask(FROM_HERE, std::move(engine_load_callback));
   }
 }
