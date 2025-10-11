@@ -117,7 +117,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 }
 
 bool UrlPathEndsWithSlash(const GURL& base_url) {
-  auto path_piece = base_url.path_piece();
+  std::string_view path_piece = base_url.path();
   return !path_piece.empty() && path_piece.back() == '/';
 }
 

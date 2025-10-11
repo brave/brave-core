@@ -67,10 +67,10 @@ DecentralizedDnsNavigationThrottle::~DecentralizedDnsNavigationThrottle() =
 content::NavigationThrottle::ThrottleCheckResult
 DecentralizedDnsNavigationThrottle::WillStartRequest() {
   GURL url = navigation_handle()->GetURL();
-  if ((IsUnstoppableDomainsTLD(url.host_piece()) &&
+  if ((IsUnstoppableDomainsTLD(url.host()) &&
        IsUnstoppableDomainsResolveMethodAsk(local_state_)) ||
-      (IsENSTLD(url.host_piece()) && IsENSResolveMethodAsk(local_state_)) ||
-      (IsSnsTLD(url.host_piece()) && IsSnsResolveMethodAsk(local_state_))) {
+      (IsENSTLD(url.host()) && IsENSResolveMethodAsk(local_state_)) ||
+      (IsSnsTLD(url.host()) && IsSnsResolveMethodAsk(local_state_))) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
         base::BindOnce(&DecentralizedDnsNavigationThrottle::ShowInterstitial,

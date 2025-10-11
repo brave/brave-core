@@ -233,7 +233,7 @@ class BraveExtensionsManifestV2InstallerBrowserTest
   void SetUpOnMainThread() override {
     auto get_extension = [](const net::test_server::HttpRequest& request)
         -> std::unique_ptr<net::test_server::HttpResponse> {
-      if (request.GetURL().path_piece() != "/extensions") {
+      if (request.GetURL().path() != "/extensions") {
         return nullptr;
       }
 

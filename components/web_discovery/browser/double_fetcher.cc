@@ -98,7 +98,7 @@ void DoubleFetcher::OnFetchTimer(const base::Value& request_data) {
   GURL url(*url_str);
 
   if (brave_search::IsBackupResultURLAllowed(url) &&
-      base::StartsWith(url.path_piece(), kSearchPath)) {
+      base::StartsWith(url.path(), kSearchPath)) {
     CHECK(backup_results_service_);
     backup_results_service_->FetchBackupResults(
         url, {},

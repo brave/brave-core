@@ -62,15 +62,15 @@ std::unique_ptr<net::test_server::HttpResponse> HandleOnionLocation(
     </html>
   )html");
 
-  if (request.GetURL().path_piece() == kTestOnionPath) {
+  if (request.GetURL().path() == kTestOnionPath) {
     http_response->AddCustomHeader("onion-location", kTestOnionURL);
     // Subsequent headers should be ignored.
     http_response->AddCustomHeader("onion-location", kTestOnionURL2);
-  } else if (request.GetURL().path_piece() == kTestInvalidScheme) {
+  } else if (request.GetURL().path() == kTestInvalidScheme) {
     http_response->AddCustomHeader("onion-location", kTestInvalidSchemeURL);
-  } else if (request.GetURL().path_piece() == kTestNotOnion) {
+  } else if (request.GetURL().path() == kTestNotOnion) {
     http_response->AddCustomHeader("onion-location", kTestNotOnionURL);
-  } else if (request.GetURL().path_piece() == kTestErrorPage) {
+  } else if (request.GetURL().path() == kTestErrorPage) {
     http_response->AddCustomHeader("onion-location", kTestAttackerOnionURL);
     http_response->set_content(R"html(
         <html>
@@ -82,7 +82,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleOnionLocation(
           </head>
         </html>
       )html");
-  } else if (request.GetURL().path_piece() == kDownload) {
+  } else if (request.GetURL().path() == kDownload) {
     http_response->set_content_type("application/octet-stream");
     http_response->set_content("Some data");
     http_response->AddCustomHeader("onion-location", kTestAttackerOnionURL);

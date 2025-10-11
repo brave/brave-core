@@ -110,8 +110,8 @@ void BraveSanitizedImageSource::OnImageLoaded(
   }
 
   if (loader->NetError() == net::OK && body &&
-      request_attributes.image_url.host_piece() == pcdn_domain_ &&
-      request_attributes.image_url.path_piece().ends_with(".pad")) {
+      request_attributes.image_url.host() == pcdn_domain_ &&
+      request_attributes.image_url.path().ends_with(".pad")) {
     std::string_view body_payload(body->data(), body->size());
     if (!brave::private_cdn::RemovePadding(&body_payload)) {
       std::move(callback).Run(nullptr);
