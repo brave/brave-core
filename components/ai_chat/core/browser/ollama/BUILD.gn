@@ -1,0 +1,50 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("ollama") {
+  sources = [
+    "ollama_client.cc",
+    "ollama_client.h",
+    "ollama_model_fetcher.cc",
+    "ollama_model_fetcher.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//mojo/public/cpp/bindings",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp",
+    "//third_party/abseil-cpp:absl",
+    "//url",
+  ]
+
+  public_deps = [ "//base" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "ollama_client_unittest.cc",
+    "ollama_model_fetcher_unittest.cc",
+  ]
+
+  deps = [
+    ":ollama",
+    "//base/test:test_support",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//components/os_crypt/sync:test_support",
+    "//components/sync_preferences:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gtest",
+  ]
+}

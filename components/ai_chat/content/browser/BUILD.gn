@@ -20,6 +20,8 @@ static_library("browser") {
     "full_screenshotter.h",
     "model_service_factory.cc",
     "model_service_factory.h",
+    "ollama_client_factory.cc",
+    "ollama_client_factory.h",
     "page_content_fetcher.cc",
     "page_content_fetcher.h",
     "pdf_utils.cc",
@@ -29,6 +31,7 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/browser/ollama",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common:common_impl",
     "//brave/components/ai_chat/core/common/mojom",
