@@ -13,6 +13,8 @@
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
+#include "brave/components/psst/browser/core/psst_consent_data.h"
+#include "brave/components/psst/common/psst_permission_schema.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -39,10 +41,16 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   class PsstUiDelegate {
    public:
     virtual ~PsstUiDelegate() = default;
+    // Show the consent dialog to the user with the provided data.
+    virtual void Show(PsstConsentData dialog_data) = 0;
     // Update the UI state based on the applied tasks and progress.
     virtual void UpdateTasks(long progress,
                              const std::vector<PolicyTask>& applied_tasks,
                              const mojom::PsstStatus status) = 0;
+    // Allows access to the PSST permission object
+    virtual std::optional<PsstPermissionInfo> GetPsstPermissionInfo(
+        const url::Origin& origin,
+        const std::string& user_id) = 0;
   };
 
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreateForWebContents(
