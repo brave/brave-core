@@ -465,7 +465,8 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
   // Verify tab was added normally (not wrapped in TreeTabNode).
   auto* added_tab =
       tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
-  EXPECT_TRUE(added_tab->GetOpener()) << "ADD_INHERIT_OPENER forces opener";
+  EXPECT_TRUE(static_cast<tabs::TabModel*>(added_tab)->opener())
+      << "ADD_INHERIT_OPENER forces opener";
   EXPECT_EQ(added_tab->GetParentCollection()->type(),
             tabs::TabCollection::Type::UNPINNED);
 
@@ -478,8 +479,6 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
   tab_interface =
       std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
   ASSERT_EQ(nullptr, tab_interface->opener());
-  ASSERT_EQ(nullptr, tab_interface->GetOpener());
-  ASSERT_EQ(tab_interface->GetOpener(), tab_interface->opener());
 
   // Add tab in tree mode without opener.
   // note that PAGE_TRANSITION_AUTO_BOOKMARK is used as LINK or TYPED transition
@@ -539,7 +538,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
                            ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
 
   added_tab = tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
-  EXPECT_EQ(opener_tab, added_tab->GetOpener());
+  EXPECT_EQ(opener_tab, static_cast<tabs::TabModel*>(added_tab)->opener());
   EXPECT_EQ(added_tab->GetParentCollection()->type(),
             tabs::TabCollection::Type::TREE_NODE);
   EXPECT_EQ(static_cast<const TreeTabNode*>(opener_tab->GetParentCollection())
@@ -570,7 +569,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
   // Verify tab was added and wrapped in its own TreeTabNode, but not as child
   // of the opener's TreeTabNode.
   added_tab = tab_strip_model().GetTabAtIndex(tab_strip_model().count() - 1);
-  EXPECT_EQ(opener_tab, added_tab->GetOpener());
+  EXPECT_EQ(opener_tab, static_cast<tabs::TabModel*>(added_tab)->opener());
   EXPECT_EQ(added_tab->GetParentCollection()->type(),
             tabs::TabCollection::Type::TREE_NODE);
   EXPECT_EQ(added_tab->GetParentCollection()->GetParentCollection(),

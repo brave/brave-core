@@ -23,7 +23,8 @@ void BraveTabStripCollection::AddTabRecursive(
     std::unique_ptr<TabInterface> tab,
     size_t index,
     std::optional<tab_groups::TabGroupId> new_group_id,
-    bool new_pinned_state) {
+    bool new_pinned_state,
+    TabInterface* opener) {
   if (!in_tree_tab_mode_) {
     TabStripCollection::AddTabRecursive(std::move(tab), index, new_group_id,
                                         new_pinned_state);
@@ -32,7 +33,7 @@ void BraveTabStripCollection::AddTabRecursive(
 
   // If the previous tab is in the same hierarchy of tree of the opener, we can
   // add the new tab to the same tree node.
-  if (const auto* opener = tab->GetOpener(); opener && index > 0) {
+  if (opener && index > 0) {
     auto* opener_collection = opener->GetParentCollection(GetPassKey());
     CHECK_EQ(opener_collection->type(), TabCollection::Type::TREE_NODE);
 
