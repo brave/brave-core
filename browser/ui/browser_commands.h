@@ -11,12 +11,17 @@
 
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "content/public/browser/page_navigator.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/mojom/containers.mojom-forward.h"
+#endif
 
 class Browser;
 class Profile;
@@ -152,6 +157,15 @@ void RemoveSplitWithSideBySide(Browser* browser);
 
 // Swap tabs in active tab.
 void SwapTabsInSplitWithSideBySide(Browser* browser);
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void IsolateTab(Browser* browser,
+                tabs::TabHandle tab,
+                const containers::mojom::ContainerPtr& container);
+void IsolateUrl(Browser* browser,
+                const GURL& url,
+                const containers::mojom::ContainerPtr& container);
+#endif
 
 }  // namespace brave
 

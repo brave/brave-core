@@ -26,6 +26,7 @@
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_service.h"
@@ -50,6 +51,10 @@
 #include "content/public/common/url_constants.h"
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/contained_tab_handler_registry.h"
+#endif
 
 namespace {
 
@@ -331,6 +336,18 @@ bool BraveBrowser::NormalBrowserSupportsWindowFeature(
 bool BraveBrowser::PreHandleMouseEvent(content::WebContents* source,
                                        const blink::WebMouseEvent& event) {
   return brave_window()->PreHandleMouseEvent(event);
+}
+
+std::optional<content::StoragePartitionConfig>
+BraveBrowser::MaybeInheritStoragePartition(
+    content::WebContents* source,
+    const content::StoragePartitionConfig& partition_config) {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  return containers::ContainedTabHandlerRegistry::GetInstance()
+      .MaybeInheritStoragePartition(partition_config, nullptr);
+#else
+  return std::nullopt;
+#endif
 }
 
 bool BraveBrowser::IsWebContentsVisible(content::WebContents* web_contents) {
