@@ -139,7 +139,7 @@ UntrustedPlayerUI::UntrustedPlayerUI(content::WebUI* web_ui)
 bool PlaylistUI::ShouldBlockPlaylistWebUI(
     content::BrowserContext* browser_context,
     const GURL& url) {
-  if (url.host_piece() != kPlaylistHost) {
+  if (url.host() != kPlaylistHost) {
     return false;
   }
 

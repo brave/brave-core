@@ -23,7 +23,7 @@ GURL ConversationUrl(std::string_view conversation_uuid) {
 }
 
 std::string_view ConversationUUIDFromURL(const GURL& url) {
-  return base::TrimString(url.path_piece(), "/", base::TrimPositions::TRIM_ALL);
+  return base::TrimString(url.path(), "/", base::TrimPositions::TRIM_ALL);
 }
 
 }  // namespace ai_chat
