@@ -32,9 +32,13 @@ import { AllowSpendPanel } from '../allow_spend_panel/allow_spend_panel'
 import {
   ConfirmSendTransaction, //
 } from '../confirm_send_transaction/confirm_send_transaction'
+import {
+  CancelSpeedupTransaction, //
+} from '../cancel_speedup_transaction/cancel_speedup_transaction'
 
 // Utils
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
+import { isCancelTransaction } from '../../../utils/tx-utils'
 
 import {
   useGetEVMTransactionSimulationQuery,
@@ -129,6 +133,9 @@ export const PendingTransactionPanel: React.FC<Props> = ({
       : skipToken,
   )
 
+  // Detect if this is a cancel transaction
+  const isCancelTx = isCancelTransaction(selectedPendingTransaction)
+
   // render
 
   // Simulations Opt-in screen
@@ -217,6 +224,11 @@ export const PendingTransactionPanel: React.FC<Props> = ({
     === BraveWallet.TransactionType.ERC20Approve
   ) {
     return <AllowSpendPanel />
+  }
+
+  // Cancel
+  if (isCancelTx) {
+    return <CancelSpeedupTransaction />
   }
 
   // Send

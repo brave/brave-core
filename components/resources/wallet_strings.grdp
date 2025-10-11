@@ -1048,6 +1048,7 @@
   <message name="IDS_BRAVE_SWAP_AVERAGE" desc="Gas price corresponding to average speed for confirmation">Average</message>
   <message name="IDS_BRAVE_SWAP_FAST" desc="Gas price corresponding to fast speed for confirmation">Fast</message>
   <message name="IDS_BRAVE_SWAP_GWEI" desc="Unit to use for gas price (giga-wei)">Gwei</message>
+  <message name="IDS_BRAVE_WALLET_ESTIMATED_FEE" desc="Estimated fee">Estimated fee</message>
   <message name="IDS_BRAVE_SWAP_SLIPPAGE_TOLERANCE" desc="Percentage tolerance to allow for slippage during the swap">Slippage tolerance</message>
   <message name="IDS_BRAVE_SWAP_EXCHANGES" desc="Exchanges to use for the swap trade">Exchanges</message>
   <message name="IDS_BRAVE_SWAP_DIRECT_ROUTE_TITLE" desc="Text indicating that swap must use direct routes in the trade">Direct route only</message>
@@ -1116,6 +1117,9 @@
   <message name="IDS_BRAVE_WALLET_GAS_PRICE" desc="Label for gas price">Gas price</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_ESTIMATED_NETWORK_FEE" desc="Label for estimated network fee">Estimated network fee</message>
   <message name="IDS_BRAVE_WALLET_USE_DEFAULT" desc="Label for use default">Use default</message>
+  <message name="IDS_BRAVE_WALLET_GAS_FEE_TOOLTIP" desc="Tooltip text for gas fee">This gas fee will replace the original.</message>
+  <message name="IDS_BRAVE_WALLET_GAS_FEE_TOOLTIP_DESCRIPTION" desc="Tooltip description for gas fee">This will create a new transaction with a new gas fee to override and cancel the pending one. A cancellation can only be attempted if the transaction is still pending on the network.</message>
+  <message name="IDS_BRAVE_WALLET_SPEED_PRIORITY" desc="Label for speed priority">Speed priority</message>
   <message name="IDS_WALLET_EIP6963_PROVIDER_NAME" desc="Provider name which will be return when announce ethereum provider">Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_RECEIVE" desc="Receive asset event title">Receive</message>
   <message name="IDS_BRAVE_WALLET_FROM" desc="From address label">From</message>
