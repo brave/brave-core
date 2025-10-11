@@ -1,8 +1,8 @@
 diff --git a/tools/crates/gnrt/lib/paths.rs b/tools/crates/gnrt/lib/paths.rs
-index e163cb6f7fd97e1726cf22a283df35e0de51c6e9..5bcfe595653fbc143bff1eade23dc92e72be0c0c 100644
+index e5c5fe9ad7c148b073394f4c033ce518a8ba1b30..7789925e25f2b7ea5f9c42cb0ec440241da66871 100644
 --- a/tools/crates/gnrt/lib/paths.rs
 +++ b/tools/crates/gnrt/lib/paths.rs
-@@ -140,7 +140,7 @@ pub fn get_build_dir_for_package(
+@@ -141,7 +141,7 @@ pub fn get_build_dir_for_package(
          .join(Epoch::from_version(version).to_string())
  }
  
@@ -11,7 +11,7 @@ index e163cb6f7fd97e1726cf22a283df35e0de51c6e9..5bcfe595653fbc143bff1eade23dc92e
  static RUST_SRC_LIBRARY_SUBDIR: &str = "library";
  static RUST_SRC_VENDOR_SUBDIR: &str = "library/vendor";
  static RUST_SRC_INSTALLED_DIR: &str = "third_party/rust-toolchain/lib/rustlib/src/rust";
-@@ -151,10 +151,10 @@ static STD_FAKE_ROOT: &str = "build/rust/std/fake_root";
+@@ -152,10 +152,10 @@ static STD_FAKE_ROOT: &str = "build/rust/std/fake_root";
  static STD_FAKE_ROOT_CONFIG_TEMPLATE: &str = "build/rust/std/fake_root/.cargo/config.toml.template";
  static STD_FAKE_ROOT_CARGO_TEMPLATE: &str = "build/rust/std/fake_root/Cargo.toml.template";
  

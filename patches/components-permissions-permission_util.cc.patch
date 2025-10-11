@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index a82088f96079c3d5ddfbd35df98b2ebb2c0e62a4..ab870cd60db1792d9dac161bd54be6738216bb89 100644
+index e243b7202505075658e04adc1eeacc01c7d7d72d..af1d19e7cee58d89a2194bb467cd76b417675380 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
 @@ -115,6 +115,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequests(

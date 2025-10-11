@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 8da156b5d24e2aaad0884c3e66f2ff5ac0f2f3c2..ffd5d4c02a67663ab36a844553adfd972af192d0 100644
+index ae391ef9616bab2fb1436e56c357a71796e80d48..5694b95cd9029254ca04114c673ef6925cd1b793 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -876,6 +876,7 @@ public class ChromeTabbedActivity extends ChromeActivity {
+@@ -879,6 +879,7 @@ public class ChromeTabbedActivity extends ChromeActivity {
                          private void closeIfNoTabsAndHomepageEnabled(
                                  boolean isPendingClosure, boolean shouldRemoveWindowWithZeroTabs) {
                              if (getTabModelSelector().getTotalTabCount() == 0) {

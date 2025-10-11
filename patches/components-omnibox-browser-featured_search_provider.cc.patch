@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/featured_search_provider.cc b/components/omnibox/browser/featured_search_provider.cc
-index 93a522ecf21fcdf389a19df85a29a1c9123812d4..19e7e0530a8ce9fa29113063720be5feac70bc37 100644
+index 3af604b09d2b00d38e83c412641f7f95d761b8b4..617f9caaee93460b47e0e56bf9308fbc586b1d2e 100644
 --- a/components/omnibox/browser/featured_search_provider.cc
 +++ b/components/omnibox/browser/featured_search_provider.cc
 @@ -290,6 +290,7 @@ void FeaturedSearchProvider::AddFeaturedKeywordMatches(

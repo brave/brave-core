@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/side_panel/side_panel_coordinator.h b/chrome/browser/ui/views/side_panel/side_panel_coordinator.h
-index e50a46ae878bc5ea8bdef1c1a7764fa1ef65f4c9..1cb3e6cbf952464f0fea5e18e65d3f21d6c07461 100644
+index 5d835b1e8319836bd642d1346013a93bdfa4fc1d..950b4a9fda497ee57dc3806028a27d2ec5b8b3cd 100644
 --- a/chrome/browser/ui/views/side_panel/side_panel_coordinator.h
 +++ b/chrome/browser/ui/views/side_panel/side_panel_coordinator.h
-@@ -50,7 +50,7 @@ class View;
+@@ -47,7 +47,7 @@ class View;
  // Existence and value of registries' active_entry() determines which entry is
  // visible for a given tab where the order of precedence is contextual
  // registry's active_entry() then global registry's.

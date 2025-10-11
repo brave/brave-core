@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index d16de1f216ca6fdea63cd4f65dbd0e8bb48a36c2..98f5c5e801fd3ca724e5c1edda0c63003f461ea6 100644
+index d064e3f3ce02fb8fc5514440ae4d73cca49be8f7..23656d8a5e095fbd6cf8a184696fa53c829dc348 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -671,6 +671,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -670,6 +670,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
    // Deprecated 09/2025.
    registry->RegisterBooleanPref(prefs::kBottomOmnibox, false);
@@ -10,7 +10,7 @@ index d16de1f216ca6fdea63cd4f65dbd0e8bb48a36c2..98f5c5e801fd3ca724e5c1edda0c6300
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1113,6 +1114,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1112,6 +1113,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // `safety_check::prefs::kSafetyCheckHomeModuleEnabled` instead.
    registry->RegisterBooleanPref(
        prefs::kHomeCustomizationMagicStackSafetyCheckEnabled, true);

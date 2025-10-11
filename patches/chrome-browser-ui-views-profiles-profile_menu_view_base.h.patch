@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view_base.h b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-index 954d7f3479ad7036edb97f77675c0998b1177b36..77e0534e90b2a686c6b3646ba93fa08445a6fda8 100644
+index 291797244a80a6746a43fd97ca62b236e7617a36..047893313d4220951535b1b22c3785542d00778f 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view_base.h
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-@@ -197,6 +197,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
+@@ -198,6 +198,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
    }
    bool actionable_item_clicked() const { return actionable_item_clicked_; }
  

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-index a6cac127ca12f8b41bf1bf882470f76c7b334a0b..0179b272cc4a3a08b5c4799577157435e225c263 100644
+index 0ce56bdbb206bb0c685c256e38a2fd7b6db65be9..22aff5b2aca222a6d3c30075cf467869ddcaf7ae 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-@@ -197,6 +197,7 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
+@@ -210,6 +210,7 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
    // From here on out, results must be returned asynchronously.
    StartAsyncRun();
  
@@ -10,7 +10,7 @@ index a6cac127ca12f8b41bf1bf882470f76c7b334a0b..0179b272cc4a3a08b5c4799577157435
    // TODO(crbug.com/40614113): collapse the asynchronicity
    base::OnceCallback next_step =
        base::BindOnce(&IdentityGetAuthTokenFunction::GetAuthTokenForAccount,
-@@ -371,12 +372,14 @@ void IdentityGetAuthTokenFunction::StartSigninFlow() {
+@@ -384,12 +385,14 @@ void IdentityGetAuthTokenFunction::StartSigninFlow() {
  void IdentityGetAuthTokenFunction::StartMintTokenFlow(
      IdentityMintRequestQueue::MintType type) {
  #if !BUILDFLAG(IS_CHROMEOS)
