@@ -47,7 +47,7 @@ void ProfileNewTabMetrics::ReportNewTabPageDefault() {
     } else {
       GURL homepage_url(profile_prefs_->GetString(prefs::kHomePage));
 
-      auto host = homepage_url.host_piece();
+      std::string_view host = homepage_url.host();
       if (host == "search.brave.com") {
         type = NewTabPageDefaultType::kHomepageBraveSearch;
       } else if (base::Contains(host, "google")) {

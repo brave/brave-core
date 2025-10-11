@@ -83,7 +83,7 @@ GURL GetCrxDownloadUrl(const base::Value::Dict& update_manifest,
     const GURL url(*codebase);
     if (!url.is_valid() || !brave::ShouldAddBraveServicesKeyHeader(url)) {
       // URL is not valid or doest't point to the Brave's server.
-      if (url.host_piece().ends_with(".test")) {
+      if (url.host().ends_with(".test")) {
         CHECK_IS_TEST();
         return url;
       }
