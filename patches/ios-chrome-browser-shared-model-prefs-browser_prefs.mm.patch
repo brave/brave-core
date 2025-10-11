@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index d16de1f216ca6fdea63cd4f65dbd0e8bb48a36c2..98f5c5e801fd3ca724e5c1edda0c63003f461ea6 100644
+index 0d8c71bc2239243c17e495aa4588fd33d95fe65d..57d01ea38a30ccd5a1e68a33fff1f2b9a5936d7c 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 @@ -671,6 +671,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -10,10 +10,10 @@ index d16de1f216ca6fdea63cd4f65dbd0e8bb48a36c2..98f5c5e801fd3ca724e5c1edda0c6300
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1113,6 +1114,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   // `safety_check::prefs::kSafetyCheckHomeModuleEnabled` instead.
+@@ -1118,6 +1119,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   // `ntp_tiles::prefs::kTabResumptionHomeModuleEnabled` instead.
    registry->RegisterBooleanPref(
-       prefs::kHomeCustomizationMagicStackSafetyCheckEnabled, true);
+       prefs::kHomeCustomizationMagicStackTabResumptionEnabled, true);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
