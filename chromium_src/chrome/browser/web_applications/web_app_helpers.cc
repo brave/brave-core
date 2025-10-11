@@ -17,7 +17,7 @@ namespace web_app {
 bool IsValidWebAppUrl(const GURL& app_url) {
   return IsValidWebAppUrl_ChromiumImpl(app_url) ||
          (app_url.SchemeIs(content::kChromeUIScheme) &&
-          base::Contains(kInstallablePWAWebUIHosts, app_url.host_piece()));
+          base::Contains(kInstallablePWAWebUIHosts, app_url.host()));
 }
 
 }  // namespace web_app

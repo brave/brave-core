@@ -47,7 +47,7 @@ bool ShouldSupportUrl(const GURL& url) {
   }
 
   return url.SchemeIs(url::kHttpsScheme)
-             ? HostHasRegistryControlledDomain(url.host_piece())
+             ? HostHasRegistryControlledDomain(url.host())
              : ShouldSupportInternalUrl(url);
 }
 

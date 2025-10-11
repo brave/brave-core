@@ -37,8 +37,8 @@ void AIChatThrottle::MaybeCreateAndAdd(
 
   const GURL& url = navigation_handle.GetURL();
 
-  bool is_main_page_url = url.SchemeIs(content::kChromeUIScheme) &&
-                          url.host_piece() == kAIChatUIHost;
+  bool is_main_page_url =
+      url.SchemeIs(content::kChromeUIScheme) && url.host() == kAIChatUIHost;
 
   // We allow main page navigation only if the full-page feature is enabled
   // via the AIChatHistory feature flag.
@@ -46,9 +46,8 @@ void AIChatThrottle::MaybeCreateAndAdd(
     return;
   }
 
-  bool is_ai_chat_frame =
-      url.SchemeIs(content::kChromeUIUntrustedScheme) &&
-      url.host_piece() == kAIChatUntrustedConversationUIHost;
+  bool is_ai_chat_frame = url.SchemeIs(content::kChromeUIUntrustedScheme) &&
+                          url.host() == kAIChatUntrustedConversationUIHost;
 
   // We need this throttle to work only for AI Chat related URLs
   if (!is_main_page_url && !is_ai_chat_frame) {

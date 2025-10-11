@@ -87,7 +87,7 @@ typedef WebUIController* (*WebUIFactoryFunction)(WebUI* web_ui,
                                                  const GURL& url);
 
 WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
-  auto host = url.host_piece();
+  std::string_view host = url.host();
   Profile* profile = Profile::FromBrowserContext(
       web_ui->GetWebContents()->GetBrowserContext());
   CHECK(profile);
@@ -177,32 +177,30 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
     return nullptr;
   }
 
-  if ((url.host_piece() == kSkusInternalsHost &&
+  if ((url.host() == kSkusInternalsHost &&
        base::FeatureList::IsEnabled(skus::features::kSkusFeature)) ||
 #if BUILDFLAG(IS_ANDROID)
-      (url.is_valid() && url.host_piece() == kWalletPageHost) ||
+      (url.is_valid() && url.host() == kWalletPageHost) ||
 #else
       (base::FeatureList::IsEnabled(
            brave_news::features::kBraveNewsFeedUpdate) &&
-       url.host_piece() == kBraveNewsInternalsHost) ||
+       url.host() == kBraveNewsInternalsHost) ||
       // On Android New Tab is a native page implemented in Java, so no need
       // in WebUI.
-      url.host_piece() == chrome::kChromeUINewTabHost ||
-      url.host_piece() == chrome::kChromeUISettingsHost ||
-      ((url.host_piece() == kWelcomeHost || url.host_piece() == kWelcomeURL) &&
+      url.host() == chrome::kChromeUINewTabHost ||
+      url.host() == chrome::kChromeUISettingsHost ||
+      ((url.host() == kWelcomeHost || url.host() == kWelcomeURL) &&
        !profile->IsGuestSession()) ||
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
-      url.host_piece() == kTorInternalsHost ||
+      url.host() == kTorInternalsHost ||
 #endif
 #if BUILDFLAG(ENABLE_AI_REWRITER)
-      (url.host_piece() == kRewriterUIHost &&
+      (url.host() == kRewriterUIHost &&
        ai_rewriter::features::IsAIRewriterEnabled()) ||
 #endif
-      url.host_piece() == kRewardsPageHost ||
-      url.host_piece() == kRewardsInternalsHost ||
-      (url.host_piece() == kAdsInternalsHost &&
-       !profile->IsIncognitoProfile())) {
+      url.host() == kRewardsPageHost || url.host() == kRewardsInternalsHost ||
+      (url.host() == kAdsInternalsHost && !profile->IsIncognitoProfile())) {
     return &NewWebUI;
   }
 
@@ -252,8 +250,8 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
 #endif
 
   // Early return to prevent upstream create its WebUI.
-  if (url.host_piece() == optimization_guide_internals::
-                              kChromeUIOptimizationGuideInternalsHost &&
+  if (url.host() == optimization_guide_internals::
+                        kChromeUIOptimizationGuideInternalsHost &&
       !optimization_guide::features::IsOptimizationHintsEnabled()) {
     return WebUI::kNoWebUI;
   }
