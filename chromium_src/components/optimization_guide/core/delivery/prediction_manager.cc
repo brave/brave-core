@@ -54,6 +54,7 @@ PredictionManager::~PredictionManager() {}
 void PredictionManager::AddObserverForOptimizationTargetModel(
     proto::OptimizationTarget optimization_target,
     const std::optional<proto::Any>& model_metadata,
+    scoped_refptr<base::SequencedTaskRunner> model_task_runner,
     OptimizationTargetModelObserver* observer) {}
 
 void PredictionManager::RemoveObserverForOptimizationTargetModel(
