@@ -17,7 +17,7 @@ import {
   defaultContext as defaultConversationContext,
 } from '../../state/conversation_context'
 import { render } from '@testing-library/react'
-import TabsMenu from './tabs_menu'
+import TabsMenu from './attachments_menu'
 import { ContentType } from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m.js'
 
 const MockContext = (
@@ -220,5 +220,58 @@ describe('TabsMenu', () => {
 
     expect(associateTab).toHaveBeenCalledWith(tab1, '1')
     expect(queryByText('@')).not.toBeInTheDocument()
+  })
+
+  it('should render bookmarks in the list', async () => {
+    const { findByText } = render(
+      <MockContext
+        getBookmarks={() =>
+          Promise.resolve([
+            {
+              id: BigInt(1),
+              title: 'Brave Browser',
+              url: { url: 'https://brave.com' },
+            },
+            {
+              id: BigInt(2),
+              title: 'MDN Web Docs',
+              url: { url: 'https://developer.mozilla.org' },
+            },
+          ])
+        }
+      >
+        <TabsMenu />
+      </MockContext>,
+    )
+
+    expect(await findByText('Brave Browser')).toBeInTheDocument()
+    expect(await findByText('MDN Web Docs')).toBeInTheDocument()
+  })
+
+  it('should filter bookmarks by query', async () => {
+    const { findByText, queryByText } = render(
+      <MockContext
+        inputText='@brave'
+        getBookmarks={() =>
+          Promise.resolve([
+            {
+              id: BigInt(1),
+              title: 'Brave Browser',
+              url: { url: 'https://brave.com' },
+            },
+            {
+              id: BigInt(2),
+              title: 'MDN Web Docs',
+              url: { url: 'https://developer.mozilla.org' },
+            },
+          ])
+        }
+      >
+        <TabsMenu />
+      </MockContext>,
+    )
+
+    expect(await findByText('Brave Browser')).toBeInTheDocument()
+    expect(queryByText('MDN Web Docs')).not.toBeInTheDocument()
   })
 })
