@@ -81,3 +81,11 @@ public class ShieldPreferences {
     default: true
   )
 }
+
+extension Preferences.Shields {
+  /// If Shred should also shred from user's history.
+  public static var shredHistoryItems = Preferences.Option<Bool>(
+    key: "shields.shred-history-items",
+    default: true
+  )
+}

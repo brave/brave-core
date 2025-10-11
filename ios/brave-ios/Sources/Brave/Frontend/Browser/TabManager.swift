@@ -970,7 +970,7 @@ class TabManager: NSObject {
     }
 
     // Delete the history for forgotten websites
-    if let historyAPI = self.historyAPI {
+    if let historyAPI = self.historyAPI, Preferences.Shields.shredHistoryItems.value {
       // if we're only forgetting 1 site, we can query history by it's domain
       let query = urls.count == 1 ? urls.first?.baseDomain : nil
 
