@@ -35,6 +35,15 @@ std::map<std::string, std::string> BrowserLiveTabContext::GetExtraDataForTab(
     extra_data[tabs::kBraveTabCustomTitleExtraDataKey] =
         base::UTF16ToUTF8(tab_ui_helper->GetTitle());
   }
+  if (tab_ui_helper->has_custom_emoji_favicon()) {
+    // Store the emoji string for restoring.
+    // Note: emojis are valid UTF-8 after conversion.
+    auto emoji = tab_ui_helper->GetCustomEmojiFaviconString();
+    if (emoji && !emoji->empty()) {
+      extra_data[tabs::kBraveTabCustomFaviconEmojiExtraDataKey] =
+          base::UTF16ToUTF8(*emoji);
+    }
+  }
 
   return extra_data;
 }

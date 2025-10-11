@@ -5,6 +5,18 @@
 
 import("//build/config/ozone.gni")
 
+source_set("tabs_views") {
+  sources = [
+    "//brave/browser/ui/views/tabs/emoji_favicon_picker_bubble.cc",
+    "//brave/browser/ui/views/tabs/emoji_favicon_picker_bubble.h",
+  ]
+  deps = [
+    "//base",
+    "//chrome/browser/ui",
+    "//ui/views",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
