@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/page_info/page_info_bubble_view.cc b/chrome/browser/ui/views/page_info/page_info_bubble_view.cc
+index 86350c4c56613219f6f21963b2c98690d6bd1304..88bb7130bbb849eadda1bf8994ff71fea574f434 100644
+--- a/chrome/browser/ui/views/page_info/page_info_bubble_view.cc
++++ b/chrome/browser/ui/views/page_info/page_info_bubble_view.cc
+@@ -208,7 +208,7 @@ views::BubbleDialogDelegateView* PageInfoBubbleView::CreatePageInfoBubble(
+                                           web_contents, url);
+   }
+ 
+-  PageInfoBubbleView* const bubble = new PageInfoBubbleView(
++  PageInfoBubbleView* const bubble = new BravePageInfoBubbleView(
+       anchor_view, anchor_rect, parent_view, web_contents, url,
+       specification->initialized_callback(),
+       specification->page_info_closing_callback(),
