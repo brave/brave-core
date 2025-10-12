@@ -8,16 +8,13 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/notimplemented.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "components/tabs/public/tab_collection.h"
 
 namespace tabs {
 
-BraveTabStripCollection::BraveTabStripCollection() {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
-}
+BraveTabStripCollection::BraveTabStripCollection() = default;
 
 void BraveTabStripCollection::AddTabRecursive(
     std::unique_ptr<TabInterface> tab,
