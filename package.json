@@ -131,7 +131,7 @@
     "emptykit.css": "1.0.1",
     "eslint": "8.57.1",
     "eslint-config-prettier": "8.6.0",
-    "eslint-config-standard-with-typescript": "43.0.1",
+    "eslint-config-love": "43.1.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-jest": "28.11.0",
     "eslint-plugin-licenses": "1.0.2",
