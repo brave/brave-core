@@ -14,15 +14,18 @@
 
 .toolUse {
   margin-top: var(--leo-spacing-m);
-  font: var(--leo-font-small-regular);
-  color: var(--leo-color-text-secondary);
   position: relative;
 
-  &.isExpandable {
-    cursor: pointer;
+  .toolLabel {
+    font: var(--leo-font-small-regular);
+    color: var(--leo-color-text-secondary);
+
+    &.isExpandable {
+      cursor: pointer;
+    }
   }
 
-  &.isActive .toolText {
+  &.isActive .toolLabel {
     background: linear-gradient(
       90deg,
       #434fcf 0%,
@@ -39,6 +42,10 @@
 }
 
 .expandedContent {
+  margin-top: var(--leo-spacing-xs);
+  font: var(--leo-font-x-small-regular);
+  font-style: italic;
+  color: var(--leo-color-text-tertiary);
 }
 
 .choice {
@@ -53,10 +60,6 @@
   --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
 }
 
-.deniedChoiceIcon {
-  --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
-}
-
 .choiceNumber {
   border-radius: 50%;
   font-size: 12px;
@@ -67,15 +70,4 @@
   justify-content: center;
   color: var(--leo-color-schemes-on-tertiary);
   background: var(--leo-color-text-interactive);
-}
-
-.assistantStorageDetail {
-  margin-top: var(--leo-spacing-xs);
-  font: var(--leo-font-x-small-regular);
-  font-style: italic;
-  color: var(--leo-color-text-tertiary);
-}
-
-.assistantStorageDetailTrigger {
-  cursor: pointer;
 }

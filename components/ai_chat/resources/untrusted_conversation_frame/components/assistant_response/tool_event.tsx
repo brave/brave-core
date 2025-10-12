@@ -21,7 +21,10 @@ interface Props {
 }
 
 /**
- * Content customizable for each known tool type
+ * Content customizable for each known tool type. Some tools provide
+ * only a label, which will get styled depending on active state, some provide
+ * a more expansive content instead, and some may provide both whereby the label
+ * will be a button which toggles the expanded content.
  */
 export interface ToolUseContent {
   /**
@@ -50,7 +53,7 @@ export type ToolComponent = React.FC<
 
     // The component should pass data about the rendering of the tool use event
     // to the tool use event template component.
-    children: (content: Partial<ToolUseContent>) => JSX.Element | null
+    children: (content: ToolUseContent) => JSX.Element | null
   }
 >
 
@@ -60,7 +63,7 @@ export type ToolComponent = React.FC<
  */
 function ToolEventContent(
   props: Props & {
-    children: (content: Partial<ToolUseContent>) => JSX.Element | null
+    children: (content: ToolUseContent) => JSX.Element | null
   },
 ) {
   const { toolUseEvent } = props
@@ -118,37 +121,62 @@ function ToolEventContent(
  * AssistantResponse component.
  */
 export default function ToolEvent(props: Props) {
-  const [isExpanded, setIsExpanded] = React.useState<boolean>(false)
   return (
     <ToolEventContent {...props}>
-      {({ toolLabel, expandedContent }) => {
-        if (!toolLabel && !expandedContent) {
+      {(content) => {
+        if (!content.toolLabel && !content.expandedContent) {
           // The tool content has decided to not show anything.
           // Perhaps it's an internal tool event, or a tool that's not ready
           // to render yet, given incomplete input.
           return null
         }
+
+        const isExpandable = content.toolLabel && content.expandedContent
+
         return (
           <div
             className={classnames(
               styles.toolUse,
               props.isEntryActive && styles.isActive,
-              toolLabel && expandedContent && styles.isExpandable,
-              `tool-${props.toolUseEvent.toolName}`,
             )}
-            onClick={() => {
-              setIsExpanded(!isExpanded)
-              return !expandedContent
-            }}
           >
-            {toolLabel && <div className={styles.toolText}>{toolLabel}</div>}
+            {isExpandable && (
+              <ToolContentExpandable
+                {...props}
+                {...content}
+              />
+            )}
 
-            {(!toolLabel || (isExpanded && expandedContent)) && (
-              <div className={styles.expandedContent}>{expandedContent}</div>
+            {!isExpandable && content.toolLabel && (
+              <div className={styles.toolLabel}>{content.toolLabel}</div>
+            )}
+
+            {!isExpandable && content.expandedContent && (
+              <div>{content.expandedContent}</div>
             )}
           </div>
         )
       }}
     </ToolEventContent>
+  )
+}
+
+function ToolContentExpandable(props: Props & ToolUseContent) {
+  const [isExpanded, setIsExpanded] = React.useState<boolean>(false)
+
+  return (
+    <>
+      <button
+        className={classnames(styles.toolLabel, styles.isExpandable)}
+        onClick={() => {
+          setIsExpanded(!isExpanded)
+        }}
+      >
+        {props.toolLabel}
+      </button>
+      {isExpanded && (
+        <div className={styles.expandedContent}>{props.expandedContent}</div>
+      )}
+    </>
   )
 }
