@@ -45,6 +45,16 @@ void BraveBrowserTabStripController::SetCustomTitleForTab(
       ->SetCustomTitleForTab(index, title);
 }
 
+int BraveBrowserTabStripController::GetTreeHeightOfTab(int index) const {
+  return static_cast<BraveTabStripModel*>(model_.get())
+      ->GetTreeHeightOfTab(index);
+}
+
+int BraveBrowserTabStripController::GetTreeNodeLevel(int index) const {
+  return static_cast<BraveTabStripModel*>(model_.get())
+      ->GetTreeNodeLevel(index);
+}
+
 void BraveBrowserTabStripController::ShowContextMenuForTab(
     Tab* tab,
     const gfx::Point& p,

@@ -269,6 +269,22 @@ void BraveTabStrip::SetCustomTitleForTab(
       ->SetCustomTitleForTab(*index, title);
 }
 
+int BraveTabStrip::GetTreeHeight(const Tab* tab) const {
+  auto index = GetModelIndexOf(tab);
+  CHECK(index);
+
+  return static_cast<BraveBrowserTabStripController*>(controller_.get())
+      ->GetTreeHeightOfTab(*index);
+}
+
+int BraveTabStrip::GetTreeNodeLevel(const Tab* tab) const {
+  auto index = GetModelIndexOf(tab);
+  CHECK(index);
+
+  return static_cast<BraveBrowserTabStripController*>(controller_.get())
+      ->GetTreeNodeLevel(*index);
+}
+
 TabTiledState BraveTabStrip::GetTiledStateForTab(int index) const {
   auto* tab = tab_at(index);
   if (!IsTabTiled(tab)) {

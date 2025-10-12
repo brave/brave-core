@@ -14,8 +14,15 @@
       Tab* tab, const std::optional<std::u16string>& title) {} \
   virtual bool IsGroupCollapsed
 
+// Add interface methods to get level and height for Tree tabs
+#define ShiftGroupRight(...)                           \
+  ShiftGroupRight(__VA_ARGS__) = 0;                    \
+  virtual int GetTreeHeight(const Tab* tab) const = 0; \
+  virtual int GetTreeNodeLevel(const Tab* tab) const
+
 #include <chrome/browser/ui/views/tabs/tab_slot_controller.h>  // IWYU pragma: export
 
+#undef ShiftGroupRight
 #undef IsGroupCollapsed
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_

@@ -44,6 +44,8 @@ class BraveTabStrip : public TabStrip {
   void SetCustomTitleForTab(
       Tab* tab,
       const std::optional<std::u16string>& title) override;
+  int GetTreeHeight(const Tab* tab) const override;
+  int GetTreeNodeLevel(const Tab* tab) const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);

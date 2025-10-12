@@ -1,0 +1,20 @@
+diff --git a/components/tabs/impl/tab_collection.cc b/components/tabs/impl/tab_collection.cc
+index 32e94fa1c49203d21faa1af9ce9923f71900da5e..dad4a1f452e284cd9b8a2fe56f341f25e27318a8 100644
+--- a/components/tabs/impl/tab_collection.cc
++++ b/components/tabs/impl/tab_collection.cc
+@@ -8,6 +8,7 @@
+ #include "base/notreached.h"
+ #include "components/tabs/public/supports_handles.h"
+ #include "components/tabs/public/tab_interface.h"
++#include "base/logging.h"
+ 
+ namespace tabs {
+ 
+@@ -275,6 +276,7 @@ std::unique_ptr<TabCollection> TabCollection::MaybeRemoveCollection(
+ }
+ 
+ void TabCollection::OnReparented(TabCollection* new_parent) {
++  BRAVE_TAB_COLLECTION_ON_REPARENTED
+   parent_ = new_parent;
+ 
+   for (auto tab : GetTabsRecursive()) {

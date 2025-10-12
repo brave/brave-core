@@ -6,25 +6,34 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_LAYOUT_STATE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_LAYOUT_STATE_H_
 
+#include "chrome/browser/ui/views/tabs/tab_strip_layout_types.h"
+
 enum class TabTiledState { kNone, kFirst, kSecond };
 
-#define IsClosed                                     \
-  IsClosed_Unused() const {                          \
-    return false;                                    \
-  }                                                  \
-                                                     \
- public:                                             \
-  void set_tiled_state(TabTiledState tiled_state) {  \
-    tiled_state_ = tiled_state;                      \
-  }                                                  \
-  TabTiledState tiled_state() const {                \
-    return tiled_state_;                             \
-  }                                                  \
-                                                     \
- private:                                            \
-  TabTiledState tiled_state_ = TabTiledState::kNone; \
-                                                     \
- public:                                             \
+#define IsClosed                                      \
+  IsClosed_Unused() const {                           \
+    return false;                                     \
+  }                                                   \
+                                                      \
+ public:                                              \
+  void set_tiled_state(TabTiledState tiled_state) {   \
+    tiled_state_ = tiled_state;                       \
+  }                                                   \
+  TabTiledState tiled_state() const {                 \
+    return tiled_state_;                              \
+  }                                                   \
+  const TabNestingInfo& nesting_info() const {        \
+    return nesting_info_;                             \
+  }                                                   \
+  void set_nesting_info(const TabNestingInfo& info) { \
+    nesting_info_ = info;                             \
+  }                                                   \
+                                                      \
+ private:                                             \
+  TabTiledState tiled_state_ = TabTiledState::kNone;  \
+  TabNestingInfo nesting_info_;                       \
+                                                      \
+ public:                                              \
   bool IsClosed
 
 #include <chrome/browser/ui/views/tabs/tab_layout_state.h>  // IWYU pragma: export

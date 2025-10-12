@@ -144,6 +144,7 @@ class BraveTabContainer : public TabContainerImpl,
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember vertical_tabs_floating_mode_enabled_;
   BooleanPrefMember vertical_tabs_collapsed_;
+  BooleanPrefMember tree_tabs_enabled_;
 
   bool layout_locked_ = false;
 

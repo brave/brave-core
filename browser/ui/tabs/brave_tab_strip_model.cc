@@ -156,6 +156,34 @@ void BraveTabStripModel::SetCustomTitleForTab(
   NotifyTabChanged(tab_interface, TabChangeType::kAll);
 }
 
+int BraveTabStripModel::GetTreeHeightOfTab(int index) const {
+  auto* tab_interface = GetTabAtIndex(index);
+  CHECK(tab_interface);
+
+  const auto* parent_collection = tab_interface->GetParentCollection();
+  if (!parent_collection ||
+      parent_collection->type() != tabs::TabCollection::Type::TREE_NODE) {
+    return 0;
+  }
+
+  return static_cast<const TreeTabNode*>(parent_collection)
+      ->GetTopLevelAncestor()
+      ->height();
+}
+
+int BraveTabStripModel::GetTreeNodeLevel(int index) const {
+  auto* tab_interface = GetTabAtIndex(index);
+  CHECK(tab_interface);
+
+  const auto* parent_collection = tab_interface->GetParentCollection();
+  if (!parent_collection ||
+      parent_collection->type() != tabs::TabCollection::Type::TREE_NODE) {
+    return 0;
+  }
+
+  return static_cast<const TreeTabNode*>(parent_collection)->level();
+}
+
 void BraveTabStripModel::CloseSelectedTabsWithSplitView() {
   auto selected_indices = selection_model().selected_indices();
   if (selected_indices.size() != 2) {

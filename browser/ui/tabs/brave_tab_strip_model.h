@@ -48,6 +48,12 @@ class BraveTabStripModel : public TabStripModel {
   void SetCustomTitleForTab(int index,
                             const std::optional<std::u16string>& title);
 
+  // Returns tree height that the `tab` at the given index belongs to.
+  int GetTreeHeightOfTab(int index) const;
+
+  // Returns tree node level of the `tab` at the given index.
+  int GetTreeNodeLevel(int index) const;
+
   // TabStripModel:
   void SelectRelativeTab(TabRelativeDirection direction,
                          TabStripUserGestureDetails detail) override;
