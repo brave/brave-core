@@ -1,30 +1,30 @@
-Total size 79253K
+Total size 78283K
 
-GROUP chromium [53310K total]
+GROUP chromium [53361K total]
      2K Amount Extraction Heuristic Regexes 3 [AmountExtractionHeuristicRegexes]
    217K chromeAutofillStatesData 2025.6.13.84507 [AutofillStates]
-   600K crl-set-13379317215952582335.data 10072 [CertificateRevocation]
+   595K crl-set-13732172358148081485.data 10087 [CertificateRevocation]
     31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
      3K Cookie Readiness List 2024.11.26.0 [CookieReadinessList]
-   102K Crowd Deny 2025.10.2.61 [Crowd Deny]
+   166K Crowd Deny 2025.10.9.60 [Crowd Deny]
      9K fileTypePolicies 67 [FileTypePolicies]
     13K First Party Sets 2025.7.24.0 [FirstPartySetsPreloaded]
      7K history_search_strings_farmhashed.binarypb 6.7431.9692 [HistorySearch]
     10K MEI Preload 1.0.7.1744928549 [MEIPreload]
   7723K OnDeviceHeadSuggestENUS500000 20250915.810226330.14 [OnDeviceHeadSuggestModel]
   1079K Open Cookie Database 2024.10.17.0 [OpenCookieDatabase]
-   325K Optimization Hints 543 [OptimizationHints]
-   376K pkiMetadata 1447 [PKIMetadata]
+   315K Optimization Hints 549 [OptimizationHints]
+   376K pkiMetadata 1457 [PKIMetadata]
      3K Probabilistic Reveal Tokens 2025.8.19.0 [ProbabilisticRevealTokenRegistry]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
-   178K safetyTips 3084 [SafetyTips]
-   238K Subresource Filtering Rules 9.60.0 [Subresource Filter]
-    34K Third-Party Cookie Deprecation Metadata 2025.10.4.1 [TpcdMetadata]
+   178K safetyTips 3085 [SafetyTips]
+   240K Subresource Filtering Rules 9.61.0 [Subresource Filter]
+    34K Third-Party Cookie Deprecation Metadata 2025.10.7.1 [TpcdMetadata]
     11K trustToken 2025.9.29.1 [TrustTokenKeyCommitments]
  23103K WASM TTS Engine 20251003.1 [WasmTtsEngine]
  17587K WidevineCdm 4.10.2891.0 [WidevineCdm]
   1642K zxcvbnData 3 [ZxcvbnData]
 
-GROUP large_files [20021K total]
-  1862K Safe Browsing/ChromeExtMalware.store.32_13404154723390843
- 18158K Safe Browsing/UrlSoceng.store.4_13404154723245301
+GROUP large_files [18998K total]
+  1863K Safe Browsing/ChromeExtMalware.store.32_13404759629917801
+ 17135K Safe Browsing/UrlSoceng.store.4_13404759629777989
