@@ -337,6 +337,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #if !BUILDFLAG(IS_ANDROID)
   (*s_brave_allowlist)[brave_tabs::kSharedPinnedTab] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_tabs::kTreeTabsEnabled] =
+      settings_api::PrefType::kBoolean;
 #endif
 
 #if BUILDFLAG(IS_WIN)
