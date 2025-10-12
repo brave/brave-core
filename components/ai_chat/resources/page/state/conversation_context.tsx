@@ -84,7 +84,9 @@ export type ConversationContext = SendFeedbackState
 
     isTemporaryChat: boolean
     attachmentsDialog: 'tabs' | 'bookmarks' | 'history' | null
-    setAttachmentsDialog: (show: 'tabs' | 'bookmarks' | 'history' | null) => void
+    setAttachmentsDialog: (
+      show: 'tabs' | 'bookmarks' | 'history' | null,
+    ) => void
     uploadFile: (useMediaCapture: boolean) => void
     getScreenshots: () => void
     removeFile: (index: number) => void

@@ -11,7 +11,11 @@ import Icon from '@brave/leo/react/icon'
 import Input from '@brave/leo/react/input'
 import Flex from '$web-common/Flex'
 import { useAIChat } from '../../state/ai_chat_context'
-import { TabData, Bookmark, HistoryEntry } from 'components/ai_chat/resources/common/mojom'
+import {
+  TabData,
+  Bookmark,
+  HistoryEntry,
+} from 'components/ai_chat/resources/common/mojom'
 import {
   ConversationContext,
   useConversation,
@@ -93,7 +97,6 @@ function UrlContentItem({ url, title }: { url: string; title: string }) {
   )
 }
 
-
 type StringKeys = Record<
   NonNullable<ConversationContext['attachmentsDialog']>,
   keyof typeof S
@@ -105,7 +108,7 @@ const titleKey: StringKeys = {
 }
 const descriptionKey: StringKeys = {
   tabs: S.CHAT_UI_ATTACHMENTS_TABS_DESCRIPTION,
-  bookmarks: S.CHAT_UI_ATTACHMENTS_BOOKMARKS_DESCRIPTION, 
+  bookmarks: S.CHAT_UI_ATTACHMENTS_BOOKMARKS_DESCRIPTION,
   history: S.CHAT_UI_ATTACHMENTS_HISTORY_DESCRIPTION,
 }
 
@@ -120,10 +123,14 @@ export function useFilteredItems(search: string) {
   const conversation = useConversation()
 
   const { result: bookmarks = [] } = usePromise(() => aiChat.getBookmarks(), [])
-  const { result: history = [] } = usePromise(() => conversation.attachmentsDialog === 'history'
-    // Note: History is only searched for more than 2 characters. This is an upstream limitation.
-    ? aiChat.getHistory(search.length <= 2 ? '' : search)
-    : Promise.resolve([]), [search, conversation.attachmentsDialog])
+  const { result: history = [] } = usePromise(
+    () =>
+      conversation.attachmentsDialog === 'history'
+        ? // Note: History is only searched for more than 2 characters. This is an upstream limitation.
+          aiChat.getHistory(search.length <= 2 ? '' : search)
+        : Promise.resolve([]),
+    [search, conversation.attachmentsDialog],
+  )
 
   return React.useMemo(() => {
     if (!conversation.attachmentsDialog) {
@@ -134,14 +141,23 @@ export function useFilteredItems(search: string) {
     const filter = (item: { title: string }) =>
       item.title.toLowerCase().includes(searchLower)
 
-    const sources: Record<NonNullable<ConversationContext['attachmentsDialog']>, Attachment[]> = {
+    const sources: Record<
+      NonNullable<ConversationContext['attachmentsDialog']>,
+      Attachment[]
+    > = {
       tabs: conversation.unassociatedTabs,
       bookmarks: bookmarks,
       history: history,
     }
 
-    return sources[conversation.attachmentsDialog!].filter(filter)
-  }, [bookmarks, history, conversation.unassociatedTabs, conversation.attachmentsDialog, search])
+    return sources[conversation.attachmentsDialog].filter(filter)
+  }, [
+    bookmarks,
+    history,
+    conversation.unassociatedTabs,
+    conversation.attachmentsDialog,
+    search,
+  ])
 }
 
 export default function Attachments() {

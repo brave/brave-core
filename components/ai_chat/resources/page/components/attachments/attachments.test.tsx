@@ -22,7 +22,10 @@ import {
   AssociatedContent,
   ContentType,
 } from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m.js'
-import { Bookmark, HistoryEntry } from 'components/ai_chat/resources/common/mojom'
+import {
+  Bookmark,
+  HistoryEntry,
+} from 'components/ai_chat/resources/common/mojom'
 
 const MockContext = (
   props: React.PropsWithChildren<Partial<AIChatContext & ConversationContext>>,
@@ -577,7 +580,9 @@ describe('Attachments Component', () => {
       await waitFor(() => {
         expect(screen.getByText('Brave Privacy Browser')).toBeInTheDocument()
         expect(screen.getByText('Web3 Standards')).toBeInTheDocument()
-        expect(screen.getByText('https://brave.com/privacy')).toBeInTheDocument()
+        expect(
+          screen.getByText('https://brave.com/privacy'),
+        ).toBeInTheDocument()
         expect(
           screen.getByText('https://w3c.org/standards'),
         ).toBeInTheDocument()

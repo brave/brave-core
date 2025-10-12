@@ -1218,7 +1218,6 @@ function StoryContext(
         createdTime: { internalValue: BigInt(Date.now() * 1000) },
         lastUsed: { internalValue: BigInt(Date.now() * 1000) },
       },
-
     ],
   }
 
