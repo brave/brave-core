@@ -28,8 +28,6 @@ export type State = Mojom.ServiceState & {
   // any). If the user creates a new conversation this will be used as the
   // default tab content.
   defaultTabContentId?: number
-  getBookmarks: () => Promise<Mojom.Bookmark[]>
-  getHistory: (search: string) => Promise<Mojom.HistoryEntry[]>
 }
 
 export const defaultUIState: State = {
@@ -51,12 +49,6 @@ export const defaultUIState: State = {
   actionList: [],
   smartModes: [],
   tabs: [],
-  async getBookmarks() {
-    return []
-  },
-  async getHistory() {
-    return []
-  },
 }
 
 // Owns connections to the browser via mojom as well as global state
@@ -127,8 +119,6 @@ class PageAPI extends API<State> {
       conversations,
       actionList,
       smartModes,
-      getBookmarks: this.getBookmarks.bind(this),
-      getHistory: this.getHistory.bind(this),
     })
 
     this.service.bindMetrics(this.metrics.$.bindNewPipeAndPassReceiver())
@@ -198,18 +188,6 @@ class PageAPI extends API<State> {
 
   private async updateCurrentPremiumStatus() {
     this.setPartialState(await this.getCurrentPremiumStatus())
-  }
-
-  getBookmarks() {
-    return this.bookmarksService
-      .getBookmarks()
-      .then(({ bookmarks }) => bookmarks)
-  }
-
-  getHistory(search: string) {
-    return this.historyService
-      .getHistory(search, null)
-      .then(({ history }) => history)
   }
 }
 
