@@ -1289,6 +1289,7 @@ if (is_android) {
       "//base:base_java_test_support",
       "//base:base_shared_preferences_java",
       "//brave/android/javatests:brave_test_java_org.chromium.chrome.browser.download",
+      "//brave/android/javatests:brave_test_java_org.chromium.chrome.browser.password_manager",
       "//brave/android/javatests:brave_test_java_org.chromium.chrome.browser.site_settings",
       "//brave/android/javatests:brave_test_java_org.chromium.chrome.browser.widget.quickactionsearchandbookmark",
       "//brave/components/brave_wallet/common:mojom_java",
