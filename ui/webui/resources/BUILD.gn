@@ -97,7 +97,7 @@ transpile_web_ui("leo_bundle") {
 
   entry_points = [ [
         "leo",
-        rebase_path("leo/initialize_nala.ts"),
+        rebase_path("leo/initialize_bundle.ts"),
       ] ]
 
   resource_name = "leo"
