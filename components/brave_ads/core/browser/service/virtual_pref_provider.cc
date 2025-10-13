@@ -156,7 +156,6 @@ base::Value::Dict VirtualPrefProvider::GetPrefs() const {
                .Set("locale", base::Value::Dict()
                                   .Set("language", CurrentLanguageCode())
                                   .Set("region", CurrentCountryCode()))
-               .Set("is_mobile_platform", IsMobilePlatform())
                .Set("name", version_info::GetOSType()))
       .Set("[virtual]:is_survey_panelist", IsSurveyPanelist(prefs_))
       .Set("[virtual]:search_engine",
