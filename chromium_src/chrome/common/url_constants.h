@@ -508,6 +508,9 @@ inline constexpr char16_t kHistorySearchV2SettingURL[] =
 inline constexpr char kWallpaperSearchLearnMorePageURL[] =
     "https://support.brave.app/";
 
+// The URL for the passed in Google Wallet.
+inline constexpr char kWalletPassesPageURL[] = "https://support.brave.app/";
+
 // The URL for the "Learn more" page for Wallpaper Search for managed users.
 inline constexpr char kWallpaperSearchLearnMorePageManagedURL[] =
     "https://support.brave.app/";
