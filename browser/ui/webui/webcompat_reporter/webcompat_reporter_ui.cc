@@ -43,6 +43,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/language/core/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/viz/common/frame_sinks/copy_output_result.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_widget_host_view.h"
@@ -247,12 +248,13 @@ void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
       base::BindOnce(
           [](base::WeakPtr<WebcompatReporterDOMHandler> handler,
              scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
-             base::Value callback_id, const SkBitmap& bitmap) {
+             base::Value callback_id,
+             const viz::CopyOutputBitmapWithMetadata& result) {
             ui_task_runner->PostTask(
                 FROM_HERE,
                 base::BindOnce(&WebcompatReporterDOMHandler::
                                    HandleCapturedScreenshotBitmap,
-                               handler, bitmap, std::move(callback_id)));
+                               handler, result.bitmap, std::move(callback_id)));
           },
           weak_ptr_factory_.GetWeakPtr(), ui_task_runner_, args[0].Clone()));
 }
