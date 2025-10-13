@@ -956,6 +956,7 @@ test("brave_browser_tests") {
     "//brave/browser/brave_shields/eventsource_pool_limit_browsertest.cc",
     "//brave/browser/brave_shields/https_upgrade_browsertest.cc",
     "//brave/browser/brave_shields/websockets_pool_limit_browsertest.cc",
+    "//brave/browser/brave_universal_web_contents_observers_browsertest.cc",
     "//brave/browser/content_settings/brave_content_settings_browsertest.cc",
     "//brave/browser/debounce/debounce_browsertest.cc",
     "//brave/browser/extensions/brave_crx_generation_browsertest.cc",

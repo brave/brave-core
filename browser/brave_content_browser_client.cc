@@ -29,6 +29,7 @@
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/browser/brave_universal_web_contents_observers.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
@@ -1677,6 +1678,13 @@ content::BluetoothDelegate* BraveContentBrowserClient::GetBluetoothDelegate() {
         std::make_unique<ChromeBluetoothDelegateImplClient>());
   }
   return bluetooth_delegate_.get();
+}
+
+void BraveContentBrowserClient::OnWebContentsCreated(
+    content::WebContents* web_contents) {
+  ChromeContentBrowserClient::OnWebContentsCreated(web_contents);
+
+  AttachBraveUniversalWebContentsObservers(web_contents);
 }
 
 bool BraveContentBrowserClient::IsJitDisabledForSite(

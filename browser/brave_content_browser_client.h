@@ -17,6 +17,7 @@
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
+#include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
@@ -204,6 +205,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 #endif
 
   content::BluetoothDelegate* GetBluetoothDelegate() override;
+
+  void OnWebContentsCreated(content::WebContents* web_contents) override;
 
  private:
   void OnAllowGoogleAuthChanged();
