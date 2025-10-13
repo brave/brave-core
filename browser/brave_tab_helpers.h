@@ -14,11 +14,6 @@ namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents);
 
-// Note: These TabHelpers are related to privacy and should be attached even to
-// background WebContents, which aren't displayed to the user. As such, these
-// TabHelpers must not depend on being displayed in a tab.
-void AttachPrivacySensitiveTabHelpers(content::WebContents* web_contents);
-
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_BRAVE_TAB_HELPERS_H_

@@ -28,6 +28,7 @@
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/browser/brave_universal_web_contents_observers.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -1432,6 +1433,13 @@ bool BraveContentBrowserClient::AllowSignedExchange(
   // `features::kSignedHTTPExchange`, which was being used to disable signed
   // exchanges.
   return false;
+}
+
+void BraveContentBrowserClient::OnWebContentsCreated(
+    content::WebContents* web_contents) {
+  ChromeContentBrowserClient::OnWebContentsCreated(web_contents);
+
+  AttachBraveUniversalWebContentsObservers(web_contents);
 }
 
 bool BraveContentBrowserClient::IsJitDisabledForSite(

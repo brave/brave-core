@@ -777,6 +777,7 @@ test("brave_browser_tests") {
     "//brave/browser/brave_shields/eventsource_pool_limit_browsertest.cc",
     "//brave/browser/brave_shields/https_upgrade_browsertest.cc",
     "//brave/browser/brave_shields/websockets_pool_limit_browsertest.cc",
+    "//brave/browser/brave_universal_web_contents_observers_browsertest.cc",
     "//brave/browser/brave_wallet/brave_wallet_ethereum_chain_browsertest.cc",
     "//brave/browser/brave_wallet/brave_wallet_event_emitter_browsertest.cc",
     "//brave/browser/brave_wallet/brave_wallet_service_browsertest.cc",
