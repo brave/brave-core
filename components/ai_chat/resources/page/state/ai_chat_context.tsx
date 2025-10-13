@@ -43,6 +43,9 @@ type AIChatContextInternal = AIChatContextProps & {
 
   showSidebar: boolean
   toggleSidebar: () => void
+
+  getBookmarks: () => Promise<Mojom.Bookmark[]>
+  getHistory: (search?: string) => Promise<Mojom.HistoryEntry[]>
 }
 
 export type AIChatContext = AIChat.State & AIChatContextInternal
@@ -71,6 +74,13 @@ export const defaultContext: AIChatContext = {
   toggleSidebar: () => {},
 
   conversationEntriesComponent: () => <></>,
+
+  async getBookmarks() {
+    return []
+  },
+  async getHistory() {
+    return []
+  },
 }
 
 export const AIChatReactContext =
@@ -119,6 +129,10 @@ export function AIChatContextProvider(
     showSidebar,
     toggleSidebar: () => setShowSidebar((s) => !s),
     conversationEntriesComponent: props.conversationEntriesComponent,
+    getBookmarks: () =>
+      api.bookmarksService.getBookmarks().then((r) => r.bookmarks),
+    getHistory: (query: string | null = null) =>
+      api.historyService.getHistory(query, null).then((r) => r.history),
   }
 
   return (
