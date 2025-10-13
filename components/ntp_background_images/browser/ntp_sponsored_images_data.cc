@@ -213,11 +213,13 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
   }
   campaign.campaign_id = *campaign_id;
 
-  bool should_metrics_fallback_to_p3a = false;
-  if (const std::string* metrics = dict.FindString(kCampaignMetricsKey)) {
-    // Metrics (optional). If not provided, the default behavior is to send
-    // confirmations.
-    should_metrics_fallback_to_p3a = *metrics == "p3a";
+  auto metric_type = brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
+  if (const std::string* const metrics = dict.FindString(kCampaignMetricsKey)) {
+    if (*metrics == "confirmation") {
+      metric_type = brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
+    } else if (*metrics == "p3a") {
+      metric_type = brave_ads::mojom::NewTabPageAdMetricType::kP3A;
+    }
   }
 
   const base::Value::List* const creative_sets =
@@ -379,7 +381,7 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
         continue;
       }
 
-      creative.should_metrics_fallback_to_p3a = should_metrics_fallback_to_p3a;
+      creative.metric_type = metric_type;
 
       campaign.creatives.push_back(creative);
     }
@@ -496,8 +498,7 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackgroundAt(
       .Set(kIsSponsoredKey, !IsSuperReferral())
       .Set(kIsBackgroundKey, false)
       .Set(kWallpaperIDKey, base::Uuid::GenerateRandomV4().AsLowercaseString())
-      .Set(kWallpaperShouldMetricsFallbackToP3aKey,
-           creative.should_metrics_fallback_to_p3a)
+      .Set(kWallpaperMetricTypeKey, static_cast<int>(creative.metric_type))
       .Set(kWallpaperURLKey, creative.url.spec())
       .Set(kWallpaperFilePathKey, creative.file_path.AsUTF8Unsafe())
       .Set(kWallpaperFocalPointXKey, creative.focal_point.x())

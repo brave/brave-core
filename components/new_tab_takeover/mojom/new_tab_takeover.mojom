@@ -7,6 +7,7 @@ module new_tab_takeover.mojom;
 
 import "url/mojom/url.mojom";
 import "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom";
+import "brave/components/brave_ads/core/mojom/brave_ads.mojom";
 
 interface NewTabTakeover {
   SetSponsoredRichMediaAdEventHandler(
@@ -14,7 +15,7 @@ interface NewTabTakeover {
 
   GetCurrentWallpaper(string creative_instance_id) =>
       (url.mojom.Url? url,
-       bool should_metrics_fallback_to_p3a,
+       brave_ads.mojom.NewTabPageAdMetricType metric_type,
        url.mojom.Url? target_url);
 
   NavigateToUrl(url.mojom.Url url);

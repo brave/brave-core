@@ -108,7 +108,7 @@
 @property(nonatomic) CGPoint focalPoint;
 @property(nonatomic, copy) NSString* creativeInstanceId;
 @property(nonatomic) NTPSponsoredImageLogo* logo;
-@property(nonatomic) BOOL shouldMetricsFallbackToP3A;
+@property(nonatomic) BraveAdsNewTabPageAdMetricType metricType;
 @end
 
 @implementation NTPSponsoredImageBackground
@@ -117,13 +117,13 @@
                        focalPoint:(CGPoint)focalPoint
                creativeInstanceId:(NSString*)creativeInstanceId
                              logo:(NTPSponsoredImageLogo*)logo
-       shouldMetricsFallbackToP3A:(BOOL)shouldMetricsFallbackToP3A {
+                       metricType:(BraveAdsNewTabPageAdMetricType)metricType {
   if ((self = [super init])) {
     self.imagePath = imagePath;
     self.focalPoint = focalPoint;
     self.creativeInstanceId = creativeInstanceId;
     self.logo = logo;
-    self.shouldMetricsFallbackToP3A = shouldMetricsFallbackToP3A;
+    self.metricType = metricType;
   }
   return self;
 }
@@ -138,13 +138,12 @@
       base::SysUTF8ToNSString(sponsoredBackground.creative_instance_id);
   auto logo =
       [[NTPSponsoredImageLogo alloc] initWithLogo:sponsoredBackground.logo];
-  const bool shouldMetricsFallbackToP3A =
-      sponsoredBackground.should_metrics_fallback_to_p3a;
+  auto metricType = sponsoredBackground.metric_type;
   return [self initWithImagePath:imagePath
                       focalPoint:focalPoint
               creativeInstanceId:creativeInstanceId
                             logo:logo
-      shouldMetricsFallbackToP3A:shouldMetricsFallbackToP3A];
+                      metricType:(BraveAdsNewTabPageAdMetricType)metricType];
 }
 
 @end

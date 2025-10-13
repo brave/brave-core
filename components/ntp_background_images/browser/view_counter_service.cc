@@ -139,8 +139,9 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
     const std::string& placement_id,
     const std::string& campaign_id,
     const std::string& creative_instance_id,
-    bool should_metrics_fallback_to_p3a) {
-  if (should_metrics_fallback_to_p3a && ntp_p3a_helper_) {
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
+  if (mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A &&
+      ntp_p3a_helper_) {
     ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
   }
 
@@ -151,7 +152,7 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
   // required and will no-op sending a confirmation. However, we still need to
   // trigger the event to ensure other related logic is executed.
   MaybeTriggerNewTabPageAdEvent(
-      placement_id, creative_instance_id, should_metrics_fallback_to_p3a,
+      placement_id, creative_instance_id, mojom_ad_metric_type,
       brave_ads::mojom::NewTabPageAdEventType::kViewedImpression);
 }
 
@@ -376,8 +377,9 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const std::string& /*target_url*/,
-    bool should_metrics_fallback_to_p3a) {
-  if (should_metrics_fallback_to_p3a && ntp_p3a_helper_) {
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
+  if (mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A &&
+      ntp_p3a_helper_) {
     ntp_p3a_helper_->RecordNewTabPageAdEvent(
         brave_ads::mojom::NewTabPageAdEventType::kClicked,
         creative_instance_id);
@@ -387,18 +389,18 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
   // required and will no-op sending a confirmation. However, we still need to
   // trigger the event to ensure other related logic is executed.
   MaybeTriggerNewTabPageAdEvent(
-      placement_id, creative_instance_id, should_metrics_fallback_to_p3a,
+      placement_id, creative_instance_id, mojom_ad_metric_type,
       brave_ads::mojom::NewTabPageAdEventType::kClicked);
 }
 
 void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    bool should_metrics_fallback_to_p3a,
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
   if (ads_service_) {
     ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                           should_metrics_fallback_to_p3a,
+                                           mojom_ad_metric_type,
                                            mojom_ad_event_type,
                                            /*intentional*/ base::DoNothing());
   }
