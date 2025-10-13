@@ -5,10 +5,21 @@
 
 import * as Mojom from '../../../common/mojom'
 
+const NON_TASK_TOOL_NAMES = [
+  Mojom.USER_CHOICE_TOOL_NAME,
+  Mojom.MEMORY_STORAGE_TOOL_NAME,
+]
+
+// How many task tools need to occur within a group for the group
+// to be considered a task.
+const TASK_TOOL_COUNT = 2
+
 /**
- * Groups consecutive assistant entries. Other entries will form a group each
- * with only a single entry.
- * @param allEntries Flat list of conversation entries
+ * Groups consecutive assistant entries for the purposes of combining tool use
+ * loops. Each tool use and response results in a separate ConversationTurn, but
+ * we want to combine them in the UI as the same turn. Other entries will form a
+ * group each with only a single entry.
+ * @param allEntries All ungrouped conversation entries for a conversation
  */
 export function groupConversationEntries(
   allEntries: Mojom.ConversationTurn[],
@@ -33,6 +44,49 @@ export function groupConversationEntries(
     }
   }
   return groupedEntries
+}
+
+/**
+ * A task is when there are multiple entries within a group and there
+ * are at least 2 task tool use events and 1 completion event.
+ * @param group Group of conversation entries from groupConversationEntries
+ * @returns true if the group is a task
+ */
+export function isGroupTask(group: Mojom.ConversationTurn[]) {
+  // Must have at least 1 tool use and a response to the tool use (2 group entries)
+  if (group.length <= 1) {
+    return false
+  }
+
+  // Must have at least 2 task tool uses within the group of responses
+  let taskToolCount = 0
+  // Must have at least 1 completion event
+  let hasCompletion = false
+  for (const entry of group) {
+    if (entry.events) {
+      for (const event of entry.events) {
+        if (event.completionEvent) {
+          hasCompletion = true
+        }
+        if (
+          !!event.toolUseEvent
+          && !NON_TASK_TOOL_NAMES.includes(event?.toolUseEvent?.toolName ?? '')
+        ) {
+          taskToolCount++
+        }
+        // Optimization: stop iterating events if we have what we need
+        if (hasCompletion && taskToolCount >= TASK_TOOL_COUNT) {
+          break
+        }
+      }
+    }
+    // Optimization: stop iterating entries if we have what we need
+    if (hasCompletion && taskToolCount >= TASK_TOOL_COUNT) {
+      break
+    }
+  }
+
+  return taskToolCount >= TASK_TOOL_COUNT && hasCompletion
 }
 
 export function getReasoningText(text: string) {
