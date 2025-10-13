@@ -279,6 +279,7 @@ const Config = function () {
     'brave_sync_endpoint',
     'brave_variations_server_url',
     'concurrent_links',
+    'dcheck_always_on',
     'enable_updater',
     'gemini_production_api_url',
     'gemini_production_client_id',
@@ -424,8 +425,6 @@ Config.prototype.buildArgs = function () {
     target_cpu: this.targetArch,
     is_official_build: this.isOfficialBuild(),
     is_debug: this.isDebug(),
-    dcheck_always_on:
-      getEnvConfig(['dcheck_always_on']) || this.isComponentBuild(),
     brave_channel: this.channel,
     brave_version_major: versionParts[0],
     brave_version_minor: versionParts[1],
