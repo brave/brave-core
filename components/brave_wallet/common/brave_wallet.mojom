@@ -2908,7 +2908,7 @@ enum SolanaInstructionParamType {
   kUint64 = 2,
   kPublicKey = 3,
   kOptionalPublicKey = 4,
-  kString = 5,
+  kString = 5,  // We support only seed strings which are 32 bytes max.
   kAuthorityType = 6,
   kUnknown = -1,
 };
