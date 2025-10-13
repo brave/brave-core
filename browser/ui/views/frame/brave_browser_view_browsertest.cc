@@ -116,7 +116,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   // Check bookmark bar/contents container position.
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
             bookmark_bar()->bounds().origin());
-  EXPECT_EQ(bookmark_bar()->bounds().bottom_left(),
+  EXPECT_EQ(bookmark_bar()->bounds().bottom_left() +
+                gfx::Vector2d(0, /*top container separator*/ 1),
             contents_container()->bounds().origin());
 
   // Hide bookmark bar always.
@@ -159,7 +160,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   EXPECT_FALSE(infobar_container()->GetVisible());
   EXPECT_TRUE(bookmark_bar()->GetVisible());
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().origin(),
-            bookmark_bar()->bounds().bottom_left());
+            bookmark_bar()->bounds().bottom_left() +
+                gfx::Vector2d(0, /*top container separator*/ 1));
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
             contents_container()->bounds().origin());
 }
