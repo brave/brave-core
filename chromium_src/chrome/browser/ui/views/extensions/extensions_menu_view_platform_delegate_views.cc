@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/views/extensions/brave_extensions_menu_main_page_view.h"
 
-#define BRAVE_EXTENSIONS_MENU_VIEW_CONTROLLER_OPEN_MAIN_PAGE               \
+#define BRAVE_EXTENSIONS_MENU_VIEW_PLATFORM_DELEGATE_VIEWS_OPEN_MAIN_PAGE  \
   {                                                                        \
     auto main_page =                                                       \
         std::make_unique<BraveExtensionsMenuMainPageView>(browser_, this); \
@@ -15,6 +15,6 @@
     return;                                                                \
   }
 
-#include <chrome/browser/ui/views/extensions/extensions_menu_view_controller.cc>
+#include <chrome/browser/ui/views/extensions/extensions_menu_view_platform_delegate_views.cc>
 
-#undef BRAVE_EXTENSIONS_MENU_VIEW_CONTROLLER_OPEN_MAIN_PAGE
+#undef BRAVE_EXTENSIONS_MENU_VIEW_PLATFORM_DELEGATE_VIEWS_OPEN_MAIN_PAGE
