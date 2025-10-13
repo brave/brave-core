@@ -4,6 +4,7 @@ include_rules = [
   "+components/paint_preview",
   "+components/pdf",
   "+components/user_prefs",
+  "+components/viz/common",
   "+content/public/browser",
   "+content/public/common",
   "+crypto",
