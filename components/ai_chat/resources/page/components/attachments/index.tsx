@@ -127,7 +127,7 @@ export function useFilteredItems(search: string) {
     () =>
       conversation.attachmentsDialog === 'history'
         ? // Note: History is only searched for more than 2 characters. This is an upstream limitation.
-          aiChat.getHistory(search.length <= 2 ? '' : search)
+          aiChat.getHistory(search)
         : Promise.resolve([]),
     [search, conversation.attachmentsDialog],
   )

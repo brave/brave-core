@@ -30,8 +30,15 @@ void HistoryUIHandler::GetHistory(const std::optional<std::string>& query,
   options.visit_order = history::QueryOptions::RECENT_FIRST;
   options.max_count = max_results.value_or(kDefaultMaxResults);
 
+  // Note: Upstream returns no results if the query is less than 2 characters,
+  // so no point passing it to the history service.
+  auto query_string = query.value_or("");
+  if (query_string.length() <= 2) {
+    query_string = "";
+  }
+
   history_service_->QueryHistory(
-      base::UTF8ToUTF16(query.value_or("")), std::move(options),
+      base::UTF8ToUTF16(query_string), std::move(options),
       base::BindOnce(&HistoryUIHandler::OnGetHistory,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
       &task_tracker_);

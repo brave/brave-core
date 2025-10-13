@@ -83,6 +83,21 @@ export default function TabsMenu() {
     [bookmarks, conversation.associatedContentInfo],
   )
 
+  const { result: history = [] } = usePromise(
+    () => aiChat.getHistory(query ?? ''),
+    [query],
+  )
+  const unselectedHistory = React.useMemo(
+    () =>
+      history.filter(
+        (h) =>
+          !conversation.associatedContentInfo.some(
+            (c) => c.url.url === h.url.url,
+          ),
+      ),
+    [history, conversation.associatedContentInfo],
+  )
+
   return (
     <FilterMenu
       categories={[
@@ -95,6 +110,10 @@ export default function TabsMenu() {
             S.CHAT_UI_ATTACHMENTS_MENU_BOOKMARKS_SECTION_TITLE,
           ),
           entries: unselectedBookmarks,
+        },
+        {
+          category: getLocale(S.CHAT_UI_ATTACHMENTS_MENU_HISTORY_SECTION_TITLE),
+          entries: unselectedHistory,
         },
       ]}
       isOpen={isOpen}

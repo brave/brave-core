@@ -274,4 +274,119 @@ describe('TabsMenu', () => {
     expect(await findByText('Brave Browser')).toBeInTheDocument()
     expect(queryByText('MDN Web Docs')).not.toBeInTheDocument()
   })
+
+  it('should render history in the list', async () => {
+    const { findByText } = render(
+      <MockContext
+        getHistory={() =>
+          Promise.resolve([
+            {
+              id: BigInt(1),
+              title: 'Brave Search',
+              url: { url: 'https://search.brave.com' },
+            },
+            {
+              id: BigInt(2),
+              title: 'GitHub',
+              url: { url: 'https://github.com' },
+            },
+          ])
+        }
+      >
+        <TabsMenu />
+      </MockContext>,
+    )
+
+    expect(await findByText('Brave Search')).toBeInTheDocument()
+    expect(await findByText('GitHub')).toBeInTheDocument()
+  })
+
+  it('should filter history by query', async () => {
+    const { findByText, queryByText } = render(
+      <MockContext
+        inputText='@search'
+        getHistory={() =>
+          Promise.resolve([
+            {
+              id: BigInt(1),
+              title: 'Brave Search',
+              url: { url: 'https://search.brave.com' },
+            },
+            {
+              id: BigInt(2),
+              title: 'GitHub',
+              url: { url: 'https://github.com' },
+            },
+          ])
+        }
+      >
+        <TabsMenu />
+      </MockContext>,
+    )
+
+    expect(await findByText('Brave Search')).toBeInTheDocument()
+    expect(queryByText('GitHub')).not.toBeInTheDocument()
+  })
+
+  it('should pass query to getHistory when query length >= 2', async () => {
+    const getHistory = jest.fn(() =>
+      Promise.resolve([
+        {
+          id: BigInt(1),
+          title: 'Test History',
+          url: { url: 'https://test.com' },
+        },
+      ]),
+    )
+
+    render(
+      <MockContext
+        inputText='@ab'
+        getHistory={getHistory}
+      >
+        <TabsMenu />
+      </MockContext>,
+    )
+
+    expect(getHistory).toHaveBeenCalledWith('ab')
+  })
+
+  it('should filter out already attached history items', async () => {
+    const { findByText, queryByText } = render(
+      <MockContext
+        associatedContentInfo={[
+          {
+            conversationTurnUuid: undefined,
+            contentId: 1,
+            title: 'Brave Search',
+            url: {
+              url: 'https://search.brave.com',
+            },
+            contentType: ContentType.PageContent,
+            contentUsedPercentage: 0,
+            uuid: '1',
+          },
+        ]}
+        getHistory={() =>
+          Promise.resolve([
+            {
+              id: BigInt(1),
+              title: 'Brave Search',
+              url: { url: 'https://search.brave.com' },
+            },
+            {
+              id: BigInt(2),
+              title: 'GitHub',
+              url: { url: 'https://github.com' },
+            },
+          ])
+        }
+      >
+        <TabsMenu />
+      </MockContext>,
+    )
+
+    expect(queryByText('Brave Search')).not.toBeInTheDocument()
+    expect(await findByText('GitHub')).toBeInTheDocument()
+  })
 })
