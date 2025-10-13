@@ -38,6 +38,7 @@
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
+#include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
@@ -46,6 +47,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/tabs/public/split_tab_visual_data.h"
@@ -149,8 +151,20 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   // Check MultiContentsView uses our separator and initially hidden.
   EXPECT_FALSE(split_view_separator()->GetVisible());
 
-  // separator should not be empty when split view is closed.
   auto* browser_view = brave_browser_view();
+
+  // Remove all infobars to test top container separator visibility.
+  // Infobar visibility affects that separator visibility.
+  // Start test w/o infobar.
+  infobars::ContentInfoBarManager::FromWebContents(GetWebContentsAt(0))
+      ->RemoveAllInfoBars(/*animate=*/false);
+  browser_view->InvalidateLayout();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !browser_view->infobar_container()->GetVisible(); }));
+
+  // separator should not be empty and visible when split view is closed.
+  EXPECT_TRUE(
+      browser_view->top_container_separator_for_testing()->GetVisible());
   EXPECT_NE(
       gfx::Size(),
       browser_view->top_container_separator_for_testing()->GetPreferredSize());
