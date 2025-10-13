@@ -67,7 +67,9 @@ def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
             print(
                 "However they are not listed as data in target. data conatains:"
             )
-            print("  " + "\n  ".join(src_roots))
+            print("  " + "\n  ".join([
+                make_source_absolute(src_folder, entry) for entry in src_roots
+            ]))
         else:
             print("However data is empty")
 
