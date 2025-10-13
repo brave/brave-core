@@ -69,9 +69,10 @@ void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
 
 void BraveTabStripModel::UpdateWebContentsStateAt(int index,
                                                   TabChangeType change_type) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs) ||
+      base::FeatureList::IsEnabled(tabs::features::kBraveEmojiTabFavicon)) {
     // Make sure that the tab's last origin is updated when the url changes.
-    // When last origin changes, the custom title is reset.
+    // When base domain changes, we reset custom title and emoji favicon.
     GetTabAtIndex(index)->GetTabFeatures()->tab_ui_helper()->UpdateLastOrigin();
   }
 
@@ -146,6 +147,25 @@ void BraveTabStripModel::SetCustomTitleForTab(
     observer.TabCustomTitleChanged(
         GetWebContentsAt(index),
         title.has_value() ? base::UTF16ToUTF8(*title) : std::string());
+  }
+
+  NotifyTabChanged(tab_interface, TabChangeType::kAll);
+}
+
+void BraveTabStripModel::SetCustomEmojiFaviconForTab(
+    int index,
+    const std::optional<std::u16string>& emoji) {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveEmojiTabFavicon));
+
+  auto* tab_interface = GetTabAtIndex(index);
+  CHECK(tab_interface);
+  auto* tab_ui_helper = tab_interface->GetTabFeatures()->tab_ui_helper();
+  CHECK(tab_ui_helper);
+  tab_ui_helper->SetCustomEmojiFavicon(emoji);
+
+  // Notify observers for persistence.
+  for (auto& observer : observers_) {
+    observer.TabCustomTitleChanged(GetWebContentsAt(index), std::nullopt);
   }
 
   NotifyTabChanged(tab_interface, TabChangeType::kAll);
