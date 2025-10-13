@@ -469,7 +469,7 @@
     Search bookmarks
   </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_HISTORY_SEARCH_PLACEHOLDER" desc="Placeholder for the history attachments search input" formatter_data="webui=AiChat">
-    Search history
+    Search browser history
   </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_SEARCH_NO_RESULTS" desc="No results message" formatter_data="webui=AiChat">
     No results found
@@ -484,7 +484,7 @@
     Attach content from bookmarks
   </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_HISTORY_TITLE" desc="Title for the history attachments section" formatter_data="webui=AiChat">
-    Attach content from history
+    Attach content from browser history
   </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_TABS_DESCRIPTION" desc="Description for the attachments section" formatter_data="webui=AiChat">
     Send page content from your browser tabs to give Leo more context for the conversation.
@@ -694,13 +694,13 @@
     Current tab contents
   </message>
   <message name="IDS_AI_CHAT_ATTACH_OPEN_TABS_BUTTON_LABEL" desc="The button label for attaching open tabs" formatter_data="webui=AiChat">
-    Open tabs...
+    Open tabs…
   </message>
   <message name="IDS_AI_CHAT_ATTACH_OPEN_BOOKMARKS_BUTTON_LABEL" desc="The button label for attaching open bookmarks" formatter_data="webui=AiChat">
-    Bookmarks...
+    Bookmarks…
   </message>
   <message name="IDS_AI_CHAT_ATTACH_OPEN_HISTORY_BUTTON_LABEL" desc="The button label for attaching history" formatter_data="webui=AiChat">
-    History...
+    History…
   </message>
   <message name="IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL" desc="The button label for Leo's microphone feature" formatter_data="webui=AiChat">
     Use microphone
