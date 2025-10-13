@@ -13,6 +13,9 @@ import "url/mojom/url.mojom";
 
 // Share some tool names between the browser and the UI so that
 // custom user actions and UI representations can be created.
+// TODO(https://github.com/brave/brave-browser/issues/50097): move to
+// untrusted_frame.mojom since these are only used in the conversation content
+// frame.
 const string kUserChoiceToolName = "user_choice_tool";
 const string kNavigateToolName = "web_page_navigator";
 const string kMemoryStorageToolName = "memory_storage_tool";
