@@ -9,7 +9,7 @@ import {
   removeReasoning,
   removeCitationsWithMissingLinks,
   groupConversationEntries,
-  isGroupTask,
+  isAssistantGroupTask,
 } from './conversation_entries_utils'
 import {
   createConversationTurnWithDefaults,
@@ -215,7 +215,7 @@ describe('isGroupTask', () => {
       }),
     ]
 
-    expect(isGroupTask(group)).toBe(true)
+    expect(isAssistantGroupTask(group)).toBe(true)
   })
 
   it('should return true for multiple events with 2 task tools in 1 entry and a completion in the other', () => {
@@ -243,7 +243,39 @@ describe('isGroupTask', () => {
       }),
     ]
 
-    expect(isGroupTask(group)).toBe(true)
+    expect(isAssistantGroupTask(group)).toBe(true)
+  })
+
+  it('sanity check: should return false when including a non-assistant entry', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.HUMAN,
+        text: 'Question 1',
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+          getToolUseEvent({
+            toolName: 'a-task-tool2',
+            id: '1',
+            argumentsJson: 'tool input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('task completed')],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(false)
   })
 
   it('should return false for single entry group', () => {
@@ -268,12 +300,12 @@ describe('isGroupTask', () => {
       }),
     ]
 
-    expect(isGroupTask(group)).toBe(false)
+    expect(isAssistantGroupTask(group)).toBe(false)
   })
 
   it('should return false for empty group', () => {
     const group: Mojom.ConversationTurn[] = []
-    expect(isGroupTask(group)).toBe(false)
+    expect(isAssistantGroupTask(group)).toBe(false)
   })
 
   it('should return false when group has no completion event', () => {
@@ -302,7 +334,7 @@ describe('isGroupTask', () => {
       }),
     ]
 
-    expect(isGroupTask(group)).toBe(false)
+    expect(isAssistantGroupTask(group)).toBe(false)
   })
 
   it('should return false when group has no valid tool use events', () => {
@@ -332,7 +364,7 @@ describe('isGroupTask', () => {
       }),
     ]
 
-    expect(isGroupTask(group)).toBe(false)
+    expect(isAssistantGroupTask(group)).toBe(false)
   })
 
   it('should return false with only 1 task tool use event - no others', () => {
@@ -354,7 +386,7 @@ describe('isGroupTask', () => {
       }),
     ]
 
-    expect(isGroupTask(group)).toBe(false)
+    expect(isAssistantGroupTask(group)).toBe(false)
   })
 
   it('should return false with only 1 task tool use event mixed with non-task tool', () => {
@@ -382,6 +414,6 @@ describe('isGroupTask', () => {
       }),
     ]
 
-    expect(isGroupTask(group)).toBe(false)
+    expect(isAssistantGroupTask(group)).toBe(false)
   })
 })

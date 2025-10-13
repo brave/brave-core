@@ -30,7 +30,7 @@ import EditIndicator from '../edit_indicator'
 import {
   getReasoningText,
   groupConversationEntries,
-  isGroupTask,
+  isAssistantGroupTask,
 } from './conversation_entries_utils'
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
 import styles from './style.module.scss'
@@ -87,8 +87,8 @@ function ConversationEntries() {
     <>
       <div>
         {groupedEntries.map((group, index) => {
-          // TODO(petemill): Split assistant and human entries to separate components
-          // to make this more readable.
+          // TODO(https://github.com/brave/brave-browser/issues/50132):
+          // Split this component up to make it more readable.
           const isLastGroup = index === groupedEntries.length - 1
           const firstEntry = group[0]
           const firstEntryEdit = firstEntry.edits?.at(-1) ?? group[0]
@@ -141,7 +141,7 @@ function ConversationEntries() {
           const hasAttachments =
             !!firstEntryEdit.uploadedFiles?.length || tabAttachments.length > 0
 
-          const groupIsTask = isGroupTask(group)
+          const groupIsTask = isAssistantGroupTask(group)
 
           return (
             <div
@@ -331,23 +331,29 @@ function ConversationEntries() {
                       )
                     })}
                 </div>
-                {!groupIsTask && isAIAssistant && showEditIndicator && (
-                  <EditIndicator time={lastEditedTime} />
+
+                {!groupIsTask && (
+                  <>
+                    {isAIAssistant && showEditIndicator && (
+                      <EditIndicator time={lastEditedTime} />
+                    )}
+                    {isAIAssistant
+                      && conversationContext.isLeoModel
+                      && !firstEntryEdit.selectedText
+                      && !showEditInput && (
+                        <ContextActionsAssistant
+                          turnUuid={firstEntryEdit.uuid}
+                          turnModelKey={turnModelKey}
+                          onEditAnswerClicked={
+                            canEditEntry
+                              ? () => setEditInputId(index)
+                              : undefined
+                          }
+                          onCopyTextClicked={handleCopyText}
+                        />
+                      )}
+                  </>
                 )}
-                {!groupIsTask
-                  && isAIAssistant
-                  && conversationContext.isLeoModel
-                  && !firstEntryEdit.selectedText
-                  && !showEditInput && (
-                    <ContextActionsAssistant
-                      turnUuid={firstEntryEdit.uuid}
-                      turnModelKey={turnModelKey}
-                      onEditAnswerClicked={
-                        canEditEntry ? () => setEditInputId(index) : undefined
-                      }
-                      onCopyTextClicked={handleCopyText}
-                    />
-                  )}
                 {isGeneratingResponse && (
                   <div className={styles.loading}>
                     <ProgressRing />
