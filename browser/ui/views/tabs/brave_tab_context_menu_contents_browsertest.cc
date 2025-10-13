@@ -187,7 +187,49 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
 
 IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
                        SplitViewMenuCustomizationTest) {
-  // Check with non split tab.
+  // Smoke test for normal tab closing to verify split view's tab closing
+  // customization doesn't affect original tab closing behavior.
+  auto* tab_strip_model = browser()->tab_strip_model();
+
+  // Create another normal tab.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+
+  // Now we have two normal tab at 0 and 1.
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  {
+    // Cache tab at 0's handle to check it's not closed when closing active tab
+    // at 1 via tab context menu.
+    auto tab0_handle = tab_strip_model->GetTabAtIndex(0)->GetHandle();
+    auto menu = CreateMenuAt(1);
+    menu->ExecuteCommand(TabStripModel::CommandCloseTab,
+                         /*event_flags=*/0);
+    EXPECT_EQ(1, tab_strip_model->count());
+    EXPECT_EQ(0, tab_strip_model->active_index());
+    EXPECT_EQ(tab0_handle, tab_strip_model->GetTabAtIndex(0)->GetHandle());
+  }
+
+  // Create another normal tab.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ false);
+
+  // Now we have two normal tab at 0 and 1.
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  {
+    // Cache tab at 0's handle to check it's not closed when closing inactive
+    // tab at 1 via tab context menu.
+    auto tab0_handle = tab_strip_model->GetTabAtIndex(0)->GetHandle();
+    auto menu = CreateMenuAt(1);
+    menu->ExecuteCommand(TabStripModel::CommandCloseTab,
+                         /*event_flags=*/0);
+    EXPECT_EQ(tab0_handle, tab_strip_model->GetTabAtIndex(0)->GetHandle());
+  }
+
+  // Now we have one normal tab at 0.
+  EXPECT_EQ(1, tab_strip_model->count());
+  EXPECT_EQ(0, tab_strip_model->active_index());
+
+  // Check split view context menu with normal tab.
   {
     auto menu = CreateMenuAt(0);
     auto* menu_model = menu->model_.get();
@@ -197,37 +239,114 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
     EXPECT_FALSE(menu_model->IsNewFeatureAt(*index));
   }
 
-  auto* tab_strip_model = browser()->tab_strip_model();
+  // Create another normal tab.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+
+  // Now we have two normal tab at 0 and 1.
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_EQ(1, tab_strip_model->active_index());
 
   // Create split tabs with tab at 1 and 2.
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
   chrome::NewSplitTab(browser(),
                       split_tabs::SplitTabCreatedSource::kTabContextMenu);
+
+  // Now we have one normal tab at 0 and split tab at 1 and 2.
   EXPECT_EQ(3, tab_strip_model->count());
   EXPECT_EQ(2, tab_strip_model->active_index());
 
   // split tab's context menu has arrange command.
   {
-    auto menu = CreateMenuAt(1);
+    auto menu = CreateMenuAt(2);
     auto* menu_model = menu->model_.get();
     auto index =
         menu_model->GetIndexOfCommandId(TabStripModel::CommandArrangeSplit);
     EXPECT_TRUE(index.has_value());
     EXPECT_FALSE(menu_model->IsNewFeatureAt(*index));
 
-    // Execute close tab menu and check only active tab is closed from split
-    // tab.
+    // Execute close tab menu on tab at 2 and check only that active tab is
+    // closed from split tab.
+    auto tab1_handle = tab_strip_model->GetTabAtIndex(1)->GetHandle();
     menu->ExecuteCommand(TabStripModel::CommandCloseTab,
                          /*event_flags=*/0);
     EXPECT_EQ(2, tab_strip_model->count());
     EXPECT_EQ(1, tab_strip_model->active_index());
+    EXPECT_EQ(tab1_handle, tab_strip_model->GetTabAtIndex(1)->GetHandle());
   }
 
+  // Create split tabs with tab at 1 and 2.
   chrome::NewSplitTab(browser(),
                       split_tabs::SplitTabCreatedSource::kTabContextMenu);
+
+  // Now we have one normal tab at 0 and split tab at 1 and 2.
   EXPECT_EQ(3, tab_strip_model->count());
   EXPECT_EQ(2, tab_strip_model->active_index());
 
+  // split tab's context menu has arrange command.
+  {
+    auto tab2_handle = tab_strip_model->GetTabAtIndex(2)->GetHandle();
+    auto menu = CreateMenuAt(1);
+    // Execute close tab menu on tab at 1 and check only that inactive tab is
+    // closed from split tab.
+    menu->ExecuteCommand(TabStripModel::CommandCloseTab,
+                         /*event_flags=*/0);
+    EXPECT_EQ(2, tab_strip_model->count());
+    EXPECT_EQ(1, tab_strip_model->active_index());
+    EXPECT_EQ(tab2_handle, tab_strip_model->GetTabAtIndex(1)->GetHandle());
+  }
+
+  // Create split tabs with tab at 1 and 2.
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+
+  // Now we have one normal tab at 0 and split tab at 1 and 2.
+  EXPECT_EQ(3, tab_strip_model->count());
+  EXPECT_EQ(2, tab_strip_model->active_index());
+
+  // Close normal tab when split tab is active and check only that normal tab is
+  // closed.
+  {
+    auto normal_tab_handle = tab_strip_model->GetTabAtIndex(0)->GetHandle();
+    auto menu = CreateMenuAt(0);
+    menu->ExecuteCommand(TabStripModel::CommandCloseTab,
+                         /*event_flags=*/0);
+    EXPECT_EQ(2, tab_strip_model->count());
+    EXPECT_EQ(1, tab_strip_model->active_index());
+    EXPECT_NE(normal_tab_handle,
+              tab_strip_model->GetTabAtIndex(0)->GetHandle());
+    EXPECT_NE(normal_tab_handle,
+              tab_strip_model->GetTabAtIndex(1)->GetHandle());
+    // Now we have one split view at tab 0 and 1.
+  }
+
+  // Create another normal tab at 0.
+  chrome::AddTabAt(browser(), GURL(), 0, /*foreground*/ true);
+
+  // Now we have one normal tab at 0 and split tab at 1 and 2.
+  EXPECT_EQ(3, tab_strip_model->count());
+  EXPECT_EQ(0, tab_strip_model->active_index());
+
+  // Close normal tab when split tab is active and check only that normal tab is
+  // closed.
+  {
+    auto normal_tab_handle = tab_strip_model->GetTabAtIndex(0)->GetHandle();
+    auto menu = CreateMenuAt(0);
+    menu->ExecuteCommand(TabStripModel::CommandCloseTab,
+                         /*event_flags=*/0);
+    EXPECT_EQ(2, tab_strip_model->count());
+    EXPECT_NE(normal_tab_handle,
+              tab_strip_model->GetTabAtIndex(0)->GetHandle());
+    EXPECT_NE(normal_tab_handle,
+              tab_strip_model->GetTabAtIndex(1)->GetHandle());
+    // Now we have one split view at tab 0 and 1.
+  }
+
+  // Create another normal tab at 0.
+  chrome::AddTabAt(browser(), GURL(), 0, /*foreground*/ false);
+  tab_strip_model->ActivateTabAt(2);
+
+  // Now we have one normal tab at 0 and split tab at 1 and 2.
+  EXPECT_EQ(3, tab_strip_model->count());
+  EXPECT_EQ(2, tab_strip_model->active_index());
   {
     auto menu = CreateMenuAt(2);
     auto* menu_model = menu->model_.get();

@@ -151,27 +151,6 @@ void BraveTabStripModel::SetCustomTitleForTab(
   NotifyTabChanged(tab_interface, TabChangeType::kAll);
 }
 
-void BraveTabStripModel::CloseSelectedTabsWithSplitView() {
-  auto selected_indices = selection_model().selected_indices();
-  if (selected_indices.size() != 2) {
-    return CloseSelectedTabs();
-  }
-
-  // If selected tabs only include two tabs from same split tab,
-  // close active tab only.
-  auto first_tab = selected_indices.begin();
-  auto first_tab_split = GetSplitForTab(*first_tab);
-  if (first_tab_split.has_value() &&
-      first_tab_split == GetSplitForTab(*(first_tab + 1))) {
-    CloseWebContentsAt(active_index(),
-                       TabCloseTypes::CLOSE_USER_GESTURE |
-                           TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
-    return;
-  }
-
-  return CloseSelectedTabs();
-}
-
 void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
   if (*tree_tabs_enabled_ && *vertical_tabs_enabled_) {
     BuildTreeTabs();
