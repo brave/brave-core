@@ -20,10 +20,10 @@ def ensure_hardlink(src, dst):
     except FileExistsError:
         if not os.path.samefile(src, dst):
             # recreating link if dst is not pointing to the src
-            os.unlink(dst)
             try:
-                os.link(src, dst)
-            except FileExistsError:
+              os.unlink(dst)
+              os.link(src, dst)
+            except (FileExistsError, FileNotFoundError):
                 # Ignore this error, it happens because of a race condition
                 # on android when the relevant target is running for more than
                 # one architecture. This is a temporary workaround
