@@ -65,7 +65,8 @@ void BraveBrowserTabStripController::ExecuteCommandForTab(
     const Tab* tab) {
   const std::optional<int> model_index = tabstrip_->GetModelIndexOf(tab);
   if (!model_index.has_value()) {
-    return BrowserTabStripController::ExecuteCommandForTab(command_id, tab);
+    BrowserTabStripController::ExecuteCommandForTab(command_id, tab);
+    return;
   }
 
   // This tab close customization targets only for split |tab|.
@@ -79,8 +80,8 @@ void BraveBrowserTabStripController::ExecuteCommandForTab(
   const auto split_id = model_->GetSplitForTab(*model_index);
   if (command_id == TabStripModel::CommandCloseTab && split_id.has_value()) {
     auto* tab_interface = model_->GetTabAtIndex(*model_index);
-    // If |tab| is split and selection size is 1, it means split tab
-    // contains |tab| is inactive and active tab is normal. Close |tab|.
+    // If |tab| is split and selection size is 1, it means split tab that
+    // contains |tab| is inactive and the active tab is normal. Close |tab|.
     if (model_->selection_model().size() == 1) {
       tab_interface->Close();
       return;
