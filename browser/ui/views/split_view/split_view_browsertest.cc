@@ -648,9 +648,19 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, BookmarksBarVisibilityTest) {
 #endif
 }
 
+// Only flaky(time out) on macOS.
+// https://github.com/brave/brave-browser/issues/48804
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView \
+  DISABLED_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView
+#else
+#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView \
+  JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView
+#endif
+
 IN_PROC_BROWSER_TEST_P(
     SplitViewCommonBrowserTest,
-    JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView) {
+    MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView) {
   NewSplitTab();
   auto* active_contents = chrome_test_utils::GetActiveWebContents(this);
   ASSERT_TRUE(IsSplitWebContents(active_contents));
