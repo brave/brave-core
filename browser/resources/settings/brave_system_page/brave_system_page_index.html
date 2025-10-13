@@ -39,11 +39,13 @@
     </settings-battery-page>
   </template>
 
-  <settings-brave-shortcuts-page
-    id="shortcuts"
-    slot="view"
-    prefs="{{prefs}}"
-    data-parent-view-id="system"
-    in-search-mode="[[inSearchMode_]]">
-  </settings-brave-shortcuts-page>
+  <template is="dom-if" if="[[showShortcutsPage_]]">
+    <settings-brave-shortcuts-page
+      id="shortcuts"
+      slot="view"
+      prefs="{{prefs}}"
+      data-parent-view-id="system"
+      in-search-mode="[[inSearchMode_]]">
+    </settings-brave-shortcuts-page>
+  </template>
 </cr-view-manager>
