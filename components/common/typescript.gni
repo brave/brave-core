@@ -237,7 +237,11 @@ template("transpile_web_ui") {
                              "visibility",
                            ])
 
-    write_file(data_paths_file, invoker.data, "json")
+    if (defined(invoker.data)) {
+      write_file(data_paths_file, invoker.data, "json")
+    } else {
+      write_file(data_paths_file, [], "json")
+    }
   }
 }
 
