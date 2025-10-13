@@ -5,6 +5,7 @@
 
 module brave_new_tab_page_refresh.mojom;
 
+import "brave/components/brave_ads/core/mojom/brave_ads.mojom";
 import "brave/components/brave_vpn/common/mojom/brave_vpn.mojom";
 
 struct BraveBackground {
@@ -38,7 +39,7 @@ struct SponsoredImageBackground {
   string campaign_id;
   string image_url;
   SponsoredImageLogo? logo;
-  bool should_metrics_fallback_to_p3a;
+  brave_ads.mojom.NewTabPageAdMetricType metric_type;
 };
 
 struct SearchEngineInfo {
@@ -132,7 +133,7 @@ interface NewTabPageHandler {
   NotifySponsoredImageLogoClicked(string wallpaper_id,
                                   string creative_instance_id,
                                   string destination_url,
-                                  bool should_metrics_fallback_to_p3a) => ();
+                                  brave_ads.mojom.NewTabPageAdMetricType metric_type) => ();
 
   // Gets or sets whether the search box is displayed on the NTP.
   GetShowSearchBox() => (bool show_search_box);

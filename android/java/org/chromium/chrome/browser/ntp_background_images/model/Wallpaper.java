@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.ntp_background_images.model;
 
+import org.chromium.brave_ads.mojom.NewTabPageAdMetricType;
+
 public class Wallpaper extends NTPImage {
     private final String mImagePath;
     private final int mFocalPointX;
@@ -16,7 +18,7 @@ public class Wallpaper extends NTPImage {
     private final String mCreativeInstanceId;
     private final String mWallpaperId;
     private final boolean mIsRichMedia;
-    private final boolean mShouldMetricsFallbackToP3a;
+    private final @NewTabPageAdMetricType.EnumType int mMetricType;
 
     public Wallpaper(
             String imagePath,
@@ -29,7 +31,7 @@ public class Wallpaper extends NTPImage {
             String creativeInstanceId,
             String wallpaperId,
             boolean isRichMedia,
-            boolean shouldMetricsFallbackToP3a) {
+            @NewTabPageAdMetricType.EnumType int metricType) {
         mImagePath = imagePath;
         mFocalPointX = focalPointX;
         mFocalPointY = focalPointY;
@@ -40,7 +42,7 @@ public class Wallpaper extends NTPImage {
         mCreativeInstanceId = creativeInstanceId;
         mWallpaperId = wallpaperId;
         mIsRichMedia = isRichMedia;
-        mShouldMetricsFallbackToP3a = shouldMetricsFallbackToP3a;
+        mMetricType = metricType;
     }
 
     public String getImagePath() {
@@ -83,7 +85,7 @@ public class Wallpaper extends NTPImage {
         return mIsRichMedia;
     }
 
-    public boolean shouldMetricsFallbackToP3a() {
-        return mShouldMetricsFallbackToP3a;
+    public @NewTabPageAdMetricType.EnumType int metricType() {
+        return mMetricType;
     }
 }

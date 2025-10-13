@@ -47,6 +47,7 @@ source_set("app") {
     "//brave/ios/browser",
     "//brave/ios/browser/ai_chat",
     "//brave/ios/browser/api/ads",
+    "//brave/ios/browser/api/ads:brave_ads_mojom_wrappers",
     "//brave/ios/browser/api/bookmarks",
     "//brave/ios/browser/api/brave_rewards",
     "//brave/ios/browser/api/brave_shields",

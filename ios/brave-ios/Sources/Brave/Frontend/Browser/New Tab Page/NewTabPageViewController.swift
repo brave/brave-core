@@ -698,13 +698,13 @@ class NewTabPageViewController: UIViewController {
         default: return nil
         }
       }()
-      if let eventType, sponsoredBackground.shouldMetricsFallbackToP3A {
+      if let eventType, sponsoredBackground.metricType == .p3a {
         p3aHelper.recordEvent(eventType, on: tab, for: sponsoredBackground)
       }
       rewards.ads.triggerNewTabPageAdEvent(
         background.wallpaperId.uuidString,
         creativeInstanceId: sponsoredBackground.creativeInstanceId,
-        shouldMetricsFallbackToP3a: sponsoredBackground.shouldMetricsFallbackToP3A,
+        metricType: sponsoredBackground.metricType,
         eventType: event,
         completion: { success in
           completion?(success)

@@ -27,6 +27,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/legacy_migration.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-data-view.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
@@ -182,18 +183,19 @@ void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
 void AdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    bool should_metrics_fallback_to_p3a,
+    mojom::NewTabPageAdMetricType mojom_ad_metric_type,
     mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(base::BindOnce(
         &AdsImpl::TriggerNewTabPageAdEvent, weak_factory_.GetWeakPtr(),
-        placement_id, creative_instance_id, should_metrics_fallback_to_p3a,
+        placement_id, creative_instance_id, mojom_ad_metric_type,
         mojom_ad_event_type, std::move(callback)));
   }
 
-  UpdateP3aMetricsFallbackState(creative_instance_id,
-                                should_metrics_fallback_to_p3a);
+  UpdateP3aMetricsFallbackState(
+      creative_instance_id,
+      mojom_ad_metric_type == mojom::NewTabPageAdMetricType::kP3A);
 
   GetAdHandler().TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
                                           mojom_ad_event_type,
