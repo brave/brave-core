@@ -643,9 +643,6 @@ Config.prototype.buildArgs = function () {
       this.braveAndroidDeveloperOptionsCode
     args.brave_safebrowsing_api_key = this.braveAndroidSafeBrowsingApiKey
 
-    // TODO(fixme)
-    args.enable_tor = false
-
     args.android_aab_to_apk = this.androidAabToApk
 
     if (
