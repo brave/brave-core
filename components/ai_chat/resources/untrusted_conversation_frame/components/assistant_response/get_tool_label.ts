@@ -6,6 +6,11 @@
 import { formatLocale, getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 
+/**
+ * See navigation_tool.cc
+ * @param toolInput Expects { "website_url": string } but is not guaranteed.
+ * @returns
+ */
 function getNavigateToolNameLabel(toolInput: any) {
   if (!toolInput?.website_url) {
     return getLocale(S.CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE)
@@ -18,6 +23,9 @@ function getNavigateToolNameLabel(toolInput: any) {
   return null
 }
 
+/**
+ * Get a display label for the specified tool given its name and input properties
+ */
 export function getToolLabel(toolName: string, toolInput: any) {
   // TODO(https://github.com/brave/brave-browser/issues/50097): add all other
   // known tool names as mojom constants and strings.
