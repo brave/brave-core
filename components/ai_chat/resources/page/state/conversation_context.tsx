@@ -83,8 +83,10 @@ export type ConversationContext = SendFeedbackState
     conversationHandler?: Mojom.ConversationHandlerRemote
 
     isTemporaryChat: boolean
-    attachmentsDialog: 'tabs' | 'bookmarks' | null
-    setAttachmentsDialog: (show: 'tabs' | 'bookmarks' | null) => void
+    attachmentsDialog: 'tabs' | 'bookmarks' | 'history' | null
+    setAttachmentsDialog: (
+      show: 'tabs' | 'bookmarks' | 'history' | null,
+    ) => void
     uploadFile: (useMediaCapture: boolean) => void
     getScreenshots: () => void
     removeFile: (index: number) => void

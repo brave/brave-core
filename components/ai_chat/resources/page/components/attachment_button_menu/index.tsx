@@ -115,6 +115,15 @@ export default function AttachmentButtonMenu(props: Props) {
             {getLocale(S.AI_CHAT_ATTACH_OPEN_BOOKMARKS_BUTTON_LABEL)}
           </div>
         </leo-menu-item>
+        <leo-menu-item onClick={() => props.setAttachmentsDialog('history')}>
+          <div className={styles.buttonContent}>
+            <Icon
+              className={styles.buttonIcon}
+              name='history'
+            />
+            {getLocale(S.AI_CHAT_ATTACH_OPEN_HISTORY_BUTTON_LABEL)}
+          </div>
+        </leo-menu-item>
       </ButtonMenu>
     </>
   )
