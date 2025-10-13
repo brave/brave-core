@@ -138,8 +138,6 @@ transpile_web_ui("polkadot_bridge_wasm") {
 
   rust_packages = [ rebase_path("wasm/polkadot_bridge_wasm/Cargo.toml") ]
 
-  no_iife = true
-  output_module = true
   public_asset_path = "chrome-untrusted://resources/brave/"
 }
 

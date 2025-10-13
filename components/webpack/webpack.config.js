@@ -101,7 +101,6 @@ module.exports = async function (env, argv) {
     devtool: isDevMode ? 'inline-source-map' : false,
     output,
     resolve,
-    target: ["web", "es2020"],
     optimization: {
       // We are providing chunk and module IDs via a plugin instead of a default
       chunkIds: false,
