@@ -40,6 +40,8 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     std::unique_ptr<BrowserViewLayoutDelegate> delegate,
     BrowserView* browser_view,
     views::View* window_scrim,
+    views::View* main_region,
+    views::View* main_container,
     views::View* top_container,
     WebAppFrameToolbarView* web_app_frame_toolbar,
     views::Label* web_app_window_title,
@@ -47,7 +49,6 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     views::View* vertical_tab_strip_container,
     views::View* toolbar,
     InfoBarContainerView* infobar_container,
-    views::View* main_container,
     views::View* contents_container,
     MultiContentsView* multi_contents_view,
     views::View* left_aligned_side_panel_separator,
@@ -58,6 +59,8 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     : BrowserViewLayout(std::move(delegate),
                         browser_view,
                         window_scrim,
+                        main_region,
+                        main_container,
                         top_container,
                         web_app_frame_toolbar,
                         web_app_window_title,
@@ -65,7 +68,6 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
                         vertical_tab_strip_container,
                         toolbar,
                         infobar_container,
-                        main_container,
                         contents_container,
                         multi_contents_view,
                         left_aligned_side_panel_separator,
@@ -208,13 +210,11 @@ void BraveBrowserViewLayout::LayoutInfoBar(gfx::Rect& available_bounds) {
 
 void BraveBrowserViewLayout::LayoutContentsContainerView(
     const gfx::Rect& available_bounds) {
-  main_container_->SetBoundsRect(available_bounds);
-
   if (contents_background_) {
     contents_background_->SetBoundsRect(available_bounds);
   }
 
-  gfx::Rect contents_container_bounds = main_container_->GetLocalBounds();
+  gfx::Rect contents_container_bounds = available_bounds;
   if (vertical_tab_strip_host_) {
     // Both vertical tab impls should not be enabled together.
     // https://github.com/brave/brave-browser/issues/48373
