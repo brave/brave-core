@@ -472,12 +472,12 @@ void ChromeImporter::ImportPasswords(
   password_manager::LoginDatabase database(
       copy_password_file.copied_file_path(),
       password_manager::IsAccountStore(false));
-  if (!database.Init(
-          /*on_undecryptable_passwords_removed=*/base::NullCallback(),
-          /*encryptor=*/nullptr)) {
-    LOG(ERROR) << "LoginDatabase Init() failed";
-    return;
-  }
+  // if (!database.Init(
+  //         /*on_undecryptable_passwords_removed=*/base::NullCallback(),
+  //         /*encryptor=*/nullptr)) {
+  //   LOG(ERROR) << "LoginDatabase Init() failed";
+  //   return;
+  // }
 
   std::vector<password_manager::PasswordForm> forms;
   bool success = database.GetAutofillableLogins(&forms);
