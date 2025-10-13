@@ -23,6 +23,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSideBySide, base::FEATURE_ENABLED_BY_DEFAULT},
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTabstripComboButton, base::FEATURE_ENABLED_BY_DEFAULT},
+    {kCloseActiveTabInSplitViewViaHotkey, base::FEATURE_ENABLED_BY_DEFAULT},
 }});
 
 bool HasTabSearchToolbarButton() {
