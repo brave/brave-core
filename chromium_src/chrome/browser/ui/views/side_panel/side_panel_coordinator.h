@@ -26,12 +26,7 @@
   friend class BraveSidePanelCoordinator; \
   void UpdatePinState
 
-#define NotifyPinnedContainerOfActiveStateChange \
-  virtual NotifyPinnedContainerOfActiveStateChange
-
 #include <chrome/browser/ui/views/side_panel/side_panel_coordinator.h>  // IWYU pragma: export
-
-#undef NotifyPinnedContainerOfActiveStateChange
 #undef UpdatePinState
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_COORDINATOR_H_
