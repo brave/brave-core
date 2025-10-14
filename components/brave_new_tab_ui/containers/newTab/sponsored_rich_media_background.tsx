@@ -12,7 +12,7 @@ export interface SponsoredRichMediaBackgroundInfo {
   url: string
   placementId: string
   creativeInstanceId: string
-  shouldMetricsFallbackToP3a: boolean
+  metricType: BraveAds.NewTabPageAdMetricType
   targetUrl: string
 }
 

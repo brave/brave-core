@@ -64,7 +64,7 @@ class AdsServiceMock : public AdsService {
               TriggerNewTabPageAdEvent,
               (const std::string&,
                const std::string&,
-               bool,
+               mojom::NewTabPageAdMetricType,
                mojom::NewTabPageAdEventType,
                TriggerAdEventCallback));
   MOCK_METHOD(void,

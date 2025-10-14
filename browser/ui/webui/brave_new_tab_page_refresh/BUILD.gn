@@ -12,7 +12,10 @@ assert(enable_custom_background)
 
 mojom("mojom") {
   sources = [ "brave_new_tab_page.mojom" ]
-  deps = [ "//brave/components/brave_vpn/common/mojom" ]
+  deps = [
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/brave_vpn/common/mojom",
+  ]
 }
 
 source_set("brave_new_tab_page_refresh") {

@@ -21,6 +21,7 @@
 #include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
@@ -486,15 +487,18 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
       dict->FindString(ntp_background_images::kCreativeInstanceIDKey);
   const std::string* target_url = dict->FindStringByDottedPath(
       ntp_background_images::kLogoDestinationURLPath);
-  const bool should_metrics_fallback_to_p3a =
-      dict->FindBool(
-              ntp_background_images::kWallpaperShouldMetricsFallbackToP3aKey)
-          .value_or(false);
+
+  brave_ads::mojom::NewTabPageAdMetricType metric_type =
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
+  if (std::optional<int> value =
+          dict->FindInt(ntp_background_images::kWallpaperMetricTypeKey)) {
+    metric_type = static_cast<brave_ads::mojom::NewTabPageAdMetricType>(*value);
+  }
 
   service->BrandedWallpaperLogoClicked(
       placement_id ? *placement_id : "",
       creative_instance_id ? *creative_instance_id : "",
-      target_url ? *target_url : "", should_metrics_fallback_to_p3a);
+      target_url ? *target_url : "", metric_type);
 }
 
 void BraveNewTabMessageHandler::HandleGetWallpaperData(
@@ -544,15 +548,17 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
       data->FindString(ntp_background_images::kCreativeInstanceIDKey);
   const std::string* campaign_id =
       data->FindString(ntp_background_images::kCampaignIdKey);
-  const bool should_metrics_fallback_to_p3a =
-      data->FindBool(
-              ntp_background_images::kWallpaperShouldMetricsFallbackToP3aKey)
-          .value_or(false);
+
+  brave_ads::mojom::NewTabPageAdMetricType metric_type =
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
+  if (std::optional<int> value =
+          data->FindInt(ntp_background_images::kWallpaperMetricTypeKey)) {
+    metric_type = static_cast<brave_ads::mojom::NewTabPageAdMetricType>(*value);
+  }
 
   service->BrandedWallpaperWillBeDisplayed(
       placement_id ? *placement_id : "", campaign_id ? *campaign_id : "",
-      creative_instance_id ? *creative_instance_id : "",
-      should_metrics_fallback_to_p3a);
+      creative_instance_id ? *creative_instance_id : "", metric_type);
 
   ntp_background_images::NewTabTakeoverInfoBarDelegate::
       MaybeDisplayAndIncrementCounter(web_ui()->GetWebContents(),

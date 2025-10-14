@@ -8,6 +8,7 @@ import { Store } from '../lib/store'
 import {
   BackgroundState,
   BackgroundActions,
+  NewTabPageAdMetricType,
   SponsoredImageBackground,
   SelectedBackgroundType } from '../state/background_state'
 
@@ -32,7 +33,7 @@ const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
       destinationUrl: 'https://brave.com',
       imageUrl: sampleBackground
     },
-    shouldMetricsFallbackToP3a: false
+    metricType: NewTabPageAdMetricType.kConfirmation
   },
 
   richMedia: {
@@ -46,7 +47,7 @@ const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
       destinationUrl: 'https://brave.com',
       imageUrl: ''
     },
-    shouldMetricsFallbackToP3a: false
+    metricType: NewTabPageAdMetricType.kConfirmation
   },
 
   none: null
