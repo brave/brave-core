@@ -29,6 +29,7 @@ source_set("browser_tests") {
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
+    "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
     "//chrome/test",
     "//chrome/test:test_support",
