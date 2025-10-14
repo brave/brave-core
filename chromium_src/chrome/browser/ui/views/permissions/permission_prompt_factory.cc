@@ -9,6 +9,7 @@
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 #include "brave/browser/ui/views/permission_bubble/brave_wallet_permission_prompt_impl.h"
+#include "brave/browser/ui/views/permission_bubble/psst_permission_prompt_impl.h"
 #endif
 
 #define CreatePermissionPrompt CreatePermissionPrompt_ChromiumImpl
@@ -34,6 +35,9 @@ std::unique_ptr<permissions::PermissionPrompt> CreatePermissionPrompt(
           permissions::RequestType::kBraveCardano) {
     return std::make_unique<BraveWalletPermissionPromptImpl>(
         browser, web_contents, *delegate);
+  } else if(delegate->Requests()[0]->request_type() ==
+            permissions::RequestType::kBravePsst) {
+    return std::make_unique<PsstPermissionPromptImpl>(web_contents, delegate);
   }
 #endif
 

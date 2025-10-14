@@ -18,6 +18,9 @@
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "content/public/browser/web_contents_user_data.h"
+#include "components/permissions/permission_prompt.h"
+#include "content/public/browser/web_contents_user_data.h"
 
 class PrefService;
 
@@ -26,7 +29,8 @@ namespace psst {
 class MatchedRule;
 class PsstRuleRegistry;
 
-class PsstTabWebContentsObserver : public content::WebContentsObserver {
+class PsstTabWebContentsObserver : public content::WebContentsObserver,
+                                   public content::WebContentsUserData<PsstTabWebContentsObserver> {
  public:
   using InsertScriptInPageCallback = base::OnceCallback<void(base::Value)>;
   using InsertScriptInPageTimeoutCallback =
@@ -65,8 +69,13 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   PsstTabWebContentsObserver& operator=(const PsstTabWebContentsObserver&) =
       delete;
 
+  void ShowBubble(permissions::PermissionPrompt::Delegate* delegate);
+
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
+  
+  // Required for WebContentsUserData
+  friend class content::WebContentsUserData<PsstTabWebContentsObserver>;
 
   PsstTabWebContentsObserver(content::WebContents* web_contents,
                              PsstRuleRegistry* registry,
@@ -95,7 +104,9 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   InjectScriptCallback inject_script_callback_;
   std::unique_ptr<PsstUiDelegate> ui_delegate_;
   base::OneShotTimer timeout_timer_;
+  raw_ptr<permissions::PermissionPrompt::Delegate> active_permission_prompt_delegate_{nullptr};
   base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
 }  // namespace psst

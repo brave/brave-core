@@ -27,6 +27,8 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
+#include "components/permissions/permission_request_manager.h"
+#include "brave/components/psst/browser/core/psst_permission_request.h"
 
 namespace psst {
 
@@ -112,6 +114,7 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     std::unique_ptr<PsstUiDelegate> ui_delegate,
     InjectScriptCallback inject_script_callback)
     : WebContentsObserver(web_contents),
+      content::WebContentsUserData<PsstTabWebContentsObserver>(*web_contents),
       registry_(registry),
       prefs_(prefs),
       inject_script_callback_(std::move(inject_script_callback)),
@@ -196,6 +199,13 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     return;
   }
 
+  // Here possible the request permission flow can be started:
+  // permissions::PermissionRequestManager::FromWebContents(web_contents())
+  //     ->AddRequest(
+  //         web_contents()->GetPrimaryMainFrame(),
+  //         std::make_unique<PsstPermissionRequest>(web_contents()->GetLastCommittedURL()));
+
+
   RunWithTimeout(
       id,
       MaybeAddParamsToScript(std::move(rule),
@@ -247,5 +257,19 @@ void PsstTabWebContentsObserver::OnScriptTimeout(int id) {
 
   ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
 }
+
+void PsstTabWebContentsObserver::ShowBubble(permissions::PermissionPrompt::Delegate* delegate) {
+  CHECK(delegate);
+  if (!ui_delegate_) {
+    return;
+  }
+
+  active_permission_prompt_delegate_ = delegate;
+  
+  // PsstConsentData psst_consent_data();
+  // ui_delegate_->Show(std::move(psst_consent_data));
+}
+
+WEB_CONTENTS_USER_DATA_KEY_IMPL(PsstTabWebContentsObserver);
 
 }  // namespace psst
