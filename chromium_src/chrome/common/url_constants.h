@@ -372,6 +372,9 @@ inline constexpr char kAddressesAndPaymentMethodsLearnMoreURL[] =
 inline constexpr char16_t kPayOverTimeLearnMoreUrl[] =
     u"https://support.brave.app";
 
+// The URL for the Wallet website.
+inline constexpr char16_t kWalletUrl[] = u"https://support.brave.app";
+
 // Help URL for Autofill Prediction Improvements.
 inline constexpr char16_t kAutofillAiLearnMoreURL[] =
     u"https://support.brave.app";
