@@ -28,6 +28,7 @@ brave_grit("static_resources") {
     "//brave/components/ai_chat/resources",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_shields/resources:bundle_js",
+    "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
     "//brave/components/decentralized_dns/content/resources:bundle_js",
     "//brave/components/request_otr/resources:bundle_js",
   ]
