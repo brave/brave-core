@@ -11,9 +11,11 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/history_ui_handler.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/history.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -25,6 +27,8 @@
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
+#include "components/keyed_service/core/service_access_type.h"
+#include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/webui/url_data_source_ios.h"
@@ -90,6 +94,10 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
       base::BindRepeating(&AIChatUI::BindInterfaceParentUIFrame,
                           base::Unretained(this)));
+
+  web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
+      base::BindRepeating(&AIChatUI::BindInterfaceHistoryUIHandler,
+                          base::Unretained(this)));
 }
 
 AIChatUI::~AIChatUI() {
@@ -99,6 +107,8 @@ AIChatUI::~AIChatUI() {
       ai_chat::mojom::Service::Name_);
   web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
       ai_chat::mojom::AIChatUIHandler::Name_);
+  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
+      ai_chat::mojom::HistoryUIHandler::Name_);
 }
 
 void AIChatUI::BindInterfaceUIHandler(
@@ -120,4 +130,12 @@ void AIChatUI::BindInterfaceParentUIFrame(
   CHECK(page_handler_);
   page_handler_->BindParentUIFrameFromChildFrame(
       std::move(parent_ui_frame_receiver));
+}
+
+void AIChatUI::BindInterfaceHistoryUIHandler(
+    mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> receiver) {
+  history_ui_handler_ = std::make_unique<ai_chat::HistoryUIHandler>(
+      std::move(receiver), ios::HistoryServiceFactory::GetForProfile(
+                               profile_, ServiceAccessType::EXPLICIT_ACCESS));
+  CHECK(history_ui_handler_);
 }
