@@ -15,6 +15,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/types.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "components/grit/brave_components_strings.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -338,8 +339,7 @@ TEST_F(TabSearchPageHandlerTest, UndoFocusTabs) {
   };
   handler()->SetOriginalTabsInfoByWindowForTesting(original_tabs_info);
   handler()->UndoFocusTabs(base::BindLambdaForTesting([&]() {
-    BrowserList* browser_list = BrowserList::GetInstance();
-    Browser* browser1 = browser_list->get(0);
+    Browser* browser1 = browser();
     EXPECT_EQ(browser1->tab_strip_model()->count(), 5)
         << "The tabs should be moved back to the window stored.";
     EXPECT_EQ(
@@ -360,9 +360,7 @@ TEST_F(TabSearchPageHandlerTest, UndoFocusTabs) {
 
     // We do not wait for the window to be closed and only verify the tabs are
     // moved out here, it is covered in TabSearchPageHandlerBrowserTest.
-    ASSERT_TRUE(browser_list->size() > 1);
-    Browser* browser2 = browser_list->get(1);
-    EXPECT_EQ(browser2->tab_strip_model()->count(), 0)
+    EXPECT_EQ(this->browser2()->GetTabStripModel()->count(), 0)
         << "The tabs should be moved back to the window stored.";
   }));
 
