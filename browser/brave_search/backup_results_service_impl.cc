@@ -10,7 +10,6 @@
 
 #include "base/byte_count.h"
 #include "base/functional/bind.h"
-#include "base/rand_util.h"
 #include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/common/features.h"
@@ -22,6 +21,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
@@ -36,9 +36,6 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
-#include "third_party/blink/public/common/navigation/navigation_policy.h"
-#include "third_party/blink/public/common/web_preferences/web_preferences.h"
-#include "chrome/browser/ui/tab_helpers.h"
 #include "url/url_constants.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -151,6 +148,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
   auto* otr_profile = profile_->GetOffTheRecordProfile(otr_profile_id, true);
 
   std::unique_ptr<content::WebContents> web_contents_unique;
+  std::unique_ptr<tabs::TabModel> tab_model;
 
 #if BUILDFLAG(IS_ANDROID)
   auto view_android = std::make_unique<ui::ViewAndroid>();
@@ -173,76 +171,47 @@ void BackupResultsServiceImpl::FetchBackupResults(
 
     // int random_width = base::RandInt(800, 1920);
     // int random_height = base::RandInt(600, 1080);
-    web_contents_unique->Resize({360, 488});
+    web_contents_unique->Resize({1360, 888});
 
-    // Insert the web contents into the tab strip model, then immediately detach
-    // auto* browser_list = BrowserList::GetInstance();
-    // if (!browser_list->empty()) {
-    //   auto* browser = browser_list->get(0);  // Get the first browser instance
-    //   auto* model = browser->tab_strip_model();
-
-    //   // Look for a tab with about:blank and insert right before it
-    //   int insert_index =
-    //       model->count();  // Default to end if no about:blank found
-    //   for (int i = 0; i < model->count(); ++i) {
-    //     auto* existing_web_contents = model->GetWebContentsAt(i);
-    //     if (existing_web_contents &&
-    //         existing_web_contents->GetLastCommittedURL() ==
-    //             GURL(url::kAboutBlankURL)) {
-    //       LOG(ERROR) << "FetchBackupResults! Found a grouped about:blank tab";
-    //       insert_index = i;  // Insert right before this about:blank tab
-    //       break;
-    //     }
-    //   }
-
-    //   model->InsertWebContentsAt(insert_index, std::move(web_contents_unique),
-    //                              ADD_ACTIVE);
-    //   LOG(ERROR) << "FetchBackupResults! Inserted web contents";
-    //   // Detach right after attaching to take ownership back
-    //   web_contents_unique =
-    //       model->DetachWebContentsAtForInsertion(insert_index);
-    //   LOG(ERROR) << "FetchBackupResults! Detached web contents";
-    // }
-
-    TabHelpers::AttachTabHelpers(web_contents_unique.get());
-
-    // auto web_preferences = web_contents->GetOrCreateWebPreferences();
-    // web_preferences.supports_multiple_windows = false;
-    // web_contents->SetWebPreferences(web_preferences);
-
-    if (features::IsBackupResultsFullRenderEnabled()) {
-      BackupResultsWebContentsObserver::CreateForWebContents(
-          web_contents_unique.get(), weak_ptr_factory_.GetWeakPtr());
+    auto* browser_list = BrowserList::GetInstance();
+    if (!browser_list->empty()) {
+      auto* browser = browser_list->get(0);
+      auto* model = browser->tab_strip_model();
+      tab_model = std::make_unique<tabs::TabModel>(
+          std::move(web_contents_unique), model);
     }
 
-    LOG(ERROR) << "FetchBackupResults! " << url.spec();
-    auto size = web_contents_unique->GetSize();
-    LOG(ERROR) << "FetchBackupResults! Size: " << size.width() << "x"
-               << size.height();
-    LOG(ERROR) << "is render widget host view present: "
-               << (web_contents_unique->GetRenderWidgetHostView() != nullptr);
-    // web_contents->GetRenderWidgetHostView()->SetSize(gfx::Size(360, 488));
-    // auto bounds = web_contents->GetRenderWidgetHostView()->GetViewBounds();
-    // LOG(ERROR) << "FetchBackupResults! Bounds: " << bounds.x() << "," <<
-    // bounds.y() << ","
-    //            << bounds.width() << "," << bounds.height();
-    size = web_contents_unique->GetSize();
-    LOG(ERROR) << "FetchBackupResults! Size2: " << size.width() << "x"
-               << size.height();
+    if (features::IsBackupResultsFullRenderEnabled() && tab_model) {
+      BackupResultsWebContentsObserver::CreateForWebContents(
+          tab_model->GetContents(), weak_ptr_factory_.GetWeakPtr());
+    }
+
+    if (tab_model) {
+      LOG(ERROR) << "FetchBackupResults! " << url.spec();
+      auto size = tab_model->GetContents()->GetSize();
+      LOG(ERROR) << "FetchBackupResults! Size: " << size.width() << "x"
+                 << size.height();
+      LOG(ERROR) << "is render widget host view present: "
+                 << (tab_model->GetContents()->GetRenderWidgetHostView() !=
+                     nullptr);
+      size = tab_model->GetContents()->GetSize();
+      LOG(ERROR) << "FetchBackupResults! Size2: " << size.width() << "x"
+                 << size.height();
+    }
     // auto visible_bounds =
     // web_contents->GetRenderWidgetHostView()->GetVisibleViewportSize();
     // LOG(ERROR) << "FetchBackupResults! Visible Bounds: " <<
     // visible_bounds.width() << "x" << visible_bounds.height();
   }
 
-  auto request = pending_requests_.emplace(
-      pending_requests_.end(), std::move(web_contents_unique), headers,
-      otr_profile, std::move(callback), url
+  auto request =
+      pending_requests_.emplace(pending_requests_.end(), std::move(tab_model),
+                                headers, otr_profile, std::move(callback), url
 #if BUILDFLAG(IS_ANDROID)
-      ,
-      std::move(view_android)
+                                ,
+                                std::move(view_android)
 #endif
-  );
+      );
 
   if (should_render) {
     // Navigate to brave.com first, then we'll navigate to the original URL
@@ -260,7 +229,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
     // if (request->headers) {
     //   load_url_params.extra_headers = request->headers->ToString();
     // }
-    if (!request->web_contents->GetController().LoadURLWithParams(
+    if (!request->tab_model ||
+        !request->tab_model->GetContents()->GetController().LoadURLWithParams(
             load_url_params)) {
       CleanupAndDispatchResult(request, std::nullopt);
       return;
@@ -275,7 +245,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
 }
 
 BackupResultsServiceImpl::PendingRequest::PendingRequest(
-    std::unique_ptr<content::WebContents> web_contents,
+    std::unique_ptr<tabs::TabModel> tab_model,
     std::optional<net::HttpRequestHeaders> headers,
     Profile* otr_profile,
     BackupResultsCallback callback,
@@ -288,7 +258,7 @@ BackupResultsServiceImpl::PendingRequest::PendingRequest(
     : headers(std::move(headers)),
       callback(std::move(callback)),
       original_url(original_url),
-      web_contents(std::move(web_contents)),
+      tab_model(std::move(tab_model)),
       otr_profile(otr_profile)
 #if BUILDFLAG(IS_ANDROID)
       ,
@@ -303,7 +273,8 @@ BackupResultsServiceImpl::PendingRequestList::iterator
 BackupResultsServiceImpl::FindPendingRequest(
     const content::WebContents* web_contents) {
   return std::ranges::find_if(pending_requests_, [&](const auto& request) {
-    return request.web_contents.get() == web_contents;
+    return request.tab_model &&
+           request.tab_model->GetContents() == web_contents;
   });
 }
 
@@ -345,7 +316,9 @@ bool BackupResultsServiceImpl::HandleWebContentsStartRequest(
 
   LOG(ERROR)
       << "HandleWebContentsStartRequest! is render widget host view present: "
-      << (pending_request->web_contents->GetRenderWidgetHostView() != nullptr);
+      << (pending_request->tab_model &&
+          pending_request->tab_model->GetContents()
+                  ->GetRenderWidgetHostView() != nullptr);
 
   MakeSimpleURLLoaderRequest(pending_request, url);
   return false;
@@ -371,11 +344,13 @@ void BackupResultsServiceImpl::HandleWebContentsDidFinishLoad(
   if (pending_request->requests_loaded ==
       static_cast<size_t>(
           features::kBackupResultsFullRenderMaxRequests.Get())) {
-    content_extraction::GetInnerHtml(
-        *pending_request->web_contents->GetPrimaryMainFrame(),
-        base::BindOnce(
-            &BackupResultsServiceImpl::HandleWebContentsContentExtraction,
-            weak_ptr_factory_.GetWeakPtr(), pending_request));
+    if (pending_request->tab_model) {
+      content_extraction::GetInnerHtml(
+          *pending_request->tab_model->GetContents()->GetPrimaryMainFrame(),
+          base::BindOnce(
+              &BackupResultsServiceImpl::HandleWebContentsContentExtraction,
+              weak_ptr_factory_.GetWeakPtr(), pending_request));
+    }
   }
 }
 
@@ -447,36 +422,26 @@ void BackupResultsServiceImpl::HandleWebContentsContentExtraction(
 void BackupResultsServiceImpl::NavigateToOriginalUrl(
     PendingRequestList::iterator pending_request) {
   if (pending_request == pending_requests_.end() ||
-      !pending_request->web_contents) {
+      !pending_request->tab_model) {
     return;
   }
 
+  auto* web_contents = pending_request->tab_model->GetContents();
   LOG(ERROR) << "NavigateToOriginalUrl! is render widget host view present: "
-             << (pending_request->web_contents->GetRenderWidgetHostView() !=
-                 nullptr);
-
-  // Resize the viewport to the same dimensions as in FetchBackupResults
-  // pending_request->web_contents->Resize({360, 488});
-  // pending_request->web_contents->Resize({1152, 930});
-  // pending_request->web_contents->GetRenderWidgetHostView()->SetSize(gfx::Size(360,
-  // 488));
-  // pending_request->web_contents->GetRenderWidgetHostView()->SetBounds(gfx::Rect(0,
-  // 0, 360, 488));
+             << (web_contents->GetRenderWidgetHostView() != nullptr);
 
   LOG(ERROR) << "NavigateToOriginalUrl! "
              << pending_request->original_url.spec();
-  auto size = pending_request->web_contents->GetSize();
+  auto size = web_contents->GetSize();
   LOG(ERROR) << "NavigateToOriginalUrl! Size: " << size.width() << "x"
              << size.height();
-  auto bounds =
-      pending_request->web_contents->GetRenderWidgetHostView()->GetViewBounds();
+  auto bounds = web_contents->GetRenderWidgetHostView()->GetViewBounds();
   LOG(ERROR) << "NavigateToOriginalUrl! Bounds: " << bounds.x() << ","
              << bounds.y() << "," << bounds.width() << "," << bounds.height();
 
   auto load_url_params = content::NavigationController::LoadURLParams(
       pending_request->original_url);
-  if (!pending_request->web_contents->GetController().LoadURLWithParams(
-          load_url_params)) {
+  if (!web_contents->GetController().LoadURLWithParams(load_url_params)) {
     CleanupAndDispatchResult(pending_request, std::nullopt);
   }
 }

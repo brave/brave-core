@@ -29,6 +29,10 @@ namespace content {
 class WebContents;
 }  // namespace content
 
+namespace tabs {
+class TabModel;
+}  // namespace tabs
+
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
@@ -66,7 +70,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
 
  private:
   struct PendingRequest {
-    PendingRequest(std::unique_ptr<content::WebContents> web_contents,
+    PendingRequest(std::unique_ptr<tabs::TabModel> tab_model,
                    std::optional<net::HttpRequestHeaders> headers,
                    Profile* otr_profile,
                    BackupResultsCallback callback,
@@ -82,7 +86,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
     BackupResultsCallback callback;
     GURL original_url;
 
-    std::unique_ptr<content::WebContents> web_contents;
+    std::unique_ptr<tabs::TabModel> tab_model;
 
     raw_ptr<Profile> otr_profile;
     scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory;
