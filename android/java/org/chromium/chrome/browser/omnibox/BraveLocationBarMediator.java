@@ -25,6 +25,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
+import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -73,7 +74,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
             Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             ObservableSupplier<@NavigationFulfillmentType Integer>
-                    navigationFulfillmentTypeSupplier) {
+                    navigationFulfillmentTypeSupplier,
+            @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator) {
         super(
                 context,
                 locationBarLayout,
@@ -93,7 +95,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 tabModelSelectorSupplier,
                 browserControlsStateProvider,
                 modalDialogManagerSupplier,
-                navigationFulfillmentTypeSupplier);
+                navigationFulfillmentTypeSupplier,
+                pageZoomIndicatorCoordinator);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
