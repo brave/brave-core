@@ -27,8 +27,7 @@ struct ZCashActionContext {
       const std::optional<OrchardAddrRawPart>& account_internal_addr,
       base::SequenceBound<OrchardSyncState>& sync_state,
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
-      const mojom::AccountIdPtr& account_id,
-      const std::string& chain_id);
+      const mojom::AccountIdPtr& account_id);
   ~ZCashActionContext();
   raw_ref<ZCashRpc> zcash_rpc;
 #if BUILDFLAG(ENABLE_ORCHARD)
@@ -40,7 +39,6 @@ struct ZCashActionContext {
   ZCashActionContext& operator=(ZCashActionContext&&);
   ZCashActionContext(ZCashActionContext&&);
   mojom::AccountIdPtr account_id;
-  std::string chain_id;
 };
 
 }  // namespace brave_wallet

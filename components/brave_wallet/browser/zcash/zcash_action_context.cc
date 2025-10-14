@@ -13,15 +13,13 @@ ZCashActionContext::ZCashActionContext(
     const std::optional<OrchardAddrRawPart>& account_internal_addr,
     base::SequenceBound<OrchardSyncState>& sync_state,
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
-    const mojom::AccountIdPtr& account_id,
-    const std::string& chain_id)
+    const mojom::AccountIdPtr& account_id)
     : zcash_rpc(zcash_rpc),
 #if BUILDFLAG(ENABLE_ORCHARD)
       account_internal_addr(account_internal_addr),
       sync_state(sync_state),
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
-      account_id(account_id.Clone()),
-      chain_id(chain_id) {
+      account_id(account_id.Clone()) {
 }
 
 ZCashActionContext& ZCashActionContext::operator=(ZCashActionContext&&) =

@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
 
@@ -122,7 +123,7 @@ void ZCashVerifyChainStateTask::OnGetAccountMeta(
 
 void ZCashVerifyChainStateTask::GetChainTipBlock() {
   context_->zcash_rpc->GetLatestBlock(
-      context_->chain_id,
+      GetNetworkForZCashKeyring(context_->account_id->keyring_id),
       base::BindOnce(&ZCashVerifyChainStateTask::OnGetChainTipBlock,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -194,7 +195,8 @@ void ZCashVerifyChainStateTask::VerifyChainState() {
       account_meta_->latest_scanned_block_id.value(), std::vector<uint8_t>());
 
   context_->zcash_rpc->GetTreeState(
-      context_->chain_id, std::move(block_id),
+      GetNetworkForZCashKeyring(context_->account_id->keyring_id),
+      std::move(block_id),
       base::BindOnce(
           &ZCashVerifyChainStateTask::OnGetTreeStateForChainVerification,
           weak_ptr_factory_.GetWeakPtr()));
@@ -235,7 +237,8 @@ void ZCashVerifyChainStateTask::GetRewindBlockTreeState() {
   auto block_id = zcash::mojom::BlockID::New(rewind_block_heght_.value(),
                                              std::vector<uint8_t>());
   context_->zcash_rpc->GetTreeState(
-      context_->chain_id, std::move(block_id),
+      GetNetworkForZCashKeyring(context_->account_id->keyring_id),
+      std::move(block_id),
       base::BindOnce(&ZCashVerifyChainStateTask::OnGetRewindBlockTreeState,
                      weak_ptr_factory_.GetWeakPtr()));
 }

@@ -769,10 +769,8 @@ async function fetchAccountCurrentNativeBalance({
     }
 
     case BraveWallet.CoinType.ZEC: {
-      const { balance, errorMessage } = await zcashWalletService.getBalance(
-        token.chainId,
-        accountId,
-      )
+      const { balance, errorMessage } =
+        await zcashWalletService.getBalance(accountId)
 
       if (errorMessage || balance === null) {
         throw new Error(

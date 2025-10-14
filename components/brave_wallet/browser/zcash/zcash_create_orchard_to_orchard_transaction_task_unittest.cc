@@ -129,7 +129,7 @@ class ZCashCreateOrchardToOrchardTransactionTaskTest : public testing::Test {
     auto internal_addr = keyring_service().GetOrchardRawBytes(
         account_id(), mojom::ZCashKeyId::New(0, 1, 0));
     return ZCashActionContext(*zcash_rpc_, *internal_addr, sync_state_,
-                              account_id_, mojom::kZCashMainnet);
+                              account_id_);
   }
 
   base::test::TaskEnvironment& task_environment() { return task_environment_; }

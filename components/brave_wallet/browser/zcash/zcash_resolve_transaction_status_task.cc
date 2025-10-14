@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
 
@@ -114,7 +115,7 @@ void ZCashResolveTransactionStatusTask::WorkOnTask() {
 
 void ZCashResolveTransactionStatusTask::GetChainTip() {
   context_.zcash_rpc->GetLatestBlock(
-      context_.chain_id,
+      GetNetworkForZCashAccount(context_.account_id),
       base::BindOnce(&ZCashResolveTransactionStatusTask::OnGetChainTipResult,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -141,7 +142,7 @@ void ZCashResolveTransactionStatusTask::GetTransaction() {
   CHECK(tx_meta_);
 
   context_.zcash_rpc->GetTransaction(
-      context_.chain_id, tx_meta_->tx_hash(),
+      GetNetworkForZCashAccount(context_.account_id), tx_meta_->tx_hash(),
       base::BindOnce(&ZCashResolveTransactionStatusTask::OnGetTransactionResult,
                      weak_ptr_factory_.GetWeakPtr()));
 }

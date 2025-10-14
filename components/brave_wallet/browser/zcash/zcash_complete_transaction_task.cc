@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -118,7 +119,7 @@ void ZCashCompleteTransactionTask::Start(
 
 void ZCashCompleteTransactionTask::GetLightdInfo() {
   context_.zcash_rpc->GetLightdInfo(
-      context_.chain_id,
+      GetNetworkForZCashAccount(context_.account_id),
       base::BindOnce(&ZCashCompleteTransactionTask::OnGetLightdInfo,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -146,7 +147,7 @@ void ZCashCompleteTransactionTask::OnGetLightdInfo(
 
 void ZCashCompleteTransactionTask::GetLatestBlock() {
   context_.zcash_rpc->GetLatestBlock(
-      context_.chain_id,
+      GetNetworkForZCashAccount(context_.account_id),
       base::BindOnce(&ZCashCompleteTransactionTask::OnGetLatestBlockHeight,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -199,7 +200,7 @@ void ZCashCompleteTransactionTask::OnWitnessCalculateResult(
 
 void ZCashCompleteTransactionTask::GetTreeState() {
   context_.zcash_rpc->GetTreeState(
-      context_.chain_id,
+      GetNetworkForZCashAccount(context_.account_id),
       zcash::mojom::BlockID::New(
           transaction_.orchard_part().anchor_block_height.value(),
           std::vector<uint8_t>({})),
