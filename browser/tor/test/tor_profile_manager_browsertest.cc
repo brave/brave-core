@@ -288,7 +288,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseLastTorWindow) {
   ui_test_utils::WaitForBrowserToClose();
   BrowserList* browser_list = BrowserList::GetInstance();
   ASSERT_EQ(browser_list->size(), 1u);
-  EXPECT_FALSE(browser_list->get(0)->profile()->IsTor());
+  EXPECT_FALSE(browser()->profile()->IsTor());
 }
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseAllTorWindows) {
