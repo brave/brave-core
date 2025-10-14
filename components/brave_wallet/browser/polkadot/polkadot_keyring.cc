@@ -13,6 +13,9 @@ namespace brave_wallet {
 
 namespace {
 
+constexpr uint8_t kPolkadotPrefix = 0u;
+constexpr uint8_t kWestendPrefix = 42u;
+
 inline constexpr char const kPolkadotTestnet[] =
     "\x1c"
     "westend";
@@ -94,7 +97,7 @@ HDKeySr25519& PolkadotKeyring::EnsureKeyPair(uint32_t account_index) {
 }
 
 std::optional<std::string> PolkadotKeyring::AddNewHDAccount(uint32_t index) {
-  return GetAddress(index, 0u);
+  return GetAddress(index, IsTestnet() ? kWestendPrefix : kPolkadotPrefix);
 }
 
 }  // namespace brave_wallet

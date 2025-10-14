@@ -270,6 +270,7 @@
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_CARDANO_DESCRIPTION" desc="Add account modal create account Cardano description">Store Cardano assets</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_CARDANO_TESTNET_DESCRIPTION" desc="Add account modal create account Cardano Testnet description">Store Cardano Testnet assets</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_POLKADOT_DESCRIPTION" desc="Add account modal create account Polkadot description">Supports Substrate assets on Polkadot relay chain and Substrate parachains</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_POLKADOT_TESTNET_DESCRIPTION" desc="Add account modal create account Polkadot Tesnet description">Supports Substrate assets on Westend relay chain and Substrate parachains</message>
   <message name="IDS_BRAVE_WALLET_FILECOIN_PRIVATE_KEY_PROTOCOL" desc="Add account modal filecoin private key protocol">Private key <ph name="PROTOCOL"><ex>BLS12-381</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT" desc="Add account modal import button">Import</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT_HARDWARE" desc="Add account modal import hardware wallet button">Import from hardware wallet</message>

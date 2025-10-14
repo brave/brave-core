@@ -125,6 +125,7 @@ export const CreateAccountModal = () => {
         BraveWallet.CoinType.BTC,
         BraveWallet.CoinType.ZEC,
         BraveWallet.CoinType.ADA,
+        BraveWallet.CoinType.DOT,
       ].includes(selectedAccountType.coin)
     ) {
       network = selectedAccountType.fixedNetwork
