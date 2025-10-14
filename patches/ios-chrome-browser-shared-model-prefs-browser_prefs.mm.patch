@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 0d8c71bc2239243c17e495aa4588fd33d95fe65d..57d01ea38a30ccd5a1e68a33fff1f2b9a5936d7c 100644
+index d89dbd5ec0ff9192c4355238a5b7b9192b6d00a0..b4c98c2bff30e34594f635574f61f71641945acc 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -671,6 +671,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -674,6 +674,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
    // Deprecated 09/2025.
    registry->RegisterBooleanPref(prefs::kBottomOmnibox, false);
@@ -10,10 +10,10 @@ index 0d8c71bc2239243c17e495aa4588fd33d95fe65d..57d01ea38a30ccd5a1e68a33fff1f2b9
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1118,6 +1119,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   // `ntp_tiles::prefs::kTabResumptionHomeModuleEnabled` instead.
-   registry->RegisterBooleanPref(
-       prefs::kHomeCustomizationMagicStackTabResumptionEnabled, true);
+@@ -1126,6 +1127,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   // instead.
+   registry->RegisterBooleanPref(prefs::kHomeCustomizationMagicStackEnabled,
+                                 true);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
