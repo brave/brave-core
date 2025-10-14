@@ -23,6 +23,7 @@ ZCashActionContext::ZCashActionContext(
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
       account_id(account_id.Clone()),
       chain_id(GetNetworkForZCashKeyring(account_id->keyring_id)) {
+  CHECK(IsZCashAccount(account_id));
 }
 
 ZCashActionContext& ZCashActionContext::operator=(ZCashActionContext&&) =

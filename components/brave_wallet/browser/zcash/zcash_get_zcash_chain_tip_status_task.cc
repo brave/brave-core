@@ -9,7 +9,6 @@
 #include <variant>
 
 #include "base/check.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
 
@@ -64,7 +63,7 @@ void ZCashGetZCashChainTipStatusTask::GetAccountMeta() {
 
 void ZCashGetZCashChainTipStatusTask::GetChainTipHeight() {
   context_.zcash_rpc->GetLatestBlock(
-      GetNetworkForZCashAccount(context_.account_id),
+      context_.chain_id,
       base::BindOnce(
           &ZCashGetZCashChainTipStatusTask::OnGetChainTipHeightResult,
           weak_ptr_factory_.GetWeakPtr()));

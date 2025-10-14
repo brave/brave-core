@@ -11,7 +11,6 @@
 #include "base/check_op.h"
 #include "base/containers/extend.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction_utils.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -63,7 +62,7 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
 
   if (!chain_height_) {
     context_.zcash_rpc->GetLatestBlock(
-        GetNetworkForZCashAccount(context_.account_id),
+        context_.chain_id,
         base::BindOnce(&ZCashCreateTransparentTransactionTask::OnGetChainHeight,
                        weak_ptr_factory_.GetWeakPtr()));
     return;

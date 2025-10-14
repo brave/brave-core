@@ -155,7 +155,7 @@ void ZCashCreateTransparentToOrchardTransactionTask::GetAllUtxos() {
 
 void ZCashCreateTransparentToOrchardTransactionTask::GetLatestBlock() {
   context_.zcash_rpc->GetLatestBlock(
-      GetNetworkForZCashAccount(context_.account_id),
+      context_.chain_id,
       base::BindOnce(&ZCashCreateTransparentToOrchardTransactionTask::
                          OnGetLatestBlockHeight,
                      weak_ptr_factory_.GetWeakPtr()));
