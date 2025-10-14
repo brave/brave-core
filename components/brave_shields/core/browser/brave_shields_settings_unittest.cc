@@ -51,6 +51,8 @@ class BraveShieldsSettingsTest : public testing::Test {
   }
 
  private:
+  base::test::ScopedFeatureList feature_list_{
+      brave_shields::features::kBraveShredFeature};
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
   sync_preferences::TestingPrefServiceSyncable profile_prefs_;
@@ -303,7 +305,6 @@ TEST_F(BraveShieldsSettingsTest, NoScriptsEnabledByDefault) {
             brave_shields::ControlType::ALLOW);
 }
 
-#if BUILDFLAG(IS_IOS)
 TEST_F(BraveShieldsSettingsTest, AutoShredMode) {
   // verify the initial values
   EXPECT_EQ(brave_shields_settings()->GetAutoShredMode(kTestUrl),
@@ -369,4 +370,3 @@ TEST_F(BraveShieldsSettingsTest, DefaultAutoShredMode) {
       brave_shields::GetAutoShredMode(GetHostContentSettingsMap(), kTestUrl),
       AutoShredMode::NEVER);
 }
-#endif

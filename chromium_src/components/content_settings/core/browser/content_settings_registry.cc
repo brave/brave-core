@@ -10,6 +10,7 @@
 #include "base/containers/fixed_flat_map.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings.mojom.h"
@@ -408,7 +409,9 @@ void ContentSettingsRegistry::BraveInit() {
       brave_shields::AutoShredSetting::DefaultValue(),
       WebsiteSettingsInfo::SYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
       WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
-      WebsiteSettingsRegistry::PLATFORM_IOS,
+      WebsiteSettingsRegistry::DESKTOP |
+          WebsiteSettingsRegistry::PLATFORM_ANDROID |
+          WebsiteSettingsRegistry::PLATFORM_IOS,
       WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
 
 #if BUILDFLAG(ENABLE_PSST)
