@@ -11,12 +11,12 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.View;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.NullUnmarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
@@ -25,6 +25,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
+import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -65,9 +66,10 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             OmniboxSuggestionsDropdownEmbedderImpl dropdownEmbedder,
             @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
-            Supplier<ModalDialogManager> modalDialogManagerSupplier,
+            Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             ObservableSupplier<@NavigationFulfillmentType Integer>
-                    navigationFulfillmentTypeSupplier) {
+                    navigationFulfillmentTypeSupplier,
+            @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator) {
         super(
                 context,
                 locationBarLayout,
@@ -87,7 +89,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 tabModelSelectorSupplier,
                 browserControlsStateProvider,
                 modalDialogManagerSupplier,
-                navigationFulfillmentTypeSupplier);
+                navigationFulfillmentTypeSupplier,
+                pageZoomIndicatorCoordinator);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
