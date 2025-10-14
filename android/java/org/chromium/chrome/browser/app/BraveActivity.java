@@ -1716,11 +1716,8 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void openBraveWalletDAppsActivity(
-            @NonNull final BraveWalletDAppsActivity.ActivityType activityType) {
-        Intent braveWalletIntent = new Intent(this, BraveWalletDAppsActivity.class);
-        braveWalletIntent.putExtra("activityType", activityType.getValue());
-        braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        braveWalletIntent.setAction(Intent.ACTION_VIEW);
+            final BraveWalletDAppsActivity.ActivityType activityType) {
+        final Intent braveWalletIntent = BraveWalletDAppsActivity.getIntent(this, activityType);
         startActivity(braveWalletIntent);
     }
 

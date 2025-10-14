@@ -7,6 +7,9 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -16,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
@@ -34,57 +38,34 @@ import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /** Base activity for all DApps-related activities */
 public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         implements TransactionConfirmationListener,
                 AddSwitchChainNetworkFragment.AddSwitchRequestProcessListener {
     private static final String TAG = "BraveWalletDApps";
+    private static final String EXTRA_ACTIVITY_TYPE =
+            "org.chromium.chrome.browser.crypto_wallet.activities.ACTIVITY_TYPE";
     private ApproveTxBottomSheetDialogFragment mApproveTxBottomSheetDialogFragment;
     private PendingTxHelper mPendingTxHelper;
     private Fragment mFragment;
     private WalletModel mWalletModel;
+    @MonotonicNonNull private ActivityType mActivityType;
 
     public enum ActivityType {
-        SIGN_MESSAGE(0),
-        ADD_ETHEREUM_CHAIN(1),
-        SWITCH_ETHEREUM_CHAIN(2),
-        ADD_TOKEN(3),
-        CONNECT_ACCOUNT(4),
-        CONFIRM_TRANSACTION(5),
-        DECRYPT_REQUEST(6),
-        GET_ENCRYPTION_PUBLIC_KEY_REQUEST(7),
-        SIGN_TRANSACTION_DEPRECATED(8),
-        SIGN_SOL_TRANSACTIONS(9),
-        SIWE_MESSAGE(10),
-        SIGN_MESSAGE_ERROR(11),
-        FINISH(12);
-
-        private final int mValue;
-        private static final Map<Integer, ActivityType> sMap = new HashMap<>();
-
-        ActivityType(int value) {
-            this.mValue = value;
-        }
-
-        static {
-            for (ActivityType activityType : ActivityType.values()) {
-                sMap.put(activityType.mValue, activityType);
-            }
-        }
-
-        public static ActivityType valueOf(int activityType) {
-            return sMap.get(activityType);
-        }
-
-        public int getValue() {
-            return mValue;
-        }
+        SIGN_MESSAGE,
+        ADD_ETHEREUM_CHAIN,
+        SWITCH_ETHEREUM_CHAIN,
+        ADD_TOKEN,
+        CONNECT_ACCOUNT,
+        CONFIRM_TRANSACTION,
+        DECRYPT_REQUEST,
+        GET_ENCRYPTION_PUBLIC_KEY_REQUEST,
+        SIGN_TRANSACTION_DEPRECATED,
+        SIGN_SOL_TRANSACTIONS,
+        SIWE_MESSAGE,
+        SIGN_MESSAGE_ERROR,
+        FINISH;
     }
-
-    private ActivityType mActivityType;
 
     @Override
     protected void onPreCreate() {
@@ -92,12 +73,16 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-        mActivityType =
-                ActivityType.valueOf(
-                        getIntent()
-                                .getIntExtra(
-                                        "activityType",
-                                        ActivityType.ADD_ETHEREUM_CHAIN.getValue()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            mActivityType =
+                    getIntent().getSerializableExtra(EXTRA_ACTIVITY_TYPE, ActivityType.class);
+        } else {
+            mActivityType = (ActivityType) getIntent().getSerializableExtra(EXTRA_ACTIVITY_TYPE);
+        }
+
+        if (mActivityType == null) {
+            mActivityType = ActivityType.ADD_ETHEREUM_CHAIN;
+        }
     }
 
     @Override
@@ -297,5 +282,13 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     @Override
     protected OneshotSupplier<ProfileProvider> createProfileProvider() {
         return new ActivityProfileProvider(getLifecycleDispatcher());
+    }
+
+    public static Intent getIntent(final Context context, final ActivityType activityType) {
+        final Intent braveWalletIntent = new Intent(context, BraveWalletDAppsActivity.class);
+        braveWalletIntent.putExtra(EXTRA_ACTIVITY_TYPE, activityType);
+        braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        braveWalletIntent.setAction(Intent.ACTION_VIEW);
+        return braveWalletIntent;
     }
 }
