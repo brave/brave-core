@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
@@ -50,6 +51,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     private PendingTxHelper mPendingTxHelper;
     private Fragment mFragment;
     private WalletModel mWalletModel;
+    @MonotonicNonNull
+    private ActivityType mActivityType;
 
     public enum ActivityType implements Parcelable {
         SIGN_MESSAGE,
@@ -88,8 +91,6 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
             }
         };
     }
-
-    private ActivityType mActivityType;
 
     @Override
     protected void onPreCreate() {
