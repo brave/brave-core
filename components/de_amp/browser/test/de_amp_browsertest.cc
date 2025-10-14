@@ -373,9 +373,10 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, RestoreTab) {
   CloseBrowserSynchronously(browser());
 
   EXPECT_EQ(0u, BrowserList::GetInstance()->size());
+  ui_test_utils::BrowserCreatedObserver browser_created_observer;
   chrome::OpenWindowWithRestoredTabs(profile);
   EXPECT_EQ(1u, BrowserList::GetInstance()->size());
-  SelectFirstBrowser();
+  SetBrowser(browser_created_observer.Wait());
 
   EXPECT_EQ(web_contents()->GetLastCommittedURL().path(), kTestCanonicalPage);
 }
