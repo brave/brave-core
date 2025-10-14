@@ -626,6 +626,9 @@ void ConversationHandler::SubmitHumanConversationEntryWithMode(
     // Create Smart Mode entry
     smart_mode_entry =
         mojom::SmartModeEntry::New(smart_mode->shortcut, smart_mode->prompt);
+
+    // Update last_used time
+    prefs::UpdateSmartModeLastUsedInPrefs(mode_id, *prefs_);
   }
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(

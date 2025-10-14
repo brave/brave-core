@@ -4398,6 +4398,10 @@ TEST_F(ConversationHandlerUnitTest,
   ASSERT_EQ(smart_modes.size(), 1u);
   std::string mode_id = smart_modes[0]->id;
 
+  // Get initial timestamps
+  base::Time created_time = smart_modes[0]->created_time;
+  base::Time initial_last_used = smart_modes[0]->last_used;
+
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -4427,6 +4431,13 @@ TEST_F(ConversationHandlerUnitTest,
   ASSERT_TRUE(history[0]->smart_mode);
   EXPECT_EQ(history[0]->smart_mode->shortcut, "playlist");
   EXPECT_EQ(history[0]->smart_mode->prompt, "Create a playlist of 10 songs");
+
+  // Verify last_used time was updated
+  auto updated_mode = prefs::GetSmartModeFromPrefs(prefs_, mode_id);
+  ASSERT_TRUE(updated_mode);
+  EXPECT_NE(updated_mode->last_used, created_time);
+  EXPECT_GT(updated_mode->last_used, initial_last_used);
+  EXPECT_EQ(updated_mode->created_time, created_time);
 }
 
 TEST_F(ConversationHandlerUnitTest,
