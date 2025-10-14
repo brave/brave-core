@@ -23,6 +23,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
@@ -180,6 +181,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
       tab_model = std::make_unique<tabs::TabModel>(
           std::move(web_contents_unique), model);
       tab_model->OnAddedToModel(model);
+      model->delegate()->WillAddWebContents(tab_model->GetContents());
     }
 
     if (features::IsBackupResultsFullRenderEnabled() && tab_model) {
