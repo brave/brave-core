@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_action_context.h"
 
+#include "brave/components/brave_wallet/common/common_utils.h"
+
 namespace brave_wallet {
 
 ZCashActionContext::ZCashActionContext(
@@ -19,7 +21,8 @@ ZCashActionContext::ZCashActionContext(
       account_internal_addr(account_internal_addr),
       sync_state(sync_state),
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
-      account_id(account_id.Clone()) {
+      account_id(account_id.Clone()),
+      chain_id(GetNetworkForZCashKeyring(account_id->keyring_id)) {
 }
 
 ZCashActionContext& ZCashActionContext::operator=(ZCashActionContext&&) =

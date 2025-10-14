@@ -39,6 +39,7 @@ struct ZCashActionContext {
   ZCashActionContext& operator=(ZCashActionContext&&);
   ZCashActionContext(ZCashActionContext&&);
   mojom::AccountIdPtr account_id;
+  std::string chain_id;
 };
 
 }  // namespace brave_wallet

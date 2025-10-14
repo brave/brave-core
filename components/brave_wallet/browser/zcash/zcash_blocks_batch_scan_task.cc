@@ -15,7 +15,6 @@
 #include "base/containers/extend.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
@@ -95,8 +94,7 @@ void ZCashBlocksBatchScanTask::GetFrontierTreeState() {
   auto block_id = zcash::mojom::BlockID::New(frontier_block_height_,
                                              std::vector<uint8_t>({}));
   context_->zcash_rpc->GetTreeState(
-      GetNetworkForZCashKeyring(context_->account_id->keyring_id),
-      std::move(block_id),
+      context_->chain_id, std::move(block_id),
       base::BindOnce(&ZCashBlocksBatchScanTask::OnGetFrontierTreeState,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -116,8 +114,7 @@ void ZCashBlocksBatchScanTask::OnGetFrontierTreeState(
 
 void ZCashBlocksBatchScanTask::GetFrontierBlock() {
   context_->zcash_rpc->GetCompactBlocks(
-      GetNetworkForZCashKeyring(context_->account_id->keyring_id),
-      frontier_block_height_, frontier_block_height_,
+      context_->chain_id, frontier_block_height_, frontier_block_height_,
       base::BindOnce(&ZCashBlocksBatchScanTask::OnGetFrontierBlock,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -146,8 +143,7 @@ void ZCashBlocksBatchScanTask::DownloadBlocks() {
   uint32_t end_index = start_index + expected_size - 1;
 
   context_->zcash_rpc->GetCompactBlocks(
-      GetNetworkForZCashKeyring(context_->account_id->keyring_id), start_index,
-      end_index,
+      context_->chain_id, start_index, end_index,
       base::BindOnce(&ZCashBlocksBatchScanTask::OnBlocksDownloaded,
                      weak_ptr_factory_.GetWeakPtr(), expected_size));
 }

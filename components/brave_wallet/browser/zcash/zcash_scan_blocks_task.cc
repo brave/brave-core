@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
 
@@ -140,9 +139,8 @@ void ZCashScanBlocksTask::OnGetAccountMeta(
 
 void ZCashScanBlocksTask::GetChainTip() {
   context_->zcash_rpc->GetLatestBlock(
-      GetNetworkForZCashKeyring(context_->account_id->keyring_id),
-      base::BindOnce(&ZCashScanBlocksTask::OnGetChainTip,
-                     weak_ptr_factory_.GetWeakPtr()));
+      context_->chain_id, base::BindOnce(&ZCashScanBlocksTask::OnGetChainTip,
+                                         weak_ptr_factory_.GetWeakPtr()));
 }
 
 void ZCashScanBlocksTask::OnGetChainTip(
