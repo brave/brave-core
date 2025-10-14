@@ -51,5 +51,53 @@ void LoadAdBlockOnlyModePolicies(policy::PolicyBundle& bundle) {
   policies.Set(policy::key::kBraveDebouncingEnabled,
                policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
                policy::POLICY_SOURCE_BRAVE, base::Value(false), nullptr);
+
+  // Disable Brave Fingerprinting.
+  policies.Set(policy::key::kDefaultBraveFingerprintingV2Setting,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE,
+               base::Value(ContentSetting::CONTENT_SETTING_ALLOW), nullptr);
+
+  // Set Brave Ads to block.
+  policies.Set(policy::key::kDefaultBraveAdsSetting,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE,
+               base::Value(ContentSetting::CONTENT_SETTING_BLOCK), nullptr);
+
+  // Disable Brave Cosmetic Filtering.
+  policies.Set(policy::key::kDefaultBraveCosmeticFilteringSetting,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE,
+               base::Value(ContentSetting::CONTENT_SETTING_ALLOW), nullptr);
+
+  // Disable Brave Cookies.
+  policies.Set(policy::key::kDefaultBraveCookiesSetting,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE,
+               base::Value(ContentSetting::CONTENT_SETTING_ALLOW), nullptr);
+
+  // Disable Brave HTTPS Upgrade.
+  policies.Set(policy::key::kDefaultBraveHttpsUpgradeSetting,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE,
+               base::Value(ContentSetting::CONTENT_SETTING_ASK), nullptr);
+
+  // Disable Brave Referrers.
+  policies.Set(policy::key::kDefaultBraveReferrersSetting,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE,
+               base::Value(ContentSetting::CONTENT_SETTING_ALLOW), nullptr);
+
+  // Disable Brave Remember 1P Storage.
+  policies.Set(policy::key::kDefaultBraveRemember1PStorageSetting,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE,
+               base::Value(ContentSetting::CONTENT_SETTING_ALLOW), nullptr);
+
+  // Disable Brave Trackers.
+  policies.Set(policy::key::kDefaultBraveTrackersSetting,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE,
+               base::Value(ContentSetting::CONTENT_SETTING_ALLOW), nullptr);
 #endif  // !BUILDFLAG(IS_IOS)
 }

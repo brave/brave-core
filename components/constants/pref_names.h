@@ -18,6 +18,21 @@ inline constexpr char kManagedBraveShieldsEnabledForUrls[] =
     "brave.managed_shields_enabled";
 inline constexpr char kManagedDefaultBraveFingerprintingV2[] =
     "brave.profile.managed_default_content_settings.brave_fingerprinting_v2";
+inline constexpr char kManagedDefaultBraveCookies[] =
+    "brave.profile.managed_default_content_settings.brave_cookies";
+inline constexpr char kManagedDefaultBraveHttpsUpgrade[] =
+    "brave.profile.managed_default_content_settings.brave_https_upgrade";
+inline constexpr char kManagedDefaultBraveReferrers[] =
+    "brave.profile.managed_default_content_settings.brave_referrers";
+inline constexpr char kManagedDefaultBraveRemember1PStorage[] =
+    "brave.profile.managed_default_content_settings.brave_remember_1p_storage";
+inline constexpr char kManagedDefaultBraveTrackers[] =
+    "brave.profile.managed_default_content_settings.brave_trackers";
+inline constexpr char kManagedDefaultBraveCosmeticFiltering[] =
+    "brave.profile.managed_default_content_settings.brave_cosmetic_filtering";
+inline constexpr char kManagedDefaultBraveAds[] =
+    "brave.profile.managed_default_content_settings.brave_ads";
+
 inline constexpr char kAdsBlocked[] = "brave.stats.ads_blocked";
 // We no longer update this pref, but we keep it around for now because it's
 // added to kAdsBlocked when being displayed.

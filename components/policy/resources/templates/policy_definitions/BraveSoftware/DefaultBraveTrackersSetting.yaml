@@ -1,0 +1,36 @@
+caption: Control default tracker blocking behavior through Brave Shields
+desc: |-
+  This policy determines how Brave handles tracking scripts and analytics that monitor user behavior.
+
+  If this policy is set to 1 (AllowTrackers), tracking scripts are permitted to function normally on websites, which may reduce privacy but improve site compatibility.
+
+  If this policy is set to 2 (BlockTrackers), trackers, analytics scripts, and other privacy-invasive content are prevented from loading on websites using Brave's tracker blocking filters.
+
+  If left unset, Brave uses the default tracker blocking behavior (blocks trackers), but users can modify this setting through Brave Shields.
+default: null
+example_value: 2
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Allow tracking scripts
+  name: AllowTrackers
+  value: 1
+- caption: Block tracking scripts
+  name: BlockTrackers
+  value: 2
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  enum:
+  - 1
+  - 2
+  type: integer
+supported_on:
+- chrome.*:142-
+- android:142-
+tags: []
+type: main

@@ -1,0 +1,42 @@
+caption: Control default cookie behavior through Brave Shields
+desc: |-
+  This policy uses Brave's enhanced cookie control system to manage how websites can store and access cookies.
+
+  If this policy is set to 1 (AllowCookies), all cookies are permitted to be stored on websites.
+
+  If this policy is set to 2 (BlockCookies), all cookies are prevented from being stored on websites.
+
+  If this policy is set to 3 (BlockThirdPartyCookies), cookies from other websites are prevented while allowing cookies from the website you're visiting.
+
+  If left unset, Brave uses the default cookie behavior (blocks third-party cookies while allowing first-party cookies), but users can modify this setting through Brave Shields.
+default: null
+example_value: 1
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Allow all sites to set cookies
+  name: AllowCookies
+  value: 1
+- caption: Do not allow any site to set cookies
+  name: BlockCookies
+  value: 2
+- caption: Block third-party cookies
+  name: BlockThirdPartyCookies
+  value: 3
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  enum:
+  - 1
+  - 2
+  - 3
+  type: integer
+supported_on:
+- chrome.*:142-
+- android:142-
+tags: []
+type: main

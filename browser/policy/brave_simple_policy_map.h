@@ -115,6 +115,20 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kDefaultBraveFingerprintingV2Setting,
      kManagedDefaultBraveFingerprintingV2, base::Value::Type::INTEGER},
+    {policy::key::kDefaultBraveCookiesSetting, kManagedDefaultBraveCookies,
+     base::Value::Type::INTEGER},
+    {policy::key::kDefaultBraveHttpsUpgradeSetting,
+     kManagedDefaultBraveHttpsUpgrade, base::Value::Type::INTEGER},
+    {policy::key::kDefaultBraveReferrersSetting, kManagedDefaultBraveReferrers,
+     base::Value::Type::INTEGER},
+    {policy::key::kDefaultBraveRemember1PStorageSetting,
+     kManagedDefaultBraveRemember1PStorage, base::Value::Type::INTEGER},
+    {policy::key::kDefaultBraveTrackersSetting, kManagedDefaultBraveTrackers,
+     base::Value::Type::INTEGER},
+    {policy::key::kDefaultBraveCosmeticFilteringSetting,
+     kManagedDefaultBraveCosmeticFiltering, base::Value::Type::INTEGER},
+    {policy::key::kDefaultBraveAdsSetting, kManagedDefaultBraveAds,
+     base::Value::Type::INTEGER},
 };
 
 }  // namespace policy
