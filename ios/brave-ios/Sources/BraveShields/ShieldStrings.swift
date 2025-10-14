@@ -808,7 +808,7 @@ extension Strings.Shields {
     "shields.shredRowDescription",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Update Auto Shred or adjust what data is shred.",
+    value: "Update Auto Shred and adjust what data is shred.",
     comment: "A row description that appears in the Shields & Privacy settings."
   )
   public static let shredSettingsViewTitle = NSLocalizedString(
