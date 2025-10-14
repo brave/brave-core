@@ -232,10 +232,11 @@ mojom::DBTransactionResultInfo::StatusCode Database::Initialize(
           kFailedToInitializeMetaTable;
     }
 
-    memory_pressure_listener_ = std::make_unique<base::MemoryPressureListener>(
-        FROM_HERE, base::MemoryPressureListenerTag::kAdsDatabase,
-        base::BindRepeating(&Database::MemoryPressureListenerCallback,
-                            weak_factory_.GetWeakPtr()));
+    memory_pressure_listener_registration_ =
+        std::make_unique<base::MemoryPressureListenerRegistration>(
+            FROM_HERE, base::MemoryPressureListenerTag::kAdsDatabase,
+            base::BindRepeating(&Database::MemoryPressureListenerCallback,
+                                weak_factory_.GetWeakPtr()));
 
     is_initialized_ = true;
   }
