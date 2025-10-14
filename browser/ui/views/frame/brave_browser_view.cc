@@ -25,7 +25,9 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
@@ -1070,6 +1072,19 @@ bool BraveBrowserView::PreHandleMouseEvent(const blink::WebMouseEvent& event) {
       sidebar_container_view_) {
     return sidebar_container_view_->PreHandleMouseEvent(
         event.PositionInScreen());
+  }
+
+  return false;
+}
+
+bool BraveBrowserView::IsWebPanelContents(content::WebContents* contents) {
+  if (!sidebar::IsWebPanelFeatureEnabled() || !contents) {
+    return false;
+  }
+
+  if (auto* sidebar_controller = browser_->GetFeatures().sidebar_controller()) {
+    return sidebar_controller->GetWebPanelController()->panel_contents() ==
+           contents;
   }
 
   return false;

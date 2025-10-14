@@ -38,8 +38,14 @@
     return false;                                    \
   }
 
+#define BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED                           \
+  const bool tab_change_with_web_panel = IsWebPanelContents(new_contents); \
+  change_tab_contents &= !tab_change_with_web_panel;                       \
+  will_restore_focus &= !tab_change_with_web_panel;
+
 #include <chrome/browser/ui/views/frame/browser_view.cc>
 
+#undef BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED
 #undef MultiContentsView
 #undef UpdateExclusiveAccessBubble
 #undef BookmarkBarView
@@ -51,6 +57,10 @@
 
 views::View* BrowserView::GetContentsContainerForLayoutManager() {
   return contents_container();
+}
+
+bool BrowserView::IsWebPanelContents(content::WebContents* contents) {
+  return false;
 }
 
 void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
