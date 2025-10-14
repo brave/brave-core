@@ -594,7 +594,7 @@ GURL PolkadotMainnetRpcUrl() {
   if (switch_url.is_valid()) {
     return switch_url;
   }
-  return GURL("https://rpc.polkadot.io");
+  return GetURLForKnownChainId(mojom::kPolkadotMainnet).value();
 }
 
 GURL PolkadotTestnetRpcUrl() {

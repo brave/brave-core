@@ -29,6 +29,7 @@ import {
 import { MAX_ZCASH_MEMO_LENGTH } from '../constants/magics'
 
 // Utils
+import { assertNotReached } from 'chrome://resources/js/assert.js'
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
@@ -498,9 +499,7 @@ export const SendScreen = React.memo(() => {
       }
 
       case BraveWallet.CoinType.DOT: {
-        // TODO: Implement Polkadot transaction sending
-        console.warn('Polkadot transaction sending not yet implemented')
-        resetSendFields()
+        assertNotReached()
         return
       }
     }

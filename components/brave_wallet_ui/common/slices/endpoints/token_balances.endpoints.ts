@@ -607,6 +607,7 @@ export const tokenBalancesEndpoints = ({
                   address,
                 )
               if (errorMessage) {
+                console.log(`getBalance error: ${errorMessage}`)
                 return {
                   error: errorMessage,
                 }

@@ -207,13 +207,12 @@ export const AccountDetailsHeader = (props: Props) => {
       )
     }
     // We are currently not able to support viewing a
-    // BTC, ZEC, ADA or DOT account on a block explorer.
+    // BTC, ZEC or ADA account on a block explorer.
     // Link to issue https://github.com/brave/brave-browser/issues/39699
     if (
       account.accountId.coin === BraveWallet.CoinType.BTC
       || account.accountId.coin === BraveWallet.CoinType.ZEC
       || account.accountId.coin === BraveWallet.CoinType.ADA
-      || account.accountId.coin === BraveWallet.CoinType.DOT
     ) {
       options = options.filter(
         (option: AccountButtonOptionsObjectType) => option.id !== 'explorer',
