@@ -64,7 +64,8 @@ class RewardsDatabase : public mojom::RewardsDatabase {
   sql::MetaTable meta_table_;
   bool initialized_ = false;
 
-  std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
+  std::unique_ptr<base::MemoryPressureListenerRegistration>
+      memory_pressure_listener_registration_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };
