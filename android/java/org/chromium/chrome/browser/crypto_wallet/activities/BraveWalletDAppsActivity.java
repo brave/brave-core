@@ -10,8 +10,6 @@ import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDA
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -53,7 +51,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     private WalletModel mWalletModel;
     @MonotonicNonNull private ActivityType mActivityType;
 
-    public enum ActivityType implements Parcelable {
+    public enum ActivityType {
         SIGN_MESSAGE,
         ADD_ETHEREUM_CHAIN,
         SWITCH_ETHEREUM_CHAIN,
@@ -67,29 +65,6 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         SIWE_MESSAGE,
         SIGN_MESSAGE_ERROR,
         FINISH;
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(ordinal());
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        public static final Creator<ActivityType> CREATOR =
-                new Creator<ActivityType>() {
-                    @Override
-                    public ActivityType createFromParcel(Parcel in) {
-                        return ActivityType.values()[in.readInt()];
-                    }
-
-                    @Override
-                    public ActivityType[] newArray(int size) {
-                        return new ActivityType[size];
-                    }
-                };
     }
 
     @Override
@@ -99,9 +74,10 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            mActivityType = getIntent().getParcelableExtra(EXTRA_ACTIVITY_TYPE, ActivityType.class);
+            mActivityType =
+                    getIntent().getSerializableExtra(EXTRA_ACTIVITY_TYPE, ActivityType.class);
         } else {
-            mActivityType = getIntent().getParcelableExtra(EXTRA_ACTIVITY_TYPE);
+            mActivityType = (ActivityType) getIntent().getSerializableExtra(EXTRA_ACTIVITY_TYPE);
         }
 
         if (mActivityType == null) {
@@ -310,7 +286,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
 
     public static Intent getIntent(final Context context, final ActivityType activityType) {
         final Intent braveWalletIntent = new Intent(context, BraveWalletDAppsActivity.class);
-        braveWalletIntent.putExtra(EXTRA_ACTIVITY_TYPE, (Parcelable) activityType);
+        braveWalletIntent.putExtra(EXTRA_ACTIVITY_TYPE, activityType);
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         braveWalletIntent.setAction(Intent.ACTION_VIEW);
         return braveWalletIntent;
