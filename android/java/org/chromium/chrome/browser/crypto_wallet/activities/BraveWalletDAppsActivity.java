@@ -15,7 +15,6 @@ import android.os.Parcelable;
 import android.view.Window;
 import android.view.WindowManager;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -46,13 +45,13 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         implements TransactionConfirmationListener,
                 AddSwitchChainNetworkFragment.AddSwitchRequestProcessListener {
     private static final String TAG = "BraveWalletDApps";
-    private static final String EXTRA_ACTIVITY_TYPE = "org.chromium.chrome.browser.crypto_wallet.activities.ACTIVITY_TYPE";
+    private static final String EXTRA_ACTIVITY_TYPE =
+            "org.chromium.chrome.browser.crypto_wallet.activities.ACTIVITY_TYPE";
     private ApproveTxBottomSheetDialogFragment mApproveTxBottomSheetDialogFragment;
     private PendingTxHelper mPendingTxHelper;
     private Fragment mFragment;
     private WalletModel mWalletModel;
-    @MonotonicNonNull
-    private ActivityType mActivityType;
+    @MonotonicNonNull private ActivityType mActivityType;
 
     public enum ActivityType implements Parcelable {
         SIGN_MESSAGE,
@@ -79,17 +78,18 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
             return 0;
         }
 
-        public static final Creator<ActivityType> CREATOR = new Creator<ActivityType>() {
-            @Override
-            public ActivityType createFromParcel(Parcel in) {
-                return ActivityType.values()[in.readInt()];
-            }
+        public static final Creator<ActivityType> CREATOR =
+                new Creator<ActivityType>() {
+                    @Override
+                    public ActivityType createFromParcel(Parcel in) {
+                        return ActivityType.values()[in.readInt()];
+                    }
 
-            @Override
-            public ActivityType[] newArray(int size) {
-                return new ActivityType[size];
-            }
-        };
+                    @Override
+                    public ActivityType[] newArray(int size) {
+                        return new ActivityType[size];
+                    }
+                };
     }
 
     @Override
@@ -99,12 +99,9 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            mActivityType = getIntent().getParcelableExtra(
-                                            EXTRA_ACTIVITY_TYPE,
-                                            ActivityType.class);
+            mActivityType = getIntent().getParcelableExtra(EXTRA_ACTIVITY_TYPE, ActivityType.class);
         } else {
-            mActivityType = getIntent().getParcelableExtra(
-                    EXTRA_ACTIVITY_TYPE);
+            mActivityType = getIntent().getParcelableExtra(EXTRA_ACTIVITY_TYPE);
         }
 
         if (mActivityType == null) {
