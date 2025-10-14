@@ -108,7 +108,7 @@ void BraveNewTabPageUI::BindInterface(
       std::move(receiver), /*contextual_session_handle=*/nullptr,
       /*secondary_contextual_session_handle=*/nullptr,
       /*composebox_metrics_recorder=*/nullptr, Profile::FromWebUI(web_ui()),
-      web_ui()->GetWebContents(), /*metrics_reporter=*/nullptr);
+      web_ui()->GetWebContents());
 }
 
 void BraveNewTabPageUI::BindInterface(
