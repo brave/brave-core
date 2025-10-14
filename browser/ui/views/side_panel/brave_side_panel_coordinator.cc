@@ -150,7 +150,8 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
     SidePanelEntry* entry,
     std::optional<std::unique_ptr<views::View>> content_view) {
   CHECK(entry);
-  actions::ActionItem* const action_item = GetActionItem(entry->key());
+  actions::ActionItem* const action_item =
+      SidePanelUtil::GetActionItem(browser_view_->browser(), entry->key());
   if (!action_item) {
     const std::string entry_id = SidePanelEntryIdToString(entry->key().id());
     LOG(ERROR) << __func__ << " no side panel action item for " << entry_id;
@@ -165,17 +166,6 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
   SidePanelCoordinator::PopulateSidePanel(supress_animations, unique_key,
                                           std::move(open_trigger), entry,
                                           std::move(content_view));
-}
-
-void BraveSidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange(
-    SidePanelEntryKey key,
-    bool is_active) {
-  if (!browser_view_->toolbar()->pinned_toolbar_actions_container()) {
-    return;
-  }
-
-  SidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange(key,
-                                                                 is_active);
 }
 
 BraveBrowserView* BraveSidePanelCoordinator::GetBraveBrowserView() {
