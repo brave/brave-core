@@ -40,7 +40,7 @@ int GetDataVersion(PrefService* prefs) {
 std::unique_ptr<TemplateURLData> GetPrepopulatedFallbackSearch(
     BravePrepopulatedEngineID default_engine_id,
     PrefService& prefs,
-    std::vector<const TemplateURLPrepopulateData::PrepopulatedEngine*>
+    const std::vector<const PrepopulatedEngine*>&
         regional_prepopulated_engines) {
   std::vector<std::unique_ptr<TemplateURLData>> prepopulated_engines =
       GetPrepopulatedEngines(prefs, regional_prepopulated_engines);
@@ -69,8 +69,7 @@ std::unique_ptr<TemplateURLData> GetPrepopulatedFallbackSearch(
 
 std::unique_ptr<TemplateURLData> GetPrepopulatedEngine(
     PrefService& prefs,
-    std::vector<const TemplateURLPrepopulateData::PrepopulatedEngine*>
-        regional_prepopulated_engines,
+    const std::vector<const PrepopulatedEngine*>& regional_prepopulated_engines,
     int prepopulated_id) {
   auto engines = TemplateURLPrepopulateData::GetPrepopulatedEngines(
       prefs, regional_prepopulated_engines);
