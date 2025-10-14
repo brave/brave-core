@@ -8,15 +8,18 @@
 #include <memory>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
+#include "brave/components/brave_account/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/common/url_constants.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/widget/widget.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"
+#include "ui/webui/webui_util.h"
 #include "url/gurl.h"
 
 namespace {
@@ -36,6 +39,18 @@ class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
 };
 
 }  // namespace
+
+BraveAccountUIDesktop::BraveAccountUIDesktop(content::WebUI* web_ui)
+    : BraveAccountUIBase(Profile::FromWebUI(web_ui),
+                         base::BindOnce(&webui::SetupWebUIDataSource)),
+      ConstrainedWebDialogUI(web_ui) {}
+
+WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIDesktop)
+
+BraveAccountUIDesktopConfig::BraveAccountUIDesktopConfig()
+    : DefaultWebUIConfig(content::kChromeUIScheme, kBraveAccountHost) {
+  CHECK(brave_account::features::IsBraveAccountEnabled());
+}
 
 void ShowBraveAccountDialog(content::WebUI* web_ui) {
   DCHECK(web_ui);
