@@ -16,6 +16,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
@@ -68,14 +69,14 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             IncognitoStateProvider incognitoStateProvider,
             MenuButtonCoordinator browsingModeMenuButtonCoordinator,
             ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
-            ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
+            @Nullable ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
             ObservableSupplier<Integer> tabCountSupplier,
             ObservableSupplier<Boolean> homepageEnabledSupplier,
             ObservableSupplier<Boolean> homepageNonNtpSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
             HistoryDelegate historyDelegate,
             boolean initializeWithIncognitoColors,
-            ObservableSupplier<Integer> constraintsSupplier,
+            ObservableSupplier<@Nullable Integer> constraintsSupplier,
             ObservableSupplier<Boolean> compositorInMotionSupplier,
             BrowserStateBrowserControlsVisibilityDelegate
                     browserStateBrowserControlsVisibilityDelegate,
@@ -91,7 +92,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             @Nullable ForwardButtonCoordinator forwardButtonCoordinator,
             @Nullable HomeButtonDisplay homeButtonDisplay,
             @Nullable ExtensionToolbarCoordinator extensionToolbarCoordinator,
-            TopControlsStacker topControlsStacker) {
+            TopControlsStacker topControlsStacker,
+            BrowserControlsStateProvider browserControlsStateProvider) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -126,7 +128,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 forwardButtonCoordinator,
                 homeButtonDisplay,
                 extensionToolbarCoordinator,
-                topControlsStacker);
+                topControlsStacker,
+                browserControlsStateProvider);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;

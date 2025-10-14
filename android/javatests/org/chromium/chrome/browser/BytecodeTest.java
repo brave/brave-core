@@ -1496,7 +1496,8 @@ public class BytecodeTest {
                         ForwardButtonCoordinator.class,
                         HomeButtonDisplay.class,
                         ExtensionToolbarCoordinator.class,
-                        TopControlsStacker.class));
+                        TopControlsStacker.class,
+                        BrowserControlsStateProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line
