@@ -34,6 +34,7 @@ class BraveMultiContentsView : public MultiContentsView {
   void UseContentsContainerViewForWebPanel();
   void SetWebPanelContents(content::WebContents* web_contents);
   void SetWebPanelVisible(bool visible);
+  void SetWebPanelActive(bool active);
   bool IsWebPanelVisible() const;
 
   void SetWebPanelWidth(int width);

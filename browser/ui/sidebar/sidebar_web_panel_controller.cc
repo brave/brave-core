@@ -76,4 +76,16 @@ void SidebarWebPanelController::OnTabWillBeRemoved(
   }
 }
 
+void SidebarWebPanelController::OnTabStripModelChanged(
+    TabStripModel* tab_strip_model,
+    const TabStripModelChange& change,
+    const TabStripSelectionChange& selection) {
+  if (!panel_contents_ || !selection.active_tab_changed()) {
+    return;
+  }
+
+  const bool is_web_panel_active = panel_contents_ == selection.new_contents;
+  GetMultiContentsView()->SetWebPanelActive(is_web_panel_active);
+}
+
 }  // namespace sidebar

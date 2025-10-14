@@ -64,8 +64,16 @@ void BraveMultiContentsView::SetWebPanelContents(
 void BraveMultiContentsView::SetWebPanelVisible(bool visible) {
   CHECK(contents_container_view_for_web_panel_);
   contents_container_view_for_web_panel_->SetVisible(visible);
-  contents_container_view_for_web_panel_->UpdateBorderAndOverlay(true, true,
-                                                                 false);
+  contents_container_view_for_web_panel_->UpdateBorderAndOverlay(
+      /*is_in_split*/ true, /*is_active*/ false,
+      /*is_highlighted*/ false);
+}
+
+void BraveMultiContentsView::SetWebPanelActive(bool active) {
+  CHECK(contents_container_view_for_web_panel_);
+  contents_container_view_for_web_panel_->UpdateBorderAndOverlay(
+      /*is_in_split*/ true, /*is_active*/ active,
+      /*is_highlighted*/ false);
 }
 
 bool BraveMultiContentsView::IsWebPanelVisible() const {

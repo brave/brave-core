@@ -25,7 +25,9 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
@@ -1080,6 +1082,19 @@ void BraveBrowserView::HandleSidebarOnMouseOverMouseEvent(
     sidebar_container_view_->ShowSidebarOnMouseOver(
         gfx::PointF(display::Screen::Get()->GetCursorScreenPoint()));
   }
+}
+
+bool BraveBrowserView::IsWebPanelContents(content::WebContents* contents) {
+  if (!sidebar::IsWebPanelFeatureEnabled() || !contents) {
+    return false;
+  }
+
+  if (auto* sidebar_controller = browser_->GetFeatures().sidebar_controller()) {
+    return sidebar_controller->GetWebPanelController()->panel_contents() ==
+           contents;
+  }
+
+  return false;
 }
 
 bool BraveBrowserView::IsSidebarVisible() const {
