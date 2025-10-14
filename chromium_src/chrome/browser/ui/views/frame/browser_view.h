@@ -14,10 +14,12 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
-#define BrowserViewLayoutDelegateImplNew \
-  BrowserViewLayoutDelegateImplNew;      \
-  friend class BraveBrowserView;         \
-  void SetNativeWindowPropertyForWidget(views::Widget* widget)
+#define BrowserViewLayoutDelegateImplNew                        \
+  BrowserViewLayoutDelegateImplNew;                             \
+  friend class BraveBrowserView;                                \
+  void SetNativeWindowPropertyForWidget(views::Widget* widget); \
+  virtual bool IsWebPanelContents(content::WebContents* contents)
+
 #define BrowserWindow BraveBrowserWindow
 #define BrowserViewLayout BraveBrowserViewLayout
 #define SidePanel BraveSidePanel
