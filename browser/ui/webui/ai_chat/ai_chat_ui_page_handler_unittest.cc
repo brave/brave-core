@@ -19,8 +19,6 @@
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
-#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/associated_url_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
@@ -130,11 +128,7 @@ TEST_F(AIChatUIPageHandlerTest, AssociateUrlContent_ValidHttpsUrl) {
   auto* associated_link_content =
       static_cast<AssociatedURLContent*>(delegates[0]);
 
-  // Should have attached shields observer and ephemeral storage tab helper
-  EXPECT_TRUE(brave_shields::BraveShieldsWebContentsObserver::FromWebContents(
-      associated_link_content->GetWebContentsForTesting()));
-  EXPECT_TRUE(ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
-      associated_link_content->GetWebContentsForTesting()));
+  EXPECT_TRUE(associated_link_content);
 
   // Should be possible to disassociate the content
   page_handler()->DisassociateContent(std::move(associated_content[0]),

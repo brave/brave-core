@@ -10,6 +10,8 @@ namespace content {
 class WebContents;
 }
 
+// These TabHelpers always attach to WebContents (including background ones).
+// See |universal_web_contents_observers.h| upstream for more details.
 void AttachBraveUniversalWebContentsObservers(
     content::WebContents* web_contents);
 
