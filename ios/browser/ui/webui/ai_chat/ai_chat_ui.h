@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/history.mojom-forward.h"
 #include "ios/web/public/webui/web_ui_ios_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -22,6 +23,7 @@ class WebUIIOS;
 
 namespace ai_chat {
 class AIChatUIPageHandler;
+class BookmarksPageHandler;
 class HistoryUIHandler;
 }  // namespace ai_chat
 
@@ -41,10 +43,13 @@ class AIChatUI : public web::WebUIIOSController {
           parent_ui_frame_receiver);
   void BindInterfaceHistoryUIHandler(
       mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> receiver);
+  void BindInterfaceBookmarksPageHandler(
+      mojo::PendingReceiver<ai_chat::mojom::BookmarksPageHandler> receiver);
 
  private:
   std::unique_ptr<ai_chat::AIChatUIPageHandler> page_handler_;
   std::unique_ptr<ai_chat::HistoryUIHandler> history_ui_handler_;
+  std::unique_ptr<ai_chat::BookmarksPageHandler> bookmarks_page_handler_;
   raw_ptr<ProfileIOS> profile_ = nullptr;
 };
 

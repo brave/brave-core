@@ -11,9 +11,11 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/bookmarks_page_handler.h"
 #include "brave/components/ai_chat/core/browser/history_ui_handler.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/history.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
@@ -28,6 +30,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/keyed_service/core/service_access_type.h"
+#include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/web_state.h"
@@ -98,6 +101,10 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
       base::BindRepeating(&AIChatUI::BindInterfaceHistoryUIHandler,
                           base::Unretained(this)));
+
+  web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
+      base::BindRepeating(&AIChatUI::BindInterfaceBookmarksPageHandler,
+                          base::Unretained(this)));
 }
 
 AIChatUI::~AIChatUI() {
@@ -109,6 +116,8 @@ AIChatUI::~AIChatUI() {
       ai_chat::mojom::AIChatUIHandler::Name_);
   web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
       ai_chat::mojom::HistoryUIHandler::Name_);
+  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
+      ai_chat::mojom::BookmarksPageHandler::Name_);
 }
 
 void AIChatUI::BindInterfaceUIHandler(
@@ -138,4 +147,11 @@ void AIChatUI::BindInterfaceHistoryUIHandler(
       std::move(receiver), ios::HistoryServiceFactory::GetForProfile(
                                profile_, ServiceAccessType::EXPLICIT_ACCESS));
   CHECK(history_ui_handler_);
+}
+
+void AIChatUI::BindInterfaceBookmarksPageHandler(
+    mojo::PendingReceiver<ai_chat::mojom::BookmarksPageHandler> receiver) {
+  bookmarks_page_handler_ = std::make_unique<ai_chat::BookmarksPageHandler>(
+      ios::BookmarkModelFactory::GetForProfile(profile_), std::move(receiver));
+  CHECK(bookmarks_page_handler_);
 }

@@ -32,6 +32,7 @@ source_set("ai_chat") {
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/resources",
+    "//ios/chrome/browser/bookmarks/model",
     "//ios/chrome/browser/history/model",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/components/webui:url_constants",
