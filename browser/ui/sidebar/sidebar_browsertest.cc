@@ -854,8 +854,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
     controller()->ActivateItemAt(sidebar_service->items().size() - 1);
     EXPECT_EQ(tab_model()->GetActiveWebContents()->GetVisibleURL(), item_url);
 
-    // Test toggle existing panel doesn't have any issue even web panel type is
-    // existed.
+    // Test toggle existing panel doesn't have any issue even web panel type
+    // exists.
     auto* panel_ui = browser()->GetFeatures().side_panel_ui();
     panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
     ASSERT_TRUE(
