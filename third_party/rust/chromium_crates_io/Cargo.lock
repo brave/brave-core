@@ -1223,7 +1223,7 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.176"
+version = "0.2.177"
 
 [[package]]
 name = "libm"
@@ -2422,7 +2422,7 @@ version = "1.0.19"
 
 [[package]]
 name = "unicode-width"
-version = "0.2.1"
+version = "0.2.2"
 
 [[package]]
 name = "unicode-xid"
