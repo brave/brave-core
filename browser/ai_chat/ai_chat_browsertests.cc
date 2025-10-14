@@ -12,6 +12,7 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/associated_web_contents.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/constants/brave_paths.h"
@@ -186,11 +187,11 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest,
   auto* ai_chat_service =
       AIChatServiceFactory::GetForBrowserContext(browser()->profile());
   auto* conversation = ai_chat_service->CreateConversation();
-  ai_chat_service->MaybeAssociateContent(content1,
+  ai_chat_service->MaybeAssociateContent(content1->associated_web_contents(),
                                          conversation->get_conversation_uuid());
-  ai_chat_service->MaybeAssociateContent(content2,
+  ai_chat_service->MaybeAssociateContent(content2->associated_web_contents(),
                                          conversation->get_conversation_uuid());
-  ai_chat_service->MaybeAssociateContent(content3,
+  ai_chat_service->MaybeAssociateContent(content3->associated_web_contents(),
                                          conversation->get_conversation_uuid());
 
   EXPECT_EQ(ai_chat_service->GetInMemoryConversationCountForTesting(), 1u);

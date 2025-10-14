@@ -10,7 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/associated_web_contents.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -20,7 +20,8 @@ class WebContents;
 
 namespace ai_chat {
 
-class PageContentFetcher : public AIChatTabHelper::PageContentFetcherDelegate {
+class PageContentFetcher
+    : public AssociatedWebContents::PageContentFetcherDelegate {
  public:
   using FetchPageContentCallback =
       AssociatedContentDriver::FetchPageContentCallback;

@@ -46,7 +46,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 
@@ -185,7 +184,8 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     active_chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
 
-    associated_content_delegate_observation_.Observe(active_chat_tab_helper_);
+    associated_content_delegate_observation_.Observe(
+        active_chat_tab_helper_->associated_web_contents());
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
   }
@@ -253,7 +253,7 @@ void AIChatUIPageHandler::GetPluralString(const std::string& key,
 
 void AIChatUIPageHandler::OpenAIChatSettings() {
   content::WebContents* contents_to_navigate =
-      (active_chat_tab_helper_) ? active_chat_tab_helper_->web_contents()
+      (active_chat_tab_helper_) ? &active_chat_tab_helper_->GetWebContents()
                                 : owner_web_contents_.get();
 #if !BUILDFLAG(IS_ANDROID)
   const GURL url(kAIChatSettingsURL);
@@ -288,7 +288,7 @@ void AIChatUIPageHandler::OpenConversationFullPage(
     ai_chat_metrics_->RecordFullPageSwitch();
   }
 #endif
-  active_chat_tab_helper_->web_contents()->OpenURL(
+  active_chat_tab_helper_->GetWebContents().OpenURL(
       {
           ConversationUrl(conversation_uuid),
           content::Referrer(),
@@ -313,7 +313,7 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
   }
 
   content::WebContents* contents_to_navigate =
-      (active_chat_tab_helper_) ? active_chat_tab_helper_->web_contents()
+      (active_chat_tab_helper_) ? &active_chat_tab_helper_->GetWebContents()
                                 : owner_web_contents_.get();
   contents_to_navigate->OpenURL(
       {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
@@ -330,7 +330,7 @@ void AIChatUIPageHandler::GoPremium() {
   OpenURL(GURL(kLeoGoPremiumUrl));
 #else
   auto* contents_to_navigate = (active_chat_tab_helper_)
-                                   ? active_chat_tab_helper_->web_contents()
+                                   ? &active_chat_tab_helper_->GetWebContents()
                                    : owner_web_contents_.get();
   ai_chat::GoPremium(contents_to_navigate);
 #endif
@@ -345,7 +345,7 @@ void AIChatUIPageHandler::ManagePremium() {
   OpenURL(GURL(kURLManagePremium));
 #else
   auto* contents_to_navigate = (active_chat_tab_helper_)
-                                   ? active_chat_tab_helper_->web_contents()
+                                   ? &active_chat_tab_helper_->GetWebContents()
                                    : owner_web_contents_.get();
   ai_chat::ManagePremium(contents_to_navigate);
 #endif
@@ -374,7 +374,9 @@ void AIChatUIPageHandler::OnRequestArchive(
 
   chat_ui_->OnNewDefaultConversation(
       active_chat_tab_helper_
-          ? std::make_optional(active_chat_tab_helper_->content_id())
+          ? std::make_optional(
+                active_chat_tab_helper_->associated_web_contents()
+                    ->content_id())
           : std::nullopt);
 }
 
@@ -397,7 +399,9 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
 
   chat_ui_->OnNewDefaultConversation(
       active_chat_tab_helper_
-          ? std::make_optional(active_chat_tab_helper_->content_id())
+          ? std::make_optional(
+                active_chat_tab_helper_->associated_web_contents()
+                    ->content_id())
           : std::nullopt);
 }
 
@@ -416,8 +420,8 @@ void AIChatUIPageHandler::BindRelatedConversation(
   ConversationHandler* conversation =
       AIChatServiceFactory::GetForBrowserContext(profile_)
           ->GetOrCreateConversationHandlerForContent(
-              active_chat_tab_helper_->content_id(),
-              active_chat_tab_helper_->GetWeakPtr());
+              active_chat_tab_helper_->associated_web_contents()->content_id(),
+              active_chat_tab_helper_->associated_web_contents()->GetWeakPtr());
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
 }
@@ -441,8 +445,9 @@ void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
 
                       AIChatServiceFactory::GetForBrowserContext(
                           contents->GetBrowserContext())
-                          ->MaybeAssociateContent(tab_helper,
-                                                  conversation_uuid);
+                          ->MaybeAssociateContent(
+                              tab_helper->associated_web_contents(),
+                              conversation_uuid);
                     },
                     conversation_uuid));
 }
@@ -475,8 +480,10 @@ void AIChatUIPageHandler::NewConversation(
   if (active_chat_tab_helper_ && conversations_are_content_associated_) {
     conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
                        ->CreateConversationHandlerForContent(
-                           active_chat_tab_helper_->content_id(),
-                           active_chat_tab_helper_->GetWeakPtr());
+                           active_chat_tab_helper_->associated_web_contents()
+                               ->content_id(),
+                           active_chat_tab_helper_->associated_web_contents()
+                               ->GetWeakPtr());
   } else {
     conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
                        ->CreateConversation();
