@@ -166,7 +166,14 @@ function ConversationEntries() {
                     isAIAssistant ? styles.message : styles.humanMessage
                   }
                 >
-                  {groupIsTask && <AssistantTask assistantEntries={group} />}
+                  {groupIsTask && (
+                    <AssistantTask
+                      assistantEntries={group}
+                      isActiveTask={isLastGroup}
+                      isGenerating={conversationContext.isGenerating}
+                      isLeoModel={conversationContext.isLeoModel}
+                    />
+                  )}
                   {!groupIsTask
                     && group.map((entry, i) => {
                       const isEntryInProgress =
