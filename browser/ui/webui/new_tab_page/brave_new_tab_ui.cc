@@ -206,7 +206,7 @@ void BraveNewTabUI::BindInterface(
   CHECK(profile);
 
   realbox_handler_ = std::make_unique<RealboxHandler>(
-      std::move(pending_page_handler), /*query_controller=*/nullptr,
+      std::move(pending_page_handler), /*contextual_session_handle=*/nullptr,
       /*composebox_metrics_recorder=*/nullptr, profile,
       web_ui()->GetWebContents(),
       /*metrics_reporter=*/nullptr);
