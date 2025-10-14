@@ -44,8 +44,7 @@ class BraveRealboxHandlerTest : public InProcessBrowserTest {
                            /*contextual_session_handle=*/nullptr,
                            /*secondary_contextual_session_handle=*/nullptr,
                            /*composebox_metrics_recorder=*/nullptr,
-                           browser()->profile(), contents(),
-                           /*metrics_reporter=*/nullptr);
+                           browser()->profile(), contents());
     AutocompleteMatch match;
     match.keyword = keyword;
     handler.omnibox_controller()->client()->OnAutocompleteAccept(
