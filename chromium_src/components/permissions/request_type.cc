@@ -34,6 +34,7 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
   case RequestType::kBraveGoogleSignInPermission:    \
   case RequestType::kBraveLocalhostAccessPermission: \
   case RequestType::kBraveOpenAIChat:                \
+  case RequestType::kBravePsst:                      \
     return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE
 
 // Add Brave cases into GetIconIdDesktop.
@@ -46,6 +47,7 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
   case RequestType::kBraveGoogleSignInPermission:    \
   case RequestType::kBraveLocalhostAccessPermission: \
   case RequestType::kBraveOpenAIChat:                \
+  case RequestType::kBravePsst:                      \
     return vector_icons::kExtensionIcon
 
 #define BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE                     \
@@ -57,6 +59,8 @@ constexpr auto kAndroidStorageAccess = IDR_ANDROID_STORAGE_ACCESS;
     return "brave_solana";                                        \
   case permissions::RequestType::kBraveCardano:                   \
     return "brave_cardano";                                       \
+  case permissions::RequestType::kBravePsst:                      \
+    return "brave_psst";                                          \
   case permissions::RequestType::kBraveGoogleSignInPermission:    \
     return "brave_google_sign_in";                                \
   case permissions::RequestType::kBraveLocalhostAccessPermission: \
@@ -92,6 +96,8 @@ RequestType ContentSettingsTypeToRequestType(
       return RequestType::kBraveSolana;
     case ContentSettingsType::BRAVE_CARDANO:
       return RequestType::kBraveCardano;
+    case ContentSettingsType::BRAVE_PSST:
+      return RequestType::kBravePsst;
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
       return RequestType::kBraveGoogleSignInPermission;
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
@@ -124,6 +130,8 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
       return ContentSettingsType::BRAVE_OPEN_AI_CHAT;
     case RequestType::kBraveCardano:
       return ContentSettingsType::BRAVE_CARDANO;
+    case RequestType::kBravePsst:
+      return ContentSettingsType::BRAVE_PSST;
     default:
       return RequestTypeToContentSettingsType_ChromiumImpl(request_type);
   }
@@ -137,6 +145,7 @@ bool IsRequestablePermissionType(ContentSettingsType content_settings_type) {
     case ContentSettingsType::BRAVE_SOLANA:
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
     case ContentSettingsType::BRAVE_CARDANO:
+    case ContentSettingsType::BRAVE_PSST:
       return true;
     default:
       return IsRequestablePermissionType_ChromiumImpl(content_settings_type);
