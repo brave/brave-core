@@ -19,6 +19,7 @@
   case RequestType::kBraveGoogleSignInPermission:    \
   case RequestType::kBraveLocalhostAccessPermission: \
   case RequestType::kBraveOpenAIChat:                \
+  case RequestType::kBravePsst:                      \
     return RequestTypeForUma::PERMISSION_VR;
 
 // These requests may be batched together, so we must handle them explicitly as

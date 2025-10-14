@@ -28,6 +28,7 @@
   case RequestType::kBraveSolana:   \
   case RequestType::kBraveCardano:  \
   case RequestType::kWidevine:      \
+  case RequestType::kBravePsst:     \
     NOTREACHED();
 #else
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH \
@@ -35,6 +36,7 @@
   case RequestType::kBraveSolana:   \
   case RequestType::kBraveCardano:  \
   case RequestType::kWidevine:      \
+  case RequestType::kBravePsst:     \
     NOTREACHED();
 #endif
 

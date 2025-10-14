@@ -15,6 +15,7 @@ static_library("core") {
     "psst_consent_data.h",
     "psst_rule.h",
     "psst_rule_registry.h",
+    "psst_permission_request.h",
   ]
 
   friend = [ ":unit_tests" ]
@@ -29,6 +30,7 @@ static_library("core") {
     "psst_rule_registry_impl.h",
     "rule_data_reader.cc",
     "rule_data_reader.h",
+    "psst_permission_request.cc",
   ]
 
   public_deps = [
