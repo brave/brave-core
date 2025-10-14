@@ -209,8 +209,7 @@ void BraveNewTabUI::BindInterface(
       std::move(pending_page_handler), /*contextual_session_handle=*/nullptr,
       /*secondary_contextual_session_handle=*/nullptr,
       /*composebox_metrics_recorder=*/nullptr, profile,
-      web_ui()->GetWebContents(),
-      /*metrics_reporter=*/nullptr);
+      web_ui()->GetWebContents());
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
