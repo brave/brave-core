@@ -51,6 +51,7 @@ export interface BraveWalletBrowserProxy {
   isZCashEnabled: () => Promise<boolean>
   isZCashShieldedTxEnabled: () => Promise<boolean>
   isCardanoEnabled: () => Promise<boolean>
+  isPolkadotEnabled: () => Promise<boolean>
   isCardanoDAppSupportEnabled: () => Promise<boolean>
   getAutoLockMinutes: () => Promise<number>
   getNetworksList: (coin: number) => Promise<NetworksList>
@@ -150,6 +151,10 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
 
   isCardanoDAppSupportEnabled() {
     return sendWithPromise('isCardanoDAppSupportEnabled')
+  }
+
+  isPolkadotEnabled() {
+    return sendWithPromise('isPolkadotEnabled')
   }
 
   getTransactionSimulationOptInStatusOptions() {

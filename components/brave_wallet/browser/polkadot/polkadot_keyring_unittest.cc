@@ -8,6 +8,7 @@
 #include <string_view>
 
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -77,7 +78,7 @@ TEST(PolkadotKeyring, Constructor) {
   EXPECT_TRUE(keyring2.IsTestnet());
 }
 
-TEST(PolkadotKeyring, GetUnifiedAddress) {
+TEST(PolkadotKeyring, GetAddress) {
   // Derived from the polkadot-sdk using:
   // clang-format off
   //
@@ -97,24 +98,88 @@ TEST(PolkadotKeyring, GetUnifiedAddress) {
   //
   // clang-format on
 
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                          mojom::KeyringId::kPolkadotMainnet);
+  // Mainnet.
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotMainnet);
 
-  constexpr char const* kAddress0 =
-      "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb";
+    EXPECT_EQ(keyring.GetAddress(0, 0u),
+              "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb");
+    EXPECT_EQ(keyring.GetAddress(1, 0u),
+              "14QspRnocdHvoDfFnGvvYwskrsSWG8nneJ2BAQ2oSMcsQUxB");
+    // This test exercises the caching codepath in the GetAddress
+    // implementation.
+    EXPECT_EQ(keyring.GetAddress(0, 0u),
+              "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb");
+  }
 
-  constexpr char const* kAddress1 =
-      "14QspRnocdHvoDfFnGvvYwskrsSWG8nneJ2BAQ2oSMcsQUxB";
+  // Testnet.
+  // Generated using subkey:
+  // subkey inspect --scheme sr25519 --network substrate "bottom drive obey lake
+  // curtain smoke basket hold race lonely fit walk//westend//*".
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotTestnet);
 
-  // https://github.com/paritytech/ss58-registry/blob/57344a5258f1abff8fdb4689e91ff594ca54f02d/ss58-registry.json#L14-L16
-  constexpr uint16_t const kPolkadotPrefix = 0;
+    EXPECT_EQ(keyring.GetAddress(0, 42u),
+              "5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx");
+    EXPECT_EQ(keyring.GetAddress(1, 42u),
+              "5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND");
+    // This test exercises the caching codepath in the GetAddress
+    // implementation.
+    EXPECT_EQ(keyring.GetAddress(0, 42u),
+              "5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx");
+  }
+}
 
-  EXPECT_EQ(keyring.GetAddress(0, kPolkadotPrefix), kAddress0);
-  EXPECT_EQ(keyring.GetAddress(1, kPolkadotPrefix), kAddress1);
-  // This test exercises the caching codepath in the GetAddress
-  // implementation.
-  EXPECT_EQ(keyring.GetAddress(0, kPolkadotPrefix), kAddress0);
+TEST(PolkadotKeyring, AddHDAccount) {
+  // Derived from the polkadot-sdk using:
+  // clang-format off
+  //
+  // polkadot_sdk::sp_core::crypto::set_default_ss58_version(
+  //     Ss58AddressFormat::from(
+  //         sp_core::crypto::Ss58AddressFormatRegistry::PolkadotAccount
+  // ));
+  //
+  // let pair = polkadot_sdk::sp_core::sr25519::Pair::from_string(
+  //     &format!("{DEV_PHRASE}//polkadot//0"),
+  //     None,
+  // )
+  // .unwrap();
+  //
+  // let s = pair.public().to_string();
+  // assert_eq!(s, "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb");
+  //
+  // clang-format on
+
+  // Mainnet.
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotMainnet);
+
+    EXPECT_EQ(keyring.AddNewHDAccount(0u).value(),
+              "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb");
+    EXPECT_EQ(keyring.AddNewHDAccount(1u).value(),
+              "14QspRnocdHvoDfFnGvvYwskrsSWG8nneJ2BAQ2oSMcsQUxB");
+  }
+
+  // Testnet.
+  // Generated using subkey:
+  // subkey inspect --scheme sr25519 --network substrate "bottom drive obey lake
+  // curtain smoke basket hold race lonely fit walk//westend//*".
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotTestnet);
+
+    EXPECT_EQ(keyring.AddNewHDAccount(0u).value(),
+              "5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx");
+    EXPECT_EQ(keyring.AddNewHDAccount(1u).value(),
+              "5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND");
+  }
 }
 
 TEST(PolkadotKeyring, GetPublicKey) {
@@ -134,30 +199,185 @@ TEST(PolkadotKeyring, GetPublicKey) {
   //
   // clang-format on
 
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                          mojom::KeyringId::kPolkadotMainnet);
+  // Mainnet.
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotMainnet);
 
-  auto pubkey = keyring.GetPublicKey(0);
+    auto pubkey = keyring.GetPublicKey(0);
 
-  constexpr char const* kPublicKey =
-      "9C9C968EBB31417A36BEC0908ECD9EB6E847B44821E521DDA9ADD8C418EF7C30";
-  EXPECT_EQ(base::HexEncode(pubkey), kPublicKey);
+    constexpr char const* kPublicKey =
+        "9C9C968EBB31417A36BEC0908ECD9EB6E847B44821E521DDA9ADD8C418EF7C30";
+    EXPECT_EQ(base::HexEncode(pubkey), kPublicKey);
+  }
+
+  // Testnet.
+  // Generated using subkey:
+  // subkey inspect --scheme sr25519 --network substrate "bottom drive obey lake
+  // curtain smoke basket hold race lonely fit walk//westend//*".
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotTestnet);
+
+    auto pubkey = keyring.GetPublicKey(0);
+
+    constexpr char const* kPublicKey =
+        "E655361D12F3CCCA5F128187CF3F5EEA052BE722746E392C8B498D0D18723470";
+    EXPECT_EQ(base::HexEncode(pubkey), kPublicKey);
+  }
 }
 
 TEST(PolkadotKeyring, SignAndVerifyMessage) {
-  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
-  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
-                          mojom::KeyringId::kPolkadotMainnet);
+  // Mainnet.
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotMainnet);
 
-  std::string_view message = "hello, world!";
-  auto signature = keyring.SignMessage(base::as_byte_span(message), 0);
-  auto verified =
-      keyring.VerifyMessage(signature, base::as_byte_span(message), 0);
-  EXPECT_TRUE(verified);
+    std::string_view message = "hello, world!";
+    auto signature = keyring.SignMessage(base::as_byte_span(message), 0);
+    auto verified =
+        keyring.VerifyMessage(signature, base::as_byte_span(message), 0);
+    EXPECT_TRUE(verified);
 
-  verified = keyring.VerifyMessage(signature, base::as_byte_span(message), 1);
-  EXPECT_FALSE(verified);
+    verified = keyring.VerifyMessage(signature, base::as_byte_span(message), 1);
+    EXPECT_FALSE(verified);
+  }
+
+  // Testnet.
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotTestnet);
+
+    std::string_view message = "hello, world!";
+    auto signature = keyring.SignMessage(base::as_byte_span(message), 0);
+    auto verified =
+        keyring.VerifyMessage(signature, base::as_byte_span(message), 0);
+    EXPECT_TRUE(verified);
+
+    verified = keyring.VerifyMessage(signature, base::as_byte_span(message), 1);
+    EXPECT_FALSE(verified);
+  }
+}
+
+TEST(PolkadotKeyring, VerifyMessage) {
+  // Testnet.
+  // Generated using subkey:
+  // subkey:latest sign --suri "bottom drive obey lake curtain smoke basket hold
+  // race lonely fit walk//westend//0" --message "hello, world!".
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotTestnet);
+    std::string_view message = "hello, world!";
+
+    std::string signature_hex =
+        "4C62835B705663D221F45A70E493C2B48FEEE5B541D3071727139A44A71F1E46E5F536"
+        "165977C187FFBCA045170EAC8B8AF33E94EF2D6410C264B536DF9C5C86";
+    std::vector<uint8_t> signature_bytes;
+    base::HexStringToBytes(signature_hex, &signature_bytes);
+
+    bool verified = keyring.VerifyMessage(
+        base::span<const uint8_t, kSr25519SignatureSize>(signature_bytes),
+        base::as_byte_span(message), 0);
+    EXPECT_TRUE(verified);
+
+    verified = keyring.VerifyMessage(
+        base::span<const uint8_t, kSr25519SignatureSize>(signature_bytes),
+        base::as_byte_span(message), 1);
+    EXPECT_FALSE(verified);
+
+    std::string signature_hex2 =
+        "20EBF57512301FB068AB1DE33C00DC2A9B020F0F446B5C1EA89D3F4A04A5B05C8206C5"
+        "5DCCD8419019FC86F4B8D177CDEF035FC36A0BE8755423BA7377927D8D";
+    std::vector<uint8_t> signature_bytes2;
+    base::HexStringToBytes(signature_hex2, &signature_bytes2);
+
+    verified = keyring.VerifyMessage(
+        base::span<const uint8_t, kSr25519SignatureSize>(signature_bytes2),
+        base::as_byte_span(message), 0);
+    EXPECT_TRUE(verified);
+
+    // Test with wrong account index - should fail
+    verified = keyring.VerifyMessage(
+        base::span<const uint8_t, kSr25519SignatureSize>(signature_bytes2),
+        base::as_byte_span(message), 1);
+    EXPECT_FALSE(verified);
+
+    // Test with wrong signature data - should fail
+    std::string wrong_signature_hex =
+        "FFFFFFF512301FB068AB1DE33C00DC2A9B020F0F446B5C1EA89D3F4A04A5B05C8206C5"
+        "5DCCD8419019FC86F4B8D177CDEF035FC36A0BE8755423BA7377927D8D";
+    std::vector<uint8_t> wrong_signature_bytes;
+    base::HexStringToBytes(wrong_signature_hex, &wrong_signature_bytes);
+
+    verified = keyring.VerifyMessage(
+        base::span<const uint8_t, kSr25519SignatureSize>(wrong_signature_bytes),
+        base::as_byte_span(message), 0);
+    EXPECT_FALSE(verified);
+  }
+
+  // Mainnet.
+  // Generated using subkey:
+  // subkey:latest sign --suri "bottom drive obey lake curtain smoke basket hold
+  // race lonely fit walk//polkadot//0" --message "hello, world!".
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+    PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotMainnet);
+    std::string_view message = "hello, world!";
+
+    // Test with first mainnet signature vector
+    std::string signature_hex =
+        "462D47EAABE15026127324CE0917A696BAE38472C57B6670154BC33F5E053B0ACF5BA2"
+        "EDC706366B407829DA3083F21C04FD1617B6AED5AED13177A4B2E9358F";
+    std::vector<uint8_t> signature_bytes;
+    base::HexStringToBytes(signature_hex, &signature_bytes);
+
+    bool verified = keyring.VerifyMessage(
+        base::span<const uint8_t, kSr25519SignatureSize>(signature_bytes),
+        base::as_byte_span(message), 0);
+    EXPECT_TRUE(verified);
+
+    // Test with wrong account index - should fail
+    verified = keyring.VerifyMessage(
+        base::span<const uint8_t, kSr25519SignatureSize>(signature_bytes),
+        base::as_byte_span(message), 1);
+    EXPECT_FALSE(verified);
+
+    // Test with second mainnet signature vector
+    std::string signature_hex2 =
+        "EAB9949387D0D89F0E22DF4D90F5F8CCAA9E6B974DF6CAD39C79764C655EA924378536"
+        "559E2D925EE534F31583511BF5050D9CB881AD51CE4607A5AD3C75E78A";
+    std::vector<uint8_t> signature_bytes2;
+    base::HexStringToBytes(signature_hex2, &signature_bytes2);
+
+    verified = keyring.VerifyMessage(
+        base::span<const uint8_t, kSr25519SignatureSize>(signature_bytes2),
+        base::as_byte_span(message), 0);
+    EXPECT_TRUE(verified);
+
+    // Test with wrong account index - should fail
+    verified = keyring.VerifyMessage(
+        base::span<const uint8_t, kSr25519SignatureSize>(signature_bytes2),
+        base::as_byte_span(message), 1);
+    EXPECT_FALSE(verified);
+
+    // Test with wrong signature data - should fail
+    std::string wrong_signature_hex =
+        "FFFFFF9387D0D89F0E22DF4D90F5F8CCAA9E6B974DF6CAD39C79764C655EA924378536"
+        "559E2D925EE534F31583511BF5050D9CB881AD51CE4607A5AD3C75E78A";
+    std::vector<uint8_t> wrong_signature_bytes;
+    base::HexStringToBytes(wrong_signature_hex, &wrong_signature_bytes);
+
+    verified = keyring.VerifyMessage(
+        base::span<const uint8_t, kSr25519SignatureSize>(wrong_signature_bytes),
+        base::as_byte_span(message), 0);
+    EXPECT_FALSE(verified);
+  }
 }
 
 }  // namespace brave_wallet
