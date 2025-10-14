@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_H_
-#define BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_H_
+#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_IOS_H_
+#define BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_IOS_H_
 
 #include "brave/components/brave_account/brave_account_ui_base.h"
 #include "brave/ios/browser/brave_account/brave_account_service_factory_ios.h"
@@ -17,14 +17,14 @@ namespace web {
 class WebUIIOS;
 }
 
-class BraveAccountUI
+class BraveAccountUIIOS
     : public BraveAccountUIBase<BraveWebUIIOSDataSource,
                                 brave_account::BraveAccountServiceFactoryIOS>,
       public web::WebUIIOSController {
  public:
-  BraveAccountUI(web::WebUIIOS* web_ui, const GURL& url);
+  BraveAccountUIIOS(web::WebUIIOS* web_ui, const GURL& url);
 
-  ~BraveAccountUI() override;
+  ~BraveAccountUIIOS() override;
 };
 
-#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_H_
+#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_IOS_H_
