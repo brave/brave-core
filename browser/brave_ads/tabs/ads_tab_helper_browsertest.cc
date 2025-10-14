@@ -421,13 +421,14 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
   void RestoreBrowser(Profile* const profile) {
     CHECK(profile);
 
+    ui_test_utils::BrowserCreatedObserver browser_created_observer;
     SessionRestoreTestHelper session_restore_test_helper;
     chrome::OpenWindowWithRestoredTabs(profile);
     if (SessionRestore::IsRestoring(profile)) {
       session_restore_test_helper.Wait();
     }
 
-    SelectFirstBrowser();
+    SetBrowser(browser_created_observer.Wait());
   }
 
   std::vector<GURL> RedirectChainExpectation(
