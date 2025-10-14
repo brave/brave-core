@@ -223,10 +223,11 @@ mojom::DBCommandResponse::Status RewardsDatabase::Initialize(
     }
 
     initialized_ = true;
-    memory_pressure_listener_ = std::make_unique<base::MemoryPressureListener>(
-        FROM_HERE, base::MemoryPressureListenerTag::kRewardsDatabase,
-        base::BindRepeating(&RewardsDatabase::OnMemoryPressure,
-                            base::Unretained(this)));
+    memory_pressure_listener_registration_ =
+        std::make_unique<base::MemoryPressureListenerRegistration>(
+            FROM_HERE, base::MemoryPressureListenerTag::kRewardsDatabase,
+            base::BindRepeating(&RewardsDatabase::OnMemoryPressure,
+                                base::Unretained(this)));
   } else {
     table_version = meta_table_.GetVersionNumber();
   }
