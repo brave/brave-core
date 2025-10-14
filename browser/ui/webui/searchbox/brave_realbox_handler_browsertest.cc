@@ -42,6 +42,7 @@ class BraveRealboxHandlerTest : public InProcessBrowserTest {
     mojo::Remote<searchbox::mojom::PageHandler> remote_page_handler;
     RealboxHandler handler(remote_page_handler.BindNewPipeAndPassReceiver(),
                            /*contextual_session_handle=*/nullptr,
+                           /*secondary_contextual_session_handle=*/nullptr,
                            /*composebox_metrics_recorder=*/nullptr,
                            browser()->profile(), contents(),
                            /*metrics_reporter=*/nullptr);
