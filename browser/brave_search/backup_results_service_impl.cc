@@ -179,6 +179,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
       auto* model = browser->tab_strip_model();
       tab_model = std::make_unique<tabs::TabModel>(
           std::move(web_contents_unique), model);
+      tab_model->OnAddedToModel(model);
     }
 
     if (features::IsBackupResultsFullRenderEnabled() && tab_model) {
