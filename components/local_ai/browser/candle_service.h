@@ -7,24 +7,37 @@
 #define BRAVE_COMPONENTS_LOCAL_AI_BROWSER_CANDLE_SERVICE_H_
 
 #include "base/memory/weak_ptr.h"
+#include "base/no_destructor.h"
 #include "brave/components/local_ai/common/candle.mojom.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace local_ai {
 
-class CandleService : mojom::CandleService {
+class CandleService : public mojom::CandleService {
  public:
-  CandleService();
-  ~CandleService() override;
+  static CandleService* GetInstance();
+
+  CandleService(const CandleService&) = delete;
+  CandleService& operator=(const CandleService&) = delete;
+
+  void BindReceiver(mojo::PendingReceiver<mojom::CandleService> receiver);
 
   void BindBert(mojo::PendingRemote<mojom::BertInterface>) override;
 
   void RunBertExample();
 
  private:
+  friend class base::NoDestructor<CandleService>;
+
+  CandleService();
+  ~CandleService() override;
+
   void OnRunBertExample(const std::string& result);
 
+  mojo::ReceiverSet<mojom::CandleService> receivers_;
   mojo::Remote<mojom::BertInterface> bert_remote_;
 
   base::WeakPtrFactory<CandleService> weak_ptr_factory_{this};

@@ -1,0 +1,22 @@
+Name: sentence-transformers/all-MiniLM-L6-v2
+URL: https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
+Version: refs/pr/21
+License: Apache 2.0
+License File: https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/raw/main/LICENSE
+Security Critical: yes
+Shipped: yes
+
+Description:
+This is a sentence-transformers model: It maps sentences & paragraphs to a 384
+dimensional dense vector space and can be used for tasks like clustering or
+semantic search.
+
+The model is used by Brave's Local AI WASM bridge for text embedding generation.
+
+Model files downloaded from:
+- model.safetensors: https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/refs%2Fpr%2F21/model.safetensors
+- config.json: https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/refs%2Fpr%2F21/config.json
+- tokenizer.json: https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/refs%2Fpr%2F21/tokenizer.json
+
+Local Modifications:
+None
