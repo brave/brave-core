@@ -510,6 +510,9 @@
   <message name="IDS_CHAT_UI_ATTACHMENTS_MENU_BOOKMARKS_SECTION_TITLE" desc="Title for the bookmarks section" formatter_data="webui=AiChat">
     Bookmarks
   </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_MENU_HISTORY_SECTION_TITLE" desc="Title for the browser visits history section of a URL picker" formatter_data="webui=AiChat">
+    History
+  </message>
   <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY" desc="Main text for the notice about conversation history" formatter_data="webui=AiChat">
     Leo will now remember your conversations so you can go back to them. They are stored encrypted on your device, and you can delete them any time.
   </message>
