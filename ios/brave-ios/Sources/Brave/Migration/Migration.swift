@@ -91,12 +91,25 @@ public class BraveLocalStateMigration {
 
   public func launchMigrations() {
     migrateDAUPingPreference()
+    migrateAdsPreferences()
   }
 
   private func migrateDAUPingPreference() {
     Preferences.DeprecatedPreferences.sendUsagePing.migrate { value in
       localState.set(value, forPath: kStatsReportingEnabledPrefName)
     }
+  }
+
+  private func migrateAdsPreferences() {
+    guard !localState.hasPref(forPath: kBraveAdsFirstRunAtPrefName) else { return }
+
+    let installationDate = Preferences.P3A.installationDate.value
+    if let installationDate = installationDate {
+      adsRewardsLog.debug("Migrated ads first-run date: \(installationDate)")
+    }
+
+    let firstRunAt = installationDate ?? Date()
+    localState.set(firstRunAt, forPath: kBraveAdsFirstRunAtPrefName)
   }
 }
 

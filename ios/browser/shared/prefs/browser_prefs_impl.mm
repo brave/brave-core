@@ -72,6 +72,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  brave_ads::RegisterLocalStatePrefs(registry);
   brave_stats::RegisterLocalStatePrefs(registry);
   brave_wallet::RegisterLocalStatePrefs(registry);
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);

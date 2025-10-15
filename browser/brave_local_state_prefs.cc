@@ -21,6 +21,7 @@
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_origin/brave_origin_prefs.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_search/browser/backup_results_metrics.h"
@@ -199,6 +200,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   misc_metrics::PageMetrics::RegisterPrefs(registry);
   ai_chat::AIChatMetrics::RegisterPrefs(registry);
   brave_ads::BraveStatsHelper::RegisterLocalStatePrefs(registry);
+  brave_ads::RegisterLocalStatePrefs(registry);
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
   brave_search::BackupResultsMetrics::RegisterPrefs(registry);
 
