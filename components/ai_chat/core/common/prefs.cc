@@ -328,4 +328,14 @@ void DeleteSmartModeFromPrefs(const std::string& id, PrefService& prefs) {
   smart_modes_dict.Remove(id);
 }
 
+void UpdateSmartModeLastUsedInPrefs(const std::string& id, PrefService& prefs) {
+  ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSmartModes);
+  base::Value::Dict* mode_dict = update->FindDict(id);
+  if (!mode_dict) {
+    return;
+  }
+
+  mode_dict->Set("last_used", base::TimeToValue(base::Time::Now()));
+}
+
 }  // namespace ai_chat::prefs

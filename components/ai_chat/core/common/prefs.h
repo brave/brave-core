@@ -86,6 +86,9 @@ void UpdateSmartModeInPrefs(const std::string& id,
 // Deletes a smart mode from prefs.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void DeleteSmartModeFromPrefs(const std::string& id, PrefService& prefs);
+// Updates the last_used time for a smart mode in prefs.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+void UpdateSmartModeLastUsedInPrefs(const std::string& id, PrefService& prefs);
 
 }  // namespace ai_chat::prefs
 

@@ -700,4 +700,33 @@ TEST_F(AIChatPrefsTest, UpdateSmartModeInPrefs_SameShortcut) {
   EXPECT_EQ(updated_mode->prompt, "Updated prompt");
 }
 
+TEST_F(AIChatPrefsTest, UpdateSmartModeLastUsedInPrefs_NonexistentId) {
+  // Should not crash with nonexistent ID
+  UpdateSmartModeLastUsedInPrefs("nonexistent-id", pref_service_);
+}
+
+TEST_F(AIChatPrefsTest, UpdateSmartModeLastUsedInPrefs_Success) {
+  // Add a smart mode
+  AddSmartModeToPrefs("test", "Test prompt", std::nullopt, pref_service_);
+  auto smart_modes = GetSmartModesFromPrefs(pref_service_);
+  ASSERT_EQ(smart_modes.size(), 1u);
+  std::string id = smart_modes[0]->id;
+
+  // Get initial timestamps
+  auto initial_mode = GetSmartModeFromPrefs(pref_service_, id);
+  ASSERT_TRUE(initial_mode);
+  base::Time created_time = initial_mode->created_time;
+  base::Time initial_last_used = initial_mode->last_used;
+
+  // Update last_used time (will be naturally later)
+  UpdateSmartModeLastUsedInPrefs(id, pref_service_);
+
+  // Verify last_used time was updated and differs from created_time
+  auto updated_mode = GetSmartModeFromPrefs(pref_service_, id);
+  ASSERT_TRUE(updated_mode);
+  EXPECT_NE(updated_mode->last_used, created_time);
+  EXPECT_GT(updated_mode->last_used, initial_last_used);
+  EXPECT_EQ(updated_mode->created_time, created_time);
+}
+
 }  // namespace ai_chat::prefs
