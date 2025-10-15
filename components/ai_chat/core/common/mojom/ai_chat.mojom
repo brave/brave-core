@@ -18,9 +18,18 @@ import "url/mojom/url.mojom";
 // frame.
 const string kUserChoiceToolName = "user_choice_tool";
 const string kTodoToolName = "todo_write";
-const string kNavigateToolName = "web_page_navigator";
 const string kAssistantDetailStorageToolName = "assistant_detail_storage";
 const string kMemoryStorageToolName = "memory_storage_tool";
+const string kClickToolName = "click_element";
+const string kDragAndReleaseToolName = "drag_and_release";
+const string kMoveMouseToolName = "move_mouse";
+const string kNavigateToolName = "web_page_navigator";
+const string kNavigateHistoryToolName = "navigate_history";
+const string kScrollElementToolName = "scroll_element";
+const string kSelectDropdownToolName = "select_dropdown";
+const string kTypeTextToolName = "type_text";
+const string kWaitToolName = "wait";
+
 
 // Maximum length for memory and customization records.
 const int32 kMaxMemoryRecordLength = 512;

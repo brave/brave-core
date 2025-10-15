@@ -747,6 +747,33 @@
   <message name='IDS_CHAT_UI_TOOL_LABEL_ASSISTANT_DETAIL_STORAGE' desc="Label for when the assistant is storing information for later" formatter_data="webui=AiChat">
     Noting down some information for later about the page
   </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_CLICK_ELEMENT" desc="Label for when the assistant is clicking something on a page" formatter_data="webui=AiChat">
+    Clicking on the page
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_DRAG_AND_RELEASE" desc="Label for when the assistant is dragging and dropping something on a page" formatter_data="webui=AiChat">
+    Dragging and dropping on the page
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_HISTORY_BACK" desc="Label for when the assistant is navigating back in browser history" formatter_data="webui=AiChat">
+    Navigating back
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_HISTORY_FORWARD" desc="Label for when the assistant is navigating forward in browser history" formatter_data="webui=AiChat">
+    Navigating forward
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_MOVE_MOUSE" desc="Label for when the assistant is moving the mouse pointer on a page" formatter_data="webui=AiChat">
+    Moving the mouse
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_SCROLL_ELEMENT" desc="Label for when the assistant is scrolling on a page" formatter_data="webui=AiChat">
+    Scrolling
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_SELECT_DROPDOWN" desc="Label for when the assistant is selecting an option from a dropdown on a page" formatter_data="webui=AiChat">
+    Selecting from a dropdown
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_TYPE_TEXT" desc="Label for when the assistant is typing text into a field on a page" formatter_data="webui=AiChat">
+    Typing text
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_WAIT" desc="Label for when the assistant is waiting for a page to load or update" formatter_data="webui=AiChat">
+    Waiting for the page
+  </message>
   <message name="IDS_AI_CHAT_TASK_PROGRESS_LABEL" desc="Label for the task progress tab in the assistant response" formatter_data="webui=AiChat">
     Progress
   </message>
