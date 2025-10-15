@@ -1411,7 +1411,8 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        StartupMetricsTracker.class));
+                        StartupMetricsTracker.class,
+                        MultiInstanceManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator", // presubmit: ignore-long-line
