@@ -15,13 +15,13 @@ WalletPageHandler::WalletPageHandler(
 WalletPageHandler::~WalletPageHandler() = default;
 
 void WalletPageHandler::ShowApprovePanelUI() {
-  NOTREACHED()
+  NOTREACHED();
 }
 
 void WalletPageHandler::ShowWalletBackupUI() {
-  NOTREACHED()
+  NOTREACHED();
 }
 
 void WalletPageHandler::UnlockWalletUI() {
-  NOTREACHED()
+  NOTREACHED();
 }
