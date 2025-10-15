@@ -131,6 +131,7 @@ void ContentAgentToolProvider::ExecuteActions(
 
   actor_service_->PerformActions(
       actor::TaskId(actions.task_id()), std::move(requests.value()),
+      actor::ActorTaskMetadata(),
       base::BindOnce(&ContentAgentToolProvider::OnActionsFinished,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
