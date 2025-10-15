@@ -50,7 +50,7 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
                                                   kShieldsAdvancedViewEnabled));
 
   source->AddBoolean("isHttpsByDefaultEnabled",
-                     brave_shields::IsHttpsByDefaultFeatureEnabled());
+                     base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault));
 
   source->AddBoolean(
       "showStrictFingerprintingMode",

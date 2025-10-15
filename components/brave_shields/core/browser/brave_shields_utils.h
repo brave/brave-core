@@ -97,7 +97,6 @@ bool IsBraveShieldsManaged(PrefService* prefs,
                            HostContentSettingsMap* map,
                            GURL url);
 
-bool IsHttpsByDefaultFeatureEnabled();
 void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
                                 ControlType type,
                                 const GURL& url,
@@ -137,9 +136,6 @@ void SetWebcompatEnabled(HostContentSettingsMap* map,
 bool IsWebcompatEnabled(HostContentSettingsMap* map,
                         ContentSettingsType webcompat_settings_type,
                         const GURL& url);
-
-ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map);
-ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map);
 
 mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
                                       const GURL& primary_url);

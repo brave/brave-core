@@ -16,7 +16,7 @@
 
 #define MaybeCreateLoader(...)                                                \
   MaybeCreateLoader(__VA_ARGS__) {                                            \
-    if (brave_shields::IsHttpsByDefaultFeatureEnabled()) {                    \
+    if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {                    \
       HostContentSettingsMap* map =                                           \
           HostContentSettingsMapFactory::GetForProfile(browser_context);      \
       if (!map ||                                                             \
