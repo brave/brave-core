@@ -3,23 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
+#include "brave/browser/ui/webui/brave_account/brave_account_ui_android.h"
+
+#include <memory>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/values.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "content/public/common/url_constants.h"
-#include "ui/webui/webui_util.h"
-
-#if BUILDFLAG(IS_ANDROID)
-#include <memory>
-
-#include "base/values.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "content/public/common/url_constants.h"
+#include "ui/webui/webui_util.h"
 
 namespace {
 class BraveAccountUIMessageHandler : public content::WebUIMessageHandler {
@@ -51,20 +49,17 @@ void BraveAccountUIMessageHandler::OnDialogCloseMessage(
   web_ui()->GetWebContents()->Close();
 }
 }  // namespace
-#endif
 
-BraveAccountUI::BraveAccountUI(content::WebUI* web_ui)
+BraveAccountUIAndroid::BraveAccountUIAndroid(content::WebUI* web_ui)
     : BraveAccountUIBase(Profile::FromWebUI(web_ui),
                          base::BindOnce(&webui::SetupWebUIDataSource)),
-      ConstrainedWebDialogUI(web_ui) {
-#if BUILDFLAG(IS_ANDROID)
+      WebUIController(web_ui) {
   web_ui->AddMessageHandler(std::make_unique<BraveAccountUIMessageHandler>());
-#endif
 }
 
-WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUI)
+WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIAndroid)
 
-BraveAccountUIConfig::BraveAccountUIConfig()
+BraveAccountUIAndroidConfig::BraveAccountUIAndroidConfig()
     : DefaultWebUIConfig(content::kChromeUIScheme, kBraveAccountHost) {
   CHECK(brave_account::features::IsBraveAccountEnabled());
 }

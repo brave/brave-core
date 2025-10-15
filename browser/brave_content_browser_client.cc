@@ -45,7 +45,6 @@
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
-#include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/updater/buildflags.h"
@@ -189,10 +188,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/ai_chat/utils.h"
+#include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 #include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 #include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 #endif
 #if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_account/brave_account_ui_android.h"
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
 #endif
 
@@ -680,16 +681,22 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<brave_news::mojom::BraveNewsController>()
         .Add<brave_news::mojom::BraveNewsInternals>();
   }
-#else   // !BUILDFLAG(IS_ANDROID)
-  registry.ForWebUI<NewTabTakeoverUI>()
-      .Add<new_tab_takeover::mojom::NewTabTakeover>();
-#endif  // !BUILDFLAG(IS_ANDROID)
 
   if (brave_account::features::IsBraveAccountEnabled()) {
-    registry.ForWebUI<BraveAccountUI>()
+    registry.ForWebUI<BraveAccountUIDesktop>()
         .Add<brave_account::mojom::Authentication>()
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
+#else   // !BUILDFLAG(IS_ANDROID)
+  registry.ForWebUI<NewTabTakeoverUI>()
+      .Add<new_tab_takeover::mojom::NewTabTakeover>();
+
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    registry.ForWebUI<BraveAccountUIAndroid>()
+        .Add<brave_account::mojom::Authentication>()
+        .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+  }
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 std::optional<base::UnguessableToken>
