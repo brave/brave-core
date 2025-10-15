@@ -66,6 +66,17 @@ const prefixReplacer = (prefix, replacements) => {
 }
 
 /**
+ * Adds the 'chrome:' scheme to protocol-relative resource URLs.
+ */
+const protocolRelativeReplacer = () => {
+  return new webpack.NormalModuleReplacementPlugin(
+    /^\/\/resources\//,
+    (resource) => {
+      resource.request = `chrome:${resource.request}`
+    })
+}
+
+/**
  * Attempts to use mock implementations of a provided module name
  * the mocked implementation should live in a `__mocks__` folder adjacent to the
  * module (`./bridge` -> `./__mocks__/bridge`)
@@ -155,10 +166,17 @@ export default async ({ config, mode }) => {
   config.plugins.push(
     provideNodeGlobals,
     useMockedModules(['bridge', 'brave_rewards_api_proxy']),
+    protocolRelativeReplacer(),
     ...Object.keys(pathMap)
       .filter((prefix) => prefix.startsWith('chrome://'))
       .map((prefix) => prefixReplacer(prefix, pathMap[prefix]))
   )
+
+  // By default, Webpack will use the "web" externals preset, which will include
+  // an externals plugin that treats module specifiers beginning with `//` as an
+  // external module. Disable the preset so that these modules can be bundled
+  // for storybook.
+  config.externalsPresets = { web: false }
 
   // When we aren't running on CI we separate the build and Typecheck phases.
   // This results in significantly faster builds (up to 7x faster). On CI we
