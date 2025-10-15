@@ -19,21 +19,21 @@ namespace brave_shields {
 class BraveShieldsSettingsService;
 }
 
-class BraveShieldsSettingsFactory : public ProfileKeyedServiceFactory {
+class BraveShieldsSettingsServiceFactory : public ProfileKeyedServiceFactory {
  public:
-  BraveShieldsSettingsFactory(const BraveShieldsSettingsFactory&) = delete;
-  BraveShieldsSettingsFactory& operator=(const BraveShieldsSettingsFactory&) =
+  BraveShieldsSettingsServiceFactory(const BraveShieldsSettingsServiceFactory&) = delete;
+  BraveShieldsSettingsServiceFactory& operator=(const BraveShieldsSettingsServiceFactory&) =
       delete;
 
-  static BraveShieldsSettingsFactory* GetInstance();
+  static BraveShieldsSettingsServiceFactory* GetInstance();
   static brave_shields::BraveShieldsSettingsService* GetForProfile(
       Profile* profile);
 
  private:
-  friend base::NoDestructor<BraveShieldsSettingsFactory>;
+  friend base::NoDestructor<BraveShieldsSettingsServiceFactory>;
 
-  BraveShieldsSettingsFactory();
-  ~BraveShieldsSettingsFactory() override;
+  BraveShieldsSettingsServiceFactory();
+  ~BraveShieldsSettingsServiceFactory() override;
 
   // ProfileKeyedServiceFactory overrides:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
