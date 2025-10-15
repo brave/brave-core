@@ -287,7 +287,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         Bundle extras = getArguments();
         assert extras.containsKey(BravePasswordManagerHelper.MANAGE_PASSWORDS_REFERRER)
                 : "PasswordSettings must be launched with a manage-passwords-referrer fragment"
-                        + "argument, but none was provided.";
+                        + " argument, but none was provided.";
         return extras.getInt(BravePasswordManagerHelper.MANAGE_PASSWORDS_REFERRER);
     }
 
