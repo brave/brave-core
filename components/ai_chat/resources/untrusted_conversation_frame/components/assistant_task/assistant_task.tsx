@@ -11,7 +11,6 @@ import TabItem from '@brave/leo/react/tabItem'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
-import API from '../../untrusted_conversation_frame_api'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import AssistantResponse from '../assistant_response'
 import ToolEvent from '../assistant_response/tool_event'
@@ -51,7 +50,7 @@ export default function AssistantTask(props: Props) {
     if (!conversationContext.contentTaskTabId) {
       return
     }
-    const id = API.getInstance().uiObserver.thumbnailUpdated.addListener(
+    const id = conversationContext.uiObserver?.thumbnailUpdated.addListener(
       (tabId: number, dataURI: string) => {
         console.error(dataURI)
         if (
@@ -64,7 +63,7 @@ export default function AssistantTask(props: Props) {
     )
 
     return () => {
-      API.getInstance().uiObserver.removeListener(id)
+      conversationContext.uiObserver?.removeListener(id)
     }
   }, [props.isActiveTask, conversationContext.contentTaskTabId])
 

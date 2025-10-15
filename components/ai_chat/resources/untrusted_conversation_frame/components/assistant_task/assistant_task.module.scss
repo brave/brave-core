@@ -9,13 +9,33 @@
   padding: var(--leo-spacing-2xl);
   display: flex;
   flex-direction: row;
-  gap: var(--leo-spacing-xs);
-  flex-wrap: wrap;
+  gap: var(--leo-spacing-l);
+  // Image should appear at the top when there isn't enough space for
+  // side-by-side with the task data.
+  flex-wrap: wrap-reverse;
+  // Image should still be at top when side-by-side with the task data
+  align-items: flex-end;
 }
 
 .taskData {
   flex: 1 1 0;
   min-width: min(300px, 100%);
+}
+
+.taskImage {
+  position: sticky;
+  background: var(--leo-color-container-background);
+  top: var(--leo-spacing-xl);
+  border-radius: var(--leo-radius-m);
+  padding: var(--leo-spacing-s);
+  border: 1px solid var(--leo-color-neutral-10);
+  width: 115px;
+  height: fit-content;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
 }
 
 .taskStep {

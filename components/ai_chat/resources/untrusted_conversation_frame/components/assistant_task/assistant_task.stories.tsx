@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { Meta } from '@storybook/react'
 import { InferControlsFromArgs } from '../../../../../../.storybook/utils'
+import * as Mojom from '../../../common/mojom'
 import { taskConversationEntries } from '../../../page/stories/story_utils/history'
 import MockContext from '../../mock_untrusted_conversation_context'
 import AssistantTask from './assistant_task'
@@ -13,17 +14,36 @@ import AssistantTask from './assistant_task'
 type CustomArgs = {
   isActiveTask: boolean
   isGenerating: boolean
+  hasContentThumbnail: boolean
 }
 
 const args: CustomArgs = {
   isActiveTask: false,
   isGenerating: false,
+  hasContentThumbnail: false,
 }
 
 export const _AssistantTask = {
   render: (args: CustomArgs) => {
     return (
-      <MockContext>
+      <MockContext
+        contentTaskTabId={args.hasContentThumbnail ? 1 : undefined}
+        uiObserver={
+          {
+            thumbnailUpdated: {
+              addListener: (
+                listener: (tabId: number, dataURI: string) => void,
+              ) => {
+                listener(
+                  1,
+                  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAICAIAAABPmPnhAAAAE0lEQVR4nGNk+M+ABzDhkxzK0gD9wgEPHVaUqgAAAABJRU5ErkJggg==',
+                )
+              },
+            },
+            removeListener: () => true,
+          } as unknown as Mojom.UntrustedUICallbackRouter
+        }
+      >
         <AssistantTask
           assistantEntries={taskConversationEntries}
           isActiveTask={args.isActiveTask}
