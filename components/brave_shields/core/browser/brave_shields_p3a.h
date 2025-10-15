@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_P3A_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_P3A_H_
 
-#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -98,8 +98,11 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs);
 
 // To be called at initialization. Will count all domain settings and
 // record to all histograms, if executed for the first time.
-void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
-                                       HostContentSettingsMap* map);
+void MaybeRecordInitialShieldsSettings(
+    PrefService* profile_prefs,
+    HostContentSettingsMap* map,
+    ControlType cosmetic_filtering_control_type,
+    ControlType fingerprinting_control_type);
 
 }  // namespace brave_shields
 
