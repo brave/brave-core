@@ -25,10 +25,12 @@ RegisterPolymerPrototypeModification({
       // Add dataCollection view.
       views.splice(1, 0, 'dataCollection');
 
+      // <if expr="enable_tor">
       // Add tor view if it should be shown.
       if (pageVisibility.braveTor) {
         views.splice(1, 0, 'tor');
       }
+      // </if>
 
       return views;
     }
@@ -59,6 +61,7 @@ RegisterPolymerTemplateModifications({
       throw new Error('[Settings] Missing privacyGuidePromoTemplate')
     }
 
+    // <if expr="enable_tor">
     viewManager.appendChild(html`<template is="dom-if"
         if="[[showPage_(pageVisibility_.braveTor)]]">
       <settings-brave-tor-subpage
@@ -68,6 +71,7 @@ RegisterPolymerTemplateModifications({
         in-search-mode="[[inSearchMode_]]">
       </settings-brave-tor-subpage>
     </template>`)
+    // </if>
 
     viewManager.appendChild(html`<settings-brave-data-collection-subpage
       id="dataCollection"

@@ -5,6 +5,7 @@
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/commander/commander_service.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/grit/generated_resources.h"
@@ -24,9 +25,10 @@ constexpr int kShowGoogleLensShortcut = IDC_SHOW_GOOGLE_LENS_SHORTCUT;
 
 // Insert "New Private Window with Tor" in "File" menu
 #undef IDS_REOPEN_CLOSED_TABS_MAC
-#define IDS_REOPEN_CLOSED_TABS_MAC                  \
+#define IDS_REOPEN_CLOSED_TABS_MAC                 \
   IDS_NEW_OFFTHERECORD_WINDOW_TOR)                  \
-      .command_id(IDC_NEW_OFFTHERECORD_WINDOW_TOR), \
+      .command_id(IDC_NEW_OFFTHERECORD_WINDOW_TOR)  \
+      .remove_if(!BUILDFLAG(ENABLE_TOR)),           \
   Item(kReopenCloseTabsMacResourceId
 
 // Insert "Report Broken Site" in "Help" menu

@@ -5,4 +5,5 @@ include_rules += [
   "+brave/components/vector_icons",
   "+brave/components/commander/common",
   "+brave/components/constants",
+  "+brave/components/tor/buildflags",
 ]

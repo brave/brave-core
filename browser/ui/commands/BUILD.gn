@@ -25,6 +25,7 @@ source_set("unit_tests") {
     "//brave/components/commands/browser",
     "//brave/components/constants",
     "//brave/components/speedreader/common/buildflags",
+    "//brave/components/tor/buildflags",
     "//chrome/app:command_ids",
     "//chrome/browser/ui",
     "//chrome/test:test_support",

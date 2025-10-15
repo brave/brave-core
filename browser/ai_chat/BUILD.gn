@@ -321,6 +321,7 @@ source_set("browser_tests") {
       "//brave/components/l10n/common:test_support",
       "//brave/components/sidebar/browser",
       "//brave/components/text_recognition/common/buildflags",
+      "//brave/components/tor/buildflags",
       "//chrome/browser",
       "//chrome/browser/pdf:pdf_extension_test_utils",
       "//chrome/browser/screen_ai:screen_ai_install_state",
