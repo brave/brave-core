@@ -113,6 +113,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveDebouncingEnabled, debounce::prefs::kDebounceEnabled,
      base::Value::Type::BOOLEAN},
+    {policy::key::kDefaultBraveFingerprintingV2Setting,
+     kManagedDefaultBraveFingerprintingV2, base::Value::Type::INTEGER},
 };
 
 }  // namespace policy
