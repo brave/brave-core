@@ -26,8 +26,6 @@ class WebState;
 
 namespace ai_chat {
 
-class AIChatMetrics;
-
 class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                             public AssociatedContentDelegate::Observer {
  public:
