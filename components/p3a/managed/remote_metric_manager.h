@@ -13,6 +13,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "base/version.h"
@@ -68,6 +69,19 @@ class RemoteMetricManager : public RemoteMetric::Delegate {
                                           int period_days) override;
 
  private:
+  friend class P3ARemoteMetricManagerUnitTest;
+
+  FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest,
+                           ProcessMetricDefinitions);
+  FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest,
+                           ProcessMetricDefinitionsBeforeProfileLoad);
+  FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest,
+                           InvalidMetricDefinitionsAreSkipped);
+  FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest, MetricReported);
+  FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest,
+                           ProfilePrefsHandling);
+  FRIEND_TEST_ALL_PREFIXES(P3ARemoteMetricManagerUnitTest, CleanupStorage);
+
   void CleanupStorage();
 
   // Maps from storage key to TimePeriodStorage objects
