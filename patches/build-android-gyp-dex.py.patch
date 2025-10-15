@@ -1,5 +1,5 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index c622e8318deba5abe1496adc17517dd5f899b13b..a07f1ee5bfa78281819d0bee8ab32db486d8da3a 100755
+index 39da2082abdc45ac21fb3a698f59197fc38aaff2..fe6e99829f4a882cdbbad8ce4eaf96df7561a44b 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
 @@ -35,6 +35,7 @@ DEFAULT_IGNORE_WARNINGS = (

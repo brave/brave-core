@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-index 86a020535ff3066aa0c10fc8a5daadb6541b058d..d8a7bb096050d2d696135b2dae6b0aea2697df97 100644
+index c93d109e472211a1002f4b52edf6ebb8e3f4b00a..a0c6bbab2c410c977d3ed67ce309c21aa38c8af4 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
 @@ -50,7 +50,7 @@ dictionary CanvasElementHitTestRegion {
