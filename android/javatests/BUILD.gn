@@ -60,3 +60,30 @@ android_library(
     "//base:base_java",
   ]
 }
+
+android_library(
+    "brave_test_java_org.chromium.chrome.browser.password_manager") {
+  resources_package = "org.chromium.chrome.test"
+
+  sources = [
+    "org/chromium/chrome/browser/password_manager/settings/PasswordSettingsSearchTest.java",
+    "org/chromium/chrome/browser/password_manager/settings/PasswordSettingsTestHelper.java",
+  ]
+
+  deps = [
+    ":brave_test_java_helper",
+    "//brave/browser/password_manager/android:test_support_java",
+    "//chrome/android:chrome_app_java_resources",
+    "//chrome/browser/password_manager/android:java",
+    "//components/password_manager/core/browser:password_manager_java_enums",
+    "//content/public/android:content_full_java",
+    "//third_party/android_deps:org_mockito_mockito_core_java",
+    "//third_party/androidx:androidx_annotation_annotation_jvm_java",
+    "//third_party/androidx:androidx_appcompat_appcompat_java",
+    "//third_party/androidx:androidx_core_core_java",
+    "//third_party/androidx:androidx_test_espresso_espresso_core_java",
+    "//third_party/hamcrest:hamcrest_core_java",
+    "//third_party/hamcrest:hamcrest_library_java",
+    "//ui/android:ui_java_test_support",
+  ]
+}
