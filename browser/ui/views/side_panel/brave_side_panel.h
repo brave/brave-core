@@ -60,6 +60,8 @@ class BraveSidePanel : public views::View,
   bool IsClosing();
   void DisableAnimationsForTesting() {}
   void AddHeaderView(std::unique_ptr<views::View> view);
+  void SetHeaderVisibility(bool visible);
+  void SetOutlineVisibility(bool visible);
 
   // Only used by tests.
   template <typename T>
@@ -73,7 +75,6 @@ class BraveSidePanel : public views::View,
 
   // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
-  void SetHeaderVisibility(bool visible);
 
   // views::View:
   void OnThemeChanged() override;
