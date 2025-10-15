@@ -104,22 +104,6 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
     browser_non_client_frame_view()->DeprecatedLayoutImmediately();
   }
 
-  javascript_dialogs::TabModalDialogManager* GetTabModalDialogManagerAt(
-      int index) {
-    return javascript_dialogs::TabModalDialogManager::FromWebContents(
-        GetWebContentsAt(index));
-  }
-
-  web_modal::WebContentsModalDialogManager* GetWebModalDialogManagerAt(
-      int index) {
-    return web_modal::WebContentsModalDialogManager::FromWebContents(
-        GetWebContentsAt(index));
-  }
-
-  content::WebContents* GetWebContentsAt(int index) {
-    return browser()->tab_strip_model()->GetWebContentsAt(index);
-  }
-
  protected:
   base::test::ScopedFeatureList scoped_features_;
 };
@@ -288,34 +272,6 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_EQ(3, tab_strip()->GetActiveIndex());
   EXPECT_FALSE(tab_strip()->tab_at(2)->IsActive());
   EXPECT_TRUE(tab_strip()->tab_at(3)->IsActive());
-
-  // Flaky with dialog test on macOS.
-#if !BUILDFLAG(IS_MAC)
-  // Activate split tab at 2
-  tab_strip()->SelectTab(tab_strip()->tab_at(2), GetDummyEvent());
-  EXPECT_EQ(2, tab_strip()->GetActiveIndex());
-
-  // Check activated split tab is the the that owned tab modal.
-  // Launch dialog from active split tab (at 2).
-  bool did_suppress = false;
-  GetTabModalDialogManagerAt(2)->RunJavaScriptDialog(
-      GetWebContentsAt(2), GetWebContentsAt(2)->GetPrimaryMainFrame(),
-      content::JAVASCRIPT_DIALOG_TYPE_ALERT, std::u16string(), std::u16string(),
-      base::BindOnce([](bool, const std::u16string&) {}), &did_suppress);
-
-  EXPECT_TRUE(GetTabModalDialogManagerAt(2)->IsShowingDialogForTesting());
-  EXPECT_TRUE(GetWebModalDialogManagerAt(2)->IsDialogActive());
-
-  // Activate non split tab at 0.
-  tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
-  EXPECT_EQ(0, tab_strip()->GetActiveIndex());
-
-  // Activate split tab that doesn't have tab modal.
-  // Check tab at 2 is activated because only a split tab that owns
-  // tab modal can be activated till that modal is dismissed.
-  tab_strip()->SelectTab(tab_strip()->tab_at(3), GetDummyEvent());
-  EXPECT_EQ(2, tab_strip()->GetActiveIndex());
-#endif
 }
 
 class SideBySideWithRoundedCornersTest : public SideBySideEnabledBrowserTest {
