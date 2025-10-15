@@ -844,10 +844,29 @@ bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
       << "This method is supposed to be called only for the active web "
          "contents";
 
+  if (IsWebPanelContents(web_contents)) {
+    return browser_->GetFeatures().devtools_ui_controller()->UpdateDevtools(
+        GetActiveContentsContainerView(), web_contents, false);
+  }
+
   bool result = BrowserView::MaybeUpdateDevtools(web_contents);
 
   UpdateWebViewRoundedCorners();
   return result;
+}
+
+bool BraveBrowserView::MaybeUpdateSplitView(
+    content::WebContents* web_contents) {
+  if (!multi_contents_view_) {
+    return BrowserView::MaybeUpdateSplitView(web_contents);
+  }
+
+  if (IsWebPanelContents(web_contents) &&
+      multi_contents_view_->IsInSplitView()) {
+    return false;
+  }
+
+  return BrowserView::MaybeUpdateSplitView(web_contents);
 }
 
 void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,

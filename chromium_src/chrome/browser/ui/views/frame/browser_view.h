@@ -29,6 +29,7 @@
   virtual MaybeShowReadingListInSidePanelIPH
 
 #define MaybeUpdateDevtools virtual MaybeUpdateDevtools
+#define MaybeUpdateSplitView virtual MaybeUpdateSplitView
 #define GetTabStripVisible virtual GetTabStripVisible
 
 #define GetTabSearchBubbleHost     \
@@ -64,6 +65,7 @@
 #undef UpdateExclusiveAccessBubble
 #undef GetTabSearchBubbleHost
 #undef GetTabStripVisible
+#undef MaybeUpdateSplitView
 #undef MaybeUpdateDevtools
 #undef MaybeShowReadingListInSidePanelIPH
 #undef BookmarkBarView

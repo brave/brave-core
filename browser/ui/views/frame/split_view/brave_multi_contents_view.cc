@@ -146,6 +146,19 @@ void BraveMultiContentsView::ResetResizeArea() {
   delegate_->ResizeWebContents(0.5, /*done_resizing=*/true);
 }
 
+void BraveMultiContentsView::UpdateContentsBorderAndOverlay() {
+  if (!contents_container_view_for_web_panel_ ||
+      !contents_container_view_for_web_panel_->is_active()) {
+    MultiContentsView::UpdateContentsBorderAndOverlay();
+    return;
+  }
+
+  for (auto* contents_container_view : contents_container_views_) {
+    contents_container_view->UpdateBorderAndOverlay(IsInSplitView(), false,
+                                                    false);
+  }
+}
+
 int BraveMultiContentsView::GetWebPanelWidth() const {
   if (!contents_container_view_for_web_panel_ ||
       !contents_container_view_for_web_panel_->GetVisible()) {

@@ -198,6 +198,7 @@ class BraveBrowserView : public BrowserView,
       base::OnceCallback<void(bool)> callback) override;
   void MaybeShowReadingListInSidePanelIPH() override;
   bool MaybeUpdateDevtools(content::WebContents* web_contents) override;
+  bool MaybeUpdateSplitView(content::WebContents* web_contents) override;
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
   void OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
                                             bool visible) override;
