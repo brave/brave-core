@@ -11,7 +11,7 @@
 
 namespace crashpad {
 
-bool Settings::GetClientID(UUID* client_id) {
+bool SettingsReader::GetClientID(UUID* client_id) {
   if (!GetClientID_ChromiumImpl(client_id))
     return false;
 
