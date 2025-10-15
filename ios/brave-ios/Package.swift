@@ -52,6 +52,7 @@ var package = Package(
     .library(name: "BrowserMenu", targets: ["BrowserMenu"]),
     .library(name: "Web", targets: ["Web"]),
     .library(name: "BraveTalk", targets: ["BraveTalk"]),
+    .library(name: "Origin", targets: ["Origin"]),
     .executable(name: "LeoAssetCatalogGenerator", targets: ["LeoAssetCatalogGenerator"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"]),
@@ -122,6 +123,7 @@ var package = Package(
         "Web",
         "BraveShields",
         "BraveTalk",
+        "Origin",
       ],
       exclude: [
         "Frontend/UserContent/UserScripts/AllFrames",
@@ -662,6 +664,10 @@ var package = Package(
         "BraveTalk", "Shared", "TestHelpers", "BraveCore",
         .product(name: "Collections", package: "swift-collections"),
       ]
+    ),
+    .target(
+      name: "Origin",
+      dependencies: ["DesignSystem", "Strings"]
     ),
   ],
   cxxLanguageStandard: .cxx17
