@@ -500,7 +500,6 @@ export const SendScreen = React.memo(() => {
 
       case BraveWallet.CoinType.DOT: {
         assertNotReached()
-        return
       }
     }
   }, [

@@ -997,41 +997,26 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForDot) {
-  {
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitAndEnableFeature(features::kBraveWalletPolkadotFeature);
+  GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
 
-    GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
+  auto dot_mainnet_token = GetPolkadotNativeToken(mojom::kPolkadotMainnet);
+  auto dot_testnet_token = GetPolkadotNativeToken(mojom::kPolkadotTestnet);
 
-    auto dot_mainnet_token = GetPolkadotNativeToken(mojom::kPolkadotMainnet);
-    auto dot_testnet_token = GetPolkadotNativeToken(mojom::kPolkadotTestnet);
+  EXPECT_THAT(GetUserAssets(mojom::kPolkadotMainnet, mojom::CoinType::DOT),
+              ElementsAre(Eq(std::ref(dot_mainnet_token))));
+  EXPECT_THAT(GetUserAssets(mojom::kPolkadotTestnet, mojom::CoinType::DOT),
+              ElementsAre(Eq(std::ref(dot_testnet_token))));
 
-    EXPECT_THAT(GetUserAssets(mojom::kPolkadotMainnet, mojom::CoinType::DOT),
-                ElementsAre(Eq(std::ref(dot_mainnet_token))));
-    EXPECT_THAT(GetUserAssets(mojom::kPolkadotTestnet, mojom::CoinType::DOT),
-                ElementsAre(Eq(std::ref(dot_testnet_token))));
+  dot_mainnet_token->visible = false;
+  dot_mainnet_token->visible = false;
 
-    dot_mainnet_token->visible = false;
-    dot_mainnet_token->visible = false;
+  AddUserAsset(dot_mainnet_token.Clone());
+  AddUserAsset(dot_testnet_token.Clone());
 
-    AddUserAsset(dot_mainnet_token.Clone());
-    AddUserAsset(dot_testnet_token.Clone());
-
-    EXPECT_THAT(GetUserAssets(mojom::kPolkadotMainnet, mojom::CoinType::DOT),
-                ElementsAre(Eq(std::ref(dot_mainnet_token))));
-    EXPECT_THAT(GetUserAssets(mojom::kPolkadotTestnet, mojom::CoinType::DOT),
-                ElementsAre(Eq(std::ref(dot_mainnet_token))));
-  }
-
-  {
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitAndDisableFeature(features::kBraveWalletPolkadotFeature);
-
-    GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
-
-    EXPECT_EQ(0u, GetUserAssets(mojom::kPolkadotMainnet, mojom::CoinType::DOT).size());
-    EXPECT_EQ(0u, GetUserAssets(mojom::kPolkadotTestnet, mojom::CoinType::DOT).size());
-  }
+  EXPECT_THAT(GetUserAssets(mojom::kPolkadotMainnet, mojom::CoinType::DOT),
+              ElementsAre(Eq(std::ref(dot_mainnet_token))));
+  EXPECT_THAT(GetUserAssets(mojom::kPolkadotTestnet, mojom::CoinType::DOT),
+              ElementsAre(Eq(std::ref(dot_testnet_token))));
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForBtc) {
