@@ -11,6 +11,7 @@
 #include "base/logging.h"
 #include "base/values.h"
 #include "base/version.h"
+#include "brave/components/p3a/managed/percentage_intermediate.h"
 #include "brave/components/p3a/managed/pref_intermediate.h"
 #include "components/prefs/pref_service.h"
 
@@ -21,6 +22,7 @@ namespace {
 constexpr char kMinVersionKey[] = "min_version";
 constexpr char kTypeKey[] = "type";
 constexpr char kPrefIntermediateType[] = "pref";
+constexpr char kPercentageIntermediateType[] = "percentage";
 
 }  // namespace
 
@@ -134,6 +136,16 @@ std::unique_ptr<RemoteMetricIntermediate> RemoteMetric::GetIntermediateInstance(
     }
     return std::make_unique<PrefIntermediate>(
         std::move(definition), local_state_, profile_prefs_, this);
+  }
+
+  if (*type == kPercentageIntermediateType) {
+    PercentageIntermediateDefinition definition;
+    base::JSONValueConverter<PercentageIntermediateDefinition> converter;
+    if (!converter.Convert(config, &definition)) {
+      return nullptr;
+    }
+    return std::make_unique<PercentageIntermediate>(std::move(definition),
+                                                    this);
   }
 
   return nullptr;  // Unknown type
