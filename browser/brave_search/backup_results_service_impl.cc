@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/byte_count.h"
+#include "base/command_line.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
@@ -18,6 +19,8 @@
 #include "chrome/browser/content_extraction/inner_html.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/resource_coordinator/resource_coordinator_parts.h"  // nogncheck
+#include "chrome/browser/resource_coordinator/tab_helper.h"  // nogncheck
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -47,6 +50,8 @@ namespace brave_search {
 
 namespace {
 
+constexpr char kMockTabHelperLoadedSwitch[] = "mock-tab-helper-loaded";
+
 constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
     net::DefineNetworkTrafficAnnotation("brave_search_backup", R"(
       semantics {
@@ -72,6 +77,17 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
 
 constexpr base::ByteCount kMaxResponseSize = base::MiB(5);
 constexpr base::TimeDelta kTimeout = base::Seconds(5);
+
+bool GetTabHelperLoadedValue(content::WebContents* web_contents) {
+  auto* command_line = base::CommandLine::ForCurrentProcess();
+  if (command_line->HasSwitch(kMockTabHelperLoadedSwitch)) {
+    LOG(ERROR) << "GetTabHelperLoadedValue! mock tab helper loaded switch: ";
+    return command_line->GetSwitchValueASCII(kMockTabHelperLoadedSwitch) ==
+           "true";
+  }
+  return resource_coordinator::ResourceCoordinatorTabHelper::IsLoaded(
+      web_contents);
+}
 
 class BackupResultsWebContentsObserver
     : public content::WebContentsObserver,
@@ -182,6 +198,12 @@ void BackupResultsServiceImpl::FetchBackupResults(
           std::move(web_contents_unique), model);
       tab_model->OnAddedToModel(model);
       model->delegate()->WillAddWebContents(tab_model->GetContents());
+      bool tab_helper_loaded =
+          GetTabHelperLoadedValue(model->GetActiveWebContents());
+      LOG(ERROR) << "resource coordinator tab helper is loaded: "
+                 << tab_helper_loaded;
+      model->GetActiveWebContents()->SetTabSwitchStartTime(
+          base::TimeTicks::Now(), tab_helper_loaded);
     }
 
     if (features::IsBackupResultsFullRenderEnabled() && tab_model) {
