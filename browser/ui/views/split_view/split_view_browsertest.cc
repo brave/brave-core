@@ -117,7 +117,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   // Remove all infobars to test top container separator visibility.
   // Infobar visibility affects that separator visibility.
   // Start test w/o infobar.
-  infobars::ContentInfoBarManager::FromWebContents(GetWebContentsAt(0))
+  infobars::ContentInfoBarManager::FromWebContents(
+      browser()->tab_strip_model()->GetWebContentsAt(0))
       ->RemoveAllInfoBars(/*animate=*/false);
   browser_view->InvalidateLayout();
   ASSERT_TRUE(base::test::RunUntil(
