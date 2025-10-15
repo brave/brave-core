@@ -468,7 +468,7 @@ void MaybeBindSkusSdkImpl(
 
 #if !BUILDFLAG(IS_ANDROID)
 void MaybeBindColorChangeHandler(
-    content::RenderFrameHost* const frame_host,
+    content::RenderFrameHost* frame_host,
     mojo::PendingReceiver<color_change_listener::mojom::PageHandler> receiver) {
   const GURL& frame_host_url = frame_host->GetLastCommittedURL();
 
@@ -599,6 +599,9 @@ void BraveContentBrowserClient::
 void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     content::WebUIBrowserInterfaceBrokerRegistry& registry) {
   ChromeContentBrowserClient::RegisterWebUIInterfaceBrokers(registry);
+  auto handler = base::BindRepeating(&MaybeBindColorChangeHandler);
+  registry.AddGlobal<color_change_listener::mojom::PageHandler>(std::move(handler));
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     registry.ForWebUI<VPNPanelUI>()
@@ -684,7 +687,6 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   registry.ForWebUI<NewTabTakeoverUI>()
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
 #endif  // !BUILDFLAG(IS_ANDROID)
-
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveAccountUI>()
         .Add<brave_account::mojom::Authentication>()

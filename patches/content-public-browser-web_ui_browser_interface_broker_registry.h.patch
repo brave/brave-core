@@ -1,0 +1,70 @@
+diff --git a/content/public/browser/web_ui_browser_interface_broker_registry.h b/content/public/browser/web_ui_browser_interface_broker_registry.h
+index d92382a7b00b2bec59a15cb3dcf629f06c1fdf8d..6557704e2126b57196cd1aaba6044e6a7d541d8d 100644
+--- a/content/public/browser/web_ui_browser_interface_broker_registry.h
++++ b/content/public/browser/web_ui_browser_interface_broker_registry.h
+@@ -6,11 +6,18 @@
+ #define CONTENT_PUBLIC_BROWSER_WEB_UI_BROWSER_INTERFACE_BROKER_REGISTRY_H_
+ 
+ #include <map>
++#include <vector>
+ 
++#include "base/functional/bind.h"
+ #include "base/memory/raw_ptr.h"
+ #include "content/common/content_export.h"
+ #include "content/public/browser/per_web_ui_browser_interface_broker.h"
++#include "content/public/browser/render_frame_host.h"
++#include "content/public/browser/web_contents.h"
++#include "content/public/browser/web_ui.h"
+ #include "content/public/browser/web_ui_controller.h"
++#include "mojo/public/cpp/bindings/binder_map.h"
++#include "mojo/public/cpp/bindings/pending_receiver.h"
+ 
+ namespace content {
+ 
+@@ -116,6 +123,33 @@ class CONTENT_EXPORT WebUIBrowserInterfaceBrokerRegistry {
+         &binder_initializers_[type]);
+   }
+ 
++  template <typename Interface>
++  WebUIBrowserInterfaceBrokerRegistry& AddGlobal(
++      base::RepeatingCallback<void(content::RenderFrameHost*,
++                                   mojo::PendingReceiver<Interface>)> binder) {
++    return AddGlobal<Interface>(base::BindRepeating(
++        [](base::RepeatingCallback<void(content::RenderFrameHost*,
++                                        mojo::PendingReceiver<Interface>)>
++               binder,
++           WebUIController* controller,
++           mojo::PendingReceiver<Interface> receiver) {},
++        std::move(binder)));
++  }
++
++  template <typename Interface>
++  WebUIBrowserInterfaceBrokerRegistry& AddGlobal(
++      base::RepeatingCallback<void(WebUIController*,
++                                   mojo::PendingReceiver<Interface>)> binder) {
++    global_binder_initializers_.push_back(base::BindRepeating(
++        [](base::RepeatingCallback<void(
++               WebUIController*, mojo::PendingReceiver<Interface>)> binder,
++           WebUIBinderMap* binder_map) {
++          binder_map->Add<Interface>(std::move(binder));
++        },
++        std::move(binder)));
++    return *this;
++  }
++
+   // Creates an unbounded interface broker for |controller|. Caller should call
+   // Bind() method on the returned broker with a PendingReceiver that receives
+   // MojoJS.bindInterface requests from the renderer. Returns nullptr if
+@@ -142,6 +176,12 @@ class CONTENT_EXPORT WebUIBrowserInterfaceBrokerRegistry {
+   }
+ 
+  private:
++  // Note: |global_binder_initializers_| are available to all WebUIs with a
++  // |PerWebUIBrowserInterfaceBroker|.
++  // If the same interface is registered both globally and for a specific WebUI,
++  // the specific WebUI's binder will take precedence.
++  std::vector<BinderInitializer> global_binder_initializers_;
++
+   std::map<WebUIController::Type, std::vector<BinderInitializer>>
+       binder_initializers_;
+ };

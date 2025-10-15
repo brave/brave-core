@@ -1,0 +1,26 @@
+diff --git a/content/browser/web_ui_browser_interface_broker_registry.cc b/content/browser/web_ui_browser_interface_broker_registry.cc
+index 96a0bbc97938ce07d5d2d59754ce9649f67ecb0f..6702d25ada81c60a2559db53dcf78d4704a5a9d2 100644
+--- a/content/browser/web_ui_browser_interface_broker_registry.cc
++++ b/content/browser/web_ui_browser_interface_broker_registry.cc
+@@ -20,11 +20,17 @@ std::unique_ptr<PerWebUIBrowserInterfaceBroker>
+ WebUIBrowserInterfaceBrokerRegistry::CreateInterfaceBroker(
+     WebUIController& controller) {
+   auto iter = binder_initializers_.find(controller.GetType());
+-  if (iter == binder_initializers_.end())
++  if (iter == binder_initializers_.end()) {
+     return nullptr;
++  }
++
++  std::vector<BinderInitializer> binder_initializers;
++  std::ranges::copy(global_binder_initializers_,
++                    std::back_inserter(binder_initializers));
++  std::ranges::copy(iter->second, std::back_inserter(binder_initializers));
+ 
+   return std::make_unique<PerWebUIBrowserInterfaceBroker>(controller,
+-                                                          iter->second);
++                                                          binder_initializers);
+ }
+ 
+-}  // namespace content
+\ No newline at end of file
++}  // namespace content
