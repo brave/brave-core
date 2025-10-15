@@ -20,10 +20,15 @@ namespace brave_ads::test {
 void RegisterLocalStatePrefs() {
   // P3A prefs.
   RegisterLocalStateBooleanPref(p3a::kP3AEnabled, true);
+
+  // Ads prefs.
+  RegisterLocalStateTimePref(prefs::kFirstRunAt, DistantPast());
 }
 
 void RegisterProfilePrefs() {
   // Ads prefs.
+  RegisterProfileTimeDeltaPref(prefs::kGracePeriod, base::Days(3));
+
   RegisterProfileStringPref(prefs::kDiagnosticId, "");
 
   RegisterProfileBooleanPref(prefs::kOptedInToNotificationAds, true);

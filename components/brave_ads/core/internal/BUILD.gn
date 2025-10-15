@@ -763,6 +763,8 @@ static_library("internal") {
     "serving/eligible_ads/exclusion_rules/exclusion_rules_base.cc",
     "serving/eligible_ads/exclusion_rules/exclusion_rules_base.h",
     "serving/eligible_ads/exclusion_rules/exclusion_rules_util.h",
+    "serving/eligible_ads/exclusion_rules/grace_period_exclusion_rule.cc",
+    "serving/eligible_ads/exclusion_rules/grace_period_exclusion_rule.h",
     "serving/eligible_ads/exclusion_rules/inline_content_ads/inline_content_ad_exclusion_rules.cc",
     "serving/eligible_ads/exclusion_rules/inline_content_ads/inline_content_ad_exclusion_rules.h",
     "serving/eligible_ads/exclusion_rules/marked_as_inappropriate_exclusion_rule.cc",
