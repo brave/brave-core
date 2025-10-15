@@ -9,6 +9,7 @@
 #include "base/gtest_prod_util.h"
 #include "components/signin/public/identity_manager/identity_manager.h"
 #include "components/sync/engine/sync_engine_host.h"
+#include "components/sync/service/sync_service.h"
 
 #define BRAVE_SYNC_SERVICE_IMPL_H_                                             \
  private:                                                                      \
@@ -23,6 +24,10 @@
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,                           \
                            ForcedSetDecryptionPassphrase);
 
+#define GetUserActionableError(...)                       \
+  GetUserActionableError_ChromiumImpl(__VA_ARGS__) const; \
+  UserActionableError GetUserActionableError(__VA_ARGS__)
+
 // Forcing this include before define virtual to avoid error of
 // "duplicate 'virtual' declaration specifier" at SyncEngine's
 // 'virtual void Initialize(InitParams params) = 0'
@@ -36,6 +41,7 @@
 
 #include <components/sync/service/sync_service_impl.h>  // IWYU pragma: export
 
+#undef GetUserActionableError
 #undef ResetEngine
 #undef Initialize
 #undef StopAndClear
