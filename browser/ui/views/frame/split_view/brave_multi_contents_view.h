@@ -56,6 +56,7 @@ class BraveMultiContentsView : public MultiContentsView {
   views::ProposedLayout CalculateProposedLayout(
       const views::SizeBounds& size_bounds) const override;
   void ResetResizeArea() override;
+  void UpdateContentsBorderAndOverlay() override;
 
   int GetWebPanelWidth() const;
 
