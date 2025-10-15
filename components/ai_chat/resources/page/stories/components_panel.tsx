@@ -50,6 +50,7 @@ import Attachments from '../components/attachments'
 import { createTextContentBlock } from '../../common/content_block'
 import ToolEvent from '../../untrusted_conversation_frame/components/assistant_response/tool_event'
 import { taskConversationEntries } from './story_utils/history'
+import { toolUseCompleteAssistantDetailStorage } from './story_utils/events'
 
 // TODO(https://github.com/brave/brave-browser/issues/47810): Attempt to split this file up
 
@@ -154,6 +155,105 @@ const toolEvents: Mojom.ToolUseEvent[] = [
     id: 'abc123g',
     toolName: Mojom.NAVIGATE_TOOL_NAME,
     argumentsJson: JSON.stringify({ website_url: 'https://www.example.com' }),
+    output: undefined,
+  },
+  {
+    id: 'todo123a',
+    toolName: 'todo_write',
+    argumentsJson: JSON.stringify({
+      merge: false,
+      todos: [
+        {
+          id: 'auth-setup',
+          content: 'Implement OAuth authentication system',
+          status: 'completed',
+        },
+        {
+          id: 'db-design',
+          content: 'Design user database schema',
+          status: 'completed',
+        },
+        {
+          id: 'api-endpoints',
+          content: 'Create REST API endpoints',
+          status: 'in_progress',
+        },
+        {
+          id: 'frontend-ui',
+          content: 'Build responsive user interface',
+          status: 'pending',
+        },
+        {
+          id: 'testing',
+          content: 'Add comprehensive unit tests',
+          status: 'pending',
+        },
+        {
+          id: 'deployment',
+          content: 'Set up production deployment pipeline',
+          status: 'cancelled',
+        },
+      ],
+    }),
+    output: [
+      createTextContentBlock(
+        JSON.stringify({
+          status: 'success',
+          total_todos: 6,
+          current_todos: [
+            {
+              id: 'auth-setup',
+              content: 'Implement OAuth authentication system',
+              status: 'completed',
+            },
+            {
+              id: 'db-design',
+              content: 'Design user database schema',
+              status: 'completed',
+            },
+            {
+              id: 'api-endpoints',
+              content: 'Create REST API endpoints',
+              status: 'in_progress',
+            },
+            {
+              id: 'frontend-ui',
+              content: 'Build responsive user interface',
+              status: 'pending',
+            },
+            {
+              id: 'testing',
+              content: 'Add comprehensive unit tests',
+              status: 'pending',
+            },
+            {
+              id: 'deployment',
+              content: 'Set up production deployment pipeline',
+              status: 'cancelled',
+            },
+          ],
+        }),
+      ),
+    ],
+  },
+  {
+    id: 'todo123b',
+    toolName: 'todo_write',
+    argumentsJson: JSON.stringify({
+      merge: true,
+      todos: [
+        {
+          id: 'bug-fix',
+          content: 'Fix login validation bug',
+          status: 'in_progress',
+        },
+        {
+          id: 'performance',
+          content: 'Optimize database queries',
+          status: 'pending',
+        },
+      ],
+    }),
     output: undefined,
   },
 ]
@@ -693,6 +793,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       getCompletionEvent(
         'This website compares differences between Juniper Model Y and legacy one.',
       ),
+      toolUseCompleteAssistantDetailStorage,
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,

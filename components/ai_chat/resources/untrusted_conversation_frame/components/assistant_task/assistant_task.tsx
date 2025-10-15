@@ -11,6 +11,7 @@ import TabItem from '@brave/leo/react/tabItem'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import AssistantResponse from '../assistant_response'
 import ToolEvent from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
@@ -42,6 +43,29 @@ interface Props {
  */
 export default function AssistantTask(props: Props) {
   const [showSteps, setShowSteps] = React.useState(false)
+  const [taskThumbnail, setTaskThumbnail] = React.useState<string>()
+  const conversationContext = useUntrustedConversationContext()
+
+  React.useEffect(() => {
+    if (!conversationContext.contentTaskTabId) {
+      return
+    }
+    const id = conversationContext.uiObserver?.thumbnailUpdated.addListener(
+      (tabId: number, dataURI: string) => {
+        console.error(dataURI)
+        if (
+          tabId === conversationContext.contentTaskTabId
+          && props.isActiveTask
+        ) {
+          setTaskThumbnail(dataURI)
+        }
+      },
+    )
+
+    return () => {
+      conversationContext.uiObserver?.removeListener(id)
+    }
+  }, [props.isActiveTask, conversationContext.contentTaskTabId])
 
   const taskData = useExtractTaskData(props.assistantEntries)
 
@@ -73,6 +97,11 @@ export default function AssistantTask(props: Props) {
             />
           )}
         </div>
+        {taskThumbnail && (
+          <div className={styles.taskImage}>
+            <img src={taskThumbnail} />
+          </div>
+        )}
       </div>
     </div>
   )
@@ -103,22 +132,24 @@ function Progress(props: Props & { taskData: TaskData }) {
   )
 
   return (
-    <div>
+    <div className={styles.progress}>
       {props.taskData.importantToolUseEvents.map((event, index) => (
         <ToolEvent
           key={index}
           toolUseEvent={event}
-          isEntryActive={props.isActiveTask}
+          isEntryActive={false}
         />
       ))}
       {currentCompletionEvent && (
-        <AssistantResponse
-          events={[currentCompletionEvent]}
-          isEntryInteractivityAllowed={false}
-          isEntryInProgress={props.isGenerating}
-          allowedLinks={[]}
-          isLeoModel={props.isLeoModel}
-        />
+        <div className={styles.progressText}>
+          <AssistantResponse
+            events={[currentCompletionEvent]}
+            isEntryInteractivityAllowed={false}
+            isEntryInProgress={props.isGenerating}
+            allowedLinks={[]}
+            isLeoModel={props.isLeoModel}
+          />
+        </div>
       )}
       {currentToolUseEvents.map((event, index) => (
         <ToolEvent

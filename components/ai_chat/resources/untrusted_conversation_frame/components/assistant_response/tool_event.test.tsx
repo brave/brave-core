@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import * as React from 'react'
 import * as Mojom from '../../../common/mojom'
 import MockContext from '../../mock_untrusted_conversation_context'
@@ -84,5 +84,29 @@ describe('ToolEvent', () => {
     expect(
       screen.getByText(S.CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE_WITH_INPUT),
     ).toBeInTheDocument()
+  })
+
+  it('should show expanded content on click', () => {
+    const result = render(
+      <MockContext>
+        <ToolEvent
+          toolUseEvent={{
+            toolName: Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME,
+            id: '123',
+            argumentsJson: '{"information": "This is some information"}',
+            output: undefined,
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+
+    const toolLabel = screen.getByText(
+      S.CHAT_UI_TOOL_LABEL_ASSISTANT_DETAIL_STORAGE,
+    )
+    expect(toolLabel).toBeInTheDocument()
+    // Click the label and check if the expanded content is shown
+    fireEvent.click(toolLabel)
+    expect(result.getByText('This is some information')).toBeInTheDocument()
   })
 })
