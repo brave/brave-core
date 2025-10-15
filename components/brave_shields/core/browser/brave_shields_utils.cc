@@ -20,6 +20,7 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_enums.mojom-data-view.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/content_settings/core/common/pref_names.h"
@@ -897,6 +898,20 @@ base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url) {
 
 bool IsDeveloperModeEnabled(PrefService* profile_state) {
   return profile_state->GetBoolean(prefs::kAdBlockDeveloperMode);
+}
+
+bool IsScriptBlockedByExtension(HostContentSettingsMap* map,
+                                const GURL& primary_url) {
+  const auto rules =
+      map->GetSettingsForOneType(ContentSettingsType::JAVASCRIPT);
+  for (const auto& rule : rules) {
+    if (rule.primary_pattern.Matches(primary_url) &&
+        rule.source ==
+            content_settings::mojom::ProviderType::kCustomExtensionProvider) {
+      return rule.GetContentSetting() == CONTENT_SETTING_BLOCK;
+    }
+  }
+  return false;
 }
 
 }  // namespace brave_shields

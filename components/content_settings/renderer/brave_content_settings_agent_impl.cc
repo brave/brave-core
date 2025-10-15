@@ -21,7 +21,6 @@
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "components/content_settings/core/common/content_settings_enums.mojom-data-view.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "content/public/renderer/render_frame.h"
 #include "net/base/features.h"
@@ -94,21 +93,6 @@ bool IsBraveShieldsDown(const GURL& primary_url,
   return setting == CONTENT_SETTING_BLOCK;
 }
 
-std::optional<bool> IsScriptBlockedByExtension(
-    const GURL& primary_url,
-    const GURL& secondary_url,
-    const ContentSettingsForOneType& rules) {
-  for (const auto& rule : rules) {
-    if (rule.primary_pattern.Matches(primary_url) &&
-        rule.secondary_pattern.Matches(secondary_url) &&
-        rule.source == mojom::ProviderType::kCustomExtensionProvider) {
-      return rule.GetContentSetting() == CONTENT_SETTING_BLOCK;
-    }
-  }
-
-  return std::nullopt;
-}
-
 // Skips everything except main frame domain and javascript urls.
 bool ShouldSkipResource(const GURL& resource_url) {
   return (resource_url.path_piece().empty() ||
@@ -162,6 +146,13 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
   return shields_settings_->reduce_language;
 }
 
+bool BraveContentSettingsAgentImpl::IsScriptBlockedByExtension() const {
+  if (!shields_settings_) {
+    return false;
+  }
+  return shields_settings_->scripts_blocked_by_extension;
+}
+
 void BraveContentSettingsAgentImpl::BraveSpecificDidAllowJavaScriptOnce(
     const GURL& resource_url) {
   // This will be called for all resources on a page, we want to notify only
@@ -199,7 +190,7 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
       BraveSpecificDidAllowJavaScriptOnce(secondary_url);
     }
   }
-  return allow;
+  return IsScriptBlockedByExtension() ? false : allow;
 }
 
 void BraveContentSettingsAgentImpl::DidNotAllowScript() {
@@ -213,19 +204,6 @@ void BraveContentSettingsAgentImpl::DidNotAllowScript() {
     blocked_script_url_ = GURL::EmptyGURL();
   }
   ContentSettingsAgentImpl::DidNotAllowScript();
-}
-
-// Helper method to check if a script blocking rule comes from an extension
-std::optional<bool> BraveContentSettingsAgentImpl::IsScriptBlockedByExtension(
-    const GURL& primary_url,
-    const GURL& secondary_url) {
-  if (!content_setting_rules_) {
-    return std::nullopt;
-  }
-
-  return ::content_settings::IsScriptBlockedByExtension(
-      primary_url, secondary_url,
-      content_setting_rules_->extension_created_java_script_rules);
 }
 
 bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
@@ -247,16 +225,7 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
   auto is_shields_down = IsBraveShieldsDown(primary_url, secondary_url);
   auto is_script_temporarily_allowed =
       IsScriptTemporarilyAllowed(secondary_url);
-
-  // Check if the script blocking rule comes from an extension
-  const auto is_blocked_by_extension =
-      IsScriptBlockedByExtension(primary_url, secondary_url);
-
   allow = allow || is_shields_down || is_script_temporarily_allowed;
-  if (is_blocked_by_extension.has_value()) {
-    // We must take into account the extension's blocking rule only if it exists
-    allow = allow || !is_blocked_by_extension.value();
-  }
 
   if (!allow) {
     blocked_script_url_ = secondary_url;
@@ -266,7 +235,7 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
     }
   }
 
-  return allow;
+  return IsScriptBlockedByExtension() ? false : allow;
 }
 
 blink::WebSecurityOrigin
@@ -435,7 +404,8 @@ BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
                           HasContentSettingsRules());
     base::debug::DumpWithoutCrashing();
     return brave_shields::mojom::ShieldsSettings::New(
-        farbling_level, base::Token(), std::vector<std::string>(), false);
+        farbling_level, base::Token(), std::vector<std::string>(), false,
+        false);
   }
 }
 

@@ -26,9 +26,7 @@ bool StructTraits<content_settings::mojom::RendererContentSettingRulesDataView,
          data.ReadFingerprintingRules(&out->fingerprinting_rules) &&
          data.ReadBraveShieldsRules(&out->brave_shields_rules) &&
          data.ReadCosmeticFilteringRules(&out->cosmetic_filtering_rules) &&
-         data.ReadWebcompatRules(&out->webcompat_rules) &&
-         data.ReadExtensionCreatedJavaScriptRules(
-             &out->extension_created_java_script_rules);
+         data.ReadWebcompatRules(&out->webcompat_rules);
 }
 
 }  // namespace mojo
