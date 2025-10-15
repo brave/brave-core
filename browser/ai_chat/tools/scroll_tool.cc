@@ -10,6 +10,7 @@
 #include "brave/browser/ai_chat/tools/target_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/common/actor/task_id.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 
@@ -34,7 +35,7 @@ ScrollTool::ScrollTool(ContentAgentTaskProvider* task_provider)
 ScrollTool::~ScrollTool() = default;
 
 std::string_view ScrollTool::Name() const {
-  return "scroll_element";
+  return mojom::kScrollElementToolName;
 }
 
 std::string_view ScrollTool::Description() const {
