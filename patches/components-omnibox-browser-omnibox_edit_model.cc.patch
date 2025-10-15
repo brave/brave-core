@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/omnibox_edit_model.cc b/components/omnibox/browser/omnibox_edit_model.cc
-index 814e1aa0ee9cc8c308fd1dbbd28f53e3ae920d0a..0d8ddc43f1dab93ba4d14f12756c99f982b6fc55 100644
+index 803df0b052092f5a4df8cc8d11dfed4ccae5b53c..5c1fca36dde7dc5426384d2e162fbae601bc473a 100644
 --- a/components/omnibox/browser/omnibox_edit_model.cc
 +++ b/components/omnibox/browser/omnibox_edit_model.cc
 @@ -652,6 +652,7 @@ void OmniboxEditModel::StartAutocomplete(bool has_selected_text,
