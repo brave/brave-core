@@ -12,6 +12,8 @@
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/webui_config.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 
 namespace content {
 class WebUI;
@@ -23,6 +25,14 @@ class BraveAccountUIDesktop
       public ConstrainedWebDialogUI {
  public:
   explicit BraveAccountUIDesktop(content::WebUI* web_ui);
+
+  using BraveAccountUIBase<
+      content::WebUIDataSource,
+      brave_account::BraveAccountServiceFactory>::BindInterface;
+
+  void BindInterface(
+      mojo::PendingReceiver<color_change_listener::mojom::PageHandler>
+          pending_receiver);
 
  private:
   WEB_UI_CONTROLLER_TYPE_DECL();

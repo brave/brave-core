@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
@@ -44,6 +45,13 @@ BraveAccountUIDesktop::BraveAccountUIDesktop(content::WebUI* web_ui)
     : BraveAccountUIBase(Profile::FromWebUI(web_ui),
                          base::BindOnce(&webui::SetupWebUIDataSource)),
       ConstrainedWebDialogUI(web_ui) {}
+
+void BraveAccountUIDesktop::BindInterface(
+    mojo::PendingReceiver<color_change_listener::mojom::PageHandler>
+        pending_receiver) {
+  ui::BraveColorChangeHandler::BindInterface(web_ui()->GetWebContents(),
+                                             std::move(pending_receiver));
+}
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIDesktop)
 
