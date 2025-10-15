@@ -259,6 +259,12 @@ inline constexpr char kGoogleAccountNameEmailAddressEditURL[] =
 inline constexpr char kGoogleTwoFactorIntersitialURL[] =
     "https://support.brave.app/";
 
+// The scheme used for google-chrome:// URLs.
+// TODO(b/446672134): Use a distinct value for each brand (e.g.,
+//  Google Chrome vs. Chromium) and install mode (e.g., stable vs.
+//  side-by-side beta).
+inline constexpr char kGoogleChromeURLScheme[] = "google-chrome";
+
 // URL of the Google Password Manager.
 inline constexpr char kGooglePasswordManagerURL[] = "https://support.brave.app";
 
