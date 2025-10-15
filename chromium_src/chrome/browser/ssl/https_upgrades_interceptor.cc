@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ssl/https_upgrades_interceptor.h"
 
+#include "base/feature_list.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -16,7 +17,7 @@
 
 #define MaybeCreateLoader(...)                                                \
   MaybeCreateLoader(__VA_ARGS__) {                                            \
-    if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {                    \
+    if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {  \
       HostContentSettingsMap* map =                                           \
           HostContentSettingsMapFactory::GetForProfile(browser_context);      \
       if (!map ||                                                             \

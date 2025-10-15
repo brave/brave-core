@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_localized_strings.h"
@@ -49,8 +50,9 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
   source->AddBoolean("isAdvancedViewEnabled", profile_->GetPrefs()->GetBoolean(
                                                   kShieldsAdvancedViewEnabled));
 
-  source->AddBoolean("isHttpsByDefaultEnabled",
-                     base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault));
+  source->AddBoolean(
+      "isHttpsByDefaultEnabled",
+      base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault));
 
   source->AddBoolean(
       "showStrictFingerprintingMode",

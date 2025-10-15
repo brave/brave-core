@@ -38,8 +38,6 @@ enum class DomainBlockingType {
   kAggressive,
 };
 
-struct ShieldsSettingCounts;
-
 ContentSettingsPattern GetPatternFromURL(const GURL& url);
 std::string ControlTypeToString(ControlType type);
 ControlType ControlTypeFromString(const std::string& string);
