@@ -157,6 +157,12 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    original_tab_ = nullptr;
+    tabs_ = nullptr;
+  }
+
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
@@ -427,8 +433,8 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 
  private:
-  raw_ptr<content::WebContents, DanglingUntriaged> original_tab_ = nullptr;
-  raw_ptr<TabStripModel, DanglingUntriaged> tabs_ = nullptr;
+  raw_ptr<content::WebContents> original_tab_ = nullptr;
+  raw_ptr<TabStripModel> tabs_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageQaBrowserTest,
