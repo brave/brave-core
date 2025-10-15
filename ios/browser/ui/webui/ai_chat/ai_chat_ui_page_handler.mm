@@ -50,17 +50,11 @@ AIChatUIPageHandler::AIChatUIPageHandler(
   // Standalone mode means Chat is opened as its own tab in the tab strip and
   // not a side panel. chat_context_web_state is nullptr in that case
   const bool is_standalone = chat_context_web_state == nullptr;
-
-  auto* profile_metrics =
-      misc_metrics::ProfileMiscMetricsServiceFactory::GetForProfile(profile);
-
-  if (profile_metrics) {
-    ai_chat_metrics_ = profile_metrics->GetAIChatMetrics();
-  }
-
   if (!is_standalone) {
     // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
     // non-standalone Leo AI
+    // Typically this would create a tab helper and associate it with the chat
+    // context WebState so we can create a new conversation on navigation
   }
 }
 
@@ -70,6 +64,7 @@ void AIChatUIPageHandler::HandleVoiceRecognition(
     const std::string& conversation_uuid) {
   // TODO: https://github.com/brave/brave-browser/issues/49452 Implement
   // delegate to handle method
+  NOTIMPLEMENTED();
 }
 
 void AIChatUIPageHandler::ShowSoftKeyboard() {}
@@ -80,12 +75,15 @@ void AIChatUIPageHandler::ProcessImageFile(
     ProcessImageFileCallback callback) {
   // TODO: https://github.com/brave/brave-browser/issues/49453 Implement helper
   // to handle processing image files
+  NOTIMPLEMENTED();
+  std::move(callback).Run(nullptr);
 }
 
 void AIChatUIPageHandler::UploadFile(bool use_media_capture,
                                      UploadFileCallback callback) {
   // TODO: https://github.com/brave/brave-browser/issues/49453 Implement helper
   // to handle processing image files
+  NOTIMPLEMENTED();
   std::move(callback).Run(std::nullopt);
 }
 
@@ -101,20 +99,25 @@ void AIChatUIPageHandler::GetPluralString(const std::string& key,
 void AIChatUIPageHandler::OpenAIChatSettings() {
   // TODO: https://github.com/brave/brave-browser/issues/49452 Implement
   // delegate to handle method
+  NOTIMPLEMENTED();
 }
 
 void AIChatUIPageHandler::OpenMemorySettings() {
+  // Memory settings arent supported on mobile
   NOTIMPLEMENTED();
 }
 
 void AIChatUIPageHandler::OpenConversationFullPage(
     const std::string& conversation_uuid) {
-  // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
-  // non-standalone Leo AI
+  // TODO: https://github.com/brave/brave-browser/issues/49452 Implement
+  // delegate to handle method
+  // This will only be called when in non-standalone mode
+  NOTIMPLEMENTED();
 }
 
 void AIChatUIPageHandler::OpenAIChatAgentProfile() {
   CHECK(ai_chat::features::IsAIChatAgentProfileEnabled());
+  NOTIMPLEMENTED();
 }
 
 void AIChatUIPageHandler::OpenURL(const GURL& url) {
@@ -122,11 +125,9 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
     return;
   }
 
-  // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
-  // non-standalone Leo AI
-  owner_web_state_->OpenURL({url, url, web::Referrer(),
-                             WindowOpenDisposition::NEW_FOREGROUND_TAB,
-                             ui::PAGE_TRANSITION_LINK, false});
+  // TODO: https://github.com/brave/brave-browser/issues/49452 Implement
+  // delegate to handle method
+  NOTIMPLEMENTED();
 }
 
 void AIChatUIPageHandler::OpenStorageSupportUrl() {
@@ -136,6 +137,7 @@ void AIChatUIPageHandler::OpenStorageSupportUrl() {
 void AIChatUIPageHandler::GoPremium() {
   // TODO: https://github.com/brave/brave-browser/issues/49452 Implement
   // delegate to handle method
+  NOTIMPLEMENTED();
 }
 
 void AIChatUIPageHandler::RefreshPremiumSession() {
@@ -145,27 +147,29 @@ void AIChatUIPageHandler::RefreshPremiumSession() {
 void AIChatUIPageHandler::ManagePremium() {
   // TODO: https://github.com/brave/brave-browser/issues/49452 Implement
   // delegate to handle method
+  NOTIMPLEMENTED();
 }
 
 void AIChatUIPageHandler::OpenModelSupportUrl() {
   OpenURL(GURL(kLeoModelSupportUrl));
 }
 
-void AIChatUIPageHandler::HandleWebStateDestroyed() {
-  // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
-  // non-standalone Leo AI
-}
-
 void AIChatUIPageHandler::OnRequestArchive(
     AssociatedContentDelegate* delegate) {
+  // This is only applicable to content-adjacent UI, e.g. SidePanel on Desktop
+  // where it would like to remain associated with the Tab and move away from
+  // Conversations of previous navigations. That doens't apply to the standalone
+  // UI where it will keep a previous navigation's conversation active.
+
   // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
   // non-standalone Leo AI
-  chat_ui_->OnNewDefaultConversation(std::nullopt);
+  NOTIMPLEMENTED();
 }
 
 void AIChatUIPageHandler::CloseUI() {
   // TODO: https://github.com/brave/brave-browser/issues/49452 Implement
   // delegate to handle method
+  NOTIMPLEMENTED();
 }
 
 void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
@@ -180,8 +184,10 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
 void AIChatUIPageHandler::BindRelatedConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
+  // For global panel, don't recall conversations by their associated tab
   // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
-  // non-standalone Leo AI
+  // non-standalone Leo AI and call GetOrCreateConversationHandlerForContent if
+  // there is tab associated with this
   ConversationHandler* conversation =
       AIChatServiceFactory::GetForProfile(profile_)->CreateConversation();
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
@@ -189,16 +195,18 @@ void AIChatUIPageHandler::BindRelatedConversation(
 
 void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
                                        const std::string& conversation_uuid) {
-  // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
-  // non-standalone Leo AI
+  // TODO: https://github.com/brave/brave-browser/issues/50196 Add webpage
+  // context support
+  NOTIMPLEMENTED();
 }
 
 void AIChatUIPageHandler::AssociateUrlContent(
     const GURL& url,
     const std::string& title,
     const std::string& conversation_uuid) {
-  // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
-  // non-standalone Leo AI
+  // TODO: https://github.com/brave/brave-browser/issues/50196 Add webpage
+  // context support
+  NOTIMPLEMENTED();
 }
 
 void AIChatUIPageHandler::DisassociateContent(
@@ -212,8 +220,11 @@ void AIChatUIPageHandler::NewConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   ConversationHandler* conversation;
+  // For standalone or global panel, don't recall conversations by their
+  // associated tas.
   // TODO: https://github.com/brave/brave-browser/issues/49451 Handle
-  // non-standalone Leo AI
+  // non-standalone Leo AI and call CreateConversationHandlerForContent if there
+  // is tab associated with this
   conversation =
       AIChatServiceFactory::GetForProfile(profile_)->CreateConversation();
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));

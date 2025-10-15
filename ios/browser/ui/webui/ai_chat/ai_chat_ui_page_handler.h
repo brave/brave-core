@@ -85,15 +85,12 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver);
 
  private:
-  void HandleWebStateDestroyed();
-
   // AssociatedContentDelegate::Observer
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
 
   // AIChatTabHelper::Observer
   raw_ptr<web::WebState> owner_web_state_ = nullptr;
   raw_ptr<ProfileIOS> profile_ = nullptr;
-  raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;
