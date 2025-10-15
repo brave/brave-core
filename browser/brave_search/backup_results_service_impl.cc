@@ -197,7 +197,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
       }
 
       model->InsertWebContentsAt(insert_index, std::move(web_contents_unique),
-                                 ADD_ACTIVE);
+                                 ADD_NONE);
     }
 
     // auto web_preferences = web_contents->GetOrCreateWebPreferences();
