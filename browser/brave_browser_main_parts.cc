@@ -18,6 +18,7 @@
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -69,6 +70,28 @@
 #include "brave/components/ipfs/ipfs_component_cleaner.h"
 #endif  // BUILDFLAG(DEPRECATE_IPFS)
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/contained_tab_handler_registry.h"
+#include "brave/components/containers/core/common/features.h"
+
+namespace {
+
+class DefaultContainedTabsHandler : public containers::ContainedTabHandler {
+ public:
+  DefaultContainedTabsHandler() : id_(base::StrCat({kIdPrefix, "default"})) {
+    DCHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
+  }
+
+  const std::string& GetId() const override { return id_; }
+
+ private:
+  std::string id_;
+};
+
+}  // namespace
+
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 ChromeBrowserMainParts::ChromeBrowserMainParts(bool is_integration_test,
                                                StartupData* startup_data)
     : ChromeBrowserMainParts_ChromiumImpl(is_integration_test, startup_data) {}
@@ -95,6 +118,14 @@ void ChromeBrowserMainParts::PreBrowserStart() {
   DCHECK(sessions::ContentSerializedNavigationDriver::GetInstance());
   speedreader::SpeedreaderExtendedInfoHandler::Register();
 #endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    containers::ContainedTabHandlerRegistry::GetInstance()
+        .RegisterContainedTabHandler(
+            std::make_unique<DefaultContainedTabsHandler>());
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   ChromeBrowserMainParts_ChromiumImpl::PreBrowserStart();
 }

@@ -43,6 +43,7 @@ include_rules += [
   "+brave/components/brave_wallet/browser",
   "+brave/components/brave_wallet/common",
   "+brave/components/containers/buildflags",
+  "+brave/components/containers/content/browser",
   "+brave/components/containers/core/browser",
   "+brave/components/containers/core/common",
   "+brave/components/containers/core/mojom",

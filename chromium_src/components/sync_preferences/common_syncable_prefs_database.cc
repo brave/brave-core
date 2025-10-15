@@ -58,7 +58,7 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
             brave_syncable_prefs_ids::kContainersList,
             syncer::PREFERENCES,
             sync_preferences::PrefSensitivity::kNone,
-            MergeBehavior::kNone,
+            MergeBehavior::kMergeableListWithRewriteOnUpdate,
         },
     },
 #endif
