@@ -23,8 +23,8 @@ class AIChatTabHelper : public content::WebContentsUserData<AIChatTabHelper> {
   AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
   ~AIChatTabHelper() override;
 
-  AssociatedWebContents* associated_web_contents() const {
-    return associated_web_contents_.get();
+  AssociatedWebContents& associated_web_contents() const {
+    return *associated_web_contents_;
   }
 
  private:

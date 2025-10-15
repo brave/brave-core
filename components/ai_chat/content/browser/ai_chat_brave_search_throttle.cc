@@ -81,7 +81,7 @@ AIChatBraveSearchThrottle::WillStartRequest() {
   // Check if nonce in HTML tag matches the one in the URL.
   AIChatTabHelper::FromWebContents(web_contents)
       ->associated_web_contents()
-      ->GetOpenAIChatButtonNonce(
+      .GetOpenAIChatButtonNonce(
           base::BindOnce(&AIChatBraveSearchThrottle::OnGetOpenAIChatButtonNonce,
                          weak_factory_.GetWeakPtr()));
   return content::NavigationThrottle::DEFER;
@@ -96,7 +96,7 @@ void AIChatBraveSearchThrottle::OpenAIChatWithStagedEntries() {
   ai_chat_service_->OpenConversationWithStagedEntries(
       AIChatTabHelper::FromWebContents(web_contents)
           ->associated_web_contents()
-          ->GetWeakPtr(),
+          .GetWeakPtr(),
       base::BindOnce(&AIChatBraveSearchThrottle::OnOpenAIChat,
                      weak_factory_.GetWeakPtr()));
 }

@@ -187,11 +187,11 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest,
   auto* ai_chat_service =
       AIChatServiceFactory::GetForBrowserContext(browser()->profile());
   auto* conversation = ai_chat_service->CreateConversation();
-  ai_chat_service->MaybeAssociateContent(content1->associated_web_contents(),
+  ai_chat_service->MaybeAssociateContent(&content1->associated_web_contents(),
                                          conversation->get_conversation_uuid());
-  ai_chat_service->MaybeAssociateContent(content2->associated_web_contents(),
+  ai_chat_service->MaybeAssociateContent(&content2->associated_web_contents(),
                                          conversation->get_conversation_uuid());
-  ai_chat_service->MaybeAssociateContent(content3->associated_web_contents(),
+  ai_chat_service->MaybeAssociateContent(&content3->associated_web_contents(),
                                          conversation->get_conversation_uuid());
 
   EXPECT_EQ(ai_chat_service->GetInMemoryConversationCountForTesting(), 1u);
