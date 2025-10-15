@@ -305,9 +305,9 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
           ? brave_shields::GetFarblingToken(host_content_settings_map,
                                             primary_url)
           : base::Token();
-  const bool scripts_blocked_by_extension =
-      brave_shields::IsScriptBlockedByExtension(host_content_settings_map,
-                                                primary_url);
+  const auto scripts_blocked_by_extension =
+      brave_shields::GetScriptBlockedByExtensionStatus(
+          host_content_settings_map, primary_url);
 
   PrefService* pref_service =
       user_prefs::UserPrefs::Get(rfh->GetBrowserContext());

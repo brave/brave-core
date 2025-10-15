@@ -758,8 +758,8 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
                 HostContentSettingsMapFactory::GetForProfile(browser_context),
                 url)
           : base::Token();
-  const bool scripts_blocked_by_extension =
-      brave_shields::IsScriptBlockedByExtension(
+  const auto scripts_blocked_by_extension =
+      brave_shields::GetScriptBlockedByExtensionStatus(
           HostContentSettingsMapFactory::GetForProfile(browser_context), url);
 
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);

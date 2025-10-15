@@ -10,7 +10,13 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import Select from '$web-components/select'
 
 import * as S from './style'
-import getPanelBrowserAPI, { AdBlockMode, CookieBlockMode, FingerprintMode, HttpsUpgradeMode } from '../../api/panel_browser_api'
+import getPanelBrowserAPI, {
+  AdBlockMode,
+  CookieBlockMode,
+  FingerprintMode,
+  HttpsUpgradeMode,
+  ScriptBlockedByExtensionStatus,
+} from '../../api/panel_browser_api'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
 
@@ -170,19 +176,35 @@ function AdvancedControlsContent () {
         </S.ControlGroup>}
         <S.ControlGroup>
           <label>
-            <span>{getLocale('braveShieldsScriptsBlocked')}</span>
+            <S.LabelContainer>
+              <span>
+                {getLocale('braveShieldsScriptsBlocked')}
+              </span>
+              {siteSettings?.scriptsBlockedByExtensionStatus !==
+                  ScriptBlockedByExtensionStatus.kNotSet && (
+                  <S.SecondaryText>
+                    {getLocale('braveShieldsScriptsBlockedOverriddenByExt')}
+                  </S.SecondaryText>
+                )}
+            </S.LabelContainer>
             <Toggle
               aria-label={getLocale('braveShieldsScriptsBlockedEnable')}
               onChange={handleIsNoScriptEnabledChange}
               checked={siteSettings?.isNoscriptEnabled}
               size='small'
-              disabled={siteBlockInfo?.isBraveShieldsManaged}
+              disabled={siteBlockInfo?.isBraveShieldsManaged ||
+                siteSettings?.scriptsBlockedByExtensionStatus !==
+                  ScriptBlockedByExtensionStatus.kNotSet}
             />
           </label>
           <S.CountButton
             title={jsListCount.toString()}
             aria-label={getLocale('braveShieldsScriptsBlocked')}
             onClick={() => setViewType?.(ViewType.ScriptsList)}
+            visible={
+              siteSettings?.scriptsBlockedByExtensionStatus ===
+              ScriptBlockedByExtensionStatus.kNotSet
+            }
             disabled={jsListCount <= 0}
           >
             {jsListCount > 99 ? '99+' : jsListCount}

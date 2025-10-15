@@ -384,6 +384,12 @@ bool BraveShieldsTabHelper::GetNoScriptEnabled() {
   return brave_shields_settings_->IsNoScriptEnabled(GetCurrentSiteURL());
 }
 
+mojom::ScriptBlockedByExtensionStatus
+BraveShieldsTabHelper::GetScriptBlockedByExtensionStatus() {
+  return brave_shields_settings_->GetScriptBlockedByExtensionStatus(
+      GetCurrentSiteURL());
+}
+
 bool BraveShieldsTabHelper::GetForgetFirstPartyStorageEnabled() {
   return brave_shields::GetForgetFirstPartyStorageEnabled(
       &*host_content_settings_map_, GetCurrentSiteURL());

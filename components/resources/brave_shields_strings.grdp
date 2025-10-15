@@ -139,6 +139,10 @@
   <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED" desc="A label for scripts Scripts blocked option.">
     Block scripts
   </message>
+  
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_EXTENSION" desc="A label for scripts Scripts blocked option which is overridden by extension rule.">
+    (enforced by extension)
+  </message>
 
   <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_ENABLE" desc="A label to describe expand/collapse button for the website scripts blocked section.">
     Enable Scripts Blocked

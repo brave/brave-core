@@ -37,8 +37,8 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
                 HostContentSettingsMapFactory::GetForProfile(browser_context),
                 top_frame_url)
           : base::Token();
-  const bool scripts_blocked_by_extension =
-      brave_shields::IsScriptBlockedByExtension(
+  const auto scripts_blocked_by_extension =
+      brave_shields::GetScriptBlockedByExtensionStatus(
           HostContentSettingsMapFactory::GetForProfile(browser_context),
           top_frame_url);
 

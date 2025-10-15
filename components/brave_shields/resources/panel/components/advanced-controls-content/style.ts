@@ -103,7 +103,20 @@ export const ControlGroup = styled.div`
   }
 `
 
-export const CountButton = styled.button`
+export const LabelContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+export const SecondaryText = styled.span`
+  color:${color.text.disabled};
+  margin-top: 5px;
+`
+
+interface CountButtonProps {
+  visible?: boolean;
+}
+export const CountButton = styled.button<CountButtonProps>`
   background-color: transparent;
   border: 0;
   padding: 0;
@@ -117,6 +130,7 @@ export const CountButton = styled.button`
   border-radius: 4px;
   border: 2px solid transparent;
   cursor: pointer;
+  display: ${props => props.visible === false ? 'none' : 'block'};
 
   &:hover {
     background-color: ${color.neutral[10]};

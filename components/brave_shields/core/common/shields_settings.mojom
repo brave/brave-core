@@ -18,7 +18,7 @@ struct ShieldsSettings {
   mojo_base.mojom.Token farbling_token;
   array<string> origins_to_allow_scripts;
   bool reduce_language;
-  bool scripts_blocked_by_extension;
+  ScriptBlockedByExtensionStatus scripts_blocked_by_extension_status = kNotSet;
 };
 
 enum AdBlockMode {
@@ -45,6 +45,12 @@ enum HttpsUpgradeMode {
   STRICT_MODE,
   STANDARD_MODE,
   DISABLED_MODE
+};
+
+enum ScriptBlockedByExtensionStatus {
+  kNotSet = 0,
+  kBlocked,
+  kAllowed
 };
 
 // Do not change order of this enum. The order is relied upon for

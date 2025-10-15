@@ -200,4 +200,10 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
           url, GURL(), AutoShredSetting::kContentSettingsType));
 }
 
+mojom::ScriptBlockedByExtensionStatus
+BraveShieldsSettings::GetScriptBlockedByExtensionStatus(const GURL& url) {
+  return brave_shields::GetScriptBlockedByExtensionStatus(
+      &*host_content_settings_map_, url);
+}
+
 }  // namespace brave_shields
