@@ -60,6 +60,7 @@ export default function TabsMenu() {
     [aiChat, conversation.conversationUuid, setIsOpen],
   )
 
+  // Filter out content that is already associated with the conversation.
   const unselectedTabs = React.useMemo(
     () =>
       aiChat.tabs.filter(
@@ -72,6 +73,8 @@ export default function TabsMenu() {
   )
 
   const { result: bookmarks = [] } = usePromise(aiChat.getBookmarks, [])
+
+  // Filter out content that is already associated with the conversation.
   const unselectedBookmarks = React.useMemo(
     () =>
       bookmarks.filter(
@@ -87,6 +90,8 @@ export default function TabsMenu() {
     () => aiChat.getHistory(query ?? ''),
     [query],
   )
+
+  // Filter out content that is already associated with the conversation.
   const unselectedHistory = React.useMemo(
     () =>
       history.filter(
