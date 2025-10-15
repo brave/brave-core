@@ -13,6 +13,7 @@ include_rules = [
   "+components/os_crypt/sync",
   "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
+  "+components/tabs",
   "+crypto",
   "+services/data_decoder/public",
   "+services/network/public",
