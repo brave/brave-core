@@ -11,7 +11,13 @@ import MainPanel from '../components/main-panel'
 import TreeList from '../components/tree-list'
 import ThemeProvider from '../../../../common/BraveCoreThemeProvider'
 import DataContext from '../state/context'
-import { AdBlockMode, FingerprintMode, CookieBlockMode, HttpsUpgradeMode } from '../api/panel_browser_api'
+import {
+  AdBlockMode,
+  FingerprintMode,
+  CookieBlockMode,
+  HttpsUpgradeMode,
+  ScriptBlockedByExtensionStatus,
+} from '../api/panel_browser_api'
 import {
   ViewType
 } from '../state/component_types'
@@ -74,6 +80,8 @@ export default {
           cookieBlockMode: CookieBlockMode.ALLOW,
           httpsUpgradeMode: HttpsUpgradeMode.DISABLED_MODE,
           isNoscriptEnabled: false,
+          scriptsBlockedByExtensionStatus:
+            ScriptBlockedByExtensionStatus.kNotSet,
           isForgetFirstPartyStorageEnabled: false,
           webcompatSettings: {}
         },
