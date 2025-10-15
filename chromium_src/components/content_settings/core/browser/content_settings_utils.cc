@@ -33,8 +33,7 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
       {ContentSettingsType::BRAVE_SHIELDS, &rules->brave_shields_rules},
       {ContentSettingsType::BRAVE_COSMETIC_FILTERING,
        &rules->cosmetic_filtering_rules},
-      {ContentSettingsType::JAVASCRIPT,
-       &rules->extension_created_java_script_rules}};
+  };
   for (const auto& setting : settings) {
     DCHECK(
         RendererContentSettingRules::IsRendererContentSetting(setting.first));

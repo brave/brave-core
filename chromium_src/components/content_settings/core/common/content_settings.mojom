@@ -14,5 +14,4 @@ struct RendererContentSettingRules {
   array<ContentSettingPatternSource> brave_shields_rules;
   array<ContentSettingPatternSource> cosmetic_filtering_rules;
   map<ContentSettingsType, array<ContentSettingPatternSource>> webcompat_rules;
-  array<ContentSettingPatternSource> extension_created_java_script_rules;
 };
