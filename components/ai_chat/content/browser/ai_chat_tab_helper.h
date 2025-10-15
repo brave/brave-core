@@ -24,6 +24,7 @@ class AIChatTabHelper : public content::WebContentsUserData<AIChatTabHelper> {
   ~AIChatTabHelper() override;
 
   AssociatedWebContents& associated_web_contents() const {
+    CHECK(associated_web_contents_);
     return *associated_web_contents_;
   }
 
