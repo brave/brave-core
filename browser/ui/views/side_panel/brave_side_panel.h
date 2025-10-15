@@ -59,6 +59,8 @@ class BraveSidePanel : public views::View,
   gfx::Size GetContentSizeUpperBound() const { return gfx::Size(); }
   bool IsClosing();
   void DisableAnimationsForTesting() {}
+  void SetHeaderVisibility(bool visible);
+  void SetOutlineVisibility(bool visible);
 
   template <typename T>
   T* GetHeaderView() {
@@ -72,7 +74,6 @@ class BraveSidePanel : public views::View,
   // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
   void AddHeaderView(std::unique_ptr<views::View> view);
-  void SetHeaderVisibility(bool visible);
 
   // views::View:
   void OnThemeChanged() override;
