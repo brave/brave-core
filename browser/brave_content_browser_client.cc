@@ -599,6 +599,9 @@ void BraveContentBrowserClient::
 void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     content::WebUIBrowserInterfaceBrokerRegistry& registry) {
   ChromeContentBrowserClient::RegisterWebUIInterfaceBrokers(registry);
+  registry.AddGlobal<color_change_listener::mojom::PageHandler>(
+      base::BindRepeating(&MaybeBindColorChangeHandler));
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     registry.ForWebUI<VPNPanelUI>()
@@ -684,7 +687,6 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveAccountUIDesktop>()
         .Add<brave_account::mojom::Authentication>()
-        .Add<color_change_listener::mojom::PageHandler>()
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
 #else   // !BUILDFLAG(IS_ANDROID)
