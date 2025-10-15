@@ -20,7 +20,7 @@ const args: CustomArgs = {
 }
 
 export const _AssistantTask = {
-  render: () => {
+  render: (args: CustomArgs) => {
     return (
       <AssistantTask
         assistantEntries={taskConversationEntries}

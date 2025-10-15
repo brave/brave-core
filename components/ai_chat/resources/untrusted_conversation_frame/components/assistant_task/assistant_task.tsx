@@ -103,22 +103,24 @@ function Progress(props: Props & { taskData: TaskData }) {
   )
 
   return (
-    <div>
+    <div className={styles.progress}>
       {props.taskData.importantToolUseEvents.map((event, index) => (
         <ToolEvent
           key={index}
           toolUseEvent={event}
-          isEntryActive={props.isActiveTask}
+          isEntryActive={false}
         />
       ))}
       {currentCompletionEvent && (
-        <AssistantResponse
-          events={[currentCompletionEvent]}
-          isEntryInteractivityAllowed={false}
-          isEntryInProgress={props.isGenerating}
-          allowedLinks={[]}
-          isLeoModel={props.isLeoModel}
-        />
+        <div className={styles.progressText}>
+          <AssistantResponse
+            events={[currentCompletionEvent]}
+            isEntryInteractivityAllowed={false}
+            isEntryInProgress={props.isGenerating}
+            allowedLinks={[]}
+            isLeoModel={props.isLeoModel}
+          />
+        </div>
       )}
       {currentToolUseEvents.map((event, index) => (
         <ToolEvent

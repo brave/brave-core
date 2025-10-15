@@ -80,3 +80,14 @@
     border-left-color: transparent;
   }
 }
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+}
+
+.progressText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}
