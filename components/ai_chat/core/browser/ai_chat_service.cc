@@ -186,6 +186,14 @@ void AIChatService::Shutdown() {
   if (ai_chat_db_) {
     ai_chat_db_.Reset();
   }
+
+  receivers_.Clear();
+  observer_remotes_.Clear();
+
+  conversation_observations_.RemoveAllObservations();
+
+  conversation_handlers_.clear();
+  conversations_.clear();
 }
 
 ConversationHandler* AIChatService::CreateConversation() {
