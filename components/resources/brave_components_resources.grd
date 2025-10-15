@@ -44,6 +44,13 @@
         <include name="IDR_BRAVE_NEW_TAB_IMG2" file="../img/newtab/settings_prefs_btn.svg" type="BINDATA" />
       </if>
 
+      <!-- WebUI Local AI resources -->
+      <include name="IDR_LOCAL_AI_INTERNALS_HTML" file="../local_ai/resources/local_ai.html" type="BINDATA" />
+      <include name="IDR_CANDLE_BERT_BRIDGE_HTML" file="../local_ai/resources/candle_bert_bridge.html" type="BINDATA" />
+      <include name="IDR_LOCAL_AI_BERT_MODEL_SAFETENSORS" file="../../ui/webui/resources/bert_models/all-MiniLM-L6-v2/model.safetensors" type="BINDATA" compress="gzip" />
+      <include name="IDR_LOCAL_AI_BERT_CONFIG_JSON" file="../../ui/webui/resources/bert_models/all-MiniLM-L6-v2/config.json" type="BINDATA" />
+      <include name="IDR_LOCAL_AI_BERT_TOKENIZER_JSON" file="../../ui/webui/resources/bert_models/all-MiniLM-L6-v2/tokenizer.json" type="BINDATA" compress="gzip" />
+
       <!-- WebUI wallet resources -->
       <include name="IDR_WALLET_PAGE_HTML" file="../brave_wallet_ui/page/wallet_page.html" type="BINDATA" />
       <include name="IDR_BRAVE_WALLET_NFT_DISPLAY_HTML" file="../brave_wallet_ui/nft/nft.html" type="BINDATA" />

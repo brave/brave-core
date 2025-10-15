@@ -12,6 +12,7 @@
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/trezor/trezor_ui.h"
+#include "brave/browser/ui/webui/candle_wasm/candle_bert_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -70,4 +71,7 @@ void RegisterChromeUntrustedWebUIConfigs() {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<AIChatUntrustedConversationUIConfig>());
   }
+
+  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+      std::make_unique<local_ai::UntrustedCandleBertUIConfig>());
 }

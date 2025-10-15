@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Local AI Internals</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        margin: 20px;
+      }
+      iframe {
+        width: 100%;
+        height: 600px;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+      }
+      .info {
+        background: #e3f2fd;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Local AI Internals</h1>
+    <div class="info">
+      <p><strong>Architecture:</strong></p>
+      <ul>
+        <li><strong>Trusted Page:</strong> chrome://local-ai-internals (this page)</li>
+        <li><strong>Untrusted WASM:</strong> chrome-untrusted://candle-bert-wasm (iframe below)</li>
+      </ul>
+      <p>The Candle BERT WASM module runs in an isolated untrusted context for security.</p>
+      <p><strong>Check the console for logs from both contexts.</strong></p>
+    </div>
+
+    <h2>Untrusted WASM Iframe:</h2>
+    <iframe src="chrome-untrusted://candle-bert-wasm/" title="Candle BERT WASM"></iframe>
+  </body>
+</html>
