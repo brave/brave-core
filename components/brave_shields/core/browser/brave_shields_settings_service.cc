@@ -10,6 +10,9 @@
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
@@ -166,6 +169,32 @@ bool BraveShieldsSettingsService::IsNoScriptEnabled(const GURL& url) {
       brave_shields::GetNoScriptControlType(&*host_content_settings_map_, url);
 
   return control_type != ControlType::ALLOW;
+}
+
+bool BraveShieldsSettingsService::GetForgetFirstPartyStorageEnabled(
+    const GURL& url) {
+  ContentSetting setting = host_content_settings_map_->GetContentSetting(
+      url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
+
+  return setting == CONTENT_SETTING_BLOCK;
+}
+
+void BraveShieldsSettingsService::SetForgetFirstPartyStorageEnabled(
+    bool is_enabled,
+    const GURL& url) {
+  auto primary_pattern = content_settings::CreateDomainPattern(url);
+
+  if (!primary_pattern.IsValid()) {
+    return;
+  }
+
+  host_content_settings_map_->SetContentSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
+      is_enabled ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
+
+  MaybeRecordShieldsUsageP3A(kChangedPerSiteShields, local_state_);
+  RecordForgetFirstPartySetting(&*host_content_settings_map_);
 }
 
 void BraveShieldsSettingsService::SetDefaultAutoShredMode(

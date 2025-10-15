@@ -10,11 +10,16 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+
+namespace brave_shields {
+class BraveShieldsSettingsService;
+}
 
 class Profile;
 
@@ -70,6 +75,8 @@ class DefaultBraveShieldsHandler
                         const std::vector<std::string>& components);
 
   raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
+      nullptr;
 
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       content_settings_observation_{this};
