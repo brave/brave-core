@@ -9,20 +9,20 @@
 
 #include <memory>
 
-#include "brave/components/brave_shields/core/browser/brave_shields_settings.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
 @implementation BraveShieldsSettingsBridgeImpl {
-  std::unique_ptr<brave_shields::BraveShieldsSettings> _braveShieldsSettings;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> _braveShieldsSettings;
 }
 
 - (instancetype)initWithBraveShieldsSettings:
-    (std::unique_ptr<brave_shields::BraveShieldsSettings>)braveShieldsSettings {
+    (raw_ptr<brave_shields::BraveShieldsSettingsService>)braveShieldsSettings {
   if ((self = [super init])) {
-    _braveShieldsSettings = std::move(braveShieldsSettings);
+    _braveShieldsSettings = braveShieldsSettings;
   }
   return self;
 }

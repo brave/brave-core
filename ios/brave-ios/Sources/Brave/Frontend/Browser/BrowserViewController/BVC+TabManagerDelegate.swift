@@ -36,7 +36,7 @@ extension BrowserViewController: TabManagerDelegate {
       tab.isPrivate ? profileController.profile.offTheRecordProfile : profileController.profile
     let braveShieldsHelper: BraveShieldsTabHelper = .init(
       tab: tab,
-      braveShieldsSettings: BraveShieldsSettingsFactory.create(for: profile)
+      braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: profile)
     )
     tab.braveShieldsHelper = braveShieldsHelper
     // When `BraveShieldsTabHelper+TabPolicyDecider` is moved to `BraveShields` target,

@@ -3,17 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_shields/core/browser/brave_shields_settings.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 
+#include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
+#include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
 namespace brave_shields {
 
-BraveShieldsSettings::BraveShieldsSettings(
+BraveShieldsSettingsService::BraveShieldsSettingsService(
     HostContentSettingsMap& host_content_settings_map,
     PrefService* local_state,
     PrefService* profile_prefs)
@@ -21,29 +23,30 @@ BraveShieldsSettings::BraveShieldsSettings(
       local_state_(local_state),
       profile_prefs_(profile_prefs) {}
 
-BraveShieldsSettings::~BraveShieldsSettings() = default;
+BraveShieldsSettingsService::~BraveShieldsSettingsService() = default;
 
-void BraveShieldsSettings::SetBraveShieldsEnabled(bool is_enabled,
-                                                  const GURL& url) {
+void BraveShieldsSettingsService::SetBraveShieldsEnabled(bool is_enabled,
+                                                         const GURL& url) {
   brave_shields::SetBraveShieldsEnabled(&*host_content_settings_map_,
                                         is_enabled, url, local_state_);
 }
 
-bool BraveShieldsSettings::GetBraveShieldsEnabled(const GURL& url) {
+bool BraveShieldsSettingsService::GetBraveShieldsEnabled(const GURL& url) {
   return brave_shields::GetBraveShieldsEnabled(&*host_content_settings_map_,
                                                url);
 }
 
-void BraveShieldsSettings::SetDefaultAdBlockMode(mojom::AdBlockMode mode) {
+void BraveShieldsSettingsService::SetDefaultAdBlockMode(
+    mojom::AdBlockMode mode) {
   SetAdBlockMode(mode, GURL());
 }
 
-mojom::AdBlockMode BraveShieldsSettings::GetDefaultAdBlockMode() {
+mojom::AdBlockMode BraveShieldsSettingsService::GetDefaultAdBlockMode() {
   return GetAdBlockMode(GURL());
 }
 
-void BraveShieldsSettings::SetAdBlockMode(mojom::AdBlockMode mode,
-                                          const GURL& url) {
+void BraveShieldsSettingsService::SetAdBlockMode(mojom::AdBlockMode mode,
+                                                 const GURL& url) {
   ControlType control_type_ad;
   ControlType control_type_cosmetic;
 
@@ -69,7 +72,8 @@ void BraveShieldsSettings::SetAdBlockMode(mojom::AdBlockMode mode,
                                                  local_state_, profile_prefs_);
 }
 
-mojom::AdBlockMode BraveShieldsSettings::GetAdBlockMode(const GURL& url) {
+mojom::AdBlockMode BraveShieldsSettingsService::GetAdBlockMode(
+    const GURL& url) {
   ControlType control_type_ad =
       brave_shields::GetAdControlType(&*host_content_settings_map_, url);
 
@@ -88,17 +92,19 @@ mojom::AdBlockMode BraveShieldsSettings::GetAdBlockMode(const GURL& url) {
   }
 }
 
-void BraveShieldsSettings::SetDefaultFingerprintMode(
+void BraveShieldsSettingsService::SetDefaultFingerprintMode(
     mojom::FingerprintMode mode) {
   SetFingerprintMode(mode, GURL());
 }
 
-mojom::FingerprintMode BraveShieldsSettings::GetDefaultFingerprintMode() {
+mojom::FingerprintMode
+BraveShieldsSettingsService::GetDefaultFingerprintMode() {
   return GetFingerprintMode(GURL());
 }
 
-void BraveShieldsSettings::SetFingerprintMode(mojom::FingerprintMode mode,
-                                              const GURL& url) {
+void BraveShieldsSettingsService::SetFingerprintMode(
+    mojom::FingerprintMode mode,
+    const GURL& url) {
 #if BUILDFLAG(IS_IOS)
   /// Strict FingerprintMode is not supported on iOS
   CHECK(mode != mojom::FingerprintMode::STRICT_MODE);
@@ -119,7 +125,7 @@ void BraveShieldsSettings::SetFingerprintMode(mojom::FingerprintMode mode,
                                               profile_prefs_);
 }
 
-mojom::FingerprintMode BraveShieldsSettings::GetFingerprintMode(
+mojom::FingerprintMode BraveShieldsSettingsService::GetFingerprintMode(
     const GURL& url) {
   ControlType control_type = brave_shields::GetFingerprintingControlType(
       &*host_content_settings_map_, url);
@@ -139,23 +145,23 @@ mojom::FingerprintMode BraveShieldsSettings::GetFingerprintMode(
   }
 }
 
-void BraveShieldsSettings::SetNoScriptEnabledByDefault(bool is_enabled) {
+void BraveShieldsSettingsService::SetNoScriptEnabledByDefault(bool is_enabled) {
   SetNoScriptEnabled(is_enabled, GURL());
 }
 
-bool BraveShieldsSettings::IsNoScriptEnabledByDefault() {
+bool BraveShieldsSettingsService::IsNoScriptEnabledByDefault() {
   return IsNoScriptEnabled(GURL());
 }
 
-void BraveShieldsSettings::SetNoScriptEnabled(bool is_enabled,
-                                              const GURL& url) {
+void BraveShieldsSettingsService::SetNoScriptEnabled(bool is_enabled,
+                                                     const GURL& url) {
   ControlType control_type =
       is_enabled ? ControlType::BLOCK : ControlType::ALLOW;
   brave_shields::SetNoScriptControlType(&*host_content_settings_map_,
                                         control_type, url, local_state_);
 }
 
-bool BraveShieldsSettings::IsNoScriptEnabled(const GURL& url) {
+bool BraveShieldsSettingsService::IsNoScriptEnabled(const GURL& url) {
   ControlType control_type =
       brave_shields::GetNoScriptControlType(&*host_content_settings_map_, url);
 
