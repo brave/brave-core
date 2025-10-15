@@ -12,7 +12,7 @@ import * as Mojom from '../../../common/mojom'
  * @returns
  */
 function getNavigateToolNameLabel(toolInput: any) {
-  if (typeof toolInput.website_url === 'string') {
+  if (typeof toolInput?.website_url === 'string') {
     return formatLocale(S.CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE_WITH_INPUT, {
       $1: toolInput.website_url as string,
     })
@@ -27,9 +27,9 @@ function getNavigateToolNameLabel(toolInput: any) {
  */
 function getHistoryToolNameLabel(toolInput: any) {
   // Tool input might not be complete, so check values explicitly.
-  if (toolInput?.direction == 'back') {
+  if (toolInput?.direction === 'back') {
     return getLocale(S.CHAT_UI_TOOL_LABEL_NAVIGATE_HISTORY_BACK)
-  } else if (toolInput?.direction == 'forward') {
+  } else if (toolInput?.direction === 'forward') {
     return getLocale(S.CHAT_UI_TOOL_LABEL_NAVIGATE_HISTORY_FORWARD)
   }
   return getLocale(S.CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE)
