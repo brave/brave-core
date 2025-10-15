@@ -15,6 +15,7 @@ source_set("features") {
     "//brave/components/brave_account:features",
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/brave_news/common",
+    "//brave/components/brave_origin",
     "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
