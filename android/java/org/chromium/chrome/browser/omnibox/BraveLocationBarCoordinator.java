@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.omnibox;
 
 import static org.chromium.build.NullUtil.assertNonNull;
 
+import android.graphics.Bitmap;
 import android.view.ActionMode;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -29,7 +30,6 @@ import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
-import org.chromium.chrome.browser.tabwindow.TabWindowManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
@@ -38,6 +38,7 @@ import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 @NullMarked
@@ -73,10 +74,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             OverrideUrlLoadingDelegate overrideUrlLoadingDelegate,
             BackKeyBehaviorDelegate backKeyBehavior,
             PageInfoAction pageInfoAction,
-            Callback<Tab> bringTabToFrontCallback,
             Callback<String> bringTabGroupToFrontCallback,
             OmniboxUma omniboxUma,
-            Supplier<TabWindowManager> tabWindowManagerSupplier,
             BookmarkState bookmarkState,
             BooleanSupplier isToolbarMicEnabledSupplier,
             @Nullable Supplier<MerchantTrustSignalsCoordinator>
@@ -87,14 +86,15 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             @Nullable BackPressManager backPressManager,
             @Nullable OmniboxSuggestionsDropdownScrollListener
                     omniboxSuggestionsDropdownScrollListener,
-            @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             LocationBarEmbedderUiOverrides uiOverrides,
             @Nullable View baseChromeLayout,
             Supplier<Integer> bottomWindowPaddingSupplier,
             @Nullable OnLongClickListener onLongClickListener,
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
             boolean isToolbarPositionCustomizationEnabled,
-            @Nullable PageZoomManager pageZoomManager) {
+            @Nullable PageZoomManager pageZoomManager,
+            Function<Tab, @Nullable Bitmap> tabFaviconFunction) {
         super(
                 locationBarLayout,
                 autocompleteAnchorView,
@@ -110,10 +110,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 overrideUrlLoadingDelegate,
                 backKeyBehavior,
                 pageInfoAction,
-                bringTabToFrontCallback,
                 bringTabGroupToFrontCallback,
                 omniboxUma,
-                tabWindowManagerSupplier,
                 bookmarkState,
                 isToolbarMicEnabledSupplier,
                 merchantTrustSignalsCoordinatorSupplier,
@@ -132,7 +130,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 onLongClickListener,
                 browserControlsStateProvider,
                 isToolbarPositionCustomizationEnabled,
-                pageZoomManager);
+                pageZoomManager,
+                tabFaviconFunction);
 
         if (mUrlBar != null) {
             ((UrlBar) mUrlBar).setSelectAllOnFocus(true);

@@ -1543,8 +1543,6 @@ public class BytecodeTest {
                         Supplier.class,
                         LocationBarDataProvider.class,
                         Callback.class,
-                        Callback.class,
-                        Supplier.class,
                         BookmarkState.class,
                         OmniboxActionDelegate.class,
                         ActivityLifecycleDispatcher.class,
@@ -1645,9 +1643,7 @@ public class BytecodeTest {
                         BackKeyBehaviorDelegate.class,
                         PageInfoAction.class,
                         Callback.class,
-                        Callback.class,
                         BraveLocationBarMediator.getOmniboxUmaClass(),
-                        Supplier.class,
                         BookmarkState.class,
                         BooleanSupplier.class,
                         Supplier.class,
@@ -1662,7 +1658,8 @@ public class BytecodeTest {
                         OnLongClickListener.class,
                         BrowserControlsStateProvider.class,
                         boolean.class,
-                        PageZoomManager.class));
+                        PageZoomManager.class,
+                        Function.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
