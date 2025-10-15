@@ -384,8 +384,8 @@ bool BraveShieldsTabHelper::GetNoScriptEnabled() {
 }
 
 bool BraveShieldsTabHelper::GetForgetFirstPartyStorageEnabled() {
-  return brave_shields::GetForgetFirstPartyStorageEnabled(
-      &*host_content_settings_map_, GetCurrentSiteURL());
+  return brave_shields_settings_->GetForgetFirstPartyStorageEnabled(
+      GetCurrentSiteURL());
 }
 
 void BraveShieldsTabHelper::SetAdBlockMode(AdBlockMode mode) {
@@ -449,9 +449,8 @@ void BraveShieldsTabHelper::SetIsNoScriptEnabled(bool is_enabled) {
 }
 
 void BraveShieldsTabHelper::SetForgetFirstPartyStorageEnabled(bool is_enabled) {
-  brave_shields::SetForgetFirstPartyStorageEnabled(
-      &*host_content_settings_map_, is_enabled, GetCurrentSiteURL(),
-      g_browser_process->local_state());
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+      is_enabled, GetCurrentSiteURL());
 }
 
 void BraveShieldsTabHelper::BlockAllowedScripts(
@@ -484,11 +483,6 @@ bool BraveShieldsTabHelper::IsBraveShieldsManaged() {
 
   return brave_shields::IsBraveShieldsManaged(
       profile_prefs, &*host_content_settings_map_, GetCurrentSiteURL());
-}
-
-bool BraveShieldsTabHelper::IsForgetFirstPartyStorageFeatureEnabled() const {
-  return base::FeatureList::IsEnabled(
-      net::features::kBraveForgetFirstPartyStorage);
 }
 
 void BraveShieldsTabHelper::HandleItemBlocked(const std::string& block_type,

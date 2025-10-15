@@ -4,7 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/string_util.h"
+#include "brave/browser/brave_shields/brave_shields_settings_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -34,6 +36,19 @@ class EphemeralStorageForgetByDefaultBrowserTest
 
   ~EphemeralStorageForgetByDefaultBrowserTest() override = default;
 
+  void SetUpOnMainThread() override {
+    EphemeralStorageBrowserTest::SetUpOnMainThread();
+
+    auto* profile = browser()->profile();
+    brave_shields_settings_ =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  }
+
+  void TearDownOnMainThread() override {
+    EphemeralStorageBrowserTest::TearDownOnMainThread();
+    brave_shields_settings_ = nullptr;
+  }
+
   void SetAndCheckValuesInFrames(WebContents* web_contents,
                                  std::string storage_value,
                                  std::string cookie_value) {
@@ -54,6 +69,7 @@ class EphemeralStorageForgetByDefaultBrowserTest
   }
 
  protected:
+  raw_ptr<BraveShieldsSettingsService> brave_shields_settings_;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
@@ -66,7 +82,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
           a_site_ephemeral_storage_url_),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
-  brave_shields::SetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
       content_settings(), true, a_site_ephemeral_storage_url_);
 
   WebContents* first_party_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
@@ -94,7 +110,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
           a_site_ephemeral_storage_url_),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
-  brave_shields::SetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
       content_settings(), true, a_site_ephemeral_storage_url_);
 
   const GURL sub_a_site_ephemeral_storage_url =
@@ -127,7 +143,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
           sub_a_site_ephemeral_storage_url),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
-  brave_shields::SetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
       content_settings(), true, sub_a_site_ephemeral_storage_url);
 
   WebContents* first_party_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
@@ -157,7 +173,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
           sub_a_site_ephemeral_storage_url),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
-  brave_shields::SetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
       content_settings(), true, sub_a_site_ephemeral_storage_url);
 
   WebContents* sub_first_party_tab =
@@ -190,10 +206,10 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
           a_site_ephemeral_storage_url_),
       brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
-  brave_shields::SetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
       content_settings(), true, a_site_ephemeral_storage_url_);
 
-  EXPECT_TRUE(brave_shields::GetForgetFirstPartyStorageEnabled(
+  EXPECT_TRUE(brave_shields_settings_->GetForgetFirstPartyStorageEnabled(
       HostContentSettingsMapFactory::GetForProfile(
           incognito_browser->profile()),
       a_site_ephemeral_storage_url_));
@@ -219,9 +235,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
                        NavigationCookiesAreCleared) {
-  brave_shields::SetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
       content_settings(), true, a_site_ephemeral_storage_url_);
-  brave_shields::SetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
       content_settings(), true, b_site_ephemeral_storage_url_);
 
   const GURL a_site_set_cookie_url = https_server_.GetURL(
@@ -274,8 +290,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
                        NavigationRedirectCookiesAreCleared) {
-  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
-                                                   GURL());
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(content_settings(),
+                                                             true, GURL());
 
   const GURL a_site_url =
       https_server_.GetURL("0.com",
@@ -320,8 +336,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
   const GURL a_site_set_cookie_url(
       "https://a.com/set-cookie?name=acom;path=/"
       ";SameSite=None;Secure;Max-Age=600");
-  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
-                                                   a_site_set_cookie_url);
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, a_site_set_cookie_url);
 
   // Cookies should NOT exist for a.com.
   EXPECT_EQ(0u, GetAllCookies().size());
@@ -347,8 +363,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
   const GURL a_site_set_cookie_url(
       "https://a.com/set-cookie?name=acom;path=/"
       ";SameSite=None;Secure;Max-Age=600");
-  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
-                                                   a_site_set_cookie_url);
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, a_site_set_cookie_url);
 
   // Cookies should NOT exist for a.com.
   EXPECT_EQ(0u, GetAllCookies().size());
@@ -376,7 +392,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
                        DisabledShieldsDontForgetFirstParty) {
-  brave_shields::SetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
       content_settings(), true, a_site_ephemeral_storage_url_);
   brave_shields::SetBraveShieldsEnabled(content_settings(), false,
                                         a_site_ephemeral_storage_url_);
@@ -431,8 +447,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
       https_server_.GetURL("sub.a.com", "/ephemeral_storage.html");
   const GURL a_com_simple_url = https_server_.GetURL("a.com", "/simple.html");
 
-  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
-                                                   sub_a_site_set_cookie_url);
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, sub_a_site_set_cookie_url);
   brave_shields::SetBraveShieldsEnabled(content_settings(), false,
                                         sub_a_site_set_cookie_url);
 
@@ -502,7 +518,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIsDefaultBrowserTest,
   const GURL a_site_set_cookie_url(
       "https://a.com/set-cookie?name=acom;path=/"
       ";SameSite=None;Secure;Max-Age=600");
-  EXPECT_TRUE(brave_shields::GetForgetFirstPartyStorageEnabled(
+  EXPECT_TRUE(brave_shields_settings_->GetForgetFirstPartyStorageEnabled(
       content_settings(), a_site_set_cookie_url));
 
   // Cookies should NOT exist for a.com.
@@ -554,9 +570,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultDisabledBrowserTest,
   const GURL a_site_set_cookie_url(
       "https://a.com/set-cookie?name=acom;path=/"
       ";SameSite=None;Secure;Max-Age=600");
-  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
-                                                   a_site_set_cookie_url);
-  EXPECT_TRUE(brave_shields::GetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, a_site_set_cookie_url);
+  EXPECT_TRUE(brave_shields_settings_->GetForgetFirstPartyStorageEnabled(
       content_settings(), a_site_set_cookie_url));
 }
 
@@ -591,9 +607,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultDisabledBrowserTest,
   const GURL a_site_set_cookie_url(
       "https://a.com/set-cookie?name=acom;path=/"
       ";SameSite=None;Secure;Max-Age=600");
-  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
-                                                   a_site_set_cookie_url);
-  EXPECT_TRUE(brave_shields::GetForgetFirstPartyStorageEnabled(
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, a_site_set_cookie_url);
+  EXPECT_TRUE(brave_shields_settings_->GetForgetFirstPartyStorageEnabled(
       content_settings(), a_site_set_cookie_url));
 
   ASSERT_TRUE(LoadURLInNewTab(a_site_set_cookie_url));
@@ -649,8 +665,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIncognitoBrowserTest,
   const GURL a_site_set_cookie_url(
       "https://a.com/set-cookie?name=acom;path=/"
       ";SameSite=None;Secure;Max-Age=600");
-  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
-                                                   a_site_set_cookie_url);
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+      content_settings(), true, a_site_set_cookie_url);
 
   // Cookies should NOT exist for a.com.
   EXPECT_EQ(0u, GetAllCookies().size());

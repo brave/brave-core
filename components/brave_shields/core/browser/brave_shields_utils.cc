@@ -760,6 +760,7 @@ ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                           : ControlType::BLOCK;
 }
 
+<<<<<<< HEAD
 void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
                                        bool is_enabled,
                                        const GURL& url,
@@ -776,14 +777,6 @@ void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
       is_enabled ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
   RecordShieldsSettingChanged(local_state);
   RecordForgetFirstPartySetting(map);
-}
-
-bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
-                                       const GURL& url) {
-  ContentSetting setting = map->GetContentSetting(
-      url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
-
-  return setting == CONTENT_SETTING_BLOCK;
 }
 
 void SetWebcompatEnabled(HostContentSettingsMap* map,

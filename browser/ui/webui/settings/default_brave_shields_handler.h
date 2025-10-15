@@ -16,6 +16,10 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
+namespace brave_shields {
+class BraveShieldsSettings;
+}
+
 class Profile;
 
 class DefaultBraveShieldsHandler
@@ -70,6 +74,8 @@ class DefaultBraveShieldsHandler
                         const std::vector<std::string>& components);
 
   raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<brave_shields::BraveShieldsSettings> brave_shields_settings_ =
+      nullptr;
 
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       content_settings_observation_{this};
