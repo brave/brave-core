@@ -8,8 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#include <memory>
-
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_shields/ios/browser/brave_shields_settings_bridge.h"
 #include "brave/components/brave_shields/ios/common/shields_settings.mojom.objc.h"
 
@@ -24,8 +23,7 @@ class BraveShieldsSettingsService;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithBraveShieldsSettings:
-    (std::unique_ptr<brave_shields::BraveShieldsSettingsService>)
-        braveShieldsSettings;
+    (raw_ptr<brave_shields::BraveShieldsSettingsService>)braveShieldsSettings;
 
 @end
 

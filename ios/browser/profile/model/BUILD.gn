@@ -18,6 +18,7 @@ source_set("model") {
     "//brave/ios/browser/api/webcompat_reporter",
     "//brave/ios/browser/brave_account",
     "//brave/ios/browser/brave_ads",
+    "//brave/ios/browser/brave_shields",
     "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/debounce",
     "//brave/ios/browser/favicon",

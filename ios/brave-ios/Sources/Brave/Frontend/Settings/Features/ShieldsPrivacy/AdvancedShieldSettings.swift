@@ -78,7 +78,7 @@ import os
     didSet {
       guard oldValue != adBlockAndTrackingPreventionLevel else { return }
       if FeatureList.kBraveShieldsContentSettings.enabled {
-        braveShieldsSettings.defaultAdBlockMode = adBlockAndTrackingPreventionLevel.adBlockMode
+        braveShieldsSettings?.defaultAdBlockMode = adBlockAndTrackingPreventionLevel.adBlockMode
       }
       // Also assign to existing pref until deprecated so reverse migration is not required
       ShieldPreferences.blockAdsAndTrackingLevel = adBlockAndTrackingPreventionLevel
@@ -88,7 +88,7 @@ import os
     didSet {
       guard oldValue != isBlockScriptsEnabled else { return }
       if FeatureList.kBraveShieldsContentSettings.enabled {
-        braveShieldsSettings.isBlockScriptsEnabledByDefault = isBlockScriptsEnabled
+        braveShieldsSettings?.isBlockScriptsEnabledByDefault = isBlockScriptsEnabled
       }
       // Also assign to existing pref until deprecated so reverse migration is not required
       Preferences.Shields.blockScripts.value = isBlockScriptsEnabled
@@ -98,7 +98,7 @@ import os
     didSet {
       guard oldValue != isBlockFingerprintingEnabled else { return }
       if FeatureList.kBraveShieldsContentSettings.enabled {
-        braveShieldsSettings.defaultFingerprintMode =
+        braveShieldsSettings?.defaultFingerprintMode =
           isBlockFingerprintingEnabled ? .standardMode : .allowMode
       }
       // Also assign to existing pref until deprecated so reverse migration is not required
@@ -145,7 +145,7 @@ import os
   private let p3aUtilities: BraveP3AUtils
   private let deAmpPrefs: DeAmpPrefs
   private let debounceService: (any DebounceService)?
-  private let braveShieldsSettings: any BraveShieldsSettings
+  private let braveShieldsSettings: (any BraveShieldsSettings)?
   private let rewards: BraveRewards?
   private let clearDataCallback: ClearDataCallback
   private let braveStats: BraveStats
@@ -157,7 +157,7 @@ import os
     tabManager: TabManager,
     feedDataSource: FeedDataSource,
     debounceService: (any DebounceService)?,
-    braveShieldsSettings: any BraveShieldsSettings,
+    braveShieldsSettings: (any BraveShieldsSettings)?,
     braveCore: BraveProfileController,
     p3aUtils: BraveP3AUtils,
     rewards: BraveRewards?,
@@ -176,10 +176,11 @@ import os
     self.clearDataCallback = clearDataCallback
     self.braveStats = braveStats
     if FeatureList.kBraveShieldsContentSettings.enabled {
-      self.adBlockAndTrackingPreventionLevel = braveShieldsSettings.defaultAdBlockMode.shieldLevel
-      self.isBlockScriptsEnabled = braveShieldsSettings.isBlockScriptsEnabledByDefault
+      self.adBlockAndTrackingPreventionLevel =
+        braveShieldsSettings?.defaultAdBlockMode.shieldLevel ?? .standard
+      self.isBlockScriptsEnabled = braveShieldsSettings?.isBlockScriptsEnabledByDefault ?? false
       self.isBlockFingerprintingEnabled =
-        braveShieldsSettings.defaultFingerprintMode == .standardMode
+        (braveShieldsSettings?.defaultFingerprintMode ?? .standardMode) == .standardMode
     } else {
       self.adBlockAndTrackingPreventionLevel = ShieldPreferences.blockAdsAndTrackingLevel
       self.isBlockScriptsEnabled = Preferences.Shields.blockScripts.value

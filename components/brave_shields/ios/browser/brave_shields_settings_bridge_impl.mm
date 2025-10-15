@@ -16,15 +16,13 @@
 #include "url/gurl.h"
 
 @implementation BraveShieldsSettingsBridgeImpl {
-  std::unique_ptr<brave_shields::BraveShieldsSettingsService>
-      _braveShieldsSettings;
+  raw_ptr<brave_shields::BraveShieldsSettingsService> _braveShieldsSettings;
 }
 
 - (instancetype)initWithBraveShieldsSettings:
-    (std::unique_ptr<brave_shields::BraveShieldsSettingsService>)
-        braveShieldsSettings {
+    (raw_ptr<brave_shields::BraveShieldsSettingsService>)braveShieldsSettings {
   if ((self = [super init])) {
-    _braveShieldsSettings = std::move(braveShieldsSettings);
+    _braveShieldsSettings = braveShieldsSettings;
   }
   return self;
 }

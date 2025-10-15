@@ -11,6 +11,7 @@
 #include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/ios/browser/brave_account/brave_account_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
+#include "brave/ios/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -33,6 +34,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   }
   brave_ads::AdsServiceFactoryIOS::GetInstance();
   brave_favicon::BraveIOSFaviconLoaderFactory::GetInstance();
+  brave_shields::BraveShieldsSettingsServiceFactory::GetInstance();
   brave_wallet::AssetRatioServiceFactory::GetInstance();
   brave_wallet::BraveWalletIpfsServiceFactory::GetInstance();
   brave_wallet::BraveWalletServiceFactory::GetInstance();
