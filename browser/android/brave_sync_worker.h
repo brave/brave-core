@@ -64,6 +64,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   // syncer::SyncServiceObserver implementation.
   void OnStateChanged(syncer::SyncService* service) override;
+  void OnSyncShutdown(syncer::SyncService* sync) override;
 
   void OnResetDone();
 
