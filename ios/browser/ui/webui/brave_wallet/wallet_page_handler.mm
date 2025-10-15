@@ -14,8 +14,14 @@ WalletPageHandler::WalletPageHandler(
 
 WalletPageHandler::~WalletPageHandler() = default;
 
-void WalletPageHandler::ShowApprovePanelUI() {}
+void WalletPageHandler::ShowApprovePanelUI() {
+  NOTREACHED()
+}
 
-void WalletPageHandler::ShowWalletBackupUI() {}
+void WalletPageHandler::ShowWalletBackupUI() {
+  NOTREACHED()
+}
 
-void WalletPageHandler::UnlockWalletUI() {}
+void WalletPageHandler::UnlockWalletUI() {
+  NOTREACHED()
+}
