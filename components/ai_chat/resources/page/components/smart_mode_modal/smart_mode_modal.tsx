@@ -78,7 +78,7 @@ export default function SmartModeModal() {
     if (!prompt.trim()) {
       return getLocale(S.CHAT_UI_PROMPT_REQUIRED_ERROR)
     }
-    if (prompt.length > 1000) {
+    if (prompt.length > 5000) {
       return getLocale(S.CHAT_UI_PROMPT_TOO_LONG_ERROR)
     }
     return ''
