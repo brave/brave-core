@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_WALLET_HANDLER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_WALLET_HANDLER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_WALLET_HANDLER_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_WALLET_HANDLER_H_
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -35,4 +35,4 @@ class WalletHandler : public mojom::WalletHandler {
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_WALLET_HANDLER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_WALLET_HANDLER_H_
