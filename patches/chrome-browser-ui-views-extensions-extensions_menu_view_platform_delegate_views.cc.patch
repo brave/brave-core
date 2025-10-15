@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_view_platform_delegate_views.cc b/chrome/browser/ui/views/extensions/extensions_menu_view_platform_delegate_views.cc
-index 10c29e701d058bb1849372d2f80e431b9665b174..05e27a300cec7662a82631ffaf77bf0621153f7f 100644
+index b781884c055aee1c97cb130a88bb182490652fa6..c14810d591d5064e42766ee37cbb995676a6c837 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_view_platform_delegate_views.cc
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_view_platform_delegate_views.cc
-@@ -314,6 +314,7 @@ ExtensionsMenuViewPlatformDelegateViews::
-     ~ExtensionsMenuViewPlatformDelegateViews() = default;
+@@ -327,6 +327,7 @@ void ExtensionsMenuViewPlatformDelegateViews::DetachFromModel() {
+ }
  
  void ExtensionsMenuViewPlatformDelegateViews::OpenMainPage() {
 +  BRAVE_EXTENSIONS_MENU_VIEW_PLATFORM_DELEGATE_VIEWS_OPEN_MAIN_PAGE
