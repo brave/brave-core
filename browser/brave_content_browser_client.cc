@@ -481,9 +481,8 @@ void MaybeBindColorChangeHandler(
     return;
   }
 
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<ui::BraveColorChangeHandler>(
-          content::WebContents::FromRenderFrameHost(frame_host)),
+  ui::BraveColorChangeHandler::BindInterface(
+      content::WebContents::FromRenderFrameHost(frame_host),
       std::move(receiver));
 }
 #endif
@@ -685,6 +684,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveAccountUIDesktop>()
         .Add<brave_account::mojom::Authentication>()
+        .Add<color_change_listener::mojom::PageHandler>()
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
 #else   // !BUILDFLAG(IS_ANDROID)
