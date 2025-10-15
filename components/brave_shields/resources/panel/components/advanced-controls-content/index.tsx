@@ -117,8 +117,8 @@ function AdvancedControlsContent () {
   const showStrictFingerprintingMode = loadTimeData.getBoolean('showStrictFingerprintingMode')
   const isWebcompatExceptionsServiceEnabled = loadTimeData.getBoolean('isWebcompatExceptionsServiceEnabled')
   const isTorProfile = loadTimeData.getBoolean('isTorProfile')
-  const isForgetFirstPartyStorageEnabled = loadTimeData.getBoolean(
-    'isForgetFirstPartyStorageEnabled'
+  const isBraveForgetFirstPartyStorageFeatureEnabled = loadTimeData.getBoolean(
+    'isBraveForgetFirstPartyStorageFeatureEnabled'
   )
 
   return (
@@ -239,7 +239,7 @@ function AdvancedControlsContent () {
             </Select>
             </div>
         </S.ControlGroup>
-        {isForgetFirstPartyStorageEnabled && <S.ControlGroup>
+        {isBraveForgetFirstPartyStorageFeatureEnabled && <S.ControlGroup>
           <label>
             <span>{getLocale('braveShieldsForgetFirstPartyStorage')}</span>
             <Toggle
