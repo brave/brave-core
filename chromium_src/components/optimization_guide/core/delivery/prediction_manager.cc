@@ -68,6 +68,10 @@ void PredictionManager::SetPredictionModelDownloadManagerForTesting(
     std::unique_ptr<PredictionModelDownloadManager>
         prediction_model_download_manager) {}
 
+void PredictionManager::SetModelDownloadSchedulingParams(
+    proto::OptimizationTarget optimization_target,
+    const download::SchedulingParams& params) {}
+
 base::flat_set<proto::OptimizationTarget>
 PredictionManager::GetRegisteredOptimizationTargets() const {
   return base::flat_set<proto::OptimizationTarget>();
