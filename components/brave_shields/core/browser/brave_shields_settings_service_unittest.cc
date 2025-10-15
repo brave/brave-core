@@ -11,9 +11,8 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/content_settings/core/test/content_settings_mock_provider.h"
-#include "components/content_settings/core/test/content_settings_test_utils.h"
-#include "components/prefs/pref_service.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -387,34 +386,47 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultAutoShredMode) {
             AutoShredDictFrom(AutoShredMode::NEVER));
 }
 
-TEST_F(BraveShieldsSettingsServiceTest, GetJsContentSettingsOverriddenData) {
-  const GURL url = GURL("https://brave.com");
-  brave_shields::SetNoScriptControlType(GetHostContentSettingsMap(),
-                                        brave_shields::ControlType::BLOCK, url);
+TEST_F(BraveShieldsSettingsServiceTest, DefaultForgetFirstPartyStorage) {
+  // verify the initial values
+  EXPECT_EQ(brave_shields_settings()->GetForgetFirstPartyStorageEnabled(GURL()),
+            false);
+  EXPECT_EQ(
+      brave_shields_settings()->GetForgetFirstPartyStorageEnabled(kTestUrl),
+      false);
+}
 
-  // No override
-  auto content_settings_overridden_data =
-      brave_shields_settings()->GetJsContentSettingOverriddenData(url);
-  EXPECT_FALSE(brave_shields_settings()->IsJsBlockingEnforced(url));
-  EXPECT_FALSE(content_settings_overridden_data);
+TEST_F(BraveShieldsSettingsServiceTest, DefaultForgetFirstPartyStorageEnabled) {
+  // verify the initial default values
+  EXPECT_EQ(brave_shields_settings()->GetForgetFirstPartyStorageEnabled(GURL()),
+            false);
+  EXPECT_EQ(GetHostContentSettingsMap()->GetWebsiteSetting(
+                GURL(), GURL(), ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE),
+            CONTENT_SETTING_ALLOW);
+}
 
-  auto extension_provider = std::make_unique<content_settings::MockProvider>();
-  extension_provider->SetWebsiteSetting(
-      ContentSettingsPattern::FromURL(url), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::JAVASCRIPT, base::Value(CONTENT_SETTING_ALLOW),
-      /*constraints=*/{},
-      content_settings::PartitionKey::GetDefaultForTesting());
-  // Overridde to ALLOW via extension
-  content_settings::TestUtils::OverrideProvider(
-      GetHostContentSettingsMap(), std::move(extension_provider),
-      content_settings::ProviderType::kCustomExtensionProvider);
+TEST_F(BraveShieldsSettingsServiceTest,
+       SetForgetFirstPartyStorageEnabledUsesETLD) {
+  const GURL test_url("https://brave.com");
+  const GURL test_subdomain_url("https://www.brave.com");
 
-  content_settings_overridden_data =
-      brave_shields_settings()->GetJsContentSettingOverriddenData(url);
-  EXPECT_FALSE(brave_shields_settings()->IsJsBlockingEnforced(url));
-  EXPECT_TRUE(content_settings_overridden_data);
-  EXPECT_EQ(::ContentSetting::CONTENT_SETTING_ALLOW,
-            content_settings_overridden_data->status);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingSource::kExtension,
-            content_settings_overridden_data->override_source);
+  EXPECT_EQ(
+      GetHostContentSettingsMap()->GetWebsiteSetting(
+          test_url, GURL(), ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE),
+      CONTENT_SETTING_ALLOW);
+  EXPECT_EQ(GetHostContentSettingsMap()->GetWebsiteSetting(
+                test_subdomain_url, GURL(),
+                ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE),
+            CONTENT_SETTING_ALLOW);
+
+  brave_shields_settings()->SetForgetFirstPartyStorageEnabled(
+      true, test_subdomain_url);
+
+  EXPECT_EQ(
+      GetHostContentSettingsMap()->GetWebsiteSetting(
+          test_url, GURL(), ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE),
+      CONTENT_SETTING_BLOCK);
+  EXPECT_EQ(GetHostContentSettingsMap()->GetWebsiteSetting(
+                test_subdomain_url, GURL(),
+                ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE),
+            CONTENT_SETTING_BLOCK);
 }
