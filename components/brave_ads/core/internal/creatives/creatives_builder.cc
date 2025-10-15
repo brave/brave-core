@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-data-view.h"
 
 namespace brave_ads {
 
@@ -63,6 +64,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.creative_set_id = creative_set.id;
         creative_ad.campaign_id = campaign.id;
         creative_ad.advertiser_id = campaign.advertiser_id;
+        creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
         creative_ad.start_at = campaign.start_at;
         creative_ad.end_at = campaign.end_at;
         creative_ad.daily_cap = campaign.daily_cap;
@@ -98,6 +100,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.creative_set_id = creative_set.id;
         creative_ad.campaign_id = campaign.id;
         creative_ad.advertiser_id = campaign.advertiser_id;
+        creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
         creative_ad.start_at = campaign.start_at;
         creative_ad.end_at = campaign.end_at;
         creative_ad.daily_cap = campaign.daily_cap;
@@ -136,6 +139,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.creative_set_id = creative_set.id;
         creative_ad.campaign_id = campaign.id;
         creative_ad.advertiser_id = campaign.advertiser_id;
+        creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
         creative_ad.start_at = campaign.start_at;
         creative_ad.end_at = campaign.end_at;
         creative_ad.daily_cap = campaign.daily_cap;

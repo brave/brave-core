@@ -138,7 +138,8 @@ enum NotificationAdEventType {
 };
 
 enum NewTabPageAdMetricType {
-  kDisabled = 0,
+  kUndefined = 0,
+  kDisabled,
   kConfirmation,
   kP3A,
 };
