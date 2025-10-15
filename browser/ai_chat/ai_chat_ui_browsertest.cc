@@ -176,7 +176,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
                         bool wait_for_callback = true) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
-    chat_tab_helper_->associated_web_contents()->GetContent(
+    chat_tab_helper_->associated_web_contents().GetContent(
         base::BindLambdaForTesting(
             [&run_loop, expected_text,
              wait_for_callback](ai_chat::PageContent content) {
@@ -198,7 +198,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     SCOPED_TRACE(testing::Message() << location.ToString());
 
     base::RunLoop run_loop;
-    chat_tab_helper_->associated_web_contents()->GetStagedEntriesFromContent(
+    chat_tab_helper_->associated_web_contents().GetStagedEntriesFromContent(
         base::BindLambdaForTesting(
             [&](const std::optional<std::vector<ai_chat::SearchQuerySummary>>&
                     search_query_summary) {
@@ -210,7 +210,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
 
   bool HasPendingGetContentRequest() {
     return !!chat_tab_helper_->associated_web_contents()
-                 ->pending_get_page_content_callback_;
+                 .pending_get_page_content_callback_;
   }
 
   std::optional<std::vector<ai_chat::mojom::UploadedFilePtr>>
@@ -218,7 +218,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     base::test::TestFuture<
         std::optional<std::vector<ai_chat::mojom::UploadedFilePtr>>>
         future;
-    chat_tab_helper_->associated_web_contents()->GetScreenshots(
+    chat_tab_helper_->associated_web_contents().GetScreenshots(
         future.GetCallback());
     return future.Take();
   }

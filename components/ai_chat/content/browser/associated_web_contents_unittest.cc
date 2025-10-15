@@ -92,7 +92,7 @@ class AssociatedWebContentsUnitTest : public content::RenderViewHostTestHarness,
                             ? std::make_unique<MockPrintPreviewExtractor>()
                             : nullptr);
     auto* helper = AIChatTabHelper::FromWebContents(web_contents());
-    associated_web_contents_ = helper->associated_web_contents();
+    associated_web_contents_ = &helper->associated_web_contents();
 
     associated_web_contents_->SetPageContentFetcherDelegateForTesting(
         std::make_unique<MockPageContentFetcher>());
