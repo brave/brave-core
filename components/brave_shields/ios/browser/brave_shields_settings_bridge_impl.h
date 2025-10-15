@@ -16,7 +16,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 namespace brave_shields {
-class BraveShieldsSettings;
+class BraveShieldsSettingsService;
 }
 
 @interface BraveShieldsSettingsBridgeImpl
@@ -24,7 +24,8 @@ class BraveShieldsSettings;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithBraveShieldsSettings:
-    (std::unique_ptr<brave_shields::BraveShieldsSettings>)braveShieldsSettings;
+    (std::unique_ptr<brave_shields::BraveShieldsSettingsService>)
+        braveShieldsSettings;
 
 @end
 

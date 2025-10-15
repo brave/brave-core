@@ -6,7 +6,7 @@
 #include "brave/ios/browser/brave_shields/brave_shields_settings_factory.h"
 
 #include "base/apple/foundation_util.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_settings.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/ios/browser/brave_shields_settings_bridge.h"
 #include "brave/components/brave_shields/ios/browser/brave_shields_settings_bridge_impl.h"
 #include "brave/ios/browser/api/profile/profile_bridge_impl.h"
@@ -24,9 +24,10 @@
   auto* map = ios::HostContentSettingsMapFactory::GetForProfile(profile);
   auto* localState = GetApplicationContext()->GetLocalState();
   auto* profilePrefs = profile->GetPrefs();
-  std::unique_ptr<brave_shields::BraveShieldsSettings> braveShieldsSettings =
-      std::make_unique<brave_shields::BraveShieldsSettings>(*map, localState,
-                                                            profilePrefs);
+  std::unique_ptr<brave_shields::BraveShieldsSettingsService>
+      braveShieldsSettings =
+          std::make_unique<brave_shields::BraveShieldsSettingsService>(
+              *map, localState, profilePrefs);
   return [[BraveShieldsSettingsBridgeImpl alloc]
       initWithBraveShieldsSettings:std::move(braveShieldsSettings)];
 }
