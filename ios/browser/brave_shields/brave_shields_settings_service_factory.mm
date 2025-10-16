@@ -32,7 +32,7 @@ BraveShieldsSettingsServiceFactory::BraveShieldsSettingsServiceFactory()
     : ProfileKeyedServiceFactoryIOS("BraveShieldsSettingsService",
                                     ProfileSelection::kRedirectedInIncognito,
                                     ServiceCreation::kCreateLazily,
-                                    TestingCreation::kNoServiceForTests) {
+                                    TestingCreation::kCreateService) {
   DependsOn(ios::HostContentSettingsMapFactory::GetInstance());
 }
 

@@ -30,7 +30,7 @@ BraveShieldsSettingsServiceFactory::GetForProfile(Profile* profile) {
 BraveShieldsSettingsServiceFactory::BraveShieldsSettingsServiceFactory()
     : ProfileKeyedServiceFactory(
           "BraveShieldsSettingsService",
-          ProfileSelections::BuildForRegularAndIncognito()) {
+          ProfileSelections::BuildRedirectedInIncognito()) {
   DependsOn(HostContentSettingsMapFactory::GetInstance());
 }
 
