@@ -47,5 +47,5 @@ BraveShieldsSettingsServiceFactory::BuildServiceInstanceForBrowserContext(
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
   CHECK(map);
   return std::make_unique<brave_shields::BraveShieldsSettingsService>(
-      map, g_browser_process->local_state(), profile->GetPrefs());
+      *map, g_browser_process->local_state(), profile->GetPrefs());
 }
