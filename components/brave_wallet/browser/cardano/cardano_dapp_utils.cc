@@ -27,7 +27,7 @@ std::vector<std::string> GetCardanoAccountPermissionIdentifiers(
   return ids;
 }
 
-mojom::AccountIdPtr GetCardanoPereferedDappAccount(
+mojom::AccountIdPtr GetCardanoPreferredDappAccount(
     BraveWalletProviderDelegate* delegate,
     KeyringService* keyring_service) {
   auto cardano_account_ids =

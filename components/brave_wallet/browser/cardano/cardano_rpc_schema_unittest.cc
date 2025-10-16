@@ -10,6 +10,8 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_blockfrost_api.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -78,7 +80,8 @@ TEST(CardanoRpcSchema, Block) {
 }
 
 TEST(CardanoRpcSchema, UnspentOutput) {
-  EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(std::nullopt));
+  CardanoAddress addr = *CardanoAddress::FromString(kMockCardanoAddress1);
+  EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, std::nullopt));
 
   blockfrost_api::UnspentOutput valid;
   valid.tx_hash =
@@ -88,21 +91,22 @@ TEST(CardanoRpcSchema, UnspentOutput) {
   valid.amount.back().quantity = "555";
   valid.amount.back().unit = "lovelace";
 
-  auto converted = UnspentOutput::FromBlockfrostApiValue(valid.Clone());
+  auto converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
   EXPECT_EQ(base::HexEncode(converted->tx_hash),
             "000102030405060708090A0B0C0D0F0E000102030405060708090A0B0C0D0F0E");
   EXPECT_EQ(converted->output_index, 123u);
   EXPECT_EQ(converted->lovelace_amount, 555u);
+  EXPECT_EQ(converted->address_to, addr);
 
   valid.amount.emplace_back();
   valid.amount.back().quantity = "10000";
   valid.amount.back().unit = "lovelace";
-  converted = UnspentOutput::FromBlockfrostApiValue(valid.Clone());
+  converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
   // Still using first one.
   EXPECT_EQ(converted->lovelace_amount, 555u);
 
   valid.amount.front().unit = "some_token";
-  converted = UnspentOutput::FromBlockfrostApiValue(valid.Clone());
+  converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
   // Other token is ignored.
   EXPECT_EQ(converted->lovelace_amount, 10000u);
 
@@ -116,28 +120,28 @@ TEST(CardanoRpcSchema, UnspentOutput) {
         "5000102030405060708090a0b0c0d0f0e000102030405060708090a0b0c0d0f0e"}) {
     auto invalid = valid.Clone();
     invalid.output_index = value;
-    EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(invalid.Clone()))
+    EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, invalid.Clone()))
         << value;
   }
 
   for (auto* value : kInvalidUint32Values) {
     auto invalid = valid.Clone();
     invalid.output_index = value;
-    EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(invalid.Clone()))
+    EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, invalid.Clone()))
         << value;
   }
 
   for (auto* value : kInvalidUint64Values) {
     auto invalid = valid.Clone();
     invalid.amount.front().quantity = value;
-    EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(invalid.Clone()))
+    EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, invalid.Clone()))
         << value;
   }
 
   for (auto* value : {"", "some_token"}) {
     auto invalid = valid.Clone();
     invalid.amount.front().unit = value;
-    EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(invalid.Clone()))
+    EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, invalid.Clone()))
         << value;
   }
 }
