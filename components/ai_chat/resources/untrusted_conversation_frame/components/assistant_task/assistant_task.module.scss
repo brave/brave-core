@@ -21,13 +21,15 @@
 .taskStep {
   --task-icon-size: 22px;
   --half-task-icon-size: calc(var(--task-icon-size) / 2);
+  --task-step-line-size: 2px;
+  --half-task-step-line-size: calc(var(--task-step-line-size) / 2);
 
   min-height: 30px;
   // Space to the left of the steps line to counteract the negative left position
   // of the steps icon.
   margin-left: var(--half-task-icon-size);
   // The steps line
-  border-left: var(--leo-color-neutral-20) 2px solid;
+  border-left: var(--leo-color-neutral-20) var(--task-step-line-size) solid;
   // No padding-top so that the previous steps line extends to the top of this
   // steps icon.
   padding: 0 var(--leo-spacing-l) var(--leo-spacing-xl) var(--leo-spacing-l);
@@ -42,16 +44,20 @@
     --border-size: 1px;
     --leo-icon-size: 16px;
     --leo-progressring-size: 16px;
+    --outline-color: var(--leo-color-divider-subtle);
 
     position: absolute;
     top: calc(0.5lh - var(--half-task-icon-size));
-    left: calc(var(--half-task-icon-size) * -1);
-    width: calc(var(--task-icon-size) - calc(2 * var(--border-size)));
-    height: calc(var(--task-icon-size) - calc(2 * var(--border-size)));
+    left: calc(
+      calc(var(--half-task-icon-size) + var(--half-task-step-line-size)) * -1
+    );
+    width: var(--task-icon-size);
+    height: var(--task-icon-size);
 
     // circle
     border-radius: 50%;
-    border: var(--leo-color-divider-subtle) var(--border-size) solid;
+
+    outline: var(--outline-color) var(--border-size) solid;
     background: var(--leo-color-container-background);
 
     // center the icon
@@ -64,7 +70,7 @@
     .taskIcon {
       --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
       background: var(--leo-color-systemfeedback-success-background);
-      border-color: var(--leo-color-systemfeedback-success-background);
+      --outline-color: transparent;
     }
   }
 
@@ -72,11 +78,12 @@
     .taskIcon {
       --leo-icon-color: var(--leo-color-systemfeedback-info-icon);
       background: var(--leo-color-systemfeedback-info-background);
-      border-color: var(--leo-color-systemfeedback-info-background);
+      --outline-color: transparent;
     }
   }
 
   &:last-child {
+    // Don't continue the steps line below the icon of the last step
     border-left-color: transparent;
   }
 }
