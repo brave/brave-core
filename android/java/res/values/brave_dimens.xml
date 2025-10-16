@@ -99,5 +99,9 @@
     <!-- Quick Action Search Widget -->
     <dimen name="quick_action_search_widget_small_margin_vertical">12dp</dimen>
 
+    <!-- Override of chromium's toolbar hairline height -->
     <dimen name="toolbar_hairline_height">0dp</dimen>
+
+    <!-- Override of chromium's Search engine logo -->
+    <dimen name="omnibox_search_engine_logo_composed_size">20dp</dimen>
 </resources>

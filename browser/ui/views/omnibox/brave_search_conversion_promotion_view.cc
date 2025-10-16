@@ -671,7 +671,8 @@ std::optional<int> BraveSearchConversionPromotionView::GetBackgroundGraphic()
   }
 
   const bool use_dark =
-      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors();
+      ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme() ==
+      ui::NativeTheme::PreferredColorScheme::kDark;
   if (!UseDDG()) {
     return use_dark ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK
                     : IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC;

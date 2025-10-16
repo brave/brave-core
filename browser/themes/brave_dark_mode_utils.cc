@@ -25,6 +25,7 @@
 #include "components/version_info/channel.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/native_theme/native_theme.h"
+#include "ui/native_theme/os_settings_provider.h"
 
 namespace {
 
@@ -83,7 +84,7 @@ bool SystemDarkModeEnabled() {
 #if BUILDFLAG(IS_LINUX)
   return HasCachedSystemDarkModeType();
 #else
-  return ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeSupported();
+  return ui::OsSettingsProvider::Get().DarkColorSchemeAvailable();
 #endif
 }
 
@@ -144,7 +145,9 @@ BraveDarkModeType GetActiveBraveDarkModeType() {
       return GetDarkModeTypeBasedOnChannel();
     }
 
-    return ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors()
+    return ui::NativeTheme::GetInstanceForNativeUi()
+                       ->preferred_color_scheme() ==
+                   ui::NativeTheme::PreferredColorScheme::kDark
                ? BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK
                : BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT;
   }

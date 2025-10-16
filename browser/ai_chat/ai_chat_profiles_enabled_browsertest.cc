@@ -17,21 +17,19 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
+#include "chrome/browser/ui/omnibox/omnibox_controller.h"
+#include "chrome/browser/ui/omnibox/omnibox_view.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
-#include "components/omnibox/browser/omnibox_controller.h"
-#include "components/omnibox/browser/omnibox_view.h"
 #include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
-
-using ui_test_utils::BrowserChangeObserver;
 
 enum class ProfileType {
   kRegular,
@@ -86,10 +84,9 @@ class AIChatProfilesEnabledTest
         return CreateIncognitoBrowser();
 #if BUILDFLAG(ENABLE_TOR)
       case ProfileType::kTor: {
-        BrowserChangeObserver observer(
-            nullptr, BrowserChangeObserver::ChangeType::kAdded);
+        ui_test_utils::BrowserCreatedObserver browser_created_observer;
         brave::NewOffTheRecordWindowTor(browser());
-        return observer.Wait();
+        return browser_created_observer.Wait();
       }
 #endif
     }

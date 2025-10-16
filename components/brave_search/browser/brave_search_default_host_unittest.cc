@@ -18,6 +18,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/brave_search/browser/prefs.h"
 #include "brave/components/brave_search/common/features.h"
@@ -88,6 +89,7 @@ class BraveSearchDefaultHostTest : public ::testing::Test {
         CreateSearchProvider(host));
   }
 
+  base::test::SingleThreadTaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
   search_engines::SearchEnginesTestEnvironment search_engines_test_environment_;
   base::test::ScopedFeatureList feature_list_;

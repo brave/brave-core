@@ -17,7 +17,7 @@
 #include "ui/aura/window_tree_host.h"
 #include "ui/color/color_provider.h"
 #include "ui/compositor/compositor.h"
-#include "ui/gfx/native_widget_types.h"
+#include "ui/gfx/native_ui_types.h"
 
 class BackgroundColorTabHelperBrowserTest
     : public InProcessBrowserTest,

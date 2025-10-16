@@ -16,10 +16,6 @@ template <typename T>
 class NoDestructor;
 }  // namespace base
 
-namespace web {
-class BrowserState;
-}  // namespace web
-
 class KeyedService;
 class ProfileIOS;
 
@@ -40,7 +36,7 @@ class URLSanitizerServiceFactory : public ProfileKeyedServiceFactoryIOS {
 
   // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
+      ProfileIOS* profile) const override;
 };
 
 }  // namespace brave

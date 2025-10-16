@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/lib/readme.rs b/tools/crates/gnrt/lib/readme.rs
-index 60d34c07e1339d84d56d0ac85af9a1a4c665683b..6593cc70797fccc9efd682e91eab1a5ba946ca51 100644
+index 6bb911cd449ae1dd1e0a7a67b715842e07410705..f024eda066a895f7a1ec813c21dd5fdef99e7012 100644
 --- a/tools/crates/gnrt/lib/readme.rs
 +++ b/tools/crates/gnrt/lib/readme.rs
 @@ -127,6 +127,7 @@ fn readme_file_from_package<'a>(

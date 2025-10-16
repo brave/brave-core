@@ -45,8 +45,7 @@ BraveWalletIpfsServiceFactory::~BraveWalletIpfsServiceFactory() = default;
 
 std::unique_ptr<KeyedService>
 BraveWalletIpfsServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
-  auto* profile = ProfileIOS::FromBrowserState(context);
+    ProfileIOS* profile) const {
   std::unique_ptr<BraveWalletIpfsService> ipfs_service(
       new BraveWalletIpfsService(profile->GetPrefs()));
   return ipfs_service;

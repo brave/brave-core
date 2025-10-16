@@ -20,10 +20,6 @@ template <typename T>
 class NoDestructor;
 }  // namespace base
 
-namespace web {
-class BrowserState;
-}  // namespace web
-
 namespace brave_wallet {
 
 class AssetRatioService;
@@ -45,7 +41,7 @@ class AssetRatioServiceFactory : public ProfileKeyedServiceFactoryIOS {
 
   // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
+      ProfileIOS* profile) const override;
 
   AssetRatioServiceFactory(const AssetRatioServiceFactory&) = delete;
   AssetRatioServiceFactory& operator=(const AssetRatioServiceFactory&) = delete;

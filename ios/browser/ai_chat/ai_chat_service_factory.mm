@@ -46,12 +46,11 @@ AIChatServiceFactory::AIChatServiceFactory()
 AIChatServiceFactory::~AIChatServiceFactory() {}
 
 std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
+    ProfileIOS* profile) const {
   if (!features::IsAIChatEnabled()) {
     return nullptr;
   }
 
-  auto* profile = ProfileIOS::FromBrowserState(context);
   if (profile->IsOffTheRecord()) {
     return nullptr;
   }
@@ -71,10 +70,10 @@ std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
   return std::make_unique<AIChatService>(
       ModelServiceFactory::GetForProfile(profile),
       nullptr /* tab_tracker_service */, std::move(credential_manager),
-      user_prefs::UserPrefs::Get(context),
+      user_prefs::UserPrefs::Get(profile),
       profile_metrics ? profile_metrics->GetAIChatMetrics() : nullptr,
       GetApplicationContext()->GetOSCryptAsync(),
-      context->GetSharedURLLoaderFactory(),
+      profile->GetSharedURLLoaderFactory(),
       version_info::GetChannelString(::GetChannel()), profile->GetStatePath());
 }
 

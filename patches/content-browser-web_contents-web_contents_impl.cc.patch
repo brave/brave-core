@@ -1,8 +1,8 @@
 diff --git a/content/browser/web_contents/web_contents_impl.cc b/content/browser/web_contents/web_contents_impl.cc
-index c1cd8903a173d4026e67cd9491d935283f980752..f62c28a2697319bb73eb242c42996e9b9b5e4e7d 100644
+index b014cd48c9997303e15fc99f2c8370ea044f413c..41109c3843cf60a716e250c69b39403466cff7fd 100644
 --- a/content/browser/web_contents/web_contents_impl.cc
 +++ b/content/browser/web_contents/web_contents_impl.cc
-@@ -5368,7 +5368,7 @@ FrameTree* WebContentsImpl::CreateNewWindow(
+@@ -5388,7 +5388,7 @@ FrameTree* WebContentsImpl::CreateNewWindow(
  
    // Save the window for later if we're not suppressing the opener (since it
    // will be shown immediately).

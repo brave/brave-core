@@ -45,7 +45,8 @@ base::Value::List LoadNavigationChain(const network::ResourceRequest& request) {
   if (!de_amp_header) {
     return base::Value::List().Append(base::Value(request.url.spec()));
   }
-  auto value = base::JSONReader::ReadList(*de_amp_header);
+  auto value = base::JSONReader::ReadList(*de_amp_header,
+                                          base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     return base::Value::List().Append(base::Value(request.url.spec()));
   }

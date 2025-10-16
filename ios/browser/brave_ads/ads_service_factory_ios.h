@@ -18,10 +18,6 @@ template <typename T>
 class NoDestructor;
 }  // namespace base
 
-namespace web {
-class BrowserState;
-}  // namespace web
-
 namespace brave_ads {
 
 class AdsServiceImplIOS;
@@ -46,7 +42,7 @@ class AdsServiceFactoryIOS : public ProfileKeyedServiceFactoryIOS {
 
   // ProfileKeyedServiceFactoryIOS:
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
+      ProfileIOS* profile) const override;
 };
 
 }  // namespace brave_ads

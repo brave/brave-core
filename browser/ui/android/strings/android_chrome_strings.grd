@@ -218,6 +218,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PREFS_NEW_LABEL" desc="The label displayed next to the title of newly added preferences.">
         <ph name="PREF_TITLE">%1$s</ph>  <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
+      <message name="IDS_SEARCH_IN_SETTINGS_HINT" desc="Hint text in search in settings widget. [CHAR_LIMIT=32]">
+        Search settings
+      </message>
 
       <!-- Notification channels -->
       <message name="IDS_NOTIFICATION_CATEGORY_GROUP_GENERAL" desc="Subheading for &quot;General&quot; section of a list of notification categories. [CHAR_LIMIT=32]">
@@ -801,6 +804,9 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_BOOKMARK_BAR_SETTING" desc="Title for the bookmark bar setting.">
         Show bookmarks
+      </message>
+      <message name="IDS_BOOKMARK_BAR_SETTING_SUBTITLE" desc="Subtitle hint for the bookmark bar setting.">
+        Hidden on narrow screens
       </message>
 
       <!-- Themes settings -->
@@ -4087,7 +4093,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Move group to another window
       </message>
       <message name="IDS_MENU_MANAGE_ALL_WINDOWS" desc="Menu item for bringing up instance switcher UI. [CHAR_LIMIT=27]">
-        Manage windows (<ph name="INSTANCE_COUNTS">%1$d<ex>3</ex></ph>)
+        Manage windows
       </message>
       <message name="IDS_MENU_FORWARD" desc="Tooltip for the button to advance to the next web page. Verb. [CHAR_LIMIT=27]">
         Forward
@@ -4356,14 +4362,17 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- Bookmark bar strings -->
-      <message name="IDS_BOOKMARK_BAR_BUTTON_ICON_CONTENT_DESCRIPTION" desc="The content description for a bookmark bar button icon.">
-        Bookmark bar button icon
-      </message>
       <message name="IDS_BOOKMARK_BAR_ALL_BOOKMARKS_BUTTON_TITLE" desc="The title for the 'All Bookmarks' button in the bookmark bar.">
-        All Bookmarks
+        All bookmarks
       </message>
       <message name="IDS_BOOKMARK_BAR_OVERFLOW_BUTTON_CONTENT_DESCRIPTION" desc="The content description for the bookmark bar overflow button.">
-        Bookmark bar overflow button
+        More bookmarks
+      </message>
+      <message name="IDS_BOOKMARK_BAR_FOLDER_CONTENT_DESCRIPTION" desc="Accessibility label for a folder that appears in the bookmarks bar.">
+        <ph name="FOLDER_TITLE">%1$s<ex>My bookmarks</ex></ph> folder
+      </message>
+      <message name="IDS_BOOKMARK_BAR_CONTENT_DESCRIPTION" desc="Accessibility label for the encompassing view of the entire bookmark bar.">
+        Bookmarks
       </message>
 
       <!-- Power bookmarks strings -->
@@ -4811,8 +4820,20 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_INCOGNITO" desc="Content description for tabs that are not selected in Private mode">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Private Tab
       </message>
-      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_INCOGNITO_SELECTED" desc="Content description for the tab that is selected in Private mode">
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_INCOGNITO" desc="Content description for the tabs that are selected in Private mode">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED" desc="Content description for tabs that are pinned">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_SELECTED" desc="Content description for pinned tabs that are selected">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Selected Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_INCOGNITO" desc="Content description for pinned tabs that are not selected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_SELECTED_INCOGNITO" desc="Content description for the pinned tabs that are selected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Selected Private Tab
       </message>
 
       <!-- Accessibility strings used in both tablet and phone tab strips -->
@@ -5335,6 +5356,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_KEYBOARD_SHORTCUT_OPEN_NEW_WINDOW" desc="A text label that appears next to the keyboard shortcut to open a new window in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open a new window
       </message>
+      <message name="IDS_KEYBOARD_SHORTCUT_CLOSE_WINDOW" desc="A text label that appears next to the keyboard shortcut to close the current Brave window. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+        Close current window
+      </message>
       <message name="IDS_KEYBOARD_SHORTCUT_OPEN_NEW_TAB" desc="A text label that appears next to the keyboard shortcut to open a new tab in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open a new tab
       </message>
@@ -5383,11 +5407,17 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_KEYBOARD_SHORTCUT_HISTORY_MANAGER" desc="A text label that appears next to the keyboard shorcut that will open up the history page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open History
       </message>
+      <message name="IDS_KEYBOARD_SHORTCUT_SHOW_DOWNLOADS" desc="Label for the keyboard shortcut to open the downloads page.">
+        Open Downloads
+      </message>
       <message name="IDS_KEYBOARD_SHORTCUT_HISTORY_GO_BACK" desc="A text label that appears next to the keyboard shorcut that will go to the previous page in your browser History. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Go to previous page
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_HISTORY_GO_FORWARD" desc="A text label that appears next to the keyboard shorcut that will go to the next page in your browser History. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Go to next page
+      </message>
+      <message name="IDS_KEYBOARD_SHORTCUT_CLEAR_BROWSING_DATA" desc="A text label that appears next to the keyboard shorcut that will go to the clear browing data page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+        Delete browsing data
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_SAVE_PAGE" desc="A text label that appears next to the keyboard shortcut that will save the page. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open options to save
@@ -5421,6 +5451,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_TASK_MANAGER" desc="A text label that appears next to the keyboard shortcut that will open Task Manager. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open Task Manager
+      </message>
+      <message name="IDS_KEYBOARD_SHORTCUT_SEND_FEEDBACK" desc="A text label that appears next to the keyboard shortcut that will open a feedback form. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+        Send feedback
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_TAB_GROUP_HEADER" desc="A text label that appears above a list of shortcuts that are related to the tab window. This group is part of several groups of keyboard shortcuts all shown in a dialog.">
         Tab and window shortcuts
@@ -5565,8 +5598,14 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MULTI_INSTANCE_RESTORATION_MESSAGE_DESCRIPTION" desc="Description of the message shown when the number of persisted instances exceeds the max instance count after an instance limit downgrade.">
         Select manage to see all windows
       </message>
-      <message name="IDS_MULTI_INSTANCE_RESTORATION_MESSAGE_BUTTON" desc="Text on the button that will open the instance switcher dialog.">
+      <message name="IDS_MULTI_INSTANCE_MESSAGE_BUTTON" desc="Text on the button that will open the instance switcher dialog.">
         Manage
+      </message>
+      <message name="IDS_MULTI_INSTANCE_CREATION_LIMIT_MESSAGE_TITLE" desc="Title of the message shown when max instances exist during an attempt to create a new instance.">
+        <ph name="MAX_INSTANCE_COUNT">%1$s<ex>5</ex></ph> window limit reached
+      </message>
+      <message name="IDS_MULTI_INSTANCE_CREATION_LIMIT_MESSAGE_DESCRIPTION" desc="Description of the message shown when max instances exist during an attempt to create a new instance.">
+        Close a window or manage windows
       </message>
 
       <!-- In-Product Help strings -->
@@ -6170,6 +6209,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT_CONTINUE" desc="Header for continue sheet. Sheet is shown to prompt user to continue to a website using an account from an identity provider.">
         Continue to <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%2$s<ex>idp.com</ex></ph>
       </message>
+    <message name="IDS_ACCOUNT_SELECTION_SHEET_SUBTITLE_FOR_EMBED" desc="Subtitle for account selection sheet. Explains the relationship between the embedder website and the embedded iframe.">
+      <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.example</ex></ph> embeds content from <ph name="IFRAME_ETLD_PLUS_ONE">%2$s<ex>iframe.example</ex></ph>
+    </message>
     <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_NAME" desc="A user's name, to be used in a list of items shared with a website">
       name
     </message>
@@ -6878,7 +6920,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
           =1 {Not used for 1 day or more}
           other {Not used for # days or more}}
       </message>
-      <message name="IDS_ARCHIVED_TAB_CARD_SUBTITLE_WITH_TAB_GROUPS" desc="Shown in the tab switcher to inform the user how long the relevant tabs and tab groups have been inactive for.">
+      <message name="IDS_ARCHIVED_TAB_CARD_SUBTITLE_WITH_TAB_GROUPS" desc="Shown in the tab switcher to inform the user how long the relevant tabs and tab groups have been inactive for. [CHAR_LIMIT=32]">
         {INACTIVE_TIME_DAYS, plural,
           =1 {Tabs and groups not used for 1 day or more}
           other {Tabs and groups not used for # days or more}}
@@ -6959,23 +7001,43 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_READER_MODE_BOTTOM_SHEET_TITLE" desc="Title of the Reading Mode bottom sheet. [CHAR_LIMIT=27]">
         Reading Mode
       </message>
-      <message name="IDS_READER_MODE_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet.">
-        Reading mode bottom sheet
+      <message name="IDS_READER_MODE_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet informing the user to swipe up to open the preferences bottom sheet.">
+        Reading mode swipe up for preferences
       </message>
       <message name="IDS_READER_MODE_BOTTOM_SHEET_CLOSED_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet when closed.">
-        Reading mode bottom sheet closed
+        Reading mode preferences closed
       </message>
       <message name="IDS_READER_MODE_BOTTOM_SHEET_HALF_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet when opened at half height.">
-        Reading mode bottom sheet opened at half height
+        Reading mode preferences opened at half height
       </message>
       <message name="IDS_READER_MODE_BOTTOM_SHEET_FULL_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Reading Mode bottom sheet when opened at full height.">
-        Reading mode bottom sheet opened at full height
+        Reading mode preferences opened at full height
       </message>
       <message name="IDS_READER_MODE_UNAVAILABLE_SNACKBAR_MESSAGE" desc="Snackbar message that shown when the user attempts to enter reader mode, but content extraction fails.">
         Reading mode is unavailable
       </message>
       <message name="IDS_READER_MODE_MENU_IPH" desc="In-product help shown to inform the user that reading mode is always available in the app menu.">
         Reading mode is always available here
+      </message>
+
+      <!-- Tips notifications -->
+      <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Content description of the Tips Promo bottom sheet informing the user on feature background and how to turn it on.">
+        Tips notifications feature promo and usage steps bottom sheet
+      </message>
+      <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_CLOSED_CONTENT_DESCRIPTION" desc="Content description of the Tips Promo bottom sheet when closed.">
+        Tips notifications promo closed
+      </message>
+      <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_HALF_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Tips Promo bottom sheet when opened at half height.">
+        Tips notifications promo opened at half height
+      </message>
+      <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_FULL_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Tips Promo bottom sheet when opened at full height.">
+        Tips notifications promo opened at full height
+      </message>
+      <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_POSITIVE_BUTTON_TEXT" desc="Button text for the Tips Promo bottom sheet to go to the settings page.">
+        Go to settings
+      </message>
+      <message name="IDS_TIPS_PROMO_BOTTOM_SHEET_NEGATIVE_BUTTON_TEXT" desc="Button text for the Tips Promo bottom sheet to go to an education page on the tip feature usage.">
+        Show me how
       </message>
     </messages>
   </release>

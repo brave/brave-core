@@ -99,6 +99,9 @@
         "chrome/installer/setup/install_worker.cc": [
             "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
         ],
+        "components/password_manager/core/browser/password_manager_constants.cc": [
+            "IS_ANDROID_FORCED_TO_FALSE",
+        ],
         "components/permissions/permission_request_data.h": [
             "BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_PERMISSION_CONTEXT_BASE",
         ],

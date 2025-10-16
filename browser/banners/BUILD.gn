@@ -14,6 +14,7 @@ if (!is_android) {
     deps = [
       "//brave/components/constants",
       "//chrome/browser",
+      "//chrome/browser/banners:test_support",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//content/public/common",

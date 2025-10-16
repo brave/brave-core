@@ -121,7 +121,7 @@ source_set("app") {
     "//ios/public/provider/chrome/browser/ui_utils:ui_utils_api",
     "//ios/web/public/init",
     "//ios/web/public/webui",
-    "//ios/web_view:web_view_sources",
+    "//ios/web_view/framework:web_view_sources",
 
     # Use the provider API controlled by args.gn.
     ios_provider_target,
@@ -130,10 +130,6 @@ source_set("app") {
   if (ios_enable_credential_provider_extension) {
     deps += [ "//ios/chrome/browser/credential_provider/model" ]
   }
-
-  deps += [
-    "//ios/third_party/material_components_ios:material_components_ios+link",
-  ]
 
   frameworks = [
     "Foundation.framework",
