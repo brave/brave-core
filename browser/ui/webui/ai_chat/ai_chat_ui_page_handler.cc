@@ -17,6 +17,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/print_preview_extractor.h"
 #include "brave/browser/brave_tab_helpers.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
@@ -456,8 +457,8 @@ void AIChatUIPageHandler::AssociateUrlContent(
     const std::string& conversation_uuid) {
   auto* context = owner_web_contents_->GetBrowserContext();
   auto* service = AIChatServiceFactory::GetForBrowserContext(context);
-  auto content = std::make_unique<ai_chat::AssociatedURLContent>(
-      url, base::UTF8ToUTF16(title), context,
+  auto content = ai_chat::AssociatedURLContent::Create(
+      url, base::UTF8ToUTF16(title), context, nullptr,
       base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers));
   service->AssociateOwnedContent(std::move(content), conversation_uuid);
 }

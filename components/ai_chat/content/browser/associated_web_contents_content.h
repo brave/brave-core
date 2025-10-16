@@ -112,10 +112,7 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
     return weak_ptr_factory_.GetWeakPtr();
   }
 
- private:
-  friend class ::AIChatUIBrowserTest;
-  friend class AssociatedWebContentsUnitTest;
-
+ protected:
   // content::WebContentsObserver
   void NavigationEntryCommitted(
       const content::LoadCommittedDetails& load_details) override;
@@ -139,6 +136,10 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
 
   void GetScreenshots(
       mojom::ConversationHandler::GetScreenshotsCallback callback) override;
+
+ private:
+  friend class ::AIChatUIBrowserTest;
+  friend class AssociatedWebContentsUnitTest;
 
   void OnScreenshotsCaptured(
       mojom::ConversationHandler::GetScreenshotsCallback callback,
