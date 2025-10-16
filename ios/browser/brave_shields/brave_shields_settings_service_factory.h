@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/no_destructor.h"
+#include "components/keyed_service/core/keyed_service.h"
 #include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 
 class ProfileIOS;
@@ -42,7 +43,7 @@ class BraveShieldsSettingsServiceFactory
 
   // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
+      ProfileIOS* context) const override;
 };
 }  // namespace brave_shields
 

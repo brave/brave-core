@@ -40,9 +40,9 @@ BraveShieldsSettingsServiceFactory::~BraveShieldsSettingsServiceFactory() {}
 
 std::unique_ptr<KeyedService>
 BraveShieldsSettingsServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
-  auto* profile = ProfileIOS::FromBrowserState(context);
+    ProfileIOS* profile) const {
   auto* map = ios::HostContentSettingsMapFactory::GetForProfile(profile);
+  CHECK(map);
   auto* local_state = GetApplicationContext()->GetLocalState();
 
   return std::make_unique<BraveShieldsSettingsService>(*map, local_state,
