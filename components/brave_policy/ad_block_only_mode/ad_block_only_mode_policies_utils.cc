@@ -70,6 +70,11 @@ void LoadAdBlockOnlyModePolicies(policy::PolicyBundle& bundle) {
                policy::POLICY_SOURCE_BRAVE,
                base::Value(ContentSetting::CONTENT_SETTING_ALLOW), nullptr);
 
+  policies.Set(policy::key::kBraveCosmeticFilteringDisabledForUrls,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE,
+               base::Value(base::Value::List().Append("*")), nullptr);
+
   // Disable Brave Cookies.
   policies.Set(policy::key::kDefaultBraveCookiesSetting,
                policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,

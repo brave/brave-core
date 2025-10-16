@@ -8,10 +8,14 @@
   {kManagedBraveShieldsDisabledForUrls, ContentSettingsType::BRAVE_SHIELDS,    \
    CONTENT_SETTING_BLOCK},                                                     \
       {kManagedBraveShieldsEnabledForUrls, ContentSettingsType::BRAVE_SHIELDS, \
-       CONTENT_SETTING_ALLOW},
+       CONTENT_SETTING_ALLOW},                                                 \
+      {kManagedBraveCosmeticFilteringDisabledForUrls,                          \
+       ContentSettingsType::BRAVE_COSMETIC_FILTERING,                          \
+       CONTENT_SETTING_DEFAULT},
 
-#define BRAVE_MANAGED_PREFS \
-  kManagedBraveShieldsDisabledForUrls, kManagedBraveShieldsEnabledForUrls,
+#define BRAVE_MANAGED_PREFS                                                \
+  kManagedBraveShieldsDisabledForUrls, kManagedBraveShieldsEnabledForUrls, \
+      kManagedBraveCosmeticFilteringDisabledForUrls,
 
 #define BRAVE_MANAGED_DEFAULT                                                \
   {ContentSettingsType::BRAVE_FINGERPRINTING_V2,                             \
