@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/synced_device_manager.html.ts b/chrome/browser/resources/history/synced_device_manager.html.ts
-index edfad390f49651662efc734de3cdd61fa3244ac1..63c53558cd58b396434badcb1f2efe2e751218fd 100644
+index e2676d4c40cb24854939d8d96f2296f14467aa7b..4446d5c253f8a8ba3af11ecd8a469ea41135e741 100644
 --- a/chrome/browser/resources/history/synced_device_manager.html.ts
 +++ b/chrome/browser/resources/history/synced_device_manager.html.ts
 @@ -31,6 +31,7 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
