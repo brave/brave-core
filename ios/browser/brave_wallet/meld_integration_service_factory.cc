@@ -42,7 +42,7 @@ MeldIntegrationServiceFactory::MeldIntegrationServiceFactory()
     : ProfileKeyedServiceFactoryIOS("MeldIntegrationService",
                                     ProfileSelection::kRedirectedInIncognito,
                                     ServiceCreation::kCreateLazily,
-                                    TestingCreation::kNoServiceForTests) {}
+                                    TestingCreation::kCreateService) {}
 
 MeldIntegrationServiceFactory::~MeldIntegrationServiceFactory() = default;
 

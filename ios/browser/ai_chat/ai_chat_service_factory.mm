@@ -37,9 +37,9 @@ AIChatServiceFactory* AIChatServiceFactory::GetInstance() {
 
 AIChatServiceFactory::AIChatServiceFactory()
     : ProfileKeyedServiceFactoryIOS("AIChatService",
-                                    ProfileSelection::kRedirectedInIncognito,
+                                    ProfileSelection::kNoInstanceInIncognito,
                                     ServiceCreation::kCreateLazily,
-                                    TestingCreation::kNoServiceForTests) {
+                                    TestingCreation::kCreateService) {
   DependsOn(misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance());
 }
 
