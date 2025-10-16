@@ -27,27 +27,29 @@ def get_not_contained(roots, test_paths):
 
     return not_contained
 
+
 def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
                         extra_modules):
     src_folder = Path(root_gen_dir).resolve().parents[2].as_posix()
-    out_dir = Path(root_gen_dir).resolve().parents[1].as_posix().replace(
+
+    make_source_absolute = lambda path: Path(path).as_posix().replace(
         src_folder, '/')
+
+    out_dir = make_source_absolute(Path(root_gen_dir).resolve().parents[1])
     src_roots = []
 
     with open(data_paths_file) as f:
         src_roots = json.loads(f.read())
 
     with open(depfile_path) as f:
-        files = [
-            Path(file).as_posix().replace(src_folder, '/')
-            for file in f.read().split()[1:]
-        ]
+        files = [make_source_absolute(file) for file in f.read().split()[1:]]
 
     all_roots = src_roots + [
         '//brave/node_modules',  # handled via package.json
         out_dir  # generated assets are deps and handled by gn already
-    ] + extra_modules
+    ] + [make_source_absolute(module) for module in extra_modules]
 
+    print(extra_modules)
     not_contained = get_not_contained(all_roots, files)
 
     if len(not_contained) > 0:
