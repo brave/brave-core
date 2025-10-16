@@ -22,7 +22,7 @@ transpile_web_ui("new_tab_takeover_ui") {
   ]
   data = [
     "//brave/components/new_tab_takeover/",
-    "//brave/components/common/",
+    
   ]
 }
 

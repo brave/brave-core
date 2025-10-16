@@ -15,7 +15,7 @@ transpile_web_ui("brave_speedreader_toolbar_ui") {
   deps = [ "//brave/components/speedreader/common:mojom_js" ]
   data = [
     "//brave/components/speedreader/resources/",
-    "//brave/components/common/",
+    
   ]
 }
 

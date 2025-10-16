@@ -22,6 +22,5 @@ transpile_web_ui("commands_ui") {
 
   data = [
     "//brave/browser/resources/settings/",
-    "//brave/components/common/",
   ]
 }

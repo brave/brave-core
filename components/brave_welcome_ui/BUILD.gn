@@ -16,7 +16,7 @@ transpile_web_ui("brave_welcome_ui") {
 
   data = [
     "//brave/components/brave_welcome_ui/",
-    "//brave/components/common/",
+    
   ]
 }
 

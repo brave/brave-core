@@ -42,7 +42,7 @@ transpile_web_ui("brave_extension") {
 
   data = [
     "//brave/components/brave_extension/extension/brave_extension/",
-    "//brave/components/common/",
+    
   ]
   deps =
       [ "//brave/components/brave_extension:web_discovery_project_resources" ]

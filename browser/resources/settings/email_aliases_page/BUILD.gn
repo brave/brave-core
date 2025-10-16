@@ -15,7 +15,6 @@ transpile_web_ui("email_aliases_ui") {
 
   data = [
     "//brave/browser/resources/settings/email_aliases_page/",
-    "//brave/components/common/",
   ]
 
   resource_name = "email_aliases"

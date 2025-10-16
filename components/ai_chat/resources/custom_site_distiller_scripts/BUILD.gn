@@ -21,7 +21,7 @@ transpile_web_ui("custom_site_distiller_scripts") {
   ]
   data = [
     "//brave/components/ai_chat/resources/custom_site_distiller_scripts/",
-    "//brave/components/common/",
+    
   ]
 
   # Distillation scripts are provided a `return` statement and IIFE by

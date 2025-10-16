@@ -18,7 +18,7 @@ transpile_web_ui("market_display_ui") {
   resource_name = "market_display"
   data = [
     "//brave/components/brave_wallet_ui/",
-    "//brave/components/common/",
+    
   ]
   deps = [
     "//brave/components/brave_wallet/common:mojom_js",

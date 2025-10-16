@@ -19,7 +19,7 @@ transpile_web_ui("ledger_bridge_ui") {
 
   data = [
     "//brave/components/brave_wallet_ui/",
-    "//brave/components/common/",
+    
   ]
 
   # TODO(apaymyshev): ledger iframe should not depend on wallet's mojo

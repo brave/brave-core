@@ -24,7 +24,7 @@ transpile_web_ui("ai_chat_ui") {
   data = [
     "//brave/components/ai_chat/resources/",
     "//brave/components/web-components",
-    "//brave/components/common/",
+    
   ]
 
   deps = [

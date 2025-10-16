@@ -20,7 +20,7 @@ transpile_web_ui("ads_internals_ui") {
   resource_name = "ads_internals"
   data = [
     "//brave/components/brave_ads/browser/resources/",
-    "//brave/components/common/",
+    
   ]
 }
 

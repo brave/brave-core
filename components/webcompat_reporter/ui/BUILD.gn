@@ -17,7 +17,7 @@ transpile_web_ui("ui") {
   resource_name = "webcompat_reporter"
   data = [
     "//brave/components/webcompat_reporter/ui/",
-    "//brave/components/common/",
+    
   ]
 }
 
