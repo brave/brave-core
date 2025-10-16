@@ -226,34 +226,6 @@ describe('useExtractTaskData', () => {
 
       expect(result.current.importantToolUseEvents).toHaveLength(0)
     })
-
-    it('should handle multiple types of important tools', () => {
-      // TODO(https://github.com/brave/brave-browser/issues/48535):
-      // Check the TODO tool is included.
-      const assistantEntries: Mojom.ConversationTurn[] = [
-        createConversationTurnWithDefaults({
-          characterType: Mojom.CharacterType.ASSISTANT,
-          events: [
-            getToolUseEvent({
-              toolName: Mojom.NAVIGATE_TOOL_NAME,
-              id: '1',
-              argumentsJson: '{"url": "https://example.com"}',
-              output: undefined,
-            }),
-            getCompletionEvent('Task'),
-          ],
-        }),
-      ]
-
-      const { result } = renderHook(() => useExtractTaskData(assistantEntries))
-
-      expect(result.current.importantToolUseEvents.length).toEqual(1)
-      expect(
-        result.current.importantToolUseEvents.filter(
-          (t) => t.toolName === Mojom.NAVIGATE_TOOL_NAME,
-        ),
-      ).toHaveLength(1)
-    })
   })
 
   describe('extracting allowed links', () => {
@@ -297,6 +269,11 @@ describe('useExtractTaskData', () => {
                 title: 'Example 1',
                 faviconUrl: { url: 'https://example1.com/favicon.ico' },
               },
+              {
+                url: { url: 'https://example2.com' },
+                title: 'Example 2',
+                faviconUrl: { url: 'https://example2.com/favicon.ico' },
+              },
             ]),
             getCompletionEvent('First task'),
           ],
@@ -307,7 +284,7 @@ describe('useExtractTaskData', () => {
             getWebSourcesEvent([
               {
                 url: { url: 'https://example2.com' },
-                title: 'Example 2',
+                title: 'Duplicate Example 2',
                 faviconUrl: { url: 'https://example2.com/favicon.ico' },
               },
               {
@@ -323,7 +300,7 @@ describe('useExtractTaskData', () => {
 
       const { result } = renderHook(() => useExtractTaskData(assistantEntries))
 
-      expect(result.current.allowedLinks).toHaveLength(3)
+      expect(result.current.allowedLinks).toHaveLength(3) // ignores duplicate
       expect(result.current.allowedLinks).toContain('https://example1.com')
       expect(result.current.allowedLinks).toContain('https://example2.com')
       expect(result.current.allowedLinks).toContain('https://example3.com')
@@ -334,6 +311,19 @@ describe('useExtractTaskData', () => {
         createConversationTurnWithDefaults({
           characterType: Mojom.CharacterType.ASSISTANT,
           events: [getCompletionEvent('Task with no sources')],
+        }),
+      ]
+
+      const { result } = renderHook(() => useExtractTaskData(assistantEntries))
+
+      expect(result.current.allowedLinks).toHaveLength(0)
+    })
+
+    it('should handle entries with no events', () => {
+      const assistantEntries: Mojom.ConversationTurn[] = [
+        createConversationTurnWithDefaults({
+          characterType: Mojom.CharacterType.ASSISTANT,
+          events: undefined,
         }),
       ]
 

@@ -90,15 +90,17 @@ function Progress(props: Props & { taskData: TaskData }) {
     return null
   }
 
-  const currentCompletionEvent = lastTaskItem.find(
-    (event) => !!event.completionEvent,
-  )
+  // If lastTaskItem has a completion event, it will be the first element.
+  // If it doesn't then .completionEvent will be undefined.
+  const currentCompletionEvent = lastTaskItem[0].completionEvent
+    ? lastTaskItem[0]
+    : undefined
 
   // Include any current tool use events that are not already included in the
   // "important" section.
   const currentToolUseEvents = lastTaskItem.filter(
     (event) =>
-      !!event.toolUseEvent
+      event.toolUseEvent
       && !props.taskData.importantToolUseEvents.includes(event.toolUseEvent),
   )
 
@@ -150,7 +152,7 @@ function Steps(props: Props & { taskData: TaskData }) {
       isRunnable
       && !isActive
       && taskItem.some(
-        (event) => !!event.toolUseEvent && !event.toolUseEvent.output,
+        (event) => event.toolUseEvent && !event.toolUseEvent.output,
       )
 
     return (
