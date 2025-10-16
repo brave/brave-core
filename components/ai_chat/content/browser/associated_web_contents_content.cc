@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/content/browser/associated_web_contents.h"
+#include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 
 #include <cstdint>
 #include <memory>
@@ -48,7 +48,7 @@
 
 namespace ai_chat {
 
-AssociatedWebContents::AssociatedWebContents(
+AssociatedWebContentsContent::AssociatedWebContentsContent(
     content::WebContents* web_contents,
     std::unique_ptr<PrintPreviewExtractionDelegate>
         print_preview_extraction_delegate)
@@ -63,9 +63,9 @@ AssociatedWebContents::AssociatedWebContents(
   previous_page_title_ = web_contents->GetTitle();
 }
 
-AssociatedWebContents::~AssociatedWebContents() = default;
+AssociatedWebContentsContent::~AssociatedWebContentsContent() = default;
 
-void AssociatedWebContents::NavigationEntryCommitted(
+void AssociatedWebContentsContent::NavigationEntryCommitted(
     const content::LoadCommittedDetails& load_details) {
   if (!load_details.is_main_frame) {
     return;
@@ -103,7 +103,8 @@ void AssociatedWebContents::NavigationEntryCommitted(
   previous_page_title_ = load_details.entry->GetTitle();
 }
 
-void AssociatedWebContents::TitleWasSet(content::NavigationEntry* entry) {
+void AssociatedWebContentsContent::TitleWasSet(
+    content::NavigationEntry* entry) {
   DVLOG(2) << __func__ << ": id=" << entry->GetUniqueID()
            << " title=" << entry->GetTitle();
   MaybeSameDocumentIsNewPage();
@@ -111,7 +112,7 @@ void AssociatedWebContents::TitleWasSet(content::NavigationEntry* entry) {
   SetTitle(entry->GetTitle());
 }
 
-void AssociatedWebContents::DidFinishLoad(
+void AssociatedWebContentsContent::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
   DVLOG(4) << __func__ << ": " << validated_url.spec();
@@ -123,7 +124,7 @@ void AssociatedWebContents::DidFinishLoad(
   }
 }
 
-void AssociatedWebContents::GetPageContent(
+void AssociatedWebContentsContent::GetPageContent(
     FetchPageContentCallback callback,
     std::string_view invalidation_token) {
   bool is_pdf = IsPdf(web_contents());
@@ -133,10 +134,11 @@ void AssociatedWebContents::GetPageContent(
         pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
     if (pdf_helper) {
       pdf_helper->RegisterForDocumentLoadComplete(base::BindOnce(
-          &AssociatedWebContents::OnPDFDocumentLoadComplete,
+          &AssociatedWebContentsContent::OnPDFDocumentLoadComplete,
           weak_ptr_factory_.GetWeakPtr(),
-          base::BindOnce(&AssociatedWebContents::OnFetchPageContentComplete,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
+          base::BindOnce(
+              &AssociatedWebContentsContent::OnFetchPageContentComplete,
+              weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
       return;
     }
 #endif  // BUILDFLAG(ENABLE_PDF)
@@ -167,11 +169,11 @@ void AssociatedWebContents::GetPageContent(
   }
   page_content_fetcher_delegate_->FetchPageContent(
       invalidation_token,
-      base::BindOnce(&AssociatedWebContents::OnFetchPageContentComplete,
+      base::BindOnce(&AssociatedWebContentsContent::OnFetchPageContentComplete,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AssociatedWebContents::OnFetchPageContentComplete(
+void AssociatedWebContentsContent::OnFetchPageContentComplete(
     FetchPageContentCallback callback,
     std::string content,
     bool is_video,
@@ -188,7 +190,7 @@ void AssociatedWebContents::OnFetchPageContentComplete(
                           std::move(invalidation_token));
 }
 
-void AssociatedWebContents::SetPendingGetContentCallback(
+void AssociatedWebContentsContent::SetPendingGetContentCallback(
     FetchPageContentCallback callback) {
   if (pending_get_page_content_callback_) {
     std::move(pending_get_page_content_callback_).Run("", false, "");
@@ -196,7 +198,7 @@ void AssociatedWebContents::SetPendingGetContentCallback(
   pending_get_page_content_callback_ = std::move(callback);
 }
 
-void AssociatedWebContents::OnNewPage(int64_t navigation_id) {
+void AssociatedWebContentsContent::OnNewPage(int64_t navigation_id) {
   DVLOG(3) << __func__ << " id: " << navigation_id;
   AssociatedContentDriver::OnNewPage(navigation_id);
   set_url(web_contents()->GetLastCommittedURL());
@@ -206,7 +208,7 @@ void AssociatedWebContents::OnNewPage(int64_t navigation_id) {
   }
 }
 
-void AssociatedWebContents::MaybeSameDocumentIsNewPage() {
+void AssociatedWebContentsContent::MaybeSameDocumentIsNewPage() {
   if (is_same_document_navigation_) {
     DVLOG(2) << "Same document navigation detected new \"page\" - calling "
                 "OnNewPage()";
@@ -221,7 +223,7 @@ void AssociatedWebContents::MaybeSameDocumentIsNewPage() {
 }
 
 #if BUILDFLAG(ENABLE_PDF)
-void AssociatedWebContents::OnPDFDocumentLoadComplete(
+void AssociatedWebContentsContent::OnPDFDocumentLoadComplete(
     FetchPageContentCallback callback) {
   auto* pdf_helper =
       pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
@@ -233,11 +235,11 @@ void AssociatedWebContents::OnPDFDocumentLoadComplete(
   // Fetch zero PDF bytes to just receive the total page count.
   pdf_helper->GetPdfBytes(
       /*size_limit=*/0,
-      base::BindOnce(&AssociatedWebContents::OnGetPDFPageCount,
+      base::BindOnce(&AssociatedWebContentsContent::OnGetPDFPageCount,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AssociatedWebContents::OnGetPDFPageCount(
+void AssociatedWebContentsContent::OnGetPDFPageCount(
     FetchPageContentCallback callback,
     pdf::mojom::PdfListener::GetPdfBytesStatus status,
     const std::vector<uint8_t>& bytes,
@@ -253,7 +255,7 @@ void AssociatedWebContents::OnGetPDFPageCount(
   // Create a barrier callback that will be called when all pages are received
   auto barrier_callback = base::BarrierCallback<std::pair<size_t, std::string>>(
       page_count,
-      base::BindOnce(&AssociatedWebContents::OnAllPDFPagesTextReceived,
+      base::BindOnce(&AssociatedWebContentsContent::OnAllPDFPagesTextReceived,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 
   for (size_t i = 0; i < page_count; ++i) {
@@ -271,7 +273,7 @@ void AssociatedWebContents::OnGetPDFPageCount(
   }
 }
 
-void AssociatedWebContents::OnAllPDFPagesTextReceived(
+void AssociatedWebContentsContent::OnAllPDFPagesTextReceived(
     FetchPageContentCallback callback,
     const std::vector<std::pair<size_t, std::string>>& page_texts) {
   // Pre-size vector to hold all texts in order
@@ -294,7 +296,7 @@ void AssociatedWebContents::OnAllPDFPagesTextReceived(
 }
 #endif  // BUILDFLAG(ENABLE_PDF)
 
-void AssociatedWebContents::GetSearchSummarizerKey(
+void AssociatedWebContentsContent::GetSearchSummarizerKey(
     GetSearchSummarizerKeyCallback callback) {
   if (!IsBraveSearchSERP(web_contents()->GetLastCommittedURL())) {
     std::move(callback).Run(std::nullopt);
@@ -304,12 +306,12 @@ void AssociatedWebContents::GetSearchSummarizerKey(
   page_content_fetcher_delegate_->GetSearchSummarizerKey(std::move(callback));
 }
 
-void AssociatedWebContents::GetOpenAIChatButtonNonce(
+void AssociatedWebContentsContent::GetOpenAIChatButtonNonce(
     mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
   page_content_fetcher_delegate_->GetOpenAIChatButtonNonce(std::move(callback));
 }
 
-bool AssociatedWebContents::HasOpenAIChatPermission() const {
+bool AssociatedWebContentsContent::HasOpenAIChatPermission() const {
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
   content::PermissionController* permission_controller =
       web_contents()->GetBrowserContext()->GetPermissionController();
@@ -322,7 +324,7 @@ bool AssociatedWebContents::HasOpenAIChatPermission() const {
   return permission_status.status == content::PermissionStatus::GRANTED;
 }
 
-void AssociatedWebContents::GetScreenshots(
+void AssociatedWebContentsContent::GetScreenshots(
     mojom::ConversationHandler::GetScreenshotsCallback callback) {
   if (print_preview_extraction_delegate_ &&
       (IsPdf(web_contents()) ||
@@ -331,18 +333,18 @@ void AssociatedWebContents::GetScreenshots(
     // Use print preview extraction for PDFs and print preview hosts
     // when delegate is available
     print_preview_extraction_delegate_->CaptureImages(
-        base::BindOnce(&AssociatedWebContents::OnScreenshotsCaptured,
+        base::BindOnce(&AssociatedWebContentsContent::OnScreenshotsCaptured,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   } else {
     full_screenshotter_ = std::make_unique<FullScreenshotter>();
     full_screenshotter_->CaptureScreenshots(
         web_contents(),
-        base::BindOnce(&AssociatedWebContents::OnScreenshotsCaptured,
+        base::BindOnce(&AssociatedWebContentsContent::OnScreenshotsCaptured,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   }
 }
 
-void AssociatedWebContents::OnScreenshotsCaptured(
+void AssociatedWebContentsContent::OnScreenshotsCaptured(
     mojom::ConversationHandler::GetScreenshotsCallback callback,
     base::expected<std::vector<std::vector<uint8_t>>, std::string> result) {
   if (result.has_value()) {
