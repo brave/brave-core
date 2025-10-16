@@ -17,6 +17,7 @@ source_set("brave_shields") {
     "//brave/components/brave_shields/ios/browser",
     "//brave/ios/browser/api/profile",
     "//brave/ios/browser/keyed_service",
+    "//components/keyed_service/core",
     "//components/user_prefs",
     "//ios/chrome/browser/content_settings/model",
     "//ios/chrome/browser/shared/model/application_context",
