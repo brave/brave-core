@@ -260,6 +260,11 @@ void SharedPinnedTabService::Shutdown() {
 
 void SharedPinnedTabService::OnBrowserAdded(Browser* browser) {
   DVLOG(1) << "Browser added: " << browser->type();
+
+  browser_close_subscriptions_[browser] = browser->RegisterBrowserDidClose(
+      base::BindRepeating(&SharedPinnedTabService::OnBrowserDidClose,
+                          weak_ptr_factory_.GetWeakPtr()));
+
   if (profile_ != browser->profile()) {
     return;
   }
@@ -303,8 +308,11 @@ void SharedPinnedTabService::OnBrowserSetLastActive(Browser* browser) {
   }
 }
 
-void SharedPinnedTabService::OnBrowserClosing(Browser* browser) {
+void SharedPinnedTabService::OnBrowserDidClose(
+    BrowserWindowInterface* browser_window_interface) {
   DVLOG(2) << __FUNCTION__;
+  Browser* browser = browser_window_interface->GetBrowserForMigrationOnly();
+  browser_close_subscriptions_.erase(browser_window_interface);
   if (!browsers_.contains(browser)) {
     // This could be called multiple times for the same |browser|
     return;
