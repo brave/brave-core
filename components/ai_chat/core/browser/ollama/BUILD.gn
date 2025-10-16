@@ -5,10 +5,10 @@
 
 static_library("ollama") {
   sources = [
-    "ollama_service.cc",
-    "ollama_service.h",
     "ollama_model_fetcher.cc",
     "ollama_model_fetcher.h",
+    "ollama_service.cc",
+    "ollama_service.h",
   ]
 
   deps = [
@@ -31,8 +31,8 @@ static_library("ollama") {
 source_set("unit_tests") {
   testonly = true
   sources = [
-    "ollama_service_unittest.cc",
     "ollama_model_fetcher_unittest.cc",
+    "ollama_service_unittest.cc",
   ]
 
   deps = [

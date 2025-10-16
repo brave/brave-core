@@ -24,8 +24,8 @@ namespace ai_chat {
 // OllamaService::ModelInfo implementation
 OllamaService::ModelInfo::ModelInfo() = default;
 OllamaService::ModelInfo::ModelInfo(const ModelInfo&) = default;
-OllamaService::ModelInfo& OllamaService::ModelInfo::operator=(const ModelInfo&) =
-    default;
+OllamaService::ModelInfo& OllamaService::ModelInfo::operator=(
+    const ModelInfo&) = default;
 OllamaService::ModelInfo::ModelInfo(ModelInfo&&) = default;
 OllamaService::ModelInfo& OllamaService::ModelInfo::operator=(ModelInfo&&) =
     default;
@@ -98,8 +98,8 @@ constexpr net::NetworkTrafficAnnotationTag kOllamaModelDetailsAnnotation =
         })");
 
 // Max download sizes for Ollama API responses
-constexpr size_t kConnectionCheckMaxSize = 1024;      // 1KB for connection check
-constexpr size_t kModelListMaxSize = 1024 * 1024;     // 1MB for model list
+constexpr size_t kConnectionCheckMaxSize = 1024;   // 1KB for connection check
+constexpr size_t kModelListMaxSize = 1024 * 1024;  // 1MB for model list
 constexpr size_t kModelDetailsMaxSize = 1024 * 1024;  // 1MB for model details
 
 }  // namespace
@@ -173,7 +173,7 @@ void OllamaService::OnModelsListComplete(
 }
 
 void OllamaService::ShowModel(const std::string& model_name,
-                             ModelDetailsCallback callback) {
+                              ModelDetailsCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(mojom::kOllamaShowModelInfoAPIEndpoint);
   request->method = "POST";
@@ -206,8 +206,8 @@ void OllamaService::OnModelDetailsComplete(
 
 std::optional<std::vector<OllamaService::ModelInfo>>
 OllamaService::ParseModelsResponse(const std::string& response_body) {
-  std::optional<base::Value::Dict> json_dict =
-      base::JSONReader::ReadDict(response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+  std::optional<base::Value::Dict> json_dict = base::JSONReader::ReadDict(
+      response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!json_dict) {
     return std::nullopt;
   }
@@ -239,8 +239,8 @@ OllamaService::ParseModelsResponse(const std::string& response_body) {
 
 std::optional<OllamaService::ModelDetails>
 OllamaService::ParseModelDetailsResponse(const std::string& response_body) {
-  std::optional<base::Value::Dict> json_dict =
-      base::JSONReader::ReadDict(response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+  std::optional<base::Value::Dict> json_dict = base::JSONReader::ReadDict(
+      response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!json_dict) {
     return std::nullopt;
   }

@@ -40,6 +40,7 @@ class OllamaModelFetcher {
   void RemoveModels();
 
  private:
+  friend class OllamaModelFetcherTest;
   FRIEND_TEST_ALL_PREFIXES(OllamaModelNameFormattingTest,
                            FormatOllamaModelName);
   FRIEND_TEST_ALL_PREFIXES(OllamaModelNameFormattingTest,
@@ -82,8 +83,9 @@ class OllamaModelFetcher {
   };
 
   void FetchModelDetails(const std::string& model_name);
-  void OnModelDetailsFetched(const std::string& model_name,
-                             std::optional<OllamaService::ModelDetails> details);
+  void OnModelDetailsFetched(
+      const std::string& model_name,
+      std::optional<OllamaService::ModelDetails> details);
 
   const raw_ref<ModelService> model_service_;
   raw_ptr<PrefService> prefs_;
