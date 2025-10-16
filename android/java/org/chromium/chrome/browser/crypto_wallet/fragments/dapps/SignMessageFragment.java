@@ -109,8 +109,8 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
                         });
     }
 
-    private void maybeHandlePendingRequests(final boolean init,
-                                            @Nullable SignMessageRequest[] requests) {
+    private void maybeHandlePendingRequests(
+            final boolean init, @Nullable SignMessageRequest[] requests) {
         if (requests == null || requests.length == 0) {
             Intent intent = new Intent();
             getActivity().setResult(Activity.RESULT_OK, intent);
@@ -124,33 +124,19 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         mUnicodeEscapeVersion = false;
         final String message;
         final boolean isEip712;
-        if (mCurrentSignMessageRequest.signData.which()
-                == SignDataUnion.Tag.EthStandardSignData) {
-            message =
-                    mCurrentSignMessageRequest.signData
-                            .getEthStandardSignData()
-                            .message;
+        if (mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthStandardSignData) {
+            message = mCurrentSignMessageRequest.signData.getEthStandardSignData().message;
             isEip712 = false;
         } else if (mCurrentSignMessageRequest.signData.which()
                 == SignDataUnion.Tag.EthSignTypedData) {
-            message =
-                    mCurrentSignMessageRequest.signData
-                            .getEthSignTypedData()
-                            .messageJson;
+            message = mCurrentSignMessageRequest.signData.getEthSignTypedData().messageJson;
             isEip712 = true;
         } else if (mCurrentSignMessageRequest.signData.which()
                 == SignDataUnion.Tag.SolanaSignData) {
-            message =
-                    mCurrentSignMessageRequest.signData
-                            .getSolanaSignData()
-                            .message;
+            message = mCurrentSignMessageRequest.signData.getSolanaSignData().message;
             isEip712 = false;
-        } else if (mCurrentSignMessageRequest.signData.which()
-                == SignDataUnion.Tag.EthSiweData) {
-            message =
-                    mCurrentSignMessageRequest.signData
-                            .getEthSiweData()
-                            .statement;
+        } else if (mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthSiweData) {
+            message = mCurrentSignMessageRequest.signData.getEthSiweData().statement;
             isEip712 = false;
         } else {
             message = "";
@@ -163,23 +149,18 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
             mSignMessageText.setLines(12);
             View view = getView();
             if (view != null) {
-                view.findViewById(R.id.non_ascii_warning_layout)
-                        .setVisibility(View.VISIBLE);
-                TextView warningLinkText =
-                        view.findViewById(R.id.non_ascii_warning_text_link);
+                view.findViewById(R.id.non_ascii_warning_layout).setVisibility(View.VISIBLE);
+                TextView warningLinkText = view.findViewById(R.id.non_ascii_warning_text_link);
                 warningLinkText.setOnClickListener(
                         v -> {
                             warningLinkText.setText(
                                     mUnicodeEscapeVersion
                                             ? getString(
-                                            R.string
-                                                    .wallet_non_ascii_characters_original)
+                                                    R.string.wallet_non_ascii_characters_original)
                                             : getString(
-                                            R.string
-                                                    .wallet_non_ascii_characters_ascii));
+                                                    R.string.wallet_non_ascii_characters_ascii));
                             mUnicodeEscapeVersion = !mUnicodeEscapeVersion;
-                            updateTextEthSign(
-                                    mUnicodeEscapeVersion, message, isEip712);
+                            updateTextEthSign(mUnicodeEscapeVersion, message, isEip712);
                         });
             }
         }
@@ -195,11 +176,8 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
                     });
         }
         if (mCurrentSignMessageRequest.originInfo != null
-                && URLUtil.isValidUrl(
-                mCurrentSignMessageRequest.originInfo.originSpec)) {
-            mWebSite.setText(
-                    Utils.geteTldSpanned(
-                            mCurrentSignMessageRequest.originInfo));
+                && URLUtil.isValidUrl(mCurrentSignMessageRequest.originInfo.originSpec)) {
+            mWebSite.setText(Utils.geteTldSpanned(mCurrentSignMessageRequest.originInfo));
         }
         updateAccount(mCurrentSignMessageRequest.accountId);
         updateNetwork(mCurrentSignMessageRequest.chainId);
