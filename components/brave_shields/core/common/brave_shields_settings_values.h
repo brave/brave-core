@@ -93,6 +93,10 @@ struct BraveShieldsSetting
             kDefaultValue);
       }
     }
+    if (const auto v = value.GetIfInt()) {
+      return traits::SettingTraits<SettingType>::From(*v).value_or(
+          kDefaultValue);
+    }
     LOG(ERROR) << "ShieldSetting " << BraveShieldsSetting::kName
                << " failed to parse value: " << value.DebugString();
     DCHECK(false) << "Invalid value.";
