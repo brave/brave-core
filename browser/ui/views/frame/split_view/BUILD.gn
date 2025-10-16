@@ -25,6 +25,7 @@ source_set("split_view") {
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/exclusive_access",
+    "//chrome/browser/ui/tabs:tab_strip",
     "//ui/base/metadata",
     "//ui/compositor",
     "//ui/views",
