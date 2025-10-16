@@ -18,7 +18,9 @@
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/browser/commander_item_model.h"
 #include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 class OmniboxView;
 class Profile;
@@ -58,9 +60,6 @@ class CommanderService : public CommanderFrontendDelegate,
   // KeyedService:
   void Shutdown() override;
 
-  // overrides BrowserListObserver:
-  void OnBrowserClosing(Browser* browser) override;
-
  private:
   void UpdateTextFromCurrentBrowserOmnibox();
   void UpdateText(const std::u16string& text, bool force);
@@ -71,6 +70,12 @@ class CommanderService : public CommanderFrontendDelegate,
 
   void ShowCommander();
   void HideCommander();
+
+  // overrides BrowserListObserver:
+  void OnBrowserAdded(Browser* browser) override;
+
+  // Callback for browser closed events.
+  void OnBrowserDidClose(BrowserWindowInterface* browser_window_interface);
 
   CommandSources command_sources_;
 
@@ -92,6 +97,12 @@ class CommanderService : public CommanderFrontendDelegate,
   base::ObserverList<Observer> observers_;
   base::ScopedObservation<BrowserList, BrowserListObserver>
       browser_list_observation_{this};
+
+  // Map to track browser close callback subscriptions.
+  absl::flat_hash_map<raw_ptr<BrowserWindowInterface>,
+                      base::CallbackListSubscription>
+      browser_close_subscriptions_;
+
   base::WeakPtrFactory<CommanderService> weak_ptr_factory_{this};
 };
 }  // namespace commander
