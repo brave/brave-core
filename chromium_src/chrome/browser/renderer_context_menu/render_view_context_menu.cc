@@ -55,7 +55,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/content/browser/associated_web_contents.h"
+#include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -329,8 +329,8 @@ void OnRewriteSuggestionCompleted(
     }
     ai_chat::ConversationHandler* conversation =
         ai_chat_service->GetOrCreateConversationHandlerForContent(
-            helper->associated_web_contents().content_id(),
-            helper->associated_web_contents().GetWeakPtr());
+            helper->web_contents_content().content_id(),
+            helper->web_contents_content().GetWeakPtr());
     if (!conversation) {
       return;
     }
@@ -609,8 +609,8 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
         ai_chat::AIChatServiceFactory::GetForBrowserContext(
             embedder_web_contents_->GetBrowserContext())
             ->GetOrCreateConversationHandlerForContent(
-                helper->associated_web_contents().content_id(),
-                helper->associated_web_contents().GetWeakPtr());
+                helper->web_contents_content().content_id(),
+                helper->web_contents_content().GetWeakPtr());
     // Before trying to activate the panel, unlink page content if needed.
     // This needs to be called before activating the panel to check against the
     // current state.

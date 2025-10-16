@@ -185,7 +185,7 @@ AIChatUIPageHandler::AIChatUIPageHandler(
         ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
 
     associated_content_delegate_observation_.Observe(
-        &active_chat_tab_helper_->associated_web_contents());
+        &active_chat_tab_helper_->web_contents_content());
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
   }
@@ -375,7 +375,7 @@ void AIChatUIPageHandler::OnRequestArchive(
   chat_ui_->OnNewDefaultConversation(
       active_chat_tab_helper_
           ? std::make_optional(
-                active_chat_tab_helper_->associated_web_contents().content_id())
+                active_chat_tab_helper_->web_contents_content().content_id())
           : std::nullopt);
 }
 
@@ -399,7 +399,7 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
   chat_ui_->OnNewDefaultConversation(
       active_chat_tab_helper_
           ? std::make_optional(
-                active_chat_tab_helper_->associated_web_contents().content_id())
+                active_chat_tab_helper_->web_contents_content().content_id())
           : std::nullopt);
 }
 
@@ -418,8 +418,8 @@ void AIChatUIPageHandler::BindRelatedConversation(
   ConversationHandler* conversation =
       AIChatServiceFactory::GetForBrowserContext(profile_)
           ->GetOrCreateConversationHandlerForContent(
-              active_chat_tab_helper_->associated_web_contents().content_id(),
-              active_chat_tab_helper_->associated_web_contents().GetWeakPtr());
+              active_chat_tab_helper_->web_contents_content().content_id(),
+              active_chat_tab_helper_->web_contents_content().GetWeakPtr());
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
 }
@@ -444,7 +444,7 @@ void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
                       AIChatServiceFactory::GetForBrowserContext(
                           contents->GetBrowserContext())
                           ->MaybeAssociateContent(
-                              &tab_helper->associated_web_contents(),
+                              &tab_helper->web_contents_content(),
                               conversation_uuid);
                     },
                     conversation_uuid));
@@ -479,9 +479,8 @@ void AIChatUIPageHandler::NewConversation(
     conversation =
         AIChatServiceFactory::GetForBrowserContext(profile_)
             ->CreateConversationHandlerForContent(
-                active_chat_tab_helper_->associated_web_contents().content_id(),
-                active_chat_tab_helper_->associated_web_contents()
-                    .GetWeakPtr());
+                active_chat_tab_helper_->web_contents_content().content_id(),
+                active_chat_tab_helper_->web_contents_content().GetWeakPtr());
   } else {
     conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
                        ->CreateConversation();

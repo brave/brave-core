@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "brave/components/ai_chat/content/browser/associated_web_contents.h"
+#include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -23,9 +23,9 @@ class AIChatTabHelper : public content::WebContentsUserData<AIChatTabHelper> {
   AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
   ~AIChatTabHelper() override;
 
-  AssociatedWebContents& associated_web_contents() const {
-    CHECK(associated_web_contents_);
-    return *associated_web_contents_;
+  AssociatedWebContentsContent& web_contents_content() const {
+    CHECK(web_contents_content_);
+    return *web_contents_content_;
   }
 
  private:
@@ -35,10 +35,11 @@ class AIChatTabHelper : public content::WebContentsUserData<AIChatTabHelper> {
   // in a different layer.
   AIChatTabHelper(
       content::WebContents* web_contents,
-      std::unique_ptr<AssociatedWebContents::PrintPreviewExtractionDelegate>
+      std::unique_ptr<
+          AssociatedWebContentsContent::PrintPreviewExtractionDelegate>
           print_preview_extraction_delegate);
 
-  std::unique_ptr<AssociatedWebContents> associated_web_contents_;
+  std::unique_ptr<AssociatedWebContentsContent> web_contents_content_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

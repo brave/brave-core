@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_WEB_CONTENTS_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_WEB_CONTENTS_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_WEB_CONTENTS_CONTENT_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_WEB_CONTENTS_CONTENT_H_
 
 #include <cstdint>
 #include <memory>
@@ -46,8 +46,8 @@ namespace ai_chat {
 class AIChatMetrics;
 
 // Provides context to an AI Chat conversation in the form of the Tab's content
-class AssociatedWebContents : public content::WebContentsObserver,
-                              public AssociatedContentDriver {
+class AssociatedWebContentsContent : public content::WebContentsObserver,
+                                     public AssociatedContentDriver {
  public:
   // Delegate to extract print preview content
   class PrintPreviewExtractionDelegate {
@@ -83,13 +83,14 @@ class AssociatedWebContents : public content::WebContentsObserver,
 
   // PrintPreviewExtractionDelegate is provided as it's implementation is
   // in a different layer.
-  AssociatedWebContents(content::WebContents* web_contents,
-                        std::unique_ptr<PrintPreviewExtractionDelegate>
-                            print_preview_extraction_delegate);
+  AssociatedWebContentsContent(content::WebContents* web_contents,
+                               std::unique_ptr<PrintPreviewExtractionDelegate>
+                                   print_preview_extraction_delegate);
 
-  AssociatedWebContents(const AssociatedWebContents&) = delete;
-  AssociatedWebContents& operator=(const AssociatedWebContents&) = delete;
-  ~AssociatedWebContents() override;
+  AssociatedWebContentsContent(const AssociatedWebContentsContent&) = delete;
+  AssociatedWebContentsContent& operator=(const AssociatedWebContentsContent&) =
+      delete;
+  ~AssociatedWebContentsContent() override;
 
   void SetPageContentFetcherDelegateForTesting(
       std::unique_ptr<PageContentFetcherDelegate> delegate) {
@@ -107,13 +108,13 @@ class AssociatedWebContents : public content::WebContentsObserver,
   void GetOpenAIChatButtonNonce(
       mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback);
 
-  base::WeakPtr<AssociatedWebContents> GetWeakPtr() {
+  base::WeakPtr<AssociatedWebContentsContent> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
   }
 
  private:
   friend class ::AIChatUIBrowserTest;
-  friend class AssociatedWebContentsUnitTest;
+  friend class AssociatedWebContentsContentUnitTest;
 
   // content::WebContentsObserver
   void NavigationEntryCommitted(
@@ -179,9 +180,9 @@ class AssociatedWebContents : public content::WebContentsObserver,
 
   std::unique_ptr<FullScreenshotter> full_screenshotter_;
 
-  base::WeakPtrFactory<AssociatedWebContents> weak_ptr_factory_{this};
+  base::WeakPtrFactory<AssociatedWebContentsContent> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_WEB_CONTENTS_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ASSOCIATED_WEB_CONTENTS_CONTENT_H_
