@@ -21,8 +21,8 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
     super.setUp()
     Preferences.Shields.blockScripts.reset()
     Preferences.Shields.fingerprintingProtection.reset()
-    ShieldPreferences.blockAdsAndTrackingLevelRaw.reset()
-    ShieldPreferences.shredLevelRaw.reset()
+    Preferences.Shields.blockAdsAndTrackingLevelRaw.reset()
+    Preferences.Shields.shredLevelRaw.reset()
   }
 
   /// Test `isBraveShieldsEnabled(for:)` with

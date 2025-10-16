@@ -38,7 +38,7 @@ struct OtherPrivacySettingsSectionView: View {
       OptionToggleView(
         title: Strings.Shields.enableGPCLabel,
         subtitle: Strings.Shields.enableGPCDescription,
-        option: ShieldPreferences.enableGPC
+        option: Preferences.Shields.enableGPC
       )
       if showBlockAllCookies || FeatureList.kBlockAllCookiesToggle.enabled
         || Preferences.Privacy.blockAllCookies.value
