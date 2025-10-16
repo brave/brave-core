@@ -14,12 +14,12 @@ from lib.util import execute_stdout, scoped_cwd
 from pathlib import Path
 
 
-def get_not_contained(srcRoots, paths):
+def get_not_contained(src_roots, paths):
     """
     Check whether all given paths are contained within the source roots.
     Returns list of paths that were not contained
     """
-    roots = [Path(r).resolve() for r in srcRoots]
+    roots = [Path(r).resolve() for r in src_roots]
     test_paths = [Path(p).resolve() for p in paths]
 
     not_contained = [
@@ -36,8 +36,8 @@ def make_source_absolute(root, path):
 
 def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
                         extra_modules):
-    src_folder = os.path.abspath(os.path.join(root_gen_dir, '..', '..', '..'))
-    out_dir = os.path.abspath(os.path.join(root_gen_dir, '..'))
+    src_folder = Path(root_gen_dir).resolve().parents[2].as_posix()
+    out_dir = Path(root_gen_dir).resolve().parents[1].as_posix()
     src_roots = []
 
     with open(data_paths_file) as f:
