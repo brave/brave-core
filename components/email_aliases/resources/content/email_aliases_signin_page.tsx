@@ -58,16 +58,26 @@ const BeforeSendingEmailForm = ({
     try {
       await emailAliasesService.requestAuthentication(email)
     } catch (errorMessage) {
-      setErrorMessage(errorMessage as string)
+      setErrorMessage(errorMessage.toString())
     }
   }
+
+  const emailRef = React.useRef<HTMLInputElement>()
+  React.useEffect(() => {
+    const input = emailRef.current
+    if (!input) {
+      return
+    }
+    setTimeout(() => input.focus())
+  }, [])
+
   return (
     <SpacedCol>
       <h4>{getLocale('emailAliasesSignInOrCreateAccount')}</h4>
       <div>{getLocale('emailAliasesEnterEmailToGetLoginLink')}</div>
       <LoginRow>
         <StretchyInput
-          autofocus
+          ref={emailRef}
           onInput={(detail) => setEmail(detail.value)}
           onKeyDown={onEnterKeyForInput(requestAuthentication)}
           name='email'

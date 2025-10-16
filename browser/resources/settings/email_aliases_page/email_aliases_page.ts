@@ -23,6 +23,11 @@ class EmailAliasesPage extends HTMLElement {
       .then(({ mount }) => {
         mount(subpage)
       })
+
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      (window as any).testing = (window as any).testing || {};
+      (window as any).testing[`emailAliases`] = this.shadowRoot;
+    }
   }
 }
 
