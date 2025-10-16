@@ -69,13 +69,10 @@ config("internal_config") {
 group("brave_ios") {
   public_deps = [
     ":brave_core_xcframework",
+    ":early_partition_alloc_xcframework",
     ":generated_xcconfig",
-    ":material_components_xcframework",
     ":nala_assets_xcframework",
   ]
-  if (ios_partition_alloc_enabled) {
-    public_deps += [ ":early_partition_alloc_xcframework" ]
-  }
 }
 
 brave_core_public_headers = [
@@ -221,34 +218,27 @@ ios_framework_bundle("brave_core_ios_framework") {
   public_headers += ios_web_view_public_headers
 }
 
-if (ios_partition_alloc_enabled) {
-  ios_framework_bundle("early_partition_alloc_framework") {
-    output_name = "PartitionAllocSupport"
-    sources = [ "//ios/chrome/app/early_pa_registration.cc" ]
-    info_plist = "//ios/chrome/app/resources/EarlyPAFrameworkInfo.plist"
-    extra_substitutions = [ "BUNDLE_IDENTIFIER=com.brave.ios.$output_name" ]
+ios_framework_bundle("early_partition_alloc_framework") {
+  output_name = "PartitionAllocSupport"
+  sources = [ "//ios/chrome/app/early_pa_registration.cc" ]
+  info_plist = "//ios/chrome/app/resources/EarlyPAFrameworkInfo.plist"
+  extra_substitutions = [ "BUNDLE_IDENTIFIER=com.brave.ios.$output_name" ]
 
-    deps = [
-      "//base/allocator:early_zone_registration_apple",
-      "//base/allocator/partition_allocator:buildflags",
-    ]
-  }
-  ios_create_xcframework("early_partition_alloc_xcframework") {
-    framework_dir = "$root_build_dir/PartitionAllocSupport.framework"
-    deps = [ ":early_partition_alloc_framework" ]
-  }
+  deps = [
+    "//base/allocator:early_zone_registration_apple",
+    "//base/allocator/partition_allocator:buildflags",
+  ]
+}
+
+ios_create_xcframework("early_partition_alloc_xcframework") {
+  framework_dir = "$root_build_dir/PartitionAllocSupport.framework"
+  deps = [ ":early_partition_alloc_framework" ]
 }
 
 ios_create_xcframework("brave_core_xcframework") {
   framework_dir = "$root_build_dir/BraveCore.framework"
   remove_asset_catalogs = true
   deps = [ ":brave_core_ios_framework" ]
-}
-
-ios_create_xcframework("material_components_xcframework") {
-  framework_dir = "$root_build_dir/MaterialComponents.framework"
-  fix_info_plist_versions = true
-  deps = [ "//ios/third_party/material_components_ios" ]
 }
 
 ios_create_xcframework("nala_assets_xcframework") {

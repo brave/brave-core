@@ -41,7 +41,7 @@ WebcompatReporterServiceFactory::WebcompatReporterServiceFactory()
 
 WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() {}
 
-void WebcompatReporterServiceFactory::RegisterBrowserStatePrefs(
+void WebcompatReporterServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   webcompat_reporter::prefs::RegisterProfilePrefs(
       static_cast<PrefRegistrySimple*>(registry));
@@ -49,10 +49,9 @@ void WebcompatReporterServiceFactory::RegisterBrowserStatePrefs(
 
 std::unique_ptr<KeyedService>
 WebcompatReporterServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
-  auto* profile = ProfileIOS::FromBrowserState(context);
+    ProfileIOS* profile) const {
   auto report_uploader = std::make_unique<WebcompatReportUploader>(
-      context->GetSharedURLLoaderFactory());
+      profile->GetSharedURLLoaderFactory());
   component_updater::ComponentUpdateService* cus =
       GetApplicationContext()->GetComponentUpdateService();
   return std::make_unique<WebcompatReporterService>(

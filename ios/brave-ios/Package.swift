@@ -16,7 +16,7 @@ var package = Package(
     .library(name: "Shared", targets: ["Shared"]),
     .library(
       name: "BraveCore",
-      targets: ["BraveCore", "MaterialComponents", "PartitionAllocSupport"]
+      targets: ["BraveCore", "PartitionAllocSupport"]
     ),
     .library(name: "BraveShared", targets: ["BraveShared"]),
     .library(name: "BraveShields", targets: ["BraveShields"]),
@@ -89,7 +89,6 @@ var package = Package(
         "Shared",
         "BraveWallet",
         "BraveCore",
-        "MaterialComponents",
         "PartitionAllocSupport",
         "BraveUI",
         "DesignSystem",
@@ -260,7 +259,6 @@ var package = Package(
       name: "Shared",
       dependencies: [
         "BraveCore",
-        "MaterialComponents",
         "Strings",
       ],
       plugins: ["LoggerPlugin"]
@@ -278,7 +276,7 @@ var package = Package(
     .testTarget(
       name: "CertificateUtilitiesTests",
       dependencies: [
-        "CertificateUtilities", "BraveShared", "BraveCore", "MaterialComponents",
+        "CertificateUtilities", "BraveShared", "BraveCore",
         "PartitionAllocSupport",
       ],
       exclude: ["Certificates/self-signed.conf"],
@@ -339,10 +337,6 @@ var package = Package(
     ),
     .binaryTarget(name: "BraveCore", path: "../../../out/ios_current_link/BraveCore.xcframework"),
     .binaryTarget(
-      name: "MaterialComponents",
-      path: "../../../out/ios_current_link/MaterialComponents.xcframework"
-    ),
-    .binaryTarget(
       name: "GRDWireGuardKit",
       path: "../third_party/GRDWireGuardKit/GRDWireGuardKit.xcframework"
     ),
@@ -376,7 +370,6 @@ var package = Package(
       dependencies: [
         "Data",
         "BraveCore",
-        "MaterialComponents",
         "PartitionAllocSupport",
         "BraveShared",
         "BraveUI",

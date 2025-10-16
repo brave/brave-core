@@ -237,9 +237,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, OpenCloseDisableTorWindow) {
   {
     Browser* tor_browser = chrome::FindBrowserWithProfile(tor.tor_profile);
     CloseTorWindow(tor.tor_profile);
-    ui_test_utils::BrowserChangeObserver(
-        tor_browser, ui_test_utils::BrowserChangeObserver::ChangeType::kRemoved)
-        .Wait();
+    ui_test_utils::BrowserDestroyedObserver(tor_browser).Wait();
 
     WaitProcessExit(tor.tor_pid);
   }

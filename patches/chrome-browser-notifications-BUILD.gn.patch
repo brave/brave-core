@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/notifications/BUILD.gn b/chrome/browser/notifications/BUILD.gn
-index ce788080fb3d1467e52f38db02ce73119e20b387..62e67c5b432c17b12f0e7f720d6ab7eba94af3cb 100644
+index 1f057daf84f3d877db4f86501b676b99b5ee0f1f..d659dbc970f3982969b6bf9b44b8a936192ecc10 100644
 --- a/chrome/browser/notifications/BUILD.gn
 +++ b/chrome/browser/notifications/BUILD.gn
 @@ -96,6 +96,7 @@ if (is_android) {

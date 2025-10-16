@@ -26,9 +26,10 @@ class BraveGlobalValueMap : public GlobalValueMap {
   // Returns nullptr to indicate the RuleIterator is empty.
   std::unique_ptr<RuleIterator> GetRuleIterator(
       ContentSettingsType content_type) const;
-  void SetContentSetting(ContentSettingsType content_type,
-                         ContentSetting setting);
-  ContentSetting GetContentSetting(ContentSettingsType content_type) const;
+  void SetPermissionSetting(ContentSettingsType content_type,
+                            std::optional<PermissionSetting> setting);
+  std::optional<PermissionSetting> GetPermissionSetting(
+      ContentSettingsType content_type) const;
 };
 
 }  // namespace content_settings

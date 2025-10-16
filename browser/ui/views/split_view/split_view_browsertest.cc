@@ -36,6 +36,7 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_background_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
@@ -113,7 +114,7 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
   }
 
   BrowserNonClientFrameView* browser_non_client_frame_view() {
-    return brave_browser_view()->frame()->GetFrameView();
+    return brave_browser_view()->browser_widget()->GetFrameView();
   }
 
   void ToggleVerticalTabStrip() {
@@ -189,6 +190,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
       multi_contents_view->contents_container_views_for_testing()[1]);
   ASSERT_TRUE(start_contents_container_view);
   ASSERT_TRUE(end_contents_container_view);
+  EXPECT_FALSE(
+      multi_contents_view->background_view_for_testing()->GetVisible());
 
   FullscreenController* fullscreen_controller = browser()
                                                     ->GetFeatures()
@@ -1020,7 +1023,7 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
   }
 
   BrowserNonClientFrameView& browser_non_client_frame_view() {
-    return *browser_view().frame()->GetFrameView();
+    return *browser_view().browser_widget()->GetFrameView();
   }
 
   void ToggleVerticalTabStrip() {
@@ -1055,10 +1058,6 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
 // (-[NSWindow beginSheet:]), which natively draws a scrim since macOS 11.
 #if !BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, ScrimForSecondaryContents) {
-  if (!base::FeatureList::IsEnabled(features::kScrimForBrowserWindowModal)) {
-    GTEST_SKIP();
-  }
-
   brave::NewSplitViewForTab(browser());
 
   auto child_widget_delegate = std::make_unique<views::WidgetDelegate>();

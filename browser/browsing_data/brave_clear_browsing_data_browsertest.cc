@@ -48,57 +48,6 @@
 using content::BraveClearBrowsingData;
 using content::WebContents;
 
-namespace {
-
-class BrowserChangeObserver : public BrowserListObserver {
- public:
-  enum class ChangeType {
-    kAdded,
-    kRemoved,
-  };
-
-  BrowserChangeObserver(Browser* browser, ChangeType type)
-      : browser_(browser), type_(type) {
-    BrowserList::AddObserver(this);
-  }
-
-  BrowserChangeObserver(const BrowserChangeObserver&) = delete;
-  BrowserChangeObserver& operator=(const BrowserChangeObserver&) = delete;
-
-  ~BrowserChangeObserver() override { BrowserList::RemoveObserver(this); }
-
-  Browser* Wait() {
-    run_loop_.Run();
-    return browser_;
-  }
-
-  // BrowserListObserver:
-  void OnBrowserAdded(Browser* browser) override {
-    if (type_ == ChangeType::kAdded) {
-      browser_ = browser;
-      run_loop_.Quit();
-    }
-  }
-
-  void OnBrowserRemoved(Browser* browser) override {
-    if (browser_ && browser_ != browser) {
-      return;
-    }
-
-    if (type_ == ChangeType::kRemoved) {
-      browser_ = browser;
-      run_loop_.Quit();
-    }
-  }
-
- private:
-  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
-  ChangeType type_;
-  base::RunLoop run_loop_;
-};
-
-}  // namespace
-
 class BraveClearDataOnExitTest
     : public InProcessBrowserTest,
       public BraveClearBrowsingData::OnExitTestingCallback {
@@ -241,10 +190,9 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
   // Open a new browser window with the provided |profile|.
   Browser* NewBrowserWindow(Profile* profile) {
     DCHECK(profile);
-    BrowserChangeObserver bco(nullptr,
-                              BrowserChangeObserver::ChangeType::kAdded);
+    ui_test_utils::BrowserCreatedObserver browser_created_observer;
     chrome::NewEmptyWindow(profile);
-    Browser* browser = bco.Wait();
+    Browser* browser = browser_created_observer.Wait();
     DCHECK(browser);
     content::WaitForLoadStopWithoutSuccessCheck(
         browser->tab_strip_model()->GetActiveWebContents());
@@ -253,10 +201,9 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
 
   // Open a new browser window with a guest session.
   Browser* NewGuestBrowserWindow() {
-    BrowserChangeObserver bco(nullptr,
-                              BrowserChangeObserver::ChangeType::kAdded);
+    ui_test_utils::BrowserCreatedObserver browser_created_observer;
     profiles::SwitchToGuestProfile(base::DoNothing());
-    Browser* browser = bco.Wait();
+    Browser* browser = browser_created_observer.Wait();
     DCHECK(browser);
     // When a guest |browser| closes a BrowsingDataRemover will be created and
     // executed. It needs a loaded TemplateUrlService or else it hangs on to a
@@ -294,10 +241,9 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
 
   // Close the provided |browser| window and wait until done.
   void CloseBrowserWindow(Browser* browser) {
-    BrowserChangeObserver bco(browser,
-                              BrowserChangeObserver::ChangeType::kRemoved);
+    ui_test_utils::BrowserDestroyedObserver browser_destroyed_observer(browser);
     chrome::ExecuteCommand(browser, IDC_CLOSE_WINDOW);
-    EXPECT_EQ(bco.Wait(), browser);
+    browser_destroyed_observer.Wait();
   }
 
   // Enable deletion of browsing history on exit.

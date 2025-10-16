@@ -1,8 +1,8 @@
 diff --git a/scripts/build/typescript/ts_library.py b/scripts/build/typescript/ts_library.py
-index c4a2a6536f9c12afd46183c44444e3aefe0a5844..7c63a55f4d57136604ab2ccb5434c871b803a9ed 100644
+index 0dead52f06546e9e1d2e49b026fd4b9c944c7b78..f2f7e85e4630cc0722d204bbeb35b2b88954dd14 100644
 --- a/scripts/build/typescript/ts_library.py
 +++ b/scripts/build/typescript/ts_library.py
-@@ -332,5 +332,6 @@ def main():
+@@ -336,5 +336,6 @@ def main():
      return 0
  
  

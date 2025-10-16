@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/resources/history/synced_device_manager.html.ts b/chrome/browser/resources/history/synced_device_manager.html.ts
+index edfad390f49651662efc734de3cdd61fa3244ac1..63c53558cd58b396434badcb1f2efe2e751218fd 100644
+--- a/chrome/browser/resources/history/synced_device_manager.html.ts
++++ b/chrome/browser/resources/history/synced_device_manager.html.ts
+@@ -31,6 +31,7 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
+   ${this.noSyncedTabsMessage_()}
+ </div>
+ 
++<!--
+ <div id="sign-in-guide"
+     ?hidden="${!this.showSignInGuide_()
+       || this.replaceSyncPromosWithSignInPromos_}">
+@@ -42,6 +43,7 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
+     $i18n{turnOnSyncButton}
+   </cr-button>
+ </div>
++-->
+ 
+ <if expr="not is_chromeos">
+   ${this.shouldShowHistorySyncOptIn_() ? html`

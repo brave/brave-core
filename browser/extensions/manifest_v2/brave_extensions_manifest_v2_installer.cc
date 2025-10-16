@@ -146,7 +146,8 @@ void ExtensionManifestV2Installer::BeginInstall() {
 void ExtensionManifestV2Installer::OnUpdateManifestResponse(
     std::optional<std::string> body) {
   if (body) {
-    auto update_manifest = base::JSONReader::ReadDict(body.value());
+    auto update_manifest = base::JSONReader::ReadDict(
+        body.value(), base::JSON_PARSE_CHROMIUM_EXTENSIONS);
     if (update_manifest) {
       const GURL crx_url = GetCrxDownloadUrl(*update_manifest, extension_id_);
       if (crx_url.is_valid() && !crx_url.is_empty()) {

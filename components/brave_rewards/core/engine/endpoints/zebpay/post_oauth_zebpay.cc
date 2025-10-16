@@ -24,7 +24,8 @@ namespace {
 
 base::expected<std::pair<std::string, std::string>, Error>
 GetAccessTokenAndLinkingInfo(RewardsEngine& engine, const std::string& body) {
-  auto value = base::JSONReader::ReadDict(body);
+  auto value =
+      base::JSONReader::ReadDict(body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
@@ -73,7 +74,8 @@ Result ParseBody(RewardsEngine& engine, const std::string& body) {
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  auto value = base::JSONReader::ReadDict(payload);
+  auto value =
+      base::JSONReader::ReadDict(payload, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);

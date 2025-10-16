@@ -378,6 +378,17 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_SESSION_CRASHED_VIEW_UMA_OPTIN" desc="Text besides the checkbox to let users optin to UMA in the restore from previous crash bubble.">
         Help make Brave better by sending crash reports and <ph name="UMA_LINK">$1<ex>usage statistics</ex></ph> to Brave
       </message>
+      <message name="IDS_RESET_PROFILE_SETTINGS_EXPLANATION_IN_BULLET_POINTS" desc="A label formatted with bullet points describing the consequences of the 'reset profile settings' feature">
+        This action will:
+        <ph name="LINE_BREAKS">&lt;br&gt;&lt;br&gt;</ph>
+          • Reset some Brave settings and Brave shortcuts
+          <ph name="LINE_BREAK">&lt;br&gt;</ph>
+          • Disable extensions
+          <ph name="LINE_BREAK">&lt;br&gt;</ph>
+          • Delete cookies and other temporary site data
+          <ph name="LINE_BREAKS">&lt;br&gt;&lt;br&gt;</ph>
+          Bookmarks, history, and saved passwords won't be affected.
+      </message>
       <if expr="not is_chromeos">
         <!-- Browser Window Title Format -->
         <if expr="_is_chrome_for_testing_branded">
@@ -646,9 +657,6 @@ Brave is unable to recover your settings.
         <message name="IDS_SAME_VERSION_REPAIR_FAILED" desc="Error displayed if installation fails due to Brave running.">
           Can not install the same Brave version that is currently running. Please close Brave and try again.
         </message>
-        <message name="IDS_SETUP_PATCH_FAILED" desc="Error message when setup.exe fails to patch itself.">
-          Installation failed due to unspecified error. Please download Brave again.
-        </message>
         <message name="IDS_INSTALL_OS_NOT_SUPPORTED" desc="Error displayed if OS is not supported">
           Brave requires Windows 10 or higher.
         </message>
@@ -678,6 +686,14 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_TRACING_SERVICE_DESCRIPTION" desc="The description of the Windows system tracing service. Displayed in the Windows Services management console.">
           Provides system tracing services for <ph name="BROWSER_NAME">$1<ex>Brave</ex></ph>. If this service is disabled, performance traces created by the browser will not include system-wide events such as context switch and ready thread events.
+        </message>
+      </if>
+      <if expr="not is_android">
+        <message name="IDS_PASSWORD_MANAGER_IMPORT_DIALOG_TITLE" desc="The title of the file selection dialog for importing passwords">
+          Import Passwords To Brave
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_EXPORT_DIALOG_TITLE" desc="The title of the file selection dialog for exporting passwords">
+          Export Passwords From Brave
         </message>
       </if>
       <!-- Options Dialog -->
@@ -979,6 +995,34 @@ Brave is unable to recover your settings.
         </message>
       </if>
 
+      <!-- Page menu. Android has separate strings for its menu -->
+      <if expr="not is_android">
+        <if expr="use_titlecase">
+          <then>
+            <message name="IDS_CUSTOMIZE_CHROME" desc="In Title Case: The text label of the Customize Brave menu item">
+              C&amp;ustomize Your Brave
+            </message>
+            <message name="IDS_OTHER_CHROME_PROFILES_TITLE" desc="In Title Case: The title of the Other Brave profiles section">
+              Other Brave Profiles
+            </message>
+            <message name="IDS_MANAGE_CHROME_PROFILES" desc="In Title Case: The text label of the manage chrome profile item">
+              &amp;Manage Brave Profiles
+            </message>
+          </then>
+          <else>
+            <message name="IDS_CUSTOMIZE_CHROME" desc="The text label of the Customize Brave menu item">
+              C&amp;ustomize your Brave
+            </message>
+            <message name="IDS_OTHER_CHROME_PROFILES_TITLE" desc="The title of the Other Brave profiles section">
+              Other Brave profiles
+            </message>
+            <message name="IDS_MANAGE_CHROME_PROFILES" desc="The text label of the manage chrome profile item">
+              &amp;Manage Brave profiles
+            </message>
+          </else>
+        </if>
+      </if>
+
       <message name="IDS_VIEW_PASSWORDS" desc="Item in the app menu which shows Password Manager page">
         P&amp;assword Manager
       </message>
@@ -1014,7 +1058,7 @@ Brave is unable to recover your settings.
         Continue where you left off: Brave can restore your tabs every time you restart. To turn this on, go to
       </message>
       <message name="IDS_SESSION_RESTORE_LINK" desc="Text for the link in the session restore infobar to open the Settings page.">
-        Settings.
+         Settings.
       </message>
 
       <!-- Enterprise sign-in dialog -->
@@ -1098,6 +1142,9 @@ Brave is unable to recover your settings.
           </message>
         </else>
       </if>
+      <message name="IDS_NTP_MODULES_SETUP_LIST_TITLE" desc="Title shown at the top of the Setup List card.">
+        Make Brave Yours
+      </message>
 
       <!-- Signin Email Confirmation tab modal dialog -->
       <if expr="not is_chromeos">
@@ -1159,7 +1206,7 @@ Brave is unable to recover your settings.
           To stay safer online with your parent’s choices, sign in to Brave
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_IPH_TEXT_SIGNIN_REMINDER" desc="This string is the body text of a reminder message, which is intended to help users understand that they have been signed in to Brave. The user previously signed in to a Brave service (like Gmail or Maps), and saw the Brave Signin Bubble intercept; when asked whether the user wanted to sign in to Brave as well, the user selected yes. After a period of time, this reminder message appears at the top right of Brave (pointing at the Profile Menu) to remind the user that they made this choice a while ago. This body text string comes after the 'Welcome back, USER_NAME' string. We are focusing on the benefit that user enjoys, now that they're signed in to Brave. The tone should be welcoming.">
-          While you're signed in, you can use your passwords and more from your Brave sync chain in Brave. You can change this at any time in settings.
+          While you're signed in, you can use your passwords and more from your Brave sync chain in Brave. You can change this anytime in settings.
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_IPH_TEXT_SIGNIN_REMINDER_SCREENREADER" desc="This string is the accessibility text of a reminder message, which is intended to help users understand that they have been signed in to Brave.">
           While you're signed in, you can use your passwords and more from your Brave sync chain in Brave. <ph name="SHORTCUT">$1<ex>CTRL+SHIFT+M</ex></ph> can change your Brave services settings.
@@ -1650,6 +1697,16 @@ Brave is unable to recover your settings.
         </message>
       </if>
 
+      <!-- Side panel strings -->
+      <message name="IDS_SIDE_PANEL_CUSTOMIZE_CHROME_TITLE" desc="The name of the Customize Brave feature in the side panel combo box.">
+        Customize Brave
+      </message>
+
+      <!-- History Strings -->
+      <message name="IDS_HISTORY_HISTORY_MENU_ITEM" desc="Label displayed in history sidebar button to display history.">
+        Brave history
+      </message>
+
       <!-- Lens Overlay Strings -->
       <if expr="not is_android">
         <!-- Side Panel Pinnable Entrypoint Strings -->
@@ -1681,6 +1738,9 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_LENS_OVERLAY_FEEDBACK_TOAST_MESSAGE" desc="The message on the toast prompting the user to share their thoughts by sending feedback.">
           Share your thoughts
+        </message>
+        <message name="IDS_LENS_OVERLAY_FEEDBACK_TOAST_MESSAGE_ALT" desc="The message on the toast asking the user if the results are useful and to send feedback.">
+          Are these results useful?
         </message>
         <message name="IDS_LENS_OVERLAY_SEND_FEEDBACK_BUTTON_LABEL" desc="The label for the button that on click opens a feedback form for the user to send feedback about the feature.">
           Send feedback
@@ -1926,6 +1986,11 @@ Brave is unable to recover your settings.
         <message name="IDS_LENS_CONTEXTUAL_SEARCH_DEFAULT_QUERY" desc="Default query for Lens searchbox to request help with the current page context.">
           help me with this
         </message>
+        <message name="IDS_LENS_CONTEXTUAL_SEARCH_ZERO_STATE_QUERY" is_accessibility_with_no_ui="true" desc="Default query for Lens searchbox to request help with the current page context in a low intent state.">
+          **Summarize:** In a single sentence under 30 words, describe the primary subject and purpose of the content in the screenshot.
+
+          **Suggest Questions:** Generate a bulleted list of 3-5 thought-provoking questions a user could ask to better understand the screenshot. These questions should include at least one that is specifically about a visual object, its design, or its placement.
+        </message>
 
         <!-- AI Mode Strings -->
         <message name="IDS_LENS_COMPOSEBOX_HINT_TEXT" desc="The hint text of the AI mode searchbox in the Lens side panel. This text is shown in the searchbox when the user has not yet typed any text, and prompts the user to ask a follow up question.">
@@ -2068,9 +2133,33 @@ Brave is unable to recover your settings.
       </if>
 
       <!-- Brave parent extension/app install blocking dialog. -->
-      <if expr="enable_extensions">
+      <if expr="enable_extensions_core">
         <message name="IDS_EXTENSION_PERMISSIONS_BLOCKED_BY_PARENT_PROMPT_MESSAGE" desc="Text for the dialog indicating that a parent has blocked extensions and apps.">
          Your parent has turned off "Permissions for sites, apps and extensions" for Brave
+        </message>
+
+        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_APP" desc="Titlebar of the prompt window for an externally installed app">
+          Another program on your computer added an app that may change the way Brave works.
+
+<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
+        </message>
+        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_EXTENSION" desc="Titlebar of the prompt window for an externally installed extension">
+          Another program on your computer added an extension that may change the way Brave works.
+
+<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
+        </message>
+        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_THEME" desc="Titlebar of the prompt window for an externally installed theme">
+          Another program on your computer added a theme that may change the way Brave works.
+
+<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
+        </message>
+        <message name="IDS_EXTENSION_EXTERNAL_INITIAL_INSTALL_PROMPT_TITLE_EXTENSION" desc="">
+          <ph name="PARTNER_NAME">$1<ex>Brave</ex></ph> has added an extension that may change the way Brave works.
+
+<ph name="EXTENSION_NAME">$2<ex>Babylon Toolbar</ex></ph>
+        </message>
+        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ABORT_BUTTON" desc="Button on the external install prompt to remove an extension installed by a third party.">
+          Remove from Brave
         </message>
       </if>
 
@@ -2627,6 +2716,19 @@ Brave is unable to recover your settings.
             Your account in Brave
           </message>
         </if>
+      </if>
+
+      <!--Desktop to iOS promo strings-->
+      <if expr="not is_android">
+        <message name="IDS_IOS_DESKTOP_ESB_PROMO_BUBBLE_DESCRIPTION_QR" desc="The description for the iOS desktop ESB promo bubble with a QR code.">
+          Download Brave on your phone to add an extra layer of protection when you're on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_ESB_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop ESB promo bubble with a reminder button.">
+          Stay safer on the go with Enhanced Safe Browsing on Brave for iOS
+        </message>
+        <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_DESCRIPTION_REMINDER" desc="The description for the footer of the iOS desktop password promo bubble.">
+          Sign in faster to sites using saved passwords for Brave on iOS
+        </message>
       </if>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta

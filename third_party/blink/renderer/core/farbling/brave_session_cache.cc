@@ -349,8 +349,9 @@ void BraveSessionCache::PerturbPixelsInternal(base::span<uint8_t> data) {
   }
 }
 
-WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
-                                                    blink::wtf_size_t length) {
+blink::String BraveSessionCache::GenerateRandomString(
+    std::string seed,
+    blink::wtf_size_t length) {
   uint8_t key[32];
   crypto::HMAC h(crypto::HMAC::SHA256);
   const auto farbling_token_bytes =
@@ -360,7 +361,7 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
   // initial PRNG seed based on session key and passed-in seed string
   uint64_t v = *reinterpret_cast<uint64_t*>(key);
   base::span<UChar> destination;
-  WTF::String value = WTF::String::CreateUninitialized(length, destination);
+  blink::String value = blink::String::CreateUninitialized(length, destination);
   for (auto& c : destination) {
     c = UNSAFE_TODO(
         kLettersForRandomStrings[v % kLettersForRandomStringsLength]);
@@ -369,7 +370,8 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
   return value;
 }
 
-WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
+blink::String BraveSessionCache::FarbledUserAgent(
+    blink::String real_user_agent) {
   FarblingPRNG prng = MakePseudoRandomGenerator();
   blink::StringBuilder result;
   result.Append(real_user_agent);

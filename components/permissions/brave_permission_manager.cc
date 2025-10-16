@@ -53,10 +53,11 @@ BravePermissionManager::GetPermissionStatusForOrigin(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   base::AutoReset<GURL> auto_reset_requesting_origin(&forced_requesting_origin_,
                                                      requesting_origin);
-  return GetPermissionStatusForCurrentDocument(
-      content::PermissionDescriptorUtil::
-          CreatePermissionDescriptorForPermissionType(permission),
-      render_frame_host, /*should_include_device_status=*/false);
+  return GetPermissionResultForCurrentDocument(
+             content::PermissionDescriptorUtil::
+                 CreatePermissionDescriptorForPermissionType(permission),
+             render_frame_host, /*should_include_device_status=*/false)
+      .status;
 }
 
 }  // namespace permissions

@@ -239,8 +239,8 @@ void BraveVPNRegionDataManager::OnFetchRegionList(
     CHECK_IS_TEST();
   }
   api_request_.reset();
-  std::optional<base::Value::List> value =
-      base::JSONReader::ReadList(region_list);
+  std::optional<base::Value::List> value = base::JSONReader::ReadList(
+      region_list, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (value && ParseAndCacheRegionList(*value, true)) {
     VLOG(2) << "Got valid region list";
     // Set default device region and it'll be updated when received valid
@@ -283,8 +283,8 @@ void BraveVPNRegionDataManager::OnFetchTimezones(
   api_request_.reset();
 
   if (success) {
-    std::optional<base::Value::List> value =
-        base::JSONReader::ReadList(timezones_list);
+    std::optional<base::Value::List> value = base::JSONReader::ReadList(
+        timezones_list, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
     success = value.has_value();
     if (success) {
       SetDeviceRegionWithTimezone(*value);

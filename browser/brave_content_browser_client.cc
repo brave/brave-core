@@ -1130,7 +1130,7 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   }
 }
 
-GURL BraveContentBrowserClient::GetEffectiveURL(
+std::optional<GURL> BraveContentBrowserClient::GetEffectiveURL(
     content::BrowserContext* browser_context,
     const GURL& url) {
   Profile* profile = Profile::FromBrowserContext(browser_context);

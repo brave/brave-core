@@ -86,8 +86,7 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
 
   // Open a Guest window.
   EXPECT_EQ(1U, BrowserList::GetInstance()->size());
-  ui_test_utils::BrowserChangeObserver browser_creation_observer(
-      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+  ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
   base::RunLoop().RunUntilIdle();
   browser_creation_observer.Wait();

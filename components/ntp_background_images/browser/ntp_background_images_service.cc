@@ -279,8 +279,8 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     const std::string cached_json_data = pref_service_->GetString(
         prefs::kNewTabPageCachedSuperReferralComponentData);
     if (!cached_json_data.empty()) {
-      std::optional<base::Value::Dict> cached_data =
-          base::JSONReader::ReadDict(cached_json_data);
+      std::optional<base::Value::Dict> cached_data = base::JSONReader::ReadDict(
+          cached_json_data, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
       if (!cached_data) {
         return;
       }
@@ -462,7 +462,8 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
   }
 
   std::optional<base::Value::Dict> mapping_table_value =
-      base::JSONReader::ReadDict(json_string);
+      base::JSONReader::ReadDict(json_string,
+                                 base::JSON_PARSE_CHROMIUM_EXTENSIONS);
 
   if (!mapping_table_value) {
     DVLOG(6) << "Mapping table is invalid.";
@@ -590,8 +591,8 @@ void NTPBackgroundImagesService::OnSponsoredComponentReady(
 void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
     bool is_super_referral,
     const std::string& json_string) {
-  std::optional<base::Value::Dict> json_value =
-      base::JSONReader::ReadDict(json_string);
+  std::optional<base::Value::Dict> json_value = base::JSONReader::ReadDict(
+      json_string, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!json_value) {
     DVLOG(2) << "Read json data failed. Invalid JSON data";
     return;

@@ -17,6 +17,7 @@ import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCallback;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
+import org.chromium.chrome.browser.omnibox.navattach.NavigationAttachmentsCoordinator;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionHandler;
 import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionHandler.VoiceResult;
@@ -52,15 +53,15 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     /** Will be deleted in bytecode, value from the parent class will be used instead. */
     private @Nullable DropdownItemViewInfoListBuilder mDropdownViewInfoListBuilder;
 
-    public BraveAutocompleteMediator(
+    BraveAutocompleteMediator(
             Context context,
             AutocompleteDelegate delegate,
             UrlBarEditingTextStateProvider textProvider,
             PropertyModel listPropertyModel,
             Handler handler,
-            Supplier<ModalDialogManager> modalDialogManagerSupplier,
+            Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             Supplier<@Nullable Tab> activityTabSupplier,
-            Supplier<ShareDelegate> shareDelegateSupplier,
+            @Nullable Supplier<ShareDelegate> shareDelegateSupplier,
             LocationBarDataProvider locationBarDataProvider,
             Callback<Tab> bringTabToFrontCallback,
             Callback<String> bringTabGroupToFrontCallback,
@@ -71,6 +72,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
             OmniboxSuggestionsDropdownEmbedder embedder,
             WindowAndroid windowAndroid,
             DeferredIMEWindowInsetApplicationCallback deferredIMEWindowInsetApplicationCallback,
+            NavigationAttachmentsCoordinator navigationAttachmentsCoordinator,
             boolean forcePhoneStyleOmnibox) {
         super(
                 context,
@@ -91,6 +93,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
                 embedder,
                 windowAndroid,
                 deferredIMEWindowInsetApplicationCallback,
+                navigationAttachmentsCoordinator,
                 forcePhoneStyleOmnibox);
 
         mDelegate = delegate;

@@ -1975,7 +1975,7 @@ base::span<const std::string_view> GetMainFontWhitelist() {
 }
 
 bool AllowFontByFamilyName(const blink::AtomicString& family_name,
-                           WTF::String default_language) {
+                           blink::String default_language) {
   auto fontWhitelist = GetMainFontWhitelist();
   if (g_simulate_empty_font_whitelist_for_testing) [[unlikely]] {
     return false;
@@ -2008,7 +2008,7 @@ bool IsFontAllowedForFarbling(const blink::AtomicString& family_name) {
 }
 
 base::span<const std::string_view> GetAdditionalFontWhitelistByLocale(
-    WTF::String locale_language) {
+    blink::String locale_language) {
 #if BUILDFLAG(IS_LINUX)
   if (locale_language != "en" && locale_language != "la") {
     const auto distro = GetLinuxDistro();

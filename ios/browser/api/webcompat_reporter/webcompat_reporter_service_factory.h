@@ -33,7 +33,7 @@ class WebcompatReporterServiceFactory : public ProfileKeyedServiceFactoryIOS {
 
  private:
   friend class base::NoDestructor<WebcompatReporterServiceFactory>;
-  void RegisterBrowserStatePrefs(
+  void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
 
   WebcompatReporterServiceFactory();
@@ -41,7 +41,7 @@ class WebcompatReporterServiceFactory : public ProfileKeyedServiceFactoryIOS {
 
   // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
+      ProfileIOS* profile) const override;
 };
 
 }  // namespace webcompat_reporter

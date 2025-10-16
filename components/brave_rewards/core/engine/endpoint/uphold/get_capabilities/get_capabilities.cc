@@ -81,7 +81,8 @@ GetCapabilities::ProcessResponse(const mojom::UrlResponse& response) const {
 
 GetCapabilities::CapabilityMap GetCapabilities::ParseBody(
     const std::string& body) const {
-  const auto value = base::JSONReader::ReadList(body);
+  const auto value =
+      base::JSONReader::ReadList(body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid body format";
     return {};

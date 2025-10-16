@@ -53,7 +53,7 @@ DebounceServiceFactory::DebounceServiceFactory()
 DebounceServiceFactory::~DebounceServiceFactory() = default;
 
 std::unique_ptr<KeyedService> DebounceServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
+    ProfileIOS* profile) const {
   if (!base::FeatureList::IsEnabled(debounce::features::kBraveDebounce)) {
     return nullptr;
   }
@@ -63,7 +63,7 @@ std::unique_ptr<KeyedService> DebounceServiceFactory::BuildServiceInstanceFor(
   std::unique_ptr<debounce::DebounceService> service =
       std::make_unique<debounce::DebounceService>(
           braveContext->debounce_component_installer(),
-          user_prefs::UserPrefs::Get(context));
+          user_prefs::UserPrefs::Get(profile));
 
   return service;
 }

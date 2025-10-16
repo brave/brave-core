@@ -24,10 +24,11 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
                          views::View* vertical_tab_strip_container,
                          views::View* toolbar,
                          InfoBarContainerView* infobar_container,
+                         views::View* main_container,
                          views::View* contents_container,
                          MultiContentsView* multi_contents_view,
                          views::View* left_aligned_side_panel_separator,
-                         views::View* unified_side_panel,
+                         views::View* contents_height_side_panel,
                          views::View* right_aligned_side_panel_separator,
                          views::View* side_panel_rounded_corner,
                          views::View* contents_separator);

@@ -22,6 +22,13 @@ void BraveLaunchOption(const base::CommandLine& cmd_line,
 }  // namespace policy
 }  // namespace sandbox
 
+// The compiler doesn't realize that we're only linking against the chromium_src
+// override object file, so it's ok for object duplication to occur here
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunique-object-duplication"
+
 #define BRAVE_START_SANDBOXED_PROCESS BraveLaunchOption(cmd_line, &options);
 #include <sandbox/policy/win/sandbox_win.cc>
 #undef BRAVE_START_SANDBOXED_PROCESS
+
+#pragma clang diagnostic pop

@@ -6,12 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_RESOURCE_FETCHER_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_RESOURCE_FETCHER_H_
 
-#define GetCacheIdentifier           \
-  GetContextCacheIdentifier() const; \
-  String GetCacheIdentifier
+#define HandleLoaderError                   \
+  Unused();                                 \
+  String GetContextCacheIdentifier() const; \
+  void HandleLoaderError
 
 #include <third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h>  // IWYU pragma: export
 
-#undef GetCacheIdentifier
+#undef HandleLoaderError
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_RESOURCE_FETCHER_H_

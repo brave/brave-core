@@ -13,9 +13,4 @@
 #include "ui/gfx/win/hwnd_util.h"
 #endif
 
-#define SetBackgroundColor(color) \
-  SetBackgroundColor(desktop_window_tree_host_->GetBackgroundColor(color))
-
 #include <ui/views/widget/desktop_aura/desktop_native_widget_aura.cc>
-
-#undef SetBackgroundColor
