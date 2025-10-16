@@ -67,6 +67,7 @@ BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   brave_shields_settings_ =
       BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  CHECK(brave_shields_settings_);
 
   local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
