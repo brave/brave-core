@@ -20,7 +20,8 @@ namespace {
 
 // Helper function to create a value transform from a JSON string definition
 std::unique_ptr<ValueTransform> CreateTransform(const std::string& json_def) {
-  auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(json_def);
+  auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(
+      json_def, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed_json.has_value() || !parsed_json->is_list()) {
     return nullptr;
   }
