@@ -2278,7 +2278,7 @@ interface ZCashWalletServiceObserver {
 };
 
 interface ZCashWalletService {
-  GetBalance(string network_id, AccountId account_id)
+  GetBalance(AccountId account_id)
       => (ZCashBalance? balance, string? error_message);
 
   GetReceiverAddress(AccountId account_id)
@@ -2287,13 +2287,11 @@ interface ZCashWalletService {
   GetZCashAccountInfo(AccountId account_id)
       => (ZCashAccountInfo? account_info);
 
-  ShieldAllFunds(string network_id, AccountId account_id)
+  ShieldAllFunds(AccountId account_id)
       => (string? tx_id, string? error_message);
 
-  GetTransactionType(string chain_id,
-                     AccountId account_id,
-                     bool use_shielded_pool,
-                     string recipient)
+  GetTransactionType(
+      AccountId account_id, bool use_shielded_pool, string recipient)
       => (ZCashTxType tx_type, ZCashAddressError error);
 
   AddObserver(pending_remote<ZCashWalletServiceObserver> observer);
@@ -2312,7 +2310,7 @@ interface ZCashWalletService {
 
   ResetSyncState(AccountId account_id) => (string? error_message);
 
-  GetChainTipStatus(AccountId account_id, string chain_id)
+  GetChainTipStatus(AccountId account_id)
       => (ZCashChainTipStatus? status, string? error_message);
 };
 

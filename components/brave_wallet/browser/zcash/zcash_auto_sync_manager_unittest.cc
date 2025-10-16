@@ -35,9 +35,8 @@ class MockZCashWalletService : public ZCashWalletService {
                            keyring_service,
                            std::move(zcash_rpc)) {}
 
-  MOCK_METHOD3(GetChainTipStatus,
+  MOCK_METHOD2(GetChainTipStatus,
                void(mojom::AccountIdPtr account_id,
-                    const std::string& chain_id,
                     GetChainTipStatusCallback callback));
 
   MOCK_METHOD3(StartShieldSync,
@@ -72,7 +71,7 @@ class ZCashAutoSyncManagerTest : public testing::Test {
         *mock_zcash_wallet_service_,
         ZCashActionContext(*zcash_rpc_, OrchardAddrRawPart(),
                            mock_zcash_wallet_service_->sync_state(),
-                           account_id_, mojom::kZCashMainnet));
+                           account_id_));
   }
 
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
@@ -100,9 +99,9 @@ class ZCashAutoSyncManagerTest : public testing::Test {
 
 TEST_F(ZCashAutoSyncManagerTest, InitialSync) {
   EXPECT_CALL(mock_zcash_wallet_service(), StartShieldSync(_, _, _));
-  ON_CALL(mock_zcash_wallet_service(), GetChainTipStatus(_, _, _))
+  ON_CALL(mock_zcash_wallet_service(), GetChainTipStatus(_, _))
       .WillByDefault(
-          [](mojom::AccountIdPtr account_id, const std::string& chain_id,
+          [](mojom::AccountIdPtr account_id,
              MockZCashWalletService::GetChainTipStatusCallback callback) {
             std::move(callback).Run(mojom::ZCashChainTipStatus::New(0, 1000),
                                     std::nullopt);
@@ -116,9 +115,9 @@ TEST_F(ZCashAutoSyncManagerTest, InitialSync) {
 
 TEST_F(ZCashAutoSyncManagerTest, TimerHit) {
   EXPECT_CALL(mock_zcash_wallet_service(), StartShieldSync(_, _, _)).Times(2);
-  ON_CALL(mock_zcash_wallet_service(), GetChainTipStatus(_, _, _))
+  ON_CALL(mock_zcash_wallet_service(), GetChainTipStatus(_, _))
       .WillByDefault(
-          [](mojom::AccountIdPtr account_id, const std::string& chain_id,
+          [](mojom::AccountIdPtr account_id,
              MockZCashWalletService::GetChainTipStatusCallback callback) {
             std::move(callback).Run(mojom::ZCashChainTipStatus::New(0, 1000),
                                     std::nullopt);

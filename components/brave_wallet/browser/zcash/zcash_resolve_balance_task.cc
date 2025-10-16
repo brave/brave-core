@@ -51,7 +51,7 @@ void ZCashResolveBalanceTask::WorkOnTask() {
 
   if (!utxo_map_) {
     zcash_wallet_service_->GetUtxos(
-        context_.chain_id, context_.account_id.Clone(),
+        context_.account_id.Clone(),
         base::BindOnce(&ZCashResolveBalanceTask::OnUtxosResolvedForBalance,
                        weak_ptr_factory_.GetWeakPtr()));
     return;

@@ -571,7 +571,6 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
                 }
                 if let zec = networkAssets?.tokens.first,
                   let zecBalance = await zcashWalletService.fetchZECTransparentBalances(
-                    networkId: zec.chainId,
                     accountId: account.accountId
                   )
                 {

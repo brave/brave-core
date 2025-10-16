@@ -112,17 +112,13 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
 
   const shieldAllFunds = async () => {
     let { txId, errorMessage } =
-      await getAPIProxy().zcashWalletService.shieldAllFunds(
-        BraveWallet.Z_CASH_MAINNET,
-        props.accountId,
-      )
+      await getAPIProxy().zcashWalletService.shieldAllFunds(props.accountId)
     setShieldResult(txId || errorMessage || 'unknown')
   }
 
   const fetchBalance = React.useCallback(async () => {
     setLoading(true)
     const result = await getAPIProxy().zcashWalletService.getBalance(
-      BraveWallet.Z_CASH_MAINNET,
       props.accountId,
     )
     setBalance(result.balance || undefined)
