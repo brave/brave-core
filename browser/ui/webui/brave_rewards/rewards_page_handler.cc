@@ -75,8 +75,6 @@ class RewardsPageHandler::UpdateObserver
     AddPrefListener(
         brave_ads::prefs::kSubdivisionTargetingUserSelectedSubdivision,
         UpdateSource::kAds);
-    AddPrefListener(brave_ads::prefs::kOptedInToSearchResultAds,
-                    UpdateSource::kAds);
     AddPrefListener(ntp_background_images::prefs::
                         kNewTabPageShowSponsoredImagesBackgroundImage,
                     UpdateSource::kAds);
@@ -411,8 +409,6 @@ void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {
                              kNewTabPageShowSponsoredImagesBackgroundImage);
   settings->notification_ads_enabled =
       prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds);
-  settings->search_ads_enabled =
-      prefs_->GetBoolean(brave_ads::prefs::kOptedInToSearchResultAds);
 
   settings->notification_ads_per_hour =
       ads_service_->GetMaximumNotificationAdsPerHour();
@@ -459,7 +455,6 @@ void RewardsPageHandler::GetAdsStatement(GetAdsStatementCallback callback) {
 
     summary->notification_ads = ad_type_map[AdType::kNotificationAd];
     summary->new_tab_page_ads = ad_type_map[AdType::kNewTabPageAd];
-    summary->search_result_ads = ad_type_map[AdType::kSearchResultAd];
 
     std::move(callback).Run(std::move(statement));
   };
@@ -515,8 +510,6 @@ void RewardsPageHandler::SetAdTypeEnabled(brave_ads::mojom::AdType ad_type,
       prefs_->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, enabled);
       break;
     case AdType::kSearchResultAd:
-      prefs_->SetBoolean(brave_ads::prefs::kOptedInToSearchResultAds, enabled);
-      break;
     case AdType::kPromotedContentAd:
     case AdType::kInlineContentAd:
     case AdType::kUndefined:

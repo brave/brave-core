@@ -43,12 +43,10 @@ export function createModel(): AppModel {
       adsEnabled: {
         'new-tab-page': true,
         'notification': false,
-        'search-result': true
       },
       adTypesReceivedThisMonth: {
         'new-tab-page': 92,
         'notification': 4,
-        'search-result': 1
       },
       minEarningsPreviousMonth: 1.244,
       nextPaymentDate: Date.now() + (4 * 24 * 60 * 60 * 1000),
@@ -260,7 +258,7 @@ export function createModel(): AppModel {
         {
           createdAt: Date.now(),
           id: '124',
-          type: 'search-result',
+          type: 'notification',
           name: 'Brave',
           text: 'Data Regulation & GDPR...',
           domain: 'kite.lnk',

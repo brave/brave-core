@@ -748,12 +748,6 @@
   <message name="IDS_REWARDS_ADS_SETTINGS_NEWS_ON_TOOLTIP" desc="">
     Brave News contains ads that cannot be independently disabled.
   </message>
-  <message name="IDS_REWARDS_ADS_SETTINGS_SEARCH_CONNECTED_TOOLTIP" desc="">
-    You cannot earn BAT from Brave Search Ads yet, but you help support Brave by having them on.
-  </message>
-  <message name="IDS_REWARDS_ADS_SETTINGS_SEARCH_TOOLTIP" desc="">
-    Brave Search Ads appear on <ph name="LINK_BEGIN">$1</ph>Brave Search<ph name="LINK_END">$2</ph>.
-  </message>
   <message name="IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_LABEL" desc="">
     Regional ad relevance
   </message>
@@ -789,9 +783,6 @@
   </message>
   <message name="IDS_REWARDS_AD_TYPE_ON_LABEL" desc="">
     On
-  </message>
-  <message name="IDS_REWARDS_AD_TYPE_SEARCH_RESULT_LABEL" desc="">
-    Search ads
   </message>
 
   <message name="IDS_REWARDS_EARNINGS_ADS_RECEIVED_TEXT" desc="">
