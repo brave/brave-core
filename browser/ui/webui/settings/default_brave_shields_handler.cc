@@ -32,7 +32,7 @@ using brave_shields::ControlTypeFromString;
 using brave_shields::ControlTypeToString;
 
 DefaultBraveShieldsHandler::DefaultBraveShieldsHandler()
-    : brave_shields_settings_(BraveShieldsSettingsServiceFactory::GetForProfile(
+    : brave_shields_settings_(*BraveShieldsSettingsServiceFactory::GetForProfile(
           Profile::FromWebUI(web_ui()))) {}
 
 DefaultBraveShieldsHandler::~DefaultBraveShieldsHandler() = default;
