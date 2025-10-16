@@ -14,59 +14,59 @@
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
 #include "brave/components/ai_chat/core/common/mojom/ollama.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
 
 namespace {
 
-constexpr char kOllamaModelsResponse[] = R"({
-  "models": [
-    {
-      "name": "llama2:7b",
-      "modified_at": "2024-01-01T00:00:00Z",
-      "size": 3825819519,
-      "details": {
-        "parameter_size": "7B"
-      }
-    },
-    {
-      "name": "mistral:latest",
-      "modified_at": "2024-01-02T00:00:00Z",
-      "size": 4109865159,
-      "details": {
-        "parameter_size": "7B"
-      }
-    }
-  ]
-})";
+using ::testing::_;
 
-constexpr char kOllamaModelsResponseUpdated[] = R"({
-  "models": [
-    {
-      "name": "llama2:7b",
-      "modified_at": "2024-01-01T00:00:00Z",
-      "size": 3825819519,
-      "details": {
-        "parameter_size": "7B"
-      }
-    }
-  ]
-})";
+// Mock OllamaService for testing OllamaModelFetcher
+class MockOllamaService : public OllamaService {
+ public:
+  explicit MockOllamaService(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+      : OllamaService(url_loader_factory) {}
 
-constexpr char kModelDetailsResponse[] = R"({
-  "model_info": {
-    "general.architecture": "llama",
-    "llama.context_length": 4096
-  },
-  "capabilities": ["chat"]
-})";
+  void FetchModels(ModelsCallback callback) override {
+    fetch_models_callback_ = std::move(callback);
+  }
+
+  void ShowModel(const std::string& model_name,
+                 ModelDetailsCallback callback) override {
+    show_model_callbacks_[model_name] = std::move(callback);
+  }
+
+  // Test helpers to trigger callbacks
+  void TriggerFetchModelsCallback(
+      std::optional<std::vector<ModelInfo>> models) {
+    if (fetch_models_callback_) {
+      std::move(fetch_models_callback_).Run(std::move(models));
+    }
+  }
+
+  void TriggerShowModelCallback(const std::string& model_name,
+                                std::optional<ModelDetails> details) {
+    auto it = show_model_callbacks_.find(model_name);
+    if (it != show_model_callbacks_.end()) {
+      std::move(it->second).Run(std::move(details));
+      show_model_callbacks_.erase(it);
+    }
+  }
+
+ private:
+  ModelsCallback fetch_models_callback_;
+  std::map<std::string, ModelDetailsCallback> show_model_callbacks_;
+};
 
 }  // namespace
 
@@ -88,6 +88,11 @@ class OllamaModelFetcherTest : public testing::Test {
 
     ollama_model_fetcher_ = std::make_unique<OllamaModelFetcher>(
         *model_service_, &pref_service_, shared_url_loader_factory_);
+
+    // Inject mock OllamaService for testing
+    auto mock = std::make_unique<MockOllamaService>(shared_url_loader_factory_);
+    mock_ollama_service_ = mock.get();
+    ollama_model_fetcher_->ollama_service_ = std::move(mock);
   }
 
   void TearDown() override { OSCryptMocker::TearDown(); }
@@ -102,6 +107,7 @@ class OllamaModelFetcherTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable* pref_service() {
     return &pref_service_;
   }
+  MockOllamaService* mock_ollama_service() { return mock_ollama_service_; }
 
  private:
   base::test::TaskEnvironment task_environment_;
@@ -110,20 +116,34 @@ class OllamaModelFetcherTest : public testing::Test {
   network::TestURLLoaderFactory test_url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<OllamaModelFetcher> ollama_model_fetcher_;
+  raw_ptr<MockOllamaService> mock_ollama_service_;
 };
 
 TEST_F(OllamaModelFetcherTest, FetchModelsAddsNewModels) {
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
-                                         kOllamaModelsResponse);
-  // Mock the detail responses for each model
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
-                                         kModelDetailsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
-                                         kModelDetailsResponse);
-
   size_t initial_count = model_service()->GetModels().size();
 
+  // Trigger FetchModels
   ollama_model_fetcher()->FetchModels();
+
+  // Simulate FetchModels response with 2 models
+  std::vector<OllamaService::ModelInfo> mock_models;
+  OllamaService::ModelInfo model1;
+  model1.name = "llama2:7b";
+  mock_models.push_back(model1);
+
+  OllamaService::ModelInfo model2;
+  model2.name = "mistral:latest";
+  mock_models.push_back(model2);
+
+  mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
+
+  // Simulate ShowModel responses for each model
+  OllamaService::ModelDetails details;
+  details.context_length = 4096;
+  details.has_vision = false;
+
+  mock_ollama_service()->TriggerShowModelCallback("llama2:7b", details);
+  mock_ollama_service()->TriggerShowModelCallback("mistral:latest", details);
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
     return model_service()->GetModels().size() == initial_count + 2;
@@ -144,13 +164,25 @@ TEST_F(OllamaModelFetcherTest, FetchModelsAddsNewModels) {
 
 TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
   // First fetch - add 2 models
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
-                                         kOllamaModelsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
-                                         kModelDetailsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
-                                         kModelDetailsResponse);
   ollama_model_fetcher()->FetchModels();
+
+  std::vector<OllamaService::ModelInfo> mock_models;
+  OllamaService::ModelInfo model1;
+  model1.name = "llama2:7b";
+  mock_models.push_back(model1);
+
+  OllamaService::ModelInfo model2;
+  model2.name = "mistral:latest";
+  mock_models.push_back(model2);
+
+  mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
+
+  OllamaService::ModelDetails details;
+  details.context_length = 4096;
+  details.has_vision = false;
+
+  mock_ollama_service()->TriggerShowModelCallback("llama2:7b", details);
+  mock_ollama_service()->TriggerShowModelCallback("mistral:latest", details);
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
     const auto& models = model_service()->GetModels();
@@ -167,9 +199,14 @@ TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
 
   // Second fetch - only 1 model remains (llama2 is not new, so no detail fetch
   // needed)
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
-                                         kOllamaModelsResponseUpdated);
   ollama_model_fetcher()->FetchModels();
+
+  std::vector<OllamaService::ModelInfo> updated_models;
+  OllamaService::ModelInfo updated_model;
+  updated_model.name = "llama2:7b";
+  updated_models.push_back(updated_model);
+
+  mock_ollama_service()->TriggerFetchModelsCallback(std::move(updated_models));
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
     const auto& models = model_service()->GetModels();
@@ -187,13 +224,25 @@ TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
 
 TEST_F(OllamaModelFetcherTest, RemoveModelsRemovesAllOllamaModels) {
   // First add some models
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
-                                         kOllamaModelsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
-                                         kModelDetailsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
-                                         kModelDetailsResponse);
   ollama_model_fetcher()->FetchModels();
+
+  std::vector<OllamaService::ModelInfo> mock_models;
+  OllamaService::ModelInfo model1;
+  model1.name = "llama2:7b";
+  mock_models.push_back(model1);
+
+  OllamaService::ModelInfo model2;
+  model2.name = "mistral:latest";
+  mock_models.push_back(model2);
+
+  mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
+
+  OllamaService::ModelDetails details;
+  details.context_length = 4096;
+  details.has_vision = false;
+
+  mock_ollama_service()->TriggerShowModelCallback("llama2:7b", details);
+  mock_ollama_service()->TriggerShowModelCallback("mistral:latest", details);
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
     const auto& models = model_service()->GetModels();
@@ -225,14 +274,15 @@ TEST_F(OllamaModelFetcherTest, RemoveModelsRemovesAllOllamaModels) {
 
 TEST_F(OllamaModelFetcherTest, FetchModelsHandlesEmptyResponse) {
   base::RunLoop run_loop;
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
-                                         "");
 
   size_t initial_count = model_service()->GetModels().size();
 
   ollama_model_fetcher()->FetchModels();
 
-  // Post a task to quit after network request completes
+  // Simulate empty response (nullopt)
+  mock_ollama_service()->TriggerFetchModelsCallback(std::nullopt);
+
+  // Post a task to quit after callback completes
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, run_loop.QuitClosure());
   run_loop.Run();
@@ -243,14 +293,15 @@ TEST_F(OllamaModelFetcherTest, FetchModelsHandlesEmptyResponse) {
 
 TEST_F(OllamaModelFetcherTest, FetchModelsHandlesInvalidJSON) {
   base::RunLoop run_loop;
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
-                                         "invalid json");
 
   size_t initial_count = model_service()->GetModels().size();
 
   ollama_model_fetcher()->FetchModels();
 
-  // Post a task to quit after network request completes
+  // Simulate invalid JSON response (nullopt)
+  mock_ollama_service()->TriggerFetchModelsCallback(std::nullopt);
+
+  // Post a task to quit after callback completes
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, run_loop.QuitClosure());
   run_loop.Run();
@@ -260,17 +311,30 @@ TEST_F(OllamaModelFetcherTest, FetchModelsHandlesInvalidJSON) {
 }
 
 TEST_F(OllamaModelFetcherTest, PrefChangeTriggersModelFetch) {
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
-                                         kOllamaModelsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
-                                         kModelDetailsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
-                                         kModelDetailsResponse);
-
   size_t initial_count = model_service()->GetModels().size();
 
-  // Enable Ollama fetching
+  // Enable Ollama fetching - this will trigger FetchModels
   pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, true);
+
+  // Simulate FetchModels response
+  std::vector<OllamaService::ModelInfo> mock_models;
+  OllamaService::ModelInfo model1;
+  model1.name = "llama2:7b";
+  mock_models.push_back(model1);
+
+  OllamaService::ModelInfo model2;
+  model2.name = "mistral:latest";
+  mock_models.push_back(model2);
+
+  mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
+
+  // Simulate ShowModel responses
+  OllamaService::ModelDetails details;
+  details.context_length = 4096;
+  details.has_vision = false;
+
+  mock_ollama_service()->TriggerShowModelCallback("llama2:7b", details);
+  mock_ollama_service()->TriggerShowModelCallback("mistral:latest", details);
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
     return model_service()->GetModels().size() == initial_count + 2;
@@ -279,13 +343,26 @@ TEST_F(OllamaModelFetcherTest, PrefChangeTriggersModelFetch) {
 
 TEST_F(OllamaModelFetcherTest, PrefChangeTriggersRemove) {
   // First add some models
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
-                                         kOllamaModelsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
-                                         kModelDetailsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
-                                         kModelDetailsResponse);
   pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, true);
+
+  // Simulate FetchModels response
+  std::vector<OllamaService::ModelInfo> mock_models;
+  OllamaService::ModelInfo model1;
+  model1.name = "llama2:7b";
+  mock_models.push_back(model1);
+
+  OllamaService::ModelInfo model2;
+  model2.name = "mistral:latest";
+  mock_models.push_back(model2);
+
+  mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
+
+  OllamaService::ModelDetails details;
+  details.context_length = 4096;
+  details.has_vision = false;
+
+  mock_ollama_service()->TriggerShowModelCallback("llama2:7b", details);
+  mock_ollama_service()->TriggerShowModelCallback("mistral:latest", details);
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
     const auto& models = model_service()->GetModels();
@@ -300,7 +377,7 @@ TEST_F(OllamaModelFetcherTest, PrefChangeTriggersRemove) {
     return count == 2;
   }));
 
-  // Disable Ollama fetching
+  // Disable Ollama fetching - this triggers RemoveModels
   pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, false);
 
   EXPECT_TRUE(base::test::RunUntil([&]() {

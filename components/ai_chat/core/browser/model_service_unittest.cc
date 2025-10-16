@@ -48,6 +48,7 @@ class MockModelServiceObserver : public ModelService::Observer {
               OnDefaultModelChanged,
               (const std::string&, const std::string&),
               (override));
+  MOCK_METHOD(void, OnModelListUpdated, (), (override));
 
  private:
   base::ScopedObservation<ModelService, ModelService::Observer>
@@ -502,7 +503,10 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
   EXPECT_EQ(GetService()->GetDefaultModelKey(), custom_model_key);
 
   // Expect observer to be called when default model is removed
-  EXPECT_CALL(*observer_, OnDefaultModelChanged(custom_model_key, _)).Times(1);
+  EXPECT_CALL(*observer_, OnDefaultModelChanged(custom_model_key, "chat-basic"))
+      .Times(1);
+  // Expect OnModelListUpdated to be called when InitModels is called
+  EXPECT_CALL(*observer_, OnModelListUpdated()).Times(1);
 
   // Delete the model
   GetService()->DeleteCustomModelsIf(base::BindRepeating(
@@ -513,8 +517,9 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
       },
       endpoint));
 
-  // Default model should be cleared
+  // Default model should be reset to chat-basic
   EXPECT_NE(GetService()->GetDefaultModelKey(), custom_model_key);
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
 
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }

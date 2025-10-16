@@ -68,12 +68,30 @@ class OllamaService : public KeyedService, public mojom::OllamaService {
   void IsConnected(IsConnectedCallback callback) override;
 
   // Fetch available models from Ollama (non-mojo method for internal use)
-  void FetchModels(ModelsCallback callback);
+  virtual void FetchModels(ModelsCallback callback);
 
   // Fetch detailed information for a specific model
-  void ShowModel(const std::string& model_name, ModelDetailsCallback callback);
+  virtual void ShowModel(const std::string& model_name,
+                         ModelDetailsCallback callback);
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest, ParseModelsResponse_Valid);
+  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest, ParseModelsResponse_InvalidJSON);
+  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest,
+                           ParseModelsResponse_MissingModelsKey);
+  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest, ParseModelsResponse_EmptyModels);
+  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest,
+                           ParseModelsResponse_InvalidModelStructure);
+  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest, ParseModelDetailsResponse_Valid);
+  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest,
+                           ParseModelDetailsResponse_InvalidJSON);
+  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest,
+                           ParseModelDetailsResponse_NoModelInfo);
+  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest,
+                           ParseModelDetailsResponse_NoCapabilities);
+  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest,
+                           ParseModelDetailsResponse_EmptyResponse);
+
   void OnConnectionCheckComplete(
       IsConnectedCallback callback,
       std::unique_ptr<network::SimpleURLLoader> loader,
