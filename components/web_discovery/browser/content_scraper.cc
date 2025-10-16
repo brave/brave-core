@@ -285,7 +285,7 @@ class ContentScraperImpl : public ContentScraper {
                                function_args[2].GetInt());
         }
       } else if (func_name == kRefineMaskURLFuncId) {
-        result = MaskURL(GURL(value));
+        result = MaskURL(GURL(value), false);
       } else if (func_name == kRefineParseURLFuncId) {
         if (function_args.size() >= 3 && function_args[1].is_string() &&
             function_args[2].is_string()) {
