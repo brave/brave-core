@@ -40,7 +40,7 @@ AssetRatioServiceFactory::AssetRatioServiceFactory()
     : ProfileKeyedServiceFactoryIOS("AssetRatioService",
                                     ProfileSelection::kRedirectedInIncognito,
                                     ServiceCreation::kCreateLazily,
-                                    TestingCreation::kNoServiceForTests) {}
+                                    TestingCreation::kCreateService) {}
 
 AssetRatioServiceFactory::~AssetRatioServiceFactory() = default;
 
