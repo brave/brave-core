@@ -318,7 +318,8 @@ class JsonTransform : public ValueTransform {
       : path_(std::move(path)), extract_objects_(extract_objects) {}
 
   std::optional<std::string> Process(std::string_view input) override {
-    auto json_dict = base::JSONReader::ReadDict(input);
+    auto json_dict =
+        base::JSONReader::ReadDict(input, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
     if (!json_dict.has_value()) {
       return "";  // Return empty string on parse error
     }
