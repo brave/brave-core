@@ -544,7 +544,6 @@ brave_java_base_module_sources = [
 ]
 
 brave_java_base_module_deps = [
-  "//brave/third_party/android_deps:com_wireguard_android_java",
   "//third_party/androidx:androidx_core_core_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_core_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_java",

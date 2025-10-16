@@ -5,7 +5,6 @@ group("android_deps") {
     ":com_android_installreferrer_java",
     ":com_github_bumptech_glide_java",
     ":com_google_android_play_integrity_java",
-    ":com_wireguard_android_java",
     ":google_play_services_safetynet_java",
   ]
 }
@@ -52,17 +51,6 @@ android_aar_prebuilt("com_github_bumptech_glide_gifdecoder_java") {
   aar_path = "libs/com_github_bumptech_glide_gifdecoder/gifdecoder-4.12.0.aar"
   info_path = "libs/com_github_bumptech_glide_gifdecoder/com_github_bumptech_glide_gifdecoder.info"
   deps = [ "//third_party/androidx:androidx_annotation_annotation_java" ]
-}
-
-android_aar_prebuilt("com_wireguard_android_java") {
-  aar_path = "libs/com_wireguard_android/tunnel-1.0.20250531.aar"
-  info_path = "libs/com_wireguard_android/com_wireguard_android.info"
-  deps = [
-    "//third_party/androidx:androidx_annotation_annotation_java",
-    "//third_party/androidx:androidx_collection_collection_java",
-  ]
-  extract_native_libraries = true
-  ignore_manifest = true
 }
 
 android_aar_prebuilt("com_github_bumptech_disklrucache_java") {
