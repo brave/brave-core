@@ -14,9 +14,9 @@ transpile_web_ui("brave_wallet_swap_page_ui") {
         rebase_path("swap.tsx"),
       ] ]
   resource_name = "brave_wallet_swap_page"
-  data = [ 
+  data = [
     "//brave/components/brave_wallet_ui/",
-    "//brave/components/brave_rewards/resources/"
+    "//brave/components/brave_rewards/resources/",
   ]
   deps = [
     "//brave/components/brave_wallet/common:mojom_js",

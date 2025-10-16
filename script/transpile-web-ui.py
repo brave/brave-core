@@ -176,6 +176,7 @@ def generate_grd(target_include_dir, grd_name, resource_name,
     with scoped_cwd(dirname):
         execute_stdout(args, env)
 
+
 def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
                         extra_modules):
 
@@ -219,6 +220,7 @@ def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
         )
 
         sys.exit(1)
+
 
 def get_not_contained(roots, test_paths):
     """
