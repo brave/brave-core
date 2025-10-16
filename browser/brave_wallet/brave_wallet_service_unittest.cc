@@ -74,84 +74,111 @@ using testing::Eq;
 
 namespace {
 
-const char token_list_json[] = R"(
+const char token_list_json[] = R"([
   {
-    "0x1": {
-      "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
-        "name": "USD Coin",
-        "logo": "usdc.png",
-        "erc20": true,
-        "erc721": false,
-        "symbol": "USDC",
-        "decimals": 6
-      },
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
-        "name": "Crypto Kitties",
-        "logo": "CryptoKitties-Kitty-13733.svg",
-        "erc20": false,
-        "erc721": true,
-        "symbol": "CK",
-        "decimals": 0
-      },
-      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
-        "name": "Uniswap",
-        "logo": "uni.svg",
-        "erc20": true,
-        "symbol": "UNI",
-        "decimals": 18
-      }
-    },
-    "0xaa36a7": {
-      "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
-        "name": "USD Coin",
-        "logo": "usdc.png",
-        "erc20": true,
-        "erc721": false,
-        "symbol": "USDC",
-        "decimals": 6
-      },
-      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
-        "name": "Crypto Kitties",
-        "logo": "CryptoKitties-Kitty-13733.svg",
-        "erc20": false,
-        "erc721": true,
-        "symbol": "CK",
-        "decimals": 0
-      },
-      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
-        "name": "Uniswap",
-        "logo": "uni.svg",
-        "erc20": true,
-        "symbol": "UNI",
-        "decimals": 18
-      }
-    },
-    "0x65": {
-      "So11111111111111111111111111111111111111112": {
-        "name": "Wrapped SOL",
-        "logo": "So11111111111111111111111111111111111111112.png",
-        "erc20": false,
-        "symbol": "SOL",
-        "decimals": 9,
-        "coingeckoId": "solana"
-      },
-      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": {
-        "name": "USD Coin",
-        "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
-        "erc20": false,
-        "symbol": "USDC",
-        "decimals": 6,
-        "coingeckoId": "usd-coin"
-      },
-      "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ": {
-        "name": "Tesla Inc.",
-        "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
-        "erc20": false,
-        "symbol": "TSLA",
-        "decimals": 8
-      }
-    }
-  })";
+    "coin": "eth",
+    "chain_id": "0x1",
+    "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    "name": "USD Coin",
+    "symbol": "USDC",
+    "decimals": 6,
+    "logo": "usdc.png",
+    "sources": ["coingecko"],
+    "token_type": "ERC20"
+  },
+  {
+    "coin": "eth",
+    "chain_id": "0x1",
+    "address": "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+    "name": "Crypto Kitties",
+    "symbol": "CK",
+    "decimals": 0,
+    "logo": "CryptoKitties-Kitty-13733.svg",
+    "sources": ["coingecko"],
+    "token_type": "ERC721"
+  },
+  {
+    "coin": "eth",
+    "chain_id": "0x1",
+    "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+    "name": "Uniswap",
+    "symbol": "UNI",
+    "decimals": 18,
+    "logo": "uni.svg",
+    "sources": ["coingecko"],
+    "token_type": "ERC20",
+    "coingecko_id": "uniswap"
+  },
+  {
+    "coin": "eth",
+    "chain_id": "0xaa36a7",
+    "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    "name": "USD Coin",
+    "symbol": "USDC",
+    "decimals": 6,
+    "logo": "usdc.png",
+    "sources": ["coingecko"],
+    "token_type": "ERC20"
+  },
+  {
+    "coin": "eth",
+    "chain_id": "0xaa36a7",
+    "address": "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+    "name": "Crypto Kitties",
+    "symbol": "CK",
+    "decimals": 0,
+    "logo": "CryptoKitties-Kitty-13733.svg",
+    "sources": ["coingecko"],
+    "token_type": "ERC721"
+  },
+  {
+    "coin": "eth",
+    "chain_id": "0xaa36a7",
+    "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+    "name": "Uniswap",
+    "symbol": "UNI",
+    "decimals": 18,
+    "logo": "uni.svg",
+    "sources": ["coingecko"],
+    "token_type": "ERC20",
+    "coingecko_id": "uniswap"
+  },
+  {
+    "coin": "sol",
+    "chain_id": "0x65",
+    "address": "So11111111111111111111111111111111111111112",
+    "name": "Wrapped SOL",
+    "symbol": "SOL",
+    "decimals": 9,
+    "logo": "So11111111111111111111111111111111111111112.png",
+    "sources": ["coingecko"],
+    "token_type": "SPL_TOKEN",
+    "coingecko_id": "solana"
+  },
+  {
+    "coin": "sol",
+    "chain_id": "0x65",
+    "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "name": "USD Coin",
+    "symbol": "USDC",
+    "decimals": 6,
+    "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
+    "sources": ["coingecko"],
+    "token_type": "SPL_TOKEN",
+    "coingecko_id": "usd-coin"
+  },
+  {
+    "coin": "sol",
+    "chain_id": "0x65",
+    "address": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ",
+    "name": "Tesla Inc.",
+    "symbol": "TSLA",
+    "decimals": 8,
+    "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+    "sources": ["coingecko"],
+    "token_type": "SPL_TOKEN_2022"
+  }
+])";
 
 const char interface_supported_response[] = R"({
       "jsonrpc":"2.0",
@@ -370,9 +397,11 @@ class BraveWalletServiceUnitTest : public testing::Test {
                 .release())));
 
     auto* registry = BlockchainRegistry::GetInstance();
-    TokenListMap token_list_map;
-    ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
-    registry->UpdateTokenList(std::move(token_list_map));
+    auto json_value = base::JSONReader::Read(token_list_json);
+    ASSERT_TRUE(json_value);
+    auto token_list_map = ParseTokenList(*json_value);
+    ASSERT_TRUE(token_list_map);
+    registry->UpdateTokenList(std::move(*token_list_map));
 
     token1_ = GetRegistry()->GetTokenByAddress(
         mojom::kMainnetChainId, mojom::CoinType::ETH,

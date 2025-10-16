@@ -239,6 +239,9 @@ BraveWalletService::BraveWalletService(
       url_loader_factory, *this, *json_rpc_service(), *keyring_service(),
       *simple_hash_client_, profile_prefs);
 
+  // Initialize BlockchainRegistry with URL loader factory for API requests
+  BlockchainRegistry::GetInstance()->Initialize(url_loader_factory);
+
   delegate_->AddObserver(this);
 
   keyring_service_->AddObserver(

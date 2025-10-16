@@ -7939,31 +7939,37 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
   // Setup registry with two assets.
-  const char token_list_json[] = R"(
+  const char token_list_json[] = R"([
     {
-      "0x65": {
-        "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ": {
-          "name": "Tesla Inc.",
-          "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
-          "erc20": false,
-          "symbol": "TSLA",
-          "decimals": 8
-        },
-        "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi": {
-          "name": "SolarMoon",
-          "logo": "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi.png",
-          "erc20": false,
-          "symbol": "MOON",
-          "decimals": 5,
-          "token2022": true
-        }
-      }
-    })";
+      "coin": "SOL",
+      "chain_id": "0x65",
+      "address": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ",
+      "name": "Tesla Inc.",
+      "symbol": "TSLA",
+      "decimals": 8,
+      "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+      "sources": ["coingecko"],
+      "token_type": "SPL_TOKEN_2022"
+    },
+    {
+      "coin": "SOL",
+      "chain_id": "0x65",
+      "address": "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi",
+      "name": "SolarMoon",
+      "symbol": "MOON",
+      "decimals": 5,
+      "logo": "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi.png",
+      "sources": ["coingecko"],
+      "token_type": "SPL_TOKEN_2022"
+    }
+  ])";
 
   auto* registry = BlockchainRegistry::GetInstance();
-  TokenListMap token_list_map;
-  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
-  registry->UpdateTokenList(std::move(token_list_map));
+  auto json_value = base::JSONReader::Read(token_list_json);
+  ASSERT_TRUE(json_value);
+  auto token_list_map = ParseTokenList(*json_value);
+  ASSERT_TRUE(token_list_map);
+  registry->UpdateTokenList(std::move(*token_list_map));
 
   // Setup two user assets.
   auto asset = mojom::BlockchainToken::New(

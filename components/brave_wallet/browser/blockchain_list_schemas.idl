@@ -171,4 +171,43 @@ namespace blockchain_lists {
     DOMString[] addresses;
   };
 
+  enum Gate3TokenType {
+    ERC20,
+    ERC721,
+    ERC1155,
+    SPL_TOKEN,
+    SPL_TOKEN_2022,
+    UNKNOWN
+  };
+
+  dictionary Gate3Token {
+    // e.g. "ETH"
+    DOMString coin;
+
+    // Hexadecimal string, e.g. "0xa"
+    DOMString chain_id;
+
+    // Hexadecimal string, e.g. "0xd336c74b840f9962cf2c666f8666d6d61ec24440"
+    DOMString address;
+
+    // e.g. "Balanced"
+    DOMString name;
+
+    // e.g. "BALN"
+    DOMString symbol;
+
+    // e.g. 18
+    long decimals;
+
+    // An url for the token logo
+    DOMString logo;
+
+    // e.g. ["coingecko"]
+    DOMString[] sources;
+
+    // e.g. "basic-attention-token"
+    DOMString? coingecko_id;
+
+    Gate3TokenType token_type;
+  };
 };

@@ -341,7 +341,7 @@ void SimpleHashClient::FetchSolCompressedNftProofData(
     const std::string& token_address,
     FetchSolCompressedNftProofDataCallback callback) {
   GURL url = GURL(base::StrCat(
-      {kSimpleHashBraveProxyUrl, "/api/v0/nfts/proof/solana/", token_address}));
+      {kGate3URL, "/simplehash/api/v0/nfts/proof/solana/", token_address}));
   if (!url.is_valid()) {
     std::move(callback).Run(std::nullopt);
     return;
@@ -1214,7 +1214,7 @@ GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
   }
 
   std::string url_str =
-      base::StrCat({kSimpleHashBraveProxyUrl, "/api/v0/nfts/owners"});
+      base::StrCat({kGate3URL, "/simplehash/api/v0/nfts/owners"});
 
   std::string chain_ids_param;
   for (const auto& chain_id : chain_ids) {
@@ -1285,8 +1285,7 @@ GURL SimpleHashClient::GetNftsUrl(
     }
   }
 
-  GURL url =
-      GURL(base::StrCat({kSimpleHashBraveProxyUrl, "/api/v0/nfts/assets"}));
+  GURL url = GURL(base::StrCat({kGate3URL, "/simplehash/api/v0/nfts/assets"}));
   url = net::AppendQueryParameter(url, "nft_ids", query_params);
   return url;
 }

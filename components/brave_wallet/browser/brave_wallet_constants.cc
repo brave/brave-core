@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 
+#include <array>
 #include <string>
 
 #include "base/command_line.h"
@@ -63,37 +64,34 @@ std::optional<std::string_view> GetZeroExAllowanceHolderAddress(
       base::FindOrNull(kAllowanceHolderAddress, chain_id));
 }
 
+// Common mapping for coin type conversions using a vector of pairs to allow
+// easy iteration in both directions.
+static constexpr auto kCoinTypeMappings =
+    std::array{std::pair{"btc", mojom::CoinType::BTC},
+               std::pair{"eth", mojom::CoinType::ETH},
+               std::pair{"sol", mojom::CoinType::SOL},
+               std::pair{"fil", mojom::CoinType::FIL},
+               std::pair{"ada", mojom::CoinType::ADA},
+               std::pair{"zec", mojom::CoinType::ZEC},
+               std::pair{"dot", mojom::CoinType::DOT}};
+
 // Maps coin type strings to mojom::CoinType enum values
 std::optional<mojom::CoinType> GetCoinTypeFromString(const std::string& coin) {
-  // key = coin_type_string, value = mojom::CoinType
-  static constexpr auto kCoinTypeStringToEnum =
-      base::MakeFixedFlatMap<std::string_view, mojom::CoinType>(
-          {{"btc", mojom::CoinType::BTC},
-           {"eth", mojom::CoinType::ETH},
-           {"sol", mojom::CoinType::SOL},
-           {"fil", mojom::CoinType::FIL},
-           {"ada", mojom::CoinType::ADA},
-           {"zec", mojom::CoinType::ZEC}});
-
-  return base::OptionalFromPtr(
-      base::FindOrNull(kCoinTypeStringToEnum, base::ToLowerASCII(coin)));
+  const std::string lower_coin = base::ToLowerASCII(coin);
+  for (const auto& [coin_str, coin_type] : kCoinTypeMappings) {
+    if (coin_str == lower_coin) {
+      return coin_type;
+    }
+  }
+  return std::nullopt;
 }
 
 // Maps mojom::CoinType enum values to coin type strings
 std::optional<std::string> GetStringFromCoinType(mojom::CoinType coin_type) {
-  // key = mojom::CoinType, value = coin_type_string
-  static constexpr auto kCoinTypeEnumToString =
-      base::MakeFixedFlatMap<mojom::CoinType, std::string_view>(
-          {{mojom::CoinType::BTC, "btc"},
-           {mojom::CoinType::ETH, "eth"},
-           {mojom::CoinType::SOL, "sol"},
-           {mojom::CoinType::FIL, "fil"},
-           {mojom::CoinType::ADA, "ada"},
-           {mojom::CoinType::ZEC, "zec"}});
-
-  auto* result = base::FindOrNull(kCoinTypeEnumToString, coin_type);
-  if (result) {
-    return base::ToUpperASCII(*result);
+  for (const auto& [coin_str, mapped_coin_type] : kCoinTypeMappings) {
+    if (mapped_coin_type == coin_type) {
+      return base::ToUpperASCII(coin_str);
+    }
   }
   return std::nullopt;
 }
