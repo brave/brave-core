@@ -28,7 +28,7 @@ group("grdp") {
   public_deps = [
     ":fonts_grdp",
     ":icons_grdp",
-    ":leo_web_components",
+    ":leo_bundle",
     ":opaque_ke",
     ":static_grdp",
   ]
@@ -90,7 +90,7 @@ if (include_polymer) {
   ]
 }
 
-transpile_web_ui("leo_web_components") {
+transpile_web_ui("leo_bundle") {
   generate_grdp = true
   resource_path_prefix = "brave"
 
@@ -98,7 +98,7 @@ transpile_web_ui("leo_web_components") {
 
   entry_points = [ [
         "leo",
-        rebase_path("leo/web_components.ts"),
+        rebase_path("leo/initialize_bundle.ts"),
       ] ]
 
   resource_name = "leo"
@@ -187,6 +187,7 @@ leo_icons = [
   "brave-icon-outline.svg",
   "brave-icon-release-color.svg",
   "brave-icon-search-color.svg",
+  "brave-icon-search.svg",
   "brave-search-big-color.svg",
   "browser-add.svg",
   "browser-extensions.svg",
@@ -370,11 +371,13 @@ leo_icons = [
   "product-brave-talk.svg",
   "product-brave-wallet.svg",
   "product-ipfs-outline.svg",
+  "product-origin.svg",
   "product-playlist-add.svg",
   "product-playlist-bold-add-color.svg",
   "product-playlist.svg",
   "product-private-window.svg",
   "product-sync.svg",
+  "product-tor.svg",
   "product-translate.svg",
   "product-vpn.svg",
   "protocol-handler-off.svg",
@@ -464,6 +467,7 @@ leo_icons = [
   "web3-bridge.svg",
   "widget-generic.svg",
   "window-bookmark.svg",
+  "window-404.svg",
   "window-content.svg",
   "window-edit.svg",
   "window-tab-close.svg",

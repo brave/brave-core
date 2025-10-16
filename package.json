@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.85.47",
+  "version": "1.85.63",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -76,7 +76,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "141.0.7390.70",
+        "tag": "141.0.7390.108",
         "repository": {
           "url": "https://github.com/brave/chromium"
         }
@@ -90,14 +90,14 @@
     }
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "8.3.5",
+    "@storybook/addon-essentials": "8.6.14",
     "@storybook/addon-knobs": "8.0.1",
-    "@storybook/csf-tools": "8.3.5",
-    "@storybook/manager-api": "8.3.5",
-    "@storybook/react": "8.3.5",
-    "@storybook/react-webpack5": "8.3.5",
-    "@storybook/theming": "8.3.5",
-    "@storybook/types": "8.3.5",
+    "@storybook/csf-tools": "8.6.14",
+    "@storybook/manager-api": "8.6.14",
+    "@storybook/react": "8.6.14",
+    "@storybook/react-webpack5": "8.6.14",
+    "@storybook/theming": "8.6.14",
+    "@storybook/types": "8.6.14",
     "@testing-library/jest-dom": "5.17.0",
     "@testing-library/react": "15.0.6",
     "@types/array-move": "2.0.0",
@@ -131,7 +131,7 @@
     "emptykit.css": "1.0.1",
     "eslint": "8.57.1",
     "eslint-config-prettier": "8.6.0",
-    "eslint-config-standard-with-typescript": "43.0.1",
+    "eslint-config-love": "43.1.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-jest": "28.11.0",
     "eslint-plugin-licenses": "1.0.2",
@@ -169,7 +169,7 @@
     "sass-loader": "10.4.1",
     "semver": "7.6.2",
     "sinon": "7.5.0",
-    "storybook": "8.3.5",
+    "storybook": "8.6.14",
     "stream-browserify": "3.0.0",
     "stream-http": "3.2.0",
     "style-loader": "2.0.0",

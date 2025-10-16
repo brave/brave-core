@@ -70,8 +70,6 @@ export function convertAdType(adType: AdType) {
       return mojom.AdType.kNewTabPageAd
     case 'notification':
       return mojom.AdType.kNotificationAd
-    case 'search-result':
-      return mojom.AdType.kSearchResultAd
   }
 }
 

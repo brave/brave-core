@@ -49,6 +49,7 @@ import WarningPremiumDisconnected from '../components/alerts/warning_premium_dis
 import Attachments from '../components/attachments'
 import { createTextContentBlock } from '../../common/content_block'
 import ToolEvent from '../../untrusted_conversation_frame/components/assistant_response/tool_event'
+import { taskConversationEntries } from './story_utils/history'
 
 // TODO(https://github.com/brave/brave-browser/issues/47810): Attempt to split this file up
 
@@ -147,6 +148,12 @@ const toolEvents: Mojom.ToolUseEvent[] = [
     id: 'abc123f',
     toolName: 'user_choice_tool',
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+    output: undefined,
+  },
+  {
+    id: 'abc123g',
+    toolName: Mojom.NAVIGATE_TOOL_NAME,
+    argumentsJson: JSON.stringify({ website_url: 'https://www.example.com' }),
     output: undefined,
   },
 ]
@@ -367,6 +374,24 @@ const HISTORY: Mojom.ConversationTurn[] = [
     smartMode: undefined,
     modelKey: '1',
   },
+  {
+    uuid: undefined,
+    text: 'Question that results in a task',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    smartMode: undefined,
+    modelKey: '1',
+  },
+  // Show how a Task is displayed within history. Use the AssistantTask story for
+  // viewing an active Task.
+  ...taskConversationEntries,
   {
     uuid: undefined,
     text: 'What is pointer compression?\n...and how does it work?\n    - tell me something interesting',
@@ -761,6 +786,8 @@ const HISTORY: Mojom.ConversationTurn[] = [
     smartMode: undefined,
     modelKey: '1',
   },
+  // Show that tool use events are NOT interactive if they are not the last entry in the
+  // group of assistant conversation entries.
   {
     uuid: undefined,
     text: '',
@@ -771,18 +798,17 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [
-      getCompletionEvent(
-        'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
-      ),
       ...toolEvents
-        .slice(0, 3)
-        .map((toolUseEvent) => ({ ...eventTemplate, toolUseEvent })),
+        .slice(2)
+        .map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent })),
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
     smartMode: undefined,
     modelKey: '1',
   },
+  // Show that single or multipletool use events are interactive if they are the
+  // last entry in thegroup of assistant conversation entries.
   {
     uuid: undefined,
     text: '',
@@ -793,9 +819,10 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [
+      getCompletionEvent('Answer one of these questions:'),
       ...toolEvents
-        .slice(3)
-        .map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent })),
+        .slice(0, 3)
+        .map((toolUseEvent) => ({ ...eventTemplate, toolUseEvent })),
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
@@ -937,7 +964,7 @@ type CustomArgs = {
   totalTokens: number
   trimmedTokens: number
   isGenerating: boolean
-  attachmentsDialog: 'tabs' | 'bookmarks' | null
+  attachmentsDialog: 'tabs' | 'bookmarks' | 'history' | null
   isNewConversation: boolean
   generatedUrlToBeOpened: Url | undefined
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
@@ -983,7 +1010,7 @@ const args: CustomArgs = {
   totalTokens: 0,
   trimmedTokens: 0,
   isGenerating: false,
-  attachmentsDialog: 'tabs',
+  attachmentsDialog: null,
   isNewConversation: false,
   generatedUrlToBeOpened: undefined,
   ratingTurnUuid: undefined,
@@ -1199,6 +1226,22 @@ function StoryContext(
         id: BigInt(2),
         url: { url: 'https://topos.nz' },
         title: 'NZ Topo',
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt(Date.now() * 1000) },
+      },
+    ],
+    getHistory: async () => [
+      {
+        id: BigInt(1),
+        url: { url: 'https://w3.org' },
+        title: 'W3',
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt(Date.now() * 1000) },
+      },
+      {
+        id: BigInt(2),
+        url: { url: 'https://readr.nz' },
+        title: 'RSS Reader',
         createdTime: { internalValue: BigInt(Date.now() * 1000) },
         lastUsed: { internalValue: BigInt(Date.now() * 1000) },
       },

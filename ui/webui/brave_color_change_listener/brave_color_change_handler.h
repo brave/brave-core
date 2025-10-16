@@ -7,6 +7,7 @@
 #define BRAVE_UI_WEBUI_BRAVE_COLOR_CHANGE_LISTENER_BRAVE_COLOR_CHANGE_HANDLER_H_
 
 #include "content/public/browser/web_contents_observer.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
@@ -30,6 +31,11 @@ class BraveColorChangeHandler
     : public content::WebContentsObserver,
       public color_change_listener::mojom::PageHandler {
  public:
+  static void BindInterface(
+      content::WebContents* web_contents,
+      mojo::PendingReceiver<color_change_listener::mojom::PageHandler>
+          pending_receiver);
+
   explicit BraveColorChangeHandler(content::WebContents* web_contents);
   BraveColorChangeHandler(const BraveColorChangeHandler&) = delete;
   BraveColorChangeHandler& operator=(const BraveColorChangeHandler&) = delete;

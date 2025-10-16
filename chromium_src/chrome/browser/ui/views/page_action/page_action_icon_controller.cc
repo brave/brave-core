@@ -5,11 +5,15 @@
 
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/views/location_bar/brave_star_view.h"
-#include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/page_action/page_action_icon_type.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/browser/ui/views/page_action/wayback_machine_action_icon_view.h"
+#endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
@@ -23,6 +27,16 @@ constexpr bool kSupportsPlaylistActionIconView = false;
 constexpr bool kSupportsSpeedreaderActionIconView = true;
 #else
 constexpr bool kSupportsSpeedreaderActionIconView = false;
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#define BRAVE_WAYBACK_MACHINE_PAGE_ACTION                                    \
+  add_page_action_icon(type, std::make_unique<WaybackMachineActionIconView>( \
+                                 params.command_updater, params.browser,     \
+                                 params.icon_label_bubble_delegate,          \
+                                 params.page_action_icon_delegate));
+#else
+#define BRAVE_WAYBACK_MACHINE_PAGE_ACTION
 #endif
 
 // Circumvent creation of CookieControlsIconView in
@@ -41,10 +55,7 @@ constexpr bool kSupportsSpeedreaderActionIconView = false;
     }                                                                          \
     break;                                                                     \
   case brave::kWaybackMachineActionIconType:                                   \
-    add_page_action_icon(type, std::make_unique<WaybackMachineActionIconView>( \
-                                   params.command_updater, params.browser,     \
-                                   params.icon_label_bubble_delegate,          \
-                                   params.page_action_icon_delegate));         \
+    BRAVE_WAYBACK_MACHINE_PAGE_ACTION                                          \
     break;                                                                     \
   case brave::kSpeedreaderPageActionIconType:                                  \
     if constexpr (kSupportsSpeedreaderActionIconView) {                        \
@@ -73,6 +84,7 @@ constexpr bool kSupportsSpeedreaderActionIconView = false;
 #undef StarView
 #undef kShown
 #undef kCookieControls
+#undef BRAVE_WAYBACK_MACHINE_PAGE_ACTION
 
 PageActionIconView* PageActionIconController::GetPlaylistActionIconView() {
   return playlist_action_icon_view_.get();

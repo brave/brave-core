@@ -23,6 +23,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
@@ -42,6 +43,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/signin/public/base/signin_pref_names.h"
 #include "content/public/browser/browser_thread.h"
+#include "net/base/features.h"
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
@@ -70,7 +72,7 @@ void MigrateHttpsUpgradeSettings(Profile* profile) {
   if (!map) {
     return;
   }
-  if (brave_shields::IsHttpsByDefaultFeatureEnabled()) {
+  if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
     // Migrate forwards from HTTPS-Only Mode to HTTPS Upgrade Strict setting.
     if (prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) {
       brave_shields::SetHttpsUpgradeControlType(map, ControlType::BLOCK,
@@ -98,9 +100,11 @@ void RecordInitialP3AValues(Profile* profile) {
   }
   ntp_background_images::RecordSponsoredImagesEnabledP3A(profile->GetPrefs());
   if (profile->IsRegularProfile()) {
-    brave_shields::MaybeRecordInitialShieldsSettings(
-        profile->GetPrefs(),
-        HostContentSettingsMapFactory::GetForProfile(profile));
+    auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+    MaybeRecordInitialShieldsSettings(
+        profile->GetPrefs(), map,
+        brave_shields::GetCosmeticFilteringControlType(map, GURL()),
+        brave_shields::GetFingerprintingControlType(map, GURL()));
   }
 }
 
@@ -163,8 +167,9 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,
                                                  bool go_off_the_record) {
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
-  if (!do_final_services_init_)
+  if (!do_final_services_init_) {
     return;
+  }
   perf::MaybeEnableBraveFeaturesServicesAndComponentsForPerfTesting(profile);
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);

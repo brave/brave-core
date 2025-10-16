@@ -102,7 +102,7 @@ class ZCashResolveTransactionStatusTaskTest : public testing::Test {
 #if BUILDFLAG(ENABLE_ORCHARD)
                               {}, sync_state_,
 #endif
-                              account_id_, mojom::kZCashMainnet);
+                              account_id_);
   }
 
   base::PassKey<class ZCashResolveTransactionStatusTaskTest> CreatePassKey() {

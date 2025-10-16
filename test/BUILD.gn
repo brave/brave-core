@@ -1033,8 +1033,6 @@ test("brave_browser_tests") {
       "//chrome/browser/ui/test/test_browser_dialog_mac.h",
       "//chrome/browser/ui/test/test_browser_dialog_mac.mm",
     ]
-
-    deps += [ "//brave/components/tor:pref_names" ]
   }
 
   if (is_win) {
@@ -1056,7 +1054,12 @@ test("brave_browser_tests") {
       "//brave/browser/tor",
       "//brave/browser/tor/test:browser_tests",
       "//brave/components/tor",
+      "//brave/components/tor:pref_names",
     ]
+  }
+
+  if (enable_tor && enable_extensions) {
+    sources += [ "//brave/browser/ui/webui/settings/brave_tor_snowflake_extension_browsertest.cc" ]
   }
 
   if (enable_brave_vpn) {
@@ -1206,7 +1209,6 @@ test("brave_browser_tests") {
     sources += [
       "//brave/browser/extensions/extension_urls_browsertest.cc",
       "//brave/browser/ui/webui/settings/brave_extensions_manifest_v2_browsertest.cc",
-      "//brave/browser/ui/webui/settings/brave_tor_snowflake_extension_browsertest.cc",
       "//chrome/browser/extensions/extension_apitest.cc",
       "//chrome/browser/extensions/extension_apitest.h",
     ]

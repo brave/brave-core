@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 class CustomBackgroundFileManager;
 class PrefService;
@@ -55,10 +56,11 @@ class BackgroundFacade {
   void RemoveCustomBackground(const std::string& background_url,
                               base::OnceClosure callback);
 
-  void NotifySponsoredImageLogoClicked(const std::string& wallpaper_id,
-                                       const std::string& creative_instance_id,
-                                       const std::string& destination_url,
-                                       bool should_metrics_fallback_to_p3a);
+  void NotifySponsoredImageLogoClicked(
+      const std::string& wallpaper_id,
+      const std::string& creative_instance_id,
+      const std::string& destination_url,
+      brave_ads::mojom::NewTabPageAdMetricType metric_type);
 
  private:
   void OnCustomBackgroundsSaved(base::OnceClosure callback,

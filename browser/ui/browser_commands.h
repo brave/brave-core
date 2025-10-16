@@ -12,6 +12,7 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "content/public/browser/page_navigator.h"
@@ -25,10 +26,12 @@ namespace brave {
 
 bool HasSelectedURL(Browser* browser);
 void CleanAndCopySelectedURL(Browser* browser);
+
+#if BUILDFLAG(ENABLE_TOR)
 void NewOffTheRecordWindowTor(Browser* browser);
 void NewOffTheRecordWindowTor(Profile* profile);
-
 void NewTorConnectionForSite(Browser*);
+#endif
 
 void ToggleAIChat(Browser* browser);
 

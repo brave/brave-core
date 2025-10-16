@@ -240,6 +240,17 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(
   contents_container_->SetBoundsRect(contents_container_bounds);
 }
 
+bool BraveBrowserViewLayout::IsImmersiveModeEnabledWithoutToolbar() const {
+  // When return true here, BrowserViewLayout::LayoutBookmarkAndInfoBars()
+  // makes |top_container_separator_| visible.
+  // We want to use |top_container_separator_| as a separator between
+  // top container and contents instead of MultiContentsContainer's top
+  // separator to cover whole browser window width.
+  // Althought it's always visible, it's only shown when rounded corners
+  // is not applied by controlling its bounds from BraveBrowserView.
+  return true;
+}
+
 void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
   if (!sidebar_container_) {
     return;

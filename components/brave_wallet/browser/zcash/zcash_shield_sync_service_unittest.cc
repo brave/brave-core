@@ -147,7 +147,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
     sync_service_ = std::make_unique<ZCashShieldSyncService>(
         zcash_wallet_service(),
         ZCashActionContext(zcash_rpc_, OrchardAddrRawPart(), sync_state_,
-                           zcash_account_, mojom::kZCashMainnet),
+                           zcash_account_),
         account_birthday, fvk, observer_->GetWeakPtr());
 
     // Ensure previous OrchardStorage is destroyed on background thread

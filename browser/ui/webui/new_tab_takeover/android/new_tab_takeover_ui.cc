@@ -87,9 +87,10 @@ void NewTabTakeoverUI::GetCurrentWallpaper(
     const std::string& creative_instance_id,
     GetCurrentWallpaperCallback callback) {
   auto failed = [&callback]() {
-    std::move(callback).Run(/*url=*/std::nullopt,
-                            /*should_metrics_fallback_to_p3a=*/false,
-                            /*target_url=*/std::nullopt);
+    std::move(callback).Run(
+        /*url=*/std::nullopt,
+        brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
+        /*target_url=*/std::nullopt);
   };
 
   const ntp_background_images::NTPSponsoredImagesData* sponsored_images_data =
@@ -105,8 +106,7 @@ void NewTabTakeoverUI::GetCurrentWallpaper(
     return failed();
   }
 
-  std::move(callback).Run(creative->url,
-                          creative->should_metrics_fallback_to_p3a,
+  std::move(callback).Run(creative->url, creative->metric_type,
                           GURL(creative->logo.destination_url));
 }
 

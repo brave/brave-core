@@ -867,6 +867,18 @@ TEST(CommonUtils, GetNetworkForZCashKeyring) {
             GetNetworkForZCashKeyring(mojom::KeyringId::kZCashTestnet));
 }
 
+TEST(CommonUtils, GetNetworkForZCashAccount) {
+  auto mainnet_account = MakeIndexBasedAccountId(
+      mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
+      mojom::AccountKind::kDerived, 0);
+  EXPECT_EQ(mojom::kZCashMainnet, GetNetworkForZCashAccount(mainnet_account));
+
+  auto testnet_account = MakeIndexBasedAccountId(
+      mojom::CoinType::ZEC, mojom::KeyringId::kZCashTestnet,
+      mojom::AccountKind::kDerived, 0);
+  EXPECT_EQ(mojom::kZCashTestnet, GetNetworkForZCashAccount(testnet_account));
+}
+
 TEST(CommonUtils, GetNetworkForBitcoinKeyring) {
   EXPECT_EQ(mojom::kBitcoinMainnet,
             GetNetworkForBitcoinKeyring(mojom::KeyringId::kBitcoin84));

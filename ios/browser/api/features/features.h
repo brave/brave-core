@@ -87,6 +87,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveSyncDefaultPasswords;
 @property(class, nonatomic, readonly)
     Feature* kWebKitAdvancedPrivacyProtections;
+@property(class, nonatomic, readonly) Feature* kBraveOrigin;
 @end
 
 NS_ASSUME_NONNULL_END

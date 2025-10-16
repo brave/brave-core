@@ -264,7 +264,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
             if let zecToken = zecNetworkAsset?.tokens.first {
               let zecBalance =
                 await self.zcashWalletService.fetchZECTransparentBalances(
-                  networkId: zecToken.chainId,
                   accountId: account.accountId
                 ) ?? 0
               tokenBalances = [zecToken.id: zecBalance]

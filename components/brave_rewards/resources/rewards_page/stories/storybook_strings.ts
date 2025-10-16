@@ -25,9 +25,6 @@ export const localeStrings: { [K in StringKey]: string } = {
   adsSettingsNewsOffTooltip: 'Brave News is currently disabled.',
   adsSettingsNewsOnTooltip:
     'Brave News contains ads that cannot be independently disabled.',
-  adsSettingsSearchConnectedTooltip:
-    'You cannot earn BAT from Brave Search Ads yet, but you help support Brave by having them on.',
-  adsSettingsSearchTooltip: 'Brave Search Ads appear on $1Brave Search$2.',
   adsSettingsSubdivisionLabel: 'Regional ad relevance',
   adsSettingsSubdivisionText:
     'This allows Brave to show you ads meant specifically for your region.',
@@ -43,7 +40,6 @@ export const localeStrings: { [K in StringKey]: string } = {
   adTypeNotificationLabel: 'Notification ads',
   adTypeOffLabel: 'Off',
   adTypeOnLabel: 'On',
-  adTypeSearchResultLabel: 'Search ads',
   appErrorTitle: 'Something went wrong',
   authorizeDeviceLimitReachedText:
     'You’ve connected the maximum number of Brave Rewards profiles to this $1 account.',

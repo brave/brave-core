@@ -28,7 +28,8 @@ class AdBlockPrefService : public KeyedService,
  public:
   explicit AdBlockPrefService(AdBlockService* ad_block_service,
                               PrefService* prefs,
-                              PrefService* local_state);
+                              PrefService* local_state,
+                              const std::string& locale);
   ~AdBlockPrefService() override;
 
   void StartProxyTracker(

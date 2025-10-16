@@ -50,13 +50,15 @@ class AdsCore final {
   // as inappropriate, and saving ads.
   Reactions& GetReactions();
 
-  // The set of creative instance ids that should fallback to P3A metric
-  // reporting. This is a temporary solution which will be removed once P3A
-  // metrics are deprecated.
-  void UpdateP3aMetricsFallbackState(const std::string& creative_instance_id,
-                                     bool should_metrics_fallback_to_p3a);
-  bool ShouldFallbackToP3aMetrics(
-      const std::string& creative_instance_id) const;
+  // Updates the reporting state for a creative instance ID, enabling or
+  // disabling metrics reporting.
+  void UpdateReportMetricState(
+      const std::string& creative_instance_id,
+      mojom::NewTabPageAdMetricType mojom_ad_metric_type);
+
+  // Returns true if metrics should be reported for the given creative instance
+  // ID, otherwise false.
+  bool ShouldReportMetric(const std::string& creative_instance_id) const;
 
  private:
   const std::unique_ptr<TokenGeneratorInterface> token_generator_;
@@ -78,10 +80,9 @@ class AdsCore final {
   // Handles user studies, a set of experiments conducted on the client.
   Studies studies_;
 
-  // The set of creative instance ids that should fallback to P3A metric
-  // reporting. This is a temporary solution which will be removed once P3A
-  // metrics are deprecated.
-  base::flat_set</*creative_instance_id*/ std::string> metrics_fallback_to_p3a_;
+  // Metrics for the given creative instance ID should not be sent
+  // if the ID exists in this set.
+  base::flat_set</*creative_instance_id*/ std::string> disable_metrics_;
 };
 
 }  // namespace brave_ads

@@ -18,7 +18,7 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
@@ -139,8 +139,9 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
     const std::string& placement_id,
     const std::string& campaign_id,
     const std::string& creative_instance_id,
-    bool should_metrics_fallback_to_p3a) {
-  if (should_metrics_fallback_to_p3a && ntp_p3a_helper_) {
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
+  if (mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A &&
+      ntp_p3a_helper_) {
     ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
   }
 
@@ -151,7 +152,7 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
   // required and will no-op sending a confirmation. However, we still need to
   // trigger the event to ensure other related logic is executed.
   MaybeTriggerNewTabPageAdEvent(
-      placement_id, creative_instance_id, should_metrics_fallback_to_p3a,
+      placement_id, creative_instance_id, mojom_ad_metric_type,
       brave_ads::mojom::NewTabPageAdEventType::kViewedImpression);
 }
 
@@ -242,6 +243,8 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
 
   NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
   if (!images_data) {
+    ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
+                                                 ad->creative_instance_id);
     return std::nullopt;
   }
 
@@ -250,6 +253,23 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
   if (!background) {
     ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
                                                  ad->creative_instance_id);
+    return std::nullopt;
+  }
+
+  brave_ads::mojom::NewTabPageAdMetricType metric_type =
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
+  if (std::optional<int> value = background->FindInt(kWallpaperMetricTypeKey)) {
+    metric_type = static_cast<brave_ads::mojom::NewTabPageAdMetricType>(*value);
+  }
+
+  // Do not show the ad while the grace period is active, unless metrics
+  // reporting is disabled for this campaign. Campaigns with disabled metrics
+  // are always eligible to be shown.
+  if (!HasGracePeriodEnded(images_data) &&
+      metric_type != brave_ads::mojom::NewTabPageAdMetricType::kDisabled) {
+    ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
+                                                 ad->creative_instance_id);
+    return std::nullopt;
   }
 
   return background;
@@ -376,8 +396,9 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const std::string& /*target_url*/,
-    bool should_metrics_fallback_to_p3a) {
-  if (should_metrics_fallback_to_p3a && ntp_p3a_helper_) {
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
+  if (mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A &&
+      ntp_p3a_helper_) {
     ntp_p3a_helper_->RecordNewTabPageAdEvent(
         brave_ads::mojom::NewTabPageAdEventType::kClicked,
         creative_instance_id);
@@ -387,18 +408,18 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
   // required and will no-op sending a confirmation. However, we still need to
   // trigger the event to ensure other related logic is executed.
   MaybeTriggerNewTabPageAdEvent(
-      placement_id, creative_instance_id, should_metrics_fallback_to_p3a,
+      placement_id, creative_instance_id, mojom_ad_metric_type,
       brave_ads::mojom::NewTabPageAdEventType::kClicked);
 }
 
 void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    bool should_metrics_fallback_to_p3a,
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
   if (ads_service_) {
     ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                           should_metrics_fallback_to_p3a,
+                                           mojom_ad_metric_type,
                                            mojom_ad_event_type,
                                            /*intentional*/ base::DoNothing());
   }
@@ -481,11 +502,7 @@ bool ViewCounterService::CanShowSponsoredImages() const {
     return false;
   }
 
-  if (!IsSponsoredImagesWallpaperOptedIn()) {
-    return false;
-  }
-
-  return HasGracePeriodEnded(images_data);
+  return IsSponsoredImagesWallpaperOptedIn();
 }
 
 bool ViewCounterService::CanShowBackgroundImages() const {

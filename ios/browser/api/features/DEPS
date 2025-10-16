@@ -3,6 +3,7 @@ include_rules = [
   "+brave/components/brave_account/features.h",
   "+brave/components/brave_component_updater/browser/features.h",
   "+brave/components/brave_news/common/features.h",
+  "+brave/components/brave_origin",
   "+brave/components/brave_rewards/core/features.h",
   "+brave/components/brave_search/common/features.h",
   "+brave/components/brave_search_conversion/features.h",

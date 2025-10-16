@@ -4,9 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
-import Tooltip from '@brave/leo/react/tooltip'
 
 import { formatMessage } from '../../../shared/lib/locale_context'
 import { useLocaleContext } from '../../lib/locale_strings'
@@ -184,38 +182,6 @@ export function AdsSettingsModal(props: Props) {
               </select>
             </span>
             <span>{adsInfo.adTypesReceivedThisMonth.notification}</span>
-          </div>
-          <div className='row'>
-            <Toggle
-              checked={adsInfo.adsEnabled['search-result']}
-              onChange={onToggleChange('search-result')}
-            />
-            <span className='name'>
-              {getString('adTypeSearchResultLabel')}
-              <Tooltip mode='default'>
-                <Icon name='info-outline' />
-                <div slot='content'>
-                  {externalWallet && (
-                    <p>{getString('adsSettingsSearchConnectedTooltip')}</p>
-                  )}
-                  <p>
-                    {formatMessage(getString('adsSettingsSearchTooltip'), {
-                      tags: {
-                        $1: (content) => (
-                          <NewTabLink
-                            key='link'
-                            href={urls.braveSearchURL}
-                          >
-                            {content}
-                          </NewTabLink>
-                        ),
-                      },
-                    })}
-                  </p>
-                </div>
-              </Tooltip>
-            </span>
-            <span>{adsInfo.adTypesReceivedThisMonth['search-result']}</span>
           </div>
         </section>
         {renderSubdivisions()}

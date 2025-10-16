@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+#ifdef __cplusplus
+#include "brave/ios/browser/api/ads/brave_ads.mojom.objc.h"
+#else
+#import "brave_ads.mojom.objc.h"
+#endif
+
 @class NTPSponsoredImageCampaign, NTPSponsoredImageBackground,
     NTPSponsoredImageLogo, NTPSponsoredImageTopSite;
 
@@ -47,13 +53,13 @@ OBJC_EXPORT
 @property(readonly) CGPoint focalPoint;
 @property(readonly) NSString* creativeInstanceId;
 @property(readonly) NTPSponsoredImageLogo* logo;
-@property(readonly) BOOL shouldMetricsFallbackToP3A;
+@property(readonly) BraveAdsNewTabPageAdMetricType metricType;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithImagePath:(NSURL*)imagePath
                        focalPoint:(CGPoint)focalPoint
                creativeInstanceId:(NSString*)creativeInstanceId
                              logo:(NTPSponsoredImageLogo*)logo
-       shouldMetricsFallbackToP3A:(BOOL)shouldMetricsFallbackToP3A
+                       metricType:(BraveAdsNewTabPageAdMetricType)metricType
     NS_DESIGNATED_INITIALIZER;
 @end
 

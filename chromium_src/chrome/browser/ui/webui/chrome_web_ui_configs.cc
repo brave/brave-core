@@ -6,7 +6,6 @@
 #include "chrome/browser/ui/webui/chrome_web_ui_configs.h"
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
@@ -19,6 +18,7 @@
 #undef RegisterChromeWebUIConfigs
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
@@ -27,6 +27,7 @@
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
 #else  // !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_account/brave_account_ui_android.h"
 #include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui_config.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
@@ -84,18 +85,20 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
   map.AddWebUIConfig(
       std::make_unique<webcompat_reporter::WebcompatReporterUIConfig>());
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    map.AddWebUIConfig(std::make_unique<BraveAccountUIDesktopConfig>());
+  }
 #else   // !BUILDFLAG(IS_ANDROID)
   map.AddWebUIConfig(std::make_unique<NewTabTakeoverUIConfig>());
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    map.AddWebUIConfig(std::make_unique<BraveAccountUIAndroidConfig>());
+  }
 #endif  // !BUILDFLAG(IS_ANDROID)
   map.AddWebUIConfig(std::make_unique<BraveAdblockUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveAdblockInternalsUIConfig>());
 
   if (ai_chat::features::IsAIChatEnabled()) {
     map.AddWebUIConfig(std::make_unique<AIChatUIConfig>());
-  }
-
-  if (brave_account::features::IsBraveAccountEnabled()) {
-    map.AddWebUIConfig(std::make_unique<BraveAccountUIConfig>());
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)

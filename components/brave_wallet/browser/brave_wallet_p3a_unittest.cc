@@ -122,8 +122,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
       TxService::AddUnapprovedTransactionCallback callback,
       base::expected<ZCashTransaction, std::string> zcash_transaction) {
     tx_service()->GetZCashTxManager()->ContinueAddUnapprovedTransaction(
-        chain_id, from, origin, std::move(callback),
-        std::move(zcash_transaction));
+        from, origin, std::move(callback), std::move(zcash_transaction));
   }
 
   void SetInterceptor(const std::string& content) {

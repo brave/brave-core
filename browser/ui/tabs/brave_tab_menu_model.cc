@@ -50,9 +50,9 @@ BraveTabMenuModel::BraveTabMenuModel(
       containers_menu_model_delegate_(containers_delegate)
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 {
-  web_contents_ = tab_strip_model->GetWebContentsAt(index);
-  CHECK(web_contents_);
-  Browser* browser = chrome::FindBrowserWithTab(web_contents_);
+  auto* web_contents = tab_strip_model->GetWebContentsAt(index);
+  CHECK(web_contents);
+  Browser* browser = chrome::FindBrowserWithTab(web_contents);
   CHECK(browser);
 
   restore_service_ =
@@ -71,10 +71,6 @@ BraveTabMenuModel::~BraveTabMenuModel() = default;
 
 int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
   int id = IDS_RESTORE_TAB;
-
-  if (!web_contents_) {
-    return id;
-  }
 
   if (!restore_service_) {
     return id;

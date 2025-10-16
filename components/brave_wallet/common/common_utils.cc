@@ -233,6 +233,10 @@ std::string GetNetworkForZCashKeyring(const mojom::KeyringId& keyring_id) {
   NOTREACHED();
 }
 
+std::string GetNetworkForZCashAccount(const mojom::AccountIdPtr& account_id) {
+  return GetNetworkForZCashKeyring(account_id->keyring_id);
+}
+
 bool IsCardanoKeyring(mojom::KeyringId keyring_id) {
   return IsCardanoHDKeyring(keyring_id) || IsCardanoImportKeyring(keyring_id) ||
          IsCardanoHardwareKeyring(keyring_id);

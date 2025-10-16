@@ -5,8 +5,8 @@
 
 source_set("brave_account") {
   sources = [
-    "brave_account_ui.h",
-    "brave_account_ui.mm",
+    "brave_account_ui_ios.h",
+    "brave_account_ui_ios.mm",
   ]
 
   deps = [

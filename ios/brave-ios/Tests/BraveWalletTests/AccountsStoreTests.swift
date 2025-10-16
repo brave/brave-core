@@ -403,8 +403,8 @@ import XCTest
     let zecMainnetBalance: UInt64 = 100_000_0
     let zecTestnetBalance: UInt64 = 100_000
     let zcashWalletService = BraveWallet.TestZCashWalletService()
-    zcashWalletService._balance = { chainId, accountId, completion in
-      if chainId == BraveWallet.ZCashMainnet {
+    zcashWalletService._balance = { accountId, completion in
+      if accountId.keyringId == BraveWallet.KeyringId.zCashMainnet {
         completion(
           .init(
             totalBalance: zecMainnetBalance,

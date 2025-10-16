@@ -5,7 +5,21 @@
 
 #include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 
+#include <memory>
+#include <utility>
+
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
+
 namespace ui {
+
+void BraveColorChangeHandler::BindInterface(
+    content::WebContents* web_contents,
+    mojo::PendingReceiver<color_change_listener::mojom::PageHandler>
+        pending_receiver) {
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<BraveColorChangeHandler>(web_contents),
+      std::move(pending_receiver));
+}
 
 BraveColorChangeHandler::BraveColorChangeHandler(
     content::WebContents* web_contents)

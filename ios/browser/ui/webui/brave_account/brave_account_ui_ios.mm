@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/ui/webui/brave_account/brave_account_ui.h"
+#include "brave/ios/browser/ui/webui/brave_account/brave_account_ui_ios.h"
 
 #include <memory>
 
@@ -51,7 +51,7 @@ void BraveAccountUIMessageHandler::OnDialogCloseMessage(
 
 }  // namespace
 
-BraveAccountUI::BraveAccountUI(web::WebUIIOS* web_ui, const GURL& url)
+BraveAccountUIIOS::BraveAccountUIIOS(web::WebUIIOS* web_ui, const GURL& url)
     : BraveAccountUIBase(ProfileIOS::FromWebUIIOS(web_ui)),
       web::WebUIIOSController(web_ui, url.host()) {
   using Authentication = void (BraveAccountUIBase::*)(
@@ -72,7 +72,7 @@ BraveAccountUI::BraveAccountUI(web::WebUIIOS* web_ui, const GURL& url)
   web_ui->AddMessageHandler(std::make_unique<BraveAccountUIMessageHandler>());
 }
 
-BraveAccountUI::~BraveAccountUI() {
+BraveAccountUIIOS::~BraveAccountUIIOS() {
   web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
       brave_account::mojom::Authentication::Name_);
 

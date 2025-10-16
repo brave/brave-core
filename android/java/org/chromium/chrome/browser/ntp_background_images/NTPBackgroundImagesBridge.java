@@ -96,7 +96,7 @@ public class NTPBackgroundImagesBridge {
                         wallpaper.getWallpaperId(),
                         wallpaper.getCreativeInstanceId(),
                         wallpaper.getLogoDestinationUrl(),
-                        wallpaper.shouldMetricsFallbackToP3a());
+                        wallpaper.metricType());
     }
 
     public boolean isSuperReferral() {
@@ -157,7 +157,8 @@ public class NTPBackgroundImagesBridge {
             String creativeInstanceId,
             String wallpaperId,
             boolean isRichMedia,
-            boolean shouldMetricsFallbackToP3a) {
+            int metricType) {
+        // The metricType int value can be passed directly since @IntDef just validates the value
         return new Wallpaper(
                 imagePath,
                 focalPointX,
@@ -169,7 +170,7 @@ public class NTPBackgroundImagesBridge {
                 creativeInstanceId,
                 wallpaperId,
                 isRichMedia,
-                shouldMetricsFallbackToP3a);
+                metricType);
     }
 
     @CalledByNative
@@ -192,7 +193,7 @@ public class NTPBackgroundImagesBridge {
                 String wallpaperId,
                 String creativeInstanceId,
                 String destinationUrl,
-                boolean shouldMetricsFallbackToP3a);
+                int metricType);
 
         void getTopSites(long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
 

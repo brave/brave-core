@@ -11,10 +11,13 @@ import '../brave_content_page/speedreader.js'
 import '../brave_data_collection_page/brave_data_collection_page.js'
 import '../brave_default_extensions_page/brave_default_extensions_page.js'
 import '../brave_new_tab_page/brave_new_tab_page.js'
+import '../brave_origin_page/brave_origin_page.js'
 import '../brave_search_engines_page/brave_search_engines_page.js'
 import '../brave_sync_page/brave_sync_page_index.js'
 import '../brave_sync_page/brave_sync_manage_devices_page.js'
+// <if expr="enable_tor">
 import '../brave_tor_page/brave_tor_subpage.js'
+// </if>
 import '../brave_wallet_page/brave_wallet_page.js'
 import '../brave_web3_domains_page/brave_web3_domains_page.js'
 import '../default_brave_shields_page/default_brave_shields_page.js'
@@ -30,7 +33,8 @@ import '../brave_content_page/containers.js'
 
 import {
   html,
-  RegisterStyleOverride
+  RegisterStyleOverride,
+  RegisterPolymerTemplateModifications
 } from 'chrome://resources/brave/polymer_overriding.js'
 
 

@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 # pylint: disable=import-error,too-many-return-statements,no-self-use
-# pylint: disable=too-many-branches
+# pylint: disable=too-many-branches,no-member
 
 import os
 
@@ -684,6 +684,12 @@ class Generator(generator.Generator):
 
         receivers = set()
         for interface in all_interfaces:
+            # Exclude any methods that include pending_receiver arguments
+            interface.methods = [
+                method for method in interface.methods if not any(
+                    mojom.IsPendingReceiverKind(p.kind)
+                    for p in method.parameters)
+            ]
             for method in interface.methods:
                 for param in method.parameters:
                     if mojom.IsPendingRemoteKind(param.kind):

@@ -43,6 +43,7 @@ class Campaigns final : public TableInterface {
 
  private:
   void MigrateToV48(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
+  void MigrateToV52(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 
   std::string BuildInsertSql(
       const mojom::DBActionInfoPtr& mojom_db_action,

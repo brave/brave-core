@@ -9,10 +9,14 @@
 #include <string>
 #include <utility>
 
+#include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
@@ -21,12 +25,35 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
 
 namespace brave_ads {
 
 namespace {
+
+constexpr char kUndefinedAdMetricType[] = "";
+constexpr char kDisabledAdMetricType[] = "disabled";
+constexpr char kConfirmationAdMetricType[] = "confirmation";
+constexpr char kP3AAdMetricType[] = "p3a";
+
+constexpr auto kStringToMojomMap =
+    base::MakeFixedFlatMap<std::string_view, mojom::NewTabPageAdMetricType>(
+        {{kUndefinedAdMetricType, mojom::NewTabPageAdMetricType::kUndefined},
+         {kDisabledAdMetricType, mojom::NewTabPageAdMetricType::kDisabled},
+         {kConfirmationAdMetricType,
+          mojom::NewTabPageAdMetricType::kConfirmation},
+         {kP3AAdMetricType, mojom::NewTabPageAdMetricType::kP3A}});
+
+constexpr auto kMojomToStringMap =
+    base::MakeFixedFlatMap<mojom::NewTabPageAdMetricType, std::string>({
+        {mojom::NewTabPageAdMetricType::kUndefined, kUndefinedAdMetricType},
+        {mojom::NewTabPageAdMetricType::kDisabled, kDisabledAdMetricType},
+        {mojom::NewTabPageAdMetricType::kConfirmation,
+         kConfirmationAdMetricType},
+        {mojom::NewTabPageAdMetricType::kP3A, kP3AAdMetricType},
+    });
 
 // Schema keys.
 constexpr int kExpectedSchemaVersion = 2;
@@ -40,6 +67,8 @@ constexpr char kCampaignVersionKey[] = "version";
 constexpr char kCampaignIdKey[] = "campaignId";
 
 constexpr char kCampaignAdvertiserIdKey[] = "advertiserId";
+
+constexpr char kCampaignMetricsKey[] = "metrics";
 
 constexpr char kCampaignStartAtKey[] = "startAt";
 constexpr char kCampaignEndAtKey[] = "endAt";
@@ -167,6 +196,14 @@ void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
       continue;
     }
 
+    mojom::NewTabPageAdMetricType mojom_ad_metric_type =
+        mojom::NewTabPageAdMetricType::kConfirmation;
+    if (const std::string* const value =
+            campaign_dict->FindString(kCampaignMetricsKey)) {
+      mojom_ad_metric_type = ToMojomNewTabPageAdMetricType(*value).value_or(
+          mojom::NewTabPageAdMetricType::kConfirmation);
+    }
+
     const std::string* const advertiser_id =
         campaign_dict->FindString(kCampaignAdvertiserIdKey);
     if (!advertiser_id) {
@@ -284,6 +321,7 @@ void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
       CreativeNewTabPageAdInfo creative_ad;
       creative_ad.campaign_id = *campaign_id;
       creative_ad.advertiser_id = *advertiser_id;
+      creative_ad.metric_type = mojom_ad_metric_type;
       creative_ad.start_at = start_at;
       creative_ad.end_at = end_at;
       creative_ad.daily_cap = daily_cap;
@@ -512,6 +550,9 @@ void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
         for (const auto& segment : segments) {
           creative_ad.segment = segment;
           creative_ads.push_back(creative_ad);
+
+          UpdateReportMetricState(creative_ad.creative_instance_id,
+                                  mojom_ad_metric_type);
         }
       }
     }
@@ -522,6 +563,28 @@ void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
       creative_ads,
       base::BindOnce(&SaveCreativeNewTabPageAdsCallback,
                      creative_set_conversions, std::move(callback)));
+}
+
+std::optional<mojom::NewTabPageAdMetricType> ToMojomNewTabPageAdMetricType(
+    std::string_view value) {
+  const auto iter = kStringToMojomMap.find(value);
+  if (iter == kStringToMojomMap.cend()) {
+    return std::nullopt;
+  }
+
+  const auto [_, mojom_confirmation_type] = *iter;
+  return mojom_confirmation_type;
+}
+
+std::string ToString(const mojom::NewTabPageAdMetricType& value) {
+  const auto iter = kMojomToStringMap.find(value);
+  if (iter != kMojomToStringMap.cend()) {
+    const auto [_, metric_type] = *iter;
+    return metric_type;
+  }
+
+  NOTREACHED() << "Unexpected value for mojom::NewTabPageAdMetricType: "
+               << base::to_underlying(value);
 }
 
 }  // namespace brave_ads

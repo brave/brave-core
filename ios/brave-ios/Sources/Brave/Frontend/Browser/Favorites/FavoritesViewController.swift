@@ -69,12 +69,15 @@ class FavoritesViewController: UIViewController {
   }
   private lazy var compositionLayout = FavoritesCompositionalLayout(
     browserColors: privateBrowsingManager.browserColors,
-    sectionProvider: { [weak self] sectionIndex, _ in
+    sectionProvider: { [weak self] sectionIndex, environment in
       guard let self else { return nil }
+      let traitCollection = environment.traitCollection
       let section = self.availableSections[sectionIndex]
       switch section {
       case .favorites:
-        return self.favoritesLayoutSection()
+        return self.favoritesLayoutSection(
+          contentSizeCategory: traitCollection.preferredContentSizeCategory
+        )
       case .recentSearches:
         return self.recentSearchesLayoutSection()
       case .recentSearchesOptIn:
@@ -227,16 +230,42 @@ class FavoritesViewController: UIViewController {
     }
   }
 
-  private func favoritesLayoutSection() -> NSCollectionLayoutSection {
-    let itemSize = NSCollectionLayoutSize(
-      widthDimension: .absolute(64),
-      heightDimension: .estimated(78)
-    )
+  private func favoritesLayoutSection(
+    contentSizeCategory: UIContentSizeCategory
+  ) -> NSCollectionLayoutSection {
+    let itemSize: NSCollectionLayoutSize
+    let groupSize: NSCollectionLayoutSize
+    if contentSizeCategory <= .large {
+      itemSize = NSCollectionLayoutSize(
+        widthDimension: .absolute(64),
+        heightDimension: .estimated(95)
+      )
+      groupSize = NSCollectionLayoutSize(
+        widthDimension: .fractionalWidth(1),
+        heightDimension: .estimated(114)
+      )
+    } else if contentSizeCategory > .large
+      && contentSizeCategory < .extraExtraExtraLarge
+    {
+      itemSize = NSCollectionLayoutSize(
+        widthDimension: .absolute(80),
+        heightDimension: .estimated(115)
+      )
+      groupSize = NSCollectionLayoutSize(
+        widthDimension: .fractionalWidth(1),
+        heightDimension: .estimated(150)
+      )
+    } else {
+      itemSize = NSCollectionLayoutSize(
+        widthDimension: .absolute(96),
+        heightDimension: .estimated(135)
+      )
+      groupSize = NSCollectionLayoutSize(
+        widthDimension: .fractionalWidth(1),
+        heightDimension: .estimated(187)
+      )
+    }
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
-    let groupSize = NSCollectionLayoutSize(
-      widthDimension: .fractionalWidth(1),
-      heightDimension: .estimated(114)
-    )
     let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
     group.interItemSpacing = .flexible(8)
     group.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)

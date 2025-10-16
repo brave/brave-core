@@ -49,7 +49,7 @@ import styles from './style.module.scss'
 import Attachments from '../attachments'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
-import TabsMenu from '../filter_menu/tabs_menu'
+import TabsMenu from '../filter_menu/attachments_menu'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -137,18 +137,19 @@ function Main() {
     }
   }
 
-  // Automatic scroll to bottom of scroll anchor when generating new response lines
+  // When the user has scrolled to the end of the conversation we anchor the scroll position to the end of the
+  // conversation.
+  // This means that:
+  // 1. Resizing the window will keep the conversation anchored to the bottom (if it was already at the bottom)
+  // 2. Loading a conversation will scroll to the end
+  // 3. Resizing the window will maintain scroll position, if you were not at the bottom before the resize.
   const scrollIsAtBottom = React.useRef(true)
   const scrollElement = React.useRef<HTMLDivElement | null>(null)
   const scrollAnchor = React.useRef<HTMLDivElement | null>(null)
 
   const handleScroll = React.useCallback(
     (e: React.UIEvent<HTMLDivElement>) => {
-      // Monitor scroll positions only when Assistant is generating,
-      // but always reset to bottom before next generation
-      if (!conversationContext.isGenerating) {
-        scrollIsAtBottom.current = true
-      } else if (scrollAnchor.current && conversationContentElement.current) {
+      if (scrollAnchor.current && conversationContentElement.current) {
         const el = e.currentTarget
         const idealScrollFromBottom =
           el.scrollHeight
@@ -163,8 +164,7 @@ function Main() {
 
   const handleConversationEntriesHeightChanged = () => {
     if (
-      !conversationContext.isGenerating
-      || !scrollElement.current
+      !scrollElement.current
       || !scrollIsAtBottom.current
       || !scrollAnchor.current
     ) {
@@ -442,7 +442,7 @@ function Main() {
           handleClick={handleToolsMenuClick}
           handleEditClick={handleToolsMenuEditClick}
         />
-        {!hasConversationStarted && <TabsMenu />}
+        <TabsMenu />
         <InputBox
           conversationStarted={hasConversationStarted}
           context={{ ...conversationContext, ...aiChatContext }}

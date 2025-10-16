@@ -559,12 +559,14 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER:
       brave::ShowWebcompatReporter(&*browser_);
       break;
+#if BUILDFLAG(ENABLE_TOR)
     case IDC_NEW_OFFTHERECORD_WINDOW_TOR:
       brave::NewOffTheRecordWindowTor(&*browser_);
       break;
     case IDC_NEW_TOR_CONNECTION_FOR_SITE:
       brave::NewTorConnectionForSite(&*browser_);
       break;
+#endif
     case IDC_SHOW_BRAVE_SYNC:
       brave::ShowSync(&*browser_);
       break;

@@ -1,0 +1,19 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This file contains defaults for gn values in Chromium which are always
+# overridden in Brave builds. This file in particular is only included in
+# builds for android
+
+safe_browsing_mode = 2
+
+# Required since cr126 to use Chrome password store
+use_login_database_as_backend = true
+
+# Fixes WebRTC IP leak with default option
+enable_mdns = true
+
+# We want it to be enabled for all configurations
+disable_android_lint = false

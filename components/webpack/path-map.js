@@ -24,6 +24,9 @@ module.exports = function (genPath) {
     'chrome://resources/brave': path.join(
       genPath,
       'brave/ui/webui/resources/tsc'),
+    'chrome://resources/mojo/mojo/public': path.resolve(
+      genPath,
+      'mojo/public'),
     'chrome://resources': path.join(
       genPath, 'ui/webui/resources/tsc'),
     // We import brave-ui direct from source and not from package repo, so we need

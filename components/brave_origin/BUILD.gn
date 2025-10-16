@@ -28,6 +28,7 @@ static_library("brave_origin") {
   friend = [ ":unit_tests" ]
 
   public_deps = [
+    "buildflags",
     "common/mojom",
     "//base",
     "//mojo/public/cpp/bindings",
