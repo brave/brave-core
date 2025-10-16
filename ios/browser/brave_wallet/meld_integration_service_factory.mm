@@ -40,7 +40,7 @@ MeldIntegrationServiceFactory* MeldIntegrationServiceFactory::GetInstance() {
 
 MeldIntegrationServiceFactory::MeldIntegrationServiceFactory()
     : ProfileKeyedServiceFactoryIOS("MeldIntegrationService",
-                                    ProfileSelection::kRedirectedInIncognito,
+                                    ProfileSelection::kNoInstanceInIncognito,
                                     ServiceCreation::kCreateLazily,
                                     TestingCreation::kCreateService) {}
 
