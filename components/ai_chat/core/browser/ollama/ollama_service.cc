@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/core/browser/ollama/ollama_client.h"
+#include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
 
 #include <memory>
 #include <string>
@@ -20,25 +20,25 @@
 
 namespace ai_chat {
 
-// OllamaClient::ModelInfo implementation
-OllamaClient::ModelInfo::ModelInfo() = default;
-OllamaClient::ModelInfo::ModelInfo(const ModelInfo&) = default;
-OllamaClient::ModelInfo& OllamaClient::ModelInfo::operator=(const ModelInfo&) =
+// OllamaService::ModelInfo implementation
+OllamaService::ModelInfo::ModelInfo() = default;
+OllamaService::ModelInfo::ModelInfo(const ModelInfo&) = default;
+OllamaService::ModelInfo& OllamaService::ModelInfo::operator=(const ModelInfo&) =
     default;
-OllamaClient::ModelInfo::ModelInfo(ModelInfo&&) = default;
-OllamaClient::ModelInfo& OllamaClient::ModelInfo::operator=(ModelInfo&&) =
+OllamaService::ModelInfo::ModelInfo(ModelInfo&&) = default;
+OllamaService::ModelInfo& OllamaService::ModelInfo::operator=(ModelInfo&&) =
     default;
-OllamaClient::ModelInfo::~ModelInfo() = default;
+OllamaService::ModelInfo::~ModelInfo() = default;
 
-// OllamaClient::ModelDetails implementation
-OllamaClient::ModelDetails::ModelDetails() = default;
-OllamaClient::ModelDetails::ModelDetails(const ModelDetails&) = default;
-OllamaClient::ModelDetails& OllamaClient::ModelDetails::operator=(
+// OllamaService::ModelDetails implementation
+OllamaService::ModelDetails::ModelDetails() = default;
+OllamaService::ModelDetails::ModelDetails(const ModelDetails&) = default;
+OllamaService::ModelDetails& OllamaService::ModelDetails::operator=(
     const ModelDetails&) = default;
-OllamaClient::ModelDetails::ModelDetails(ModelDetails&&) = default;
-OllamaClient::ModelDetails& OllamaClient::ModelDetails::operator=(
+OllamaService::ModelDetails::ModelDetails(ModelDetails&&) = default;
+OllamaService::ModelDetails& OllamaService::ModelDetails::operator=(
     ModelDetails&&) = default;
-OllamaClient::ModelDetails::~ModelDetails() = default;
+OllamaService::ModelDetails::~ModelDetails() = default;
 
 namespace {
 
@@ -98,18 +98,18 @@ constexpr net::NetworkTrafficAnnotationTag kOllamaModelDetailsAnnotation =
 
 }  // namespace
 
-OllamaClient::OllamaClient(
+OllamaService::OllamaService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(std::move(url_loader_factory)) {}
 
-OllamaClient::~OllamaClient() = default;
+OllamaService::~OllamaService() = default;
 
-void OllamaClient::BindReceiver(
+void OllamaService::BindReceiver(
     mojo::PendingReceiver<mojom::OllamaService> receiver) {
   receivers_.Add(this, std::move(receiver));
 }
 
-void OllamaClient::Connected(ConnectedCallback callback) {
+void OllamaService::IsConnected(IsConnectedCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(mojom::kOllamaBaseUrl);
   request->method = "GET";
@@ -120,14 +120,14 @@ void OllamaClient::Connected(ConnectedCallback callback) {
   auto* loader_ptr = loader.get();
   loader_ptr->DownloadToString(
       url_loader_factory_.get(),
-      base::BindOnce(&OllamaClient::OnConnectionCheckComplete,
+      base::BindOnce(&OllamaService::OnConnectionCheckComplete,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                      std::move(loader)),
       1024);  // Small response expected
 }
 
-void OllamaClient::OnConnectionCheckComplete(
-    ConnectedCallback callback,
+void OllamaService::OnConnectionCheckComplete(
+    IsConnectedCallback callback,
     std::unique_ptr<network::SimpleURLLoader> loader,
     std::optional<std::string> response) {
   bool connected = response &&
@@ -138,9 +138,9 @@ void OllamaClient::OnConnectionCheckComplete(
   std::move(callback).Run(connected);
 }
 
-void OllamaClient::FetchModels(ModelsCallback callback) {
+void OllamaService::FetchModels(ModelsCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
-  request->url = GURL(mojom::kOllamaApiTagsEndpoint);
+  request->url = GURL(mojom::kOllamaListModelsAPIEndpoint);
   request->method = "GET";
 
   auto loader = network::SimpleURLLoader::Create(std::move(request),
@@ -149,13 +149,13 @@ void OllamaClient::FetchModels(ModelsCallback callback) {
   auto* loader_ptr = loader.get();
   loader_ptr->DownloadToString(
       url_loader_factory_.get(),
-      base::BindOnce(&OllamaClient::OnModelsListComplete,
+      base::BindOnce(&OllamaService::OnModelsListComplete,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                      std::move(loader)),
       1024 * 1024);  // 1MB should be enough for model list
 }
 
-void OllamaClient::OnModelsListComplete(
+void OllamaService::OnModelsListComplete(
     ModelsCallback callback,
     std::unique_ptr<network::SimpleURLLoader> loader,
     std::optional<std::string> response) {
@@ -166,10 +166,10 @@ void OllamaClient::OnModelsListComplete(
   std::move(callback).Run(ParseModelsResponse(*response));
 }
 
-void OllamaClient::ShowModel(const std::string& model_name,
+void OllamaService::ShowModel(const std::string& model_name,
                              ModelDetailsCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
-  request->url = GURL(mojom::kOllamaApiShowEndpoint);
+  request->url = GURL(mojom::kOllamaShowModelInfoAPIEndpoint);
   request->method = "POST";
   request->headers.SetHeader("Content-Type", "application/json");
 
@@ -182,13 +182,13 @@ void OllamaClient::ShowModel(const std::string& model_name,
   auto* loader_ptr = loader.get();
   loader_ptr->DownloadToString(
       url_loader_factory_.get(),
-      base::BindOnce(&OllamaClient::OnModelDetailsComplete,
+      base::BindOnce(&OllamaService::OnModelDetailsComplete,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                      std::move(loader)),
       1024 * 1024);  // 1MB should be enough for model details
 }
 
-void OllamaClient::OnModelDetailsComplete(
+void OllamaService::OnModelDetailsComplete(
     ModelDetailsCallback callback,
     std::unique_ptr<network::SimpleURLLoader> loader,
     std::optional<std::string> response) {
@@ -199,10 +199,10 @@ void OllamaClient::OnModelDetailsComplete(
   std::move(callback).Run(ParseModelDetailsResponse(*response));
 }
 
-std::optional<std::vector<OllamaClient::ModelInfo>>
-OllamaClient::ParseModelsResponse(const std::string& response_body) {
+std::optional<std::vector<OllamaService::ModelInfo>>
+OllamaService::ParseModelsResponse(const std::string& response_body) {
   std::optional<base::Value::Dict> json_dict =
-      base::JSONReader::ReadDict(response_body);
+      base::JSONReader::ReadDict(response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!json_dict) {
     return std::nullopt;
   }
@@ -232,10 +232,10 @@ OllamaClient::ParseModelsResponse(const std::string& response_body) {
   return models;
 }
 
-std::optional<OllamaClient::ModelDetails>
-OllamaClient::ParseModelDetailsResponse(const std::string& response_body) {
+std::optional<OllamaService::ModelDetails>
+OllamaService::ParseModelDetailsResponse(const std::string& response_body) {
   std::optional<base::Value::Dict> json_dict =
-      base::JSONReader::ReadDict(response_body);
+      base::JSONReader::ReadDict(response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!json_dict) {
     return std::nullopt;
   }

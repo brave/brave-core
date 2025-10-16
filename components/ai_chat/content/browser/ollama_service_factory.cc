@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/content/browser/ollama_client_factory.h"
+#include "brave/components/ai_chat/content/browser/ollama_service_factory.h"
 
 #include "base/check.h"
 #include "base/no_destructor.h"
-#include "brave/components/ai_chat/core/browser/ollama/ollama_client.h"
+#include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "content/public/browser/browser_context.h"
@@ -16,36 +16,36 @@
 namespace ai_chat {
 
 // static
-OllamaClientFactory* OllamaClientFactory::GetInstance() {
-  static base::NoDestructor<OllamaClientFactory> instance;
+OllamaServiceFactory* OllamaServiceFactory::GetInstance() {
+  static base::NoDestructor<OllamaServiceFactory> instance;
   return instance.get();
 }
 
 // static
-OllamaClient* OllamaClientFactory::GetForBrowserContext(
+OllamaService* OllamaServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
   DCHECK(context);
   if (features::IsAIChatEnabled()) {
-    return static_cast<OllamaClient*>(
+    return static_cast<OllamaService*>(
         GetInstance()->GetServiceForBrowserContext(context, true));
   }
 
   return nullptr;
 }
 
-OllamaClientFactory::OllamaClientFactory()
+OllamaServiceFactory::OllamaServiceFactory()
     : BrowserContextKeyedServiceFactory(
-          "OllamaClientFactory",
+          "OllamaServiceFactory",
           BrowserContextDependencyManager::GetInstance()) {}
 
-OllamaClientFactory::~OllamaClientFactory() = default;
+OllamaServiceFactory::~OllamaServiceFactory() = default;
 
 std::unique_ptr<KeyedService>
-OllamaClientFactory::BuildServiceInstanceForBrowserContext(
+OllamaServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto url_loader_factory = context->GetDefaultStoragePartition()
                                 ->GetURLLoaderFactoryForBrowserProcess();
-  return std::make_unique<OllamaClient>(url_loader_factory);
+  return std::make_unique<OllamaService>(url_loader_factory);
 }
 
 }  // namespace ai_chat

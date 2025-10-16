@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/core/browser/ollama/ollama_client.h"
+#include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
 
 #include <memory>
 #include <string>
@@ -41,19 +41,19 @@ constexpr char kOllamaModelsResponse[] = R"({
 
 }  // namespace
 
-class OllamaClientTest : public testing::Test {
+class OllamaServiceTest : public testing::Test {
  public:
-  OllamaClientTest() = default;
-  ~OllamaClientTest() override = default;
+  OllamaServiceTest() = default;
+  ~OllamaServiceTest() override = default;
 
   void SetUp() override {
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &test_url_loader_factory_);
-    ollama_client_ = std::make_unique<OllamaClient>(shared_url_loader_factory_);
+    ollama_client_ = std::make_unique<OllamaService>(shared_url_loader_factory_);
   }
 
-  OllamaClient* ollama_client() { return ollama_client_.get(); }
+  OllamaService* ollama_client() { return ollama_client_.get(); }
   network::TestURLLoaderFactory* test_url_loader_factory() {
     return &test_url_loader_factory_;
   }
@@ -62,15 +62,15 @@ class OllamaClientTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<OllamaClient> ollama_client_;
+  std::unique_ptr<OllamaService> ollama_client_;
 };
 
-TEST_F(OllamaClientTest, ConnectedSuccess) {
+TEST_F(OllamaServiceTest, ConnectedSuccess) {
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaBaseUrl,
                                          kOllamaSuccessResponse);
 
   base::RunLoop run_loop;
-  ollama_client()->Connected(base::BindLambdaForTesting([&](bool connected) {
+  ollama_client()->IsConnected(base::BindLambdaForTesting([&](bool connected) {
     EXPECT_TRUE(connected);
     run_loop.Quit();
   }));
@@ -78,12 +78,12 @@ TEST_F(OllamaClientTest, ConnectedSuccess) {
   run_loop.Run();
 }
 
-TEST_F(OllamaClientTest, ConnectedFailure) {
+TEST_F(OllamaServiceTest, ConnectedFailure) {
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaBaseUrl, "",
                                          net::HTTP_INTERNAL_SERVER_ERROR);
 
   base::RunLoop run_loop;
-  ollama_client()->Connected(base::BindLambdaForTesting([&](bool connected) {
+  ollama_client()->IsConnected(base::BindLambdaForTesting([&](bool connected) {
     EXPECT_FALSE(connected);
     run_loop.Quit();
   }));
@@ -91,7 +91,7 @@ TEST_F(OllamaClientTest, ConnectedFailure) {
   run_loop.Run();
 }
 
-TEST_F(OllamaClientTest, ConnectedNoResponse) {
+TEST_F(OllamaServiceTest, ConnectedNoResponse) {
   // Simulate network error with failed response
   test_url_loader_factory()->AddResponse(
       GURL(ai_chat::mojom::kOllamaBaseUrl),
@@ -99,7 +99,7 @@ TEST_F(OllamaClientTest, ConnectedNoResponse) {
       network::URLLoaderCompletionStatus(net::ERR_CONNECTION_REFUSED));
 
   base::RunLoop run_loop;
-  ollama_client()->Connected(base::BindLambdaForTesting([&](bool connected) {
+  ollama_client()->IsConnected(base::BindLambdaForTesting([&](bool connected) {
     EXPECT_FALSE(connected);
     run_loop.Quit();
   }));
@@ -107,12 +107,12 @@ TEST_F(OllamaClientTest, ConnectedNoResponse) {
   run_loop.Run();
 }
 
-TEST_F(OllamaClientTest, ConnectedWrongResponse) {
+TEST_F(OllamaServiceTest, ConnectedWrongResponse) {
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaBaseUrl,
                                          "Some other response");
 
   base::RunLoop run_loop;
-  ollama_client()->Connected(base::BindLambdaForTesting([&](bool connected) {
+  ollama_client()->IsConnected(base::BindLambdaForTesting([&](bool connected) {
     EXPECT_FALSE(connected);
     run_loop.Quit();
   }));
@@ -120,13 +120,13 @@ TEST_F(OllamaClientTest, ConnectedWrongResponse) {
   run_loop.Run();
 }
 
-TEST_F(OllamaClientTest, FetchModelsSuccess) {
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
+TEST_F(OllamaServiceTest, FetchModelsSuccess) {
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
                                          kOllamaModelsResponse);
 
   base::RunLoop run_loop;
   ollama_client()->FetchModels(base::BindLambdaForTesting(
-      [&](std::optional<std::vector<OllamaClient::ModelInfo>> models) {
+      [&](std::optional<std::vector<OllamaService::ModelInfo>> models) {
         ASSERT_TRUE(models.has_value());
         ASSERT_EQ(2u, models->size());
         EXPECT_EQ("llama2:7b", (*models)[0].name);
@@ -137,16 +137,16 @@ TEST_F(OllamaClientTest, FetchModelsSuccess) {
   run_loop.Run();
 }
 
-TEST_F(OllamaClientTest, FetchModelsNoResponse) {
+TEST_F(OllamaServiceTest, FetchModelsNoResponse) {
   // Simulate network error with failed response
   test_url_loader_factory()->AddResponse(
-      GURL(ai_chat::mojom::kOllamaApiTagsEndpoint),
+      GURL(ai_chat::mojom::kOllamaListModelsAPIEndpoint),
       network::mojom::URLResponseHead::New(), "",
       network::URLLoaderCompletionStatus(net::ERR_CONNECTION_REFUSED));
 
   base::RunLoop run_loop;
   ollama_client()->FetchModels(base::BindLambdaForTesting(
-      [&](std::optional<std::vector<OllamaClient::ModelInfo>> models) {
+      [&](std::optional<std::vector<OllamaService::ModelInfo>> models) {
         EXPECT_FALSE(models.has_value());
         run_loop.Quit();
       }));
@@ -154,13 +154,13 @@ TEST_F(OllamaClientTest, FetchModelsNoResponse) {
   run_loop.Run();
 }
 
-TEST_F(OllamaClientTest, FetchModelsEmptyResponse) {
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
+TEST_F(OllamaServiceTest, FetchModelsEmptyResponse) {
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
                                          "");
 
   base::RunLoop run_loop;
   ollama_client()->FetchModels(base::BindLambdaForTesting(
-      [&](std::optional<std::vector<OllamaClient::ModelInfo>> models) {
+      [&](std::optional<std::vector<OllamaService::ModelInfo>> models) {
         EXPECT_FALSE(models.has_value());
         run_loop.Quit();
       }));
@@ -168,7 +168,7 @@ TEST_F(OllamaClientTest, FetchModelsEmptyResponse) {
   run_loop.Run();
 }
 
-TEST_F(OllamaClientTest, ShowModelSuccess) {
+TEST_F(OllamaServiceTest, ShowModelSuccess) {
   constexpr char kModelDetailsResponse[] = R"({
     "model_info": {
       "general.architecture": "llama",
@@ -177,13 +177,13 @@ TEST_F(OllamaClientTest, ShowModelSuccess) {
     "capabilities": ["vision", "chat"]
   })";
 
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
                                          kModelDetailsResponse);
 
   base::RunLoop run_loop;
   ollama_client()->ShowModel(
       "llama2:7b", base::BindLambdaForTesting(
-                       [&](std::optional<OllamaClient::ModelDetails> details) {
+                       [&](std::optional<OllamaService::ModelDetails> details) {
                          ASSERT_TRUE(details.has_value());
                          EXPECT_EQ(4096u, details->context_length);
                          EXPECT_TRUE(details->has_vision);
@@ -193,16 +193,16 @@ TEST_F(OllamaClientTest, ShowModelSuccess) {
   run_loop.Run();
 }
 
-TEST_F(OllamaClientTest, ShowModelNoResponse) {
+TEST_F(OllamaServiceTest, ShowModelNoResponse) {
   test_url_loader_factory()->AddResponse(
-      GURL(ai_chat::mojom::kOllamaApiShowEndpoint),
+      GURL(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint),
       network::mojom::URLResponseHead::New(), "",
       network::URLLoaderCompletionStatus(net::ERR_CONNECTION_REFUSED));
 
   base::RunLoop run_loop;
   ollama_client()->ShowModel(
       "llama2:7b", base::BindLambdaForTesting(
-                       [&](std::optional<OllamaClient::ModelDetails> details) {
+                       [&](std::optional<OllamaService::ModelDetails> details) {
                          EXPECT_FALSE(details.has_value());
                          run_loop.Quit();
                        }));
