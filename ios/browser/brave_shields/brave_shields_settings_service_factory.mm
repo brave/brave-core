@@ -44,10 +44,9 @@ BraveShieldsSettingsServiceFactory::BuildServiceInstanceFor(
   auto* profile = ProfileIOS::FromBrowserState(context);
   auto* map = ios::HostContentSettingsMapFactory::GetForProfile(profile);
   auto* local_state = GetApplicationContext()->GetLocalState();
-  auto* profile_prefs = user_prefs::UserPrefs::Get(context);
 
   return std::make_unique<BraveShieldsSettingsService>(*map, local_state,
-                                                       profile_prefs);
+                                                       profile->GetPrefs());
 }
 
 }  // namespace brave_shields
