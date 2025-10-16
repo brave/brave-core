@@ -669,13 +669,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #endif
 
 #if BUILDFLAG(ENABLE_OMAHA4)
-#define BRAVE_UPDATER_FEATURE_ENTRIES                          \
-  EXPAND_FEATURE_ENTRIES({                                     \
-      "brave-use-omaha4-alpha",                                \
-      "Use Omaha 4 Alpha",                                     \
-      "Use the new automatic update system",                   \
-      kOsMac,                                                  \
-      FEATURE_VALUE_TYPE(brave_updater::kBraveUseOmaha4Alpha), \
+#define BRAVE_UPDATER_FEATURE_ENTRIES                     \
+  EXPAND_FEATURE_ENTRIES({                                \
+      "brave-use-omaha4",                                 \
+      "Use Omaha 4",                                      \
+      "Use the new automatic update system",              \
+      kOsMac,                                             \
+      FEATURE_VALUE_TYPE(brave_updater::kBraveUseOmaha4), \
   })
 #else
 #define BRAVE_UPDATER_FEATURE_ENTRIES

@@ -14,7 +14,7 @@
 
 namespace brave_updater {
 
-BASE_DECLARE_FEATURE(kBraveUseOmaha4Alpha);
+BASE_DECLARE_FEATURE(kBraveUseOmaha4);
 BASE_DECLARE_FEATURE_PARAM(int, kLegacyFallbackIntervalDays);
 
 bool ShouldUseOmaha4();

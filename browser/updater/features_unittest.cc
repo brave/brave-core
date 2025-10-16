@@ -25,36 +25,36 @@ class ShouldUseOmaha4Test : public testing::Test {
 };
 
 TEST_F(ShouldUseOmaha4Test, ReturnsFalseWhenFeatureDisabled) {
-  scoped_feature_list_.InitAndDisableFeature(kBraveUseOmaha4Alpha);
+  scoped_feature_list_.InitAndDisableFeature(kBraveUseOmaha4);
   EXPECT_FALSE(ShouldUseOmaha4(1));
 }
 
 TEST_F(ShouldUseOmaha4Test, ReturnsTrueWhenFeatureEnabled) {
-  scoped_feature_list_.InitAndEnableFeature(kBraveUseOmaha4Alpha);
+  scoped_feature_list_.InitAndEnableFeature(kBraveUseOmaha4);
   EXPECT_TRUE(ShouldUseOmaha4(1));
 }
 
 TEST_F(ShouldUseOmaha4Test, LetsLegacyImplRunEvenWhenFeatureEnabled) {
-  scoped_feature_list_.InitAndEnableFeature(kBraveUseOmaha4Alpha);
+  scoped_feature_list_.InitAndEnableFeature(kBraveUseOmaha4);
   EXPECT_FALSE(ShouldUseOmaha4(5));
 }
 
 TEST_F(ShouldUseOmaha4Test, StaysConstantWhenFeatureDisabled) {
-  scoped_feature_list_.InitAndDisableFeature(kBraveUseOmaha4Alpha);
+  scoped_feature_list_.InitAndDisableFeature(kBraveUseOmaha4);
   for (int day = 1; day < 10; day++) {
     EXPECT_FALSE(ShouldUseOmaha4(day));
   }
 }
 
 TEST_F(ShouldUseOmaha4Test, StaysConstantWhenFeatureEnabled) {
-  scoped_feature_list_.InitAndEnableFeature(kBraveUseOmaha4Alpha);
+  scoped_feature_list_.InitAndEnableFeature(kBraveUseOmaha4);
   for (int day = 1; day < 10; day++) {
     EXPECT_TRUE(ShouldUseOmaha4(day));
   }
 }
 
 TEST_F(ShouldUseOmaha4Test, StaysConstantWhenLegacyImplRuns) {
-  scoped_feature_list_.InitAndEnableFeature(kBraveUseOmaha4Alpha);
+  scoped_feature_list_.InitAndEnableFeature(kBraveUseOmaha4);
   // Trigger the `% 5 == 0` case on day 0.
   for (int day = 0; day < 10; day++) {
     EXPECT_FALSE(ShouldUseOmaha4(day));
