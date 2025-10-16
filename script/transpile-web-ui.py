@@ -5,72 +5,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
+import json
 import os
 import sys
 import shutil
-import json
-from lib.util import execute_stdout, scoped_cwd
 
 from pathlib import Path
 
-
-def get_not_contained(roots, test_paths):
-    """
-    Check whether all given paths are contained within the source roots.
-    Returns list of paths that were not contained
-    """
-
-    not_contained = [
-        str(path) for path in test_paths
-        if not any(path.startswith(root) for root in roots)
-    ]
-
-    return not_contained
-
-
-def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
-                        extra_modules):
-
-    src_folder = Path(os.path.abspath(os.path.join(
-        __file__, '..', '..', '..'))).resolve().as_posix()
-
-    make_source_absolute = lambda path: Path(path).resolve().as_posix(
-    ).replace(src_folder, '/')
-
-    out_dir = make_source_absolute(Path(root_gen_dir).resolve().parents[1])
-    src_roots = []
-
-    with open(data_paths_file) as f:
-        src_roots = json.loads(f.read())
-
-    with open(depfile_path) as f:
-        files = [make_source_absolute(file) for file in f.read().split()[1:]]
-
-    all_roots = src_roots + [
-        '//brave/node_modules',  # handled via package.json
-        out_dir  # generated assets are deps and handled by gn already
-    ] + [make_source_absolute(module) for module in extra_modules]
-
-    not_contained = get_not_contained(all_roots, files)
-
-    if len(not_contained) > 0:
-        print("error occured cross-referencing data folders.")
-        print("transpile_web_ui accessed the following files:")
-        print("  " + "\n  ".join(not_contained))
-
-        if len(src_roots) > 0:
-            print(
-                "However they are not listed as data in target. data conatains:"
-            )
-            print("  " + "\n  ".join(src_roots))
-        else:
-            print("However data is empty")
-
-        print(
-            "fix this issue by adding the containing source folders into the transpile_web_ui target data section"
-        )
-
-        sys.exit(1)
+from lib.util import execute_stdout, scoped_cwd
 
 
 NPM = 'npm'
@@ -234,6 +176,64 @@ def generate_grd(target_include_dir, grd_name, resource_name,
     with scoped_cwd(dirname):
         execute_stdout(args, env)
 
+def get_not_contained(roots, test_paths):
+    """
+    Check whether all given paths are contained within the source roots.
+    Returns list of paths that were not contained
+    """
+
+    not_contained = [
+        str(path) for path in test_paths
+        if not any(path.startswith(root) for root in roots)
+    ]
+
+    return not_contained
+
+
+def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
+                        extra_modules):
+
+    src_folder = Path(os.path.abspath(os.path.join(
+        __file__, '..', '..', '..'))).resolve().as_posix()
+
+    make_source_absolute = lambda path: Path(path).resolve().as_posix(
+    ).replace(src_folder, '/')
+
+    out_dir = make_source_absolute(Path(root_gen_dir).resolve().parents[1])
+    src_roots = []
+
+    with open(data_paths_file) as f:
+        src_roots = json.loads(f.read())
+
+    with open(depfile_path) as f:
+        files = [make_source_absolute(file) for file in f.read().split()[1:]]
+
+    all_roots = src_roots + [
+        '//brave/node_modules',  # handled via package.json
+        out_dir  # generated assets are deps and handled by gn already
+    ] + [make_source_absolute(module) for module in extra_modules]
+
+    not_contained = get_not_contained(all_roots, files)
+
+    if len(not_contained) > 0:
+        print("error occured cross-referencing data folders.")
+        print("transpile_web_ui accessed the following files:")
+        print("  " + "\n  ".join(not_contained))
+
+        if len(src_roots) > 0:
+            print(
+                "However they are not listed as data in target. data conatains:"
+            )
+            print("  " + "\n  ".join(src_roots))
+        else:
+            print("However data is empty")
+
+        print(
+            "fix this issue by adding the containing source folders into the transpile_web_ui target data section"
+        )
+
+        sys.exit(1)
 
 if __name__ == '__main__':
     sys.exit(main())
+
