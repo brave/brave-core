@@ -12,7 +12,9 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/values.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
@@ -29,7 +31,10 @@ using brave_shields::ControlType;
 using brave_shields::ControlTypeFromString;
 using brave_shields::ControlTypeToString;
 
-DefaultBraveShieldsHandler::DefaultBraveShieldsHandler() = default;
+DefaultBraveShieldsHandler::DefaultBraveShieldsHandler()
+    : brave_shields_settings_(*BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromWebUI(web_ui()))) {}
+
 DefaultBraveShieldsHandler::~DefaultBraveShieldsHandler() = default;
 
 void DefaultBraveShieldsHandler::RegisterMessages() {
@@ -391,9 +396,7 @@ void DefaultBraveShieldsHandler::SetForgetFirstPartyStorageEnabled(
 
   bool value = args[0].GetBool();
 
-  brave_shields::SetForgetFirstPartyStorageEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile_), value, GURL(),
-      g_browser_process->local_state());
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(value, GURL());
 }
 
 void DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled(
@@ -401,8 +404,8 @@ void DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled(
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
-  const bool result = brave_shields::GetForgetFirstPartyStorageEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  const bool result =
+      brave_shields_settings_->GetForgetFirstPartyStorageEnabled(GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(result));
