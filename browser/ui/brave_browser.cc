@@ -37,6 +37,8 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/new_tab_page_third_party/new_tab_page_third_party_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
@@ -91,13 +93,13 @@ bool BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
     return false;
   }
 
-  const int active_tab_index = model->active_index();
-
-  if (active_tab_index == TabStripModel::kNoTab) {
+  if (TabStripModel::kNoTab == model->active_index()) {
     return false;
   }
 
-  return model->IsActiveTabSplit();
+  // Use rounded corners when browser view shows split view.
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  return browser_view->multi_contents_view()->IsInSplitView();
 }
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
