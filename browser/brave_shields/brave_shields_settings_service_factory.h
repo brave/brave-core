@@ -21,9 +21,10 @@ class BraveShieldsSettingsService;
 
 class BraveShieldsSettingsServiceFactory : public ProfileKeyedServiceFactory {
  public:
-  BraveShieldsSettingsServiceFactory(const BraveShieldsSettingsServiceFactory&) = delete;
-  BraveShieldsSettingsServiceFactory& operator=(const BraveShieldsSettingsServiceFactory&) =
-      delete;
+  BraveShieldsSettingsServiceFactory(
+      const BraveShieldsSettingsServiceFactory&) = delete;
+  BraveShieldsSettingsServiceFactory& operator=(
+      const BraveShieldsSettingsServiceFactory&) = delete;
 
   static BraveShieldsSettingsServiceFactory* GetInstance();
   static brave_shields::BraveShieldsSettingsService* GetForProfile(

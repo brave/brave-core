@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
+#include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
@@ -147,7 +148,7 @@ class BraveShieldsTabHelper
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       observation_{this};
   const raw_ref<HostContentSettingsMap> host_content_settings_map_;
-  std::unique_ptr<BraveShieldsSettingsService> brave_shields_settings_;
+  raw_ptr<BraveShieldsSettingsService> brave_shields_settings_;
 
   PrefChangeRegistrar local_state_change_registrar_;
 
