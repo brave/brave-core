@@ -32,6 +32,7 @@
 #include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
@@ -652,38 +653,32 @@ void ModelService::DeleteCustomModel(uint32_t index) {
 }
 
 void ModelService::DeleteCustomModelsIf(CustomModelPredicate predicate) {
-  base::Value::List custom_models_pref =
-      pref_service_->GetList(kCustomModelsList).Clone();
-
-  auto current_default_key = GetDefaultModelKey();
+  ScopedListPrefUpdate update(pref_service_, kCustomModelsList);
   std::vector<std::string> removed_keys;
 
   // Remove models matching predicate (iterate in reverse to avoid index issues)
-  for (size_t i = custom_models_pref.size(); i > 0; --i) {
-    const base::Value::Dict& model_dict = custom_models_pref[i - 1].GetDict();
+  for (size_t i = update->size(); i > 0; --i) {
+    const base::Value::Dict& model_dict = (*update)[i - 1].GetDict();
 
     if (predicate.Run(model_dict)) {
       std::string removed_key = *model_dict.FindString(kCustomModelItemKey);
       removed_keys.push_back(removed_key);
 
       // Check if this is the default model
-      if (current_default_key == removed_key) {
+      if (GetDefaultModelKey() == removed_key) {
         pref_service_->ClearPref(kDefaultModelKey);
         DVLOG(1) << "Default model key " << removed_key
                  << " was removed. Cleared default model key.";
         for (auto& obs : observers_) {
           obs.OnDefaultModelChanged(removed_key, GetDefaultModelKey());
         }
-        current_default_key =
-            GetDefaultModelKey();  // Update for next iteration
       }
 
-      custom_models_pref.erase(custom_models_pref.begin() + (i - 1));
+      update->erase(update->begin() + (i - 1));
     }
   }
 
   if (!removed_keys.empty()) {
-    pref_service_->SetList(kCustomModelsList, std::move(custom_models_pref));
     InitModels();
 
     for (const auto& removed_key : removed_keys) {

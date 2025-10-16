@@ -11,6 +11,7 @@
 
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -96,6 +97,11 @@ constexpr net::NetworkTrafficAnnotationTag kOllamaModelDetailsAnnotation =
           setting: "This feature can be disabled in Leo Assistant settings."
         })");
 
+// Max download sizes for Ollama API responses
+constexpr size_t kConnectionCheckMaxSize = 1024;      // 1KB for connection check
+constexpr size_t kModelListMaxSize = 1024 * 1024;     // 1MB for model list
+constexpr size_t kModelDetailsMaxSize = 1024 * 1024;  // 1MB for model details
+
 }  // namespace
 
 OllamaService::OllamaService(
@@ -123,7 +129,7 @@ void OllamaService::IsConnected(IsConnectedCallback callback) {
       base::BindOnce(&OllamaService::OnConnectionCheckComplete,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                      std::move(loader)),
-      1024);  // Small response expected
+      kConnectionCheckMaxSize);
 }
 
 void OllamaService::OnConnectionCheckComplete(
@@ -152,7 +158,7 @@ void OllamaService::FetchModels(ModelsCallback callback) {
       base::BindOnce(&OllamaService::OnModelsListComplete,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                      std::move(loader)),
-      1024 * 1024);  // 1MB should be enough for model list
+      kModelListMaxSize);
 }
 
 void OllamaService::OnModelsListComplete(
@@ -171,12 +177,11 @@ void OllamaService::ShowModel(const std::string& model_name,
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(mojom::kOllamaShowModelInfoAPIEndpoint);
   request->method = "POST";
-  request->headers.SetHeader("Content-Type", "application/json");
 
   auto loader = network::SimpleURLLoader::Create(std::move(request),
                                                  kOllamaModelDetailsAnnotation);
 
-  std::string body = "{\"model\":\"" + model_name + "\"}";
+  std::string body = base::StrCat({"{\"model\":\"", model_name, "\"}"});
   loader->AttachStringForUpload(body, "application/json");
 
   auto* loader_ptr = loader.get();
@@ -185,7 +190,7 @@ void OllamaService::ShowModel(const std::string& model_name,
       base::BindOnce(&OllamaService::OnModelDetailsComplete,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                      std::move(loader)),
-      1024 * 1024);  // 1MB should be enough for model details
+      kModelDetailsMaxSize);
 }
 
 void OllamaService::OnModelDetailsComplete(
