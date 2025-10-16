@@ -31,7 +31,7 @@ def get_not_contained(roots, test_paths):
 def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
                         extra_modules):
     
-    src_folder = Path(root_gen_dir).resolve().parents[2].as_posix()
+    src_folder = Path(os.path.abspath(os.path.join(__file__, '..', '..', '..'))).resolve().as_posix()
 
     make_source_absolute = lambda path: Path(path).resolve().as_posix().replace(
         src_folder, '/')
@@ -68,9 +68,6 @@ def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
         print(
             "fix this issue by adding the containing source folders into the transpile_web_ui target data section"
         )
-
-        print("src directory: ", src_folder)
-        print("root gen directory: ", root_gen_dir)
 
         sys.exit(1)
 
