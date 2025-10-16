@@ -13,12 +13,19 @@ static_library("brave_policy") {
   ]
 
   deps = [
+    ":brave_policy_observer",
     "//base",
     "//brave/components/brave_origin",
     "//components/policy/core/browser",
     "//components/policy/core/common",
     "//components/prefs",
   ]
+}
+
+source_set("brave_policy_observer") {
+  sources = [ "brave_policy_observer.h" ]
+
+  public_deps = [ "//base" ]
 }
 
 source_set("unit_tests") {

@@ -13,15 +13,15 @@
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
+#include "brave/components/brave_policy/brave_policy_observer.h"
 #include "components/policy/core/common/configuration_policy_provider.h"
 
 namespace brave_policy {
 
 // Policy provider for profile level policies.
 // Note: When this is created, the profile is not yet initialized.
-class BraveProfilePolicyProvider
-    : public policy::ConfigurationPolicyProvider,
-      public brave_origin::BraveOriginPolicyManager::Observer {
+class BraveProfilePolicyProvider : public policy::ConfigurationPolicyProvider,
+                                   public BravePolicyObserver {
  public:
   BraveProfilePolicyProvider();
   ~BraveProfilePolicyProvider() override;
@@ -35,8 +35,8 @@ class BraveProfilePolicyProvider
   void RefreshPolicies(policy::PolicyFetchReason reason) override;
   bool IsFirstPolicyLoadComplete(policy::PolicyDomain domain) const override;
 
-  // brave_origin::BraveOriginPolicyManager::Observer implementation.
-  void OnBraveOriginPoliciesReady() override;
+  // BravePolicyObserver implementation.
+  void OnBravePoliciesReady() override;
   void OnProfilePolicyChanged(std::string_view policy_key,
                               std::string_view profile_id) override;
   void SetProfileID(const std::string& profile_id);
@@ -55,7 +55,7 @@ class BraveProfilePolicyProvider
   std::string profile_id_;
 
   base::ScopedObservation<brave_origin::BraveOriginPolicyManager,
-                          brave_origin::BraveOriginPolicyManager::Observer>
+                          BravePolicyObserver>
       brave_origin_observation_{this};
 
   base::WeakPtrFactory<BraveProfilePolicyProvider> weak_factory_{this};
