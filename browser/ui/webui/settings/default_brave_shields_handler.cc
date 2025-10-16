@@ -12,7 +12,7 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/values.h"
-#include "brave/browser/brave_shields/brave_shields_settings_factory.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
