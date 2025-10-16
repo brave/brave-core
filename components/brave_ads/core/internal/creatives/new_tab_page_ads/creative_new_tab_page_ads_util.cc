@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/containers/fixed_flat_map.h"
@@ -47,7 +48,7 @@ constexpr auto kStringToMojomMap =
          {kP3AAdMetricType, mojom::NewTabPageAdMetricType::kP3A}});
 
 constexpr auto kMojomToStringMap =
-    base::MakeFixedFlatMap<mojom::NewTabPageAdMetricType, std::string>({
+    base::MakeFixedFlatMap<mojom::NewTabPageAdMetricType, std::string_view>({
         {mojom::NewTabPageAdMetricType::kUndefined, kUndefinedAdMetricType},
         {mojom::NewTabPageAdMetricType::kDisabled, kDisabledAdMetricType},
         {mojom::NewTabPageAdMetricType::kConfirmation,
@@ -580,7 +581,7 @@ std::string ToString(const mojom::NewTabPageAdMetricType& value) {
   const auto iter = kMojomToStringMap.find(value);
   if (iter != kMojomToStringMap.cend()) {
     const auto [_, metric_type] = *iter;
-    return metric_type;
+    return std::string(metric_type);
   }
 
   NOTREACHED() << "Unexpected value for mojom::NewTabPageAdMetricType: "
