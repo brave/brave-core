@@ -131,7 +131,6 @@ void ZCashResolveBalanceTask::CreateBalance() {
         return;
       }
       result->shielded_pending_balance -= result->shielded_balance;
-
       result->total_balance += result->shielded_balance;
     }
   }
