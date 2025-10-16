@@ -196,13 +196,11 @@ CardanoTransaction::TxInput::FromValue(const base::Value::Dict& value) {
 }
 
 // static
-std::optional<CardanoTransaction::TxInput>
-CardanoTransaction::TxInput::FromRpcUtxo(
-    const CardanoAddress& address,
+CardanoTransaction::TxInput CardanoTransaction::TxInput::FromRpcUtxo(
     const cardano_rpc::UnspentOutput& utxo) {
   CardanoTransaction::TxInput result;
 
-  result.utxo_address = address;
+  result.utxo_address = utxo.address_to;
   result.utxo_outpoint.txid = utxo.tx_hash;
   result.utxo_outpoint.index = utxo.output_index;
   result.utxo_value = utxo.lovelace_amount;

@@ -48,7 +48,7 @@ class CardanoRpc {
   void GetLatestEpochParameters(GetLatestEpochParametersCallback callback);
 
   using GetUtxoListCallback = RpcResponseCallback<UnspentOutputs>;
-  void GetUtxoList(const std::string& address, GetUtxoListCallback callback);
+  void GetUtxoList(const CardanoAddress& address, GetUtxoListCallback callback);
 
   using PostTransactionCallback = RpcResponseCallback<std::string>;
   void PostTransaction(const std::vector<uint8_t>& transaction,
@@ -81,7 +81,7 @@ class CardanoRpc {
   void OnGetLatestEpochParameters(GetLatestEpochParametersCallback callback,
                                   APIRequestResult api_request_result);
   void OnGetUtxoList(GetUtxoListCallback callback,
-                     const std::string& address,
+                     const CardanoAddress& address,
                      APIRequestResult api_request_result);
   void OnPostTransaction(PostTransactionCallback callback,
                          APIRequestResult api_request_result);

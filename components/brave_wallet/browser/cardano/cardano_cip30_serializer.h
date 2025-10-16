@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_CIP30_SERIALIZER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_CIP30_SERIALIZER_H_
 
+#include <optional>
 #include <vector>
 
 #include "base/containers/span.h"
@@ -42,14 +43,13 @@ class CardanoCip30Serializer {
       base::span<const uint8_t> message,
       base::span<const uint8_t> signature);
 
-  static std::string SerializeAmount(uint64_t amount);
+  static std::optional<std::string> SerializeAmount(uint64_t amount);
 
   static std::optional<uint64_t> DeserializeAmount(
       const std::string& amount_cbor);
 
-  static std::vector<std::string> SerializeUtxos(
-      const std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>>&
-          utxos);
+  static std::optional<std::vector<std::string>> SerializeUtxos(
+      base::span<const cardano_rpc::UnspentOutput> utxos);
 };
 
 }  // namespace brave_wallet
