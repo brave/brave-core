@@ -58,7 +58,8 @@ std::optional<std::string> RefineParseURL(const std::string& value,
 std::optional<std::string> RefineJsonExtract(const std::string& value,
                                              const std::string& path,
                                              bool extract_objects) {
-  auto parsed = base::JSONReader::ReadDict(value);
+  auto parsed =
+      base::JSONReader::ReadDict(value, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed) {
     return std::nullopt;
   }
