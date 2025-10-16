@@ -132,6 +132,11 @@
 namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents) {
+  LOG(ERROR) << __func__;
+  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
+    ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
+        web_contents);
+  }
 #if BUILDFLAG(IS_ANDROID)
   YouTubeScriptInjectorTabHelper::CreateForWebContents(web_contents);
 #else

@@ -33,6 +33,7 @@ TLDEphemeralLifetimeMap& ActiveTLDStorageAreas() {
 
 TLDEphemeralLifetime::TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key)
     : key_(key) {
+  LOG(ERROR) << __func__;
   DCHECK(ActiveTLDStorageAreas().find(key_) == ActiveTLDStorageAreas().end());
   ActiveTLDStorageAreas().emplace(key_, weak_factory_.GetWeakPtr());
   ephemeral_storage_service_ =
@@ -44,6 +45,7 @@ TLDEphemeralLifetime::TLDEphemeralLifetime(const TLDEphemeralLifetimeKey& key)
 }
 
 TLDEphemeralLifetime::~TLDEphemeralLifetime() {
+  LOG(ERROR) << __func__;
   if (ephemeral_storage_service_) {
     const bool shields_disabled_on_one_of_hosts = std::ranges::any_of(
         shields_state_on_hosts_, [](const auto& v) { return !v.second; });

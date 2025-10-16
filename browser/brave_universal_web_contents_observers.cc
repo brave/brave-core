@@ -12,10 +12,11 @@
 
 void AttachBraveUniversalWebContentsObservers(
     content::WebContents* web_contents) {
+  LOG(ERROR) << __func__;
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
-  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
-    ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
-        web_contents);
-  }
+  // if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
+  //   ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
+  //       web_contents);
+  // }
 }

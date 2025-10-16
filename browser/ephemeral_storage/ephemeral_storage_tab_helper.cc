@@ -162,6 +162,11 @@ void EphemeralStorageTabHelper::DidFinishNavigation(
 
   // Clear all provisional ephemeral lifetimes. A committed ephemeral lifetime
   // is created in ReadyToCommitNavigation().
+  LOG(ERROR)
+      << "Clearing provisional ephemeral lifetimes (DidFinishNavigation). "
+      << navigation_handle->IsInMainFrame() << ", "
+      << navigation_handle->IsSameDocument() << ", "
+      << navigation_handle->GetURL();
   provisional_tld_ephemeral_lifetimes_.clear();
 }
 
@@ -182,6 +187,8 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
       net::URLToEphemeralStorageDomain(last_committed_url);
   if (new_domain != previous_domain) {
     // Create new storage areas for new ephemeral storage domain.
+    LOG(ERROR) << "Domains didn't match (ReadyToCommitNavigation). New:"
+               << new_domain << " Old: " << previous_domain;
     CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
   }
   UpdateShieldsState(new_url);
@@ -190,6 +197,9 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
 void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
     const std::string& new_domain,
     const GURL& new_url) {
+  LOG(ERROR) << "Creating ephemeral storage areas for domain and URL: "
+             << new_domain << " " << new_url;
+
   if (new_url.is_empty()) {
     return;
   }

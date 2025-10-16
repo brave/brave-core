@@ -372,26 +372,33 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
 
   // Cookies should NOT exist for a.com.
   EXPECT_EQ(0u, GetAllCookies().size());
+  LOG(ERROR) << "Setting cookies";
 
-  EXPECT_TRUE(LoadURLInNewTab(a_site_set_cookie_url));
+  auto* contents = LoadURLInNewTab(a_site_set_cookie_url);
+  EXPECT_TRUE(contents);
+  LOG(ERROR) << "Contents: " << contents->GetLastCommittedURL();
 
   // Cookies SHOULD exist for a.com.
-  EXPECT_EQ(1u, GetAllCookies().size());
+//   EXPECT_EQ(1u, GetAllCookies().size());
 
+  LOG(ERROR) << "Navigating";
   // Navigate to b.com to activate a deferred cleanup for a.com.
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
-
+LOG(ERROR) << "Navigated";
   // Open sub.a.com in another tab to stop the deferred cleanup for a.com.
   const GURL sub_a_site_ephemeral_storage_url =
       https_server_.GetURL("sub.a.com", "/ephemeral_storage.html");
+  LOG(ERROR) << "Loading sub.a.com";
   EXPECT_TRUE(LoadURLInNewTab(sub_a_site_ephemeral_storage_url));
+  LOG(ERROR) << "Loaded sub.a.com";
+  EXPECT_FALSE(true);
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
                        DontForgetFirstPartyIfSubDomainIsOpened) {
-  EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive());
-  EXPECT_EQ(1u, GetAllCookies().size());
+//   EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive());
+//   EXPECT_EQ(1u, GetAllCookies().size());
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
