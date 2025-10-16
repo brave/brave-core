@@ -183,6 +183,17 @@ export function createSearchHandler(
       newTabProxy.handler.setLastUsedSearchEngine(engine)
     },
 
+    setActiveSearchInputKey(key) {
+      const { activeSearchInputKey } = store.getState()
+      if (key !== activeSearchInputKey) {
+        searchProxy.handler.stopAutocomplete(true)
+        store.update({
+          activeSearchInputKey: key,
+          searchMatches: []
+        })
+      }
+    },
+
     queryAutocomplete(query, engine) {
       const searchEngine = findSearchEngine(engine)
       if (searchEngine && searchEngine.keyword) {

@@ -10,11 +10,15 @@ import {
   AutocompleteMatch,
   ClickEvent } from '../../state/search_state'
 
+import {
+  useSearchState,
+  useSearchActions,
+  useSearchMatches } from '../../context/search_context'
+
 import { ResultOption } from './search_results'
-import { useSearchState, useSearchActions } from '../../context/search_context'
 import { urlFromInput } from '../../lib/url_input'
 
-export function useSearchInputState() {
+export function useSearchInputState(inputKey: string) {
   const actions = useSearchActions()
 
   const showSearchBox = useSearchState((s) => s.showSearchBox)
@@ -22,7 +26,7 @@ export function useSearchInputState() {
   const enabledSearchEngines = useSearchState((s) => s.enabledSearchEngines)
   const defaultSearchEngine = useSearchState((s) => s.defaultSearchEngine)
   const lastUsedSearchEngine = useSearchState((s) => s.lastUsedSearchEngine)
-  const searchMatches = useSearchState((s) => s.searchMatches)
+  const searchMatches = useSearchMatches(inputKey)
   const searchSuggestionsEnabled =
       useSearchState((s) => s.searchSuggestionsEnabled)
 
@@ -51,7 +55,7 @@ export function useSearchInputState() {
   // Build the list of result options. The result options can contain a direct
   // URL (if the user has typed a URL) or a list of autocomplete options.
   const resultOptions = React.useMemo(
-      () => getResultOptions(query, searchMatches),
+      () => getResultOptions(query, searchMatches ?? []),
       [query, searchMatches])
 
   // When the result option list changes, select the first available option that
@@ -142,6 +146,10 @@ export function useSearchInputState() {
     }
   }
 
+  function setActiveInput() {
+    actions.setActiveSearchInputKey(inputKey)
+  }
+
   function handleActionKeyDown(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       if (selectedResultOption !== null) {
@@ -165,6 +173,7 @@ export function useSearchInputState() {
   return {
     query,
     setQuery,
+    setActiveInput,
     handleActionKeyDown,
     openSearch,
     resultOptions,

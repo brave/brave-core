@@ -23,7 +23,7 @@ interface Props {
 }
 
 export function SearchBox(props: Props) {
-  const inputState = useSearchInputState()
+  const inputState = useSearchInputState('search-box')
   const searchFeatureEnabled = useSearchState((s) => s.searchFeatureEnabled)
   const showSearchBox = useSearchState((s) => s.showSearchBox)
   const [expanded, setExpanded] = React.useState(false)
@@ -73,6 +73,7 @@ export function SearchBox(props: Props) {
             }
             tabIndex={1}
             value={inputState.query}
+            onFocus={() => inputState.setActiveInput()}
             onClick={() => setExpanded(true)}
             onKeyDown={(event) => {
               inputState.handleActionKeyDown(event.nativeEvent)
