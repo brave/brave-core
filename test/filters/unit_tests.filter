@@ -226,8 +226,9 @@
 # features::kEarlyHintsPreloadForNavigation
 -PreconnectManagerTest.*
 
-# This test fails because we disable kBookmarkTriggerForPrerender2KillSwitch
+# These tests fail because we disable kBookmarkTriggerForPrerender2KillSwitch
 -BookmarkBarPreloadPipelineManagerTest.DisallowSearchUrlBookmarkBar
+-BookmarkBarPreloadPipelineManagerTest.PrefetchAndPrerenderDisallowSearchUrl
 
 # This test is disabled because the Brave NTP doesn't support this feature
 -NewTabPageModulesTest.HasModulesEnabled_SignedInAccount
@@ -703,6 +704,7 @@
 -FullStreamUIPolicyTest.*
 -GCMProfileServiceTest.*
 -GetUserPopulationForProfileTest.PopulatesPopulation
+-HistorySyncOptinHandlerTest.*
 -HostContentSettingsMapTest.IncognitoInheritSaaAndRenew
 -HostContentSettingsMapTest.IncognitoPartialInheritDefault
 -HostContentSettingsMapTest.IncognitoPartialInheritPref
