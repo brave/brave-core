@@ -56,7 +56,7 @@ struct DefaultShieldsSectionView: View {
             set: { newValue in
               settings.httpsUpgradeLevel =
                 !newValue
-                ? .disabled : (ShieldPreferences.httpsUpgradePriorEnabledLevel ?? .standard)
+                ? .disabled : (Preferences.Shields.httpsUpgradePriorEnabledLevel ?? .standard)
             }
           )
         )

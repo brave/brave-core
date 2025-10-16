@@ -457,7 +457,7 @@ extension Preferences {
     DeprecatedPreferences.blockAdsAndTracking.migrate { isEnabled in
       if !isEnabled {
         // We only need to migrate `disabled`. `standard` is the default.
-        ShieldPreferences.blockAdsAndTrackingLevel = .disabled
+        Preferences.Shields.blockAdsAndTrackingLevel = .disabled
       }
     }
 
@@ -470,13 +470,13 @@ extension Preferences {
     // and on it will correctly set the underlying upgrade level to the level they had set when
     // the feature flag was on.
     if !FeatureList.kBraveHttpsByDefault.enabled {
-      ShieldPreferences.httpsUpgradePriorEnabledLevel = ShieldPreferences.httpsUpgradeLevel
+      Preferences.Shields.httpsUpgradePriorEnabledLevel = Preferences.Shields.httpsUpgradeLevel
     }
     guard !Migration.httpsUpgradesLivelCompleted.value else { return }
 
     // Migrate old tracking protection setting to new BraveShields setting
     DeprecatedPreferences.httpsEverywhere.migrate { isEnabled in
-      ShieldPreferences.httpsUpgradeLevel = isEnabled ? .standard : .disabled
+      Preferences.Shields.httpsUpgradeLevel = isEnabled ? .standard : .disabled
     }
 
     Migration.adBlockAndTrackingProtectionShieldLevelCompleted.value = true
