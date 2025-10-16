@@ -60,6 +60,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/variations/pref_names.h"
 #include "content/public/browser/browser_context.h"
@@ -265,6 +266,16 @@ void AdsServiceImpl::Migrate() {
   if (ads_per_hour == 0) {
     prefs_->ClearPref(prefs::kMaximumNotificationAdsPerHour);
     prefs_->SetBoolean(prefs::kOptedInToNotificationAds, false);
+  }
+
+  if (!local_state_->HasPrefPath(prefs::kFirstRunAt)) {
+    base::Time first_run_at =
+        local_state_->HasPrefPath(metrics::prefs::kInstallDate)
+            ? base::Time::FromSecondsSinceUnixEpoch(static_cast<double>(
+                  local_state_->GetInt64(metrics::prefs::kInstallDate)))
+            : base::Time::Now();
+
+    local_state_->SetTime(prefs::kFirstRunAt, first_run_at);
   }
 }
 

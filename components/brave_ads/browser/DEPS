@@ -2,6 +2,7 @@
 include_rules = [
   "+brave/components/constants",
   "+components/content_settings",
+  "+components/metrics",
   "+components/history",
   "+components/prefs",
   "+components/variations",
