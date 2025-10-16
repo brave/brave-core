@@ -50,12 +50,17 @@ bool BraveProfilePolicyProvider::IsFirstPolicyLoadComplete(
   return first_policies_loaded_;
 }
 
-void BraveProfilePolicyProvider::OnBraveOriginPoliciesReady() {
+void BraveProfilePolicyProvider::OnBravePoliciesReady() {
   policies_ready_ = true;
 
-  // Once we have BraveOrigin policies and a profile ID trigger Refresh policies
+  // Once we have Brave policies and a profile ID trigger Refresh policies
   if (!profile_id_.empty()) {
-    RefreshPolicies(policy::PolicyFetchReason::kBrowserStart);
+    // `OnBravePoliciesReady()` can be called multiple times, so we need to
+    // choose the appropriate reason for the policies refresh basing on the
+    // first policies load complete state.
+    RefreshPolicies(first_policies_loaded_
+                        ? policy::PolicyFetchReason::kUserRequest
+                        : policy::PolicyFetchReason::kBrowserStart);
   }
 }
 

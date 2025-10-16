@@ -15,6 +15,7 @@ static_library("brave_policy") {
   deps = [
     "//base",
     "//brave/components/brave_origin",
+    "//brave/components/brave_policy/common",
     "//components/policy/core/browser",
     "//components/policy/core/common",
     "//components/prefs",

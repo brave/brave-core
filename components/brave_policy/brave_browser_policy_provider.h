@@ -19,9 +19,8 @@ namespace brave_policy {
 // This provider handles policies that affect global preferences
 // and is registered with the BrowserPolicyConnector for machine-wide policy
 // management.
-class BraveBrowserPolicyProvider
-    : public policy::ConfigurationPolicyProvider,
-      public brave_origin::BraveOriginPolicyManager::Observer {
+class BraveBrowserPolicyProvider : public policy::ConfigurationPolicyProvider,
+                                   public BravePolicyObserver {
  public:
   BraveBrowserPolicyProvider();
   ~BraveBrowserPolicyProvider() override;
@@ -35,8 +34,8 @@ class BraveBrowserPolicyProvider
   void RefreshPolicies(policy::PolicyFetchReason reason) override;
   bool IsFirstPolicyLoadComplete(policy::PolicyDomain domain) const override;
 
-  // brave_origin::BraveOriginPolicyManager::Observer implementation.
-  void OnBraveOriginPoliciesReady() override;
+  // BravePolicyObserver implementation.
+  void OnBravePoliciesReady() override;
   void OnBrowserPolicyChanged(std::string_view policy_key) override;
 
  private:
@@ -52,7 +51,7 @@ class BraveBrowserPolicyProvider
   bool first_policies_loaded_ = false;
 
   base::ScopedObservation<brave_origin::BraveOriginPolicyManager,
-                          brave_origin::BraveOriginPolicyManager::Observer>
+                          BravePolicyObserver>
       policy_manager_observation_{this};
 
   base::WeakPtrFactory<BraveBrowserPolicyProvider> weak_factory_{this};
