@@ -70,6 +70,7 @@ def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
         )
 
         print("src directory: ", src_folder)
+        print("root gen directory: ", root_gen_dir)
 
         sys.exit(1)
 
