@@ -23,7 +23,7 @@ source_set("web_view") {
     "//ios/chrome/browser/tabs/model",
     "//ios/web/common",
     "//ios/web/web_state",
-    "//ios/web_view:web_view_sources",
+    "//ios/web_view/framework:web_view_sources",
   ]
   frameworks = [
     "Foundation.framework",

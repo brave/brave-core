@@ -47,7 +47,8 @@ mojom::Result GetCards::ParseBody(const std::string& body,
                                   std::string* id) const {
   DCHECK(id);
 
-  std::optional<base::Value::List> value = base::JSONReader::ReadList(body);
+  std::optional<base::Value::List> value =
+      base::JSONReader::ReadList(body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;

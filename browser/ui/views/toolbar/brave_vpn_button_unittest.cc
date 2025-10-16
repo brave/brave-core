@@ -44,7 +44,7 @@ class BraveVpnButtonUnitTest : public testing::Test {
       Browser::CreateParams params(profile(), true);
       auto test_window = std::make_unique<TestBrowserWindow>();
       params.window = test_window.release();
-      browser_.reset(Browser::Create(params));
+      browser_ = Browser::DeprecatedCreateOwnedForTesting(params);
     }
     return browser_.get();
   }

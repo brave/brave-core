@@ -181,8 +181,10 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
 #if defined(TOOLKIT_VIEWS)
   void WaitForSidePanelClose() {
     ASSERT_TRUE(base::test::RunUntil([&]() {
-      return browser()->GetBrowserView().unified_side_panel()->state() ==
-             SidePanel::State::kClosed;
+      return browser()
+                 ->GetBrowserView()
+                 .contents_height_side_panel()
+                 ->state() == SidePanel::State::kClosed;
     }));
   }
 #endif  // #if defined(TOOLKIT_VIEWS)
@@ -268,8 +270,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 // Create guest browser and test its brave commands status.
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsEnableTestGuestWindow) {
-  ui_test_utils::BrowserChangeObserver browser_creation_observer(
-      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+  ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
 
   Browser* guest_browser = browser_creation_observer.Wait();
@@ -299,8 +300,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 #if BUILDFLAG(ENABLE_TOR)
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsEnableTestPrivateTorWindow) {
-  ui_test_utils::BrowserChangeObserver tor_browser_creation_observer(
-      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+  ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
   brave::NewOffTheRecordWindowTor(browser());
   Browser* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);
@@ -452,7 +452,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   auto* side_panel_coordinator =
       browser()->GetFeatures().side_panel_coordinator();
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return browser()->GetBrowserView().unified_side_panel()->state() ==
+    return browser()->GetBrowserView().contents_height_side_panel()->state() ==
            SidePanel::State::kClosed;
   }));
 

@@ -34,23 +34,16 @@ def main(argv):
                         help='Path to the java binary wrapper script.')
     parser.add_argument('--input-jar', required=True)
     parser.add_argument('--output-jar', required=True)
-    parser.add_argument('--direct-classpath-jars', required=True)
     parser.add_argument('--sdk-classpath-jars', required=True)
     parser.add_argument('--extra-classpath-jars', dest='extra_jars',
                         action='append', default=[],
                         help='Extra inputs, passed last to the binary script.')
-    parser.add_argument('-v', '--verbose', action='store_true')
     parser.add_argument('--missing-classes-allowlist')
-    _AddSwitch(parser, '--is-prebuilt')
     _AddSwitch(parser, '--enable-thread-annotations')
-    _AddSwitch(parser, '--enable-check-class-path')
     args = parser.parse_args(argv)
 
     sdk_jars = action_helpers.parse_gn_list(args.sdk_classpath_jars)
     assert len(sdk_jars) > 0
-
-    direct_jars = action_helpers.parse_gn_list(args.direct_classpath_jars)
-    assert len(direct_jars) > 0
 
     extra_classpath_jars = []
     for a in args.extra_jars:
@@ -58,17 +51,14 @@ def main(argv):
     args.missing_classes_allowlist = action_helpers.parse_gn_list(
         args.missing_classes_allowlist)
 
-    if args.verbose:
-        verbose = '--verbose'
-    else:
-        verbose = '--not-verbose'
-
     cmd = ([
-        args.script, args.input_jar, args.output_jar, verbose, args.is_prebuilt,
-        args.enable_thread_annotations, args.enable_check_class_path
+        args.script,
+        args.input_jar,
+        args.output_jar,
+        args.enable_thread_annotations,
     ] + [str(len(args.missing_classes_allowlist))] +
-             args.missing_classes_allowlist + [str(len(sdk_jars))] + sdk_jars +
-            [str(len(direct_jars))] + direct_jars + extra_classpath_jars)
+           args.missing_classes_allowlist + [str(len(sdk_jars))] + sdk_jars +
+           extra_classpath_jars)
     subprocess.check_call(cmd)
 
 

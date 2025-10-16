@@ -270,7 +270,7 @@ void AIRewriterDialogDelegate::DidFinishNavigation(
 }
 
 void AIRewriterDialogDelegate::OnFocusChangedInPage(
-    content::FocusedNodeDetails* focused_node) {
+    const content::FocusedNodeDetails& details) {
   CloseDialog();
 }
 void AIRewriterDialogDelegate::ShowDialog() {

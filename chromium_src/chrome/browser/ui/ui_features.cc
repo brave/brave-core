@@ -19,7 +19,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #endif
     // TODO(https://github.com/brave/brave-browser/issues/46337): Re-enable
     // scrim views if needed.
-    {kScrimForBrowserWindowModal, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSideBySide, base::FEATURE_ENABLED_BY_DEFAULT},
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTabstripComboButton, base::FEATURE_ENABLED_BY_DEFAULT},

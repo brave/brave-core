@@ -93,11 +93,17 @@
   <message name="IDS_COLLABORATION_ENTREPRISE_SIGNIN_DISABLED_BODY" desc="The body of the error dialog when entreprise signin disabled.">
     To share or join tab groups, you must be able to sign in to Brave
   </message>
+  <message name="IDS_COLLABORATION_ENTREPRISE_SIGNIN_DISABLED_SYNC_HISTORY_BODY" desc="The body of the error dialog when entreprise signin disabled.">
+    To share tabs and collaborate with others, you must be able to sign in to Brave
+  </message>
   <message name="IDS_COLLABORATION_ENTREPRISE_SYNC_DISABLED_HEADER" desc="The header of the error dialog when entreprise sync disabled.">
     Your organization limits what you can save
   </message>
   <message name="IDS_COLLABORATION_ENTREPRISE_SYNC_DISABLED_BODY" desc="The body of the error dialog when entreprise sync disabled.">
     When your organization limits saving to your Brave sync chain, you can’t share or join tab groups
+  </message>
+  <message name="IDS_COLLABORATION_ENTREPRISE_TABS_SYNC_DISABLED_BODY" desc="The body of the error dialog when entreprise sync disabled.">
+    When your organization limits saving to your Brave sync chain, you can’t share tabs or collaborate with others
   </message>
   <message name="IDS_COLLABORATION_ENTREPRISE_GROUP_CLOSED_HEADER" desc="The header of the error dialog when entreprise group is closed.">
     This group is closed

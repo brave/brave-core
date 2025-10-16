@@ -174,9 +174,9 @@ BraveHelpBubbleDelegateView::BraveHelpBubbleDelegateView(
 BraveHelpBubbleDelegateView::~BraveHelpBubbleDelegateView() = default;
 
 std::unique_ptr<NonClientFrameView>
-BraveHelpBubbleDelegateView::CreateNonClientFrameView(views::Widget* widget) {
+BraveHelpBubbleDelegateView::CreateFrameView(views::Widget* widget) {
   std::unique_ptr<NonClientFrameView> frame =
-      BubbleDialogDelegateView::CreateNonClientFrameView(widget);
+      BubbleDialogDelegateView::CreateFrameView(widget);
   CHECK(frame);
 
   std::unique_ptr<BorderWithArrow> border =

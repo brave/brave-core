@@ -650,9 +650,6 @@ Config.prototype.buildArgs = function () {
     args.brave_safebrowsing_api_key = this.braveAndroidSafeBrowsingApiKey
     args.safe_browsing_mode = 2
 
-    // Required since cr126 to use Chrome password store
-    args.use_login_database_as_backend = true
-
     // TODO(fixme)
     args.enable_tor = false
 

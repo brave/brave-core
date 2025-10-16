@@ -38,7 +38,7 @@ class BraveAccountServiceFactoryIOS : public ProfileKeyedServiceFactoryIOS {
 
   // BrowserStateKeyedServiceFactory:
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* state) const override;
+      ProfileIOS* profile) const override;
 };
 
 }  // namespace brave_account
