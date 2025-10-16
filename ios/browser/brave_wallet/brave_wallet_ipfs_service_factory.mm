@@ -37,7 +37,7 @@ BraveWalletIpfsServiceFactory* BraveWalletIpfsServiceFactory::GetInstance() {
 
 BraveWalletIpfsServiceFactory::BraveWalletIpfsServiceFactory()
     : ProfileKeyedServiceFactoryIOS("BraveWalletIpfsService",
-                                    ProfileSelection::kRedirectedInIncognito,
+                                    ProfileSelection::kNoInstanceInIncognito,
                                     ServiceCreation::kCreateLazily,
                                     TestingCreation::kCreateService) {}
 

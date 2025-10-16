@@ -5,8 +5,8 @@
 
 source_set("brave_wallet") {
   sources = [
-    "asset_ratio_service_factory.cc",
     "asset_ratio_service_factory.h",
+    "asset_ratio_service_factory.mm",
     "blockchain_images_source.h",
     "blockchain_images_source.mm",
     "brave_wallet_factory_wrappers.h",
@@ -17,10 +17,10 @@ source_set("brave_wallet") {
     "brave_wallet_service_factory.mm",
     "features.h",
     "features.mm",
-    "meld_integration_service_factory.cc",
     "meld_integration_service_factory.h",
-    "swap_service_factory.cc",
+    "meld_integration_service_factory.mm",
     "swap_service_factory.h",
+    "swap_service_factory.mm",
     "wallet_data_files_installer_delegate_impl.h",
     "wallet_data_files_installer_delegate_impl.mm",
   ]
