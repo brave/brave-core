@@ -573,9 +573,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
 // https://zcashblockexplorer.com/transactions/3bc513afc84befb9774f667eb4e63266a7229ab1fdb43476dd7c3a33d16b3101/raw
 TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
   {
-    auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 0);
+    auto account =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+    auto account_id = account->account_id.Clone();
     keyring_service_->UpdateNextUnusedAddressForZCashAccount(account_id, 2, 2);
   }
 
@@ -719,9 +719,9 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
           callback_called = true;
         });
 
-    auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 0);
+    auto account =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+    auto account_id = account->account_id.Clone();
 
     zcash_wallet_service_->RunDiscovery(std::move(account_id),
                                         std::move(discovery_callback));
@@ -766,9 +766,9 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery) {
           callback_called = true;
         });
 
-    auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 0);
+    auto account =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+    auto account_id = account->account_id.Clone();
 
     zcash_wallet_service_->RunDiscovery(std::move(account_id),
                                         std::move(discovery_callback));
@@ -809,9 +809,9 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
       });
 
   {
-    auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 0);
+    auto account =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+    auto account_id = account->account_id.Clone();
     keyring_service_->UpdateNextUnusedAddressForZCashAccount(account_id, 2,
                                                              std::nullopt);
   }
@@ -828,9 +828,9 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
           callback_called = true;
         });
 
-    auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 0);
+    auto account =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+    auto account_id = account->account_id.Clone();
 
     zcash_wallet_service_->RunDiscovery(std::move(account_id),
                                         std::move(discovery_callback));
@@ -841,10 +841,9 @@ TEST_F(ZCashWalletServiceUnitTest, AddressDiscovery_FromPrefs) {
 }
 
 TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
-  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
-  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 0);
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = account_1->account_id.Clone();
 
   // https://github.com/Electric-Coin-Company/zcash-android-wallet-sdk/blob/v2.0.6/sdk-incubator-lib/src/main/java/cash/z/ecc/android/sdk/fixture/WalletFixture.kt
 
@@ -942,10 +941,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
 }
 
 TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
-  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashTestnet, 0);
-  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashTestnet,
-                                              mojom::AccountKind::kDerived, 0);
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashTestnet, 0);
+  auto account_id_1 = account_1->account_id.Clone();
 
   // Normal transparent address - testnet
   {
@@ -1030,10 +1028,9 @@ TEST_F(ZCashWalletServiceUnitTest, AutoSync) {
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
                                    false, base::DoNothing());
-  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
-  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 0);
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = account_1->account_id.Clone();
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([&](const std::string& chain_id,
@@ -1087,10 +1084,9 @@ TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
                                    false, base::DoNothing());
-  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
-  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 0);
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = account_1->account_id.Clone();
   {
     base::MockCallback<ZCashWalletService::GetZCashAccountInfoCallback>
         get_zcash_account_info_callback;
@@ -1116,10 +1112,9 @@ TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
 }
 
 TEST_F(ZCashWalletServiceUnitTest, ValidateShielding) {
-  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
-  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 0);
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = account_1->account_id.Clone();
 
   {
     base::test::ScopedFeatureList feature_list;
@@ -1137,9 +1132,9 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateShielding) {
   }
 
   {
-    auto account_id_2 = MakeIndexBasedAccountId(
-        mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
-        mojom::AccountKind::kDerived, 0);
+    auto account_2 =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+    auto account_id_2 = account_2->account_id.Clone();
     base::test::ScopedFeatureList feature_list;
     feature_list.InitAndEnableFeatureWithParameters(
         features::kBraveWalletZCashFeature,
@@ -1156,10 +1151,9 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateShielding) {
 }
 
 TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
-  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
-  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 0);
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = account_1->account_id.Clone();
 
   // Shielded addresses disabled
   {
@@ -1230,15 +1224,13 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
                                    false, base::DoNothing());
-  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
-  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_2 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
 
-  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 0);
-  auto account_id_2 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 1);
+  auto account_id_1 = account_1->account_id.Clone();
+  auto account_id_2 = account_2->account_id.Clone();
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([&](const std::string& chain_id,
@@ -1318,10 +1310,9 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
   keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
                                    false, base::DoNothing());
   OrchardBundleManager::OverrideRandomSeedForTesting(70972);
-  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
-  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                            mojom::KeyringId::kZCashMainnet,
-                                            mojom::AccountKind::kDerived, 0);
+  auto account =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id = account->account_id.Clone();
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account_id, 1, 0);
   ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
       .WillByDefault(
@@ -1398,10 +1389,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
   keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
                                    false, base::DoNothing());
   OrchardBundleManager::OverrideRandomSeedForTesting(10987);
-  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
-  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                            mojom::KeyringId::kZCashMainnet,
-                                            mojom::AccountKind::kDerived, 1);
+  auto account =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
+  auto account_id = account->account_id.Clone();
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account_id, 1, 0);
 
   ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
@@ -1811,10 +1801,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
   keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
                                    false, base::DoNothing());
   OrchardBundleManager::OverrideRandomSeedForTesting(70972);
-  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
-  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                            mojom::KeyringId::kZCashMainnet,
-                                            mojom::AccountKind::kDerived, 0);
+  auto account =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id = account->account_id.Clone();
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account_id, 1, 0);
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
@@ -2340,10 +2329,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
   keyring_service()->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
                                    false, base::DoNothing());
   OrchardBundleManager::OverrideRandomSeedForTesting(985321);
-  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 6);
-  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                            mojom::KeyringId::kZCashMainnet,
-                                            mojom::AccountKind::kDerived, 6);
+  auto account =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 6);
+  auto account_id = account->account_id.Clone();
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           [&](const std::string& chain_id,
@@ -2723,9 +2711,9 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldSync) {
   keyring_service()->SetZCashAccountBirthday(
       account_id(), mojom::ZCashAccountShieldBirthday::New(100u, "hash"));
 
-  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 0);
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = account_1->account_id.Clone();
 
   {
     base::MockCallback<ZCashWalletService::IsSyncInProgressCallback>

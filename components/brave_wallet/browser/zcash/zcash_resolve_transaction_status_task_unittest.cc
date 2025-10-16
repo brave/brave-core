@@ -60,10 +60,6 @@ class ZCashResolveTransactionStatusTaskTest : public testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
-    account_id_ = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                          mojom::KeyringId::kZCashMainnet,
-                                          mojom::AccountKind::kDerived, 0);
-
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     base::FilePath db_path(
         temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
@@ -76,6 +72,10 @@ class ZCashResolveTransactionStatusTaskTest : public testing::Test {
     keyring_service_->Reset();
     keyring_service_->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
                                     false, base::DoNothing());
+
+    auto account = AccountUtils(keyring_service_.get())
+                       .EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+    account_id_ = account->account_id.Clone();
 
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
         db_path, *keyring_service_,
