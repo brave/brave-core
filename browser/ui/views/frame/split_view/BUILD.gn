@@ -11,6 +11,8 @@ source_set("split_view") {
     "brave_contents_container_view.h",
     "brave_multi_contents_view.cc",
     "brave_multi_contents_view.h",
+    "brave_multi_contents_view_delegate_impl.cc",
+    "brave_multi_contents_view_delegate_impl.h",
     "brave_multi_contents_view_mini_toolbar.cc",
     "brave_multi_contents_view_mini_toolbar.h",
   ]
