@@ -820,6 +820,21 @@ mojom::BlockchainTokenPtr GetCardanoNativeToken(std::string_view chain_id) {
   return result;
 }
 
+mojom::BlockchainTokenPtr GetPolkadotNativeToken(std::string_view chain_id) {
+  auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::DOT);
+  CHECK(network);
+
+  auto result = NetworkToNativeToken(*network);
+  result->logo = "dot.png";
+  if (chain_id == mojom::kPolkadotMainnet) {
+    result->coingecko_id = "dot";
+  } else {
+    result->coingecko_id = "";
+  }
+
+  return result;
+}
+
 mojom::BlockchainTokenPtr GetZcashNativeShieldedToken(
     std::string_view chain_id) {
   auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::ZEC);
