@@ -30,7 +30,6 @@ transpile_web_ui("brave_new_tab_ui") {
     "//brave/components/brave_news/browser/resources/",
     "//brave/components/brave_rewards/resources/shared/",
     "//brave/components/web-components/",
-    
   ]
 }
 

@@ -16,10 +16,7 @@ transpile_web_ui("market_display_ui") {
       ] ]
   webpack_aliases = [ "browser" ]
   resource_name = "market_display"
-  data = [
-    "//brave/components/brave_wallet_ui/",
-    
-  ]
+  data = [ "//brave/components/brave_wallet_ui/" ]
   deps = [
     "//brave/components/brave_wallet/common:mojom_js",
     "//brave/components/brave_wallet/common:preprocess_mojo",

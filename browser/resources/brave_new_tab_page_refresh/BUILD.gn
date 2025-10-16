@@ -18,7 +18,7 @@ transpile_web_ui("resources") {
     "//brave/browser/resources/brave_new_tab_page_refresh/",
     "//brave/components/brave_news/browser/resources/",
     "//brave/components/brave_rewards/resources/",
-    
+
     "//brave/components/web-components/",
   ]
   deps = [

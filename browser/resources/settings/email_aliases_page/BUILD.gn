@@ -13,9 +13,7 @@ transpile_web_ui("email_aliases_ui") {
         rebase_path("email_aliases.tsx"),
       ] ]
 
-  data = [
-    "//brave/browser/resources/settings/email_aliases_page/",
-  ]
+  data = [ "//brave/browser/resources/settings/email_aliases_page/" ]
 
   resource_name = "email_aliases"
 

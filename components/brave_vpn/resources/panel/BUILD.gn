@@ -19,7 +19,6 @@ transpile_web_ui("brave_vpn_panel_ui") {
   data = [
     "//brave/components/brave_vpn/resources/panel/",
     "//brave/components/web-components",
-    
   ]
 
   deps = [

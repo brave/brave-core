@@ -18,10 +18,7 @@ transpile_web_ui("skus_internals_ui") {
   ]
 
   resource_name = "skus_internals"
-  data = [
-    "//brave/components/skus/browser/resources/",
-    
-  ]
+  data = [ "//brave/components/skus/browser/resources/" ]
 }
 
 pack_web_resources("generated_resources") {

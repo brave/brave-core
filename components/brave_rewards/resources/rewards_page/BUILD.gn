@@ -13,10 +13,7 @@ transpile_web_ui("rewards_page") {
       ] ]
   resource_name = "rewards_page"
   output_module = true
-  data = [
-    "//brave/components/brave_rewards/resources/",
-    
-  ]
+  data = [ "//brave/components/brave_rewards/resources/" ]
   deps = [ "//brave/components/brave_rewards/core/mojom:webui_js" ]
 }
 

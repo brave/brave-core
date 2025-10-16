@@ -20,10 +20,7 @@ transpile_web_ui("new_tab_takeover_ui") {
     "//brave/components/ntp_background_images/browser/mojom:mojom_js",
     "//mojo/public/mojom/base",
   ]
-  data = [
-    "//brave/components/new_tab_takeover/",
-    
-  ]
+  data = [ "//brave/components/new_tab_takeover/" ]
 }
 
 pack_web_resources("new_tab_takeover_generated_resources") {

@@ -16,7 +16,6 @@ transpile_web_ui("brave_shields_panel_ui") {
   data = [
     "//brave/components/brave_shields/resources/panel/",
     "//brave/components/web-components/",
-    
   ]
   deps = [ "//brave/components/brave_shields/core/common:mojom_js" ]
 }

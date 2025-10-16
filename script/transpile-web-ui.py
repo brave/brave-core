@@ -176,6 +176,7 @@ def generate_grd(target_include_dir, grd_name, resource_name,
     with scoped_cwd(dirname):
         execute_stdout(args, env)
 
+
 def get_not_contained(roots, test_paths):
     """
     Check whether all given paths are contained within the source roots.
@@ -236,4 +237,3 @@ def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
 
 if __name__ == '__main__':
     sys.exit(main())
-
