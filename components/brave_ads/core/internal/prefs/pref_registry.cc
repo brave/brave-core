@@ -17,6 +17,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* const registry) {
 
 void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
   // Ads prefs.
+  registry->RegisterTimeDeltaPref(prefs::kGracePeriod, base::Days(3));
+
   registry->RegisterStringPref(prefs::kDiagnosticId, "");
 
   registry->RegisterBooleanPref(prefs::kOptedInToNotificationAds, false);

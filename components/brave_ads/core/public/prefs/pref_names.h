@@ -14,6 +14,8 @@ namespace brave_ads::prefs {
 // Ads prefs.
 inline constexpr char kFirstRunAt[] = "brave.brave_ads.first_run_at";
 
+inline constexpr char kGracePeriod[] = "brave.brave_ads.grace_period";
+
 inline constexpr char kDiagnosticId[] = "brave.brave_ads.diagnostics.id";
 
 inline constexpr char kOptedInToNotificationAds[] = "brave.brave_ads.enabled";
