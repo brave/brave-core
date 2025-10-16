@@ -37,6 +37,10 @@ class TreeTabNode : public tabs::TabCollection {
   const tabs::TabInterface* current_tab() const { return current_tab_; }
   tabs::TabInterface* current_tab() { return current_tab_; }
 
+  // Returns the top-level ancestor TreeTabNode in the hierarchy.
+  TreeTabNode* GetTopLevelAncestor();
+  const TreeTabNode* GetTopLevelAncestor() const;
+
  private:
   // Returns all TreeTabNodes recursively from the given parent collection.
   static void CollectTreeNodesRecursively(tabs::TabCollection& parent,
