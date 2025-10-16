@@ -58,9 +58,19 @@ const BeforeSendingEmailForm = ({
     try {
       await emailAliasesService.requestAuthentication(email)
     } catch (errorMessage) {
-      setErrorMessage(errorMessage as string)
+      setErrorMessage(errorMessage.toString())
     }
   }
+
+  const emailRef = React.useRef<HTMLInputElement>()
+  React.useEffect(() => {
+    const input = emailRef.current
+    if (!input) {
+      return
+    }
+    setTimeout(() => input.focus())
+  }, [])
+
   return (
     <SpacedCol>
       <h4>{getLocale(S.SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT)}</h4>
@@ -69,7 +79,7 @@ const BeforeSendingEmailForm = ({
       </div>
       <LoginRow>
         <StretchyInput
-          autofocus
+          ref={emailRef}
           onInput={(detail) => setEmail(detail.value)}
           onKeyDown={onEnterKeyForInput(requestAuthentication)}
           name='email'
