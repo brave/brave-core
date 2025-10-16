@@ -64,12 +64,12 @@ policy::PolicyBundle BraveProfilePolicyProvider::LoadPolicies() {
 
   // TODO(https://github.com/brave/brave-browser/issues/47463)
   // Get the actual purchase state from SKU service.
-#if DCHECK_IS_ON()  // Debug builds only
+#if !defined(OFFICIAL_BUILD)
   if (brave_origin::IsBraveOriginEnabled()) {
     LoadBraveOriginPolicies(bundle);
   }
 #else
-  // Always disabled in release builds
+  // Always disabled in official builds
 #endif
 
   return bundle;
