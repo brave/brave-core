@@ -76,6 +76,11 @@ def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
         print(
             "fix this issue by adding the containing source folders into the transpile_web_ui target data section"
         )
+
+        print(src_folder)
+        print(out_dir)
+        print(extra_modules)
+        
         sys.exit(1)
 
 
