@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_referrals/browser/file_extended_attribute.h"
 
+#include <errno.h>
 #include <sys/xattr.h>
 
 #include "base/logging.h"
