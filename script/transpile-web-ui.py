@@ -176,21 +176,6 @@ def generate_grd(target_include_dir, grd_name, resource_name,
     with scoped_cwd(dirname):
         execute_stdout(args, env)
 
-
-def get_not_contained(roots, test_paths):
-    """
-    Check whether all given paths are contained within the source roots.
-    Returns list of paths that were not contained
-    """
-
-    not_contained = [
-        str(path) for path in test_paths
-        if not any(path.startswith(root) for root in roots)
-    ]
-
-    return not_contained
-
-
 def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
                         extra_modules):
 
@@ -201,10 +186,10 @@ def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
     ).replace(src_folder, '/')
 
     out_dir = make_source_absolute(Path(root_gen_dir).resolve().parents[1])
-    src_roots = []
 
     with open(data_paths_file) as f:
         src_roots = json.loads(f.read())
+        assert isinstance(src_roots, list)
 
     with open(depfile_path) as f:
         files = [make_source_absolute(file) for file in f.read().split()[1:]]
@@ -234,6 +219,19 @@ def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
         )
 
         sys.exit(1)
+
+def get_not_contained(roots, test_paths):
+    """
+    Check whether all given paths are contained within the source roots.
+    Returns list of paths that were not contained
+    """
+
+    not_contained = [
+        str(path) for path in test_paths
+        if not any(path.startswith(root) for root in roots)
+    ]
+
+    return not_contained
 
 if __name__ == '__main__':
     sys.exit(main())
