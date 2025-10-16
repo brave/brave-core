@@ -14,17 +14,15 @@ from lib.util import execute_stdout, scoped_cwd
 from pathlib import Path
 
 
-def get_not_contained(src_roots, paths):
+def get_not_contained(roots, test_paths):
     """
     Check whether all given paths are contained within the source roots.
     Returns list of paths that were not contained
     """
-    roots = [Path(r).resolve() for r in src_roots]
-    test_paths = [Path(p).resolve() for p in paths]
 
     not_contained = [
         str(path) for path in test_paths
-        if not any(path.is_relative_to(root) for root in roots)
+        if not any(path.startswith(root) for root in roots)
     ]
 
     return not_contained
@@ -37,20 +35,21 @@ def make_source_absolute(root, path):
 def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
                         extra_modules):
     src_folder = Path(root_gen_dir).resolve().parents[2].as_posix()
-    out_dir = Path(root_gen_dir).resolve().parents[1].as_posix()
+    out_dir = Path(root_gen_dir).resolve().parents[1].as_posix().replace(
+        src_folder, '/')
     src_roots = []
 
     with open(data_paths_file) as f:
         src_roots = json.loads(f.read())
-        src_roots = [
-            root.replace('//', src_folder + '/') for root in src_roots
-        ]
 
     with open(depfile_path) as f:
-        files = f.read().split(' ')[1:]
+        files = [
+            Path(file).as_posix().replace(src_folder, '/')
+            for file in f.read().split(' ')[1:]
+        ]
 
     all_roots = src_roots + [
-        src_folder + '/brave/node_modules',  # handled via package.json
+        '//brave/node_modules',  # handled via package.json
         out_dir  # generated assets are deps and handled by gn already
     ] + extra_modules
 
@@ -59,17 +58,13 @@ def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
     if len(not_contained) > 0:
         print("error occured cross-referencing data folders.")
         print("transpile_web_ui accessed the following files:")
-        print("  " + "\n  ".join(
-            [make_source_absolute(src_folder, file)
-             for file in not_contained]))
+        print("  " + "\n  ".join(not_contained))
 
         if len(src_roots) > 0:
             print(
                 "However they are not listed as data in target. data conatains:"
             )
-            print("  " + "\n  ".join([
-                make_source_absolute(src_folder, entry) for entry in src_roots
-            ]))
+            print("  " + "\n  ".join(src_roots))
         else:
             print("However data is empty")
 
@@ -77,10 +72,6 @@ def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
             "fix this issue by adding the containing source folders into the transpile_web_ui target data section"
         )
 
-        print(src_folder)
-        print(out_dir)
-        print(extra_modules)
-        
         sys.exit(1)
 
 
