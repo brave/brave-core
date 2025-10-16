@@ -19,11 +19,8 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
         deleteField(sBraveNewTabPageLayoutClassName, "mMvTilesContainerLayout");
         makeProtectedField(sNewTabPageLayoutClassName, "mMvTilesContainerLayout");
 
-        deleteField(sBraveNewTabPageLayoutClassName, "mLogoCoordinator");
-        makeProtectedField(sNewTabPageLayoutClassName, "mLogoCoordinator");
-
-        deleteField(sBraveNewTabPageLayoutClassName, "mInitialTileNum");
-        makeProtectedField(sNewTabPageLayoutClassName, "mInitialTileNum");
+        deleteField(sBraveNewTabPageLayoutClassName, "mMvtContentFits");
+        makeProtectedField(sNewTabPageLayoutClassName, "mMvtContentFits");
 
         deleteField(sBraveNewTabPageLayoutClassName, "mProfile");
         makeProtectedField(sNewTabPageLayoutClassName, "mProfile");
@@ -46,8 +43,15 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
                 "setSearchProviderBottomMargin",
                 "Ljava/lang/Override;");
 
+        makePublicMethod(sNewTabPageLayoutClassName, "calculateTabletMvtWidth");
+        addMethodAnnotation(
+                sBraveNewTabPageLayoutClassName, "calculateTabletMvtWidth", "Ljava/lang/Override;");
+
         deleteMethod(sBraveNewTabPageLayoutClassName, "getLogoMargin");
         makePublicMethod(sNewTabPageLayoutClassName, "getLogoMargin");
+
+        deleteMethod(sBraveNewTabPageLayoutClassName, "updateMvtOnTablet");
+        makePublicMethod(sNewTabPageLayoutClassName, "updateMvtOnTablet");
 
         changeSuperName(sNewTabPageLayoutClassName, sNewTabPageLayoutSuperClassName);
     }

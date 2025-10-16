@@ -46,8 +46,8 @@ WireguardProfileCredentials::FromServerResponse(
   if (server_response.empty() || client_private_key.empty()) {
     return std::nullopt;
   }
-  std::optional<base::Value::Dict> value =
-      base::JSONReader::ReadDict(server_response);
+  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(
+      server_response, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value.has_value()) {
     return std::nullopt;
   }
@@ -78,8 +78,8 @@ WireguardProfileCredentials::FromString(const std::string& credentials) {
   if (credentials.empty()) {
     return std::nullopt;
   }
-  std::optional<base::Value::Dict> value =
-      base::JSONReader::ReadDict(credentials);
+  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(
+      credentials, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value.has_value()) {
     return std::nullopt;
   }

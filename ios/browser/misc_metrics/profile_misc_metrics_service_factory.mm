@@ -38,8 +38,8 @@ ProfileMiscMetricsServiceFactory::~ProfileMiscMetricsServiceFactory() = default;
 
 std::unique_ptr<KeyedService>
 ProfileMiscMetricsServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
-  return std::make_unique<ProfileMiscMetricsService>(context);
+    ProfileIOS* profile) const {
+  return std::make_unique<ProfileMiscMetricsService>(profile);
 }
 
 }  // namespace misc_metrics

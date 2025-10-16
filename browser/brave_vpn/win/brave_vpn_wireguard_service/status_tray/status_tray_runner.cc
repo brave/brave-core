@@ -73,7 +73,8 @@ int GetStatusIconTooltip(brave_vpn::mojom::ConnectionState state) {
 
 int GetStatusTrayIcon(brave_vpn::mojom::ConnectionState state) {
   bool dark_theme =
-      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors();
+      ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme() ==
+      ui::NativeTheme::PreferredColorScheme::kDark;
   switch (state) {
     case brave_vpn::mojom::ConnectionState::CONNECTED:
       return dark_theme ? IDR_BRAVE_VPN_TRAY_LIGHT_CONNECTED

@@ -32,6 +32,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/color/color_provider.h"
+#include "ui/gfx/image/image_skia.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"

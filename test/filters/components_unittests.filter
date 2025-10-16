@@ -46,6 +46,7 @@
 -HintsManagerFetchingTest.*
 -HintsManagerProactivePersonalizationFetchingTest.*
 -ModelBrokerClientTest.*
+-OnDeviceAssetManagerTest.AdaptationModelDownloadRegisteredWhenFeatureFirstUsed
 -OnDeviceModelAdaptationLoaderTest2.UnavailableAdaptationRejectsSession
 -OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsDefaultUserAnonymousDataCollectionEnabled
 -PDPMetricsTest.TestFalseOptGuideResponseIsRecorded
@@ -84,6 +85,15 @@
 -SyncUserSettingsImplTest.PreferredTypesNotKeepEverythingSynced
 -SyncUserSettingsImplTest.PreferredTypesSyncEverything
 -SyncUserSettingsImplTest.SetSelectedTypeInFullSyncMode
+
+# These tests fail because we disable
+# switches::kSyncEnableBookmarksInTransportMode
+-InitialAccountBookmarkDeduplicatorTest.*
+
+# These tests fail because we patch ImageServiceConsentHelper::GetConsentStatus
+# to return false always
+-ImageServiceConsentHelperTest.*
+-ImageServiceImplTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
@@ -158,8 +168,6 @@
 -MostVisitedSitesWithCustomLinksTest.DisableCustomLinksWhenInitialized
 -OhttpKeyServiceTest.AsyncFetch_PrefChanges_BackgroundHprtDisabled
 -OhttpKeyServiceTest.GetOhttpKey_BackgroundLookupsForbidden
--OmniboxControllerTest.CheckDefaultAutocompleteProviders
--OmniboxEditModelTest.*
 -OnDeviceModelAdaptationLoaderTest.*
 -OnDeviceModelComponentTest.*
 -OnDeviceModelComponentTest.PerformanceClassChangesAfterInstall

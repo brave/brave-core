@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_TOOLTIPS_BOUNDS_UTIL_H_
 #define BRAVE_BROWSER_UI_BRAVE_TOOLTIPS_BOUNDS_UTIL_H_
 
-#include "ui/gfx/native_widget_types.h"
+#include "ui/gfx/native_ui_types.h"
 
 namespace gfx {
 class Rect;

@@ -8,5 +8,4 @@
     <dimen name="omnibox_brave_search_banner_height">150dp</dimen>
     <dimen name="omnibox_brave_search_banner_text_desc_right_margin">30dp</dimen>
     <dimen name="omnibox_brave_search_banner_text_desc_top_margin">4dp</dimen>
-    <dimen name="brave_omnibox_icon_size">20dp</dimen>
 </resources>

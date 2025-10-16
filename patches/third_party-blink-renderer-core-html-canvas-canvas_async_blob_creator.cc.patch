@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc b/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc
-index e7ab8dd22116bf671898433d6aad1150ed873b2c..7cfa8cd556fb13fa400cfe7070b2c88956beca1d 100644
+index cec45ea0504573d62e81440d3683e2773172ff60..c6a98427f6ecdae0b1ca475909505062e0d866f6 100644
 --- a/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc
 +++ b/third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.cc
 @@ -221,6 +221,7 @@ CanvasAsyncBlobCreator::CanvasAsyncBlobCreator(

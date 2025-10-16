@@ -36,6 +36,7 @@ source_set("unit_tests") {
     "//brave/components/l10n/common:test_support",
     "//brave/components/omnibox/buildflags",
     "//brave/components/search_engines",
+    "//chrome/browser/history",
     "//components/bookmarks/browser",
     "//components/bookmarks/test",
     "//components/omnibox/browser",

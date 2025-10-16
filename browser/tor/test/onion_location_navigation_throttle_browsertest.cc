@@ -146,8 +146,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
                        : IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT,
                 u"")));
 
-    ui_test_utils::BrowserChangeObserver browser_creation_observer(
-        nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+    ui_test_utils::BrowserCreatedObserver browser_creation_observer;
 
     content::TestNavigationObserver navigation_observer(
         url, content::MessageLoopRunner::QuitMode::IMMEDIATE, false);

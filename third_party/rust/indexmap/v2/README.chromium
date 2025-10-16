@@ -1,6 +1,6 @@
 Name: indexmap
 URL: https://crates.io/crates/indexmap
-Version: 2.10.0
+Version: 2.11.4
 License: Apache-2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/indexmap-v2/../../../../../../third_party/rust/chromium_crates_io/vendor/indexmap-v2/LICENSE-APACHE
 Shipped: yes

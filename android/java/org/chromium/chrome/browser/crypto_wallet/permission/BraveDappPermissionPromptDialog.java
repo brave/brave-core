@@ -247,6 +247,7 @@ public class BraveDappPermissionPromptDialog
         }
         ImageLoader.fetchFavIcon(
                 mFavIconURL,
+                false,
                 new WeakReference<>(mContext),
                 fav -> {
                     if (fav == null) return;

@@ -12,6 +12,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/stl_util.h"
+#include "base/test/task_environment.h"
 #include "base/values.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/google/core/common/google_switches.h"
@@ -89,6 +90,7 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
   }
 
  protected:
+  base::test::SingleThreadTaskEnvironment task_environment_;
   search_engines::SearchEnginesTestEnvironment search_engines_test_environment_;
   std::vector<const PrepopulatedEngine*> brave_prepopulated_engines_;
 };

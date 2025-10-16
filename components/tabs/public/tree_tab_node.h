@@ -50,7 +50,8 @@ class TreeTabNode : public tabs::TabCollection {
 
   // Returns the direct children of this TreeTabNode as a list of variants
   // containing either TabInterface* or TabCollection*.
-  std::vector<std::variant<tabs::TabInterface*, TabCollection*>> GetChildren();
+  std::vector<std::variant<tabs::TabInterface*, TabCollection*>>
+  GetTreeNodeChildren();
 
   tree_tab::TreeTabNodeId tree_tab_node_id_;
 

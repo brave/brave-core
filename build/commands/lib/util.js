@@ -726,7 +726,11 @@ const util = {
 
     const buildGuard = new ActionGuard(path.join(outputDir, 'build.guard'))
     try {
-      if (config.isCI && buildGuard.wasInterrupted()) {
+      if (
+        config.isCI &&
+        config.hostOS !== 'win' && // gn clean has issues with symlinks.
+        buildGuard.wasInterrupted()
+      ) {
         await util.runAsync('gn', ['clean', outputDir], options)
       }
       buildGuard.markStarted()

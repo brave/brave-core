@@ -333,7 +333,7 @@ std::optional<base::Value::Dict> FilTransaction::DeserializeSignedTx(
       json::convert_int64_value_to_string("/Message/GasLimit", signed_tx, true);
   json = json::convert_int64_value_to_string("/Message/Nonce", json, true);
   json = json::convert_int64_value_to_string("/Message/Method", json, true);
-  return base::JSONReader::ReadDict(json);
+  return base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
 }
 
 // https://spec.filecoin.io/algorithms/crypto/signatures/#section-algorithms.crypto.signatures

@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.85.63",
+  "version": "1.85.65",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -76,7 +76,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "141.0.7390.108",
+        "tag": "142.0.7444.23",
         "repository": {
           "url": "https://github.com/brave/chromium"
         }

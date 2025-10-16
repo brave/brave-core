@@ -25,14 +25,15 @@ std::unique_ptr<RuleIterator> BraveGlobalValueMap::GetRuleIterator(
   return GlobalValueMap::GetRuleIterator(content_type);
 }
 
-void BraveGlobalValueMap::SetContentSetting(ContentSettingsType content_type,
-                                            ContentSetting setting) {
-  return GlobalValueMap::SetContentSetting(content_type, setting);
+void BraveGlobalValueMap::SetPermissionSetting(
+    ContentSettingsType content_type,
+    std::optional<PermissionSetting> setting) {
+  return GlobalValueMap::SetPermissionSetting(content_type, setting);
 }
 
-ContentSetting BraveGlobalValueMap::GetContentSetting(
+std::optional<PermissionSetting> BraveGlobalValueMap::GetPermissionSetting(
     ContentSettingsType content_type) const {
-  return GlobalValueMap::GetContentSetting(content_type);
+  return GlobalValueMap::GetPermissionSetting(content_type);
 }
 
 }  // namespace content_settings

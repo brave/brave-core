@@ -45,7 +45,8 @@ class AIRewriterDialogDelegate : public ui::WebDialogDelegate,
 
   // content::WebContentsObserver:
   void DidFinishNavigation(content::NavigationHandle* handle) override;
-  void OnFocusChangedInPage(content::FocusedNodeDetails* details) override;
+  void OnFocusChangedInPage(
+      const content::FocusedNodeDetails& details) override;
 
   views::Widget* widget_for_testing() { return widget_for_testing_; }
   AIRewriterUI* GetRewriterUIForTesting();

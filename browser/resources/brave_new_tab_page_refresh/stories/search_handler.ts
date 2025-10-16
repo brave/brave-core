@@ -72,6 +72,10 @@ export function createSearchHandler(store: Store<SearchState>): SearchActions {
       })
     },
 
+    setActiveSearchInputKey(key) {
+      store.update({ activeSearchInputKey: key })
+    },
+
     queryAutocomplete(query, engine) {
       store.update({
         searchMatches: [{

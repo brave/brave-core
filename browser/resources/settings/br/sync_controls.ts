@@ -1,0 +1,19 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
+
+RegisterPolymerTemplateModifications({
+  'settings-sync-controls': (templateContent) => {
+    // Remove payment integration from settings-sync-controls
+    let paymentIntegrationToggle =
+      templateContent.querySelector('cr-toggle[checked="{{syncPrefs.paymentsSynced}}"]')
+    if (!paymentIntegrationToggle) {
+      console.error('[Brave Settings Overrides] Could not find sync control payment toggle')
+      return
+    }
+    paymentIntegrationToggle.parentElement.remove()
+  }
+})

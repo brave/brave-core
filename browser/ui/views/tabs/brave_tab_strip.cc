@@ -381,7 +381,9 @@ void BraveTabStrip::UpdateTabContainer() {
             BrowserView::GetBrowserViewForBrowser(browser));
         DCHECK(browser_view);
         auto* scroll_container = static_cast<TabStripScrollContainer*>(
-            browser_view->tab_strip_region_view()->tab_strip_container_);
+            views::AsViewClass<TabStripRegionView>(
+                browser_view->tab_strip_view())
+                ->tab_strip_container_);
         DCHECK(scroll_container);
         SetAvailableWidthCallback(base::BindRepeating(
             &TabStripScrollContainer::GetTabStripAvailableWidth,

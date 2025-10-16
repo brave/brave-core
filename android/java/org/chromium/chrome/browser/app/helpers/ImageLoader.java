@@ -430,22 +430,35 @@ public class ImageLoader {
         return url.endsWith(".gif") || url.endsWith("=gif");
     }
 
-    public static void fetchFavIcon(String originSpecUrl, WeakReference<Context> context,
+    public static void fetchFavIcon(
+            String originSpecUrl,
+            boolean useIncognitoNtpIcon,
+            WeakReference<Context> context,
             Callbacks.Callback1<Bitmap> callback) {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            FaviconHelper.FaviconImageCallback imageCallback = (bitmap, iconUrl) -> {
-                if (context.get() != null) {
-                    if (bitmap == null) {
-                        bitmap = getFaviconThemeHelper().getDefaultFaviconBitmap(
-                                context.get(), iconUrl, true);
-                    }
-                    callback.call(bitmap);
-                }
-            };
+            FaviconHelper.FaviconImageCallback imageCallback =
+                    (bitmap, iconUrl) -> {
+                        if (context.get() != null) {
+                            if (bitmap == null) {
+                                bitmap =
+                                        getFaviconThemeHelper()
+                                                .getDefaultFaviconBitmap(
+                                                        context.get(),
+                                                        iconUrl,
+                                                        true,
+                                                        useIncognitoNtpIcon);
+                            }
+                            callback.call(bitmap);
+                        }
+                    };
             // 0 is a max bitmap size for download
-            getFaviconHelper().getLocalFaviconImageForURL(
-                    activity.getCurrentProfile(), new GURL(originSpecUrl), 0, imageCallback);
+            getFaviconHelper()
+                    .getLocalFaviconImageForURL(
+                            activity.getCurrentProfile(),
+                            new GURL(originSpecUrl),
+                            0,
+                            imageCallback);
 
         } catch (Exception ignored) {
         }

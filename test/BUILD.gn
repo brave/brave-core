@@ -477,8 +477,10 @@ test("brave_unit_tests") {
       "//brave/components/commands/browser:unit_tests",
       "//brave/components/commands/common:unit_tests",
       "//brave/ui/views:unit_tests",
+      "//chrome/browser/history",
       "//chrome/browser/ui/views/bubble",
       "//components/favicon/content",
+      "//components/push_messaging:test_support",
       "//components/user_data_importer/common",
     ]
   }
@@ -1344,6 +1346,7 @@ if (is_android) {
       "//chrome/test/android:chrome_java_integration_test_support",
       "//chrome/test/android:chrome_java_test_support_common",
       "//components/bookmarks/common/android:bookmarks_java",
+      "//components/browser_ui/accessibility/android:lib_java",
       "//components/browser_ui/bottomsheet/android:java",
       "//components/browser_ui/bottomsheet/android:manager_java",
       "//components/browser_ui/desktop_windowing/android:java",
